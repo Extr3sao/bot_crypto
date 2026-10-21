@@ -1,0 +1,446 @@
+{
+  "accounting": {
+    "initial_equity_usdt": 10000.0,
+    "mark_prices": {
+      "ETH/USDT": 2446.36,
+      "SOL/USDT": 106.6
+    },
+    "meanings": {
+      "costs_realised_usdt": "same value as costs_usdt, named for symmetry with costs_total_usdt",
+      "costs_total_usdt": "costs_usdt + entry_commissions_accrued_open_usdt",
+      "costs_usdt": "realised cost of closed trades only: execution + entry + exit commissions. Unchanged since 003B; it does NOT include open positions.",
+      "entry_commissions_accrued_open_usdt": "entry commissions of positions still open: charged at close by the broker, but already owed and already withheld from marked equity",
+      "entry_commissions_realised_usdt": "entry commissions inside closed trades",
+      "execution_costs_realised_usdt": "spread/impact cost embedded in closed-trade fills",
+      "exit_commissions_realised_usdt": "exit commissions inside closed trades",
+      "marked_equity_usdt": "initial equity + pnl_total_usdt",
+      "pnl_realised_usdt": "net PnL of closed trades (same value as net_realised_usdt)",
+      "pnl_total_usdt": "pnl_realised_usdt + pnl_unrealised_usdt",
+      "pnl_unrealised_usdt": "open positions marked at the last observable close, net of accrued entry commissions"
+    },
+    "schema_version": "paper-accounting/2"
+  },
+  "book_id": "paper-resume-drill",
+  "calls": 170,
+  "closed_trades": 16,
+  "costs_realised_usdt": 20.83960112,
+  "costs_total_usdt": 21.83960112,
+  "costs_usdt": 20.839601,
+  "counters": {
+    "action:LONG": 92,
+    "action:NO_TRADE": 24,
+    "action:SHORT": 54,
+    "closed_trades": 8,
+    "dropped:ALREADY_LONG": 51,
+    "dropped:ALREADY_SHORT": 3,
+    "dropped:MODEL_NO_TRADE": 24,
+    "dropped:OPPOSITE_LONG_OPEN": 14,
+    "dropped:OPPOSITE_SHORT_OPEN": 5,
+    "fills": 8,
+    "risk_blocked:consecutive_loss_cooldown": 55
+  },
+  "decision_points": 3,
+  "drawdown_pct": 0.279175,
+  "drawdown_status": "MEASURED",
+  "drawdown_usdt": 27.95137,
+  "entry_commissions_accrued_open_usdt": 1.0,
+  "entry_commissions_realised_usdt": 8.0,
+  "equity_points": 77,
+  "estimated_spend_usd": 0.0,
+  "execution": {
+    "bar_interval_ms": 300000,
+    "data_gap_policy": "fail_closed_unless_independent_coverage",
+    "entry_bar_range_policy": "full_bar_from_its_open",
+    "entry_quote_sources": {
+      "bar_open": 18
+    },
+    "exit_ts_resolutions": [
+      "OPEN_GAP",
+      "BAR_WINDOW",
+      "QUOTE",
+      "MINUTE_WINDOW"
+    ],
+    "expired_opinions": 0,
+    "fills": 8,
+    "gap_exits": 0,
+    "gap_policy": "open_on_gap",
+    "max_opinion_age_ms": 300000,
+    "open_phase_order": "gap_close>mark>entries>intrabar",
+    "quote_lag_ms": {
+      "max": 0,
+      "median": 0,
+      "min": 0
+    },
+    "quote_source": "bar_open",
+    "stale_valuation_vetoes": 0,
+    "stop_coverage": "entry_at_open_full_bar",
+    "sub_bar_fills": 0,
+    "subbar_entries": false,
+    "waiting_events": 0
+  },
+  "execution_costs_realised_usdt": 4.83960112,
+  "exit_commissions_realised_usdt": 8.0,
+  "fills": 8,
+  "final_equity_usdt": 9985.328916,
+  "gross_realised_usdt": 1.328916,
+  "marked_equity_usdt": 9984.72055381,
+  "net_realised_usdt": -14.671084,
+  "open_positions_at_end": {
+    "ETH/USDT": {
+      "entry_commission_usdt": 0.5,
+      "entry_price": 2436.2969425261062,
+      "mark_price": 2446.36,
+      "notional_usdt": 500.0,
+      "position_id": "pos-paper-resume-drill-00000065",
+      "side": "sell",
+      "unrealised_pnl_usdt": -2.06523624
+    },
+    "SOL/USDT": {
+      "entry_commission_usdt": 0.5,
+      "entry_price": 106.07875573384673,
+      "mark_price": 106.6,
+      "notional_usdt": 500.0,
+      "position_id": "pos-paper-resume-drill-00000067",
+      "side": "buy",
+      "unrealised_pnl_usdt": 2.45687396
+    }
+  },
+  "pnl_realised_usdt": -14.67108391,
+  "pnl_total_usdt": -15.27944619,
+  "pnl_unrealised_usdt": -0.60836228,
+  "provider": "strategy-signal",
+  "reconciliation": {
+    "accounting_schema_version": "paper-accounting/2",
+    "costs_realised_usdt": 20.83960112,
+    "costs_total_usdt": 21.83960112,
+    "curve_end_equity_usdt": 9984.72055381,
+    "entry_commission_usdt": 8.0,
+    "entry_commissions_accrued_open_usdt": 1.0,
+    "execution_cost_usdt": 4.83960112,
+    "exit_commission_usdt": 8.0,
+    "final_equity_usdt": 9985.32891609,
+    "identities": {
+      "cash_rebuilds_from_realised_pnl": true,
+      "curve_ends_at_final_equity": true,
+      "every_close_after_its_entry_quote": true,
+      "every_fill_pays_at_or_after_its_answer": true,
+      "marked_equity_rebuilds_from_open_position": true,
+      "net_pnl_nets_every_named_cost": true,
+      "open_positions_are_disjoint_from_closed_trades": true,
+      "realised_costs_equal_closed_trade_legs": true,
+      "risk_equity_matches_marked_equity": true,
+      "total_costs_equal_realised_plus_accrued": true,
+      "total_pnl_moves_the_marked_book": true
+    },
+    "initial_equity_usdt": 10000.0,
+    "marked_equity_usdt": 9984.72055381,
+    "marks_complete_at_end": true,
+    "net_realised_usdt": -14.67108391,
+    "open_gap_exits": 0,
+    "open_position_ids_at_end": [
+      "pos-paper-resume-drill-00000065",
+      "pos-paper-resume-drill-00000067"
+    ],
+    "open_positions_at_end": 2,
+    "pnl_total_usdt": -15.27944619,
+    "reference_gross_usdt": 6.1685172,
+    "risk_equity_usdt": 9984.72055381,
+    "tolerance_usdt": 1e-06,
+    "unrealised_pnl_gross_usdt": 0.39163772,
+    "unrealised_pnl_net_usdt": -0.60836228
+  },
+  "recovery": {
+    "barrier_ms": 1792506300000,
+    "checks": [
+      {
+        "check": "contract_matches",
+        "detail": "",
+        "ok": true
+      },
+      {
+        "check": "barrier_present",
+        "detail": "",
+        "ok": true
+      },
+      {
+        "check": "dataset_prefix_matches",
+        "detail": "",
+        "ok": true
+      },
+      {
+        "check": "equity_identity",
+        "detail": "",
+        "ok": true
+      },
+      {
+        "check": "closed_history_intact",
+        "detail": "",
+        "ok": true
+      },
+      {
+        "check": "position_structure",
+        "detail": "",
+        "ok": true
+      },
+      {
+        "check": "risk_agrees_with_mark",
+        "detail": "",
+        "ok": true
+      },
+      {
+        "check": "resume_bar_available",
+        "detail": "the dataset holds a bar at 1792506600000",
+        "ok": true
+      },
+      {
+        "check": "barrier_is_continuous",
+        "detail": "resuming at 1792506600000",
+        "ok": true
+      }
+    ],
+    "code": null,
+    "detail": "book paper-resume-drill recovered at bar 1792506300000: 2 open, 8 closed, equity 10008.28548442",
+    "gap": null,
+    "reconstruction": null,
+    "resume_from_ms": 1792506600000,
+    "status": "RECOVERED"
+  },
+  "resumed": true,
+  "risk_equity_usdt": 9984.720554,
+  "session": {
+    "barrier_ms": 1792529400000,
+    "book_digest": "ee315b364bef5622eb1de9120b0104f919f5d3dd6b7ddeb882a3c4e32c4f3024",
+    "closed_trades": 8,
+    "fills": 8,
+    "net_realised_usdt": -22.956568,
+    "recovery": {
+      "barrier_ms": 1792506300000,
+      "checks": [
+        {
+          "check": "contract_matches",
+          "detail": "",
+          "ok": true
+        },
+        {
+          "check": "barrier_present",
+          "detail": "",
+          "ok": true
+        },
+        {
+          "check": "dataset_prefix_matches",
+          "detail": "",
+          "ok": true
+        },
+        {
+          "check": "equity_identity",
+          "detail": "",
+          "ok": true
+        },
+        {
+          "check": "closed_history_intact",
+          "detail": "",
+          "ok": true
+        },
+        {
+          "check": "position_structure",
+          "detail": "",
+          "ok": true
+        },
+        {
+          "check": "risk_agrees_with_mark",
+          "detail": "",
+          "ok": true
+        },
+        {
+          "check": "resume_bar_available",
+          "detail": "the dataset holds a bar at 1792506600000",
+          "ok": true
+        },
+        {
+          "check": "barrier_is_continuous",
+          "detail": "resuming at 1792506600000",
+          "ok": true
+        }
+      ],
+      "code": null,
+      "detail": "book paper-resume-drill recovered at bar 1792506300000: 2 open, 8 closed, equity 10008.28548442",
+      "gap": null,
+      "reconstruction": null,
+      "resume_from_ms": 1792506600000,
+      "status": "RECOVERED"
+    },
+    "resume_from_ms": 1792506600000,
+    "resumed": true,
+    "session_id": "B-2",
+    "session_index": 2,
+    "sessions": [
+      "B-1",
+      "B-2"
+    ]
+  },
+  "session_id": "B-2",
+  "stop_at_ms": null,
+  "stop_reason": null,
+  "trades": [
+    {
+      "closed_at_utc": "2026-10-20T14:05:00Z",
+      "entry_price": 2404.2052395824635,
+      "exit_price": 2421.6572250000004,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2026-10-20T13:55:00Z",
+      "pnl_net_usdt": 2.6294708,
+      "side": "buy",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T14:05:00Z",
+      "entry_price": 104.82829888108073,
+      "exit_price": 105.57592500000001,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2026-10-20T13:55:00Z",
+      "pnl_net_usdt": 2.5659556,
+      "side": "buy",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T14:10:00Z",
+      "entry_price": 2424.099999680854,
+      "exit_price": 2441.6964000000003,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2026-10-20T14:05:00Z",
+      "pnl_net_usdt": 2.6294708,
+      "side": "buy",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T14:10:00Z",
+      "entry_price": 106.29883613993356,
+      "exit_price": 107.05695000000001,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2026-10-20T14:05:00Z",
+      "pnl_net_usdt": 2.5659556,
+      "side": "buy",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T14:15:00Z",
+      "entry_price": 2444.0447717453044,
+      "exit_price": 2461.78595,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2026-10-20T14:10:00Z",
+      "pnl_net_usdt": 2.6294708,
+      "side": "buy",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T14:15:00Z",
+      "entry_price": 106.96908101301615,
+      "exit_price": 107.73197500000002,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2026-10-20T14:10:00Z",
+      "pnl_net_usdt": 2.5659556,
+      "side": "buy",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T14:20:00Z",
+      "entry_price": 2468.64065665327,
+      "exit_price": 2455.70975,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2026-10-20T14:15:00Z",
+      "pnl_net_usdt": -3.6190338,
+      "side": "buy",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T14:25:00Z",
+      "entry_price": 107.82939532771917,
+      "exit_price": 107.25105000000002,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2026-10-20T14:15:00Z",
+      "pnl_net_usdt": -3.68176097,
+      "side": "buy",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T15:00:00Z",
+      "entry_price": 2459.528476437265,
+      "exit_price": 2477.3820500000006,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2026-10-20T14:20:00Z",
+      "pnl_net_usdt": 2.6294708,
+      "side": "buy",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T15:05:00Z",
+      "entry_price": 2473.1717407782426,
+      "exit_price": 2460.2171,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2026-10-20T15:00:00Z",
+      "pnl_net_usdt": -3.6190338,
+      "side": "buy",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T15:10:00Z",
+      "entry_price": 107.39923817036765,
+      "exit_price": 106.8232,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2026-10-20T14:25:00Z",
+      "pnl_net_usdt": -3.68176097,
+      "side": "buy",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T15:15:00Z",
+      "entry_price": 2460.8988043072895,
+      "exit_price": 2448.00845,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2026-10-20T15:05:00Z",
+      "pnl_net_usdt": -3.6190338,
+      "side": "buy",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T15:15:00Z",
+      "entry_price": 107.10913218052592,
+      "exit_price": 106.53464999999998,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2026-10-20T15:10:00Z",
+      "pnl_net_usdt": -3.68176097,
+      "side": "buy",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T16:40:00Z",
+      "entry_price": 105.78133880222019,
+      "exit_price": 106.34909999999998,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2026-10-20T16:15:00Z",
+      "pnl_net_usdt": -3.68365481,
+      "side": "sell",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T18:30:00Z",
+      "entry_price": 106.66897136835229,
+      "exit_price": 106.09684999999999,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2026-10-20T17:40:00Z",
+      "pnl_net_usdt": -3.68176097,
+      "side": "buy",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "closed_at_utc": "2026-10-20T19:25:00Z",
+      "entry_price": 2439.5036852271196,
+      "exit_price": 2426.7254,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2026-10-20T16:15:00Z",
+      "pnl_net_usdt": -3.6190338,
+      "side": "buy",
+      "symbol": "ETH/USDT"
+    }
+  ]
+}

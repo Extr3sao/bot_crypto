@@ -1,0 +1,3391 @@
+{
+  "concurrent_writer": {
+    "detail": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-resume\\.tmp\\gap-lab\\concurrent\\BOOK.lock is held by pid=33440 session='holder' since 0s: a second writer over one book would trade the same bar twice",
+    "ok": true,
+    "status": "REFUSED"
+  },
+  "corrupt_feed": {
+    "detail": "BTC/USDT: minute 1792509720000 does not follow 1792509720000; an unsorted or duplicated series is corrupt, not sparse",
+    "ok": true,
+    "status": "REFUSED_AT_LOAD"
+  },
+  "kill_while_resuming": {
+    "attempts": [
+      {
+        "attempt": 0,
+        "closed_after": 0,
+        "closed_before": 0,
+        "exit_code": 1,
+        "killed": true,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+      },
+      {
+        "attempt": 1,
+        "closed_after": 0,
+        "closed_before": 0,
+        "exit_code": 1,
+        "killed": true,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+      },
+      {
+        "attempt": 2,
+        "closed_after": 0,
+        "closed_before": 0,
+        "exit_code": 1,
+        "killed": true,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+      },
+      {
+        "attempt": 3,
+        "closed_after": 0,
+        "closed_before": 0,
+        "exit_code": 1,
+        "killed": true,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+      },
+      {
+        "attempt": 4,
+        "closed_after": 0,
+        "closed_before": 0,
+        "exit_code": 1,
+        "killed": true,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+      },
+      {
+        "attempt": 5,
+        "closed_after": 0,
+        "closed_before": 0,
+        "exit_code": 1,
+        "killed": true,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+      },
+      {
+        "attempt": 6,
+        "closed_after": 0,
+        "closed_before": 0,
+        "exit_code": 1,
+        "killed": true,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+      },
+      {
+        "attempt": 7,
+        "closed_after": 0,
+        "closed_before": 0,
+        "exit_code": 1,
+        "killed": true,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+      },
+      {
+        "attempt": 8,
+        "closed_after": 0,
+        "closed_before": 0,
+        "exit_code": 1,
+        "killed": true,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+      },
+      {
+        "attempt": 9,
+        "closed_after": 0,
+        "closed_before": 0,
+        "exit_code": 1,
+        "killed": true,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+      },
+      {
+        "attempt": 10,
+        "closed_after": 0,
+        "closed_before": 0,
+        "exit_code": 1,
+        "killed": true,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+      },
+      {
+        "attempt": 11,
+        "closed_after": 0,
+        "closed_before": 0,
+        "exit_code": 1,
+        "killed": true,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+      },
+      {
+        "attempt": 12,
+        "closed_after": 0,
+        "closed_before": 0,
+        "exit_code": 1,
+        "killed": true,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+      },
+      {
+        "attempt": 13,
+        "closed_after": 0,
+        "closed_before": 0,
+        "exit_code": 1,
+        "killed": true,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+      }
+    ],
+    "book_comparison": {
+      "differences": [],
+      "exempt": {
+        "barrier/bars_committed": "the holed arm never had that bar, so it never committed it",
+        "closed_digest": "it hashes the closed rows including closed_at, which the reconstruction observes at the minute instead of at the bar",
+        "integrity_digest": "digest over the body, including the paths exempted here",
+        "risk/last_loss_ms": "derived from the exit instant",
+        "session_id": "process lineage",
+        "session_ids": "process lineage",
+        "session_index": "process lineage",
+        "state_digest": "digest over the body, including the paths exempted here"
+      },
+      "exempt_prefixes": {
+        "calls": "provider calls made by this process",
+        "closed_trades[0]/closed_at": "the reconstruction knows the minute; the continuous arm knows the bar close",
+        "contract/dataset": "the holed dataset has one fewer bar under the barrier; the check that matters at the barrier the book was written at is `dataset_prefix_matches` in the report",
+        "counters": "per-process action counters, excluded from the economic digest",
+        "entry_provenance": "per-position notes, excluded from the economic digest",
+        "marks": "mark cache; the next bar rewrites it",
+        "pending": "orders in flight, excluded from the economic digest",
+        "session": "process lineage: session_id / session_index / session_ids",
+        "spend_usd": "provider spend of this process",
+        "stop_reason": "process stop condition"
+      },
+      "ok": true
+    },
+    "digests_equal": false,
+    "final_closed": 1,
+    "final_closes_in_last_ledger": 1,
+    "final_equity": 9996.380966197243,
+    "final_open": 0,
+    "final_state_digest": "939b210501ed4de03b29ca9a330afa1e085c871ac1aeecf78051f78f4518202e",
+    "iterations": 14,
+    "ok": true,
+    "reference_closed": 1,
+    "reference_equity": 9996.380966197243,
+    "reference_state_digest": "0e1a7ca1e8a259576e8972483d89565fd1e23915ac0feaa8d236e0a8741dcd92"
+  },
+  "kill_while_saving": {
+    "failures": [],
+    "iterations": 12,
+    "ok": true,
+    "outcomes": [
+      {
+        "attempt": 0,
+        "delay_s": 0.05,
+        "digest": "107f2d63425ecd756aaecb4359c75cf1252f8232bc654ec793f6040636f647e7",
+        "exit_code": 1,
+        "generations": {
+          "book": true,
+          "prev": false
+        },
+        "killed": true,
+        "status": "READABLE"
+      },
+      {
+        "attempt": 1,
+        "delay_s": 0.08,
+        "digest": "6dc6f497b651511f9c54ed9c590d1863eead4a29adf38e6b6b57e632ca5bf39d",
+        "exit_code": 1,
+        "generations": {
+          "book": true,
+          "prev": false
+        },
+        "killed": true,
+        "status": "READABLE"
+      },
+      {
+        "attempt": 2,
+        "delay_s": 0.11,
+        "digest": "4c9e12bc308c1ef78abbd7005fa10ab25954b47d40b9cfe54a70b4f6830cab71",
+        "exit_code": 1,
+        "generations": {
+          "book": true,
+          "prev": false
+        },
+        "killed": true,
+        "status": "READABLE"
+      },
+      {
+        "attempt": 3,
+        "delay_s": 0.14,
+        "digest": "b4e8bc7a65667fcb934ace94fdce0c1653e8a55f46b2442080a75cdfece327c0",
+        "exit_code": 1,
+        "generations": {
+          "book": true,
+          "prev": false
+        },
+        "killed": true,
+        "status": "READABLE"
+      },
+      {
+        "attempt": 4,
+        "delay_s": 0.17,
+        "digest": "6edbdd848a4f9761f5edc8ed829130c69c6bccfb627e59e1f2f4e99274ac78fe",
+        "exit_code": 1,
+        "generations": {
+          "book": true,
+          "prev": false
+        },
+        "killed": true,
+        "status": "READABLE"
+      },
+      {
+        "attempt": 5,
+        "delay_s": 0.2,
+        "digest": "e3dabb9ede5c35a34fa566ea33a21a297afa68339a06ba41cd9d81924e1a9219",
+        "exit_code": 1,
+        "generations": {
+          "book": true,
+          "prev": false
+        },
+        "killed": true,
+        "status": "READABLE"
+      },
+      {
+        "attempt": 6,
+        "delay_s": 0.23,
+        "digest": "16ef0dbc4586fc37243005d7a27b98418c69c95ae4e7c59f520ae5411030787f",
+        "exit_code": 1,
+        "generations": {
+          "book": true,
+          "prev": false
+        },
+        "killed": true,
+        "status": "READABLE"
+      },
+      {
+        "attempt": 7,
+        "delay_s": 0.26,
+        "digest": "64bcc049edea05c423ea550b981bc72ff73ed47b474b2a7ad1ede49b23efe73e",
+        "exit_code": 1,
+        "generations": {
+          "book": true,
+          "prev": false
+        },
+        "killed": true,
+        "status": "READABLE"
+      },
+      {
+        "attempt": 8,
+        "delay_s": 0.29,
+        "digest": "445197b6eeb1e8a7c088d676f88536ef20de5f2ccaab23794e0fbdb559e783e3",
+        "exit_code": 1,
+        "generations": {
+          "book": true,
+          "prev": false
+        },
+        "killed": true,
+        "status": "READABLE"
+      },
+      {
+        "attempt": 9,
+        "delay_s": 0.32,
+        "digest": "fe5ee71bf9b5fabfb30ad8bf7e33620815e999366aadd0e65f85576977262053",
+        "exit_code": 1,
+        "generations": {
+          "book": true,
+          "prev": false
+        },
+        "killed": true,
+        "status": "READABLE"
+      },
+      {
+        "attempt": 10,
+        "delay_s": 0.35,
+        "digest": "b6c39060ecc16669693998b8712f97e5ca2b325b64d2eb224bb3d22259404e61",
+        "exit_code": 1,
+        "generations": {
+          "book": true,
+          "prev": false
+        },
+        "killed": true,
+        "status": "READABLE"
+      },
+      {
+        "attempt": 11,
+        "delay_s": 0.38,
+        "digest": "7ddf52f8a6f965e1ce4e1ddd60778cca5293666fd3f5ea0e67f6ed4da7740fe8",
+        "exit_code": 1,
+        "generations": {
+          "book": true,
+          "prev": false
+        },
+        "killed": true,
+        "status": "READABLE"
+      }
+    ]
+  },
+  "ok": true,
+  "scenarios": {
+    "both": {
+      "A": {
+        "book": {
+          "barrier_ms": 1792514100000,
+          "closed_trades": [
+            {
+              "closed_at": 1792509900.0,
+              "entry_commission": 0.5,
+              "entry_order_id": "ord-quote-gap-lab-00000002",
+              "entry_price": 100.02393211860658,
+              "execution_cost_usdt": 0.23866576532663242,
+              "exit_commission": 0.5,
+              "exit_order_id": "ordx-quote-gap-lab-00000004",
+              "exit_price": 99.5,
+              "exit_reason": "stop_loss",
+              "gross_pnl": -2.619033802756882,
+              "opened_at": 1792508700.0,
+              "pnl": -3.619033802756882,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "reference_entry_price": 100.0,
+              "reference_exit_price": 99.52381245801355,
+              "reference_gross_pnl": -2.3803680374302494,
+              "side": "buy",
+              "strategy_name": "ai_vision",
+              "symbol": "BTC/USDT",
+              "total_cost_usdt": 1.2386657653266324,
+              "trade_id": "trd-quote-gap-lab-00000003"
+            }
+          ],
+          "equity": 9996.380966197243,
+          "integrity_digest": "349c03c2bc922875ddfb1a56aa9dae5d9a6cec58c4de70f5fe76765f16ebb6c0",
+          "marked_equity": 9996.3809662,
+          "open_positions": [],
+          "state_digest": "fe2156779519dfd73a15df82d172dc2be30520a02b171520a89955ac0a3f642f"
+        },
+        "closes": [
+          {
+            "bars_held": 4,
+            "commissions_usdt": 1.0,
+            "day_utc": "2026-10-20",
+            "entry_commission_usdt": 0.5,
+            "entry_decision_ts_ms": 1792508700000,
+            "entry_price": 100.02393211860658,
+            "entry_quote_ts_ms": 1792508700000,
+            "entry_received_at_ms": 1792508700000,
+            "execution_cost_usdt": 0.23866577,
+            "exit_commission_usdt": 0.5,
+            "exit_price": 99.5,
+            "exit_reason": "stop_loss",
+            "exit_reference_price": 99.52381246,
+            "exit_ts_lower_bound_ms": 1792509600000,
+            "exit_ts_resolution": "BAR_WINDOW",
+            "exit_ts_upper_bound_ms": 1792509900000,
+            "gap_open_price": null,
+            "gap_price_source": null,
+            "gross_pnl_usdt": -2.6190338,
+            "kind": "CLOSE",
+            "phase": "INTRABAR",
+            "pnl_net_usdt": -3.6190338,
+            "position_id": "pos-quote-gap-lab-00000001",
+            "quantity": 4.998803680374302,
+            "recorded_at_utc": "2026-10-21T07:48:21Z",
+            "reference_gross_pnl_usdt": -2.38036804,
+            "risk_daily_pnl_after": -3.6190338,
+            "risk_equity_after": 9995.76133423,
+            "risk_equity_before": 9999.38036804,
+            "risk_weekly_pnl_after": -3.6190338,
+            "side": "buy",
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_price": 100.77411160949613,
+            "trade_id": "trd-quote-gap-lab-00000003",
+            "ts_ms": 1792509900000,
+            "ts_utc": "2026-10-20T15:25:00Z"
+          }
+        ],
+        "code": null,
+        "detail": "FRESH",
+        "fills": [
+          {
+            "commission_bps": 10.0,
+            "data_gap_covered_by": null,
+            "data_gap_missing_bar_open_ms": null,
+            "decision_bar_index": 28,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792508700000,
+            "entry_commission_usdt": 0.5,
+            "entry_price": 100.02393211860658,
+            "entry_quote_source": "bar_open",
+            "fill_bar_index": 29,
+            "intent": "OPEN_LONG",
+            "kind": "FILL",
+            "notional_usdt": 500.0,
+            "opinion_age_ms": 0,
+            "phase": "OPEN_ENTRY",
+            "position_id": "pos-quote-gap-lab-00000001",
+            "price_bps_per_side": 2.39321186,
+            "quantity": 4.998803680374302,
+            "quote_bar_open_ms": 1792508700000,
+            "quote_lag_ms": 0,
+            "quote_price": 100.0,
+            "quote_source": "bar_open",
+            "quote_ts_ms": 1792508700000,
+            "received_at_ms": 1792508700000,
+            "recorded_at_utc": "2026-10-21T07:48:20Z",
+            "reference_price": 100.0,
+            "side": "buy",
+            "stop_loss_pct": 0.5,
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_pct": 0.75,
+            "take_profit_price": 100.77411160949613,
+            "ts_ms": 1792508700000,
+            "ts_utc": "2026-10-20T15:05:00Z"
+          }
+        ],
+        "name": "A",
+        "recovery": {
+          "barrier_ms": null,
+          "checks": [
+            {
+              "check": "book_present",
+              "detail": "no book on disk: a fresh book is the only one",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "detail": "no durable book: this session starts the account",
+          "gap": null,
+          "reconstruction": null,
+          "resume_from_ms": null,
+          "status": "FRESH"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 1,
+          "fills": 1,
+          "final_equity_usdt": 9996.380966,
+          "net_realised_usdt": -3.619034,
+          "open_gap_exits": null,
+          "open_positions_at_end": {}
+        }
+      },
+      "B": {
+        "book": {
+          "barrier_ms": 1792509300000,
+          "closed_trades": [],
+          "equity": 10000.0,
+          "integrity_digest": "4407f65a92f7cbc69c2f0bebb4b298679b5e290ee6732162c9e9462e5247504d",
+          "marked_equity": 9999.38036804,
+          "open_positions": [
+            {
+              "entry_price": 100.02393211860658,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "side": "buy",
+              "stop_loss_pct": 0.5,
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            }
+          ],
+          "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+        },
+        "closes": [],
+        "code": "GAP_EXIT_AMBIGUOUS",
+        "detail": "stop and take-profit were both crossed inside one minute for pos-quote-gap-lab-00000001; the order inside that minute is not observable, so the PnL is a range and not a number this book may publish",
+        "fills": [],
+        "name": "s2",
+        "recovery": {
+          "checks": [
+            {
+              "check": "contract_matches",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "barrier_present",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "dataset_prefix_matches",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "equity_identity",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "closed_history_intact",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "position_structure",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "risk_agrees_with_mark",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "resume_bar_available",
+              "detail": "the dataset holds a bar at 1792509900000",
+              "ok": true
+            },
+            {
+              "check": "barrier_is_continuous",
+              "detail": "bar 1792509600000 is missing; the next bar is 1792509900000",
+              "ok": false
+            },
+            {
+              "check": "gap_evidence_matches_book",
+              "detail": "the assessment covers bars 1792509300000->1792509900000 and 1 position(s), matching this book",
+              "ok": true
+            },
+            {
+              "check": "gap.feed_present",
+              "detail": "feed 'binance_spot_1m_klines' supplied",
+              "ok": true
+            },
+            {
+              "check": "gap.feed_is_independent",
+              "detail": "the feed names itself 'binance_spot_1m_klines'",
+              "ok": true
+            },
+            {
+              "check": "gap.minute_grid_complete",
+              "detail": "every minute of the hole is present for BTC/USDT",
+              "ok": true
+            },
+            {
+              "check": "gap.no_opinion_spans_the_hole",
+              "detail": "no in-flight opinion could have filled inside the hole",
+              "ok": true
+            }
+          ],
+          "code": "GAP_EXIT_AMBIGUOUS",
+          "gap": {
+            "checks": [
+              {
+                "check": "feed_present",
+                "detail": "feed 'binance_spot_1m_klines' supplied",
+                "ok": true
+              },
+              {
+                "check": "feed_is_independent",
+                "detail": "the feed names itself 'binance_spot_1m_klines'",
+                "ok": true
+              },
+              {
+                "check": "minute_grid_complete",
+                "detail": "every minute of the hole is present for BTC/USDT",
+                "ok": true
+              },
+              {
+                "check": "no_opinion_spans_the_hole",
+                "detail": "no in-flight opinion could have filled inside the hole",
+                "ok": true
+              }
+            ],
+            "code": "GAP_EXIT_AMBIGUOUS",
+            "detail": "stop and take-profit were both crossed inside one minute for pos-quote-gap-lab-00000001; the order inside that minute is not observable, so the PnL is a range and not a number this book may publish",
+            "evidence": {
+              "barrier_ms": 1792509300000,
+              "minutes_expected": 5,
+              "resume_ms": 1792509900000,
+              "symbols": {
+                "BTC/USDT": {
+                  "feed": "binance_spot_1m_klines",
+                  "first_minute_ms": 1792509600000,
+                  "last_minute_ms": 1792509840000,
+                  "minutes_expected": 5,
+                  "minutes_observed": 5,
+                  "series_sha256": "badb3071251e3e74e964c5ace61ef77b34b737149a3d8a08b50833f411025e34",
+                  "window_sha256": "9bb44b807da4662f9b11ac43c9685a0432d4716e7f250ed6eefadbf6c1d471a5"
+                }
+              }
+            },
+            "feed": "binance_spot_1m_klines",
+            "minutes": [
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509600000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509660000
+              },
+              {
+                "close": 101.0,
+                "high": 101.1,
+                "low": 99.2,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509720000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509780000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509840000
+              }
+            ],
+            "positions": [
+              {
+                "ambiguous_minute_ms": 1792509720000,
+                "best_price": 101.1,
+                "detail": "stop and take-profit are both inside the range of minute 1792509720000; a 1-minute OHLC does not say which printed first, so the exit and its sign are unknown",
+                "entry_price": 100.02393211860658,
+                "exit_minute_ms": null,
+                "exit_price": null,
+                "exit_reason": null,
+                "minutes_observed": 5,
+                "position_id": "pos-quote-gap-lab-00000001",
+                "quantity": 4.998803680374302,
+                "side": "buy",
+                "status": "AMBIGUOUS",
+                "stop_price": 99.52381245801355,
+                "stop_touch": {
+                  "close": 101.0,
+                  "high": 101.1,
+                  "level_price": 99.52381245801355,
+                  "low": 99.2,
+                  "minute_ms": 1792509720000,
+                  "open": 100.0
+                },
+                "symbol": "BTC/USDT",
+                "take_profit_price": 100.77411160949613,
+                "take_profit_touch": {
+                  "close": 101.0,
+                  "high": 101.1,
+                  "level_price": 100.77411160949613,
+                  "low": 99.2,
+                  "minute_ms": 1792509720000,
+                  "open": 100.0
+                },
+                "worst_price": 99.2,
+                "worst_unrealised_usdt": -4.118674906869158
+              }
+            ],
+            "verdict": "BLOCKED",
+            "window": {
+              "barrier_ms": 1792509300000,
+              "end_ms": 1792509900000,
+              "interval_ms": 300000,
+              "minutes_expected": 5,
+              "missing_bars": [
+                1792509600000
+              ],
+              "resume_ms": 1792509900000,
+              "start_ms": 1792509600000
+            }
+          },
+          "reconstruction": null,
+          "resume_from_ms": null,
+          "status": "BLOCKED"
+        },
+        "status": "BLOCKED",
+        "summary": null
+      },
+      "bars": 48,
+      "bars_sha256": "c45bbf0acebfa672c093643fe20668fce311b47e70f1ff9f93bf9ff69f07a02d",
+      "book_comparison": null,
+      "comparison": null,
+      "hole_bar_ms": 1792509600000,
+      "scenario": "both",
+      "session_1": {
+        "book": {
+          "barrier_ms": 1792509300000,
+          "closed_trades": [],
+          "equity": 10000.0,
+          "integrity_digest": "4407f65a92f7cbc69c2f0bebb4b298679b5e290ee6732162c9e9462e5247504d",
+          "marked_equity": 9999.38036804,
+          "open_positions": [
+            {
+              "entry_price": 100.02393211860658,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "side": "buy",
+              "stop_loss_pct": 0.5,
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            }
+          ],
+          "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+        },
+        "closes": [],
+        "code": null,
+        "detail": "FRESH",
+        "fills": [
+          {
+            "commission_bps": 10.0,
+            "data_gap_covered_by": null,
+            "data_gap_missing_bar_open_ms": null,
+            "decision_bar_index": 28,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792508700000,
+            "entry_commission_usdt": 0.5,
+            "entry_price": 100.02393211860658,
+            "entry_quote_source": "bar_open",
+            "fill_bar_index": 29,
+            "intent": "OPEN_LONG",
+            "kind": "FILL",
+            "notional_usdt": 500.0,
+            "opinion_age_ms": 0,
+            "phase": "OPEN_ENTRY",
+            "position_id": "pos-quote-gap-lab-00000001",
+            "price_bps_per_side": 2.39321186,
+            "quantity": 4.998803680374302,
+            "quote_bar_open_ms": 1792508700000,
+            "quote_lag_ms": 0,
+            "quote_price": 100.0,
+            "quote_source": "bar_open",
+            "quote_ts_ms": 1792508700000,
+            "received_at_ms": 1792508700000,
+            "recorded_at_utc": "2026-10-21T07:48:34Z",
+            "reference_price": 100.0,
+            "side": "buy",
+            "stop_loss_pct": 0.5,
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_pct": 0.75,
+            "take_profit_price": 100.77411160949613,
+            "ts_ms": 1792508700000,
+            "ts_utc": "2026-10-20T15:05:00Z"
+          }
+        ],
+        "name": "s1",
+        "recovery": {
+          "barrier_ms": null,
+          "checks": [
+            {
+              "check": "book_present",
+              "detail": "no book on disk: a fresh book is the only one",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "detail": "no durable book: this session starts the account",
+          "gap": null,
+          "reconstruction": null,
+          "resume_from_ms": null,
+          "status": "FRESH"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 0,
+          "fills": 1,
+          "final_equity_usdt": 10000.0,
+          "net_realised_usdt": 0,
+          "open_gap_exits": null,
+          "open_positions_at_end": {
+            "BTC/USDT": {
+              "entry_commission_usdt": 0.5,
+              "entry_price": 100.02393211860658,
+              "mark_price": 100.0,
+              "notional_usdt": 500.0,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "side": "buy",
+              "unrealised_pnl_usdt": -0.11963196
+            }
+          }
+        }
+      }
+    },
+    "partial": {
+      "A": {
+        "book": {
+          "barrier_ms": 1792514100000,
+          "closed_trades": [],
+          "equity": 10000.0,
+          "integrity_digest": "6b8677aa0067aa135453d25ad4652dc9149611d70ed73cc0b7baa575a95e78c9",
+          "marked_equity": 9999.38036804,
+          "open_positions": [
+            {
+              "entry_price": 100.02393211860658,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "side": "buy",
+              "stop_loss_pct": 0.5,
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            }
+          ],
+          "state_digest": "611e438e144b814b5dbb66820c4b2ec0c4c11751e6b7c975119cd5039ee83592"
+        },
+        "closes": [],
+        "code": null,
+        "detail": "FRESH",
+        "fills": [
+          {
+            "commission_bps": 10.0,
+            "data_gap_covered_by": null,
+            "data_gap_missing_bar_open_ms": null,
+            "decision_bar_index": 28,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792508700000,
+            "entry_commission_usdt": 0.5,
+            "entry_price": 100.02393211860658,
+            "entry_quote_source": "bar_open",
+            "fill_bar_index": 29,
+            "intent": "OPEN_LONG",
+            "kind": "FILL",
+            "notional_usdt": 500.0,
+            "opinion_age_ms": 0,
+            "phase": "OPEN_ENTRY",
+            "position_id": "pos-quote-gap-lab-00000001",
+            "price_bps_per_side": 2.39321186,
+            "quantity": 4.998803680374302,
+            "quote_bar_open_ms": 1792508700000,
+            "quote_lag_ms": 0,
+            "quote_price": 100.0,
+            "quote_source": "bar_open",
+            "quote_ts_ms": 1792508700000,
+            "received_at_ms": 1792508700000,
+            "recorded_at_utc": "2026-10-21T07:48:41Z",
+            "reference_price": 100.0,
+            "side": "buy",
+            "stop_loss_pct": 0.5,
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_pct": 0.75,
+            "take_profit_price": 100.77411160949613,
+            "ts_ms": 1792508700000,
+            "ts_utc": "2026-10-20T15:05:00Z"
+          }
+        ],
+        "name": "A",
+        "recovery": {
+          "barrier_ms": null,
+          "checks": [
+            {
+              "check": "book_present",
+              "detail": "no book on disk: a fresh book is the only one",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "detail": "no durable book: this session starts the account",
+          "gap": null,
+          "reconstruction": null,
+          "resume_from_ms": null,
+          "status": "FRESH"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 0,
+          "fills": 1,
+          "final_equity_usdt": 10000.0,
+          "net_realised_usdt": 0,
+          "open_gap_exits": null,
+          "open_positions_at_end": {
+            "BTC/USDT": {
+              "entry_commission_usdt": 0.5,
+              "entry_price": 100.02393211860658,
+              "mark_price": 100.0,
+              "notional_usdt": 500.0,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "side": "buy",
+              "unrealised_pnl_usdt": -0.11963196
+            }
+          }
+        }
+      },
+      "B": {
+        "book": {
+          "barrier_ms": 1792509300000,
+          "closed_trades": [],
+          "equity": 10000.0,
+          "integrity_digest": "4407f65a92f7cbc69c2f0bebb4b298679b5e290ee6732162c9e9462e5247504d",
+          "marked_equity": 9999.38036804,
+          "open_positions": [
+            {
+              "entry_price": 100.02393211860658,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "side": "buy",
+              "stop_loss_pct": 0.5,
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            }
+          ],
+          "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+        },
+        "closes": [],
+        "code": "GAP_NOT_COVERED",
+        "detail": "the 1-minute feed does not cover the hole completely: BTC/USDT: 4/5 minutes observed in the hole (1 missing, first 1792509720000)",
+        "fills": [],
+        "name": "s2",
+        "recovery": {
+          "checks": [
+            {
+              "check": "contract_matches",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "barrier_present",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "dataset_prefix_matches",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "equity_identity",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "closed_history_intact",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "position_structure",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "risk_agrees_with_mark",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "resume_bar_available",
+              "detail": "the dataset holds a bar at 1792509900000",
+              "ok": true
+            },
+            {
+              "check": "barrier_is_continuous",
+              "detail": "bar 1792509600000 is missing; the next bar is 1792509900000",
+              "ok": false
+            },
+            {
+              "check": "gap_evidence_matches_book",
+              "detail": "the assessment covers bars 1792509300000->1792509900000 and 1 position(s), matching this book",
+              "ok": true
+            },
+            {
+              "check": "gap.feed_present",
+              "detail": "feed 'binance_spot_1m_klines' supplied",
+              "ok": true
+            },
+            {
+              "check": "gap.feed_is_independent",
+              "detail": "the feed names itself 'binance_spot_1m_klines'",
+              "ok": true
+            },
+            {
+              "check": "gap.minute_grid_complete",
+              "detail": "BTC/USDT: 4/5 minutes observed in the hole (1 missing, first 1792509720000)",
+              "ok": false
+            }
+          ],
+          "code": "GAP_NOT_COVERED",
+          "gap": {
+            "checks": [
+              {
+                "check": "feed_present",
+                "detail": "feed 'binance_spot_1m_klines' supplied",
+                "ok": true
+              },
+              {
+                "check": "feed_is_independent",
+                "detail": "the feed names itself 'binance_spot_1m_klines'",
+                "ok": true
+              },
+              {
+                "check": "minute_grid_complete",
+                "detail": "BTC/USDT: 4/5 minutes observed in the hole (1 missing, first 1792509720000)",
+                "ok": false
+              }
+            ],
+            "code": "GAP_NOT_COVERED",
+            "detail": "the 1-minute feed does not cover the hole completely: BTC/USDT: 4/5 minutes observed in the hole (1 missing, first 1792509720000)",
+            "evidence": {
+              "barrier_ms": 1792509300000,
+              "minutes_expected": 5,
+              "resume_ms": 1792509900000,
+              "symbols": {
+                "BTC/USDT": {
+                  "minutes_expected": 5,
+                  "minutes_observed": 4,
+                  "missing_minutes": [
+                    1792509720000
+                  ]
+                }
+              }
+            },
+            "feed": "binance_spot_1m_klines",
+            "minutes": [],
+            "positions": [
+              {
+                "ambiguous_minute_ms": null,
+                "best_price": null,
+                "detail": "coverage failed before this position could be judged",
+                "entry_price": 100.02393211860658,
+                "exit_minute_ms": null,
+                "exit_price": null,
+                "exit_reason": null,
+                "minutes_observed": 0,
+                "position_id": "pos-quote-gap-lab-00000001",
+                "quantity": 4.998803680374302,
+                "side": "buy",
+                "status": "UNCOVERED",
+                "stop_price": 99.52381245801355,
+                "stop_touch": null,
+                "symbol": "BTC/USDT",
+                "take_profit_price": 100.77411160949613,
+                "take_profit_touch": null,
+                "worst_price": null,
+                "worst_unrealised_usdt": null
+              }
+            ],
+            "verdict": "BLOCKED",
+            "window": {
+              "barrier_ms": 1792509300000,
+              "end_ms": 1792509900000,
+              "interval_ms": 300000,
+              "minutes_expected": 5,
+              "missing_bars": [
+                1792509600000
+              ],
+              "resume_ms": 1792509900000,
+              "start_ms": 1792509600000
+            }
+          },
+          "reconstruction": null,
+          "resume_from_ms": null,
+          "status": "BLOCKED"
+        },
+        "status": "BLOCKED",
+        "summary": null
+      },
+      "bars": 48,
+      "bars_sha256": "48f6e460887d6a8244ad8d33fa8b2a5dd5d842f76eece8490d92d3fa6866b394",
+      "book_comparison": null,
+      "comparison": null,
+      "hole_bar_ms": 1792509600000,
+      "scenario": "partial",
+      "session_1": {
+        "book": {
+          "barrier_ms": 1792509300000,
+          "closed_trades": [],
+          "equity": 10000.0,
+          "integrity_digest": "4407f65a92f7cbc69c2f0bebb4b298679b5e290ee6732162c9e9462e5247504d",
+          "marked_equity": 9999.38036804,
+          "open_positions": [
+            {
+              "entry_price": 100.02393211860658,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "side": "buy",
+              "stop_loss_pct": 0.5,
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            }
+          ],
+          "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+        },
+        "closes": [],
+        "code": null,
+        "detail": "FRESH",
+        "fills": [
+          {
+            "commission_bps": 10.0,
+            "data_gap_covered_by": null,
+            "data_gap_missing_bar_open_ms": null,
+            "decision_bar_index": 28,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792508700000,
+            "entry_commission_usdt": 0.5,
+            "entry_price": 100.02393211860658,
+            "entry_quote_source": "bar_open",
+            "fill_bar_index": 29,
+            "intent": "OPEN_LONG",
+            "kind": "FILL",
+            "notional_usdt": 500.0,
+            "opinion_age_ms": 0,
+            "phase": "OPEN_ENTRY",
+            "position_id": "pos-quote-gap-lab-00000001",
+            "price_bps_per_side": 2.39321186,
+            "quantity": 4.998803680374302,
+            "quote_bar_open_ms": 1792508700000,
+            "quote_lag_ms": 0,
+            "quote_price": 100.0,
+            "quote_source": "bar_open",
+            "quote_ts_ms": 1792508700000,
+            "received_at_ms": 1792508700000,
+            "recorded_at_utc": "2026-10-21T07:48:54Z",
+            "reference_price": 100.0,
+            "side": "buy",
+            "stop_loss_pct": 0.5,
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_pct": 0.75,
+            "take_profit_price": 100.77411160949613,
+            "ts_ms": 1792508700000,
+            "ts_utc": "2026-10-20T15:05:00Z"
+          }
+        ],
+        "name": "s1",
+        "recovery": {
+          "barrier_ms": null,
+          "checks": [
+            {
+              "check": "book_present",
+              "detail": "no book on disk: a fresh book is the only one",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "detail": "no durable book: this session starts the account",
+          "gap": null,
+          "reconstruction": null,
+          "resume_from_ms": null,
+          "status": "FRESH"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 0,
+          "fills": 1,
+          "final_equity_usdt": 10000.0,
+          "net_realised_usdt": 0,
+          "open_gap_exits": null,
+          "open_positions_at_end": {
+            "BTC/USDT": {
+              "entry_commission_usdt": 0.5,
+              "entry_price": 100.02393211860658,
+              "mark_price": 100.0,
+              "notional_usdt": 500.0,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "side": "buy",
+              "unrealised_pnl_usdt": -0.11963196
+            }
+          }
+        }
+      }
+    },
+    "quiet": {
+      "A": {
+        "book": {
+          "barrier_ms": 1792514100000,
+          "closed_trades": [],
+          "equity": 10000.0,
+          "integrity_digest": "6b8677aa0067aa135453d25ad4652dc9149611d70ed73cc0b7baa575a95e78c9",
+          "marked_equity": 9999.38036804,
+          "open_positions": [
+            {
+              "entry_price": 100.02393211860658,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "side": "buy",
+              "stop_loss_pct": 0.5,
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            }
+          ],
+          "state_digest": "611e438e144b814b5dbb66820c4b2ec0c4c11751e6b7c975119cd5039ee83592"
+        },
+        "closes": [],
+        "code": null,
+        "detail": "FRESH",
+        "fills": [
+          {
+            "commission_bps": 10.0,
+            "data_gap_covered_by": null,
+            "data_gap_missing_bar_open_ms": null,
+            "decision_bar_index": 28,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792508700000,
+            "entry_commission_usdt": 0.5,
+            "entry_price": 100.02393211860658,
+            "entry_quote_source": "bar_open",
+            "fill_bar_index": 29,
+            "intent": "OPEN_LONG",
+            "kind": "FILL",
+            "notional_usdt": 500.0,
+            "opinion_age_ms": 0,
+            "phase": "OPEN_ENTRY",
+            "position_id": "pos-quote-gap-lab-00000001",
+            "price_bps_per_side": 2.39321186,
+            "quantity": 4.998803680374302,
+            "quote_bar_open_ms": 1792508700000,
+            "quote_lag_ms": 0,
+            "quote_price": 100.0,
+            "quote_source": "bar_open",
+            "quote_ts_ms": 1792508700000,
+            "received_at_ms": 1792508700000,
+            "recorded_at_utc": "2026-10-21T07:47:06Z",
+            "reference_price": 100.0,
+            "side": "buy",
+            "stop_loss_pct": 0.5,
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_pct": 0.75,
+            "take_profit_price": 100.77411160949613,
+            "ts_ms": 1792508700000,
+            "ts_utc": "2026-10-20T15:05:00Z"
+          }
+        ],
+        "name": "A",
+        "recovery": {
+          "barrier_ms": null,
+          "checks": [
+            {
+              "check": "book_present",
+              "detail": "no book on disk: a fresh book is the only one",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "detail": "no durable book: this session starts the account",
+          "gap": null,
+          "reconstruction": null,
+          "resume_from_ms": null,
+          "status": "FRESH"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 0,
+          "fills": 1,
+          "final_equity_usdt": 10000.0,
+          "net_realised_usdt": 0,
+          "open_gap_exits": null,
+          "open_positions_at_end": {
+            "BTC/USDT": {
+              "entry_commission_usdt": 0.5,
+              "entry_price": 100.02393211860658,
+              "mark_price": 100.0,
+              "notional_usdt": 500.0,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "side": "buy",
+              "unrealised_pnl_usdt": -0.11963196
+            }
+          }
+        }
+      },
+      "B": {
+        "book": {
+          "barrier_ms": 1792514100000,
+          "closed_trades": [],
+          "equity": 10000.0,
+          "integrity_digest": "ee58104cffd673fa2c17ed0b4348d66aee456e635d916cec675914c2752bbb45",
+          "marked_equity": 9999.38036804,
+          "open_positions": [
+            {
+              "entry_price": 100.02393211860658,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "side": "buy",
+              "stop_loss_pct": 0.5,
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            }
+          ],
+          "state_digest": "6dd828a5637bd09bc6f4d560159e3d0c8a2ad7185c567a290adf8d3e9629c9c5"
+        },
+        "closes": [],
+        "code": null,
+        "detail": "RECOVERED",
+        "fills": [],
+        "name": "s2",
+        "recovery": {
+          "checks": [
+            {
+              "check": "contract_matches",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "barrier_present",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "dataset_prefix_matches",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "equity_identity",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "closed_history_intact",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "position_structure",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "risk_agrees_with_mark",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "resume_bar_available",
+              "detail": "the dataset holds a bar at 1792509900000",
+              "ok": true
+            },
+            {
+              "check": "barrier_is_continuous",
+              "detail": "bar 1792509600000 is missing; the next bar is 1792509900000",
+              "ok": false
+            },
+            {
+              "check": "gap_evidence_matches_book",
+              "detail": "the assessment covers bars 1792509300000->1792509900000 and 1 position(s), matching this book",
+              "ok": true
+            },
+            {
+              "check": "gap_covered_by_quotes",
+              "detail": "binance_spot_1m_klines observed every minute of 1792509600000..1792509899999 for BTC/USDT (5 minutes, 329904379efd)",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "gap": {
+            "checks": [
+              {
+                "check": "feed_present",
+                "detail": "feed 'binance_spot_1m_klines' supplied",
+                "ok": true
+              },
+              {
+                "check": "feed_is_independent",
+                "detail": "the feed names itself 'binance_spot_1m_klines'",
+                "ok": true
+              },
+              {
+                "check": "minute_grid_complete",
+                "detail": "every minute of the hole is present for BTC/USDT",
+                "ok": true
+              },
+              {
+                "check": "no_opinion_spans_the_hole",
+                "detail": "no in-flight opinion could have filled inside the hole",
+                "ok": true
+              },
+              {
+                "check": "protective_exits_placed",
+                "detail": "0 exit(s) placeable, 1 position(s) never touched a level",
+                "ok": true
+              }
+            ],
+            "code": null,
+            "detail": "every minute of the hole was observed by binance_spot_1m_klines and no protective level was crossed for 1 open position(s)",
+            "evidence": {
+              "barrier_ms": 1792509300000,
+              "minutes_expected": 5,
+              "resume_ms": 1792509900000,
+              "symbols": {
+                "BTC/USDT": {
+                  "feed": "binance_spot_1m_klines",
+                  "first_minute_ms": 1792509600000,
+                  "last_minute_ms": 1792509840000,
+                  "minutes_expected": 5,
+                  "minutes_observed": 5,
+                  "series_sha256": "3553db38dc313373a1c9029a2b6b3ddf54a21358c352e71e8e9e9329030f8ef5",
+                  "window_sha256": "329904379efd2abff2763b8e30088dd1be3d066c6e9628298d2229347c1fffc9"
+                }
+              }
+            },
+            "feed": "binance_spot_1m_klines",
+            "minutes": [
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509600000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509660000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509720000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509780000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509840000
+              }
+            ],
+            "positions": [
+              {
+                "ambiguous_minute_ms": null,
+                "best_price": 100.02,
+                "detail": "neither the stop nor the take-profit falls inside any observed minute: no protective exit can have happened",
+                "entry_price": 100.02393211860658,
+                "exit_minute_ms": null,
+                "exit_price": null,
+                "exit_reason": null,
+                "minutes_observed": 5,
+                "position_id": "pos-quote-gap-lab-00000001",
+                "quantity": 4.998803680374302,
+                "side": "buy",
+                "status": "INTACT",
+                "stop_price": 99.52381245801355,
+                "stop_touch": null,
+                "symbol": "BTC/USDT",
+                "take_profit_price": 100.77411160949613,
+                "take_profit_touch": null,
+                "worst_price": 99.98,
+                "worst_unrealised_usdt": -0.2196080361771968
+              }
+            ],
+            "verdict": "CLEAR",
+            "window": {
+              "barrier_ms": 1792509300000,
+              "end_ms": 1792509900000,
+              "interval_ms": 300000,
+              "minutes_expected": 5,
+              "missing_bars": [
+                1792509600000
+              ],
+              "resume_ms": 1792509900000,
+              "start_ms": 1792509600000
+            }
+          },
+          "reconstruction": null,
+          "resume_from_ms": 1792509900000,
+          "status": "RECOVERED"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 0,
+          "fills": 0,
+          "final_equity_usdt": 10000.0,
+          "net_realised_usdt": 0,
+          "open_gap_exits": null,
+          "open_positions_at_end": {
+            "BTC/USDT": {
+              "entry_commission_usdt": 0.5,
+              "entry_price": 100.02393211860658,
+              "mark_price": 100.0,
+              "notional_usdt": 500.0,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "side": "buy",
+              "unrealised_pnl_usdt": -0.11963196
+            }
+          }
+        }
+      },
+      "bars": 48,
+      "bars_sha256": "48f6e460887d6a8244ad8d33fa8b2a5dd5d842f76eece8490d92d3fa6866b394",
+      "book_comparison": {
+        "differences": [],
+        "exempt": {
+          "barrier/bars_committed": "the holed arm never had that bar, so it never committed it",
+          "closed_digest": "it hashes the closed rows including closed_at, which the reconstruction observes at the minute instead of at the bar",
+          "integrity_digest": "digest over the body, including the paths exempted here",
+          "risk/last_loss_ms": "derived from the exit instant",
+          "session_id": "process lineage",
+          "session_ids": "process lineage",
+          "session_index": "process lineage",
+          "state_digest": "digest over the body, including the paths exempted here"
+        },
+        "exempt_prefixes": {
+          "calls": "provider calls made by this process",
+          "closed_trades[0]/closed_at": "the reconstruction knows the minute; the continuous arm knows the bar close",
+          "contract/dataset": "the holed dataset has one fewer bar under the barrier; the check that matters at the barrier the book was written at is `dataset_prefix_matches` in the report",
+          "counters": "per-process action counters, excluded from the economic digest",
+          "entry_provenance": "per-position notes, excluded from the economic digest",
+          "marks": "mark cache; the next bar rewrites it",
+          "pending": "orders in flight, excluded from the economic digest",
+          "session": "process lineage: session_id / session_index / session_ids",
+          "spend_usd": "provider spend of this process",
+          "stop_reason": "process stop condition"
+        },
+        "ok": true
+      },
+      "comparison": {
+        "closes_a": 0,
+        "closes_b": 0,
+        "differences": [],
+        "fields": [
+          "symbol",
+          "side",
+          "entry_price",
+          "exit_price",
+          "quantity",
+          "pnl_net_usdt",
+          "gross_pnl_usdt",
+          "reference_gross_pnl_usdt",
+          "execution_cost_usdt",
+          "entry_commission_usdt",
+          "exit_commission_usdt",
+          "commissions_usdt",
+          "exit_reason",
+          "position_id"
+        ],
+        "ok": true
+      },
+      "hole_bar_ms": 1792509600000,
+      "scenario": "quiet",
+      "session_1": {
+        "book": {
+          "barrier_ms": 1792509300000,
+          "closed_trades": [],
+          "equity": 10000.0,
+          "integrity_digest": "4407f65a92f7cbc69c2f0bebb4b298679b5e290ee6732162c9e9462e5247504d",
+          "marked_equity": 9999.38036804,
+          "open_positions": [
+            {
+              "entry_price": 100.02393211860658,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "side": "buy",
+              "stop_loss_pct": 0.5,
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            }
+          ],
+          "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+        },
+        "closes": [],
+        "code": null,
+        "detail": "FRESH",
+        "fills": [
+          {
+            "commission_bps": 10.0,
+            "data_gap_covered_by": null,
+            "data_gap_missing_bar_open_ms": null,
+            "decision_bar_index": 28,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792508700000,
+            "entry_commission_usdt": 0.5,
+            "entry_price": 100.02393211860658,
+            "entry_quote_source": "bar_open",
+            "fill_bar_index": 29,
+            "intent": "OPEN_LONG",
+            "kind": "FILL",
+            "notional_usdt": 500.0,
+            "opinion_age_ms": 0,
+            "phase": "OPEN_ENTRY",
+            "position_id": "pos-quote-gap-lab-00000001",
+            "price_bps_per_side": 2.39321186,
+            "quantity": 4.998803680374302,
+            "quote_bar_open_ms": 1792508700000,
+            "quote_lag_ms": 0,
+            "quote_price": 100.0,
+            "quote_source": "bar_open",
+            "quote_ts_ms": 1792508700000,
+            "received_at_ms": 1792508700000,
+            "recorded_at_utc": "2026-10-21T07:47:16Z",
+            "reference_price": 100.0,
+            "side": "buy",
+            "stop_loss_pct": 0.5,
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_pct": 0.75,
+            "take_profit_price": 100.77411160949613,
+            "ts_ms": 1792508700000,
+            "ts_utc": "2026-10-20T15:05:00Z"
+          }
+        ],
+        "name": "s1",
+        "recovery": {
+          "barrier_ms": null,
+          "checks": [
+            {
+              "check": "book_present",
+              "detail": "no book on disk: a fresh book is the only one",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "detail": "no durable book: this session starts the account",
+          "gap": null,
+          "reconstruction": null,
+          "resume_from_ms": null,
+          "status": "FRESH"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 0,
+          "fills": 1,
+          "final_equity_usdt": 10000.0,
+          "net_realised_usdt": 0,
+          "open_gap_exits": null,
+          "open_positions_at_end": {
+            "BTC/USDT": {
+              "entry_commission_usdt": 0.5,
+              "entry_price": 100.02393211860658,
+              "mark_price": 100.0,
+              "notional_usdt": 500.0,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "side": "buy",
+              "unrealised_pnl_usdt": -0.11963196
+            }
+          }
+        }
+      }
+    },
+    "split": {
+      "A": {
+        "book": {
+          "barrier_ms": 1792514100000,
+          "closed_trades": [],
+          "equity": 10000.0,
+          "integrity_digest": "6b8677aa0067aa135453d25ad4652dc9149611d70ed73cc0b7baa575a95e78c9",
+          "marked_equity": 9999.38036804,
+          "open_positions": [
+            {
+              "entry_price": 100.02393211860658,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "side": "buy",
+              "stop_loss_pct": 0.5,
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            }
+          ],
+          "state_digest": "611e438e144b814b5dbb66820c4b2ec0c4c11751e6b7c975119cd5039ee83592"
+        },
+        "closes": [],
+        "code": null,
+        "detail": "FRESH",
+        "fills": [
+          {
+            "commission_bps": 10.0,
+            "data_gap_covered_by": null,
+            "data_gap_missing_bar_open_ms": null,
+            "decision_bar_index": 28,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792508700000,
+            "entry_commission_usdt": 0.5,
+            "entry_price": 100.02393211860658,
+            "entry_quote_source": "bar_open",
+            "fill_bar_index": 29,
+            "intent": "OPEN_LONG",
+            "kind": "FILL",
+            "notional_usdt": 500.0,
+            "opinion_age_ms": 0,
+            "phase": "OPEN_ENTRY",
+            "position_id": "pos-quote-gap-lab-00000001",
+            "price_bps_per_side": 2.39321186,
+            "quantity": 4.998803680374302,
+            "quote_bar_open_ms": 1792508700000,
+            "quote_lag_ms": 0,
+            "quote_price": 100.0,
+            "quote_source": "bar_open",
+            "quote_ts_ms": 1792508700000,
+            "received_at_ms": 1792508700000,
+            "recorded_at_utc": "2026-10-21T07:46:44Z",
+            "reference_price": 100.0,
+            "side": "buy",
+            "stop_loss_pct": 0.5,
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_pct": 0.75,
+            "take_profit_price": 100.77411160949613,
+            "ts_ms": 1792508700000,
+            "ts_utc": "2026-10-20T15:05:00Z"
+          }
+        ],
+        "name": "A",
+        "recovery": {
+          "barrier_ms": null,
+          "checks": [
+            {
+              "check": "book_present",
+              "detail": "no book on disk: a fresh book is the only one",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "detail": "no durable book: this session starts the account",
+          "gap": null,
+          "reconstruction": null,
+          "resume_from_ms": null,
+          "status": "FRESH"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 0,
+          "fills": 1,
+          "final_equity_usdt": 10000.0,
+          "net_realised_usdt": 0,
+          "open_gap_exits": null,
+          "open_positions_at_end": {
+            "BTC/USDT": {
+              "entry_commission_usdt": 0.5,
+              "entry_price": 100.02393211860658,
+              "mark_price": 100.0,
+              "notional_usdt": 500.0,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "side": "buy",
+              "unrealised_pnl_usdt": -0.11963196
+            }
+          }
+        }
+      },
+      "B": {
+        "book": {
+          "barrier_ms": 1792514100000,
+          "closed_trades": [],
+          "equity": 10000.0,
+          "integrity_digest": "56cd6757c0dfbde8e3f4ae44cde4097652da92de6c8ddf5db6dfc88b0ee9c52f",
+          "marked_equity": 9999.38036804,
+          "open_positions": [
+            {
+              "entry_price": 100.02393211860658,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "side": "buy",
+              "stop_loss_pct": 0.5,
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            }
+          ],
+          "state_digest": "611e438e144b814b5dbb66820c4b2ec0c4c11751e6b7c975119cd5039ee83592"
+        },
+        "closes": [],
+        "code": null,
+        "detail": "RECOVERED",
+        "fills": [],
+        "name": "s2",
+        "recovery": {
+          "checks": [
+            {
+              "check": "contract_matches",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "barrier_present",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "dataset_prefix_matches",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "equity_identity",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "closed_history_intact",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "position_structure",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "risk_agrees_with_mark",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "resume_bar_available",
+              "detail": "the dataset holds a bar at 1792509600000",
+              "ok": true
+            },
+            {
+              "check": "barrier_is_continuous",
+              "detail": "resuming at 1792509600000",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "gap": null,
+          "reconstruction": null,
+          "resume_from_ms": 1792509600000,
+          "status": "RECOVERED"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 0,
+          "fills": 0,
+          "final_equity_usdt": 10000.0,
+          "net_realised_usdt": 0,
+          "open_gap_exits": null,
+          "open_positions_at_end": {
+            "BTC/USDT": {
+              "entry_commission_usdt": 0.5,
+              "entry_price": 100.02393211860658,
+              "mark_price": 100.0,
+              "notional_usdt": 500.0,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "side": "buy",
+              "unrealised_pnl_usdt": -0.11963196
+            }
+          }
+        }
+      },
+      "bars": 48,
+      "bars_sha256": "48f6e460887d6a8244ad8d33fa8b2a5dd5d842f76eece8490d92d3fa6866b394",
+      "book_comparison": {
+        "differences": [],
+        "exempt": {
+          "barrier/bars_committed": "the holed arm never had that bar, so it never committed it",
+          "closed_digest": "it hashes the closed rows including closed_at, which the reconstruction observes at the minute instead of at the bar",
+          "integrity_digest": "digest over the body, including the paths exempted here",
+          "risk/last_loss_ms": "derived from the exit instant",
+          "session_id": "process lineage",
+          "session_ids": "process lineage",
+          "session_index": "process lineage",
+          "state_digest": "digest over the body, including the paths exempted here"
+        },
+        "exempt_prefixes": {
+          "calls": "provider calls made by this process",
+          "closed_trades[0]/closed_at": "the reconstruction knows the minute; the continuous arm knows the bar close",
+          "contract/dataset": "the holed dataset has one fewer bar under the barrier; the check that matters at the barrier the book was written at is `dataset_prefix_matches` in the report",
+          "counters": "per-process action counters, excluded from the economic digest",
+          "entry_provenance": "per-position notes, excluded from the economic digest",
+          "marks": "mark cache; the next bar rewrites it",
+          "pending": "orders in flight, excluded from the economic digest",
+          "session": "process lineage: session_id / session_index / session_ids",
+          "spend_usd": "provider spend of this process",
+          "stop_reason": "process stop condition"
+        },
+        "ok": true
+      },
+      "comparison": {
+        "closes_a": 0,
+        "closes_b": 0,
+        "differences": [],
+        "fields": [
+          "symbol",
+          "side",
+          "entry_price",
+          "exit_price",
+          "quantity",
+          "pnl_net_usdt",
+          "gross_pnl_usdt",
+          "reference_gross_pnl_usdt",
+          "execution_cost_usdt",
+          "entry_commission_usdt",
+          "exit_commission_usdt",
+          "commissions_usdt",
+          "exit_reason",
+          "position_id"
+        ],
+        "ok": true
+      },
+      "hole_bar_ms": null,
+      "scenario": "split",
+      "session_1": {
+        "book": {
+          "barrier_ms": 1792509300000,
+          "closed_trades": [],
+          "equity": 10000.0,
+          "integrity_digest": "4407f65a92f7cbc69c2f0bebb4b298679b5e290ee6732162c9e9462e5247504d",
+          "marked_equity": 9999.38036804,
+          "open_positions": [
+            {
+              "entry_price": 100.02393211860658,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "side": "buy",
+              "stop_loss_pct": 0.5,
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            }
+          ],
+          "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+        },
+        "closes": [],
+        "code": null,
+        "detail": "FRESH",
+        "fills": [
+          {
+            "commission_bps": 10.0,
+            "data_gap_covered_by": null,
+            "data_gap_missing_bar_open_ms": null,
+            "decision_bar_index": 28,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792508700000,
+            "entry_commission_usdt": 0.5,
+            "entry_price": 100.02393211860658,
+            "entry_quote_source": "bar_open",
+            "fill_bar_index": 29,
+            "intent": "OPEN_LONG",
+            "kind": "FILL",
+            "notional_usdt": 500.0,
+            "opinion_age_ms": 0,
+            "phase": "OPEN_ENTRY",
+            "position_id": "pos-quote-gap-lab-00000001",
+            "price_bps_per_side": 2.39321186,
+            "quantity": 4.998803680374302,
+            "quote_bar_open_ms": 1792508700000,
+            "quote_lag_ms": 0,
+            "quote_price": 100.0,
+            "quote_source": "bar_open",
+            "quote_ts_ms": 1792508700000,
+            "received_at_ms": 1792508700000,
+            "recorded_at_utc": "2026-10-21T07:46:55Z",
+            "reference_price": 100.0,
+            "side": "buy",
+            "stop_loss_pct": 0.5,
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_pct": 0.75,
+            "take_profit_price": 100.77411160949613,
+            "ts_ms": 1792508700000,
+            "ts_utc": "2026-10-20T15:05:00Z"
+          }
+        ],
+        "name": "s1",
+        "recovery": {
+          "barrier_ms": null,
+          "checks": [
+            {
+              "check": "book_present",
+              "detail": "no book on disk: a fresh book is the only one",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "detail": "no durable book: this session starts the account",
+          "gap": null,
+          "reconstruction": null,
+          "resume_from_ms": null,
+          "status": "FRESH"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 0,
+          "fills": 1,
+          "final_equity_usdt": 10000.0,
+          "net_realised_usdt": 0,
+          "open_gap_exits": null,
+          "open_positions_at_end": {
+            "BTC/USDT": {
+              "entry_commission_usdt": 0.5,
+              "entry_price": 100.02393211860658,
+              "mark_price": 100.0,
+              "notional_usdt": 500.0,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "side": "buy",
+              "unrealised_pnl_usdt": -0.11963196
+            }
+          }
+        }
+      }
+    },
+    "stop": {
+      "A": {
+        "book": {
+          "barrier_ms": 1792514100000,
+          "closed_trades": [
+            {
+              "closed_at": 1792509900.0,
+              "entry_commission": 0.5,
+              "entry_order_id": "ord-quote-gap-lab-00000002",
+              "entry_price": 100.02393211860658,
+              "execution_cost_usdt": 0.23866576532663242,
+              "exit_commission": 0.5,
+              "exit_order_id": "ordx-quote-gap-lab-00000004",
+              "exit_price": 99.5,
+              "exit_reason": "stop_loss",
+              "gross_pnl": -2.619033802756882,
+              "opened_at": 1792508700.0,
+              "pnl": -3.619033802756882,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "reference_entry_price": 100.0,
+              "reference_exit_price": 99.52381245801355,
+              "reference_gross_pnl": -2.3803680374302494,
+              "side": "buy",
+              "strategy_name": "ai_vision",
+              "symbol": "BTC/USDT",
+              "total_cost_usdt": 1.2386657653266324,
+              "trade_id": "trd-quote-gap-lab-00000003"
+            }
+          ],
+          "equity": 9996.380966197243,
+          "integrity_digest": "ef195033d123e696c3042ad89698e17fdeeddaacad9c6877fed81299783a610d",
+          "marked_equity": 9996.3809662,
+          "open_positions": [],
+          "state_digest": "0e1a7ca1e8a259576e8972483d89565fd1e23915ac0feaa8d236e0a8741dcd92"
+        },
+        "closes": [
+          {
+            "bars_held": 4,
+            "commissions_usdt": 1.0,
+            "day_utc": "2026-10-20",
+            "entry_commission_usdt": 0.5,
+            "entry_decision_ts_ms": 1792508700000,
+            "entry_price": 100.02393211860658,
+            "entry_quote_ts_ms": 1792508700000,
+            "entry_received_at_ms": 1792508700000,
+            "execution_cost_usdt": 0.23866577,
+            "exit_commission_usdt": 0.5,
+            "exit_price": 99.5,
+            "exit_reason": "stop_loss",
+            "exit_reference_price": 99.52381246,
+            "exit_ts_lower_bound_ms": 1792509600000,
+            "exit_ts_resolution": "BAR_WINDOW",
+            "exit_ts_upper_bound_ms": 1792509900000,
+            "gap_open_price": null,
+            "gap_price_source": null,
+            "gross_pnl_usdt": -2.6190338,
+            "kind": "CLOSE",
+            "phase": "INTRABAR",
+            "pnl_net_usdt": -3.6190338,
+            "position_id": "pos-quote-gap-lab-00000001",
+            "quantity": 4.998803680374302,
+            "recorded_at_utc": "2026-10-21T07:47:30Z",
+            "reference_gross_pnl_usdt": -2.38036804,
+            "risk_daily_pnl_after": -3.6190338,
+            "risk_equity_after": 9995.76133423,
+            "risk_equity_before": 9999.38036804,
+            "risk_weekly_pnl_after": -3.6190338,
+            "side": "buy",
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_price": 100.77411160949613,
+            "trade_id": "trd-quote-gap-lab-00000003",
+            "ts_ms": 1792509900000,
+            "ts_utc": "2026-10-20T15:25:00Z"
+          }
+        ],
+        "code": null,
+        "detail": "FRESH",
+        "fills": [
+          {
+            "commission_bps": 10.0,
+            "data_gap_covered_by": null,
+            "data_gap_missing_bar_open_ms": null,
+            "decision_bar_index": 28,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792508700000,
+            "entry_commission_usdt": 0.5,
+            "entry_price": 100.02393211860658,
+            "entry_quote_source": "bar_open",
+            "fill_bar_index": 29,
+            "intent": "OPEN_LONG",
+            "kind": "FILL",
+            "notional_usdt": 500.0,
+            "opinion_age_ms": 0,
+            "phase": "OPEN_ENTRY",
+            "position_id": "pos-quote-gap-lab-00000001",
+            "price_bps_per_side": 2.39321186,
+            "quantity": 4.998803680374302,
+            "quote_bar_open_ms": 1792508700000,
+            "quote_lag_ms": 0,
+            "quote_price": 100.0,
+            "quote_source": "bar_open",
+            "quote_ts_ms": 1792508700000,
+            "received_at_ms": 1792508700000,
+            "recorded_at_utc": "2026-10-21T07:47:29Z",
+            "reference_price": 100.0,
+            "side": "buy",
+            "stop_loss_pct": 0.5,
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_pct": 0.75,
+            "take_profit_price": 100.77411160949613,
+            "ts_ms": 1792508700000,
+            "ts_utc": "2026-10-20T15:05:00Z"
+          }
+        ],
+        "name": "A",
+        "recovery": {
+          "barrier_ms": null,
+          "checks": [
+            {
+              "check": "book_present",
+              "detail": "no book on disk: a fresh book is the only one",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "detail": "no durable book: this session starts the account",
+          "gap": null,
+          "reconstruction": null,
+          "resume_from_ms": null,
+          "status": "FRESH"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 1,
+          "fills": 1,
+          "final_equity_usdt": 9996.380966,
+          "net_realised_usdt": -3.619034,
+          "open_gap_exits": null,
+          "open_positions_at_end": {}
+        }
+      },
+      "B": {
+        "book": {
+          "barrier_ms": 1792514100000,
+          "closed_trades": [
+            {
+              "closed_at": 1792500000.0,
+              "entry_commission": 0.5,
+              "entry_order_id": "ord-quote-gap-lab-00000002",
+              "entry_price": 100.02393211860658,
+              "execution_cost_usdt": 0.23866576532663242,
+              "exit_commission": 0.5,
+              "exit_order_id": "ordx-quote-gap-lab-00000004",
+              "exit_price": 99.5,
+              "exit_reason": "stop_loss",
+              "gross_pnl": -2.619033802756882,
+              "opened_at": 1792508700.0,
+              "pnl": -3.619033802756882,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "reference_entry_price": 100.0,
+              "reference_exit_price": 99.52381245801355,
+              "reference_gross_pnl": -2.3803680374302494,
+              "side": "buy",
+              "strategy_name": "ai_vision",
+              "symbol": "BTC/USDT",
+              "total_cost_usdt": 1.2386657653266324,
+              "trade_id": "trd-quote-gap-lab-00000003"
+            }
+          ],
+          "equity": 9996.380966197243,
+          "integrity_digest": "eb2a0abed1795beaa4bdfb5bf4d0fc79be3e4abfbf918566993b41a8017d482b",
+          "marked_equity": 9996.3809662,
+          "open_positions": [],
+          "state_digest": "939b210501ed4de03b29ca9a330afa1e085c871ac1aeecf78051f78f4518202e"
+        },
+        "closes": [
+          {
+            "bars_held": 4,
+            "commissions_usdt": 1.0,
+            "day_utc": "2026-10-20",
+            "entry_commission_usdt": 0.5,
+            "entry_decision_ts_ms": 1792508700000,
+            "entry_price": 100.02393211860658,
+            "entry_quote_ts_ms": 1792508700000,
+            "entry_received_at_ms": 1792508700000,
+            "execution_cost_usdt": 0.23866577,
+            "exit_commission_usdt": 0.5,
+            "exit_price": 99.5,
+            "exit_reason": "stop_loss",
+            "exit_reference_price": 99.52381246,
+            "exit_ts_lower_bound_ms": 1792509720000,
+            "exit_ts_resolution": "MINUTE_WINDOW",
+            "exit_ts_upper_bound_ms": 1792509780000,
+            "gap_open_price": null,
+            "gap_price_source": null,
+            "gross_pnl_usdt": -2.6190338,
+            "kind": "CLOSE",
+            "phase": "GAP_RECONSTRUCTION",
+            "pnl_net_usdt": -3.6190338,
+            "position_id": "pos-quote-gap-lab-00000001",
+            "quantity": 4.998803680374302,
+            "recorded_at_utc": "2026-10-21T07:47:43Z",
+            "reference_gross_pnl_usdt": -2.38036804,
+            "risk_daily_pnl_after": -3.6190338,
+            "risk_equity_after": 9995.76133424,
+            "risk_equity_before": 9999.38036804,
+            "risk_weekly_pnl_after": -3.6190338,
+            "side": "buy",
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_price": 100.77411160949613,
+            "trade_id": "trd-quote-gap-lab-00000003",
+            "ts_ms": 1792509780000,
+            "ts_utc": "2026-10-20T15:23:00Z"
+          }
+        ],
+        "code": null,
+        "detail": "RECOVERED",
+        "fills": [],
+        "name": "s2",
+        "recovery": {
+          "checks": [
+            {
+              "check": "contract_matches",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "barrier_present",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "dataset_prefix_matches",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "equity_identity",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "closed_history_intact",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "position_structure",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "risk_agrees_with_mark",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "resume_bar_available",
+              "detail": "the dataset holds a bar at 1792509900000",
+              "ok": true
+            },
+            {
+              "check": "barrier_is_continuous",
+              "detail": "bar 1792509600000 is missing; the next bar is 1792509900000",
+              "ok": false
+            },
+            {
+              "check": "gap_evidence_matches_book",
+              "detail": "the assessment covers bars 1792509300000->1792509900000 and 1 position(s), matching this book",
+              "ok": true
+            },
+            {
+              "check": "gap_covered_by_quotes",
+              "detail": "binance_spot_1m_klines observed every minute of 1792509600000..1792509899999 for BTC/USDT (5 minutes, 87c7aa28bcc6)",
+              "ok": true
+            },
+            {
+              "check": "gap_exits_placeable",
+              "detail": "1 protective exit(s) crossed inside the hole and are placed at their observed minute: pos-quote-gap-lab-00000001 BTC/USDT stop_loss at 99.52381245801355 (minute 1792509720000)",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "gap": {
+            "checks": [
+              {
+                "check": "feed_present",
+                "detail": "feed 'binance_spot_1m_klines' supplied",
+                "ok": true
+              },
+              {
+                "check": "feed_is_independent",
+                "detail": "the feed names itself 'binance_spot_1m_klines'",
+                "ok": true
+              },
+              {
+                "check": "minute_grid_complete",
+                "detail": "every minute of the hole is present for BTC/USDT",
+                "ok": true
+              },
+              {
+                "check": "no_opinion_spans_the_hole",
+                "detail": "no in-flight opinion could have filled inside the hole",
+                "ok": true
+              },
+              {
+                "check": "protective_exits_placed",
+                "detail": "1 exit(s) placeable, 0 position(s) never touched a level",
+                "ok": true
+              }
+            ],
+            "code": null,
+            "detail": "1 protective exit(s) were crossed inside the hole and are placed at their observed minute by binance_spot_1m_klines; the remaining 0 position(s) were provably untouched",
+            "evidence": {
+              "barrier_ms": 1792509300000,
+              "minutes_expected": 5,
+              "resume_ms": 1792509900000,
+              "symbols": {
+                "BTC/USDT": {
+                  "feed": "binance_spot_1m_klines",
+                  "first_minute_ms": 1792509600000,
+                  "last_minute_ms": 1792509840000,
+                  "minutes_expected": 5,
+                  "minutes_observed": 5,
+                  "series_sha256": "6b35119a1c8c0f3aca683e5bb317a263d9e7f79cc1c309b76af4369d145dd3da",
+                  "window_sha256": "87c7aa28bcc60f15a142f905c7ebd1b6c391bef90789a516ab7ad1439faa416d"
+                }
+              }
+            },
+            "feed": "binance_spot_1m_klines",
+            "minutes": [
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509600000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509660000
+              },
+              {
+                "close": 99.4,
+                "high": 100.02,
+                "low": 99.2,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509720000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509780000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509840000
+              }
+            ],
+            "positions": [
+              {
+                "ambiguous_minute_ms": null,
+                "best_price": 100.02,
+                "detail": "the stop was crossed in minute 1792509720000, which is an observed price, not an inferred one",
+                "entry_price": 100.02393211860658,
+                "exit_minute_ms": 1792509720000,
+                "exit_price": 99.52381245801355,
+                "exit_reason": "stop_loss",
+                "minutes_observed": 5,
+                "position_id": "pos-quote-gap-lab-00000001",
+                "quantity": 4.998803680374302,
+                "side": "buy",
+                "status": "RECONSTRUCTIBLE",
+                "stop_price": 99.52381245801355,
+                "stop_touch": {
+                  "close": 99.4,
+                  "high": 100.02,
+                  "level_price": 99.52381245801355,
+                  "low": 99.2,
+                  "minute_ms": 1792509720000,
+                  "open": 100.0
+                },
+                "symbol": "BTC/USDT",
+                "take_profit_price": 100.77411160949613,
+                "take_profit_touch": null,
+                "worst_price": 99.2,
+                "worst_unrealised_usdt": -4.118674906869158
+              }
+            ],
+            "verdict": "RECONSTRUCT",
+            "window": {
+              "barrier_ms": 1792509300000,
+              "end_ms": 1792509900000,
+              "interval_ms": 300000,
+              "minutes_expected": 5,
+              "missing_bars": [
+                1792509600000
+              ],
+              "resume_ms": 1792509900000,
+              "start_ms": 1792509600000
+            }
+          },
+          "reconstruction": {
+            "evidence": {
+              "barrier_ms": 1792509300000,
+              "minutes_expected": 5,
+              "resume_ms": 1792509900000,
+              "symbols": {
+                "BTC/USDT": {
+                  "feed": "binance_spot_1m_klines",
+                  "first_minute_ms": 1792509600000,
+                  "last_minute_ms": 1792509840000,
+                  "minutes_expected": 5,
+                  "minutes_observed": 5,
+                  "series_sha256": "6b35119a1c8c0f3aca683e5bb317a263d9e7f79cc1c309b76af4369d145dd3da",
+                  "window_sha256": "87c7aa28bcc60f15a142f905c7ebd1b6c391bef90789a516ab7ad1439faa416d"
+                }
+              }
+            },
+            "exits": [
+              {
+                "minute_ms": 1792509720000,
+                "position_id": "pos-quote-gap-lab-00000001",
+                "price": 99.52381245801355,
+                "reason": "stop_loss",
+                "side": "buy",
+                "stop_price": 99.52381245801355,
+                "stop_touch": {
+                  "close": 99.4,
+                  "high": 100.02,
+                  "level_price": 99.52381245801355,
+                  "low": 99.2,
+                  "minute_ms": 1792509720000,
+                  "open": 100.0
+                },
+                "symbol": "BTC/USDT",
+                "take_profit_price": 100.77411160949613,
+                "take_profit_touch": null,
+                "worst_price": 99.2,
+                "worst_unrealised_usdt": -4.118674906869158
+              }
+            ],
+            "feed": "binance_spot_1m_klines",
+            "kind": "PROTECTIVE_EXITS",
+            "minutes": [
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509600000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509660000
+              },
+              {
+                "close": 99.4,
+                "high": 100.02,
+                "low": 99.2,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509720000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509780000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509840000
+              }
+            ],
+            "window": {
+              "barrier_ms": 1792509300000,
+              "end_ms": 1792509900000,
+              "interval_ms": 300000,
+              "minutes_expected": 5,
+              "missing_bars": [
+                1792509600000
+              ],
+              "resume_ms": 1792509900000,
+              "start_ms": 1792509600000
+            }
+          },
+          "resume_from_ms": 1792509900000,
+          "status": "RECOVERED"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 1,
+          "fills": 0,
+          "final_equity_usdt": 9996.380966,
+          "net_realised_usdt": -3.619034,
+          "open_gap_exits": null,
+          "open_positions_at_end": {}
+        }
+      },
+      "bars": 48,
+      "bars_sha256": "ac7dde708bf421c68dd751859a008779f80d10197970cc438581cae9e6c41258",
+      "book_comparison": {
+        "differences": [],
+        "exempt": {
+          "barrier/bars_committed": "the holed arm never had that bar, so it never committed it",
+          "closed_digest": "it hashes the closed rows including closed_at, which the reconstruction observes at the minute instead of at the bar",
+          "integrity_digest": "digest over the body, including the paths exempted here",
+          "risk/last_loss_ms": "derived from the exit instant",
+          "session_id": "process lineage",
+          "session_ids": "process lineage",
+          "session_index": "process lineage",
+          "state_digest": "digest over the body, including the paths exempted here"
+        },
+        "exempt_prefixes": {
+          "calls": "provider calls made by this process",
+          "closed_trades[0]/closed_at": "the reconstruction knows the minute; the continuous arm knows the bar close",
+          "contract/dataset": "the holed dataset has one fewer bar under the barrier; the check that matters at the barrier the book was written at is `dataset_prefix_matches` in the report",
+          "counters": "per-process action counters, excluded from the economic digest",
+          "entry_provenance": "per-position notes, excluded from the economic digest",
+          "marks": "mark cache; the next bar rewrites it",
+          "pending": "orders in flight, excluded from the economic digest",
+          "session": "process lineage: session_id / session_index / session_ids",
+          "spend_usd": "provider spend of this process",
+          "stop_reason": "process stop condition"
+        },
+        "ok": true
+      },
+      "comparison": {
+        "closes_a": 1,
+        "closes_b": 1,
+        "differences": [],
+        "fields": [
+          "symbol",
+          "side",
+          "entry_price",
+          "exit_price",
+          "quantity",
+          "pnl_net_usdt",
+          "gross_pnl_usdt",
+          "reference_gross_pnl_usdt",
+          "execution_cost_usdt",
+          "entry_commission_usdt",
+          "exit_commission_usdt",
+          "commissions_usdt",
+          "exit_reason",
+          "position_id"
+        ],
+        "ok": true
+      },
+      "hole_bar_ms": 1792509600000,
+      "scenario": "stop",
+      "session_1": {
+        "book": {
+          "barrier_ms": 1792509300000,
+          "closed_trades": [],
+          "equity": 10000.0,
+          "integrity_digest": "4407f65a92f7cbc69c2f0bebb4b298679b5e290ee6732162c9e9462e5247504d",
+          "marked_equity": 9999.38036804,
+          "open_positions": [
+            {
+              "entry_price": 100.02393211860658,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "side": "buy",
+              "stop_loss_pct": 0.5,
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            }
+          ],
+          "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+        },
+        "closes": [],
+        "code": null,
+        "detail": "FRESH",
+        "fills": [
+          {
+            "commission_bps": 10.0,
+            "data_gap_covered_by": null,
+            "data_gap_missing_bar_open_ms": null,
+            "decision_bar_index": 28,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792508700000,
+            "entry_commission_usdt": 0.5,
+            "entry_price": 100.02393211860658,
+            "entry_quote_source": "bar_open",
+            "fill_bar_index": 29,
+            "intent": "OPEN_LONG",
+            "kind": "FILL",
+            "notional_usdt": 500.0,
+            "opinion_age_ms": 0,
+            "phase": "OPEN_ENTRY",
+            "position_id": "pos-quote-gap-lab-00000001",
+            "price_bps_per_side": 2.39321186,
+            "quantity": 4.998803680374302,
+            "quote_bar_open_ms": 1792508700000,
+            "quote_lag_ms": 0,
+            "quote_price": 100.0,
+            "quote_source": "bar_open",
+            "quote_ts_ms": 1792508700000,
+            "received_at_ms": 1792508700000,
+            "recorded_at_utc": "2026-10-21T07:47:42Z",
+            "reference_price": 100.0,
+            "side": "buy",
+            "stop_loss_pct": 0.5,
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_pct": 0.75,
+            "take_profit_price": 100.77411160949613,
+            "ts_ms": 1792508700000,
+            "ts_utc": "2026-10-20T15:05:00Z"
+          }
+        ],
+        "name": "s1",
+        "recovery": {
+          "barrier_ms": null,
+          "checks": [
+            {
+              "check": "book_present",
+              "detail": "no book on disk: a fresh book is the only one",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "detail": "no durable book: this session starts the account",
+          "gap": null,
+          "reconstruction": null,
+          "resume_from_ms": null,
+          "status": "FRESH"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 0,
+          "fills": 1,
+          "final_equity_usdt": 10000.0,
+          "net_realised_usdt": 0,
+          "open_gap_exits": null,
+          "open_positions_at_end": {
+            "BTC/USDT": {
+              "entry_commission_usdt": 0.5,
+              "entry_price": 100.02393211860658,
+              "mark_price": 100.0,
+              "notional_usdt": 500.0,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "side": "buy",
+              "unrealised_pnl_usdt": -0.11963196
+            }
+          }
+        }
+      }
+    },
+    "take": {
+      "A": {
+        "book": {
+          "barrier_ms": 1792514100000,
+          "closed_trades": [
+            {
+              "closed_at": 1792509900.0,
+              "entry_commission": 0.5,
+              "entry_order_id": "ord-quote-gap-lab-00000002",
+              "entry_price": 100.02393211860658,
+              "execution_cost_usdt": 0.24016116485874006,
+              "exit_commission": 0.5,
+              "exit_order_id": "ordx-quote-gap-lab-00000004",
+              "exit_price": 100.75,
+              "exit_reason": "take_profit",
+              "gross_pnl": 3.629470797710996,
+              "opened_at": 1792508700.0,
+              "pnl": 2.629470797710996,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "reference_entry_price": 100.0,
+              "reference_exit_price": 100.77411160949613,
+              "reference_gross_pnl": 3.869631962569736,
+              "side": "buy",
+              "strategy_name": "ai_vision",
+              "symbol": "BTC/USDT",
+              "total_cost_usdt": 1.24016116485874,
+              "trade_id": "trd-quote-gap-lab-00000003"
+            }
+          ],
+          "equity": 10002.62947079771,
+          "integrity_digest": "f904f19be591d4d3e94fdeff78d5e200046d0fcd0d753bb596cce95f59a9d26d",
+          "marked_equity": 10002.6294708,
+          "open_positions": [],
+          "state_digest": "4ad079ff5d5fe3b97abab32c7900f618fa5f5806e49c6901ed6fd3638854f45e"
+        },
+        "closes": [
+          {
+            "bars_held": 4,
+            "commissions_usdt": 1.0,
+            "day_utc": "2026-10-20",
+            "entry_commission_usdt": 0.5,
+            "entry_decision_ts_ms": 1792508700000,
+            "entry_price": 100.02393211860658,
+            "entry_quote_ts_ms": 1792508700000,
+            "entry_received_at_ms": 1792508700000,
+            "execution_cost_usdt": 0.24016116,
+            "exit_commission_usdt": 0.5,
+            "exit_price": 100.75,
+            "exit_reason": "take_profit",
+            "exit_reference_price": 100.77411161,
+            "exit_ts_lower_bound_ms": 1792509600000,
+            "exit_ts_resolution": "BAR_WINDOW",
+            "exit_ts_upper_bound_ms": 1792509900000,
+            "gap_open_price": null,
+            "gap_price_source": null,
+            "gross_pnl_usdt": 3.6294708,
+            "kind": "CLOSE",
+            "phase": "INTRABAR",
+            "pnl_net_usdt": 2.6294708,
+            "position_id": "pos-quote-gap-lab-00000001",
+            "quantity": 4.998803680374302,
+            "recorded_at_utc": "2026-10-21T07:47:56Z",
+            "reference_gross_pnl_usdt": 3.86963196,
+            "risk_daily_pnl_after": 2.6294708,
+            "risk_equity_after": 10002.00983884,
+            "risk_equity_before": 9999.38036804,
+            "risk_weekly_pnl_after": 2.6294708,
+            "side": "buy",
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_price": 100.77411160949613,
+            "trade_id": "trd-quote-gap-lab-00000003",
+            "ts_ms": 1792509900000,
+            "ts_utc": "2026-10-20T15:25:00Z"
+          }
+        ],
+        "code": null,
+        "detail": "FRESH",
+        "fills": [
+          {
+            "commission_bps": 10.0,
+            "data_gap_covered_by": null,
+            "data_gap_missing_bar_open_ms": null,
+            "decision_bar_index": 28,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792508700000,
+            "entry_commission_usdt": 0.5,
+            "entry_price": 100.02393211860658,
+            "entry_quote_source": "bar_open",
+            "fill_bar_index": 29,
+            "intent": "OPEN_LONG",
+            "kind": "FILL",
+            "notional_usdt": 500.0,
+            "opinion_age_ms": 0,
+            "phase": "OPEN_ENTRY",
+            "position_id": "pos-quote-gap-lab-00000001",
+            "price_bps_per_side": 2.39321186,
+            "quantity": 4.998803680374302,
+            "quote_bar_open_ms": 1792508700000,
+            "quote_lag_ms": 0,
+            "quote_price": 100.0,
+            "quote_source": "bar_open",
+            "quote_ts_ms": 1792508700000,
+            "received_at_ms": 1792508700000,
+            "recorded_at_utc": "2026-10-21T07:47:55Z",
+            "reference_price": 100.0,
+            "side": "buy",
+            "stop_loss_pct": 0.5,
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_pct": 0.75,
+            "take_profit_price": 100.77411160949613,
+            "ts_ms": 1792508700000,
+            "ts_utc": "2026-10-20T15:05:00Z"
+          }
+        ],
+        "name": "A",
+        "recovery": {
+          "barrier_ms": null,
+          "checks": [
+            {
+              "check": "book_present",
+              "detail": "no book on disk: a fresh book is the only one",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "detail": "no durable book: this session starts the account",
+          "gap": null,
+          "reconstruction": null,
+          "resume_from_ms": null,
+          "status": "FRESH"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 1,
+          "fills": 1,
+          "final_equity_usdt": 10002.629471,
+          "net_realised_usdt": 2.629471,
+          "open_gap_exits": null,
+          "open_positions_at_end": {}
+        }
+      },
+      "B": {
+        "book": {
+          "barrier_ms": 1792514100000,
+          "closed_trades": [
+            {
+              "closed_at": 1792500000.0,
+              "entry_commission": 0.5,
+              "entry_order_id": "ord-quote-gap-lab-00000002",
+              "entry_price": 100.02393211860658,
+              "execution_cost_usdt": 0.24016116485874006,
+              "exit_commission": 0.5,
+              "exit_order_id": "ordx-quote-gap-lab-00000004",
+              "exit_price": 100.75,
+              "exit_reason": "take_profit",
+              "gross_pnl": 3.629470797710996,
+              "opened_at": 1792508700.0,
+              "pnl": 2.629470797710996,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "reference_entry_price": 100.0,
+              "reference_exit_price": 100.77411160949613,
+              "reference_gross_pnl": 3.869631962569736,
+              "side": "buy",
+              "strategy_name": "ai_vision",
+              "symbol": "BTC/USDT",
+              "total_cost_usdt": 1.24016116485874,
+              "trade_id": "trd-quote-gap-lab-00000003"
+            }
+          ],
+          "equity": 10002.62947079771,
+          "integrity_digest": "6ccb57f1e832f94a52cd984d836ac55cc08ebe77ba61cc8cb992d8ea9c728404",
+          "marked_equity": 10002.6294708,
+          "open_positions": [],
+          "state_digest": "920025ffbd8d70d6ac2336defade5d4438b8ce34079598f2ced82631178c97b7"
+        },
+        "closes": [
+          {
+            "bars_held": 4,
+            "commissions_usdt": 1.0,
+            "day_utc": "2026-10-20",
+            "entry_commission_usdt": 0.5,
+            "entry_decision_ts_ms": 1792508700000,
+            "entry_price": 100.02393211860658,
+            "entry_quote_ts_ms": 1792508700000,
+            "entry_received_at_ms": 1792508700000,
+            "execution_cost_usdt": 0.24016116,
+            "exit_commission_usdt": 0.5,
+            "exit_price": 100.75,
+            "exit_reason": "take_profit",
+            "exit_reference_price": 100.77411161,
+            "exit_ts_lower_bound_ms": 1792509720000,
+            "exit_ts_resolution": "MINUTE_WINDOW",
+            "exit_ts_upper_bound_ms": 1792509780000,
+            "gap_open_price": null,
+            "gap_price_source": null,
+            "gross_pnl_usdt": 3.6294708,
+            "kind": "CLOSE",
+            "phase": "GAP_RECONSTRUCTION",
+            "pnl_net_usdt": 2.6294708,
+            "position_id": "pos-quote-gap-lab-00000001",
+            "quantity": 4.998803680374302,
+            "recorded_at_utc": "2026-10-21T07:48:09Z",
+            "reference_gross_pnl_usdt": 3.86963196,
+            "risk_daily_pnl_after": 2.6294708,
+            "risk_equity_after": 10002.00983884,
+            "risk_equity_before": 9999.38036804,
+            "risk_weekly_pnl_after": 2.6294708,
+            "side": "buy",
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_price": 100.77411160949613,
+            "trade_id": "trd-quote-gap-lab-00000003",
+            "ts_ms": 1792509780000,
+            "ts_utc": "2026-10-20T15:23:00Z"
+          }
+        ],
+        "code": null,
+        "detail": "RECOVERED",
+        "fills": [],
+        "name": "s2",
+        "recovery": {
+          "checks": [
+            {
+              "check": "contract_matches",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "barrier_present",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "dataset_prefix_matches",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "equity_identity",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "closed_history_intact",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "position_structure",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "risk_agrees_with_mark",
+              "detail": "",
+              "ok": true
+            },
+            {
+              "check": "resume_bar_available",
+              "detail": "the dataset holds a bar at 1792509900000",
+              "ok": true
+            },
+            {
+              "check": "barrier_is_continuous",
+              "detail": "bar 1792509600000 is missing; the next bar is 1792509900000",
+              "ok": false
+            },
+            {
+              "check": "gap_evidence_matches_book",
+              "detail": "the assessment covers bars 1792509300000->1792509900000 and 1 position(s), matching this book",
+              "ok": true
+            },
+            {
+              "check": "gap_covered_by_quotes",
+              "detail": "binance_spot_1m_klines observed every minute of 1792509600000..1792509899999 for BTC/USDT (5 minutes, cce2e6e39179)",
+              "ok": true
+            },
+            {
+              "check": "gap_exits_placeable",
+              "detail": "1 protective exit(s) crossed inside the hole and are placed at their observed minute: pos-quote-gap-lab-00000001 BTC/USDT take_profit at 100.77411160949613 (minute 1792509720000)",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "gap": {
+            "checks": [
+              {
+                "check": "feed_present",
+                "detail": "feed 'binance_spot_1m_klines' supplied",
+                "ok": true
+              },
+              {
+                "check": "feed_is_independent",
+                "detail": "the feed names itself 'binance_spot_1m_klines'",
+                "ok": true
+              },
+              {
+                "check": "minute_grid_complete",
+                "detail": "every minute of the hole is present for BTC/USDT",
+                "ok": true
+              },
+              {
+                "check": "no_opinion_spans_the_hole",
+                "detail": "no in-flight opinion could have filled inside the hole",
+                "ok": true
+              },
+              {
+                "check": "protective_exits_placed",
+                "detail": "1 exit(s) placeable, 0 position(s) never touched a level",
+                "ok": true
+              }
+            ],
+            "code": null,
+            "detail": "1 protective exit(s) were crossed inside the hole and are placed at their observed minute by binance_spot_1m_klines; the remaining 0 position(s) were provably untouched",
+            "evidence": {
+              "barrier_ms": 1792509300000,
+              "minutes_expected": 5,
+              "resume_ms": 1792509900000,
+              "symbols": {
+                "BTC/USDT": {
+                  "feed": "binance_spot_1m_klines",
+                  "first_minute_ms": 1792509600000,
+                  "last_minute_ms": 1792509840000,
+                  "minutes_expected": 5,
+                  "minutes_observed": 5,
+                  "series_sha256": "bd4ea38edf7cfef37fcfa4c10b3afc6bc851577d347054d12b47f0f1cfd2122d",
+                  "window_sha256": "cce2e6e39179369e44777279f01eb59381e218bd3003bf172eede779e1dab425"
+                }
+              }
+            },
+            "feed": "binance_spot_1m_klines",
+            "minutes": [
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509600000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509660000
+              },
+              {
+                "close": 101.0,
+                "high": 101.1,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509720000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509780000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509840000
+              }
+            ],
+            "positions": [
+              {
+                "ambiguous_minute_ms": null,
+                "best_price": 101.1,
+                "detail": "the take-profit was crossed in minute 1792509720000, which is an observed price, not an inferred one",
+                "entry_price": 100.02393211860658,
+                "exit_minute_ms": 1792509720000,
+                "exit_price": 100.77411160949613,
+                "exit_reason": "take_profit",
+                "minutes_observed": 5,
+                "position_id": "pos-quote-gap-lab-00000001",
+                "quantity": 4.998803680374302,
+                "side": "buy",
+                "status": "RECONSTRUCTIBLE",
+                "stop_price": 99.52381245801355,
+                "stop_touch": null,
+                "symbol": "BTC/USDT",
+                "take_profit_price": 100.77411160949613,
+                "take_profit_touch": {
+                  "close": 101.0,
+                  "high": 101.1,
+                  "level_price": 100.77411160949613,
+                  "low": 99.98,
+                  "minute_ms": 1792509720000,
+                  "open": 100.0
+                },
+                "worst_price": 99.98,
+                "worst_unrealised_usdt": -0.2196080361771968
+              }
+            ],
+            "verdict": "RECONSTRUCT",
+            "window": {
+              "barrier_ms": 1792509300000,
+              "end_ms": 1792509900000,
+              "interval_ms": 300000,
+              "minutes_expected": 5,
+              "missing_bars": [
+                1792509600000
+              ],
+              "resume_ms": 1792509900000,
+              "start_ms": 1792509600000
+            }
+          },
+          "reconstruction": {
+            "evidence": {
+              "barrier_ms": 1792509300000,
+              "minutes_expected": 5,
+              "resume_ms": 1792509900000,
+              "symbols": {
+                "BTC/USDT": {
+                  "feed": "binance_spot_1m_klines",
+                  "first_minute_ms": 1792509600000,
+                  "last_minute_ms": 1792509840000,
+                  "minutes_expected": 5,
+                  "minutes_observed": 5,
+                  "series_sha256": "bd4ea38edf7cfef37fcfa4c10b3afc6bc851577d347054d12b47f0f1cfd2122d",
+                  "window_sha256": "cce2e6e39179369e44777279f01eb59381e218bd3003bf172eede779e1dab425"
+                }
+              }
+            },
+            "exits": [
+              {
+                "minute_ms": 1792509720000,
+                "position_id": "pos-quote-gap-lab-00000001",
+                "price": 100.77411160949613,
+                "reason": "take_profit",
+                "side": "buy",
+                "stop_price": 99.52381245801355,
+                "stop_touch": null,
+                "symbol": "BTC/USDT",
+                "take_profit_price": 100.77411160949613,
+                "take_profit_touch": {
+                  "close": 101.0,
+                  "high": 101.1,
+                  "level_price": 100.77411160949613,
+                  "low": 99.98,
+                  "minute_ms": 1792509720000,
+                  "open": 100.0
+                },
+                "worst_price": 99.98,
+                "worst_unrealised_usdt": -0.2196080361771968
+              }
+            ],
+            "feed": "binance_spot_1m_klines",
+            "kind": "PROTECTIVE_EXITS",
+            "minutes": [
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509600000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509660000
+              },
+              {
+                "close": 101.0,
+                "high": 101.1,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509720000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509780000
+              },
+              {
+                "close": 100.0,
+                "high": 100.02,
+                "low": 99.98,
+                "open": 100.0,
+                "symbol": "BTC/USDT",
+                "ts_ms": 1792509840000
+              }
+            ],
+            "window": {
+              "barrier_ms": 1792509300000,
+              "end_ms": 1792509900000,
+              "interval_ms": 300000,
+              "minutes_expected": 5,
+              "missing_bars": [
+                1792509600000
+              ],
+              "resume_ms": 1792509900000,
+              "start_ms": 1792509600000
+            }
+          },
+          "resume_from_ms": 1792509900000,
+          "status": "RECOVERED"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 1,
+          "fills": 0,
+          "final_equity_usdt": 10002.629471,
+          "net_realised_usdt": 2.629471,
+          "open_gap_exits": null,
+          "open_positions_at_end": {}
+        }
+      },
+      "bars": 48,
+      "bars_sha256": "1776fb157fa8dfb785605befa49fc3e846d9b3add12df5ab6fd014060e130784",
+      "book_comparison": {
+        "differences": [],
+        "exempt": {
+          "barrier/bars_committed": "the holed arm never had that bar, so it never committed it",
+          "closed_digest": "it hashes the closed rows including closed_at, which the reconstruction observes at the minute instead of at the bar",
+          "integrity_digest": "digest over the body, including the paths exempted here",
+          "risk/last_loss_ms": "derived from the exit instant",
+          "session_id": "process lineage",
+          "session_ids": "process lineage",
+          "session_index": "process lineage",
+          "state_digest": "digest over the body, including the paths exempted here"
+        },
+        "exempt_prefixes": {
+          "calls": "provider calls made by this process",
+          "closed_trades[0]/closed_at": "the reconstruction knows the minute; the continuous arm knows the bar close",
+          "contract/dataset": "the holed dataset has one fewer bar under the barrier; the check that matters at the barrier the book was written at is `dataset_prefix_matches` in the report",
+          "counters": "per-process action counters, excluded from the economic digest",
+          "entry_provenance": "per-position notes, excluded from the economic digest",
+          "marks": "mark cache; the next bar rewrites it",
+          "pending": "orders in flight, excluded from the economic digest",
+          "session": "process lineage: session_id / session_index / session_ids",
+          "spend_usd": "provider spend of this process",
+          "stop_reason": "process stop condition"
+        },
+        "ok": true
+      },
+      "comparison": {
+        "closes_a": 1,
+        "closes_b": 1,
+        "differences": [],
+        "fields": [
+          "symbol",
+          "side",
+          "entry_price",
+          "exit_price",
+          "quantity",
+          "pnl_net_usdt",
+          "gross_pnl_usdt",
+          "reference_gross_pnl_usdt",
+          "execution_cost_usdt",
+          "entry_commission_usdt",
+          "exit_commission_usdt",
+          "commissions_usdt",
+          "exit_reason",
+          "position_id"
+        ],
+        "ok": true
+      },
+      "hole_bar_ms": 1792509600000,
+      "scenario": "take",
+      "session_1": {
+        "book": {
+          "barrier_ms": 1792509300000,
+          "closed_trades": [],
+          "equity": 10000.0,
+          "integrity_digest": "4407f65a92f7cbc69c2f0bebb4b298679b5e290ee6732162c9e9462e5247504d",
+          "marked_equity": 9999.38036804,
+          "open_positions": [
+            {
+              "entry_price": 100.02393211860658,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "quantity": 4.998803680374302,
+              "side": "buy",
+              "stop_loss_pct": 0.5,
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            }
+          ],
+          "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e"
+        },
+        "closes": [],
+        "code": null,
+        "detail": "FRESH",
+        "fills": [
+          {
+            "commission_bps": 10.0,
+            "data_gap_covered_by": null,
+            "data_gap_missing_bar_open_ms": null,
+            "decision_bar_index": 28,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792508700000,
+            "entry_commission_usdt": 0.5,
+            "entry_price": 100.02393211860658,
+            "entry_quote_source": "bar_open",
+            "fill_bar_index": 29,
+            "intent": "OPEN_LONG",
+            "kind": "FILL",
+            "notional_usdt": 500.0,
+            "opinion_age_ms": 0,
+            "phase": "OPEN_ENTRY",
+            "position_id": "pos-quote-gap-lab-00000001",
+            "price_bps_per_side": 2.39321186,
+            "quantity": 4.998803680374302,
+            "quote_bar_open_ms": 1792508700000,
+            "quote_lag_ms": 0,
+            "quote_price": 100.0,
+            "quote_source": "bar_open",
+            "quote_ts_ms": 1792508700000,
+            "received_at_ms": 1792508700000,
+            "recorded_at_utc": "2026-10-21T07:48:07Z",
+            "reference_price": 100.0,
+            "side": "buy",
+            "stop_loss_pct": 0.5,
+            "stop_loss_price": 99.52381245801355,
+            "symbol": "BTC/USDT",
+            "take_profit_pct": 0.75,
+            "take_profit_price": 100.77411160949613,
+            "ts_ms": 1792508700000,
+            "ts_utc": "2026-10-20T15:05:00Z"
+          }
+        ],
+        "name": "s1",
+        "recovery": {
+          "barrier_ms": null,
+          "checks": [
+            {
+              "check": "book_present",
+              "detail": "no book on disk: a fresh book is the only one",
+              "ok": true
+            }
+          ],
+          "code": null,
+          "detail": "no durable book: this session starts the account",
+          "gap": null,
+          "reconstruction": null,
+          "resume_from_ms": null,
+          "status": "FRESH"
+        },
+        "status": "RAN",
+        "summary": {
+          "closed_trades": 0,
+          "fills": 1,
+          "final_equity_usdt": 10000.0,
+          "net_realised_usdt": 0,
+          "open_gap_exits": null,
+          "open_positions_at_end": {
+            "BTC/USDT": {
+              "entry_commission_usdt": 0.5,
+              "entry_price": 100.02393211860658,
+              "mark_price": 100.0,
+              "notional_usdt": 500.0,
+              "position_id": "pos-quote-gap-lab-00000001",
+              "side": "buy",
+              "unrealised_pnl_usdt": -0.11963196
+            }
+          }
+        }
+      }
+    }
+  }
+}

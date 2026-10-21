@@ -1,0 +1,24 @@
+{
+  "schema": "CLEAN_CHECKOUT_REPORT_V1",
+  "generated_at_utc": "2026-10-21T12:27:43+00:00",
+  "checkout": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean",
+  "code_sha": "aab65cf9d60e520119426fc74bccd84e110eee1e",
+  "clone_command": "git clone --no-hardlinks <worktree> <temp>/rfc003-clean",
+  "install_command": "uv sync --frozen --all-extras",
+  "lockfile": "uv.lock (regenerated at f5471bd's parent; matplotlib was missing)",
+  "positive_probe": {
+    "package_origin": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean\\src\\trading_bot\\__init__.py",
+    "inside_checkout": true,
+    "python": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean\\.venv\\Scripts\\python.exe",
+    "injected_pythonpath": null,
+    "status": "OK"
+  },
+  "negative_probe_neg01": {
+    "injected_pythonpath": "C:/Users/GVLLFR0035/Downloads/bot freebuff/src",
+    "package_origin": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\__init__.py",
+    "status": "REFUSED",
+    "code": "FOREIGN_CHECKOUT"
+  },
+  "requirements_fingerprint": "2181da3dd1a708b09c5a028a46a2613d4ea9e020a0c4523156008a9da6192f46",
+  "conclusion": "from a clean clone at CODE_SHA with a fresh venv, trading_bot resolves inside the checkout without PYTHONPATH; pointing PYTHONPATH at the sibling checkout moves the origin outside and the gate refuses it"
+}

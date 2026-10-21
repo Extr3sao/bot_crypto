@@ -1,0 +1,503 @@
+{
+  "schema": "VERIFICATION_REPLAY_V1",
+  "generated_at_utc": "2026-10-21T12:27:42+00:00",
+  "command": "python scripts/verify_quote_gap.py --lab reports/ai-bots/WP-PAPER-QUOTE-GAP-002/lab/GAP_LAB.json --negative-controls --json <out>",
+  "cwd": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean",
+  "exit_code": 0,
+  "stdout_tail": [
+    "      \"detected\": true,",
+    "      \"first_failure\": \"quiet.exemptions_are_known\"",
+    "    }",
+    "  ],",
+    "  \"negative_controls_ok\": true",
+    "}"
+  ],
+  "replayed": {
+    "checks": [
+      {
+        "check": "split.resumed",
+        "detail": "status=RAN code=None",
+        "ok": true
+      },
+      {
+        "check": "split.A.no_duplicate_close",
+        "detail": "0 closed row(s), 0 unique position(s)",
+        "ok": true
+      },
+      {
+        "check": "split.A.open_and_closed_are_disjoint",
+        "detail": "overlap []",
+        "ok": true
+      },
+      {
+        "check": "split.A.equity_finances_itself",
+        "detail": "initial 10000.00000000 + pnl 0.00000000 vs equity 10000.0",
+        "ok": true
+      },
+      {
+        "check": "split.B.no_duplicate_close",
+        "detail": "0 closed row(s), 0 unique position(s)",
+        "ok": true
+      },
+      {
+        "check": "split.B.open_and_closed_are_disjoint",
+        "detail": "overlap []",
+        "ok": true
+      },
+      {
+        "check": "split.B.equity_finances_itself",
+        "detail": "initial 10000.00000000 + pnl 0.00000000 vs equity 10000.0",
+        "ok": true
+      },
+      {
+        "check": "split.exemptions_are_known",
+        "detail": "the lab exempted paths the verifier does not accept: []",
+        "ok": true
+      },
+      {
+        "check": "split.bodies_agree",
+        "detail": "[]",
+        "ok": true
+      },
+      {
+        "check": "quiet.resumed",
+        "detail": "status=RAN code=None",
+        "ok": true
+      },
+      {
+        "check": "quiet.no_reconstruction",
+        "detail": "a quiet hole must not invent an exit",
+        "ok": true
+      },
+      {
+        "check": "quiet.stop_not_touched",
+        "detail": "0 minute(s) contain 99.52381246",
+        "ok": true
+      },
+      {
+        "check": "quiet.take_not_touched",
+        "detail": "0 minute(s) contain 100.77411161",
+        "ok": true
+      },
+      {
+        "check": "quiet.A.no_duplicate_close",
+        "detail": "0 closed row(s), 0 unique position(s)",
+        "ok": true
+      },
+      {
+        "check": "quiet.A.open_and_closed_are_disjoint",
+        "detail": "overlap []",
+        "ok": true
+      },
+      {
+        "check": "quiet.A.equity_finances_itself",
+        "detail": "initial 10000.00000000 + pnl 0.00000000 vs equity 10000.0",
+        "ok": true
+      },
+      {
+        "check": "quiet.B.no_duplicate_close",
+        "detail": "0 closed row(s), 0 unique position(s)",
+        "ok": true
+      },
+      {
+        "check": "quiet.B.open_and_closed_are_disjoint",
+        "detail": "overlap []",
+        "ok": true
+      },
+      {
+        "check": "quiet.B.equity_finances_itself",
+        "detail": "initial 10000.00000000 + pnl 0.00000000 vs equity 10000.0",
+        "ok": true
+      },
+      {
+        "check": "quiet.exemptions_are_known",
+        "detail": "the lab exempted paths the verifier does not accept: []",
+        "ok": true
+      },
+      {
+        "check": "quiet.bodies_agree",
+        "detail": "[]",
+        "ok": true
+      },
+      {
+        "check": "stop.resumed",
+        "detail": "status=RAN code=None",
+        "ok": true
+      },
+      {
+        "check": "stop.one_close",
+        "detail": "1 close(s)",
+        "ok": true
+      },
+      {
+        "check": "stop.reason",
+        "detail": "stop_loss != stop_loss",
+        "ok": true
+      },
+      {
+        "check": "stop.price_is_the_level",
+        "detail": "99.52381246 vs 99.52381246 derived from entry/pct",
+        "ok": true
+      },
+      {
+        "check": "stop.price_from_session_1",
+        "detail": "the level and the entry both come from the book session 1 wrote",
+        "ok": true
+      },
+      {
+        "check": "stop.exit_inside_the_hole",
+        "detail": "exit [1792509720000, 1792509780000] hole (1792509300000, 1792509900000)",
+        "ok": true
+      },
+      {
+        "check": "stop.proving_minute_present",
+        "detail": "1 minute(s) at 1792509720000",
+        "ok": true
+      },
+      {
+        "check": "stop.level_inside_the_minute",
+        "detail": "minute H/L 100.02/99.2 vs level 99.52381246",
+        "ok": true
+      },
+      {
+        "check": "stop.no_other_close",
+        "detail": "A closed 1 time(s)",
+        "ok": true
+      },
+      {
+        "check": "stop.same_economics_as_continuous",
+        "detail": "pnl -3.6190338 vs -3.6190338",
+        "ok": true
+      },
+      {
+        "check": "stop.A.no_duplicate_close",
+        "detail": "1 closed row(s), 1 unique position(s)",
+        "ok": true
+      },
+      {
+        "check": "stop.A.open_and_closed_are_disjoint",
+        "detail": "overlap []",
+        "ok": true
+      },
+      {
+        "check": "stop.A.equity_finances_itself",
+        "detail": "initial 10000.00000000 + pnl -3.61903380 vs equity 9996.380966197243",
+        "ok": true
+      },
+      {
+        "check": "stop.A.pnl_identity",
+        "detail": "-3.61903380 vs -3.619033802756882",
+        "ok": true
+      },
+      {
+        "check": "stop.A.cost_identity",
+        "detail": "0.23866577 vs 0.23866576532663242",
+        "ok": true
+      },
+      {
+        "check": "stop.B.no_duplicate_close",
+        "detail": "1 closed row(s), 1 unique position(s)",
+        "ok": true
+      },
+      {
+        "check": "stop.B.open_and_closed_are_disjoint",
+        "detail": "overlap []",
+        "ok": true
+      },
+      {
+        "check": "stop.B.equity_finances_itself",
+        "detail": "initial 10000.00000000 + pnl -3.61903380 vs equity 9996.380966197243",
+        "ok": true
+      },
+      {
+        "check": "stop.B.pnl_identity",
+        "detail": "-3.61903380 vs -3.619033802756882",
+        "ok": true
+      },
+      {
+        "check": "stop.B.cost_identity",
+        "detail": "0.23866577 vs 0.23866576532663242",
+        "ok": true
+      },
+      {
+        "check": "stop.exemptions_are_known",
+        "detail": "the lab exempted paths the verifier does not accept: []",
+        "ok": true
+      },
+      {
+        "check": "stop.bodies_agree",
+        "detail": "[]",
+        "ok": true
+      },
+      {
+        "check": "take.resumed",
+        "detail": "status=RAN code=None",
+        "ok": true
+      },
+      {
+        "check": "take.one_close",
+        "detail": "1 close(s)",
+        "ok": true
+      },
+      {
+        "check": "take.reason",
+        "detail": "take_profit != take_profit",
+        "ok": true
+      },
+      {
+        "check": "take.price_is_the_level",
+        "detail": "100.77411161 vs 100.77411161 derived from entry/pct",
+        "ok": true
+      },
+      {
+        "check": "take.price_from_session_1",
+        "detail": "the level and the entry both come from the book session 1 wrote",
+        "ok": true
+      },
+      {
+        "check": "take.exit_inside_the_hole",
+        "detail": "exit [1792509720000, 1792509780000] hole (1792509300000, 1792509900000)",
+        "ok": true
+      },
+      {
+        "check": "take.proving_minute_present",
+        "detail": "1 minute(s) at 1792509720000",
+        "ok": true
+      },
+      {
+        "check": "take.level_inside_the_minute",
+        "detail": "minute H/L 101.1/99.98 vs level 100.77411161",
+        "ok": true
+      },
+      {
+        "check": "take.no_other_close",
+        "detail": "A closed 1 time(s)",
+        "ok": true
+      },
+      {
+        "check": "take.same_economics_as_continuous",
+        "detail": "pnl 2.6294708 vs 2.6294708",
+        "ok": true
+      },
+      {
+        "check": "take.A.no_duplicate_close",
+        "detail": "1 closed row(s), 1 unique position(s)",
+        "ok": true
+      },
+      {
+        "check": "take.A.open_and_closed_are_disjoint",
+        "detail": "overlap []",
+        "ok": true
+      },
+      {
+        "check": "take.A.equity_finances_itself",
+        "detail": "initial 10000.00000000 + pnl 2.62947080 vs equity 10002.62947079771",
+        "ok": true
+      },
+      {
+        "check": "take.A.pnl_identity",
+        "detail": "2.62947080 vs 2.629470797710996",
+        "ok": true
+      },
+      {
+        "check": "take.A.cost_identity",
+        "detail": "0.24016116 vs 0.24016116485874006",
+        "ok": true
+      },
+      {
+        "check": "take.B.no_duplicate_close",
+        "detail": "1 closed row(s), 1 unique position(s)",
+        "ok": true
+      },
+      {
+        "check": "take.B.open_and_closed_are_disjoint",
+        "detail": "overlap []",
+        "ok": true
+      },
+      {
+        "check": "take.B.equity_finances_itself",
+        "detail": "initial 10000.00000000 + pnl 2.62947080 vs equity 10002.62947079771",
+        "ok": true
+      },
+      {
+        "check": "take.B.pnl_identity",
+        "detail": "2.62947080 vs 2.629470797710996",
+        "ok": true
+      },
+      {
+        "check": "take.B.cost_identity",
+        "detail": "0.24016116 vs 0.24016116485874006",
+        "ok": true
+      },
+      {
+        "check": "take.exemptions_are_known",
+        "detail": "the lab exempted paths the verifier does not accept: []",
+        "ok": true
+      },
+      {
+        "check": "take.bodies_agree",
+        "detail": "[]",
+        "ok": true
+      },
+      {
+        "check": "both.blocked",
+        "detail": "status=BLOCKED code=GAP_EXIT_AMBIGUOUS",
+        "ok": true
+      },
+      {
+        "check": "both.no_fill",
+        "detail": "0 close(s), 0 fill(s)",
+        "ok": true
+      },
+      {
+        "check": "both.no_resume",
+        "detail": "resume_from_ms=None",
+        "ok": true
+      },
+      {
+        "check": "both.ambiguous_minute_really_holds_both",
+        "detail": "[1792509720000]",
+        "ok": true
+      },
+      {
+        "check": "partial.blocked",
+        "detail": "status=BLOCKED code=GAP_NOT_COVERED",
+        "ok": true
+      },
+      {
+        "check": "partial.no_fill",
+        "detail": "0 close(s), 0 fill(s)",
+        "ok": true
+      },
+      {
+        "check": "partial.no_resume",
+        "detail": "resume_from_ms=None",
+        "ok": true
+      },
+      {
+        "check": "partial.coverage_is_short",
+        "detail": "4/5 minutes observed",
+        "ok": true
+      },
+      {
+        "check": "corrupt_feed.refused",
+        "detail": "status=REFUSED_AT_LOAD",
+        "ok": true
+      },
+      {
+        "check": "concurrent_writer.refused",
+        "detail": "status=REFUSED",
+        "ok": true
+      },
+      {
+        "check": "kill_save.every_book_readable",
+        "detail": "['READABLE', 'READABLE', 'READABLE', 'READABLE', 'READABLE', 'READABLE', 'READABLE', 'READABLE', 'READABLE', 'READABLE', 'READABLE', 'READABLE']",
+        "ok": true
+      },
+      {
+        "check": "kill_save.a_kill_really_happened",
+        "detail": "12 killed of 12",
+        "ok": true
+      },
+      {
+        "check": "kill_resume.a_kill_really_happened",
+        "detail": "14 killed of 14",
+        "ok": true
+      },
+      {
+        "check": "kill_resume.no_double_close",
+        "detail": "[[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]",
+        "ok": true
+      },
+      {
+        "check": "kill_resume.settles_on_one_trade",
+        "detail": "closed=1 open=0",
+        "ok": true
+      },
+      {
+        "check": "kill_resume.equity_matches_the_reference",
+        "detail": "9996.380966197243 vs 9996.380966197243",
+        "ok": true
+      },
+      {
+        "check": "kill_resume.state_is_terminal",
+        "detail": "[]",
+        "ok": true
+      },
+      {
+        "check": "report.ok_matches_its_own_evidence",
+        "detail": "report says ok=True, recomputed True",
+        "ok": true
+      }
+    ],
+    "failed": [],
+    "false_success": 0,
+    "independent_of": "scripts/quote_gap_lab.py and trading_bot.vision.gap_recovery",
+    "lab": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-resume\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\lab\\GAP_LAB.json",
+    "lab_sha256": "9970d07d9b0cc5931a6e7e4661b1202740680773410b95ef588270584496ebad",
+    "negative_controls": [
+      {
+        "control": "pnl_inflado",
+        "detected": true,
+        "first_failure": "stop.same_economics_as_continuous"
+      },
+      {
+        "control": "precio_de_salida_inventado",
+        "detected": true,
+        "first_failure": "stop.same_economics_as_continuous"
+      },
+      {
+        "control": "salida_fuera_del_hueco",
+        "detected": true,
+        "first_failure": "stop.exit_inside_the_hole"
+      },
+      {
+        "control": "cobertura_falsa",
+        "detected": true,
+        "first_failure": "partial.coverage_is_short"
+      },
+      {
+        "control": "ambiguedad_limpiada",
+        "detected": true,
+        "first_failure": "both.blocked"
+      },
+      {
+        "control": "equity_inventada",
+        "detected": true,
+        "first_failure": "quiet.bodies_agree"
+      },
+      {
+        "control": "cierre_duplicado",
+        "detected": true,
+        "first_failure": "stop.B.no_duplicate_close"
+      },
+      {
+        "control": "kill_oculto",
+        "detected": true,
+        "first_failure": "kill_resume.a_kill_really_happened"
+      },
+      {
+        "control": "falso_ok",
+        "detected": true,
+        "first_failure": "partial.blocked"
+      },
+      {
+        "control": "exencion_inventada",
+        "detected": true,
+        "first_failure": "quiet.exemptions_are_known"
+      }
+    ],
+    "negative_controls_ok": true,
+    "negative_controls_undetected": [],
+    "ok": true,
+    "passed": 83,
+    "schema": "QUOTE_GAP_VERIFICATION_V1"
+  },
+  "recorded_file": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/VERIFICATION.json",
+  "recorded_passed": 83,
+  "recorded_ok": true,
+  "recorded_controls": 10,
+  "same_check_names": true,
+  "same_first_failures": true,
+  "note_on_false_success": "the replayed payload's `false_success` field means 'the verifier's own verdict agreed with its checks', not 'the runtime produced no false successes'. It is reported as a scoped metric, not as FALSE_SUCCESS=0."
+}

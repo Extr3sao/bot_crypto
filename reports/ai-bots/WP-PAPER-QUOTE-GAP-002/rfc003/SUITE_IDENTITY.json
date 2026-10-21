@@ -1,0 +1,137 @@
+{
+  "schema": "SUITE_IDENTITY_V1",
+  "collected": 694,
+  "collect_exit": 0,
+  "node_ids_sha256": "f713aba4e32ec7e23fa216671916857239244c9b53cb26570112e2d9944cf8f6",
+  "collection_gap_vs_a5": 0,
+  "sizes": [
+    310,
+    240,
+    92,
+    33,
+    19
+  ],
+  "code_sha": "aab65cf9d60e520119426fc74bccd84e110eee1e",
+  "tree_sha": "21f69ab0ac77e14d6328798bc7e867d5c95e1b14",
+  "worktree_dirty": 0,
+  "python": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean\\.venv\\Scripts\\python.exe",
+  "python_version": "3.11.15 (main, Jun 23 2026, 15:20:37) [MSC v.1944 64 bit (AMD64)]",
+  "package_origin": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean\\src\\trading_bot\\__init__.py",
+  "commands": [
+    "pytest tests/unit/vision tests/unit/paper tests/unit/risk tests/unit/market_data (collect-only)"
+  ],
+  "parts": [
+    {
+      "part": 1,
+      "size": 310,
+      "exit_code": 0,
+      "seconds": 510.2,
+      "passed": 310,
+      "failed": 0,
+      "errors": 0,
+      "log": "evidence\\part-1.log",
+      "log_sha256": "850117a8e07fa58b42147c6a18fb50d5a02803f47488e172c84baaaff150a478",
+      "log_bytes": 36216,
+      "node_ids_sha256": "1eb2b85ec466a034ecf5309b591f633ba0a375986d509c0e3714884c85f94898",
+      "command": "pytest -v -p no:warnings --tb=short <partition ids>",
+      "env": "PYTHONPATH scrubbed",
+      "summary_line": "======================= 310 passed in 507.94s (0:08:27) ======================="
+    },
+    {
+      "part": 2,
+      "size": 240,
+      "exit_code": 0,
+      "seconds": 42.2,
+      "passed": 240,
+      "failed": 0,
+      "errors": 0,
+      "log": "evidence\\part-2.log",
+      "log_sha256": "aeeb5da859c34ab9b907f3ce0161b965f0fcdf20239b2600ae1576fd93d06fc0",
+      "log_bytes": 27271,
+      "node_ids_sha256": "316a781947ebeda3f69e76b2ba45d96af8edcddc1c2be6e668793141bac99152",
+      "command": "pytest -v -p no:warnings --tb=short <partition ids>",
+      "env": "PYTHONPATH scrubbed",
+      "summary_line": "============================ 240 passed in 40.78s ============================="
+    },
+    {
+      "part": 3,
+      "size": 92,
+      "exit_code": 0,
+      "seconds": 21.8,
+      "passed": 92,
+      "failed": 0,
+      "errors": 0,
+      "log": "evidence\\part-3.log",
+      "log_sha256": "78ff6c68c71016ad07ed357ed50a2586e91316cf5ec44e19f8fb0d6df8718cae",
+      "log_bytes": 10697,
+      "node_ids_sha256": "031a51ea473a824df44e41c0e5d3c42aaf7ad2f879191f490619abc44b0f5081",
+      "command": "pytest -v -p no:warnings --tb=short <partition ids>",
+      "env": "PYTHONPATH scrubbed",
+      "summary_line": "============================= 92 passed in 20.65s ============================="
+    },
+    {
+      "part": 4,
+      "size": 33,
+      "exit_code": 0,
+      "seconds": 2.8,
+      "passed": 33,
+      "failed": 0,
+      "errors": 0,
+      "log": "evidence\\part-4.log",
+      "log_sha256": "4cc21eca625bf02347305238330fd22342bca36eeb07deee93f5d1075463283a",
+      "log_bytes": 4294,
+      "node_ids_sha256": "12f090b168b9c448f92afda98e32a22dc84c76e12ea3ecf712b1e690965f7094",
+      "command": "pytest -v -p no:warnings --tb=short <partition ids>",
+      "env": "PYTHONPATH scrubbed",
+      "summary_line": "============================= 33 passed in 1.80s =============================="
+    },
+    {
+      "part": 5,
+      "size": 19,
+      "exit_code": 0,
+      "seconds": 3.2,
+      "passed": 19,
+      "failed": 0,
+      "errors": 0,
+      "log": "evidence\\part-5.log",
+      "log_sha256": "643dee2bf05d206b547b717c05c443cafe4d2f2595c5ad0e0e24bbc497b6336e",
+      "log_bytes": 2396,
+      "node_ids_sha256": "8db8d6fbe12418e1b72997c7343058715ba239a69bb30422e9db832d0958f4ea",
+      "command": "pytest -v -p no:warnings --tb=short <partition ids>",
+      "env": "PYTHONPATH scrubbed",
+      "summary_line": "============================= 19 passed in 1.89s =============================="
+    }
+  ],
+  "disjointness": {
+    "pairwise_overlap": {
+      "1v2": 0,
+      "1v3": 0,
+      "1v4": 0,
+      "1v5": 0,
+      "2v3": 0,
+      "2v4": 0,
+      "2v5": 0,
+      "3v4": 0,
+      "3v5": 0,
+      "4v5": 0
+    },
+    "union_size": 694,
+    "covers_collection": true,
+    "no_id_in_two_parts": true,
+    "sum_of_parts": 694
+  },
+  "totals": {
+    "executed": 694,
+    "passed": 694,
+    "failed": 0,
+    "errors": 0,
+    "exit_codes": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "generated_at_utc": "2026-10-21T12:16:42+00:00"
+  }
+}

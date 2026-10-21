@@ -1,0 +1,355 @@
+{
+  "schema": "ORDER_BOUNDARY_AUDIT_V2",
+  "generated_at_utc": "2026-10-21T12:27:43+00:00",
+  "claims": {
+    "live_config_disabled": {
+      "value": "live_enabled=false in every lane run of the drill and the lab",
+      "status": "MEASURED",
+      "evidence": "drill/DRILL.json live_enabled, lab/GAP_LAB.json per scenario"
+    },
+    "order_submit_attempts": {
+      "value": 0,
+      "status": "MEASURED",
+      "scope": "one lane session: open a position, commit, resume through a covered hole",
+      "spies_armed": 3,
+      "boundaries": [
+        "ccxt.Exchange.create_order",
+        "ccxt.binance.create_order",
+        "ccxt.binanceusdm.create_order"
+      ],
+      "calls_crossed": [],
+      "log": "reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc003\\evidence\\no_order_probe.log",
+      "log_sha256": "5a6b1314b2122f79db80dd955dd75144ea864392acc522009c062934b6d1a66f"
+    },
+    "external_orders": {
+      "value": null,
+      "status": "NOT_VERIFIABLE",
+      "reason": "only an independent venue statement could settle this; no exchange was contacted in this phase and no credentials exist in the environment"
+    }
+  },
+  "prior_claim_corrected": {
+    "claim": "no order path exists in vision/ and paper/",
+    "status": "MISLEADING",
+    "why": "true of those two directories, false of the process: the lane loads ccxt and trading_bot.execution transitively, and src/trading_bot/app.py holds a real gated live order command. 'No path' was never the reason nothing was sent; an armed boundary that nothing crossed is."
+  },
+  "static_scan": {
+    "modules_scanned": 414,
+    "tokens": [
+      "place_order",
+      "create_order",
+      "submit_order",
+      "createOrder",
+      "placeOrder"
+    ],
+    "hits": [
+      {
+        "path": "src\\trading_bot\\app.py",
+        "line": 342,
+        "token": "create_order",
+        "text": "# hardcodeado: el path de órdenes usa ``create_order`` del hub."
+      },
+      {
+        "path": "src\\trading_bot\\app.py",
+        "line": 813,
+        "token": "create_order",
+        "text": "order = connector.create_order("
+      },
+      {
+        "path": "src\\trading_bot\\app.py",
+        "line": 998,
+        "token": "place_order",
+        "text": "order = futures_client.place_order("
+      },
+      {
+        "path": "src\\trading_bot\\app.py",
+        "line": 1149,
+        "token": "create_order",
+        "text": "# (create_order/fetch_balance/fetch_market_rules del"
+      },
+      {
+        "path": "src\\trading_bot\\app.py",
+        "line": 1210,
+        "token": "place_order",
+        "text": "def _cmd_place_order(args: argparse.Namespace) -> int:"
+      },
+      {
+        "path": "src\\trading_bot\\app.py",
+        "line": 1227,
+        "token": "place_order",
+        "text": "order = futures_client.place_order("
+      },
+      {
+        "path": "src\\trading_bot\\app.py",
+        "line": 1378,
+        "token": "place_order",
+        "text": "return _cmd_place_order(args)"
+      },
+      {
+        "path": "src\\trading_bot\\intelligence\\ai_bots\\registry.py",
+        "line": 13,
+        "token": "place_order",
+        "text": "``place_order``, ``modify_risk`` or ``read_secrets`` is refused at construction, so the"
+      },
+      {
+        "path": "src\\trading_bot\\intelligence\\ai_bots\\registry.py",
+        "line": 33,
+        "token": "place_order",
+        "text": "\"place_order\","
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix.py",
+        "line": 356,
+        "token": "place_order",
+        "text": "\"/api/spot/v1/order/place_order\","
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix.py",
+        "line": 424,
+        "token": "create_order",
+        "text": "- ``create_order`` NO se simula: el cliente REST ``place_spot_order`` no"
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix.py",
+        "line": 570,
+        "token": "create_order",
+        "text": "def create_order("
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix.py",
+        "line": 587,
+        "token": "create_order",
+        "text": "\"BitunixSpotConnector.create_order no soportado: el cliente REST \""
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix_futures.py",
+        "line": 4,
+        "token": "place_order",
+        "text": "- Place order: POST /api/v1/futures/trade/place_order"
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix_futures.py",
+        "line": 7,
+        "token": "place_order",
+        "text": "- Place TP/SL order: POST /api/v1/futures/tpsl/place_order"
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix_futures.py",
+        "line": 269,
+        "token": "place_order",
+        "text": "def place_order("
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix_futures.py",
+        "line": 312,
+        "token": "place_order",
+        "text": "\"/api/v1/futures/trade/place_order\","
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix_futures.py",
+        "line": 358,
+        "token": "place_order",
+        "text": "\"/api/v1/futures/tpsl/place_order\","
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix_futures.py",
+        "line": 388,
+        "token": "create_order",
+        "text": "- ``create_order`` conserva ``client_order_id``/``clientId`` y devuelve"
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix_futures.py",
+        "line": 509,
+        "token": "create_order",
+        "text": "def create_order("
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix_futures.py",
+        "line": 527,
+        "token": "create_order",
+        "text": "\"create_order\","
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix_futures.py",
+        "line": 534,
+        "token": "place_order",
+        "text": "payload = self._client.place_order("
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix_futures.py",
+        "line": 543,
+        "token": "create_order",
+        "text": "log.error(\"bitunix_futures_create_order_failed\", exc_info=True)"
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix_futures.py",
+        "line": 549,
+        "token": "place_order",
+        "text": "\"Bitunix futures place_order no devolvió orderId; el payload \""
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\bitunix_futures.py",
+        "line": 562,
+        "token": "create_order",
+        "text": "\"bitunix_futures_create_order_ok\","
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\exchange_connector.py",
+        "line": 12,
+        "token": "create_order",
+        "text": "- **Idempotencia** en ``create_order``: el caller pasa un"
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\exchange_connector.py",
+        "line": 166,
+        "token": "create_order",
+        "text": "def create_order("
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\exchange_connector.py",
+        "line": 548,
+        "token": "create_order",
+        "text": "def create_order("
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\exchange_connector.py",
+        "line": 572,
+        "token": "create_order",
+        "text": "op=\"create_order\","
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\exchange_connector.py",
+        "line": 582,
+        "token": "create_order",
+        "text": "self._exchange_instance.create_order("
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\exchange_connector.py",
+        "line": 592,
+        "token": "create_order",
+        "text": "log.info(\"create_order_start\")"
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\exchange_connector.py",
+        "line": 596,
+        "token": "create_order",
+        "text": "log.error(\"create_order_failed\", exc_info=True)"
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\exchange_connector.py",
+        "line": 600,
+        "token": "create_order",
+        "text": "\"create_order_ok\","
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\quota.py",
+        "line": 25,
+        "token": "create_order",
+        "text": "câblée dans ``create_order``/``cancel_order`` (écritures d'exécution) et ne"
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\scanner_bridge.py",
+        "line": 38,
+        "token": "create_order",
+        "text": "scanner y para el path de ejecución (create_order/fetch_balance),"
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\types.py",
+        "line": 82,
+        "token": "create_order",
+        "text": "\"\"\"Resultado de `create_order` con `client_order_id` propagado.\"\"\""
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\types.py",
+        "line": 263,
+        "token": "create_order",
+        "text": "def create_order("
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\wiring.py",
+        "line": 260,
+        "token": "create_order",
+        "text": "def create_order("
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\wiring.py",
+        "line": 270,
+        "token": "create_order",
+        "text": "\"create_order\","
+      },
+      {
+        "path": "src\\trading_bot\\market_data\\wiring.py",
+        "line": 271,
+        "token": "create_order",
+        "text": "self._inner.create_order,"
+      },
+      {
+        "path": "src\\trading_bot\\vision\\contract.py",
+        "line": 55,
+        "token": "place_order",
+        "text": "\"place_order\","
+      }
+    ],
+    "live_or_execution_hits": [
+      {
+        "path": "src\\trading_bot\\app.py",
+        "line": 342,
+        "token": "create_order",
+        "text": "# hardcodeado: el path de órdenes usa ``create_order`` del hub."
+      },
+      {
+        "path": "src\\trading_bot\\app.py",
+        "line": 813,
+        "token": "create_order",
+        "text": "order = connector.create_order("
+      },
+      {
+        "path": "src\\trading_bot\\app.py",
+        "line": 998,
+        "token": "place_order",
+        "text": "order = futures_client.place_order("
+      },
+      {
+        "path": "src\\trading_bot\\app.py",
+        "line": 1149,
+        "token": "create_order",
+        "text": "# (create_order/fetch_balance/fetch_market_rules del"
+      },
+      {
+        "path": "src\\trading_bot\\app.py",
+        "line": 1210,
+        "token": "place_order",
+        "text": "def _cmd_place_order(args: argparse.Namespace) -> int:"
+      },
+      {
+        "path": "src\\trading_bot\\app.py",
+        "line": 1227,
+        "token": "place_order",
+        "text": "order = futures_client.place_order("
+      },
+      {
+        "path": "src\\trading_bot\\app.py",
+        "line": 1378,
+        "token": "place_order",
+        "text": "return _cmd_place_order(args)"
+      }
+    ]
+  },
+  "runtime_probe": {
+    "spies_armed": 3,
+    "submission_modules_loaded": [
+      "ccxt.abstract.coinbaseexchange",
+      "ccxt.base.exchange",
+      "ccxt.coinbaseexchange",
+      "trading_bot.config.exchange",
+      "trading_bot.execution",
+      "trading_bot.execution.idempotency",
+      "trading_bot.execution.live_gate",
+      "trading_bot.market_data.exchange_connector",
+      "trading_bot.vision.execution"
+    ],
+    "broker_submission_attrs": [],
+    "order_submit_attempts": 0,
+    "verdict": "the boundary was armed and nothing crossed it"
+  },
+  "conclusion": "the exercised lane loaded ccxt and the execution package, so the absence of a submission path cannot be claimed; instead three submission boundaries were armed and a full open/close/resume session crossed none of them. That is a scoped zero, not external_orders=0"
+}

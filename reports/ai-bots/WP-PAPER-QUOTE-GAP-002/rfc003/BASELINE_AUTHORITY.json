@@ -1,0 +1,309 @@
+{
+  "schema": "BASELINE_AUTHORITY_V1",
+  "wp": "WP-PAPER-QUOTE-GAP-002",
+  "rfc": "RFC-PAPER-QUOTE-GAP-003",
+  "generated_at_utc": "2026-10-21T11:39:29+00:00",
+  "git": {
+    "head": "fefb0771036c33c648ecb2ed11cb28e8c2b49264",
+    "branch": "wp/paper-resume-001",
+    "toplevel": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-resume",
+    "status_entries": 150,
+    "status_modified_tracked": [
+      "1 .M N... 100644 100644 100644 2a1ad47085036cb28c0ccdc02dbdb9e18cb0b2c3 2a1ad47085036cb28c0ccdc02dbdb9e18cb0b2c3 .gitattributes",
+      "1 .M N... 100644 100644 100644 09cfef1c74f721e35004f21ef7561b943d42afb2 09cfef1c74f721e35004f21ef7561b943d42afb2 docs/agentic/EXECUTION_CHECKPOINT.md",
+      "1 .M N... 100644 100644 100644 240143ef597df3aa9ef42f0b3f83d1b095bff787 240143ef597df3aa9ef42f0b3f83d1b095bff787 docs/runtime/runtime_authority_map.md",
+      "1 .M N... 100644 100644 100644 575245a2a49e69cd329193ea4c98caddc243157d 575245a2a49e69cd329193ea4c98caddc243157d pyproject.toml",
+      "1 .M N... 100644 100644 100644 f778058249dbd0fdddbaf382439be73c802b4d15 f778058249dbd0fdddbaf382439be73c802b4d15 src/trading_bot/vision/lane.py",
+      "1 .M N... 100644 100644 100644 929b328e220e914db86996edf28fa78780cef178 929b328e220e914db86996edf28fa78780cef178 src/trading_bot/vision/ledger.py",
+      "1 .M N... 100644 100644 100644 80638f92808a1788a1efa49446cfdd111ed740e4 80638f92808a1788a1efa49446cfdd111ed740e4 src/trading_bot/vision/prospective.py",
+      "1 .M N... 100644 100644 100644 07f8dadda55d921d3d7b3ceccaaded12ca357c75 07f8dadda55d921d3d7b3ceccaaded12ca357c75 src/trading_bot/vision/quotes.py"
+    ],
+    "status_untracked_outside_tmp": [
+      "data/quote-feed-1m/AAVEUSDT_1m_2021-01-04_2021-02-17.json",
+      "data/quote-feed-1m/SOURCE_MANIFEST.json",
+      "data/quote-feed-1m/UNIUSDT_1m_2021-01-04_2021-02-17.json",
+      "docs/rfc/RFC-050_VISION_DURABLE_SESSION.md",
+      "docs/rfc/RFC-051_VISION_QUOTE_GAP_RECOVERY.md",
+      "scripts/make_quote_gap_evidence.py",
+      "scripts/make_resume_report.py",
+      "scripts/paper_resume_drill.py",
+      "scripts/quote_feed_source.py",
+      "scripts/quote_gap_lab.py",
+      "scripts/verify_paper_resume.py",
+      "scripts/verify_quote_gap.py",
+      "src/trading_bot/vision/durable.py",
+      "src/trading_bot/vision/gap_recovery.py",
+      "tests/unit/vision/test_durable_book.py",
+      "tests/unit/vision/test_gap_recovery.py",
+      "tests/unit/vision/test_gap_recovery_venue.py",
+      "tests/unit/vision/test_session_durable.py",
+      "tests/unit/vision/test_session_recovery.py"
+    ],
+    "diff_check_exit": 2,
+    "diff_check_output": "pyproject.toml:162: trailing whitespace.\n+# A worktree can share a virtualenv with another checkout, and an editable install points\npyproject.toml:163: trailing whitespace.\n+# at *that* checkout's ``src``.  Without this line ``pytest`` silently imports the other\npyproject.toml:164: trailing whitespace.\n+# tree, so a green run would say nothing about the code in front of you.\npyproject.toml:165: trailing whitespace.\n+pythonpath = [\"src\"]\nwarning: in the working copy of 'docs/agentic/EXECUTION_CHECKPOINT.md', LF will be replaced by CRLF the next time Git touches it",
+    "diff_stat": ".gitattributes                        |   7 +\n docs/agentic/EXECUTION_CHECKPOINT.md  | 144 +++++++++\n docs/runtime/runtime_authority_map.md | 103 +++++++\n pyproject.toml                        |   4 +\n src/trading_bot/vision/lane.py        | 560 +++++++++++++++++++++++++++++++++-\n src/trading_bot/vision/ledger.py      |  27 +-\n src/trading_bot/vision/prospective.py | 174 ++++++++++-\n src/trading_bot/vision/quotes.py      |  20 ++\n 8 files changed, 1009 insertions(+), 30 deletions(-)\nwarning: in the working copy of 'docs/agentic/EXECUTION_CHECKPOINT.md', LF will be replaced by CRLF the next time Git touches it",
+    "log": [
+      "fefb077 Seal the fill-reality evidence without the predecessor's untracked tree",
+      "9800925 Store the fill-reality artifacts in the bytes their seal hashes",
+      "10919df Publish the fill-reality evidence so a clean checkout can re-derive it",
+      "f014813 Price maker fills against the observed trade tape instead of assuming a touch",
+      "b0e1549 Admit every existing AlphaFamily to the paper lane and prove the cost barrier"
+    ]
+  },
+  "files": [
+    {
+      "path": "src/trading_bot/vision/lane.py",
+      "present": true,
+      "tracked_at_head": true,
+      "sha256": "7928ce5b7599ae148af5ab66b18f23edf6f2144e54349a85c63ae40b827ade51",
+      "bytes": 109706
+    },
+    {
+      "path": "src/trading_bot/vision/ledger.py",
+      "present": true,
+      "tracked_at_head": true,
+      "sha256": "2eb5b6a70ce2d46bef365c47308402b15000bc5b19b395efc960bf06a04ba0cb",
+      "bytes": 9651
+    },
+    {
+      "path": "src/trading_bot/vision/prospective.py",
+      "present": true,
+      "tracked_at_head": true,
+      "sha256": "2e4c026db6e20a83e8819da85b5acbfa04096928046c286bbe4a967e0a7ef41b",
+      "bytes": 45510
+    },
+    {
+      "path": "src/trading_bot/vision/quotes.py",
+      "present": true,
+      "tracked_at_head": true,
+      "sha256": "62c59ec1a4f1e8d6eba131b292d81b59a70809e91f7c31c569d52fd70dd7b1ca",
+      "bytes": 14210
+    },
+    {
+      "path": "src/trading_bot/vision/durable.py",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "3e023540ba3fd08d19dd0b81b2a9b458384a23731d50e53b74773ce996dd50a9",
+      "bytes": 43191
+    },
+    {
+      "path": "src/trading_bot/vision/gap_recovery.py",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "f813d7f5d9072a0c43aa2a4e6449a880d426775104e57f951039d81b9844c5d2",
+      "bytes": 27501
+    },
+    {
+      "path": "tests/unit/vision/test_gap_recovery.py",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "7a69a4e27e4f63bee67975fadf5adf62ba6a36a37d73f00f87dceb078bf5defd",
+      "bytes": 15607
+    },
+    {
+      "path": "tests/unit/vision/test_gap_recovery_venue.py",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "59634fcf330fcf49efa663713c622a30345bd90e8057fb6407091c0a89a09753",
+      "bytes": 7725
+    },
+    {
+      "path": "tests/unit/vision/test_durable_book.py",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "bf7fd6fd76c15fbcba664ff44b220ceee27da97aae6aa1a40c35ff4e38643976",
+      "bytes": 22010
+    },
+    {
+      "path": "tests/unit/vision/test_session_durable.py",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "00dd59353a1e0bc14b76ed5ef14249b9dd896481d3ea27aa6fc1b934b6a95d87",
+      "bytes": 9649
+    },
+    {
+      "path": "tests/unit/vision/test_session_recovery.py",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "66be2b390823d68821f72b6a82154e140a205511a746d8a2eb931c41b849414e",
+      "bytes": 24800
+    },
+    {
+      "path": "tests/unit/vision/test_minute_quote_feed.py",
+      "present": true,
+      "tracked_at_head": true,
+      "sha256": "bf5e866de42a38dae89ad4783f974d756db39fded9bcdfb5a6a161d4c5352d36",
+      "bytes": 12527
+    },
+    {
+      "path": "tests/unit/vision/test_subbar_execution.py",
+      "present": true,
+      "tracked_at_head": true,
+      "sha256": "8054d3cb9802ae96af7e1dd7ddbbf11e9d0232faa02bc71dc37f9a61a27cbfff",
+      "bytes": 14669
+    },
+    {
+      "path": "scripts/quote_gap_lab.py",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "db41e31276ebd9278a8ccd7593ad92e1e35656b0588b33f0950f952054887848",
+      "bytes": 35309
+    },
+    {
+      "path": "scripts/verify_quote_gap.py",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "e59a507f045418f32449fdf35477bc74575d6ad5390a5931fce2fb4af823e8e6",
+      "bytes": 24209
+    },
+    {
+      "path": "scripts/quote_feed_source.py",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "a5c52f0a31ff3d60806936ec459bd74cb0ea1e79c4688804e610b3b7ccac76a7",
+      "bytes": 10370
+    },
+    {
+      "path": "scripts/paper_resume_drill.py",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "a5f0ec3711fd915c9bfc5f29758139c916a5958bcc4fc45640176be1f4839e24",
+      "bytes": 19370
+    },
+    {
+      "path": "scripts/make_quote_gap_evidence.py",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "323d1ed72edfba922869f28c21bd2fdb9fde8545507ba62f3b3a374c2b7f8d68",
+      "bytes": 13910
+    },
+    {
+      "path": "scripts/make_resume_report.py",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "bfe7e01647b4177fcffa6ead1f90a6eaddece2aaa607defb0870e0579f205777",
+      "bytes": 6843
+    },
+    {
+      "path": "scripts/verify_paper_resume.py",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "bf5e3a693bb1f6157c8d357b158b502094f8f605ff19b6fbf669e378b593b094",
+      "bytes": 13968
+    },
+    {
+      "path": "pyproject.toml",
+      "present": true,
+      "tracked_at_head": true,
+      "sha256": "9a0f90cb4a1ba048b1cdd7e94254f16c87d9e6b072c40220ff40928d11ddfcb5",
+      "bytes": 7816
+    },
+    {
+      "path": ".gitattributes",
+      "present": true,
+      "tracked_at_head": true,
+      "sha256": "f6ccc14a3ffe438c823b1fa38457ff161b3d9a9ee8a44c6c417ef764c508589c",
+      "bytes": 3664
+    },
+    {
+      "path": ".gitignore",
+      "present": true,
+      "tracked_at_head": true,
+      "sha256": "b038022a2425d0de2fa296d21086b6cd0d486e104485ce067a5f0d5b1503f023",
+      "bytes": 26352
+    },
+    {
+      "path": "data/quote-feed-1m/SOURCE_MANIFEST.json",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "55855c8440470c53e7f1c9674bb5cac37f035b4ae9b3aff532b773f3e85f4f7b",
+      "bytes": 2504
+    },
+    {
+      "path": "data/quote-feed-1m/AAVEUSDT_1m_2021-01-04_2021-02-17.json",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "5c19ec3d9e54a1b4435dbf43043236028b0a010697f7d38ca4fd2c674235824c",
+      "bytes": 3580813
+    },
+    {
+      "path": "data/quote-feed-1m/UNIUSDT_1m_2021-01-04_2021-02-17.json",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "05033895083b62b6664029181b0df1f3f2275d95c381dea213b9d9297002a6f9",
+      "bytes": 3491121
+    },
+    {
+      "path": "docs/rfc/RFC-050_VISION_DURABLE_SESSION.md",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "d8e4f9f7f96d0fdc5bc1e56ad35dcf60a8e7eeec5909b41e3ef64003211279a8",
+      "bytes": 10185
+    },
+    {
+      "path": "docs/rfc/RFC-051_VISION_QUOTE_GAP_RECOVERY.md",
+      "present": true,
+      "tracked_at_head": false,
+      "sha256": "7356806c490d76c39bbcd303fad981ce7d6877f0929b4cd5e6d404091795e50e",
+      "bytes": 12063
+    },
+    {
+      "path": "docs/runtime/runtime_authority_map.md",
+      "present": true,
+      "tracked_at_head": true,
+      "sha256": "49433f57dfeeba9080efe81ef24ac664e6717c39a40605522132b522d4629b7a",
+      "bytes": 13603
+    },
+    {
+      "path": "docs/agentic/EXECUTION_CHECKPOINT.md",
+      "present": true,
+      "tracked_at_head": true,
+      "sha256": "78deaecb36dc7e4e5b9b967cc2a10dd375baaaff17e19f43b1656d8542db826c",
+      "bytes": 83301
+    }
+  ],
+  "counts": {
+    "scope_files": 30,
+    "present": 30,
+    "tracked_at_head": 11,
+    "untracked_at_head": 19
+  },
+  "findings": [
+    {
+      "id": "B1",
+      "claim": "every runtime file of the WP is untracked at HEAD",
+      "measured": 19
+    },
+    {
+      "id": "B2",
+      "claim": "reports/ai-bots/* is ignored and both WP directories lack a re-inclusion",
+      "measured": "see .gitignore:463 and the !reports/ai-bots/<ID>/ lines"
+    },
+    {
+      "id": "B3",
+      "claim": "data/quote-feed-1m is required by three test modules and is untracked",
+      "measured": "test_minute_quote_feed.py, test_gap_recovery_venue.py, test_subbar_execution.py"
+    },
+    {
+      "id": "B4",
+      "claim": "pyproject.toml is stored in the index with CRLF under core.autocrlf=true",
+      "measured": "git ls-files --eol pyproject.toml -> i/crlf w/crlf"
+    },
+    {
+      "id": "B5",
+      "claim": "no interpreter resolves trading_bot to this tree without PYTHONPATH",
+      "measured": "find_spec('trading_bot') is None under the shared hermes venv"
+    },
+    {
+      "id": "B6",
+      "claim": "the drill archive lives inside the WP; the script default points at a missing tree",
+      "measured": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/archive holds 4 files, 1.4 MB"
+    },
+    {
+      "id": "B7",
+      "claim": "many worktrees share one interpreter, so contamination risk is structural",
+      "measured": "git worktree list"
+    }
+  ],
+  "no_mutation": true
+}

@@ -1,3 +1,45 @@
+## 2026-10-21 · RFC-PAPER-QUOTE-GAP-003 — autoridad Git y evidencia reproducible (Fase A)
+
+**Objetivo:** que el `PASS` de la Fase A no descanse en un árbol de trabajo. **Rama:**
+`wp/paper-resume-001`. **Commits:** `aab65cf` (`CODE_SHA`), `fed5476` (test post-`COMMIT`).
+**Modo:** OFFLINE/LAB; `PAPER_VALIDATION=NOT_PERFORMED`, `LIVE=NOT_AUTHORIZED`,
+`exchange_reconciliation=NOT_VERIFIABLE`.
+
+**Hecho (medido, desde clone limpio)**
+
+1. Todo el código del WP estaba **sin commitear** (19 ficheros untracked) y `reports/ai-bots/*`
+   ignoraba las dos carpetas de evidencia: se añadieron las re-inclusiones y el árbol se selló en
+   `aab65cf`, con los dos árboles de evidencia en `-text` porque sus digests nombran bytes.
+2. `uv.lock` no declaraba `matplotlib`: `uv sync --frozen` dejaba 24 módulos sin recolectar.
+   Regenerado (aditivo, ningún pin movido) y re-sellado.
+3. **694 tests** recogidos y ejecutados en cinco tramos disjuntos (`310+240+92+33+19`), 694
+   passed, exit 0, desde un venv nuevo sin `PYTHONPATH`; `trading_bot` resuelve dentro del
+   checkout y un señuelo en `PYTHONPATH` hace que el gate salga `REFUSED`.
+4. Verificador independiente: 9/9 y `unsupported_pass_count=0` sobre 10 adversariales. Replay del
+   verificador del WP: 83/83 con los mismos nombres y el mismo `first_failure`.
+5. **Corrección:** no es cierto que «no exista ruta de orden». El lane carga `ccxt` y
+   `trading_bot.execution`, y `app.py` tiene `_cmd_place_order` gateado. El cero se mide con tres
+   espías armados sobre `ccxt.*.create_order` (0 cruces), no con un grep.
+6. **Corrección:** en el lab los 14 kills son pre-`COMMIT` (`closed 0→0`) y el `state_digest`
+   crudo **difiere** del control; la economía coincide al último decimal. La rama post-`COMMIT`
+   tiene test propio (`fed5476`): dos reanudaciones, cero cierres, digest estable.
+
+**Pendiente**
+
+- Reconciliación con el exchange y crash entre `fsync` del ledger y el rename del libro.
+- PAPER end-to-end, con decisión separada.
+
+**Reanudar:**
+
+```
+cd <repo> && git log -1 --oneline
+python reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/tools/verify_phase_a.py \
+  --checkout <clone en CODE_SHA> --wp reports/ai-bots/WP-PAPER-QUOTE-GAP-002 \
+  --json-out /tmp/phase_a.json
+```
+
+---
+
 ## 2026-10-21 · WP-PAPER-QUOTE-GAP-002 — recuperación a través de un hueco, con evidencia de 1 minuto
 
 **Objetivo:** que un libro con exposición no quede terminal (`UNVERIFIED_GAP`) cuando falta la vela

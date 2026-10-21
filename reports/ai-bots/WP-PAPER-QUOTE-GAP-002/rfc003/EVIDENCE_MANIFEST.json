@@ -1,0 +1,561 @@
+{
+  "schema": "EVIDENCE_MANIFEST_V2",
+  "wp": "WP-PAPER-QUOTE-GAP-002",
+  "rfc": "RFC-PAPER-QUOTE-GAP-003",
+  "generated_at_utc": "2026-10-21T12:35:10+00:00",
+  "code_sha": "aab65cf9d60e520119426fc74bccd84e110eee1e",
+  "runtime_inventory": [
+    "src/trading_bot/vision/lane.py",
+    "src/trading_bot/vision/ledger.py",
+    "src/trading_bot/vision/prospective.py",
+    "src/trading_bot/vision/quotes.py",
+    "src/trading_bot/vision/durable.py",
+    "src/trading_bot/vision/gap_recovery.py",
+    "src/trading_bot/paper/broker.py",
+    "src/trading_bot/risk/manager.py",
+    "pyproject.toml"
+  ],
+  "hash_kinds": {
+    "file_sha256": "sha256 of the bytes in `entries`",
+    "event_chain_head_sha256": "head of the collector's hash chain; it names 3034 rows, not the file",
+    "minutes_sha256": "sha256 of the per-symbol 1-minute file (same as file_sha256)",
+    "bars_sha256": "sha256 of the derived 5m series"
+  },
+  "chain_heads": {
+    "events": "b92e522603df519f5fb510c8713afd25e2ad8fcb7300d5b83c1a6d9c6f5250c1",
+    "lab_locked": {
+      "final_state_digest": "939b210501ed4de03b29ca9a330afa1e085c871ac1aeecf78051f78f4518202e",
+      "reference_state_digest": "0e1a7ca1e8a259576e8972483d89565fd1e23915ac0feaa8d236e0a8741dcd92"
+    }
+  },
+  "entries": [
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/archive/ETHUSDT.jsonl",
+      "role": "input-dataset",
+      "sha256": "aa7f0845a7ca20d4aff5552b3ceb33813934fbf31f508f71efc2fe299219ed4c",
+      "byte_count": 219215,
+      "producer": "minute collector (binance_spot_rest_1m), archived",
+      "created_utc": "2026-10-21T07:41:27+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/archive/EVENTS.jsonl",
+      "role": "input-dataset",
+      "sha256": "09108772bf0d83c6e5f155bc72cece3ba397592e6d848ba3dafdac1ec8c03f3f",
+      "byte_count": 949035,
+      "producer": "minute collector (binance_spot_rest_1m), archived",
+      "created_utc": "2026-10-21T07:41:27+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/archive/MANIFEST.json",
+      "role": "input-dataset",
+      "sha256": "40730e6494bf5e63b7833d9b7c803f0324ce74c474ae184df83f48933f413632",
+      "byte_count": 1386,
+      "producer": "minute collector (binance_spot_rest_1m), archived",
+      "created_utc": "2026-10-21T07:41:27+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/archive/SOLUSDT.jsonl",
+      "role": "input-dataset",
+      "sha256": "64b777f320bc1960bd8994f8020c4142a1dbc78a56ad621c1d1275eb73971003",
+      "byte_count": 216398,
+      "producer": "minute collector (binance_spot_rest_1m), archived",
+      "created_utc": "2026-10-21T07:41:27+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/A/A-continuous-SIGNAL_TRACE.jsonl",
+      "role": "artifact",
+      "sha256": "7c6e518dee35f63807e791eba7711a8ff044aedb15f66a8219643bdad77675c9",
+      "byte_count": 196168,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:43:26+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/A/A-continuous.json",
+      "role": "artifact",
+      "sha256": "ef630e6072092000eecbbaadb916ae8e20b360872268de64addfd106e2845873",
+      "byte_count": 11933,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:43:26+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/A/A-continuous.jsonl",
+      "role": "artifact",
+      "sha256": "3a1ed0ebdbdc957171d6bc7c8610609fbc56ad172d8d5d65b874ee8ab339af2b",
+      "byte_count": 555750,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:43:26+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/A/STATE/BOOK.json",
+      "role": "artifact",
+      "sha256": "97aa502135443fa8a54fba8eea35439e93beb22952c231e4868a46f2919461aa",
+      "byte_count": 19256,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:43:26+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/A/STATE/BOOK.json.prev",
+      "role": "artifact",
+      "sha256": "5304200be74e2d1839531902ff27fe7fbd9ea3acec06cb19d7d021f1eb2d1ddf",
+      "byte_count": 19257,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:43:26+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/A/STATE/BOOK_EVENTS.jsonl",
+      "role": "artifact",
+      "sha256": "5151babda3e82643dc8c76f7447de9216d3c573d33fee2df25b04a6a81cdd251",
+      "byte_count": 58715,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:43:26+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/B/B-1-SIGNAL_TRACE.jsonl",
+      "role": "artifact",
+      "sha256": "08011051e50e0adbd54ab9acf3739c5a1a1da653cfecbcf67f4fff89bccd6046",
+      "byte_count": 19482,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:43:37+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/B/B-1.jsonl",
+      "role": "artifact",
+      "sha256": "89db3a331fc90d41bc3ad5a7a3313186a691e5abef82d2e56f9fd39d4910589d",
+      "byte_count": 74866,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:43:37+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/B/B-1.jsonl.lock",
+      "role": "artifact",
+      "sha256": "8b8b029f1142f5cbc825aa6cbee01406c915c6b055db79e111011c465e557c9f",
+      "byte_count": 5,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:43:29+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/B/B-2-SIGNAL_TRACE.jsonl",
+      "role": "artifact",
+      "sha256": "cb680b43bfb6407c9a82d82ea38f1c82b97df11772e67b5859033c901e961634",
+      "byte_count": 177835,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:44:45+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/B/B-2.json",
+      "role": "artifact",
+      "sha256": "7729ceb0508a23d788bb5797db4d61ecb93a4b35471eb27bbfd8375fb6de85b3",
+      "byte_count": 13835,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:44:45+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/B/B-2.jsonl",
+      "role": "artifact",
+      "sha256": "3213107b71ecfaf0ad57fc36affcb941127a3e28a78e83e9622e0282421675dc",
+      "byte_count": 486947,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:44:45+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/B/STATE/BOOK.json",
+      "role": "artifact",
+      "sha256": "e30f4d06f5efa60a4e1dabde237668809d31ba8262f7b5dadabc99e56d89d16b",
+      "byte_count": 19242,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:44:45+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/B/STATE/BOOK.json.prev",
+      "role": "artifact",
+      "sha256": "5ee32932fc41447ed73b4ac1378eec84f48a3ee57a5d82e6691b73f12875c8a9",
+      "byte_count": 19243,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:44:45+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/B/STATE/BOOK_EVENTS.jsonl",
+      "role": "artifact",
+      "sha256": "9f66935e3ee16424bc770fd46737b11b532f636ea344f61d38a0922d82214dca",
+      "byte_count": 57410,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:44:45+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/DRILL.json",
+      "role": "artifact",
+      "sha256": "5fbd50b393c04c8e105a5a46686fe3b6773ac2538c1e17392301d2cd032e4aa5",
+      "byte_count": 37231,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:44:46+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/DRILL.md",
+      "role": "artifact",
+      "sha256": "b423c0dee14e0ce866b6925c4c1718f6c582cfc6ac9342296be6aa94a65b56ca",
+      "byte_count": 724,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:44:46+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/EVIDENCE_MANIFEST.json",
+      "role": "artifact",
+      "sha256": "a4904d789477562bec4675f41e745f4e7c5acc638b9b6676578a28c173a324d6",
+      "byte_count": 8874,
+      "producer": "builder",
+      "created_utc": "2026-10-21T10:09:43+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/FINAL_REPORT.md",
+      "role": "report",
+      "sha256": "eee5e050701d00d9f3f44486c6205f676b0704e2aa21e852a4449f834113f5a6",
+      "byte_count": 10118,
+      "producer": "builder",
+      "created_utc": "2026-10-21T09:03:37+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/GIT_AUTHORITY_AUDIT.json",
+      "role": "artifact",
+      "sha256": "5ac3cab48c3b4fc0abd6c1dcc2de982d1a451ab33aa14aaf67046d6a6b1ec7ba",
+      "byte_count": 18980,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:31:51+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/GIT_AUTHORITY_AUDIT.md",
+      "role": "report",
+      "sha256": "d3ccb56bc9777e1be0e1d25d5edd0f52294dc7f17cbdc5d978566a648f741eca",
+      "byte_count": 21206,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:31:51+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/lab/GAP_LAB.json",
+      "role": "artifact",
+      "sha256": "9970d07d9b0cc5931a6e7e4661b1202740680773410b95ef588270584496ebad",
+      "byte_count": 122763,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:49:29+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/lab/SHA256SUMS",
+      "role": "artifact",
+      "sha256": "bcad036c1915ebf4d84d1c0411db0f65f66dea57d569521a30e657520b0cea92",
+      "byte_count": 80,
+      "producer": "builder",
+      "created_utc": "2026-10-21T07:49:29+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/BASELINE_AUTHORITY.json",
+      "role": "artifact",
+      "sha256": "db8400dc47d00f3dabf89182adbea4a78c98f7c790d48f0857c5e067d19780f9",
+      "byte_count": 12873,
+      "producer": "builder",
+      "created_utc": "2026-10-21T11:39:29+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/CLEAN_CHECKOUT_REPORT.json",
+      "role": "artifact",
+      "sha256": "502ebae2866b6909bde84472e97039ddae0b4dc392127ef919743f306543ef9c",
+      "byte_count": 1381,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:27:43+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/DATA_PROVENANCE.json",
+      "role": "artifact",
+      "sha256": "4ac5e6483a4fe86e94173c82d1390d3818b7629b87b482044dc71353c5c5008c",
+      "byte_count": 2614,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:27:42+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/collect.txt",
+      "role": "collection",
+      "sha256": "fbb0da11137b0ad1e4db9ac4b39b90a3f8af503c533e6e403e83fd8329b02ceb",
+      "byte_count": 67717,
+      "producer": "scripts in rfc003/tools driven from the clean checkout",
+      "created_utc": "2026-10-21T12:07:00+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/mypy.log",
+      "role": "primary-log",
+      "sha256": "e2702f9afc4c0f80ff1e8624f77af7a7d2689ca184512114aae5967a76229ba8",
+      "byte_count": 44,
+      "producer": "scripts in rfc003/tools driven from the clean checkout",
+      "created_utc": "2026-10-21T12:23:49+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/no_order_probe.log",
+      "role": "primary-log",
+      "sha256": "5a6b1314b2122f79db80dd955dd75144ea864392acc522009c062934b6d1a66f",
+      "byte_count": 1849,
+      "producer": "scripts in rfc003/tools driven from the clean checkout",
+      "created_utc": "2026-10-21T12:26:16+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/part-1.log",
+      "role": "primary-log",
+      "sha256": "850117a8e07fa58b42147c6a18fb50d5a02803f47488e172c84baaaff150a478",
+      "byte_count": 36216,
+      "producer": "scripts in rfc003/tools driven from the clean checkout",
+      "created_utc": "2026-10-21T12:15:31+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/part-2.log",
+      "role": "primary-log",
+      "sha256": "aeeb5da859c34ab9b907f3ce0161b965f0fcdf20239b2600ae1576fd93d06fc0",
+      "byte_count": 27271,
+      "producer": "scripts in rfc003/tools driven from the clean checkout",
+      "created_utc": "2026-10-21T12:16:13+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/part-3.log",
+      "role": "primary-log",
+      "sha256": "78ff6c68c71016ad07ed357ed50a2586e91316cf5ec44e19f8fb0d6df8718cae",
+      "byte_count": 10697,
+      "producer": "scripts in rfc003/tools driven from the clean checkout",
+      "created_utc": "2026-10-21T12:16:35+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/part-4.log",
+      "role": "primary-log",
+      "sha256": "4cc21eca625bf02347305238330fd22342bca36eeb07deee93f5d1075463283a",
+      "byte_count": 4294,
+      "producer": "scripts in rfc003/tools driven from the clean checkout",
+      "created_utc": "2026-10-21T12:16:38+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/part-5.log",
+      "role": "primary-log",
+      "sha256": "643dee2bf05d206b547b717c05c443cafe4d2f2595c5ad0e0e24bbc497b6336e",
+      "byte_count": 2396,
+      "producer": "scripts in rfc003/tools driven from the clean checkout",
+      "created_utc": "2026-10-21T12:16:41+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/post-commit.log",
+      "role": "primary-log",
+      "sha256": "398c71430d16dc84c566528af8cad024d2184da2473ba3e00d7beb4ac28626dc",
+      "byte_count": 2888,
+      "producer": "scripts in rfc003/tools driven from the clean checkout",
+      "created_utc": "2026-10-21T12:23:22+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/quote_feed_verify.log",
+      "role": "primary-log",
+      "sha256": "8bb33beb10ee707452be74a8afb2fa7c04d18011ce12371a7bc070137181a0d1",
+      "byte_count": 2781,
+      "producer": "scripts in rfc003/tools driven from the clean checkout",
+      "created_utc": "2026-10-21T12:23:51+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/requirements.frozen.txt",
+      "role": "environment",
+      "sha256": "2181da3dd1a708b09c5a028a46a2613d4ea9e020a0c4523156008a9da6192f46",
+      "byte_count": 2137,
+      "producer": "scripts in rfc003/tools driven from the clean checkout",
+      "created_utc": "2026-10-21T12:16:42+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/ruff.log",
+      "role": "primary-log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "byte_count": 19,
+      "producer": "scripts in rfc003/tools driven from the clean checkout",
+      "created_utc": "2026-10-21T12:23:29+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/verification_replay.json",
+      "role": "evidence",
+      "sha256": "55f3381ad1406aa174a8dee255af929ca233bba391124fa9eca313e1d4036a71",
+      "byte_count": 12821,
+      "producer": "scripts in rfc003/tools driven from the clean checkout",
+      "created_utc": "2026-10-21T12:27:42+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/FINAL_REPORT.json",
+      "role": "artifact",
+      "sha256": "429e96b6ce9be1d6c896548b5629fdb527123b0488d0e58889ff0f7a030432b9",
+      "byte_count": 17501,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:35:09+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/FINAL_REPORT.md",
+      "role": "report",
+      "sha256": "bd300dfb7cc30a75724e3070b2babed948d5440e2ff41bcda9cb1820fd92a833",
+      "byte_count": 6618,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:31:41+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/import_identity_neg01.json",
+      "role": "artifact",
+      "sha256": "551c0f7db85f48c3f34d9c3764e13b123d6069c09d64892f923fcaaef8449cff",
+      "byte_count": 1879,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:24:31+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/import_identity_positive.json",
+      "role": "artifact",
+      "sha256": "d47792e4f0981f4084f8cd5b005591bf05e62a1edab2647e848cab202dc302a3",
+      "byte_count": 1628,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:24:31+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/ORDER_BOUNDARY_AUDIT.json",
+      "role": "artifact",
+      "sha256": "34caa5f3e5569e77ade7ac5e88d396de166ad72a8d4dbb130b968ff454e1fa5c",
+      "byte_count": 12124,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:27:43+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/PREREGISTRATION.md",
+      "role": "report",
+      "sha256": "20162adc904436d74e50647a1a3f1fabb021f0990ea93d6f2bf1c7f40f40a929",
+      "byte_count": 10120,
+      "producer": "builder",
+      "created_utc": "2026-10-21T11:38:43+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/RECOVERY_BRANCH_MATRIX.json",
+      "role": "artifact",
+      "sha256": "ba5089a4a2e71f52ce26d85231e802dec97f4d18e0e974333c1f30c56a46c88c",
+      "byte_count": 7330,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:27:42+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/RUN_REPORT.json",
+      "role": "artifact",
+      "sha256": "34b63496b6c2f9d4d1c085c5f4d360450230460996e5605db05ba8b670c54f96",
+      "byte_count": 18283,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:35:09+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/RUN_REPORT.md",
+      "role": "report",
+      "sha256": "87bf9a0f2b3004fc7712e1c9f8f7151c56ab574c2c937cd86dc7dc87485e4b0b",
+      "byte_count": 3434,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:31:28+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/SUITE_IDENTITY.json",
+      "role": "artifact",
+      "sha256": "870097015c9c07375a8a6606da62dec3441a45fd031affdb1ecdc0d9a21c6a1b",
+      "byte_count": 4551,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:16:42+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/tools/build_artifacts.py",
+      "role": "tooling",
+      "sha256": "0080c6fac1a4d465430b26ee0c5c75055116008f268d224c443a74339a9d429c",
+      "byte_count": 19732,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:27:13+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/tools/import_identity_gate.py",
+      "role": "tooling",
+      "sha256": "4f87c3a105b71070f1564b98d60a052e586f8f80db42c55904cb6b44efefe708",
+      "byte_count": 6004,
+      "producer": "builder",
+      "created_utc": "2026-10-21T11:44:38+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/tools/make_reports.py",
+      "role": "tooling",
+      "sha256": "913a8d98690cf28c7a0682e30ada5d9f544f6e0c5404322d6ac092e99afe1c44",
+      "byte_count": 12912,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:30:43+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/tools/probe_no_orders.py",
+      "role": "tooling",
+      "sha256": "16ef751ef9bd28c448021e481d684d6bb440781748d669b05e16776ba45093a7",
+      "byte_count": 6505,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:26:06+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/tools/run_suite.py",
+      "role": "tooling",
+      "sha256": "18e50850c014cf715cc11e6e501aafa0d6823c5fad665c3d8fb67e36dbd18afb",
+      "byte_count": 9196,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:06:52+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/tools/seal.py",
+      "role": "tooling",
+      "sha256": "189a4570589341816f0c7680bb2f63dee53b6798736319a21bba3ecdb9eed5fc",
+      "byte_count": 5581,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:34:38+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/tools/verify_phase_a.py",
+      "role": "tooling",
+      "sha256": "00c2375b5aaaff41aef8969583e0d9fd2e4ce1cf70e6f9ddffc1fff68dc37584",
+      "byte_count": 38157,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:33:53+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/VERIFICATION_REPLAY.json",
+      "role": "artifact",
+      "sha256": "2118022f016f3c70900b93ac3cd897c8a2534b2ff1a4872c1fca78cca2bcf531",
+      "byte_count": 14790,
+      "producer": "builder",
+      "created_utc": "2026-10-21T12:27:42+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/RUN_REPORT.json",
+      "role": "artifact",
+      "sha256": "b98f07d8e925bd48d468348637273bdac00e1410ade9a674570f11b648ec7615",
+      "byte_count": 12790,
+      "producer": "builder",
+      "created_utc": "2026-10-21T09:02:37+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/RUN_REPORT.md",
+      "role": "report",
+      "sha256": "8eee03fa0c762b03438361a75af9fbfa6a940e06b2e39b83850c409f3eea6cfa",
+      "byte_count": 3962,
+      "producer": "builder",
+      "created_utc": "2026-10-21T09:02:37+00:00"
+    },
+    {
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/VERIFICATION.json",
+      "role": "artifact",
+      "sha256": "55f3381ad1406aa174a8dee255af929ca233bba391124fa9eca313e1d4036a71",
+      "byte_count": 12821,
+      "producer": "builder",
+      "created_utc": "2026-10-21T09:02:37+00:00"
+    }
+  ],
+  "self_excluded": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/EVIDENCE_MANIFEST.json",
+  "anchor": "this manifest is not hashed inside itself; the commit that publishes it (EVIDENCE_SHA) is the external anchor, and tests re-hash every entry from disk",
+  "totals": {
+    "entries": 64,
+    "bytes": 3749870,
+    "by_role": {
+      "input-dataset": 4,
+      "artifact": 34,
+      "report": 6,
+      "collection": 1,
+      "primary-log": 10,
+      "environment": 1,
+      "evidence": 1,
+      "tooling": 7
+    }
+  }
+}

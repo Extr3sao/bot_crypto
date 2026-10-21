@@ -1,0 +1,212 @@
+{
+  "archive": {
+    "events_chain_verified": true,
+    "events_head": "b92e522603df519f5fb510c8713afd25e2ad8fcb7300d5b83c1a6d9c6f5250c1",
+    "events_note": "events_sha256 es la cabeza de la cadena; recompuesta 3034/3034 y coincide",
+    "events_rows": 3034,
+    "minutes_match_disk": {
+      "ETHUSDT": true,
+      "SOLUSDT": true
+    },
+    "provenance_limit": "origen declarado por el collector; sin firma de terceros",
+    "source": "binance_spot_rest_1m",
+    "symbols": {
+      "ETHUSDT": "aa7f0845a7ca20d4aff5552b3ceb33813934fbf31f508f71efc2fe299219ed4c",
+      "SOLUSDT": "64b777f320bc1960bd8994f8020c4142a1dbc78a56ad621c1d1275eb73971003"
+    }
+  },
+  "artifact_hashes": {
+    "drill": {
+      "matches_disk": true,
+      "sha256": "5fbd50b393c04c8e105a5a46686fe3b6773ac2538c1e17392301d2cd032e4aa5"
+    },
+    "lab": {
+      "matches_disk": true,
+      "sha256": "9970d07d9b0cc5931a6e7e4661b1202740680773410b95ef588270584496ebad"
+    },
+    "verification": {
+      "matches_disk": true,
+      "sha256": "55f3381ad1406aa174a8dee255af929ca233bba391124fa9eca313e1d4036a71"
+    }
+  },
+  "claims_summary": {
+    "10-controls": "CONFIRMED",
+    "22": "CONFIRMED",
+    "694": "CONFIRMED",
+    "83": "CONFIRMED",
+    "90": "CONFIRMED",
+    "drill": "CONFIRMED",
+    "exchange": "NOT_VERIFIABLE",
+    "false-success": "NOT_VERIFIABLE",
+    "kill-resume": "CONFIRMED",
+    "lab": "CONFIRMED",
+    "market-data": "CONFIRMED",
+    "paper-live": "CONFIRMED",
+    "post-commit": "CONFIRMED",
+    "ruff-mypy": "CONFIRMED"
+  },
+  "decision": "PARTIAL",
+  "defects_open": [
+    "O1",
+    "O2",
+    "O3",
+    "O4",
+    "O5",
+    "O6",
+    "O7",
+    "O8",
+    "O9"
+  ],
+  "files": [
+    {
+      "bytes": 10118,
+      "mtime_utc": "2026-10-21T09:03:37Z",
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/FINAL_REPORT.md",
+      "role": "informe de cierre",
+      "sha256": "eee5e050701d00d9f3f44486c6205f676b0704e2aa21e852a4449f834113f5a6",
+      "tracked_by_git": false
+    },
+    {
+      "bytes": 3962,
+      "mtime_utc": "2026-10-21T09:02:37Z",
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/RUN_REPORT.md",
+      "role": "informe de ejecucion generado",
+      "sha256": "8eee03fa0c762b03438361a75af9fbfa6a940e06b2e39b83850c409f3eea6cfa",
+      "tracked_by_git": false
+    },
+    {
+      "bytes": 12790,
+      "mtime_utc": "2026-10-21T09:02:37Z",
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/RUN_REPORT.json",
+      "role": "checks con exit code + hashes del runtime",
+      "sha256": "b98f07d8e925bd48d468348637273bdac00e1410ade9a674570f11b648ec7615",
+      "tracked_by_git": false
+    },
+    {
+      "bytes": 12821,
+      "mtime_utc": "2026-10-21T09:02:37Z",
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/VERIFICATION.json",
+      "role": "verificacion independiente (83 checks, 10 controles)",
+      "sha256": "55f3381ad1406aa174a8dee255af929ca233bba391124fa9eca313e1d4036a71",
+      "tracked_by_git": false
+    },
+    {
+      "bytes": 122763,
+      "mtime_utc": "2026-10-21T07:49:29Z",
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/lab/GAP_LAB.json",
+      "role": "laboratorio: 6 escenarios + corrupcion + concurrencia + 26 muertes",
+      "sha256": "9970d07d9b0cc5931a6e7e4661b1202740680773410b95ef588270584496ebad",
+      "tracked_by_git": false
+    },
+    {
+      "bytes": 80,
+      "mtime_utc": "2026-10-21T07:49:29Z",
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/lab/SHA256SUMS",
+      "role": "hash del laboratorio",
+      "sha256": "bcad036c1915ebf4d84d1c0411db0f65f66dea57d569521a30e657520b0cea92",
+      "tracked_by_git": false
+    },
+    {
+      "bytes": 37231,
+      "mtime_utc": "2026-10-21T07:44:46Z",
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/DRILL.json",
+      "role": "drill A/B sobre minutos reales",
+      "sha256": "5fbd50b393c04c8e105a5a46686fe3b6773ac2538c1e17392301d2cd032e4aa5",
+      "tracked_by_git": false
+    },
+    {
+      "bytes": 724,
+      "mtime_utc": "2026-10-21T07:44:46Z",
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/DRILL.md",
+      "role": "drill legible",
+      "sha256": "b423c0dee14e0ce866b6925c4c1718f6c582cfc6ac9342296be6aa94a65b56ca",
+      "tracked_by_git": false
+    },
+    {
+      "bytes": 1386,
+      "mtime_utc": "2026-10-21T07:41:27Z",
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/archive/MANIFEST.json",
+      "role": "manifiesto del collector (minutos, cadena de eventos)",
+      "sha256": "40730e6494bf5e63b7833d9b7c803f0324ce74c474ae184df83f48933f413632",
+      "tracked_by_git": false
+    },
+    {
+      "bytes": 219215,
+      "mtime_utc": "2026-10-21T07:41:27Z",
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/archive/ETHUSDT.jsonl",
+      "role": "720 minutos reales del venue",
+      "sha256": "aa7f0845a7ca20d4aff5552b3ceb33813934fbf31f508f71efc2fe299219ed4c",
+      "tracked_by_git": false
+    },
+    {
+      "bytes": 216398,
+      "mtime_utc": "2026-10-21T07:41:27Z",
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/archive/SOLUSDT.jsonl",
+      "role": "720 minutos reales del venue",
+      "sha256": "64b777f320bc1960bd8994f8020c4142a1dbc78a56ad621c1d1275eb73971003",
+      "tracked_by_git": false
+    },
+    {
+      "bytes": 949035,
+      "mtime_utc": "2026-10-21T07:41:27Z",
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/archive/EVENTS.jsonl",
+      "role": "3034 eventos encadenados del collector",
+      "sha256": "09108772bf0d83c6e5f155bc72cece3ba397592e6d848ba3dafdac1ec8c03f3f",
+      "tracked_by_git": false
+    },
+    {
+      "bytes": 18947,
+      "mtime_utc": "2026-10-21T10:09:37Z",
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/GIT_AUTHORITY_AUDIT.md",
+      "role": "auditoria de autoridad Git (este WP)",
+      "sha256": "b00401f31af883be3e1c3dc663f7031a9f586cfdc4e719520f878c204100612a",
+      "tracked_by_git": false
+    },
+    {
+      "bytes": 18250,
+      "mtime_utc": "2026-10-21T10:09:43Z",
+      "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/GIT_AUTHORITY_AUDIT.json",
+      "role": "auditoria, legible por maquina",
+      "sha256": "d6e6dccb354a972dd0ea1932cd6ad673deffab4479e6102d51fb2cf1eda2fea3",
+      "tracked_by_git": false
+    }
+  ],
+  "generated_at_utc": "2026-10-21T10:09:43Z",
+  "generated_by": "Fase A - auditoria read-only (sin commits, sin LIVE)",
+  "git": {
+    "branch": "wp/paper-resume-001",
+    "evidence_tracked_by_git": false,
+    "head": "fefb0771036c33c648ecb2ed11cb28e8c2b49264",
+    "ignore_rule": ".gitignore:463 (reports/ai-bots/*)",
+    "wp_code_committed": false
+  },
+  "runtime_hashes": {
+    "src/trading_bot/paper/broker.py": "3cb099fa72bd052ddb1e2340d0c02ee3799aa4dd8eb4395faed9a49f86814e1f",
+    "src/trading_bot/risk/manager.py": "ee8e84c38a00be80ccafbd4168e6d0a8180a2829b288e7345140d0b33b41473a",
+    "src/trading_bot/vision/durable.py": "3e023540ba3fd08d19dd0b81b2a9b458384a23731d50e53b74773ce996dd50a9",
+    "src/trading_bot/vision/gap_recovery.py": "f813d7f5d9072a0c43aa2a4e6449a880d426775104e57f951039d81b9844c5d2",
+    "src/trading_bot/vision/lane.py": "7928ce5b7599ae148af5ab66b18f23edf6f2144e54349a85c63ae40b827ade51",
+    "src/trading_bot/vision/prospective.py": "2e4c026db6e20a83e8819da85b5acbfa04096928046c286bbe4a967e0a7ef41b",
+    "src/trading_bot/vision/quotes.py": "62c59ec1a4f1e8d6eba131b292d81b59a70809e91f7c31c569d52fd70dd7b1ca"
+  },
+  "runtime_hashes_match_disk": true,
+  "schema": "WP_EVIDENCE_MANIFEST_V1",
+  "script_hashes": {
+    "scripts/make_quote_gap_evidence.py": "323d1ed72edfba922869f28c21bd2fdb9fde8545507ba62f3b3a374c2b7f8d68",
+    "scripts/quote_feed_source.py": "a5c52f0a31ff3d60806936ec459bd74cb0ea1e79c4688804e610b3b7ccac76a7",
+    "scripts/quote_gap_lab.py": "db41e31276ebd9278a8ccd7593ad92e1e35656b0588b33f0950f952054887848",
+    "scripts/verify_quote_gap.py": "e59a507f045418f32449fdf35477bc74575d6ad5390a5931fce2fb4af823e8e6"
+  },
+  "self_excluded": [
+    "EVIDENCE_MANIFEST.json (un manifiesto no se hashea a si mismo)"
+  ],
+  "test_hashes": {
+    "tests/unit/vision/test_durable_book.py": "bf7fd6fd76c15fbcba664ff44b220ceee27da97aae6aa1a40c35ff4e38643976",
+    "tests/unit/vision/test_gap_recovery.py": "7a69a4e27e4f63bee67975fadf5adf62ba6a36a37d73f00f87dceb078bf5defd",
+    "tests/unit/vision/test_gap_recovery_venue.py": "59634fcf330fcf49efa663713c622a30345bd90e8057fb6407091c0a89a09753",
+    "tests/unit/vision/test_prospective_session.py": "56f5c48175b7e70aff40b88db2f0a7ea5540b591674aa274d6fa1ec0ecc22b0f",
+    "tests/unit/vision/test_session_durable.py": "00dd59353a1e0bc14b76ed5ef14249b9dd896481d3ea27aa6fc1b934b6a95d87",
+    "tests/unit/vision/test_session_recovery.py": "66be2b390823d68821f72b6a82154e140a205511a746d8a2eb931c41b849414e"
+  },
+  "wp": "WP-PAPER-QUOTE-GAP-002"
+}
