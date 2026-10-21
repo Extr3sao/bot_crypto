@@ -141,7 +141,9 @@ def dataset_stamps(archive: str) -> tuple[int, ...]:
 def day_missing(symbol: str, day: str) -> int:
     start = int(datetime.fromisoformat(day).replace(tzinfo=UTC).timestamp() * 1000)
     observed = sum(
-        1 for stamp in dataset_stamps(symbol.replace("/", "")) if start <= stamp < start + 86_400_000
+        1
+        for stamp in dataset_stamps(symbol.replace("/", ""))
+        if start <= stamp < start + 86_400_000
     )
     return 1440 - observed
 
@@ -233,7 +235,11 @@ def sandbox(pristine: Path, tmp_path: Path) -> Path:
 
 
 def codes(payload: dict[str, Any]) -> set[str]:
-    return {item["code"] for item in payload["controls"] if item["state"] in ("FAIL", "BLOCKED", "UNRECOMPUTABLE")}
+    return {
+        item["code"]
+        for item in payload["controls"]
+        if item["state"] in ("FAIL", "BLOCKED", "UNRECOMPUTABLE")
+    }
 
 
 def test_the_pristine_fixture_passes(pristine):
@@ -241,6 +247,9 @@ def test_the_pristine_fixture_passes(pristine):
     failures = [item for item in payload["controls"] if item["state"] != "PASS"]
     assert not failures, failures[:3]
     assert payload["result"] == "PASS"
+    #: 383 comprobaciones es el contrato de B: 32 runs por 10 controles, mas cadena, celdas,
+    #: delta, bootstrap, regla y estrés. Un PASS con menos comprobaciones no es el mismo B.
+    assert payload["checks_total"] == 383
     assert payload["oos_decision"] == "NOT_EVIDENCED"
     assert payload["stress_classification"]["used_for_decision"] is False
 
@@ -270,7 +279,9 @@ def test_an_edited_close_in_a_rechained_ledger_is_caught(sandbox):
     target = next(
         (sandbox / "reports/ai-bots/RFC-DEF-RUN-017/evidence/oos/runs").rglob("2021-02-09.jsonl")
     )
-    entries = [json.loads(line)["entry"] for line in target.read_text(encoding="utf-8").splitlines()]
+    entries = [
+        json.loads(line)["entry"] for line in target.read_text(encoding="utf-8").splitlines()
+    ]
     close = next(entry for entry in entries if entry["kind"] == "CLOSE")
     close["pnl_net_usdt"] = str(Decimal(close["pnl_net_usdt"]) + Decimal("25"))
     chain_write(target, entries)
@@ -322,10 +333,19 @@ def test_a_missing_dataset_blocks_instead_of_passing(sandbox):
 
 
 def test_the_recount_metadata_defect_is_visible_on_real_evidence():
-    """El fixture está corregido; el paquete real no. B debe distinguirlos."""
+    """El fixture está corregido; el paquete sellado no. B debe distinguir los dos defectos."""
     payload = verifier.verify(REPO)
     assert payload["result"] == "FAIL"
-    assert [item["code"] for item in payload["defects"]] == ["RECOUNT_ZEROED_RUN_METADATA"]
+    #: 017 publicó ocho runs con `bars=0`, `started_at_utc=null` y 1441 minutos en un día
+    #: de 1440. Procedencia y cobertura comparten causa pero no diagnóstico: B los separa.
+    assert [item["code"] for item in payload["defects"]] == [
+        "RUN_PROVENANCE_INCOMPLETE",
+        "RECOUNT_ZEROED_RUN_METADATA",
+    ]
+    provenance, recount = payload["defects"]
+    assert len(provenance["runs"]) == 8
+    assert all("start=None" in item for item in provenance["runs"])
+    assert len(recount["runs"]) == 8
     assert "RUN_PROVENANCE_COMPLETE" in codes(payload)
 
 
@@ -350,10 +370,14 @@ def test_recount_rebuild_keeps_dataset_coverage():
 # --------------------------------------------------------------------------- gate
 
 
-def write_gate_inputs(root: Path, *, technical: str = "PASS", economic: str = "NOT_EVIDENCED") -> None:
+def write_gate_inputs(
+    root: Path, *, technical: str = "PASS", economic: str = "NOT_EVIDENCED"
+) -> None:
     out = root / "reports" / "ai-bots" / "RFC-DEF-RUN-018"
     out.mkdir(parents=True, exist_ok=True)
-    (out / "BASELINE_017.json").write_text(json.dumps({"git": {"head": "a" * 40}}), encoding="utf-8")
+    (out / "BASELINE_017.json").write_text(
+        json.dumps({"git": {"head": "a" * 40}}), encoding="utf-8"
+    )
     (out / "EVIDENCE_SEAL.json").write_text(json.dumps({"commit": "b" * 40}), encoding="utf-8")
     oos = root / "reports" / "ai-bots" / "RFC-DEF-RUN-017" / "evidence" / "oos"
     oos.mkdir(parents=True, exist_ok=True)
@@ -446,6 +470,33 @@ def test_gate_does_not_accept_tests_as_runtime(sandbox):
     assert decision["paper_admission"] == "NO_GO"
 
 
+def test_gate_refuses_incomplete_provenance_and_exit_zero_is_not_a_verdict(sandbox):
+    """Un FAIL de procedencia bloquea; y el código de salida no es el veredicto."""
+    write_gate_inputs(sandbox, technical="FAIL")
+    path = sandbox / "reports/ai-bots/RFC-DEF-RUN-018/INDEPENDENT_VERIFICATION.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["controls"].append(
+        {"code": "RUN_PROVENANCE_COMPLETE", "state": "FAIL", "detail": "sin bloque"}
+    )
+    payload["summary"] = {"PASS": 1, "FAIL": 2}
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    decision = gate.decide(sandbox)
+    assert decision["technical_integrity"] == "FAIL"
+    assert decision["economic_evidence"] == "INVALID"
+    assert decision["paper_admission"] == "NO_GO"
+    assert decision["false_success"] == 0
+    #: sin --strict el gate sale 0 porque se ejecutó, no porque aprobase; con --strict
+    #: distingue. Quien lea solo el exit code sin `--strict` se equivoca, y eso es visible.
+    assert gate.main(["--root", str(sandbox)]) == 0
+    written = json.loads(
+        (sandbox / "reports/ai-bots/RFC-DEF-RUN-018/ADMISSION_DECISION.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert written["technical_integrity"] == "FAIL"
+    assert gate.main(["--root", str(sandbox), "--strict"]) == 3
+
+
 def test_a_technical_pass_does_not_upgrade_economic_evidence(sandbox):
     write_gate_inputs(sandbox, economic="EVIDENCED")
     decision = gate.decide(sandbox)
@@ -471,7 +522,7 @@ def test_prose_mentions_are_not_dependencies():
         "# import trading_bot\n"
         "import json\n"
         "\n"
-        "MESSAGE = \"from trading_bot import ledger\"\n"
+        'MESSAGE = "from trading_bot import ledger"\n'
     )
     result = auditor().audit_source(source)
     assert result["independent"] is True
@@ -503,11 +554,7 @@ def test_literal_dynamic_import_is_resolved_and_blocked():
 
 
 def test_unresolvable_dynamic_import_fails_closed():
-    source = (
-        "import importlib\n"
-        "def go(name):\n"
-        "    return importlib.import_module(name)\n"
-    )
+    source = "import importlib\ndef go(name):\n    return importlib.import_module(name)\n"
     result = auditor().audit_source(source)
     assert result["independent"] is False
     assert "UNRESOLVED_DYNAMIC_IMPORT" in result["reasons"]

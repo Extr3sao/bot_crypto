@@ -129,9 +129,7 @@ def ledger_facts(rows: list[dict[str, Any]]) -> dict[str, Any]:
     entries = [row.get("entry") or {} for row in rows]
     kinds = Counter(str(entry.get("kind", "?")) for entry in entries)
     closes = [entry for entry in entries if entry.get("kind") == "CLOSE"]
-    run_end = next(
-        (entry for entry in reversed(entries) if entry.get("kind") == "RUN_END"), None
-    )
+    run_end = next((entry for entry in reversed(entries) if entry.get("kind") == "RUN_END"), None)
     net = sum((num(entry.get("pnl_net_usdt", 0)) for entry in closes), Decimal(0))
     gross = sum((num(entry.get("gross_pnl_usdt", 0)) for entry in closes), Decimal(0))
     fees = sum((num(entry.get("commissions_usdt", 0)) for entry in closes), Decimal(0))
@@ -151,6 +149,157 @@ def ledger_facts(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "chain_head": str(rows[-1].get("sha256")) if rows else GENESIS,
         "close_days": sorted({str(entry.get("day_utc")) for entry in closes}),
     }
+
+
+# --------------------------------------------------------------------------- procedencia
+
+PROVENANCE_METHODS = ("DIRECT", "LEDGER_RECONSTRUCTION")
+
+
+def canonical(payload: Any) -> str:
+    return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
+def series_digest(rows: Iterable[Iterable[Any]]) -> str:
+    """Huella del dataset tal como la declara la cabecera `RUN`, reimplementada aquí.
+
+    No se importa `trading_bot.vision.lane.series_digest`: validar la huella con la
+    función que la produjo no sería verificar, sería repetirse.
+    """
+    payload = json.dumps(
+        [
+            [
+                int(row[0]),
+                round(float(row[1]), 8),
+                round(float(row[2]), 8),
+                round(float(row[3]), 8),
+                round(float(row[4]), 8),
+                round(float(row[5]), 8),
+            ]
+            for row in rows
+        ],
+        separators=(",", ":"),
+    )
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def to_ms(stamp: str) -> int:
+    return int(datetime.fromisoformat(str(stamp).replace("Z", "+00:00")).timestamp() * 1000)
+
+
+def provenance_reasons(
+    run: dict[str, Any],
+    rows: list[dict[str, Any]],
+    dataset: list[list[Any]] | None,
+    artifact_resumes: list[dict[str, Any]] | None,
+) -> list[str]:
+    """Motivos por los que la procedencia de un run **no** queda demostrada.
+
+    La lista vacía es la única señal de PASS. Un run directo solo necesita hora de
+    inicio real. Un run reconstruido desde el ledger —lo que 017 marcó con
+    `resumed_from_ledger=true`— necesita enlazar su resumen con la cabecera `RUN`, el
+    cierre `RUN_END`, la cadena y el dataset, y declarar el acto de reanudación con su
+    commit. Ninguna comprobación se satisface por el nombre de un campo.
+    """
+    entries = [row.get("entry") or {} for row in rows]
+    head = next((entry for entry in entries if entry.get("kind") == "RUN"), None)
+    end = next((entry for entry in reversed(entries) if entry.get("kind") == "RUN_END"), None)
+    reasons: list[str] = []
+    if run.get("started_at_utc") is None:
+        reasons.append("start=None")
+    if run.get("resumed_from_ledger"):
+        #: El marcador de 017 no demostraba nada: sin bloque no hay enlace al origen.
+        reasons.append("legacy_resume_marker_without_provenance")
+    provenance = run.get("provenance")
+    if provenance is None:
+        if artifact_resumes:
+            reasons.append("artifact_declares_resume_but_run_has_no_provenance")
+        return reasons
+    if not isinstance(provenance, dict):
+        return [*reasons, "provenance_not_an_object"]
+    method = provenance.get("method")
+    if method not in PROVENANCE_METHODS:
+        reasons.append(f"method={method!r}")
+    if head is None or end is None:
+        return [*reasons, "ledger_without_RUN_or_RUN_END"]
+    if provenance.get("run_id") != head.get("book_id"):
+        reasons.append("run_id")
+    if provenance.get("started_at_utc") != head.get("recorded_at_utc"):
+        reasons.append("started_at_utc")
+    if provenance.get("finished_at_utc") != end.get("recorded_at_utc"):
+        reasons.append("finished_at_utc")
+    if run.get("started_at_utc") != head.get("recorded_at_utc"):
+        reasons.append("run_started_at_utc")
+    if run.get("finished_at_utc") != end.get("recorded_at_utc"):
+        reasons.append("run_finished_at_utc")
+    chain = provenance.get("chain") or {}
+    if int(chain.get("rows", -1)) != len(rows):
+        reasons.append("chain_rows")
+    if str(chain.get("head_sha256")) != str(rows[-1].get("sha256")):
+        reasons.append("chain_head")
+    if int(chain.get("run_end_seq", -1)) != int(rows[-1].get("seq", -1)):
+        reasons.append("run_end_seq")
+    if chain.get("ok") is not True:
+        reasons.append("chain_ok")
+    declared = provenance.get("dataset")
+    if declared != head.get("dataset"):
+        reasons.append("dataset_block")
+    elif dataset is not None and isinstance(declared, dict):
+        info = declared.get(str(run.get("symbol"))) or {}
+        if not info:
+            reasons.append("dataset_symbol")
+        else:
+            first = to_ms(str(info.get("first_open_utc")))
+            count = int(info.get("bars", -1))
+            window = [row for row in dataset if int(row[0]) >= first][:count]
+            if len(window) != count:
+                reasons.append("dataset_bars")
+            elif series_digest(window) != str(info.get("sha256")):
+                reasons.append("dataset_sha256")
+            elif int(window[-1][0]) != to_ms(str(info.get("last_open_utc"))):
+                reasons.append("dataset_last_open")
+    config = {
+        "lane": head.get("lane"),
+        "provider": head.get("provider"),
+        "risk_policy": head.get("risk_policy"),
+        "cost_multiplier": head.get("cost_multiplier"),
+        "equity_usdt": head.get("equity_usdt"),
+    }
+    if (
+        str(provenance.get("config_sha256"))
+        != hashlib.sha256(canonical(config).encode("utf-8")).hexdigest()
+    ):
+        reasons.append("config_sha256")
+    if provenance.get("config") != config:
+        reasons.append("config_block")
+    resumes = provenance.get("resumes")
+    if method == "LEDGER_RECONSTRUCTION":
+        if not isinstance(resumes, list) or not resumes:
+            reasons.append("resume_history_missing")
+        elif artifact_resumes is not None and resumes != artifact_resumes:
+            reasons.append("resume_history_disagrees_with_artifact")
+    elif resumes not in ([], None):
+        reasons.append("direct_run_has_resume_history")
+    if isinstance(resumes, list) and resumes:
+        if [int(item.get("attempt", 0)) for item in resumes] != list(range(1, len(resumes) + 1)):
+            reasons.append("resume_attempt_sequence")
+        stamps = [str(item.get("at_utc")) for item in resumes]
+        if stamps != sorted(stamps):
+            reasons.append("resume_timestamps_not_monotonic")
+        commits = [str(item.get("at_commit") or "") for item in resumes]
+        if any(
+            len(commit) != 40 or any(ch not in "0123456789abcdef" for ch in commit)
+            for commit in commits
+        ):
+            reasons.append("resume_commit_missing")
+    original = provenance.get("original_commit")
+    source = str(provenance.get("original_commit_source") or "")
+    if original is None:
+        if not source:
+            reasons.append("original_commit_source_missing")
+    elif len(str(original)) != 40 or not source:
+        reasons.append("original_commit_invalid")
+    return reasons
 
 
 # --------------------------------------------------------------------------- stats
@@ -294,9 +443,7 @@ def verify(
     checks.append(
         check(
             "PLAN_BOOTSTRAP_PARAMS",
-            "PASS"
-            if int(plan.get("bootstrap_resamples", 0)) == RESAMPLES
-            else "FAIL",
+            "PASS" if int(plan.get("bootstrap_resamples", 0)) == RESAMPLES else "FAIL",
             f"resamples={plan.get('bootstrap_resamples')} esperado={RESAMPLES}",
         )
     )
@@ -313,7 +460,7 @@ def verify(
 
     dataset_state = "PASS"
     dataset_detail: list[str] = []
-    bars_by_symbol: dict[str, list[int]] = {}
+    bars_by_symbol: dict[str, list[list[Any]]] = {}
     for symbol, declared in (plan.get("datasets") or {}).items():
         path = root / declared["path"]
         if not path.is_file():
@@ -323,7 +470,7 @@ def verify(
         digest = sha256(path)
         loaded = json.loads(path.read_text(encoding="utf-8"))
         bars = len(loaded)
-        bars_by_symbol[symbol] = [int(row[0]) for row in loaded]
+        bars_by_symbol[symbol] = sorted(loaded, key=lambda row: int(row[0]))
         if digest != declared["sha256"] or bars != int(declared["rows"]):
             dataset_state = "FAIL"
         dataset_detail.append(f"{symbol}: sha256={digest[:12]} bars={bars}")
@@ -343,6 +490,8 @@ def verify(
     recomputed: dict[tuple[str, str, float, str], dict[str, Any]] = {}
     deferred_failures: list[str] = []
     provenance_losses: list[str] = []
+    zeroed_metadata: list[str] = []
+    artifact_resumes = runs_payload.get("resumes") if runs_payload else None
     for run in runs:
         key = (
             str(run.get("symbol")),
@@ -376,13 +525,12 @@ def verify(
         facts["ledger"] = str(path)
         facts["key"] = key
         day_start_ms = int(
-            datetime.fromisoformat(str(run.get("day_utc"))).replace(tzinfo=UTC).timestamp()
-            * 1000
+            datetime.fromisoformat(str(run.get("day_utc"))).replace(tzinfo=UTC).timestamp() * 1000
         )
         observed_minutes = sum(
             1
-            for stamp in bars_by_symbol.get(str(run.get("symbol")), [])
-            if day_start_ms <= stamp < day_start_ms + 86_400_000
+            for row in bars_by_symbol.get(str(run.get("symbol")), [])
+            if day_start_ms <= int(row[0]) < day_start_ms + 86_400_000
         )
         facts["missing_minutes"] = 1440 - observed_minutes
         checks.append(
@@ -395,17 +543,29 @@ def verify(
             )
         )
         recomputed[key] = facts
-        if run.get("started_at_utc") is None or run.get("resumed_from_ledger"):
+        losses = provenance_reasons(
+            run, rows, bars_by_symbol.get(str(run.get("symbol"))), artifact_resumes
+        )
+        if losses:
             provenance_losses.append(
                 f"{tag}: start={run.get('started_at_utc')} bars={run.get('bars')} "
-                f"observed={run.get('minutes_observed')}"
+                f"observed={run.get('minutes_observed')} reasons={','.join(losses)}"
+            )
+        expected_minutes = int(run.get("minutes_expected", 1440) or 1440)
+        if int(run.get("bars", -1) or 0) <= 0 or int(run.get("minutes_observed", 0) or 0) > (
+            expected_minutes
+        ):
+            zeroed_metadata.append(
+                f"{tag}: bars={run.get('bars')} observed={run.get('minutes_observed')}/"
+                f"{expected_minutes}"
             )
 
         checks.append(
             check(
                 f"DEFERRED_FROM_LEDGER_{tag}",
                 "PASS"
-                if str(facts["run_end"].get("deferred_slots_source", "")) == "ledger:OPINION_DEFERRED"
+                if str(facts["run_end"].get("deferred_slots_source", ""))
+                == "ledger:OPINION_DEFERRED"
                 or facts["deferred_slots"] == int(run.get("deferred_slots", -1))
                 else "FAIL",
                 f"ledger={facts['deferred_slots']} publicado={run.get('deferred_slots')}",
@@ -431,9 +591,7 @@ def verify(
         checks.append(
             check(
                 f"CLOSED_FROM_LEDGER_{tag}",
-                "PASS"
-                if facts["closed_trades"] == int(run.get("closed_trades", -1))
-                else "FAIL",
+                "PASS" if facts["closed_trades"] == int(run.get("closed_trades", -1)) else "FAIL",
                 f"ledger={facts['closed_trades']} publicado={run.get('closed_trades')}",
             )
         )
@@ -485,7 +643,8 @@ def verify(
             "RUN_PROVENANCE_COMPLETE",
             "PASS" if not provenance_losses else "FAIL",
             "; ".join(provenance_losses[:4])
-            or "cada run conserva inicio, barras y minutos observados",
+            or "cada run enlaza su ledger: run_id, inicio, cierre, dataset, configuración, "
+            "cadena y acto de reanudación",
         )
     )
     if runs:
@@ -513,7 +672,7 @@ def verify(
                 "closed_trades": 0,
                 "calls": 0,
                 "deferred_slots": 0,
-                        "missing_minutes": 0,
+                "missing_minutes": 0,
                 "net": Decimal(0),
                 "gross": Decimal(0),
                 "fees": Decimal(0),
@@ -563,7 +722,9 @@ def verify(
             ("gross_pnl_usdt", "gross"),
         ):
             if not same(mine[mine_key], published.get(field)):
-                problems.append(f"{field}: ledger={mine[mine_key]} publicado={published.get(field)}")
+                problems.append(
+                    f"{field}: ledger={mine[mine_key]} publicado={published.get(field)}"
+                )
         expectancy = num(published.get("net_pnl_usdt", 0)) / max(
             1, int(published.get("closed_trades", 1) or 1)
         )
@@ -586,7 +747,8 @@ def verify(
         check(
             "DEFER_CELLS_HAVE_DEFERRALS",
             "PASS"
-            if defer_cells and all(int(value.get("deferred_slots", 0)) > 0 for value in defer_cells.values())
+            if defer_cells
+            and all(int(value.get("deferred_slots", 0)) > 0 for value in defer_cells.values())
             else "FAIL",
             "; ".join(f"{k}={v.get('deferred_slots')}" for k, v in sorted(defer_cells.items()))
             or "sin celdas DEFER",
@@ -667,11 +829,14 @@ def verify(
         )
         ci95[symbol] = (published_deltas.get(symbol) or {}).get("ci95")
     reapplied = classify(net_def, net_sup, expectancy_def, ci95, SYMBOLS)
-    matched = all(
-        reapplied[key] == published_decision.get(key)
-        for key in reapplied
-        if key in published_decision
-    ) and published_decision.get("economic_status") == reapplied["economic_status"]
+    matched = (
+        all(
+            reapplied[key] == published_decision.get(key)
+            for key in reapplied
+            if key in published_decision
+        )
+        and published_decision.get("economic_status") == reapplied["economic_status"]
+    )
     checks.append(
         check(
             "DECISION_RULE_REAPPLIED",
@@ -744,8 +909,7 @@ def verify(
             check(
                 "STRESS_POST_HOC_FLAG",
                 "PASS"
-                if stress.get("used_for_decision") is False
-                and stress.get("cost_multiplier") == 2.0
+                if stress.get("used_for_decision") is False and stress.get("cost_multiplier") == 2.0
                 else "FAIL",
                 f"used_for_decision={stress.get('used_for_decision')} "
                 f"multiplier={stress.get('cost_multiplier')}",
@@ -755,7 +919,8 @@ def verify(
             check(
                 "STRESS_AFTER_PRIMARY",
                 "PASS"
-                if str(stress.get("generated_at_utc", "")) > str(results.get("generated_at_utc", ""))
+                if str(stress.get("generated_at_utc", ""))
+                > str(results.get("generated_at_utc", ""))
                 else "FAIL",
                 f"estres={stress.get('generated_at_utc')} primario={results.get('generated_at_utc')}",
             )
@@ -804,7 +969,11 @@ def verify(
             None,
         )
         net_def_c2 = sum(
-            (value["net"] for key, value in cost2.items() if key[1] == "DEFER" and key[0] == "UNI/USDT"),
+            (
+                value["net"]
+                for key, value in cost2.items()
+                if key[1] == "DEFER" and key[0] == "UNI/USDT"
+            ),
             Decimal(0),
         )
         net_sup_c2 = sum(
@@ -825,7 +994,9 @@ def verify(
         checks.append(
             check(
                 "STRESS_STATUS_REAPPLIED",
-                "PASS" if stress_decision["economic_status"] == stress.get("stress_status") else "FAIL",
+                "PASS"
+                if stress_decision["economic_status"] == stress.get("stress_status")
+                else "FAIL",
                 f"reaplicada={stress_decision['economic_status']} declarada={stress.get('stress_status')} "
                 f"def={net_def_c2} sup={net_sup_c2}",
             )
@@ -1031,25 +1202,47 @@ def verify(
             "cells": sorted(cells),
         },
         "differences": diffs,
-        "defects": (
-            [
-                {
-                    "code": "RECOUNT_ZEROED_RUN_METADATA",
-                    "severity": "P2",
-                    "economic_effect": "none_observed",
-                    "detail": (
-                        "`result_from_ledger` (usado por --recount/--resume) escribe "
-                        "missing_minutes=0, bars=0, started_at_utc=null y cuenta DECISIONES "
-                        "como minutos observados. Ocho runs SUPERSEDE fueron reconstruidos "
-                        "así: su economía es correcta y sus contadores salen del ledger, pero "
-                        "su cobertura de datos publicada es falsa."
-                    ),
-                    "runs": provenance_losses,
-                }
-            ]
-            if provenance_losses
-            else []
-        ),
+        "defects": [
+            *(
+                [
+                    {
+                        "code": "RUN_PROVENANCE_INCOMPLETE",
+                        "severity": "P1",
+                        "economic_effect": "none_observed",
+                        "detail": (
+                            "Hay runs cuyo resumen no se puede enlazar con el ledger que los "
+                            "produjo: falta el acto de reanudación, el run_id, la ventana del "
+                            "dataset, la configuración o la cabeza de la cadena. 017 los marcó "
+                            "con `resumed_from_ledger=true` y nada más, así que su origen no "
+                            "era demostrable aunque su economía fuese correcta."
+                        ),
+                        "runs": provenance_losses,
+                    }
+                ]
+                if provenance_losses
+                else []
+            ),
+            *(
+                [
+                    {
+                        "code": "RECOUNT_ZEROED_RUN_METADATA",
+                        "severity": "P2",
+                        "economic_effect": "none_observed",
+                        "detail": (
+                            "`result_from_ledger` publicó `bars=0` y contó líneas `DECISION` "
+                            "como minutos observados (1441 en un día de 1440). La economía es "
+                            "correcta; la cobertura publicada no. El camino de código ya "
+                            "deriva cobertura y procedencia del ledger y del dataset, pero el "
+                            "artefacto sellado de 017 conserva los valores antiguos y no se "
+                            "reescribe."
+                        ),
+                        "runs": zeroed_metadata,
+                    }
+                ]
+                if zeroed_metadata
+                else []
+            ),
+        ],
         "bootstrap_seed": SEED,
         "bootstrap_resamples": RESAMPLES,
         "economic_delta": {
@@ -1135,7 +1328,11 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     root = Path(args.root).resolve()
     payload = verify(root)
-    json_path = Path(args.json) if args.json else root / "reports" / "ai-bots" / "RFC-DEF-RUN-018" / "INDEPENDENT_VERIFICATION.json"
+    json_path = (
+        Path(args.json)
+        if args.json
+        else root / "reports" / "ai-bots" / "RFC-DEF-RUN-018" / "INDEPENDENT_VERIFICATION.json"
+    )
     json_path.parent.mkdir(parents=True, exist_ok=True)
     json_path.write_text(
         json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n",

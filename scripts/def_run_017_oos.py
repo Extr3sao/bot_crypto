@@ -31,6 +31,7 @@ import json
 import multiprocessing as mp
 import os
 import random
+import subprocess
 import sys
 from contextlib import redirect_stdout
 from datetime import UTC, datetime
@@ -65,6 +66,27 @@ def utc_now() -> str:
 
 def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def canonical(payload: Any) -> str:
+    """JSON estable: la misma configuración produce el mismo sha256 en cualquier máquina."""
+    return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
+def git_head() -> str | None:
+    """Commit del árbol que ejecuta la reanudación. `None` si git no responde.
+
+    Se registra como acto de la reanudación, no como origen del run: un ledger de 017
+    no guarda el commit que lo escribió, y suponerlo sería inventar procedencia.
+    """
+    run = subprocess.run(
+        ["git", "-C", str(REPO), "rev-parse", "HEAD"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    head = run.stdout.strip()
+    return head if run.returncode == 0 and len(head) == 40 else None
 
 
 def load_minutes(symbol: str) -> list[list[float]]:
@@ -108,9 +130,7 @@ def plan() -> dict[str, Any]:
         "datasets": {
             symbol: {
                 "path": f"data/quote-feed-1m/{ARCHIVE[symbol]}_1m_2021-01-04_2021-02-17.json",
-                "sha256": sha256_file(
-                    DATA / f"{ARCHIVE[symbol]}_1m_2021-01-04_2021-02-17.json"
-                ),
+                "sha256": sha256_file(DATA / f"{ARCHIVE[symbol]}_1m_2021-01-04_2021-02-17.json"),
                 "rows": len(load_minutes(symbol)),
             }
             for symbol in SYMBOLS
@@ -167,9 +187,7 @@ def run_day(task: dict[str, Any]) -> dict[str, Any]:
     observed = sum(1 for row in rows if day_start <= int(row[0]) < day_end)
     expected = (day_end - day_start) // MINUTE_MS
 
-    ledger_dir = (
-        EVIDENCE / "runs" / ARCHIVE[symbol] / lifecycle.lower() / f"cost-{multiplier:.1f}"
-    )
+    ledger_dir = EVIDENCE / "runs" / ARCHIVE[symbol] / lifecycle.lower() / f"cost-{multiplier:.1f}"
     ledger_dir.mkdir(parents=True, exist_ok=True)
     ledger = ledger_dir / f"{datetime.fromtimestamp(day * 86400, tz=UTC):%Y-%m-%d}.jsonl"
     for stale in (ledger, ledger.with_suffix(".jsonl.lock")):
@@ -221,8 +239,7 @@ def run_day(task: dict[str, Any]) -> dict[str, Any]:
     net = sum(float(entry["pnl_net_usdt"]) for entry in closes)
     gross = sum(float(entry["gross_pnl_usdt"]) for entry in closes)
     costs = sum(
-        float(entry["commissions_usdt"]) + float(entry["execution_cost_usdt"])
-        for entry in closes
+        float(entry["commissions_usdt"]) + float(entry["execution_cost_usdt"]) for entry in closes
     )
     terminal = [
         entry
@@ -286,15 +303,95 @@ def ledger_for(task: dict[str, Any]) -> Path:
     )
 
 
-def result_from_ledger(task: dict[str, Any], path: Path) -> dict[str, Any]:
+def ledger_provenance(
+    rows: list[dict[str, Any]],
+    *,
+    method: str,
+    resumes: list[dict[str, Any]],
+    chain_ok: bool | None,
+) -> dict[str, Any] | None:
+    """Procedencia derivada de los bytes del ledger, no de lo que el resumen recuerde.
+
+    El `--resume` de 017 publicó `resumed_from_ledger=true` y nada más: ni de qué run
+    venía, ni con qué configuración, ni con qué dataset. El ledger sí lo guarda —cabecera
+    `RUN` con `book_id`, dataset, lane, proveedor y política de riesgo, y cierre `RUN_END`
+    con su hora de pared—; la reparación no añade datos: los enlaza y los firma.
+
+    `original_commit` queda en `None` a propósito: el ledger no registra el commit que lo
+    escribió y completarlo con el commit actual sería inventar el origen.
+    """
+    entries = [row.get("entry") or {} for row in rows]
+    head = next((entry for entry in entries if entry.get("kind") == "RUN"), None)
+    end = next((entry for entry in reversed(entries) if entry.get("kind") == "RUN_END"), None)
+    if head is None or end is None:
+        return None
+    config = {
+        "lane": head.get("lane"),
+        "provider": head.get("provider"),
+        "risk_policy": head.get("risk_policy"),
+        "cost_multiplier": head.get("cost_multiplier"),
+        "equity_usdt": head.get("equity_usdt"),
+    }
+    return {
+        "method": method,
+        "run_id": head.get("book_id"),
+        "started_at_utc": head.get("recorded_at_utc"),
+        "finished_at_utc": end.get("recorded_at_utc"),
+        "dataset": head.get("dataset"),
+        "config": config,
+        "config_sha256": hashlib.sha256(canonical(config).encode("utf-8")).hexdigest(),
+        "chain": {
+            "ok": bool(chain_ok),
+            "rows": len(rows),
+            "head_sha256": str(rows[-1].get("sha256")),
+            "run_end_seq": int(rows[-1].get("seq", len(rows))),
+        },
+        "resumes": list(resumes),
+        "original_commit": None,
+        "original_commit_source": "NOT_RECORDED_IN_LEDGER",
+    }
+
+
+def attach_provenance(
+    result: dict[str, Any],
+    *,
+    method: str,
+    resumes: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Enlaza el resumen del run con los bytes que lo produjeron."""
+    from trading_bot.vision.ledger import read_entries, verify_chain
+
+    path = REPO / str(result["ledger"])
+    rows = read_entries(path)
+    chain = verify_chain(path)
+    provenance = ledger_provenance(
+        rows, method=method, resumes=list(resumes or []), chain_ok=chain.get("ok")
+    )
+    if provenance is None:
+        return result
+    result["provenance"] = provenance
+    result["started_at_utc"] = provenance["started_at_utc"]
+    result["finished_at_utc"] = provenance["finished_at_utc"]
+    result["ledger_sha256"] = sha256_file(path)
+    result["chain"] = chain
+    return result
+
+
+def result_from_ledger(
+    task: dict[str, Any],
+    path: Path,
+    *,
+    resumes: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     """Reconstruye el resumen de un día ya ejecutado sin volver a pagarlo.
 
     Un reinicio no debe reejecutar 8 días de replay: el ledger ya está en disco y su
     último renglón es ``RUN_END``. Solo se aceptan ledgers terminados.
     """
-    from trading_bot.vision.ledger import read_entries, verify_chain
+    from trading_bot.vision.ledger import read_entries
 
-    entries = [row["entry"] for row in read_entries(path)]
+    rows = read_entries(path)
+    entries = [row["entry"] for row in rows]
     closes = [entry for entry in entries if entry.get("kind") == "CLOSE"]
     fills = [entry for entry in entries if entry.get("kind") == "FILL"]
     #: DEF-RUN-018: hasta ahora este resumen escribía `missing_minutes=0`, `bars=0` y
@@ -304,21 +401,19 @@ def result_from_ledger(task: dict[str, Any], path: Path) -> dict[str, Any]:
     #: propia cadena, para que un `--recount` no pueda volver a falsear metadatos.
     day_start = int(task["day"]) * DAY_MS
     day_end = day_start + DAY_MS
-    rows = load_minutes(task["symbol"])
-    observed = sum(1 for row in rows if day_start <= int(row[0]) < day_end)
-    bars = sum(1 for row in rows if day_start - WARMUP_BARS * MINUTE_MS <= int(row[0]) < day_end)
-    run_end = next(
-        (entry for entry in reversed(entries) if entry.get("kind") == "RUN_END"), None
+    minutes = load_minutes(task["symbol"])
+    observed = sum(1 for row in minutes if day_start <= int(row[0]) < day_end)
+    bars = sum(
+        1 for row in minutes if day_start - WARMUP_BARS * MINUTE_MS <= int(row[0]) < day_end
     )
-    return {
+    run_end = next((entry for entry in reversed(entries) if entry.get("kind") == "RUN_END"), None)
+    result = {
         "schema_version": SCHEMA,
         "symbol": task["symbol"],
         "lifecycle": task["lifecycle"],
         "cost_multiplier": float(task["cost_multiplier"]),
         "day": int(task["day"]),
-        "day_utc": datetime.fromtimestamp(int(task["day"]) * 86400, tz=UTC).strftime(
-            "%Y-%m-%d"
-        ),
+        "day_utc": datetime.fromtimestamp(int(task["day"]) * 86400, tz=UTC).strftime("%Y-%m-%d"),
         "minutes_expected": DAY_MS // MINUTE_MS,
         "minutes_observed": observed,
         "missing_minutes": DAY_MS // MINUTE_MS - observed,
@@ -327,9 +422,7 @@ def result_from_ledger(task: dict[str, Any], path: Path) -> dict[str, Any]:
         "calls": sum(1 for entry in entries if entry.get("kind") == "DECISION"),
         "fills": len(fills),
         "closed_trades": len(closes),
-        "deferred_slots": sum(
-            1 for entry in entries if entry.get("kind") == "OPINION_DEFERRED"
-        ),
+        "deferred_slots": sum(1 for entry in entries if entry.get("kind") == "OPINION_DEFERRED"),
         "deferred_slots_source": "ledger:OPINION_DEFERRED",
         "superseded": sum(
             1
@@ -339,20 +432,13 @@ def result_from_ledger(task: dict[str, Any], path: Path) -> dict[str, Any]:
         ),
         "gross_pnl_usdt": round(sum(float(e["gross_pnl_usdt"]) for e in closes), 8),
         "costs_usdt": round(
-            sum(
-                float(e["commissions_usdt"]) + float(e["execution_cost_usdt"])
-                for e in closes
-            ),
+            sum(float(e["commissions_usdt"]) + float(e["execution_cost_usdt"]) for e in closes),
             8,
         ),
         "net_pnl_usdt": round(sum(float(e["pnl_net_usdt"]) for e in closes), 8),
         "exit_reasons": sorted({str(e.get("exit_reason")) for e in closes}),
         "drawdown_usdt": next(
-            (
-                entry.get("drawdown_usdt")
-                for entry in entries
-                if entry.get("kind") == "RUN_END"
-            ),
+            (entry.get("drawdown_usdt") for entry in entries if entry.get("kind") == "RUN_END"),
             None,
         ),
         "terminal_rows": sum(
@@ -361,12 +447,12 @@ def result_from_ledger(task: dict[str, Any], path: Path) -> dict[str, Any]:
             if entry.get("kind") in ("FILL", "GUARD_REJECT", "DECISION_OUTCOME")
         ),
         "ledger": str(path.relative_to(REPO)),
-        "ledger_sha256": sha256_file(path),
-        "chain": verify_chain(path),
-        "resumed_from_ledger": True,
         "started_at_utc": entries[0].get("recorded_at_utc") if entries else None,
         "finished_at_utc": (run_end or {}).get("recorded_at_utc") or utc_now(),
     }
+    #: La procedencia no se declara: se enlaza con la cabecera `RUN`, el cierre `RUN_END`
+    #: y la cadena de sha256 que el verificador B puede recalcular por su cuenta.
+    return attach_provenance(result, method="LEDGER_RECONSTRUCTION", resumes=resumes)
 
 
 def stress_summary(partition: str, *, out_name: str) -> int:
@@ -417,15 +503,16 @@ def stress_summary(partition: str, *, out_name: str) -> int:
         for s in symbols
     )
     separates = all(
-        deltas[s].get("ci95") is not None
-        and (deltas[s]["ci95"][1] < 0 or deltas[s]["ci95"][0] > 0)
+        deltas[s].get("ci95") is not None and (deltas[s]["ci95"][1] < 0 or deltas[s]["ci95"][0] > 0)
         for s in symbols
     )
     positive = all(
         (cells.get(f"{s}|DEFER|2.0") or {}).get("expectancy_usdt", 0) > 0 for s in symbols
     )
     status = (
-        "EVIDENCED" if (better and separates and positive) else "NEGATIVE"
+        "EVIDENCED"
+        if (better and separates and positive)
+        else "NEGATIVE"
         if (worse and separates)
         else "NOT_EVIDENCED"
     )
@@ -458,7 +545,7 @@ def stress_summary(partition: str, *, out_name: str) -> int:
     return 0
 
 
-def recount(partition: str, *, out_name: str | None = None) -> int:
+def recount(partition: str, *, out_name: str | None = None, source_path: Path | None = None) -> int:
     """Re-deriva los contadores de ciclo de vida leyendo los ledgers, sin repagar un día.
 
     El 2026-10-21 el informe del OOS salió con ``deferred_slots=0`` en la rama DEFER aunque
@@ -473,11 +560,12 @@ def recount(partition: str, *, out_name: str | None = None) -> int:
     """
     from trading_bot.vision.ledger import read_entries
 
-    source = EVIDENCE / (out_name or f"OOS_RUNS_{partition}.json")
+    source = source_path or EVIDENCE / (out_name or f"OOS_RUNS_{partition}.json")
     if not source.is_file():
         raise SystemExit(f"missing {source}")
     payload = json.loads(source.read_text(encoding="utf-8"))
     changes: list[dict[str, Any]] = []
+    before_provenance = [run.get("provenance") for run in payload["runs"]]
     for run in payload["runs"]:
         path = REPO / str(run["ledger"])
         if not path.is_file():
@@ -509,6 +597,10 @@ def recount(partition: str, *, out_name: str | None = None) -> int:
         "pnl_untouched": True,
         "changed_runs": len(changes),
         "changes": changes,
+        #: Recontar contadores no puede tocar la procedencia: si el bloque cambia, el
+        #: propio artefacto lo delata.
+        "provenance_unchanged": before_provenance
+        == [run.get("provenance") for run in payload["runs"]],
     }
     source.write_text(
         json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n"
@@ -561,18 +653,43 @@ def execute(
     print(f"partition={partition} days={len(days)} tasks={len(tasks)} workers={workers}")
     results: list[dict[str, Any]] = []
     EVIDENCE.mkdir(parents=True, exist_ok=True)
+    target = EVIDENCE / (out_name or f"OOS_RUNS_{partition}.json")
+    history: list[dict[str, Any]] = []
+    if target.is_file():
+        previous = json.loads(target.read_text(encoding="utf-8"))
+        history = list(previous.get("resumes") or [])
 
     if resume:
+        finished: list[tuple[dict[str, Any], Path]] = []
         pending: list[dict[str, Any]] = []
         for task in tasks:
             path = ledger_for(task)
             if path.is_file() and path.read_text(encoding="utf-8").rstrip().endswith("}"):
                 last = json.loads(path.read_text(encoding="utf-8").splitlines()[-1])
                 if (last.get("entry") or {}).get("kind") == "RUN_END":
-                    results.append(result_from_ledger(task, path))
+                    finished.append((task, path))
                     continue
             pending.append(task)
-        print(f"resume: {len(results)} days already finished, {len(pending)} to run", flush=True)
+        #: El acto de reanudar se registra antes de sobrescribir el artefacto anterior,
+        #: para que quede su sha256 y no una promesa de que «ya estaba».
+        history.append(
+            {
+                "attempt": len(history) + 1,
+                "at_utc": utc_now(),
+                "at_commit": git_head(),
+                "source_artifact_sha256": sha256_file(target) if target.is_file() else None,
+                "partition": partition,
+                "ledgers_reused": len(finished),
+                "ledgers_executed": len(pending),
+            }
+        )
+        for task, path in finished:
+            results.append(result_from_ledger(task, path, resumes=history))
+        print(
+            f"resume: {len(finished)} days already finished, {len(pending)} to run "
+            f"(attempt {len(history)})",
+            flush=True,
+        )
         tasks = pending
 
     with mp.get_context("spawn").Pool(processes=workers) as pool:
@@ -584,17 +701,22 @@ def execute(
                 f"fills={result['fills']} net={result['net_pnl_usdt']}",
                 flush=True,
             )
-    results.sort(key=lambda row: (row["symbol"], row["lifecycle"], row["cost_multiplier"], row["day"]))
+    for result in results:
+        if "provenance" not in result:
+            attach_provenance(result, method="DIRECT", resumes=[])
+    results.sort(
+        key=lambda row: (row["symbol"], row["lifecycle"], row["cost_multiplier"], row["day"])
+    )
     payload = {
         "schema_version": SCHEMA,
         "plan": frozen,
         "partition": partition,
         "generated_at_utc": utc_now(),
         "workers": workers,
+        "resumes": history,
         "runs": results,
         "totals": aggregate(results),
     }
-    target = EVIDENCE / (out_name or f"OOS_RUNS_{partition}.json")
     target.write_text(
         json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n"
     )
@@ -654,7 +776,10 @@ def _bootstrap(values: list[float], *, seed: int, resamples: int) -> dict[str, A
     return {
         "samples": len(values),
         "mean": round(sum(values) / len(values), 6),
-        "ci95": [round(means[int(0.025 * len(means))], 6), round(means[int(0.975 * len(means)) - 1], 6)],
+        "ci95": [
+            round(means[int(0.025 * len(means))], 6),
+            round(means[int(0.975 * len(means)) - 1], 6),
+        ],
         "days_positive": sum(1 for value in values if value > 0),
         "days_negative": sum(1 for value in values if value < 0),
         "days_flat": sum(1 for value in values if value == 0),
@@ -697,17 +822,12 @@ def aggregate_results(partition: str) -> int:
     net_sup = {
         symbol: float(cell(symbol, "SUPERSEDE").get("net_pnl_usdt", 0.0)) for symbol in SYMBOLS
     }
-    expectancy_def = {
-        symbol: cell(symbol, "DEFER").get("expectancy_usdt") for symbol in SYMBOLS
-    }
+    expectancy_def = {symbol: cell(symbol, "DEFER").get("expectancy_usdt") for symbol in SYMBOLS}
     better_both = all(net_def[symbol] > net_sup[symbol] for symbol in SYMBOLS)
     worse_both = all(net_def[symbol] < net_sup[symbol] for symbol in SYMBOLS)
     excludes_zero = all(
         (deltas[symbol]["ci95"] is not None)
-        and (
-            deltas[symbol]["ci95"][1] < 0
-            or deltas[symbol]["ci95"][0] > 0
-        )
+        and (deltas[symbol]["ci95"][1] < 0 or deltas[symbol]["ci95"][0] > 0)
         for symbol in SYMBOLS
     )
     if better_both and excludes_zero and all((v or 0) > 0 for v in expectancy_def.values()):
@@ -724,9 +844,7 @@ def aggregate_results(partition: str) -> int:
         "schema_version": SCHEMA,
         "partition": partition,
         "generated_at_utc": utc_now(),
-        "plan_sha256": hashlib.sha256(
-            (EVIDENCE / "OOS_PLAN.json").read_bytes()
-        ).hexdigest()
+        "plan_sha256": hashlib.sha256((EVIDENCE / "OOS_PLAN.json").read_bytes()).hexdigest()
         if (EVIDENCE / "OOS_PLAN.json").is_file()
         else None,
         "cells": cells,

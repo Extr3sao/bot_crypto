@@ -15,6 +15,7 @@ EVIDENCED` produce `NO_GO`, y eso es el resultado esperado de este RFC.
 Uso::
 
     python scripts/def_run_018_gate.py
+    python scripts/def_run_018_gate.py --strict   # exit 3 si no hay integridad técnica
 """
 
 from __future__ import annotations
@@ -148,7 +149,7 @@ def decide(root: Path) -> dict[str, Any]:
         paper = "NO_GO"
 
     # -- clasificación del estrés -------------------------------------------
-    stress = ((verification or {}).get("stress_classification") or {})
+    stress = (verification or {}).get("stress_classification") or {}
     stress_ok = stress.get("used_for_decision") is False and stress.get("confirmatory") is False
     if not stress_ok:
         defects.append(
@@ -314,57 +315,76 @@ def render_final(decision: dict[str, Any]) -> str:
         [
             f"# FINAL_REPORT — {RFC}",
             "",
-            "## PHASE", "",
+            "## PHASE",
+            "",
             f"`{'TECHNICAL_CLOSED' if decision['technical_integrity'] == 'PASS' else 'AUDITING'}`",
             "",
-            "## COMMITS", "",
+            "## COMMITS",
+            "",
             f"- sello: `{tech['seal_commit']}`",
             f"- baseline: `{tech['baseline_head']}`",
             "",
-            "## IMPLEMENTED", "",
+            "## IMPLEMENTED",
+            "",
             "- Verificador B independiente (recomputa cadena, contabilidad, delta pareado, bootstrap).",
             "- Replay desde checkout limpio en worktree aislado, con datasets anclados por SHA-256.",
             "- Suite adversarial de 10 casos fail-closed.",
             "- Gate determinista con tres decisiones separadas.",
             "",
-            "## TESTS", "",
+            "## TESTS",
+            "",
             f"- Verificador B: {tech['independent_checks']} comprobaciones, "
             f"{tech['independent_verifier']}.",
             "- Verificador A sin regresiones sobre el paquete sellado.",
             "",
-            "## RUNTIME_VALIDATION", "",
+            "## RUNTIME_VALIDATION",
+            "",
             f"- `{tech['clean_replay']}` · runtime ejecutado={tech['runtime_executed']}.",
             "",
-            "## PAPER_VALIDATION", "",
+            "## PAPER_VALIDATION",
+            "",
             f"- `{decision['paper_validation']}`. Este RFC no ejecuta paper.",
             "",
-            "## FALSE_SUCCESS", "",
-            f"- `{decision['false_success']}`"
-            + (f": {'; '.join(decision['false_success_detail'])}" if decision["false_success_detail"] else ""),
+            "## FALSE_SUCCESS",
             "",
-            "## DEFECTS", "",
+            f"- `{decision['false_success']}`"
+            + (
+                f": {'; '.join(decision['false_success_detail'])}"
+                if decision["false_success_detail"]
+                else ""
+            ),
+            "",
+            "## DEFECTS",
+            "",
             *(
-                [f"- **{item.get('code')}** ({item.get('severity', 'P2')}): {item.get('detail', '')}"
-                 for item in decision["defects"]]
+                [
+                    f"- **{item.get('code')}** ({item.get('severity', 'P2')}): {item.get('detail', '')}"
+                    for item in decision["defects"]
+                ]
                 or ["- ninguno"]
             ),
             "",
-            "## BLOCKERS", "",
+            "## BLOCKERS",
+            "",
             *([f"- `{item}`" for item in decision["blockers"]] or ["- ninguno"]),
             "",
-            "## EVIDENCE", "",
+            "## EVIDENCE",
+            "",
             "- `BASELINE_017.json`, `EVIDENCE_SEAL.json`, `COMMIT_MANIFEST.json`.",
             "- `INDEPENDENT_VERIFICATION.json`, `CLEAN_REPRO_RUN_REPORT.json`.",
             "- `ADMISSION_DECISION.json`, `ARTIFACT_MANIFEST.json`.",
             "",
-            "## ARCHITECTURE_STATUS", "",
+            "## ARCHITECTURE_STATUS",
+            "",
             f"- integridad técnica: **{verdict}**.",
             "",
-            "## RFC_STATUS", "",
+            "## RFC_STATUS",
+            "",
             f"- `{decision['rfc']}`: `{'CLOSED_WITH_DEFECTS' if decision['defects'] else 'CLOSED'}` "
             "en el alcance técnico; sin promoción.",
             "",
-            "## NEXT_PHASE", "",
+            "## NEXT_PHASE",
+            "",
             "- Un experimento económico **nuevo y preregistrado** si se quiere medir una ventaja;",
             "  este RFC no lo inicia.",
             f"- Resultado económico: `{decision['economic_evidence']}`; paper `{decision['paper_admission']}`.",
@@ -395,6 +415,14 @@ def write_manifest(root: Path) -> None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", default=".")
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help=(
+            "exit 3 si technical_integrity != PASS; sin esta bandera el script sale 0 "
+            "siempre y el veredicto solo está en ADMISSION_DECISION.json"
+        ),
+    )
     args = parser.parse_args(argv)
     root = Path(args.root).resolve()
     decision = decide(root)
@@ -406,6 +434,10 @@ def main(argv: list[str] | None = None) -> int:
         f"paper_admission={decision['paper_admission']} "
         f"defects={len(decision['defects'])} blockers={decision['blockers']}"
     )
+    #: Por defecto 0 es «se ejecutó», no «se aprobó»: el veredicto está en el JSON. Un
+    #: orquestador que lea el código de salida necesita `--strict`, que sí distingue.
+    if args.strict and decision["technical_integrity"] != "PASS":
+        return 3
     return 0
 
 
