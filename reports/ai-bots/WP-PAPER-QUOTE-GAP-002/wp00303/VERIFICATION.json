@@ -88,7 +88,7 @@
   {
    "blocked": false,
    "check": "evidence_in_commit",
-   "detail": "34 evidence files, all inside 189ffd31",
+   "detail": "34 evidence files, all inside 798ab78d",
    "ok": true
   },
   {
@@ -110,8 +110,10 @@
    "ok": true
   }
  ],
+ "evidence_sha": "798ab78dad6e8e0da07d8e79a85e75503a61b742",
  "failed": [],
- "generated_at_utc": "2026-10-21T19:44:01Z",
+ "generated_at_utc": "2026-10-21T19:45:06Z",
+ "lab_generated_at_utc": "2026-10-21T19:34:44Z",
  "negative_controls": [
   {
    "id": "01",

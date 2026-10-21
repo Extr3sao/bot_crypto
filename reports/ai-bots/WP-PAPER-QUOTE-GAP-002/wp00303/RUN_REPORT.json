@@ -88,7 +88,7 @@
   {
    "blocked": false,
    "check": "evidence_in_commit",
-   "detail": "34 evidence files, all inside 189ffd31",
+   "detail": "34 evidence files, all inside 798ab78d",
    "ok": true
   },
   {
@@ -213,7 +213,7 @@
    "result": "PASS"
   }
  },
- "generated_at_utc": "2026-10-21T19:44:00Z",
+ "generated_at_utc": "2026-10-21T19:45:05Z",
  "git": {
   "branch": "wp/isolation-005",
   "head": "b82b487a301d8c23ff98ce0fe97cba47d94fe471",
@@ -294,7 +294,7 @@
  "title": "WP-003-03 \u2014 PAPER end-to-end validation",
  "verification": {
   "blocked": [],
-  "evidence_sha": null,
+  "evidence_sha": "798ab78dad6e8e0da07d8e79a85e75503a61b742",
   "failed": [],
   "negative_controls_rejected": 11,
   "negative_controls_total": 11,

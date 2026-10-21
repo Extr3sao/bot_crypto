@@ -670,6 +670,8 @@ def verify(bundle: dict[str, Any], context: dict[str, Any]) -> dict[str, Any]:
     return {
         "schema": "wp00303-verification/1",
         "generated_at_utc": datetime.now(tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "evidence_sha": context.get("evidence_sha"),
+        "lab_generated_at_utc": bundle.get("generated_at_utc"),
         "verdict": verdict,
         "checks": results,
         "failed": [row["check"] for row in failed],
