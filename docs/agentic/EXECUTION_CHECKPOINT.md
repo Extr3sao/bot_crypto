@@ -1600,7 +1600,8 @@ aislamiento de RFC-005 instalada en cada proceso hijo.
   order_routes=False`. 8 escenarios de abuso, **13 refusals**, **0 llamadas a venue**, 0 HTTP.
 - Reproducibilidad: digest económico idéntico en dos ejecuciones independientes.
 - Verificación independiente (`scripts/verify_paper_e2e.py`, separada del builder): **PASS**,
-  18/18 checks, **11/11 controles negativos rechazados**, evidencia juzgada en `189ffd31`.
+  18/18 checks, **11/11 controles negativos rechazados**; el recibo versionado juzga
+  `bb302b66` y se re-ejecutó sobre `eb11c18b` (el commit del propio recibo) → **PASS**.
 
 **Limitaciones que no se convierten en PASS.**
 
@@ -1617,7 +1618,7 @@ aislamiento de RFC-005 instalada en cada proceso hijo.
 - `pytest tests/unit/market_data` falla 6 tests **solo si** se exporta `TRADING_BOT_MODE=paper`
   (el gate de órdenes refuse por diseño); sin esa variable: 140 passed.
 
-**GITHUB_SYNC.** `REMOTE_BRANCH_SYNCED`: `origin/wp/isolation-005` = `189ffd31` (leído con
+**GITHUB_SYNC.** `REMOTE_BRANCH_SYNCED`: `origin/wp/isolation-005` = `eb11c18b` (leído con
 `ls-remote`), PR abierto en https://github.com/Extr3sao/bot_crypto/pull/17. `MAIN_SYNCED = NO`:
 no se fusiona sobre un pipeline rojo y `main` no contiene el commit. `DELIVERY_STATUS = BLOCKED`
 por esa razón, no por el código.

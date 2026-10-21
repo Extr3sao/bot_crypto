@@ -1,6 +1,6 @@
 # RUN REPORT — WP-003-03 — PAPER end-to-end validation
 
-Generated 2026-10-21T19:45:58Z from `PAPER_E2E_LAB.json`, `VERIFICATION.json` and the pytest log.
+Generated 2026-10-21T19:48:01Z from `PAPER_E2E_LAB.json`, `VERIFICATION.json` and the pytest log.
 
 ## Qué se ejecutó
 
@@ -44,6 +44,7 @@ Generated 2026-10-21T19:45:58Z from `PAPER_E2E_LAB.json`, `VERIFICATION.json` an
 | merge_result | NOT_MERGED: the PR is open and mergeable, but the CI pipeline is red on this branch and red on main since July 2026; merging on a red pipeline is not a quality control. No protection bypass was used and no force push was made. |
 | sync_status | REMOTE_BRANCH_SYNCED |
 | verification_timestamp | 2026-10-21T19:45:00Z |
+
 ## Comandos
 
 ```bash

@@ -50,9 +50,10 @@
 | merge_result | NOT_MERGED: the PR is open and mergeable, but the CI pipeline is red on this branch and red on main since July 2026; merging on a red pipeline is not a quality control. No protection bypass was used and no force push was made. |
 | sync_status | REMOTE_BRANCH_SYNCED |
 | verification_timestamp | 2026-10-21T19:45:00Z |
+
 ## Verificación independiente
 
 - Veredicto: `PASS` (18/18 checks).
 - Controles negativos rechazados: 11/11.
-- Commit juzgado: `798ab78dad6e8e0da07d8e79a85e75503a61b742`.
+- Commit juzgado: `bb302b665a6ccb7e3d71630fa765211296e19c30`.
 

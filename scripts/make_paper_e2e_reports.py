@@ -414,7 +414,7 @@ def main() -> int:
     ]
     for name, value in dimensions.items():
         lines.append(f"| {name} | {value['result']} | {value['basis']} |")
-    lines += ["", "## GITHUB_SYNC", "", *_sync_table(sync)]
+    lines += ["", "## GITHUB_SYNC", "", *_sync_table(sync), ""]
     lines += [
         "## Comandos",
         "",
@@ -462,7 +462,7 @@ def main() -> int:
         final_lines.append(f"| {name} | {value['result']} | {value['basis']} |")
     final_lines += ["", "## Limitaciones (no son PASS)", ""]
     final_lines += [f"- {item}" for item in final_report["limitations"]]
-    final_lines += ["", "## GITHUB_SYNC", "", *_sync_table(sync)]
+    final_lines += ["", "## GITHUB_SYNC", "", *_sync_table(sync), ""]
     final_lines += [
         "## Verificación independiente",
         "",

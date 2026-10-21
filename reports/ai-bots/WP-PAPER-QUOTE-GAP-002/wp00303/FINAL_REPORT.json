@@ -46,7 +46,7 @@
    "result": "PASS"
   }
  },
- "generated_at_utc": "2026-10-21T19:45:58Z",
+ "generated_at_utc": "2026-10-21T19:48:01Z",
  "github_sync": {
   "_measured_by": "git ls-remote origin + GitHub REST API (read-only)",
   "branch_protection": "NONE: GET /branches/main/protection returned 404 'Branch not protected'",
