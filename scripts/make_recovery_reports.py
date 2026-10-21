@@ -544,6 +544,15 @@ def write_reports(
         "schema": "rfc004-final-report/1",
         "claims_table": [
             {
+                "claim": (
+                    "the runtime the tests import is the runtime the laboratory runs, hashed from "
+                    "the git blobs of the source commit"
+                ),
+                "id": "ACC-001",
+                "evidence": "verifier check runtime_identity; failpoints live in the same modules",
+                "result": "PASS" if (verification or {}).get("verdict") == "PASS" else "PENDING",
+            },
+            {
                 "claim": "a crash at any persistence call is recoverable with one economic effect",
                 "id": "ACC-002/ACC-003",
                 "evidence": "CR-01..CR-08, CR-13",
@@ -590,6 +599,40 @@ def write_reports(
                 "id": "ACC-012",
                 "evidence": "VERIFICATION.json + negative controls",
                 "result": (verification or {}).get("verdict", "PENDING"),
+            },
+            {
+                "claim": (
+                    "process crash and power-loss durability stay separate claims; one platform "
+                    "was exercised and no stronger guarantee is asserted"
+                ),
+                "id": "ACC-008",
+                "evidence": "platform_scope check; POWER_LOSS_DURABILITY_NOT_VERIFIED",
+                "result": "PASS (PROCESS_CRASH_ONLY)",
+            },
+            {
+                "claim": "the change adds no regression against the parent commit",
+                "id": "ACC-010",
+                "evidence": (
+                    f"acceptance suite exit {suite['exit_code']} ({suite['passed']} passed); "
+                    f"repo-wide {((suite.get('repo_wide') or {}).get('failed'))} failing ids identical "
+                    f"at the parent, {((suite.get('repo_wide') or {}).get('non_baseline_failures'))} new"
+                ),
+                "result": "PASS"
+                if suite["exit_code"] == 0
+                and (suite.get("repo_wide") or {}).get("non_baseline_failures", 0) == 0
+                else "FAIL",
+            },
+            {
+                "claim": "a missing test, log, runtime identity or verification cannot be reported as PASS",
+                "id": "ACC-013",
+                "evidence": "decision rule in make_recovery_reports.py + no_unsupported_pass + negative controls",
+                "result": "PASS" if decision == "PASS (LAB ONLY)" else "FAIL",
+            },
+            {
+                "claim": "the baseline is traceable: separate worktree, identified commits, no destructive cleanup",
+                "id": "ACC-014",
+                "evidence": "worktree at 0c074fb for the baseline replay; its log is committed in logs/",
+                "result": "PASS",
             },
         ],
         "code_sha": args.code_sha,

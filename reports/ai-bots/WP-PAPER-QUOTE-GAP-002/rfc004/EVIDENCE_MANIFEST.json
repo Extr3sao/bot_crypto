@@ -16,7 +16,7 @@
   {
    "bytes": 26700,
    "path": "ECONOMIC_EQUIVALENCE.json",
-   "sha256": "576ccfb58164fa3ebad9b073a2213261a0c04fbe4b18fc3b16dec0e5003ef0e5"
+   "sha256": "d23dda24b869b5662f26b1e5f0dff1899a399ae1e194f96f847a205919161f4f"
   },
   {
    "bytes": 5806,
@@ -24,9 +24,9 @@
    "sha256": "5a924dc4f8fd61f16f57450ed404ea5047dd46e075ea752b1b2374fb7752b57c"
   },
   {
-   "bytes": 29688,
+   "bytes": 30994,
    "path": "FINAL_REPORT.json",
-   "sha256": "59be5e942b88889afc495f270bb45b19dff3a95c924dd4acd7d5be062d3c42ef"
+   "sha256": "17bc27e486c29aafc97a1f21364561d068003fea051153c2d02c6abe33b06356"
   },
   {
    "bytes": 6370,
@@ -1311,7 +1311,7 @@
   {
    "bytes": 1070,
    "path": "NETWORK_ISOLATION_AUDIT.json",
-   "sha256": "a31adc7652f4641d36c611a1e4444c2327fae047f128625b5f5d56f3c20147ca"
+   "sha256": "d1e493743396d0fa922f073f26ee5b60763219e23b7a6789efd84a88e0063b28"
   },
   {
    "bytes": 5896,
@@ -1336,7 +1336,7 @@
   {
    "bytes": 29827,
    "path": "RUN_REPORT.json",
-   "sha256": "f76fe40dc99d016333e31592f95c15ece2f35cb5d41ef1cf2cc1363233f31faa"
+   "sha256": "6add6b74b9a163e26e8e6d6a00881ca507edc45671e92b51cc8d2b43e1c1c733"
   },
   {
    "bytes": 2677,
@@ -1351,7 +1351,7 @@
   {
    "bytes": 3246,
    "path": "SUITE_IDENTITY.json",
-   "sha256": "6db15ad733f42db88ea532780e5af248f8178649f0f3b7520b23278c3c5082ec"
+   "sha256": "fcf6c0872df1ab19c2a01516a5b10c21cdb771e30b9ce4f7669967ba146202a8"
   },
   {
    "bytes": 4766,
@@ -1359,7 +1359,7 @@
    "sha256": "52dc281d9eacb031b62373fef5af89b3d7628f3b466b75c17c23c2151354a5ed"
   }
  ],
- "generated_at_utc": "2026-10-21T16:12:44Z",
+ "generated_at_utc": "2026-10-21T16:15:24Z",
  "gitignored_files": [],
  "hash_policy": "sha256 of the text with CRLF normalised to LF (core.autocrlf=true; blobs store LF)",
  "hidden_by_ignore_rules": 0,
@@ -1368,5 +1368,5 @@
  "run_id": "rfc004-20261021T150123Z",
  "schema": "rfc004-evidence-manifest/1",
  "source_commit": "33ea87b5a881856e588dfb97e3a305037c2fca6f",
- "total_bytes": 14200428
+ "total_bytes": 14201734
 }

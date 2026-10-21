@@ -8,7 +8,7 @@
   ],
   "equity": 9996.380966197243
  },
- "generated_at_utc": "2026-10-21T16:12:44Z",
+ "generated_at_utc": "2026-10-21T16:15:23Z",
  "mismatched": [],
  "note": "CR-11 is a refusal scenario (its children are expected to leave the tampered book in place); CR-09/CR-10 are compared through their own checks because one child is refused.",
  "scenarios": [

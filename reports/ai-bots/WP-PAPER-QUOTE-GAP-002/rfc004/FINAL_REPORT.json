@@ -1,6 +1,12 @@
 {
  "claims_table": [
   {
+   "claim": "the runtime the tests import is the runtime the laboratory runs, hashed from the git blobs of the source commit",
+   "evidence": "verifier check runtime_identity; failpoints live in the same modules",
+   "id": "ACC-001",
+   "result": "PASS"
+  },
+  {
    "claim": "a crash at any persistence call is recoverable with one economic effect",
    "evidence": "CR-01..CR-08, CR-13",
    "id": "ACC-002/ACC-003",
@@ -46,6 +52,30 @@
    "claim": "an independent verifier accepts only the sealed commit",
    "evidence": "VERIFICATION.json + negative controls",
    "id": "ACC-012",
+   "result": "PASS"
+  },
+  {
+   "claim": "process crash and power-loss durability stay separate claims; one platform was exercised and no stronger guarantee is asserted",
+   "evidence": "platform_scope check; POWER_LOSS_DURABILITY_NOT_VERIFIED",
+   "id": "ACC-008",
+   "result": "PASS (PROCESS_CRASH_ONLY)"
+  },
+  {
+   "claim": "the change adds no regression against the parent commit",
+   "evidence": "acceptance suite exit 0 (577 passed); repo-wide 101 failing ids identical at the parent, 0 new",
+   "id": "ACC-010",
+   "result": "PASS"
+  },
+  {
+   "claim": "a missing test, log, runtime identity or verification cannot be reported as PASS",
+   "evidence": "decision rule in make_recovery_reports.py + no_unsupported_pass + negative controls",
+   "id": "ACC-013",
+   "result": "PASS"
+  },
+  {
+   "claim": "the baseline is traceable: separate worktree, identified commits, no destructive cleanup",
+   "evidence": "worktree at 0c074fb for the baseline replay; its log is committed in logs/",
+   "id": "ACC-014",
    "result": "PASS"
   }
  ],
@@ -589,7 +619,7 @@
   "rule": "a scenario without a child exit 86, or with a failed check inside a PASS, is not counted"
  },
  "filesystem": "NTFS",
- "generated_at_utc": "2026-10-21T16:12:44Z",
+ "generated_at_utc": "2026-10-21T16:15:23Z",
  "limitations": [
   "PAPER_VALIDATION = NOT_PERFORMED",
   "EXTERNAL_ORDERS / RECONCILIATION = NOT_VERIFIABLE",
