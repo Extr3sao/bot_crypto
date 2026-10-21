@@ -41,6 +41,7 @@ ARTEFACTS = (
     "design/PROTOCOL.json",
     "design/PREREGISTRATION.md",
     "design/DESIGN.sha256",
+    "design/PAPER_INTEGRATION_PLAN.md",
     "ORDER_EVENT_SCHEMA.md",
     "ORDER_EVENT_SCHEMA.json",
     "STATE_MACHINE.md",
@@ -231,6 +232,23 @@ DEFECTS = (
             "the gate refuses to run when the worktree path resolves to the repository it is "
             "executing from, and the reproduction verdict is now produced by a separate "
             "comparison script (exp_003p_checkout_compare.py) that reads two directories"
+        ),
+    },
+    {
+        "id": "DEF-003P-08",
+        "severity": "medium",
+        "summary": "the independence audit reported a false negative from a substring scan",
+        "detail": (
+            "`program_independence` was decided by searching the verifier's text for each "
+            "producer module stem. Those stems (\"store\", \"engine\", \"venue\", "
+            "\"reconcile\", \"recorder\", \"contracts\") also occur as ordinary words in "
+            "its prose, so the audit published `program_independence=false` for a verifier "
+            "that imports no `trading_bot` module at all. An audit that understates its own "
+            "separation is still wrong: the claim has to match the code."
+        ),
+        "treatment": (
+            "the scan parses the verifier with `ast` and collects its real imports; the "
+            "markdown heading follows the measured value instead of asserting it"
         ),
     },
 )
@@ -476,7 +494,9 @@ def render_final(data: dict[str, Any], report: dict[str, Any]) -> str:
         f"`{report['dimensions']['CLEAN_CHECKOUT_REPRODUCTION']}` "
         f"({checkout.get('verdict', 'NOT_PERFORMED')})",
         "- **PAPER_VALIDATION**: `BLOCKED_NOT_CONFIGURED` — no authorised paper provider exists "
-        "in this workspace, so nothing here is observed paper execution",
+        "in this workspace, so nothing here is observed paper execution; the minimum "
+        "integration plan and its P1..P10 acceptance checks are in "
+        "`design/PAPER_INTEGRATION_PLAN.md` and were not executed",
         f"- **FALSE_SUCCESS**: `{verification.get('false_success', 0)}`",
         f"- **DEFECTS**: {len(DEFECTS)} found and fixed/declared during the phase",
         f"- **BLOCKERS**: {len(BLOCKERS)}",

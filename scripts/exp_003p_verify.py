@@ -19,6 +19,7 @@ bug hide, because the arithmetic below is written from scratch.
 from __future__ import annotations
 
 import argparse
+import ast
 import hashlib
 import json
 import re
@@ -498,12 +499,19 @@ def independence_audit(out: Path) -> dict[str, Any]:
         REPO / "scripts" / "exp_003p_rehearsal.py",
     ]
     verifier = REPO / "scripts" / "exp_003p_verify.py"
-    verifier_source = verifier.read_text(encoding="utf-8")
-    imported_producer = [
-        path.name
-        for path in producer
-        if path.stem in verifier_source and path.stem != "exp_003p_rehearsal"
-    ]
+    #: A substring scan for module stems is not an import check: "store", "engine" and
+    #: "venue" are ordinary words in this file's prose, so the scan reported the verifier as
+    #: importing the producer when it imports no ``trading_bot`` module at all. Parse the
+    #: imports instead of looking for their names.
+    imported_modules: set[str] = set()
+    for node in ast.walk(ast.parse(verifier.read_text(encoding="utf-8"))):
+        if isinstance(node, ast.Import):
+            imported_modules.update(alias.name for alias in node.names)
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            imported_modules.add(node.module)
+    imported_producer = sorted(
+        name for name in imported_modules if name.startswith("trading_bot")
+    )
     return {
         "schema_version": "AI_BOTS_003P_INDEPENDENCE_V1",
         "program_independence": not imported_producer,
@@ -529,7 +537,8 @@ def independence_audit(out: Path) -> dict[str, Any]:
         ),
         "reused_modules_check": {
             "imports_producer_modules": imported_producer,
-            "verified_by": "string scan of the verifier source for each producer module stem",
+            "imported_modules": sorted(imported_modules),
+            "verified_by": "ast.parse of the verifier source, collecting Import/ImportFrom",
         },
     }
 
@@ -602,7 +611,11 @@ def main(argv: list[str] | None = None) -> int:
                 f"- verifier: `{audit['verifier_program']}` "
                 f"(`{audit['verifier_sha256'][:16]}…`)",
                 "",
-                "## Why program independence holds",
+                (
+                    "## Why program independence holds"
+                    if audit["program_independence"]
+                    else "## Why program independence does not hold"
+                ),
                 "",
                 "The verifier imports the standard library and the frozen contract only. The",
                 "hash chain, the accounting and the state machine are re-implemented inside it",

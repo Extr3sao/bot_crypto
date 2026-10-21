@@ -34,6 +34,7 @@ ARTEFACTS = (
     "design/PROTOCOL.json",
     "design/PREREGISTRATION.md",
     "design/DESIGN.sha256",
+    "design/PAPER_INTEGRATION_PLAN.md",
     "ORDER_EVENT_SCHEMA.md",
     "ORDER_EVENT_SCHEMA.json",
     "STATE_MACHINE.md",
