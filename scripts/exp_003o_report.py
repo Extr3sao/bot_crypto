@@ -225,6 +225,15 @@ def _report(out: Path) -> dict[str, Any]:
         "independent_verifier_verified": verification["checks"]["V8_parity_recomputation"][
             "passed"
         ],
+        "independent_verifier_scope": (
+            "program-level: the verifier recomputes decisions from the bytes and owns its own "
+            "digest, join and controls; it is a second program, not a second author"
+        ),
+        "organizational_independence": False,
+        "organizational_independence_note": (
+            "builder A, builder B and verifier C were written by the same agent in the same session; "
+            "RFC-EXP-003O forbids certifying organizational independence on that basis"
+        ),
         "prefix_invariance": verification["checks"]["V6_prefix_invariance"].get("clean"),
         "fixtures": fixtures,
         "functional_coverage": verification["checks"]["V11_functional_coverage"]["complete"],
@@ -236,6 +245,12 @@ def _report(out: Path) -> dict[str, Any]:
         "false_success_observed": verification["false_success_observed"],
         "tests": tests,
         "clean_checkout_reproduction": reproduction,
+        "cells_without_evaluable_instants": verification["checks"]["V11_functional_coverage"][
+            "cells_without_evaluable_instants"
+        ],
+        "cells_evaluated_without_signal": verification["checks"]["V11_functional_coverage"][
+            "cells_evaluated_without_signal"
+        ],
         "defects": [
             {
                 "id": "DEF-003O-01",
@@ -270,7 +285,62 @@ def _report(out: Path) -> dict[str, Any]:
                 "severity": "medium",
                 "treatment": "declared INSUFFICIENT_EVIDENCE_REAL_WINDOW; functional coverage rests on fixtures",
             },
+            {
+                "id": "DEF-003O-05",
+                "origin": "EXP-003O verifier",
+                "summary": "the verifier's own bar reader disagreed with the producers' arithmetic",
+                "detail": (
+                    "the window digest packs float64 bits; the verifier summed minute volumes with "
+                    "Python's sum while the producers used numpy's pairwise reduction, so 37,224 "
+                    "per-row digests disagreed in both streams. The audit was blaming the producers "
+                    "for a defect in itself."
+                ),
+                "severity": "high",
+                "treatment": (
+                    "reader now uses the same IEEE-754 reduction and a digest-format self-check runs "
+                    "before any declared digest is judged; 0 mismatches after the fix"
+                ),
+            },
+            {
+                "id": "DEF-003O-06",
+                "origin": "EXP-003O verifier",
+                "summary": "negative controls asserted on the first difference class of a one-sided join",
+                "detail": (
+                    "NEG-06 and NEG-10 mutated one side of a join with no counterpart, so the join "
+                    "invented MISSING/EXTRA_EVALUATION and the expected class was never the one read; "
+                    "NEG-07 placed its spurious key on an instant that already existed in both streams."
+                ),
+                "severity": "high",
+                "treatment": (
+                    "each control now mutates a single row inside a complete cell and requires "
+                    "exactly one class with exactly one instance; 12/12 effective"
+                ),
+            },
+            {
+                "id": "DEF-003O-07",
+                "origin": "EXP-003O verifier",
+                "summary": "a cell with no evaluable instant could borrow a quiet cell's zero",
+                "detail": (
+                    "coverage counted cells by zero signals, so the two 4h lane-B cells that are "
+                    "entirely NOT_READY looked identical to a cell that was evaluated 1,083 times "
+                    "and never fired."
+                ),
+                "severity": "high",
+                "treatment": (
+                    "evaluated instants are counted separately from signals; the full certification "
+                    "is INCOMPLETE_REAL_DATA_COVERAGE, not PASS"
+                ),
+            },
+            {
+                "id": "DEF-003O-08",
+                "origin": "EXP-003O tooling",
+                "summary": "report generation crashed on a relative --out path",
+                "detail": "design/PROTOCOL.json was made relative to the repository before being resolved",
+                "severity": "low",
+                "treatment": "every entry point resolves --out first",
+            },
         ],
+        "verifier_defects": ["DEF-003O-05", "DEF-003O-06", "DEF-003O-07", "DEF-003O-08"],
         "blockers": [] if status == "PASS" else ["see status: a required dimension is not PASS"],
         "evidence": sorted(
             str(path.relative_to(out)).replace("\\", "/")
@@ -400,8 +470,15 @@ def _final_md(report: dict[str, Any]) -> str:
         f"{report['pit_rows_audited'].get('independent')} audited rows.",
         f"- {report['negative_controls_effective']}/{report['negative_controls_total']} negative "
         "controls effective and detected.",
-        f"- cells without a real sample: `{', '.join(zero) if zero else 'none'}` — their functional",
-        "  coverage rests on the frozen fixtures, which prove implementation behaviour only.",
+        f"- cells with no evaluable instant at all: "
+        f"`{', '.join(report['cells_without_evaluable_instants']) or 'none'}` — the 46-day window "
+        "never clears their warm-up, so their coverage rests on the frozen fixtures, which prove "
+        "implementation behaviour only.",
+        f"- cells evaluated but silent: "
+        f"`{', '.join(report['cells_evaluated_without_signal']) or 'none'}` — real NO_SIGNAL "
+        "instants compared key by key; a zero here is a compared zero, not a missing sample.",
+        f"- cells with zero signals in the independent stream: "
+        f"`{', '.join(zero) if zero else 'none'}`.",
         "",
         "## TESTS",
         "",
