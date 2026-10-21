@@ -108,6 +108,8 @@ def run_tests(out: Path) -> int:
         "suites": [
             "tests/unit/paper",
             "tests/unit/reports",
+            "tests/unit/autonomous",
+            "tests/integration",
         ],
     }
     commands = {
@@ -125,6 +127,27 @@ def run_tests(out: Path) -> int:
             "-m",
             "pytest",
             "tests/unit/reports",
+            "-q",
+            "-p",
+            "no:cacheprovider",
+        ],
+        #: The autonomous runtime is the entrypoint that constructs PaperBroker for real;
+        #: instrumenting the broker without running its own suite would leave the
+        #: "tested runtime == instrumented runtime" claim on a static reading.
+        "pytest_autonomous": [
+            PYTHON,
+            "-m",
+            "pytest",
+            "tests/unit/autonomous",
+            "-q",
+            "-p",
+            "no:cacheprovider",
+        ],
+        "pytest_integration": [
+            PYTHON,
+            "-m",
+            "pytest",
+            "tests/integration",
             "-q",
             "-p",
             "no:cacheprovider",
@@ -290,6 +313,10 @@ def run_checkout_check(
             str(reproduced_out / "NEGATIVE_CONTROLS.json"),
         ],
         ["scripts/exp_003p_verify.py", "--out", str(reproduced_out)],
+        #: The suites are re-run *in the checkout* with the checkout's interpreter: a
+        #: reproduction that only re-ran the rehearsal would leave the code path the tests
+        #: exercise unverified in the tree that is supposed to reproduce it.
+        ["scripts/exp_003p_pipeline.py", "tests", "--out", str(reproduced_out)],
     )
     executed: list[dict[str, Any]] = []
     for phase in phases:

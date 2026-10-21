@@ -190,6 +190,36 @@ def compare(published: Path, reproduced: Path) -> dict[str, Any]:
     if not same_controls:
         failures.append("controls")
 
+    published_tests = (
+        read_json(published / "evidence" / "TESTS.json")
+        if (published / "evidence" / "TESTS.json").exists()
+        else {}
+    )
+    reproduced_tests = (
+        read_json(reproduced / "evidence" / "TESTS.json")
+        if (reproduced / "evidence" / "TESTS.json").exists()
+        else {}
+    )
+    published_codes = {
+        key: value.get("exit_code")
+        for key, value in (published_tests.get("results") or {}).items()
+        if isinstance(value, dict)
+    }
+    reproduced_codes = {
+        key: value.get("exit_code")
+        for key, value in (reproduced_tests.get("results") or {}).items()
+        if isinstance(value, dict)
+    }
+    same_tests = bool(published_codes) and published_codes == reproduced_codes
+    comparisons["tests"] = {
+        "identical_exit_codes": same_tests,
+        "state_published": published_tests.get("state"),
+        "state_reproduced": reproduced_tests.get("state"),
+        "exit_codes": reproduced_codes,
+    }
+    if not same_tests or reproduced_tests.get("state") != "PASS":
+        failures.append("tests")
+
     published_recon = read_json(published / "RECONCILIATION.json")
     reproduced_recon = read_json(reproduced / "RECONCILIATION.json")
     same_recon = published_recon.get("result") == reproduced_recon.get("result") and (
