@@ -20,6 +20,12 @@ latest bar that could still legitimately arrive has arrived, so that sealing a d
 premature. Sealing early is how a backfill would get promoted: the missing bars would be added
 later with a lag that disqualifies them, but the attestation would already say the day was
 complete.
+
+The two conditions of RFC-050 section 3 are **independent** and are not given the same tolerance.
+The 90 % budget answers *how many bars are present*; the lag test answers *whether every stored bar
+was watched*. Applying the budget to the lag as well would admit a day that lost 10 % of its bars
+to lateness, which is the same collapse of two failures into one number that this module exists to
+prevent. WP-051-02C corrected exactly that: see :data:`RULE_VERSION`.
 """
 
 from __future__ import annotations
@@ -37,6 +43,7 @@ __all__ = [
     "INCOMPLETE",
     "PENDING",
     "PROSPECTIVELY_OBSERVED",
+    "RULE_VERSION",
     "Accumulation",
     "DayAdmission",
     "accumulate",
@@ -45,6 +52,11 @@ __all__ = [
     "intersection_epoch",
     "utc_date",
 ]
+
+#: The semantics this module implements. ``V2`` makes the lag condition universal over the stored
+#: bars; ``V1`` applied the 90 % coverage budget to it and is preserved only in the historical
+#: ledger, which is not rewritten.
+RULE_VERSION = "RFC-050-S3-UNIVERSAL-LAG/V2"
 
 PROSPECTIVELY_OBSERVED = "PROSPECTIVELY_OBSERVED"
 DENSE_BUT_BACKFILLED = "DENSE_BUT_BACKFILLED"
@@ -92,6 +104,7 @@ class SeriesDay:
     stored: int
     prospective: int
     byte_end: int | None
+    duplicates: int = 0
 
     @property
     def stored_coverage(self) -> float:
@@ -101,6 +114,16 @@ class SeriesDay:
     def prospective_coverage(self) -> float:
         return round(self.prospective / self.expected, 6) if self.expected else 0.0
 
+    @property
+    def all_bars_prospective(self) -> bool:
+        """Every stored bar was closed and inside its bound.
+
+        This is RFC-050 section 3's second condition applied to the whole set. It is deliberately a
+        universal and not a ratio: a day with 22 of 24 timely bars is not 91.7 % observed, it is a
+        day on which two bars arrived late.
+        """
+        return self.stored > 0 and self.prospective == self.stored
+
     def as_dict(self) -> dict[str, Any]:
         return {
             "interval": self.interval,
@@ -109,6 +132,8 @@ class SeriesDay:
             "prospectively_observed_bars": self.prospective,
             "stored_coverage": self.stored_coverage,
             "prospective_coverage": self.prospective_coverage,
+            "all_bars_prospective": self.all_bars_prospective,
+            "duplicate_bars": self.duplicates,
             "byte_end": self.byte_end,
         }
 
@@ -157,6 +182,12 @@ def classify_day(
     ``indexes`` is the complete set of series the experiment declares. A series with no bar
     for the day is reported as zero stored bars, not skipped: skipping a missing series is how
     a two-asset day gets counted as a three-asset one.
+
+    A day is ``PROSPECTIVELY_OBSERVED`` only when every declared series holds at least
+    ``coverage_required`` of the calendar's bars **and every stored bar is closed and inside its
+    lag bound**. Absence is judged by coverage; lateness is judged by the universal. The two are
+    never traded against each other. A duplicated open instant makes the day ``INCOMPLETE``: the
+    store cannot show one bar per slot, so it cannot be evidence of coverage.
     """
     if not indexes:
         raise ValueError("a day cannot be classified against no series")
@@ -170,6 +201,9 @@ def classify_day(
             raise ValueError(f"no lag bound declared for {index.interval!r}") from error
         bars = index.bars_on(day)
         prospective = sum(1 for bar in bars if bar.closed and 0 <= bar.lag_ms <= bound)
+        # Two records for one open instant cannot be two observations; a duplicated timely bar can
+        # mask a missing one. The store has no deduplication contract, so the day fails closed.
+        duplicates = len(bars) - len({bar.open_ms for bar in bars})
         rows.append(
             SeriesDay(
                 interval=index.interval,
@@ -178,12 +212,15 @@ def classify_day(
                 stored=len(bars),
                 prospective=prospective,
                 byte_end=index.day_end(day),
+                duplicates=duplicates,
             )
         )
 
     dense = all(row.stored_coverage >= coverage_required for row in rows)
-    observed = all(row.prospective_coverage >= coverage_required for row in rows)
-    if not dense:
+    # Condition (2) is universal over the stored bars; the 90 % budget belongs to presence only.
+    observed = all(row.all_bars_prospective for row in rows)
+    duplicated = any(row.duplicates > 0 for row in rows)
+    if duplicated or not dense:
         classification = INCOMPLETE
     elif observed:
         classification = PROSPECTIVELY_OBSERVED

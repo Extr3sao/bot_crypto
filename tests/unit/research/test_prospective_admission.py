@@ -122,11 +122,121 @@ def test_lag_boundary_is_inclusive(tmp_path: Path) -> None:
 
 
 def test_ninety_percent_coverage_is_the_threshold(tmp_path: Path) -> None:
-    """22 of 24 is 0.9167 and passes; 21 of 24 is 0.875, which is not even dense."""
+    """22 of 24 is 0.9167 and passes; 21 of 24 is 0.875, which is not even dense.
+
+    The 22 present bars are timely, so this is a *presence* shortfall inside the budget, not a
+    lateness tolerance. WP-051-02C kept this behaviour and removed the other one.
+    """
     passing = _index(_write(tmp_path / "a.jsonl", skip=(0, 1)), "BTC")
     failing = _index(_write(tmp_path / "b.jsonl", skip=(0, 1, 2)), "BTC")
     assert classify_day(DAY, [passing]).classification == "PROSPECTIVELY_OBSERVED"
     assert classify_day(DAY, [failing]).classification == INCOMPLETE
+
+
+def _append(
+    path: Path,
+    *,
+    ts: int,
+    interval: str = "1h",
+    lag_ms: int = 60_000,
+    closed: bool = True,
+    marker: int = 0,
+) -> None:
+    span = HOUR if interval == "1h" else 900_000
+    with path.open("a", encoding="utf-8", newline="\n") as handle:
+        handle.write(
+            json.dumps(
+                {
+                    "ts": ts,
+                    "interval": interval,
+                    "closed": closed,
+                    "fetched_at_ms": ts + span + lag_ms,
+                    "payload_sha256": f"{marker:064x}",
+                }
+            )
+            + "\n"
+        )
+
+
+def test_two_late_bars_reject_a_dense_day_inside_the_coverage_budget(tmp_path: Path) -> None:
+    """WP-051-02C regression: 22 timely bars plus 2 that arrived 3 h late is not observed.
+
+    The day is dense (24/24 stored) and 91.7 % of its bars are inside the bound, so the old
+    ``prospective_coverage >= 0.90`` test admitted it. The protocol's second condition is universal.
+    """
+    path = tmp_path / "BTC.jsonl"
+    _write(path, skip=(0, 1))
+    base = int(datetime.fromisoformat(f"{DAY}T00:00:00+00:00").timestamp() * 1000)
+    for offset in (0, 1):
+        _append(path, ts=base + offset * HOUR, lag_ms=3 * HOUR, marker=offset)
+    day = classify_day(DAY, [_index(path, "BTC")])
+    assert day.series[0].stored == 24
+    assert day.series[0].prospective == 22
+    assert round(day.series[0].prospective_coverage, 6) == 0.916667
+    assert day.series[0].all_bars_prospective is False
+    assert day.classification == DENSE_BUT_BACKFILLED
+    assert day.admissible is False
+
+
+def test_one_late_fifteen_minute_bar_rejects_the_joint_day(tmp_path: Path) -> None:
+    """95 of 96 timely is 99 %, and still not observation: one window was missed."""
+    path = tmp_path / "BTC.jsonl"
+    _write(path, interval="15m", count=96, skip=(0,))
+    base = int(datetime.fromisoformat(f"{DAY}T00:00:00+00:00").timestamp() * 1000)
+    _append(path, ts=base, interval="15m", lag_ms=45 * 60_000, marker=1)
+    day = classify_day(DAY, [index_series(path, "BTC", "15m")], lag_bounds={"15m": 1_800_000})
+    assert day.series[0].stored == 96
+    assert day.series[0].prospective == 95
+    assert day.classification == DENSE_BUT_BACKFILLED
+
+
+def test_presence_and_lateness_are_not_traded_against_each_other(tmp_path: Path) -> None:
+    """Two failures at once stay two failures; neither fills in for the other."""
+    path = tmp_path / "BTC.jsonl"
+    _write(path, skip=(0, 1, 2))
+    base = int(datetime.fromisoformat(f"{DAY}T00:00:00+00:00").timestamp() * 1000)
+    _append(path, ts=base, lag_ms=3 * HOUR, marker=1)
+    _append(path, ts=base + HOUR, lag_ms=3 * HOUR, marker=2)
+    day = classify_day(DAY, [_index(path, "BTC")])
+    # 23 stored of 24 (0.958) with two of them late: dense, and still not observed.
+    assert day.classification == DENSE_BUT_BACKFILLED
+
+
+def test_an_unclosed_bar_rejects_the_day_even_when_coverage_is_full(tmp_path: Path) -> None:
+    path = tmp_path / "BTC.jsonl"
+    _write(path)
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+    rows[7]["closed"] = False
+    path.write_text("\n".join(json.dumps(row) for row in rows) + "\n", encoding="utf-8")
+    day = classify_day(DAY, [_index(path, "BTC")])
+    assert day.series[0].stored == 24
+    assert day.series[0].prospective == 23
+    assert day.classification == DENSE_BUT_BACKFILLED
+
+
+def test_a_negative_lag_is_not_observation(tmp_path: Path) -> None:
+    """A bar stored before it closed is impossible; it fails closed rather than counting as early."""
+    index = _index(_write(tmp_path / "BTC.jsonl", lag_ms=-1), "BTC")
+    assert classify_day(DAY, [index]).classification == DENSE_BUT_BACKFILLED
+
+
+def test_a_duplicated_bar_makes_the_day_incomplete(tmp_path: Path) -> None:
+    """Two records for one instant can mask a missing bar, so the day cannot be evidence."""
+    path = tmp_path / "BTC.jsonl"
+    _write(path, skip=(0,))
+    base = int(datetime.fromisoformat(f"{DAY}T00:00:00+00:00").timestamp() * 1000)
+    _append(path, ts=base + HOUR, lag_ms=60_000, marker=99)
+    day = classify_day(DAY, [_index(path, "BTC")])
+    assert day.series[0].stored == 24
+    assert day.series[0].duplicates == 1
+    assert day.classification == INCOMPLETE
+    assert day.admissible is False
+
+
+def test_the_rule_version_is_recorded_for_the_sidecar() -> None:
+    from trading_bot.research.prospective.admission import RULE_VERSION
+
+    assert RULE_VERSION == "RFC-050-S3-UNIVERSAL-LAG/V2"
 
 
 def test_a_missing_series_is_not_silently_skipped(tmp_path: Path) -> None:
