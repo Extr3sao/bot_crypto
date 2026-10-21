@@ -53,6 +53,7 @@ from trading_bot.research.economic_recovery.alpha15 import cost_for
 from trading_bot.research.equity_drawdown import max_drawdown
 from trading_bot.risk.manager import RiskManager
 from trading_bot.strategies.types import Side, Signal
+from trading_bot.vision import failpoints
 from trading_bot.vision.chart import ChartImage, render_chart_png, window_fingerprint
 from trading_bot.vision.clock import bar_close_ms, information_ms, timeframe_ms
 from trading_bot.vision.contract import (
@@ -341,6 +342,11 @@ class VisionLane:
         # -- durable book ---------------------------------------------------------
         #: Where the book is written, and the reconciled answer to "may this run continue".
         self.book_store = book_store
+        #: What :meth:`LaneBookStore.recover` found on disk when this session adopted the
+        #: book. ``None`` when the lane is not durable or did not resume. It is published in
+        #: the summary because "no change" and "recovered from a lagging log" are different
+        #: claims, and only one of them is true after a crash.
+        self.store_recovery: dict[str, Any] | None = None
         self.session_id = session_id or uuid.uuid4().hex[:12]
         self.session_index = 1
         self.session_ids: list[str] = [self.session_id]
@@ -528,6 +534,11 @@ class VisionLane:
                 "risk_daily_pnl_after": round(float(self.risk.daily_pnl), 8),
                 "risk_weekly_pnl_after": round(float(self.risk.weekly_pnl), 8),
             },
+            #: The economic identity of this close. A resume after a crash re-executes the
+            #: bar whose book never landed, so the same exit is computed twice; the ledger
+            #: recognises the identity and leaves the first row alone instead of writing a
+            #: second CLOSE for one effect.
+            operation_id=f"{self.book_id}|CLOSE|{trade.position_id}",
         )
         self._bump("closed_trades")
         if resolution == "OPEN_GAP":
@@ -1156,6 +1167,7 @@ class VisionLane:
                 "stop_loss_pct": float(sized.stop_loss_pct),
                 "take_profit_pct": float(sized.take_profit_pct),
             },
+            operation_id=f"{self.book_id}|FILL|{position_id}",
         )
         self._bump("fills")
         return "RESOLVED"
@@ -1616,6 +1628,20 @@ class VisionLane:
                 )
             )
         if applied:
+            #: A realisation turns the mark into cash, and ``risk.equity`` was restored from
+            #: the book's *marked* equity. Recording the realised PnL on top of it therefore
+            #: counted the closed leg twice: the position's unrealised move was still inside
+            #: the number the close converted. The bar loop re-marks from the broker on every
+            #: bar (``RiskManager.mark_equity`` assigns, it does not add), but a reconstruction
+            #: happens *outside* that loop — so without this line the commit taken between the
+            #: reconstruction and the next bar published a book whose ``risk_equity``
+            #: disagreed with its ``marked_equity``, and ``reconcile_book`` refused to resume
+            #: it (``RISK_MISMATCH``). The account was fail-closed and stuck: measured at
+            #: 9997.26097534 against 9996.3809662 on the RFC004 seed, i.e. 0.8797 of
+            #: unrealised PnL charged as if it were cash.
+            self.risk.mark_equity(
+                float(self.broker.mark_to_market_equity(dict(self._marks)))
+            )
             #: A close is durable when it reaches the book, not when it reaches memory.
             self._commit()
         return applied
@@ -1686,6 +1712,18 @@ class VisionLane:
             gap=self._assess_gap(book, barrier, timeline),
         )
         self.recovery = report
+        if self.book_store is not None and book is not None:
+            #: A diagnosis, not a second gate: ``reconcile_book`` decides whether the
+            #: session may continue, and this says what the disk looked like when it did.
+            #: Its refusals (corruption, an unnameable generation) are already fatal here
+            #: because ``load()`` raised before this point.
+            #:
+            #: ``check_lock=False`` porque el cerrojo que encuentra es el de esta misma
+            #: sesión; y sin ``ledger_path`` porque el ledger de una sesión no puede probar
+            #: nada sobre los cierres que comprometió un proceso anterior. La conciliación
+            #: libro↔ledger es una operación explícita sobre el ledger de toda la cuenta
+            #: (laboratorio, auditoría, verificador), no una inferencia del carril.
+            self.store_recovery = self.book_store.recover(check_lock=False)
         self._gap_plan = None if report.reconstruction is None else dict(report.reconstruction)
         if report.status == RecoveryStatus.BLOCKED:
             raise RecoveryBlocked(report)
@@ -1840,6 +1878,15 @@ class VisionLane:
         if self._barrier_ms is None:
             return None
         body = self._book_body(session_end=session_end)
+        #: Everything this bar did is in memory and, for the economic rows, already in the
+        #: ledger. Nothing of it is committed until the book lands, which is why this is the
+        #: failpoint that separates "has an effect" from "has no effect".
+        failpoints.trigger(
+            "bar.before_commit",
+            path=store.directory,
+            closed_trades=len(body["closed_trades"]),
+            session_end=bool(session_end),
+        )
         book = store.save(body)
         self._committed_digest = book.state_digest
         store.event(
@@ -1858,6 +1905,12 @@ class VisionLane:
                 "pending": len(body["pending"]),
                 "session_end": bool(session_end),
             },
+        )
+        failpoints.trigger(
+            "bar.after_commit",
+            path=store.directory,
+            closed_trades=len(body["closed_trades"]),
+            session_end=bool(session_end),
         )
         return book
 
@@ -1928,6 +1981,7 @@ class VisionLane:
             "calls": self.calls_made,
             "estimated_spend_usd": round(self.spend_usd, 6),
             "stop_reason": self.stop_reason,
+            "store_recovery": self.store_recovery,
             # ``fills`` counts openings, not closed trades: a fill that is still open at
             # the end of the run is a fill, and reporting only closes would hide it.
             "fills": int(self.counters.get("fills", 0)),

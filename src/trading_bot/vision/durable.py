@@ -58,6 +58,7 @@ from typing import Any
 
 import structlog
 
+from trading_bot.vision import failpoints
 from trading_bot.vision.gap_recovery import GapAssessment
 
 __all__ = [
@@ -72,6 +73,7 @@ __all__ = [
     "RecoveryStatus",
     "SessionBusy",
     "SessionLock",
+    "StoreRecoveryStatus",
     "book_digest",
     "closed_digest",
     "contract_from",
@@ -362,11 +364,13 @@ class SessionLock:
                     age_s=round(age_s, 1),
                 )
             self._acquired = True
+            failpoints.trigger("lock.after_acquire", path=self.path, takeover=True)
             return self
         os.write(fd, payload)
         os.fsync(fd)
         os.close(fd)
         self._acquired = True
+        failpoints.trigger("lock.after_acquire", path=self.path, takeover=False)
         return self
 
     def _read(self) -> dict[str, Any] | None:
@@ -406,6 +410,9 @@ class LaneBookStore:
     def __init__(self, directory: Path | str) -> None:
         self._dir = Path(directory)
         self._log = structlog.get_logger("vision_lane_book")
+        #: Set when a torn event row was dropped. Reported by :meth:`recover` so a repair
+        #: is always visible as one.
+        self.events_repair: dict[str, Any] | None = None
 
     @property
     def directory(self) -> Path:
@@ -509,11 +516,23 @@ class LaneBookStore:
             "body": body,
         }
         payload = json.dumps(doc, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        closed_trades = len(body.get("closed_trades") or [])
+        #: ``closed_trades`` is the context a crash matrix needs: "the write that first
+        #: carries a close" is a different window from "the first write of the run".
+        failpoints.trigger(
+            "book.before_save", path=self._dir, closed_trades=closed_trades, barrier=body.get("barrier", {}).get("bar_open_ms")
+        )
         tmp = self.path.with_suffix(".json.tmp")
         with open(tmp, "wb") as handle:
             handle.write(payload)
+            failpoints.trigger(
+                "book.after_tmp_write", path=self._dir, closed_trades=closed_trades
+            )
             handle.flush()
             os.fsync(handle.fileno())
+        failpoints.trigger(
+            "book.after_tmp_fsync", path=self._dir, closed_trades=closed_trades
+        )
         if self.path.exists():
             #: A copy, not a rename. Rotating the current book out of the way and then
             #: replacing it has a window in which ``BOOK.json`` does not exist: a crash
@@ -522,8 +541,15 @@ class LaneBookStore:
             #: book at ``BOOK.json`` for the whole write, and the copy is fsynced so the
             #: fallback generation is durable too.
             self._copy_previous()
+            failpoints.trigger(
+                "book.after_prev_copy", path=self._dir, closed_trades=closed_trades
+            )
         os.replace(tmp, self.path)
+        failpoints.trigger("book.after_replace", path=self._dir, closed_trades=closed_trades)
         self._fsync_dir()
+        failpoints.trigger(
+            "book.after_dir_fsync", path=self._dir, closed_trades=closed_trades
+        )
         return LaneBook(
             body=body,
             digest=digest,
@@ -560,20 +586,319 @@ class LaneBookStore:
         """
         self._dir.mkdir(parents=True, exist_ok=True)
         row = {"kind": kind, "at_ms": _now_ms(), **payload}
+        self._repair_events_tail()
+        with self.events_path.open("a", encoding="utf-8", newline="\n") as handle:
+            handle.write(json.dumps(row, sort_keys=True) + "\n")
+            failpoints.trigger("event.after_write", path=self._dir, kind=kind)
+            handle.flush()
+            os.fsync(handle.fileno())
+        failpoints.trigger("event.after_fsync", path=self._dir, kind=kind)
+
+    def events(self) -> list[dict[str, Any]]:
+        """Every committed event row.
+
+        A trailing row that does not parse is the signature of a process killed inside
+        ``event()``. It is not committed and it is not reported as if it were: it is
+        skipped, and :meth:`recover` names it. A bad row with a good one after it is an
+        edit and raises, because silently skipping it would rewrite history.
+        """
+        if not self.events_path.exists():
+            return []
+        out: list[dict[str, Any]] = []
+        raw = self.events_path.read_bytes()
+        lines = [line for line in raw.split(b"\n") if line.strip()]
+        for index, line in enumerate(lines):
+            try:
+                out.append(json.loads(line.decode("utf-8")))
+            except (ValueError, UnicodeDecodeError):
+                if index == len(lines) - 1:
+                    self.events_repair = {
+                        "reason": "TORN_TAIL",
+                        "dropped_bytes": len(line),
+                        "lines_kept": len(out),
+                    }
+                    break
+                raise CorruptBook(
+                    f"{self.events_path} line {index + 1} does not parse and is not the "
+                    "last one: the commit log was edited"
+                ) from None
+        return out
+
+    def _repair_events_tail(self) -> None:
+        """Drop a tail that a killed process left half-written, and say that it did.
+
+        The truncation is recorded as a ``REPAIR`` row *in the log itself* after the cut,
+        so the absence of a commit cannot be mistaken for a log that never had one.
+        """
+        if not self.events_path.exists():
+            return
+        raw = self.events_path.read_bytes()
+        if not raw or raw.endswith(b"\n"):
+            return
+        cut = raw.rfind(b"\n") + 1
+        dropped = raw[cut:]
+        with self.events_path.open("r+b") as handle:
+            handle.truncate(cut)
+            handle.flush()
+            os.fsync(handle.fileno())
+        self.events_repair = {
+            "reason": "TORN_TAIL",
+            "dropped_bytes": len(dropped),
+            "dropped_preview": dropped[:120].decode("utf-8", "replace"),
+        }
+        row = {"kind": "REPAIR", "at_ms": _now_ms(), **self.events_repair}
         with self.events_path.open("a", encoding="utf-8", newline="\n") as handle:
             handle.write(json.dumps(row, sort_keys=True) + "\n")
             handle.flush()
             os.fsync(handle.fileno())
 
-    def events(self) -> list[dict[str, Any]]:
-        if not self.events_path.exists():
-            return []
-        out: list[dict[str, Any]] = []
-        with self.events_path.open("r", encoding="utf-8") as handle:
-            for raw in handle:
-                if raw.strip():
-                    out.append(json.loads(raw))
-        return out
+    # -- recovery -------------------------------------------------------------
+
+    def recover(
+        self,
+        *,
+        ledger_path: Path | str | None = None,
+        check_lock: bool = True,
+    ) -> dict[str, Any]:
+        """Classify what a resume finds, in the vocabulary the RFC asks for.
+
+        This is a diagnosis, not a repair of the economics. It answers, separately:
+
+        * is there a book at all (:data:`StoreRecoveryStatus.NO_CHANGE` when the account
+          is fresh)?
+        * is the generation on disk *nameable* (a ``.prev`` without a ``BOOK.json`` is not
+          "an older book", it is an interrupted rotation: ambiguous, refused)?
+        * did the process die between the atomic replace and the ``COMMIT`` event? The book
+          is authoritative and carries its own digest, so the lag is recoverable and is
+          reported as such, not invented as a rollback;
+        * does the ledger (the projection) agree with the book? Missing committed rows are
+          corruption; extra rows are the *expected* residue of a crash between the ledger
+          fsync and the book replace, and are named one by one;
+        * what can this platform actually promise about power loss?
+
+        ``check_lock=False`` is for a caller that already holds the lock (the lane holds it
+        for the whole session): the lock file it finds is its own, and reporting
+        ``BLOCKED_LOCK`` there would turn a normal session into a false alarm.
+        ``ledger_path`` is only meaningful when the file is the ledger of *this book's whole
+        life*; a per-session ledger cannot prove anything about closes committed by an
+        earlier process, so the caller decides.
+        """
+        checks: list[dict[str, Any]] = []
+        report: dict[str, Any] = {
+            "status": StoreRecoveryStatus.NO_CHANGE,
+            "code": None,
+            "detail": "",
+            "checks": checks,
+            "book_digest": None,
+            "state_digest": None,
+            "barrier_ms": None,
+            "orphan_tmp": False,
+            "commit_event_lag": False,
+            "events_repair": None,
+            "ledger": None,
+            "platform": {
+                "os": os.name,
+                "directory_fsync": "unsupported" if os.name == "nt" else "attempted",
+                "power_loss_scope": "POWER_LOSS_DURABILITY_NOT_VERIFIED",
+            },
+        }
+
+        def add(name: str, ok: bool, detail: str) -> None:
+            checks.append({"check": name, "ok": bool(ok), "detail": detail})
+
+        tmp = self.path.with_suffix(".json.tmp")
+        report["orphan_tmp"] = tmp.exists()
+        add(
+            "orphan_tmp_absent",
+            True,
+            "no temporary book left behind"
+            if not tmp.exists()
+            else f"{tmp.name} exists and is not adopted: a partial write is never a state",
+        )
+
+        if not self.path.exists():
+            if self.prev_path.exists() or tmp.exists():
+                add(
+                    "current_generation_nameable",
+                    False,
+                    f"{self.path.name} is missing while "
+                    + ", ".join(
+                        name for name, present in ((self.prev_path.name, self.prev_path.exists()), (tmp.name, tmp.exists())) if present
+                    )
+                    + " exist(s)",
+                )
+                report.update(
+                    status=StoreRecoveryStatus.REFUSED_AMBIGUOUS_COMMIT,
+                    code="CURRENT_GENERATION_MISSING",
+                    detail=(
+                        "the book that is current cannot be named: a write was interrupted "
+                        "between generations and neither the previous file nor the temporary "
+                        "one is proof of which one committed"
+                    ),
+                )
+                return report
+            add("book_present", True, "no book on disk: this session starts the account")
+            report["detail"] = "no durable book: nothing to recover"
+            return report
+
+        try:
+            book = self.load()
+        except CorruptBook as exc:
+            add("book_loadable", False, str(exc))
+            report.update(
+                status=StoreRecoveryStatus.REFUSED_CORRUPTION,
+                code="BOOK_NOT_TRUSTWORTHY",
+                detail=str(exc),
+            )
+            return report
+        assert book is not None
+        add(
+            "book_loadable",
+            True,
+            f"{self.path.name} parses and matches its own digest {book.digest[:12]}",
+        )
+        report.update(
+            book_digest=book.digest, state_digest=book.state_digest, barrier_ms=book.barrier_ms
+        )
+
+        events = self.events()
+        report["events_repair"] = self.events_repair
+        commits = [row for row in events if row.get("kind") == "COMMIT"]
+        congruent = bool(commits) and str(commits[-1].get("digest")) == book.digest
+        report["commit_event_lag"] = not congruent
+        add(
+            "commit_event_congruent",
+            True,
+            f"the last COMMIT event carries this book's digest {book.digest[:12]}"
+            if congruent
+            else (
+                "the book is ahead of its commit log (replace landed, event did not): the "
+                "book is authoritative and carries its own digest, so the merge is a log "
+                "entry, not a rollback"
+            ),
+        )
+
+        changed = bool(report["orphan_tmp"]) or report["commit_event_lag"] or bool(
+            report["events_repair"]
+        )
+
+        if ledger_path is not None:
+            ledger = self._ledger_projection(book, Path(ledger_path))
+            report["ledger"] = ledger
+            add(
+                "ledger_projection_consistent",
+                not ledger["missing"] and not ledger["duplicates"],
+                ledger["detail"],
+            )
+            if ledger["missing"] or ledger["duplicates"]:
+                report.update(
+                    status=StoreRecoveryStatus.REFUSED_CORRUPTION,
+                    code="PROJECTION_BEHIND_AUTHORITY"
+                    if ledger["missing"]
+                    else "DUPLICATE_OPERATION",
+                    detail=ledger["detail"],
+                )
+                return report
+            if ledger["uncommitted"]:
+                changed = True
+
+        held = self._lock_held() if check_lock else False
+        add(
+            "lock_state",
+            True,
+            "the caller holds the lock for this session"
+            if not check_lock
+            else (
+                "no live writer holds the book"
+                if not held
+                else f"{self.lock_path.name} is held by a live process: a resume must wait"
+            ),
+        )
+        if held:
+            report.update(
+                status=StoreRecoveryStatus.BLOCKED_LOCK,
+                code="LOCK_HELD",
+                detail=(
+                    f"{self.lock_path} names a pid that is still alive; a second writer "
+                    "would trade the same bar twice"
+                ),
+            )
+            return report
+
+        if changed:
+            report.update(
+                status=StoreRecoveryStatus.RECOVERED,
+                detail=(
+                    "the committed book is intact and was reconciled with its log and "
+                    "projection; nothing was replayed and no effect was re-applied"
+                ),
+            )
+        else:
+            report["detail"] = "the book, its commit log and its projection already agree"
+        return report
+
+    def _lock_held(self) -> bool:
+        if not self.lock_path.exists():
+            return False
+        try:
+            holder = json.loads(self.lock_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return True
+        return pid_alive(int(holder.get("pid", 0) or 0)) is not False
+
+    def _ledger_projection(self, book: LaneBook, ledger_path: Path) -> dict[str, Any]:
+        """Compare the committed book with the rows the ledger claims.
+
+        The book is the authority (a close exists iff it is in ``closed_trades``). The
+        ledger is at-least-once by construction: a crash after its fsync and before the
+        book replace leaves rows the account never committed, and a resume re-executes
+        exactly those. So *extra* rows are named and tolerated; *missing* committed rows
+        and *duplicate* operation identities are refused.
+        """
+        rows: list[dict[str, Any]] = []
+        if ledger_path.exists():
+            for line in ledger_path.read_bytes().split(b"\n"):
+                if not line.strip():
+                    continue
+                try:
+                    rows.append(json.loads(line.decode("utf-8")))
+                except (ValueError, UnicodeDecodeError):
+                    continue
+        seen: dict[str, int] = {}
+        for row in rows:
+            entry = dict(row.get("entry") or {})
+            operation_id = str(entry.get("operation_id") or "")
+            if operation_id:
+                seen[operation_id] = seen.get(operation_id, 0) + 1
+        duplicates = sorted(key for key, count in seen.items() if count > 1)
+        #: Every economic operation the book says happened: the close of a position and the
+        #: fill that opened it, including positions still open (their FILL is committed even
+        #: though their CLOSE does not exist yet). Comparing closes alone turned every open
+        #: position's fill into a phantom "uncommitted row".
+        closed_ids = {str(row.get("position_id", "")) for row in book.closed_trades}
+        open_ids = {str(row.get("position_id", "")) for row in book.open_positions}
+        committed = {f"{book.book_id}|CLOSE|{position_id}" for position_id in closed_ids}
+        committed |= {
+            f"{book.book_id}|FILL|{position_id}" for position_id in closed_ids | open_ids
+        }
+        missing = sorted(committed - set(seen))
+        uncommitted = sorted(set(seen) - committed)
+        detail = (
+            f"{len(seen)} operation row(s) in the ledger, {len(committed)} committed "
+            f"operation(s); missing={len(missing)} uncommitted={len(uncommitted)} "
+            f"duplicates={len(duplicates)}"
+        )
+        return {
+            "path": str(ledger_path),
+            "rows": len(rows),
+            "operations": len(seen),
+            "committed_operations": len(committed),
+            "committed_closes": len(closed_ids),
+            "missing": missing,
+            "uncommitted": uncommitted,
+            "duplicates": duplicates,
+            "detail": detail,
+        }
 
 
 # -- recovery -------------------------------------------------------------------
@@ -585,6 +910,21 @@ class RecoveryStatus:
     FRESH = "FRESH"
     RECOVERED = "RECOVERED"
     BLOCKED = "BLOCKED"
+
+
+class StoreRecoveryStatus:
+    """What a *store-level* resume found. Separate from :class:`RecoveryStatus`.
+
+    ``RecoveryStatus`` answers "may this session continue at this bar?", which needs the
+    market data. This one answers "what does the disk say?", which does not — and a
+    verifier has to be able to ask the second question without a dataset.
+    """
+
+    NO_CHANGE = "NO_CHANGE"
+    RECOVERED = "RECOVERED"
+    REFUSED_CORRUPTION = "REFUSED_CORRUPTION"
+    REFUSED_AMBIGUOUS_COMMIT = "REFUSED_AMBIGUOUS_COMMIT"
+    BLOCKED_LOCK = "BLOCKED_LOCK"
 
 
 @dataclass(frozen=True, slots=True)

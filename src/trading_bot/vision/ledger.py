@@ -33,6 +33,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from trading_bot.vision import failpoints
 from trading_bot.vision.durable import pid_alive
 
 
@@ -75,15 +76,40 @@ class LedgerLockedError(RuntimeError):
     """Another writer holds the ledger. Refused, never merged."""
 
 
+class OperationConflict(RuntimeError):
+    """One ``operation_id`` was re-executed with a different economic result.
+
+    A retry may repeat a committed operation (the crash window between the row and the
+    book makes that the normal case) and must then produce the same row, byte for byte
+    apart from the clock. Two different results under one identity is not a retry: it is a
+    non-deterministic effect, and publishing either of them would make the ledger claim a
+    history the book cannot reproduce.
+    """
+
+
+def _economics(entry: dict[str, Any]) -> dict[str, Any]:
+    """The row without the wall clock: what two executions of one operation must share."""
+    return {key: value for key, value in entry.items() if key != "recorded_at_utc"}
+
+
 class DecisionLedger:
     """Append-only, hash-chained, single-writer JSONL."""
 
     def __init__(self, path: Path | str) -> None:
         self.path = Path(path)
         self._lock_path = self.path.with_suffix(self.path.suffix + ".lock")
+        #: Where a torn tail was recorded before it was dropped. The ledger is evidence:
+        #: a line that was removed has to leave a mark, or the repair is indistinguishable
+        #: from an edit.
+        self._torn_path = self.path.with_suffix(self.path.suffix + ".torn.json")
         self._lock_fd: int | None = None
         self._seq = 0
         self._last_sha = GENESIS
+        #: ``operation_id`` -> the line already on disk, so a re-execution after a crash
+        #: appends nothing and returns the committed row instead.
+        self._operations: dict[str, LedgerLine] = {}
+        self.duplicates_suppressed = 0
+        self.tail_repair: dict[str, Any] | None = None
 
     # -- lifecycle -----------------------------------------------------------
 
@@ -108,7 +134,7 @@ class DecisionLedger:
             self._lock_fd = os.open(self._lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
         os.write(self._lock_fd, str(os.getpid()).encode())
         if self.path.exists():
-            self._seq, self._last_sha = self._tail()
+            self._seq, self._last_sha = self._scan()
         return self
 
     def close(self) -> None:
@@ -131,35 +157,132 @@ class DecisionLedger:
         except (OSError, ValueError):
             return None
 
-    def _tail(self) -> tuple[int, str]:
+    def _scan(self) -> tuple[int, str]:
+        """Read the chain, truncate a torn tail, and index the committed operations.
+
+        A process that dies mid-``write`` leaves bytes that are not a line. That tail was
+        never committed — its hash link does not exist and nothing can be derived from it —
+        so it is dropped, and the drop is written to ``<ledger>.torn.json`` before it
+        happens. A bad line with a good line *after* it is not a torn tail: it is an edit,
+        and it is left in place for :func:`verify_chain` to refuse.
+        """
+        raw = self.path.read_bytes()
+        if not raw:
+            return 0, GENESIS
+        cut = raw.rfind(b"\n") + 1
+        complete, tail = raw[:cut], raw[cut:]
+        if tail.strip():
+            self._truncate(cut, tail, "TORN_TAIL")
+        #: Segmentos crudos, no líneas filtradas: el recorte se hace por *offset de byte*, y
+        #: calcularlo sumando longitudes de líneas ya filtradas se desvía en cuanto hay una
+        #: línea vacía o un CR. Un byte de menos corta una fila buena.
+        segments = complete.split(b"\n")[:-1]
         last: dict[str, Any] | None = None
-        with self.path.open("r", encoding="utf-8") as handle:
-            for raw in handle:
-                if raw.strip():
-                    last = json.loads(raw)
+        position = 0
+        for index, segment in enumerate(segments):
+            if not segment.strip():
+                position += len(segment) + 1
+                continue
+            try:
+                row = json.loads(segment.decode("utf-8"))
+            except (ValueError, UnicodeDecodeError):
+                if any(item.strip() for item in segments[index + 1 :]):
+                    raise  # una edición en medio: el fichero no se toca
+                #: Basura al final que sí termina en salto de línea: mismo veredicto que
+                #: una cola rota, y misma evidencia.
+                self._truncate(position, segment, "BAD_TAIL")
+                break
+            last = row
+            operation_id = str(row["entry"].get("operation_id") or "")
+            if operation_id and operation_id not in self._operations:
+                self._operations[operation_id] = LedgerLine(
+                    seq=int(row["seq"]),
+                    prev_sha256=str(row["prev_sha256"]),
+                    entry=dict(row["entry"]),
+                    sha256=str(row["sha256"]),
+                )
+            position += len(segment) + 1
         if last is None:
             return 0, GENESIS
         return int(last["seq"]), str(last["sha256"])
 
+    def _truncate(self, offset: int, dropped: bytes, reason: str) -> None:
+        record = {
+            "reason": reason,
+            "offset": int(offset),
+            "dropped_bytes": len(dropped),
+            "dropped_preview": dropped[:120].decode("utf-8", "replace"),
+        }
+        with self._torn_path.open("w", encoding="utf-8", newline="\n") as handle:
+            handle.write(json.dumps(record, sort_keys=True) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        with self.path.open("r+b") as handle:
+            handle.truncate(offset)
+            handle.flush()
+            os.fsync(handle.fileno())
+        self.tail_repair = record
+
     # -- writing -------------------------------------------------------------
 
-    def append(self, kind: str, payload: dict[str, Any], *, clock: str | None = None) -> LedgerLine:
+    def append(
+        self,
+        kind: str,
+        payload: dict[str, Any],
+        *,
+        clock: str | None = None,
+        operation_id: str | None = None,
+    ) -> LedgerLine:
+        """Append one line, or return the committed one when the operation repeats.
+
+        ``operation_id`` is the economic identity of the row (``<book>|CLOSE|<position>``).
+        A resume after a crash re-executes the bar whose book never landed, so the same
+        close is computed a second time; without this the ledger would carry two CLOSE
+        rows for one economic event and the *evidence* would be wrong even though the book
+        was right. Suppression is only allowed when the repeated row is economically
+        identical: a different result under one identity raises
+        :class:`OperationConflict` instead of being silently deduplicated.
+        """
         if self._lock_fd is None:
             raise LedgerLockedError("ledger.append() before open(): refusing an unlocked write")
         entry = {
             "kind": kind,
             "recorded_at_utc": clock or _utc_now(),
+            **({"operation_id": operation_id} if operation_id else {}),
             **payload,
         }
+        if operation_id:
+            existing = self._operations.get(operation_id)
+            if existing is not None:
+                if _economics(existing.entry) != _economics(entry):
+                    changed = sorted(
+                        key
+                        for key in set(existing.entry) | set(entry)
+                        if existing.entry.get(key) != entry.get(key)
+                    )
+                    raise OperationConflict(
+                        f"{operation_id} was already committed with a different result "
+                        f"({', '.join(changed)}); a retry may not change an effect"
+                    )
+                self.duplicates_suppressed += 1
+                return existing
         seq = self._seq + 1
         digest = line_hash(seq, self._last_sha, entry)
         line = LedgerLine(seq=seq, prev_sha256=self._last_sha, entry=entry, sha256=digest)
+        if operation_id:
+            failpoints.trigger("ledger.before_write", path=self.path, operation_id=operation_id)
         with self.path.open("a", encoding="utf-8", newline="\n") as handle:
             handle.write(line.to_json() + "\n")
+            if operation_id:
+                failpoints.trigger("ledger.after_write", path=self.path, operation_id=operation_id)
             handle.flush()
             os.fsync(handle.fileno())
+        if operation_id:
+            failpoints.trigger("ledger.after_fsync", path=self.path, operation_id=operation_id)
         self._seq = seq
         self._last_sha = digest
+        if operation_id:
+            self._operations[operation_id] = line
         return line
 
 

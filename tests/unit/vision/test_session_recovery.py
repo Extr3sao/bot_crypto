@@ -29,6 +29,7 @@ import pytest
 
 from trading_bot.config.settings import load_settings
 from trading_bot.research.economic_recovery.experiments import Bar
+from trading_bot.vision import failpoints
 from trading_bot.vision.durable import (
     CorruptBook,
     LaneBookStore,
@@ -700,3 +701,89 @@ def test_a_resume_after_the_gap_close_was_committed_books_nothing_twice(tmp_path
         assert current.open_positions == [], attempt
         #: La reanudación corrió de verdad; no es un libro que se negó a abrirse.
         assert isinstance(summary, dict), attempt
+
+
+# -- 9. el commit intermedio de la reconstrucción -------------------------------
+#
+# El plan de hueco cierra la posición y llama a ``_commit()`` *antes* de procesar la
+# primera vela posterior. Ese commit es durable y el proceso puede morir justo después, así
+# que el libro que deja tiene que poder reanudarse. Medido en RFC004: publicaba
+# ``risk_equity=9997.26097534`` frente a ``marked_equity=9996.3809662`` —la parte no
+# realizada del cierre contada dos veces— y ``reconcile_book`` lo rechazaba con
+# ``RISK_MISMATCH`` para siempre: fail-closed, pero cuenta bloqueada.
+
+
+class _StopAtCommit(RuntimeError):
+    """Detiene el proceso de test en un failpoint sin matarlo (el laboratorio usa os._exit)."""
+
+
+def test_the_commit_that_books_a_reconstruction_can_be_resumed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv(failpoints.ENV_SPEC, "bar.after_commit")
+    monkeypatch.setenv(failpoints.ENV_SANDBOX, str(tmp_path))
+    #: El hook se instala *antes* de la primera sesión: sin él, un failpoint armado hace
+    #: ``os._exit`` y se llevaría por delante a pytest. La bandera decide cuándo el disparo
+    #: detiene la prueba, para que el commit de la sesión inicial no la corte.
+    state: dict[str, object] = {"armed": False, "hits": []}
+
+    def hook(spec) -> None:  # type: ignore[no-untyped-def]
+        hits = state["hits"]
+        assert isinstance(hits, list)
+        hits.append(spec.name)
+        if state["armed"]:
+            raise _StopAtCommit(spec.name)
+
+    failpoints.set_trigger_hook(hook)
+    try:
+        store, _, book_first, _ = _first_run(tmp_path, _bars(OPEN_AT_END))
+        state["armed"] = True
+        lane = _lane(
+            _holed_bars(EXTEND_STOP),
+            ScriptedProvider(["NO_TRADE"]),
+            tmp_path / "run-2.jsonl",
+            store=store,
+            book=book_first,
+            session_id="run-2",
+            quote_feed=_hole_series(low=99.0),
+        )
+        with pytest.raises(_StopAtCommit):
+            lane.run()
+    finally:
+        #: Desarmar las dos mitades: sin el hook, un failpoint armado hace ``os._exit``; sin
+        #: desarmar el entorno, la reanudación que viene detrás mataría a pytest.
+        failpoints.set_trigger_hook(None)
+        monkeypatch.delenv(failpoints.ENV_SPEC, raising=False)
+        monkeypatch.delenv(failpoints.ENV_SANDBOX, raising=False)
+        failpoints.reset()
+
+    #: El commit que corta es el primero de la reanudación: el del plan de hueco, con la
+    #: posición ya cerrada y la barrera todavía en la vela 21.
+    assert state["hits"][-1] == "bar.after_commit"
+    committed = store.load()
+    assert committed is not None
+    assert len(committed.closed_trades) == 1
+    assert committed.open_positions == []
+    assert committed.body["risk_equity"] == pytest.approx(
+        committed.body["marked_equity"], abs=1e-6
+    ), (
+        "the reconstruction commit must publish risk and mark as one number; "
+        f"risk={committed.body['risk_equity']} marked={committed.body['marked_equity']}"
+    )
+    recovered = store.recover()
+    assert recovered["status"] in {"NO_CHANGE", "RECOVERED"}, recovered["detail"]
+
+    _, _, entries = _resume(
+        tmp_path,
+        _holed_bars(EXTEND_STOP),
+        store,
+        name="run-3",
+        quote_feed=_hole_series(low=99.0),
+    )
+    after = store.load()
+    assert after is not None
+    assert _closes(entries) == [], "the committed close must not be booked a second time"
+    assert len(after.closed_trades) == 1
+    assert after.body["broker"]["equity"] == pytest.approx(
+        committed.body["broker"]["equity"], abs=1e-9
+    )
