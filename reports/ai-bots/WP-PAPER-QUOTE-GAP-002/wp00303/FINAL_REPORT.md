@@ -23,7 +23,7 @@
 | EXTERNAL_ORDER_PREVENTION | PASS | 13 refusals across 8 abuse scenarios; 0 venue calls |
 | INDEPENDENT_VERIFICATION | PASS | verify_paper_e2e.py: 18/18 checks, 11/11 negative controls rejected |
 | PAPER_VALIDATION | PASS (OFFLINE_RECORDED_DATA) | recorded Binance 1h klines (sha256-matched); orders=23 fills_closed=21 PAPER only. EXTERNAL_SESSION=NOT_PERFORMED: the paper policy denies the network, so no venue-connected session can exist under it. |
-| GITHUB_SYNC | REMOTE_BRANCH_SYNCED | local=06ba3183 remote=06ba3183 main=5e6f9632 pending=0 |
+| GITHUB_SYNC | REMOTE_BRANCH_SYNCED | local=bb302b66 remote=bb302b66 main=5e6f9632 pending=0 |
 | FALSE_SUCCESS | PASS | unsupported_pass_count=0; every dimension above is derived from a measured artefact, and a blocked check is never counted as passed |
 
 ## Limitaciones (no son PASS)
@@ -41,8 +41,8 @@
 | repository | https://github.com/Extr3sao/bot_crypto.git |
 | local_branch | wp/isolation-005 |
 | remote_branch | wp/isolation-005 |
-| local_head_sha | 06ba31832a4e33f18c3de46516af75e5b6e14d0f |
-| remote_head_sha | 06ba31832a4e33f18c3de46516af75e5b6e14d0f |
+| local_head_sha | bb302b665a6ccb7e3d71630fa765211296e19c30 |
+| remote_head_sha | bb302b665a6ccb7e3d71630fa765211296e19c30 |
 | default_branch_sha | 5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d |
 | commits_pending | 0 |
 | push_result | ok (exit 0): new branch wp/isolation-005 -> wp/isolation-005, 487 commits, no force |
