@@ -1,33 +1,34 @@
 {
-  "schema": "wp00304-github-sync/1",
+  "schema": "wp00304-github-sync/2",
   "work_package": "WP-003-04",
   "repository": "https://github.com/Extr3sao/bot_crypto.git",
   "repository_visibility": "public",
   "local_branch": "wp/isolation-005",
   "remote_branch": "origin/wp/isolation-005",
-  "local_head_sha": "e450a238",
-  "remote_head_sha": "ffda06d516f993b6925d0ac6029a45c23c8af8dd",
+  "local_head_sha": "4af8010457b410d4c1b78514cc38890ddc4bef0f",
+  "remote_head_sha": "4af8010457b410d4c1b78514cc38890ddc4bef0f",
+  "observed_by": "git ls-remote --heads origin wp/isolation-005",
   "default_branch": "main",
   "default_branch_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
   "local_main_sha": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
   "commits_pending": {
-    "branch_vs_remote": "see observed_remote_head_sha in the following commit",
+    "branch_vs_remote_at_observation": 0,
     "local_main_vs_origin_main": 259
   },
-  "push_result": "see observed_remote_head_sha in the following commit",
+  "push_result": "OK — ffda06d5..4af80104 wp/isolation-005 -> wp/isolation-005 (fast-forward, no force)",
   "pull_request_url": "https://github.com/Extr3sao/bot_crypto/pull/17",
   "pull_request_state": "open",
   "merge_result": "NOT_MERGED",
   "merge_blocked_by": [
     "format-and-lint: 617 files would be reformatted",
-    "type-check: 611 remaining mypy errors in 105 files",
-    "tests-and-coverage: 2 collection errors",
-    "pip-audit: 11 advisories (80 on the base)",
-    "smoke-pr-pipeline: failure at Set up job (infrastructure)"
+    "type-check: 611 remaining mypy errors in 105 files (0 in WP-003-03)",
+    "tests-and-coverage: 2 collection errors; base fails the 90% floor at 62.34%",
+    "pip-audit: 11 advisories on the branch, 80 on the base",
+    "smoke-pr-pipeline: failure at Set up job (infrastructure, also red on main)"
   ],
   "sync_status": "REMOTE_BRANCH_SYNCED",
   "main_synced": "NO",
   "false_success": 0,
-  "verification_timestamp_utc": "2026-10-21T23:30:00Z",
-  "note": "Un commit no puede contener su propio hash: este registro nombra el tip observado con ls-remote antes de publicar, y el commit siguiente lo sustituye por el que ls-remote devolvio tras el push."
+  "verification_timestamp_utc": "2026-10-21T23:52:00Z",
+  "note": "El SHA fue leído con ls-remote después del push. Este fichero se publica en un commit posterior, así que el tip remoto queda un commit por delante de lo aquí registrado: es un desfase de construcción, no una rama sin publicar. Ningún dato de sincronización de este WP se ha tomado de la narrativa anterior."
 }
