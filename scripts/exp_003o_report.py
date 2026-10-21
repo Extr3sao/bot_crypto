@@ -346,7 +346,7 @@ def _report(out: Path) -> dict[str, Any]:
             },
         ],
         "verifier_defects": ["DEF-003O-05", "DEF-003O-06", "DEF-003O-07", "DEF-003O-08"],
-        "blockers": [] if status == "PASS" else ["see status: a required dimension is not PASS"],
+        "blockers": _blockers(status, verification, reproduction),
         "evidence": sorted(
             str(path.relative_to(out)).replace("\\", "/")
             for path in out.rglob("*")
@@ -428,6 +428,35 @@ def _run_md(report: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def _blockers(
+    status: str, verification: dict[str, Any], reproduction: dict[str, Any] | None
+) -> list[str]:
+    """Name the dimension that stops a PASS, instead of pointing at the status word."""
+
+    if status == "PASS":
+        return []
+    blockers: list[str] = []
+    if verification["technical_signal_parity"] != "PASS":
+        blockers.append("technical signal parity did not pass: see VERIFICATION.json")
+    coverage = verification["checks"]["V11_functional_coverage"]
+    if coverage["cells_without_evaluable_instants"]:
+        blockers.append(
+            "no evaluable instant in this window: "
+            + ", ".join(coverage["cells_without_evaluable_instants"])
+            + " (their warm-up exceeds 46 days of bars)"
+        )
+    if not coverage["complete"]:
+        blockers.append("functional coverage is incomplete: see fixtures in NEGATIVE_CONTROLS/V11")
+    if not verification.get("organizational_independence", False):
+        blockers.append(
+            "organizational independence not certified: builders A/B and verifier C share one "
+            "author; BUILDER != VERIFIER holds as three programs, not as three people"
+        )
+    if reproduction is None or reproduction.get("verdict") != "REPRODUCED":
+        blockers.append("clean-checkout reproduction is not REPRODUCED")
+    return blockers or ["a required dimension is not PASS: see VERIFICATION.json"]
+
+
 def _final_md(report: dict[str, Any]) -> str:
     zero = report["cells_zero_sample"]
     lines = [
@@ -501,6 +530,21 @@ def _final_md(report: dict[str, Any]) -> str:
             f"  - treatment: {defect['treatment']}",
         ]
     lines += [
+        "",
+        "## INDEPENDENT VERIFICATION",
+        "",
+        "- **`BUILDER != VERIFIER`**: three separate programs. Builder A replays the frozen 003N",
+        "  producer and imports its families; builder B reads the bars itself and owns its own",
+        "  indicator arithmetic and lane-B machines; the verifier recomputes every row from bytes",
+        "  with its own digest, join and controls and never calls either builder to decide.",
+        "- **What the verifier proved**: every declared window digest reproduced (275,724 keys),",
+        "  calendar coverage with zero missing or extra instants, zero PIT violations, prefix",
+        "  invariance at 300 and 1,500 bars, 12/12 controls each detecting exactly one intended",
+        "  class in a complete cell.",
+        "- **What it did not prove**: `organizational_independence=false`. One author wrote both",
+        "  builders and the verifier in one session, so a shared conceptual error would survive",
+        "  the parity. The fixtures and the hand-computed expectations are the only defence",
+        "  against that, and they cover the rule families, not the regimes.",
         "",
         "## BLOCKERS",
         "",

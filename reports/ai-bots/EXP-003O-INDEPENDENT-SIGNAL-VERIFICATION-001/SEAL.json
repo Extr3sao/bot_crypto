@@ -51,9 +51,9 @@
       "sha256": "fe20f8acf6b83eeaaaa5139b70a7d4b17c11d751cff55230f32d2b7708495328"
     },
     {
-      "bytes": 7634,
+      "bytes": 8861,
       "path": "FINAL_REPORT.md",
-      "sha256": "6ead530359fb9aeb3e2c065edd3d9c3ca45e7945e3e17d8ec6c622007a4d9854"
+      "sha256": "76795b84fe5a0324a865874db7136daf1366c6332011fd54dec40acf88545f26"
     },
     {
       "bytes": 1995,
@@ -181,14 +181,14 @@
       "sha256": "8672c70e873acf0c5777000c3d253edca98390bee99d6d761d3c22b794c8dac3"
     },
     {
-      "bytes": 14406,
+      "bytes": 14649,
       "path": "RUN_REPORT.json",
-      "sha256": "db913b3d6a7706ac76395906a9504152d6b875892fb49907f2359ef8e866f8da"
+      "sha256": "0dbca353bb15eaf41f2de9e51b8c46b4dec4ca4949a3ec7a34c8d92190458ce6"
     },
     {
       "bytes": 1710,
       "path": "RUN_REPORT.md",
-      "sha256": "b8714980ef2e5354bd4257cde320e21c7c98536af89cfe8aae8dbdd52eea06da"
+      "sha256": "21d56d114c914513d574c1d15755f36f97dbb1739180b9ce2cf6f69987e2022d"
     },
     {
       "bytes": 8312,
@@ -231,7 +231,7 @@
     "SHA256SUMS.txt"
   ],
   "files": 45,
-  "manifest_sha256": "dc2420bbfcc4655a02e484184a519c00daf63428b3781470ff41da66de926324",
+  "manifest_sha256": "f89ae7602da43a32f23ec91157586b10f3e0a856c604bbe0fb2267cec628c10c",
   "run_id": "EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001",
-  "sealed_at_utc": "2026-10-21T09:22:50Z"
+  "sealed_at_utc": "2026-10-21T09:24:03Z"
 }

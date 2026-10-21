@@ -3,7 +3,7 @@
 **status `INCOMPLETE`** · `TECHNICAL_SIGNAL_PARITY=PASS` · `FULL_INDEPENDENT_CERTIFICATION=INCOMPLETE_REAL_DATA_COVERAGE` · `ECONOMIC_EDGE=NOT_EVALUATED`
 
 - design digest `b28a7b4c53168fd5…` · preregistration commit `4ea93d8` · prospective=`True`
-- source commit `f831c66` · experiment commit `54d010c`
+- source commit `f831c66` · experiment commit `784046c`
 - 24 cells (24 evaluable) · 275724 keys · 52848 / 52848 signals
 - 0 unexplained differences · 0 PIT violations · 12/12 controls
 

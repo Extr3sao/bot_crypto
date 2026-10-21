@@ -1,6 +1,7 @@
 {
   "blockers": [
-    "see status: a required dimension is not PASS"
+    "no evaluable instant in this window: mean_reversion_vol_liq@4h, vol_regime_breakout@4h (their warm-up exceeds 46 days of bars)",
+    "organizational independence not certified: builders A/B and verifier C share one author; BUILDER != VERIFIER holds as three programs, not as three people"
   ],
   "cells_evaluable": 24,
   "cells_evaluated_without_signal": [
@@ -222,7 +223,7 @@
     "signals/independent_evaluations.jsonl.gz",
     "signals/original_evaluations.jsonl.gz"
   ],
-  "experiment_commit": "54d010c38d17c8c00c6b41852a0fb03ed3ca0b62",
+  "experiment_commit": "784046c0e97e390d411c4620505a861a67744e86",
   "false_success_observed": 0,
   "fixtures": {
     "fixtures": [

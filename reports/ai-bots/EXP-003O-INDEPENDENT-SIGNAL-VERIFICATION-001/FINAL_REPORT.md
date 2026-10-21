@@ -7,7 +7,7 @@
 ## COMMITS
 
 - baseline + protocol: `4ea93d815ed6` (prospective=`True`)
-- experiment HEAD: `54d010c38d17`
+- experiment HEAD: `784046c0e97e`
 
 ## IMPLEMENTED
 
@@ -69,9 +69,25 @@
   - design/PROTOCOL.json was made relative to the repository before being resolved
   - treatment: every entry point resolves --out first
 
+## INDEPENDENT VERIFICATION
+
+- **`BUILDER != VERIFIER`**: three separate programs. Builder A replays the frozen 003N
+  producer and imports its families; builder B reads the bars itself and owns its own
+  indicator arithmetic and lane-B machines; the verifier recomputes every row from bytes
+  with its own digest, join and controls and never calls either builder to decide.
+- **What the verifier proved**: every declared window digest reproduced (275,724 keys),
+  calendar coverage with zero missing or extra instants, zero PIT violations, prefix
+  invariance at 300 and 1,500 bars, 12/12 controls each detecting exactly one intended
+  class in a complete cell.
+- **What it did not prove**: `organizational_independence=false`. One author wrote both
+  builders and the verifier in one session, so a shared conceptual error would survive
+  the parity. The fixtures and the hand-computed expectations are the only defence
+  against that, and they cover the rule families, not the regimes.
+
 ## BLOCKERS
 
-- see status: a required dimension is not PASS
+- no evaluable instant in this window: mean_reversion_vol_liq@4h, vol_regime_breakout@4h (their warm-up exceeds 46 days of bars)
+- organizational independence not certified: builders A/B and verifier C share one author; BUILDER != VERIFIER holds as three programs, not as three people
 
 ## EVIDENCE
 
@@ -91,7 +107,7 @@
 | `INDEPENDENT_VERIFICATION.md` | `19716272b7acfbd2…` |
 | `CLEAN_CHECKOUT_REPRODUCTION.json` | `fefca46da935f381…` |
 | `CELL_COVERAGE_MANIFEST.csv` | `c9e33e46811eb7eb…` |
-| `RUN_REPORT.json` | `db913b3d6a7706ac…` |
+| `RUN_REPORT.json` | `0dbca353bb15eaf4…` |
 
 ## ARCHITECTURE_STATUS
 
