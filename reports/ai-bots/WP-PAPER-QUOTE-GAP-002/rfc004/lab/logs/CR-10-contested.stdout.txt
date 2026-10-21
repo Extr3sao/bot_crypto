@@ -1,0 +1,1 @@
+{"out": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\logs\\CR-10-contested.json", "exit": 2, "pid": 41596}

@@ -1,0 +1,107 @@
+{
+ "schema": "rfc004-recovery-branch-matrix/1",
+ "legend": {
+  "NO_CHANGE": "the book, its commit log and its projection already agree",
+  "RECOVERED": "the committed book is intact and was reconciled with log/projection; nothing was replayed",
+  "REFUSED_CORRUPTION": "a committed artefact does not verify; the runtime stops",
+  "REFUSED_AMBIGUOUS_COMMIT": "the current generation cannot be named",
+  "BLOCKED_LOCK": "a live process owns the book"
+ },
+ "branches": [
+  {
+   "branch": "no book, no prev, no tmp",
+   "outcome": "NO_CHANGE",
+   "witness": "tests/unit/vision/test_recovery_transaction.py::test_no_book_at_all_is_no_change"
+  },
+  {
+   "branch": "book present, last COMMIT event carries its digest, projection agrees",
+   "outcome": "NO_CHANGE",
+   "witness": "CR-00 final state; tests/unit/vision/test_durable_book.py"
+  },
+  {
+   "branch": "BOOK.json absent while BOOK.json.prev exists",
+   "outcome": "REFUSED_AMBIGUOUS_COMMIT (CURRENT_GENERATION_MISSING)",
+   "witness": "tests/unit/vision/test_recovery_transaction.py::test_a_prev_without_a_current_book_is_ambiguous_not_old"
+  },
+  {
+   "branch": "orphan BOOK.json.tmp (complete or partial)",
+   "outcome": "RECOVERED; orphan_tmp=true; never adopted",
+   "witness": "CR-03, CR-04, CR-13; tests/unit/vision/test_recovery_transaction.py::test_an_orphan_temporary_book_is_reported_and_never_adopted"
+  },
+  {
+   "branch": "book committed, COMMIT event missing (crash between replace and ACK)",
+   "outcome": "RECOVERED; commit_event_lag=true; the book is the authority",
+   "witness": "CR-06; tests/unit/vision/test_recovery_transaction.py::test_a_commit_whose_event_never_landed_is_recoverable_and_named"
+  },
+  {
+   "branch": "torn tail in BOOK_EVENTS.jsonl",
+   "outcome": "RECOVERED; the tail is dropped and a REPAIR row is written into the log",
+   "witness": "durable.py::_repair_events_tail; CR-06 after-crash inspect"
+  },
+  {
+   "branch": "torn tail in a session ledger",
+   "outcome": "RECOVERED; <ledger>.torn.json records offset/bytes; chain keeps verifying",
+   "witness": "tests/unit/vision/test_recovery_transaction.py::test_a_torn_tail_is_dropped_and_the_drop_is_recorded"
+  },
+  {
+   "branch": "bad ledger line with a good line after it",
+   "outcome": "left in place; verify_chain reports TAMPERED_LINE",
+   "witness": "tests/unit/vision/test_recovery_transaction.py::test_a_bad_line_before_the_tail_is_not_repaired"
+  },
+  {
+   "branch": "book digest does not match its body",
+   "outcome": "REFUSED_CORRUPTION; file preserved; BOOK.corrupt.<ms>.json written",
+   "witness": "CR-11; tests/unit/vision/test_recovery_transaction.py::test_a_corrupt_book_is_quarantined_and_refused"
+  },
+  {
+   "branch": "projection lacks a row for a committed close",
+   "outcome": "REFUSED_CORRUPTION (PROJECTION_BEHIND_AUTHORITY)",
+   "witness": "CR-12 ahead; tests/unit/vision/test_recovery_transaction.py::test_the_projection_missing_a_committed_close_is_refused"
+  },
+  {
+   "branch": "projection has rows the book never committed (crash between ledger fsync and replace)",
+   "outcome": "RECOVERED; the extra operation ids are listed and the bar is re-executed once",
+   "witness": "CR-02, CR-08; tests/unit/vision/test_recovery_transaction.py::test_uncommitted_rows_in_the_projection_are_tolerated_and_listed"
+  },
+  {
+   "branch": "a re-executed close produces a different number under the same operation_id",
+   "outcome": "REFUSED (OperationConflict); nothing is written",
+   "witness": "CR-11 ledger; tests/unit/vision/test_recovery_transaction.py::test_a_retry_that_changes_the_number_is_a_conflict_not_a_duplicate"
+  },
+  {
+   "branch": "two processes over one book",
+   "outcome": "second gets SessionBusy; no merge, no wait, no takeover of a live holder",
+   "witness": "CR-09; tests/unit/vision/test_session_recovery.py::test_a_book_held_by_a_live_session_cannot_be_taken_over"
+  },
+  {
+   "branch": "lock left by a dead process",
+   "outcome": "taken over, serialised by the .takeover guard, recorded in the lock itself",
+   "witness": "CR-10 orphan; tests/unit/vision/test_session_recovery.py::test_a_ledger_lock_left_by_a_killed_process_is_taken_over"
+  },
+  {
+   "branch": "snapshot one commit behind its ledger",
+   "outcome": "rebuilt by re-executing the bar; duplicate ledger row suppressed by operation_id",
+   "witness": "CR-12 behind"
+  },
+  {
+   "branch": "a commit that books a gap reconstruction (barrier does not advance)",
+   "outcome": "RECOVERED; risk_equity == marked_equity, so the book is resumable",
+   "witness": "tests/unit/vision/test_session_recovery.py::test_the_commit_that_books_a_reconstruction_can_be_resumed (this test failed before the RFC004 fix)"
+  },
+  {
+   "branch": "historical RFC003 book (schema vision-lane-book/1)",
+   "outcome": "NO_CHANGE; digest re-derives; files byte-identical across two reads",
+   "witness": "CR-14"
+  }
+ ],
+ "not_a_branch": [
+  {
+   "case": "partial restore of a book with one broken identity",
+   "why": "reconcile_book returns one verdict; a book whose equity identity fails is BLOCKED even if its positions look right"
+  },
+  {
+   "case": "repairing a committed close by inference",
+   "why": "recover_from_durable_state never invents missing operations; only uncommitted tails are dropped"
+  }
+ ]
+}

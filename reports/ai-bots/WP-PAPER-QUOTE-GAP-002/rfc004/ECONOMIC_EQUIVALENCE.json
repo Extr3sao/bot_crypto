@@ -1,0 +1,1049 @@
+{
+ "all_recovered_equal_control": true,
+ "comparison": "canonical projection: exact Decimal strings over broker, positions, closed trades, risk, marks, pending, contract and barrier; session lineage and session counters excluded",
+ "control": {
+  "canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+  "closed": [
+   "pos-rfc004-lab-book-00000001"
+  ],
+  "equity": 9996.380966197243
+ },
+ "generated_at_utc": "2026-10-21T16:00:33Z",
+ "mismatched": [],
+ "note": "CR-11 is a refusal scenario (its children are expected to leave the tampered book in place); CR-09/CR-10 are compared through their own checks because one child is refused.",
+ "scenarios": [
+  {
+   "adversary": "no crash: the reference run",
+   "after_crash_closes": null,
+   "canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "checks": [
+    {
+     "check": "ran",
+     "detail": "resume exit=0",
+     "ok": true
+    },
+    {
+     "check": "one_close",
+     "detail": "one committed close",
+     "ok": true
+    },
+    {
+     "check": "flat_after",
+     "detail": "no position left open",
+     "ok": true
+    },
+    {
+     "check": "ledger_one_close",
+     "detail": "1 CLOSE row(s)",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.384,
+     "tag": "CR-00-final"
+    }
+   ],
+   "closed_positions": null,
+   "control_canonical": null,
+   "failpoint": null,
+   "id": "CR-00",
+   "ledger_close_operation_ids": null,
+   "ledger_close_rows": null,
+   "recovery_status": null,
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "before the first durable write of the closing session",
+   "after_crash_closes": 0,
+   "canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "checks": [
+    {
+     "check": "crash_was_a_kill",
+     "detail": "child exit=86 (86 = os._exit at the failpoint)",
+     "ok": true
+    },
+    {
+     "check": "post_crash_state",
+     "detail": "expected the seed book; unchanged=True closes=0",
+     "ok": true
+    },
+    {
+     "check": "economic_equivalence",
+     "detail": "recovered state is the control state, field by field",
+     "ok": true
+    },
+    {
+     "check": "closed_once",
+     "detail": "the book holds 1 close(s), expected 1",
+     "ok": true
+    },
+    {
+     "check": "ledger_rows_not_duplicated",
+     "detail": "1 CLOSE row(s) with 1 unique operation id(s)",
+     "ok": true
+    },
+    {
+     "check": "second_resume_is_a_noop",
+     "detail": "a further resume writes no new CLOSE row (1 vs 1) and changes no digit",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "run",
+     "returncode": 86,
+     "role": "resume",
+     "seconds": 1.936,
+     "tag": "CR-01-crash"
+    },
+    {
+     "mode": "inspect",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.197,
+     "tag": "CR-01-after-crash"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.254,
+     "tag": "CR-01-resume"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.066,
+     "tag": "CR-01-resume2"
+    }
+   ],
+   "closed_positions": [
+    "pos-rfc004-lab-book-00000001"
+   ],
+   "control_canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "failpoint": "ledger.before_write",
+   "id": "CR-01",
+   "ledger_close_operation_ids": [
+    "rfc004-lab-book|CLOSE|pos-rfc004-lab-book-00000001"
+   ],
+   "ledger_close_rows": 1,
+   "recovery_status": "NO_CHANGE",
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "after the ledger row was written, before its fsync",
+   "after_crash_closes": 0,
+   "canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "checks": [
+    {
+     "check": "crash_was_a_kill",
+     "detail": "child exit=86 (86 = os._exit at the failpoint)",
+     "ok": true
+    },
+    {
+     "check": "post_crash_state",
+     "detail": "the crash left either the seed book or a loadable book with the close, never a third state: unchanged=True closes=0 status=NO_CHANGE",
+     "ok": true
+    },
+    {
+     "check": "economic_equivalence",
+     "detail": "recovered state is the control state, field by field",
+     "ok": true
+    },
+    {
+     "check": "closed_once",
+     "detail": "the book holds 1 close(s), expected 1",
+     "ok": true
+    },
+    {
+     "check": "ledger_rows_not_duplicated",
+     "detail": "1 CLOSE row(s) with 1 unique operation id(s)",
+     "ok": true
+    },
+    {
+     "check": "second_resume_is_a_noop",
+     "detail": "a further resume writes no new CLOSE row (1 vs 1) and changes no digit",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "run",
+     "returncode": 86,
+     "role": "resume",
+     "seconds": 1.868,
+     "tag": "CR-02-crash"
+    },
+    {
+     "mode": "inspect",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.261,
+     "tag": "CR-02-after-crash"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.922,
+     "tag": "CR-02-resume"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.352,
+     "tag": "CR-02-resume2"
+    }
+   ],
+   "closed_positions": [
+    "pos-rfc004-lab-book-00000001"
+   ],
+   "control_canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "failpoint": "ledger.after_write",
+   "id": "CR-02",
+   "ledger_close_operation_ids": [
+    "rfc004-lab-book|CLOSE|pos-rfc004-lab-book-00000001"
+   ],
+   "ledger_close_rows": 1,
+   "recovery_status": "NO_CHANGE",
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "the new book was written and fsynced, the replace has not happened",
+   "after_crash_closes": 0,
+   "canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "checks": [
+    {
+     "check": "crash_was_a_kill",
+     "detail": "child exit=86 (86 = os._exit at the failpoint)",
+     "ok": true
+    },
+    {
+     "check": "post_crash_state",
+     "detail": "expected the seed book; unchanged=True closes=0",
+     "ok": true
+    },
+    {
+     "check": "economic_equivalence",
+     "detail": "recovered state is the control state, field by field",
+     "ok": true
+    },
+    {
+     "check": "closed_once",
+     "detail": "the book holds 1 close(s), expected 1",
+     "ok": true
+    },
+    {
+     "check": "ledger_rows_not_duplicated",
+     "detail": "1 CLOSE row(s) with 1 unique operation id(s)",
+     "ok": true
+    },
+    {
+     "check": "second_resume_is_a_noop",
+     "detail": "a further resume writes no new CLOSE row (1 vs 1) and changes no digit",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "run",
+     "returncode": 86,
+     "role": "resume",
+     "seconds": 1.937,
+     "tag": "CR-03-crash"
+    },
+    {
+     "mode": "inspect",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.19,
+     "tag": "CR-03-after-crash"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.335,
+     "tag": "CR-03-resume"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.099,
+     "tag": "CR-03-resume2"
+    }
+   ],
+   "closed_positions": [
+    "pos-rfc004-lab-book-00000001"
+   ],
+   "control_canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "failpoint": "book.after_tmp_fsync",
+   "id": "CR-03",
+   "ledger_close_operation_ids": [
+    "rfc004-lab-book|CLOSE|pos-rfc004-lab-book-00000001"
+   ],
+   "ledger_close_rows": 1,
+   "recovery_status": "RECOVERED",
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "the temporary projection is partly written",
+   "after_crash_closes": 0,
+   "canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "checks": [
+    {
+     "check": "crash_was_a_kill",
+     "detail": "child exit=86 (86 = os._exit at the failpoint)",
+     "ok": true
+    },
+    {
+     "check": "post_crash_state",
+     "detail": "expected the seed book; unchanged=True closes=0",
+     "ok": true
+    },
+    {
+     "check": "economic_equivalence",
+     "detail": "recovered state is the control state, field by field",
+     "ok": true
+    },
+    {
+     "check": "closed_once",
+     "detail": "the book holds 1 close(s), expected 1",
+     "ok": true
+    },
+    {
+     "check": "ledger_rows_not_duplicated",
+     "detail": "1 CLOSE row(s) with 1 unique operation id(s)",
+     "ok": true
+    },
+    {
+     "check": "second_resume_is_a_noop",
+     "detail": "a further resume writes no new CLOSE row (1 vs 1) and changes no digit",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "run",
+     "returncode": 86,
+     "role": "resume",
+     "seconds": 1.846,
+     "tag": "CR-04-crash"
+    },
+    {
+     "mode": "inspect",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.05,
+     "tag": "CR-04-after-crash"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.555,
+     "tag": "CR-04-resume"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.285,
+     "tag": "CR-04-resume2"
+    }
+   ],
+   "closed_positions": [
+    "pos-rfc004-lab-book-00000001"
+   ],
+   "control_canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "failpoint": "book.after_tmp_write",
+   "id": "CR-04",
+   "ledger_close_operation_ids": [
+    "rfc004-lab-book|CLOSE|pos-rfc004-lab-book-00000001"
+   ],
+   "ledger_close_rows": 1,
+   "recovery_status": "RECOVERED",
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "the previous generation was copied, the replace has not happened",
+   "after_crash_closes": 0,
+   "canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "checks": [
+    {
+     "check": "crash_was_a_kill",
+     "detail": "child exit=86 (86 = os._exit at the failpoint)",
+     "ok": true
+    },
+    {
+     "check": "post_crash_state",
+     "detail": "expected the seed book; unchanged=True closes=0",
+     "ok": true
+    },
+    {
+     "check": "economic_equivalence",
+     "detail": "recovered state is the control state, field by field",
+     "ok": true
+    },
+    {
+     "check": "closed_once",
+     "detail": "the book holds 1 close(s), expected 1",
+     "ok": true
+    },
+    {
+     "check": "ledger_rows_not_duplicated",
+     "detail": "1 CLOSE row(s) with 1 unique operation id(s)",
+     "ok": true
+    },
+    {
+     "check": "second_resume_is_a_noop",
+     "detail": "a further resume writes no new CLOSE row (1 vs 1) and changes no digit",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "run",
+     "returncode": 86,
+     "role": "resume",
+     "seconds": 2.212,
+     "tag": "CR-05-crash"
+    },
+    {
+     "mode": "inspect",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.116,
+     "tag": "CR-05-after-crash"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.313,
+     "tag": "CR-05-resume"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.928,
+     "tag": "CR-05-resume2"
+    }
+   ],
+   "closed_positions": [
+    "pos-rfc004-lab-book-00000001"
+   ],
+   "control_canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "failpoint": "book.after_prev_copy",
+   "id": "CR-05",
+   "ledger_close_operation_ids": [
+    "rfc004-lab-book|CLOSE|pos-rfc004-lab-book-00000001"
+   ],
+   "ledger_close_rows": 1,
+   "recovery_status": "RECOVERED",
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "the replace landed, the COMMIT event was never written",
+   "after_crash_closes": 1,
+   "canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "checks": [
+    {
+     "check": "crash_was_a_kill",
+     "detail": "child exit=86 (86 = os._exit at the failpoint)",
+     "ok": true
+    },
+    {
+     "check": "post_crash_state",
+     "detail": "the close is in the book (closes=1) and the book is loadable (store status=RECOVERED); barrier=1792530000000",
+     "ok": true
+    },
+    {
+     "check": "economic_equivalence",
+     "detail": "recovered state is the control state, field by field",
+     "ok": true
+    },
+    {
+     "check": "closed_once",
+     "detail": "the book holds 1 close(s), expected 1",
+     "ok": true
+    },
+    {
+     "check": "ledger_rows_not_duplicated",
+     "detail": "1 CLOSE row(s) with 1 unique operation id(s)",
+     "ok": true
+    },
+    {
+     "check": "second_resume_is_a_noop",
+     "detail": "a further resume writes no new CLOSE row (1 vs 1) and changes no digit",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "run",
+     "returncode": 86,
+     "role": "resume",
+     "seconds": 2.682,
+     "tag": "CR-06-crash"
+    },
+    {
+     "mode": "inspect",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.788,
+     "tag": "CR-06-after-crash"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 5.602,
+     "tag": "CR-06-resume"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 4.857,
+     "tag": "CR-06-resume2"
+    }
+   ],
+   "closed_positions": [
+    "pos-rfc004-lab-book-00000001"
+   ],
+   "control_canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "failpoint": "book.after_replace",
+   "id": "CR-06",
+   "ledger_close_operation_ids": [
+    "rfc004-lab-book|CLOSE|pos-rfc004-lab-book-00000001"
+   ],
+   "ledger_close_rows": 1,
+   "recovery_status": "RECOVERED",
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "after ACK: the bar is committed",
+   "after_crash_closes": null,
+   "canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "checks": [
+    {
+     "check": "crash_was_a_kill",
+     "detail": "child exit=86",
+     "ok": true
+    },
+    {
+     "check": "commit_survived",
+     "detail": "the barrier the resume started from is the barrier the crash committed (1792530000000 vs 1792530000000)",
+     "ok": true
+    },
+    {
+     "check": "economic_equivalence",
+     "detail": "recovered state is the control state, field by field",
+     "ok": true
+    },
+    {
+     "check": "closed_once",
+     "detail": "the book holds 1 close(s), expected 1",
+     "ok": true
+    },
+    {
+     "check": "ledger_rows_not_duplicated",
+     "detail": "1 CLOSE row(s) with 1 unique operation id(s)",
+     "ok": true
+    },
+    {
+     "check": "second_resume_is_a_noop",
+     "detail": "a further resume writes no new CLOSE row (1 vs 1) and changes no digit",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "run",
+     "returncode": 86,
+     "role": "resume",
+     "seconds": 2.292,
+     "tag": "CR-07-crash"
+    },
+    {
+     "mode": "inspect",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.327,
+     "tag": "CR-07-after-crash"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.488,
+     "tag": "CR-07-resume3"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.435,
+     "tag": "CR-07-resume4"
+    }
+   ],
+   "closed_positions": [
+    "pos-rfc004-lab-book-00000001"
+   ],
+   "control_canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "failpoint": "bar.after_commit",
+   "id": "CR-07",
+   "ledger_close_operation_ids": [
+    "rfc004-lab-book|CLOSE|pos-rfc004-lab-book-00000001"
+   ],
+   "ledger_close_rows": 1,
+   "recovery_status": "NO_CHANGE",
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "the same operation_id retried three times",
+   "after_crash_closes": null,
+   "canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "checks": [
+    {
+     "check": "crash_was_a_kill",
+     "detail": "child exit=86",
+     "ok": true
+    },
+    {
+     "check": "economic_equivalence",
+     "detail": "recovered state is the control state, field by field",
+     "ok": true
+    },
+    {
+     "check": "closed_once",
+     "detail": "the book holds 1 close(s), expected 1",
+     "ok": true
+    },
+    {
+     "check": "ledger_rows_not_duplicated",
+     "detail": "1 CLOSE row(s) with 1 unique operation id(s)",
+     "ok": true
+    },
+    {
+     "check": "second_resume_is_a_noop",
+     "detail": "a further resume writes no new CLOSE row (1 vs 1) and changes no digit",
+     "ok": true
+    },
+    {
+     "check": "duplicate_was_suppressed_not_rewritten",
+     "detail": "the re-executed close matched its committed row and appended nothing",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "run",
+     "returncode": 86,
+     "role": "resume",
+     "seconds": 2.42,
+     "tag": "CR-08-crash"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.774,
+     "tag": "CR-08-retry-0"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.185,
+     "tag": "CR-08-retry-1"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.229,
+     "tag": "CR-08-retry-2"
+    }
+   ],
+   "closed_positions": [
+    "pos-rfc004-lab-book-00000001"
+   ],
+   "control_canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "failpoint": "ledger.after_fsync",
+   "id": "CR-08",
+   "ledger_close_operation_ids": [
+    "rfc004-lab-book|CLOSE|pos-rfc004-lab-book-00000001"
+   ],
+   "ledger_close_rows": 1,
+   "recovery_status": null,
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "two processes resume the same book at the same instant",
+   "after_crash_closes": null,
+   "canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "checks": [
+    {
+     "check": "no_double_apply",
+     "detail": "1 close(s) after two concurrent resumes",
+     "ok": true
+    },
+    {
+     "check": "one_writer",
+     "detail": "1 process(es) ran, 1 refused",
+     "ok": true
+    },
+    {
+     "check": "refusal_is_the_lock",
+     "detail": "SessionBusy",
+     "ok": true
+    },
+    {
+     "check": "ledger_single_close",
+     "detail": "one CLOSE row in the shared ledger",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 3.651,
+     "tag": "CR-09-a"
+    },
+    {
+     "mode": "run",
+     "returncode": 2,
+     "role": "resume",
+     "seconds": 3.658,
+     "tag": "CR-09-b"
+    }
+   ],
+   "closed_positions": null,
+   "control_canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "failpoint": null,
+   "id": "CR-09",
+   "ledger_close_operation_ids": null,
+   "ledger_close_rows": null,
+   "recovery_status": null,
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "an orphan lock and a live lock around the same book",
+   "after_crash_closes": null,
+   "canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "checks": [
+    {
+     "check": "orphan_taken_over",
+     "detail": "exit=0, closes=1",
+     "ok": true
+    },
+    {
+     "check": "live_lock_respected",
+     "detail": "exit=2 refusal=SessionBusy",
+     "ok": true
+    },
+    {
+     "check": "lock_released_after_holder_left",
+     "detail": "the next resume ran (exit=0) and found no lock file",
+     "ok": true
+    },
+    {
+     "check": "orphan_did_not_duplicate",
+     "detail": "1 CLOSE row(s) after the takeover",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.48,
+     "tag": "CR-10-orphan"
+    },
+    {
+     "mode": "run",
+     "returncode": 2,
+     "role": "resume",
+     "seconds": 2.26,
+     "tag": "CR-10-contested"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.247,
+     "tag": "CR-10-after-holder"
+    }
+   ],
+   "closed_positions": null,
+   "control_canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "failpoint": null,
+   "id": "CR-10",
+   "ledger_close_operation_ids": null,
+   "ledger_close_rows": null,
+   "recovery_status": null,
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "a committed book and a committed ledger row are edited",
+   "after_crash_closes": null,
+   "canonical": null,
+   "checks": [
+    {
+     "check": "tampered_book_refused",
+     "detail": "exit=2 refusal=CorruptBook",
+     "ok": true
+    },
+    {
+     "check": "tampered_book_preserved",
+     "detail": "3 quarantined copy(ies), file left as it was",
+     "ok": true
+    },
+    {
+     "check": "ledger_edit_breaks_the_chain",
+     "detail": "TAMPERED_LINE_9",
+     "ok": true
+    },
+    {
+     "check": "ledger_edit_refused_by_the_runtime",
+     "detail": "exit=2 refusal=OperationConflict",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "run",
+     "returncode": 2,
+     "role": "resume",
+     "seconds": 2.022,
+     "tag": "CR-11-tampered"
+    },
+    {
+     "mode": "inspect",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.001,
+     "tag": "CR-11-ledger-inspect"
+    },
+    {
+     "mode": "run",
+     "returncode": 2,
+     "role": "resume",
+     "seconds": 2.246,
+     "tag": "CR-11-ledger-resume"
+    }
+   ],
+   "closed_positions": null,
+   "control_canonical": null,
+   "failpoint": null,
+   "id": "CR-11",
+   "ledger_close_operation_ids": null,
+   "ledger_close_rows": null,
+   "recovery_status": null,
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "the projection is one commit behind, then one commit ahead",
+   "after_crash_closes": null,
+   "canonical": null,
+   "checks": [
+    {
+     "check": "behind_was_rebuilt_not_replayed_onto",
+     "detail": "exit=0 closes=1 rows=1",
+     "ok": true
+    },
+    {
+     "check": "ahead_is_refused",
+     "detail": "PROJECTION_BEHIND_AUTHORITY",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.38,
+     "tag": "CR-12-behind-resume"
+    },
+    {
+     "mode": "inspect",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.214,
+     "tag": "CR-12-ahead-inspect"
+    }
+   ],
+   "closed_positions": null,
+   "control_canonical": "99ff314125aac1b04e408c8f771a5b6601df48e50e51383938c665a1805451a1",
+   "failpoint": null,
+   "id": "CR-12",
+   "ledger_close_operation_ids": null,
+   "ledger_close_rows": null,
+   "recovery_status": null,
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "an orphan temporary book and a replace that cannot land",
+   "after_crash_closes": null,
+   "canonical": null,
+   "checks": [
+    {
+     "check": "orphan_tmp_not_adopted",
+     "detail": "the book after the resume is the control economy, not the forged temporary",
+     "ok": true
+    },
+    {
+     "check": "orphan_tmp_reported",
+     "detail": "True",
+     "ok": true
+    },
+    {
+     "check": "failed_replace_left_no_partial_state",
+     "detail": "exit=3, book unchanged=True",
+     "ok": true
+    },
+    {
+     "check": "next_resume_after_repair_works",
+     "detail": "exit=0",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 3.137,
+     "tag": "CR-13-orphan"
+    },
+    {
+     "mode": "run",
+     "returncode": 3,
+     "role": "resume",
+     "seconds": 3.002,
+     "tag": "CR-13-replace-failed"
+    },
+    {
+     "mode": "run",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 3.259,
+     "tag": "CR-13-replace-retried"
+    }
+   ],
+   "closed_positions": null,
+   "control_canonical": null,
+   "failpoint": null,
+   "id": "CR-13",
+   "ledger_close_operation_ids": null,
+   "ledger_close_rows": null,
+   "recovery_status": null,
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "a committed book from RFC003 (WP-PAPER-QUOTE-GAP-002 drill A)",
+   "after_crash_closes": null,
+   "canonical": null,
+   "checks": [
+    {
+     "check": "historical_book_readable",
+     "detail": "83fd7777fd12dca38ba477dcb2215509978b413b6ee877d5f59af174352542ae",
+     "ok": true
+    },
+    {
+     "check": "historical_digest_stable_across_repeated_reads",
+     "detail": "two reads, one digest",
+     "ok": true
+    },
+    {
+     "check": "historical_files_untouched",
+     "detail": "3 file(s) byte-identical after two recovery passes",
+     "ok": true
+    },
+    {
+     "check": "historical_recovery_classified",
+     "detail": "status=NO_CHANGE code=None",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "inspect",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 4.143,
+     "tag": "CR-14-first"
+    },
+    {
+     "mode": "inspect",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 2.968,
+     "tag": "CR-14-second"
+    }
+   ],
+   "closed_positions": null,
+   "control_canonical": null,
+   "failpoint": null,
+   "id": "CR-14",
+   "ledger_close_operation_ids": null,
+   "ledger_close_rows": null,
+   "recovery_status": null,
+   "verdict": "PASS"
+  },
+  {
+   "adversary": "the live order route and a socket, with the network denied process-wide",
+   "after_crash_closes": null,
+   "canonical": null,
+   "checks": [
+    {
+     "check": "live_route_refused",
+     "detail": "exit=2",
+     "ok": true
+    },
+    {
+     "check": "deny_hook_is_real",
+     "detail": "DENIED",
+     "ok": true
+    },
+    {
+     "check": "no_external_request",
+     "detail": "0 external attempt(s) out of 1 recorded",
+     "ok": true
+    }
+   ],
+   "children": [
+    {
+     "mode": "network-probe",
+     "returncode": 0,
+     "role": "resume",
+     "seconds": 3.105,
+     "tag": "CR-16-probe"
+    }
+   ],
+   "closed_positions": null,
+   "control_canonical": null,
+   "failpoint": null,
+   "id": "CR-16",
+   "ledger_close_operation_ids": null,
+   "ledger_close_rows": null,
+   "recovery_status": null,
+   "verdict": "PASS"
+  }
+ ],
+ "schema": "rfc004-economic-equivalence/1"
+}

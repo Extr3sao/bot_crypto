@@ -1,0 +1,2 @@
+2026-10-21 16:59:30 [info     ] paper.fill_closed              entry_commission=0.5 equity=9996.380966197243 exit_commission=0.5 gross_pnl=-2.619033802756882 net_pnl=-3.619033802756882 reason=stop_loss symbol=BTC/USDT
+2026-10-21 16:59:30 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.619033802756882 equity=9997.260975337244 pnl=-3.619033802756882 weekly_pnl=-3.619033802756882

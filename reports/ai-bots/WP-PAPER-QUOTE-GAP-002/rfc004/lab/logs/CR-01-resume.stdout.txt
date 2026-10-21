@@ -1,0 +1,4 @@
+2026-10-21 16:59:08 [warning  ] lane_book.lock_taken_over      age_s=4.1 path=C:\Users\GVLLFR0035\Downloads\bot-freebuff-recovery-004\reports\ai-bots\WP-PAPER-QUOTE-GAP-002\rfc004\lab\cases\CR-01\state\BOOK.lock previous_pid=38232
+2026-10-21 16:59:08 [info     ] paper.fill_closed              entry_commission=0.5 equity=9996.380966197243 exit_commission=0.5 gross_pnl=-2.619033802756882 net_pnl=-3.619033802756882 reason=stop_loss symbol=BTC/USDT
+2026-10-21 16:59:08 [info     ] risk.trade_recorded            consecutive_losses=1 daily_pnl=-3.619033802756882 equity=9997.260975337244 pnl=-3.619033802756882 weekly_pnl=-3.619033802756882
+{"out": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\logs\\CR-01-resume.json", "exit": 0, "pid": 28968}

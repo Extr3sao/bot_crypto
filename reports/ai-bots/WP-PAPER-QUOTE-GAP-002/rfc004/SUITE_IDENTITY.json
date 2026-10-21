@@ -1,0 +1,82 @@
+{
+ "command": ".venv/Scripts/python.exe -m pytest -q tests/unit/vision tests/unit/paper tests/unit/risk",
+ "errors": 0,
+ "exit_code": 0,
+ "failed": 0,
+ "generated_at_utc": "2026-10-21T16:00:33Z",
+ "passed": 577,
+ "repo_wide": {
+  "area_of_failures": [
+   "test_active_recovery_wp.py",
+   "test_alpha_recovery_v1_4_manifests.py",
+   "test_arp009_exp021_pit.py",
+   "test_arp010_exp022_pit.py",
+   "test_arp011_exp019_pit.py",
+   "test_arp013_exp023_spec.py",
+   "test_cost_barrier_adversarial.py",
+   "test_cost_barrier_explorer.py",
+   "test_cost_barrier_gate.py",
+   "test_economic001_evidence_closure.py",
+   "test_edge03_forward.py",
+   "test_edge04_autonomous.py",
+   "test_edge14_economic_recovery.py",
+   "test_edge16_causality.py",
+   "test_profitability_gate035.py",
+   "test_recovery_determinism.py",
+   "test_rfc035s3_strategy_closure.py",
+   "test_rfc046_activation_and_campaign.py",
+   "test_rfc046_discovery_proposal.py",
+   "test_rfc046_economic_gate.py",
+   "test_rfc047_windows_evidence.py",
+   "test_sprint024_stats.py",
+   "test_sprint026_execution.py",
+   "test_st6_forward_regime.py",
+   "test_st6_scheduler.py",
+   "test_windowless.py"
+  ],
+  "baseline": {
+   "command": "the same failing ids replayed on a worktree of the untouched parent commit",
+   "commit": "0c074fb4f3e22bb10407cb8af12ae94f8db480bc",
+   "errors": 14,
+   "exit_code": 1,
+   "failed": 101,
+   "passed": 0,
+   "result": "101 failed, 14 errors in 110.26s (0:01:50)",
+   "seconds": 110.26
+  },
+  "command": ".venv/Scripts/python.exe -m pytest -q --ignore=tests/unit/observability/test_vision_panel.py --ignore=tests/unit/research/test_edge16_pit.py",
+  "errors": 14,
+  "exit_code": 1,
+  "failed": 101,
+  "failures_at_baseline": 115,
+  "failures_at_baseline_sha256": "6287ccdabc2d265df4b092bb8b9bafd572f531ed8e0c57e3231c8ab8932e1330",
+  "failures_at_head": 115,
+  "failures_at_head_sha256": "6287ccdabc2d265df4b092bb8b9bafd572f531ed8e0c57e3231c8ab8932e1330",
+  "identical_to_baseline": true,
+  "non_baseline_failure_ids": [],
+  "non_baseline_failures": 0,
+  "note": "the repository-wide suite is not green at the parent commit either: the same failing ids fail on 0c074fb without this change. The acceptance suite is the vision/paper/risk slice above, which exits 0. This is declared, not hidden: a repo-wide green suite is a pre-existing gap this WP did not close and did not widen.",
+  "passed": 4350,
+  "result": "101 failed, 4350 passed, 31 skipped, 78 warnings, 14 errors in 1492.82s (0:24:52)",
+  "seconds": 1492.82
+ },
+ "result": "577 passed in 521.57s (0:08:41)",
+ "runtime_target": {
+  "failpoints_live_in": "src/trading_bot/vision/{durable,ledger,lane}.py, the same modules the tests import",
+  "runtime_target": "scripts/ai_vision_lane.py -> the same class, same constructor",
+  "test_target": "trading_bot.vision.lane.VisionLane.run (imported from the worktree's src/)"
+ },
+ "schema": "rfc004-suite-identity/1",
+ "scope": "acceptance suite: the modules this WP changes and the accounting they feed",
+ "seconds": 521.57,
+ "static_gates": {
+  "mypy": {
+   "exit_code": 0,
+   "log": "logs/mypy.txt"
+  },
+  "ruff": {
+   "exit_code": 0,
+   "log": "logs/ruff.txt"
+  }
+ }
+}
