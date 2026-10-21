@@ -74,9 +74,12 @@ def vision_config(**lane_overrides):
     return config.__class__(provider=config.provider, lane=lane.__class__(**merged))
 
 
+#: DEF-RUN-014: el stop del guion es el que el libro arriesga, así que tiene que limpiar
+#: el coste de ida y vuelta (24.79 bps a 500 USDT). 0.2 % estaba por debajo y el lane
+#: ahora lo rechaza con causa; 1.0 % es el mismo escenario con una distancia ejecutable.
 ALWAYS_LONG_ANSWER = (
     '{"schema_version":"ai-vision-decision/1","symbol":"BTC/USDT","action":"LONG",'
-    '"confidence":0.8,"horizon_bars":10,"stop_loss_pct":0.2,"take_profit_pct":5.0,'
+    '"confidence":0.8,"horizon_bars":10,"stop_loss_pct":1.0,"take_profit_pct":5.0,'
     '"invalidation":null,"rationale":"Continuation."}'
 )
 

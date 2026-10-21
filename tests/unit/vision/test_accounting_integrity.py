@@ -38,7 +38,7 @@ SYMBOL = "BTC/USDT"
 
 LONG = (
     '{"schema_version":"ai-vision-decision/1","symbol":"%s","action":"LONG",'
-    '"confidence":0.8,"horizon_bars":8,"stop_loss_pct":1.0,"take_profit_pct":1.0,'
+    '"confidence":0.8,"horizon_bars":8,"stop_loss_pct":0.5,"take_profit_pct":0.75,'
     '"invalidation":null,"rationale":"Continuation."}'
 )
 NO_TRADE = (
@@ -47,8 +47,9 @@ NO_TRADE = (
     '"invalidation":null,"rationale":"No level."}'
 )
 
-#: Lo que la política de riesgo de producción fija: 0,5 % de stop. Se declara aquí para que
-#: el nivel esperado sea un número del test y no una lectura del sistema bajo prueba.
+#: Lo que este guion declara y lo que la política de riesgo de producción también usa: 0,5 %
+#: de stop. DEF-RUN-014: la distancia declarada es la que se arriesga, así que el guion
+#: declara la que el escenario necesita (antes declaraba 1,0 % y el lane la descartaba).
 POLICY_STOP_PCT = 0.5
 
 

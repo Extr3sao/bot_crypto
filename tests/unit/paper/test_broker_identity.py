@@ -30,6 +30,10 @@ def _buy(symbol: str = "BTC/USDT", price: float = 100.0, notional: float = 1_000
         timeframe="1h",
         confidence=0.9,
         price=price,
+        #: The 1 %/2 % the broker used to assume when a signal carried no stop. Declaring
+        #: them keeps this identity test's numbers identical under DEF-RUN-014.
+        stop_loss_pct=1.0,
+        take_profit_pct=2.0,
         metadata={"notional_usdt": notional},
     )
 

@@ -262,14 +262,18 @@ def test_broker_none_result_counts_but_no_idempotency() -> None:
     c1 = engine.run_cycle_sync({"BTC/USDT": list(bars)}, {"BTC/USDT": ts})
     assert c1.orders_created == 1
     # A NEW bar exists at the new decision ts → new intent (cloid differs);
-    # the broker already holds a same-side long → execute_signal returns
-    # None → recorded as a broker-stage rejection, NOT registered as sent.
+    # DEF-RUN-015: the book already holds a same-side long, so the cycle resolves the
+    # occupancy before the entry gates and records a ``position`` skip (it used to reach
+    # the broker, return ``None`` and be filed as a ``broker`` rejection). Either way the
+    # intent is NOT registered as sent, which is what this test is about.
     c2 = engine.run_cycle_sync(
         {"BTC/USDT": _bars("BTC/USDT", n=61)}, {"BTC/USDT": TS0 + 60 * 60_000}
     )
     assert c2.orders_created == 0
     assert c2.duplicate_intents == 0
-    assert any(r["stage"] == "broker" for r in c2.rejections)
+    assert c2.same_side_skips == 1
+    assert any(r["stage"] == "position" for r in c2.rejections)
+    assert engine.idempotency.active_count == 1
 
 
 def test_broker_exception_zero_orders() -> None:

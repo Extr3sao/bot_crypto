@@ -259,15 +259,34 @@ def test_the_lane_still_refuses_the_hole_without_a_feed(tmp_path):
         if row.get("kind") == "GUARD_REJECT" and row.get("code") == "DATA_GAP"
     ]
     assert rejects and rejects[0]["missing_bar_open_ms"] == START_MS + 21 * HOUR_MS
-    assert summary["fills"] == 0
+    #: DEF-RUN-016: esta prueba afirmaba `fills == 0`, y ese cero no medía el guard: medía
+    #: el defecto. Con cadencia 1, toda opinión era sustituida en el cierre siguiente antes
+    #: de que su apertura fuese leída, así que ninguna operación podía existir. La propiedad
+    #: que importa es la que sigue: ninguna posición se abre en un camino que cruce un
+    #: hueco. Un relleno en un tramo contiguo es legítimo y no necesita feed que lo firme.
+    fills = [row for row in rows if row.get("kind") == "FILL"]
+    assert summary["fills"] == len(fills)
+    holes = {START_MS + index * HOUR_MS for index in EXPECTED_FILL_BARS}
+    for fill in fills:
+        opened_after_decision = int(fill["decision_bar_open_ms"]) + HOUR_MS
+        crossed = [
+            stamp for stamp in holes if opened_after_decision <= stamp <= int(fill["quote_ts_ms"])
+        ]
+        assert crossed == [], f"fill at {fill['quote_ts_ms']} crosses the hole(s) {crossed}"
 
 
 def test_the_real_feed_unlocks_the_holes_it_proves(tmp_path):
+    #: La ventana es de **dos** barras a propósito. Un hueco cuesta exactamente una barra de
+    #: edad de la opinión: su primer precio posible pasa a ser el siguiente que existe. Con
+    #: la ventana de una barra el veredicto honesto es la expiración
+    #: (``test_a_covered_hole_still_obeys_the_opinion_window``); lo que este test mide es la
+    #: otra mitad: cuando la ventana lo absorbe, el feed convierte el hueco en operación.
     summary, rows = run_lane(
         tmp_path,
         series=flat_hours(remove=EXPECTED_FILL_BARS),
         quote_feed=feed(),
         latency_ms=900,
+        max_opinion_age_ms=2 * HOUR_MS,
     )
     fills = [row for row in rows if row.get("kind") == "FILL"]
     assert summary["fills"] == len(fills) >= 1
@@ -282,6 +301,43 @@ def test_the_real_feed_unlocks_the_holes_it_proves(tmp_path):
     ]
 
 
+def test_a_proven_hole_still_costs_one_bar_of_opinion_age(tmp_path):
+    """La cobertura ejecuta el hueco; no lo abarata.
+
+    Una orden cuyo primer precio posible es el que **sigue** al hueco llega dos barras
+    después de su decisión. Con la ventana de una barra el veredicto es la expiración: el
+    feed demuestra que el mercado siguió cotizando, no que la opinión siga siendo actual.
+    Se comprueba en el carril para que el aplazamiento no pueda confundirse con una
+    sustitución silenciosa ni con un relleno a precio viejo.
+    """
+
+    _, rows = run_lane(
+        tmp_path,
+        series=flat_hours(remove=EXPECTED_FILL_BARS),
+        quote_feed=feed(),
+        latency_ms=900,
+    )
+
+    expired = [
+        row
+        for row in rows
+        if row.get("kind") == "GUARD_REJECT" and row.get("code") == "LATE_RESPONSE"
+    ]
+    assert expired, "the order held behind the hole must expire with a row, not vanish"
+    assert all(int(row["opinion_age_ms"]) > int(row["max_opinion_age_ms"]) for row in expired)
+    holes = {START_MS + index * HOUR_MS for index in EXPECTED_FILL_BARS}
+    for fill in (row for row in rows if row.get("kind") == "FILL"):
+        crossed = [
+            hole
+            for hole in holes
+            if int(fill["decision_bar_open_ms"]) + HOUR_MS <= hole <= int(fill["quote_ts_ms"])
+        ]
+        assert crossed == [], f"an expired opinion cannot reappear as a fill on {crossed}"
+    assert not [row for row in rows if row.get("code") == "DATA_GAP"], (
+        "the feed did prove this hole; the refusal it earns is the clock's, not the guard's"
+    )
+
+
 def test_the_lane_never_uses_the_minute_feed_as_an_entry_price(tmp_path):
     """El feed prueba continuidad; la cotización sigue siendo una apertura de vela."""
 
@@ -290,6 +346,7 @@ def test_the_lane_never_uses_the_minute_feed_as_an_entry_price(tmp_path):
         series=flat_hours(remove=EXPECTED_FILL_BARS),
         quote_feed=feed(),
         latency_ms=900,
+        max_opinion_age_ms=2 * HOUR_MS,
     )
     fill = next(row for row in rows if row.get("kind") == "FILL")
     assert fill["quote_source"] == "bar_open"

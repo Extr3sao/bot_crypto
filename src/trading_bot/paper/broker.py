@@ -329,22 +329,50 @@ class PaperBroker:
         """
         symbol = signal.symbol
 
-        # Close existing position on same symbol if opposite side
+        # -- DEF-RUN-015: CLOSE is a request, REVERSE does not exist ------------------
+        #
+        # This method used to close an existing position whenever a signal arrived on the
+        # opposite side, and returned the ``ClosedTrade`` to a caller that counted any
+        # non-``None`` result as a created order. An exit therefore looked like an entry,
+        # and the position the signal seemed to ask for was never opened. Three paths,
+        # three names now: an explicit CLOSE closes; a same-side signal is skipped; an
+        # opposite signal without CLOSE intent is refused and changes nothing.
+        intent = str(signal.metadata.get("intent", "OPEN") or "OPEN").upper()
+        if intent == "CLOSE":
+            return self.close_position(
+                symbol,
+                float(signal.price),
+                str(signal.metadata.get("close_reason") or "signal_close"),
+            )
+
         if symbol in self._positions:
             existing = self._positions[symbol]
             if existing.side != signal.side:
-                self._log.info(
-                    "paper.closing_opposite",
+                self._log.warning(
+                    "paper.implicit_reversal_refused",
                     symbol=symbol,
                     existing_side=existing.side,
                     new_side=signal.side,
                 )
-                return self._close_position(symbol, signal.price, "signal")
-
-        # Skip if already have position on this symbol (same side)
-        if symbol in self._positions:
+                raise BrokerOrderError(
+                    "IMPLICIT_REVERSAL_FORBIDDEN: "
+                    f"{symbol} already holds a {existing.side} position and this signal "
+                    f"asks to open {signal.side}. Closing is an explicit action "
+                    "(metadata.intent=\"CLOSE\" or PaperBroker.close_position); a signal "
+                    "never closes and reverses in one step."
+                )
+            # Skip if already have position on this symbol (same side)
             self._log.info("paper.skip_duplicate", symbol=symbol)
             return None
+
+        # DEF-RUN-014: no silent 1 % default. The protective distance is the risk
+        # engine's decision and must arrive with the signal it approved.
+        if signal.stop_loss_pct is None:
+            raise BrokerOrderError(
+                "STOP_LOSS_REQUIRED: signal for "
+                f"{symbol} carries no stop_loss_pct. The broker never invents one: a "
+                "position without the approved stop is a position with unmeasured risk."
+            )
 
         # Compute quantity from position size in metadata.
         # Risk authority invariant: execute_signal is only reachable with a
@@ -409,6 +437,33 @@ class PaperBroker:
         )
 
         return position
+
+    def close_position(
+        self, symbol: str, reference_price: float, reason: str = "explicit_close"
+    ) -> ClosedTrade | None:
+        """Close an open position on purpose (DEF-RUN-015).
+
+        The explicit counterpart of ``execute_signal``: callers that want an exit say so
+        with this method instead of sending an opposite signal and hoping the broker reads
+        it as one. A flat book is a no-op — asking to close nothing is not an error, but it
+        is logged, so "no close happened" is observable rather than inferred.
+        """
+        position = self._positions.get(symbol)
+        if position is None:
+            self._log.info("paper.close_noop", symbol=symbol, reason=reason)
+            return None
+        if float(reference_price) <= 0:
+            raise BrokerOrderError(
+                f"close_position({symbol!r}) needs a positive reference price, got {reference_price!r}"
+            )
+        self._log.info(
+            "paper.close_requested",
+            symbol=symbol,
+            side=position.side,
+            reason=reason,
+            reference_price=float(reference_price),
+        )
+        return self._close_position(symbol, float(reference_price), str(reason))
 
     def _close_position(self, symbol: str, exit_price: float, reason: str) -> ClosedTrade:
         """Close an existing position and compute PnL.

@@ -87,6 +87,14 @@ class CycleStageCounts:
     risk_errors: int = 0
     orders_created: int = 0
     broker_errors: int = 0
+    #: DEF-RUN-015: an exit is not an entry. ``exits_requested`` counts the exit
+    #: evaluations this cycle produced, ``exits_closed`` how many actually closed a book
+    #: position, ``reversals_refused`` an opposite signal the broker refused, and
+    #: ``same_side_skips`` a signal whose side was already held.
+    exits_requested: int = 0
+    exits_closed: int = 0
+    reversals_refused: int = 0
+    same_side_skips: int = 0
     #: WP-EDGE-017/P0.4: one count per defensive block that fired (by block id).
     defensive_blocks: dict[str, int] = field(default_factory=dict)
     rejections: list[dict[str, Any]] = field(default_factory=list)
@@ -109,6 +117,10 @@ class CycleStageCounts:
             "risk_errors": self.risk_errors,
             "orders_created": self.orders_created,
             "broker_errors": self.broker_errors,
+            "exits_requested": self.exits_requested,
+            "exits_closed": self.exits_closed,
+            "reversals_refused": self.reversals_refused,
+            "same_side_skips": self.same_side_skips,
             "defensive_blocks": dict(self.defensive_blocks),
             "rejections": list(self.rejections),
         }
@@ -397,12 +409,51 @@ class PaperCycleEngine:
                 _reject(counts, symbol, "risk", "candidate_without_alpha")
                 continue
 
+            # Idempotency first: exactly-once is about the intent, and it must keep its
+            # meaning (a repeated intent is a duplicate, not a new position signal).
             cloid = intent_cloid(
                 symbol, cand.strategy_id, cand.direction, int(getattr(alpha, "timestamp", 0))
             )
             if self._idempotency.is_duplicate(cloid):
                 counts.duplicate_intents += 1
                 _reject(counts, symbol, "idempotency", f"duplicate_intent:{cloid}")
+                continue
+
+            # -- DEF-RUN-015: occupancy is resolved BEFORE the entry gates ----------
+            #
+            # A gate that blocks an exit is a bug, not a policy (``max_open_positions``
+            # rejecting the very signal that would free a slot is the clearest case). So
+            # the position is inspected here: same side is a skip, the opposite side is an
+            # exit *request* — never an entry, and never a reversal.
+            held = self._broker.positions.get(symbol)
+            if held is not None:
+                held_side = str(getattr(held, "side", ""))
+                wanted_side = "buy" if cand.direction.upper() == "LONG" else "sell"
+                if held_side == wanted_side:
+                    counts.same_side_skips += 1
+                    _reject(counts, symbol, "position", "same_side_already_open")
+                    continue
+                counts.exits_requested += 1
+                exit_price = float(cand.entry_reference or 0.0)
+                if exit_price <= 0:
+                    _reject(counts, symbol, "exit", "EXIT_WITHOUT_PRICE")
+                    continue
+                try:
+                    closed = self._broker.close_position(
+                        symbol, exit_price, "OPPOSITE_SIGNAL_EXIT_EVALUATION"
+                    )
+                except Exception as exc:  # broker failure ⇒ no order, loud and recorded
+                    counts.broker_errors += 1
+                    _reject(counts, symbol, "broker", f"{type(exc).__name__}: {exc}")
+                    continue
+                if closed is None:
+                    _reject(counts, symbol, "exit", "exit_requested_no_position")
+                    continue
+                counts.exits_closed += 1
+                _reject(counts, symbol, "exit", "CLOSED_ON_OPPOSITE_SIGNAL")
+                #: The book changed: the next cycle must re-evaluate, not skip on the
+                #: bar gate.
+                self.bump_state_version("position_closed:opposite_signal")
                 continue
 
             try:

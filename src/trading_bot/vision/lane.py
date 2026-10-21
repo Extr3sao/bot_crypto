@@ -18,11 +18,19 @@ Timing is the same discipline the deterministic lane uses, and it matters:
 * protective exits are checked before new entries on every bar, with the broker's
   conservative both-hit policy (``stop_first``).
 
-Risk is not re-implemented here. ``RiskManager.check_signal`` is the only gate, sizing
-comes from its ``PositionSize``, and the stops are the policy's defaults — the model's
-own stop is recorded as advice, never substituted into the book, because letting the
-prompt choose the stop distance would let the prompt change the risk per trade and the
-comparison with the deterministic lane would be between two policies, not two decisions.
+Risk is not re-implemented here. ``RiskManager.check_signal`` is the only gate and sizing
+comes from its ``PositionSize``. The stop the model declares is the **thesis'
+invalidation** and it is honoured exactly: DEF-RUN-014 closed the path where this lane
+built a ``Signal`` without ``stop_loss_pct``, which made the manager apply the policy
+default (0.5 %) while the model had asked for something else. The resolution is now
+explicit and published on every row (``requested`` / ``effective`` / ``source`` /
+``reason`` / ``risk_at_stop_usdt``), and a distance shorter than the round trip it has to
+survive is refused as ``stop_inside_costs`` instead of being executed as if it were a
+loss limit.
+
+What keeps the comparison with the deterministic lane honest is not ignoring the model's
+distance but *sizing* under the policy: the notional is still ``RiskManager``'s, so a
+tighter stop buys a smaller position, not a bigger risk.
 
 One subtraction from parity, declared: a CLOSE is not passed through ``check_signal``.
 A trade-count or cooldown gate that blocks an exit is a bug, not a policy, and the
@@ -34,7 +42,8 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Callable, Sequence
+import math
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, replace
 from datetime import UTC, datetime
 from itertools import pairwise
@@ -72,7 +81,7 @@ from trading_bot.vision.guards import (
     assert_tradeable_window,
     check_costs,
 )
-from trading_bot.vision.ledger import DecisionLedger
+from trading_bot.vision.ledger import DecisionLedger, read_entries
 from trading_bot.vision.prompt import PromptBundle, build_prompt
 from trading_bot.vision.provider import (
     ProviderError,
@@ -120,6 +129,97 @@ COST_MEANINGS: dict[str, str] = {
 
 def _utc_iso(ms: int) -> str:
     return datetime.fromtimestamp(ms / 1000.0, tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+#: DEF-RUN-016: the two scheduling rules a replay may declare. The default is the one
+#: the runtime uses; the other exists so a report can show what the pipeline did before.
+OPINION_LIFECYCLE_DEFER = "DEFER"
+OPINION_LIFECYCLE_SUPERSEDE = "SUPERSEDE"
+OPINION_LIFECYCLES = (OPINION_LIFECYCLE_DEFER, OPINION_LIFECYCLE_SUPERSEDE)
+
+#: DEF-RUN-016: las cinco clases terminales son disjuntas — una opinión pertenece a
+#: exactamente una — y suman las opiniones generadas. ``expired``,
+#: ``superseded``, ``pending_at_end`` y ``deferred_slots`` son **vistas** de alguna de
+#: ellas (o de un turno que no llegó a ser opinión), nunca sumandos extra.
+OPINION_ACCOUNTING_SCHEMA = "DEF_RUN_016_OPINION_ACCOUNTING_V1"
+OPINION_ACCOUNTING_IDENTITY = (
+    "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED"
+)
+TERMINAL_CLASSES = ("FILLED", "CLOSED", "BLOCKED_BY_RISK", "GATED", "REJECTED")
+ACTIONABLE_INTENTS = ("OPEN_LONG", "OPEN_SHORT", "CLOSE")
+
+
+class OpinionLifecycleError(RuntimeError):
+    """El ledger no explica todas las opiniones que el carril generó.
+
+    Deliberadamente no es un ``assert``: ``python -O`` elimina los ``assert`` y un resumen
+    que no cuadra se publicaría igual. Lleva el código, la cuenta reconstruida desde los
+    bytes y las opiniones afectadas, y se escribe en el ledger **antes** de propagarse, de
+    modo que el fallo sea reproducible y auditable desde el propio artefacto.
+    """
+
+    def __init__(self, code: str, detail: str, **fields: Any) -> None:
+        super().__init__(f"{code}: {detail}")
+        self.code = code
+        self.detail = detail
+        self.fields = dict(fields)
+
+    def to_row(self) -> dict[str, Any]:
+        return {"code": self.code, "detail": self.detail, **self.fields}
+
+
+def _terminal_event(entry: Mapping[str, Any]) -> tuple[str, str] | None:
+    """Qué clase terminal declara esta fila, si declara alguna.
+
+    La fila de aprobación del riesgo de una entrada rellenada **no** es un cierre: no
+    lleva ``executed`` y el relleno que la sigue es el evento terminal. Tratar cada fila
+    con ``decision_seq`` como un cierre contaría la misma opinión dos veces.
+    """
+    kind = entry.get("kind")
+    if kind == "FILL":
+        return ("FILLED", "FILL")
+    if kind == "DECISION_OUTCOME":
+        intent = str(entry.get("intent") or "")
+        executed = entry.get("executed")
+        if intent == "CLOSE":
+            if executed is True:
+                return ("CLOSED", "CLOSE_EXECUTED")
+            if executed is False:
+                return ("GATED", str(entry.get("risk_gate") or "CLOSE_NOT_EXECUTED"))
+            return None
+        if entry.get("approved") is False:
+            return ("BLOCKED_BY_RISK", str(entry.get("risk_blocked_by") or "unknown"))
+        if entry.get("approved") is True and executed is False:
+            return ("GATED", str(entry.get("risk_gate") or "unknown"))
+        return None
+    if kind == "GUARD_REJECT" and entry.get("decision_seq") is not None:
+        return ("REJECTED", str(entry.get("code") or "UNKNOWN"))
+    return None
+
+
+def _latencies(values: Sequence[int]) -> dict[str, Any]:
+    """p50/p95/p99 of a millisecond series, plus the sample it was measured on.
+
+    ``None`` for an empty series: a percentile of nothing is not zero, and a report that
+    printed 0 would read as a measured instant.
+    """
+    if not values:
+        return {"samples": 0, "p50": None, "p95": None, "p99": None, "max": None}
+    ordered = sorted(int(value) for value in values)
+
+    def at(quantile: float) -> int:
+        #: Nearest-rank, so every percentile is an observed value and never an average of
+        #: two observations that no order ever had.
+        index = max(0, min(len(ordered) - 1, math.ceil(quantile * len(ordered)) - 1))
+        return ordered[index]
+
+    return {
+        "samples": len(ordered),
+        "p50": at(0.50),
+        "p95": at(0.95),
+        "p99": at(0.99),
+        "max": ordered[-1],
+    }
 
 
 def _day_of(ms: int) -> str:
@@ -191,6 +291,7 @@ class VisionLane:
         quote_feed: QuoteFeed | None = None,
         subbar_entries: bool = False,
         decision_from_ms: int | None = None,
+        opinion_lifecycle: str = OPINION_LIFECYCLE_DEFER,
     ) -> None:
         if not series:
             raise ValueError("series is empty")
@@ -202,6 +303,17 @@ class VisionLane:
         self.decision_every = int(
             decision_every_bars or config.lane.decision_every_bars
         )
+        #: DEF-RUN-016. ``DEFER`` is the runtime contract: an opinion still inside its TTL
+        #: keeps the quote it is about to pay. ``SUPERSEDE`` is the pre-fix scheduling rule,
+        #: kept **only** so CURRENT and PROPOSED can be replayed over the same data with the
+        #: same code; it is not a tuning knob and the default is not negotiable at runtime.
+        lifecycle = str(opinion_lifecycle).upper()
+        if lifecycle not in OPINION_LIFECYCLES:
+            raise ValueError(
+                f"unknown opinion_lifecycle {opinion_lifecycle!r}; "
+                f"allowed: {list(OPINION_LIFECYCLES)}"
+            )
+        self.opinion_lifecycle = lifecycle
         self.max_calls = int(max_calls or config.lane.max_calls_per_run)
         self.max_spend_usd = float(
             config.lane.max_estimated_spend_usd if max_spend_usd is None else max_spend_usd
@@ -252,12 +364,32 @@ class VisionLane:
             clock=lambda: self._current_ms[0] / 1000.0,
             cost_schedule=cost_schedule,
         )
+        def round_trip_bps(symbol: str, notional: float) -> float:
+            """What one round trip costs at the size the decision will actually take.
+
+            The same schedule the broker will charge, with the same declared multiplier, so
+            the number the risk gate compares a stop against is the number the fills pay.
+            """
+            terms = cost_for(symbol, stake_usdt=max(notional, 1.0))
+            return float(terms.round_trip_bps(self.cost_multiplier))
+
         self.risk = RiskManager(
             risk=risk_policy,
             equity=self.equity,
             _clock=lambda: self._current_ms[0] / 1000.0,
+            #: DEF-RUN-014: a stop shorter than the round trip is not a loss limit. The lane
+            #: asks the manager to refuse it (``NO_TRADE`` with both numbers in the reason)
+            #: instead of executing a distance that cannot pay for its own friction.
+            cost_bps_for=round_trip_bps,
+            stop_cost_policy="REJECT",
         )
         self._pending: dict[str, PendingOrder] = {}
+        #: How many decision slots each in-flight opinion has cost. Published so a reader
+        #: can tell a pipeline that is one bar behind from one that is starved.
+        self._deferrals: dict[int, int] = {}
+        #: Filled by the run-end sweep before the summary is taken; zero is "no opinion
+        #: was still waiting", which is a measurement, not a missing value.
+        self._pending_at_end = 0
         #: Median distance between consecutive bars, per symbol. Used to tell "the next
         #: bar" from "some later bar after a hole in the data".
         self._step_ms: dict[str, int] = {
@@ -314,6 +446,7 @@ class VisionLane:
     def _bump(self, key: str) -> None:
         self.counters[key] = self.counters.get(key, 0) + 1
 
+
     def _reject_pending(
         self,
         symbol: str,
@@ -347,6 +480,72 @@ class VisionLane:
         )
         self._bump(f"guard:{code}")
 
+    def _defer_decision(
+        self,
+        symbol: str,
+        ts_ms: int,
+        pending: PendingOrder,
+        next_open: int,
+        source: str = "grid",
+    ) -> None:
+        """Say out loud that this decision slot was spent before it was taken.
+
+        DEF-RUN-016. The lane formed an opinion at every bar close and replaced the one
+        still waiting for its first executable quote with
+        ``SUPERSEDED_BY_NEWER_OPINION``. When the answer is late enough that the next open
+        is already after it, that replacement is a phase-ordering mistake: the supersede
+        row was written at ``close_ms`` — the instant of the bar open that would price the
+        waiting order — and it was written *before* that open was ever read. The only
+        executable opinion was destroyed by an opinion whose answer arrives *after* that
+        same price and can therefore never use it.
+
+        The rule is now stated as an invariant: **at the instant a quote is read, the
+        freshest arrived opinion is the one that gets it**. An opinion formed now answers at
+        ``close(k+1) + L`` while the waiting one is priced at the first open at or after
+        ``close(k) + L``, which is always earlier than that. The waiting opinion is therefore
+        never obsolete at the price it is about to pay, and the newer answer could only
+        arrive after that price. The slot is deferred — not paid for, not counted as an
+        opinion.
+
+        Nothing is kept alive past its TTL to manufacture trades. The deferral only applies
+        while the waiting opinion can still be priced inside ``max_opinion_age_ms``; once
+        its first open is already older than the window (a model slower than its own bar),
+        the order is obsolete and a newer view supersedes it exactly as before, so a slow
+        provider cannot starve the decision slot. A waiting order whose path is broken by a
+        hole still meets ``DATA_GAP`` at the next bar that exists.
+        """
+        self.ledger.append(
+            "OPINION_DEFERRED",
+            {
+                "ts_ms": int(ts_ms),
+                "ts_utc": _utc_iso(int(ts_ms)),
+                "symbol": symbol,
+                "phase": "DECISION",
+                "reason": "OPINION_IN_FLIGHT",
+                "decision_seq": pending.decision_seq,
+                "intent": pending.intent,
+                "decision_ts_ms": int(pending.decision_ts_ms),
+                "received_at_ms": int(pending.received_at_ms),
+                "next_executable_open_ms": next_open,
+                "next_executable_open_utc": _utc_iso(int(next_open)),
+                #: ``grid`` siempre: la apertura se proyecta con el reloj declarado, no se
+                #: lee de un futuro que el ciclo aún no tiene. Si el dataset tiene un hueco,
+                #: la ejecución lo rechaza al leer el precio.
+                "next_executable_open_source": source,
+                "pending_deferrals": 1
+                + int(self._deferrals.get(pending.decision_seq, 0)),
+                "detail": (
+                    "the opinion in flight has not been offered a quote at or after its "
+                    "answer yet; a new answer could only compete for the same quote and "
+                    "would arrive after it, so the paid call is not made"
+                ),
+            },
+        )
+        self._deferrals[pending.decision_seq] = 1 + int(
+            self._deferrals.get(pending.decision_seq, 0)
+        )
+        self._bump("opinion:deferred")
+
     def _data_gap(
         self, symbol: str, pending: PendingOrder, at_ms: int
     ) -> dict[str, Any] | None:
@@ -358,14 +557,20 @@ class VisionLane:
         quote is later than the hole, which is not the same as continuous.
         """
         stamps = self._bar_ts_ms.get(symbol, set())
+        #: DEF-RUN-016: la orden puede esperar más de una barra (una opinión aplazada cruza
+        #: al menos una). Antes solo se miraba la barra inmediatamente posterior, así que un
+        #: hueco en medio de un camino más largo pasaba desapercibido. Ahora se recorre el
+        #: tramo completo desde la barra de decisión hasta la cotización.
         probe = int(pending.decision_bar_open_ms) + self.interval_ms
-        if probe >= int(at_ms) or probe in stamps:
-            return None
-        missing = probe
-        run = 0
-        while probe < int(at_ms) and probe not in stamps:
-            run += 1
+        absent: list[int] = []
+        while probe < int(at_ms):
+            if probe not in stamps:
+                absent.append(probe)
             probe += self.interval_ms
+        if not absent:
+            return None
+        missing = absent[0]
+        run = len(absent)
         record: dict[str, Any] = {
             "covered": False,
             "missing_bar_open_ms": missing,
@@ -680,6 +885,10 @@ class VisionLane:
         if not resolved.actionable:
             self._bump(f"dropped:{resolved.reason}")
             return None
+        #: An actionable opinion is one the pipeline owes a fill or a verdict. Counted
+        #: here, at the only place an opinion is born, so the lifecycle cannot double-count
+        #: a decision row that was never tradable.
+        self._bump("opinion:generated")
         return PendingOrder(
             bar_index=0,  # filled by the caller with the bar index
             intent=resolved.intent,
@@ -861,6 +1070,9 @@ class VisionLane:
                     ),
                     "opinion_age_ms": outcome.age_ms,
                     "max_opinion_age_ms": self.max_opinion_age_ms,
+                    #: Sin ``decision_seq`` esta fila no se podía unir con su nacimiento:
+                    #: la opinión expiraba y, para cualquier verificador, desaparecía.
+                    "decision_seq": pending.decision_seq,
                     "decision_ts_ms": pending.decision_ts_ms,
                     "received_at_ms": pending.received_at_ms,
                     **quote.to_row(),
@@ -868,32 +1080,47 @@ class VisionLane:
                 },
             )
             self._bump("guard:LATE_RESPONSE")
+            self._bump("opinion:expired")
             return "RESOLVED"
 
         price = float(quote.price)
         if price <= 0:
+            #: Un precio no positivo no es un mercado. Sin fila terminal la opinión
+            #: desaparecía del ledger en lugar de morir con nombre.
+            self._reject_pending(
+                symbol,
+                int(quote.ts_ms),
+                pending,
+                "NON_POSITIVE_QUOTE",
+                (
+                    f"the first executable quote is {price!r}: a non-positive price is a "
+                    "missing observation, not an execution"
+                ),
+                extra={"quote_ts_ms": int(quote.ts_ms), "quote_price": price},
+            )
             return "RESOLVED"
 
         if pending.intent == "CLOSE":
             position = self.broker.positions.get(symbol)
             if position is None:
+                #: La posición desapareció entre la opinión y su precio (salida
+                #: protectora en la fase anterior). La opinión no puede ejecutarse y
+                #: tiene que decirlo: un ``return`` silencioso la borraba del recuento.
+                self._reject_pending(
+                    symbol,
+                    int(bar.ts_ms),
+                    pending,
+                    "NO_POSITION_TO_CLOSE",
+                    "the position this opinion asked to close no longer exists at its quote",
+                    extra={"quote_ts_ms": int(quote.ts_ms)},
+                )
                 return "RESOLVED"
-            closing_side: Side = "sell" if str(position.side) == "buy" else "buy"
-            close_signal = Signal(
-                symbol=symbol,
-                side=closing_side,
-                strategy_name="ai_vision",
-                timeframe=self.timeframe,
-                confidence=float(decision.confidence),
-                price=price,
-                metadata={
-                    "notional_usdt": float(position.notional_usdt),
-                    "decision_seq": pending.decision_seq,
-                },
-            )
             opened = float(position.opened_at)
             bars_held = round((float(quote.ts_ms) / 1000.0 - opened) / 3600.0)
-            result = self.broker.execute_signal(close_signal)
+            #: DEF-RUN-015: an explicit close, not an opposite signal. The lane used to
+            #: send a `sell` to close a `buy`, which the broker read as a close only by
+            #: accident and which the new contract refuses outright.
+            result = self.broker.close_position(symbol, price, "signal")
             if result is not None and hasattr(result, "pnl"):
                 # A model CLOSE is a market order at the quote that carried it, so the
                 # exit instant is the quote, not the end of the bar.
@@ -917,9 +1144,20 @@ class VisionLane:
                     "executed": result is not None,
                 },
             )
+            if result is not None:
+                #: Una opinión CLOSE ejecutada no produce un ``FILL`` (produce un ``CLOSE``),
+                #: así que su clase terminal se cuenta aquí o no se cuenta en ninguna parte.
+                self._bump("opinion:closed")
+            else:
+                #: La fila ya declaró ``executed: False``; el contador tiene que decir lo
+                #: mismo o la opinión queda con una clase terminal no publicada.
+                self._bump("gate:CLOSE_NOT_EXECUTED")
             return "RESOLVED"
 
         side: Side = "buy" if pending.intent == "OPEN_LONG" else "sell"
+        #: DEF-RUN-014: the model's own invalidation distance travels to the risk engine.
+        #: Omitting it was the defect: the manager then applied the policy default and the
+        #: ledger reported a stop nobody had asked for.
         signal = Signal(
             symbol=symbol,
             side=side,
@@ -927,9 +1165,12 @@ class VisionLane:
             timeframe=self.timeframe,
             confidence=float(decision.confidence),
             price=price,
+            stop_loss_pct=decision.stop_loss_pct,
+            take_profit_pct=decision.take_profit_pct,
             metadata={"decision_seq": pending.decision_seq},
         )
         check = self.risk.check_signal(signal)
+        stop_row = check.stop_resolution.to_row() if check.stop_resolution else {}
         self.ledger.append(
             "DECISION_OUTCOME",
             {
@@ -954,6 +1195,9 @@ class VisionLane:
                     and check.position_size is not None
                     and float(decision.stop_loss_pct) <= float(check.position_size.stop_loss_pct)
                 ),
+                #: The whole stop contract, resolved by the risk engine (DEF-RUN-014).
+                "stop_contract": stop_row,
+                **stop_row,
             },
         )
         if not check.approved or check.position_size is None:
@@ -1024,6 +1268,25 @@ class VisionLane:
         )
         filled = self.broker.execute_signal(order)
         if filled is None:
+            #: El broker puede negarse después de que el riesgo aprobase. Sin esta fila la
+            #: opinión no tendría evento terminal y desaparecería del ledger: el defecto que
+            #: ``DEF-RUN-016`` existe para hacer imposible.
+            self.ledger.append(
+                "DECISION_OUTCOME",
+                {
+                    "ts_ms": ts,
+                    "symbol": symbol,
+                    "decision_seq": pending.decision_seq,
+                    "intent": pending.intent,
+                    "risk_gate": "BROKER_REJECTED",
+                    "phase": "OPEN_ENTRY",
+                    "approved": True,
+                    "executed": False,
+                    "risk_blocked_by": "BROKER_REJECTED",
+                    "risk_reason": "the broker returned no order for an approved signal",
+                    "notional_usdt": notional,
+                },
+            )
             self._bump("broker_rejected")
             return "RESOLVED"
         self.risk.sync_open_positions(dict(self.broker.positions))
@@ -1035,6 +1298,7 @@ class VisionLane:
         stop_price = float(position.stop_loss_price) if position is not None else 0.0
         target_price = float(position.take_profit_price) if position is not None else 0.0
         self._entry_provenance[position_id] = {
+            "decision_bar_open_ms": int(pending.decision_bar_open_ms),
             "quote_ts_ms": quote.ts_ms,
             "quote_source": quote.source,
             "quote_lag_ms": outcome.lag_ms,
@@ -1066,6 +1330,7 @@ class VisionLane:
                 "decision_seq": pending.decision_seq,
                 "decision_ts_ms": pending.decision_ts_ms,
                 "received_at_ms": pending.received_at_ms,
+                "decision_bar_open_ms": int(pending.decision_bar_open_ms),
                 "decision_bar_index": pending.decision_bar_index,
                 "fill_bar_index": bar_index,
                 "quote_ts_ms": quote.ts_ms,
@@ -1105,6 +1370,10 @@ class VisionLane:
                 ),
                 "stop_loss_pct": float(sized.stop_loss_pct),
                 "take_profit_pct": float(sized.take_profit_pct),
+                #: DEF-RUN-014: the fill row states where its protective distance came
+                #: from and what it costs to survive, so a verifier can check the model →
+                #: risk → order → ledger chain from these bytes alone.
+                **(sized.stop_resolution.to_row() if sized.stop_resolution else {}),
             },
         )
         self._bump("fills")
@@ -1145,6 +1414,7 @@ class VisionLane:
                         "data_delay_ms": self.data_delay_ms,
                         "decision_from_ms": self.decision_from_ms,
                         "max_opinion_age_ms": self.max_opinion_age_ms,
+                        "opinion_lifecycle": self.opinion_lifecycle,
                         "max_calls": self.max_calls,
                         "max_spend_usd": self.max_spend_usd,
                         # Declared conventions a reader needs to interpret every fill:
@@ -1342,25 +1612,85 @@ class VisionLane:
                         stop_reason=self.stop_reason,
                     ):
                         continue
-                    decision = self._decide(symbol, bars[index], bars[: index + 1])
-                    if decision is not None:
-                        waiting = self._pending.get(symbol)
-                        if waiting is not None:
-                            # A newer view supersedes an order that never found a quote.
-                            # It is recorded rather than dropped: an opinion that vanished
-                            # without a row would look like one that was never made.
+                    waiting = self._pending.get(symbol)
+                    if waiting is not None:
+                        # DEF-RUN-016. A newer opinion can never be available at the
+                        # instant the waiting one is priced: the waiting answer is at
+                        # ``close(k) + L`` and its first open is < ``close(k) + L + T``,
+                        # while the next opinion answers at ``close(k) + T + L``. So the
+                        # waiting opinion is the freshest one *that exists* when its quote
+                        # is read, and replacing it destroys the only executable view. The
+                        # paid call is not made; the slot is recorded as deferred.
+                        #: At the live edge the next bar does not exist *yet*. Taking that as
+                        #: "no quote" would supersede the newest opinion as a side effect of
+                        #: the series being shorter, and the next cycle would then disagree
+                        #: with the previous one about a decision that was already made. The
+                        #: grid's next open is the honest candidate there, and it is labelled
+                        #: as an assumption instead of passed off as a fact.
+                        #: La decisión se toma sobre la **rejilla declarada**, nunca sobre si
+                        #: la serie ya contiene esa barra. Si dependiera de los datos futuros,
+                        #: el último turno de un ciclo se resolvería de una forma y, al
+                        #: llegar la barra, de otra: el prefijo del ledger divergiría y la
+                        #: sesión marcaría ``PREFIX_DIVERGENCE`` sobre una decisión pasada.
+                        #: Un hueco sigue siendo un hueco: `_data_gap` lo comprueba al leer el
+                        #: precio, y cubre ya todo el tramo recorrido.
+                        #: La apertura se **proyecta** con la rejilla declarada, así que su
+                        #: procedencia es ``grid`` y se dice: no se leyó del dataset. Si el
+                        #: dataset tiene un hueco, `_data_gap` lo rechaza al leer el precio.
+                        next_open_source = "grid"
+                        ahead = max(0, int(waiting.received_at_ms) - int(close_ms))
+                        steps = math.ceil(ahead / self.interval_ms)
+                        planned = int(close_ms) + steps * self.interval_ms
+                        #: Only an opinion that can still be priced inside its declared TTL is
+                        #: worth protecting. If the first open at or after the answer is
+                        #: already older than ``max_opinion_age_ms`` (a model slower than
+                        #: its own window), the waiting order is obsolete by construction:
+                        #: it is superseded as before and the slot is not starved forever.
+                        still_tradable = (
+                            self.opinion_lifecycle == OPINION_LIFECYCLE_DEFER
+                            and int(planned) - int(waiting.decision_ts_ms)
+                            <= self.max_opinion_age_ms
+                        )
+                        if still_tradable:
+                            self._defer_decision(
+                                symbol,
+                                close_ms,
+                                waiting,
+                                int(planned),
+                                next_open_source,
+                            )
+                            continue
+                        decision = self._decide(symbol, bars[index], bars[: index + 1])
+                        if decision is not None:
                             self._reject_pending(
                                 symbol,
                                 close_ms,
                                 waiting,
                                 "SUPERSEDED_BY_NEWER_OPINION",
                                 (
-                                    "a newer opinion replaced this one before any quote "
-                                    "existed at or after its answer"
+                                    "the waiting opinion cannot be priced inside its "
+                                    "declared window any more; a newer view replaced it"
                                 ),
-                                extra={"replaced_by_decision_seq": decision.decision_seq},
+                                extra={
+                                    "replaced_by_decision_seq": decision.decision_seq,
+                                    "next_executable_open_ms": int(planned),
+                                    "next_executable_open_source": next_open_source,
+                                    "opinion_age_at_next_open_ms": (
+                                        int(planned) - int(waiting.decision_ts_ms)
+                                    ),
+                                    "max_opinion_age_ms": self.max_opinion_age_ms,
+                                },
                                 phase="DECISION",
                             )
+                            self._pending[symbol] = replace(
+                                decision,
+                                bar_index=index + 1,
+                                decision_bar_index=index,
+                                expected_step_ms=int(self._step_ms[symbol]),
+                            )
+                        continue
+                    decision = self._decide(symbol, bars[index], bars[: index + 1])
+                    if decision is not None:
                         self._pending[symbol] = replace(
                             decision,
                             bar_index=index + 1,
@@ -1370,6 +1700,8 @@ class VisionLane:
 
             #: An order still waiting when the dataset ends never became a trade, and
             #: saying so is the difference between "no fill" and "no record".
+            self._pending_at_end = len(self._pending)
+
             for symbol, pending in sorted(self._pending.items()):
                 self._reject_pending(
                     symbol,
@@ -1382,10 +1714,202 @@ class VisionLane:
             self._pending.clear()
 
             summary = self._summary()
+            #: DEF-RUN-016: la contabilidad se contrasta contra los bytes ya persistidos y
+            #: **antes** de publicar el resumen. Un resumen que no explica todas sus
+            #: opiniones no se escribe como ``RUN_END``: se escribe el fallo y se levanta,
+            #: porque un PASS publicado no se puede retirar.
+            self._enforce_opinion_lifecycle(summary)
             self.ledger.append("RUN_END", summary)
             return summary
         finally:
             self.ledger.close()
+
+    # -- opinion lifecycle ---------------------------------------------------
+
+    def _opinion_lifecycle_view(self) -> dict[str, Any]:
+        """Reconstruye la vida de cada opinión desde los bytes del ledger.
+
+        No se cree a los contadores: la identidad se comprueba sobre las filas que ya
+        están en disco, y una opinión nacida sin evento terminal, cerrada dos veces o
+        terminal sin nacimiento es un fallo, no un valor que cuadrar a mano. Es
+        deliberadamente distinto del verificador independiente
+        (``scripts/def_run_016_verify.py``), que no importa este paquete y vuelve a
+        derivar clases, causas y cadenas: un defecto del algoritmo no puede esconderse en
+        los dos sitios a la vez.
+        """
+        lines = read_entries(self.ledger.path)
+        births: dict[int, str] = {}
+        terminals: dict[int, list[dict[str, Any]]] = {}
+        for line in lines:
+            entry = line.get("entry") or {}
+            seq = int(line["seq"])
+            if entry.get("kind") == "DECISION" and entry.get("intent") in ACTIONABLE_INTENTS:
+                births[seq] = str(entry["intent"])
+                continue
+            target = entry.get("decision_seq")
+            if target is None:
+                continue
+            observed = _terminal_event(entry)
+            if observed is None:
+                continue
+            terminals.setdefault(int(target), []).append(
+                {
+                    "seq": seq,
+                    "kind": entry.get("kind"),
+                    "class": observed[0],
+                    "reason": observed[1],
+                }
+            )
+        classes = dict.fromkeys(TERMINAL_CLASSES, 0)
+        rejected: dict[str, int] = {}
+        duplicate: list[dict[str, Any]] = []
+        orphan: list[dict[str, Any]] = []
+        for seq in sorted(terminals):
+            events = terminals[seq]
+            if seq not in births:
+                orphan.append({"decision_seq": seq, "events": events})
+                continue
+            if len(events) > 1:
+                #: Dos cierres de la misma opinión es la forma exacta de contarla dos
+                #: veces. Se publica entera; elegir el primero la ocultaría.
+                duplicate.append({"decision_seq": seq, "events": events})
+            first = events[0]
+            classes[first["class"]] += 1
+            if first["class"] == "REJECTED":
+                reason = str(first["reason"])
+                rejected[reason] = rejected.get(reason, 0) + 1
+        unrecorded = sorted(seq for seq in births if seq not in terminals)
+        return {
+            "schema_version": OPINION_ACCOUNTING_SCHEMA,
+            "source": "ledger_bytes",
+            "invariant": OPINION_ACCOUNTING_IDENTITY,
+            #: No hay continuidad entre sesiones en este carril: cada ``run`` es un replay
+            #: cerrado y sus órdenes en vuelo mueren con él. Se declara en lugar de
+            #: dejar que un lector lo suponga, y una sesión que sí continuara tendría que
+            #: publicar otra cosa aquí antes de terminalizar sus pendientes.
+            "session_continuity": "NONE",
+            "generated": len(births),
+            "terminal_classes": dict(classes),
+            "rejected_by_code": dict(sorted(rejected.items())),
+            "unrecorded": unrecorded,
+            "duplicate_terminals": duplicate,
+            "orphan_terminals": orphan,
+            #: El sha256 de la cadena no se publica aquí a propósito: incluye
+            #: ``recorded_at_utc`` y por tanto dos corridas idénticas no producen el mismo
+            #: valor. La integridad de la cadena la certifica el verificador desde los
+            #: bytes publicados; el resumen solo declara sobre cuántas filas se comprobó.
+            "ledger_lines": len(lines),
+            "ok": not unrecorded and not duplicate and not orphan,
+        }
+
+    def _enforce_opinion_lifecycle(self, summary: dict[str, Any]) -> None:
+        """Exige ``generated == sum(disjoint terminal classes)`` o no publica resumen.
+
+        Tres comprobaciones, cada una capaz de tumbar la publicación por sí sola:
+
+        1. estructural: toda opinión nace una vez y termina exactamente una vez;
+        2. contable: los contadores publicados coinciden con las filas del ledger;
+        3. de vistas: ``expired``, ``superseded`` y ``pending_at_end`` describen la misma
+           opinión que su código de rechazo, no una segunda cuenta.
+        """
+        view = self._opinion_lifecycle_view()
+        classes = view["terminal_classes"]
+        published = summary.setdefault("execution", {}).setdefault("opinions", {})
+        #: La vista publicada es la del ledger: ``rejected`` describe **opiniones**, y un
+        #: guarda *pre-call* (causal, frescura, activo) rechaza una llamada que nunca fue
+        #: opinión. Mezclarlos era lo que permitía que la identidad «cuadrara» contando
+        #: llamadas que jamás llegaron a ser una decisión accionable.
+        published["rejected"] = dict(view["rejected_by_code"])
+        published["terminal_classes"] = dict(classes)
+        published["lifecycle"] = view
+        expected = {
+            "generated": int(self.counters.get("opinion:generated", 0)),
+            "executed_openings": int(self.counters.get("fills", 0)),
+            "closed_by_intent": int(self.counters.get("opinion:closed", 0)),
+            "blocked_by_risk": sum(
+                value for key, value in self.counters.items() if key.startswith("risk_blocked:")
+            ),
+            "gated": (
+                int(self.counters.get("broker_rejected", 0))
+                + int(self.counters.get("dropped:SYMBOL_SLOT_OCCUPIED", 0))
+                + sum(value for key, value in self.counters.items() if key.startswith("gate:"))
+            ),
+        }
+        observed = {
+            "generated": int(view["generated"]),
+            "executed_openings": int(classes["FILLED"]),
+            "closed_by_intent": int(classes["CLOSED"]),
+            "blocked_by_risk": int(classes["BLOCKED_BY_RISK"]),
+            "gated": int(classes["GATED"]),
+        }
+        disagreements: list[dict[str, Any]] = [
+            {"field": key, "counter": expected[key], "ledger": observed[key]}
+            for key in expected
+            if expected[key] != observed[key]
+        ]
+        for code, count in sorted(view["rejected_by_code"].items()):
+            counter = int(self.counters.get(f"guard:{code}", 0))
+            if counter != int(count):
+                disagreements.append(
+                    {"field": f"rejected:{code}", "counter": counter, "ledger": int(count)}
+                )
+        for field, code in (
+            ("expired", "LATE_RESPONSE"),
+            ("superseded", "SUPERSEDED_BY_NEWER_OPINION"),
+            ("pending_at_end", "RUN_ENDED_WITH_ORDER_PENDING"),
+        ):
+            declared = int(published.get(field) or 0)
+            counted = int(view["rejected_by_code"].get(code, 0))
+            if declared != counted:
+                disagreements.append(
+                    {"field": field, "view": declared, "ledger": counted}
+                )
+        adds_up = bool(view["ok"] and not disagreements)
+        summary["opinion_accounting"] = {
+            "schema_version": OPINION_ACCOUNTING_SCHEMA,
+            "invariant": OPINION_ACCOUNTING_IDENTITY,
+            "source": "ledger_bytes",
+            "session_continuity": view["session_continuity"],
+            "adds_up": adds_up,
+            "generated": view["generated"],
+            "terminal_classes": dict(classes),
+            "terminal": sum(classes.values()),
+            "unrecorded": view["unrecorded"],
+            "duplicate_terminals": view["duplicate_terminals"],
+            "orphan_terminals": view["orphan_terminals"],
+            "deferred_slots": int(published.get("deferred_slots") or 0),
+            "counter_disagreements": disagreements,
+            "ledger_lines": view["ledger_lines"],
+        }
+        summary.setdefault("reconciliation", {}).setdefault("identities", {})[
+            "opinion_lifecycle_adds_up"
+        ] = adds_up
+        if not adds_up:
+            failure = {
+                "ts_ms": int(self._current_ms[0]),
+                "ts_utc": _utc_iso(int(self._current_ms[0])),
+                "phase": "RUN_END",
+                "code": "OPINION_LIFECYCLE_VIOLATION",
+                "invariant": OPINION_ACCOUNTING_IDENTITY,
+                "detail": (
+                    "the ledger does not account for every opinion it produced, so no "
+                    "summary is published as RUN_END"
+                ),
+                "opinion_accounting": summary["opinion_accounting"],
+                "counters": dict(sorted(self.counters.items())),
+                "persisted_before_raise": True,
+            }
+            self.ledger.append("INTEGRITY_FAILURE", failure)
+            raise OpinionLifecycleError(
+                "OPINION_LIFECYCLE_VIOLATION",
+                OPINION_ACCOUNTING_IDENTITY + " is false; no summary was published",
+                generated=view["generated"],
+                terminal_classes=dict(classes),
+                unrecorded=view["unrecorded"],
+                duplicate_terminals=view["duplicate_terminals"],
+                orphan_terminals=view["orphan_terminals"],
+                counter_disagreements=disagreements,
+            )
 
     def _accounting(self, trades: Sequence[Any]) -> dict[str, Any]:
         """The one place where costs and PnL are separated, for summary and reconciliation.
@@ -1545,6 +2069,31 @@ class VisionLane:
             for entry in self._entry_provenance.values()
             if "quote_lag_ms" in entry
         ]
+        #: The four instants a pipeline audit has to separate. ``provider_ms`` is the model
+        #: thinking, ``quote_wait_ms`` is the price waiting for the answer (and vice versa),
+        #: ``decision_to_quote_ms`` is the whole delay the opinion survives, and
+        #: ``data_to_decision_ms`` is the feed delay declared for this run.
+        provider_gaps = [
+            int(entry["received_at_ms"]) - int(entry["decision_ts_ms"])
+            for entry in self._entry_provenance.values()
+            if "received_at_ms" in entry and "decision_ts_ms" in entry
+        ]
+        quote_waits = [
+            int(entry["quote_ts_ms"]) - int(entry["received_at_ms"])
+            for entry in self._entry_provenance.values()
+            if "quote_ts_ms" in entry and "received_at_ms" in entry
+        ]
+        decision_to_quote = [
+            int(entry["quote_ts_ms"]) - int(entry["decision_ts_ms"])
+            for entry in self._entry_provenance.values()
+            if "quote_ts_ms" in entry and "decision_ts_ms" in entry
+        ]
+        data_to_decision = [
+            int(entry["decision_ts_ms"])
+            - (int(entry["decision_bar_open_ms"]) + self.interval_ms)
+            for entry in self._entry_provenance.values()
+            if "decision_ts_ms" in entry and "decision_bar_open_ms" in entry
+        ]
         sources: dict[str, int] = {}
         for entry in self._entry_provenance.values():
             source = str(entry.get("quote_source") or "unknown")
@@ -1582,6 +2131,59 @@ class VisionLane:
             "fills": int(self.counters.get("fills", 0)),
             "waiting_events": int(self.counters.get("requote:WAITING_FOR_QUOTE", 0)),
             "expired_opinions": int(self.counters.get("guard:LATE_RESPONSE", 0)),
+            #: DEF-RUN-016: one row per opinion, from birth to its terminal event. La
+            #: identidad que este bloque publica es la de la fila terminal, no la del motivo:
+            #:
+            #:     generated = executed_openings + closed_by_intent + blocked_by_risk
+            #:                 + gated + sum(rejected.values())
+            #:
+            #: ``superseded``, ``expired`` y ``pending_at_end`` son **vistas** de
+            #: ``rejected`` (su código), no sumandos extra: contarlas además sería contar dos
+            #: veces la misma opinión. Un `DATA_GAP` o un `RUN_ENDED_WITH_ORDER_PENDING` no
+            #: cabían en la identidad anterior y hacían que una opinión «desapareciera».
+            "opinions": {
+                "generated": int(self.counters.get("opinion:generated", 0)),
+                "deferred_slots": int(self.counters.get("opinion:deferred", 0)),
+                "superseded": int(
+                    self.counters.get("guard:SUPERSEDED_BY_NEWER_OPINION", 0)
+                ),
+                "expired": int(self.counters.get("opinion:expired", 0)),
+                "executed_openings": int(self.counters.get("fills", 0)),
+                "closed_by_intent": int(self.counters.get("opinion:closed", 0)),
+                "blocked_by_risk": sum(
+                    value
+                    for key, value in self.counters.items()
+                    if key.startswith("risk_blocked:")
+                ),
+                #: Aprobada por el riesgo y aun así sin orden: la ventana, el coste, el
+                #: hueco del símbolo o el broker la pararon después del veredicto.
+                "gated": (
+                    int(self.counters.get("broker_rejected", 0))
+                    + int(self.counters.get("dropped:SYMBOL_SLOT_OCCUPIED", 0))
+                    + sum(
+                        value
+                        for key, value in self.counters.items()
+                        if key.startswith("gate:")
+                    )
+                ),
+                "rejected": dict(
+                    sorted(
+                        (key.split(":", 1)[1], int(value))
+                        for key, value in self.counters.items()
+                        if key.startswith("guard:")
+                    )
+                ),
+                "pending_at_end": int(getattr(self, "_pending_at_end", 0)),
+                "deferrals_per_opinion": dict(
+                    sorted((str(seq), count) for seq, count in self._deferrals.items())
+                ),
+            },
+            "stage_latency_ms": {
+                "data_to_decision": _latencies(data_to_decision),
+                "decision_to_received": _latencies(provider_gaps),
+                "received_to_quote": _latencies(quote_waits),
+                "decision_to_quote": _latencies(decision_to_quote),
+            },
             "quote_lag_ms": {
                 "min": min(lags) if lags else None,
                 "max": max(lags) if lags else None,
