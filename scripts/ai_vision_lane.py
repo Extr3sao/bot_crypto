@@ -130,6 +130,15 @@ def main() -> int:
     evidence = out / "evidence" / args.tag
     evidence.mkdir(parents=True, exist_ok=True)
 
+    #: RFC-PAPER-ISOLATION-005: ``replay`` es el runtime paper/offline (fixtures, sin
+    #: proveedor externo), así que se aísla antes de construir lane o provider. ``live``
+    #: llama a un proveedor de visión por red y queda declarado fuera de la afirmación
+    #: de aislamiento, no dentro de ella con una excepción silenciosa.
+    if args.mode == "replay":
+        from trading_bot.execution import isolation
+
+        isolation.install_for_runtime("paper", log_path=evidence / "isolation_network.jsonl")
+
     config = load_vision_config(env=os.environ)
     provider, blocked_code, blocked_reason = build_provider(args.mode, config, args.fixtures)
     if provider is None:

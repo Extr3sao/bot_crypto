@@ -26,6 +26,7 @@ if str(REPO / "src") not in sys.path:
     sys.path.insert(0, str(REPO / "src"))
 
 from trading_bot.config.settings import load_settings  # noqa: E402
+from trading_bot.execution import isolation  # noqa: E402
 from trading_bot.intelligence.ai_bots.bots import (  # noqa: E402
     build_structured_prompt,
     text_only_provider,
@@ -298,6 +299,16 @@ def main(argv: list[str] | None = None) -> int:
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
+
+    #: RFC-PAPER-ISOLATION-005: el modo ``mock`` es el runtime paper/offline de este
+    #: programa, así que se aísla **antes** de construir nada. ``live`` es una llamada
+    #: al proveedor de visión (red externa por diseño) y no forma parte de la
+    #: afirmación de aislamiento: se declara fuera de alcance en vez de fingir que
+    #: el hook la cubre.
+    isolation_policy: dict[str, Any] | None = None
+    if args.mode == "mock":
+        guard = isolation.install_for_runtime("paper", log_path=out / "isolation_network.jsonl")
+        isolation_policy = guard.summary()
     stamp = datetime.now(UTC).isoformat()
 
     registry = default_registry(env={"AI_BOTS_ENABLED": "true"})
@@ -375,6 +386,7 @@ def main(argv: list[str] | None = None) -> int:
         "bots": rows,
         "discarded_chart_dirs": [],
         "economics": "NOT_EVIDENCE" if args.mode == "mock" else "PENDING_VERDICT",
+        "isolation": isolation_policy,
         "limitations": [
             "Mock mode answers with a fixed script; it proves plumbing, not edge.",
             "Historical replay cannot be labelled as prospective evidence.",
@@ -393,7 +405,13 @@ def _render_md(report: dict[str, Any]) -> str:
         f"**Mode:** {report['mode']}  ",
         f"**Status:** {report['status']}  ",
         f"**Real model called:** {report['real_model_called']}  ",
-        f"**Economics:** {report['economics']}",
+        f"**Economics:** {report['economics']}  ",
+        "" if report.get("isolation") is None else (
+            f"**Isolation:** mode={report['isolation']['policy']['mode']} "
+            f"orders={report['isolation']['policy']['order_routes']} "
+            f"network={report['isolation']['policy']['external_network']} "
+            f"denied={report['isolation']['denied']}  "
+        ),
         "",
         "| bot | calls | fills | closed | net USDT | costs USDT | dd % | stop |",
         "| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
