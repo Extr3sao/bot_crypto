@@ -108,6 +108,10 @@ Con P1–P6 hechos, la PR pasa de 493 commits a 234 y de 7 checks rojos a 0; ent
 
 Un commit no puede contener su propio SHA: el registro nombra el tip que `ls-remote` devolvió **después** del push y declara el desfase de un commit por construcción.
 
+**CI sobre el HEAD publicado.** Run `39676933508` sobre `835ae788`: los cinco jobs del workflow vuelven a fallar en los mismos pasos (`Ruff format --check`, `Mypy strict`, `pip-audit`, `Pytest + coverage`, `Set up job`), y las dos gates por path (`recovery-determinism`, `cost-barrier`) también. La clasificación de §1–§2 se sostiene sobre el commit publicado, no sólo sobre la medición local.
+
+**Una advertencia de gobernanza.** GitHub devolvió `mergeable_state = unstable` con `ffda06d5` y `clean` con `835ae788`, con **siete checks rojos en ambos casos**. El indicador de merge de la plataforma no acredita nada aquí: `main` no se puede fusionar porque **nadie debe** hacerlo con los gates rojos, no porque GitHub lo impida. La protección de rama no se pudo leer (401 anónimo) y queda como `UNKNOWN`.
+
 ---
 
 ## 8. Estados (separados, sin PASS global)

@@ -26,6 +26,24 @@
     "pip-audit: 11 advisories on the branch, 80 on the base",
     "smoke-pr-pipeline: failure at Set up job (infrastructure, also red on main)"
   ],
+  "ci_on_published_head": {
+    "sha": "835ae788166a318683da060f70e153421ea2214f",
+    "ci_baseline_run": 39676933508,
+    "jobs": {
+      "Format + Lint (Ruff)": "failure @ Ruff format --check",
+      "Type check (Mypy strict)": "failure @ Mypy strict",
+      "Security audit (pip-audit)": "failure @ pip-audit",
+      "Tests + Coverage (pytest, fast)": "failure @ Pytest + coverage >= 90%",
+      "Smoke PR-pipeline": "failure @ Set up job"
+    },
+    "other_runs": {"recovery-determinism": "failure (39676933496)", "cost-barrier": "failure (39676933542)"}
+  },
+  "platform_merge_signal": {
+    "mergeable_state_at_ffda06d5": "unstable",
+    "mergeable_state_at_835ae788": "clean",
+    "checks_red_in_both": 7,
+    "conclusion": "El indicador de merge de GitHub no acredita nada mientras no existan required status checks; la proteccion de main no se pudo leer (401 anonimo) y por tanto se declara UNKNOWN. Las gates de este repo se honran por proceso, no por la plataforma."
+  },
   "sync_status": "REMOTE_BRANCH_SYNCED",
   "main_synced": "NO",
   "false_success": 0,

@@ -38,8 +38,11 @@ La PR tampoco mide lo que su título dice: son **493 commits y 3 447 ficheros** 
 | PR #17 | 493 commits · 3 447 ficheros · +2 721 865 / −1 437 | GitHub REST `pulls/17` |
 | `mergeable` | `true` · `mergeable_state = unstable` | idem |
 | Protección de `main` | `UNKNOWN` (401 anónimo) | `GET /branches/main/protection` |
+| `mergeable_state` en el HEAD publicado | **`clean` con 7 checks rojos** | GitHub REST, `835ae788` |
 
 **Consecuencia estructural:** `origin/main` ⊆ `main` local ⊆ `wp/isolation-005`. Nada está divergido; lo que falta es **publicar** los 259 commits de `main` local o **decidir** que no se publican. Mientras eso no se decida, cualquier PR desde este clon arrastra el tronco entero: la PR de un work package de 234 commits se presenta como una de 493.
+
+**El indicador de merge de GitHub no acredita nada aquí.** Con `ffda06d5` devolvió `unstable` y con `835ae788` devolvió **`clean`**, en ambos casos con **siete checks rojos**. Mientras no se pueda leer la protección de rama (401 anónimo), la conclusión honesta es que las gates de este repositorio se respetan **por proceso**, no por la plataforma: no fusionar depende de quien tiene el botón.
 
 ---
 
