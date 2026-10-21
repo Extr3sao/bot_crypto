@@ -325,6 +325,7 @@
   "RUN_REPORT.md",
   "SUITE_IDENTITY.json",
   "VERIFICATION.json",
+  "VERIFIER_REPLAY.json",
   "lab/cases/CR-00/ledger.jsonl",
   "lab/cases/CR-00/state/BOOK.json",
   "lab/cases/CR-00/state/BOOK.json.prev",
@@ -578,6 +579,8 @@
   "logs/repo_wide_failing_ids.txt",
   "logs/repo_wide_suite.txt",
   "logs/ruff.txt",
+  "logs/verifier_clone_receipt.json",
+  "logs/verifier_clone_stdout.txt",
   "runtime_authority_map.md"
  ],
  "evidence_commit": "ANCHOR_EXTERNAL \u2014 the commit that contains EVIDENCE_MANIFEST.json; verify with verify_recovery.py --evidence-sha <sha>",
@@ -586,7 +589,7 @@
   "rule": "a scenario without a child exit 86, or with a failed check inside a PASS, is not counted"
  },
  "filesystem": "NTFS",
- "generated_at_utc": "2026-10-21T16:07:18Z",
+ "generated_at_utc": "2026-10-21T16:09:44Z",
  "limitations": [
   "PAPER_VALIDATION = NOT_PERFORMED",
   "EXTERNAL_ORDERS / RECONCILIATION = NOT_VERIFIABLE",

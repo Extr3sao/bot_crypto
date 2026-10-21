@@ -1,7 +1,7 @@
 {
  "anchor": "the commit that contains this manifest; verify with verify_recovery.py --evidence-sha <sha>",
  "bundle": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004",
- "file_count": 269,
+ "file_count": 271,
  "files": [
   {
    "bytes": 5408,
@@ -16,7 +16,7 @@
   {
    "bytes": 26700,
    "path": "ECONOMIC_EQUIVALENCE.json",
-   "sha256": "0d9390dea4115171f0734d55e8c1199bec9cc497645b11a67e0dff866ee0bd3d"
+   "sha256": "ce81e6276f727d2600db584042358ad5c4435b85aa08a345a0ea39225606d8cd"
   },
   {
    "bytes": 5806,
@@ -24,9 +24,9 @@
    "sha256": "5a924dc4f8fd61f16f57450ed404ea5047dd46e075ea752b1b2374fb7752b57c"
   },
   {
-   "bytes": 29585,
+   "bytes": 29688,
    "path": "FINAL_REPORT.json",
-   "sha256": "eadb7e013dbb7e2897922fd9448d213ad670bc32e53961916387b5da8d6f085e"
+   "sha256": "9611b6aa669932042c32e68a5829107c24c7f844f60d4607d778559cb3c737ed"
   },
   {
    "bytes": 6337,
@@ -1299,9 +1299,19 @@
    "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
   },
   {
+   "bytes": 4766,
+   "path": "logs/verifier_clone_receipt.json",
+   "sha256": "65a15ca9475581fba01c8e707cb717c7b788fc35f41caf783d440fb93409ba97"
+  },
+  {
+   "bytes": 2585,
+   "path": "logs/verifier_clone_stdout.txt",
+   "sha256": "16d8d42a8a5b4f825ab57e10fa19ec5e812bbb93fc0c1ea64550c4d07cda6f90"
+  },
+  {
    "bytes": 1070,
    "path": "NETWORK_ISOLATION_AUDIT.json",
-   "sha256": "60f69e99c1adc68d87246198c7fdc8165d16014282b699bf8ed0869880b169bf"
+   "sha256": "ee8b38b7e603b32c2fb0ccea8aca467b98fc011d2b818f72f5c68d31d86dcd80"
   },
   {
    "bytes": 5896,
@@ -1324,9 +1334,9 @@
    "sha256": "49f061f241af32e7530fbb5412f67fc7a2a7e5743d27940121ece37ce6f53acb"
   },
   {
-   "bytes": 29724,
+   "bytes": 29827,
    "path": "RUN_REPORT.json",
-   "sha256": "2e8e8ece9b0c9d044ac325628400ade2b093083570e5b1069aad3ed1514264a0"
+   "sha256": "7a2b01c370f2f50a27f6376cb62d859f2e58bf71dace0d6daa3a8700bea4c7ff"
   },
   {
    "bytes": 2677,
@@ -1341,7 +1351,7 @@
   {
    "bytes": 3246,
    "path": "SUITE_IDENTITY.json",
-   "sha256": "5d4b2e8a2395430734517b1feb55e951ca00b56c69cc972955eef863c90d5ac1"
+   "sha256": "71f312bf3729ca23a5894861528963ea9daae5a708eef6742a7e3e61d988df5e"
   },
   {
    "bytes": 4766,
@@ -1349,7 +1359,7 @@
    "sha256": "52dc281d9eacb031b62373fef5af89b3d7628f3b466b75c17c23c2151354a5ed"
   }
  ],
- "generated_at_utc": "2026-10-21T16:07:18Z",
+ "generated_at_utc": "2026-10-21T16:09:44Z",
  "gitignored_files": [],
  "hash_policy": "sha256 of the text with CRLF normalised to LF (core.autocrlf=true; blobs store LF)",
  "hidden_by_ignore_rules": 0,
@@ -1358,5 +1368,5 @@
  "run_id": "rfc004-20261021T150123Z",
  "schema": "rfc004-evidence-manifest/1",
  "source_commit": "33ea87b5a881856e588dfb97e3a305037c2fca6f",
- "total_bytes": 14192838
+ "total_bytes": 14200395
 }

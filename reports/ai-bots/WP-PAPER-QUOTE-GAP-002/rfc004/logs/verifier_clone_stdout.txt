@@ -1,0 +1,32 @@
+ok   lab_shape                schema rfc004-recovery-lab/1, source_commit 33ea87b5a881
+ok   scenarios_complete       16 scenario(s) present: CR-00, CR-01, CR-02, CR-03, CR-04, CR-05, CR-06, CR-07, CR-08, CR-09, CR-10, CR-11, CR
+ok   no_failures              every scenario reports PASS
+ok   no_unsupported_pass      no scenario claims PASS while a check failed
+ok   crash_is_real            8 crash(es) end a real process at a real failpoint (exit 86)
+ok   crash_window             each crash left the book on one side of the replace, never in between
+ok   post_crash_loadable      the state a crash leaves is always nameable (NO_CHANGE or RECOVERED)
+ok   economic_equivalence     14 recovered state(s) re-derive to the control projection
+ok   exactly_once             one CLOSE row per committed effect, one effect per close, in every scenario
+ok   digest_coherence         39 published book(s) grouped by 4 runtime digest(s); each digest re-derives exactly one economy
+ok   ledger_identity          442 ledger row(s) across every child carry a unique operation id
+ok   second_resume            6 second resume(s) booked nothing and moved nothing
+ok   refusals                 contention and corruption were refused by the runtime, not repaired
+ok   network_isolation        1 audited socket call(s), all loopback control; the live route refused before any I/O
+ok   historical_compat        RFC003 book at barrier 1792529400000 read twice; 3 file(s) byte-identical
+ok   platform_scope           os=nt filesystem=NTFS directory_fsync=unsupported power_loss=NOT_VERIFIED
+ok   runtime_identity         6 runtime file(s) hash to their blobs at 33ea87b5a881
+ok   evidence_in_commit       270 evidence file(s) are inside commit e25c9ec80421
+ok   manifest_covers          269 file(s) hashed and covered by the manifest
+ok   reports_consistent       both reports point at the same commit and claim no paper validation
+ok   NEG-01-scenario-dropped            ['scenarios_complete']
+ok   NEG-02-scenario-failed             ['no_failures']
+ok   NEG-03-pass-with-failed-check      ['no_unsupported_pass']
+ok   NEG-04-duplicate-operation-id      ['ledger_identity']
+ok   NEG-05-equity-moved-one-cent       ['digest_coherence']
+ok   NEG-06-falsified-source-commit     ['runtime_identity', 'reports_consistent']
+ok   NEG-07-falsified-runtime-hash      ['runtime_identity']
+ok   NEG-08-crash-returncode-zeroed     ['crash_is_real']
+ok   NEG-09-external-request-added      ['network_isolation']
+ok   NEG-10-power-loss-claimed          ['platform_scope']
+
+verdict: PASS
