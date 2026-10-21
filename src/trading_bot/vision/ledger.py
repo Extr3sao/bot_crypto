@@ -33,6 +33,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from trading_bot.vision.durable import pid_alive
+
 
 def _utc_now() -> str:
     return datetime.now(tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -90,10 +92,20 @@ class DecisionLedger:
         try:
             self._lock_fd = os.open(self._lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
         except FileExistsError as exc:
-            raise LedgerLockedError(
-                f"{self._lock_path} exists: another writer owns this ledger. "
-                "If no writer is running, remove the stale lock deliberately."
-            ) from exc
+            holder = self._lock_owner()
+            alive = pid_alive(holder) if holder else None
+            if alive is not False:
+                raise LedgerLockedError(
+                    f"{self._lock_path} exists: another writer owns this ledger "
+                    f"(pid={holder}, alive={alive}). If no writer is running, remove the "
+                    "stale lock deliberately."
+                ) from exc
+            #: Un proceso terminado a la fuerza no ejecuta su ``finally``: su cerrojo queda
+            #: en disco apuntando a un pid que ya no existe. Sin este relevo, una caída real
+            #: no se puede reanudar — y el libro durable estaría protegiendo una cadena que
+            #: nadie puede volver a abrir.
+            self._lock_path.unlink(missing_ok=True)
+            self._lock_fd = os.open(self._lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
         os.write(self._lock_fd, str(os.getpid()).encode())
         if self.path.exists():
             self._seq, self._last_sha = self._tail()
@@ -111,6 +123,13 @@ class DecisionLedger:
 
     def __exit__(self, *exc: object) -> None:
         self.close()
+
+    def _lock_owner(self) -> int | None:
+        """El pid que dejó escrito el cerrojo, o ``None`` si no se puede leer."""
+        try:
+            return int(self._lock_path.read_text(encoding="utf-8").strip() or 0)
+        except (OSError, ValueError):
+            return None
 
     def _tail(self) -> tuple[int, str]:
         last: dict[str, Any] | None = None

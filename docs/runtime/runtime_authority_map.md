@@ -90,3 +90,106 @@ outside tests is either the autonomous runtime (behind two `RiskManager.check_si
 calls) or the legacy PAPER engine. `grep` for `.execute_signal` / `PaperBroker(` shows
 only `autonomous/runtime.py:1422`, `paper/paper_cycle.py:425`, entrypoint
 construction, and the L5 verifier script.
+
+---
+
+# RUNTIME AUTHORITY MAP — sesión durable (WP-PAPER-RESUME-001, 2026-10-20)
+
+> Cierra el hueco que el mapa de salida de `roundtrip-5m` declaró abierto: «no hay
+> persistencia del libro en esta ruta; un reinicio empieza plano». Ahora hay un libro en
+> disco, y lo que sigue describe la cadena que lo escribe y la que lo recupera. Evidencia:
+> `scripts/paper_resume_drill.py` (A/B sobre minutos reales archivados, con procesos
+> terminados sin cierre ordenado) y `scripts/verify_paper_resume.py` (verificador
+> independiente con controles negativos).
+
+## Cadena de estado (visión, PAPER)
+
+```
+VisionLane.run
+  ├─ _apply_recovery()            vis/lane.py
+  │    └─ reconcile_book(book, contract, prefix, timeline)   vis/durable.py
+  │         FRESH | RECOVERED | BLOCKED → RecoveryBlocked
+  │         RECOVERED ⇒ PaperBroker.restore + RiskManager.restore_state + pending + marcas
+  ├─ por vela: OPEN → gaps → mark → entradas → CLOSE → salidas → marks → decisiones
+  │    └─ _commit(barrier_ms=ts)  → LaneBookStore.save (tmp+fsync+replace, .prev)
+  │                               → BOOK_EVENTS.jsonl (COMMIT, fsync)
+  └─ fin del dataset
+       ├─ durable: `_commit(session_end=True)` y las opiniones en vuelo se CONSERVAN
+       └─ no durable: RUN_ENDED_WITH_ORDER_PENDING (comportamiento histórico, intacto)
+
+ProspectiveSession.run (durable=True, opt-in)
+  ├─ _open_durable_book(): LaneBookStore(out/STATE) + SessionLock + load
+  ├─ SESSION_START.durable = {recovered, barrier_ms, decision_from_ms, blocked}
+  ├─ _decision_from_ms(): None si hay libro (la barrera acota el pasado), arranque si no
+  ├─ _cycle_book(): relee el libro comprometido en cada ciclo
+  └─ RecoveryBlocked ⇒ fila CYCLE status=RECOVERY_BLOCKED, 0 fills, sesión detenida
+```
+
+## Clasificación (sólo lo ejecutado)
+
+| component | path / symbol | classification | evidence |
+| --- | --- | --- | --- |
+| `LaneBookStore.save/load` | `vision/durable.py` | RUNTIME_AUTHORITATIVE | 144 commits en la campaña A; `DRILL.json` con `state_digest` |
+| `SessionLock` | `vision/durable.py` | RUNTIME_AUTHORITATIVE | relevo de un dueño muerto tras `TerminateProcess` (B) |
+| `reconcile_book` | `vision/durable.py` | RUNTIME_AUTHORITATIVE | 9 checks; 8+1 controles negativos detectados |
+| `VisionLane._commit` | `vision/lane.py` | RUNTIME_AUTHORITATIVE | `BOOK_EVENTS.jsonl` una fila por vela |
+| `VisionLane._apply_recovery` | `vision/lane.py` | RUNTIME_AUTHORITATIVE | reanudación de B tras cada muerte |
+| `PaperBroker.restore` | `paper/broker.py` | RUNTIME_AUTHORITATIVE (reutilizado) | posiciones con `position_id` y comisión devengada |
+| `RiskManager.restore_state` | `risk/manager.py` | RUNTIME_AUTHORITATIVE (reutilizado) | `risk_equity == marked_equity` tras recuperar |
+| `ProspectiveSession` modo durable | `vision/prospective.py` | RUNTIME_AUTHORITATIVE (opt-in) | 2 sesiones sobre el mismo `out_dir` en el test de integración |
+| `ProspectiveSession` modo no durable | `vision/prospective.py` | RUNTIME_AUTHORITATIVE (default) | sin cambios: 11 tests previos siguen verdes |
+
+## Autoridad del estado, en una línea
+
+`STATE/BOOK.json` (barrera + libro + riesgo + pendientes) es la verdad económica; el ledger
+de cada sesión es su proyección y se verifica contra el libro. Una fila `CLOSE` que no está
+en `closed_trades` nunca ocurrió.
+
+---
+
+# RUNTIME AUTHORITY MAP — hueco de datos (WP-PAPER-QUOTE-GAP-002, 2026-10-21)
+
+> Desbloquea el único veredicto terminal que dejó el WP anterior: `UNVERIFIED_GAP`. Un
+> hueco de 5 m se puede cruzar si un feed de 1 minuto independiente observó **todos** sus
+> minutos; lo que el hueco prueba se aplica, lo que no se prueba bloquea. Evidencia:
+> `scripts/quote_gap_lab.py` (6 escenarios + 2 experimentos de muerte real) y
+> `scripts/verify_quote_gap.py` (verificador independiente, 10 controles negativos).
+
+## Cadena (sólo cuando el hueco existe)
+
+```
+VisionLane._apply_recovery
+  ├─ _assess_gap(book, barrier, timeline)            vis/lane.py
+  │    └─ gap_recovery.assess_gap(window, positions, feed, pending)
+  │         CLEAR | RECONSTRUCT | BLOCKED  (+ evidencia por símbolo y minuto)
+  └─ reconcile_book(..., gap=assessment)             vis/durable.py
+       ├─ CLEAR       → RECOVERED, libro intacto
+       ├─ RECONSTRUCT → RECOVERED + reconstruction{exits, minutes}
+       └─ BLOCKED     → RecoveryBlocked(código, causa); el libro no se toca
+
+VisionLane.run
+  ├─ RUN  (publica `recovery.gap` y `recovery.reconstruction`)
+  ├─ _apply_gap_plan(): por minuto → PaperBroker.check_positions_ohlc(gap_policy=open_on_gap)
+  │    ├─ CLOSE con phase=GAP_RECONSTRUCTION, exit_ts_resolution=MINUTE_WINDOW
+  │    ├─ risk.reset_daily() si el minuto cae en otro día UTC
+  │    └─ _commit(): el cierre es durable cuando está en el libro
+  └─ primera vela real (resume_from_ms), procesada con normalidad
+```
+
+## Clasificación (sólo lo ejecutado)
+
+| component | path / symbol | classification | evidence |
+| --- | --- | --- | --- |
+| `assess_gap` | `vision/gap_recovery.py` | RUNTIME_AUTHORITATIVE | 20 tests unitarios + 4 sobre minutos reales del archivo |
+| `MinuteBarQuoteFeed.minute_bars_between/series_digest` | `vision/quotes.py` | RUNTIME_AUTHORITATIVE | cobertura y rangos del archivo versionado |
+| `reconcile_book(gap=...)` | `vision/durable.py` | RUNTIME_AUTHORITATIVE | `GAP_LAB.json`: CLEAR, RECONSTRUCT, AMBIGUOUS, NOT_COVERED |
+| `VisionLane._apply_gap_plan` | `vision/lane.py` | RUNTIME_AUTHORITATIVE | cierre reconstruido con el mismo precio que la corrida continua |
+| `LaneBookStore.save` (copia antes del replace) | `vision/durable.py` | RUNTIME_AUTHORITATIVE | 12 muertes reales durante la escritura, 12 libros legibles |
+| `SessionLock` (relevo con guardián) | `vision/durable.py` | RUNTIME_AUTHORITATIVE | segundo tomador rechazado; guardián abandonado reemplazable |
+| `scripts/quote_feed_source.py` | — | PROVENANCE | el fixture se re-deriva de `data.binance.vision` y coincide byte a byte |
+
+## Límite declarado
+
+El hueco se resuelve **en la barrera**. Una vela que falta *después* de reanudar la salta el
+bucle de velas: `check_positions_ohlc` sólo ve velas presentes. Corregirlo cambia la
+semántica de `DATA_GAP` que otros tests fijan y queda como WP siguiente, no como hecho.

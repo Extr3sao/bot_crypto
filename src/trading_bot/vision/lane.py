@@ -34,6 +34,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import uuid
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass, replace
 from datetime import UTC, datetime
@@ -42,7 +43,12 @@ from pathlib import Path
 from typing import Any, cast
 
 from trading_bot.config.risk import Risk
-from trading_bot.paper.broker import BrokerCost, ClosedTrade, PaperBroker
+from trading_bot.paper.broker import (
+    BrokerCost,
+    ClosedTrade,
+    PaperBroker,
+    PaperPosition,
+)
 from trading_bot.research.economic_recovery.alpha15 import cost_for
 from trading_bot.research.equity_drawdown import max_drawdown
 from trading_bot.risk.manager import RiskManager
@@ -55,6 +61,16 @@ from trading_bot.vision.contract import (
     parse_decision,
     resolve_intent,
 )
+from trading_bot.vision.durable import (
+    LaneBook,
+    LaneBookStore,
+    RecoveryBlocked,
+    RecoveryReport,
+    RecoveryStatus,
+    closed_digest,
+    contract_from,
+    reconcile_book,
+)
 from trading_bot.vision.execution import (
     BAR_OPEN_SOURCE,
     Quote,
@@ -62,6 +78,13 @@ from trading_bot.vision.execution import (
     SubBarQuoteFeed,
     quote_at,
     schedule,
+)
+from trading_bot.vision.gap_recovery import (
+    MINUTE_MS,
+    GapAssessment,
+    GapWindow,
+    MinuteFeed,
+    assess_gap,
 )
 from trading_bot.vision.guards import (
     OpinionRejected,
@@ -191,6 +214,13 @@ class VisionLane:
         quote_feed: QuoteFeed | None = None,
         subbar_entries: bool = False,
         decision_from_ms: int | None = None,
+        #: Durable book. ``None`` keeps the historical behaviour exactly: the book lives
+        #: in this object and dies with the process. A store turns the run into a session
+        #: that can be interrupted without losing exposure, and ``book`` is the state a
+        #: previous process committed.
+        book_store: LaneBookStore | None = None,
+        book: LaneBook | None = None,
+        session_id: str | None = None,
     ) -> None:
         if not series:
             raise ValueError("series is empty")
@@ -308,6 +338,26 @@ class VisionLane:
         self.spend_usd = 0.0
         self.stop_reason: str | None = None
         self.counters: dict[str, int] = {}
+        # -- durable book ---------------------------------------------------------
+        #: Where the book is written, and the reconciled answer to "may this run continue".
+        self.book_store = book_store
+        self.session_id = session_id or uuid.uuid4().hex[:12]
+        self.session_index = 1
+        self.session_ids: list[str] = [self.session_id]
+        self.recovery: RecoveryReport | None = None
+        self._restore_book = book
+        self._resume_from_ms: int | None = None
+        #: Protective exits the 1-minute feed proved were crossed while the 5-minute grid
+        #: had a hole. Applied after the RUN row, before the first bar, because a close is
+        #: an economic event and the ledger has to be open to record it.
+        self._gap_plan: dict[str, Any] | None = None
+        self._gap_exits_applied: list[dict[str, Any]] = []
+        self._barrier_ms: int | None = None
+        self._bars_committed = 0
+        self._committed_digest: str | None = None
+        self._session_baseline_closed = 0
+        self._session_baseline_pnl = 0.0
+        self._apply_recovery()
 
     # -- helpers -------------------------------------------------------------
 
@@ -1118,6 +1168,13 @@ class VisionLane:
             for symbol, bars in self.series.items()
         }
         timeline = sorted({ts for bars in self.series.values() for ts in index_of_ts(bars)})
+        if self._resume_from_ms is not None:
+            #: A resumed book has already paid for every bar at or before its barrier.
+            #: Those bars are the decision window and nothing else: re-processing them
+            #: would re-open positions the book already holds and re-close trades it
+            #: already booked. The barrier is the only thing standing between a restart
+            #: and a duplicated economic event.
+            timeline = [int(ts) for ts in timeline if int(ts) >= int(self._resume_from_ms)]
 
         self.ledger.open()
         try:
@@ -1126,6 +1183,17 @@ class VisionLane:
                 {
                     "book_id": self.book_id,
                     "provider": self.config.as_public_dict(),
+                    "session": {
+                        "session_id": self.session_id,
+                        "session_index": self.session_index,
+                        "sessions": list(self.session_ids),
+                        "durable": self.book_store is not None,
+                        "barrier_ms": self._barrier_ms,
+                        "resume_from_ms": self._resume_from_ms,
+                    },
+                    #: The verdict, not a claim: a run that resumed says so with the checks
+                    #: that allowed it, and a fresh book says it had none to make.
+                    "recovery": None if self.recovery is None else self.recovery.to_dict(),
                     "equity_usdt": self.equity,
                     "cost_multiplier": self.cost_multiplier,
                     "risk_policy": {
@@ -1154,7 +1222,12 @@ class VisionLane:
                         # The order inside one timestamp. A reader who does not know it
                         # cannot tell an early stop from a late one in the rows.
                         "open_phase_order": "gap_close>mark>entries>intrabar",
-                        "exit_ts_resolutions": ["OPEN_GAP", "BAR_WINDOW", "QUOTE"],
+                        "exit_ts_resolutions": [
+                            "OPEN_GAP",
+                            "BAR_WINDOW",
+                            "QUOTE",
+                            "MINUTE_WINDOW",
+                        ],
                         "gap_price_source": "bar_open",
                         "data_gap_policy": "fail_closed_unless_independent_coverage",
                         "quote_feed": getattr(self.quote_feed, "name", None),
@@ -1170,6 +1243,11 @@ class VisionLane:
                     },
                 },
             )
+
+            #: Before the first bar: a protective exit the hole proves was crossed belongs
+            #: to the hole. Booking it here, not at the resume bar, is what keeps the
+            #: recovered book from holding a position the market already took out.
+            self._gap_exits_applied = self._apply_gap_plan()
 
             previous_day: str | None = None
             symbols = sorted(self.series)
@@ -1368,24 +1446,420 @@ class VisionLane:
                             expected_step_ms=int(self._step_ms[symbol]),
                         )
 
+                # -- COMMIT(ts) -------------------------------------------------------
+                # Everything this bar did — gap exits, entries, intrabar exits, marks and
+                # the opinions formed on its close — is in the book, and the book is on
+                # disk before the next open can act on it. A crash after this line cannot
+                # re-open, re-close or forget anything: the barrier covers it.
+                self._commit(barrier_ms=ts, barrier_close_ms=close_ms)
+
             #: An order still waiting when the dataset ends never became a trade, and
             #: saying so is the difference between "no fill" and "no record".
-            for symbol, pending in sorted(self._pending.items()):
-                self._reject_pending(
-                    symbol,
-                    self._current_ms[0],
-                    pending,
-                    "RUN_ENDED_WITH_ORDER_PENDING",
-                    "the dataset ended before a quote existed at or after the answer",
-                    phase="RUN_END",
-                )
-            self._pending.clear()
+            if self.book_store is not None:
+                #: A durable book outlives the dataset this process was handed. An opinion
+                #: already paid for and waiting for its first executable quote belongs to
+                #: the book, not to the file's end: the next bar — this cycle's or the next
+                #: process's — still prices it. Closing it here would throw away a decision
+                #: the account paid for, and a restart would pay for it again.
+                self._commit(session_end=True)
+            else:
+                for symbol, pending in sorted(self._pending.items()):
+                    self._reject_pending(
+                        symbol,
+                        self._current_ms[0],
+                        pending,
+                        "RUN_ENDED_WITH_ORDER_PENDING",
+                        "the dataset ended before a quote existed at or after the answer",
+                        phase="RUN_END",
+                    )
+                self._pending.clear()
 
             summary = self._summary()
             self.ledger.append("RUN_END", summary)
             return summary
         finally:
             self.ledger.close()
+
+    # -- durable book ---------------------------------------------------------
+    def _assess_gap(
+        self, book: LaneBook | None, barrier: int | None, timeline: list[int]
+    ) -> GapAssessment | None:
+        """Ask the 1-minute feed about a hole, or say nothing at all.
+
+        ``None`` is the honest answer when there is no hole, no feed, or a feed that cannot
+        report minute ranges: the caller then falls back to the existing refusal
+        (:data:`UNVERIFIED_GAP`) instead of treating silence as evidence.
+        """
+        if book is None or barrier is None:
+            return None
+        after = [ts for ts in timeline if int(ts) > int(barrier)]
+        if not after:
+            return None
+        first = min(int(ts) for ts in after)
+        if first == int(barrier) + self.interval_ms:
+            return None
+        feed = self.quote_feed
+        if feed is None or not callable(getattr(feed, "minute_bars_between", None)):
+            return None
+        return assess_gap(
+            window=GapWindow(
+                barrier_ms=int(barrier), resume_ms=first, interval_ms=self.interval_ms
+            ),
+            positions=book.open_positions,
+            feed=cast("MinuteFeed", feed),
+            pending=book.body.get("pending") or {},
+            max_opinion_age_ms=self.max_opinion_age_ms,
+        )
+
+    def _apply_gap_plan(self) -> list[dict[str, Any]]:
+        """Book the protective exits a covered hole proved were crossed.
+
+        The check is the broker's own ``check_positions_ohlc``, minute by minute: the
+        reconstruction adds *evidence granularity*, not a second execution model. A stop the
+        minute's open already crossed fills at that open (``gap_policy="open_on_gap"``),
+        exactly as the lane does for a bar; a stop crossed inside the minute fills at the
+        stop, which is the price the lane books for an intrabar touch.
+
+        Ambiguity never reaches here: :func:`assess_gap` blocks when both levels are inside
+        one minute, because choosing an order there would be this function inventing the
+        PnL rather than reading it.
+
+        Returns the applied rows. A planned exit that does not happen, or a close nobody
+        planned, is a contradiction between the assessment and the book, so it raises
+        before anything is committed.
+        """
+        plan = self._gap_plan
+        if not plan:
+            return []
+        planned = {str(item["position_id"]): item for item in plan.get("exits") or []}
+        applied: list[dict[str, Any]] = []
+        last_day = _day_of(self._barrier_ms) if self._barrier_ms is not None else None
+        for minute in sorted(
+            (dict(row) for row in plan.get("minutes") or []),
+            key=lambda row: (int(row["ts_ms"]), str(row["symbol"])),
+        ):
+            symbol = str(minute["symbol"])
+            if symbol not in self.broker.positions:
+                continue
+            ts = int(minute["ts_ms"])
+            day = _day_of(ts)
+            #: The same day boundary the bar loop would have crossed, observed from the
+            #: evidence instead of from a bar that no longer exists. Without it a loss the
+            #: hole proves would land in the following day's budget.
+            if last_day is not None and day != last_day:
+                self.risk.reset_daily()
+            last_day = day
+            closed = self.broker.check_positions_ohlc(
+                {
+                    symbol: (
+                        float(minute["open"]),
+                        float(minute["high"]),
+                        float(minute["low"]),
+                        float(minute["close"]),
+                    )
+                },
+                gap_policy="open_on_gap",
+            )
+            for trade in closed:
+                row = planned.get(str(trade.position_id))
+                if row is None:
+                    raise RecoveryBlocked(
+                        RecoveryReport(
+                            status=RecoveryStatus.BLOCKED,
+                            code="GAP_PLAN_CONTRADICTED",
+                            detail=(
+                                f"minute {ts} closed {trade.position_id}, which the "
+                                "assessment judged untouched; the book and its evidence "
+                                "disagree, so neither is trusted"
+                            ),
+                            barrier_ms=self._barrier_ms,
+                        )
+                    )
+                opened_ms = int(float(trade.opened_at) * 1000)
+                #: The broker stamps ``closed_at`` from the lane's clock, which still points
+                #: at the first bar of the dataset during recovery. Pointing it at the minute
+                #: that proves the exit is what makes ``closed_at`` an observation instead of
+                #: an artefact of when the process started.
+                self._current_ms[0] = ts + MINUTE_MS
+                self._record_close(
+                    trade,
+                    exit_ts_ms=ts + MINUTE_MS,
+                    window_start_ms=ts,
+                    bars_held=max(0, round((ts + MINUTE_MS - opened_ms) / self.interval_ms)),
+                    resolution="MINUTE_WINDOW",
+                    phase="GAP_RECONSTRUCTION",
+                )
+                self._bump("gap_reconstructed_exits")
+                applied.append(
+                    {
+                        "position_id": str(trade.position_id),
+                        "symbol": symbol,
+                        "minute_ms": ts,
+                        "reason": str(trade.exit_reason),
+                        "price": float(trade.exit_price),
+                        "pnl_net_usdt": round(float(trade.pnl), 8),
+                    }
+                )
+        missing = sorted(set(planned) - {row["position_id"] for row in applied})
+        if missing:
+            raise RecoveryBlocked(
+                RecoveryReport(
+                    status=RecoveryStatus.BLOCKED,
+                    code="GAP_PLAN_UNAPPLIED",
+                    detail=(
+                        "the assessment placed an exit for "
+                        f"{', '.join(missing)} but the broker did not produce one; the "
+                        "book would resume holding a position the evidence says is gone"
+                    ),
+                    barrier_ms=self._barrier_ms,
+                    reconstruction=plan,
+                )
+            )
+        if applied:
+            #: A close is durable when it reaches the book, not when it reaches memory.
+            self._commit()
+        return applied
+
+    def _prefix_meta(self, symbol: str, barrier_ms: int | None) -> dict[str, Any]:
+        """Bars, last open and digest of one symbol *up to the barrier*.
+
+        The prefix, not the file: the bars after the barrier are the ones this process has
+        not acted on yet, and a digest over them would change on every new bar and stop
+        proving anything about the state that was committed.
+        """
+        bars = self.series[symbol]
+        prefix = [
+            bar for bar in bars if barrier_ms is None or int(bar.ts_ms) <= int(barrier_ms)
+        ]
+        return {
+            "bars": len(prefix),
+            "first_open_ms": int(prefix[0].ts_ms) if prefix else None,
+            "last_open_ms": int(prefix[-1].ts_ms) if prefix else None,
+            "sha256": series_digest(prefix),
+        }
+
+    def _contract(self, *, barrier_ms: int | None) -> dict[str, Any]:
+        """The experiment this book belongs to, with the history under it."""
+        return contract_from(
+            book_id=self.book_id,
+            timeframe=self.timeframe,
+            interval_ms=self.interval_ms,
+            equity=self.equity,
+            cost_multiplier=self.cost_multiplier,
+            window_bars=self.window_bars,
+            decision_every_bars=self.decision_every,
+            risk_policy={
+                "max_risk_per_trade_pct": float(self.risk_policy.max_risk_per_trade_pct),
+                "max_daily_loss_pct": float(self.risk_policy.max_daily_loss_pct),
+                "max_weekly_loss_pct": float(self.risk_policy.max_weekly_loss_pct),
+                "max_total_drawdown_pct": float(self.risk_policy.max_total_drawdown_pct),
+                "max_open_positions": int(self.risk_policy.max_open_positions),
+                "default_stop_loss_pct": float(self.risk_policy.default_stop_loss_pct),
+                "default_take_profit_pct": float(self.risk_policy.default_take_profit_pct),
+            },
+            provider=str(getattr(self.provider, "name", "unknown")),
+            dataset={
+                symbol: self._prefix_meta(symbol, barrier_ms) for symbol in self.series
+            },
+        )
+
+    def _apply_recovery(self) -> None:
+        """Adopt a committed book, or refuse to run on one that is not trusted.
+
+        The lane never repairs a book, never restores "what it can" and never starts flat
+        over a file it cannot explain: :func:`reconcile_book` returns one verdict, and a
+        ``BLOCKED`` verdict raises before the broker can be touched.
+        """
+        book = self._restore_book
+        if book is None and self.book_store is None:
+            return
+        timeline = sorted(
+            {int(ts) for bars in self.series.values() for ts in index_of_ts(bars)}
+        )
+        barrier = None if book is None else book.barrier_ms
+        report = reconcile_book(
+            book,
+            contract=self._contract(barrier_ms=barrier),
+            prefix={symbol: self._prefix_meta(symbol, barrier) for symbol in self.series},
+            timeline=timeline,
+            interval_ms=self.interval_ms,
+            gap=self._assess_gap(book, barrier, timeline),
+        )
+        self.recovery = report
+        self._gap_plan = None if report.reconstruction is None else dict(report.reconstruction)
+        if report.status == RecoveryStatus.BLOCKED:
+            raise RecoveryBlocked(report)
+        if not report.recovered or book is None:
+            return
+
+        broker_state = dict(book.body.get("broker") or {})
+        self.broker.restore(
+            equity=float(broker_state["equity"]),
+            initial_equity=float(broker_state["initial_equity"]),
+            fills_opened=int(broker_state.get("fills_opened", 0)),
+            fills_closed=int(broker_state.get("fills_closed", 0)),
+            open_positions=[PaperPosition(**dict(row)) for row in book.open_positions],
+            closed_trades=book.closed_trades,
+        )
+        risk_state = dict(book.body.get("risk") or {})
+        self.risk.restore_state(
+            daily_pnl=float(risk_state.get("daily_pnl", 0.0)),
+            weekly_pnl=float(risk_state.get("weekly_pnl", 0.0)),
+            trades_today=int(risk_state.get("trades_today", 0)),
+            consecutive_losses=int(risk_state.get("consecutive_losses", 0)),
+            peak_equity=float(risk_state.get("peak_equity", 0.0)),
+            open_positions=dict(self.broker.positions),
+            kill_switch_active=bool(risk_state.get("kill_switch_active", False)),
+            day_peak_equity=(
+                None
+                if risk_state.get("day_peak_equity") is None
+                else float(risk_state["day_peak_equity"])
+            ),
+            last_loss_ms=int(risk_state.get("last_loss_ms", 0) or 0),
+            weekly_start_ms=(
+                None
+                if risk_state.get("weekly_start_ms") is None
+                else int(risk_state["weekly_start_ms"])
+            ),
+        )
+        #: Equity must reflect the restored book *before* the first risk check, and it is
+        #: the marked equity the book published, not the raw cash: the open leg's
+        #: unrealised PnL and the accrued entry commission are part of what can be lost.
+        self.risk.equity = float(book.body.get("marked_equity") or 0.0)
+        self.risk.peak_equity = max(self.risk.peak_equity, self.risk.equity)
+        self.risk.day_peak_equity = max(self.risk.day_peak_equity, self.risk.equity)
+
+        self._entry_provenance = {
+            str(key): dict(value)
+            for key, value in (book.body.get("entry_provenance") or {}).items()
+        }
+        self._marks = {
+            str(key): float(value) for key, value in (book.body.get("marks") or {}).items()
+        }
+        self._pending = {
+            str(symbol): _pending_from_row(dict(row))
+            for symbol, row in (book.body.get("pending") or {}).items()
+        }
+        #: Session-scoped counters are reset on purpose: ``fills`` and ``closed_trades``
+        #: describe what *this* process did, and the account totals live in the broker.
+        restored_counters = {
+            str(key): int(value) for key, value in (book.body.get("counters") or {}).items()
+        }
+        for key in ("fills", "closed_trades", "gap_exits"):
+            restored_counters.pop(key, None)
+        self.counters = restored_counters
+        self.calls_made = int(book.body.get("calls") or 0)
+        self.spend_usd = float(book.body.get("spend_usd") or 0.0)
+        self.stop_reason = book.body.get("stop_reason")
+        self._barrier_ms = book.barrier_ms
+        self._bars_committed = int((book.body.get("barrier") or {}).get("bars_committed") or 0)
+        self._resume_from_ms = report.resume_from_ms
+        #: La identidad es del *proceso*, no del ciclo: un ciclo nuevo del mismo proceso
+        #: continúa la misma sesión, y sólo un proceso distinto abre la siguiente. Contar
+        #: ciclos como sesiones inflaría el linaje hasta que dejara de significar algo.
+        previous_ids = [str(item) for item in (book.body.get("session_ids") or [])]
+        previous_index = int(book.body.get("session_index") or 1)
+        if previous_ids and previous_ids[-1] == self.session_id:
+            self.session_ids = previous_ids
+            self.session_index = previous_index
+        else:
+            self.session_ids = [*previous_ids, self.session_id]
+            self.session_index = previous_index + 1
+        self._session_baseline_closed = len(self.broker.closed_trades)
+        self._session_baseline_pnl = sum(
+            float(trade.pnl) for trade in self.broker.closed_trades
+        )
+        self._committed_digest = book.state_digest
+
+    def _book_body(self, *, session_end: bool) -> dict[str, Any]:
+        """The whole economic state, JSON-safe, at the barrier this lane committed."""
+        assert self._barrier_ms is not None
+        barrier = int(self._barrier_ms)
+        marks = {symbol: float(price) for symbol, price in self._marks.items()}
+        marked = float(self.broker.mark_to_market_equity(marks))
+        closed = self.broker.closed_trades_rows()
+        return {
+            "book_id": self.book_id,
+            "session_id": self.session_id,
+            "session_index": self.session_index,
+            "session_ids": list(self.session_ids),
+            "contract": self._contract(barrier_ms=barrier),
+            "barrier": {
+                "bar_open_ms": barrier,
+                "bar_close_ms": barrier + self.interval_ms,
+                "bars_committed": self._bars_committed,
+                "session_end": bool(session_end),
+            },
+            "broker": self.broker.extract_state(),
+            "open_positions": [
+                position.to_row() for position in self.broker.positions.values()
+            ],
+            "closed_trades": closed,
+            "closed_digest": closed_digest(closed),
+            "risk": self.risk.extract_state(),
+            "marked_equity": round(marked, 8),
+            #: El número que el motor de riesgo lleva de verdad, junto al que el libro
+            #: publica: guardar sólo la marca haría que la comprobación comparase un valor
+            #: consigo mismo y pasara mientras el motor vive en otra equity.
+            "risk_equity": round(float(self.risk.equity), 8),
+            "pending": {
+                symbol: _pending_row(pending)
+                for symbol, pending in sorted(self._pending.items())
+            },
+            "entry_provenance": {
+                str(key): dict(value) for key, value in self._entry_provenance.items()
+            },
+            "marks": marks,
+            "counters": dict(sorted(self.counters.items())),
+            "calls": int(self.calls_made),
+            "spend_usd": round(float(self.spend_usd), 8),
+            "stop_reason": self.stop_reason,
+        }
+
+    def _commit(
+        self,
+        *,
+        barrier_ms: int | None = None,
+        barrier_close_ms: int | None = None,
+        session_end: bool = False,
+    ) -> LaneBook | None:
+        """Write the book atomically at ``barrier_ms``; the only durable write in the lane.
+
+        Returns the sealed book so the caller can publish its digest. ``None`` means the
+        lane is not durable, or no bar has been processed yet (there is no true state to
+        write, and inventing one would be worse than having none).
+        """
+        store = self.book_store
+        if store is None:
+            return None
+        if barrier_ms is not None and (
+            self._barrier_ms is None or int(barrier_ms) > int(self._barrier_ms)
+        ):
+            self._barrier_ms = int(barrier_ms)
+            self._bars_committed += 1
+        if self._barrier_ms is None:
+            return None
+        body = self._book_body(session_end=session_end)
+        book = store.save(body)
+        self._committed_digest = book.state_digest
+        store.event(
+            "COMMIT",
+            {
+                "book_id": body["book_id"],
+                "session_id": self.session_id,
+                "session_index": self.session_index,
+                "barrier_open_ms": body["barrier"]["bar_open_ms"],
+                "barrier_close_ms": barrier_close_ms or body["barrier"]["bar_close_ms"],
+                "digest": book.digest,
+                "open_positions": len(body["open_positions"]),
+                "closed_trades": len(body["closed_trades"]),
+                "equity": body["broker"]["equity"],
+                "marked_equity": body["marked_equity"],
+                "pending": len(body["pending"]),
+                "session_end": bool(session_end),
+            },
+        )
+        return book
 
     def _accounting(self, trades: Sequence[Any]) -> dict[str, Any]:
         """The one place where costs and PnL are separated, for summary and reconciliation.
@@ -1495,6 +1969,22 @@ class VisionLane:
                 else round(float(drawdown.drawdown_usdt or 0.0), 6)
             ),
             "equity_points": len(self.equity_curve),
+            #: Book-level totals above describe the *account*, which a resumed session
+            #: inherits whole. This block describes what *this process* did to it, so a
+            #: reader can tell "the account is up 3 USDT" from "this session made 3".
+            "session": {
+                "session_id": self.session_id,
+                "session_index": self.session_index,
+                "sessions": list(self.session_ids),
+                "resumed": bool(self.recovery and self.recovery.recovered),
+                "barrier_ms": self._barrier_ms,
+                "resume_from_ms": self._resume_from_ms,
+                "fills": int(self.counters.get("fills", 0)),
+                "closed_trades": len(trades) - self._session_baseline_closed,
+                "net_realised_usdt": round(net - self._session_baseline_pnl, 6),
+                "book_digest": self._committed_digest,
+                "recovery": None if self.recovery is None else self.recovery.to_dict(),
+            },
             "execution": self._execution_report(),
             "reconciliation": self._reconciliation(trades),
             "counters": dict(sorted(self.counters.items())),
@@ -1575,7 +2065,12 @@ class VisionLane:
             ),
             "gap_policy": "open_on_gap",
             "open_phase_order": "gap_close>mark>entries>intrabar",
-            "exit_ts_resolutions": ["OPEN_GAP", "BAR_WINDOW", "QUOTE"],
+            "exit_ts_resolutions": [
+                "OPEN_GAP",
+                "BAR_WINDOW",
+                "QUOTE",
+                "MINUTE_WINDOW",
+            ],
             "data_gap_policy": "fail_closed_unless_independent_coverage",
             "gap_exits": int(self.counters.get("gap_exits", 0)),
             "stale_valuation_vetoes": int(self.counters.get("veto:STALE_VALUATION", 0)),
@@ -1696,6 +2191,45 @@ class VisionLane:
                 ],
             },
         }
+
+
+def _pending_row(pending: PendingOrder) -> dict[str, Any]:
+    """One in-flight opinion as a durable row.
+
+    It travels with the book because it is not reconstructible: the provider was paid for
+    it, and a restart that dropped it would either lose the trade or pay for the opinion
+    twice. The decision is stored whole so the fill it produces is the one approved.
+    """
+    return {
+        "bar_index": int(pending.bar_index),
+        "intent": str(pending.intent),
+        "decision": None
+        if pending.decision is None
+        else pending.decision.model_dump(mode="json"),
+        "decision_seq": int(pending.decision_seq),
+        "decision_ts_ms": int(pending.decision_ts_ms),
+        "decision_bar_open_ms": int(pending.decision_bar_open_ms),
+        "expected_step_ms": int(pending.expected_step_ms),
+        "received_at_ms": int(pending.received_at_ms),
+        "decision_bar_index": int(pending.decision_bar_index),
+    }
+
+
+def _pending_from_row(row: dict[str, Any]) -> PendingOrder:
+    """Inverse of :func:`_pending_row`; refuses a row it cannot read back whole."""
+    payload = dict(row)
+    decision = payload.get("decision")
+    return PendingOrder(
+        bar_index=int(payload["bar_index"]),
+        intent=str(payload["intent"]),
+        decision=None if decision is None else VisionDecision.model_validate(decision),
+        decision_seq=int(payload["decision_seq"]),
+        decision_ts_ms=int(payload.get("decision_ts_ms") or 0),
+        decision_bar_open_ms=int(payload.get("decision_bar_open_ms") or 0),
+        expected_step_ms=int(payload.get("expected_step_ms") or 0),
+        received_at_ms=int(payload.get("received_at_ms") or 0),
+        decision_bar_index=int(payload.get("decision_bar_index") or 0),
+    )
 
 
 def _median_step(bars: Sequence[Any]) -> int:

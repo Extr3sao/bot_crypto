@@ -159,6 +159,10 @@ ignore_missing_imports = true
 minversion = "8.0"
 addopts = "-ra --strict-markers --strict-config"
 testpaths = ["tests"]
+# A worktree can share a virtualenv with another checkout, and an editable install points
+# at *that* checkout's ``src``.  Without this line ``pytest`` silently imports the other
+# tree, so a green run would say nothing about the code in front of you.
+pythonpath = ["src"]
 markers = [
   "unit: pruebas unitarias",
   "integration: pruebas que requieren servicios externos o red",

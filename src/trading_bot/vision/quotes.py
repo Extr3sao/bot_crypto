@@ -182,6 +182,26 @@ class MinuteBarQuoteFeed:
                 "silently answers for another symbol would prove the wrong thing"
             ) from None
 
+    def series_digest(self, symbol: str) -> str:
+        """Digest of the whole loaded series, so a verdict can name the bytes it used."""
+        return self.series(symbol).digest
+
+    def minute_bars_between(
+        self, symbol: str, start_ms: int, end_ms: int
+    ) -> tuple[Bar, ...]:
+        """The minutes in ``[start_ms, end_ms)``, with their ranges.
+
+        ``quotes_between`` returns opens, which is what an execution price needs; a
+        protective-exit reconstruction needs the high and low of each minute, because that
+        is the set of prices the venue printed inside it. Both come from the same series, so
+        a caller cannot accidentally mix two vintages of the archive.
+        """
+        series = self.series(symbol)
+        stamps = self._stamps[symbol]
+        left = bisect.bisect_left(stamps, int(start_ms))
+        right = bisect.bisect_left(stamps, int(end_ms))
+        return tuple(series.bars[left:right])
+
     def quotes_between(self, symbol: str, start_ms: int, end_ms: int) -> tuple[Quote, ...]:
         """Every 1-minute open in ``[start_ms, end_ms)``, in order."""
 

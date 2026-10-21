@@ -1,3 +1,147 @@
+## 2026-10-21 · WP-PAPER-QUOTE-GAP-002 — recuperación a través de un hueco, con evidencia de 1 minuto
+
+**Objetivo:** que un libro con exposición no quede terminal (`UNVERIFIED_GAP`) cuando falta la vela
+siguiente, sin volver a «empezar plano». **Rama:** `wp/paper-resume-001` · **HEAD:** `fefb077` ·
+**Modo:** PAPER/OFFLINE, `LIVE_ENABLED=false`, `REAL_MODEL_CALLED=false`, `live_orders=0`.
+
+**Hecho (medido)**
+
+1. **`src/trading_bot/vision/gap_recovery.py`** (nuevo): dictamen en tres afirmaciones separadas
+   — cobertura (hecho), toque de una barrera (observación en un minuto nombrado), orden dentro de
+   un minuto (ambigüedad, no se elige). Veredictos `CLEAR` / `RECONSTRUCT` / `BLOCKED`; estados
+   por posición `INTACT` / `RECONSTRUCTIBLE` / `AMBIGUOUS` / `UNCOVERED`. No importa `durable` ni
+   el bróker (fórmulas de stop/TP reescritas y atadas a `PaperPosition` por test).
+2. **`lane.py`**: `_apply_gap_plan` usa el **mismo** `check_positions_ohlc(gap_policy="open_on_gap")`
+   del bucle, minuto a minuto; cierres con `phase="GAP_RECONSTRUCTION"` y
+   `exit_ts_resolution="MINUTE_WINDOW"`, reloj del lane apuntado al minuto y `reset_daily()` al
+   cruzar día UTC. `COMMIT` después del cierre: durable cuando está en el libro.
+3. **Dos defectos de durabilidad corregidos** (previos a este WP, con test de regresión): (a) morir
+   entre la rotación y el `replace` dejaba sólo `BOOK.json.prev` y la sesión **empezaba plano**;
+   ahora se copia la generación anterior y un libro ausente con `.prev` se rechaza; (b) el relevo
+   del cerrojo en carrera permitía dos dueños; ahora se serializa con `takeover` (`O_EXCL`) y el
+   ganador verifica el inodo.
+4. **Laboratorio** (`scripts/quote_gap_lab.py` → `lab/GAP_LAB.json`, `ok=true`): `split`, `quiet`,
+   `stop`, `take` reanudan con la misma economía campo a campo; `both` bloquea con
+   `GAP_EXIT_AMBIGUOUS`; `partial` bloquea con `GAP_NOT_COVERED`; feed corrupto
+   `REFUSED_AT_LOAD`; segundo escritor `REFUSED`; 12 muertes durante el guardado → 12 libros
+   `READABLE`.
+5. **Drill A/B sobre minutos reales** (ETH/SOL, 720 min → 144 velas 5 m, `2026-10-20T08:55Z→20:50Z`):
+   `B` matado con `TerminateProcess` a los 12,0 s (`killed=true`) y reanudado en otro proceso;
+   `verdict=PASS`, `REC-03/04/05/RT-07`, `differences=[]`.
+6. **Verificación independiente** (`scripts/verify_quote_gap.py`, no importa `gap_recovery`):
+   **83/83** checks, **10/10** controles negativos, `FALSE_SUCCESS=0`; el propio `ok` del
+   laboratorio se recompone y se compara.
+7. **Tests:** 90 (6 ficheros del WP) + 22 (minutos/subbar) + 694 (suite amplia
+   `vision+paper+risk+market_data`, `EXIT=0`). `ruff` 0 sobre los 17 ficheros del WP y `mypy` 0
+   sobre los 7 de runtime.
+
+**Informes:** `reports/ai-bots/WP-PAPER-QUOTE-GAP-002/{FINAL_REPORT.md,RUN_REPORT.json,RUN_REPORT.md,VERIFICATION.json,lab/,drill/,archive/}`,
+`docs/rfc/RFC-051_VISION_QUOTE_GAP_RECOVERY.md`, `docs/runtime/runtime_authority_map.md`.
+
+**Pendiente / no afirmado**
+
+- **Las 14 muertes de `kill-resume` cayeron antes del `COMMIT`** (posición siempre abierta,
+  libro sin cambios): prueba la rama «muere antes → se recalcula»; la rama «muere después → no se
+  vuelve a cerrar» la sostiene `test_a_close_that_already_happened_is_not_booked_twice`, no una
+  muerte real.
+- **El hueco debe empezar en la barrera**: una vela ausente *después* de reanudar la salta el bucle
+  y no se evalúa con minutos. Corregirlo cambia la semántica de `DATA_GAP` que otros tests fijan.
+- Opiniones en vuelo: se bloquean (`GAP_PENDING_OPINION`), no se reconstruyen.
+- Feed de 1 minuto **en vivo** dentro del reconciliador y reconciliación contra el exchange: no
+  hechos. El drill usa minutos archivados; no mide latencia ni reconexión.
+- Nada de LIVE: esta cadena no tiene ruta de orden.
+- **Sin commit:** todo el trabajo (RFC-050 + RFC-051) sigue en el árbol; ningún commit nuevo.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+# Este checkout no tiene `.venv`: se usa el intérprete que ya corre los tests del repo.
+PY="${PYTHON:-python}"
+PYTHONPATH=src "$PY" scripts/quote_gap_lab.py run \
+  --out reports/ai-bots/WP-PAPER-QUOTE-GAP-002/lab
+PYTHONPATH=src "$PY" scripts/verify_quote_gap.py \
+  --lab reports/ai-bots/WP-PAPER-QUOTE-GAP-002/lab/GAP_LAB.json --negative-controls \
+  --json reports/ai-bots/WP-PAPER-QUOTE-GAP-002/VERIFICATION.json
+mkdir -p .tmp
+{ echo "\$ python -m pytest tests/unit/vision tests/unit/paper tests/unit/risk tests/unit/market_data -q"; \
+  "$PY" -m pytest tests/unit/vision tests/unit/paper tests/unit/risk tests/unit/market_data -q 2>&1; \
+  echo "EXIT=$?"; } > .tmp/wide-suite.log
+PYTHONPATH=src "$PY" scripts/make_quote_gap_evidence.py \
+  --out reports/ai-bots/WP-PAPER-QUOTE-GAP-002 --suite-log .tmp/wide-suite.log
+```
+
+Cada comando deja artefacto y exit code; el generador re-ejecuta pytest, `ruff`, `mypy`,
+`quote_feed_source.py verify` y el verificador, y falla (exit 1) si algún check sale distinto de 0.
+
+---
+
+## 2026-10-20 · WP-PAPER-RESUME-001 — sesión PAPER durable (libro en disco)
+
+**Objetivo:** que una sesión PAPER que muere con exposición no la pierda. **Rama:**
+`agent/ai-bots/RFC-TAP-AI-BOTS-003` · **HEAD de partida:** `fefb077` · **Modo:** PAPER/OFFLINE,
+`LIVE_ENABLED=false`, `REAL_MODEL_CALLED=false`.
+
+**Hecho (medido)**
+
+1. **Libro en disco.** `src/trading_bot/vision/durable.py` (nuevo): `LaneBookStore` con
+   `tmp+fsync+replace`, `.prev`, `state_digest` autenticado en `load`, `SessionLock` con relevo de
+   dueño probado muerto, y `reconcile_book` con 9 checks que bloquean en bloque (sin restauración
+   parcial). Punto de commit único por vela en `VisionLane._commit`; `_apply_recovery` se niega a
+   arrancar plano si hay libro. `ProspectiveSession` gana modo durable opt-in (`STATE/`, lock,
+   `RECOVERY_BLOCKED` como fila de CYCLE con 0 fills).
+2. **Experimento A/B sobre minutos reales** (ETH/SOL, 144 velas 5m, `2026-10-20T08:55Z→20:50Z`):
+   A continuo vs B con `TerminateProcess` a los 9.0 s **con 2 posiciones abiertas** y reanudación
+   en otro proceso. Mismo `state_digest` (`ee315b364bef5622…`), 144 velas comprometidas, 16 cierres
+   y 2 abiertas en ambos brazos, **cero diferencias**. `RECOVERED at bar 1792506600000: 2 open,
+   8 closed`, `resume_from_ms=1792506900000`. `drill/DRILL.json`, `drill/DRILL.md`. Veredicto
+   **PASS** con `RT-07`, `REC-03`, `REC-04`, `REC-05`.
+3. **Verificación independiente.** `scripts/verify_paper_resume.py` (no importa el verificador de
+   la librería): **26/26 checks**, **9/9 controles negativos** detectados, `FALSE_SUCCESS=0`.
+   Siete de los nueve no los mata el hash sino la aritmética. `VERIFICATION.json`.
+4. **Tests:** `51 passed` (durable 22, recovery 14, sesión durable 4, prospective 11), exit 0.
+   Suite amplia: `641 passed`, 14 fallos **sólo por `data/quote-feed-1m` ausente** en esta copia;
+   con el fixture copiado esos dos ficheros dan `22 passed` y se borró después. `ruff` 0, `mypy` 0.
+5. **Tres defectos del propio arnés/producto encontrados y corregidos en esta pasada:**
+   (a) el drill heredaba libros de la corrida anterior y publicaba `PASS` con un hijo que salía
+   limpio en 4.4 s → ahora borra `A/`/`B/` antes de empezar; (b) el veredicto no exigía el kill
+   (`REC-04 NOT_EXERCISED` convivía con `PASS`) → ahora `verdict=PASS` exige `killed=True` y deja
+   `note` cuando no se midió nada; (c) `RECOVERY.checks` publicaba la frase del fallo al lado de
+   `ok=true` → `_check` separa `detail` de `fail_detail`, con test de regresión.
+
+**Informes:** `reports/ai-bots/WP-PAPER-RESUME-001/{RUN_REPORT.json,RUN_REPORT.md,FINAL_REPORT.md}`,
+`docs/rfc/RFC-050_VISION_DURABLE_SESSION.md`, `docs/runtime/runtime_authority_map.md`.
+
+**Pendiente / no afirmado**
+
+- Nada de LIVE: esta cadena no tiene ruta de orden (`live_orders=0`).
+- Sin red: el drill corre sobre minutos archivados; no mide latencia ni reconexión.
+- El lock cubre dos procesos sobre el mismo directorio, no libros del mismo `book_id` en máquinas
+  distintas.
+- `UNVERIFIED_GAP`: si falta la vela siguiente a la barrera, el libro se bloquea aunque un feed de
+  minutos pudiera probar que no se cruzó ningún stop. Conectar ese feed al reconciliador queda
+  abierto; hoy es un bloqueo honesto, no un falso OK.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+PY=./.venv/Scripts/python.exe
+PYTHONPATH=src $PY scripts/paper_resume_drill.py \
+  --archive "../bot freebuff/reports/ai-bots/WP-PAPER-ROUNDTRIP-001/live/roundtrip-5m/market-1m" \
+  --out reports/ai-bots/WP-PAPER-RESUME-001/drill --symbols ETHUSDT SOLUSDT --kill-after 9
+PYTHONPATH=src $PY scripts/verify_paper_resume.py \
+  --drill reports/ai-bots/WP-PAPER-RESUME-001/drill --negative-controls \
+  --out reports/ai-bots/WP-PAPER-RESUME-001/VERIFICATION.json
+$PY scripts/make_resume_report.py
+PYTHONPATH=src $PY -m pytest tests/unit/vision/test_durable_book.py \
+  tests/unit/vision/test_session_recovery.py tests/unit/vision/test_session_durable.py \
+  tests/unit/vision/test_prospective_session.py -q
+```
+
+Cada comando deja artefacto y exit code; el drill se niega a declarar `PASS` si el kill no ocurrió
+(`killed=False` ⇒ `FAIL` + `note`) y el verificador se niega a pasar con un control negativo vivo.
+
 ## 2026-10-20 · EXP-003K-CANDIDATE-001 — segunda estrategia y suelo de costes
 
 **Objetivo:** demostrar el ciclo completo PAPER y evaluar una segunda `AlphaFamily` con ventaja

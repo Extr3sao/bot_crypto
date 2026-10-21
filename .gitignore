@@ -511,3 +511,14 @@ reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/*
 !reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/dataset/
 reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/dataset/*
 !reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/dataset/TAPE_MANIFEST.json
+
+# ============================================================
+# WP-PAPER-RESUME-001 / WP-PAPER-QUOTE-GAP-002 — la sesion PAPER durable y la
+# recuperacion a traves de un hueco de datos. Hasta ahora su evidencia vivia solo
+# en este disco: `reports/ai-bots/*` ignora el arbol entero y ninguna de las dos
+# carpetas tenia re-inclusion, asi que ni los informes ni el `archive/` de 1 minuto
+# ni los estados de los 14 kill-resume podian entrar en un commit. Un checkout
+# limpio no podia verificar nada de lo que los informes afirman.
+# ============================================================
+!reports/ai-bots/WP-PAPER-RESUME-001/
+!reports/ai-bots/WP-PAPER-QUOTE-GAP-002/

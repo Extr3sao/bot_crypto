@@ -42,6 +42,16 @@ from trading_bot.market_data.minute_collector import (
 )
 from trading_bot.research.economic_recovery.experiments import Bar
 from trading_bot.vision.clock import timeframe_ms
+from trading_bot.vision.durable import (
+    CorruptBook,
+    LaneBook,
+    LaneBookStore,
+    RecoveryBlocked,
+    RecoveryReport,
+    RecoveryStatus,
+    SessionBusy,
+    SessionLock,
+)
 from trading_bot.vision.lane import VisionLane
 from trading_bot.vision.ledger import DecisionLedger, read_entries
 from trading_bot.vision.provider import VisionRequest, VisionResponse
@@ -142,6 +152,11 @@ class ProspectiveConfig:
     #: other mode. There is no third value and no silent fallback between them.
     signal_source: str = SIGNAL_SOURCE_LEGACY
     strategy_id: str = STRATEGY_EMA_CROSSOVER
+    #: Opt-in durable book. ``False`` keeps the historical behaviour exactly — every cycle
+    #: re-derives the book from the bars since the session began, and a restart starts
+    #: flat. ``True`` writes the book after every bar, refuses to run over a book it cannot
+    #: reconcile, and continues an interrupted session instead of forgetting its exposure.
+    durable: bool = False
 
     def __post_init__(self) -> None:
         if str(self.mode).upper() not in ALLOWED_MODES:
@@ -298,11 +313,83 @@ class ProspectiveSession:
     _last_block_signature: str | None = field(default=None, init=False)
     _blocked_reasons: set[str] = field(default_factory=set, init=False)
     _runtime: dict[str, str] = field(default_factory=dict, init=False)
+    _book_store: LaneBookStore | None = field(default=None, init=False)
+    _book_lock: SessionLock | None = field(default=None, init=False)
+    _book: LaneBook | None = field(default=None, init=False)
+    _book_block: RecoveryReport | None = field(default=None, init=False)
+    _resumed_book: bool = field(default=False, init=False)
+    _session_id: str = field(default="", init=False)
 
     def __post_init__(self) -> None:
         self.out_dir = Path(self.out_dir)
         self.root = Path(self.root)
         self._runtime = runtime_hashes(self.root)
+
+    # -- durable book ---------------------------------------------------------
+    def _open_durable_book(self) -> None:
+        """Abre el libro, o se niega a arrancar en vez de empezar desde cero.
+
+        El orden importa: se lee para saber qué sesión es ésta, se toma el cerrojo, y sólo
+        entonces se adopta el libro. Cualquier respuesta que no sea "libro reconocido" deja
+        ``_book_block`` armado y el primer ciclo publica ``RECOVERY_BLOCKED`` sin haber
+        tocado el mercado.
+        """
+        self._book_store = LaneBookStore(self.out_dir / "STATE")
+        try:
+            book = self._book_store.load()
+            index = 1 + int((book.body.get("session_index") or 0) if book is not None else 0)
+            self._session_id = f"session-{index:03d}"
+            self._book_lock = self._book_store.lock(session_id=self._session_id)
+            self._book = book
+        except (CorruptBook, SessionBusy, OSError) as exc:
+            code = (
+                "CORRUPT_BOOK"
+                if isinstance(exc, CorruptBook)
+                else "SESSION_BUSY"
+                if isinstance(exc, SessionBusy)
+                else "STATE_UNREADABLE"
+            )
+            self._book_block = RecoveryReport(
+                status=RecoveryStatus.BLOCKED,
+                code=code,
+                detail=str(exc),
+                checks=(),
+            )
+            self._book = None
+            return
+        self._resumed_book = self._book is not None
+        self._book_store.event(
+            "SESSION_OPEN",
+            {
+                "session_id": self._session_id,
+                "recovered": self._resumed_book,
+                "barrier_ms": None if self._book is None else self._book.barrier_ms,
+            },
+        )
+
+    def _decision_from_ms(self) -> int | None:
+        """Desde cuándo se permite *formar* una opinión.
+
+        Un libro recién abierto no decide sobre las velas de calentamiento: cerraron antes
+        de que la sesión existiera. Un libro recuperado sí decide sobre toda vela posterior
+        a su barrera — ésas son justo las que el proceso anterior no llegó a ver —, y su
+        límite inferior es la barrera, no el arranque de este proceso.
+        """
+        return None if self._resumed_book else self._started_at_ms
+
+    def _cycle_book(self) -> LaneBook | None:
+        """El libro que este ciclo debe continuar, releído de disco en cada ciclo.
+
+        Releerlo, en vez de guardarlo en memoria, es lo que hace que un ciclo sea función
+        del estado *comprometido*: si una escritura falló, el siguiente ciclo lo ve.
+        """
+        if self._book_block is not None:
+            raise RecoveryBlocked(self._book_block)
+        if self._book_store is None:
+            return None
+        if self._book is not None and self._cycle <= 1:
+            return self._book
+        return self._book_store.load()
 
     # -- session scaffolding -------------------------------------------------
 
@@ -464,7 +551,10 @@ class ProspectiveSession:
             decision_every_bars=self.config.decision_every_bars,
             quote_feed=feed,
             subbar_entries=True,
-            decision_from_ms=self._started_at_ms,
+            decision_from_ms=self._decision_from_ms(),
+            book_store=self._book_store,
+            book=self._cycle_book(),
+            session_id=self._session_id,
         )
         summary = lane.run()
         (directory / "summary.json").write_text(
@@ -474,8 +564,20 @@ class ProspectiveSession:
         )
         rows = read_entries(ledger_path)
         new_rows = max(0, len(rows) - len(self._previous_rows))
-        prefix = compare_prefix(self._previous_rows, rows)
+        if self._book_store is None:
+            prefix = compare_prefix(self._previous_rows, rows)
+        else:
+            #: Con libro durable el ciclo no re-deriva la historia: la continúa. Comparar
+            #: prefijos entre ciclos compararía dos ventanas distintas; lo que hay que
+            #: demostrar es que el libro avanzó y con qué digest.
+            prefix = {
+                "ok": True,
+                "checked": 0,
+                "skipped": "DURABLE_BOOK",
+                "detail": "the cycle continues the committed book instead of replaying it",
+            }
         self._previous_rows = rows
+        book_after = self._book_store.load() if self._book_store is not None else None
         record = {
             "cycle": cycle,
             "status": "EXECUTED",
@@ -545,6 +647,19 @@ class ProspectiveSession:
                 "mark_prices": (summary.get("accounting") or {}).get("mark_prices", {}),
             },
             "open_positions_at_end": summary.get("open_positions_at_end", {}),
+            "durable": None
+            if book_after is None
+            else {
+                "barrier_ms": book_after.barrier_ms,
+                "state_digest": book_after.state_digest,
+                "integrity_digest": book_after.digest,
+                "open_positions": len(book_after.open_positions),
+                "closed_trades": len(book_after.closed_trades),
+                "equity": (book_after.body.get("broker") or {}).get("equity"),
+                "marked_equity": book_after.body.get("marked_equity"),
+                "session": summary.get("session"),
+                "recovery": (summary.get("session") or {}).get("recovery"),
+            },
         }
         if not prefix["ok"]:
             record["status"] = "ABORTED"
@@ -562,7 +677,12 @@ class ProspectiveSession:
         self.out_dir.mkdir(parents=True, exist_ok=True)
         collector = self._ensure_collector()
         stream_path = self.out_dir / "STREAM.jsonl"
-        if stream_path.exists():
+        if self.config.durable:
+            #: Una sesión durable escribe sobre el mismo libro que la anterior, así que su
+            #: cadena de evidencia tampoco empieza de cero: el ledger reanuda desde el
+            #: último eslabón y el reinicio queda visible dentro de la misma cadena.
+            self._open_durable_book()
+        elif stream_path.exists():
             stream_path.unlink()
         stream = DecisionLedger(stream_path).open()
         self._stream = stream
@@ -599,6 +719,15 @@ class ProspectiveSession:
             "runtime_sha256": self._runtime,
             "source": getattr(collector.source, "name", "unknown"),
         }
+        if self._book_store is not None:
+            session_info["durable"] = {
+                "state_dir": str(self._book_store.directory),
+                "session_id": self._session_id,
+                "recovered": self._resumed_book,
+                "barrier_ms": None if self._book is None else self._book.barrier_ms,
+                "decision_from_ms": self._decision_from_ms(),
+                "blocked": None if self._book_block is None else self._book_block.to_dict(),
+            }
         stream.append("SESSION_START", session_info)
         self._write_json("SESSION_START.json", session_info)
         try:
@@ -757,22 +886,39 @@ class ProspectiveSession:
                         f"decision_time {decision_time_ms} < data_time {data_time_ms}"
                     )
                 self._cycle += 1
-                record = self._run_cycle(
-                    cycle=self._cycle,
-                    series=series,
-                    minutes=minutes,
-                    data_time_ms=data_time_ms,
-                    decision_time_ms=decision_time_ms,
-                    server_time_ms=server_time_ms,
-                    health=health,
-                )
+                try:
+                    record = self._run_cycle(
+                        cycle=self._cycle,
+                        series=series,
+                        minutes=minutes,
+                        data_time_ms=data_time_ms,
+                        decision_time_ms=decision_time_ms,
+                        server_time_ms=server_time_ms,
+                        health=health,
+                    )
+                except RecoveryBlocked as exc:
+                    #: Un libro que no se puede reconciliar no se "arregla" arrancando
+                    #: plano: se publica y se detiene la sesión. Una posición que
+                    #: desaparece en silencio es exactamente el defecto que esto cierra.
+                    record = {
+                        "cycle": self._cycle,
+                        "status": "RECOVERY_BLOCKED",
+                        "mode": PAPER,
+                        "reason": exc.report.code,
+                        "detail": exc.report.detail,
+                        "checks": [dict(check) for check in exc.report.checks],
+                        "live_orders": 0,
+                        "fills": 0,
+                        "closed_trades": 0,
+                    }
                 stream.append("CYCLE", record)
                 cycles.append(record)
                 self._last_cycle_bar_open_ms = newest_open
                 self._last_block_signature = None
                 self.progress(
                     f"cycle {self._cycle} bar {_utc_iso(newest_open)} "
-                    f"fills={record['fills']} closed={record['closed_trades']}"
+                    f"fills={record.get('fills', 0)} "
+                    f"closed={record.get('closed_trades', 0)}"
                 )
                 if record["status"] != "EXECUTED":
                     break
@@ -783,6 +929,8 @@ class ProspectiveSession:
         finally:
             stream.close()
             collector.close()
+            if self._book_lock is not None:
+                self._book_lock.release()
 
     def _summary(self, cycles: Sequence[Mapping[str, Any]], blocked: int) -> dict[str, Any]:
         executed = [row for row in cycles if row.get("status") == "EXECUTED"]

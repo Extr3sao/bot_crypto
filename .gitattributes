@@ -2,6 +2,13 @@
 # snapshots, retrieved primary-source evidence).  Git's automatic end-of-line
 # normalisation would rewrite those bytes on checkout and silently break every
 # recorded digest, so the trees are stored exactly as they are on disk.
+# The 1-minute quote feed is digest-pinned: ``SOURCE_MANIFEST.json`` records the sha256 of
+# each file and the test suite refuses a fixture that does not hash to it.  The files were
+# written by the capture script with CRLF line endings, so letting git normalise them would
+# either fail every integrity test on a clean checkout or, worse, pass while the bytes the
+# manifest names had changed.  Stored verbatim, verified by ``scripts/quote_feed_source.py``.
+data/quote-feed-1m/** -text
+
 data/rfc049/** -text
 
 # The cost-barrier CI evidence bundle is digest-pinned: the copy of the gitignored
@@ -46,3 +53,11 @@ reports/economic-recovery/RFC-EDGE-01*/scratch/*.jsonl -text
 # files to CRLF and the seal verified 0/18: the hash named bytes nobody had.  The tree is
 # stored exactly as written so the manifest is a check and not a coincidence.
 reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/** -text
+
+# WP-PAPER-RESUME-001 / WP-PAPER-QUOTE-GAP-002 — la evidencia se hashea byte a byte:
+# `minutes_sha256`, `bars_sha256`, la cadena de 3034 eventos y los manifiestos SHA-256
+# se recalculan desde estos ficheros. Un checkout que convirtiera los finales de linea
+# haria que el hash nombrara bytes que nadie tiene, que es exactamente lo que le paso a
+# EXP-003M (sello 0/18). Se guardan tal cual, como los arboles de RFC-049.
+reports/ai-bots/WP-PAPER-QUOTE-GAP-002/** -text
+reports/ai-bots/WP-PAPER-RESUME-001/** -text
