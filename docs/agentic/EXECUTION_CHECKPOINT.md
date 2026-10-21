@@ -1376,8 +1376,11 @@ sellar la evidencia para un verificador independiente.
 **Commits.** `33ea87b` runtime + failpoints + laboratorio (lo que el verificador hashea como
 `source_commit`), `e0c24d5` doble suite, `5e5e2dc` evidencia, `cd08b98` dos checks nuevos del
 verificador, `e25c9ec` manifiesto que no se hashea a sí mismo, `ab85d37` recibo de la
-verificación desde clon limpio. **Sele final:** `verify_recovery.py --evidence-sha <commit que
-contiene este texto>` → `PASS`, 20/20 checks, 10/10 controles negativos.
+verificación desde clon limpio. **Evidencia en `e185db4`** (`EVIDENCE_MANIFEST.json` de
+271 ficheros, `hidden_by_ignore_rules = 0`). **Sello:**
+`verify_recovery.py --evidence-sha e185db4` → `PASS`, 20/20 checks, 10/10 controles
+negativos, desde el worktree y desde un clon limpio. Si se regeneran los informes, el sha de
+evidencia cambia y hay que volver a sellar con el nuevo.
 
 **Hecho.**
 
