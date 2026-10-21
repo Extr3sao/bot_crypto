@@ -257,8 +257,14 @@ def main(argv: list[str] | None = None) -> int:
     }
     if args.requirements:
         requirements = Path(args.requirements)
+        try:
+            # A repository-relative path is the one another checkout can use; an absolute
+            # path from this machine would not survive the machine.
+            recorded = str(requirements.resolve().relative_to(REPO)).replace("\\", "/")
+        except ValueError:
+            recorded = str(requirements)
         payload["requirements"] = {
-            "path": str(requirements),
+            "path": recorded,
             "sha256": _sha256(requirements) if requirements.exists() else None,
             "lines": (
                 len(requirements.read_text(encoding="utf-8").splitlines())

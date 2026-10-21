@@ -59,6 +59,7 @@ ARTEFACTS = (
     "REHEARSAL.json",
     "evidence/BASELINE.json",
     "evidence/TESTS.json",
+    "evidence/environment.freeze.txt",
     "evidence/CLEAN_CHECKOUT_REPRODUCTION.json",
     "RUN_REPORT.md",
     "RUN_REPORT.json",
