@@ -303,8 +303,15 @@ def build_run_report(out: Path, data: dict[str, Any]) -> dict[str, Any]:
         "REPRODUCED": "PASS",
         "FAILED": "FAIL",
     }.get(str(checkout.get("verdict")), "NOT_PERFORMED")
+    #: A checkout that reproduced the artefacts while importing another tree's `src` has not
+    #: reproduced anything. The environment audit is read here, not assumed, and a clean
+    #: verdict without one is reported as such instead of passing by default.
+    environment_audit = checkout.get("environment_audit") or {}
+    environment_state = "NOT_PERFORMED"
+    if checkout.get("verdict") == "REPRODUCED":
+        environment_state = "PASS" if environment_audit.get("ok") else "FAIL"
     status = "PASS" if technical == "PASS" and paper == "PASS" else "PARTIAL"
-    if technical == "FAIL" or checkout_state == "FAIL":
+    if technical == "FAIL" or checkout_state == "FAIL" or environment_state == "FAIL":
         status = "FAIL"
 
     return {
@@ -371,11 +378,18 @@ def build_run_report(out: Path, data: dict[str, Any]) -> dict[str, Any]:
                 if isinstance(value, dict)
             },
         },
+        "checkout_environment": {
+            "state": environment_state,
+            "pins": f"{environment_audit.get('pins_installed')}/{environment_audit.get('pins_in_freeze')}",
+            "paths_outside_checkout": environment_audit.get("paths_outside_checkout") or [],
+            "pins_mismatch": environment_audit.get("pins_mismatch") or [],
+        },
         "dimensions": {
             "IMPLEMENTATION": "PASS",
             "TESTS": tests.get("state", "NOT_PERFORMED"),
             "OFFLINE_RUNTIME_VALIDATION": technical,
             "CLEAN_CHECKOUT_REPRODUCTION": checkout_state,
+            "CHECKOUT_ENVIRONMENT": environment_state,
             "PAPER_VALIDATION": paper,
             "ECONOMIC_EDGE": "NOT_EVALUATED",
             "STRATEGY_PROMOTION": "DENIED",
@@ -498,6 +512,10 @@ def render_final(data: dict[str, Any], report: dict[str, Any]) -> str:
         f"- **CLEAN_CHECKOUT_REPRODUCTION**: "
         f"`{report['dimensions']['CLEAN_CHECKOUT_REPRODUCTION']}` "
         f"({checkout.get('verdict', 'NOT_PERFORMED')})",
+        f"- **CHECKOUT_ENVIRONMENT**: `{report['checkout_environment']['state']}` "
+        f"({report['checkout_environment']['pins']} pins matched, "
+        f"{len(report['checkout_environment']['paths_outside_checkout'])} pointers outside the "
+        "checkout)",
         "- **PAPER_VALIDATION**: `BLOCKED_NOT_CONFIGURED` — no authorised paper provider exists "
         "in this workspace, so nothing here is observed paper execution; the minimum "
         "integration plan and its P1..P10 acceptance checks are in "

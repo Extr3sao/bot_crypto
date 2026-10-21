@@ -12,6 +12,7 @@ step is the failure mode this experiment exists to make impossible.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import re
 import subprocess
@@ -20,6 +21,7 @@ import tomllib
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
+from urllib.parse import unquote
 
 REPO = Path(__file__).resolve().parents[1]
 if str(REPO / "scripts") not in sys.path:
@@ -185,11 +187,31 @@ def _site_packages(python: Path) -> Path | None:
     return None
 
 
-def _pin(line: str) -> str | None:
+def _pin(line: str) -> str:
     stripped = line.strip()
     if not stripped or stripped.startswith(("#", "-")):
-        return None
-    return stripped.split(";")[0].replace("_", "-").lower()
+        return ""
+    name, sep, version = stripped.split(";")[0].partition("==")
+    if not sep:
+        return ""
+    #: PEP 503 normalisation, so `boolean.py` and `boolean-py` are the same pin.
+    return f"{re.sub(r'[-_.]+', '-', name).lower()}=={version}"
+
+
+def _foreign_paths(text: str) -> list[str]:
+    """Paths a pointer file names, without mistaking `try:` for a drive letter.
+
+    ``.pth`` files in this repository carry Python one-liners whose escaped newlines
+    look like drive separators to a naive pattern, and ``direct_url.json`` spells its
+    path as a ``file:///`` URL. Both are read as what they are.
+    """
+
+    found = [unquote(match) for match in re.findall(r"file:///([^\"'\s]+)", text)]
+    for line in text.splitlines():
+        stripped = line.strip().strip('"').strip(",")
+        if re.match(r"^[A-Za-z]:[\\/]", stripped) or stripped.startswith("/"):
+            found.append(stripped)
+    return found
 
 
 def audit_environment(
@@ -227,7 +249,7 @@ def audit_environment(
             text = pointer.read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
-        for match in re.findall(r"[A-Za-z]:[\\/][^\"'\r\n]*|/(?:home|Users)/[^\"'\r\n]*", text):
+        for match in _foreign_paths(text):
             target = Path(match.strip().rstrip("\\/"))
             try:
                 inside = target.resolve().is_relative_to(root)
@@ -239,14 +261,16 @@ def audit_environment(
                 )
 
     project = ""
-    try:
-        project = str(
-            tomllib.loads((worktree / "pyproject.toml").read_text(encoding="utf-8"))["project"][
-                "name"
-            ]
-        ).replace("_", "-").lower()
-    except (OSError, KeyError):
-        pass
+    with contextlib.suppress(OSError, KeyError):
+        project = re.sub(
+            r"[-_.]+",
+            "-",
+            str(
+                tomllib.loads((worktree / "pyproject.toml").read_text(encoding="utf-8"))[
+                    "project"
+                ]["name"]
+            ),
+        ).lower()
     probe = subprocess.run(
         [
             str(python),
@@ -259,7 +283,9 @@ def audit_environment(
         text=True,
         check=False,
     )
-    installed = {_pin(row) for row in json.loads(probe.stdout or "[]")} if probe.returncode == 0 else set()
+    installed = (
+        {_pin(row) for row in json.loads(probe.stdout or "[]")} if probe.returncode == 0 else set()
+    )
     installed = {pin for pin in installed if pin and not pin.startswith(f"{project}==")}
     expected: set[str] = set()
     if requirements is not None and requirements.exists():
