@@ -1434,3 +1434,67 @@ python scripts/verify_recovery.py \
   --evidence-sha "$(git rev-parse HEAD)" --negative-controls \
   --json reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/VERIFIER_REPLAY.json
 ```
+
+## 2026-10-21 · RFC-PAPER-ISOLATION-005 / WP-003-02 — aislamiento operativo paper
+
+**Objetivo.** Que el runtime paper/offline no pueda enviar órdenes reales ni abrir red
+externa no autorizada, y que eso se demuestre desde fuera del runtime.
+
+**Worktree.** `bot-freebuff-recovery-004`, rama `wp/isolation-005`, desde `e661c32`
+(cierre de RFC004). Nada empujado al remoto.
+
+**Commits.** `0bdda77` runtime + puertas + laboratorio + verificador; `1f0af7e` informes y
+regla del flake; evidencia en el commit que contiene `EVIDENCE_MANIFEST.json`.
+
+**Hecho (medido).**
+
+1. `src/trading_bot/execution/isolation.py`: política estricta salvo `live`, audit hook
+   (`sys.addaudithook`) con 14 eventos de red, registro de intentos y
+   `assert_order_allowed`. Instalación irreversible: un segundo `install()` más laxo lanza
+   `ISO_POLICY_REDEFINED`.
+2. Puerta en 7 métodos concretos (`CCXTExchangeConnector.create/cancel`,
+   `BitunixFuturesClient.place_order`, `BitunixFuturesConnector.create/cancel`,
+   `BitunixSpotConnector.create/cancel`) y en `app._cmd_place_order`; los wrappers delegan
+   en los gated. Inventario AST: **13 rutas** (7 gated, 2 delegando, 4 abstract/Protocol).
+3. Entrypoints aislados antes de construir nada: `scripts/ai_bots_run.py --mode mock` y
+   `scripts/ai_vision_lane.py --mode replay`.
+4. `trading_bot.execution.__init__` importa `live_gate` de forma perezosa: el ciclo
+   `config.universe → market_data → isolation` impedía arrancar el runtime paper (DEF-02).
+5. Laboratorio `scripts/isolation_lab.py`: **ISO-00..ISO-09** en procesos hijos →
+   **9 PASS, 1 LIMITATION, 0 FAIL**. 16 intentos de red auditados, **16 denegados**
+   (externos permitidos: 0). Órdenes: 7 rechazos `ISO_ORDER_ROUTE`, 0 llamadas a venue,
+   0 credenciales.
+6. Verificador `scripts/verify_isolation.py`: **16 checks, 8/8 controles negativos
+   rechazados**, sin importar `trading_bot`; `PASS` contra el commit de evidencia.
+7. Suite de aceptación (vision+paper+risk+execution+market_data): **734 passed, exit 0**,
+   569 s. Repo completo: 102 fallos + 14 errores, con **un** fallo no presente en la
+   replay del padre (`test_journal_is_bounded_over_a_thousand_noop_cycles`, test de 1000
+   ciclos que pasa en solitario en ambos commits: 130 s / 124 s). Se declara como flake con
+   ambas re-ejecuciones en `logs/` y el verificador sólo lo acepta si ambas pasan.
+8. **DEF-03 corregido en la narrativa:** en esta versión de ccxt el constructor no abre
+   sesión; el primer `fetch_ticker` sí, y es ahí donde se deniega.
+
+**Pendiente / límites declarados.**
+
+- `OS_SANDBOX = NOT_AVAILABLE`: el hook es por proceso; ISO-09 mide que un hijo sale de la
+  barrera en vez de fingir contención.
+- `PAPER_VALIDATION = NOT_PERFORMED` (WP-003-03) y reconciliación externa fuera de alcance.
+- Los entrypoints `--mode live` de los dos scripts llaman a un proveedor de visión por red
+  por diseño: están **fuera** de la afirmación de aislamiento, no exentos dentro de ella.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+.venv/Scripts/python.exe -m pytest -q tests/unit/vision tests/unit/paper tests/unit/risk \
+  tests/unit/execution tests/unit/market_data
+.venv/Scripts/python.exe scripts/isolation_lab.py \
+  --out reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc005/lab \
+  --json reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc005/ISOLATION_LAB.json
+.venv/Scripts/python.exe scripts/verify_isolation.py \
+  --lab reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc005/ISOLATION_LAB.json \
+  --bundle reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc005 \
+  --inventory reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc005/ISOLATION_INVENTORY.json \
+  --repo . --evidence-sha "$(git rev-parse HEAD)" --negative-controls \
+  --json /tmp/isolation_verdict.json
+```

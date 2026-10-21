@@ -2,7 +2,7 @@
  "conclusion": "every order-capable route that can run in this tree refuses in a paper process before any I/O; the documented live CLI route exits 2 with and without --confirm-live. Nothing in this battery used a credential or reached a venue.",
  "credentials_used": 0,
  "gate": "isolation.assert_order_allowed at every order-capable method, before the venue object is used; backed by TRADING_BOT_MODE in the environment for children",
- "generated_at_utc": "2026-10-21T17:50:25Z",
+ "generated_at_utc": "2026-10-21T17:52:13Z",
  "live_cli": {
   "exit_with_confirm_in_paper": 2,
   "exit_without_confirm": 2

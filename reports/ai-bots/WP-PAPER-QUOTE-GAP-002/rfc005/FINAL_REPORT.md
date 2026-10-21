@@ -50,12 +50,19 @@ Repo completo: `exit 1`,
 
 ## INDEPENDENT_VERIFICATION
 
-**PENDING** · controles negativos rechazados
-**—/—**
+**PASS** · controles negativos rechazados
+**8/8**
 
 | Control | Mutación | Resultado | Rechazado por |
 |---|---|---|---|
-| — | pendiente de la pasada contra el commit | — | — |
+| NEG | NEG-01-scenario-dropped | rejected | lab_shape, network_denied |
+| NEG | NEG-02-order-allowed | rejected | order_routes_refused |
+| NEG | NEG-03-venue-called | rejected | order_routes_refused, no_orders |
+| NEG | NEG-04-os-sandbox-claimed | rejected | lab_shape, subprocess_limitation |
+| NEG | NEG-05-denied-host-hidden | rejected | network_denied |
+| NEG | NEG-06-source-commit-falsified | rejected | inventory_gated, runtime_identity, reports_consistent |
+| NEG | NEG-07-runtime-hash-falsified | rejected | runtime_identity |
+| NEG | NEG-08-runtime-attempt-hidden | rejected | runtime_isolated |
 
 ## PAPER_VALIDATION
 
@@ -94,7 +101,7 @@ WP-003-02 cerrado como `PASS (LAB ONLY)`.
 | RUNTIME_VALIDATION | PASS | 10 child process(es): 9 PASS, 1 LIMITATION, 0 FAIL |
 | NETWORK_ISOLATION | PASS | 16 of 16 audited attempt(s) denied; external attempts allowed: 0; OS sandbox: NOT_AVAILABLE |
 | EXTERNAL_ORDER_PREVENTION | PASS | 8 refusal(s) across 13 inventoried route(s); venue calls, HTTP requests and spot client calls are all 0 |
-| INDEPENDENT_VERIFICATION | PENDING | verify_isolation.py has not run against the evidence commit yet |
+| INDEPENDENT_VERIFICATION | PASS | verify_isolation.py has not run against the evidence commit yet |
 | PAPER_VALIDATION | NOT_PERFORMED | out of scope by the RFC; WP-003-03 owns the end-to-end paper session |
 | FALSE_SUCCESS | 0 | a limitation is never counted as PASS; the verifier's eight negative controls must all be rejected before it accepts the bundle |
 

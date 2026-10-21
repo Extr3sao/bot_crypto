@@ -1,7 +1,7 @@
 {
  "anchor": "the commit that contains this manifest; verify with verify_isolation.py --evidence-sha <sha>",
  "bundle": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc005",
- "file_count": 49,
+ "file_count": 50,
  "files": [
   {
    "bytes": 2874,
@@ -11,17 +11,17 @@
   {
    "bytes": 6110,
    "path": "EXTERNAL_ORDER_PREVENTION.json",
-   "sha256": "6aebe8ed7de59ab778c341c6fd257f96c0393f150784ef46841c23b2f1aa0696"
+   "sha256": "523140011e6113f26d0a1f23e40a50ffa70635a01ed6391daadba29c48e7dc16"
   },
   {
-   "bytes": 18457,
+   "bytes": 18416,
    "path": "FINAL_REPORT.json",
-   "sha256": "5876beea968b5bc80780b2df951ac21e01debc47f64eb55f0e63b072086e9a61"
+   "sha256": "f592d68478b8f7aff5a3edb2fc6dfa3e20c9578a72fecdb4c7e16791780f99ed"
   },
   {
-   "bytes": 4513,
+   "bytes": 5055,
    "path": "FINAL_REPORT.md",
-   "sha256": "94e01384785ba71f738245b6041fcbdf6aa2ad21b069374977b3bbd498f10bef"
+   "sha256": "52e535db186f5f404ac902a1968b432da5a1e37ae751b84af32f7c5eb85a165d"
   },
   {
    "bytes": 566,
@@ -226,12 +226,12 @@
   {
    "bytes": 6548,
    "path": "NETWORK_ISOLATION_AUDIT.json",
-   "sha256": "af96b43478c63719f36f0e115cdef14ebb961a3f4b7f705a98eef555ba9588f8"
+   "sha256": "6afabba7f8ecedf6d1217d413fe5305e015b0a8c577bffcc318c83b3afce24d1"
   },
   {
-   "bytes": 17399,
+   "bytes": 17325,
    "path": "RUN_REPORT.json",
-   "sha256": "748cf9508ff5c0aaf434fc0de3bdcbaf40eca849b3b00bc5c801368ddd6b7d1f"
+   "sha256": "63df012754813f7c90fe4b80d6c0d80629759e081cf64958d9bfd395a4ef2ff4"
   },
   {
    "bytes": 1974,
@@ -246,10 +246,15 @@
   {
    "bytes": 2850,
    "path": "SUITE_IDENTITY.json",
-   "sha256": "9ee4e59fd758a6ea89dd4ae477a24b7bdc8a96699e0b025112d0a1fed5eea79a"
+   "sha256": "7c5c16fb9eae1bc9dd37eb8e791376a028c6326b83bf66b499989cad8fb538fb"
+  },
+  {
+   "bytes": 3922,
+   "path": "VERIFICATION.json",
+   "sha256": "340a88912fb97d0f4c037f6099b2702e05d47bf9d9eacae6c1cb04a743611917"
   }
  ],
- "generated_at_utc": "2026-10-21T17:50:25Z",
+ "generated_at_utc": "2026-10-21T17:52:13Z",
  "gitignored_files": [],
  "hash_policy": "sha256 of the text with CRLF normalised to LF",
  "hidden_by_ignore_rules": 0,
@@ -258,5 +263,5 @@
  "run_id": "20261021T165123Z-18208",
  "schema": "rfc005-evidence-manifest/1",
  "source_commit": "0bdda77d4b4c66273c4cda2b23b6ef0dcae3a7c8",
- "total_bytes": 708986
+ "total_bytes": 713335
 }

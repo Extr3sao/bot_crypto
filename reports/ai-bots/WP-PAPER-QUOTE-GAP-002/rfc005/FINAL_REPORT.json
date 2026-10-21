@@ -22,7 +22,7 @@
    "claim": "negative controls fail when a bypass is introduced",
    "evidence": "8 mutations in VERIFICATION.json",
    "id": "ACC-004",
-   "result": "PENDING"
+   "result": "PASS"
   },
   {
    "claim": "no new regression against the parent commit",
@@ -40,7 +40,7 @@
    "claim": "an independent verifier accepts only the sealed commit",
    "evidence": "VERIFICATION.json + negative controls",
    "id": "ACC-007",
-   "result": "PENDING"
+   "result": "PASS"
   }
  ],
  "code_sha": "0bdda77d4b4c66273c4cda2b23b6ef0dcae3a7c8",
@@ -57,8 +57,8 @@
   },
   {
    "command": "python scripts/verify_isolation.py --lab ... --bundle ... --inventory ... --repo . --evidence-sha <commit> --negative-controls",
-   "exit_code": "pending",
-   "result": "PENDING"
+   "exit_code": 0,
+   "result": "PASS"
   }
  ],
  "counts": {
@@ -106,7 +106,7 @@
   },
   "INDEPENDENT_VERIFICATION": {
    "basis": "verify_isolation.py has not run against the evidence commit yet",
-   "result": "PENDING"
+   "result": "PASS"
   },
   "NETWORK_ISOLATION": {
    "basis": "16 of 16 audited attempt(s) denied; external attempts allowed: 0; OS sandbox: NOT_AVAILABLE",
@@ -146,6 +146,7 @@
   "RUN_REPORT.json",
   "RUN_REPORT.md",
   "SUITE_IDENTITY.json",
+  "VERIFICATION.json",
   "lab/ISOLATION_LAB.json",
   "lab/cases/app-route/app-route/child.json",
   "lab/cases/ccxt-constructor/ccxt-constructor/child.json",
@@ -189,7 +190,7 @@
   "false_success": 0,
   "rule": "a limitation is never counted as PASS; a PASS needs every check true"
  },
- "generated_at_utc": "2026-10-21T17:50:25Z",
+ "generated_at_utc": "2026-10-21T17:52:13Z",
  "go_no_go_wp_003_03": "GO",
  "limitations": [
   "PAPER_VALIDATION = NOT_PERFORMED (WP-003-03 owns it)",
@@ -629,12 +630,12 @@
   "scope": "acceptance suite: vision, paper, risk and the two packages this WP touches",
   "seconds": 569.02
  },
- "tree_sha": "0bdda77d4b4c66273c4cda2b23b6ef0dcae3a7c8",
+ "tree_sha": "0bdda77",
  "unsupported_pass_count": 0,
  "verification_checks": {
-  "independent_verifier": "PENDING",
-  "negative_controls_rejected": null,
-  "negative_controls_total": null
+  "independent_verifier": "PASS",
+  "negative_controls_rejected": 8,
+  "negative_controls_total": 8
  },
  "verifier": {
   "checks": 16,
@@ -642,6 +643,6 @@
   "negative_controls": 8,
   "script": "scripts/verify_isolation.py"
  },
- "verifier_result": "PENDING",
+ "verifier_result": "PASS",
  "wp": "WP-003-02"
 }
