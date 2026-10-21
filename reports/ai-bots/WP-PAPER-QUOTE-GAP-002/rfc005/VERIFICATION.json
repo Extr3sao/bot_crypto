@@ -67,12 +67,12 @@
   },
   {
    "check": "evidence_in_commit",
-   "detail": "51 evidence file(s) are inside commit dbb6c07ec064",
+   "detail": "51 evidence file(s) are inside commit 95b484a8519b",
    "ok": true
   },
   {
    "check": "manifest_covers",
-   "detail": "50 file(s) hashed and covered by the manifest",
+   "detail": "49 file(s) hashed and covered by the manifest",
    "ok": true
   },
   {
@@ -81,8 +81,9 @@
    "ok": true
   }
  ],
+ "evidence_sha": "95b484a8519b5d73d16ec6c949a86b543575c4bf",
  "failed": [],
- "generated_at_utc": "2026-10-21T17:57:55Z",
+ "generated_at_utc": "2026-10-21T18:04:38Z",
  "negative_controls": [
   {
    "id": "NEG",
