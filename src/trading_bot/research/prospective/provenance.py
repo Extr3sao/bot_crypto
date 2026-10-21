@@ -183,6 +183,21 @@ def path_is_dirty(repo: Path, path: str) -> bool:
     return bool(ok and output.decode("utf-8", "replace").strip())
 
 
+def worktree_blob_id(repo: Path, path: str) -> str | None:
+    """The object id Git would store for the file on disk, end-of-line policy applied.
+
+    Comparing bytes directly would call a CRLF checkout of an LF blob a modification. What has to
+    match is the file Git would commit, and that is exactly what ``hash-object`` answers.
+    """
+    ok, output = git(repo, "hash-object", "--", path)
+    return output.decode("ascii").strip() if ok else None
+
+
+def committed_blob_id(repo: Path, commit: str, path: str) -> str | None:
+    ok, output = git(repo, "rev-parse", f"{commit}:{path}")
+    return output.decode("ascii").strip() if ok else None
+
+
 # --------------------------------------------------------------------------- #
 # the declaration
 # --------------------------------------------------------------------------- #
@@ -335,26 +350,42 @@ def validate(
     else:
         actual = sha256_file(original_path)
         declared = str(declaration.supersedes.get("sha256") or "")
-        if actual != declared:
-            defects.append(
-                Defect(
-                    "ORIGINAL_DECLARATION_SHA256_MISMATCH",
-                    f"{original_path.name} is {actual}, the successor cites {declared}",
-                )
-            )
         blob = str(declaration.supersedes.get("git_blob") or "")
         if verify_git:
             last = last_commit_for_path(repo, _relative(repo, original_path))
             committed = file_bytes_at(repo, last, _relative(repo, original_path)) if last else None
             if committed is None:
                 defects.append(Defect("ORIGINAL_DECLARATION_NOT_COMMITTED", str(original_path)))
-            elif sha256_bytes(committed) != actual or _git_blob_id(committed) != blob:
-                defects.append(
-                    Defect(
-                        "ORIGINAL_DECLARATION_BLOB_MISMATCH",
-                        "the committed blob is not the file this checkout holds",
+            else:
+                if actual != declared and sha256_bytes(committed) != declared:
+                    defects.append(
+                        Defect(
+                            "ORIGINAL_DECLARATION_SHA256_MISMATCH",
+                            f"{original_path.name} is {actual}, the successor cites {declared}",
+                        )
                     )
+                if _git_blob_id(committed) != blob:
+                    defects.append(
+                        Defect(
+                            "ORIGINAL_DECLARATION_BLOB_MISMATCH",
+                            "the committed blob is not the file this checkout holds",
+                        )
+                    )
+                if path_is_dirty(repo, _relative(repo, original_path)):
+                    defects.append(
+                        Defect(
+                            "ORIGINAL_DECLARATION_MODIFIED_IN_WORKTREE",
+                            f"{original_path.name} has uncommitted changes; its hash no longer "
+                            "describes what was frozen",
+                        )
+                    )
+        elif actual != declared:
+            defects.append(
+                Defect(
+                    "ORIGINAL_DECLARATION_SHA256_MISMATCH",
+                    f"{original_path.name} is {actual}, the successor cites {declared}",
                 )
+            )
         try:
             original = json.loads(original_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
@@ -391,6 +422,26 @@ def validate(
                 )
     if not generator_path.is_file():
         defects.append(Defect("GENERATOR_FILE_MISSING", str(generator_path)))
+    elif verify_git:
+        rel = _relative(repo, generator_path)
+        would_run = worktree_blob_id(repo, rel)
+        declared_blob = committed_blob_id(repo, commit, rel) if commit and len(commit) == 40 else None
+        if would_run is None:
+            defects.append(Defect("GENERATOR_WORKTREE_UNREADABLE", rel))
+        elif declared_blob is not None and would_run != declared_blob:
+            defects.append(
+                Defect(
+                    "GENERATOR_FILE_DIFFERS_FROM_DECLARED",
+                    f"the file that would run is blob {would_run}; {commit} holds {declared_blob}",
+                )
+            )
+        if path_is_dirty(repo, rel):
+            defects.append(
+                Defect(
+                    "GENERATOR_WORKTREE_DIRTY",
+                    f"{rel} has uncommitted changes; the declared commit is not what would run",
+                )
+            )
     else:
         on_disk = sha256_file(generator_path)
         if on_disk != str(declaration.generator.get("blob_sha256") or ""):
@@ -399,14 +450,6 @@ def validate(
                     "GENERATOR_FILE_DIFFERS_FROM_DECLARED",
                     f"the file that would run hashes to {on_disk}, the declaration names "
                     f"{declaration.generator.get('blob_sha256')}",
-                )
-            )
-        if verify_git and path_is_dirty(repo, _relative(repo, generator_path)):
-            defects.append(
-                Defect(
-                    "GENERATOR_WORKTREE_DIRTY",
-                    f"{_relative(repo, generator_path)} has uncommitted changes; the declared "
-                    "commit is not what would run",
                 )
             )
     if str(declaration.generator.get("path")) != _relative(repo, generator_path):
@@ -448,8 +491,7 @@ def validate(
                 )
             )
         else:
-            committed = file_bytes_at(repo, declaration_commit, rel)
-            if committed is None or sha256_bytes(committed) != sha256_file(declaration.path):
+            if path_is_dirty(repo, rel):
                 defects.append(
                     Defect(
                         "DECLARATION_WORKTREE_DIRTY",
@@ -604,6 +646,9 @@ def authorize(
     stamp = commit_epoch(repo, resolve_commit(repo, declaration.generator_commit) or "")
     if stamp is None:  # pragma: no cover - validate() has already resolved it
         raise DeclarationError([Defect("GENERATOR_COMMIT_UNKNOWN", declaration.generator_commit)])
+    committed_generator = file_bytes_at(
+        repo, declaration.generator_commit, declaration.generator_path
+    )
     return ProvenanceRecord(
         declaration_id=declaration.declaration_id,
         declaration_path=_relative(repo, declaration.path),
@@ -611,7 +656,7 @@ def authorize(
         declaration_commit=last_commit_for_path(repo, _relative(repo, declaration.path)),
         generator_path=declaration.generator_path,
         generator_commit=declaration.generator_commit,
-        generator_sha256=sha256_file(repo / declaration.generator_path),
+        generator_sha256=sha256_bytes(committed_generator or b""),
         supersedes_path=str(declaration.supersedes.get("path")),
         supersedes_sha256=str(declaration.supersedes.get("sha256")),
         effective_from_ms=declaration.effective_from_ms,
