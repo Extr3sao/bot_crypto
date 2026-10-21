@@ -20,6 +20,8 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
+import json
 import sys
 from dataclasses import replace
 from datetime import UTC, datetime
@@ -555,6 +557,29 @@ def compute_metrics(
     }
 
 
+def content_digest(path: Path) -> str:
+    """Hash the trace's content, not the commit it happens to bind.
+
+    Every envelope stamps ``commit_sha`` and its ``chain_digest`` covers that field, so two
+    identical executions recorded at two commits produce two different file hashes. This
+    digest normalises exactly those two fields and nothing else: it is equal if and only if
+    the executions are. Without it, a concurrent commit landing between two rehearsals
+    reads as nondeterminism.
+    """
+
+    digest = hashlib.sha256()
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        row["commit_sha"] = "<COMMIT>"
+        if "chain_digest" in row:
+            row["chain_digest"] = "<CHAIN>"
+        digest.update(canonical_json(row).encode("utf-8"))
+        digest.update(b"\n")
+    return digest.hexdigest()
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="EXP-003P offline rehearsal")
     parser.add_argument("--out", default=str(OUT))
@@ -576,6 +601,8 @@ def main(argv: list[str] | None = None) -> int:
         "run_id": RUN_ID,
         "execution_trace_sha256": sha256_file(out / "EXECUTION_TRACE.jsonl"),
         "scenario_trace_sha256": sha256_file(out / "SCENARIO_TRACE.jsonl"),
+        "execution_trace_content_sha256": content_digest(out / "EXECUTION_TRACE.jsonl"),
+        "scenario_trace_content_sha256": content_digest(out / "SCENARIO_TRACE.jsonl"),
         "lifecycle_csv_sha256": sha256_file(out / "ORDER_LIFECYCLE.csv"),
         "store_digest_runtime": runtime["engine"].store.digest(),
         "store_digest_scenario": scenario["engine"].store.digest(),

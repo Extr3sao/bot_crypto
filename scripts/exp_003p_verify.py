@@ -373,20 +373,31 @@ def check_determinism(checks: Checks, out: Path) -> None:
         return
     second = read_json(second_path)
     keys = (
-        "execution_trace_sha256",
-        "scenario_trace_sha256",
+        "execution_trace_content_sha256",
+        "scenario_trace_content_sha256",
         "lifecycle_csv_sha256",
         "ledger_digest_runtime",
         "ledger_digest_scenario",
-        "run_digest",
     )
     differences = [key for key in keys if published.get(key) != second.get(key)]
+    #: `execution_trace_sha256`, `scenario_trace_sha256` and `run_digest` cover the
+    #: `commit_sha` inside each envelope, so a commit landing between the two rehearsals
+    #: changes them without the execution having changed at all. Determinism is decided by
+    #: the content digests; the commit-bound ones are reported next to them.
+    commit_bound = [
+        key
+        for key in ("execution_trace_sha256", "scenario_trace_sha256", "run_digest")
+        if published.get(key) != second.get(key)
+    ]
     checks.add(
         "V8_determinism",
-        "two rehearsals produce the same digest",
+        "two rehearsals produce the same content digest",
         not differences,
-        f"identical on {len(keys) - len(differences)}/{len(keys)} digests",
+        f"identical on {len(keys) - len(differences)}/{len(keys)} content digests "
+        f"(commit-bound differences: {commit_bound or 'none'})",
         differences=differences,
+        commit_bound_differences=commit_bound,
+        commits=[published.get("commit"), second.get("commit")],
     )
 
 

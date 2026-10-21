@@ -353,19 +353,27 @@ def rehearse(out: Path) -> int:
     if second != 0:
         return second
     keys = (
-        "execution_trace_sha256",
-        "scenario_trace_sha256",
+        "execution_trace_content_sha256",
+        "scenario_trace_content_sha256",
         "lifecycle_csv_sha256",
         "ledger_digest_runtime",
         "ledger_digest_scenario",
-        "run_digest",
     )
     a = read_json(out / "DIGESTS.json")
     b = read_json(second_out / "DIGESTS.json")
     differences = [key for key in keys if a.get(key) != b.get(key)]
+    #: Digests that cover `commit_sha` differ by construction if another agent commits
+    #: between the two rehearsals. They are reported, never used to call the execution
+    #: nondeterministic: the content digests above are what decide that.
+    commit_bound = [
+        key
+        for key in ("execution_trace_sha256", "scenario_trace_sha256", "run_digest")
+        if a.get(key) != b.get(key)
+    ]
     print(
         f"[003p-pipeline] determinism {'PASS' if not differences else 'FAIL'} "
-        f"differences={differences} run_digest={a['run_digest'][:18]}…"
+        f"differences={differences} "
+        f"commit_bound_differences={commit_bound} run_digest={a['run_digest'][:18]}…"
     )
     return 0 if not differences else 6
 

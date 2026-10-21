@@ -311,7 +311,11 @@ def build_run_report(out: Path, data: dict[str, Any]) -> dict[str, Any]:
         "schema_version": SCHEMA_RUN_REPORT,
         "status": status,
         "generated_at_utc": datetime.now(tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "commit": git("rev-parse", "HEAD"),
+        #: The commit the run binds is the one recorded by the rehearsal, not whatever HEAD
+        #: happens to be when the report is rendered: this tree is shared, other agents
+        #: commit to it, and a report that renamed the commit would misstate its evidence.
+        "commit": digests.get("commit") or git("rev-parse", "HEAD"),
+        "head_when_report_rendered": git("rev-parse", "HEAD"),
         "branch": git("rev-parse", "--abbrev-ref", "HEAD"),
         "config_digest": config_digest(),
         "environment": {
