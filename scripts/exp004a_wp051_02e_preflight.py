@@ -92,6 +92,15 @@ CLOSURE_ARTEFACTS = (
     ("doc", "docs/agentic/exp004a/wp051_02e/RUN_REPORT.md"),
     ("report", "docs/agentic/exp004a/wp051_02e/RUN_REPORT.json"),
     ("evidence", "docs/agentic/exp004a/wp051_02e/evidence/TEST_RUNS.json"),
+    # ``*.log`` is ignored repository-wide, so these were force-added on purpose: the run reports
+    # name them, and a reference to a file Git does not hold is not evidence.
+    ("evidence", "docs/agentic/exp004a/wp051_02e/evidence/preflight_run.log"),
+    ("evidence", "docs/agentic/exp004a/wp051_02e/evidence/verify_run.log"),
+    ("evidence", "docs/agentic/exp004a/wp051_02e/evidence/pytest_capture_provenance.log"),
+    ("evidence", "docs/agentic/exp004a/wp051_02e/evidence/pytest_wp051_02e.log"),
+    ("evidence", "docs/agentic/exp004a/wp051_02e/evidence/pytest_adversarial.log"),
+    ("evidence", "docs/agentic/exp004a/wp051_02e/evidence/pytest_admission.log"),
+    ("evidence", "docs/agentic/exp004a/wp051_02e/evidence/pytest_prereg_gate.log"),
     ("tool", "scripts/exp004a_wp051_02e_preflight.py"),
     ("tool", "scripts/exp004a_wp051_02e_verify.py"),
     ("test", "tests/unit/research/test_exp004a_wp051_02e.py"),

@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "run_id": "wp051-02e/EXP-004A/2026-10-21",
-  "generated_at_utc": "2026-10-21T19:28:39Z",
-  "head_when_generated": "8176502f4f39f733df990be64a50b1b71b602087",
+  "generated_at_utc": "2026-10-21T19:33:27Z",
+  "head_when_generated": "b74285bea94183e9e2a06fdc73cb9d5af8a73eb1",
   "hashing": {
     "sha256": "bytes as read from this checkout",
     "git_blob": "the object id Git stores; null until the commit that carries the file",
     "self_exclusion": "this manifest does not hash itself; the commit that carries it addresses it"
   },
-  "artefacts": 16,
+  "artefacts": 23,
   "missing": [],
   "entries": [
     {
@@ -16,96 +16,152 @@
       "path": "docs/agentic/exp004a/wp051_02e/RFC_EXP004A_051_02E.md",
       "bytes": 18300,
       "sha256": "053774d7e222f48b34225a45c282e889ae7b004de4210f34c6dde7c9f5c06c96",
-      "git_blob": null,
-      "in_head": false
+      "git_blob": "28e455dd51a9bf3b361ebdf5fd4aa00119869d68",
+      "in_head": true
     },
     {
       "role": "baseline",
       "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_BASELINE.json",
       "bytes": 4589,
       "sha256": "d42d2bffa54906a436a6e8e470f79ee8d5d4c4310d94ab31ae74ea37375e1b7e",
-      "git_blob": null,
-      "in_head": false
+      "git_blob": "6d1620a595a5771e9a2a3b9f698d0ff6ff0b1aea",
+      "in_head": true
     },
     {
       "role": "builder",
       "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_PREFLIGHT.json",
       "bytes": 13727,
       "sha256": "ebfc9aff54381fb00f09d261955ee72ef4afc94fd881edcc25944cb005d668e2",
-      "git_blob": null,
-      "in_head": false
+      "git_blob": "260cb7c84f8c10b24647db32798416a6b840945a",
+      "in_head": true
     },
     {
       "role": "builder",
       "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_CAPTURE_REPORT.json",
       "bytes": 7099,
       "sha256": "059ba996e7a7f102caa5eb2c6f6cf1d62460eb2feffda6250e6ff83ffa8f62bc",
-      "git_blob": null,
-      "in_head": false
+      "git_blob": "ab5420cb2d9742fc76b4f6a9732962e9e4ccde8c",
+      "in_head": true
     },
     {
       "role": "independent",
       "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_INDEPENDENT_VERIFICATION.json",
       "bytes": 12528,
       "sha256": "a058ee841770fa10ca0bc6cfd2a4fa5c96ee36c924ab110d7a2d7eb35b472561",
-      "git_blob": null,
-      "in_head": false
+      "git_blob": "f2e0bc39afa5bf9e6401915fadd3ad268e898af0",
+      "in_head": true
     },
     {
       "role": "doc",
       "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_FINAL_REPORT.md",
       "bytes": 9534,
       "sha256": "30603ce0115ac829b21474abdcc176bd3962e3be31a7e943f32b47668a5f357f",
-      "git_blob": null,
-      "in_head": false
+      "git_blob": "41e4cb1bf6d0f82e8a57fb325ab9b50d89ec655d",
+      "in_head": true
     },
     {
       "role": "doc",
       "path": "docs/agentic/exp004a/wp051_02e/RUN_REPORT.md",
       "bytes": 8763,
       "sha256": "51f7d5a3674e8a6b7464e3f4b59f4a0f23b0fd103012cf636a2e03838e82d7d3",
-      "git_blob": null,
-      "in_head": false
+      "git_blob": "94abc0f6ff0f4c2b41b0186863fb8e3ecde79128",
+      "in_head": true
     },
     {
       "role": "report",
       "path": "docs/agentic/exp004a/wp051_02e/RUN_REPORT.json",
       "bytes": 14313,
       "sha256": "2bc44f4414bd21fd74947308870311fcddb11f965463551bcb5c16c8b00555b0",
-      "git_blob": null,
-      "in_head": false
+      "git_blob": "2bc105a6537e1fffefd6cf9d6fb07e4a5a0c0079",
+      "in_head": true
     },
     {
       "role": "evidence",
       "path": "docs/agentic/exp004a/wp051_02e/evidence/TEST_RUNS.json",
       "bytes": 3267,
       "sha256": "70929ade5df0f860952b5aff7c4a139ab65efb4d31a27e053c3e70f7b7283b00",
+      "git_blob": "d7d7dbdb6e6eee9e89499ab13d54e8f762bd45e2",
+      "in_head": true
+    },
+    {
+      "role": "evidence",
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/preflight_run.log",
+      "bytes": 1397,
+      "sha256": "da987811e2ae07b56cd9457f147c1a31a3b8645307911b7524f46287458a32fe",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "evidence",
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/verify_run.log",
+      "bytes": 3077,
+      "sha256": "da2ab384d8deb2814851352638c615293f9ffb1422208276b611d31391d4b698",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "evidence",
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_capture_provenance.log",
+      "bytes": 102,
+      "sha256": "c2522a0e71a21fda065f807fc48213cbb983729749777894e58f35b4678b1473",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "evidence",
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_wp051_02e.log",
+      "bytes": 102,
+      "sha256": "0b8ce5206d5f759505cde793a002bb3819e86fc8bf49b983fbf32b35a894b36c",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "evidence",
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_adversarial.log",
+      "bytes": 101,
+      "sha256": "5c3793ceeaf8dbd0a71e307be0d1cb542769a2bd8f6ef9cb048bc226fc95ded2",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "evidence",
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_admission.log",
+      "bytes": 101,
+      "sha256": "8a1c576315a65317d936ea19fe30011185b6de81c75395362a1171c047048ef3",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "evidence",
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_prereg_gate.log",
+      "bytes": 304,
+      "sha256": "814150574d6770658e13b4c456218e1a88ff32d7cd849c830aa8143342cb1461",
       "git_blob": null,
       "in_head": false
     },
     {
       "role": "tool",
       "path": "scripts/exp004a_wp051_02e_preflight.py",
-      "bytes": 34610,
-      "sha256": "923627233cfd849d401c13e0174a307efd0e0c8a452c60359160636c27ff8a66",
-      "git_blob": null,
-      "in_head": false
+      "bytes": 35364,
+      "sha256": "6e9b7d8f08df5947f40513b565e765e7633b750a07dbcab1a456f41f447dd58c",
+      "git_blob": "a56b7e89352e3b174f689192ec0c685c5d5098b1",
+      "in_head": true
     },
     {
       "role": "tool",
       "path": "scripts/exp004a_wp051_02e_verify.py",
       "bytes": 39806,
       "sha256": "945684c66586bdf49a91079e6b78a5c2bc2a1eca1f2f09bbac80195921ca645b",
-      "git_blob": null,
-      "in_head": false
+      "git_blob": "60e92a942014e9bbf648f097fd340d052ec46e5c",
+      "in_head": true
     },
     {
       "role": "test",
       "path": "tests/unit/research/test_exp004a_wp051_02e.py",
       "bytes": 15805,
       "sha256": "0c8783a3f08ccc182edaff61c2536320222cf72de9854325983bc0b1ad58e61f",
-      "git_blob": null,
-      "in_head": false
+      "git_blob": "94cd516561639d5b125b36e2e2d51516a2990b45",
+      "in_head": true
     },
     {
       "role": "declaration",

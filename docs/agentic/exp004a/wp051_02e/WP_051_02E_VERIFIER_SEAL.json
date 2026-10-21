@@ -2,13 +2,21 @@
   "schema_version": "1.0",
   "run_id": "wp051-02e/EXP-004A/2026-10-21",
   "verifier": "verifier-d/EXP-004A/WP-051-02E",
-  "generated_at_utc": "2026-10-21T19:29:16Z",
-  "head": "c0b86b1e0ae9f0bc85f2c48ebb7f046be0cda050",
+  "generated_at_utc": "2026-10-21T19:33:30Z",
+  "head": "b74285bea94183e9e2a06fdc73cb9d5af8a73eb1",
   "status": "PASS",
-  "entries": 16,
+  "entries": 23,
   "mismatched": [],
   "missing_reports": [],
-  "not_in_head": [],
+  "not_in_head": [
+    "docs/agentic/exp004a/wp051_02e/evidence/preflight_run.log",
+    "docs/agentic/exp004a/wp051_02e/evidence/verify_run.log",
+    "docs/agentic/exp004a/wp051_02e/evidence/pytest_capture_provenance.log",
+    "docs/agentic/exp004a/wp051_02e/evidence/pytest_wp051_02e.log",
+    "docs/agentic/exp004a/wp051_02e/evidence/pytest_adversarial.log",
+    "docs/agentic/exp004a/wp051_02e/evidence/pytest_admission.log",
+    "docs/agentic/exp004a/wp051_02e/evidence/pytest_prereg_gate.log"
+  ],
   "detail": "the manifest is verified against the files on disk and against the objects Git stores; an artefact that is not committed yet is listed, not treated as absent",
   "entries_by_path": [
     {
@@ -84,9 +92,65 @@
       "head_blob": "d7d7dbdb6e6eee9e89499ab13d54e8f762bd45e2"
     },
     {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/preflight_run.log",
+      "recorded": "da987811e2ae07b56cd9457f147c1a31a3b8645307911b7524f46287458a32fe",
+      "now": "da987811e2ae07b56cd9457f147c1a31a3b8645307911b7524f46287458a32fe",
+      "match": true,
+      "in_head": false,
+      "head_blob": null
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/verify_run.log",
+      "recorded": "da2ab384d8deb2814851352638c615293f9ffb1422208276b611d31391d4b698",
+      "now": "da2ab384d8deb2814851352638c615293f9ffb1422208276b611d31391d4b698",
+      "match": true,
+      "in_head": false,
+      "head_blob": null
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_capture_provenance.log",
+      "recorded": "c2522a0e71a21fda065f807fc48213cbb983729749777894e58f35b4678b1473",
+      "now": "c2522a0e71a21fda065f807fc48213cbb983729749777894e58f35b4678b1473",
+      "match": true,
+      "in_head": false,
+      "head_blob": null
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_wp051_02e.log",
+      "recorded": "0b8ce5206d5f759505cde793a002bb3819e86fc8bf49b983fbf32b35a894b36c",
+      "now": "0b8ce5206d5f759505cde793a002bb3819e86fc8bf49b983fbf32b35a894b36c",
+      "match": true,
+      "in_head": false,
+      "head_blob": null
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_adversarial.log",
+      "recorded": "5c3793ceeaf8dbd0a71e307be0d1cb542769a2bd8f6ef9cb048bc226fc95ded2",
+      "now": "5c3793ceeaf8dbd0a71e307be0d1cb542769a2bd8f6ef9cb048bc226fc95ded2",
+      "match": true,
+      "in_head": false,
+      "head_blob": null
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_admission.log",
+      "recorded": "8a1c576315a65317d936ea19fe30011185b6de81c75395362a1171c047048ef3",
+      "now": "8a1c576315a65317d936ea19fe30011185b6de81c75395362a1171c047048ef3",
+      "match": true,
+      "in_head": false,
+      "head_blob": null
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_prereg_gate.log",
+      "recorded": "814150574d6770658e13b4c456218e1a88ff32d7cd849c830aa8143342cb1461",
+      "now": "814150574d6770658e13b4c456218e1a88ff32d7cd849c830aa8143342cb1461",
+      "match": true,
+      "in_head": false,
+      "head_blob": null
+    },
+    {
       "path": "scripts/exp004a_wp051_02e_preflight.py",
-      "recorded": "923627233cfd849d401c13e0174a307efd0e0c8a452c60359160636c27ff8a66",
-      "now": "923627233cfd849d401c13e0174a307efd0e0c8a452c60359160636c27ff8a66",
+      "recorded": "6e9b7d8f08df5947f40513b565e765e7633b750a07dbcab1a456f41f447dd58c",
+      "now": "6e9b7d8f08df5947f40513b565e765e7633b750a07dbcab1a456f41f447dd58c",
       "match": true,
       "in_head": true,
       "head_blob": "a56b7e89352e3b174f689192ec0c685c5d5098b1"
