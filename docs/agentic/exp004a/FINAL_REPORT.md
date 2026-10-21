@@ -138,6 +138,27 @@ a real link out of the checkout, asserts the linked file is readable through it,
 the result of a check that refuses everything. The one remaining skip is the old
 `symlink_to` test, which is superseded rather than fixed.
 
+## 6.1 Post-commit evidence
+
+The gate was re-run **after** the protocol was committed, so the "not yet committed" housekeeping
+defects of the run-time pass are gone and what remains is the deliberate refusal:
+
+| Mode | Decision | Exit | Defects |
+| --- | --- | --- | --- |
+| `inspect` | `INSPECTION_ONLY_NO_RUN` | **3** | none — `PROTOCOL_FROZEN_BEFORE_CAPTURE_START` verified from git |
+| `authorize` | `BLOCKED` | **2** | exactly one: `TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE` |
+
+Raw output: `GATE_INSPECT.json`, `GATE_AUTHORIZE.json`, and their logs, in this directory.
+
+A clean checkout at `HEAD` reproduces the sealed ledger **byte for byte** —
+`73f8ba7b…` for `admission_1h.jsonl` and `1f10efb4…` for the joint lane, identical to the index — which is
+what the `data/exp004a/** -text` rule in `.gitattributes` exists to guarantee. Without it, a CRLF checkout
+would rewrite the bytes the attestations hash and make the committed seal fail verification on a machine
+that never touched the data.
+
+Commits: `47116b2` (mechanism, tests, RFC, phase-1 protocol, seal) and `fed25aa` (the pointer binding
+phase 1 to the commit that froze its code). Both precede `capture.start_utc`.
+
 ## 7. What was not done, and why
 
 | Not done | Reason |
