@@ -1,7 +1,7 @@
 # WP-051-02D independent verification
 
 **Verifier**: `verifier-c/EXP-004A/WP-051-02D` (not `builder/EXP-004A/WP-051-02D`)  
-**HEAD at verification**: `583c66379a26b6924e1ebb07488866825b45d865`  
+**HEAD at verification**: `0c54133308fb85dd5aef13d957232798326557be`  
 **Declaration**: `config/preregistrations/EXP-004A.datasets.phase2.json` at `a179ed0d74bfc5fd00383b2d575c9949ca6e1f95`  
 **Status**: `PASS`
 

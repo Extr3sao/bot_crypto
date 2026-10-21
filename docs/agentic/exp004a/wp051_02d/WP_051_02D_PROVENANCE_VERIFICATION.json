@@ -4,8 +4,8 @@
   "role": "independent verifier",
   "verifier_id": "verifier-c/EXP-004A/WP-051-02D",
   "builder_id": "builder/EXP-004A/WP-051-02D",
-  "generated_at_utc": "2026-10-21T15:38:55Z",
-  "head_at_verification": "583c66379a26b6924e1ebb07488866825b45d865",
+  "generated_at_utc": "2026-10-21T15:40:20Z",
+  "head_at_verification": "0c54133308fb85dd5aef13d957232798326557be",
   "declaration": {
     "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
     "sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
@@ -272,7 +272,7 @@
           "detail": "every artefact is committed and unmodified",
           "evidence": {
             "uncommitted": [],
-            "head": "583c66379a26b6924e1ebb07488866825b45d865"
+            "head": "0c54133308fb85dd5aef13d957232798326557be"
           }
         },
         {
