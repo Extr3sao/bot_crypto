@@ -1373,6 +1373,12 @@ sellar la evidencia para un verificador independiente.
 **Worktree.** `bot-freebuff-recovery-004`, rama `wp/recovery-004`, creada desde
 `0c074fb4f3e22bb10407cb8af12ae94f8db480bc` (evidencia de RFC003). Nada empujado al remoto.
 
+**Commits.** `33ea87b` runtime + failpoints + laboratorio (lo que el verificador hashea como
+`source_commit`), `e0c24d5` doble suite, `5e5e2dc` evidencia, `cd08b98` dos checks nuevos del
+verificador, `e25c9ec` manifiesto que no se hashea a sí mismo, `ab85d37` recibo de la
+verificación desde clon limpio. **Sele final:** `verify_recovery.py --evidence-sha <commit que
+contiene este texto>` → `PASS`, 20/20 checks, 10/10 controles negativos.
+
 **Hecho.**
 
 - `src/trading_bot/vision/failpoints.py`: inyección por entorno, OFF por defecto, sandbox
