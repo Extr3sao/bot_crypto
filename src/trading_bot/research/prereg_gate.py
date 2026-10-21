@@ -56,12 +56,14 @@ __all__ = [
     "discover_existing_runs",
     "evaluate",
     "git",
+    "git_commit_time",
     "main",
     "normalise_id",
     "parse_utc",
     "prior_executions",
     "safely_under_repo",
     "sha256_file",
+    "two_phase_defects",
     "validate_split_rules",
 ]
 
@@ -72,7 +74,13 @@ INSPECTION_ONLY = "INSPECTION_ONLY_NO_RUN"
 BLOCKED = "BLOCKED"
 
 REQUIRED_SPLITS = ("discovery", "validation", "holdout")
-_FROZEN_STATUSES = ("READY_TO_FREEZE", "FROZEN")
+#: ``PROTOCOL_FROZEN`` is phase 1 of a two-phase freeze: the hypothesis, splits, costs and decision
+#: rule are committed before the data exists. ``REGISTRY_FROZEN`` is phase 2: the same protocol plus
+#: the digests of the bytes that were captured. Only phase 2 can ever be authorised.
+_FROZEN_STATUSES = ("READY_TO_FREEZE", "FROZEN", "PROTOCOL_FROZEN", "REGISTRY_FROZEN")
+_PHASE_ONE_STATUS = "PROTOCOL_FROZEN"
+_PHASE_TWO_STATUSES = ("FROZEN", "REGISTRY_FROZEN")
+_TWO_PHASE_PHASE_ONE = "TWO_PHASE_PHASE_1"
 _DECISIONS = {AUTHORIZED: 0, INSPECTION_ONLY: 3, BLOCKED: 2}
 
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
@@ -343,6 +351,136 @@ def _dataset_file(repo: Path, raw: Any) -> Path | None:
 
 
 # --------------------------------------------------------------------------- #
+# the two-phase freeze
+# --------------------------------------------------------------------------- #
+def _deferral_allowed(two_phase: Mapping[str, Any], entry: Mapping[str, Any]) -> bool:
+    """A missing digest is tolerated only in phase 1, and only when asked for by name.
+
+    The requirement is not weakened; it is moved to a commit that provably happens after the
+    capture closed (:func:`two_phase_defects`). What is forbidden is silence: a dataset may not
+    simply omit its digests while the manifest claims to be phase 2.
+    """
+    if not two_phase or two_phase.get("phase") != 1:
+        return False
+    if two_phase.get("digests_deferred") is not True:
+        return False
+    return entry.get("digest_deferred_by") == _TWO_PHASE_PHASE_ONE
+
+
+def git_commit_time(repo: Path, relative: str) -> datetime | None:
+    """When the last commit touching ``relative`` was made, or ``None`` if unknowable.
+
+    ``None`` is returned for an untracked file, a path outside a repository, and a host without
+    git. Callers must distinguish "unknown" from "too late"; only the second is a defect.
+    """
+    ok, output = git(repo, "log", "-1", "--format=%ct", "--", relative)
+    if not ok or not output.strip().isdigit():
+        return None
+    return datetime.fromtimestamp(int(output.strip()), UTC)
+
+def two_phase_defects(
+    *,
+    repo: Path,
+    manifest_path: str,
+    registry_path: str,
+    two_phase: Mapping[str, Any],
+    registry: Mapping[str, Any],
+    status: Any,
+    mode: str,
+    checks: list[str],
+) -> list[str]:
+    """Validate a declared two-phase freeze: protocol first, digests second, data in between."""
+    errors: list[str] = []
+    phase = two_phase.get("phase")
+    if phase not in (1, 2):
+        return ["TWO_PHASE_PHASE_INVALID"]
+    if status == _PHASE_ONE_STATUS and phase != 1:
+        errors.append("TWO_PHASE_STATUS_PHASE_MISMATCH")
+    if status == "REGISTRY_FROZEN" and phase != 2:
+        errors.append("TWO_PHASE_STATUS_PHASE_MISMATCH")
+
+    capture = two_phase.get("capture")
+    if not isinstance(capture, Mapping):
+        return [*errors, "TWO_PHASE_CAPTURE_UNDECLARED"]
+    try:
+        start = parse_utc(capture.get("start_utc"))
+        end = parse_utc(capture.get("end_utc"))
+        if start >= end:
+            raise ValueError("empty capture window")
+    except (TypeError, ValueError, AttributeError):
+        return [*errors, "TWO_PHASE_CAPTURE_WINDOW_INVALID"]
+    if type(capture.get("target_days")) is not int or int(capture["target_days"]) < 1:
+        errors.append("TWO_PHASE_TARGET_DAYS_INVALID")
+
+    entries = registry.get("entries")
+    datasets = [row for row in entries if isinstance(row, Mapping)] if isinstance(entries, list) else []
+
+    if phase == 1:
+        # Nothing may exist yet. A dataset file present during phase 1 means the protocol was
+        # written after somebody had already looked at the data it claims to predict.
+        for index, entry in enumerate(datasets):
+            for prefix in ("raw", "normalized"):
+                if _dataset_file(repo, entry.get(f"{prefix}_file")) is not None:
+                    errors.append(f"DATASET_PRESENT_BEFORE_FREEZE:DATASET_{index}_{prefix.upper()}")
+        manifest_commit = git_commit_time(repo, manifest_path)
+        if manifest_commit is None:
+            checks.append("TWO_PHASE_PHASE_1_NOT_YET_COMMITTED")
+        elif manifest_commit >= start:
+            errors.append("PROTOCOL_FROZEN_AFTER_CAPTURE_STARTED")
+        else:
+            checks.append("PROTOCOL_FROZEN_BEFORE_CAPTURE_START")
+        return errors
+
+    # --- phase 2 ---------------------------------------------------------- #
+    phase_one = two_phase.get("phase1_commit")
+    if not isinstance(phase_one, str) or not re.fullmatch(r"[0-9a-f]{40}", phase_one):
+        errors.append("TWO_PHASE_PHASE_1_COMMIT_MISSING")
+    else:
+        ok, _ = git(repo, "merge-base", "--is-ancestor", phase_one, "HEAD")
+        if not ok:
+            errors.append("TWO_PHASE_PHASE_1_COMMIT_NOT_ANCESTOR")
+        else:
+            ok, stamp = git(repo, "log", "-1", "--format=%ct", phase_one)
+            if ok and stamp.strip().isdigit():
+                if datetime.fromtimestamp(int(stamp.strip()), UTC) >= start:
+                    errors.append("PROTOCOL_FROZEN_AFTER_CAPTURE_STARTED")
+                else:
+                    checks.append("PROTOCOL_FROZEN_BEFORE_CAPTURE_START")
+            else:
+                errors.append("TWO_PHASE_PHASE_1_COMMIT_TIMESTAMP_UNKNOWN")
+
+    if capture.get("closed") is not True:
+        errors.append("TWO_PHASE_CAPTURE_NOT_CLOSED")
+    registry_commit = git_commit_time(repo, registry_path)
+    if registry_commit is None:
+        # An unverifiable ordering is not an ordering. Inspection may proceed and say so;
+        # authorisation may not.
+        if mode == "authorize":
+            errors.append("TWO_PHASE_TIMING_UNVERIFIABLE")
+        else:
+            checks.append("TWO_PHASE_REGISTRY_NOT_COMMITTED")
+    elif registry_commit < end:
+        errors.append("DIGESTS_FROZEN_BEFORE_CAPTURE_CLOSED")
+    else:
+        checks.append("DIGESTS_FROZEN_AFTER_CAPTURE_CLOSED")
+
+    for index, entry in enumerate(datasets):
+        for prefix in ("raw", "normalized"):
+            if not isinstance(entry.get(f"{prefix}_sha256"), str):
+                errors.append(f"TWO_PHASE_PHASE_2_REQUIRES_DIGESTS:DATASET_{index}_{prefix.upper()}")
+        try:
+            dataset_start = parse_utc(entry.get("period_start_utc"))
+            dataset_end = parse_utc(entry.get("period_end_utc"))
+        except (TypeError, ValueError, AttributeError):
+            continue  # reported by the dataset checks, which own that message
+        if dataset_start < start:
+            errors.append(f"DATASET_{index}_PREDATES_CAPTURE")
+        if dataset_end > end:
+            errors.append(f"DATASET_{index}_AFTER_CAPTURE_CLOSE")
+    return errors
+
+
+# --------------------------------------------------------------------------- #
 # the gate
 # --------------------------------------------------------------------------- #
 def evaluate(
@@ -375,6 +513,8 @@ def evaluate(
 
     manifest = load(manifest_path, "PREREG")
     registry = load(registry_path, "REGISTRY")
+    raw_two_phase = manifest.get("two_phase")
+    two_phase: Mapping[str, Any] = raw_two_phase if isinstance(raw_two_phase, Mapping) else {}
 
     declared = manifest.get("experiment_id")
     requested = experiment_id or declared
@@ -397,7 +537,11 @@ def evaluate(
         errors.append("PREREG_NOT_READY_TO_FREEZE")
     if manifest.get("origin") == "reconstructed_from_prior_session_summary_not_runtime":
         checks.append("PREREG_ORIGIN_DECLARED_RECONSTRUCTED")
-    if mode == "authorize" and manifest.get("status") != "FROZEN":
+    if mode == "authorize" and manifest.get("status") == _PHASE_ONE_STATUS:
+        # The whole point of the split: a protocol frozen before its data exists cannot be
+        # authorised, because nobody can say yet what bytes the run would read.
+        errors.append("TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE")
+    elif mode == "authorize" and manifest.get("status") not in _PHASE_TWO_STATUSES:
         errors.append("PREREG_NOT_FROZEN")
 
     # --- hypothesis, design, economics, acceptance, controls --------------- #
@@ -498,7 +642,13 @@ def evaluate(
             if not isinstance(entry, Mapping):
                 errors.append(f"{name}_INVALID")
                 continue
-            require_fields(entry, name, DATASET_FIELDS, errors)
+            deferred = _deferral_allowed(two_phase, entry)
+            required_fields = (
+                tuple(field for field in DATASET_FIELDS if field not in ("raw_sha256", "normalized_sha256"))
+                if deferred
+                else DATASET_FIELDS
+            )
+            require_fields(entry, name, required_fields, errors)
             dataset_id = entry.get("dataset_id")
             if isinstance(dataset_id, str):
                 if dataset_id in seen:
@@ -515,7 +665,14 @@ def evaluate(
                 digest = entry.get(f"{prefix}_sha256")
                 path = _dataset_file(repo, entry.get(f"{prefix}_file"))
                 if not isinstance(digest, str) or not HEX64.fullmatch(digest):
-                    errors.append(f"{name}_{prefix.upper()}_SHA256_MISSING_OR_INVALID")
+                    # Phase 1 is allowed to declare a dataset it has not captured yet, but only
+                    # explicitly, per dataset, and only while the manifest says phase 1. The
+                    # requirement is not dropped; it is deferred to a second commit that cannot
+                    # happen before the capture closes.
+                    if deferred:
+                        checks.append(f"{name}_{prefix.upper()}_DIGEST_DEFERRED_TO_PHASE_2")
+                    else:
+                        errors.append(f"{name}_{prefix.upper()}_SHA256_MISSING_OR_INVALID")
                     continue
                 if path is None:
                     errors.append(f"{name}_{prefix.upper()}_FILE_MISSING")
@@ -523,10 +680,12 @@ def evaluate(
                     errors.append(f"{name}_{prefix.upper()}_SHA256_MISMATCH")
                 else:
                     checks.append(f"{name}_{prefix.upper()}_SHA256_OK")
-            if entry.get("reproduction_status") not in (
-                "VERIFIED_INDEPENDENTLY",
-                "VERIFIED_LOCALLY",
-            ):
+            status = entry.get("reproduction_status")
+            if status == "PENDING_CAPTURE" and deferred:
+                # Honest name for a dataset that does not exist yet. It is not a verification, and
+                # phase 2 will not accept it: the tuple below is enforced once capture has closed.
+                checks.append(f"{name}_PROVENANCE_PENDING_CAPTURE")
+            elif status not in ("VERIFIED_INDEPENDENTLY", "VERIFIED_LOCALLY"):
                 errors.append(f"{name}_PROVENANCE_NOT_VERIFIED")
 
     # --- the prior-runs ledger --------------------------------------------- #
@@ -591,6 +750,21 @@ def evaluate(
                 ok, status = git(repo, "status", "--porcelain", "--", str(path))
                 if not ok or status:
                     errors.append("RUNTIME_CODE_DIRTY:" + str(path))
+
+    # --- the two-phase freeze --------------------------------------------- #
+    if two_phase:
+        errors.extend(
+            two_phase_defects(
+                repo=repo,
+                manifest_path=manifest_path,
+                registry_path=registry_path,
+                two_phase=two_phase,
+                registry=registry,
+                status=manifest.get("status"),
+                mode=mode,
+                checks=checks,
+            )
+        )
 
     checks.append("OFFLINE_PREFLIGHT_ONLY_NO_ECONOMIC_EXECUTION")
     unique_errors = sorted(set(errors))

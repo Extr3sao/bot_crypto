@@ -55,3 +55,10 @@ reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/** -text
 # EXP-003O seals its own artefact tree and quotes a design digest inside every report, so
 # the bytes must survive a checkout unchanged: LF in, LF out, no normalisation either way.
 reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/** -text
+
+# EXP-004A's admission ledger is digest-pinned: every attestation records the sha256 of a
+# byte prefix of the bar store and the chain links each record to the previous one.  Git's
+# end-of-line normalisation would rewrite those bytes on checkout and make the committed
+# ledger fail its own verification on a machine that never touched the data, so the tree is
+# stored exactly as it was sealed.
+data/exp004a/** -text

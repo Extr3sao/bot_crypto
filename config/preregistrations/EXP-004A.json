@@ -1,0 +1,126 @@
+{
+  "experiment_id": "EXP-004A",
+  "schema_version": "2.0",
+  "status": "PROTOCOL_FROZEN",
+  "origin": "author_drafted_before_results",
+  "title": "COST-CONFIRM: measured round-trip cost versus the frozen model, on prospectively observed quotes",
+  "frozen_on_utc": "2026-10-21T00:00:00Z",
+  "scope_note": "This is phase 1 of a two-phase freeze. It commits the question, the splits, the cost arithmetic and the decision rule BEFORE the capture window opens. It contains no digests, because the bytes do not exist yet, and the gate refuses to authorise it for exactly that reason.",
+  "two_phase": {
+    "phase": 1,
+    "digests_deferred": true,
+    "capture": {
+      "start_utc": "2026-10-22T00:00:00Z",
+      "end_utc": "2027-01-20T00:00:00Z",
+      "target_days": 90,
+      "closed": false,
+      "instrument": "1h klines (BTC/ETH/SOL) plus the ST-6 bookTicker+depth tape",
+      "note": "The window starts after this manifest's commit. Phase 2 may not be committed until closed is true, and the gate checks the commit clock rather than this field."
+    }
+  },
+  "hypothesis": {
+    "null": "the realised round-trip cost at the declared notional equals or exceeds the frozen model's 24.786 bps (BTC/ETH) and 27.310 bps (SOL)",
+    "alternative": "the realised round-trip cost is at most 20.0 bps median and 27.31 bps p90 on all three assets, so the frozen model is pessimistic rather than the market expensive",
+    "candidate_id": "cost_model/measured_toll/v1",
+    "candidate_family": "execution_cost_measurement",
+    "baseline_id": "NO_TRADE",
+    "candidate_code_commit": "0000000000000000000000000000000000000000",
+    "baseline_config_path": "config/preregistrations/EXP-004A.baseline.json",
+    "candidate_config_path": "config/preregistrations/EXP-004A.json",
+    "expected_mechanism": "the toll is dominated by the venue fee (2 x 10 bps at VIP0) and not by the spread, so a measured median near 20 bps is compatible with a model that charges 24.79 bps of spread and slippage"
+  },
+  "design": {
+    "primary_metric": "median measured round-trip cost in bps per asset over the capture window",
+    "secondary_metrics": [
+      "p90 measured round-trip cost in bps per asset",
+      "measured spread component in bps",
+      "measured depth impact at the declared notional",
+      "days of prospectively observed data"
+    ],
+    "statistical_method": "nearest-rank percentiles over per-window measurements; no interpolation, no fitted parameter",
+    "bootstrap_seed": 20261022,
+    "bootstrap_iterations": 5000,
+    "multiple_comparisons_plan": "three assets, one pre-declared rule (median and p90 on all three); no family-wise search, so no multiplicity correction is owed",
+    "baseline": "NO_TRADE",
+    "sample_selection_predefined": true,
+    "embargo_minutes": 1440,
+    "splits": {
+      "discovery": {
+        "start_utc": "2026-10-22T00:00:00Z",
+        "end_utc": "2026-11-21T00:00:00Z"
+      },
+      "validation": {
+        "start_utc": "2026-11-22T00:00:00Z",
+        "end_utc": "2026-12-21T00:00:00Z"
+      },
+      "holdout": {
+        "start_utc": "2026-12-22T00:00:00Z",
+        "end_utc": "2027-01-20T00:00:00Z"
+      }
+    },
+    "holdout_past_consumed_exclusion": [
+      "2026-08-06/2026-08-20",
+      "2026-08-20/2026-10-18",
+      "2026-03-01/2026-10-14"
+    ]
+  },
+  "economics": {
+    "venue": "Binance Spot (BINANCE_SPOT_STANDARD_TAKER)",
+    "instrument_type": "spot",
+    "fee_schedule_source": "VENUE_SPECS in src/trading_bot/research/microstructure/cost_model_v3.py, SRC-01",
+    "maker_fee_bps_per_side": 10.0,
+    "taker_fee_bps_per_side": 10.0,
+    "slippage_bps_per_side": 0.0,
+    "latency_ms": 250,
+    "queue_assumptions": "taker execution only; no queue position is claimed",
+    "post_only_rejections": "not applicable to a measurement that places no order",
+    "partial_fill_policy": "not applicable; the cost is measured, not executed",
+    "unfilled_orders_policy": "not applicable; no order is sent",
+    "adverse_selection_model": "none claimed: the measurement prices the spread and the depth walk, not a fill outcome",
+    "minimum_notional_usdt": 5.0,
+    "tick_size_source": "venue instrument metadata, as recorded in the ST-6 window",
+    "lot_size_source": "venue instrument metadata, as recorded in the ST-6 window",
+    "max_leverage": 1,
+    "max_position_notional_usdt": 500.0,
+    "risk_rejection_policy": "no order is placed, so no risk decision arises",
+    "declared_notional_usdt": 500.0,
+    "slippage_note": "slippage is NOT assumed to be zero: it is measured from the recorded depth walk, and where the declared notional was not walked the result is reported as a lower bound rather than a measurement"
+  },
+  "acceptance": {
+    "min_oos_completed_trades": 1,
+    "min_oos_trading_days": 90,
+    "max_drawdown_usdt": 0.0,
+    "min_profit_factor": 1.0,
+    "stop_conditions": [
+      "coverage below 0.90 on any asset",
+      "fewer than 90 prospectively observed days at the declared close",
+      "any asset whose declared notional was never walked"
+    ],
+    "require_positive_lower_95ci": true,
+    "reject_if_any_data_lookahead": true,
+    "reject_on_missing_realistic_costs": true,
+    "unit_note": "min_oos_completed_trades is 1 because the measured unit is a round trip, not a trade; no position is ever opened"
+  },
+  "controls": {
+    "point_in_time_join_policy": "each measurement uses the quote recorded at or before its own window close; no later observation is joined backwards",
+    "lookahead_test_path": "tests/unit/research/test_prospective_admission.py",
+    "leakage_test_path": "tests/unit/research/test_execution_cost_measured.py",
+    "future_mutation_test_path": "tests/unit/research/test_prereg_gate_two_phase.py",
+    "execution_command": "python scripts/exp004a_foundation.py",
+    "builder_identity": "tap-foundation-2026-10-21",
+    "independent_verifier_identity": "NOT_YET_ASSIGNED",
+    "independent_verification_command": "python scripts/exp004a_verify.py (not written yet: the verifier must not be authored by the builder)",
+    "preexisting_runs_ledger_path": "config/preregistrations/EXP-004A.prior_runs.json",
+    "code_scope_paths": [
+      "src/trading_bot/research/prospective",
+      "src/trading_bot/research/execution_cost"
+    ],
+    "data_time_not_after_decision_time": true,
+    "no_retune_on_holdout": true,
+    "execution_mode": "OFFLINE_ONLY",
+    "holdout_opened": false,
+    "previous_results_exist": false,
+    "previous_run_marker_paths": [],
+    "no_previously_consumed_holdout": false
+  }
+}

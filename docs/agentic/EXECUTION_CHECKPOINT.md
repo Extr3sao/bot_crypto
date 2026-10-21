@@ -1586,3 +1586,61 @@ git log -1 --format='%H %s' && git rev-list --count origin/agent/ai-bots/RFC-TAP
 ./.venv/Scripts/python.exe -c "import json;c=json.load(open('data/forward/edge04/coverage.json'));from collections import Counter;print(Counter(d['class'] for d in c['days']))"
 # reproducir el verificador desde HEAD limpio: ver FINAL_REPORT.md, bloque "Reproduce this report", paso 3
 ```
+
+---
+
+## 2026-10-21 — TAP-EXP-004A-FOUNDATION (freeze en dos fases, admisión prospectiva, coste medido)
+
+**Objetivo:** preparar la validación económica prospectiva sin ejecutarla.
+**Base auditada:** `f831c66` (y su gemelo pre-amend `39153a0`, mismo padre `277d1df`: difieren en 3 líneas de
+`FINAL_REPORT.md`). **Ningún experimento autorizado.** `economic_executions: 0`, `live_orders: 0`.
+
+**Hecho**
+
+1. **Gate en dos fases** (`prereg_gate.py` + `docs/RFC-050_EXP004A_TWO_PHASE_FREEZE.md`): `PROTOCOL_FROZEN`
+   (fase 1) es inspeccionable (exit 3) y **nunca autorizable** (`TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE`, exit 2);
+   los digests se difieren por dataset, explícitamente, y **no** en fase 2. El orden se verifica contra el reloj de
+   git, no contra el manifiesto: commit del protocolo < `capture.start_utc`, commit del registro ≥ `capture.end_utc`,
+   y `period_start >= start` / `period_end <= end` para cada dataset. Sin reloj verificable → `TWO_PHASE_TIMING_UNVERIFIABLE`.
+2. **Admisión prospectiva sellada** (`src/trading_bot/research/prospective/`): 234 atestaciones para el carril 1h
+   (702 digests de serie) y 14 para 1h+15m (84), **verificadas contra los bytes, 0 errores**. Segunda ejecución:
+   **0 registros añadidos** y sigue verificando (idempotente). `sealable_through` impide sellar un día cuyos barras
+   aún pueden llegar legítimamente.
+3. **Discrepancia de 235 días resuelta**: 235 días con barra → 234 clasificables → **229 backfilled** → **5**
+   prospectivos en 1h → **4** exigiendo 1h+15m. La diferencia 5/4 es `2026-10-15` (22/24 barras 1h dentro del bound,
+   79/96 en 15m). El carril 15m empieza `2026-10-07`, que es también donde acaba el corpus 15m congelado.
+4. **Coste medido** (`execution_cost/`, sin aritmética nueva: fee de `VENUE_SPECS`, spread y depth del tape ST-6):
+   **BTC 20.0012**, ETH 20.0408, SOL 20.9414 bps medianos a **200 USDT**, clase `OBSERVED`. El peaje es el fee:
+   95.5–99.99 % del total. A **500 USDT** —el notional declarado— el tape nunca caminó ese tamaño:
+   `DECLARED_SIZE_NOT_WALKED` y cota inferior, no medición.
+5. **Independencia**: 4 afirmaciones de experimento → **3 ventanas independientes**. `EXP-003J` ≡ `EXP-003K`.
+6. **Tests**: **115 passed, 1 skipped**. `ruff` y `mypy` limpios. El hueco del symlink queda **cerrado en esta
+   máquina** con una junction real (`mklink /J`, sin privilegios) más un control positivo; el skip que queda es el
+   test antiguo de `symlink_to`, sustituido, no arreglado.
+7. **`EXP-004A` fase 1 commiteado** en `config/preregistrations/EXP-004A.{json,datasets.json,prior_runs.json}` y
+   **rechazado por su propio gate** (exit 2). `discover_existing_runs('EXP-004A')` sigue `[]`: el informe vive en
+   `docs/agentic/exp004a/`, fuera de `reports/ai-bots/`, para no gastar el identificador que prepara.
+
+**Pendiente / bloqueado**
+
+- **4 de 90 días** admitidos. El observador produce ~5 días admisibles por 234 días liquidados: el cuello de botella
+  es la cobertura del observador, no el protocolo.
+- **500 USDT nunca caminado**: o se extiende el colector antes del `capture.start_utc` (2026-10-22), o el
+  experimento se declara en 200 USDT. No se escala el impacto.
+- **Verificador no escrito**: `independent_verifier_identity = NOT_YET_ASSIGNED`; no lo puede escribir el builder.
+- Fase 2 (registro de digests) **no existe** y no puede existir antes del cierre de la captura.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git log -1 --format='%H %s'
+./.venv/Scripts/python.exe scripts/exp004a_foundation.py
+./.venv/Scripts/python.exe -m trading_bot.research.prereg_gate --repo . --experiment-id EXP-004A \
+    --manifest config/preregistrations/EXP-004A.json \
+    --registry config/preregistrations/EXP-004A.datasets.json --mode authorize    # BLOCKED, exit 2
+./.venv/Scripts/python.exe -m pytest tests/unit/research/test_prospective_admission.py \
+    tests/unit/research/test_execution_cost_measured.py \
+    tests/unit/research/test_prereg_gate_two_phase.py \
+    tests/unit/research/test_prereg_gate_escape.py -q                              # 64 passed
+```
