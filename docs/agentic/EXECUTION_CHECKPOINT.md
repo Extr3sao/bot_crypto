@@ -1644,3 +1644,8 @@ git log -1 --format='%H %s'
     tests/unit/research/test_prereg_gate_two_phase.py \
     tests/unit/research/test_prereg_gate_escape.py -q                              # 64 passed
 ```
+
+> **Nota de alcance (misma sesión):** el conteo/seal de admisión es **automático en la observación**
+> (el observer de WP-EDGE-03 corre por el planificador del host) pero **invocado a mano en el conteo**: el paso
+> es append-only e idempotente (segunda ejecución: **0** registros añadidos), así que invocarlo a diario añade solo
+> días nuevos. Engancharlo al supervisor existente es un cambio de estado del host y no se hizo aquí.

@@ -181,7 +181,12 @@ phase 1 to the commit that froze its code). Both precede `capture.start_utc`.
 4. **200 USDT ≠ 500 USDT.** The declared notional of `EXP-004A` was never walked by the collector.
 5. **Program-level verification.** The tests are adversarial and the seal is cryptographic, but the verifier
    of a future version of this experiment is still a program written by this workstream, not a person.
-6. **The run report is generated, not curated.** `RUN_REPORT.json` records the gate defects that existed at
+6. **Accumulation is automatic at the observation layer, manual at the counting layer.** The forward observer
+   already runs on the host scheduler (730 recorded runs); the admission/seal step is invoked, not scheduled.
+   It is append-only and idempotent — a second run appended **0** records — so invoking it daily adds only
+   newly settled days and never rewrites one. Wiring it to the existing supervisor is a distinct change to
+   host state and was not made here.
+7. **The run report is generated, not curated.** `RUN_REPORT.json` records the gate defects that existed at
    generation time, including "not yet committed"; the post-commit gate output is captured separately in
    `GATE_AFTER_COMMIT.json`.
 
