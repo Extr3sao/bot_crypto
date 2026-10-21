@@ -19,7 +19,7 @@ refused by its own gate.**
 | 3 | Automatic prospective observation accumulating 90 admissible days | **done as a mechanism, 4/90 accumulated** | §4, `admission_1h.jsonl` (234 attestations), `admission_1h+15m.jsonl` (14) |
 | 4 | Execution cost distinguishing observed / simulated / assumed | **done at 200 USDT, refused at 500** | §5 — BTC 20.0012 bps measured, 500 USDT `DECLARED_SIZE_NOT_WALKED` |
 | 5 | Resolve the 235-day inventory discrepancy; duplicates add no observations | **done** | §2 — 235 → 234 → 229 backfilled → 5 (1h) → **4** (1h+15m) |
-| 6 | Unit, integration, adversarial tests, including symlink escapes | **done, 87 passed / 1 skipped** | §6 — junction escape now proven on this host |
+| 6 | Unit, integration, adversarial tests, including symlink escapes | **done, 115 passed / 1 skipped** | §6 — junction escape now proven on this host |
 | 7 | Do not authorise or execute `EXP-004A` | **respected** | gate exit 2; `discover_existing_runs` still `[]` |
 
 ## 1. Authority
