@@ -1,6 +1,6 @@
 # RUN REPORT — WP-003-03 — PAPER end-to-end validation
 
-Generated 2026-10-21T19:48:01Z from `PAPER_E2E_LAB.json`, `VERIFICATION.json` and the pytest log.
+Generated 2026-10-21T19:48:49Z from `PAPER_E2E_LAB.json`, `VERIFICATION.json` and the pytest log.
 
 ## Qué se ejecutó
 

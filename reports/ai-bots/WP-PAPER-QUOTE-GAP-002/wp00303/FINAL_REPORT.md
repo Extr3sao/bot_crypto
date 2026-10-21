@@ -55,5 +55,5 @@
 
 - Veredicto: `PASS` (18/18 checks).
 - Controles negativos rechazados: 11/11.
-- Commit juzgado: `bb302b665a6ccb7e3d71630fa765211296e19c30`.
+- Commit juzgado: `f281d949286b951ced5a9f087788a2142a301ceb`.
 
