@@ -7,7 +7,7 @@
 ## COMMITS
 
 - baseline + protocol: `4ea93d815ed6` (prospective=`True`)
-- experiment HEAD: `fe196d795e40`
+- experiment HEAD: `cedfcb5c5d03`
 
 ## IMPLEMENTED
 
@@ -105,9 +105,9 @@
 | `NEGATIVE_CONTROLS.json` | `e0eafa8a0513606f…` |
 | `INDEPENDENCE_AUDIT.md` | `37818f02a1c71b00…` |
 | `INDEPENDENT_VERIFICATION.md` | `19716272b7acfbd2…` |
-| `CLEAN_CHECKOUT_REPRODUCTION.json` | `fefca46da935f381…` |
+| `CLEAN_CHECKOUT_REPRODUCTION.json` | `11685a68052d0031…` |
 | `CELL_COVERAGE_MANIFEST.csv` | `c9e33e46811eb7eb…` |
-| `RUN_REPORT.json` | `95e893977bbda885…` |
+| `RUN_REPORT.json` | `32d3bde8ea4ae669…` |
 
 ## ARCHITECTURE_STATUS
 

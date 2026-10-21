@@ -18,7 +18,7 @@
     "mean_reversion_vol_liq@4h"
   ],
   "clean_checkout_reproduction": {
-    "commit": "78a0da82a2328535776450bdb680b347e0978a48",
+    "commit": "cedfcb5c5d0370721d83f2c2f643f81c5a36a9dd",
     "comparisons": {
       "SIGNAL_PARITY_SUMMARY.json": {
         "identical_counts": true,
@@ -46,7 +46,7 @@
     },
     "dataset_digests_expected": 3,
     "dataset_digests_matched": 3,
-    "generated_at_utc": "2026-10-21T09:13:46Z",
+    "generated_at_utc": "2026-10-21T09:49:31Z",
     "method": {
       "comparison": "both evaluation streams compared byte for byte; summaries compared on their verdicts and counts",
       "dataset": "copied in only after each SHA-256 matched the protocol's frozen digest",
@@ -99,7 +99,7 @@
       }
     ],
     "verdict": "REPRODUCED",
-    "worktree_add": "HEAD is now at 78a0da8 Record what the verifier got wrong before it judged anything",
+    "worktree_add": "HEAD is now at cedfcb5 Bind the sealed report to the commit that holds every line of its code",
     "worktree_status_lines_before": 0
   },
   "config_unchanged": true,
@@ -223,7 +223,7 @@
     "signals/independent_evaluations.jsonl.gz",
     "signals/original_evaluations.jsonl.gz"
   ],
-  "experiment_commit": "fe196d795e404a50ec74d6f743ac594fe609702c",
+  "experiment_commit": "cedfcb5c5d0370721d83f2c2f643f81c5a36a9dd",
   "false_success_observed": 0,
   "fixtures": {
     "fixtures": [
