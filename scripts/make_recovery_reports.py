@@ -398,6 +398,20 @@ def write_reports(
                 "fix": "corrected oracles; no threshold relaxed",
                 "class": "laboratory",
             },
+            {
+                "id": "DEF-06",
+                "what": (
+                    "the verifier only read the last child of each scenario, so a duplicated CLOSE "
+                    "in the book a crash left behind and a book edited one cent after the run "
+                    "were both accepted once the packaging checks stopped failing"
+                ),
+                "evidence": "NEG-04 and NEG-05 were rejected by packaging checks first, not by the economy",
+                "fix": (
+                    "two re-derived checks: ledger_identity (no operation id twice in any child) "
+                    "and digest_coherence (one runtime state digest cannot re-derive two economies)"
+                ),
+                "class": "verifier",
+            },
         ],
         "environment": lab["environment"],
         "errors": [],

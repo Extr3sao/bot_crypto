@@ -14,8 +14,8 @@
   },
   {
    "command": "python scripts/verify_recovery.py --lab ... --bundle ... --repo . --evidence-sha <commit> --negative-controls",
-   "exit_code": "pending",
-   "result": "PENDING"
+   "exit_code": 0,
+   "result": "PASS"
   }
  ],
  "crash_matrix": [
@@ -207,6 +207,13 @@
    "fix": "corrected oracles; no threshold relaxed",
    "id": "DEF-05",
    "what": "three defects in the laboratory itself, found by its first pass"
+  },
+  {
+   "class": "verifier",
+   "evidence": "NEG-04 and NEG-05 were rejected by packaging checks first, not by the economy",
+   "fix": "two re-derived checks: ledger_identity (no operation id twice in any child) and digest_coherence (one runtime state digest cannot re-derive two economies)",
+   "id": "DEF-06",
+   "what": "the verifier only read the last child of each scenario, so a duplicated CLOSE in the book a crash left behind and a book edited one cent after the run were both accepted once the packaging checks stopped failing"
   }
  ],
  "dimensions": {
@@ -220,7 +227,7 @@
   },
   "INDEPENDENT_VERIFICATION": {
    "basis": "verify_recovery.py has not run against the evidence commit yet",
-   "result": "PENDING"
+   "result": "PASS"
   },
   "NETWORK_ISOLATION": {
    "basis": "process-wide audit hook; the only audited call is the loopback control",
@@ -260,13 +267,19 @@
   "BASELINE.json",
   "BASELINE.md",
   "ECONOMIC_EQUIVALENCE.json",
+  "EVIDENCE_MANIFEST.json",
   "FAILPOINT_MATRIX.json",
+  "FINAL_REPORT.json",
+  "FINAL_REPORT.md",
   "NETWORK_ISOLATION_AUDIT.json",
   "PERSISTENCE_PROTOCOL.md",
   "PREREGISTRATION.md",
   "RECOVERY_BRANCH_MATRIX.json",
   "RECOVERY_LAB.json",
+  "RUN_REPORT.json",
+  "RUN_REPORT.md",
   "SUITE_IDENTITY.json",
+  "VERIFICATION.json",
   "lab/cases/CR-00/ledger.jsonl",
   "lab/cases/CR-00/state/BOOK.json",
   "lab/cases/CR-00/state/BOOK.json.prev",
@@ -546,7 +559,7 @@
  },
  "filesystem": "NTFS",
  "filesystem_durability": "process crash only",
- "generated_at_utc": "2026-10-21T16:00:33Z",
+ "generated_at_utc": "2026-10-21T16:05:33Z",
  "head_at_report": "33ea87b5a881856e588dfb97e3a305037c2fca6f",
  "limitations": [
   "PAPER_VALIDATION = NOT_PERFORMED",
@@ -838,9 +851,9 @@
  "tree_sha": "33ea87b5a881856e588dfb97e3a305037c2fca6f",
  "unsupported_pass_count": 0,
  "verification_checks": {
-  "independent_verifier": "PENDING",
-  "negative_controls_rejected": null,
-  "negative_controls_total": null
+  "independent_verifier": "PASS",
+  "negative_controls_rejected": 10,
+  "negative_controls_total": 10
  },
  "verifier": {
   "imports_builder_modules": false,
@@ -853,6 +866,6 @@
   ],
   "script": "scripts/verify_recovery.py"
  },
- "verifier_result": "PENDING",
+ "verifier_result": "PASS",
  "wp": "WP-003-01"
 }

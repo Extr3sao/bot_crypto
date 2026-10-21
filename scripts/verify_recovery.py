@@ -596,6 +596,74 @@ def check_reports(bundle: dict[str, Any], _ctx: dict[str, Any]) -> Check:
     return True, "both reports point at the same commit and claim no paper validation"
 
 
+def check_digest_coherence(bundle: dict[str, Any], _ctx: dict[str, Any]) -> Check:
+    """The same runtime state digest must always re-derive the same economy.
+
+    A book edited after the run keeps the ``state_digest`` the runtime wrote, so grouping the
+    children by that digest and comparing what each book actually contains is what turns a
+    one-cent edit into a disagreement. Checking only the last child of each scenario, as the
+    earlier version did, left every book a crash left behind out of the comparison.
+    """
+    groups: dict[str, list[tuple[str, str, str]]] = {}
+    for item in bundle.get("scenarios") or []:
+        for child in _children(item):
+            book = _book(child)
+            if not book:
+                continue
+            payload = child.get("payload") or {}
+            digest = str(
+                payload.get("book_state_digest")
+                or (payload.get("store_recovery") or {}).get("state_digest")
+                or ""
+            )
+            if not digest:
+                continue
+            groups.setdefault(digest, []).append(
+                (str(item.get("id")), str(child.get("tag")), _canonical(book))
+            )
+    problems = []
+    compared = 0
+    for digest, rows in groups.items():
+        canonical = {row[2] for row in rows}
+        compared += len(rows)
+        if len(canonical) > 1:
+            problems.append(
+                f"state {digest[:12]} is published as {len(canonical)} different economies: "
+                + ", ".join(row[1] for row in rows)
+            )
+    if problems:
+        return False, "; ".join(problems)
+    return True, (
+        f"{compared} published book(s) grouped by {len(groups)} runtime digest(s); "
+        "each digest re-derives exactly one economy"
+    )
+
+
+def check_ledger_identity(bundle: dict[str, Any], _ctx: dict[str, Any]) -> Check:
+    """No ledger, in any child, may carry the same operation twice.
+
+    The runtime deduplicates by ``operation_id``; an evidence bundle that shows one operation
+    twice is either a duplicate economic effect or a ledger that was edited. Both are refused.
+    The earlier version only read the final child's ledger, so a duplicated CLOSE in the book
+    a crash left behind was invisible.
+    """
+    problems = []
+    seen_rows = 0
+    for item in bundle.get("scenarios") or []:
+        for child in _children(item):
+            ids = [str(entry.get("operation_id") or "") for entry in _entries(child)]
+            seen_rows += len(ids)
+            repeated = sorted({value for value in ids if value and ids.count(value) > 1})
+            if repeated:
+                problems.append(
+                    f"{item.get('id')}/{child.get('tag')}: {len(repeated)} operation id(s) "
+                    f"appear more than once ({', '.join(value[:24] for value in repeated[:3])})"
+                )
+    if problems:
+        return False, "; ".join(problems)
+    return True, f"{seen_rows} ledger row(s) across every child carry a unique operation id"
+
+
 CHECKS: tuple[tuple[str, Callable[[dict[str, Any], dict[str, Any]], Check]], ...] = (
     ("lab_shape", check_lab_shape),
     ("scenarios_complete", check_scenarios_complete),
@@ -606,6 +674,8 @@ CHECKS: tuple[tuple[str, Callable[[dict[str, Any], dict[str, Any]], Check]], ...
     ("post_crash_loadable", check_post_crash_book_loadable),
     ("economic_equivalence", check_economic_equivalence),
     ("exactly_once", check_exactly_once),
+    ("digest_coherence", check_digest_coherence),
+    ("ledger_identity", check_ledger_identity),
     ("second_resume", check_second_resume),
     ("refusals", check_refusals),
     ("network_isolation", check_network),

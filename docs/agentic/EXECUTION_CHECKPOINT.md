@@ -1387,21 +1387,36 @@ sellar la evidencia para un verificador independiente.
   el libro irreanudable con `RISK_MISMATCH`).
 - Laboratorio `scripts/recovery_lab.py` + `scripts/recovery_child.py`: 16 escenarios,
   **16/16 PASS**, procesos hijos con `os._exit(86)`, red negada por audit hook.
-- Verificador `scripts/verify_recovery.py`: 18 comprobaciones re-derivadas + 10 controles
+- Verificador `scripts/verify_recovery.py`: **20 comprobaciones** re-derivadas + 10 controles
   negativos; no importa módulos del constructor.
-- Informes y manifiesto en `reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/`.
+- **DEF-06 (corregido en este WP):** con la evidencia ya empaquetada, dos controles negativos
+  dejaron de ser rechazados por casualidad y pasaron sin ser detectados: el verificador sólo
+  miraba el último hijo de cada escenario, así que no veía un `CLOSE` duplicado en el libro que
+  dejó la caída ni un libro editado un céntimo después de la ejecución. Ahora hay dos checks
+  más (`ledger_identity`, `digest_coherence`): mismo `state_digest` ⇒ misma economía, y ningún
+  `operation_id` dos veces en ningún hijo. `NEG-04` y `NEG-05` se rechazan por su propia causa.
+- Informes y manifiesto en `reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/` (270 ficheros,
+  `hidden_by_ignore_rules = 0`).
+- **Suite de aceptación** (`vision + paper + risk`): **577 passed, exit 0, 521 s**. **Suite del
+  repo completo:** 101 fallos + 14 errores de recolección, **el mismo conjunto exacto**
+  (mismo sha256 de ids) al replicar sólo esos ids en un worktree de `0c074fb`: 0 regresiones
+  nuevas, y el hueco preexistente queda declarado en `SUITE_IDENTITY.json.repo_wide`.
 
 **Pendiente.**
 
 - `POWER_LOSS_DURABILITY_NOT_VERIFIED` (no hay corte de alimentación ni fsync de directorio
   en NTFS) y `EXTERNAL_ORDERS / RECONCILIATION = NOT_VERIFIABLE`; ambos declarados.
 - `PAPER_VALIDATION = NOT_PERFORMED` hasta el WP de paper E2E.
+- La suite del repo **no está verde en el commit padre**: los 115 ids que fallan son
+  `tests/unit/research/*` (artefactos commiteados obsoletos, fixtures ausentes) y
+  `tests/unit/ops/test_windowless.py` (señala `scripts/paper_resume_drill.py:212`). Cerrarlo es
+  trabajo propio, no de este WP.
 
 **Reanudación verificable**
 
 ```bash
 cd "$(git rev-parse --show-toplevel)"
-python -m pytest tests/unit/vision tests/unit/paper tests/unit/risk tests/unit/market_data -q
+python -m pytest tests/unit/vision tests/unit/paper tests/unit/risk -q
 python scripts/recovery_lab.py --out reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/lab \
   --json reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/RECOVERY_LAB.json
 python scripts/verify_recovery.py \

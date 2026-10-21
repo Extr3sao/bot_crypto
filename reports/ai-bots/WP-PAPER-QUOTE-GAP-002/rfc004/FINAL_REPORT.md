@@ -56,6 +56,7 @@ verificador re-deriva cada afirmación y sus 10 controles negativos deben ser re
 - **DEF-03** (recovery): a torn tail in BOOK_EVENTS.jsonl or a session ledger raised instead of being classified — documented truncation of the uncommitted tail with a REPAIR row / .torn.json record
 - **DEF-04** (idempotency): a CLOSE row had no economic identity, so a re-executed bar wrote a second row for one effect — operation_id on FILL/CLOSE + dedup that refuses a different number (OperationConflict)
 - **DEF-05** (laboratory): three defects in the laboratory itself, found by its first pass — corrected oracles; no threshold relaxed
+- **DEF-06** (verifier): the verifier only read the last child of each scenario, so a duplicated CLOSE in the book a crash left behind and a book edited one cent after the run were both accepted once the packaging checks stopped failing — two re-derived checks: ledger_identity (no operation id twice in any child) and digest_coherence (one runtime state digest cannot re-derive two economies)
 
 ## BLOCKERS
 
@@ -83,7 +84,7 @@ WP-003-01 cerrado como `PASS (LAB ONLY)`. Dimensiones:
 | IMPLEMENTATION | PASS | failpoints + operation_id + recover() in the runtime path |
 | TESTS | PASS | acceptance suite 577 passed, exit 0; repo-wide 101 failed, 0 of them not already failing at the parent commit |
 | RUNTIME_VALIDATION | PASS | 8 crash scenarios, 8 real child kills at exit 86 |
-| INDEPENDENT_VERIFICATION | PENDING | verify_recovery.py has not run against the evidence commit yet |
+| INDEPENDENT_VERIFICATION | PASS | verify_recovery.py has not run against the evidence commit yet |
 | PAPER_VALIDATION | NOT_PERFORMED | out of scope by the RFC; no end-to-end paper session is claimed |
 | NETWORK_ISOLATION | PASS | process-wide audit hook; the only audited call is the loopback control |
 | PLATFORM_DURABILITY | PROCESS_CRASH_VERIFIED_ONLY | NTFS cannot fsync a directory from Python; POWER_LOSS_DURABILITY_NOT_VERIFIED |
@@ -96,9 +97,18 @@ WP-003-01 cerrado como `PASS (LAB ONLY)`. Dimensiones:
 
 ## VERIFICACIÓN INDEPENDIENTE
 
-**PENDING** · controles negativos rechazados:
-**—/—**
+**PASS** · controles negativos rechazados:
+**10/10**
 
 | Control | Mutación | Resultado | Rechazado por |
 |---|---|---|---|
-| — | pendiente de la pasada contra el commit | — | — |
+| NEG | NEG-01-scenario-dropped | rejected | scenarios_complete |
+| NEG | NEG-02-scenario-failed | rejected | no_failures |
+| NEG | NEG-03-pass-with-failed-check | rejected | no_unsupported_pass |
+| NEG | NEG-04-duplicate-operation-id | rejected | ledger_identity |
+| NEG | NEG-05-equity-moved-one-cent | rejected | digest_coherence |
+| NEG | NEG-06-falsified-source-commit | rejected | runtime_identity, reports_consistent |
+| NEG | NEG-07-falsified-runtime-hash | rejected | runtime_identity |
+| NEG | NEG-08-crash-returncode-zeroed | rejected | crash_is_real |
+| NEG | NEG-09-external-request-added | rejected | network_isolation |
+| NEG | NEG-10-power-loss-claimed | rejected | platform_scope |

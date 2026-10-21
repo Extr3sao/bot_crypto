@@ -1,0 +1,199 @@
+{
+ "checks": [
+  {
+   "check": "lab_shape",
+   "detail": "schema rfc004-recovery-lab/1, source_commit 33ea87b5a881",
+   "ok": true
+  },
+  {
+   "check": "scenarios_complete",
+   "detail": "16 scenario(s) present: CR-00, CR-01, CR-02, CR-03, CR-04, CR-05, CR-06, CR-07, CR-08, CR-09, CR-10, CR-11, CR-12, CR-13, CR-14, CR-16",
+   "ok": true
+  },
+  {
+   "check": "no_failures",
+   "detail": "every scenario reports PASS",
+   "ok": true
+  },
+  {
+   "check": "no_unsupported_pass",
+   "detail": "no scenario claims PASS while a check failed",
+   "ok": true
+  },
+  {
+   "check": "crash_is_real",
+   "detail": "8 crash(es) end a real process at a real failpoint (exit 86)",
+   "ok": true
+  },
+  {
+   "check": "crash_window",
+   "detail": "each crash left the book on one side of the replace, never in between",
+   "ok": true
+  },
+  {
+   "check": "post_crash_loadable",
+   "detail": "the state a crash leaves is always nameable (NO_CHANGE or RECOVERED)",
+   "ok": true
+  },
+  {
+   "check": "economic_equivalence",
+   "detail": "14 recovered state(s) re-derive to the control projection",
+   "ok": true
+  },
+  {
+   "check": "exactly_once",
+   "detail": "one CLOSE row per committed effect, one effect per close, in every scenario",
+   "ok": true
+  },
+  {
+   "check": "digest_coherence",
+   "detail": "39 published book(s) grouped by 4 runtime digest(s); each digest re-derives exactly one economy",
+   "ok": true
+  },
+  {
+   "check": "ledger_identity",
+   "detail": "442 ledger row(s) across every child carry a unique operation id",
+   "ok": true
+  },
+  {
+   "check": "second_resume",
+   "detail": "6 second resume(s) booked nothing and moved nothing",
+   "ok": true
+  },
+  {
+   "check": "refusals",
+   "detail": "contention and corruption were refused by the runtime, not repaired",
+   "ok": true
+  },
+  {
+   "check": "network_isolation",
+   "detail": "1 audited socket call(s), all loopback control; the live route refused before any I/O",
+   "ok": true
+  },
+  {
+   "check": "historical_compat",
+   "detail": "RFC003 book at barrier 1792529400000 read twice; 3 file(s) byte-identical",
+   "ok": true
+  },
+  {
+   "check": "platform_scope",
+   "detail": "os=nt filesystem=NTFS directory_fsync=unsupported power_loss=NOT_VERIFIED",
+   "ok": true
+  },
+  {
+   "check": "runtime_identity",
+   "detail": "6 runtime file(s) hash to their blobs at 33ea87b5a881",
+   "ok": true
+  },
+  {
+   "check": "evidence_in_commit",
+   "detail": "269 evidence file(s) are inside commit 5e5e2dcb505e",
+   "ok": true
+  },
+  {
+   "check": "manifest_covers",
+   "detail": "268 file(s) hashed and covered by the manifest",
+   "ok": true
+  },
+  {
+   "check": "reports_consistent",
+   "detail": "both reports point at the same commit and claim no paper validation",
+   "ok": true
+  }
+ ],
+ "claims": {
+  "FILESYSTEM_DURABILITY": "PROCESS_CRASH_VERIFIED_ONLY",
+  "POWER_LOSS_DURABILITY_NOT_VERIFIED": true,
+  "PROCESS_CRASH_VERIFIED": true
+ },
+ "failed": [],
+ "generated_at_utc": "2026-10-21T16:05:01Z",
+ "negative_controls": [
+  {
+   "id": "NEG",
+   "mutation": "NEG-01-scenario-dropped",
+   "rejected": true,
+   "rejected_by": [
+    "scenarios_complete"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-02-scenario-failed",
+   "rejected": true,
+   "rejected_by": [
+    "no_failures"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-03-pass-with-failed-check",
+   "rejected": true,
+   "rejected_by": [
+    "no_unsupported_pass"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-04-duplicate-operation-id",
+   "rejected": true,
+   "rejected_by": [
+    "ledger_identity"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-05-equity-moved-one-cent",
+   "rejected": true,
+   "rejected_by": [
+    "digest_coherence"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-06-falsified-source-commit",
+   "rejected": true,
+   "rejected_by": [
+    "runtime_identity",
+    "reports_consistent"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-07-falsified-runtime-hash",
+   "rejected": true,
+   "rejected_by": [
+    "runtime_identity"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-08-crash-returncode-zeroed",
+   "rejected": true,
+   "rejected_by": [
+    "crash_is_real"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-09-external-request-added",
+   "rejected": true,
+   "rejected_by": [
+    "network_isolation"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-10-power-loss-claimed",
+   "rejected": true,
+   "rejected_by": [
+    "platform_scope"
+   ]
+  }
+ ],
+ "negative_controls_rejected": 10,
+ "negative_controls_total": 10,
+ "schema": "rfc004-verifier/1",
+ "unsupported_pass_count": 0,
+ "verdict": "PASS"
+}
