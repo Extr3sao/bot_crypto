@@ -83,6 +83,7 @@ from trading_bot.vision.guards import (
 )
 from trading_bot.vision.ledger import DecisionLedger, read_entries
 from trading_bot.vision.prompt import PromptBundle, build_prompt
+from trading_bot.vision.provenance import capture as capture_code_provenance
 from trading_bot.vision.provider import (
     ProviderError,
     VisionProvider,
@@ -297,6 +298,10 @@ class VisionLane:
         #: behaviour, byte for byte. Named ``lifecycle_recorder`` because ``lifecycle`` is
         #: already the local name of the opinion-lifecycle policy below.
         lifecycle_recorder: Any | None = None,
+        #: DEF-RUN-019: where to look for the commit that is running this lane. The
+        #: default is this checkout; a test or a clean rehearsal points it at its own
+        #: root so the block describes the code that actually executed.
+        code_root: Path | str | None = None,
     ) -> None:
         if not series:
             raise ValueError("series is empty")
@@ -305,6 +310,13 @@ class VisionLane:
         self.config = config
         self.equity = float(equity)
         self.book_id = book_id
+        #: The root whose Git (and whose runtime bytes) the ``RUN`` header will record.
+        #: Captured before the first bar, never reconstructed afterwards.
+        self.code_root = (
+            Path(code_root).resolve()
+            if code_root is not None
+            else Path(__file__).resolve().parents[3]
+        )
         self.decision_every = int(
             decision_every_bars or config.lane.decision_every_bars
         )
@@ -1444,6 +1456,10 @@ class VisionLane:
                         }
                         for symbol, bars in self.series.items()
                     },
+                    # DEF-RUN-019: the commit is written down before the first decision is
+                    # taken, so provenance is a record instead of a reconstruction. Facts
+                    # only: the verifier decides whether they demonstrate anything.
+                    "code_provenance": capture_code_provenance(self.code_root),
                 },
             )
 

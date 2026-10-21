@@ -127,6 +127,34 @@ def decide(root: Path) -> dict[str, Any]:
     else:
         technical = "FAIL"
 
+    #: WP-DEF-018-03: el compromiso de código que la cabecera `RUN` escribe antes de la
+    #: primera decisión. B lo mide en un dominio aparte (`run_provenance`), así que el
+    #: recuento del sujeto 017 no cambia. `NOT_EVIDENCED` describe los ledgers anteriores
+    #: al control y se declara; un `FAIL` sí es una afirmación que Git desmiente y manda.
+    code_provenance = (verification or {}).get("run_provenance") or {}
+    code_provenance_status = code_provenance.get("status")
+    if code_provenance_status == "FAIL":
+        technical = "FAIL"
+        blockers.append("CODE_PROVENANCE_FAILED")
+        reasons.append(
+            "la cabecera RUN declara un commit que Git no sostiene: "
+            + ", ".join(
+                sorted(
+                    {
+                        reason
+                        for ledger in code_provenance.get("ledgers") or []
+                        if ledger.get("status") == "FAIL"
+                        for reason in ledger.get("reasons") or []
+                    }
+                )
+            )[:300]
+        )
+    elif technical == "PASS" and code_provenance_status != "PASS":
+        reasons.append(
+            "la integridad técnica se apoya en ledgers que no declaran el commit que los "
+            f"ejecutó (code_provenance={code_provenance_status}); el control es prospectivo"
+        )
+
     economic_mismatch_ok = (verification or {}).get("summary", {}).get("FAIL", 0) == 0
     economic = "INVALID"
     published_status = ((primary or {}).get("decision") or {}).get("economic_status")
@@ -168,6 +196,16 @@ def decide(root: Path) -> dict[str, Any]:
     # -- defectos y bloqueos -------------------------------------------------
     for defect in (verification or {}).get("defects") or []:
         defects.append(defect)
+    if code_provenance_status == "FAIL":
+        defects.append(
+            {
+                "code": "CODE_PROVENANCE_UNPROVEN",
+                "detail": (
+                    "hay ledgers cuya cabecera RUN afirma un commit o unos bytes que Git "
+                    "desmiente; la procedencia del código no está demostrada"
+                ),
+            }
+        )
     if technical == "FAIL" and b_result == "FAIL":
         reasons.append(
             "la verificación independiente encontró comprobaciones en FAIL: "
@@ -221,6 +259,9 @@ def decide(root: Path) -> dict[str, Any]:
             "clean_replay": replay_status,
             "runtime_executed": (replay or {}).get("runtime_executed"),
             "independence_demonstrated": independence_ok,
+            "code_provenance": code_provenance_status,
+            "code_provenance_counts": code_provenance.get("counts"),
+            "code_provenance_checks": code_provenance.get("checks_total"),
             "baseline_head": ((baseline or {}).get("git") or {}).get("head"),
             "seal_commit": (seal or {}).get("commit"),
         },

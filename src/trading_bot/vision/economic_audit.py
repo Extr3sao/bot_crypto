@@ -260,10 +260,31 @@ class EconomicRunIdentity:
         lane = run.get("lane") or {}
         unknowns: list[str] = []
         worktree_state = "DECLARED"
-        if source_commit is None:
+        #: DEF-RUN-019: la cabecera `RUN` puede versionar el commit que la escribió y las
+        #: huellas de los ficheros que ejecutó. Cuando ese bloque existe se lee de ahí en
+        #: lugar de pedírselo al llamante; cuando no existe (todo 017, todo 018) el
+        #: resultado es exactamente el de antes: `UNKNOWN` y la incógnita declarada. No se
+        #: rellena un commit desconocido con el actual, que sería inventar el origen.
+        block = run.get("code_provenance")
+        recorded: dict[str, Any] = block if isinstance(block, dict) else {}
+        recorded_commit = str(recorded.get("commit") or "")
+        if len(recorded_commit) != 40 or set(recorded_commit) == {"0"}:
+            recorded_commit = ""
+        recorded_hashes = {
+            str(name): str(info.get("sha256"))
+            for name, info in (recorded.get("files") or {}).items()
+            if isinstance(info, dict) and info.get("sha256")
+        }
+        if source_commit is None and recorded_commit:
+            source_commit = recorded_commit
+            runtime_dirty = list((recorded.get("worktree") or {}).get("runtime_dirty") or [])
+            worktree_state = "DECLARED_RUNTIME_DIRTY" if runtime_dirty else "DECLARED_RUNTIME_CLEAN"
+        elif source_commit is None:
             source_commit = "UNKNOWN"
             worktree_state = "UNKNOWN"
             unknowns.append("source_commit: el ledger no versiona el commit que lo produjo")
+        if not runtime_hashes and recorded_hashes:
+            runtime_hashes = recorded_hashes
         if not runtime_hashes:
             unknowns.append("runtime_source_hashes: no están en el ledger")
         unknowns.append(

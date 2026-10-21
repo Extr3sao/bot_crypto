@@ -27,6 +27,8 @@ import csv
 import hashlib
 import json
 import random
+import re
+import subprocess
 import sys
 from collections import Counter
 from collections.abc import Iterable, Sequence
@@ -302,6 +304,247 @@ def provenance_reasons(
     return reasons
 
 
+# --------------------------------------------------------------------------- código
+
+#: El bloque que la cabecera `RUN` escribe antes de la primera decisión. Aquí solo se
+#: declara su contrato: B no importa el módulo que lo produce, vuelve a preguntar a Git.
+PROVENANCE_SCHEMA = "VISION_RUN_CODE_PROVENANCE_V1"
+PROVENANCE_POLICY = "CLEAN_RUNTIME_PATHS"
+#: El mínimo que B exige por su cuenta. Si el productor acortase su lista de ficheros, el
+#: bloque seguiría cuadrando consigo mismo; estas cinco rutas impiden que eso baste.
+PROVENANCE_CORE_PATHS = (
+    "src/trading_bot/paper/broker.py",
+    "src/trading_bot/risk/manager.py",
+    "src/trading_bot/vision/lane.py",
+    "src/trading_bot/vision/ledger.py",
+    "src/trading_bot/vision/provenance.py",
+)
+SHA40 = re.compile(r"^[0-9a-f]{40}$")
+
+
+def git_read(root: Path, *args: str) -> tuple[bool, bytes]:
+    """Una llamada de plomería de solo lectura. Nunca levanta por un exit distinto de 0."""
+    try:
+        completed = subprocess.run(
+            ["git", "-C", str(root), *args], capture_output=True, check=False, timeout=120
+        )
+    except (OSError, subprocess.SubprocessError):
+        return False, b""
+    return completed.returncode == 0, completed.stdout
+
+
+def _resolve_commit(root: Path, commit: str, cache: dict[str, str | None]) -> str | None:
+    if commit not in cache:
+        ok, output = git_read(root, "rev-parse", "--verify", f"{commit}^{{commit}}")
+        cache[commit] = output.decode("ascii", "replace").strip() if ok else None
+    return cache[commit]
+
+
+def _blob_at(
+    root: Path, commit: str, path: str, cache: dict[tuple[str, str], str | None]
+) -> str | None:
+    key = (commit, path)
+    if key not in cache:
+        ok, output = git_read(root, "rev-parse", f"{commit}:{path}")
+        cache[key] = output.decode("ascii", "replace").strip() if ok else None
+    return cache[key]
+
+
+def _bytes_at(
+    root: Path, commit: str, path: str, cache: dict[tuple[str, str], bytes | None]
+) -> bytes | None:
+    """Los bytes del fichero tal como se materializan desde ese commit.
+
+    ``cat-file --filters`` aplica la misma política de fin de línea que un checkout, así
+    que lo que se compara es el fichero que *ejecutó* con el fichero que el commit
+    *contiene*, sin que un CRLF de Windows parezca una modificación.
+    """
+    key = (commit, path)
+    if key not in cache:
+        ok, output = git_read(root, "cat-file", "--filters", f"{commit}:{path}")
+        cache[key] = output if ok else None
+    return cache[key]
+
+
+def _judge_block(
+    ledger: str, block: dict[str, Any], root: Path, caches: dict[str, Any]
+) -> tuple[list[dict[str, Any]], list[str]]:
+    """Las comprobaciones de un bloque presente y los motivos por los que no demuestra nada."""
+    checks: list[dict[str, Any]] = []
+    reasons: list[str] = []
+
+    def add(code: str, ok: bool, detail: str) -> None:
+        checks.append(
+            {
+                "code": f"CODE_PROVENANCE_{code}",
+                "state": "PASS" if ok else "FAIL",
+                "detail": detail,
+                "ledger": ledger,
+            }
+        )
+        if not ok:
+            reasons.append(code)
+
+    add(
+        "SCHEMA",
+        block.get("schema") == PROVENANCE_SCHEMA,
+        f"schema={block.get('schema')!r} esperado={PROVENANCE_SCHEMA!r}",
+    )
+    commit = str(block.get("commit") or "")
+    format_ok = bool(SHA40.match(commit)) and commit != "0" * 40
+    add("COMMIT_FORMAT", format_ok, f"commit={commit!r} (40 hex, no cero)")
+    add("POLICY", block.get("policy") == PROVENANCE_POLICY, f"policy={block.get('policy')!r}")
+    add(
+        "HEAD_AT_CAPTURE",
+        bool(format_ok) and block.get("head_at_capture") == commit,
+        f"head={block.get('head_at_capture')!r} commit={commit!r}",
+    )
+    resolved = _resolve_commit(root, commit, caches["commit"]) if format_ok else None
+    add(
+        "COMMIT_RESOLVES",
+        bool(format_ok) and resolved == commit,
+        f"git rev-parse {commit[:12]}… -> {str(resolved)[:12]}…" if format_ok else "sin commit",
+    )
+
+    raw_files = block.get("files")
+    files: dict[str, Any] = raw_files if isinstance(raw_files, dict) else {}
+    declared = sorted(str(name) for name in (block.get("runtime_paths") or []))
+    add(
+        "FILES_COVER_DECLARED",
+        bool(files) and sorted(files) == declared,
+        f"{len(files)} ficheros hasheados, {len(declared)} declarados",
+    )
+    missing = [str(name) for name in (block.get("missing_runtime_paths") or [])]
+    uncovered = [path for path in PROVENANCE_CORE_PATHS if path not in files]
+    add(
+        "RUNTIME_PATHS_COVERED",
+        not missing and not uncovered,
+        f"missing={missing[:4]} uncovered={uncovered[:4]}",
+    )
+
+    bound: list[str] = []
+    unbound: list[str] = []
+    bytes_ok: list[str] = []
+    bytes_bad: list[str] = []
+    if resolved == commit and files:
+        for path, info in sorted(files.items()):
+            blob = info.get("blob") if isinstance(info, dict) else None
+            expected = _blob_at(root, commit, str(path), caches["blob"])
+            (bound if expected and expected == blob else unbound).append(str(path))
+            payload = _bytes_at(root, commit, str(path), caches["bytes"])
+            recorded = info.get("sha256") if isinstance(info, dict) else None
+            if payload is not None and recorded and hashlib.sha256(payload).hexdigest() == recorded:
+                bytes_ok.append(str(path))
+            else:
+                bytes_bad.append(str(path))
+    else:
+        unbound.append("commit no resuelto")
+    add(
+        "BLOBS_AT_COMMIT",
+        bool(bound) and not unbound,
+        f"{len(bound)} blobs coinciden; discrepan={unbound[:4]}",
+    )
+    add(
+        "BYTES_AT_COMMIT",
+        bool(bytes_ok) and not bytes_bad,
+        f"{len(bytes_ok)} ficheros coinciden byte a byte; discrepan={bytes_bad[:4]}",
+    )
+    raw_worktree = block.get("worktree")
+    worktree: dict[str, Any] = raw_worktree if isinstance(raw_worktree, dict) else {}
+    dirty = [str(name) for name in (worktree.get("runtime_dirty") or [])]
+    add(
+        "WORKTREE_RUNTIME_CLEAN",
+        not dirty,
+        f"runtime_dirty={dirty[:4]} "
+        f"limpias_fuera_del_runtime={worktree.get('dirty_outside_runtime_total')}",
+    )
+    return checks, reasons
+
+
+def code_provenance(
+    root: Path, ledgers: Sequence[Path], *, extra: Sequence[Path] = ()
+) -> dict[str, Any]:
+    """¿La cabecera `RUN` demuestra con qué commit se ejecutó?
+
+    Tres estados, sin zona gris: `PASS` si cada afirmación del bloque se sostiene contra
+    Git; `FAIL` si el bloque existe y algo no cuadra; `NOT_EVIDENCED` si el ledger no
+    declara bloque — es anterior al control y no se le rellena un commit que no registró.
+    """
+    caches: dict[str, Any] = {"commit": {}, "blob": {}, "bytes": {}}
+    targets: list[Path] = []
+    for path in [*ledgers, *extra]:
+        if path not in targets:
+            targets.append(path)
+    rows_out: list[dict[str, Any]] = []
+    checks: list[dict[str, Any]] = []
+    for path in targets:
+        try:
+            label = path.relative_to(root).as_posix()
+        except ValueError:
+            label = path.as_posix()
+        rows, error = read_rows(path)
+        entries = [row.get("entry") or {} for row in rows]
+        head = next((entry for entry in entries if entry.get("kind") == "RUN"), None)
+        block = (head or {}).get("code_provenance")
+        if head is None:
+            rows_out.append(
+                {
+                    "ledger": label,
+                    "status": "NOT_EVIDENCED",
+                    "reasons": [error or "NO_RUN_ROW"],
+                }
+            )
+            continue
+        if not isinstance(block, dict):
+            rows_out.append(
+                {
+                    "ledger": label,
+                    "status": "NOT_EVIDENCED",
+                    "reasons": ["PRE_CONTROL_LEDGER"],
+                    "note": "el ledger no declara commit: es anterior al control, no se rellena",
+                }
+            )
+            continue
+        ledger_checks, reasons = _judge_block(label, block, root, caches)
+        checks.extend(ledger_checks)
+        rows_out.append(
+            {
+                "ledger": label,
+                "status": "FAIL" if reasons else "PASS",
+                "commit": block.get("commit"),
+                "policy": block.get("policy"),
+                "reasons": reasons,
+                "ledger_head": str(rows[-1].get("sha256")) if rows else None,
+            }
+        )
+    counts = Counter(item["status"] for item in rows_out)
+    if counts.get("FAIL"):
+        status = "FAIL"
+    elif counts.get("PASS") and not counts.get("NOT_EVIDENCED"):
+        status = "PASS"
+    else:
+        status = "NOT_EVIDENCED"
+    return {
+        "schema": "DEF_RUN_018_CODE_PROVENANCE_V1",
+        "generated_at_utc": datetime.now(tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "verifier": "B: reimplementa la comprobación, no importa trading_bot.vision.provenance",
+        "status": status,
+        "counts": {
+            "PASS": counts.get("PASS", 0),
+            "FAIL": counts.get("FAIL", 0),
+            "NOT_EVIDENCED": counts.get("NOT_EVIDENCED", 0),
+        },
+        "ledgers": rows_out,
+        "checks": checks,
+        "checks_total": len(checks),
+        "reading": (
+            "PASS = el commit del bloque existe, contiene exactamente los blobs declarados y "
+            "los bytes que se ejecutaron; FAIL = el bloque afirma algo que Git desmiente; "
+            "NOT_EVIDENCED = el ledger no declara commit (anterior al control)"
+        ),
+    }
+
+
 # --------------------------------------------------------------------------- stats
 
 
@@ -393,6 +636,7 @@ def verify(
     runs_root: Path | None = None,
     rfc16: Path | None = None,
     rfc17_data: Path | None = None,
+    extra_ledgers: Sequence[Path] = (),
 ) -> dict[str, Any]:
     evidence = evidence or root / "reports" / "ai-bots" / SUBJECT / "evidence"
     rfc17_data = rfc17_data or root / "data" / "def-run-017"
@@ -401,6 +645,7 @@ def verify(
     checks: list[dict[str, Any]] = []
     errors: list[str] = []
     diffs: list[dict[str, Any]] = []
+    resolved_ledgers: list[Path] = []
 
     # -- 1. plan congelado ---------------------------------------------------
     plan, error = read_json(evidence / "oos" / "OOS_PLAN.json")
@@ -504,6 +749,7 @@ def verify(
         if path is None:
             checks.append(check(f"LEDGER_PRESENT_{tag}", "BLOCKED", "ledger no encontrado"))
             continue
+        resolved_ledgers.append(path)
         rows, row_error = read_rows(path)
         if row_error:
             checks.append(check(f"LEDGER_READ_{tag}", "BLOCKED", row_error))
@@ -1152,6 +1398,12 @@ def verify(
         )
     )
 
+    # -- 9. procedencia del código en la cabecera RUN ------------------------
+    #: Dominio aparte a propósito: las comprobaciones del sujeto 017 siguen siendo las
+    #: mismas y su recuento no cambia. Un control nuevo no puede presentarse como si el
+    #: paquete sellado lo hubiera cumplido siempre.
+    provenance = code_provenance(root, resolved_ledgers, extra=extra_ledgers)
+
     # -- dictamen ------------------------------------------------------------
     states = Counter(item["state"] for item in checks)
     #: Un insumo ausente manda sobre los fallos que su ausencia provoca: BLOCKED es la
@@ -1266,6 +1518,7 @@ def verify(
             "confirmatory": False,
         },
         "controls": checks,
+        "run_provenance": provenance,
         "summary": dict(states),
         "checks_total": len(checks),
         "result": result,
@@ -1328,9 +1581,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--root", default=".")
     parser.add_argument("--json", default=None)
     parser.add_argument("--md", default=None)
+    parser.add_argument(
+        "--ledger",
+        action="append",
+        default=None,
+        help="ledger adicional cuya procedencia de código se verifica (repetible)",
+    )
     args = parser.parse_args(argv)
     root = Path(args.root).resolve()
-    payload = verify(root)
+    extra = [
+        (Path(item) if Path(item).is_absolute() else root / item) for item in (args.ledger or [])
+    ]
+    payload = verify(root, extra_ledgers=extra)
     json_path = (
         Path(args.json)
         if args.json
@@ -1358,7 +1620,9 @@ def main(argv: list[str] | None = None) -> int:
         Path(args.md).write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
     print(
         f"result={payload['result']} checks={payload['checks_total']} "
-        f"summary={payload.get('summary')} -> {json_path}"
+        f"summary={payload.get('summary')} "
+        f"code_provenance={payload['run_provenance']['status']} "
+        f"{payload['run_provenance']['counts']} -> {json_path}"
     )
     if payload["result"] == "PASS":
         return 0
