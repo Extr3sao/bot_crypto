@@ -1,0 +1,220 @@
+{
+  "mission": "RFC-051-EXP-004A-INDEPENDENT-VERIFICATION",
+  "role": "EXP-004A_BUILDER_A",
+  "builder_identity": "tap-foundation-2026-10-21",
+  "independent_verifier_identity": "NOT_YET_ASSIGNED",
+  "generated_at_utc": "2026-10-21T08:45:00Z",
+  "status": "BLOCKED",
+  "status_reason": "BLOCKED_MISSING_INDEPENDENT_VERIFIER",
+  "scope_executed": ["WP-051-00", "WP-051-01"],
+  "scope_blocked": ["WP-051-02", "WP-051-03", "WP-051-04"],
+  "authority": {
+    "head": "8aac8b475a156d7961c0d15fa74c5ec9a175af50",
+    "head_tree": "34b9927a2197949c6df98c8698bf7301a1413fd3",
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "worktrees": 21,
+    "dirty_entries": 277,
+    "dirty_entries_owned_by_this_mission": 0,
+    "builder_report_claimed_head": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+    "evaluated_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+    "evaluated_commit_note": "47116b2 introduces the 9 measurement files; d05f8de predates them (git diff --stat d05f8de 47116b2 = +2368 lines across those files). The builder report's HEAD label is stale; the code is byte-identical to the clean tree.",
+    "predecessor_commit": "f831c66",
+    "orphan_commit": {
+      "sha": "39153a0",
+      "relationship": "superseded draft of f831c66: same parent 277d1df, differs only in docs/agentic/FINAL_REPORT.md (+3/-2), on no branch, not an ancestor of HEAD"
+    }
+  },
+  "inventory": {
+    "publisher": "scripts/exp004a_evidence_inventory.py",
+    "output": "docs/agentic/exp004a/handoff/EVIDENCE_INVENTORY.json",
+    "tracked_references": 28,
+    "groups": {
+      "admission_ledgers": 2,
+      "builder_gate_evidence": 4,
+      "builder_reports": 3,
+      "implementation": 9,
+      "preregistration": 4,
+      "protocol": 1,
+      "tests": 5
+    },
+    "live_store_series_present": 6,
+    "live_store_in_git": false,
+    "cost_tape": {
+      "path": "data/st6/ST6_OBSERVATIONS.jsonl",
+      "sha256": "3d5755d78af7c9f1e8d959ae1559228ccb19c5fdd152181efa6b98d766008434",
+      "rows": 912
+    },
+    "read_only": true,
+    "writer_guard": "refuses --out under data/, reports/ai-bots/, evidence/"
+  },
+  "admission": {
+    "capture_start_utc": "2026-10-22T00:00:00Z",
+    "capture_end_utc": "2027-01-20T00:00:00Z",
+    "capture_closed": false,
+    "capture_window_has_opened": false,
+    "target_days": 90,
+    "lanes": {
+      "1h": {
+        "records": 234,
+        "admissible": 5,
+        "admissible_days_inside_capture_window": 0,
+        "admissible_days_outside_capture_window": 5,
+        "chain_tip_sha256": "40693a413ab83c4e110140198d6beef369ab263edeac08f223972841c2e2b43e"
+      },
+      "1h+15m": {
+        "records": 14,
+        "admissible": 4,
+        "admissible_days_inside_capture_window": 0,
+        "admissible_days_outside_capture_window": 4,
+        "chain_tip_sha256": "1d0661bb1982885f197ef0d05c2f3e977b5807eb115b7ec1bb79b1b85791036f"
+      }
+    },
+    "discrepancy_235_days": {
+      "days_with_any_data": 235,
+      "window_observation_days": 234,
+      "densely_covered_but_backfilled": 229,
+      "prospectively_observed_1h": 5,
+      "prospectively_observed_joint": 4,
+      "observer_required_days": 60,
+      "experiment_min_oos_trading_days": 90,
+      "note": "the 60 in data/forward/edge04/coverage.json is another lane's stopping rule; the frozen requirement for EXP-004A is 90"
+    },
+    "duplicate_experiment_independence": {
+      "book": "src/trading_bot/research/prospective/independence.py",
+      "keys": ["calendar day", "bytes digest"],
+      "reported_merges": ["EXP-003J + EXP-003K -> one 175-trade window"],
+      "effect": "a sixth report over the same days adds zero observations"
+    }
+  },
+  "gate": {
+    "evaluated_at_head": "8aac8b475a156d7961c0d15fa74c5ec9a175af50",
+    "inspect": {
+      "exit_code": 3,
+      "decision": "INSPECTION_ONLY_NO_RUN",
+      "errors": [],
+      "transcript": "docs/agentic/exp004a/handoff/gate/INSPECT.txt"
+    },
+    "authorize": {
+      "exit_code": 2,
+      "decision": "BLOCKED",
+      "errors": ["TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"],
+      "transcript": "docs/agentic/exp004a/handoff/gate/AUTHORIZE.txt"
+    },
+    "exit_codes_changed": false,
+    "semantics_changed": false
+  },
+  "cost": {
+    "declared_notional_usdt": 500.0,
+    "observed_notional_usdt": 200.0,
+    "declared_size_status": "DECLARED_SIZE_NOT_WALKED",
+    "observed_median_bps": {
+      "BTC": 20.0012,
+      "ETH": 20.0408,
+      "SOL": 20.9414
+    },
+    "round_trip_scope_proven": false,
+    "profitability_claim": null
+  },
+  "promotion": {
+    "decision": "NO_PROMOTION",
+    "authority": "deterministic acceptance controller (RFC-051 6.4), not the builder",
+    "blocking_reasons": [
+      "PHASE_2_CAPTURE_OPEN",
+      "INSUFFICIENT_ADMITTED_DAYS",
+      "ZERO_ADMITTED_DAYS_INSIDE_CAPTURE_WINDOW",
+      "DECLARED_SIZE_NOT_WALKED",
+      "BLOCKED_MISSING_INDEPENDENT_VERIFIER"
+    ]
+  },
+  "claims": {
+    "C-001": "SUBMITTED_NOT_VERIFIED",
+    "C-002": "SUBMITTED_NOT_VERIFIED",
+    "C-003": "SUBMITTED_NOT_VERIFIED",
+    "C-004": "SUBMITTED_NOT_VERIFIED",
+    "C-005": "SUBMITTED_NOT_VERIFIED",
+    "C-006": "SUBMITTED_NOT_VERIFIED",
+    "C-007": "SUBMITTED_NOT_VERIFIED",
+    "C-008": "SUBMITTED_NOT_VERIFIED",
+    "C-009": "SUBMITTED_NOT_VERIFIED",
+    "C-010": "SUBMITTED_NOT_VERIFIED",
+    "C-011": "SUBMITTED_NOT_VERIFIED",
+    "C-012": "SUBMITTED_NOT_VERIFIED"
+  },
+  "tests": {
+    "new_suite": {
+      "path": "tests/unit/research/test_exp004a_evidence_inventory.py",
+      "result": "13 passed",
+      "command": "./.venv/Scripts/python.exe -m pytest tests/unit/research/test_exp004a_evidence_inventory.py -q",
+      "exit_code": 0,
+      "skips": 0
+    },
+    "exp004a_suites": {
+      "suites": 5,
+      "result": "115 passed, 1 skipped",
+      "duration_s": 108.47,
+      "exit_code": 0,
+      "skips": [
+        "tests/unit/research/test_prereg_gate.py:591 symlinks unavailable in this environment"
+      ]
+    },
+    "layers_covered": ["UNIT", "CONTRACT"],
+    "layers_not_covered": ["INTEGRATION", "ADVERSARIAL_VERIFIER", "REAL_RUNTIME_VERIFIER", "CLEAN_CHECKOUT_VERIFIER"],
+    "layers_not_covered_reason": "those layers require the verifier, which this role may not author"
+  },
+  "evidence_hygiene": {
+    "source_mutations": 0,
+    "evidence_store_writes": 0,
+    "sealed_test_changes": 0,
+    "rfc050_changes": 0,
+    "other_workstream_files_touched": 0,
+    "economic_executions": 0,
+    "network_calls": 0
+  },
+  "defects": [
+    {
+      "id": "A-1",
+      "severity": "medium",
+      "summary": "builder report names d05f8de as authority.head while the code it describes was introduced at 47116b2",
+      "evidence": "git diff --stat d05f8de 47116b2 -> 9 measurement files, +2368 lines",
+      "status": "OPEN_BY_DESIGN: the sealed report is corrected in the handoff, not rewritten"
+    },
+    {
+      "id": "A-2",
+      "severity": "medium",
+      "summary": "zero admissible days lie inside the frozen capture window; the 4/90 figure counts pre-window days",
+      "status": "OPEN"
+    },
+    {
+      "id": "A-3",
+      "severity": "low",
+      "summary": "observer target of 60 days vs experiment requirement of 90 days",
+      "status": "OPEN"
+    },
+    {
+      "id": "A-4",
+      "severity": "low",
+      "summary": "gate transcripts matched .gitignore *.log and were absent from a clean checkout",
+      "status": "CLOSED: fresh transcripts added as handoff/gate/*.txt at 8aac8b4"
+    },
+    {
+      "id": "A-5",
+      "severity": "low",
+      "summary": "the phase-1 manifest's working-tree bytes hash to 3761481d while its committed bytes hash to 07d4702a, so a published working-tree digest would name bytes a clean checkout cannot reproduce",
+      "evidence": "EVIDENCE_INVENTORY.json tracked_references.preregistration[0].blob_sha256 vs sha256",
+      "status": "CLOSED: the inventory now publishes blob_sha256 for tracked references and states the digest policy"
+    }
+  ],
+  "blockers": [
+    "BLOCKED_MISSING_INDEPENDENT_VERIFIER",
+    "SOURCE_BYTES_UNAVAILABLE_FOR_CLEAN_CHECKOUT",
+    "TIME_PROOF_WEAK",
+    "DECLARED_SIZE_NOT_WALKED",
+    "PHASE2_CAPTURE_OPEN",
+    "INSUFFICIENT_ADMITTED_DAYS"
+  ],
+  "false_success": {
+    "count": 0,
+    "definition": "no claim was marked PASS, no promotion was asserted, no profitability was claimed, and no blocker was downgraded to a warning",
+    "scope_note": "this is a count over the artifacts this mission produced, not a claim of universal impossibility"
+  }
+}
