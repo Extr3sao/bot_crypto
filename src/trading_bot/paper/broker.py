@@ -235,6 +235,11 @@ class PaperBroker:
         clock: Callable[[], float] | None = None,
         spread_bps: float = 0.0,
         cost_schedule: Callable[[str, float], BrokerCost] | None = None,
+        #: EXP-003P: optional observer of the execution boundary. It receives the opened
+        #: position, the closed trade and the refusals; it never returns anything the
+        #: broker uses, so a recorder cannot change an order, a size or a price. ``None``
+        #: keeps every existing caller byte-identical.
+        lifecycle: Any | None = None,
     ) -> None:
         del db_url  # legacy compat, unused
         #: Where ``opened_at``/``closed_at`` come from. A replay passes its own
@@ -261,6 +266,7 @@ class PaperBroker:
         #: parameters above for every fill, because a real venue prices each pair
         #: and size differently. The callable receives ``(symbol, notional)``.
         self._cost_schedule = cost_schedule
+        self._lifecycle = lifecycle
         self._positions: dict[str, PaperPosition] = {}
         self._closed_trades: list[ClosedTrade] = []
         self._fills_opened = 0
@@ -321,6 +327,27 @@ class PaperBroker:
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
         pass
 
+    def _observe_refusal(self, signal: Signal, reason: str) -> None:
+        """Tell an attached recorder that this signal produced no order (EXP-003P)."""
+
+        recorder = self._lifecycle
+        if recorder is None:
+            return
+        try:
+            recorder.on_refusal(
+                symbol=str(signal.symbol),
+                side=str(signal.side),
+                reason=reason,
+                when_s=float(self._clock()),
+                metadata=dict(signal.metadata or {}),
+            )
+        except Exception as exc:  # observability must never break the execution decision
+            self._log.warning(
+                "paper.lifecycle_refusal_not_recorded",
+                symbol=signal.symbol,
+                error=f"{type(exc).__name__}: {exc}",
+            )
+
     def execute_signal(self, signal: Signal) -> ClosedTrade | PaperPosition | None:
         """Execute a signal: open a new position.
 
@@ -354,6 +381,7 @@ class PaperBroker:
                     existing_side=existing.side,
                     new_side=signal.side,
                 )
+                self._observe_refusal(signal, "IMPLICIT_REVERSAL_FORBIDDEN")
                 raise BrokerOrderError(
                     "IMPLICIT_REVERSAL_FORBIDDEN: "
                     f"{symbol} already holds a {existing.side} position and this signal "
@@ -368,6 +396,7 @@ class PaperBroker:
         # DEF-RUN-014: no silent 1 % default. The protective distance is the risk
         # engine's decision and must arrive with the signal it approved.
         if signal.stop_loss_pct is None:
+            self._observe_refusal(signal, "STOP_LOSS_REQUIRED")
             raise BrokerOrderError(
                 "STOP_LOSS_REQUIRED: signal for "
                 f"{symbol} carries no stop_loss_pct. The broker never invents one: a "
@@ -381,6 +410,7 @@ class PaperBroker:
         # silently sizing at an arbitrary equity fraction (false success).
         notional = float(signal.metadata.get("notional_usdt", 0.0) or 0.0)
         if notional <= 0:
+            self._observe_refusal(signal, "NOTIONAL_NOT_RISK_APPROVED")
             raise BrokerOrderError(
                 f"signal for {symbol} lacks risk-approved notional_usdt metadata "
                 "(pipeline integrity: order must be sized by RiskManager)"
@@ -421,6 +451,15 @@ class PaperBroker:
 
         self._positions[symbol] = position
         self._fills_opened += 1
+        if self._lifecycle is not None:
+            try:
+                self._lifecycle.on_entry(position, signal)
+            except Exception as exc:  # observability must never break an executed order
+                self._log.warning(
+                    "paper.lifecycle_entry_not_recorded",
+                    symbol=symbol,
+                    error=f"{type(exc).__name__}: {exc}",
+                )
         # Do NOT deduct entry commission from equity here.
         # Entry commission is deducted at close time as part of true-net PnL
         # so that ClosedTrade.pnl = gross_pnl - entry_commission - exit_commission.
@@ -527,6 +566,15 @@ class PaperBroker:
         self._closed_trades.append(trade)
         self._fills_closed += 1
         self._equity += net_pnl
+        if self._lifecycle is not None:
+            try:
+                self._lifecycle.on_exit(trade)
+            except Exception as exc:  # observability must never undo a booked close
+                self._log.warning(
+                    "paper.lifecycle_exit_not_recorded",
+                    symbol=symbol,
+                    error=f"{type(exc).__name__}: {exc}",
+                )
 
         self._log.info(
             "paper.fill_closed",

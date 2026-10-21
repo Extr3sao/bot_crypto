@@ -292,6 +292,11 @@ class VisionLane:
         subbar_entries: bool = False,
         decision_from_ms: int | None = None,
         opinion_lifecycle: str = OPINION_LIFECYCLE_DEFER,
+        #: EXP-003P: optional observer of the execution boundary, forwarded to the broker.
+        #: It cannot change a decision, a size or a price; ``None`` is the historical
+        #: behaviour, byte for byte. Named ``lifecycle_recorder`` because ``lifecycle`` is
+        #: already the local name of the opinion-lifecycle policy below.
+        lifecycle_recorder: Any | None = None,
     ) -> None:
         if not series:
             raise ValueError("series is empty")
@@ -363,6 +368,7 @@ class VisionLane:
             book_id=book_id,
             clock=lambda: self._current_ms[0] / 1000.0,
             cost_schedule=cost_schedule,
+            lifecycle=lifecycle_recorder,
         )
         def round_trip_bps(symbol: str, notional: float) -> float:
             """What one round trip costs at the size the decision will actually take.
