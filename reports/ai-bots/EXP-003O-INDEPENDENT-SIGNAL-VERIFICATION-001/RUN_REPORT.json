@@ -223,7 +223,7 @@
     "signals/independent_evaluations.jsonl.gz",
     "signals/original_evaluations.jsonl.gz"
   ],
-  "experiment_commit": "784046c0e97e390d411c4620505a861a67744e86",
+  "experiment_commit": "fe196d795e404a50ec74d6f743ac594fe609702c",
   "false_success_observed": 0,
   "fixtures": {
     "fixtures": [
