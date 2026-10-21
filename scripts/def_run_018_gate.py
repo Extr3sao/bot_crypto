@@ -54,6 +54,10 @@ def decide(root: Path) -> dict[str, Any]:
     seal = load(out / "EVIDENCE_SEAL.json")
     verification = load(out / "INDEPENDENT_VERIFICATION.json")
     replay = load(out / "CLEAN_REPRO_RUN_REPORT.json")
+    #: El dictamen de arriba es sobre la **reproducción**. El paquete sellado de 017 no se
+    #: reescribe, así que su estado se publica aparte: ocultarlo convertiría un PASS de
+    #: reproducibilidad en una certificación que nadie dio.
+    subject_package = load(out / "WP-DEF-018-02" / "SEALED_SUBJECT_VERIFICATION.json")
     primary = load(root / "reports" / "ai-bots" / SUBJECT / "evidence" / "oos" / "OOS_RESULTS.json")
 
     blockers: list[str] = []
@@ -175,6 +179,12 @@ def decide(root: Path) -> dict[str, Any]:
         )
     if replay is not None and replay.get("status") != "CLEAN_CHECKOUT_REPRODUCED":
         reasons.append(f"el checkout limpio terminó en {replay.get('status')}")
+    subject_state = (subject_package or {}).get("result")
+    if subject_state == "FAIL":
+        reasons.append(
+            "el paquete sellado de 017 sigue en FAIL en la verificación independiente: la "
+            "reproducción reparada no reescribe su procedencia"
+        )
 
     # -- órdenes observadas --------------------------------------------------
     paper_orders = (replay or {}).get("paper_orders")
@@ -213,6 +223,16 @@ def decide(root: Path) -> dict[str, Any]:
             "independence_demonstrated": independence_ok,
             "baseline_head": ((baseline or {}).get("git") or {}).get("head"),
             "seal_commit": (seal or {}).get("commit"),
+        },
+        "subject_package": {
+            "artifact": "WP-DEF-018-02/SEALED_SUBJECT_VERIFICATION.json",
+            "result": subject_state,
+            "summary": (subject_package or {}).get("summary"),
+            "note": (
+                "estado del paquete sellado de 017, que no se reescribe: un FAIL aquí no "
+                "invalida la reproducción reparada, pero impide leer el PASS como "
+                "certificación del sello original"
+            ),
         },
         "defects": defects,
         "blockers": blockers,
@@ -271,7 +291,9 @@ def render_run_report(decision: dict[str, Any]) -> str:
         f"| `technical_integrity` | **{decision['technical_integrity']}** |",
         f"| `economic_evidence` | **{decision['economic_evidence']}** |",
         f"| `paper_admission` | **{decision['paper_admission']}** |",
-        f"| Verificador B | {tech['independent_verifier']} ({tech['independent_checks']} checks) |",
+        f"| Verificador B | {tech['independent_verifier']} ({tech['independent_checks']} checks) |"
+        f"| Paquete sellado de 017 | **{decision['subject_package']['result'] or 'NO_VERIFICADO'}** "
+        f"{decision['subject_package']['summary'] or ''} |",
         f"| Checkout limpio | {tech['clean_replay']} (runtime ejecutado={tech['runtime_executed']}) |",
         f"| Independencia demostrada | {tech['independence_demonstrated']} |",
         f"| Commit del sello | `{tech['seal_commit']}` |",

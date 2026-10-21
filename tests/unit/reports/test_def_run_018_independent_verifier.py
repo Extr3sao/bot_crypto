@@ -500,6 +500,22 @@ def test_gate_refuses_incomplete_provenance_and_exit_zero_is_not_a_verdict(sandb
     assert gate.main(["--root", str(sandbox), "--strict"]) == 3
 
 
+def test_gate_publishes_the_sealed_package_state_apart(sandbox):
+    """El PASS de la reproducción no puede leerse como certificación del sello original."""
+    write_gate_inputs(sandbox)
+    out = sandbox / "reports/ai-bots/RFC-DEF-RUN-018"
+    (out / "WP-DEF-018-02").mkdir(parents=True, exist_ok=True)
+    (out / "WP-DEF-018-02/SEALED_SUBJECT_VERIFICATION.json").write_text(
+        json.dumps({"result": "FAIL", "summary": {"PASS": 380, "FAIL": 3}}), encoding="utf-8"
+    )
+    decision = gate.decide(sandbox)
+    assert decision["technical_integrity"] == "PASS"
+    assert decision["subject_package"]["result"] == "FAIL"
+    assert decision["subject_package"]["summary"] == {"PASS": 380, "FAIL": 3}
+    assert any("paquete sellado" in reason for reason in decision["reasons"])
+    assert decision["paper_admission"] == "NO_GO"
+
+
 def test_a_technical_pass_does_not_upgrade_economic_evidence(sandbox):
     write_gate_inputs(sandbox, economic="EVIDENCED")
     decision = gate.decide(sandbox)
