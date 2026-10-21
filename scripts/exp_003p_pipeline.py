@@ -507,6 +507,14 @@ def run_checkout_check(
         check=False,
     )
     payload["phases"] = executed
+    #: The comparer writes the verdict and owns that file; the audit is appended here rather
+    #: than declared by it, so a passing comparison cannot describe an environment it never
+    #: looked at. Without this merge a clean verdict would arrive with no audit and the report
+    #: would refuse it, which is what happened the first time this ran.
+    recorded = read_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json")
+    recorded["environment_audit"] = audit
+    recorded["phases"] = executed
+    write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", recorded)
     print(
         "[003p-pipeline] checkout "
         f"{'REPRODUCED' if comparison.returncode == 0 else 'FAILED'} "
