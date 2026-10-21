@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0",
+  "run_id": "wp051-02e/EXP-004A/2026-10-21",
+  "generated_at_utc": "2026-10-21T19:28:39Z",
+  "head_when_generated": "8176502f4f39f733df990be64a50b1b71b602087",
+  "hashing": {
+    "sha256": "bytes as read from this checkout",
+    "git_blob": "the object id Git stores; null until the commit that carries the file",
+    "self_exclusion": "this manifest does not hash itself; the commit that carries it addresses it"
+  },
+  "artefacts": 16,
+  "missing": [],
+  "entries": [
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02e/RFC_EXP004A_051_02E.md",
+      "bytes": 18300,
+      "sha256": "053774d7e222f48b34225a45c282e889ae7b004de4210f34c6dde7c9f5c06c96",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "baseline",
+      "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_BASELINE.json",
+      "bytes": 4589,
+      "sha256": "d42d2bffa54906a436a6e8e470f79ee8d5d4c4310d94ab31ae74ea37375e1b7e",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "builder",
+      "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_PREFLIGHT.json",
+      "bytes": 13727,
+      "sha256": "ebfc9aff54381fb00f09d261955ee72ef4afc94fd881edcc25944cb005d668e2",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "builder",
+      "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_CAPTURE_REPORT.json",
+      "bytes": 7099,
+      "sha256": "059ba996e7a7f102caa5eb2c6f6cf1d62460eb2feffda6250e6ff83ffa8f62bc",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "independent",
+      "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_INDEPENDENT_VERIFICATION.json",
+      "bytes": 12528,
+      "sha256": "a058ee841770fa10ca0bc6cfd2a4fa5c96ee36c924ab110d7a2d7eb35b472561",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_FINAL_REPORT.md",
+      "bytes": 9534,
+      "sha256": "30603ce0115ac829b21474abdcc176bd3962e3be31a7e943f32b47668a5f357f",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02e/RUN_REPORT.md",
+      "bytes": 8763,
+      "sha256": "51f7d5a3674e8a6b7464e3f4b59f4a0f23b0fd103012cf636a2e03838e82d7d3",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "report",
+      "path": "docs/agentic/exp004a/wp051_02e/RUN_REPORT.json",
+      "bytes": 14313,
+      "sha256": "2bc44f4414bd21fd74947308870311fcddb11f965463551bcb5c16c8b00555b0",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "evidence",
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/TEST_RUNS.json",
+      "bytes": 3267,
+      "sha256": "70929ade5df0f860952b5aff7c4a139ab65efb4d31a27e053c3e70f7b7283b00",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "tool",
+      "path": "scripts/exp004a_wp051_02e_preflight.py",
+      "bytes": 34610,
+      "sha256": "923627233cfd849d401c13e0174a307efd0e0c8a452c60359160636c27ff8a66",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "tool",
+      "path": "scripts/exp004a_wp051_02e_verify.py",
+      "bytes": 39806,
+      "sha256": "945684c66586bdf49a91079e6b78a5c2bc2a1eca1f2f09bbac80195921ca645b",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "test",
+      "path": "tests/unit/research/test_exp004a_wp051_02e.py",
+      "bytes": 15805,
+      "sha256": "0c8783a3f08ccc182edaff61c2536320222cf72de9854325983bc0b1ad58e61f",
+      "git_blob": null,
+      "in_head": false
+    },
+    {
+      "role": "declaration",
+      "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+      "bytes": 6201,
+      "sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+      "git_blob": "9421cc52a8a3366b3a1fa6998d547b0a002ed89b",
+      "in_head": true
+    },
+    {
+      "role": "input",
+      "path": "config/preregistrations/EXP-004A.datasets.json",
+      "bytes": 4669,
+      "sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+      "git_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7",
+      "in_head": true
+    },
+    {
+      "role": "generator",
+      "path": "scripts/exp004a_capture.py",
+      "bytes": 16470,
+      "sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+      "git_blob": "052832c2252a719c63d0859628ada648c799c6ce",
+      "in_head": true
+    },
+    {
+      "role": "input",
+      "path": "docs/agentic/exp004a/wp051_02d/EVIDENCE_MANIFEST.json",
+      "bytes": 7797,
+      "sha256": "ccefdac4151ae0435e5570549a15eb9974336fd14248e06c61e7005e1308c984",
+      "git_blob": "c86254b68e8409c92587bc724bffc43922b44849",
+      "in_head": true
+    }
+  ]
+}
