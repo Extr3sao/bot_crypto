@@ -13,8 +13,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
+import tomllib
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -173,6 +175,114 @@ def run_tests(out: Path) -> int:
     return 0 if not failed else 4
 
 
+def _site_packages(python: Path) -> Path | None:
+    root = python.parent.parent
+    if sys.platform == "win32":
+        candidate = root / "Lib" / "site-packages"
+        return candidate if candidate.exists() else None
+    for candidate in sorted(root.glob("lib/python3*/site-packages")):
+        return candidate
+    return None
+
+
+def _pin(line: str) -> str | None:
+    stripped = line.strip()
+    if not stripped or stripped.startswith(("#", "-")):
+        return None
+    return stripped.split(";")[0].replace("_", "-").lower()
+
+
+def audit_environment(
+    worktree: Path, python: Path, requirements: Path | None
+) -> dict[str, Any]:
+    """Check that the checkout's environment belongs to the checkout.
+
+    Two failures are possible and the first one was observed: a freeze file that pins the
+    project with an absolute ``-e file:///...`` entry, so the checkout imports the publishing
+    tree's ``src`` instead of its own; and an install whose pins differ from the file it
+    claims to have been synced from. The gate reads the environment rather than trusting the
+    install command it was handed.
+    """
+
+    site = _site_packages(python)
+    audit: dict[str, Any] = {
+        "site_packages": str(site) if site else None,
+        "pins_in_freeze": 0,
+        "pins_mismatch": [],
+        "paths_outside_checkout": [],
+    }
+    if site is None:
+        audit["ok"] = False
+        audit["detail"] = "no site-packages next to the checkout interpreter"
+        return audit
+
+    root = worktree.resolve()
+    pointers = [
+        *site.glob("*.pth"),
+        *site.glob("*.egg-link"),
+        *site.glob("*.dist-info/direct_url.json"),
+    ]
+    for pointer in sorted(pointers):
+        try:
+            text = pointer.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        for match in re.findall(r"[A-Za-z]:[\\/][^\"'\r\n]*|/(?:home|Users)/[^\"'\r\n]*", text):
+            target = Path(match.strip().rstrip("\\/"))
+            try:
+                inside = target.resolve().is_relative_to(root)
+            except OSError:
+                inside = False
+            if not inside:
+                audit["paths_outside_checkout"].append(
+                    {"pointer": pointer.name, "path": match.strip()}
+                )
+
+    project = ""
+    try:
+        project = str(
+            tomllib.loads((worktree / "pyproject.toml").read_text(encoding="utf-8"))["project"][
+                "name"
+            ]
+        ).replace("_", "-").lower()
+    except (OSError, KeyError):
+        pass
+    probe = subprocess.run(
+        [
+            str(python),
+            "-c",
+            "import json, importlib.metadata as m\n"
+            "print(json.dumps(sorted('%s==%s' % (d.metadata['Name'], d.version)\n"
+            "    for d in m.distributions() if d.metadata['Name'])))\n",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    installed = {_pin(row) for row in json.loads(probe.stdout or "[]")} if probe.returncode == 0 else set()
+    installed = {pin for pin in installed if pin and not pin.startswith(f"{project}==")}
+    expected: set[str] = set()
+    if requirements is not None and requirements.exists():
+        expected = {
+            pin
+            for pin in (
+                _pin(line) for line in requirements.read_text(encoding="utf-8").splitlines()
+            )
+            if pin and "==" in pin
+        }
+    audit["pins_in_freeze"] = len(expected)
+    audit["pins_installed"] = len(installed)
+    audit["pins_mismatch"] = sorted(expected.symmetric_difference(installed))[:20]
+    audit["ok"] = (
+        not audit["paths_outside_checkout"]
+        and probe.returncode == 0
+        and (not expected or not audit["pins_mismatch"])
+    )
+    if probe.returncode != 0:
+        audit["probe_stderr"] = probe.stderr.strip().splitlines()[-3:]
+    return audit
+
+
 def run_checkout_check(
     out: Path, install_command: str = "not recorded", requirements: str | None = None
 ) -> int:
@@ -289,6 +399,26 @@ def run_checkout_check(
         write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", payload)
         print("[003p-pipeline] checkout FAILED — the worktree has no environment")
         return 5
+
+    audit = audit_environment(
+        worktree, python, Path(requirements) if requirements else None
+    )
+    payload["environment_audit"] = audit
+    if not audit["ok"]:
+        payload["verdict"] = "FAILED"
+        payload["detail"] = (
+            "the checkout's environment is not the checkout's: "
+            f"paths_outside_checkout={audit['paths_outside_checkout'][:3]} "
+            f"pins_mismatch={audit['pins_mismatch'][:5]}"
+        )
+        write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", payload)
+        print("[003p-pipeline] checkout FAILED — environment audit")
+        print(f"[003p-pipeline]   {payload['detail']}")
+        return 5
+    print(
+        f"[003p-pipeline] environment {audit['pins_installed']}/{audit['pins_in_freeze']} pins "
+        f"match, no path outside the checkout"
+    )
 
     reproduced_out = worktree / "reports" / "ai-bots" / out.name
     phases: tuple[list[str], ...] = (
