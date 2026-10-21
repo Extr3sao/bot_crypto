@@ -60,26 +60,43 @@ def decide(root: Path) -> dict[str, Any]:
     reasons: list[str] = []
     false_success: list[str] = []
 
-    # -- independencia -------------------------------------------------------
-    independence = (verification or {}).get("independence") or {}
-    reused = independence.get("reused_recomputation_code") or []
-    source_a = root / "scripts" / "def_run_017_verify.py"
-    independence_ok = bool(verification) and (
-        not independence.get("imports_trading_bot", True)
-        and not reused
-        and (
-            not source_a.is_file()
-            or independence.get("source_sha256") != sha256(source_a)
-        )
+    # -- independencia medida por el auditor externo, no declarada por B ------
+    audit = load(out / "INDEPENDENCE_AUDIT.json")
+    b_path = root / "scripts" / "def_run_018_verify_b.py"
+    b_sha = sha256(b_path) if b_path.is_file() else None
+    audit_ok = bool(audit) and (
+        audit.get("independent") is True
+        and audit.get("state") == "PASS"
+        and b_sha is not None
+        and audit.get("audited_sha256") == b_sha
     )
+    self_report = (verification or {}).get("independence") or {}
+    self_reused = self_report.get("reused_recomputation_code") or []
+    self_declares_reuse = bool(self_report.get("imports_trading_bot")) or bool(self_reused)
     if verification is None:
         blockers.append("MISSING_INDEPENDENT_VERIFICATION")
-    elif not independence_ok:
+    if audit is None:
+        audit_ok = False
+        blockers.append("MISSING_INDEPENDENCE_AUDIT")
+        reasons.append("no se ejecutó el auditor externo de imports de B")
+    elif not audit_ok:
+        audit_ok = False
         blockers.append("INDEPENDENCE_NOT_PROVEN")
         reasons.append(
-            "el verificador B comparte código o importa el módulo del Builder: "
-            f"reutilizado={reused} imports_trading_bot={independence.get('imports_trading_bot')}"
+            "el auditor externo no certifica la independencia de B: "
+            f"state={audit.get('state')} reasons={audit.get('reasons')} "
+            f"sha_auditado={str(audit.get('audited_sha256'))[:12]}… sha_actual={str(b_sha)[:12]}…"
         )
+    if self_declares_reuse:
+        #: si B mide y encuentra reutilización, el gate no puede publicar PASS aunque el
+        #: auditor externo todavía no se haya ejecutado sobre esta revisión.
+        audit_ok = False
+        blockers.append("INDEPENDENCE_NOT_PROVEN")
+        reasons.append(
+            "B declara reutilización de código del Builder: "
+            f"reutilizado={self_reused} imports_trading_bot={self_report.get('imports_trading_bot')}"
+        )
+    independence_ok = audit_ok
 
     # -- integridad técnica --------------------------------------------------
     b_result = (verification or {}).get("result")
@@ -208,6 +225,7 @@ def decide(root: Path) -> dict[str, Any]:
             "baseline": bool(baseline),
             "seal": bool(seal),
             "independent_verification": bool(verification),
+            "independence_audit": bool(audit),
             "clean_replay": bool(replay),
             "oos_results": bool(primary),
         },
@@ -287,7 +305,9 @@ def render_final(decision: dict[str, Any]) -> str:
     tech = decision["technical_detail"]
     verdict = {
         "PASS": "reproducible y auditado en el alcance del RFC-018",
-        "FAIL": "no reproducible: la verificación independiente encontró discrepancias",
+        "FAIL": "economía reproducida ("
+        f"{tech.get('clean_replay')}) pero no certificado: el verificador independiente "
+        "encontró discrepancias de procedencia",
         "BLOCKED": "no verificable con los insumos disponibles",
     }[decision["technical_integrity"]]
     return "\n".join(

@@ -386,6 +386,21 @@ def write_gate_inputs(root: Path, *, technical: str = "PASS", economic: str = "N
         ),
         encoding="utf-8",
     )
+    verifier = root / "scripts" / "def_run_018_verify_b.py"
+    verifier.parent.mkdir(parents=True, exist_ok=True)
+    source = (REPO / "scripts" / "def_run_018_verify_b.py").read_bytes()
+    verifier.write_bytes(source)
+    (out / "INDEPENDENCE_AUDIT.json").write_text(
+        json.dumps(
+            {
+                "state": "PASS",
+                "independent": True,
+                "reasons": [],
+                "audited_sha256": hashlib.sha256(source).hexdigest(),
+            }
+        ),
+        encoding="utf-8",
+    )
     (out / "CLEAN_REPRO_RUN_REPORT.json").write_text(
         json.dumps(
             {
@@ -437,3 +452,113 @@ def test_a_technical_pass_does_not_upgrade_economic_evidence(sandbox):
     assert decision["technical_integrity"] == "PASS"
     assert decision["paper_admission"] == "NO_GO"
     assert decision["paper_validation"] == "NOT_PERFORMED"
+
+
+# --------------------------------------------------- auditoría de independencia AST
+
+AUDITOR = REPO / "scripts" / "def_run_018_independence_audit.py"
+
+
+@cache
+def auditor():
+    return load_module("def_run_018_independence_audit", AUDITOR)
+
+
+def test_prose_mentions_are_not_dependencies():
+    """El falso positivo original: la prosa de B hablaba de los módulos del Builder."""
+    source = (
+        '"""No importa `from trading_bot.vision import economic_audit` ni def_run_017_verify."""\n'
+        "# import trading_bot\n"
+        "import json\n"
+        "\n"
+        "MESSAGE = \"from trading_bot import ledger\"\n"
+    )
+    result = auditor().audit_source(source)
+    assert result["independent"] is True
+    assert result["forbidden"] == []
+    assert result["imports"] == ["json"]
+
+
+def test_from_import_with_alias_is_a_dependency():
+    result = auditor().audit_source("from trading_bot.vision import ledger as led\n")
+    assert result["independent"] is False
+    assert "FORBIDDEN_IMPORT" in result["reasons"]
+    assert result["forbidden"] == ["trading_bot.vision"]
+
+
+def test_plain_imports_and_third_party_are_classified():
+    result = auditor().audit_source("import def_run_017_verify\nimport numpy\nimport json\n")
+    assert result["forbidden"] == ["def_run_017_verify"]
+    #: los dos son ajenos a la biblioteca estándar; el prohibido también se lista ahí.
+    assert result["non_stdlib"] == ["def_run_017_verify", "numpy"]
+    assert result["independent"] is False
+
+
+def test_literal_dynamic_import_is_resolved_and_blocked():
+    source = 'import importlib\nimportlib.import_module("trading_bot.vision.ledger")\n'
+    result = auditor().audit_source(source)
+    assert result["forbidden"] == ["trading_bot.vision.ledger"]
+    assert result["independent"] is False
+    assert result["dynamic_imports"][0]["state"] == "RESOLVED_LITERAL"
+
+
+def test_unresolvable_dynamic_import_fails_closed():
+    source = (
+        "import importlib\n"
+        "def go(name):\n"
+        "    return importlib.import_module(name)\n"
+    )
+    result = auditor().audit_source(source)
+    assert result["independent"] is False
+    assert "UNRESOLVED_DYNAMIC_IMPORT" in result["reasons"]
+    assert result["uncertain"] is True
+
+
+def test_syntax_error_fails_closed_without_raising():
+    result = auditor().audit_source("def broken(:\n")
+    assert result["state"] == "FAIL"
+    assert result["independent"] is False
+    assert result["reasons"] == ["SYNTAX_ERROR"]
+
+
+def test_relative_import_fails_closed():
+    result = auditor().audit_source("from . import helper\n")
+    assert "RELATIVE_IMPORT" in result["reasons"]
+    assert result["independent"] is False
+
+
+def test_the_real_verifier_b_is_independent():
+    result = auditor().audit_path(REPO / "scripts" / "def_run_018_verify_b.py")
+    assert result["state"] == "PASS"
+    assert result["independent"] is True
+    assert result["forbidden"] == []
+
+
+def test_gate_requires_the_external_audit(sandbox):
+    write_gate_inputs(sandbox)
+    (sandbox / "reports/ai-bots/RFC-DEF-RUN-018/INDEPENDENCE_AUDIT.json").unlink()
+    decision = gate.decide(sandbox)
+    assert decision["technical_integrity"] == "BLOCKED"
+    assert "MISSING_INDEPENDENCE_AUDIT" in decision["blockers"]
+
+
+def test_gate_rejects_an_audit_of_another_revision(sandbox):
+    write_gate_inputs(sandbox)
+    path = sandbox / "reports/ai-bots/RFC-DEF-RUN-018/INDEPENDENCE_AUDIT.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["audited_sha256"] = "d" * 64
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    decision = gate.decide(sandbox)
+    assert decision["technical_integrity"] == "BLOCKED"
+    assert "INDEPENDENCE_NOT_PROVEN" in decision["blockers"]
+
+
+def test_gate_rejects_an_audit_that_found_reuse(sandbox):
+    write_gate_inputs(sandbox)
+    path = sandbox / "reports/ai-bots/RFC-DEF-RUN-018/INDEPENDENCE_AUDIT.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload.update({"state": "FAIL", "independent": False, "reasons": ["FORBIDDEN_IMPORT"]})
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    decision = gate.decide(sandbox)
+    assert decision["technical_integrity"] == "BLOCKED"
+    assert decision["technical_detail"]["independence_demonstrated"] is False

@@ -22,6 +22,7 @@ Uso::
 from __future__ import annotations
 
 import argparse
+import ast
 import csv
 import hashlib
 import json
@@ -1081,20 +1082,42 @@ def verify(
     }
 
 
+def imported_modules(source: str) -> set[str]:
+    """Imports reales del fuente: `Import`/`ImportFrom` con sus alias, vía `ast`.
+
+    Buscar cadenas no medía dependencias: «from trading_bot» aparecía en la prosa de
+    este fichero y bastaba para publicar `imports_trading_bot=true` en un verificador
+    que no importa nada del Builder. Aquí se parsea, no se busca.
+    """
+    modules: set[str] = set()
+    for node in ast.walk(ast.parse(source)):
+        if isinstance(node, ast.Import):
+            modules.update(alias.name for alias in node.names)
+        elif isinstance(node, ast.ImportFrom) and node.module and not node.level:
+            modules.add(node.module)
+    return modules
+
+
 def independence() -> dict[str, Any]:
-    """Declara —y comprueba en el propio fuente— que B no reutiliza el código de A."""
-    source = Path(__file__).read_text(encoding="utf-8")
-    forbidden = (
-        "def_run_017_verify",
-        "from trading_bot",
-        "import trading_bot",
-        "economic_audit",
+    """Autodeclaración medida con `ast`; el gate no la usa para aprobar.
+
+    La autoridad es `INDEPENDENCE_AUDIT.json`, que produce el auditor externo
+    `scripts/def_run_018_independence_audit.py`. Este campo existe para que un desacuerdo
+    entre lo que B dice y lo que el auditor mide sea visible y bloquee.
+    """
+    forbidden = ("trading_bot", "def_run_017_verify", "economic_audit")
+    modules = imported_modules(Path(__file__).read_text(encoding="utf-8"))
+    hits = sorted(
+        name
+        for name in modules
+        if any(name == token or name.startswith(f"{token}.") for token in forbidden)
     )
-    hits = [token for token in forbidden if token in source.split('"""', 2)[-1]]
     return {
         "shared_with_builder": "specification and input bytes only",
         "imports_trading_bot": bool(hits),
         "reused_recomputation_code": hits,
+        "imports": sorted(modules),
+        "measured_by": "ast.parse del propio fuente",
         "statement": (
             "B lee JSONL/CSV con la biblioteca estándar y reimplementa cadena, contabilidad, "
             "delta pareado, bootstrap y regla de decisión; no importa el verificador A ni el "
