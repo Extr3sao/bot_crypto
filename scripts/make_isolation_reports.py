@@ -21,7 +21,11 @@ from pathlib import Path
 from typing import Any
 
 BUNDLE_REL = "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc005"
-MANIFEST_EXCLUDED = {"EVIDENCE_MANIFEST.json", "VERIFIER_REPLAY.json"}
+# The manifest and the verifier's own outputs cannot describe themselves: the manifest is
+# written last, and VERIFICATION.json/VERIFIER_REPLAY.json are produced by the verifier
+# against the commit that contains the manifest. Excluding them keeps the manifest a
+# closed set the verifier can re-hash without a self-referential hash.
+MANIFEST_EXCLUDED = {"EVIDENCE_MANIFEST.json", "VERIFIER_REPLAY.json", "VERIFICATION.json"}
 
 
 def utc_now() -> str:
@@ -304,6 +308,21 @@ def write_suite(args: argparse.Namespace, bundle: Path) -> dict[str, Any]:
     return payload
 
 
+def _verification_basis(verification: dict[str, Any] | None) -> str:
+    if not verification:
+        return "verify_isolation.py has not run against the evidence commit yet"
+    checks = verification.get("checks") or []
+    accepted = sum(1 for row in checks if row.get("ok"))
+    rejected = verification.get("negative_controls_rejected")
+    total = verification.get("negative_controls_total")
+    commit = verification.get("evidence_sha") or verification.get("evidence_commit") or ""
+    short = str(commit)[:12] or "the evidence commit"
+    return (
+        f"verify_isolation.py {verification.get('verdict')}: {accepted}/{len(checks)} check(s) "
+        f"accepted, {rejected}/{total} negative control(s) rejected, against {short}"
+    )
+
+
 def dimensions(
     lab: dict[str, Any], suite: dict[str, Any], network: dict[str, Any], orders: dict[str, Any],
     verification: dict[str, Any] | None,
@@ -357,9 +376,8 @@ def dimensions(
         },
         "INDEPENDENT_VERIFICATION": {
             "result": (verification or {}).get("verdict", "PENDING"),
-            "basis": (verification or {}).get(
-                "basis", "verify_isolation.py has not run against the evidence commit yet"
-            ),
+            "basis": (verification or {}).get("basis")
+            or _verification_basis(verification),
         },
         "PAPER_VALIDATION": {
             "result": "NOT_PERFORMED",

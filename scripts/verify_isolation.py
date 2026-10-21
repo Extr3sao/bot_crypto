@@ -505,6 +505,7 @@ def verify(
     return {
         "schema": "rfc005-verification/1",
         "generated_at_utc": _utc_now(),
+        "evidence_sha": evidence_sha or "",
         "verdict": "PASS" if not failed else "FAIL",
         "checks": results,
         "failed": failed,

@@ -7,7 +7,7 @@
   "api.binance.com",
   "https://api.binance.com/api/v3/ping"
  ],
- "generated_at_utc": "2026-10-21T17:52:13Z",
+ "generated_at_utc": "2026-10-21T18:03:03Z",
  "os_sandbox": "NOT_AVAILABLE",
  "policy": {
   "default": "deny every outbound event; loopback only when the policy says so",

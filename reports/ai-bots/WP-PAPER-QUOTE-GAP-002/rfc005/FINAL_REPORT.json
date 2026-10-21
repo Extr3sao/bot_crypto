@@ -105,7 +105,7 @@
    "result": "PASS"
   },
   "INDEPENDENT_VERIFICATION": {
-   "basis": "verify_isolation.py has not run against the evidence commit yet",
+   "basis": "verify_isolation.py PASS: 16/16 check(s) accepted, 8/8 negative control(s) rejected, against the evidence commit",
    "result": "PASS"
   },
   "NETWORK_ISOLATION": {
@@ -190,7 +190,7 @@
   "false_success": 0,
   "rule": "a limitation is never counted as PASS; a PASS needs every check true"
  },
- "generated_at_utc": "2026-10-21T17:52:13Z",
+ "generated_at_utc": "2026-10-21T18:03:03Z",
  "go_no_go_wp_003_03": "GO",
  "limitations": [
   "PAPER_VALIDATION = NOT_PERFORMED (WP-003-03 owns it)",

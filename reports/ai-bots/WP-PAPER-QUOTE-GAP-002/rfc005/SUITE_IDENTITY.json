@@ -3,7 +3,7 @@
  "errors": 0,
  "exit_code": 0,
  "failed": 0,
- "generated_at_utc": "2026-10-21T17:52:13Z",
+ "generated_at_utc": "2026-10-21T18:03:03Z",
  "passed": 734,
  "repo_wide": {
   "baseline": {
@@ -62,11 +62,11 @@
  "static_gates": {
   "mypy": {
    "exit_code": 0,
-   "log": "logs/mypy.txt"
+   "log": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc005/logs/mypy.txt"
   },
   "ruff": {
    "exit_code": 0,
-   "log": "logs/ruff.txt"
+   "log": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc005/logs/ruff.txt"
   }
  }
 }
