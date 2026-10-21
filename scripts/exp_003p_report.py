@@ -564,6 +564,11 @@ def render_final(data: dict[str, Any], report: dict[str, Any]) -> str:
         "cost decomposition of the broker is reported instead.",
         "- Depends on `EXP-003O=PASS_PARTIAL_INCOMPLETE_REAL_DATA`; 003P does not repair that "
         "coverage or its independence.",
+        "- `tests/unit/reports` belongs to another experiment and is not part of this gate. "
+        "Observed while reproducing: it passes in the shared tree (201 tests) and is red in a "
+        "clean checkout (2 failed, 40 errors) because it reads artifacts under "
+        "`reports/ai-bots` that are git-ignored and therefore absent from a checkout. That "
+        "is a pre-existing defect of that suite, declared here and not counted as green.",
         "- The clean-checkout reproduction needs the 003K frozen dataset, which the code commit "
         "publishes under `reports/ai-bots/EXP-003K-CANDIDATE-001/dataset` (3.9 MB) so the "
         "checkout is self-contained; the three SHA-256 digests are the ones `BASELINE.json` "
