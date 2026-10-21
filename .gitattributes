@@ -51,3 +51,7 @@ reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/** -text
 # are compared byte for byte by the verifier. A checkout that rewrote their line endings
 # would break both, exactly as it broke EXP-003M's seal (see 003N's evidence/).
 reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/** -text
+
+# EXP-003O seals its own artefact tree and quotes a design digest inside every report, so
+# the bytes must survive a checkout unchanged: LF in, LF out, no normalisation either way.
+reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/** -text

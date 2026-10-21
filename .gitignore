@@ -530,3 +530,24 @@ reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/*
 !reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/design/*.md
 !reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/evidence/
 !reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/evidence/*
+
+# EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001 — paridad de señales y auditoría PIT. Se publican
+# el diseño congelado, las evaluaciones por instante, los controles negativos y los informes,
+# porque el verificador y la reproducción desde checkout limpio los releen. Lo que exceda el
+# límite de tamaño se queda fuera con manifiesto y procedimiento de regeneración, como manda el
+# propio protocolo.
+!reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/
+reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/*
+!reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/*.md
+!reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/*.json
+!reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/*.csv
+!reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/*.txt
+!reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/DESIGN.sha256
+!reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/design/
+!reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/design/*
+!reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/signals/
+!reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/signals/*.jsonl.gz
+!reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/evidence/
+!reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/evidence/*
+!reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/fixtures/
+!reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/fixtures/*
