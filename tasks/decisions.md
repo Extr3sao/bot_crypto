@@ -1759,3 +1759,37 @@ lo que NO se requerirá per-ADR "next free" footnote nunca más.
   obligación de pasar por `run_bot` en vez de invocar el lane a mano.
 - **Reversión**: otro ADR; relajar el registro para que el bot opere es exactamente lo
   que este ADR prohíbe.
+
+## ADR-PAPER-01 — El libro es la autoridad; el ledger es una proyección deduplicada
+
+- **Fecha**: 2026-10-21.
+- **Contexto**: RFC-PAPER-RECOVERY-004 pide *exactly-once a nivel de efecto económico* ante
+  caídas, y propone en §5.1 derivar el estado canónico por replay del prefijo comprometido
+  del **ledger**. El runtime real hace lo contrario: `LaneBookStore` escribe `BOOK.json` de
+  forma atómica con su propio `digest`, y `reconcile_book` lo juzga a él; el ledger de
+  sesión es la cadena de evidencia de *un* proceso y cada sesión puede escribir en un
+  fichero distinto. Invertir la autoridad exigiría mover al ledger riesgo, pendientes,
+  contrato y marcas, y migrar los libros históricos de RFC003.
+- **Decisión**:
+  1. `BOOK.json` sigue siendo la fuente de verdad; `deterministic_replay(ledger)` **no** se
+     adopta. La desviación queda declarada en
+     `reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/runtime_authority_map.md`.
+  2. El ledger es una proyección **at-least-once**: sus filas se escriben antes del commit
+     del compás, así que puede ir por delante del libro. La barrera impide re-procesar un
+     compás ya cubierto, y cada fila económica lleva
+     `operation_id = <book>|CLOSE|<position>` (o `|FILL|`) para que la re-ejecución no
+     escriba una segunda fila.
+  3. Una repetición sólo se suprime si es económicamente idéntica salvo el reloj; si el
+     número cambia, se lanza `OperationConflict` y no se escribe nada.
+  4. El libro publica `risk_equity` y `marked_equity` como un solo número: una realización
+     convierte la marca en caja, así que el motor de riesgo se re-marca desde el bróker
+     antes del commit que la contabiliza.
+- **Qué NO cambia**: los gates de live, la configuración de riesgo, la ausencia de ruta de
+  orden en el lane, el formato del libro (`vision-lane-book/1`) y los libros históricos.
+- **Consecuencias**: una caída entre el fsync del ledger y el `replace` del libro se
+  recupera re-ejecutando el compás una vez, y la evidencia no queda duplicada ni
+  reescrita. El coste es una identidad por fila económica y la obligación de que el replay
+  sea determinista: si deja de serlo, el resultado es un rechazo (`OperationConflict`), no
+  un cierre inventado.
+- **Reversión**: un ADR nuevo con migración reversible de los libros existentes; este WP no
+  la hace porque ningún fallo medido la exige.

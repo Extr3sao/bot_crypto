@@ -193,3 +193,35 @@ VisionLane.run
 El hueco se resuelve **en la barrera**. Una vela que falta *después* de reanudar la salta el
 bucle de velas: `check_positions_ohlc` sólo ve velas presentes. Corregirlo cambia la
 semántica de `DATA_GAP` que otros tests fijan y queda como WP siguiente, no como hecho.
+
+---
+
+# RUNTIME AUTHORITY MAP — transacción y recuperación (WP-003-01 / RFC004, 2026-10-21)
+
+> Cierra la ventana que RFC003 dejó sin punto de inyección: `ledger fsync → BOOK.json
+> replace`. La evidencia está en `reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/`
+> (16 escenarios con `os._exit`, verificador independiente con 10 controles negativos).
+
+## Puntos de persistencia y autoridad
+
+```
+ledger.append(FILL|CLOSE, operation_id)   fsync por fila   proyección (puede ir por delante)
+_commit(barrier):
+   BOOK.json.tmp  write → flush → fsync                    failpoint book.after_tmp_fsync
+   BOOK.json → BOOK.json.prev  copy → fsync                failpoint book.after_prev_copy
+   os.replace(tmp, BOOK.json)             ← COMMIT         failpoint book.after_replace
+   fsync(dir)                             no-op en nt      failpoint book.after_dir_fsync
+   BOOK_EVENTS.jsonl (COMMIT)             ← ACK            failpoint event.after_fsync
+```
+
+- `BOOK.json` sigue siendo **RUNTIME_AUTHORITATIVE**; `BOOK_EVENTS.jsonl` es su auditoría y
+  el ledger de sesión una **proyección at-least-once**.
+- `LaneBookStore.recover()` clasifica el disco sin dataset: `NO_CHANGE`, `RECOVERED`,
+  `REFUSED_CORRUPTION`, `REFUSED_AMBIGUOUS_COMMIT`, `BLOCKED_LOCK`. El carril lo llama con
+  `check_lock=False` (el cerrojo que ve es el suyo) y **sin** ledger, porque el de una
+  sesión no puede probar los cierres de otro proceso.
+- `vision/failpoints.py`: inyección por entorno, **OFF** por defecto, sandbox obligatorio y
+  `os._exit` (una excepción se podría capturar y convertir en éxito).
+- Una realización re-marca el motor de riesgo desde el bróker **antes** del commit que la
+  contabiliza: sin eso, el commit intermedio de una reconstrucción publicaba
+  `risk_equity != marked_equity` y `reconcile_book` lo rechazaba para siempre.

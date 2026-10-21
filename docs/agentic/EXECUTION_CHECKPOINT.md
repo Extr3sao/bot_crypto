@@ -1363,3 +1363,50 @@ done
 
 Cada comando produce artefacto y exit code; el informe recalcula H1-H8 desde ficheros y falla si
 falta uno.
+
+## 2026-10-21 · RFC-PAPER-RECOVERY-004 / WP-003-01 — recuperación transaccional
+
+**Objetivo.** Cerrar `WP-003-01`: instrumentar la ventana `ledger fsync → book replace` en
+la ruta real, demostrar exactly-once económico con procesos hijos que mueren de verdad, y
+sellar la evidencia para un verificador independiente.
+
+**Worktree.** `bot-freebuff-recovery-004`, rama `wp/recovery-004`, creada desde
+`0c074fb4f3e22bb10407cb8af12ae94f8db480bc` (evidencia de RFC003). Nada empujado al remoto.
+
+**Hecho.**
+
+- `src/trading_bot/vision/failpoints.py`: inyección por entorno, OFF por defecto, sandbox
+  obligatorio, `os._exit` (no excepción), caché **keyed por el valor** del entorno.
+- `durable.py`: 9 puntos reales (`save`, `event`, `lock`), `recover()` con `NO_CHANGE`,
+  `RECOVERED`, `REFUSED_CORRUPTION`, `REFUSED_AMBIGUOUS_COMMIT`, `BLOCKED_LOCK`, y
+  reparación registrada de colas rotas en `BOOK_EVENTS.jsonl`.
+- `ledger.py`: `operation_id` con deduplicación idéntica y `OperationConflict` si el número
+  cambia; recorte de cola rota con `<ledger>.torn.json` por offset de byte.
+- `lane.py`: identidad en `FILL`/`CLOSE`, failpoints alrededor del commit, y el arreglo de
+  `DEF-01` (el commit de reconstrucción publicaba `risk_equity != marked_equity` y dejaba
+  el libro irreanudable con `RISK_MISMATCH`).
+- Laboratorio `scripts/recovery_lab.py` + `scripts/recovery_child.py`: 16 escenarios,
+  **16/16 PASS**, procesos hijos con `os._exit(86)`, red negada por audit hook.
+- Verificador `scripts/verify_recovery.py`: 18 comprobaciones re-derivadas + 10 controles
+  negativos; no importa módulos del constructor.
+- Informes y manifiesto en `reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/`.
+
+**Pendiente.**
+
+- `POWER_LOSS_DURABILITY_NOT_VERIFIED` (no hay corte de alimentación ni fsync de directorio
+  en NTFS) y `EXTERNAL_ORDERS / RECONCILIATION = NOT_VERIFIABLE`; ambos declarados.
+- `PAPER_VALIDATION = NOT_PERFORMED` hasta el WP de paper E2E.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+python -m pytest tests/unit/vision tests/unit/paper tests/unit/risk tests/unit/market_data -q
+python scripts/recovery_lab.py --out reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/lab \
+  --json reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/RECOVERY_LAB.json
+python scripts/verify_recovery.py \
+  --lab reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/RECOVERY_LAB.json \
+  --bundle reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004 --repo . \
+  --evidence-sha "$(git rev-parse HEAD)" --negative-controls \
+  --json reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/VERIFIER_REPLAY.json
+```
