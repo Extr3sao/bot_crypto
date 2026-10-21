@@ -24,7 +24,7 @@
     "candidate_id": "cost_model/measured_toll/v1",
     "candidate_family": "execution_cost_measurement",
     "baseline_id": "NO_TRADE",
-    "candidate_code_commit": "0000000000000000000000000000000000000000",
+    "candidate_code_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
     "baseline_config_path": "config/preregistrations/EXP-004A.baseline.json",
     "candidate_config_path": "config/preregistrations/EXP-004A.json",
     "expected_mechanism": "the toll is dominated by the venue fee (2 x 10 bps at VIP0) and not by the spread, so a measured median near 20 bps is compatible with a model that charges 24.79 bps of spread and slippage"
@@ -122,5 +122,9 @@
     "previous_results_exist": false,
     "previous_run_marker_paths": [],
     "no_previously_consumed_holdout": false
+  },
+  "phase_one_commits": {
+    "protocol_and_measurement_code": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+    "note": "phase 1 may span several commits, all of which must precede capture.start_utc; the gate checks the last commit touching this file, which is the pointer commit that follows this one"
   }
 }
