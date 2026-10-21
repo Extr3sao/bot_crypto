@@ -581,6 +581,29 @@ def check_github_sync(bundle: dict[str, Any], context: dict[str, Any]) -> tuple[
             return False, f"claims {status} without a remote sha"
     if status == "MAIN_SYNCED" and default != local:
         return False, f"claims MAIN_SYNCED but default branch is {default[:8]}"
+    repo = context.get("repo")
+    if repo is not None and status in {"REMOTE_BRANCH_SYNCED", "MAIN_SYNCED"}:
+        import subprocess
+
+        branch = str(sync.get("remote_branch") or "")
+        published = subprocess.run(
+            ["git", "merge-base", "--is-ancestor", local, f"origin/{branch}"],
+            cwd=repo,
+            capture_output=True,
+            text=True,
+        )
+        if published.returncode != 0:
+            return False, f"{local[:8]} is not on origin/{branch}: the publish is not real"
+        main_on_remote = subprocess.run(
+            ["git", "merge-base", "--is-ancestor", local, "origin/main"],
+            cwd=repo,
+            capture_output=True,
+            text=True,
+        )
+        if status == "MAIN_SYNCED" and main_on_remote.returncode != 0:
+            return False, "claims MAIN_SYNCED but origin/main does not contain the commit"
+        if status == "REMOTE_BRANCH_SYNCED" and main_on_remote.returncode == 0:
+            return False, "the commit is already on main: the record should say MAIN_SYNCED"
     if status in {"LOCAL_COMMITTED", "GITHUB_BLOCKED"} and str(sync.get("main_synced")) not in {
         "NO",
         "false",
