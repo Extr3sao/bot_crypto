@@ -27,8 +27,9 @@ producción ni de paper E2E.
 ## TESTS
 
 `.venv/Scripts/python.exe -m pytest -q tests/unit/vision tests/unit/paper tests/unit/risk` → **577 passed in 521.57s (0:08:41)**, `exit 0`, 521.57 s.
-Nuevos: 16 unitarios + 1 regresión. Repo completo: `exit 1`, 101 fallos **preexistentes**
-(idéntico conjunto en el commit padre, 0 nuevos).
+Nuevos: 16 unitarios + 1 regresión. Repo completo: `exit 1`,
+101 fallos y 14 errores de recolección **preexistentes**
+(mismo conjunto de ids en el commit padre, 0 nuevos).
 
 ## RUNTIME_VALIDATION
 

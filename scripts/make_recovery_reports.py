@@ -722,8 +722,9 @@ producción ni de paper E2E.
 ## TESTS
 
 `{suite['command']}` → **{suite['result']}**, `exit {suite['exit_code']}`, {suite['seconds']} s.
-Nuevos: 16 unitarios + 1 regresión. Repo completo: `exit {suite.get('repo_wide', {}).get('exit_code', '—')}`, {(suite.get('repo_wide') or {}).get('failed', '—')} fallos **preexistentes**
-(idéntico conjunto en el commit padre, {(suite.get('repo_wide') or {}).get('non_baseline_failures', '—')} nuevos).
+Nuevos: 16 unitarios + 1 regresión. Repo completo: `exit {suite.get('repo_wide', {}).get('exit_code', '—')}`,
+{(suite.get('repo_wide') or {}).get('failed', '—')} fallos y {(suite.get('repo_wide') or {}).get('errors', '—')} errores de recolección **preexistentes**
+(mismo conjunto de ids en el commit padre, {(suite.get('repo_wide') or {}).get('non_baseline_failures', '—')} nuevos).
 
 ## RUNTIME_VALIDATION
 

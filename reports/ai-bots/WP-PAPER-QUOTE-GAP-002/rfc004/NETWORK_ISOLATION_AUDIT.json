@@ -10,7 +10,7 @@
  "conclusion": "no socket left the process; the live order route refuses before any I/O",
  "external_attempts": 0,
  "external_reconciliation": "NOT_VERIFIABLE",
- "generated_at_utc": "2026-10-21T16:09:44Z",
+ "generated_at_utc": "2026-10-21T16:12:44Z",
  "live_route": {
   "deny_probe": "DENIED",
   "entrypoint": "src/trading_bot/app.py::_cmd_place_order",
