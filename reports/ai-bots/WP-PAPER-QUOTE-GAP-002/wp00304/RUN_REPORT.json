@@ -1,0 +1,199 @@
+{
+  "schema": "wp00304-run-report/1",
+  "work_package": "WP-003-04",
+  "title": "Desbloquear la integración en main",
+  "objective": "Identificar y ejecutar, cuando sea seguro, la ruta mínima para integrar WP-003-03 en main con CI verificable.",
+  "verification_timestamp_utc": "2026-10-21T23:30:00Z",
+  "repository": "https://github.com/Extr3sao/bot_crypto.git",
+  "verdict": "BLOCKED",
+  "one_line": "3 de los 7 checks que fallan en el PR #17 ya fallaban en la base; de los 2 que la base pasa, el rojo que aporta la rama es 0% de WP-003-03.",
+  "git": {
+    "local_branch": "wp/isolation-005",
+    "local_head_at_start": "ffda06d516f993b6925d0ac6029a45c23c8af8dd",
+    "remote_branch_head_at_start": "ffda06d516f993b6925d0ac6029a45c23c8af8dd",
+    "origin_main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+    "origin_main_date": "2026-09-22T13:54:36+02:00",
+    "local_main": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+    "local_main_date": "2026-10-12T08:26:57+02:00",
+    "local_main_ahead_of_origin_main": 259,
+    "local_main_behind_origin_main": 0,
+    "branch_ahead_of_local_main": 234,
+    "branch_behind_local_main": 0,
+    "merge_base_main_branch": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+    "history_divergence": "none (linear: origin/main subset of local main subset of branch)",
+    "files_changed_vs_local_main": 1859,
+    "files_changed_vs_origin_main": 3447,
+    "branch_protection_main": "UNKNOWN (GitHub API 401 without authentication)"
+  },
+  "pull_request": {
+    "number": 17,
+    "url": "https://github.com/Extr3sao/bot_crypto/pull/17",
+    "state": "open",
+    "base": {"ref": "main", "sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d"},
+    "head": {"ref": "wp/isolation-005", "sha": "ffda06d516f993b6925d0ac6029a45c23c8af8dd"},
+    "commits": 493,
+    "changed_files": 3447,
+    "additions": 2721865,
+    "deletions": 1437,
+    "mergeable": true,
+    "mergeable_state": "unstable"
+  },
+  "ci": {
+    "head_run_ids": [39664991894, 39664992138, 39664991828],
+    "head_checks_total": 7,
+    "head_checks_failed": 7,
+    "head_failed_steps": {
+      "Format + Lint (Ruff)": "Ruff format --check",
+      "Type check (Mypy strict)": "Mypy strict",
+      "Tests + Coverage (pytest, fast)": "Pytest (excl. slow + market) + coverage >= 90%",
+      "Security audit (pip-audit)": "pip-audit",
+      "Smoke PR-pipeline (parse + preflight, no side effects)": "Set up job",
+      "Rehearse the recovery lane in a clean checkout of this commit": "Lane contract tests and determinism regressions",
+      "Reproduce the cost-barrier artefacts from the declared inputs": "Reproduce the artefacts (full reproduction) + Keep the evidence"
+    },
+    "baseline_run_id": 35724120977,
+    "baseline_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+    "baseline_jobs": {
+      "Format + Lint (Ruff)": "success",
+      "Type check (Mypy strict)": "success",
+      "pip-audit": "failure",
+      "Tests + Coverage (pytest, fast)": "failure",
+      "Smoke PR-pipeline (parse + preflight, no side effects)": "failure (Set up job)"
+    }
+  },
+  "measurements": {
+    "toolchain": {
+      "python_version_file": "3.11",
+      "python_runtime": "3.11.15",
+      "uv": "0.11.26",
+      "ruff_pinned": "0.15.20",
+      "ruff_used": "0.15.20",
+      "mypy_pinned": "2.1.0",
+      "mypy_used": "2.1.0",
+      "note": "uv.lock pins the same ruff/mypy at origin/main, at local main and at HEAD; the local runs are therefore not version drift."
+    },
+    "clean_tree_method": "detached git worktree at each SHA, no untracked files, PYTHONPATH=<worktree>/src",
+    "origin_main": {
+      "sha": "5e6f9632",
+      "ruff_format_check": {"exit": 0, "files_reformatted": 0, "files_formatted": 239},
+      "ruff_check": {"exit": 0, "errors": 0},
+      "mypy": {"exit": 0, "errors": 0, "files_checked": 233},
+      "pytest": {"exit": 0, "passed": 582, "seconds": 193.98},
+      "pytest_with_coverage": {"exit": 1, "passed": 582, "coverage_percent": 62.34, "required_percent": 90},
+      "pip_audit": {"exit": 1, "vulnerabilities": 80, "packages_affected": 9}
+    },
+    "local_main": {
+      "sha": "1d2192b0",
+      "ruff_format_check": {"exit": 1, "files_reformatted": 433},
+      "ruff_check": {"exit": 1, "errors": 100},
+      "mypy": {"exit": 1, "errors": 253, "files_checked": 801}
+    },
+    "branch_head": {
+      "sha": "ffda06d5",
+      "ruff_format_check": {"exit": 1, "files_reformatted": 617, "files_formatted": 543},
+      "ruff_check": {"exit": 1, "errors": 195, "files": 44},
+      "mypy": {"exit": 1, "errors": 622, "files": 107, "files_checked": 1155},
+      "mypy_after_fix": {"commit": "e450a238", "errors": 611, "files": 105, "wp00303_errors": 0},
+      "pytest": {"exit": 2, "collection_errors": 2, "collected": 0},
+      "pytest_diagnostic": {
+        "status": "FAIL",
+        "run_command": "pytest -m 'not slow and not market' --ignore=tests/unit/observability/test_vision_panel.py --ignore=tests/unit/research/test_edge16_pit.py",
+        "passed": 4362,
+        "failed": 101,
+        "errors": 14,
+        "skipped": 31,
+        "seconds": 2228.52,
+        "failed_nodes_by_cohort": {"wp00303": 0, "local_main": 96, "branch_earlier": 19},
+        "failed_node_examples_local_main": ["tests/unit/research/test_profitability_gate035.py (22)", "tests/unit/research/test_rfc035s3_strategy_closure.py (16)", "tests/unit/research/test_cost_barrier_gate.py (12)"],
+        "failed_node_examples_branch_earlier": ["tests/unit/research/test_edge03_forward.py (10)", "tests/unit/research/test_edge04_autonomous.py (4)"],
+        "wp00303_own_tests": "tests/integration/test_paper_e2e_001.py, _002.py, _003.py: 20 passed"
+      },
+      "pip_audit": {"exit": 1, "vulnerabilities": 11},
+      "tracked_transient_files": {"exit": 0, "matches": 0}
+    },
+    "attribution": {
+      "method": "for each offending path, git log --diff-filter=A -1 gives the introducing commit; it is classified against rev-list main..wp/isolation-005, rev-list origin/main..main and rev-list b82b487a..HEAD",
+      "format_files": {"wp00303": 0, "branch_earlier": 183, "local_main": 430, "origin_base": 4, "total": 617},
+      "lint_files": {"wp00303": 0, "branch_earlier": 28, "local_main": 16, "total": 44},
+      "mypy_errors": {"wp00303": 11, "branch_earlier": 358, "local_main": 253, "total": 622},
+      "distinct_last_touching_commits_for_format": 178
+    },
+    "cost_of_mechanical_repair": {
+      "ruff_format_apply": {"files": 617, "insertions": 37469, "deletions": 18032},
+      "ruff_check_autofixable": 122,
+      "ruff_check_manual": 73
+    }
+  },
+  "classification": [
+    {"check": "format-and-lint (format)", "base": "PASS", "head": "FAIL 617 files", "class": "REGRESION_DE_LA_ACUMULACION", "wp00303_share": "0%"},
+    {"check": "format-and-lint (lint)", "base": "PASS", "head": "FAIL 195 errors / 44 files", "class": "REGRESION_DE_LA_ACUMULACION", "wp00303_share": "0%"},
+    {"check": "type-check", "base": "PASS", "head": "FAIL 622 -> 611 errors", "class": "REGRESION_DE_LA_ACUMULACION", "wp00303_share": "11 de 622, corregidos en e450a238"},
+    {"check": "tests-and-coverage", "base": "FAIL (coverage 62.34% < 90%)", "head": "FAIL (2 collection errors)", "class": "BASELINE_PREEXISTENTE + REGRESION_AJENA", "wp00303_share": "0%"},
+    {"check": "pip-audit", "base": "FAIL (80 advisories)", "head": "FAIL (11 advisories)", "class": "BASELINE_PREEXISTENTE", "wp00303_share": "0%"},
+    {"check": "smoke-pr-pipeline", "base": "FAIL at Set up job", "head": "FAIL at Set up job", "class": "INFRAESTRUCTURA", "wp00303_share": "0%"},
+    {"check": "recovery-determinism (not required)", "base": "not run (path filter)", "head": "FAIL lane contract tests", "class": "REGRESION_AJENA", "wp00303_share": "0%"},
+    {"check": "cost-barrier (not required)", "base": "not run (path filter)", "head": "FAIL reproduce artefacts", "class": "REGRESION_AJENA", "wp00303_share": "0%"}
+  ],
+  "broken_dependencies": [
+    {
+      "test": "tests/unit/observability/test_vision_panel.py",
+      "introduced_by": "5fd791d8",
+      "imports": "trading_bot.observability.vision_panel",
+      "exists_on": ["wp003i/reproducibility (e90a8ad3, 26fd3955)", "wp003j/runtime"],
+      "ancestor_of_branch": false,
+      "untracked_copy": {"path": "src/trading_bot/observability/vision_panel.py", "sha256": "bcd04d18a052913f755e1c091e77be2fc2f83fbd373a2ea1192896142fc0107e", "state": "untracked in 6 worktrees"}
+    },
+    {
+      "test": "tests/unit/research/test_edge16_pit.py",
+      "introduced_by": "6f04e59b",
+      "imports": "trading_bot.research.economic_recovery.alpha15.PRE_PIT_RUNNERS",
+      "exists_on": ["exp/ai-bots/EXP-003I-THROUGHPUT-001 (8eb4a2c1)", "wp003i/reproducibility (9f3892f6)", "wp003j/runtime", "agent/ai-critic/RFC-TAP-AI-BOTS-004G (611db47e)"],
+      "ancestor_of_branch": false
+    }
+  ],
+  "actions_executed": [
+    {
+      "commit": "e450a238",
+      "what": "corregidos los 11 errores de mypy de WP-003-03 en scripts/paper_e2e_lab.py y scripts/make_paper_e2e_reports.py",
+      "effect": "mypy . 622 -> 611 errores; los dos ficheros de este WP quedan en 0; ruido de ruff sin cambios (ambos limpios)"
+    },
+    {
+      "what": "re-ejecución completa del laboratorio PAPER con el código corregido",
+      "result": "LAB_EXIT=0; el verificador con --repeat devuelve PASS (exit 0), 18/18 checks, 11/11 controles negativos rechazados, digests económicos idénticos entre dos ejecuciones independientes"
+    }
+  ],
+  "route_proposed": [
+    {"id": "P1", "action": "arreglar el baseline de CI en main (cobertura 62.34% real, pip-audit 80 avisos, accion del smoke job)", "owner": "pipeline"},
+    {"id": "P2", "action": "decidir main local: publicar los 259 commits (fast-forward) o declararlos abandonados", "owner": "titular"},
+    {"id": "P3", "action": "deuda de formato: 1 commit mecanico de 617 ficheros (+37469/-18032)", "owner": "titular (autorizacion explicita)"},
+    {"id": "P4", "action": "deuda de lint: 122 auto-fixables + 73 manuales en 44 ficheros", "owner": "duenos de cada WP"},
+    {"id": "P5", "action": "deuda de tipos: 611 errores en 105 ficheros", "owner": "duenos de cada WP"},
+    {"id": "P6", "action": "auto-contencion: integrar wp003i/reproducibility y wp003j/runtime, o traer los 2 modulos que faltan", "owner": "titular"},
+    {"id": "P7", "action": "re-ejecutar CI + verificacion independiente sobre la PR ya pequena", "owner": "este agente"}
+  ],
+  "status": {
+    "IMPLEMENTATION_STATUS": "PASS",
+    "TEST_STATUS": "FAIL",
+    "RUNTIME_VALIDATION": "PASS",
+    "NETWORK_ISOLATION": "PASS (process-scoped)",
+    "EXTERNAL_ORDER_PREVENTION": "PASS (process-scoped)",
+    "OS_SANDBOX": "NOT_AVAILABLE",
+    "PAPER_VALIDATION": "PASS (offline, declared scenario ledger)",
+    "INDEPENDENT_VERIFICATION": "PASS",
+    "CI_STATUS": "RED",
+    "BASELINE_CI_STATUS": "RED (3 of 5 jobs red at origin/main 5e6f9632)",
+    "GITHUB_SYNC": "REMOTE_BRANCH_SYNCED",
+    "MAIN_SYNCED": "NO",
+    "DELIVERY_STATUS": "BLOCKED",
+    "PRODUCTION_READY": "NOT_CLAIMED",
+    "FALSE_SUCCESS": 0
+  },
+  "limitations": [
+    "No se ha ejecutado la reparacion mecanica de formato (617 ficheros) por estar prohibida en el encargo sin autorizacion explicita del titular.",
+    "Los 611 errores de mypy restantes pertenecen a otros work packages y no se han tocado.",
+    "Los 2 errores de coleccion dependen de ramas hermanas no fusionadas; no se ha borrado ni reescrito trabajo ajeno.",
+    "La suite de la rama falla (101 failed + 14 errors) pero ninguno de los 115 nodos rojos pertenece a WP-003-03: 96 son de los commits no publicados de main y 19 de la rama previa.",
+    "No se ha fusionado la PR ni se ha publicado main: los gates no lo permiten.",
+    "La proteccion de rama de main no se ha podido verificar (401 anonimo)."
+  ]
+}

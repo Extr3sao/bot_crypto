@@ -1613,8 +1613,9 @@ aislamiento de RFC-005 instalada en cada proceso hijo.
 - `SPREAD = ESTIMATED` (COST_MODEL_V3 por defecto): el corpus no tiene serie de quotes.
 - El ledger de escenario es un input declarado (`_scenario: true`), **no** evidencia de research;
   con el ledger comprometido no hay ninguna estrategia admitida para PAPER y por eso no hay fills.
-- `ruff format --check` y el resto del pipeline CI están rojos en todo el repo (621 ficheros a
-  reformatear; `main` lleva rojo desde 2026-07-10). Los tres scripts de este WP sí pasan.
+- `ruff format --check` y el resto del pipeline CI están rojos en todo el repo (**617** ficheros a
+  reformatear en un árbol limpio; el recuento de 621 incluía `.tmp/`, que no se versiona).
+  Los tres scripts de este WP sí pasan, y desde `e450a238` también pasan `mypy` y `ruff check`.
 - `pytest tests/unit/market_data` falla 6 tests **solo si** se exporta `TRADING_BOT_MODE=paper`
   (el gate de órdenes refuse por diseño); sin esa variable: 140 passed.
 
@@ -1635,4 +1636,75 @@ cd "$(git rev-parse --show-toplevel)"
   --evidence-sha "$(git rev-parse HEAD)" --repeat .tmp/pe/run1.json \
   --github-sync reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00303/GITHUB_SYNC.json \
   --negative-controls --json /tmp/wp00303_verification.json
+```
+
+---
+
+## WP-003-04 — Desbloquear la integración en `main` (2026-10-21)
+
+**Objetivo.** Identificar y ejecutar, si es seguro, la ruta mínima para integrar WP-003-03 en
+`main` con CI verificable.
+
+**Resultado.** `BLOCKED` con causa medida. No se fusionó nada y no se publicó `main`.
+
+**Lo que decide (medido, no heredado).**
+
+1. En `origin/main` `5e6f9632` (run `35724120977`) **ya fallan 3 de los 5 jobs**: `pip-audit`,
+   `Tests + Coverage` y el smoke job (este último en `Set up job`, antes del checkout). Solo
+   `Format + Lint` y `Type check` están verdes en la base.
+2. La base no falla por tests sino por **umbral**: `582 passed` y **cobertura 62.34 %** frente al
+   **90 %** del workflow. `pip-audit` arrastra **80 avisos en 9 paquetes**.
+3. El rojo que sí aporta la rama **no es de este WP**: de **617** ficheros sin formatear, **0**;
+   de **195** errores de lint en 44 ficheros, **0**; de **622** errores de mypy, **11** (los dos
+   ficheros del WP), corregidos en **`e450a238`** → quedan **611**, todos ajenos.
+4. La suite de la rama: `101 failed, 4362 passed, 14 errors` en 37 min. **0 de los 115 nodos
+   rojos son de WP-003-03** (96 de los 259 commits no publicados de `main`, 19 de la rama previa).
+   Los 20 tests de `test_paper_e2e_00{1,2,3}` pasan.
+5. **Dos tests no coleccionan** porque importan módulos que solo existen en ramas hermanas:
+   `test_vision_panel.py` (`5fd791d8`) → `trading_bot.observability.vision_panel` (en
+   `wp003i/reproducibility`, `wp003j/runtime`); `test_edge16_pit.py` (`6f04e59b`) →
+   `alpha15.PRE_PIT_RUNNERS` (en `exp/ai-bots/EXP-003I-THROUGHPUT-001`, `wp003i`, `wp003j`,
+   `ai-critic-004G`). Ninguno de esos commits es ancestro de esta rama.
+6. La PR mide **493 commits / 3 447 ficheros / +2 721 865** porque `main` local lleva **259
+   commits sin publicar** desde 2026-09-22. `origin/main` es ancestro de `main` local y de la
+   rama: todo es fast-forward, no hay divergencia.
+
+**Lo que se ejecutó.**
+
+- `e450a238`: 11 errores de mypy propios corregidos (ignores muertos, guard leído dos veces,
+  `payload` sin anotar, `dict` de informe con unión por clave). `mypy .` 622 → 611.
+- Re-ejecución completa del laboratorio PAPER con el código corregido: `LAB_EXIT=0`; verificador
+  con `--repeat`: **PASS**, 18/18, **11/11** controles negativos, digests económicos idénticos.
+- Medición local de las cuatro gates en árboles limpios de `ffda06d5`, `1d2192b0` y `5e6f9632`
+  con la toolchain del lock (`ruff 0.15.20`, `mypy 2.1.0`, Python 3.11 — idéntica en base y rama).
+
+**Lo que NO se hizo, y por qué.**
+
+- `ruff format .` (617 ficheros, **+37 469 / −18 032** líneas): reformateo masivo de trabajo de
+  178 commits ajenos. Requiere autorización explícita del titular, no es una decisión reversible.
+- Reparar los 611 errores de mypy restantes (105 ficheros de otros WPs): no es mecánico.
+- Borrar o marcar `skip` los dos tests que no coleccionan: descartaría trabajo ajeno para poner
+  un gate verde.
+- Fusionar la PR o publicar `main`: 7/7 checks rojos y 3 de ellos ya rojos en la base.
+
+**Ruta de desbloqueo, en orden.** P1 baseline de CI en `main` (cobertura/umbral, `pip-audit`,
+acción del smoke job) → P2 decidir los 259 commits de `main` local → P3 formato (1 commit
+mecánico) → P4 lint (122 auto + 73 manuales) → P5 tipos (611) → P6 auto-contención de las 2
+dependencias cruzadas → P7 re-CI y merge. Con eso la PR baja a 234 commits / 1 859 ficheros.
+
+**GITHUB_SYNC.** Rama `wp/isolation-005` publicada; el tip observado está en
+`reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00304/GITHUB_SYNC.json` (leído con `ls-remote`).
+`MAIN_SYNCED = NO`. `DELIVERY_STATUS = BLOCKED`. `FALSE_SUCCESS = 0`. `PRODUCTION_READY` no se
+declara.
+
+**Reanudación verificable.**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git rev-parse HEAD origin/main main
+git rev-list --count origin/main..main main..wp/isolation-005
+git worktree add --detach ../ff-wt-head HEAD
+cd ../ff-wt-head
+../bot-freebuff-recovery-004/.venv/Scripts/ruff format --check .   # 617
+../bot-freebuff-recovery-004/.venv/Scripts/mypy .                  # 611, ninguno de WP-003-03
 ```

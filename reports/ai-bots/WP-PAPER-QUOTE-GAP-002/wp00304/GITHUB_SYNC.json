@@ -1,0 +1,33 @@
+{
+  "schema": "wp00304-github-sync/1",
+  "work_package": "WP-003-04",
+  "repository": "https://github.com/Extr3sao/bot_crypto.git",
+  "repository_visibility": "public",
+  "local_branch": "wp/isolation-005",
+  "remote_branch": "origin/wp/isolation-005",
+  "local_head_sha": "e450a238",
+  "remote_head_sha": "ffda06d516f993b6925d0ac6029a45c23c8af8dd",
+  "default_branch": "main",
+  "default_branch_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+  "local_main_sha": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+  "commits_pending": {
+    "branch_vs_remote": "see observed_remote_head_sha in the following commit",
+    "local_main_vs_origin_main": 259
+  },
+  "push_result": "see observed_remote_head_sha in the following commit",
+  "pull_request_url": "https://github.com/Extr3sao/bot_crypto/pull/17",
+  "pull_request_state": "open",
+  "merge_result": "NOT_MERGED",
+  "merge_blocked_by": [
+    "format-and-lint: 617 files would be reformatted",
+    "type-check: 611 remaining mypy errors in 105 files",
+    "tests-and-coverage: 2 collection errors",
+    "pip-audit: 11 advisories (80 on the base)",
+    "smoke-pr-pipeline: failure at Set up job (infrastructure)"
+  ],
+  "sync_status": "REMOTE_BRANCH_SYNCED",
+  "main_synced": "NO",
+  "false_success": 0,
+  "verification_timestamp_utc": "2026-10-21T23:30:00Z",
+  "note": "Un commit no puede contener su propio hash: este registro nombra el tip observado con ls-remote antes de publicar, y el commit siguiente lo sustituye por el que ls-remote devolvio tras el push."
+}
