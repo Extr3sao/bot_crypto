@@ -29,7 +29,7 @@ import json
 import random
 import sys
 from collections import Counter
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 from datetime import UTC, datetime
 from decimal import Decimal
 from pathlib import Path
@@ -160,7 +160,7 @@ def canonical(payload: Any) -> str:
     return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 
-def series_digest(rows: Iterable[Iterable[Any]]) -> str:
+def series_digest(rows: Sequence[Sequence[Any]]) -> str:
     """Huella del dataset tal como la declara la cabecera `RUN`, reimplementada aquí.
 
     No se importa `trading_bot.vision.lane.series_digest`: validar la huella con la
