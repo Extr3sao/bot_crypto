@@ -1,6 +1,115 @@
 {
  "builder": "codebuff (builder); scripts/verify_paper_e2e.py is the separate verifier",
- "checks": [],
+ "checks": [
+  {
+   "blocked": false,
+   "check": "lab_shape",
+   "detail": "all scenarios present, completed and exited 0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "runtime_identity",
+   "detail": "13 runtime files hashed and unchanged",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "dataset_identity",
+   "detail": "3 recorded series match the fetch manifest",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "committed_ledger_no_trade",
+   "detail": "orders=0 fills=0 decisions=480 trade_decisions=0 shadow=1 admitted_for_paper=[]",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "scenario_reached_broker",
+   "detail": "orders=23 trade_decisions=32 fills_opened=21 fills_closed=21 closed_trades=21 scenario_ledger=True",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "no_orphan_fills",
+   "detail": "executions=23 orders_recorded=23 unexecuted_with_reason=9 orphan=0 duplicate_cloids=0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "accounting_identities",
+   "detail": "identities=5/5 commissions=10.500000 realised=87.651526 recomputed=87.651526",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "risk_before_order",
+   "detail": "orders_after_approved_risk=23 violations=0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "restart_reconciled",
+   "detail": "status=RECOVERED persisted_intents=23 recovered_intents=23 duplicated_cloids=0 equity_delta=0.0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "error_path_closed",
+   "detail": "cycles=3 orders=0 fills=0 executions=0 trade_decisions=0 decisions=9 errors=0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "no_external_network",
+   "detail": "no audited network event; strict paper policy in every child",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "abuse_battery",
+   "detail": "13 refusals across 8 scenarios; zero venue calls",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "pit_holds",
+   "detail": "1080 decisions satisfy decision_time >= market_time",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "reproducible_evidence",
+   "detail": "economic digests identical across two independent runs",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "evidence_in_commit",
+   "detail": "34 evidence files, all inside 189ffd31",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "manifest_covers",
+   "detail": "32 files hashed, manifest complete",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "reports_consistent",
+   "detail": "reports match the lab ({'scenario_orders': 23, 'scenario_fills_closed': 21, 'committed_orders': 0, 'decisions': 480}); 9 separated dimensions present",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "github_sync_consistent",
+   "detail": "REMOTE_BRANCH_SYNCED: local=06ba3183 remote=06ba3183 default=5e6f9632 pending=0",
+   "ok": true
+  }
+ ],
  "claims_not_made": [
   "PRODUCTION_READY",
   "OS_SANDBOX",
@@ -15,8 +124,8 @@
   },
   {
    "command": "python scripts/verify_paper_e2e.py --negative-controls",
-   "exit_code": 1,
-   "result": "NOT_RUN"
+   "exit_code": 0,
+   "result": "PASS"
   },
   {
    "command": "pytest -q tests/unit/paper tests/unit/risk tests/unit/execution tests/unit/autonomous tests/integration/test_paper_e2e_00{1,2,3}.py",
@@ -69,42 +178,42 @@
  "dimensions": {
   "EXTERNAL_ORDER_PREVENTION": {
    "basis": "13 refusals across 8 abuse scenarios; 0 venue calls",
-   "result": "FAIL"
+   "result": "PASS"
   },
   "FALSE_SUCCESS": {
    "basis": "unsupported_pass_count=0; every dimension above is derived from a measured artefact, and a blocked check is never counted as passed",
-   "result": "FAIL"
+   "result": "PASS"
   },
   "GITHUB_SYNC": {
-   "basis": "GITHUB_SYNC.json is absent: remote state was not measured",
-   "result": "NOT_CHECKED"
+   "basis": "local=06ba3183 remote=06ba3183 main=5e6f9632 pending=0",
+   "result": "REMOTE_BRANCH_SYNCED"
   },
   "IMPLEMENTATION_STATUS": {
    "basis": "paper_e2e_lab.py and verify_paper_e2e.py are committed with the evidence; no runtime file was modified (runtime_identity check re-hashes 13 files)",
    "result": "PASS"
   },
   "INDEPENDENT_VERIFICATION": {
-   "basis": "verify_paper_e2e.py: 0/0 checks, None/None negative controls rejected",
-   "result": "NOT_RUN"
+   "basis": "verify_paper_e2e.py: 18/18 checks, 11/11 negative controls rejected",
+   "result": "PASS"
   },
   "NETWORK_ISOLATION": {
-   "basis": "the network check failed: see VERIFICATION.json",
-   "result": "FAIL"
+   "basis": "0 audited network events in every child; policy external_network=False loopback=False order_routes=False",
+   "result": "PASS"
   },
   "PAPER_VALIDATION": {
    "basis": "recorded Binance 1h klines (sha256-matched); orders=23 fills_closed=21 PAPER only. EXTERNAL_SESSION=NOT_PERFORMED: the paper policy denies the network, so no venue-connected session can exist under it.",
-   "result": "BLOCKED"
+   "result": "PASS (OFFLINE_RECORDED_DATA)"
   },
   "RUNTIME_VALIDATION": {
    "basis": "the real AutonomousPaperRuntime ran 23 orders / 480 decisions in E2E-SCENARIO and 480 decisions in E2E-COMMITTED",
-   "result": "FAIL"
+   "result": "PASS"
   },
   "TEST_STATUS": {
    "basis": "pytest: 541 passed in 44.56s (exit 0)",
    "result": "PASS"
   }
  },
- "generated_at_utc": "2026-10-21T19:36:12Z",
+ "generated_at_utc": "2026-10-21T19:44:00Z",
  "git": {
   "branch": "wp/isolation-005",
   "head": "b82b487a301d8c23ff98ce0fe97cba47d94fe471",
@@ -116,7 +225,39 @@
    "?? scripts/verify_paper_e2e.py"
   ]
  },
- "github_sync": null,
+ "github_sync": {
+  "_measured_by": "git ls-remote origin + GitHub REST API (read-only)",
+  "branch_protection": "NONE: GET /branches/main/protection returned 404 'Branch not protected'",
+  "ci_status": {
+   "branch_runs": "3 workflows on 06ba3183 (CI Baseline, Cost-barrier drift gate, recovery-determinism): all failure",
+   "failed_checks_on_evidence_commit": [
+    "Format + Lint (Ruff): ruff format --check fails repo-wide (621 files); the three WP-003-03 scripts already pass",
+    "Type check (Mypy strict): failure",
+    "Tests + Coverage (pytest, fast): failure",
+    "Security audit (pip-audit): failure",
+    "Reproduce the cost-barrier artefacts: failure",
+    "Rehearse the recovery lane in a clean checkout: failure",
+    "Smoke PR-pipeline: failure at 'Set up job' (infrastructure, before any repo step)"
+   ],
+   "main_baseline": "origin/main 5e6f9632: every CI Baseline run since 2026-07-10 is failure (5e6f9632, 767462c6, 81670670, 99eeea60, c0c057b1), so the red pipeline predates this branch"
+  },
+  "commits_ahead_of_main": 487,
+  "commits_pending": 0,
+  "default_branch_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+  "local_branch": "wp/isolation-005",
+  "local_head_sha": "06ba31832a4e33f18c3de46516af75e5b6e14d0f",
+  "main_synced": "NO",
+  "merge_result": "NOT_MERGED: the PR is open and mergeable, but the CI pipeline is red on this branch and red on main since July 2026; merging on a red pipeline is not a quality control. No protection bypass was used and no force push was made.",
+  "pull_request_url": "https://github.com/Extr3sao/bot_crypto/pull/17",
+  "push_result": "ok (exit 0): new branch wp/isolation-005 -> wp/isolation-005, 487 commits, no force",
+  "receipt_note": "local_head_sha is the evidence commit that was pushed and observed on origin; the commit that carries this record and VERIFICATION.json comes after it and changes no evidence file.",
+  "remote_branch": "wp/isolation-005",
+  "remote_head_sha": "06ba31832a4e33f18c3de46516af75e5b6e14d0f",
+  "remote_repository_confirmed": "git remote -v = https://github.com/Extr3sao/bot_crypto.git; GitHub reports it as Extr3sao/bot_crypto, default branch main. Extr3sao/Bot-Trading also exists (main cadb0f08) and is a different repository: its tree is an agent-configuration repo (AGENTS.md, docs, commands) with 468 files and no trading_bot package, so it is not this project's remote.",
+  "repository": "https://github.com/Extr3sao/bot_crypto.git",
+  "sync_status": "REMOTE_BRANCH_SYNCED",
+  "verification_timestamp": "2026-10-21T19:45:00Z"
+ },
  "paper": {
   "committed_decisions": 480,
   "committed_orders": 0,
@@ -155,9 +296,9 @@
   "blocked": [],
   "evidence_sha": null,
   "failed": [],
-  "negative_controls_rejected": null,
-  "negative_controls_total": null,
-  "verdict": "NOT_RUN"
+  "negative_controls_rejected": 11,
+  "negative_controls_total": 11,
+  "verdict": "PASS"
  },
  "work_package": "WP-003-03"
 }

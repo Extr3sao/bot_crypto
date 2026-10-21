@@ -1571,3 +1571,67 @@ los dos informes (`4c322d5b`), y la suite de aceptación se ejecuta sin ningún 
 El recibo `VERIFICATION.json` de este commit juzga `4c322d5b`: **PASS**, 16/16 checks,
 **8/8 controles negativos rechazados**, 51 ficheros de evidencia dentro del commit y 49
 cubiertos por el manifiesto. Re-ejecutado sobre el propio commit del recibo → **PASS**.
+
+---
+
+## Addendum 2026-10-21 — WP-003-03: PAPER real y sincronización con GitHub
+
+**Rama `wp/isolation-005`.** Base medida: `b82b487a` (aislamiento RFC-005, verificado de
+nuevo: 16/16 checks). Remoto comprobado con `git remote -v` = `https://github.com/Extr3sao/bot_crypto.git`
+(no `Bot-Trading`, que es otro repositorio: 468 ficheros de configuración de agentes, sin
+`trading_bot`). `origin/main` = `5e6f9632`; la rama es su descendiente directa (486 commits al
+empezar, 487 al cerrar), sin divergencia ni force push.
+
+**Qué se ejecutó (no tests unitarios).** `scripts/paper_e2e_lab.py` compone el runtime
+autoritativo (`AutonomousPaperRuntime`) y lo conduce sobre klines 1h **registradas** de
+`data/edge07/holdout-1h` (BTC/ETH/SOL, sha256 contra `_FETCH_MANIFEST.json`), con la política de
+aislamiento de RFC-005 instalada en cada proceso hijo.
+
+| escenario | decisiones | TRADE | NO_TRADE | órdenes | fills abiertos/cerrados |
+| --- | --- | --- | --- | --- | --- |
+| E2E-COMMITTED (ledger comprometido) | 480 | 0 | 479 (+1 SHADOW) | **0** | 0 / 0 |
+| E2E-SCENARIO (ledger de escenario declarado) | 480 | 32 | 448 | **23** | 21 / 21 |
+| E2E-RESTART (persistencia + reconciliación) | 120 | 0 | 120 | 0 nuevas | 21 / 21 restaurados |
+
+- Contabilidad: `realised_pnl = 87.651526` USDT, comisiones `10.5`, 5/5 identidades del broker
+  ciertas, `equity_delta = 0.0` tras el reinicio, 0 cloids duplicados, reconciliación `RECOVERED`.
+- Decisiones sin fill: 9 TRADE con `broker_returned_no_fill` (razón registrada, no silencio).
+- Aislamiento: 0 eventos de red auditados; política `external_network=False loopback=False
+  order_routes=False`. 8 escenarios de abuso, **13 refusals**, **0 llamadas a venue**, 0 HTTP.
+- Reproducibilidad: digest económico idéntico en dos ejecuciones independientes.
+- Verificación independiente (`scripts/verify_paper_e2e.py`, separada del builder): **PASS**,
+  18/18 checks, **11/11 controles negativos rechazados**, evidencia juzgada en `189ffd31`.
+
+**Limitaciones que no se convierten en PASS.**
+
+- `OS_SANDBOX = NOT_AVAILABLE`: barrera por proceso (audit hook). En Windows el self-pipe de
+  `asyncio` usa un socketpair loopback, así que el event loop se crea **antes** del hook; la
+  evidencia lo registra (`pre_hook`) y el log de red posterior al hook está vacío.
+- `EXTERNAL_SESSION = NOT_PERFORMED`: la política paper deniega la red, así que una sesión PAPER
+  conectada a un venue no puede existir bajo ella. La validación es con datos registrados.
+- `SPREAD = ESTIMATED` (COST_MODEL_V3 por defecto): el corpus no tiene serie de quotes.
+- El ledger de escenario es un input declarado (`_scenario: true`), **no** evidencia de research;
+  con el ledger comprometido no hay ninguna estrategia admitida para PAPER y por eso no hay fills.
+- `ruff format --check` y el resto del pipeline CI están rojos en todo el repo (621 ficheros a
+  reformatear; `main` lleva rojo desde 2026-07-10). Los tres scripts de este WP sí pasan.
+- `pytest tests/unit/market_data` falla 6 tests **solo si** se exporta `TRADING_BOT_MODE=paper`
+  (el gate de órdenes refuse por diseño); sin esa variable: 140 passed.
+
+**GITHUB_SYNC.** `REMOTE_BRANCH_SYNCED`: `origin/wp/isolation-005` = `189ffd31` (leído con
+`ls-remote`), PR abierto en https://github.com/Extr3sao/bot_crypto/pull/17. `MAIN_SYNCED = NO`:
+no se fusiona sobre un pipeline rojo y `main` no contiene el commit. `DELIVERY_STATUS = BLOCKED`
+por esa razón, no por el código.
+
+**Reanudación verificable.**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+.venv/Scripts/python.exe scripts/paper_e2e_lab.py            # 3 E2E + 8 abusos (~35 s)
+.venv/Scripts/python.exe scripts/make_paper_e2e_reports.py --pytest-log .tmp/pe/pytest.log
+.venv/Scripts/python.exe scripts/verify_paper_e2e.py \
+  --lab reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00303/PAPER_E2E_LAB.json \
+  --bundle reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00303 --repo . \
+  --evidence-sha "$(git rev-parse HEAD)" --repeat .tmp/pe/run1.json \
+  --github-sync reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00303/GITHUB_SYNC.json \
+  --negative-controls --json /tmp/wp00303_verification.json
+```

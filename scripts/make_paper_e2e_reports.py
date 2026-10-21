@@ -344,6 +344,15 @@ def main() -> int:
             if verification.get("verdict") == "PASS"
             else "BLOCKED"
         ),
+        "delivery_status": (
+            "BLOCKED" if str((sync or {}).get("main_synced", "NO")) != "YES" else "DELIVERED"
+        ),
+        "delivery_status_reason": (
+            "the evidence is published on the working branch but main does not contain it; "
+            "the mission requires MAIN_SYNCED=YES before delivery can be declared"
+            if str((sync or {}).get("main_synced", "NO")) != "YES"
+            else "main contains the published commit"
+        ),
         "paper": counts,
         "dimensions": dimensions,
         "github_sync": sync,
@@ -425,6 +434,9 @@ def main() -> int:
         "",
         f"**Decisión: `{final_report['decision']}`.** PAPER únicamente, datos registrados "
         "offline, sin capital real.",
+        "",
+        f"**DELIVERY_STATUS: `{final_report['delivery_status']}`** — "
+        f"{final_report['delivery_status_reason']}.",
         "",
         "## Resultado medido",
         "",
