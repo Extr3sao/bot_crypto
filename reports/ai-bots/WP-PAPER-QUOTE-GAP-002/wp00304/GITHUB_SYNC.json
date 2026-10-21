@@ -11,10 +11,6 @@
   "default_branch": "main",
   "default_branch_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
   "local_main_sha": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
-  "commits_pending": {
-    "branch_vs_remote_at_observation": 0,
-    "local_main_vs_origin_main": 259
-  },
   "push_result": "OK — ffda06d5..4af80104 wp/isolation-005 -> wp/isolation-005 (fast-forward, no force)",
   "pull_request_url": "https://github.com/Extr3sao/bot_crypto/pull/17",
   "pull_request_state": "open",
@@ -36,7 +32,10 @@
       "Tests + Coverage (pytest, fast)": "failure @ Pytest + coverage >= 90%",
       "Smoke PR-pipeline": "failure @ Set up job"
     },
-    "other_runs": {"recovery-determinism": "failure (39676933496)", "cost-barrier": "failure (39676933542)"}
+    "other_runs": {
+      "recovery-determinism": "failure (39676933496)",
+      "cost-barrier": "failure (39676933542)"
+    }
   },
   "platform_merge_signal": {
     "mergeable_state_at_ffda06d5": "unstable",
@@ -47,6 +46,12 @@
   "sync_status": "REMOTE_BRANCH_SYNCED",
   "main_synced": "NO",
   "false_success": 0,
-  "verification_timestamp_utc": "2026-10-21T23:52:00Z",
-  "note": "El SHA fue leído con ls-remote después del push. Este fichero se publica en un commit posterior, así que el tip remoto queda un commit por delante de lo aquí registrado: es un desfase de construcción, no una rama sin publicar. Ningún dato de sincronización de este WP se ha tomado de la narrativa anterior."
+  "note": "El SHA fue leído con ls-remote después del push. Este fichero se publica en un commit posterior, así que el tip remoto queda un commit por delante de lo aquí registrado: es un desfase de construcción, no una rama sin publicar. Ningún dato de sincronización de este WP se ha tomado de la narrativa anterior.",
+  "verification_timestamp": "2026-10-21T23:52:00Z",
+  "commits_pending_detail": {
+    "branch_vs_remote_at_observation": 0,
+    "local_main_vs_origin_main": 259
+  },
+  "commits_pending": 0,
+  "main_commits_pending": 259
 }

@@ -212,15 +212,15 @@ Ninguna de las cinco es una decisión técnica reversible dentro de este work pa
 | `repository` | `https://github.com/Extr3sao/bot_crypto.git` |
 | `local_branch` | `wp/isolation-005` |
 | `remote_branch` | `origin/wp/isolation-005` |
-| `local_head_sha` | `e450a238` (al escribir este informe) → ver `GITHUB_SYNC.json` para el SHA observado tras publicar |
-| `remote_head_sha` | ver `GITHUB_SYNC.json` |
+| `local_head_sha` | `be54120972cd4d182d8f19f12bcbda09452d5892` |
+| `remote_head_sha` | `be54120972cd4d182d8f19f12bcbda09452d5892` |
 | `default_branch_sha` | `5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d` |
-| `commits_pending` | ver `GITHUB_SYNC.json` (`ls-remote` post-push) |
-| `push_result` | ver `GITHUB_SYNC.json` |
+| `commits_pending` | **0** en la rama · **259** entre `main` local y `origin/main` |
+| `push_result` | `OK` — `ffda06d5..be541209` (fast-forward, sin force) |
 | `pull_request_url` | https://github.com/Extr3sao/bot_crypto/pull/17 |
 | `merge_result` | **NOT_MERGED** — 7/7 checks en rojo |
-| `sync_status` | `REMOTE_BRANCH_SYNCED` para la rama · `MAIN_SYNCED = NO` |
-| `verification_timestamp` | 2026-10-21 (UTC) |
+| `sync_status` | `REMOTE_BRANCH_SYNCED` · `MAIN_SYNCED = NO` |
+| `verification_timestamp` | `2026-10-21T23:59:00Z` |
 
 El SHA de la rama se registra **después** de publicar, en el fichero `GITHUB_SYNC.json` que se añade en un commit posterior: un commit no puede contener su propio hash, así que el registro nombra el tip que `ls-remote` devolvió y declara el desfase de 1 commit por construcción.
 

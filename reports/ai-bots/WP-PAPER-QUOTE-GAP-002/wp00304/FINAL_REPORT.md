@@ -96,15 +96,15 @@ Con P1–P6 hechos, la PR pasa de 493 commits a 234 y de 7 checks rojos a 0; ent
 | `repository` | `https://github.com/Extr3sao/bot_crypto.git` |
 | `local_branch` | `wp/isolation-005` |
 | `remote_branch` | `origin/wp/isolation-005` |
-| `local_head_sha` | el de `GITHUB_SYNC.json` (se escribe tras publicar) |
-| `remote_head_sha` | `ls-remote --heads origin wp/isolation-005` |
+| `local_head_sha` | `be54120972cd4d182d8f19f12bcbda09452d5892` |
+| `remote_head_sha` | `be54120972cd4d182d8f19f12bcbda09452d5892` |
 | `default_branch_sha` | `5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d` |
-| `commits_pending` | 0 en la rama tras el push; **259** entre `main` local y `origin/main` |
-| `push_result` | ver `GITHUB_SYNC.json` |
+| `commits_pending` | **0** en la rama · **259** entre `main` local y `origin/main` |
+| `push_result` | `OK` — `ffda06d5..be541209` (fast-forward, sin force) |
 | `pull_request_url` | https://github.com/Extr3sao/bot_crypto/pull/17 |
 | `merge_result` | `NOT_MERGED` — gates rojos |
-| `sync_status` | `REMOTE_BRANCH_SYNCED` |
-| `verification_timestamp` | 2026-10-21 (UTC) |
+| `sync_status` | `REMOTE_BRANCH_SYNCED` · `MAIN_SYNCED = NO` |
+| `verification_timestamp` | `2026-10-21T23:59:00Z` |
 
 Un commit no puede contener su propio SHA: el registro nombra el tip que `ls-remote` devolvió **después** del push y declara el desfase de un commit por construcción.
 
