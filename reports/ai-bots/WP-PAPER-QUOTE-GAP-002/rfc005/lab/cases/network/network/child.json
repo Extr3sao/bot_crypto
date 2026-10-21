@@ -1,0 +1,95 @@
+{
+ "attempts": [
+  {
+   "args": "('api.binance.com', 443, 0, 1, 0)",
+   "decision": "DENY",
+   "event": "socket.getaddrinfo",
+   "host": "api.binance.com",
+   "pid": 30448,
+   "reason": "policy 'paper' denies socket.getaddrinfo"
+  },
+  {
+   "args": "('127.0.0.1', 9, 0, 1, 0)",
+   "decision": "DENY",
+   "event": "socket.getaddrinfo",
+   "host": "127.0.0.1",
+   "pid": 30448,
+   "reason": "policy 'paper' denies socket.getaddrinfo"
+  },
+  {
+   "args": "('api.binance.com', 443, 0, 0, 0)",
+   "decision": "DENY",
+   "event": "socket.getaddrinfo",
+   "host": "api.binance.com",
+   "pid": 30448,
+   "reason": "policy 'paper' denies socket.getaddrinfo"
+  },
+  {
+   "args": "('localhost', 80, 0, 0, 0)",
+   "decision": "DENY",
+   "event": "socket.getaddrinfo",
+   "host": "localhost",
+   "pid": 30448,
+   "reason": "policy 'paper' denies socket.getaddrinfo"
+  },
+  {
+   "args": "('https://api.binance.com/api/v3/ping', None, {}, 'GET')",
+   "decision": "DENY",
+   "event": "urllib.Request",
+   "host": "https://api.binance.com/api/v3/ping",
+   "pid": 30448,
+   "reason": "policy 'paper' denies urllib.Request"
+  },
+  {
+   "args": "(<http.client.HTTPSConnection object at 0x000002BB9DD23CD0>, 'fapi.binance.com', 443)",
+   "decision": "DENY",
+   "event": "http.client.connect",
+   "host": null,
+   "pid": 30448,
+   "reason": "policy 'paper' denies http.client.connect"
+  }
+ ],
+ "denied": 6,
+ "mode": "network",
+ "pid": 30448,
+ "policy": {
+  "external_network": false,
+  "loopback_network": false,
+  "mode": "paper",
+  "order_routes": false,
+  "source": "policy_for_mode"
+ },
+ "result": {
+  "external_connect": {
+   "code": "ISO_EXTERNAL_NETWORK",
+   "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'api.binance.com': policy 'paper' denies socket.getaddrinfo",
+   "outcome": "DENIED"
+  },
+  "external_dns": {
+   "code": "ISO_EXTERNAL_NETWORK",
+   "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'api.binance.com': policy 'paper' denies socket.getaddrinfo",
+   "outcome": "DENIED"
+  },
+  "http_client": {
+   "code": "ISO_EXTERNAL_NETWORK",
+   "detail": "ISO_EXTERNAL_NETWORK: http.client.connect to None: policy 'paper' denies http.client.connect",
+   "outcome": "DENIED"
+  },
+  "loopback_connect": {
+   "code": "ISO_EXTERNAL_NETWORK",
+   "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to '127.0.0.1': policy 'paper' denies socket.getaddrinfo",
+   "outcome": "DENIED"
+  },
+  "loopback_dns": {
+   "code": "ISO_EXTERNAL_NETWORK",
+   "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'localhost': policy 'paper' denies socket.getaddrinfo",
+   "outcome": "DENIED"
+  },
+  "urllib": {
+   "code": "ISO_EXTERNAL_NETWORK",
+   "detail": "ISO_EXTERNAL_NETWORK: urllib.Request to 'https://api.binance.com/api/v3/ping': policy 'paper' denies urllib.Request",
+   "outcome": "DENIED"
+  }
+ },
+ "status": "RAN"
+}

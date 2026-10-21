@@ -1,0 +1,18 @@
+{
+  "bot_id": "BOT-CTX-01",
+  "run_id": "cca50702b1df",
+  "image_mode": "text_only",
+  "prompt_version": "aibot-ctx-prompt/1",
+  "snapshots": [
+    {
+      "decision_time_ms": 1791900000000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1791896400000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "ced227ceb3f4ed37c3f6a5599e5631f62fbe9939b18b556354b26b75fc475ffc"
+    }
+  ]
+}

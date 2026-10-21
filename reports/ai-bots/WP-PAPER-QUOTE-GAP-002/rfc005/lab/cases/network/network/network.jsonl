@@ -1,0 +1,6 @@
+{"event": "socket.getaddrinfo", "host": "api.binance.com", "args": "('api.binance.com', 443, 0, 1, 0)", "decision": "DENY", "reason": "policy 'paper' denies socket.getaddrinfo", "pid": 30448}
+{"event": "socket.getaddrinfo", "host": "127.0.0.1", "args": "('127.0.0.1', 9, 0, 1, 0)", "decision": "DENY", "reason": "policy 'paper' denies socket.getaddrinfo", "pid": 30448}
+{"event": "socket.getaddrinfo", "host": "api.binance.com", "args": "('api.binance.com', 443, 0, 0, 0)", "decision": "DENY", "reason": "policy 'paper' denies socket.getaddrinfo", "pid": 30448}
+{"event": "socket.getaddrinfo", "host": "localhost", "args": "('localhost', 80, 0, 0, 0)", "decision": "DENY", "reason": "policy 'paper' denies socket.getaddrinfo", "pid": 30448}
+{"event": "urllib.Request", "host": "https://api.binance.com/api/v3/ping", "args": "('https://api.binance.com/api/v3/ping', None, {}, 'GET')", "decision": "DENY", "reason": "policy 'paper' denies urllib.Request", "pid": 30448}
+{"event": "http.client.connect", "host": null, "args": "(<http.client.HTTPSConnection object at 0x000002BB9DD23CD0>, 'fapi.binance.com', 443)", "decision": "DENY", "reason": "policy 'paper' denies http.client.connect", "pid": 30448}

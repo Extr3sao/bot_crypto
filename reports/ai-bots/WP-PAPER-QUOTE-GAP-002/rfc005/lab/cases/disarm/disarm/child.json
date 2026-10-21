@@ -1,0 +1,53 @@
+{
+ "attempts": [
+  {
+   "args": "('api.binance.com', 443, 0, 0, 0)",
+   "decision": "DENY",
+   "event": "socket.getaddrinfo",
+   "host": "api.binance.com",
+   "pid": 29860,
+   "reason": "policy 'paper' denies socket.getaddrinfo"
+  },
+  {
+   "args": "('api.binance.com', 443, 0, 0, 0)",
+   "decision": "DENY",
+   "event": "socket.getaddrinfo",
+   "host": "api.binance.com",
+   "pid": 29860,
+   "reason": "policy 'paper' denies socket.getaddrinfo"
+  }
+ ],
+ "denied": 2,
+ "mode": "disarm",
+ "pid": 29860,
+ "policy": {
+  "external_network": false,
+  "loopback_network": false,
+  "mode": "paper",
+  "order_routes": false,
+  "source": "policy_for_mode"
+ },
+ "result": {
+  "after_env_flip": {
+   "code": "ISO_EXTERNAL_NETWORK",
+   "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'api.binance.com': policy 'paper' denies socket.getaddrinfo",
+   "outcome": "DENIED"
+  },
+  "before": {
+   "code": "ISO_EXTERNAL_NETWORK",
+   "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'api.binance.com': policy 'paper' denies socket.getaddrinfo",
+   "outcome": "DENIED"
+  },
+  "mutated_policy": {
+   "code": "ISO_POLICY_REDEFINED",
+   "detail": "ISO_POLICY_REDEFINED: already installed as {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode'}, refused {'mode': 'paper', 'exter",
+   "outcome": "REFUSED"
+  },
+  "reinstall_live": {
+   "code": "ISO_POLICY_REDEFINED",
+   "detail": "ISO_POLICY_REDEFINED: already installed as {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode'}, refused {'mode': 'live', 'extern",
+   "outcome": "REFUSED"
+  }
+ },
+ "status": "RAN"
+}

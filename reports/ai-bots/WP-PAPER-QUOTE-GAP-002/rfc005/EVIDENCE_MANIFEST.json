@@ -1,0 +1,262 @@
+{
+ "anchor": "the commit that contains this manifest; verify with verify_isolation.py --evidence-sha <sha>",
+ "bundle": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc005",
+ "file_count": 49,
+ "files": [
+  {
+   "bytes": 2874,
+   "path": "BASELINE.json",
+   "sha256": "2be6169023ba9da66b03a99ae98cf9f0669f5dc8c7ad28e3b495ee0ba53b8101"
+  },
+  {
+   "bytes": 6110,
+   "path": "EXTERNAL_ORDER_PREVENTION.json",
+   "sha256": "6aebe8ed7de59ab778c341c6fd257f96c0393f150784ef46841c23b2f1aa0696"
+  },
+  {
+   "bytes": 18457,
+   "path": "FINAL_REPORT.json",
+   "sha256": "5876beea968b5bc80780b2df951ac21e01debc47f64eb55f0e63b072086e9a61"
+  },
+  {
+   "bytes": 4513,
+   "path": "FINAL_REPORT.md",
+   "sha256": "94e01384785ba71f738245b6041fcbdf6aa2ad21b069374977b3bbd498f10bef"
+  },
+  {
+   "bytes": 566,
+   "path": "FLAKE_RERUN.json",
+   "sha256": "1c942b5497780b82ed07cc238767954586825ba97786fd64f0fcebab89bd4ca9"
+  },
+  {
+   "bytes": 3452,
+   "path": "ISOLATION_CONTRACT.md",
+   "sha256": "37931fce21cfd8fa8e07232f8ef11dfb3602528134a9b085a7d80dc2f5ff829e"
+  },
+  {
+   "bytes": 69225,
+   "path": "ISOLATION_INVENTORY.json",
+   "sha256": "8e2b13ea5c0b47e87fca280019744cfa94883175c2236ed01fe9836bf878816f"
+  },
+  {
+   "bytes": 25793,
+   "path": "ISOLATION_LAB.json",
+   "sha256": "2b34d655b70b2a7db10f178258d0eb057ba8630298c77217845a8cc4e86a304e"
+  },
+  {
+   "bytes": 614,
+   "path": "lab/cases/app-route/app-route/child.json",
+   "sha256": "9287cde9ae9a715d0e709a5c35fb2ab07f746023975d6e56e7837f3952d78ae5"
+  },
+  {
+   "bytes": 803,
+   "path": "lab/cases/ccxt-constructor/ccxt-constructor/child.json",
+   "sha256": "34a212441e5d2e326a0756cd55d0d1e2a07b9690f784d4e42c14b97684f568a1"
+  },
+  {
+   "bytes": 192,
+   "path": "lab/cases/ccxt-constructor/ccxt-constructor/network.jsonl",
+   "sha256": "fb192af4cc524cdd3fee7ae30b96a3f26fddae15d8a4010492644eac3c874d69"
+  },
+  {
+   "bytes": 1745,
+   "path": "lab/cases/disarm/disarm/child.json",
+   "sha256": "90876a4c8f0145ce309c03a917e86a2a458c19d11d94abb276558a35aca4068d"
+  },
+  {
+   "bytes": 384,
+   "path": "lab/cases/disarm/disarm/network.jsonl",
+   "sha256": "c573e683334b0fbdce5548f1e7bf32336dc04fb04cba66103be79e2e16c33120"
+  },
+  {
+   "bytes": 2905,
+   "path": "lab/cases/network/network/child.json",
+   "sha256": "37a9a439c55beda78c79e794627737aa9b3d9174b58a73cd8f92f52c92420d24"
+  },
+  {
+   "bytes": 1201,
+   "path": "lab/cases/network/network/network.jsonl",
+   "sha256": "d8ca80a531e2ee6a76ca8cb11b426413f7cc1fda3a2b38ff6574387ee44d95f9"
+  },
+  {
+   "bytes": 881,
+   "path": "lab/cases/order-ccxt/order-ccxt/child.json",
+   "sha256": "2a3d9933f9e63a76318b589454bd53c6205910f375d25756a2526a0d2dee5982"
+  },
+  {
+   "bytes": 1224,
+   "path": "lab/cases/order-futures/order-futures/child.json",
+   "sha256": "3d518c2aaf260cb4fc32e2ab903f8b9ffcc73dbb7978be5cb5af1252def9f4f2"
+  },
+  {
+   "bytes": 881,
+   "path": "lab/cases/order-spot/order-spot/child.json",
+   "sha256": "54e05560247055b24ef13607088582a0cf2f13caa6238244c5c35424f011c07f"
+  },
+  {
+   "bytes": 717,
+   "path": "lab/cases/runtime/runtime/child.json",
+   "sha256": "d52ac98811e9411f1c2ec209def053bd4e6fb034ca8f6b43befd2241f5eca9ac"
+  },
+  {
+   "bytes": 434,
+   "path": "lab/cases/runtime/runtime/runtime/BOT_BENCHMARK.csv",
+   "sha256": "0a1ee0f61b841e72f006d0c347fa5468d63923501fe18888e5adb5689a1eaf0f"
+  },
+  {
+   "bytes": 2541,
+   "path": "lab/cases/runtime/runtime/runtime/BOT_CAPABILITY_REGISTRY.json",
+   "sha256": "c41a29b92f1263946ad235c2777f62f6c96ea5ba51705f46f49129522f07467a"
+  },
+  {
+   "bytes": 1949,
+   "path": "lab/cases/runtime/runtime/runtime/RUN_REPORT.json",
+   "sha256": "48aeca1ff442665eaf05cd5de0dc5ed58f31a4854da4349e9a5bc1ea68db21d1"
+  },
+  {
+   "bytes": 634,
+   "path": "lab/cases/runtime/runtime/runtime/RUN_REPORT.md",
+   "sha256": "9ee789f7e4ba15b68f0da11f7ee6e8cc32db1da85416d1493b34bdcf35bd7b51"
+  },
+  {
+   "bytes": 11635,
+   "path": "lab/cases/runtime/runtime/runtime/runs/bot-ctx-01/BOT-CTX-01_DECISIONS.jsonl",
+   "sha256": "ff3e69030a34358667026e0290877266bebd0e4c152547ac665bebedfcdad001"
+  },
+  {
+   "bytes": 4917,
+   "path": "lab/cases/runtime/runtime/runtime/runs/bot-ctx-01/BOT_DECISION_TRACE.jsonl",
+   "sha256": "a3d8ecf8fe74804b6ba7e7025981ca728ec7857924698cfbde2f83ddecde2ec2"
+  },
+  {
+   "bytes": 738,
+   "path": "lab/cases/runtime/runtime/runtime/runs/bot-ctx-01/MODEL_INVOCATIONS.jsonl",
+   "sha256": "0570d2f86da2d6bf72f9811f1dbbbb015407b44fba95b9cadf1183eeffcb0857"
+  },
+  {
+   "bytes": 5637,
+   "path": "lab/cases/runtime/runtime/runtime/runs/bot-ctx-01/SUMMARY.json",
+   "sha256": "815f13edbbec641c0595ed9a9db9339f28c7867f6273e1b40146fc10731051f1"
+  },
+  {
+   "bytes": 501,
+   "path": "lab/cases/runtime/runtime/runtime/runs/bot-ctx-01/VISION_SNAPSHOT_MANIFEST.json",
+   "sha256": "c4a4e5003bd00c2365a0727fc87cc2cbe0d6b86e148614d798b8b632b5376bc2"
+  },
+  {
+   "bytes": 11699,
+   "path": "lab/cases/runtime/runtime/runtime/runs/bot-vis-01/BOT-VIS-01_DECISIONS.jsonl",
+   "sha256": "646dc550cfc5526e750e8b3a25b26b937635fa45fbd945e825a153f87997ce93"
+  },
+  {
+   "bytes": 4913,
+   "path": "lab/cases/runtime/runtime/runtime/runs/bot-vis-01/BOT_DECISION_TRACE.jsonl",
+   "sha256": "e7841632e4aa7a1fc700a7d03097547ecb15967eb03bf59defbc7f285e11db85"
+  },
+  {
+   "bytes": 737,
+   "path": "lab/cases/runtime/runtime/runtime/runs/bot-vis-01/MODEL_INVOCATIONS.jsonl",
+   "sha256": "a46b25b06bc9ffabb5b124775f1ee254523652154e405f34c82643f95ca7c293"
+  },
+  {
+   "bytes": 58011,
+   "path": "lab/cases/runtime/runtime/runtime/runs/bot-vis-01/snapshots/40f5f24d31c99c3ff9df579aedaa9d84a7fa1c919584f93d8c163d99790f4f36.png",
+   "sha256": "f8c40f2deb4548feed084e722db90db7ad8ae299a79dd8da4d5c34627bd68973"
+  },
+  {
+   "bytes": 5633,
+   "path": "lab/cases/runtime/runtime/runtime/runs/bot-vis-01/SUMMARY.json",
+   "sha256": "f7846f5ce223d26070f20c6e92bc406bd782580c7de3149d7377d6ac30eb95b6"
+  },
+  {
+   "bytes": 567,
+   "path": "lab/cases/runtime/runtime/runtime/runs/bot-vis-01/VISION_SNAPSHOT_MANIFEST.json",
+   "sha256": "f1456bfcacde51f1011611267ff517c666e96eebe37799edf06e539069d49ccd"
+  },
+  {
+   "bytes": 777,
+   "path": "lab/cases/subprocess/subprocess/child.json",
+   "sha256": "6d5fc5d025c8f33ee29951e7aef8b572c86385ded7f2024cff405e99f09b91ea"
+  },
+  {
+   "bytes": 192,
+   "path": "lab/cases/subprocess/subprocess/network.jsonl",
+   "sha256": "25f80af28d58f4b367ad57a9d9e203335c70ef1d901e3c9c15d224878af48028"
+  },
+  {
+   "bytes": 25793,
+   "path": "lab/ISOLATION_LAB.json",
+   "sha256": "2b34d655b70b2a7db10f178258d0eb057ba8630298c77217845a8cc4e86a304e"
+  },
+  {
+   "bytes": 931,
+   "path": "logs/acceptance_suite.txt",
+   "sha256": "9738d317017e8ba8cc226fd11f5b3b44d8c7846519bbd660f3d2419e78c4885f"
+  },
+  {
+   "bytes": 119,
+   "path": "logs/flake_baseline_alone.txt",
+   "sha256": "9ca6201737370a7a8c2c24f6c845aada52d441cde64d7cd807bf560bd671dd4b"
+  },
+  {
+   "bytes": 119,
+   "path": "logs/flake_head_alone.txt",
+   "sha256": "b7dce493424914ab570aa92a1f23031bcb91cfbed18912cecaedde7a40041f4a"
+  },
+  {
+   "bytes": 44,
+   "path": "logs/mypy.txt",
+   "sha256": "46984ca20bf69f7b14ec1fd9bd82101d56a4e109e68f016fd2a04f22481b09b3"
+  },
+  {
+   "bytes": 194308,
+   "path": "logs/repo_wide_baseline_e661c32.txt",
+   "sha256": "35a873a2f04364cf22298f553bff73373ae2d5507cb3489e8ef59520d187169f"
+  },
+  {
+   "bytes": 200804,
+   "path": "logs/repo_wide_suite.txt",
+   "sha256": "bd23a1586e34445ccf0e1c5c9b37a3dd18bee7b06581f82858149aa5276a713b"
+  },
+  {
+   "bytes": 19,
+   "path": "logs/ruff.txt",
+   "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+  },
+  {
+   "bytes": 6548,
+   "path": "NETWORK_ISOLATION_AUDIT.json",
+   "sha256": "af96b43478c63719f36f0e115cdef14ebb961a3f4b7f705a98eef555ba9588f8"
+  },
+  {
+   "bytes": 17399,
+   "path": "RUN_REPORT.json",
+   "sha256": "748cf9508ff5c0aaf434fc0de3bdcbaf40eca849b3b00bc5c801368ddd6b7d1f"
+  },
+  {
+   "bytes": 1974,
+   "path": "RUN_REPORT.md",
+   "sha256": "a42f5e52fc75ca3b81c9515ea97a144402a1172e0e78f783bc975edae24614f2"
+  },
+  {
+   "bytes": 4026,
+   "path": "runtime_authority_map.md",
+   "sha256": "214a7f75846374ac392b90a49cf95facc788c37523c39895cc262377c18d1195"
+  },
+  {
+   "bytes": 2850,
+   "path": "SUITE_IDENTITY.json",
+   "sha256": "9ee4e59fd758a6ea89dd4ae477a24b7bdc8a96699e0b025112d0a1fed5eea79a"
+  }
+ ],
+ "generated_at_utc": "2026-10-21T17:50:25Z",
+ "gitignored_files": [],
+ "hash_policy": "sha256 of the text with CRLF normalised to LF",
+ "hidden_by_ignore_rules": 0,
+ "historical": false,
+ "note": "this manifest and the verifier replay are not listed: a file cannot hash itself",
+ "run_id": "20261021T165123Z-18208",
+ "schema": "rfc005-evidence-manifest/1",
+ "source_commit": "0bdda77d4b4c66273c4cda2b23b6ef0dcae3a7c8",
+ "total_bytes": 708986
+}

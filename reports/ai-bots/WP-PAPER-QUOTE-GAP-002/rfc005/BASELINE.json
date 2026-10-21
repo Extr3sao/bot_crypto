@@ -1,0 +1,68 @@
+{
+ "schema": "rfc005-baseline/1",
+ "captured_at_utc": "2026-10-21T19:05:00Z",
+ "rfc": "RFC-PAPER-ISOLATION-005",
+ "wp": "WP-003-02",
+ "branch": "wp/isolation-005",
+ "parent_commit": "e661c32",
+ "parent_note": "HEAD of RFC-PAPER-RECOVERY-004 (wp/recovery-004) when this work package started",
+ "worktree": "bot-freebuff-recovery-004",
+ "remote_push": "none",
+ "git_status_at_start": "clean except .tmp/ scratch",
+ "inventory_at_start": {
+  "script": "scripts/isolation_inventory.py",
+  "order_routes": 13,
+  "runtime_order_routes": 11,
+  "network_importing_runtime_modules": 15,
+  "entrypoints": 404,
+  "lane_entrypoints": 8
+ },
+ "controls_found_before_this_wp": [
+  {
+   "control": "trading_bot.app place-order --confirm-live",
+   "where": "src/trading_bot/app.py::_cmd_place_order",
+   "what_it_answers": "did an operator ask for a live order",
+   "gap": "it is a CLI argument, not a process capability; an adapter called directly never sees it"
+  },
+  {
+   "control": "runtime.mode == live",
+   "where": "src/trading_bot/app.py (three call sites)",
+   "what_it_answers": "what the configuration declares",
+   "gap": "configuration is data; a paper process can still import and call an adapter"
+  },
+  {
+   "control": "LiveTradingGate checklist",
+   "where": "src/trading_bot/execution/live_gate.py",
+   "what_it_answers": "whether the live checklist is satisfied",
+   "gap": "validates settings, not outbound sockets; does not stop ccxt from opening a session"
+  },
+  {
+   "control": "RFC004 laboratory deny hook",
+   "where": "scripts/recovery_child.py::_deny_network",
+   "what_it_answers": "no socket in the recovery laboratory",
+   "gap": "test-only script; never installed by a runtime entry point"
+  }
+ ],
+ "known_gaps_at_baseline": [
+  "no runtime-level network deny: ccxt and urllib can open sockets from any imported adapter",
+  "no order gate independent of CLI flags and configuration",
+  "ccxt constructor behaviour was asserted from an RFC003 narrative, not measured on this version",
+  "the repository-wide suite is not green at the parent commit (recorded by RFC004 with 101 failures + 14 collection errors in research/ops)"
+ ],
+ "expected_failures_before_editing": [
+  "ISO-01..ISO-03 would reach the fake venue: no code refuses a direct create_order call",
+  "ISO-05..ISO-07 would attempt real DNS/connect: no audit hook is installed by a runtime",
+  "ISO-04 would still exit 2, but only because of the CLI flag and the mode check",
+  "ISO-08 would reinstall a permissive policy without objection: install() did not exist",
+  "ISO-09 would show the same residual: a per-process hook cannot cover a child"
+ ],
+ "measured_after_implementation": {
+  "order_gate_refusals": 7,
+  "audited_network_attempts": 16,
+  "audited_network_denied": 16,
+  "external_attempts_allowed": 0,
+  "real_orders": 0,
+  "credentials_used": 0,
+  "os_sandbox": "NOT_AVAILABLE"
+ }
+}

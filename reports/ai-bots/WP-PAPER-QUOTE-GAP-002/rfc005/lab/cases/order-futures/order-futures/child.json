@@ -1,0 +1,32 @@
+{
+ "attempts": [],
+ "denied": 0,
+ "mode": "order-futures",
+ "pid": 40052,
+ "policy": {
+  "external_network": false,
+  "loopback_network": false,
+  "mode": "paper",
+  "order_routes": false,
+  "source": "policy_for_mode"
+ },
+ "result": {
+  "client_place_order": {
+   "code": "ISO_ORDER_ROUTE",
+   "detail": "ISO_ORDER_ROUTE: market_data.BitunixFuturesClient.place_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode'",
+   "outcome": "REFUSED"
+  },
+  "connector_cancel_order": {
+   "code": "ISO_ORDER_ROUTE",
+   "detail": "ISO_ORDER_ROUTE: market_data.BitunixFuturesConnector.cancel_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_m",
+   "outcome": "REFUSED"
+  },
+  "connector_create_order": {
+   "code": "ISO_ORDER_ROUTE",
+   "detail": "ISO_ORDER_ROUTE: market_data.BitunixFuturesConnector.create_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_m",
+   "outcome": "REFUSED"
+  },
+  "http_requests": 0
+ },
+ "status": "RAN"
+}

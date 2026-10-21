@@ -1,0 +1,68 @@
+{
+  "schema_version": "AIBOT_RUN_REPORT_V1",
+  "generated_at": "2026-10-21T16:51:13.396304+00:00",
+  "mode": "mock",
+  "status": "EXECUTED",
+  "real_model_called": false,
+  "data": {
+    "source": "data/edge08/universe-1h (Binance 1h, committed)",
+    "symbols": [
+      "AAVEUSDT",
+      "UNIUSDT"
+    ],
+    "limit_bars": 150
+  },
+  "bots": [
+    {
+      "bot_id": "BOT-VIS-01",
+      "symbols": "AAVEUSDT+UNIUSDT",
+      "model_status": "MOCK_TEST",
+      "prompt_version": "ai-vision-prompt/2",
+      "calls": 1,
+      "fills": 1,
+      "closed_trades": 1,
+      "net_realised_usdt": 2.448196,
+      "gross_realised_usdt": 3.448196,
+      "costs_usdt": 1.601361,
+      "final_equity_usdt": 10002.448196,
+      "drawdown_pct": 0.0,
+      "stop_reason": "MAX_CALLS_REACHED",
+      "images_attached": 1
+    },
+    {
+      "bot_id": "BOT-CTX-01",
+      "symbols": "AAVEUSDT+UNIUSDT",
+      "model_status": "MOCK_TEST",
+      "prompt_version": "aibot-ctx-prompt/1",
+      "calls": 1,
+      "fills": 1,
+      "closed_trades": 1,
+      "net_realised_usdt": 2.448196,
+      "gross_realised_usdt": 3.448196,
+      "costs_usdt": 1.601361,
+      "final_equity_usdt": 10002.448196,
+      "drawdown_pct": 0.0,
+      "stop_reason": "MAX_CALLS_REACHED",
+      "images_attached": 0
+    }
+  ],
+  "discarded_chart_dirs": [],
+  "economics": "NOT_EVIDENCE",
+  "isolation": {
+    "policy": {
+      "mode": "paper",
+      "external_network": false,
+      "loopback_network": false,
+      "order_routes": false,
+      "source": "policy_for_mode"
+    },
+    "attempts": 0,
+    "denied": 0,
+    "allowed_loopback": 0,
+    "log_path": "reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc005\\lab\\cases\\runtime\\runtime\\network.jsonl"
+  },
+  "limitations": [
+    "Mock mode answers with a fixed script; it proves plumbing, not edge.",
+    "Historical replay cannot be labelled as prospective evidence."
+  ]
+}

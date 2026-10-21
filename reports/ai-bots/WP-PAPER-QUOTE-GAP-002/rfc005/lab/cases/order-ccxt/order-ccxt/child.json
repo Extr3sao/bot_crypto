@@ -1,0 +1,27 @@
+{
+ "attempts": [],
+ "denied": 0,
+ "mode": "order-ccxt",
+ "pid": 16628,
+ "policy": {
+  "external_network": false,
+  "loopback_network": false,
+  "mode": "paper",
+  "order_routes": false,
+  "source": "policy_for_mode"
+ },
+ "result": {
+  "cancel": {
+   "code": "ISO_ORDER_ROUTE",
+   "detail": "ISO_ORDER_ROUTE: market_data.CCXTExchangeConnector.cancel_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mod",
+   "outcome": "REFUSED"
+  },
+  "create": {
+   "code": "ISO_ORDER_ROUTE",
+   "detail": "ISO_ORDER_ROUTE: market_data.CCXTExchangeConnector.create_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mod",
+   "outcome": "REFUSED"
+  },
+  "venue_calls": []
+ },
+ "status": "RAN"
+}

@@ -1,0 +1,2714 @@
+{
+ "branch": "wp/isolation-005",
+ "counts": {
+  "entrypoints": 404,
+  "network_capabilities": 15,
+  "order_routes": 13
+ },
+ "entrypoints": [
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/active_economic_audit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/aggtrades_experiments.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/ai_bots_003b_verify.py"
+  },
+  {
+   "constructs_lane": true,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/ai_bots_003c_capture.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/ai_bots_003c_verify.py"
+  },
+  {
+   "constructs_lane": true,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/ai_bots_003g_compare.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/ai_bots_003g_paper.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": true,
+   "script": "scripts/ai_bots_003g_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/ai_bots_003h_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/ai_bots_rea_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/ai_bots_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": true,
+   "script": "scripts/ai_bots_verify.py"
+  },
+  {
+   "constructs_lane": true,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/ai_vision_lane.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/ai_vision_smoke.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/alpha001_cost_frontier.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/alpha001_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/alpha001_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/alpha002_capture.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/alpha002_preregister.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/alpha002_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/alpha002_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/alpha003_preregister.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/alpha003_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/alpha003_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/alpha_diversified_v1.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/alpha_diversified_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/alpha_expansion_inventory.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/alpha_expansion_v1.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/alpha_recovery_campaign.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/alpha_recovery_feasibility.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/alpha_recovery_v1_3.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/alpha_recovery_v1_4.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/arp007_oos.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/arp007_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/arp008_post_oos_recovery.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/arp009_exp_021.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/arp010_exp_022.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/arp011_exp_019.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/arp012_verify_exp_019.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/autonomous_paper.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/build_admission_matrix.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/build_strategy_admission.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/campaign_state_view.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cap001_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": true,
+   "script": "scripts/cap001_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cap002_real_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cap002_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": true,
+   "script": "scripts/cap002_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cap003_campaign.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": true,
+   "script": "scripts/cap003_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cap004_campaign_runner.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cap004_supervisor.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": true,
+   "script": "scripts/cap004_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cap004b_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cap004c_migrate.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cap004c_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cap004c_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cap004d_daily_dashboard.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cap004d_health_check.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cap004d_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/check_bdd_fixtures.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/clean_checkout_rehearsal.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cost_barrier.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cost_barrier_adversarial.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cost_barrier_certify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cost_barrier_evidence.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cost_barrier_explorer.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cost_barrier_gate.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cost_barrier_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/cost_drift_monitor.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/dependency_closure.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/dependency_closure_files.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/discovery_candidates.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/economic001_closure.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/economic001_closure_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/economic001_readonly_probe.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge01_ablation.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge01_ablation_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge01_closure_experiments.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge01_closure_report_check.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge01_closure_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge01_mechanism_ablation.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge01_mechanism_ablation_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge01_risk_ablation.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge01_risk_ablation_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge01_robustness_experiments.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge01_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge01_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge01_wp02_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge03_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": true,
+   "script": "scripts/edge03_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge04_closure.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge04_observer.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": true,
+   "script": "scripts/edge04_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge04r_continuity.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge04r_session.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge04r_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge05_closure.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge05_reconcile.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge05_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge05_watchdog.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge05r_regression.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge05r_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge05r_snapshot.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge05r_storage_inventory.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge05r_storage_reclaim.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge06_economics.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge06_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge06_research.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge06_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge06_volume_tenants.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge07_active.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge07_active_barrier.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge07_fetch_holdout.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge07_growth_evidence.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge07_reclaim.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge07_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge07_validate.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge07_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge08_economics.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge08_fetch_universe.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge08_preregister.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge08_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge08_screen.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge08_universe_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge08_validate.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge08_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge09_audit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge09_deliverables.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge09_experiments.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge09_gates.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge09_panel.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge09_preregister.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge09_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge09_sources.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge09_suite_evidence.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge09_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge12_continuity.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge12_gate.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge12_operational.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge12_reports.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge12_runner.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge12_storage.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge12_tests.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge12_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge14_reports.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge14_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge14_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge14r_adversarial.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge14r_economic_comparison.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/edge14r_engine_parity.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge14r_external_engines.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge14r_fee_reconciliation.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/edge14r_fetch_1m.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge14r_jesse_attempt.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge14r_jesse_parity.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/edge14r_oos_preregistration.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/edge14r_paper_execution.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge14r_reports.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge14r_trade_path.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge14r_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge14r_vnpy_backtest.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge15_alphas.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/edge15_oos_preregistration.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge15_paper_lane.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge15_parity_explain.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge15_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge16_adversarial.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge16_artifacts.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge16_capture.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge16_paper_lane.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge16_reports.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge16_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge17_capture.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/edge17_prefix_replay.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge17_reports.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/edge17_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/evidence004_generate.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/evidence004_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003j_analysis.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003j_dataset.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003j_determinism.py"
+  },
+  {
+   "constructs_lane": true,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003j_replay.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003j_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003j_semantic_parity.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003j_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003j_verify_external.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003k_audit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003k_cycle.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003k_determinism.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003k_inventory.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003k_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003k_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003k_select.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003k_verdict.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003k_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003m_compare.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003m_fills.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003m_pipeline.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003m_preregister.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003m_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003m_tape.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/exp_003m_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/fetch_aggtrades_microstructure.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/fetch_alpha_expansion_history.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/fetch_alpha_recovery_extended.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/fetch_baseline_data.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/fetch_diversified_history.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/fetch_microstructure_data.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/forward_collector.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/forward_disk_guard_test.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/forward_final_summary.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/forward_kline_crosscheck.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/forward_paper_coexistence.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/forward_quality_gates.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/forward_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/forward_retention.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/forward_storage_policy.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/forward_streaming_benchmark.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": true,
+   "script": "scripts/isolation_child.py"
+  },
+  {
+   "constructs_lane": true,
+   "imports_ccxt": true,
+   "mentions_place_order": true,
+   "script": "scripts/isolation_inventory.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": true,
+   "script": "scripts/isolation_lab.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/make_quote_gap_evidence.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": true,
+   "script": "scripts/make_recovery_reports.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/make_resume_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/microstructure_admission.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/microstructure_collector.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/microstructure_edge_v2.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/microstructure_experiments.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/multi_family_backtest.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/multi_tf_backtest.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/ops_background_audit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/ops_window_origin.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/ops_windowless_probe.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/paper_lab_dashboard.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/paper_lab_research.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/paper_lab_status.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/paper_lab_verification.py"
+  },
+  {
+   "constructs_lane": true,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/paper_resume_drill.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/pgate035_closure.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/pgate035_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/quote_feed_source.py"
+  },
+  {
+   "constructs_lane": true,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/quote_gap_lab.py"
+  },
+  {
+   "constructs_lane": true,
+   "imports_ccxt": true,
+   "mentions_place_order": true,
+   "script": "scripts/recovery_child.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/recovery_economic_invariance.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/recovery_input_evidence.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": true,
+   "script": "scripts/recovery_lab.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/recovery_run_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/recovery_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/regime_analysis.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/resample_baseline_data.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/research_verification.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc010_baseline_replay.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc010b_analysis.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc010b_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc020_data_audit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc020_future_injection.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc020_htf_stale_audit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc020_leakage_scan.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc020_ledger_regime_audit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc020_provenance.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc020_runtime_validate.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc020_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc021_edge_discovery.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc021_g2_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc021_ledger_pit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc030_beta_diagnostic.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc030_pair_e2e.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc034_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc034_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc035_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc035_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc035s3_closure.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc035s3_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc036_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc036_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc037_adversarial.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc037_reconcile.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc037_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc038_capital.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc038_data.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc038_nulls.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc038_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc038_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc039_data.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": true,
+   "script": "scripts/rfc039_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc040_data.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc040_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc041_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc041_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc042_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": true,
+   "script": "scripts/rfc042_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc043_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": true,
+   "script": "scripts/rfc043_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc044_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": true,
+   "script": "scripts/rfc044_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc046_activate.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc046_audit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc046_campaign.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc046_campaign_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc046_cost_forensics.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc046_economic_gate.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc046_economic_gate_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc046_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc047_builder.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc047_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc048_derive_instruments.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc048_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc048_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc048_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc048v_certify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc048v_falsify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": true,
+   "script": "scripts/rfc048v_runtime_authority.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc049_prepare.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc049_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc049b_admission.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc049b_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc049c_ablation.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc049c_active_audit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc049c_engine.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/rfc049c_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint002_diagnose.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint002_pipeline.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint002_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint002_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint002_stage0.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint002_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint002_vol30_diagnosis.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint023_analysis.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint023_null.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint023_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint024_analysis.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint024_null.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint024_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint025_analysis.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint025_data.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint025_info.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint025_null.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint025_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint025_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint026_exec.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint026_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint027_fetch.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint027_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint027_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint028_fetch.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint028_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint028_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint029_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint029_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint030_fetch.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint030_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint030_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint031_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint031_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint032_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint032_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint033_fetch.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint033_run.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/sprint033_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/st6_close_replay.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": true,
+   "script": "scripts/st6_close_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/st6_forward_regime.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": true,
+   "script": "scripts/st6_forward_regime_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/st6_health_check.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": true,
+   "script": "scripts/st6_scheduler_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/st6_scheduler_witness.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/st6_slot_ledger.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/st6_state_snapshot.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/st6_windows_events.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/start_paper_lab.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/start_paper_trading.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/strategy_baseline_backtest.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/strategy_behavior_audit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/strategy_dynamic_experiment.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/strategy_ecosystem_dashboard.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/strategy_lifecycle_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/strategy_robustness_variants.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/system_daily_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/trade_asymmetry_audit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/venue_execution_research.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": true,
+   "script": "scripts/verify_isolation.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/verify_paper_resume.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/verify_quote_gap.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": true,
+   "script": "scripts/verify_recovery.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/windowless.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp10_active_recovery.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp10_baseline_economic_audit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp10_e1_cost_reality.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp10_e1_decision.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp10_e2_preregistration.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp10_open_blockers.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp10_phase0_wp9_closure.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp10_run_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp10_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp9_ci_audit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp9_disk_budget_audit.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp9_economic_blockers.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp9_m03_m07_readiness.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp9_run_report.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/wp9_runtime_rehearsal.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp9_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": false,
+   "mentions_place_order": false,
+   "script": "scripts/wp_edge_00_verify.py"
+  },
+  {
+   "constructs_lane": false,
+   "imports_ccxt": true,
+   "mentions_place_order": false,
+   "script": "scripts/wp_edge_00b_verify.py"
+  }
+ ],
+ "hosts": [
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "file": "src/trading_bot/market_data/bitunix.py",
+   "host": "api.bitunix.com"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "file": "src/trading_bot/market_data/bitunix_futures.py",
+   "host": "api.bitunix.com"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "file": "src/trading_bot/market_data/minute_collector.py",
+   "host": "api.binance.com"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "file": "src/trading_bot/research/edge03/ingest.py",
+   "host": "api.binance.com"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "file": "src/trading_bot/research/edge09/sources.py",
+   "host": "api.binance.com"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "file": "src/trading_bot/research/edge09/sources.py",
+   "host": "fapi.binance.com"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "file": "src/trading_bot/research/forward/collector.py",
+   "host": "api.binance.com"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "file": "src/trading_bot/research/forward/collector.py",
+   "host": "fapi.binance.com"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "file": "src/trading_bot/research/market_provenance.py",
+   "host": "api.binance.com"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "file": "src/trading_bot/research/market_provenance.py",
+   "host": "api.bybit.com"
+  }
+ ],
+ "network_capabilities": [
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "http.client",
+   "file": "src/trading_bot/app.py",
+   "imports": "http",
+   "module": "trading_bot.app"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "urllib.request",
+   "file": "src/trading_bot/market_data/bitunix.py",
+   "imports": "urllib",
+   "module": "trading_bot.market_data.bitunix"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "urllib.request",
+   "file": "src/trading_bot/market_data/bitunix_futures.py",
+   "imports": "urllib",
+   "module": "trading_bot.market_data.bitunix_futures"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "ccxt (venue SDK; opens a session in the constructor)",
+   "file": "src/trading_bot/market_data/exchange_connector.py",
+   "imports": "ccxt",
+   "module": "trading_bot.market_data.exchange_connector"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "urllib.request",
+   "file": "src/trading_bot/market_data/minute_collector.py",
+   "imports": "urllib",
+   "module": "trading_bot.market_data.minute_collector"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "raw sockets",
+   "file": "src/trading_bot/research/campaign_lock.py",
+   "imports": "socket",
+   "module": "trading_bot.research.campaign_lock"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "ccxt (venue SDK; opens a session in the constructor)",
+   "file": "src/trading_bot/research/economic_recovery/paper_exec.py",
+   "imports": "ccxt",
+   "module": "trading_bot.research.economic_recovery.paper_exec"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "raw sockets",
+   "file": "src/trading_bot/research/edge03/autonomous.py",
+   "imports": "socket",
+   "module": "trading_bot.research.edge03.autonomous"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "urllib.request",
+   "file": "src/trading_bot/research/edge03/ingest.py",
+   "imports": "urllib",
+   "module": "trading_bot.research.edge03.ingest"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "raw sockets",
+   "file": "src/trading_bot/research/edge05/watchdog.py",
+   "imports": "socket",
+   "module": "trading_bot.research.edge05.watchdog"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "urllib.request",
+   "file": "src/trading_bot/research/edge09/sources.py",
+   "imports": "urllib",
+   "module": "trading_bot.research.edge09.sources"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "aiohttp",
+   "file": "src/trading_bot/research/forward/collector.py",
+   "imports": "aiohttp",
+   "module": "trading_bot.research.forward.collector"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "urllib.request",
+   "file": "src/trading_bot/research/market_provenance.py",
+   "imports": "urllib",
+   "module": "trading_bot.research.market_provenance"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "raw sockets",
+   "file": "src/trading_bot/vision/durable.py",
+   "imports": "socket",
+   "module": "trading_bot.vision.durable"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "capability": "httpx",
+   "file": "src/trading_bot/vision/provider.py",
+   "imports": "httpx",
+   "module": "trading_bot.vision.provider"
+  }
+ ],
+ "order_routes": [
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "BitunixSpotConnector",
+   "file": "src/trading_bot/market_data/bitunix.py",
+   "line": 571,
+   "method": "create_order",
+   "module": "trading_bot.market_data.bitunix",
+   "route": "trading_bot.market_data.bitunix.BitunixSpotConnector.create_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "BitunixSpotConnector",
+   "file": "src/trading_bot/market_data/bitunix.py",
+   "line": 598,
+   "method": "cancel_order",
+   "module": "trading_bot.market_data.bitunix",
+   "route": "trading_bot.market_data.bitunix.BitunixSpotConnector.cancel_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "BitunixFuturesClient",
+   "file": "src/trading_bot/market_data/bitunix_futures.py",
+   "line": 270,
+   "method": "place_order",
+   "module": "trading_bot.market_data.bitunix_futures",
+   "route": "trading_bot.market_data.bitunix_futures.BitunixFuturesClient.place_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "BitunixFuturesConnector",
+   "file": "src/trading_bot/market_data/bitunix_futures.py",
+   "line": 517,
+   "method": "create_order",
+   "module": "trading_bot.market_data.bitunix_futures",
+   "route": "trading_bot.market_data.bitunix_futures.BitunixFuturesConnector.create_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "BitunixFuturesConnector",
+   "file": "src/trading_bot/market_data/bitunix_futures.py",
+   "line": 590,
+   "method": "cancel_order",
+   "module": "trading_bot.market_data.bitunix_futures",
+   "route": "trading_bot.market_data.bitunix_futures.BitunixFuturesConnector.cancel_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "ExchangeConnector",
+   "file": "src/trading_bot/market_data/exchange_connector.py",
+   "line": 167,
+   "method": "create_order",
+   "module": "trading_bot.market_data.exchange_connector",
+   "route": "trading_bot.market_data.exchange_connector.ExchangeConnector.create_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "ExchangeConnector",
+   "file": "src/trading_bot/market_data/exchange_connector.py",
+   "line": 179,
+   "method": "cancel_order",
+   "module": "trading_bot.market_data.exchange_connector",
+   "route": "trading_bot.market_data.exchange_connector.ExchangeConnector.cancel_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "CCXTExchangeConnector",
+   "file": "src/trading_bot/market_data/exchange_connector.py",
+   "line": 549,
+   "method": "create_order",
+   "module": "trading_bot.market_data.exchange_connector",
+   "route": "trading_bot.market_data.exchange_connector.CCXTExchangeConnector.create_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "CCXTExchangeConnector",
+   "file": "src/trading_bot/market_data/exchange_connector.py",
+   "line": 623,
+   "method": "cancel_order",
+   "module": "trading_bot.market_data.exchange_connector",
+   "route": "trading_bot.market_data.exchange_connector.CCXTExchangeConnector.cancel_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "MultiExchangeConnector",
+   "file": "src/trading_bot/market_data/types.py",
+   "line": 263,
+   "method": "create_order",
+   "module": "trading_bot.market_data.types",
+   "route": "trading_bot.market_data.types.MultiExchangeConnector.create_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "MultiExchangeConnector",
+   "file": "src/trading_bot/market_data/types.py",
+   "line": 273,
+   "method": "cancel_order",
+   "module": "trading_bot.market_data.types",
+   "route": "trading_bot.market_data.types.MultiExchangeConnector.cancel_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "_ObservedConnector",
+   "file": "src/trading_bot/market_data/wiring.py",
+   "line": 260,
+   "method": "create_order",
+   "module": "trading_bot.market_data.wiring",
+   "route": "trading_bot.market_data.wiring._ObservedConnector.create_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "_ObservedConnector",
+   "file": "src/trading_bot/market_data/wiring.py",
+   "line": 280,
+   "method": "cancel_order",
+   "module": "trading_bot.market_data.wiring",
+   "route": "trading_bot.market_data.wiring._ObservedConnector.cancel_order"
+  }
+ ],
+ "schema": "rfc005-isolation-inventory/1",
+ "source_commit": "0bdda77d4b4c66273c4cda2b23b6ef0dcae3a7c8"
+}

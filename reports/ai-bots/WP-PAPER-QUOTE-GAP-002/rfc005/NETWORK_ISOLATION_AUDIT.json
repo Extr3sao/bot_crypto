@@ -1,0 +1,240 @@
+{
+ "attempts_total": 16,
+ "conclusion": "no audited outbound event was allowed; every external call was refused before the syscall and recorded with its host. A child process is outside the hook, and the laboratory measures that instead of claiming an OS barrier.",
+ "denied_total": 16,
+ "external_attempts_allowed": 0,
+ "external_hosts_attempted": [
+  "api.binance.com",
+  "https://api.binance.com/api/v3/ping"
+ ],
+ "generated_at_utc": "2026-10-21T17:50:25Z",
+ "os_sandbox": "NOT_AVAILABLE",
+ "policy": {
+  "default": "deny every outbound event; loopback only when the policy says so",
+  "mechanism": "sys.addaudithook on socket.connect/sendto/getaddrinfo/gethostbyname/gethostbyaddr/getnameinfo, urllib.Request, http.client.connect, ftplib, smtplib, imaplib, poplib, telnetlib and ssl.wrap_socket",
+  "scope": "one Python process, installed at the paper entry point before it builds anything"
+ },
+ "residual": "the audit hook lives inside one Python process; a child process, a native extension or a direct syscall is outside it. ISO-09 measures that boundary instead of assuming it away.",
+ "scenarios": [
+  {
+   "attempts": [],
+   "denied": 0,
+   "hosts": [],
+   "id": "ISO-00",
+   "mode": "runtime"
+  },
+  {
+   "attempts": [],
+   "denied": 0,
+   "hosts": [],
+   "id": "ISO-01",
+   "mode": "order-ccxt"
+  },
+  {
+   "attempts": [],
+   "denied": 0,
+   "hosts": [],
+   "id": "ISO-02",
+   "mode": "order-futures"
+  },
+  {
+   "attempts": [],
+   "denied": 0,
+   "hosts": [],
+   "id": "ISO-03",
+   "mode": "order-spot"
+  },
+  {
+   "attempts": [],
+   "denied": 0,
+   "hosts": [],
+   "id": "ISO-04",
+   "mode": "app-route"
+  },
+  {
+   "attempts": [
+    {
+     "args": "('api.binance.com', 443, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 34516,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('127.0.0.1', 9, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "127.0.0.1",
+     "pid": 34516,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 34516,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('localhost', 80, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "localhost",
+     "pid": 34516,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('https://api.binance.com/api/v3/ping', None, {}, 'GET')",
+     "decision": "DENY",
+     "event": "urllib.Request",
+     "host": "https://api.binance.com/api/v3/ping",
+     "pid": 34516,
+     "reason": "policy 'paper' denies urllib.Request"
+    },
+    {
+     "args": "(<http.client.HTTPSConnection object at 0x000002444AF03F10>, 'fapi.binance.com', 443)",
+     "decision": "DENY",
+     "event": "http.client.connect",
+     "host": null,
+     "pid": 34516,
+     "reason": "policy 'paper' denies http.client.connect"
+    }
+   ],
+   "denied": 6,
+   "hosts": [
+    "127.0.0.1",
+    "api.binance.com",
+    "https://api.binance.com/api/v3/ping",
+    "localhost"
+   ],
+   "id": "ISO-05",
+   "mode": "network"
+  },
+  {
+   "attempts": [
+    {
+     "args": "('api.binance.com', 443, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 30448,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('127.0.0.1', 9, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "127.0.0.1",
+     "pid": 30448,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 30448,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('localhost', 80, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "localhost",
+     "pid": 30448,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('https://api.binance.com/api/v3/ping', None, {}, 'GET')",
+     "decision": "DENY",
+     "event": "urllib.Request",
+     "host": "https://api.binance.com/api/v3/ping",
+     "pid": 30448,
+     "reason": "policy 'paper' denies urllib.Request"
+    },
+    {
+     "args": "(<http.client.HTTPSConnection object at 0x000002BB9DD23CD0>, 'fapi.binance.com', 443)",
+     "decision": "DENY",
+     "event": "http.client.connect",
+     "host": null,
+     "pid": 30448,
+     "reason": "policy 'paper' denies http.client.connect"
+    }
+   ],
+   "denied": 6,
+   "hosts": [
+    "127.0.0.1",
+    "api.binance.com",
+    "https://api.binance.com/api/v3/ping",
+    "localhost"
+   ],
+   "id": "ISO-06",
+   "mode": "network"
+  },
+  {
+   "attempts": [
+    {
+     "args": "('api.binance.com', 443, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 32904,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    }
+   ],
+   "denied": 1,
+   "hosts": [
+    "api.binance.com"
+   ],
+   "id": "ISO-07",
+   "mode": "ccxt-constructor"
+  },
+  {
+   "attempts": [
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 29860,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 29860,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    }
+   ],
+   "denied": 2,
+   "hosts": [
+    "api.binance.com"
+   ],
+   "id": "ISO-08",
+   "mode": "disarm"
+  },
+  {
+   "attempts": [
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 34128,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    }
+   ],
+   "denied": 1,
+   "hosts": [
+    "api.binance.com"
+   ],
+   "id": "ISO-09",
+   "mode": "subprocess"
+  }
+ ],
+ "schema": "rfc005-network-isolation-audit/1"
+}

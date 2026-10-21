@@ -1,0 +1,34 @@
+{
+ "attempts": [
+  {
+   "args": "('api.binance.com', 443, 0, 1, 0)",
+   "decision": "DENY",
+   "event": "socket.getaddrinfo",
+   "host": "api.binance.com",
+   "pid": 32904,
+   "reason": "policy 'paper' denies socket.getaddrinfo"
+  }
+ ],
+ "denied": 1,
+ "mode": "ccxt-constructor",
+ "pid": 32904,
+ "policy": {
+  "external_network": false,
+  "loopback_network": false,
+  "mode": "paper",
+  "order_routes": false,
+  "source": "policy_for_mode"
+ },
+ "result": {
+  "constructor": {
+   "fetch_after_construction": {
+    "code": "ISO_EXTERNAL_NETWORK",
+    "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'api.binance.com': policy 'paper' denies socket.getaddrinfo",
+    "outcome": "DENIED"
+   },
+   "id": "binance",
+   "outcome": "CONSTRUCTED"
+  }
+ },
+ "status": "RAN"
+}

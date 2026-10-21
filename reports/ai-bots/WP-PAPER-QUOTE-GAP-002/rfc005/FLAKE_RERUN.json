@@ -1,0 +1,18 @@
+{
+ "baseline_alone": {
+  "exit_code": 0,
+  "log": "logs/flake_baseline_alone.txt",
+  "passed": 1,
+  "seconds": 124.01
+ },
+ "explained": true,
+ "head_alone": {
+  "exit_code": 0,
+  "log": "logs/flake_head_alone.txt",
+  "passed": 1,
+  "seconds": 129.8
+ },
+ "in_full_run": true,
+ "reason": "1000-cycle timing test: it fails under a 25-minute full-suite load and passes in ~2 minutes alone on both commits; the isolated runs are the evidence",
+ "test": "tests/unit/research/test_campaign_storage.py::test_journal_is_bounded_over_a_thousand_noop_cycles"
+}

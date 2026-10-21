@@ -1,0 +1,919 @@
+{
+ "branch": "wp/isolation-005",
+ "children": [
+  {
+   "attempts": [],
+   "denied": 0,
+   "id": "ISO-00",
+   "mode": "runtime",
+   "returncode": 0,
+   "seconds": 4.43,
+   "status": "RAN"
+  },
+  {
+   "attempts": [],
+   "denied": 0,
+   "id": "ISO-01",
+   "mode": "order-ccxt",
+   "returncode": 0,
+   "seconds": 1.31,
+   "status": "RAN"
+  },
+  {
+   "attempts": [],
+   "denied": 0,
+   "id": "ISO-02",
+   "mode": "order-futures",
+   "returncode": 0,
+   "seconds": 1.38,
+   "status": "RAN"
+  },
+  {
+   "attempts": [],
+   "denied": 0,
+   "id": "ISO-03",
+   "mode": "order-spot",
+   "returncode": 0,
+   "seconds": 1.4,
+   "status": "RAN"
+  },
+  {
+   "attempts": [],
+   "denied": 0,
+   "id": "ISO-04",
+   "mode": "app-route",
+   "returncode": 0,
+   "seconds": 1.53,
+   "status": "RAN"
+  },
+  {
+   "attempts": [
+    {
+     "args": "('api.binance.com', 443, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 34516,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('127.0.0.1', 9, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "127.0.0.1",
+     "pid": 34516,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 34516,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('localhost', 80, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "localhost",
+     "pid": 34516,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('https://api.binance.com/api/v3/ping', None, {}, 'GET')",
+     "decision": "DENY",
+     "event": "urllib.Request",
+     "host": "https://api.binance.com/api/v3/ping",
+     "pid": 34516,
+     "reason": "policy 'paper' denies urllib.Request"
+    },
+    {
+     "args": "(<http.client.HTTPSConnection object at 0x000002444AF03F10>, 'fapi.binance.com', 443)",
+     "decision": "DENY",
+     "event": "http.client.connect",
+     "host": null,
+     "pid": 34516,
+     "reason": "policy 'paper' denies http.client.connect"
+    }
+   ],
+   "denied": 6,
+   "id": "ISO-05",
+   "mode": "network",
+   "returncode": 0,
+   "seconds": 0.21,
+   "status": "RAN"
+  },
+  {
+   "attempts": [
+    {
+     "args": "('api.binance.com', 443, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 30448,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('127.0.0.1', 9, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "127.0.0.1",
+     "pid": 30448,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 30448,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('localhost', 80, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "localhost",
+     "pid": 30448,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('https://api.binance.com/api/v3/ping', None, {}, 'GET')",
+     "decision": "DENY",
+     "event": "urllib.Request",
+     "host": "https://api.binance.com/api/v3/ping",
+     "pid": 30448,
+     "reason": "policy 'paper' denies urllib.Request"
+    },
+    {
+     "args": "(<http.client.HTTPSConnection object at 0x000002BB9DD23CD0>, 'fapi.binance.com', 443)",
+     "decision": "DENY",
+     "event": "http.client.connect",
+     "host": null,
+     "pid": 30448,
+     "reason": "policy 'paper' denies http.client.connect"
+    }
+   ],
+   "denied": 6,
+   "id": "ISO-06",
+   "mode": "network",
+   "returncode": 0,
+   "seconds": 0.21,
+   "status": "RAN"
+  },
+  {
+   "attempts": [
+    {
+     "args": "('api.binance.com', 443, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 32904,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    }
+   ],
+   "denied": 1,
+   "id": "ISO-07",
+   "mode": "ccxt-constructor",
+   "returncode": 0,
+   "seconds": 1.09,
+   "status": "RAN"
+  },
+  {
+   "attempts": [
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 29860,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 29860,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    }
+   ],
+   "denied": 2,
+   "id": "ISO-08",
+   "mode": "disarm",
+   "returncode": 0,
+   "seconds": 0.28,
+   "status": "RAN"
+  },
+  {
+   "attempts": [
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 34128,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    }
+   ],
+   "denied": 1,
+   "id": "ISO-09",
+   "mode": "subprocess",
+   "returncode": 0,
+   "seconds": 0.68,
+   "status": "RAN"
+  }
+ ],
+ "counts": {
+  "failed": 0,
+  "limitations": 1,
+  "passed": 9,
+  "total": 10
+ },
+ "elapsed_s": 12.8,
+ "environment": {
+  "hostname": "DESKTOP-4CHO695",
+  "os_name": "nt",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.11.15"
+ },
+ "filesystem_hashes": {
+  "scripts/ai_bots_run.py": "90f2dc7cb62b3dbf69c5e0ceedfeacb438d95991ec9e8be53feddddc1fd5c71d",
+  "scripts/ai_vision_lane.py": "0b30342188732dafb0466fe11985e5806baad4244a52706a50718dcd0d0f5bb0",
+  "src/trading_bot/app.py": "95c07afa2ebe341687ef37cc35c103ac8104b2dd199cc2bc6c9e3323a1b0cd2a",
+  "src/trading_bot/execution/__init__.py": "01c9468f933294de57dc436650b66e81ce19d8aa60810c40919e8487fba9fa44",
+  "src/trading_bot/execution/isolation.py": "ce118158ca43e1fc87f40fd0d8e2552bc9c020bf61c9f65152cbb53dbb94b2e7",
+  "src/trading_bot/market_data/bitunix.py": "7df82fd68a767d8fd64634544bc9f3a5aad212cc3193b3f8010f012b4aee71e6",
+  "src/trading_bot/market_data/bitunix_futures.py": "ab7b17102e14d2a754f38afd96810d0331a0e6306499fae95b1671d7d397b8a6",
+  "src/trading_bot/market_data/exchange_connector.py": "04471cdce1a8436c6ed0ec2bb3b36f72dc350c78b410bfd25e9ee34bc002eeea"
+ },
+ "generated_at_utc": "2026-10-21T16:51:23Z",
+ "os_sandbox": "NOT_AVAILABLE",
+ "residual": "the audit hook lives inside one Python process; a child process, a native extension or a direct syscall is outside it. ISO-09 measures that boundary instead of assuming it away.",
+ "run_id": "20261021T165123Z-18208",
+ "scenarios": [
+  {
+   "checks": [
+    {
+     "check": "ran",
+     "detail": "RAN",
+     "ok": true
+    },
+    {
+     "check": "exit_code",
+     "detail": "exit=0",
+     "ok": true
+    },
+    {
+     "check": "report_executed",
+     "detail": "EXECUTED",
+     "ok": true
+    },
+    {
+     "check": "policy_paper",
+     "detail": "paper",
+     "ok": true
+    },
+    {
+     "check": "orders_denied",
+     "detail": "False",
+     "ok": true
+    },
+    {
+     "check": "network_denied",
+     "detail": "False",
+     "ok": true
+    },
+    {
+     "check": "no_attempts",
+     "detail": "0 attempt(s)",
+     "ok": true
+    }
+   ],
+   "child_returncode": 0,
+   "child_seconds": 4.43,
+   "child_status": "RAN",
+   "claim": "the paper runtime runs end to end under the policy",
+   "denied": 0,
+   "id": "ISO-00",
+   "mode": "runtime",
+   "network_log": [],
+   "observed": {
+    "exit_code": 0,
+    "isolation": {
+     "allowed_loopback": 0,
+     "attempts": 0,
+     "denied": 0,
+     "log_path": "reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc005\\lab\\cases\\runtime\\runtime\\network.jsonl",
+     "policy": {
+      "external_network": false,
+      "loopback_network": false,
+      "mode": "paper",
+      "order_routes": false,
+      "source": "policy_for_mode"
+     }
+    },
+    "report_status": "EXECUTED",
+    "run_report_present": true
+   },
+   "verdict": "PASS"
+  },
+  {
+   "checks": [
+    {
+     "check": "ran",
+     "detail": "RAN",
+     "ok": true
+    },
+    {
+     "check": "create_refused",
+     "detail": "REFUSED",
+     "ok": true
+    },
+    {
+     "check": "cancel_refused",
+     "detail": "REFUSED",
+     "ok": true
+    },
+    {
+     "check": "venue_untouched",
+     "detail": "[]",
+     "ok": true
+    }
+   ],
+   "child_returncode": 0,
+   "child_seconds": 1.31,
+   "child_status": "RAN",
+   "claim": "CCXT create/cancel refused before the venue object is used",
+   "denied": 0,
+   "id": "ISO-01",
+   "mode": "order-ccxt",
+   "network_log": [],
+   "observed": {
+    "cancel": {
+     "code": "ISO_ORDER_ROUTE",
+     "detail": "ISO_ORDER_ROUTE: market_data.CCXTExchangeConnector.cancel_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mod",
+     "outcome": "REFUSED"
+    },
+    "create": {
+     "code": "ISO_ORDER_ROUTE",
+     "detail": "ISO_ORDER_ROUTE: market_data.CCXTExchangeConnector.create_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mod",
+     "outcome": "REFUSED"
+    },
+    "venue_calls": []
+   },
+   "verdict": "PASS"
+  },
+  {
+   "checks": [
+    {
+     "check": "ran",
+     "detail": "RAN",
+     "ok": true
+    },
+    {
+     "check": "client_place_refused",
+     "detail": "REFUSED",
+     "ok": true
+    },
+    {
+     "check": "connector_create_refused",
+     "detail": "REFUSED",
+     "ok": true
+    },
+    {
+     "check": "connector_cancel_refused",
+     "detail": "REFUSED",
+     "ok": true
+    },
+    {
+     "check": "no_http_request",
+     "detail": "0",
+     "ok": true
+    }
+   ],
+   "child_returncode": 0,
+   "child_seconds": 1.38,
+   "child_status": "RAN",
+   "claim": "Bitunix futures client and connector refuse before HTTP",
+   "denied": 0,
+   "id": "ISO-02",
+   "mode": "order-futures",
+   "network_log": [],
+   "observed": {
+    "client_place_order": {
+     "code": "ISO_ORDER_ROUTE",
+     "detail": "ISO_ORDER_ROUTE: market_data.BitunixFuturesClient.place_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode'",
+     "outcome": "REFUSED"
+    },
+    "connector_cancel_order": {
+     "code": "ISO_ORDER_ROUTE",
+     "detail": "ISO_ORDER_ROUTE: market_data.BitunixFuturesConnector.cancel_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_m",
+     "outcome": "REFUSED"
+    },
+    "connector_create_order": {
+     "code": "ISO_ORDER_ROUTE",
+     "detail": "ISO_ORDER_ROUTE: market_data.BitunixFuturesConnector.create_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_m",
+     "outcome": "REFUSED"
+    },
+    "http_requests": 0
+   },
+   "verdict": "PASS"
+  },
+  {
+   "checks": [
+    {
+     "check": "ran",
+     "detail": "RAN",
+     "ok": true
+    },
+    {
+     "check": "create_refused",
+     "detail": "REFUSED",
+     "ok": true
+    },
+    {
+     "check": "cancel_refused",
+     "detail": "REFUSED",
+     "ok": true
+    },
+    {
+     "check": "client_untouched",
+     "detail": "0",
+     "ok": true
+    }
+   ],
+   "child_returncode": 0,
+   "child_seconds": 1.4,
+   "child_status": "RAN",
+   "claim": "Bitunix spot connector refuses before its client",
+   "denied": 0,
+   "id": "ISO-03",
+   "mode": "order-spot",
+   "network_log": [],
+   "observed": {
+    "cancel": {
+     "code": "ISO_ORDER_ROUTE",
+     "detail": "ISO_ORDER_ROUTE: market_data.BitunixSpotConnector.cancel_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode",
+     "outcome": "REFUSED"
+    },
+    "client_calls": 0,
+    "create": {
+     "code": "ISO_ORDER_ROUTE",
+     "detail": "ISO_ORDER_ROUTE: market_data.BitunixSpotConnector.create_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode",
+     "outcome": "REFUSED"
+    }
+   },
+   "verdict": "PASS"
+  },
+  {
+   "checks": [
+    {
+     "check": "ran",
+     "detail": "RAN",
+     "ok": true
+    },
+    {
+     "check": "no_confirm_exit",
+     "detail": "2",
+     "ok": true
+    },
+    {
+     "check": "confirm_in_paper_exit",
+     "detail": "2",
+     "ok": true
+    },
+    {
+     "check": "gate_refused",
+     "detail": "REFUSED",
+     "ok": true
+    },
+    {
+     "check": "no_network",
+     "detail": "0 attempt(s)",
+     "ok": true
+    }
+   ],
+   "child_returncode": 0,
+   "child_seconds": 1.53,
+   "child_status": "RAN",
+   "claim": "the documented live CLI route refuses in a paper process",
+   "denied": 0,
+   "id": "ISO-04",
+   "mode": "app-route",
+   "network_log": [],
+   "observed": {
+    "exit_with_confirm_in_paper": 2,
+    "exit_without_confirm": 2,
+    "gate_on_command": {
+     "code": "ISO_ORDER_ROUTE",
+     "detail": "ISO_ORDER_ROUTE: app._cmd_place_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode'}",
+     "outcome": "REFUSED"
+    }
+   },
+   "verdict": "PASS"
+  },
+  {
+   "checks": [
+    {
+     "check": "ran",
+     "detail": "RAN",
+     "ok": true
+    },
+    {
+     "check": "external_connect",
+     "detail": "DENIED",
+     "ok": true
+    },
+    {
+     "check": "loopback_connect",
+     "detail": "DENIED",
+     "ok": true
+    },
+    {
+     "check": "external_dns",
+     "detail": "DENIED",
+     "ok": true
+    },
+    {
+     "check": "loopback_dns",
+     "detail": "DENIED",
+     "ok": true
+    },
+    {
+     "check": "host_recorded",
+     "detail": "127.0.0.1, None, api.binance.com, https://api.binance.com/api/v3/ping, localhost",
+     "ok": true
+    }
+   ],
+   "child_returncode": 0,
+   "child_seconds": 0.21,
+   "child_status": "RAN",
+   "claim": "external connect and DNS are denied and recorded",
+   "denied": 6,
+   "id": "ISO-05",
+   "mode": "network",
+   "network_log": [
+    {
+     "args": "('api.binance.com', 443, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 34516,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('127.0.0.1', 9, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "127.0.0.1",
+     "pid": 34516,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 34516,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('localhost', 80, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "localhost",
+     "pid": 34516,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('https://api.binance.com/api/v3/ping', None, {}, 'GET')",
+     "decision": "DENY",
+     "event": "urllib.Request",
+     "host": "https://api.binance.com/api/v3/ping",
+     "pid": 34516,
+     "reason": "policy 'paper' denies urllib.Request"
+    },
+    {
+     "args": "(<http.client.HTTPSConnection object at 0x000002444AF03F10>, 'fapi.binance.com', 443)",
+     "decision": "DENY",
+     "event": "http.client.connect",
+     "host": null,
+     "pid": 34516,
+     "reason": "policy 'paper' denies http.client.connect"
+    }
+   ],
+   "observed": {
+    "external_connect": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'api.binance.com': policy 'paper' denies socket.getaddrinfo",
+     "outcome": "DENIED"
+    },
+    "external_dns": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'api.binance.com': policy 'paper' denies socket.getaddrinfo",
+     "outcome": "DENIED"
+    },
+    "http_client": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: http.client.connect to None: policy 'paper' denies http.client.connect",
+     "outcome": "DENIED"
+    },
+    "loopback_connect": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to '127.0.0.1': policy 'paper' denies socket.getaddrinfo",
+     "outcome": "DENIED"
+    },
+    "loopback_dns": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'localhost': policy 'paper' denies socket.getaddrinfo",
+     "outcome": "DENIED"
+    },
+    "urllib": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: urllib.Request to 'https://api.binance.com/api/v3/ping': policy 'paper' denies urllib.Request",
+     "outcome": "DENIED"
+    }
+   },
+   "verdict": "PASS"
+  },
+  {
+   "checks": [
+    {
+     "check": "ran",
+     "detail": "RAN",
+     "ok": true
+    },
+    {
+     "check": "urllib_denied",
+     "detail": "DENIED",
+     "ok": true
+    },
+    {
+     "check": "http_client_denied",
+     "detail": "DENIED",
+     "ok": true
+    }
+   ],
+   "child_returncode": 0,
+   "child_seconds": 0.21,
+   "child_status": "RAN",
+   "claim": "urllib and http.client are denied by the same hook",
+   "denied": 6,
+   "id": "ISO-06",
+   "mode": "network",
+   "network_log": [
+    {
+     "args": "('api.binance.com', 443, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 30448,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('127.0.0.1', 9, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "127.0.0.1",
+     "pid": 30448,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 30448,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('localhost', 80, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "localhost",
+     "pid": 30448,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('https://api.binance.com/api/v3/ping', None, {}, 'GET')",
+     "decision": "DENY",
+     "event": "urllib.Request",
+     "host": "https://api.binance.com/api/v3/ping",
+     "pid": 30448,
+     "reason": "policy 'paper' denies urllib.Request"
+    },
+    {
+     "args": "(<http.client.HTTPSConnection object at 0x000002BB9DD23CD0>, 'fapi.binance.com', 443)",
+     "decision": "DENY",
+     "event": "http.client.connect",
+     "host": null,
+     "pid": 30448,
+     "reason": "policy 'paper' denies http.client.connect"
+    }
+   ],
+   "observed": {
+    "external_connect": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'api.binance.com': policy 'paper' denies socket.getaddrinfo",
+     "outcome": "DENIED"
+    },
+    "external_dns": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'api.binance.com': policy 'paper' denies socket.getaddrinfo",
+     "outcome": "DENIED"
+    },
+    "http_client": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: http.client.connect to None: policy 'paper' denies http.client.connect",
+     "outcome": "DENIED"
+    },
+    "loopback_connect": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to '127.0.0.1': policy 'paper' denies socket.getaddrinfo",
+     "outcome": "DENIED"
+    },
+    "loopback_dns": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'localhost': policy 'paper' denies socket.getaddrinfo",
+     "outcome": "DENIED"
+    },
+    "urllib": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: urllib.Request to 'https://api.binance.com/api/v3/ping': policy 'paper' denies urllib.Request",
+     "outcome": "DENIED"
+    }
+   },
+   "verdict": "PASS"
+  },
+  {
+   "checks": [
+    {
+     "check": "ran",
+     "detail": "RAN",
+     "ok": true
+    },
+    {
+     "check": "no_io_survives_construction",
+     "detail": "constructed without I/O; first call=DENIED",
+     "ok": true
+    }
+   ],
+   "child_returncode": 0,
+   "child_seconds": 1.09,
+   "child_status": "RAN",
+   "claim": "a ccxt venue client cannot complete a call under the policy",
+   "denied": 1,
+   "id": "ISO-07",
+   "mode": "ccxt-constructor",
+   "network_log": [
+    {
+     "args": "('api.binance.com', 443, 0, 1, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 32904,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    }
+   ],
+   "observed": {
+    "constructor": {
+     "fetch_after_construction": {
+      "code": "ISO_EXTERNAL_NETWORK",
+      "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'api.binance.com': policy 'paper' denies socket.getaddrinfo",
+      "outcome": "DENIED"
+     },
+     "id": "binance",
+     "outcome": "CONSTRUCTED"
+    }
+   },
+   "verdict": "PASS"
+  },
+  {
+   "checks": [
+    {
+     "check": "ran",
+     "detail": "RAN",
+     "ok": true
+    },
+    {
+     "check": "denied_before",
+     "detail": "DENIED",
+     "ok": true
+    },
+    {
+     "check": "denied_after_env_flip",
+     "detail": "DENIED",
+     "ok": true
+    },
+    {
+     "check": "reinstall_refused",
+     "detail": "REFUSED",
+     "ok": true
+    },
+    {
+     "check": "policy_mutation_refused",
+     "detail": "REFUSED",
+     "ok": true
+    }
+   ],
+   "child_returncode": 0,
+   "child_seconds": 0.28,
+   "child_status": "RAN",
+   "claim": "environment and re-installation cannot weaken the policy",
+   "denied": 2,
+   "id": "ISO-08",
+   "mode": "disarm",
+   "network_log": [
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 29860,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    },
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 29860,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    }
+   ],
+   "observed": {
+    "after_env_flip": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'api.binance.com': policy 'paper' denies socket.getaddrinfo",
+     "outcome": "DENIED"
+    },
+    "before": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'api.binance.com': policy 'paper' denies socket.getaddrinfo",
+     "outcome": "DENIED"
+    },
+    "mutated_policy": {
+     "code": "ISO_POLICY_REDEFINED",
+     "detail": "ISO_POLICY_REDEFINED: already installed as {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode'}, refused {'mode': 'paper', 'exter",
+     "outcome": "REFUSED"
+    },
+    "reinstall_live": {
+     "code": "ISO_POLICY_REDEFINED",
+     "detail": "ISO_POLICY_REDEFINED: already installed as {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode'}, refused {'mode': 'live', 'extern",
+     "outcome": "REFUSED"
+    }
+   },
+   "verdict": "PASS"
+  },
+  {
+   "checks": [
+    {
+     "check": "ran",
+     "detail": "RAN",
+     "ok": true
+    },
+    {
+     "check": "parent_denied",
+     "detail": "DENIED",
+     "ok": true
+    },
+    {
+     "check": "child_leaves_the_barrier",
+     "detail": "child='ATTEMPTED:TimeoutError': the hook is per process, not an OS sandbox",
+     "ok": true
+    }
+   ],
+   "child_returncode": 0,
+   "child_seconds": 0.68,
+   "child_status": "RAN",
+   "claim": "a child process is outside the hook: declared limitation",
+   "denied": 1,
+   "id": "ISO-09",
+   "mode": "subprocess",
+   "network_log": [
+    {
+     "args": "('api.binance.com', 443, 0, 0, 0)",
+     "decision": "DENY",
+     "event": "socket.getaddrinfo",
+     "host": "api.binance.com",
+     "pid": 34128,
+     "reason": "policy 'paper' denies socket.getaddrinfo"
+    }
+   ],
+   "observed": {
+    "child_output": "ATTEMPTED:TimeoutError",
+    "child_returncode": 0,
+    "parent_attempt": {
+     "code": "ISO_EXTERNAL_NETWORK",
+     "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'api.binance.com': policy 'paper' denies socket.getaddrinfo",
+     "outcome": "DENIED"
+    }
+   },
+   "verdict": "LIMITATION"
+  }
+ ],
+ "schema": "rfc005-isolation-lab/1",
+ "source_commit": "0bdda77d4b4c66273c4cda2b23b6ef0dcae3a7c8"
+}

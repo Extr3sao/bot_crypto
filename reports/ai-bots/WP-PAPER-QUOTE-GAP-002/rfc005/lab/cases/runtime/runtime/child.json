@@ -1,0 +1,32 @@
+{
+ "attempts": [],
+ "denied": 0,
+ "mode": "runtime",
+ "pid": 28868,
+ "policy": {
+  "external_network": false,
+  "loopback_network": false,
+  "mode": "paper",
+  "order_routes": false,
+  "source": "policy_for_mode"
+ },
+ "result": {
+  "exit_code": 0,
+  "isolation": {
+   "allowed_loopback": 0,
+   "attempts": 0,
+   "denied": 0,
+   "log_path": "reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc005\\lab\\cases\\runtime\\runtime\\network.jsonl",
+   "policy": {
+    "external_network": false,
+    "loopback_network": false,
+    "mode": "paper",
+    "order_routes": false,
+    "source": "policy_for_mode"
+   }
+  },
+  "report_status": "EXECUTED",
+  "run_report_present": true
+ },
+ "status": "RAN"
+}
