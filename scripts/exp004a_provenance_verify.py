@@ -193,7 +193,9 @@ def run_cli(*args: str) -> subprocess.CompletedProcess[str]:
 
 
 def fixture(path: Path, rows: list[dict[str, Any]]) -> Path:
-    path.write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
+    """Bytes, not text: a fixture written through a text handle gets CRLF on this host, and then a
+    verbatim comparison fails for a reason that has nothing to do with the extractor."""
+    path.write_bytes("".join(json.dumps(row) + "\n" for row in rows).encode("utf-8"))
     return path
 
 
@@ -318,11 +320,10 @@ def technical_checks() -> list[Check]:
             "fetched_at_ms": start + hour + 60_000,
             "payload_sha256": "0" * 64,
         }
-        row = json.dumps(bar) + "\n"
         inside = fixture(root / "inside.jsonl", [bar])
         result = run_cli("--slice", "1h:BTC", "--source", str(inside), "--out", str(root / "out"))
         written = root / "out" / "EXP-004A-1H-BTC.jsonl"
-        verbatim = written.is_file() and written.read_bytes() == row.encode()
+        verbatim = written.is_file() and written.read_bytes() == inside.read_bytes()
         manifest = {}
         if result.returncode == 0:
             manifest = json.loads(result.stdout)["manifest"]

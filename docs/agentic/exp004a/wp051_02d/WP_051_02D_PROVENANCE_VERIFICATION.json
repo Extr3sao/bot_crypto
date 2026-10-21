@@ -1,0 +1,363 @@
+{
+  "schema_version": "1.0",
+  "run_id": "wp051-02d/EXP-004A/2026-10-21",
+  "role": "independent verifier",
+  "verifier_id": "verifier-c/EXP-004A/WP-051-02D",
+  "builder_id": "builder/EXP-004A/WP-051-02D",
+  "generated_at_utc": "2026-10-21T15:38:55Z",
+  "head_at_verification": "583c66379a26b6924e1ebb07488866825b45d865",
+  "declaration": {
+    "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+    "sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+    "commit": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95"
+  },
+  "status": "PASS",
+  "controls": [
+    {
+      "control": "TECHNICAL_VERIFICATION",
+      "status": "PASS",
+      "checks": [
+        {
+          "check_id": "V-TECH-01",
+          "control": "TECHNICAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "every required field is present",
+          "evidence": {
+            "missing": []
+          }
+        },
+        {
+          "check_id": "V-TECH-02",
+          "control": "TECHNICAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "only generator_code_commit differs from phase 1",
+          "evidence": {
+            "drift": []
+          }
+        },
+        {
+          "check_id": "V-TECH-03",
+          "control": "TECHNICAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "2026-10-22T00:00:00Z to 2027-01-20T00:00:00Z",
+          "evidence": {
+            "capture_window": [
+              "2026-10-22T00:00:00Z",
+              "2027-01-20T00:00:00Z"
+            ]
+          }
+        },
+        {
+          "check_id": "V-TECH-04",
+          "control": "TECHNICAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "every entry still invokes the declared command",
+          "evidence": {
+            "commands": [
+              "python scripts/exp004a_capture.py --slice 1h:BTC",
+              "python scripts/exp004a_capture.py --slice 1h:ETH",
+              "python scripts/exp004a_capture.py --slice 1h:SOL",
+              "python scripts/exp004a_capture.py --slice st6:tape"
+            ]
+          }
+        },
+        {
+          "check_id": "V-TECH-05",
+          "control": "TECHNICAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "st6:tape exit 2",
+          "evidence": {
+            "exit_code": 2
+          }
+        },
+        {
+          "check_id": "V-TECH-06",
+          "control": "TECHNICAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "positive fixture exit 0, verbatim=True, provenance=yes",
+          "evidence": {
+            "exit_code": 0,
+            "verbatim": true,
+            "row_count": 1
+          }
+        },
+        {
+          "check_id": "V-TECH-07",
+          "control": "TECHNICAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "empty window exit 3",
+          "evidence": {
+            "exit_code": 3
+          }
+        },
+        {
+          "check_id": "V-TECH-08",
+          "control": "TECHNICAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "pre-effective fixture exit 5",
+          "evidence": {
+            "exit_code": 5
+          }
+        },
+        {
+          "check_id": "V-TECH-09",
+          "control": "TECHNICAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "the declared window is non-empty",
+          "evidence": {
+            "start_utc": "2026-10-22T00:00:00.000Z",
+            "end_utc": "2027-01-20T00:00:00.000Z"
+          }
+        }
+      ],
+      "failed_checks": []
+    },
+    {
+      "control": "PROVENANCE_VERIFICATION",
+      "status": "PASS",
+      "checks": [
+        {
+          "check_id": "V-PROV-01",
+          "control": "PROVENANCE_VERIFICATION",
+          "status": "PASS",
+          "detail": "fc036d967923f09a6092cb0e5de7409afd07ebd7 -> fc036d967923f09a6092cb0e5de7409afd07ebd7",
+          "evidence": {
+            "commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+            "resolved": "fc036d967923f09a6092cb0e5de7409afd07ebd7"
+          }
+        },
+        {
+          "check_id": "V-PROV-02",
+          "control": "PROVENANCE_VERIFICATION",
+          "status": "PASS",
+          "detail": "blob sha256 af1ab7cc23980dad... vs declared af1ab7cc23980dad...",
+          "evidence": {
+            "blob_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+            "declared_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8"
+          }
+        },
+        {
+          "check_id": "V-PROV-03",
+          "control": "PROVENANCE_VERIFICATION",
+          "status": "PASS",
+          "detail": "would run 052832c2252a719c63d0859628ada648c799c6ce / commit holds 052832c2252a719c63d0859628ada648c799c6ce",
+          "evidence": {
+            "worktree_blob": "052832c2252a719c63d0859628ada648c799c6ce",
+            "committed_blob": "052832c2252a719c63d0859628ada648c799c6ce"
+          }
+        },
+        {
+          "check_id": "V-PROV-04",
+          "control": "PROVENANCE_VERIFICATION",
+          "status": "PASS",
+          "detail": "generator commit is an ancestor of HEAD",
+          "evidence": {}
+        },
+        {
+          "check_id": "V-PROV-05",
+          "control": "PROVENANCE_VERIFICATION",
+          "status": "PASS",
+          "detail": "phase-1 blob 8946f871a97b7575..., successor cites 8946f871a97b7575..., disk 8946f871a97b7575...",
+          "evidence": {
+            "original_blob_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+            "cited_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+            "disk_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+            "freeze_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638"
+          }
+        },
+        {
+          "check_id": "V-PROV-06",
+          "control": "PROVENANCE_VERIFICATION",
+          "status": "PASS",
+          "detail": "phase-1 blob 43c9deea29a8e4af1c0333bcc0b58131620ec3e7 / HEAD blob 43c9deea29a8e4af1c0333bcc0b58131620ec3e7 / dirty=False",
+          "evidence": {
+            "phase_one_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "phase_one_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7",
+            "head_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7"
+          }
+        }
+      ],
+      "failed_checks": []
+    },
+    {
+      "control": "TEMPORAL_VERIFICATION",
+      "status": "PASS",
+      "checks": [
+        {
+          "check_id": "V-TEMP-01",
+          "control": "TEMPORAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "issued 2026-10-21T15:20:56.000Z <= effective 2026-10-21T16:00:00.000Z <= window 2026-10-22T00:00:00.000Z",
+          "evidence": {
+            "issued_at_utc": "2026-10-21T15:20:56.000Z",
+            "effective_from_utc": "2026-10-21T16:00:00.000Z",
+            "window_start_utc": "2026-10-22T00:00:00.000Z"
+          }
+        },
+        {
+          "check_id": "V-TEMP-02",
+          "control": "TEMPORAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "declaration commit a179ed0d74bfc5fd00383b2d575c9949ca6e1f95 dated 2026-10-21T15:21:23.000Z",
+          "evidence": {
+            "declaration_commit": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95",
+            "committed_at_utc": "2026-10-21T15:21:23.000Z"
+          }
+        },
+        {
+          "check_id": "V-TEMP-03",
+          "control": "TEMPORAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "declaration commit is an ancestor of HEAD",
+          "evidence": {}
+        },
+        {
+          "check_id": "V-TEMP-04",
+          "control": "TEMPORAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "the committed declaration is the file on disk",
+          "evidence": {}
+        },
+        {
+          "check_id": "V-TEMP-05",
+          "control": "TEMPORAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "no capture exists, so no retroactive validity is claimed",
+          "evidence": {
+            "captures_checked": 0,
+            "datasets_present": []
+          }
+        },
+        {
+          "check_id": "V-TEMP-06",
+          "control": "TEMPORAL_VERIFICATION",
+          "status": "PASS",
+          "detail": "the extractor calls authorize() and eligibility_defects() before writing",
+          "evidence": {
+            "imports": [
+              "__future__",
+              "argparse",
+              "dataclasses",
+              "datetime",
+              "hashlib",
+              "json",
+              "pathlib",
+              "sys",
+              "trading_bot",
+              "typing"
+            ]
+          }
+        }
+      ],
+      "failed_checks": []
+    },
+    {
+      "control": "ARTIFACT_INTEGRITY",
+      "status": "PASS",
+      "checks": [
+        {
+          "check_id": "V-ART-01",
+          "control": "ARTIFACT_INTEGRITY",
+          "status": "PASS",
+          "detail": "8 artefacts present",
+          "evidence": {
+            "missing": [],
+            "empty": []
+          }
+        },
+        {
+          "check_id": "V-ART-02",
+          "control": "ARTIFACT_INTEGRITY",
+          "status": "PASS",
+          "detail": "every artefact is committed and unmodified",
+          "evidence": {
+            "uncommitted": [],
+            "head": "583c66379a26b6924e1ebb07488866825b45d865"
+          }
+        },
+        {
+          "check_id": "V-ART-03",
+          "control": "ARTIFACT_INTEGRITY",
+          "status": "PASS",
+          "detail": "the builder's reported declaration and generator digests recompute",
+          "evidence": {
+            "disagreements": []
+          }
+        }
+      ],
+      "failed_checks": []
+    },
+    {
+      "control": "POLICY_COMPLIANCE",
+      "status": "PASS",
+      "checks": [
+        {
+          "check_id": "V-POL-01",
+          "control": "POLICY_COMPLIANCE",
+          "status": "PASS",
+          "detail": "original declaration blob 43c9deea29a8e4af1c0333bcc0b58131620ec3e7 is the phase-1 blob",
+          "evidence": {}
+        },
+        {
+          "check_id": "V-POL-02",
+          "control": "POLICY_COMPLIANCE",
+          "status": "PASS",
+          "detail": "promotion NO_PROMOTION, prior verifier FAIL, decision file unchanged=True",
+          "evidence": {
+            "promotion": "NO_PROMOTION",
+            "prior_verifier_status": "FAIL",
+            "decision_file_unchanged": true
+          }
+        },
+        {
+          "check_id": "V-POL-03",
+          "control": "POLICY_COMPLIANCE",
+          "status": "PASS",
+          "detail": "BUILDER != VERIFIER and the verifier imports neither the package nor the preflight",
+          "evidence": {
+            "verifier": "verifier-c/EXP-004A/WP-051-02D",
+            "builder": "builder/EXP-004A/WP-051-02D",
+            "imports": [
+              "__future__",
+              "argparse",
+              "ast",
+              "dataclasses",
+              "datetime",
+              "hashlib",
+              "json",
+              "pathlib",
+              "subprocess",
+              "sys",
+              "tempfile",
+              "typing"
+            ]
+          }
+        },
+        {
+          "check_id": "V-POL-04",
+          "control": "POLICY_COMPLIANCE",
+          "status": "PASS",
+          "detail": "the extractor holds no network client or credential",
+          "evidence": {
+            "forbidden": []
+          }
+        },
+        {
+          "check_id": "V-POL-05",
+          "control": "POLICY_COMPLIANCE",
+          "status": "PASS",
+          "detail": "preregistration unchanged=True, experiment EXP-004A",
+          "evidence": {}
+        }
+      ],
+      "failed_checks": []
+    }
+  ],
+  "failed_controls": [],
+  "limits": [
+    "No prospective capture exists yet: the window opens 2026-10-22, so this verifies the binding and the refusals, not any observed market day.",
+    "No external timestamp attestation is available; the chronology rests on Git ancestry plus the bar store's own fetched_at_ms. C-013 stays TIME_PROOF_WEAK.",
+    "PASS here is not an authorisation, a 90-day validation or a promotion."
+  ],
+  "economic_executions": 0
+}
