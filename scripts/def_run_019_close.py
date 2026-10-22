@@ -149,7 +149,11 @@ def build_gates(
         },
         "independent_verification": {
             "state": verifier.get("overall") or "NOT_EVIDENCED",
-            "detail": f"verificador {verifier.get('verifier')}",
+            "detail": (
+                f"{verifier.get('generated_by')} · independiente={verifier.get('independent')} · "
+                f"importa al productor={verifier.get('imports_producer')} · "
+                f"false_success propio={verifier.get('false_success')}"
+            ),
         },
     }
 
@@ -376,6 +380,8 @@ def main(argv: list[str] | None = None) -> int:
             "f7d2345e",
             "900fd980",
             "b0a0b1db",
+            #: La recuperación: el cierre dejó de afirmar PASS sobre una suite fallida.
+            "ceb0b3f6",
         ],
         "IMPLEMENTATION": {
             "state": "PASS" if blocks and first_block.get("unavailable_reasons") == [] else "FAIL",
