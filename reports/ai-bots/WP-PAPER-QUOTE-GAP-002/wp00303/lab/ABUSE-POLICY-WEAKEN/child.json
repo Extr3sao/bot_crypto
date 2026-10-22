@@ -1,0 +1,29 @@
+{
+ "child_seconds": 0.0,
+ "guard_attempts": {
+  "install_live_policy": {
+   "code": "ISO_POLICY_REDEFINED",
+   "detail": "ISO_POLICY_REDEFINED: already installed as {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode'}, refused {'mode': 'live', 'external_network': True, 'loopback_network': T",
+   "outcome": "REFUSED"
+  }
+ },
+ "order_attempts": {
+  "order_under_paper_policy": {
+   "code": "ISO_ORDER_ROUTE",
+   "detail": "ISO_ORDER_ROUTE: scenario.live_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode'}",
+   "outcome": "REFUSED"
+  }
+ },
+ "policy_now": {
+  "external_network": false,
+  "loopback_network": false,
+  "mode": "paper",
+  "order_routes": false,
+  "source": "policy_for_mode"
+ },
+ "pre_hook": [
+  "asyncio event loop (its self-pipe is a loopback socketpair on Windows; created before the hook, no venue object exists yet)"
+ ],
+ "recorded_at_utc": "2026-10-22T21:19:38Z",
+ "status": "OK"
+}

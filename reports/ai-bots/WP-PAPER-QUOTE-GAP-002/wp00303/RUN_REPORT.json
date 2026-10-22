@@ -1,0 +1,175 @@
+{
+ "builder": "codebuff (builder); scripts/verify_paper_e2e.py is the separate verifier",
+ "checks": [],
+ "claims_not_made": [
+  "PRODUCTION_READY",
+  "OS_SANDBOX",
+  "EXTERNAL_SESSION",
+  "MARKET_PERFORMANCE_FROM_SCENARIO_LEDGER"
+ ],
+ "commands": [
+  {
+   "command": "python scripts/paper_e2e_lab.py",
+   "exit_code": 0,
+   "result": "3 E2E scenarios + 8 abuse scenarios"
+  },
+  {
+   "command": "python scripts/verify_paper_e2e.py --negative-controls",
+   "exit_code": 1,
+   "result": "NOT_RUN"
+  },
+  {
+   "command": "pytest -q tests/unit/paper tests/unit/risk tests/unit/execution tests/unit/autonomous tests/integration/test_paper_e2e_00{1,2,3}.py",
+   "exit_code": 0,
+   "result": "37 passed in 4.95s"
+  }
+ ],
+ "dataset": {
+  "interval": "1h",
+  "manifest": "data/edge07/holdout-1h/_FETCH_MANIFEST.json",
+  "manifest_sha256": "883a4fd3c66992c11276782db772f4c80bd16525dc61bbc9b8851999c732d1b4",
+  "normalization": "list of {ts,open,high,low,close,volume}; ts = bar OPEN time (ms, UTC); floats; no interpolation, no synthesis, gaps left absent",
+  "requested_range": {
+   "end_utc_exclusive": "2026-10-14T07:00:00Z",
+   "start_utc": "2026-03-01T00:00:00Z"
+  },
+  "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
+  "spread_bps": 1.0,
+  "spread_provenance": "ESTIMATED: COST_MODEL_V3 majors default, not an observed quote",
+  "symbols": {
+   "BTC/USDT": {
+    "bars": 5455,
+    "file": "data/edge07/holdout-1h/BTCUSDT_holdout2026.json",
+    "first_utc": "2026-03-01T00:00:00Z",
+    "last_utc": "2026-10-14T06:00:00Z",
+    "manifest_sha256": "e2435ca3ee72ad790b25f18a87bde3ed12deec20d9b6a712021a881716e4f6b9",
+    "matches_manifest": true,
+    "sha256": "e2435ca3ee72ad790b25f18a87bde3ed12deec20d9b6a712021a881716e4f6b9"
+   },
+   "ETH/USDT": {
+    "bars": 5455,
+    "file": "data/edge07/holdout-1h/ETHUSDT_holdout2026.json",
+    "first_utc": "2026-03-01T00:00:00Z",
+    "last_utc": "2026-10-14T06:00:00Z",
+    "manifest_sha256": "a38a3efef91092383182cbf30b76d0f8e4422101a534a30f015b368da38600e2",
+    "matches_manifest": true,
+    "sha256": "a38a3efef91092383182cbf30b76d0f8e4422101a534a30f015b368da38600e2"
+   },
+   "SOL/USDT": {
+    "bars": 5455,
+    "file": "data/edge07/holdout-1h/SOLUSDT_holdout2026.json",
+    "first_utc": "2026-03-01T00:00:00Z",
+    "last_utc": "2026-10-14T06:00:00Z",
+    "manifest_sha256": "fe55108b2e38643dbbdb168b91b6640b62685ae9116552d142849d984c3687cb",
+    "matches_manifest": true,
+    "sha256": "fe55108b2e38643dbbdb168b91b6640b62685ae9116552d142849d984c3687cb"
+   }
+  }
+ },
+ "dimensions": {
+  "EXTERNAL_ORDER_PREVENTION": {
+   "basis": "13 refusals across 8 abuse scenarios; 0 venue calls",
+   "result": "FAIL"
+  },
+  "FALSE_SUCCESS": {
+   "basis": "unsupported_pass_count=0; every dimension above is derived from a measured artefact, and a blocked check is never counted as passed",
+   "result": "FAIL"
+  },
+  "GITHUB_SYNC": {
+   "basis": "local=baf5b560 remote=baf5b560 main=5e6f9632 pending=1",
+   "result": "REMOTE_BRANCH_SYNCED"
+  },
+  "IMPLEMENTATION_STATUS": {
+   "basis": "paper_e2e_lab.py and verify_paper_e2e.py are committed with the evidence; no runtime file was modified (runtime_identity check re-hashes 13 files)",
+   "result": "PASS"
+  },
+  "INDEPENDENT_VERIFICATION": {
+   "basis": "verify_paper_e2e.py: 0/0 checks, None/None negative controls rejected",
+   "result": "NOT_RUN"
+  },
+  "NETWORK_ISOLATION": {
+   "basis": "the network check failed: see VERIFICATION.json",
+   "result": "FAIL"
+  },
+  "PAPER_VALIDATION": {
+   "basis": "recorded Binance 1h klines (sha256-matched); orders=23 fills_closed=21 PAPER only. EXTERNAL_SESSION=NOT_PERFORMED: the paper policy denies the network, so no venue-connected session can exist under it.",
+   "result": "BLOCKED"
+  },
+  "RUNTIME_VALIDATION": {
+   "basis": "the real AutonomousPaperRuntime ran 23 orders / 480 decisions in E2E-SCENARIO and 480 decisions in E2E-COMMITTED",
+   "result": "FAIL"
+  },
+  "TEST_STATUS": {
+   "basis": "pytest: 37 passed in 4.95s (exit 0)",
+   "result": "PASS"
+  }
+ },
+ "generated_at_utc": "2026-10-22T21:24:43Z",
+ "git": {
+  "branch": "recovery/wp00303",
+  "head": "baf5b560101188ecceb36a4880d3dca16b267e31",
+  "source_dirty": false,
+  "status_short": []
+ },
+ "github_sync": {
+  "commits_pending": 1,
+  "default_branch_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+  "evidence_commit": "NOT_RECORDED_HERE",
+  "evidence_commit_reason": "The evidence bundle is added by a commit that did not exist when this file was written. It is identified by content, not by a self-reference: it is the first commit after this head whose tree contains this bundle, and the manifest hashes each file so a reader can confirm which tree is being judged.",
+  "head_scope": "local_head_sha is the commit the laboratory ran at and whose 13 runtime hashes this bundle records. It is an ancestor of origin/recovery/wp00303. The bundle commit is the one commit pending at the moment this record was written: a file cannot name the commit that adds it without a circular reference.",
+  "local_branch": "recovery/wp00303",
+  "local_head_sha": "baf5b560101188ecceb36a4880d3dca16b267e31",
+  "main_synced": "NO",
+  "main_synced_note": "origin/main is 5e6f9632; neither this branch nor the 259-commit trunk it sits on has been merged.",
+  "push_result": "ok",
+  "remote_branch": "recovery/wp00303",
+  "remote_evidence": "git ls-remote origin refs/heads/recovery/trunk-sync refs/heads/recovery/wp00303, read after the push",
+  "remote_head_sha": "baf5b560101188ecceb36a4880d3dca16b267e31",
+  "repository": "https://github.com/Extr3sao/bot_crypto.git",
+  "sync_status": "REMOTE_BRANCH_SYNCED",
+  "verification_timestamp": "2026-10-22T21:22:24Z"
+ },
+ "paper": {
+  "committed_decisions": 480,
+  "committed_orders": 0,
+  "committed_shadow_decisions": 1,
+  "committed_trade_decisions": 0,
+  "decisions": 480,
+  "restart_duplicated_cloids": 0,
+  "scenario_fills_closed": 21,
+  "scenario_fills_opened": 21,
+  "scenario_no_trade_decisions": 448,
+  "scenario_orders": 23,
+  "scenario_risk_vetoes": 280,
+  "scenario_strategic_refusals": 168,
+  "scenario_trade_decisions": 32,
+  "scenario_unexecuted_trade_decisions": 9
+ },
+ "parameters": {
+  "assets": [
+   "BTC",
+   "ETH",
+   "SOL"
+  ],
+  "cycles": 160,
+  "initial_equity": 10000.0,
+  "lookback_bars": 120,
+  "restart_cycles": 40,
+  "size_usd": 1000.0,
+  "spread_bps": 1.0,
+  "spread_provenance": "ESTIMATED: COST_MODEL_V3 majors default, not an observed quote",
+  "start_index": 600,
+  "timeframe": "1h"
+ },
+ "schema": "wp00303-run-report/1",
+ "title": "WP-003-03 \u2014 PAPER end-to-end validation",
+ "verification": {
+  "blocked": [],
+  "evidence_sha": null,
+  "failed": [],
+  "negative_controls_rejected": null,
+  "negative_controls_total": null,
+  "verdict": "NOT_RUN"
+ },
+ "work_package": "WP-003-03"
+}

@@ -1,0 +1,94 @@
+{
+ "claims_not_made": [
+  "PRODUCTION_READY",
+  "OS_SANDBOX",
+  "EXTERNAL_SESSION",
+  "MARKET_PERFORMANCE_FROM_SCENARIO_LEDGER"
+ ],
+ "decision": "BLOCKED",
+ "delivery_status": "BLOCKED",
+ "delivery_status_reason": "the evidence is published on the working branch but main does not contain it; the mission requires MAIN_SYNCED=YES before delivery can be declared",
+ "dimensions": {
+  "EXTERNAL_ORDER_PREVENTION": {
+   "basis": "13 refusals across 8 abuse scenarios; 0 venue calls",
+   "result": "FAIL"
+  },
+  "FALSE_SUCCESS": {
+   "basis": "unsupported_pass_count=0; every dimension above is derived from a measured artefact, and a blocked check is never counted as passed",
+   "result": "FAIL"
+  },
+  "GITHUB_SYNC": {
+   "basis": "local=baf5b560 remote=baf5b560 main=5e6f9632 pending=1",
+   "result": "REMOTE_BRANCH_SYNCED"
+  },
+  "IMPLEMENTATION_STATUS": {
+   "basis": "paper_e2e_lab.py and verify_paper_e2e.py are committed with the evidence; no runtime file was modified (runtime_identity check re-hashes 13 files)",
+   "result": "PASS"
+  },
+  "INDEPENDENT_VERIFICATION": {
+   "basis": "verify_paper_e2e.py: 0/0 checks, None/None negative controls rejected",
+   "result": "NOT_RUN"
+  },
+  "NETWORK_ISOLATION": {
+   "basis": "the network check failed: see VERIFICATION.json",
+   "result": "FAIL"
+  },
+  "PAPER_VALIDATION": {
+   "basis": "recorded Binance 1h klines (sha256-matched); orders=23 fills_closed=21 PAPER only. EXTERNAL_SESSION=NOT_PERFORMED: the paper policy denies the network, so no venue-connected session can exist under it.",
+   "result": "BLOCKED"
+  },
+  "RUNTIME_VALIDATION": {
+   "basis": "the real AutonomousPaperRuntime ran 23 orders / 480 decisions in E2E-SCENARIO and 480 decisions in E2E-COMMITTED",
+   "result": "FAIL"
+  },
+  "TEST_STATUS": {
+   "basis": "pytest: 37 passed in 4.95s (exit 0)",
+   "result": "PASS"
+  }
+ },
+ "generated_at_utc": "2026-10-22T21:24:43Z",
+ "github_sync": {
+  "commits_pending": 1,
+  "default_branch_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+  "evidence_commit": "NOT_RECORDED_HERE",
+  "evidence_commit_reason": "The evidence bundle is added by a commit that did not exist when this file was written. It is identified by content, not by a self-reference: it is the first commit after this head whose tree contains this bundle, and the manifest hashes each file so a reader can confirm which tree is being judged.",
+  "head_scope": "local_head_sha is the commit the laboratory ran at and whose 13 runtime hashes this bundle records. It is an ancestor of origin/recovery/wp00303. The bundle commit is the one commit pending at the moment this record was written: a file cannot name the commit that adds it without a circular reference.",
+  "local_branch": "recovery/wp00303",
+  "local_head_sha": "baf5b560101188ecceb36a4880d3dca16b267e31",
+  "main_synced": "NO",
+  "main_synced_note": "origin/main is 5e6f9632; neither this branch nor the 259-commit trunk it sits on has been merged.",
+  "push_result": "ok",
+  "remote_branch": "recovery/wp00303",
+  "remote_evidence": "git ls-remote origin refs/heads/recovery/trunk-sync refs/heads/recovery/wp00303, read after the push",
+  "remote_head_sha": "baf5b560101188ecceb36a4880d3dca16b267e31",
+  "repository": "https://github.com/Extr3sao/bot_crypto.git",
+  "sync_status": "REMOTE_BRANCH_SYNCED",
+  "verification_timestamp": "2026-10-22T21:22:24Z"
+ },
+ "limitations": [
+  "OS_SANDBOX = NOT_AVAILABLE: the barrier is a per-process audit hook; a child process started without it is outside it.",
+  "EXTERNAL_SESSION = NOT_PERFORMED: the paper policy denies the network by design, so no venue-connected paper session can exist under it.",
+  "SPREAD = ESTIMATED (COST_MODEL_V3 default): this corpus holds no quote series.",
+  "SCENARIO admission ledger is a declared input, not research evidence; the committed ledger admits nothing for PAPER.",
+  "Committed-ledger run produced 0 orders by governance, so fills were only observable in the declared scenario run."
+ ],
+ "paper": {
+  "committed_decisions": 480,
+  "committed_orders": 0,
+  "committed_shadow_decisions": 1,
+  "committed_trade_decisions": 0,
+  "decisions": 480,
+  "restart_duplicated_cloids": 0,
+  "scenario_fills_closed": 21,
+  "scenario_fills_opened": 21,
+  "scenario_no_trade_decisions": 448,
+  "scenario_orders": 23,
+  "scenario_risk_vetoes": 280,
+  "scenario_strategic_refusals": 168,
+  "scenario_trade_decisions": 32,
+  "scenario_unexecuted_trade_decisions": 9
+ },
+ "schema": "wp00303-final-report/1",
+ "title": "WP-003-03 \u2014 PAPER end-to-end validation",
+ "work_package": "WP-003-03"
+}

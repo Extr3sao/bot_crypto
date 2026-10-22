@@ -1,0 +1,21 @@
+{
+ "child_seconds": 2.425,
+ "http_calls": 0,
+ "order_attempts": {
+  "client_place_order": {
+   "code": "ISO_ORDER_ROUTE",
+   "detail": "ISO_ORDER_ROUTE: market_data.BitunixFuturesClient.place_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode'} (BTCUSDT BUY MARKET 0.01)",
+   "outcome": "REFUSED"
+  },
+  "connector_create_order": {
+   "code": "ISO_ORDER_ROUTE",
+   "detail": "ISO_ORDER_ROUTE: market_data.BitunixFuturesConnector.create_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode'} (BTCUSDT buy market 0.01)",
+   "outcome": "REFUSED"
+  }
+ },
+ "pre_hook": [
+  "asyncio event loop (its self-pipe is a loopback socketpair on Windows; created before the hook, no venue object exists yet)"
+ ],
+ "recorded_at_utc": "2026-10-22T21:19:21Z",
+ "status": "OK"
+}

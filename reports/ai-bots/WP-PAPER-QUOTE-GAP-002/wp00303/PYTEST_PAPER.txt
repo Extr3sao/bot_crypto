@@ -1,0 +1,4 @@
+$ PYTHONPATH=src python -m pytest -q tests/integration/test_paper_e2e_001.py tests/integration/test_paper_e2e_002.py tests/integration/test_paper_e2e_003.py tests/unit/execution/test_isolation.py
+.....................................                                    [100%]
+37 passed in 4.95s
+EXIT=0

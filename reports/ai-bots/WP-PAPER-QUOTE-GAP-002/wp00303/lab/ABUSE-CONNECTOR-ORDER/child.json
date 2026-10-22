@@ -1,0 +1,21 @@
+{
+ "child_seconds": 2.823,
+ "order_attempts": {
+  "cancel_order": {
+   "code": "ISO_ORDER_ROUTE",
+   "detail": "ISO_ORDER_ROUTE: market_data.CCXTExchangeConnector.cancel_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode'} (order-1 BTC/USDT)",
+   "outcome": "REFUSED"
+  },
+  "create_order": {
+   "code": "ISO_ORDER_ROUTE",
+   "detail": "ISO_ORDER_ROUTE: market_data.CCXTExchangeConnector.create_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode'} (BTC/USDT buy market 1.0)",
+   "outcome": "REFUSED"
+  }
+ },
+ "pre_hook": [
+  "asyncio event loop (its self-pipe is a loopback socketpair on Windows; created before the hook, no venue object exists yet)"
+ ],
+ "recorded_at_utc": "2026-10-22T21:19:18Z",
+ "status": "OK",
+ "venue_calls": []
+}
