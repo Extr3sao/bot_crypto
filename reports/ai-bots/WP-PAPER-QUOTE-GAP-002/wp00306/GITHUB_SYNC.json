@@ -1,28 +1,35 @@
 {
  "branches": {
   "fix/ci-smoke-pwsh": {
+   "equality_expected": true,
    "published": true,
    "remote_head_sha": "9682ee1b31dbd01f72b3ff94ba3e6397df971fb6"
   },
   "recovery/trunk-sync": {
+   "equality_expected": true,
    "published": true,
    "remote_head_sha": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22"
   },
   "recovery/wp00303": {
+   "equality_expected": true,
    "published": true,
    "remote_head_sha": "08c5d9d22c87764a0a57586a232fd27df13acebf"
-  },
-  "wp/isolation-005": {
-   "published": true,
-   "remote_head_sha": "4888409cbc13e0fded4180761141d38e43777d52"
   }
+ },
+ "carrier_branch": {
+  "check": "git merge-base --is-ancestor <head_at_measurement> origin/wp/isolation-005",
+  "equality_expected": false,
+  "head_at_measurement": "4888409cbc13e0fded4180761141d38e43777d52",
+  "name": "wp/isolation-005",
+  "published": true,
+  "why": "A commit that records a branch's head moves that head. Equality can never hold for the branch that carries this file, so the record is checked by ancestry instead: head_at_measurement is an ancestor of origin/wp/isolation-005 forever."
  },
  "default_branch": "main",
  "default_branch_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
  "generated_at_utc": "2026-10-22T21:28:31Z",
  "main_synced": "NO",
  "main_synced_reason": "origin/main is 5e6f9632; neither the 259-commit local trunk nor the 244-commit branch has been pushed to main, and no merge was performed.",
- "measurement_scope": "Read with git ls-remote in this session. wp/isolation-005 moves by one commit whenever this file is committed on it, so its recorded head is the sha the file measured, not the sha that contains it; recovery/* and fix/* are stable.",
+ "measurement_scope": "Every branch under `branches` was read with git ls-remote and is expected to match; none of them carries this file. The carrier branch is recorded by ancestry, not by equality.",
  "pull_requests": {
   "17": {
    "action_taken": "none: its mandatory gates are still red",

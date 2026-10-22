@@ -155,12 +155,13 @@
   "origin_main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
   "port_head": "baf5b560101188ecceb36a4880d3dca16b267e31",
   "recovery_branch": "08c5d9d22c87764a0a57586a232fd27df13acebf",
-  "remote_heads": {
+  "remote_heads_at_session_start": {
    "fix/ci-smoke-pwsh": "9682ee1b31dbd01f72b3ff94ba3e6397df971fb6",
    "recovery/trunk-sync": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
    "recovery/wp00303": "08c5d9d22c87764a0a57586a232fd27df13acebf",
    "wp/isolation-005": "624455c8c55c8564a5d244cb82688a1332159ae7"
   },
+  "remote_heads_note": "wp/isolation-005 moved after this reading because it carries the WP-003-06 reports; recovery/* and fix/* are unchanged and are re-read in GITHUB_SYNC.json.",
   "trunk_sync": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
   "wp_branch": "624455c8c55c8564a5d244cb82688a1332159ae7"
  },
