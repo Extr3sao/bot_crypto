@@ -1,0 +1,284 @@
+{
+  "schema_version": "1.0",
+  "runner": "runner/EXP-004A/WP-051-02F",
+  "rfc": "RFC-EXP004A-051-02F",
+  "sealed_at_utc": "2026-10-22T14:49:52.994Z",
+  "head": "5314559fb93266ea5c05343baac1eae6e450d4fe",
+  "run_id": "20261022T140037Z-de5d3329",
+  "run_dir": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329",
+  "state": "CAPTURED_VERIFIED",
+  "independent_verification": "PASS",
+  "hash_semantics": "sha256 hashes the bytes in this checkout; git_blob_sha is the Git object id at HEAD. They are different magnitudes and are never presented as the same one.",
+  "entries": [
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/CLAIM.json",
+      "bytes": 8623,
+      "sha256": "6a19d6c5f573c3725ff43acab35000811fdfbf0f9470bcb530870dadf684fcc6"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/INDEPENDENT_VERIFICATION.json",
+      "bytes": 7533,
+      "sha256": "06e7ee8a7e636af884106ec740e17d164e6aa824915cb1c136c239c687e072fa"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/logs/observation.log",
+      "bytes": 549,
+      "sha256": "71ce210843d1cf4ded879071282361d4b2da3ea282696a9fae45dc03781c9eea"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/logs/preflight.log",
+      "bytes": 1585,
+      "sha256": "1ef149592a4276ca0ef004440170b3ce9e31423fbe5cae2699465f6ff4efce7d"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/logs/verify_02f.log",
+      "bytes": 2309,
+      "sha256": "4a4e8ff63e5d9208d1c9dfde2b5e14337e7c623c0675a72acf6069a66857fb70"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/reused_preflight/02E_REVERIFIED.json",
+      "bytes": 12551,
+      "sha256": "e590085fca37852669913aa3e1bf2d515303737e0108a286a797b1a3784f61b7"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/reused_preflight/WP_051_02E_BASELINE.json",
+      "bytes": 4645,
+      "sha256": "4996caa20e6dd0c49aef7e8219f34267123f4b3d98fa16db1a1c5463d480f26d"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/reused_preflight/WP_051_02E_PREFLIGHT.json",
+      "bytes": 13839,
+      "sha256": "6eed7758c3d58a30e1a531b63853a7072de6fc28fc2c6c027fe8b37266866ffb"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/RUN_REPORT.json",
+      "bytes": 12057,
+      "sha256": "636304b5b00619ec99c556dfff1736202d3d2b24c5cbcfba76341a481e8b2f69"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/RUN_REPORT.md",
+      "bytes": 2456,
+      "sha256": "69c5cec8798733293daf78bc0a2c42bbacce6c5f3256abe2b4359ac1efc1100a"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/CLAIM.json",
+      "bytes": 22353,
+      "sha256": "69ce47d59c16db465dc48a419421735218cb563c77f2f8dc097853c2dcbf74b6"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/INDEPENDENT_VERIFICATION.json",
+      "bytes": 13007,
+      "sha256": "b2286aec7ce49055a95ada06fcc6796e1ae854395e5aa0fb69c777ad72992c18"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/logs/capture_1h_BTC.log",
+      "bytes": 3259,
+      "sha256": "d1493ab83120264a8931f71bfc949b2dc0e46e49a56e0f9c078aca64217381de"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/logs/capture_1h_ETH.log",
+      "bytes": 3260,
+      "sha256": "c1abce951b4feed32200ba3ff4116b9e12caf953d55cee872b1289417f51bc3e"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/logs/capture_1h_SOL.log",
+      "bytes": 3260,
+      "sha256": "48ad90929791192a17ea43a69ab87c115acea00d896660fb7270acdec3afc962"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/logs/observation.log",
+      "bytes": 550,
+      "sha256": "d73bfe53ae3fa80b34ce485f3cbb0d49187bb04517877f01e80deaaacaa1b38a"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/logs/preflight.log",
+      "bytes": 1585,
+      "sha256": "9a51557bb5e31ed5f5487bb5a911bd9e3f0b158d68787c29eb14e9735d0491d3"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/logs/verify_02f.log",
+      "bytes": 3867,
+      "sha256": "61a302dd3947e178648b57964d8c54d09612177e044a4553d07b4c13a031e10e"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/reused_preflight/02E_REVERIFIED.json",
+      "bytes": 14134,
+      "sha256": "55c4d95367c12d2addb96ccc8bdd6220ffe1d61e8b5caf8444f29fab774e8347"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/reused_preflight/WP_051_02E_BASELINE.json",
+      "bytes": 4639,
+      "sha256": "156eee5ad0cea5e8cb7ebf23785a1ac4db908328b3d7401ab058c1a4538ae7a7"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/reused_preflight/WP_051_02E_PREFLIGHT.json",
+      "bytes": 13821,
+      "sha256": "205aa9ca1502b4ffa9f427ee4539367bca60a4a4879a7df8536b54c0c8b20852"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/RUN_REPORT.json",
+      "bytes": 27385,
+      "sha256": "721eaa89fe5ed22b64b749a6eb5aa46df1a9b0d555c90639ee3c7d04d2fd485c"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/RUN_REPORT.md",
+      "bytes": 2693,
+      "sha256": "1ef0beb8eca6081616703668304dd4a8e452d543c4d20c8da3d27187a7f642c4"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/CLAIM.json",
+      "bytes": 10186,
+      "sha256": "993df5f367aef1060689c02c85cbf209be5a5452abef8879a1109d52213fee70"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/INDEPENDENT_VERIFICATION.json",
+      "bytes": 13385,
+      "sha256": "4f164da02fa84a8590aeed0be6d1850073a01f7fe2fa1e4a90287811d233a487"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/logs/observation.log",
+      "bytes": 549,
+      "sha256": "591b465230e743927b5b87b1c0e609a746c45c79163442295485fad8fda27ca7"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/logs/preflight.log",
+      "bytes": 1622,
+      "sha256": "a480b3cba2b02da2506e80c2e99e21647dd8327a9759a8e5a4b71114d0a5d3ee"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/logs/verify_02f.log",
+      "bytes": 3929,
+      "sha256": "dbeeebede4250b0d19ae41a446b874b4b6f559578f850a2a941b34e65adeb39c"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/reused_preflight/02E_REVERIFIED.json",
+      "bytes": 14134,
+      "sha256": "f4ecedcb67edfa76f6611c792e68c09a2484cd2eb0097d6047ee32317ae8ec78"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/reused_preflight/WP_051_02E_BASELINE.json",
+      "bytes": 4849,
+      "sha256": "36c3451b940a3165102c3ffe9741e8f6c74e1d54bc8382618cf2febb44a130d1"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/reused_preflight/WP_051_02E_PREFLIGHT.json",
+      "bytes": 14165,
+      "sha256": "e65c1ebd77409bc14b2aab8f7eabf61d0ef3871164207b3f8545cb4f047062c8"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/RUN_REPORT.json",
+      "bytes": 15311,
+      "sha256": "4578933c323da9c101211a532a706c80723b89689e1f2ee7486c9f29f526727b"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/RUN_REPORT.md",
+      "bytes": 3058,
+      "sha256": "cab83e5ca9324241977875f5851f6f56f22ec6895e76580e546c7935791845d3"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/FINAL_REPORT.json",
+      "bytes": 15898,
+      "sha256": "867013904c7135146a05bde1efab98df34b698e9f708cd7e8491843bb841e4ff"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/FINAL_REPORT.md",
+      "bytes": 19262,
+      "sha256": "f855701b5008b6222e657f31693df5f907b4368933449564904524674290454e"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/INDEPENDENT_VERIFICATION.json",
+      "bytes": 13007,
+      "sha256": "b2286aec7ce49055a95ada06fcc6796e1ae854395e5aa0fb69c777ad72992c18"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/LATEST_RUN.json",
+      "bytes": 378,
+      "sha256": "d3dd4948cd5fe8828b05e8ee4b44d47da2c444227c50739a5f015e35627c89f4"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/reused_preflight/02E_REVERIFIED.json",
+      "bytes": 12528,
+      "sha256": "41b75eb639416e90c1e100c6b5ce872c8fca6032506808798509eb1fb97db466"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/reused_preflight/WP_051_02E_BASELINE.json",
+      "bytes": 4589,
+      "sha256": "34c336ad3b5bb27348d7f1001e5cbaec251f99efd0b4747713cef34490172bb5"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/reused_preflight/WP_051_02E_PREFLIGHT.json",
+      "bytes": 13724,
+      "sha256": "3b3c70c761a7267d5f87d942e2c3ab572e30ffc51b4be59a12d8e85f32882e79"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/REVERIFICATION_UNDER_FINAL_VERIFIER.json",
+      "bytes": 15025,
+      "sha256": "1bcceaea7dc36fe4bd095d4990346be73fa45f441eb2def1ec3987b8bf65f414"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/RUN_REPORT.json",
+      "bytes": 27385,
+      "sha256": "721eaa89fe5ed22b64b749a6eb5aa46df1a9b0d555c90639ee3c7d04d2fd485c"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/RUN_REPORT.md",
+      "bytes": 2693,
+      "sha256": "1ef0beb8eca6081616703668304dd4a8e452d543c4d20c8da3d27187a7f642c4"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02f/RUNTIME_AUTHORITY.md",
+      "bytes": 6166,
+      "sha256": "8fe252c31758f5678d7a3974a257f20b41aae0fbd04e2d77735bc9e9eae2169f"
+    },
+    {
+      "path": "data/exp004a/EXP-004A-1H-BTC.jsonl",
+      "role": "dataset",
+      "present": true,
+      "bytes": 4403,
+      "sha256": "da7310abcacc410ee20b2dbfdd814d78ff5d5689267554eace6632bf274950cd",
+      "claimed_sha256": "da7310abcacc410ee20b2dbfdd814d78ff5d5689267554eace6632bf274950cd",
+      "matches_claim": true
+    },
+    {
+      "path": "data/exp004a/EXP-004A-1H-BTC.MANIFEST.json",
+      "role": "dataset_manifest",
+      "present": true,
+      "bytes": 3312,
+      "sha256": "5893438cb1a1feab65cdc088d3ddae4cd092ba84596fd2cf77c4d9571636dafc"
+    },
+    {
+      "path": "data/exp004a/EXP-004A-1H-ETH.jsonl",
+      "role": "dataset",
+      "present": true,
+      "bytes": 4348,
+      "sha256": "28275763fe0bc3d6c514681f8c0c94fc2e1266acbd737724884b06c11b500729",
+      "claimed_sha256": "28275763fe0bc3d6c514681f8c0c94fc2e1266acbd737724884b06c11b500729",
+      "matches_claim": true
+    },
+    {
+      "path": "data/exp004a/EXP-004A-1H-ETH.MANIFEST.json",
+      "role": "dataset_manifest",
+      "present": true,
+      "bytes": 3312,
+      "sha256": "3f4ced7035bf1ceb7322c14b16378083d134727bd832b4a60f3a3c0383dd1d78"
+    },
+    {
+      "path": "data/exp004a/EXP-004A-1H-SOL.jsonl",
+      "role": "dataset",
+      "present": true,
+      "bytes": 4296,
+      "sha256": "b617d5492bb89ced9f0c3157a0a6ef50ccf6e1dcbb2167f2d7a5e8d16caa049e",
+      "claimed_sha256": "b617d5492bb89ced9f0c3157a0a6ef50ccf6e1dcbb2167f2d7a5e8d16caa049e",
+      "matches_claim": true
+    },
+    {
+      "path": "data/exp004a/EXP-004A-1H-SOL.MANIFEST.json",
+      "role": "dataset_manifest",
+      "present": true,
+      "bytes": 3312,
+      "sha256": "a72d0940099435004c9c95b27fdb9d9eaa740d18768c1ffa7162da05194f44f4"
+    }
+  ],
+  "entry_count": 50,
+  "not_a_certification": "a manifest says what is in the package. It does not say the package is right, and it does not promote anything."
+}
