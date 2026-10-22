@@ -25,6 +25,7 @@ import json
 import os
 import subprocess
 import sys
+from collections.abc import Sequence
 from dataclasses import replace
 from datetime import UTC, datetime
 from pathlib import Path
@@ -189,7 +190,14 @@ def run_child(args: argparse.Namespace) -> int:
 
     cycles: list[dict[str, Any]] = []
     for path in sorted((out / "session" / "cycles").glob("*/ledger.jsonl")):
-        entries = [canonical(row["entry"]) for row in read_entries(path)]
+        #: ``recorded_at_utc`` is when the line was written, not what it decided: two runs
+        #: of the same code at different wall-clock times would differ only there.
+        entries = [
+            canonical(
+                {key: value for key, value in row["entry"].items() if key != "recorded_at_utc"}
+            )
+            for row in read_entries(path)
+        ]
         cycles.append(
             {
                 "cycle": int(path.parent.name.split("-")[-1]),
@@ -278,8 +286,22 @@ def spawn(src: Path, args: argparse.Namespace, out: Path) -> dict[str, Any]:
     }
 
 
+def body(rows: Sequence[str]) -> list[str]:
+    """The rows after the ``RUN`` header.
+
+    The header is the one place the two trees are *supposed* to differ: the current tree
+    writes the code provenance block and the baseline predates it. Comparing it would
+    measure the feature instead of the decisions, so it is reported separately and every
+    row a decision can appear in is compared byte for byte.
+    """
+    if rows and json.loads(rows[0]).get("kind") == "RUN":
+        return list(rows[1:])
+    return list(rows)
+
+
 def compare(baseline: dict[str, Any], current: dict[str, Any]) -> dict[str, Any]:
     differences: list[str] = []
+    header_differences: list[int] = []
     left = baseline.get("cycles") or []
     right = current.get("cycles") or []
     if len(left) != len(right):
@@ -287,19 +309,23 @@ def compare(baseline: dict[str, Any], current: dict[str, Any]) -> dict[str, Any]
     for a, b in zip(left, right, strict=False):
         if a["cycle"] != b["cycle"]:
             differences.append(f"CYCLE_INDEX {a['cycle']} != {b['cycle']}")
-        if a["rows_sha256"] != b["rows_sha256"]:
+        if a["rows"] and b["rows"] and a["rows"][0] != b["rows"][0]:
+            header_differences.append(int(a["cycle"]))
+        left_rows = body(a["rows"])
+        right_rows = body(b["rows"])
+        if left_rows != right_rows:
             first = next(
                 (
                     index
                     for index, (row_a, row_b) in enumerate(
-                        zip(a["rows"], b["rows"], strict=False)
+                        zip(left_rows, right_rows, strict=False)
                     )
                     if row_a != row_b
                 ),
                 None,
             )
             differences.append(
-                f"CYCLE_{a['cycle']}_LEDGER_DIFFERS rows={len(a['rows'])}/{len(b['rows'])} "
+                f"CYCLE_{a['cycle']}_LEDGER_DIFFERS rows={len(left_rows)}/{len(right_rows)} "
                 f"first={first}"
             )
     keys = (
@@ -320,7 +346,12 @@ def compare(baseline: dict[str, Any], current: dict[str, Any]) -> dict[str, Any]
             differences.append(
                 f"SUMMARY_{key} {left_summary.get(key)!r} != {right_summary.get(key)!r}"
             )
-    return {"differences": differences, "cycles": len(right)}
+    return {
+        "differences": differences,
+        "header_differences": header_differences,
+        "cycles": len(right),
+        "compared_rows": sum(len(body(row["rows"])) for row in right),
+    }
 
 
 def main(argv: list[str] | None = None) -> int:
