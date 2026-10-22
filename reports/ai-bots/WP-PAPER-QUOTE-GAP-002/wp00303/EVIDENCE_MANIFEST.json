@@ -2,14 +2,14 @@
  "algorithm": "sha256",
  "file_count": 33,
  "files": {
-  "FINAL_REPORT.json": "4c00b5aea2002c11295cc424f922aef580a1b98d9667a1bceff613f5963204e0",
-  "FINAL_REPORT.md": "f3cacdee038b69a4afa158f4da0eb32c1433efc7160918b9da0e66834520adea",
+  "FINAL_REPORT.json": "438e00d4720bcb0c35c98591639442c4f3e0dd1c488602ea71860a6983fa22ae",
+  "FINAL_REPORT.md": "09960abd0cc6ddf3303df8d8201a27688210bf9b740b07c749988ac63a4677a7",
   "GITHUB_SYNC.json": "faa92a4b02bed38251fa6be9de35ae687d314bb54b351e0a592fb011a10ba225",
   "PAPER_E2E_LAB.json": "21e1b56368fad55be74b7bfdbb178835223477e109e8d45648473889998304cf",
   "PAPER_E2E_LAB_REPEAT.json": "a29a6a31b25c4646c0215dbe8e1739a82ac05a93c264f966a898fd8e17a830f9",
   "PYTEST_PAPER.txt": "7452ef43904530eb7b90f70bb42811f45e638faca50d645ec106d8c3c358dd71",
-  "RUN_REPORT.json": "5731bda2276e243ece86ac1ac1cd61385813fea5fd2efe2ae75291b6c57ac386",
-  "RUN_REPORT.md": "798060fcd4dd621d95e4eda49e4d6abe2ef4aa785796b4fe86d6e0bfb8a13dbc",
+  "RUN_REPORT.json": "5ec312a1afbf00030a2f030181d6f41ddec4e04c57951890de8e1a23e602c04e",
+  "RUN_REPORT.md": "daab037586ad0098acb570665a71fc9baa456dd036c0bd60da4982a8971e88be",
   "lab/ABUSE-APP-ORDER/child.json": "2160b56b7fe85a094442ba452851262757e715d21b85a5e8ccedf800d4e80934",
   "lab/ABUSE-CONNECTOR-ORDER/child.json": "2b10f4a205dd858a0940032bff2708d19c3b79421861b3da8b9edd90dcf90cce",
   "lab/ABUSE-DELEGATION/child.json": "87c279b496035cc7a49818e52cc23656e1d1007fa8888785eeb5f920c49049f3",
@@ -36,7 +36,7 @@
   "lab/E2E-SCENARIO/run/performance.json": "9c0deacfcf6d083a3cc5ae436780e45a393361b6d510da2e0b5bf381b6b6c19f",
   "lab/E2E-SCENARIO/run/traces.jsonl": "2d0eace9341370c10d9427d380c5da3e982084386606abba73cee6da30c363d7"
  },
- "generated_at_utc": "2026-10-22T21:24:43Z",
+ "generated_at_utc": "2026-10-22T21:25:25Z",
  "normalization": "CRLF replaced by LF before hashing (text artefacts only)",
  "schema": "wp00303-evidence-manifest/1"
 }

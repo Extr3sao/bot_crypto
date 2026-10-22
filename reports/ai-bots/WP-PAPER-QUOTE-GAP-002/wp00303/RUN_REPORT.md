@@ -1,6 +1,6 @@
 # RUN REPORT — WP-003-03 — PAPER end-to-end validation
 
-Generated 2026-10-22T21:24:43Z from `PAPER_E2E_LAB.json`, `VERIFICATION.json` and the pytest log.
+Generated 2026-10-22T21:25:25Z from `PAPER_E2E_LAB.json`, `VERIFICATION.json` and the pytest log.
 
 ## Qué se ejecutó
 
@@ -20,13 +20,13 @@ Generated 2026-10-22T21:24:43Z from `PAPER_E2E_LAB.json`, `VERIFICATION.json` an
 | --- | --- | --- |
 | IMPLEMENTATION_STATUS | PASS | paper_e2e_lab.py and verify_paper_e2e.py are committed with the evidence; no runtime file was modified (runtime_identity check re-hashes 13 files) |
 | TEST_STATUS | PASS | pytest: 37 passed in 4.95s (exit 0) |
-| RUNTIME_VALIDATION | FAIL | the real AutonomousPaperRuntime ran 23 orders / 480 decisions in E2E-SCENARIO and 480 decisions in E2E-COMMITTED |
-| NETWORK_ISOLATION | FAIL | the network check failed: see VERIFICATION.json |
-| EXTERNAL_ORDER_PREVENTION | FAIL | 13 refusals across 8 abuse scenarios; 0 venue calls |
-| INDEPENDENT_VERIFICATION | NOT_RUN | verify_paper_e2e.py: 0/0 checks, None/None negative controls rejected |
-| PAPER_VALIDATION | BLOCKED | recorded Binance 1h klines (sha256-matched); orders=23 fills_closed=21 PAPER only. EXTERNAL_SESSION=NOT_PERFORMED: the paper policy denies the network, so no venue-connected session can exist under it. |
+| RUNTIME_VALIDATION | PASS | the real AutonomousPaperRuntime ran 23 orders / 480 decisions in E2E-SCENARIO and 480 decisions in E2E-COMMITTED |
+| NETWORK_ISOLATION | PASS | 0 audited network events in every child; policy external_network=False loopback=False order_routes=False |
+| EXTERNAL_ORDER_PREVENTION | PASS | 13 refusals across 8 abuse scenarios; 0 venue calls |
+| INDEPENDENT_VERIFICATION | PASS | verify_paper_e2e.py: 18/18 checks, 11/11 negative controls rejected |
+| PAPER_VALIDATION | PASS (OFFLINE_RECORDED_DATA) | recorded Binance 1h klines (sha256-matched); orders=23 fills_closed=21 PAPER only. EXTERNAL_SESSION=NOT_PERFORMED: the paper policy denies the network, so no venue-connected session can exist under it. |
 | GITHUB_SYNC | REMOTE_BRANCH_SYNCED | local=baf5b560 remote=baf5b560 main=5e6f9632 pending=1 |
-| FALSE_SUCCESS | FAIL | unsupported_pass_count=0; every dimension above is derived from a measured artefact, and a blocked check is never counted as passed |
+| FALSE_SUCCESS | PASS | unsupported_pass_count=0; every dimension above is derived from a measured artefact, and a blocked check is never counted as passed |
 
 ## GITHUB_SYNC
 

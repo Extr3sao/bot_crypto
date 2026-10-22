@@ -1,6 +1,115 @@
 {
  "builder": "codebuff (builder); scripts/verify_paper_e2e.py is the separate verifier",
- "checks": [],
+ "checks": [
+  {
+   "blocked": false,
+   "check": "lab_shape",
+   "detail": "all scenarios present, completed and exited 0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "runtime_identity",
+   "detail": "13 runtime files hashed and unchanged",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "dataset_identity",
+   "detail": "3 recorded series match the fetch manifest",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "committed_ledger_no_trade",
+   "detail": "orders=0 fills=0 decisions=480 trade_decisions=0 shadow=1 admitted_for_paper=[]",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "scenario_reached_broker",
+   "detail": "orders=23 trade_decisions=32 fills_opened=21 fills_closed=21 closed_trades=21 scenario_ledger=True",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "no_orphan_fills",
+   "detail": "executions=23 orders_recorded=23 unexecuted_with_reason=9 orphan=0 duplicate_cloids=0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "accounting_identities",
+   "detail": "identities=5/5 commissions=10.500000 realised=87.651526 recomputed=87.651526",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "risk_before_order",
+   "detail": "orders_after_approved_risk=23 violations=0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "restart_reconciled",
+   "detail": "status=RECOVERED persisted_intents=23 recovered_intents=23 duplicated_cloids=0 equity_delta=0.0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "error_path_closed",
+   "detail": "cycles=3 orders=0 fills=0 executions=0 trade_decisions=0 decisions=9 errors=0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "no_external_network",
+   "detail": "no audited network event; strict paper policy in every child",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "abuse_battery",
+   "detail": "13 refusals across 8 scenarios; zero venue calls",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "pit_holds",
+   "detail": "1080 decisions satisfy decision_time >= market_time",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "reproducible_evidence",
+   "detail": "economic digests identical across two independent runs",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "evidence_in_commit",
+   "detail": "34 evidence files, all inside abdf2146",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "manifest_covers",
+   "detail": "33 files hashed, manifest complete",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "reports_consistent",
+   "detail": "reports match the lab ({'scenario_orders': 23, 'scenario_fills_closed': 21, 'committed_orders': 0, 'decisions': 480}); 9 separated dimensions present",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "github_sync_consistent",
+   "detail": "REMOTE_BRANCH_SYNCED: local=baf5b560 remote=baf5b560 default=5e6f9632 pending=1",
+   "ok": true
+  }
+ ],
  "claims_not_made": [
   "PRODUCTION_READY",
   "OS_SANDBOX",
@@ -15,8 +124,8 @@
   },
   {
    "command": "python scripts/verify_paper_e2e.py --negative-controls",
-   "exit_code": 1,
-   "result": "NOT_RUN"
+   "exit_code": 0,
+   "result": "PASS"
   },
   {
    "command": "pytest -q tests/unit/paper tests/unit/risk tests/unit/execution tests/unit/autonomous tests/integration/test_paper_e2e_00{1,2,3}.py",
@@ -69,11 +178,11 @@
  "dimensions": {
   "EXTERNAL_ORDER_PREVENTION": {
    "basis": "13 refusals across 8 abuse scenarios; 0 venue calls",
-   "result": "FAIL"
+   "result": "PASS"
   },
   "FALSE_SUCCESS": {
    "basis": "unsupported_pass_count=0; every dimension above is derived from a measured artefact, and a blocked check is never counted as passed",
-   "result": "FAIL"
+   "result": "PASS"
   },
   "GITHUB_SYNC": {
    "basis": "local=baf5b560 remote=baf5b560 main=5e6f9632 pending=1",
@@ -84,27 +193,27 @@
    "result": "PASS"
   },
   "INDEPENDENT_VERIFICATION": {
-   "basis": "verify_paper_e2e.py: 0/0 checks, None/None negative controls rejected",
-   "result": "NOT_RUN"
+   "basis": "verify_paper_e2e.py: 18/18 checks, 11/11 negative controls rejected",
+   "result": "PASS"
   },
   "NETWORK_ISOLATION": {
-   "basis": "the network check failed: see VERIFICATION.json",
-   "result": "FAIL"
+   "basis": "0 audited network events in every child; policy external_network=False loopback=False order_routes=False",
+   "result": "PASS"
   },
   "PAPER_VALIDATION": {
    "basis": "recorded Binance 1h klines (sha256-matched); orders=23 fills_closed=21 PAPER only. EXTERNAL_SESSION=NOT_PERFORMED: the paper policy denies the network, so no venue-connected session can exist under it.",
-   "result": "BLOCKED"
+   "result": "PASS (OFFLINE_RECORDED_DATA)"
   },
   "RUNTIME_VALIDATION": {
    "basis": "the real AutonomousPaperRuntime ran 23 orders / 480 decisions in E2E-SCENARIO and 480 decisions in E2E-COMMITTED",
-   "result": "FAIL"
+   "result": "PASS"
   },
   "TEST_STATUS": {
    "basis": "pytest: 37 passed in 4.95s (exit 0)",
    "result": "PASS"
   }
  },
- "generated_at_utc": "2026-10-22T21:24:43Z",
+ "generated_at_utc": "2026-10-22T21:25:25Z",
  "git": {
   "branch": "recovery/wp00303",
   "head": "baf5b560101188ecceb36a4880d3dca16b267e31",
@@ -165,11 +274,11 @@
  "title": "WP-003-03 \u2014 PAPER end-to-end validation",
  "verification": {
   "blocked": [],
-  "evidence_sha": null,
+  "evidence_sha": "abdf21462efc7ae2390affeac2150f657a0095bb",
   "failed": [],
-  "negative_controls_rejected": null,
-  "negative_controls_total": null,
-  "verdict": "NOT_RUN"
+  "negative_controls_rejected": 11,
+  "negative_controls_total": 11,
+  "verdict": "PASS"
  },
  "work_package": "WP-003-03"
 }
