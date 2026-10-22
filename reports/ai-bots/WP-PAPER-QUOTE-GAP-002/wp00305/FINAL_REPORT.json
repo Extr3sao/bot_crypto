@@ -1,7 +1,7 @@
 {
  "schema": "wp00305-final-report/1",
  "work_package": "WP-003-05",
- "title": "Recuperación de integración y baseline de GitHub",
+ "title": "Recuperaci\u00f3n de integraci\u00f3n y baseline de GitHub",
  "decision": "BLOCKED",
  "delivery_status": "BLOCKED",
  "delivery_status_reason": "the integration is built and verified, but publishing the trunk turns three gates red on main (433 unformatted files, 100 lint errors, 253 type errors) and the suite incollectable (4 errors), and fixing it requires the repository-wide reformat this WP is forbidden to perform; WP-003-03 cannot exist without that trunk",
@@ -21,15 +21,43 @@
   "minimal_branch_deletions": 88,
   "economic_digests_identical": "3/3",
   "runtime_hashes_identical_pre_format": "13/13",
-  "gate_debt_added": {"format": 0, "lint": 0, "mypy": 0, "collection": 0},
+  "gate_debt_added": {
+   "format": 0,
+   "lint": 0,
+   "mypy": 0,
+   "collection": 0
+  },
   "wp_tests_passed": 37,
   "independent_checks_ok": "14/18",
-  "negative_controls_rejected": "11/11"
+  "negative_controls_rejected": "11/11",
+  "suite_failure_nodes": 95,
+  "suite_failure_set_identical_to_reference": true
  },
  "integration_plan": [
-  {"id": "PR-1", "branch": "fix/ci-smoke-pwsh", "head": "9682ee1b31dbd01f72b3ff94ba3e6397df971fb6", "state": "PUBLISHED", "scope": "1 file", "ci_verified": false},
-  {"id": "PR-2", "branch": "trunk", "head": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22", "state": "BLOCKED_ON_OWNER", "scope": "259 commits, fast-forward", "blocker": "format debt of 433 files"},
-  {"id": "PR-3", "branch": "integration/wp00303-min", "head": "baf5b560101188ecceb36a4880d3dca16b267e31", "state": "BUILT_AND_VERIFIED_LOCAL", "scope": "6 commits, 23 files", "blocker": "depends on PR-2"}
+  {
+   "id": "PR-1",
+   "branch": "fix/ci-smoke-pwsh",
+   "head": "9682ee1b31dbd01f72b3ff94ba3e6397df971fb6",
+   "state": "PUBLISHED",
+   "scope": "1 file",
+   "ci_verified": false
+  },
+  {
+   "id": "PR-2",
+   "branch": "trunk",
+   "head": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+   "state": "BLOCKED_ON_OWNER",
+   "scope": "259 commits, fast-forward",
+   "blocker": "format debt of 433 files"
+  },
+  {
+   "id": "PR-3",
+   "branch": "integration/wp00303-min",
+   "head": "baf5b560101188ecceb36a4880d3dca16b267e31",
+   "state": "BUILT_AND_VERIFIED_LOCAL",
+   "scope": "6 commits, 23 files",
+   "blocker": "depends on PR-2"
+  }
  ],
  "dimensions": {
   "HISTORY_EXPLAINED": "PASS",
@@ -57,15 +85,16 @@
   "repository": "https://github.com/Extr3sao/bot_crypto.git",
   "local_branch": "wp/isolation-005",
   "remote_branch": "origin/wp/isolation-005",
-  "local_head_sha": "afc0127086a67632ed94488d95d2e430417535b2",
-  "remote_head_sha": "afc0127086a67632ed94488d95d2e430417535b2",
+  "local_head_sha": "7aa41e9ca9a8a3e9afb0f20a69987a2acf0aa5bb",
+  "remote_head_sha": "7aa41e9ca9a8a3e9afb0f20a69987a2acf0aa5bb",
   "default_branch_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
   "commits_pending": 0,
-  "push_result": "OK for fix/ci-smoke-pwsh (9682ee1b, new branch, no force); wp/isolation-005 unchanged",
+  "push_result": "OK: afc01270..7aa41e9c on wp/isolation-005 (fast-forward, no force). fix/ci-smoke-pwsh = 9682ee1b was published earlier the same day.",
   "pull_request_url": "https://github.com/Extr3sao/bot_crypto/pull/17",
-  "merge_result": "NOT_MERGED",
-  "sync_status": "REMOTE_BRANCH_SYNCED; MAIN_SYNCED=NO",
-  "verification_timestamp": "2026-10-22T16:20:00Z"
+  "merge_result": "NOT_MERGED: 7/7 checks red",
+  "sync_status": "REMOTE_BRANCH_SYNCED; MAIN_SYNCED=NO (origin/main still 5e6f9632; local main 1d2192b0 is 259 commits ahead and unpublished)",
+  "verification_timestamp": "2026-10-22T16:20:00Z",
+  "note": "The twelve fields name the tip that `git ls-remote` returned (7aa41e9c). The commit that carries them is one later, by construction: a commit cannot contain its own hash."
  },
  "next_work_package": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00305/NEXT_WP_WP-003-06.md"
 }

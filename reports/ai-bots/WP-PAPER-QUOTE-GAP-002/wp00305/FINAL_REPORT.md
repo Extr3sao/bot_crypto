@@ -13,7 +13,7 @@
 - **3/3 digests económicos idénticos** (`20f10f30…`, `59dc3611…`, `45ada80c…`), totales y contabilidad idénticos, 23 órdenes, 21 cierres, PnL 87.65152561534461.
 - **13/13 hashes de runtime byte-idénticos** en el port previo al formateo; 8/13 tras él, con los 3 digests intactos.
 - **0 deuda nueva de gates:** 0 ficheros de formato, 0 errores de lint, 0 de tipos, **0 errores de colección** (el tronco tenía 4).
-- **37 tests del WP en verde**; suite completa `81 failed, 3230 passed, 31 skipped, 14 errors`, todos los rojos en `tests/unit/research/*` del tronco.
+- **37 tests del WP en verde**; suite completa `81 failed, 3230 passed, 31 skipped, 14 errors`, **95 nodos rojos idénticos al árbol de referencia sin el port (diferencia 0)**, todos en `tests/unit/research/*` del tronco.
 - **Job de smoke reparado y publicado** (`9682ee1b`): la acción `microsoft/powershell@v1.1.0` no existe; el job moría en `Set up job`, antes del checkout.
 - **Verificación independiente:** 14/18 checks y **11/11 controles negativos rechazados**; los 4 no verdes son empaquetado de evidencia y estado remoto, declarados como límite.
 
@@ -63,15 +63,17 @@ El orden no es estético: PR-3 **no puede existir sin PR-2**, porque el runtime 
 | `repository` | `https://github.com/Extr3sao/bot_crypto.git` |
 | `local_branch` | `wp/isolation-005` |
 | `remote_branch` | `origin/wp/isolation-005` |
-| `local_head_sha` | `afc0127086a67632ed94488d95d2e430417535b2` |
-| `remote_head_sha` | `afc0127086a67632ed94488d95d2e430417535b2` |
+| `local_head_sha` | `7aa41e9ca9a8a3e9afb0f20a69987a2acf0aa5bb` |
+| `remote_head_sha` | `7aa41e9ca9a8a3e9afb0f20a69987a2acf0aa5bb` |
 | `default_branch_sha` | `5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d` |
 | `commits_pending` | 0 en la rama · 259 en el tronco |
-| `push_result` | `OK` para `fix/ci-smoke-pwsh` (`9682ee1b`, rama nueva, sin force); `wp/isolation-005` sin cambios |
+| `push_result` | `OK`: `afc01270..7aa41e9c` en `wp/isolation-005` (fast-forward, sin force); `fix/ci-smoke-pwsh` = `9682ee1b` publicado antes |
 | `pull_request_url` | https://github.com/Extr3sao/bot_crypto/pull/17 |
 | `merge_result` | `NOT_MERGED` — 7/7 checks rojos |
 | `sync_status` | `REMOTE_BRANCH_SYNCED` · `MAIN_SYNCED = NO` |
 | `verification_timestamp` | `2026-10-22T16:20:00Z` |
+
+Este informe nombra el tip leído del remoto (`7aa41e9c`); el commit que lo lleva es uno posterior, por construcción.
 
 ## Dimensiones
 

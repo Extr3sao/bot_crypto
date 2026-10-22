@@ -112,15 +112,15 @@
    "ok": false
   }
  ],
- "evidence_sha": "5b5ea7d29f9cca3e8bf7e20a78ca955af7c04d78",
+ "evidence_sha": "baf5b560101188ecceb36a4880d3dca16b267e31",
  "failed": [
   "evidence_in_commit",
   "manifest_covers",
   "reports_consistent",
   "github_sync_consistent"
  ],
- "generated_at_utc": "2026-10-22T14:12:37Z",
- "lab_generated_at_utc": "2026-10-22T14:12:35Z",
+ "generated_at_utc": "2026-10-22T14:32:40Z",
+ "lab_generated_at_utc": "2026-10-22T14:32:39Z",
  "negative_controls": [
   {
    "id": "01",

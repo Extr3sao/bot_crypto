@@ -83,7 +83,7 @@ El paso L4 es el hallazgo metodológico de este WP: **el laboratorio pasa con el
 | `4c60683c` | broker + runtime de decisión (6 ficheros, +526/−53) |
 | `04aeb308` | `risk/manager.py` (+82/−3) |
 | `7e4971d1` | formato de los 8 ficheros portados |
-| `5b5ea7d2` | `src/trading_bot/ops/` (2 ficheros, 499 líneas) |
+| `baf5b560` | `src/trading_bot/ops/` (2 ficheros, 499 líneas) |
 
 **23 ficheros, +4 472 / −88 líneas** (19 de código/config y test, +4 393 líneas; 4 de dataset, 1.6 MB en 79 líneas porque son JSON de una sola línea), frente a 1 864 ficheros y +1 990 709 líneas de la rama.
 
@@ -103,7 +103,7 @@ El commit de formato (`7e4971d1`) cambia los bytes de 5 de esos 13 ficheros y **
 
 | # | Test commiteado | Módulo/símbolo que importa | Dónde existe | Estado |
 | --- | --- | --- | --- | --- |
-| D1 | `tests/unit/autonomous/test_{lab_ops_hardening,pid_identity,supervisor}.py`, `tests/unit/forward/test_forward_exit_contract.py` (tronco, 2026-09-29/10-01) | `trading_bot.ops` | sólo rama, `fe9b5e26` (2026-10-18) | **reparado** en `5b5ea7d2`: 4 errores de colección → 0 |
+| D1 | `tests/unit/autonomous/test_{lab_ops_hardening,pid_identity,supervisor}.py`, `tests/unit/forward/test_forward_exit_contract.py` (tronco, 2026-09-29/10-01) | `trading_bot.ops` | sólo rama, `fe9b5e26` (2026-10-18) | **reparado** en `baf5b560`: 4 errores de colección → 0 |
 | D2 | `tests/unit/observability/test_vision_panel.py` (`5fd791d8`) | `trading_bot.observability.vision_panel` | **en ningún commit**: existe sin versionar en 6 worktrees | **abierto**, ajeno a este WP |
 | D3 | `tests/unit/research/test_edge16_pit.py` (`6f04e59b`) | `alpha15.PRE_PIT_RUNNERS` | `8eb4a2c1`/`9f3892f6`/`611db47e`, en 4 ramas hermanas | **abierto**, requiere decisión del titular |
 
@@ -129,7 +129,7 @@ Sin force, sin merge: `origin/main` es ancestro. Reduce la PR de 498 a 239 commi
 
 | Gate | `origin/main` `5e6f9632` | tronco `1d2192b0` | rama `afc01270` | rama mínima |
 | --- | --- | --- | --- | --- |
-| `ruff format --check .` | **0** | **433 ficheros** | 617 | 431 (todos del tronco) |
+| `ruff format --check .` | **0** | **433 ficheros** | 617 | **428** (0 propios; 5 menos que el tronco) |
 | `ruff check .` | **0** | **100 errores** | 195 / 44 ficheros | 100 (todos del tronco) |
 | `mypy .` | **0** | **253 errores** | 622 / 107 ficheros | 253 (todos del tronco) |
 | Colección de la suite | 582 tests OK | **4 errores** | 2 errores | **0 errores** |

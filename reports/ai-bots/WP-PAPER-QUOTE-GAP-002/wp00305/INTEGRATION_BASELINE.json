@@ -11,9 +11,17 @@
   "branch_head": "afc0127086a67632ed94488d95d2e430417535b2",
   "remote_branch_head": "afc0127086a67632ed94488d95d2e430417535b2",
   "merge_base_main_branch": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
-  "divergence": {"origin_main_behind_local_main": 0, "local_main_ahead": 259, "local_main_behind_branch": 0, "branch_ahead_of_local_main": 239},
+  "divergence": {
+   "origin_main_behind_local_main": 0,
+   "local_main_ahead": 259,
+   "local_main_behind_branch": 0,
+   "branch_ahead_of_local_main": 239
+  },
   "history_shape": "linear, zero merge commits",
-  "authors": {"distinct": 1, "email": "franciscovalladares@gencat.cat"}
+  "authors": {
+   "distinct": 1,
+   "email": "franciscovalladares@gencat.cat"
+  }
  },
  "pull_request": {
   "number": 17,
@@ -26,7 +34,19 @@
   "deletions": 1437,
   "mergeable": true,
   "mergeable_state": "unstable",
-  "check_runs": {"total": 7, "failing": 7, "names": ["Format + Lint (Ruff)", "Type check (Mypy strict)", "Tests + Coverage (pytest, fast)", "Security audit (pip-audit)", "Smoke PR-pipeline (parse + preflight, no side effects)", "Reproduce the cost-barrier artefacts", "Rehearse the recovery lane in a clean checkout"]},
+  "check_runs": {
+   "total": 7,
+   "failing": 7,
+   "names": [
+    "Format + Lint (Ruff)",
+    "Type check (Mypy strict)",
+    "Tests + Coverage (pytest, fast)",
+    "Security audit (pip-audit)",
+    "Smoke PR-pipeline (parse + preflight, no side effects)",
+    "Reproduce the cost-barrier artefacts",
+    "Rehearse the recovery lane in a clean checkout"
+   ]
+  },
   "branch_protection": "UNKNOWN: anonymous GET /branches/main/protection returns 401",
   "source": "GitHub REST /pulls/17 and /commits/afc01270/check-runs, read in this session"
  },
@@ -37,8 +57,20 @@
    "commits": 259,
    "first_date": "2026-09-25",
    "last_date": "2026-10-12",
-   "work_package_tags": {"tagged": 0, "untagged": 259},
-   "file_touches_by_area": {"data": 648, "docs": 569, "scripts": 406, "src": 252, "tests": 227, "research": 106, "root": 44, "ci": 36},
+   "work_package_tags": {
+    "tagged": 0,
+    "untagged": 259
+   },
+   "file_touches_by_area": {
+    "data": 648,
+    "docs": 569,
+    "scripts": 406,
+    "src": 252,
+    "tests": 227,
+    "research": 106,
+    "root": 44,
+    "ci": 36
+   },
    "verification_state": "never pushed, therefore never run by CI; four of its own tests cannot import at its tip (see missing_dependencies D1)",
    "verdict": "publishable only after the format decision; fast-forward, no conflicts"
   },
@@ -49,38 +81,109 @@
    "first_date": "2026-10-12",
    "last_date": "2026-10-21",
    "work_package_tags": {
-    "UNTAGGED": 114, "WP-EDGE-01": 20, "WP-EDGE-07": 16, "WP-EDGE-05": 11, "WP-EDGE-04": 9,
-    "WP-EDGE-06": 9, "RFC-EDGE-014": 7, "WP-EDGE-04R": 7, "WP-EDGE-09F": 7, "WP-EDGE-12": 6,
-    "WP-EDGE-02": 6, "WP-EDGE-00": 6, "WP-EDGE-03": 5, "RFC-EDGE-014R": 4, "WP-EDGE-05R": 4,
-    "WP-EDGE-08F": 3, "other_single": 6
+    "UNTAGGED": 114,
+    "WP-EDGE-01": 20,
+    "WP-EDGE-07": 16,
+    "WP-EDGE-05": 11,
+    "WP-EDGE-04": 9,
+    "WP-EDGE-06": 9,
+    "RFC-EDGE-014": 7,
+    "WP-EDGE-04R": 7,
+    "WP-EDGE-09F": 7,
+    "WP-EDGE-12": 6,
+    "WP-EDGE-02": 6,
+    "WP-EDGE-00": 6,
+    "WP-EDGE-03": 5,
+    "RFC-EDGE-014R": 4,
+    "WP-EDGE-05R": 4,
+    "WP-EDGE-08F": 3,
+    "other_single": 6
    },
-   "file_touches_by_area": {"reports": 2042, "scripts": 278, "src": 187, "tests": 111, "docs": 61, "root": 53, "data": 26},
+   "file_touches_by_area": {
+    "reports": 2042,
+    "scripts": 278,
+    "src": 187,
+    "tests": 111,
+    "docs": 61,
+    "root": 53,
+    "data": 26
+   },
    "verification_state": "7/7 checks red at the published head; 3 of those 5 CI Baseline jobs are already red on the base",
    "verdict": "not mergeable as a whole; contains WP-003-03 and its dependency set, isolable"
   }
  ],
  "artifact_inventory": {
-  "totals": {"files": 3452, "additions": 2722984, "deletions": 1437},
+  "totals": {
+   "files": 3452,
+   "additions": 2722984,
+   "deletions": 1437
+  },
   "by_class": {
-   "evidence_generated_reports": {"files": 1176, "additions": 1790665, "share_of_additions_pct": 65.8},
-   "datasets_data": {"files": 323, "additions": 382299, "share_of_additions_pct": 14.0},
-   "scripts": {"files": 432, "additions": 240901, "share_of_additions_pct": 8.8},
-   "src": {"files": 271, "additions": 118071, "share_of_additions_pct": 4.3},
-   "docs": {"files": 896, "additions": 99782, "share_of_additions_pct": 3.7},
-   "tests": {"files": 236, "additions": 71047, "share_of_additions_pct": 2.6},
-   "ci_and_other": {"files": 118, "additions": 20219, "share_of_additions_pct": 0.8}
+   "evidence_generated_reports": {
+    "files": 1176,
+    "additions": 1790665,
+    "share_of_additions_pct": 65.8
+   },
+   "datasets_data": {
+    "files": 323,
+    "additions": 382299,
+    "share_of_additions_pct": 14.0
+   },
+   "scripts": {
+    "files": 432,
+    "additions": 240901,
+    "share_of_additions_pct": 8.8
+   },
+   "src": {
+    "files": 271,
+    "additions": 118071,
+    "share_of_additions_pct": 4.3
+   },
+   "docs": {
+    "files": 896,
+    "additions": 99782,
+    "share_of_additions_pct": 3.7
+   },
+   "tests": {
+    "files": 236,
+    "additions": 71047,
+    "share_of_additions_pct": 2.6
+   },
+   "ci_and_other": {
+    "files": 118,
+    "additions": 20219,
+    "share_of_additions_pct": 0.8
+   }
   },
   "largest_single_files": [
-   {"path": "reports/edge-recovery/WP-EDGE-01/EQUITY_CURVE.csv", "lines": 229648},
-   {"path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/RECOVERY_LAB.json", "lines": 184410},
-   {"path": "reports/edge-recovery/WP-EDGE-02/trend-robustness/ROBUSTNESS.json", "lines": 97676},
-   {"path": "reports/edge-recovery/WP-EDGE-09/panel/PANEL_SECONDS.csv", "lines": 95914},
-   {"path": "data/rfc048/raw/binance_usdm_exchange_info.json", "lines": 79246}
+   {
+    "path": "reports/edge-recovery/WP-EDGE-01/EQUITY_CURVE.csv",
+    "lines": 229648
+   },
+   {
+    "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/RECOVERY_LAB.json",
+    "lines": 184410
+   },
+   {
+    "path": "reports/edge-recovery/WP-EDGE-02/trend-robustness/ROBUSTNESS.json",
+    "lines": 97676
+   },
+   {
+    "path": "reports/edge-recovery/WP-EDGE-09/panel/PANEL_SECONDS.csv",
+    "lines": 95914
+   },
+   {
+    "path": "data/rfc048/raw/binance_usdm_exchange_info.json",
+    "lines": 79246
+   }
   ],
   "conclusion": "the PR is large because it publishes the evidence of 20 research work packages and because main has not been published since 2026-09-22; its code content is 939 files and 430k lines, and WP-003-03's own code is 2629 lines in three scripts"
  },
  "work_package_wp00303": {
-  "commits": ["06ba3183", "e450a238"],
+  "commits": [
+   "06ba3183",
+   "e450a238"
+  ],
   "scripts": {
    "scripts/paper_e2e_lab.py": 1290,
    "scripts/verify_paper_e2e.py": 841,
@@ -98,37 +201,79 @@
    {
     "layer": "L1_GUARD",
     "source_commit": "0bdda77d",
-    "files": ["src/trading_bot/execution/isolation.py", "src/trading_bot/execution/__init__.py", "src/trading_bot/app.py", "src/trading_bot/market_data/bitunix.py", "src/trading_bot/market_data/bitunix_futures.py", "src/trading_bot/market_data/exchange_connector.py", "tests/unit/execution/test_isolation.py"],
+    "files": [
+     "src/trading_bot/execution/isolation.py",
+     "src/trading_bot/execution/__init__.py",
+     "src/trading_bot/app.py",
+     "src/trading_bot/market_data/bitunix.py",
+     "src/trading_bot/market_data/bitunix_futures.py",
+     "src/trading_bot/market_data/exchange_connector.py",
+     "tests/unit/execution/test_isolation.py"
+    ],
     "reason": "ModuleNotFoundError: trading_bot.execution.isolation"
    },
    {
     "layer": "L2_CORPUS",
     "source_commit": "8e66e81b",
-    "files": ["data/edge07/holdout-1h/BTCUSDT_holdout2026.json", "data/edge07/holdout-1h/ETHUSDT_holdout2026.json", "data/edge07/holdout-1h/SOLUSDT_holdout2026.json", "data/edge07/holdout-1h/_FETCH_MANIFEST.json"],
+    "files": [
+     "data/edge07/holdout-1h/BTCUSDT_holdout2026.json",
+     "data/edge07/holdout-1h/ETHUSDT_holdout2026.json",
+     "data/edge07/holdout-1h/SOLUSDT_holdout2026.json",
+     "data/edge07/holdout-1h/_FETCH_MANIFEST.json"
+    ],
     "reason": "the lab declares this corpus and checks its sha256 against the manifest"
    },
    {
     "layer": "L3_BROKER_AND_DECISION",
-    "source_commits": ["b4ff5889", "87b9c6af", "5b86b656", "96957a2b", "86d4f126"],
-    "files": ["src/trading_bot/paper/broker.py", "src/trading_bot/paper/reconciliation_v4.py", "src/trading_bot/autonomous/contracts.py", "src/trading_bot/autonomous/decision.py", "src/trading_bot/autonomous/runtime.py", "src/trading_bot/autonomous/supervisor.py"],
+    "source_commits": [
+     "b4ff5889",
+     "87b9c6af",
+     "5b86b656",
+     "96957a2b",
+     "86d4f126"
+    ],
+    "files": [
+     "src/trading_bot/paper/broker.py",
+     "src/trading_bot/paper/reconciliation_v4.py",
+     "src/trading_bot/autonomous/contracts.py",
+     "src/trading_bot/autonomous/decision.py",
+     "src/trading_bot/autonomous/runtime.py",
+     "src/trading_bot/autonomous/supervisor.py"
+    ],
     "reason": "AttributeError: 'PaperBroker' object has no attribute 'accounting_snapshot'"
    },
    {
     "layer": "L4_RISK",
-    "source_commits": ["9dbbbaee", "1869f535", "5b86b656"],
-    "files": ["src/trading_bot/risk/manager.py"],
+    "source_commits": [
+     "9dbbbaee",
+     "1869f535",
+     "5b86b656"
+    ],
+    "files": [
+     "src/trading_bot/risk/manager.py"
+    ],
     "reason": "no exception: E2E-RESTART digest differed (32 trades approved where the published run vetoed all 81). A single-scenario validation would have missed it",
     "measured_delta": "risk_VETOED 49 vs 81, orders_created 16 vs 0 before this file was ported"
    },
    {
     "layer": "L5_LAB",
-    "source_commits": ["06ba3183", "e450a238"],
-    "files": ["scripts/paper_e2e_lab.py", "scripts/verify_paper_e2e.py", "scripts/make_paper_e2e_reports.py"]
+    "source_commits": [
+     "06ba3183",
+     "e450a238"
+    ],
+    "files": [
+     "scripts/paper_e2e_lab.py",
+     "scripts/verify_paper_e2e.py",
+     "scripts/make_paper_e2e_reports.py"
+    ]
    },
    {
     "layer": "L6_OPS",
     "source_commit": "fe9b5e26",
-    "files": ["src/trading_bot/ops/__init__.py", "src/trading_bot/ops/windowless.py"],
+    "files": [
+     "src/trading_bot/ops/__init__.py",
+     "src/trading_bot/ops/windowless.py"
+    ],
     "reason": "4 collection errors in the trunk: four committed tests import trading_bot.ops, which did not exist until 2026-10-18"
    },
    {
@@ -141,7 +286,14 @@
   "resulting_branch": {
    "name": "integration/wp00303-min",
    "head": "baf5b560101188ecceb36a4880d3dca16b267e31",
-   "commits": ["31b8d223", "021d614d", "4c60683c", "04aeb308", "7e4971d1", "baf5b560"],
+   "commits": [
+    "31b8d223",
+    "021d614d",
+    "4c60683c",
+    "04aeb308",
+    "7e4971d1",
+    "baf5b560"
+   ],
    "files": 23,
    "additions": 4472,
    "deletions": 88,
@@ -149,14 +301,58 @@
   },
   "economic_equivalence": {
    "published_evidence": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00303/PAPER_E2E_LAB.json",
-   "E2E-COMMITTED": {"published": "20f10f30bb6ce5394f6c19f89f4bc0658faeea2684199160f4a566a4edf9aac9", "port": "20f10f30bb6ce5394f6c19f89f4bc0658faeea2684199160f4a566a4edf9aac9", "identical": true, "totals_identical": true, "accounting_identical": true},
-   "E2E-SCENARIO": {"published": "59dc36111fad5be54e0f82b3df758dfab65307ef223476d3a72235999c7385c9", "port": "59dc36111fad5be54e0f82b3df758dfab65307ef223476d3a72235999c7385c9", "identical": true, "totals_identical": true, "accounting_identical": true, "orders_created": 23, "fills_closed": 21, "realised_pnl": 87.65152561534461},
-   "E2E-RESTART": {"published": "45ada80c456bf79b1c294656c0fbb9742e5864489247649f34cf6e8d434444ce", "port": "45ada80c456bf79b1c294656c0fbb9742e5864489247649f34cf6e8d434444ce", "identical": true, "totals_identical": true, "accounting_identical": true},
-   "closed_trade_fields_that_differ": ["closed_at", "entry_order_id", "exit_order_id", "opened_at", "position_id", "trade_id"],
-   "runtime_sha256": {"files": 13, "identical_before_formatting": 13, "identical_after_formatting": 8, "changed_by_formatting_only": ["src/trading_bot/autonomous/decision.py", "src/trading_bot/autonomous/runtime.py", "src/trading_bot/execution/isolation.py", "src/trading_bot/paper/broker.py", "src/trading_bot/paper/reconciliation_v4.py"]},
+   "E2E-COMMITTED": {
+    "published": "20f10f30bb6ce5394f6c19f89f4bc0658faeea2684199160f4a566a4edf9aac9",
+    "port": "20f10f30bb6ce5394f6c19f89f4bc0658faeea2684199160f4a566a4edf9aac9",
+    "identical": true,
+    "totals_identical": true,
+    "accounting_identical": true
+   },
+   "E2E-SCENARIO": {
+    "published": "59dc36111fad5be54e0f82b3df758dfab65307ef223476d3a72235999c7385c9",
+    "port": "59dc36111fad5be54e0f82b3df758dfab65307ef223476d3a72235999c7385c9",
+    "identical": true,
+    "totals_identical": true,
+    "accounting_identical": true,
+    "orders_created": 23,
+    "fills_closed": 21,
+    "realised_pnl": 87.65152561534461
+   },
+   "E2E-RESTART": {
+    "published": "45ada80c456bf79b1c294656c0fbb9742e5864489247649f34cf6e8d434444ce",
+    "port": "45ada80c456bf79b1c294656c0fbb9742e5864489247649f34cf6e8d434444ce",
+    "identical": true,
+    "totals_identical": true,
+    "accounting_identical": true
+   },
+   "closed_trade_fields_that_differ": [
+    "closed_at",
+    "entry_order_id",
+    "exit_order_id",
+    "opened_at",
+    "position_id",
+    "trade_id"
+   ],
+   "runtime_sha256": {
+    "files": 13,
+    "identical_before_formatting": 13,
+    "identical_after_formatting": 8,
+    "changed_by_formatting_only": [
+     "src/trading_bot/autonomous/decision.py",
+     "src/trading_bot/autonomous/runtime.py",
+     "src/trading_bot/execution/isolation.py",
+     "src/trading_bot/paper/broker.py",
+     "src/trading_bot/paper/reconciliation_v4.py"
+    ]
+   },
    "dataset_identical": true,
    "dataset_manifest_sha256": "883a4fd3c66992c11276782db772f4c80bd16525dc61bbc9b8851999c732d1b4",
-   "abuse_battery": {"scenarios": 8, "all_ok": true, "refusals": 13, "network_events": 0}
+   "abuse_battery": {
+    "scenarios": 8,
+    "all_ok": true,
+    "refusals": 13,
+    "network_events": 0
+   }
   },
   "independent_verification": {
    "script": "scripts/verify_paper_e2e.py",
@@ -167,10 +363,22 @@
    "negative_controls_total": 11,
    "verdict": "FAIL",
    "failing_checks": [
-    {"id": "evidence_in_commit", "cause": "the 27 files of the scratch bundle are not in the judged commit"},
-    {"id": "manifest_covers", "cause": "no EVIDENCE_MANIFEST.json in the scratch bundle"},
-    {"id": "reports_consistent", "cause": "no RUN_REPORT.json / FINAL_REPORT.json in the scratch bundle"},
-    {"id": "github_sync_consistent", "cause": "no GITHUB_SYNC.json: the minimal branch is unpublished, so remote state is not checked (BLOCKED, not PASS)"}
+    {
+     "id": "evidence_in_commit",
+     "cause": "the 27 files of the scratch bundle are not in the judged commit"
+    },
+    {
+     "id": "manifest_covers",
+     "cause": "no EVIDENCE_MANIFEST.json in the scratch bundle"
+    },
+    {
+     "id": "reports_consistent",
+     "cause": "no RUN_REPORT.json / FINAL_REPORT.json in the scratch bundle"
+    },
+    {
+     "id": "github_sync_consistent",
+     "cause": "no GITHUB_SYNC.json: the minimal branch is unpublished, so remote state is not checked (BLOCKED, not PASS)"
+    }
    ],
    "substance": "all eight economic/execution checks and both reproducibility checks pass; the four non-green checks are about packaging the evidence, not about the flow"
   }
@@ -179,7 +387,12 @@
   {
    "id": "D1",
    "status": "FIXED_IN_PORT",
-   "tests": ["tests/unit/autonomous/test_lab_ops_hardening.py", "tests/unit/autonomous/test_pid_identity.py", "tests/unit/autonomous/test_supervisor.py", "tests/unit/forward/test_forward_exit_contract.py"],
+   "tests": [
+    "tests/unit/autonomous/test_lab_ops_hardening.py",
+    "tests/unit/autonomous/test_pid_identity.py",
+    "tests/unit/autonomous/test_supervisor.py",
+    "tests/unit/forward/test_forward_exit_contract.py"
+   ],
    "committed": "trunk, 2026-09-29 and 2026-10-01",
    "needs": "trading_bot.ops",
    "exists_in": "branch only, fe9b5e26 (2026-10-18)",
@@ -188,16 +401,20 @@
   {
    "id": "D2",
    "status": "OPEN",
-   "tests": ["tests/unit/observability/test_vision_panel.py"],
+   "tests": [
+    "tests/unit/observability/test_vision_panel.py"
+   ],
    "committed": "5fd791d8",
    "needs": "trading_bot.observability.vision_panel",
-   "exists_in": "no commit at all; untracked file with sha256 bcd04d18… in six worktrees on disk",
+   "exists_in": "no commit at all; untracked file with sha256 bcd04d18\u2026 in six worktrees on disk",
    "effect": "collection error wherever the branch is checked out"
   },
   {
    "id": "D3",
    "status": "OPEN_REQUIRES_OWNER",
-   "tests": ["tests/unit/research/test_edge16_pit.py"],
+   "tests": [
+    "tests/unit/research/test_edge16_pit.py"
+   ],
    "committed": "6f04e59b",
    "needs": "alpha15.PRE_PIT_RUNNERS",
    "exists_in": "8eb4a2c1 / 9f3892f6 / 611db47e, in four sibling branches; none is an ancestor of wp/isolation-005",
@@ -206,22 +423,111 @@
  ],
  "ci_baseline": {
   "runs": {
-   "base_origin_main": {"run": 35724120977, "sha": "5e6f9632", "jobs": {"Format + Lint": "success", "Type check": "success", "Security audit": "failure", "Tests + Coverage": "failure", "Smoke PR-pipeline": "failure at Set up job"}},
-   "published_head": {"run": 39677738326, "sha": "afc01270", "jobs": {"Format + Lint": "failure at Ruff format --check", "Type check": "failure at Mypy strict", "Tests + Coverage": "failure", "Security audit": "failure at pip-audit", "Smoke PR-pipeline": "failure at Set up job", "cost-barrier": "failure", "recovery-determinism": "failure"}}
+   "base_origin_main": {
+    "run": 35724120977,
+    "sha": "5e6f9632",
+    "jobs": {
+     "Format + Lint": "success",
+     "Type check": "success",
+     "Security audit": "failure",
+     "Tests + Coverage": "failure",
+     "Smoke PR-pipeline": "failure at Set up job"
+    }
+   },
+   "published_head": {
+    "run": 39677738326,
+    "sha": "afc01270",
+    "jobs": {
+     "Format + Lint": "failure at Ruff format --check",
+     "Type check": "failure at Mypy strict",
+     "Tests + Coverage": "failure",
+     "Security audit": "failure at pip-audit",
+     "Smoke PR-pipeline": "failure at Set up job",
+     "cost-barrier": "failure",
+     "recovery-determinism": "failure"
+    }
+   }
   },
   "local_gates": {
-   "base": {"sha": "5e6f9632", "format_files": 0, "lint_errors": 0, "mypy_errors": 0, "mypy_checked": 233, "collection_errors": 0},
-   "trunk": {"sha": "1d2192b0", "format_files": 433, "lint_errors": 100, "mypy_errors": 253, "collection_errors": 4},
-   "branch": {"sha": "afc01270", "format_files": 617, "lint_errors": 195, "mypy_errors": 611, "collection_errors": 2},
-   "minimal_port": {"sha": "baf5b560", "format_files": 428, "lint_errors": 100, "mypy_errors": 253, "collection_errors": 0, "own_files_flagged": 0}
+   "base": {
+    "sha": "5e6f9632",
+    "format_files": 0,
+    "lint_errors": 0,
+    "mypy_errors": 0,
+    "mypy_checked": 233,
+    "collection_errors": 0
+   },
+   "trunk": {
+    "sha": "1d2192b0",
+    "format_files": 433,
+    "lint_errors": 100,
+    "mypy_errors": 253,
+    "collection_errors": 4
+   },
+   "branch": {
+    "sha": "afc01270",
+    "format_files": 617,
+    "lint_errors": 195,
+    "mypy_errors": 611,
+    "collection_errors": 2
+   },
+   "minimal_port": {
+    "sha": "baf5b560",
+    "format_files": 428,
+    "lint_errors": 100,
+    "mypy_errors": 253,
+    "collection_errors": 0,
+    "own_files_flagged": 0
+   }
   },
-  "coverage_gate": {"required_pct": 90, "base_measured_pct": 62.34, "source": "measured in WP-003-04 on a clean origin/main worktree"},
-  "pip_audit": {"base_advisories": 80, "base_packages": 9, "branch_advisories": 11, "source": "base: WP-003-04 local pip-audit; branch: WP-003-04 at ffda06d5"}
+  "coverage_gate": {
+   "required_pct": 90,
+   "base_measured_pct": 62.34,
+   "source": "measured in WP-003-04 on a clean origin/main worktree"
+  },
+  "pip_audit": {
+   "base_advisories": 80,
+   "base_packages": 9,
+   "branch_advisories": 11,
+   "source": "base: WP-003-04 local pip-audit; branch: WP-003-04 at ffda06d5"
+  }
  },
  "suite": {
-  "minimal_port": {"failed": 81, "passed": 3230, "skipped": 31, "deselected": 3, "errors": 14, "seconds": 738.41, "collection_errors": 0, "failing_files": {"tests/unit/research/test_rfc035s3_strategy_closure.py": 16, "tests/unit/research/test_cost_barrier_gate.py": 11, "tests/unit/research/test_st6_scheduler.py": 9, "tests/unit/research/test_profitability_gate035.py": 8, "tests/unit/research/test_sprint024_stats.py": 7}},
-  "trunk_plus_ops": "RUNNING_AT_WRITE_TIME: the same suite on 1d2192b0 + the two ops files, to attribute every failure to the trunk rather than to the port",
-  "wp_tests": {"command": "pytest tests/integration/test_paper_e2e_00{1,2,3}.py tests/unit/execution/test_isolation.py", "result": "37 passed", "exit": 0},
+  "minimal_port": {
+   "failed": 81,
+   "passed": 3230,
+   "skipped": 31,
+   "deselected": 3,
+   "errors": 14,
+   "seconds": 738.41,
+   "collection_errors": 0,
+   "failing_files": {
+    "tests/unit/research/test_rfc035s3_strategy_closure.py": 16,
+    "tests/unit/research/test_cost_barrier_gate.py": 11,
+    "tests/unit/research/test_st6_scheduler.py": 9,
+    "tests/unit/research/test_profitability_gate035.py": 8,
+    "tests/unit/research/test_sprint024_stats.py": 7
+   }
+  },
+  "trunk_plus_ops": {
+   "tree": "1d2192b0 + the two ops files (no WP-003-03 port)",
+   "failed": 81,
+   "passed": 3213,
+   "skipped": 31,
+   "deselected": 3,
+   "errors": 14,
+   "seconds": 636.45,
+   "failure_nodes": 95,
+   "identical_failure_set_to_minimal": true,
+   "nodes_only_in_minimal": 0,
+   "nodes_only_in_trunk_plus_ops": 0,
+   "conclusion": "the port adds 17 passing tests and changes no failing node: the 95 red nodes belong to the trunk's research artefacts, not to this work package"
+  },
+  "wp_tests": {
+   "command": "pytest tests/integration/test_paper_e2e_00{1,2,3}.py tests/unit/execution/test_isolation.py",
+   "result": "37 passed",
+   "exit": 0
+  },
   "source": "pytest -m \"not slow and not market\" -q, PYTHONPATH=src, repository .venv"
  },
  "integration_plan": [
@@ -234,7 +540,11 @@
    "files": 1,
    "summary": "remove `uses: microsoft/powershell@v1.1.0`, which does not exist (tag and action.yml both 404), so the job no longer dies at Set up job",
    "published": true,
-   "verified_locally": ["YAML parses", "the job keeps one uses: (actions/checkout@v4)", "scripts/open-pr-tsk-0204.ps1 parses with 0 errors and 551 tokens"],
+   "verified_locally": [
+    "YAML parses",
+    "the job keeps one uses: (actions/checkout@v4)",
+    "scripts/open-pr-tsk-0204.ps1 parses with 0 errors and 551 tokens"
+   ],
    "verified_in_ci": false,
    "reason_not_verified_in_ci": "the workflow triggers only on push to main and on pull_request to main; a branch push runs nothing, and opening a PR needs the owner's decision"
   },
@@ -258,7 +568,12 @@
    "additions": 4472,
    "deletions": 88,
    "blocker": "depends on PR-2: the runtime it exercises does not exist in origin/main",
-   "gate_debt_added": {"format": 0, "lint": 0, "mypy": 0, "collection": 0}
+   "gate_debt_added": {
+    "format": 0,
+    "lint": 0,
+    "mypy": 0,
+    "collection": 0
+   }
   }
  ],
  "status": {

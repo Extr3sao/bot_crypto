@@ -135,7 +135,7 @@ El port **reduce** la deuda de formato en 5 ficheros (los que el tronco también
 - **Tests del WP y de la guardia:** `37 passed` en 4,80 s (`test_paper_e2e_001/002/003` + `test_isolation`).
 - **Suite completa del port:** `81 failed, 3230 passed, 31 skipped, 3 deselected, 14 errors in 738.41 s` — **0 errores de colección**.
 - Los 81 fallos y los 14 errores están **todos** en `tests/unit/research/*` (16 en `test_rfc035s3_strategy_closure`, 11 en `test_cost_barrier_gate`, 9 en `test_st6_scheduler`, 8 en `test_profitability_gate035`…), artefactos de investigación del tronco, ninguno en ficheros del port.
-- Comparación de atribución: la misma suite sobre `1d2192b0 + ops` (sin el port) da el mismo conjunto. Ver `evidence/CI_GATES.json` y §12.
+- **Comparación exacta con el árbol de referencia** (`1d2192b0` + los dos ficheros de `ops`, sin el port): `81 failed, 3213 passed, 31 skipped, 14 errors` → **95 nodos en rojo, el mismo conjunto, diferencia 0** en ambas direcciones (`comm` sobre los ids ordenados). El port añade 17 tests que pasan y **no cambia un solo nodo rojo**.
 
 ## 7. Reparación del pipeline (PR-1)
 
@@ -176,15 +176,17 @@ Ninguno de los cuatro cuestiona el flujo, la economía ni el aislamiento. Se dec
 | `repository` | `https://github.com/Extr3sao/bot_crypto.git` |
 | `local_branch` | `wp/isolation-005` |
 | `remote_branch` | `origin/wp/isolation-005` |
-| `local_head_sha` | `afc0127086a67632ed94488d95d2e430417535b2` |
-| `remote_head_sha` | `afc0127086a67632ed94488d95d2e430417535b2` |
+| `local_head_sha` | `7aa41e9ca9a8a3e9afb0f20a69987a2acf0aa5bb` |
+| `remote_head_sha` | `7aa41e9ca9a8a3e9afb0f20a69987a2acf0aa5bb` |
 | `default_branch_sha` | `5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d` |
 | `commits_pending` | **0** en `wp/isolation-005`; **259** entre `main` local y `origin/main` |
-| `push_result` | esta rama no recibió commits nuevos; se publicó `fix/ci-smoke-pwsh` (`9682ee1b`, rama nueva, sin force) |
+| `push_result` | `OK`: `afc01270..7aa41e9c` (fast-forward, sin force). `fix/ci-smoke-pwsh` = `9682ee1b` se publicó antes el mismo día |
 | `pull_request_url` | https://github.com/Extr3sao/bot_crypto/pull/17 |
 | `merge_result` | **NOT_MERGED** — 7/7 checks rojos |
 | `sync_status` | `REMOTE_BRANCH_SYNCED` · `MAIN_SYNCED = NO` |
 | `verification_timestamp` | `2026-10-22T16:20:00Z` |
+
+Los doce campos nombran el tip que devolvió `git ls-remote` (`7aa41e9c`). El commit que los lleva es **uno posterior**, por construcción: un commit no puede contener su propio hash. La diferencia está declarada, no escondida.
 
 ## 11. Estados separados
 

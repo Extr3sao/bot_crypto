@@ -3,13 +3,14 @@
  "repository": "https://github.com/Extr3sao/bot_crypto.git",
  "local_branch": "wp/isolation-005",
  "remote_branch": "origin/wp/isolation-005",
- "local_head_sha": "afc0127086a67632ed94488d95d2e430417535b2",
- "remote_head_sha": "afc0127086a67632ed94488d95d2e430417535b2",
+ "local_head_sha": "7aa41e9ca9a8a3e9afb0f20a69987a2acf0aa5bb",
+ "remote_head_sha": "7aa41e9ca9a8a3e9afb0f20a69987a2acf0aa5bb",
  "default_branch_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
  "commits_pending": 0,
- "push_result": "NONE_ON_THIS_BRANCH: this work package published no commit to wp/isolation-005 (local = remote = afc01270, read back with git ls-remote). Two auxiliary branches exist: fix/ci-smoke-pwsh = 9682ee1b31dbd01f72b3ff94ba3e6397df971fb6 was pushed with --set-upstream (fast-forward, new branch, no force); integration/wp00303-min = 5b5ea7d29f9cca3e8bf7e20a78ca955af7c04d78 stays local and unpublished.",
+ "push_result": "OK: afc01270..7aa41e9c on wp/isolation-005 (fast-forward, no force). fix/ci-smoke-pwsh = 9682ee1b was published earlier the same day.",
  "pull_request_url": "https://github.com/Extr3sao/bot_crypto/pull/17",
  "merge_result": "NOT_MERGED: 7/7 checks are red on afc01270 (CI Baseline 5/5 + cost-barrier + recovery-determinism). No merge, no force-push and no branch-protection bypass was attempted.",
- "sync_status": "REMOTE_BRANCH_SYNCED; MAIN_SYNCED = NO (origin/main still 5e6f9632; local main 1d2192b0 is 259 commits ahead and unpublished)",
- "verification_timestamp": "2026-10-22T16:20:00Z"
+ "sync_status": "REMOTE_BRANCH_SYNCED; MAIN_SYNCED=NO (origin/main still 5e6f9632; local main 1d2192b0 is 259 commits ahead and unpublished)",
+ "verification_timestamp": "2026-10-22T16:20:00Z",
+ "note": "The twelve fields name the tip that `git ls-remote` returned (7aa41e9c). The commit that carries them is one later, by construction: a commit cannot contain its own hash."
 }

@@ -16,7 +16,7 @@ Dejar el repositorio en un estado en el que publicar el tronco y la PR de WP-003
 | --- | --- |
 | `origin/main` pasa formato, lint y tipos; falla cobertura (62.34 %), `pip-audit` (80) y el job de smoke (`Set up job`) | run `35724120977` sobre `5e6f9632` |
 | El tronco (`1d2192b0`, 259 commits) trae 433 ficheros sin formatear, 100 errores de lint, 253 de tipos y **4 errores de colección** | `wp00305/evidence/CI_GATES.json` |
-| WP-003-03 es aislable en **6 commits / 23 ficheros** sobre el tronco, con **3/3 digests económicos idénticos** | `integration/wp00303-min` = `5b5ea7d2` |
+| WP-003-03 es aislable en **6 commits / 23 ficheros** sobre el tronco, con **3/3 digests económicos idénticos** | `integration/wp00303-min` = `baf5b560` |
 | El port no añade deuda de gates (0 formato, 0 lint, 0 tipos, 0 errores de colección) | `CI_GATES.json` → `delta_vs_trunk` |
 | El job de smoke muere porque `microsoft/powershell@v1.1.0` no existe (404 en tag y `action.yml`) | job `119491886187`, paso 1 `Set up job` fallido, sin paso 2 |
 
@@ -55,7 +55,7 @@ En una rama de trabajo **no publicada**:
 ### T4 · Dejar PR-1 y PR-3 listas para abrir
 
 - PR-1 `fix/ci-smoke-pwsh` = `9682ee1b`, publicada. Abrir la PR **sólo** con autorización; sin ella, queda como rama.
-- PR-3 `integration/wp00303-min` = `5b5ea7d2`, local. Rebasarla sobre el tronco publicado cuando D1 esté decidida y volver a ejecutar: `paper_e2e_lab` + verificador + `pytest` de los ficheros del WP.
+- PR-3 `integration/wp00303-min` = `baf5b560`, local. Rebasarla sobre el tronco publicado cuando D1 esté decidida y volver a ejecutar: `paper_e2e_lab` + verificador + `pytest` de los ficheros del WP.
 
 **Criterio:** cada PR tiene su informe con alcance, gates y digests; ninguna se fusiona.
 
