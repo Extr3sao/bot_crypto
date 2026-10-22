@@ -361,28 +361,36 @@ def main(argv: list[str] | None = None) -> int:
         },
     ]
 
+    head = git("rev-parse", "HEAD")
+    #: Los commits del WP se enumeran porque son su historia; el último se **deriva**, no se
+    #: enumera: enumerarlo dejaba el paquete diciendo ``head`` = el commit que lo generó y una
+    #: lista que terminaba uno antes, que es una discrepancia interna gratuita.
+    commits = [
+        "b852939f",
+        "396b1284",
+        "87ad0d7a",
+        "9e652712",
+        "2b6de6fc",
+        "4773f9ec",
+        "f20dff9b",
+        "2ed43ad4",
+        "ff49e715",
+        "f7d2345e",
+        "900fd980",
+        "b0a0b1db",
+        #: La recuperación: el cierre dejó de afirmar PASS sobre una suite fallida.
+        "ceb0b3f6",
+    ]
+    if head and head not in commits:
+        commits.append(head)
+
     report: dict[str, Any] = {
         "schema_version": SCHEMA,
         "work_package": "WP-DEF-018-04",
         "generated_at_utc": utc_now(),
-        "head": git("rev-parse", "HEAD"),
+        "head": head,
         "branch": git("rev-parse", "--abbrev-ref", "HEAD"),
-        "commits": [
-            "b852939f",
-            "396b1284",
-            "87ad0d7a",
-            "9e652712",
-            "2b6de6fc",
-            "4773f9ec",
-            "f20dff9b",
-            "2ed43ad4",
-            "ff49e715",
-            "f7d2345e",
-            "900fd980",
-            "b0a0b1db",
-            #: La recuperación: el cierre dejó de afirmar PASS sobre una suite fallida.
-            "ceb0b3f6",
-        ],
+        "commits": commits,
         "IMPLEMENTATION": {
             "state": "PASS" if blocks and first_block.get("unavailable_reasons") == [] else "FAIL",
             "files": [
