@@ -1,0 +1,154 @@
+{
+ "schema": "wp00305-ci-gates/1",
+ "measured_at": "2026-10-22",
+ "toolchain": {
+  "ruff": "0.15.20",
+  "mypy": "2.1.0",
+  "python": "3.11.15",
+  "provenance": "uv.lock pins ruff/mypy; interpreter is the repository .venv. Same binaries used in every column."
+ },
+ "windows_note": "Measured on a Windows checkout (CRLF working tree). ruff/mypy read the same bytes; the only line-ending-sensitive artefact is git, not these gates.",
+ "trees": {
+  "base": {
+   "ref": "origin/main",
+   "sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+   "worktree": "../ff-wt-main-baseline",
+   "format": {
+    "exit": 0,
+    "files_to_reformat": 0,
+    "already_formatted": 239
+   },
+   "lint": {
+    "exit": 0,
+    "errors": 0
+   },
+   "mypy": {
+    "exit": 0,
+    "errors": 0,
+    "checked": 233
+   },
+   "collection": {
+    "errors": 0,
+    "tests": 582,
+    "source": "measured in WP-003-04 on the same base"
+   },
+   "coverage_gate": {
+    "required_pct": 90,
+    "measured_pct": 62.34,
+    "exit": 1
+   },
+   "pip_audit": {
+    "exit": 1,
+    "advisories": 80,
+    "packages": 9
+   }
+  },
+  "trunk": {
+   "ref": "main",
+   "sha": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+   "worktree": "../ff-wt-trunk",
+   "format": {
+    "exit": 1,
+    "files_to_reformat": 433,
+    "already_formatted": 374
+   },
+   "lint": {
+    "exit": 1,
+    "errors": 100
+   },
+   "mypy": {
+    "exit": 1,
+    "errors": 253,
+    "files_with_errors": 29,
+    "checked": 801
+   },
+   "collection": {
+    "exit": 2,
+    "errors": 4,
+    "modules": [
+     "tests/unit/autonomous/test_lab_ops_hardening.py",
+     "tests/unit/autonomous/test_pid_identity.py",
+     "tests/unit/autonomous/test_supervisor.py",
+     "tests/unit/forward/test_forward_exit_contract.py"
+    ],
+    "cause": "ModuleNotFoundError: No module named 'trading_bot.ops'"
+   }
+  },
+  "branch": {
+   "ref": "wp/isolation-005",
+   "sha": "afc0127086a67632ed94488d95d2e430417535b2",
+   "worktree": "../ff-wt-branch",
+   "format": {
+    "exit": 1,
+    "files_to_reformat": 617,
+    "already_formatted": 543
+   },
+   "lint": {
+    "exit": 1,
+    "errors": 195,
+    "files": 44,
+    "auto_fixable": 122
+   },
+   "mypy": {
+    "exit": 1,
+    "errors": 611,
+    "files_with_errors": 105,
+    "checked": 1155
+   },
+   "collection": {
+    "exit": 2,
+    "errors": 2,
+    "modules": [
+     "tests/unit/observability/test_vision_panel.py",
+     "tests/unit/research/test_edge16_pit.py"
+    ],
+    "source": "measured in WP-003-04 at ffda06d5; both files untouched since"
+   },
+   "pip_audit": {
+    "exit": 1,
+    "advisories": 11,
+    "source": "measured in WP-003-04 at ffda06d5"
+   }
+  },
+  "minimal_port": {
+   "ref": "integration/wp00303-min",
+   "sha": "baf5b560101188ecceb36a4880d3dca16b267e31",
+   "worktree": "../ff-wt-min",
+   "format": {
+    "exit": 1,
+    "files_to_reformat": 428,
+    "already_formatted": 386,
+    "own_files_flagged": 0,
+    "note": "raw `ruff format --check .` prints 433; five of those are untracked scratch scripts under .tmp/ that are not in any commit. Tracked files: 428, i.e. five fewer than the trunk because 7e4971d1 formatted five files the trunk also had flagged."
+   },
+   "lint": {
+    "exit": 1,
+    "errors": 100,
+    "own_files_flagged": 0,
+    "note": "raw `ruff check .` prints 105; five belong to the same untracked .tmp/ scratch scripts. No ported file is flagged."
+   },
+   "mypy": {
+    "exit": 1,
+    "errors": 253,
+    "files_with_errors": 29,
+    "checked": 808,
+    "own_files_flagged": 0
+   },
+   "collection": {
+    "exit": 0,
+    "errors": 0
+   },
+   "delta_vs_trunk": {
+    "format": -5,
+    "lint": 0,
+    "mypy": 0,
+    "collection": -4
+   }
+  }
+ },
+ "attribution": {
+  "method": "every number above is a whole-tree run in a clean worktree; the minimal column is then compared to the trunk column run in the same session with the same binaries, so the delta is attributable to the port and nothing else.",
+  "port_adds_gate_debt": false,
+  "format_delta_explanation": "5 fewer files than the trunk: the eight ported-but-unformatted files were formatted in 7e4971d1, of which five were already counted in the trunk's 433. The port adds no flagged file of its own."
+ }
+}

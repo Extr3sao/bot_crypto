@@ -1708,3 +1708,69 @@ cd ../ff-wt-head
 ../bot-freebuff-recovery-004/.venv/Scripts/ruff format --check .   # 617
 ../bot-freebuff-recovery-004/.venv/Scripts/mypy .                  # 611, ninguno de WP-003-03
 ```
+
+## 2026-10-22 · RFC-PAPER-INTEGRATION-005 / WP-003-05 — integración y baseline de GitHub
+
+**Objetivo.** Recuperar una vía de integración verificable para la PR #17 sin cambios masivos:
+clasificar las dos cohortes, aislar WP-003-03 con su conjunto mínimo de dependencias y reparar lo
+que del pipeline base sea reproducible y aislado.
+
+**Worktree.** `bot-freebuff-recovery-004`, rama `wp/isolation-005` = `afc01270` (local = remoto,
+sin cambios). Ramas nuevas: `integration/wp00303-min` = `baf5b560` (local, sin publicar) y
+`fix/ci-smoke-pwsh` = `9682ee1b` (publicada, fast-forward, rama nueva).
+
+**Hecho (medido).**
+
+1. **Autoridad.** `origin/main` = `5e6f9632`; `main` local = `1d2192b0` (+259, −0); rama = `afc01270`
+   (+239 sobre `main`). Cero merges. GitHub y Git coinciden: PR #17 = **498 commits / 3 452 ficheros
+   / +2 722 984 / −1 437**, **7/7 checks rojos**, `mergeable_state = unstable`, protección 401.
+2. **Tamaño explicado.** 65.8 % de las adiciones son evidencia (`reports/`, 1 176 ficheros,
+   1 790 665 líneas) y 14.0 % datasets (`data/`, 323 ficheros). El código de WP-003-03 son 2 629
+   líneas en tres scripts. Cinco artefactos suman 646 000 líneas sin ser código.
+3. **WP-003-03 aislado.** `integration/wp00303-min`: 6 commits, **23 ficheros, +4 472 / −88**, frente
+   a 1 864 ficheros de la rama. Capas: tronco (259) + `0bdda77d` guardia + `8e66e81b` corpus +
+   6 ficheros de `b4ff5889/87b9c6af/5b86b656/96957a2b/86d4f126` + `risk/manager.py` de
+   `9dbbbaee/1869f535/5b86b656` + `06ba3183`/`e450a238` + `fe9b5e26` (`ops/`) + formato de 8 ficheros.
+4. **Equivalencia económica.** 3/3 digests idénticos (`20f10f30…`, `59dc3611…`, `45ada80c…`),
+   totales y contabilidad idénticos (23 órdenes, 21 cierres, PnL 87.65152561534461), 13/13 hashes
+   de runtime byte-idénticos antes del formateo y 8/13 después con los digests intactos, dataset
+   idéntico (`883a4fd3…`), 8/8 escenarios de abuso OK y 0 eventos de red.
+5. **Gates.** base 0/0/0; tronco **433 formato / 100 lint / 253 mypy / 4 errores de colección**;
+   rama 617/195/611/2; port **428/100/253/0**, con **0 ficheros propios marcados**.
+6. **Suite del port.** `81 failed, 3230 passed, 31 skipped, 14 errors` en 738 s, **0 errores de
+   colección**; todos los rojos en `tests/unit/research/*` del tronco. 37/37 tests del WP y de la
+   guardia en verde. Los 4 errores de colección del tronco se cerraron portando `trading_bot.ops`
+   (cuatro tests del tronco lo importaban desde el 2026-09-29 y el módulo no existía hasta `fe9b5e26`).
+7. **Pipeline.** El job de smoke muere en `Set up job` (job `119491886187`, paso 1, sin paso 2)
+   porque `microsoft/powershell@v1.1.0` **no existe** (404 en tag y `action.yml`). `fix/ci-smoke-pwsh`
+   elimina el paso: `ubuntu-latest` ya trae pwsh y los dos pasos ya piden `shell: pwsh`. Verificado
+   en local (YAML + parser con 0 errores y 551 tokens); **sin run de CI** porque el workflow sólo se
+   dispara en PR a `main`.
+8. **Verificación independiente.** `verify_paper_e2e.py` sobre `baf5b560`: **14/18 checks, 11/11
+   controles negativos**; los 4 no verdes son `evidence_in_commit`, `manifest_covers`,
+   `reports_consistent` (el bundle está en `.tmp`, no en el commit) y `github_sync_consistent`
+   (BLOCKED: rama mínima no publicada).
+
+**Bloqueos (todos del titular o de política).** B1 publicar el tronco pone rojo `main` y arreglarlo
+exige `ruff format` sobre 433 ficheros de 259 commits ajenos (prohibido). B2 WP-003-03 necesita el
+tronco: `origin/main` no tiene `src/trading_bot/autonomous/`. B3 cobertura 90 % con base 62.34 %.
+B4 `pip-audit` 80 avisos en la base. B5 D2/D3: tests commiteados sin módulo (`vision_panel` no está
+en ningún commit; `alpha15.PRE_PIT_RUNNERS` sólo en cuatro ramas hermanas).
+
+**Entregables.** `reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00305/`: `INTEGRATION_BASELINE.json`,
+`INTEGRATION_MAP.md`, `RUN_REPORT.md/json`, `FINAL_REPORT.md/json`, `GITHUB_SYNC.json`,
+`NEXT_WP_WP-003-06.md` y `evidence/{CI_GATES,PAPER_E2E_MINIMAL_COMPARISON,VERIFICATION_MINIMAL}.json`.
+
+**Reanudación verificable.**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git rev-parse origin/main main wp/isolation-005
+git worktree list | grep -E "ff-wt-(min|trunk|branch|ci)"
+cd ../ff-wt-min && git log --oneline main..HEAD          # 6 commits, head baf5b560
+PYTHONPATH=src python scripts/paper_e2e_lab.py --out .tmp/lab --json .tmp/PAPER_E2E_LAB.json
+python scripts/verify_paper_e2e.py --lab .tmp/PAPER_E2E_LAB.json --bundle .tmp \
+  --repo . --evidence-sha "$(git rev-parse HEAD)" --repeat .tmp/PAPER_E2E_LAB.json \
+  --negative-controls --json .tmp/VERIFICATION.json
+cd ../ff-wt-ci && git log --oneline -1                   # 9682ee1b, published
+```

@@ -1,0 +1,261 @@
+{
+ "blocked": [
+  "github_sync_consistent"
+ ],
+ "checks": [
+  {
+   "blocked": false,
+   "check": "lab_shape",
+   "detail": "all scenarios present, completed and exited 0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "runtime_identity",
+   "detail": "13 runtime files hashed and unchanged",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "dataset_identity",
+   "detail": "3 recorded series match the fetch manifest",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "committed_ledger_no_trade",
+   "detail": "orders=0 fills=0 decisions=480 trade_decisions=0 shadow=1 admitted_for_paper=[]",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "scenario_reached_broker",
+   "detail": "orders=23 trade_decisions=32 fills_opened=21 fills_closed=21 closed_trades=21 scenario_ledger=True",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "no_orphan_fills",
+   "detail": "executions=23 orders_recorded=23 unexecuted_with_reason=9 orphan=0 duplicate_cloids=0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "accounting_identities",
+   "detail": "identities=5/5 commissions=10.500000 realised=87.651526 recomputed=87.651526",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "risk_before_order",
+   "detail": "orders_after_approved_risk=23 violations=0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "restart_reconciled",
+   "detail": "status=RECOVERED persisted_intents=23 recovered_intents=23 duplicated_cloids=0 equity_delta=0.0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "error_path_closed",
+   "detail": "cycles=3 orders=0 fills=0 executions=0 trade_decisions=0 decisions=9 errors=0",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "no_external_network",
+   "detail": "no audited network event; strict paper policy in every child",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "abuse_battery",
+   "detail": "13 refusals across 8 scenarios; zero venue calls",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "pit_holds",
+   "detail": "1080 decisions satisfy decision_time >= market_time",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "reproducible_evidence",
+   "detail": "economic digests identical across two independent runs",
+   "ok": true
+  },
+  {
+   "blocked": false,
+   "check": "evidence_in_commit",
+   "detail": "27 not in the commit: ['PAPER_E2E_LAB.json', 'lab.log', 'lab/ABUSE-APP-ORDER/child.json', 'lab/ABUSE-CONNECTOR-ORDER/child.json']",
+   "ok": false
+  },
+  {
+   "blocked": false,
+   "check": "manifest_covers",
+   "detail": "EVIDENCE_MANIFEST.json is missing",
+   "ok": false
+  },
+  {
+   "blocked": false,
+   "check": "reports_consistent",
+   "detail": "RUN_REPORT.json or FINAL_REPORT.json missing",
+   "ok": false
+  },
+  {
+   "blocked": true,
+   "check": "github_sync_consistent",
+   "detail": "no GITHUB_SYNC.json: remote state not checked",
+   "ok": false
+  }
+ ],
+ "evidence_sha": "5b5ea7d29f9cca3e8bf7e20a78ca955af7c04d78",
+ "failed": [
+  "evidence_in_commit",
+  "manifest_covers",
+  "reports_consistent",
+  "github_sync_consistent"
+ ],
+ "generated_at_utc": "2026-10-22T14:12:37Z",
+ "lab_generated_at_utc": "2026-10-22T14:12:35Z",
+ "negative_controls": [
+  {
+   "id": "01",
+   "mutation": "NEG-01-invented-order",
+   "rejected": true,
+   "rejected_by": [
+    "committed_ledger_no_trade",
+    "evidence_in_commit",
+    "manifest_covers",
+    "reports_consistent",
+    "github_sync_consistent"
+   ]
+  },
+  {
+   "id": "02",
+   "mutation": "NEG-02-committed-turned-trade",
+   "rejected": true,
+   "rejected_by": [
+    "committed_ledger_no_trade",
+    "evidence_in_commit",
+    "manifest_covers",
+    "reports_consistent",
+    "github_sync_consistent"
+   ]
+  },
+  {
+   "id": "03",
+   "mutation": "NEG-03-equity-moved-a-cent",
+   "rejected": true,
+   "rejected_by": [
+    "accounting_identities",
+    "evidence_in_commit",
+    "manifest_covers",
+    "reports_consistent",
+    "github_sync_consistent"
+   ]
+  },
+  {
+   "id": "04",
+   "mutation": "NEG-04-orphan-fill",
+   "rejected": true,
+   "rejected_by": [
+    "no_orphan_fills",
+    "evidence_in_commit",
+    "manifest_covers",
+    "reports_consistent",
+    "github_sync_consistent"
+   ]
+  },
+  {
+   "id": "05",
+   "mutation": "NEG-05-fees-zeroed",
+   "rejected": true,
+   "rejected_by": [
+    "accounting_identities",
+    "evidence_in_commit",
+    "manifest_covers",
+    "reports_consistent",
+    "github_sync_consistent"
+   ]
+  },
+  {
+   "id": "06",
+   "mutation": "NEG-06-restart-duplicated",
+   "rejected": true,
+   "rejected_by": [
+    "restart_reconciled",
+    "evidence_in_commit",
+    "manifest_covers",
+    "reports_consistent",
+    "github_sync_consistent"
+   ]
+  },
+  {
+   "id": "07",
+   "mutation": "NEG-07-external-connection",
+   "rejected": true,
+   "rejected_by": [
+    "no_external_network",
+    "evidence_in_commit",
+    "manifest_covers",
+    "reports_consistent",
+    "github_sync_consistent"
+   ]
+  },
+  {
+   "id": "08",
+   "mutation": "NEG-08-dataset-falsified",
+   "rejected": true,
+   "rejected_by": [
+    "dataset_identity",
+    "evidence_in_commit",
+    "manifest_covers",
+    "reports_consistent",
+    "github_sync_consistent"
+   ]
+  },
+  {
+   "id": "09",
+   "mutation": "NEG-09-unsynced-remote-claimed",
+   "rejected": true,
+   "rejected_by": [
+    "evidence_in_commit",
+    "manifest_covers",
+    "reports_consistent",
+    "github_sync_consistent"
+   ]
+  },
+  {
+   "id": "10",
+   "mutation": "NEG-10-error-path-ordered",
+   "rejected": true,
+   "rejected_by": [
+    "error_path_closed",
+    "evidence_in_commit",
+    "manifest_covers",
+    "reports_consistent",
+    "github_sync_consistent"
+   ]
+  },
+  {
+   "id": "11",
+   "mutation": "NEG-11-blocked-check-as-pass",
+   "rejected": true,
+   "rejected_by": [
+    "evidence_in_commit",
+    "manifest_covers",
+    "reports_consistent",
+    "github_sync_consistent"
+   ]
+  }
+ ],
+ "negative_controls_rejected": 11,
+ "negative_controls_total": 11,
+ "schema": "wp00303-verification/1",
+ "unsupported_pass_count": 4,
+ "verdict": "FAIL"
+}

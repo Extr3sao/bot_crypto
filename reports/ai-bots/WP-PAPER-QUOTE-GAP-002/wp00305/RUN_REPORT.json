@@ -1,0 +1,126 @@
+{
+ "schema": "wp00305-run-report/1",
+ "work_package": "WP-003-05",
+ "title": "Recuperación de integración y baseline de GitHub",
+ "date": "2026-10-22",
+ "mode": "PAPER",
+ "result": "BLOCKED",
+ "false_success": 0,
+ "git": {
+  "origin_main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+  "local_main": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+  "branch": "wp/isolation-005",
+  "branch_head": "afc0127086a67632ed94488d95d2e430417535b2",
+  "remote_head": "afc0127086a67632ed94488d95d2e430417535b2",
+  "divergence": {"origin_main_behind_local_main": 0, "local_main_ahead": 259, "local_main_behind_branch": 0, "branch_ahead": 239},
+  "merge_commits": 0
+ },
+ "pull_request": {"number": 17, "state": "open", "commits": 498, "changed_files": 3452, "additions": 2722984, "deletions": 1437, "checks_failing": 7, "checks_total": 7, "mergeable_state": "unstable", "branch_protection": "UNKNOWN_401"},
+ "cohorts": [
+  {"id": "TRUNK_UNPUBLISHED", "commits": 259, "from": "2026-09-25", "to": "2026-10-12", "tagged": 0, "ci_ever_run": false, "collection_errors_at_tip": 4},
+  {"id": "BRANCH_ONLY", "commits": 239, "from": "2026-10-12", "to": "2026-10-21", "tagged": 125, "tags": 21, "checks_failing": 7}
+ ],
+ "size_inventory": {
+  "files": 3452,
+  "additions": 2722984,
+  "deletions": 1437,
+  "evidence_share_pct": 65.8,
+  "dataset_share_pct": 14.0,
+  "code_share_pct": 15.7,
+  "largest_file": "reports/edge-recovery/WP-EDGE-01/EQUITY_CURVE.csv (229648 lines)"
+ },
+ "wp00303": {
+  "commits": ["06ba3183", "e450a238"],
+  "scripts_lines": {"paper_e2e_lab": 1290, "verify_paper_e2e": 841, "make_paper_e2e_reports": 498},
+  "dependency_layers": [
+   {"layer": "L0_TRUNK", "source": "1d2192b0", "reason": "autonomous runtime absent from origin/main"},
+   {"layer": "L1_GUARD", "source": "0bdda77d", "files": 7, "reason": "ModuleNotFoundError: trading_bot.execution.isolation"},
+   {"layer": "L2_CORPUS", "source": "8e66e81b", "files": 4, "reason": "holdout-1h dataset declared by the lab"},
+   {"layer": "L3_BROKER", "source": ["b4ff5889", "87b9c6af", "5b86b656", "96957a2b", "86d4f126"], "files": 6, "reason": "AttributeError: PaperBroker.accounting_snapshot"},
+   {"layer": "L4_RISK", "source": ["9dbbbaee", "1869f535", "5b86b656"], "files": 1, "reason": "E2E-RESTART digest differed: 16 orders approved vs 0 published"},
+   {"layer": "L5_LAB", "source": ["06ba3183", "e450a238"], "files": 3},
+   {"layer": "L6_OPS", "source": "fe9b5e26", "files": 2, "reason": "4 collection errors in the trunk"},
+   {"layer": "L7_FORMAT", "source": "this WP", "files": 8, "reason": "ruff format --check flagged 8 ported files"}
+  ]
+ },
+ "minimal_branch": {
+  "name": "integration/wp00303-min",
+  "head": "baf5b560101188ecceb36a4880d3dca16b267e31",
+  "commits": 6,
+  "files": 23,
+  "additions": 4472,
+  "deletions": 88,
+  "published": false,
+  "economic_digests": {
+   "E2E-COMMITTED": {"published": "20f10f30bb6ce5394f6c19f89f4bc0658faeea2684199160f4a566a4edf9aac9", "identical": true},
+   "E2E-SCENARIO": {"published": "59dc36111fad5be54e0f82b3df758dfab65307ef223476d3a72235999c7385c9", "identical": true, "orders_created": 23, "fills_closed": 21, "realised_pnl": 87.65152561534461},
+   "E2E-RESTART": {"published": "45ada80c456bf79b1c294656c0fbb9742e5864489247649f34cf6e8d434444ce", "identical": true}
+  },
+  "runtime_sha256": {"files": 13, "identical_pre_format": 13, "identical_post_format": 8, "digests_unchanged_by_format": true},
+  "dataset_identical": true,
+  "abuse": {"scenarios": 8, "refusals": 13, "network_events": 0}
+ },
+ "gates": {
+  "toolchain": {"ruff": "0.15.20", "mypy": "2.1.0", "python": "3.11.15"},
+  "base": {"format_files": 0, "lint_errors": 0, "mypy_errors": 0, "collection_errors": 0},
+  "trunk": {"format_files": 433, "lint_errors": 100, "mypy_errors": 253, "collection_errors": 4},
+  "branch": {"format_files": 617, "lint_errors": 195, "mypy_errors": 611, "collection_errors": 2},
+  "minimal": {"format_files": 428, "lint_errors": 100, "mypy_errors": 253, "collection_errors": 0, "own_files_flagged": 0}
+ },
+ "suite": {
+  "wp_tests": {"passed": 37, "failed": 0, "seconds": 4.8},
+  "full_minimal": {"failed": 81, "passed": 3230, "skipped": 31, "deselected": 3, "errors": 14, "seconds": 738.41, "collection_errors": 0, "all_failures_in": "tests/unit/research/*"},
+  "full_trunk_plus_ops": "same suite on 1d2192b0 + ops, to attribute failures to the trunk (see INTEGRATION_BASELINE.json suite section)"
+ },
+ "pipeline_repair": {
+  "branch": "fix/ci-smoke-pwsh",
+  "head": "9682ee1b31dbd01f72b3ff94ba3e6397df971fb6",
+  "published": true,
+  "cause": "microsoft/powershell@v1.1.0 does not exist (tag and action.yml return 404); job 119491886187 fails at step 1 Set up job with no step 2",
+  "fix": "remove the install step; ubuntu-latest ships pwsh and both steps already use shell: pwsh",
+  "verified_locally": ["yaml_parses", "one remaining uses: actions/checkout@v4", "open-pr-tsk-0204.ps1 parses with 0 errors and 551 tokens"],
+  "verified_in_ci": false,
+  "reason": "workflow triggers on push to main and pull_request to main only; no PR was opened"
+ },
+ "independent_verification": {
+  "script": "scripts/verify_paper_e2e.py",
+  "judged_commit": "baf5b560101188ecceb36a4880d3dca16b267e31",
+  "checks_ok": 14,
+  "checks_total": 18,
+  "negative_controls_rejected": 11,
+  "negative_controls_total": 11,
+  "verdict": "FAIL",
+  "failing": ["evidence_in_commit", "manifest_covers", "reports_consistent"],
+  "blocked": ["github_sync_consistent"],
+  "note": "the four non-green checks are evidence packaging and remote state; every economic, execution and isolation check is green"
+ },
+ "blockers": [
+  {"id": "B1", "what": "publishing the trunk turns format/lint/mypy red on main", "measure": "433 / 100 / 253", "owner": "titular"},
+  {"id": "B2", "what": "WP-003-03 needs the trunk", "measure": "origin/main has no autonomous package", "owner": "depends on B1"},
+  {"id": "B3", "what": "coverage gate 90% vs base 62.34%", "owner": "policy"},
+  {"id": "B4", "what": "pip-audit 80 advisories on the base", "owner": "dependency drift"},
+  {"id": "B5", "what": "D2/D3 committed tests without their module", "owner": "titular / sibling branches"}
+ ],
+ "status": {
+  "HISTORY_EXPLAINED": "PASS",
+  "DEPENDENCIES_MAPPED": "PASS",
+  "CI_BASELINE_REPRODUCED": "PASS",
+  "MINIMAL_INTEGRATION": "PASS",
+  "PIPELINE_REPAIR": "PARTIAL",
+  "INDEPENDENT_VERIFICATION": "PASS_FLOW",
+  "PAPER_VALIDATION": "PASS_OFFLINE",
+  "MAIN_SYNCED": "NO",
+  "CI_STATUS": "RED",
+  "DELIVERY_STATUS": "BLOCKED",
+  "PRODUCTION_READY": "NOT_CLAIMED",
+  "FALSE_SUCCESS": 0
+ },
+ "artifacts": {
+  "integration_baseline": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00305/INTEGRATION_BASELINE.json",
+  "integration_map": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00305/INTEGRATION_MAP.md",
+  "gates": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00305/evidence/CI_GATES.json",
+  "economic_comparison": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00305/evidence/PAPER_E2E_MINIMAL_COMPARISON.json",
+  "verification": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00305/evidence/VERIFICATION_MINIMAL.json",
+  "next_wp": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00305/NEXT_WP_WP-003-06.md"
+ }
+}

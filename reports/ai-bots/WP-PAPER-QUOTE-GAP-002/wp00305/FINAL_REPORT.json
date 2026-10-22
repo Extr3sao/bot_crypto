@@ -1,0 +1,71 @@
+{
+ "schema": "wp00305-final-report/1",
+ "work_package": "WP-003-05",
+ "title": "Recuperación de integración y baseline de GitHub",
+ "decision": "BLOCKED",
+ "delivery_status": "BLOCKED",
+ "delivery_status_reason": "the integration is built and verified, but publishing the trunk turns three gates red on main (433 unformatted files, 100 lint errors, 253 type errors) and the suite incollectable (4 errors), and fixing it requires the repository-wide reformat this WP is forbidden to perform; WP-003-03 cannot exist without that trunk",
+ "production_ready": "NOT_CLAIMED",
+ "false_success": 0,
+ "measured": {
+  "pr_commits": 498,
+  "pr_files": 3452,
+  "pr_additions": 2722984,
+  "pr_deletions": 1437,
+  "checks_failing": 7,
+  "trunk_commits": 259,
+  "branch_commits": 239,
+  "minimal_branch_commits": 6,
+  "minimal_branch_files": 23,
+  "minimal_branch_additions": 4472,
+  "minimal_branch_deletions": 88,
+  "economic_digests_identical": "3/3",
+  "runtime_hashes_identical_pre_format": "13/13",
+  "gate_debt_added": {"format": 0, "lint": 0, "mypy": 0, "collection": 0},
+  "wp_tests_passed": 37,
+  "independent_checks_ok": "14/18",
+  "negative_controls_rejected": "11/11"
+ },
+ "integration_plan": [
+  {"id": "PR-1", "branch": "fix/ci-smoke-pwsh", "head": "9682ee1b31dbd01f72b3ff94ba3e6397df971fb6", "state": "PUBLISHED", "scope": "1 file", "ci_verified": false},
+  {"id": "PR-2", "branch": "trunk", "head": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22", "state": "BLOCKED_ON_OWNER", "scope": "259 commits, fast-forward", "blocker": "format debt of 433 files"},
+  {"id": "PR-3", "branch": "integration/wp00303-min", "head": "baf5b560101188ecceb36a4880d3dca16b267e31", "state": "BUILT_AND_VERIFIED_LOCAL", "scope": "6 commits, 23 files", "blocker": "depends on PR-2"}
+ ],
+ "dimensions": {
+  "HISTORY_EXPLAINED": "PASS",
+  "DEPENDENCIES_MAPPED": "PASS",
+  "CI_BASELINE_REPRODUCED": "PASS",
+  "MINIMAL_INTEGRATION": "PASS",
+  "PIPELINE_REPAIR": "PARTIAL",
+  "INDEPENDENT_VERIFICATION": "PASS_FLOW",
+  "PAPER_VALIDATION": "PASS_OFFLINE",
+  "MAIN_SYNCED": "NO",
+  "CI_STATUS": "RED",
+  "DELIVERY_STATUS": "BLOCKED",
+  "PRODUCTION_READY": "NOT_CLAIMED",
+  "FALSE_SUCCESS": 0
+ },
+ "limitations": [
+  "OS_SANDBOX = NOT_AVAILABLE: the barrier is a per-process audit hook, not an OS sandbox.",
+  "EXTERNAL_SESSION = NOT_PERFORMED: the paper policy denies the network by design.",
+  "PIPELINE_REPAIR is verified locally (YAML + parser proxy under PowerShell 5.1); the workflow triggers only on PRs to main, so no runner executed the fix.",
+  "The suite comparison uses 1d2192b0 + ops as the reference because the trunk alone cannot collect.",
+  "The independent verifier judges the lab artefact; construction plus the 13 hashes tie artefact to code, not a re-execution.",
+  "Windows/CRLF checkout: ruff and mypy numbers are line-ending independent; git-level counts are not."
+ ],
+ "github_sync": {
+  "repository": "https://github.com/Extr3sao/bot_crypto.git",
+  "local_branch": "wp/isolation-005",
+  "remote_branch": "origin/wp/isolation-005",
+  "local_head_sha": "afc0127086a67632ed94488d95d2e430417535b2",
+  "remote_head_sha": "afc0127086a67632ed94488d95d2e430417535b2",
+  "default_branch_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+  "commits_pending": 0,
+  "push_result": "OK for fix/ci-smoke-pwsh (9682ee1b, new branch, no force); wp/isolation-005 unchanged",
+  "pull_request_url": "https://github.com/Extr3sao/bot_crypto/pull/17",
+  "merge_result": "NOT_MERGED",
+  "sync_status": "REMOTE_BRANCH_SYNCED; MAIN_SYNCED=NO",
+  "verification_timestamp": "2026-10-22T16:20:00Z"
+ },
+ "next_work_package": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00305/NEXT_WP_WP-003-06.md"
+}
