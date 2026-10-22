@@ -153,16 +153,22 @@ class RiskState(StrEnum):
 
 
 class NoTradeKind(StrEnum):
-    """Why a NO_TRADE happened — the four honest NO_TRADE classes (§4).
+    """Why a NO_TRADE happened — the honest NO_TRADE classes (§4).
 
     An operational failure (provider outage, adapter error, internal error) is
     NOT one of these: see ``RuntimeFailureKind``. Mixing the two would turn an
     incident into a fake trading decision.
+
+    A universe exclusion is the mirror-image mistake and is kept apart too
+    (DEF-WP00-01): when the scanner's deterministic filters leave an asset
+    inactive, the runtime *chose* not to evaluate it, so the record says so
+    instead of reporting the missing bars as if the market had been unreadable.
     """
 
     NO_TRADE_STRATEGIC = "NO_TRADE_STRATEGIC"
     NO_TRADE_RISK = "NO_TRADE_RISK"
     NO_TRADE_DATA = "NO_TRADE_DATA"
+    NO_TRADE_UNIVERSE = "NO_TRADE_UNIVERSE"
     NO_TRADE_CONFLICT = "NO_TRADE_CONFLICT"
 
 
@@ -813,13 +819,16 @@ class DecisionTrace:
                 raise ValueError("only a NO_TRADE trace may carry a no_trade_kind")
             if self.no_trade_kind not in {k.value for k in NoTradeKind}:
                 raise ValueError(f"unknown no_trade_kind {self.no_trade_kind!r}")
-            if (
-                self.no_trade_kind == NoTradeKind.NO_TRADE_DATA.value
-                and self.proposal is not None
-            ):
+            if self.no_trade_kind in {
+                NoTradeKind.NO_TRADE_DATA.value,
+                NoTradeKind.NO_TRADE_UNIVERSE.value,
+            } and self.proposal is not None:
                 # A DATA no-decision means there was nothing usable to reason
-                # about: it cannot carry a trade proposal.
-                raise ValueError("a NO_TRADE_DATA decision cannot carry a trade proposal")
+                # about, and a universe exclusion means the asset never reached
+                # a strategy: neither can carry a trade proposal.
+                raise ValueError(
+                    f"a {self.no_trade_kind} decision cannot carry a trade proposal"
+                )
 
     def to_dict(self) -> dict[str, Any]:
         return {

@@ -21,7 +21,9 @@ learning without pretending that an unproven edge is tradeable.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, get_args
+
+from trading_bot.scanner.types import RejectionReason
 
 from .contracts import (
     AdmissionEntry,
@@ -41,10 +43,14 @@ __all__ = [
     "CLASSIFICATIONS",
     "DECISION_ENGINE_VERSION",
     "NO_TRADE_KINDS",
+    "UNIVERSE_FILTERED",
+    "UNIVERSE_REJECTION_REASONS",
     "DecisionEngine",
     "DecisionRequest",
     "DecisionResult",
+    "classification_for_scanner_rejection",
     "no_trade_kind_for",
+    "unclassified_scanner_rejections",
 ]
 
 DECISION_ENGINE_VERSION = "decision-engine-v1"
@@ -61,6 +67,7 @@ CLASSIFICATIONS = (
     "NOT_ADMITTED",
     "PAPER_ADMITTED",
     "RISK_VETO",
+    "UNIVERSE_FILTERED",
     "UNKNOWN_STRATEGY",
     "VERIFIER_FAIL",
 )
@@ -82,26 +89,90 @@ _STRATEGIC_CLASSIFICATIONS: frozenset[str] = frozenset(
 #: Classifications whose cause is the DATA, not the strategy.
 _DATA_CLASSIFICATIONS: frozenset[str] = frozenset({"CONTEXT_ERROR", "NO_MARKET_DATA"})
 
+#: Classification for an asset the scanner's deterministic universe filters left
+#: inactive (DEF-WP00-01). The cause is the market SELECTION, not the data: the
+#: runtime never handed the asset to a strategy, so filing it under the data
+#: classes reported a deliberate exclusion as an inability to read the market.
+UNIVERSE_FILTERED = "UNIVERSE_FILTERED"
+_UNIVERSE_CLASSIFICATIONS: frozenset[str] = frozenset({UNIVERSE_FILTERED})
+
 #: Classifications where two independent reviewers disagreed with the packet.
 _CONFLICT_CLASSIFICATIONS: frozenset[str] = frozenset({"AGENT_VETO", "VERIFIER_FAIL"})
 
 #: Every classification a NO_TRADE may carry (see ``no_trade_kind_for``).
 NO_TRADE_KINDS: frozenset[str] = (
-    _STRATEGIC_CLASSIFICATIONS | _DATA_CLASSIFICATIONS | _CONFLICT_CLASSIFICATIONS | {"RISK_VETO"}
+    _STRATEGIC_CLASSIFICATIONS
+    | _DATA_CLASSIFICATIONS
+    | _UNIVERSE_CLASSIFICATIONS
+    | _CONFLICT_CLASSIFICATIONS
+    | {"RISK_VETO"}
 )
+
+#: Scanner rejections whose cause is the market SELECTION: each one is a frozen,
+#: deterministic filter (liquidity, spread, volatility envelope, whitelist,
+#: custom bounds), and none of them is a data failure. The list mirrors the
+#: closed ``RejectionReason`` catalogue; a reason added there without being
+#: classified here fails ``unclassified_scanner_rejections``.
+UNIVERSE_REJECTION_REASONS: frozenset[str] = frozenset(
+    {
+        "not_whitelisted",
+        "volume_below_threshold",
+        "volume_below_threshold_for_live_min_10M",
+        "spread_above_threshold",
+        "atr_out_of_range",
+        "price_below_threshold",
+    }
+)
+
+#: Scanner rejections whose cause IS the data: the scanner could not build the
+#: history it needs, so the runtime genuinely could not decide. This is the one
+#: reason in the catalogue that stays a DATA no-decision.
+_DATA_REJECTION_REASONS: frozenset[str] = frozenset({"insufficient_history"})
+
+
+def unclassified_scanner_rejections() -> frozenset[str]:
+    """Scanner rejection reasons this taxonomy does not classify (ought to be ∅).
+
+    The scanner publishes its reasons as a closed ``Literal``, so adding one
+    there must be a deliberate decision here: whether it describes a selection
+    or a data shortfall changes how the NO_TRADE is reported. Leaving it out
+    would default it silently, which is exactly what this function forbids.
+    """
+    return (
+        frozenset(get_args(RejectionReason))
+        - UNIVERSE_REJECTION_REASONS
+        - _DATA_REJECTION_REASONS
+    )
+
+
+def classification_for_scanner_rejection(reason: str | None) -> str:
+    """Name the honest classification for an asset the scanner left inactive.
+
+    Only an unreadable-history rejection is a data no-decision; every other
+    catalogue reason is a selection decision. A reason outside the catalogue
+    (another adapter, a hand-built snapshot) defaults to the selection class
+    because that is the fact the runtime actually knows — the scanner said the
+    asset is not in the tradable universe — and the raw string stays visible in
+    the decision's ``reason``.
+    """
+    if reason in _DATA_REJECTION_REASONS:
+        return "NO_MARKET_DATA"
+    return UNIVERSE_FILTERED
 
 
 def no_trade_kind_for(classification: str) -> NoTradeKind:
     """Map a NO_TRADE classification onto its honest kind (§4).
 
-    Risk, data and conflict are separated from the strategic ("the edge does
-    not survive cost") class so a reader can never confuse "we chose not to
-    trade" with "we could not decide".
+    Risk, data, universe and conflict are separated from the strategic ("the
+    edge does not survive cost") class so a reader can never confuse "we chose
+    not to trade" with "we could not decide".
     """
     if classification == "RISK_VETO":
         return NoTradeKind.NO_TRADE_RISK
     if classification in _CONFLICT_CLASSIFICATIONS:
         return NoTradeKind.NO_TRADE_CONFLICT
+    if classification in _UNIVERSE_CLASSIFICATIONS:
+        return NoTradeKind.NO_TRADE_UNIVERSE
     if classification in _DATA_CLASSIFICATIONS:
         return NoTradeKind.NO_TRADE_DATA
     if classification in _STRATEGIC_CLASSIFICATIONS:

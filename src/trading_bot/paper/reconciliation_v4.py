@@ -237,6 +237,10 @@ class StartupReconcilerV4:
             book = {
                 str(row.get("symbol")): dict(row) for row in state.open_positions if row.get("symbol")
             }
+        # WP-EDGE-017F/P0.1: the weekly window anchor travels with the counters.
+        # A snapshot written before the anchor existed has no key here, and the
+        # manager then anchors it on restore instead of forgiving the loss.
+        stored_week = risk_state.get("weekly_start_ms")
         self._risk.restore_state(
             daily_pnl=float(risk_state.get("daily_pnl", 0.0)),
             weekly_pnl=float(risk_state.get("weekly_pnl", 0.0)),
@@ -245,6 +249,7 @@ class StartupReconcilerV4:
             peak_equity=float(risk_state.get("peak_equity", 0.0)),
             open_positions=book,
             kill_switch_active=bool(risk_state.get("kill_switch_active", False)),
+            weekly_start_ms=int(stored_week) if stored_week is not None else None,
         )
         # Equity must reflect the restored book BEFORE any new risk check.
         self._risk.equity = float(self._broker.equity)

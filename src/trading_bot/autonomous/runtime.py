@@ -70,7 +70,12 @@ from .contracts import (
     VerifierVerdict,
 )
 from .costs import COST_MODEL_VERSION, CostEngine
-from .decision import DecisionEngine, DecisionRequest
+from .decision import (
+    DecisionEngine,
+    DecisionRequest,
+    classification_for_scanner_rejection,
+    no_trade_kind_for,
+)
 from .experience import StrategyPerformanceStore
 from .outcomes import OutcomeEvaluator
 from .pit import closed_bar_slice, infer_bar_interval_ms
@@ -688,6 +693,34 @@ class AutonomousPaperRuntime:
                 market_context=market_context,
                 strategies_considered=strategies_considered,
                 no_trade_kind=NoTradeKind.NO_TRADE_DATA.value,
+            )
+
+        # DEF-WP00-01 — the scanner's universe verdict is NAMED, not inferred.
+        #
+        # ``run_cycle`` refuses to fetch history for an inactive snapshot, so an
+        # excluded asset reaches this method with no bars, the context build
+        # below failed with "no bars at or before ts …" and the refusal was filed
+        # as CONTEXT_ERROR / NO_TRADE_DATA: a deliberate selection reported as an
+        # inability to read the market. The asset never reached a strategy, so
+        # the honest record is UNIVERSE_FILTERED / NO_TRADE_UNIVERSE, with the
+        # scanner's own reason kept in ``market_context`` and in the reason
+        # string. Still a NO_TRADE: no order, and no runtime failure either.
+        if not bool(getattr(snap, "active", False)):
+            rejection = getattr(snap, "rejection_reason", None)
+            universe_classification = classification_for_scanner_rejection(rejection)
+            return self._terminal(
+                session_id=session_id,
+                decision_id=decision_id,
+                asset=asset,
+                symbol=symbol,
+                market_time_ms=market_time_ms,
+                decision_time_ms=decision_time_ms,
+                mode=DecisionMode.NO_TRADE,
+                reason=f"scanner_rejected:{rejection or 'reason_not_stated'}",
+                classification=universe_classification,
+                market_context=market_context,
+                strategies_considered=strategies_considered,
+                no_trade_kind=no_trade_kind_for(universe_classification).value,
             )
 
         context: Any | None = None
