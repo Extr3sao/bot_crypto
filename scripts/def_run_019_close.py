@@ -400,6 +400,9 @@ def main(argv: list[str] | None = None) -> int:
                 "scripts/def_run_019_prospective_run.py",
                 "scripts/def_run_019_integrity.py",
                 "scripts/def_run_019_negative_controls.py",
+                #: El cierre también es implementación: es quien decide qué puede afirmarse.
+                "scripts/def_run_019_close.py",
+                "tests/unit/reports/test_def_run_019_close.py",
             ],
             "run_id": first_block.get("run_id"),
             "session_id": first_block.get("session_id"),
