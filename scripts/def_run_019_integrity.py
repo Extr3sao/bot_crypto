@@ -133,7 +133,9 @@ def run_child(args: argparse.Namespace) -> int:
     from trading_bot.vision.settings import load_vision_config
 
     rows = load_minutes(Path(args.minutes))
-    start = int(rows[0]["open_ms"]) + int(args.warmup_minutes + 30) * MINUTE_MS
+    start = int(rows[0]["open_ms"]) + int(
+        args.warmup_minutes + args.start_offset_minutes
+    ) * MINUTE_MS
     clock = FakeClock(start)
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -252,6 +254,8 @@ def spawn(src: Path, args: argparse.Namespace, out: Path) -> dict[str, Any]:
         str(args.decision_every_bars),
         "--warmup-minutes",
         str(args.warmup_minutes),
+        "--start-offset-minutes",
+        str(args.start_offset_minutes),
         "--duration-s",
         str(args.duration_s),
         "--latency-ms",
@@ -333,6 +337,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--window-bars", type=int, default=20)
     parser.add_argument("--decision-every-bars", type=int, default=1)
     parser.add_argument("--warmup-minutes", type=int, default=90)
+    parser.add_argument("--start-offset-minutes", type=int, default=5)
     parser.add_argument("--duration-s", type=int, default=3_600)
     parser.add_argument("--latency-ms", type=int, default=30_000)
     parser.add_argument("--max-cycles", type=int, default=3)
