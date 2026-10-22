@@ -1715,8 +1715,9 @@ cd ../ff-wt-head
 clasificar las dos cohortes, aislar WP-003-03 con su conjunto mínimo de dependencias y reparar lo
 que del pipeline base sea reproducible y aislado.
 
-**Worktree.** `bot-freebuff-recovery-004`, rama `wp/isolation-005`: `afc01270` al empezar,
-`1af4f81d` al cerrar (local = remoto; los dos commits añadidos son este informe). Ramas nuevas: `integration/wp00303-min` = `baf5b560` (local, sin publicar) y
+**Worktree.** `bot-freebuff-recovery-004`, rama `wp/isolation-005`: `afc01270` al empezar; el tip
+al cerrar es el que devuelva `git ls-remote --heads origin wp/isolation-005`, que no se cita aquí
+porque los commits de este informe lo mueven (los 12 campos viven en `wp00305/GITHUB_SYNC.json`). Ramas nuevas: `integration/wp00303-min` = `baf5b560` (local, sin publicar) y
 `fix/ci-smoke-pwsh` = `9682ee1b` (publicada, fast-forward, rama nueva).
 
 **Hecho (medido).**
