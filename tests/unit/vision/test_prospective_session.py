@@ -620,7 +620,9 @@ def test_a_resume_keeps_the_delay_it_pinned_when_the_network_moved(tmp_path: Pat
         root=root,
         resume=True,
         out=out,
-        clock_start_ms=LATER_MS,
+        #: Half a minute past the boundary, so this session's first poll observes a real
+        #: delivery latency instead of landing exactly on the close like the first one.
+        clock_start_ms=LATER_MS + 30_000,
         sleep_scale=4.0,
     )
     second_summary = second.run()
