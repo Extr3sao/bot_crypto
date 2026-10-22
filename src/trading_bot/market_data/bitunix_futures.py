@@ -23,6 +23,7 @@ from urllib.error import HTTPError
 
 import structlog
 
+from trading_bot.execution import isolation
 from trading_bot.market_data.bitunix import BitunixAPIError, to_api_symbol
 from trading_bot.market_data.exceptions import (
     ConnectorProtocolError,
@@ -281,6 +282,13 @@ class BitunixFuturesClient:
         tp_price: float | None = None,
         sl_price: float | None = None,
     ) -> CCXTPayloadProtocol:
+        #: RFC005: el cliente REST es la última capa con HTTP a la vista. Si la
+        #: puerta no está aquí, `app place-order` y el conector podrían llamarlo
+        #: sin pasar por ningún otro control.
+        isolation.assert_order_allowed(
+            "market_data.BitunixFuturesClient.place_order",
+            detail=f"{symbol} {side} {order_type} {qty}",
+        )
         payload: dict[str, Any] = {  # TSK-200: cast target
             "symbol": to_api_symbol(symbol),
             "side": side.upper(),
@@ -522,6 +530,10 @@ class BitunixFuturesConnector:
         loud. Un ``clientId`` reflejado que no coincida con el enviado rompe
         la correlación y también falla loud.
         """
+        isolation.assert_order_allowed(
+            "market_data.BitunixFuturesConnector.create_order",
+            detail=f"{symbol} {side} {order_type} {amount}",
+        )
         cid = client_order_id or str(uuid.uuid4())
         log = self._bind(
             "create_order",
@@ -581,6 +593,13 @@ class BitunixFuturesConnector:
         No se simula éxito ni se reutiliza ``flash_close_position`` (cierra
         posiciones, no cancela órdenes pendientes).
         """
+        #: RFC005: aunque hoy esta ruta no puede enviar nada (no hay cliente
+        #: de cancelación), la puerta se coloca igual: si mañana se implementa,
+        #: el orden de los controles no depende de que alguien se acuerde.
+        isolation.assert_order_allowed(
+            "market_data.BitunixFuturesConnector.cancel_order",
+            detail=f"{order_id} {symbol}",
+        )
         raise UnsupportedConnectorOperationError(
             "BitunixFuturesConnector.cancel_order no soportado: "
             "BitunixFuturesClient no expone cancelación de órdenes "
