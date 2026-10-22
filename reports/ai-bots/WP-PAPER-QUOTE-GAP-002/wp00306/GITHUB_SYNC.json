@@ -14,7 +14,7 @@
   },
   "wp/isolation-005": {
    "published": true,
-   "remote_head_sha": "624455c8c55c8564a5d244cb82688a1332159ae7"
+   "remote_head_sha": "4888409cbc13e0fded4180761141d38e43777d52"
   }
  },
  "default_branch": "main",
@@ -22,12 +22,14 @@
  "generated_at_utc": "2026-10-22T21:28:31Z",
  "main_synced": "NO",
  "main_synced_reason": "origin/main is 5e6f9632; neither the 259-commit local trunk nor the 244-commit branch has been pushed to main, and no merge was performed.",
+ "measurement_scope": "Read with git ls-remote in this session. wp/isolation-005 moves by one commit whenever this file is committed on it, so its recorded head is the sha the file measured, not the sha that contains it; recovery/* and fix/* are stable.",
  "pull_requests": {
   "17": {
    "action_taken": "none: its mandatory gates are still red",
    "head": "wp/isolation-005",
    "merged": false,
-   "state": "open"
+   "state_note": "No GitHub API access in this session (no gh, no token). The PR was open when WP-003-05 queried it and this session neither merged nor closed it; that is what is claimed.",
+   "state_observed": "NOT_REQUERIED"
   },
   "new_prs_opened": {
    "ci_smoke": false,
