@@ -197,19 +197,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install pwsh (PowerShell 7+)
-        uses: microsoft/powershell@v1.1.0
-
+      # The pwsh step below needs no install action: `ubuntu-latest` ships
+      # PowerShell 7+ and the `pwsh` shell keyword resolves it. The previous
+      # `microsoft/powershell@v1.1.0` reference does not exist (no such tag and
+      # no action.yml), so the runner failed at `Set up job` — before checkout,
+      # which is why this job never reached a single assertion.
       - name: "PSParser tokenize the PR-pipeline script (pwsh 7+ only)"
         # Regression tripwire: any PS5.1-syntactic regression in
         # scripts/open-pr-tsk-0204.ps1 trips this check before merge.
         # Note: the class `System.Management.Automation.Language.Parser`
         # exists only in PowerShell 7.0+. The PS 5.1 equivalent is
         # `System.Management.Automation.Parser` (no `.Language` segment).
-        # The smoke job installs pwsh via `microsoft/powershell@v1.1.0`
-        # so CI runs the right runtime; if a developer copy-pastes this
-        # step into a local Windows PowerShell 5.1, the type will not
-        # resolve and the namespace path must be swapped manually.
+        # `shell: pwsh` pins the runtime, so no install step is needed; a
+        # developer copy-pasting this into a local Windows PowerShell 5.1
+        # must swap the namespace by hand.
         # ADR-0020 keeps the pwsh-only direction for this kind of script.
         shell: pwsh
         run: |
