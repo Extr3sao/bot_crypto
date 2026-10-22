@@ -12,7 +12,12 @@
     "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
     "note": "el checkout es compartido y otros paquetes commitearon durante la sesión (87ad0d7a -> f20dff9b -> 2ed43ad4); el run sella el HEAD desde el que corrió"
   },
-  "commits": [],
+  "commits": [
+    {
+      "hash": "be5b68e1",
+      "what": "runner, verificador, tests, mapa de autoridad, evidencia sellada y los tres datasets"
+    }
+  ],
   "files": {
     "code": [
       "scripts/exp004a_wp051_02f_runner.py",
@@ -407,5 +412,6 @@
   "certification": "BLOCKED",
   "promotion": "NO_PROMOTION",
   "overall": "PARTIAL",
-  "next_operational_step": "decisión sobre DEF-02F-01; si es phase 3, RFC con generador nuevo que rechace ingestas posteriores a la decisión, declaración nueva y comparador PIT sobre inputs idénticos"
+  "next_operational_step": "decisión sobre DEF-02F-01; si es phase 3, RFC con generador nuevo que rechace ingestas posteriores a la decisión, declaración nueva y comparador PIT sobre inputs idénticos",
+  "commits_note": "el commit que contiene este informe; el sellado se regeneró después de escribirlo y ese refresco vive en EVIDENCE_MANIFEST.json (sealed_at_utc), no en un commit distinto"
 }

@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "runner": "runner/EXP-004A/WP-051-02F",
   "rfc": "RFC-EXP004A-051-02F",
-  "sealed_at_utc": "2026-10-22T14:49:52.994Z",
-  "head": "5314559fb93266ea5c05343baac1eae6e450d4fe",
+  "sealed_at_utc": "2026-10-22T14:50:58.171Z",
+  "head": "be5b68e12541c62a33be32ef9b9af8ccf0ec7cb0",
   "run_id": "20261022T140037Z-de5d3329",
   "run_dir": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329",
   "state": "CAPTURED_VERIFIED",
@@ -13,12 +13,14 @@
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/CLAIM.json",
       "bytes": 8623,
-      "sha256": "6a19d6c5f573c3725ff43acab35000811fdfbf0f9470bcb530870dadf684fcc6"
+      "sha256": "6a19d6c5f573c3725ff43acab35000811fdfbf0f9470bcb530870dadf684fcc6",
+      "git_blob_sha": "983a93595cf6ec33edb2020d67382e2bc9c65486"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/INDEPENDENT_VERIFICATION.json",
       "bytes": 7533,
-      "sha256": "06e7ee8a7e636af884106ec740e17d164e6aa824915cb1c136c239c687e072fa"
+      "sha256": "06e7ee8a7e636af884106ec740e17d164e6aa824915cb1c136c239c687e072fa",
+      "git_blob_sha": "a2e414f1c30c51370f3a83b14a1c387796e8c8f8"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/logs/observation.log",
@@ -38,37 +40,44 @@
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/reused_preflight/02E_REVERIFIED.json",
       "bytes": 12551,
-      "sha256": "e590085fca37852669913aa3e1bf2d515303737e0108a286a797b1a3784f61b7"
+      "sha256": "e590085fca37852669913aa3e1bf2d515303737e0108a286a797b1a3784f61b7",
+      "git_blob_sha": "595232c2745d5826f7003f1fd23ae88c34d6d423"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/reused_preflight/WP_051_02E_BASELINE.json",
       "bytes": 4645,
-      "sha256": "4996caa20e6dd0c49aef7e8219f34267123f4b3d98fa16db1a1c5463d480f26d"
+      "sha256": "4996caa20e6dd0c49aef7e8219f34267123f4b3d98fa16db1a1c5463d480f26d",
+      "git_blob_sha": "a5b78fe5a639359c01d8f3a1c471a64cd81a21a1"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/reused_preflight/WP_051_02E_PREFLIGHT.json",
       "bytes": 13839,
-      "sha256": "6eed7758c3d58a30e1a531b63853a7072de6fc28fc2c6c027fe8b37266866ffb"
+      "sha256": "6eed7758c3d58a30e1a531b63853a7072de6fc28fc2c6c027fe8b37266866ffb",
+      "git_blob_sha": "1e7f1a544f268b794e9e2479fe97672cab5daed1"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/RUN_REPORT.json",
       "bytes": 12057,
-      "sha256": "636304b5b00619ec99c556dfff1736202d3d2b24c5cbcfba76341a481e8b2f69"
+      "sha256": "636304b5b00619ec99c556dfff1736202d3d2b24c5cbcfba76341a481e8b2f69",
+      "git_blob_sha": "52dd75b1d9f526e4b817801839bb228645fd53b9"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/RUN_REPORT.md",
       "bytes": 2456,
-      "sha256": "69c5cec8798733293daf78bc0a2c42bbacce6c5f3256abe2b4359ac1efc1100a"
+      "sha256": "69c5cec8798733293daf78bc0a2c42bbacce6c5f3256abe2b4359ac1efc1100a",
+      "git_blob_sha": "bcf226f190bf07e991a36296d5fce27ecef9256e"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/CLAIM.json",
       "bytes": 22353,
-      "sha256": "69ce47d59c16db465dc48a419421735218cb563c77f2f8dc097853c2dcbf74b6"
+      "sha256": "69ce47d59c16db465dc48a419421735218cb563c77f2f8dc097853c2dcbf74b6",
+      "git_blob_sha": "f1564b1c224bc021f36c3323575a23ee46423da0"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/INDEPENDENT_VERIFICATION.json",
       "bytes": 13007,
-      "sha256": "b2286aec7ce49055a95ada06fcc6796e1ae854395e5aa0fb69c777ad72992c18"
+      "sha256": "b2286aec7ce49055a95ada06fcc6796e1ae854395e5aa0fb69c777ad72992c18",
+      "git_blob_sha": "4cf5dda9cb523dbd89f3d0f68823ff3ef425e4ff"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/logs/capture_1h_BTC.log",
@@ -103,37 +112,44 @@
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/reused_preflight/02E_REVERIFIED.json",
       "bytes": 14134,
-      "sha256": "55c4d95367c12d2addb96ccc8bdd6220ffe1d61e8b5caf8444f29fab774e8347"
+      "sha256": "55c4d95367c12d2addb96ccc8bdd6220ffe1d61e8b5caf8444f29fab774e8347",
+      "git_blob_sha": "e3bef3baee87e56331f566214ee023d697714f06"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/reused_preflight/WP_051_02E_BASELINE.json",
       "bytes": 4639,
-      "sha256": "156eee5ad0cea5e8cb7ebf23785a1ac4db908328b3d7401ab058c1a4538ae7a7"
+      "sha256": "156eee5ad0cea5e8cb7ebf23785a1ac4db908328b3d7401ab058c1a4538ae7a7",
+      "git_blob_sha": "899241736ee9d0ca41a9bd5958282f70acad4e27"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/reused_preflight/WP_051_02E_PREFLIGHT.json",
       "bytes": 13821,
-      "sha256": "205aa9ca1502b4ffa9f427ee4539367bca60a4a4879a7df8536b54c0c8b20852"
+      "sha256": "205aa9ca1502b4ffa9f427ee4539367bca60a4a4879a7df8536b54c0c8b20852",
+      "git_blob_sha": "ac4161daf37b2459362c0fcd993be0769572470c"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/RUN_REPORT.json",
       "bytes": 27385,
-      "sha256": "721eaa89fe5ed22b64b749a6eb5aa46df1a9b0d555c90639ee3c7d04d2fd485c"
+      "sha256": "721eaa89fe5ed22b64b749a6eb5aa46df1a9b0d555c90639ee3c7d04d2fd485c",
+      "git_blob_sha": "7ba04258f165ad53df8f30717e0994b9e769634a"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329/RUN_REPORT.md",
       "bytes": 2693,
-      "sha256": "1ef0beb8eca6081616703668304dd4a8e452d543c4d20c8da3d27187a7f642c4"
+      "sha256": "1ef0beb8eca6081616703668304dd4a8e452d543c4d20c8da3d27187a7f642c4",
+      "git_blob_sha": "9f2eb747c517706f1d69eb31e7ab247b48a5de2f"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/CLAIM.json",
       "bytes": 10186,
-      "sha256": "993df5f367aef1060689c02c85cbf209be5a5452abef8879a1109d52213fee70"
+      "sha256": "993df5f367aef1060689c02c85cbf209be5a5452abef8879a1109d52213fee70",
+      "git_blob_sha": "6614b368818d0ae012ee2d87854f5dc3cbcfe829"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/INDEPENDENT_VERIFICATION.json",
       "bytes": 13385,
-      "sha256": "4f164da02fa84a8590aeed0be6d1850073a01f7fe2fa1e4a90287811d233a487"
+      "sha256": "4f164da02fa84a8590aeed0be6d1850073a01f7fe2fa1e4a90287811d233a487",
+      "git_blob_sha": "4da0ecf9f23cb5546e5d99168d7b2bb915623c07"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/logs/observation.log",
@@ -153,82 +169,98 @@
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/reused_preflight/02E_REVERIFIED.json",
       "bytes": 14134,
-      "sha256": "f4ecedcb67edfa76f6611c792e68c09a2484cd2eb0097d6047ee32317ae8ec78"
+      "sha256": "f4ecedcb67edfa76f6611c792e68c09a2484cd2eb0097d6047ee32317ae8ec78",
+      "git_blob_sha": "34ddd5d52d14012e04b677f940b72f85320bf9c0"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/reused_preflight/WP_051_02E_BASELINE.json",
       "bytes": 4849,
-      "sha256": "36c3451b940a3165102c3ffe9741e8f6c74e1d54bc8382618cf2febb44a130d1"
+      "sha256": "36c3451b940a3165102c3ffe9741e8f6c74e1d54bc8382618cf2febb44a130d1",
+      "git_blob_sha": "499af0f697fba649844a705c6748f1f611174758"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/reused_preflight/WP_051_02E_PREFLIGHT.json",
       "bytes": 14165,
-      "sha256": "e65c1ebd77409bc14b2aab8f7eabf61d0ef3871164207b3f8545cb4f047062c8"
+      "sha256": "e65c1ebd77409bc14b2aab8f7eabf61d0ef3871164207b3f8545cb4f047062c8",
+      "git_blob_sha": "50d509562225a308c37f44a6d0d46fee0fabf0f4"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/RUN_REPORT.json",
       "bytes": 15311,
-      "sha256": "4578933c323da9c101211a532a706c80723b89689e1f2ee7486c9f29f526727b"
+      "sha256": "4578933c323da9c101211a532a706c80723b89689e1f2ee7486c9f29f526727b",
+      "git_blob_sha": "a863a47eeef49f56cd1e0a60e86b5040dbadec59"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T142234Z-55818916/RUN_REPORT.md",
       "bytes": 3058,
-      "sha256": "cab83e5ca9324241977875f5851f6f56f22ec6895e76580e546c7935791845d3"
+      "sha256": "cab83e5ca9324241977875f5851f6f56f22ec6895e76580e546c7935791845d3",
+      "git_blob_sha": "e2f5dcfe87c29a7a0d612e9eacb82134ca3cbc74"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/FINAL_REPORT.json",
-      "bytes": 15898,
-      "sha256": "867013904c7135146a05bde1efab98df34b698e9f708cd7e8491843bb841e4ff"
+      "bytes": 16239,
+      "sha256": "55812e1ee11edb22d4e5e478646dc2cd60eecbabd4801651022b88b9d13e0383",
+      "git_blob_sha": "93a00423b1e7871dbef136c0fbb675b6f61b7fd3"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/FINAL_REPORT.md",
       "bytes": 19262,
-      "sha256": "f855701b5008b6222e657f31693df5f907b4368933449564904524674290454e"
+      "sha256": "f855701b5008b6222e657f31693df5f907b4368933449564904524674290454e",
+      "git_blob_sha": "08dad90e7f3ae0077a0abb86963c4d947c22be8b"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/INDEPENDENT_VERIFICATION.json",
       "bytes": 13007,
-      "sha256": "b2286aec7ce49055a95ada06fcc6796e1ae854395e5aa0fb69c777ad72992c18"
+      "sha256": "b2286aec7ce49055a95ada06fcc6796e1ae854395e5aa0fb69c777ad72992c18",
+      "git_blob_sha": "4cf5dda9cb523dbd89f3d0f68823ff3ef425e4ff"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/LATEST_RUN.json",
       "bytes": 378,
-      "sha256": "d3dd4948cd5fe8828b05e8ee4b44d47da2c444227c50739a5f015e35627c89f4"
+      "sha256": "d3dd4948cd5fe8828b05e8ee4b44d47da2c444227c50739a5f015e35627c89f4",
+      "git_blob_sha": "1334f156f5e207effee1718f728df3044f1cce68"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/reused_preflight/02E_REVERIFIED.json",
       "bytes": 12528,
-      "sha256": "41b75eb639416e90c1e100c6b5ce872c8fca6032506808798509eb1fb97db466"
+      "sha256": "41b75eb639416e90c1e100c6b5ce872c8fca6032506808798509eb1fb97db466",
+      "git_blob_sha": "1744154d652610faa655b55ab866945fecf7613c"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/reused_preflight/WP_051_02E_BASELINE.json",
       "bytes": 4589,
-      "sha256": "34c336ad3b5bb27348d7f1001e5cbaec251f99efd0b4747713cef34490172bb5"
+      "sha256": "34c336ad3b5bb27348d7f1001e5cbaec251f99efd0b4747713cef34490172bb5",
+      "git_blob_sha": "2226b5728597ed8e0d2b27793fdf30801f1fd77e"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/reused_preflight/WP_051_02E_PREFLIGHT.json",
       "bytes": 13724,
-      "sha256": "3b3c70c761a7267d5f87d942e2c3ab572e30ffc51b4be59a12d8e85f32882e79"
+      "sha256": "3b3c70c761a7267d5f87d942e2c3ab572e30ffc51b4be59a12d8e85f32882e79",
+      "git_blob_sha": "b96e0ca2507da20dff3792a88ee906059974d283"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/REVERIFICATION_UNDER_FINAL_VERIFIER.json",
       "bytes": 15025,
-      "sha256": "1bcceaea7dc36fe4bd095d4990346be73fa45f441eb2def1ec3987b8bf65f414"
+      "sha256": "1bcceaea7dc36fe4bd095d4990346be73fa45f441eb2def1ec3987b8bf65f414",
+      "git_blob_sha": "344540185d6cf92e283686a37cce038ee05f4b5d"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/RUN_REPORT.json",
       "bytes": 27385,
-      "sha256": "721eaa89fe5ed22b64b749a6eb5aa46df1a9b0d555c90639ee3c7d04d2fd485c"
+      "sha256": "721eaa89fe5ed22b64b749a6eb5aa46df1a9b0d555c90639ee3c7d04d2fd485c",
+      "git_blob_sha": "7ba04258f165ad53df8f30717e0994b9e769634a"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/RUN_REPORT.md",
       "bytes": 2693,
-      "sha256": "1ef0beb8eca6081616703668304dd4a8e452d543c4d20c8da3d27187a7f642c4"
+      "sha256": "1ef0beb8eca6081616703668304dd4a8e452d543c4d20c8da3d27187a7f642c4",
+      "git_blob_sha": "9f2eb747c517706f1d69eb31e7ab247b48a5de2f"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/RUNTIME_AUTHORITY.md",
       "bytes": 6166,
-      "sha256": "8fe252c31758f5678d7a3974a257f20b41aae0fbd04e2d77735bc9e9eae2169f"
+      "sha256": "8fe252c31758f5678d7a3974a257f20b41aae0fbd04e2d77735bc9e9eae2169f",
+      "git_blob_sha": "68e1f0431ffca434b98c81fa58f5ea1b78c9125a"
     },
     {
       "path": "data/exp004a/EXP-004A-1H-BTC.jsonl",
