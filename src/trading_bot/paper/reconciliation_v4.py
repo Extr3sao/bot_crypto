@@ -235,7 +235,9 @@ class StartupReconcilerV4:
         book = dict(risk_state.get("open_positions", {}) or {})
         if not book:
             book = {
-                str(row.get("symbol")): dict(row) for row in state.open_positions if row.get("symbol")
+                str(row.get("symbol")): dict(row)
+                for row in state.open_positions
+                if row.get("symbol")
             }
         # WP-EDGE-017F/P0.1: the weekly window anchor travels with the counters.
         # A snapshot written before the anchor existed has no key here, and the

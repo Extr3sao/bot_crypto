@@ -292,9 +292,7 @@ def install(policy: IsolationPolicy, *, log_path: Path | str | None = None) -> G
     return guard
 
 
-def install_for_runtime(
-    mode: str | None = None, *, log_path: Path | str | None = None
-) -> Guard:
+def install_for_runtime(mode: str | None = None, *, log_path: Path | str | None = None) -> Guard:
     """Install the policy the process declared, defaulting to paper."""
     declared = mode or mode_from_environment() or "paper"
     return install(policy_for_mode(declared), log_path=log_path)

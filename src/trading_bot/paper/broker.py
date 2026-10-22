@@ -608,7 +608,9 @@ class PaperBroker:
                         trigger_price = tp_price
                         exit_reason = "take_profit"
                     else:  # stop_first (default, conservative)
-                        trigger_price = _gap_exit(_open, sl_price, side="buy", gap_policy=gap_policy)
+                        trigger_price = _gap_exit(
+                            _open, sl_price, side="buy", gap_policy=gap_policy
+                        )
                         exit_reason = "stop_loss"
                 elif sl_hit:
                     trigger_price = _gap_exit(_open, sl_price, side="buy", gap_policy=gap_policy)

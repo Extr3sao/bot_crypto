@@ -55,20 +55,24 @@ def test_external_connect_is_denied_with_the_host_in_the_reason() -> None:
 
 def test_loopback_is_allowed_only_when_the_policy_says_so() -> None:
     strict = isolation.policy_for_mode("paper")
-    assert isolation.decide_network(
-        "socket.connect", (object(), ("127.0.0.1", 8000)), strict
-    )[0] == "DENY"
+    assert (
+        isolation.decide_network("socket.connect", (object(), ("127.0.0.1", 8000)), strict)[0]
+        == "DENY"
+    )
 
     opened = isolation.IsolationPolicy(mode="paper", loopback_network=True)
-    assert isolation.decide_network(
-        "socket.connect", (object(), ("127.0.0.1", 8000)), opened
-    )[0] == "ALLOW_LOOPBACK"
-    assert isolation.decide_network(
-        "socket.getaddrinfo", ("localhost", 8000, 0, 0, 0), opened
-    )[0] == "ALLOW_LOOPBACK"
-    assert isolation.decide_network(
-        "socket.connect", (object(), ("api.binance.com", 443)), opened
-    )[0] == "DENY"
+    assert (
+        isolation.decide_network("socket.connect", (object(), ("127.0.0.1", 8000)), opened)[0]
+        == "ALLOW_LOOPBACK"
+    )
+    assert (
+        isolation.decide_network("socket.getaddrinfo", ("localhost", 8000, 0, 0, 0), opened)[0]
+        == "ALLOW_LOOPBACK"
+    )
+    assert (
+        isolation.decide_network("socket.connect", (object(), ("api.binance.com", 443)), opened)[0]
+        == "DENY"
+    )
 
 
 def test_dns_is_a_network_event_and_is_denied() -> None:
@@ -81,9 +85,10 @@ def test_dns_is_a_network_event_and_is_denied() -> None:
 
 
 def test_a_non_network_event_is_ignored() -> None:
-    assert isolation.decide_network(
-        "open", ("/tmp/x", "r"), isolation.policy_for_mode("paper")
-    )[0] == "IGNORE"
+    assert (
+        isolation.decide_network("open", ("/tmp/x", "r"), isolation.policy_for_mode("paper"))[0]
+        == "IGNORE"
+    )
 
 
 def test_order_gate_allows_a_process_with_no_runtime_declaration(monkeypatch) -> None:

@@ -139,9 +139,7 @@ def unclassified_scanner_rejections() -> frozenset[str]:
     would default it silently, which is exactly what this function forbids.
     """
     return (
-        frozenset(get_args(RejectionReason))
-        - UNIVERSE_REJECTION_REASONS
-        - _DATA_REJECTION_REASONS
+        frozenset(get_args(RejectionReason)) - UNIVERSE_REJECTION_REASONS - _DATA_REJECTION_REASONS
     )
 
 
@@ -321,9 +319,14 @@ class DecisionEngine:
         admitted = request.admission.admitted_for_paper
         net_positive = proposal.expected_net_edge_bps > 0
 
-        if admitted and net_positive and request.risk.verdict in (
-            RiskVerdict.PASS,
-            RiskVerdict.ADJUST,
+        if (
+            admitted
+            and net_positive
+            and request.risk.verdict
+            in (
+                RiskVerdict.PASS,
+                RiskVerdict.ADJUST,
+            )
         ):
             return DecisionResult(
                 mode=DecisionMode.TRADE_PAPER,
@@ -343,9 +346,7 @@ class DecisionEngine:
             return self._no_trade(f"risk_not_pass:{request.risk.verdict.value}", "RISK_VETO")
 
         if not request.shadow_evaluation_enabled:
-            return self._no_trade(
-                f"{classification.lower()}_and_shadow_disabled", classification
-            )
+            return self._no_trade(f"{classification.lower()}_and_shadow_disabled", classification)
 
         return DecisionResult(
             mode=DecisionMode.SHADOW_TRADE,
@@ -378,9 +379,7 @@ class DecisionEngine:
             and proposal.expected_net_edge_bps > 0
         )
         if order_authorising:
-            raise ValueError(
-                "advisory risk review cannot accompany an order-authorising packet"
-            )
+            raise ValueError("advisory risk review cannot accompany an order-authorising packet")
 
     def _no_trade(self, reason: str, classification: str) -> DecisionResult:
         if classification not in CLASSIFICATIONS:
