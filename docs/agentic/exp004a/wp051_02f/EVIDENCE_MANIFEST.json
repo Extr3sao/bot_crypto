@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "runner": "runner/EXP-004A/WP-051-02F",
   "rfc": "RFC-EXP004A-051-02F",
-  "sealed_at_utc": "2026-10-22T14:50:58.171Z",
-  "head": "be5b68e12541c62a33be32ef9b9af8ccf0ec7cb0",
+  "sealed_at_utc": "2026-10-22T14:53:18.281Z",
+  "head": "e56c518832eaa7dd25e9a54cd720b50ca436fefc",
   "run_id": "20261022T140037Z-de5d3329",
   "run_dir": "docs/agentic/exp004a/wp051_02f/evidence/20261022T140037Z-de5d3329",
   "state": "CAPTURED_VERIFIED",
@@ -198,15 +198,15 @@
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/FINAL_REPORT.json",
-      "bytes": 16239,
-      "sha256": "55812e1ee11edb22d4e5e478646dc2cd60eecbabd4801651022b88b9d13e0383",
-      "git_blob_sha": "93a00423b1e7871dbef136c0fbb675b6f61b7fd3"
+      "bytes": 16306,
+      "sha256": "b6a74529ac88cadd578de7f50c68f2020c14c6d319d08375019abb7faa305f67",
+      "git_blob_sha": "fc6a91acb0cde8b70417692267dc25903dab1099"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/FINAL_REPORT.md",
-      "bytes": 19262,
-      "sha256": "f855701b5008b6222e657f31693df5f907b4368933449564904524674290454e",
-      "git_blob_sha": "08dad90e7f3ae0077a0abb86963c4d947c22be8b"
+      "bytes": 20331,
+      "sha256": "25116eb969c06d60bce2726e30e5cb8da06b2663f8bf7c4aaa497a50552e7faf",
+      "git_blob_sha": "f69e3d9b89c8de4816cbed6f0472c883ed0eeadd"
     },
     {
       "path": "docs/agentic/exp004a/wp051_02f/INDEPENDENT_VERIFICATION.json",

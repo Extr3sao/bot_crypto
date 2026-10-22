@@ -68,6 +68,20 @@ with the declaration's own command, the observation from `scripts/edge04_observe
 | D6 | Dead code: the runner carried an unused `reverify_02e`. | Removed; the verifier owns that control. |
 | D7 | `ruff` and `mypy --strict` did not pass on the two new scripts. | Both clean. |
 
+### Commits
+
+| Commit | What it carries |
+|---|---|
+| `be5b68e1` | the runner, the verifier, the tests, the authority map, the sealed evidence and the three datasets |
+| `5817184e` | the re-seal that includes this report (50 manifest entries, none orphaned) |
+
+The commit that carries *this file* is the one this report cannot name, because writing its id into
+the file would change the file. It is `git log -1 -- docs/agentic/exp004a/wp051_02f/FINAL_REPORT.md`,
+and it also re-seals the manifest so that the digest it lists is the one that exists.
+
+The checkout is shared: `HEAD` moved from `87ad0d7a` to `f20dff9b` to `2ed43ad4` while this package
+ran. Only the paths listed in §10 were staged; nothing else was reverted, cleaned or stashed.
+
 ---
 
 ## 3. Real execution
@@ -201,9 +215,20 @@ in the suite writes to `data/exp004a`, to the forward store or to the freeze.
 
 ### The wider suite
 
-Run after the last change, in this checkout, with the three modules that cannot even be collected
-named separately. Results and the reason those three are excluded are in §9 — they fail without
-this package's files present, which is how they are shown not to be this package's doing.
+`tests/unit/research` as a whole, run after the last change in this checkout:
+
+| | Count |
+|---|---|
+| passed | **2758** |
+| failed | **24** |
+| skipped | 1 |
+| duration | 1019 s |
+| could not be collected | 3 modules (§9) |
+
+**None of the 24 is this package's.** The failure set is identical before and after this package's
+changes, and every one of them reproduces with the three 02F files moved out of the tree — which
+is also how they were attributed. The two causes observed are a shared checkout in flux and tests
+that commit "now" into a repository whose window opened on 2026-10-22. §9 names them.
 
 ---
 

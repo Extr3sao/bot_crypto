@@ -413,5 +413,5 @@
   "promotion": "NO_PROMOTION",
   "overall": "PARTIAL",
   "next_operational_step": "decisión sobre DEF-02F-01; si es phase 3, RFC con generador nuevo que rechace ingestas posteriores a la decisión, declaración nueva y comparador PIT sobre inputs idénticos",
-  "commits_note": "el commit que contiene este informe; el sellado se regeneró después de escribirlo y ese refresco vive en EVIDENCE_MANIFEST.json (sealed_at_utc), no en un commit distinto"
+  "commits_note": "el commit que lleva este informe no puede nombrarse a sí mismo: escribirlo cambiaría el fichero. Se identifica con `git log -1 -- docs/agentic/exp004a/wp051_02f/FINAL_REPORT.md`, y ese mismo commit re-sella el manifiesto (sealed_at_utc)"
 }
