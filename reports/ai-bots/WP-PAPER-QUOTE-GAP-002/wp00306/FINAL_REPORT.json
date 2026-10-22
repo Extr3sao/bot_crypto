@@ -1,0 +1,121 @@
+{
+ "answers": {
+  "1_commits_and_branches": {
+   "commits_in_the_deliverable": 8,
+   "fix/ci-smoke-pwsh": "9682ee1b31dbd01f72b3ff94ba3e6397df971fb6",
+   "merged": false,
+   "origin_main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+   "published": true,
+   "recovery/trunk-sync": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+   "recovery/wp00303": "08c5d9d22c87764a0a57586a232fd27df13acebf",
+   "wp/isolation-005": "624455c8c55c8564a5d244cb82688a1332159ae7"
+  },
+  "2_integrated": "The 6-commit WP-003-03 port plus its evidence and verdict live on recovery/wp00303, cut from the 259-commit trunk. Nothing was merged into main, nothing was rebased, nothing was force-pushed, and the 244 branch-only commits of PR #17 were not published anywhere new.",
+  "3_tests_and_ci": {
+   "ci_real_run": "NOT_PERFORMED",
+   "full_suite_baseline": "81 failed, 3213 passed, 31 skipped, 3 deselected, 78 warnings, 14 errors in 562.08s (0:09:22)",
+   "full_suite_tip": "81 failed, 3230 passed, 31 skipped, 3 deselected, 78 warnings, 14 errors in 668.61s (0:11:08)",
+   "nodes_only_in_baseline": 0,
+   "nodes_only_in_tip": 0,
+   "work_package_tests": "37 passed, exit 0, at the delivered tip"
+  },
+  "4_eighteen_controls": {
+   "delivered_tip": "18/18",
+   "evidence_commit": "18/18",
+   "negative_controls": "11/11",
+   "previously_failing": {
+    "evidence_in_commit": "PASS (35 bundle files inside the judged commit)",
+    "github_sync_consistent": "PASS (REMOTE_BRANCH_SYNCED read from origin)",
+    "manifest_covers": "PASS (33 files hashed, none unlisted)",
+    "reports_consistent": "PASS (report counts equal the lab, 9 dimensions with basis)"
+   }
+  },
+  "5_blockers": [
+   "the 259-commit trunk cannot be published green: 433 unformatted files, 100 lint, 253 mypy, 4 collection errors",
+   "the coverage gate is 90 % against 62.34 % on origin/main \u2014 a policy decision, not a code defect",
+   "pip-audit reports 80 advisories in 9 packages on origin/main",
+   "the stacked review depends on the trunk: origin/main has no src/trading_bot/autonomous/",
+   "a real CI run of the smoke fix needs a PR to main, and this host has no gh CLI or token",
+   "tests/unit/research/* carries 95 red nodes inherited from the trunk"
+  ],
+  "6_paper_state": {
+   "digests_reproduced": "3/3, twice in the bundle and once on the delivered tip",
+   "executed": true,
+   "external_session": "NOT_PERFORMED",
+   "fills_closed": 21,
+   "live_orders": 0,
+   "mode": "PAPER, offline, recorded Binance 1h klines",
+   "network_events": 0,
+   "orders": 23,
+   "realised_pnl": 87.65152561534461
+  },
+  "7_next_minimal_step": "Take the trunk decision: authorise one mechanical ruff-format commit on 1d2192b0 (+32 621/\u221215 426 lines, AST-proven neutral), so 433 becomes 0 and every other gate can be measured against a green baseline."
+ },
+ "dimensions": {
+  "CI_REAL_RUN": {
+   "basis": "no gh CLI, no token, and the workflow has no push trigger for branches; local equivalents are listed in RUN_REPORT.json",
+   "result": "NOT_PERFORMED"
+  },
+  "EVIDENCE_VERSIONED": {
+   "basis": "32 files hashed by EVIDENCE_MANIFEST.json inside commit abdf2146; the repository's .gitignore hides reports/*, so the bundle was force-added deliberately",
+   "result": "PASS"
+  },
+  "EXTERNAL_ORDER_PREVENTION": {
+   "basis": "13 refusals across 8 abuse scenarios; 0 venue calls, 0 HTTP requests, 0 spot-client calls",
+   "result": "PASS"
+  },
+  "FALSE_SUCCESS": {
+   "basis": "unsupported_pass_count=0 from the verifier; every NOT_PERFORMED above is reported as such rather than folded into a green",
+   "result": "PASS"
+  },
+  "GITHUB_SYNC": {
+   "basis": "all four branches verified with git ls-remote; main_synced=NO, no merge performed",
+   "result": "REMOTE_BRANCH_SYNCED"
+  },
+  "IMPLEMENTATION_STATUS": {
+   "basis": "23 code files ported on top of the trunk; 14/23 blobs byte-identical to the branch tip, 9 differ by formatting with 0 semantic changes (AST compared file by file)",
+   "result": "PASS"
+  },
+  "INDEPENDENT_VERIFICATION": {
+   "basis": "verify_paper_e2e.py 18/18 checks and 11/11 negative controls on a clean checkout of the delivered tip",
+   "result": "PASS"
+  },
+  "NETWORK_ISOLATION": {
+   "basis": "0 audited network events in every child under a strict paper policy (order_routes=False, external_network=False)",
+   "result": "PASS"
+  },
+  "PAPER_VALIDATION": {
+   "basis": "3/3 economic digests equal the published reference across three independent runs, one of them on the delivered tree. EXTERNAL_SESSION=NOT_PERFORMED",
+   "result": "PASS (OFFLINE_RECORDED_DATA)"
+  },
+  "RUNTIME_VALIDATION": {
+   "basis": "the real runtime ran 480 decisions and 23 orders in E2E-SCENARIO and 480 decisions with 0 orders in E2E-COMMITTED, on the delivered tip",
+   "result": "PASS"
+  },
+  "TEST_STATUS": {
+   "basis": "37/37 work-package tests at the delivered tip; full suite 3230 passed with the same 95 red nodes as the baseline",
+   "result": "PASS"
+  }
+ },
+ "generated_at_utc": "2026-10-22T21:54:21Z",
+ "limitations": [
+  "The verifier judges the lab artefact; it does not re-run the runtime itself. The binding between artefact and code is the 13 runtime hashes plus the 3 fresh digests.",
+  "Windows 11 host with CRLF working trees. Hashing normalises CRLF to LF, so manifest digests are platform-stable; git-level counts are not.",
+  "The 95 red nodes are inherited from the trunk's research artefacts and were not repaired here; repairing them is package F1 of the sanitation plan.",
+  "pwsh 7 is absent from this host, so the PowerShell assertion ran under 5.1."
+ ],
+ "schema": "wp00306-final-report/1",
+ "status": {
+  "CI_REAL_RUN": "NOT_PERFORMED",
+  "DELIVERY_STATUS": "BLOCKED",
+  "EVIDENCE_VERSIONED": "PASS",
+  "FALSE_SUCCESS": 0,
+  "INDEPENDENT_VERIFICATION": "PASS 18/18",
+  "LIVE_ORDERS": "NONE",
+  "MAIN_SYNCED": "NO",
+  "MERGES": "NONE",
+  "PAPER_VALIDATION": "PASS (OFFLINE_RECORDED_DATA)",
+  "PRODUCTION_READY": "NOT CLAIMED"
+ },
+ "work_package": "WP-003-06"
+}

@@ -1,0 +1,49 @@
+{
+ "branches": {
+  "fix/ci-smoke-pwsh": {
+   "published": true,
+   "remote_head_sha": "9682ee1b31dbd01f72b3ff94ba3e6397df971fb6"
+  },
+  "recovery/trunk-sync": {
+   "published": true,
+   "remote_head_sha": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22"
+  },
+  "recovery/wp00303": {
+   "published": true,
+   "remote_head_sha": "08c5d9d22c87764a0a57586a232fd27df13acebf"
+  },
+  "wp/isolation-005": {
+   "published": true,
+   "remote_head_sha": "624455c8c55c8564a5d244cb82688a1332159ae7"
+  }
+ },
+ "default_branch": "main",
+ "default_branch_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+ "generated_at_utc": "2026-10-22T21:28:31Z",
+ "main_synced": "NO",
+ "main_synced_reason": "origin/main is 5e6f9632; neither the 259-commit local trunk nor the 244-commit branch has been pushed to main, and no merge was performed.",
+ "pull_requests": {
+  "17": {
+   "action_taken": "none: its mandatory gates are still red",
+   "head": "wp/isolation-005",
+   "merged": false,
+   "state": "open"
+  },
+  "new_prs_opened": {
+   "ci_smoke": false,
+   "stacked_recovery": false
+  },
+  "not_opened_reason": "no GitHub CLI and no token on this host; the workflow triggers only on push/PR to main. Opening a PR is a review action the owner performs, not one this session fakes."
+ },
+ "remote_evidence": "git ls-remote origin refs/heads/<branch>, run in this session after the pushes",
+ "repository": "https://github.com/Extr3sao/bot_crypto.git",
+ "schema": "wp00306-github-sync/1",
+ "stacked_review": {
+  "base": "recovery/trunk-sync",
+  "commits": 8,
+  "depends_on_unpublished_trunk": true,
+  "head": "recovery/wp00303",
+  "note": "The base branch publishes the 259 trunk commits so the diff is readable. It does not make the work independent of them: origin/main lacks the runtime entirely."
+ },
+ "verification_timestamp": "2026-10-22T21:28:32Z"
+}

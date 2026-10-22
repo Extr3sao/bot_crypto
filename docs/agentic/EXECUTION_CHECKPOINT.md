@@ -1775,3 +1775,78 @@ python scripts/verify_paper_e2e.py --lab .tmp/PAPER_E2E_LAB.json --bundle .tmp \
   --negative-controls --json .tmp/VERIFICATION.json
 cd ../ff-wt-ci && git log --oneline -1                   # 9682ee1b, published
 ```
+
+---
+
+## 2026-10-22 · WP-003-06 — entrega verificable, no promesa verificable
+
+**Objetivo:** que la integración mínima de WP-003-03 se pueda revisar y re-verificar sin
+confiar en quien la construyó. **Rama de trabajo:** `wp/isolation-005` (informes).
+**Entregable:** `recovery/wp00303` = `08c5d9d2`, publicado. **Modo:** PAPER/OFFLINE,
+`LIVE_ORDERS=0`, sin merges, sin rebase, sin force-push, sin `ruff format .`.
+
+**Hecho (medido en esta sesión)**
+
+1. **Disco al 100 %** al empezar (el primer `git worktree add` murió con
+   `No space left on device`). Se liberaron cuatro worktrees de scratch detachados y limpios
+   (`ff-wt-local-main`, `ff-wt-main-baseline`, `ff-wt-branch`, temp rfc018) → 1.1 GB. Ningún
+   fichero del proyecto borrado.
+2. **Ramas nuevas publicadas:** `recovery/trunk-sync` = `1d2192b0` (nombre inmutable del tronco)
+   y `recovery/wp00303` = `08c5d9d2`, 8 commits = 6 de port (`baf5b560`) + `abdf2146` (bundle) +
+   `08c5d9d2` (veredicto). `origin/recovery/wp00303` leído con `ls-remote`.
+3. **Los cuatro controles que fallaban ahora se evalúan:** `evidence_in_commit` (35 ficheros
+   dentro del commit juzgado), `manifest_covers` (33 hasheados), `reports_consistent` (counts =
+   lab, 9 dimensiones con `basis`), `github_sync_consistent` (`REMOTE_BRANCH_SYNCED` leído de
+   `origin`). **18/18 + 11/11** en `abdf2146` y, en checkout limpio, en `08c5d9d2`.
+   Circularidad rota así: el bundle nombra `local_head_sha=baf5b560` (ancestro de la rama, el
+   commit al que corrió el laboratorio) y el veredicto va en un commit posterior.
+4. **Economía:** 3/3 digests idénticos a la referencia (`20f10f30…`, `59dc3611…`, `45ada80c…`)
+   en **cuatro** ejecuciones, incluida una sobre el árbol entregado. 23 órdenes, 21 cierres,
+   PnL `87.65152561534461`, 13 rechazos de abuso, 0 eventos de red, 13 hashes de runtime.
+5. **Suite, comparación bidireccional:** tip `81 failed, 3230 passed, 31 skipped, 14 errors`
+   (668.61 s) vs baseline tronco+ops `81 / 3213 / 31 / 14` (562.08 s). **Nodos rojos 95 = 95,
+   0 sólo en el tip, 0 sólo en el baseline.** Los +17 passes son del port.
+6. **Formato, la discrepancia 433/428 resuelta:** el tronco tiene 433 sin formatear y el port
+   428; la diferencia son **exactamente 5** ficheros del tronco que el port toca y formatea,
+   con **0** añadidos. El commit mecánico del tronco mediría `+32 621/−15 426` líneas.
+   Equivalencia semántica: 19 ficheros comparados por AST, 18 idénticos, 1 difiere sólo en la
+   **posición de un import** (`ops/windowless.py`), 0 cambios semánticos.
+7. **Corrección a WP-003-05 (`vision_panel`):** el módulo **sí** está commiteado (`e90a8ad3`, en
+   `wp003i`/`wp003j`), el test `5fd791d8` **no** está en el tronco ni en el port (por eso el port
+   tiene 0 errores de colección), las dos copias en disco **difieren** y la versión tolerante ya
+   existe en `a91cabea`. Decisión: **no incorporarlo**.
+8. **CI real: `NOT_PERFORMED`.** No hay `gh` ni token; el workflow sólo dispara en push/PR a
+   `main`. En local: YAML válido, un solo `uses:`, `microsoft/powershell` **no existe como
+   repositorio**, y `open-pr-tsk-0204.ps1` parsea con 551 tokens y 0 errores en PS **5.1**
+   (`pwsh` 7 no está instalado: límite declarado).
+
+**Bloqueos que quedan.** B1 tronco no publicable (433/100/253/4) — necesita la decisión de
+formato. B2 cobertura 90 % vs 62.34 %. B3 `pip-audit` 80 avisos. B4 el stack depende de los 259
+commits: `origin/main` no tiene `src/trading_bot/autonomous/`. B5 CI real requiere PR del titular.
+B6 95 nodos rojos de research. B7 `alpha15.PRE_PIT_RUNNERS`.
+
+**Estado.** `EVIDENCE_VERSIONED=PASS` · `INDEPENDENT_VERIFICATION=PASS 18/18` ·
+`PAPER_VALIDATION=PASS (OFFLINE_RECORDED_DATA)` · `CI_REAL_RUN=NOT_PERFORMED` ·
+`MAIN_SYNCED=NO` · `DELIVERY_STATUS=BLOCKED` · `FALSE_SUCCESS=0` · `PRODUCTION_READY=NOT CLAIMED`.
+
+**Entregables.** `reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00306/`: `INTEGRATION_MAP.md`,
+`INTEGRATION_BASELINE.json`, `GITHUB_SYNC.json`, `RUN_REPORT.md/json`, `FINAL_REPORT.md/json`,
+`TRUNK_SANITATION_PLAN.md`. Bundle verificado en `.../wp00303/` dentro de `recovery/wp00303`.
+
+**Reanudación verificable.**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git fetch origin
+git rev-parse origin/main main recovery/trunk-sync recovery/wp00303 wp/isolation-005 fix/ci-smoke-pwsh
+git log --oneline origin/recovery/trunk-sync..origin/recovery/wp00303   # 8 commits
+git worktree add --detach ../ff-wt-verify origin/recovery/wp00303
+cd ../ff-wt-verify && test -z "$(git status --porcelain)" && echo CLEAN
+python scripts/verify_paper_e2e.py \
+  --lab reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00303/PAPER_E2E_LAB.json \
+  --bundle reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00303 --repo . \
+  --evidence-sha "$(git rev-parse HEAD)" \
+  --repeat reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00303/PAPER_E2E_LAB_REPEAT.json \
+  --github-sync reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00303/GITHUB_SYNC.json \
+  --negative-controls --json /tmp/verdict.json   # esperado: PASS 18/18
+```
