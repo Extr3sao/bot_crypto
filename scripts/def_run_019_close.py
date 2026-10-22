@@ -60,23 +60,110 @@ def git(*args: str) -> str:
     return completed.stdout.strip()
 
 
-def pytest_summary(path: Path) -> dict[str, Any]:
+def pytest_summary(path: Path, exit_path: Path) -> dict[str, Any]:
+    """Read a suite's log **and** the exit status the runner wrote beside it.
+
+    Counting ``passed``/``failed`` is not enough to call a suite green. A log that ends
+    without a summary line (interrupted, killed, truncated) parses to ``0 failed`` and
+    would look cleaner than a run that actually failed. So the summary line is required
+    and the exit status must be the one the shell recorded, not one inferred from the
+    counts. Anything else is ``NOT_EVIDENCED``.
+    """
     if not path.is_file():
-        return {"present": False}
+        return {"present": False, "state": "NOT_EVIDENCED", "reason": "LOG_MISSING"}
     text = path.read_text(encoding="utf-8", errors="replace")
     match = re.search(r"(\d+) passed", text)
     failed = re.search(r"(\d+) failed", text)
-    errors = re.search(r"(\d+) error", text)
+    errors = re.search(r"(\d+) errors? in", text)
+    summary = next(
+        (
+            line
+            for line in reversed(text.splitlines())
+            if re.search(r"\d+ (passed|failed|error)", line)
+        ),
+        "",
+    ).strip()
+    exit_code: int | None = None
+    if exit_path.is_file():
+        raw = exit_path.read_text(encoding="utf-8").strip()
+        exit_code = int(raw) if raw.lstrip("-").isdigit() else None
+    reasons: list[str] = []
+    if not summary:
+        reasons.append("NO_SUMMARY_LINE")
+    if exit_code is None:
+        reasons.append("NO_RECORDED_EXIT_CODE")
+    if (failed and int(failed.group(1))) or (errors and int(errors.group(1))):
+        reasons.append("SUITE_FAILURES")
+    if exit_code is not None and exit_code != 0:
+        reasons.append("NON_ZERO_EXIT")
     return {
         "present": True,
         "passed": int(match.group(1)) if match else 0,
         "failed": int(failed.group(1)) if failed else 0,
         "errors": int(errors.group(1)) if errors else 0,
-        "line": next(
-            (line for line in reversed(text.splitlines()) if " passed" in line or " failed" in line),
-            "",
-        ).strip(),
+        "line": summary,
+        "exit_code": exit_code,
+        "conclusive": not reasons,
+        "reasons": reasons,
+        "state": "PASS" if not reasons else "NOT_EVIDENCED",
     }
+
+
+def verdict_from(gates: dict[str, dict[str, Any]]) -> str:
+    """A verdict is the conjunction of the gates, never a literal someone typed."""
+    return "PASS" if all(gate["state"] == "PASS" for gate in gates.values()) else "NOT_EVIDENCED"
+
+
+def build_gates(
+    *,
+    implementation: str,
+    vision: dict[str, Any],
+    reports: dict[str, Any],
+    ab: dict[str, Any],
+    controls: dict[str, Any],
+    verifier: dict[str, Any],
+) -> dict[str, dict[str, Any]]:
+    """The six things that have to hold before this pack may say ``PASS``."""
+    return {
+        "implementation": {
+            "state": implementation,
+            "detail": "el bloque de sesión existe y no declara motivos de indisponibilidad",
+        },
+        "tests_vision": {
+            "state": vision.get("state", "NOT_EVIDENCED"),
+            "detail": vision.get("line") or "; ".join(vision.get("reasons") or []) or "sin log",
+        },
+        "tests_reports": {
+            "state": reports.get("state", "NOT_EVIDENCED"),
+            "detail": reports.get("line") or "; ".join(reports.get("reasons") or []) or "sin log",
+        },
+        "economic_integrity": {
+            "state": "PASS" if ab.get("all_match") is True else "NOT_EVIDENCED",
+            "detail": f"{ab.get('compared_rows')} filas comparadas, "
+            f"{len(ab.get('differences') or [])} diferencias",
+        },
+        "negative_controls": {
+            "state": "PASS" if controls.get("all_detected") is True else "NOT_EVIDENCED",
+            "detail": f"{len(controls.get('controls') or [])} controles, "
+            f"todos detectados={controls.get('all_detected')}",
+        },
+        "independent_verification": {
+            "state": verifier.get("overall") or "NOT_EVIDENCED",
+            "detail": f"verificador {verifier.get('verifier')}",
+        },
+    }
+
+
+def collected(path: Path) -> dict[str, int]:
+    """Count the node ids pytest actually collected, per file, from a real run."""
+    if not path.is_file():
+        return {}
+    counts: dict[str, int] = {}
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        node = line.split("::")[0].strip()
+        if line.startswith("tests/") and "::" in line:
+            counts[node] = counts.get(node, 0) + 1
+    return counts
 
 
 def manifest(root: Path) -> dict[str, Any]:
@@ -103,6 +190,30 @@ def manifest(root: Path) -> dict[str, Any]:
     }
 
 
+def self_check(payload: dict[str, Any]) -> list[str]:
+    """Every claim that a reader would take as green, checked against the gate it rests on."""
+    problems: list[str] = []
+    tests = payload.get("TESTS") or {}
+    for name in ("vision", "reports"):
+        block = tests.get(name) or {}
+        suspicious = (
+            block.get("failed") or block.get("errors") or block.get("exit_code") not in (0, None)
+        )
+        if suspicious and block.get("state") == "PASS":
+            problems.append(f"TESTS.{name} declared PASS with {block.get('line')!r}")
+        if payload.get("VERDICT") == "PASS" and block.get("state") != "PASS":
+            problems.append(f"VERDICT PASS while TESTS.{name} is {block.get('state')}")
+    if payload.get("VERDICT") == "PASS":
+        for name, gate in (payload.get("GATES") or {}).items():
+            if gate.get("state") != "PASS":
+                problems.append(f"VERDICT PASS while gate {name} is {gate.get('state')}")
+    if payload.get("IMPLEMENTATION", {}).get("state") == "PASS" and not payload.get(
+        "IMPLEMENTATION", {}
+    ).get("runtime_digest"):
+        problems.append("IMPLEMENTATION PASS without a runtime digest")
+    return problems
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Build the WP-04 evidence pack")
     parser.add_argument("--evidence", required=True)
@@ -125,8 +236,10 @@ def main(argv: list[str] | None = None) -> int:
     verdict = read_json(evidence / "VERDICT_LIVE.json")
     controls = read_json(evidence / "NEGATIVE_CONTROLS.json")
     ab = read_json(evidence / "AB_ECONOMIC_INTEGRITY.json")
-    vision = pytest_summary(evidence / "logs" / "pytest-vision.log")
-    reports = pytest_summary(evidence / "logs" / "pytest-reports-shared.log")
+    logs = evidence / "logs"
+    vision = pytest_summary(logs / "pytest-vision.log", logs / "pytest-vision.exit")
+    reports = pytest_summary(logs / "pytest-reports.log", logs / "pytest-reports.exit")
+    wp_files = collected(logs / "collect-wp04.txt")
 
     session_dirs = {
         name: {
@@ -282,11 +395,7 @@ def main(argv: list[str] | None = None) -> int:
         "TESTS": {
             "vision": vision,
             "reports": reports,
-            "wp_files": {
-                "tests/unit/vision/test_session_provenance.py": 16,
-                "tests/unit/vision/test_prospective_session.py": 20,
-                "tests/unit/reports/test_def_run_019_verifier.py": 22,
-            },
+            "wp_files": wp_files or {"collected": "NOT_EVIDENCED"},
         },
         "RUNTIME_VALIDATION": {
             "live_sessions": len({entry.get("provenance", {}).get("session_id") for entry in cycles}),
@@ -338,7 +447,6 @@ def main(argv: list[str] | None = None) -> int:
                 ],
             },
         },
-        "FALSE_SUCCESS": 0,
         "DEFECTS": [
             {
                 "id": "WP04-D1",
@@ -346,9 +454,40 @@ def main(argv: list[str] | None = None) -> int:
                 "summary": "reanudar re-medía el retardo de entrega y cambiaba la primera decisión",
                 "evidence": "evidence/live-session/STREAM.jsonl",
                 "fix_commit": "f20dff9b",
+            },
+            {
+                "id": "WP04-D2",
+                "status": "FIXED_AND_GATED",
+                "summary": (
+                    "el cierre calculaba VERDICT=PASS sin consultar su propio bloque TESTS y "
+                    "escribía FALSE_SUCCESS=0 como literal: el paquete de 5314559f decía PASS "
+                    "junto a '1 failed, 348 passed'"
+                ),
+                "evidence": "RUN_REPORT.json (GATES, SELF_CHECK)",
+                "fix": (
+                    "el veredicto es la conjunción de seis puertas; una suite fallida, un log sin "
+                    "línea de resumen o un exit code no registrado lo retiran, y el payload emitido "
+                    "se relee buscando contradicciones"
+                ),
+                "regression_test": "tests/unit/reports/test_def_run_019_close.py",
+            },
+        ],
+        "BLOCKERS": [
+            {
+                "id": "ENV-DISK",
+                "status": "WORKED_AROUND_AND_DISCLOSED",
+                "summary": (
+                    "la máquina estuvo al 100% de disco durante buena parte de la sesión: dos "
+                    "ejecuciones de la suite de visión y una de reports fallaron con ENOSPC/MemoryError, "
+                    "no con aserciones"
+                ),
+                "handling": (
+                    "solo se liberó espacio propio (scratch de pytest y worktrees propios ya "
+                    "commiteados); no se borró trabajo de otros agentes; las cifras publicadas son "
+                    "las de las ejecuciones que terminaron con exit code registrado"
+                ),
             }
         ],
-        "BLOCKERS": [],
         "PAPER_ADMISSION": "NO_GO",
         "PAPER_ADMISSION_REASON": (
             "el paquete sellado de 017 sigue en 380/3 y la admisión no depende de este WP; "
@@ -360,14 +499,32 @@ def main(argv: list[str] | None = None) -> int:
             "repetir la sesión en vivo con más ciclos y varios símbolos antes de cualquier admisión",
         ],
     }
-    report["VERDICT"] = (
-        "PASS"
-        if report["IMPLEMENTATION"]["state"] == "PASS"
-        and ab.get("all_match") is True
-        and controls.get("all_detected") is True
-        and verdict.get("overall") == "PASS"
-        else "NOT_EVIDENCED"
+    #: The verdict is arithmetic over named gates, never a literal. The first version of
+    #: this closer wrote ``PASS`` while its own ``TESTS`` block reported ``1 failed``:
+    #: the suites were recorded but never consulted. A gate that is not satisfied now
+    #: removes the verdict instead of decorating it.
+    report["GATES"] = build_gates(
+        implementation=report["IMPLEMENTATION"]["state"],
+        vision=vision,
+        reports=reports,
+        ab=ab,
+        controls=controls,
+        verifier=verdict,
     )
+    report["VERDICT"] = verdict_from(report["GATES"])
+    report["FALSE_SUCCESS"] = 0
+
+    #: Read the payload back and look for the contradiction the old closer shipped: a
+    #: PASS next to a suite that failed, or a gate marked satisfied that is not. Each one
+    #: found is counted in FALSE_SUCCESS and removes the verdict.
+    contradictions = self_check(report)
+    if contradictions:
+        report["VERDICT"] = "NOT_EVIDENCED"
+        report["FALSE_SUCCESS"] = len(contradictions)
+    report["SELF_CHECK"] = {
+        "contradictions": contradictions,
+        "clean": not contradictions,
+    }
 
     (out / "RUN_REPORT.json").write_text(
         json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n"
@@ -408,7 +565,18 @@ def main(argv: list[str] | None = None) -> int:
         f"{row.get('expected_check_present')} |"
         for row in controls.get("controls") or []
     )
+    gates_md = "\n".join(
+        f"| {name} | {gate['state']} | {gate['detail']} |"
+        for name, gate in report["GATES"].items()
+    )
     domains = session_dirs["live-session-2"]["domains"]
+    defects_md = "\n".join(
+        f"| {row['id']} | {row['status']} | {row['summary']} |" for row in report["DEFECTS"]
+    )
+    blockers_md = "\n".join(
+        f"| {row['id']} | {row['status']} | {row['summary']} — {row['handling']} |"
+        for row in report["BLOCKERS"]
+    )
     domains_md = "\n".join(
         f"| {name} | {value.get('state')} |" for name, value in domains.items()
     )
@@ -422,13 +590,23 @@ def main(argv: list[str] | None = None) -> int:
 | Estado | Valor |
 | --- | --- |
 | Implementación | {report['IMPLEMENTATION']['state']} |
-| Tests (visión) | {vision.get('line') or 'no ejecutados'} |
-| Tests (reports) | {reports.get('line') or 'no ejecutados'} |
+| Tests (visión) | {vision.get('state')} — {vision.get('line') or 'sin ejecutar'} (exit {vision.get('exit_code')}) |
+| Tests (reports) | {reports.get('state')} — {reports.get('line') or 'sin ejecutar'} (exit {reports.get('exit_code')}) |
 | Verificador independiente | {verdict.get('overall')} |
 | Controles negativos detectados | {controls.get('all_detected')} |
 | Integridad económica | {'sin diferencias' if ab.get('all_match') else 'CON DIFERENCIAS'} |
 | FALSE_SUCCESS | {report['FALSE_SUCCESS']} |
+| Autocomprobación del cierre | {'limpia' if report['SELF_CHECK']['clean'] else report['SELF_CHECK']['contradictions']} |
+| Veredicto | {report['VERDICT']} |
 | Paper admission | {report['PAPER_ADMISSION']} |
+
+El veredicto es la conjunción de seis puertas, no una afirmación suelta. Una suite que falla,
+un log sin línea de resumen o un exit code que no se registró retiran el `PASS` en vez de
+acompañarlo.
+
+| Puerta | Estado | Detalle |
+| --- | --- | --- |
+{gates_md}
 
 ## Qué cambia
 
@@ -495,10 +673,25 @@ reloj simulado: **{ab.get('compared_rows')} filas** de ledger comparadas byte a 
 **{len(ab.get('differences') or [])} diferencias**. El encabezado `RUN` difiere en los tres
 ciclos, como debe: es el bloque que este WP añade.
 
+## Defectos y bloqueos
+
+| ID | Estado | Qué pasó |
+| --- | --- | --- |
+{defects_md}
+{blockers_md}
+
+`WP04-D2` es el defecto del propio cierre: el paquete anterior afirmaba `PASS` mientras su
+bloque de tests decía `1 failed`. El veredicto ya no es una cadena escrita a mano sino la
+conjunción de las seis puertas de arriba, y el payload emitido se relee para buscar la
+contradicción (`SELF_CHECK`). Reproducido en `tests/unit/reports/test_def_run_019_close.py`.
+
 ## Limitaciones
 
 - Una sesión en vivo depende del feed: dos ciclos, un símbolo, 2 fills simulados. No es una
   muestra suficiente para ninguna afirmación económica.
+- La máquina estuvo al 100% de disco: dos intentos de la suite de visión y uno de `reports`
+  murieron con `ENOSPC`/`MemoryError`. Las cifras publicadas son de ejecuciones terminadas con
+  exit code registrado; los intentos descartados no se presentan como aprobados.
 - El bloque cubre 22 ficheros de runtime; no cubre el sistema operativo ni la versión del
   intérprete más allá de lo que `environment_digest` declara.
 - El paquete sellado de 017 y sus 3 defectos no se reescriben: este WP no los toca.
@@ -515,6 +708,9 @@ ciclos, como debe: es el bloque que este WP añade.
                 "verifier": verdict.get("overall"),
                 "controls": controls.get("all_detected"),
                 "ab": ab.get("all_match"),
+                "false_success": report["FALSE_SUCCESS"],
+                "self_check": report["SELF_CHECK"],
+                "gates": {name: gate["state"] for name, gate in report["GATES"].items()},
                 "manifest_files": read_json(out / "EVIDENCE_MANIFEST.json").get("count"),
             },
             indent=2,
