@@ -343,7 +343,7 @@ def test_a_block_written_after_the_first_decision_fails(tmp_path: Path) -> None:
     verdict = verifier.judge_session(session, root)
 
     assert verdict["overall"] == "FAIL"
-    assert "evidence:PROVENANCE_BEFORE_FIRST_CYCLE" in verdict["reasons"]
+    assert "evidence:PROVENANCE_PRECEDES_ITS_CYCLES" in verdict["reasons"]
 
 
 def test_a_cycle_without_the_pinned_identity_fails(tmp_path: Path) -> None:
@@ -466,7 +466,57 @@ def test_a_resumed_session_whose_parent_pin_moved_fails(tmp_path: Path) -> None:
     verdict = verifier.judge_session(out, root)
 
     assert verdict["overall"] == "FAIL"
-    assert "resume:PARENT_PINS_AGREE" in verdict["reasons"]
+    #: Only the continuation lives here, so the parent is judged through its own record.
+    assert "resume:PINNED_IDENTITY_PRESERVED[0]" in verdict["reasons"]
+
+
+def test_a_resumed_session_whose_stream_parent_moved_fails(tmp_path: Path) -> None:
+    root = make_repo(tmp_path)
+    parent = block_for(root)
+    child = provenance.capture_session(
+        root,
+        config=CONFIG,
+        provider=PROVIDER,
+        started_at_ms=STARTED_MS + 900_000,
+        mode="PAPER",
+        resume_parent={**parent, "chain": []},
+    )
+    out = tmp_path / "both"
+    out.mkdir()
+    rows: list[tuple[str, dict[str, Any]]] = [
+        ("SESSION_START", {"schema_version": "PROSPECTIVE_PAPER_SESSION_V1"}),
+        ("SESSION_PROVENANCE", parent),
+        ("CYCLE", cycle_row(out, parent, 1)),
+        ("SESSION_END", {"runtime_stable": True, "provenance": {"pinned_identity": parent["pinned_identity"]}}),
+        ("SESSION_START", {"schema_version": "PROSPECTIVE_PAPER_SESSION_V1"}),
+        ("SESSION_PROVENANCE", child),
+        ("CYCLE", cycle_row(out, child, 2)),
+        ("SESSION_END", {"runtime_stable": True, "provenance": {"pinned_identity": child["pinned_identity"]}}),
+    ]
+    write_rows(out, rows)
+    (out / "SESSION_PROVENANCE.json").write_text(
+        json.dumps(child, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n"
+    )
+    records = out / "provenance"
+    records.mkdir()
+    for block in (parent, child):
+        (records / f"session-{block['session_id']}.json").write_text(
+            json.dumps(block, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n"
+        )
+    #: An intact pair, then the same pair with the parent's pin moved.
+    assert verifier.judge_session(out, root)["overall"] == "PASS"
+    rebuilt = [
+        (entry["kind"], {k: v for k, v in entry.items() if k != "kind"})
+        for entry in entries_of(out)
+    ]
+    for kind, payload in rebuilt:
+        if kind == "SESSION_PROVENANCE" and payload.get("pinned_identity") == parent["pinned_identity"]:
+            payload["pinned_identity"] = "1" * 64
+            break
+    write_rows(out, rebuilt)
+    verdict = verifier.judge_session(out, root)
+    assert verdict["overall"] == "FAIL"
+    assert "resume:PINNED_IDENTITY_PRESERVED[1]" in verdict["reasons"]
 
 
 def test_a_rewritten_stream_breaks_its_own_chain(tmp_path: Path) -> None:

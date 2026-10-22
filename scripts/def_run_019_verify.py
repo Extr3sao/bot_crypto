@@ -125,8 +125,8 @@ class Checks:
 
     def domain(self, name: str) -> dict[str, Any]:
         rows = [row for row in self.rows if row["domain"] == name]
-        failed = [row["code"] for row in rows if row["state"] == FAIL]
-        silent = [row["code"] for row in rows if row["state"] == NOT_EVIDENCED]
+        failed = sorted({row["code"] for row in rows if row["state"] == FAIL})
+        silent = sorted({row["code"] for row in rows if row["state"] == NOT_EVIDENCED})
         state = FAIL if failed else (NOT_EVIDENCED if silent else PASS)
         return {
             "state": state,
@@ -411,60 +411,121 @@ def identity_domain(checks: Checks, block: dict[str, Any]) -> None:
 # --------------------------------------------------------------------------- evidence
 
 
+def session_boundaries(kinds: Sequence[str]) -> list[int]:
+    """Index of every ``SESSION_START``; a resumed directory holds more than one."""
+    return [index for index, kind in enumerate(kinds) if kind == "SESSION_START"]
+
+
+def owner_session(index: int, starts: Sequence[int]) -> int:
+    owner = 0
+    for position, start in enumerate(starts):
+        if start <= index:
+            owner = position
+    return owner
+
+
 def evidence_domain(
-    checks: Checks, session: Path, entries: list[dict[str, Any]], block: dict[str, Any]
+    checks: Checks,
+    session: Path,
+    entries: list[dict[str, Any]],
+    blocks: Sequence[tuple[int, dict[str, Any]]],
 ) -> None:
     kinds = [str(entry.get("kind")) for entry in entries]
-    provenance_positions = [index for index, kind in enumerate(kinds) if kind == "SESSION_PROVENANCE"]
-    checks.add(
-        "evidence",
-        "PROVENANCE_ROW_ONCE",
-        len(provenance_positions) == 1,
-        f"{len(provenance_positions)} fila(s) SESSION_PROVENANCE",
-    )
+    starts = session_boundaries(kinds)
     checks.add(
         "evidence",
         "SESSION_START_PRESENT",
-        "SESSION_START" in kinds,
-        f"kinds={sorted(set(kinds))}",
+        bool(starts),
+        f"{len(starts)} SESSION_START, kinds={sorted(set(kinds))}",
     )
-    cycle_positions = [index for index, kind in enumerate(kinds) if kind == "CYCLE"]
-    first_cycle = cycle_positions[0] if cycle_positions else None
-    provenance_at = provenance_positions[0] if provenance_positions else None
     checks.add(
         "evidence",
-        "PROVENANCE_BEFORE_FIRST_CYCLE",
-        None
-        if provenance_at is None or first_cycle is None
-        else provenance_at < first_cycle,
-        f"provenance en {provenance_at}, primera decisión en {first_cycle}",
+        "PROVENANCE_ROW_PRESENT",
+        bool(blocks),
+        f"{len(blocks)} bloques de procedencia",
     )
 
-    pinned = block.get("pinned_identity")
-    runtime_digest = (block.get("runtime") or {}).get("digest")
-    mismatched = [
-        int(entry.get("cycle", 0))
-        for entry in entries
-        if entry.get("kind") == "CYCLE"
-        and (
-            (entry.get("provenance") or {}).get("pinned_identity") != pinned
-            or (entry.get("provenance") or {}).get("runtime_digest") != runtime_digest
-        )
-    ]
+    #: A block must precede the first decision of the session it belongs to, and that
+    #: session starts at its own ``SESSION_START`` — not at the previous cycle, which a
+    #: late block could otherwise claim to precede.
+    late: list[int] = []
+    undecided: list[int] = []
+    for position, (block_index, _block) in enumerate(blocks):
+        owner = owner_session(block_index, starts) if starts else 0
+        session_start = starts[owner] if starts else 0
+        later = [
+            index
+            for index, kind in enumerate(kinds)
+            if kind == "CYCLE" and session_start < index
+        ]
+        if not later:
+            undecided.append(position)
+            continue
+        if block_index > later[0]:
+            late.append(position)
+    checks.add(
+        "evidence",
+        "PROVENANCE_PRECEDES_ITS_CYCLES",
+        None if len(undecided) == len(blocks) else not late,
+        f"bloques tardíos={late[:4]} sesiones sin decisión={undecided[:4]}",
+    )
+
+    def nearest_block(index: int) -> dict[str, Any] | None:
+        candidates = [block for position, block in blocks if position < index]
+        return candidates[-1] if candidates else None
+
+    mismatched: list[int] = []
     cycles = [entry for entry in entries if entry.get("kind") == "CYCLE"]
+    for index, entry in enumerate(entries):
+        if entry.get("kind") != "CYCLE":
+            continue
+        owner = nearest_block(index) or {}
+        payload = entry.get("provenance") or {}
+        if (
+            payload.get("pinned_identity") != owner.get("pinned_identity")
+            or payload.get("runtime_digest") != (owner.get("runtime") or {}).get("digest")
+        ):
+            mismatched.append(index)
     checks.add(
         "evidence",
         "EVERY_CYCLE_CARRIES_THE_PIN",
         bool(cycles) and not mismatched,
         f"{len(cycles)} ciclos, discrepan={mismatched[:4]}",
     )
-    ending = [entry for entry in entries if entry.get("kind") == "SESSION_END"]
+
+    mislabelled: list[int] = []
+    ending = [index for index, kind in enumerate(kinds) if kind == "SESSION_END"]
+    for index in ending:
+        owner = nearest_block(index) or {}
+        if (entries[index].get("provenance") or {}).get("pinned_identity") != owner.get(
+            "pinned_identity"
+        ):
+            mislabelled.append(index)
     checks.add(
         "evidence",
         "SUMMARY_CARRIES_THE_PIN",
-        bool(ending)
-        and (ending[-1].get("provenance") or {}).get("pinned_identity") == pinned,
-        f"{len(ending)} fila(s) SESSION_END",
+        bool(ending) and not mislabelled,
+        f"{len(ending)} SESSION_END, discrepan={mislabelled[:4]}",
+    )
+
+    latest = blocks[-1][1] if blocks else {}
+    file_block = read_json(session / "SESSION_PROVENANCE.json")
+    checks.add(
+        "evidence",
+        "PROVENANCE_FILE_MATCHES_LAST_ROW",
+        None if file_block is None else canonical(file_block) == canonical(latest),
+        "el fichero describe la última sesión de la cadena",
+    )
+    missing_records: list[str] = []
+    for _index, block in blocks:
+        record = read_json(session / "provenance" / f"session-{block.get('session_id')}.json")
+        if record is None or canonical(record) != canonical(block):
+            missing_records.append(str(block.get("session_id")))
+    checks.add(
+        "evidence",
+        "SESSION_RECORDS_ON_DISK",
+        bool(blocks) and not missing_records,
+        f"sin registro propio={missing_records[:3]}",
     )
 
     missing_ledgers: list[str] = []
@@ -528,66 +589,80 @@ def stability_domain(
     )
 
 
-def resume_domain(checks: Checks, session: Path, block: dict[str, Any]) -> None:
-    resume = block.get("resume") if isinstance(block.get("resume"), dict) else {}
-    chain = resume.get("chain") if isinstance(resume.get("chain"), list) else []
-    known = sorted((session / "provenance").glob("session-*.json")) if (
-        session / "provenance"
-    ).is_dir() else []
+def resume_domain(
+    checks: Checks, session: Path, blocks: Sequence[tuple[int, dict[str, Any]]]
+) -> None:
+    """Each continuation must name the session it continues, and share its pin."""
 
-    if not resume.get("resumed") and len(known) <= 1:
+    continuations = [
+        (position, block)
+        for position, (_index, block) in enumerate(blocks)
+        if (block.get("resume") or {}).get("resumed")
+    ]
+    if not continuations:
         checks.add(
             "resume",
             "NO_RESUME_TO_JUDGE",
             None,
-            "la sesión no declara reanudación y no hay una anterior que enlazar",
+            "ningún bloque declara reanudación: nada que enlazar",
         )
         return
-    checks.add(
-        "resume",
-        "PARENT_DECLARED",
-        bool(resume.get("resumed")) and bool(resume.get("parent_session_id")),
-        f"resumed={resume.get('resumed')} parent={resume.get('parent_session_id')!r}",
-    )
-    checks.add(
-        "resume",
-        "CHAIN_ORDERED",
-        bool(chain) and chain[-1].get("session_id") == resume.get("parent_session_id"),
-        f"cadena={[item.get('session_id') for item in chain][:4]}",
-    )
-    pinned = block.get("pinned_identity")
-    checks.add(
-        "resume",
-        "CHAIN_PINNED_IDENTITIES_EQUAL",
-        bool(chain) and all(item.get("pinned_identity") == pinned for item in chain),
-        "todas las sesiones anteriores comparten pin"
-        if chain
-        else "sin cadena que comparar",
-    )
-    linked = {
-        item.get("session_id"): item.get("pinned_identity") for item in chain if isinstance(item, dict)
-    }
-    found: dict[str, Any] = {}
-    for path in known:
-        payload = read_json(path)
-        if payload:
-            found[str(payload.get("session_id"))] = payload.get("pinned_identity")
-    absent = [name for name in linked if name not in found]
-    disagreement = [
-        name for name in linked if name in found and found[name] != linked[name]
-    ]
-    checks.add(
-        "resume",
-        "PARENT_BLOCKS_ON_DISK",
-        bool(linked) and not absent,
-        f"sin bloque en disco={absent[:3]}",
-    )
-    checks.add(
-        "resume",
-        "PARENT_PINS_AGREE",
-        bool(linked) and not disagreement and all(value == pinned for value in found.values()),
-        f"discrepan={disagreement[:3]} bloques={len(found)}",
-    )
+
+    def record_of(session_id: str) -> dict[str, Any] | None:
+        return read_json(session / "provenance" / f"session-{session_id}.json")
+
+    for position, block in continuations:
+        resume = block.get("resume") or {}
+        parent = str(resume.get("parent_session_id") or "")
+        previous = blocks[position - 1][1] if position else None
+        if previous is not None:
+            #: The directory holds both sessions, so the chain itself is the evidence.
+            checks.add(
+                "resume",
+                f"PARENT_IS_PREVIOUS_SESSION[{position}]",
+                bool(parent) and parent == str(previous.get("session_id") or ""),
+                f"parent={parent[:24]} sesión anterior={str(previous.get('session_id'))[:24]}",
+            )
+            checks.add(
+                "resume",
+                f"PINNED_IDENTITY_PRESERVED[{position}]",
+                block.get("pinned_identity") == previous.get("pinned_identity"),
+                "el pin no cambió al reanudar",
+            )
+        else:
+            #: Only the continuation is here. Its parent is checkable through the record
+            #: the parent wrote, and if that record is absent the link is not evidenced.
+            parent_record = record_of(parent) if parent else None
+            checks.add(
+                "resume",
+                f"PARENT_RECORD_PRESENT[{position}]",
+                None if parent_record is None else True,
+                f"registro del padre {parent[:24]!r} en provenance/",
+            )
+            checks.add(
+                "resume",
+                f"PINNED_IDENTITY_PRESERVED[{position}]",
+                None
+                if parent_record is None
+                else block.get("pinned_identity") == parent_record.get("pinned_identity"),
+                "el pin no cambió al reanudar",
+            )
+
+        chain = [item for item in (resume.get("chain") or []) if isinstance(item, dict)]
+        chain_ids = [str(item.get("session_id") or "") for item in chain]
+        visible = [str(item.get("session_id") or "") for _i, item in blocks[:position]]
+        records = [record_of(name) for name in chain_ids]
+        linked_by_records = bool(chain_ids) and all(
+            record is not None
+            and record.get("pinned_identity") == block.get("pinned_identity")
+            for record in records
+        )
+        checks.add(
+            "resume",
+            f"CHAIN_LINKS_EVERY_SESSION[{position}]",
+            chain_ids == visible or linked_by_records,
+            f"cadena={chain_ids[:4]} en_esta_carpeta={visible[:4]}",
+        )
 
 
 # --------------------------------------------------------------------------- session
@@ -606,18 +681,17 @@ def judge_session(session: Path, repo: Path) -> dict[str, Any]:
     )
 
     entries = [row["entry"] for row in read_jsonl(stream)]
-    rows = [entry for entry in entries if entry.get("kind") == "SESSION_PROVENANCE"]
-    #: The chain adds ``kind`` and ``recorded_at_utc`` to every row; the block itself is
-    #: the payload beside them, and comparing the file against the whole row would always
-    #: look like a disagreement.
-    block = (
-        {key: value for key, value in rows[0].items() if key not in ("kind", "recorded_at_utc")}
-        if rows
-        else {}
-    )
-    file_block = read_json(session / "SESSION_PROVENANCE.json")
+    #: A resumed directory holds one block per contiguous session, so the unit is the
+    #: block, not "the" block. The chain adds ``kind`` and ``recorded_at_utc`` to every
+    #: row; the block is the payload beside them.
+    blocks: list[tuple[int, dict[str, Any]]] = [
+        (index, {key: value for key, value in entry.items() if key not in ("kind", "recorded_at_utc")})
+        for index, entry in enumerate(entries)
+        if entry.get("kind") == "SESSION_PROVENANCE"
+    ]
+    block = blocks[-1][1] if blocks else {}
 
-    if not block:
+    if not blocks:
         checks.add(
             "identity",
             "PROVENANCE_ROW_PRESENT",
@@ -625,25 +699,21 @@ def judge_session(session: Path, repo: Path) -> dict[str, Any]:
             "la sesión no publicó bloque de procedencia: nada que verificar, nada que aprobar",
         )
         checks.add("code", "CODE_BLOCK_PRESENT", None, "sin bloque")
-        checks.add("evidence", "PROVENANCE_ROW_ONCE", None, "sin fila")
         checks.add("stability", "NO_DRIFT_OBSERVED", None, "sin bloque que fijar")
     else:
-        checks.add("identity", "PROVENANCE_ROW_PRESENT", True, f"session_id={block.get('session_id')!r}")
-        if file_block is not None:
-            checks.add(
-                "evidence",
-                "PROVENANCE_FILE_MATCHES_ROW",
-                canonical(file_block) == canonical(block),
-                "SESSION_PROVENANCE.json y la fila de la cadena coinciden"
-                if canonical(file_block) == canonical(block)
-                else "el fichero y la cadena no coinciden",
-            )
         cache: dict[str, Any] = {}
-        code_domain(checks, block, repo, cache)
-        identity_domain(checks, block)
-        evidence_domain(checks, session, entries, block)
+        for _index, item in blocks:
+            checks.add(
+                "identity",
+                "PROVENANCE_ROW_PRESENT",
+                True,
+                f"session_id={item.get('session_id')!r} run_id={item.get('run_id')!r}",
+            )
+            code_domain(checks, item, repo, cache)
+            identity_domain(checks, item)
+        evidence_domain(checks, session, entries, blocks)
         stability_domain(checks, entries, block)
-        resume_domain(checks, session, block)
+        resume_domain(checks, session, blocks)
 
     domains = {
         name: checks.domain(name)
@@ -662,11 +732,13 @@ def judge_session(session: Path, repo: Path) -> dict[str, Any]:
     if overall != FAIL and domains["resume"]["state"] == FAIL:
         overall = FAIL
 
-    reasons = [
-        f"{row['domain']}:{row['code']}"
-        for row in checks.rows
-        if row["state"] in (FAIL, NOT_EVIDENCED)
-    ]
+    reasons = sorted(
+        {
+            f"{row['domain']}:{row['code']}"
+            for row in checks.rows
+            if row["state"] in (FAIL, NOT_EVIDENCED)
+        }
+    )
     return {
         "session": str(session),
         "session_id": block.get("session_id"),
