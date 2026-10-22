@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import math
+import subprocess
 from dataclasses import replace
 from pathlib import Path
 
@@ -21,8 +22,12 @@ from trading_bot.vision.prospective import (
     LiveModeRefused,
     ProspectiveConfig,
     ProspectiveSession,
+    RuntimeNotProvable,
+    SessionAborted,
+    SessionIdentityMismatch,
     compare_prefix,
 )
+from trading_bot.vision.provenance import SESSION_PATHS
 from trading_bot.vision.settings import load_vision_config
 
 REPO = Path(__file__).resolve().parents[3]
@@ -117,10 +122,14 @@ def build_session(
     signal_source: str = "legacy_parity",
     window_bars: int = 20,
     decision_every_bars: int = 1,
+    root: Path = REPO,
+    resume: bool = False,
+    out: Path | None = None,
+    clock_start_ms: int | None = None,
 ) -> tuple[ProspectiveSession, FakeClock, SyntheticVenue]:
-    clock = FakeClock(T0 + 300 * MINUTE_MS)
+    clock = FakeClock(clock_start_ms if clock_start_ms is not None else T0 + 300 * MINUTE_MS)
     venue = SyntheticVenue(clock)
-    out = tmp_path / "session"
+    out = out if out is not None else tmp_path / "session"
     out.mkdir(parents=True, exist_ok=True)
     collector = MinuteCollector(
         source=venue,
@@ -157,10 +166,11 @@ def build_session(
         out_dir=out,
         vision_config=vision,
         risk_policy=settings.risk,
-        root=REPO,
+        root=root,
         collector=collector,
         clock=clock,
         sleeper=clock.sleep,
+        resume=resume,
     )
     if freeze_after_bootstrap:
         # Freeze once the warm-up has been read, so the session starts healthy and then
@@ -403,3 +413,249 @@ def test_an_unknown_signal_source_is_refused_by_the_config() -> None:
 def test_the_experimental_source_refuses_a_window_the_family_cannot_read() -> None:
     with pytest.raises(ValueError, match="window_bars"):
         ProspectiveConfig(signal_source="strategy_experimental", window_bars=20)
+
+
+# ---------------------------------------------------------------------------
+# RFC-DEF-RUN-019 / WP-04 — a live session has to say which bytes decided
+# ---------------------------------------------------------------------------
+
+LATER_MS = T0 + 305 * MINUTE_MS
+
+
+def git_run(root: Path, *args: str) -> str:
+    completed = subprocess.run(
+        ["git", "-C", str(root), *args], capture_output=True, text=True, check=True
+    )
+    return completed.stdout.strip()
+
+
+def fake_runtime_root(tmp_path: Path, *, commit: bool = True) -> Path:
+    """A repository holding every runtime path, so a session can be pinned against it.
+
+    The files are placeholders: ``capture_session`` hashes bytes and asks Git, it never
+    imports what it is hashing. That keeps the fail-closed tests independent of the code
+    under test.
+    """
+
+    root = tmp_path / "fake-root"
+    for relative in SESSION_PATHS:
+        target = root / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(f"# {relative}\n", encoding="utf-8", newline="\n")
+    if not commit:
+        return root
+    git_run(root, "init", "-q")
+    git_run(root, "add", "-A")
+    git_run(
+        root,
+        "-c",
+        "user.email=agent@example.invalid",
+        "-c",
+        "user.name=agent",
+        "commit",
+        "-q",
+        "-m",
+        "runtime",
+    )
+    return root
+
+
+def stream_rows(out: Path) -> list[dict[str, object]]:
+    return [row["entry"] for row in read_entries(out / "STREAM.jsonl")]
+
+
+def test_the_session_records_its_identity_before_the_first_decision(tmp_path: Path) -> None:
+    root = fake_runtime_root(tmp_path)
+    session, _clock, _venue = build_session(tmp_path, max_cycles=2, root=root)
+    summary = session.run()
+
+    out = tmp_path / "session"
+    entries = stream_rows(out)
+    kinds = [entry["kind"] for entry in entries]
+    assert kinds.index("SESSION_PROVENANCE") < kinds.index("CYCLE")
+    block = entries[kinds.index("SESSION_PROVENANCE")]
+    assert block["code"]["commit"] == git_run(root, "rev-parse", "HEAD")
+    assert block["mode"] == "PAPER" and block["live_enabled"] is False
+    assert block["provider"]["data"]["name"] == "synthetic_venue"
+    assert block["config"]["payload"]["window_bars"] == 20
+    assert len(block["runtime"]["sha256"]) == len(SESSION_PATHS)
+    assert block["unavailable_reasons"] == []
+
+    cycles = [entry for entry in entries if entry["kind"] == "CYCLE"]
+    assert cycles
+    assert {entry["provenance"]["pinned_identity"] for entry in cycles} == {
+        block["pinned_identity"]
+    }
+    assert {entry["provenance"]["runtime_digest"] for entry in cycles} == {
+        block["runtime"]["digest"]
+    }
+    assert summary["provenance"]["session_id"] == block["session_id"]
+    assert summary["provenance"]["pinned_identity"] == block["pinned_identity"]
+    assert (out / "SESSION_PROVENANCE.json").is_file()
+    assert (out / "provenance" / f"session-{block['session_id']}.json").is_file()
+
+
+def test_a_dirty_runtime_refuses_before_the_venue_is_called(tmp_path: Path) -> None:
+    root = fake_runtime_root(tmp_path)
+    (root / "src/trading_bot/risk/manager.py").write_text(
+        "# edited while a session could have started\n", encoding="utf-8", newline="\n"
+    )
+    session, _clock, venue = build_session(tmp_path, root=root)
+
+    with pytest.raises(RuntimeNotProvable) as excinfo:
+        session.run()
+
+    assert excinfo.value.reasons == ["RUNTIME_PATHS_DIRTY"]
+    assert venue.fetches == 0, "a refused session must not have read the feed"
+    assert not (tmp_path / "session" / "STREAM.jsonl").exists()
+
+
+def test_a_root_without_git_refuses_to_start(tmp_path: Path) -> None:
+    root = fake_runtime_root(tmp_path, commit=False)
+    session, _clock, venue = build_session(tmp_path, root=root)
+
+    with pytest.raises(RuntimeNotProvable) as excinfo:
+        session.run()
+
+    assert "NOT_A_REPOSITORY" in excinfo.value.reasons
+    assert venue.fetches == 0
+
+
+def test_a_shared_checkout_with_unrelated_edits_runs_and_discloses_them(tmp_path: Path) -> None:
+    root = fake_runtime_root(tmp_path)
+    (root / "notes-from-another-agent.md").write_text("in progress\n", encoding="utf-8")
+    session, _clock, _venue = build_session(tmp_path, max_cycles=1, root=root)
+
+    summary = session.run()
+
+    assert summary["cycles_executed"] == 1
+    block = json.loads((tmp_path / "session" / "SESSION_PROVENANCE.json").read_text("utf-8"))
+    worktree = block["code"]["worktree"]
+    assert worktree["runtime_dirty"] == []
+    assert worktree["fully_clean"] is False
+    assert worktree["dirty_outside_runtime_total"] == 1
+    assert block["unavailable_reasons"] == []
+
+
+def test_a_runtime_change_mid_session_stops_the_next_decision(tmp_path: Path) -> None:
+    root = fake_runtime_root(tmp_path)
+    session, clock, _venue = build_session(
+        tmp_path, max_cycles=5, duration_s=3_600, root=root
+    )
+    untouched = session.progress
+
+    def progress(message: str) -> None:
+        untouched(message)
+        if message.startswith("cycle 1"):
+            (root / "src/trading_bot/vision/lane.py").write_text(
+                "# changed under the running session\n", encoding="utf-8", newline="\n"
+            )
+            clock.now += 10 * MINUTE_MS
+
+    session.progress = progress
+    summary = session.run()
+
+    assert summary["cycles_executed"] == 1
+    assert summary["runtime_stable"] is False
+    assert summary["runtime_drift"] == ["src/trading_bot/vision/lane.py"]
+    entries = stream_rows(tmp_path / "session")
+    drift = [e for e in entries if e.get("reason") == "RUNTIME_DRIFT"]
+    assert len(drift) == 1
+    assert drift[0]["detail"]["changed_paths"] == ["src/trading_bot/vision/lane.py"]
+    assert "RUNTIME_DRIFT" in summary["blocked_reasons"]
+    kinds = [e["kind"] for e in entries]
+    assert kinds.index("BLOCKED") < kinds.index("SESSION_END")
+
+
+def test_a_resume_continues_the_chain_after_proving_the_identity(tmp_path: Path) -> None:
+    root = fake_runtime_root(tmp_path)
+    out = tmp_path / "session"
+    first, _clock, _venue = build_session(tmp_path, max_cycles=1, root=root)
+    first_summary = first.run()
+
+    second, _clock2, _venue2 = build_session(
+        tmp_path, max_cycles=1, root=root, resume=True, out=out, clock_start_ms=LATER_MS
+    )
+    second_summary = second.run()
+
+    assert second_summary["provenance"]["resumed"] is True
+    assert second_summary["provenance"]["session_id"] != first_summary["provenance"]["session_id"]
+    assert second_summary["provenance"]["chain"][0]["session_id"] == (
+        first_summary["provenance"]["session_id"]
+    )
+    assert second_summary["provenance"]["pinned_identity"] == (
+        first_summary["provenance"]["pinned_identity"]
+    )
+    entries = stream_rows(out)
+    starts = [entry for entry in entries if entry["kind"] == "SESSION_START"]
+    assert len(starts) == 2
+    assert [entry["cycle"] for entry in entries if entry["kind"] == "CYCLE"] == [1, 2]
+    assert all(
+        entry["status"] == "EXECUTED" for entry in entries if entry["kind"] == "CYCLE"
+    )
+    assert [item["session_id"] for item in second_summary["provenance"]["chain"]] == [
+        first_summary["provenance"]["session_id"]
+    ]
+
+
+def test_a_resume_refuses_when_the_code_moved(tmp_path: Path) -> None:
+    root = fake_runtime_root(tmp_path)
+    out = tmp_path / "session"
+    build_session(tmp_path, max_cycles=1, root=root)[0].run()
+
+    target = root / "src/trading_bot/risk/manager.py"
+    target.write_text("# a new decision rule\n", encoding="utf-8", newline="\n")
+    git_run(root, "add", "-A")
+    git_run(
+        root,
+        "-c",
+        "user.email=agent@example.invalid",
+        "-c",
+        "user.name=agent",
+        "commit",
+        "-q",
+        "-m",
+        "change the rule",
+    )
+
+    session, _clock, _venue = build_session(
+        tmp_path, root=root, resume=True, out=out, clock_start_ms=LATER_MS
+    )
+    with pytest.raises(SessionIdentityMismatch) as excinfo:
+        session.run()
+
+    assert "COMMIT_CHANGED" in excinfo.value.reasons
+    assert "RUNTIME_DRIFT" in excinfo.value.reasons
+    assert excinfo.value.detail["changed_runtime_paths"] == [
+        "src/trading_bot/risk/manager.py"
+    ]
+
+
+def test_a_resume_refuses_a_different_configuration(tmp_path: Path) -> None:
+    root = fake_runtime_root(tmp_path)
+    out = tmp_path / "session"
+    build_session(tmp_path, max_cycles=1, root=root)[0].run()
+
+    session, _clock, _venue = build_session(
+        tmp_path,
+        max_cycles=1,
+        window_bars=24,
+        root=root,
+        resume=True,
+        out=out,
+        clock_start_ms=LATER_MS,
+    )
+    with pytest.raises(SessionIdentityMismatch) as excinfo:
+        session.run()
+
+    assert excinfo.value.reasons == ["CONFIG_CHANGED"]
+
+
+def test_a_resume_without_a_pinned_session_is_refused(tmp_path: Path) -> None:
+    root = fake_runtime_root(tmp_path)
+    session, _clock, venue = build_session(tmp_path, root=root, resume=True)
+
+    with pytest.raises(SessionAborted, match="RESUME_WITHOUT_PROVENANCE"):
+        session.run()
+
+    assert venue.fetches == 0

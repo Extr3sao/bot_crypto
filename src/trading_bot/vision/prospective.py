@@ -44,6 +44,15 @@ from trading_bot.research.economic_recovery.experiments import Bar
 from trading_bot.vision.clock import timeframe_ms
 from trading_bot.vision.lane import VisionLane
 from trading_bot.vision.ledger import DecisionLedger, read_entries
+from trading_bot.vision.provenance import (
+    RuntimeNotProvable,
+    SessionIdentityMismatch,
+    assert_provable,
+    capture_session,
+    drifted,
+    file_hashes,
+    resume_reasons,
+)
 from trading_bot.vision.provider import VisionRequest, VisionResponse
 from trading_bot.vision.quotes import MinuteBarQuoteFeed, MinuteSeries
 from trading_bot.vision.settings import VisionConfig
@@ -145,8 +154,7 @@ class ProspectiveConfig:
 
     def __post_init__(self) -> None:
         if str(self.mode).upper() not in ALLOWED_MODES:
-            raise LiveModeRefused(
-                f"mode {self.mode!r} is not allowed: this session is PAPER only and has "
+            raise LiveModeRefused(                f"mode {self.mode!r} is not allowed: this session is PAPER only and has "
                 "no path to a live order"
             )
         if not self.symbols:
@@ -180,6 +188,33 @@ class ProspectiveConfig:
     @property
     def interval_ms(self) -> int:
         return timeframe_ms(self.timeframe)
+
+    def identity_payload(self) -> dict[str, Any]:
+        """Every declared field, for the configuration fingerprint.
+
+        The ``SESSION_START`` row publishes a subset a reader finds useful; the fingerprint
+        must cover the whole declaration, because two sessions that differ only in
+        ``stale_after_ms`` make different decisions but would otherwise hash the same.
+        """
+
+        return {
+            "symbols": list(self.symbols),
+            "timeframe": self.timeframe,
+            "window_bars": int(self.window_bars),
+            "decision_every_bars": int(self.decision_every_bars),
+            "duration_s": int(self.duration_s),
+            "poll_interval_s": float(self.poll_interval_s),
+            "settle_ms": int(self.settle_ms),
+            "latency_ms": int(self.latency_ms),
+            "warmup_minutes": int(self.warmup_minutes),
+            "equity": float(self.equity),
+            "mode": str(self.mode),
+            "max_cycles": None if self.max_cycles is None else int(self.max_cycles),
+            "stale_after_ms": int(self.stale_after_ms),
+            "max_skew_ms": int(self.max_skew_ms),
+            "signal_source": self.signal_source,
+            "strategy_id": self.strategy_id,
+        }
 
 
 class PaperScriptProvider:
@@ -289,6 +324,10 @@ class ProspectiveSession:
     clock: Callable[[], int] = lambda: int(time.time() * 1000)
     sleeper: Callable[[float], None] = time.sleep
     progress: Callable[[str], None] = lambda message: None
+    #: WP-04C: continue a session that was interrupted, after re-proving that the bytes
+    #: are still the ones it pinned. ``False`` means a fresh session, which deletes the
+    #: previous stream rather than appending to a different run's evidence.
+    resume: bool = False
     _stream: DecisionLedger | None = field(default=None, init=False)
     _last_cycle_bar_open_ms: int | None = field(default=None, init=False)
     _previous_rows: list[dict[str, Any]] = field(default_factory=list, init=False)
@@ -298,11 +337,139 @@ class ProspectiveSession:
     _last_block_signature: str | None = field(default=None, init=False)
     _blocked_reasons: set[str] = field(default_factory=set, init=False)
     _runtime: dict[str, str] = field(default_factory=dict, init=False)
+    _pin: dict[str, Any] = field(default_factory=dict, init=False)
+    _pinned_runtime: dict[str, str] = field(default_factory=dict, init=False)
+    _pinned_digest: str = field(default="", init=False)
+    _runtime_drift_paths: list[str] = field(default_factory=list, init=False)
 
     def __post_init__(self) -> None:
         self.out_dir = Path(self.out_dir)
         self.root = Path(self.root)
         self._runtime = runtime_hashes(self.root)
+
+    # -- provenance ----------------------------------------------------------
+
+    def _previous_provenance(self) -> dict[str, Any] | None:
+        """The block the interrupted session pinned, if this directory holds one."""
+        path = self.out_dir / "SESSION_PROVENANCE.json"
+        if not path.is_file():
+            return None
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return None
+        return payload if isinstance(payload, dict) else None
+
+    def _provider_identity(self) -> dict[str, Any]:
+        """Who produces the prices and who produces the opinion. Both decide the run."""
+        collector = self.collector
+        if collector is not None:
+            source = collector.source
+            data = {
+                "kind": "injected",
+                "name": str(getattr(source, "name", type(source).__name__)),
+                "base_url": getattr(source, "base_url", None),
+            }
+        else:
+            default = _default_source()
+            data = {
+                "kind": "default",
+                "name": str(getattr(default, "name", type(default).__name__)),
+                "base_url": getattr(default, "base_url", None),
+            }
+        return {
+            "signal": {
+                "source": self.config.signal_source,
+                "provider": provider_name(self.config.signal_source),
+                "strategy_id": self.config.strategy_id
+                if self.config.signal_source == SIGNAL_SOURCE_STRATEGY
+                else None,
+                "declared_latency_ms": int(self.config.latency_ms),
+                "real_model_called": False,
+            },
+            "data": data,
+        }
+
+    def _pin_before_deciding(self, started_at_ms: int) -> tuple[dict[str, Any], int]:
+        """Capture the session identity, refuse if it proves nothing, verify a resume.
+
+        Runs before the collector and before the first bar is read, so the block describes
+        the bytes that *are about to* decide rather than the bytes that happened to be on
+        disk when the session ended. Nothing here touches the feed: a session whose runtime
+        cannot be named fails before it can call a venue.
+        """
+
+        previous = self._previous_provenance() if self.resume else None
+        if self.resume and previous is None:
+            raise SessionAborted(
+                "RESUME_WITHOUT_PROVENANCE: there is no pinned session in "
+                f"{self.out_dir}, so a continuation could only claim an identity it never had"
+            )
+        block = capture_session(
+            self.root,
+            config=self.config.identity_payload(),
+            provider=self._provider_identity(),
+            started_at_ms=started_at_ms,
+            mode=PAPER,
+            resume_parent=previous,
+        )
+        assert_provable(block)
+        origin = int(started_at_ms)
+        if previous is not None:
+            reasons = resume_reasons(previous, block)
+            if reasons:
+                raise SessionIdentityMismatch(
+                    reasons,
+                    {
+                        "previous_session_id": previous.get("session_id"),
+                        "previous_pinned_identity": previous.get("pinned_identity"),
+                        "candidate_pinned_identity": block.get("pinned_identity"),
+                        "changed_runtime_paths": drifted(
+                            (block.get("runtime") or {}).get("sha256") or {},
+                            (previous.get("runtime") or {}).get("sha256") or {},
+                        ),
+                        "previous_commit": (previous.get("code") or {}).get("commit"),
+                        "candidate_commit": (block.get("code") or {}).get("commit"),
+                    },
+                )
+            chain = (previous.get("resume") or {}).get("chain") or []
+            origin = int(
+                (chain[0] if chain else {}).get("started_at_ms")
+                or previous.get("started_at_ms")
+                or started_at_ms
+            )
+        self._pin = block
+        self._pinned_runtime = dict((block.get("runtime") or {}).get("sha256") or {})
+        self._pinned_digest = str((block.get("runtime") or {}).get("digest") or "")
+        return block, origin
+
+    def _runtime_drift(self) -> list[str]:
+        """Paths whose bytes are no longer the ones this session pinned."""
+        if not self._pinned_runtime:
+            return []
+        current = file_hashes(self.root, tuple(self._pinned_runtime))
+        return drifted(current, self._pinned_runtime)
+
+    def _resume_state(self) -> tuple[int, list[dict[str, Any]]]:
+        """Continue the cycle counter and the prefix comparison across a restart.
+
+        The previous session's last cycle ledger is a complete prefix; re-running the lane
+        over it must reproduce every past decision, which is the same guarantee
+        ``compare_prefix`` gives inside one process, extended over the gap.
+        """
+
+        directory = self.out_dir / "cycles"
+        if not directory.is_dir():
+            return 0, []
+        indices = sorted(
+            int(item.name.split("-")[-1])
+            for item in directory.glob("cycle-*")
+            if item.name.split("-")[-1].isdigit()
+        )
+        if not indices:
+            return 0, []
+        last = directory / f"cycle-{indices[-1]:04d}" / "ledger.jsonl"
+        return indices[-1], read_entries(last)
 
     # -- session scaffolding -------------------------------------------------
 
@@ -480,6 +647,14 @@ class ProspectiveSession:
             "cycle": cycle,
             "status": "EXECUTED",
             "mode": PAPER,
+            #: WP-04: the identity of the bytes that produced this cycle, repeated on every
+            #: row so a reader does not have to trust a header written before the data.
+            "provenance": {
+                "run_id": self._pin.get("run_id"),
+                "session_id": self._pin.get("session_id"),
+                "pinned_identity": self._pin.get("pinned_identity"),
+                "runtime_digest": self._pinned_digest,
+            },
             "decision_bar_open_ms": int(data_time_ms) - self.config.interval_ms,
             "data_time_ms": int(data_time_ms),
             "data_time_utc": _utc_iso(data_time_ms),
@@ -560,14 +735,21 @@ class ProspectiveSession:
         if str(self.config.mode).upper() != PAPER:
             raise LiveModeRefused("ProspectiveSession.run() is PAPER only")
         self.out_dir.mkdir(parents=True, exist_ok=True)
+        started = int(self.clock())
+        #: Before the collector, before the bootstrap, before any bar: the identity of the
+        #: runtime is pinned, or the session does not start at all.
+        pin, origin_ms = self._pin_before_deciding(started)
         collector = self._ensure_collector()
         stream_path = self.out_dir / "STREAM.jsonl"
-        if stream_path.exists():
+        if stream_path.exists() and not pin["resume"]["resumed"]:
             stream_path.unlink()
         stream = DecisionLedger(stream_path).open()
         self._stream = stream
-        started = int(self.clock())
-        self._started_at_ms = started
+        #: On a resume the lane keeps reproducing the first session's decisions, so the
+        #: prefix comparison still covers everything decided before the interruption.
+        self._started_at_ms = int(origin_ms)
+        if pin["resume"]["resumed"]:
+            self._cycle, self._previous_rows = self._resume_state()
         deadline = started + self.config.duration_s * 1000
         session_info: dict[str, Any] = {
             "schema_version": "PROSPECTIVE_PAPER_SESSION_V1",
@@ -598,9 +780,27 @@ class ProspectiveSession:
             "subbar_entries": "PAPER_ONLY",
             "runtime_sha256": self._runtime,
             "source": getattr(collector.source, "name", "unknown"),
+            "provenance": {
+                "run_id": pin["run_id"],
+                "session_id": pin["session_id"],
+                "pinned_identity": pin["pinned_identity"],
+                "runtime_digest": pin["runtime"]["digest"],
+                "resumed": pin["resume"]["resumed"],
+            },
         }
         stream.append("SESSION_START", session_info)
         self._write_json("SESSION_START.json", session_info)
+        #: Written to the chain and to its own file *before* the bootstrap reads a bar, so
+        #: the claim is on record before it can be reasonable to check it.
+        stream.append("SESSION_PROVENANCE", pin)
+        self._write_json("SESSION_PROVENANCE.json", pin)
+        session_record = self.out_dir / "provenance" / f"session-{pin['session_id']}.json"
+        session_record.parent.mkdir(parents=True, exist_ok=True)
+        session_record.write_text(
+            json.dumps(pin, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
         try:
             bootstrap_started = int(self.clock())
             bootstrap = collector.bootstrap(minutes=self.config.warmup_minutes)
@@ -750,6 +950,29 @@ class ProspectiveSession:
                 ):
                     self.sleeper(self.config.poll_interval_s)
                     continue
+                #: WP-04C: the bytes were pinned at the start; if they moved, the next
+                #: decision has no identity and is not taken. Checked here — after the data
+                #: gate, immediately before a decision would be stamped.
+                moved = self._runtime_drift()
+                if moved:
+                    self._runtime_drift_paths = moved
+                    self._emit_once(
+                        "BLOCKED",
+                        "RUNTIME_DRIFT:" + ",".join(moved),
+                        {
+                            "cycle": self._cycle + 1,
+                            "reason": "RUNTIME_DRIFT",
+                            "detail": {
+                                "changed_paths": moved,
+                                "pinned_identity": pin["pinned_identity"],
+                                "pinned_runtime_digest": pin["runtime"]["digest"],
+                            },
+                            "at_ms": int(self.clock()),
+                            "at_utc": _utc_iso(int(self.clock())),
+                            "live_orders": 0,
+                        },
+                    )
+                    break
                 decision_time_ms = int(self.clock())
                 if decision_time_ms < data_time_ms:
                     raise SessionAborted(
@@ -793,6 +1016,19 @@ class ProspectiveSession:
             "live_enabled": False,
             "live_orders": 0,
             "real_model_called": False,
+            #: WP-04: the same identity the session pinned, published with the result so the
+            #: summary is not separable from the bytes that produced it.
+            "provenance": {
+                "run_id": self._pin.get("run_id"),
+                "session_id": self._pin.get("session_id"),
+                "pinned_identity": self._pin.get("pinned_identity"),
+                "runtime_digest": self._pinned_digest,
+                "resumed": bool((self._pin.get("resume") or {}).get("resumed")),
+                "chain": list((self._pin.get("resume") or {}).get("chain") or []),
+                "unavailable_reasons": list(self._pin.get("unavailable_reasons") or []),
+            },
+            "runtime_stable": not self._runtime_drift_paths,
+            "runtime_drift": list(self._runtime_drift_paths),
             "provider": provider_name(self.config.signal_source),
             "signal_source": self.config.signal_source,
             "strategy_id": self.config.strategy_id
@@ -865,7 +1101,9 @@ __all__ = [
     "PaperScriptProvider",
     "ProspectiveConfig",
     "ProspectiveSession",
+    "RuntimeNotProvable",
     "SessionAborted",
+    "SessionIdentityMismatch",
     "aggregate_complete",
     "compare_prefix",
     "display_symbol",
