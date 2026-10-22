@@ -163,7 +163,9 @@ def run_child(args: argparse.Namespace) -> int:
             window_bars=args.window_bars,
             decision_every_bars=args.decision_every_bars,
             duration_s=args.duration_s,
-            poll_interval_s=0.0,
+            #: One simulated second per poll: the clock only moves when the session sleeps,
+            #: so a zero interval would spin forever instead of reaching the next bar.
+            poll_interval_s=1.0,
             settle_ms=0,
             latency_ms=args.latency_ms,
             warmup_minutes=args.warmup_minutes,
