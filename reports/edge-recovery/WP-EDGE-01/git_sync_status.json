@@ -1,0 +1,254 @@
+{
+  "work_package": "WP-EDGE-01",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "local": {
+    "head_at_commit_of_this_file": "the revision that carries this text is the record commit listed last in commits_created_by_this_wp; it names 94714bd3ec2b0420aef6ed0c746c8c5df5b0e82d as the head it was written at",
+    "head_before_this_wp": "4be09fb95b90669fbf10ab73073f8915a7c8020d",
+    "commits_created_by_this_wp": [
+      {
+        "sha": "46b72fde7d10dda421730ce2a818e09302f08b2a",
+        "kind": "instrument-and-artifact",
+        "subject": "Add the EDGE-01 candidates, simulator, campaign harness and verifier. [WP-EDGE-01]"
+      },
+      {
+        "sha": "7539633964d41d534b79f3519594ffb53f0c6570",
+        "kind": "artifacts",
+        "subject": "Publish the WP-EDGE-01 campaign results and their independent verification. [WP-EDGE-01]"
+      },
+      {
+        "sha": "5f6cf817a613133df2c7e1219a507592b3e55e2c",
+        "kind": "artifacts-and-docs",
+        "subject": "Split fees from slippage in the per-strategy table and record the push block. [WP-EDGE-01]"
+      },
+      {
+        "sha": "1a0a6c85299ca09ac354d3bcf797b34a806adff2",
+        "kind": "documentation-only",
+        "subject": "Record the final WP-EDGE-01 git state and the run-to-commit identity. [WP-EDGE-01]"
+      },
+      {
+        "sha": "ba0779b3c4254a4532984899a5ac989047f5a3ed",
+        "kind": "documentation-only",
+        "subject": "State the missing volatility filter and the next hypotheses explicitly. [WP-EDGE-01]"
+      },
+      {
+        "sha": "c9687a8a140a7c37b5c6a084e378dff851527f70",
+        "kind": "documentation-only",
+        "subject": "List every WP-EDGE-01 commit and the digest that identifies the measured run. [WP-EDGE-01]"
+      },
+      {
+        "sha": "d3c28e7ea098c368ef56348729b125f4c1b94537",
+        "kind": "documentation-only",
+        "subject": "Name the commit that carries the sync status instead of chasing its own hash. [WP-EDGE-01]"
+      },
+      {
+        "sha": "042947cf58b25d3b706b28fde81b4be6986c6c2f",
+        "kind": "documentation-only",
+        "subject": "Record ADR-0027 for the frozen research lane and cite only real commits. [WP-EDGE-01]"
+      },
+      {
+        "sha": "ab7be9c4c60e8cb01e87f659b3d3baa45d5151c1",
+        "kind": "instrument-and-artifact",
+        "subject": "Label every trade with the benchmark market regime it was decided in. [WP-EDGE-01]"
+      },
+      {
+        "sha": "4d7a67ea49d7c5d801025ef013f447f28382b135",
+        "kind": "instrument-and-artifact",
+        "subject": "Hash the code, not one machine's line endings, in the source digest. [WP-EDGE-01]"
+      },
+      {
+        "sha": "a76297e21e83430e52f4082a7317370681583862",
+        "kind": "documentation-only",
+        "subject": "Refresh ADR-0027 and the sync record for the market-context and digest work. [WP-EDGE-01]"
+      },
+      {
+        "sha": "03a62bd72323c7891962e6059f11884201e6620f",
+        "kind": "instrument-and-artifact",
+        "subject": "State the evaluated period and assets inside each strategy's results. [WP-EDGE-01]"
+      },
+      {
+        "sha": "ce42ca42c297fe2b6a6594a49b385ed811442666",
+        "kind": "closure",
+        "subject": "Carry the final WP-EDGE-01 git state, digest and verification counts in one record. [WP-EDGE-01]"
+      },
+      {
+        "sha": "90cee7327e69de1af0d599d9c5b008f43ed3b722",
+        "kind": "closure",
+        "subject": "Model the retest entry and review the 4h trend out of sample. [WP-EDGE-01]"
+      },
+      {
+        "sha": "752225531529f601c91426538579daadeafeef7f",
+        "kind": "closure",
+        "subject": "Regenerate the derived recovery view with its sources and record ADR-0031. [WP-EDGE-01]"
+      },
+      {
+        "sha": "af250f27811ce7c913d4a89585f531b739fd2d2b",
+        "kind": "closure",
+        "subject": "Anchor the recovery state view to the commit that first carries ADR-0031. [WP-EDGE-01]"
+      },
+      {
+        "sha": "e81eba9a1f184a67589eb7c5fedf02f474023526",
+        "kind": "closure",
+        "subject": "Publish the WP-EDGE-01 closure report with a verifier that re-derives its figures. [WP-EDGE-01]"
+      },
+      {
+        "sha": "b29f1745c9c6ec324876271869fa7e284fca8d60",
+        "kind": "closure",
+        "subject": "Record the WP-EDGE-01 closure: verdicts, digests, commits and the blocked push. [WP-EDGE-01]"
+      },
+      {
+        "sha": "94714bd3ec2b0420aef6ed0c746c8c5df5b0e82d",
+        "kind": "closure",
+        "subject": "Attribute the push probes in the closure report to the commands that produced them. [WP-EDGE-01]"
+      }
+    ],
+    "files_owned_by_this_wp": [
+      "src/trading_bot/research/edge01/{__init__,data,features,costs,candidates,simulator,campaign}.py",
+      "scripts/edge01_run.py",
+      "scripts/edge01_verify.py",
+      "tests/unit/research/test_edge01_pit.py",
+      "tests/unit/research/test_edge01_gate_and_artifacts.py",
+      "reports/edge-recovery/WP-EDGE-01/* (force-added: reports/* is gitignored)",
+      "tasks/decisions.md (ADR-0027, appended)",
+      "src/trading_bot/research/edge01/{retest,closure}.py (the H6 entry plan and the OOS review)",
+      "scripts/edge01_closure_experiments.py, scripts/edge01_closure_verify.py",
+      "scripts/edge01_closure_report_check.py",
+      "tests/unit/research/test_edge01_closure_experiments.py",
+      "reports/edge-recovery/WP-EDGE-01/{retest-h6,oos-trend-4h,closure}/ (force-added: reports/* is gitignored)"
+    ],
+    "uncommitted_after_this_wp": [],
+    "worktree_dirty": true,
+    "dirty_note": "The checkout is shared and other threads keep uncommitted work in it: FINAL_REPORT.md, RUN_REPORT.json, RUN_REPORT.md and several data/st6, data/rfc035e and evidence/ files, scripts/cap004c_verify.py, scripts/st6_scheduler_witness.py, untracked tests/unit/research/test_swing_*.py and test_rfc035*.py, and an uncommitted regeneration of data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.{json,md} taken at commit 5348fcd5 on 2026-10-11. None of it belongs to this work package: it was not staged, edited, reverted or used as evidence. This WP's own evidence for the recovery gate is closure/CLEAN_CHECKOUT_REHEARSAL.json, produced at the commit named below. `git status --porcelain -- src/trading_bot/research/edge01 scripts/edge01_closure*.py scripts/edge01_mechanism_ablation.py scripts/edge01_risk_ablation.py scripts/edge01_ablation.py tests/unit/research/test_edge01_*.py reports/edge-recovery tasks/decisions.md .gitignore` is empty for the paths this WP owns.",
+    "self_reference": "A status file cannot contain the hash of the commit that carries it. This file has been revised by each documentation commit listed above with kind=documentation-only; the revision that carries the current text names the commits it summarises instead of chasing its own hash. `git log --oneline -- reports/edge-recovery/WP-EDGE-01/git_sync_status.json` shows every revision."
+  },
+  "run_to_commit_identity": {
+    "measured_with_head": "ce42ca42c297fe2b6a6594a49b385ed811442666",
+    "measured_with_worktree_dirty": true,
+    "source_digest_rule": "sha256 over name+bytes of src/trading_bot/research/edge01/*.py, scripts/edge01_run.py and scripts/edge01_verify.py, with CRLF folded to LF so the digest does not depend on the checkout's line endings",
+    "source_sha256_at_measurement": "616a86fa7258fa9efe2faf1d3b333a87722944aef9796bfa228417014c178c5a",
+    "source_sha256_of_the_committed_tree": "616a86fa7258fa9efe2faf1d3b333a87722944aef9796bfa228417014c178c5a",
+    "source_sha256_of_the_committed_tree_at": "94714bd3ec2b0420aef6ed0c746c8c5df5b0e82d",
+    "identity_holds": true,
+    "how_to_check": "Recompute the digest from the blobs of the commit, never from the working tree: `python -c \"import subprocess,hashlib,pathlib;...\"` is not needed because scripts/edge01_closure_report_check.py does it and refuses an artefact whose digest does not match the commit it names. The digest folds CRLF to LF, so the working tree, the stored blobs and a clean checkout agree (DEF-EDGE01-09).",
+    "note": "The campaign was re-run after the H6, OOS and recovery work, on the same corpus and the same frozen parameters, and republished byte-identical results (TRADES.csv, EQUITY_CURVE.csv, MARKET_CONTEXT.csv, STRATEGY_RESULTS.json); the digest recorded in RUN_REPORT.json is the digest of the code at af250f2, which already contains every closure change to the research package."
+  },
+  "remote": {
+    "name": "origin",
+    "url": "https://github.com/Extr3sao/bot_crypto.git",
+    "anonymous_read": "OK (git ls-remote --heads origin returned 61 branches)",
+    "remote_head_of_this_branch": null,
+    "remote_head_note": "git ls-remote origin refs/heads/agent/edge-recovery/* returned nothing: the branch, and therefore all ten WP-EDGE-00b/WP-EDGE-01 commits, does not exist on GitHub."
+  },
+  "push": {
+    "attempted": true,
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "remote": "https://github.com/Extr3sao/bot_crypto.git",
+    "status": "BLOCKED_GITHUB_AUTH",
+    "published": false,
+    "remote_message": "remote: No anonymous write access. (recorded on the earlier probe of this branch; the probe below cannot reach the remote at all)",
+    "probes": [
+      {
+        "command": "GIT_TERMINAL_PROMPT=0 git -c credential.helper= push --dry-run origin HEAD",
+        "why": "no helper, no prompt: the only question left is whether a credential can be supplied non-interactively",
+        "exit_code": 128,
+        "stderr": "fatal: could not read Username for 'https://github.com': terminal prompts disabled",
+        "result": "no credential available without a human"
+      },
+      {
+        "command": "GIT_TERMINAL_PROMPT=0 git push --dry-run origin HEAD",
+        "why": "the configured helper (manager) is allowed to answer",
+        "exit_code": null,
+        "stderr": "did not return within 180 s: the credential manager waits for an interactive sign-in even with GIT_TERMINAL_PROMPT=0; the process tree was terminated by the harness and no git or credential-manager process was left running (checked)",
+        "result": "blocks on an interactive sign-in that no automated run can complete"
+      },
+      {
+        "command": "git ls-remote --heads origin",
+        "why": "separate read access from write access",
+        "exit_code": 0,
+        "stderr": "",
+        "result": "61 branches listed anonymously: the remote is reachable, only writing is unauthenticated"
+      }
+    ],
+    "fatal_message": "fatal: could not read Username for 'https://github.com': terminal prompts disabled",
+    "remote_head_of_this_branch": null,
+    "remote_head_note": "`git ls-remote --heads origin refs/heads/agent/edge-recovery/*` returns nothing, so the branch and its commits exist only locally.",
+    "unlock_procedure": [
+      "1. The operator puts a credential they own where their own git configuration can read it. This checkout has `credential.helper = manager` (Git Credential Manager), which only authenticates interactively, so any of these works and none of them requires a token in this chat or in this repository:",
+      "   a. run `git push origin HEAD` once from an interactive terminal and complete the sign-in; the manager stores the credential in the operating system's vault and later non-interactive pushes reuse it;",
+      "   b. pre-seed that vault without git prompting for a URL: pipe `protocol=https`, `host=github.com`, `username=<github user>` and `password=<fine-grained PAT with contents:write>` into `git credential-manager store` (the value never leaves the operator's machine and is never read or printed here);",
+      "   c. set an exported token in the environment of the pushing process and let git read it from the environment only, e.g. `GITHUB_TOKEN=... git -c credential.helper='!f() { echo username=x-access-token; echo password=$GITHUB_TOKEN; }; f' push origin HEAD`;",
+      "   d. install the GitHub CLI and let it configure git: `gh auth login --hostname github.com --git-protocol https` followed by `gh auth setup-git`.",
+      "2. Verify the unlock without writing to the remote: `GIT_TERMINAL_PROMPT=0 git push --dry-run origin HEAD` must exit 0 and print the ref update it would publish.",
+      "3. Publish the branch (it does not exist on the remote yet): `git push --set-upstream origin agent/edge-recovery/WP-EDGE-00-baseline`.",
+      "4. Confirm from the remote, not from the local exit code: `git ls-remote --heads origin refs/heads/agent/edge-recovery/WP-EDGE-00-baseline` must return the pushed commit, and its sha must equal `git rev-parse HEAD`.",
+      "Rules: never paste the credential into the chat, never commit it, and revoke it if it ever reaches a log. Nothing in this work package depends on the push: the campaign runs offline against local corpora and both verifiers read only published files."
+    ],
+    "secrets_handling": "No token, password or credential value was read, printed, stored or requested. This record lists only the presence or absence of the mechanisms and the exact commands an operator can run."
+  },
+  "auth_diagnosis": {
+    "github_token_env": "unset",
+    "gh_token_env": "unset",
+    "git_askpass_env": "unset",
+    "ssh_agent": "unset (SSH_AUTH_SOCK absent)",
+    "git_credential_file": "absent (~/.git-credentials)",
+    "configured_credential_helper": "manager (Git Credential Manager: interactive sign-in only)",
+    "gh_cli": "not installed",
+    "first_probe_note": "The manager does not honour GIT_TERMINAL_PROMPT=0: the probe with the helper enabled never returned and had to be terminated, which is why the recorded exit code for it is null rather than a code.",
+    "secrets_handling": "No token, password or credential value was read, printed, stored or requested. This file records only the presence or absence of the mechanisms."
+  },
+  "consequence": "The work package is complete and verified locally and unpublished. Nothing in the artefacts depends on the push: the campaign runs offline against local corpora, both verifiers read only the published files, and the PAPER runtime was not modified. Publishing needs a credential the operator supplies through their own git configuration; the exact procedure is in push.unlock_procedure and no token was requested, stored or echoed here.",
+  "verification_artefact": {
+    "artefacts": [
+      {
+        "path": "reports/edge-recovery/WP-EDGE-01/INDEPENDENT_VERIFICATION.json",
+        "checks_passed": 14,
+        "checks_total": 14,
+        "mutations_detected": "8/8",
+        "produced_by": "scripts/edge01_verify.py"
+      },
+      {
+        "path": "reports/edge-recovery/WP-EDGE-01/retest-h6/RETEST_VERIFICATION.json",
+        "checks_passed": 15,
+        "checks_total": 15,
+        "mutations_detected": "19/19",
+        "produced_by": "scripts/edge01_closure_verify.py --experiment h6",
+        "experiment": "h6"
+      },
+      {
+        "path": "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND_VERIFICATION.json",
+        "checks_passed": 13,
+        "checks_total": 13,
+        "mutations_detected": "17/17",
+        "produced_by": "scripts/edge01_closure_verify.py --experiment oos",
+        "experiment": "oos"
+      },
+      {
+        "path": "reports/edge-recovery/WP-EDGE-01/closure/REPORT_FIGURES_CHECK.json",
+        "checks_passed": null,
+        "checks_total": null,
+        "produced_by": "scripts/edge01_closure_report_check.py",
+        "note": "audits the closure report's figures and this record's claims; its counts are inside the file itself."
+      }
+    ],
+    "rule": "Each verifier is a separate process that imports nothing from the research package: it reads the published artefacts, re-derives the metrics, the cost identity, the order lifecycle and the frozen decision rules, and mutates its own inputs to prove the checks bite.",
+    "produced_after_the_last_artefact_change": true
+  },
+  "final_state": {
+    "head": "94714bd3ec2b0420aef6ed0c746c8c5df5b0e82d",
+    "worktree_clean_for_wp_paths": true,
+    "push_status": "BLOCKED_GITHUB_AUTH",
+    "paper_integration": "NOT_AUTHORIZED (no candidate reached ADMIT; the 4h trend review returned NOT_SUFFICIENT_EVIDENCE / INSUFFICIENT_EVIDENCE)",
+    "commits_listed_here": 19,
+    "commits_in_this_wp_at_HEAD": 19,
+    "carrying_commit_not_self_listed": true,
+    "carrying_commit_note": "A record cannot name the commit that carries it. The revision below names every commit up to the content commit and states the digest of the code it indexes; `git log --oneline 4be09fb..HEAD` shows the record commit itself."
+  },
+  "closure": {
+    "h6_verdict": "RETEST_IMPROVES_NET",
+    "h6_execution": "VIABLE",
+    "oos_verdict": "NOT_SUFFICIENT_EVIDENCE",
+    "wp_admission": "INSUFFICIENT_EVIDENCE",
+    "recovery_gate": "PASS",
+    "record": "reports/edge-recovery/WP-EDGE-01/closure/RUN_REPORT.json",
+    "report": "reports/edge-recovery/WP-EDGE-01/FINAL_REPORT.md"
+  }
+}

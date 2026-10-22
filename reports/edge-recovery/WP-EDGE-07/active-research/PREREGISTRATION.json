@@ -1,0 +1,86 @@
+{
+  "schema_version": "EDGE07_ACTIVE_PREREGISTRATION_V1",
+  "run_id": "EDGE07-ACTIVE-PREREG-20261014T092000Z",
+  "registered_at_utc": "2026-10-14T09:20:00Z",
+  "registered_before": ["any ACTIVE candidate was measured"],
+  "mission_target_trades_per_day": 3.0,
+  "multiplicity": 2,
+  "books": {
+    "edge07_active_thrust": {
+      "answers": "A-1 momentum continuation on a thrust",
+      "params": {
+        "ema_period": 48,
+        "breakout_lookback": 12,
+        "atr_period": 14,
+        "thrust_atr": 0.5,
+        "stop_atr": 1.0,
+        "target_atr": 1.5,
+        "min_rr": 1.5,
+        "cost_margin": 1.25
+      }
+    },
+    "edge07_active_fade": {
+      "answers": "A-2 fade of a two-ATR dislocation",
+      "params": {
+        "ema_period": 24,
+        "atr_period": 14,
+        "stretch_atr": 2.0,
+        "down_bar_atr": 0.75,
+        "stop_atr": 1.0,
+        "min_rr": 0.5,
+        "cost_margin": 1.25
+      }
+    }
+  },
+  "declared_cost_wall": {
+    "model": "COST_MODEL_V3",
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "horizon_minutes": 60,
+    "round_trip_bps": 23.790569415042093,
+    "components_bps": {"fee": 20.0, "spread": 1.0, "slippage": 2.632456, "impact": 0.158114},
+    "daily_cost_at_three_trades": 71.37170824512628,
+    "note": "a book at this frequency must earn more than the round-trip cost per trade, on average, before it earns anything"
+  },
+  "windows": {
+    "development": {
+      "DEV": {"start_utc": "2019-01-01T00:00:00Z", "end_utc": "2023-12-31T23:59:59Z", "read_before": true},
+      "VAL": {"start_utc": "2024-01-01T00:00:00Z", "end_utc": "2024-12-31T23:59:59Z", "read_before": true}
+    },
+    "independent": {
+      "NEW_HOLDOUT": {
+        "start_utc": "2026-03-01T00:00:00Z",
+        "end_utc_exclusive": "2026-10-14T08:00:00Z",
+        "corpus": "data/edge07/holdout-1h",
+        "read_before": false,
+        "re_read_permitted": false
+      }
+    }
+  },
+  "timeframe": "1h",
+  "assets": ["BTC", "ETH", "SOL"],
+  "direction": "LONG only (spot)",
+  "costs": {"model": "COST_MODEL_V3", "scenarios": ["BASE", "2X_FEES", "ADVERSE"]},
+  "risk_policy": "config/risk.yaml through edge01.campaign.load_risk_policy; max_trades_per_day is 20, so the frequency target is a design aim and never a reason to force an entry",
+  "criteria": [
+    {"id": "C0", "statement": "screen: DEV gross expectancy > 0, else REJECT_NO_GROSS_EDGE without reading the independent window", "decisive": true},
+    {"id": "C1", "statement": "trades >= 3 per day on NEW_HOLDOUT", "decisive": true},
+    {"id": "C2", "statement": "net > 0 at BASE on NEW_HOLDOUT", "decisive": true},
+    {"id": "C3", "statement": "expectancy > 0 at BASE on NEW_HOLDOUT", "decisive": true},
+    {"id": "C4", "statement": "net > 0 at 2X fees on NEW_HOLDOUT", "decisive": true},
+    {"id": "C5", "statement": "largest single trade <= 50% of the net on NEW_HOLDOUT", "decisive": true},
+    {"id": "C6", "statement": "net > 0 in at least 2 of the 3 equal consecutive time blocks", "decisive": true},
+    {"id": "R", "statement": "per-asset, per-context and bootstrap readings reported, never decisive", "decisive": false}
+  ],
+  "verdicts": {
+    "ADMIT_PAPER": "C1-C6 all pass on NEW_HOLDOUT; admission to a paper lane only, no live trading, no capital",
+    "REJECT": "C0 failed, or a decisive criterion failed with power",
+    "INSUFFICIENT_EVIDENCE": "sample too small, or one trade carries the net, or the frequency target is missed while everything else is non-negative"
+  },
+  "consequences": {
+    "on_reject": "reported with its numbers, not tuned and re-run on this window",
+    "on_insufficient": "reported as no result, never as a pass",
+    "promotion": "NONE",
+    "order_sent": false,
+    "hypothetical": true
+  }
+}

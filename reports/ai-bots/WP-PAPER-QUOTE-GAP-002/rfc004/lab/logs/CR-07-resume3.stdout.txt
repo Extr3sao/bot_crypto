@@ -1,0 +1,2 @@
+2026-10-21 17:00:09 [warning  ] lane_book.lock_taken_over      age_s=4.4 path=C:\Users\GVLLFR0035\Downloads\bot-freebuff-recovery-004\reports\ai-bots\WP-PAPER-QUOTE-GAP-002\rfc004\lab\cases\CR-07\state\BOOK.lock previous_pid=39528
+{"out": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\logs\\CR-07-resume3.json", "exit": 0, "pid": 11684}

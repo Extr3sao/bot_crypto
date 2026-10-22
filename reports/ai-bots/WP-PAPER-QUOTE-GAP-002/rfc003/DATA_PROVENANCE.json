@@ -1,0 +1,57 @@
+{
+  "schema": "DATA_PROVENANCE_V1",
+  "generated_at_utc": "2026-10-21T12:27:42+00:00",
+  "archive": "reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\archive",
+  "source": "archived 1m minutes recorded from the venue (binance_spot_rest_1m)",
+  "why_it_matters": "the 5m series the drill runs on is aggregated from these minutes, so a substituted or normalised fixture would move every digest below",
+  "hash_kinds": {
+    "file_sha256": "sha256 of the bytes stored in the repository",
+    "minutes_sha256": "sha256 of <SYMBOL>.jsonl, the 1-minute file itself",
+    "bars_sha256": "sha256 of the canonical 5m series derived from it",
+    "event_chain_head_sha256": "head of a hash chain over 3034 events; NOT a file hash and never comparable to one"
+  },
+  "symbols": {
+    "ETHUSDT": {
+      "file_sha256": "aa7f0845a7ca20d4aff5552b3ceb33813934fbf31f508f71efc2fe299219ed4c",
+      "byte_count": 219215,
+      "minutes": 720,
+      "minutes_sha256": "aa7f0845a7ca20d4aff5552b3ceb33813934fbf31f508f71efc2fe299219ed4c",
+      "bars_5m": 144,
+      "bars_sha256": "e230e99ddf90e9cb9d1e119a43392850e93e1f6baab420c8598b64dbc21f7599",
+      "recorded_minutes_sha256": "aa7f0845a7ca20d4aff5552b3ceb33813934fbf31f508f71efc2fe299219ed4c",
+      "recorded_bars_sha256": "e230e99ddf90e9cb9d1e119a43392850e93e1f6baab420c8598b64dbc21f7599",
+      "matches_drill": true
+    },
+    "SOLUSDT": {
+      "file_sha256": "64b777f320bc1960bd8994f8020c4142a1dbc78a56ad621c1d1275eb73971003",
+      "byte_count": 216398,
+      "minutes": 720,
+      "minutes_sha256": "64b777f320bc1960bd8994f8020c4142a1dbc78a56ad621c1d1275eb73971003",
+      "bars_5m": 144,
+      "bars_sha256": "053c43f3d35bf6ee9fcbfb6419d476a46b91eef4b95acfb99032235193ab561c",
+      "recorded_minutes_sha256": "64b777f320bc1960bd8994f8020c4142a1dbc78a56ad621c1d1275eb73971003",
+      "recorded_bars_sha256": "053c43f3d35bf6ee9fcbfb6419d476a46b91eef4b95acfb99032235193ab561c",
+      "matches_drill": true
+    }
+  },
+  "collector": {
+    "events": 3034,
+    "manifest_events": 3034,
+    "chain_head": "b92e522603df519f5fb510c8713afd25e2ad8fcb7300d5b83c1a6d9c6f5250c1",
+    "manifest_chain_head": "b92e522603df519f5fb510c8713afd25e2ad8fcb7300d5b83c1a6d9c6f5250c1",
+    "chain_intact": true,
+    "skew_ms": -448,
+    "max_skew_ms": 5000,
+    "blocked": {},
+    "health": {
+      "ETHUSDT": {
+        "reason": "the last closed minute arrived inside its window",
+        "state": "OK"
+      },
+      "SOLUSDT": {
+        "reason": "the last closed minute arrived inside its window",
+        "state": "OK"
+      }
+    }
+  }
+}

@@ -1,0 +1,277 @@
+{
+  "bars": 200,
+  "decision_every_bars": 24,
+  "git": {
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "dirty_paths": 183,
+    "head": "0841d372cdf36e6b52b6d8ed2e02b9d4e8c23a5e"
+  },
+  "libraries": {
+    "mypy": "2.1.0",
+    "numpy": "2.0.2",
+    "pydantic": "2.13.4",
+    "pytest": "9.1.1",
+    "python": "3.11.15",
+    "pyyaml": "6.0.3",
+    "ruff": "0.15.20"
+  },
+  "prospective_paper_validated": false,
+  "provider": "replay (scripted transport; NOT a model)",
+  "python": "3.11.15",
+  "real_model_called": false,
+  "scenarios": [
+    {
+      "chain": {
+        "head_sha256": "66b57f2fc5c03f9db8461bc06ec80a6bbcc41a6ee5efd2ea3a05a3e215ae5c94",
+        "kinds": {
+          "CLOSE": 2,
+          "DECISION": 8,
+          "DECISION_OUTCOME": 10,
+          "FILL": 2,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 24,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 2,
+      "counters": {
+        "action:CLOSE": 2,
+        "action:LONG": 3,
+        "action:SHORT": 3,
+        "closed_trades": 2,
+        "dropped:NO_POSITION_TO_CLOSE": 2,
+        "fills": 2,
+        "gate:WEEKEND_BLOCK": 4,
+        "requote:WAITING_FOR_QUOTE": 6
+      },
+      "declared_bars": {
+        "AAVE/USDT": 200,
+        "UNI/USDT": 200
+      },
+      "fills": 2,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 900,
+      "ledger": "evidence\\real_900ms_ledger.jsonl",
+      "name": "real_900ms",
+      "net_realised_usdt": -7.599295,
+      "policy_override": null,
+      "removed_bar_open_ms": {},
+      "series_sha256": "aca26ff85171381281e6df1944c70d8aa853721d17eee6ab1fbc2f392fc1856a",
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "d73ad8611644159f8f27a4400a5ecfe116e9d19b8ebecb087ca023e6605b1983",
+        "kinds": {
+          "CLOSE": 2,
+          "DECISION": 8,
+          "DECISION_OUTCOME": 10,
+          "FILL": 2,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 24,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 2,
+      "counters": {
+        "action:CLOSE": 2,
+        "action:LONG": 3,
+        "action:SHORT": 3,
+        "closed_trades": 2,
+        "dropped:NO_POSITION_TO_CLOSE": 2,
+        "fills": 2,
+        "gate:WEEKEND_BLOCK": 4,
+        "requote:WAITING_FOR_QUOTE": 6
+      },
+      "declared_bars": {
+        "AAVE/USDT": 200,
+        "UNI/USDT": 200
+      },
+      "fills": 2,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 900,
+      "ledger": "evidence\\real_900ms_wide_stop_ledger.jsonl",
+      "name": "real_900ms_wide_stop",
+      "net_realised_usdt": 2.415689,
+      "policy_override": {
+        "default_stop_loss_pct": 2.0,
+        "default_take_profit_pct": 3.0
+      },
+      "removed_bar_open_ms": {},
+      "series_sha256": "aca26ff85171381281e6df1944c70d8aa853721d17eee6ab1fbc2f392fc1856a",
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "21742a8a5a55f37c79d257a00c7549e2b1db8fef693e79c1a293aa35e1d0614e",
+        "kinds": {
+          "CLOSE": 2,
+          "DECISION": 8,
+          "DECISION_OUTCOME": 10,
+          "FILL": 2,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 24,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 2,
+      "counters": {
+        "action:CLOSE": 2,
+        "action:LONG": 3,
+        "action:SHORT": 3,
+        "closed_trades": 2,
+        "dropped:NO_POSITION_TO_CLOSE": 2,
+        "fills": 2,
+        "gate:WEEKEND_BLOCK": 4
+      },
+      "declared_bars": {
+        "AAVE/USDT": 200,
+        "UNI/USDT": 200
+      },
+      "fills": 2,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 0,
+      "ledger": "evidence\\real_0ms_ledger.jsonl",
+      "name": "real_0ms",
+      "net_realised_usdt": -7.599295,
+      "policy_override": null,
+      "removed_bar_open_ms": {},
+      "series_sha256": "aca26ff85171381281e6df1944c70d8aa853721d17eee6ab1fbc2f392fc1856a",
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "012ffeecf263669b3457c91611c7f88e4830b3a333b653f24646b6f7e75a8e8e",
+        "kinds": {
+          "CLOSE": 2,
+          "DECISION": 8,
+          "DECISION_OUTCOME": 6,
+          "FILL": 2,
+          "GUARD_REJECT": 2,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 22,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 2,
+      "counters": {
+        "action:CLOSE": 2,
+        "action:LONG": 3,
+        "action:SHORT": 3,
+        "closed_trades": 2,
+        "dropped:NO_POSITION_TO_CLOSE": 2,
+        "fills": 2,
+        "gate:WEEKEND_BLOCK": 2,
+        "guard:DATA_GAP": 2,
+        "requote:WAITING_FOR_QUOTE": 4
+      },
+      "declared_bars": {
+        "AAVE/USDT": 200,
+        "UNI/USDT": 200
+      },
+      "fills": 2,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 900,
+      "ledger": "evidence\\real_900ms_hole_ledger.jsonl",
+      "name": "real_900ms_hole",
+      "net_realised_usdt": -7.599295,
+      "policy_override": null,
+      "removed_bar_open_ms": {
+        "AAVE/USDT": 1610154000000,
+        "UNI/USDT": 1610154000000
+      },
+      "series_sha256": "073443d2637888de8dc8b4ba10beb3b73a36b62fa9e32c02eda5a32c43b5b9d5",
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "d3de28e0a30dec0ae63909e2838ac6c2431e7ab4dafaf6f27811eb332ee1b4f7",
+        "kinds": {
+          "CLOSE": 1,
+          "DECISION": 114,
+          "DECISION_OUTCOME": 5,
+          "FILL": 1,
+          "GUARD_REJECT": 1,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 124,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 1,
+      "counters": {
+        "action:LONG": 58,
+        "action:NO_TRADE": 56,
+        "closed_trades": 1,
+        "dropped:ALREADY_LONG": 52,
+        "dropped:MODEL_NO_TRADE": 56,
+        "fills": 1,
+        "gap_exits": 1,
+        "guard:RUN_ENDED_WITH_ORDER_PENDING": 1,
+        "risk_blocked:daily_loss_limit": 4
+      },
+      "declared_bars": {
+        "BTC/USDT": 76,
+        "ETH/USDT": 76
+      },
+      "fills": 1,
+      "gap_exits": 1,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 0,
+      "ledger": "evidence\\synthetic_gap_open_ledger.jsonl",
+      "name": "synthetic_gap_open",
+      "net_realised_usdt": -16.232058,
+      "policy_override": {
+        "max_daily_loss_pct": 0.05
+      },
+      "removed_bar_open_ms": {},
+      "series_sha256": "246b02854c56be98798e1b5c273b0228f18aefd22b0b3b0e0cbdba8dd0b129c5",
+      "synthetic_dataset": true
+    }
+  ],
+  "tool": "ai_bots_003c_capture",
+  "window_bars": 120
+}

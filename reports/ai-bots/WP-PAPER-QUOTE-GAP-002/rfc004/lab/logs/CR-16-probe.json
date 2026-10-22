@@ -1,0 +1,87 @@
+{
+ "argv": [
+  "--root",
+  "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\cases\\CR-16",
+  "--ledger",
+  "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\cases\\CR-16\\ledger.jsonl",
+  "--out",
+  "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\logs\\CR-16-probe.json",
+  "--role",
+  "resume",
+  "--mode",
+  "network-probe",
+  "--bars",
+  "holed",
+  "--feed",
+  "stop_hole",
+  "--session",
+  "CR-16-probe",
+  "--book-id",
+  "rfc004-lab-book",
+  "--hold-lock-ms",
+  "0.0",
+  "--deny-network"
+ ],
+ "barrier_ms": null,
+ "book": null,
+ "book_state_digest": null,
+ "deny_probe": "DENIED",
+ "deny_probe_detail": "network denied in the recovery laboratory: socket.getaddrinfo",
+ "events": [],
+ "files": [],
+ "ledger": {
+  "chain": {
+   "head_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+   "kinds": {},
+   "lines": 0,
+   "ok": true,
+   "reason": "INTACT"
+  },
+  "entries": [],
+  "exists": true,
+  "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\cases\\CR-16\\ledger.jsonl",
+  "torn": false
+ },
+ "lock": {
+  "exists": false,
+  "holder": null,
+  "holder_alive": null
+ },
+ "network": {
+  "attempts": 1,
+  "denied": 0,
+  "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\cases\\CR-16\\network.jsonl"
+ },
+ "pid": 13208,
+ "place_order_exit": 2,
+ "role": "network-probe",
+ "store_recovery": {
+  "barrier_ms": null,
+  "book_digest": null,
+  "checks": [
+   {
+    "check": "orphan_tmp_absent",
+    "detail": "no temporary book left behind",
+    "ok": true
+   },
+   {
+    "check": "book_present",
+    "detail": "no book on disk: this session starts the account",
+    "ok": true
+   }
+  ],
+  "code": null,
+  "commit_event_lag": false,
+  "detail": "no durable book: nothing to recover",
+  "events_repair": null,
+  "ledger": null,
+  "orphan_tmp": false,
+  "platform": {
+   "directory_fsync": "unsupported",
+   "os": "nt",
+   "power_loss_scope": "POWER_LOSS_DURABILITY_NOT_VERIFIED"
+  },
+  "state_digest": null,
+  "status": "NO_CHANGE"
+ }
+}

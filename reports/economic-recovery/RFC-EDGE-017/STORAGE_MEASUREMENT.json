@@ -1,0 +1,57 @@
+{
+  "declared_fallback_bytes_per_hour": 240000000,
+  "effective_bytes_per_hour": 9787.0,
+  "fallback_overstatement_factor": 24522.3,
+  "guard_inputs_unchanged": {
+    "collector_max_bytes": 67108864,
+    "hours": 24.0,
+    "note": "the guard's own defaults; this package changed no reserve, multiplier or limit",
+    "reserve_bytes": 2000000000,
+    "stress_multiplier": 1.5
+  },
+  "guard_plan": {
+    "autoscaled": false,
+    "collector_max_bytes": 67108864,
+    "collector_max_gb": 0.067,
+    "effective_rate_bytes_per_hour": 9787.0,
+    "free_bytes": 4253241344,
+    "free_gb": 4.253,
+    "hours": 24.0,
+    "hours_affordable_by_disk": 230227.991,
+    "hours_affordable_by_valve": 6856.939,
+    "ok": true,
+    "overhead_bytes_per_hour": 9369.0,
+    "rate_bytes_per_hour": 418.0,
+    "rate_source": "measured from this collector's own slice, ledger and manifest at the commit that produced this report; not the 240 MB/h cross-lane fallback",
+    "reasons": [
+      "the valve pays for 24.00 h at 1.5x (0.067 GB available, 0.000 GB needed) and the host keeps 2.253 GB above the reserve"
+    ],
+    "recommended_collector_max_bytes": 352332,
+    "required_gb": 0.0,
+    "required_gb_at_stress": 0.0,
+    "reserve_bytes": 2000000000,
+    "state": "COHERENT",
+    "stress_multiplier": 1.5
+  },
+  "ledger": {
+    "bytes": 4476,
+    "bytes_per_line": 1119.0,
+    "lines": 4,
+    "path": "reports/economic-recovery/RFC-EDGE-015/scratch/OOS_CAPTURE_LEDGER.jsonl"
+  },
+  "manifest": {
+    "bytes": 6012,
+    "rewritten_per_run": true
+  },
+  "measured_at_utc": "2026-10-17T16:36:07Z",
+  "overhead_bytes_per_hour": 9369.0,
+  "peak_transient_bytes_during_atomic_write": 6688,
+  "rate_bytes_per_hour": 418.0,
+  "schema_version": "EDGE17_STORAGE_MEASUREMENT_V1",
+  "slice": {
+    "bytes": 3344,
+    "bytes_per_row": 139.333,
+    "path": "reports/economic-recovery/RFC-EDGE-015/scratch/OOS_PROSPECTIVE_1H.jsonl",
+    "rows": 24
+  }
+}

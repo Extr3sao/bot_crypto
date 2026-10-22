@@ -1,0 +1,23 @@
+{
+ "attempts": [],
+ "denied": 0,
+ "mode": "app-route",
+ "pid": 3468,
+ "policy": {
+  "external_network": false,
+  "loopback_network": false,
+  "mode": "paper",
+  "order_routes": false,
+  "source": "policy_for_mode"
+ },
+ "result": {
+  "exit_with_confirm_in_paper": 2,
+  "exit_without_confirm": 2,
+  "gate_on_command": {
+   "code": "ISO_ORDER_ROUTE",
+   "detail": "ISO_ORDER_ROUTE: app._cmd_place_order refused: policy {'mode': 'paper', 'external_network': False, 'loopback_network': False, 'order_routes': False, 'source': 'policy_for_mode'}",
+   "outcome": "REFUSED"
+  }
+ },
+ "status": "RAN"
+}

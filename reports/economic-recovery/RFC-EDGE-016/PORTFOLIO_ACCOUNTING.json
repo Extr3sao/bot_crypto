@@ -1,0 +1,38 @@
+{
+  "reconciliation": {
+    "015_single_base_used_for_the_comparison": 10000.0,
+    "015_sum_of_books": 29987.190039413617,
+    "016_single_base": 10000.0,
+    "verdict": "NOT_COMPARABLE_UNTIL_RESTATED"
+  },
+  "schema_version": "EDGE16_PORTFOLIO_ACCOUNTING_V1",
+  "wp_edge_015": {
+    "books": [
+      "EDGE15LANE-BTCUSDT",
+      "EDGE15LANE-ETHUSDT",
+      "EDGE15LANE-SOLUSDT"
+    ],
+    "equity_per_book_usdt": 10000.0,
+    "mode": "THREE_INDEPENDENT_SIMULATIONS",
+    "not_a_claim_about_capital": true,
+    "reported_mark_to_market_usdt": 29987.190039413617,
+    "why": "three books of 10 000 are three simulations; adding their equity describes nothing an account could hold, and the 015 comparison used a single 10 000 base, so the two numbers were never the same quantity"
+  },
+  "wp_edge_016": {
+    "book_id": "EDGE16LANE",
+    "closed_trades": 146,
+    "equity_mark_to_market_usdt": 9946.615472912987,
+    "equity_usdt": 10000.0,
+    "gates_that_bind_across_symbols": [
+      "max_open_positions",
+      "max_total_exposure_pct",
+      "max_asset_exposure_pct",
+      "max_daily_loss_pct",
+      "max_weekly_loss_pct",
+      "max_total_drawdown_pct"
+    ],
+    "identities_hold": true,
+    "mode": "ONE_SHARED_PORTFOLIO",
+    "realised_pnl_usdt": -53.38452708701357
+  }
+}

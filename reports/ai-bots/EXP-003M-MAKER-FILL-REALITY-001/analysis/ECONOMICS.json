@@ -1,0 +1,304 @@
+{
+  "economics": {
+    "F0_touch_full": {
+      "bootstrap_ci95_net_per_signal": {
+        "block_days": 5,
+        "blocks": 10,
+        "lower": -1.59759553,
+        "mean": -0.45225547,
+        "resamples": 10000,
+        "seed": 20261020,
+        "upper": 0.70372749
+      },
+      "edge_over_fees_usdt": -0.48309107,
+      "exit_reasons": {
+        "stop_loss": 24,
+        "take_profit": 20
+      },
+      "fees_per_fill_usdt": 0.75,
+      "fill_rate": 0.93617,
+      "filled": 44,
+      "gross_per_fill_usdt": 0.26690893,
+      "halves": {
+        "first_half_count": 21,
+        "first_half_mean": -0.79188128,
+        "second_half_count": 26,
+        "second_half_mean": -0.17794232
+      },
+      "mean_fill_fraction": 1.0,
+      "miss_reasons": {
+        "NO_TOUCH_IN_OHLC": 3
+      },
+      "naive_stderr_usdt": 0.44908757,
+      "net_per_fill_usdt": -0.48309107,
+      "net_per_signal_usdt": -0.45225547,
+      "net_usdt": -21.25600719,
+      "parameters": {
+        "fee_schedule": "spot_vip0_bnb",
+        "horizon_minutes": 15,
+        "kind": "FILL_UPPER_BOUND",
+        "latency_ms": 0,
+        "note": "EXP-003L's assumption: any touch fills us fully at the limit",
+        "offset_bps": 0.0,
+        "queue_multiple": 0.0
+      },
+      "signals": 47
+    },
+    "F1_tape_base": {
+      "bootstrap_ci95_net_per_signal": {
+        "block_days": 5,
+        "blocks": 10,
+        "lower": -1.47268478,
+        "mean": -0.47780855,
+        "resamples": 10000,
+        "seed": 20261020,
+        "upper": 0.60918853
+      },
+      "edge_over_fees_usdt": -0.53469052,
+      "exit_reasons": {
+        "stop_loss": 23,
+        "take_profit": 19
+      },
+      "fees_per_fill_usdt": 0.74065459,
+      "fill_rate": 0.893617,
+      "filled": 42,
+      "gross_per_fill_usdt": 0.20596407,
+      "halves": {
+        "first_half_count": 21,
+        "first_half_mean": -0.93473842,
+        "second_half_count": 26,
+        "second_half_mean": -0.10874981
+      },
+      "mean_fill_fraction": 0.987539,
+      "miss_reasons": {
+        "NO_AGGRESSOR_AT_LIMIT": 3,
+        "QUEUE_NEVER_REACHED": 2
+      },
+      "naive_stderr_usdt": 0.4345261,
+      "net_per_fill_usdt": -0.53469052,
+      "net_per_signal_usdt": -0.47780855,
+      "net_usdt": -22.45700195,
+      "parameters": {
+        "fee_schedule": "spot_vip0_bnb",
+        "horizon_minutes": 15,
+        "kind": "ESTIMATED",
+        "latency_ms": 400,
+        "note": "one order of queue ahead of us, 400 ms to reach the venue",
+        "offset_bps": 0.0,
+        "queue_multiple": 1.0
+      },
+      "signals": 47
+    },
+    "F2_tape_pessimistic": {
+      "bootstrap_ci95_net_per_signal": {
+        "block_days": 5,
+        "blocks": 10,
+        "lower": -1.59992186,
+        "mean": -0.64824774,
+        "resamples": 10000,
+        "seed": 20261020,
+        "upper": 0.41752127
+      },
+      "edge_over_fees_usdt": -0.92326194,
+      "exit_reasons": {
+        "stop_loss": 19,
+        "take_profit": 14
+      },
+      "fees_per_fill_usdt": 1.0,
+      "fill_rate": 0.702128,
+      "filled": 33,
+      "gross_per_fill_usdt": 0.07673806,
+      "halves": {
+        "first_half_count": 21,
+        "first_half_mean": -1.07209958,
+        "second_half_count": 26,
+        "second_half_mean": -0.30590588
+      },
+      "mean_fill_fraction": 1.0,
+      "miss_reasons": {
+        "NO_AGGRESSOR_AT_LIMIT": 12,
+        "QUEUE_NEVER_REACHED": 2
+      },
+      "naive_stderr_usdt": 0.3902839,
+      "net_per_fill_usdt": -0.92326194,
+      "net_per_signal_usdt": -0.64824774,
+      "net_usdt": -30.4676439,
+      "parameters": {
+        "fee_schedule": "spot_vip0",
+        "horizon_minutes": 5,
+        "kind": "ESTIMATED",
+        "latency_ms": 2000,
+        "note": "four orders of queue, 2 s latency, 5 min horizon, 2 bp offset: the corner EXP-003L gated on",
+        "offset_bps": 2.0,
+        "queue_multiple": 4.0
+      },
+      "signals": 47
+    },
+    "F3_tape_no_queue": {
+      "bootstrap_ci95_net_per_signal": {
+        "block_days": 5,
+        "blocks": 10,
+        "lower": -1.53313382,
+        "mean": -0.44087985,
+        "resamples": 10000,
+        "seed": 20261020,
+        "upper": 0.70495381
+      },
+      "edge_over_fees_usdt": -0.47093984,
+      "exit_reasons": {
+        "stop_loss": 24,
+        "take_profit": 20
+      },
+      "fees_per_fill_usdt": 0.73886478,
+      "fill_rate": 0.93617,
+      "filled": 44,
+      "gross_per_fill_usdt": 0.26792494,
+      "halves": {
+        "first_half_count": 21,
+        "first_half_mean": -0.82925457,
+        "second_half_count": 26,
+        "second_half_mean": -0.12719258
+      },
+      "mean_fill_fraction": 0.985153,
+      "miss_reasons": {
+        "NO_AGGRESSOR_AT_LIMIT": 3
+      },
+      "naive_stderr_usdt": 0.44362852,
+      "net_per_fill_usdt": -0.47093984,
+      "net_per_signal_usdt": -0.44087985,
+      "net_usdt": -20.72135298,
+      "parameters": {
+        "fee_schedule": "spot_vip0_bnb",
+        "horizon_minutes": 15,
+        "kind": "TAPE_UPPER_BOUND",
+        "latency_ms": 400,
+        "note": "queue ignored: what the tape alone allows. Brackets F0",
+        "offset_bps": 0.0,
+        "queue_multiple": 0.0
+      },
+      "signals": 47
+    }
+  },
+  "evidence_class": "ESTIMATED_FROM_OBSERVED_TRADE_TAPE",
+  "experiment": "EXP-003M-MAKER-FILL-REALITY-001",
+  "fill_model_sha256": "702d56c562ca7f85601166e67a441455aae97f3d4d246bcdfe55bcaad842fbe0",
+  "gates": {
+    "G1_reproduces_003l": {
+      "detail": {
+        "fill_rate": 0.0,
+        "gross_per_fill_usdt": 0.0,
+        "net_per_fill_usdt": 0.0,
+        "net_per_signal_usdt": 0.0
+      },
+      "passed": true
+    },
+    "G4_economics_pessimistic": {
+      "detail": {
+        "ci_lower": -1.59992186,
+        "net_per_fill_usdt": -0.92326194,
+        "net_per_signal_usdt": -0.64824774
+      },
+      "passed": false
+    },
+    "G5_optimistic_ceiling": {
+      "detail": {
+        "fees_per_fill_usdt": 0.75,
+        "gross_per_fill_usdt": 0.26690893,
+        "net_per_fill_usdt": -0.48309107,
+        "statement": "F0 fills every touch at the improved price with no queue. Its gross per fill is the ceiling any fill model can reach on this sample"
+      },
+      "passed": false
+    },
+    "G7_evidence_class": {
+      "detail": {
+        "class": "ESTIMATED_FROM_OBSERVED_TRADE_TAPE",
+        "reason": "no order was ever sent to an exchange; fills are inferred from the tape"
+      },
+      "passed": false
+    }
+  },
+  "limitations": [
+    "no order was sent to an exchange: every fill here is inferred from published trades",
+    "the queue position at the limit is unobservable without a spot L2 feed; it is declared and swept, not measured",
+    "a trade at our price is not proof that our order was the one matched",
+    "cancel/replace traffic and hidden liquidity are not modelled",
+    "the holdout 2026-08-06 → 2026-08-20 stays closed; nothing here is out-of-sample in the forward sense",
+    "a moving-block bootstrap on 47 signals is a wide interval, not a proof of anything"
+  ],
+  "pessimistic_corner_cross_check": {
+    "note": "EXP-003L's 5m/2 bp offset/spot_vip0 corner is a different scenario object in EXP-003M (which adds a tape-based queue); it is quoted, not restated, and the F0 gate above is the reproduction that counts",
+    "predecessor": {
+      "fill_rate": 0.787234,
+      "net_per_fill_usdt": -0.87386648,
+      "net_per_signal_usdt": -0.68793744
+    }
+  },
+  "rationale": "The candidate loses under the pessimistic maker model and already loses under the most generous one. Fill realism is not the binding constraint: the gross edge per fill is smaller than the fees it must clear, so a better fill rate has nothing to rescue.",
+  "reproduction": {
+    "deltas": {
+      "fill_rate": 0.0,
+      "gross_per_fill_usdt": 0.0,
+      "net_per_fill_usdt": 0.0,
+      "net_per_signal_usdt": 0.0
+    },
+    "matches": true,
+    "measured": {
+      "fill_rate": 0.93617,
+      "gross_per_fill_usdt": 0.26690893,
+      "net_per_fill_usdt": -0.48309107,
+      "net_per_signal_usdt": -0.45225547
+    },
+    "scenario": "maker_resting__spot_vip0_bnb__h15__o0",
+    "target": {
+      "fill_rate": 0.93617,
+      "gross_per_fill_usdt": 0.26690893,
+      "net_per_fill_usdt": -0.48309107,
+      "net_per_signal_usdt": -0.45225547
+    },
+    "tolerance_usdt": 1e-08
+  },
+  "schema_version": "AI_BOTS_003M_ECONOMICS_V1",
+  "selection": {
+    "F1_tape_base": {
+      "adverse_15m_bps": 6.225917,
+      "adverse_1m_bps": -3.370451,
+      "adverse_5m_bps": 2.05749,
+      "baseline_adverse_15m_bps": 2.362074,
+      "baseline_adverse_1m_bps": -4.83592,
+      "baseline_adverse_5m_bps": -1.779905,
+      "baseline_filled": 44,
+      "delta_adverse_5m_bps": 3.837395,
+      "filled": 42,
+      "note": "positive = the forward move went against the position. Compare a tape-filled set with the touch-filled set on the same horizons",
+      "seconds_to_fill_median": 12.082
+    },
+    "F2_tape_pessimistic": {
+      "adverse_15m_bps": 5.075807,
+      "adverse_1m_bps": -2.504843,
+      "adverse_5m_bps": 5.307905,
+      "baseline_adverse_15m_bps": 2.362074,
+      "baseline_adverse_1m_bps": -4.83592,
+      "baseline_adverse_5m_bps": -1.779905,
+      "baseline_filled": 44,
+      "delta_adverse_5m_bps": 7.08781,
+      "filled": 33,
+      "note": "positive = the forward move went against the position. Compare a tape-filled set with the touch-filled set on the same horizons",
+      "seconds_to_fill_median": 41.567
+    },
+    "F3_tape_no_queue": {
+      "adverse_15m_bps": 2.362074,
+      "adverse_1m_bps": -4.83592,
+      "adverse_5m_bps": -1.779905,
+      "baseline_adverse_15m_bps": 2.362074,
+      "baseline_adverse_1m_bps": -4.83592,
+      "baseline_adverse_5m_bps": -1.779905,
+      "baseline_filled": 44,
+      "delta_adverse_5m_bps": 0.0,
+      "filled": 44,
+      "note": "positive = the forward move went against the position. Compare a tape-filled set with the touch-filled set on the same horizons",
+      "seconds_to_fill_median": 8.889
+    }
+  },
+  "signals": 47,
+  "verdict": "REJECT"
+}

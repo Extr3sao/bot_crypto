@@ -1,0 +1,90 @@
+{
+ "schema": "wp00305-paper-e2e-minimal-comparison/1",
+ "generated_from": {
+  "published": {
+   "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00303/PAPER_E2E_LAB.json",
+   "sha256": "ad25e7d422b38a1b010f55488601d6fd7bde58d27d17cd6fe33fe74759f435a2"
+  },
+  "port_pre_format": {
+   "path": ".tmp/full2/PAPER_E2E_LAB.json",
+   "sha256": "e6f602739a5b41484f7fe7c463abdb4245fc866da049599ab87861873b8edc34"
+  },
+  "port_post_format": {
+   "path": ".tmp/full5/PAPER_E2E_LAB.json",
+   "sha256": "bc0efed292db5556699bd584fed69f20101c84af35c67b426cf672ea06154e4a"
+  }
+ },
+ "scenarios": {
+  "E2E-COMMITTED": {
+   "economic_digest_published": "20f10f30bb6ce5394f6c19f89f4bc0658faeea2684199160f4a566a4edf9aac9",
+   "economic_digest_port_pre_format": "20f10f30bb6ce5394f6c19f89f4bc0658faeea2684199160f4a566a4edf9aac9",
+   "economic_digest_port_post_format": "20f10f30bb6ce5394f6c19f89f4bc0658faeea2684199160f4a566a4edf9aac9",
+   "digest_identical": true,
+   "totals_identical": true,
+   "accounting_identical": true,
+   "closed_trade_fields_that_differ": [],
+   "orders_created": 0,
+   "fills_closed": 0,
+   "realised_pnl": 0
+  },
+  "E2E-SCENARIO": {
+   "economic_digest_published": "59dc36111fad5be54e0f82b3df758dfab65307ef223476d3a72235999c7385c9",
+   "economic_digest_port_pre_format": "59dc36111fad5be54e0f82b3df758dfab65307ef223476d3a72235999c7385c9",
+   "economic_digest_port_post_format": "59dc36111fad5be54e0f82b3df758dfab65307ef223476d3a72235999c7385c9",
+   "digest_identical": true,
+   "totals_identical": true,
+   "accounting_identical": true,
+   "closed_trade_fields_that_differ": [
+    "closed_at",
+    "entry_order_id",
+    "exit_order_id",
+    "opened_at",
+    "position_id",
+    "trade_id"
+   ],
+   "orders_created": 23,
+   "fills_closed": 21,
+   "realised_pnl": 87.65152561534461
+  },
+  "E2E-RESTART": {
+   "economic_digest_published": "45ada80c456bf79b1c294656c0fbb9742e5864489247649f34cf6e8d434444ce",
+   "economic_digest_port_pre_format": "45ada80c456bf79b1c294656c0fbb9742e5864489247649f34cf6e8d434444ce",
+   "economic_digest_port_post_format": "45ada80c456bf79b1c294656c0fbb9742e5864489247649f34cf6e8d434444ce",
+   "digest_identical": true,
+   "totals_identical": true,
+   "accounting_identical": true,
+   "closed_trade_fields_that_differ": [
+    "closed_at",
+    "entry_order_id",
+    "exit_order_id",
+    "opened_at",
+    "position_id",
+    "trade_id"
+   ],
+   "orders_created": 0,
+   "fills_closed": 21,
+   "realised_pnl": 87.65152561534461
+  }
+ },
+ "runtime": {
+  "files_hashed": 13,
+  "identical_pre_format": 13,
+  "identical_post_format": 8,
+  "changed_only_by_formatting": [
+   "src/trading_bot/autonomous/decision.py",
+   "src/trading_bot/autonomous/runtime.py",
+   "src/trading_bot/execution/isolation.py",
+   "src/trading_bot/paper/broker.py",
+   "src/trading_bot/paper/reconciliation_v4.py"
+  ]
+ },
+ "dataset": {
+  "identical": true,
+  "manifest_sha256": "883a4fd3c66992c11276782db772f4c80bd16525dc61bbc9b8851999c732d1b4"
+ },
+ "abuse": {
+  "scenarios": 8,
+  "all_ok": true,
+  "zero_network_events": true
+ }
+}

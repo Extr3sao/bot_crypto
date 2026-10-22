@@ -1,0 +1,139 @@
+{
+  "hypothesis_id": "H-049-001",
+  "strategy_id": "S-049-001-STABLE_LIQUIDITY_IMPULSE",
+  "spec_version": 1,
+  "status": "SPEC_FROZEN",
+  "family": "stablecoin_primary_issuance",
+  "economic_mechanism": "Stablecoins are the settlement rail of crypto trading. Primary-market issuance creates new dollar liabilities that are backed by fiat/T-bill purchases and are almost entirely deployed into crypto markets, so aggregate USD-pegged stablecoin supply growth measures net new dollars entering the crypto system. Because inflows are autocorrelated while liquidity is being deployed, a supply expansion above its own recent norm should be followed by positive net spot returns at the multi-day horizon, and a contraction should precede de-risking.",
+  "source_ids": ["SRC-049-001", "SRC-049-002", "SRC-049-003", "SRC-049-004", "SRC-049-005"],
+  "source_versions": {
+    "SRC-049-001": "DefiLlama API endpoint /stablecoincharts/all, retrieved and hashed in data/rfc049/vendor/VENDOR_MANIFEST.json",
+    "SRC-049-002": "arXiv:2411.06327v2 (2025-09-01)",
+    "SRC-049-003": "FEDS Notes 2024-02-23",
+    "SRC-049-004": "FRB Philadelphia WP 26-24 (2026)",
+    "SRC-049-005": "MDPI JRFM / preprints (2026)"
+  },
+  "asset_universe": ["BTCUSDT"],
+  "replication_assets": ["ETHUSDT"],
+  "instrument_types": ["spot_long_cash"],
+  "direction": "long_only",
+  "timeframe": "1d bars; decision evaluated weekly at Sunday 23:00:00 UTC; execution at the next daily bar open (Monday 00:00 UTC)",
+  "entry_rule": "Let D_t be the total circulating value in USD of all USD-pegged stablecoins as published by the frozen vendor series (SRC-049-001), on the daily grid. Let r30_t = D_t / D_{t-30} - 1 (30-day net growth). Let B_t be the median of the previous 365 daily values of r30 ending at t-1 (strictly causal; B_t uses no value dated t or later). At each weekly decision instant, using the most recent daily observation t* whose availability time is <= Saturday 23:59:00 UTC, if r30_{t*} > B_{t*} the strategy is LONG; otherwise FLAT. A LONG state is opened at the next bar open after a transition from FLAT.",
+  "exit_rule": "The position is closed at the next bar open after the weekly state becomes FLAT (r30 <= B). The runtime risk engine may close the position independently and unconditionally; the strategy has no discretionary stop, no target and no time stop beyond the state flip.",
+  "invalidation": [
+    "Any acceptance threshold in acceptance_thresholds fails on the sealed out-of-sample window.",
+    "The locked-bootstrap lower confidence bound of net per-trip expectancy is <= 0 at the preregistered level.",
+    "The net edge does not survive the 1.5x cost stress.",
+    "The signal's incremental edge over the two declared baselines (buy-and-hold and the own-price 200-day trend state) is <= 0.",
+    "The vendor series is revised in a way that changes any decision already acted on (PIT integrity failure)."
+  ],
+  "parameters": {
+    "growth_window_days": 30,
+    "reference_median_window_days": 365,
+    "decision_weekday": "Sunday",
+    "decision_time_utc": "23:00:00",
+    "execution_lag": "next daily bar open",
+    "parameter_searches": 0
+  },
+  "indicator_warmup": "395 daily values (30 for r30, 365 for the causal median) must exist before the first decidable day",
+  "position_sizing_policy": "Long/cash spot, 1x notional, one position at a time, no leverage, no derivatives. The runtime risk engine owns sizing and limits and may reduce or veto; the strategy never sets margin or leverage.",
+  "risk_limits": {
+    "leverage": "1x only (spot long/cash)",
+    "max_equity_drawdown_for_admission": 0.25,
+    "per_trade_risk_budget": "not set by the strategy; risk engine applies its certified limits unchanged",
+    "single_trade_concentration_limit": "no single round trip may contribute more than 40% of positive net"
+  },
+  "holding_policy": "State-based; minimum hold 1 day; no discretionary exit beyond the frozen rule",
+  "funding_policy": "not applicable (spot)",
+  "execution_model": "Taker market orders on both legs at the next bar open after the decision instant; no maker fill assumption; no intrabar fills; costs from COST_MODEL_V3 (BINANCE_SPOT_STANDARD_TAKER) at the 200 USDT reference notional and at the measured notional of each simulation.",
+  "cost_model": {
+    "model": "COST_MODEL_V3",
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "round_trip_bps_at_200_usdt": null,
+    "round_trip_bps_at_1000_usdt": null,
+    "stress_multiple": 1.5,
+    "knowledge": "fees KNOWN (Binance Spot VIP0 published schedule); spread/slippage/impact ESTIMATED; no account-verified schedule",
+    "note": "the numeric values are recorded in data/rfc049/PREREGISTRATION_MANIFEST.json, re-derived from the frozen model at build time, never typed by hand"
+  },
+  "market_data_version": {
+    "price": "data/raw/alpha001/BTC-USDT_1d.json (and ETH-USDT_1d.json for replication), sha256 recorded in PREREGISTRATION_MANIFEST.json",
+    "signal": "data/rfc049/vendor/raw/defillama_stablecoin_supply_all.json, sha256 recorded in VENDOR_MANIFEST.json",
+    "field": "totalCirculatingUSD.peggedUSD"
+  },
+  "development_period": "first decidable day (on or after 2019-01-01) to 2023-12-31 (RESEARCH_EXPOSED: the daily price history and its general shape were inspected by RFC-035, RFC-046 and ALPHA-001/003; no result for this hypothesis or its sources was computed before this freeze)",
+  "validation_period": "2024-01-01 to 2026-10-10 (RESEARCH_EXPOSED, degraded evidential status: viewed by prior campaigns on other hypotheses; never used to fit this specification)",
+  "oos_policy": "SEALED_FORWARD_OOS: observations collected strictly after the preregistration freeze timestamp recorded in PREREGISTRATION_MANIFEST.json; opened exactly once, after either 20 closed round trips have accrued or 24 months have elapsed since the freeze, whichever comes first; if fewer than 20 closed round trips have accrued at 24 months the outcome is INSUFFICIENT_OOS_SAMPLE, never PASS and never REJECT on power alone.",
+  "statistical_tests": [
+    "net per-trip expectancy = mean net PnL per closed round trip, after COST_MODEL_V3 costs",
+    "stationary block bootstrap (10,000 resamples, expected block length 7 days) one-sided 95% lower confidence bound on net expectancy",
+    "profit factor = gross positive net / gross negative net",
+    "1.5x cost stress: every modelled cost component multiplied by 1.5, all else unchanged",
+    "BH and Holm corrections across the campaign's admitted hypotheses for the primary p-value (block-bootstrap p)",
+    "sign stability across three equal consecutive sub-windows of each period",
+    "incremental tests: (a) versus buy-and-hold over identical active windows; (b) versus an own-price 200-day SMA long/cash state machine on the same asset; (c) versus the other admitted hypothesis's state (H-049-002)"
+  ],
+  "acceptance_thresholds": {
+    "net_expectancy_positive": true,
+    "net_profit_factor_min": 1.1,
+    "net_pnl_oos_positive": true,
+    "lcb_95_net_expectancy_positive": true,
+    "cost_stress_1_5x_net_positive": true,
+    "positive_in_every_partition": ["development", "validation", "sealed_oos"],
+    "max_drawdown_le": 0.25,
+    "single_trade_share_of_positive_net_le": 0.4,
+    "minimum_oos_round_trips_or_months": "20 round trips or 24 months, whichever comes first",
+    "incremental_over_buy_and_hold_positive": true,
+    "incremental_over_200d_trend_baseline_positive": true
+  },
+  "estimated_turnover": {
+    "basis": "pre-measurement estimate from the rule's design (weekly decisions, 30-day growth versus its 365-day median)",
+    "expected_round_trips_per_year": "6 to 20",
+    "annual_cost_drag_at_20_trips_pct_capital": null,
+    "note": "the drag is computed in PREREGISTRATION_MANIFEST.json from the frozen cost model; realised turnover is measured in Phase B and may not be tuned"
+  },
+  "cost_feasibility": "The rule trades a slow state with multi-week holding periods. The relevant hurdle per round trip is the frozen spot round-trip cost (see PREREGISTRATION_MANIFEST.json). A move-cost ratio of at least 2x per trip is required and is checked in Phase B from measured turnover; if the measured turnover makes the cost drag exceed the measured gross edge, the outcome is COST_DISQUALIFIED.",
+  "expected_market_behavior": "Signal positive in liquidity-expansion regimes (supply growing above its norm) with positive forward returns; flat or negative episodes during redemptions and depegs; expected strongest in trending/liquid regimes and weakest during forced-deleveraging episodes.",
+  "alternative_explanations": [
+    "Endogeneity: stablecoin supply grows because prices rise (mint demand from existing holders), not because new dollars predict returns; the incremental test versus the 200-day trend baseline and versus buy-and-hold is designed to detect exactly this.",
+    "Trend proxy: the signal may be a slower expression of the same information as price momentum; if the trend baseline matches it, the hypothesis is rejected as a re-description.",
+    "Supply inflation from yield farming and cross-chain bridging without new demand.",
+    "Vendor revision: DefiLlama historical series may be backfilled; the one-day lag and the snapshot hashes are the mitigation."
+  ],
+  "counter_evidence": [
+    "SRC-049-005 reports weak or non-systematic forward predictability from stablecoin events in a 2026 peer-reviewed study.",
+    "OPP-0003 (the project's registered USDT-exchange-flow opportunity) remains WATCH with the note that on-chain flow series are usually commercial and that the 1-2 hour horizon collides with the cost floor; this specification deliberately uses a free aggregate series and a cost-compatible horizon instead.",
+    "Issuance is partly endogenous to demand (minting accommodates buyers, not creates them)."
+  ],
+  "market_regimes": ["liquidity expansion", "liquidity contraction", "depeg stress", "forced deleveraging"],
+  "data_requirements": [
+    "daily aggregate USD-pegged stablecoin circulating supply (SRC-049-001), full history from 2017-11-28",
+    "daily spot OHLC for BTCUSDT (and ETHUSDT), in-repo klines from 2017-08"
+  ],
+  "point_in_time_assumptions": [
+    "the vendor's value dated day t is treated as available at 00:00:00 UTC of day t+1 (one full day of conservatism); no same-day use",
+    "the frozen research snapshot (VENDOR_MANIFEST.json sha256) is used for development and validation; live collection during the sealed period records the value at retrieval time, and the retrieved value is what the decision uses",
+    "a decision uses only values with availability_time <= decision_time - 1 hour margin; the Saturday 23:59 UTC cutoff enforces this",
+    "no future bar, no interpolated value, no forward-filled value beyond 3 consecutive missing days (a 4th missing day forces FLAT)"
+  ],
+  "known_failure_modes": [
+    "trend-proxy collapse (already measured elsewhere in this repository as the fate of several price-conditioned signals)",
+    "data revisions invalidating acted decisions",
+    "regime break: supply grows during price declines if redemptions lag",
+    "few round trips making the sample underpowered",
+    "cost drift above the modelled schedule"
+  ],
+  "testable_predictions": [
+    "net per-trip expectancy after costs is positive on development and validation data",
+    "the state's forward net return exceeds buy-and-hold and the 200-day trend baseline over the same windows",
+    "the sign is stable across three consecutive sub-windows of the development period",
+    "the frozen rule, re-run independently by a verifier that never imports the builder, reproduces every trade and metric"
+  ],
+  "falsification_conditions": [
+    "any acceptance threshold fails on the sealed OOS",
+    "the effect is indistinguishable from the trend baseline (incremental <= 0)",
+    "LONG-state forward net return <= FLAT-state forward net return after costs across development and validation",
+    "PIT audit finds any decision that consumed a value published after its decision instant"
+  ],
+  "admission_status": "ADMITTED_FOR_PREREGISTRATION",
+  "notes": "Admission is not validation. No economic result for this hypothesis has been computed at freeze time."
+}

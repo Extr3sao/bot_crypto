@@ -1,0 +1,161 @@
+{
+  "schema": "wp00304-final-report/1",
+  "work_package": "WP-003-04",
+  "title": "Desbloquear la integración en main",
+  "decision": "BLOCKED",
+  "decision_reason": "Tres de los siete checks del PR ya fallan en origin/main; los dos que la base sí pasa sólo se ponen verdes reformateando 617 ficheros ajenos y reparando 611 errores de tipos en 105 ficheros ajenos, y dos tests dependen de ramas hermanas no fusionadas. Nada de eso es una decisión técnica reversible de este WP.",
+  "verification_timestamp_utc": "2026-10-21T23:30:00Z",
+  "acceptance_criteria": [
+    {
+      "id": 1,
+      "criterion": "Flujo PAPER ejecutado realmente",
+      "status": "MET",
+      "evidence": "re-ejecucion completa del laboratorio con el codigo corregido, LAB_EXIT=0"
+    },
+    {
+      "id": 2,
+      "criterion": "Evidencia de ejecucion reproducible",
+      "status": "MET",
+      "evidence": "verificador --repeat: economic digests identical across two independent runs"
+    },
+    {
+      "id": 3,
+      "criterion": "Aislamiento de ordenes reales validado",
+      "status": "MET (process-scoped)",
+      "evidence": "no_external_network + abuse_battery: 13 refusals / 8 escenarios, 0 llamadas a venue"
+    },
+    {
+      "id": 4,
+      "criterion": "Reconciliacion PAPER comprobada",
+      "status": "MET",
+      "evidence": "restart_reconciled: 23/23 intents, 0 cloids duplicados, delta equity 0.0"
+    },
+    {
+      "id": 5,
+      "criterion": "Tests y verificaciones independientes superados",
+      "status": "NOT_MET",
+      "evidence": "2 errores de coleccion por imports de ramas hermanas; el artefacto PAPER si pasa 18/18 + 11/11"
+    },
+    {
+      "id": 6,
+      "criterion": "Sin operaciones con capital real",
+      "status": "MET",
+      "evidence": "TRADING_BOT_MODE=paper + politica de aislamiento en cada proceso hijo"
+    },
+    {
+      "id": 7,
+      "criterion": "Informes completos y coherentes",
+      "status": "MET",
+      "evidence": "RUN_REPORT.md/json, FINAL_REPORT.md/json, EXECUTION_CHECKPOINT.md"
+    },
+    {
+      "id": 8,
+      "criterion": "Commits publicados y SHA remoto comprobado",
+      "status": "PARTIAL",
+      "evidence": "rama publicada y comprobada con ls-remote; main no actualizado"
+    }
+  ],
+  "criteria_met": 6,
+  "criteria_total": 8,
+  "deciding_facts": [
+    "En origin/main 5e6f9632 (run 35724120977): Format + Lint success, Type check success, pip-audit failure, Tests + Coverage failure, Smoke failure en Set up job.",
+    "origin/main local: 582 passed pero cobertura 62.34% frente al 90% exigido; pip-audit arrastra 80 avisos en 9 paquetes.",
+    "De los 617 ficheros sin formatear, 0 son de WP-003-03; de los 44 ficheros con lint, 0; de los 622 errores de mypy, 11, corregidos en e450a238 (quedan 611 ajenos).",
+    "tests/unit/observability/test_vision_panel.py (5fd791d8) y tests/unit/research/test_edge16_pit.py (6f04e59b) importan modulos que solo existen en wp003i/reproducibility, wp003j/runtime y ramas hermanas.",
+    "La PR presenta 493 commits y 3447 ficheros porque main local lleva 259 commits sin publicar desde 2026-09-22."
+  ],
+  "executed": [
+    {
+      "type": "commit",
+      "sha": "e450a238",
+      "summary": "corregidos los 11 errores de mypy de WP-003-03; mypy . 622 -> 611; los dos ficheros del WP quedan en 0"
+    },
+    {
+      "type": "run",
+      "summary": "re-ejecucion del laboratorio PAPER: LAB_EXIT=0, veredicto PASS con --repeat, digests economicos identicos"
+    },
+    {
+      "type": "measurement",
+      "summary": "reproduccion local de las cuatro gates en ffda06d5, 1d2192b0 y 5e6f9632 con la toolchain del lock"
+    }
+  ],
+  "not_executed_and_why": [
+    {
+      "action": "ruff format . sobre 617 ficheros",
+      "why": "reformateo masivo de trabajo de 178 commits ajenos; prohibido sin autorizacion explicita del titular"
+    },
+    {
+      "action": "reparar los 611 errores de mypy restantes",
+      "why": "105 ficheros de otros work packages; no es mecanico y no es de este WP"
+    },
+    {
+      "action": "borrar o marcar como skip los 2 tests que no coleccionan",
+      "why": "seria descartar trabajo ajeno para poner un gate verde"
+    },
+    {
+      "action": "merge de la PR o push a main",
+      "why": "7/7 checks rojos y 3 de ellos rojos ya en la base; fusionar seria saltarse los gates"
+    },
+    {
+      "action": "cambiar el umbral de cobertura o el alcance del gate",
+      "why": "debilita el contrato documentado en quality/release-gates.md"
+    }
+  ],
+  "route": {
+    "steps": [
+      "P1 baseline de CI en main",
+      "P2 decidir los 259 commits de main local",
+      "P3 deuda de formato (617 ficheros)",
+      "P4 deuda de lint (44 ficheros)",
+      "P5 deuda de tipos (611 errores / 105 ficheros)",
+      "P6 auto-contencion de las 2 dependencias cruzadas",
+      "P7 re-CI y merge"
+    ],
+    "expected_pr_after_fix": {
+      "commits": 234,
+      "files": 1859,
+      "failed_checks": 0
+    }
+  },
+  "status": {
+    "IMPLEMENTATION_STATUS": "PASS",
+    "TEST_STATUS": "FAIL",
+    "RUNTIME_VALIDATION": "PASS",
+    "NETWORK_ISOLATION": "PASS (process-scoped)",
+    "EXTERNAL_ORDER_PREVENTION": "PASS (process-scoped)",
+    "OS_SANDBOX": "NOT_AVAILABLE",
+    "PAPER_VALIDATION": "PASS (offline, declared scenario ledger)",
+    "INDEPENDENT_VERIFICATION": "PASS",
+    "CI_STATUS": "RED",
+    "GITHUB_SYNC": "REMOTE_BRANCH_SYNCED",
+    "MAIN_SYNCED": "NO",
+    "DELIVERY_STATUS": "BLOCKED",
+    "PRODUCTION_READY": "NOT_CLAIMED",
+    "FALSE_SUCCESS": 0
+  },
+  "limitations": [
+    "OS_SANDBOX NOT_AVAILABLE: barrera por proceso, sin contencion de SO acreditada",
+    "EXTERNAL_SESSION NOT_PERFORMED: la politica de paper deniega la red",
+    "ledger del escenario con ordenes declarado, no comprometido",
+    "SPREAD ESTIMATED en el modelo de costes",
+    "la suite de la rama falla (101 failed + 14 errors, 4362 passed) pero 0 de los 115 nodos rojos es de WP-003-03: 96 de main local y 19 de la rama previa",
+    "proteccion de rama de main UNKNOWN (API 401 sin autenticacion)"
+  ],
+  "github_sync": {
+    "repository": "https://github.com/Extr3sao/bot_crypto.git",
+    "local_branch": "wp/isolation-005",
+    "remote_branch": "origin/wp/isolation-005",
+    "local_head_sha": "be54120972cd4d182d8f19f12bcbda09452d5892",
+    "remote_head_sha": "be54120972cd4d182d8f19f12bcbda09452d5892",
+    "default_branch_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+    "commits_pending": 0,
+    "push_result": "OK — ffda06d5..be541209 wp/isolation-005 -> wp/isolation-005 (fast-forward, no force)",
+    "pull_request_url": "https://github.com/Extr3sao/bot_crypto/pull/17",
+    "merge_result": "NOT_MERGED",
+    "sync_status": "REMOTE_BRANCH_SYNCED",
+    "verification_timestamp": "2026-10-21T23:59:00Z",
+    "main_commits_pending": 259,
+    "main_synced": "NO",
+    "note": "local_head_sha es el tip que ls-remote devolvio antes de escribir este registro; el commit que lo contiene queda un paso por delante (desfase de construccion, no rama sin publicar)."
+  }
+}

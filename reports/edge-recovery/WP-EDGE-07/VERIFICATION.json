@@ -1,0 +1,458 @@
+{
+  "as_of_utc": "2026-10-14T09:43:25Z",
+  "checks": [
+    {
+      "detail": {
+        "clears_healthy_floor": false,
+        "critical_floor_bytes": 2147483648,
+        "free_bytes": 3198779392,
+        "free_gib": 2.979,
+        "healthy_floor_bytes": 5368709120
+      },
+      "id": "A-1",
+      "passed": true,
+      "statement": "the volume is above the runtime's 2 GiB critical floor"
+    },
+    {
+      "detail": {
+        "applied_runs": 4,
+        "paths_recorded_as_removed": 193,
+        "paths_that_still_exist": [],
+        "reclaimed_bytes_total": 2261922757
+      },
+      "id": "A-2",
+      "passed": true,
+      "statement": "every path the reclaim recorded as removed is gone, and at least one sweep was applied"
+    },
+    {
+      "detail": {
+        "after": "2026-10-14T08:44:22Z",
+        "count": 4,
+        "ticks": [
+          {
+            "market_requests": 7,
+            "new_bars": 18,
+            "slot_key": "2026-10-14T08:45Z",
+            "started_at_utc": "2026-10-14T08:55:56Z"
+          },
+          {
+            "market_requests": 7,
+            "new_bars": 6,
+            "slot_key": "2026-10-14T09:00Z",
+            "started_at_utc": "2026-10-14T09:10:58Z"
+          },
+          {
+            "market_requests": 4,
+            "new_bars": 3,
+            "slot_key": "2026-10-14T09:15Z",
+            "started_at_utc": "2026-10-14T09:25:57Z"
+          },
+          {
+            "market_requests": 4,
+            "new_bars": 3,
+            "slot_key": "2026-10-14T09:30Z",
+            "started_at_utc": "2026-10-14T09:40:57Z"
+          }
+        ]
+      },
+      "id": "A-3",
+      "passed": true,
+      "statement": "at least two real scheduled ticks observed after the reclaim"
+    },
+    {
+      "detail": {
+        "last_receipt": {
+          "after_outcome": "OBSERVED",
+          "artifacts": {
+            "attribution": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\BAR_ATTRIBUTION.json",
+            "markdown": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.md",
+            "markers": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\INCOMPLETE_STATES.jsonl",
+            "reconciliation": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json"
+          },
+          "at_utc": "2026-10-14T09:41:47Z",
+          "hypothetical": true,
+          "mode": "SCHEDULED",
+          "order_sent": false,
+          "outcome": "OBSERVED",
+          "ran": true,
+          "reason": null,
+          "run_id": "FWD-EDGE04-20261014T093000Z",
+          "schema_version": "EDGE04_DERIVED_REFRESH_V1",
+          "seconds": 0.266,
+          "slot_key": "2026-10-14T09:30Z",
+          "status": "HISTORICAL_ONLY",
+          "unattributed_bars": null
+        },
+        "receipts_inconsistent_with_the_tick": [],
+        "receipts_missing": [],
+        "receipts_on_file": 3,
+        "scheduled_ticks_since": 3,
+        "wiring_reference": "2026-10-14T09:07:00Z"
+      },
+      "id": "A-4",
+      "passed": true,
+      "statement": "every scheduled tick after the wiring has a durable receipt, and its ran/not-ran follows the tick's own outcome"
+    },
+    {
+      "detail": {
+        "records_replayed": 0,
+        "run_records": 98,
+        "slots_anchored": 11,
+        "slots_vanished": [],
+        "started_at_non_decreasing": true,
+        "store_series": {
+          "15m/BTC.jsonl": 663,
+          "15m/ETH.jsonl": 663,
+          "15m/SOL.jsonl": 663,
+          "1h/BTC.jsonl": 5457,
+          "1h/ETH.jsonl": 5457,
+          "1h/SOL.jsonl": 5457
+        }
+      },
+      "id": "A-5",
+      "passed": true,
+      "statement": "every scheduled slot WP-EDGE-06 published is still in the lane's log, in order, never replayed, and its store still holds every series"
+    },
+    {
+      "detail": {
+        "corpus_digest": "196884f9e719315eaf4a0e1844d28cdf2528f9743f043931c9383a172a7e3cec",
+        "gaps": 0,
+        "mismatched": [],
+        "symbols": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "SOLUSDT"
+        ]
+      },
+      "id": "B-1",
+      "passed": true,
+      "statement": "every holdout shard still hashes to the digest its manifest recorded"
+    },
+    {
+      "detail": {
+        "matches_flag_on_the_artefact": true,
+        "recomputed": "9ceb20fc7d4500c334e2d58f6ff4cd6d26c6b228c4f8ef93f3c709082e44e8ad",
+        "recorded": "9ceb20fc7d4500c334e2d58f6ff4cd6d26c6b228c4f8ef93f3c709082e44e8ad",
+        "registered": "9ceb20fc7d4500c334e2d58f6ff4cd6d26c6b228c4f8ef93f3c709082e44e8ad"
+      },
+      "id": "B-2",
+      "passed": true,
+      "statement": "the parameters read on the new window are the registered bytes, and the run says so"
+    },
+    {
+      "detail": {
+        "figures": 10,
+        "unequal": []
+      },
+      "id": "B-3",
+      "passed": true,
+      "statement": "the runner reproduced every published consulted-window figure it re-derived"
+    },
+    {
+      "detail": {
+        "failed": [
+          "P2",
+          "P3",
+          "P4",
+          "P5",
+          "P6",
+          "R1",
+          "R2"
+        ],
+        "published": "REJECT",
+        "recomputed": "REJECT"
+      },
+      "id": "B-4",
+      "passed": true,
+      "statement": "the trend verdict follows from its own checks by the registered mapping"
+    },
+    {
+      "detail": {
+        "active.hypothetical": true,
+        "active.order_sent": false,
+        "active.promotion": "NONE",
+        "validation.hypothetical": true,
+        "validation.order_sent": false,
+        "validation.promotion": "NONE"
+      },
+      "id": "B-5",
+      "passed": true,
+      "statement": "nothing was promoted, no order was sent, every reading is hypothetical"
+    },
+    {
+      "detail": {
+        "frozen_last_bar_ms": 1772319600000,
+        "gap_hours": 1.0,
+        "new_window_start_ms": 1772323200000
+      },
+      "id": "B-6",
+      "passed": true,
+      "statement": "the new window begins after the last bar of every frozen corpus"
+    },
+    {
+      "detail": {
+        "books": {
+          "edge07_active_fade": "REJECT_NO_GROSS_EDGE",
+          "edge07_active_thrust": "REJECT_NO_GROSS_EDGE"
+        },
+        "holdout_read_by_any_candidate": false,
+        "mismatched": {}
+      },
+      "id": "C-1",
+      "passed": true,
+      "statement": "each ACTIVE verdict follows from its own checks, and a screened-out book read no independent window"
+    },
+    {
+      "detail": {
+        "observations": 5453,
+        "published": 27.6151,
+        "recomputed": 27.6151
+      },
+      "id": "C-2",
+      "passed": true,
+      "statement": "the published one-hour ceiling for BTC on the new window recomputes from the bars"
+    }
+  ],
+  "failing": [],
+  "passed": 13,
+  "result": "PASS",
+  "schema_version": "EDGE07_VERIFICATION_V1",
+  "self_test": {
+    "baseline_result": "PASS",
+    "detected": 14,
+    "result": "PASS",
+    "sabotages": [
+      {
+        "check": "A-1",
+        "detail": {
+          "clears_healthy_floor": false,
+          "critical_floor_bytes": 2147483648,
+          "free_bytes": 1024,
+          "free_gib": 0.0,
+          "healthy_floor_bytes": 5368709120
+        },
+        "detected": true,
+        "must_be_caught_by": "A-1"
+      },
+      {
+        "check": "A-2",
+        "detail": {
+          "applied_runs": 5,
+          "paths_recorded_as_removed": 194,
+          "paths_that_still_exist": [
+            "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\edge07_verify.py"
+          ],
+          "reclaimed_bytes_total": 2261922757
+        },
+        "detected": true,
+        "must_be_caught_by": "A-2"
+      },
+      {
+        "check": "A-3",
+        "detail": {
+          "after": "2026-10-14T08:44:22Z",
+          "count": 0,
+          "ticks": []
+        },
+        "detected": true,
+        "must_be_caught_by": "A-3"
+      },
+      {
+        "check": "A-4",
+        "detail": {
+          "last_receipt": {
+            "after_outcome": "OBSERVED",
+            "artifacts": {
+              "attribution": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\BAR_ATTRIBUTION.json",
+              "markdown": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.md",
+              "markers": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\INCOMPLETE_STATES.jsonl",
+              "reconciliation": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge05\\reconciliation\\RECONCILIATION.json"
+            },
+            "at_utc": "2026-10-14T09:27:00Z",
+            "hypothetical": true,
+            "mode": "SCHEDULED",
+            "order_sent": false,
+            "outcome": "OBSERVED",
+            "ran": true,
+            "reason": null,
+            "run_id": "FWD-EDGE04-20261014T091500Z",
+            "schema_version": "EDGE04_DERIVED_REFRESH_V1",
+            "seconds": 0.234,
+            "slot_key": "2026-10-14T09:15Z",
+            "status": "HISTORICAL_ONLY",
+            "unattributed_bars": null
+          },
+          "receipts_inconsistent_with_the_tick": [],
+          "receipts_missing": [
+            "FWD-EDGE04-20261014T093000Z"
+          ],
+          "receipts_on_file": 2,
+          "scheduled_ticks_since": 3,
+          "wiring_reference": "2026-10-14T09:07:00Z"
+        },
+        "detected": true,
+        "must_be_caught_by": "A-4"
+      },
+      {
+        "check": "A-5",
+        "detail": {
+          "records_replayed": 0,
+          "run_records": 98,
+          "slots_anchored": 11,
+          "slots_vanished": [],
+          "started_at_non_decreasing": true,
+          "store_series": {
+            "15m/BTC.jsonl": 0,
+            "15m/ETH.jsonl": 663,
+            "15m/SOL.jsonl": 663,
+            "1h/BTC.jsonl": 5457,
+            "1h/ETH.jsonl": 5457,
+            "1h/SOL.jsonl": 5457
+          }
+        },
+        "detected": true,
+        "must_be_caught_by": "A-5"
+      },
+      {
+        "check": "B-1",
+        "detail": {
+          "corpus_digest": "196884f9e719315eaf4a0e1844d28cdf2528f9743f043931c9383a172a7e3cec",
+          "gaps": 0,
+          "mismatched": [
+            "BTCUSDT"
+          ],
+          "symbols": [
+            "BTCUSDT",
+            "ETHUSDT",
+            "SOLUSDT"
+          ]
+        },
+        "detected": true,
+        "must_be_caught_by": "B-1"
+      },
+      {
+        "check": "B-2",
+        "detail": {
+          "matches_flag_on_the_artefact": true,
+          "recomputed": "05d2c1d965a6417b92480a8ed977c4e10451255bf1d2b83390f504cbbe2d6e26",
+          "recorded": "9ceb20fc7d4500c334e2d58f6ff4cd6d26c6b228c4f8ef93f3c709082e44e8ad",
+          "registered": "9ceb20fc7d4500c334e2d58f6ff4cd6d26c6b228c4f8ef93f3c709082e44e8ad"
+        },
+        "detected": true,
+        "must_be_caught_by": "B-2"
+      },
+      {
+        "check": "B-3",
+        "detail": {
+          "figures": 10,
+          "unequal": [
+            {
+              "equal": false,
+              "mine_net_usdt": 1056.2895,
+              "mine_trades": 584,
+              "published_net_usdt": 1056.2895,
+              "published_trades": 584,
+              "source": "reports/edge-recovery/WP-EDGE-06/research/FAMILY_PROGRAM.json",
+              "what": "DEV/BASE"
+            }
+          ]
+        },
+        "detected": true,
+        "must_be_caught_by": "B-3"
+      },
+      {
+        "check": "B-4",
+        "detail": {
+          "failed": [
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "R1",
+            "R2"
+          ],
+          "published": "ADMIT_PAPER",
+          "recomputed": "REJECT"
+        },
+        "detected": true,
+        "must_be_caught_by": "B-4"
+      },
+      {
+        "check": "B-5",
+        "detail": {
+          "active.hypothetical": true,
+          "active.order_sent": false,
+          "active.promotion": "NONE",
+          "validation.hypothetical": true,
+          "validation.order_sent": false,
+          "validation.promotion": "PAPER"
+        },
+        "detected": true,
+        "must_be_caught_by": "B-5"
+      },
+      {
+        "check": "B-6",
+        "detail": {
+          "frozen_last_bar_ms": 1772319600000,
+          "gap_hours": -47866.556,
+          "new_window_start_ms": 1600000000000
+        },
+        "detected": true,
+        "must_be_caught_by": "B-6"
+      },
+      {
+        "check": "C-1",
+        "detail": {
+          "books": {
+            "edge07_active_fade": "ADMIT_PAPER",
+            "edge07_active_thrust": "REJECT_NO_GROSS_EDGE"
+          },
+          "holdout_read_by_any_candidate": false,
+          "mismatched": {
+            "edge07_active_fade": {
+              "published": "ADMIT_PAPER",
+              "recomputed": "REJECT_NO_GROSS_EDGE"
+            }
+          }
+        },
+        "detected": true,
+        "must_be_caught_by": "C-1"
+      },
+      {
+        "check": "C-2",
+        "detail": {
+          "observations": 5453,
+          "published": 999.0,
+          "recomputed": 27.6151
+        },
+        "detected": true,
+        "must_be_caught_by": "C-2"
+      },
+      {
+        "check": "A-6",
+        "detail": {
+          "records_replayed": 0,
+          "run_records": 97,
+          "slots_anchored": 11,
+          "slots_vanished": [
+            "2026-10-14T06:00Z"
+          ],
+          "started_at_non_decreasing": true,
+          "store_series": {
+            "15m/BTC.jsonl": 663,
+            "15m/ETH.jsonl": 663,
+            "15m/SOL.jsonl": 663,
+            "1h/BTC.jsonl": 5457,
+            "1h/ETH.jsonl": 5457,
+            "1h/SOL.jsonl": 5457
+          }
+        },
+        "detected": true,
+        "must_be_caught_by": "A-5"
+      }
+    ],
+    "total": 14
+  },
+  "total": 13
+}

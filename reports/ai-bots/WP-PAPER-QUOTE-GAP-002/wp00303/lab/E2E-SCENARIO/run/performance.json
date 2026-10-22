@@ -1,0 +1,2895 @@
+{
+  "cells": {
+    "momentum@1h|BTC|LOW_VOLATILITY|1h": {
+      "asset": "BTC",
+      "regime": "LOW_VOLATILITY",
+      "samples": [
+        {
+          "correct": false,
+          "decision_id": "6bb76b9fcee34dca-BTC",
+          "gross_bps": -14.758468426047179,
+          "mode": "NO_TRADE",
+          "net_bps": -38.54903784604718,
+          "timestamp_ms": 1774692000000
+        },
+        {
+          "correct": true,
+          "decision_id": "cd989c67151e4f75-BTC",
+          "gross_bps": 57.182978760544806,
+          "mode": "NO_TRADE",
+          "net_bps": 33.3924093405448,
+          "timestamp_ms": 1774706400000
+        }
+      ],
+      "strategy_id": "momentum@1h",
+      "timeframe": "1h"
+    },
+    "momentum@1h|BTC|RANGE|1h": {
+      "asset": "BTC",
+      "regime": "RANGE",
+      "samples": [
+        {
+          "correct": false,
+          "decision_id": "6cfef02814fa4555-BTC",
+          "gross_bps": -4.014500160171843,
+          "mode": "TRADE_PAPER",
+          "net_bps": -27.805069580171843,
+          "timestamp_ms": 1774497600000
+        },
+        {
+          "correct": false,
+          "decision_id": "cfcdd277699c4e3d-BTC",
+          "gross_bps": -11.454364355617322,
+          "mode": "TRADE_PAPER",
+          "net_bps": -35.244933775617326,
+          "timestamp_ms": 1774508400000
+        },
+        {
+          "correct": true,
+          "decision_id": "7f91e1d2854f48a3-BTC",
+          "gross_bps": 1.389499549053284,
+          "mode": "NO_TRADE",
+          "net_bps": -22.401069870946717,
+          "timestamp_ms": 1774512000000
+        },
+        {
+          "correct": true,
+          "decision_id": "5dfa5b027fad4cde-BTC",
+          "gross_bps": 8.941687697538711,
+          "mode": "NO_TRADE",
+          "net_bps": -14.84888172246129,
+          "timestamp_ms": 1774515600000
+        },
+        {
+          "correct": true,
+          "decision_id": "cc00c1a95bbf40f6-BTC",
+          "gross_bps": 66.02806406932869,
+          "mode": "NO_TRADE",
+          "net_bps": 42.237494649328696,
+          "timestamp_ms": 1774519200000
+        },
+        {
+          "correct": false,
+          "decision_id": "563ee5f1e03d4ae8-BTC",
+          "gross_bps": -22.858566245821788,
+          "mode": "NO_TRADE",
+          "net_bps": -46.64913566582179,
+          "timestamp_ms": 1774688400000
+        },
+        {
+          "correct": false,
+          "decision_id": "67746c5d57b6426d-BTC",
+          "gross_bps": -13.914844146264462,
+          "mode": "NO_TRADE",
+          "net_bps": -37.70541356626446,
+          "timestamp_ms": 1774710000000
+        },
+        {
+          "correct": true,
+          "decision_id": "301759b9e80646b7-BTC",
+          "gross_bps": 40.875249655015,
+          "mode": "NO_TRADE",
+          "net_bps": 17.084680235014996,
+          "timestamp_ms": 1774713600000
+        },
+        {
+          "correct": false,
+          "decision_id": "6afe6d1055f24367-BTC",
+          "gross_bps": -13.125437309399713,
+          "mode": "NO_TRADE",
+          "net_bps": -36.91600672939971,
+          "timestamp_ms": 1774717200000
+        },
+        {
+          "correct": false,
+          "decision_id": "890a944fbfef4e78-BTC",
+          "gross_bps": -12.063899520296486,
+          "mode": "NO_TRADE",
+          "net_bps": -35.854468940296485,
+          "timestamp_ms": 1774720800000
+        },
+        {
+          "correct": true,
+          "decision_id": "bb8c5c07530f4ea8-BTC",
+          "gross_bps": 1.268905989311782,
+          "mode": "NO_TRADE",
+          "net_bps": -22.521663430688218,
+          "timestamp_ms": 1774728000000
+        },
+        {
+          "correct": false,
+          "decision_id": "62b6f6fee27445c9-BTC",
+          "gross_bps": -1.5721080534379364,
+          "mode": "NO_TRADE",
+          "net_bps": -25.362677473437937,
+          "timestamp_ms": 1774731600000
+        },
+        {
+          "correct": false,
+          "decision_id": "9d89a52cfa3641b8-BTC",
+          "gross_bps": -32.95220159626957,
+          "mode": "NO_TRADE",
+          "net_bps": -56.74277101626957,
+          "timestamp_ms": 1774735200000
+        },
+        {
+          "correct": true,
+          "decision_id": "33dddfbc8a1943d6-BTC",
+          "gross_bps": 10.549515014727456,
+          "mode": "NO_TRADE",
+          "net_bps": -13.241054405272545,
+          "timestamp_ms": 1774738800000
+        },
+        {
+          "correct": false,
+          "decision_id": "632db834ee364d80-BTC",
+          "gross_bps": -22.869616010005927,
+          "mode": "NO_TRADE",
+          "net_bps": -46.660185430005924,
+          "timestamp_ms": 1774828800000
+        },
+        {
+          "correct": false,
+          "decision_id": "a8fe22bde9b84526-BTC",
+          "gross_bps": -40.79930399405175,
+          "mode": "NO_TRADE",
+          "net_bps": -64.58987341405175,
+          "timestamp_ms": 1774832400000
+        },
+        {
+          "correct": true,
+          "decision_id": "9f9aeb56dd094480-BTC",
+          "gross_bps": 7.864899529969551,
+          "mode": "NO_TRADE",
+          "net_bps": -15.925669890030449,
+          "timestamp_ms": 1774843200000
+        },
+        {
+          "correct": true,
+          "decision_id": "ae4ad553a24e4501-BTC",
+          "gross_bps": 65.87240858787067,
+          "mode": "NO_TRADE",
+          "net_bps": 42.08183916787067,
+          "timestamp_ms": 1774846800000
+        },
+        {
+          "correct": false,
+          "decision_id": "abe59fd817d84ac8-BTC",
+          "gross_bps": -18.31363418489645,
+          "mode": "NO_TRADE",
+          "net_bps": -42.104203604896455,
+          "timestamp_ms": 1774850400000
+        },
+        {
+          "correct": false,
+          "decision_id": "4afb0029c2674d88-BTC",
+          "gross_bps": -27.754211359314354,
+          "mode": "NO_TRADE",
+          "net_bps": -51.54478077931435,
+          "timestamp_ms": 1774854000000
+        },
+        {
+          "correct": true,
+          "decision_id": "4ccf813668564ca4-BTC",
+          "gross_bps": 47.4332272394055,
+          "mode": "NO_TRADE",
+          "net_bps": 23.642657819405496,
+          "timestamp_ms": 1774857600000
+        },
+        {
+          "correct": true,
+          "decision_id": "313fe2339b644e82-BTC",
+          "gross_bps": 26.120779876464642,
+          "mode": "NO_TRADE",
+          "net_bps": 2.3302104564646413,
+          "timestamp_ms": 1774897200000
+        },
+        {
+          "correct": true,
+          "decision_id": "206019c54e6e4ec9-BTC",
+          "gross_bps": 15.514573436998392,
+          "mode": "NO_TRADE",
+          "net_bps": -8.275995983001609,
+          "timestamp_ms": 1774900800000
+        },
+        {
+          "correct": false,
+          "decision_id": "a279a60ef7254bc9-BTC",
+          "gross_bps": -15.229139572395702,
+          "mode": "NO_TRADE",
+          "net_bps": -39.01970899239571,
+          "timestamp_ms": 1774904400000
+        },
+        {
+          "correct": false,
+          "decision_id": "20391f4d5f974c59-BTC",
+          "gross_bps": -23.690425107350897,
+          "mode": "NO_TRADE",
+          "net_bps": -47.4809945273509,
+          "timestamp_ms": 1774908000000
+        },
+        {
+          "correct": true,
+          "decision_id": "ec595139367b4584-BTC",
+          "gross_bps": 3.6402117669257104,
+          "mode": "NO_TRADE",
+          "net_bps": -20.15035765307429,
+          "timestamp_ms": 1774911600000
+        },
+        {
+          "correct": false,
+          "decision_id": "cdfd5aa6a0b64976-BTC",
+          "gross_bps": -1.8552075631376124,
+          "mode": "NO_TRADE",
+          "net_bps": -25.645776983137612,
+          "timestamp_ms": 1774915200000
+        },
+        {
+          "correct": false,
+          "decision_id": "e71ad1fd9b624c03-BTC",
+          "gross_bps": -61.58625706371444,
+          "mode": "NO_TRADE",
+          "net_bps": -85.37682648371444,
+          "timestamp_ms": 1774918800000
+        },
+        {
+          "correct": false,
+          "decision_id": "cdbc43b1b3c44f1e-BTC",
+          "gross_bps": -108.58556363568637,
+          "mode": "NO_TRADE",
+          "net_bps": -132.37613305568638,
+          "timestamp_ms": 1774922400000
+        },
+        {
+          "correct": false,
+          "decision_id": "244c9a9da29a46f1-BTC",
+          "gross_bps": -35.130696227727654,
+          "mode": "NO_TRADE",
+          "net_bps": -58.92126564772765,
+          "timestamp_ms": 1774929600000
+        },
+        {
+          "correct": false,
+          "decision_id": "d53aa360c4b54480-BTC",
+          "gross_bps": -23.739844507195574,
+          "mode": "NO_TRADE",
+          "net_bps": -47.530413927195575,
+          "timestamp_ms": 1774933200000
+        },
+        {
+          "correct": true,
+          "decision_id": "14b5922c85b947e1-BTC",
+          "gross_bps": 20.38226631791602,
+          "mode": "NO_TRADE",
+          "net_bps": -3.4083031020839805,
+          "timestamp_ms": 1774936800000
+        },
+        {
+          "correct": false,
+          "decision_id": "1eb8e06d624046ad-BTC",
+          "gross_bps": -27.899721165311973,
+          "mode": "NO_TRADE",
+          "net_bps": -51.69029058531197,
+          "timestamp_ms": 1774940400000
+        },
+        {
+          "correct": false,
+          "decision_id": "43fab2410cf940a3-BTC",
+          "gross_bps": -18.54418653235172,
+          "mode": "NO_TRADE",
+          "net_bps": -42.33475595235172,
+          "timestamp_ms": 1774944000000
+        },
+        {
+          "correct": false,
+          "decision_id": "e5b2622261204c9b-BTC",
+          "gross_bps": -87.48407433890053,
+          "mode": "NO_TRADE",
+          "net_bps": -111.27464375890052,
+          "timestamp_ms": 1774947600000
+        },
+        {
+          "correct": false,
+          "decision_id": "b97af9dd69c94edf-BTC",
+          "gross_bps": -36.05142322138716,
+          "mode": "NO_TRADE",
+          "net_bps": -59.841992641387165,
+          "timestamp_ms": 1774954800000
+        },
+        {
+          "correct": false,
+          "decision_id": "0e888b07734d4a0f-BTC",
+          "gross_bps": -48.56744789068876,
+          "mode": "NO_TRADE",
+          "net_bps": -72.35801731068877,
+          "timestamp_ms": 1774958400000
+        },
+        {
+          "correct": true,
+          "decision_id": "6941b74567874df6-BTC",
+          "gross_bps": 4.863112310903219,
+          "mode": "NO_TRADE",
+          "net_bps": -18.927457109096782,
+          "timestamp_ms": 1774962000000
+        },
+        {
+          "correct": false,
+          "decision_id": "c0a945e57fee4b2f-BTC",
+          "gross_bps": -97.37408192787552,
+          "mode": "NO_TRADE",
+          "net_bps": -121.16465134787552,
+          "timestamp_ms": 1774965600000
+        },
+        {
+          "correct": true,
+          "decision_id": "8e4a46d2a89c4881-BTC",
+          "gross_bps": 106.21332498492941,
+          "mode": "NO_TRADE",
+          "net_bps": 82.42275556492942,
+          "timestamp_ms": 1774969200000
+        },
+        {
+          "correct": false,
+          "decision_id": "a33f7418b3244e69-BTC",
+          "gross_bps": -22.429151439198503,
+          "mode": "NO_TRADE",
+          "net_bps": -46.2197208591985,
+          "timestamp_ms": 1774972800000
+        },
+        {
+          "correct": false,
+          "decision_id": "e09aae204f5b401d-BTC",
+          "gross_bps": -139.20805312810904,
+          "mode": "NO_TRADE",
+          "net_bps": -162.99862254810904,
+          "timestamp_ms": 1774976400000
+        },
+        {
+          "correct": false,
+          "decision_id": "7bda55ba61c345e8-BTC",
+          "gross_bps": -2.2474708584085987,
+          "mode": "NO_TRADE",
+          "net_bps": -26.038040278408598,
+          "timestamp_ms": 1774987200000
+        },
+        {
+          "correct": true,
+          "decision_id": "06412f98e867403d-BTC",
+          "gross_bps": 62.903530133197506,
+          "mode": "NO_TRADE",
+          "net_bps": 39.11296071319751,
+          "timestamp_ms": 1774990800000
+        },
+        {
+          "correct": true,
+          "decision_id": "50f12951516f4082-BTC",
+          "gross_bps": 1.8252257032218755,
+          "mode": "NO_TRADE",
+          "net_bps": -21.965343716778126,
+          "timestamp_ms": 1774994400000
+        },
+        {
+          "correct": true,
+          "decision_id": "f125f7528b3c4b8f-BTC",
+          "gross_bps": 19.533327162547103,
+          "mode": "NO_TRADE",
+          "net_bps": -4.257242257452898,
+          "timestamp_ms": 1775019600000
+        }
+      ],
+      "strategy_id": "momentum@1h",
+      "timeframe": "1h"
+    },
+    "momentum@1h|BTC|TREND_DOWN|1h": {
+      "asset": "BTC",
+      "regime": "TREND_DOWN",
+      "samples": [
+        {
+          "correct": true,
+          "decision_id": "0885abbdda78433b-BTC",
+          "gross_bps": 6.430196998639133,
+          "mode": "TRADE_PAPER",
+          "net_bps": -17.360372421360868,
+          "timestamp_ms": 1774522800000
+        },
+        {
+          "correct": true,
+          "decision_id": "4aa8ce51d5cf40c0-BTC",
+          "gross_bps": 34.76381835527283,
+          "mode": "NO_TRADE",
+          "net_bps": 10.973248935272832,
+          "timestamp_ms": 1774526400000
+        },
+        {
+          "correct": false,
+          "decision_id": "5d175f1d40884142-BTC",
+          "gross_bps": -23.155201923436916,
+          "mode": "TRADE_PAPER",
+          "net_bps": -46.94577134343692,
+          "timestamp_ms": 1774530000000
+        },
+        {
+          "correct": false,
+          "decision_id": "711c18b670544e20-BTC",
+          "gross_bps": -30.267977525338758,
+          "mode": "NO_TRADE",
+          "net_bps": -54.05854694533876,
+          "timestamp_ms": 1774533600000
+        },
+        {
+          "correct": true,
+          "decision_id": "9c653d6fc0ed4a7c-BTC",
+          "gross_bps": 23.93081987215717,
+          "mode": "NO_TRADE",
+          "net_bps": 0.14025045215716858,
+          "timestamp_ms": 1774537200000
+        },
+        {
+          "correct": true,
+          "decision_id": "ec6d83bc408e4e23-BTC",
+          "gross_bps": 57.179110165929785,
+          "mode": "NO_TRADE",
+          "net_bps": 33.38854074592979,
+          "timestamp_ms": 1774540800000
+        },
+        {
+          "correct": true,
+          "decision_id": "3dd94d1d77a8479c-BTC",
+          "gross_bps": 21.73049553404377,
+          "mode": "NO_TRADE",
+          "net_bps": -2.060073885956232,
+          "timestamp_ms": 1774544400000
+        },
+        {
+          "correct": true,
+          "decision_id": "424cea88dd8c4bd3-BTC",
+          "gross_bps": 64.65163322043115,
+          "mode": "TRADE_PAPER",
+          "net_bps": 40.861063800431154,
+          "timestamp_ms": 1774548000000
+        },
+        {
+          "correct": false,
+          "decision_id": "37e00ad5005a4049-BTC",
+          "gross_bps": -1.517079334634325,
+          "mode": "TRADE_PAPER",
+          "net_bps": -25.307648754634325,
+          "timestamp_ms": 1774551600000
+        },
+        {
+          "correct": false,
+          "decision_id": "45e5078aa0d94134-BTC",
+          "gross_bps": -5.417735748515537,
+          "mode": "TRADE_PAPER",
+          "net_bps": -29.208305168515537,
+          "timestamp_ms": 1774555200000
+        },
+        {
+          "correct": false,
+          "decision_id": "f60f9e1e2ae24da0-BTC",
+          "gross_bps": -68.70276456948103,
+          "mode": "NO_TRADE",
+          "net_bps": -92.49333398948103,
+          "timestamp_ms": 1774558800000
+        },
+        {
+          "correct": true,
+          "decision_id": "b0d0bb44598f4afa-BTC",
+          "gross_bps": 12.188934719566909,
+          "mode": "NO_TRADE",
+          "net_bps": -11.601634700433092,
+          "timestamp_ms": 1774562400000
+        },
+        {
+          "correct": true,
+          "decision_id": "433d091652d848b8-BTC",
+          "gross_bps": 4.125006710573041,
+          "mode": "NO_TRADE",
+          "net_bps": -19.665562709426958,
+          "timestamp_ms": 1774566000000
+        },
+        {
+          "correct": true,
+          "decision_id": "3fffeaa2e9b54856-BTC",
+          "gross_bps": 10.503294472401866,
+          "mode": "NO_TRADE",
+          "net_bps": -13.287274947598135,
+          "timestamp_ms": 1774569600000
+        },
+        {
+          "correct": true,
+          "decision_id": "ada2412a001b4354-BTC",
+          "gross_bps": 5.129299766304876,
+          "mode": "NO_TRADE",
+          "net_bps": -18.661269653695125,
+          "timestamp_ms": 1774573200000
+        },
+        {
+          "correct": true,
+          "decision_id": "5f8407f568354d86-BTC",
+          "gross_bps": 33.081323017351515,
+          "mode": "TRADE_PAPER",
+          "net_bps": 9.290753597351515,
+          "timestamp_ms": 1774605600000
+        },
+        {
+          "correct": true,
+          "decision_id": "24f4684222a9446a-BTC",
+          "gross_bps": 176.28860634062792,
+          "mode": "TRADE_PAPER",
+          "net_bps": 152.49803692062792,
+          "timestamp_ms": 1774609200000
+        },
+        {
+          "correct": false,
+          "decision_id": "8dbd2eb830c34c28-BTC",
+          "gross_bps": -30.12973514794356,
+          "mode": "TRADE_PAPER",
+          "net_bps": -53.92030456794356,
+          "timestamp_ms": 1774612800000
+        },
+        {
+          "correct": true,
+          "decision_id": "dc0a8ee4556843a3-BTC",
+          "gross_bps": 12.446257862116703,
+          "mode": "NO_TRADE",
+          "net_bps": -11.344311557883298,
+          "timestamp_ms": 1774616400000
+        },
+        {
+          "correct": true,
+          "decision_id": "b937b0ed1cad4593-BTC",
+          "gross_bps": 64.76156623800323,
+          "mode": "NO_TRADE",
+          "net_bps": 40.97099681800323,
+          "timestamp_ms": 1774620000000
+        },
+        {
+          "correct": false,
+          "decision_id": "d27e5cd5007647b5-BTC",
+          "gross_bps": -2.529147136532652,
+          "mode": "NO_TRADE",
+          "net_bps": -26.319716556532654,
+          "timestamp_ms": 1774623600000
+        },
+        {
+          "correct": true,
+          "decision_id": "4aba4c39c6314c64-BTC",
+          "gross_bps": 13.93246981423938,
+          "mode": "NO_TRADE",
+          "net_bps": -9.858099605760621,
+          "timestamp_ms": 1774627200000
+        },
+        {
+          "correct": true,
+          "decision_id": "1a88e16498d7474a-BTC",
+          "gross_bps": 20.197293051485836,
+          "mode": "NO_TRADE",
+          "net_bps": -3.5932763685141644,
+          "timestamp_ms": 1774630800000
+        },
+        {
+          "correct": true,
+          "decision_id": "522c2a0b6c1a4024-BTC",
+          "gross_bps": 52.49677588224962,
+          "mode": "TRADE_PAPER",
+          "net_bps": 28.70620646224962,
+          "timestamp_ms": 1774634400000
+        },
+        {
+          "correct": false,
+          "decision_id": "cafa2b51b61b4d79-BTC",
+          "gross_bps": -31.046919746981253,
+          "mode": "TRADE_PAPER",
+          "net_bps": -54.83748916698126,
+          "timestamp_ms": 1774638000000
+        },
+        {
+          "correct": false,
+          "decision_id": "37d2f9d3f5144179-BTC",
+          "gross_bps": -30.98120516083071,
+          "mode": "NO_TRADE",
+          "net_bps": -54.77177458083071,
+          "timestamp_ms": 1774641600000
+        },
+        {
+          "correct": true,
+          "decision_id": "9c9eacda555348a8-BTC",
+          "gross_bps": 3.0132951427209735,
+          "mode": "NO_TRADE",
+          "net_bps": -20.777274277279027,
+          "timestamp_ms": 1774645200000
+        },
+        {
+          "correct": false,
+          "decision_id": "6a67b2f3ebfb46ee-BTC",
+          "gross_bps": -11.699350325565057,
+          "mode": "NO_TRADE",
+          "net_bps": -35.48991974556506,
+          "timestamp_ms": 1774648800000
+        },
+        {
+          "correct": true,
+          "decision_id": "1b5bbf670fc24f12-BTC",
+          "gross_bps": 11.68114012526951,
+          "mode": "NO_TRADE",
+          "net_bps": -12.109429294730491,
+          "timestamp_ms": 1774652400000
+        },
+        {
+          "correct": true,
+          "decision_id": "45793818611048e3-BTC",
+          "gross_bps": 6.794987922704523,
+          "mode": "TRADE_PAPER",
+          "net_bps": -16.995581497295476,
+          "timestamp_ms": 1774674000000
+        },
+        {
+          "correct": true,
+          "decision_id": "191f4f29d8e3431c-BTC",
+          "gross_bps": 8.582634293937561,
+          "mode": "TRADE_PAPER",
+          "net_bps": -15.20793512606244,
+          "timestamp_ms": 1774677600000
+        },
+        {
+          "correct": true,
+          "decision_id": "e2158d04a00a4c85-BTC",
+          "gross_bps": 27.037449911119868,
+          "mode": "TRADE_PAPER",
+          "net_bps": 3.2468804911198674,
+          "timestamp_ms": 1774684800000
+        }
+      ],
+      "strategy_id": "momentum@1h",
+      "timeframe": "1h"
+    },
+    "momentum@1h|BTC|TREND_UP|1h": {
+      "asset": "BTC",
+      "regime": "TREND_UP",
+      "samples": [
+        {
+          "correct": true,
+          "decision_id": "a4f0240206594fe7-BTC",
+          "gross_bps": 6.21817069255677,
+          "mode": "NO_TRADE",
+          "net_bps": -17.57239872744323,
+          "timestamp_ms": 1774861200000
+        },
+        {
+          "correct": false,
+          "decision_id": "ea79423de2ed4cda-BTC",
+          "gross_bps": -25.268064937359778,
+          "mode": "NO_TRADE",
+          "net_bps": -49.05863435735978,
+          "timestamp_ms": 1774864800000
+        },
+        {
+          "correct": false,
+          "decision_id": "21e081ffcea04b84-BTC",
+          "gross_bps": -1.0267357241520492,
+          "mode": "NO_TRADE",
+          "net_bps": -24.81730514415205,
+          "timestamp_ms": 1774868400000
+        },
+        {
+          "correct": true,
+          "decision_id": "e23baf46a376463b-BTC",
+          "gross_bps": 28.437424848340637,
+          "mode": "NO_TRADE",
+          "net_bps": 4.646855428340636,
+          "timestamp_ms": 1774872000000
+        },
+        {
+          "correct": true,
+          "decision_id": "27dc4cbe97a740df-BTC",
+          "gross_bps": 32.37862632414522,
+          "mode": "NO_TRADE",
+          "net_bps": 8.588056904145223,
+          "timestamp_ms": 1774875600000
+        },
+        {
+          "correct": false,
+          "decision_id": "8ebce8c1221542cd-BTC",
+          "gross_bps": -54.50253823329308,
+          "mode": "NO_TRADE",
+          "net_bps": -78.29310765329308,
+          "timestamp_ms": 1774879200000
+        },
+        {
+          "correct": true,
+          "decision_id": "03b9c3f918b743a9-BTC",
+          "gross_bps": 39.98547598146551,
+          "mode": "NO_TRADE",
+          "net_bps": 16.194906561465512,
+          "timestamp_ms": 1774882800000
+        },
+        {
+          "correct": false,
+          "decision_id": "157231d9e78a453a-BTC",
+          "gross_bps": -15.395883797986714,
+          "mode": "NO_TRADE",
+          "net_bps": -39.18645321798672,
+          "timestamp_ms": 1774998000000
+        },
+        {
+          "correct": true,
+          "decision_id": "0e1776d2bed7490d-BTC",
+          "gross_bps": 16.371615277455767,
+          "mode": "NO_TRADE",
+          "net_bps": -7.418954142544234,
+          "timestamp_ms": 1775001600000
+        },
+        {
+          "correct": true,
+          "decision_id": "4a7ad5e204114b7a-BTC",
+          "gross_bps": 6.776063902076149,
+          "mode": "NO_TRADE",
+          "net_bps": -17.01450551792385,
+          "timestamp_ms": 1775005200000
+        },
+        {
+          "correct": false,
+          "decision_id": "e249b823a7924e2c-BTC",
+          "gross_bps": -80.20108077256639,
+          "mode": "NO_TRADE",
+          "net_bps": -103.99165019256638,
+          "timestamp_ms": 1775008800000
+        },
+        {
+          "correct": false,
+          "decision_id": "db5f82d94a5744aa-BTC",
+          "gross_bps": -16.7948384492623,
+          "mode": "NO_TRADE",
+          "net_bps": -40.5854078692623,
+          "timestamp_ms": 1775012400000
+        },
+        {
+          "correct": true,
+          "decision_id": "c4884bda03ca46b5-BTC",
+          "gross_bps": 22.28132741604714,
+          "mode": "NO_TRADE",
+          "net_bps": -1.5092420039528598,
+          "timestamp_ms": 1775023200000
+        },
+        {
+          "correct": true,
+          "decision_id": "3120a5798aec44ef-BTC",
+          "gross_bps": 94.48840291912994,
+          "mode": "NO_TRADE",
+          "net_bps": 70.69783349912994,
+          "timestamp_ms": 1775026800000
+        },
+        {
+          "correct": false,
+          "decision_id": "9d14bb838b8f432a-BTC",
+          "gross_bps": -59.454856058759624,
+          "mode": "NO_TRADE",
+          "net_bps": -83.24542547875963,
+          "timestamp_ms": 1775030400000
+        },
+        {
+          "correct": false,
+          "decision_id": "6299103e72e34179-BTC",
+          "gross_bps": -3.1794095382281062,
+          "mode": "NO_TRADE",
+          "net_bps": -26.969978958228108,
+          "timestamp_ms": 1775034000000
+        },
+        {
+          "correct": false,
+          "decision_id": "4a49fc27703444c3-BTC",
+          "gross_bps": -3.8095149334155467,
+          "mode": "NO_TRADE",
+          "net_bps": -27.600084353415546,
+          "timestamp_ms": 1775037600000
+        },
+        {
+          "correct": false,
+          "decision_id": "91a8ca81f5d24ec0-BTC",
+          "gross_bps": -8.514946681428397,
+          "mode": "NO_TRADE",
+          "net_bps": -32.305516101428395,
+          "timestamp_ms": 1775041200000
+        },
+        {
+          "correct": false,
+          "decision_id": "a146e117b9084e73-BTC",
+          "gross_bps": -46.413666679667436,
+          "mode": "NO_TRADE",
+          "net_bps": -70.20423609966744,
+          "timestamp_ms": 1775048400000
+        }
+      ],
+      "strategy_id": "momentum@1h",
+      "timeframe": "1h"
+    },
+    "momentum@1h|ETH|RANGE|1h": {
+      "asset": "ETH",
+      "regime": "RANGE",
+      "samples": [
+        {
+          "correct": false,
+          "decision_id": "6cfef02814fa4555-ETH",
+          "gross_bps": -15.069977720620459,
+          "mode": "TRADE_PAPER",
+          "net_bps": -38.86054714062046,
+          "timestamp_ms": 1774497600000
+        },
+        {
+          "correct": true,
+          "decision_id": "db9cda73b3594f7d-ETH",
+          "gross_bps": 16.254800971572674,
+          "mode": "NO_TRADE",
+          "net_bps": -7.535768448427326,
+          "timestamp_ms": 1774501200000
+        },
+        {
+          "correct": true,
+          "decision_id": "a9843d316a9249d7-ETH",
+          "gross_bps": 140.29799368286817,
+          "mode": "NO_TRADE",
+          "net_bps": 116.50742426286817,
+          "timestamp_ms": 1774504800000
+        },
+        {
+          "correct": false,
+          "decision_id": "cfcdd277699c4e3d-ETH",
+          "gross_bps": -10.898539784387937,
+          "mode": "TRADE_PAPER",
+          "net_bps": -34.68910920438794,
+          "timestamp_ms": 1774508400000
+        },
+        {
+          "correct": true,
+          "decision_id": "e2158d04a00a4c85-ETH",
+          "gross_bps": 30.58547190084655,
+          "mode": "TRADE_PAPER",
+          "net_bps": 6.794902480846549,
+          "timestamp_ms": 1774684800000
+        },
+        {
+          "correct": false,
+          "decision_id": "563ee5f1e03d4ae8-ETH",
+          "gross_bps": -39.012092253882166,
+          "mode": "NO_TRADE",
+          "net_bps": -62.80266167388217,
+          "timestamp_ms": 1774688400000
+        },
+        {
+          "correct": true,
+          "decision_id": "6bb76b9fcee34dca-ETH",
+          "gross_bps": 1.4005322022367135,
+          "mode": "NO_TRADE",
+          "net_bps": -22.390037217763286,
+          "timestamp_ms": 1774692000000
+        },
+        {
+          "correct": true,
+          "decision_id": "cd989c67151e4f75-ETH",
+          "gross_bps": 133.6720558892218,
+          "mode": "NO_TRADE",
+          "net_bps": 109.88148646922181,
+          "timestamp_ms": 1774706400000
+        },
+        {
+          "correct": false,
+          "decision_id": "67746c5d57b6426d-ETH",
+          "gross_bps": -27.437820765891104,
+          "mode": "NO_TRADE",
+          "net_bps": -51.2283901858911,
+          "timestamp_ms": 1774710000000
+        },
+        {
+          "correct": true,
+          "decision_id": "301759b9e80646b7-ETH",
+          "gross_bps": 29.690623701035214,
+          "mode": "NO_TRADE",
+          "net_bps": 5.900054281035214,
+          "timestamp_ms": 1774713600000
+        },
+        {
+          "correct": false,
+          "decision_id": "6afe6d1055f24367-ETH",
+          "gross_bps": -10.163604428568341,
+          "mode": "NO_TRADE",
+          "net_bps": -33.954173848568345,
+          "timestamp_ms": 1774717200000
+        },
+        {
+          "correct": false,
+          "decision_id": "890a944fbfef4e78-ETH",
+          "gross_bps": -19.458904177244218,
+          "mode": "NO_TRADE",
+          "net_bps": -43.24947359724422,
+          "timestamp_ms": 1774720800000
+        },
+        {
+          "correct": true,
+          "decision_id": "cf68a8ad8ffe482c-ETH",
+          "gross_bps": 4.750499792165814,
+          "mode": "NO_TRADE",
+          "net_bps": -19.040069627834185,
+          "timestamp_ms": 1774724400000
+        },
+        {
+          "correct": false,
+          "decision_id": "bb8c5c07530f4ea8-ETH",
+          "gross_bps": -6.133148679394645,
+          "mode": "NO_TRADE",
+          "net_bps": -29.923718099394645,
+          "timestamp_ms": 1774728000000
+        },
+        {
+          "correct": true,
+          "decision_id": "62b6f6fee27445c9-ETH",
+          "gross_bps": 19.944965752068597,
+          "mode": "NO_TRADE",
+          "net_bps": -3.845603667931403,
+          "timestamp_ms": 1774731600000
+        },
+        {
+          "correct": false,
+          "decision_id": "9d89a52cfa3641b8-ETH",
+          "gross_bps": -73.99028939192637,
+          "mode": "NO_TRADE",
+          "net_bps": -97.78085881192636,
+          "timestamp_ms": 1774735200000
+        },
+        {
+          "correct": true,
+          "decision_id": "33dddfbc8a1943d6-ETH",
+          "gross_bps": 11.34548494484104,
+          "mode": "NO_TRADE",
+          "net_bps": -12.44508447515896,
+          "timestamp_ms": 1774738800000
+        },
+        {
+          "correct": false,
+          "decision_id": "708303f24b3c4833-ETH",
+          "gross_bps": -85.2432290035742,
+          "mode": "NO_TRADE",
+          "net_bps": -109.0337984235742,
+          "timestamp_ms": 1774742400000
+        },
+        {
+          "correct": false,
+          "decision_id": "319e78728e324f5d-ETH",
+          "gross_bps": -22.158276266581474,
+          "mode": "NO_TRADE",
+          "net_bps": -45.94884568658148,
+          "timestamp_ms": 1774746000000
+        },
+        {
+          "correct": false,
+          "decision_id": "3365c4797b0441e2-ETH",
+          "gross_bps": -29.61243722363315,
+          "mode": "NO_TRADE",
+          "net_bps": -53.40300664363315,
+          "timestamp_ms": 1774749600000
+        },
+        {
+          "correct": false,
+          "decision_id": "f7c38eb1ae974941-ETH",
+          "gross_bps": -19.201228878648916,
+          "mode": "NO_TRADE",
+          "net_bps": -42.991798298648916,
+          "timestamp_ms": 1774753200000
+        },
+        {
+          "correct": false,
+          "decision_id": "221ee61a7dc44bf3-ETH",
+          "gross_bps": -10.801770096518272,
+          "mode": "NO_TRADE",
+          "net_bps": -34.59233951651827,
+          "timestamp_ms": 1774756800000
+        },
+        {
+          "correct": true,
+          "decision_id": "ed610551af0b49bb-ETH",
+          "gross_bps": 2.6921255328163305,
+          "mode": "NO_TRADE",
+          "net_bps": -21.09844388718367,
+          "timestamp_ms": 1774764000000
+        },
+        {
+          "correct": true,
+          "decision_id": "3a5f02dd21b24e3c-ETH",
+          "gross_bps": 1.6456308500926404,
+          "mode": "NO_TRADE",
+          "net_bps": -22.14493856990736,
+          "timestamp_ms": 1774767600000
+        },
+        {
+          "correct": false,
+          "decision_id": "b913aa0443554987-ETH",
+          "gross_bps": -5.785593871260969,
+          "mode": "NO_TRADE",
+          "net_bps": -29.57616329126097,
+          "timestamp_ms": 1774771200000
+        },
+        {
+          "correct": false,
+          "decision_id": "d669fa8a4e4e490e-ETH",
+          "gross_bps": -35.62999159575135,
+          "mode": "NO_TRADE",
+          "net_bps": -59.420561015751346,
+          "timestamp_ms": 1774796400000
+        },
+        {
+          "correct": true,
+          "decision_id": "e8870a15a8794c5d-ETH",
+          "gross_bps": 6.017541132401176,
+          "mode": "NO_TRADE",
+          "net_bps": -17.773028287598827,
+          "timestamp_ms": 1774800000000
+        },
+        {
+          "correct": false,
+          "decision_id": "a8932d2bced44f5c-ETH",
+          "gross_bps": -24.335539421064585,
+          "mode": "NO_TRADE",
+          "net_bps": -48.126108841064585,
+          "timestamp_ms": 1774803600000
+        },
+        {
+          "correct": false,
+          "decision_id": "3f7feb6c3aeb4d82-ETH",
+          "gross_bps": -11.177384592251107,
+          "mode": "NO_TRADE",
+          "net_bps": -34.967954012251106,
+          "timestamp_ms": 1774810800000
+        },
+        {
+          "correct": false,
+          "decision_id": "632db834ee364d80-ETH",
+          "gross_bps": -53.95164109240721,
+          "mode": "NO_TRADE",
+          "net_bps": -77.74221051240721,
+          "timestamp_ms": 1774828800000
+        },
+        {
+          "correct": true,
+          "decision_id": "7e585ef0da644c93-ETH",
+          "gross_bps": 96.9941753754172,
+          "mode": "NO_TRADE",
+          "net_bps": 73.2036059554172,
+          "timestamp_ms": 1774839600000
+        },
+        {
+          "correct": true,
+          "decision_id": "9f9aeb56dd094480-ETH",
+          "gross_bps": 29.311355563985188,
+          "mode": "NO_TRADE",
+          "net_bps": 5.5207861439851875,
+          "timestamp_ms": 1774843200000
+        },
+        {
+          "correct": true,
+          "decision_id": "ae4ad553a24e4501-ETH",
+          "gross_bps": 61.44762952629705,
+          "mode": "NO_TRADE",
+          "net_bps": 37.65706010629705,
+          "timestamp_ms": 1774846800000
+        },
+        {
+          "correct": true,
+          "decision_id": "a279a60ef7254bc9-ETH",
+          "gross_bps": 2.470721944952315,
+          "mode": "NO_TRADE",
+          "net_bps": -21.319847475047688,
+          "timestamp_ms": 1774904400000
+        },
+        {
+          "correct": false,
+          "decision_id": "20391f4d5f974c59-ETH",
+          "gross_bps": -63.26611308817692,
+          "mode": "NO_TRADE",
+          "net_bps": -87.05668250817692,
+          "timestamp_ms": 1774908000000
+        },
+        {
+          "correct": true,
+          "decision_id": "ec595139367b4584-ETH",
+          "gross_bps": 14.341846758350062,
+          "mode": "NO_TRADE",
+          "net_bps": -9.448722661649938,
+          "timestamp_ms": 1774911600000
+        },
+        {
+          "correct": true,
+          "decision_id": "cdfd5aa6a0b64976-ETH",
+          "gross_bps": 32.46306097153043,
+          "mode": "NO_TRADE",
+          "net_bps": 8.672491551530431,
+          "timestamp_ms": 1774915200000
+        },
+        {
+          "correct": false,
+          "decision_id": "e71ad1fd9b624c03-ETH",
+          "gross_bps": -50.18554340531401,
+          "mode": "NO_TRADE",
+          "net_bps": -73.976112825314,
+          "timestamp_ms": 1774918800000
+        },
+        {
+          "correct": false,
+          "decision_id": "cdbc43b1b3c44f1e-ETH",
+          "gross_bps": -178.47936562492285,
+          "mode": "NO_TRADE",
+          "net_bps": -202.26993504492285,
+          "timestamp_ms": 1774922400000
+        },
+        {
+          "correct": false,
+          "decision_id": "d53aa360c4b54480-ETH",
+          "gross_bps": -28.257472020748654,
+          "mode": "NO_TRADE",
+          "net_bps": -52.048041440748655,
+          "timestamp_ms": 1774933200000
+        },
+        {
+          "correct": true,
+          "decision_id": "14b5922c85b947e1-ETH",
+          "gross_bps": 16.691979600848452,
+          "mode": "NO_TRADE",
+          "net_bps": -7.098589819151549,
+          "timestamp_ms": 1774936800000
+        },
+        {
+          "correct": false,
+          "decision_id": "1eb8e06d624046ad-ETH",
+          "gross_bps": -9.591582659581256,
+          "mode": "NO_TRADE",
+          "net_bps": -33.38215207958126,
+          "timestamp_ms": 1774940400000
+        },
+        {
+          "correct": false,
+          "decision_id": "43fab2410cf940a3-ETH",
+          "gross_bps": -30.83890550978809,
+          "mode": "NO_TRADE",
+          "net_bps": -54.62947492978809,
+          "timestamp_ms": 1774944000000
+        },
+        {
+          "correct": false,
+          "decision_id": "e5b2622261204c9b-ETH",
+          "gross_bps": -77.18984226423485,
+          "mode": "NO_TRADE",
+          "net_bps": -100.98041168423485,
+          "timestamp_ms": 1774947600000
+        },
+        {
+          "correct": false,
+          "decision_id": "6941b74567874df6-ETH",
+          "gross_bps": -32.23593964334669,
+          "mode": "NO_TRADE",
+          "net_bps": -56.026509063346694,
+          "timestamp_ms": 1774962000000
+        },
+        {
+          "correct": false,
+          "decision_id": "c0a945e57fee4b2f-ETH",
+          "gross_bps": -134.7312699606399,
+          "mode": "NO_TRADE",
+          "net_bps": -158.5218393806399,
+          "timestamp_ms": 1774965600000
+        },
+        {
+          "correct": false,
+          "decision_id": "a33f7418b3244e69-ETH",
+          "gross_bps": -43.54966421302606,
+          "mode": "NO_TRADE",
+          "net_bps": -67.34023363302606,
+          "timestamp_ms": 1774972800000
+        },
+        {
+          "correct": true,
+          "decision_id": "e4e08edc07634439-ETH",
+          "gross_bps": 7.936128507913704,
+          "mode": "NO_TRADE",
+          "net_bps": -15.854440912086297,
+          "timestamp_ms": 1774980000000
+        }
+      ],
+      "strategy_id": "momentum@1h",
+      "timeframe": "1h"
+    },
+    "momentum@1h|ETH|TREND_DOWN|1h": {
+      "asset": "ETH",
+      "regime": "TREND_DOWN",
+      "samples": [
+        {
+          "correct": false,
+          "decision_id": "7f91e1d2854f48a3-ETH",
+          "gross_bps": -8.38886637195548,
+          "mode": "NO_TRADE",
+          "net_bps": -32.179435791955484,
+          "timestamp_ms": 1774512000000
+        },
+        {
+          "correct": true,
+          "decision_id": "5dfa5b027fad4cde-ETH",
+          "gross_bps": 18.83558418564352,
+          "mode": "NO_TRADE",
+          "net_bps": -4.9549852343564815,
+          "timestamp_ms": 1774515600000
+        },
+        {
+          "correct": true,
+          "decision_id": "cc00c1a95bbf40f6-ETH",
+          "gross_bps": 174.55794380177767,
+          "mode": "NO_TRADE",
+          "net_bps": 150.76737438177767,
+          "timestamp_ms": 1774519200000
+        },
+        {
+          "correct": true,
+          "decision_id": "0885abbdda78433b-ETH",
+          "gross_bps": 19.158375907500968,
+          "mode": "TRADE_PAPER",
+          "net_bps": -4.6321935124990326,
+          "timestamp_ms": 1774522800000
+        },
+        {
+          "correct": true,
+          "decision_id": "4aa8ce51d5cf40c0-ETH",
+          "gross_bps": 49.11841820412304,
+          "mode": "NO_TRADE",
+          "net_bps": 25.327848784123038,
+          "timestamp_ms": 1774526400000
+        },
+        {
+          "correct": false,
+          "decision_id": "5d175f1d40884142-ETH",
+          "gross_bps": -24.946336369437134,
+          "mode": "NO_TRADE",
+          "net_bps": -48.73690578943713,
+          "timestamp_ms": 1774530000000
+        },
+        {
+          "correct": false,
+          "decision_id": "711c18b670544e20-ETH",
+          "gross_bps": -36.747685185184665,
+          "mode": "NO_TRADE",
+          "net_bps": -60.53825460518466,
+          "timestamp_ms": 1774533600000
+        },
+        {
+          "correct": true,
+          "decision_id": "9c653d6fc0ed4a7c-ETH",
+          "gross_bps": 23.784126618040467,
+          "mode": "NO_TRADE",
+          "net_bps": -0.006442801959533284,
+          "timestamp_ms": 1774537200000
+        },
+        {
+          "correct": true,
+          "decision_id": "ec6d83bc408e4e23-ETH",
+          "gross_bps": 28.27185289003786,
+          "mode": "NO_TRADE",
+          "net_bps": 4.481283470037859,
+          "timestamp_ms": 1774540800000
+        },
+        {
+          "correct": true,
+          "decision_id": "3dd94d1d77a8479c-ETH",
+          "gross_bps": 45.88485316846986,
+          "mode": "NO_TRADE",
+          "net_bps": 22.09428374846986,
+          "timestamp_ms": 1774544400000
+        },
+        {
+          "correct": true,
+          "decision_id": "424cea88dd8c4bd3-ETH",
+          "gross_bps": 55.752341210152046,
+          "mode": "TRADE_PAPER",
+          "net_bps": 31.961771790152046,
+          "timestamp_ms": 1774548000000
+        },
+        {
+          "correct": true,
+          "decision_id": "37e00ad5005a4049-ETH",
+          "gross_bps": 10.929974968404478,
+          "mode": "NO_TRADE",
+          "net_bps": -12.860594451595523,
+          "timestamp_ms": 1774551600000
+        },
+        {
+          "correct": false,
+          "decision_id": "45e5078aa0d94134-ETH",
+          "gross_bps": -9.525344744206969,
+          "mode": "TRADE_PAPER",
+          "net_bps": -33.31591416420697,
+          "timestamp_ms": 1774555200000
+        },
+        {
+          "correct": false,
+          "decision_id": "f60f9e1e2ae24da0-ETH",
+          "gross_bps": -76.95986569844608,
+          "mode": "NO_TRADE",
+          "net_bps": -100.75043511844608,
+          "timestamp_ms": 1774558800000
+        },
+        {
+          "correct": false,
+          "decision_id": "b0d0bb44598f4afa-ETH",
+          "gross_bps": -16.853197991176376,
+          "mode": "NO_TRADE",
+          "net_bps": -40.64376741117638,
+          "timestamp_ms": 1774562400000
+        },
+        {
+          "correct": false,
+          "decision_id": "5acd531603664a24-ETH",
+          "gross_bps": -40.55338882744498,
+          "mode": "NO_TRADE",
+          "net_bps": -64.34395824744497,
+          "timestamp_ms": 1774587600000
+        },
+        {
+          "correct": true,
+          "decision_id": "cb7ece4188044285-ETH",
+          "gross_bps": 7.325829613818254,
+          "mode": "NO_TRADE",
+          "net_bps": -16.464739806181747,
+          "timestamp_ms": 1774594800000
+        },
+        {
+          "correct": false,
+          "decision_id": "8dbd2eb830c34c28-ETH",
+          "gross_bps": -0.6527185728553513,
+          "mode": "TRADE_PAPER",
+          "net_bps": -24.443287992855353,
+          "timestamp_ms": 1774612800000
+        },
+        {
+          "correct": true,
+          "decision_id": "dc0a8ee4556843a3-ETH",
+          "gross_bps": 11.848579174615423,
+          "mode": "NO_TRADE",
+          "net_bps": -11.941990245384577,
+          "timestamp_ms": 1774616400000
+        },
+        {
+          "correct": true,
+          "decision_id": "b937b0ed1cad4593-ETH",
+          "gross_bps": 51.37124014798148,
+          "mode": "NO_TRADE",
+          "net_bps": 27.58067072798148,
+          "timestamp_ms": 1774620000000
+        },
+        {
+          "correct": false,
+          "decision_id": "d27e5cd5007647b5-ETH",
+          "gross_bps": -51.383878497590324,
+          "mode": "NO_TRADE",
+          "net_bps": -75.17444791759033,
+          "timestamp_ms": 1774623600000
+        },
+        {
+          "correct": false,
+          "decision_id": "4aba4c39c6314c64-ETH",
+          "gross_bps": -9.701466278607192,
+          "mode": "NO_TRADE",
+          "net_bps": -33.4920356986072,
+          "timestamp_ms": 1774627200000
+        },
+        {
+          "correct": true,
+          "decision_id": "1a88e16498d7474a-ETH",
+          "gross_bps": 24.205049916637893,
+          "mode": "NO_TRADE",
+          "net_bps": 0.41448049663789277,
+          "timestamp_ms": 1774630800000
+        },
+        {
+          "correct": true,
+          "decision_id": "522c2a0b6c1a4024-ETH",
+          "gross_bps": 46.46362949911914,
+          "mode": "NO_TRADE",
+          "net_bps": 22.673060079119143,
+          "timestamp_ms": 1774634400000
+        },
+        {
+          "correct": false,
+          "decision_id": "cafa2b51b61b4d79-ETH",
+          "gross_bps": -36.21154419983149,
+          "mode": "TRADE_PAPER",
+          "net_bps": -60.00211361983149,
+          "timestamp_ms": 1774638000000
+        },
+        {
+          "correct": false,
+          "decision_id": "37d2f9d3f5144179-ETH",
+          "gross_bps": -36.68559737556866,
+          "mode": "NO_TRADE",
+          "net_bps": -60.47616679556866,
+          "timestamp_ms": 1774641600000
+        },
+        {
+          "correct": true,
+          "decision_id": "9c9eacda555348a8-ETH",
+          "gross_bps": 28.46799985941765,
+          "mode": "NO_TRADE",
+          "net_bps": 4.677430439417648,
+          "timestamp_ms": 1774645200000
+        },
+        {
+          "correct": false,
+          "decision_id": "dd345bfa957f4925-ETH",
+          "gross_bps": -0.8029105507468667,
+          "mode": "TRADE_PAPER",
+          "net_bps": -24.593479970746866,
+          "timestamp_ms": 1774659600000
+        },
+        {
+          "correct": true,
+          "decision_id": "45793818611048e3-ETH",
+          "gross_bps": 8.093746700917961,
+          "mode": "TRADE_PAPER",
+          "net_bps": -15.69682271908204,
+          "timestamp_ms": 1774674000000
+        }
+      ],
+      "strategy_id": "momentum@1h",
+      "timeframe": "1h"
+    },
+    "momentum@1h|ETH|TREND_UP|1h": {
+      "asset": "ETH",
+      "regime": "TREND_UP",
+      "samples": [
+        {
+          "correct": false,
+          "decision_id": "abe59fd817d84ac8-ETH",
+          "gross_bps": -2.685035564516301,
+          "mode": "NO_TRADE",
+          "net_bps": -26.475604984516302,
+          "timestamp_ms": 1774850400000
+        },
+        {
+          "correct": false,
+          "decision_id": "4afb0029c2674d88-ETH",
+          "gross_bps": -26.271583717477352,
+          "mode": "NO_TRADE",
+          "net_bps": -50.06215313747735,
+          "timestamp_ms": 1774854000000
+        },
+        {
+          "correct": true,
+          "decision_id": "4ccf813668564ca4-ETH",
+          "gross_bps": 83.82049097656694,
+          "mode": "NO_TRADE",
+          "net_bps": 60.02992155656695,
+          "timestamp_ms": 1774857600000
+        },
+        {
+          "correct": true,
+          "decision_id": "a4f0240206594fe7-ETH",
+          "gross_bps": 13.352236863826604,
+          "mode": "NO_TRADE",
+          "net_bps": -10.438332556173396,
+          "timestamp_ms": 1774861200000
+        },
+        {
+          "correct": false,
+          "decision_id": "ea79423de2ed4cda-ETH",
+          "gross_bps": -34.766501966223025,
+          "mode": "NO_TRADE",
+          "net_bps": -58.55707138622303,
+          "timestamp_ms": 1774864800000
+        },
+        {
+          "correct": true,
+          "decision_id": "21e081ffcea04b84-ETH",
+          "gross_bps": 12.748399151405954,
+          "mode": "NO_TRADE",
+          "net_bps": -11.042170268594047,
+          "timestamp_ms": 1774868400000
+        },
+        {
+          "correct": true,
+          "decision_id": "e23baf46a376463b-ETH",
+          "gross_bps": 65.60468077248296,
+          "mode": "NO_TRADE",
+          "net_bps": 41.81411135248297,
+          "timestamp_ms": 1774872000000
+        },
+        {
+          "correct": true,
+          "decision_id": "27dc4cbe97a740df-ETH",
+          "gross_bps": 15.739059904985146,
+          "mode": "NO_TRADE",
+          "net_bps": -8.051509515014855,
+          "timestamp_ms": 1774875600000
+        },
+        {
+          "correct": false,
+          "decision_id": "8ebce8c1221542cd-ETH",
+          "gross_bps": -65.6531086409512,
+          "mode": "NO_TRADE",
+          "net_bps": -89.4436780609512,
+          "timestamp_ms": 1774879200000
+        },
+        {
+          "correct": true,
+          "decision_id": "03b9c3f918b743a9-ETH",
+          "gross_bps": 52.01560468140345,
+          "mode": "NO_TRADE",
+          "net_bps": 28.225035261403452,
+          "timestamp_ms": 1774882800000
+        },
+        {
+          "correct": true,
+          "decision_id": "86f4a125a01c46f6-ETH",
+          "gross_bps": 13.950300245217932,
+          "mode": "NO_TRADE",
+          "net_bps": -9.840269174782069,
+          "timestamp_ms": 1774886400000
+        },
+        {
+          "correct": false,
+          "decision_id": "02128bd52e584e13-ETH",
+          "gross_bps": -40.250080741181684,
+          "mode": "NO_TRADE",
+          "net_bps": -64.04065016118169,
+          "timestamp_ms": 1774890000000
+        },
+        {
+          "correct": false,
+          "decision_id": "1ab933cc07314923-ETH",
+          "gross_bps": -117.99552797916873,
+          "mode": "NO_TRADE",
+          "net_bps": -141.78609739916874,
+          "timestamp_ms": 1774893600000
+        },
+        {
+          "correct": true,
+          "decision_id": "313fe2339b644e82-ETH",
+          "gross_bps": 45.00930551474217,
+          "mode": "NO_TRADE",
+          "net_bps": 21.218736094742166,
+          "timestamp_ms": 1774897200000
+        },
+        {
+          "correct": true,
+          "decision_id": "206019c54e6e4ec9-ETH",
+          "gross_bps": 43.835265988063895,
+          "mode": "NO_TRADE",
+          "net_bps": 20.044696568063895,
+          "timestamp_ms": 1774900800000
+        },
+        {
+          "correct": true,
+          "decision_id": "d1f0083da9c44757-ETH",
+          "gross_bps": 31.193870141780415,
+          "mode": "NO_TRADE",
+          "net_bps": 7.403300721780415,
+          "timestamp_ms": 1774983600000
+        },
+        {
+          "correct": false,
+          "decision_id": "7bda55ba61c345e8-ETH",
+          "gross_bps": -15.953216597059413,
+          "mode": "NO_TRADE",
+          "net_bps": -39.74378601705941,
+          "timestamp_ms": 1774987200000
+        },
+        {
+          "correct": true,
+          "decision_id": "06412f98e867403d-ETH",
+          "gross_bps": 53.03977028818859,
+          "mode": "NO_TRADE",
+          "net_bps": 29.24920086818859,
+          "timestamp_ms": 1774990800000
+        },
+        {
+          "correct": false,
+          "decision_id": "50f12951516f4082-ETH",
+          "gross_bps": -23.865329322565053,
+          "mode": "NO_TRADE",
+          "net_bps": -47.65589874256506,
+          "timestamp_ms": 1774994400000
+        },
+        {
+          "correct": false,
+          "decision_id": "157231d9e78a453a-ETH",
+          "gross_bps": -29.106404835847915,
+          "mode": "NO_TRADE",
+          "net_bps": -52.896974255847915,
+          "timestamp_ms": 1774998000000
+        },
+        {
+          "correct": true,
+          "decision_id": "0e1776d2bed7490d-ETH",
+          "gross_bps": 42.54689937085736,
+          "mode": "NO_TRADE",
+          "net_bps": 18.75632995085736,
+          "timestamp_ms": 1775001600000
+        },
+        {
+          "correct": true,
+          "decision_id": "4a7ad5e204114b7a-ETH",
+          "gross_bps": 44.12400317274839,
+          "mode": "NO_TRADE",
+          "net_bps": 20.333433752748387,
+          "timestamp_ms": 1775005200000
+        },
+        {
+          "correct": false,
+          "decision_id": "e249b823a7924e2c-ETH",
+          "gross_bps": -102.94507074222584,
+          "mode": "NO_TRADE",
+          "net_bps": -126.73564016222583,
+          "timestamp_ms": 1775008800000
+        },
+        {
+          "correct": false,
+          "decision_id": "db5f82d94a5744aa-ETH",
+          "gross_bps": -21.500752526338424,
+          "mode": "NO_TRADE",
+          "net_bps": -45.29132194633843,
+          "timestamp_ms": 1775012400000
+        },
+        {
+          "correct": true,
+          "decision_id": "c4884bda03ca46b5-ETH",
+          "gross_bps": 54.04355692808964,
+          "mode": "NO_TRADE",
+          "net_bps": 30.252987508089642,
+          "timestamp_ms": 1775023200000
+        },
+        {
+          "correct": true,
+          "decision_id": "3120a5798aec44ef-ETH",
+          "gross_bps": 134.54752740652077,
+          "mode": "NO_TRADE",
+          "net_bps": 110.75695798652077,
+          "timestamp_ms": 1775026800000
+        },
+        {
+          "correct": false,
+          "decision_id": "9d14bb838b8f432a-ETH",
+          "gross_bps": -94.03922407181017,
+          "mode": "NO_TRADE",
+          "net_bps": -117.82979349181016,
+          "timestamp_ms": 1775030400000
+        },
+        {
+          "correct": true,
+          "decision_id": "6299103e72e34179-ETH",
+          "gross_bps": 27.968090098545456,
+          "mode": "NO_TRADE",
+          "net_bps": 4.177520678545456,
+          "timestamp_ms": 1775034000000
+        },
+        {
+          "correct": false,
+          "decision_id": "4a49fc27703444c3-ETH",
+          "gross_bps": -2.667340521114872,
+          "mode": "NO_TRADE",
+          "net_bps": -26.457909941114874,
+          "timestamp_ms": 1775037600000
+        },
+        {
+          "correct": false,
+          "decision_id": "91a8ca81f5d24ec0-ETH",
+          "gross_bps": -17.506166945172847,
+          "mode": "NO_TRADE",
+          "net_bps": -41.29673636517285,
+          "timestamp_ms": 1775041200000
+        },
+        {
+          "correct": true,
+          "decision_id": "f0d7b9bcfb964e04-ETH",
+          "gross_bps": 12.519635195648947,
+          "mode": "NO_TRADE",
+          "net_bps": -11.270934224351054,
+          "timestamp_ms": 1775044800000
+        },
+        {
+          "correct": false,
+          "decision_id": "a146e117b9084e73-ETH",
+          "gross_bps": -21.07412472135324,
+          "mode": "NO_TRADE",
+          "net_bps": -44.86469414135324,
+          "timestamp_ms": 1775048400000
+        },
+        {
+          "correct": false,
+          "decision_id": "9874d80d13ae4815-ETH",
+          "gross_bps": -54.15755436874049,
+          "mode": "NO_TRADE",
+          "net_bps": -77.94812378874049,
+          "timestamp_ms": 1775052000000
+        }
+      ],
+      "strategy_id": "momentum@1h",
+      "timeframe": "1h"
+    },
+    "momentum@1h|SOL|RANGE|1h": {
+      "asset": "SOL",
+      "regime": "RANGE",
+      "samples": [
+        {
+          "correct": false,
+          "decision_id": "6cfef02814fa4555-SOL",
+          "gross_bps": -12.093227792436174,
+          "mode": "TRADE_PAPER",
+          "net_bps": -35.88379721243618,
+          "timestamp_ms": 1774497600000
+        },
+        {
+          "correct": true,
+          "decision_id": "db9cda73b3594f7d-SOL",
+          "gross_bps": 27.451411002525532,
+          "mode": "NO_TRADE",
+          "net_bps": 3.6608415825255314,
+          "timestamp_ms": 1774501200000
+        },
+        {
+          "correct": true,
+          "decision_id": "a9843d316a9249d7-SOL",
+          "gross_bps": 171.76833296630565,
+          "mode": "NO_TRADE",
+          "net_bps": 147.97776354630565,
+          "timestamp_ms": 1774504800000
+        },
+        {
+          "correct": false,
+          "decision_id": "6bb76b9fcee34dca-SOL",
+          "gross_bps": -40.767386091127506,
+          "mode": "NO_TRADE",
+          "net_bps": -64.5579555111275,
+          "timestamp_ms": 1774692000000
+        },
+        {
+          "correct": false,
+          "decision_id": "67746c5d57b6426d-SOL",
+          "gross_bps": -16.79059726553137,
+          "mode": "NO_TRADE",
+          "net_bps": -40.58116668553137,
+          "timestamp_ms": 1774710000000
+        },
+        {
+          "correct": true,
+          "decision_id": "301759b9e80646b7-SOL",
+          "gross_bps": 70.87938491110084,
+          "mode": "NO_TRADE",
+          "net_bps": 47.088815491100846,
+          "timestamp_ms": 1774713600000
+        },
+        {
+          "correct": false,
+          "decision_id": "6afe6d1055f24367-SOL",
+          "gross_bps": -31.01514970774247,
+          "mode": "NO_TRADE",
+          "net_bps": -54.80571912774247,
+          "timestamp_ms": 1774717200000
+        },
+        {
+          "correct": false,
+          "decision_id": "319e78728e324f5d-SOL",
+          "gross_bps": -14.61810208307837,
+          "mode": "NO_TRADE",
+          "net_bps": -38.40867150307837,
+          "timestamp_ms": 1774746000000
+        },
+        {
+          "correct": false,
+          "decision_id": "3365c4797b0441e2-SOL",
+          "gross_bps": -32.84271986376478,
+          "mode": "NO_TRADE",
+          "net_bps": -56.63328928376478,
+          "timestamp_ms": 1774749600000
+        },
+        {
+          "correct": false,
+          "decision_id": "f7c38eb1ae974941-SOL",
+          "gross_bps": -36.37245392822467,
+          "mode": "NO_TRADE",
+          "net_bps": -60.16302334822467,
+          "timestamp_ms": 1774753200000
+        },
+        {
+          "correct": false,
+          "decision_id": "221ee61a7dc44bf3-SOL",
+          "gross_bps": -26.576467745832186,
+          "mode": "NO_TRADE",
+          "net_bps": -50.36703716583219,
+          "timestamp_ms": 1774756800000
+        },
+        {
+          "correct": false,
+          "decision_id": "d669fa8a4e4e490e-SOL",
+          "gross_bps": -1.2207031250006244,
+          "mode": "NO_TRADE",
+          "net_bps": -25.011272545000626,
+          "timestamp_ms": 1774796400000
+        },
+        {
+          "correct": true,
+          "decision_id": "e8870a15a8794c5d-SOL",
+          "gross_bps": 14.64664957890938,
+          "mode": "NO_TRADE",
+          "net_bps": -9.143919841090622,
+          "timestamp_ms": 1774800000000
+        },
+        {
+          "correct": true,
+          "decision_id": "a8932d2bced44f5c-SOL",
+          "gross_bps": 12.223444566679932,
+          "mode": "NO_TRADE",
+          "net_bps": -11.567124853320069,
+          "timestamp_ms": 1774803600000
+        },
+        {
+          "correct": true,
+          "decision_id": "1e6a928d554f4784-SOL",
+          "gross_bps": 18.35760616815463,
+          "mode": "NO_TRADE",
+          "net_bps": -5.432963251845372,
+          "timestamp_ms": 1774807200000
+        },
+        {
+          "correct": true,
+          "decision_id": "7e585ef0da644c93-SOL",
+          "gross_bps": 77.3787933744409,
+          "mode": "NO_TRADE",
+          "net_bps": 53.588223954440906,
+          "timestamp_ms": 1774839600000
+        },
+        {
+          "correct": false,
+          "decision_id": "9f9aeb56dd094480-SOL",
+          "gross_bps": -9.59808038392301,
+          "mode": "NO_TRADE",
+          "net_bps": -33.38864980392301,
+          "timestamp_ms": 1774843200000
+        },
+        {
+          "correct": true,
+          "decision_id": "ae4ad553a24e4501-SOL",
+          "gross_bps": 60.045634682358596,
+          "mode": "NO_TRADE",
+          "net_bps": 36.2550652623586,
+          "timestamp_ms": 1774846800000
+        },
+        {
+          "correct": false,
+          "decision_id": "abe59fd817d84ac8-SOL",
+          "gross_bps": -15.518682105765246,
+          "mode": "NO_TRADE",
+          "net_bps": -39.30925152576525,
+          "timestamp_ms": 1774850400000
+        },
+        {
+          "correct": true,
+          "decision_id": "206019c54e6e4ec9-SOL",
+          "gross_bps": 36.28008223485272,
+          "mode": "NO_TRADE",
+          "net_bps": 12.48951281485272,
+          "timestamp_ms": 1774900800000
+        },
+        {
+          "correct": false,
+          "decision_id": "a279a60ef7254bc9-SOL",
+          "gross_bps": -48.54958125986232,
+          "mode": "NO_TRADE",
+          "net_bps": -72.34015067986232,
+          "timestamp_ms": 1774904400000
+        },
+        {
+          "correct": false,
+          "decision_id": "20391f4d5f974c59-SOL",
+          "gross_bps": -43.48351250150977,
+          "mode": "NO_TRADE",
+          "net_bps": -67.27408192150978,
+          "timestamp_ms": 1774908000000
+        },
+        {
+          "correct": true,
+          "decision_id": "ec595139367b4584-SOL",
+          "gross_bps": 40.88995790739668,
+          "mode": "NO_TRADE",
+          "net_bps": 17.099388487396677,
+          "timestamp_ms": 1774911600000
+        },
+        {
+          "correct": true,
+          "decision_id": "cdfd5aa6a0b64976-SOL",
+          "gross_bps": 32.604757879482676,
+          "mode": "NO_TRADE",
+          "net_bps": 8.814188459482676,
+          "timestamp_ms": 1774915200000
+        },
+        {
+          "correct": false,
+          "decision_id": "e71ad1fd9b624c03-SOL",
+          "gross_bps": -21.807608432274364,
+          "mode": "NO_TRADE",
+          "net_bps": -45.59817785227436,
+          "timestamp_ms": 1774918800000
+        },
+        {
+          "correct": false,
+          "decision_id": "cdbc43b1b3c44f1e-SOL",
+          "gross_bps": -136.60541586073447,
+          "mode": "NO_TRADE",
+          "net_bps": -160.39598528073446,
+          "timestamp_ms": 1774922400000
+        },
+        {
+          "correct": true,
+          "decision_id": "57b7b864eb184ac8-SOL",
+          "gross_bps": 2.3852116875367946,
+          "mode": "NO_TRADE",
+          "net_bps": -21.405357732463205,
+          "timestamp_ms": 1774926000000
+        },
+        {
+          "correct": false,
+          "decision_id": "1eb8e06d624046ad-SOL",
+          "gross_bps": -42.9748119851975,
+          "mode": "NO_TRADE",
+          "net_bps": -66.7653814051975,
+          "timestamp_ms": 1774940400000
+        },
+        {
+          "correct": false,
+          "decision_id": "43fab2410cf940a3-SOL",
+          "gross_bps": -37.16580745713971,
+          "mode": "NO_TRADE",
+          "net_bps": -60.956376877139704,
+          "timestamp_ms": 1774944000000
+        },
+        {
+          "correct": true,
+          "decision_id": "5dda4d1aabe748a0-SOL",
+          "gross_bps": 206.68693009118576,
+          "mode": "NO_TRADE",
+          "net_bps": 182.89636067118576,
+          "timestamp_ms": 1774951200000
+        },
+        {
+          "correct": false,
+          "decision_id": "7bda55ba61c345e8-SOL",
+          "gross_bps": -24.125452352231946,
+          "mode": "NO_TRADE",
+          "net_bps": -47.91602177223194,
+          "timestamp_ms": 1774987200000
+        },
+        {
+          "correct": true,
+          "decision_id": "06412f98e867403d-SOL",
+          "gross_bps": 55.622732769043985,
+          "mode": "NO_TRADE",
+          "net_bps": 31.832163349043984,
+          "timestamp_ms": 1774990800000
+        },
+        {
+          "correct": false,
+          "decision_id": "50f12951516f4082-SOL",
+          "gross_bps": -36.07503607503574,
+          "mode": "NO_TRADE",
+          "net_bps": -59.86560549503574,
+          "timestamp_ms": 1774994400000
+        },
+        {
+          "correct": false,
+          "decision_id": "157231d9e78a453a-SOL",
+          "gross_bps": -12.068549360366198,
+          "mode": "NO_TRADE",
+          "net_bps": -35.8591187803662,
+          "timestamp_ms": 1774998000000
+        },
+        {
+          "correct": true,
+          "decision_id": "0e1776d2bed7490d-SOL",
+          "gross_bps": 53.16578057032355,
+          "mode": "NO_TRADE",
+          "net_bps": 29.375211150323548,
+          "timestamp_ms": 1775001600000
+        },
+        {
+          "correct": true,
+          "decision_id": "4a7ad5e204114b7a-SOL",
+          "gross_bps": 24.038461538461878,
+          "mode": "NO_TRADE",
+          "net_bps": 0.24789211846187698,
+          "timestamp_ms": 1775005200000
+        },
+        {
+          "correct": false,
+          "decision_id": "e249b823a7924e2c-SOL",
+          "gross_bps": -80.33573141486829,
+          "mode": "NO_TRADE",
+          "net_bps": -104.12630083486829,
+          "timestamp_ms": 1775008800000
+        },
+        {
+          "correct": false,
+          "decision_id": "db5f82d94a5744aa-SOL",
+          "gross_bps": -9.670010878762032,
+          "mode": "NO_TRADE",
+          "net_bps": -33.46058029876203,
+          "timestamp_ms": 1775012400000
+        },
+        {
+          "correct": true,
+          "decision_id": "f125f7528b3c4b8f-SOL",
+          "gross_bps": 37.15689799832051,
+          "mode": "NO_TRADE",
+          "net_bps": 13.366328578320509,
+          "timestamp_ms": 1775019600000
+        },
+        {
+          "correct": true,
+          "decision_id": "c4884bda03ca46b5-SOL",
+          "gross_bps": 47.76689754000546,
+          "mode": "NO_TRADE",
+          "net_bps": 23.97632812000546,
+          "timestamp_ms": 1775023200000
+        },
+        {
+          "correct": false,
+          "decision_id": "a146e117b9084e73-SOL",
+          "gross_bps": -40.78205589540642,
+          "mode": "NO_TRADE",
+          "net_bps": -64.57262531540643,
+          "timestamp_ms": 1775048400000
+        },
+        {
+          "correct": false,
+          "decision_id": "8ba4480478394c00-SOL",
+          "gross_bps": -87.09326236845274,
+          "mode": "NO_TRADE",
+          "net_bps": -110.88383178845274,
+          "timestamp_ms": 1775055600000
+        },
+        {
+          "correct": false,
+          "decision_id": "2f27ccb7ad40405f-SOL",
+          "gross_bps": -194.90613416238307,
+          "mode": "NO_TRADE",
+          "net_bps": -218.69670358238307,
+          "timestamp_ms": 1775062800000
+        }
+      ],
+      "strategy_id": "momentum@1h",
+      "timeframe": "1h"
+    },
+    "momentum@1h|SOL|TREND_DOWN|1h": {
+      "asset": "SOL",
+      "regime": "TREND_DOWN",
+      "samples": [
+        {
+          "correct": true,
+          "decision_id": "cfcdd277699c4e3d-SOL",
+          "gross_bps": 23.526775711405776,
+          "mode": "TRADE_PAPER",
+          "net_bps": -0.2637937085942248,
+          "timestamp_ms": 1774508400000
+        },
+        {
+          "correct": false,
+          "decision_id": "7f91e1d2854f48a3-SOL",
+          "gross_bps": -5.614823133070989,
+          "mode": "NO_TRADE",
+          "net_bps": -29.40539255307099,
+          "timestamp_ms": 1774512000000
+        },
+        {
+          "correct": true,
+          "decision_id": "5dfa5b027fad4cde-SOL",
+          "gross_bps": 24.691358024691233,
+          "mode": "NO_TRADE",
+          "net_bps": 0.9007886046912326,
+          "timestamp_ms": 1774515600000
+        },
+        {
+          "correct": true,
+          "decision_id": "cc00c1a95bbf40f6-SOL",
+          "gross_bps": 85.5085508550845,
+          "mode": "NO_TRADE",
+          "net_bps": 61.717981435084496,
+          "timestamp_ms": 1774519200000
+        },
+        {
+          "correct": true,
+          "decision_id": "0885abbdda78433b-SOL",
+          "gross_bps": 20.426690876078847,
+          "mode": "TRADE_PAPER",
+          "net_bps": -3.363878543921153,
+          "timestamp_ms": 1774522800000
+        },
+        {
+          "correct": true,
+          "decision_id": "4aa8ce51d5cf40c0-SOL",
+          "gross_bps": 40.93700250170564,
+          "mode": "NO_TRADE",
+          "net_bps": 17.14643308170564,
+          "timestamp_ms": 1774526400000
+        },
+        {
+          "correct": true,
+          "decision_id": "5d175f1d40884142-SOL",
+          "gross_bps": 2.283626398720715,
+          "mode": "NO_TRADE",
+          "net_bps": -21.506943021279284,
+          "timestamp_ms": 1774530000000
+        },
+        {
+          "correct": false,
+          "decision_id": "711c18b670544e20-SOL",
+          "gross_bps": -41.114664230242056,
+          "mode": "NO_TRADE",
+          "net_bps": -64.90523365024205,
+          "timestamp_ms": 1774533600000
+        },
+        {
+          "correct": true,
+          "decision_id": "9c653d6fc0ed4a7c-SOL",
+          "gross_bps": 43.22111010009048,
+          "mode": "NO_TRADE",
+          "net_bps": 19.430540680090477,
+          "timestamp_ms": 1774537200000
+        },
+        {
+          "correct": false,
+          "decision_id": "ec6d83bc408e4e23-SOL",
+          "gross_bps": -0.0,
+          "mode": "NO_TRADE",
+          "net_bps": -23.79056942,
+          "timestamp_ms": 1774540800000
+        },
+        {
+          "correct": true,
+          "decision_id": "3dd94d1d77a8479c-SOL",
+          "gross_bps": 38.839387708476515,
+          "mode": "NO_TRADE",
+          "net_bps": 15.048818288476514,
+          "timestamp_ms": 1774544400000
+        },
+        {
+          "correct": true,
+          "decision_id": "424cea88dd8c4bd3-SOL",
+          "gross_bps": 65.36697247706506,
+          "mode": "TRADE_PAPER",
+          "net_bps": 41.576403057065065,
+          "timestamp_ms": 1774548000000
+        },
+        {
+          "correct": true,
+          "decision_id": "37e00ad5005a4049-SOL",
+          "gross_bps": 65.7970679903028,
+          "mode": "NO_TRADE",
+          "net_bps": 42.00649857030281,
+          "timestamp_ms": 1774551600000
+        },
+        {
+          "correct": true,
+          "decision_id": "45e5078aa0d94134-SOL",
+          "gross_bps": 67.3948408087379,
+          "mode": "TRADE_PAPER",
+          "net_bps": 43.6042713887379,
+          "timestamp_ms": 1774555200000
+        },
+        {
+          "correct": false,
+          "decision_id": "f60f9e1e2ae24da0-SOL",
+          "gross_bps": -100.60832943378561,
+          "mode": "NO_TRADE",
+          "net_bps": -124.39889885378561,
+          "timestamp_ms": 1774558800000
+        },
+        {
+          "correct": false,
+          "decision_id": "b0d0bb44598f4afa-SOL",
+          "gross_bps": -57.91058605513088,
+          "mode": "NO_TRADE",
+          "net_bps": -81.70115547513088,
+          "timestamp_ms": 1774562400000
+        },
+        {
+          "correct": true,
+          "decision_id": "433d091652d848b8-SOL",
+          "gross_bps": 3.454629203132328,
+          "mode": "NO_TRADE",
+          "net_bps": -20.335940216867673,
+          "timestamp_ms": 1774566000000
+        },
+        {
+          "correct": true,
+          "decision_id": "3fffeaa2e9b54856-SOL",
+          "gross_bps": 32.25434857735297,
+          "mode": "NO_TRADE",
+          "net_bps": 8.46377915735297,
+          "timestamp_ms": 1774569600000
+        },
+        {
+          "correct": false,
+          "decision_id": "cb7ece4188044285-SOL",
+          "gross_bps": -3.4843205574914213,
+          "mode": "NO_TRADE",
+          "net_bps": -27.274889977491423,
+          "timestamp_ms": 1774594800000
+        },
+        {
+          "correct": false,
+          "decision_id": "8dbd2eb830c34c28-SOL",
+          "gross_bps": -44.56757407853585,
+          "mode": "TRADE_PAPER",
+          "net_bps": -68.35814349853585,
+          "timestamp_ms": 1774612800000
+        },
+        {
+          "correct": true,
+          "decision_id": "dc0a8ee4556843a3-SOL",
+          "gross_bps": 34.77635208058595,
+          "mode": "NO_TRADE",
+          "net_bps": 10.98578266058595,
+          "timestamp_ms": 1774616400000
+        },
+        {
+          "correct": true,
+          "decision_id": "b937b0ed1cad4593-SOL",
+          "gross_bps": 18.05054151624446,
+          "mode": "NO_TRADE",
+          "net_bps": -5.740027903755539,
+          "timestamp_ms": 1774620000000
+        },
+        {
+          "correct": false,
+          "decision_id": "d27e5cd5007647b5-SOL",
+          "gross_bps": -27.727546714888966,
+          "mode": "NO_TRADE",
+          "net_bps": -51.51811613488897,
+          "timestamp_ms": 1774623600000
+        },
+        {
+          "correct": false,
+          "decision_id": "4aba4c39c6314c64-SOL",
+          "gross_bps": -20.43760519355464,
+          "mode": "NO_TRADE",
+          "net_bps": -44.22817461355464,
+          "timestamp_ms": 1774627200000
+        },
+        {
+          "correct": true,
+          "decision_id": "1a88e16498d7474a-SOL",
+          "gross_bps": 38.39232153569204,
+          "mode": "NO_TRADE",
+          "net_bps": 14.60175211569204,
+          "timestamp_ms": 1774630800000
+        },
+        {
+          "correct": true,
+          "decision_id": "522c2a0b6c1a4024-SOL",
+          "gross_bps": 96.35071660845443,
+          "mode": "NO_TRADE",
+          "net_bps": 72.56014718845444,
+          "timestamp_ms": 1774634400000
+        },
+        {
+          "correct": false,
+          "decision_id": "cafa2b51b61b4d79-SOL",
+          "gross_bps": -19.457618873889892,
+          "mode": "TRADE_PAPER",
+          "net_bps": -43.248188293889896,
+          "timestamp_ms": 1774638000000
+        },
+        {
+          "correct": false,
+          "decision_id": "37d2f9d3f5144179-SOL",
+          "gross_bps": -50.977060322854925,
+          "mode": "NO_TRADE",
+          "net_bps": -74.76762974285492,
+          "timestamp_ms": 1774641600000
+        },
+        {
+          "correct": true,
+          "decision_id": "9c9eacda555348a8-SOL",
+          "gross_bps": 4.830334500664926,
+          "mode": "NO_TRADE",
+          "net_bps": -18.960234919335075,
+          "timestamp_ms": 1774645200000
+        },
+        {
+          "correct": false,
+          "decision_id": "563ee5f1e03d4ae8-SOL",
+          "gross_bps": -26.309495336043874,
+          "mode": "NO_TRADE",
+          "net_bps": -50.10006475604388,
+          "timestamp_ms": 1774688400000
+        },
+        {
+          "correct": false,
+          "decision_id": "3f7feb6c3aeb4d82-SOL",
+          "gross_bps": -30.65228052967141,
+          "mode": "NO_TRADE",
+          "net_bps": -54.44284994967141,
+          "timestamp_ms": 1774810800000
+        },
+        {
+          "correct": true,
+          "decision_id": "0a07295c3caa4777-SOL",
+          "gross_bps": 23.22454467668961,
+          "mode": "NO_TRADE",
+          "net_bps": -0.5660247433103898,
+          "timestamp_ms": 1774814400000
+        },
+        {
+          "correct": false,
+          "decision_id": "afa0081f1ca041b0-SOL",
+          "gross_bps": -39.20607694192516,
+          "mode": "NO_TRADE",
+          "net_bps": -62.99664636192516,
+          "timestamp_ms": 1774818000000
+        },
+        {
+          "correct": false,
+          "decision_id": "632db834ee364d80-SOL",
+          "gross_bps": -61.774153694094394,
+          "mode": "NO_TRADE",
+          "net_bps": -85.56472311409439,
+          "timestamp_ms": 1774828800000
+        },
+        {
+          "correct": false,
+          "decision_id": "a8fe22bde9b84526-SOL",
+          "gross_bps": -55.255402750491506,
+          "mode": "NO_TRADE",
+          "net_bps": -79.04597217049151,
+          "timestamp_ms": 1774832400000
+        },
+        {
+          "correct": true,
+          "decision_id": "b97af9dd69c94edf-SOL",
+          "gross_bps": 9.93171942892592,
+          "mode": "NO_TRADE",
+          "net_bps": -13.85884999107408,
+          "timestamp_ms": 1774954800000
+        },
+        {
+          "correct": false,
+          "decision_id": "0e888b07734d4a0f-SOL",
+          "gross_bps": -47.222567416427914,
+          "mode": "NO_TRADE",
+          "net_bps": -71.01313683642792,
+          "timestamp_ms": 1774958400000
+        },
+        {
+          "correct": true,
+          "decision_id": "6941b74567874df6-SOL",
+          "gross_bps": 8.658008658007814,
+          "mode": "NO_TRADE",
+          "net_bps": -15.132560761992186,
+          "timestamp_ms": 1774962000000
+        },
+        {
+          "correct": false,
+          "decision_id": "c0a945e57fee4b2f-SOL",
+          "gross_bps": -133.6964595196829,
+          "mode": "NO_TRADE",
+          "net_bps": -157.4870289396829,
+          "timestamp_ms": 1774965600000
+        },
+        {
+          "correct": true,
+          "decision_id": "8e4a46d2a89c4881-SOL",
+          "gross_bps": 150.25653554849794,
+          "mode": "NO_TRADE",
+          "net_bps": 126.46596612849794,
+          "timestamp_ms": 1774969200000
+        },
+        {
+          "correct": false,
+          "decision_id": "a33f7418b3244e69-SOL",
+          "gross_bps": -28.525362768200917,
+          "mode": "NO_TRADE",
+          "net_bps": -52.31593218820092,
+          "timestamp_ms": 1774972800000
+        },
+        {
+          "correct": false,
+          "decision_id": "e09aae204f5b401d-SOL",
+          "gross_bps": -189.21592876576813,
+          "mode": "NO_TRADE",
+          "net_bps": -213.00649818576812,
+          "timestamp_ms": 1774976400000
+        },
+        {
+          "correct": true,
+          "decision_id": "e4e08edc07634439-SOL",
+          "gross_bps": 2.4274790629925986,
+          "mode": "NO_TRADE",
+          "net_bps": -21.3630903570074,
+          "timestamp_ms": 1774980000000
+        }
+      ],
+      "strategy_id": "momentum@1h",
+      "timeframe": "1h"
+    },
+    "momentum@1h|SOL|TREND_UP|1h": {
+      "asset": "SOL",
+      "regime": "TREND_UP",
+      "samples": [
+        {
+          "correct": false,
+          "decision_id": "4afb0029c2674d88-SOL",
+          "gross_bps": -20.325203252032722,
+          "mode": "NO_TRADE",
+          "net_bps": -44.11577267203272,
+          "timestamp_ms": 1774854000000
+        },
+        {
+          "correct": true,
+          "decision_id": "4ccf813668564ca4-SOL",
+          "gross_bps": 65.89193722295401,
+          "mode": "NO_TRADE",
+          "net_bps": 42.101367802954016,
+          "timestamp_ms": 1774857600000
+        },
+        {
+          "correct": true,
+          "decision_id": "a4f0240206594fe7-SOL",
+          "gross_bps": 59.50964056177101,
+          "mode": "NO_TRADE",
+          "net_bps": 35.71907114177101,
+          "timestamp_ms": 1774861200000
+        },
+        {
+          "correct": false,
+          "decision_id": "ea79423de2ed4cda-SOL",
+          "gross_bps": -44.959772834831455,
+          "mode": "NO_TRADE",
+          "net_bps": -68.75034225483145,
+          "timestamp_ms": 1774864800000
+        },
+        {
+          "correct": false,
+          "decision_id": "21e081ffcea04b84-SOL",
+          "gross_bps": -26.146898027097556,
+          "mode": "NO_TRADE",
+          "net_bps": -49.93746744709756,
+          "timestamp_ms": 1774868400000
+        },
+        {
+          "correct": true,
+          "decision_id": "e23baf46a376463b-SOL",
+          "gross_bps": 38.13155386081902,
+          "mode": "NO_TRADE",
+          "net_bps": 14.340984440819017,
+          "timestamp_ms": 1774872000000
+        },
+        {
+          "correct": true,
+          "decision_id": "27dc4cbe97a740df-SOL",
+          "gross_bps": 29.677113010446345,
+          "mode": "NO_TRADE",
+          "net_bps": 5.886543590446344,
+          "timestamp_ms": 1774875600000
+        },
+        {
+          "correct": false,
+          "decision_id": "8ebce8c1221542cd-SOL",
+          "gross_bps": -56.81145697715585,
+          "mode": "NO_TRADE",
+          "net_bps": -80.60202639715585,
+          "timestamp_ms": 1774879200000
+        },
+        {
+          "correct": true,
+          "decision_id": "03b9c3f918b743a9-SOL",
+          "gross_bps": 45.232710391619506,
+          "mode": "NO_TRADE",
+          "net_bps": 21.442140971619505,
+          "timestamp_ms": 1774882800000
+        },
+        {
+          "correct": true,
+          "decision_id": "86f4a125a01c46f6-SOL",
+          "gross_bps": 14.219694276573593,
+          "mode": "NO_TRADE",
+          "net_bps": -9.570875143426408,
+          "timestamp_ms": 1774886400000
+        },
+        {
+          "correct": false,
+          "decision_id": "02128bd52e584e13-SOL",
+          "gross_bps": -34.31546562537052,
+          "mode": "NO_TRADE",
+          "net_bps": -58.10603504537052,
+          "timestamp_ms": 1774890000000
+        },
+        {
+          "correct": false,
+          "decision_id": "1ab933cc07314923-SOL",
+          "gross_bps": -113.98717644264946,
+          "mode": "NO_TRADE",
+          "net_bps": -137.77774586264945,
+          "timestamp_ms": 1774893600000
+        },
+        {
+          "correct": true,
+          "decision_id": "313fe2339b644e82-SOL",
+          "gross_bps": 68.46024501561463,
+          "mode": "NO_TRADE",
+          "net_bps": 44.669675595614635,
+          "timestamp_ms": 1774897200000
+        },
+        {
+          "correct": true,
+          "decision_id": "3120a5798aec44ef-SOL",
+          "gross_bps": 36.84335631091066,
+          "mode": "NO_TRADE",
+          "net_bps": 13.052786890910657,
+          "timestamp_ms": 1775026800000
+        },
+        {
+          "correct": false,
+          "decision_id": "9d14bb838b8f432a-SOL",
+          "gross_bps": -72.23208999407927,
+          "mode": "NO_TRADE",
+          "net_bps": -96.02265941407927,
+          "timestamp_ms": 1775030400000
+        },
+        {
+          "correct": false,
+          "decision_id": "6299103e72e34179-SOL",
+          "gross_bps": -26.240458015267038,
+          "mode": "NO_TRADE",
+          "net_bps": -50.031027435267035,
+          "timestamp_ms": 1775034000000
+        },
+        {
+          "correct": false,
+          "decision_id": "4a49fc27703444c3-SOL",
+          "gross_bps": -28.701267639321824,
+          "mode": "NO_TRADE",
+          "net_bps": -52.491837059321824,
+          "timestamp_ms": 1775037600000
+        }
+      ],
+      "strategy_id": "momentum@1h",
+      "timeframe": "1h"
+    }
+  },
+  "seen_decisions": [
+    "02128bd52e584e13-ETH",
+    "02128bd52e584e13-SOL",
+    "03b9c3f918b743a9-BTC",
+    "03b9c3f918b743a9-ETH",
+    "03b9c3f918b743a9-SOL",
+    "06412f98e867403d-BTC",
+    "06412f98e867403d-ETH",
+    "06412f98e867403d-SOL",
+    "0885abbdda78433b-BTC",
+    "0885abbdda78433b-ETH",
+    "0885abbdda78433b-SOL",
+    "0a07295c3caa4777-SOL",
+    "0e1776d2bed7490d-BTC",
+    "0e1776d2bed7490d-ETH",
+    "0e1776d2bed7490d-SOL",
+    "0e888b07734d4a0f-BTC",
+    "0e888b07734d4a0f-SOL",
+    "14b5922c85b947e1-BTC",
+    "14b5922c85b947e1-ETH",
+    "157231d9e78a453a-BTC",
+    "157231d9e78a453a-ETH",
+    "157231d9e78a453a-SOL",
+    "191f4f29d8e3431c-BTC",
+    "1a88e16498d7474a-BTC",
+    "1a88e16498d7474a-ETH",
+    "1a88e16498d7474a-SOL",
+    "1ab933cc07314923-ETH",
+    "1ab933cc07314923-SOL",
+    "1b5bbf670fc24f12-BTC",
+    "1e6a928d554f4784-SOL",
+    "1eb8e06d624046ad-BTC",
+    "1eb8e06d624046ad-ETH",
+    "1eb8e06d624046ad-SOL",
+    "20391f4d5f974c59-BTC",
+    "20391f4d5f974c59-ETH",
+    "20391f4d5f974c59-SOL",
+    "206019c54e6e4ec9-BTC",
+    "206019c54e6e4ec9-ETH",
+    "206019c54e6e4ec9-SOL",
+    "21e081ffcea04b84-BTC",
+    "21e081ffcea04b84-ETH",
+    "21e081ffcea04b84-SOL",
+    "221ee61a7dc44bf3-ETH",
+    "221ee61a7dc44bf3-SOL",
+    "244c9a9da29a46f1-BTC",
+    "24f4684222a9446a-BTC",
+    "27dc4cbe97a740df-BTC",
+    "27dc4cbe97a740df-ETH",
+    "27dc4cbe97a740df-SOL",
+    "2f27ccb7ad40405f-SOL",
+    "301759b9e80646b7-BTC",
+    "301759b9e80646b7-ETH",
+    "301759b9e80646b7-SOL",
+    "3120a5798aec44ef-BTC",
+    "3120a5798aec44ef-ETH",
+    "3120a5798aec44ef-SOL",
+    "313fe2339b644e82-BTC",
+    "313fe2339b644e82-ETH",
+    "313fe2339b644e82-SOL",
+    "319e78728e324f5d-ETH",
+    "319e78728e324f5d-SOL",
+    "3365c4797b0441e2-ETH",
+    "3365c4797b0441e2-SOL",
+    "33dddfbc8a1943d6-BTC",
+    "33dddfbc8a1943d6-ETH",
+    "37d2f9d3f5144179-BTC",
+    "37d2f9d3f5144179-ETH",
+    "37d2f9d3f5144179-SOL",
+    "37e00ad5005a4049-BTC",
+    "37e00ad5005a4049-ETH",
+    "37e00ad5005a4049-SOL",
+    "3a5f02dd21b24e3c-ETH",
+    "3dd94d1d77a8479c-BTC",
+    "3dd94d1d77a8479c-ETH",
+    "3dd94d1d77a8479c-SOL",
+    "3f7feb6c3aeb4d82-ETH",
+    "3f7feb6c3aeb4d82-SOL",
+    "3fffeaa2e9b54856-BTC",
+    "3fffeaa2e9b54856-SOL",
+    "424cea88dd8c4bd3-BTC",
+    "424cea88dd8c4bd3-ETH",
+    "424cea88dd8c4bd3-SOL",
+    "433d091652d848b8-BTC",
+    "433d091652d848b8-SOL",
+    "43fab2410cf940a3-BTC",
+    "43fab2410cf940a3-ETH",
+    "43fab2410cf940a3-SOL",
+    "45793818611048e3-BTC",
+    "45793818611048e3-ETH",
+    "45e5078aa0d94134-BTC",
+    "45e5078aa0d94134-ETH",
+    "45e5078aa0d94134-SOL",
+    "4a49fc27703444c3-BTC",
+    "4a49fc27703444c3-ETH",
+    "4a49fc27703444c3-SOL",
+    "4a7ad5e204114b7a-BTC",
+    "4a7ad5e204114b7a-ETH",
+    "4a7ad5e204114b7a-SOL",
+    "4aa8ce51d5cf40c0-BTC",
+    "4aa8ce51d5cf40c0-ETH",
+    "4aa8ce51d5cf40c0-SOL",
+    "4aba4c39c6314c64-BTC",
+    "4aba4c39c6314c64-ETH",
+    "4aba4c39c6314c64-SOL",
+    "4afb0029c2674d88-BTC",
+    "4afb0029c2674d88-ETH",
+    "4afb0029c2674d88-SOL",
+    "4ccf813668564ca4-BTC",
+    "4ccf813668564ca4-ETH",
+    "4ccf813668564ca4-SOL",
+    "50f12951516f4082-BTC",
+    "50f12951516f4082-ETH",
+    "50f12951516f4082-SOL",
+    "522c2a0b6c1a4024-BTC",
+    "522c2a0b6c1a4024-ETH",
+    "522c2a0b6c1a4024-SOL",
+    "563ee5f1e03d4ae8-BTC",
+    "563ee5f1e03d4ae8-ETH",
+    "563ee5f1e03d4ae8-SOL",
+    "57b7b864eb184ac8-SOL",
+    "5acd531603664a24-ETH",
+    "5d175f1d40884142-BTC",
+    "5d175f1d40884142-ETH",
+    "5d175f1d40884142-SOL",
+    "5dda4d1aabe748a0-SOL",
+    "5dfa5b027fad4cde-BTC",
+    "5dfa5b027fad4cde-ETH",
+    "5dfa5b027fad4cde-SOL",
+    "5f8407f568354d86-BTC",
+    "6299103e72e34179-BTC",
+    "6299103e72e34179-ETH",
+    "6299103e72e34179-SOL",
+    "62b6f6fee27445c9-BTC",
+    "62b6f6fee27445c9-ETH",
+    "632db834ee364d80-BTC",
+    "632db834ee364d80-ETH",
+    "632db834ee364d80-SOL",
+    "67746c5d57b6426d-BTC",
+    "67746c5d57b6426d-ETH",
+    "67746c5d57b6426d-SOL",
+    "6941b74567874df6-BTC",
+    "6941b74567874df6-ETH",
+    "6941b74567874df6-SOL",
+    "6a67b2f3ebfb46ee-BTC",
+    "6afe6d1055f24367-BTC",
+    "6afe6d1055f24367-ETH",
+    "6afe6d1055f24367-SOL",
+    "6bb76b9fcee34dca-BTC",
+    "6bb76b9fcee34dca-ETH",
+    "6bb76b9fcee34dca-SOL",
+    "6cfef02814fa4555-BTC",
+    "6cfef02814fa4555-ETH",
+    "6cfef02814fa4555-SOL",
+    "708303f24b3c4833-ETH",
+    "711c18b670544e20-BTC",
+    "711c18b670544e20-ETH",
+    "711c18b670544e20-SOL",
+    "7bda55ba61c345e8-BTC",
+    "7bda55ba61c345e8-ETH",
+    "7bda55ba61c345e8-SOL",
+    "7e585ef0da644c93-ETH",
+    "7e585ef0da644c93-SOL",
+    "7f91e1d2854f48a3-BTC",
+    "7f91e1d2854f48a3-ETH",
+    "7f91e1d2854f48a3-SOL",
+    "86f4a125a01c46f6-ETH",
+    "86f4a125a01c46f6-SOL",
+    "890a944fbfef4e78-BTC",
+    "890a944fbfef4e78-ETH",
+    "8ba4480478394c00-SOL",
+    "8dbd2eb830c34c28-BTC",
+    "8dbd2eb830c34c28-ETH",
+    "8dbd2eb830c34c28-SOL",
+    "8e4a46d2a89c4881-BTC",
+    "8e4a46d2a89c4881-SOL",
+    "8ebce8c1221542cd-BTC",
+    "8ebce8c1221542cd-ETH",
+    "8ebce8c1221542cd-SOL",
+    "91a8ca81f5d24ec0-BTC",
+    "91a8ca81f5d24ec0-ETH",
+    "9874d80d13ae4815-ETH",
+    "9c653d6fc0ed4a7c-BTC",
+    "9c653d6fc0ed4a7c-ETH",
+    "9c653d6fc0ed4a7c-SOL",
+    "9c9eacda555348a8-BTC",
+    "9c9eacda555348a8-ETH",
+    "9c9eacda555348a8-SOL",
+    "9d14bb838b8f432a-BTC",
+    "9d14bb838b8f432a-ETH",
+    "9d14bb838b8f432a-SOL",
+    "9d89a52cfa3641b8-BTC",
+    "9d89a52cfa3641b8-ETH",
+    "9f9aeb56dd094480-BTC",
+    "9f9aeb56dd094480-ETH",
+    "9f9aeb56dd094480-SOL",
+    "a146e117b9084e73-BTC",
+    "a146e117b9084e73-ETH",
+    "a146e117b9084e73-SOL",
+    "a279a60ef7254bc9-BTC",
+    "a279a60ef7254bc9-ETH",
+    "a279a60ef7254bc9-SOL",
+    "a33f7418b3244e69-BTC",
+    "a33f7418b3244e69-ETH",
+    "a33f7418b3244e69-SOL",
+    "a4f0240206594fe7-BTC",
+    "a4f0240206594fe7-ETH",
+    "a4f0240206594fe7-SOL",
+    "a8932d2bced44f5c-ETH",
+    "a8932d2bced44f5c-SOL",
+    "a8fe22bde9b84526-BTC",
+    "a8fe22bde9b84526-SOL",
+    "a9843d316a9249d7-ETH",
+    "a9843d316a9249d7-SOL",
+    "abe59fd817d84ac8-BTC",
+    "abe59fd817d84ac8-ETH",
+    "abe59fd817d84ac8-SOL",
+    "ada2412a001b4354-BTC",
+    "ae4ad553a24e4501-BTC",
+    "ae4ad553a24e4501-ETH",
+    "ae4ad553a24e4501-SOL",
+    "afa0081f1ca041b0-SOL",
+    "b0d0bb44598f4afa-BTC",
+    "b0d0bb44598f4afa-ETH",
+    "b0d0bb44598f4afa-SOL",
+    "b913aa0443554987-ETH",
+    "b937b0ed1cad4593-BTC",
+    "b937b0ed1cad4593-ETH",
+    "b937b0ed1cad4593-SOL",
+    "b97af9dd69c94edf-BTC",
+    "b97af9dd69c94edf-SOL",
+    "bb8c5c07530f4ea8-BTC",
+    "bb8c5c07530f4ea8-ETH",
+    "c0a945e57fee4b2f-BTC",
+    "c0a945e57fee4b2f-ETH",
+    "c0a945e57fee4b2f-SOL",
+    "c4884bda03ca46b5-BTC",
+    "c4884bda03ca46b5-ETH",
+    "c4884bda03ca46b5-SOL",
+    "cafa2b51b61b4d79-BTC",
+    "cafa2b51b61b4d79-ETH",
+    "cafa2b51b61b4d79-SOL",
+    "cb7ece4188044285-ETH",
+    "cb7ece4188044285-SOL",
+    "cc00c1a95bbf40f6-BTC",
+    "cc00c1a95bbf40f6-ETH",
+    "cc00c1a95bbf40f6-SOL",
+    "cd989c67151e4f75-BTC",
+    "cd989c67151e4f75-ETH",
+    "cdbc43b1b3c44f1e-BTC",
+    "cdbc43b1b3c44f1e-ETH",
+    "cdbc43b1b3c44f1e-SOL",
+    "cdfd5aa6a0b64976-BTC",
+    "cdfd5aa6a0b64976-ETH",
+    "cdfd5aa6a0b64976-SOL",
+    "cf68a8ad8ffe482c-ETH",
+    "cfcdd277699c4e3d-BTC",
+    "cfcdd277699c4e3d-ETH",
+    "cfcdd277699c4e3d-SOL",
+    "d1f0083da9c44757-ETH",
+    "d27e5cd5007647b5-BTC",
+    "d27e5cd5007647b5-ETH",
+    "d27e5cd5007647b5-SOL",
+    "d53aa360c4b54480-BTC",
+    "d53aa360c4b54480-ETH",
+    "d669fa8a4e4e490e-ETH",
+    "d669fa8a4e4e490e-SOL",
+    "db5f82d94a5744aa-BTC",
+    "db5f82d94a5744aa-ETH",
+    "db5f82d94a5744aa-SOL",
+    "db9cda73b3594f7d-ETH",
+    "db9cda73b3594f7d-SOL",
+    "dc0a8ee4556843a3-BTC",
+    "dc0a8ee4556843a3-ETH",
+    "dc0a8ee4556843a3-SOL",
+    "dd345bfa957f4925-ETH",
+    "e09aae204f5b401d-BTC",
+    "e09aae204f5b401d-SOL",
+    "e2158d04a00a4c85-BTC",
+    "e2158d04a00a4c85-ETH",
+    "e23baf46a376463b-BTC",
+    "e23baf46a376463b-ETH",
+    "e23baf46a376463b-SOL",
+    "e249b823a7924e2c-BTC",
+    "e249b823a7924e2c-ETH",
+    "e249b823a7924e2c-SOL",
+    "e4e08edc07634439-ETH",
+    "e4e08edc07634439-SOL",
+    "e5b2622261204c9b-BTC",
+    "e5b2622261204c9b-ETH",
+    "e71ad1fd9b624c03-BTC",
+    "e71ad1fd9b624c03-ETH",
+    "e71ad1fd9b624c03-SOL",
+    "e8870a15a8794c5d-ETH",
+    "e8870a15a8794c5d-SOL",
+    "ea79423de2ed4cda-BTC",
+    "ea79423de2ed4cda-ETH",
+    "ea79423de2ed4cda-SOL",
+    "ec595139367b4584-BTC",
+    "ec595139367b4584-ETH",
+    "ec595139367b4584-SOL",
+    "ec6d83bc408e4e23-BTC",
+    "ec6d83bc408e4e23-ETH",
+    "ec6d83bc408e4e23-SOL",
+    "ed610551af0b49bb-ETH",
+    "f0d7b9bcfb964e04-ETH",
+    "f125f7528b3c4b8f-BTC",
+    "f125f7528b3c4b8f-SOL",
+    "f60f9e1e2ae24da0-BTC",
+    "f60f9e1e2ae24da0-ETH",
+    "f60f9e1e2ae24da0-SOL",
+    "f7c38eb1ae974941-ETH",
+    "f7c38eb1ae974941-SOL"
+  ],
+  "version": "experience-learning-v1"
+}

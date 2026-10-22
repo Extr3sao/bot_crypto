@@ -1,0 +1,457 @@
+{
+  "branch_coverage": {
+    "after_commit": {
+      "evidence": "probe .tmp/audit/probe_after_commit.py: run-3 0 cierres, closed_trades=1, open=0, equity igual, state_digest igual, sin bloqueo",
+      "source": "auditoria (no estaba en la evidencia del WP)",
+      "status": "CONFIRMED"
+    },
+    "before_commit": {
+      "evidence": "14/14 kills con closed_before=0, closed_after=0, open=1; libro identico; pasada final 1 cierre, equity 9996.380966197243",
+      "status": "CONFIRMED"
+    },
+    "double_close": {
+      "evidence": "probe + no_duplicate_close/open_and_closed_are_disjoint del verificador + REC-03 del drill",
+      "status": "CONFIRMED"
+    },
+    "exchange_reconciliation": {
+      "evidence": "sin cliente de exchange ni ruta de orden",
+      "status": "ABSENT"
+    },
+    "market_data": {
+      "evidence": "bars_sha256 e230e99d/053c43f3 y minutes_sha256 reproducidos; cadena de 3034 eventos 0 rota",
+      "status": "CONFIRMED"
+    },
+    "paper_live": {
+      "evidence": "no hay place_order|create_order|submit_order en vision/ ni paper/; live_* son literales",
+      "status": "CONFIRMED (estatico) / NOT_VERIFIABLE (campos)"
+    }
+  },
+  "claims": [
+    {
+      "claim": "suite amplia vision+paper+risk+market_data: 694 passed",
+      "evidence": "coleccion 334+73+147+140=694; re-ejecucion 310+240+92+33+19=694, cinco tramos exit 0",
+      "id": "694",
+      "limit": "la evidencia archivada es un log ignorado por git, fuera del WP y sin hash (O2)",
+      "status": "CONFIRMED"
+    },
+    {
+      "claim": "90 tests de los 6 ficheros del WP",
+      "evidence": "coleccion 90; corridos dentro del tramo de 310, exit 0",
+      "id": "90",
+      "limit": null,
+      "status": "CONFIRMED"
+    },
+    {
+      "claim": "22 tests de minutos/subbar",
+      "evidence": "coleccion exacta 22; corridos dentro del tramo de 92, exit 0",
+      "id": "22",
+      "limit": null,
+      "status": "CONFIRMED"
+    },
+    {
+      "claim": "ruff y mypy sin errores",
+      "evidence": "ruff exit 0 sobre 17 ficheros; mypy exit 0 sobre 7",
+      "id": "ruff-mypy",
+      "limit": "el inventario hasheado omite vision/ledger.py (O5)",
+      "status": "CONFIRMED"
+    },
+    {
+      "claim": "83/83 verificaciones",
+      "evidence": "re-ejecucion sin --json: 83/83, failed=[], mismos nombres y first_failure",
+      "id": "83",
+      "limit": "verifica el JSON del laboratorio, no re-ejecuta el runtime",
+      "status": "CONFIRMED"
+    },
+    {
+      "claim": "10/10 controles negativos detectados",
+      "evidence": "10 mutaciones, todas detectadas con first_failure reproducible",
+      "id": "10-controls",
+      "limit": null,
+      "status": "CONFIRMED"
+    },
+    {
+      "claim": "FALSE_SUCCESS=0",
+      "evidence": "el campo se calcula 0 if ok else 1 en verify_quote_gap.py",
+      "id": "false-success",
+      "limit": "mide si el verificador paso, no si el runtime publico un falso exito (O4)",
+      "status": "NOT_VERIFIABLE"
+    },
+    {
+      "claim": "GAP_LAB ok=true",
+      "evidence": "6 escenarios + corrupcion + concurrencia + 26 muertes; hash 9970d07d",
+      "id": "lab",
+      "limit": "salida del propio laboratorio; vinculo con el runtime por construccion",
+      "status": "CONFIRMED"
+    },
+    {
+      "claim": "drill A/B 4/4 PASS",
+      "evidence": "criterios calculados; killed=true; differences=[]; digests de datos reproducidos desde archive/",
+      "id": "drill",
+      "limit": "live_orders/live_enabled/real_model_called son literales (O9)",
+      "status": "CONFIRMED"
+    },
+    {
+      "claim": "14 experimentos kill-resume",
+      "evidence": "14 intentos, 14 killed=true, libro identico en todos",
+      "id": "kill-resume",
+      "limit": "los 14 kills cayeron antes del COMMIT (O3)",
+      "status": "CONFIRMED"
+    },
+    {
+      "claim": "recuperacion despues del COMMIT",
+      "evidence": "probe de auditoria: run-3 con 0 cierres, libro y state_digest identicos, sin bloqueo",
+      "id": "post-commit",
+      "limit": "no estaba en la evidencia del WP; se midio en esta auditoria",
+      "status": "CONFIRMED"
+    },
+    {
+      "claim": "minutos reales realmente usados",
+      "evidence": "bars_sha256 y minutes_sha256 reproducidos; cadena de 3034 eventos, 0 rota",
+      "id": "market-data",
+      "limit": "el origen externo lo declara el collector; sin firma de terceros",
+      "status": "CONFIRMED"
+    },
+    {
+      "claim": "reconciliacion con el exchange",
+      "evidence": "no existe cliente de exchange ni ruta de orden en vision/ ni paper/",
+      "id": "exchange",
+      "limit": "la capacidad no esta implementada",
+      "status": "NOT_VERIFIABLE"
+    },
+    {
+      "claim": "PAPER, 0 ordenes, LIVE bloqueado",
+      "evidence": "ausencia estatica de ruta de envio de ordenes",
+      "id": "paper-live",
+      "limit": "los campos live_* del JSON son constantes, no medidas (O9)",
+      "status": "CONFIRMED"
+    }
+  ],
+  "decision": "PARTIAL",
+  "decision_reason": "La identidad codigo<->evidencia esta demostrada por 20/20 hashes y por re-ejecucion verde sobre los mismos bytes, pero el WP no existe en ningun commit, la evidencia primaria de 694 esta fuera del paquete y sin hash, la carrera del COMMIT era unilateral en la evidencia, y tres campos que suenan a medida son constantes.",
+  "defects": {
+    "fixed": [
+      {
+        "defect": "muerte entre rotacion y replace dejaba solo .prev y se leia como libro ausente",
+        "id": "C1",
+        "proof": "durable.py:520-525 + test_a_crash_before_the_rename_leaves_the_previous_book_readable"
+      },
+      {
+        "defect": "relevo del cerrojo en carrera permitia dos duenos",
+        "id": "C2",
+        "proof": "durable.py:310-341 (guardian O_EXCL) + test_a_second_taker_is_refused_while_one_takeover_is_in_flight"
+      },
+      {
+        "defect": "el generador de evidencias reventaba con --out relativo",
+        "id": "C3",
+        "proof": "collect() ancla out a REPO; corrida posterior exit 0"
+      },
+      {
+        "defect": "el generador formateaba None como duracion (TypeError)",
+        "id": "C4",
+        "proof": "imprime (log); corrida posterior exit 0"
+      },
+      {
+        "defect": "quote_feed_source.py con 3 avisos reales de ruff (RUF007/RUF100/SIM108)",
+        "id": "C5",
+        "proof": "ruff exit 0"
+      }
+    ],
+    "open": [
+      {
+        "defect": "pythonpath=[\"src\"] sin commitear; el venv resuelve trading_bot al checkout hermano 'bot freebuff'",
+        "evidence": "python -c import trading_bot -> ...\\bot freebuff\\src\\...; pytest -o pythonpath= -> error de coleccion",
+        "id": "O1",
+        "severity": "alta"
+      },
+      {
+        "defect": "el log de los 694 es .tmp/wide-suite.log: ignorado por git (*.log), fuera del WP y sin hash en RUN_REPORT",
+        "evidence": "RUN_REPORT check #2 source='captured log'",
+        "id": "O2",
+        "severity": "media"
+      },
+      {
+        "defect": "kill-resume solo ejercio la rama previa al COMMIT",
+        "evidence": "14/14 intentos con closed_before=0 y closed_after=0",
+        "id": "O3",
+        "severity": "media"
+      },
+      {
+        "defect": "false_success del verificador no mide falsos exitos del runtime",
+        "evidence": "verify_quote_gap.py: 'false_success': 0 if ok else 1",
+        "id": "O4",
+        "severity": "baja"
+      },
+      {
+        "defect": "el inventario de hashes omite vision/ledger.py (modificado) y el resto del grafo de imports",
+        "evidence": "RUN_REPORT.runtime_sha256 tiene 7 entradas",
+        "id": "O5",
+        "severity": "baja"
+      },
+      {
+        "defect": "git diff --check rc=2 por CRLF en las lineas anadidas de pyproject.toml",
+        "evidence": "git diff --check: pyproject.toml:162-165 trailing whitespace",
+        "id": "O6",
+        "severity": "baja"
+      },
+      {
+        "defect": "MANIFEST.events_sha256 es la cabeza de la cadena de eventos, no el hash del fichero",
+        "evidence": "cadena recompuesta: 3034/3034, cabeza b92e5226 = manifest",
+        "id": "O7",
+        "severity": "informativa"
+      },
+      {
+        "defect": "sin reconciliacion con exchange, huecos intra-corrida, feed de 1m en vivo, retencion",
+        "evidence": "declarado en FINAL_REPORT §6-§7",
+        "id": "O8",
+        "severity": "informativa"
+      },
+      {
+        "defect": "live_orders/live_enabled/real_model_called son literales del generador",
+        "evidence": "paper_resume_drill.py:374-375; make_quote_gap_evidence.py:187-189",
+        "id": "O9",
+        "severity": "media"
+      }
+    ]
+  },
+  "environment": {
+    "loadavg": "~65 durante la auditoria",
+    "suite_note": "una sola invocacion de la suite amplia excede 600 s; se corrio en cinco tramos disjuntos"
+  },
+  "generated_at_utc": "2026-10-21T10:09:43Z",
+  "git": {
+    "branch": "wp/paper-resume-001",
+    "diff_check": {
+      "cause": "CRLF marcado como trailing whitespace en pyproject.toml:162-165 (core.whitespace sin cr-at-eol)",
+      "exit": 2
+    },
+    "diff_stat": {
+      "deletions": 30,
+      "files": 8,
+      "insertions": 1009
+    },
+    "evidence_ignored_by_git": "reports/ai-bots/* (.gitignore:463)",
+    "head": "fefb0771036c33c648ecb2ed11cb28e8c2b49264",
+    "log": [
+      "fefb077",
+      "9800925",
+      "10919df",
+      "f014813",
+      "b0e1549"
+    ],
+    "modified": [
+      ".gitattributes",
+      "docs/agentic/EXECUTION_CHECKPOINT.md",
+      "docs/runtime/runtime_authority_map.md",
+      "pyproject.toml",
+      "src/trading_bot/vision/lane.py",
+      "src/trading_bot/vision/ledger.py",
+      "src/trading_bot/vision/prospective.py",
+      "src/trading_bot/vision/quotes.py"
+    ],
+    "modified_count": 8,
+    "untracked_added_by_audit": 15,
+    "untracked_note": "A1 se capturo antes del probe; la auditoria anadio 15 entradas bajo .tmp/audit/ (probe, su estado y logs). Los ficheros versionados modificados siguen siendo 8.",
+    "untracked_outside_tmp": 19,
+    "untracked_total": 121,
+    "untracked_under_tmp": 102,
+    "upstream": null,
+    "wp_code_committed": false
+  },
+  "hash_correspondence": {
+    "all_artifacts_match": true,
+    "all_files_match": true,
+    "artifacts": [
+      {
+        "artifact": "drill",
+        "matches": true,
+        "mtime_utc": "2026-10-21T07:44:46Z",
+        "on_disk": "5fbd50b393c04c8e105a5a46686fe3b6773ac2538c1e17392301d2cd032e4aa5",
+        "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/DRILL.json",
+        "recorded": "5fbd50b393c04c8e105a5a46686fe3b6773ac2538c1e17392301d2cd032e4aa5"
+      },
+      {
+        "artifact": "lab",
+        "matches": true,
+        "mtime_utc": "2026-10-21T07:49:29Z",
+        "on_disk": "9970d07d9b0cc5931a6e7e4661b1202740680773410b95ef588270584496ebad",
+        "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/lab/GAP_LAB.json",
+        "recorded": "9970d07d9b0cc5931a6e7e4661b1202740680773410b95ef588270584496ebad"
+      },
+      {
+        "artifact": "verification",
+        "matches": true,
+        "mtime_utc": "2026-10-21T09:02:37Z",
+        "on_disk": "55f3381ad1406aa174a8dee255af929ca233bba391124fa9eca313e1d4036a71",
+        "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/VERIFICATION.json",
+        "recorded": "55f3381ad1406aa174a8dee255af929ca233bba391124fa9eca313e1d4036a71"
+      }
+    ],
+    "files": [
+      {
+        "group": "runtime_sha256",
+        "matches": true,
+        "on_disk": "3cb099fa72bd052ddb1e2340d0c02ee3799aa4dd8eb4395faed9a49f86814e1f",
+        "path": "src/trading_bot/paper/broker.py",
+        "recorded": "3cb099fa72bd052ddb1e2340d0c02ee3799aa4dd8eb4395faed9a49f86814e1f"
+      },
+      {
+        "group": "runtime_sha256",
+        "matches": true,
+        "on_disk": "ee8e84c38a00be80ccafbd4168e6d0a8180a2829b288e7345140d0b33b41473a",
+        "path": "src/trading_bot/risk/manager.py",
+        "recorded": "ee8e84c38a00be80ccafbd4168e6d0a8180a2829b288e7345140d0b33b41473a"
+      },
+      {
+        "group": "runtime_sha256",
+        "matches": true,
+        "on_disk": "3e023540ba3fd08d19dd0b81b2a9b458384a23731d50e53b74773ce996dd50a9",
+        "path": "src/trading_bot/vision/durable.py",
+        "recorded": "3e023540ba3fd08d19dd0b81b2a9b458384a23731d50e53b74773ce996dd50a9"
+      },
+      {
+        "group": "runtime_sha256",
+        "matches": true,
+        "on_disk": "f813d7f5d9072a0c43aa2a4e6449a880d426775104e57f951039d81b9844c5d2",
+        "path": "src/trading_bot/vision/gap_recovery.py",
+        "recorded": "f813d7f5d9072a0c43aa2a4e6449a880d426775104e57f951039d81b9844c5d2"
+      },
+      {
+        "group": "runtime_sha256",
+        "matches": true,
+        "on_disk": "7928ce5b7599ae148af5ab66b18f23edf6f2144e54349a85c63ae40b827ade51",
+        "path": "src/trading_bot/vision/lane.py",
+        "recorded": "7928ce5b7599ae148af5ab66b18f23edf6f2144e54349a85c63ae40b827ade51"
+      },
+      {
+        "group": "runtime_sha256",
+        "matches": true,
+        "on_disk": "2e4c026db6e20a83e8819da85b5acbfa04096928046c286bbe4a967e0a7ef41b",
+        "path": "src/trading_bot/vision/prospective.py",
+        "recorded": "2e4c026db6e20a83e8819da85b5acbfa04096928046c286bbe4a967e0a7ef41b"
+      },
+      {
+        "group": "runtime_sha256",
+        "matches": true,
+        "on_disk": "62c59ec1a4f1e8d6eba131b292d81b59a70809e91f7c31c569d52fd70dd7b1ca",
+        "path": "src/trading_bot/vision/quotes.py",
+        "recorded": "62c59ec1a4f1e8d6eba131b292d81b59a70809e91f7c31c569d52fd70dd7b1ca"
+      },
+      {
+        "group": "script_sha256",
+        "matches": true,
+        "on_disk": "323d1ed72edfba922869f28c21bd2fdb9fde8545507ba62f3b3a374c2b7f8d68",
+        "path": "scripts/make_quote_gap_evidence.py",
+        "recorded": "323d1ed72edfba922869f28c21bd2fdb9fde8545507ba62f3b3a374c2b7f8d68"
+      },
+      {
+        "group": "script_sha256",
+        "matches": true,
+        "on_disk": "a5c52f0a31ff3d60806936ec459bd74cb0ea1e79c4688804e610b3b7ccac76a7",
+        "path": "scripts/quote_feed_source.py",
+        "recorded": "a5c52f0a31ff3d60806936ec459bd74cb0ea1e79c4688804e610b3b7ccac76a7"
+      },
+      {
+        "group": "script_sha256",
+        "matches": true,
+        "on_disk": "db41e31276ebd9278a8ccd7593ad92e1e35656b0588b33f0950f952054887848",
+        "path": "scripts/quote_gap_lab.py",
+        "recorded": "db41e31276ebd9278a8ccd7593ad92e1e35656b0588b33f0950f952054887848"
+      },
+      {
+        "group": "script_sha256",
+        "matches": true,
+        "on_disk": "e59a507f045418f32449fdf35477bc74575d6ad5390a5931fce2fb4af823e8e6",
+        "path": "scripts/verify_quote_gap.py",
+        "recorded": "e59a507f045418f32449fdf35477bc74575d6ad5390a5931fce2fb4af823e8e6"
+      },
+      {
+        "group": "test_sha256",
+        "matches": true,
+        "on_disk": "bf7fd6fd76c15fbcba664ff44b220ceee27da97aae6aa1a40c35ff4e38643976",
+        "path": "tests/unit/vision/test_durable_book.py",
+        "recorded": "bf7fd6fd76c15fbcba664ff44b220ceee27da97aae6aa1a40c35ff4e38643976"
+      },
+      {
+        "group": "test_sha256",
+        "matches": true,
+        "on_disk": "7a69a4e27e4f63bee67975fadf5adf62ba6a36a37d73f00f87dceb078bf5defd",
+        "path": "tests/unit/vision/test_gap_recovery.py",
+        "recorded": "7a69a4e27e4f63bee67975fadf5adf62ba6a36a37d73f00f87dceb078bf5defd"
+      },
+      {
+        "group": "test_sha256",
+        "matches": true,
+        "on_disk": "59634fcf330fcf49efa663713c622a30345bd90e8057fb6407091c0a89a09753",
+        "path": "tests/unit/vision/test_gap_recovery_venue.py",
+        "recorded": "59634fcf330fcf49efa663713c622a30345bd90e8057fb6407091c0a89a09753"
+      },
+      {
+        "group": "test_sha256",
+        "matches": true,
+        "on_disk": "56f5c48175b7e70aff40b88db2f0a7ea5540b591674aa274d6fa1ec0ecc22b0f",
+        "path": "tests/unit/vision/test_prospective_session.py",
+        "recorded": "56f5c48175b7e70aff40b88db2f0a7ea5540b591674aa274d6fa1ec0ecc22b0f"
+      },
+      {
+        "group": "test_sha256",
+        "matches": true,
+        "on_disk": "00dd59353a1e0bc14b76ed5ef14249b9dd896481d3ea27aa6fc1b934b6a95d87",
+        "path": "tests/unit/vision/test_session_durable.py",
+        "recorded": "00dd59353a1e0bc14b76ed5ef14249b9dd896481d3ea27aa6fc1b934b6a95d87"
+      },
+      {
+        "group": "test_sha256",
+        "matches": true,
+        "on_disk": "66be2b390823d68821f72b6a82154e140a205511a746d8a2eb931c41b849414e",
+        "path": "tests/unit/vision/test_session_recovery.py",
+        "recorded": "66be2b390823d68821f72b6a82154e140a205511a746d8a2eb931c41b849414e"
+      }
+    ],
+    "lab_sha256_matches": true,
+    "sha256sums_matches": true
+  },
+  "mode": "read-only (sin commits, sin LIVE, sin cambios de configuracion)",
+  "next_action": [
+    "Commitear el WP (codigo + tests + pyproject.toml con pythonpath) y anotar el SHA.",
+    "Regenerar la evidencia contra ese commit: log de la suite dentro del WP (o hash en RUN_REPORT), ledger.py en el inventario, live_* como comprobacion estatica.",
+    "Solo entonces la Fase A puede pasar a PASS; nada de esto habilita PAPER integral ni LIVE."
+  ],
+  "phase": "A",
+  "runtime_reachability": {
+    "pytest_pin": "pyproject.toml pythonpath=[\"src\"] (sin commitear)",
+    "scripts_pin_src": [
+      "scripts/quote_gap_lab.py (sys.path.insert)",
+      "scripts/paper_resume_drill.py (sys.path.insert)",
+      "scripts/make_quote_gap_evidence.py (PYTHONPATH por hijo)"
+    ],
+    "verifier_imports_trading_bot": false,
+    "verifier_independence": "recalcula niveles con _level, toques con _touches e identidades economicas propias; valida la lista blanca de exenciones (exemptions_are_known)",
+    "verifier_limit": "audita el JSON del laboratorio, no re-ejecuta el runtime",
+    "without_pin": "import trading_bot resuelve a .../Downloads/bot freebuff/src (checkout hermano); pytest -o pythonpath= falla la coleccion"
+  },
+  "schema": "GIT_AUTHORITY_AUDIT_V1",
+  "wp": "WP-PAPER-QUOTE-GAP-002",
+  "superseded_by": {
+    "rfc": "RFC-PAPER-QUOTE-GAP-003",
+    "date": "2026-10-21",
+    "artifacts": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/",
+    "decision": "PASS (LAB ONLY)",
+    "code_sha": "aab65cf9d60e520119426fc74bccd84e110eee1e",
+    "defects_closed": [
+      "O1",
+      "O2",
+      "O3",
+      "O4",
+      "O5",
+      "O6(code)",
+      "O7",
+      "O9"
+    ],
+    "corrections": [
+      "the package was not importable at all without PYTHONPATH; A5's mechanism was wrong",
+      "a gated live order path exists in src/trading_bot/app.py and was never executed",
+      "the lab's raw state_digest differs from the control while the economy matches exactly"
+    ]
+  },
+  "history_preserved": true
+}

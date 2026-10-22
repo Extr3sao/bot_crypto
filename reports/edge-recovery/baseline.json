@@ -1,0 +1,167 @@
+{
+  "artifact": "wp-edge-00-baseline",
+  "claim": "state captured at the start of WP-EDGE-00 from the live checkout, not from documentation",
+  "generated_at_utc": "2026-10-12T09:04:52.419713+00:00",
+  "repo": {
+    "root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+    "branch": "main",
+    "head": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+    "origin_main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+    "merge_base": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+    "ahead": 259,
+    "behind": 0,
+    "remotes": [
+      "origin\thttps://github.com/Extr3sao/bot_crypto.git (fetch)",
+      "origin\thttps://github.com/Extr3sao/bot_crypto.git (push)"
+    ],
+    "worktrees": [
+      "C:/Users/GVLLFR0035/Downloads/bot freebuff                       1d2192b [main]",
+      "C:/Users/GVLLFR0035/AppData/Local/Temp/tmp.JO8dDvmzuj/wp9-clean  90ed615 (detached HEAD)",
+      "C:/Users/GVLLFR0035/AppData/Local/Temp/wp8-base                  38b8e18 (detached HEAD)",
+      "C:/Users/GVLLFR0035/AppData/Local/Temp/wp8-diff2                 6c3af00 (detached HEAD)",
+      "C:/Users/GVLLFR0035/AppData/Local/Temp/wp8-head                  33512b5 (detached HEAD)",
+      "C:/Users/GVLLFR0035/Downloads/bot-freebuff-rfc035s3-lab          7e21f7c (detached HEAD)",
+      "C:/Users/GVLLFR0035/Downloads/bot-freebuff-verify-lab            1376fa4 (detached HEAD)"
+    ],
+    "tree": {
+      "modified_tracked": 29,
+      "untracked": 94,
+      "staged": 0,
+      "source": "git status --porcelain=v1 (2026-10-12)"
+    }
+  },
+  "environment": {
+    "python": "3.11.15",
+    "executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "packages": {
+      "ccxt": "4.5.63",
+      "pydantic": "2.13.4",
+      "pytest": "9.1.1",
+      "ruff": "0.15.20",
+      "mypy": "2.1.0"
+    }
+  },
+  "config": {
+    "mode": "paper",
+    "exchange_id": "binance",
+    "live_trading_enabled": false,
+    "sandbox": true,
+    "assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "timeframe": "5m",
+    "live_gate": "runtime.mode != live in both PAPER entrypoints; no live order adapter on their path"
+  },
+  "strategy_registry": {
+    "ledger_path": "config/strategy_admission.json",
+    "ledger_sha256": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+    "statuses": {
+      "NO_GROSS_EDGE": 17,
+      "COST_KILLED": 7
+    },
+    "admitted_for_paper": [],
+    "paper_executable_on_5m": [],
+    "runtime_observed": "start_paper_trading.py printed '[registry] paper-executable on 5m: NONE'"
+  },
+  "entrypoints": {
+    "paper_loop": {
+      "path": "scripts/start_paper_trading.py",
+      "role": "single entrypoint for the paper trading loop",
+      "executed": true,
+      "command": "COMMAND = python scripts/start_paper_trading.py --assets BTC,ETH,SOL --provider fake --max-cycles 1 --interval 0 --ledger <fixture>",
+      "evidence": "reports/edge-recovery/runs/WP-EDGE-00-smoke-fixture/stdout_1cyc.log"
+    },
+    "autonomous_paper": {
+      "path": "scripts/autonomous_paper.py",
+      "role": "autonomous PAPER/SHADOW runtime (decision layer, agents, verifier, paper broker)",
+      "executed": true,
+      "command": "python scripts/autonomous_paper.py --assets BTC,ETH,SOL --timeframe 5m --provider ccxt --cycles 2 --interval 15 --run-id wp-edge-00-smoke-real --run-root reports/edge-recovery/runs/WP-EDGE-00-smoke-real --state-path <run>/paper_state.json --ledger config/strategy_admission.json --horizon-minutes 5.0 --size-usd 1000.0 --no-shadow",
+      "evidence": "reports/edge-recovery/runs/WP-EDGE-00-smoke-real/wp-edge-00-smoke-real/RUN_REPORT.json"
+    },
+    "lab_launcher": {
+      "path": "scripts/start_paper_lab.py",
+      "role": "supervisor: PAPER + collector + retention + strategy lab",
+      "executed": false
+    }
+  },
+  "data": {
+    "raw_corpus_bytes_approx": "137 MB (data/raw)",
+    "sizes": {
+      "data/raw": "137M",
+      "data/st6": "18M",
+      "data/recovery": "2.1M",
+      "data/swing": "4.3M",
+      "reports/autonomous-paper": "29M",
+      "reports/strategy-baseline": "41M"
+    },
+    "market_data_source_in_smoke": "public Binance spot via ccxt 4.5.63 (read-only, no keys)"
+  },
+  "previous_campaigns": [
+    {
+      "lane": "WP-10",
+      "artifact": "data/recovery/wp10/FINAL_REPORT.md",
+      "head": "49ca773",
+      "class": "RESEARCH_RESULT (cost measurement)",
+      "reproducible": "offline, yes"
+    },
+    {
+      "lane": "WP-9",
+      "artifact": "reports/autonomous-paper/wp9-runtime-legs/RUN_REPORT.json",
+      "head": "5348fcd",
+      "class": "PAPER runtime rehearsal",
+      "reproducible": "legs yes; 24h window no"
+    },
+    {
+      "lane": "RFC-049 Discovery 2",
+      "artifact": "data/recovery/RFC049_POST_CLOSURE_REPORT.md",
+      "class": "closed/rejected",
+      "reproducible": "offline, yes"
+    },
+    {
+      "lane": "PAPER-DATA-ACCUMULATION-V1",
+      "artifact": "RUN_REPORT.md (tracked, modified)",
+      "result": "PAPER_24H_DATA_FAILED (collector disk budget)",
+      "reproducible": "configuration-specific"
+    },
+    {
+      "lane": "SWING V1 (uncommitted)",
+      "artifact": "data/swing/FINAL_REPORT.md",
+      "class": "research campaign, uncommitted",
+      "reproducible": "scripts/swing_run.py exists"
+    }
+  ],
+  "reproducibility": {
+    "reproducible_now": [
+      "PAPER smoke with decision (this WP)",
+      "WP-10 cost measurement (offline)",
+      "RFC-049 artifacts (offline)"
+    ],
+    "not_reproducible_now": [
+      "verify_l5_independent.py 11/11 (stale fixture vs DEF-AUTO-4)",
+      "full 24h runtime rehearsal (wall-clock bound)"
+    ]
+  },
+  "known_defects_at_baseline": [
+    {
+      "id": "DEF-WP00-01",
+      "summary": "inactive asset (SOL, volume_below_threshold) surfaces as NO_TRADE_DATA context_error instead of a universe/inactive classification",
+      "severity": "reporting",
+      "fail_closed": true
+    },
+    {
+      "id": "DEF-WP00-02",
+      "summary": "scripts/verify_l5_independent.py is a stale verifier (status CONFIRMED no longer passes the DEF-AUTO-4 router gate); 8/11",
+      "severity": "verification",
+      "fail_closed": true
+    },
+    {
+      "id": "DEF-WP00-03",
+      "summary": "provider market verification returned provider_supported=null / provider_verified=false in the real smoke preflight",
+      "severity": "cosmetic/observability",
+      "fail_closed": false
+    }
+  ]
+}

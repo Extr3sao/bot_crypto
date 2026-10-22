@@ -30,6 +30,7 @@ from urllib.error import HTTPError
 
 import structlog
 
+from trading_bot.execution import isolation
 from trading_bot.market_data.exceptions import (
     ConnectorProtocolError,
     UnsupportedConnectorOperationError,
@@ -583,6 +584,10 @@ class BitunixSpotConnector:
         acepta ni refleja un client ID, así que no puede garantizarse la
         idempotencia; se falla loud antes de enviar la request.
         """
+        isolation.assert_order_allowed(
+            "market_data.BitunixSpotConnector.create_order",
+            detail=f"{symbol} {side} {order_type} {amount}",
+        )
         raise UnsupportedConnectorOperationError(
             "BitunixSpotConnector.create_order no soportado: el cliente REST "
             "place_spot_order no correlaciona client_order_id y el Protocol "
@@ -592,6 +597,10 @@ class BitunixSpotConnector:
 
     def cancel_order(self, order_id: str, symbol: str) -> None:
         """NO simulado: el cliente spot no expone cancelación nativa."""
+        isolation.assert_order_allowed(
+            "market_data.BitunixSpotConnector.cancel_order",
+            detail=f"{order_id} {symbol}",
+        )
         raise UnsupportedConnectorOperationError(
             "BitunixSpotConnector.cancel_order no soportado: BitunixSpotClient "
             "no implementa cancelación; el adapter no simula éxito."

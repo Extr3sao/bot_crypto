@@ -1,0 +1,31 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\GVLLFR0035\AppData\Local\Temp\rfc003-post\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: C:\Users\GVLLFR0035\AppData\Local\Temp\rfc003-post
+configfile: pyproject.toml
+plugins: anyio-4.14.1, hypothesis-6.155.7, bdd-8.1.0, cov-7.1.0
+collecting ... collected 20 items
+
+tests/unit/vision/test_session_recovery.py::test_a_position_open_at_the_crash_resumes_with_its_identity PASSED [  5%]
+tests/unit/vision/test_session_recovery.py::test_the_resumed_session_reports_the_account_not_only_its_own_trades PASSED [ 10%]
+tests/unit/vision/test_session_recovery.py::test_a_restart_with_no_new_bars_changes_nothing PASSED [ 15%]
+tests/unit/vision/test_session_recovery.py::test_the_stop_armed_before_the_crash_closes_the_trade_after_it PASSED [ 20%]
+tests/unit/vision/test_session_recovery.py::test_a_close_that_already_happened_is_not_booked_twice PASSED [ 25%]
+tests/unit/vision/test_session_recovery.py::test_an_interrupted_run_and_a_continuous_run_reach_the_same_economy PASSED [ 30%]
+tests/unit/vision/test_session_recovery.py::test_an_opinion_waiting_for_its_quote_survives_the_restart PASSED [ 35%]
+tests/unit/vision/test_session_recovery.py::test_a_book_from_another_experiment_is_refused_at_the_lane PASSED [ 40%]
+tests/unit/vision/test_session_recovery.py::test_bars_that_changed_under_the_book_are_refused PASSED [ 45%]
+tests/unit/vision/test_session_recovery.py::test_a_corrupt_book_is_never_read_as_an_empty_one PASSED [ 50%]
+tests/unit/vision/test_session_recovery.py::test_a_book_held_by_a_live_session_cannot_be_taken_over PASSED [ 55%]
+tests/unit/vision/test_session_recovery.py::test_every_processed_bar_is_committed_and_named PASSED [ 60%]
+tests/unit/vision/test_session_recovery.py::test_a_ledger_lock_left_by_a_killed_process_is_taken_over PASSED [ 65%]
+tests/unit/vision/test_session_recovery.py::test_a_ledger_lock_held_by_a_live_process_is_still_refused PASSED [ 70%]
+tests/unit/vision/test_session_recovery.py::test_a_covered_hole_resumes_without_touching_the_book PASSED [ 75%]
+tests/unit/vision/test_session_recovery.py::test_a_stop_crossed_inside_the_hole_is_booked_at_its_minute PASSED [ 80%]
+tests/unit/vision/test_session_recovery.py::test_a_hole_without_a_feed_is_still_unverified PASSED [ 85%]
+tests/unit/vision/test_session_recovery.py::test_an_ambiguous_minute_blocks_and_leaves_the_position_open PASSED [ 90%]
+tests/unit/vision/test_session_recovery.py::test_a_partial_minute_grid_blocks_instead_of_resuming_on_a_guess PASSED [ 95%]
+tests/unit/vision/test_session_recovery.py::test_a_resume_after_the_gap_close_was_committed_books_nothing_twice PASSED [100%]
+
+============================= 20 passed in 46.27s =============================

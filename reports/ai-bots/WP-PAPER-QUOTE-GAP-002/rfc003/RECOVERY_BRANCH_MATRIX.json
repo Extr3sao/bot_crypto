@@ -1,0 +1,234 @@
+{
+  "schema": "RECOVERY_BRANCH_MATRIX_V1",
+  "generated_at_utc": "2026-10-21T12:27:42+00:00",
+  "states": [
+    "PRE_COMMIT",
+    "COMMITTED",
+    "RESTARTED",
+    "RECONCILED_LOCAL"
+  ],
+  "pre_commit": {
+    "source": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/lab/GAP_LAB.json",
+    "cases": 14,
+    "killed": 14,
+    "no_double_close": true,
+    "every_close_count_is_0_or_1": true,
+    "rows": [
+      {
+        "branch": "PRE_COMMIT",
+        "kill_id": 0,
+        "killed": true,
+        "exit_code": 1,
+        "closed_before": 0,
+        "closed_after": 0,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e",
+        "double_close": false
+      },
+      {
+        "branch": "PRE_COMMIT",
+        "kill_id": 1,
+        "killed": true,
+        "exit_code": 1,
+        "closed_before": 0,
+        "closed_after": 0,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e",
+        "double_close": false
+      },
+      {
+        "branch": "PRE_COMMIT",
+        "kill_id": 2,
+        "killed": true,
+        "exit_code": 1,
+        "closed_before": 0,
+        "closed_after": 0,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e",
+        "double_close": false
+      },
+      {
+        "branch": "PRE_COMMIT",
+        "kill_id": 3,
+        "killed": true,
+        "exit_code": 1,
+        "closed_before": 0,
+        "closed_after": 0,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e",
+        "double_close": false
+      },
+      {
+        "branch": "PRE_COMMIT",
+        "kill_id": 4,
+        "killed": true,
+        "exit_code": 1,
+        "closed_before": 0,
+        "closed_after": 0,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e",
+        "double_close": false
+      },
+      {
+        "branch": "PRE_COMMIT",
+        "kill_id": 5,
+        "killed": true,
+        "exit_code": 1,
+        "closed_before": 0,
+        "closed_after": 0,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e",
+        "double_close": false
+      },
+      {
+        "branch": "PRE_COMMIT",
+        "kill_id": 6,
+        "killed": true,
+        "exit_code": 1,
+        "closed_before": 0,
+        "closed_after": 0,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e",
+        "double_close": false
+      },
+      {
+        "branch": "PRE_COMMIT",
+        "kill_id": 7,
+        "killed": true,
+        "exit_code": 1,
+        "closed_before": 0,
+        "closed_after": 0,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e",
+        "double_close": false
+      },
+      {
+        "branch": "PRE_COMMIT",
+        "kill_id": 8,
+        "killed": true,
+        "exit_code": 1,
+        "closed_before": 0,
+        "closed_after": 0,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e",
+        "double_close": false
+      },
+      {
+        "branch": "PRE_COMMIT",
+        "kill_id": 9,
+        "killed": true,
+        "exit_code": 1,
+        "closed_before": 0,
+        "closed_after": 0,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e",
+        "double_close": false
+      },
+      {
+        "branch": "PRE_COMMIT",
+        "kill_id": 10,
+        "killed": true,
+        "exit_code": 1,
+        "closed_before": 0,
+        "closed_after": 0,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e",
+        "double_close": false
+      },
+      {
+        "branch": "PRE_COMMIT",
+        "kill_id": 11,
+        "killed": true,
+        "exit_code": 1,
+        "closed_before": 0,
+        "closed_after": 0,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e",
+        "double_close": false
+      },
+      {
+        "branch": "PRE_COMMIT",
+        "kill_id": 12,
+        "killed": true,
+        "exit_code": 1,
+        "closed_before": 0,
+        "closed_after": 0,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e",
+        "double_close": false
+      },
+      {
+        "branch": "PRE_COMMIT",
+        "kill_id": 13,
+        "killed": true,
+        "exit_code": 1,
+        "closed_before": 0,
+        "closed_after": 0,
+        "open_after": 1,
+        "state_digest": "f64fcff8ed175c1fa4ef7c276e9772f23cd892d0bb5e5eeab9ccc46429f8fa6e",
+        "double_close": false
+      }
+    ],
+    "what_it_actually_shows": "all 14 kills landed while the position was still open (closed 0->0, open 1): this is the PRE_COMMIT branch, and it is why the post-commit side needed a test of its own",
+    "resume_after_the_kills": {
+      "final_closed": 1,
+      "reference_closed": 1,
+      "final_open": 0,
+      "final_equity": 9996.380966197243,
+      "reference_equity": 9996.380966197243,
+      "economy_equal": true,
+      "raw_state_digest_equal": false,
+      "differences_after_declared_exemptions": [],
+      "exempt_paths": [
+        "calls",
+        "closed_trades[0]/closed_at",
+        "contract/dataset",
+        "counters",
+        "entry_provenance",
+        "marks",
+        "pending",
+        "session",
+        "spend_usd",
+        "stop_reason"
+      ],
+      "ok": true
+    },
+    "saving_branch": {
+      "outcomes": 12,
+      "all_readable": true
+    }
+  },
+  "drill": {
+    "source": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/drill/DRILL.json",
+    "children": 2,
+    "verdict": "PASS",
+    "criteria": {
+      "REC-03": "PASS",
+      "REC-04": "PASS",
+      "REC-05": "PASS",
+      "RT-07": "PASS"
+    }
+  },
+  "post_commit": {
+    "branch": "POST_COMMIT",
+    "test": "tests/unit/vision/test_session_recovery.py::test_a_resume_after_the_gap_close_was_committed_books_nothing_twice",
+    "resumes": 2,
+    "closes_after_commit": 0,
+    "open_after": 0,
+    "digest_stable": true,
+    "blocked": false,
+    "log": "reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc003\\evidence\\post-commit.log",
+    "log_sha256": "398c71430d16dc84c566528af8cad024d2184da2473ba3e00d7beb4ac28626dc",
+    "test_sha_note": "committed after CODE_SHA; the diff between them touches no src/ file, so the runtime seal still describes the tree that ran the 694"
+  },
+  "coverage": {
+    "branches_covered": [
+      "PRE_COMMIT",
+      "POST_COMMIT"
+    ],
+    "post_commit_measurement": "two consecutive resumes over the committed book: zero closes, unchanged state_digest, no RecoveryBlocked",
+    "not_covered": [
+      "crash between the ledger fsync and the book rename: the store exposes no injection point to target it deterministically, so it is declared rather than simulated"
+    ]
+  }
+}

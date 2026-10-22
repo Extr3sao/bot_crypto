@@ -1,0 +1,35 @@
+{
+ "_measured_by": "git ls-remote origin + GitHub REST API (read-only)",
+ "branch_protection": "NONE: GET /branches/main/protection returned 404 'Branch not protected'",
+ "ci_status": {
+  "branch_runs": "3 workflows on 06ba3183 (CI Baseline, Cost-barrier drift gate, recovery-determinism): all failure",
+  "failed_checks_on_evidence_commit": [
+   "Format + Lint (Ruff): ruff format --check fails repo-wide (621 files); the three WP-003-03 scripts already pass",
+   "Type check (Mypy strict): failure",
+   "Tests + Coverage (pytest, fast): failure",
+   "Security audit (pip-audit): failure",
+   "Reproduce the cost-barrier artefacts: failure",
+   "Rehearse the recovery lane in a clean checkout: failure",
+   "Smoke PR-pipeline: failure at 'Set up job' (infrastructure, before any repo step)"
+  ],
+  "main_baseline": "origin/main 5e6f9632: every CI Baseline run since 2026-07-10 is failure (5e6f9632, 767462c6, 81670670, 99eeea60, c0c057b1), so the red pipeline predates this branch"
+ },
+ "commits_ahead_of_main": 487,
+ "commits_pending": 0,
+ "default_branch_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+ "evidence_commit": "06ba31832a4e33f18c3de46516af75e5b6e14d0f",
+ "local_branch": "wp/isolation-005",
+ "local_head_sha": "bb302b665a6ccb7e3d71630fa765211296e19c30",
+ "main_synced": "NO",
+ "merge_result": "NOT_MERGED: the PR is open and mergeable, but the CI pipeline is red on this branch and red on main since July 2026; merging on a red pipeline is not a quality control. No protection bypass was used and no force push was made.",
+ "pull_request_url": "https://github.com/Extr3sao/bot_crypto/pull/17",
+ "push_result": "ok (exit 0): new branch wp/isolation-005 -> wp/isolation-005, 487 commits, no force",
+ "receipt_note": "local_head_sha/remote_head_sha are the branch tip read back with ls-remote when this record was written (bb302b66). evidence_commit is where the lab evidence was published (06ba3183); verified_commit is the tree the independent verifier judged PASS (798ab78d). The commits after the evidence commit carry only receipts and change no evidence file, which is why the verifier re-derives the publish with git merge-base instead of comparing a literal tip.",
+ "remote_branch": "wp/isolation-005",
+ "remote_head_sha": "bb302b665a6ccb7e3d71630fa765211296e19c30",
+ "remote_repository_confirmed": "git remote -v = https://github.com/Extr3sao/bot_crypto.git; GitHub reports it as Extr3sao/bot_crypto, default branch main. Extr3sao/Bot-Trading also exists (main cadb0f08) and is a different repository: its tree is an agent-configuration repo (AGENTS.md, docs, commands) with 468 files and no trading_bot package, so it is not this project's remote.",
+ "repository": "https://github.com/Extr3sao/bot_crypto.git",
+ "sync_status": "REMOTE_BRANCH_SYNCED",
+ "verification_timestamp": "2026-10-21T19:45:00Z",
+ "verified_commit": "798ab78dad6e8e0da07d8e79a85e75503a61b742"
+}

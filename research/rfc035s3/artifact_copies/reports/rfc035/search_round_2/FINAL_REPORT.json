@@ -1,0 +1,206 @@
+{
+  "artifact": "RFC035S2_FINAL_REPORT",
+  "rfc": "RFC-035S2",
+  "status": "CONTINUE_SEARCH",
+  "rfc_035_status": "OPEN",
+  "rfc_036_status": "NOT_OPEN",
+  "retrieved_at_utc": "2026-10-08T00:00:00Z",
+  "sources_reviewed": {
+    "round_2": 44,
+    "round_1_retained": 20,
+    "total_in_canonical_registry": 64,
+    "independent_information_origins": 34,
+    "by_class": {
+      "PRIMARY_SOURCE": 34,
+      "DERIVED_SOURCE": 6,
+      "MIRROR": 0,
+      "COMMENTARY": 3,
+      "INDEPENDENT_REPLICATION": 1
+    }
+  },
+  "real_strategies_found": 11,
+  "research_hypotheses_found": 5,
+  "research_tasks_found": 2,
+  "candidates_extracted": 18,
+  "classification_counts": {
+    "REPLICATE_P0": 0,
+    "REPLICATE_P1": 2,
+    "RESEARCH_HYPOTHESIS": 3,
+    "WATCH": 2,
+    "INSUFFICIENT_EVIDENCE": 4,
+    "REJECT": 7
+  },
+  "rejected_count": 7,
+  "top_rejection_reasons": [
+    {
+      "reason": "COST_FLOOR_HEADROOM_NOT_ESTABLISHED",
+      "count": 9
+    },
+    {
+      "reason": "RULES_INCOMPLETE_MATERIAL_FIELDS",
+      "count": 8
+    },
+    {
+      "reason": "SOURCE_READ_LEVEL_INSUFFICIENT",
+      "count": 8
+    },
+    {
+      "reason": "NO_CODE",
+      "count": 7
+    },
+    {
+      "reason": "INSTRUMENT_OR_UNIVERSE_MISMATCH",
+      "count": 4
+    },
+    {
+      "reason": "NO_FIXED_PARAMETERS_RETRAINING_REQUIRED",
+      "count": 4
+    },
+    {
+      "reason": "NO_CANONICAL_PERIOD_OR_RESULTS",
+      "count": 3
+    },
+    {
+      "reason": "OVERFIT_RISK_PARAMETER_SEARCH",
+      "count": 2
+    },
+    {
+      "reason": "REPRODUCIBILITY_LLM_OR_HARDWARE",
+      "count": 2
+    },
+    {
+      "reason": "FORECAST_ONLY_NOT_A_STRATEGY",
+      "count": 1
+    },
+    {
+      "reason": "SAMPLE_TOO_SHORT",
+      "count": 1
+    }
+  ],
+  "replicate_p1_candidates": [
+    "C-02",
+    "C-07"
+  ],
+  "selected_replicate_p0": null,
+  "closest_candidates": [
+    {
+      "CANDIDATE_ID": "C-02",
+      "SELECTED_REPLICATE_P0": "NONE",
+      "SOURCE": "S2-03",
+      "SOURCE_TITLE": "Strategy001 (freqtrade-strategies) — EMA20/50 cross with Heikin-Ashi confirmation on 5m",
+      "SOURCE_VERSION": "DEFINED the blob itself is the version (pin the file hash)",
+      "CODE_AVAILABLE": "DEFINED this exact file in freqtrade/freqtrade-strategies",
+      "RULE_COMPLETENESS": "15/21",
+      "UNKNOWN_MATERIAL_FIELDS": [
+        "assets",
+        "sizing_rule",
+        "warmup",
+        "transaction_costs",
+        "original_period",
+        "original_metrics"
+      ],
+      "DATA_AVAILABILITY": "DEFINED exchange OHLCV (freqtrade download-data)",
+      "ORIGINAL_PERIOD": "UNKNOWN nothing is published with the file",
+      "ORIGINAL_TRADE_COUNT": "UNKNOWN",
+      "ORIGINAL_METRICS": "UNKNOWN the corpus README shows results as links/images, not as numbers",
+      "COST_MODEL": "UNKNOWN no fee or slippage model; freqtrade applies whatever the user's config says",
+      "EVIDENCE_LEVEL": "E1",
+      "COUNTER_EVIDENCE": [
+        "the corpus README itself calls these strategies starting points and warns that results depend on the user's pairs and period",
+        "the file's own comment notes that minimal_roi and stoploss are overridden by the user's config",
+        "no backtest is published with the file, so there is no external result to reproduce — only an external rule set"
+      ],
+      "CLASSIFICATION": "REPLICATE_P1"
+    },
+    {
+      "CANDIDATE_ID": "C-07",
+      "SELECTED_REPLICATE_P0": "NONE",
+      "SOURCE": "S2-08",
+      "SOURCE_TITLE": "Q24 Crypto Guide Strategy (Quantiacs) — SMA15/34 + RSI14 long-only crypto daily",
+      "SOURCE_VERSION": "UNKNOWN the documentation page carries no version or commit; a replication must pin the retrieved content",
+      "CODE_AVAILABLE": "DEFINED the published example, cloneable in the platform (the code is in the page)",
+      "RULE_COMPLETENESS": "15/21",
+      "UNKNOWN_MATERIAL_FIELDS": [
+        "exit_stop",
+        "exit_target",
+        "execution_assumption",
+        "transaction_costs",
+        "original_metrics",
+        "source_version"
+      ],
+      "DATA_AVAILABILITY": "DEFINED Quantiacs cryptodaily dataset (qnt.data.cryptodaily_load_data, min_date 2015-01-01) plus the is_liquid field",
+      "ORIGINAL_PERIOD": "DEFINED in-sample from 2016-01-01 (earlier data may be used for testing/training)",
+      "ORIGINAL_TRADE_COUNT": "UNKNOWN",
+      "ORIGINAL_METRICS": "UNKNOWN the page shows the statistics call but not its output; the contest requires an in-sample Sharpe above 1.0 for validity",
+      "COST_MODEL": "UNKNOWN the page states no cost assumption; the statistics function decides what is charged",
+      "EVIDENCE_LEVEL": "E2",
+      "COUNTER_EVIDENCE": [
+        "the contest's own gate is in-sample Sharpe, which selects for overfitting and says nothing about costs",
+        "the page's benchmark download raised an HTTP 404 while being read, so even the benchmark call is currently broken",
+        "long-only by rule, so the strategy has no way to express a negative view",
+        "nothing about the example's realised live paper performance is public"
+      ],
+      "CLASSIFICATION": "REPLICATE_P1"
+    }
+  ],
+  "why_no_p0": [
+    "no source read this round defines every material field of a trading strategy: the two closest (C-02, C-07) have 15 of 21 required fields defined, and the missing ones are costs, execution and (for C-02) the original period and metrics",
+    "no candidate combines a complete rule set with E2-or-better evidence and a declared cost model",
+    "the strongest independently evaluated crypto result found (G-Research, E3) has no trading layer at all",
+    "promoting any candidate to REPLICATE_P0 would require inventing the fields the mission forbids inventing"
+  ],
+  "next_gate": {
+    "gate": "RFC-035 = CONTINUE_SEARCH",
+    "what_round_3_must_find": [
+      "a source that states, or ships as code, every material field: entry, exit (including stop and target), sizing, execution assumptions and a transaction-cost model",
+      "a published original period with a trade count and metrics, so success or failure is objectively measurable",
+      "a turnover profile compatible with the project's 23.791 bps round trip, or an explicit cost model that shows why it is not",
+      "candidates already on this list to be read at full-text level: C-01 (NostalgiaForInfinity code, pinned to a release), C-07 (Quantiacs cost model), C-14 (Karaptic notes), C-15 (Pine source and tester settings)"
+    ],
+    "forbidden": [
+      "promoting a hypothesis to make progress",
+      "labelling a strategy we design as an external replication"
+    ]
+  },
+  "freeze": {
+    "freeze_taken": false,
+    "reason": "RFC-035S2 section 15 freezes a candidate only when one is selected as REPLICATE_P0. This round selected none, so there is nothing to freeze and no local backtest was run.",
+    "what_a_freeze_would_have_contained": [
+      "OPPORTUNITY_ID",
+      "PRIMARY_SOURCE",
+      "SOURCE_VERSION",
+      "SOURCE_COMMIT",
+      "STRATEGY_RULES",
+      "PARAMETERS",
+      "ASSETS",
+      "TIMEFRAME",
+      "ORIGINAL_PERIOD",
+      "DATA_REQUIREMENTS",
+      "COST_ASSUMPTIONS",
+      "RULE_HASH",
+      "SOURCE_BUNDLE_HASH",
+      "SELECTION_TIMESTAMP"
+    ]
+  },
+  "independent_verification": {
+    "verifier": "scripts/rfc035s2_verify.py",
+    "artifact": "reports/rfc035/search_round_2/INDEPENDENT_VERIFICATION.json",
+    "status": "PASS",
+    "false_success": 0,
+    "note": "this block is owned by the verifier: it overwrites it with the measured values",
+    "checks": "863/863",
+    "verified_at_utc": "2026-10-08T05:34:58Z"
+  },
+  "false_success": 0,
+  "forbidden_verdicts_not_claimed": [
+    "EDGE_CONFIRMED",
+    "PROFITABLE",
+    "READY_FOR_PAPER",
+    "READY_FOR_LIVE"
+  ],
+  "limitations": [
+    "nothing in this round is a profitability claim: the mission only asked whether a strategy exists that could be reproduced exactly",
+    "several sources were read at listing level because they are bot-blocked or paywalled; each one is marked and none of them was promoted",
+    "no candidate was backtested locally: RFC-035S2 section 15 forbids letting a local test influence selection"
+  ]
+}

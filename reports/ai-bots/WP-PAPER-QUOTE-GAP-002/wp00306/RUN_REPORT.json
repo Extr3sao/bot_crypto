@@ -1,0 +1,216 @@
+{
+ "builder": "codebuff (builder); scripts/verify_paper_e2e.py is the separate verifier",
+ "ci": {
+  "gap": "pwsh 7 is not installed on this host, so the local parse ran under 5.1 with the same Language.Parser API",
+  "local_checks": [
+   "the workflow YAML parses",
+   "the smoke job keeps exactly one uses: (actions/checkout@v4)",
+   "microsoft/powershell does not exist as a repository (git ls-remote: repository not found)",
+   "scripts/open-pr-tsk-0204.ps1 parses with 551 tokens and 0 errors under Windows PowerShell 5.1.26100"
+  ],
+  "real_run": "NOT_PERFORMED",
+  "reason": "the workflow triggers only on push/pull_request to main; this host has no gh CLI and no token, and opening a PR is the owner's action"
+ },
+ "economy": {
+  "abuse_scenarios": 8,
+  "committed_orders": 0,
+  "digests": {
+   "E2E-COMMITTED": "20f10f30bb6ce5394f6c19f89f4bc0658faeea2684199160f4a566a4edf9aac9",
+   "E2E-RESTART": "45ada80c456bf79b1c294656c0fbb9742e5864489247649f34cf6e8d434444ce",
+   "E2E-SCENARIO": "59dc36111fad5be54e0f82b3df758dfab65307ef223476d3a72235999c7385c9"
+  },
+  "fills_closed": 21,
+  "identical": true,
+  "network_events": 0,
+  "realised_pnl": 87.65152561534461,
+  "reference": {
+   "E2E-COMMITTED": "20f10f30bb6ce5394f6c19f89f4bc0658faeea2684199160f4a566a4edf9aac9",
+   "E2E-RESTART": "45ada80c456bf79b1c294656c0fbb9742e5864489247649f34cf6e8d434444ce",
+   "E2E-SCENARIO": "59dc36111fad5be54e0f82b3df758dfab65307ef223476d3a72235999c7385c9"
+  },
+  "refusals": 13,
+  "runtime_files_hashed": 13,
+  "scenario_orders": 23,
+  "tip_run_identical": true
+ },
+ "evidence_bundle": {
+  "files_in_manifest": 32,
+  "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00303"
+ },
+ "executed": [
+  {
+   "command": "python scripts/paper_e2e_lab.py --json reports/.../wp00303/PAPER_E2E_LAB.json --out reports/.../wp00303/lab",
+   "exit": 0,
+   "id": "E1",
+   "result": "3/3 E2E OK, 8/8 abuse OK, digests equal to the published reference",
+   "tree": "recovery/wp00303 @ baf5b560",
+   "what": "lab run 1 on the port tree"
+  },
+  {
+   "command": "python scripts/paper_e2e_lab.py --json .tmp/PAPER_E2E_LAB_REPEAT.json --out .tmp/lab_repeat",
+   "exit": 0,
+   "id": "E2",
+   "result": "digests identical to run 1; discarded because its recorded status_short held the run's own untracked output directory",
+   "what": "lab run 2 (repeat) writing into the worktree"
+  },
+  {
+   "command": "python scripts/paper_e2e_lab.py --json ../bot-freebuff-recovery-004/.tmp/PAPER_E2E_LAB_REPEAT.json --out ../bot-freebuff-recovery-004/.tmp/lab_repeat",
+   "exit": 0,
+   "id": "E3",
+   "result": "clean (source_dirty=false); committed as PAPER_E2E_LAB_REPEAT.json",
+   "what": "lab run 3 (repeat) on a clean tree, output outside the checkout"
+  },
+  {
+   "command": "python scripts/paper_e2e_lab.py --json .tmp/PAPER_E2E_LAB_AT_TIP.json",
+   "exit": 0,
+   "id": "E4",
+   "result": "3/3 digests identical to the reference on the delivered tree itself",
+   "tree": "recovery/wp00303 @ 08c5d9d2, detached, clean",
+   "what": "lab run 4 on the delivered tip"
+  },
+  {
+   "command": "pytest -q tests/integration/test_paper_e2e_001.py ... test_paper_e2e_003.py tests/unit/execution/test_isolation.py",
+   "exit": 0,
+   "id": "E5",
+   "result": "37 passed in 5.26s",
+   "what": "37 work-package tests at the delivered tip"
+  },
+  {
+   "command": "verify_paper_e2e.py --repo . --evidence-sha abdf2146 --repeat ... --github-sync ... --negative-controls",
+   "exit": 0,
+   "id": "E6",
+   "result": "18/18 checks, 11/11 negative controls rejected",
+   "what": "independent verifier on the evidence commit"
+  },
+  {
+   "command": "same, --evidence-sha 08c5d9d2, worktree ../ff-wt-verify with git status empty",
+   "exit": 0,
+   "id": "E7",
+   "result": "18/18 checks, 11/11 negative controls rejected",
+   "what": "independent verifier on the delivered tip, clean detached checkout"
+  },
+  {
+   "command": "pytest -m 'not slow and not market' -q --tb=no -rfE",
+   "exit": 1,
+   "id": "E8",
+   "result": "81 failed, 3230 passed, 31 skipped, 3 deselected, 78 warnings, 14 errors in 668.61s (0:11:08)",
+   "what": "full suite at the delivered tip"
+  },
+  {
+   "command": "same, in ../ff-wt-trunk-ops (1d2192b0 plus the two ops files)",
+   "exit": 1,
+   "id": "E9",
+   "result": "81 failed, 3213 passed, 31 skipped, 3 deselected, 78 warnings, 14 errors in 562.08s (0:09:22)",
+   "what": "full suite at the trunk+ops baseline"
+  },
+  {
+   "command": "ruff format --check .",
+   "exit": 1,
+   "id": "E10",
+   "result": "433 files at 1d2192b0, 428 at baf5b560; 5 fixed by the port, 0 added",
+   "what": "format gate on both trees"
+  },
+  {
+   "command": "yaml.safe_load(ci.yml); git ls-remote microsoft/powershell; powershell.exe Parser::ParseFile",
+   "exit": 0,
+   "id": "E11",
+   "result": "YAML parses; one uses: left (actions/checkout@v4); the referenced repository does not exist; the script parses with 551 tokens and 0 errors under PS 5.1",
+   "what": "smoke-job repair, local only"
+  }
+ ],
+ "gates": {
+  "format_equivalence": {
+   "ast_identical": 18,
+   "files_compared": 19,
+   "import_order_only": 1,
+   "semantic_changes": 0
+  },
+  "format_reconciliation": {
+   "added_by_port": 0,
+   "fixed_by_port": 5,
+   "port": 428,
+   "trunk": 433
+  },
+  "new_debt": {
+   "collection": 0,
+   "format": 0,
+   "lint": 0,
+   "mypy": 0
+  },
+  "port": {
+   "collection_errors": 0,
+   "format_files": 428,
+   "lint": 100,
+   "mypy": 253,
+   "sha": "baf5b560"
+  },
+  "trunk": {
+   "collection_errors": 4,
+   "format_files": 433,
+   "lint": 100,
+   "mypy": 253,
+   "sha": "1d2192b0"
+  }
+ },
+ "generated_at_utc": "2026-10-22T21:54:21Z",
+ "git_authority": {
+  "ci_fix": "9682ee1b31dbd01f72b3ff94ba3e6397df971fb6",
+  "evidence_commit": "abdf21462efc7ae2390affeac2150f657a0095bb",
+  "local_main": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+  "origin_main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+  "port_head": "baf5b560101188ecceb36a4880d3dca16b267e31",
+  "recovery_branch": "08c5d9d22c87764a0a57586a232fd27df13acebf",
+  "remote": {
+   "fix/ci-smoke-pwsh": "9682ee1b31dbd01f72b3ff94ba3e6397df971fb6",
+   "recovery/trunk-sync": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+   "recovery/wp00303": "08c5d9d22c87764a0a57586a232fd27df13acebf",
+   "wp/isolation-005": "624455c8c55c8564a5d244cb82688a1332159ae7"
+  },
+  "trunk_sync": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+  "verdict_commit": "08c5d9d22c87764a0a57586a232fd27df13acebf",
+  "wp_branch": "624455c8c55c8564a5d244cb82688a1332159ae7"
+ },
+ "schema": "wp00306-run-report/1",
+ "status": {
+  "CI_REAL_RUN": "NOT_PERFORMED",
+  "DELIVERY_STATUS": "BLOCKED",
+  "EVIDENCE_VERSIONED": "PASS",
+  "FALSE_SUCCESS": 0,
+  "INDEPENDENT_VERIFICATION": "PASS 18/18",
+  "LIVE_ORDERS": "NONE",
+  "MAIN_SYNCED": "NO",
+  "MERGES": "NONE",
+  "PAPER_VALIDATION": "PASS (OFFLINE_RECORDED_DATA)",
+  "PRODUCTION_READY": "NOT CLAIMED"
+ },
+ "suite": {
+  "baseline": {
+   "red_nodes": 95,
+   "summary": "81 failed, 3213 passed, 31 skipped, 3 deselected, 78 warnings, 14 errors in 562.08s (0:09:22)"
+  },
+  "conclusion": "the port adds 17 passing tests and moves no red node in either direction",
+  "extra_passing_tests": 17,
+  "node_sets_identical": true,
+  "nodes_only_in_baseline": 0,
+  "nodes_only_in_tip": 0,
+  "tip": {
+   "red_nodes": 95,
+   "summary": "81 failed, 3230 passed, 31 skipped, 3 deselected, 78 warnings, 14 errors in 668.61s (0:11:08)"
+  }
+ },
+ "verification": {
+  "blocked": [],
+  "evidence_commit": "abdf21462efc7ae2390affeac2150f657a0095bb",
+  "evidence_commit_checks_ok": 18,
+  "evidence_commit_checks_total": 18,
+  "evidence_commit_negative_controls": "11/11",
+  "failed": [],
+  "tip_checkout": "detached worktree ../ff-wt-verify, git status --porcelain empty",
+  "tip_checks_ok": 18,
+  "tip_checks_total": 18,
+  "tip_commit": "08c5d9d22c87764a0a57586a232fd27df13acebf",
+  "tip_negative_controls": "11/11",
+  "unsupported_pass_count": 0
+ },
+ "work_package": "WP-003-06"
+}

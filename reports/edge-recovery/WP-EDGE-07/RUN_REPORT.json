@@ -1,0 +1,1108 @@
+{
+  "schema_version": "EDGE07_RUN_REPORT_V1",
+  "as_of_utc": "2026-10-14T09:43:23Z",
+  "host": "DESKTOP-4CHO695",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "head": "d30d52d068c165f0da06af8bb9356e6c60a5f0f9",
+  "worktree_dirty_entries": 136,
+  "worktree_dirty_entries_of_this_work_package": 0,
+  "volume": {
+    "free_bytes": 3199168512,
+    "free_gib": 2.979,
+    "total_gib": 237.5,
+    "critical_floor_gib": 2.0,
+    "healthy_floor_gib": 5.0,
+    "verdict": "ABOVE_CRITICAL_BELOW_HEALTHY"
+  },
+  "storage": {
+    "invocations_recorded": 8,
+    "dry_runs": 4,
+    "applied_runs": 4,
+    "latest_applied_utc": "2026-10-14T08:50:23Z",
+    "reclaimed_bytes_total": 2261922757,
+    "paths_recorded_as_removed": 193,
+    "paths_that_still_exist": [],
+    "free_before_bytes": 2824138752,
+    "free_after_bytes": 3955908608,
+    "critical_floor_bytes": 2147483648,
+    "healthy_floor_bytes": 5368709120,
+    "clears_critical_floor": true,
+    "clears_healthy_floor": false,
+    "eligible_entries": 12,
+    "removed_entries": 12,
+    "kept_entries": 4,
+    "neighbours_named_not_deleted": 12,
+    "verification": {
+      "every_removal_recorded": true,
+      "failed_removals": [],
+      "worktrees_still_registered_outside": [
+        "C:/Users/GVLLFR0035/Downloads/bot-freebuff-rfc035s3-lab"
+      ],
+      "nothing_outside_the_rules_is_a_candidate": true
+    }
+  },
+  "lane": {
+    "runs_total": 98,
+    "runs_observing": 51,
+    "last_observing_slot": "2026-10-14T09:30Z",
+    "last_observing_started_utc": "2026-10-14T09:40:57Z",
+    "last_observing_new_bars": 3,
+    "refusals_for_disk": 41,
+    "last_refusal_slot": "2026-10-14T08:30Z",
+    "scheduled_observing_ticks_after_the_reclaim": [
+      {
+        "slot_key": "2026-10-14T08:45Z",
+        "started_at_utc": "2026-10-14T08:55:56Z",
+        "new_bars": 18,
+        "market_requests": 7
+      },
+      {
+        "slot_key": "2026-10-14T09:00Z",
+        "started_at_utc": "2026-10-14T09:10:58Z",
+        "new_bars": 6,
+        "market_requests": 7
+      },
+      {
+        "slot_key": "2026-10-14T09:15Z",
+        "started_at_utc": "2026-10-14T09:25:57Z",
+        "new_bars": 3,
+        "market_requests": 4
+      },
+      {
+        "slot_key": "2026-10-14T09:30Z",
+        "started_at_utc": "2026-10-14T09:40:57Z",
+        "new_bars": 3,
+        "market_requests": 4
+      }
+    ],
+    "scheduled_observing_ticks_after_the_reclaim_count": 4,
+    "receipts_total": 3,
+    "last_receipt": {
+      "slot_key": "2026-10-14T09:30Z",
+      "at_utc": "2026-10-14T09:41:47Z",
+      "mode": "SCHEDULED",
+      "after_outcome": "OBSERVED",
+      "ran": true,
+      "status": "HISTORICAL_ONLY",
+      "reconciliation_artifacts": 4
+    }
+  },
+  "tracks": {
+    "validation": {
+      "run_id": "EDGE07-VALIDATION-20261014T090256Z",
+      "as_of_utc": "2026-10-14T09:02:56Z",
+      "book": "edge07_trend_fixed",
+      "verdict": "REJECT",
+      "why": "decisive criterion failed on NEW_HOLDOUT: P2, P3, P4, P5, P6, R1, R2",
+      "powered": true,
+      "checks": [
+        {
+          "id": "P1",
+          "statement": "trades >= 30",
+          "passed": true,
+          "value": 65
+        },
+        {
+          "id": "P2",
+          "statement": "net > 0 at BASE",
+          "passed": false,
+          "value": -140.3041
+        },
+        {
+          "id": "P3",
+          "statement": "expectancy > 0 at BASE",
+          "passed": false,
+          "value": -2.1585
+        },
+        {
+          "id": "P4",
+          "statement": "net > 0 at 2X_FEES",
+          "passed": false,
+          "value": -205.2287
+        },
+        {
+          "id": "P5",
+          "statement": "largest single trade <= 50% of the net",
+          "passed": false,
+          "value": null
+        },
+        {
+          "id": "P6",
+          "statement": "at least one positive regime",
+          "passed": false,
+          "value": 0
+        },
+        {
+          "id": "R1",
+          "statement": "net still > 0 with the largest winner removed",
+          "passed": false,
+          "value": -170.085
+        },
+        {
+          "id": "R2",
+          "statement": "net > 0 in at least 2 of 3 time blocks",
+          "passed": false,
+          "value": 1
+        },
+        {
+          "id": "S1",
+          "statement": "DEV gross > 0",
+          "passed": true,
+          "value": 1746.0725
+        }
+      ],
+      "failed": [
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "P6",
+        "R1",
+        "R2"
+      ],
+      "params_hash": "9ceb20fc7d4500c334e2d58f6ff4cd6d26c6b228c4f8ef93f3c709082e44e8ad",
+      "params_hash_matches_the_registration": true,
+      "registered_params_hash": "9ceb20fc7d4500c334e2d58f6ff4cd6d26c6b228c4f8ef93f3c709082e44e8ad",
+      "registered_at_utc": "2026-10-14T08:53:54Z",
+      "preregistration_run_id": "EDGE07-PREREG-20261014T085354Z",
+      "preregistration_multiplicity": 2,
+      "instrument_check_all_equal": true,
+      "frozen_gate": {
+        "disclosure": "the frozen gate is reported with OOS := NEW_HOLDOUT for comparability; the verdict above is the one the pre-registration defines",
+        "reasons": [
+          "oos net -140.30 USDT <= 0 after costs",
+          "oos expectancy -2.1585 USDT/trade <= 0",
+          "oos has 0 profitable regime(s), fewer than the required 1",
+          "oos net turns negative under 2x fees (-205.23 USDT): no cost margin"
+        ],
+        "verdict": "REJECT"
+      },
+      "new_window": {
+        "trades": 65,
+        "net_usdt": -140.3041,
+        "expectancy_usdt": -2.1585,
+        "gross_usdt": -63.0744,
+        "fees_usdt": 64.9246,
+        "win_rate_pct": 20.0,
+        "avg_duration_min": 1325.54,
+        "profit_factor": 0.671,
+        "max_drawdown_pct": 2.1413,
+        "largest_trade_share_of_net": null,
+        "total_cost_bps_per_trade": 23.763
+      },
+      "no_trade_null": {
+        "expectancy_usdt": -2.6576,
+        "net_usdt": -170.085,
+        "removed_trade_net_usdt": 29.781,
+        "return_pct_of_start_equity": -1.7009,
+        "trades": 64
+      },
+      "expectancy_ci_90_usdt": {
+        "high": 1.0015,
+        "low": -5.1501,
+        "point": -2.1585
+      },
+      "net_ci_90_usdt": {
+        "high": 65.097,
+        "low": -334.7546,
+        "point": -140.3041
+      },
+      "positive_time_blocks": 1,
+      "time_blocks": [
+        {
+          "block": 1,
+          "from_utc": "2026-03-01T00:00:00Z",
+          "net_usdt": -123.4348,
+          "to_utc": "2026-05-15T18:40:00Z",
+          "trades": 23
+        },
+        {
+          "block": 2,
+          "from_utc": "2026-05-15T18:40:00Z",
+          "net_usdt": -67.6398,
+          "to_utc": "2026-07-30T13:20:00Z",
+          "trades": 9
+        },
+        {
+          "block": 3,
+          "from_utc": "2026-07-30T13:20:00Z",
+          "net_usdt": 50.7705,
+          "to_utc": "2026-10-14T08:00:00Z",
+          "trades": 33
+        }
+      ],
+      "serial_dependence": {
+        "band_2_over_sqrt_n": 0.2481,
+        "expected_runs": 21.8,
+        "lag1_autocorrelation": 0.5073,
+        "observations": 65,
+        "runs": 11,
+        "runs_z": -4.2574
+      },
+      "by_asset_detail": {
+        "BTC": {
+          "expectancy_usdt": -0.0505,
+          "net_usdt": -0.8085,
+          "trades": 16
+        },
+        "ETH": {
+          "expectancy_usdt": -4.358,
+          "net_usdt": -117.666,
+          "trades": 27
+        },
+        "SOL": {
+          "expectancy_usdt": -0.9923,
+          "net_usdt": -21.8296,
+          "trades": 22
+        }
+      },
+      "by_market_context_detail": {
+        "BEAR": {
+          "expectancy_usdt": -1.72,
+          "net_usdt": -67.0807,
+          "trades": 39
+        },
+        "BULL": {
+          "expectancy_usdt": -3.4886,
+          "net_usdt": -59.3066,
+          "trades": 17
+        },
+        "SIDEWAYS": {
+          "expectancy_usdt": -1.5463,
+          "net_usdt": -13.9167,
+          "trades": 9
+        }
+      },
+      "coverage_4h_bars": {
+        "BTC": 1363,
+        "ETH": 1363,
+        "SOL": 1363
+      },
+      "coverage_min_bars": 1363,
+      "coverage_min_required": 300,
+      "coverage_enough": true,
+      "gaps": 0,
+      "manifest_digest": "196884f9e719315eaf4a0e1844d28cdf2528f9743f043931c9383a172a7e3cec",
+      "fetched_at_utc": "2026-10-14T08:56:16Z",
+      "requested_range": {
+        "end_utc_exclusive": "2026-10-14T07:00:00Z",
+        "start_utc": "2026-03-01T00:00:00Z"
+      },
+      "comparison": {
+        "fixed_target_net_usdt": -140.3041,
+        "fixed_target_trades": 65,
+        "trailing_net_usdt": 61.0046,
+        "trailing_trades": 28,
+        "trailing_largest_trade_share": 2.2373,
+        "note": "same corpus, same window, same costs, same risk policy, same simulator; the only difference is the exit rule, which is what the comparison is for"
+      },
+      "costs": {
+        "model": "COST_MODEL_V3",
+        "round_trip_bps": 23.790569
+      },
+      "windows": {
+        "DEV": {
+          "trades": 584,
+          "net_usdt": 1056.2895,
+          "expectancy_usdt": 1.8087,
+          "sharpe_annualised": 0.7219,
+          "profit_factor": 1.1966,
+          "max_drawdown_pct": 4.0367,
+          "largest_trade_share_of_net": 0.0743,
+          "total_cost_bps_per_trade": 23.8579,
+          "net_usdt_at_2x_fees": 104.2169,
+          "consulted_before_this_work_package": true
+        },
+        "VAL": {
+          "trades": 136,
+          "net_usdt": -146.1493,
+          "expectancy_usdt": -1.0746,
+          "sharpe_annualised": -0.575,
+          "profit_factor": 0.869,
+          "max_drawdown_pct": 3.5367,
+          "largest_trade_share_of_net": null,
+          "total_cost_bps_per_trade": 23.7887,
+          "net_usdt_at_2x_fees": -281.5418,
+          "consulted_before_this_work_package": true
+        },
+        "OOS_CONSULTED": {
+          "trades": 113,
+          "net_usdt": 230.0174,
+          "expectancy_usdt": 2.0356,
+          "sharpe_annualised": 0.9585,
+          "profit_factor": 1.321,
+          "max_drawdown_pct": 1.5329,
+          "largest_trade_share_of_net": 0.2219,
+          "total_cost_bps_per_trade": 23.8629,
+          "net_usdt_at_2x_fees": 116.674,
+          "consulted_before_this_work_package": true
+        },
+        "NEW_HOLDOUT": {
+          "trades": 65,
+          "net_usdt": -140.3041,
+          "expectancy_usdt": -2.1585,
+          "sharpe_annualised": -1.2461,
+          "profit_factor": 0.671,
+          "max_drawdown_pct": 2.1413,
+          "largest_trade_share_of_net": null,
+          "total_cost_bps_per_trade": 23.763,
+          "net_usdt_at_2x_fees": -205.2287,
+          "consulted_before_this_work_package": false
+        }
+      }
+    },
+    "active": {
+      "run_id": "EDGE07-ACTIVE-20261014T091124Z",
+      "as_of_utc": "2026-10-14T09:11:24Z",
+      "timeframe": "1h",
+      "frequency_target_per_day": 3.0,
+      "multiplicity": 2,
+      "registered_at_utc": "2026-10-14T09:20:00Z",
+      "screen_cost_wall_bps": 23.790569,
+      "declared_cost_wall": {
+        "components_bps": {
+          "fee": 20.0,
+          "impact": 0.158114,
+          "slippage": 2.632456,
+          "spread": 1.0
+        },
+        "daily_cost_at_three_trades": 71.37170824512629,
+        "horizon_minutes": 60,
+        "model": "COST_MODEL_V3",
+        "note": "a book at this frequency must earn more than the round-trip cost per trade, on average, before it earns anything",
+        "round_trip_bps": 23.790569415042093,
+        "scenario": "BINANCE_SPOT_STANDARD_TAKER"
+      },
+      "verdicts": {
+        "edge07_active_fade": "REJECT_NO_GROSS_EDGE",
+        "edge07_active_thrust": "REJECT_NO_GROSS_EDGE"
+      },
+      "readings": {
+        "edge07_active_fade": {
+          "verdict": "REJECT_NO_GROSS_EDGE",
+          "why": "the setup loses money before any fee on DEV (-0.788 USDT/trade over 255 trades), which no cost change can repair",
+          "holdout_read": false,
+          "screen_pass": false
+        },
+        "edge07_active_thrust": {
+          "verdict": "REJECT_NO_GROSS_EDGE",
+          "why": "the setup loses money before any fee on DEV (-0.2694 USDT/trade over 338 trades), which no cost change can repair",
+          "holdout_read": false,
+          "screen_pass": false
+        }
+      },
+      "frequency": {
+        "edge07_active_fade": {
+          "holdout_trades_per_day": null,
+          "screen_DEV_trades_per_day": 0.1397,
+          "screen_VAL_trades_per_day": 0.9945
+        },
+        "edge07_active_thrust": {
+          "holdout_trades_per_day": null,
+          "screen_DEV_trades_per_day": 0.1852,
+          "screen_VAL_trades_per_day": 1.0055
+        }
+      },
+      "best_observed_gross_bps_per_trade": {
+        "edge07_active_fade": -15.761,
+        "edge07_active_thrust": -5.3873
+      },
+      "candidates": {
+        "edge07_active_fade": {
+          "dev_avg_duration_min": 461.65,
+          "dev_exit_reason_mix": {
+            "stop_loss": 192,
+            "target": 63
+          },
+          "dev_gross_bps_per_trade": -15.761,
+          "dev_net_usdt": -503.9857,
+          "dev_trades": 255,
+          "dev_trades_per_day": 0.1397
+        },
+        "edge07_active_thrust": {
+          "dev_avg_duration_min": 173.61,
+          "dev_exit_reason_mix": {
+            "stop_loss": 206,
+            "target": 132
+          },
+          "dev_gross_bps_per_trade": -5.3873,
+          "dev_net_usdt": -492.9215,
+          "dev_trades": 338,
+          "dev_trades_per_day": 0.1852
+        }
+      },
+      "preregistration_present": true,
+      "holdout_read_by_any_candidate": false
+    },
+    "barrier": {
+      "declared_cost_wall_bps": 23.7906,
+      "frequency_target_per_day": 3.0,
+      "cost_model": "COST_MODEL_V3 / BINANCE_SPOT_STANDARD_TAKER at a one-hour horizon",
+      "methods": "perfect foresight: entry at the open of the next bar, exit at the open H bars later, capturing the absolute open-to-open move, paying the round trip; a real book captures less because it is sometimes wrong and exits early",
+      "rows": {
+        "BTC": [
+          {
+            "horizon_hours": 1,
+            "trades_per_day_per_asset": 24.0,
+            "mean_absolute_move_bps": 27.6151,
+            "perfect_foresight_net_bps": 3.8246,
+            "capture_fraction_needed_to_break_even": 0.8615,
+            "share_of_moves_below_cost": 0.605
+          },
+          {
+            "horizon_hours": 2,
+            "trades_per_day_per_asset": 12.0,
+            "mean_absolute_move_bps": 39.4633,
+            "perfect_foresight_net_bps": 15.6728,
+            "capture_fraction_needed_to_break_even": 0.6029,
+            "share_of_moves_below_cost": 0.4659
+          },
+          {
+            "horizon_hours": 4,
+            "trades_per_day_per_asset": 6.0,
+            "mean_absolute_move_bps": 55.6179,
+            "perfect_foresight_net_bps": 31.8274,
+            "capture_fraction_needed_to_break_even": 0.4277,
+            "share_of_moves_below_cost": 0.3576
+          },
+          {
+            "horizon_hours": 8,
+            "trades_per_day_per_asset": 3.0,
+            "mean_absolute_move_bps": 79.9841,
+            "perfect_foresight_net_bps": 56.1936,
+            "capture_fraction_needed_to_break_even": 0.2974,
+            "share_of_moves_below_cost": 0.2563
+          },
+          {
+            "horizon_hours": 24,
+            "trades_per_day_per_asset": 1.0,
+            "mean_absolute_move_bps": 148.3688,
+            "perfect_foresight_net_bps": 124.5782,
+            "capture_fraction_needed_to_break_even": 0.1603,
+            "share_of_moves_below_cost": 0.1319
+          }
+        ],
+        "ETH": [
+          {
+            "horizon_hours": 1,
+            "trades_per_day_per_asset": 24.0,
+            "mean_absolute_move_bps": 35.3403,
+            "perfect_foresight_net_bps": 11.5498,
+            "capture_fraction_needed_to_break_even": 0.6732,
+            "share_of_moves_below_cost": 0.5164
+          },
+          {
+            "horizon_hours": 2,
+            "trades_per_day_per_asset": 12.0,
+            "mean_absolute_move_bps": 50.6857,
+            "perfect_foresight_net_bps": 26.8951,
+            "capture_fraction_needed_to_break_even": 0.4694,
+            "share_of_moves_below_cost": 0.401
+          },
+          {
+            "horizon_hours": 4,
+            "trades_per_day_per_asset": 6.0,
+            "mean_absolute_move_bps": 72.8126,
+            "perfect_foresight_net_bps": 49.022,
+            "capture_fraction_needed_to_break_even": 0.3267,
+            "share_of_moves_below_cost": 0.2938
+          },
+          {
+            "horizon_hours": 8,
+            "trades_per_day_per_asset": 3.0,
+            "mean_absolute_move_bps": 105.4404,
+            "perfect_foresight_net_bps": 81.6499,
+            "capture_fraction_needed_to_break_even": 0.2256,
+            "share_of_moves_below_cost": 0.2025
+          },
+          {
+            "horizon_hours": 24,
+            "trades_per_day_per_asset": 1.0,
+            "mean_absolute_move_bps": 194.9175,
+            "perfect_foresight_net_bps": 171.127,
+            "capture_fraction_needed_to_break_even": 0.1221,
+            "share_of_moves_below_cost": 0.1074
+          }
+        ],
+        "SOL": [
+          {
+            "horizon_hours": 1,
+            "trades_per_day_per_asset": 24.0,
+            "mean_absolute_move_bps": 41.2123,
+            "perfect_foresight_net_bps": 17.4217,
+            "capture_fraction_needed_to_break_even": 0.5773,
+            "share_of_moves_below_cost": 0.4434
+          },
+          {
+            "horizon_hours": 2,
+            "trades_per_day_per_asset": 12.0,
+            "mean_absolute_move_bps": 59.0639,
+            "perfect_foresight_net_bps": 35.2733,
+            "capture_fraction_needed_to_break_even": 0.4028,
+            "share_of_moves_below_cost": 0.327
+          },
+          {
+            "horizon_hours": 4,
+            "trades_per_day_per_asset": 6.0,
+            "mean_absolute_move_bps": 83.94,
+            "perfect_foresight_net_bps": 60.1495,
+            "capture_fraction_needed_to_break_even": 0.2834,
+            "share_of_moves_below_cost": 0.2393
+          },
+          {
+            "horizon_hours": 8,
+            "trades_per_day_per_asset": 3.0,
+            "mean_absolute_move_bps": 120.2721,
+            "perfect_foresight_net_bps": 96.4815,
+            "capture_fraction_needed_to_break_even": 0.1978,
+            "share_of_moves_below_cost": 0.1607
+          },
+          {
+            "horizon_hours": 24,
+            "trades_per_day_per_asset": 1.0,
+            "mean_absolute_move_bps": 223.4628,
+            "perfect_foresight_net_bps": 199.6722,
+            "capture_fraction_needed_to_break_even": 0.1065,
+            "share_of_moves_below_cost": 0.0823
+          }
+        ]
+      },
+      "pooled": {
+        "None": {
+          "share_of_moves_below_cost": 0.1072,
+          "mean_absolute_move_bps": 188.9164,
+          "capture_fraction_needed_to_break_even": null
+        }
+      },
+      "reachable_at": [
+        {
+          "horizon_bars": 1,
+          "mean_absolute_move_bps": 34.7226,
+          "perfect_foresight_net_bps": 10.932,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.5216,
+          "trades_per_day_across_the_universe": 72.0
+        },
+        {
+          "horizon_bars": 2,
+          "mean_absolute_move_bps": 49.7376,
+          "perfect_foresight_net_bps": 25.9471,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.398,
+          "trades_per_day_across_the_universe": 36.0
+        },
+        {
+          "horizon_bars": 4,
+          "mean_absolute_move_bps": 70.7902,
+          "perfect_foresight_net_bps": 46.9996,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.2969,
+          "trades_per_day_across_the_universe": 18.0
+        },
+        {
+          "horizon_bars": 8,
+          "mean_absolute_move_bps": 101.8989,
+          "perfect_foresight_net_bps": 78.1083,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.2065,
+          "trades_per_day_across_the_universe": 9.0
+        },
+        {
+          "horizon_bars": 24,
+          "mean_absolute_move_bps": 188.9164,
+          "perfect_foresight_net_bps": 165.1258,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.1072,
+          "trades_per_day_across_the_universe": 3.0
+        }
+      ]
+    }
+  },
+  "reclaim_history": {
+    "invocations": 8,
+    "applied_runs": 4,
+    "paths_recorded_as_removed": 193
+  },
+  "growth": {
+    "read_at_utc": "2026-10-14T08:28:12Z",
+    "deleted_anything": false,
+    "writers": []
+  },
+  "verification": {
+    "command": "scripts/edge07_verify.py --self-test",
+    "exit_code": 0,
+    "stdout_tail": "  A-5  PASS  every scheduled slot WP-EDGE-06 published is still in the lane's log, in order, never re\n  B-1  PASS  every holdout shard still hashes to the digest its manifest recorded\n  B-2  PASS  the parameters read on the new window are the registered bytes, and the run says so\n  B-3  PASS  the runner reproduced every published consulted-window figure it re-derived\n  B-4  PASS  the trend verdict follows from its own checks by the registered mapping\n  B-5  PASS  nothing was promoted, no order was sent, every reading is hypothetical\n  B-6  PASS  the new window begins after the last bar of every frozen corpus\n  C-1  PASS  each ACTIVE verdict follows from its own checks, and a screened-out book read no indepen\n  C-2  PASS  the published one-hour ceiling for BTC on the new window recomputes from the bars\nresult PASS (13/13)\nself-test PASS: 14/14 sabotages detected\nwrote reports\\edge-recovery\\WP-EDGE-07\\VERIFICATION.json",
+    "as_of_utc": "2026-10-14T09:43:25Z",
+    "result": "PASS",
+    "checks_passed": 13,
+    "checks_total": 13,
+    "failing": [],
+    "failing_count": 0,
+    "self_test": "PASS",
+    "sabotages": 14,
+    "sabotages_detected": 14,
+    "checks": [
+      {
+        "id": "A-1",
+        "statement": "the volume is above the runtime's 2 GiB critical floor",
+        "passed": true
+      },
+      {
+        "id": "A-2",
+        "statement": "every path the reclaim recorded as removed is gone, and at least one sweep was applied",
+        "passed": true
+      },
+      {
+        "id": "A-3",
+        "statement": "at least two real scheduled ticks observed after the reclaim",
+        "passed": true
+      },
+      {
+        "id": "A-4",
+        "statement": "every scheduled tick after the wiring has a durable receipt, and its ran/not-ran follows the tick's own outcome",
+        "passed": true
+      },
+      {
+        "id": "A-5",
+        "statement": "every scheduled slot WP-EDGE-06 published is still in the lane's log, in order, never replayed, and its store still holds every series",
+        "passed": true
+      },
+      {
+        "id": "B-1",
+        "statement": "every holdout shard still hashes to the digest its manifest recorded",
+        "passed": true
+      },
+      {
+        "id": "B-2",
+        "statement": "the parameters read on the new window are the registered bytes, and the run says so",
+        "passed": true
+      },
+      {
+        "id": "B-3",
+        "statement": "the runner reproduced every published consulted-window figure it re-derived",
+        "passed": true
+      },
+      {
+        "id": "B-4",
+        "statement": "the trend verdict follows from its own checks by the registered mapping",
+        "passed": true
+      },
+      {
+        "id": "B-5",
+        "statement": "nothing was promoted, no order was sent, every reading is hypothetical",
+        "passed": true
+      },
+      {
+        "id": "B-6",
+        "statement": "the new window begins after the last bar of every frozen corpus",
+        "passed": true
+      },
+      {
+        "id": "C-1",
+        "statement": "each ACTIVE verdict follows from its own checks, and a screened-out book read no independent window",
+        "passed": true
+      },
+      {
+        "id": "C-2",
+        "statement": "the published one-hour ceiling for BTC on the new window recomputes from the bars",
+        "passed": true
+      }
+    ]
+  },
+  "tests": {
+    "owned": {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/research/test_edge07_scheduler_evidence.py tests/unit/research/test_edge06_cadence.py tests/unit/research/test_wp9_disk_budget.py",
+      "exit_code": 0,
+      "seconds": 3.14,
+      "summary": "26 passed in 2.17s",
+      "stdout_tail": "..........................                                               [100%]\n26 passed in 2.17s",
+      "stderr_tail": ""
+    },
+    "lint": {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py",
+      "exit_code": 0,
+      "seconds": 0.15,
+      "summary": "All checks passed!",
+      "stdout_tail": "All checks passed!",
+      "stderr_tail": ""
+    },
+    "format": {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff format --check scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07 tests/unit/research/test_edge07_scheduler_evidence.py",
+      "exit_code": 0,
+      "seconds": 0.15,
+      "summary": "12 files already formatted",
+      "stdout_tail": "12 files already formatted",
+      "stderr_tail": ""
+    },
+    "types": {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m mypy scripts/edge07_report.py scripts/edge07_verify.py scripts/edge07_validate.py scripts/edge07_active.py scripts/edge07_active_barrier.py scripts/edge07_fetch_holdout.py scripts/edge07_growth_evidence.py scripts/edge07_reclaim.py src/trading_bot/research/edge07",
+      "exit_code": 0,
+      "seconds": 0.59,
+      "summary": "Success: no issues found in 11 source files",
+      "stdout_tail": "Success: no issues found in 11 source files",
+      "stderr_tail": ""
+    }
+  },
+  "hypothetical": true,
+  "order_sent": false,
+  "promotion": "NONE",
+  "github": {
+    "schema_version": "EDGE07_GITHUB_STATE_V1",
+    "as_of_utc": "2026-10-14T09:43:23Z",
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "head": "d30d52d068c165f0da06af8bb9356e6c60a5f0f9",
+    "remote": "https://github.com/Extr3sao/bot_crypto.git",
+    "remote_branch_ref": "refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
+    "remote_has_this_branch": true,
+    "remote_tip": "d30d52d068c165f0da06af8bb9356e6c60a5f0f9",
+    "remote_matches_head": true,
+    "pushed_range_at_last_push": "edd4ef2..d30d52d",
+    "push_kind": "normal fast-forward of an existing remote branch; force push not used and not needed",
+    "force_push_used": false,
+    "commits_of_this_work_package": [
+      {
+        "sha": "d30d52d068c165f0da06af8bb9356e6c60a5f0f9",
+        "subject": "Stop hashing the reports that the reading rewrites after hashing them [WP-EDGE-07]"
+      },
+      {
+        "sha": "52d30c08498f5a53dc4d6d074cc0edb43673423d",
+        "subject": "Re-take the reading at the published commit, including the Spanish report [WP-EDGE-07]"
+      },
+      {
+        "sha": "ebdafc32a34aa43866632004610498599703b7af",
+        "subject": "Render the executive report, the per-window table and the cadence receipt too [WP-EDGE-07]"
+      },
+      {
+        "sha": "69f85d2f4bd19ae392b8a72b61e921d33a70f5a1",
+        "subject": "Re-take the reading at the published commit, so the three reports agree with it [WP-EDGE-07]"
+      },
+      {
+        "sha": "07deeb40dd3f28781e7d6f64d6701dbec0330e59",
+        "subject": "Count uncommitted work, not the files a reading is in the middle of writing [WP-EDGE-07]"
+      },
+      {
+        "sha": "196deb49475e171c4a4ef3b0a21620e0f4a8be39",
+        "subject": "Read the published ref back from the remote instead of asserting it [WP-EDGE-07]"
+      },
+      {
+        "sha": "62ce473048d3bcc8ff4afb1a8c950ec40f57259b",
+        "subject": "Re-take the reading at the commit that publishes it [WP-EDGE-07]"
+      },
+      {
+        "sha": "7737481e355f2c41ea4b0cce8e40c9bb8925b2a0",
+        "subject": "Render the run record and the final report from one reading of the whole package [WP-EDGE-07]"
+      },
+      {
+        "sha": "85e110898280d9f3dc0b2e76484830302b8cf0d8",
+        "subject": "Run the work package's own files through the formatter and the type checker [WP-EDGE-07]"
+      },
+      {
+        "sha": "b0ddf50914500b56e4df0c670d58b3b2b9a628ff",
+        "subject": "Correct the append-only claim: run_id names the slot, not the tick [WP-EDGE-07]"
+      },
+      {
+        "sha": "838586425b94d741477610a5f59ef598d8bdbdc1",
+        "subject": "Screen the ACTIVE books, measure the ceiling they run into, and record the proposal [WP-EDGE-07]"
+      },
+      {
+        "sha": "e2b3b6c2e38b2d10baf9a2259a24b76d846fa346",
+        "subject": "Register two ACTIVE multi-asset candidates and the cost wall they face [WP-EDGE-07]"
+      },
+      {
+        "sha": "8e66e81b7686aa37098d000ec3379be9f1e31e2b",
+        "subject": "Read the frozen trend book on a window nobody had read, and let the registered criteria reject it [WP-EDGE-07]"
+      },
+      {
+        "sha": "53d905bb369a6860f0618258b83cc0cb16abab6b",
+        "subject": "Recover the lane's operating margin from our own scratch, and make the cadence's re-read leave a receipt [WP-EDGE-07]"
+      },
+      {
+        "sha": "046cfd68d955b77ab3530bdd3fa2751c41675531",
+        "subject": "Register the WP-EDGE-07 trend validation before the new window is read [WP-EDGE-07]"
+      }
+    ],
+    "commits_total": 15,
+    "worktree_dirty_entries": 136,
+    "worktree_dirty_entries_of_this_work_package": 0,
+    "volume_free_bytes_at_this_reading": 3199168512,
+    "credentials_read_or_printed": false,
+    "note_on_this_file": "this file is written after the push and describes the ref at that instant; the commit carrying it is published by the following push, which is why remote_matches_head is read from the remote rather than assumed"
+  },
+  "acceptance": [
+    {
+      "id": "ACC-01",
+      "requirement": "Branch, remote, commits and working tree verified and published",
+      "status": "PASS",
+      "figures": [
+        "branch",
+        "head",
+        "github.remote_matches_head",
+        "github.commits_total",
+        "worktree_dirty_entries_of_this_work_package"
+      ]
+    },
+    {
+      "id": "ACC-02",
+      "requirement": "Only this repository's own tool caches were removed, and every removal is recorded",
+      "status": "PASS",
+      "figures": [
+        "storage.applied_runs",
+        "storage.paths_recorded_as_removed",
+        "storage.paths_that_still_exist"
+      ]
+    },
+    {
+      "id": "ACC-03",
+      "requirement": "The volume clears the floor the lane refuses below, and the shortfall to healthy is stated",
+      "status": "PASS",
+      "figures": [
+        "volume.free_gib",
+        "volume.verdict",
+        "storage.reclaimed_bytes_total"
+      ]
+    },
+    {
+      "id": "ACC-04",
+      "requirement": "The volume's other writers are named, and none of their files was deleted",
+      "status": "PASS",
+      "figures": [
+        "storage.neighbours_named_not_deleted",
+        "storage.eligible_entries",
+        "growth.writers"
+      ]
+    },
+    {
+      "id": "ACC-05",
+      "requirement": "A tick that consumed its slot re-runs the integrated reconciliation and carries its receipt",
+      "status": "PASS",
+      "figures": [
+        "lane.receipts_total",
+        "lane.last_receipt",
+        "lane.last_receipt.reconciliation_artifacts"
+      ]
+    },
+    {
+      "id": "ACC-06",
+      "requirement": "Ingestion resumed through real scheduled ticks after the reclaim",
+      "status": "PASS",
+      "figures": [
+        "lane.scheduled_observing_ticks_after_the_reclaim",
+        "lane.runs_observing",
+        "lane.refusals_for_disk"
+      ]
+    },
+    {
+      "id": "ACC-07",
+      "requirement": "The trend parameters are the registered bytes, and the run says so",
+      "status": "PASS",
+      "figures": [
+        "validation.params_hash",
+        "validation.registered_params_hash"
+      ]
+    },
+    {
+      "id": "ACC-08",
+      "requirement": "The new window is unread by the frozen corpora, complete, and its coverage declared",
+      "status": "PASS",
+      "figures": [
+        "validation.coverage_4h_bars",
+        "validation.gaps",
+        "validation.requested_range"
+      ]
+    },
+    {
+      "id": "ACC-09",
+      "requirement": "The registered criteria decided the trend verdict, with power",
+      "status": "PASS",
+      "figures": [
+        "validation.verdict",
+        "validation.failed",
+        "validation.new_window.trades"
+      ]
+    },
+    {
+      "id": "ACC-10",
+      "requirement": "The comparison arm is reported from the same window, costs and risk policy",
+      "status": "PASS",
+      "figures": [
+        "validation.comparison.trailing_net_usdt",
+        "validation.comparison.fixed_target_net_usdt"
+      ]
+    },
+    {
+      "id": "ACC-11",
+      "requirement": "ACTIVE candidates registered before screening, with the frequency target and multiplicity",
+      "status": "PASS",
+      "figures": [
+        "active.registered_at_utc",
+        "active.multiplicity",
+        "active.frequency_target_per_day"
+      ]
+    },
+    {
+      "id": "ACC-12",
+      "requirement": "The screen decided both ACTIVE books, and neither read the independent window",
+      "status": "PASS",
+      "figures": [
+        "active.readings",
+        "active.holdout_read_by_any_candidate"
+      ]
+    },
+    {
+      "id": "ACC-13",
+      "requirement": "The cost barrier is measured on the new window, per asset and per horizon",
+      "status": "PASS",
+      "figures": [
+        "barrier.rows",
+        "barrier.declared_cost_wall_bps"
+      ]
+    },
+    {
+      "id": "ACC-14",
+      "requirement": "The frequency target is answered numerically, with the clock that can pay for it named",
+      "status": "PASS",
+      "figures": [
+        "barrier.reachable_at",
+        "barrier.pooled"
+      ]
+    },
+    {
+      "id": "ACC-15",
+      "requirement": "Nothing promoted, no order sent, no parameter changed after seeing a result",
+      "status": "PASS",
+      "figures": [
+        "promotion",
+        "order_sent",
+        "validation.instrument_check_all_equal"
+      ]
+    },
+    {
+      "id": "ACC-16",
+      "requirement": "Independent verification passes, with the self-test catching every sabotage",
+      "status": "PASS",
+      "figures": [
+        "verification.checks_passed",
+        "verification.sabotages_detected",
+        "verification.exit_code"
+      ]
+    },
+    {
+      "id": "ACC-17",
+      "requirement": "The owned suites and the linter ran here, with their own exit status",
+      "status": "PASS",
+      "figures": [
+        "tests.owned.summary",
+        "tests.lint.summary",
+        "tests.format.summary",
+        "tests.types.summary"
+      ]
+    }
+  ],
+  "artefacts": [
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/active-research/ACTIVE_RESEARCH.json",
+      "sha256": "6d36b816793e61cc64aad6fe5ec5968b7eb03b4ae8dc5261a5a8185749e3ac7d",
+      "bytes": 71208
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/active-research/ACTIVE_RESEARCH.md",
+      "sha256": "68bca38e7759e719956c5a6a49ac88d44af0288c8733009a05de7162ccb43daa",
+      "bytes": 2223
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/active-research/ACTIVE_TRADES.csv",
+      "sha256": "4403c073e7868e41e81fca668cb3fd9b59f25e1f3b0ca676f45c698bb9c67aa6",
+      "bytes": 355370
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/active-research/COST_BARRIER_ACTIVE.json",
+      "sha256": "d7fcaee590aa0c7724b2a197864548050b1d810b37ed8cda4784691fd5b0f0dc",
+      "bytes": 32422
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/active-research/COST_BARRIER_ACTIVE.md",
+      "sha256": "bbdb6ceccb514a63d7215ad0c348ab49024f847171a7d3d13b002aebaa31e70f",
+      "bytes": 3191
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/active-research/FINDINGS.md",
+      "sha256": "8f5cb021d65957eb9a75c5d3446c9ae96867dd9fc2d0c0800ec1e4c956240f0b",
+      "bytes": 5787
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/active-research/PREREGISTRATION.json",
+      "sha256": "be680f480ea9de874d3a4b51b857271971da45050e018e16f821c06e51edb0ac",
+      "bytes": 3734
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/active-research/PREREGISTRATION.md",
+      "sha256": "94043a05d00b4d4a9ed7c267b5497a4d17a97223da3d3e609fca576859d4f189",
+      "bytes": 5479
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/GROWTH_EVIDENCE.json",
+      "sha256": "2f630eff2dddffd7244916edf1cda668f47e9be1ffd7ea3c9b078739fa8ecd7d",
+      "bytes": 419023
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/GROWTH_EVIDENCE.md",
+      "sha256": "7150732b73c637323a1008e466d76b32aa1602a2810df9b540379aa10cfd6bc3",
+      "bytes": 9831
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/PREREGISTRATION.json",
+      "sha256": "6ded966cd78257140cc3b3d3f105307c312966d0ffe9f052257e985f7e2eaffa",
+      "bytes": 4418
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/PREREGISTRATION.md",
+      "sha256": "296bd4e37d8932d0d0cfc2420dbe1a0d9cb8cc85ce57a1304627dc8b5e3f93c0",
+      "bytes": 5986
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/STORAGE_RECLAIM.json",
+      "sha256": "f08f7954eb994a112c2cbe3deb4bbfba934c288e01c5b08b09db10d7d1790894",
+      "bytes": 30142
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/STORAGE_RECLAIM.md",
+      "sha256": "459d31720f6a7ba4738f38d17fa111b7601ced0cec8e61634535c529e24f2565",
+      "bytes": 5460
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/STORAGE_RECLAIM_HISTORY.jsonl",
+      "sha256": "c82943db50b9323cf7754bb3edc311b0fa37527e931e29ba6f2a7c0356305045",
+      "bytes": 16763
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/validation/VALIDATION.json",
+      "sha256": "9a318e917bdf14189c971b08dcb9aa90cbf7bf874a6b3d09f1517614abf80168",
+      "bytes": 97070
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/validation/VALIDATION.md",
+      "sha256": "89ca9c860cdddfdd23bd07c7aa6b9071454cc8e9ea837f5e5423fa5a350d5e29",
+      "bytes": 7261
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-07/validation/VALIDATION_TRADES.csv",
+      "sha256": "20e0fa0631d8714849b137f737dbe0876cec24200d85328c2446c6d6ae6d3912",
+      "bytes": 103305
+    }
+  ],
+  "verdict": "CLOSED_WITH_OPEN_ITEMS",
+  "open_items": [
+    {
+      "item": "The volume is 2.979 GiB free: above the 2.0 GiB the lane refuses under and below the 5.0 GiB the heavy publication waits for, so the lane ingests while the heavier export still waits",
+      "owner": "The volume's owner: clear temporary files older than a day"
+    },
+    {
+      "item": "The trend book with the fixed target was rejected on a window nobody had read, so 'would a different exit have saved it' is unanswered — the trailing arm on the same window is positive but under-powered",
+      "owner": "A new pre-registration, on a window that has not been read"
+    },
+    {
+      "item": "Both ACTIVE books were stopped by their own registered screen before the independent window, so the hourly frequency target rests on the measured ceiling rather than on a candidate",
+      "owner": "A new registration at a clock the barrier table says is affordable"
+    }
+  ]
+}

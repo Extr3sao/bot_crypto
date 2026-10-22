@@ -1,0 +1,187 @@
+{
+ "conclusion": "every order-capable route that can run in this tree refuses in a paper process before any I/O; the documented live CLI route exits 2 with and without --confirm-live. Nothing in this battery used a credential or reached a venue.",
+ "credentials_used": 0,
+ "gate": "isolation.assert_order_allowed at every order-capable method, before the venue object is used; backed by TRADING_BOT_MODE in the environment for children",
+ "generated_at_utc": "2026-10-21T18:11:26Z",
+ "live_cli": {
+  "exit_with_confirm_in_paper": 2,
+  "exit_without_confirm": 2
+ },
+ "real_orders_sent": 0,
+ "refusals": [
+  {
+   "code": "ISO_ORDER_ROUTE",
+   "outcome": "REFUSED",
+   "route": "cancel",
+   "scenario": "ISO-01"
+  },
+  {
+   "code": "ISO_ORDER_ROUTE",
+   "outcome": "REFUSED",
+   "route": "create",
+   "scenario": "ISO-01"
+  },
+  {
+   "code": "ISO_ORDER_ROUTE",
+   "outcome": "REFUSED",
+   "route": "client_place_order",
+   "scenario": "ISO-02"
+  },
+  {
+   "code": "ISO_ORDER_ROUTE",
+   "outcome": "REFUSED",
+   "route": "connector_cancel_order",
+   "scenario": "ISO-02"
+  },
+  {
+   "code": "ISO_ORDER_ROUTE",
+   "outcome": "REFUSED",
+   "route": "connector_create_order",
+   "scenario": "ISO-02"
+  },
+  {
+   "code": "ISO_ORDER_ROUTE",
+   "outcome": "REFUSED",
+   "route": "cancel",
+   "scenario": "ISO-03"
+  },
+  {
+   "code": "ISO_ORDER_ROUTE",
+   "outcome": "REFUSED",
+   "route": "create",
+   "scenario": "ISO-03"
+  },
+  {
+   "code": "ISO_ORDER_ROUTE",
+   "outcome": "REFUSED",
+   "route": "gate_on_command",
+   "scenario": "ISO-04"
+  }
+ ],
+ "routes": [
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "BitunixSpotConnector",
+   "file": "src/trading_bot/market_data/bitunix.py",
+   "line": 571,
+   "method": "create_order",
+   "module": "trading_bot.market_data.bitunix",
+   "route": "trading_bot.market_data.bitunix.BitunixSpotConnector.create_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "BitunixSpotConnector",
+   "file": "src/trading_bot/market_data/bitunix.py",
+   "line": 598,
+   "method": "cancel_order",
+   "module": "trading_bot.market_data.bitunix",
+   "route": "trading_bot.market_data.bitunix.BitunixSpotConnector.cancel_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "BitunixFuturesClient",
+   "file": "src/trading_bot/market_data/bitunix_futures.py",
+   "line": 270,
+   "method": "place_order",
+   "module": "trading_bot.market_data.bitunix_futures",
+   "route": "trading_bot.market_data.bitunix_futures.BitunixFuturesClient.place_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "BitunixFuturesConnector",
+   "file": "src/trading_bot/market_data/bitunix_futures.py",
+   "line": 517,
+   "method": "create_order",
+   "module": "trading_bot.market_data.bitunix_futures",
+   "route": "trading_bot.market_data.bitunix_futures.BitunixFuturesConnector.create_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "BitunixFuturesConnector",
+   "file": "src/trading_bot/market_data/bitunix_futures.py",
+   "line": 590,
+   "method": "cancel_order",
+   "module": "trading_bot.market_data.bitunix_futures",
+   "route": "trading_bot.market_data.bitunix_futures.BitunixFuturesConnector.cancel_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "ExchangeConnector",
+   "file": "src/trading_bot/market_data/exchange_connector.py",
+   "line": 167,
+   "method": "create_order",
+   "module": "trading_bot.market_data.exchange_connector",
+   "route": "trading_bot.market_data.exchange_connector.ExchangeConnector.create_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "ExchangeConnector",
+   "file": "src/trading_bot/market_data/exchange_connector.py",
+   "line": 179,
+   "method": "cancel_order",
+   "module": "trading_bot.market_data.exchange_connector",
+   "route": "trading_bot.market_data.exchange_connector.ExchangeConnector.cancel_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "CCXTExchangeConnector",
+   "file": "src/trading_bot/market_data/exchange_connector.py",
+   "line": 549,
+   "method": "create_order",
+   "module": "trading_bot.market_data.exchange_connector",
+   "route": "trading_bot.market_data.exchange_connector.CCXTExchangeConnector.create_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "CCXTExchangeConnector",
+   "file": "src/trading_bot/market_data/exchange_connector.py",
+   "line": 623,
+   "method": "cancel_order",
+   "module": "trading_bot.market_data.exchange_connector",
+   "route": "trading_bot.market_data.exchange_connector.CCXTExchangeConnector.cancel_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "MultiExchangeConnector",
+   "file": "src/trading_bot/market_data/types.py",
+   "line": 263,
+   "method": "create_order",
+   "module": "trading_bot.market_data.types",
+   "route": "trading_bot.market_data.types.MultiExchangeConnector.create_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "MultiExchangeConnector",
+   "file": "src/trading_bot/market_data/types.py",
+   "line": 273,
+   "method": "cancel_order",
+   "module": "trading_bot.market_data.types",
+   "route": "trading_bot.market_data.types.MultiExchangeConnector.cancel_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "_ObservedConnector",
+   "file": "src/trading_bot/market_data/wiring.py",
+   "line": 260,
+   "method": "create_order",
+   "module": "trading_bot.market_data.wiring",
+   "route": "trading_bot.market_data.wiring._ObservedConnector.create_order"
+  },
+  {
+   "authority": "RUNTIME_REACHABLE",
+   "class": "_ObservedConnector",
+   "file": "src/trading_bot/market_data/wiring.py",
+   "line": 280,
+   "method": "cancel_order",
+   "module": "trading_bot.market_data.wiring",
+   "route": "trading_bot.market_data.wiring._ObservedConnector.cancel_order"
+  }
+ ],
+ "routes_inventoried": 13,
+ "schema": "rfc005-order-prevention/1",
+ "venue_calls": {
+  "bitunix_http_requests": 0,
+  "bitunix_spot_client_calls": 0,
+  "ccxt_fake_venue": 0
+ }
+}

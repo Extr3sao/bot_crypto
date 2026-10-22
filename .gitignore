@@ -40,6 +40,11 @@ data/backtests/*
 data/storage/*
 data/chart_snapshots/*
 data/*.db
+# WP-EDGE-03 — tienda forward: OHLCV crudo de ~5 MB que crece en cada corrida. Se
+# mantiene local por el mismo criterio que los corpus crudos de arriba; lo que SI
+# se versiona es su procedencia (INGEST_LEDGER.jsonl) y sus digests, pinados en
+# reports/edge-recovery/WP-EDGE-03/forward-observation/OBSERVATION.json#manifest.
+data/forward/
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/backtests/.gitkeep
@@ -54,6 +59,275 @@ logs/*
 !logs/.gitkeep
 reports/*
 !reports/.gitkeep
+
+# ------------------------------------------------------------
+# WP-EDGE-01 — la evidencia de la campana y de la ablacion H1 SI se versiona.
+# `reports/*` ignora el ARBOL entero, y git no re-incluye un fichero cuyo
+# directorio padre esta excluido: hay que re-incluir la cadena de padres paso a
+# paso y volver a ignorar lo de en medio, para que la excepcion alcance solo a
+# esta carpeta y no abra de golpe el resto de salidas de reports/.
+# ------------------------------------------------------------
+!reports/edge-recovery/
+reports/edge-recovery/*
+!reports/edge-recovery/WP-EDGE-01/
+reports/edge-recovery/WP-EDGE-01/*
+# Una linea por experimento: la excepcion queda explicita y acotada a la evidencia
+# de cada ablacion, no a todo lo que se suelte en la carpeta del WP.
+!reports/edge-recovery/WP-EDGE-01/ablation-h1/
+!reports/edge-recovery/WP-EDGE-01/risk-budget-h5/
+!reports/edge-recovery/WP-EDGE-01/entry-timing-h2/
+!reports/edge-recovery/WP-EDGE-01/vol-filter-h4/
+!reports/edge-recovery/WP-EDGE-01/retest-h6/
+!reports/edge-recovery/WP-EDGE-01/oos-trend-4h/
+!reports/edge-recovery/WP-EDGE-01/closure/
+# El informe de cierre es un .md en la RAIZ de la carpeta del WP (junto a los
+# artefactos de la campana), no dentro de un experimento: se re-incluye por
+# extension y solo en ese nivel.
+!reports/edge-recovery/WP-EDGE-01/*.md
+
+# ------------------------------------------------------------
+# WP-EDGE-02 — misma cadena de excepciones que WP-EDGE-01, por el mismo motivo:
+# la evidencia de la robustez de tendencia y de la auditoria de riesgo SI se
+# versiona, y cada carpeta de experimento se re-incluye con su propia linea para
+# que la excepcion quede acotada a esa evidencia.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-02/
+reports/edge-recovery/WP-EDGE-02/*
+!reports/edge-recovery/WP-EDGE-02/trend-robustness/
+!reports/edge-recovery/WP-EDGE-02/h6-risk-audit/
+# La verificacion independiente vive en la raiz de la carpeta del WP, junto a los
+# informes: se re-incluye por extension y solo en ese nivel.
+!reports/edge-recovery/WP-EDGE-02/*.json
+!reports/edge-recovery/WP-EDGE-02/*.md
+
+# ------------------------------------------------------------
+# WP-EDGE-03 — misma cadena de excepciones que WP-EDGE-01/02, por el mismo motivo:
+# la evidencia de la observacion forward (ingesta incremental, shadow de los
+# rulesets congelados y paridad de riesgo) SI se versiona, y cada carpeta de salida
+# se re-incluye con su propia linea para que la excepcion quede acotada.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-03/
+reports/edge-recovery/WP-EDGE-03/*
+!reports/edge-recovery/WP-EDGE-03/forward-observation/
+!reports/edge-recovery/WP-EDGE-03/risk-parity/
+# La verificacion independiente vive en la raiz de la carpeta del WP, junto a los
+# informes: se re-incluye por extension y solo en ese nivel.
+!reports/edge-recovery/WP-EDGE-03/*.json
+!reports/edge-recovery/WP-EDGE-03/*.md
+
+# ------------------------------------------------------------
+# WP-EDGE-04 — misma cadena de excepciones que WP-EDGE-01/02/03: la auditoria del
+# runtime, el diseno del scheduler, los informes, la verificacion independiente y
+# la instantanea fechada de la evidencia viva SI se versionan. La instantanea
+# incluye la publicacion que la evidencia apunta, porque un puntero cuyos
+# artefactos se quedan fuera no lo puede comprobar nadie; cada fichero copiado
+# lleva su sha256 en evidence/SNAPSHOT.json.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-04/
+reports/edge-recovery/WP-EDGE-04/*
+!reports/edge-recovery/WP-EDGE-04/evidence/
+!reports/edge-recovery/WP-EDGE-04/*.json
+!reports/edge-recovery/WP-EDGE-04/*.md
+
+# ------------------------------------------------------------
+# WP-EDGE-05 — misma cadena de excepciones que WP-EDGE-01/02/03/04, por el mismo
+# motivo: el watchdog independiente, la reconciliacion posterior a un crash, la
+# auditoría de continuidad de Windows, el presupuesto de recursos, la verificación
+# independiente y la instantánea fechada de la evidencia viva SI se versionan.
+# La instantánea (evidence/) lleva la línea temporal, el registro de las dos tareas
+# programadas y la rebanada de la tienda, cada uno con su sha256 en
+# evidence/SNAPSHOT.json; el estado operativo vivo sigue bajo data/forward/
+# (ignorado más arriba), de modo que nada de lo que crece en cada tick entra aquí.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-05/
+reports/edge-recovery/WP-EDGE-05/*
+!reports/edge-recovery/WP-EDGE-05/evidence/
+!reports/edge-recovery/WP-EDGE-05/*.json
+!reports/edge-recovery/WP-EDGE-05/*.md
+
+# ------------------------------------------------------------
+# WP-EDGE-05R — misma cadena de excepciones que WP-EDGE-01…05, por el mismo motivo:
+# el diagnostico de almacenamiento, el registro de la recuperacion, la instantanea de
+# lectura, los informes renderizados desde ella, la verificacion independiente, la
+# regresion y el estado de GitHub SI se versionan. La instantanea de lectura fija el
+# sha256 de cada artefacto del que cita una cifra, y el estado vivo (data/forward/)
+# sigue bajo la regla de arriba, de modo que nada que crezca en cada tick entra aqui.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-05R/
+reports/edge-recovery/WP-EDGE-05R/*
+!reports/edge-recovery/WP-EDGE-05R/*.json
+!reports/edge-recovery/WP-EDGE-05R/*.md
+!reports/edge-recovery/WP-EDGE-05R/*.jsonl
+# ------------------------------------------------------------
+# WP-EDGE-06 — misma cadena de excepciones que WP-EDGE-01…05R, por el mismo motivo: el
+# diagnostico de almacenamiento, el inventario de los inquilinos del volumen, la auditoria
+# economica, las hipotesis registradas ANTES de correr, y los informes SI se versionan.
+# `research/` necesita su propia linea: git no re-incluye un fichero cuyo directorio padre
+# esta excluido, y esa carpeta es la que lleva la evidencia de las familias nuevas.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-06/
+reports/edge-recovery/WP-EDGE-06/*
+!reports/edge-recovery/WP-EDGE-06/*.json
+!reports/edge-recovery/WP-EDGE-06/*.md
+!reports/edge-recovery/WP-EDGE-06/*.jsonl
+!reports/edge-recovery/WP-EDGE-06/research/
+reports/edge-recovery/WP-EDGE-06/research/*
+!reports/edge-recovery/WP-EDGE-06/research/*.json
+!reports/edge-recovery/WP-EDGE-06/research/*.md
+!reports/edge-recovery/WP-EDGE-06/research/*.jsonl
+!reports/edge-recovery/WP-EDGE-06/research/*.csv
+!reports/edge-recovery/WP-EDGE-06/research/*/
+reports/edge-recovery/WP-EDGE-06/research/*/*
+!reports/edge-recovery/WP-EDGE-06/research/*/*.json
+!reports/edge-recovery/WP-EDGE-06/research/*/*.md
+!reports/edge-recovery/WP-EDGE-06/research/*/*.csv
+!reports/edge-recovery/WP-EDGE-06/research/*/*.jsonl
+
+# ------------------------------------------------------------
+# WP-EDGE-07 — misma cadena de excepciones que WP-EDGE-01…06, por el mismo motivo:
+# la pre-registracion (escrita y commiteada ANTES de leer la ventana nueva), la
+# validacion economica de la variante tendencial, la investigacion ACTIVE y los
+# informes SI se versionan. `validation/` y `active-research/` necesitan su propia
+# linea porque git no re-incluye un fichero cuyo directorio padre esta excluido, y
+# es ahi donde vive la evidencia. El corpus nuevo (data/edge07/holdout-1h/) se
+# versiona con su manifiesto de sha256 por shard; el estado vivo sigue bajo
+# data/forward/ y no entra aqui.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-07/
+reports/edge-recovery/WP-EDGE-07/*
+!reports/edge-recovery/WP-EDGE-07/*.json
+!reports/edge-recovery/WP-EDGE-07/*.md
+!reports/edge-recovery/WP-EDGE-07/*.jsonl
+!reports/edge-recovery/WP-EDGE-07/validation/
+reports/edge-recovery/WP-EDGE-07/validation/*
+!reports/edge-recovery/WP-EDGE-07/validation/*.json
+!reports/edge-recovery/WP-EDGE-07/validation/*.md
+!reports/edge-recovery/WP-EDGE-07/validation/*.csv
+!reports/edge-recovery/WP-EDGE-07/validation/*.jsonl
+!reports/edge-recovery/WP-EDGE-07/active-research/
+reports/edge-recovery/WP-EDGE-07/active-research/*
+!reports/edge-recovery/WP-EDGE-07/active-research/*.json
+!reports/edge-recovery/WP-EDGE-07/active-research/*.md
+!reports/edge-recovery/WP-EDGE-07/active-research/*.csv
+!reports/edge-recovery/WP-EDGE-07/active-research/*.jsonl
+
+# ------------------------------------------------------------
+# WP-EDGE-08 — misma cadena de excepciones que WP-EDGE-01…07, por el mismo motivo: lo que
+# se versiona es la evidencia. Aqui la evidencia es una CROSS-SECTION: seis simbolos que
+# ningun artefacto commiteado habia medido nunca (AAVE, UNI, MKR, SNX, CRV, SUSHI), asi que
+# la RFC-EDGE-008, su pre-registracion (commiteada antes de leer una sola barra del corpus),
+# los dos tracks (calidad y activo), la matriz economica y las validaciones SI entran.
+# `*.md` en la raiz del WP cubre RFC-EDGE-008.md, PREREGISTRATION.md, UNIVERSE.md,
+# RUN_REPORT.md, FINAL_REPORT.md y el informe ejecutivo; las subcarpetas necesitan su propia
+# linea porque git no re-incluye un fichero cuyo directorio padre esta excluido.
+# El corpus nuevo (data/edge08/universe-1h/, ~15 MiB) se versiona con su manifiesto de
+# sha256 por shard: sin el, la validacion no seria reproducible desde el commit.
+# ------------------------------------------------------------
+!reports/edge-recovery/WP-EDGE-08/
+reports/edge-recovery/WP-EDGE-08/*
+!reports/edge-recovery/WP-EDGE-08/*.json
+!reports/edge-recovery/WP-EDGE-08/*.md
+!reports/edge-recovery/WP-EDGE-08/*.jsonl
+!reports/edge-recovery/WP-EDGE-08/quality/
+reports/edge-recovery/WP-EDGE-08/quality/*
+!reports/edge-recovery/WP-EDGE-08/quality/*.json
+!reports/edge-recovery/WP-EDGE-08/quality/*.md
+!reports/edge-recovery/WP-EDGE-08/quality/*.csv
+!reports/edge-recovery/WP-EDGE-08/active/
+reports/edge-recovery/WP-EDGE-08/active/*
+!reports/edge-recovery/WP-EDGE-08/active/*.json
+!reports/edge-recovery/WP-EDGE-08/active/*.md
+!reports/edge-recovery/WP-EDGE-08/active/*.csv
+!reports/edge-recovery/WP-EDGE-08/economics/
+reports/edge-recovery/WP-EDGE-08/economics/*
+!reports/edge-recovery/WP-EDGE-08/economics/*.json
+!reports/edge-recovery/WP-EDGE-08/economics/*.md
+!reports/edge-recovery/WP-EDGE-08/economics/*.csv
+!reports/edge-recovery/WP-EDGE-08/validation/
+reports/edge-recovery/WP-EDGE-08/validation/*
+!reports/edge-recovery/WP-EDGE-08/validation/*.json
+!reports/edge-recovery/WP-EDGE-08/validation/*.md
+!reports/edge-recovery/WP-EDGE-08/validation/*.csv
+
+# ============================================================
+# WP-EDGE-09 — misma cadena de excepciones que WP-EDGE-01…08, por el mismo motivo: la
+# evidencia de la fase de microestructura económica SI se versiona. El panel de un segundo
+# (16.7 MB) se versiona también, y por una razón propia: la captura cruda de la que sale
+# vive bajo reports/ y NO se versiona, así que sin el panel la evidencia no sería
+# verificable en un clon limpio. La cabecera de cada artefacto declara su sha256.
+# ============================================================
+!reports/edge-recovery/WP-EDGE-09/
+reports/edge-recovery/WP-EDGE-09/*
+!reports/edge-recovery/WP-EDGE-09/*.json
+!reports/edge-recovery/WP-EDGE-09/*.md
+!reports/edge-recovery/WP-EDGE-09/*.jsonl
+!reports/edge-recovery/WP-EDGE-09/audit/
+!reports/edge-recovery/WP-EDGE-09/audit/*.json
+!reports/edge-recovery/WP-EDGE-09/audit/*.md
+!reports/edge-recovery/WP-EDGE-09/sources/
+!reports/edge-recovery/WP-EDGE-09/sources/*.json
+!reports/edge-recovery/WP-EDGE-09/sources/*.md
+!reports/edge-recovery/WP-EDGE-09/panel/
+!reports/edge-recovery/WP-EDGE-09/panel/*.json
+!reports/edge-recovery/WP-EDGE-09/panel/*.csv
+!reports/edge-recovery/WP-EDGE-09/panel/panel_build.log
+!reports/edge-recovery/WP-EDGE-09/gates/
+!reports/edge-recovery/WP-EDGE-09/gates/*.json
+!reports/edge-recovery/WP-EDGE-09/gates/*.md
+!reports/edge-recovery/WP-EDGE-09/experiments/
+!reports/edge-recovery/WP-EDGE-09/experiments/*.json
+!reports/edge-recovery/WP-EDGE-09/experiments/*.md
+
+# ============================================================
+# WP-EDGE-04R — misma cadena de excepciones que WP-EDGE-01/02/03/04, por el mismo
+# motivo: la auditoria de continuidad (que atribuye cada trigger perdido a un estado
+# que el propio host registro), las metricas de disponibilidad, el diseno y las sondas
+# de independencia de sesion, la verificacion independiente y la evidencia del host SI
+# se versionan. `evidence/` lleva la lectura del sistema operativo tal cual se leyo y
+# la auditoria derivada de ella, de modo que el veredicto se puede re-derivar sin este
+# host; el estado vivo del observador sigue bajo data/forward/ (ignorado arriba), asi
+# que nada de lo que crece en cada tick entra aqui.
+# ============================================================
+!reports/edge-recovery/WP-EDGE-04R/
+reports/edge-recovery/WP-EDGE-04R/*
+!reports/edge-recovery/WP-EDGE-04R/evidence/
+!reports/edge-recovery/WP-EDGE-04R/*.json
+!reports/edge-recovery/WP-EDGE-04R/*.md
+
+# ============================================================
+# WP-EDGE-12 — misma cadena de excepciones que WP-EDGE-01…09/04R, por el mismo motivo:
+# la puerta de dependencias leida del host, la decision de mecanismo con las negativas
+# verbatim, el techo de almacenamiento, la matriz de continuidad ejercitada sobre el
+# observador real, la validacion operativa y la verificacion independiente SI se
+# versionan. `evidence/` lleva la lectura del sistema operativo tal cual se leyo, los
+# snapshots de los dos logs sobre los que se calcularon las cifras, la definicion
+# propuesta, el XML de la sonda S4U y el registro de las regresiones
+# (TEST_RUNS.json), de modo que el veredicto se puede re-derivar sin este host; el
+# estado vivo del observador y el ensayo de continuidad siguen bajo data/forward/
+# (ignorado arriba), asi que nada de lo que crece en cada tick entra aqui.
+# ============================================================
+!reports/edge-recovery/WP-EDGE-12/
+reports/edge-recovery/WP-EDGE-12/*
+!reports/edge-recovery/WP-EDGE-12/evidence/
+!reports/edge-recovery/WP-EDGE-12/*.json
+!reports/edge-recovery/WP-EDGE-12/*.md
+
+# ============================================================
+# CAP-003 — evidencias OHLCV crudas: locales por tamano.
+# El ledger (evidence/real_decisions/*.jsonl) SI se versiona y
+# fija cada fichero crudo con su sha256.
+# ============================================================
+evidence/real_decisions/raw_evidence/
+
+# ============================================================
+# CAP-004 — estado operativo vivo (cambia en cada ciclo, no es evidencia)
+# El manifiesto, el RAW_EVIDENCE_MANIFEST y los checkpoints SI se versionan.
+# ============================================================
+evidence/real_decisions/heartbeat.json
+evidence/real_decisions/CAMPAIGN_LOCK.json
+# CAP-004B — the supervisor's operational history is append-only host state
+# (it grows every scheduled run); the campaign ledger remains versioned.
+evidence/real_decisions/operations.jsonl
 
 # ============================================================
 # Notebooks — solo checkpoints
@@ -79,6 +353,10 @@ htmlcov/
 .tox/
 .mypy_cache/
 .ruff_cache/
+# WP-EDGE-05R — the hypothesis example database is a tool cache like the others: the
+# tool rewrites it, git tracks none of it, and leaving it unnamed here made it the one
+# untracked cache the storage reclaim could not prove safe to remove.
+.hypothesis/
 
 # ============================================================
 # Docker
@@ -113,3 +391,138 @@ commit_msg*.txt
 .agentic-backup/
 .freebuff/
 his.zip
+
+# ============================================================
+# RFC-EDGE-014 — recuperación económica. Misma mecánica que los WP de
+# EDGE: `reports/*` ignora el árbol entero y git no re-incluye un fichero
+# cuyo directorio padre está excluido, así que la cadena de padres se
+# re-incluye paso a paso y se vuelve a ignorar lo de en medio. La excepción
+# alcanza solo a esta carpeta y no abre el resto de salidas de reports/.
+# ============================================================
+!reports/economic-recovery/
+reports/economic-recovery/*
+!reports/economic-recovery/RFC-EDGE-014/
+reports/economic-recovery/RFC-EDGE-014/*
+!reports/economic-recovery/RFC-EDGE-014/*.json
+!reports/economic-recovery/RFC-EDGE-014/*.md
+!reports/economic-recovery/RFC-EDGE-014/CANDIDATE_SPECS/
+reports/economic-recovery/RFC-EDGE-014/CANDIDATE_SPECS/*
+!reports/economic-recovery/RFC-EDGE-014/CANDIDATE_SPECS/*.md
+
+# ============================================================
+# RFC-EDGE-014R — recuperación operativa. Continúa RFC-EDGE-014 y escribe su
+# propio juego de artefactos, para no sobreescribir el registro ya publicado
+# de 014. Misma mecánica de re-inclusión paso a paso. El resto de `scratch/` se
+# queda fuera: son intermedios regenerables. La excepción es el dataset del
+# replay, que SÍ se versiona — una descarga nueva de ccxt siempre trae otra
+# ventana, así que sin el fichero la evidencia de paper no sería re-derivable
+# offline, solo comparable contra una descarga distinta. El ledger sandbox no
+# se versiona: `build_sandbox_ledger()` lo sintetiza de forma determinista.
+# ============================================================
+!reports/economic-recovery/RFC-EDGE-014R/
+reports/economic-recovery/RFC-EDGE-014R/*
+!reports/economic-recovery/RFC-EDGE-014R/*.json
+!reports/economic-recovery/RFC-EDGE-014R/*.md
+!reports/economic-recovery/RFC-EDGE-014R/*.csv
+!reports/economic-recovery/RFC-EDGE-014R/*.jsonl
+!reports/economic-recovery/RFC-EDGE-014R/scratch/
+reports/economic-recovery/RFC-EDGE-014R/scratch/*
+!reports/economic-recovery/RFC-EDGE-014R/scratch/PAPER_REPLAY_BARS.jsonl
+
+# ============================================================
+# RFC-EDGE-015 — búsqueda de alpha y paper prospectivo. Mismo mecanismo de
+# re-inclusión paso a paso que 014R: los artefactos del paquete (json/md/csv)
+# se versionan, y de `scratch/` y `experimental_paper/` solo lo que es
+# evidencia re-leíble (los ciclos y trades del carril experimental). Lo demás
+# se queda fuera porque es regenerable.
+# ============================================================
+!reports/economic-recovery/RFC-EDGE-015/
+reports/economic-recovery/RFC-EDGE-015/*
+!reports/economic-recovery/RFC-EDGE-015/*.json
+!reports/economic-recovery/RFC-EDGE-015/*.md
+!reports/economic-recovery/RFC-EDGE-015/*.csv
+!reports/economic-recovery/RFC-EDGE-015/*.jsonl
+!reports/economic-recovery/RFC-EDGE-015/experimental_paper/
+reports/economic-recovery/RFC-EDGE-015/experimental_paper/*
+!reports/economic-recovery/RFC-EDGE-015/experimental_paper/*.json
+!reports/economic-recovery/RFC-EDGE-015/experimental_paper/*.jsonl
+!reports/economic-recovery/RFC-EDGE-015/scratch/
+reports/economic-recovery/RFC-EDGE-015/scratch/*
+!reports/economic-recovery/RFC-EDGE-015/scratch/OOS_PROSPECTIVE_1H.jsonl
+!reports/economic-recovery/RFC-EDGE-015/scratch/OOS_DESCRIPTIVE_1H.jsonl
+
+# ============================================================
+# RFC-AI-BOTS-002 — el paquete de evidencia EVIDENCE-004 SI se versiona.
+# Mismo mecanismo de re-inclusion paso a paso que los paquetes anteriores:
+# `reports/*` ignora el arbol entero y git no re-incluye un fichero cuyo padre
+# esta excluido. Sin esto, cada proyeccion nueva (`derived/`) y cada manifiesto
+# historico naceran ignorados, y un checkout limpio no podria verificar lo que
+# el informe afirma.
+# ============================================================
+!reports/ai-bots/
+reports/ai-bots/*
+!reports/ai-bots/RFC-AI-BOTS-002/
+!reports/ai-bots/RFC-AI-BOTS-003/
+# RFC-TAP-AI-BOTS-003G — el colector, la sesión PAPER, el fallo de agregación y su
+# verificación se publican porque el verificador reconstruye cada cifra desde estos bytes.
+# La preflight se conserva en disco pero no se versiona: corrió con código anterior a la
+# congelación y no es evidencia de la sesión publicada.
+!reports/ai-bots/RFC-AI-BOTS-003G/
+reports/ai-bots/RFC-AI-BOTS-003G/session-preflight/
+# RFC-TAP-AI-BOTS-003H — la corrección contable, la sesión de smoke y su verificación.
+# Los logs de la WP (freeze, métricas, salidas de comando) son evidencia citada por los
+# informes: se publican, no se dejan como artefactos locales.
+!reports/ai-bots/RFC-AI-BOTS-003H/
+!logs/rfc003h/
+# EXP-003J-REAL-SIGNAL-PAPER-001 — los informes, el rastro de decisiones y el análisis se
+# publican para que un checkout limpio pueda comprobar lo que el informe afirma sin depender de
+# este disco. Lo pesado y regenerable (dataset, sesiones live, replays, logs) sigue fuera: su
+# integridad la sostiene el sello SHA-256, que se publica igual.
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/
+reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/*
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/*.md
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/*.json
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/*.jsonl
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/*.csv
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/*.txt
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/analysis/
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/analysis/*.json
+!reports/ai-bots/EXP-003J-REAL-SIGNAL-PAPER-001/analysis/*.md
+# DIRECTIVE-2026-10-20 — informe de la directiva que cierra WP-005L, audita el E2E paper y
+# resuelve la consistencia de la evidencia de 003J. Sólo texto: los artefactos pesados viven en
+# las carpetas de cada experimento.
+!reports/ai-bots/DIRECTIVE-2026-10-20/
+reports/ai-bots/DIRECTIVE-2026-10-20/*
+!reports/ai-bots/DIRECTIVE-2026-10-20/*.md
+!reports/ai-bots/DIRECTIVE-2026-10-20/*.json
+# EXP-003M-MAKER-FILL-REALITY-001 — se publican los informes, el diseño, el análisis y los
+# manifiestos de datos (que llevan los digests de la cinta). La cinta y las klines descargadas
+# quedan fuera: son 400 MiB regenerables, y su integridad la sostiene DATASET_SHA256SUMS.txt.
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/
+reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/*
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/*.md
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/*.json
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/*.txt
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/analysis/
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/analysis/*.json
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/design/
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/design/*.json
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/design/*.md
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/dataset/
+reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/dataset/*
+!reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/dataset/TAPE_MANIFEST.json
+
+# ============================================================
+# WP-PAPER-RESUME-001 / WP-PAPER-QUOTE-GAP-002 — la sesion PAPER durable y la
+# recuperacion a traves de un hueco de datos. Hasta ahora su evidencia vivia solo
+# en este disco: `reports/ai-bots/*` ignora el arbol entero y ninguna de las dos
+# carpetas tenia re-inclusion, asi que ni los informes ni el `archive/` de 1 minuto
+# ni los estados de los 14 kill-resume podian entrar en un commit. Un checkout
+# limpio no podia verificar nada de lo que los informes afirman.
+# ============================================================
+!reports/ai-bots/WP-PAPER-RESUME-001/
+!reports/ai-bots/WP-PAPER-QUOTE-GAP-002/
+# Los logs primarios de la Fase A se versionan: `*.log` los ignoraba y el primer commit de
+# evidencia publicó el manifiesto sin los ficheros que el manifiesto hashea. Un sello que
+# nombra bytes que nadie tiene es exactamente lo que este RFC vino a cerrar.
+!reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/evidence/*.log

@@ -1,0 +1,55 @@
+{
+  "experiment_id": "EXP-ARP-011",
+  "strategy_id": "H-VOLEXP-BREAK-001",
+  "arm": "PROJECT_DERIVED_VARIANT",
+  "source_faithful": false,
+  "source_attribution": "NONE — new project hypothesis",
+  "mechanism_family": "breakout_volatility_expansion",
+  "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+  "timeframe": "1d",
+  "timeframe_derivation": "complete UTC epoch buckets from frozen 5m corpus",
+  "rules": {
+    "breakout_gate": "close[i] > max(high[i-20 .. i-1])",
+    "vol_expansion_gate": "ATR(14)[i] > median(ATR(14)[i-20 .. i-1])",
+    "entry": "next daily bar open, long-only",
+    "stop": "1.5 x ATR(14)",
+    "target": "3.0 x ATR(14)",
+    "max_hold_days": 10
+  },
+  "parameters": {
+    "atr_period": 14,
+    "breakout_lookback_days": 20,
+    "vol_gate_days": 20,
+    "stop_atr": 1.5,
+    "target_atr": 3.0,
+    "max_hold_days": 10
+  },
+  "cost_model": {
+    "version": "COST_MODEL_V3",
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "source": "live CostEngine (never hardcoded)",
+    "stress_multiples": [0.5, 1.0, 1.5, 2.0]
+  },
+  "data": {
+    "dataset_fingerprint": "9d51385d570b8ff4ba1af22c3d4491f78c36111ec7383173e7d0351d5ee21658",
+    "corpus": "reports/strategy-baseline/data (21 x 5m base files, W1-W7)"
+  },
+  "splits": {
+    "DEV": ["W1_2026-03", "W2_2026-04", "W3_2026-05", "W4_2026-06"],
+    "VALIDATION": ["W5_2026-07", "W6_2026-08"],
+    "OOS_LOCK": ["W7_2026-09"],
+    "oos_opened": false
+  },
+  "config_hash": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+  "verifier": "UNASSIGNED",
+  "kill_criteria": [
+    "DEV gross expectancy <= 0 -> REJECT_NO_EDGE",
+    "DEV gross expectancy <= 23.559 bps -> REJECT_COSTS",
+    "DEV trades < 10 -> REJECT_INSUFFICIENT_SAMPLE",
+    "single trade > 50% of positive DEV net -> REJECT_FRAGILE",
+    "any look-ahead -> REJECT_PIT"
+  ],
+  "testability": "PARTIAL (10-day holds vs ~100 evaluable DEV days)",
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "frozen_before_results": true
+}

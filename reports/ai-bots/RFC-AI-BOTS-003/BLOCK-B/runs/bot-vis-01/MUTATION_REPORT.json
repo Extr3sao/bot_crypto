@@ -1,0 +1,103 @@
+{
+  "caught": 10,
+  "mode": "mutations",
+  "mutations": [
+    {
+      "caught": true,
+      "expected_check": "fill_quote_at_or_after_answer",
+      "failing_checks": [
+        "fill_quote_at_or_after_answer",
+        "fill_quote_lag_is_measured",
+        "fill_quote_is_a_declared_bar_open"
+      ],
+      "mutation": "M-01"
+    },
+    {
+      "caught": true,
+      "expected_check": "fill_quote_at_or_after_decision",
+      "failing_checks": [
+        "fill_quote_at_or_after_answer",
+        "fill_quote_at_or_after_decision",
+        "fill_quote_lag_is_measured",
+        "fill_quote_is_a_declared_bar_open"
+      ],
+      "mutation": "M-02"
+    },
+    {
+      "caught": true,
+      "expected_check": "fill_quote_lag_is_measured",
+      "failing_checks": [
+        "fill_quote_lag_is_measured"
+      ],
+      "mutation": "M-03"
+    },
+    {
+      "caught": true,
+      "expected_check": "fill_quote_is_a_declared_bar_open",
+      "failing_checks": [
+        "fill_quote_is_a_declared_bar_open"
+      ],
+      "mutation": "M-04"
+    },
+    {
+      "caught": true,
+      "expected_check": "fill_quote_within_opinion_window",
+      "failing_checks": [
+        "fill_quote_lag_is_measured",
+        "fill_quote_within_opinion_window"
+      ],
+      "mutation": "M-05"
+    },
+    {
+      "caught": true,
+      "expected_check": "net_pnl_nets_every_named_cost",
+      "failing_checks": [
+        "net_pnl_nets_every_named_cost",
+        "cash_rebuilds_from_realised_pnl"
+      ],
+      "mutation": "M-06"
+    },
+    {
+      "caught": true,
+      "expected_check": "stop_never_credited_better_than_its_level",
+      "failing_checks": [
+        "stop_never_credited_better_than_its_level",
+        "success_is_backed_by_its_own_prices"
+      ],
+      "mutation": "M-07"
+    },
+    {
+      "caught": true,
+      "expected_check": "exit_not_before_entry_quote",
+      "failing_checks": [
+        "exit_not_before_entry_quote",
+        "exit_window_is_declared"
+      ],
+      "mutation": "M-08"
+    },
+    {
+      "caught": true,
+      "expected_check": "every_actionable_decision_is_resolved",
+      "failing_checks": [
+        "counters_match_rows",
+        "every_actionable_decision_is_resolved",
+        "position_ids_are_unique_and_owned"
+      ],
+      "mutation": "M-09"
+    },
+    {
+      "caught": true,
+      "expected_check": "position_ids_are_unique_and_owned",
+      "failing_checks": [
+        "counters_match_rows",
+        "one_decision_executes_at_most_once",
+        "position_ids_are_unique_and_owned",
+        "ledger_is_bracketed_by_run_and_run_end"
+      ],
+      "mutation": "M-10"
+    }
+  ],
+  "tool": "ai_bots_003b_verify",
+  "total": 10,
+  "verdict": "PASS"
+}

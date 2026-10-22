@@ -1,0 +1,479 @@
+{
+  "checks": [
+    {
+      "detail": "2049 trades over ['EDGE07_HOLDOUT_1H', 'EDGE08_ALTS_1H'], 0 violation(s)",
+      "id": "V10",
+      "ok": true,
+      "what": "every restated fill is causally executable, rebuilt from the raw series"
+    },
+    {
+      "detail": "4/2049 = 0.195% are terminal marks",
+      "id": "V11",
+      "ok": true,
+      "what": "terminal marks are rare and are named as marks, not counted as exits"
+    },
+    {
+      "detail": "27 lanes, 0 overlap(s)",
+      "id": "V12",
+      "ok": true,
+      "what": "one position per lane, and no entry at the instant of an exit"
+    },
+    {
+      "detail": "54 rows rebuilt, 0 disagreement(s)",
+      "id": "V13",
+      "ok": true,
+      "what": "the restatement table is arithmetic on the trades and the cost column"
+    },
+    {
+      "detail": "27 lanes, swept share 1.0, None pre-repair trades",
+      "id": "V14",
+      "ok": true,
+      "what": "the defect map says all of it, per lane, and its share is its own arithmetic"
+    },
+    {
+      "detail": "14 trades, {'stop_loss': 9, 'take_profit': 5}",
+      "id": "V15",
+      "ok": true,
+      "what": "the WP-EDGE-015 diagnosis on file is 9 stop-loss and 5 take-profit"
+    },
+    {
+      "detail": "net -12.809961, gross -3.476721, fees 9.33324 USDT from the untouched file",
+      "id": "V16",
+      "ok": true,
+      "what": "the pre-repair lane's PnL is the one restated, and its fees are nonzero"
+    },
+    {
+      "detail": "016 ONE_SHARED_BOOK at 10000.0; 015 THREE_INDEPENDENT_SIMULATIONS",
+      "id": "V20",
+      "ok": true,
+      "what": "the lane ran one shared book, and the portfolio artifact says so"
+    },
+    {
+      "detail": "015 sum None is not a portfolio (NOT_COMPARABLE_UNTIL_RESTATED)",
+      "id": "V21",
+      "ok": true,
+      "what": "three 10 000 books are never added into a capital claim"
+    },
+    {
+      "detail": "RiskManager.check_signal via trading_bot.config.settings.load_settings",
+      "id": "V22",
+      "ok": true,
+      "what": "entries were approved and sized by the runtime's own engine"
+    },
+    {
+      "detail": "146 approved, 3 refused, sizes [500.0], cap 500",
+      "id": "V23",
+      "ok": true,
+      "what": "the engine refused orders and every approved size obeys the written policy"
+    },
+    {
+      "detail": "146 closes for 146 opens; final consecutive_losses 0, daily_pnl 0.0",
+      "id": "V24",
+      "ok": true,
+      "what": "every closing trade fed the engine's own loss and cooldown state"
+    },
+    {
+      "detail": "kill switch at end: False",
+      "id": "V25",
+      "ok": true,
+      "what": "the kill switch was live in the engine and never silently bypassed"
+    },
+    {
+      "detail": "6c4dd0be1fc2\u2026 unchanged; admitted []",
+      "id": "V26",
+      "ok": true,
+      "what": "the authoritative admission ledger is byte-identical and still admits nothing"
+    },
+    {
+      "detail": "tag EXPERIMENTAL_PROSPECTIVE_PAPER, gate BYPASSED_BY_DESIGN_LABELLED_EXPERIMENTAL",
+      "id": "V27",
+      "ok": true,
+      "what": "the experimental lane names itself experimental instead of admitted"
+    },
+    {
+      "detail": "146 trades, identities [True], fees 0.0",
+      "id": "V28",
+      "ok": true,
+      "what": "the book's accounting identities hold and its fee figure is the same twice"
+    },
+    {
+      "detail": "PRE_COST, latency 0 ms, cost charged in the restatement",
+      "id": "V29",
+      "ok": true,
+      "what": "the lane admits its PnL is pre-cost and that no latency is modelled"
+    },
+    {
+      "detail": "clean",
+      "id": "V30",
+      "ok": true,
+      "what": "no proposal or risk message carries an outcome it could not have known"
+    },
+    {
+      "detail": "52 weekend refusals, 0 weekend fill(s)",
+      "id": "V31",
+      "ok": true,
+      "what": "the written weekend veto is honoured: no fill on a Saturday or Sunday"
+    },
+    {
+      "detail": "WEEKEND_POLICY.json declares 7/7 impossible without a governance decision",
+      "id": "V32",
+      "ok": true,
+      "what": "the weekend conflict is reported rather than resolved by the code"
+    },
+    {
+      "detail": "6003 lane bars checked",
+      "id": "V33",
+      "ok": true,
+      "what": "the lane's coverage ledger never evaluates a bar it did not observe"
+    },
+    {
+      "detail": "gross -53.384527 -> net -239.7503/-426.1162/-612.482 USDT at 1x/2x/3x; 0 problem(s)",
+      "id": "V34",
+      "ok": true,
+      "what": "the lane's net-of-cost view rebuilds from its own fills and clears the fee floor"
+    },
+    {
+      "detail": "broker default 'stop_first', lane declares 'stop_first'",
+      "id": "V35",
+      "ok": true,
+      "what": "when a stop and a target are both touched, the lane resolves it against itself"
+    },
+    {
+      "detail": "6 expected symbol-bars, 0 problem(s)",
+      "id": "V40",
+      "ok": true,
+      "what": "a bar no collector observed is MISSING, never an evaluated quiet bar"
+    },
+    {
+      "detail": "observed 3, evaluated 3, with a proposal 0, with a fill 0",
+      "id": "V41",
+      "ok": true,
+      "what": "observation, evaluation and fills are reported as separate counts"
+    },
+    {
+      "detail": "PROSPECTIVE_CAPTURE_NOT_AUTOMATED: INSUFFICIENT_FREE_SPACE",
+      "id": "V42",
+      "ok": true,
+      "what": "the prospective status is the truthful not-automated one"
+    },
+    {
+      "detail": "VENUE|SYMBOL|TIMEFRAME|OPEN_MS, 3 keys, 0 duplicate",
+      "id": "V43",
+      "ok": true,
+      "what": "the unique key is venue, symbol, timeframe and open instant, with no duplicates"
+    },
+    {
+      "detail": "3/6 symbol-bars = 0.500; current False; missing rows labelled 3",
+      "id": "V56",
+      "ok": true,
+      "what": "coverage is the observed-over-expected ratio, and a stalled collector shows as less"
+    },
+    {
+      "detail": "the run report carries the status PROSPECTIVE_EVIDENCE_INSUFFICIENT",
+      "id": "V44",
+      "ok": true,
+      "what": "three captured bars are not sold as evidence of an edge"
+    },
+    {
+      "detail": "CAPTURE_BLOCKED_DISK at 4.213 GiB free, INSUFFICIENT_FREE_SPACE, guard_relaxed False",
+      "id": "V45",
+      "ok": true,
+      "what": "the disk guard blocked the collector and nobody lowered it"
+    },
+    {
+      "detail": "SCHEDULER_DECISION.json: DO_NOT_CREATE_A_SCHEDULER",
+      "id": "V46",
+      "ok": true,
+      "what": "no scheduled job was created by this package"
+    },
+    {
+      "detail": "3 workflow(s), scheduled: none",
+      "id": "V47",
+      "ok": true,
+      "what": "the workflow files on disk still contain no cron this package added"
+    },
+    {
+      "detail": "worst deviation 0.0195 USDT over 27 restated rows; verdict NO_RESTATED_EDGE_SURVIVES; CURRENT net 0.0",
+      "id": "V48",
+      "ok": true,
+      "what": "the CURRENT/PROPOSED table is the published rows, and the verdict follows the threshold"
+    },
+    {
+      "detail": "holding ['PIT_FIXED_RISK_PARITY_VALIDATED', 'ECONOMIC_RESULTS_RESTATED_NO_EDGE', 'PROSPECTIVE_CAPTURE_NOT_AUTOMATED', 'CAPTURE_BLOCKED_DISK', 'PROSPECTIVE_EVIDENCE_INSUFFICIENT', 'INDEPENDENT_VERIFIED']",
+      "id": "V49",
+      "ok": true,
+      "what": "the run report's statuses follow the evidence, true or false"
+    },
+    {
+      "detail": "post-repair violations 0 over 7081 pre-repair exits checked",
+      "id": "V55",
+      "ok": true,
+      "what": "the defect map's own audit count is zero after the repair"
+    },
+    {
+      "detail": "32 artifacts, 10 code files",
+      "id": "V57",
+      "ok": true,
+      "what": "every artifact and code hash in the index matches the bytes on disk"
+    },
+    {
+      "detail": "8 stages, unresolved []",
+      "id": "V58",
+      "ok": true,
+      "what": "each named decision has one owner, resolved at a line that really says so"
+    },
+    {
+      "detail": "RUNTIME_AUTHORITY_MAP.json and .md",
+      "id": "V59",
+      "ok": true,
+      "what": "the runtime authority map is published as both data and prose"
+    },
+    {
+      "detail": "swept 1.0 of 7081 exits; 3 symbols of window evidence",
+      "id": "V61",
+      "ok": true,
+      "what": "the reconciliation is arithmetic on the defect map and leaves no lane in violation"
+    },
+    {
+      "detail": "14 imports scanned; forbidden: none",
+      "id": "V50",
+      "ok": true,
+      "what": "this verifier imports none of the modules that built the artifacts"
+    },
+    {
+      "detail": "baseline 267c7a70d2e8 is an ancestor of the verified tree",
+      "id": "V51",
+      "ok": true,
+      "what": "the audited baseline is an ancestor of the verified HEAD"
+    },
+    {
+      "detail": "label HISTORICAL_DESCRIPTIVE_PRE_PIT_FIX; WP-EDGE-015 artifacts still on disk untouched",
+      "id": "V52",
+      "ok": true,
+      "what": "the pre-repair work package is preserved and named as historical, not corrected"
+    },
+    {
+      "detail": "risk.yaml 3c27c866d5f1\u2026 matches the baseline hash",
+      "id": "V53",
+      "ok": true,
+      "what": "the risk policy file the lane loads is the one this verifier reads"
+    },
+    {
+      "detail": "38/38 mutations caught",
+      "id": "V60",
+      "ok": true,
+      "what": "every injected fault is caught by the check that exists for it"
+    }
+  ],
+  "counts": {
+    "failed": 0,
+    "mutations": 38,
+    "mutations_caught": 38,
+    "passed": 44,
+    "total": 44
+  },
+  "imports_no_builder_module": [
+    "economic_recovery.alpha15",
+    "economic_recovery.pit15",
+    "economic_recovery.experiments",
+    "trading_bot.risk.manager",
+    "trading_bot.paper.broker"
+  ],
+  "method": "fills and their causality are recomputed from the raw OHLCV series named by the corpus; the restatement table is rebuilt from the per-trade records and the cost column; the lane's risk posture is read from config/risk.yaml and the admission ledger; the coverage ladder is checked for a missing bar dressed up as an evaluated one; every check is then run against a mutated artifact, which must fail it",
+  "mutations": [
+    {
+      "detail": "EDGE08_ALTS_1H/AAVE/USDT/vol_regime_breakout: same-bar close-to-open exit",
+      "detected": true,
+      "name": "same-bar close-to-open exit"
+    },
+    {
+      "detail": "EDGE08_ALTS_1H/AAVE/USDT/vol_regime_breakout: same-bar close-to-open exit",
+      "detected": true,
+      "name": "an exit one bar too early"
+    },
+    {
+      "detail": "EDGE08_ALTS_1H/AAVE/USDT/vol_regime_breakout: exit data instant is not the signal bar's close",
+      "detected": true,
+      "name": "exit stamped before its data"
+    },
+    {
+      "detail": "EDGE08_ALTS_1H/AAVE/USDT/vol_regime_breakout: gross_bps does not recompute from its own prices",
+      "detected": true,
+      "name": "gross inflated by hand"
+    },
+    {
+      "detail": "EDGE08_ALTS_1H/AAVE/USDT/mean_reversion_vol_liq: same-bar close-to-open exit",
+      "detected": true,
+      "name": "a terminal mark relabelled as an exit"
+    },
+    {
+      "detail": "EDGE08_ALTS_1H/DOGE/USDT/vol_regime_breakout: no raw series to check against",
+      "detected": true,
+      "name": "a trade with no raw series behind it"
+    },
+    {
+      "detail": "X/Y/USDT/f: entry at 15 while the previous position was open",
+      "detected": true,
+      "name": "a second position inside the first"
+    },
+    {
+      "detail": "X/Y/USDT/f: entry at 20 while the previous position was open",
+      "detected": true,
+      "name": "an entry at the instant of the previous exit"
+    },
+    {
+      "detail": "no overlap in a sequential lane",
+      "detected": true,
+      "name": "a clean lane the overlap check must accept"
+    },
+    {
+      "detail": "('EDGE08_ALTS_1H', 'AAVE/USDT', 'vol_regime_breakout'): net_bps_total_1x -2526.8788 != -2626.878766 rebuilt from the trades",
+      "detected": true,
+      "name": "a restated row inflated by 100 bps"
+    },
+    {
+      "detail": "('EDGE08_ALTS_1H', 'AAVE/USDT', 'vol_regime_breakout'): net_bps_total_1x -2626.8788 != -1815.998766 rebuilt from the trades",
+      "detected": true,
+      "name": "a fake zero cost"
+    },
+    {
+      "detail": "('EDGE08_ALTS_1H', 'AAVE/USDT', 'vol_regime_breakout'): 29 trades claimed, 28 on file",
+      "detected": true,
+      "name": "a trade count that no fills support"
+    },
+    {
+      "detail": "('EDGE08_ALTS_1H', 'AAVE/USDT', 'vol_regime_breakout'): net_bps_total_2x -2626.8788 != -3437.758766 rebuilt from the trades",
+      "detected": true,
+      "name": "a 2x multiplier that charges nothing extra"
+    },
+    {
+      "detail": "cycle 15 (PROPOSAL) carries exit_price",
+      "detected": true,
+      "name": "a future outcome smuggled into a proposal"
+    },
+    {
+      "detail": "cycle 17 filled on 2026-10-18 (weekend)",
+      "detected": true,
+      "name": "a fill on a Sunday"
+    },
+    {
+      "detail": "BTC/USDT@1784761200000: evaluated without being observed",
+      "detected": true,
+      "name": "an evaluation with its observation removed"
+    },
+    {
+      "detail": "an unobserved bar labelled MISSING_NO_COLLECTOR raises nothing",
+      "detected": true,
+      "name": "a missing bar left as missing the check must accept"
+    },
+    {
+      "detail": "BTC/USDT@1792232800000: a bar nobody observed claims to be evaluated",
+      "detected": true,
+      "name": "a missing bar promoted to evaluated"
+    },
+    {
+      "detail": "BTC/USDT@1792232800000: a missing bar that is not labelled MISSING_NO_COLLECTOR",
+      "detected": true,
+      "name": "a gap relabelled as a quiet day"
+    },
+    {
+      "detail": "BTC/USDT@1792224000000: undefined stage(s) ['INVENTED_STAGE']",
+      "detected": true,
+      "name": "a stage nobody defined"
+    },
+    {
+      "detail": "BTC/USDT@1792224000000: evaluated without being observed",
+      "detected": true,
+      "name": "an evaluation with no observation behind it"
+    },
+    {
+      "detail": "the swept share is no longer 100%",
+      "detected": true,
+      "name": "a softened defect share"
+    },
+    {
+      "detail": "the 015 mode no longer isolates them",
+      "detected": true,
+      "name": "three books presented as one portfolio"
+    },
+    {
+      "detail": "the lane reports 'tp_first' but the broker's default is 'stop_first'",
+      "detected": true,
+      "name": "an optimistic both-hit policy"
+    },
+    {
+      "detail": "the lane says it overrode the broker's policy",
+      "detected": true,
+      "name": "a lane that admits overriding the broker"
+    },
+    {
+      "detail": "net_1x is not gross minus its own cost",
+      "detected": true,
+      "name": "a frictionless cost claim (cost 1x = 0)"
+    },
+    {
+      "detail": "the charged cost 18.6366 USDT is below the venue's own fee floor 146.0000",
+      "detected": true,
+      "name": "a cost 10x below the venue's fee floor"
+    },
+    {
+      "detail": "gross_realised_usdt 100.0 != -53.384527 summed from the fills",
+      "detected": true,
+      "name": "a lane PnL that does not sum from its fills"
+    },
+    {
+      "detail": "BASELINE.json: hash does not match the bytes on disk",
+      "detected": true,
+      "name": "an evidence hash that does not match the file"
+    },
+    {
+      "detail": "the index lists a hash of itself, which cannot be truthful",
+      "detected": true,
+      "name": "an index that hashes itself"
+    },
+    {
+      "detail": "signal_calculation: line 1 of src/trading_bot/research/economic_recovery/pit15.py does not contain 'def machine_for'",
+      "detected": true,
+      "name": "a map whose line does not name the component"
+    },
+    {
+      "detail": "stages missing or unknown: ['scheduler']",
+      "detected": true,
+      "name": "a map with a stage quietly dropped"
+    },
+    {
+      "detail": "swept exits 1 != 7081",
+      "detected": true,
+      "name": "a reconciliation that softens the swept count"
+    },
+    {
+      "detail": "both PIT/parity outcomes are declared the same, so neither is informative",
+      "detected": true,
+      "name": "a run report claiming PIT_FIXED_RISK_PARITY_VALIDATED"
+    },
+    {
+      "detail": "PROSPECTIVE_EVIDENCE_INSUFFICIENT is declared False but the evidence says True",
+      "detected": true,
+      "name": "a run report claiming PROSPECTIVE_EVIDENCE_INSUFFICIENT"
+    },
+    {
+      "detail": "CAPTURE_BLOCKED_DISK is declared False but the evidence says True",
+      "detected": true,
+      "name": "a run report claiming CAPTURE_BLOCKED_DISK"
+    },
+    {
+      "detail": "ECONOMIC_RESULTS_RESTATED_NO_EDGE is declared False but the evidence says True",
+      "detected": true,
+      "name": "a run report claiming ECONOMIC_RESULTS_RESTATED_NO_EDGE"
+    },
+    {
+      "detail": "statuses_holding does not match the declared statuses",
+      "detected": true,
+      "name": "a status list that does not match its own flags"
+    }
+  ],
+  "schema_version": "EDGE16_INDEPENDENT_VERIFICATION_V1",
+  "verdict": "VERIFIED",
+  "verifier": "scripts/edge16_verify.py",
+  "work_package": "WP-EDGE-016/16F"
+}

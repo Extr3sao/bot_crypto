@@ -1,0 +1,5 @@
+{
+  "verifier": "scripts/ai_bots_rea_verify.py",
+  "note": "BUILDER != VERIFIER: this file is produced by the independent verifier, not by the builder",
+  "status": "PENDING_RERUN"
+}

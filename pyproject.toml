@@ -10,6 +10,11 @@ authors = [{ name = "Crypto Scalping Agentic Bot Contributors" }]
 # Estas dependencias se confirmarán y ajustarán en Fase 1.
 # La decisión completa está documentada en docs/architecture.md.
 dependencies = [
+  # aiohttp: cliente HTTP/WebSocket asincrono. Ya venia como dependencia
+  # transitiva de ccxt; se declara explicitamente porque el colector forward de
+  # microestructura (DISCOVERY PLANE) lo usa como transporte WebSocket. Sin
+  # WebSocket no hay captura sin perdidas de aggTrade/bookTicker (§5, §11).
+  "aiohttp>=3.9.0,<4.0.0",
   "ccxt>=4.0.0,<5.0.0",
   "pandas>=2.1.0",
   # numpy<2.1: pin a versiones con stubs compatibles con Python 3.11.
@@ -25,6 +30,9 @@ dependencies = [
   "tenacity>=8.2.3",
   "structlog>=24.1.0",
   "python-dotenv>=1.0.1",
+  # matplotlib: el agente discrecional multimodal (RFC-AI-VISION-001) renderiza a PNG
+  # el gráfico que ve el modelo. Sin raster no hay visión: se declara explícitamente.
+  "matplotlib>=3.8,<4.0",
 ]
 
 [project.optional-dependencies]
@@ -103,7 +111,7 @@ plugins = ["pydantic.mypy"]
 # the documented pytest collection policy: orphaned v031-v033 integration tests
 # import modules never committed to this repo and are excluded (see
 # tests/integration/conftest.py and docs/PAPER_L5_CERTIFICATION.md).
-mypy_path = "src"
+mypy_path = ["src", "scripts"]
 explicit_package_bases = true
 exclude = ['test_v03[123]_.*\.py$']
 
@@ -151,6 +159,10 @@ ignore_missing_imports = true
 minversion = "8.0"
 addopts = "-ra --strict-markers --strict-config"
 testpaths = ["tests"]
+# A worktree can share a virtualenv with another checkout, and an editable install points
+# at *that* checkout's ``src``.  Without this line ``pytest`` silently imports the other
+# tree, so a green run would say nothing about the code in front of you.
+pythonpath = ["src"]
 markers = [
   "unit: pruebas unitarias",
   "integration: pruebas que requieren servicios externos o red",

@@ -1,0 +1,66 @@
+{
+  "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+  "enabled": true,
+  "installed": true,
+  "interval_minutes": 15,
+  "receipts": [
+    {
+      "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+      "at_utc": "2026-10-13T11:23:27Z",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+      "description": "WP-EDGE-04 forward observation: unattended tick of the frozen WP-EDGE-03 forward lane. Public market data only; no credentials, no orders, no capital.",
+      "interval_minutes": 15,
+      "note": "the scheduler's own registration is a declaration; it is evidence that the task exists and is enabled, never that a measurement was taken",
+      "schema_version": "EDGE04_TICK_V1",
+      "status": "INSTALLED",
+      "task": {
+        "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+        "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "enabled": true,
+        "installed": true,
+        "last_run_time": "11/30/1999 00:00:00",
+        "last_task_result": 267011,
+        "missed_runs": 0,
+        "multiple_instances": "IgnoreNew",
+        "next_run_time": "10/13/2026 13:24:25",
+        "scheduler_type": "windows_task_scheduler",
+        "start_when_available": "True",
+        "state": "Ready",
+        "task_name": "TradingAgentic-EDGE04-Forward",
+        "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+      },
+      "task_name": "TradingAgentic-EDGE04-Forward",
+      "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+    },
+    {
+      "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+      "at_utc": "2026-10-13T11:24:55Z",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+      "description": "WP-EDGE-04 forward observation: unattended tick of the frozen WP-EDGE-03 forward lane. Public market data only; no credentials, no orders, no capital.",
+      "interval_minutes": 15,
+      "note": "the scheduler's own registration is a declaration; it is evidence that the task exists and is enabled, never that a measurement was taken",
+      "schema_version": "EDGE04_TICK_V1",
+      "status": "UPDATED",
+      "task": {
+        "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+        "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "enabled": true,
+        "installed": true,
+        "last_run_time": "10/13/2026 13:24:25",
+        "last_task_result": 0,
+        "missed_runs": 0,
+        "multiple_instances": "IgnoreNew",
+        "next_run_time": "10/13/2026 13:25:53",
+        "scheduler_type": "windows_task_scheduler",
+        "start_when_available": "True",
+        "state": "Ready",
+        "task_name": "TradingAgentic-EDGE04-Forward",
+        "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+      },
+      "task_name": "TradingAgentic-EDGE04-Forward",
+      "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+    }
+  ],
+  "schema_version": "EDGE04_TICK_V1",
+  "task_name": "TradingAgentic-EDGE04-Forward"
+}

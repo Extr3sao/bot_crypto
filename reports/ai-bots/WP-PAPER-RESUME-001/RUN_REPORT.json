@@ -1,0 +1,221 @@
+{
+ "schema_version": "PAPER_RESUME_RUN_REPORT_V1",
+ "rfc": "WP-PAPER-RESUME-001",
+ "generated_at_utc": "2026-10-20T22:47:27Z",
+ "branch": "wp/paper-resume-001",
+ "base_commit": "fefb0771036c33c648ecb2ed11cb28e8c2b49264",
+ "mode": "PAPER",
+ "live_enabled": false,
+ "real_model_called": false,
+ "false_success": 0,
+ "environment": {
+  "python": "3.11.15",
+  "runtime_sha256": {
+   "src/trading_bot/vision/durable.py": "140a6966d861d4131edfeaa099f985b1aefa5d624d87856b4e76c7089f4d4c06",
+   "src/trading_bot/vision/prospective.py": "2e4c026db6e20a83e8819da85b5acbfa04096928046c286bbe4a967e0a7ef41b",
+   "src/trading_bot/vision/lane.py": "fd5b6114b49dbaa37f54364e3d2b3663fb9a92796bb0120493f2c3ed3b31a796",
+   "src/trading_bot/vision/ledger.py": "2eb5b6a70ce2d46bef365c47308402b15000bc5b19b395efc960bf06a04ba0cb",
+   "src/trading_bot/paper/broker.py": "3cb099fa72bd052ddb1e2340d0c02ee3799aa4dd8eb4395faed9a49f86814e1f",
+   "src/trading_bot/risk/manager.py": "ee8e84c38a00be80ccafbd4168e6d0a8180a2829b288e7345140d0b33b41473a"
+  },
+  "dirty_entries": 13
+ },
+ "dataset": {
+  "archive": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\ai-bots\\WP-PAPER-ROUNDTRIP-001\\live\\roundtrip-5m\\market-1m",
+  "source": "archived 1m minutes recorded from the venue (binance_spot_rest_1m)",
+  "symbols": {
+   "ETHUSDT": {
+    "bars_5m": 144,
+    "bars_sha256": "e230e99ddf90e9cb9d1e119a43392850e93e1f6baab420c8598b64dbc21f7599",
+    "first_bar_utc": "2026-10-20T08:55:00Z",
+    "last_bar_utc": "2026-10-20T20:50:00Z",
+    "minutes_sha256": "aa7f0845a7ca20d4aff5552b3ceb33813934fbf31f508f71efc2fe299219ed4c",
+    "venue_symbol": "ETH/USDT"
+   },
+   "SOLUSDT": {
+    "bars_5m": 144,
+    "bars_sha256": "053c43f3d35bf6ee9fcbfb6419d476a46b91eef4b95acfb99032235193ab561c",
+    "first_bar_utc": "2026-10-20T08:55:00Z",
+    "last_bar_utc": "2026-10-20T20:50:00Z",
+    "minutes_sha256": "64b777f320bc1960bd8994f8020c4142a1dbc78a56ad621c1d1275eb73971003",
+    "venue_symbol": "SOL/USDT"
+   }
+  },
+  "live_orders": 0
+ },
+ "drill": {
+  "verdict": "PASS",
+  "criteria": {
+   "REC-03": "PASS",
+   "REC-04": "PASS",
+   "REC-05": "PASS",
+   "RT-07": "PASS"
+  },
+  "children": [
+   {
+    "args": [
+     "--archive",
+     "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\ai-bots\\WP-PAPER-ROUNDTRIP-001\\live\\roundtrip-5m\\market-1m",
+     "--out",
+     "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-resume\\reports\\ai-bots\\WP-PAPER-RESUME-001\\drill",
+     "--symbols",
+     "ETHUSDT",
+     "SOLUSDT",
+     "--child",
+     "--child-out",
+     "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-resume\\reports\\ai-bots\\WP-PAPER-RESUME-001\\drill\\B",
+     "--child-session",
+     "B-1"
+    ],
+    "exit_code": 1,
+    "killed": true,
+    "seconds": 9.0
+   },
+   {
+    "args": [
+     "--archive",
+     "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\ai-bots\\WP-PAPER-ROUNDTRIP-001\\live\\roundtrip-5m\\market-1m",
+     "--out",
+     "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-resume\\reports\\ai-bots\\WP-PAPER-RESUME-001\\drill",
+     "--symbols",
+     "ETHUSDT",
+     "SOLUSDT",
+     "--child",
+     "--child-out",
+     "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-resume\\reports\\ai-bots\\WP-PAPER-RESUME-001\\drill\\B",
+     "--child-session",
+     "B-2"
+    ],
+    "exit_code": 0,
+    "killed": false,
+    "seconds": 67.0
+   }
+  ],
+  "A": {
+   "label": "A",
+   "sessions": [
+    "A-continuous"
+   ],
+   "state_digest": "ee315b364bef5622eb1de9120b0104f919f5d3dd6b7ddeb882a3c4e32c4f3024",
+   "integrity_digest": "83fd7777fd12dca38ba477dcb2215509978b413b6ee877d5f59af174352542ae",
+   "barrier_ms": 1792529400000,
+   "bars_committed": 144,
+   "closed_trades": 16,
+   "open_positions": 2
+  },
+  "B": {
+   "label": "B",
+   "sessions": [
+    "B-1",
+    "B-2"
+   ],
+   "state_digest": "ee315b364bef5622eb1de9120b0104f919f5d3dd6b7ddeb882a3c4e32c4f3024",
+   "integrity_digest": "6ae6ddf8f2e4919e6929ae30ec2c7f96d96b49e73a95f69ab4e7190a0e965736",
+   "barrier_ms": 1792529400000,
+   "bars_committed": 144,
+   "closed_trades": 16,
+   "open_positions": 2
+  },
+  "differences": [],
+  "digest_semantics": {
+   "state_digest": "libro económico; A == B es la invariante RT-07",
+   "integrity_digest": "incluye la cadena de sesiones; difiere por diseño (1 vs 2)"
+  }
+ },
+ "verification": {
+  "schema": "PAPER_RESUME_VERIFICATION_V1",
+  "checks": 26,
+  "passed": 26,
+  "failed": [],
+  "ok": true,
+  "false_success": 0,
+  "independent_of": "vision.durable (no importa su verificador)",
+  "negative_controls_ok": true,
+  "negative_controls": [
+   {
+    "control": "pnl_inflado",
+    "detail": "A.equity_identity",
+    "detected": true
+   },
+   {
+    "control": "equity_inventada",
+    "detail": "A.equity_identity",
+    "detected": true
+   },
+   {
+    "control": "posicion_duplicada",
+    "detail": "A.no_shared_identity",
+    "detected": true
+   },
+   {
+    "control": "posicion_a_la_vez_cerrada",
+    "detail": "A.no_shared_identity",
+    "detected": true
+   },
+   {
+    "control": "nocional_incoherente",
+    "detail": "A.position_structure",
+    "detected": true
+   },
+   {
+    "control": "riesgo_desalineado",
+    "detail": "A.risk_agrees_with_mark",
+    "detected": true
+   },
+   {
+    "control": "digest_falso",
+    "detail": "A.integrity_digest",
+    "detected": true
+   },
+   {
+    "control": "cierres_borrados",
+    "detail": "A.equity_identity",
+    "detected": true
+   },
+   {
+    "control": "sin_reinicio_real",
+    "detail": "b.restarted",
+    "detected": true
+   }
+  ]
+ },
+ "checks": [
+  {
+   "command": "pytest tests/unit/vision/test_durable_book.py tests/unit/vision/test_session_recovery.py tests/unit/vision/test_session_durable.py tests/unit/vision/test_prospective_session.py -q",
+   "result": "51 passed",
+   "passed": 51,
+   "failed": 0,
+   "exit_code": 0
+  },
+  {
+   "command": "pytest tests/unit/vision tests/unit/paper tests/unit/risk tests/unit/market_data -q",
+   "result": "641 passed, 14 failed — los 14 exigen data/quote-feed-1m, fixture que esta copia no trae; con el fixture presente (mismos bytes que el checkout hermano) esos dos ficheros dan 22 passed / 0 failed",
+   "passed": 641,
+   "failed": 14,
+   "exit_code": 1,
+   "note": "fallo por fixture ausente, no por regresión: ver tests_with_fixture"
+  },
+  {
+   "command": "pytest tests/unit/vision/test_minute_quote_feed.py tests/unit/vision/test_subbar_execution.py -q   (con data/quote-feed-1m copiado)",
+   "result": "22 passed",
+   "passed": 22,
+   "failed": 0,
+   "exit_code": 0
+  },
+  {
+   "command": "ruff check <9 ficheros nuevos o tocados>",
+   "result": "All checks passed!",
+   "exit_code": 0
+  },
+  {
+   "command": "mypy src/trading_bot/vision/durable.py src/trading_bot/vision/prospective.py src/trading_bot/vision/lane.py",
+   "result": "Success: no issues found in 3 source files",
+   "exit_code": 0
+  },
+  {
+   "command": "python scripts/verify_paper_resume.py --drill <drill> --negative-controls",
+   "result": "26/26 checks, 9/9 controles negativos detectados",
+   "exit_code": 0
+  }
+ ]
+}

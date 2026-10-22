@@ -1078,3 +1078,718 @@ global del ledger (header section) se actualizará atómicamente, por
 lo que NO se requerirá per-ADR "next free" footnote nunca más.
 
 
+
+## ADR-0024 - RFC-046: excepcion limitada y fechada de RFC-041 para Controlled Discovery (offline)
+
+> RFC-046 ACTIVATION — registrada el 2026-10-08. No usa footnotes "next free" (regla post-ADR-0023).
+
+- **Estado**: Decidido y aprobado por el propietario.
+- **Contexto**: RFC-035 cerro sin candidato (`CLOSED_NO_SUITABLE_EXTERNAL_STRATEGY`,
+  `REPLICATE_P0 = NONE`) y RFC-041 dejo el proyecto sin siguiente movimiento admitido: su gate
+  `G_BUSINESS_REENTRY` exige un trigger cualificado (A-E) y ninguno ha disparado. La unica via
+  que RFC-041 admite es nueva evidencia externa o un cambio estructural, lo que impide buscar
+  ventaja economica internamente. RFC-046 propone investigacion cuantitativa controlada, offline,
+  preregistrada y con presupuesto cerrado.
+- **Opciones**:
+  - esperar un trigger cualificado (coste: parada indefinida, sin linea de investigacion);
+  - excepcion general a RFC-041 (rechazada: abriria produccion sin evidencia);
+  - excepcion limitada, fechada y offline (aprobada, opcion 5A).
+- **Decision**: opcion **5A**. Se aprueba una excepcion especifica de RFC-041 que activa RFC-046
+  **exclusivamente en investigacion offline**. `G_BUSINESS_REENTRY` permanece **distinto de PASS**.
+  No se autoriza paper, live, ordenes reales, despliegue de capital, promocion automatica,
+  modificacion automatica del Risk Engine, ni optimizacion sobre OOS.
+- **Razon**: permite buscar ventaja economica neta con un presupuesto acotado y evidencia
+  verificable, sin relajar ninguna puerta de produccion ni reescribir los contratos historicos.
+- **Consecuencias aplicadas en esta activacion**:
+  - `RFC-046 = APPROVED / ACTIVE`; `DISCOVERY_OFFLINE = AUTHORIZED`; `LIVE_TRADING = DISABLED`;
+    `TRADES_AUTHORIZED = 0`; `G_BUSINESS_REENTRY != PASS`; `RISK_ENGINE = DETERMINISTIC`;
+    `BUILDER != VERIFIER`; `FALSE_SUCCESS = 0`.
+  - Excepcion fechada en `docs/research/BUSINESS_REENTRY_POLICY.*`.
+  - Trigger de `docs/research/PROFITABILITY_OPERATING_MODEL.*` ampliado solo para Controlled Discovery.
+  - Cierre formal de `docs/governance/PROFITABILITY_FIRST_FREEZE.md` (evidencia RFC-035 conservada).
+  - `Fase 10` en `tasks/roadmap.md` y registro de identificadores `docs/roadmap/RFC_REGISTRY.json`.
+  - Parada: `docs/governance/DISCOVERY_STOP_RULES.md`. Agotado el presupuesto o fallada la campana
+    se emite `DISCOVERY_CAMPAIGN_FAILED` y **no hay refill automatico de hipotesis**.
+  - Revocable por el propietario en cualquier momento; sin efecto sobre produccion.
+
+
+## ADR-0025 - RFC-049 Discovery 2: autorizacion de campana offline (DEV/VAL) por el operador
+
+> RFC-049 DISCOVERY 2 ACTIVATION — registrada el 2026-10-10. No usa footnotes "next free" (regla post-ADR-0023).
+
+- **Estado**: Decidido y aprobado por el propietario (operador).
+- **Contexto**: RFC-049 Phase A cerro en `RFC049_PREPARED_AWAITING_CAMPAIGN_AUTHORIZATION` con dos
+  hipotesis admitidas y congeladas (H-049-001 liquidez stablecoin, H-049-002 liquidez neta USD) y
+  `NEXT_CAMPAIGN = NOT_AUTHORIZED`. La admission RFC-049B las clasifico
+  `READY_FOR_AUTHORIZED_TEST` con PIT verificado y zero violaciones de disponibilidad. El gate de
+  activacion (`PREREGISTRATION_MANIFEST.json#gate`) exige que la autorizacion venga del operador
+  "via a governance decision that changes NEXT_CAMPAIGN"; el charter reserva al operador autorizar
+  la campana (RFC049_DISCOVERY_ADMISSION §7). El operador emitio la instruccion "TRADING AGENTIC
+  PORTABLE — RFC-049 DISCOVERY 2" autorizando exclusivamente la preparacion y ejecucion de
+  experimentos Discovery 2 offline, condicionada a que el charter permita registrar validamente
+  dicha autorizacion y excluyendo explicitamente el OOS sellado, paper fuera de sus gates y
+  trading real.
+- **Opciones**:
+  - mantener `NOT_AUTHORIZED` (coste: la campana no produce evidencia y las candidatas quedan sin
+    medir en sus particiones expuestas);
+  - campana completa incluida apertura OOS y promocion (rechazada: el OOS sellado solo se abre en
+    su gate temporal —20 round trips o 24 meses— y la promocion tiene gate propio);
+  - autorizacion limitada a DEV/VAL offline sobre particiones RESEARCH_EXPOSED, con OOS sellado,
+    paper y live intactos (aprobada).
+- **Decision**: opcion limitada. `NEXT_CAMPAIGN = AUTHORIZED` con
+  `authorization_scope = OFFLINE_DEV_VAL_ONLY`. Se ejecutan WP-049-06 (runtime de estrategia en el
+  plano de investigacion), WP-049-07 (experimentos economicos DEV/VAL), WP-049-08 (robustez) y
+  WP-049-09 (reproduccion independiente) con reglas, costes, umbrales y particiones congelados, y
+  ademas el diagnostico de filtros de liquidez sobre una base declarada (FASE 4 de la instruccion)
+  y la auditoria del pipeline ACTIVE (FASE 5).
+- **Razon**: permite medir valor economico neto con disciplina preregistrada y evidencia
+  verificable, sin relajar ninguna puerta ni reescribir la evidencia historica. El charter permite
+  registrar esta autorizacion (operador = autoridad de activacion) y no existe autorizacion
+  adicional incumplida para el alcance autorizado; por tanto NO se registra BLOCKED para DEV/VAL.
+- **Consecuencias aplicadas en esta activacion**:
+  - `data/rfc049/discovery2/CAMPAIGN_AUTHORIZATION.json` registra la decision, su alcance y las
+    comprobaciones de control; los artefactos historicos de Phase A y RFC-049B (BASELINE_AUDIT,
+    DATA_EXPOSURE_AUDIT, PREREGISTRATION_MANIFEST, `admission/*`, `ECONOMIC_RESULTS`,
+    `ROBUSTNESS_REPORT`) NO se modifican; los resultados nuevos viven en `data/rfc049/discovery2/`.
+  - `SEALED_OOS = CLOSED` (apertura unica en su gate: 20 round trips o 24 meses desde
+    `freeze_timestamp_utc = 2026-10-10T11:26:20Z`); `PAPER_PROMOTION = NOT_AUTHORIZED` (gate
+    separado); `LIVE_TRADING = DISABLED`; `TRADES_AUTHORIZED = 0`; `PROFITABILITY_VERIFIED = FALSE`.
+  - Todo resultado DEV/VAL es RESEARCH_EXPOSED y no confirmatorio; ningun PASS es emitible antes
+    del OOS sellado y ningun umbral se cambia tras conocer resultados.
+  - El minimo de 20 round trips OOS no se reduce; si el OOS no llega a 20 en 24 meses el resultado
+    es `INSUFFICIENT_OOS_SAMPLE`, nunca PASS y nunca REJECT por potencia.
+  - Revocable por el operador en cualquier momento; sin efecto sobre produccion.
+
+
+## ADR-0026 - RFC-049 Discovery 2: cierre de campana (DISCOVERY_CAMPAIGN_FAILED) y retirada de la apertura unica del OOS sellado
+
+> RFC-049 DISCOVERY 2 CLOSURE — registrada el 2026-10-10 sobre HEAD `2d113a0ae82f`. Decisiones de
+> gobernanza por el operador (propietario); no toca evidencia congelada ni reabre candidatas.
+
+- **Estado**: Decidido y aprobado por el propietario (operador).
+- **Contexto**: ADR-0025 autorizo la campana Discovery 2 en alcance `OFFLINE_DEV_VAL_ONLY`. La Fase B
+  se ejecuto completa y verificada de forma independiente (PASS 37/37, 8/8 controles, `FALSE_SUCCESS = 0`):
+  ambas candidatas congeladas produjeron un net grande en desarrollo 2019-2023 y DECAYERON a no
+  confirmatorio en validacion 2024-2026. Segun la lista de umbrales congelados, ambas registran criterios
+  fallidos (`ECONOMIC_RESULTS.json#failed_criteria`): H-049-001 LCB/validacion, drawdown/desarrollo y
+  validacion, single-trade/validacion e incrementales/validacion; H-049-002 LCB/validacion,
+  drawdown/validacion, single-trade/desarrollo e incrementales/validacion. Por `RFC049_DISCOVERY_ADMISSION`
+  §6 un candidato que falla una etapa se cierra en esa etapa. Con ambas cerradas, ST-2 de
+  `DISCOVERY_STOP_RULES.md` ("ningun candidato satisface `PROFITABILITY_GATE_V1`") es terminal:
+  `DISCOVERY_CAMPAIGN_FAILED`. Quedo ademas abierta una pregunta de gobernanza: la apertura unica del OOS
+  sellado quedo *moot* (ninguna candidata puede promocionar y el gate es inalcanzable en su propia ventana:
+  5.9 y 12.4 round trips esperados en 24 meses frente al minimo de 20). El operador instruyo registrar el
+  cierre y resolver si se cancela dicha apertura en vez de gastar la unica inspeccion.
+- **Opciones** (para el OOS sellado):
+  - abrir la ventana en su gate y registrar la lectura forward (rechazada: consumiria la unica muestra
+    forward no contaminada para una decision que ya no puede cambiar —una lectura sin decision adjunta, el
+    riesgo de trial no registrado de ST-10— y ST-8 prohibe inspeccionar OOS mas de una vez por candidata);
+  - dejar el gate armado y esperar su disparo a los 24 meses (2028-10-10) (rechazada: el mismo consumo
+    irreversible, dos anos mas tarde, manteniendo vivas como objetos de seguimiento dos candidatas cerradas);
+  - **retirar la apertura junto con las candidatas cerradas, sin leer la ventana** (aprobada).
+- **Decision**: cierre de la campana en estado terminal `DISCOVERY_CAMPAIGN_FAILED` (ST-2) y resolucion del
+  OOS sellado en **`CANCELLED_NOT_OPENED`**: la ventana no se lee, la unica inspeccion licenciada queda
+  anulada sin usarse y `OOS_OPENED` permanece `false`.
+- **Razon**: el valor de informacion de la inspeccion es cero (ninguna candidata cerrada puede promocionar y
+  el gate es mecanicamente inalcanzable en su ventana) mientras su coste es positivo e irreversible (se
+  consume la unica muestra forward no contaminada). No abrir es la accion dominante. No se rebaja el minimo
+  de 20 round trips, no hay REJECT por potencia y la etiqueta que el gate habria producido sigue siendo
+  `INSUFFICIENT_OOS_SAMPLE`.
+- **Consecuencias aplicadas en este cierre**:
+  - `data/rfc049/discovery2/CAMPAIGN_CLOSURE.json` y `CAMPAIGN_CLOSURE.md` registran la campana terminal,
+    las hipotesis y candidatas intentadas, los trials contados, el motivo de rechazo por candidata con la
+    clave de umbral congelada, el resultado negativo, los defectos y las mediciones superadas conservadas
+    (`DISCOVERY_STOP_RULES.md` §3).
+  - `SEALED_OOS = CANCELLED_NOT_OPENED`; la declaracion congelada en `PREREGISTRATION_MANIFEST.json` NO se
+    edita (es un registro de Fase A bajo hash): este ADR y el artefacto de cierre son la autoridad hacia
+    adelante y la superan. La ventana no se lee ni se borra. Una campana futura recibe su PROPIO freeze y su
+    propia ventana sellada; no puede reclamar la ventana 2026-10-11 como su primera inspeccion.
+  - `HYPOTHESIS_001 = HYPOTHESIS_002 = CLOSED_REJECTED_DEV_VAL`; `HYPOTHESIS_BUDGET = EXHAUSTED_NO_REFILL`;
+    `NEXT_CAMPAIGN = NOT_AUTHORIZED` (el alcance de ADR-0025 se consumio y no se extiende a trabajo nuevo).
+  - Sin cambios de umbrales, de modelo de coste, de particiones ni de especificaciones; sin busqueda de
+    parametros; sin reapertura, sustitucion ni re-tune de candidatas; sin filtros anadidos para rescatar
+    periodos perdedores. Artefactos historicos no reescritos.
+  - Estado de gobernanza posterior: `PAPER_PROMOTION = NOT_AUTHORIZED`, `LIVE_TRADING = DISABLED`,
+    `TRADES_AUTHORIZED = 0`, `PROFITABILITY_VERIFIED = FALSE`, `FALSE_SUCCESS = 0`,
+    `RISK_ENGINE = DETERMINISTIC`, `RFC_049_DISCOVERY2 = CLOSED`.
+  - Ruta por defecto: esperar evidencia externa cualificada; no reabrir las familias cerradas ni recargar el
+    presupuesto de hipotesis. Reversion solo por un ADR nuevo que revierta explicitamente este; ni siquiera
+    entonces podria resucitar una candidata terminada.
+
+## ADR-0027 - WP-EDGE-01: lane de investigacion edge01 congelado, verificacion por artefactos y runtime PAPER intacto
+
+> WP-EDGE-01 STRATEGY RESULTS - registrada el 2026-10-12 sobre la rama
+> `agent/edge-recovery/WP-EDGE-00-baseline`. Decision de metodo y de promocion; no reabre candidatas
+> cerradas de otras campanas ni toca evidencia congelada.
+
+- **Estado**: Decidido y aplicado (trabajo local, sin autorizacion de capital real).
+- **Contexto**: el WP pedia implementar y evaluar tres candidatos reales (EDGE-INTRA-01, EDGE-INTRA-02,
+  EDGE-TREND-01) sobre datos historicos locales y decidir su promocion. El repo ya tenia un runtime
+  autoritativo (`src/trading_bot/autonomous/**` para PAPER, risk y execution deterministas) y campanas
+  previas congeladas. Habia que elegir como medir sin contaminar el runtime ni reutilizar evidencia
+  historica, y que hacer si ningun candidato supera los criterios.
+- **Opciones**:
+  - medir dentro del runtime PAPER reutilizando su pipeline (rechazada: mezcla la investigacion con la
+    ruta que ejecuta decisiones, y cualquier ajuste para que los candidatos pasen habria cambiado
+    comportamiento ya verificado del runtime);
+  - medir en un lane de investigacion propio, con datos, costes y particiones congelados y verificado por
+    un tercero que solo lee artefactos (aprobada);
+  - promover el mejor candidato aunque no alcance ADMIT, para "tener algo en PAPER" (rechazada: haria
+    ejecutar al runtime reglas cuya unica propiedad medida es perder dinero despues de costes).
+- **Decision**: los tres candidatos viven en `src/trading_bot/research/edge01/` y se ejecutan con
+  `scripts/edge01_run.py`; la verificacion independiente vive en `scripts/edge01_verify.py`, que no
+  importa el paquete y comprueba solo los CSV/JSON publicados (14/14 checks, con auto-test
+  mutante 8/8).
+  La clasificacion es por candidato y por particion: `ADMIT` exige OOS neto positivo, expectancy
+  positiva, al menos un regimen rentable, margen bajo 2x fees y muestra suficiente; si no, `REJECT`, y
+  si la evidencia es suficiente pero debil, `INSUFFICIENT_EVIDENCE` en vez de inventar veredicto.
+- **Razon**: mantiene la separacion entre investigacion y runtime, permite reproducir cada numero desde
+  los artefactos publicados sin ejecutar el codigo, y evita que la presion por promocion convierta un
+  resultado negativo en una pieza de produccion. Ninguna particion se abre sin declararlo y ningun
+  parametro se optimiza sobre el conjunto de prueba.
+- **Consecuencias aplicadas en este WP**:
+  - `reports/edge-recovery/WP-EDGE-01/` publica `STRATEGY_RESULTS.md|json`, `TRADES.csv`,
+    `EQUITY_CURVE.csv`, `RUN_REPORT.md|json`, `INDEPENDENT_VERIFICATION.json` y `git_sync_status.json`;
+    `RUN_REPORT.json#test_target_equals_runtime_target` registra que tests y runner usan el mismo paquete
+    y que `runtime_files_changed_by_this_wp` esta vacio.
+  - Resultado: EDGE-INTRA-01, EDGE-INTRA-02 y su ablacion sin FVG quedan `REJECT` (neto y expectancy
+    negativos en DEV, VAL y OOS, y sin margen bajo 2x fees); EDGE-TREND-01 en 4h y 1d quedan
+    `INSUFFICIENT_EVIDENCE` (la unica ventana positiva depende de una sola operacion o tiene muestra
+    insuficiente). Ningun candidato alcanza `ADMIT`.
+  - `PAPER_PROMOTION = NOT_AUTHORIZED` por ausencia de candidato admitido: no se integra nada en el
+    pipeline PAPER. `src/trading_bot/autonomous/**` no se modifica. `LIVE_TRADING = DISABLED`,
+    `TRADES_AUTHORIZED = 0`, `PROFITABILITY_VERIFIED = FALSE`.
+  - Los defectos encontrados y corregidos durante el WP (look-ahead de 45 min en la lectura de contexto
+    1h, liquidacion de posiciones abiertas al final de la ventana, colision de identificadores en
+    `TRADES.csv`, tamano de los JSON publicados, y una huella de codigo que dependia de los finales de
+    linea del checkout) se registran en `RUN_REPORT.json#defects_fixed_in_this_wp` (DEF-EDGE01-01..09)
+    con su evidencia de test, en vez de quedar como cambios silenciosos.
+  - La cobertura de mercado no se mide con la columna `regime` de `TRADES.csv`: esa columna es el
+    estado del filtro de tendencia del propio candidato y un candidato filtrado solo puede escribir un
+    valor, asi que el criterio preinscrito `require_min_positive_regimes` queda estructuralmente
+    sesgado y se declara debil en vez de presentarlo como prueba. La cobertura real (alcista, bajista,
+    lateral) se publica como `market_context` por operacion, calculado con la regla del benchmark
+    (BTC diario: cierre frente a su EMA200 y la pendiente a 20 dias de esa EMA, convencion ya existente
+    del lane swing) leida *as-of* el instante de la decision, publicada dia a dia en `MARKET_CONTEXT.csv`
+    y re-derivada por el verificador sin importar el paquete (`MARKET_CONTEXT_ATTRIBUTION`). Los dias
+    sin lectura posible se cuentan como `UNDEFINED` en su propia columna.
+  - Ningun umbral, criterio ni veredicto cambio al anadir esa columna: los tres intraday siguen
+    `REJECT` y los dos trend siguen `INSUFFICIENT_EVIDENCE`.
+  - EDGE-TREND-01 no lleva un filtro de volatilidad separado (el ATR solo vive en stop y trailing): se
+    declara como tal y no se anade a posteriori. Las hipotesis siguientes quedan en
+    `RUN_REPORT.json#next_hypotheses`; no se recarga ningun presupuesto de hipotesis por este ADR.
+  - Publicacion remota: `push = BLOCKED_GITHUB_AUTH` (sin token, sin credential helper usable y `gh` no
+    instalado). Los cinco commits del WP quedan locales; no se leyo, imprimio ni almaceno ninguna
+    credencial.
+  - Reversion: solo un ADR nuevo que revierta explicitamente este, y no podria resucitar los veredictos
+    medidos sin nueva evidencia fuera de muestra.
+
+
+## ADR-0028 - WP-EDGE-01 H1: ablacion congelada de EDGE-INTRA-01 sin filtro de tendencia, medida SOLO en DEV
+
+> Registrada el 2026-10-12 sobre la rama `agent/edge-recovery/WP-EDGE-00-baseline`. Cierra la
+> hipotesis H1 (`RUN_REPORT.json#next_hypotheses`) sin abrir ninguna ventana nueva.
+
+- **Estado**: Decidido y aplicado (trabajo local, sin autorizacion de capital real).
+- **Contexto**: el embudo intraday de WP-EDGE-01 estaba dominado por `trend_filter_fail` (>=2.000
+  rechazos por ventana frente a ~60 operaciones), asi que quedaba abierto si la perdida venia del
+  filtro de tendencia de 1h o de la propia regla de ruptura. El filtro fue disenado y medido dentro
+  del proceso pre-registrado, pero una variante SIN el solo se puede disenar despues de haber leido
+  VAL y OOS.
+- **Opciones**:
+  - medir la variante en DEV, VAL y OOS como un candidato mas (rechazada: la variante se diseno
+    despues de leer esas ventanas, asi que volver a leerlas las convierte en in-sample y la
+    comparacion deja de ser evidencia fuera de muestra);
+  - medir la variante SOLO en DEV, con la regla de decision congelada antes de ejecutarla, y no
+    promover nada (aprobada);
+  - concluir "es el filtro" o "es el breakout" a partir del embudo publicado, sin ablacion
+    (rechazada: el embudo dice quien fue rechazado, no que habria pasado sin la puerta).
+- **Decision**: la ablacion es un override derivado del ruleset congelado
+  (`use_trend_filter=False`), nunca una edicion de `FROZEN_PARAMS`: `PARAMS_HASH` sigue siendo
+  `d073a2d6..` y las reglas pre-registradas quedan intactas. Se ejecuta con
+  `scripts/edge01_ablation.py` y se verifica en un proceso aparte con
+  `scripts/edge01_ablation_verify.py` (10/10 checks, auto-test mutante 10/10). La variante NO entra en
+  `CANDIDATE_SCOPES`, de modo que el proceso pre-registrado no puede medirla en VAL ni en OOS.
+- **Razon**: una variante disenada a posteriori solo puede responder la pregunta de mecanismo
+  ("de donde viene la perdida") en la particion que ya se uso para disenarla. Declararlo y medirlo
+  ahi evita tanto la promocion silenciosa como el gasto de la unica lectura fuera de muestra que
+  queda.
+- **Consecuencias aplicadas**:
+  - Resultado DEV (BASE, 15m, BTC/ETH/SOL, solo lado largo): base 860 senales / 290 operaciones /
+    bruto -151,71 USDT / neto -496,43; ablacion sin filtro 1.528 senales / 313 operaciones / bruto
+    -128,96 USDT / neto -501,06. Ambas ramas consideran los MISMOS 3.260 setups: quitar la puerta
+    re-encamina 1.097 rechazos por tendencia en 668 senales nuevas y 429 rechazos en las puertas
+    posteriores; solo 23 senales sobreviven a la capa de riesgo hasta ser operacion, y el 5% de
+    kill switch de drawdown absorbe la mayor parte (`risk_drawdown_halt` +630).
+  - **Veredicto: `BREAKOUT_IS_THE_CAUSE`** (regla congelada antes de ejecutar: bruto de la ablacion
+    <= 0 -> el fallo esta en la ruptura, no en el filtro). El filtro no ocultaba una ventaja
+    pre-coste; el bruto es negativo en DEV incluso sin el.
+  - El contexto de DEV refuerza el veredicto: el benchmark BTC (diario, as-of la decision) estaba en
+    `BULL` en el 100% de las 603 operaciones ejecutadas por las dos ramas, comprobado por
+    `MARKET_CONTEXT_ATTRIBUTION` re-derivando la etiqueta desde el `MARKET_CONTEXT.csv` publicado en
+    la propia carpeta de la ablacion. Una ruptura long-only pierde antes de costes incluso en la
+    etiqueta de mercado mas favorable, asi que el resultado no se explica por haber medido en un
+    regimen adverso.
+  - La ablacion refuta explicitamente la afirmacion "toda negativa distinta del filtro solo puede
+    crecer": `level_already_traded` es estado del candidato, asi que la ablacion puede rechazar un
+    setup antes de la puerta que elimino (`volume_filter_fail` cae de 550 a 461). El verificador
+    comprueba el invariante que si es teorema: ambas ramas evaluan las mismas barras y consideran
+    el mismo numero de setups, y difieren solo en como lo resuelven.
+  - Artefactos: `reports/edge-recovery/WP-EDGE-01/ablation-h1/` publica `ABLATION.json`,
+    `ABLATION.md`, `ABLATION_TRADES.csv`, `ABLATION_REFUSALS.csv`, `ABLATION_SIGNALS.csv` y
+    `ABLATION_VERIFICATION.json`.
+  - Sin cambios en el resultado del WP: los tres intraday siguen `REJECT`, los dos trend siguen
+    `INSUFFICIENT_EVIDENCE`, `PAPER_PROMOTION = NOT_AUTHORIZED` y `src/trading_bot/autonomous/**`
+    sigue sin tocarse. La ablacion no abre ninguna ventana ni recarga presupuesto de hipotesis.
+  - Reversion: solo un ADR nuevo que la revierta explicitamente; una variante que quiera promocionar
+    tiene que volver a pasar el proceso pre-registrado (congelar, validar, medir OOS una sola vez).
+
+
+## ADR-0029 - WP-EDGE-01 H5: presupuesto de riesgo separado con el kill switch de drawdown inerte, medido SOLO en DEV
+
+> Registrada el 2026-10-12 sobre la rama `agent/edge-recovery/WP-EDGE-00-baseline`. Cierra la
+> hipotesis H5 (`RUN_REPORT.json#next_hypotheses`), formulada a partir del resultado de H1, sin
+> abrir ninguna ventana nueva y sin tocar la autoridad de riesgo del runtime.
+
+- **Estado**: Decidido y aplicado (trabajo local, sin autorizacion de capital real).
+- **Contexto**: la ablacion H1 (ADR-0028) mostro que las senales intraday extra no las rechazaba la
+  regla de entrada sino la capa de riesgo, y en concreto el kill switch de drawdown del 5%
+  peak-to-trough: 493 rechazos `risk_drawdown_halt` en DEV frente a 860 senales. Eso deja abierta
+  una pregunta distinta de la de H1 y que el candidato no puede responder sobre si mismo: era ese
+  kill switch el techo real de la frecuencia intraday, y valian la pena las operaciones que
+  rechazaba?
+- **Opciones**:
+  - cambiar `config/risk.yaml` para medir con otro presupuesto (rechazada: el fichero es la
+    autoridad de riesgo del runtime y cambiarlo para un experimento convierte una medicion en un
+    cambio de politica);
+  - medir con un presupuesto de investigacion construido como `dataclasses.replace` del leido del
+    config, con UN solo campo sustituido, y declararlo como instrumento (aprobada);
+  - desactivar ademas el cooldown por racha de perdidas o subir el numero de posiciones abiertas
+    para "dar mas margen" (rechazada: cambia varios limites a la vez y deja de ser atribuible).
+- **Decision**: la variante es el presupuesto del runtime con `drawdown_halt_pct` puesto a 100 (un
+  halt al 100% del equity de pico es inalcanzable, asi que no puede dispararse), obtenida por
+  sustitucion de un unico campo y no por edicion del YAML. Se ejecuta con
+  `scripts/edge01_risk_ablation.py` y se verifica en un proceso aparte con
+  `scripts/edge01_risk_ablation_verify.py` (13/13 checks, auto-test mutante 14/14). Se mide SOLO en
+  DEV: el comportamiento del kill switch en VAL y OOS ya se observo en la corrida del WP, asi que
+  volver a leerlas no seria fuera de muestra.
+- **Razon**: separa la pregunta de mecanismo ("el riesgo era el techo") del cambio de politica, y
+  deja el resultado auditable sin conceder nada al runtime. Un presupuesto que no puede dispararse
+  no es una mejora gratuita: es quitar una proteccion, y su coste en drawdown se publica al lado
+  del resultado.
+- **Consecuencias aplicadas**:
+  - Resultado DEV (BASE, 15m, BTC/ETH/SOL, solo largo; mismo candidato congelado en las dos ramas):
+    base 290 operaciones, bruto -151,71 USDT, neto -496,43, drawdown maximo 5,04%; variante 670
+    operaciones, bruto -96,18 USDT, neto -892,89, drawdown maximo 9,15%.
+  - El kill switch dominaba el embudo de verdad: rechazo 493 entradas repartidas en 86 dias, el
+    31,6% de los 272 dias de la ventana DEV. Liberarlo anade 380 operaciones (+131% de participacion,
+    exposicion 1,57% -> 3,79%) y mejora el bruto por operacion (-0,523 -> -0,144 USDT).
+  - **Veredicto: `RISK_NOT_BINDING_ON_PROFITABILITY`** (regla congelada antes de ejecutar: mas de 20
+    operaciones extra y neto marginal <= 0 -> el presupuesto no es lo que hace intraday no rentable).
+    Las 380 operaciones extra valen -396,46 USDT de neto marginal, -1,04 USDT por operacion: la
+    frecuencia sigue sin pagar su coste de ida y vuelta, y el drawdown casi se duplica. **El kill
+    switch estaba tapando la hemorragia, no la oportunidad.**
+  - Hallazgo de medicion: el kill switch no solo bloquea entradas, **censura la cobertura**. La rama
+    base opera el 100% de sus 290 operaciones con el benchmark en `BULL`; la variante toca `BULL`
+    (567), `BEAR` (51) y `SIDEWAYS` (52) sobre la misma ventana. Un limite que se dispara y se queda
+    disparado convierte la muestra base en una muestra truncada del mercado, no en una version mas
+    pequena de la variante. Cualquier lectura de cobertura de regimen de la corrida principal (ADR-0027)
+    tiene que contar con esta censura.
+  - Invariante comprobado por el verificador (`CANDIDATE_LAYER_IDENTICAL`, `FUNNEL_SPLIT_BY_LAYER`):
+    un presupuesto de riesgo no puede cambiar lo que imprime el candidato. Las dos ramas emiten las
+    MISMAS 860 senales y los mismos 6 recuentos de rechazo de capa candidato; solo se mueve la capa de
+    riesgo (`risk_drawdown_halt` 493 -> 0, `risk_loss_cooldown` 17 -> 37, porque una operacion liberada
+    cambia el camino de drawdown y por tanto el historial de cooldown).
+  - `config/risk.yaml` no se modifica: la rama base lo lee tal cual y el verificador comprueba que la
+    politica publicada sea la del fichero por su sha256 y que las dos ramas difieran en exactamente un
+    campo. `src/trading_bot/autonomous/**` sigue sin tocarse y `PAPER_PROMOTION` no cambia.
+  - Artefactos: `reports/edge-recovery/WP-EDGE-01/risk-budget-h5/` publica `RISK_ABLATION.json`,
+    `RISK_ABLATION.md`, `RISK_TRADES.csv`, `RISK_REFUSALS.csv`, `RISK_SIGNALS.csv`, `MARKET_CONTEXT.csv`
+    y `RISK_ABLATION_VERIFICATION.json`.
+  - Reversion: solo un ADR nuevo que la revierta explicitamente; rescatar la variante como politica
+    exigiria un ADR propio sobre `config/risk.yaml` y nueva evidencia fuera de muestra, porque el
+    resultado medido de aplicarla es perder 396,46 USDT mas en DEV a cambio de 4,11 puntos mas de
+    drawdown.
+
+## ADR-0030 - WP-EDGE-01 H2/H4: el patron de ablacion congelada se reutiliza para dos preguntas de mecanismo (timing de entrada y filtro de volatilidad)
+
+> Registrada el 2026-10-12 sobre la rama `agent/edge-recovery/WP-EDGE-00-baseline`. Cierra las
+> hipotesis H2 y H4 (`RUN_REPORT.json#next_hypotheses`) con un experimento DEV-only por pregunta,
+> sin abrir ninguna ventana nueva y sin tocar los parametros congelados del candidato.
+
+- **Estado**: Decidido y aplicado (trabajo local, sin autorizacion de capital real).
+- **Contexto**: H1 y H5 (ADR-0028, ADR-0029) respondieron preguntas de embudo (que rechaza la regla
+  de entrada, que hace el presupuesto de riesgo con lo que sobrevive). H2 y H4 preguntan por el
+  MECANISMO, no por el embudo, y su propia formulacion impone otra disciplina: H2 pide medir si la
+  entrada llega tarde respecto al nivel que rompe (el bruto es negativo, asi que la perdida no es
+  solo coste), y H4 pide declarar una rejilla de umbrales de ATR ANTES de mirar VAL/OOS, elegir en
+  DEV y congelar. Una medicion de mecanismo sin regla congelada ni verificador propio se puede leer
+  como se quiera despues de ver el resultado, que es justo lo que la hipotesis prohibe.
+- **Opciones**:
+  - un unico experimento que responda las dos preguntas y ademas ajuste el candidato (rechazada:
+    mezcla dos causas y hace la atribucion imposible);
+  - scripts ad hoc por pregunta con su salida en pantalla (rechazada: sin regla pre-registrada, sin
+    artefactos con digest y sin verificador independiente, la evidencia no es auditable);
+  - reutilizar el patron de H1/H5 (declaracion escrita antes de medir + regla congelada + ventana
+    DEV + artefactos + verificador que no importa el paquete), con un runner y un verificador
+    compartidos que despachan por experimento (aprobada);
+  - elegir el umbral de H4 mirando VAL u OOS "para no elegir a ciegas" (rechazada: es exactamente lo
+    que la hipotesis prohibe; elegir despues de leer la ventana no es evidencia).
+- **Decision**: se declaran dos experimentos separados, cada uno con su regla congelada:
+  - `ABL-EDGE01-H2`, diagnostico: NO cambia ninguna regla. Vuelve a correr el candidato congelado
+    con el presupuesto de riesgo del runtime (el mismo libro que la corrida base del WP) y reparte
+    las operaciones ejecutadas por `distance_atr = (entry_mid - level) / atr`, donde el nivel es el
+    que la propia senal nombra en `hard_invalidation`. Regla congelada: `near` = primer bucket,
+    `far` = el resto; menos de 25 operaciones a un lado -> `INCONCLUSIVE`; `ENTRY_IS_LATE` si `far`
+    tiene al menos tantas operaciones como `near` y su expectativa es peor; si no,
+    `ENTRY_NOT_THE_PROBLEM`.
+  - `ABL-EDGE01-H4`, ablacion con rejilla declarada: el candidato congelado mas UN campo,
+    `min_atr_pct`, anadido por override (los parametros congelados y `PARAMS_HASH` no se mueven; por
+    defecto el campo no existe). La rejilla son los percentiles de rango mas cercano 25/50/75 de la
+    distribucion de `atr/close` de las barras de DEV (todos los activos), calculada ANTES de correr
+    ninguna rama. Regla congelada: entre las ramas con al menos 30 operaciones en DEV gana el mejor
+    neto (empate -> umbral mas bajo); `INCONCLUSIVE` si la baseline no llega al suelo;
+    `FILTER_NOT_JUSTIFIED_ON_DEV` si gana la baseline, si la mejora es <= 0, si la rama ganadora no
+    es rentable o si una sola operacion la sostiene; si no, `FILTER_FROZEN_FOR_VALIDATION`, y el
+    umbral queda CONGELADO, nunca promovido: su VAL/OOS lo mide un run nuevo.
+  - Se ejecutan con `scripts/edge01_mechanism_ablation.py` y se verifican en un proceso aparte que
+    no importa nada de `trading_bot` con `scripts/edge01_mechanism_ablation_verify.py`: H2 13/13
+    checks y auto-test mutante 15/15; H4 14/14 y 17/17.
+- **Razon**: cada pregunta de mecanismo queda con su propio experimento, su propia regla escrita
+  antes de medir y su propio verificador, asi que un resultado no se puede atribuir a la causa
+  equivocada ni releer a conveniencia. El verificador es lo que hace util el patron: obliga a que
+  los buckets sean los bordes declarados, a que la rejilla sea el percentil declarado de la muestra
+  publicada, a que cada rama sea el candidato congelado mas un campo, a que la puerta solo rechace
+  lo que esta por debajo de su umbral y a que el veredicto sea lo que la regla da sobre los numeros
+  publicados. El auto-test mutante solo vale si muerde: en esta ronda una mutacion (bruto inflado en
+  una fila) no era detectada porque el check comparaba sumas de rama y no la identidad de cada
+  operacion, y se corrigio el check en lugar de la mutacion.
+- **Resultado H2 (DEV, 272 dias, BASE, 290 operaciones, el mismo libro que el WP)**:
+  - distancia mediana de entrada: 0.4974 ATR sobre el nivel roto; 236 de 290 rellenos (81%) caen a
+    0.25 ATR o mas por encima del nivel.
+  - `near` (<0.25 ATR): 54 operaciones, bruto **+5.47** USDT, expectativa **-1.0882** por operacion.
+  - `far` (>=0.25 ATR): 236 operaciones, bruto **-157.18**, expectativa **-1.8545**.
+  - el MAE mediano crece con la distancia (26.8 -> 37.4 -> 49.4 -> 59.7 bps en los cuatro buckets)
+    mientras el MFE mediano solo sube de 28.3 a 45.5: cuanto mas lejos del nivel se entra, mas
+    recorrido tiene el precio para volver a atravesar la posicion.
+  - veredicto: **`ENTRY_IS_LATE`**. La perdida bruta intraday no es solo coste: la mayoria de los
+    rellenos ocurre donde parte del movimiento ya se ha consumido, y la expectativa esta del lado
+    que casi nunca se alcanza. La consecuencia de diseno es mover la ENTRADA (limite o retest en el
+    nivel), no el stop ni el modelo de coste.
+- **Resultado H4 (DEV del split de tendencia, 4h, BASE)**: rejilla calculada sobre 29.206 barras de
+  DEV -> `p25 = 1.551912%`, `p50 = 2.239198%`, `p75 = 3.330741%` de ATR/close.
+  - `baseline` (sin filtro): 223 operaciones, bruto 2.128,91, coste 207,73, neto **1.921,18**,
+    expectativa 8,6152, drawdown 4,28%.
+  - `p25`: 188 operaciones (366 rechazos por volatilidad), neto 1.595,54, expectativa 8,4869, dd 3,98%.
+  - `p50`: 131 operaciones (794 rechazos), neto 993,67, expectativa 7,5853, dd 3,20%.
+  - `p75`: 58 operaciones (1.243 rechazos), neto 499,98, expectativa 8,6203, dd 1,94%.
+  - veredicto: **`FILTER_NOT_JUSTIFIED_ON_DEV`**. Ningun umbral bate a la baseline en DEV: el filtro
+    recorta participacion sin mejorar la calidad por operacion, asi que NO se anade al ruleset. La
+    regla congela `frozen_threshold_pct = None`.
+  - observacion publicada junto al veredicto, NO una promocion: `p75` conserva la expectativa de la
+    baseline (8,62 frente a 8,62) con el 26% de las operaciones y menos de la mitad del drawdown.
+    Eso es un patron a formular como hipotesis nueva con su propia regla (la metrica de la regla es
+    el neto, y por neto el filtro pierde), y cualquier uso exigiria medirlo en VAL y OOS una vez.
+- **Consecuencias**:
+  - H2 deja una direccion de diseno (entrada mas cerca del nivel) que necesita su propio experimento
+    antes de tocar el candidato: cambiar la entrada cambia el candidato congelado y exige un ADR.
+  - H4 deja la puerta `min_atr_pct` en el candidato como campo OPCIONAL y ausente por defecto: el
+    hash de parametros congelados no se ha movido y ninguna rama se cablea a PAPER ni a live.
+  - La evidencia queda en `reports/edge-recovery/WP-EDGE-01/entry-timing-h2/` y
+    `reports/edge-recovery/WP-EDGE-01/vol-filter-h4/`, con sus `*_VERIFICATION.json`; las huellas de
+    codigo registradas en los artefactos del WP se re-anclaron al codigo final para que no haya
+    deriva entre lo que se midio y lo que se lee.
+  - Ninguna de las dos conclusiones autoriza capital real: siguen siendo DEV, sin libro de ordenes
+    historico, solo lado largo (spot).
+- **Reversion**: solo un ADR nuevo que la revierta explicitamente. Anadir el filtro de volatilidad al
+  ruleset exigiria el run pre-registrado de VAL/OOS del umbral congelado; cambiar la regla de entrada
+  por lo que sugiere H2 exigiria un candidato nuevo con sus parametros congelados y su propia corrida
+  de campana.
+
+---
+
+## ADR-0031 - WP-EDGE-01 cierre: H6 (entrada por retest, con relleno de limite modelado), revision OOS de tendencia 4h (sin PAPER) y reparacion del mecanismo de la vista de estado
+
+> Registrada el 2026-10-12 sobre la rama `agent/edge-recovery/WP-EDGE-00-baseline`. Cierra H6 (la
+> direccion que dejo H2), responde H3 con una revision fuera de muestra y resuelve los tres fallos
+> de recuperacion sin regenerar evidencia historica.
+
+- **Estado**: Decidido y aplicado (trabajo local, sin autorizacion de capital real y sin tocar PAPER).
+- **Contexto**: H2 midio que el libro intradia paga la extension (236 de 290 rellenos DEV a 0,25 ATR o
+  mas por encima del nivel, y solo el lado cercano con bruto positivo). Eso apuntaba a una entrada en
+  el nivel, pero convertir esa direccion en un cambio del ruleset exigia su propio experimento, su
+  regla congelada y un libro de ordenes limite que NO suponga relleno perfecto. En paralelo, H3 dejo
+  abierto si el 4h tendencial merecia PAPER, y tres pruebas del workstream de recuperacion fallaban
+  porque la vista de estado derivada publicada no coincidia con lo que reconstruye el propio commit.
+- **Opciones (H6)**:
+  - cambiar el candidato congelado para que entre en el nivel (rechazada: mueve `PARAMS_HASH` y
+    convierte una hipotesis en un hecho sin ventana de validacion);
+  - reutilizar `edge_intra_02` (retest + FVG) como si fuera la respuesta (rechazada: cambia dos cosas
+    a la vez -la exigencia de FVG y la entrada- y no aisla el precio de entrada);
+  - variante con los MISMOS parametros congelados que reutiliza las senales congeladas y solo cambia
+    la EJECUCION, con libro de ordenes limite propio, un brazo de control que cruza el mismo plan a
+    mercado y un verificador independiente (aprobada).
+- **Decision (H6)**: se anade `trading_bot.research.edge01.retest` (`EDGE-INTRA-01R`) y el simulador
+  admite que una senal pida una entrada limite (`entry_limit`, `limit_expiry_bars`), apagado por
+  defecto. La regla se congela ANTES de medir: limite de compra en el nivel roto
+  (`hard_invalidation`), vivo 8 barras de 15m, relleno solo si una barra cotiza en o por debajo del
+  nivel y SIEMPRE al nivel, nunca mejor; se paga el mismo spread, slippage, impacto y comision que
+  una entrada a mercado (no se inventa rebaja de maker); el presupuesto de riesgo del runtime se
+  consulta en el momento del toque; la caducidad se aplica antes del relleno, de modo que una barra
+  fuera de la ventana no rellena; y el stop, el objetivo y el trailing son los de la senal congelada.
+  Tres ramas por ventana: `frozen_market` (el libro publicado), `plan_market` (el mismo plan cruzado
+  a mercado) y `plan_limit`. Regla economica congelada: `RETEST_UNPOWERED` si no se llega a 100
+  ordenes o 50 rellenos; si no, mejor neto Y mejor expectativa -> `RETEST_IMPROVES_NET`; solo mejor
+  expectativa -> `RETEST_IMPROVES_EXPECTANCY_ONLY`; ninguna -> `RETEST_DOES_NOT_HELP`. Y una lectura
+  de ejecucion separada: `STARVED` por debajo del 40% de relleno, `VIABLE` a partir de ahi.
+- **Resultado (H6)**: veredicto **`RETEST_IMPROVES_NET`** con `VIABLE`. En DEV el plan rellena 372 de
+  686 ordenes (54,23%; 128 caducan, 183 las rechaza el presupuesto de riesgo en el toque y 3 se
+  cancelan al final de la ventana) y anota -495,88 USDT frente a -496,4298 del libro congelado, con la
+  expectativa por operacion de -1,7118 a -1,3330 (+0,3788). El brazo `plan_market` reproduce el libro
+  congelado EXACTAMENTE (-496,4298 / -1,7118), asi que la diferencia es el precio de entrada y no el
+  conjunto de senales. La mejora se repite fuera de la ventana de diseno: VAL +121,74 USDT (76,86% de
+  relleno) y OOS +39,10 (81,82%). El neto absoluto sigue siendo negativo: la entrada no hace rentable
+  la ruptura intradia, y no se promociona nada.
+- **Resultado (OOS tendencia 4h)**: **`NOT_SUFFICIENT_EVIDENCE`**, o sea NO a PAPER. OOS anota
+  +208,01 USDT en 52 operaciones (43,54% de win rate) y sigue positivo con 2x fees (+160,67), con un
+  drawdown del 2,57% muy por debajo del buy & hold, y dos de los tres periodos declarados positivos;
+  pero la mayor operacion es el 79,87% del neto OOS, por encima del 50% congelado. Los libros por
+  activo dicen lo mismo: OOS BTC +3,06 (-14,68 con 2x fees), ETH +281,60, SOL -75,55; VAL queda casi
+  plano (+4,53 en 58 operaciones). La regla de admision del propio WP coincide:
+  `INSUFFICIENT_EVIDENCE`.
+- **Decision (recuperacion)**: los tres fallos (`test_state_view_is_deterministic`,
+  `test_repeated_reproduction_is_byte_identical` y `test_the_clean_checkout_rehearsal_passes_on_this_commit`)
+  NO se arreglan tocando la prueba ni editando el JSON a mano. El diagnostico medido: la vista de
+  estado publicada (`data/recovery/CAMPAIGN_STATE_VIEW.json`, generada el 2026-10-11 a head
+  `9b9a4b8a`) no era lo que reconstruye el commit actual -una reconstruccion en un worktree limpio de
+  HEAD da `8bbd684d` mientras el fichero commiteado declara `e7bee5d8`-, y el mecanismo esta pensado
+  exactamente asi: la vista es una funcion del commit, se lee desde `git show HEAD:` y solo se
+  refresca regenerandola y COMMITEANDOLA junto a las fuentes que se movieron. Se regenera con su
+  propio script (`scripts/campaign_state_view.py`, que reescribe la vista y su informe), se comprueba
+  que el pivote es estable (reconstruirla dos veces da el mismo `payload_sha256`, o sea que no se lee
+  a si misma), se confirma que la auditoria economica ya era consistente (`023b66ff`) y se commitea
+  todo junto. La evidencia historica NO se reescribe: el commit anterior conserva su revision y lo
+  que se publica es la revision vigente, con la divergencia documentada aqui.
+- **Consecuencias**:
+  - El contrato de la senal gana dos campos OPCIONALES (`entry_limit`, `limit_expiry_bars`) que el
+    libro congelado nunca usa: la campana se re-ejecuto entera y reprodujo sus numeros BIT A BIT
+    (intradia DEV -496,4298; tendencia 4h DEV 1.921,1792; los cinco veredictos intactos), y
+    `STRATEGY_RESULTS.json` quedo byte a byte igual que en HEAD.
+  - El destino de cada orden planificada se publica con su propio desenlace, y `cancelled_close_below_level`
+    se declara INALCANZABLE (una barra que cierra por debajo del nivel lo ha tocado por construccion,
+    asi que rellena antes): el verificador comprueba que nunca aparece, en vez de fingir que puede.
+  - H6 no autoriza capital real: sigue siendo DEV/VAL/OOS sin libro de ordenes historico, solo lado
+    largo (spot), con seleccion adversa declarada como limite explicito (un limite se rellena justo
+    cuando la ruptura falla y no hay forma de cobrarla sin libro de ordenes).
+  - La siguiente pregunta util no es "otro filtro": es si un plan de entrada mas largo (o una entrada
+    parcial en el nivel) mejora el neto total, porque la mejora medida es por operacion y el neto se
+    queda plano al reducir participacion.
+- **Reversion**: solo un ADR nuevo. Volver a la entrada a mercado es borrar la variante (el libro
+  congelado no cambio); pasar el 4h a PAPER exigiria una muestra OOS donde ninguna operacion concentre
+  el neto, o un ruleset nuevo con su propia corrida pre-registrada.
+
+## ADR-0032 - WP-EDGE-02: robustez de tendencia 4h (criterio de concentracion intacto) y auditoria de los 183 rechazos de riesgo de H6
+
+- **Fecha**: 2026-10-12
+- **Estado**: aceptado
+- **Contexto**: WP-EDGE-01 cerro con dos preguntas abiertas y un push bloqueado. La
+  revision OOS del 4h se nego a pasar a PAPER por UN motivo declarado (la mayor
+  operacion era el 79,87% del neto OOS, contra un limite del 50%), que es un
+  diagnostico y no un analisis: no dice cuanto del resto del libro sobrevive. Y H6
+  publico que 183 de sus 686 ordenes limite fueron rechazadas por el presupuesto de
+  riesgo en el instante del toque (148 halt de drawdown, 35 cooldown de perdidas) sin
+  comprobar si el presupuesto acerto en cada una.
+- **Decision (WP-EDGE-02A)**: se congela ANTES de medir una regla de robustez de nueve
+  criterios sobre el ruleset 4h ya congelado, sin tocar un parametro ni el corpus:
+  - el criterio de concentracion se mantiene EXACTAMENTE en 0,50 y se declara de donde
+    viene (`OOS_TREND_DECISION.max_single_trade_share_of_net`); una variante consciente
+    del tamano (por ejemplo contra la suma de los k mayores o contra el beneficio bruto)
+    queda registrada como PROPUESTA para un experimento nuevo, no como revision
+    retroactiva de esta corrida;
+  - la sensibilidad por dejar fuera las k mayores ganadoras (k=1 y k=3) es un diagnostico
+    SOBRE la corrida publicada: no se re-ajusta nada y las operaciones retiradas se
+    publican para poder devolverlas;
+  - la incertidumbre se declara y se reimplementa: intervalo Newey-West (regla de lag
+    `floor(4*(n/100)^(2/9))` y valor critico t por tabla declarada hasta 9 grados de
+    libertad y expansion de Cornish-Fisher por encima) mas bootstrap de bloques
+    estacionario con PRNG xorshift64* sembrado, 5000 remuestreos y longitud de bloque 5;
+  - los periodos adicionales se Miden en vez de prometerse: la cobertura del corpus se
+    publica y una franja sobrante solo cuenta como periodo usable si supera un minimo
+    declarado de 30 dias.
+- **Resultado (WP-EDGE-02A)**: la reproduccion del cierre anterior es EXACTA (OOS
+  +208,0056 en 52 operaciones, mayor operacion 0,7987 del neto, 16 comparaciones) y el
+  veredicto es **`INSUFFICIENT_EVIDENCE`**: falla el criterio de concentracion (0,7987 >
+  0,50) y el intervalo HAC de la expectativa CONTIENE el 0 (`[-9,2735, +17,2738]`; el
+  bootstrap da `[-6,7735, +15,6310]`). Ningun criterio decisivo falla: el libro sobrevive
+  a perder su mejor operacion (+41,87 USDT) aunque no a perder tres (-221,33), el plano
+  ADVERSE (fees x2, slippage e impacto x3) todavia deja +146,89, dos de los tres libros por
+  activo son positivos y el drawdown (2,57%) esta muy por debajo del buy & hold (73,20%).
+  La contribucion dice de donde viene el neto: ETH en libro propio +281,60 frente a BTC
+  +3,06 y SOL -75,55; en VAL el mismo libro pierde su mejor operacion y pasa a -120,03.
+  **Nada pasa a PAPER** y la tuberia de paper no se toco.
+- **Decision (WP-EDGE-02B)**: la auditoria no relaja ningun limite y no cambia el
+  ruleset. Re-ejecuta las tres ramas de H6 con un envoltorio OBSERVADOR sobre el camino
+  de entrada del simulador congelado (registra el estado que vio el presupuesto y
+  devuelve el valor original sin alterarlo; se restaura en un `finally`), declara antes
+  de correr las reglas que dan sentido a cada motivo de rechazo, comprueba cada rechazo
+  contra ese estado capturado Y ademas contra un estado RECONSTRUIDO desde el corpus
+  local y el libro de operaciones publicado por un proceso aparte que no importa nada del
+  paquete, y publica los invariantes del libro (contabilidad, caja no negativa, sizing
+  contra el riesgo configurado, topes de notional por orden/activo/total, minimo de
+  notional, limites de posiciones y de operaciones diarias, un desenlace por orden,
+  atribucion del rechazo y ausencia de duplicados).
+- **Resultado (WP-EDGE-02B)**: **`AUDIT_PASS`**. 686 ordenes con el reparto publicado
+  (372 rellenas, 128 caducadas, 183 rechazadas, 3 canceladas), 183/183 rechazos de la
+  ventana primaria justificados por el estado reconstruido (148 halt + 35 cooldown),
+  2734/2734 rechazos de todas las ventanas y ramas, 150 filas de invariantes con 0 fallos,
+  la curva de capital reconstruida desde el corpus coincide en las 26113 barras publicadas
+  y la identidad contable cierra (10.000,00 - 495,8756 = 9.504,1244). Frente al Risk
+  Engine real (`src/trading_bot/risk/manager.py`) la misma regla dispara en 2734/2734
+  casos, y la brecha de modelado queda declarada: el presupuesto de investigacion NO
+  modela el limite de perdida diaria, el semanal, el drawdown diario, el bloqueo de fin de
+  semana, los bloqueos de spread/ATR ni el kill switch, asi que en vivo bloquearia AL MENOS
+  igual, nunca menos.
+- **Defecto encontrado y corregido dentro de este WP**: `DEF-EDGE02-01` - el observador
+  sustituia un mapping de posiciones vacio pero VIVO por uno nuevo (`positions or {}`), de
+  modo que una entrada tomada con el libro plano se quedaba sin tamano atribuido. Lo
+  detectaron los propios invariantes de entrada en la primera corrida (15 filas fallando,
+  todas `notional_at_or_above_minimum` con notional 0) y se fija con una prueba de
+  regresion que reproduce el bug a proposito.
+- **Procedencia**: los 9 modulos del paquete que WP-EDGE-01 midio quedan BYTE A BYTE
+  identicos; la huella del paquete que registra una corrida nueva cambia solo porque se
+  anaden dos modulos (`robustness.py`, `risk_audit.py`). Ningun artefacto de WP-EDGE-01 se
+  edito y ningun script suyo se modifico: la comprobacion por fichero esta en el RUN_REPORT.
+- **Consecuencias**:
+  - El criterio de concentracion del 50% sigue siendo el que decide: la pregunta util
+    ahora es un experimento NUEVO pre-registrado sobre un criterio consciente del tamano,
+    no una reinterpretacion de esta corrida.
+  - Un periodo genuinamente nuevo exige corpus nuevo: el congelado termina en la ultima
+    barra del OOS (solo sobran 5 barras de barrido, 0,83 dias).
+  - La auditoria convierte "183 rechazos" en un hecho comprobado: no son un defecto de
+    accounting, ni estado obsoleto, ni rechazos duplicados; son el halt del 5% y el
+    cooldown de 3 perdidas haciendo su trabajo sobre un libro que pierde dinero.
+- **Reversion**: solo un ADR nuevo. Relajar el halt o el criterio de concentracion para
+  que este libro pase es exactamente lo que este WP se prohibe.
+
+## ADR-017F-01 — La ventana semanal de riesgo es la semana UTC de lunes a lunes
+
+- **Contexto**: `RiskManager.record_trade_result` acumulaba `weekly_pnl` y nada lo reiniciaba.
+  `reset_daily` no lo tocaba (correcto) pero no existía ninguna transición semanal, así que una
+  semana mala vetaba todas las señales del resto de la corrida. El replay hace resets diarios y
+  nunca observaba un reinicio semanal.
+- **Decisión**:
+  - La ventana es la semana ISO en UTC: de lunes 00:00 a lunes 00:00, sin DST ni calendario local.
+  - `RiskManager.weekly_start_ms` ancla la ventana y viaja en `extract_state`/`restore_state`, de
+    modo que un reinicio conserva la pérdida de la semana en curso.
+  - `roll_week()` se evalúa en `check_signal`, `record_trade_result` y `reset_daily`, usando el
+    reloj inyectable (en el replay, el timestamp de la barra). Un reloj que retrocede no reinicia
+    nada; una instantánea antigua sin ancla conserva su pérdida y la ancla a la semana del
+    restore, para que no pueda vetar para siempre.
+  - `reset_daily` sigue sin reiniciar la semana por sí mismo: el día frontera es donde se *observa*
+    el lunes cuando el fin de semana no tuvo operaciones, y ese cruce se registra como
+    `WEEK_BOUNDARY / RISK_RESET_WEEKLY` en la lane.
+- **Qué NO cambia**: `max_weekly_loss_pct`, el resto de límites, la reserva de disco y la política
+  de fin de semana. El límite sigue vetando; solo deja de vetar indefinidamente.
+- **Nota de contrato**: `docs/risk-policy.md` decía «pausa por 1 día». Esa pausa nunca se
+  implementó y no se introduce aquí: un veto de 24 h que se reevalúa contra el mismo acumulador
+  volvería a bloquear inmediatamente. Se documenta la semántica real (veto hasta el cierre de la
+  ventana), que es la más conservadora de las dos.
+- **Consecuencias**: el replay de 017 deja de arrastrar una pérdida semanal única durante todo el
+  periodo; los rechazos semanales pasan a ser por semana, y `NET_RISK_REPLAY` cambia en
+  consecuencia. Cualquier cifra anterior de fills semanales queda superada.
+- **Reversión**: solo un ADR nuevo; relajar la ventana para que el libro pase es exactamente lo que
+  este paquete se prohíbe.
+
+## ADR-AIV-01 — El agente discrecional multimodal decide, pero no dimensiona
+
+- **Contexto**: se pide un agente que *vea* gráficos y decida LONG/SHORT/CLOSE/NO_TRADE por sí
+  mismo, no que explique señales deterministas. Las cuatro referencias (qrak/LLM_trader,
+  Ganador1/FenixAI_tradingBot, FortuneMal/AI-trading, 195440/nof1.ai) envían o no imágenes según el
+  caso, pero ninguna convierte la respuesta en una decisión *validada* con identidad de imagen y
+  replay reproducible; dos ni siquiera adjuntan un gráfico (nof1.ai opera con datos numéricos).
+- **Decisión**:
+  - El modelo recibe **una imagen PNG determinista** (velas, volumen, EMA20/50 en una ventana fija)
+    y un prompt versionado. El hash SHA-256 de la imagen y del prompt viaja en el ledger, de modo
+    que "el modelo vio esto" es comprobable y reproducible.
+  - El modelo elige **acción, convicción, horizonte y dónde se equivoca**. **No elige tamaño,
+    apalancamiento ni límites**, y el `stop_loss_pct` que propone se registra pero no sustituye al
+    de la política: si el prompt pudiera elegir la distancia del stop, cambiaría el riesgo por
+    operación y la comparación con el carril determinista sería entre dos políticas, no entre dos
+    decisiones.
+  - El sizing y los stops salen del `RiskManager` real (`config/risk.yaml`), y el único gate es
+    `check_signal`; el `PaperBroker` real aplica el mismo `cost_for` que EDGE-016/017.
+  - **Una excepción declarada**: un `CLOSE` no pasa por `check_signal`. Un tope de número de
+    operaciones que bloquee una salida es un defecto, no una política; se registra como
+    `BYPASSED_FOR_REDUCTION`.
+  - La ejecución ocurre en la **apertura de la barra siguiente** a la decisión, igual que el carril
+    determinista, para que ningún relleno use un precio que el modelo no había visto.
+  - La coherencia con el libro es mecánica: no se promedia ni se invierte en un paso (`ALREADY_*`,
+    `OPPOSITE_*` se descartan y se cuentan), porque invertir en un paso paga dos spreads por una
+    opinión y el modelo nunca ve el relleno que provocó.
+  - El proveedor es un **adaptador OpenAI-compatible** (`VISION_API_KEY` en `.env`): el proveedor
+    es una decisión de despliegue, no de arquitectura.
+- **Qué NO cambia**: ningún límite de `config/risk.yaml`, ni el modo de operación (paper/shadow),
+  ni la ruta de ejecución real. El paquete no importa ningún cliente de exchange.
+- **Consecuencias**: sin credencial, el smoke y el lane devuelven **BLOCKED (exit 2)** y no inventan
+  una decisión. El valor económico solo puede afirmarse con decisiones *live*; un replay demuestra
+  la tubería, no el modelo (el veredicto se marca `NOT_EVIDENCE`).
+- **Reversión**: un ADR nuevo. Relajar la validación para "que el modelo opere" es exactamente lo
+  que este paquete se prohíbe.
+## ADR-AIB-01 — Un registro de bots, un libro canónico
+
+- **Fecha**: 2026-10-17.
+- **Contexto**: el RFC-TAP-AI-BOTS-002 añade un segundo agente discrecional (BOT-CTX-01)
+  junto al visual (BOT-VIS-01). El riesgo real de tener dos bots es que cada uno acabe con
+  su propio broker, sus propios límites o su propio sizing, y la comparación entre ambos
+  mida dos políticas en vez de dos decisiones.
+- **Decisión**:
+  1. `BotCapabilityRegistry` es la única puerta: un bot declara modelo, contratos de
+     entrada/salida, presupuesto y latencia; las capacidades de ejecución están prohibidas
+     por lista negra y lanzan `RegistryError` si se intentan conceder.
+  2. Ambos bots se ejecutan a través de `run_bot`, que construye el `RiskManager` y el
+     `PaperBroker` del runtime. Los módulos de bot no importan ninguno de los dos
+     (comprobado por AST en la verificación independiente).
+  3. Todo bot está desactivado por defecto y necesita activación explícita por bot.
+  4. El `model_status` de un run sólo puede ser `REAL_MODEL_CALL` si existe un recibo de
+     llamada con éxito; si no, es `MOCK_TEST` o `REAL_MODEL_ATTEMPTED_FAILED`.
+- **Qué NO cambia**: `config/risk.yaml`, el modo paper/shadow, la ausencia de ruta de
+  orden real, y la prohibición de que un LLM dimensione.
+- **Consecuencias**: dos bots son comparables con los mismos datos, coste y capital; un
+  bot no puede degradar el riesgo del otro. El coste es un registro más que mantener y la
+  obligación de pasar por `run_bot` en vez de invocar el lane a mano.
+- **Reversión**: otro ADR; relajar el registro para que el bot opere es exactamente lo
+  que este ADR prohíbe.
+
+## ADR-PAPER-01 — El libro es la autoridad; el ledger es una proyección deduplicada
+
+- **Fecha**: 2026-10-21.
+- **Contexto**: RFC-PAPER-RECOVERY-004 pide *exactly-once a nivel de efecto económico* ante
+  caídas, y propone en §5.1 derivar el estado canónico por replay del prefijo comprometido
+  del **ledger**. El runtime real hace lo contrario: `LaneBookStore` escribe `BOOK.json` de
+  forma atómica con su propio `digest`, y `reconcile_book` lo juzga a él; el ledger de
+  sesión es la cadena de evidencia de *un* proceso y cada sesión puede escribir en un
+  fichero distinto. Invertir la autoridad exigiría mover al ledger riesgo, pendientes,
+  contrato y marcas, y migrar los libros históricos de RFC003.
+- **Decisión**:
+  1. `BOOK.json` sigue siendo la fuente de verdad; `deterministic_replay(ledger)` **no** se
+     adopta. La desviación queda declarada en
+     `reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/runtime_authority_map.md`.
+  2. El ledger es una proyección **at-least-once**: sus filas se escriben antes del commit
+     del compás, así que puede ir por delante del libro. La barrera impide re-procesar un
+     compás ya cubierto, y cada fila económica lleva
+     `operation_id = <book>|CLOSE|<position>` (o `|FILL|`) para que la re-ejecución no
+     escriba una segunda fila.
+  3. Una repetición sólo se suprime si es económicamente idéntica salvo el reloj; si el
+     número cambia, se lanza `OperationConflict` y no se escribe nada.
+  4. El libro publica `risk_equity` y `marked_equity` como un solo número: una realización
+     convierte la marca en caja, así que el motor de riesgo se re-marca desde el bróker
+     antes del commit que la contabiliza.
+- **Qué NO cambia**: los gates de live, la configuración de riesgo, la ausencia de ruta de
+  orden en el lane, el formato del libro (`vision-lane-book/1`) y los libros históricos.
+- **Consecuencias**: una caída entre el fsync del ledger y el `replace` del libro se
+  recupera re-ejecutando el compás una vez, y la evidencia no queda duplicada ni
+  reescrita. El coste es una identidad por fila económica y la obligación de que el replay
+  sea determinista: si deja de serlo, el resultado es un rechazo (`OperationConflict`), no
+  un cierre inventado.
+- **Reversión**: un ADR nuevo con migración reversible de los libros existentes; este WP no
+  la hace porque ningún fallo medido la exige.

@@ -1,0 +1,18 @@
+{
+  "bot_id": "BOT-VIS-01",
+  "run_id": "06144b6e4724",
+  "image_mode": "png_attached",
+  "prompt_version": "ai-vision-prompt/2",
+  "snapshots": [
+    {
+      "decision_time_ms": 1791900000000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "40f5f24d31c99c3ff9df579aedaa9d84a7fa1c919584f93d8c163d99790f4f36",
+      "image_attached": true,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1791896400000,
+      "prompt_id": "ai-vision-prompt/2",
+      "prompt_sha256": "bc41b27788e0b161d7faaa3b30a945abc02c64d3ce4dfc89cca7e1241f265b2c"
+    }
+  ]
+}

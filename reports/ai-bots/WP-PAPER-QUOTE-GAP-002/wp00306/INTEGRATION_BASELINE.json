@@ -1,0 +1,374 @@
+{
+ "artifact_inventory": {
+  "branch_additions_by_area": {
+   "data": {
+    "files": 20,
+    "lines": 591,
+    "share_pct": 0.0
+   },
+   "note": "computed with git diff --numstat main...wp/isolation-005; evidence and generated reports dominate the branch",
+   "reports": {
+    "files": 1452,
+    "lines": 1818017,
+    "share_pct": 91.2
+   }
+  },
+  "largest_single_files": [
+   {
+    "lines": 229648,
+    "path": "reports/edge-recovery/WP-EDGE-01/EQUITY_CURVE.csv"
+   },
+   {
+    "lines": 184410,
+    "path": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc004/RECOVERY_LAB.json"
+   },
+   {
+    "lines": 97676,
+    "path": "reports/edge-recovery/WP-EDGE-02/trend-robustness/ROBUSTNESS.json"
+   },
+   {
+    "lines": 95914,
+    "path": "reports/edge-recovery/WP-EDGE-09/panel/PANEL_SECONDS.csv"
+   },
+   {
+    "lines": 79246,
+    "path": "data/rfc048/raw/binance_usdm_exchange_info.json"
+   }
+  ]
+ },
+ "cohorts": {
+  "branch_only": {
+   "commits": 244,
+   "dates": {
+    "first": "2026-10-12",
+    "last": "2026-10-22"
+   },
+   "diff": {
+    "additions": 1992926,
+    "deletions": 352,
+    "files": 1875
+   },
+   "range": "main..wp/isolation-005",
+   "verification_state": "7/7 checks red at its published head; 3 of the 5 CI Baseline jobs already red on the base"
+  },
+  "trunk_unpublished": {
+   "commits": 259,
+   "dates": {
+    "first": "2026-09-25",
+    "last": "2026-10-12"
+   },
+   "diff": {
+    "additions": 732394,
+    "deletions": 1204,
+    "files": 1625
+   },
+   "range": "origin/main..main",
+   "verification_state": "never pushed before this WP, therefore never run by CI; four of its own tests could not import until trading_bot.ops was ported"
+  }
+ },
+ "economy": {
+  "reference_digests": {
+   "E2E-COMMITTED": "20f10f30bb6ce5394f6c19f89f4bc0658faeea2684199160f4a566a4edf9aac9",
+   "E2E-RESTART": "45ada80c456bf79b1c294656c0fbb9742e5864489247649f34cf6e8d434444ce",
+   "E2E-SCENARIO": "59dc36111fad5be54e0f82b3df758dfab65307ef223476d3a72235999c7385c9"
+  },
+  "runs": [
+   {
+    "clean": true,
+    "digests_identical": true,
+    "id": "run1",
+    "tree": "baf5b560"
+   },
+   {
+    "clean": false,
+    "digests_identical": true,
+    "id": "run2",
+    "note": "dirty only by its own untracked output directory; discarded",
+    "tree": "baf5b560"
+   },
+   {
+    "clean": true,
+    "digests_identical": true,
+    "id": "run3",
+    "note": "committed as PAPER_E2E_LAB_REPEAT.json",
+    "tree": "baf5b560"
+   },
+   {
+    "clean": true,
+    "digests_identical": true,
+    "id": "run4",
+    "tree": "08c5d9d2 (delivered tip)"
+   }
+  ]
+ },
+ "gates": {
+  "base_origin_main_5e6f9632": {
+   "collection_errors": 0,
+   "format_files": 0,
+   "lint": 0,
+   "mypy": 0
+  },
+  "coverage_gate": {
+   "base_measured_pct": 62.34,
+   "required_pct": 90,
+   "source": "WP-003-04 on a clean origin/main worktree"
+  },
+  "format_reconciliation": {
+   "added": [],
+   "explanation": "433 - 5 = 428 with an empty set difference in the other direction; the 8 files formatted by 7e4971d1 are these 5 plus 3 new files the trunk never counted",
+   "fixed": [
+    "src/trading_bot/autonomous/contracts.py",
+    "src/trading_bot/autonomous/decision.py",
+    "src/trading_bot/autonomous/runtime.py",
+    "src/trading_bot/autonomous/supervisor.py",
+    "src/trading_bot/paper/reconciliation_v4.py"
+   ],
+   "port": 428,
+   "trunk": 433
+  },
+  "pip_audit": {
+   "base_advisories": 80,
+   "base_packages": 9,
+   "source": "WP-003-04"
+  },
+  "port_baf5b560": {
+   "collection_errors": 0,
+   "format_files": 428,
+   "lint": 100,
+   "mypy": 253
+  },
+  "trunk_1d2192b0": {
+   "collection_errors": 4,
+   "format_files": 433,
+   "lint": 100,
+   "mypy": 253
+  }
+ },
+ "generated_at_utc": "2026-10-22T21:54:58Z",
+ "git_authority": {
+  "ci_fix": "9682ee1b31dbd01f72b3ff94ba3e6397df971fb6",
+  "evidence_commit": "abdf21462efc7ae2390affeac2150f657a0095bb",
+  "linear_history": true,
+  "local_main": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+  "merge_base_main_branch": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+  "merge_commits_in_cohort": 0,
+  "origin_main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+  "port_head": "baf5b560101188ecceb36a4880d3dca16b267e31",
+  "recovery_branch": "08c5d9d22c87764a0a57586a232fd27df13acebf",
+  "remote_heads_at_session_start": {
+   "fix/ci-smoke-pwsh": "9682ee1b31dbd01f72b3ff94ba3e6397df971fb6",
+   "recovery/trunk-sync": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+   "recovery/wp00303": "08c5d9d22c87764a0a57586a232fd27df13acebf",
+   "wp/isolation-005": "624455c8c55c8564a5d244cb82688a1332159ae7"
+  },
+  "remote_heads_note": "wp/isolation-005 moved after this reading because it carries the WP-003-06 reports; recovery/* and fix/* are unchanged and are re-read in GITHUB_SYNC.json.",
+  "trunk_sync": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+  "wp_branch": "624455c8c55c8564a5d244cb82688a1332159ae7"
+ },
+ "independent_verification": {
+  "delivered_tip": {
+   "checkout": "detached worktree, git status --porcelain empty",
+   "checks": "18/18",
+   "negative_controls": "11/11",
+   "sha": "08c5d9d22c87764a0a57586a232fd27df13acebf"
+  },
+  "evidence_commit": {
+   "checks": "18/18",
+   "negative_controls": "11/11",
+   "sha": "abdf21462efc7ae2390affeac2150f657a0095bb"
+  },
+  "previously_failing_controls": {
+   "evidence_in_commit": "was 'the 27 files of the scratch bundle are not in the judged commit' \u2014 now 35 files inside the judged commit",
+   "github_sync_consistent": "was BLOCKED because the branch was unpublished \u2014 now read from origin/recovery/wp00303",
+   "manifest_covers": "was 'no EVIDENCE_MANIFEST.json in the scratch bundle' \u2014 now 33 files hashed and covered",
+   "reports_consistent": "was 'no RUN_REPORT.json / FINAL_REPORT.json' \u2014 now both, with counts equal to the lab"
+  },
+  "script": "scripts/verify_paper_e2e.py"
+ },
+ "integration_plan": [
+  {
+   "base": "origin/main 5e6f9632",
+   "branch": "fix/ci-smoke-pwsh",
+   "head": "9682ee1b31dbd01f72b3ff94ba3e6397df971fb6",
+   "id": "PR-1",
+   "independent": true,
+   "summary": "remove the uses: that points at a repository which does not exist",
+   "verified_in_ci": false
+  },
+  {
+   "base": "origin/main 5e6f9632",
+   "blocker": "publishing it turns format, lint, type and collection gates red on main",
+   "branch": "publication of the trunk",
+   "commits": 259,
+   "fast_forward": true,
+   "head": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+   "id": "PR-2",
+   "needs": "the format decision, then packages B1..F1 of TRUNK_SANITATION_PLAN.md"
+  },
+  {
+   "base": "recovery/trunk-sync (PR-2)",
+   "branch": "recovery/wp00303",
+   "code_files": 23,
+   "commits": 8,
+   "id": "PR-3",
+   "independent_of_the_trunk": false,
+   "summary": "the WP-003-03 port plus its evidence and its verdict; gate debt added = 0"
+  }
+ ],
+ "limitations": [
+  "The stack depends on the 259-commit trunk; origin/main has no src/trading_bot/autonomous/, so no independent PR against main can exist for this work package.",
+  "The real CI run is NOT_PERFORMED: no gh CLI, no token, and the workflow has no branch push trigger.",
+  "The verifier judges the artefact; the link to the code is the 13 runtime hashes plus three fresh runs.",
+  "The 95 red suite nodes belong to the trunk's research artefacts and are untouched here.",
+  "Disk reached 100 % at the start of the session; four scratch worktrees from earlier WPs (clean, detached, recreatable from git) were removed to make room. No project file was deleted."
+ ],
+ "method": "Every value was produced by a command run in this session against this checkout, or read from an artefact this session wrote. Values inherited from WP-003-05 are labelled with their sha; none is copied without a label.",
+ "minimal_port": {
+  "blob_identity_with_branch_tip": {
+   "compared": 23,
+   "differing": 9,
+   "identical": 14,
+   "note": "the 9 differing files are the 8 formatted in 7e4971d1 plus windowless.py; AST comparison is identical except the position of one import in windowless.py (same import set, identical non-import body)",
+   "semantic_changes": 0
+  },
+  "branch": "recovery/wp00303",
+  "code_commits": 6,
+  "code_files": 23,
+  "diff_from_trunk_code_only": {
+   "additions": 4472,
+   "deletions": 88,
+   "files": 23
+  },
+  "diff_from_trunk_including_evidence": {
+   "additions": 91773,
+   "deletions": 88,
+   "files": 58
+  },
+  "diff_note": "the 58-file figure is the whole diff; 23 of those files are code and 35 are the evidence bundle (two lab JSONs, the traces and the reports). The code-only figure is the one to read when judging the port.",
+  "evidence_commits": 2,
+  "head": "08c5d9d22c87764a0a57586a232fd27df13acebf",
+  "port_commits": [
+   "31b8d223",
+   "021d614d",
+   "4c60683c",
+   "04aeb308",
+   "7e4971d1",
+   "baf5b560",
+   "abdf2146",
+   "08c5d9d2"
+  ],
+  "scripts": {
+   "scripts/make_paper_e2e_reports.py": 498,
+   "scripts/paper_e2e_lab.py": 1290,
+   "scripts/verify_paper_e2e.py": 841
+  }
+ },
+ "missing_dependencies": {
+  "D1_trading_bot_ops": {
+   "effect": "4 collection errors at the trunk tip; 0 after porting the two stdlib-only ops files",
+   "status": "FIXED_IN_PORT",
+   "tests": [
+    "tests/unit/autonomous/test_lab_ops_hardening.py",
+    "tests/unit/autonomous/test_pid_identity.py",
+    "tests/unit/autonomous/test_supervisor.py",
+    "tests/unit/forward/test_forward_exit_contract.py"
+   ]
+  },
+  "D2_observability_vision_panel": {
+   "corrects": "WP-003-05 said 'no commit at all' and 'one untracked file in six worktrees'. Both claims were wrong.",
+   "decision": "not incorporated: promoting an untracked copy would import another lane's contract into a PAPER work package",
+   "module_branches": [
+    "wp003i/reproducibility",
+    "wp003j/runtime"
+   ],
+   "module_committed_at": "e90a8ad3 (172 lines), reformatted at 26fd3955",
+   "on_disk_copies_differ": true,
+   "owner": "observability lane",
+   "reachability": "no module outside the test imports it",
+   "status": "RESOLVED_DO_NOT_PORT",
+   "test_commit": "5fd791d8",
+   "test_in_port": false,
+   "test_in_trunk": false,
+   "tolerant_test_exists_at": "a91cabea on exp/ai-bots/EXP-003I-THROUGHPUT-001",
+   "why_the_port_collects": "the test that imports the module is not in the trunk, so the port never meets it"
+  },
+  "D3_alpha15_pre_pit_runners": {
+   "exists_in": "sibling branches only; none is an ancestor of wp/isolation-005",
+   "needs": "alpha15.PRE_PIT_RUNNERS",
+   "owner": "research/edge lane",
+   "status": "OPEN_REQUIRES_OWNER",
+   "tests": [
+    "tests/unit/research/test_edge16_pit.py"
+   ]
+  }
+ },
+ "pull_request_17": {
+  "head_now": "624455c8c55c8564a5d244cb82688a1332159ae7",
+  "measured_at_wp00305": {
+   "additions": 2722984,
+   "commits": 498,
+   "deletions": 1437,
+   "files": 3452,
+   "head": "afc0127086a67632ed94488d95d2e430417535b2"
+  },
+  "measured_now": {
+   "additions": 2725201,
+   "commits": 503,
+   "deletions": 1437,
+   "files": 3463
+  },
+  "merged": false,
+  "reconciliation": "WP-003-05 measured 498 commits / 3452 files / +2722984 at afc01270. The tip is five report commits later, so the current numbers are 503 / 3463 / +2725201. Both are correct for the sha they name; the earlier report did not say which sha it described, which is the defect this baseline corrects.",
+  "state": "open"
+ },
+ "repository": "https://github.com/Extr3sao/bot_crypto.git",
+ "schema": "wp00306-integration-baseline/1",
+ "status": {
+  "CI_REAL_RUN": "NOT_PERFORMED",
+  "DELIVERY_STATUS": "BLOCKED",
+  "DEPENDENCIES_MAPPED": "PASS (D1 fixed, D2 resolved and not ported, D3 open with owner)",
+  "EVIDENCE_VERSIONED": "PASS",
+  "FALSE_SUCCESS": 0,
+  "GIT_AUTHORITY": "MEASURED",
+  "HISTORY_EXPLAINED": "PASS",
+  "INDEPENDENT_VERIFICATION": "PASS 18/18 + 11/11 at the delivered tip",
+  "MAIN_SYNCED": "NO",
+  "MINIMAL_INTEGRATION": "PASS (8 commits, 23 code files, 0 new gate debt, 3/3 digests)",
+  "PRODUCTION_READY": "NOT CLAIMED"
+ },
+ "suite": {
+  "baseline": {
+   "red_nodes": 95,
+   "summary": "81 failed, 3213 passed, 31 skipped, 3 deselected, 14 errors in 562.08s"
+  },
+  "conclusion": "the port adds 17 passing tests and moves no red node in either direction",
+  "nodes_only_in_baseline": 0,
+  "nodes_only_in_tip": 0,
+  "tip": {
+   "red_nodes": 95,
+   "summary": "81 failed, 3230 passed, 31 skipped, 3 deselected, 14 errors in 668.61s"
+  }
+ },
+ "work_package": "WP-003-06",
+ "wp00305_deliverable_count": {
+  "correction": "The WP-003-05 hand-off prose said 'seven deliverables' and then listed nine paths. Both were loose: the directory holds 11 files, 7 of them JSON. Counted here with git ls-tree at 624455c8.",
+  "files": 11,
+  "json": 7,
+  "json_files": [
+   "FINAL_REPORT.json",
+   "GITHUB_SYNC.json",
+   "INTEGRATION_BASELINE.json",
+   "RUN_REPORT.json",
+   "evidence/CI_GATES.json",
+   "evidence/PAPER_E2E_MINIMAL_COMPARISON.json",
+   "evidence/VERIFICATION_MINIMAL.json"
+  ],
+  "markdown": 4,
+  "markdown_files": [
+   "FINAL_REPORT.md",
+   "INTEGRATION_MAP.md",
+   "NEXT_WP_WP-003-06.md",
+   "RUN_REPORT.md"
+  ]
+ }
+}

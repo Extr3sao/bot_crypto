@@ -33,6 +33,7 @@ import json
 from dataclasses import dataclass, field
 from typing import Any
 
+from trading_bot.config.risk import DefensiveBlocks
 from trading_bot.execution.idempotency import IdempotencyGuard
 from trading_bot.market_data.types import OHLCV
 from trading_bot.paper.candidate_portfolio import TradeCandidate, build_portfolio
@@ -40,6 +41,7 @@ from trading_bot.paper.signal_adapter import AdapterError, alpha_signal_to_signa
 from trading_bot.paper.snapshot_context import trim_to_pit
 from trading_bot.research.asset_intelligence.registry import CryptoAssetAgentRegistry
 from trading_bot.research.strategy_router import RouterDecision, StrategyRouter
+from trading_bot.risk.defensive_blocks import BlockVerdict, MarketConditions, evaluate_blocks
 from trading_bot.risk.manager import RiskManager
 
 __all__ = [
@@ -78,12 +80,15 @@ class CycleStageCounts:
     signals_generated: int = 0
     strategy_errors: int = 0
     adapter_errors: int = 0
+    bar_close_skips: int = 0
     duplicate_intents: int = 0
     risk_accepted: int = 0
     risk_rejected: int = 0
     risk_errors: int = 0
     orders_created: int = 0
     broker_errors: int = 0
+    #: WP-EDGE-017/P0.4: one count per defensive block that fired (by block id).
+    defensive_blocks: dict[str, int] = field(default_factory=dict)
     rejections: list[dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -97,12 +102,14 @@ class CycleStageCounts:
             "signals_generated": self.signals_generated,
             "strategy_errors": self.strategy_errors,
             "adapter_errors": self.adapter_errors,
+            "bar_close_skips": self.bar_close_skips,
             "duplicate_intents": self.duplicate_intents,
             "risk_accepted": self.risk_accepted,
             "risk_rejected": self.risk_rejected,
             "risk_errors": self.risk_errors,
             "orders_created": self.orders_created,
             "broker_errors": self.broker_errors,
+            "defensive_blocks": dict(self.defensive_blocks),
             "rejections": list(self.rejections),
         }
 
@@ -138,6 +145,19 @@ class PaperCycleEngine:
     Dependencies are canonical components only. No strategy selection
     happens here: the StrategyRouter decides, families generate, the
     SignalAdapter converts, risk approves, the broker executes.
+
+    BAR_CLOSE gate (BURN-IN-V2): ema_crossover and the other committed
+    families are pure functions of the PIT bar window (verified audit:
+    same closed candles + unchanged risk state ⇒ same alphas). When the
+    relevant state has NOT changed since the last evaluation for the same
+    latest-closed-candle, the strategy stage is skipped and the cycle
+    records ``bar_close_skips`` — Risk only sees meaningful proposals.
+    Relevant state = risk counters that can flip a decision (kill switch,
+    cooldown, daily loss, trade count) plus portfolio occupancy (open
+    positions change the broker same-side outcome) and cycle freshness
+    (a NEW snapshot timestamp means new market data may have arrived).
+    The execution idempotency layer is untouched and remains the final
+    safety barrier.
     """
 
     def __init__(
@@ -151,6 +171,10 @@ class PaperCycleEngine:
         broker: Any,  # PaperBroker
         indicator_fn: Any | None = None,  # candles → dict[str, IndicatorResult]
         idempotency: IdempotencyGuard | None = None,
+        # WP-EDGE-017/P0.4: the four declared defensive blocks. ``None`` keeps the
+        # historical behaviour for callers that have not opted in; the paper
+        # launcher always supplies the policy from config/risk.yaml.
+        defensive_blocks: DefensiveBlocks | None = None,
     ) -> None:
         self._registry = asset_registry
         self._router = router
@@ -160,6 +184,13 @@ class PaperCycleEngine:
         self._broker = broker
         self._indicator_fn = indicator_fn
         self._idempotency = idempotency or IdempotencyGuard()
+        self._defensive_blocks = defensive_blocks
+        # BAR_CLOSE gate state (BURN-IN-V2): per symbol, the (bar_ts, state
+        # version) already evaluated. State version bumps when anything that
+        # could legitimately change a decision happens (risk counters,
+        # portfolio occupancy, kill switch, reconciliation restore).
+        self._bar_gate: dict[str, tuple[int, int, tuple[float, int, int, float, bool]]] = {}
+        self._state_version = 0
 
     @property
     def idempotency(self) -> IdempotencyGuard:
@@ -170,16 +201,85 @@ class PaperCycleEngine:
         """Public accessor used by the runner to sync broker equity."""
         return self._risk
 
+    def pending_intents(self) -> list[str]:
+        """Snapshot of the intent ledger (durable persistence, GAP-R1)."""
+        return sorted(self._idempotency.sent_cloids)
+
+    # -- BAR_CLOSE gate (BURN-IN-V2) ------------------------------------------
+
+    def bump_state_version(self, reason: str) -> None:
+        """Force re-evaluation for all symbols (legitimate state change).
+
+        Called by the runner when something that can legitimately change a
+        decision happens between cycles: a position closed (portfolio
+        changed), risk counters moved (cooldown expiry, daily reset,
+        kill-switch flip), reconciliation restored state, or a manual
+        reset. The gate must never mask these.
+        """
+        self._state_version += 1
+        self._log_state_bump(reason)
+
+    def _log_state_bump(self, reason: str) -> None:
+        import structlog
+
+        structlog.get_logger("paper_cycle").info(
+            "paper.bar_gate.state_bumped", reason=reason, version=self._state_version
+        )
+
+    def _bar_gate_allows(self, symbol: str, bars: list[OHLCV]) -> bool:
+        """True when strategy evaluation is REQUIRED for this symbol.
+
+        Skip only when ALL hold:
+        - same latest-closed-candle timestamp as the last evaluation;
+        - unchanged relevant state version (risk/portfolio/kill switch);
+        - the risk engine's snapshot is unchanged since that evaluation
+          (equity, open-position count, trades_today, daily pnl).
+
+        Anything else (new candle, state bump, restored book, counter
+        movement) ⇒ evaluate. Fail-open: unknown symbol ⇒ evaluate.
+        """
+        if not bars:
+            return True
+        latest_bar_ts = bars[-1].timestamp
+        risk_sig = self._risk_signature()
+        key = (latest_bar_ts, self._state_version, risk_sig)
+        if self._bar_gate.get(symbol) == key:
+            return False
+        self._bar_gate[symbol] = key
+        return True
+
+    def _risk_signature(self) -> tuple[float, int, int, float, bool]:
+        """Fingerprint of risk state that can flip a decision."""
+        r = self._risk
+        return (
+            round(float(getattr(r, "equity", 0.0)), 6),
+            len(getattr(r, "open_positions", {}) or {}),
+            int(getattr(r, "trades_today", 0)),
+            round(float(getattr(r, "daily_pnl", 0.0)), 6),
+            bool(getattr(r, "kill_switch_active", False)),
+        )
+
+    def _defensive_verdict(
+        self, symbol: str, conditions: dict[str, MarketConditions] | None
+    ) -> BlockVerdict | None:
+        """Evaluate the declared blocks, failing closed if their inputs are absent."""
+        if self._defensive_blocks is None:
+            return None
+        return evaluate_blocks(self._defensive_blocks, (conditions or {}).get(symbol))
+
     def run_cycle_sync(
         self,
         history: dict[str, list[OHLCV]],
         decision_timestamps: dict[str, int],
+        conditions: dict[str, MarketConditions] | None = None,
     ) -> CycleStageCounts:
         """Run the canonical cycle synchronously for each symbol.
 
         ``history`` maps symbol → recent OHLCV series; the PIT slice
         (bars <= decision timestamp) is taken before any feature or
-        context computation.
+        context computation. ``conditions`` carries the measured market
+        context the defensive blocks need; a symbol absent from it is blocked
+        (``market_conditions_unknown``), never waved through.
         """
         counts = CycleStageCounts()
         candidates: list[TradeCandidate] = []
@@ -216,6 +316,14 @@ class PaperCycleEngine:
             if decision.is_no_trade or not decision.strategy_id:
                 counts.router_no_trade += 1
                 _reject(counts, symbol, "router", f"NO_TRADE:{decision.no_trade_reason}")
+                continue
+
+            # -- BAR_CLOSE gate: skip redundant same-bar evaluation --------
+            # AFTER routing (router+context stay observable every cycle) but
+            # BEFORE family generation/risk/broker (where churn lives).
+            if not self._bar_gate_allows(symbol, bars):
+                counts.bar_close_skips += 1
+                _reject(counts, symbol, "bar_gate", "same_bar_unchanged_state")
                 continue
 
             family = self._families.get(decision.family or "")
@@ -308,6 +416,19 @@ class PaperCycleEngine:
                 _reject(counts, symbol, "adapter", f"{type(exc).__name__}: {exc}")
                 continue
 
+            verdict = self._defensive_verdict(symbol, conditions)
+            if verdict is not None and verdict.blocked:
+                counts.risk_rejected += 1
+                key = verdict.blocked_by or "defensive_block"
+                counts.defensive_blocks[key] = counts.defensive_blocks.get(key, 0) + 1
+                _reject(
+                    counts,
+                    symbol,
+                    "defensive_block",
+                    f"{key}: {verdict.reason or 'blocked'}",
+                )
+                continue
+
             try:
                 check = self._risk.check_signal(base_signal)
             except Exception as exc:  # risk engine failure ⇒ no order
@@ -373,7 +494,14 @@ class RouteOnlyEngine:
         self,
         history: dict[str, list[OHLCV]],
         decision_timestamps: dict[str, int],
+        conditions: dict[str, Any] | None = None,
     ) -> CycleStageCounts:
+        """Route-only path: it places no orders, so there are no blocks to apply.
+
+        ``conditions`` is accepted so the caller uses one signature for both
+        engines; nothing here can trade, so nothing here is blocked.
+        """
+        del conditions
         counts = CycleStageCounts()
         for symbol in sorted(history):
             ts = int(decision_timestamps.get(symbol, 0))

@@ -1,0 +1,79 @@
+{
+  "checks": [
+    {
+      "check": "AAVEUSDT.present",
+      "detail": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean\\data\\quote-feed-1m\\AAVEUSDT_1m_2021-01-04_2021-02-17.json",
+      "ok": true
+    },
+    {
+      "check": "AAVEUSDT.file_sha256",
+      "detail": "observed 5c19ec3d9e54a1b4435dbf43043236028b0a010697f7d38ca4fd2c674235824c, manifest 5c19ec3d9e54a1b4435dbf43043236028b0a010697f7d38ca4fd2c674235824c",
+      "ok": true
+    },
+    {
+      "check": "AAVEUSDT.rows",
+      "detail": "observed 63281, manifest 63281",
+      "ok": true
+    },
+    {
+      "check": "AAVEUSDT.series_sha256",
+      "detail": "observed ebc49a6411590e80ee02690653c0b8667f969c871c9511ef845b065bfd51517d, manifest ebc49a6411590e80ee02690653c0b8667f969c871c9511ef845b065bfd51517d",
+      "ok": true
+    },
+    {
+      "check": "AAVEUSDT.first_minute",
+      "detail": "observed 1609718400000, manifest 1609718400000",
+      "ok": true
+    },
+    {
+      "check": "AAVEUSDT.last_minute",
+      "detail": "observed 1613519940000, manifest 1613519940000",
+      "ok": true
+    },
+    {
+      "check": "AAVEUSDT.minute_grid",
+      "detail": "63281 rows, 1 non-consecutive step(s); holes are preserved, never interpolated",
+      "ok": true
+    },
+    {
+      "check": "UNIUSDT.present",
+      "detail": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean\\data\\quote-feed-1m\\UNIUSDT_1m_2021-01-04_2021-02-17.json",
+      "ok": true
+    },
+    {
+      "check": "UNIUSDT.file_sha256",
+      "detail": "observed 05033895083b62b6664029181b0df1f3f2275d95c381dea213b9d9297002a6f9, manifest 05033895083b62b6664029181b0df1f3f2275d95c381dea213b9d9297002a6f9",
+      "ok": true
+    },
+    {
+      "check": "UNIUSDT.rows",
+      "detail": "observed 63281, manifest 63281",
+      "ok": true
+    },
+    {
+      "check": "UNIUSDT.series_sha256",
+      "detail": "observed 308706655e11da3fdf89f548fa18af666f9fb2c5b16eccd440790188fa2b22b5, manifest 308706655e11da3fdf89f548fa18af666f9fb2c5b16eccd440790188fa2b22b5",
+      "ok": true
+    },
+    {
+      "check": "UNIUSDT.first_minute",
+      "detail": "observed 1609718400000, manifest 1609718400000",
+      "ok": true
+    },
+    {
+      "check": "UNIUSDT.last_minute",
+      "detail": "observed 1613519940000, manifest 1613519940000",
+      "ok": true
+    },
+    {
+      "check": "UNIUSDT.minute_grid",
+      "detail": "63281 rows, 1 non-consecutive step(s); holes are preserved, never interpolated",
+      "ok": true
+    }
+  ],
+  "failed": [],
+  "manifest_sha256": "55855c8440470c53e7f1c9674bb5cac37f035b4ae9b3aff532b773f3e85f4f7b",
+  "mode": "verify",
+  "ok": true,
+  "root": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean\\data\\quote-feed-1m"
+}

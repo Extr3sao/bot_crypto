@@ -1,0 +1,163 @@
+{
+ "checks": [
+  {
+   "check": "lab_shape",
+   "detail": "10 scenario(s), counts consistent, os_sandbox declared",
+   "ok": true
+  },
+  {
+   "check": "scenarios_complete",
+   "detail": "every scenario was executed by a child process",
+   "ok": true
+  },
+  {
+   "check": "inventory_gated",
+   "detail": "7 runtime route(s) gated in place, 2 delegating, 4 abstract/Protocol member(s) with no body",
+   "ok": true
+  },
+  {
+   "check": "runtime_isolated",
+   "detail": "the paper runtime ran to EXECUTED under a strict policy, with no audited attempt",
+   "ok": true
+  },
+  {
+   "check": "order_routes_refused",
+   "detail": "7 order-capable call(s) refused with ISO_ORDER_ROUTE; no venue touched",
+   "ok": true
+  },
+  {
+   "check": "live_route_refused",
+   "detail": "the documented live CLI route exits 2 with and without --confirm-live, before any I/O",
+   "ok": true
+  },
+  {
+   "check": "network_denied",
+   "detail": "connect, DNS, urllib and http.client were denied and the venue host was recorded",
+   "ok": true
+  },
+  {
+   "check": "disarm_refused",
+   "detail": "environment flips did not weaken the guard and re-installation was refused",
+   "ok": true
+  },
+  {
+   "check": "ccxt_construction",
+   "detail": "construction performed no I/O in this ccxt version; the first call was denied",
+   "ok": true
+  },
+  {
+   "check": "subprocess_limitation",
+   "detail": "the per-process boundary is measured and declared, never claimed as containment",
+   "ok": true
+  },
+  {
+   "check": "no_orders",
+   "detail": "venue calls, HTTP requests and spot-client calls sum to zero across the battery",
+   "ok": true
+  },
+  {
+   "check": "runtime_identity",
+   "detail": "8 runtime file(s) hash to their blobs at 0bdda77d4b4c",
+   "ok": true
+  },
+  {
+   "check": "suite_identity",
+   "detail": "acceptance 734 passed, exit 0; 102 repo-wide failure(s), 0 unexplained (one declared flake re-run on both commits)",
+   "ok": true
+  },
+  {
+   "check": "evidence_in_commit",
+   "detail": "51 evidence file(s) are inside commit 4c322d5bf99f",
+   "ok": true
+  },
+  {
+   "check": "manifest_covers",
+   "detail": "49 file(s) hashed and covered by the manifest",
+   "ok": true
+  },
+  {
+   "check": "reports_consistent",
+   "detail": "both reports point at the same commit and claim no paper validation",
+   "ok": true
+  }
+ ],
+ "evidence_sha": "4c322d5bf99f2230a46d9a5fdc57a12414db0f18",
+ "failed": [],
+ "generated_at_utc": "2026-10-21T18:11:32Z",
+ "negative_controls": [
+  {
+   "id": "NEG",
+   "mutation": "NEG-01-scenario-dropped",
+   "rejected": true,
+   "rejected_by": [
+    "lab_shape",
+    "network_denied"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-02-order-allowed",
+   "rejected": true,
+   "rejected_by": [
+    "order_routes_refused"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-03-venue-called",
+   "rejected": true,
+   "rejected_by": [
+    "order_routes_refused",
+    "no_orders"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-04-os-sandbox-claimed",
+   "rejected": true,
+   "rejected_by": [
+    "lab_shape",
+    "subprocess_limitation"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-05-denied-host-hidden",
+   "rejected": true,
+   "rejected_by": [
+    "network_denied"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-06-source-commit-falsified",
+   "rejected": true,
+   "rejected_by": [
+    "inventory_gated",
+    "runtime_identity",
+    "reports_consistent"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-07-runtime-hash-falsified",
+   "rejected": true,
+   "rejected_by": [
+    "runtime_identity"
+   ]
+  },
+  {
+   "id": "NEG",
+   "mutation": "NEG-08-runtime-attempt-hidden",
+   "rejected": true,
+   "rejected_by": [
+    "runtime_isolated"
+   ]
+  }
+ ],
+ "negative_controls_rejected": 8,
+ "negative_controls_total": 8,
+ "schema": "rfc005-verification/1",
+ "unsupported_pass_count": 0,
+ "verdict": "PASS"
+}

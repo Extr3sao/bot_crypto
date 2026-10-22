@@ -1,0 +1,421 @@
+{
+  "book_id": "ai-vision-paper-003c-real_900ms_wide_stop",
+  "calls": 74,
+  "closed_trades": 34,
+  "costs_usdt": 54.435915,
+  "counters": {
+    "action:CLOSE": 12,
+    "action:LONG": 25,
+    "action:NO_TRADE": 12,
+    "action:SHORT": 25,
+    "closed_trades": 34,
+    "dropped:MODEL_NO_TRADE": 12,
+    "dropped:NO_POSITION_TO_CLOSE": 12,
+    "fills": 34,
+    "gate:WEEKEND_BLOCK": 16,
+    "requote:WAITING_FOR_QUOTE": 50
+  },
+  "decision_points": 4,
+  "drawdown_pct": 0.878991,
+  "drawdown_status": "MEASURED",
+  "drawdown_usdt": 87.920343,
+  "equity_points": 1000,
+  "estimated_spend_usd": 0.0,
+  "execution": {
+    "bar_interval_ms": 3600000,
+    "data_gap_policy": "fail_closed_unless_independent_coverage",
+    "exit_ts_resolutions": [
+      "OPEN_GAP",
+      "BAR_WINDOW",
+      "QUOTE"
+    ],
+    "expired_opinions": 0,
+    "fills": 34,
+    "gap_exits": 0,
+    "gap_policy": "open_on_gap",
+    "max_opinion_age_ms": 3600000,
+    "open_phase_order": "gap_close>mark>entries>intrabar",
+    "quote_lag_ms": {
+      "max": 3599100,
+      "median": 3599100,
+      "min": 3599100
+    },
+    "quote_source": "bar_open",
+    "stale_valuation_vetoes": 0,
+    "stop_coverage": "entry_at_open_full_bar",
+    "waiting_events": 50
+  },
+  "fills": 34,
+  "final_equity_usdt": 9965.752079,
+  "gross_realised_usdt": -0.247921,
+  "net_realised_usdt": -34.247921,
+  "open_positions_at_end": {},
+  "provider": "replay",
+  "reconciliation": {
+    "curve_end_equity_usdt": 9965.75207879,
+    "entry_commission_usdt": 17.0,
+    "execution_cost_usdt": 20.43591483,
+    "exit_commission_usdt": 17.0,
+    "final_equity_usdt": 9965.75207879,
+    "identities": {
+      "cash_rebuilds_from_realised_pnl": true,
+      "curve_ends_at_final_equity": true,
+      "every_close_after_its_entry_quote": true,
+      "net_pnl_nets_every_named_cost": true,
+      "risk_equity_matches_marked_equity": true
+    },
+    "initial_equity_usdt": 10000.0,
+    "marked_equity_usdt": 9965.75207879,
+    "marks_complete_at_end": true,
+    "net_realised_usdt": -34.24792121,
+    "open_gap_exits": 0,
+    "open_positions_at_end": 0,
+    "reference_gross_usdt": 20.18799363,
+    "risk_equity_usdt": 9965.75207879,
+    "tolerance_usdt": 1e-06
+  },
+  "risk_equity_usdt": 9965.752079,
+  "stop_reason": null,
+  "trades": [
+    {
+      "closed_at_utc": "2021-01-11T03:00:00Z",
+      "entry_price": 118.704839615788,
+      "exit_price": 115.21271999999999,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2021-01-11T02:00:00Z",
+      "pnl_net_usdt": 13.70925544,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-11T03:00:00Z",
+      "entry_price": 5.8333948695037225,
+      "exit_price": 5.713302,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-11T02:00:00Z",
+      "pnl_net_usdt": -11.29356594,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-13T03:00:00Z",
+      "entry_price": 126.49117191731865,
+      "exit_price": 129.09834,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-13T02:00:00Z",
+      "pnl_net_usdt": -11.30573139,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-13T06:00:00Z",
+      "entry_price": 5.483185053841995,
+      "exit_price": 5.370301999999999,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-13T02:00:00Z",
+      "pnl_net_usdt": -11.29356594,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-15T03:00:00Z",
+      "entry_price": 148.66088176776847,
+      "exit_price": 151.72500000000002,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-15T02:00:00Z",
+      "pnl_net_usdt": -11.30573139,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-15T04:00:00Z",
+      "entry_price": 7.036215496380757,
+      "exit_price": 6.89136,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-15T02:00:00Z",
+      "pnl_net_usdt": -11.29356594,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-19T03:00:00Z",
+      "entry_price": 9.305875281710744,
+      "exit_price": 9.114294,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-19T02:00:00Z",
+      "pnl_net_usdt": -11.29356594,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-19T08:00:00Z",
+      "entry_price": 203.59295145761985,
+      "exit_price": 207.7893,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-19T02:00:00Z",
+      "pnl_net_usdt": -11.30573139,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-21T04:00:00Z",
+      "entry_price": 8.664491019313123,
+      "exit_price": 8.486113999999999,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-21T02:00:00Z",
+      "pnl_net_usdt": -11.29356594,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-21T05:00:00Z",
+      "entry_price": 193.38806901237155,
+      "exit_price": 187.69888,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2021-01-21T02:00:00Z",
+      "pnl_net_usdt": 13.70925544,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-22T03:00:00Z",
+      "entry_price": 170.32989177441556,
+      "exit_price": 173.84064,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-22T02:00:00Z",
+      "pnl_net_usdt": -11.30573139,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-22T05:00:00Z",
+      "entry_price": 7.808778349730527,
+      "exit_price": 8.038223000000002,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2021-01-22T02:00:00Z",
+      "pnl_net_usdt": 13.6914562,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-25T03:00:00Z",
+      "entry_price": 262.7624809034063,
+      "exit_price": 268.17840000000007,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-25T02:00:00Z",
+      "pnl_net_usdt": -11.30573139,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-25T03:00:00Z",
+      "entry_price": 12.1261649572083,
+      "exit_price": 12.482467000000002,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2021-01-25T02:00:00Z",
+      "pnl_net_usdt": 13.6914562,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-27T05:00:00Z",
+      "entry_price": 268.8618245096496,
+      "exit_price": 274.40346,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-27T02:00:00Z",
+      "pnl_net_usdt": -11.30573139,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-27T05:00:00Z",
+      "entry_price": 13.42674415262862,
+      "exit_price": 13.821261,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2021-01-27T02:00:00Z",
+      "pnl_net_usdt": 13.6914562,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-28T03:00:00Z",
+      "entry_price": 15.326882552461822,
+      "exit_price": 15.011346000000001,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-28T02:00:00Z",
+      "pnl_net_usdt": -11.29356594,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-28T05:00:00Z",
+      "entry_price": 286.05651675041906,
+      "exit_price": 277.64116,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2021-01-28T02:00:00Z",
+      "pnl_net_usdt": 13.70925544,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-29T03:00:00Z",
+      "entry_price": 297.1868444159494,
+      "exit_price": 303.31230000000005,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-29T02:00:00Z",
+      "pnl_net_usdt": -11.30573139,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-29T03:00:00Z",
+      "entry_price": 14.72302077031367,
+      "exit_price": 15.155626,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2021-01-29T02:00:00Z",
+      "pnl_net_usdt": 13.6914562,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-02-02T03:00:00Z",
+      "entry_price": 19.904425023002588,
+      "exit_price": 19.49465,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-02-02T02:00:00Z",
+      "pnl_net_usdt": -11.29356594,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-02-02T09:00:00Z",
+      "entry_price": 291.21442472220696,
+      "exit_price": 297.21678,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-02-02T02:00:00Z",
+      "pnl_net_usdt": -11.30573139,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-02-03T05:00:00Z",
+      "entry_price": 302.8194678085083,
+      "exit_price": 309.06102,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-02-03T02:00:00Z",
+      "pnl_net_usdt": -11.30573139,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-02-03T08:00:00Z",
+      "entry_price": 19.003485257225964,
+      "exit_price": 19.561863,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2021-02-03T02:00:00Z",
+      "pnl_net_usdt": 13.6914562,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-02-04T03:00:00Z",
+      "entry_price": 412.96543823801625,
+      "exit_price": 400.81661,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2021-02-04T02:00:00Z",
+      "pnl_net_usdt": 13.70925544,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-02-04T03:00:00Z",
+      "entry_price": 20.901822578007188,
+      "exit_price": 20.471514,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-02-04T02:00:00Z",
+      "pnl_net_usdt": -11.29356594,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-02-08T03:00:00Z",
+      "entry_price": 477.1429655227155,
+      "exit_price": 463.10612999999995,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2021-02-08T02:00:00Z",
+      "pnl_net_usdt": 13.70925544,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-02-08T05:00:00Z",
+      "entry_price": 18.383613883504704,
+      "exit_price": 18.923778,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2021-02-08T02:00:00Z",
+      "pnl_net_usdt": 13.6914562,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-02-09T07:00:00Z",
+      "entry_price": 484.557520694716,
+      "exit_price": 494.54496,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-02-09T02:00:00Z",
+      "pnl_net_usdt": -11.30573139,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-02-09T10:00:00Z",
+      "entry_price": 19.182692622897434,
+      "exit_price": 19.746336,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2021-02-09T02:00:00Z",
+      "pnl_net_usdt": 13.6914562,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-02-10T03:00:00Z",
+      "entry_price": 505.8467583647462,
+      "exit_price": 516.2729999999999,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-02-10T02:00:00Z",
+      "pnl_net_usdt": -11.30573139,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-02-10T06:00:00Z",
+      "entry_price": 20.418332912499338,
+      "exit_price": 21.018282999999997,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2021-02-10T02:00:00Z",
+      "pnl_net_usdt": 13.6914562,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-02-12T06:00:00Z",
+      "entry_price": 21.556414753452625,
+      "exit_price": 22.189805000000003,
+      "exit_reason": "take_profit",
+      "opened_at_utc": "2021-02-12T03:00:00Z",
+      "pnl_net_usdt": 13.6914562,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    },
+    {
+      "closed_at_utc": "2021-02-12T08:00:00Z",
+      "entry_price": 512.0430438569155,
+      "exit_price": 522.597,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-02-12T03:00:00Z",
+      "pnl_net_usdt": -11.30573139,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    }
+  ]
+}

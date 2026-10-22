@@ -1,0 +1,85 @@
+{
+ "baseline_version": "RFC035_BASELINE_V1",
+ "as_of_utc": "2026-10-07T21:05:00Z",
+ "active_rfc": "RFC-035",
+ "task": "EXTERNAL_PROFITABLE_OPPORTUNITY_DISCOVERY",
+ "mode": "PROFITABILITY_FIRST",
+ "alpha_004_opened": false,
+ "branch": "main",
+ "source_commit": "7e21f7ca6dbf8816d83f2f8ab15aeb09310b878c",
+ "cap004c_commit_present": true,
+ "working_tree_dirty_entries": 26,
+ "rfc_number_collision": {
+  "existing_artifact": "reports/RFC035_FINAL_REPORT.md",
+  "existing_scope": "STRATEGIC PROFITABILITY PLAN V2 (2026-10-05, commit d940b532)",
+  "existing_status": "superseded; MF-TREND-001 MODERN_VALIDATION_DATA_BLOCKED (RFC-037/RFC-038), min capital 25M-50M USD",
+  "this_run_namespace": "reports/rfc035/ + research/profitability/",
+  "same_rfc": false
+ },
+ "gates": {
+  "cap004c_storage": {"status": "PASS", "passed": 169, "checks": 169, "mismatches": 0, "false_success": 0,
+   "command": ".venv/Scripts/python scripts/cap004c_verify.py", "exit_code": 0},
+  "cap004b_campaign": {"status": "PASS", "checks": 36, "command": ".venv/Scripts/python scripts/cap004b_verify.py", "exit_code": 0},
+  "cap004_and_cap003_delegated": {"status": "PASS", "false_success": 0},
+  "pytest": {"command": ".venv/Scripts/python -m pytest -q", "result": "2745 passed", "exit_code": 0, "seconds": 214.6},
+  "ruff": {"command": ".venv/Scripts/python -m ruff check .", "result": "All checks passed", "exit_code": 0},
+  "mypy": {"command": ".venv/Scripts/python -m mypy . --exclude reports", "result": "no issues found in 687 source files", "exit_code": 0},
+  "git_diff_check": {"exit_code": 0}
+ },
+ "certified_state": {
+  "CAP004C": "STORAGE_STABILIZED",
+  "CAP004B": "RUNNING",
+  "CHAIN": "INTACT",
+  "DRIFT": "NO_DRIFT",
+  "FALSE_SUCCESS": 0
+ },
+ "campaign": {
+  "campaign_id": "CAP004-REAL-DECISIONS-V1",
+  "campaign_status": "RUNNING",
+  "as_of_utc": "2026-10-07T20:45:02Z",
+  "age_days": 1.128,
+  "population": {"sealed": 4, "matured": 4, "settled": 4, "evaluated": 4, "verified": 4, "matured_unsettled": 0},
+  "scheduler": {"task": "TradingAgentic-CAP004-Campaign", "state": "Ready", "next_run_local": "2026-10-07T23:00:00"},
+  "disk": {"status": "HEALTHY", "free_bytes": 25943785472, "free_gib": 24.16},
+  "observed_anomaly": {
+   "cycles": ["2026-10-07T20:00Z", "2026-10-07T20:15Z", "2026-10-07T20:30Z", "2026-10-07T20:45Z"],
+   "error_type": "MISSED_DECISION_SLOT",
+   "exit_code": 3,
+   "verification": "SKIPPED",
+   "decisions_lost": 0,
+   "note": "campaign RUNNING must not be read as 'sealing on cadence'; reported as a finding"
+  }
+ },
+ "verifier_interpreter_finding": {
+  "observed_at_utc": "2026-10-07T20:48:23Z",
+  "interpreter": "system python (no structlog)",
+  "artifact_assessment": "storage_not_verified",
+  "mismatch": "replay group raised ModuleNotFoundError: No module named 'structlog'",
+  "cause": "interpreter artefact, not an evidence defect",
+  "remedy": "cap004c_verify now fails closed: STATUS = ENVIRONMENT_UNVERIFIED, exit 2, certified artifact untouched",
+  "re_run_under_project_venv": {"status": "PASS", "passed": 169, "checks": 169}
+ },
+ "flags": {
+  "G_AGENTIC_EDGE": "NOT_TESTED",
+  "TRADES_AUTHORIZED": 0,
+  "FALSE_SUCCESS": 0,
+  "alpha_research_freeze": "ACTIVE",
+  "next_alpha_rfc_allowed": false,
+  "BUSINESS_VALIDATED_EDGE_COUNT": 0
+ },
+ "closed_lines_respected": [
+  "EXT-TSMOM-001 INVALIDATED_TRADABILITY",
+  "EXT-TSMOM-002 REJECTED_HISTORICAL_PLAUSIBILITY",
+  "EXT-TSMOM-003 REJECTED_VALIDATION",
+  "EXT-XMOM-001 REJECTED_ROBUSTNESS",
+  "MF-TREND-001 MODERN_VALIDATION_DATA_BLOCKED",
+  "SC-TREND-001 VALIDATED_DEFENSIVE",
+  "SC-DUALMOM-002 REJECTED_BUSINESS_EDGE",
+  "SC-CANDIDATE-003 NOT_AUTHORIZED",
+  "internal microstructure A-01..A-06 COST_KILLED (cost floor 23.791 bps round trip)"
+ ],
+ "limitations": [
+  "working tree is shared with other threads; only RFC-035 files were authored here",
+  "campaign cadence anomaly (MISSED_DECISION_SLOT) is reported, not repaired: it belongs to CAP-004B, not to RFC-035"
+ ]
+}

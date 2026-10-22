@@ -1,0 +1,290 @@
+{
+  "admission_claim": {
+    "fee_share_of_round_trip": 0.859187,
+    "fee_share_percent": 85.92,
+    "mean_fee_bps": 20.0,
+    "mean_round_trip_bps": 23.27783,
+    "n_streams": 10,
+    "population": "admission_scenario_only",
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "verdict": "the fee is 85.9% of the admission round trip"
+  },
+  "breakdowns": [
+    {
+      "aggregation": "per_scenario_mean_over_streams",
+      "components_double_count_checked": true,
+      "data_version_sha256": "a48e106e16b2346a5aaa4b6f7e3cd862887fa4a8be55c22265ea44c4d5d008f6",
+      "entry_fee_bps": 10.0,
+      "exit_fee_bps": 10.0,
+      "fee_schedule_source": "WP-EDGE-09 gates/COST_LIQUIDITY_CAPACITY.json (venue schedule, UTC tier at capture)",
+      "funding_bps": null,
+      "impact_bps": null,
+      "included_in": [
+        "spread_bps"
+      ],
+      "latency_bps": null,
+      "net_cost_bps": 23.27783,
+      "notes": [
+        "entry and exit split the taker fee symmetrically; the schedule does not publish a maker/taker asymmetry at this tier"
+      ],
+      "numeraire": "USDT",
+      "population": "BINANCE_SPOT_STANDARD_TAKER",
+      "rebate_bps": null,
+      "reconciliation": {
+        "checks": [
+          {
+            "detail": "components 23.27783 vs round_trip 23.27783",
+            "name": "components_add_up_to_the_round_trip",
+            "passed": true
+          },
+          {
+            "detail": "components above the total: none",
+            "name": "no_component_exceeds_a_non_negative_total_unexplained",
+            "passed": true
+          },
+          {
+            "detail": "every cost component is a non-negative cost",
+            "name": "no_negative_component",
+            "passed": true
+          }
+        ],
+        "detail": "components=23.27783 total=23.27783",
+        "status": "RECONCILED"
+      },
+      "round_trip_bps": 23.27783,
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "slippage_bps": null,
+      "spread_bps": 3.27783,
+      "status": "RECONCILED",
+      "tolerance_bps": 0.01
+    },
+    {
+      "aggregation": "per_scenario_mean_over_streams",
+      "components_double_count_checked": true,
+      "data_version_sha256": "a48e106e16b2346a5aaa4b6f7e3cd862887fa4a8be55c22265ea44c4d5d008f6",
+      "entry_fee_bps": 40.0,
+      "exit_fee_bps": 40.0,
+      "fee_schedule_source": "WP-EDGE-09 gates/COST_LIQUIDITY_CAPACITY.json (venue schedule, UTC tier at capture)",
+      "funding_bps": null,
+      "impact_bps": null,
+      "included_in": [
+        "spread_bps"
+      ],
+      "latency_bps": null,
+      "net_cost_bps": 83.27783,
+      "notes": [
+        "entry and exit split the taker fee symmetrically; the schedule does not publish a maker/taker asymmetry at this tier"
+      ],
+      "numeraire": "USDT",
+      "population": "all_registered_venue_schedules",
+      "rebate_bps": null,
+      "reconciliation": {
+        "checks": [
+          {
+            "detail": "components 83.27783 vs round_trip 83.27783",
+            "name": "components_add_up_to_the_round_trip",
+            "passed": true
+          },
+          {
+            "detail": "components above the total: none",
+            "name": "no_component_exceeds_a_non_negative_total_unexplained",
+            "passed": true
+          },
+          {
+            "detail": "every cost component is a non-negative cost",
+            "name": "no_negative_component",
+            "passed": true
+          }
+        ],
+        "detail": "components=83.27783 total=83.27783",
+        "status": "RECONCILED"
+      },
+      "round_trip_bps": 83.27783,
+      "scenario_id": "KRAKENPRO_SPOT_TAKER",
+      "slippage_bps": null,
+      "spread_bps": 3.27783,
+      "status": "RECONCILED",
+      "tolerance_bps": 0.01
+    },
+    {
+      "aggregation": "per_scenario_mean_over_streams",
+      "components_double_count_checked": true,
+      "data_version_sha256": "a48e106e16b2346a5aaa4b6f7e3cd862887fa4a8be55c22265ea44c4d5d008f6",
+      "entry_fee_bps": 5.0,
+      "exit_fee_bps": 5.0,
+      "fee_schedule_source": "WP-EDGE-09 gates/COST_LIQUIDITY_CAPACITY.json (venue schedule, UTC tier at capture)",
+      "funding_bps": null,
+      "impact_bps": null,
+      "included_in": [
+        "spread_bps"
+      ],
+      "latency_bps": null,
+      "net_cost_bps": 13.27783,
+      "notes": [
+        "entry and exit split the taker fee symmetrically; the schedule does not publish a maker/taker asymmetry at this tier"
+      ],
+      "numeraire": "USDT",
+      "population": "all_registered_venue_schedules",
+      "rebate_bps": null,
+      "reconciliation": {
+        "checks": [
+          {
+            "detail": "components 13.27783 vs round_trip 13.27783",
+            "name": "components_add_up_to_the_round_trip",
+            "passed": true
+          },
+          {
+            "detail": "components above the total: none",
+            "name": "no_component_exceeds_a_non_negative_total_unexplained",
+            "passed": true
+          },
+          {
+            "detail": "every cost component is a non-negative cost",
+            "name": "no_negative_component",
+            "passed": true
+          }
+        ],
+        "detail": "components=13.27783 total=13.27783",
+        "status": "RECONCILED"
+      },
+      "round_trip_bps": 13.27783,
+      "scenario_id": "MEXC_SPOT_TAKER",
+      "slippage_bps": null,
+      "spread_bps": 3.27783,
+      "status": "RECONCILED",
+      "tolerance_bps": 0.01
+    },
+    {
+      "aggregation": "per_scenario_mean_over_streams",
+      "components_double_count_checked": true,
+      "data_version_sha256": "a48e106e16b2346a5aaa4b6f7e3cd862887fa4a8be55c22265ea44c4d5d008f6",
+      "entry_fee_bps": 10.0,
+      "exit_fee_bps": 10.0,
+      "fee_schedule_source": "WP-EDGE-09 gates/COST_LIQUIDITY_CAPACITY.json (venue schedule, UTC tier at capture)",
+      "funding_bps": null,
+      "impact_bps": null,
+      "included_in": [
+        "spread_bps"
+      ],
+      "latency_bps": null,
+      "net_cost_bps": 23.27783,
+      "notes": [
+        "entry and exit split the taker fee symmetrically; the schedule does not publish a maker/taker asymmetry at this tier"
+      ],
+      "numeraire": "USDT",
+      "population": "all_registered_venue_schedules",
+      "rebate_bps": null,
+      "reconciliation": {
+        "checks": [
+          {
+            "detail": "components 23.27783 vs round_trip 23.27783",
+            "name": "components_add_up_to_the_round_trip",
+            "passed": true
+          },
+          {
+            "detail": "components above the total: none",
+            "name": "no_component_exceeds_a_non_negative_total_unexplained",
+            "passed": true
+          },
+          {
+            "detail": "every cost component is a non-negative cost",
+            "name": "no_negative_component",
+            "passed": true
+          }
+        ],
+        "detail": "components=23.27783 total=23.27783",
+        "status": "RECONCILED"
+      },
+      "round_trip_bps": 23.27783,
+      "scenario_id": "OKX_SPOT_TAKER",
+      "slippage_bps": null,
+      "spread_bps": 3.27783,
+      "status": "RECONCILED",
+      "tolerance_bps": 0.01
+    }
+  ],
+  "cross_population_defect": {
+    "correct_statement": "the fee is 85.9% of the admission round trip (20 bps of 23.2778 bps); the 1.3863 ratio mixes four venue schedules with one admission scenario and must not be read as a cost share",
+    "defect": "population_mismatch",
+    "denominator": {
+      "n_assets": 6,
+      "population": "admission_scenario_only",
+      "value_bps": 23.443933
+    },
+    "explanation": "the published 1.3863 divides a cross-venue mean fee by an admission-only mean barrier; the fee was not double counted and no identity was broken in the gate, the identity was broken by the sentence at render time",
+    "matches_published_1_3863": true,
+    "numerator": {
+      "n_schedules": 4,
+      "per_schedule_mean_fee_bps": {
+        "BINANCE_SPOT_STANDARD_TAKER": 20.0,
+        "KRAKENPRO_SPOT_TAKER": 80.0,
+        "MEXC_SPOT_TAKER": 10.0,
+        "OKX_SPOT_TAKER": 20.0
+      },
+      "population": "all_registered_venue_schedules",
+      "value_bps": 32.5,
+      "why_it_is_a_real_number": "each of the four schedules has its own taker fee; their mean is the cost of a product a trader would choose between, not the cost of one product"
+    },
+    "published_ratio": 1.386286
+  },
+  "notes": [
+    "the WP-EDGE-09 originals keep their bytes; this record supersedes the 1.3863 sentence by reference rather than by rewriting the document that carries it",
+    "no promotion is unfrozen by this reconciliation; it restores the arithmetic, not the edge"
+  ],
+  "order_sent": false,
+  "per_scenario": {
+    "BINANCE_SPOT_STANDARD_TAKER": {
+      "components_sum_matches_round_trip": true,
+      "fee_share_of_its_own_barrier": 0.859187,
+      "mean_fee_bps": 20.0,
+      "mean_round_trip_bps": 23.27783,
+      "n": 10,
+      "product": "Spot",
+      "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+      "venue": "Binance"
+    },
+    "KRAKENPRO_SPOT_TAKER": {
+      "components_sum_matches_round_trip": true,
+      "fee_share_of_its_own_barrier": 0.96064,
+      "mean_fee_bps": 80.0,
+      "mean_round_trip_bps": 83.27783,
+      "n": 10,
+      "product": "Spot",
+      "scenario": "KRAKENPRO_SPOT_TAKER",
+      "venue": "Kraken Pro"
+    },
+    "MEXC_SPOT_TAKER": {
+      "components_sum_matches_round_trip": true,
+      "fee_share_of_its_own_barrier": 0.753135,
+      "mean_fee_bps": 10.0,
+      "mean_round_trip_bps": 13.27783,
+      "n": 10,
+      "product": "Spot",
+      "scenario": "MEXC_SPOT_TAKER",
+      "venue": "MEXC"
+    },
+    "OKX_SPOT_TAKER": {
+      "components_sum_matches_round_trip": true,
+      "fee_share_of_its_own_barrier": 0.859187,
+      "mean_fee_bps": 20.0,
+      "mean_round_trip_bps": 23.27783,
+      "n": 10,
+      "product": "Spot",
+      "scenario": "OKX_SPOT_TAKER",
+      "venue": "OKX"
+    }
+  },
+  "primary_source": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-09\\gates\\COST_LIQUIDITY_CAPACITY.json",
+  "primary_source_sha256": "a48e106e16b2346a5aaa4b6f7e3cd862887fa4a8be55c22265ea44c4d5d008f6",
+  "primary_source_untouched": true,
+  "promotion": "NONE",
+  "schema_version": "EDGE14_COST_RECONCILIATION_V1",
+  "status_by_axis": {
+    "admission_cost_share": "RECONCILED",
+    "cross_venue_fee_mean": "RECONCILED",
+    "promotions_frozen": true,
+    "published_1_3863_sentence": "INCONSISTENT_SUPERSEDED"
+  },
+  "verdict": "ECONOMIC_INTEGRITY_RECONCILED",
+  "work_package": "WP-EDGE-14B"
+}

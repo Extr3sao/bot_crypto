@@ -29,6 +29,7 @@ from pydantic import ValidationError
 from trading_bot import __version__
 from trading_bot.charting import ChartSnapshotRequest, render_local_chart_snapshot
 from trading_bot.config import TradingMode, load_settings
+from trading_bot.execution import isolation
 from trading_bot.market_data.bitunix import (
     BitunixAPIError,
     BitunixSpotClient,
@@ -1216,6 +1217,17 @@ def _cmd_place_order(args: argparse.Namespace) -> int:
     settings = load_settings(config_dir=args.config_dir, env_file=env_file)
     if settings.runtime.mode != TradingMode.LIVE:
         sys.stderr.write("ERROR: runtime.mode debe ser 'live' para colocar una orden real.\n")
+        return 2
+
+    #: RFC005: segunda puerta, independiente de las dos anteriores. Un proceso
+    #: paper que herede `--confirm-live` y un `.env` en modo live sigue sin poder
+    #: enviar: la política de aislamiento se instala antes y no admite órdenes.
+    try:
+        isolation.assert_order_allowed(
+            "app._cmd_place_order", detail=f"{args.market_kind} {args.symbol}"
+        )
+    except isolation.OrderRouteRefused as exc:
+        sys.stderr.write(f"ERROR: {exc}\n")
         return 2
 
     if args.market_kind == "futures":

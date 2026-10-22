@@ -1,0 +1,132 @@
+{
+  "schema": "PHASE_A_VERIFICATION_V1",
+  "generated_at_utc": "2026-10-21T12:40:25+00:00",
+  "code_sha": "aab65cf9d60e520119426fc74bccd84e110eee1e",
+  "checkout": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean",
+  "verifier": "reports/ai-bots/WP-PAPER-QUOTE-GAP-002/rfc003/tools/verify_phase_a.py",
+  "imports_business_logic": false,
+  "checks": [
+    {
+      "check": "ACC-001.git_authority",
+      "ok": true,
+      "detail": "20 files hash to their HEAD blob under the repo's EOL policy"
+    },
+    {
+      "check": "ACC-002.import_identity",
+      "ok": true,
+      "detail": "origin=C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean\\src\\trading_bot\\__init__.py inside=True (inject=None)"
+    },
+    {
+      "check": "ACC-003.suite_identity",
+      "ok": true,
+      "detail": "694 ids, 5 disjoint parts, all logs re-hash"
+    },
+    {
+      "check": "ACC-005.dataset",
+      "ok": true,
+      "detail": "minutes and 5m bars re-derive from the WP archive"
+    },
+    {
+      "check": "ACC-005.event_chain",
+      "ok": true,
+      "detail": "3034 events, head b92e522603df519f… intact"
+    },
+    {
+      "check": "ACC-004.gap_lab_replay",
+      "ok": true,
+      "detail": "83 checks with the same names, 10/10 controls detect, same first_failure"
+    },
+    {
+      "check": "ACC-006.recovery_matrix",
+      "ok": true,
+      "detail": "drill arms identical, 14 kills with no double close, economy equal, 12 books readable"
+    },
+    {
+      "check": "ACC-008.order_boundary",
+      "ok": true,
+      "detail": "3 armed boundaries, none crossed, 7 gated live sites declared"
+    },
+    {
+      "check": "ACC-007.evidence_manifest",
+      "ok": true,
+      "detail": "64 entries re-hash from their bytes"
+    },
+    {
+      "check": "ACC-010.inventory",
+      "ok": true,
+      "detail": "inventory covers 9 runtime files"
+    },
+    {
+      "check": "ACC-009.unsupported_pass_count",
+      "ok": true,
+      "detail": "0 of 10 adversarial cases were wrongly accepted"
+    }
+  ],
+  "passed": 11,
+  "failed": [],
+  "adversarial": [
+    {
+      "id": "NEG-02",
+      "expectation": "mutated runtime file is rejected",
+      "accepted_invalid": false,
+      "detail": "git blob identity sees the mutation"
+    },
+    {
+      "id": "NEG-03",
+      "expectation": "a tampered log is rejected",
+      "accepted_invalid": false,
+      "detail": "[\"part 1: log hash does not match the manifest\"]"
+    },
+    {
+      "id": "NEG-04",
+      "expectation": "a duplicated node id is rejected",
+      "accepted_invalid": false,
+      "detail": "[\"part 2: node-id hash does not re-derive\"]"
+    },
+    {
+      "id": "NEG-05",
+      "expectation": "a missing partition is rejected",
+      "accepted_invalid": false,
+      "detail": "[\"part 5: log missing\"]"
+    },
+    {
+      "id": "NEG-09",
+      "expectation": "an unmeasured 'no orders' claim is rejected",
+      "accepted_invalid": false,
+      "detail": "[\"external_orders asserted without venue reconciliation\", \"attempts=0 claimed with no armed boundary: proves nothing\"]"
+    },
+    {
+      "id": "NEG-10",
+      "expectation": "an incomplete inventory is rejected",
+      "accepted_invalid": false,
+      "detail": "inventory omits ['src/trading_bot/vision/ledger.py']"
+    },
+    {
+      "id": "NEG-01",
+      "expectation": "the import gate refuses a foreign package",
+      "accepted_invalid": false,
+      "detail": "gate exit 3, status=REFUSED, origin=C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpg_fzbn6d\\src\\trading_bot\\__init__.py"
+    },
+    {
+      "id": "NEG-06",
+      "expectation": "a pre-commit crash resumes consistently",
+      "accepted_invalid": false,
+      "detail": "2 passed in 8.53s"
+    },
+    {
+      "id": "NEG-07",
+      "expectation": "a post-commit crash does not close twice",
+      "accepted_invalid": false,
+      "detail": "1 passed in 7.06s"
+    },
+    {
+      "id": "NEG-08",
+      "expectation": "an armed transport refuses a live order",
+      "accepted_invalid": false,
+      "detail": "REFUSED 1"
+    }
+  ],
+  "unsupported_pass_count": 0,
+  "unsupported_pass_scope": "preregistered Phase-A adversarial cases only",
+  "ok": true
+}

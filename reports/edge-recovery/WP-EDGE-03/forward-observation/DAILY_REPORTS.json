@@ -1,0 +1,6442 @@
+{
+  "arms": {
+    "2026-03-02": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-03-04": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-03-05": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-03-10": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 5,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 5,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 5,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-03-13": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-03-16": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-03-17": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -48.188141,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 2
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -48.560176,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 2
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -46.36694,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 2
+      }
+    },
+    "2026-03-25": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -26.202466,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -26.281137,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -25.574478,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      }
+    },
+    "2026-03-31": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-04-01": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-04-06": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 6,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 6,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 6,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-04-08": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-04-11": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -46.512064,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 2
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -47.045187,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 2
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -44.554662,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 2
+      }
+    },
+    "2026-04-12": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-04-14": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -25.503175,
+        "refusals": 1,
+        "signals": 3,
+        "trades": 2
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -25.878892,
+        "refusals": 1,
+        "signals": 3,
+        "trades": 2
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -23.721982,
+        "refusals": 1,
+        "signals": 3,
+        "trades": 2
+      }
+    },
+    "2026-04-16": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-04-17": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 2,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 2,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 2,
+        "trades": 0
+      }
+    },
+    "2026-04-18": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-04-22": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -18.172712,
+        "refusals": 0,
+        "signals": 6,
+        "trades": 2
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -18.721647,
+        "refusals": 0,
+        "signals": 6,
+        "trades": 2
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -16.186913,
+        "refusals": 0,
+        "signals": 6,
+        "trades": 2
+      }
+    },
+    "2026-04-26": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      }
+    },
+    "2026-04-27": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 0
+      }
+    },
+    "2026-05-01": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      }
+    },
+    "2026-05-04": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -16.677415,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -16.947647,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -15.692122,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 1
+      }
+    },
+    "2026-05-05": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 0
+      }
+    },
+    "2026-05-06": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -24.377583,
+        "refusals": 3,
+        "signals": 2,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -24.643519,
+        "refusals": 3,
+        "signals": 2,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -23.400006,
+        "refusals": 3,
+        "signals": 2,
+        "trades": 1
+      }
+    },
+    "2026-05-07": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 19.001992,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 18.711853,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 20.023036,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      }
+    },
+    "2026-05-08": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      }
+    },
+    "2026-05-09": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      }
+    },
+    "2026-05-10": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -13.93762,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -14.20938,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -12.949581,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 1
+      }
+    },
+    "2026-05-11": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 0
+      }
+    },
+    "2026-05-12": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-05-21": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-06-14": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-06-15": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 11,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 11,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 11,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-06-21": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-06-22": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-06-26": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-06-29": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-07-01": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-07-02": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -25.799175,
+        "refusals": 4,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -25.869547,
+        "refusals": 4,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -25.208394,
+        "refusals": 4,
+        "signals": 1,
+        "trades": 1
+      }
+    },
+    "2026-07-03": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-07-04": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 4,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 4,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 4,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-07-06": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-07-07": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-07-10": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-07-11": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -18.702353,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -18.971455,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -17.719089,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      }
+    },
+    "2026-07-14": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -1.994363,
+        "refusals": 1,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 144.462032,
+        "refusals": 1,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -0.994357,
+        "refusals": 1,
+        "signals": 1,
+        "trades": 1
+      }
+    },
+    "2026-07-15": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 2,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 2,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 2,
+        "trades": 0
+      }
+    },
+    "2026-07-16": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-07-20": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -33.033104,
+        "refusals": 0,
+        "signals": 5,
+        "trades": 2
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -33.573747,
+        "refusals": 0,
+        "signals": 5,
+        "trades": 2
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -31.062195,
+        "refusals": 0,
+        "signals": 5,
+        "trades": 2
+      }
+    },
+    "2026-07-21": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 6,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 6,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 6,
+        "trades": 0
+      }
+    },
+    "2026-07-22": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-07-27": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      }
+    },
+    "2026-08-05": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 135.34766,
+        "refusals": 1,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 136.485283,
+        "refusals": 1,
+        "signals": 1,
+        "trades": 1
+      }
+    },
+    "2026-08-07": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-08-08": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-08-09": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-08-17": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 121.645228,
+        "refusals": 2,
+        "signals": 3,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 121.297817,
+        "refusals": 2,
+        "signals": 3,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 122.769121,
+        "refusals": 2,
+        "signals": 3,
+        "trades": 1
+      }
+    },
+    "2026-08-18": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 2,
+        "trades": 0
+      }
+    },
+    "2026-08-19": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 3,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 3,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 3,
+        "trades": 0
+      }
+    },
+    "2026-08-20": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 34.105327,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 33.806761,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 35.141505,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 1
+      }
+    },
+    "2026-08-21": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 2,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 5,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 5,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 5,
+        "trades": 0
+      }
+    },
+    "2026-08-22": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 3,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 0
+      }
+    },
+    "2026-08-25": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      }
+    },
+    "2026-08-27": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -26.473367,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -26.574517,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -25.859406,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 1
+      }
+    },
+    "2026-08-28": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 1,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-09-03": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -48.973515,
+        "refusals": 0,
+        "signals": 5,
+        "trades": 2
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -49.377017,
+        "refusals": 0,
+        "signals": 5,
+        "trades": 2
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -47.083612,
+        "refusals": 0,
+        "signals": 5,
+        "trades": 2
+      }
+    },
+    "2026-09-06": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      }
+    },
+    "2026-09-11": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      }
+    },
+    "2026-09-18": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 39.575654,
+        "refusals": 0,
+        "signals": 7,
+        "trades": 3
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 38.677802,
+        "refusals": 0,
+        "signals": 7,
+        "trades": 3
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 42.62132,
+        "refusals": 0,
+        "signals": 7,
+        "trades": 3
+      }
+    },
+    "2026-09-19": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": -12.790181,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": -12.867184,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": -12.414506,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      }
+    },
+    "2026-09-21": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 2.931932,
+        "refusals": 0,
+        "signals": 7,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 2.650845,
+        "refusals": 0,
+        "signals": 7,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 3.902896,
+        "refusals": 0,
+        "signals": 7,
+        "trades": 1
+      }
+    },
+    "2026-09-22": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": -43.215496,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 2
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": -43.366895,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 2
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": -42.247614,
+        "refusals": 0,
+        "signals": 3,
+        "trades": 2
+      }
+    },
+    "2026-09-25": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      }
+    },
+    "2026-09-26": {
+      "edge_trend_01_1d:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_1d:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_1d:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      }
+    },
+    "2026-09-27": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 0
+      }
+    },
+    "2026-09-29": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -22.325361,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -22.592441,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -21.345727,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      }
+    },
+    "2026-10-02": {
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -18.966216,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -19.235171,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -17.983216,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      }
+    },
+    "2026-10-08": {
+      "edge_intra_01:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 6,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 6,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 6,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_limit:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 6,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 6,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 6,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 6,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 6,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 6,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 6,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-10-09": {
+      "edge_intra_01:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 11,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 11,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 11,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_limit:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 11,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 11,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 11,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 11,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 11,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 11,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 11,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-10-10": {
+      "edge_intra_01:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 15,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 15,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 15,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_limit:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 15,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 15,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 15,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 15,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 15,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 15,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 15,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-10-11": {
+      "edge_intra_01:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 10,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 10,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 10,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_limit:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 10,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 10,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 10,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 10,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 10,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 10,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 10,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_trend_01_4h:2X_FEES": {
+        "net_usdt": -10.539421,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:ADVERSE": {
+        "net_usdt": -10.813078,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      },
+      "edge_trend_01_4h:BASE": {
+        "net_usdt": -9.547978,
+        "refusals": 0,
+        "signals": 1,
+        "trades": 1
+      }
+    },
+    "2026-10-12": {
+      "edge_intra_01:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 9,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 9,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 9,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_limit:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 9,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 9,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 9,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 9,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 9,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 9,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 9,
+        "signals": 0,
+        "trades": 0
+      }
+    },
+    "2026-10-13": {
+      "edge_intra_01:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_limit:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_01r_market:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:2X_FEES": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:ADVERSE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      },
+      "edge_intra_02:BASE": {
+        "net_usdt": 0.0,
+        "refusals": 7,
+        "signals": 0,
+        "trades": 0
+      }
+    }
+  },
+  "dates": [
+    "2026-03-01",
+    "2026-03-02",
+    "2026-03-03",
+    "2026-03-04",
+    "2026-03-05",
+    "2026-03-06",
+    "2026-03-07",
+    "2026-03-08",
+    "2026-03-09",
+    "2026-03-10",
+    "2026-03-11",
+    "2026-03-12",
+    "2026-03-13",
+    "2026-03-14",
+    "2026-03-15",
+    "2026-03-16",
+    "2026-03-17",
+    "2026-03-18",
+    "2026-03-19",
+    "2026-03-20",
+    "2026-03-21",
+    "2026-03-22",
+    "2026-03-23",
+    "2026-03-24",
+    "2026-03-25",
+    "2026-03-26",
+    "2026-03-27",
+    "2026-03-28",
+    "2026-03-29",
+    "2026-03-30",
+    "2026-03-31",
+    "2026-04-01",
+    "2026-04-02",
+    "2026-04-03",
+    "2026-04-04",
+    "2026-04-05",
+    "2026-04-06",
+    "2026-04-07",
+    "2026-04-08",
+    "2026-04-09",
+    "2026-04-10",
+    "2026-04-11",
+    "2026-04-12",
+    "2026-04-13",
+    "2026-04-14",
+    "2026-04-15",
+    "2026-04-16",
+    "2026-04-17",
+    "2026-04-18",
+    "2026-04-19",
+    "2026-04-20",
+    "2026-04-21",
+    "2026-04-22",
+    "2026-04-23",
+    "2026-04-24",
+    "2026-04-25",
+    "2026-04-26",
+    "2026-04-27",
+    "2026-04-28",
+    "2026-04-29",
+    "2026-04-30",
+    "2026-05-01",
+    "2026-05-02",
+    "2026-05-03",
+    "2026-05-04",
+    "2026-05-05",
+    "2026-05-06",
+    "2026-05-07",
+    "2026-05-08",
+    "2026-05-09",
+    "2026-05-10",
+    "2026-05-11",
+    "2026-05-12",
+    "2026-05-13",
+    "2026-05-14",
+    "2026-05-15",
+    "2026-05-16",
+    "2026-05-17",
+    "2026-05-18",
+    "2026-05-19",
+    "2026-05-20",
+    "2026-05-21",
+    "2026-05-22",
+    "2026-05-23",
+    "2026-05-24",
+    "2026-05-25",
+    "2026-05-26",
+    "2026-05-27",
+    "2026-05-28",
+    "2026-05-29",
+    "2026-05-30",
+    "2026-05-31",
+    "2026-06-01",
+    "2026-06-02",
+    "2026-06-03",
+    "2026-06-04",
+    "2026-06-05",
+    "2026-06-06",
+    "2026-06-07",
+    "2026-06-08",
+    "2026-06-09",
+    "2026-06-10",
+    "2026-06-11",
+    "2026-06-12",
+    "2026-06-13",
+    "2026-06-14",
+    "2026-06-15",
+    "2026-06-16",
+    "2026-06-17",
+    "2026-06-18",
+    "2026-06-19",
+    "2026-06-20",
+    "2026-06-21",
+    "2026-06-22",
+    "2026-06-23",
+    "2026-06-24",
+    "2026-06-25",
+    "2026-06-26",
+    "2026-06-27",
+    "2026-06-28",
+    "2026-06-29",
+    "2026-06-30",
+    "2026-07-01",
+    "2026-07-02",
+    "2026-07-03",
+    "2026-07-04",
+    "2026-07-05",
+    "2026-07-06",
+    "2026-07-07",
+    "2026-07-08",
+    "2026-07-09",
+    "2026-07-10",
+    "2026-07-11",
+    "2026-07-12",
+    "2026-07-13",
+    "2026-07-14",
+    "2026-07-15",
+    "2026-07-16",
+    "2026-07-17",
+    "2026-07-18",
+    "2026-07-19",
+    "2026-07-20",
+    "2026-07-21",
+    "2026-07-22",
+    "2026-07-23",
+    "2026-07-24",
+    "2026-07-25",
+    "2026-07-26",
+    "2026-07-27",
+    "2026-07-28",
+    "2026-07-29",
+    "2026-07-30",
+    "2026-07-31",
+    "2026-08-01",
+    "2026-08-02",
+    "2026-08-03",
+    "2026-08-04",
+    "2026-08-05",
+    "2026-08-06",
+    "2026-08-07",
+    "2026-08-08",
+    "2026-08-09",
+    "2026-08-10",
+    "2026-08-11",
+    "2026-08-12",
+    "2026-08-13",
+    "2026-08-14",
+    "2026-08-15",
+    "2026-08-16",
+    "2026-08-17",
+    "2026-08-18",
+    "2026-08-19",
+    "2026-08-20",
+    "2026-08-21",
+    "2026-08-22",
+    "2026-08-23",
+    "2026-08-24",
+    "2026-08-25",
+    "2026-08-26",
+    "2026-08-27",
+    "2026-08-28",
+    "2026-08-29",
+    "2026-08-30",
+    "2026-08-31",
+    "2026-09-01",
+    "2026-09-02",
+    "2026-09-03",
+    "2026-09-04",
+    "2026-09-05",
+    "2026-09-06",
+    "2026-09-07",
+    "2026-09-08",
+    "2026-09-09",
+    "2026-09-10",
+    "2026-09-11",
+    "2026-09-12",
+    "2026-09-13",
+    "2026-09-14",
+    "2026-09-15",
+    "2026-09-16",
+    "2026-09-17",
+    "2026-09-18",
+    "2026-09-19",
+    "2026-09-20",
+    "2026-09-21",
+    "2026-09-22",
+    "2026-09-23",
+    "2026-09-24",
+    "2026-09-25",
+    "2026-09-26",
+    "2026-09-27",
+    "2026-09-28",
+    "2026-09-29",
+    "2026-09-30",
+    "2026-10-01",
+    "2026-10-02",
+    "2026-10-03",
+    "2026-10-04",
+    "2026-10-05",
+    "2026-10-06",
+    "2026-10-07",
+    "2026-10-08",
+    "2026-10-09",
+    "2026-10-10",
+    "2026-10-11",
+    "2026-10-12",
+    "2026-10-13"
+  ],
+  "days": {
+    "2026-03-01": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-02": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-03": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-04": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 21
+      },
+      "refusals": 21,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-05": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-06": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-07": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-08": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-09": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-10": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 15
+      },
+      "refusals": 15,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-11": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-12": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-13": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 9
+      },
+      "refusals": 9,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-14": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-15": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-16": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 0.0,
+      "drawdown_pct": 0.0,
+      "equity": 10000.0,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 9
+      },
+      "refusals": 9,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-17": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -13.231993,
+      "drawdown_pct": 0.13232,
+      "equity": 9986.768007,
+      "net_usdt": -143.115257,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 12
+      },
+      "refusals": 12,
+      "signals": 6,
+      "trades": 6
+    },
+    "2026-03-18": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -46.36694,
+      "drawdown_pct": 0.463669,
+      "equity": 9953.63306,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-19": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -46.36694,
+      "drawdown_pct": 0.463669,
+      "equity": 9953.63306,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-20": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -46.36694,
+      "drawdown_pct": 0.463669,
+      "equity": 9953.63306,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-21": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -46.36694,
+      "drawdown_pct": 0.463669,
+      "equity": 9953.63306,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-22": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -46.36694,
+      "drawdown_pct": 0.463669,
+      "equity": 9953.63306,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-23": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -46.36694,
+      "drawdown_pct": 0.463669,
+      "equity": 9953.63306,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-24": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -46.36694,
+      "drawdown_pct": 0.463669,
+      "equity": 9953.63306,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-25": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -50.990521,
+      "drawdown_pct": 0.509905,
+      "equity": 9949.009479,
+      "net_usdt": -78.058081,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 3
+    },
+    "2026-03-26": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-27": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-28": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-29": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-30": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-03-31": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-01": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 6
+      },
+      "refusals": 6,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-02": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-03": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-04": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-05": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-06": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 18
+      },
+      "refusals": 18,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-07": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-08": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 9
+      },
+      "refusals": 9,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-09": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-10": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -71.941418,
+      "drawdown_pct": 0.719414,
+      "equity": 9928.058582,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-11": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -83.184853,
+      "drawdown_pct": 0.831849,
+      "equity": 9916.815147,
+      "net_usdt": -138.111913,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 6,
+      "trades": 6
+    },
+    "2026-04-12": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -116.49608,
+      "drawdown_pct": 1.164961,
+      "equity": 9883.50392,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-13": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -116.49608,
+      "drawdown_pct": 1.164961,
+      "equity": 9883.50392,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-14": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -126.676003,
+      "drawdown_pct": 1.26676,
+      "equity": 9873.323997,
+      "net_usdt": -75.104049,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 9
+      },
+      "refusals": 9,
+      "signals": 9,
+      "trades": 6
+    },
+    "2026-04-15": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -115.669798,
+      "drawdown_pct": 1.156698,
+      "equity": 9884.330202,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-16": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -115.382183,
+      "drawdown_pct": 1.153822,
+      "equity": 9884.617817,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-17": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -90.322729,
+      "drawdown_pct": 0.903227,
+      "equity": 9909.677271,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 6,
+      "trades": 0
+    },
+    "2026-04-18": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -111.402081,
+      "drawdown_pct": 1.114021,
+      "equity": 9888.597919,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 6
+      },
+      "refusals": 6,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-19": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -132.979979,
+      "drawdown_pct": 1.3298,
+      "equity": 9867.020021,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-20": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -124.284206,
+      "drawdown_pct": 1.242842,
+      "equity": 9875.715794,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-21": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -121.999374,
+      "drawdown_pct": 1.219994,
+      "equity": 9878.000626,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-22": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -112.062658,
+      "drawdown_pct": 1.120627,
+      "equity": 9887.937342,
+      "net_usdt": -53.081272,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 18,
+      "trades": 6
+    },
+    "2026-04-23": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -123.380653,
+      "drawdown_pct": 1.233807,
+      "equity": 9876.619347,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-24": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -130.952227,
+      "drawdown_pct": 1.309522,
+      "equity": 9869.047773,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-25": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -128.965363,
+      "drawdown_pct": 1.289654,
+      "equity": 9871.034637,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-26": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -109.423934,
+      "drawdown_pct": 1.094239,
+      "equity": 9890.576066,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 0
+    },
+    "2026-04-27": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -141.114977,
+      "drawdown_pct": 1.41115,
+      "equity": 9858.885023,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 9,
+      "trades": 0
+    },
+    "2026-04-28": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -154.552041,
+      "drawdown_pct": 1.54552,
+      "equity": 9845.447959,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-29": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -177.168341,
+      "drawdown_pct": 1.771683,
+      "equity": 9822.831659,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-04-30": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -173.514755,
+      "drawdown_pct": 1.735148,
+      "equity": 9826.485245,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-01": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -161.361975,
+      "drawdown_pct": 1.61362,
+      "equity": 9838.638025,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 0
+    },
+    "2026-05-02": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -158.423217,
+      "drawdown_pct": 1.584232,
+      "equity": 9841.576783,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-03": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -159.185958,
+      "drawdown_pct": 1.59186,
+      "equity": 9840.814042,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-04": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -166.543646,
+      "drawdown_pct": 1.665436,
+      "equity": 9833.456354,
+      "net_usdt": -49.317184,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 6,
+      "trades": 3
+    },
+    "2026-05-05": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -159.808015,
+      "drawdown_pct": 1.59808,
+      "equity": 9840.191985,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 6
+      },
+      "refusals": 6,
+      "signals": 6,
+      "trades": 0
+    },
+    "2026-05-06": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -168.77752,
+      "drawdown_pct": 1.687775,
+      "equity": 9831.22248,
+      "net_usdt": -72.421108,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 12
+      },
+      "refusals": 12,
+      "signals": 6,
+      "trades": 3
+    },
+    "2026-05-07": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -198.805469,
+      "drawdown_pct": 1.988055,
+      "equity": 9801.194531,
+      "net_usdt": 57.736881,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 3
+    },
+    "2026-05-08": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -177.695413,
+      "drawdown_pct": 1.776954,
+      "equity": 9822.304587,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 0
+    },
+    "2026-05-09": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -168.357043,
+      "drawdown_pct": 1.68357,
+      "equity": 9831.642957,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 3,
+      "trades": 0
+    },
+    "2026-05-10": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -135.008626,
+      "drawdown_pct": 1.350086,
+      "equity": 9864.991374,
+      "net_usdt": -41.096581,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 9,
+      "trades": 3
+    },
+    "2026-05-11": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -139.700387,
+      "drawdown_pct": 1.397004,
+      "equity": 9860.299613,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 9,
+      "trades": 0
+    },
+    "2026-05-12": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -178.720778,
+      "drawdown_pct": 1.787208,
+      "equity": 9821.279222,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-13": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-14": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-15": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-16": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-17": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-18": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-19": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-20": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-21": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-22": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-23": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-24": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-25": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-26": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-27": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-28": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-29": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-30": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-05-31": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-01": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-02": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-03": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-04": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-05": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-06": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-07": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-08": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-09": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-10": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-11": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-12": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-13": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-14": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 6
+      },
+      "refusals": 6,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-15": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 33
+      },
+      "refusals": 33,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-16": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-17": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-18": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-19": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-20": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-21": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-22": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 6
+      },
+      "refusals": 6,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-23": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-24": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-25": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-26": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 6
+      },
+      "refusals": 6,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-27": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-28": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-29": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 6
+      },
+      "refusals": 6,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-06-30": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-01": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.423648,
+      "drawdown_pct": 1.884236,
+      "equity": 9811.576352,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-02": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -194.928108,
+      "drawdown_pct": 1.949281,
+      "equity": 9805.071892,
+      "net_usdt": -76.877116,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 15
+      },
+      "refusals": 15,
+      "signals": 3,
+      "trades": 3
+    },
+    "2026-07-03": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -188.602843,
+      "drawdown_pct": 1.886028,
+      "equity": 9811.397157,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 6
+      },
+      "refusals": 6,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-04": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -190.724361,
+      "drawdown_pct": 1.907244,
+      "equity": 9809.275639,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 12
+      },
+      "refusals": 12,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-05": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -191.549395,
+      "drawdown_pct": 1.915494,
+      "equity": 9808.450605,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-06": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -190.174337,
+      "drawdown_pct": 1.901743,
+      "equity": 9809.825663,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-07": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -195.517419,
+      "drawdown_pct": 1.955174,
+      "equity": 9804.482581,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-08": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -206.321443,
+      "drawdown_pct": 2.063214,
+      "equity": 9793.678557,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-09": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -205.496408,
+      "drawdown_pct": 2.054964,
+      "equity": 9794.503592,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-10": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -205.142822,
+      "drawdown_pct": 2.051428,
+      "equity": 9794.857178,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-11": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -217.955947,
+      "drawdown_pct": 2.179559,
+      "equity": 9782.044053,
+      "net_usdt": -55.392897,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 3
+    },
+    "2026-07-12": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -215.935955,
+      "drawdown_pct": 2.15936,
+      "equity": 9784.064045,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-13": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -231.351131,
+      "drawdown_pct": 2.313511,
+      "equity": 9768.648869,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-14": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -227.007239,
+      "drawdown_pct": 2.270072,
+      "equity": 9772.992761,
+      "net_usdt": 141.473312,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 3,
+      "trades": 3
+    },
+    "2026-07-15": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -220.078699,
+      "drawdown_pct": 2.200787,
+      "equity": 9779.921301,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 12
+      },
+      "refusals": 12,
+      "signals": 6,
+      "trades": 0
+    },
+    "2026-07-16": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -234.247684,
+      "drawdown_pct": 2.342477,
+      "equity": 9765.752316,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-17": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -240.320487,
+      "drawdown_pct": 2.403205,
+      "equity": 9759.679513,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-18": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -234.807512,
+      "drawdown_pct": 2.348075,
+      "equity": 9765.192488,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-19": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -232.242966,
+      "drawdown_pct": 2.32243,
+      "equity": 9767.757034,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-20": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -219.274793,
+      "drawdown_pct": 2.192748,
+      "equity": 9780.725207,
+      "net_usdt": -97.669046,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 15,
+      "trades": 6
+    },
+    "2026-07-21": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -200.854668,
+      "drawdown_pct": 2.008547,
+      "equity": 9799.145332,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 18,
+      "trades": 0
+    },
+    "2026-07-22": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -204.088375,
+      "drawdown_pct": 2.040884,
+      "equity": 9795.911625,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-23": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -240.332677,
+      "drawdown_pct": 2.403327,
+      "equity": 9759.667323,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-24": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -261.459088,
+      "drawdown_pct": 2.614591,
+      "equity": 9738.540912,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-25": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -256.082592,
+      "drawdown_pct": 2.560826,
+      "equity": 9743.917408,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-26": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -226.990031,
+      "drawdown_pct": 2.2699,
+      "equity": 9773.009969,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-27": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -257.893489,
+      "drawdown_pct": 2.578935,
+      "equity": 9742.106511,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 0
+    },
+    "2026-07-28": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -263.407683,
+      "drawdown_pct": 2.634077,
+      "equity": 9736.592317,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-29": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -263.407683,
+      "drawdown_pct": 2.634077,
+      "equity": 9736.592317,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-30": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -263.407683,
+      "drawdown_pct": 2.634077,
+      "equity": 9736.592317,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-07-31": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -263.407683,
+      "drawdown_pct": 2.634077,
+      "equity": 9736.592317,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-01": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -263.407683,
+      "drawdown_pct": 2.634077,
+      "equity": 9736.592317,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-02": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -263.407683,
+      "drawdown_pct": 2.634077,
+      "equity": 9736.592317,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-03": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -263.407683,
+      "drawdown_pct": 2.634077,
+      "equity": 9736.592317,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-04": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -263.407683,
+      "drawdown_pct": 2.634077,
+      "equity": 9736.592317,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-05": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -265.619898,
+      "drawdown_pct": 2.656199,
+      "equity": 9734.380102,
+      "net_usdt": 271.832943,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 3,
+      "trades": 2
+    },
+    "2026-08-06": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -266.871604,
+      "drawdown_pct": 2.668716,
+      "equity": 9733.128396,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-07": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -264.243022,
+      "drawdown_pct": 2.64243,
+      "equity": 9735.756978,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-08": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -263.575446,
+      "drawdown_pct": 2.635754,
+      "equity": 9736.424554,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 6
+      },
+      "refusals": 6,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-09": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -265.163547,
+      "drawdown_pct": 2.651635,
+      "equity": 9734.836453,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-10": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -274.939892,
+      "drawdown_pct": 2.749399,
+      "equity": 9725.060108,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-11": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -272.480811,
+      "drawdown_pct": 2.724808,
+      "equity": 9727.519189,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-12": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -273.205758,
+      "drawdown_pct": 2.732058,
+      "equity": 9726.794242,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-13": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -271.552463,
+      "drawdown_pct": 2.715525,
+      "equity": 9728.447537,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-14": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -272.582512,
+      "drawdown_pct": 2.725825,
+      "equity": 9727.417488,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-15": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -272.467773,
+      "drawdown_pct": 2.724678,
+      "equity": 9727.532227,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-16": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -274.199299,
+      "drawdown_pct": 2.741993,
+      "equity": 9725.800701,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-17": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -265.080154,
+      "drawdown_pct": 2.650802,
+      "equity": 9734.919846,
+      "net_usdt": 365.712166,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 6
+      },
+      "refusals": 6,
+      "signals": 9,
+      "trades": 3
+    },
+    "2026-08-18": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -257.206632,
+      "drawdown_pct": 2.572066,
+      "equity": 9742.793368,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 6,
+      "trades": 0
+    },
+    "2026-08-19": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -115.147974,
+      "drawdown_pct": 1.15148,
+      "equity": 9884.852026,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 9,
+      "trades": 0
+    },
+    "2026-08-20": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -73.333049,
+      "drawdown_pct": 0.73333,
+      "equity": 9926.666951,
+      "net_usdt": 103.053593,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 9
+      },
+      "refusals": 9,
+      "signals": 9,
+      "trades": 3
+    },
+    "2026-08-21": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 52.806708,
+      "drawdown_pct": 0.0,
+      "equity": 10052.806708,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 6
+      },
+      "refusals": 6,
+      "signals": 15,
+      "trades": 0
+    },
+    "2026-08-22": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 31.530468,
+      "drawdown_pct": 0.41322,
+      "equity": 10031.530468,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 9
+      },
+      "refusals": 9,
+      "signals": 9,
+      "trades": 0
+    },
+    "2026-08-23": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 36.111116,
+      "drawdown_pct": 0.367746,
+      "equity": 10036.111116,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-24": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 44.85964,
+      "drawdown_pct": 0.280896,
+      "equity": 10044.85964,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-25": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 41.706975,
+      "drawdown_pct": 0.312194,
+      "equity": 10041.706975,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 0
+    },
+    "2026-08-26": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 45.075096,
+      "drawdown_pct": 0.278757,
+      "equity": 10045.075096,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-27": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 70.73026,
+      "drawdown_pct": 0.024069,
+      "equity": 10070.73026,
+      "net_usdt": -78.90729,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 9,
+      "trades": 3
+    },
+    "2026-08-28": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 31.585772,
+      "drawdown_pct": 0.412671,
+      "equity": 10031.585772,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 3
+      },
+      "refusals": 3,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-29": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 36.424514,
+      "drawdown_pct": 0.364635,
+      "equity": 10036.424514,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-30": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 23.631675,
+      "drawdown_pct": 0.491634,
+      "equity": 10023.631675,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-08-31": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 27.973286,
+      "drawdown_pct": 0.448533,
+      "equity": 10027.973286,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-01": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 17.831813,
+      "drawdown_pct": 0.549211,
+      "equity": 10017.831813,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-02": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 19.256922,
+      "drawdown_pct": 0.535064,
+      "equity": 10019.256922,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-03": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 28.442295,
+      "drawdown_pct": 0.443877,
+      "equity": 10028.442295,
+      "net_usdt": -145.434144,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 15,
+      "trades": 6
+    },
+    "2026-09-04": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 1.739686,
+      "drawdown_pct": 0.708964,
+      "equity": 10001.739686,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-05": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 11.744708,
+      "drawdown_pct": 0.60964,
+      "equity": 10011.744708,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-06": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 32.755643,
+      "drawdown_pct": 0.401057,
+      "equity": 10032.755643,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 0
+    },
+    "2026-09-07": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 11.305855,
+      "drawdown_pct": 0.613997,
+      "equity": 10011.305855,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-08": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 1.77783,
+      "drawdown_pct": 0.708585,
+      "equity": 10001.77783,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-09": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -7.513976,
+      "drawdown_pct": 0.800829,
+      "equity": 9992.486024,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-10": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -22.991765,
+      "drawdown_pct": 0.954482,
+      "equity": 9977.008235,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-11": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 4.925159,
+      "drawdown_pct": 0.677341,
+      "equity": 10004.925159,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 0
+    },
+    "2026-09-12": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 4.471677,
+      "drawdown_pct": 0.681842,
+      "equity": 10004.471677,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-13": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -13.274892,
+      "drawdown_pct": 0.858019,
+      "equity": 9986.725108,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-14": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 5.023554,
+      "drawdown_pct": 0.676364,
+      "equity": 10005.023554,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-15": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -41.954792,
+      "drawdown_pct": 1.142735,
+      "equity": 9958.045208,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-16": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -41.954792,
+      "drawdown_pct": 1.142735,
+      "equity": 9958.045208,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-17": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -41.954792,
+      "drawdown_pct": 1.142735,
+      "equity": 9958.045208,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-18": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -3.030879,
+      "drawdown_pct": 0.756323,
+      "equity": 9996.969121,
+      "net_usdt": 120.874776,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 21,
+      "trades": 9
+    },
+    "2026-09-19": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -4.633081,
+      "drawdown_pct": 0.772229,
+      "equity": 9995.366919,
+      "net_usdt": -38.071871,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 3
+    },
+    "2026-09-20": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -13.487957,
+      "drawdown_pct": 0.860134,
+      "equity": 9986.512043,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-21": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 54.081927,
+      "drawdown_pct": 0.189343,
+      "equity": 10054.081927,
+      "net_usdt": 9.485673,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 21,
+      "trades": 3
+    },
+    "2026-09-22": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 45.814847,
+      "drawdown_pct": 0.271413,
+      "equity": 10045.814847,
+      "net_usdt": -128.830005,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 9,
+      "trades": 6
+    },
+    "2026-09-23": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -6.85521,
+      "drawdown_pct": 0.794289,
+      "equity": 9993.14479,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-24": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 1.560953,
+      "drawdown_pct": 0.710738,
+      "equity": 10001.560953,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-25": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 22.539778,
+      "drawdown_pct": 0.502474,
+      "equity": 10022.539778,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 0
+    },
+    "2026-09-26": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 19.501748,
+      "drawdown_pct": 0.532633,
+      "equity": 10019.501748,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 0
+    },
+    "2026-09-27": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 21.882906,
+      "drawdown_pct": 0.508995,
+      "equity": 10021.882906,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 0
+    },
+    "2026-09-28": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 4.569424,
+      "drawdown_pct": 0.680872,
+      "equity": 10004.569424,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-09-29": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -5.494265,
+      "drawdown_pct": 0.780778,
+      "equity": 9994.505735,
+      "net_usdt": -66.263529,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 3
+    },
+    "2026-09-30": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -4.025177,
+      "drawdown_pct": 0.766194,
+      "equity": 9995.974823,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-10-01": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -0.291169,
+      "drawdown_pct": 0.729125,
+      "equity": 9999.708831,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-10-02": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -16.433051,
+      "drawdown_pct": 0.889372,
+      "equity": 9983.566949,
+      "net_usdt": -56.184603,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 3,
+      "trades": 3
+    },
+    "2026-10-03": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -11.655073,
+      "drawdown_pct": 0.841939,
+      "equity": 9988.344927,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-10-04": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": 5.9253,
+      "drawdown_pct": 0.667412,
+      "equity": 10005.9253,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-10-05": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -1.608874,
+      "drawdown_pct": 0.742206,
+      "equity": 9998.391126,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-10-06": {
+      "appended": 0,
+      "bars": 72,
+      "by_series": {
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -5.153646,
+      "drawdown_pct": 0.777397,
+      "equity": 9994.846354,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-10-07": {
+      "appended": 0,
+      "bars": 219,
+      "by_series": {
+        "15m:BTC": 49,
+        "15m:ETH": 49,
+        "15m:SOL": 49,
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -34.759519,
+      "drawdown_pct": 1.071305,
+      "equity": 9965.240481,
+      "net_usdt": 0.0,
+      "refusal_mix": {},
+      "refusals": 0,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-10-08": {
+      "appended": 0,
+      "bars": 360,
+      "by_series": {
+        "15m:BTC": 96,
+        "15m:ETH": 96,
+        "15m:SOL": 96,
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -34.759519,
+      "drawdown_pct": 1.071305,
+      "equity": 9965.240481,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 20,
+        "candidate:volume_filter_fail": 40
+      },
+      "refusals": 60,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-10-09": {
+      "appended": 0,
+      "bars": 360,
+      "by_series": {
+        "15m:BTC": 96,
+        "15m:ETH": 96,
+        "15m:SOL": 96,
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -34.759519,
+      "drawdown_pct": 1.071305,
+      "equity": 9965.240481,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 70,
+        "candidate:volume_filter_fail": 40
+      },
+      "refusals": 110,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-10-10": {
+      "appended": 0,
+      "bars": 360,
+      "by_series": {
+        "15m:BTC": 96,
+        "15m:ETH": 96,
+        "15m:SOL": 96,
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -34.759519,
+      "drawdown_pct": 1.071305,
+      "equity": 9965.240481,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 100,
+        "candidate:volume_filter_fail": 50
+      },
+      "refusals": 150,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-10-11": {
+      "appended": 0,
+      "bars": 360,
+      "by_series": {
+        "15m:BTC": 96,
+        "15m:ETH": 96,
+        "15m:SOL": 96,
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -35.663144,
+      "drawdown_pct": 1.080276,
+      "equity": 9964.336856,
+      "net_usdt": -30.900477,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 90,
+        "candidate:volume_filter_fail": 10
+      },
+      "refusals": 100,
+      "signals": 3,
+      "trades": 3
+    },
+    "2026-10-12": {
+      "appended": 3,
+      "bars": 360,
+      "by_series": {
+        "15m:BTC": 96,
+        "15m:ETH": 96,
+        "15m:SOL": 96,
+        "1h:BTC": 24,
+        "1h:ETH": 24,
+        "1h:SOL": 24
+      },
+      "cumulative_net_usdt": -44.307497,
+      "drawdown_pct": 1.166092,
+      "equity": 9955.692503,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 60,
+        "candidate:volume_filter_fail": 30
+      },
+      "refusals": 90,
+      "signals": 0,
+      "trades": 0
+    },
+    "2026-10-13": {
+      "appended": 18,
+      "bars": 81,
+      "by_series": {
+        "15m:BTC": 22,
+        "15m:ETH": 22,
+        "15m:SOL": 22,
+        "1h:BTC": 5,
+        "1h:ETH": 5,
+        "1h:SOL": 5
+      },
+      "cumulative_net_usdt": -44.307497,
+      "drawdown_pct": 1.166092,
+      "equity": 9955.692503,
+      "net_usdt": 0.0,
+      "refusal_mix": {
+        "candidate:trend_filter_fail": 20,
+        "candidate:volume_filter_fail": 50
+      },
+      "refusals": 70,
+      "run_appended": 3,
+      "signals": 0,
+      "trades": 0
+    }
+  }
+}

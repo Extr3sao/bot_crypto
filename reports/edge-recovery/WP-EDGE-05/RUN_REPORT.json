@@ -1,0 +1,423 @@
+{
+  "schema_version": "EDGE05_RUN_REPORT_V1",
+  "work_package": "WP-EDGE-05",
+  "title": "Autonomous reliability, crash reconciliation and forward evidence integrity for the WP-EDGE-04 lane",
+  "generated_at_utc": "2026-10-13T20:14:00Z",
+  "does_not_authorise": "PAPER or LIVE trading, and no promotion of any strategy: this work package adds a second, independent observer and a reconciliation of what was already written; it observes, it does not admit",
+  "hypothetical": true,
+  "order_sent": false,
+  "promotion": "NONE",
+  "sources": {
+    "watchdog_readings": "data/forward/edge05/watchdog.jsonl (9 rows)",
+    "watchdog_alerts": "data/forward/edge05/watch_alerts.jsonl (25 rows)",
+    "watchdog_latest": "data/forward/edge05/LATEST.json",
+    "lane_run_log": "data/forward/edge04/runs.jsonl (42 rows)",
+    "lane_slot_ledger": "data/forward/edge04/slots.jsonl",
+    "ingest_ledger": "data/forward/edge04/ledger/INGEST_LEDGER.jsonl (456 rows)",
+    "forward_store": "data/forward/edge03 (18159 bars)",
+    "lane_coverage": "data/forward/edge04/coverage.json",
+    "reconciliation": "data/forward/edge05/reconciliation/RECONCILIATION.json",
+    "watchdog_install_receipt": "data/forward/edge05/install.json",
+    "verifier_verdict": "reports/edge-recovery/WP-EDGE-05/VERIFICATION.json",
+    "closure_artefacts": "reports/edge-recovery/WP-EDGE-05/EDGE05_{WATCHDOG_STATUS,RESOURCE_BUDGET,WINDOWS_CONTINUITY,FORWARD_ELIGIBILITY}.json",
+    "forward_eligibility": "reports/edge-recovery/WP-EDGE-05/EDGE05_FORWARD_ELIGIBILITY.json (227 days, 0 eligible)",
+    "runtime_authority_map": "reports/edge-recovery/WP-EDGE-05/runtime_authority_map.md",
+    "timeline": "reports/edge-recovery/WP-EDGE-05/evidence/FASE5_TIMELINE.md",
+    "task_registrations": "reports/edge-recovery/WP-EDGE-05/evidence/EDGE05_TASK_REGISTRATION.json",
+    "outage_rehearsal": "reports/edge-recovery/WP-EDGE-05/evidence/OUTAGE_REHEARSAL_START.json",
+    "outage_readings": "reports/edge-recovery/WP-EDGE-05/evidence/OUTAGE_DETECT_{1,2}.txt",
+    "snapshot": "reports/edge-recovery/WP-EDGE-05/evidence/SNAPSHOT.json",
+    "store_slice": "reports/edge-recovery/WP-EDGE-05/evidence/STORE_SLICE.json"
+  },
+  "repository": {
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "base_commit": "e07785b2585d0b4589a9a6dbc0aba53f4ced6802",
+    "base_commit_subject": "Record the post-commit re-verification and the push probe. [WP-EDGE-04]",
+    "lane_commits": [
+      {
+        "commit": "40ba11c",
+        "subject": "Watch the forward lane from outside it, and say which silence is a fault. [WP-EDGE-05]",
+        "files": [
+          "src/trading_bot/research/edge05/__init__.py",
+          "src/trading_bot/research/edge05/watchdog.py",
+          "scripts/edge05_watchdog.py",
+          "tests/unit/research/test_edge05_watchdog.py"
+        ]
+      },
+      {
+        "commit": "17d0e44",
+        "subject": "Reconcile the store against the ticks that claim it, and name what is unowned. [WP-EDGE-05]",
+        "files": [
+          "src/trading_bot/research/edge05/reconcile.py",
+          "scripts/edge05_reconcile.py",
+          "tests/unit/research/test_edge05_reconcile.py"
+        ]
+      },
+      {
+        "commit": "6d62c79",
+        "subject": "Verify the watchdog with code that shares none of it, then publish the record. [WP-EDGE-05]",
+        "files": [
+          "scripts/edge05_verify.py",
+          "scripts/edge05_closure.py"
+        ]
+      }
+    ],
+    "closure_commit": {
+      "subject": "Plant the market lie where it is always a lie, so the self-test cannot pass by accident. [WP-EDGE-05]",
+      "files": ["scripts/edge05_verify.py"],
+      "why": "the market-expectation sabotage only produced a contradiction while the store happened to lag the closed-bar calendar, so the same self-test passed or failed depending on when it ran"
+    },
+    "other_workstreams_left_untouched": [
+      "FINAL_REPORT.md",
+      "RUN_REPORT.md",
+      "RUN_REPORT.json",
+      "data/st6/*",
+      "data/recovery/wp8/*",
+      "evidence/real_decisions/*",
+      "docs/source_registry.md",
+      "scripts/cap004c_verify.py",
+      "scripts/st6_scheduler_witness.py"
+    ]
+  },
+  "runtime": {
+    "host": "DESKTOP-4CHO695",
+    "python": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+    "python_version": "3.11.15",
+    "lane_task": {
+      "task_name": "TradingAgentic-EDGE04-Forward",
+      "state": "Ready",
+      "logon_type": "InteractiveToken",
+      "trigger_repetition_interval": "PT15M",
+      "multiple_instances_policy": "IgnoreNew",
+      "start_when_available": "true",
+      "restart_on_failure": "Count=3 Interval=PT5M",
+      "execution_time_limit": "PT1H",
+      "run_level": "LeastPrivilege",
+      "last_run_utc": "2026-10-13T19:55:54Z",
+      "last_task_result": 0
+    },
+    "watchdog_task": {
+      "task_name": "TradingAgentic-EDGE05-Watchdog",
+      "installed_at_utc": "2026-10-13T19:01:32Z",
+      "state": "Enabled",
+      "interval_minutes": 15,
+      "last_run_utc": "2026-10-13T20:02:31Z",
+      "last_task_result": 0,
+      "next_run_utc": "2026-10-13T20:17:30Z",
+      "note": "the registration is evidence that a second, independent check exists; it is never evidence that a check was taken"
+    },
+    "shares_nothing_with_the_lane": [
+      "no lease",
+      "no pipeline",
+      "no market request",
+      "no write to data/forward/edge04",
+      "its own OS task, because a watchdog sharing a scheduler with the thing it watches cannot report that scheduler's death"
+    ]
+  },
+  "window": {
+    "watchdog_readings_utc": ["2026-10-13T18:47:10Z", "2026-10-13T20:02:39Z"],
+    "lane_runs_utc": ["2026-10-13T11:24:03Z", "2026-10-13T20:11:33Z"],
+    "reconciliation_at_utc": "2026-10-13T20:13:12Z",
+    "verification_at_utc": "2026-10-13T20:13:18Z",
+    "refreshed_at_utc": "2026-10-13T20:13:48Z",
+    "reading": "reconcile, then verify, then publish, in that order and back to back: the reconciliation is a reading of the store at an instant and the store moves again at the lane's next tick"
+  },
+  "watchdog": {
+    "checks": [
+      "scheduler_task",
+      "scheduler_cadence",
+      "scheduler_last_result",
+      "lane_cadence",
+      "lane_lease",
+      "lane_process",
+      "store_freshness",
+      "market_expectation",
+      "evidence_integrity",
+      "restart_proof",
+      "resource_disk",
+      "resource_growth",
+      "watchdog_cadence"
+    ],
+    "verdict_is": "the worst of the thirteen, never a vote and never an average",
+    "readings_on_file": 9,
+    "verdicts": {"WATCH_OK": 6, "WATCH_ALARM": 3},
+    "alerts_on_file": 25,
+    "alert_kinds": 16,
+    "alert_kinds_seen": [
+      "SCHEDULER_DISABLED",
+      "SCHEDULER_TASK_FAILED",
+      "TICK_OVERDUE",
+      "TICK_DIED_MID_WRITE",
+      "INGEST_STALLED",
+      "MARKET_QUIET",
+      "STORE_STALE",
+      "EVIDENCE_CORRUPT",
+      "RECONCILIATION_REQUIRED",
+      "RESTART_PROOF_BROKEN",
+      "DISK_WARNING",
+      "DISK_RECOVERED",
+      "GROWTH_BUDGET_EXCEEDED",
+      "WATCHDOG_DEGRADED",
+      "WATCHDOG_ALARM",
+      "WATCHDOG_RECOVERED"
+    ],
+    "alerts_are": "per transition, not per reading: a fault announced once, its recovery announced once, carrying the id of the tick that recovered it",
+    "quiet_market_vs_failure": "a check of its own: bars that closed while the tick was not due are latency and the reading says so in words; only a disabled or failing scheduler, a lease outliving its holder, a tick that died mid-write, a stalled store, unreadable evidence or a disk below its floor earns an alarm"
+  },
+  "controlled_outage": {
+    "rehearsal": "WP-EDGE-05 controlled scheduler outage",
+    "action": "Disable-ScheduledTask TradingAgentic-EDGE04-Forward",
+    "disabled_at_utc": "2026-10-13T18:48:10Z",
+    "first_detection_utc": "2026-10-13T18:48:16Z",
+    "detection_latency_seconds": 6,
+    "detection_verdict": "WATCH_ALARM",
+    "detection_category": "SCHEDULER_FAILURE",
+    "detection_findings": ["scheduler_task: the task is disabled"],
+    "second_detection_utc": "2026-10-13T18:55:59Z",
+    "second_detection_findings": [
+      "scheduler_cadence: the scheduler reports 1 missed run(s)",
+      "scheduler_task: the task is disabled"
+    ],
+    "re_enabled_at_utc": "2026-10-13T19:06:06Z",
+    "recovered_by_tick": "FWD-EDGE04-20261013T190000Z",
+    "recovered_at_utc": "2026-10-13T19:11:27Z",
+    "recovered_verdict_at_utc": "2026-10-13T19:12:07Z",
+    "episode_seconds": 1431,
+    "episodes": 1,
+    "recoveries": 1,
+    "bars_lost": 0,
+    "bars_collected_by_the_recovering_tick": 9,
+    "bars_re_fetched": 0,
+    "reading": "the nine bars are exactly those that closed while the scheduler was off: (2 fifteen-minute + 1 hourly) x 3 assets; the second ingest pass at the same instant appended 0"
+  },
+  "ticks": {
+    "runs_on_file": 42,
+    "outcomes": {"OBSERVED": 33, "ALREADY_OBSERVED": 4, "NO_NEW_DATA": 3, "ALREADY_RUNNING": 2},
+    "slot_ledger_rows": 35,
+    "consuming_runs": 36,
+    "idempotence": "a slot is sealed once: a retry of the same slot is ALREADY_OBSERVED or ALREADY_RUNNING, never a second decision"
+  },
+  "reconciliation": {
+    "generated_at_utc": "2026-10-13T20:13:12Z",
+    "status": "HISTORICAL_ONLY",
+    "verdict": "RECONCILIATION_INCOMPLETE",
+    "rule": "each ingest ledger row claims the grid instants immediately after its high-water mark; every stored bar above the chain's epoch must be claimed by exactly one row, and every row's high-water mark must be the previous row's end",
+    "inputs": {
+      "runs": 42,
+      "consuming_runs": 36,
+      "seals": 35,
+      "ledger_rows": 456,
+      "ingest_attempts": 38,
+      "attempts_with_a_run": 36,
+      "attempts_without_a_run": 2,
+      "ledger_row_cap": 4032,
+      "ledger_truncated": false
+    },
+    "chains": {
+      "1h:BTC": {"epoch_utc": "2026-10-13T10:00:00Z", "ledger_rows": 76, "claimed_bars": 9, "stored_bars": 5444, "unattributed_bars": 0, "chain_holds": true},
+      "1h:ETH": {"epoch_utc": "2026-10-13T10:00:00Z", "ledger_rows": 76, "claimed_bars": 9, "stored_bars": 5444, "unattributed_bars": 0, "chain_holds": true},
+      "1h:SOL": {"epoch_utc": "2026-10-13T10:00:00Z", "ledger_rows": 76, "claimed_bars": 9, "stored_bars": 5444, "unattributed_bars": 0, "chain_holds": true},
+      "15m:BTC": {"epoch_utc": "2026-10-13T11:00:00Z", "ledger_rows": 76, "claimed_bars": 35, "stored_bars": 609, "unattributed_bars": 0, "chain_holds": true},
+      "15m:ETH": {"epoch_utc": "2026-10-13T11:00:00Z", "ledger_rows": 76, "claimed_bars": 35, "stored_bars": 609, "unattributed_bars": 0, "chain_holds": true},
+      "15m:SOL": {"epoch_utc": "2026-10-13T11:00:00Z", "ledger_rows": 76, "claimed_bars": 35, "stored_bars": 609, "unattributed_bars": 0, "chain_holds": true}
+    },
+    "defect_counts": {
+      "CHAIN_BROKEN": 0,
+      "CLAIMED_BUT_ABSENT": 0,
+      "DECISION_DIVERGENCE": 0,
+      "DOUBLE_CLAIM": 0,
+      "RESTART_PROOF_BROKEN": 0,
+      "SEAL_MISSING": 0,
+      "SEAL_ORPHANED": 0,
+      "UNATTRIBUTED_ATTEMPT": 2,
+      "UNATTRIBUTED_BAR": 0
+    },
+    "open_defect_counts": {
+      "CHAIN_BROKEN": 0,
+      "CLAIMED_BUT_ABSENT": 0,
+      "DECISION_DIVERGENCE": 0,
+      "DOUBLE_CLAIM": 0,
+      "RESTART_PROOF_BROKEN": 0,
+      "SEAL_MISSING": 0,
+      "SEAL_ORPHANED": 0,
+      "UNATTRIBUTED_ATTEMPT": 0,
+      "UNATTRIBUTED_BAR": 0
+    },
+    "unattributed_attempts": [
+      {
+        "attempt_at_utc": "2026-10-13T11:25:20Z",
+        "bars_appended": 0,
+        "episode": "CLOSED",
+        "interval_covered": true,
+        "recovered_by_run": "FWD-EDGE04-20261013T113000Z",
+        "reading": "an ingest that found nothing new, whose process ended before it recorded itself"
+      },
+      {
+        "attempt_at_utc": "2026-10-13T15:02:10Z",
+        "bars_appended": 6,
+        "bars": "1h 14:00Z x3, 15m 14:45Z x3",
+        "episode": "CLOSED",
+        "interval_covered": true,
+        "recovered_by_run": "FWD-EDGE04-20261013T150000Z",
+        "next_run_appended_bars": 0,
+        "reading": "the six bars of WP-EDGE-04's own hard interruption: present in the store, covered exactly once, by the attempt that never named itself"
+      }
+    ],
+    "decisions": {
+      "captured_total": 3636,
+      "comparable_pairs": 35,
+      "digests_seen": 1,
+      "divergences": 0,
+      "rule": "two consecutive consuming ticks that read a store of the same size must have produced the same decisions digest and the same captured count"
+    },
+    "restart_proof": {
+      "instants_with_two_passes": 38,
+      "broken": [],
+      "reading": "the pipeline ingests twice at one market instant on purpose; the second pass must append nothing"
+    },
+    "reconstruction": {
+      "bars_removed": 0,
+      "lane_files_rewritten": [],
+      "every_stored_bar_has_an_author_or_a_name": true,
+      "reading": "a bar with no claiming row is not deleted and is not silently attributed: it is named, with the attempt that fetched it, and preserved"
+    }
+  },
+  "independent_verification": {
+    "verifier": "scripts/edge05_verify.py",
+    "builder_is_not_the_verifier": true,
+    "shares_no_module_with_the_watchdog": "it re-reads the raw files and re-derives every claim; it imports no part of the thing it verifies",
+    "verdict": "VERIFY_PASS 13/13",
+    "checks": 13,
+    "self_test": "SELF_TEST_PASS 15/15",
+    "sabotages_skipped": 0,
+    "exit_code": 0,
+    "slice_mode": "the same verifier re-run against evidence/STORE_SLICE.json, with the store-dependent recomputation declared and not attempted"
+  },
+  "tests": {
+    "edge05_watchdog_and_reconcile": {"passed": 46, "failed": 0, "command": "python -m pytest tests/unit/research/test_edge05_watchdog.py tests/unit/research/test_edge05_reconcile.py"},
+    "sabotage_matrix": {"detected": 15, "of": 15, "skipped": 0}
+  },
+  "resources": {
+    "free_bytes": 6069309440,
+    "free_gib": 5.6525,
+    "volume_used_percent": 97.62,
+    "lane_tree_bytes": 3288974,
+    "watchdog_tree_bytes": 193564,
+    "store_bytes": 5621615,
+    "store_bars": 18159,
+    "measured_growth_bytes_per_day": 1493484.324,
+    "measured_window_hours": 8.0,
+    "declared_growth_thresholds_bytes_per_day": {"warn": 16777216, "stop": 67108864},
+    "lane_budget_over_sixty_days_bytes_per_day": 4581290.667,
+    "declared_free_space_floors_bytes": {"warn": 5368709120, "critical": 2147483648},
+    "disk_status": "HEALTHY",
+    "never_deleted": [
+      "the forward store",
+      "daily/<date>.json, the lane's durable coverage record",
+      "every published report",
+      "the run log, the slot ledger and the ingest ledger"
+    ],
+    "pruned": [
+      "the lane's bounded operational logs, at their declared caps",
+      "the watchdog's own readings and alerts, at its own declared caps"
+    ],
+    "snapshots": "a snapshot identical to the previous one is refused and the refusal recorded; the watchdog snapshots its own readings, never the store",
+    "near_full_disk": "the two floors and their two actions are exercised by tests rather than live; the volume is 97.47% full and that is not this lane's doing, but it is this lane's risk"
+  },
+  "forward_coverage": {
+    "source": "data/forward/edge04/coverage.json (EDGE04_COVERAGE_V1)",
+    "required_days": 60,
+    "eligible_days": 0,
+    "remaining_days": 60,
+    "days_with_any_data": 227,
+    "days_in_the_observation_window_but_backfilled": 226,
+    "prospectively_observed_days": [],
+    "today": {"day": "2026-10-13", "class": "INCOMPLETE", "coverage": 0.541667, "eligible": false},
+    "criteria_frozen_before_accumulating": {
+      "coverage_required": 0.9,
+      "lag_bound_seconds": {"1h": 7200, "15m": 1800},
+      "freeze": {
+        "frozen_1h_end_utc": "2026-02-28T23:00:00Z",
+        "frozen_15m_end_utc": "2026-10-07T11:30:00Z",
+        "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77"
+      },
+      "rule": "a day counts only if every primary asset holds at least 90% of the 24 hourly bars the calendar expects for it, and every one of those bars was stored within its timeframe's lag bound of closing"
+    },
+    "published_as": "reports/edge-recovery/WP-EDGE-05/EDGE05_FORWARD_ELIGIBILITY.json",
+    "cohorts_kept_apart": {
+      "HISTORICAL_BACKFILLED": {"days": 226, "counted_as_forward": false, "measured": "the 226 days of the observation window, all classed DENSE_BUT_BACKFILLED: their bars were stored long after they closed"},
+      "REFUSED_OTHER_CLASSES": {"days": 1, "by_class": {"INCOMPLETE": 1}, "counted_as_forward": false},
+      "FORWARD_PROSPECTIVE": {"days": 0, "counted_as_forward": true},
+      "reading": "a backfill is history, not an observation; the two are reported separately and never aggregated into one sample"
+    }
+  },
+  "errors": {
+    "raised_and_fixed": [
+      "a check that was right for the wrong reason: the live verifier failed the interruption check while the episode was still open, and passed once the recovery had actually happened",
+      "a reconciliation with a shelf life: after the recovering tick appended its nine bars, the chain check failed by exactly one tick, so reconcile and verify are now run back to back and the sequence is documented",
+      "an audit silent about the switch that matters: Enabled was omitted from the recorded defaults, so a reader could not tell an enabled lane from a disabled one",
+      "a self-test that could pass by accident: the market-expectation sabotage produced a contradiction only while the store lagged the calendar, so it was planted where it is always a lie"
+    ],
+    "open": []
+  },
+  "alerts": {
+    "kinds": 16,
+    "rows": 25,
+    "per_transition": true
+  },
+  "publication": {
+    "commits_local": 4,
+    "push": "BLOCKED_GITHUB_AUTH",
+    "probe": "GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=/bin/true timeout 60 git push --dry-run origin HEAD",
+    "probe_result": "no output, killed after 60 s, exit 124",
+    "origin": "https://github.com/Extr3sao/bot_crypto.git",
+    "reading": "the credential helper never returns because the prompt it waits for is disabled; the probe was a dry run and no credential was supplied, so nothing left this machine"
+  },
+  "not_exercised": [
+    "locked screen, on this host, without disturbing the person using it",
+    "user logoff: the lane's InteractiveToken means it does not run, and removing that limitation needs a stored credential this work package will not hold",
+    "reboot and sleep/wake: declared by the registration, not exercised here",
+    "a 60-day unattended window: 24 minutes of live outage is not 60 days of scheduled firing",
+    "an observer outside the host: if the host is off, nothing on it reports it",
+    "STORE_STALE, EVIDENCE_CORRUPT and DISK_BUDGET_EXCEEDED against the live lane: exercised by tests and by the sabotage matrix"
+  ],
+  "later_observation": {
+    "recorded_at_utc": "2026-10-13T21:45:25Z",
+    "what_changed": "the host's volume fell under the critical floor after this report was first written, so the live lane refused its own ticks; the report keeps the reading instead of the old claim",
+    "free_bytes": 2091692032,
+    "free_gib": 1.948,
+    "critical_floor_bytes": 2147483648,
+    "healthy_floor_bytes": 5368709120,
+    "lane_rows": 48,
+    "live_disk_budget_exceeded": 5,
+    "first_refusal_utc": "2026-10-13T20:25:56Z",
+    "latest_refusals_utc": [
+      "2026-10-13T21:25:56Z",
+      "2026-10-13T21:40:56Z"
+    ],
+    "market_requests_from_a_refused_tick": 0,
+    "data_deleted_to_make_room": false,
+    "watchdog_latest_utc": "2026-10-13T21:32:33Z",
+    "watchdog_latest_verdict": "WATCH_ALARM",
+    "watchdog_latest_category": "SCHEDULER_FAILURE",
+    "watchdog_readings": 15,
+    "watchdog_alerts": 35,
+    "category_wart": "a tick that deliberately fails closed on disk is surfaced as SCHEDULER_FAILURE rather than RESOURCE_PRESSURE: a categorisation to improve, not a failing check",
+    "forward_days_still_zero": true,
+    "hypothetical": true,
+    "order_sent": false,
+    "promotion": "NONE"
+  },
+  "false_success_controls": {
+    "order_sent": false,
+    "hypothetical": true,
+    "promotion": "NONE",
+    "credentials_used": false,
+    "risk_engine_changed": false,
+    "strategies_changed": false,
+    "lane_stopped_or_replaced": false,
+    "second_trading_orchestrator_created": false,
+    "verification_ran_on_a_copy_for_the_sabotages": true,
+    "exit_codes_are_the_commands_own": true
+  }
+}

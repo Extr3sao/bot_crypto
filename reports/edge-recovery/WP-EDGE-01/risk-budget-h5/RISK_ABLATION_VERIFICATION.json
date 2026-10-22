@@ -1,0 +1,234 @@
+{
+  "dir": "reports\\edge-recovery\\WP-EDGE-01\\risk-budget-h5",
+  "checks": [
+    {
+      "check": "ARTIFACTS_PRESENT",
+      "ok": true,
+      "detail": "5 artefacts match their digests"
+    },
+    {
+      "check": "WINDOW_IS_PREREGISTERED_DEV",
+      "ok": true,
+      "detail": "every one of 960 trades, 5347 refusals and 1720 signals sits inside the DEV window"
+    },
+    {
+      "check": "BUDGET_IS_ONE_FIELD_APART",
+      "ok": true,
+      "detail": "one field apart (drawdown_halt_pct: 5.0 -> 100.0) and the base matches config/risk.yaml"
+    },
+    {
+      "check": "HALT_IS_INERT_IN_VARIANT",
+      "ok": true,
+      "detail": "risk:risk_drawdown_halt 493 -> 0"
+    },
+    {
+      "check": "CANDIDATE_LAYER_IDENTICAL",
+      "ok": true,
+      "detail": "860 identical signals and 6 identical candidate-level refusal counts in both arms"
+    },
+    {
+      "check": "GROSS_BEFORE_COSTS_RECOMPUTED",
+      "ok": true,
+      "detail": "base: gross -151.71 vs recomputed -151.71 | variant: gross -96.18 vs recomputed -96.18"
+    },
+    {
+      "check": "COST_SPLIT_IDENTITY",
+      "ok": true,
+      "detail": "cost split reconciles on both arms"
+    },
+    {
+      "check": "FUNNEL_ARITHMETIC",
+      "ok": true,
+      "detail": "base: 2910 refusals over 8 reasons | variant: 2437 refusals over 7 reasons"
+    },
+    {
+      "check": "FUNNEL_SPLIT_BY_LAYER",
+      "ok": true,
+      "detail": "candidate layer frozen; risk layer moved: risk:risk_drawdown_halt 493 -> 0, risk:risk_loss_cooldown 17 -> 37"
+    },
+    {
+      "check": "MARGINAL_ARITHMETIC",
+      "ok": true,
+      "detail": "marginal +380 trades, -396.46 USDT net, +55.54 USDT gross"
+    },
+    {
+      "check": "MARKET_CONTEXT_ATTRIBUTION",
+      "ok": true,
+      "detail": "960 trades attributed from 2596 benchmark days (BEAR=51, BULL=857, SIDEWAYS=52)"
+    },
+    {
+      "check": "DECISION_RULE_FROZEN",
+      "ok": true,
+      "detail": "the decision rule matches the pre-registered constants ({'min_extra_trades': 20, 'marginal_net_positive_usdt': 0.0})"
+    },
+    {
+      "check": "VERDICT_RECOMPUTED",
+      "ok": true,
+      "detail": "RISK_NOT_BINDING_ON_PROFITABILITY recomputed: +380 trades, -396.46 USDT marginal net"
+    }
+  ],
+  "passed": 13,
+  "total": 13,
+  "self_test": {
+    "baseline_all_green": true,
+    "baseline": {
+      "ARTIFACTS_PRESENT": true,
+      "WINDOW_IS_PREREGISTERED_DEV": true,
+      "BUDGET_IS_ONE_FIELD_APART": true,
+      "HALT_IS_INERT_IN_VARIANT": true,
+      "CANDIDATE_LAYER_IDENTICAL": true,
+      "GROSS_BEFORE_COSTS_RECOMPUTED": true,
+      "COST_SPLIT_IDENTITY": true,
+      "FUNNEL_ARITHMETIC": true,
+      "FUNNEL_SPLIT_BY_LAYER": true,
+      "MARGINAL_ARITHMETIC": true,
+      "MARKET_CONTEXT_ATTRIBUTION": true,
+      "DECISION_RULE_FROZEN": true,
+      "VERDICT_RECOMPUTED": true
+    },
+    "mutations": [
+      {
+        "mutation": "M1_flattered_gross",
+        "expected_check": "GROSS_BEFORE_COSTS_RECOMPUTED",
+        "detected": [
+          "GROSS_BEFORE_COSTS_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "variant: declared gross -71.18 != recomputed -96.18"
+      },
+      {
+        "mutation": "M2_tampered_fees",
+        "expected_check": "COST_SPLIT_IDENTITY",
+        "detected": [
+          "COST_SPLIT_IDENTITY"
+        ],
+        "expected_check_failed": true,
+        "detail": "base: declared fees_usdt 296.79 != the sum of the rows"
+      },
+      {
+        "mutation": "M3_window_moved_to_val",
+        "expected_check": "WINDOW_IS_PREREGISTERED_DEV",
+        "detected": [
+          "WINDOW_IS_PREREGISTERED_DEV"
+        ],
+        "expected_check_failed": true,
+        "detail": "declared window starts 1751328000000, DEV starts 1727740800000"
+      },
+      {
+        "mutation": "M4_second_field_retuned",
+        "expected_check": "BUDGET_IS_ONE_FIELD_APART",
+        "detected": [
+          "BUDGET_IS_ONE_FIELD_APART"
+        ],
+        "expected_check_failed": true,
+        "detail": "the budgets differ in ['drawdown_halt_pct', 'max_trades_per_day'], the experiment declares only ['drawdown_halt_pct']"
+      },
+      {
+        "mutation": "M5_base_halt_relaxed",
+        "expected_check": "BUDGET_IS_ONE_FIELD_APART",
+        "detected": [
+          "BUDGET_IS_ONE_FIELD_APART"
+        ],
+        "expected_check_failed": true,
+        "detail": "the base drawdown halt is 20.0, the runtime config says 5.0: the base arm is not the runtime's budget"
+      },
+      {
+        "mutation": "M6_halt_back_in_variant",
+        "expected_check": "HALT_IS_INERT_IN_VARIANT",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "FUNNEL_ARITHMETIC",
+          "HALT_IS_INERT_IN_VARIANT"
+        ],
+        "expected_check_failed": true,
+        "detail": "the variant still refused 1 entries with risk:risk_drawdown_halt: the halt is not inert; variant: declares 0 halt refusals, the rows carry 1"
+      },
+      {
+        "mutation": "M7_signal_changed_in_one_arm",
+        "expected_check": "CANDIDATE_LAYER_IDENTICAL",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "CANDIDATE_LAYER_IDENTICAL"
+        ],
+        "expected_check_failed": true,
+        "detail": "the two arms did not print the same signals"
+      },
+      {
+        "mutation": "M8_refusals_trimmed",
+        "expected_check": "FUNNEL_ARITHMETIC",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "CANDIDATE_LAYER_IDENTICAL",
+          "FUNNEL_ARITHMETIC",
+          "FUNNEL_SPLIT_BY_LAYER"
+        ],
+        "expected_check_failed": true,
+        "detail": "variant: file and JSON disagree (file-only {'candidate:volume_filter_fail': 259, 'candidate:trend_filter_fail': 489, 'candidate:rr_below_minimum': 66, 'candidate:level_already_traded': 350, 'candidate:stop_too_wide': 29, 'risk:risk_loss_cooldown': 20, 'candidate:reward_below_cost': 5}, json-only {'candidate:volume_filter_fail': 550, 'candidate:trend_filter_fail': 1097, 'candidate:rr_below_minimum': 105, 'candidate:level_already_traded': 584, 'candidate:stop_too_wide': 55, 'risk:risk_loss_cooldown': 37, 'candidate:reward_below_cost': 9})"
+      },
+      {
+        "mutation": "M9_candidate_refusal_moved",
+        "expected_check": "FUNNEL_SPLIT_BY_LAYER",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "CANDIDATE_LAYER_IDENTICAL",
+          "FUNNEL_ARITHMETIC",
+          "FUNNEL_SPLIT_BY_LAYER"
+        ],
+        "expected_check_failed": true,
+        "detail": "candidate-layer refusals moved: candidate:volume_filter_fail 550 -> 551"
+      },
+      {
+        "mutation": "M10_marginal_tampered",
+        "expected_check": "MARGINAL_ARITHMETIC",
+        "detected": [
+          "MARGINAL_ARITHMETIC"
+        ],
+        "expected_check_failed": true,
+        "detail": "marginal_net_usdt: declared -366.464 != recomputed -396.4641"
+      },
+      {
+        "mutation": "M11_relabelled_market_context",
+        "expected_check": "MARKET_CONTEXT_ATTRIBUTION",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "MARKET_CONTEXT_ATTRIBUTION"
+        ],
+        "expected_check_failed": true,
+        "detail": "base/ETH @ 1728310500000: market_context 'BEAR' != 'BULL' readable at that instant; base/BTC @ 1728311400000: market_context 'BEAR' != 'BULL' readable at that instant; base/SOL @ 1728311400000: market_context 'BEAR' != 'BULL' readable at that instant; base/BTC @ 1728396000000: market_context 'BEAR' != 'BULL' readable at that instant; base/ETH @ 1728396000000: market_context 'BEAR' != 'BULL' readable at that instant; base/SOL @ 1728396000000: market_context 'BEAR' != 'BULL' readable at that instant"
+      },
+      {
+        "mutation": "M12_flipped_verdict",
+        "expected_check": "VERDICT_RECOMPUTED",
+        "detected": [
+          "VERDICT_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "declared FREQUENCY_VIABLE but the rule on the published numbers gives RISK_NOT_BINDING_ON_PROFITABILITY"
+      },
+      {
+        "mutation": "M13_relaxed_rule",
+        "expected_check": "DECISION_RULE_FROZEN",
+        "detected": [
+          "DECISION_RULE_FROZEN"
+        ],
+        "expected_check_failed": true,
+        "detail": "rule.min_extra_trades is 1, frozen value is 20"
+      },
+      {
+        "mutation": "M14_out_of_window_trade",
+        "expected_check": "WINDOW_IS_PREREGISTERED_DEV",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "GROSS_BEFORE_COSTS_RECOMPUTED",
+          "MARGINAL_ARITHMETIC",
+          "MARKET_CONTEXT_ATTRIBUTION",
+          "WINDOW_IS_PREREGISTERED_DEV"
+        ],
+        "expected_check_failed": true,
+        "detail": "trade decision_ts 1769904000000 outside DEV; trade entry_ts 1769904900000 outside DEV; trade exit_ts 1769905800000 outside DEV"
+      }
+    ],
+    "all_detected": true
+  },
+  "failed": 0
+}

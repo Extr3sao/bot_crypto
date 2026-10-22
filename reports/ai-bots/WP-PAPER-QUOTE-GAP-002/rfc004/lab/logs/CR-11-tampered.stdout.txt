@@ -1,0 +1,4 @@
+2026-10-21 17:00:42 [error    ] lane_book.corrupt              path=C:\Users\GVLLFR0035\Downloads\bot-freebuff-recovery-004\reports\ai-bots\WP-PAPER-QUOTE-GAP-002\rfc004\lab\cases\CR-11\state\BOOK.corrupt.1792594842327.json
+2026-10-21 17:00:42 [error    ] lane_book.corrupt              path=C:\Users\GVLLFR0035\Downloads\bot-freebuff-recovery-004\reports\ai-bots\WP-PAPER-QUOTE-GAP-002\rfc004\lab\cases\CR-11\state\BOOK.corrupt.1792594842328.json
+2026-10-21 17:00:42 [error    ] lane_book.corrupt              path=C:\Users\GVLLFR0035\Downloads\bot-freebuff-recovery-004\reports\ai-bots\WP-PAPER-QUOTE-GAP-002\rfc004\lab\cases\CR-11\state\BOOK.corrupt.1792594842333.json
+{"out": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\logs\\CR-11-tampered.json", "exit": 2, "pid": 34724}

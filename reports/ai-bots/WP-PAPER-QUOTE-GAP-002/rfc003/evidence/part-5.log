@@ -1,0 +1,30 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\GVLLFR0035\AppData\Local\Temp\rfc003-clean\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: C:\Users\GVLLFR0035\AppData\Local\Temp\rfc003-clean
+configfile: pyproject.toml
+plugins: anyio-4.14.1, hypothesis-6.155.7, bdd-8.1.0, cov-7.1.0
+collecting ... collected 19 items
+
+tests/unit/market_data/test_ohlcv_fetcher.py::test_fetch_and_cache_pulls_persists_returns_from_store PASSED [  5%]
+tests/unit/market_data/test_ohlcv_fetcher.py::test_re_fetch_is_idempotent_no_duplicates PASSED [ 10%]
+tests/unit/market_data/test_ohlcv_fetcher.py::test_re_fetch_with_corrected_value_overwrites_last_write_wins PASSED [ 15%]
+tests/unit/market_data/test_ohlcv_fetcher.py::test_connector_exception_propagates_and_store_untouched PASSED [ 21%]
+tests/unit/market_data/test_ohlcv_fetcher.py::test_nan_values_are_dropped PASSED [ 26%]
+tests/unit/market_data/test_ohlcv_fetcher.py::test_high_less_than_low_is_dropped PASSED [ 31%]
+tests/unit/market_data/test_ohlcv_fetcher.py::test_clock_fn_invoked_at_least_once PASSED [ 36%]
+tests/unit/market_data/test_quota.py::test_quota_state_remaining_never_negative PASSED [ 42%]
+tests/unit/market_data/test_quota.py::test_check_has_no_side_effect PASSED [ 47%]
+tests/unit/market_data/test_quota.py::test_consume_decrements_capacity PASSED [ 52%]
+tests/unit/market_data/test_quota.py::test_exhaustion_raises_quota_exhausted_fail_closed PASSED [ 57%]
+tests/unit/market_data/test_quota.py::test_multiple_requests_then_refuse_then_window_recovery PASSED [ 63%]
+tests/unit/market_data/test_quota.py::test_provider_keys_are_isolated PASSED [ 68%]
+tests/unit/market_data/test_quota.py::test_invalid_configuration_fails_fast PASSED [ 73%]
+tests/unit/market_data/test_quota.py::test_invalid_cost_rejected PASSED  [ 78%]
+tests/unit/market_data/test_quota.py::test_no_silent_bypass_on_partial_cost PASSED [ 84%]
+tests/unit/market_data/test_quota.py::test_determinism_same_clock_same_result PASSED [ 89%]
+tests/unit/market_data/test_quota.py::test_concurrent_consumption_is_atomic PASSED [ 94%]
+tests/unit/market_data/test_quota.py::test_retry_after_hint_is_window_bounded PASSED [100%]
+
+============================= 19 passed in 1.89s ==============================

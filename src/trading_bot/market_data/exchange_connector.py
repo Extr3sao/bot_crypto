@@ -64,6 +64,7 @@ from tenacity import (
 )
 
 from trading_bot.config.exchange import Exchange
+from trading_bot.execution import isolation
 from trading_bot.market_data.exceptions import ConnectorProtocolError
 from trading_bot.market_data.types import (
     OHLCV,
@@ -563,6 +564,12 @@ class CCXTExchangeConnector(ExchangeConnector):
         # (Binance, Kraken, OKX, Bybit, Coinbase Pro); TSK-101 sólo
         # cubre Binance. Multi-exchange mapping (clientOid, clOrdID,
         # orderLinkId) queda en ``MULTI_EXCHANGE_SCOPE``.
+        #: RFC005: la puerta va antes de generar el id y antes de cualquier
+        #: llamada a ccxt, para que un proceso paper no pueda ni intentarlo.
+        isolation.assert_order_allowed(
+            "market_data.CCXTExchangeConnector.create_order",
+            detail=f"{symbol} {side} {order_type} {amount}",
+        )
         cid = client_order_id or str(uuid.uuid4())
         params: dict[str, Any] = {"clientOrderId": cid}
 
@@ -614,6 +621,10 @@ class CCXTExchangeConnector(ExchangeConnector):
         )
 
     def cancel_order(self, order_id: str, symbol: str) -> None:
+        isolation.assert_order_allowed(
+            "market_data.CCXTExchangeConnector.cancel_order",
+            detail=f"{order_id} {symbol}",
+        )
         request_id = str(uuid.uuid4())
         log = self._log.bind(req_id=request_id, op="cancel_order", order_id=order_id, symbol=symbol)
 

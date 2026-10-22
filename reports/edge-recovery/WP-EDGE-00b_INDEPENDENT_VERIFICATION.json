@@ -1,0 +1,117 @@
+{
+  "artifact": "WP-EDGE-00b-INDEPENDENT-VERIFICATION",
+  "claim": "an asset excluded by the scanner's universe filters is reported as a selection no-decision (NO_TRADE_UNIVERSE), not as a data outage (NO_TRADE_DATA)",
+  "verifier": "scripts/wp_edge_00b_verify.py (separate process, artifact + source text, no runtime imports)",
+  "generated_at_utc": "2026-10-12T10:43:12.668248+00:00",
+  "base": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery",
+  "run": "runs/WP-EDGE-00b-universe-fix/wp-edge-00b-universe-fix",
+  "source_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+  "checks_passed": 13,
+  "checks_total": 13,
+  "checks": [
+    {
+      "name": "ARTIFACTS_PRESENT",
+      "passed": true,
+      "detail": "all required artifacts present"
+    },
+    {
+      "name": "UNIVERSE_CLASS_DECLARED",
+      "passed": true,
+      "detail": "universe class + classification declared"
+    },
+    {
+      "name": "UNIVERSE_BRANCH_PRESENT",
+      "passed": true,
+      "detail": "inactive snapshot short-circuits before the context build"
+    },
+    {
+      "name": "TAXONOMY_NOT_CONFLATED",
+      "passed": true,
+      "detail": "universe class is separate from the data classes"
+    },
+    {
+      "name": "KINDS_REDERIVED_FROM_TRACES",
+      "passed": true,
+      "detail": "traces=6 kinds={'NO_TRADE_STRATEGIC': 4, 'NO_TRADE_UNIVERSE': 2}"
+    },
+    {
+      "name": "UNIVERSE_TRACES_CLEAN",
+      "passed": true,
+      "detail": "2 universe no-decision(s), no orders, no proposals"
+    },
+    {
+      "name": "UNIVERSE_REASON_MATCHES_SCANNER",
+      "passed": true,
+      "detail": "selection reasons classified as universe; a data shortfall would stay DATA"
+    },
+    {
+      "name": "ACTIVE_ASSETS_STILL_EVALUATED",
+      "passed": true,
+      "detail": "4 active asset-cycles kept their strategic NO_TRADE"
+    },
+    {
+      "name": "NO_ORDERS_NO_TRADES",
+      "passed": true,
+      "detail": "0 orders, 0 trades, 0 runtime failures, mode=paper"
+    },
+    {
+      "name": "TRACE_CHAIN_INTACT",
+      "passed": true,
+      "detail": "6 records; recomputed chain intact"
+    },
+    {
+      "name": "RUN_COMMIT_IS_ANCESTOR",
+      "passed": true,
+      "detail": "run commit=6a3a09047bdc is an ancestor of HEAD"
+    },
+    {
+      "name": "NO_SECRET_MATERIAL",
+      "passed": true,
+      "detail": "no secret-shaped material in the run evidence"
+    },
+    {
+      "name": "HONESTY_LABELS",
+      "passed": true,
+      "detail": "real-data run, universe no-decision visible, no profitability claim"
+    }
+  ],
+  "negative_controls_detected": 7,
+  "negative_controls_total": 7,
+  "negative_controls": [
+    {
+      "name": "kind_swapped_to_data",
+      "detected": true
+    },
+    {
+      "name": "universe_trace_reclassified",
+      "detected": true
+    },
+    {
+      "name": "order_injected_in_universe_trace",
+      "detected": true
+    },
+    {
+      "name": "strategic_trace_called_universe",
+      "detected": true
+    },
+    {
+      "name": "source_branch_neutralised",
+      "detected": true
+    },
+    {
+      "name": "classification_reverted",
+      "detected": true
+    },
+    {
+      "name": "secret_injected",
+      "detected": true
+    }
+  ],
+  "false_success": 0,
+  "verdict": "PASS",
+  "limitations": [
+    "Separate process/implementation, not a different human or agent.",
+    "Verifies the classification and the persisted evidence; it cannot certify profitability, and this run produces none.",
+    "The source checks are static (text/AST-free) reads of three files, so they prove the branch exists, not that every call path reaches it."
+  ]
+}

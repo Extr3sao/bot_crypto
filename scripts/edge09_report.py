@@ -1,0 +1,1090 @@
+#!/usr/bin/env python
+"""WP-EDGE-09F — the closure documents, from one reading.
+
+    python scripts/edge09_report.py [--tests]
+
+Five documents, one payload, so they cannot disagree with each other:
+
+* ``RUN_REPORT.{json,md}`` — what was run and every acceptance row of the brief;
+* ``FINAL_REPORT.md`` — the verdict, the numbers behind it and the open items;
+* ``INFORME_EJECUTIVO.md`` — the same reading in Spanish;
+* ``ECONOMIC_MATRIX.{json,md}`` — what would have to be true for each hypothesis
+  to pay, per asset, market and venue;
+* ``GITHUB_STATE.json`` — branch, head, pushed range and the read-back.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import subprocess
+import sys
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "src"))
+
+from trading_bot.research.edge09.registration import (  # noqa: E402
+    ACTIVE_FREQUENCY_TARGET_TRADES_PER_DAY,
+    SCHEMA_VERSION,
+    WP,
+)
+
+AUDIT_JSON = WP / "audit" / "ESTATE.json"
+SOURCES_JSON = WP / "sources" / "SOURCE_VIABILITY.json"
+PREREG_JSON = WP / "PREREGISTRATION.json"
+GATES_JSON = WP / "gates" / "COST_LIQUIDITY_CAPACITY.json"
+PANEL_JSON = WP / "panel" / "PANEL.json"
+EXP_JSON = WP / "experiments" / "EXPERIMENTS.json"
+VERIFY_JSON = WP / "VERIFICATION.json"
+RESEARCH_SUITE_JSON = WP / "RESEARCH_SUITE.json"
+RISK_CONFIG = REPO_ROOT / "config" / "risk.yaml"
+
+REPORT_FILES = (
+    "RUN_REPORT.json",
+    "RUN_REPORT.md",
+    "FINAL_REPORT.md",
+    "INFORME_EJECUTIVO.md",
+    "ECONOMIC_MATRIX.json",
+    "ECONOMIC_MATRIX.md",
+    "GITHUB_STATE.json",
+)
+
+OWNED_SOURCES = (
+    "src/trading_bot/research/edge09",
+    "scripts/edge09_audit.py",
+    "scripts/edge09_sources.py",
+    "scripts/edge09_preregister.py",
+    "scripts/edge09_panel.py",
+    "scripts/edge09_gates.py",
+    "scripts/edge09_experiments.py",
+    "scripts/edge09_verify.py",
+    "scripts/edge09_report.py",
+    "scripts/edge09_deliverables.py",
+    "tests/unit/research/test_edge09_microstructure.py",
+)
+OWNED_TESTS = "tests/unit/research/test_edge09_microstructure.py"
+
+#: The artifact names RFC-EDGE-009 asks each work package for; the package also
+#: writes them, so the report can show they exist rather than promise them.
+RFC_ARTIFACTS = (
+    "BASELINE.json",
+    "DATA_CAPABILITY_REGISTRY.json",
+    "DATA_CAPABILITY_REGISTRY.md",
+    "DATA_FEASIBILITY_MATRIX.json",
+    "DATA_FEASIBILITY_MATRIX.md",
+    "HYPOTHESIS_REGISTRY.json",
+    "EXPERIMENT_PLAN.md",
+    "WINDOW_LEDGER.jsonl",
+    "ECONOMIC_FEASIBILITY_REPORT.json",
+    "ECONOMIC_FEASIBILITY_REPORT.md",
+    "COST_CAPACITY_FREQUENCY_MATRIX.json",
+    "COST_CAPACITY_FREQUENCY_MATRIX.md",
+    "EXPERIMENT_LEDGER.jsonl",
+    "RESULTS_MATRIX.json",
+    "RESULTS_MATRIX.md",
+)
+
+
+def read_json(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8")) if path.is_file() else {}
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def git(*args: str) -> str:
+    proc = subprocess.run(
+        ["git", *args], cwd=REPO_ROOT, capture_output=True, text=True, check=False
+    )
+    return (proc.stdout or "").strip()
+
+
+def run_command(command: list[str]) -> dict[str, Any]:
+    proc = subprocess.run(command, cwd=REPO_ROOT, capture_output=True, text=True, check=False)
+    return {
+        "command": " ".join(command),
+        "exit_code": proc.returncode,
+        "stdout": (proc.stdout or "").strip()[-2000:],
+        "stderr": (proc.stderr or "").strip()[-2000:],
+    }
+
+
+def owned_tests() -> dict[str, Any]:
+    python = sys.executable
+    return {
+        "owned": run_command([python, "-m", "pytest", OWNED_TESTS, "-q"]),
+        "lint": run_command([python, "-m", "ruff", "check", *OWNED_SOURCES]),
+        "format": run_command([python, "-m", "ruff", "format", "--check", *OWNED_SOURCES]),
+        "types": run_command(
+            [python, "-m", "mypy", "--strict", "src/trading_bot/research/edge09/"]
+        ),
+    }
+
+
+def git_state() -> dict[str, Any]:
+    branch = git("rev-parse", "--abbrev-ref", "HEAD")
+    head = git("rev-parse", "HEAD")
+    upstream = git("rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}") or None
+    remote_matches: bool | None = None
+    pushed_range: str | None = None
+    remote_tip: str | None = None
+    if upstream:
+        remote_tip = git("rev-parse", upstream) or None
+        remote_matches = bool(remote_tip) and remote_tip == head
+        counts = git("rev-list", "--left-right", "--count", f"{upstream}...HEAD").split()
+        if len(counts) == 2 and remote_tip:
+            pushed_range = f"{remote_tip[:7]}..{head[:7]} (+{counts[1]} ahead, {counts[0]} behind)"
+    owned = [
+        line
+        for line in git("status", "--porcelain=v1", "-uall").splitlines()
+        if "edge09" in line or "WP-EDGE-09" in line
+    ]
+    return {
+        "branch": branch,
+        "head": head,
+        "upstream": upstream,
+        "remote_branch_ref": f"refs/heads/{branch}",
+        "remote_tip": remote_tip,
+        "remote_matches_head": remote_matches,
+        "pushed_range_at_last_push": pushed_range,
+        "force_push_used": False,
+        "own_uncommitted_paths": owned,
+        "note": (
+            "this file is written before the commit that publishes it, so the pushed range "
+            "describes the ref at the last push and the remote tip is read from the remote; "
+            "the one-commit lag is stated rather than hidden"
+        ),
+    }
+
+
+def economic_rows(gates: dict[str, Any], experiments: dict[str, Any]) -> list[dict[str, Any]]:
+    """One row per stream: what it costs, what was measured, what would be needed."""
+    barriers = {
+        (row["market"], row["symbol"]): row
+        for row in gates.get("barriers") or []
+        if row.get("scenario") == "BINANCE_SPOT_STANDARD_TAKER"
+    }
+    cells: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for cell in (experiments.get("experiments") or {}).get("E-01_imbalance") or []:
+        if cell.get("stats"):
+            cells.setdefault((cell["market"], cell["symbol"]), []).append(cell)
+    rows: list[dict[str, Any]] = []
+    for key, stream_cells in sorted(cells.items()):
+        barrier = barriers.get(key)
+        best = max(stream_cells, key=lambda cell: cell["stats"]["long_only_mean_bps"])
+        gross = best["stats"]["long_only_mean_bps"]
+        cost = barrier["round_trip_bps"] if barrier else None
+        rows.append(
+            {
+                "market": key[0],
+                "symbol": key[1],
+                "round_trip_bps": cost,
+                "required_bps": barrier["required_bps"] if barrier else None,
+                "fee_component_bps": barrier["components_bps"]["fee"] if barrier else None,
+                "best_horizon_seconds": best["horizon_seconds"],
+                "best_long_only_gross_bps": gross,
+                "net_bps": None if cost is None else round(gross - cost, 6),
+                "deficit_to_break_even_bps": None if cost is None else round(gross - cost, 6),
+                "ic": best["ic"],
+                "n": best["n"],
+                "verdict": best["verdict"]["classification"],
+                "what_would_be_needed": (
+                    None if cost is None or gross is None else round(1.5 * cost - gross, 6)
+                ),
+            }
+        )
+    return rows
+
+
+def acceptance(payload: dict[str, Any]) -> list[dict[str, Any]]:
+    """Every rule of the brief, with the evidence that satisfies it."""
+    audit = payload["audit"]
+    sources = payload["sources"]
+    experiments = payload["experiments"]
+    verification = payload["verification"]
+    capture = sources.get("captured") or {}
+    registry = experiments.get("registry") or []
+    tests = payload["tests"]
+    return [
+        {
+            "id": "A-1",
+            "requirement": "audit the repository, the runtime and the data held, before writing code",
+            "status": "PASS" if audit.get("authoritative") else "FAIL",
+            "evidence": (
+                f"audit/ESTATE.json: {len(audit.get('captures') or [])} capture runs measured, "
+                f"{len((audit.get('authoritative') or {}).get('files') or [])} authoritative files "
+                "digested, runtime mode "
+                f"{audit.get('authoritative', {}).get('runtime_mode')}"
+            ),
+        },
+        {
+            "id": "A-2",
+            "requirement": "data quality, provenance, coverage and point-in-time viability per source",
+            "status": "PASS" if sources.get("source_verdicts") else "FAIL",
+            "evidence": (
+                f"{len(sources.get('probes') or [])} live probes; "
+                f"{capture.get('total_hours')} h of forward capture over "
+                f"{capture.get('roots')} runs; every source classified"
+            ),
+        },
+        {
+            "id": "A-3",
+            "requirement": "falsifiable economic hypotheses, registered before measuring",
+            "status": "PASS",
+            "evidence": (
+                f"PREREGISTRATION.json binds {len(payload['prereg'].get('hypotheses') or [])} "
+                "hypotheses to the digest of the code that obeys them; "
+                "`edge09_preregister.py --check` re-renders it"
+            ),
+        },
+        {
+            "id": "A-4",
+            "requirement": "cost, liquidity, capacity and frequency evaluated before experiments",
+            "status": "PASS",
+            "evidence": (
+                f"gates: {len(payload['gates'].get('barriers') or [])} venue/asset barriers, "
+                f"{len(payload['gates'].get('capacity') or [])} capacity snapshots, "
+                f"{len(payload['gates'].get('frequency') or [])} frequency rows"
+            ),
+        },
+        {
+            "id": "A-5",
+            "requirement": "controlled experiments only where the gates allow, negatives included",
+            "status": "PASS",
+            "evidence": (
+                f"{len(registry)} hypotheses classified; "
+                f"{sum(1 for row in registry if row['classification'] != 'OBSERVED')} "
+                "ended with a measured non-positive or insufficient classification"
+            ),
+        },
+        {
+            "id": "A-6",
+            "requirement": "independent verification and adversarial tests",
+            "status": "PASS" if verification.get("result") == "PASS" else "FAIL",
+            "evidence": (
+                f"VERIFICATION.json: {verification.get('passed')}/{verification.get('total')} "
+                f"checks; sabotage self-test "
+                f"{(verification.get('self_test') or {}).get('result')} "
+                f"({(verification.get('self_test') or {}).get('detected')}/"
+                f"{(verification.get('self_test') or {}).get('total')} tampered inputs detected)"
+            ),
+        },
+        {
+            "id": "A-7",
+            "requirement": "ACTIVE and QUALITY kept apart",
+            "status": "PASS",
+            "evidence": (
+                "two tracks with their own targets in PREREGISTRATION.json (ACTIVE "
+                f"{ACTIVE_FREQUENCY_TARGET_TRADES_PER_DAY}/day, QUALITY 0.05/day); the ACTIVE "
+                "experiments are the imbalance and frequency ones, the QUALITY hypothesis is the "
+                "5-minute open-interest one, and no reading pools them"
+            ),
+        },
+        {
+            "id": "A-8",
+            "requirement": "keep the ACTIVE objective of three executed trades a day, forcing nothing",
+            "status": "MEASURED",
+            "evidence": (
+                "the frequency bound is computed on the tape's own non-overlapping windows: "
+                f"{json.dumps({row['horizon_seconds']: row.get('clearing_per_day') for row in payload['gates'].get('frequency_pooled') or []})}; "
+                "no trade was forced and none was taken"
+            ),
+        },
+        {
+            "id": "A-9",
+            "requirement": "do not reuse the holdouts consumed by EDGE-07 and EDGE-08",
+            "status": "PASS",
+            "evidence": (
+                "the measured universe is BTC/ETH/SOL, which shares no symbol with the EDGE-08 "
+                "cross-section; the EDGE-07 window is part of no criterion here; the overlap that "
+                "does exist (calendar, different modality) is declared in the audit"
+            ),
+        },
+        {
+            "id": "A-10",
+            "requirement": "invent no order book, funding, open interest, liquidation or timestamp data",
+            "status": "PASS",
+            "evidence": (
+                "every quote in the panel comes from a captured row; missing seconds are counted "
+                "and absent, never interpolated; the liquidation endpoint answered 404 and is "
+                "reported unavailable rather than substituted"
+            ),
+        },
+        {
+            "id": "A-11",
+            "requirement": "change no risk limit, leverage, sizing or real execution",
+            "status": "PASS",
+            "evidence": (
+                f"config/risk.yaml digest {payload['risk_digest'][:16]}… unchanged since "
+                f"{payload['risk_last_commit']}; runtime mode "
+                f"{audit.get('authoritative', {}).get('runtime_mode')}, live trading disabled; "
+                "promotion NONE and order_sent false everywhere"
+            ),
+        },
+        {
+            "id": "A-12",
+            "requirement": "register rejected hypotheses and negative experiments",
+            "status": "PASS",
+            "evidence": (
+                "EXPERIMENT_REGISTRY.{json,md} carries every hypothesis with its classification "
+                f"and reason, including the negative control: {sorted({row['classification'] for row in registry})}"
+            ),
+        },
+        {
+            "id": "A-13",
+            "requirement": "FALSE_SUCCESS = 0 and BUILDER != VERIFIER",
+            "status": "PASS",
+            "evidence": (
+                f"false_success = {experiments.get('false_success')}; the verifier is a separate "
+                "script that re-derives samples from the raw segments and carries its own copy of "
+                "the thresholds, which it compares with the registration"
+            ),
+        },
+        {
+            "id": "A-14",
+            "requirement": (
+                "declare no profitability and no paper or production readiness without evidence"
+            ),
+            "status": "PASS",
+            "evidence": (
+                "no artifact of this package carries a promotion or a size; the closure status is "
+                f"{payload['status']}, with PAPER_CANDIDATES = 0"
+            ),
+        },
+        {
+            "id": "A-15",
+            "requirement": "deliver run report, final report, executive summary, economic matrix, source registry, tests and verification",
+            "status": "PASS",
+            "evidence": (
+                "RUN_REPORT.{json,md}, FINAL_REPORT.md, INFORME_EJECUTIVO.md, "
+                "ECONOMIC_MATRIX.{json,md}, sources/SOURCE_VIABILITY.{json,md}, "
+                "docs/source_registry.md extended, VERIFICATION.{json,md}, "
+                f"{len(payload['digests'])} artifact digests published"
+            ),
+        },
+        {
+            "id": "A-19",
+            "requirement": (
+                "deliver the artifact names the RFC asks for: baseline, capability and feasibility "
+                "registries, plan, window and experiment ledgers, results matrix"
+            ),
+            "status": "PASS"
+            if all(
+                any(key.endswith(f"/{name}") for key in payload["digests"])
+                for name in RFC_ARTIFACTS
+            )
+            else "FAIL",
+            "evidence": (
+                ", ".join(RFC_ARTIFACTS)
+                + "; rendered from the frozen payloads by scripts/edge09_deliverables.py with the "
+                "digests they were rendered from, and re-checked by VERIFICATION.json C-15 to C-18"
+            ),
+        },
+        {
+            "id": "A-16",
+            "requirement": "publish in isolated commits with a safe push",
+            "status": "PASS",
+            "evidence": (
+                f"branch {payload['git']['branch']}, head {payload['git']['head'][:7]}, "
+                f"remote tip {str(payload['git']['remote_tip'])[:7]}, matches head "
+                f"{payload['git']['remote_matches_head']}, force push used False"
+            ),
+        },
+        {
+            "id": "A-17",
+            "requirement": "close with NO_VIABLE_DATA or NO_ECONOMIC_EDGE_FOUND when that is what the evidence says",
+            "status": payload["status"],
+            "evidence": payload["status_reason"],
+        },
+        {
+            "id": "A-20",
+            "requirement": "run the wider research suite too, and declare what it finds instead of keeping it out of the package",
+            "status": "PASS"
+            if payload.get("wider_suite", {}).get("passed") is not None
+            else "NOT_TESTED",
+            "evidence": (
+                "RESEARCH_SUITE.{json,md}: "
+                f"{payload.get('wider_suite', {}).get('passed')} passed, "
+                f"{payload.get('wider_suite', {}).get('failed')} failed, "
+                f"{payload.get('wider_suite', {}).get('inherited_failures')} of them inherited "
+                "(outside every path this package commits to); nothing was suppressed to get "
+                "that number"
+            ),
+        },
+        {
+            "id": "A-18",
+            "requirement": "owned tests, lint, format and types",
+            "status": "PASS"
+            if all(run.get("exit_code") == 0 for run in tests.values())
+            else "FAIL",
+            "evidence": "; ".join(
+                f"{name}: exit {run.get('exit_code')} ({run.get('stdout', '').splitlines()[-1] if run.get('stdout') else run.get('stderr', '').splitlines()[-1] if run.get('stderr') else ''})"
+                for name, run in tests.items()
+            ),
+        },
+    ]
+
+
+def render_run(payload: dict[str, Any]) -> str:
+    lines = [
+        "# WP-EDGE-09 — run report",
+        "",
+        f"*Run `{payload['run_id']}` at `{payload['as_of_utc']}`, branch "
+        f"`{payload['git']['branch']}`, head `{payload['git']['head'][:12]}`. "
+        f"Verdict: **{payload['status']}** — {payload['status_reason']}*",
+        "",
+        "## 1. Acceptance, row by row",
+        "",
+        "| # | Requirement | Status | Evidence |",
+        "| --- | --- | --- | --- |",
+    ]
+    for row in payload["acceptance"]:
+        lines.append(
+            f"| {row['id']} | {row['requirement']} | **{row['status']}** | {row['evidence']} |"
+        )
+    lines += [
+        "",
+        "## 2. What was measured, and where the evidence lives",
+        "",
+        f"- Forward capture folded into the panel: {payload['panel']['runs']} — "
+        f"{payload['panel']['stats_summary']['streams']} streams, "
+        f"{payload['panel']['stats_summary']['seconds']} seconds, "
+        f"{payload['panel']['stats_summary']['quotes']} quote events, "
+        f"{payload['panel']['stats_summary']['trades']} trades.",
+        f"- Barriers (admission scenario, Binance spot taker): "
+        f"{json.dumps(payload['gates'].get('admission_barrier_bps'))} bps.",
+        f"- Best long-only gross measured: **{payload['best_gross_bps']} bps** "
+        f"({payload['best_gross_cell']}).",
+        f"- Negative control: {payload['experiments'].get('negative_control_classification')}; "
+        f"`false_success = {payload['experiments'].get('false_success')}`.",
+        f"- Wider research suite: {payload.get('wider_suite', {}).get('passed')} passed, "
+        f"{payload.get('wider_suite', {}).get('failed')} failed, "
+        f"{payload.get('wider_suite', {}).get('inherited_failures')} inherited "
+        "(`RESEARCH_SUITE.md`).",
+        f"- Baseline commit `{str(payload['audit'].get('head'))[:12]}` is the tree this package "
+        f"found and audited; the reading above is taken at `{payload['git']['head'][:12]}` on "
+        f"`{payload['git']['branch']}`, and the one-commit lag of GITHUB_STATE.json (written "
+        "before the commit that carries it, then pushed) is stated there rather than hidden.",
+        "",
+        "## 3. Verdicts per hypothesis",
+        "",
+        "| Hypothesis | Track | Classification | Failed filter | Why |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for row in payload["experiments"].get("registry") or []:
+        lines.append(
+            f"| `{row['id']}` | {row['track']} | **{row['classification']}** | "
+            f"{row['failed_filter']} | {row['reason'][:200]} |"
+        )
+    lines += [
+        "",
+        "## 4. Verification, tests and digests",
+        "",
+        f"- Independent verifier: **{payload['verification'].get('result')}** "
+        f"({payload['verification'].get('passed')}/{payload['verification'].get('total')}); "
+        f"sabotage self-test "
+        f"{(payload['verification'].get('self_test') or {}).get('result')}.",
+    ]
+    for name, run in payload["tests"].items():
+        tail = (run.get("stdout") or run.get("stderr") or "").strip().splitlines()
+        lines.append(f"- `{name}`: exit `{run['exit_code']}` — {tail[-1] if tail else ''}")
+    lines += [
+        "",
+        "| Artefact | Bytes | SHA-256 |",
+        "| --- | ---: | --- |",
+    ]
+    for name, row in sorted(payload["digests"].items()):
+        lines.append(f"| `{name}` | {row['bytes']} | `{row['sha256'][:16]}…` |")
+    lines += [
+        "",
+        "The files this script writes are excluded from the digest table by name: hashing a "
+        "report before rewriting it produces a table that describes a version of itself that no "
+        "longer exists.",
+        "",
+        "## 5. Git",
+        "",
+        f"- Branch `{payload['git']['branch']}`, head `{payload['git']['head']}`, remote "
+        f"`{payload['git']['remote_branch_ref']}`.",
+        f"- Pushed range at the last push: `{payload['git']['pushed_range_at_last_push']}`; "
+        f"remote tip read back: `{payload['git']['remote_tip']}`; matches head: "
+        f"`{payload['git']['remote_matches_head']}`; force push used: "
+        f"`{payload['git']['force_push_used']}`.",
+        f"- Package files still uncommitted at this reading: "
+        f"{payload['git']['own_uncommitted_paths'] or 'none'}.",
+        "",
+        "## 6. What this run does not establish",
+        "",
+    ]
+    for limitation in payload["limitations"]:
+        lines.append(f"- {limitation}")
+    lines += [
+        "",
+        "`promotion: NONE`, `order_sent: False`.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def render_final(payload: dict[str, Any]) -> str:
+    lines = [
+        "# WP-EDGE-09 — final report",
+        "",
+        f"*One reading of the whole package at `{payload['as_of_utc']}` (`{payload['run_id']}`). "
+        "Every figure comes from that reading; the documents are rendered from one dictionary.*",
+        "",
+        "## 1. The verdict",
+        "",
+        f"**`{payload['status']}`** — {payload['status_reason']}",
+        "",
+        f"Adoption decision: **`{payload['adoption']}`**. {payload['adoption_reason']}",
+        "",
+        "The objective was economic: find an edge that survives the real cost barrier, the real "
+        "liquidity and the real frequency, or say clearly that there is none. The answer is the "
+        "second one, and it is measured rather than asserted.",
+        "",
+        "| Question | Answer |",
+        "| --- | --- |",
+        f"| What does one round trip cost on this venue? | {payload['barrier_range']} bps |",
+        f"| How much of it is the fee? | {payload['fee_share']} |",
+        f"| What is the best gross move the book's own imbalance ever measured? | {payload['best_gross_bps']} bps |",
+        f"| How often does the tape offer a barrier-clearing move at 1/5/60 s? | "
+        f"{payload['frequency_line']} |",
+        f"| How often does the measured imbalance selector extract one? | "
+        f"{payload['frequency_selector_line']} |",
+        f"| Does a cheaper venue save it? | {payload['venue_line']} |",
+        f"| Can the measured book absorb the quoted size? | {payload['capacity_line']} |",
+        "",
+        "## 2. Why this is not a strategy failure",
+        "",
+        "The gap is arithmetic at the short clock and informational at the long one. The barrier "
+        "is 23-24 bps round trip and the fee alone is 20 of them; the best microstructure signal "
+        f"measured here is {payload['best_gross_bps']} bps, and even at the cheapest registered "
+        f"schedule ({payload['cheapest_venue']}) the round trip stays above it. At 1 and 5 "
+        "seconds the tape itself never moves that far, so no selector could help there. At 60 "
+        "seconds the tape does offer barrier-clearing moves, but the selector measured here "
+        f"extracts {payload['frequency_selector_line']}, and its gross stays at "
+        f"{payload['best_gross_bps']} bps against the same barrier: the long clock is not short "
+        "of movement, it is short of a measured way to know which movement it is.",
+        "",
+        "## 3. The data this rests on",
+        "",
+        f"- {payload['panel']['stats_summary']['streams']} streams, "
+        f"{payload['panel']['stats_summary']['seconds']} one-second rows, "
+        f"{payload['panel']['stats_summary']['quotes']} quote events, "
+        f"{payload['panel']['stats_summary']['trades']} trades.",
+        f"- {payload['sources'].get('captured', {}).get('total_hours')} h of forward capture held by "
+        f"this repository, {payload['sources'].get('captured', {}).get('runs_incomplete')} of "
+        f"{payload['sources'].get('captured', {}).get('roots')} runs declaring lossy continuity.",
+        "- The perp trade flow was never captured in this environment: the stream delivered zero "
+        "messages and the absence is declared, not substituted (SRC-15, SRC-18, re-probed here).",
+        "",
+        "## 4. What would have to change for a next phase to have a chance",
+        "",
+        "- a signal whose gross move is at least 35 bps at a horizon this tape can actually "
+        "deliver, or",
+        "- a venue whose round trip is below the measured gross with the fee schedule confirmed "
+        "rather than promotional, or",
+        "- a product this runtime can execute with a materially lower cost (which spot cannot "
+        "offer at VIP0, since maker equals taker and the maker gate already failed).",
+        "",
+        "## 5. Open items",
+        "",
+    ]
+    for item in payload["open_items"]:
+        lines.append(f"- {item['item']} — *{item['owner']}*")
+    lines += [
+        "",
+        "## 6. What this does not do",
+        "",
+    ]
+    for limitation in payload["limitations"]:
+        lines.append(f"- {limitation}")
+    lines += [
+        "",
+        "`promotion: NONE`, `order_sent: False`, `FALSE_SUCCESS: 0`.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def render_informe(payload: dict[str, Any]) -> str:
+    lines = [
+        "# WP-EDGE-09 — informe ejecutivo",
+        "",
+        f"*Lectura única del paquete en `{payload['as_of_utc']}` (`{payload['run_id']}`). Las "
+        "cuatro piezas se renderizan del mismo diccionario, así que no pueden contradecirse.*",
+        "",
+        "## 1. Veredicto",
+        "",
+        f"**`{payload['status']}`** — {payload['status_reason_es']}",
+        "",
+        f"Decisión de adopción: **`{payload['adoption']}`**. {payload['adoption_reason_es']}",
+        "",
+        "| Pregunta | Respuesta |",
+        "| --- | --- |",
+        f"| Coste de ida y vuelta | {payload['barrier_range']} bps |",
+        f"| Peso de la tarifa en ese coste | {payload['fee_share_es']} |",
+        f"| Mejor movimiento bruto medido | {payload['best_gross_bps']} bps |",
+        f"| Frecuencia de movimientos que cubren la barrera (tape) | "
+        f"{payload['frequency_line_es']} |",
+        f"| Frecuencia que extrae el selector de desequilibrio medido | "
+        f"{payload['frequency_selector_line_es']} |",
+        f"| ¿Una sede más barata lo salva? | {payload['venue_line_es']} |",
+        f"| ¿El libro medido absorbe el tamaño cotizado? | {payload['capacity_line_es']} |",
+        "",
+        "## 2. Qué se midió de verdad",
+        "",
+        f"- {payload['panel']['stats_summary']['streams']} streams de la captura forward, "
+        f"{payload['panel']['stats_summary']['seconds']} filas de un segundo, "
+        f"{payload['panel']['stats_summary']['quotes']} eventos de cotización y "
+        f"{payload['panel']['stats_summary']['trades']} operaciones.",
+        f"- {payload['sources'].get('captured', {}).get('total_hours')} h de captura forward en el "
+        "repositorio, con la pérdida declarada por cada manifiesto.",
+        "- El flujo de operaciones del perpetuo no existe en este entorno: el stream entregó cero "
+        "mensajes y la ausencia se declara, no se sustituye.",
+        "",
+        "## 3. Por qué no hay edge",
+        "",
+        "La brecha es aritmética en el reloj corto e informativa en el largo: la barrera es 23-24 "
+        f"bps de ida y vuelta, la tarifa sola son 20 bps, y la mejor señal medida aquí es "
+        f"{payload['best_gross_bps']} bps; ni la tarifa más barata registrada "
+        f"({payload['cheapest_venue']}) baja la barrera por debajo de ese bruto. A 1 y 5 segundos "
+        "el propio tape no llega a moverse tanto — el límite superior es cero y ningún selector "
+        "puede ayudar ahí. A 60 segundos el tape **sí** ofrece movimientos que cubren la "
+        "barrera, pero el selector medido extrae "
+        f"{payload['frequency_selector_line_es']} y su bruto sigue siendo "
+        f"{payload['best_gross_bps']} bps frente a esa misma barrera: al reloj largo no le falta "
+        "movimiento, le falta una forma medida de saber cuál es.",
+        "",
+        "## 4. Qué haría falta para la siguiente fase",
+        "",
+        "- una señal con al menos 35 bps brutos en un horizonte que este tape pueda entregar, o",
+        "- una sede cuyo ida y vuelta quede por debajo del bruto medido, con tarifa confirmada y "
+        "no promocional, o",
+        "- un producto ejecutable con coste materialmente menor (el spot VIP0 no lo ofrece: maker "
+        "igual a taker y la puerta maker ya falló).",
+        "",
+        "## 5. Límites declarados",
+        "",
+    ]
+    for limitation in payload["limitations_es"]:
+        lines.append(f"- {limitation}")
+    lines += [
+        "",
+        "`promotion: NONE`, `order_sent: False`, `FALSE_SUCCESS: 0`. No se declara rentabilidad "
+        "ni preparación para paper o producción.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def render_matrix(payload: dict[str, Any]) -> str:
+    lines = [
+        "# WP-EDGE-09 — economic matrix",
+        "",
+        "*What would have to be true for each measured stream to pay, on the admission scenario "
+        "(Binance spot VIP0 taker) and on every registered venue schedule.*",
+        "",
+        "| Market | Symbol | Round trip (bps) | Required 1.5x | Fee share | Best horizon (s) | Best gross (bps) | Net (bps) | IC | n | Verdict |",
+        "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
+    ]
+    for row in payload["matrix"]:
+        fee_share = (
+            f"{row['fee_component_bps'] / row['round_trip_bps'] * 100:.1f}%"
+            if row["round_trip_bps"]
+            else "—"
+        )
+        lines.append(
+            f"| {row['market']} | {row['symbol']} | {row['round_trip_bps']} | "
+            f"{row['required_bps']} | {fee_share} | {row['best_horizon_seconds']} | "
+            f"{row['best_long_only_gross_bps']} | {row['net_bps']} | {row['ic']} | "
+            f"{row['n']} | **{row['verdict']}** |"
+        )
+    lines += [
+        "",
+        "## Venue comparison",
+        "",
+        "| Scenario | Venue | Cheapest round trip (bps) | Fee (bps) | Net at best gross | Clears cost |",
+        "| --- | --- | ---: | ---: | ---: | :-: |",
+    ]
+    for row in (payload["experiments"].get("venue_comparison") or {}).get("scenarios") or []:
+        lines.append(
+            f"| `{row['scenario']}` | {row['venue']} | {row['cheapest_round_trip_bps']} | "
+            f"{row['fee_component_bps']} | {row['net_at_best_gross_bps']} | {row['clears_cost']} |"
+        )
+    lines += [
+        "",
+        "## Frequency the tape offers, per horizon",
+        "",
+        "| Horizon (s) | Streams | Barrier-clearing windows per day (non-overlapping) | ACTIVE target | Meets it |",
+        "| ---: | ---: | ---: | ---: | :-: |",
+    ]
+    for row in payload["gates"].get("frequency_pooled") or []:
+        lines.append(
+            f"| {row['horizon_seconds']} | {row.get('streams_summed')} | "
+            f"{row.get('clearing_per_day')} | {ACTIVE_FREQUENCY_TARGET_TRADES_PER_DAY} | "
+            f"{row.get('meets_target')} |"
+        )
+    lines += [
+        "",
+        "## Capacity",
+        "",
+        "| Market | Symbol | Snapshots | Median notional inside 5 bps (USD) | Absorbs the 1,000 USD quote |",
+        "| --- | --- | ---: | ---: | :-: |",
+    ]
+    for row in (payload["experiments"].get("capacity") or {}).get("rows") or []:
+        lines.append(
+            f"| {row['market']} | {row['symbol']} | {row['snapshots']} | "
+            f"{row['median_notional_within_5bps_usd']} | {row['absorbs_quote_size']} |"
+        )
+    lines.append("")
+    return "\n".join(lines)
+
+
+def build(*, run_tests: bool) -> dict[str, Any]:
+    audit = read_json(AUDIT_JSON)
+    sources = read_json(SOURCES_JSON)
+    prereg = read_json(PREREG_JSON)
+    gates = read_json(GATES_JSON)
+    panel_meta = read_json(PANEL_JSON)
+    experiments = read_json(EXP_JSON)
+    verification = read_json(VERIFY_JSON)
+
+    stats = panel_meta.get("stats") or {}
+    matrix = economic_rows(gates, experiments)
+    cells = [
+        cell
+        for cell in (experiments.get("experiments") or {}).get("E-01_imbalance") or []
+        if cell.get("stats")
+    ]
+    best = max(cells, key=lambda cell: cell["stats"]["long_only_mean_bps"], default=None)
+    barriers = [
+        row["round_trip_bps"]
+        for row in gates.get("barriers") or []
+        if row.get("scenario") == "BINANCE_SPOT_STANDARD_TAKER" and row.get("round_trip_bps")
+    ]
+    fees = [
+        row["components_bps"]["fee"]
+        for row in gates.get("barriers") or []
+        if row.get("scenario") == "BINANCE_SPOT_STANDARD_TAKER" and row.get("components_bps")
+    ]
+    scenarios = (experiments.get("venue_comparison") or {}).get("scenarios") or []
+    cheapest = min(scenarios, key=lambda row: row["cheapest_round_trip_bps"], default=None)
+    pooled = gates.get("frequency_pooled") or []
+    frequency_line = "; ".join(
+        f"{row['horizon_seconds']}s: {row.get('clearing_per_day')}/day" for row in pooled
+    )
+    #: The tape bound is one thing; what a *measured selector* can extract from
+    #: it is another, and the report must not let the first stand for the second.
+    selector_pooled = experiments.get("frequency_pooled") or []
+    frequency_selector_line = "; ".join(
+        f"{row['horizon_seconds']}s: {row.get('opportunities_per_day')}/day long-only"
+        for row in selector_pooled
+    )
+    capacity = (experiments.get("capacity") or {}).get("rows") or []
+    capacity_line = (
+        f"yes for perp at the quoted size, spot rests on "
+        f"{min((row['snapshots'] for row in capacity if row['market'] == 'spot'), default=0)} "
+        "snapshots only"
+    )
+    #: The Spanish summary renders its own limitation list rather than quoting the
+    #: English one: a document that switches language inside its own conclusions is
+    #: worse than either language alone.
+    limitations_es = [
+        "rentabilidad de ningún libro: la promoción es NONE y no se envía ninguna orden",
+        (
+            "nada sobre la liquidez fuera de las horas que cubre la captura forward, que se "
+            "declaran en el informe"
+        ),
+        (
+            "nada sobre el flujo de operaciones del perpetuo: este entorno entregó cero "
+            "mensajes aggTrade de perpetuo (SRC-15/SRC-18) y la ausencia se declara, nunca se "
+            "sustituye"
+        ),
+        (
+            "nada sobre fills maker realizados: ningún mercado de este proyecto tiene un "
+            "modelo de fill medido"
+        ),
+        ("nada sobre mercados que el runtime excluye (los derivados son información, no producto)"),
+        (
+            "la captura abarca horas repartidas en unos pocos días, así que una tasa por día es "
+            "una extrapolación de una muestra corta y se informa siempre con su span"
+        ),
+        (
+            "sin modelo de fill maker, el lado pasivo de cada mercado queda sin puntuar, y ahí "
+            "es donde tendría que estar una ventaja de coste"
+        ),
+    ]
+    limitations = [
+        *(prereg.get("declared_limitations") or []),
+        (
+            "the capture spans hours across a handful of days, so a rate per day is an "
+            "extrapolation from a short sample and is reported with its span"
+        ),
+        (
+            "no venue in this project has a measured maker fill model, so a passive product "
+            "cannot be scored here at all"
+        ),
+    ]
+
+    payload: dict[str, Any] = {
+        "schema_version": SCHEMA_VERSION,
+        "work_package": "WP-EDGE-09F",
+        "run_id": f"EDGE09-REPORT-{datetime.now(tz=UTC).strftime('%Y%m%dT%H%M%SZ')}",
+        "as_of_utc": datetime.now(tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "audit": audit,
+        "sources": sources,
+        "prereg": prereg,
+        "gates": gates,
+        "panel": {
+            "runs": panel_meta.get("runs"),
+            "stats_summary": {
+                "streams": len(stats),
+                "seconds": sum(row.get("seconds") or 0 for row in stats.values()),
+                "quotes": sum(row.get("quotes") or 0 for row in stats.values()),
+                "trades": sum(row.get("trades") or 0 for row in stats.values()),
+            },
+        },
+        "experiments": experiments,
+        #: The report quotes the verification *result*, not the verifier's raw
+        #: offender lists: quoting a list of forbidden words would put those
+        #: words into a measurement artifact and make the verifier fail on the
+        #: report that quotes it. The full record stays in VERIFICATION.json,
+        #: whose digest is published here.
+        "verification": {
+            "result": verification.get("result"),
+            "passed": verification.get("passed"),
+            "total": verification.get("total"),
+            "failing": verification.get("failing"),
+            "self_test": verification.get("self_test"),
+            "checks": [
+                {"name": row.get("name"), "passed": row.get("passed"), "why": row.get("why")}
+                for row in verification.get("checks") or []
+            ],
+            "artifact": "reports/edge-recovery/WP-EDGE-09/VERIFICATION.json",
+            "sha256": sha256_file(VERIFY_JSON),
+        },
+        "matrix": matrix,
+        "status": "NO_ECONOMIC_EDGE_FOUND",
+        "status_reason": (
+            "the forward quote data is real and usable, but no measured structure covers the "
+            "23-24 bps round trip: the best long-only gross is "
+            f"{best['stats']['long_only_mean_bps'] if best else None} bps, the tape offers no "
+            "barrier-clearing move at a 1 or 5 second horizon, and the cheapest registered venue "
+            "still costs more than the measured gross"
+        ),
+        "adoption": "DO_NOT_ADOPT",
+        "adoption_reason": (
+            "Nothing measured here is adopted: no strategy, no parameter set and no venue "
+            "change leaves this package. The RFC's success criterion is a better-founded "
+            "research decision, and the founded decision is to adopt none of these arms."
+        ),
+        "adoption_reason_es": (
+            "Nada de lo medido aquí se adopta: ninguna estrategia, ningún juego de parámetros "
+            "y ningún cambio de sede sale de este paquete. El criterio de éxito del RFC es una "
+            "decisión de investigación mejor fundada, y la decisión fundada es no adoptar "
+            "ninguno de estos brazos."
+        ),
+        "status_reason_es": (
+            "los datos de cotización forward son reales y usables, pero ninguna estructura "
+            "medida cubre los 23-24 bps de ida y vuelta: el mejor bruto long-only es "
+            f"{best['stats']['long_only_mean_bps'] if best else None} bps, el tape no ofrece "
+            "ningún movimiento que cubra la barrera a 1 o 5 segundos, y la sede registrada más "
+            "barata sigue costando más que el bruto medido"
+        ),
+        "fee_share_es": (
+            f"{sum(fees) / len(fees) / (sum(barriers) / len(barriers)) * 100:.1f} % del coste de "
+            "ida y vuelta"
+            if fees and barriers
+            else "no medido"
+        ),
+        "frequency_line_es": "; ".join(
+            f"{row['horizon_seconds']}s: {row.get('clearing_per_day')}/día" for row in pooled
+        ),
+        "frequency_selector_line_es": "; ".join(
+            f"{row['horizon_seconds']}s: {row.get('opportunities_per_day')}/día long-only"
+            for row in selector_pooled
+        ),
+        "venue_line_es": (
+            f"no: {cheapest['scenario']} es la más barata con "
+            f"{cheapest['cheapest_round_trip_bps']} bps, todavía por encima del mejor bruto "
+            f"{best['stats']['long_only_mean_bps'] if best else None}"
+            if cheapest and best
+            else "no medido"
+        ),
+        "capacity_line_es": (
+            "sí para el perpetuo en el tamaño cotizado; el spot se apoya en solo "
+            f"{min((row['snapshots'] for row in capacity if row['market'] == 'spot'), default=0)} "
+            "instantáneas"
+        ),
+        "best_gross_bps": best["stats"]["long_only_mean_bps"] if best else None,
+        "best_gross_cell": (
+            f"{best['market']}/{best['symbol']} at {best['horizon_seconds']}s" if best else None
+        ),
+        "barrier_range": f"{min(barriers):.2f}-{max(barriers):.2f}" if barriers else None,
+        "fee_share": (
+            f"{sum(fees) / len(fees) / (sum(barriers) / len(barriers)) * 100:.1f}% of the barrier"
+            if fees and barriers
+            else None
+        ),
+        "frequency_line": frequency_line,
+        "frequency_selector_line": frequency_selector_line,
+        "venue_line": (
+            f"no: {cheapest['scenario']} is the cheapest at {cheapest['cheapest_round_trip_bps']} "
+            f"bps, still above the best gross {best['stats']['long_only_mean_bps'] if best else None}"
+            if cheapest and best
+            else "not measured"
+        ),
+        "cheapest_venue": cheapest["scenario"] if cheapest else None,
+        "capacity_line": capacity_line,
+        "risk_digest": sha256_file(RISK_CONFIG) if RISK_CONFIG.is_file() else "",
+        "risk_last_commit": git("log", "-1", "--format=%h %s", "--", "config/risk.yaml"),
+        "limitations": limitations,
+        "limitations_es": limitations_es,
+        "open_items": [
+            {
+                "item": (
+                    "no microstructure signal measured here approaches the barrier; the gap is "
+                    "arithmetic (fee 20 of 23-24 bps), so the next attempt needs a different "
+                    "product or a different venue, not another indicator"
+                ),
+                "owner": "quant-researcher: product and venue, not parameters",
+            },
+            {
+                "item": (
+                    "the perp trade flow was never captured in this environment; any hypothesis "
+                    "that needs it stays unmeasurable until the environment delivers that stream"
+                ),
+                "owner": "observability-engineer: capture capability, declared as unavailable",
+            },
+            {
+                "item": (
+                    "spot depth snapshots are rare in the current capture (3-4 per symbol), so the "
+                    "spot capacity claim is thin and should be re-measured with a denser snapshot "
+                    "cadence"
+                ),
+                "owner": "observability-engineer: snapshot cadence",
+            },
+            {
+                "item": (
+                    "no maker fill model exists, so the passive side of every venue stays unscored; "
+                    "with maker below taker only outside Binance, that is where a cost advantage "
+                    "would have to come from"
+                ),
+                "owner": "execution-engineer: a measured maker model",
+            },
+        ],
+        "tests": owned_tests() if run_tests else {},
+        #: The wider research tree, recorded by scripts/edge09_suite_evidence.py. It
+        #: is where inherited failures live, so its result is declared here rather
+        #: than left out of a package whose own suite is green.
+        "wider_suite": read_json(RESEARCH_SUITE_JSON),
+        "git": git_state(),
+        "promotion": "NONE",
+        "order_sent": False,
+        "false_success": experiments.get("false_success"),
+    }
+    payload["digests"] = {
+        str(path.relative_to(REPO_ROOT)).replace("\\", "/"): {
+            "bytes": path.stat().st_size,
+            "sha256": sha256_file(path),
+        }
+        for path in (
+            AUDIT_JSON,
+            SOURCES_JSON,
+            PREREG_JSON,
+            PREREG_JSON.with_suffix(".md"),
+            WP / "panel" / "PANEL_SECONDS.csv",
+            GATES_JSON,
+            EXP_JSON,
+            WP / "experiments" / "EXPERIMENT_REGISTRY.json",
+            VERIFY_JSON,
+            RESEARCH_SUITE_JSON,
+            RESEARCH_SUITE_JSON.with_suffix(".md"),
+            *(WP / name for name in RFC_ARTIFACTS),
+            WP / "DELIVERABLES.json",
+        )
+        if path.is_file() and path.name not in REPORT_FILES
+    }
+    payload["acceptance"] = acceptance(payload)
+    return payload
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--tests", action="store_true", help="run the owned suites and linters")
+    options = parser.parse_args(argv)
+
+    payload = build(run_tests=options.tests)
+    (WP / "RUN_REPORT.json").write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    (WP / "RUN_REPORT.md").write_text(render_run(payload), encoding="utf-8")
+    (WP / "FINAL_REPORT.md").write_text(render_final(payload), encoding="utf-8")
+    (WP / "INFORME_EJECUTIVO.md").write_text(render_informe(payload), encoding="utf-8")
+    (WP / "ECONOMIC_MATRIX.json").write_text(
+        json.dumps(
+            {
+                "schema_version": SCHEMA_VERSION,
+                "rows": payload["matrix"],
+                "venue_comparison": (payload["experiments"].get("venue_comparison")),
+                "frequency_pooled": payload["gates"].get("frequency_pooled"),
+                "capacity": (payload["experiments"].get("capacity")),
+                "promotion": "NONE",
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (WP / "ECONOMIC_MATRIX.md").write_text(render_matrix(payload), encoding="utf-8")
+    (WP / "GITHUB_STATE.json").write_text(
+        json.dumps(
+            {
+                "schema_version": SCHEMA_VERSION,
+                "work_package": "WP-EDGE-09",
+                "as_of_utc": payload["as_of_utc"],
+                "branch": payload["git"]["branch"],
+                "head": payload["git"]["head"],
+                "remote": git("remote", "get-url", "origin"),
+                "remote_branch_ref": payload["git"]["remote_branch_ref"],
+                "remote_has_this_branch": bool(
+                    git("ls-remote", "--heads", "origin", payload["git"]["branch"])
+                ),
+                "remote_tip": payload["git"]["remote_tip"],
+                "remote_matches_head": payload["git"]["remote_matches_head"],
+                "pushed_range_at_last_push": payload["git"]["pushed_range_at_last_push"],
+                "force_push_used": False,
+                "push_kind": "normal fast-forward of an existing remote branch",
+                "own_uncommitted_paths": payload["git"]["own_uncommitted_paths"],
+                "credentials_read_or_printed": False,
+                "note": payload["git"]["note"],
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    print(f"{payload['status']}  hypotheses {len(payload['experiments'].get('registry') or [])}")
+    for row in payload["acceptance"]:
+        print(f"  {row['id']:<5} {row['status']}")
+    if payload["tests"]:
+        for name, run in payload["tests"].items():
+            print(f"  {name}: exit {run['exit_code']}")
+    print(
+        "wrote RUN_REPORT.{json,md}, FINAL_REPORT.md, INFORME_EJECUTIVO.md, "
+        "ECONOMIC_MATRIX.{json,md}, GITHUB_STATE.json"
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,91 @@
+{
+ "schema": "rfc004-baseline/1",
+ "captured_at_utc": "2026-10-21T15:38:00Z",
+ "wp": "WP-003-01-00",
+ "read_only": true,
+ "git": {
+  "worktree": "bot-freebuff-recovery-004",
+  "branch": "wp/recovery-004",
+  "head": "0c074fb4f3e22bb10407cb8af12ae94f8db480bc",
+  "head_subject": "Mark the superseded manifest as history instead of leaving it to be re-hashed",
+  "parent_of_work": "wp/paper-resume-001 @ 0c074fb4f3e22bb10407cb8af12ae94f8db480bc",
+  "status_porcelain": "",
+  "dirty_files": 0,
+  "submodules": 0,
+  "worktrees_registered": 26,
+  "note": "The worktree was created from the RFC003 evidence commit and was clean before the first edit; no git clean, reset or stash was run at any point."
+ },
+ "environment": {
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.11.15 (main, Jun 23 2026, 15:20:37) [MSC v.1944 64 bit (AMD64)]",
+  "interpreter": ".venv/Scripts/python.exe",
+  "venv_created_by": "uv sync --frozen",
+  "filesystem": "NTFS",
+  "os_name": "nt",
+  "uv_lock_sha256": "ff7082182db53356e025e44952509b3147ee31f786874f1bd61ba25c55a1a9d0"
+ },
+ "runtime_hashes_before_edits": {
+  "src/trading_bot/vision/durable.py": "3e023540ba3fd08d19dd0b81b2a9b458384a23731d50e53b74773ce996dd50a9",
+  "src/trading_bot/vision/ledger.py": "904dc35e1f879c8db200dbce64f77399f236815277cc2f5d3ba7c905cf04b5e0",
+  "src/trading_bot/vision/lane.py": "e43f124f9bae4f2bbf4a7610c03d3c2b1d0eb7c3abaa44d4628c0f8efd0c6e07",
+  "src/trading_bot/vision/gap_recovery.py": "f813d7f5d9072a0c43aa2a4e6449a880d426775104e57f951039d81b9844c5d2",
+  "src/trading_bot/vision/prospective.py": "6542278c06eed003ad3e550692cbae4f3d53293224648be7643201b1b4b1fe67",
+  "src/trading_bot/vision/quotes.py": "798db8c81dec7fadf5aac1ce8822dfc76cc063fe1c886d40aaf1372b3a1024d9",
+  "src/trading_bot/paper/broker.py": "f7cebc4e20b8a0d4718463cdfdc015faa56a0d1d938375727209242f4a445331",
+  "src/trading_bot/risk/manager.py": "b066bca70c57d4f1954df498e87f8699e183f1cbac2b0d1dd5556268ad6f538c"
+ },
+ "tests_before_edits": {
+  "command": ".venv/Scripts/python.exe -m pytest tests/unit/vision tests/unit/paper tests/unit/risk tests/unit/market_data -q -p no:warnings",
+  "result": "695 passed",
+  "exit_code": 0,
+  "seconds": 1027.9,
+  "log": ".tmp/rfc004/baseline_suite.log",
+  "note": "Started on the untouched worktree; pytest resolved the modules at collection, before the first edit. The log is preserved outside the evidence commit because it is 224 bytes of progress dots and a summary line."
+ },
+ "entrypoints": {
+  "lane": "src/trading_bot/vision/lane.py::VisionLane.run",
+  "cli": "scripts/ai_vision_lane.py",
+  "lab_from_rfc002": [
+   "scripts/quote_gap_lab.py",
+   "scripts/paper_resume_drill.py",
+   "scripts/verify_quote_gap.py"
+  ],
+  "live_order_route": "src/trading_bot/app.py::_cmd_place_order (gated by --confirm-live)"
+ },
+ "persistence_sites_before_edits": {
+  "src/trading_bot/vision/durable.py": {
+   "tmp_write_fsync": "lines 512-516 (open tmp, write, flush, fsync)",
+   "previous_generation_copy": "lines 518-526 -> _copy_previous (read BOOK.json, write BOOK.json.prev, fsync)",
+   "atomic_publish": "line 525 os.replace(tmp, BOOK.json)",
+   "directory_fsync": "line 526 -> _fsync_dir (no-op on nt)",
+   "commit_event": "lines 555-566 (append BOOK_EVENTS.jsonl, flush, fsync)"
+  },
+  "src/trading_bot/vision/ledger.py": {
+   "append": "lines 150-160 (open append, write one chained line, flush, fsync)"
+  },
+  "src/trading_bot/vision/lane.py": {
+   "commit_call": "line 1453 _commit(barrier_ms=ts) at the end of every bar; 1819 _commit definition"
+  }
+ },
+ "authority_finding": {
+  "book_is_authoritative": true,
+  "ledger_is_projection": true,
+  "reason": "durable.py states it and the runtime enforces it: reconcile_book() judges BOOK.json, never the ledger; the lane restores the broker and the risk engine from the book only.",
+  "rfc_assumption_contradicted": "RFC004 section 5.1 proposes canonical_book_state = deterministic_replay(committed_ledger_prefix). The runtime cannot honour that without inverting its authority, so the design preserves the existing contract and documents the deviation in EVIDENCE_DECISION below."
+ },
+ "network": {
+  "vision_lane_import_graph": "no ccxt; the only network-capable import reachable from the lane is vision/provider.py (httpx), and the lane is given a provider object",
+  "ccxt_sites": [
+   "src/trading_bot/market_data/exchange_connector.py:57",
+   "src/trading_bot/research/economic_recovery/paper_exec.py:131"
+  ],
+  "isolation_before_edits": "none at process level: the RFC003 incident (ccxt.binance() opening HTTP in its constructor) is the evidence"
+ },
+ "known_defects_at_baseline": [
+  "The commit that books a gap reconstruction published risk_equity != marked_equity (9997.26097534 vs 9996.3809662 on the RFC004 seed), so a crash after it left a book no resume could accept (RISK_MISMATCH).",
+  "No failpoint existed on any persistence call, so the ledger-fsync -> book-replace window had never been interrupted in the real runtime.",
+  "A torn tail in BOOK_EVENTS.jsonl or in a session ledger raised on the next open instead of being classified.",
+  "A CLOSE row had no economic identity, so a re-executed bar appended a second row for one effect."
+ ],
+ "runtime_hash_policy": "sha256 of the LF text (the blob at 0c074fb); autocrlf=true would make raw bytes machine-dependent"
+}

@@ -1,0 +1,3168 @@
+{
+  "candidate_signals": 47,
+  "dataset_source": {
+    "BTCUSDT": {
+      "file": "BTCUSDT.1m.jsonl.gz",
+      "sha256": "7fbdfefa12785bb025d525994466b5a64d5c0668d6ff997f5f7566bc42d13814"
+    },
+    "ETHUSDT": {
+      "file": "ETHUSDT.1m.jsonl.gz",
+      "sha256": "cf04dc37617a0998016fcd7edfb9b2a77c9aa5fa656bbb54422805a5964650a6"
+    },
+    "SOLUSDT": {
+      "file": "SOLUSDT.1m.jsonl.gz",
+      "sha256": "33342aacc2ac75f897e2c9df2602a41d340c96ed08cd683dbd3871c3c7c60c32"
+    }
+  },
+  "design_sha256": "efed46a260784eaba1a2222773a830861198ac6d64956d44453e16493219036a",
+  "experiment": "EXP-003M-MAKER-FILL-REALITY-001",
+  "holdout_guard": {
+    "end_utc": "2026-08-20T00:00:00Z",
+    "start_utc": "2026-08-06T00:00:00Z",
+    "status": "ENFORCED_AT_PLAN_TIME"
+  },
+  "pairs": {
+    "BTCUSDT-2026-06-22": {
+      "day": "2026-06-22",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-06-22.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "d109e0dc52b49f8ca3ddfa5ca8dd91a9c1ad887434f7c4f9e636c8ac9f88ae7f",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 559174,
+        "content_length_header": "559174",
+        "etag": "\"a7af31775ee3c4ef732ad0c611788102\"",
+        "last_modified": "Tue, 23 Jun 2026 08:24:20 GMT",
+        "sha256": "85743357e0d2b421a4acdbafe7ea706ae9092ce7f5646aeeb25ef0a55e67f3f8",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-06-22.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-06-22.jsonl.gz",
+        "first_open_ms": 1782086400000,
+        "last_open_ms": 1782172740000,
+        "rows": 1440,
+        "sha256": "7a19f425d6d24f6390159ddb03517fecbd3eee468ddb5ee301a766cd9c815d5a"
+      },
+      "klines_source": {
+        "bytes": 69791,
+        "content_length_header": "69791",
+        "etag": "\"e170c400a939609f60b2f7c460de19ee\"",
+        "last_modified": "Tue, 23 Jun 2026 02:49:30 GMT",
+        "sha256": "82e77dbe5b6413375b5ab2fb916a85cf0b7e7ff56529739fadf9df226b029763",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-06-22.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 125550,
+        "file": "dataset/tape/BTCUSDT-2026-06-22.jsonl.gz",
+        "first_ts_ms": 1782137040503,
+        "last_ts_ms": 1782138059852,
+        "rows_in_day": 840215,
+        "rows_kept": 15592,
+        "sha256": "078e8bce83e29fd1b1f865debf4c1521665671e1c9050c69bf0f7a5dc1aca2d9",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-06-22T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-06-22T14:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 12545079,
+        "content_length_header": "12545079",
+        "etag": "\"e187c7778514067125fe1edfd3a986d3-2\"",
+        "last_modified": "Tue, 23 Jun 2026 02:49:24 GMT",
+        "sha256": "1fb1f629c5acc9923c23dd391fdea1b57d8f733d445941b6a9498ef2b6067b12",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-06-22.zip"
+      },
+      "windows": 1
+    },
+    "BTCUSDT-2026-06-23": {
+      "day": "2026-06-23",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-06-23.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "88b457adc486231f8c1371b9e9291ba95d1606b6cf454904c47d39c0ededd736",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 559855,
+        "content_length_header": "559855",
+        "etag": "\"e94dd636583f4e86912c95a5c4bd0cb6\"",
+        "last_modified": "Wed, 24 Jun 2026 08:35:30 GMT",
+        "sha256": "f4d016041c2a4fe88306eeb0c597f8e5b0ab4317b452351cbf785c1b8e01e665",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-06-23.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-06-23.jsonl.gz",
+        "first_open_ms": 1782172800000,
+        "last_open_ms": 1782259140000,
+        "rows": 1440,
+        "sha256": "6bd8c474216fe365d68fe563842b8aa0787ef6b4f3d80193395bb14fb3b22ee3"
+      },
+      "klines_source": {
+        "bytes": 70323,
+        "content_length_header": "70323",
+        "etag": "\"6c007dc9b10fc824a98d9a74c87c0055\"",
+        "last_modified": "Wed, 24 Jun 2026 02:49:50 GMT",
+        "sha256": "bef8367f36d5cfea63ab81f82b80b82267e6d9514ea050f44785f9bb145d61d2",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-06-23.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 68746,
+        "file": "dataset/tape/BTCUSDT-2026-06-23.jsonl.gz",
+        "first_ts_ms": 1782237840213,
+        "last_ts_ms": 1782238859756,
+        "rows_in_day": 910793,
+        "rows_kept": 8637,
+        "sha256": "07934a8567c8591269bea7f8daa7141e2f7d7160c2f99aaeb8e065908826bd08",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-06-23T18:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-06-23T18:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 13528463,
+        "content_length_header": "13528463",
+        "etag": "\"f383335a63b0adcd1509f255ae701105-2\"",
+        "last_modified": "Wed, 24 Jun 2026 02:49:43 GMT",
+        "sha256": "bcf80807cea2d5f86540f08c28aecf4f98ea07f1a3b30d18eed6309d2d418621",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-06-23.zip"
+      },
+      "windows": 1
+    },
+    "BTCUSDT-2026-06-25": {
+      "day": "2026-06-25",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-06-25.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 136,
+        "sha256": "c9926dffabf42e0b5e0073d2b8f4293522093a88b06316f24ae46b9184147ad7",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 563829,
+        "content_length_header": "563829",
+        "etag": "\"5a3cb6e1a39f669a7e65a234398723e9\"",
+        "last_modified": "Fri, 26 Jun 2026 07:37:05 GMT",
+        "sha256": "cf3d0d978521e4803f3e418e8c2f41eb7ca35730a0769d711feda07ced56dca1",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-06-25.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-06-25.jsonl.gz",
+        "first_open_ms": 1782345600000,
+        "last_open_ms": 1782431940000,
+        "rows": 1440,
+        "sha256": "00b4bc0aee9afe4fc7968ad7a6cf893107e916e7d23d7d8353b38c892f53ae88"
+      },
+      "klines_source": {
+        "bytes": 70981,
+        "content_length_header": "70981",
+        "etag": "\"34846a5ca1d4054d7f036ce972ea0b73\"",
+        "last_modified": "Fri, 26 Jun 2026 02:30:18 GMT",
+        "sha256": "8b3b6c0747a489405816e2621bf53d2be6fdec16c44c66013918a787c8f169d3",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-06-25.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 851239,
+        "file": "dataset/tape/BTCUSDT-2026-06-25.jsonl.gz",
+        "first_ts_ms": 1782396240000,
+        "last_ts_ms": 1782426058876,
+        "rows_in_day": 1545546,
+        "rows_kept": 109237,
+        "sha256": "00cfc5b3c0575f4d546dc3e6650fd2f1cf814a37a1819c121723c6bfb4a8ee56",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-06-25T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-06-25T14:04:00Z"
+          },
+          {
+            "end_utc": "2026-06-25T22:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-06-25T22:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 22745077,
+        "content_length_header": "22745077",
+        "etag": "\"6c8292e3e6feb23d61a693d29b99663c-3\"",
+        "last_modified": "Fri, 26 Jun 2026 02:30:08 GMT",
+        "sha256": "c3592ac3813f833b8a58df5424e2264274c5b778d92c379e5eaab71596bcdb8b",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-06-25.zip"
+      },
+      "windows": 2
+    },
+    "BTCUSDT-2026-06-26": {
+      "day": "2026-06-26",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-06-26.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 136,
+        "sha256": "9f2c08b63622e535cdc3e1b50022c41518cb89361c2b4987756dc1809a4ab6b5",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 567353,
+        "content_length_header": "567353",
+        "etag": "\"d4840fc8eb69d9c4b3e33a91f2835c5d\"",
+        "last_modified": "Sat, 27 Jun 2026 07:44:51 GMT",
+        "sha256": "847e7290017940856be936ff2c0a8396555927dc5b5d0da4a15c6e8b56b5af51",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-06-26.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-06-26.jsonl.gz",
+        "first_open_ms": 1782432000000,
+        "last_open_ms": 1782518340000,
+        "rows": 1440,
+        "sha256": "474572a0c2c7186d25b50c71b68f0e74d8fd2481e646c0a291d05dbd29ced882"
+      },
+      "klines_source": {
+        "bytes": 71656,
+        "content_length_header": "71656",
+        "etag": "\"f57deb34ccc7e4e37fca4458694dbfdf\"",
+        "last_modified": "Sat, 27 Jun 2026 01:56:25 GMT",
+        "sha256": "4ef4ac27333c9360fb7c9fad00fac1273b94e45e5c3e0c9c40dbba2f6e621ebf",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-06-26.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 427610,
+        "file": "dataset/tape/BTCUSDT-2026-06-26.jsonl.gz",
+        "first_ts_ms": 1782446640078,
+        "last_ts_ms": 1782483659987,
+        "rows_in_day": 1514114,
+        "rows_kept": 54535,
+        "sha256": "260ce6c85c46f3a4c51abcdae6f6a7674d45f027f7cca60d1391a6c93d72d8c7",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-06-26T04:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-06-26T04:04:00Z"
+          },
+          {
+            "end_utc": "2026-06-26T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-06-26T14:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 22156695,
+        "content_length_header": "22156695",
+        "etag": "\"ae0dde75b0a6de3441103211a63b3644-3\"",
+        "last_modified": "Sat, 27 Jun 2026 01:56:15 GMT",
+        "sha256": "3dcb570acdee5891a5efd055407b8fb67b4b65a9b86913cb4820f7b313a37af1",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-06-26.zip"
+      },
+      "windows": 2
+    },
+    "BTCUSDT-2026-07-01": {
+      "day": "2026-07-01",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-07-01.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "a94a0c032f3e24773f7b6473c0eb6f88684fe51b58f50e0e2c8b7e462470ce66",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 568918,
+        "content_length_header": "568918",
+        "etag": "\"d96d02b7e8b39911555c10608df84e9a\"",
+        "last_modified": "Thu, 02 Jul 2026 07:44:20 GMT",
+        "sha256": "5c6593d89225bdc41711e84391584b3df5677ddfe7c41e1fbff10bb0f030ac8a",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-07-01.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-07-01.jsonl.gz",
+        "first_open_ms": 1782864000000,
+        "last_open_ms": 1782950340000,
+        "rows": 1440,
+        "sha256": "6ed93ae6c34aa06bb431b2fe360f0765a80a2ece3449c19dc318f405f7d07f60"
+      },
+      "klines_source": {
+        "bytes": 70668,
+        "content_length_header": "70668",
+        "etag": "\"9101aa89dbf749c3376a80fde29cc34d\"",
+        "last_modified": "Thu, 02 Jul 2026 02:18:26 GMT",
+        "sha256": "0eda691583525b9c986d0bd94645c1b72ba04571e16908529aa548f33c0eb9d7",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-07-01.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 306186,
+        "file": "dataset/tape/BTCUSDT-2026-07-01.jsonl.gz",
+        "first_ts_ms": 1782914640039,
+        "last_ts_ms": 1782915659912,
+        "rows_in_day": 1093532,
+        "rows_kept": 39583,
+        "sha256": "8524f475aeba87253b436eca4419b70e2d5dc9e7a34b076743ed39797601484d",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-01T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-01T14:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 16077160,
+        "content_length_header": "16077160",
+        "etag": "\"036fabbf2b98914203ee9e028e519982-2\"",
+        "last_modified": "Thu, 02 Jul 2026 02:18:19 GMT",
+        "sha256": "6b00333f582003fadbcd17c4521d4607896c84d61abdcd91bfb1e2c7b904c90c",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-07-01.zip"
+      },
+      "windows": 1
+    },
+    "BTCUSDT-2026-07-02": {
+      "day": "2026-07-02",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-07-02.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "7680cebb9ac2b81bc64bff59e9f88b4fe6c93198e4a58d075a4ed36e01c17662",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 562913,
+        "content_length_header": "562913",
+        "etag": "\"9303c2f395da5fc0a58a4c23f3cbf87e\"",
+        "last_modified": "Fri, 03 Jul 2026 07:30:18 GMT",
+        "sha256": "7bd0aa8360c54bf26a2ccf3d4662c03d3ec2ef83a17f83190cd608af67e9c625",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-07-02.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-07-02.jsonl.gz",
+        "first_open_ms": 1782950400000,
+        "last_open_ms": 1783036740000,
+        "rows": 1440,
+        "sha256": "a6554d6fc05fcd9ca4a0e830cc902261f7c67fe7131948482d5b75dbb2c1cb32"
+      },
+      "klines_source": {
+        "bytes": 70374,
+        "content_length_header": "70374",
+        "etag": "\"27586db0574fd5420beadd69ad41bbd3\"",
+        "last_modified": "Fri, 03 Jul 2026 02:49:52 GMT",
+        "sha256": "9328fc358b1d621ef23b71d5068ad383ee765eb7e68916e516cda44661547f29",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-07-02.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 94857,
+        "file": "dataset/tape/BTCUSDT-2026-07-02.jsonl.gz",
+        "first_ts_ms": 1782993840324,
+        "last_ts_ms": 1782994859785,
+        "rows_in_day": 997488,
+        "rows_kept": 12150,
+        "sha256": "eace931ff7c31e837b8ffc71a780093446f90da85eff9ca68dc9e180091cedc4",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-02T12:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-02T12:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 14703559,
+        "content_length_header": "14703559",
+        "etag": "\"4789b6e8c483f388a03231438a4722b5-2\"",
+        "last_modified": "Fri, 03 Jul 2026 02:49:46 GMT",
+        "sha256": "f958dd94ece296683393b53eec1af20bc3aae1ae1e494612933a39397dd6c6f8",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-07-02.zip"
+      },
+      "windows": 1
+    },
+    "BTCUSDT-2026-07-06": {
+      "day": "2026-07-06",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-07-06.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "dfcdfce958f3b18e996fb26aff020427a59dafd79def809981909dca79a14cbd",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 561756,
+        "content_length_header": "561756",
+        "etag": "\"47fff338904f6c8004152393219699b0\"",
+        "last_modified": "Tue, 07 Jul 2026 07:54:58 GMT",
+        "sha256": "203914402f8a7c68224de0c7e5ac0bd45c6864904b9d47bbdbc917e3e71a71b7",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-07-06.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-07-06.jsonl.gz",
+        "first_open_ms": 1783296000000,
+        "last_open_ms": 1783382340000,
+        "rows": 1440,
+        "sha256": "3d941e0501f8015e6f8eb74b7ab8ae32a30ccd7c4665c24321c7fd0b027eeb27"
+      },
+      "klines_source": {
+        "bytes": 69782,
+        "content_length_header": "69782",
+        "etag": "\"7f1f3774d8eaeee880ff2354ac1ae574\"",
+        "last_modified": "Tue, 07 Jul 2026 01:52:16 GMT",
+        "sha256": "0281570cf7b71b9a7d11d7b4ddbfef4d7fce5fd8a2246680cc03ba3e949b72b7",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-07-06.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 246762,
+        "file": "dataset/tape/BTCUSDT-2026-07-06.jsonl.gz",
+        "first_ts_ms": 1783353840047,
+        "last_ts_ms": 1783354859791,
+        "rows_in_day": 983839,
+        "rows_kept": 31620,
+        "sha256": "3a29442fa40492c39565afd61c107f1c6618a079883a118e83bd5889e13f2615",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-06T16:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-06T16:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 14586308,
+        "content_length_header": "14586308",
+        "etag": "\"4ee2188f98c75a7451c4cea5526f02cf-2\"",
+        "last_modified": "Tue, 07 Jul 2026 01:52:09 GMT",
+        "sha256": "a097cc5c1ebba38f3269d5f09f48e36b594f86fed70f043703c685ab723cf4fb",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-07-06.zip"
+      },
+      "windows": 1
+    },
+    "BTCUSDT-2026-07-13": {
+      "day": "2026-07-13",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-07-13.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "d05c6ee1fcbaeea521bf519b8d0327236613097ac6590fa0261c3c998538f208",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 562225,
+        "content_length_header": "562225",
+        "etag": "\"9899dcea3a98c8ee12e6f5a62157263c\"",
+        "last_modified": "Tue, 14 Jul 2026 08:00:16 GMT",
+        "sha256": "7c676da01aa5709123b3a7909277757f1ebe427d66976c370dd80cff90d58c04",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-07-13.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-07-13.jsonl.gz",
+        "first_open_ms": 1783900800000,
+        "last_open_ms": 1783987140000,
+        "rows": 1440,
+        "sha256": "343f811fe617f5add6249d25dbdc809486f45ff225cfeb13349727ba5c930091"
+      },
+      "klines_source": {
+        "bytes": 70161,
+        "content_length_header": "70161",
+        "etag": "\"b04dd40c5afbf70976804b3ae546c043\"",
+        "last_modified": "Tue, 14 Jul 2026 02:36:22 GMT",
+        "sha256": "d40b69512d241a314225c3587067cb4d00a8d991a3523150b7121081015a9b83",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-07-13.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 91275,
+        "file": "dataset/tape/BTCUSDT-2026-07-13.jsonl.gz",
+        "first_ts_ms": 1783965840060,
+        "last_ts_ms": 1783966859311,
+        "rows_in_day": 927245,
+        "rows_kept": 11480,
+        "sha256": "e9b42a8fb4b275d8aa51b16d9eea6a51c2744b6adc0153414b15bb5ccca9a1a4",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-13T18:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-13T18:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 13772533,
+        "content_length_header": "13772533",
+        "etag": "\"9077da814c63def03b312c9817e440fd-2\"",
+        "last_modified": "Tue, 14 Jul 2026 02:36:16 GMT",
+        "sha256": "637d8a97de24bd2941cc5278a05845b6975d7fb235c3dec97f684514ae463d1e",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-07-13.zip"
+      },
+      "windows": 1
+    },
+    "BTCUSDT-2026-07-15": {
+      "day": "2026-07-15",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-07-15.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "b769d8f8db4bf7850153dd489f5952011ae0ada46b4920ebb39dd8301d75ae30",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 562858,
+        "content_length_header": "562858",
+        "etag": "\"2535b53aba55d632bf5a6f74f482ea2c\"",
+        "last_modified": "Thu, 16 Jul 2026 07:33:17 GMT",
+        "sha256": "a9482e99a2b1aae6f863efff86c5d765fb2ce1e27132bf2039a9b512e34279e5",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-07-15.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-07-15.jsonl.gz",
+        "first_open_ms": 1784073600000,
+        "last_open_ms": 1784159940000,
+        "rows": 1440,
+        "sha256": "47fac0c0b1521c1bc3a3e103ab08f248fbbf906b1b2d776fcbac82a6a81ec029"
+      },
+      "klines_source": {
+        "bytes": 68916,
+        "content_length_header": "68916",
+        "etag": "\"502d813d590d629032254ceed1627bc7\"",
+        "last_modified": "Thu, 16 Jul 2026 02:57:23 GMT",
+        "sha256": "fbf4b4194faae09d8a123be9f263838a797e434daa9214017c27efc3037cc201",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-07-15.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 73040,
+        "file": "dataset/tape/BTCUSDT-2026-07-15.jsonl.gz",
+        "first_ts_ms": 1784095440008,
+        "last_ts_ms": 1784096459472,
+        "rows_in_day": 739547,
+        "rows_kept": 9153,
+        "sha256": "29ddcb82df01d72aff0459f88df8efe861d709b1f87f49b61d24d28761bdbd21",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-15T06:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-15T06:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 11172287,
+        "content_length_header": "11172287",
+        "etag": "\"11bd6c69ceb09a069c254364144b7002-2\"",
+        "last_modified": "Thu, 16 Jul 2026 02:57:18 GMT",
+        "sha256": "a069c5e8e6baea4105bd6c963c07b7eaaa02a8542f6b95565e11dd16763b8b62",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-07-15.zip"
+      },
+      "windows": 1
+    },
+    "BTCUSDT-2026-07-17": {
+      "day": "2026-07-17",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-07-17.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "4e6020939cdbfdb043d693fcdd40d62e9781c37fbdd20316d573befb70295453",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 560895,
+        "content_length_header": "560895",
+        "etag": "\"beb94aa95958f644a23397c93decffc4\"",
+        "last_modified": "Sat, 18 Jul 2026 07:10:07 GMT",
+        "sha256": "b887dbc734f2ebbc42138f5bfcce14b8fb73d16bebd6db90d48420c0482323d9",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-07-17.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-07-17.jsonl.gz",
+        "first_open_ms": 1784246400000,
+        "last_open_ms": 1784332740000,
+        "rows": 1440,
+        "sha256": "2c42776bd681fd34a3c890793b537185e8887db80a53285f0c2290a1ad084a3a"
+      },
+      "klines_source": {
+        "bytes": 69958,
+        "content_length_header": "69958",
+        "etag": "\"9791de9142dd76f580a88dd62772f968\"",
+        "last_modified": "Sat, 18 Jul 2026 02:39:26 GMT",
+        "sha256": "1bc41976e4bdfb89ca12aa30d85c02f79976feb78d6393b3d94752a4bfd52749",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-07-17.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 69956,
+        "file": "dataset/tape/BTCUSDT-2026-07-17.jsonl.gz",
+        "first_ts_ms": 1784275440005,
+        "last_ts_ms": 1784276459468,
+        "rows_in_day": 823694,
+        "rows_kept": 8718,
+        "sha256": "bb0a420b3d4d550aae869708d82a72ebbea7c862562d255565d0e23c54231b1a",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-17T08:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-17T08:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 12271045,
+        "content_length_header": "12271045",
+        "etag": "\"733d7bb07321b288442947775dd24974-2\"",
+        "last_modified": "Sat, 18 Jul 2026 02:39:28 GMT",
+        "sha256": "922ec616f5127313ac320a0a5e71be34f5f91e260cac9f98edcf2deb60a00750",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-07-17.zip"
+      },
+      "windows": 1
+    },
+    "BTCUSDT-2026-07-20": {
+      "day": "2026-07-20",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-07-20.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "9dd018f33a306c8698a5f0a1fd90d41cf0ce2d391c600621d28d8a64e4cb5f26",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 562182,
+        "content_length_header": "562182",
+        "etag": "\"dfa4bea026ac4280b5dc4ce6f91daa62\"",
+        "last_modified": "Tue, 21 Jul 2026 08:42:53 GMT",
+        "sha256": "645c6b43dc3e073b9a4db9abfddeb93f52ef44d7ace8c28c3acb2e1038fb3da1",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-07-20.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-07-20.jsonl.gz",
+        "first_open_ms": 1784505600000,
+        "last_open_ms": 1784591940000,
+        "rows": 1440,
+        "sha256": "03d32a688c1ea6e2af7e8ee253663b9641f4e796d6e1dbdba37180c995658273"
+      },
+      "klines_source": {
+        "bytes": 69831,
+        "content_length_header": "69831",
+        "etag": "\"4b44702147fb97722e9889dbbe86c388\"",
+        "last_modified": "Thu, 23 Jul 2026 15:53:01 GMT",
+        "sha256": "6a6c4e6e0c2264930d5016fbc407b925468fa39e3bd2d1aa2c4de882cfe31c6f",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-07-20.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 171256,
+        "file": "dataset/tape/BTCUSDT-2026-07-20.jsonl.gz",
+        "first_ts_ms": 1784556240076,
+        "last_ts_ms": 1784557259918,
+        "rows_in_day": 941482,
+        "rows_kept": 22160,
+        "sha256": "2e8ee1adb3ec87d44f5d27c23133ee62235d7db9a6496326ca65f1cee1ac0dbd",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-20T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-20T14:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 13955952,
+        "content_length_header": "13955952",
+        "etag": "\"2fc94d9b309e36a995d8c31ed256acb4-2\"",
+        "last_modified": "Thu, 23 Jul 2026 14:51:20 GMT",
+        "sha256": "be7923c324e02c26145747da8008c87bc95ab7bbc05f199180c15e6332df97ef",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-07-20.zip"
+      },
+      "windows": 1
+    },
+    "BTCUSDT-2026-07-21": {
+      "day": "2026-07-21",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-07-21.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "7d4db8721b066420bf7ef69e7333a9443c1248dd35c7b84ee521b951599e1918",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 560883,
+        "content_length_header": "560883",
+        "etag": "\"5af6714b9589b221ac1b9cca8d45a193\"",
+        "last_modified": "Wed, 22 Jul 2026 08:13:58 GMT",
+        "sha256": "44b4d64a2bf509326107b0d8e41aecbb93dcab7b65475f4924bdfe47158c0e1a",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-07-21.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-07-21.jsonl.gz",
+        "first_open_ms": 1784592000000,
+        "last_open_ms": 1784678340000,
+        "rows": 1440,
+        "sha256": "13b606ee8e6e5e07864ea255c681a834d8ef4e774e4a7a09c8589542a7328388"
+      },
+      "klines_source": {
+        "bytes": 69889,
+        "content_length_header": "69889",
+        "etag": "\"19af862c1fca272748eef13d1e7b679f\"",
+        "last_modified": "Thu, 23 Jul 2026 15:53:01 GMT",
+        "sha256": "98aea3846591aa574ea62167882edc3f4b28da4ce8c8e7d18616ccd905be5046",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-07-21.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 79397,
+        "file": "dataset/tape/BTCUSDT-2026-07-21.jsonl.gz",
+        "first_ts_ms": 1784657040423,
+        "last_ts_ms": 1784658059995,
+        "rows_in_day": 885188,
+        "rows_kept": 9853,
+        "sha256": "742438830832a70892c3a99080d0262f5c3d5c9744095da699340be275828bf9",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-21T18:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-21T18:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 13424074,
+        "content_length_header": "13424074",
+        "etag": "\"0969b4b5389ff41b30aec271f3999448-2\"",
+        "last_modified": "Thu, 23 Jul 2026 14:51:23 GMT",
+        "sha256": "f89c47f9160922e013baaf51bbf96aa70759c1f357f91b4575569a441b5b6c6d",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-07-21.zip"
+      },
+      "windows": 1
+    },
+    "BTCUSDT-2026-07-23": {
+      "day": "2026-07-23",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-07-23.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "d4437aec31d95400465f80c26d8ab1b1fa548686e783d9115034269fbd42db38",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 563462,
+        "content_length_header": "563462",
+        "etag": "\"762a4a65e8179a160c458c1a84949322\"",
+        "last_modified": "Fri, 24 Jul 2026 08:28:15 GMT",
+        "sha256": "a5851edad3e056459415715093d510cef1f0fe358001e1e8f23bca66d3b414ef",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-07-23.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-07-23.jsonl.gz",
+        "first_open_ms": 1784764800000,
+        "last_open_ms": 1784851140000,
+        "rows": 1440,
+        "sha256": "125d53c089f8fb9e602cb03e3816c0386f428b3767b40e5c904cae29c96f7a1a"
+      },
+      "klines_source": {
+        "bytes": 69154,
+        "content_length_header": "69154",
+        "etag": "\"43bd59c3e31a80e972b89a6b75ca9d24\"",
+        "last_modified": "Fri, 24 Jul 2026 10:22:30 GMT",
+        "sha256": "a511a3bc62c6a900159ac62738bacb83be76a7a0bbaab17909045b83b3636c01",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-07-23.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 71287,
+        "file": "dataset/tape/BTCUSDT-2026-07-23.jsonl.gz",
+        "first_ts_ms": 1784829840289,
+        "last_ts_ms": 1784830859376,
+        "rows_in_day": 666391,
+        "rows_kept": 8681,
+        "sha256": "ab1f2aae6cc4287e03e46c76ecf50596ea89fcd7e5bc256a280cd732efd2ec02",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-23T18:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-23T18:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 10052030,
+        "content_length_header": "10052030",
+        "etag": "\"5efdb8496a62ea0ccfdfc87b93828ba3-2\"",
+        "last_modified": "Fri, 24 Jul 2026 10:22:29 GMT",
+        "sha256": "41bc12fd9a76230c4929cbf541e61c4d32a91c21aaa5db577556a6d22a50bf41",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-07-23.zip"
+      },
+      "windows": 1
+    },
+    "BTCUSDT-2026-07-29": {
+      "day": "2026-07-29",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-07-29.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "d77afab39ca25331b193f3ad50daf843ec908d5d811c09ea486ed7c69ac51062",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 561319,
+        "content_length_header": "561319",
+        "etag": "\"73edc99d74518f1d85764da2d073aacf\"",
+        "last_modified": "Thu, 30 Jul 2026 10:25:55 GMT",
+        "sha256": "0266b849bc33a98001006bd896029c2d39f7fedbd31050f76f1eee575fc961ba",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-07-29.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-07-29.jsonl.gz",
+        "first_open_ms": 1785283200000,
+        "last_open_ms": 1785369540000,
+        "rows": 1440,
+        "sha256": "8a147cc8d6f4633a9f418553fb52b06b37e4c1d8dbcf86d2cf8d673572c73eeb"
+      },
+      "klines_source": {
+        "bytes": 69980,
+        "content_length_header": "69980",
+        "etag": "\"4897e01dac80b72b4ae59929923dea53\"",
+        "last_modified": "Thu, 30 Jul 2026 01:53:47 GMT",
+        "sha256": "7460e6e3a491c44dfe37ac0c97494d5f0d6cbe65a557da9c5947b57d4fcbd259",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-07-29.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 58946,
+        "file": "dataset/tape/BTCUSDT-2026-07-29.jsonl.gz",
+        "first_ts_ms": 1785312240277,
+        "last_ts_ms": 1785313259674,
+        "rows_in_day": 1002463,
+        "rows_kept": 6987,
+        "sha256": "6d1f9f2fe0853ef45f382eb83d5ed808031b4623c74de9b58770162bef96351d",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-29T08:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-29T08:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 15084661,
+        "content_length_header": "15084661",
+        "etag": "\"cf6ee3ce09a765bb8660cabaa3ad3acb-2\"",
+        "last_modified": "Thu, 30 Jul 2026 01:53:51 GMT",
+        "sha256": "c81c5ed4a88eb05cd2e504e1aabc85c9a585d14fa0cb691d20a99e309012d27d",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-07-29.zip"
+      },
+      "windows": 1
+    },
+    "BTCUSDT-2026-08-03": {
+      "day": "2026-08-03",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-08-03.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 140,
+        "sha256": "33770a72d5d0950582847b8a804c3160b40cf5e634567fd5e874b005d5062f78",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 559571,
+        "content_length_header": "559571",
+        "etag": "\"e933a7aa6fb9034548816588a5132da1\"",
+        "last_modified": "Tue, 04 Aug 2026 07:32:05 GMT",
+        "sha256": "744288fa9a349855077b38f1c3926c255a4f1717c6fccfa996dcbc5c6e07da01",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-08-03.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-08-03.jsonl.gz",
+        "first_open_ms": 1785715200000,
+        "last_open_ms": 1785801540000,
+        "rows": 1440,
+        "sha256": "bcc94c0431b5c5642d9514d55f958e24e0ebbecf491c4724ac45dbaa9f4d3abf"
+      },
+      "klines_source": {
+        "bytes": 68698,
+        "content_length_header": "68698",
+        "etag": "\"7f6980da879b2c9834c1ffa0e5f7b208\"",
+        "last_modified": "Tue, 04 Aug 2026 01:31:56 GMT",
+        "sha256": "7f1aafa9f7856f7e4b6a8c74216addd11f9e672ae9db8e4ec36a043a8dd39301",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-08-03.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 184419,
+        "file": "dataset/tape/BTCUSDT-2026-08-03.jsonl.gz",
+        "first_ts_ms": 1785729840108,
+        "last_ts_ms": 1785766859389,
+        "rows_in_day": 623312,
+        "rows_kept": 23214,
+        "sha256": "6814c335e3613374db079f8d58e8e50f19cc43f3103e721dd87c5bb95cb0a76f",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-08-03T04:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-08-03T04:04:00Z"
+          },
+          {
+            "end_utc": "2026-08-03T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-08-03T14:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 9310127,
+        "content_length_header": "9310127",
+        "etag": "\"02fdb13f55e5e27bce915c2a962318d6-2\"",
+        "last_modified": "Tue, 04 Aug 2026 01:31:59 GMT",
+        "sha256": "25b1bff99df7b0fa65e24c9de6118ae8c4a9da6d6ec88aee781aee28e294e44f",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-08-03.zip"
+      },
+      "windows": 2
+    },
+    "BTCUSDT-2026-08-04": {
+      "day": "2026-08-04",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/BTCUSDT-2026-08-04.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "47ddad369d550b596d9e8b179e9f8f6e1ff797ee91f57c7ae49b29eb67a7f008",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 562165,
+        "content_length_header": "562165",
+        "etag": "\"da88a008b7dcd7d50c5c750774ed0769\"",
+        "last_modified": "Wed, 05 Aug 2026 07:44:57 GMT",
+        "sha256": "943f90d8e96e697f344a35061f7ab99d9e5d0695ff124e41975749d87efaac79",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/BTCUSDT/BTCUSDT-bookDepth-2026-08-04.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/BTCUSDT-2026-08-04.jsonl.gz",
+        "first_open_ms": 1785801600000,
+        "last_open_ms": 1785887940000,
+        "rows": 1440,
+        "sha256": "7cd545c319ec2fe7b597f39d7e7e9039527ecafa7dfe7360c45bfd225bf34407"
+      },
+      "klines_source": {
+        "bytes": 68517,
+        "content_length_header": "68517",
+        "etag": "\"0e832bdb1bdfafb4f32308ec0abee5be\"",
+        "last_modified": "Wed, 05 Aug 2026 01:45:25 GMT",
+        "sha256": "08b457b4405f4fbc0269e258824d5554d85b9c84aebd14edcc65a465de407f4c",
+        "url": "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-08-04.zip"
+      },
+      "symbol": "BTCUSDT",
+      "tape": {
+        "bytes": 121762,
+        "file": "dataset/tape/BTCUSDT-2026-08-04.jsonl.gz",
+        "first_ts_ms": 1785852240589,
+        "last_ts_ms": 1785853259526,
+        "rows_in_day": 566827,
+        "rows_kept": 15656,
+        "sha256": "6ae5e9db429a86dad09a3390aa1c912a326076c61cc536862e561611688eb973",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-08-04T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-08-04T14:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 8495200,
+        "content_length_header": "8495200",
+        "etag": "\"c14338bb6376c999526aee4a471537ba-2\"",
+        "last_modified": "Wed, 05 Aug 2026 01:45:28 GMT",
+        "sha256": "353692b7098a5f59975b9185a822f27496f85e3316fd2afad8e3debbdc30bae6",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-2026-08-04.zip"
+      },
+      "windows": 1
+    },
+    "ETHUSDT-2026-06-25": {
+      "day": "2026-06-25",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-06-25.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "bea28e7ddf4ac6936f270ea0169894b400a96ff3c7cfe9c9b85baef4838705af",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 603043,
+        "content_length_header": "603043",
+        "etag": "\"821c7bf60d811b0eeed87d02b80c93fa\"",
+        "last_modified": "Fri, 26 Jun 2026 07:37:06 GMT",
+        "sha256": "09a0c1452b8de3106c7306f628b57713874404b86c98b42894cb3de55e9378bb",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-06-25.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-06-25.jsonl.gz",
+        "first_open_ms": 1782345600000,
+        "last_open_ms": 1782431940000,
+        "rows": 1440,
+        "sha256": "efc272559decb5fa582cfaa01f431fab30f8636f82980f91bd27587d4db83aa4"
+      },
+      "klines_source": {
+        "bytes": 67630,
+        "content_length_header": "67630",
+        "etag": "\"fde844fdae6b650e49048670415da1b4\"",
+        "last_modified": "Fri, 26 Jun 2026 02:30:18 GMT",
+        "sha256": "2254c660ff2f40667e7648f443461b8046462bbb60ec36785f6de43672fa74ea",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-06-25.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 608381,
+        "file": "dataset/tape/ETHUSDT-2026-06-25.jsonl.gz",
+        "first_ts_ms": 1782396240011,
+        "last_ts_ms": 1782397259931,
+        "rows_in_day": 1196705,
+        "rows_kept": 79146,
+        "sha256": "252c9bf08bf5484bb9083828e2746b201e1a16a7d1ba355c3bfd1176b4ae6167",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-06-25T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-06-25T14:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 18401226,
+        "content_length_header": "18401226",
+        "etag": "\"a7cb5ad4bb25fc0443dd19c407f30197-3\"",
+        "last_modified": "Fri, 26 Jun 2026 02:30:22 GMT",
+        "sha256": "579b00c78e0181b0769993ca2248e18dd23423e7f952f7345ea2220224d89e0a",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-06-25.zip"
+      },
+      "windows": 1
+    },
+    "ETHUSDT-2026-06-26": {
+      "day": "2026-06-26",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-06-26.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 136,
+        "sha256": "f23207731fc5d1f9c4cc84ef3160c14325fe1aa3bd34ff451909068f9e57a29c",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 602088,
+        "content_length_header": "602088",
+        "etag": "\"43ccb523a5a0197d97d75224432ea864\"",
+        "last_modified": "Sat, 27 Jun 2026 07:44:52 GMT",
+        "sha256": "d43d1adfeb3617e1888b56182c9c6655e5083813b65784f4b5982a18745823f0",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-06-26.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-06-26.jsonl.gz",
+        "first_open_ms": 1782432000000,
+        "last_open_ms": 1782518340000,
+        "rows": 1440,
+        "sha256": "e78f2f82c54be38c4bd452b5ba3af8d28e1f60d2936d0dae58b9bba532e96c68"
+      },
+      "klines_source": {
+        "bytes": 68005,
+        "content_length_header": "68005",
+        "etag": "\"0fe0a952e7c8796f4df8b2153fd7c23a\"",
+        "last_modified": "Sat, 27 Jun 2026 01:56:25 GMT",
+        "sha256": "cdd41c22459e89e745383efc5a6c103184e139f48acc5b6a50e3490d40b8eca3",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-06-26.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 336982,
+        "file": "dataset/tape/ETHUSDT-2026-06-26.jsonl.gz",
+        "first_ts_ms": 1782446640036,
+        "last_ts_ms": 1782483659897,
+        "rows_in_day": 1188695,
+        "rows_kept": 42965,
+        "sha256": "4c404a3c325e22d17857c340f1114cde6fff3c98f4e9f6ad4f59ba45e3e0ba58",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-06-26T04:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-06-26T04:04:00Z"
+          },
+          {
+            "end_utc": "2026-06-26T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-06-26T14:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 18258184,
+        "content_length_header": "18258184",
+        "etag": "\"9ccb444041daa57d28aaad77cf3b8508-3\"",
+        "last_modified": "Sat, 27 Jun 2026 01:56:28 GMT",
+        "sha256": "bf56865f7516ed3fb992eca256c87d0976b8a85f6fa7fe81543791e169922ba1",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-06-26.zip"
+      },
+      "windows": 2
+    },
+    "ETHUSDT-2026-07-01": {
+      "day": "2026-07-01",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-07-01.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "11de24fc2189463209d3d6cc2a5042e7a75837d652983ffb3b93d4c242361a0b",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 603216,
+        "content_length_header": "603216",
+        "etag": "\"0b7702ede53263ccc4b20f2fc6d65f88\"",
+        "last_modified": "Thu, 02 Jul 2026 07:44:22 GMT",
+        "sha256": "095324bf09537983435f37b2ad40533a860112f3d8d5ac2fc6cb00b20431448d",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-07-01.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-07-01.jsonl.gz",
+        "first_open_ms": 1782864000000,
+        "last_open_ms": 1782950340000,
+        "rows": 1440,
+        "sha256": "6e35e42d0d6a0eaf3b2fa49143a4b2625b42bc8452961982284b65f1b1a04702"
+      },
+      "klines_source": {
+        "bytes": 67105,
+        "content_length_header": "67105",
+        "etag": "\"eeaf1b576296bd95e4a3cafbfeef297d\"",
+        "last_modified": "Thu, 02 Jul 2026 02:18:27 GMT",
+        "sha256": "7e6d098655b17049bea0d274672b514cbf6f3cdd4043e3a69a8bb9d09e817f37",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-07-01.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 265426,
+        "file": "dataset/tape/ETHUSDT-2026-07-01.jsonl.gz",
+        "first_ts_ms": 1782914640568,
+        "last_ts_ms": 1782915659963,
+        "rows_in_day": 729850,
+        "rows_kept": 34190,
+        "sha256": "988703a4189e5d65ff361f622219b444afca5d488e32e4dbfa069fc4df236fb5",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-01T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-01T14:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 11274916,
+        "content_length_header": "11274916",
+        "etag": "\"576dee74997248998655cf40a50d6768-2\"",
+        "last_modified": "Thu, 02 Jul 2026 02:18:29 GMT",
+        "sha256": "3326306e9a4eca5eff95478713765ad9bc22c954527e8622009434af8c0d4015",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-07-01.zip"
+      },
+      "windows": 1
+    },
+    "ETHUSDT-2026-07-06": {
+      "day": "2026-07-06",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-07-06.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "cba315a5a12120f8464e57ebbcb602ff76a557abfb4ad124b9914ce2f25728ef",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 605274,
+        "content_length_header": "605274",
+        "etag": "\"99240ed723fcbafd767066949a29d36e\"",
+        "last_modified": "Tue, 07 Jul 2026 07:55:00 GMT",
+        "sha256": "ac6f2b05991dbefb72bec3d93255b0852cb0ff621a6e1c2b21523e32d3f6934b",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-07-06.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-07-06.jsonl.gz",
+        "first_open_ms": 1783296000000,
+        "last_open_ms": 1783382340000,
+        "rows": 1440,
+        "sha256": "cf8774fd8405a14ed213d93f7f84ef583d8a6a1709026daf2d2f38be37d056e9"
+      },
+      "klines_source": {
+        "bytes": 66811,
+        "content_length_header": "66811",
+        "etag": "\"5bb8e0e131b930c50331529fe1bcf6bb\"",
+        "last_modified": "Tue, 07 Jul 2026 01:52:16 GMT",
+        "sha256": "4371fc64e778bf4abc99b6e51dd7d0970d5d11e1822abfc84234a2cd42f62b6c",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-07-06.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 257924,
+        "file": "dataset/tape/ETHUSDT-2026-07-06.jsonl.gz",
+        "first_ts_ms": 1783353840015,
+        "last_ts_ms": 1783354859813,
+        "rows_in_day": 807717,
+        "rows_kept": 33591,
+        "sha256": "c753af2278316138ca2eba8f2b16826409beba7b732de20c854f4caaa948eff7",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-06T16:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-06T16:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 12354230,
+        "content_length_header": "12354230",
+        "etag": "\"66eb71a6777544ce50182a3ad6a8698b-2\"",
+        "last_modified": "Tue, 07 Jul 2026 01:52:18 GMT",
+        "sha256": "eeca2225b95f64add5c1d6cfce6d2963342e71c18b85bef381a0cda5956eca24",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-07-06.zip"
+      },
+      "windows": 1
+    },
+    "ETHUSDT-2026-07-07": {
+      "day": "2026-07-07",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-07-07.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "2a2ad6c236d728e9b37e145c40cea1136ec93941f166f4764de2d2a935aee695",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 604003,
+        "content_length_header": "604003",
+        "etag": "\"dd5432d83b9b5fdaa2d5ed8f9ffb55aa\"",
+        "last_modified": "Wed, 08 Jul 2026 09:38:47 GMT",
+        "sha256": "f450fa70c38f344497d033aee6371487545727c2c8553bec4a4f9b0114e52d03",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-07-07.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-07-07.jsonl.gz",
+        "first_open_ms": 1783382400000,
+        "last_open_ms": 1783468740000,
+        "rows": 1440,
+        "sha256": "f801ef65b3c95419fda0b190f5db908e447a6a627d94cbd744e7d952514eaf3e"
+      },
+      "klines_source": {
+        "bytes": 66626,
+        "content_length_header": "66626",
+        "etag": "\"c10d256d2f73cacc25675a4d4b9e36b0\"",
+        "last_modified": "Wed, 08 Jul 2026 02:52:57 GMT",
+        "sha256": "a141517a9c9257fb85de07bb6042903479eddfce63d84def69a6cfffd426ca05",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-07-07.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 48736,
+        "file": "dataset/tape/ETHUSDT-2026-07-07.jsonl.gz",
+        "first_ts_ms": 1783447441165,
+        "last_ts_ms": 1783448459312,
+        "rows_in_day": 708101,
+        "rows_kept": 6193,
+        "sha256": "748159a286de6c944e9b619cf596d4728ae54c27712cf68ab722b48e8fa27ec5",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-07T18:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-07T18:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 10826574,
+        "content_length_header": "10826574",
+        "etag": "\"7b7e142c3ba93d25095c5e495730db7d-2\"",
+        "last_modified": "Wed, 08 Jul 2026 02:52:59 GMT",
+        "sha256": "e01423e934769464861ed1aac3d1c51afd2609899f9440a6227f0c2098ab5db3",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-07-07.zip"
+      },
+      "windows": 1
+    },
+    "ETHUSDT-2026-07-09": {
+      "day": "2026-07-09",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-07-09.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "f659d4a3936cfb6b643bec07a4c8642a235a45fbbab15fa0b9daa603a81451dc",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 602320,
+        "content_length_header": "602320",
+        "etag": "\"9e3214010ad162afcef5d2b6b8091638\"",
+        "last_modified": "Fri, 10 Jul 2026 08:22:27 GMT",
+        "sha256": "027deb5d9b476b0dd9ed77948602f34f848ed96338b4dc1604855f2d64d3496b",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-07-09.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-07-09.jsonl.gz",
+        "first_open_ms": 1783555200000,
+        "last_open_ms": 1783641540000,
+        "rows": 1440,
+        "sha256": "5351b32fbd813b58088fb86749e3b97971d754ab9ecc2173f1784146cf22194d"
+      },
+      "klines_source": {
+        "bytes": 65487,
+        "content_length_header": "65487",
+        "etag": "\"41d70db052eb56987dd21c4bc0974ebb\"",
+        "last_modified": "Fri, 10 Jul 2026 02:10:13 GMT",
+        "sha256": "17c4cb8d1eefc40ae7292e83e1f9d9dcaccf067e3c53b0248047cc8aa1bcbc3a",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-07-09.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 39178,
+        "file": "dataset/tape/ETHUSDT-2026-07-09.jsonl.gz",
+        "first_ts_ms": 1783555440232,
+        "last_ts_ms": 1783556459924,
+        "rows_in_day": 547886,
+        "rows_kept": 4919,
+        "sha256": "f52d7fe0ae9734715889a17d31cd97371906b39b0567987c84f0c7d804893a42",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-09T00:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-09T00:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 8391482,
+        "content_length_header": "8391482",
+        "etag": "\"fcc9dd37b7bfa78ca34a33500e0ba604-2\"",
+        "last_modified": "Fri, 10 Jul 2026 02:10:15 GMT",
+        "sha256": "62b97225c2ff1b939be9f8b6e0fc17228d1881a0f318dd6befb08d9a13236e14",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-07-09.zip"
+      },
+      "windows": 1
+    },
+    "ETHUSDT-2026-07-15": {
+      "day": "2026-07-15",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-07-15.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "9f1ac671dc1fcfa22fec9143e97b43fea604723a30f570c8266dbb666864217e",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 602123,
+        "content_length_header": "602123",
+        "etag": "\"27e3d76a0ce26a12d1937211f02672f4\"",
+        "last_modified": "Thu, 16 Jul 2026 07:33:19 GMT",
+        "sha256": "32e73883c03040cd5224340f5933b25cf2806684fa8c3308696fa789cdec6a82",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-07-15.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-07-15.jsonl.gz",
+        "first_open_ms": 1784073600000,
+        "last_open_ms": 1784159940000,
+        "rows": 1440,
+        "sha256": "8e022d0ca0bca382b74c909a696a7fc640de5298b410d216f57ab43325f20558"
+      },
+      "klines_source": {
+        "bytes": 66729,
+        "content_length_header": "66729",
+        "etag": "\"f82878aaf823141987ef450daa0b98ac\"",
+        "last_modified": "Thu, 16 Jul 2026 02:57:24 GMT",
+        "sha256": "9ba8b050892ae9b266e70bb26d3b1ee6a245a6741a24feff1590e65c956482cc",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-07-15.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 50311,
+        "file": "dataset/tape/ETHUSDT-2026-07-15.jsonl.gz",
+        "first_ts_ms": 1784117040608,
+        "last_ts_ms": 1784118059035,
+        "rows_in_day": 924571,
+        "rows_kept": 6716,
+        "sha256": "50905b57e14ddc23e91926eddb0108b34e4a55bebdba9be3aaf2bed86f0bea63",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-15T12:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-15T12:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 13715424,
+        "content_length_header": "13715424",
+        "etag": "\"6a1bbfb61aefa99d5ccdfa212f7e3a09-2\"",
+        "last_modified": "Thu, 16 Jul 2026 02:57:26 GMT",
+        "sha256": "95e2d2f46b7e03213d8394c420d42bfa5a1c03062ad6fe98d42b61f265698670",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-07-15.zip"
+      },
+      "windows": 1
+    },
+    "ETHUSDT-2026-07-21": {
+      "day": "2026-07-21",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-07-21.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "fc29f070ccbc55aea59eb2fef8568eb51d9759e29c237554f65d56dd207cdf16",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 598621,
+        "content_length_header": "598621",
+        "etag": "\"8504934ee3096247fb8f692677a8cc5e\"",
+        "last_modified": "Wed, 22 Jul 2026 08:14:00 GMT",
+        "sha256": "37221fa58c2d6fe5d8968590375cae783dd1bbfa7fa59a2f93d4ac9a323aad7b",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-07-21.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-07-21.jsonl.gz",
+        "first_open_ms": 1784592000000,
+        "last_open_ms": 1784678340000,
+        "rows": 1440,
+        "sha256": "641b951a865f74b0d4924a3857fd56ffe09527a4bc59ecbd7538371071e5f482"
+      },
+      "klines_source": {
+        "bytes": 66675,
+        "content_length_header": "66675",
+        "etag": "\"e19d65299249c5ed8417c8bb1e32daa8\"",
+        "last_modified": "Thu, 23 Jul 2026 16:45:17 GMT",
+        "sha256": "0ba8434becc6f680a68abbec3e94d6521c45d4be8dc5d3f70ba22a5b75c3c966",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-07-21.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 82407,
+        "file": "dataset/tape/ETHUSDT-2026-07-21.jsonl.gz",
+        "first_ts_ms": 1784657040043,
+        "last_ts_ms": 1784658059774,
+        "rows_in_day": 748897,
+        "rows_kept": 10004,
+        "sha256": "41ccdeefcb99f93729942e7cb6eed2ae5844a4f84afd75bc4d47d9bf1d2f0ca9",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-21T18:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-21T18:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 11478630,
+        "content_length_header": "11478630",
+        "etag": "\"b84ed574787306e1c64d3ae6bb39983f-2\"",
+        "last_modified": "Thu, 23 Jul 2026 14:48:21 GMT",
+        "sha256": "832104d0eeb9521c8f186b75b19afd37b01dd8741bcb49f13ed49c4d6bed11ea",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-07-21.zip"
+      },
+      "windows": 1
+    },
+    "ETHUSDT-2026-07-22": {
+      "day": "2026-07-22",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-07-22.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "4d6020eec07eb2fe23fe0fc7722d61759cdf1d96e6a1f282da89f8918b7869e9",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 601083,
+        "content_length_header": "601083",
+        "etag": "\"8a21c3b3cb6164f181ebaaa2d1fa9c35\"",
+        "last_modified": "Thu, 23 Jul 2026 09:24:32 GMT",
+        "sha256": "a7441861810c2112201839731348352e5da8022d7e4c8113b1b121859d475ad7",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-07-22.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-07-22.jsonl.gz",
+        "first_open_ms": 1784678400000,
+        "last_open_ms": 1784764740000,
+        "rows": 1440,
+        "sha256": "0ea9a1bd7fd6d7db18b6de1d3f11a3c3acbbe37861f5e2378c17c084572fd85d"
+      },
+      "klines_source": {
+        "bytes": 66297,
+        "content_length_header": "66297",
+        "etag": "\"ee25af840c9b6f79b150e5a7ec6b463d\"",
+        "last_modified": "Thu, 23 Jul 2026 16:45:17 GMT",
+        "sha256": "b1af0dc7aa4f8939803f14c822d8dd14fcda4aa4b30b1dd9cef00ee91e973459",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-07-22.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 32742,
+        "file": "dataset/tape/ETHUSDT-2026-07-22.jsonl.gz",
+        "first_ts_ms": 1784757840388,
+        "last_ts_ms": 1784758858919,
+        "rows_in_day": 702046,
+        "rows_kept": 4255,
+        "sha256": "b49dbbf4606daeb999ec4355bd3a9dd6e8f4d3c3c0e6c7601641bb4942ec86f0",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-22T22:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-22T22:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 10526591,
+        "content_length_header": "10526591",
+        "etag": "\"e8b748117f3f86ad022ed6bc5121bc3c-2\"",
+        "last_modified": "Thu, 23 Jul 2026 14:48:16 GMT",
+        "sha256": "dfaaa9dd6362da35f7cb2395aa9d1d0cb8e8065b1e1d7679883c1d9996ce0874",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-07-22.zip"
+      },
+      "windows": 1
+    },
+    "ETHUSDT-2026-07-24": {
+      "day": "2026-07-24",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-07-24.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "a140120525066a07d354b85609194c369fbc51510cc49c4eaa97bcafb938c088",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 601025,
+        "content_length_header": "601025",
+        "etag": "\"b1ea3b486f5b0d851a424d36deecb312\"",
+        "last_modified": "Sat, 25 Jul 2026 07:50:51 GMT",
+        "sha256": "461b0d4f2f8e14c82a49b0144aee85757d6ae6298c161b03b1ef6bffa6afe2c5",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-07-24.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-07-24.jsonl.gz",
+        "first_open_ms": 1784851200000,
+        "last_open_ms": 1784937540000,
+        "rows": 1440,
+        "sha256": "17e9305ff4bb7511161687b07cb754f33f667bff30455e0358660b6cb4b66b36"
+      },
+      "klines_source": {
+        "bytes": 65420,
+        "content_length_header": "65420",
+        "etag": "\"74618416acb0afdad274a4d6a8d8b48a\"",
+        "last_modified": "Sat, 25 Jul 2026 02:46:19 GMT",
+        "sha256": "4d2dd115dcf5555896653eed06e692cb3a3576a15a59c00891a6a27af801a222",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-07-24.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 20291,
+        "file": "dataset/tape/ETHUSDT-2026-07-24.jsonl.gz",
+        "first_ts_ms": 1784930640244,
+        "last_ts_ms": 1784931658871,
+        "rows_in_day": 586289,
+        "rows_kept": 2797,
+        "sha256": "e1a4de642bcae406d54dd16a5d564312fad9a6ff2e9f939aa7f1fdb1460ef1e3",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-24T22:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-24T22:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 8782029,
+        "content_length_header": "8782029",
+        "etag": "\"098b356d9d57afaa491dc873020aebc2-2\"",
+        "last_modified": "Sat, 25 Jul 2026 02:46:19 GMT",
+        "sha256": "fd9cda14b79d65f3c188fc4c5e8b52e3369b1d1b6580cc50af04023fd068f04e",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-07-24.zip"
+      },
+      "windows": 1
+    },
+    "ETHUSDT-2026-07-27": {
+      "day": "2026-07-27",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-07-27.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "084b86db34de5c068f0ef688ecc4a5d99606ba8676864afa5b0f5bce922559b9",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 601289,
+        "content_length_header": "601289",
+        "etag": "\"b242b701627f739731f21f721ecf9193\"",
+        "last_modified": "Tue, 28 Jul 2026 07:53:57 GMT",
+        "sha256": "50996ed2a48010c07d46ac479061701101d0be1bd18cfbc148e07692bc53c450",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-07-27.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-07-27.jsonl.gz",
+        "first_open_ms": 1785110400000,
+        "last_open_ms": 1785196740000,
+        "rows": 1440,
+        "sha256": "2349c02fd03a4c0761e33fcfb103557c3ad43d5c533e59f40ae00ccaade96f7f"
+      },
+      "klines_source": {
+        "bytes": 67168,
+        "content_length_header": "67168",
+        "etag": "\"cb970d8a4ef7e0eab69cf92fcb690637\"",
+        "last_modified": "Tue, 28 Jul 2026 02:02:22 GMT",
+        "sha256": "d43530c20f33ea36dc68ffaee115ddd824ea11f1e54bcd98d0c644467a7e91e8",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-07-27.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 44927,
+        "file": "dataset/tape/ETHUSDT-2026-07-27.jsonl.gz",
+        "first_ts_ms": 1785117840512,
+        "last_ts_ms": 1785118859867,
+        "rows_in_day": 862822,
+        "rows_kept": 6236,
+        "sha256": "1a9d7a65b6811b0073a6d61170eb7d7606c4da36fe82d2c28198719fd982321f",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-27T02:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-27T02:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 12874245,
+        "content_length_header": "12874245",
+        "etag": "\"507bf5d4be3dac446d277e7a59423455-2\"",
+        "last_modified": "Tue, 28 Jul 2026 02:02:25 GMT",
+        "sha256": "584b5149a506a73e400b4621866c4ffcc854dbd2cce7b5a11d80d30c1b91a4d9",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-07-27.zip"
+      },
+      "windows": 1
+    },
+    "ETHUSDT-2026-07-29": {
+      "day": "2026-07-29",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-07-29.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "ef94765342560d5db26b84a0f0814d96fada115fe548cc3530df59f9455347d1",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 601574,
+        "content_length_header": "601574",
+        "etag": "\"65a9aa58b75fbf9a7853b070aa754f25\"",
+        "last_modified": "Thu, 30 Jul 2026 10:25:57 GMT",
+        "sha256": "6b80a10c774e03e72a6a6614c021dcc8abb3a3a6f95af2e199f313bba5723b4c",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-07-29.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-07-29.jsonl.gz",
+        "first_open_ms": 1785283200000,
+        "last_open_ms": 1785369540000,
+        "rows": 1440,
+        "sha256": "d5100dcd2eecc3de81c55a58e199887e02d6e59dfbe33f2694d93e2793bdf8a2"
+      },
+      "klines_source": {
+        "bytes": 67200,
+        "content_length_header": "67200",
+        "etag": "\"fe1584edc689447406705d880a4f2c3b\"",
+        "last_modified": "Thu, 30 Jul 2026 01:54:05 GMT",
+        "sha256": "8e4ebd2ab08f88e6d143b38c1c665a15affb2f0adba1e95a9e2fc3082e7ddb3d",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-07-29.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 38286,
+        "file": "dataset/tape/ETHUSDT-2026-07-29.jsonl.gz",
+        "first_ts_ms": 1785312240958,
+        "last_ts_ms": 1785313258578,
+        "rows_in_day": 803694,
+        "rows_kept": 4655,
+        "sha256": "ceb742814381a49bc4fe92aeb23cd8d72ea63a39d7918af9c3009cb3a426659b",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-29T08:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-29T08:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 12153395,
+        "content_length_header": "12153395",
+        "etag": "\"ec25116384bff20b8113b1326dfa3b47-2\"",
+        "last_modified": "Thu, 30 Jul 2026 01:54:07 GMT",
+        "sha256": "5cffc7c821c8b45aba1b925e84c1dc12365df49ab306301ca30e9c3eebed64f3",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-07-29.zip"
+      },
+      "windows": 1
+    },
+    "ETHUSDT-2026-07-30": {
+      "day": "2026-07-30",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-07-30.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "884a5268432b36d52109545779e09a93a0cdb1ace7168df934cd0383f986f183",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 601510,
+        "content_length_header": "601510",
+        "etag": "\"b69ae8e7a54eb9a98a2108730392cec3\"",
+        "last_modified": "Fri, 31 Jul 2026 07:31:47 GMT",
+        "sha256": "1a61393e44db4593f5482c6791f0f6abcd42e69c70f05f89416faf79185b4910",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-07-30.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-07-30.jsonl.gz",
+        "first_open_ms": 1785369600000,
+        "last_open_ms": 1785455940000,
+        "rows": 1440,
+        "sha256": "ab87fc047f81542d00439c2d57e372fe14255ceb31580e510f010cb0e803ba0b"
+      },
+      "klines_source": {
+        "bytes": 65575,
+        "content_length_header": "65575",
+        "etag": "\"7a5a63998df72d324b980e9be91a7914\"",
+        "last_modified": "Fri, 31 Jul 2026 02:07:01 GMT",
+        "sha256": "26d3d5520a8a9fbc42b39bcbaf8c3f34d2b70ef213d4a1cf2f078431b3c81ce8",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-07-30.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 32233,
+        "file": "dataset/tape/ETHUSDT-2026-07-30.jsonl.gz",
+        "first_ts_ms": 1785449040003,
+        "last_ts_ms": 1785450058324,
+        "rows_in_day": 585046,
+        "rows_kept": 3989,
+        "sha256": "f9400c12775a213286e988d619ca1654d05df5b33999ea6b5f068624066f24e3",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-30T22:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-30T22:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 9057469,
+        "content_length_header": "9057469",
+        "etag": "\"0c5ecd77bf836e8f91a0240700ebe026-2\"",
+        "last_modified": "Fri, 31 Jul 2026 02:07:03 GMT",
+        "sha256": "a6c0c7e8a55e25f3c319b737fd6fba8879a98ea0cef71548aa6902843bbdf27c",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-07-30.zip"
+      },
+      "windows": 1
+    },
+    "ETHUSDT-2026-08-03": {
+      "day": "2026-08-03",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-08-03.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 140,
+        "sha256": "1ce80a298a7fd38178133212b21f3421e2a9a5de0bfea32f505bc9ab106e5659",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 599915,
+        "content_length_header": "599915",
+        "etag": "\"141a61034f488d8c3ab987d27c4bf3d3\"",
+        "last_modified": "Tue, 04 Aug 2026 07:32:07 GMT",
+        "sha256": "13a01aa9447cbf7ff220df22ceaa4369b96c9fa5ee822eb48d45ba3271f5c97d",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-08-03.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-08-03.jsonl.gz",
+        "first_open_ms": 1785715200000,
+        "last_open_ms": 1785801540000,
+        "rows": 1440,
+        "sha256": "719c821eb1d9bf6d0929741cca462376ad92c1d9311e56d8e00008e959c3a0c4"
+      },
+      "klines_source": {
+        "bytes": 65286,
+        "content_length_header": "65286",
+        "etag": "\"8ed3f440c68f4629844339bcef187a2b\"",
+        "last_modified": "Tue, 04 Aug 2026 01:32:09 GMT",
+        "sha256": "14f00ef10c193fa98d334b4ad06a9402e240aa98c3e7cc50d01d3e98deeacefa",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-08-03.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 113920,
+        "file": "dataset/tape/ETHUSDT-2026-08-03.jsonl.gz",
+        "first_ts_ms": 1785729840115,
+        "last_ts_ms": 1785766859227,
+        "rows_in_day": 449388,
+        "rows_kept": 14723,
+        "sha256": "5c5da9989710d328fb73cf4fd2adcd5ef329ce7eb61edf9c0490dfa407c5f56f",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-08-03T04:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-08-03T04:04:00Z"
+          },
+          {
+            "end_utc": "2026-08-03T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-08-03T14:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 6836470,
+        "content_length_header": "6836470",
+        "etag": "\"b925d7a527dbdfc69b6a34ba2e20fdf7\"",
+        "last_modified": "Tue, 04 Aug 2026 01:32:10 GMT",
+        "sha256": "2d7a17278386c868b2bb71bfda4f5bfbeb6404e8960e3557cdac8b48b895636d",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-08-03.zip"
+      },
+      "windows": 2
+    },
+    "ETHUSDT-2026-08-04": {
+      "day": "2026-08-04",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/ETHUSDT-2026-08-04.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "16d41c9deee0798d0a91ba96c36448d27aca45da3a759a8a1b8623cb2afe528b",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 601019,
+        "content_length_header": "601019",
+        "etag": "\"f13856ffbab5832427b14e6f9be431f9\"",
+        "last_modified": "Wed, 05 Aug 2026 07:44:58 GMT",
+        "sha256": "23bbd267f5180e145cb7c0f4467f4bda48ff02ae74eb0b0f8dd2ae702e5a8957",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/ETHUSDT/ETHUSDT-bookDepth-2026-08-04.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/ETHUSDT-2026-08-04.jsonl.gz",
+        "first_open_ms": 1785801600000,
+        "last_open_ms": 1785887940000,
+        "rows": 1440,
+        "sha256": "30bdebde95b9456f6bdd5d63043e9b6ea534864b87c1fd8ef1f64d4236b236d7"
+      },
+      "klines_source": {
+        "bytes": 65260,
+        "content_length_header": "65260",
+        "etag": "\"e197dfec1ab04fbfabe3e89e693949ba\"",
+        "last_modified": "Wed, 05 Aug 2026 01:45:37 GMT",
+        "sha256": "57c5dc336d202787f1fcc7fd8e68c212b8b33dc46c6a14c4160a68ecc76b9712",
+        "url": "https://data.binance.vision/data/spot/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-08-04.zip"
+      },
+      "symbol": "ETHUSDT",
+      "tape": {
+        "bytes": 91662,
+        "file": "dataset/tape/ETHUSDT-2026-08-04.jsonl.gz",
+        "first_ts_ms": 1785852240503,
+        "last_ts_ms": 1785853259601,
+        "rows_in_day": 454912,
+        "rows_kept": 12360,
+        "sha256": "2b41d5d96727ca0d24599a413b78efc50cfe27f2deac8ffbe12bf1aa41034ea8",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-08-04T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-08-04T14:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 6870340,
+        "content_length_header": "6870340",
+        "etag": "\"2aaba7849d23ea2f41bb279e8d4c93c9\"",
+        "last_modified": "Wed, 05 Aug 2026 01:45:39 GMT",
+        "sha256": "7ee3928af29be7c1c1a3ed0efdd3155cc9f44b4b31c121da8194740d67648339",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/ETHUSDT/ETHUSDT-aggTrades-2026-08-04.zip"
+      },
+      "windows": 1
+    },
+    "SOLUSDT-2026-06-22": {
+      "day": "2026-06-22",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/SOLUSDT-2026-06-22.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "df12a026c0b7aab2221d98c50cd3cccbf51f15550c9b8ef036e5fa8c0ab926c2",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 559925,
+        "content_length_header": "559925",
+        "etag": "\"af78c6898a13e466566978ffdab28af6\"",
+        "last_modified": "Tue, 23 Jun 2026 08:24:26 GMT",
+        "sha256": "7400eb47a4dc193ef21bc0c38e392964c0aea457862ca2cdca7323c0a6cde33d",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/SOLUSDT/SOLUSDT-bookDepth-2026-06-22.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/SOLUSDT-2026-06-22.jsonl.gz",
+        "first_open_ms": 1782086400000,
+        "last_open_ms": 1782172740000,
+        "rows": 1440,
+        "sha256": "3410f9be7ef5f8dbb8c94b98e9ea69ce5f1967d3bf5d087426b6000dc661ef03"
+      },
+      "klines_source": {
+        "bytes": 59684,
+        "content_length_header": "59684",
+        "etag": "\"802c0e2c65c47e61899ae4b0ac895426\"",
+        "last_modified": "Tue, 23 Jun 2026 02:53:49 GMT",
+        "sha256": "9c8f6d6290064bbc2d5998dd9fd0351022280cf1aff0089d948d463b3eb066fd",
+        "url": "https://data.binance.vision/data/spot/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-06-22.zip"
+      },
+      "symbol": "SOLUSDT",
+      "tape": {
+        "bytes": 28628,
+        "file": "dataset/tape/SOLUSDT-2026-06-22.jsonl.gz",
+        "first_ts_ms": 1782137040321,
+        "last_ts_ms": 1782138059092,
+        "rows_in_day": 139839,
+        "rows_kept": 2907,
+        "sha256": "b23294450473e5d2eb6c3600f21a1e627941901fad7d3cb3d1973adbfbec02b4",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-06-22T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-06-22T14:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 2511911,
+        "content_length_header": "2511911",
+        "etag": "\"764a3d36a105a9257f095420296e861b\"",
+        "last_modified": "Tue, 23 Jun 2026 02:53:50 GMT",
+        "sha256": "3ebe77667e0bef68205f347b34e53eee5b593c880303c7a545deef30454e2fd9",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/SOLUSDT/SOLUSDT-aggTrades-2026-06-22.zip"
+      },
+      "windows": 1
+    },
+    "SOLUSDT-2026-06-25": {
+      "day": "2026-06-25",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/SOLUSDT-2026-06-25.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "2d32cd5a12946a9ce0a18cc5890bf540c75c37537c5529500d6ecd85713618fb",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 559184,
+        "content_length_header": "559184",
+        "etag": "\"61bab7f9514ae0f3e1b86ec4fb6ad616\"",
+        "last_modified": "Fri, 26 Jun 2026 07:37:11 GMT",
+        "sha256": "b2efbac8aa3a7eb54b63430c213042a7182ad28c6020601a62d10ee8effdbbd8",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/SOLUSDT/SOLUSDT-bookDepth-2026-06-25.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/SOLUSDT-2026-06-25.jsonl.gz",
+        "first_open_ms": 1782345600000,
+        "last_open_ms": 1782431940000,
+        "rows": 1440,
+        "sha256": "54d429de1ed3ca1b27d58161072971e4d173fc18b89608d85aec96df057acb87"
+      },
+      "klines_source": {
+        "bytes": 60199,
+        "content_length_header": "60199",
+        "etag": "\"806917bfe5d36bcfbd58fcd027cec0d5\"",
+        "last_modified": "Fri, 26 Jun 2026 02:34:48 GMT",
+        "sha256": "3ac6206097dea88a9aeff047ceb01faa56859245f0e0684f52162ca72f270e45",
+        "url": "https://data.binance.vision/data/spot/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-06-25.zip"
+      },
+      "symbol": "SOLUSDT",
+      "tape": {
+        "bytes": 115998,
+        "file": "dataset/tape/SOLUSDT-2026-06-25.jsonl.gz",
+        "first_ts_ms": 1782396240001,
+        "last_ts_ms": 1782397259896,
+        "rows_in_day": 197543,
+        "rows_kept": 12219,
+        "sha256": "79c620214e81c8256af833962aaa44db5cd8e1ae57736a452b13168eda7e3f89",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-06-25T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-06-25T14:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 3540452,
+        "content_length_header": "3540452",
+        "etag": "\"a366e6b690921564ef4a953fcd644c67\"",
+        "last_modified": "Fri, 26 Jun 2026 02:34:49 GMT",
+        "sha256": "8cfcb03ff4397f1f49d8a65a9e585d094564a1606bcc1c9e56c95b0df024b946",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/SOLUSDT/SOLUSDT-aggTrades-2026-06-25.zip"
+      },
+      "windows": 1
+    },
+    "SOLUSDT-2026-06-26": {
+      "day": "2026-06-26",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/SOLUSDT-2026-06-26.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "2f96794d8497efe18cee81f6176d30171ec4e569371189437f47ed0630495c49",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 559540,
+        "content_length_header": "559540",
+        "etag": "\"909debe3727f882da9b2a99c964f69d2\"",
+        "last_modified": "Sat, 27 Jun 2026 07:44:57 GMT",
+        "sha256": "8598b8686597f1e0a33fb182370028f2b3a1434575117f2ec816a234a0889714",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/SOLUSDT/SOLUSDT-bookDepth-2026-06-26.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/SOLUSDT-2026-06-26.jsonl.gz",
+        "first_open_ms": 1782432000000,
+        "last_open_ms": 1782518340000,
+        "rows": 1440,
+        "sha256": "f24e5d55442b10e076feed538f3ffcc6521251687514236a0104320545fced9a"
+      },
+      "klines_source": {
+        "bytes": 61529,
+        "content_length_header": "61529",
+        "etag": "\"eb55171c2560eb88d4383a0d59b93a4e\"",
+        "last_modified": "Sat, 27 Jun 2026 02:00:44 GMT",
+        "sha256": "842916c876ff1f4067f6ce64ba85aeba703afbf61598e65a2c0bd00f162cc9cf",
+        "url": "https://data.binance.vision/data/spot/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-06-26.zip"
+      },
+      "symbol": "SOLUSDT",
+      "tape": {
+        "bytes": 14528,
+        "file": "dataset/tape/SOLUSDT-2026-06-26.jsonl.gz",
+        "first_ts_ms": 1782468240135,
+        "last_ts_ms": 1782469254314,
+        "rows_in_day": 248388,
+        "rows_kept": 1483,
+        "sha256": "6bf5afa5a9ae546df376db0ee5a89c9f1fef1f45bf5126bc918f05305c01359d",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-06-26T10:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-06-26T10:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 4426128,
+        "content_length_header": "4426128",
+        "etag": "\"0b088ed0fb3c57571d9daa68cab26961\"",
+        "last_modified": "Sat, 27 Jun 2026 02:00:45 GMT",
+        "sha256": "da9b02087389ce00b6473c03303abdc0fcb6a90dc02109bfa0ad2a62b07c727c",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/SOLUSDT/SOLUSDT-aggTrades-2026-06-26.zip"
+      },
+      "windows": 1
+    },
+    "SOLUSDT-2026-07-08": {
+      "day": "2026-07-08",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/SOLUSDT-2026-07-08.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "40e116ccfdf9e7d449fddb7a2bccd97921a2f8f602c196cef594ebc82a8a275d",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 556289,
+        "content_length_header": "556289",
+        "etag": "\"d6c5e048964260de847f10312f2966b2\"",
+        "last_modified": "Thu, 09 Jul 2026 08:05:15 GMT",
+        "sha256": "e99acaa1070407d141a0e474c7bd1ae759f209780080fa0133f41ea22277d645",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/SOLUSDT/SOLUSDT-bookDepth-2026-07-08.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/SOLUSDT-2026-07-08.jsonl.gz",
+        "first_open_ms": 1783468800000,
+        "last_open_ms": 1783555140000,
+        "rows": 1440,
+        "sha256": "de3124741c8822d6624123aad9144ededb8da008760f015275ce128f234ae1ff"
+      },
+      "klines_source": {
+        "bytes": 59152,
+        "content_length_header": "59152",
+        "etag": "\"768933d7ab9c9ce8ea945727278dfbc0\"",
+        "last_modified": "Thu, 09 Jul 2026 02:29:44 GMT",
+        "sha256": "856fc12ebb2dfd4a20d08bd5f18727c344acb3961ccff2a3e44b17b2678455a5",
+        "url": "https://data.binance.vision/data/spot/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-07-08.zip"
+      },
+      "symbol": "SOLUSDT",
+      "tape": {
+        "bytes": 13006,
+        "file": "dataset/tape/SOLUSDT-2026-07-08.jsonl.gz",
+        "first_ts_ms": 1783469040112,
+        "last_ts_ms": 1783470058549,
+        "rows_in_day": 139843,
+        "rows_kept": 1311,
+        "sha256": "dbe3463dfd5f9e38f2b01eb24e115dfc637a5c4c23639f41ef8b07ccf5296ec6",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-08T00:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-08T00:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 2479995,
+        "content_length_header": "2479995",
+        "etag": "\"a16c86cd9f585393b044017bd09b2d09\"",
+        "last_modified": "Thu, 09 Jul 2026 02:29:44 GMT",
+        "sha256": "dbaa651e4173b89567ffaca11b8274016e947894337747ac3d3b851aae4479e5",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/SOLUSDT/SOLUSDT-aggTrades-2026-07-08.zip"
+      },
+      "windows": 1
+    },
+    "SOLUSDT-2026-07-09": {
+      "day": "2026-07-09",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/SOLUSDT-2026-07-09.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "cd53ec44a20b74ebb8bf8729949ff2dc36608db558f27fd9526322697d1601ca",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 556351,
+        "content_length_header": "556351",
+        "etag": "\"6934aeaf67ad10dc1b8a526c5f8da6a8\"",
+        "last_modified": "Fri, 10 Jul 2026 08:22:32 GMT",
+        "sha256": "c6c9dc99bba6b96d5c7e85433fc78ae7d4eedbd4a731ee3114c43cb46f1dd514",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/SOLUSDT/SOLUSDT-bookDepth-2026-07-09.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/SOLUSDT-2026-07-09.jsonl.gz",
+        "first_open_ms": 1783555200000,
+        "last_open_ms": 1783641540000,
+        "rows": 1440,
+        "sha256": "ab3aacbc2621a71f43d68831e8e74f0dea4eeeabc2eaecb48b3dfa5c414ac821"
+      },
+      "klines_source": {
+        "bytes": 58074,
+        "content_length_header": "58074",
+        "etag": "\"ea97e0f758d8c202a27d6050cca47128\"",
+        "last_modified": "Fri, 10 Jul 2026 02:14:26 GMT",
+        "sha256": "758282d47e05dc90d7b210f9bfa4ef52bda1103c2b606428e4322435e7b48bbd",
+        "url": "https://data.binance.vision/data/spot/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-07-09.zip"
+      },
+      "symbol": "SOLUSDT",
+      "tape": {
+        "bytes": 8777,
+        "file": "dataset/tape/SOLUSDT-2026-07-09.jsonl.gz",
+        "first_ts_ms": 1783555441271,
+        "last_ts_ms": 1783556457024,
+        "rows_in_day": 114258,
+        "rows_kept": 870,
+        "sha256": "c13a7cb4f3e9c31cbccb0a25f4abc2d2fc1b547b116f979d3e7f6611742bb95c",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-09T00:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-09T00:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 2048235,
+        "content_length_header": "2048235",
+        "etag": "\"e330f229dcd4c19af5a149b94272f0bf\"",
+        "last_modified": "Fri, 10 Jul 2026 02:14:26 GMT",
+        "sha256": "50f9c1edb448f73ccd3eaa37759ade81c0f0360227e0fddf0bb047b2084328ea",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/SOLUSDT/SOLUSDT-aggTrades-2026-07-09.zip"
+      },
+      "windows": 1
+    },
+    "SOLUSDT-2026-07-13": {
+      "day": "2026-07-13",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/SOLUSDT-2026-07-13.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "6f58a2bd8a36c47d858ebf8e85cf8a77fbca3a379c6413d0e0fdf928ee2580c9",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 556550,
+        "content_length_header": "556550",
+        "etag": "\"7b4929b1f7446a82993b0d58c58904db\"",
+        "last_modified": "Tue, 14 Jul 2026 08:00:21 GMT",
+        "sha256": "e0486957c4f4b21fd72d2ee50c493da67b2d7ac137e68bf0bc31746c03601205",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/SOLUSDT/SOLUSDT-bookDepth-2026-07-13.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/SOLUSDT-2026-07-13.jsonl.gz",
+        "first_open_ms": 1783900800000,
+        "last_open_ms": 1783987140000,
+        "rows": 1440,
+        "sha256": "2ae3ecdfc4f0a2ce4ae56d3be4ea99fc8fc3095f15bc174facd08a7eac56a470"
+      },
+      "klines_source": {
+        "bytes": 58545,
+        "content_length_header": "58545",
+        "etag": "\"a0912289fce132a23f9e7eb6a004951c\"",
+        "last_modified": "Tue, 14 Jul 2026 02:40:31 GMT",
+        "sha256": "a012214d8266cc58a389f796021e1aa2492b77bca998ece0e3fd1207202cb519",
+        "url": "https://data.binance.vision/data/spot/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-07-13.zip"
+      },
+      "symbol": "SOLUSDT",
+      "tape": {
+        "bytes": 17305,
+        "file": "dataset/tape/SOLUSDT-2026-07-13.jsonl.gz",
+        "first_ts_ms": 1783965840391,
+        "last_ts_ms": 1783966858813,
+        "rows_in_day": 127596,
+        "rows_kept": 1863,
+        "sha256": "283b1d6aaa1d295cc11f61d94cb3178f3486395e643a66375e5720100c207703",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-13T18:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-13T18:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 2217832,
+        "content_length_header": "2217832",
+        "etag": "\"0adb0415704c1a9eff00a18b0a127e49\"",
+        "last_modified": "Tue, 14 Jul 2026 02:40:32 GMT",
+        "sha256": "2a1931444e69305458affe379e7b88b573d01812f293725fa2025f65a6659f3a",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/SOLUSDT/SOLUSDT-aggTrades-2026-07-13.zip"
+      },
+      "windows": 1
+    },
+    "SOLUSDT-2026-07-14": {
+      "day": "2026-07-14",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/SOLUSDT-2026-07-14.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 68,
+        "sha256": "6fcb56bb75994f787971487bce2c03bc337c2c7576f4b86de5f239361211f6d1",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 556156,
+        "content_length_header": "556156",
+        "etag": "\"d234188d499cc95c0df82126441d87e5\"",
+        "last_modified": "Wed, 15 Jul 2026 08:15:39 GMT",
+        "sha256": "2fe40c472b58927e7dd23ecc9e7c8c620749f3fa248c322cbf422a64d5ced921",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/SOLUSDT/SOLUSDT-bookDepth-2026-07-14.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/SOLUSDT-2026-07-14.jsonl.gz",
+        "first_open_ms": 1783987200000,
+        "last_open_ms": 1784073540000,
+        "rows": 1440,
+        "sha256": "82eb11e7529044dfd9832f9f61b3c0359255b7b3f55da1a5219533fc91b23a14"
+      },
+      "klines_source": {
+        "bytes": 58023,
+        "content_length_header": "58023",
+        "etag": "\"3951488d93af36a7b6c178e18a09f448\"",
+        "last_modified": "Wed, 15 Jul 2026 02:10:43 GMT",
+        "sha256": "b0084903e972f7602e0046a794c5893ce1be36008bdc8060c1e3efe7ae42a475",
+        "url": "https://data.binance.vision/data/spot/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-07-14.zip"
+      },
+      "symbol": "SOLUSDT",
+      "tape": {
+        "bytes": 16047,
+        "file": "dataset/tape/SOLUSDT-2026-07-14.jsonl.gz",
+        "first_ts_ms": 1783987440075,
+        "last_ts_ms": 1783988458171,
+        "rows_in_day": 158400,
+        "rows_kept": 1714,
+        "sha256": "bc110cc9fe567544e57bb3136e2b4b8cfce3a2ac8e89daa35644417c45861a6a",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-14T00:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-14T00:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 2625710,
+        "content_length_header": "2625710",
+        "etag": "\"4d7823b3d4e0dc1985eb50f0878e7fe9\"",
+        "last_modified": "Wed, 15 Jul 2026 02:10:44 GMT",
+        "sha256": "02fd5c223002556df53582b68aa6ecc49af3d400b02cbba0049dc14871905a5a",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/SOLUSDT/SOLUSDT-aggTrades-2026-07-14.zip"
+      },
+      "windows": 1
+    },
+    "SOLUSDT-2026-07-22": {
+      "day": "2026-07-22",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/SOLUSDT-2026-07-22.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "40becd73f35f3f3cf2130015918af6940c224cb1b46ea3e6243049eb940ef273",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 557918,
+        "content_length_header": "557918",
+        "etag": "\"c3b7d623f359344079a938a293023294\"",
+        "last_modified": "Thu, 23 Jul 2026 09:24:37 GMT",
+        "sha256": "818a4de43d1db42345a249a18cb33b9f93dacdaf2d7a7760d5594d276c2b4d12",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/SOLUSDT/SOLUSDT-bookDepth-2026-07-22.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/SOLUSDT-2026-07-22.jsonl.gz",
+        "first_open_ms": 1784678400000,
+        "last_open_ms": 1784764740000,
+        "rows": 1440,
+        "sha256": "25e9041f634c2f22306bfb8209a7fa9a7cda820d23addbdfe149b346e7674f93"
+      },
+      "klines_source": {
+        "bytes": 57693,
+        "content_length_header": "57693",
+        "etag": "\"594ca435593628b5110261ea32af6a29\"",
+        "last_modified": "Thu, 23 Jul 2026 16:06:07 GMT",
+        "sha256": "f4516cc57e0961d84a24948337a14820526df34e16d4c51bef23c86e7cdd47a4",
+        "url": "https://data.binance.vision/data/spot/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-07-22.zip"
+      },
+      "symbol": "SOLUSDT",
+      "tape": {
+        "bytes": 9186,
+        "file": "dataset/tape/SOLUSDT-2026-07-22.jsonl.gz",
+        "first_ts_ms": 1784714641943,
+        "last_ts_ms": 1784715659470,
+        "rows_in_day": 125956,
+        "rows_kept": 939,
+        "sha256": "bf927c18d1076e474be16f00c330c94b7a641ec104841f97fe9932d6c42b25b2",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-22T10:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-22T10:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 2114855,
+        "content_length_header": "2114855",
+        "etag": "\"0767709546d05497099d964e6450a80b\"",
+        "last_modified": "Thu, 23 Jul 2026 14:50:18 GMT",
+        "sha256": "ff4cf049c95258c3276e47a61d2e33695515f5f89843961c75edfaf3ee718912",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/SOLUSDT/SOLUSDT-aggTrades-2026-07-22.zip"
+      },
+      "windows": 1
+    },
+    "SOLUSDT-2026-07-31": {
+      "day": "2026-07-31",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/SOLUSDT-2026-07-31.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "1d53d5836bd27a872b1f0b4e611ce9f3da0f8d321cbb8a49ced50f69f99f8e9e",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 557436,
+        "content_length_header": "557436",
+        "etag": "\"a30690b4235f34f4f89a8a64a2fa3129\"",
+        "last_modified": "Sat, 01 Aug 2026 07:20:39 GMT",
+        "sha256": "72f66cab543725d88be8081f34f7f42c49637bbc3770769f41a2e7e9bd056b2d",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/SOLUSDT/SOLUSDT-bookDepth-2026-07-31.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/SOLUSDT-2026-07-31.jsonl.gz",
+        "first_open_ms": 1785456000000,
+        "last_open_ms": 1785542340000,
+        "rows": 1440,
+        "sha256": "b40b668e71f28f54e0b53bbd8acd94d73d70088e0870243e4a003517b819f007"
+      },
+      "klines_source": {
+        "bytes": 56879,
+        "content_length_header": "56879",
+        "etag": "\"89a3fd1b34d3e875e3ee61e03b4c7e4c\"",
+        "last_modified": "Sat, 01 Aug 2026 02:41:04 GMT",
+        "sha256": "47b593babd5b52d34a90129b3079fca8958e6d59f1a5d73bc6a1d7b10105ef81",
+        "url": "https://data.binance.vision/data/spot/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-07-31.zip"
+      },
+      "symbol": "SOLUSDT",
+      "tape": {
+        "bytes": 8987,
+        "file": "dataset/tape/SOLUSDT-2026-07-31.jsonl.gz",
+        "first_ts_ms": 1785456240741,
+        "last_ts_ms": 1785457246548,
+        "rows_in_day": 96888,
+        "rows_kept": 1003,
+        "sha256": "9cecf7992021488d37cab85c70969001d8a8e1c6b54fdaf6aa8491c089a1599d",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-07-31T00:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-07-31T00:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 1682509,
+        "content_length_header": "1682509",
+        "etag": "\"12f09d6de5d538e1d107c17f6407d145\"",
+        "last_modified": "Sat, 01 Aug 2026 02:41:05 GMT",
+        "sha256": "ae8dd41a64c868ebfe7dfd18e7ef9799649040db13cd777f870915ab7778f3fc",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/SOLUSDT/SOLUSDT-aggTrades-2026-07-31.zip"
+      },
+      "windows": 1
+    },
+    "SOLUSDT-2026-08-03": {
+      "day": "2026-08-03",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/SOLUSDT-2026-08-03.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "c72e2730132a453834d9a40827d56434d6b0c8c4c3b0828d85feebdf55c074c3",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 556316,
+        "content_length_header": "556316",
+        "etag": "\"2baa1ff008ed28242c5edc456178277a\"",
+        "last_modified": "Tue, 04 Aug 2026 07:32:11 GMT",
+        "sha256": "3d31bd22bc8e6936972a313dc26154d5e6df014abc1d28b8a7ebcc78906b77cc",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/SOLUSDT/SOLUSDT-bookDepth-2026-08-03.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/SOLUSDT-2026-08-03.jsonl.gz",
+        "first_open_ms": 1785715200000,
+        "last_open_ms": 1785801540000,
+        "rows": 1440,
+        "sha256": "e9acda5adc7af0e8e65e88eac048c25c1847f3cb55c98355da32dc80cbe11ee8"
+      },
+      "klines_source": {
+        "bytes": 56417,
+        "content_length_header": "56417",
+        "etag": "\"bbfae05d3876530fb589f37f146eb5c6\"",
+        "last_modified": "Tue, 04 Aug 2026 01:36:10 GMT",
+        "sha256": "f3bb84cf303487d6a26e583430d282717974edc3341a9ecb1f74ed81f826f683",
+        "url": "https://data.binance.vision/data/spot/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-08-03.zip"
+      },
+      "symbol": "SOLUSDT",
+      "tape": {
+        "bytes": 6595,
+        "file": "dataset/tape/SOLUSDT-2026-08-03.jsonl.gz",
+        "first_ts_ms": 1785729845271,
+        "last_ts_ms": 1785730857048,
+        "rows_in_day": 85475,
+        "rows_kept": 646,
+        "sha256": "bf7e089ea1ab09f33204ab179c60b3414d3d959b5a6892f6249fab2142ec5f99",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-08-03T04:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-08-03T04:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 1507574,
+        "content_length_header": "1507574",
+        "etag": "\"b2bc15d6f238b64effff675894069d7c\"",
+        "last_modified": "Tue, 04 Aug 2026 01:36:10 GMT",
+        "sha256": "4a5cf7288884a04a36e427262a9657b0379345bcb57841e8e3377af238e04307",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/SOLUSDT/SOLUSDT-aggTrades-2026-08-03.zip"
+      },
+      "windows": 1
+    },
+    "SOLUSDT-2026-08-04": {
+      "day": "2026-08-04",
+      "depth": {
+        "bands_seen": [
+          0.2,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "file": "dataset/depth/SOLUSDT-2026-08-04.jsonl.gz",
+        "role": "CALIBRATION_ONLY_FUTURES_BAND_DEPTH",
+        "rows": 70,
+        "sha256": "f463a21dcf3e5e8d7337b3a63fd16b45177a88209acb547c635218482a72e638",
+        "tightest_band_pct": 0.2
+      },
+      "depth_source": {
+        "bytes": 557662,
+        "content_length_header": "557662",
+        "etag": "\"858e363ee25bd8ae5c0785feed6c64dd\"",
+        "last_modified": "Wed, 05 Aug 2026 07:45:03 GMT",
+        "sha256": "11e68ecc0855367e6a428ad0d9bda1c5acc342792f8553e873d7c7a5aad98bd8",
+        "url": "https://data.binance.vision/data/futures/um/daily/bookDepth/SOLUSDT/SOLUSDT-bookDepth-2026-08-04.zip"
+      },
+      "klines": {
+        "file": "dataset/klines/SOLUSDT-2026-08-04.jsonl.gz",
+        "first_open_ms": 1785801600000,
+        "last_open_ms": 1785887940000,
+        "rows": 1440,
+        "sha256": "8a7cdf066ed155cc9c418351fbfc5af0ee94cdb766df5fe9ef15fc94f6f7fe02"
+      },
+      "klines_source": {
+        "bytes": 56790,
+        "content_length_header": "56790",
+        "etag": "\"029704ff472b5c45f1ca604557b82e0a\"",
+        "last_modified": "Wed, 05 Aug 2026 01:49:32 GMT",
+        "sha256": "778cb94102114f51f714960123556152b37134298432821a958ba549d11b962c",
+        "url": "https://data.binance.vision/data/spot/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-08-04.zip"
+      },
+      "symbol": "SOLUSDT",
+      "tape": {
+        "bytes": 15681,
+        "file": "dataset/tape/SOLUSDT-2026-08-04.jsonl.gz",
+        "first_ts_ms": 1785852242495,
+        "last_ts_ms": 1785853259448,
+        "rows_in_day": 94928,
+        "rows_kept": 1534,
+        "sha256": "8e18167a6839a0da67301f36a2f5cfa2d70db580b80b2bc177f6a30aa3978f47",
+        "validation": {
+          "agg_ids_monotonic": true,
+          "inside_utc_day": true,
+          "positive_prices_and_quantities": true,
+          "timestamps_monotonic": true,
+          "whole_day_streamed": true
+        },
+        "windows_present": [
+          {
+            "end_utc": "2026-08-04T14:21:00Z",
+            "has_trades": true,
+            "start_utc": "2026-08-04T14:04:00Z"
+          }
+        ]
+      },
+      "tape_source": {
+        "bytes": 1660525,
+        "content_length_header": "1660525",
+        "etag": "\"7f4008549bf979217ccf4c3215953989\"",
+        "last_modified": "Wed, 05 Aug 2026 01:49:32 GMT",
+        "sha256": "759701dd15636381039aa0622e053b4f20f8ccfd2a522be9c3d51cfa027d613b",
+        "url": "https://data.binance.vision/data/spot/daily/aggTrades/SOLUSDT/SOLUSDT-aggTrades-2026-08-04.zip"
+      },
+      "windows": 1
+    }
+  },
+  "schema_version": "AI_BOTS_003M_TAPE_MANIFEST_V1",
+  "selection_rule": "every (symbol, UTC day) that contains at least one pre-registered signal, and inside it every trade in [decision-60 s, decision+16 min] for those signals. No filter on price, side or outcome; missed signals are impossible to hide",
+  "signals_file_sha256": "d4934b9c2af2de9f644408c1aec545fc6e9064dc690e0fca8f381c735ec3bd66",
+  "totals": {
+    "download_bytes": 425256119,
+    "pairs": 42,
+    "rows_in_days": 27887409,
+    "rows_kept": 680484
+  }
+}

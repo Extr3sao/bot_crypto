@@ -1,0 +1,32 @@
+{
+  "checkout": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean",
+  "python": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean\\.venv\\Scripts\\python.exe",
+  "expected_commit": "aab65cf9d60e520119426fc74bccd84e110eee1e",
+  "commit": "aab65cf9d60e520119426fc74bccd84e110eee1e",
+  "dirty_entries": 0,
+  "injected_pythonpath": "C:/Users/GVLLFR0035/Downloads/bot freebuff/src",
+  "probe": {
+    "found": true,
+    "origin": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\__init__.py",
+    "sys_path": [
+      "",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\python311.zip",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\DLLs",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none\\Lib",
+      "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11-windows-x86_64-none",
+      "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean\\.venv",
+      "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean\\.venv\\Lib\\site-packages",
+      "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean\\src"
+    ],
+    "python": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean\\.venv\\Scripts\\python.exe",
+    "version": "3.11.15 (main, Jun 23 2026, 15:20:37) [MSC v.1944 64 bit (AMD64)]"
+  },
+  "origin_inside_checkout": false,
+  "status": "REFUSED",
+  "code": "FOREIGN_CHECKOUT",
+  "detail": "trading_bot resolved to C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\__init__.py, outside C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\rfc003-clean",
+  "generated_at_utc": "2026-10-21T12:24:31+00:00",
+  "expected_status": "REFUSED",
+  "gate_matches_expectation": true
+}

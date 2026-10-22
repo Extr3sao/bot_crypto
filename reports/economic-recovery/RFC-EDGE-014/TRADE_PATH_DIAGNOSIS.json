@@ -1,0 +1,228 @@
+{
+  "absence_vs_zero": "stages whose ledger is absent are UNKNOWN or weakly-zero with the absence named; only stages with a present ledger assert a real zero",
+  "funnel": {
+    "headline": {
+      "closed_trades": 1,
+      "directional_decisions": 1,
+      "exchange_orders": 0,
+      "paper_broker_fills": 0,
+      "paper_order_intents": 0,
+      "sealed_decisions": 4,
+      "settled_outcomes": 4
+    },
+    "operations": {
+      "actions": {
+        "INSTALL": 1,
+        "NOOP": 860,
+        "RUN": 1
+      },
+      "cycles": 862,
+      "exit_codes": {
+        "0": 779,
+        "1": 1,
+        "3": 82
+      }
+    },
+    "population": {
+      "evaluated_decisions": 4,
+      "matured_decisions": 4,
+      "pending_decisions": 0,
+      "sealed_decisions": 4,
+      "settled_outcomes": 4,
+      "verified_evaluations": 4
+    },
+    "stages": [
+      {
+        "count": 4,
+        "evidence_class": "observed",
+        "field": "outcome (one row per decision whose horizon closed)",
+        "note": "each row carries bars_used; the raw OHLCV is pinned by hash per row",
+        "source": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\evidence\\real_decisions\\outcomes.jsonl",
+        "stage": "MARKET_DATA",
+        "unit": "snapshots with a closed horizon"
+      },
+      {
+        "count": 4,
+        "evidence_class": "observed",
+        "field": "decision",
+        "note": "1 directional, 3 NO_TRADE",
+        "source": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\evidence\\real_decisions\\decisions.jsonl",
+        "stage": "SIGNAL",
+        "unit": "sealed analyst decisions"
+      },
+      {
+        "count": 1,
+        "evidence_class": "observed",
+        "field": "decision != NO_TRADE",
+        "note": "no separate proposal artefact exists in this ledger; the directional decision is the last stage the ledger records before risk",
+        "source": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\evidence\\real_decisions\\decisions.jsonl",
+        "stage": "PROPOSAL",
+        "unit": "decisions that carried a direction"
+      },
+      {
+        "count": null,
+        "evidence_class": "unknown",
+        "field": null,
+        "note": "UNKNOWN, not zero: this campaign path does not write a router record",
+        "source": "no router artefact for the CAP-004 real-decision path",
+        "stage": "ROUTER",
+        "unit": "router passes"
+      },
+      {
+        "count": null,
+        "evidence_class": "unknown",
+        "field": null,
+        "note": "UNKNOWN, not zero: risk was not invoked on a directional decision in this window",
+        "source": "no risk artefact for the CAP-004 real-decision path",
+        "stage": "RISK",
+        "unit": "risk passes"
+      },
+      {
+        "count": 0,
+        "evidence_class": "absent_ledger",
+        "field": null,
+        "note": "no intent ledger exists on this path, so zero is asserted weakly: nothing would have recorded an intent had one happened",
+        "source": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\evidence\\real_decisions\\paper_intents.jsonl",
+        "stage": "ORDER_INTENT",
+        "unit": "paper order intents"
+      },
+      {
+        "count": 0,
+        "evidence_class": "absent_ledger",
+        "field": null,
+        "note": "no paper broker ran on this path; no fill ledger exists",
+        "source": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\evidence\\real_decisions\\paper_fills.jsonl",
+        "stage": "PAPER_BROKER",
+        "unit": "paper broker fills"
+      },
+      {
+        "count": 4,
+        "evidence_class": "observed",
+        "field": "outcome",
+        "note": "1 closed as WIN/LOSS, 3 as NO_TRADE",
+        "source": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\evidence\\real_decisions\\outcomes.jsonl",
+        "stage": "RECONCILIATION",
+        "unit": "settled outcomes"
+      }
+    ]
+  },
+  "live_status": "VERIFIED_ZERO",
+  "live_status_basis": "the exchange's private ledger was not consulted; what is verified is that no order left this runtime, from the ledger the runtime writes itself. A zero at the venue is not asserted without a venue source.",
+  "no_trade": {
+    "by_reason": {
+      "DATA_GAP": {
+        "cycles": 1,
+        "explanation": "the market data had a gap the runtime refused to trade through",
+        "raw_codes": {
+          "DATA_BLOCKED": 1
+        },
+        "reason_code": "DATA_GAP"
+      },
+      "DISK_BUDGET_VETO": {
+        "cycles": 42,
+        "explanation": "the disk guard refused to open a new decision slot",
+        "raw_codes": {
+          "NO_NEW_DECISION_DISK_CRITICAL": 42
+        },
+        "reason_code": "DISK_BUDGET_VETO"
+      },
+      "NO_SIGNAL": {
+        "cycles": 0,
+        "decisions": 3,
+        "explanation": "the signal layer produced a NO_TRADE decision",
+        "raw_codes": {},
+        "reason_code": "NO_SIGNAL"
+      },
+      "UNKNOWN": {
+        "cycles": 83,
+        "explanation": "the source wrote 'MISSED_DECISION_SLOT', which this audit does not yet normalise",
+        "raw_codes": {
+          "MISSED_DECISION_SLOT": 40,
+          "NetworkError('binance GET https://api.binance.com/api/v3/exchangeInfo')": 1,
+          "free space 1229598720 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1347272704 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1365286912 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1374810112 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1376059392 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1377476608 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1378086912 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1379528704 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1381109760 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1381879808 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1382416384 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1382948864 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1384624128 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1385701376 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1385803776 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1386414080 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1387364352 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1387655168 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1390399488 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1393831936 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1395970048 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1396518912 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1486135296 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1488089088 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1489915904 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1490161664 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1494253568 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1632591872 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1729191936 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1758679040 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1800028160 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1869324288 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1949081600 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 1955778560 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 2113626112 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 2115911680 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 2143211520 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 887959552 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 891170816 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 893247488 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 893394944 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1,
+          "free space 895279104 bytes is below the critical threshold 2147483648; sealing paused so existing evidence can be protected": 1
+        },
+        "reason_code": "UNKNOWN"
+      }
+    },
+    "explanation_counts": 1,
+    "no_trade_decisions_sealed": 3,
+    "no_trade_outcomes_settled": 3,
+    "note": "a NO_TRADE decision is not a missing trade; it is a trade the signal layer declined to take, and it is counted separately from a cycle that never reached the signal layer at all"
+  },
+  "order_sent": false,
+  "primary_sources": {
+    "decisions": {
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\evidence\\real_decisions\\decisions.jsonl",
+      "sha256": "d52ce9ad6008e8c44c2881ae18cc0f059749fee4cad913c33b6d4b3bdcfab11a"
+    },
+    "evaluations": {
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\evidence\\real_decisions\\evaluations.jsonl",
+      "sha256": "c1250f3dac1140aef4e2c10b540609ff3749c4bb1f932ded16df483c12409623"
+    },
+    "operations": {
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\evidence\\real_decisions\\operations.jsonl",
+      "sha256": "b3dc6923a50116af2ade123e281ef2867d8de624dc946a3d0417a551426d7227"
+    },
+    "outcomes": {
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\evidence\\real_decisions\\outcomes.jsonl",
+      "sha256": "7ea3836832a345976921bcdaa6f7aa5a0a0b1e6dc0806f11fa2eebb5a4f7cbf9"
+    }
+  },
+  "promotion": "NONE",
+  "schema_version": "EDGE14_TRADE_PATH_DIAGNOSIS_V1",
+  "smallest_honest_claim": "over the measured window this runtime sealed 4 decision(s), sent 0 paper intent(s) and 0 exchange order(s)",
+  "window": {
+    "available": true,
+    "cycle_counter_in_heartbeat": 906,
+    "cycles_recorded": 862,
+    "first_operation_utc": "2026-10-06T19:59:02Z",
+    "interval_seconds": 900,
+    "last_operation_utc": "2026-10-16T12:45:03Z",
+    "note": "the window is the ledger's own extent; no day was filled in, and the difference between 30 and the measured span is reported, not padded",
+    "requested_days": 30,
+    "span_days": 9.6986,
+    "window_is_the_full_thirty_days": false
+  },
+  "work_package": "WP-EDGE-14A"
+}

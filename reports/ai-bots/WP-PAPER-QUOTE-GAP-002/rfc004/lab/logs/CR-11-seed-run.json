@@ -1,0 +1,5323 @@
+{
+ "argv": [
+  "--root",
+  "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\cases\\CR-11",
+  "--ledger",
+  "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\cases\\CR-11\\ledger.jsonl",
+  "--out",
+  "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\logs\\CR-11-seed-run.json",
+  "--role",
+  "resume",
+  "--mode",
+  "run",
+  "--bars",
+  "holed",
+  "--feed",
+  "stop_hole",
+  "--session",
+  "CR-11-seed-run",
+  "--book-id",
+  "rfc004-lab-book",
+  "--hold-lock-ms",
+  "0.0",
+  "--deny-network"
+ ],
+ "barrier_ms": 1792537200000,
+ "book": {
+  "barrier": {
+   "bar_close_ms": 1792540800000,
+   "bar_open_ms": 1792537200000,
+   "bars_committed": 23,
+   "session_end": true
+  },
+  "book_id": "rfc004-lab-book",
+  "broker": {
+   "equity": 9996.380966197243,
+   "fills_closed": 1,
+   "fills_opened": 1,
+   "initial_equity": 10000.0
+  },
+  "calls": 4,
+  "closed_digest": "eeaa7bea84b862ff58780120effd02bd9466739a444de3fa6237f0a99615c819",
+  "closed_trades": [
+   {
+    "closed_at": 1792454400.0,
+    "entry_commission": 0.5,
+    "entry_order_id": "ord-rfc004-lab-book-00000002",
+    "entry_price": 100.02393211860658,
+    "execution_cost_usdt": 0.23866576532663242,
+    "exit_commission": 0.5,
+    "exit_order_id": "ordx-rfc004-lab-book-00000004",
+    "exit_price": 99.5,
+    "exit_reason": "stop_loss",
+    "gross_pnl": -2.619033802756882,
+    "opened_at": 1792526400.0,
+    "pnl": -3.619033802756882,
+    "position_id": "pos-rfc004-lab-book-00000001",
+    "quantity": 4.998803680374302,
+    "reference_entry_price": 100.0,
+    "reference_exit_price": 99.52381245801355,
+    "reference_gross_pnl": -2.3803680374302494,
+    "side": "buy",
+    "strategy_name": "ai_vision",
+    "symbol": "BTC/USDT",
+    "total_cost_usdt": 1.2386657653266324,
+    "trade_id": "trd-rfc004-lab-book-00000003"
+   }
+  ],
+  "contract": {
+   "book_id": "rfc004-lab-book",
+   "cost_multiplier": 1.0,
+   "dataset": {
+    "BTC/USDT": {
+     "bars": 23,
+     "first_open_ms": 1792454400000,
+     "last_open_ms": 1792537200000,
+     "sha256": "19cf82a07714e65bccff5aa644deed9f373a583a80077c9b47ca892c4a6de1be"
+    }
+   },
+   "decision_every_bars": 1,
+   "equity": 10000.0,
+   "interval_ms": 3600000,
+   "provider": "replay",
+   "risk_policy": {
+    "default_stop_loss_pct": 0.5,
+    "default_take_profit_pct": 0.75,
+    "max_daily_loss_pct": 1.0,
+    "max_open_positions": 3,
+    "max_risk_per_trade_pct": 0.25,
+    "max_total_drawdown_pct": 5.0,
+    "max_weekly_loss_pct": 3.0
+   },
+   "timeframe": "1h",
+   "window_bars": 20
+  },
+  "counters": {
+   "action:LONG": 1,
+   "closed_trades": 1,
+   "gap_reconstructed_exits": 1,
+   "parse_error:INVALID_JSON": 3
+  },
+  "entry_provenance": {
+   "pos-rfc004-lab-book-00000001": {
+    "decision_ts_ms": 1792526400000,
+    "quote_lag_ms": 0,
+    "quote_source": "bar_open",
+    "quote_ts_ms": 1792526400000,
+    "received_at_ms": 1792526400000,
+    "stop_loss_price": 99.52381245801355,
+    "take_profit_price": 100.77411160949613
+   }
+  },
+  "marked_equity": 9996.3809662,
+  "marks": {
+   "BTC/USDT": 99.0
+  },
+  "open_positions": [],
+  "pending": {},
+  "risk": {
+   "consecutive_losses": 1,
+   "daily_pnl": -3.619033802756882,
+   "day_peak_equity": 10000.880009141543,
+   "kill_switch_active": false,
+   "last_loss_ms": 1792534560000,
+   "open_positions": {},
+   "peak_equity": 10000.880009141543,
+   "trades_today": 1,
+   "weekly_pnl": -3.619033802756882,
+   "weekly_start_ms": 1792368000000
+  },
+  "risk_equity": 9996.3809662,
+  "session_id": "CR-11-seed-run",
+  "session_ids": [
+   "seed-first-run",
+   "CR-11-seed-run"
+  ],
+  "session_index": 2,
+  "spend_usd": 0.0,
+  "stop_reason": null
+ },
+ "book_closed_digest": "eeaa7bea84b862ff58780120effd02bd9466739a444de3fa6237f0a99615c819",
+ "book_digest": "a1595e3f0ac93bdb22be3525d9a3f37799d33e2d3df7261d65dc887f650ec21f",
+ "book_state_digest": "7efb29eaf9ee54ce514e1a78214eef69f44fa8435e81b3bca8074eb5e00f2908",
+ "elapsed_s": 0.254,
+ "events": [
+  {
+   "at_ms": 1792594738990,
+   "barrier_close_ms": 1792458000000,
+   "barrier_open_ms": 1792454400000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "c0b79e63f026902b41b9e3200f3c167323ed20bf1d5ba29f982280036a8fec9b",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739000,
+   "barrier_close_ms": 1792461600000,
+   "barrier_open_ms": 1792458000000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "13ca2fbc40f1b38f72b4560d68a22e852d559410677df60d064cf1347871839f",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739009,
+   "barrier_close_ms": 1792465200000,
+   "barrier_open_ms": 1792461600000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "49eff31f0b684057814964e0073cac3a823c5a4f1987081d00010e45db222d7d",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739018,
+   "barrier_close_ms": 1792468800000,
+   "barrier_open_ms": 1792465200000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "6f4b29d630fa50054d1997063ccc1a3dea3a59f7b9d4b16d1065287e10d23bae",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739026,
+   "barrier_close_ms": 1792472400000,
+   "barrier_open_ms": 1792468800000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "1ff9ca5b6958993bb15710a91edd666e1304ee62f55c8607cab4076c1837fa9c",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739031,
+   "barrier_close_ms": 1792476000000,
+   "barrier_open_ms": 1792472400000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "3d3e3b23ae377b542b76babb85f493b10267578a9dddab07b5b72510c3ce2e9b",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739036,
+   "barrier_close_ms": 1792479600000,
+   "barrier_open_ms": 1792476000000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "da2a94fc96fc96a00f4158536884925080a8e21027ff4cead08580f19d2ab04a",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739038,
+   "barrier_close_ms": 1792483200000,
+   "barrier_open_ms": 1792479600000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "9743e55f4ad5d8700ee23395fe37d65a3b336b996e10f2ce1e7207b1f0dbcd33",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739052,
+   "barrier_close_ms": 1792486800000,
+   "barrier_open_ms": 1792483200000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "e2e7e333b95baf4873f4a4b736bebf2bf54964a8979d1c550f2275581a3ca75a",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739052,
+   "barrier_close_ms": 1792490400000,
+   "barrier_open_ms": 1792486800000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "a5bdaac60b3842533b25de1706780673ba157f2acbea84339805aca2655f3987",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739065,
+   "barrier_close_ms": 1792494000000,
+   "barrier_open_ms": 1792490400000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "0ab4df2e520cd777b7d457f81a2caa5912673d41010b65f204a68c21b3a85528",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739068,
+   "barrier_close_ms": 1792497600000,
+   "barrier_open_ms": 1792494000000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "7ec2cd03cd872e81a79f04df305257a864b1eac805f72800964f2309d936a7ba",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739068,
+   "barrier_close_ms": 1792501200000,
+   "barrier_open_ms": 1792497600000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "cd628cf295f05ea4b85785ce9a90dff45e603e11a7323be67c3b0667ea1add1c",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739086,
+   "barrier_close_ms": 1792504800000,
+   "barrier_open_ms": 1792501200000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "98fdf5380989e5f76f9c145a5be5b171daed98897d46fdba46113c295f201db3",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739091,
+   "barrier_close_ms": 1792508400000,
+   "barrier_open_ms": 1792504800000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "046f4bfba70246b27fec25353d811eae71b6068d2b8a769fe176beb5f81e79cf",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739098,
+   "barrier_close_ms": 1792512000000,
+   "barrier_open_ms": 1792508400000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "d4b3b7486b6fab499950f224edf63e0fbbf5063139288ebd9eb4891fc9e71597",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739104,
+   "barrier_close_ms": 1792515600000,
+   "barrier_open_ms": 1792512000000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "395422d9f026a6a4d90b60e1f04319de024e5892528c2f2996fe1cf43e0ba3f5",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739109,
+   "barrier_close_ms": 1792519200000,
+   "barrier_open_ms": 1792515600000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "459edb4e4a90cfe96131e7e241e7167643836f744d6480c38432027f9f7d3aa0",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739118,
+   "barrier_close_ms": 1792522800000,
+   "barrier_open_ms": 1792519200000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "958929d8289a16ce2200964bd014fe485dfdbeee8201f5915ee43a183952ce1d",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739295,
+   "barrier_close_ms": 1792526400000,
+   "barrier_open_ms": 1792522800000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "3eec51e1fc86db941be29d9bfb14502d0b80be3d68b88d40f6871a4e4734ba40",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.0,
+   "open_positions": 0,
+   "pending": 1,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739488,
+   "barrier_close_ms": 1792530000000,
+   "barrier_open_ms": 1792526400000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "d55135b5ad5d0261477a6e98b60a04c3eb0cc304e9c596ceaf012ecdb2b2c53e",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 9999.38036804,
+   "open_positions": 1,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739660,
+   "barrier_close_ms": 1792533600000,
+   "barrier_open_ms": 1792530000000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "3225a5f2d444afe56dc82a36613e25dd6483ea53b99ba42d52365f97836eb6c0",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.88000914,
+   "open_positions": 1,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594739667,
+   "barrier_close_ms": 1792533600000,
+   "barrier_open_ms": 1792530000000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 0,
+   "digest": "2dcbdde4c0b2b9d2006c4179e6d68459211d3250e453104c00f776a5c451c400",
+   "equity": 10000.0,
+   "kind": "COMMIT",
+   "marked_equity": 10000.88000914,
+   "open_positions": 1,
+   "pending": 0,
+   "session_end": true,
+   "session_id": "seed-first-run",
+   "session_index": 1
+  },
+  {
+   "at_ms": 1792594840092,
+   "barrier_close_ms": 1792533600000,
+   "barrier_open_ms": 1792530000000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 1,
+   "digest": "749260734dea7e3e42c60615729f7b1eaa99d53d511778e52ef30f0e48c7e1f4",
+   "equity": 9996.380966197243,
+   "kind": "COMMIT",
+   "marked_equity": 9996.3809662,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "CR-11-seed-run",
+   "session_index": 2
+  },
+  {
+   "at_ms": 1792594840286,
+   "barrier_close_ms": 1792540800000,
+   "barrier_open_ms": 1792537200000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 1,
+   "digest": "7633105a9c016c60eea7ad91820231e00324ea251166e1a367b082c9c58b8b83",
+   "equity": 9996.380966197243,
+   "kind": "COMMIT",
+   "marked_equity": 9996.3809662,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": false,
+   "session_id": "CR-11-seed-run",
+   "session_index": 2
+  },
+  {
+   "at_ms": 1792594840289,
+   "barrier_close_ms": 1792540800000,
+   "barrier_open_ms": 1792537200000,
+   "book_id": "rfc004-lab-book",
+   "closed_trades": 1,
+   "digest": "a1595e3f0ac93bdb22be3525d9a3f37799d33e2d3df7261d65dc887f650ec21f",
+   "equity": 9996.380966197243,
+   "kind": "COMMIT",
+   "marked_equity": 9996.3809662,
+   "open_positions": 0,
+   "pending": 0,
+   "session_end": true,
+   "session_id": "CR-11-seed-run",
+   "session_index": 2
+  }
+ ],
+ "files": [
+  "BOOK.json",
+  "BOOK.json.prev",
+  "BOOK_EVENTS.jsonl"
+ ],
+ "ledger": {
+  "chain": {
+   "head_sha256": "1f4991571dcf109a07ad105abbe72750d55e777ad5ed41ee2794bf2560a3c151",
+   "kinds": {
+    "CLOSE": 1,
+    "DECISION": 4,
+    "DECISION_OUTCOME": 1,
+    "FILL": 1,
+    "RUN": 2,
+    "RUN_END": 2
+   },
+   "lines": 11,
+   "ok": true,
+   "reason": "INTACT"
+  },
+  "entries": [
+   {
+    "entry": {
+     "book_id": "rfc004-lab-book",
+     "cost_multiplier": 1.0,
+     "dataset": {
+      "BTC/USDT": {
+       "bars": 22,
+       "first_open_utc": "2026-10-20T00:00:00Z",
+       "last_open_utc": "2026-10-20T21:00:00Z",
+       "sha256": "8467b3945c75a988b2e7519f9730e37890e24eb6237be1b46622b10fb5bd417c"
+      }
+     },
+     "equity_usdt": 10000.0,
+     "kind": "RUN",
+     "lane": {
+      "bar_interval_ms": 3600000,
+      "data_delay_ms": 0,
+      "data_gap_policy": "fail_closed_unless_independent_coverage",
+      "decision_every_bars": 1,
+      "decision_from_ms": null,
+      "execution_quote": "bar_open",
+      "exit_ts_resolutions": [
+       "OPEN_GAP",
+       "BAR_WINDOW",
+       "QUOTE",
+       "MINUTE_WINDOW"
+      ],
+      "gap_policy": "open_on_gap",
+      "gap_price_source": "bar_open",
+      "max_calls": 50,
+      "max_opinion_age_ms": 3600000,
+      "max_spend_usd": 1.0,
+      "open_phase_order": "gap_close>mark>entries>intrabar",
+      "quote_feed": null,
+      "stop_coverage": "entry_at_open_full_bar",
+      "timeframe": "1h",
+      "window_bars": 20
+     },
+     "provider": {
+      "api_key_env": "VISION_API_KEY",
+      "base_url": "https://api.openai.com/v1",
+      "detail": "high",
+      "lane": {
+       "data_delay_ms": 0,
+       "decision_every_bars": 1,
+       "max_calls_per_run": 50,
+       "max_estimated_spend_usd": 1.0,
+       "max_opinion_age_ms": 0,
+       "timeframe": "1h",
+       "window_bars": 20
+      },
+      "max_attempts": 3,
+      "model": "gpt-4o-mini",
+      "prices": {
+       "image_tokens_estimate": 1400,
+       "input_usd_per_mtok": 0.15,
+       "output_usd_per_mtok": 0.6
+      },
+      "provider": "openai-compatible",
+      "supports_json_object": true,
+      "timeout_s": 60.0
+     },
+     "recorded_at_utc": "2026-10-21T14:58:58Z",
+     "recovery": {
+      "barrier_ms": null,
+      "checks": [
+       {
+        "check": "book_present",
+        "detail": "no book on disk: a fresh book is the only one",
+        "ok": true
+       }
+      ],
+      "code": null,
+      "detail": "no durable book: this session starts the account",
+      "gap": null,
+      "reconstruction": null,
+      "resume_from_ms": null,
+      "status": "FRESH"
+     },
+     "risk_policy": {
+      "default_stop_loss_pct": 0.5,
+      "default_take_profit_pct": 0.75,
+      "max_daily_loss_pct": 1.0,
+      "max_open_positions": 3,
+      "max_risk_per_trade_pct": 0.25,
+      "max_total_drawdown_pct": 5.0,
+      "max_weekly_loss_pct": 3.0
+     },
+     "session": {
+      "barrier_ms": null,
+      "durable": true,
+      "resume_from_ms": null,
+      "session_id": "seed-first-run",
+      "session_index": 1,
+      "sessions": [
+       "seed-first-run"
+      ]
+     }
+    },
+    "prev_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "seq": 1,
+    "sha256": "c82b12a7bb042ffd51e68ffa973a153ae9150c0d0ca28d7a3610e76ffde1a526"
+   },
+   {
+    "entry": {
+     "chart": {
+      "bar_count": 20,
+      "bytes": 25771,
+      "chart_spec_version": "ai-vision-chart/2",
+      "first_open_utc": "2026-10-20T00:00:00Z",
+      "last_open_utc": "2026-10-20T19:00:00Z",
+      "sha256": "3448b90a48dcd5e63450708a6e83a5547a3df3d76f6657c39373ae10f80eb35e",
+      "symbol": "BTC/USDT",
+      "timeframe": "1h"
+     },
+     "coherence_reason": "MODEL_LONG",
+     "decision": {
+      "action": "LONG",
+      "confidence": 0.6,
+      "horizon_bars": 6,
+      "invalidation": null,
+      "invalidation_price": null,
+      "rationale": "Recuperaci\u00f3n transaccional PAPER.",
+      "schema_version": "ai-vision-decision/1",
+      "stop_loss_pct": 0.5,
+      "symbol": "BTC/USDT",
+      "take_profit_pct": 0.75
+     },
+     "decision_bar_ts_ms": 1792522800000,
+     "intent": "OPEN_LONG",
+     "kind": "DECISION",
+     "parse_error": null,
+     "phase": "DECISION",
+     "prompt": {
+      "context": {
+       "atr_pct": 0.09999999999999432,
+       "equity": 10000.0,
+       "last_close": 100.0,
+       "max_open_positions": 3,
+       "max_weekly_loss_pct": 3.0,
+       "open_positions": 0,
+       "position": null,
+       "recent_closed": [],
+       "return_20_bars_pct": null,
+       "risk_per_trade_pct": 0.25,
+       "symbol": "BTC/USDT",
+       "timeframe": "1h",
+       "window_bars": 20
+      },
+      "sha256": "0aa083807f2abb18a3b9e2da2765d06c0b7bf9bff143ed6ff2e3ceac7eb7ccb2",
+      "version": "ai-vision-prompt/2"
+     },
+     "provider": {
+      "attempts": 1,
+      "cost_usd": 0.0,
+      "image_sha256_in_request": "3448b90a48dcd5e63450708a6e83a5547a3df3d76f6657c39373ae10f80eb35e",
+      "latency_ms": 0,
+      "model": "replay",
+      "provider": "replay",
+      "request_id": "replay-1",
+      "response_chars": 222,
+      "usage": {}
+     },
+     "raw_answer": "{\"schema_version\":\"ai-vision-decision/1\",\"symbol\":\"BTC/USDT\",\"action\":\"LONG\",\"confidence\":0.6,\"horizon_bars\":6,\"stop_loss_pct\":0.5,\"take_profit_pct\":0.75,\"invalidation\":null,\"rationale\":\"Recuperaci\u00f3n transaccional PAPER.\"}",
+     "raw_answer_truncated": false,
+     "recorded_at_utc": "2026-10-21T14:58:59Z",
+     "risk_blocked_by": null,
+     "symbol": "BTC/USDT",
+     "ts_ms": 1792526400000,
+     "ts_utc": "2026-10-20T20:00:00Z",
+     "window_fingerprint": "16a7aa45c885b9f29af66a5da3a57f8ddf909a625ecf1e2be932499c7a7d3fcb"
+    },
+    "prev_sha256": "c82b12a7bb042ffd51e68ffa973a153ae9150c0d0ca28d7a3610e76ffde1a526",
+    "seq": 2,
+    "sha256": "01f6b8d7fff495376307ab7b842962aa97763683b84056d24176082bfbd469e5"
+   },
+   {
+    "entry": {
+     "approved": true,
+     "decision_seq": 2,
+     "intent": "OPEN_LONG",
+     "kind": "DECISION_OUTCOME",
+     "model_stop_inside_policy": true,
+     "model_stop_loss_pct": 0.5,
+     "notional_usdt": 500.0,
+     "phase": "OPEN_ENTRY",
+     "policy_stop_loss_pct": 0.5,
+     "recorded_at_utc": "2026-10-21T14:58:59Z",
+     "risk_blocked_by": null,
+     "risk_gate": "check_signal",
+     "risk_reason": null,
+     "symbol": "BTC/USDT",
+     "ts_ms": 1792526400000
+    },
+    "prev_sha256": "01f6b8d7fff495376307ab7b842962aa97763683b84056d24176082bfbd469e5",
+    "seq": 3,
+    "sha256": "6ca3c33f9308c2380d0b23e051a86348db351ef57bef7402b4e6884887a020d0"
+   },
+   {
+    "entry": {
+     "commission_bps": 10.0,
+     "data_gap_covered_by": null,
+     "data_gap_missing_bar_open_ms": null,
+     "decision_bar_index": 19,
+     "decision_seq": 2,
+     "decision_ts_ms": 1792526400000,
+     "entry_commission_usdt": 0.5,
+     "entry_price": 100.02393211860658,
+     "entry_quote_source": "bar_open",
+     "fill_bar_index": 20,
+     "intent": "OPEN_LONG",
+     "kind": "FILL",
+     "notional_usdt": 500.0,
+     "operation_id": "rfc004-lab-book|FILL|pos-rfc004-lab-book-00000001",
+     "opinion_age_ms": 0,
+     "phase": "OPEN_ENTRY",
+     "position_id": "pos-rfc004-lab-book-00000001",
+     "price_bps_per_side": 2.39321186,
+     "quantity": 4.998803680374302,
+     "quote_bar_open_ms": 1792526400000,
+     "quote_lag_ms": 0,
+     "quote_price": 100.0,
+     "quote_source": "bar_open",
+     "quote_ts_ms": 1792526400000,
+     "received_at_ms": 1792526400000,
+     "recorded_at_utc": "2026-10-21T14:58:59Z",
+     "reference_price": 100.0,
+     "side": "buy",
+     "stop_loss_pct": 0.5,
+     "stop_loss_price": 99.52381245801355,
+     "symbol": "BTC/USDT",
+     "take_profit_pct": 0.75,
+     "take_profit_price": 100.77411160949613,
+     "ts_ms": 1792526400000,
+     "ts_utc": "2026-10-20T20:00:00Z"
+    },
+    "prev_sha256": "6ca3c33f9308c2380d0b23e051a86348db351ef57bef7402b4e6884887a020d0",
+    "seq": 4,
+    "sha256": "6e07c17343a6adae41ec167b3eebf41764180c1705a613e62b2508c0bf734d5d"
+   },
+   {
+    "entry": {
+     "chart": {
+      "bar_count": 20,
+      "bytes": 25741,
+      "chart_spec_version": "ai-vision-chart/2",
+      "first_open_utc": "2026-10-20T01:00:00Z",
+      "last_open_utc": "2026-10-20T20:00:00Z",
+      "sha256": "fb36e8ca28d5562d531cc5bde400f5c7389674caa314220c59e67fc888aff676",
+      "symbol": "BTC/USDT",
+      "timeframe": "1h"
+     },
+     "coherence_reason": null,
+     "decision": null,
+     "decision_bar_ts_ms": 1792526400000,
+     "kind": "DECISION",
+     "parse_detail": "no candidate parsed as an object: Expecting value: line 1 column 132 (char 131)",
+     "parse_error": "INVALID_JSON",
+     "prompt": {
+      "context": {
+       "atr_pct": 0.09999999999999432,
+       "equity": 9999.38036803743,
+       "last_close": 100.0,
+       "max_open_positions": 3,
+       "max_weekly_loss_pct": 3.0,
+       "open_positions": 1,
+       "position": {
+        "entry_price": 100.02393211860658,
+        "side": "buy",
+        "unrealised_pct": -0.0239,
+        "unrealised_usdt": -0.119632
+       },
+       "recent_closed": [],
+       "return_20_bars_pct": 0.0,
+       "risk_per_trade_pct": 0.25,
+       "symbol": "BTC/USDT",
+       "timeframe": "1h",
+       "window_bars": 20
+      },
+      "sha256": "708dd509df455135c820d6cf3f36c6e34509ec8df04ba299efde5264c6171939",
+      "version": "ai-vision-prompt/2"
+     },
+     "provider": {
+      "attempts": 1,
+      "cost_usd": 0.0,
+      "image_sha256_in_request": "fb36e8ca28d5562d531cc5bde400f5c7389674caa314220c59e67fc888aff676",
+      "latency_ms": 0,
+      "model": "replay",
+      "provider": "replay",
+      "request_id": "replay-2",
+      "response_chars": 227,
+      "usage": {}
+     },
+     "raw_answer": "{\"schema_version\":\"ai-vision-decision/1\",\"symbol\":\"BTC/USDT\",\"action\":\"NO_TRADE\",\"confidence\":0.6,\"horizon_bars\":6,\"stop_loss_pct\":None,\"take_profit_pct\":None,\"invalidation\":null,\"rationale\":\"Recuperaci\u00f3n transaccional PAPER.\"}",
+     "raw_answer_truncated": false,
+     "recorded_at_utc": "2026-10-21T14:58:59Z",
+     "risk_blocked_by": null,
+     "symbol": "BTC/USDT",
+     "ts_ms": 1792530000000,
+     "ts_utc": "2026-10-20T21:00:00Z",
+     "window_fingerprint": "5c2d5424095246cfe43b6f2ab5670c2f0ab4be5b6ade4b08b3a2638888339749"
+    },
+    "prev_sha256": "6e07c17343a6adae41ec167b3eebf41764180c1705a613e62b2508c0bf734d5d",
+    "seq": 5,
+    "sha256": "3a93932bb5b9c185bb0fca23ff5aa907ed1f53cef5c5fc55634488bafa309367"
+   },
+   {
+    "entry": {
+     "chart": {
+      "bar_count": 20,
+      "bytes": 30122,
+      "chart_spec_version": "ai-vision-chart/2",
+      "first_open_utc": "2026-10-20T02:00:00Z",
+      "last_open_utc": "2026-10-20T21:00:00Z",
+      "sha256": "747629a3e4cab572d34fe45398efe04315ddf5ef6d3e2a2d2ed354963c6cd63b",
+      "symbol": "BTC/USDT",
+      "timeframe": "1h"
+     },
+     "coherence_reason": null,
+     "decision": null,
+     "decision_bar_ts_ms": 1792530000000,
+     "kind": "DECISION",
+     "parse_detail": "no candidate parsed as an object: Expecting value: line 1 column 132 (char 131)",
+     "parse_error": "INVALID_JSON",
+     "prompt": {
+      "context": {
+       "atr_pct": 0.12107605754165421,
+       "equity": 10000.880009141543,
+       "last_close": 100.3,
+       "max_open_positions": 3,
+       "max_weekly_loss_pct": 3.0,
+       "open_positions": 1,
+       "position": {
+        "entry_price": 100.02393211860658,
+        "side": "buy",
+        "unrealised_pct": 0.276,
+        "unrealised_usdt": 1.380009
+       },
+       "recent_closed": [],
+       "return_20_bars_pct": 0.29999999999998916,
+       "risk_per_trade_pct": 0.25,
+       "symbol": "BTC/USDT",
+       "timeframe": "1h",
+       "window_bars": 20
+      },
+      "sha256": "0a89c3246b5bd4b3abe9ae95d910252065080e762f7265875b9d526f20d13f09",
+      "version": "ai-vision-prompt/2"
+     },
+     "provider": {
+      "attempts": 1,
+      "cost_usd": 0.0,
+      "image_sha256_in_request": "747629a3e4cab572d34fe45398efe04315ddf5ef6d3e2a2d2ed354963c6cd63b",
+      "latency_ms": 0,
+      "model": "replay",
+      "provider": "replay",
+      "request_id": "replay-3",
+      "response_chars": 227,
+      "usage": {}
+     },
+     "raw_answer": "{\"schema_version\":\"ai-vision-decision/1\",\"symbol\":\"BTC/USDT\",\"action\":\"NO_TRADE\",\"confidence\":0.6,\"horizon_bars\":6,\"stop_loss_pct\":None,\"take_profit_pct\":None,\"invalidation\":null,\"rationale\":\"Recuperaci\u00f3n transaccional PAPER.\"}",
+     "raw_answer_truncated": false,
+     "recorded_at_utc": "2026-10-21T14:58:59Z",
+     "risk_blocked_by": null,
+     "symbol": "BTC/USDT",
+     "ts_ms": 1792533600000,
+     "ts_utc": "2026-10-20T22:00:00Z",
+     "window_fingerprint": "446a048ea66f5b9ce7ce5ef9bb0dd803a5539591b7a4c0ea3061def7535cbd50"
+    },
+    "prev_sha256": "3a93932bb5b9c185bb0fca23ff5aa907ed1f53cef5c5fc55634488bafa309367",
+    "seq": 6,
+    "sha256": "1973304ec9f730a0e9205cd323e7308b5666ab57215062f9a020db748721068d"
+   },
+   {
+    "entry": {
+     "accounting": {
+      "initial_equity_usdt": 10000.0,
+      "mark_prices": {
+       "BTC/USDT": 100.3
+      },
+      "meanings": {
+       "costs_realised_usdt": "same value as costs_usdt, named for symmetry with costs_total_usdt",
+       "costs_total_usdt": "costs_usdt + entry_commissions_accrued_open_usdt",
+       "costs_usdt": "realised cost of closed trades only: execution + entry + exit commissions. Unchanged since 003B; it does NOT include open positions.",
+       "entry_commissions_accrued_open_usdt": "entry commissions of positions still open: charged at close by the broker, but already owed and already withheld from marked equity",
+       "entry_commissions_realised_usdt": "entry commissions inside closed trades",
+       "execution_costs_realised_usdt": "spread/impact cost embedded in closed-trade fills",
+       "exit_commissions_realised_usdt": "exit commissions inside closed trades",
+       "marked_equity_usdt": "initial equity + pnl_total_usdt",
+       "pnl_realised_usdt": "net PnL of closed trades (same value as net_realised_usdt)",
+       "pnl_total_usdt": "pnl_realised_usdt + pnl_unrealised_usdt",
+       "pnl_unrealised_usdt": "open positions marked at the last observable close, net of accrued entry commissions"
+      },
+      "schema_version": "paper-accounting/2"
+     },
+     "book_id": "rfc004-lab-book",
+     "calls": 3,
+     "closed_trades": 0,
+     "costs_realised_usdt": 0,
+     "costs_total_usdt": 0.5,
+     "costs_usdt": 0,
+     "counters": {
+      "action:LONG": 1,
+      "fills": 1,
+      "parse_error:INVALID_JSON": 2
+     },
+     "decision_points": 1,
+     "drawdown_pct": 0.006196,
+     "drawdown_status": "MEASURED",
+     "drawdown_usdt": 0.619632,
+     "entry_commissions_accrued_open_usdt": 0.5,
+     "entry_commissions_realised_usdt": 0,
+     "equity_points": 22,
+     "estimated_spend_usd": 0.0,
+     "execution": {
+      "bar_interval_ms": 3600000,
+      "data_gap_policy": "fail_closed_unless_independent_coverage",
+      "entry_bar_range_policy": "full_bar_from_its_open",
+      "entry_quote_sources": {
+       "bar_open": 1
+      },
+      "exit_ts_resolutions": [
+       "OPEN_GAP",
+       "BAR_WINDOW",
+       "QUOTE",
+       "MINUTE_WINDOW"
+      ],
+      "expired_opinions": 0,
+      "fills": 1,
+      "gap_exits": 0,
+      "gap_policy": "open_on_gap",
+      "max_opinion_age_ms": 3600000,
+      "open_phase_order": "gap_close>mark>entries>intrabar",
+      "quote_lag_ms": {
+       "max": 0,
+       "median": 0,
+       "min": 0
+      },
+      "quote_source": "bar_open",
+      "stale_valuation_vetoes": 0,
+      "stop_coverage": "entry_at_open_full_bar",
+      "sub_bar_fills": 0,
+      "subbar_entries": false,
+      "waiting_events": 0
+     },
+     "execution_costs_realised_usdt": 0,
+     "exit_commissions_realised_usdt": 0,
+     "fills": 1,
+     "final_equity_usdt": 10000.0,
+     "gross_realised_usdt": 0,
+     "kind": "RUN_END",
+     "marked_equity_usdt": 10000.88000914,
+     "net_realised_usdt": 0,
+     "open_positions_at_end": {
+      "BTC/USDT": {
+       "entry_commission_usdt": 0.5,
+       "entry_price": 100.02393211860658,
+       "mark_price": 100.3,
+       "notional_usdt": 500.0,
+       "position_id": "pos-rfc004-lab-book-00000001",
+       "side": "buy",
+       "unrealised_pnl_usdt": 1.38000914
+      }
+     },
+     "pnl_realised_usdt": 0,
+     "pnl_total_usdt": 0.88000914,
+     "pnl_unrealised_usdt": 0.88000914,
+     "provider": "replay",
+     "reconciliation": {
+      "accounting_schema_version": "paper-accounting/2",
+      "costs_realised_usdt": 0,
+      "costs_total_usdt": 0.5,
+      "curve_end_equity_usdt": 10000.88000914,
+      "entry_commission_usdt": 0,
+      "entry_commissions_accrued_open_usdt": 0.5,
+      "execution_cost_usdt": 0,
+      "exit_commission_usdt": 0,
+      "final_equity_usdt": 10000.0,
+      "identities": {
+       "cash_rebuilds_from_realised_pnl": true,
+       "curve_ends_at_final_equity": true,
+       "every_close_after_its_entry_quote": true,
+       "every_fill_pays_at_or_after_its_answer": true,
+       "marked_equity_rebuilds_from_open_position": true,
+       "net_pnl_nets_every_named_cost": true,
+       "open_positions_are_disjoint_from_closed_trades": true,
+       "realised_costs_equal_closed_trade_legs": true,
+       "risk_equity_matches_marked_equity": true,
+       "total_costs_equal_realised_plus_accrued": true,
+       "total_pnl_moves_the_marked_book": true
+      },
+      "initial_equity_usdt": 10000.0,
+      "marked_equity_usdt": 10000.88000914,
+      "marks_complete_at_end": true,
+      "net_realised_usdt": 0,
+      "open_gap_exits": 0,
+      "open_position_ids_at_end": [
+       "pos-rfc004-lab-book-00000001"
+      ],
+      "open_positions_at_end": 1,
+      "pnl_total_usdt": 0.88000914,
+      "reference_gross_usdt": 0,
+      "risk_equity_usdt": 10000.88000914,
+      "tolerance_usdt": 1e-06,
+      "unrealised_pnl_gross_usdt": 1.38000914,
+      "unrealised_pnl_net_usdt": 0.88000914
+     },
+     "recorded_at_utc": "2026-10-21T14:58:59Z",
+     "risk_equity_usdt": 10000.880009,
+     "session": {
+      "barrier_ms": 1792530000000,
+      "book_digest": "f34bebc06ae4ae1c0911b8e9749ea6ede3821637efba94af322787c833f60ed8",
+      "closed_trades": 0,
+      "fills": 1,
+      "net_realised_usdt": 0.0,
+      "recovery": {
+       "barrier_ms": null,
+       "checks": [
+        {
+         "check": "book_present",
+         "detail": "no book on disk: a fresh book is the only one",
+         "ok": true
+        }
+       ],
+       "code": null,
+       "detail": "no durable book: this session starts the account",
+       "gap": null,
+       "reconstruction": null,
+       "resume_from_ms": null,
+       "status": "FRESH"
+      },
+      "resume_from_ms": null,
+      "resumed": false,
+      "session_id": "seed-first-run",
+      "session_index": 1,
+      "sessions": [
+       "seed-first-run"
+      ]
+     },
+     "stop_reason": null,
+     "store_recovery": null,
+     "trades": []
+    },
+    "prev_sha256": "1973304ec9f730a0e9205cd323e7308b5666ab57215062f9a020db748721068d",
+    "seq": 7,
+    "sha256": "738dff400e9bc71365f1ec98d6119122fb4fc80b675c6cb6755cb73c8c6ecc1d"
+   },
+   {
+    "entry": {
+     "book_id": "rfc004-lab-book",
+     "cost_multiplier": 1.0,
+     "dataset": {
+      "BTC/USDT": {
+       "bars": 23,
+       "first_open_utc": "2026-10-20T00:00:00Z",
+       "last_open_utc": "2026-10-20T23:00:00Z",
+       "sha256": "19cf82a07714e65bccff5aa644deed9f373a583a80077c9b47ca892c4a6de1be"
+      }
+     },
+     "equity_usdt": 10000.0,
+     "kind": "RUN",
+     "lane": {
+      "bar_interval_ms": 3600000,
+      "data_delay_ms": 0,
+      "data_gap_policy": "fail_closed_unless_independent_coverage",
+      "decision_every_bars": 1,
+      "decision_from_ms": null,
+      "execution_quote": "bar_open",
+      "exit_ts_resolutions": [
+       "OPEN_GAP",
+       "BAR_WINDOW",
+       "QUOTE",
+       "MINUTE_WINDOW"
+      ],
+      "gap_policy": "open_on_gap",
+      "gap_price_source": "bar_open",
+      "max_calls": 50,
+      "max_opinion_age_ms": 3600000,
+      "max_spend_usd": 1.0,
+      "open_phase_order": "gap_close>mark>entries>intrabar",
+      "quote_feed": "binance_spot_1m_klines",
+      "stop_coverage": "entry_at_open_full_bar",
+      "timeframe": "1h",
+      "window_bars": 20
+     },
+     "provider": {
+      "api_key_env": "VISION_API_KEY",
+      "base_url": "https://api.openai.com/v1",
+      "detail": "high",
+      "lane": {
+       "data_delay_ms": 0,
+       "decision_every_bars": 1,
+       "max_calls_per_run": 50,
+       "max_estimated_spend_usd": 1.0,
+       "max_opinion_age_ms": 0,
+       "timeframe": "1h",
+       "window_bars": 20
+      },
+      "max_attempts": 3,
+      "model": "gpt-4o-mini",
+      "prices": {
+       "image_tokens_estimate": 1400,
+       "input_usd_per_mtok": 0.15,
+       "output_usd_per_mtok": 0.6
+      },
+      "provider": "openai-compatible",
+      "supports_json_object": true,
+      "timeout_s": 60.0
+     },
+     "recorded_at_utc": "2026-10-21T15:00:40Z",
+     "recovery": {
+      "barrier_ms": 1792530000000,
+      "checks": [
+       {
+        "check": "contract_matches",
+        "detail": "",
+        "ok": true
+       },
+       {
+        "check": "barrier_present",
+        "detail": "",
+        "ok": true
+       },
+       {
+        "check": "dataset_prefix_matches",
+        "detail": "",
+        "ok": true
+       },
+       {
+        "check": "equity_identity",
+        "detail": "",
+        "ok": true
+       },
+       {
+        "check": "closed_history_intact",
+        "detail": "",
+        "ok": true
+       },
+       {
+        "check": "position_structure",
+        "detail": "",
+        "ok": true
+       },
+       {
+        "check": "risk_agrees_with_mark",
+        "detail": "",
+        "ok": true
+       },
+       {
+        "check": "resume_bar_available",
+        "detail": "the dataset holds a bar at 1792537200000",
+        "ok": true
+       },
+       {
+        "check": "barrier_is_continuous",
+        "detail": "bar 1792533600000 is missing; the next bar is 1792537200000",
+        "ok": false
+       },
+       {
+        "check": "gap_evidence_matches_book",
+        "detail": "the assessment covers bars 1792530000000->1792537200000 and 1 position(s), matching this book",
+        "ok": true
+       },
+       {
+        "check": "gap_covered_by_quotes",
+        "detail": "binance_spot_1m_klines observed every minute of 1792533600000..1792537199999 for BTC/USDT (60 minutes, 3d5bce46d39c)",
+        "ok": true
+       },
+       {
+        "check": "gap_exits_placeable",
+        "detail": "1 protective exit(s) crossed inside the hole and are placed at their observed minute: pos-rfc004-lab-book-00000001 BTC/USDT stop_loss at 99.52381245801355 (minute 1792534500000)",
+        "ok": true
+       }
+      ],
+      "code": null,
+      "detail": "book rfc004-lab-book recovered at bar 1792530000000 across a 1-bar hole: 1 open, 0 closed, 1 exit(s) reconstructed, equity 10000.00000000",
+      "gap": {
+       "checks": [
+        {
+         "check": "feed_present",
+         "detail": "feed 'binance_spot_1m_klines' supplied",
+         "ok": true
+        },
+        {
+         "check": "feed_is_independent",
+         "detail": "the feed names itself 'binance_spot_1m_klines'",
+         "ok": true
+        },
+        {
+         "check": "minute_grid_complete",
+         "detail": "every minute of the hole is present for BTC/USDT",
+         "ok": true
+        },
+        {
+         "check": "no_opinion_spans_the_hole",
+         "detail": "no in-flight opinion could have filled inside the hole",
+         "ok": true
+        },
+        {
+         "check": "protective_exits_placed",
+         "detail": "1 exit(s) placeable, 0 position(s) never touched a level",
+         "ok": true
+        }
+       ],
+       "code": null,
+       "detail": "1 protective exit(s) were crossed inside the hole and are placed at their observed minute by binance_spot_1m_klines; the remaining 0 position(s) were provably untouched",
+       "evidence": {
+        "barrier_ms": 1792530000000,
+        "minutes_expected": 60,
+        "resume_ms": 1792537200000,
+        "symbols": {
+         "BTC/USDT": {
+          "feed": "binance_spot_1m_klines",
+          "first_minute_ms": 1792533600000,
+          "last_minute_ms": 1792537140000,
+          "minutes_expected": 60,
+          "minutes_observed": 60,
+          "series_sha256": "3d5bce46d39c6623c2c859e11f8c448502119d609d850c9c015584216a51710b",
+          "window_sha256": "3d5bce46d39c6623c2c859e11f8c448502119d609d850c9c015584216a51710b"
+         }
+        }
+       },
+       "feed": "binance_spot_1m_klines",
+       "minutes": [
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792533600000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792533660000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792533720000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792533780000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792533840000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792533900000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792533960000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534020000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534080000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534140000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534200000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534260000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534320000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534380000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534440000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.0,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534500000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534560000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534620000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534680000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534740000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534800000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534860000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534920000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534980000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535040000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535100000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535160000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535220000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535280000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535340000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535400000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535460000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535520000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535580000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535640000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535700000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535760000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535820000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535880000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535940000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536000000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536060000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536120000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536180000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536240000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536300000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536360000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536420000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536480000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536540000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536600000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536660000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536720000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536780000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536840000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536900000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536960000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792537020000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792537080000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792537140000
+        }
+       ],
+       "positions": [
+        {
+         "ambiguous_minute_ms": null,
+         "best_price": 100.4,
+         "detail": "the stop was crossed in minute 1792534500000, which is an observed price, not an inferred one",
+         "entry_price": 100.02393211860658,
+         "exit_minute_ms": 1792534500000,
+         "exit_price": 99.52381245801355,
+         "exit_reason": "stop_loss",
+         "minutes_observed": 60,
+         "position_id": "pos-rfc004-lab-book-00000001",
+         "quantity": 4.998803680374302,
+         "side": "buy",
+         "status": "RECONSTRUCTIBLE",
+         "stop_price": 99.52381245801355,
+         "stop_touch": {
+          "close": 100.0,
+          "high": 100.4,
+          "level_price": 99.52381245801355,
+          "low": 99.0,
+          "minute_ms": 1792534500000,
+          "open": 100.0
+         },
+         "symbol": "BTC/USDT",
+         "take_profit_price": 100.77411160949613,
+         "take_profit_touch": null,
+         "worst_price": 99.0,
+         "worst_unrealised_usdt": -5.118435642944033
+        }
+       ],
+       "verdict": "RECONSTRUCT",
+       "window": {
+        "barrier_ms": 1792530000000,
+        "end_ms": 1792537200000,
+        "interval_ms": 3600000,
+        "minutes_expected": 60,
+        "missing_bars": [
+         1792533600000
+        ],
+        "resume_ms": 1792537200000,
+        "start_ms": 1792533600000
+       }
+      },
+      "reconstruction": {
+       "evidence": {
+        "barrier_ms": 1792530000000,
+        "minutes_expected": 60,
+        "resume_ms": 1792537200000,
+        "symbols": {
+         "BTC/USDT": {
+          "feed": "binance_spot_1m_klines",
+          "first_minute_ms": 1792533600000,
+          "last_minute_ms": 1792537140000,
+          "minutes_expected": 60,
+          "minutes_observed": 60,
+          "series_sha256": "3d5bce46d39c6623c2c859e11f8c448502119d609d850c9c015584216a51710b",
+          "window_sha256": "3d5bce46d39c6623c2c859e11f8c448502119d609d850c9c015584216a51710b"
+         }
+        }
+       },
+       "exits": [
+        {
+         "minute_ms": 1792534500000,
+         "position_id": "pos-rfc004-lab-book-00000001",
+         "price": 99.52381245801355,
+         "reason": "stop_loss",
+         "side": "buy",
+         "stop_price": 99.52381245801355,
+         "stop_touch": {
+          "close": 100.0,
+          "high": 100.4,
+          "level_price": 99.52381245801355,
+          "low": 99.0,
+          "minute_ms": 1792534500000,
+          "open": 100.0
+         },
+         "symbol": "BTC/USDT",
+         "take_profit_price": 100.77411160949613,
+         "take_profit_touch": null,
+         "worst_price": 99.0,
+         "worst_unrealised_usdt": -5.118435642944033
+        }
+       ],
+       "feed": "binance_spot_1m_klines",
+       "kind": "PROTECTIVE_EXITS",
+       "minutes": [
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792533600000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792533660000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792533720000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792533780000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792533840000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792533900000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792533960000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534020000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534080000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534140000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534200000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534260000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534320000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534380000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534440000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.0,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534500000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534560000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534620000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534680000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534740000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534800000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534860000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534920000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792534980000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535040000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535100000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535160000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535220000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535280000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535340000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535400000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535460000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535520000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535580000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535640000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535700000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535760000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535820000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535880000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792535940000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536000000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536060000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536120000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536180000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536240000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536300000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536360000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536420000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536480000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536540000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536600000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536660000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536720000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536780000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536840000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536900000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792536960000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792537020000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792537080000
+        },
+        {
+         "close": 100.0,
+         "high": 100.4,
+         "low": 99.6,
+         "open": 100.0,
+         "symbol": "BTC/USDT",
+         "ts_ms": 1792537140000
+        }
+       ],
+       "window": {
+        "barrier_ms": 1792530000000,
+        "end_ms": 1792537200000,
+        "interval_ms": 3600000,
+        "minutes_expected": 60,
+        "missing_bars": [
+         1792533600000
+        ],
+        "resume_ms": 1792537200000,
+        "start_ms": 1792533600000
+       }
+      },
+      "resume_from_ms": 1792537200000,
+      "status": "RECOVERED"
+     },
+     "risk_policy": {
+      "default_stop_loss_pct": 0.5,
+      "default_take_profit_pct": 0.75,
+      "max_daily_loss_pct": 1.0,
+      "max_open_positions": 3,
+      "max_risk_per_trade_pct": 0.25,
+      "max_total_drawdown_pct": 5.0,
+      "max_weekly_loss_pct": 3.0
+     },
+     "session": {
+      "barrier_ms": 1792530000000,
+      "durable": true,
+      "resume_from_ms": 1792537200000,
+      "session_id": "CR-11-seed-run",
+      "session_index": 2,
+      "sessions": [
+       "seed-first-run",
+       "CR-11-seed-run"
+      ]
+     }
+    },
+    "prev_sha256": "738dff400e9bc71365f1ec98d6119122fb4fc80b675c6cb6755cb73c8c6ecc1d",
+    "seq": 8,
+    "sha256": "f75643121c9a361078fc01406c7dd14e673979a1472caa52e33b02e3a6636f63"
+   },
+   {
+    "entry": {
+     "bars_held": 2,
+     "commissions_usdt": 1.0,
+     "day_utc": "2026-10-20",
+     "entry_commission_usdt": 0.5,
+     "entry_decision_ts_ms": 1792526400000,
+     "entry_price": 100.02393211860658,
+     "entry_quote_ts_ms": 1792526400000,
+     "entry_received_at_ms": 1792526400000,
+     "execution_cost_usdt": 0.23866577,
+     "exit_commission_usdt": 0.5,
+     "exit_price": 99.5,
+     "exit_reason": "stop_loss",
+     "exit_reference_price": 99.52381246,
+     "exit_ts_lower_bound_ms": 1792534500000,
+     "exit_ts_resolution": "MINUTE_WINDOW",
+     "exit_ts_upper_bound_ms": 1792534560000,
+     "gap_open_price": null,
+     "gap_price_source": null,
+     "gross_pnl_usdt": -2.6190338,
+     "kind": "CLOSE",
+     "operation_id": "rfc004-lab-book|CLOSE|pos-rfc004-lab-book-00000001",
+     "phase": "GAP_RECONSTRUCTION",
+     "pnl_net_usdt": -3.6190338,
+     "position_id": "pos-rfc004-lab-book-00000001",
+     "quantity": 4.998803680374302,
+     "recorded_at_utc": "2026-10-21T15:00:40Z",
+     "reference_gross_pnl_usdt": -2.38036804,
+     "risk_daily_pnl_after": -3.6190338,
+     "risk_equity_after": 9997.26097534,
+     "risk_equity_before": 10000.88000914,
+     "risk_weekly_pnl_after": -3.6190338,
+     "side": "buy",
+     "stop_loss_price": 99.52381245801355,
+     "symbol": "BTC/USDT",
+     "take_profit_price": 100.77411160949613,
+     "trade_id": "trd-rfc004-lab-book-00000003",
+     "ts_ms": 1792534560000,
+     "ts_utc": "2026-10-20T22:16:00Z"
+    },
+    "prev_sha256": "f75643121c9a361078fc01406c7dd14e673979a1472caa52e33b02e3a6636f63",
+    "seq": 9,
+    "sha256": "740e38161d4349d7e297663c6b9399767f853fea1b4f776aebfdeec60e577fab"
+   },
+   {
+    "entry": {
+     "chart": {
+      "bar_count": 20,
+      "bytes": 29734,
+      "chart_spec_version": "ai-vision-chart/2",
+      "first_open_utc": "2026-10-20T03:00:00Z",
+      "last_open_utc": "2026-10-20T23:00:00Z",
+      "sha256": "9bb129766e481b0c4585cb76a905b995ac0143ac6bc883ffae45d14fa5a3d5b0",
+      "symbol": "BTC/USDT",
+      "timeframe": "1h"
+     },
+     "coherence_reason": null,
+     "decision": null,
+     "decision_bar_ts_ms": 1792537200000,
+     "kind": "DECISION",
+     "parse_detail": "no candidate parsed as an object: Expecting value: line 1 column 132 (char 131)",
+     "parse_error": "INVALID_JSON",
+     "prompt": {
+      "context": {
+       "atr_pct": 0.21281746031745355,
+       "equity": 9996.380966197243,
+       "last_close": 99.0,
+       "max_open_positions": 3,
+       "max_weekly_loss_pct": 3.0,
+       "open_positions": 0,
+       "position": null,
+       "recent_closed": [
+        {
+         "pnl_usdt": -3.619034,
+         "side": "buy",
+         "symbol": "BTC/USDT"
+        }
+       ],
+       "return_20_bars_pct": -1.0000000000000009,
+       "risk_per_trade_pct": 0.25,
+       "symbol": "BTC/USDT",
+       "timeframe": "1h",
+       "window_bars": 20
+      },
+      "sha256": "5450a0f1f9d07aaf31ab0e16f36b638c1d3838025f8dc7df50133e9e0c51e420",
+      "version": "ai-vision-prompt/2"
+     },
+     "provider": {
+      "attempts": 1,
+      "cost_usd": 0.0,
+      "image_sha256_in_request": "9bb129766e481b0c4585cb76a905b995ac0143ac6bc883ffae45d14fa5a3d5b0",
+      "latency_ms": 0,
+      "model": "replay",
+      "provider": "replay",
+      "request_id": "replay-1",
+      "response_chars": 227,
+      "usage": {}
+     },
+     "raw_answer": "{\"schema_version\":\"ai-vision-decision/1\",\"symbol\":\"BTC/USDT\",\"action\":\"NO_TRADE\",\"confidence\":0.6,\"horizon_bars\":6,\"stop_loss_pct\":None,\"take_profit_pct\":None,\"invalidation\":null,\"rationale\":\"Recuperaci\u00f3n transaccional PAPER.\"}",
+     "raw_answer_truncated": false,
+     "recorded_at_utc": "2026-10-21T15:00:40Z",
+     "risk_blocked_by": null,
+     "symbol": "BTC/USDT",
+     "ts_ms": 1792540800000,
+     "ts_utc": "2026-10-21T00:00:00Z",
+     "window_fingerprint": "a9acd1da7f3284c5316783e3ae920e5ba5dd0d7d84218647cdda7692535e3d76"
+    },
+    "prev_sha256": "740e38161d4349d7e297663c6b9399767f853fea1b4f776aebfdeec60e577fab",
+    "seq": 10,
+    "sha256": "78f8b46214cf74bb8f853fb1cce9ccd946df6dabcd11d413b3d8a604aecbd0d1"
+   },
+   {
+    "entry": {
+     "accounting": {
+      "initial_equity_usdt": 10000.0,
+      "mark_prices": {
+       "BTC/USDT": 99.0
+      },
+      "meanings": {
+       "costs_realised_usdt": "same value as costs_usdt, named for symmetry with costs_total_usdt",
+       "costs_total_usdt": "costs_usdt + entry_commissions_accrued_open_usdt",
+       "costs_usdt": "realised cost of closed trades only: execution + entry + exit commissions. Unchanged since 003B; it does NOT include open positions.",
+       "entry_commissions_accrued_open_usdt": "entry commissions of positions still open: charged at close by the broker, but already owed and already withheld from marked equity",
+       "entry_commissions_realised_usdt": "entry commissions inside closed trades",
+       "execution_costs_realised_usdt": "spread/impact cost embedded in closed-trade fills",
+       "exit_commissions_realised_usdt": "exit commissions inside closed trades",
+       "marked_equity_usdt": "initial equity + pnl_total_usdt",
+       "pnl_realised_usdt": "net PnL of closed trades (same value as net_realised_usdt)",
+       "pnl_total_usdt": "pnl_realised_usdt + pnl_unrealised_usdt",
+       "pnl_unrealised_usdt": "open positions marked at the last observable close, net of accrued entry commissions"
+      },
+      "schema_version": "paper-accounting/2"
+     },
+     "book_id": "rfc004-lab-book",
+     "calls": 4,
+     "closed_trades": 1,
+     "costs_realised_usdt": 1.23866577,
+     "costs_total_usdt": 1.23866577,
+     "costs_usdt": 1.238666,
+     "counters": {
+      "action:LONG": 1,
+      "closed_trades": 1,
+      "gap_reconstructed_exits": 1,
+      "parse_error:INVALID_JSON": 3
+     },
+     "decision_points": 1,
+     "drawdown_pct": null,
+     "drawdown_status": "UNKNOWN",
+     "drawdown_usdt": null,
+     "entry_commissions_accrued_open_usdt": 0.0,
+     "entry_commissions_realised_usdt": 0.5,
+     "equity_points": 1,
+     "estimated_spend_usd": 0.0,
+     "execution": {
+      "bar_interval_ms": 3600000,
+      "data_gap_policy": "fail_closed_unless_independent_coverage",
+      "entry_bar_range_policy": "full_bar_from_its_open",
+      "entry_quote_sources": {
+       "bar_open": 1
+      },
+      "exit_ts_resolutions": [
+       "OPEN_GAP",
+       "BAR_WINDOW",
+       "QUOTE",
+       "MINUTE_WINDOW"
+      ],
+      "expired_opinions": 0,
+      "fills": 0,
+      "gap_exits": 0,
+      "gap_policy": "open_on_gap",
+      "max_opinion_age_ms": 3600000,
+      "open_phase_order": "gap_close>mark>entries>intrabar",
+      "quote_lag_ms": {
+       "max": 0,
+       "median": 0,
+       "min": 0
+      },
+      "quote_source": "bar_open",
+      "stale_valuation_vetoes": 0,
+      "stop_coverage": "entry_at_open_full_bar",
+      "sub_bar_fills": 0,
+      "subbar_entries": false,
+      "waiting_events": 0
+     },
+     "execution_costs_realised_usdt": 0.23866577,
+     "exit_commissions_realised_usdt": 0.5,
+     "fills": 0,
+     "final_equity_usdt": 9996.380966,
+     "gross_realised_usdt": -2.619034,
+     "kind": "RUN_END",
+     "marked_equity_usdt": 9996.3809662,
+     "net_realised_usdt": -3.619034,
+     "open_positions_at_end": {},
+     "pnl_realised_usdt": -3.6190338,
+     "pnl_total_usdt": -3.6190338,
+     "pnl_unrealised_usdt": 0.0,
+     "provider": "replay",
+     "reconciliation": {
+      "accounting_schema_version": "paper-accounting/2",
+      "costs_realised_usdt": 1.23866577,
+      "costs_total_usdt": 1.23866577,
+      "curve_end_equity_usdt": 9996.3809662,
+      "entry_commission_usdt": 0.5,
+      "entry_commissions_accrued_open_usdt": 0.0,
+      "execution_cost_usdt": 0.23866577,
+      "exit_commission_usdt": 0.5,
+      "final_equity_usdt": 9996.3809662,
+      "identities": {
+       "cash_rebuilds_from_realised_pnl": true,
+       "curve_ends_at_final_equity": true,
+       "every_close_after_its_entry_quote": false,
+       "every_fill_pays_at_or_after_its_answer": true,
+       "marked_equity_rebuilds_from_open_position": true,
+       "net_pnl_nets_every_named_cost": true,
+       "open_positions_are_disjoint_from_closed_trades": true,
+       "realised_costs_equal_closed_trade_legs": true,
+       "risk_equity_matches_marked_equity": true,
+       "total_costs_equal_realised_plus_accrued": true,
+       "total_pnl_moves_the_marked_book": true
+      },
+      "initial_equity_usdt": 10000.0,
+      "marked_equity_usdt": 9996.3809662,
+      "marks_complete_at_end": true,
+      "net_realised_usdt": -3.6190338,
+      "open_gap_exits": 0,
+      "open_position_ids_at_end": [],
+      "open_positions_at_end": 0,
+      "pnl_total_usdt": -3.6190338,
+      "reference_gross_usdt": -2.38036804,
+      "risk_equity_usdt": 9996.3809662,
+      "tolerance_usdt": 1e-06,
+      "unrealised_pnl_gross_usdt": 0.0,
+      "unrealised_pnl_net_usdt": 0.0
+     },
+     "recorded_at_utc": "2026-10-21T15:00:40Z",
+     "risk_equity_usdt": 9996.380966,
+     "session": {
+      "barrier_ms": 1792537200000,
+      "book_digest": "7efb29eaf9ee54ce514e1a78214eef69f44fa8435e81b3bca8074eb5e00f2908",
+      "closed_trades": 1,
+      "fills": 0,
+      "net_realised_usdt": -3.619034,
+      "recovery": {
+       "barrier_ms": 1792530000000,
+       "checks": [
+        {
+         "check": "contract_matches",
+         "detail": "",
+         "ok": true
+        },
+        {
+         "check": "barrier_present",
+         "detail": "",
+         "ok": true
+        },
+        {
+         "check": "dataset_prefix_matches",
+         "detail": "",
+         "ok": true
+        },
+        {
+         "check": "equity_identity",
+         "detail": "",
+         "ok": true
+        },
+        {
+         "check": "closed_history_intact",
+         "detail": "",
+         "ok": true
+        },
+        {
+         "check": "position_structure",
+         "detail": "",
+         "ok": true
+        },
+        {
+         "check": "risk_agrees_with_mark",
+         "detail": "",
+         "ok": true
+        },
+        {
+         "check": "resume_bar_available",
+         "detail": "the dataset holds a bar at 1792537200000",
+         "ok": true
+        },
+        {
+         "check": "barrier_is_continuous",
+         "detail": "bar 1792533600000 is missing; the next bar is 1792537200000",
+         "ok": false
+        },
+        {
+         "check": "gap_evidence_matches_book",
+         "detail": "the assessment covers bars 1792530000000->1792537200000 and 1 position(s), matching this book",
+         "ok": true
+        },
+        {
+         "check": "gap_covered_by_quotes",
+         "detail": "binance_spot_1m_klines observed every minute of 1792533600000..1792537199999 for BTC/USDT (60 minutes, 3d5bce46d39c)",
+         "ok": true
+        },
+        {
+         "check": "gap_exits_placeable",
+         "detail": "1 protective exit(s) crossed inside the hole and are placed at their observed minute: pos-rfc004-lab-book-00000001 BTC/USDT stop_loss at 99.52381245801355 (minute 1792534500000)",
+         "ok": true
+        }
+       ],
+       "code": null,
+       "detail": "book rfc004-lab-book recovered at bar 1792530000000 across a 1-bar hole: 1 open, 0 closed, 1 exit(s) reconstructed, equity 10000.00000000",
+       "gap": {
+        "checks": [
+         {
+          "check": "feed_present",
+          "detail": "feed 'binance_spot_1m_klines' supplied",
+          "ok": true
+         },
+         {
+          "check": "feed_is_independent",
+          "detail": "the feed names itself 'binance_spot_1m_klines'",
+          "ok": true
+         },
+         {
+          "check": "minute_grid_complete",
+          "detail": "every minute of the hole is present for BTC/USDT",
+          "ok": true
+         },
+         {
+          "check": "no_opinion_spans_the_hole",
+          "detail": "no in-flight opinion could have filled inside the hole",
+          "ok": true
+         },
+         {
+          "check": "protective_exits_placed",
+          "detail": "1 exit(s) placeable, 0 position(s) never touched a level",
+          "ok": true
+         }
+        ],
+        "code": null,
+        "detail": "1 protective exit(s) were crossed inside the hole and are placed at their observed minute by binance_spot_1m_klines; the remaining 0 position(s) were provably untouched",
+        "evidence": {
+         "barrier_ms": 1792530000000,
+         "minutes_expected": 60,
+         "resume_ms": 1792537200000,
+         "symbols": {
+          "BTC/USDT": {
+           "feed": "binance_spot_1m_klines",
+           "first_minute_ms": 1792533600000,
+           "last_minute_ms": 1792537140000,
+           "minutes_expected": 60,
+           "minutes_observed": 60,
+           "series_sha256": "3d5bce46d39c6623c2c859e11f8c448502119d609d850c9c015584216a51710b",
+           "window_sha256": "3d5bce46d39c6623c2c859e11f8c448502119d609d850c9c015584216a51710b"
+          }
+         }
+        },
+        "feed": "binance_spot_1m_klines",
+        "minutes": [
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792533600000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792533660000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792533720000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792533780000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792533840000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792533900000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792533960000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534020000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534080000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534140000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534200000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534260000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534320000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534380000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534440000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.0,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534500000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534560000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534620000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534680000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534740000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534800000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534860000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534920000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534980000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535040000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535100000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535160000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535220000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535280000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535340000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535400000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535460000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535520000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535580000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535640000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535700000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535760000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535820000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535880000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535940000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536000000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536060000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536120000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536180000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536240000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536300000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536360000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536420000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536480000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536540000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536600000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536660000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536720000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536780000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536840000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536900000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536960000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792537020000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792537080000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792537140000
+         }
+        ],
+        "positions": [
+         {
+          "ambiguous_minute_ms": null,
+          "best_price": 100.4,
+          "detail": "the stop was crossed in minute 1792534500000, which is an observed price, not an inferred one",
+          "entry_price": 100.02393211860658,
+          "exit_minute_ms": 1792534500000,
+          "exit_price": 99.52381245801355,
+          "exit_reason": "stop_loss",
+          "minutes_observed": 60,
+          "position_id": "pos-rfc004-lab-book-00000001",
+          "quantity": 4.998803680374302,
+          "side": "buy",
+          "status": "RECONSTRUCTIBLE",
+          "stop_price": 99.52381245801355,
+          "stop_touch": {
+           "close": 100.0,
+           "high": 100.4,
+           "level_price": 99.52381245801355,
+           "low": 99.0,
+           "minute_ms": 1792534500000,
+           "open": 100.0
+          },
+          "symbol": "BTC/USDT",
+          "take_profit_price": 100.77411160949613,
+          "take_profit_touch": null,
+          "worst_price": 99.0,
+          "worst_unrealised_usdt": -5.118435642944033
+         }
+        ],
+        "verdict": "RECONSTRUCT",
+        "window": {
+         "barrier_ms": 1792530000000,
+         "end_ms": 1792537200000,
+         "interval_ms": 3600000,
+         "minutes_expected": 60,
+         "missing_bars": [
+          1792533600000
+         ],
+         "resume_ms": 1792537200000,
+         "start_ms": 1792533600000
+        }
+       },
+       "reconstruction": {
+        "evidence": {
+         "barrier_ms": 1792530000000,
+         "minutes_expected": 60,
+         "resume_ms": 1792537200000,
+         "symbols": {
+          "BTC/USDT": {
+           "feed": "binance_spot_1m_klines",
+           "first_minute_ms": 1792533600000,
+           "last_minute_ms": 1792537140000,
+           "minutes_expected": 60,
+           "minutes_observed": 60,
+           "series_sha256": "3d5bce46d39c6623c2c859e11f8c448502119d609d850c9c015584216a51710b",
+           "window_sha256": "3d5bce46d39c6623c2c859e11f8c448502119d609d850c9c015584216a51710b"
+          }
+         }
+        },
+        "exits": [
+         {
+          "minute_ms": 1792534500000,
+          "position_id": "pos-rfc004-lab-book-00000001",
+          "price": 99.52381245801355,
+          "reason": "stop_loss",
+          "side": "buy",
+          "stop_price": 99.52381245801355,
+          "stop_touch": {
+           "close": 100.0,
+           "high": 100.4,
+           "level_price": 99.52381245801355,
+           "low": 99.0,
+           "minute_ms": 1792534500000,
+           "open": 100.0
+          },
+          "symbol": "BTC/USDT",
+          "take_profit_price": 100.77411160949613,
+          "take_profit_touch": null,
+          "worst_price": 99.0,
+          "worst_unrealised_usdt": -5.118435642944033
+         }
+        ],
+        "feed": "binance_spot_1m_klines",
+        "kind": "PROTECTIVE_EXITS",
+        "minutes": [
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792533600000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792533660000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792533720000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792533780000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792533840000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792533900000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792533960000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534020000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534080000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534140000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534200000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534260000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534320000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534380000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534440000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.0,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534500000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534560000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534620000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534680000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534740000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534800000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534860000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534920000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792534980000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535040000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535100000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535160000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535220000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535280000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535340000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535400000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535460000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535520000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535580000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535640000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535700000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535760000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535820000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535880000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792535940000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536000000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536060000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536120000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536180000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536240000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536300000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536360000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536420000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536480000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536540000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536600000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536660000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536720000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536780000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536840000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536900000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792536960000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792537020000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792537080000
+         },
+         {
+          "close": 100.0,
+          "high": 100.4,
+          "low": 99.6,
+          "open": 100.0,
+          "symbol": "BTC/USDT",
+          "ts_ms": 1792537140000
+         }
+        ],
+        "window": {
+         "barrier_ms": 1792530000000,
+         "end_ms": 1792537200000,
+         "interval_ms": 3600000,
+         "minutes_expected": 60,
+         "missing_bars": [
+          1792533600000
+         ],
+         "resume_ms": 1792537200000,
+         "start_ms": 1792533600000
+        }
+       },
+       "resume_from_ms": 1792537200000,
+       "status": "RECOVERED"
+      },
+      "resume_from_ms": 1792537200000,
+      "resumed": true,
+      "session_id": "CR-11-seed-run",
+      "session_index": 2,
+      "sessions": [
+       "seed-first-run",
+       "CR-11-seed-run"
+      ]
+     },
+     "stop_reason": null,
+     "store_recovery": {
+      "barrier_ms": 1792530000000,
+      "book_digest": "2dcbdde4c0b2b9d2006c4179e6d68459211d3250e453104c00f776a5c451c400",
+      "checks": [
+       {
+        "check": "orphan_tmp_absent",
+        "detail": "no temporary book left behind",
+        "ok": true
+       },
+       {
+        "check": "book_loadable",
+        "detail": "BOOK.json parses and matches its own digest 2dcbdde4c0b2",
+        "ok": true
+       },
+       {
+        "check": "commit_event_congruent",
+        "detail": "the last COMMIT event carries this book's digest 2dcbdde4c0b2",
+        "ok": true
+       },
+       {
+        "check": "lock_state",
+        "detail": "the caller holds the lock for this session",
+        "ok": true
+       }
+      ],
+      "code": null,
+      "commit_event_lag": false,
+      "detail": "the book, its commit log and its projection already agree",
+      "events_repair": null,
+      "ledger": null,
+      "orphan_tmp": false,
+      "platform": {
+       "directory_fsync": "unsupported",
+       "os": "nt",
+       "power_loss_scope": "POWER_LOSS_DURABILITY_NOT_VERIFIED"
+      },
+      "state_digest": "f34bebc06ae4ae1c0911b8e9749ea6ede3821637efba94af322787c833f60ed8",
+      "status": "NO_CHANGE"
+     },
+     "trades": [
+      {
+       "closed_at_utc": "2026-10-20T00:00:00Z",
+       "entry_price": 100.02393211860658,
+       "exit_price": 99.5,
+       "exit_reason": "stop_loss",
+       "opened_at_utc": "2026-10-20T20:00:00Z",
+       "pnl_net_usdt": -3.6190338,
+       "side": "buy",
+       "symbol": "BTC/USDT"
+      }
+     ]
+    },
+    "prev_sha256": "78f8b46214cf74bb8f853fb1cce9ccd946df6dabcd11d413b3d8a604aecbd0d1",
+    "seq": 11,
+    "sha256": "1f4991571dcf109a07ad105abbe72750d55e777ad5ed41ee2794bf2560a3c151"
+   }
+  ],
+  "exists": true,
+  "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\cases\\CR-11\\ledger.jsonl",
+  "torn": false
+ },
+ "ledger_stats": {
+  "duplicates_suppressed": 0,
+  "tail_repair": null
+ },
+ "lock": {
+  "exists": false,
+  "holder": null,
+  "holder_alive": null
+ },
+ "network": {
+  "attempts": 0,
+  "denied": 0,
+  "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\cases\\CR-11\\network.jsonl"
+ },
+ "pid": 3252,
+ "role": "resume",
+ "session": "CR-11-seed-run",
+ "store_recovery": {
+  "barrier_ms": 1792537200000,
+  "book_digest": "a1595e3f0ac93bdb22be3525d9a3f37799d33e2d3df7261d65dc887f650ec21f",
+  "checks": [
+   {
+    "check": "orphan_tmp_absent",
+    "detail": "no temporary book left behind",
+    "ok": true
+   },
+   {
+    "check": "book_loadable",
+    "detail": "BOOK.json parses and matches its own digest a1595e3f0ac9",
+    "ok": true
+   },
+   {
+    "check": "commit_event_congruent",
+    "detail": "the last COMMIT event carries this book's digest a1595e3f0ac9",
+    "ok": true
+   },
+   {
+    "check": "ledger_projection_consistent",
+    "detail": "2 operation row(s) in the ledger, 2 committed operation(s); missing=0 uncommitted=0 duplicates=0",
+    "ok": true
+   },
+   {
+    "check": "lock_state",
+    "detail": "no live writer holds the book",
+    "ok": true
+   }
+  ],
+  "code": null,
+  "commit_event_lag": false,
+  "detail": "the book, its commit log and its projection already agree",
+  "events_repair": null,
+  "ledger": {
+   "committed_closes": 1,
+   "committed_operations": 2,
+   "detail": "2 operation row(s) in the ledger, 2 committed operation(s); missing=0 uncommitted=0 duplicates=0",
+   "duplicates": [],
+   "missing": [],
+   "operations": 2,
+   "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-recovery-004\\reports\\ai-bots\\WP-PAPER-QUOTE-GAP-002\\rfc004\\lab\\cases\\CR-11\\ledger.jsonl",
+   "rows": 11,
+   "uncommitted": []
+  },
+  "orphan_tmp": false,
+  "platform": {
+   "directory_fsync": "unsupported",
+   "os": "nt",
+   "power_loss_scope": "POWER_LOSS_DURABILITY_NOT_VERIFIED"
+  },
+  "state_digest": "7efb29eaf9ee54ce514e1a78214eef69f44fa8435e81b3bca8074eb5e00f2908",
+  "status": "NO_CHANGE"
+ },
+ "summary": {
+  "accounting": {
+   "initial_equity_usdt": 10000.0,
+   "mark_prices": {
+    "BTC/USDT": 99.0
+   },
+   "meanings": {
+    "costs_realised_usdt": "same value as costs_usdt, named for symmetry with costs_total_usdt",
+    "costs_total_usdt": "costs_usdt + entry_commissions_accrued_open_usdt",
+    "costs_usdt": "realised cost of closed trades only: execution + entry + exit commissions. Unchanged since 003B; it does NOT include open positions.",
+    "entry_commissions_accrued_open_usdt": "entry commissions of positions still open: charged at close by the broker, but already owed and already withheld from marked equity",
+    "entry_commissions_realised_usdt": "entry commissions inside closed trades",
+    "execution_costs_realised_usdt": "spread/impact cost embedded in closed-trade fills",
+    "exit_commissions_realised_usdt": "exit commissions inside closed trades",
+    "marked_equity_usdt": "initial equity + pnl_total_usdt",
+    "pnl_realised_usdt": "net PnL of closed trades (same value as net_realised_usdt)",
+    "pnl_total_usdt": "pnl_realised_usdt + pnl_unrealised_usdt",
+    "pnl_unrealised_usdt": "open positions marked at the last observable close, net of accrued entry commissions"
+   },
+   "schema_version": "paper-accounting/2"
+  },
+  "book_id": "rfc004-lab-book",
+  "calls": 4,
+  "closed_trades": 1,
+  "costs_realised_usdt": 1.23866577,
+  "costs_total_usdt": 1.23866577,
+  "costs_usdt": 1.238666,
+  "counters": {
+   "action:LONG": 1,
+   "closed_trades": 1,
+   "gap_reconstructed_exits": 1,
+   "parse_error:INVALID_JSON": 3
+  },
+  "decision_points": 1,
+  "drawdown_pct": null,
+  "drawdown_status": "UNKNOWN",
+  "drawdown_usdt": null,
+  "entry_commissions_accrued_open_usdt": 0.0,
+  "entry_commissions_realised_usdt": 0.5,
+  "equity_points": 1,
+  "estimated_spend_usd": 0.0,
+  "execution": {
+   "bar_interval_ms": 3600000,
+   "data_gap_policy": "fail_closed_unless_independent_coverage",
+   "entry_bar_range_policy": "full_bar_from_its_open",
+   "entry_quote_sources": {
+    "bar_open": 1
+   },
+   "exit_ts_resolutions": [
+    "OPEN_GAP",
+    "BAR_WINDOW",
+    "QUOTE",
+    "MINUTE_WINDOW"
+   ],
+   "expired_opinions": 0,
+   "fills": 0,
+   "gap_exits": 0,
+   "gap_policy": "open_on_gap",
+   "max_opinion_age_ms": 3600000,
+   "open_phase_order": "gap_close>mark>entries>intrabar",
+   "quote_lag_ms": {
+    "max": 0,
+    "median": 0,
+    "min": 0
+   },
+   "quote_source": "bar_open",
+   "stale_valuation_vetoes": 0,
+   "stop_coverage": "entry_at_open_full_bar",
+   "sub_bar_fills": 0,
+   "subbar_entries": false,
+   "waiting_events": 0
+  },
+  "execution_costs_realised_usdt": 0.23866577,
+  "exit_commissions_realised_usdt": 0.5,
+  "fills": 0,
+  "final_equity_usdt": 9996.380966,
+  "gross_realised_usdt": -2.619034,
+  "marked_equity_usdt": 9996.3809662,
+  "net_realised_usdt": -3.619034,
+  "open_positions_at_end": {},
+  "pnl_realised_usdt": -3.6190338,
+  "pnl_total_usdt": -3.6190338,
+  "pnl_unrealised_usdt": 0.0,
+  "provider": "replay",
+  "reconciliation": {
+   "accounting_schema_version": "paper-accounting/2",
+   "costs_realised_usdt": 1.23866577,
+   "costs_total_usdt": 1.23866577,
+   "curve_end_equity_usdt": 9996.3809662,
+   "entry_commission_usdt": 0.5,
+   "entry_commissions_accrued_open_usdt": 0.0,
+   "execution_cost_usdt": 0.23866577,
+   "exit_commission_usdt": 0.5,
+   "final_equity_usdt": 9996.3809662,
+   "identities": {
+    "cash_rebuilds_from_realised_pnl": true,
+    "curve_ends_at_final_equity": true,
+    "every_close_after_its_entry_quote": false,
+    "every_fill_pays_at_or_after_its_answer": true,
+    "marked_equity_rebuilds_from_open_position": true,
+    "net_pnl_nets_every_named_cost": true,
+    "open_positions_are_disjoint_from_closed_trades": true,
+    "realised_costs_equal_closed_trade_legs": true,
+    "risk_equity_matches_marked_equity": true,
+    "total_costs_equal_realised_plus_accrued": true,
+    "total_pnl_moves_the_marked_book": true
+   },
+   "initial_equity_usdt": 10000.0,
+   "marked_equity_usdt": 9996.3809662,
+   "marks_complete_at_end": true,
+   "net_realised_usdt": -3.6190338,
+   "open_gap_exits": 0,
+   "open_position_ids_at_end": [],
+   "open_positions_at_end": 0,
+   "pnl_total_usdt": -3.6190338,
+   "reference_gross_usdt": -2.38036804,
+   "risk_equity_usdt": 9996.3809662,
+   "tolerance_usdt": 1e-06,
+   "unrealised_pnl_gross_usdt": 0.0,
+   "unrealised_pnl_net_usdt": 0.0
+  },
+  "risk_equity_usdt": 9996.380966,
+  "session": {
+   "barrier_ms": 1792537200000,
+   "book_digest": "7efb29eaf9ee54ce514e1a78214eef69f44fa8435e81b3bca8074eb5e00f2908",
+   "closed_trades": 1,
+   "fills": 0,
+   "net_realised_usdt": -3.619034,
+   "recovery": {
+    "barrier_ms": 1792530000000,
+    "checks": [
+     {
+      "check": "contract_matches",
+      "detail": "",
+      "ok": true
+     },
+     {
+      "check": "barrier_present",
+      "detail": "",
+      "ok": true
+     },
+     {
+      "check": "dataset_prefix_matches",
+      "detail": "",
+      "ok": true
+     },
+     {
+      "check": "equity_identity",
+      "detail": "",
+      "ok": true
+     },
+     {
+      "check": "closed_history_intact",
+      "detail": "",
+      "ok": true
+     },
+     {
+      "check": "position_structure",
+      "detail": "",
+      "ok": true
+     },
+     {
+      "check": "risk_agrees_with_mark",
+      "detail": "",
+      "ok": true
+     },
+     {
+      "check": "resume_bar_available",
+      "detail": "the dataset holds a bar at 1792537200000",
+      "ok": true
+     },
+     {
+      "check": "barrier_is_continuous",
+      "detail": "bar 1792533600000 is missing; the next bar is 1792537200000",
+      "ok": false
+     },
+     {
+      "check": "gap_evidence_matches_book",
+      "detail": "the assessment covers bars 1792530000000->1792537200000 and 1 position(s), matching this book",
+      "ok": true
+     },
+     {
+      "check": "gap_covered_by_quotes",
+      "detail": "binance_spot_1m_klines observed every minute of 1792533600000..1792537199999 for BTC/USDT (60 minutes, 3d5bce46d39c)",
+      "ok": true
+     },
+     {
+      "check": "gap_exits_placeable",
+      "detail": "1 protective exit(s) crossed inside the hole and are placed at their observed minute: pos-rfc004-lab-book-00000001 BTC/USDT stop_loss at 99.52381245801355 (minute 1792534500000)",
+      "ok": true
+     }
+    ],
+    "code": null,
+    "detail": "book rfc004-lab-book recovered at bar 1792530000000 across a 1-bar hole: 1 open, 0 closed, 1 exit(s) reconstructed, equity 10000.00000000",
+    "gap": {
+     "checks": [
+      {
+       "check": "feed_present",
+       "detail": "feed 'binance_spot_1m_klines' supplied",
+       "ok": true
+      },
+      {
+       "check": "feed_is_independent",
+       "detail": "the feed names itself 'binance_spot_1m_klines'",
+       "ok": true
+      },
+      {
+       "check": "minute_grid_complete",
+       "detail": "every minute of the hole is present for BTC/USDT",
+       "ok": true
+      },
+      {
+       "check": "no_opinion_spans_the_hole",
+       "detail": "no in-flight opinion could have filled inside the hole",
+       "ok": true
+      },
+      {
+       "check": "protective_exits_placed",
+       "detail": "1 exit(s) placeable, 0 position(s) never touched a level",
+       "ok": true
+      }
+     ],
+     "code": null,
+     "detail": "1 protective exit(s) were crossed inside the hole and are placed at their observed minute by binance_spot_1m_klines; the remaining 0 position(s) were provably untouched",
+     "evidence": {
+      "barrier_ms": 1792530000000,
+      "minutes_expected": 60,
+      "resume_ms": 1792537200000,
+      "symbols": {
+       "BTC/USDT": {
+        "feed": "binance_spot_1m_klines",
+        "first_minute_ms": 1792533600000,
+        "last_minute_ms": 1792537140000,
+        "minutes_expected": 60,
+        "minutes_observed": 60,
+        "series_sha256": "3d5bce46d39c6623c2c859e11f8c448502119d609d850c9c015584216a51710b",
+        "window_sha256": "3d5bce46d39c6623c2c859e11f8c448502119d609d850c9c015584216a51710b"
+       }
+      }
+     },
+     "feed": "binance_spot_1m_klines",
+     "minutes": [
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792533600000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792533660000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792533720000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792533780000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792533840000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792533900000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792533960000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534020000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534080000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534140000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534200000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534260000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534320000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534380000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534440000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.0,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534500000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534560000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534620000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534680000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534740000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534800000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534860000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534920000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534980000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535040000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535100000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535160000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535220000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535280000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535340000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535400000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535460000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535520000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535580000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535640000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535700000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535760000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535820000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535880000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535940000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536000000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536060000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536120000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536180000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536240000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536300000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536360000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536420000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536480000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536540000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536600000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536660000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536720000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536780000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536840000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536900000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536960000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792537020000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792537080000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792537140000
+      }
+     ],
+     "positions": [
+      {
+       "ambiguous_minute_ms": null,
+       "best_price": 100.4,
+       "detail": "the stop was crossed in minute 1792534500000, which is an observed price, not an inferred one",
+       "entry_price": 100.02393211860658,
+       "exit_minute_ms": 1792534500000,
+       "exit_price": 99.52381245801355,
+       "exit_reason": "stop_loss",
+       "minutes_observed": 60,
+       "position_id": "pos-rfc004-lab-book-00000001",
+       "quantity": 4.998803680374302,
+       "side": "buy",
+       "status": "RECONSTRUCTIBLE",
+       "stop_price": 99.52381245801355,
+       "stop_touch": {
+        "close": 100.0,
+        "high": 100.4,
+        "level_price": 99.52381245801355,
+        "low": 99.0,
+        "minute_ms": 1792534500000,
+        "open": 100.0
+       },
+       "symbol": "BTC/USDT",
+       "take_profit_price": 100.77411160949613,
+       "take_profit_touch": null,
+       "worst_price": 99.0,
+       "worst_unrealised_usdt": -5.118435642944033
+      }
+     ],
+     "verdict": "RECONSTRUCT",
+     "window": {
+      "barrier_ms": 1792530000000,
+      "end_ms": 1792537200000,
+      "interval_ms": 3600000,
+      "minutes_expected": 60,
+      "missing_bars": [
+       1792533600000
+      ],
+      "resume_ms": 1792537200000,
+      "start_ms": 1792533600000
+     }
+    },
+    "reconstruction": {
+     "evidence": {
+      "barrier_ms": 1792530000000,
+      "minutes_expected": 60,
+      "resume_ms": 1792537200000,
+      "symbols": {
+       "BTC/USDT": {
+        "feed": "binance_spot_1m_klines",
+        "first_minute_ms": 1792533600000,
+        "last_minute_ms": 1792537140000,
+        "minutes_expected": 60,
+        "minutes_observed": 60,
+        "series_sha256": "3d5bce46d39c6623c2c859e11f8c448502119d609d850c9c015584216a51710b",
+        "window_sha256": "3d5bce46d39c6623c2c859e11f8c448502119d609d850c9c015584216a51710b"
+       }
+      }
+     },
+     "exits": [
+      {
+       "minute_ms": 1792534500000,
+       "position_id": "pos-rfc004-lab-book-00000001",
+       "price": 99.52381245801355,
+       "reason": "stop_loss",
+       "side": "buy",
+       "stop_price": 99.52381245801355,
+       "stop_touch": {
+        "close": 100.0,
+        "high": 100.4,
+        "level_price": 99.52381245801355,
+        "low": 99.0,
+        "minute_ms": 1792534500000,
+        "open": 100.0
+       },
+       "symbol": "BTC/USDT",
+       "take_profit_price": 100.77411160949613,
+       "take_profit_touch": null,
+       "worst_price": 99.0,
+       "worst_unrealised_usdt": -5.118435642944033
+      }
+     ],
+     "feed": "binance_spot_1m_klines",
+     "kind": "PROTECTIVE_EXITS",
+     "minutes": [
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792533600000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792533660000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792533720000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792533780000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792533840000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792533900000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792533960000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534020000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534080000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534140000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534200000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534260000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534320000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534380000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534440000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.0,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534500000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534560000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534620000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534680000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534740000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534800000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534860000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534920000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792534980000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535040000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535100000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535160000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535220000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535280000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535340000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535400000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535460000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535520000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535580000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535640000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535700000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535760000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535820000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535880000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792535940000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536000000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536060000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536120000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536180000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536240000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536300000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536360000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536420000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536480000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536540000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536600000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536660000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536720000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536780000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536840000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536900000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792536960000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792537020000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792537080000
+      },
+      {
+       "close": 100.0,
+       "high": 100.4,
+       "low": 99.6,
+       "open": 100.0,
+       "symbol": "BTC/USDT",
+       "ts_ms": 1792537140000
+      }
+     ],
+     "window": {
+      "barrier_ms": 1792530000000,
+      "end_ms": 1792537200000,
+      "interval_ms": 3600000,
+      "minutes_expected": 60,
+      "missing_bars": [
+       1792533600000
+      ],
+      "resume_ms": 1792537200000,
+      "start_ms": 1792533600000
+     }
+    },
+    "resume_from_ms": 1792537200000,
+    "status": "RECOVERED"
+   },
+   "resume_from_ms": 1792537200000,
+   "resumed": true,
+   "session_id": "CR-11-seed-run",
+   "session_index": 2,
+   "sessions": [
+    "seed-first-run",
+    "CR-11-seed-run"
+   ]
+  },
+  "stop_reason": null,
+  "store_recovery": {
+   "barrier_ms": 1792530000000,
+   "book_digest": "2dcbdde4c0b2b9d2006c4179e6d68459211d3250e453104c00f776a5c451c400",
+   "checks": [
+    {
+     "check": "orphan_tmp_absent",
+     "detail": "no temporary book left behind",
+     "ok": true
+    },
+    {
+     "check": "book_loadable",
+     "detail": "BOOK.json parses and matches its own digest 2dcbdde4c0b2",
+     "ok": true
+    },
+    {
+     "check": "commit_event_congruent",
+     "detail": "the last COMMIT event carries this book's digest 2dcbdde4c0b2",
+     "ok": true
+    },
+    {
+     "check": "lock_state",
+     "detail": "the caller holds the lock for this session",
+     "ok": true
+    }
+   ],
+   "code": null,
+   "commit_event_lag": false,
+   "detail": "the book, its commit log and its projection already agree",
+   "events_repair": null,
+   "ledger": null,
+   "orphan_tmp": false,
+   "platform": {
+    "directory_fsync": "unsupported",
+    "os": "nt",
+    "power_loss_scope": "POWER_LOSS_DURABILITY_NOT_VERIFIED"
+   },
+   "state_digest": "f34bebc06ae4ae1c0911b8e9749ea6ede3821637efba94af322787c833f60ed8",
+   "status": "NO_CHANGE"
+  },
+  "trades": [
+   {
+    "closed_at_utc": "2026-10-20T00:00:00Z",
+    "entry_price": 100.02393211860658,
+    "exit_price": 99.5,
+    "exit_reason": "stop_loss",
+    "opened_at_utc": "2026-10-20T20:00:00Z",
+    "pnl_net_usdt": -3.6190338,
+    "side": "buy",
+    "symbol": "BTC/USDT"
+   }
+  ]
+ }
+}

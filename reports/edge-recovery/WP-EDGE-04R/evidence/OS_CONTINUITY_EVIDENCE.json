@@ -1,0 +1,425 @@
+{
+  "autologon": {
+    "auto_admin_logon": "0",
+    "default_user_name": "GVLLFR0035",
+    "reading": "the switch and the account name only: a password is never read, and the absence of automatic logon is the reason a rebooted host can sit unavailable until a person signs in"
+  },
+  "boots": [
+    {
+      "at": "2026-10-14T22:43:21.8131924Z",
+      "id": 12,
+      "message": "El sistema operativo se inici\u00a2 a la hora del sistema ?2026?-?10?-?14T22:43:21.500000000Z.",
+      "provider": "Microsoft-Windows-Kernel-General"
+    },
+    {
+      "at": "2026-10-14T22:41:14.0914466Z",
+      "id": 12,
+      "message": "El sistema operativo se inici\u00a2 a la hora del sistema ?2026?-?10?-?14T22:41:13.500000000Z.",
+      "provider": "Microsoft-Windows-Kernel-General"
+    }
+  ],
+  "errors": [],
+  "eventlog_service": [
+    {
+      "at": "2026-10-14T22:43:30.5847468Z",
+      "id": 6005,
+      "message": "Se inici\u00a2 el servicio de Registro de eventos.",
+      "provider": "EventLog"
+    },
+    {
+      "at": "2026-10-14T22:43:30.5833994Z",
+      "id": 6009,
+      "message": "Microsoft (R) Windows (R) 10.00. 26200 Multiprocessor Free.",
+      "provider": "EventLog"
+    },
+    {
+      "at": "2026-10-14T22:43:01.8864148Z",
+      "id": 6006,
+      "message": "Se detuvo el servicio de Registro de eventos.",
+      "provider": "EventLog"
+    },
+    {
+      "at": "2026-10-14T22:41:37.5419966Z",
+      "id": 6005,
+      "message": "Se inici\u00a2 el servicio de Registro de eventos.",
+      "provider": "EventLog"
+    },
+    {
+      "at": "2026-10-14T22:41:37.5404729Z",
+      "id": 6009,
+      "message": "Microsoft (R) Windows (R) 10.00. 26200 Multiprocessor Free.",
+      "provider": "EventLog"
+    },
+    {
+      "at": "2026-10-14T22:33:43.7363089Z",
+      "id": 6006,
+      "message": "Se detuvo el servicio de Registro de eventos.",
+      "provider": "EventLog"
+    }
+  ],
+  "host": {
+    "collected_at_utc": "2026-10-15T18:32:24.6025896Z",
+    "elevated": false,
+    "last_boot_utc": "2026-10-14T22:43:21.5000000Z",
+    "name": "DESKTOP-4CHO695",
+    "os": "Microsoft Windows 11 Enterprise",
+    "os_version": "10.0.26200",
+    "powershell": "5.1.26100.9711",
+    "user": "DIRECTORI\\GVLLFR0035"
+  },
+  "lane": {
+    "bytes": 12402232,
+    "measured_at_utc": "2026-10-15T18:32:24Z",
+    "note": "the tree the lane was writing to, at the instant this evidence was collected, pinned so a re-derivation reads it back instead of measuring a tree the lane has kept growing; every other figure in the audit comes from the host record or the committed tick snapshot, and a later live reading is a new reading of the lane rather than a re-derivation of this one",
+    "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "store_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03"
+  },
+  "partitions": [
+    {
+      "disk_number": 0,
+      "drive_letter": "\u0000",
+      "partition_number": 1,
+      "size_bytes": 104857600,
+      "type": "System"
+    },
+    {
+      "disk_number": 0,
+      "drive_letter": "\u0000",
+      "partition_number": 2,
+      "size_bytes": 16777216,
+      "type": "Reserved"
+    },
+    {
+      "disk_number": 0,
+      "drive_letter": "C",
+      "partition_number": 3,
+      "size_bytes": 255041994752,
+      "type": "Basic"
+    },
+    {
+      "disk_number": 0,
+      "drive_letter": "\u0000",
+      "partition_number": 4,
+      "size_bytes": 893386752,
+      "type": "Recovery"
+    }
+  ],
+  "physical_disks": [
+    {
+      "bus_type": "NVMe",
+      "device_id": "0",
+      "friendly_name": "KXG60ZNV256G KIOXIA",
+      "media_type": "SSD",
+      "size_bytes": 256060514304
+    }
+  ],
+  "power": [
+    {
+      "at": "2026-10-15T17:10:56.5094794Z",
+      "id": 105,
+      "message": "Cambio de fuente de energ\u00a1a.",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:43:25.4213608Z",
+      "id": 521,
+      "message": "Cambio de n\u00a3mero de bater\u00a1as",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:43:25.4044858Z",
+      "id": 521,
+      "message": "Cambio de n\u00a3mero de bater\u00a1as",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:43:24.2459284Z",
+      "id": 578,
+      "message": "El sistema ha detectado que se ha iniciado un reinicio desde Active.",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:43:24.1568484Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.PCHZ se ha enumerado. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:43:24.1568458Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.SK2Z se ha enumerado. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:43:24.1568442Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.SK1Z se ha enumerado. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:43:24.1568424Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.CHGZ se ha enumerado. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:43:24.1568406Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.BATZ se ha enumerado. _PSV = 401K _TC1 = 50 _TC2 = 0 _TSP = 30000ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:43:24.1568387Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.LOCZ se ha enumerado. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:43:24.1568368Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.EXTZ se ha enumerado. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:43:24.1568347Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.GFXZ se ha enumerado. _PSV = 375K _TC1 = 1 _TC2 = 2 _TSP = 30000ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:43:24.1568316Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.CPUZ se ha enumerado. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 373K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:43:07.6594920Z",
+      "id": 577,
+      "message": "El sistema se ha preparado para que el sistema inicie un reinicio desde Active.",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:43:06.8292176Z",
+      "id": 109,
+      "message": "El administrador de energ\u00a1a del kernel ha iniciado una transici\u00a2n de apagado. Acci\u00a2n: Power Action Reboot C\u00a2digo de evento: 0x0 Motivo: Kernel API",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:41:18.4816263Z",
+      "id": 521,
+      "message": "Cambio de n\u00a3mero de bater\u00a1as",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:41:18.4592230Z",
+      "id": 521,
+      "message": "Cambio de n\u00a3mero de bater\u00a1as",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:41:17.1709377Z",
+      "id": 578,
+      "message": "El sistema ha detectado que se ha iniciado un reinicio desde Active.",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:41:17.1702614Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.PCHZ se ha enumerado. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:41:17.1702604Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.SK2Z se ha enumerado. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:41:17.1702595Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.SK1Z se ha enumerado. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:41:17.1702585Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.CHGZ se ha enumerado. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:41:17.1702575Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.BATZ se ha enumerado. _PSV = 401K _TC1 = 50 _TC2 = 0 _TSP = 30000ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:41:17.1702566Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.LOCZ se ha enumerado. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:41:17.1702558Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.EXTZ se ha enumerado. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:41:17.1702546Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.GFXZ se ha enumerado. _PSV = 375K _TC1 = 1 _TC2 = 2 _TSP = 30000ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 0K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:41:17.1702529Z",
+      "id": 125,
+      "message": "La zona t\u201armica ACPI \\_TZ.CPUZ se ha enumerado. _PSV = 0K _TC1 = 0 _TC2 = 0 _TSP = 0ms _AC0 = 0K _AC1 = 0K _AC2 = 0K _AC3 = 0K _AC4 = 0K _AC5 = 0K _AC6 = 0K _AC7 = 0K _AC8 = 0K _AC9 = 0K _CRT = 401K _HOT = 373K L\u00a1mite m\u00a1nimo = 0 _CR3 = 0K",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:33:49.4723617Z",
+      "id": 577,
+      "message": "El sistema se ha preparado para que el sistema inicie un reinicio desde Active.",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    },
+    {
+      "at": "2026-10-14T22:33:48.6033514Z",
+      "id": 109,
+      "message": "El administrador de energ\u00a1a del kernel ha iniciado una transici\u00a2n de apagado. Acci\u00a2n: Power Action Reboot C\u00a2digo de evento: 0x0 Motivo: Kernel API",
+      "provider": "Microsoft-Windows-Kernel-Power"
+    }
+  ],
+  "power_troubleshooter": null,
+  "schema_version": "EDGE04R_OS_EVIDENCE_V1",
+  "sessions": [
+    {
+      "at": "2026-10-15T04:50:54.5124040Z",
+      "id": 22,
+      "message": "Servicios de Escritorio remoto: notificaci\u00a2n de inicio de shell recibida: Usuario: DIRECTORI\\GVLLFR0035 Identificador de sesi\u00a2n: 1 Direcci\u00a2n de red de origen: LOCAL",
+      "provider": "Microsoft-Windows-TerminalServices-LocalSessionManager"
+    },
+    {
+      "at": "2026-10-15T04:50:54.1365751Z",
+      "id": 21,
+      "message": "Servicios de Escritorio remoto: inicio de sesi\u00a2n correcto: Usuario: DIRECTORI\\GVLLFR0035 Identificador de sesi\u00a2n: 1 Direcci\u00a2n de red de origen: LOCAL",
+      "provider": "Microsoft-Windows-TerminalServices-LocalSessionManager"
+    },
+    {
+      "at": "2026-10-14T22:29:37.6989633Z",
+      "id": 23,
+      "message": "Servicios de Escritorio remoto: cierre de sesi\u00a2n correcto: Usuario: DIRECTORI\\GVLLFR0035 Identificador de sesi\u00a2n: 1",
+      "provider": "Microsoft-Windows-TerminalServices-LocalSessionManager"
+    }
+  ],
+  "shutdowns": [
+    {
+      "at": "2026-10-14T22:43:07.7660234Z",
+      "id": 13,
+      "message": "El sistema operativo se est\u00a0 cerrando a la hora del sistema ?2026?-?10?-?14T22:43:07.766022500Z.",
+      "provider": "Microsoft-Windows-Kernel-General"
+    },
+    {
+      "at": "2026-10-14T22:33:49.6139352Z",
+      "id": 13,
+      "message": "El sistema operativo se est\u00a0 cerrando a la hora del sistema ?2026?-?10?-?14T22:33:49.613933000Z.",
+      "provider": "Microsoft-Windows-Kernel-General"
+    }
+  ],
+  "supported": true,
+  "task": {
+    "actions": [
+      {
+        "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+        "execute": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "working_directory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+      }
+    ],
+    "disallow_on_batteries": "False",
+    "execution_time_limit": "PT1H",
+    "last_run_time": "10/15/2026 20:25:54",
+    "last_task_result": 0,
+    "logon_type": "Interactive",
+    "missed_runs": 0,
+    "multiple_instances": "IgnoreNew",
+    "next_run_time": "10/15/2026 20:40:53",
+    "restart_count": "3",
+    "restart_interval": "PT5M",
+    "run_level": "Limited",
+    "run_only_if_idle": "False",
+    "start_when_available": "True",
+    "state": "Ready",
+    "task_name": "TradingAgentic-EDGE04-Forward",
+    "triggers": [
+      {
+        "delay": "",
+        "duration": "P3650D",
+        "enabled": "True",
+        "interval": "PT15M",
+        "start_boundary": "2026-10-13T13:25:53",
+        "type": "MSFT_TaskTimeTrigger"
+      }
+    ],
+    "user_id": "GVLLFR0035",
+    "wake_to_run": "False",
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-16\"?>\r\n<Task version=\"1.2\" xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\">\r\n  <RegistrationInfo>\r\n    <Date>2026-10-13T13:24:53</Date>\r\n    <Author>DIRECTORI\\GVLLFR0035</Author>\r\n    <Description>WP-EDGE-04 forward observation: unattended tick of the frozen WP-EDGE-03 forward lane. Public market data only; no credentials, no orders, no capital.</Description>\r\n    <URI>\\TradingAgentic-EDGE04-Forward</URI>\r\n  </RegistrationInfo>\r\n  <Principals>\r\n    <Principal id=\"Author\">\r\n      <UserId>S-1-12-1-2907394642-1261797007-1573842048-3608101379</UserId>\r\n      <LogonType>InteractiveToken</LogonType>\r\n    </Principal>\r\n  </Principals>\r\n  <Settings>\r\n    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>\r\n    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>\r\n    <ExecutionTimeLimit>PT1H</ExecutionTimeLimit>\r\n    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>\r\n    <RestartOnFailure>\r\n      <Count>3</Count>\r\n      <Interval>PT5M</Interval>\r\n    </RestartOnFailure>\r\n    <StartWhenAvailable>true</StartWhenAvailable>\r\n    <IdleSettings>\r\n      <StopOnIdleEnd>true</StopOnIdleEnd>\r\n      <RestartOnIdle>false</RestartOnIdle>\r\n    </IdleSettings>\r\n  </Settings>\r\n  <Triggers>\r\n    <TimeTrigger>\r\n      <StartBoundary>2026-10-13T13:25:53</StartBoundary>\r\n      <Repetition>\r\n        <Interval>PT15M</Interval>\r\n        <Duration>P3650D</Duration>\r\n      </Repetition>\r\n    </TimeTrigger>\r\n  </Triggers>\r\n  <Actions Context=\"Author\">\r\n    <Exec>\r\n      <Command>C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe</Command>\r\n      <Arguments>\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due</Arguments>\r\n      <WorkingDirectory>C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff</WorkingDirectory>\r\n    </Exec>\r\n  </Actions>\r\n</Task>"
+  },
+  "task_history": {
+    "enabled": false,
+    "log_name": "Microsoft-Windows-TaskScheduler/Operational",
+    "reading": "a disabled operational log is why a trigger that fired and could not start a process leaves no host-side trace at all",
+    "record_count": 0
+  },
+  "task_name": "TradingAgentic-EDGE04-Forward",
+  "volumes": [
+    {
+      "capacity_bytes": 255041990656,
+      "device_id": "\\\\?\\Volume{d5737391-22c5-433d-b0d1-05967af16033}\\",
+      "drive_letter": "C:",
+      "drive_type": 3,
+      "file_system": "NTFS",
+      "free_bytes": 8406212608,
+      "label": ""
+    },
+    {
+      "capacity_bytes": 893382656,
+      "device_id": "\\\\?\\Volume{d78a4214-3168-4fe7-9be7-1055eacb506f}\\",
+      "drive_letter": "",
+      "drive_type": 3,
+      "file_system": "NTFS",
+      "free_bytes": 57155584,
+      "label": ""
+    },
+    {
+      "capacity_bytes": 100663296,
+      "device_id": "\\\\?\\Volume{fcb3ff63-b06d-4c19-82a3-66a7ef874f7e}\\",
+      "drive_letter": "",
+      "drive_type": 3,
+      "file_system": "FAT32",
+      "free_bytes": 6948864,
+      "label": ""
+    },
+    {
+      "capacity_bytes": 255041990656,
+      "device_id": "\\\\?\\Volume{8ccd6496-c88a-11f1-a11b-18cc18ea46d7}\\",
+      "drive_letter": "G:",
+      "drive_type": 3,
+      "file_system": "FAT32",
+      "free_bytes": 7985901568,
+      "label": "Google Drive"
+    }
+  ],
+  "winlogon": [
+    {
+      "at": "2026-10-15T04:50:53.7398349Z",
+      "id": 7001,
+      "message": "User Logon Notification for Customer Experience Improvement Program",
+      "provider": "Microsoft-Windows-Winlogon"
+    },
+    {
+      "at": "2026-10-14T22:29:38.7953488Z",
+      "id": 7002,
+      "message": "User Logoff Notification for Customer Experience Improvement Program",
+      "provider": "Microsoft-Windows-Winlogon"
+    }
+  ]
+}

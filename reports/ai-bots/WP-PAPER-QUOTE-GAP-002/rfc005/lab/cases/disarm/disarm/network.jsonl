@@ -1,0 +1,2 @@
+{"event": "socket.getaddrinfo", "host": "api.binance.com", "args": "('api.binance.com', 443, 0, 0, 0)", "decision": "DENY", "reason": "policy 'paper' denies socket.getaddrinfo", "pid": 29860}
+{"event": "socket.getaddrinfo", "host": "api.binance.com", "args": "('api.binance.com', 443, 0, 0, 0)", "decision": "DENY", "reason": "policy 'paper' denies socket.getaddrinfo", "pid": 29860}

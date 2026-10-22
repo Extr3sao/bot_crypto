@@ -1,0 +1,146 @@
+{
+ "schema": "rfc004-failpoint-matrix/1",
+ "armed_by": "TRADING_BOT_FAILPOINT + TRADING_BOT_FAILPOINT_SANDBOX (both required; default OFF)",
+ "firing": "os._exit(86) — an exception could be caught and turned into a success",
+ "sandbox_rule": "the path being written must resolve inside TRADING_BOT_FAILPOINT_SANDBOX, otherwise FailpointRefused",
+ "points": [
+  {
+   "name": "ledger.before_write",
+   "file": "src/trading_bot/vision/ledger.py",
+   "line": 266,
+   "durable_before": "every previous ledger row; no part of this one",
+   "post_crash": "the row does not exist; the book is untouched by this bar",
+   "cr": "CR-01",
+   "context": {"operation_id": "<book>|CLOSE|<position>"}
+  },
+  {
+   "name": "ledger.after_write",
+   "file": "src/trading_bot/vision/ledger.py",
+   "line": 270,
+   "durable_before": "the bytes are in the OS page cache, not fsynced",
+   "post_crash": "under a process crash the row is usually visible; under power loss it may not be. The two are not distinguishable here — declared in the report",
+   "cr": "CR-02",
+   "context": {"operation_id": "<book>|CLOSE|<position>"}
+  },
+  {
+   "name": "ledger.after_fsync",
+   "file": "src/trading_bot/vision/ledger.py",
+   "line": 274,
+   "durable_before": "the row is durable; the book still lacks its effect",
+   "post_crash": "projection ahead of authority: the resume re-executes the bar and the identity suppresses the duplicate row",
+   "cr": "CR-08",
+   "context": {"operation_id": "<book>|CLOSE|<position>"}
+  },
+  {
+   "name": "book.before_save",
+   "file": "src/trading_bot/vision/durable.py",
+   "line": 522,
+   "durable_before": "the previous book (seed) and the ledger rows of this bar",
+   "post_crash": "seed book; the effect is not committed",
+   "cr": "CR-01 (companion)",
+   "context": {"closed_trades": 0, "barrier": 1792526400000}
+  },
+  {
+   "name": "book.after_tmp_write",
+   "file": "src/trading_bot/vision/durable.py",
+   "line": 528,
+   "durable_before": "a partly written BOOK.json.tmp; BOOK.json still the seed",
+   "post_crash": "temporary file unusable and never adopted",
+   "cr": "CR-04",
+   "context": {"closed_trades": 1}
+  },
+  {
+   "name": "book.after_tmp_fsync",
+   "file": "src/trading_bot/vision/durable.py",
+   "line": 533,
+   "durable_before": "a complete, fsynced BOOK.json.tmp; BOOK.json still the seed",
+   "post_crash": "orphan tmp; recover() reports it, load() ignores it",
+   "cr": "CR-03",
+   "context": {"closed_trades": 1}
+  },
+  {
+   "name": "book.after_prev_copy",
+   "file": "src/trading_bot/vision/durable.py",
+   "line": 544,
+   "durable_before": "BOOK.json.prev == the seed; BOOK.json still the seed",
+   "post_crash": "seed book; the rotation is harmless because the current generation never moved",
+   "cr": "CR-05",
+   "context": {"closed_trades": 1}
+  },
+  {
+   "name": "book.after_replace",
+   "file": "src/trading_bot/vision/durable.py",
+   "line": 548,
+   "durable_before": "BOOK.json is the new book (COMMIT); no COMMIT event, no directory fsync",
+   "post_crash": "committed intermediate book; recover() reports commit_event_lag and accepts it",
+   "cr": "CR-06",
+   "context": {"closed_trades": 1}
+  },
+  {
+   "name": "book.after_dir_fsync",
+   "file": "src/trading_bot/vision/durable.py",
+   "line": 550,
+   "durable_before": "as after_replace; on nt the directory fsync is a no-op, so this point is the same window",
+   "post_crash": "committed book",
+   "cr": "CR-06 (same window on Windows)",
+   "context": {"closed_trades": 1}
+  },
+  {
+   "name": "event.after_write",
+   "file": "src/trading_bot/vision/durable.py",
+   "line": 592,
+   "durable_before": "a COMMIT row in the OS cache; the book already committed",
+   "post_crash": "the resume sees the book and a torn tail it classifies, never a rolled-back book",
+   "cr": "CR-06 (log side)",
+   "context": {"kind": "COMMIT"}
+  },
+  {
+   "name": "event.after_fsync",
+   "file": "src/trading_bot/vision/durable.py",
+   "line": 595,
+   "durable_before": "the ACK is durable",
+   "post_crash": "a committed bar whose ACK exists; two resumes must change nothing",
+   "cr": "CR-07 (companion)",
+   "context": {"kind": "COMMIT"}
+  },
+  {
+   "name": "bar.before_commit",
+   "file": "src/trading_bot/vision/lane.py",
+   "line": 1878,
+   "durable_before": "the bar's economic ledger rows; the book still at the previous barrier",
+   "post_crash": "no effect committed; the resume re-executes the bar",
+   "cr": "CR-02/CR-03 companion",
+   "context": {"closed_trades": 1, "session_end": false}
+  },
+  {
+   "name": "bar.after_commit",
+   "file": "src/trading_bot/vision/lane.py",
+   "line": 1903,
+   "durable_before": "the book and its COMMIT event are both durable (ACK reached)",
+   "post_crash": "committed bar; the resume starts after its barrier",
+   "cr": "CR-07",
+   "context": {"closed_trades": 1, "session_end": false}
+  },
+  {
+   "name": "lock.after_acquire",
+   "file": "src/trading_bot/vision/durable.py",
+   "line": 367,
+   "durable_before": "the lock file is on disk (takeover path at 367, first acquisition at 373)",
+   "post_crash": "an orphan lock whose pid is gone: the next process takes it over",
+   "cr": "CR-10 (orphan)",
+   "context": {"takeover": true}
+  }
+ ],
+ "not_instrumented_on_purpose": [
+  {
+   "window": "between _copy_previous's fsync and os.replace",
+   "why": "it is the same window as book.after_prev_copy: the current generation has not moved, so the crash leaves the seed book",
+   "covered_by": "CR-05"
+  },
+  {
+   "window": "inside a single os.replace",
+   "why": "the primitive is atomic or fails; a failpoint inside the syscall would be a kernel fault injection, not a runtime one",
+   "covered_by": "CR-13 (failed replace)"
+  }
+ ]
+}

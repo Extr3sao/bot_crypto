@@ -1,0 +1,63 @@
+# The RFC-049 audits hash these trees byte for byte (frozen specifications, vendor
+# snapshots, retrieved primary-source evidence).  Git's automatic end-of-line
+# normalisation would rewrite those bytes on checkout and silently break every
+# recorded digest, so the trees are stored exactly as they are on disk.
+# The 1-minute quote feed is digest-pinned: ``SOURCE_MANIFEST.json`` records the sha256 of
+# each file and the test suite refuses a fixture that does not hash to it.  The files were
+# written by the capture script with CRLF line endings, so letting git normalise them would
+# either fail every integrity test on a clean checkout or, worse, pass while the bytes the
+# manifest names had changed.  Stored verbatim, verified by ``scripts/quote_feed_source.py``.
+data/quote-feed-1m/** -text
+
+data/rfc049/** -text
+
+# The cost-barrier CI evidence bundle is digest-pinned: the copy of the gitignored
+# market-horizon input must arrive in a clean checkout with exactly the bytes the
+# published explorer recorded for it, so git must not normalise them on the way in
+# or out.  Same reason as the RFC-049 trees above, same treatment.
+data/recovery/wp7/evidence/** -text
+
+# The WP-8 input-authority bundle is digest-pinned for the same reason as the
+# cost-barrier one: every external input the ACTIVE recovery lane needs must arrive
+# in a clean checkout with exactly the bytes its published artefact recorded, so git
+# must not normalise them on the way in or out.
+data/recovery/wp8/evidence/** -text
+
+# The WP-EDGE-04R proposal is the definition the scheduler consumes, and ``schtasks`` reads
+# that form (the document declares UTF-16).  It is committed in the bytes it is applied with
+# and pinned by digest in the record beside it, so git must not normalise it either.
+reports/edge-recovery/WP-EDGE-04R/evidence/PROPOSED_FORWARD_TASK.xml -text
+
+# The WP-EDGE-09 evidence is digest-pinned by the package itself: every gate,
+# experiment, ledger and report row quotes the sha256 of the files it was derived
+# from, and the panel of one second is the only copy of the capture that survives a
+# clone (the raw segments under reports/ are not versioned).  Normalising these bytes
+# on checkout would break the digests the verifier recomputes, so the tree is stored
+# exactly as it is on disk.  Same reason as the trees above, same treatment.
+reports/edge-recovery/WP-EDGE-09/** -text
+
+# The WP-EDGE-12 proposal is the definition a preflight hashes and an operator would
+# register, and ``schtasks`` reads that form (the document declares UTF-16): the digest
+# published beside it in RUNNER_PREFLIGHT.json is a digest of these bytes, so normalising
+# them on the way in or out would make the recorded hash name a document nobody has.
+reports/edge-recovery/WP-EDGE-12/evidence/PROPOSED_DEFINITION.xml -text
+
+# The prospective holdout slices are digest-pinned: the capture manifest records the
+# sha256 of the bytes the collector wrote, and a checkout that rewrites their line
+# endings (core.autocrlf=true on this host did exactly that) makes the digest name a
+# file nobody has.  Same reason as the digest-pinned trees above, same treatment.
+reports/economic-recovery/RFC-EDGE-01*/scratch/*.jsonl -text
+
+# EXP-003M publishes digests of its own artifacts (SHA256SUMS.txt) and of the regenerable
+# tape (DATASET_SHA256SUMS.txt).  A clean checkout with core.autocrlf=true rewrote those
+# files to CRLF and the seal verified 0/18: the hash named bytes nobody had.  The tree is
+# stored exactly as written so the manifest is a check and not a coincidence.
+reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/** -text
+
+# WP-PAPER-RESUME-001 / WP-PAPER-QUOTE-GAP-002 — la evidencia se hashea byte a byte:
+# `minutes_sha256`, `bars_sha256`, la cadena de 3034 eventos y los manifiestos SHA-256
+# se recalculan desde estos ficheros. Un checkout que convirtiera los finales de linea
+# haria que el hash nombrara bytes que nadie tiene, que es exactamente lo que le paso a
+# EXP-003M (sello 0/18). Se guardan tal cual, como los arboles de RFC-049.
+reports/ai-bots/WP-PAPER-QUOTE-GAP-002/** -text
+reports/ai-bots/WP-PAPER-RESUME-001/** -text

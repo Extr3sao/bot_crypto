@@ -1,0 +1,24 @@
+{
+ "attempts": [
+  {
+   "args": "('127.0.0.1', 9, 0, 1, 0)",
+   "event": "socket.getaddrinfo",
+   "pid": 13208
+  }
+ ],
+ "children_isolated": "every laboratory child ran with --deny-network",
+ "conclusion": "no socket left the process; the live order route refuses before any I/O",
+ "external_attempts": 0,
+ "external_reconciliation": "NOT_VERIFIABLE",
+ "generated_at_utc": "2026-10-21T16:15:23Z",
+ "live_route": {
+  "deny_probe": "DENIED",
+  "entrypoint": "src/trading_bot/app.py::_cmd_place_order",
+  "error": null,
+  "exit_code_without_confirm_live": 2
+ },
+ "loopback_control": "the CR-16 child attempts 127.0.0.1:9 on purpose; being denied is the positive control that the guard exists",
+ "mechanism": "sys.addaudithook on socket.connect / socket.getaddrinfo / socket.gethostbyname / urllib.Request / http.client.connect; the hook raises PermissionError process-wide and cannot be removed",
+ "policy": "process-wide audit hook denies socket.connect/getaddrinfo; loopback probe is the positive control",
+ "schema": "rfc004-network-isolation/1"
+}

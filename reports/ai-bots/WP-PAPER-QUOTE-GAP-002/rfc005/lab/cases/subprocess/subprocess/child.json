@@ -1,0 +1,32 @@
+{
+ "attempts": [
+  {
+   "args": "('api.binance.com', 443, 0, 0, 0)",
+   "decision": "DENY",
+   "event": "socket.getaddrinfo",
+   "host": "api.binance.com",
+   "pid": 34128,
+   "reason": "policy 'paper' denies socket.getaddrinfo"
+  }
+ ],
+ "denied": 1,
+ "mode": "subprocess",
+ "pid": 34128,
+ "policy": {
+  "external_network": false,
+  "loopback_network": false,
+  "mode": "paper",
+  "order_routes": false,
+  "source": "policy_for_mode"
+ },
+ "result": {
+  "child_output": "ATTEMPTED:TimeoutError",
+  "child_returncode": 0,
+  "parent_attempt": {
+   "code": "ISO_EXTERNAL_NETWORK",
+   "detail": "ISO_EXTERNAL_NETWORK: socket.getaddrinfo to 'api.binance.com': policy 'paper' denies socket.getaddrinfo",
+   "outcome": "DENIED"
+  }
+ },
+ "status": "RAN"
+}

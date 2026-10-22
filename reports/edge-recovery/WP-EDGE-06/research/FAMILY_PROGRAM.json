@@ -1,0 +1,3318 @@
+{
+  "admission_criteria": {
+    "max_single_trade_share_of_net": 0.5,
+    "min_oos_trades": 30,
+    "note": "Initial thresholds for WP-EDGE-01, recorded before the campaign ran. They are NOT an approved profitability bar; they are the minimum evidence needed to avoid calling noise an edge. The cost-stress criterion (OOS net still positive at 2x fees) is stated here rather than inferred from the measured results.",
+    "require_min_positive_regimes": 1,
+    "require_oos_base_scenario_positive": true,
+    "require_oos_cost_stress_positive": true,
+    "require_oos_expectancy_positive": true,
+    "require_oos_net_positive": true
+  },
+  "as_of_utc": "2026-10-14T08:10:30Z",
+  "books": {
+    "edge06_fade_extension": {
+      "answers": "H-FADE",
+      "split": "trend",
+      "timeframe": "4h"
+    },
+    "edge06_trend_fixed": {
+      "answers": "H-TARGET",
+      "split": "trend",
+      "timeframe": "4h"
+    },
+    "edge06_xs_momentum": {
+      "answers": "H-XS",
+      "split": "trend",
+      "timeframe": "4h"
+    }
+  },
+  "cost_scenarios": {
+    "2X_FEES": [
+      2.0,
+      1.0
+    ],
+    "ADVERSE": [
+      2.0,
+      3.0
+    ],
+    "BASE": [
+      1.0,
+      1.0
+    ]
+  },
+  "declared_params": {
+    "edge06_fade_extension": {
+      "atr_period": 14,
+      "cost_margin": 1.5,
+      "ema_period": 200,
+      "entry_distance_atr": 2.0,
+      "min_rr": 1.5,
+      "stop_atr": 1.5
+    },
+    "edge06_trend_fixed": {
+      "atr_period": 14,
+      "breakout_lookback": 20,
+      "cost_margin": 1.5,
+      "ema_fast": 50,
+      "ema_slow": 200,
+      "min_rr": 2.0,
+      "stop_atr": 1.0,
+      "target_atr": 3.0
+    },
+    "edge06_xs_momentum": {
+      "atr_period": 14,
+      "cost_margin": 1.0,
+      "exit_ema": 100,
+      "relative_strength_lookback": 30,
+      "stop_atr": 2.0,
+      "trend_ema": 200
+    }
+  },
+  "families": {
+    "edge06_fade_extension": {
+      "answers": "H-FADE",
+      "book": "edge06_fade_extension",
+      "reading": {
+        "disclosure": "the trend OOS window has already been read by the frozen 4h ruleset and by the robustness analysis of WP-EDGE-02, so clearing the gate here is 'not yet rejected' and never validation",
+        "evidence": {
+          "dev_base_net_usdt": -340.9207,
+          "dev_gross_usdt": -150.8223,
+          "dev_trades": 187,
+          "min_oos_trades": 30,
+          "oos_2x_fees_net_usdt": -438.0427,
+          "oos_cost_bps_per_trade": 23.62,
+          "oos_largest_trade_share_of_net": null,
+          "oos_net_usdt": -391.3438,
+          "oos_trades": 50,
+          "oos_without_the_largest_usdt": -454.9851,
+          "positive_regimes_oos": 0,
+          "window_net_usdt": {
+            "DEV": -340.9207,
+            "OOS": -391.3438,
+            "VAL": 469.6773
+          },
+          "windows_are_previously_read": true
+        },
+        "gate_verdict": "REJECT",
+        "power": "powered (oos n=50 >= 30)",
+        "reasons": [
+          "oos net -391.34 USDT <= 0 after costs",
+          "oos expectancy -7.8269 USDT/trade <= 0",
+          "oos has 0 profitable regime(s), fewer than the required 1",
+          "oos net turns negative under 2x fees (-438.04 USDT): no cost margin",
+          "the DEV gross is -150.82 USDT: the setup loses money before any fee, which no cost change can repair"
+        ],
+        "verdict": "REJECT_NO_GROSS_EDGE"
+      },
+      "scope": {
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "assets_are_the_declared_universe": false,
+        "declared_params": {
+          "atr_period": 14,
+          "cost_margin": 1.5,
+          "ema_period": 200,
+          "entry_distance_atr": 2.0,
+          "min_rr": 1.5,
+          "stop_atr": 1.5
+        },
+        "frozen_params_source": "reports/edge-recovery/WP-EDGE-06/research/HYPOTHESES.md",
+        "provenance": {
+          "BTC": {
+            "bars": 15665,
+            "first_ts": 1546300800000,
+            "last_ts": 1772308800000,
+            "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57",
+            "sources": [
+              "reports/alpha-expansion-v1/data/BTCUSDT_2019.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2020.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2021.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2022.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2023.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2024.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2025.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2026.json"
+            ],
+            "symbol": "BTC",
+            "timeframe": "4h"
+          },
+          "ETH": {
+            "bars": 15665,
+            "first_ts": 1546300800000,
+            "last_ts": 1772308800000,
+            "sha256": "365046d4738aa7b1dee89a8fc2a544cdfa80b1b6d64ee66a207f504de85afab9",
+            "sources": [
+              "reports/alpha-expansion-v1/data/ETHUSDT_2019.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2020.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2021.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2022.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2023.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2024.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2025.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2026.json"
+            ],
+            "symbol": "ETH",
+            "timeframe": "4h"
+          },
+          "SOL": {
+            "bars": 12153,
+            "first_ts": 1597132800000,
+            "last_ts": 1772308800000,
+            "sha256": "847d8eb45eafebd80825f3146c47e3ef34c829516ea5f8501664655f04ff1613",
+            "sources": [
+              "reports/alpha-expansion-v1/data/SOLUSDT_2020.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2021.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2022.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2023.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2024.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2025.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2026.json"
+            ],
+            "symbol": "SOL",
+            "timeframe": "4h"
+          },
+          "aggregated_from_1h": {
+            "bars": 62724,
+            "first_ts": 1546300800000,
+            "last_ts": 1772319600000,
+            "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57",
+            "sources": [
+              "reports/alpha-expansion-v1/data/BTCUSDT_2019.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2020.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2021.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2022.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2023.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2024.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2025.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2026.json"
+            ],
+            "symbol": "BTC",
+            "timeframe": "1h"
+          }
+        },
+        "split": "trend",
+        "timeframe": "4h"
+      },
+      "splits": {
+        "DEV": {
+          "2X_FEES": {
+            "avg_duration_min": 5167.59,
+            "avg_loss_usdt": -19.6603,
+            "avg_win_usdt": 52.8913,
+            "by_asset": {
+              "BTC": {
+                "net": -148.1283,
+                "trades": 41,
+                "win_rate": 21.9512
+              },
+              "ETH": {
+                "net": -244.2077,
+                "trades": 38,
+                "win_rate": 18.4211
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": 29.8554,
+                "trades": 4,
+                "win_rate": 25.0
+              },
+              "BULL": {
+                "net": -106.5579,
+                "trades": 27,
+                "win_rate": 22.2222
+              },
+              "SIDEWAYS": {
+                "net": -308.5887,
+                "trades": 30,
+                "win_rate": 10.0
+              },
+              "UNDEFINED": {
+                "net": -7.0448,
+                "trades": 18,
+                "win_rate": 33.3333
+              }
+            },
+            "by_regime": {
+              "DOWN": {
+                "net": -392.336,
+                "trades": 79,
+                "win_rate": 20.2532
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:rr_below_minimum": 550,
+              "risk:risk_drawdown_halt": 7137
+            },
+            "exit_reason_mix": {
+              "stop_loss": 63,
+              "target": 16
+            },
+            "expectancy_usdt": -4.9663,
+            "exposure_pct_of_time": 5.1781,
+            "fees_usdt": 146.1226,
+            "final_equity": 9607.664,
+            "gross_usdt": -232.3661,
+            "largest_trade_share_of_net": null,
+            "max_drawdown_pct": 5.0773,
+            "net_usdt": -392.336,
+            "payoff_ratio": 2.6903,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 43.790569,
+              "scenario_id": "2X_FEES",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 13.8472,
+            "profit_factor": 0.6832,
+            "return_pct": -3.9234,
+            "sharpe_annualised": -0.4862,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 8545,
+            "total_cost_bps_per_trade": 43.6435,
+            "trades": 79,
+            "win_rate_pct": 20.2532,
+            "without_the_largest_winner": {
+              "expectancy_usdt": -6.6481,
+              "net_usdt": -518.5484,
+              "removed_trade_net_usdt": 126.2124,
+              "return_pct_of_start_equity": -5.1855,
+              "trades": 78
+            }
+          },
+          "ADVERSE": {
+            "avg_duration_min": 5167.59,
+            "avg_loss_usdt": -19.8766,
+            "avg_win_usdt": 52.5425,
+            "by_asset": {
+              "BTC": {
+                "net": -158.8708,
+                "trades": 41,
+                "win_rate": 21.9512
+              },
+              "ETH": {
+                "net": -252.6767,
+                "trades": 38,
+                "win_rate": 18.4211
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": 28.2016,
+                "trades": 4,
+                "win_rate": 25.0
+              },
+              "BULL": {
+                "net": -113.6669,
+                "trades": 27,
+                "win_rate": 22.2222
+              },
+              "SIDEWAYS": {
+                "net": -314.4733,
+                "trades": 30,
+                "win_rate": 10.0
+              },
+              "UNDEFINED": {
+                "net": -11.6089,
+                "trades": 18,
+                "win_rate": 33.3333
+              }
+            },
+            "by_regime": {
+              "DOWN": {
+                "net": -411.5475,
+                "trades": 79,
+                "win_rate": 20.2532
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:rr_below_minimum": 550,
+              "risk:risk_drawdown_halt": 7137
+            },
+            "exit_reason_mix": {
+              "stop_loss": 63,
+              "target": 16
+            },
+            "expectancy_usdt": -5.2095,
+            "exposure_pct_of_time": 5.1781,
+            "fees_usdt": 145.9573,
+            "final_equity": 9588.4525,
+            "gross_usdt": -231.3935,
+            "largest_trade_share_of_net": null,
+            "max_drawdown_pct": 5.1683,
+            "net_usdt": -411.5475,
+            "payoff_ratio": 2.6434,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.474342,
+              "other_bps": 0.0,
+              "round_trip_bps": 49.371708,
+              "scenario_id": "ADVERSE",
+              "size_usd": 1000.0,
+              "slippage_bps": 7.897367,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 34.1967,
+            "profit_factor": 0.6713,
+            "return_pct": -4.1155,
+            "sharpe_annualised": -0.5108,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 8545,
+            "total_cost_bps_per_trade": 49.1927,
+            "trades": 79,
+            "win_rate_pct": 20.2532,
+            "without_the_largest_winner": {
+              "expectancy_usdt": -6.8899,
+              "net_usdt": -537.41,
+              "removed_trade_net_usdt": 125.8625,
+              "return_pct_of_start_equity": -5.3741,
+              "trades": 78
+            }
+          },
+          "BASE": {
+            "avg_duration_min": 7011.34,
+            "avg_loss_usdt": -21.6391,
+            "avg_win_usdt": 62.5788,
+            "by_asset": {
+              "BTC": {
+                "net": -256.7535,
+                "trades": 75,
+                "win_rate": 24.0
+              },
+              "ETH": {
+                "net": -2.6816,
+                "trades": 65,
+                "win_rate": 27.6923
+              },
+              "SOL": {
+                "net": -81.4856,
+                "trades": 47,
+                "win_rate": 17.0213
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": -376.6498,
+                "trades": 38,
+                "win_rate": 10.5263
+              },
+              "BULL": {
+                "net": 33.4248,
+                "trades": 88,
+                "win_rate": 28.4091
+              },
+              "SIDEWAYS": {
+                "net": -7.541,
+                "trades": 43,
+                "win_rate": 20.9302
+              },
+              "UNDEFINED": {
+                "net": 9.8453,
+                "trades": 18,
+                "win_rate": 33.3333
+              }
+            },
+            "by_regime": {
+              "DOWN": {
+                "net": -340.9207,
+                "trades": 187,
+                "win_rate": 23.5294
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:rr_below_minimum": 550,
+              "risk:risk_drawdown_halt": 4840
+            },
+            "exit_reason_mix": {
+              "stop_loss": 143,
+              "target": 44
+            },
+            "expectancy_usdt": -1.8231,
+            "exposure_pct_of_time": 16.6301,
+            "fees_usdt": 159.8099,
+            "final_equity": 9659.0793,
+            "gross_usdt": -150.8223,
+            "largest_trade_share_of_net": null,
+            "max_drawdown_pct": 5.3736,
+            "net_usdt": -340.9207,
+            "payoff_ratio": 2.8919,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 20.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 23.790569,
+              "scenario_id": "BASE",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 30.2885,
+            "profit_factor": 0.8898,
+            "return_pct": -3.4092,
+            "sharpe_annualised": -0.2035,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 8545,
+            "total_cost_bps_per_trade": 23.7636,
+            "trades": 187,
+            "win_rate_pct": 23.5294,
+            "without_the_largest_winner": {
+              "expectancy_usdt": -3.1206,
+              "net_usdt": -580.4397,
+              "removed_trade_net_usdt": 239.519,
+              "return_pct_of_start_equity": -5.8044,
+              "trades": 186
+            }
+          }
+        },
+        "OOS": {
+          "2X_FEES": {
+            "avg_duration_min": 3580.8,
+            "avg_loss_usdt": -20.9744,
+            "avg_win_usdt": 34.5417,
+            "by_asset": {
+              "BTC": {
+                "net": -34.7801,
+                "trades": 12,
+                "win_rate": 33.3333
+              },
+              "ETH": {
+                "net": -96.6277,
+                "trades": 18,
+                "win_rate": 27.7778
+              },
+              "SOL": {
+                "net": -306.6349,
+                "trades": 20,
+                "win_rate": 10.0
+              }
+            },
+            "by_market_context": {
+              "BULL": {
+                "net": -336.5181,
+                "trades": 46,
+                "win_rate": 23.913
+              },
+              "SIDEWAYS": {
+                "net": -101.5246,
+                "trades": 4,
+                "win_rate": 0.0
+              }
+            },
+            "by_regime": {
+              "DOWN": {
+                "net": -438.0427,
+                "trades": 50,
+                "win_rate": 22.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:rr_below_minimum": 150,
+              "risk:risk_drawdown_halt": 2627
+            },
+            "exit_reason_mix": {
+              "stop_loss": 39,
+              "target": 11
+            },
+            "expectancy_usdt": -8.7609,
+            "exposure_pct_of_time": 9.7977,
+            "fees_usdt": 95.1276,
+            "final_equity": 9561.9573,
+            "gross_usdt": -333.9004,
+            "largest_trade_share_of_net": null,
+            "max_drawdown_pct": 5.4623,
+            "net_usdt": -438.0427,
+            "payoff_ratio": 1.6468,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 43.790569,
+              "scenario_id": "2X_FEES",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 9.0147,
+            "profit_factor": 0.4645,
+            "return_pct": -4.3804,
+            "sharpe_annualised": -1.0751,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 3265,
+            "total_cost_bps_per_trade": 43.4771,
+            "trades": 50,
+            "win_rate_pct": 22.0,
+            "without_the_largest_winner": {
+              "expectancy_usdt": -10.2167,
+              "net_usdt": -500.6194,
+              "removed_trade_net_usdt": 62.5767,
+              "return_pct_of_start_equity": -5.0062,
+              "trades": 49
+            }
+          },
+          "ADVERSE": {
+            "avg_duration_min": 3580.8,
+            "avg_loss_usdt": -21.1883,
+            "avg_win_usdt": 34.2429,
+            "by_asset": {
+              "BTC": {
+                "net": -38.1152,
+                "trades": 12,
+                "win_rate": 33.3333
+              },
+              "ETH": {
+                "net": -100.6338,
+                "trades": 18,
+                "win_rate": 27.7778
+              },
+              "SOL": {
+                "net": -310.9217,
+                "trades": 20,
+                "win_rate": 10.0
+              }
+            },
+            "by_market_context": {
+              "BULL": {
+                "net": -347.6556,
+                "trades": 46,
+                "win_rate": 23.913
+              },
+              "SIDEWAYS": {
+                "net": -102.0151,
+                "trades": 4,
+                "win_rate": 0.0
+              }
+            },
+            "by_regime": {
+              "DOWN": {
+                "net": -449.6706,
+                "trades": 50,
+                "win_rate": 22.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:rr_below_minimum": 150,
+              "risk:risk_drawdown_halt": 2627
+            },
+            "exit_reason_mix": {
+              "stop_loss": 39,
+              "target": 11
+            },
+            "expectancy_usdt": -8.9934,
+            "exposure_pct_of_time": 9.7977,
+            "fees_usdt": 95.0093,
+            "final_equity": 9550.3294,
+            "gross_usdt": -332.4014,
+            "largest_trade_share_of_net": null,
+            "max_drawdown_pct": 5.5297,
+            "net_usdt": -449.6706,
+            "payoff_ratio": 1.6161,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.474342,
+              "other_bps": 0.0,
+              "round_trip_bps": 49.371708,
+              "scenario_id": "ADVERSE",
+              "size_usd": 1000.0,
+              "slippage_bps": 7.897367,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 22.2599,
+            "profit_factor": 0.4558,
+            "return_pct": -4.4967,
+            "sharpe_annualised": -1.1059,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 3265,
+            "total_cost_bps_per_trade": 49.0058,
+            "trades": 50,
+            "win_rate_pct": 22.0,
+            "without_the_largest_winner": {
+              "expectancy_usdt": -10.4476,
+              "net_usdt": -511.9328,
+              "removed_trade_net_usdt": 62.2622,
+              "return_pct_of_start_equity": -5.1193,
+              "trades": 49
+            }
+          },
+          "BASE": {
+            "avg_duration_min": 3580.8,
+            "avg_loss_usdt": -20.0694,
+            "avg_win_usdt": 35.5783,
+            "by_asset": {
+              "BTC": {
+                "net": -22.7909,
+                "trades": 12,
+                "win_rate": 33.3333
+              },
+              "ETH": {
+                "net": -80.0411,
+                "trades": 18,
+                "win_rate": 27.7778
+              },
+              "SOL": {
+                "net": -288.5117,
+                "trades": 20,
+                "win_rate": 10.0
+              }
+            },
+            "by_market_context": {
+              "BULL": {
+                "net": -293.0946,
+                "trades": 46,
+                "win_rate": 23.913
+              },
+              "SIDEWAYS": {
+                "net": -98.2492,
+                "trades": 4,
+                "win_rate": 0.0
+              }
+            },
+            "by_regime": {
+              "DOWN": {
+                "net": -391.3438,
+                "trades": 50,
+                "win_rate": 22.0
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:rr_below_minimum": 150,
+              "risk:risk_drawdown_halt": 2627
+            },
+            "exit_reason_mix": {
+              "stop_loss": 39,
+              "target": 11
+            },
+            "expectancy_usdt": -7.8269,
+            "exposure_pct_of_time": 9.7977,
+            "fees_usdt": 47.5899,
+            "final_equity": 9608.6562,
+            "gross_usdt": -334.7342,
+            "largest_trade_share_of_net": null,
+            "max_drawdown_pct": 5.1708,
+            "net_usdt": -391.3438,
+            "payoff_ratio": 1.7728,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 20.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 23.790569,
+              "scenario_id": "BASE",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 9.0196,
+            "profit_factor": 0.5,
+            "return_pct": -3.9134,
+            "sharpe_annualised": -0.9645,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 3265,
+            "total_cost_bps_per_trade": 23.62,
+            "trades": 50,
+            "win_rate_pct": 22.0,
+            "without_the_largest_winner": {
+              "expectancy_usdt": -9.2854,
+              "net_usdt": -454.9851,
+              "removed_trade_net_usdt": 63.6413,
+              "return_pct_of_start_equity": -4.5499,
+              "trades": 49
+            }
+          }
+        },
+        "VAL": {
+          "2X_FEES": {
+            "avg_duration_min": 5689.7,
+            "avg_loss_usdt": -18.207,
+            "avg_win_usdt": 47.7056,
+            "by_asset": {
+              "BTC": {
+                "net": 67.8043,
+                "trades": 33,
+                "win_rate": 27.2727
+              },
+              "ETH": {
+                "net": 213.2419,
+                "trades": 29,
+                "win_rate": 41.3793
+              },
+              "SOL": {
+                "net": 91.574,
+                "trades": 37,
+                "win_rate": 32.4324
+              }
+            },
+            "by_market_context": {
+              "BULL": {
+                "net": -68.3296,
+                "trades": 79,
+                "win_rate": 30.3797
+              },
+              "SIDEWAYS": {
+                "net": 440.9498,
+                "trades": 20,
+                "win_rate": 45.0
+              }
+            },
+            "by_regime": {
+              "DOWN": {
+                "net": 372.6202,
+                "trades": 99,
+                "win_rate": 33.3333
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:rr_below_minimum": 116
+            },
+            "exit_reason_mix": {
+              "end_of_data": 3,
+              "stop_loss": 65,
+              "target": 31
+            },
+            "expectancy_usdt": 3.7638,
+            "exposure_pct_of_time": 35.723,
+            "fees_usdt": 190.286,
+            "final_equity": 10372.6202,
+            "gross_usdt": 580.9385,
+            "largest_trade_share_of_net": 0.3678,
+            "max_drawdown_pct": 2.9621,
+            "net_usdt": 372.6202,
+            "payoff_ratio": 2.6202,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 43.790569,
+              "scenario_id": "2X_FEES",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 18.0323,
+            "profit_factor": 1.3101,
+            "return_pct": 3.7262,
+            "sharpe_annualised": 0.8069,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 1486,
+            "total_cost_bps_per_trade": 44.0512,
+            "trades": 99,
+            "win_rate_pct": 33.3333,
+            "without_the_largest_winner": {
+              "expectancy_usdt": 2.4038,
+              "net_usdt": 235.5677,
+              "removed_trade_net_usdt": 137.0525,
+              "return_pct_of_start_equity": 2.3557,
+              "trades": 98
+            }
+          },
+          "ADVERSE": {
+            "avg_duration_min": 5689.7,
+            "avg_loss_usdt": -18.4412,
+            "avg_win_usdt": 47.3211,
+            "by_asset": {
+              "BTC": {
+                "net": 58.4151,
+                "trades": 33,
+                "win_rate": 27.2727
+              },
+              "ETH": {
+                "net": 204.1395,
+                "trades": 29,
+                "win_rate": 41.3793
+              },
+              "SOL": {
+                "net": 81.9203,
+                "trades": 37,
+                "win_rate": 32.4324
+              }
+            },
+            "by_market_context": {
+              "BULL": {
+                "net": -89.7908,
+                "trades": 79,
+                "win_rate": 30.3797
+              },
+              "SIDEWAYS": {
+                "net": 434.2657,
+                "trades": 20,
+                "win_rate": 45.0
+              }
+            },
+            "by_regime": {
+              "DOWN": {
+                "net": 344.4749,
+                "trades": 99,
+                "win_rate": 33.3333
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:rr_below_minimum": 116
+            },
+            "exit_reason_mix": {
+              "end_of_data": 3,
+              "stop_loss": 65,
+              "target": 31
+            },
+            "expectancy_usdt": 3.4795,
+            "exposure_pct_of_time": 35.723,
+            "fees_usdt": 190.0518,
+            "final_equity": 10344.4749,
+            "gross_usdt": 579.0546,
+            "largest_trade_share_of_net": 0.3949,
+            "max_drawdown_pct": 2.9943,
+            "net_usdt": 344.4749,
+            "payoff_ratio": 2.566,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.474342,
+              "other_bps": 0.0,
+              "round_trip_bps": 49.371708,
+              "scenario_id": "ADVERSE",
+              "size_usd": 1000.0,
+              "slippage_bps": 7.897367,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 44.5279,
+            "profit_factor": 1.283,
+            "return_pct": 3.4447,
+            "sharpe_annualised": 0.749,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 1486,
+            "total_cost_bps_per_trade": 49.651,
+            "trades": 99,
+            "win_rate_pct": 33.3333,
+            "without_the_largest_winner": {
+              "expectancy_usdt": 2.1269,
+              "net_usdt": 208.4398,
+              "removed_trade_net_usdt": 136.0351,
+              "return_pct_of_start_equity": 2.0844,
+              "trades": 98
+            }
+          },
+          "BASE": {
+            "avg_duration_min": 5689.7,
+            "avg_loss_usdt": -17.5643,
+            "avg_win_usdt": 47.3929,
+            "by_asset": {
+              "BTC": {
+                "net": 100.9472,
+                "trades": 33,
+                "win_rate": 30.303
+              },
+              "ETH": {
+                "net": 243.243,
+                "trades": 29,
+                "win_rate": 41.3793
+              },
+              "SOL": {
+                "net": 125.4871,
+                "trades": 37,
+                "win_rate": 32.4324
+              }
+            },
+            "by_market_context": {
+              "BULL": {
+                "net": 8.4985,
+                "trades": 79,
+                "win_rate": 31.6456
+              },
+              "SIDEWAYS": {
+                "net": 461.1788,
+                "trades": 20,
+                "win_rate": 45.0
+              }
+            },
+            "by_regime": {
+              "DOWN": {
+                "net": 469.6773,
+                "trades": 99,
+                "win_rate": 34.3434
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:rr_below_minimum": 116
+            },
+            "exit_reason_mix": {
+              "end_of_data": 3,
+              "stop_loss": 65,
+              "target": 31
+            },
+            "expectancy_usdt": 4.7442,
+            "exposure_pct_of_time": 35.723,
+            "fees_usdt": 95.2278,
+            "final_equity": 10469.6773,
+            "gross_usdt": 582.9535,
+            "largest_trade_share_of_net": 0.2956,
+            "max_drawdown_pct": 2.8424,
+            "net_usdt": 469.6773,
+            "payoff_ratio": 2.6982,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 20.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 23.790569,
+              "scenario_id": "BASE",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 18.0484,
+            "profit_factor": 1.4114,
+            "return_pct": 4.6968,
+            "sharpe_annualised": 1.0143,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 1486,
+            "total_cost_bps_per_trade": 23.9325,
+            "trades": 99,
+            "win_rate_pct": 34.3434,
+            "without_the_largest_winner": {
+              "expectancy_usdt": 3.3758,
+              "net_usdt": 330.8278,
+              "removed_trade_net_usdt": 138.8495,
+              "return_pct_of_start_equity": 3.3083,
+              "trades": 98
+            }
+          }
+        }
+      }
+    },
+    "edge06_trend_fixed": {
+      "answers": "H-TARGET",
+      "book": "edge06_trend_fixed",
+      "reading": {
+        "disclosure": "the trend OOS window has already been read by the frozen 4h ruleset and by the robustness analysis of WP-EDGE-02, so clearing the gate here is 'not yet rejected' and never validation",
+        "evidence": {
+          "dev_base_net_usdt": 1056.2895,
+          "dev_gross_usdt": 1746.0725,
+          "dev_trades": 584,
+          "min_oos_trades": 30,
+          "oos_2x_fees_net_usdt": 116.674,
+          "oos_cost_bps_per_trade": 23.8629,
+          "oos_largest_trade_share_of_net": 0.2219,
+          "oos_net_usdt": 230.0174,
+          "oos_trades": 113,
+          "oos_without_the_largest_usdt": 178.9786,
+          "positive_regimes_oos": 1,
+          "window_net_usdt": {
+            "DEV": 1056.2895,
+            "OOS": 230.0174,
+            "VAL": -146.1493
+          },
+          "windows_are_previously_read": true
+        },
+        "gate_verdict": "ADMIT",
+        "power": "powered (oos n=113 >= 30)",
+        "reasons": [
+          "oos net positive after costs, sample powered, no single trade carries it",
+          "clears the frozen gate, is not carried by one trade, and survives removing its largest winner \u2014 still NOT validated: this OOS window was read before"
+        ],
+        "verdict": "ADMIT"
+      },
+      "scope": {
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "assets_are_the_declared_universe": false,
+        "declared_params": {
+          "atr_period": 14,
+          "breakout_lookback": 20,
+          "cost_margin": 1.5,
+          "ema_fast": 50,
+          "ema_slow": 200,
+          "min_rr": 2.0,
+          "stop_atr": 1.0,
+          "target_atr": 3.0
+        },
+        "frozen_params_source": "reports/edge-recovery/WP-EDGE-06/research/HYPOTHESES.md",
+        "provenance": {
+          "BTC": {
+            "bars": 15665,
+            "first_ts": 1546300800000,
+            "last_ts": 1772308800000,
+            "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57",
+            "sources": [
+              "reports/alpha-expansion-v1/data/BTCUSDT_2019.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2020.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2021.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2022.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2023.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2024.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2025.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2026.json"
+            ],
+            "symbol": "BTC",
+            "timeframe": "4h"
+          },
+          "ETH": {
+            "bars": 15665,
+            "first_ts": 1546300800000,
+            "last_ts": 1772308800000,
+            "sha256": "365046d4738aa7b1dee89a8fc2a544cdfa80b1b6d64ee66a207f504de85afab9",
+            "sources": [
+              "reports/alpha-expansion-v1/data/ETHUSDT_2019.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2020.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2021.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2022.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2023.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2024.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2025.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2026.json"
+            ],
+            "symbol": "ETH",
+            "timeframe": "4h"
+          },
+          "SOL": {
+            "bars": 12153,
+            "first_ts": 1597132800000,
+            "last_ts": 1772308800000,
+            "sha256": "847d8eb45eafebd80825f3146c47e3ef34c829516ea5f8501664655f04ff1613",
+            "sources": [
+              "reports/alpha-expansion-v1/data/SOLUSDT_2020.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2021.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2022.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2023.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2024.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2025.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2026.json"
+            ],
+            "symbol": "SOL",
+            "timeframe": "4h"
+          },
+          "aggregated_from_1h": {
+            "bars": 62724,
+            "first_ts": 1546300800000,
+            "last_ts": 1772319600000,
+            "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57",
+            "sources": [
+              "reports/alpha-expansion-v1/data/BTCUSDT_2019.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2020.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2021.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2022.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2023.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2024.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2025.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2026.json"
+            ],
+            "symbol": "BTC",
+            "timeframe": "1h"
+          }
+        },
+        "split": "trend",
+        "timeframe": "4h"
+      },
+      "splits": {
+        "DEV": {
+          "2X_FEES": {
+            "avg_duration_min": 1370.82,
+            "avg_loss_usdt": -14.9724,
+            "avg_win_usdt": 31.8701,
+            "by_asset": {
+              "BTC": {
+                "net": -2.665,
+                "trades": 193,
+                "win_rate": 34.1969
+              },
+              "ETH": {
+                "net": 172.5947,
+                "trades": 212,
+                "win_rate": 33.4906
+              },
+              "SOL": {
+                "net": -65.7128,
+                "trades": 98,
+                "win_rate": 26.5306
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": 18.0482,
+                "trades": 56,
+                "win_rate": 33.9286
+              },
+              "BULL": {
+                "net": -211.7252,
+                "trades": 338,
+                "win_rate": 29.5858
+              },
+              "SIDEWAYS": {
+                "net": -141.811,
+                "trades": 31,
+                "win_rate": 22.5806
+              },
+              "UNDEFINED": {
+                "net": 439.705,
+                "trades": 78,
+                "win_rate": 47.4359
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": 104.2169,
+                "trades": 503,
+                "win_rate": 32.4056
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:trend_filter_fail": 535,
+              "risk:risk_drawdown_halt": 116
+            },
+            "exit_reason_mix": {
+              "stop_loss": 340,
+              "target": 163
+            },
+            "expectancy_usdt": 0.2072,
+            "exposure_pct_of_time": 8.7458,
+            "fees_usdt": 996.1046,
+            "final_equity": 10104.2169,
+            "gross_usdt": 1194.7167,
+            "largest_trade_share_of_net": 0.7245,
+            "max_drawdown_pct": 4.9759,
+            "net_usdt": 104.2169,
+            "payoff_ratio": 2.1286,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 43.790569,
+              "scenario_id": "2X_FEES",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 94.3951,
+            "profit_factor": 1.0205,
+            "return_pct": 1.0422,
+            "sharpe_annualised": 0.0889,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 1037,
+            "total_cost_bps_per_trade": 43.8875,
+            "trades": 503,
+            "win_rate_pct": 32.4056,
+            "without_the_largest_winner": {
+              "expectancy_usdt": 0.0572,
+              "net_usdt": 28.7138,
+              "removed_trade_net_usdt": 75.5031,
+              "return_pct_of_start_equity": 0.2871,
+              "trades": 502
+            }
+          },
+          "ADVERSE": {
+            "avg_duration_min": 1379.39,
+            "avg_loss_usdt": -15.3067,
+            "avg_win_usdt": 31.608,
+            "by_asset": {
+              "BTC": {
+                "net": -61.0337,
+                "trades": 190,
+                "win_rate": 34.2105
+              },
+              "ETH": {
+                "net": 133.3211,
+                "trades": 210,
+                "win_rate": 33.8095
+              },
+              "SOL": {
+                "net": -48.919,
+                "trades": 95,
+                "win_rate": 27.3684
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": 2.384,
+                "trades": 56,
+                "win_rate": 33.9286
+              },
+              "BULL": {
+                "net": -246.4756,
+                "trades": 330,
+                "win_rate": 30.0
+              },
+              "SIDEWAYS": {
+                "net": -150.3975,
+                "trades": 31,
+                "win_rate": 22.5806
+              },
+              "UNDEFINED": {
+                "net": 417.8574,
+                "trades": 78,
+                "win_rate": 47.4359
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": 23.3684,
+                "trades": 495,
+                "win_rate": 32.7273
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:trend_filter_fail": 535,
+              "risk:risk_drawdown_halt": 126
+            },
+            "exit_reason_mix": {
+              "stop_loss": 333,
+              "target": 162
+            },
+            "expectancy_usdt": 0.0472,
+            "exposure_pct_of_time": 8.6606,
+            "fees_usdt": 979.4476,
+            "final_equity": 10023.3684,
+            "gross_usdt": 1232.2937,
+            "largest_trade_share_of_net": 3.1948,
+            "max_drawdown_pct": 4.9225,
+            "net_usdt": 23.3684,
+            "payoff_ratio": 2.065,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.474342,
+              "other_bps": 0.0,
+              "round_trip_bps": 49.371708,
+              "scenario_id": "ADVERSE",
+              "size_usd": 1000.0,
+              "slippage_bps": 7.897367,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 229.4777,
+            "profit_factor": 1.0046,
+            "return_pct": 0.2337,
+            "sharpe_annualised": 0.0307,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 1037,
+            "total_cost_bps_per_trade": 49.473,
+            "trades": 495,
+            "win_rate_pct": 32.7273,
+            "without_the_largest_winner": {
+              "expectancy_usdt": -0.1038,
+              "net_usdt": -51.2883,
+              "removed_trade_net_usdt": 74.6567,
+              "return_pct_of_start_equity": -0.5129,
+              "trades": 494
+            }
+          },
+          "BASE": {
+            "avg_duration_min": 1310.14,
+            "avg_loss_usdt": -13.9162,
+            "avg_win_usdt": 32.4643,
+            "by_asset": {
+              "BTC": {
+                "net": 239.7371,
+                "trades": 217,
+                "win_rate": 35.023
+              },
+              "ETH": {
+                "net": 393.727,
+                "trades": 233,
+                "win_rate": 33.4764
+              },
+              "SOL": {
+                "net": 422.8255,
+                "trades": 134,
+                "win_rate": 32.8358
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": 74.1785,
+                "trades": 56,
+                "win_rate": 33.9286
+              },
+              "BULL": {
+                "net": 531.4922,
+                "trades": 417,
+                "win_rate": 31.8945
+              },
+              "SIDEWAYS": {
+                "net": -67.3758,
+                "trades": 33,
+                "win_rate": 27.2727
+              },
+              "UNDEFINED": {
+                "net": 517.9947,
+                "trades": 78,
+                "win_rate": 47.4359
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": 1056.2895,
+                "trades": 584,
+                "win_rate": 33.9041
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:trend_filter_fail": 535
+            },
+            "exit_reason_mix": {
+              "stop_loss": 386,
+              "target": 198
+            },
+            "expectancy_usdt": 1.8087,
+            "exposure_pct_of_time": 9.7047,
+            "fees_usdt": 579.8793,
+            "final_equity": 11056.2895,
+            "gross_usdt": 1746.0725,
+            "largest_trade_share_of_net": 0.0743,
+            "max_drawdown_pct": 4.0367,
+            "net_usdt": 1056.2895,
+            "payoff_ratio": 2.3328,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 20.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 23.790569,
+              "scenario_id": "BASE",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 109.9037,
+            "profit_factor": 1.1966,
+            "return_pct": 10.5629,
+            "sharpe_annualised": 0.7219,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 1037,
+            "total_cost_bps_per_trade": 23.8579,
+            "trades": 584,
+            "win_rate_pct": 33.9041,
+            "without_the_largest_winner": {
+              "expectancy_usdt": 1.6772,
+              "net_usdt": 977.7805,
+              "removed_trade_net_usdt": 78.509,
+              "return_pct_of_start_equity": 9.7778,
+              "trades": 583
+            }
+          }
+        },
+        "OOS": {
+          "2X_FEES": {
+            "avg_duration_min": 1287.08,
+            "avg_loss_usdt": -10.6738,
+            "avg_win_usdt": 23.2444,
+            "by_asset": {
+              "BTC": {
+                "net": -24.3828,
+                "trades": 37,
+                "win_rate": 32.4324
+              },
+              "ETH": {
+                "net": 189.1395,
+                "trades": 39,
+                "win_rate": 43.5897
+              },
+              "SOL": {
+                "net": -48.0827,
+                "trades": 37,
+                "win_rate": 27.027
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": -47.7002,
+                "trades": 11,
+                "win_rate": 18.1818
+              },
+              "BULL": {
+                "net": 139.4506,
+                "trades": 97,
+                "win_rate": 36.0825
+              },
+              "SIDEWAYS": {
+                "net": 24.9237,
+                "trades": 5,
+                "win_rate": 40.0
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": 116.674,
+                "trades": 113,
+                "win_rate": 34.5133
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:trend_filter_fail": 205
+            },
+            "exit_reason_mix": {
+              "stop_loss": 74,
+              "target": 39
+            },
+            "expectancy_usdt": 1.0325,
+            "exposure_pct_of_time": 7.959,
+            "fees_usdt": 226.6867,
+            "final_equity": 10116.674,
+            "gross_usdt": 364.8426,
+            "largest_trade_share_of_net": 0.4284,
+            "max_drawdown_pct": 1.7626,
+            "net_usdt": 116.674,
+            "payoff_ratio": 2.1777,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 43.790569,
+              "scenario_id": "2X_FEES",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 21.4818,
+            "profit_factor": 1.1477,
+            "return_pct": 1.1667,
+            "sharpe_annualised": 0.4887,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 203,
+            "total_cost_bps_per_trade": 43.9236,
+            "trades": 113,
+            "win_rate_pct": 34.5133,
+            "without_the_largest_winner": {
+              "expectancy_usdt": 0.5954,
+              "net_usdt": 66.6873,
+              "removed_trade_net_usdt": 49.9867,
+              "return_pct_of_start_equity": 0.6669,
+              "trades": 112
+            }
+          },
+          "ADVERSE": {
+            "avg_duration_min": 1287.08,
+            "avg_loss_usdt": -10.9473,
+            "avg_win_usdt": 22.9519,
+            "by_asset": {
+              "BTC": {
+                "net": -34.7121,
+                "trades": 37,
+                "win_rate": 32.4324
+              },
+              "ETH": {
+                "net": 178.1321,
+                "trades": 39,
+                "win_rate": 43.5897
+              },
+              "SOL": {
+                "net": -58.3987,
+                "trades": 37,
+                "win_rate": 27.027
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": -50.7485,
+                "trades": 11,
+                "win_rate": 18.1818
+              },
+              "BULL": {
+                "net": 112.2577,
+                "trades": 97,
+                "win_rate": 36.0825
+              },
+              "SIDEWAYS": {
+                "net": 23.5121,
+                "trades": 5,
+                "win_rate": 40.0
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": 85.0213,
+                "trades": 113,
+                "win_rate": 34.5133
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:trend_filter_fail": 205
+            },
+            "exit_reason_mix": {
+              "stop_loss": 74,
+              "target": 39
+            },
+            "expectancy_usdt": 0.7524,
+            "exposure_pct_of_time": 7.959,
+            "fees_usdt": 226.6233,
+            "final_equity": 10085.0213,
+            "gross_usdt": 364.7408,
+            "largest_trade_share_of_net": 0.5843,
+            "max_drawdown_pct": 1.8279,
+            "net_usdt": 85.0213,
+            "payoff_ratio": 2.0966,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.474342,
+              "other_bps": 0.0,
+              "round_trip_bps": 49.371708,
+              "scenario_id": "ADVERSE",
+              "size_usd": 1000.0,
+              "slippage_bps": 7.897367,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 53.0963,
+            "profit_factor": 1.105,
+            "return_pct": 0.8502,
+            "sharpe_annualised": 0.3587,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 203,
+            "total_cost_bps_per_trade": 49.5079,
+            "trades": 113,
+            "win_rate_pct": 34.5133,
+            "without_the_largest_winner": {
+              "expectancy_usdt": 0.3156,
+              "net_usdt": 35.3419,
+              "removed_trade_net_usdt": 49.6794,
+              "return_pct_of_start_equity": 0.3534,
+              "trades": 112
+            }
+          },
+          "BASE": {
+            "avg_duration_min": 1287.08,
+            "avg_loss_usdt": -9.6825,
+            "avg_win_usdt": 24.2697,
+            "by_asset": {
+              "BTC": {
+                "net": 12.6669,
+                "trades": 37,
+                "win_rate": 32.4324
+              },
+              "ETH": {
+                "net": 228.4072,
+                "trades": 39,
+                "win_rate": 43.5897
+              },
+              "SOL": {
+                "net": -11.0567,
+                "trades": 37,
+                "win_rate": 27.027
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": -36.726,
+                "trades": 11,
+                "win_rate": 18.1818
+              },
+              "BULL": {
+                "net": 236.7847,
+                "trades": 97,
+                "win_rate": 36.0825
+              },
+              "SIDEWAYS": {
+                "net": 29.9587,
+                "trades": 5,
+                "win_rate": 40.0
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": 230.0174,
+                "trades": 113,
+                "win_rate": 34.5133
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:trend_filter_fail": 205
+            },
+            "exit_reason_mix": {
+              "stop_loss": 74,
+              "target": 39
+            },
+            "expectancy_usdt": 2.0356,
+            "exposure_pct_of_time": 7.959,
+            "fees_usdt": 113.3434,
+            "final_equity": 10230.0174,
+            "gross_usdt": 364.8426,
+            "largest_trade_share_of_net": 0.2219,
+            "max_drawdown_pct": 1.5329,
+            "net_usdt": 230.0174,
+            "payoff_ratio": 2.5066,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 20.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 23.790569,
+              "scenario_id": "BASE",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 21.4818,
+            "profit_factor": 1.321,
+            "return_pct": 2.3002,
+            "sharpe_annualised": 0.9585,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 203,
+            "total_cost_bps_per_trade": 23.8629,
+            "trades": 113,
+            "win_rate_pct": 34.5133,
+            "without_the_largest_winner": {
+              "expectancy_usdt": 1.598,
+              "net_usdt": 178.9786,
+              "removed_trade_net_usdt": 51.0388,
+              "return_pct_of_start_equity": 1.7898,
+              "trades": 112
+            }
+          }
+        },
+        "VAL": {
+          "2X_FEES": {
+            "avg_duration_min": 1503.53,
+            "avg_loss_usdt": -12.3653,
+            "avg_win_usdt": 24.4805,
+            "by_asset": {
+              "BTC": {
+                "net": 32.6164,
+                "trades": 50,
+                "win_rate": 38.0
+              },
+              "ETH": {
+                "net": -86.0913,
+                "trades": 43,
+                "win_rate": 23.2558
+              },
+              "SOL": {
+                "net": -228.0669,
+                "trades": 43,
+                "win_rate": 20.9302
+              }
+            },
+            "by_market_context": {
+              "BULL": {
+                "net": -307.5839,
+                "trades": 135,
+                "win_rate": 27.4074
+              },
+              "SIDEWAYS": {
+                "net": 26.0422,
+                "trades": 1,
+                "win_rate": 100.0
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": -281.5418,
+                "trades": 136,
+                "win_rate": 27.9412
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:trend_filter_fail": 139
+            },
+            "exit_reason_mix": {
+              "stop_loss": 98,
+              "target": 38
+            },
+            "expectancy_usdt": -2.0702,
+            "exposure_pct_of_time": 12.968,
+            "fees_usdt": 271.3223,
+            "final_equity": 9718.4582,
+            "gross_usdt": 15.4922,
+            "largest_trade_share_of_net": null,
+            "max_drawdown_pct": 4.1803,
+            "net_usdt": -281.5418,
+            "payoff_ratio": 1.9798,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 43.790569,
+              "scenario_id": "2X_FEES",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 25.7116,
+            "profit_factor": 0.7677,
+            "return_pct": -2.8154,
+            "sharpe_annualised": -1.0965,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 246,
+            "total_cost_bps_per_trade": 43.7873,
+            "trades": 136,
+            "win_rate_pct": 27.9412,
+            "without_the_largest_winner": {
+              "expectancy_usdt": -2.46,
+              "net_usdt": -332.1007,
+              "removed_trade_net_usdt": 50.5589,
+              "return_pct_of_start_equity": -3.321,
+              "trades": 135
+            }
+          },
+          "ADVERSE": {
+            "avg_duration_min": 1503.53,
+            "avg_loss_usdt": -12.6338,
+            "avg_win_usdt": 24.1873,
+            "by_asset": {
+              "BTC": {
+                "net": 18.6214,
+                "trades": 50,
+                "win_rate": 38.0
+              },
+              "ETH": {
+                "net": -98.0633,
+                "trades": 43,
+                "win_rate": 23.2558
+              },
+              "SOL": {
+                "net": -239.5555,
+                "trades": 43,
+                "win_rate": 20.9302
+              }
+            },
+            "by_market_context": {
+              "BULL": {
+                "net": -344.7455,
+                "trades": 135,
+                "win_rate": 27.4074
+              },
+              "SIDEWAYS": {
+                "net": 25.7481,
+                "trades": 1,
+                "win_rate": 100.0
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": -318.9974,
+                "trades": 136,
+                "win_rate": 27.9412
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:trend_filter_fail": 139
+            },
+            "exit_reason_mix": {
+              "stop_loss": 98,
+              "target": 38
+            },
+            "expectancy_usdt": -2.3456,
+            "exposure_pct_of_time": 12.968,
+            "fees_usdt": 271.2276,
+            "final_equity": 9681.0026,
+            "gross_usdt": 15.7768,
+            "largest_trade_share_of_net": null,
+            "max_drawdown_pct": 4.3574,
+            "net_usdt": -318.9974,
+            "payoff_ratio": 1.9145,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.474342,
+              "other_bps": 0.0,
+              "round_trip_bps": 49.371708,
+              "scenario_id": "ADVERSE",
+              "size_usd": 1000.0,
+              "slippage_bps": 7.897367,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 63.5466,
+            "profit_factor": 0.7424,
+            "return_pct": -3.19,
+            "sharpe_annualised": -1.2409,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 246,
+            "total_cost_bps_per_trade": 49.3543,
+            "trades": 136,
+            "win_rate_pct": 27.9412,
+            "without_the_largest_winner": {
+              "expectancy_usdt": -2.7352,
+              "net_usdt": -369.2486,
+              "removed_trade_net_usdt": 50.2512,
+              "return_pct_of_start_equity": -3.6925,
+              "trades": 135
+            }
+          },
+          "BASE": {
+            "avg_duration_min": 1503.53,
+            "avg_loss_usdt": -11.3818,
+            "avg_win_usdt": 25.507,
+            "by_asset": {
+              "BTC": {
+                "net": 82.7493,
+                "trades": 50,
+                "win_rate": 38.0
+              },
+              "ETH": {
+                "net": -43.0913,
+                "trades": 43,
+                "win_rate": 23.2558
+              },
+              "SOL": {
+                "net": -185.8072,
+                "trades": 43,
+                "win_rate": 20.9302
+              }
+            },
+            "by_market_context": {
+              "BULL": {
+                "net": -173.2195,
+                "trades": 135,
+                "win_rate": 27.4074
+              },
+              "SIDEWAYS": {
+                "net": 27.0703,
+                "trades": 1,
+                "win_rate": 100.0
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": -146.1493,
+                "trades": 136,
+                "win_rate": 27.9412
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:trend_filter_fail": 139
+            },
+            "exit_reason_mix": {
+              "stop_loss": 98,
+              "target": 38
+            },
+            "expectancy_usdt": -1.0746,
+            "exposure_pct_of_time": 12.968,
+            "fees_usdt": 135.6697,
+            "final_equity": 9853.8507,
+            "gross_usdt": 15.2337,
+            "largest_trade_share_of_net": null,
+            "max_drawdown_pct": 3.5367,
+            "net_usdt": -146.1493,
+            "payoff_ratio": 2.241,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 20.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 23.790569,
+              "scenario_id": "BASE",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 25.7133,
+            "profit_factor": 0.869,
+            "return_pct": -1.4615,
+            "sharpe_annualised": -0.575,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 246,
+            "total_cost_bps_per_trade": 23.7887,
+            "trades": 136,
+            "win_rate_pct": 27.9412,
+            "without_the_largest_winner": {
+              "expectancy_usdt": -1.4649,
+              "net_usdt": -197.7609,
+              "removed_trade_net_usdt": 51.6116,
+              "return_pct_of_start_equity": -1.9776,
+              "trades": 135
+            }
+          }
+        }
+      }
+    },
+    "edge06_xs_momentum": {
+      "answers": "H-XS",
+      "book": "edge06_xs_momentum",
+      "reading": {
+        "disclosure": "the trend OOS window has already been read by the frozen 4h ruleset and by the robustness analysis of WP-EDGE-02, so clearing the gate here is 'not yet rejected' and never validation",
+        "evidence": {
+          "dev_base_net_usdt": 432.4416,
+          "dev_gross_usdt": 604.48,
+          "dev_trades": 175,
+          "min_oos_trades": 30,
+          "oos_2x_fees_net_usdt": 126.0126,
+          "oos_cost_bps_per_trade": 23.9065,
+          "oos_largest_trade_share_of_net": 0.6372,
+          "oos_net_usdt": 170.192,
+          "oos_trades": 45,
+          "oos_without_the_largest_usdt": 61.7396,
+          "positive_regimes_oos": 1,
+          "window_net_usdt": {
+            "DEV": 432.4416,
+            "OOS": 170.192,
+            "VAL": -78.4308
+          },
+          "windows_are_previously_read": true
+        },
+        "gate_verdict": "INSUFFICIENT_EVIDENCE",
+        "power": "powered (oos n=45 >= 30)",
+        "reasons": [
+          "the largest single trade is 0.64 of the oos net"
+        ],
+        "verdict": "INSUFFICIENT_EVIDENCE"
+      },
+      "scope": {
+        "assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "assets_are_the_declared_universe": true,
+        "declared_params": {
+          "atr_period": 14,
+          "cost_margin": 1.0,
+          "exit_ema": 100,
+          "relative_strength_lookback": 30,
+          "stop_atr": 2.0,
+          "trend_ema": 200
+        },
+        "frozen_params_source": "reports/edge-recovery/WP-EDGE-06/research/HYPOTHESES.md",
+        "provenance": {
+          "BTC": {
+            "bars": 15665,
+            "first_ts": 1546300800000,
+            "last_ts": 1772308800000,
+            "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57",
+            "sources": [
+              "reports/alpha-expansion-v1/data/BTCUSDT_2019.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2020.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2021.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2022.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2023.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2024.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2025.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2026.json"
+            ],
+            "symbol": "BTC",
+            "timeframe": "4h"
+          },
+          "ETH": {
+            "bars": 15665,
+            "first_ts": 1546300800000,
+            "last_ts": 1772308800000,
+            "sha256": "365046d4738aa7b1dee89a8fc2a544cdfa80b1b6d64ee66a207f504de85afab9",
+            "sources": [
+              "reports/alpha-expansion-v1/data/ETHUSDT_2019.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2020.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2021.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2022.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2023.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2024.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2025.json",
+              "reports/alpha-expansion-v1/data/ETHUSDT_2026.json"
+            ],
+            "symbol": "ETH",
+            "timeframe": "4h"
+          },
+          "SOL": {
+            "bars": 12153,
+            "first_ts": 1597132800000,
+            "last_ts": 1772308800000,
+            "sha256": "847d8eb45eafebd80825f3146c47e3ef34c829516ea5f8501664655f04ff1613",
+            "sources": [
+              "reports/alpha-expansion-v1/data/SOLUSDT_2020.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2021.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2022.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2023.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2024.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2025.json",
+              "reports/alpha-expansion-v1/data/SOLUSDT_2026.json"
+            ],
+            "symbol": "SOL",
+            "timeframe": "4h"
+          },
+          "aggregated_from_1h": {
+            "bars": 62724,
+            "first_ts": 1546300800000,
+            "last_ts": 1772319600000,
+            "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57",
+            "sources": [
+              "reports/alpha-expansion-v1/data/BTCUSDT_2019.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2020.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2021.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2022.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2023.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2024.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2025.json",
+              "reports/alpha-expansion-v1/data/BTCUSDT_2026.json"
+            ],
+            "symbol": "BTC",
+            "timeframe": "1h"
+          }
+        },
+        "split": "trend",
+        "timeframe": "4h"
+      },
+      "splits": {
+        "DEV": {
+          "2X_FEES": {
+            "avg_duration_min": 4064.91,
+            "avg_loss_usdt": -21.5712,
+            "avg_win_usdt": 29.8251,
+            "by_asset": {
+              "BTC": {
+                "net": -150.2034,
+                "trades": 40,
+                "win_rate": 40.0
+              },
+              "ETH": {
+                "net": -15.5292,
+                "trades": 53,
+                "win_rate": 41.5094
+              },
+              "SOL": {
+                "net": 451.0847,
+                "trades": 82,
+                "win_rate": 50.0
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": -126.4423,
+                "trades": 47,
+                "win_rate": 40.4255
+              },
+              "BULL": {
+                "net": 485.3885,
+                "trades": 118,
+                "win_rate": 46.6102
+              },
+              "SIDEWAYS": {
+                "net": -73.594,
+                "trades": 10,
+                "win_rate": 50.0
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": 285.3522,
+                "trades": 175,
+                "win_rate": 45.1429
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:not_the_relative_leader": 692
+            },
+            "exit_reason_mix": {
+              "stop_loss": 88,
+              "trailing_stop": 87
+            },
+            "expectancy_usdt": 1.6306,
+            "exposure_pct_of_time": 9.0228,
+            "fees_usdt": 288.3754,
+            "final_equity": 10285.3522,
+            "gross_usdt": 601.0553,
+            "largest_trade_share_of_net": 0.6752,
+            "max_drawdown_pct": 3.5846,
+            "net_usdt": 285.3522,
+            "payoff_ratio": 1.3826,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 43.790569,
+              "scenario_id": "2X_FEES",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 27.3277,
+            "profit_factor": 1.1378,
+            "return_pct": 2.8535,
+            "sharpe_annualised": 0.2657,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 449,
+            "total_cost_bps_per_trade": 43.9655,
+            "trades": 175,
+            "win_rate_pct": 45.1429,
+            "without_the_largest_winner": {
+              "expectancy_usdt": 0.5327,
+              "net_usdt": 92.6928,
+              "removed_trade_net_usdt": 192.6594,
+              "return_pct_of_start_equity": 0.9269,
+              "trades": 174
+            }
+          },
+          "ADVERSE": {
+            "avg_duration_min": 4069.03,
+            "avg_loss_usdt": -21.9732,
+            "avg_win_usdt": 29.4578,
+            "by_asset": {
+              "BTC": {
+                "net": -160.2934,
+                "trades": 40,
+                "win_rate": 40.0
+              },
+              "ETH": {
+                "net": -29.3807,
+                "trades": 53,
+                "win_rate": 41.5094
+              },
+              "SOL": {
+                "net": 407.4164,
+                "trades": 82,
+                "win_rate": 50.0
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": -137.6457,
+                "trades": 47,
+                "win_rate": 40.4255
+              },
+              "BULL": {
+                "net": 430.8792,
+                "trades": 118,
+                "win_rate": 46.6102
+              },
+              "SIDEWAYS": {
+                "net": -75.4912,
+                "trades": 10,
+                "win_rate": 50.0
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": 217.7424,
+                "trades": 175,
+                "win_rate": 45.1429
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:not_the_relative_leader": 692
+            },
+            "exit_reason_mix": {
+              "stop_loss": 89,
+              "trailing_stop": 86
+            },
+            "expectancy_usdt": 1.2442,
+            "exposure_pct_of_time": 9.032,
+            "fees_usdt": 287.2879,
+            "final_equity": 10217.7424,
+            "gross_usdt": 572.3398,
+            "largest_trade_share_of_net": 0.8789,
+            "max_drawdown_pct": 3.9413,
+            "net_usdt": 217.7424,
+            "payoff_ratio": 1.3406,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.474342,
+              "other_bps": 0.0,
+              "round_trip_bps": 49.371708,
+              "scenario_id": "ADVERSE",
+              "size_usd": 1000.0,
+              "slippage_bps": 7.897367,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 67.3096,
+            "profit_factor": 1.1032,
+            "return_pct": 2.1774,
+            "sharpe_annualised": 0.2058,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 449,
+            "total_cost_bps_per_trade": 49.5459,
+            "trades": 175,
+            "win_rate_pct": 45.1429,
+            "without_the_largest_winner": {
+              "expectancy_usdt": 0.1515,
+              "net_usdt": 26.3641,
+              "removed_trade_net_usdt": 191.3783,
+              "return_pct_of_start_equity": 0.2636,
+              "trades": 174
+            }
+          },
+          "BASE": {
+            "avg_duration_min": 4064.91,
+            "avg_loss_usdt": -21.7687,
+            "avg_win_usdt": 29.3393,
+            "by_asset": {
+              "BTC": {
+                "net": -111.8178,
+                "trades": 40,
+                "win_rate": 42.5
+              },
+              "ETH": {
+                "net": 32.5998,
+                "trades": 53,
+                "win_rate": 43.3962
+              },
+              "SOL": {
+                "net": 511.6597,
+                "trades": 82,
+                "win_rate": 52.439
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": -84.9464,
+                "trades": 47,
+                "win_rate": 40.4255
+              },
+              "BULL": {
+                "net": 583.2812,
+                "trades": 118,
+                "win_rate": 50.0
+              },
+              "SIDEWAYS": {
+                "net": -65.8932,
+                "trades": 10,
+                "win_rate": 50.0
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": 432.4416,
+                "trades": 175,
+                "win_rate": 47.4286
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:not_the_relative_leader": 692
+            },
+            "exit_reason_mix": {
+              "stop_loss": 88,
+              "trailing_stop": 87
+            },
+            "expectancy_usdt": 2.4711,
+            "exposure_pct_of_time": 9.0228,
+            "fees_usdt": 144.6273,
+            "final_equity": 10432.4416,
+            "gross_usdt": 604.48,
+            "largest_trade_share_of_net": 0.4498,
+            "max_drawdown_pct": 3.1576,
+            "net_usdt": 432.4416,
+            "payoff_ratio": 1.3478,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 20.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 23.790569,
+              "scenario_id": "BASE",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 27.411,
+            "profit_factor": 1.2159,
+            "return_pct": 4.3244,
+            "sharpe_annualised": 0.3988,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 449,
+            "total_cost_bps_per_trade": 23.8859,
+            "trades": 175,
+            "win_rate_pct": 47.4286,
+            "without_the_largest_winner": {
+              "expectancy_usdt": 1.3674,
+              "net_usdt": 237.9359,
+              "removed_trade_net_usdt": 194.5057,
+              "return_pct_of_start_equity": 2.3794,
+              "trades": 174
+            }
+          }
+        },
+        "OOS": {
+          "2X_FEES": {
+            "avg_duration_min": 4362.67,
+            "avg_loss_usdt": -19.4847,
+            "avg_win_usdt": 39.505,
+            "by_asset": {
+              "BTC": {
+                "net": -10.8865,
+                "trades": 11,
+                "win_rate": 27.2727
+              },
+              "ETH": {
+                "net": 94.37,
+                "trades": 18,
+                "win_rate": 38.8889
+              },
+              "SOL": {
+                "net": 42.529,
+                "trades": 16,
+                "win_rate": 43.75
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": 2.084,
+                "trades": 7,
+                "win_rate": 42.8571
+              },
+              "BULL": {
+                "net": 149.781,
+                "trades": 36,
+                "win_rate": 36.1111
+              },
+              "SIDEWAYS": {
+                "net": -25.8525,
+                "trades": 2,
+                "win_rate": 50.0
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": 126.0126,
+                "trades": 45,
+                "win_rate": 37.7778
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:not_the_relative_leader": 138
+            },
+            "exit_reason_mix": {
+              "stop_loss": 28,
+              "trailing_stop": 17
+            },
+            "expectancy_usdt": 2.8003,
+            "exposure_pct_of_time": 10.7434,
+            "fees_usdt": 88.4371,
+            "final_equity": 10126.0126,
+            "gross_usdt": 222.8303,
+            "largest_trade_share_of_net": 0.852,
+            "max_drawdown_pct": 2.0307,
+            "net_usdt": 126.0126,
+            "payoff_ratio": 2.0275,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 43.790569,
+              "scenario_id": "2X_FEES",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 8.3807,
+            "profit_factor": 1.231,
+            "return_pct": 1.2601,
+            "sharpe_annualised": 0.533,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 120,
+            "total_cost_bps_per_trade": 44.004,
+            "trades": 45,
+            "win_rate_pct": 37.7778,
+            "without_the_largest_winner": {
+              "expectancy_usdt": 0.424,
+              "net_usdt": 18.655,
+              "removed_trade_net_usdt": 107.3576,
+              "return_pct_of_start_equity": 0.1865,
+              "trades": 44
+            }
+          },
+          "ADVERSE": {
+            "avg_duration_min": 4362.67,
+            "avg_loss_usdt": -19.7399,
+            "avg_win_usdt": 39.1646,
+            "by_asset": {
+              "BTC": {
+                "net": -13.9553,
+                "trades": 11,
+                "win_rate": 27.2727
+              },
+              "ETH": {
+                "net": 89.3814,
+                "trades": 18,
+                "win_rate": 38.8889
+              },
+              "SOL": {
+                "net": 37.6551,
+                "trades": 16,
+                "win_rate": 43.75
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": -0.0858,
+                "trades": 7,
+                "win_rate": 42.8571
+              },
+              "BULL": {
+                "net": 139.5641,
+                "trades": 36,
+                "win_rate": 36.1111
+              },
+              "SIDEWAYS": {
+                "net": -26.3971,
+                "trades": 2,
+                "win_rate": 50.0
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": 113.0812,
+                "trades": 45,
+                "win_rate": 37.7778
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:not_the_relative_leader": 138
+            },
+            "exit_reason_mix": {
+              "stop_loss": 28,
+              "trailing_stop": 17
+            },
+            "expectancy_usdt": 2.5129,
+            "exposure_pct_of_time": 10.7434,
+            "fees_usdt": 88.3736,
+            "final_equity": 10113.0812,
+            "gross_usdt": 222.1601,
+            "largest_trade_share_of_net": 0.9416,
+            "max_drawdown_pct": 2.0645,
+            "net_usdt": 113.0812,
+            "payoff_ratio": 1.984,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.474342,
+              "other_bps": 0.0,
+              "round_trip_bps": 49.371708,
+              "scenario_id": "ADVERSE",
+              "size_usd": 1000.0,
+              "slippage_bps": 7.897367,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 20.7053,
+            "profit_factor": 1.2046,
+            "return_pct": 1.1308,
+            "sharpe_annualised": 0.4792,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 120,
+            "total_cost_bps_per_trade": 49.5979,
+            "trades": 45,
+            "win_rate_pct": 37.7778,
+            "without_the_largest_winner": {
+              "expectancy_usdt": 0.1502,
+              "net_usdt": 6.6074,
+              "removed_trade_net_usdt": 106.4738,
+              "return_pct_of_start_equity": 0.0661,
+              "trades": 44
+            }
+          },
+          "BASE": {
+            "avg_duration_min": 4362.67,
+            "avg_loss_usdt": -18.5238,
+            "avg_win_usdt": 40.5211,
+            "by_asset": {
+              "BTC": {
+                "net": 0.1247,
+                "trades": 11,
+                "win_rate": 27.2727
+              },
+              "ETH": {
+                "net": 112.1417,
+                "trades": 18,
+                "win_rate": 38.8889
+              },
+              "SOL": {
+                "net": 57.9256,
+                "trades": 16,
+                "win_rate": 43.75
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": 9.0405,
+                "trades": 7,
+                "win_rate": 42.8571
+              },
+              "BULL": {
+                "net": 185.0259,
+                "trades": 36,
+                "win_rate": 36.1111
+              },
+              "SIDEWAYS": {
+                "net": -23.8744,
+                "trades": 2,
+                "win_rate": 50.0
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": 170.192,
+                "trades": 45,
+                "win_rate": 37.7778
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:not_the_relative_leader": 138
+            },
+            "exit_reason_mix": {
+              "stop_loss": 28,
+              "trailing_stop": 17
+            },
+            "expectancy_usdt": 3.782,
+            "exposure_pct_of_time": 10.7434,
+            "fees_usdt": 44.2227,
+            "final_equity": 10170.192,
+            "gross_usdt": 222.7961,
+            "largest_trade_share_of_net": 0.6372,
+            "max_drawdown_pct": 1.9071,
+            "net_usdt": 170.192,
+            "payoff_ratio": 2.1875,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 20.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 23.790569,
+              "scenario_id": "BASE",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 8.3815,
+            "profit_factor": 1.3281,
+            "return_pct": 1.7019,
+            "sharpe_annualised": 0.7248,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 120,
+            "total_cost_bps_per_trade": 23.9065,
+            "trades": 45,
+            "win_rate_pct": 37.7778,
+            "without_the_largest_winner": {
+              "expectancy_usdt": 1.4032,
+              "net_usdt": 61.7396,
+              "removed_trade_net_usdt": 108.4524,
+              "return_pct_of_start_equity": 0.6174,
+              "trades": 44
+            }
+          }
+        },
+        "VAL": {
+          "2X_FEES": {
+            "avg_duration_min": 4100.34,
+            "avg_loss_usdt": -19.8397,
+            "avg_win_usdt": 19.9916,
+            "by_asset": {
+              "BTC": {
+                "net": -32.0331,
+                "trades": 18,
+                "win_rate": 50.0
+              },
+              "ETH": {
+                "net": -23.8536,
+                "trades": 19,
+                "win_rate": 42.1053
+              },
+              "SOL": {
+                "net": -79.0427,
+                "trades": 22,
+                "win_rate": 40.9091
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": -31.8303,
+                "trades": 3,
+                "win_rate": 33.3333
+              },
+              "BULL": {
+                "net": -8.3604,
+                "trades": 50,
+                "win_rate": 48.0
+              },
+              "SIDEWAYS": {
+                "net": -94.7385,
+                "trades": 6,
+                "win_rate": 16.6667
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": -134.9293,
+                "trades": 59,
+                "win_rate": 44.0678
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:not_the_relative_leader": 136
+            },
+            "exit_reason_mix": {
+              "stop_loss": 31,
+              "trailing_stop": 28
+            },
+            "expectancy_usdt": -2.2869,
+            "exposure_pct_of_time": 15.3425,
+            "fees_usdt": 112.6708,
+            "final_equity": 9865.0707,
+            "gross_usdt": -11.5814,
+            "largest_trade_share_of_net": null,
+            "max_drawdown_pct": 3.2237,
+            "net_usdt": -134.9293,
+            "payoff_ratio": 1.0077,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 43.790569,
+              "scenario_id": "2X_FEES",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 10.6772,
+            "profit_factor": 0.7939,
+            "return_pct": -1.3493,
+            "sharpe_annualised": -0.5944,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 156,
+            "total_cost_bps_per_trade": 43.7733,
+            "trades": 59,
+            "win_rate_pct": 44.0678,
+            "without_the_largest_winner": {
+              "expectancy_usdt": -3.3202,
+              "net_usdt": -192.569,
+              "removed_trade_net_usdt": 57.6397,
+              "return_pct_of_start_equity": -1.9257,
+              "trades": 58
+            }
+          },
+          "ADVERSE": {
+            "avg_duration_min": 4100.34,
+            "avg_loss_usdt": -20.0609,
+            "avg_win_usdt": 19.6757,
+            "by_asset": {
+              "BTC": {
+                "net": -36.8464,
+                "trades": 18,
+                "win_rate": 50.0
+              },
+              "ETH": {
+                "net": -29.1759,
+                "trades": 19,
+                "win_rate": 42.1053
+              },
+              "SOL": {
+                "net": -84.4208,
+                "trades": 22,
+                "win_rate": 40.9091
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": -32.6512,
+                "trades": 3,
+                "win_rate": 33.3333
+              },
+              "BULL": {
+                "net": -21.6445,
+                "trades": 50,
+                "win_rate": 48.0
+              },
+              "SIDEWAYS": {
+                "net": -96.1474,
+                "trades": 6,
+                "win_rate": 16.6667
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": -150.4431,
+                "trades": 59,
+                "win_rate": 44.0678
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:not_the_relative_leader": 136
+            },
+            "exit_reason_mix": {
+              "stop_loss": 31,
+              "trailing_stop": 28
+            },
+            "expectancy_usdt": -2.5499,
+            "exposure_pct_of_time": 15.3425,
+            "fees_usdt": 112.5182,
+            "final_equity": 9849.5569,
+            "gross_usdt": -11.5627,
+            "largest_trade_share_of_net": null,
+            "max_drawdown_pct": 3.3215,
+            "net_usdt": -150.4431,
+            "payoff_ratio": 0.9808,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 40.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.474342,
+              "other_bps": 0.0,
+              "round_trip_bps": 49.371708,
+              "scenario_id": "ADVERSE",
+              "size_usd": 1000.0,
+              "slippage_bps": 7.897367,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 26.3622,
+            "profit_factor": 0.7727,
+            "return_pct": -1.5044,
+            "sharpe_annualised": -0.664,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 156,
+            "total_cost_bps_per_trade": 49.3384,
+            "trades": 59,
+            "win_rate_pct": 44.0678,
+            "without_the_largest_winner": {
+              "expectancy_usdt": -3.583,
+              "net_usdt": -207.8127,
+              "removed_trade_net_usdt": 57.3696,
+              "return_pct_of_start_equity": -2.0781,
+              "trades": 58
+            }
+          },
+          "BASE": {
+            "avg_duration_min": 4100.34,
+            "avg_loss_usdt": -18.924,
+            "avg_win_usdt": 21.0023,
+            "by_asset": {
+              "BTC": {
+                "net": -14.3227,
+                "trades": 18,
+                "win_rate": 50.0
+              },
+              "ETH": {
+                "net": -5.2691,
+                "trades": 19,
+                "win_rate": 42.1053
+              },
+              "SOL": {
+                "net": -58.839,
+                "trades": 22,
+                "win_rate": 40.9091
+              }
+            },
+            "by_market_context": {
+              "BEAR": {
+                "net": -28.8562,
+                "trades": 3,
+                "win_rate": 33.3333
+              },
+              "BULL": {
+                "net": 39.7364,
+                "trades": 50,
+                "win_rate": 48.0
+              },
+              "SIDEWAYS": {
+                "net": -89.311,
+                "trades": 6,
+                "win_rate": 16.6667
+              }
+            },
+            "by_regime": {
+              "UP": {
+                "net": -78.4308,
+                "trades": 59,
+                "win_rate": 44.0678
+              }
+            },
+            "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+            "candidate_refusals": {
+              "candidate:not_the_relative_leader": 136
+            },
+            "exit_reason_mix": {
+              "stop_loss": 31,
+              "trailing_stop": 28
+            },
+            "expectancy_usdt": -1.3293,
+            "exposure_pct_of_time": 15.3425,
+            "fees_usdt": 56.3746,
+            "final_equity": 9921.5692,
+            "gross_usdt": -11.3715,
+            "largest_trade_share_of_net": null,
+            "max_drawdown_pct": 2.8862,
+            "net_usdt": -78.4308,
+            "payoff_ratio": 1.1098,
+            "plane": {
+              "cost_model_version": "COST_MODEL_V3",
+              "fee_bps": 20.0,
+              "funding_bps": 0.0,
+              "horizon_minutes": 1440.0,
+              "impact_bps": 0.158114,
+              "other_bps": 0.0,
+              "round_trip_bps": 23.790569,
+              "scenario_id": "BASE",
+              "size_usd": 1000.0,
+              "slippage_bps": 2.632456,
+              "spread_bps": 1.0
+            },
+            "price_costs_usdt": 10.6846,
+            "profit_factor": 0.8744,
+            "return_pct": -0.7843,
+            "sharpe_annualised": -0.3456,
+            "sharpe_convention": "per-4h equity returns, annualised with 2190 bars/year; None when fewer than 100 observations",
+            "signals_printed": 156,
+            "total_cost_bps_per_trade": 23.7813,
+            "trades": 59,
+            "win_rate_pct": 44.0678,
+            "without_the_largest_winner": {
+              "expectancy_usdt": -2.3643,
+              "net_usdt": -137.1316,
+              "removed_trade_net_usdt": 58.7008,
+              "return_pct_of_start_equity": -1.3713,
+              "trades": 58
+            }
+          }
+        }
+      }
+    }
+  },
+  "hypothetical": true,
+  "order_sent": false,
+  "promotion": "NONE",
+  "reference": {
+    "books": {
+      "edge_intra_01": {
+        "splits": {
+          "DEV": {
+            "2X_FEES": {
+              "expectancy_usdt": -2.5468,
+              "fees_usdt": 393.7841,
+              "gross_usdt": -70.6193,
+              "largest_trade_share_of_net": null,
+              "max_drawdown_pct": 5.0956,
+              "net_usdt": -501.72,
+              "price_costs_usdt": 37.3166,
+              "profit_factor": 0.229,
+              "trades": 197
+            },
+            "ADVERSE": {
+              "expectancy_usdt": -2.9359,
+              "fees_usdt": 337.683,
+              "gross_usdt": -79.3675,
+              "largest_trade_share_of_net": null,
+              "max_drawdown_pct": 5.0361,
+              "net_usdt": -496.1672,
+              "price_costs_usdt": 79.1167,
+              "profit_factor": 0.1927,
+              "trades": 169
+            },
+            "BASE": {
+              "expectancy_usdt": -1.7118,
+              "fees_usdt": 289.7934,
+              "gross_usdt": -151.7123,
+              "largest_trade_share_of_net": null,
+              "max_drawdown_pct": 5.0427,
+              "net_usdt": -496.4298,
+              "price_costs_usdt": 54.9241,
+              "profit_factor": 0.3224,
+              "trades": 290
+            }
+          },
+          "OOS": {
+            "2X_FEES": {
+              "expectancy_usdt": -2.5616,
+              "fees_usdt": 103.9415,
+              "gross_usdt": -19.4097,
+              "largest_trade_share_of_net": null,
+              "max_drawdown_pct": 1.332,
+              "net_usdt": -133.2011,
+              "price_costs_usdt": 9.8499,
+              "profit_factor": 0.1843,
+              "trades": 52
+            },
+            "ADVERSE": {
+              "expectancy_usdt": -2.7182,
+              "fees_usdt": 91.9338,
+              "gross_usdt": -11.5628,
+              "largest_trade_share_of_net": null,
+              "max_drawdown_pct": 1.2504,
+              "net_usdt": -125.036,
+              "price_costs_usdt": 21.5394,
+              "profit_factor": 0.1806,
+              "trades": 46
+            },
+            "BASE": {
+              "expectancy_usdt": -1.5049,
+              "fees_usdt": 62.9682,
+              "gross_usdt": -19.9052,
+              "largest_trade_share_of_net": null,
+              "max_drawdown_pct": 0.9481,
+              "net_usdt": -94.8077,
+              "price_costs_usdt": 11.9343,
+              "profit_factor": 0.3028,
+              "trades": 63
+            }
+          },
+          "VAL": {
+            "2X_FEES": {
+              "expectancy_usdt": -2.2127,
+              "fees_usdt": 459.902,
+              "gross_usdt": -5.4346,
+              "largest_trade_share_of_net": null,
+              "max_drawdown_pct": 5.0892,
+              "net_usdt": -508.9188,
+              "price_costs_usdt": 43.5823,
+              "profit_factor": 0.2646,
+              "trades": 230
+            },
+            "ADVERSE": {
+              "expectancy_usdt": -2.4154,
+              "fees_usdt": 417.826,
+              "gross_usdt": 10.9002,
+              "largest_trade_share_of_net": null,
+              "max_drawdown_pct": 5.0482,
+              "net_usdt": -504.8194,
+              "price_costs_usdt": 97.8936,
+              "profit_factor": 0.2519,
+              "trades": 209
+            },
+            "BASE": {
+              "expectancy_usdt": -1.393,
+              "fees_usdt": 343.8647,
+              "gross_usdt": -70.1464,
+              "largest_trade_share_of_net": null,
+              "max_drawdown_pct": 4.8288,
+              "net_usdt": -479.1833,
+              "price_costs_usdt": 65.1721,
+              "profit_factor": 0.3722,
+              "trades": 344
+            }
+          }
+        },
+        "verdict": "REJECT"
+      },
+      "edge_trend_01_1d": {
+        "splits": {
+          "DEV": {
+            "2X_FEES": {
+              "expectancy_usdt": 23.3684,
+              "fees_usdt": 29.0367,
+              "gross_usdt": 943.154,
+              "largest_trade_share_of_net": 0.1443,
+              "max_drawdown_pct": 1.1841,
+              "net_usdt": 911.3657,
+              "price_costs_usdt": 2.7517,
+              "profit_factor": 3.8479,
+              "trades": 39
+            },
+            "ADVERSE": {
+              "expectancy_usdt": 23.2148,
+              "fees_usdt": 28.9656,
+              "gross_usdt": 941.1298,
+              "largest_trade_share_of_net": 0.1448,
+              "max_drawdown_pct": 1.1869,
+              "net_usdt": 905.3776,
+              "price_costs_usdt": 6.7866,
+              "profit_factor": 3.825,
+              "trades": 39
+            },
+            "BASE": {
+              "expectancy_usdt": 23.7566,
+              "fees_usdt": 14.5278,
+              "gross_usdt": 943.7902,
+              "largest_trade_share_of_net": 0.1426,
+              "max_drawdown_pct": 1.1665,
+              "net_usdt": 926.5089,
+              "price_costs_usdt": 2.7535,
+              "profit_factor": 3.9338,
+              "trades": 39
+            }
+          },
+          "OOS": {
+            "2X_FEES": {
+              "expectancy_usdt": -9.6278,
+              "fees_usdt": 13.215,
+              "gross_usdt": -110.6947,
+              "largest_trade_share_of_net": null,
+              "max_drawdown_pct": 1.8139,
+              "net_usdt": -125.162,
+              "price_costs_usdt": 1.2523,
+              "profit_factor": 0.3989,
+              "trades": 13
+            },
+            "ADVERSE": {
+              "expectancy_usdt": -9.7361,
+              "fees_usdt": 13.1688,
+              "gross_usdt": -110.3153,
+              "largest_trade_share_of_net": null,
+              "max_drawdown_pct": 1.8206,
+              "net_usdt": -126.5695,
+              "price_costs_usdt": 3.0853,
+              "profit_factor": 0.3936,
+              "trades": 13
+            },
+            "BASE": {
+              "expectancy_usdt": -9.1231,
+              "fees_usdt": 6.6092,
+              "gross_usdt": -110.7385,
+              "largest_trade_share_of_net": null,
+              "max_drawdown_pct": 1.76,
+              "net_usdt": -118.6003,
+              "price_costs_usdt": 1.2526,
+              "profit_factor": 0.4192,
+              "trades": 13
+            }
+          },
+          "VAL": {
+            "2X_FEES": {
+              "expectancy_usdt": 3.9481,
+              "fees_usdt": 15.1483,
+              "gross_usdt": 95.5466,
+              "largest_trade_share_of_net": 1.7407,
+              "max_drawdown_pct": 2.989,
+              "net_usdt": 78.9627,
+              "price_costs_usdt": 1.4355,
+              "profit_factor": 1.2466,
+              "trades": 20
+            },
+            "ADVERSE": {
+              "expectancy_usdt": 3.8201,
+              "fees_usdt": 15.1122,
+              "gross_usdt": 95.055,
+              "largest_trade_share_of_net": 1.7902,
+              "max_drawdown_pct": 2.9947,
+              "net_usdt": 76.4021,
+              "price_costs_usdt": 3.5407,
+              "profit_factor": 1.2383,
+              "trades": 20
+            },
+            "BASE": {
+              "expectancy_usdt": 4.3269,
+              "fees_usdt": 7.5766,
+              "gross_usdt": 95.5507,
+              "largest_trade_share_of_net": 1.5971,
+              "max_drawdown_pct": 2.9423,
+              "net_usdt": 86.5381,
+              "price_costs_usdt": 1.436,
+              "profit_factor": 1.274,
+              "trades": 20
+            }
+          }
+        },
+        "verdict": "INSUFFICIENT_EVIDENCE"
+      },
+      "edge_trend_01_4h": {
+        "splits": {
+          "DEV": {
+            "2X_FEES": {
+              "expectancy_usdt": 7.7973,
+              "fees_usdt": 347.804,
+              "gross_usdt": 2119.5645,
+              "largest_trade_share_of_net": 0.0729,
+              "max_drawdown_pct": 4.4546,
+              "net_usdt": 1738.801,
+              "price_costs_usdt": 32.9595,
+              "profit_factor": 1.6874,
+              "trades": 223
+            },
+            "ADVERSE": {
+              "expectancy_usdt": 7.547,
+              "fees_usdt": 346.5855,
+              "gross_usdt": 2110.7729,
+              "largest_trade_share_of_net": 0.0747,
+              "max_drawdown_pct": 4.4916,
+              "net_usdt": 1682.9844,
+              "price_costs_usdt": 81.2029,
+              "profit_factor": 1.6625,
+              "trades": 223
+            },
+            "BASE": {
+              "expectancy_usdt": 8.6152,
+              "fees_usdt": 174.6333,
+              "gross_usdt": 2128.9105,
+              "largest_trade_share_of_net": 0.0673,
+              "max_drawdown_pct": 4.2793,
+              "net_usdt": 1921.1792,
+              "price_costs_usdt": 33.0981,
+              "profit_factor": 1.7782,
+              "trades": 223
+            }
+          },
+          "OOS": {
+            "2X_FEES": {
+              "expectancy_usdt": 3.0899,
+              "fees_usdt": 94.6135,
+              "gross_usdt": 264.2518,
+              "largest_trade_share_of_net": 1.0267,
+              "max_drawdown_pct": 2.7025,
+              "net_usdt": 160.6723,
+              "price_costs_usdt": 8.966,
+              "profit_factor": 1.2461,
+              "trades": 52
+            },
+            "ADVERSE": {
+              "expectancy_usdt": 2.8248,
+              "fees_usdt": 94.4339,
+              "gross_usdt": 263.4499,
+              "largest_trade_share_of_net": 1.1205,
+              "max_drawdown_pct": 2.7312,
+              "net_usdt": 146.8908,
+              "price_costs_usdt": 22.1252,
+              "profit_factor": 1.2231,
+              "trades": 52
+            },
+            "BASE": {
+              "expectancy_usdt": 4.0001,
+              "fees_usdt": 47.3423,
+              "gross_usdt": 264.3207,
+              "largest_trade_share_of_net": 0.7987,
+              "max_drawdown_pct": 2.567,
+              "net_usdt": 208.0056,
+              "price_costs_usdt": 8.9727,
+              "profit_factor": 1.3312,
+              "trades": 52
+            }
+          },
+          "VAL": {
+            "2X_FEES": {
+              "expectancy_usdt": -0.7662,
+              "fees_usdt": 97.4099,
+              "gross_usdt": 62.2021,
+              "largest_trade_share_of_net": null,
+              "max_drawdown_pct": 4.3857,
+              "net_usdt": -44.4387,
+              "price_costs_usdt": 9.231,
+              "profit_factor": 0.9356,
+              "trades": 58
+            },
+            "ADVERSE": {
+              "expectancy_usdt": -1.0131,
+              "fees_usdt": 97.1959,
+              "gross_usdt": 61.2067,
+              "largest_trade_share_of_net": null,
+              "max_drawdown_pct": 4.4569,
+              "net_usdt": -58.7616,
+              "price_costs_usdt": 22.7723,
+              "profit_factor": 0.9155,
+              "trades": 58
+            },
+            "BASE": {
+              "expectancy_usdt": 0.078,
+              "fees_usdt": 48.753,
+              "gross_usdt": 62.5185,
+              "largest_trade_share_of_net": 27.5248,
+              "max_drawdown_pct": 4.1002,
+              "net_usdt": 4.5253,
+              "price_costs_usdt": 9.2401,
+              "profit_factor": 1.0068,
+              "trades": 58
+            }
+          }
+        },
+        "verdict": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    "note": "measured by the WP-EDGE-01 campaign, not by this work package",
+    "source": "reports/edge-recovery/WP-EDGE-01/STRATEGY_RESULTS.json"
+  },
+  "run_id": "EDGE06-PROGRAM-20261014T081030Z",
+  "schema_version": "EDGE06_FAMILY_PROGRAM_V1",
+  "windows": {
+    "intraday": {
+      "DEV": {
+        "end_utc": "2025-06-30T00:00:00+00:00",
+        "start_utc": "2024-10-01T00:00:00+00:00"
+      },
+      "OOS": {
+        "end_utc": "2026-10-07T00:00:00+00:00",
+        "start_utc": "2026-01-01T00:00:00+00:00"
+      },
+      "VAL": {
+        "end_utc": "2025-12-31T00:00:00+00:00",
+        "start_utc": "2025-07-01T00:00:00+00:00"
+      }
+    },
+    "trend": {
+      "DEV": {
+        "end_utc": "2023-12-31T00:00:00+00:00",
+        "start_utc": "2019-01-01T00:00:00+00:00"
+      },
+      "OOS": {
+        "end_utc": "2026-02-28T00:00:00+00:00",
+        "start_utc": "2025-01-01T00:00:00+00:00"
+      },
+      "VAL": {
+        "end_utc": "2024-12-31T00:00:00+00:00",
+        "start_utc": "2024-01-01T00:00:00+00:00"
+      }
+    }
+  }
+}

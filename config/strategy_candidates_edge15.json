@@ -1,0 +1,191 @@
+{
+  "_claim": "WP-EDGE-015 research candidates, registered with the runtime's vocabulary and NOT admitted: admitted_for_paper is false for every one of them, and the authoritative ledger config/strategy_admission.json is untouched",
+  "_generated_by": "scripts/edge15_alphas.py",
+  "_schema_version": "strategy-admission-ledger-v1",
+  "_sources": [
+    {
+      "path": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+      "sha256": ""
+    }
+  ],
+  "cross_sectional_rotation@BTCUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": -35.6295,
+    "family": "cross_sectional_rotation",
+    "known": true,
+    "rationale": "WP-EDGE-015: TESTED; held-out verdict REJECT; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_CANDIDATE",
+    "strategy_id": "cross_sectional_rotation@BTCUSDT@1h",
+    "timeframe": "1h"
+  },
+  "cross_sectional_rotation@ETHUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": -35.6295,
+    "family": "cross_sectional_rotation",
+    "known": true,
+    "rationale": "WP-EDGE-015: TESTED; held-out verdict REJECT; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_CANDIDATE",
+    "strategy_id": "cross_sectional_rotation@ETHUSDT@1h",
+    "timeframe": "1h"
+  },
+  "cross_sectional_rotation@SOLUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": -35.6295,
+    "family": "cross_sectional_rotation",
+    "known": true,
+    "rationale": "WP-EDGE-015: TESTED; held-out verdict REJECT; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_CANDIDATE",
+    "strategy_id": "cross_sectional_rotation@SOLUSDT@1h",
+    "timeframe": "1h"
+  },
+  "maker_only_spread_capture@BTCUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": null,
+    "family": "maker_only_spread_capture",
+    "known": true,
+    "rationale": "WP-EDGE-015: DEFER_NO_FILL_MODEL; held-out verdict DEFER_NO_FILL_MODEL; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_REQUIRED",
+    "strategy_id": "maker_only_spread_capture@BTCUSDT@1h",
+    "timeframe": "1h"
+  },
+  "maker_only_spread_capture@ETHUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": null,
+    "family": "maker_only_spread_capture",
+    "known": true,
+    "rationale": "WP-EDGE-015: DEFER_NO_FILL_MODEL; held-out verdict DEFER_NO_FILL_MODEL; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_REQUIRED",
+    "strategy_id": "maker_only_spread_capture@ETHUSDT@1h",
+    "timeframe": "1h"
+  },
+  "maker_only_spread_capture@SOLUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": null,
+    "family": "maker_only_spread_capture",
+    "known": true,
+    "rationale": "WP-EDGE-015: DEFER_NO_FILL_MODEL; held-out verdict DEFER_NO_FILL_MODEL; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_REQUIRED",
+    "strategy_id": "maker_only_spread_capture@SOLUSDT@1h",
+    "timeframe": "1h"
+  },
+  "mean_reversion_vol_liq@BTCUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": 54.8413,
+    "family": "mean_reversion_vol_liq",
+    "known": true,
+    "rationale": "WP-EDGE-015: TESTED; held-out verdict EXPERIMENT_COST_FRAGILE; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_CANDIDATE",
+    "strategy_id": "mean_reversion_vol_liq@BTCUSDT@1h",
+    "timeframe": "1h"
+  },
+  "mean_reversion_vol_liq@ETHUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": 54.8413,
+    "family": "mean_reversion_vol_liq",
+    "known": true,
+    "rationale": "WP-EDGE-015: TESTED; held-out verdict EXPERIMENT_COST_FRAGILE; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_CANDIDATE",
+    "strategy_id": "mean_reversion_vol_liq@ETHUSDT@1h",
+    "timeframe": "1h"
+  },
+  "mean_reversion_vol_liq@SOLUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": 54.8413,
+    "family": "mean_reversion_vol_liq",
+    "known": true,
+    "rationale": "WP-EDGE-015: TESTED; held-out verdict EXPERIMENT_COST_FRAGILE; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_CANDIDATE",
+    "strategy_id": "mean_reversion_vol_liq@SOLUSDT@1h",
+    "timeframe": "1h"
+  },
+  "trend_pullback@BTCUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": -37.0432,
+    "family": "trend_pullback",
+    "known": true,
+    "rationale": "WP-EDGE-015: TESTED; held-out verdict REJECT; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_CANDIDATE",
+    "strategy_id": "trend_pullback@BTCUSDT@1h",
+    "timeframe": "1h"
+  },
+  "trend_pullback@ETHUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": -37.0432,
+    "family": "trend_pullback",
+    "known": true,
+    "rationale": "WP-EDGE-015: TESTED; held-out verdict REJECT; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_CANDIDATE",
+    "strategy_id": "trend_pullback@ETHUSDT@1h",
+    "timeframe": "1h"
+  },
+  "trend_pullback@SOLUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": -37.0432,
+    "family": "trend_pullback",
+    "known": true,
+    "rationale": "WP-EDGE-015: TESTED; held-out verdict REJECT; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_CANDIDATE",
+    "strategy_id": "trend_pullback@SOLUSDT@1h",
+    "timeframe": "1h"
+  },
+  "vol_regime_breakout@BTCUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": 223.7941,
+    "family": "vol_regime_breakout",
+    "known": true,
+    "rationale": "WP-EDGE-015: TESTED; held-out verdict REJECT_OUTLIER_DRIVEN; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_CANDIDATE",
+    "strategy_id": "vol_regime_breakout@BTCUSDT@1h",
+    "timeframe": "1h"
+  },
+  "vol_regime_breakout@ETHUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": 223.7941,
+    "family": "vol_regime_breakout",
+    "known": true,
+    "rationale": "WP-EDGE-015: TESTED; held-out verdict REJECT_OUTLIER_DRIVEN; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_CANDIDATE",
+    "strategy_id": "vol_regime_breakout@ETHUSDT@1h",
+    "timeframe": "1h"
+  },
+  "vol_regime_breakout@SOLUSDT@1h": {
+    "admitted_for_paper": false,
+    "edge_evidence": null,
+    "expected_gross_edge_bps": 223.7941,
+    "family": "vol_regime_breakout",
+    "known": true,
+    "rationale": "WP-EDGE-015: TESTED; held-out verdict REJECT_OUTLIER_DRIVEN; disabled until an admitted gross edge exists on data the selection never read",
+    "source_doc": "reports/economic-recovery/RFC-EDGE-015/ALPHA_RESULTS.json",
+    "status": "RESEARCH_CANDIDATE",
+    "strategy_id": "vol_regime_breakout@SOLUSDT@1h",
+    "timeframe": "1h"
+  }
+}
