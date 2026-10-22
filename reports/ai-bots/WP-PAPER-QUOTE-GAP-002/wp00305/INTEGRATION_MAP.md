@@ -64,7 +64,7 @@ Se construyó una rama limpia desde el tronco y se fue midiendo qué falta, un e
 
 | Paso | Lo que se añadió | Origen exacto | Fallo medido que lo exigió |
 | --- | --- | --- | --- |
-| L1 | 13 ficheros: guardia de aislamiento en `execution/__init__.py`, `execution/isolation.py`, `app.py` y los 3 conectores de venue, más su test | `0bdda77d` (WP-003-02) | `ModuleNotFoundError: trading_bot.execution.isolation` |
+| L1 | 7 ficheros (de los 13 del commit): guardia de aislamiento en `execution/__init__.py`, `execution/isolation.py`, `app.py` y los 3 conectores de venue, más su test | `0bdda77d` (WP-003-02) | `ModuleNotFoundError: trading_bot.execution.isolation` |
 | L2 | `data/edge07/holdout-1h/` (4 ficheros, 1.6 MB) | `8e66e81b` (WP-EDGE-07) | corpus declarado por el laboratorio; sin él no hay barras |
 | L3 | `paper/broker.py`, `paper/reconciliation_v4.py`, `autonomous/{contracts,decision,runtime,supervisor}.py` | `b4ff5889`, `87b9c6af`, `5b86b656`, `96957a2b`, `86d4f126` | `AttributeError: 'PaperBroker' object has no attribute 'accounting_snapshot'` |
 | L4 | `risk/manager.py` | `9dbbbaee`, `1869f535`, `5b86b656` | **no hubo error**: el digest de `E2E-RESTART` difería (32 trades aprobados donde la evidencia publicada vetó los 81). Sin este fichero el resultado era silenciosamente distinto |
