@@ -113,6 +113,20 @@ Decision for this work package: **do not incorporate it**. It is not orphan code
 it is another lane's committed work plus another lane's test fix, and importing either would
 have dragged a third lane's contract into a PAPER work package.
 
+## 5b. The same path exists on two branches, with different contents
+
+`reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00303/` exists **twice** and the difference is the
+point:
+
+| branch | what it holds | verdict inside |
+| ------ | ------------- | -------------- |
+| `wp/isolation-005` | WP-003-05's run: the lab plus reports, no manifest, no verdict commit | `FAIL`, 14/18 — the record of a bundle the verifier could not fully see |
+| `recovery/wp00303` | the delivered bundle: 33 manifest files, both lab runs, `VERIFICATION.json` | `PASS`, 18/18 on `abdf2146` |
+
+Reading the first as if it were the second is the exact mistake this work package exists to
+prevent, so the two are labelled here rather than silently overwritten. The old bundle is
+history, not evidence.
+
 ## 6. How to review this in five commands
 
 ```bash
