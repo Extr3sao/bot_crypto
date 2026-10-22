@@ -341,6 +341,12 @@ class ProspectiveSession:
     _pinned_runtime: dict[str, str] = field(default_factory=dict, init=False)
     _pinned_digest: str = field(default="", init=False)
     _runtime_drift_paths: list[str] = field(default_factory=list, init=False)
+    #: A delivered-latency measurement is part of the decision clock, not a property of the
+    #: host: it decides when a bar's information is assumed to be available. A resumed
+    #: session keeps the delay it pinned, or its first cycle would rewrite decisions the
+    #: previous session already took (measured: 2608 ms → 4625 ms changed a DECISION row).
+    _pinned_delay_ms: int | None = field(default=None, init=False)
+    _measured_delay_ms: int | None = field(default=None, init=False)
 
     def __post_init__(self) -> None:
         self.out_dir = Path(self.out_dir)
@@ -470,6 +476,14 @@ class ProspectiveSession:
             return 0, []
         last = directory / f"cycle-{indices[-1]:04d}" / "ledger.jsonl"
         return indices[-1], read_entries(last)
+
+    def _previous_delay(self) -> int | None:
+        """The delay the interrupted session decided with, taken from its own chain."""
+        for entry in reversed([row["entry"] for row in read_entries(self.out_dir / "STREAM.jsonl")]):
+            delay = entry.get("data_delay_ms")
+            if entry.get("kind") in ("CYCLE", "SESSION_END") and isinstance(delay, int):
+                return int(delay)
+        return None
 
     # -- session scaffolding -------------------------------------------------
 
@@ -750,6 +764,7 @@ class ProspectiveSession:
         self._started_at_ms = int(origin_ms)
         if pin["resume"]["resumed"]:
             self._cycle, self._previous_rows = self._resume_state()
+            self._pinned_delay_ms = self._previous_delay()
         deadline = started + self.config.duration_s * 1000
         session_info: dict[str, Any] = {
             "schema_version": "PROSPECTIVE_PAPER_SESSION_V1",
@@ -806,13 +821,23 @@ class ProspectiveSession:
             bootstrap = collector.bootstrap(minutes=self.config.warmup_minutes)
             self._write_json("BOOTSTRAP.json", bootstrap)
             self.progress("bootstrap complete")
-            self._data_delay_ms = self._awaited_live_delay(
-                collector, since_ms=bootstrap_started
-            )
+            measured = self._awaited_live_delay(collector, since_ms=bootstrap_started)
+            self._measured_delay_ms = int(measured)
+            if self._pinned_delay_ms is not None:
+                #: Continuing on the same clock: a fresh measurement is published beside
+                #: the pinned value, but the pinned one is what the lane decides with, so
+                #: the prefix this session reproduces stays comparable.
+                self._data_delay_ms = int(self._pinned_delay_ms)
+                delay_source = "PINNED_FROM_PREVIOUS_SESSION"
+            else:
+                self._data_delay_ms = int(measured)
+                delay_source = "MEASURED_AT_SESSION_START"
             stream.append(
                 "DELAY_MEASURED",
                 {
                     "data_delay_ms": self._data_delay_ms,
+                    "measured_now_ms": self._measured_delay_ms,
+                    "source": delay_source,
                     "method": "p95 of (received_at - bar close) on minutes that closed "
                     "after the session started",
                 },
@@ -1037,6 +1062,10 @@ class ProspectiveSession:
             "cycles_executed": len(executed),
             "cycles_blocked": blocked,
             "data_delay_ms": self._data_delay_ms,
+            "data_delay_source": "PINNED_FROM_PREVIOUS_SESSION"
+            if self._pinned_delay_ms is not None
+            else "MEASURED_AT_SESSION_START",
+            "data_delay_measured_now_ms": self._measured_delay_ms,
             "declared_latency_ms": self.config.latency_ms,
             "subbar_entries": True,
             "decision_bars": sorted({int(row["decision_bar_open_ms"]) for row in executed}),

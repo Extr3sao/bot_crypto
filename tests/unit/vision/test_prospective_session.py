@@ -126,6 +126,7 @@ def build_session(
     resume: bool = False,
     out: Path | None = None,
     clock_start_ms: int | None = None,
+    sleep_scale: float = 1.0,
 ) -> tuple[ProspectiveSession, FakeClock, SyntheticVenue]:
     clock = FakeClock(clock_start_ms if clock_start_ms is not None else T0 + 300 * MINUTE_MS)
     venue = SyntheticVenue(clock)
@@ -169,7 +170,7 @@ def build_session(
         root=root,
         collector=collector,
         clock=clock,
-        sleeper=clock.sleep,
+        sleeper=lambda seconds: clock.sleep(seconds * sleep_scale),
         resume=resume,
     )
     if freeze_after_bootstrap:
@@ -596,6 +597,44 @@ def test_a_resume_continues_the_chain_after_proving_the_identity(tmp_path: Path)
     assert [item["session_id"] for item in second_summary["provenance"]["chain"]] == [
         first_summary["provenance"]["session_id"]
     ]
+
+
+def test_a_resume_keeps_the_delay_it_pinned_when_the_network_moved(tmp_path: Path) -> None:
+    """Measured on real data: 2608 ms became 4625 ms and rewrote a DECISION row.
+
+    The delivery delay is part of the decision clock — it decides when a bar's
+    information is assumed to be available. A resumed session that re-measured it
+    produced a different first decision than the session it was continuing, so the
+    prefix check aborted (correctly, but uselessly). The pinned delay is now reused and
+    the fresh measurement is published beside it.
+    """
+
+    root = fake_runtime_root(tmp_path)
+    out = tmp_path / "session"
+    first, _clock, _venue = build_session(tmp_path, max_cycles=1, root=root)
+    first_summary = first.run()
+
+    second, _clock2, _venue2 = build_session(
+        tmp_path,
+        max_cycles=1,
+        root=root,
+        resume=True,
+        out=out,
+        clock_start_ms=LATER_MS,
+        sleep_scale=4.0,
+    )
+    second_summary = second.run()
+
+    assert second_summary["data_delay_source"] == "PINNED_FROM_PREVIOUS_SESSION"
+    assert second_summary["data_delay_ms"] == first_summary["data_delay_ms"]
+    assert second_summary["data_delay_measured_now_ms"] > second_summary["data_delay_ms"]
+    entries = stream_rows(out)
+    resumed_cycles = [entry for entry in entries if entry["kind"] == "CYCLE"][-1:]
+    assert resumed_cycles and resumed_cycles[0]["status"] == "EXECUTED"
+    assert resumed_cycles[0]["ledger"]["prefix"]["ok"] is True
+    delay_rows = [entry for entry in entries if entry["kind"] == "DELAY_MEASURED"]
+    assert delay_rows[-1]["source"] == "PINNED_FROM_PREVIOUS_SESSION"
+    assert delay_rows[-1]["measured_now_ms"] == second_summary["data_delay_measured_now_ms"]
 
 
 def test_a_resume_refuses_when_the_code_moved(tmp_path: Path) -> None:
