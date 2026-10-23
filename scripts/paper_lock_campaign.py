@@ -50,6 +50,7 @@ import subprocess
 import sys
 import time
 from datetime import UTC, datetime
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -57,6 +58,7 @@ REPO = Path(__file__).resolve().parents[1]
 if str(REPO / "src") not in sys.path:
     sys.path.insert(0, str(REPO / "src"))
 
+from trading_bot.ops import windowless  # noqa: E402
 from trading_bot.ops.session_status import session_status  # noqa: E402
 from trading_bot.ops.single_writer import (  # noqa: E402
     LockLost,
@@ -65,7 +67,6 @@ from trading_bot.ops.single_writer import (  # noqa: E402
     diagnose_lock,
     pid_alive,
 )
-from trading_bot.ops import windowless  # noqa: E402
 from trading_bot.vision.ledger import read_entries, verify_chain  # noqa: E402
 
 ENTRYPOINT = REPO / "scripts" / "def_run_019_prospective_run.py"
@@ -105,6 +106,12 @@ def session_rows(session: Path) -> list[dict[str, Any]]:
 
 def rows_of(session: Path, kind: str) -> list[dict[str, Any]]:
     return [row for row in session_rows(session) if row["entry"].get("kind") == kind]
+
+
+def cycles_exceed(session: Path, count: int) -> bool:
+    """Predicate for ``wait_for``: has this session persisted more than ``count`` cycles?"""
+
+    return len(cycle_numbers(session)) > count
 
 
 def cycle_numbers(session: Path) -> list[int]:
@@ -421,7 +428,6 @@ def run_campaign(args: argparse.Namespace) -> int:
     }
     write(out / "CAMPAIGN.json", campaign)
 
-    previous_rows = 0
     for index, mode in enumerate(args.modes, start=1):
         target = iteration_dir(out, index)
         target.mkdir(parents=True, exist_ok=True)
@@ -450,7 +456,9 @@ def run_campaign(args: argparse.Namespace) -> int:
         }
         write(target / "LAUNCH.json", record)
 
-        started = wait_for(lambda: len(session_rows(session)) > rows_before, timeout_s=120)
+        started = wait_for(
+            lambda before=rows_before: len(session_rows(session)) > before, timeout_s=120
+        )
         if not started:
             record["failure"] = "NO_SESSION_START"
             record["tail"] = crash_log.read_text(encoding="utf-8", errors="replace")[-3000:]
@@ -461,7 +469,11 @@ def run_campaign(args: argparse.Namespace) -> int:
         # and must not change one byte of the record; this is the live-owner invariant asked
         # of the *real* guard while a *real* session runs.
         stream_lock = session / "STREAM.jsonl.lock"
-        wait_for(lambda: diagnose_lock(SingleWriter(stream_lock).read())["state"] == "HELD", timeout_s=60)
+        wait_for(
+            lambda lock_path=stream_lock: diagnose_lock(SingleWriter(lock_path).read())["state"]
+            == "HELD",
+            timeout_s=60,
+        )
         live_probe = {
             "stream": probe_live(stream_lock),
             "cycles": [],
@@ -495,7 +507,7 @@ def run_campaign(args: argparse.Namespace) -> int:
             reached = (
                 "AFTER_CYCLE"
                 if wait_for(
-                    lambda: len(cycle_numbers(session)) > len(cycles_before),
+                    partial(cycles_exceed, session, len(cycles_before)),
                     timeout_s=args.wait_cycle_timeout_s,
                     poll_s=0.2,
                 )
@@ -556,10 +568,10 @@ def run_campaign(args: argparse.Namespace) -> int:
         # fenced, so its guard must refuse; a probe that succeeded would be a silent fork.
         if old_stream:
             appeared = wait_for(
-                lambda: (
-                    (SingleWriter(stream_lock).read() or {}).get("token")
-                    not in (None, old_stream.get("token"))
-                    and diagnose_lock(SingleWriter(stream_lock).read())["state"] == "HELD"
+                lambda lock_path=stream_lock, old=old_stream: (
+                    (SingleWriter(lock_path).read() or {}).get("token")
+                    not in (None, old.get("token"))
+                    and diagnose_lock(SingleWriter(lock_path).read())["state"] == "HELD"
                 ),
                 timeout_s=120,
             )
@@ -613,7 +625,6 @@ def run_campaign(args: argparse.Namespace) -> int:
             "exit_code": resume_exit,
         }
         write(out / "CAMPAIGN.json", campaign)
-        previous_rows = len(rows_after)
 
         if resume_exit != 0 or remaining:
             break

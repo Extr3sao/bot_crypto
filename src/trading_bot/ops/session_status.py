@@ -128,7 +128,6 @@ def session_status(out_dir: Path | str) -> dict[str, Any]:
 
     starts = [entry for entry in entries if entry.get("kind") == "SESSION_START"]
     cycles = [entry for entry in entries if entry.get("kind") == "CYCLE"]
-    reclaimed = [entry for entry in entries if entry.get("kind") == "LOCK_RECLAIMED"]
     ends = [entry for entry in entries if entry.get("kind") == "SESSION_END"]
 
     locks, fences = _locks(root) if root.is_dir() else ([], [])

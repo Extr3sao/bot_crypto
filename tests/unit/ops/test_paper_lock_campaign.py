@@ -23,8 +23,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-import pytest
-
 from trading_bot.ops.single_writer import SingleWriter, diagnose_lock
 from trading_bot.vision.ledger import GENESIS, line_hash
 

@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import itertools
 import json
 import os
 import shutil
@@ -256,9 +257,12 @@ def judge(campaign: Path) -> dict[str, Any]:
                 if match is None or match["pid"] != lock.get("pid"):
                     ownership["ok"] = False
                     continue
-                if isinstance(lock.get("fence"), int) and isinstance(match["fence"], int):
-                    if int(lock["fence"]) <= int(match["fence"]):
-                        ownership["fences_advance"] = False
+                if (
+                    isinstance(lock.get("fence"), int)
+                    and isinstance(match["fence"], int)
+                    and int(lock["fence"]) <= int(match["fence"])
+                ):
+                    ownership["fences_advance"] = False
 
         iterations.append(
             {
@@ -322,7 +326,7 @@ def judge(campaign: Path) -> dict[str, Any]:
 
     interrupted = [number for number in directories if number not in cycle_numbers]
     gaps_ok = True
-    for left, right in zip(cycle_numbers, cycle_numbers[1:]):
+    for left, right in itertools.pairwise(cycle_numbers):
         if right == left + 1:
             continue
         if right == left + 2 and (left + 1) in interrupted:
