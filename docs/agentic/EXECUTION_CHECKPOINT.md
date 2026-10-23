@@ -1761,7 +1761,7 @@ base `819cb0d2`. El estado medido es el **lane vivo** del checkout compartido
 
 - **`DEF-02H-01` (riesgo real, sin arreglar):** el volumen está al 99 %, libre entre 0.02 y 8.2 GiB
   contra un suelo de 2 GiB. El lane solo ocupa 14 228 034 B de su presupuesto; la presión es del
-  host. No se liberó nada: borrar evidencia de otros lanes no es de este paquete. Mientras siga así
+  host. **Corrección posterior:** el volumen llegó a **0 MB libres** a las `06:57Z` y esta sesión recuperó **solo su propio scratch** (`%TEMP%/pytest-of-GVLLFR0035` 528 MB + `__pycache__` del worktree 19 MB): `0 → 523 MB` a las `07:00:00Z`, y otra vez **22 MB** a las `07:00:23Z` — no resuelve el suelo de 2 GiB. Consumidores medidos entonces, ninguno de este proyecto: `desktop-v2.db` 244 MB, `WebCacheV01.dat` 83 MB, caché de Discord 66 MB, store de Cisco Spark 65 MB, caché de Claude 34 MB, `data/forward/edge05/watchdog.jsonl` 38 MB. Borrar cachés de otras aplicaciones o evidencia de otros lanes es decisión del dueño: **no se hizo**, porque no es de este paquete. Mientras siga así
   habrá más días perdidos.
 - **`DEF-02H-02`:** `C3_AFTER_REBOOT` depende de `LogonType InteractiveToken`; un reinicio sin inicio
   de sesión deja hueco. Cambiarlo exige privilegios de administrador: **no ejecutado**.
