@@ -171,8 +171,16 @@ script.
 `pull_request: [main]`; this branch is not a PR and no GitHub Actions run was started, so
 no run is claimed.
 
-The branch `recovery/trunk-format-001` is published to `origin` as a fast-forward from
-`89da583e`. No force-push. `main` and `origin/main` are untouched at `1d2192b0` / `5e6f9632`.
+Commit: **`32e2888e`** on `recovery/trunk-format-001`, pushed as a fast-forward from
+`89da583e` (`git ls-remote` afterwards returns `32e2888e` for the branch and `5e6f9632`
+for `main`). No force-push. `main` and `origin/main` are untouched at `1d2192b0` /
+`5e6f9632`.
+
+**Reproducible from the commit, not from this working tree.** A detached worktree was
+checked out at `32e2888e`, its own `.venv` rebuilt with `uv sync --frozen`, and the
+guard re-run: `ruff format --check .` → exit 0 (`788 files already formatted`),
+`verify_format_exemptions.py --self-test` → `VERDICT=PASS (9/9)` with all eleven
+negative controls rejected.
 
 ## 8. Status
 

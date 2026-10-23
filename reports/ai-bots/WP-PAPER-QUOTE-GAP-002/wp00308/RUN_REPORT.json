@@ -59,10 +59,23 @@
    "pytest_base": 1,
    "pytest_head": 1,
    "node_diff": 0
+  },
+  "commit": "32e2888e98e616e84b06a9126740e71f7b349a6d",
+  "published": {
+   "remote": "https://github.com/Extr3sao/bot_crypto.git",
+   "branch": "recovery/trunk-format-001",
+   "from": "89da583e",
+   "to": "32e2888e",
+   "fast_forward": true,
+   "force": false,
+   "remote_main": "5e6f9632",
+   "local_main": "1d2192b0"
   }
  },
  "change": {
-  "files_edited": ["pyproject.toml"],
+  "files_edited": [
+   "pyproject.toml"
+  ],
   "files_added": [
    "scripts/verify_format_exemptions.py",
    "scripts/make_format_gate_reports.py",
@@ -204,5 +217,14 @@
   "CI_STATUS": "NOT_PERFORMED",
   "RUNTIME_STATUS": "NOT_PERFORMED",
   "FALSE_SUCCESS": 0
+ },
+ "rehearsal": {
+  "worktree": "detached at 32e2888e",
+  "venv": "rebuilt from uv.lock with uv sync --frozen",
+  "format_exit": 0,
+  "formatted": 788,
+  "guard_verdict": "PASS",
+  "guard_checks": "9/9",
+  "negative_controls_rejected": 11
  }
 }
