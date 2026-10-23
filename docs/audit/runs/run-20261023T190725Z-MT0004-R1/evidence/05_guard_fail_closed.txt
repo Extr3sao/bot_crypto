@@ -1,0 +1,7 @@
+# The guard refuses to skip outside a git work tree (V-05b)
+result: exit=1 refused=(True)
+
+=========================== short test summary info ===========================
+FAILED tests/unit/test_audit_contracts_tracked.py::test_no_contract_is_gitignored
+FAILED tests/unit/test_audit_contracts_tracked.py::test_every_contract_is_tracked_by_git
+2 failed, 6 passed in 0.34s
