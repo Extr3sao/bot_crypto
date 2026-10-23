@@ -245,8 +245,18 @@ def build_campaign(root: Path) -> Path:
             (directory / "CONCURRENCY.json").write_text(
                 json.dumps(
                     {
+                        "path": str(session / "STREAM.jsonl.lock"),
                         "racers": 2,
-                        "outcomes": [{"outcome": "RECLAIMED"}, {"outcome": "REFUSED"}],
+                        "outcomes": [
+                            {
+                                "outcome": "RECLAIMED",
+                                "pid": 1111,
+                                "fence": 3,
+                                "previous_owner": {"fence": 1},
+                                "released": True,
+                            },
+                            {"outcome": "REFUSED", "code": "LOCK_HELD", "pid": 2222},
+                        ],
                     },
                     sort_keys=True,
                 ),

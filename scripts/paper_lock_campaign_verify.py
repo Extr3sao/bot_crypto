@@ -80,6 +80,10 @@ def iteration_number(directory: Path) -> int:
     return int(directory.name.split("-")[-1])
 
 
+def _lock_name(path: Any) -> str:
+    return str(path).replace("\\", "/").rsplit("/", 1)[-1]
+
+
 def stream_rows(path: Path) -> list[dict[str, Any]]:
     return [
         json.loads(line)
@@ -209,6 +213,7 @@ def judge(campaign: Path) -> dict[str, Any]:
                     "state": verdict["state"],
                     "reason": verdict["reason"],
                     "pid": (record or {}).get("pid"),
+                    "process_start_ms": (record or {}).get("process_start_ms"),
                     "token": (record or {}).get("token"),
                     "fence": (record or {}).get("fence"),
                     "recorded_state": item.get("state"),
@@ -219,6 +224,22 @@ def judge(campaign: Path) -> dict[str, Any]:
         own_reclaims = [item for item in reclaims if crash_rows < item["seq"] <= end]
         own_cycles = [item for item in cycles if crash_rows < item["seq"] <= end]
         start = next((item for item in starts if item["seq"] > crash_rows), None)
+
+        #: A lock whose abandoned owner was taken over by the concurrency probe is already
+        #: free when the session resumes, so the session correctly records nothing about it.
+        #: The probe's own takeover is the evidence for that path, and it is held to the same
+        #: standard: exactly one winner, a higher fence, and it must have released.
+        race_paths: list[str] = []
+        race_recovered = False
+        if race:
+            winners = [
+                item for item in (race.get("outcomes") or []) if item.get("outcome") == "RECLAIMED"
+            ]
+            if len(winners) == 1 and winners[0].get("released") is True:
+                previous = winners[0].get("previous_owner") or {}
+                if int(winners[0].get("fence") or 0) > int(previous.get("fence") or 0):
+                    race_recovered = True
+                    race_paths = [str(race.get("path") or "").replace("\\", "/").split("/")[-1]]
 
         ownership = {"ok": True, "reasons_proved": True, "fences_advance": True}
         covered: set[str] = set()
@@ -249,6 +270,8 @@ def judge(campaign: Path) -> dict[str, Any]:
                 "leftovers": recomputed,
                 "leftover_paths": sorted({left["path"] for left in recomputed}),
                 "reclaimed_paths": sorted(covered),
+                "race_recovered_paths": race_paths,
+                "race_recovered": race_recovered,
                 "resume_start_seq": start["seq"] if start else None,
                 "resume_resumed_flag": (
                     (start["entry"].get("provenance") or {}).get("resumed") if start else None
@@ -344,8 +367,13 @@ def judge(campaign: Path) -> dict[str, Any]:
             len({left["path"] for left in item["leftovers"]}) == len(item["leftovers"])
             for item in iterations
         ),
+        #: The lock record names the lock (``BTCUSDT.jsonl.lock``); the audit walks the
+        #: directory (``market-1m/BTCUSDT.jsonl.lock``). Compare the identity, not the walk.
         "every_recovery_is_reclaimed": all(
-            set(item["leftover_paths"]) <= set(item["reclaimed_paths"]) for item in iterations
+            {_lock_name(path) for path in item["leftover_paths"]}
+            <= {_lock_name(path) for path in item["reclaimed_paths"]}
+            | {_lock_name(path) for path in item["race_recovered_paths"]}
+            for item in iterations
         ),
         "reclaim_reason_is_a_proof": all(item["ownership"]["reasons_proved"] for item in iterations),
         "reclaim_takes_over_the_crashed_owner": all(item["ownership"]["ok"] for item in iterations),
@@ -367,13 +395,16 @@ def judge(campaign: Path) -> dict[str, Any]:
         "cycle_gaps_are_interrupted_cycles": gaps_ok,
         "persisted_cycle_ledgers_intact": bool(persisted_ledgers)
         and all(bool(item.get("ok")) for item in persisted_ledgers.values()),
+        #: One process holds every lock of an epoch; the *token* is per lock instance, which
+        #: is exactly why identity is (pid, process start) and not the token.
         "one_owner_per_iteration": all(
-            len({(left["pid"], left["token"]) for left in item["leftovers"]}) == 1
+            len({(left["pid"], left["process_start_ms"]) for left in item["leftovers"]}) == 1
+            and len(item["leftovers"]) > 0
             for item in iterations
         ),
         "owner_identity_never_repeats": len(
             {
-                (left["pid"], left["token"])
+                (left["pid"], left["process_start_ms"])
                 for item in iterations
                 for left in item["leftovers"]
             }
@@ -398,7 +429,8 @@ def judge(campaign: Path) -> dict[str, Any]:
         ),
         "concurrent_reclaim_has_one_winner": bool(raced)
         and all(
-            len(item["race"].get("outcomes") or []) == int(item["race"].get("racers") or 0)
+            item["race_recovered"] is True
+            and len(item["race"].get("outcomes") or []) == int(item["race"].get("racers") or 0)
             and sum(
                 1
                 for outcome in item["race"].get("outcomes") or []
