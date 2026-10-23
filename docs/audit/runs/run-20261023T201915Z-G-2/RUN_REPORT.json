@@ -48,9 +48,30 @@
     "script": "offline_trace.py",
     "verdict": "OPERATIONAL_THEN_ENGAGED_NO_NEW_ORDER",
     "steps": [
-      {"phase": "operational", "gate_engaged": false, "mode": "TRADE_PAPER", "order_created": true, "broker_calls": 1, "switch_state": "normal"},
-      {"phase": "engaged", "gate_engaged": true, "mode": "TRADE_PAPER", "order_created": false, "broker_calls": 1, "switch_state": "halted"},
-      {"phase": "engaged (second cycle)", "gate_engaged": true, "mode": "TRADE_PAPER", "order_created": false, "broker_calls": 1, "switch_state": "halted"}
+      {
+        "phase": "operational",
+        "gate_engaged": false,
+        "mode": "TRADE_PAPER",
+        "order_created": true,
+        "broker_calls": 1,
+        "switch_state": "normal"
+      },
+      {
+        "phase": "engaged",
+        "gate_engaged": true,
+        "mode": "TRADE_PAPER",
+        "order_created": false,
+        "broker_calls": 1,
+        "switch_state": "halted"
+      },
+      {
+        "phase": "engaged (second cycle)",
+        "gate_engaged": true,
+        "mode": "TRADE_PAPER",
+        "order_created": false,
+        "broker_calls": 1,
+        "switch_state": "halted"
+      }
     ],
     "engine": "hostile: always returns TRADE_PAPER and order_authorised",
     "note": "The decision engine still says TRADE_PAPER in rows 2 and 3; the order is refused at the dispatch boundary, not by rule 0."
@@ -84,13 +105,14 @@
   },
   "false_success_known": 0,
   "artifacts": {
-    "RUN_REPORT.md": "b6a00d17dd3c863069027cda770ee80010701c29e87f27b254cd08b2002390b6",
-    "FINAL_REPORT.md": "6dcbc95be5418f2b8cc8d64b006ea1a29b7a9ced0c32a9f3b898bdf5861d526f",
+    "RUN_REPORT.md": "c88786f09ebd0c2193a6237bd6627a38daa3e591dca5fe2a9a0c51bf136c269f",
+    "FINAL_REPORT.md": "3dfb3cf477de1fb54f1ff2275bc8d63f5a5c9929c7f93fcc93e61983b7feaa2d",
     "COMMITS.md": "6cb29092b8a654754d86d2d7ac88bcf7f84e78fc82b9c35f58475ed1a487c234",
     "offline_trace.py": "43aa1ff949d78977210e5c6b02b307ba73407b7df3febb33402985308148f83f",
     "offline_trace.json": "7b9fe2615324ead70c641919407a218501e42386b76600f35e99c8479d69b1d7",
     "mutants.json": "95a3e6da82987629680e06ff5651a0a41b89ab55f52e88768344daed459ffabf",
-    "verification.json": "6bb8f172d6a9575d13bc5b70d5f50672376d1f4fee7eb9f4712e180fd498168f"
+    "verification.json": "bd7cc5feed696884f57e40c8e63c8509dbfcde31d97c150fdfda305ac92bf437",
+    "verify_g2.py": "34e53b1f4646181aa75f032592f46b8b9d26de8deaaaaf829f477b159d63729a"
   },
   "artifacts_note": "This file does not hash itself. Every other artifact above is hashed after its final write."
 }

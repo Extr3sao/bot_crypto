@@ -107,7 +107,7 @@
       "detail": "engage exit 0, disarm exit 2",
       "evidence": {
         "status": "REQUESTED",
-        "control_file": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g2-cli-nqqhk76j\\KILL_SWITCH",
+        "control_file": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g2-cli-_v7yvozz\\KILL_SWITCH",
         "reason": "verifier",
         "enforced": false,
         "note": "El proceso vivo confirma en kill_switch_events.jsonl (event=engaged). Exit 0 solo prueba que la peticion quedo en disco."
@@ -156,12 +156,12 @@
       "criterion": "ACC-G2-10",
       "description": "the focal suites pass in the exported tree",
       "passed": true,
-      "detail": "27 passed in 24.23s",
+      "detail": "27 passed in 25.38s",
       "evidence": {}
     }
   ],
   "passed": 10,
   "total": 10,
-  "total_seconds": 41.75,
+  "total_seconds": 42.01,
   "verdict": "VERIFIED_SCOPED"
 }

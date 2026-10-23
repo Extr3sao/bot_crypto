@@ -175,4 +175,13 @@ uv run --frozen python scripts/audit/g2_mutants.py --rev <sha> --json mutants.js
 # offline trace
 PYTHONPATH=src:. uv run --frozen python docs/audit/runs/run-20261023T201915Z-G-2/offline_trace.py \
     --run-dir /tmp/g2-offline --json /tmp/g2-trace.json
+
+# independent re-derivation (a copy is versioned here, next to this report)
+uv run --frozen python docs/audit/runs/run-20261023T201915Z-G-2/verify_g2.py \
+    --rev 00671e62 --json /tmp/verification.json
 ```
+
+The verifier is versioned at [`verify_g2.py`](verify_g2.py) so a reader can run
+the same checks from the same commit rather than trusting this prose. It locates
+the repository by walking up to `.git`, not by assuming a depth, so it works
+from `reports/multiagent-audit/tools/` and from this directory alike.

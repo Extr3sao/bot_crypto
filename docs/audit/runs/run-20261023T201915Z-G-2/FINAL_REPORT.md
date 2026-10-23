@@ -71,7 +71,10 @@ this survives a future regression in `DecisionEngine`.
 ## Reproduce the verdict
 
 ```bash
-python reports/multiagent-audit/tools/verify_g2.py --rev 00671e62 \
-    --json docs/audit/runs/run-20261023T201915Z-G-2/verification.json
+python docs/audit/runs/run-20261023T201915Z-G-2/verify_g2.py --rev 00671e62 \
+    --json /tmp/verification.json
 # 10/10 — VERIFIED_SCOPED (PROCEDURALLY_SEPARATED)
 ```
+
+The verifier is versioned next to this report, so the claim above is
+checkable from the tree rather than from the author's working copy.
