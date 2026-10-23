@@ -1,0 +1,516 @@
+{
+  "checks": [
+    {
+      "detail": "HEAD=9983b050c8e2, source=9983b050c8e2",
+      "id": "SOURCE_COMMIT_CHECKED_OUT",
+      "status": "PASS"
+    },
+    {
+      "detail": "contract present=True; declared objects present=4/4",
+      "id": "CONTRACT_DECLARES_ITS_GENERATOR",
+      "resolved": {
+        "code_commit": {
+          "declared": "889abf304be89164fecad5ba83b222788bdc7e2a",
+          "present": true,
+          "type": "commit"
+        },
+        "engine_block": {
+          "declared": "75d73669df037f661175c1d0b11f82c5f76b9d67",
+          "present": true,
+          "type": "blob"
+        },
+        "program_blob": {
+          "declared": "2fec148451ed74245435dfc6e82de2b168625f16",
+          "present": true,
+          "type": "blob"
+        },
+        "verifier_blob": {
+          "declared": "20503fb2a17d01e1e070d944aeb9b94b2d42d7a1",
+          "present": true,
+          "type": "blob"
+        }
+      },
+      "status": "PASS"
+    },
+    {
+      "detail": "declared=eb27cedc2626844d, file=match",
+      "id": "CONTRACT_SUPERSEDES_HASH_MATCHES",
+      "status": "PASS"
+    },
+    {
+      "detail": "24 manifests, 24 pass; rows: rehearsal=864 production=0",
+      "id": "PHASE3_SHARD_MANIFESTS_VERIFY",
+      "status": "PASS"
+    },
+    {
+      "detail": "29 of 29 published files match their own snapshot hash",
+      "id": "PUBLISHED_PREFIX_VERIFIES",
+      "status": "PASS"
+    },
+    {
+      "detail": "3 of 11 recorded days survive; 2 match the recorded hash; differing=['2026-10-15.json']; missing=8 days",
+      "id": "PUBLISHED_PREFIX_VERSUS_THE_RECORD",
+      "status": "PASS"
+    },
+    {
+      "detail": "12 of 12 files identical to 9983b050",
+      "id": "RECORD_BYTES_STILL_MATCH_THEIR_COMMIT",
+      "status": "PASS"
+    },
+    {
+      "detail": "registered=True; action=C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\scripts\\edge04_watchdog.py; exists=False",
+      "id": "GUARD_TASK_POINTS_AT_A_LIVE_SCRIPT",
+      "status": "FAIL"
+    },
+    {
+      "detail": "`--help` exit=0",
+      "id": "GUARD_IS_OPERABLE",
+      "status": "PASS"
+    },
+    {
+      "detail": "`--check` exit=0 (read-only mode)",
+      "id": "RUNNER_IS_EXECUTABLE",
+      "status": "PASS"
+    },
+    {
+      "detail": "exit=0 :: ...........................................................              [100%]\n59 passed in 0.93s",
+      "id": "TESTS_PASS",
+      "status": "PASS"
+    },
+    {
+      "detail": "INSUFFICIENT: free=13.3997 GiB, required=14.564 GiB, margin=-1.1643 GiB, instruments agree=True",
+      "id": "SPACE_WITHIN_THE_FROZEN_BUDGET",
+      "status": "FAIL"
+    },
+    {
+      "detail": "data/forward/edge04 and data/forward/edge03 are absent: the campaign cannot resume from this tree",
+      "id": "FORWARD_STORE_STILL_EXISTS",
+      "status": "FAIL"
+    }
+  ],
+  "failed": 3,
+  "generated_at_utc": "2026-10-23T19:15:17Z",
+  "guard_task": {
+    "arguments": "\"C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\scripts\\edge04_watchdog.py\" --state-root \"C:/Users/GVLLFR0035/Downloads/bot freebuff/data/forward/edge04\"",
+    "command": "\"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe\"",
+    "error": null,
+    "query_exit": 0,
+    "referenced_script": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\scripts\\edge04_watchdog.py",
+    "referenced_script_exists": false,
+    "registered": true
+  },
+  "passed": 10,
+  "prefix": {
+    "checks": [
+      {
+        "matches_record": true,
+        "recorded_prefix": "9bfd37e08e96",
+        "shard": "2026-10-13.json",
+        "survives": true
+      },
+      {
+        "matches_record": true,
+        "recorded_prefix": "ebe0da1bdaf5",
+        "shard": "2026-10-14.json",
+        "survives": true
+      },
+      {
+        "matches_record": false,
+        "recorded_prefix": "e4c1d3e187a0",
+        "shard": "2026-10-15.json",
+        "survives": true
+      },
+      {
+        "matches_record": false,
+        "recorded_prefix": "62cf5811f8a0",
+        "shard": "2026-10-16.json",
+        "survives": false
+      },
+      {
+        "matches_record": false,
+        "recorded_prefix": "18fc5d911b31",
+        "shard": "2026-10-17.json",
+        "survives": false
+      },
+      {
+        "matches_record": false,
+        "recorded_prefix": "38ca7acbd4c1",
+        "shard": "2026-10-18.json",
+        "survives": false
+      },
+      {
+        "matches_record": false,
+        "recorded_prefix": "1175aaaaad94",
+        "shard": "2026-10-19.json",
+        "survives": false
+      },
+      {
+        "matches_record": false,
+        "recorded_prefix": "8542b1fb4a7d",
+        "shard": "2026-10-20.json",
+        "survives": false
+      },
+      {
+        "matches_record": false,
+        "recorded_prefix": "b013c482351c",
+        "shard": "2026-10-21.json",
+        "survives": false
+      },
+      {
+        "matches_record": false,
+        "recorded_prefix": "885defc4951b",
+        "shard": "2026-10-22.json",
+        "survives": false
+      },
+      {
+        "matches_record": false,
+        "recorded_prefix": "3267c8466224",
+        "shard": "2026-10-23.json",
+        "survives": false
+      }
+    ],
+    "summary": {
+      "differing": [
+        "2026-10-15.json"
+      ],
+      "matching": 2,
+      "missing": [
+        "2026-10-16.json",
+        "2026-10-17.json",
+        "2026-10-18.json",
+        "2026-10-19.json",
+        "2026-10-20.json",
+        "2026-10-21.json",
+        "2026-10-22.json",
+        "2026-10-23.json"
+      ],
+      "recorded_shards": 11,
+      "surviving_shards": 3
+    }
+  },
+  "runner": {
+    "command": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\.venv\\Scripts\\python.exe scripts/exp004a_wp051_02f_runner.py --check",
+    "exit_code": 0,
+    "tail": "  ],\n  \"deferred_slices\": [\n    \"EXP-004A-ST6-TAPE: timeframe '4h slot, 3 rounds of 15s' is not a bar series\"\n  ],\n  \"eligible_series\": [],\n  \"started_at_utc\": \"2026-10-23T19:15:15.332Z\",\n  \"economic_executions\": 0\n}"
+  },
+  "schema_version": "EXP004A_WP051_02K_RECOVERY_AUDIT_V1",
+  "shards": {
+    "checks": [
+      {
+        "bytes": 0,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/consolidated/1h_BTC/20261022T221043Z-a2bce8a6.MANIFEST.json",
+        "ok": true,
+        "rows": 0,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 0,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/consolidated/1h_BTC/20261023T053435Z-7fe919f5.MANIFEST.json",
+        "ok": true,
+        "rows": 0,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 0,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/consolidated/1h_ETH/20261022T221043Z-a2bce8a6.MANIFEST.json",
+        "ok": true,
+        "rows": 0,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 0,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/consolidated/1h_ETH/20261023T053435Z-7fe919f5.MANIFEST.json",
+        "ok": true,
+        "rows": 0,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 0,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/consolidated/1h_SOL/20261022T221043Z-a2bce8a6.MANIFEST.json",
+        "ok": true,
+        "rows": 0,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 0,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/consolidated/1h_SOL/20261023T053435Z-7fe919f5.MANIFEST.json",
+        "ok": true,
+        "rows": 0,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 7529,
+        "declaration_matches": true,
+        "generator_declared": "2fec148451ed74245435dfc6e82de2b168625f16",
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/1h_BTC/2026-10-19.MANIFEST.json",
+        "ok": true,
+        "rows": 24,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 7543,
+        "declaration_matches": true,
+        "generator_declared": "2fec148451ed74245435dfc6e82de2b168625f16",
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/1h_BTC/2026-10-20.MANIFEST.json",
+        "ok": true,
+        "rows": 24,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 7537,
+        "declaration_matches": true,
+        "generator_declared": "2fec148451ed74245435dfc6e82de2b168625f16",
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/1h_BTC/2026-10-21.MANIFEST.json",
+        "ok": true,
+        "rows": 24,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 7454,
+        "declaration_matches": true,
+        "generator_declared": "2fec148451ed74245435dfc6e82de2b168625f16",
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/1h_ETH/2026-10-19.MANIFEST.json",
+        "ok": true,
+        "rows": 24,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 7452,
+        "declaration_matches": true,
+        "generator_declared": "2fec148451ed74245435dfc6e82de2b168625f16",
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/1h_ETH/2026-10-20.MANIFEST.json",
+        "ok": true,
+        "rows": 24,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 7452,
+        "declaration_matches": true,
+        "generator_declared": "2fec148451ed74245435dfc6e82de2b168625f16",
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/1h_ETH/2026-10-21.MANIFEST.json",
+        "ok": true,
+        "rows": 24,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 7362,
+        "declaration_matches": true,
+        "generator_declared": "2fec148451ed74245435dfc6e82de2b168625f16",
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/1h_SOL/2026-10-19.MANIFEST.json",
+        "ok": true,
+        "rows": 24,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 7357,
+        "declaration_matches": true,
+        "generator_declared": "2fec148451ed74245435dfc6e82de2b168625f16",
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/1h_SOL/2026-10-20.MANIFEST.json",
+        "ok": true,
+        "rows": 24,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 7359,
+        "declaration_matches": true,
+        "generator_declared": "2fec148451ed74245435dfc6e82de2b168625f16",
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/1h_SOL/2026-10-21.MANIFEST.json",
+        "ok": true,
+        "rows": 24,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 22609,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/consolidated/1h_BTC/20261022T221044Z-c9a9f320.MANIFEST.json",
+        "ok": true,
+        "rows": 72,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 22609,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/consolidated/1h_BTC/20261022T221046Z-8a317fe4.MANIFEST.json",
+        "ok": true,
+        "rows": 72,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 22609,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/consolidated/1h_BTC/20261022T221048Z-0d5ae0a6.MANIFEST.json",
+        "ok": true,
+        "rows": 72,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 22358,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/consolidated/1h_ETH/20261022T221044Z-c9a9f320.MANIFEST.json",
+        "ok": true,
+        "rows": 72,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 22358,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/consolidated/1h_ETH/20261022T221046Z-8a317fe4.MANIFEST.json",
+        "ok": true,
+        "rows": 72,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 22358,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/consolidated/1h_ETH/20261022T221048Z-0d5ae0a6.MANIFEST.json",
+        "ok": true,
+        "rows": 72,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 22078,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/consolidated/1h_SOL/20261022T221044Z-c9a9f320.MANIFEST.json",
+        "ok": true,
+        "rows": 72,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 22078,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/consolidated/1h_SOL/20261022T221046Z-8a317fe4.MANIFEST.json",
+        "ok": true,
+        "rows": 72,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      },
+      {
+        "bytes": 22078,
+        "declaration_matches": true,
+        "generator_declared": null,
+        "generator_matches": true,
+        "manifest": "data/exp004a/phase3/rehearsal/consolidated/1h_SOL/20261022T221048Z-0d5ae0a6.MANIFEST.json",
+        "ok": true,
+        "rows": 72,
+        "shard_hash_matches": true,
+        "shard_present": true,
+        "size_matches": true
+      }
+    ],
+    "failed": [],
+    "manifests": 24,
+    "note": "a rehearsal row is prospective=false and counts_toward_coverage=false: 864 verified rows can still mean zero production rows",
+    "passed": 24,
+    "present": true,
+    "production_rows": 0,
+    "rehearsal_rows": 864,
+    "rows_captured": 864,
+    "verdict": "PASS"
+  },
+  "skipped": 0,
+  "source_commit": "9983b050c8e241ef9d8365c8ffc33c95df1658dd",
+  "space": {
+    "free_bytes": 14387855360,
+    "free_bytes_kernel32": 14387855360,
+    "free_gib": 13.3997,
+    "instruments_agree": true,
+    "margin_gib": -1.1643,
+    "required_gib": 14.564,
+    "verdict": "INSUFFICIENT"
+  },
+  "tests": {
+    "command": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_exp004a_wp051_02k.py tests/unit/research/test_exp004a_wp051_02k_continue.py -q",
+    "exit_code": 0,
+    "tail": "...........................................................              [100%]\n59 passed in 0.93s"
+  },
+  "verdict": "BLOCKED_WITH_EVIDENCE",
+  "verdict_note": "a passing test suite is not a campaign readiness decision; the store gate is separate and explicit"
+}
