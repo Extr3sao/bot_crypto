@@ -41,7 +41,12 @@ KNOWN_STATUSES = {
     "blocked",
     "spec_reissue_required",
 }
-KNOWN_PROVENANCE = {"recovered", "reissued", "lost"}
+#: Where a task came from. ``gap`` was added for G-2: a defect the audit already
+#: declared (G-1..G-4), which is neither recovered nor reissued nor lost, and
+#: which the previous three-value set made unrepresentable — the guard failed on
+#: a truthful entry. The set stays closed on purpose; adding a fourth value is a
+#: deliberate, reviewed act, not a free-text field.
+KNOWN_PROVENANCE = {"recovered", "reissued", "lost", "gap"}
 
 
 def _git(*args: str) -> subprocess.CompletedProcess[str]:
