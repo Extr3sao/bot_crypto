@@ -1713,3 +1713,74 @@ PYTHONPATH=src python scripts/exp004a_wp051_02g_capture.py --once       # primer
 PYTHONPATH=src python scripts/exp004a_wp051_02g_verify.py --claim docs/agentic/exp004a/wp051_02g/evidence/20261023T053435Z-7fe919f5/RUN_REPORT.json
 PYTHONPATH=src python -m pytest tests/unit/research/test_exp004a_wp051_02g.py -q     # 49 passed
 ```
+
+---
+
+## WP-051-02H — recuperación del observador forward, hueco y continuidad
+
+**Objetivo:** recuperar la adquisición prospectiva de EXP-004A, encontrar la causa real de la
+parada, cuantificar el hueco y dejar el observador bajo supervisión verificable. Sin trading, sin
+crecimiento de capacidades.
+
+**Worktree:** `C:/Users/GVLLFR0035/Downloads/bot-freebuff-exp004a-02h`, rama `wp/exp004a-051-02h`,
+base `819cb0d2`. El estado medido es el **lane vivo** del checkout compartido
+(`bot freebuff/data/forward/edge04` + `edge03`), no una copia del worktree.
+
+**Hecho en esta sesión**
+
+1. **`DEF-02G-10` resuelto y reencuadrado.** El observador nunca estuvo detenido: la tarea
+   `TradingAgentic-EDGE04-Forward` disparó cada 15 min todo el tiempo y devolvió `0`. Lo que se
+   paró fue la *escritura*: 34 ticks `DISK_BUDGET_EXCEEDED` entre `2026-10-22T18:10:56Z` y
+   `2026-10-23T05:55:56Z`, con **0.0 GiB libres** en el peor punto. El `18:00Z` de 02G era el final
+   de una copia ignorada por Git, no del store (`RC1`, `CONFIRMED`).
+2. **Recuperación real, sin intervención.** Reanudó solo: `FWD-EDGE04-20261023T053000Z` a
+   `05:40:57Z` con 87 barras, y `…T060000Z` a `06:10:58Z` con 9/9 barras, `missing_bars=0`,
+   `order_sent=false`, `store_sha256` registrado. Latencia de recuperación: 900 s (un ciclo).
+3. **Hueco cuantificado.** Silencio de store **345.02 min** (20 701 s) entre el último tick
+   consumidor (`23:55:56Z`) y el que reanudó; 23 episodios de rechazo en el log; el peor,
+   22 ticks (`00:10:56Z` → `05:25:57Z`).
+4. **Impacto de fase.** Día `2026-10-23` `DAY_OPEN_ALREADY_DOOMED` en BTC/ETH/SOL (3 admisibles de 6
+   almacenadas; `LATE` a 160–281 min). Techo: **6408/6480 = 0.988889**, por encima del suelo 0.9 y
+   por debajo de 1.0 → `CEILING_BELOW_DECLARED`, `COVERAGE_COMPLETE` inalcanzable. Sin re-fetch, sin
+   timestamps sintéticos, sin mover umbrales.
+5. **Continuidad.** `scripts/edge04_watchdog.py` instalado como `TradingAgentic-EDGE04-Watchdog`
+   (15 min, exit 0/1/8/9/2 = OK/DEGRADED/BLOCKED/STALE/UNREADABLE, marcador
+   `ATTENTION_REQUIRED.txt` solo en BLOCKED/STALE). Diez requisitos recomputados contra el
+   planificador del SO: 10/10 `SATISFIED`.
+6. **Primer shard diario tras la recuperación:** `data/forward/edge04/daily/2026-10-23.json`
+   (`06:26Z`), 99/99 barras, `PARITY_PASS`, `errors: []`, `order_sent: false`; verificado por
+   `scripts/edge04_verify.py` → **15/15 `VERIFY_PASS`** (incluye `DAILY_EVIDENCE_CONSISTENT`, 11
+   ficheros y 66 digests, y `PUBLICATION_SWAPPED_ATOMICALLY`, 21 ficheros).
+7. **Verificación independiente del paquete:** 17 checks, 0 fallos, `PASS`,
+   `experiment_certified: false`.
+8. **Pruebas:** `test_exp004a_wp051_02h.py` **24 passed** (3.03 s); con 02G **73 passed**.
+9. **Sellado:** `EVIDENCE_MANIFEST.json` con 10/10 entradas y `git_blob_sha` de `HEAD` en todas.
+   Commits: `cc8c10d3` (paquete), `2c7cfabb` (manifiesto).
+
+**Pendiente / bloqueado**
+
+- **`DEF-02H-01` (riesgo real, sin arreglar):** el volumen está al 99 %, libre entre 0.02 y 8.2 GiB
+  contra un suelo de 2 GiB. El lane solo ocupa 14 228 034 B de su presupuesto; la presión es del
+  host. No se liberó nada: borrar evidencia de otros lanes no es de este paquete. Mientras siga así
+  habrá más días perdidos.
+- **`DEF-02H-02`:** `C3_AFTER_REBOOT` depende de `LogonType InteractiveToken`; un reinicio sin inicio
+  de sesión deja hueco. Cambiarlo exige privilegios de administrador: **no ejecutado**.
+- **`DEF-02H-03`:** la alarma es un exit code y un fichero, no un aviso a una persona.
+- **`DEF-02H-04`:** `COVERAGE_COMPLETE` inalcanzable en fase 3; las alternativas están en
+  `FINAL_REPORT.md §4` y **no** se aplicaron.
+- **`DEF-02H-05`:** fallo de proveedor no observado en la ventana (solo probado en unitarios).
+- **Fuera de alcance, solo reportado:** `TradingAgentic-ST6-Forward` `Disabled` (result 3),
+  `TradingAgentic-EDGE05-Watchdog` result 10. No se tocaron.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"        # worktree 02h
+git log -2 --format='%H %s'
+MAIN="/c/Users/GVLLFR0035/Downloads/bot freebuff"
+PY="$MAIN/.venv/Scripts/python.exe"
+"$PY" scripts/exp004a_wp051_02h_audit.py --all   --state-root "$MAIN/data/forward/edge04" --store-root "$MAIN/data/forward/edge03"   # exit 0
+"$PY" scripts/exp004a_wp051_02h_verify.py   --state-root "$MAIN/data/forward/edge04" --store-root "$MAIN/data/forward/edge03"   # 17/17 PASS
+"$PY" "$MAIN/scripts/edge04_verify.py" --state-root "$MAIN/data/forward/edge04"       # 15/15 PASS
+PYTHONPATH=src "$PY" -m pytest tests/unit/research/test_exp004a_wp051_02h.py -q       # 24 passed
+```
