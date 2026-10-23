@@ -1,0 +1,179 @@
+{
+  "checkout": {
+    "branch": "recovery/exp004a-02k-9983b050",
+    "dirty_paths": 5,
+    "head": "9983b050c8e241ef9d8365c8ffc33c95df1658dd",
+    "head_is_source": true,
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k"
+  },
+  "counts": {
+    "ABSENT": 2,
+    "FOUND_VALID": 13
+  },
+  "elements": [
+    {
+      "blob": "82aec64affaf33e4092bc81fd89db792b3303b60",
+      "bytes": 7992,
+      "class": "FOUND_VALID",
+      "key": "contract_phase3",
+      "lines": 139,
+      "path": "config/preregistrations/EXP-004A.datasets.phase3.json",
+      "purpose": "the frozen declaration: window, shard policy, coverage rule",
+      "sha256": "240a1c6f057bcea3a2c57e4ce5d783cfb0aa3cf41b07ddb4d5b25ab86656ab84",
+      "why": "byte-identical to blob 82aec64affaf"
+    },
+    {
+      "blob": "9421cc52a8a3366b3a1fa6998d547b0a002ed89b",
+      "bytes": 6071,
+      "class": "FOUND_VALID",
+      "key": "contract_phase2",
+      "lines": 130,
+      "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+      "purpose": "the superseded declaration, kept for reference",
+      "sha256": "6922d12e781800e7f670c7d1eb3f944e92806fc69af686a78ac671e314989eeb",
+      "why": "byte-identical to blob 9421cc52a8a3"
+    },
+    {
+      "blob": "d3bf7f003f22023ec40dd3be50d27ad592d064bb",
+      "bytes": 6830,
+      "class": "FOUND_VALID",
+      "key": "contract_root",
+      "lines": 130,
+      "path": "config/preregistrations/EXP-004A.json",
+      "purpose": "the experiment's root declaration",
+      "sha256": "07d4702adc264f0306eb2757049edc2aea98a5d7df2f4b8350603d057794c7df",
+      "why": "byte-identical to blob d3bf7f003f22"
+    },
+    {
+      "blob": "f5aac1604e37b019349a455fa5ab9d4dbb0dff52",
+      "bytes": 71331,
+      "class": "FOUND_VALID",
+      "key": "capture_runner_02f",
+      "lines": 1759,
+      "path": "scripts/exp004a_wp051_02f_runner.py",
+      "purpose": "the forward capture entry point (phase 1/2)",
+      "sha256": "015ba8e63f3977be126b0ff58a1b022b37d37a7fcd32cacd0a5ef0efde743f66",
+      "why": "byte-identical to blob f5aac1604e37"
+    },
+    {
+      "blob": "2fec148451ed74245435dfc6e82de2b168625f16",
+      "bytes": 49120,
+      "class": "FOUND_VALID",
+      "key": "capture_runner_02g",
+      "lines": 1254,
+      "path": "scripts/exp004a_wp051_02g_capture.py",
+      "purpose": "the incremental capture entry point (phase 3)",
+      "sha256": "37d5683b18921e3aafa0397642298a75b5657491ce814af24d771b97e8c594b4",
+      "why": "byte-identical to blob 2fec148451ed"
+    },
+    {
+      "blob": "20503fb2a17d01e1e070d944aeb9b94b2d42d7a1",
+      "bytes": 45772,
+      "class": "FOUND_VALID",
+      "key": "capture_verifier_02g",
+      "lines": 1099,
+      "path": "scripts/exp004a_wp051_02g_verify.py",
+      "purpose": "the independent verifier of a phase-3 capture",
+      "sha256": "cff3826c9c914bdc3d11b6463fb96d7a1ba630b5941177e91113295af71004ec",
+      "why": "byte-identical to blob 20503fb2a17d"
+    },
+    {
+      "blob": "cab2e11fab9120662fbf3ad42a4550d0aa55b930",
+      "bytes": 21664,
+      "class": "FOUND_VALID",
+      "key": "observer",
+      "lines": 494,
+      "path": "scripts/edge04_observer.py",
+      "purpose": "the forward observer that writes the store and the alarm rows",
+      "sha256": "fbfa8a1a504aadf57607d5f69159e666b6c468b279fbc59bcb8a009bcb94e014",
+      "why": "byte-identical to blob cab2e11fab91"
+    },
+    {
+      "blob": "4f3460329f1dacec7797849cb3ec73bc67290469",
+      "bytes": 40166,
+      "class": "FOUND_VALID",
+      "key": "observer_watchdog",
+      "lines": 989,
+      "path": "scripts/edge04_watchdog.py",
+      "purpose": "the guard: reads the observer's silence and escalates",
+      "sha256": "98cc8d214dfb2c00ad87cf6130940cc6a19df3dba5133953264e6598a540c877",
+      "why": "byte-identical to blob 4f3460329f1d"
+    },
+    {
+      "blob": "9a89939ee8847ec4fcf1bfdd47242761b4be0af1",
+      "bytes": 19745,
+      "class": "FOUND_VALID",
+      "key": "closure",
+      "lines": 460,
+      "path": "scripts/edge04_closure.py",
+      "purpose": "closes a day into the store",
+      "sha256": "4e9b325754665582b8064047e1ad23295ea3072329eefccb2a13f45c0d5c1102",
+      "why": "byte-identical to blob 9a89939ee884"
+    },
+    {
+      "blob": "75d73669df037f661175c1d0b11f82c5f76b9d67",
+      "bytes": 45038,
+      "class": "FOUND_VALID",
+      "key": "engine",
+      "lines": 1131,
+      "path": "src/trading_bot/research/prospective/incremental.py",
+      "purpose": "the capture plan the contract names as its engine",
+      "sha256": "5ed75f0695cf75e8b4e6357951febd64e55dd732112222696d7e5fc5aea1a53f",
+      "why": "byte-identical to blob 75d73669df03"
+    },
+    {
+      "blob": "af7162fbfcd5ea5672d86ba232191f4eba68dcbe",
+      "bytes": 7216,
+      "class": "FOUND_VALID",
+      "key": "store_module",
+      "lines": 206,
+      "path": "src/trading_bot/research/prospective/store.py",
+      "purpose": "the reader the runner imports",
+      "sha256": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d",
+      "why": "byte-identical to blob af7162fbfcd5"
+    },
+    {
+      "class": "FOUND_VALID",
+      "files": 50,
+      "key": "shard_store_phase3",
+      "path": "data/exp004a/phase3",
+      "purpose": "the write-once phase-3 shards and their manifests",
+      "why": "directory with 50 files, tracked at 9983b050"
+    },
+    {
+      "class": "FOUND_VALID",
+      "files": 31,
+      "key": "published_prefix",
+      "path": "reports/edge-recovery/WP-EDGE-04/evidence",
+      "purpose": "the only surviving copy of any part of the forward store",
+      "why": "directory with 31 files, tracked at 9983b050"
+    },
+    {
+      "class": "ABSENT",
+      "key": "store_forward_edge04",
+      "path": "data/forward/edge04",
+      "purpose": "the live phase-3 forward store: runs, slots, alarms, daily shards",
+      "why": "not in this checkout and not tracked by the commit"
+    },
+    {
+      "class": "ABSENT",
+      "key": "store_forward_edge03",
+      "path": "data/forward/edge03",
+      "purpose": "the live phase-2 forward store the 02G verifier reads",
+      "why": "not in this checkout and not tracked by the commit"
+    }
+  ],
+  "generated_at_utc": "2026-10-23T19:07:15Z",
+  "guard_task": {
+    "arguments": "\"C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\scripts\\edge04_watchdog.py\" --state-root \"C:/Users/GVLLFR0035/Downloads/bot freebuff/data/forward/edge04\"",
+    "command": "\"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe\"",
+    "error": null,
+    "query_exit": 0,
+    "referenced_script": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\scripts\\edge04_watchdog.py",
+    "referenced_script_exists": false,
+    "registered": true
+  },
+  "schema_version": "EXP004A_WP051_02K_RECOVERY_AUDIT_V1",
+  "source_commit": "9983b050c8e241ef9d8365c8ffc33c95df1658dd",
+  "verdict": "INCOMPLETE"
+}
