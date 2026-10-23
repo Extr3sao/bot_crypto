@@ -178,9 +178,10 @@ for `main`). No force-push. `main` and `origin/main` are untouched at `1d2192b0`
 
 **Reproducible from the commit, not from this working tree.** A detached worktree was
 checked out at `32e2888e`, its own `.venv` rebuilt with `uv sync --frozen`, and the
-guard re-run: `ruff format --check .` → exit 0 (`788 files already formatted`),
-`verify_format_exemptions.py --self-test` → `VERDICT=PASS (9/9)` with all eleven
-negative controls rejected.
+guard re-run there: `ruff format --check .` -> exit 0 (`788 files already formatted`),
+`verify_format_exemptions.py --self-test` -> `VERDICT=PASS (9/9)` with all eleven
+negative controls rejected. That run is the one recorded in
+`FORMAT_EXEMPTIONS_AUDIT.json`, whose `head` is `32e2888e`.
 
 ## 8. Status
 

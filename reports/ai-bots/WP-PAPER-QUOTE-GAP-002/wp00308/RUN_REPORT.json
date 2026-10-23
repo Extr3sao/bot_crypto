@@ -1,7 +1,7 @@
 {
  "schema": "wp00308-run-report/1",
  "work_package": "WP-003-08",
- "generated_at_utc": "2026-10-23T19:20:00Z",
+ "generated_at_utc": "2026-10-23T18:37:56Z",
  "builder": "Codebuff (Freebuff desktop), single session, Windows 11 host",
  "objective": "make `ruff format --check .` exit 0 while preserving every committed certification and adding no regression",
  "workspace_incident": {
@@ -225,6 +225,7 @@
   "formatted": 788,
   "guard_verdict": "PASS",
   "guard_checks": "9/9",
-  "negative_controls_rejected": 11
+  "negative_controls_rejected": 11,
+  "audit_artifact": "FORMAT_EXEMPTIONS_AUDIT.json (head=32e2888e)"
  }
 }
