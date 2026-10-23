@@ -1784,3 +1784,70 @@ PY="$MAIN/.venv/Scripts/python.exe"
 "$PY" "$MAIN/scripts/edge04_verify.py" --state-root "$MAIN/data/forward/edge04"       # 15/15 PASS
 PYTHONPATH=src "$PY" -m pytest tests/unit/research/test_exp004a_wp051_02h.py -q       # 24 passed
 ```
+
+---
+
+## WP-051-02I — EDGE-04 storage stability (2026-10-23T11:00Z)
+
+**Objetivo:** eliminar el riesgo de interrupción de la captura por saturación del volumen, sin
+tocar evidencias ni el runtime de trading. **Estado: cerrado con `BLOCKED` declarado** por
+capacidad — no por falta de trabajo, sino porque no existe capacidad suficiente en el host.
+
+**Hecho**
+- `scripts/exp004a_wp051_02i_storage.py`: auditoría (`--audit`), inventario del volumen
+  (`--survey`), barrido propio con evidencia acumulada (`--sweep [--apply]`), sello
+  (`--manifest`).
+- `scripts/exp004a_wp051_02i_verify.py`: verificador independiente, **16/16 PASS**; no importa
+  el constructor.
+- `scripts/edge04_watchdog.py` V1 → **V2**: velocidad y ETA desde las lecturas del propio
+  observador, estado `RECOVERED`, log de transiciones acotado (256 KiB), escrituras best-effort
+  (un volumen lleno no produce un traceback) y registro honesto de cada canal de escalado.
+- Pruebas: **19 nuevas** (`test_exp004a_wp051_02i.py`) + **161 pasando, 1 skip** en las seis
+  suites afectadas. Presión de disco por lector inyectado (1.9 / 2.0 / 4.9 / 5.0 GiB); **nunca**
+  se llenó C:.
+- Barrido: **13.57 MiB** (321 ficheros, primera pasada aplicada) + **216 353 B** (4 directorios,
+  pasada registrada) + **0 B** (pasada idempotente). Todo untracked y whitelisted.
+- Watchdog V2 ya en producción por la tarea programada: `10:47:02Z` escribió
+  `EDGE04_WATCHDOG_V2`, `DEGRADED`, `AT_RISK 2.79 h`; `LastTaskResult=1`.
+
+**Medido (no estimado)**
+- 929 lecturas del propio lane, `2026-10-13T11:23:38Z → 2026-10-23T10:40:56Z`.
+- **25** tramos bajo el suelo de 2 GiB; **162 ticks rechazados** (40.55 h de slots); mínimo
+  **0.00 GiB**.
+- `2026-10-23`: 25 rechazos; 0.00 GiB de `03:40Z` a `04:55Z`; episodio `00:10:56Z → 05:25:57Z`.
+- Caída máxima intradía: **14.58 GiB** (`2026-10-19`, 22.91 → 8.32 GiB).
+- Huella propia: **20.37 MiB**; crecimiento **1.16 MB/día**; 90 días = **104.5 MB**;
+  **314.5 B/fila**.
+- **Requerido 16.68 GiB libres estables; disponibles 4.42 GiB → `INSUFFICIENT`.**
+
+**Pendiente / bloqueado**
+- `DEF-02I-01` **BLOCKED**: hacen falta **≥ 16.68 GiB** libres sostenidos en C:. Candidatos
+  (ninguno aplicado, todos requieren decisión externa): `C:\ESD` 4.58 GiB (admin), worktrees en
+  `Downloads` 18.53 GiB, `%TEMP%` 6–7 GiB, `ms-playwright` 3.27 GiB, `wsl` 6.16 GiB,
+  `hermes` 2.77 GiB.
+- `DEF-02I-02`: la alarma funciona (exit code + marcador + log) pero **nadie la lee**; el log de
+  eventos de Windows rechaza escritores sin privilegios y no hay webhook.
+- `DEF-02I-05`: el origen de la caída de 14.58 GiB/día no está atribuido.
+- `DEF-02I-07`: `LogonType=Interactive` sin probar (requiere administrador).
+- `DEF-02I-08`: `tests/unit/research` como directorio no corre (import roto en
+  `test_exp004a_wp051_02g.py`, preexistente; y cap de 600 s).
+- Ventana intacta: `2026-10-24` es el día 2 de `2026-10-23 → 2027-01-21`. `COVERAGE_COMPLETE`
+  inalcanzable (techo 0.988889); el suelo 0.9 sigue siendo alcanzable con **8 días perdidos más**
+  como máximo.
+
+**Commits:** `522c07fd` (auditor + verifier + watchdog V2 + tests + informes), `65e33c1c` y
+`60d60b04` (sellos del manifiesto). Ramo `wp/exp004a-051-02h`, **sin push**.
+
+**Reanudación verificable**
+
+```bash
+cd "/c/Users/GVLLFR0035/Downloads/bot-freebuff-exp004a-02h"
+MAIN="/c/Users/GVLLFR0035/Downloads/bot freebuff"
+PY="$MAIN/.venv/Scripts/python.exe"
+"$PY" scripts/exp004a_wp051_02i_storage.py --audit                 # exit 0, verdict INSUFFICIENT
+"$PY" scripts/exp004a_wp051_02i_storage.py --sweep                  # dry run, 0 B si ya se limpió
+"$PY" scripts/exp004a_wp051_02i_verify.py                           # 16/16 PASS
+"$PY" scripts/edge04_watchdog.py --state-root "$MAIN/data/forward/edge04"   # 1 = DEGRADED
+"$PY" -m pytest tests/unit/research/test_exp004a_wp051_02i.py -q    # 19 passed
+schtasks /query /tn TradingAgentic-EDGE04-Watchdog /v               # LastTaskResult
+```
