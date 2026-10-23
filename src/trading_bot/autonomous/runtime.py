@@ -75,8 +75,10 @@ from .decision import (
     DecisionRequest,
     classification_for_scanner_rejection,
     no_trade_kind_for,
+    process_kill_switch,
 )
 from .experience import StrategyPerformanceStore
+from .hot_stop import HotStopGate
 from .outcomes import OutcomeEvaluator
 from .pit import closed_bar_slice, infer_bar_interval_ms
 from .trace import DecisionTraceStore
@@ -318,6 +320,7 @@ class AutonomousPaperRuntime:
         now_fn: Callable[[], int] | None = None,
         routing_mode: StrategyRoutingMode | str = StrategyRoutingMode.LEGACY,
         lifecycle_ecosystem: Any | None = None,
+        hot_stop: HotStopGate | None = None,
     ) -> None:
         self._settings = settings
         self._scanner_factory = scanner_factory
@@ -344,6 +347,14 @@ class AutonomousPaperRuntime:
 
         run_dir = Path(run_dir)
         self._run_dir = run_dir
+        # G-2 — engage-only safety gate at the broker boundary. On by default:
+        # a runtime built without one would be the regression this task exists
+        # to prevent. The switch is the same process authority rule 0 reads.
+        self._hot_stop = (
+            hot_stop
+            if hot_stop is not None
+            else HotStopGate(kill_switch=process_kill_switch(), run_dir=run_dir)
+        )
         self._trace_store = DecisionTraceStore(run_dir)
         self._performance = StrategyPerformanceStore(
             Path(performance_path) if performance_path is not None else run_dir / "performance.json"
@@ -549,9 +560,17 @@ class AutonomousPaperRuntime:
             "market_data_accessed": False,
         }
 
+    @property
+    def hot_stop(self) -> HotStopGate:
+        """The G-2 gate — exposed so an operator surface can report its state."""
+        return self._hot_stop
+
     async def run_cycle(self, *, cycle: int) -> CycleReport:
         """One full cycle: ingest once, then decide deterministically."""
         session_id = uuid4().hex[:16]
+        # G-2 — honour a hot engage at the cycle boundary too, so the state is
+        # visible even on a cycle that never reaches the broker.
+        self._hot_stop.poll(run_id=session_id)
         started = self._now()
         errors: list[str] = []
 
@@ -1452,7 +1471,16 @@ class AutonomousPaperRuntime:
                     "decision_id": decision_id,
                 },
             )
-            result = self._broker.execute_signal(approved)
+            # G-2 — the last boundary before the broker. The lock is held across
+            # the call: an engage cannot ACK while this dispatch is in flight,
+            # and no dispatch can begin after that ACK.
+            with self._hot_stop.order_boundary(run_id=session_id) as allowed:
+                if not allowed:
+                    errors.append(
+                        f"{symbol}: kill_switch_engaged_hot:{self._hot_stop.engaged_reason}"
+                    )
+                    return False
+                result = self._broker.execute_signal(approved)
         except Exception as exc:  # broker failure ⇒ no order, loud and recorded
             errors.append(f"{symbol}: broker_error {type(exc).__name__}: {exc}")
             return False

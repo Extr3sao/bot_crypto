@@ -27,6 +27,7 @@ from uuid import uuid4
 from pydantic import ValidationError
 
 from trading_bot import __version__
+from trading_bot.autonomous.hot_stop import HOT_STOP_FILE_NAME
 from trading_bot.charting import ChartSnapshotRequest, render_local_chart_snapshot
 from trading_bot.config import TradingMode, load_settings
 from trading_bot.market_data.bitunix import (
@@ -60,10 +61,13 @@ DEFAULT_DEMO_PAIRS: list[tuple[str, bool]] = [
 
 #: Subcomandos reservados cuyo comportamiento real aun no existe. Un stub
 #: que retorna 0 es un fallo de seguridad: cualquier wrapper, cron o agente
-#: que compruebe el exit code concluye que la accion se ejecuto. Los dos
-#: abortan en ``main`` con exit 2 + mensaje a stderr hasta que MT-0003
-#: (kill switch en el path de decision) y MT-0004 (tests negativos) existan.
-NOT_IMPLEMENTED_SUBCOMMANDS: frozenset[str] = frozenset({"kill-switch", "status"})
+#: que compruebe el exit code concluye que la accion se ejecuto. Abortan en
+#: ``main`` con exit 2 + mensaje a stderr.
+#:
+#: ``kill-switch`` left this set with G-2: the rule-0 gate (MT-0003) and its
+#: negative controls (MT-0004-R1) now exist, so the command can ask a **running**
+#: process to engage. ``status`` stays reserved.
+NOT_IMPLEMENTED_SUBCOMMANDS: frozenset[str] = frozenset({"status"})
 
 
 @dataclass(slots=True)
@@ -295,7 +299,28 @@ def _build_parser() -> argparse.ArgumentParser:
     tpsl_parser.add_argument("--config-dir", default="config")
     tpsl_parser.add_argument("--env-file", default=".env")
 
-    sub.add_parser("kill-switch", help="Stub reservado.")
+    kill_switch_parser = sub.add_parser(
+        "kill-switch",
+        help="Pide a un proceso vivo que active su kill switch (fichero de control).",
+    )
+    kill_switch_parser.add_argument(
+        "--run-dir",
+        required=True,
+        help="Directorio del run que el proceso vivo vigila (el mismo de STOP).",
+    )
+    kill_switch_parser.add_argument(
+        "--engage",
+        action="store_true",
+        help="Solicita la parada. El proceso confirma en kill_switch_events.jsonl.",
+    )
+    kill_switch_parser.add_argument(
+        "--reason", default="", help="Motivo del operador, queda registrado."
+    )
+    kill_switch_parser.add_argument(
+        "--disarm",
+        action="store_true",
+        help="Reservado y rechazado: el stop es monotonico durante la vida del proceso.",
+    )
     sub.add_parser("status", help="Stub reservado.")
     return parser
 
@@ -1365,6 +1390,67 @@ def _cmd_set_tpsl(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_kill_switch(args: argparse.Namespace) -> int:
+    """G-2 — ask a *running* process to engage its kill switch.
+
+    This writes the control file the loop polls; it never touches another
+    process's memory and never opens a socket. Exit 0 means the request is
+    durably on disk, **not** that the process has halted: only the ``engaged``
+    event in ``kill_switch_events.jsonl`` proves that, and stdout says so.
+
+    ``--disarm`` is refused on purpose. The stop is monotonic for the life of
+    the process (G-2 REQ-G2-02); rearming is a new process with an explicit off
+    token, and an operator who could disarm from here could undo the stop after
+    the fact, which is the failure this whole gap is about.
+    """
+    if args.disarm:
+        sys.stderr.write(
+            "ERROR: kill-switch --disarm no esta soportado; el stop es monotono "
+            "durante la vida del proceso. No se ha ejecutado ninguna accion.\n"
+        )
+        return 2
+    if not args.engage:
+        sys.stderr.write(
+            "ERROR: kill-switch requiere --engage; no se ha ejecutado ninguna accion.\n"
+        )
+        return 2
+    run_dir = Path(args.run_dir)
+    if not run_dir.is_dir():
+        sys.stderr.write(
+            f"ERROR: run-dir no existe o no es un directorio: {run_dir}. "
+            "No se ha ejecutado ninguna accion.\n"
+        )
+        return 2
+    control = run_dir / HOT_STOP_FILE_NAME
+    reason = (args.reason or "").strip() or "operator requested hot engage"
+    tmp = control.with_name(control.name + ".tmp")
+    try:
+        tmp.write_text(reason + "\n", encoding="utf-8")
+        tmp.replace(control)
+    except OSError as exc:
+        sys.stderr.write(
+            f"ERROR: no se pudo escribir {control}: {type(exc).__name__}. "
+            "No se ha ejecutado ninguna accion.\n"
+        )
+        return 2
+    print(
+        json.dumps(
+            {
+                "status": "REQUESTED",
+                "control_file": str(control),
+                "reason": reason,
+                "enforced": False,
+                "note": (
+                    "El proceso vivo confirma en kill_switch_events.jsonl "
+                    "(event=engaged). Exit 0 solo prueba que la peticion quedo en disco."
+                ),
+            },
+            ensure_ascii=True,
+        )
+    )
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     # Entry point CLI: UTF-8 en stdout/stderr antes de cualquier log (fix
     # UnicodeEncodeError cp1252 en Windows; ver `_force_utf8_stdio`).
@@ -1389,6 +1475,8 @@ def main(argv: list[str] | None = None) -> int:
         return _cmd_close_position(args)
     if args.command == "set-tpsl":
         return _cmd_set_tpsl(args)
+    if args.command == "kill-switch":
+        return _cmd_kill_switch(args)
     if args.command in NOT_IMPLEMENTED_SUBCOMMANDS:
         # Mismo contrato de rechazo que ``scan --no-demo`` y que
         # ``place-order`` sin ``--confirm-live``: exit 2 + stderr, y ninguna

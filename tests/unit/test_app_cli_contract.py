@@ -1,7 +1,11 @@
 """Contract tests for the CLI surface: a subcommand that does nothing must fail.
 
 MT-0002.  ``kill-switch`` and ``status`` were shipped as placeholders that
-printed ``[stub] ...`` and returned 0.  Any operator, wrapper, cron job or
+printed ``[stub] ...`` and returned 0.
+
+``kill-switch`` left that set with G-2: it now writes the control file a
+running process polls. Its own contract is pinned in section 5, including the
+one thing it must never do — report success for a stop it did not request.  Any operator, wrapper, cron job or
 agent that trusts the exit code concludes that the system halted, or that it
 reported its state, when neither happened (OB-02: the highest-consequence
 false success in the product surface).
@@ -27,6 +31,7 @@ list of names: the defect was a shape of code (``print(...)`` then
 from __future__ import annotations
 
 import ast
+import json
 import os
 import subprocess
 import sys
@@ -39,9 +44,11 @@ from trading_bot import app as app_module
 REPO_ROOT = Path(__file__).resolve().parents[2]
 APP_PATH = Path(app_module.__file__)
 
-#: The two commands MT-0002 was opened for.  ``MT-0003``/``MT-0004`` will give
-#: them real behaviour; until then the contract is "refuse loudly".
-DECLARED_UNIMPLEMENTED = frozenset({"kill-switch", "status"})
+#: The commands MT-0002 was opened for that still have no real behaviour.
+#: ``kill-switch`` was implemented by G-2 (rule 0 in MT-0003, its negative
+#: controls in MT-0004-R1); ``status`` remains reserved, so the contract there
+#: is still "refuse loudly".
+DECLARED_UNIMPLEMENTED = frozenset({"status"})
 
 
 def _run(*argv: str) -> subprocess.CompletedProcess[str]:
@@ -257,3 +264,68 @@ def test_the_cli_still_reports_its_version() -> None:
     completed = _run("--version")
     assert completed.returncode == 0
     assert "trading-bot" in _normalise(completed.stdout)
+
+
+# --- 5. the G-2 control command ---------------------------------------------
+
+
+def test_kill_switch_refuses_without_engage(tmp_path: Path) -> None:
+    """No ``--engage`` means no request: exit 2, empty stdout, no file."""
+    completed = _run("kill-switch", "--run-dir", str(tmp_path))
+    assert completed.returncode == 2
+    assert _normalise(completed.stdout) == ""
+    assert "--engage" in _normalise(completed.stderr)
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_kill_switch_refuses_to_disarm(tmp_path: Path) -> None:
+    """The stop is monotonic: an operator cannot undo it from the CLI.
+
+    This is the failure G-2 exists for. A ``--disarm`` that exited 0 would let a
+    script present a stopped process as a running one, and vice versa.
+    """
+    completed = _run("kill-switch", "--run-dir", str(tmp_path), "--engage", "--disarm")
+    assert completed.returncode == 2
+    assert _normalise(completed.stdout) == ""
+    assert "monotono" in _normalise(completed.stderr)
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_kill_switch_refuses_a_missing_run_dir(tmp_path: Path) -> None:
+    missing = tmp_path / "nope"
+    completed = _run("kill-switch", "--run-dir", str(missing), "--engage")
+    assert completed.returncode == 2
+    assert _normalise(completed.stdout) == ""
+    assert "run-dir" in _normalise(completed.stderr)
+    assert not missing.exists()
+
+
+def test_kill_switch_writes_the_request_a_running_gate_polls(tmp_path: Path) -> None:
+    """End to end through the real entrypoint: CLI request -> gate engaged.
+
+    The CLI's exit code is deliberately *not* treated as enforcement: it says
+    ``REQUESTED`` / ``enforced: false``, and the engaged state has to be
+    obtained by the process that polls.
+    """
+    from trading_bot.autonomous.hot_stop import (
+        HOT_STOP_FILE_NAME,
+        HotStopGate,
+    )
+    from trading_bot.paper.kill_switch_v2 import KillSwitch
+
+    completed = _run(
+        "kill-switch", "--run-dir", str(tmp_path), "--engage", "--reason", "operator: manual"
+    )
+    assert completed.returncode == 0, completed.stderr[-400:]
+    payload = json.loads(completed.stdout)
+    assert payload["status"] == "REQUESTED"
+    assert payload["enforced"] is False
+    assert Path(payload["control_file"]) == tmp_path / HOT_STOP_FILE_NAME
+    assert (tmp_path / HOT_STOP_FILE_NAME).read_text(encoding="utf-8").strip() == "operator: manual"
+
+    gate = HotStopGate(kill_switch=KillSwitch(), run_dir=tmp_path, now_ms=lambda: 0)
+    assert gate.poll(run_id="run-1") is True
+    with gate.order_boundary() as allowed:
+        assert allowed is False
+    events = (tmp_path / "kill_switch_events.jsonl").read_text(encoding="utf-8").splitlines()
+    assert json.loads(events[0])["reason"] == "operator: manual"
