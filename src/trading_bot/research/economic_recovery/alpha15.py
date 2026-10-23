@@ -38,6 +38,7 @@ from statistics import median
 from typing import Any
 
 from .experiments import Bar, load_ohlcv
+from .pit15 import run_family
 
 __all__ = [
     "COST_MODEL_V15",
@@ -473,6 +474,20 @@ def bar_series(path: Any, *, limit: int | None = None) -> list[Bar]:
 
 
 def _vol_regime_breakout(bars: Sequence[Bar], params: dict[str, Any]) -> list[dict[str, Any]]:
+    """WP-EDGE-016: evaluated through the point-in-time machine (see ``pit15``).
+
+    The WP-EDGE-015 version of this function filled every exit at the open of the
+    bar whose close triggered it — a price that had already happened before the
+    information existed. The rule itself is unchanged; only the fill instant moved
+    to the next executable bar.
+    """
+    return run_family("vol_regime_breakout", bars, params)
+
+
+def _vol_regime_breakout_pre_pit(
+    bars: Sequence[Bar], params: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """The pre-repair rule, kept only so the defect stays reproducible in tests."""
     closes = [b.close for b in bars]
     highs = [b.high for b in bars]
     lows = [b.low for b in bars]
@@ -524,6 +539,12 @@ def _vol_regime_breakout(bars: Sequence[Bar], params: dict[str, Any]) -> list[di
 
 
 def _trend_pullback(bars: Sequence[Bar], params: dict[str, Any]) -> list[dict[str, Any]]:
+    """WP-EDGE-016: the same rule, with exits filled at the next executable bar."""
+    return run_family("trend_pullback", bars, params)
+
+
+def _trend_pullback_pre_pit(bars: Sequence[Bar], params: dict[str, Any]) -> list[dict[str, Any]]:
+    """The pre-repair rule, kept only so the defect stays reproducible in tests."""
     closes = [b.close for b in bars]
     trend = _real(_ema(closes, int(params["trend_ema_hours"])))
     fast = _real(_ema(closes, int(params["fast_ema_hours"])))
@@ -566,6 +587,14 @@ def _trend_pullback(bars: Sequence[Bar], params: dict[str, Any]) -> list[dict[st
 
 
 def _mean_reversion_vol_liq(bars: Sequence[Bar], params: dict[str, Any]) -> list[dict[str, Any]]:
+    """WP-EDGE-016: the same rule, with exits filled at the next executable bar."""
+    return run_family("mean_reversion_vol_liq", bars, params)
+
+
+def _mean_reversion_vol_liq_pre_pit(
+    bars: Sequence[Bar], params: dict[str, Any]
+) -> list[dict[str, Any]]:
+    """The pre-repair rule, kept only so the defect stays reproducible in tests."""
     closes = [b.close for b in bars]
     volumes = [b.volume for b in bars]
     mean = _real(_sma(closes, int(params["mean_hours"])))
@@ -1049,3 +1078,13 @@ def family_runner(name: str) -> Callable[[Sequence[Bar], dict[str, Any]], list[d
         "trend_pullback": _trend_pullback,
         "mean_reversion_vol_liq": _mean_reversion_vol_liq,
     }[name]
+
+
+#: The pre-repair runners, for the reconciliation script and its tests only.
+PRE_PIT_RUNNERS: dict[str, Callable[[Sequence[Bar], dict[str, Any]], list[dict[str, Any]]]] = {
+    "vol_regime_breakout": _vol_regime_breakout_pre_pit,
+    "trend_pullback": _trend_pullback_pre_pit,
+    "mean_reversion_vol_liq": _mean_reversion_vol_liq_pre_pit,
+}
+
+__all_pit__ = ["PIT_CONTRACT", "audit_trade", "PRE_PIT_RUNNERS", "run_family"]
