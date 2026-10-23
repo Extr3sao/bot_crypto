@@ -274,25 +274,29 @@ def test_a_venue_outage_at_startup_blocks_instead_of_escaping(tmp_path: Path) ->
     """Measured on the host: an unreachable venue at startup exited 1 out of bootstrap.
 
     A raw ``SourceUnavailable`` traceback carries no row, no code and no reason, so an
-    outage looked exactly like a broken session. The session must block, say why, and end
-    at its deadline without inventing the delivery delay it never measured.
+    outage looked exactly like a broken session. The session now blocks, says why, and
+    ends its window with zero cycles — the same report the poll loop gives — instead of
+    inventing the delivery delay it never measured.
     """
 
     session, _clock, venue = build_session(tmp_path, duration_s=60, max_cycles=2)
     venue.failures = 10**6
 
-    with pytest.raises(SessionAborted, match="NO_WARMUP_DATA"):
-        session.run()
+    summary = session.run()
 
+    assert summary["cycles_executed"] == 0
+    assert summary["blocked_reasons"] == ["FEED_DOWN"]
+    assert summary["data_delay_measured_now_ms"] is None
     rows = read_entries(tmp_path / "session" / "STREAM.jsonl")
     blocked = [row["entry"] for row in rows if row["entry"]["kind"] == "BLOCKED"]
     assert blocked, "an outage must leave a row, not only a traceback"
     assert blocked[0]["reason"] == "FEED_DOWN"
     assert blocked[0]["phase"] == "WARMUP"
     assert blocked[0]["detail"]["code"] == "NETWORK"
-    assert not [row for row in rows if row["entry"]["kind"] == "CYCLE"]
+    kinds = [row["entry"]["kind"] for row in rows]
+    assert "CYCLE" not in kinds and "DELAY_MEASURED" not in kinds
+    assert kinds[-1] == "SESSION_END"
     assert venue.fetches == 0, "no bar may be read, let alone decided on"
-    assert not (tmp_path / "session" / "SUMMARY.json").exists()
 
 
 def test_a_venue_that_returns_after_the_outage_still_decides(tmp_path: Path) -> None:

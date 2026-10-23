@@ -927,6 +927,8 @@ class ProspectiveSession:
             #: made an outage indistinguishable from a broken session. Blocking and
             #: retrying is the same condition the poll loop already handles, and it still
             #: refuses to decide without a measured delay: the deadline ends the session.
+            measured: int | None = None
+            warmed = False
             while True:
                 try:
                     bootstrap = collector.bootstrap(minutes=self.config.warmup_minutes)
@@ -966,13 +968,20 @@ class ProspectiveSession:
                         )
                     )
                 else:
+                    warmed = True
                     break
                 if int(self.clock()) >= deadline:
-                    raise SessionAborted(
-                        "NO_WARMUP_DATA: the venue produced nothing before the deadline; "
-                        "a session without a measured delivery delay cannot decide"
-                    )
+                    break
                 self.sleeper(self.config.poll_interval_s)
+            if not warmed or measured is None:
+                #: The declared window ended before the venue produced a usable warm-up.
+                #: That is a session that ran and blocked — the same thing the poll loop
+                #: reports — not an exception: a caller reading the exit status must not
+                #: have to choose between "crash" and "fine" for a known condition.
+                summary = self._summary([], blocked_cycles)
+                stream.append("SESSION_END", summary)
+                self._write_json("SUMMARY.json", summary)
+                return summary
             self._measured_delay_ms = int(measured)
             if self._pinned_delay_ms is not None:
                 #: Continuing on the same clock: a fresh measurement is published beside
