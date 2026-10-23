@@ -188,6 +188,21 @@ def test_a_historical_refusal_does_not_mark_a_later_run_failed(tmp_path: Path) -
     assert status["last_attempt"]["refused"] is True
 
 
+def test_a_truncated_stream_is_a_failed_state_not_an_exception(tmp_path: Path) -> None:
+    """A kill between ``write`` and ``fsync`` leaves a half line. The answer is FAILED."""
+
+    root = _session(tmp_path, resumed_last=False)
+    with (root / "STREAM.jsonl").open("a", encoding="utf-8", newline="\n") as handle:
+        handle.write('{"seq": 6, "prev_sha256": "deadbeef", "ent')
+
+    status = session_status(root)
+
+    assert status["state"] == "FAILED"
+    assert status["ledger"]["chain_ok"] is False
+    assert any(item.startswith("CHAIN_") for item in status["why"])
+    assert status["read_only"] is True
+
+
 def test_the_diagnostic_is_read_only(tmp_path: Path) -> None:
     root = _session(tmp_path, resumed_last=False)
     pid = _dead_pid()

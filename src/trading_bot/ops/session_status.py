@@ -122,7 +122,13 @@ def session_status(out_dir: Path | str) -> dict[str, Any]:
     root = Path(out_dir)
     stream = root / "STREAM.jsonl"
     chain = verify_chain(stream)
-    rows = read_entries(stream)
+    #: A kill between ``write`` and ``fsync`` can leave a half line. The chain already says
+    #: so (``BAD_JSON_AT_*``); raising here would turn "this session is broken" — the answer
+    #: the operator needs — into a traceback from the diagnostic itself.
+    try:
+        rows = read_entries(stream)
+    except (OSError, json.JSONDecodeError):
+        rows = []
     entries = [row["entry"] for row in rows]
     seqs = [int(row["seq"]) for row in rows]
 
@@ -203,7 +209,10 @@ def session_status(out_dir: Path | str) -> dict[str, Any]:
     for item in waiting:
         why.append(f"{item['state']}:{item['reason']}:{item['path']}")
 
-    if not rows and not locks:
+    #: ``ABSENT`` means nothing ran here, so it needs an absent stream: a stream that exists
+    #: but cannot be parsed is broken evidence, and calling that "no session" would invite a
+    #: fresh start over a chain somebody may still be writing.
+    if not rows and not locks and not stream.exists():
         state = ABSENT
     elif (
         chain.get("ok") is not True
