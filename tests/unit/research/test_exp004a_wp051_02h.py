@@ -334,6 +334,50 @@ def test_the_store_silence_is_measured_from_the_last_tick_that_added_bars():
     assert worst["recovery_latency_seconds"] == pytest.approx(165 * 60, rel=1e-6)
 
 
+def test_an_open_episode_does_not_erase_the_closed_one_it_followed():
+    """A tick refused ten minutes ago must not refute a resume that happened hours ago.
+
+    The package's finding is about the hole that is over. Once a newer refusal episode opens
+    and has no resume yet, its silence and latency are not numbers; anchoring the finding to it
+    would mean the next refused tick invalidates the audit, which is what 06:40:57Z did before
+    this control existed.
+    """
+    base = datetime(2026, 10, 23, 0, 0, tzinfo=UTC)
+    rows = [
+        tick(base, outcome="OBSERVED", new_bars=3),
+        tick(base + timedelta(minutes=15), outcome="DISK_BUDGET_EXCEEDED", exit_code=5,
+             disk={"free_gib": 0.2}),
+        tick(base + timedelta(minutes=30), outcome="DISK_BUDGET_EXCEEDED", exit_code=5,
+             disk={"free_gib": 0.1}),
+        tick(base + timedelta(minutes=45), outcome="OBSERVED", new_bars=6),
+        tick(base + timedelta(minutes=60), outcome="DISK_BUDGET_EXCEEDED", exit_code=5,
+             disk={"free_gib": 0.05}),
+    ]
+    boundary = audit.recovery_boundary(rows, audit_ms=ms(base) + 90 * 60_000, since_ms=0)
+    assert boundary["episode_in_progress"] is True
+    assert boundary["open_episode"]["blocked_ticks"] == 1
+    assert boundary["open_episode"]["resumed"] is False
+    # the audited episode is the closed one, and its numbers stay its own
+    assert boundary["resume"]["run_id"] == rows[3]["run_id"]
+    assert boundary["recovery_latency_seconds"] == 900.0
+    assert boundary["store_silence_minutes"] == pytest.approx(45.0)
+    assert boundary["block_episode"]["blocked_ticks"] == 2
+
+
+def test_a_log_whose_last_episode_closed_has_nothing_held_open():
+    base = datetime(2026, 10, 23, 0, 0, tzinfo=UTC)
+    rows = [
+        tick(base, outcome="OBSERVED", new_bars=3),
+        tick(base + timedelta(minutes=15), outcome="DISK_BUDGET_EXCEEDED", exit_code=5,
+             disk={"free_gib": 0.2}),
+        tick(base + timedelta(minutes=30), outcome="OBSERVED", new_bars=6),
+    ]
+    boundary = audit.recovery_boundary(rows, audit_ms=ms(base) + 60 * 60_000, since_ms=0)
+    assert boundary["episode_in_progress"] is False
+    assert boundary["open_episode"] is None
+    assert boundary["store_silence_minutes"] == pytest.approx(30.0)
+
+
 def test_the_ceiling_removes_only_the_days_that_are_already_lost():
     impact_rows = 2160
     lost = ["2026-10-23"]
@@ -462,6 +506,28 @@ def test_the_verifier_fails_a_ceiling_that_rounds_a_shortfall_away(tmp_path: Pat
     (package / "COVERAGE_GAP_REPORT.json").write_text(json.dumps(gap), encoding="utf-8")
     verdict, _detail = verifier.verify(repo, package, state, store)
     assert "COVERAGE_CEILING" in verdict.failed
+
+
+def test_the_verifier_keeps_the_recovery_claim_when_a_newer_refusal_is_open(tmp_path: Path):
+    """A refusal after the last observation must not make the earlier recovery unnameable."""
+    repo, package, state, store = _verifier_fixture(tmp_path)
+    with (state / "runs.jsonl").open("a", encoding="utf-8") as handle:
+        handle.write(
+            json.dumps(
+                tick(
+                    datetime(2026, 10, 23, 6, 10, tzinfo=UTC),
+                    outcome="DISK_BUDGET_EXCEEDED",
+                    exit_code=5,
+                    disk={"free_gib": 0.2},
+                ),
+                sort_keys=True,
+            )
+            + "\n"
+        )
+    verdict, _detail = verifier.verify(repo, package, state, store)
+    names = {check.name: check for check in verdict.checks}
+    assert names["RECOVERY_CLAIM"].ok is True
+    assert names["STORE_SILENCE_REPRODUCED"].ok is True
 
 
 def test_the_verifier_does_not_import_what_it_judges():

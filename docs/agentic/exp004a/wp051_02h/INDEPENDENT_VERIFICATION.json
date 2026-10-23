@@ -1,16 +1,16 @@
 {
-  "at_utc": "2026-10-23T06:38:45.583Z",
+  "at_utc": "2026-10-23T06:56:48.097Z",
   "certification_allowed": false,
   "certification_blocked_by": "COVERAGE_CEILING_BELOW_DECLARED",
   "check_count": 17,
   "checks": [
     {
-      "detail": "912 tick record(s) parsed; the package claims 912 \u2014 equal",
+      "detail": "914 tick record(s) parsed; the package claims 914 \u2014 equal",
       "name": "TICK_LOG_READABLE",
       "ok": true
     },
     {
-      "detail": "newest tick 2026-10-23T06:25:58.000Z, age 761.1s (limit 2700s); the package says 696.5s, outcome OBSERVED",
+      "detail": "newest tick 2026-10-23T06:55:57.000Z, age 45.5s (limit 2700s); the package says 43.3s, outcome DISK_BUDGET_EXCEEDED",
       "name": "OBSERVER_LIVENESS",
       "ok": true
     },
@@ -20,7 +20,7 @@
       "ok": true
     },
     {
-      "detail": "34 refusal(s) since 2026-10-22T18:00:00.000Z with a free-space floor of 0.0 GiB; the package reports 34 and 0.0",
+      "detail": "36 refusal(s) since 2026-10-22T18:00:00.000Z with a free-space floor of 0.0 GiB; the package reports 36 and 0.0",
       "name": "BLOCK_EPISODE",
       "ok": true
     },
@@ -30,7 +30,7 @@
       "ok": true
     },
     {
-      "detail": "recomputed store silence 30.02 min; the package claims 30.02 min (recovery latency after the last refusal: 902.0 s)",
+      "detail": "recomputed store silence 345.02 min; the package claims 345.02 min (recovery latency after the last refusal: 900.0 s)",
       "name": "STORE_SILENCE_REPRODUCED",
       "ok": true
     },
@@ -65,7 +65,7 @@
       "ok": true
     },
     {
-      "detail": "the scheduler holds LastTaskResult=1 for TradingAgentic-EDGE04-Watchdog (a non-zero result is the alarm: 8 blocked, 9 stale)",
+      "detail": "the scheduler holds LastTaskResult=8 for TradingAgentic-EDGE04-Watchdog (a non-zero result is the alarm: 8 blocked, 9 stale)",
       "name": "WATCHDOG_ALARM_REACHES_OS",
       "ok": true
     },
@@ -92,8 +92,8 @@
   ],
   "detail": {
     "newest_tick": {
-      "outcome": "OBSERVED",
-      "started_at_utc": "2026-10-23T06:25:58.000Z"
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "started_at_utc": "2026-10-23T06:55:57.000Z"
     },
     "recovery_tick": {
       "alerts": [
@@ -346,11 +346,11 @@
       "trades_today": 0,
       "window_observation_days": 236
     },
-    "watchdog_task_result": 1
+    "watchdog_task_result": 8
   },
   "experiment_certified": false,
   "failed_checks": [],
-  "head": "819cb0d29f87b624fd982b5c581f4aea6e5993e0",
+  "head": "b1c29d32a15b51825d5b3171c455ff1940e4b134",
   "note": "a PASS here says the package measured what it says it measured. It does not say the experiment is complete, recoverable in full, or worth anything.",
   "package": "WP-051-02H",
   "schema_version": "1.0",

@@ -14,19 +14,28 @@
 
 ## 1. The real state, first
 
-Measured at `2026-10-23T06:38:27Z` from the **live** lane, not from a worktree copy.
+Measured at `2026-10-23T06:57Z` from the **live** lane, not from a worktree copy.
 
 | Reading | Value | Source |
 | --- | --- | --- |
 | Observer task | `TradingAgentic-EDGE04-Forward`, installed, last result `0` | OS scheduler |
 | Cadence | `PT15M` for `P3650D`, `StartWhenAvailable`, restart 3×`PT5M`, `MultipleInstances=IgnoreNew` | OS scheduler |
-| Last tick | `FWD-EDGE04-20261023T061500Z` finished `06:26:51Z`, 3 new bars | `runs.jsonl` |
-| Tick age at audit | `696.5 s` (limit `2700 s`) | `health.json` |
-| Ticks in the audited window | **50** — 16 `OBSERVED`, 34 `DISK_BUDGET_EXCEEDED` | `runs.jsonl` |
+| Last tick | `FWD-EDGE04-20261023T065500Z` at `06:55:57Z`, **refused** | `runs.jsonl` |
+| The refusal that started the open episode | `FWD-EDGE04-20261023T064000Z` at `06:40:57Z` on `1.6262 GiB` free | `runs.jsonl` |
+| Last consuming tick | `FWD-EDGE04-20261023T061500Z` finished `06:26:51Z`, 3 new bars | `runs.jsonl` |
+| Tick age at audit | `767.1 s` (limit `2700 s`) | `health.json`, `runs.jsonl` |
+| Ticks in the audited window | **52** — 16 `OBSERVED`, 36 `DISK_BUDGET_EXCEEDED` | `runs.jsonl` |
 | Health | `DEGRADED` (below the 5 GiB warning floor; growth volatile) | `health.json` |
-| Watchdog | installed, 15-minute cadence, `LastTaskResult=1` (`DEGRADED`) | OS scheduler |
-| Free space | `2.265 GiB` of `237.5 GiB` — **99.05 % full** | `WATCHDOG.json` |
+| Watchdog | installed, 15-minute cadence; raised a real `BLOCKED` alarm (`exit 8`, `LastTaskResult=8`) at `06:47:02Z` | OS scheduler, `WATCHDOG.json` |
+| Free space | `1.43 GiB` of `237.5 GiB` — **99 % full**, and falling | `WATCHDOG.json`, `df` |
 | Orders | `order_sent: false`, `promotion: NONE` in every record read | tick log, daily shard |
+
+The recovery is real and the risk is still live: **the lane was refused again at `06:40:57Z`
+and once more at `06:55:57Z`**, on `1.6262 GiB` and then `1.42 GiB` free, and at `06:47:02Z` the new
+watchdog raised `ATTENTION_REQUIRED.txt` for the first time — a `BLOCKED` verdict with free space
+falling from `2.30 GiB` to `1.43 GiB` inside twenty minutes. The episode audited below is the closed
+one that cost the day; the open one is a second hole forming while this paragraph is written, and
+the tick at `07:10:57Z` will say which way it went.
 
 Two independent programs agree on that table (`exp004a_wp051_02h_audit.py`,
 `exp004a_wp051_02h_verify.py`), and a third that predates this package
@@ -159,11 +168,12 @@ and is not presented as if it did.
 
 | Suite | Result | Proves |
 | --- | --- | --- |
-| `tests/unit/research/test_exp004a_wp051_02h.py` (new, 24 tests) | **24 passed** (3.11 s) | watchdog statuses and marker lifecycle, disk floors, corrupt-line accounting, the audit's lag/quarantine/ceiling arithmetic, the seal's refusal to overwrite, and the verifier's ability to *fail* a claim that hides a lost day |
+| `tests/unit/research/test_exp004a_wp051_02h.py` (new, 27 tests) | **27 passed** (3.75 s) | watchdog statuses and marker lifecycle, disk floors, corrupt-line accounting, the audit's lag/quarantine/ceiling arithmetic, the seal's refusal to overwrite, the verifier's ability to *fail* a claim that hides a lost day, and the anchoring rule below |
 | `tests/unit/research/test_exp004a_wp051_02g.py` (unchanged, 49 tests) | **49 passed** (36.55 s) | 02G's frozen behaviour is intact under this package's changes |
 | `scripts/exp004a_wp051_02h_verify.py` (independent) | **17 checks, 0 failed, `PASS`** | the reports survive a second implementation reading the same bytes |
 | `scripts/edge04_verify.py` (pre-existing, independent) | **15/15 `VERIFY_PASS`** | the live lane's artefacts, including today's daily shard |
 | Real ticks | 16 `OBSERVED` inside the audited window, 2 real `ALREADY_RUNNING` refusals | the mechanism, not a simulation |
+| Real alarm | `BLOCKED` at `06:47:02Z`, `exit 8`, marker written and worded with its reason | `C7`/`C9` hold in production, not only in a unit test |
 
 Named scenarios from the mission, and where each stands: normal start (real, `06:25:58Z`); concurrent
 second start (real refusals in history + `MultipleInstances=IgnoreNew` + lease + unit test); unexpected
@@ -195,6 +205,15 @@ A unit test is never counted here as a production proof: the rows above separate
   channel (out of scope here), and until then a human must look at the scheduler.
 - **`DEF-02H-04` — `COVERAGE_COMPLETE` is unreachable for phase 3.** A consequence of the lost day,
   not a defect to repair: see §4 for the owner's options.
+- **`DEF-02H-06` (found here, fixed here) — a claim that moved with the clock.** When a second
+  refusal opened at `06:40:57Z`, the builder anchored its finding, its recovery tick and its
+  latency to that *unresolved* episode, so `RC3` flipped to `REFUTED` and the independent verifier
+  failed `RECOVERY_CLAIM` — on a hole that was already closed and correctly measured. Both programs
+  now anchor to the last refusal the observer got past, and the running episode is reported beside
+  it as `episode_in_progress`/`open_episode` instead of being averaged into the finding. Two tests
+  pin this (`an_open_episode_does_not_erase_the_closed_one_it_followed`,
+  `the_verifier_keeps_the_recovery_claim_when_a_newer_refusal_is_open`). It is the same class of
+  error as `DEF-02G-08`: a claim whose truth decays after it is sealed.
 - **`DEF-02H-05` — provider failure remains untested in production.** No `PROVIDER_*` outcome exists
   in the window; the code path is unit-tested only.
 - Observed and **not touched** (outside this package's scope): `TradingAgentic-ST6-Forward` is
@@ -205,7 +224,7 @@ A unit test is never counted here as a production proof: the rows above separate
 
 | Verdict | Value | Basis |
 | --- | --- | --- |
-| `RECOVERY_PASS` | **`true`** | observer running (task result `0`, tick age `696 s`), a real forward capture (`06:10:58Z`, 9/9 bars, persisted, `store_sha256` recorded), no duplicates, the hole quantified (345.02 min), coverage classified per the existing contract |
+| `RECOVERY_PASS` | **`true`**, for the audited hole | observer running (task fired on cadence, tick age `767 s`), a real forward capture (`06:10:58Z`, 9/9 bars, persisted, `store_sha256` recorded), no duplicates, the hole quantified (345.02 min), coverage classified per the existing contract. A **new** refusal episode opened at `06:40:57Z` and is reported open, not recovered |
 | `CONTINUITY_PASS` | **`true`, with `DEF-02H-02` recorded** | supervision operative, restart and resume exercised for real, data preserved and append-only, health and alarm readable by the OS, independent verifier agrees |
 | `EXPERIMENT_CERTIFIED` | **`false`** | 0 of 90 days complete; `CEILING_BELOW_DECLARED`; this package certifies nothing |
 
@@ -219,15 +238,17 @@ and the one number that would have made the phase look whole — `6480` — appe
 | `python scripts/exp004a_wp051_02h_audit.py --all --state-root <main>/data/forward/edge04 --store-root <main>/data/forward/edge03` | `0` |
 | `python scripts/exp004a_wp051_02h_verify.py --state-root … --store-root … --out …/INDEPENDENT_VERIFICATION.json` | `0` (17/17) |
 | `python scripts/edge04_verify.py --state-root … --json-out …/DAILY_CAPTURE_VERIFICATION.json` | `0` (15/15) |
-| `python -m pytest tests/unit/research/test_exp004a_wp051_02h.py` | `0` (24 passed) |
-| `python -m pytest …test_exp004a_wp051_02h.py …test_exp004a_wp051_02g.py` | `0` (73 passed) |
+| `python -m pytest tests/unit/research/test_exp004a_wp051_02h.py` | `0` (27 passed) |
+| `python -m pytest …test_exp004a_wp051_02h.py …test_exp004a_wp051_02g.py` | `0` (76 passed) |
 | `powershell Get-ScheduledTask … Get-ScheduledTaskInfo` for `TradingAgentic-EDGE04-*` | `0` |
 | `python scripts/exp004a_wp051_02h_audit.py --seal` | written after commit — see `EVIDENCE_MANIFEST.json` |
 
 ## 11. What happens next
 
 1. **Before the next hour passes:** the owner decides on the volume in `DEF-02H-01`. Every hour at
-   99 % capacity is another chance to lose a day that cannot be recovered.
+   99 % capacity is another chance to lose a day that cannot be recovered. `%TEMP%` alone held
+   **8.3 GB** of reclaimable scratch at audit time; `data/raw` holds 189 MB and `data/forward`
+   82 MB, and none of it is this package's to delete.
 2. **Daily, without a human step:** `TradingAgentic-EDGE04-Forward` keeps ticking; tomorrow's shard
    is written by the same publication step that wrote today's, and `edge04_verify.py` judges it.
 3. **At the end of the window:** the coverage verdict is phrased against the 0.9 floor and against

@@ -595,7 +595,15 @@ def build_recovery(
         for row in runs
         if row.get("outcome") == "DISK_BUDGET_EXCEEDED" and row.get("started_at_utc")
     ]
-    last_block_ms = max(blocked_starts) if blocked_starts else None
+    # The recovery is the first observation after the last refusal that the observer *got past*.
+    # A refusal still waiting for its next tick has no recovery to name, and letting it redefine
+    # the claim would make the report depend on the clock rather than on the log.
+    newest_observation = recovered[-1][0] if recovered else None
+    closed_blocks = [
+        start for start in blocked_starts
+        if newest_observation is not None and start < newest_observation
+    ]
+    last_block_ms = max(closed_blocks) if closed_blocks else None
     after_block = [item for item in recovered if last_block_ms is None or item[0] > last_block_ms]
     recovery_tick = after_block[0][1] if after_block else (recovered[-1][1] if recovered else None)
 
@@ -903,10 +911,30 @@ def recovery_boundary(runs: list[dict[str, Any]], audit_ms: int, since_ms: int =
     worst = max(in_window, key=lambda item: item["store_silence_seconds"], default=None)
     last = episodes[-1]
     episode_start, episode_end = last[0][0], last[-1][0]
-    before = [(ms, row) for ms, row in consuming if ms < episode_start]
-    after = [(ms, row) for ms, row in consuming if ms > episode_end]
-    resume_ms = after[0][0] if after else None
-    last_bar_ms = before[-1][0] if before else None
+    resume_ms = per_episode[-1]["resume"] and parse_iso(per_episode[-1]["resume"]["started_at_utc"])
+    # An episode that is still running has no resume, so its silence and its latency are not
+    # numbers yet. Anchoring the package's finding to it would let the next refused tick refute
+    # claims about a hole that is already closed -- which is what happened at 06:40:57Z. The
+    # audited episode is therefore the worst *closed* one inside the window, and the running
+    # one is reported beside it, named as unfinished rather than averaged into the finding.
+    latest_is_open = resume_ms is None
+    anchor = per_episode[-1]
+    anchor_group = last
+    if latest_is_open and measured:
+        closed_in_window = [
+            index
+            for index, item in enumerate(per_episode)
+            if item["store_silence_seconds"] is not None
+            and parse_iso(item["last_blocked_start_utc"]) >= since_ms
+        ]
+        if closed_in_window:
+            anchor_index = max(
+                closed_in_window, key=lambda index: per_episode[index]["store_silence_seconds"]
+            )
+            anchor = per_episode[anchor_index]
+            anchor_group = episodes[anchor_index]
+    resume_ms = None if anchor["resume"] is None else parse_iso(anchor["resume"]["started_at_utc"])
+    anchor_end = parse_iso(anchor["last_blocked_start_utc"])
     return {
         "episode_boundaries": per_episode,
         "worst_episode": worst,
@@ -926,37 +954,30 @@ def recovery_boundary(runs: list[dict[str, Any]], audit_ms: int, since_ms: int =
             for group in episodes
         ],
         "block_episode": {
+            "first_blocked_start_utc": anchor["first_blocked_start_utc"],
+            "last_blocked_start_utc": anchor["last_blocked_start_utc"],
+            "blocked_ticks": anchor["blocked_ticks"],
+            "last_block_reason": anchor["last_block_reason"],
+            "last_block_free_gib": (anchor_group[-1][1].get("disk") or {}).get("free_gib"),
+            "last_block_health": anchor_group[-1][1].get("health_status"),
+        },
+        "last_consuming_tick_before": anchor["last_consuming_tick_before"],
+        "resume": anchor["resume"],
+        "recovery_latency_seconds": anchor["recovery_latency_seconds"],
+        "store_silence_seconds": anchor["store_silence_seconds"],
+        "store_silence_minutes": anchor["store_silence_minutes"],
+        "episode_in_progress": latest_is_open,
+        "open_episode": None
+        if not latest_is_open
+        else {
             "first_blocked_start_utc": iso(episode_start),
             "last_blocked_start_utc": iso(episode_end),
             "blocked_ticks": len(last),
             "last_block_reason": last[-1][1].get("outcome_reason"),
             "last_block_free_gib": (last[-1][1].get("disk") or {}).get("free_gib"),
-            "last_block_health": last[-1][1].get("health_status"),
+            "minutes_open": round((audit_ms - episode_start) / 60_000, 2),
+            "resumed": False,
         },
-        "last_consuming_tick_before": None
-        if last_bar_ms is None
-        else {
-            "started_at_utc": iso(last_bar_ms),
-            "run_id": before[-1][1].get("run_id"),
-            "new_bars": before[-1][1].get("new_bars"),
-        },
-        "resume": None
-        if resume_ms is None
-        else {
-            "started_at_utc": iso(resume_ms),
-            "new_bars": after[0][1].get("new_bars"),
-            "outcome": after[0][1].get("outcome"),
-            "run_id": after[0][1].get("run_id"),
-        },
-        "recovery_latency_seconds": None
-        if resume_ms is None
-        else round((resume_ms - episode_end) / 1000, 1),
-        "store_silence_seconds": None
-        if resume_ms is None or last_bar_ms is None
-        else round((resume_ms - last_bar_ms) / 1000, 1),
-        "store_silence_minutes": None
-        if resume_ms is None or last_bar_ms is None
-        else round((resume_ms - last_bar_ms) / 60_000, 2),
         "audited_at_utc": iso(audit_ms),
     }
 
@@ -1151,8 +1172,17 @@ def build_root_cause(*, repo: Path, recovery: dict[str, Any], gap: dict[str, Any
             },
             {
                 "id": "RC3",
-                "claim": "the observer resumed by itself, without any intervention",
-                "evidence": boundary,
+                "claim": (
+                    "the observer resumed by itself after the audited episode, without any "
+                    "intervention"
+                ),
+                "evidence": {
+                    "audited_episode": boundary["block_episode"],
+                    "resume": boundary.get("resume"),
+                    "recovery_latency_seconds": boundary.get("recovery_latency_seconds"),
+                    "a_newer_episode_is_still_open": boundary.get("episode_in_progress"),
+                    "open_episode": boundary.get("open_episode"),
+                },
                 "verdict": "CONFIRMED" if boundary.get("resume") else "REFUTED",
             },
             {
@@ -1283,6 +1313,18 @@ def render_run_report(package: Path, repo: Path) -> tuple[dict[str, Any], str]:
         f"between the last tick that added bars and the tick that resumed them",
         f"- recovery latency after the last refusal: "
         f"`{boundary.get('recovery_latency_seconds')} s`",
+        *(
+            [
+                f"- **a newer refusal episode is still open**: "
+                f"`{(boundary.get('open_episode') or {}).get('first_blocked_start_utc')}` → "
+                f"`{(boundary.get('open_episode') or {}).get('last_blocked_start_utc')}`, "
+                f"{(boundary.get('open_episode') or {}).get('blocked_ticks')} tick(s), not resumed "
+                f"after {(boundary.get('open_episode') or {}).get('minutes_open')} min. The numbers "
+                f"above describe the last *closed* episode, which is the one this package audits."
+            ]
+            if boundary.get("episode_in_progress")
+            else []
+        ),
         "",
         "## Coverage, against the declaration",
         "",

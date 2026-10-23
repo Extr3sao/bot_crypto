@@ -10,7 +10,8 @@ The controls, and nothing but the controls:
 * ``TICK_LOG_READABLE``          the tick log parses, and the package did not hide lines
 * ``OBSERVER_LIVENESS``          the newest tick is inside the declared cadence
 * ``RECOVERY_CLAIM``             the tick the package calls "the recovery" exists and is
-                                 the first observation after the last refusal
+                                 the first observation after the last refusal the observer
+                                 got past (a refusal still waiting for its next tick has none)
 * ``BLOCK_EPISODE``              the refusal episode is measured, with its free-space floor
 * ``NO_DUPLICATE_TICKS``         no run id appears twice
 * ``STORE_ADVANCED``             the store holds bars newer than the instant 02G named
@@ -277,7 +278,14 @@ def verify(repo: Path, package: Path, state_root: Path, store_root: Path) -> tup
     observed_with_bars = [
         (ms, row) for ms, row in stamped if row.get("outcome") == "OBSERVED" and int(row.get("new_bars") or 0) > 0
     ]
-    last_block = max(blocked) if blocked else None
+    # measured, not trusted: a refusal that the observer has not yet got past has no recovery to
+    # name, so the claim is anchored to the last refusal that a consuming tick followed
+    newest_observed_ms = max((ms for ms, _row in observed_with_bars), default=None)
+    closed_blocked = [
+        ms for ms in blocked
+        if newest_observed_ms is not None and ms < newest_observed_ms
+    ]
+    last_block = max(closed_blocked) if closed_blocked else None
     after = [(ms, row) for ms, row in observed_with_bars if last_block is None or ms > last_block]
     claimed_recovery = recovery.get("recovered_observation") or {}
     matches = bool(after) and claimed_recovery.get("run_id") == after[0][1].get("run_id")

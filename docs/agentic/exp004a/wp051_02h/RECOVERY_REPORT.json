@@ -1,6 +1,6 @@
 {
-  "generated_at_utc": "2026-10-23T06:38:27.488Z",
-  "head": "819cb0d29f87b624fd982b5c581f4aea6e5993e0",
+  "generated_at_utc": "2026-10-23T06:56:40.263Z",
+  "head": "b1c29d32a15b51825d5b3171c455ff1940e4b134",
   "not_a_certification": "the observer running is not the experiment succeeding: this file says the acquisition is alive, and nothing about what it will be worth",
   "observations": {
     "bars_advancing": true,
@@ -11,21 +11,20 @@
     "tick_within_three_intervals": true
   },
   "observer": {
-    "consecutive_non_observations": 0,
+    "consecutive_non_observations": 2,
     "corrupt_run_lines": 0,
-    "health_generated_at_utc": "2026-10-23T06:26:51Z",
+    "health_generated_at_utc": "2026-10-23T06:55:57Z",
     "health_reasons": [
-      "the volume is below the warning floor: the heavy publication waits",
-      "the measured growth rate is volatile"
+      "the volume is below the critical floor"
     ],
-    "health_status": "DEGRADED",
-    "last_tick_age_seconds": 696.5,
+    "health_status": "BLOCKED",
+    "last_tick_age_seconds": 43.3,
     "processes": {
       "matches": [],
       "note": "the process table was not readable on this host",
       "queried": false
     },
-    "runs_log_lines": 912,
+    "runs_log_lines": 914,
     "task": {
       "action": {
         "arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
@@ -35,10 +34,10 @@
       "enabled": null,
       "installed": true,
       "last_run": {
-        "last_run_time": "/Date(1792736754000)/",
-        "last_task_result": 0,
+        "last_run_time": "/Date(1792738554000)/",
+        "last_task_result": 5,
         "missed_runs": 0,
-        "next_run_time": "/Date(1792737653000)/"
+        "next_run_time": "/Date(1792739453000)/"
       },
       "note": "read through the OS scheduler; never through the repository's install.json",
       "principal": {
@@ -74,10 +73,10 @@
       "enabled": null,
       "installed": true,
       "last_run": {
-        "last_run_time": "/Date(1792737121000)/",
-        "last_task_result": 1,
+        "last_run_time": "/Date(1792738021000)/",
+        "last_task_result": 8,
         "missed_runs": 0,
-        "next_run_time": "/Date(1792738020000)/"
+        "next_run_time": "/Date(1792738920000)/"
       },
       "note": "read through the OS scheduler; never through the repository's install.json",
       "principal": {
@@ -154,260 +153,81 @@
   },
   "tick_census": {
     "blocked": {
-      "count": 34,
+      "count": 36,
       "first_utc": "2026-10-22T18:10:56.000Z",
-      "last_utc": "2026-10-23T05:55:56.000Z",
+      "last_utc": "2026-10-23T06:55:57.000Z",
       "min_free_gib": 0.0,
-      "reason": "0.4797 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request"
+      "reason": "0.6594 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request"
     },
     "by_outcome": {
-      "DISK_BUDGET_EXCEEDED": 34,
+      "DISK_BUDGET_EXCEEDED": 36,
       "OBSERVED": 16
     },
-    "expected_ticks": 50,
+    "expected_ticks": 52,
     "first_tick_utc": "2026-10-22T18:10:56.000Z",
     "last_tick": {
       "alerts": [],
-      "attempts": 1,
-      "captured_decisions": 140,
       "corrupt_log_lines": 0,
-      "daily": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\daily\\2026-10-23.json",
-      "daily_finalised": {
-        "already_current": [
-          "2026-10-13",
-          "2026-10-14",
-          "2026-10-15",
-          "2026-10-16",
-          "2026-10-17",
-          "2026-10-18",
-          "2026-10-19",
-          "2026-10-20",
-          "2026-10-21",
-          "2026-10-22"
-        ],
-        "corrected": [],
-        "no_store_rows": [],
-        "reading": "a finished day's own file cannot hold that day's last bars, so a finished day whose hashes no longer answer to the store is corrected rather than left standing as a claim nobody can check"
-      },
-      "decisions_digest": "8ef36cea4e1f0d2bebad8cfc2b6ecb6255c9f5bf0179d499edecbe8317286ade",
       "disk": {
         "critical_free_bytes": 2147483648,
-        "free_bytes": 2472480768,
-        "free_gib": 2.3027,
+        "free_bytes": 708005888,
+        "free_gib": 0.6594,
         "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
-        "status": "WARNING",
+        "status": "CRITICAL",
         "total_bytes": 255041990656,
         "total_gib": 237.5264,
-        "used_percent": 99.03,
+        "used_percent": 99.72,
         "warning_free_bytes": 5368709120
       },
       "disk_after": {
         "critical_free_bytes": 2147483648,
-        "free_bytes": 2467913728,
-        "free_gib": 2.2984,
+        "free_bytes": 708005888,
+        "free_gib": 0.6594,
         "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
-        "status": "WARNING",
+        "status": "CRITICAL",
         "total_bytes": 255041990656,
         "total_gib": 237.5264,
-        "used_percent": 99.03,
+        "used_percent": 99.72,
         "warning_free_bytes": 5368709120
       },
       "due_only": true,
-      "duration_seconds": 53.292,
-      "errors": [],
-      "exit_code": 0,
-      "expectation_series": [
+      "duration_seconds": 0.072,
+      "errors": [
         {
-          "appended": 0,
-          "expected": 0,
-          "high_water_ts": 1792731600000,
-          "missing": 0,
-          "outcome": "no_new_data",
-          "series": "1h:BTC"
-        },
-        {
-          "appended": 0,
-          "expected": 0,
-          "high_water_ts": 1792731600000,
-          "missing": 0,
-          "outcome": "no_new_data",
-          "series": "1h:ETH"
-        },
-        {
-          "appended": 0,
-          "expected": 0,
-          "high_water_ts": 1792731600000,
-          "missing": 0,
-          "outcome": "no_new_data",
-          "series": "1h:SOL"
-        },
-        {
-          "appended": 1,
-          "expected": 1,
-          "high_water_ts": 1792734300000,
-          "missing": 0,
-          "outcome": "ingested",
-          "series": "15m:BTC"
-        },
-        {
-          "appended": 1,
-          "expected": 1,
-          "high_water_ts": 1792734300000,
-          "missing": 0,
-          "outcome": "ingested",
-          "series": "15m:ETH"
-        },
-        {
-          "appended": 1,
-          "expected": 1,
-          "high_water_ts": 1792734300000,
-          "missing": 0,
-          "outcome": "ingested",
-          "series": "15m:SOL"
+          "outcome": "DISK_BUDGET_EXCEEDED",
+          "reason": "0.6594 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+          "series": null,
+          "stage": "tick"
         }
       ],
-      "expected_new_bars": 3,
-      "finished_at_ms": 1792736811307,
-      "finished_at_utc": "2026-10-23T06:26:51Z",
-      "health_status": "DEGRADED",
+      "exit_code": 5,
+      "finished_at_ms": 1792738557243,
+      "finished_at_utc": "2026-10-23T06:55:57Z",
+      "health_status": "BLOCKED",
       "host": "DESKTOP-4CHO695",
       "hypothetical": true,
-      "hypothetical_net_usdt": -59.141704,
-      "latency": {
-        "15m:BTC": {
-          "fresh_bars": 1,
-          "fresh_max_seconds": 660.232,
-          "fresh_median_seconds": 660.232
-        },
-        "15m:ETH": {
-          "fresh_bars": 1,
-          "fresh_max_seconds": 660.232,
-          "fresh_median_seconds": 660.232
-        },
-        "15m:SOL": {
-          "fresh_bars": 1,
-          "fresh_max_seconds": 660.232,
-          "fresh_median_seconds": 660.232
-        },
-        "1h:BTC": {
-          "fresh_bars": 0,
-          "fresh_max_seconds": null,
-          "fresh_median_seconds": null
-        },
-        "1h:ETH": {
-          "fresh_bars": 0,
-          "fresh_max_seconds": null,
-          "fresh_median_seconds": null
-        },
-        "1h:SOL": {
-          "fresh_bars": 0,
-          "fresh_max_seconds": null,
-          "fresh_median_seconds": null
-        }
-      },
-      "lease": {
-        "acquired": true,
-        "holder": {
-          "acquired_at": 1792736758,
-          "campaign_id": "EDGE04_FORWARD_OBSERVER",
-          "host": "DESKTOP-4CHO695",
-          "lease_version": "CAMPAIGN_LEASE_V1",
-          "pid": 17008,
-          "renewed_at": 1792736758,
-          "stale_after_seconds": 300
-        },
-        "previous_holder": null,
-        "status": "ACQUIRED"
-      },
-      "lease_release": {
-        "released": true,
-        "status": "RELEASED"
-      },
-      "market_instant_utc": "2026-10-23T06:26:00Z",
-      "market_requests": 4,
-      "missing_bars": 0,
+      "market_requests": 0,
       "mode": "SCHEDULED",
-      "new_bars": 3,
+      "new_bars": 0,
       "order_sent": false,
-      "outcome": "OBSERVED",
-      "outcome_reason": "3 new closed bar(s) stored",
-      "parity_verdict": "PARITY_PASS",
-      "payload_error": null,
-      "pid": 17008,
-      "previous_consuming_run_id": "FWD-EDGE04-20261023T060000Z",
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "outcome_reason": "0.6594 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "pid": 11192,
+      "previous_consuming_run_id": "FWD-EDGE04-20261023T061500Z",
       "promotion": "NONE",
-      "prospective_observation_days": 7,
-      "pruned_rows": {
-        "ledger": 12
-      },
-      "publication": {
-        "last_published_ms": 1792734059184,
-        "next_due_ms": 1792820459184,
-        "ran": false,
-        "reason": "the publication cadence has not elapsed"
-      },
-      "published_at_utc": "2026-10-23T06:26:51Z",
+      "pruned_rows": {},
+      "published_at_utc": "2026-10-23T06:55:57Z",
       "python": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
-      "refusals": 1840,
-      "ruleset": {
-        "agrees_with_publication": true,
-        "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77"
-      },
-      "run_id": "FWD-EDGE04-20261023T061500Z",
+      "run_id": "FWD-EDGE04-20261023T064500Z",
       "schema_version": "EDGE04_TICK_V1",
-      "signals": 367,
-      "signals_this_publication": 0,
-      "signals_today": 0,
       "slot_already_observed": false,
-      "slot_end_utc": "2026-10-23T06:30Z",
-      "slot_key": "2026-10-23T06:15Z",
-      "slot_sealed": true,
-      "slot_start_utc": "2026-10-23T06:15Z",
-      "stale_series": [],
-      "started_at_ms": 1792736758015,
-      "started_at_utc": "2026-10-23T06:25:58Z",
-      "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
-      "store": {
-        "series": {
-          "15m:BTC": {
-            "bars": 1514,
-            "last_ts": 1792735200000,
-            "sha256": "ef24f4e072cf32d1"
-          },
-          "15m:ETH": {
-            "bars": 1514,
-            "last_ts": 1792735200000,
-            "sha256": "3686f5a8ca751a4f"
-          },
-          "15m:SOL": {
-            "bars": 1514,
-            "last_ts": 1792735200000,
-            "sha256": "0cedd947e0a256b1"
-          },
-          "1h:BTC": {
-            "bars": 5670,
-            "last_ts": 1792731600000,
-            "sha256": "e0a918fa282327cd"
-          },
-          "1h:ETH": {
-            "bars": 5670,
-            "last_ts": 1792731600000,
-            "sha256": "2c544643433a51f0"
-          },
-          "1h:SOL": {
-            "bars": 5670,
-            "last_ts": 1792731600000,
-            "sha256": "ebec0329adfad5a2"
-          }
-        },
-        "total_bars": 21552
-      },
-      "store_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03",
-      "trades": 137,
-      "trades_today": 0,
-      "window_observation_days": 236
+      "slot_end_utc": "2026-10-23T07:00Z",
+      "slot_key": "2026-10-23T06:45Z",
+      "slot_start_utc": "2026-10-23T06:45Z",
+      "started_at_ms": 1792738557171,
+      "started_at_utc": "2026-10-23T06:55:57Z"
     },
-    "last_tick_utc": "2026-10-23T06:25:58.000Z",
+    "last_tick_utc": "2026-10-23T06:55:57.000Z",
     "silences": [],
     "since_utc": "2026-10-22T18:00:00.000Z",
     "slot_integrity": {
@@ -416,7 +236,7 @@
       "sealed_slots": 16,
       "sealed_twice": []
     },
-    "ticks": 50
+    "ticks": 52
   },
   "verdict": "OBSERVER_RUNNING"
 }
