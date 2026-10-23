@@ -113,7 +113,7 @@ veto, 6 gross edge, 7 paper admission. Rule 0 reads no request field.
 | Gap | Meaning | Status in this tree |
 |---|---|---|
 | **G-1** | Kill-switch state is not persisted; a restart boots `NORMAL` | Open. `_boot_kill_switch()` reads `TRADING_BOT_KILL_SWITCH` once at import; `KillSwitch` has no store. Pinned as executable truth by MT-0003's `test_the_state_does_not_survive_a_restart_and_that_is_the_declared_gap`. |
-| **G-2** | No hot activation from the CLI | Open. `kill-switch` is a refusing stub; the only operator lever is the boot-time environment variable. |
+| **G-2** | No hot activation from the CLI | **Closed for the autonomous path** by `docs/audit/G-2.md`: `HotStopGate` polls `<run_dir>/KILL_SWITCH` and holds the lock across `broker.execute_signal`, so an ACK means nothing is in flight. `kill-switch --run-dir … --engage` writes that file; `status` stays a stub. The `paper_cycle` and live paths remain **unprotected** (G-3/G-4). |
 | **G-3** | Live order paths that bypass `DecisionEngine` | Open. Not measured here; the CLI's live path was not exercised in this task. |
 | **G-4** | Duplicate engine `paper/paper_cycle.py` | Open, and sharper than before: that module does not import `autonomous.decision`, so the robots started by `scripts/start_paper_trading.py` are not protected by rule 0. |
 
@@ -143,3 +143,29 @@ advanced during this task, so §2 is a snapshot, not a live view. Re-measured at
 The rule that decides is the reachability check in §3, not the tip of any
 branch: a branch with more commits is authoritative only when the gate is
 reachable from it.
+
+## 8. Addendum — the G-2 boundary (2026-10-23)
+
+G-2 measured this tree at `27db70ef` and added one row to §3's picture. The
+broker boundary is no longer just `runtime.py:1455`: it is that call **inside**
+`HotStopGate.order_boundary`.
+
+```text
+scripts/autonomous_paper.py
+  → AutonomousPaperRuntime.run / run_cycle          (runtime.py:422, 552)
+      → run_cycle: hot_stop.poll()                  (cycle boundary)
+      → _evaluate_asset → DecisionEngine.decide     (rule 0, MT-0003)
+      → _execute_paper                              (runtime.py:1414)
+          → hot_stop.order_boundary()  [lock held]  (hot_stop.py)
+              → broker.execute_signal               (the only dispatch)
+```
+
+| Path | Boundary | Covered |
+|---|---|---|
+| `scripts/autonomous_paper.py` | `runtime.py:1455` inside the gate | **yes** |
+| `trading-bot run --demo` → `paper/paper_cycle.py` | its own `execute_signal` | **no** — no `DecisionEngine`, no gate (G-4) |
+| `trading-bot place-order`, `--auto-trade` | Bitunix clients | **no** — live, not measured (G-3) |
+
+`grep -n "execute_signal" src/trading_bot/autonomous/runtime.py` returns exactly
+one dispatch site, which is why a single boundary is sufficient here and why a
+second one appearing later invalidates the G-2 claim.
