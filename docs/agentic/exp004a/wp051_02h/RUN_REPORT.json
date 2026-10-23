@@ -1,0 +1,61 @@
+{
+  "continuity": {
+    "blocking": [],
+    "requirements": 10,
+    "verdict": "CONTINUITY_SATISFIED"
+  },
+  "experiment_certified": false,
+  "false_success": 0,
+  "gap": {
+    "ceiling": 0.988889,
+    "coverage_complete_reachable": false,
+    "declared_rows": 6480,
+    "episodes": 23,
+    "first_valid_after_utc": "2026-10-22T19:00:00.000Z",
+    "last_valid_before_utc": "2026-10-22T18:00:00.000Z",
+    "lost_days": [
+      "2026-10-23"
+    ],
+    "recovery_latency_seconds": 902.0,
+    "rows_reachable": 6408,
+    "store_silence_minutes": 345.02
+  },
+  "generated_at_utc": "2026-10-23T06:38:29.813Z",
+  "head": "819cb0d29f87b624fd982b5c581f4aea6e5993e0",
+  "independent_verification": {
+    "checks": 17,
+    "failed": [],
+    "verdict": "PASS"
+  },
+  "not_a_certification": "the observer is alive and the package is measured. The declaration it feeds can no longer be completed, and nothing here changes that.",
+  "package": "WP-051-02H",
+  "recovery": {
+    "blocked_ticks": 34,
+    "by_outcome": {
+      "DISK_BUDGET_EXCEEDED": 34,
+      "OBSERVED": 16
+    },
+    "last_tick_age_seconds": 696.5,
+    "min_free_gib": 0.0,
+    "observer_task": {
+      "last_run_time": "/Date(1792736754000)/",
+      "last_task_result": 0,
+      "missed_runs": 0,
+      "next_run_time": "/Date(1792737653000)/"
+    },
+    "resumed_new_bars": 9,
+    "resumed_observation": "FWD-EDGE04-20261023T060000Z",
+    "ticks_since_reference": 50,
+    "verdict": "OBSERVER_RUNNING"
+  },
+  "root_cause": {
+    "claims": {
+      "RC1": "CONFIRMED",
+      "RC2": "CONFIRMED",
+      "RC3": "CONFIRMED",
+      "RC4": "CONFIRMED"
+    },
+    "root_cause": "DISK_BUDGET_EXCEEDED: the observer's own storage guard refused to make a market request while the volume was below its critical free-space floor, and it said so in every tick it refused. Nothing was broken; nothing was fetched."
+  },
+  "schema_version": "1.0"
+}

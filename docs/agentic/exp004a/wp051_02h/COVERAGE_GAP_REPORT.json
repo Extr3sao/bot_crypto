@@ -1,0 +1,1720 @@
+{
+  "context_days": [
+    {
+      "assets": {
+        "BTC": {
+          "admissible": 0,
+          "bars_in_store": 24,
+          "classification": "DAY_QUARANTINED",
+          "inadmissible": [
+            {
+              "lag_minutes": 10.98,
+              "open_utc": "2026-10-22T00:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.98,
+              "open_utc": "2026-10-22T01:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.98,
+              "open_utc": "2026-10-22T02:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T03:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T04:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T05:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T06:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T07:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T08:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T09:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T10:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T11:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 25.97,
+              "open_utc": "2026-10-22T12:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 0.73,
+              "open_utc": "2026-10-22T13:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T14:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T15:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 85.97,
+              "open_utc": "2026-10-22T16:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 25.97,
+              "open_utc": "2026-10-22T17:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T18:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 145.99,
+              "open_utc": "2026-10-22T19:00:00.000Z",
+              "reasons": [
+                "LATE",
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 85.99,
+              "open_utc": "2026-10-22T20:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 25.99,
+              "open_utc": "2026-10-22T21:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T22:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 340.99,
+              "open_utc": "2026-10-22T23:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            }
+          ],
+          "lost": true,
+          "missing_opens": []
+        },
+        "ETH": {
+          "admissible": 0,
+          "bars_in_store": 24,
+          "classification": "DAY_QUARANTINED",
+          "inadmissible": [
+            {
+              "lag_minutes": 10.98,
+              "open_utc": "2026-10-22T00:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.98,
+              "open_utc": "2026-10-22T01:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.98,
+              "open_utc": "2026-10-22T02:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T03:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T04:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T05:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T06:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T07:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T08:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T09:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T10:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T11:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 25.97,
+              "open_utc": "2026-10-22T12:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 0.73,
+              "open_utc": "2026-10-22T13:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T14:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T15:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 85.97,
+              "open_utc": "2026-10-22T16:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 25.97,
+              "open_utc": "2026-10-22T17:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T18:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 145.99,
+              "open_utc": "2026-10-22T19:00:00.000Z",
+              "reasons": [
+                "LATE",
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 85.99,
+              "open_utc": "2026-10-22T20:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 25.99,
+              "open_utc": "2026-10-22T21:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T22:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 340.99,
+              "open_utc": "2026-10-22T23:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            }
+          ],
+          "lost": true,
+          "missing_opens": []
+        },
+        "SOL": {
+          "admissible": 0,
+          "bars_in_store": 24,
+          "classification": "DAY_QUARANTINED",
+          "inadmissible": [
+            {
+              "lag_minutes": 10.98,
+              "open_utc": "2026-10-22T00:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.98,
+              "open_utc": "2026-10-22T01:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.98,
+              "open_utc": "2026-10-22T02:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T03:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T04:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T05:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T06:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T07:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T08:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T09:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T10:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.96,
+              "open_utc": "2026-10-22T11:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 25.97,
+              "open_utc": "2026-10-22T12:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 0.73,
+              "open_utc": "2026-10-22T13:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T14:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T15:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 85.97,
+              "open_utc": "2026-10-22T16:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 25.97,
+              "open_utc": "2026-10-22T17:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T18:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 145.99,
+              "open_utc": "2026-10-22T19:00:00.000Z",
+              "reasons": [
+                "LATE",
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 85.99,
+              "open_utc": "2026-10-22T20:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 25.99,
+              "open_utc": "2026-10-22T21:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 10.97,
+              "open_utc": "2026-10-22T22:00:00.000Z",
+              "reasons": [
+                "BEFORE_EFFECTIVE_FROM"
+              ]
+            },
+            {
+              "lag_minutes": 340.99,
+              "open_utc": "2026-10-22T23:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            }
+          ],
+          "lost": true,
+          "missing_opens": []
+        }
+      },
+      "day": "2026-10-22",
+      "in_declared_window": false
+    },
+    {
+      "assets": {
+        "BTC": {
+          "admissible": 3,
+          "bars_in_store": 6,
+          "classification": "DAY_OPEN_ALREADY_DOOMED",
+          "inadmissible": [
+            {
+              "lag_minutes": 280.99,
+              "open_utc": "2026-10-23T00:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            },
+            {
+              "lag_minutes": 220.99,
+              "open_utc": "2026-10-23T01:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            },
+            {
+              "lag_minutes": 160.99,
+              "open_utc": "2026-10-23T02:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            }
+          ],
+          "lost": true,
+          "missing_opens": [
+            "2026-10-23T06:00:00.000Z",
+            "2026-10-23T07:00:00.000Z",
+            "2026-10-23T08:00:00.000Z",
+            "2026-10-23T09:00:00.000Z",
+            "2026-10-23T10:00:00.000Z",
+            "2026-10-23T11:00:00.000Z",
+            "2026-10-23T12:00:00.000Z",
+            "2026-10-23T13:00:00.000Z",
+            "2026-10-23T14:00:00.000Z",
+            "2026-10-23T15:00:00.000Z",
+            "2026-10-23T16:00:00.000Z",
+            "2026-10-23T17:00:00.000Z",
+            "2026-10-23T18:00:00.000Z",
+            "2026-10-23T19:00:00.000Z",
+            "2026-10-23T20:00:00.000Z",
+            "2026-10-23T21:00:00.000Z",
+            "2026-10-23T22:00:00.000Z",
+            "2026-10-23T23:00:00.000Z"
+          ]
+        },
+        "ETH": {
+          "admissible": 3,
+          "bars_in_store": 6,
+          "classification": "DAY_OPEN_ALREADY_DOOMED",
+          "inadmissible": [
+            {
+              "lag_minutes": 280.99,
+              "open_utc": "2026-10-23T00:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            },
+            {
+              "lag_minutes": 220.99,
+              "open_utc": "2026-10-23T01:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            },
+            {
+              "lag_minutes": 160.99,
+              "open_utc": "2026-10-23T02:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            }
+          ],
+          "lost": true,
+          "missing_opens": [
+            "2026-10-23T06:00:00.000Z",
+            "2026-10-23T07:00:00.000Z",
+            "2026-10-23T08:00:00.000Z",
+            "2026-10-23T09:00:00.000Z",
+            "2026-10-23T10:00:00.000Z",
+            "2026-10-23T11:00:00.000Z",
+            "2026-10-23T12:00:00.000Z",
+            "2026-10-23T13:00:00.000Z",
+            "2026-10-23T14:00:00.000Z",
+            "2026-10-23T15:00:00.000Z",
+            "2026-10-23T16:00:00.000Z",
+            "2026-10-23T17:00:00.000Z",
+            "2026-10-23T18:00:00.000Z",
+            "2026-10-23T19:00:00.000Z",
+            "2026-10-23T20:00:00.000Z",
+            "2026-10-23T21:00:00.000Z",
+            "2026-10-23T22:00:00.000Z",
+            "2026-10-23T23:00:00.000Z"
+          ]
+        },
+        "SOL": {
+          "admissible": 3,
+          "bars_in_store": 6,
+          "classification": "DAY_OPEN_ALREADY_DOOMED",
+          "inadmissible": [
+            {
+              "lag_minutes": 280.99,
+              "open_utc": "2026-10-23T00:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            },
+            {
+              "lag_minutes": 220.99,
+              "open_utc": "2026-10-23T01:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            },
+            {
+              "lag_minutes": 160.99,
+              "open_utc": "2026-10-23T02:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            }
+          ],
+          "lost": true,
+          "missing_opens": [
+            "2026-10-23T06:00:00.000Z",
+            "2026-10-23T07:00:00.000Z",
+            "2026-10-23T08:00:00.000Z",
+            "2026-10-23T09:00:00.000Z",
+            "2026-10-23T10:00:00.000Z",
+            "2026-10-23T11:00:00.000Z",
+            "2026-10-23T12:00:00.000Z",
+            "2026-10-23T13:00:00.000Z",
+            "2026-10-23T14:00:00.000Z",
+            "2026-10-23T15:00:00.000Z",
+            "2026-10-23T16:00:00.000Z",
+            "2026-10-23T17:00:00.000Z",
+            "2026-10-23T18:00:00.000Z",
+            "2026-10-23T19:00:00.000Z",
+            "2026-10-23T20:00:00.000Z",
+            "2026-10-23T21:00:00.000Z",
+            "2026-10-23T22:00:00.000Z",
+            "2026-10-23T23:00:00.000Z"
+          ]
+        }
+      },
+      "day": "2026-10-23",
+      "in_declared_window": true
+    }
+  ],
+  "days": [
+    {
+      "assets": {
+        "BTC": {
+          "admissible": 3,
+          "bars_in_store": 6,
+          "classification": "DAY_OPEN_ALREADY_DOOMED",
+          "inadmissible": [
+            {
+              "lag_minutes": 280.99,
+              "open_utc": "2026-10-23T00:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            },
+            {
+              "lag_minutes": 220.99,
+              "open_utc": "2026-10-23T01:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            },
+            {
+              "lag_minutes": 160.99,
+              "open_utc": "2026-10-23T02:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            }
+          ],
+          "lost": true,
+          "missing_opens": [
+            "2026-10-23T06:00:00.000Z",
+            "2026-10-23T07:00:00.000Z",
+            "2026-10-23T08:00:00.000Z",
+            "2026-10-23T09:00:00.000Z",
+            "2026-10-23T10:00:00.000Z",
+            "2026-10-23T11:00:00.000Z",
+            "2026-10-23T12:00:00.000Z",
+            "2026-10-23T13:00:00.000Z",
+            "2026-10-23T14:00:00.000Z",
+            "2026-10-23T15:00:00.000Z",
+            "2026-10-23T16:00:00.000Z",
+            "2026-10-23T17:00:00.000Z",
+            "2026-10-23T18:00:00.000Z",
+            "2026-10-23T19:00:00.000Z",
+            "2026-10-23T20:00:00.000Z",
+            "2026-10-23T21:00:00.000Z",
+            "2026-10-23T22:00:00.000Z",
+            "2026-10-23T23:00:00.000Z"
+          ]
+        },
+        "ETH": {
+          "admissible": 3,
+          "bars_in_store": 6,
+          "classification": "DAY_OPEN_ALREADY_DOOMED",
+          "inadmissible": [
+            {
+              "lag_minutes": 280.99,
+              "open_utc": "2026-10-23T00:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            },
+            {
+              "lag_minutes": 220.99,
+              "open_utc": "2026-10-23T01:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            },
+            {
+              "lag_minutes": 160.99,
+              "open_utc": "2026-10-23T02:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            }
+          ],
+          "lost": true,
+          "missing_opens": [
+            "2026-10-23T06:00:00.000Z",
+            "2026-10-23T07:00:00.000Z",
+            "2026-10-23T08:00:00.000Z",
+            "2026-10-23T09:00:00.000Z",
+            "2026-10-23T10:00:00.000Z",
+            "2026-10-23T11:00:00.000Z",
+            "2026-10-23T12:00:00.000Z",
+            "2026-10-23T13:00:00.000Z",
+            "2026-10-23T14:00:00.000Z",
+            "2026-10-23T15:00:00.000Z",
+            "2026-10-23T16:00:00.000Z",
+            "2026-10-23T17:00:00.000Z",
+            "2026-10-23T18:00:00.000Z",
+            "2026-10-23T19:00:00.000Z",
+            "2026-10-23T20:00:00.000Z",
+            "2026-10-23T21:00:00.000Z",
+            "2026-10-23T22:00:00.000Z",
+            "2026-10-23T23:00:00.000Z"
+          ]
+        },
+        "SOL": {
+          "admissible": 3,
+          "bars_in_store": 6,
+          "classification": "DAY_OPEN_ALREADY_DOOMED",
+          "inadmissible": [
+            {
+              "lag_minutes": 280.99,
+              "open_utc": "2026-10-23T00:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            },
+            {
+              "lag_minutes": 220.99,
+              "open_utc": "2026-10-23T01:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            },
+            {
+              "lag_minutes": 160.99,
+              "open_utc": "2026-10-23T02:00:00.000Z",
+              "reasons": [
+                "LATE"
+              ]
+            }
+          ],
+          "lost": true,
+          "missing_opens": [
+            "2026-10-23T06:00:00.000Z",
+            "2026-10-23T07:00:00.000Z",
+            "2026-10-23T08:00:00.000Z",
+            "2026-10-23T09:00:00.000Z",
+            "2026-10-23T10:00:00.000Z",
+            "2026-10-23T11:00:00.000Z",
+            "2026-10-23T12:00:00.000Z",
+            "2026-10-23T13:00:00.000Z",
+            "2026-10-23T14:00:00.000Z",
+            "2026-10-23T15:00:00.000Z",
+            "2026-10-23T16:00:00.000Z",
+            "2026-10-23T17:00:00.000Z",
+            "2026-10-23T18:00:00.000Z",
+            "2026-10-23T19:00:00.000Z",
+            "2026-10-23T20:00:00.000Z",
+            "2026-10-23T21:00:00.000Z",
+            "2026-10-23T22:00:00.000Z",
+            "2026-10-23T23:00:00.000Z"
+          ]
+        }
+      },
+      "assets_in_agreement": true,
+      "classification": "DAY_OPEN_ALREADY_DOOMED",
+      "day": "2026-10-23",
+      "lost": true
+    }
+  ],
+  "declaration": {
+    "complete_rule": "COVERAGE_COMPLETE requires admissible_rows == declared_rows exactly and zero defects. required_fraction is a floor for adjudication, not a licence to certify a short dataset as the declared one.",
+    "days": 90,
+    "declaration_id": "EXP-004A.datasets.phase3/v1",
+    "declared_rows": 6480,
+    "effective_from_utc": "2026-10-23T00:00:00Z",
+    "end_utc": "2027-01-21T00:00:00Z",
+    "entries": [
+      {
+        "asset": "BTC",
+        "period_end_utc": "2027-01-21T00:00:00Z",
+        "period_start_utc": "2026-10-23T00:00:00Z",
+        "row_count": 2160,
+        "source_path": "data/forward/edge03/1h/BTC.jsonl",
+        "timeframe": "1h"
+      },
+      {
+        "asset": "ETH",
+        "period_end_utc": "2027-01-21T00:00:00Z",
+        "period_start_utc": "2026-10-23T00:00:00Z",
+        "row_count": 2160,
+        "source_path": "data/forward/edge03/1h/ETH.jsonl",
+        "timeframe": "1h"
+      },
+      {
+        "asset": "SOL",
+        "period_end_utc": "2027-01-21T00:00:00Z",
+        "period_start_utc": "2026-10-23T00:00:00Z",
+        "row_count": 2160,
+        "source_path": "data/forward/edge03/1h/SOL.jsonl",
+        "timeframe": "1h"
+      }
+    ],
+    "lag_bound_ms": 7200000,
+    "path": "C:/Users/GVLLFR0035/Downloads/bot-freebuff-exp004a-02h/config/preregistrations/EXP-004A.datasets.phase3.json",
+    "required_fraction": 0.9,
+    "sha256": "baeffad097f7d9370cd5b3aa3ab91517ee01d409b7dcbb00c96aad82e54a2cfe",
+    "start_utc": "2026-10-23T00:00:00Z"
+  },
+  "generated_at_utc": "2026-10-23T06:38:27.532Z",
+  "head": "819cb0d29f87b624fd982b5c581f4aea6e5993e0",
+  "not_applied": "no bar was re-fetched, no timestamp was synthesised, and no threshold moved. The alternatives in FINAL_REPORT §4 are proposals for the owner of the declaration, and none of them is implemented here.",
+  "package": "WP-051-02H",
+  "phase_impact": {
+    "complete_days_by_asset": {
+      "BTC": [],
+      "ETH": [],
+      "SOL": []
+    },
+    "coverage_complete_reachable": false,
+    "declared_days": 90,
+    "declared_rows": 6480,
+    "fraction_still_reachable": 0.988889,
+    "lost_days_any_asset": [
+      "2026-10-23"
+    ],
+    "lost_days_by_asset": {
+      "BTC": [
+        "2026-10-23"
+      ],
+      "ETH": [
+        "2026-10-23"
+      ],
+      "SOL": [
+        "2026-10-23"
+      ]
+    },
+    "reading": "COVERAGE_COMPLETE requires admissible_rows == declared_rows exactly. Once a day is quarantined that equality is arithmetically unreachable, so the declaration as written can no longer be completed, whatever the remaining days do. The ceiling is computed by removing the lost days only; it assumes every remaining day arrives clean, which is an assumption, not a result.",
+    "required_fraction": 0.9,
+    "rows_per_day": 72,
+    "rows_still_reachable": 6408,
+    "status_now": "CEILING_BELOW_DECLARED"
+  },
+  "recovery_boundary": {
+    "audited_at_utc": "2026-10-23T06:38:27.532Z",
+    "block_episode": {
+      "blocked_ticks": 1,
+      "first_blocked_start_utc": "2026-10-23T05:55:56.000Z",
+      "last_block_free_gib": 0.4797,
+      "last_block_health": "BLOCKED",
+      "last_block_reason": "0.4797 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "last_blocked_start_utc": "2026-10-23T05:55:56.000Z"
+    },
+    "episode_boundaries": [
+      {
+        "blocked_ticks": 3,
+        "first_blocked_start_utc": "2026-10-13T20:25:56.000Z",
+        "last_block_reason": "1.9978 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-13T20:55:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 6,
+          "run_id": "FWD-EDGE04-20261013T200000Z",
+          "started_at_utc": "2026-10-13T20:10:56.000Z"
+        },
+        "min_free_gib": 1.8095,
+        "recovery_latency_seconds": 900.0,
+        "resume": {
+          "new_bars": 15,
+          "run_id": "FWD-EDGE04-20261013T210000Z",
+          "started_at_utc": "2026-10-13T21:10:56.000Z"
+        },
+        "store_silence_minutes": 60.0,
+        "store_silence_seconds": 3600.0
+      },
+      {
+        "blocked_ticks": 2,
+        "first_blocked_start_utc": "2026-10-13T21:25:56.000Z",
+        "last_block_reason": "1.7731 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-13T21:40:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 15,
+          "run_id": "FWD-EDGE04-20261013T210000Z",
+          "started_at_utc": "2026-10-13T21:10:56.000Z"
+        },
+        "min_free_gib": 1.7731,
+        "recovery_latency_seconds": 902.0,
+        "resume": {
+          "new_bars": 9,
+          "run_id": "FWD-EDGE04-20261013T214500Z",
+          "started_at_utc": "2026-10-13T21:55:58.000Z"
+        },
+        "store_silence_minutes": 45.03,
+        "store_silence_seconds": 2702.0
+      },
+      {
+        "blocked_ticks": 30,
+        "first_blocked_start_utc": "2026-10-13T22:10:57.000Z",
+        "last_block_reason": "0.8385 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-14T05:25:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 9,
+          "run_id": "FWD-EDGE04-20261013T214500Z",
+          "started_at_utc": "2026-10-13T21:55:58.000Z"
+        },
+        "min_free_gib": 0.8302,
+        "recovery_latency_seconds": 900.0,
+        "resume": {
+          "new_bars": 117,
+          "run_id": "FWD-EDGE04-20261014T053000Z",
+          "started_at_utc": "2026-10-14T05:40:56.000Z"
+        },
+        "store_silence_minutes": 464.97,
+        "store_silence_seconds": 27898.0
+      },
+      {
+        "blocked_ticks": 6,
+        "first_blocked_start_utc": "2026-10-14T07:55:09.000Z",
+        "last_block_reason": "1.2469 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-14T08:40:57.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261014T073000Z",
+          "started_at_utc": "2026-10-14T07:40:56.000Z"
+        },
+        "min_free_gib": 1.1567,
+        "recovery_latency_seconds": 899.0,
+        "resume": {
+          "new_bars": 18,
+          "run_id": "FWD-EDGE04-20261014T084500Z",
+          "started_at_utc": "2026-10-14T08:55:56.000Z"
+        },
+        "store_silence_minutes": 75.0,
+        "store_silence_seconds": 4500.0
+      },
+      {
+        "blocked_ticks": 4,
+        "first_blocked_start_utc": "2026-10-14T12:55:56.000Z",
+        "last_block_reason": "1.3899 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-14T13:40:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261014T123000Z",
+          "started_at_utc": "2026-10-14T12:40:56.000Z"
+        },
+        "min_free_gib": 1.3843,
+        "recovery_latency_seconds": 900.0,
+        "resume": {
+          "new_bars": 18,
+          "run_id": "FWD-EDGE04-20261014T134500Z",
+          "started_at_utc": "2026-10-14T13:55:56.000Z"
+        },
+        "store_silence_minutes": 75.0,
+        "store_silence_seconds": 4500.0
+      },
+      {
+        "blocked_ticks": 2,
+        "first_blocked_start_utc": "2026-10-17T16:55:57.000Z",
+        "last_block_reason": "1.6144 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-17T17:10:57.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261017T163000Z",
+          "started_at_utc": "2026-10-17T16:40:56.000Z"
+        },
+        "min_free_gib": 1.6144,
+        "recovery_latency_seconds": 900.0,
+        "resume": {
+          "new_bars": 12,
+          "run_id": "FWD-EDGE04-20261017T171500Z",
+          "started_at_utc": "2026-10-17T17:25:57.000Z"
+        },
+        "store_silence_minutes": 45.02,
+        "store_silence_seconds": 2701.0
+      },
+      {
+        "blocked_ticks": 7,
+        "first_blocked_start_utc": "2026-10-17T18:10:57.000Z",
+        "last_block_reason": "0.2813 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-17T19:55:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261017T174500Z",
+          "started_at_utc": "2026-10-17T17:55:56.000Z"
+        },
+        "min_free_gib": 0.1552,
+        "recovery_latency_seconds": 900.0,
+        "resume": {
+          "new_bars": 36,
+          "run_id": "FWD-EDGE04-20261017T200000Z",
+          "started_at_utc": "2026-10-17T20:10:56.000Z"
+        },
+        "store_silence_minutes": 135.0,
+        "store_silence_seconds": 8100.0
+      },
+      {
+        "blocked_ticks": 1,
+        "first_blocked_start_utc": "2026-10-17T22:40:56.000Z",
+        "last_block_reason": "0.7602 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-17T22:40:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261017T221500Z",
+          "started_at_utc": "2026-10-17T22:25:56.000Z"
+        },
+        "min_free_gib": 0.7602,
+        "recovery_latency_seconds": 900.0,
+        "resume": {
+          "new_bars": 6,
+          "run_id": "FWD-EDGE04-20261017T224500Z",
+          "started_at_utc": "2026-10-17T22:55:56.000Z"
+        },
+        "store_silence_minutes": 30.0,
+        "store_silence_seconds": 1800.0
+      },
+      {
+        "blocked_ticks": 1,
+        "first_blocked_start_utc": "2026-10-17T23:10:56.000Z",
+        "last_block_reason": "1.7763 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-17T23:10:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 6,
+          "run_id": "FWD-EDGE04-20261017T224500Z",
+          "started_at_utc": "2026-10-17T22:55:56.000Z"
+        },
+        "min_free_gib": 1.7763,
+        "recovery_latency_seconds": 899.0,
+        "resume": {
+          "new_bars": 9,
+          "run_id": "FWD-EDGE04-20261017T231500Z",
+          "started_at_utc": "2026-10-17T23:25:55.000Z"
+        },
+        "store_silence_minutes": 29.98,
+        "store_silence_seconds": 1799.0
+      },
+      {
+        "blocked_ticks": 1,
+        "first_blocked_start_utc": "2026-10-18T00:10:55.000Z",
+        "last_block_reason": "1.9976 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-18T00:10:55.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261017T234500Z",
+          "started_at_utc": "2026-10-17T23:55:55.000Z"
+        },
+        "min_free_gib": 1.9976,
+        "recovery_latency_seconds": 900.0,
+        "resume": {
+          "new_bars": 9,
+          "run_id": "FWD-EDGE04-20261018T001500Z",
+          "started_at_utc": "2026-10-18T00:25:55.000Z"
+        },
+        "store_silence_minutes": 30.0,
+        "store_silence_seconds": 1800.0
+      },
+      {
+        "blocked_ticks": 2,
+        "first_blocked_start_utc": "2026-10-18T07:40:56.000Z",
+        "last_block_reason": "1.9325 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-18T07:55:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261018T071500Z",
+          "started_at_utc": "2026-10-18T07:25:56.000Z"
+        },
+        "min_free_gib": 1.9325,
+        "recovery_latency_seconds": 900.0,
+        "resume": {
+          "new_bars": 12,
+          "run_id": "FWD-EDGE04-20261018T080000Z",
+          "started_at_utc": "2026-10-18T08:10:56.000Z"
+        },
+        "store_silence_minutes": 45.0,
+        "store_silence_seconds": 2700.0
+      },
+      {
+        "blocked_ticks": 14,
+        "first_blocked_start_utc": "2026-10-18T09:10:57.000Z",
+        "last_block_reason": "1.4847 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-18T12:25:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261018T084500Z",
+          "started_at_utc": "2026-10-18T08:55:56.000Z"
+        },
+        "min_free_gib": 0.0,
+        "recovery_latency_seconds": 900.0,
+        "resume": {
+          "new_bars": 57,
+          "run_id": "FWD-EDGE04-20261018T123000Z",
+          "started_at_utc": "2026-10-18T12:40:56.000Z"
+        },
+        "store_silence_minutes": 225.0,
+        "store_silence_seconds": 13500.0
+      },
+      {
+        "blocked_ticks": 31,
+        "first_blocked_start_utc": "2026-10-18T19:10:57.000Z",
+        "last_block_reason": "0.512 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-19T02:40:55.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261018T184500Z",
+          "started_at_utc": "2026-10-18T18:55:57.000Z"
+        },
+        "min_free_gib": 0.0,
+        "recovery_latency_seconds": 901.0,
+        "resume": {
+          "new_bars": 120,
+          "run_id": "FWD-EDGE04-20261019T024500Z",
+          "started_at_utc": "2026-10-19T02:55:56.000Z"
+        },
+        "store_silence_minutes": 479.98,
+        "store_silence_seconds": 28799.0
+      },
+      {
+        "blocked_ticks": 1,
+        "first_blocked_start_utc": "2026-10-20T11:40:58.000Z",
+        "last_block_reason": "1.9345 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-20T11:40:58.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261020T111500Z",
+          "started_at_utc": "2026-10-20T11:26:57.000Z"
+        },
+        "min_free_gib": 1.9345,
+        "recovery_latency_seconds": 898.0,
+        "resume": {
+          "new_bars": 6,
+          "run_id": "FWD-EDGE04-20261020T114500Z",
+          "started_at_utc": "2026-10-20T11:55:56.000Z"
+        },
+        "store_silence_minutes": 28.98,
+        "store_silence_seconds": 1739.0
+      },
+      {
+        "blocked_ticks": 2,
+        "first_blocked_start_utc": "2026-10-20T14:26:17.000Z",
+        "last_block_reason": "0.9288 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-20T14:43:24.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 6,
+          "run_id": "FWD-EDGE04-20261020T140000Z",
+          "started_at_utc": "2026-10-20T14:10:57.000Z"
+        },
+        "min_free_gib": 0.9114,
+        "recovery_latency_seconds": 766.0,
+        "resume": {
+          "new_bars": 9,
+          "run_id": "FWD-EDGE04-20261020T144500Z",
+          "started_at_utc": "2026-10-20T14:56:10.000Z"
+        },
+        "store_silence_minutes": 45.22,
+        "store_silence_seconds": 2713.0
+      },
+      {
+        "blocked_ticks": 5,
+        "first_blocked_start_utc": "2026-10-21T16:10:56.000Z",
+        "last_block_reason": "1.5412 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-21T17:10:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261021T154500Z",
+          "started_at_utc": "2026-10-21T15:55:56.000Z"
+        },
+        "min_free_gib": 0.263,
+        "recovery_latency_seconds": 900.0,
+        "resume": {
+          "new_bars": 24,
+          "run_id": "FWD-EDGE04-20261021T171500Z",
+          "started_at_utc": "2026-10-21T17:25:56.000Z"
+        },
+        "store_silence_minutes": 90.0,
+        "store_silence_seconds": 5400.0
+      },
+      {
+        "blocked_ticks": 1,
+        "first_blocked_start_utc": "2026-10-21T17:55:56.000Z",
+        "last_block_reason": "1.3201 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-21T17:55:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261021T173000Z",
+          "started_at_utc": "2026-10-21T17:40:56.000Z"
+        },
+        "min_free_gib": 1.3201,
+        "recovery_latency_seconds": 900.0,
+        "resume": {
+          "new_bars": 9,
+          "run_id": "FWD-EDGE04-20261021T180000Z",
+          "started_at_utc": "2026-10-21T18:10:56.000Z"
+        },
+        "store_silence_minutes": 30.0,
+        "store_silence_seconds": 1800.0
+      },
+      {
+        "blocked_ticks": 7,
+        "first_blocked_start_utc": "2026-10-21T18:25:56.000Z",
+        "last_block_reason": "0.059 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-21T19:55:57.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 9,
+          "run_id": "FWD-EDGE04-20261021T180000Z",
+          "started_at_utc": "2026-10-21T18:10:56.000Z"
+        },
+        "min_free_gib": 0.035,
+        "recovery_latency_seconds": 1816.0,
+        "resume": {
+          "new_bars": 33,
+          "run_id": "FWD-EDGE04-20261021T201500Z",
+          "started_at_utc": "2026-10-21T20:26:13.000Z"
+        },
+        "store_silence_minutes": 135.28,
+        "store_silence_seconds": 8117.0
+      },
+      {
+        "blocked_ticks": 1,
+        "first_blocked_start_utc": "2026-10-22T14:55:56.000Z",
+        "last_block_reason": "1.6912 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-22T14:55:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261022T143000Z",
+          "started_at_utc": "2026-10-22T14:40:58.000Z"
+        },
+        "min_free_gib": 1.6912,
+        "recovery_latency_seconds": 900.0,
+        "resume": {
+          "new_bars": 9,
+          "run_id": "FWD-EDGE04-20261022T150000Z",
+          "started_at_utc": "2026-10-22T15:10:56.000Z"
+        },
+        "store_silence_minutes": 29.97,
+        "store_silence_seconds": 1798.0
+      },
+      {
+        "blocked_ticks": 6,
+        "first_blocked_start_utc": "2026-10-22T16:55:56.000Z",
+        "last_block_reason": "1.4416 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-22T18:10:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261022T163000Z",
+          "started_at_utc": "2026-10-22T16:40:56.000Z"
+        },
+        "min_free_gib": 1.4416,
+        "recovery_latency_seconds": 900.0,
+        "resume": {
+          "new_bars": 27,
+          "run_id": "FWD-EDGE04-20261022T181500Z",
+          "started_at_utc": "2026-10-22T18:25:56.000Z"
+        },
+        "store_silence_minutes": 105.0,
+        "store_silence_seconds": 6300.0
+      },
+      {
+        "blocked_ticks": 10,
+        "first_blocked_start_utc": "2026-10-22T19:55:56.000Z",
+        "last_block_reason": "0.281 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-22T22:10:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261022T193000Z",
+          "started_at_utc": "2026-10-22T19:40:56.000Z"
+        },
+        "min_free_gib": 0.2777,
+        "recovery_latency_seconds": 901.0,
+        "resume": {
+          "new_bars": 42,
+          "run_id": "FWD-EDGE04-20261022T221500Z",
+          "started_at_utc": "2026-10-22T22:25:57.000Z"
+        },
+        "store_silence_minutes": 165.02,
+        "store_silence_seconds": 9901.0
+      },
+      {
+        "blocked_ticks": 22,
+        "first_blocked_start_utc": "2026-10-23T00:10:56.000Z",
+        "last_block_reason": "0.0218 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-23T05:25:57.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 3,
+          "run_id": "FWD-EDGE04-20261022T234500Z",
+          "started_at_utc": "2026-10-22T23:55:56.000Z"
+        },
+        "min_free_gib": 0.0,
+        "recovery_latency_seconds": 900.0,
+        "resume": {
+          "new_bars": 87,
+          "run_id": "FWD-EDGE04-20261023T053000Z",
+          "started_at_utc": "2026-10-23T05:40:57.000Z"
+        },
+        "store_silence_minutes": 345.02,
+        "store_silence_seconds": 20701.0
+      },
+      {
+        "blocked_ticks": 1,
+        "first_blocked_start_utc": "2026-10-23T05:55:56.000Z",
+        "last_block_reason": "0.4797 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+        "last_blocked_start_utc": "2026-10-23T05:55:56.000Z",
+        "last_consuming_tick_before": {
+          "new_bars": 87,
+          "run_id": "FWD-EDGE04-20261023T053000Z",
+          "started_at_utc": "2026-10-23T05:40:57.000Z"
+        },
+        "min_free_gib": 0.4797,
+        "recovery_latency_seconds": 902.0,
+        "resume": {
+          "new_bars": 9,
+          "run_id": "FWD-EDGE04-20261023T060000Z",
+          "started_at_utc": "2026-10-23T06:10:58.000Z"
+        },
+        "store_silence_minutes": 30.02,
+        "store_silence_seconds": 1801.0
+      }
+    ],
+    "episodes": [
+      {
+        "blocked_ticks": 3,
+        "first_blocked_start_utc": "2026-10-13T20:25:56.000Z",
+        "last_blocked_start_utc": "2026-10-13T20:55:56.000Z",
+        "min_free_gib": 1.8095,
+        "minutes": 30.0
+      },
+      {
+        "blocked_ticks": 2,
+        "first_blocked_start_utc": "2026-10-13T21:25:56.000Z",
+        "last_blocked_start_utc": "2026-10-13T21:40:56.000Z",
+        "min_free_gib": 1.7731,
+        "minutes": 15.0
+      },
+      {
+        "blocked_ticks": 30,
+        "first_blocked_start_utc": "2026-10-13T22:10:57.000Z",
+        "last_blocked_start_utc": "2026-10-14T05:25:56.000Z",
+        "min_free_gib": 0.8302,
+        "minutes": 434.98
+      },
+      {
+        "blocked_ticks": 6,
+        "first_blocked_start_utc": "2026-10-14T07:55:09.000Z",
+        "last_blocked_start_utc": "2026-10-14T08:40:57.000Z",
+        "min_free_gib": 1.1567,
+        "minutes": 45.8
+      },
+      {
+        "blocked_ticks": 4,
+        "first_blocked_start_utc": "2026-10-14T12:55:56.000Z",
+        "last_blocked_start_utc": "2026-10-14T13:40:56.000Z",
+        "min_free_gib": 1.3843,
+        "minutes": 45.0
+      },
+      {
+        "blocked_ticks": 2,
+        "first_blocked_start_utc": "2026-10-17T16:55:57.000Z",
+        "last_blocked_start_utc": "2026-10-17T17:10:57.000Z",
+        "min_free_gib": 1.6144,
+        "minutes": 15.0
+      },
+      {
+        "blocked_ticks": 7,
+        "first_blocked_start_utc": "2026-10-17T18:10:57.000Z",
+        "last_blocked_start_utc": "2026-10-17T19:55:56.000Z",
+        "min_free_gib": 0.1552,
+        "minutes": 104.98
+      },
+      {
+        "blocked_ticks": 1,
+        "first_blocked_start_utc": "2026-10-17T22:40:56.000Z",
+        "last_blocked_start_utc": "2026-10-17T22:40:56.000Z",
+        "min_free_gib": 0.7602,
+        "minutes": 0.0
+      },
+      {
+        "blocked_ticks": 1,
+        "first_blocked_start_utc": "2026-10-17T23:10:56.000Z",
+        "last_blocked_start_utc": "2026-10-17T23:10:56.000Z",
+        "min_free_gib": 1.7763,
+        "minutes": 0.0
+      },
+      {
+        "blocked_ticks": 1,
+        "first_blocked_start_utc": "2026-10-18T00:10:55.000Z",
+        "last_blocked_start_utc": "2026-10-18T00:10:55.000Z",
+        "min_free_gib": 1.9976,
+        "minutes": 0.0
+      },
+      {
+        "blocked_ticks": 2,
+        "first_blocked_start_utc": "2026-10-18T07:40:56.000Z",
+        "last_blocked_start_utc": "2026-10-18T07:55:56.000Z",
+        "min_free_gib": 1.9325,
+        "minutes": 15.0
+      },
+      {
+        "blocked_ticks": 14,
+        "first_blocked_start_utc": "2026-10-18T09:10:57.000Z",
+        "last_blocked_start_utc": "2026-10-18T12:25:56.000Z",
+        "min_free_gib": 0.0,
+        "minutes": 194.98
+      },
+      {
+        "blocked_ticks": 31,
+        "first_blocked_start_utc": "2026-10-18T19:10:57.000Z",
+        "last_blocked_start_utc": "2026-10-19T02:40:55.000Z",
+        "min_free_gib": 0.0,
+        "minutes": 449.97
+      },
+      {
+        "blocked_ticks": 1,
+        "first_blocked_start_utc": "2026-10-20T11:40:58.000Z",
+        "last_blocked_start_utc": "2026-10-20T11:40:58.000Z",
+        "min_free_gib": 1.9345,
+        "minutes": 0.0
+      },
+      {
+        "blocked_ticks": 2,
+        "first_blocked_start_utc": "2026-10-20T14:26:17.000Z",
+        "last_blocked_start_utc": "2026-10-20T14:43:24.000Z",
+        "min_free_gib": 0.9114,
+        "minutes": 17.12
+      },
+      {
+        "blocked_ticks": 5,
+        "first_blocked_start_utc": "2026-10-21T16:10:56.000Z",
+        "last_blocked_start_utc": "2026-10-21T17:10:56.000Z",
+        "min_free_gib": 0.263,
+        "minutes": 60.0
+      },
+      {
+        "blocked_ticks": 1,
+        "first_blocked_start_utc": "2026-10-21T17:55:56.000Z",
+        "last_blocked_start_utc": "2026-10-21T17:55:56.000Z",
+        "min_free_gib": 1.3201,
+        "minutes": 0.0
+      },
+      {
+        "blocked_ticks": 7,
+        "first_blocked_start_utc": "2026-10-21T18:25:56.000Z",
+        "last_blocked_start_utc": "2026-10-21T19:55:57.000Z",
+        "min_free_gib": 0.035,
+        "minutes": 90.02
+      },
+      {
+        "blocked_ticks": 1,
+        "first_blocked_start_utc": "2026-10-22T14:55:56.000Z",
+        "last_blocked_start_utc": "2026-10-22T14:55:56.000Z",
+        "min_free_gib": 1.6912,
+        "minutes": 0.0
+      },
+      {
+        "blocked_ticks": 6,
+        "first_blocked_start_utc": "2026-10-22T16:55:56.000Z",
+        "last_blocked_start_utc": "2026-10-22T18:10:56.000Z",
+        "min_free_gib": 1.4416,
+        "minutes": 75.0
+      },
+      {
+        "blocked_ticks": 10,
+        "first_blocked_start_utc": "2026-10-22T19:55:56.000Z",
+        "last_blocked_start_utc": "2026-10-22T22:10:56.000Z",
+        "min_free_gib": 0.2777,
+        "minutes": 135.0
+      },
+      {
+        "blocked_ticks": 22,
+        "first_blocked_start_utc": "2026-10-23T00:10:56.000Z",
+        "last_blocked_start_utc": "2026-10-23T05:25:57.000Z",
+        "min_free_gib": 0.0,
+        "minutes": 315.02
+      },
+      {
+        "blocked_ticks": 1,
+        "first_blocked_start_utc": "2026-10-23T05:55:56.000Z",
+        "last_blocked_start_utc": "2026-10-23T05:55:56.000Z",
+        "min_free_gib": 0.4797,
+        "minutes": 0.0
+      }
+    ],
+    "last_consuming_tick_before": {
+      "new_bars": 87,
+      "run_id": "FWD-EDGE04-20261023T053000Z",
+      "started_at_utc": "2026-10-23T05:40:57.000Z"
+    },
+    "recovery_latency_seconds": 902.0,
+    "resume": {
+      "new_bars": 9,
+      "outcome": "OBSERVED",
+      "run_id": "FWD-EDGE04-20261023T060000Z",
+      "started_at_utc": "2026-10-23T06:10:58.000Z"
+    },
+    "store_silence_minutes": 30.02,
+    "store_silence_seconds": 1801.0,
+    "worst_episode": {
+      "blocked_ticks": 22,
+      "first_blocked_start_utc": "2026-10-23T00:10:56.000Z",
+      "last_block_reason": "0.0218 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "last_blocked_start_utc": "2026-10-23T05:25:57.000Z",
+      "last_consuming_tick_before": {
+        "new_bars": 3,
+        "run_id": "FWD-EDGE04-20261022T234500Z",
+        "started_at_utc": "2026-10-22T23:55:56.000Z"
+      },
+      "min_free_gib": 0.0,
+      "recovery_latency_seconds": 900.0,
+      "resume": {
+        "new_bars": 87,
+        "run_id": "FWD-EDGE04-20261023T053000Z",
+        "started_at_utc": "2026-10-23T05:40:57.000Z"
+      },
+      "store_silence_minutes": 345.02,
+      "store_silence_seconds": 20701.0
+    },
+    "worst_episode_all_time": {
+      "blocked_ticks": 31,
+      "first_blocked_start_utc": "2026-10-18T19:10:57.000Z",
+      "last_block_reason": "0.512 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "last_blocked_start_utc": "2026-10-19T02:40:55.000Z",
+      "last_consuming_tick_before": {
+        "new_bars": 3,
+        "run_id": "FWD-EDGE04-20261018T184500Z",
+        "started_at_utc": "2026-10-18T18:55:57.000Z"
+      },
+      "min_free_gib": 0.0,
+      "recovery_latency_seconds": 901.0,
+      "resume": {
+        "new_bars": 120,
+        "run_id": "FWD-EDGE04-20261019T024500Z",
+        "started_at_utc": "2026-10-19T02:55:56.000Z"
+      },
+      "store_silence_minutes": 479.98,
+      "store_silence_seconds": 28799.0
+    }
+  },
+  "schema_version": "1.0",
+  "series": {
+    "1h:BTC": {
+      "corrupt_lines": 0,
+      "first_bar_after_reference": {
+        "admissible": false,
+        "fetched_utc": "2026-10-22T22:25:59.691Z",
+        "lag_minutes": 145.99,
+        "lag_ms": 8759691,
+        "open_utc": "2026-10-22T19:00:00.000Z",
+        "payload_sha256": "f10a4ae9593ba4d77c5b10e334ffc9b17186dcf5cb7e273ac0a7e24a51f9f31e",
+        "reasons": [
+          "LATE",
+          "BEFORE_EFFECTIVE_FROM"
+        ],
+        "source": "BINANCE_PUBLIC_REST:/api/v3/klines"
+      },
+      "last_bar_before_reference": {
+        "admissible": false,
+        "fetched_utc": "2026-10-22T19:10:58.062Z",
+        "lag_minutes": 10.97,
+        "lag_ms": 658062,
+        "open_utc": "2026-10-22T18:00:00.000Z",
+        "payload_sha256": "d06281c94ac4f0688816657d7dd2c789a366af010c9738c31e06adcb8d5ad571",
+        "reasons": [
+          "BEFORE_EFFECTIVE_FROM"
+        ],
+        "source": "BINANCE_PUBLIC_REST:/api/v3/klines"
+      },
+      "rows": 5670,
+      "span": {
+        "first_open_utc": "2026-03-01T00:00:00.000Z",
+        "last_open_utc": "2026-10-23T05:00:00.000Z"
+      }
+    },
+    "1h:ETH": {
+      "corrupt_lines": 0,
+      "first_bar_after_reference": {
+        "admissible": false,
+        "fetched_utc": "2026-10-22T22:25:59.691Z",
+        "lag_minutes": 145.99,
+        "lag_ms": 8759691,
+        "open_utc": "2026-10-22T19:00:00.000Z",
+        "payload_sha256": "de80b31b46cd2810d782a72f5e9c184b38c682d060094eb1e7fbdf7f13e3512a",
+        "reasons": [
+          "LATE",
+          "BEFORE_EFFECTIVE_FROM"
+        ],
+        "source": "BINANCE_PUBLIC_REST:/api/v3/klines"
+      },
+      "last_bar_before_reference": {
+        "admissible": false,
+        "fetched_utc": "2026-10-22T19:10:58.062Z",
+        "lag_minutes": 10.97,
+        "lag_ms": 658062,
+        "open_utc": "2026-10-22T18:00:00.000Z",
+        "payload_sha256": "67e955d668146b7bc378cf75dd620a79dcfc904351b85618f459a9ac79149cab",
+        "reasons": [
+          "BEFORE_EFFECTIVE_FROM"
+        ],
+        "source": "BINANCE_PUBLIC_REST:/api/v3/klines"
+      },
+      "rows": 5670,
+      "span": {
+        "first_open_utc": "2026-03-01T00:00:00.000Z",
+        "last_open_utc": "2026-10-23T05:00:00.000Z"
+      }
+    },
+    "1h:SOL": {
+      "corrupt_lines": 0,
+      "first_bar_after_reference": {
+        "admissible": false,
+        "fetched_utc": "2026-10-22T22:25:59.691Z",
+        "lag_minutes": 145.99,
+        "lag_ms": 8759691,
+        "open_utc": "2026-10-22T19:00:00.000Z",
+        "payload_sha256": "a93006a361858347d6e014feab2bbb8b37a91525f5f98c8e3c25124148ae451e",
+        "reasons": [
+          "LATE",
+          "BEFORE_EFFECTIVE_FROM"
+        ],
+        "source": "BINANCE_PUBLIC_REST:/api/v3/klines"
+      },
+      "last_bar_before_reference": {
+        "admissible": false,
+        "fetched_utc": "2026-10-22T19:10:58.062Z",
+        "lag_minutes": 10.97,
+        "lag_ms": 658062,
+        "open_utc": "2026-10-22T18:00:00.000Z",
+        "payload_sha256": "cc27ecbc97d7206b6597f364d14462ef8d57b7f2f6735c2b595551f8455d55b6",
+        "reasons": [
+          "BEFORE_EFFECTIVE_FROM"
+        ],
+        "source": "BINANCE_PUBLIC_REST:/api/v3/klines"
+      },
+      "rows": 5670,
+      "span": {
+        "first_open_utc": "2026-03-01T00:00:00.000Z",
+        "last_open_utc": "2026-10-23T05:00:00.000Z"
+      }
+    }
+  },
+  "since_utc": "2026-10-22T18:00:00.000Z"
+}
