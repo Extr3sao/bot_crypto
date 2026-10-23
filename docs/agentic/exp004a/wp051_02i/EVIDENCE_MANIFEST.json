@@ -8,7 +8,7 @@
     },
     {
       "bytes": 17347,
-      "git_blob_sha": "8ba47016bad42992d140590bdfbb4c25b892d95c",
+      "git_blob_sha": "4e77caea9db793794d0c5528d1a4dc1f57250da0",
       "path": "docs/agentic/exp004a/wp051_02i/FINAL_REPORT.md",
       "sha256": "d648fdb5cd7f62219cd6ad393f438be28cd9d859518215f38e904c6dbe74fc2f"
     },
@@ -26,18 +26,19 @@
     },
     {
       "bytes": 3213,
+      "git_blob_sha": "ccc775b1681e6137fa22474fc81b2e12ac974ec1",
       "path": "docs/agentic/exp004a/wp051_02i/LIVE_ALARM_EVIDENCE.json",
       "sha256": "4ba09f1d08f3c0f4d99b91c51754dd47c382773d0538454424dff2c3427e7998"
     },
     {
       "bytes": 8397,
-      "git_blob_sha": "6473c456f3cfb39b51fa7799724bc2d59396039e",
+      "git_blob_sha": "2c7c8c1e99829a6ee65fffd73845942f931703ae",
       "path": "docs/agentic/exp004a/wp051_02i/RUN_REPORT.json",
       "sha256": "5b44ed53f4392d447236b363b94bd2773b79be463f9d10d2603ecb3c44d82bf4"
     },
     {
       "bytes": 7103,
-      "git_blob_sha": "1324feca14104b1ac666660753f42384726a5b33",
+      "git_blob_sha": "c9f9408e0a81c585b5e7f0f50a637ebdd29d9843",
       "path": "docs/agentic/exp004a/wp051_02i/RUN_REPORT.md",
       "sha256": "de5799b7ff9c877c3c91bbf24dc06a383719ec5ab971680ca9c7893f151ee75c"
     },
@@ -86,12 +87,10 @@
   ],
   "entry_count": 14,
   "hash_semantics": "sha256 hashes the bytes in this checkout; git_blob_sha is the Git object id at HEAD. They are different magnitudes and are never presented as the same value.",
-  "head": "ef545f0b59f34fcabd26d633aceebfc7c92987de",
-  "missing_git_blob": [
-    "docs/agentic/exp004a/wp051_02i/LIVE_ALARM_EVIDENCE.json"
-  ],
+  "head": "f2b6eaaf171012b3f5b6ba1a1143ffe0eb69507e",
+  "missing_git_blob": [],
   "not_a_certification": "a manifest says what is in the package. It does not say the package is right, and it promotes nothing.",
   "package": "WP-051-02I",
   "schema_version": "EXP004A_WP051_02I_STORAGE_V1",
-  "sealed_at_utc": "2026-10-23T11:08:31Z"
+  "sealed_at_utc": "2026-10-23T11:08:33Z"
 }
