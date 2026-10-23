@@ -1,0 +1,78 @@
+{
+  "channels": [
+    {
+      "configured": true,
+      "delivery": "PowerShell toast, attributed to Windows PowerShell's AUMID",
+      "detection": "watchdog state machine",
+      "generation": "alert id from the transition and the instant",
+      "last_receipt": {
+        "alert_id": "EDGE04-ALERT_TEST-20261023T112758Z",
+        "at_ms": 1792754878734,
+        "at_utc": "2026-10-23T11:27:58Z",
+        "channels": [
+          {
+            "attempted": true,
+            "channel": "desktop_toast",
+            "error": null,
+            "exit": 0,
+            "history_after": 6,
+            "receipt": true,
+            "shown": true
+          }
+        ],
+        "last_tick": "2026-10-23T11:25:56Z",
+        "previous_status": null,
+        "receipt": true,
+        "status": "ALERT_TEST"
+      },
+      "limitation": "needs an interactive session of the same user; on a locked or signed-out machine the toast cannot be shown and the receipt check fails loudly",
+      "name": "desktop_toast",
+      "receipt": "the OS notification history is read back by tag",
+      "verified": true
+    },
+    {
+      "configured": true,
+      "delivery": "stored in the Task Scheduler database",
+      "detection": "scheduler",
+      "generation": "the process exit code",
+      "limitation": "a signal, not a delivery: no one on this host reads it",
+      "name": "task_scheduler_last_result",
+      "receipt": "none: nothing polls it",
+      "verified": false
+    },
+    {
+      "configured": false,
+      "delivery": "eventcreate",
+      "detection": "n/a",
+      "generation": "n/a",
+      "limitation": "refused with 'Acceso denegado' without elevation (measured 2026-10-23)",
+      "name": "windows_event_log",
+      "receipt": "none",
+      "verified": false
+    },
+    {
+      "configured": false,
+      "delivery": "HTTP POST",
+      "detection": "n/a",
+      "generation": "n/a",
+      "limitation": "EDGE04_ALERT_WEBHOOK is not set; the code path exists and is tested, but no URL is configured and this session will not invent one",
+      "name": "webhook",
+      "receipt": "HTTP status",
+      "verified": false
+    }
+  ],
+  "delivered_with_receipt": 2,
+  "delivery_verdict": "PASS_LOCAL",
+  "environment_presence": {
+    "EDGE04_ALERT_WEBHOOK": false,
+    "SLACK_WEBHOOK_URL": false,
+    "SMTP_HOST": false,
+    "TEAMS_WEBHOOK_URL": false
+  },
+  "generated_at_utc": "2026-10-23T11:52:30Z",
+  "ledger_entries": 2,
+  "remote_verdict": "BLOCKED",
+  "schema_version": "EXP004A_WP051_02J_RECOVERY_V1",
+  "statement": "an alert can now reach the person at this machine, and the OS records the receipt. An alert cannot yet leave the machine: no webhook, no mail transport and no event-log permission exist here. Until one of those is enabled, an unattended failure at night is still only recorded, not delivered.",
+  "suppressed": 0
+}

@@ -82,6 +82,7 @@ from typing import Any
 
 SCHEMA_VERSION = "EDGE04_WATCHDOG_V2"
 TASK_NAME = "TradingAgentic-EDGE04-Watchdog"
+SUPERVISOR_TASK_NAME = "TradingAgentic-EDGE04-Alarm"
 DEFAULT_INTERVAL_MINUTES = 15
 SILENCE_FACTOR = 3
 WARNING_FREE_BYTES = 5 * 1024**3
@@ -103,6 +104,18 @@ HISTORY_MIN_DAYS = 3
 EVENTS_FILE = "WATCHDOG_EVENTS.jsonl"
 EVENTS_MAX_BYTES = 256 * 1024
 
+#: Alert delivery. ``ALERT_LEDGER`` records every alert and what each channel answered, so a
+#: duplicate is provable rather than plausible, and ``SUPERVISOR_FILE`` is the heartbeat that
+#: lets a second task notice when this watchdog stops running.
+ALERT_LEDGER = "ALERT_LEDGER.jsonl"
+ALERT_LEDGER_MAX_BYTES = 512 * 1024
+SUPERVISOR_FILE = "SUPERVISOR.json"
+SUPERVISOR_INTERVAL_MINUTES = 10
+SUPERVISOR_SILENCE_FACTOR = 5
+ALERT_COOLDOWN_SECONDS = 6 * 3600
+TOAST_SCRIPT = "edge04_toast.ps1"
+EXIT_WATCHDOG_SILENT = 10
+
 BLOCKING_STATES = ("BLOCKED", "STALE", "UNREADABLE")
 RECOVERED = "RECOVERED"
 WEBHOOK_ENV = "EDGE04_ALERT_WEBHOOK"
@@ -112,6 +125,10 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 def now() -> datetime:
     return datetime.now(tz=UTC)
+
+
+def now_ms() -> int:
+    return int(datetime.now(tz=UTC).timestamp() * 1000)
 
 
 def parse_iso(text: str) -> datetime:
@@ -329,6 +346,22 @@ def check(
         )
     if corrupt:
         reasons.append(f"{corrupt} unreadable line(s) in the last 64 of runs.jsonl")
+    supervisor = read_json(state_root / SUPERVISOR_FILE)
+    supervisor_age = None
+    supervisor_stale = False
+    if supervisor:
+        try:
+            supervisor_age = round(
+                (observed_now - parse_iso(str(supervisor.get("generated_at_utc")))).total_seconds(), 1
+            )
+        except (ValueError, TypeError):
+            supervisor_age = None
+        if supervisor_age is not None and supervisor_age > SUPERVISOR_INTERVAL_MINUTES * 60 * SUPERVISOR_SILENCE_FACTOR:
+            supervisor_stale = True
+            reasons.append(
+                f"the supervisor has not run for {round(supervisor_age / 60, 1)} minutes: the "
+                "thing that notices this watchdog's absence is itself absent"
+            )
 
     if age_seconds is None or not finished:
         status, code = "UNREADABLE", EXIT_UNREADABLE
@@ -336,7 +369,7 @@ def check(
         status, code = "BLOCKED", EXIT_BLOCKED
     elif age_seconds > silence_limit:
         status, code = "STALE", EXIT_STALE
-    elif disk["status"] == "WARNING" or corrupt:
+    elif disk["status"] == "WARNING" or corrupt or supervisor_stale:
         status, code = "DEGRADED", EXIT_DEGRADED
     elif previous_status in BLOCKING_STATES:
         status, code = RECOVERED, EXIT_OK
@@ -372,6 +405,7 @@ def check(
         "forecast": ahead,
         "previous_status": previous_status,
         "recovered_from": previous_status if status == RECOVERED else None,
+        "supervisor_age_seconds": supervisor_age,
         "health_status": health.get("status"),
         "health_generated_at_utc": health.get("generated_at_utc"),
         "corrupt_lines_examined": corrupt,
@@ -409,6 +443,218 @@ def append_event(root: Path, result: dict[str, Any], *, escalated: bool = False)
     except OSError as exc:
         return f"ERROR:{exc}"
     return "APPENDED"
+
+
+def alert_identity(result: dict[str, Any]) -> str:
+    """The id this alert will be known by, in every channel and in the ledger.
+
+    Deterministic from the transition and the instant: two runs racing for the same transition
+    produce the same id, which is what makes dedup a comparison rather than a guess. The tag is
+    also what the toast receipt is looked up by, so the id has to survive as a Windows tag:
+    letters, digits and dashes only, under 64 characters.
+    """
+    stamp = str(result.get("generated_at_utc") or "").replace("-", "").replace(":", "")
+    status = str(result.get("status") or "UNKNOWN")
+    return f"EDGE04-{status}-{stamp}"[:64]
+
+
+def alert_ledger(root: Path) -> list[dict[str, Any]]:
+    path = root / ALERT_LEDGER
+    rows: list[dict[str, Any]] = []
+    try:
+        raw = path.read_bytes()
+    except OSError:
+        return rows
+    for line in raw.splitlines():
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(row, dict):
+            rows.append(row)
+    return rows
+
+
+def duplicate_suppression(ledger: list[dict[str, Any]], result: dict[str, Any]) -> str | None:
+    """Why this alert must not be sent again, or ``None`` when it should be.
+
+    Two rules, both observable from the ledger: the same id is never delivered twice, and the
+    same *condition* (status plus the tick it describes) is not re-alerted inside the cooldown.
+    A repeat inside the window is recorded as suppressed rather than dropped, so the ledger
+    shows what was deliberately not sent.
+    """
+    identity = alert_identity(result)
+    last_tick = (result.get("last_tick") or {}).get("started_at_utc")
+    now_ts = None
+    try:
+        now_ts = parse_iso(str(result.get("generated_at_utc"))).timestamp()
+    except ValueError:
+        now_ts = None
+    for row in reversed(ledger):
+        if row.get("alert_id") == identity and row.get("receipt"):
+            return f"alert {identity} was already delivered with a receipt"
+        if (
+            row.get("status") == result.get("status")
+            and row.get("last_tick") == last_tick
+            and row.get("receipt")
+        ):
+            return f"the same condition was already delivered as {row.get('alert_id')}"
+        if (
+            now_ts is not None
+            and row.get("status") == result.get("status")
+            and isinstance(row.get("at_ms"), int)
+            and 0 <= now_ts - row["at_ms"] / 1000 < ALERT_COOLDOWN_SECONDS
+            and row.get("receipt")
+        ):
+            return (
+                f"{result.get('status')} was delivered {round((now_ts - row['at_ms'] / 1000) / 60)} "
+                "min ago, inside the cooldown"
+            )
+    return None
+
+
+def deliver_alert(
+    root: Path, result: dict[str, Any], *, force: bool = False
+) -> dict[str, Any]:
+    """Send one alert to the one channel that can prove receipt, and record everything.
+
+    The toast is sent by a PowerShell helper that reads the notification back out of the OS
+    history by tag. ``receipt`` is that read: true means the operating system recorded the
+    notification for this exact id, false means the caller must not claim delivery.
+
+    Failure of the channel is data, not an exception: the watchdog's exit code is unchanged by
+    whether a toast appeared.
+    """
+    identity = alert_identity(result)
+    ledger = alert_ledger(root)
+    suppression = None if force else duplicate_suppression(ledger, result)
+    entry: dict[str, Any] = {
+        "alert_id": identity,
+        "at_ms": now_ms(),
+        "at_utc": result.get("generated_at_utc"),
+        "status": result.get("status"),
+        "previous_status": result.get("previous_status"),
+        "last_tick": (result.get("last_tick") or {}).get("started_at_utc"),
+        "channels": [],
+        "receipt": False,
+    }
+    if suppression:
+        entry["suppressed"] = suppression
+        _append_ledger(root, entry)
+        return entry
+
+    script = REPO_ROOT / "scripts" / TOAST_SCRIPT
+    title = f"EDGE04 {result.get('status')}"
+    body = (result.get("reasons") or [""])[0][:220]
+    code, out, err = run(
+        [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            str(script),
+            "-Tag",
+            identity,
+            "-Title",
+            title,
+            "-Body",
+            body or "see WATCHDOG.json",
+        ],
+        timeout=45,
+    )
+    parsed: dict[str, Any] = {}
+    for line in reversed(out.strip().splitlines()):
+        try:
+            candidate = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(candidate, dict):
+            parsed = candidate
+            break
+    entry["channels"].append(
+        {
+            "channel": "desktop_toast",
+            "attempted": True,
+            "shown": bool(parsed.get("shown")),
+            "receipt": bool(parsed.get("receipt")),
+            "history_after": parsed.get("history"),
+            "exit": code,
+            "error": parsed.get("error") or (err.strip()[:200] or None),
+        }
+    )
+    entry["receipt"] = bool(parsed.get("receipt"))
+    _append_ledger(root, entry)
+    return entry
+
+
+def _append_ledger(root: Path, entry: dict[str, Any]) -> str:
+    path = root / ALERT_LEDGER
+    try:
+        if path.is_file() and path.stat().st_size > ALERT_LEDGER_MAX_BYTES:
+            os.replace(path, path.with_suffix(".jsonl.1"))
+        with path.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(entry, sort_keys=True) + "\n")
+    except OSError as exc:
+        return f"ERROR:{exc}"
+    return "APPENDED"
+
+
+def supervise(state_root: Path, *, interval_minutes: int = SUPERVISOR_INTERVAL_MINUTES) -> dict[str, Any]:
+    """Notice when the watchdog itself stops running, and say so through the same channel.
+
+    A watchdog cannot report its own absence. This is the second reader: a task on its own
+    schedule that reads the timestamp the watchdog wrote and raises an alert when that timestamp
+    ages past the tolerance. It writes its own heartbeat, so the watchdog can notice *its*
+    absence in turn -- neither one is trusted to be the only witness.
+    """
+    now_dt = now()
+    verdict = read_json(state_root / "WATCHDOG.json") or {}
+    stamp = str(verdict.get("generated_at_utc") or "")
+    age_seconds = None
+    if stamp:
+        try:
+            age_seconds = round((now_dt - parse_iso(stamp)).total_seconds(), 1)
+        except ValueError:
+            age_seconds = None
+    limit = interval_minutes * 60 * SUPERVISOR_SILENCE_FACTOR
+    silent = age_seconds is None or age_seconds > limit
+    reasons: list[str] = []
+    if age_seconds is None:
+        reasons.append("the watchdog has never written a verdict here")
+    elif silent:
+        reasons.append(
+            f"the watchdog has not run for {round(age_seconds / 60, 1)} minutes, past the "
+            f"{limit // 60} its schedule allows: the alarm is not being evaluated at all"
+        )
+    result: dict[str, Any] = {
+        "schema_version": SCHEMA_VERSION,
+        "generated_at_utc": now_dt.isoformat(timespec="seconds").replace("+00:00", "Z"),
+        "state_root": str(state_root),
+        "role": "SUPERVISOR",
+        "status": "WATCHDOG_SILENT" if silent else "WATCHDOG_ALIVE",
+        "exit_code": EXIT_WATCHDOG_SILENT if silent else EXIT_OK,
+        "reasons": reasons,
+        "watchdog_verdict_at_utc": stamp or None,
+        "watchdog_status": verdict.get("status"),
+        "watchdog_age_seconds": age_seconds,
+        "silence_limit_seconds": limit,
+    }
+    try:
+        root = state_root
+        root.mkdir(parents=True, exist_ok=True)
+        target = root / SUPERVISOR_FILE
+        temporary = target.with_suffix(".json.part")
+        temporary.write_bytes((json.dumps(result, indent=2, sort_keys=True) + "\n").encode("utf-8"))
+        os.replace(temporary, target)
+        result["persisted"] = {"verdict": str(target), "marker": "UNTOUCHED"}
+    except OSError as exc:
+        result["persisted"] = {"verdict": f"ERROR:{exc}", "marker": "UNTOUCHED"}
+    if silent:
+        result["delivery"] = deliver_alert(state_root, result)
+    return result
 
 
 def escalate(result: dict[str, Any]) -> list[dict[str, Any]]:
@@ -552,6 +798,33 @@ def persist(state_root: Path, result: dict[str, Any]) -> dict[str, str]:
     }
 
 
+def install_supervisor_command(interval_minutes: int, state_root: Path | None = None) -> list[str]:
+    """Register the second reader: the task that notices this watchdog's silence.
+
+    Separate task, separate schedule, same interpreter and state root. Its own absence is
+    noticed by the watchdog through the heartbeat it writes, so the two cover each other
+    instead of one of them being the only witness to its own death.
+    """
+    python = Path(sys.executable)
+    script = REPO_ROOT / "scripts" / "edge04_watchdog.py"
+    target = (state_root or REPO_ROOT / DEFAULT_STATE).resolve()
+    return [
+        "schtasks",
+        "/create",
+        "/f",
+        "/tn",
+        SUPERVISOR_TASK_NAME,
+        "/tr",
+        f'"{python}" "{script}" --state-root "{target.as_posix()}" --supervise',
+        "/sc",
+        "minute",
+        "/mo",
+        str(interval_minutes),
+        "/rl",
+        "LIMITED",
+    ]
+
+
 def run(argv: list[str], *, timeout: int = 90) -> tuple[int, str, str]:
     try:
         completed = subprocess.run(argv, capture_output=True, text=True, timeout=timeout)
@@ -601,7 +874,18 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="attempt every notification channel even when the state has not changed",
     )
+    parser.add_argument(
+        "--supervise",
+        action="store_true",
+        help="notice when the watchdog itself has stopped running",
+    )
+    parser.add_argument(
+        "--alert-test",
+        action="store_true",
+        help="send one alert end to end, with its receipt, and exit",
+    )
     parser.add_argument("--install", action="store_true")
+    parser.add_argument("--install-supervisor", action="store_true")
     parser.add_argument("--uninstall", action="store_true")
     parser.add_argument("--task-status", action="store_true")
     args = parser.parse_args(argv)
@@ -617,16 +901,57 @@ def main(argv: list[str] | None = None) -> int:
             )
         )
         return EXIT_OK if code == 0 else EXIT_UNREADABLE
-    if args.uninstall:
-        code, _out, err = run(["schtasks", "/delete", "/f", "/tn", TASK_NAME])
-        print(json.dumps({"uninstalled": code == 0, "stderr": err.strip()[:200]}))
+    if args.install_supervisor:
+        command = install_supervisor_command(SUPERVISOR_INTERVAL_MINUTES, args.state_root)
+        code, out, err = run(command)
+        print(
+            json.dumps(
+                {"installed": code == 0, "task": SUPERVISOR_TASK_NAME, "command": command,
+                 "exit": code, "stdout": out.strip(), "stderr": err.strip()[:400]},
+                ensure_ascii=False,
+            )
+        )
         return EXIT_OK if code == 0 else EXIT_UNREADABLE
+    if args.uninstall:
+        removed = {}
+        for name in (TASK_NAME, SUPERVISOR_TASK_NAME):
+            code, _out, err = run(["schtasks", "/delete", "/f", "/tn", name])
+            removed[name] = {"removed": code == 0, "stderr": err.strip()[:200]}
+        print(json.dumps({"uninstalled": removed}, ensure_ascii=False))
+        return EXIT_OK if all(item["removed"] for item in removed.values()) else EXIT_UNREADABLE
     if args.task_status:
         code, out, err = run(["schtasks", "/query", "/tn", TASK_NAME, "/fo", "LIST", "/v"])
         print(out.strip() or err.strip())
         return EXIT_OK if code == 0 else EXIT_UNREADABLE
 
     state_root = (args.state_root or REPO_ROOT / DEFAULT_STATE).resolve()
+
+    if args.supervise:
+        supervised = supervise(state_root)
+        if args.json:
+            print(json.dumps(supervised, indent=2, sort_keys=True))
+        else:
+            print(f"{supervised['status']}  {supervised['generated_at_utc']}")
+            for reason in supervised["reasons"]:
+                print(f"  - {reason}")
+            delivery = supervised.get("delivery") or {}
+            if delivery:
+                print(
+                    f"  alert {delivery.get('alert_id')}: receipt={delivery.get('receipt')} "
+                    f"{delivery.get('suppressed') or ''}"
+                )
+        return int(supervised["exit_code"])
+
+    if args.alert_test:
+        probe = check(state_root=state_root, interval_minutes=args.interval_minutes)
+        probe["status"] = "ALERT_TEST"
+        probe["previous_status"] = None
+        probe["reasons"] = ["end-to-end delivery test asked for by an operator"]
+        probe["generated_at_utc"] = now().isoformat(timespec="seconds").replace("+00:00", "Z")
+        delivery = deliver_alert(state_root, probe, force=True)
+        print(json.dumps(delivery, indent=2, sort_keys=True))
+        return EXIT_OK if delivery.get("receipt") else EXIT_BLOCKED
+
     result = check(state_root=state_root, interval_minutes=args.interval_minutes)
     if not args.no_persist:
         result["persisted"] = persist(state_root, result)
@@ -635,6 +960,10 @@ def main(argv: list[str] | None = None) -> int:
         result["escalation"] = escalate(result)
         if transition and result["status"] in BLOCKING_STATES:
             append_event(state_root, result, escalated=True)
+    if not args.no_persist and transition and result["status"] in BLOCKING_STATES:
+        # The alert goes out on the transition, once, with a receipt. A repeat of the same
+        # condition inside the cooldown is recorded as suppressed, not re-sent.
+        result["delivery"] = deliver_alert(state_root, result)
     if args.json:
         print(json.dumps(result, indent=2, sort_keys=True))
     else:

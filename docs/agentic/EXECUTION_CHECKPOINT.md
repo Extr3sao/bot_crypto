@@ -1851,3 +1851,66 @@ PY="$MAIN/.venv/Scripts/python.exe"
 "$PY" -m pytest tests/unit/research/test_exp004a_wp051_02i.py -q    # 19 passed
 schtasks /query /tn TradingAgentic-EDGE04-Watchdog /v               # LastTaskResult
 ```
+
+---
+
+## 2026-10-23 · WP-051-02J — la alarma ya se prueba sola; el disco sigue sin margen
+
+**Objetivo:** resolver los defectos operativos del informe 02I (espacio, atribución, alerta) sin
+tocar un solo control de la campaña preinscrita.
+
+**Hecho**
+
+1. **Disco diagnosticado sin borrar nada ajeno.** 60 candidatos clasificados (`DIAGNOSIS.json`):
+   `SAFE_OWNED` 0,001 GiB · `ACTIVE_OR_PROTECTED` 11,83 GiB · `REQUIRES_APPROVAL` 26,57 GiB.
+   Borrado por este paquete: **1,36 MiB** de `__pycache__` propios, sin seguimiento.
+   Candidatos mayores (ninguno aplicado): `wsl` 6,16 · `C:\ESD` 4,58 · `ms-playwright` 3,28 ·
+   `hermes` 2,77 · `C:\tmp` 1,98 (protegido) · worktrees de `Downloads` 0,46–0,99 c/u.
+2. **Presupuesto recalculado como distribución**, no como cifra única: p50 6,96 GiB, **p90
+   12,467**, máximo 14,583; requerido   **14,565 GiB** contra **3,248 GiB** libres → `INSUFFICIENT`,
+   déficit **11,317 GiB**. La cifra 16,68 del 02I era la peor caída, no el margen.
+   Huella propia: 1,16 MB/día (0,0972 GiB los 90 días) — la campaña no es el consumidor.
+3. **Los 0,00 GiB son reales**, no un error de medición: los dos instrumentos coinciden byte a
+   byte en las 7 lecturas a cero y en las 18 bajo 50 MiB, y el tick escribió su log con 0
+   disponible. Matiz: es agotamiento del espacio *disponible*, no del disco físico.
+4. **Día perdido reconstruido:** 25 rechazos `00:10:56Z → 06:55:57Z`; horas 00–02 `LATE`
+   (281/221/161 min > 120), 03–10 `ADMISIBLE`, 11–23 `MISSING`. **72 filas declaradas, 24
+   admisibles conservadas, día excluido por la política de lag.** Nada re-fetcheado.
+5. **DEF-02I-02 corregido y probado de extremo a extremo.** Toast con recibo del SO (2 entregas,
+   `11:27:46Z` y `11:27:58Z`, historial leído por tag, verificado dos veces). Segunda tarea
+   `TradingAgentic-EDGE04-Alarm` cada 10 min: **dos ciclos automáticos consecutivos sin
+   operador** — watchdog `11:47:01Z` (result 1) → `WATCHDOG.json` `11:47:02Z`; alarma `11:48:01Z`
+   (result 0) → `SUPERVISOR.json` `11:48:02Z`, desfase 1,0 s en ambos. Cada uno degrada si el
+   otro enmudece. `ALERT_REMOTE` sigue `BLOCKED` (sin webhook/SMTP/event log).
+6. **Suite nueva ejecutada de verdad:** 15/15, exit 0 (`TEST_EVIDENCE.json` con sha256 de la
+   suite). **Verificador independiente 15/15 PASS**, exit 0, re-consulta `schtasks` y re-hashea la
+   suite por su cuenta.
+
+**No ejecutado / bloqueado**
+
+- `DEF-02I-01` **BLOCKED**: faltan 11,32 GiB para el p90. Requiere decisión del dueño del host
+  (borrar/trasladar `wsl`, `C:\ESD`, `ms-playwright`, `hermes` o worktrees ajenos).
+- `ALERT_REMOTE` **BLOCKED**: la alerta llega a esta máquina, a nadie más.
+- `DEF-02I-05`: la caída no está atribuida a un fichero (99,6 % en contadores de proceso, 0 % en
+  los árboles vigilados); no hay nada que borrar.
+- `DEF-02I-07`: `LogonType=Interactive` sin probar (requiere administrador).
+- `DEF-02I-08`: el **directorio** `tests/unit/research` sigue rompiendo por el import preexistente
+  de `test_exp004a_wp051_02g.py`; la suite de este paquete corre por fichero.
+- Campaña intacta: `2026-10-23 → 2027-01-21`, 90 d, suelo 0,9, 6.480 filas, suelo 2 GiB.
+  Alcanzables 6.408 → techo 0,9889; margen del suelo = **8 días completos** más.
+
+**Dictamen:** `BLOCKED` (capacidad `INSUFFICIENT`; alarma/programa/tests/verificación `PASS`).
+**Sin commit:** el paquete queda sin seguimiento en `wp/exp004a-051-02h` a la espera de decisión.
+
+**Reanudación verificable**
+
+```bash
+cd "/c/Users/GVLLFR0035/Downloads/bot-freebuff-exp004a-02h"
+MAIN="/c/Users/GVLLFR0035/Downloads/bot freebuff"
+PY="$MAIN/.venv/Scripts/python.exe"
+"$PY" scripts/exp004a_wp051_02j_recovery.py --scheduler   # 2/2 firing, desfase ~1 s
+"$PY" scripts/exp004a_wp051_02j_recovery.py --tests       # 15 passed, exit 0
+"$PY" scripts/exp004a_wp051_02j_recovery.py --capacity    # INSUFFICIENT, déficit 11,32 GiB
+"$PY" scripts/exp004a_wp051_02j_verify.py                 # 15/15 PASS
+schtasks /query /tn TradingAgentic-EDGE04-Alarm /v        # último resultado 0
+```
