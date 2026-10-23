@@ -85,7 +85,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--root", default=str(REPO), help="checkout the entrypoint runs from")
     parser.add_argument("--entrypoint", default=None)
     parser.add_argument("--start", action="store_true", help="create the session when absent")
-    parser.add_argument("--once", action="store_true", help="act at most once, then stop")
+    parser.add_argument(
+        "--once", action="store_true", help="cap the retry budget at one restart, then stop"
+    )
     parser.add_argument("--max-restarts", type=int, default=3)
     parser.add_argument("--backoff-base-s", type=float, default=2.0)
     parser.add_argument("--backoff-cap-s", type=float, default=30.0)
@@ -132,8 +134,8 @@ def main(argv: list[str] | None = None) -> int:
         root=args.root,
     )
     if args.once:
-        #: ``--once`` is not a dry run: it still performs the one action the policy chose.
-        #: It exists so a caller can ask "would you touch this?" and stop there.
+        #: ``--once`` is not a dry run: it still performs the action the policy chose.
+        #: It exists so a caller can ask "would you touch this?" with a single restart of budget.
         supervisor.policy = replace(policy, max_restarts=min(policy.max_restarts, 1))
     result = supervisor.run()
     print(json.dumps(result, indent=2, sort_keys=True))
