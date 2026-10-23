@@ -40,7 +40,12 @@ from trading_bot.ops.single_writer import (
     process_start_ms,
     reclaim_abandoned,
 )
-from trading_bot.vision.ledger import DecisionLedger, LedgerLockedError, verify_chain
+from trading_bot.vision.ledger import (
+    DecisionLedger,
+    LedgerLockedError,
+    read_entries,
+    verify_chain,
+)
 
 REPO = Path(__file__).resolve().parents[3]
 
@@ -92,6 +97,29 @@ out.write_text(
 #: would leave an *abandoned* lock, and a later contender would reclaim it legitimately —
 #: correct behaviour that would make this test's "exactly one winner" claim wrong.
 time.sleep(1.5)
+"""
+
+
+FENCING_SCRIPT = """
+import json, os, sys, time
+from pathlib import Path
+from trading_bot.vision.ledger import DecisionLedger, LedgerLockedError
+
+ledger_path, ready, go, outcome = (Path(arg) for arg in sys.argv[1:5])
+ledger = DecisionLedger(ledger_path).open()
+ledger.append("RUN", {"step": "before the takeover"})
+ready.write_text(
+    json.dumps({"pid": os.getpid(), "token": ledger.lock_record["token"], "fence": ledger.lock_record["fence"]})
+)
+while not go.exists():
+    time.sleep(0.01)
+try:
+    ledger.append("RUN", {"step": "after losing ownership"})
+    result = {"appended": True, "error": None}
+except LedgerLockedError as exc:
+    result = {"appended": False, "error": str(exc)}
+outcome.write_text(json.dumps(result))
+ledger.close()
 """
 
 
@@ -447,6 +475,43 @@ def test_a_resumed_ledger_continues_the_chain_without_duplicating_rows(tmp_path:
     assert report["lines"] == 3
     seqs = [json.loads(line)["seq"] for line in path.read_text(encoding="utf-8").splitlines()]
     assert seqs == [1, 2, 3], "a resume appends; it never rewrites or repeats a row"
+
+
+def test_a_real_old_owner_cannot_write_after_its_lock_is_taken_over(tmp_path: Path) -> None:
+    """Fencing across processes, through the consumer the runtime actually uses.
+
+    A separate interpreter holds the ledger, writes one row and blocks. The parent then
+    installs another owner's record (a takeover the child does not notice, which is exactly
+    what a paused process sees) and tells it to write. The child's next ``append`` must be
+    refused and the file must still hold one row.
+    """
+
+    ledger_path = tmp_path / "STREAM.jsonl"
+    ready = tmp_path / "ready.json"
+    go = tmp_path / "go"
+    outcome = tmp_path / "outcome.json"
+    proc = _spawn(FENCING_SCRIPT, ledger_path, ready, go, outcome)
+    try:
+        first = _wait_for(ready)
+        assert int(first["fence"]) == 1
+
+        lock_path = ledger_path.with_suffix(".jsonl.lock")
+        #: The takeover: another owner's complete record, at a higher fence.
+        _record(lock_path, token="newowner" * 4, fence=2)
+        go.touch()
+        result = _wait_for(outcome)
+        assert proc.wait(timeout=60) == 0
+    finally:
+        if proc.poll() is None:  # pragma: no cover - only on a hung child
+            proc.kill()
+            proc.wait(timeout=30)
+
+    assert result["appended"] is False
+    assert "LOCK_LOST" in str(result["error"])
+    rows = read_entries(ledger_path)
+    assert [row["entry"]["step"] for row in rows] == ["before the takeover"]
+    assert verify_chain(ledger_path)["ok"] is True
+    assert json.loads(lock_path.read_text(encoding="utf-8"))["token"] == "newowner" * 4
 
 
 def test_lost_ownership_is_reported_not_silently_ignored(tmp_path: Path) -> None:
