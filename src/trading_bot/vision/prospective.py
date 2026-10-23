@@ -40,6 +40,7 @@ from trading_bot.config.risk import Risk
 from trading_bot.market_data.minute_collector import (
     MinuteBar,
     MinuteCollector,
+    SourceUnavailable,
     aggregate_complete,
 )
 from trading_bot.research.economic_recovery.experiments import Bar
@@ -917,12 +918,61 @@ class ProspectiveSession:
             encoding="utf-8",
             newline="\n",
         )
+        cycles: list[dict[str, Any]] = []
+        blocked_cycles = 0
         try:
             bootstrap_started = int(self.clock())
-            bootstrap = collector.bootstrap(minutes=self.config.warmup_minutes)
-            self._write_json("BOOTSTRAP.json", bootstrap)
-            self.progress("bootstrap complete")
-            measured = self._awaited_live_delay(collector, since_ms=bootstrap_started)
+            #: A venue that does not answer at startup used to escape as a raw
+            #: ``SourceUnavailable`` traceback (measured: exit 1, no row, no code), which
+            #: made an outage indistinguishable from a broken session. Blocking and
+            #: retrying is the same condition the poll loop already handles, and it still
+            #: refuses to decide without a measured delay: the deadline ends the session.
+            while True:
+                try:
+                    bootstrap = collector.bootstrap(minutes=self.config.warmup_minutes)
+                    self._write_json("BOOTSTRAP.json", bootstrap)
+                    self.progress("bootstrap complete")
+                    measured = self._awaited_live_delay(collector, since_ms=bootstrap_started)
+                except SourceUnavailable as exc:
+                    blocked_cycles += int(
+                        self._emit_once(
+                            "BLOCKED",
+                            f"FEED_DOWN:WARMUP:{exc.code}",
+                            {
+                                "cycle": self._cycle + 1,
+                                "reason": "FEED_DOWN",
+                                "phase": "WARMUP",
+                                "detail": {"code": exc.code, "detail": exc.detail},
+                                "at_ms": int(self.clock()),
+                                "live_orders": 0,
+                            },
+                        )
+                    )
+                except SessionAborted as exc:
+                    #: ``_awaited_live_delay`` gives up when no minute has closed yet; that
+                    #: is a feed that has not produced data, not a reason to invent one.
+                    blocked_cycles += int(
+                        self._emit_once(
+                            "BLOCKED",
+                            "NO_LIVE_DATA:WARMUP",
+                            {
+                                "cycle": self._cycle + 1,
+                                "reason": "NO_LIVE_DATA",
+                                "phase": "WARMUP",
+                                "detail": str(exc),
+                                "at_ms": int(self.clock()),
+                                "live_orders": 0,
+                            },
+                        )
+                    )
+                else:
+                    break
+                if int(self.clock()) >= deadline:
+                    raise SessionAborted(
+                        "NO_WARMUP_DATA: the venue produced nothing before the deadline; "
+                        "a session without a measured delivery delay cannot decide"
+                    )
+                self.sleeper(self.config.poll_interval_s)
             self._measured_delay_ms = int(measured)
             if self._pinned_delay_ms is not None:
                 #: Continuing on the same clock: a fresh measurement is published beside
@@ -943,8 +993,6 @@ class ProspectiveSession:
                     "after the session started",
                 },
             )
-            cycles: list[dict[str, Any]] = []
-            blocked_cycles = 0
             while int(self.clock()) < deadline:
                 if self.config.max_cycles is not None and len(cycles) >= self.config.max_cycles:
                     break
