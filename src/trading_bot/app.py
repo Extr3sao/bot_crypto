@@ -58,6 +58,13 @@ DEFAULT_DEMO_PAIRS: list[tuple[str, bool]] = [
     ("MATIC/USDT", True),
 ]
 
+#: Subcomandos reservados cuyo comportamiento real aun no existe. Un stub
+#: que retorna 0 es un fallo de seguridad: cualquier wrapper, cron o agente
+#: que compruebe el exit code concluye que la accion se ejecuto. Los dos
+#: abortan en ``main`` con exit 2 + mensaje a stderr hasta que MT-0003
+#: (kill switch en el path de decision) y MT-0004 (tests negativos) existan.
+NOT_IMPLEMENTED_SUBCOMMANDS: frozenset[str] = frozenset({"kill-switch", "status"})
+
 
 @dataclass(slots=True)
 class RuntimeState:
@@ -1382,12 +1389,17 @@ def main(argv: list[str] | None = None) -> int:
         return _cmd_close_position(args)
     if args.command == "set-tpsl":
         return _cmd_set_tpsl(args)
-    if args.command == "kill-switch":
-        print("[stub] kill-switch: pendiente.")
-        return 0
-    if args.command == "status":
-        print("[stub] status: pendiente.")
-        return 0
+    if args.command in NOT_IMPLEMENTED_SUBCOMMANDS:
+        # Mismo contrato de rechazo que ``scan --no-demo`` y que
+        # ``place-order`` sin ``--confirm-live``: exit 2 + stderr, y ninguna
+        # accion ejecutada. No se imprime nada por stdout, para que ningun
+        # consumidor pueda leer un mensaje de exito de un comando que no
+        # hizo nada.
+        sys.stderr.write(
+            f"ERROR: el subcomando '{args.command}' no esta implementado; "
+            "no se ha ejecutado ninguna accion.\n"
+        )
+        return 2
 
     parser.print_help()
     return 1
