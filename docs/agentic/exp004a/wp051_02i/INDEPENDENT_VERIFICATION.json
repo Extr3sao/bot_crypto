@@ -2,7 +2,7 @@
   "check_count": 16,
   "checks": [
     {
-      "detail": "STORAGE_CAPACITY_REPORT.json parsed: schema EXP004A_WP051_02I_STORAGE_V1, generated 2026-10-23T10:54:43Z",
+      "detail": "STORAGE_CAPACITY_REPORT.json parsed: schema EXP004A_WP051_02I_STORAGE_V1, generated 2026-10-23T10:55:31Z",
       "id": "REPORT_PRESENT",
       "status": "PASS"
     },
@@ -41,9 +41,35 @@
       "status": "PASS"
     },
     {
-      "detail": "4 stable path(s) agree within tolerance; 4 volatile path(s) reported separately",
+      "detail": "4 stable path(s) agree within tolerance; 4 evidence path(s) did not shrink; 4 volatile path(s) reported separately",
       "evidence": {
         "compared": 4,
+        "protected": [
+          {
+            "claimed": 14336531,
+            "growth": 7131,
+            "id": "lane_state",
+            "now": 14343662
+          },
+          {
+            "claimed": 6695977,
+            "growth": 932,
+            "id": "lane_source_store",
+            "now": 6696909
+          },
+          {
+            "claimed": 336780,
+            "growth": 0,
+            "id": "phase3_shards",
+            "now": 336780
+          },
+          {
+            "claimed": 157898573,
+            "growth": 723439,
+            "id": "git_objects",
+            "now": 158622012
+          }
+        ],
         "volatile": [
           {
             "claimed": 0,
@@ -58,16 +84,16 @@
             "now": 168005792
           },
           {
-            "claimed": 19885061007,
-            "growth": 78570,
+            "claimed": 19894377686,
+            "growth": 1506115,
             "id": "downloads_worktrees",
-            "now": 19885139577
+            "now": 19895883801
           },
           {
-            "claimed": 7368085252,
-            "growth": 980764,
+            "claimed": 7370908553,
+            "growth": -492630694,
             "id": "temp",
-            "now": 7369066016
+            "now": 6878277859
           }
         ]
       },
@@ -84,7 +110,15 @@
       "status": "PASS"
     },
     {
-      "detail": "0 removed director(ies), all whitelisted and untracked",
+      "detail": "4 distinct removed director(ies) across the recorded history, all whitelisted and untracked; 4 of them have been rebuilt since, which is what a cache does",
+      "evidence": {
+        "regenerated": [
+          "scripts\\__pycache__",
+          "tests\\__pycache__",
+          "tests\\unit\\__pycache__",
+          "tests\\unit\\research\\__pycache__"
+        ]
+      },
       "id": "SWEEP_STAYED_INSIDE_ITS_SCOPE",
       "status": "PASS"
     },
@@ -94,7 +128,7 @@
       "status": "PASS"
     },
     {
-      "detail": "watchdog 4.407 GiB, verifier 4.406 GiB",
+      "detail": "watchdog 4.909 GiB, verifier 4.909 GiB",
       "id": "WATCHDOG_READS_THE_SAME_VOLUME",
       "status": "PASS"
     },
@@ -104,7 +138,7 @@
       "status": "PASS"
     },
     {
-      "detail": "forecast label 'AT_RISK' with 2.58 h to the floor",
+      "detail": "forecast label 'AT_RISK' with 3.12 h to the floor",
       "id": "WATCHDOG_FORECAST_IS_LABELLED",
       "status": "PASS"
     },
@@ -121,8 +155,8 @@
   ],
   "corrupt_run_lines": 0,
   "failed": 0,
-  "generated_at_utc": "2026-10-23T10:55:00Z",
-  "head": "611cd7178648b727a9052ebeea3f2c6e494489a8",
+  "generated_at_utc": "2026-10-23T11:04:26Z",
+  "head": "b3faecf38382a5edb135195fc44e42af464cf810",
   "not_a_certification": "this says the storage report agrees with the bytes on this host. It says nothing about the experiment's coverage, and it promotes nothing.",
   "package": "WP-051-02I",
   "passed": 16,

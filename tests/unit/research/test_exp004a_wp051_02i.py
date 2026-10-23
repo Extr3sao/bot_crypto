@@ -404,6 +404,44 @@ def test_the_verifier_does_not_mistake_a_growing_log_for_a_mismatch(tmp_path: Pa
     assert "the tick log holds 2" in checks["REFUSALS_RECOMPUTED"]["detail"]
 
 
+def test_the_verifier_fails_when_evidence_shrank(tmp_path: Path):
+    evidence = tmp_path / "lane"
+    evidence.mkdir()
+    (evidence / "runs.jsonl").write_bytes(b"a" * 4 * 1024 * 1024)
+    report = {
+        "consumers": [
+            {
+                "id": "lane_state",
+                "class": "PROTECTED_EVIDENCE",
+                "volatile": False,
+                "measured": {"path": str(evidence), "exists": True, "bytes": 8 * 1024 * 1024},
+            }
+        ]
+    }
+    check_result = verifier.check_consumers(report)[0]
+    assert check_result["status"] == "FAIL"
+    assert "shrank" in check_result["detail"]
+
+
+def test_the_verifier_allows_evidence_to_grow(tmp_path: Path):
+    evidence = tmp_path / "lane"
+    evidence.mkdir()
+    (evidence / "runs.jsonl").write_bytes(b"a" * 5 * 1024 * 1024)
+    report = {
+        "consumers": [
+            {
+                "id": "lane_state",
+                "class": "PROTECTED_EVIDENCE",
+                "volatile": False,
+                "measured": {"path": str(evidence), "exists": True, "bytes": 4 * 1024 * 1024},
+            }
+        ]
+    }
+    check_result = verifier.check_consumers(report)[0]
+    assert check_result["status"] == "PASS"
+    assert check_result["evidence"]["protected"][0]["growth"] > 0
+
+
 def test_the_verifier_counts_a_volatile_tree_separately(tmp_path: Path):
     shared = tmp_path / "shared"
     shared.mkdir()

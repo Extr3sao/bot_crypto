@@ -357,6 +357,7 @@ def check_consumers(report: dict[str, Any]) -> list[dict[str, Any]]:
     problems: list[str] = []
     compared = 0
     volatile: list[dict[str, Any]] = []
+    protected: list[dict[str, Any]] = []
     for row in report.get("consumers") or []:
         measured = row.get("measured") or {}
         path = Path(str(measured.get("path") or ""))
@@ -391,6 +392,19 @@ def check_consumers(report: dict[str, Any]) -> list[dict[str, Any]]:
         drift = abs(again - fresh)
         compared += 1
         tolerance = max(2 * 1024**2, int(0.01 * max(claimed, fresh)), drift)
+        if str(row.get("class") or "").startswith("PROTECTED"):
+            # Evidence may GROW between the report and the verification -- the lane is writing.
+            # It may not shrink: a smaller store than the one the report measured is exactly the
+            # failure this whole package exists to make visible.
+            if fresh < claimed - tolerance:
+                problems.append(
+                    f"{row.get('id')}: the evidence tree shrank from {claimed} to {fresh} bytes"
+                )
+            else:
+                protected.append(
+                    {"id": row.get("id"), "claimed": claimed, "now": fresh, "growth": fresh - claimed}
+                )
+            continue
         if abs(fresh - claimed) > tolerance:
             problems.append(
                 f"{row.get('id')}: report {claimed} bytes, now {fresh}, churn {drift} "
@@ -401,8 +415,9 @@ def check_consumers(report: dict[str, Any]) -> list[dict[str, Any]]:
             "CONSUMERS_MATCH_THE_FILESYSTEM",
             not problems,
             "; ".join(problems) or f"{compared} stable path(s) agree within tolerance; "
+            f"{len(protected)} evidence path(s) did not shrink; "
             f"{len(volatile)} volatile path(s) reported separately",
-            evidence={"compared": compared, "volatile": volatile},
+            evidence={"compared": compared, "volatile": volatile, "protected": protected},
         )
     ]
 
@@ -454,15 +469,23 @@ def check_sweep(out: Path) -> list[dict[str, Any]]:
     if evidence is None:
         return [check("SWEEP_EVIDENCE_PRESENT", False, f"{SWEEP_NAME} is missing")]
     problems: list[str] = []
-    for item in evidence.get("removed") or []:
+    regenerated: list[str] = []
+    # Every run the evidence records, not only the last one: a later run that removes nothing
+    # must not shelter an earlier run's paths from being audited.
+    removed: list[dict[str, Any]] = list(evidence.get("removed") or [])
+    for run in evidence.get("history") or []:
+        removed.extend(run.get("removed") or [])
+    for item in removed:
         path = Path(str(item.get("path") or ""))
         if path.is_absolute() or ".." in path.parts:
             problems.append(f"{path}: outside the worktree")
         if path.name not in WHITELIST:
             problems.append(f"{path}: not on the whitelist")
-        target = REPO_ROOT / path
-        if target.exists():
-            problems.append(f"{path}: reported removed but still present")
+        # A cache that exists again is not a contradiction: it is rebuilt by the next import or
+        # the next test run. What must hold is that what was deleted was scratch, in scope, and
+        # untracked -- not that the path stays empty for ever.
+        if (REPO_ROOT / path).exists():
+            regenerated.append(str(path))
         if git(REPO_ROOT, "ls-tree", "--name-only", "HEAD", "--", str(path)):
             problems.append(f"{path}: tracked by Git at HEAD")
     return [
@@ -470,7 +493,10 @@ def check_sweep(out: Path) -> list[dict[str, Any]]:
             "SWEEP_STAYED_INSIDE_ITS_SCOPE",
             not problems,
             "; ".join(problems)
-            or f"{len(evidence.get('removed') or [])} removed director(ies), all whitelisted and untracked",
+            or f"{len({str(item.get('path')) for item in removed})} distinct removed director(ies) "
+            "across the recorded history, all whitelisted and untracked; "
+            f"{len(regenerated)} of them have been rebuilt since, which is what a cache does",
+            evidence={"regenerated": regenerated},
         )
     ]
 
