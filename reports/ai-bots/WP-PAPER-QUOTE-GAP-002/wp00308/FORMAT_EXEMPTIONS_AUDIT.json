@@ -1,0 +1,135 @@
+{
+ "base": "1d2192b0",
+ "guard": {
+  "base": "1d2192b0",
+  "checks": [
+   {
+    "data": {
+     "configured": 24
+    },
+    "detail": "24 configured == 24 declared",
+    "name": "config_matches_declaration",
+    "ok": true
+   },
+   {
+    "data": {
+     "entries": 24
+    },
+    "detail": "every entry is an existing, declared .py file",
+    "name": "entries_are_exact_files",
+    "ok": true
+   },
+   {
+    "data": {
+     "extend_exclude": [
+      "*.sh"
+     ]
+    },
+    "detail": "formatter-only exclusion; lint coverage untouched",
+    "name": "no_global_disable",
+    "ok": true
+   },
+   {
+    "data": {
+     "exit_code": 0
+    },
+    "detail": "788 files already formatted",
+    "name": "formatter_is_green",
+    "ok": true
+   },
+   {
+    "data": {
+     "flagged": 24
+    },
+    "detail": "clearing format.exclude flags exactly the 24 exempted files",
+    "name": "exemptions_are_necessary",
+    "ok": true
+   },
+   {
+    "data": {
+     "digests": {
+      "scripts/active_economic_audit.py": "6c4fbd8093a7057a0d02d7fdcb2953dccebf11b2959746bf1ebc7bb45f0cf5ba",
+      "scripts/autonomous_paper.py": "65d0836b3cbce65c5401e715a89df8105e2b5cf1eb9468f6e2a72b7a57beef48",
+      "scripts/campaign_state_view.py": "ee955e239d7730d7fc3304b6701b3d0a49f889090737885d645c33a790a0d6a2",
+      "scripts/cost_barrier.py": "2c9ed4e053f49fe26cf8c37b31bf6fb471e0f0ccab4b510a56406e250fd1c3b8",
+      "scripts/cost_barrier_adversarial.py": "c56c2049d97aef9def479f926b64fc72da3dec2821f20e24a6b3896175bc2439",
+      "scripts/cost_barrier_evidence.py": "6ab4cc400f9d45a88f3bfe0167a5c535317da45e31e42cdd88d595a9f403d411",
+      "scripts/cost_barrier_explorer.py": "b2bc66da02592ba9d2d9d7e60b48369a3fc2c6b5939a9bfee7d0cd1118913960",
+      "scripts/cost_barrier_gate.py": "8707fb90d042886ef27ee2c5e774a43f0f5b1d59dd5e023b0a7fb23f5a1d8725",
+      "scripts/cost_barrier_verify.py": "a43fe404dec4016540c035e10432eddf30595fb496e02cc8dc3aed9d15447908",
+      "scripts/paper_lab_research.py": "377e46df2993ea900662f6dcc42d8436937282a7276046b398bb0f353b31b39c",
+      "scripts/recovery_verify.py": "76520fac058886a3966f2693fa6c7b0e3ad9e7fefe0dd34c035b8e239265546b",
+      "scripts/rfc010_baseline_replay.py": "b2d9e79161f04298b3063082b922b146b8d22f16d1fbe296d246530300daa606",
+      "scripts/rfc021_ledger_pit.py": "d350f700a4a1cdfd11dd37426df72c5a40b96a6cfa85cc92fa7b82d1eb403cc0",
+      "scripts/st6_close_verify.py": "335afe68cf33bcff4d4f2ea7437cc0f6a8495abe960f8ab5060ceb93f8af67c4",
+      "scripts/st6_forward_regime.py": "50fad5e709dbe0b3c99a0687fdec4d2cf7382d4372e59425c1f1e74a8b8404df",
+      "scripts/st6_health_check.py": "9c97c8287871f8c9ada29e9f25e33134da7736f337d189b03b46df136ebcbc52",
+      "scripts/st6_scheduler_evidence.py": "12653d5b48b76366770ddc966250bb7a6d6424c4e71e32e46460a6d417087cb8",
+      "scripts/st6_scheduler_verify.py": "f3bbbe191f74fb4676ea064ce39242bc7b10381a61fef25c6ddc6afc595ff3e5",
+      "scripts/st6_scheduler_witness.py": "c18fa9d0bc7b52cfe4429b41951ce3d93e299b883e4d1e1d1e1186fe0851c547",
+      "scripts/st6_slot_ledger.py": "b000f350c2b8817c9c846f9e6c5fc7ec23f6655386376dc6e03e81bf83bd3297",
+      "src/trading_bot/research/forward/collector.py": "f7bb1f35872947bf47c0909fafc91e1957326d6ec8601f67727632dc5afd2158",
+      "src/trading_bot/research/microstructure/cost_model_v3.py": "bc7e27538b65b7f3f8a376687d5e100c97cdfd14a2dbd87f293707acf02247ee",
+      "tests/unit/research/test_active_recovery_wp.py": "ce27f6dfd0b6f4093c80b63146a2cd76320e166dec9cc7080e7f6f8b4fa8e943",
+      "tests/unit/research/test_st6_scheduler.py": "13089736aaec469c6d224235626f321d06af730fa65bb90387a4f4d8cbab8b88"
+     }
+    },
+    "detail": "24 files byte-identical to 1d2192b0",
+    "name": "protected_bytes_unchanged",
+    "ok": true
+   },
+   {
+    "data": {
+     "linted_files": 812
+    },
+    "detail": "24/24 exempted files are still linted",
+    "name": "linter_still_covers",
+    "ok": true
+   },
+   {
+    "data": {
+     "touched": 0
+    },
+    "detail": "no committed record under data/ changed since the base commit",
+    "name": "certification_records_unchanged",
+    "ok": true
+   },
+   {
+    "data": {
+     "controls": 11
+    },
+    "detail": "drop_entry=rejected, add_undeclared_entry=rejected, exempt_without_declaration=rejected, glob_entry=rejected, lint_exclude=rejected, formatter_red=rejected, decorative_exemption=rejected, hidden_unformatted_file=rejected, tampered_bytes=rejected, lint_coverage_lost=rejected, records_detector=rejected",
+    "name": "self_test",
+    "ok": true
+   }
+  ],
+  "failed": [],
+  "head": "89da583eb6660f914bccf44aad82f470ea3089c3",
+  "schema": "wp00308-format-exemptions-audit/1",
+  "verdict": "PASS"
+ },
+ "pin_cost": {
+  "fixed_red_nodes": [],
+  "method": "scratch worktree at HEAD with every exempted file reformatted via `ruff format --config format.exclude=[]`; the difference in red nodes against the base run is exactly what the exemption buys",
+  "new_red_nodes": [
+   "tests.unit.forward.test_forward_collector_replay::test_the_capture_code_still_matches_the_certified_commit",
+   "tests.unit.research.test_cost_barrier_adversarial::test_the_certification_record_digests_content_not_a_checkout",
+   "tests.unit.research.test_cost_barrier_gate::test_a_missing_required_input_blocks_rather_than_fails"
+  ],
+  "run": {
+   "errors": 14,
+   "failures": 92,
+   "passed": 3202,
+   "red_nodes": 106,
+   "sha": "base+1d2192b0+formatted_pins",
+   "skipped": 31,
+   "tests": 3339
+  }
+ },
+ "regression": {
+  "new_red_nodes": [],
+  "verdict": "NO_NEW_FAILURES"
+ },
+ "schema": "wp00308-format-exemptions-audit/1",
+ "source": "scripts/verify_format_exemptions.py --self-test --json"
+}

@@ -91,6 +91,36 @@ ignore = [
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+# Files whose exact bytes are certified by committed evidence pins (see
+# reports/ai-bots/WP-PAPER-QUOTE-GAP-002/wp00307/EXEMPTIONS.json). Formatting any of
+# them invalidates a certification record, so they are excluded from the formatter only:
+# `ruff check` still analyses every one of them.
+exclude = [
+  "scripts/active_economic_audit.py",
+  "scripts/autonomous_paper.py",
+  "scripts/campaign_state_view.py",
+  "scripts/cost_barrier.py",
+  "scripts/cost_barrier_adversarial.py",
+  "scripts/cost_barrier_evidence.py",
+  "scripts/cost_barrier_explorer.py",
+  "scripts/cost_barrier_gate.py",
+  "scripts/cost_barrier_verify.py",
+  "scripts/paper_lab_research.py",
+  "scripts/recovery_verify.py",
+  "scripts/rfc010_baseline_replay.py",
+  "scripts/rfc021_ledger_pit.py",
+  "scripts/st6_close_verify.py",
+  "scripts/st6_forward_regime.py",
+  "scripts/st6_health_check.py",
+  "scripts/st6_scheduler_evidence.py",
+  "scripts/st6_scheduler_verify.py",
+  "scripts/st6_scheduler_witness.py",
+  "scripts/st6_slot_ledger.py",
+  "src/trading_bot/research/forward/collector.py",
+  "src/trading_bot/research/microstructure/cost_model_v3.py",
+  "tests/unit/research/test_active_recovery_wp.py",
+  "tests/unit/research/test_st6_scheduler.py",
+]
 
 # ----------------------------
 # Mypy

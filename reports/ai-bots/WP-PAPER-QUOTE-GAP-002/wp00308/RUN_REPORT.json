@@ -1,0 +1,208 @@
+{
+ "schema": "wp00308-run-report/1",
+ "work_package": "WP-003-08",
+ "generated_at_utc": "2026-10-23T19:20:00Z",
+ "builder": "Codebuff (Freebuff desktop), single session, Windows 11 host",
+ "objective": "make `ruff format --check .` exit 0 while preserving every committed certification and adding no regression",
+ "workspace_incident": {
+  "observed": "every working tree under Downloads/bot* was empty; only the primary .git/objects survived",
+  "detected_before_any_change": true,
+  "objects_survived": {
+   "size_mb": 147,
+   "commits": 1219,
+   "trees": 7812,
+   "blobs": 10832,
+   "fsck_connectivity_only_exit": 0,
+   "missing_or_corrupt": 0,
+   "dangling": 294
+  },
+  "recovered": [
+   "git init in place, core.autocrlf=false",
+   "refs main=1d2192b0, recovery/trunk-format-001=89da583e, origin/main=5e6f9632",
+   "git reset --hard main (1951 tracked files)",
+   "git worktree add ../ff-wt-trunkfmt recovery/trunk-format-001 (1965 files)",
+   "origin re-added as https://github.com/Extr3sao/bot_crypto.git, verified by git ls-remote (main=5e6f9632, recovery/trunk-format-001=89da583e)",
+   "uv sync --frozen --all-extras --dev rebuilt the .venv from uv.lock"
+  ],
+  "not_recovered": [
+   "gitignored artifacts: reports/*, data/raw/*, data/st6/ST6_HEALTH_STATUS.json",
+   "uncommitted work that other lanes may have held in the emptied trees",
+   "the original .git/config, logs and reflog"
+  ],
+  "consequence": "the historical suite counts of WP-003-07 do not reproduce; the comparison in this WP is base-versus-head inside one identical, path-matched environment"
+ },
+ "executed": {
+  "worktree": "../ff-wt-trunkfmt",
+  "branch": "recovery/trunk-format-001",
+  "base": "1d2192b0",
+  "branch_tip_before": "89da583e",
+  "commands": [
+   "ruff format --check .  (before, branch tip)",
+   "ruff format --check .  (before, base 1d2192b0)",
+   "python scripts/verify_format_exemptions.py --self-test",
+   "ruff format --check .  (after)",
+   "ruff format --check --config 'format.exclude=[]' .",
+   "ruff check .",
+   "mypy .",
+   "pytest -m 'not slow and not market'  (base, path-matched worktree ff-wt-base)",
+   "pytest -m 'not slow and not market'  (head)",
+   "python scripts/make_format_gate_reports.py --base-xml ... --head-xml ... --pin-xml ..."
+  ],
+  "exit_codes": {
+   "format_before_branch": 1,
+   "format_before_base": 1,
+   "guard": 0,
+   "format_after": 0,
+   "format_with_exclusions_cleared": 1,
+   "lint": 1,
+   "mypy": 1,
+   "pytest_base": 1,
+   "pytest_head": 1,
+   "node_diff": 0
+  }
+ },
+ "change": {
+  "files_edited": ["pyproject.toml"],
+  "files_added": [
+   "scripts/verify_format_exemptions.py",
+   "scripts/make_format_gate_reports.py",
+   "tests/unit/test_format_exemption_guard.py"
+  ],
+  "scope": "[tool.ruff.format].exclude only, 24 exact paths generated from wp00307/EXEMPTIONS.json",
+  "forbidden_edits_verified_absent": [
+   "no top-level [tool.ruff].exclude",
+   "no [tool.ruff.lint].exclude",
+   "no extension change to extend-exclude",
+   "no trading, risk, sizing, execution or accounting file touched"
+  ]
+ },
+ "gates": {
+  "format": {
+   "base": 433,
+   "branch_tip": 24,
+   "head": 0,
+   "exit_code": 0,
+   "files_formatted": 788,
+   "excluded": 24,
+   "exclusions_are_necessary": true,
+   "source": "ruff 0.15.20, `ruff format --check .`"
+  },
+  "lint": {
+   "base": 100,
+   "head": 100,
+   "delta": 0,
+   "still_lints_all_exempted_files": true,
+   "source": "ruff 0.15.20, `ruff check .` and `ruff check --show-files`"
+  },
+  "mypy": {
+   "base_errors": 253,
+   "base_files_with_errors": 29,
+   "base_checked": 801,
+   "head_errors": 253,
+   "head_files_with_errors": 29,
+   "head_checked": 806,
+   "delta_errors": 0,
+   "note": "head checks five more files because the branch adds the WP-003-07 and WP-003-08 scripts plus the guard test; nothing new is red"
+  },
+  "content_pins": {
+   "files": 24,
+   "sha256_equal_to_base": 24,
+   "certification_records_changed": 0,
+   "dependent_tests_identified": 6,
+   "source": "scripts/verify_format_exemptions.py, `git diff 1d2192b0..HEAD -- data/`"
+  }
+ },
+ "guard": {
+  "checks": 8,
+  "checks_passed": 8,
+  "negative_controls": 11,
+  "negative_controls_rejected": 11,
+  "suite_test": "tests/unit/test_format_exemption_guard.py",
+  "suite_test_result": "2 passed"
+ },
+ "suite": {
+  "command": "pytest -m \"not slow and not market\" -q --tb=no -p no:cacheprovider",
+  "base": {
+   "sha": "1d2192b0",
+   "worktree": "../ff-wt-base",
+   "tests": 3339,
+   "failures": 89,
+   "errors": 14,
+   "skipped": 31,
+   "passed": 3205,
+   "red_nodes": 103,
+   "seconds": 703
+  },
+  "head": {
+   "sha": "HEAD",
+   "worktree": "../ff-wt-trunkfmt",
+   "tests": 3339,
+   "failures": 89,
+   "errors": 14,
+   "skipped": 31,
+   "passed": 3205,
+   "red_nodes": 103,
+   "seconds": 474
+  },
+  "delta": {
+   "tests": 0,
+   "passed": 0,
+   "failed": 0,
+   "errors": 0,
+   "skipped": 0,
+   "red_nodes": 0
+  },
+  "new_red_nodes": [],
+  "fixed_red_nodes": [],
+  "shared_red_nodes": 103,
+  "verdict": "NO_NEW_FAILURES",
+  "discarded_comparison": {
+   "why": "the first base run happened in the recovered primary tree (.../bot freebuff); the host's registered scheduled task names that path, so one ST6 test that compares the task with the repository path passed on base and failed at HEAD",
+   "new_nodes": [
+    "tests.unit.research.test_st6_scheduler::test_the_task_definition_matches_the_repository_and_the_host"
+   ],
+   "resolution": "base re-run from a path-matched worktree with its own venv; the artefact disappears and the diff is empty"
+  },
+  "historical_baseline_drift": {
+   "wp00307_red_nodes": 95,
+   "now_red_nodes": 103,
+   "cause": "the wipe removed gitignored artifacts the tests read",
+   "evidence": "44 red nodes fail with FileNotFoundError for reports/profitability_gate035/*, reports/rfc035/search_round_3/*, data/raw/alpha003/price/* and data/st6/ST6_HEALTH_STATUS.json, each confirmed untracked and ignored with git ls-files and git check-ignore -v",
+   "claim_scope": "this WP claims only the base-versus-head invariant, not a reproduction of the pre-wipe absolute counts"
+  }
+ },
+ "pin_cost": {
+  "method": "scratch worktree at HEAD, all 24 exempted files reformatted with `ruff format --config format.exclude=[]`, suite re-run and compared by node id",
+  "red_nodes_base": 103,
+  "red_nodes_with_pins_formatted": 106,
+  "new_red_nodes": [
+   "tests.unit.forward.test_forward_collector_replay::test_the_capture_code_still_matches_the_certified_commit",
+   "tests.unit.research.test_cost_barrier_adversarial::test_the_certification_record_digests_content_not_a_checkout",
+   "tests.unit.research.test_cost_barrier_gate::test_a_missing_required_input_blocks_rather_than_fails"
+  ],
+  "slow_tests_outside_the_filter": [
+   "tests.unit.research.test_recovery_determinism::test_the_clean_checkout_rehearsal_passes_on_this_commit",
+   "tests.unit.research.test_recovery_determinism::test_a_sabotaged_evidence_copy_is_detected",
+   "tests.unit.research.test_recovery_determinism::test_a_sabotaged_committed_input_is_detected"
+  ],
+  "total_dependent_tests": 6,
+  "conclusion": "the exemption protects six certification tests; removing it without re-certifying is a decision for the lanes that own those records"
+ },
+ "ci": {
+  "status": "NOT_PERFORMED",
+  "reason": ".github/workflows/ci.yml triggers on push/pull_request to main only; this branch is published without a PR and no GitHub Actions run was started"
+ },
+ "status": {
+  "WP_STATUS": "PASS",
+  "FORMAT_CHECK": "PASS",
+  "CONTENT_PINS": "PASS",
+  "NEW_TEST_FAILURES": 0,
+  "NEW_LINT_ERRORS": 0,
+  "NEW_MYPY_ERRORS": 0,
+  "CERTIFICATION_HISTORY": "UNCHANGED",
+  "TRUNK_STATUS": "PARTIAL (format debt closed; lint 100, mypy 253, 103 red nodes, coverage and pip-audit still open)",
+  "CI_STATUS": "NOT_PERFORMED",
+  "RUNTIME_STATUS": "NOT_PERFORMED",
+  "FALSE_SUCCESS": 0
+ }
+}
