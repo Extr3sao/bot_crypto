@@ -1,14 +1,18 @@
 # WP-051-02G — final report
 
 **Phase:** EXP-004A, phase 3 (incremental prospective acquisition) · **Work package:** WP-051-02G ·
-**RFC:** `CODEX — WP-051-02G` · **Date:** 2026-10-22
+**RFC:** `CODEX — WP-051-02G` · **Date:** 2026-10-22 → 2026-10-23
 
 > The mechanism works on real bytes: nine write-once shards, three assets, three closed days, 216
-> bars, verified by a program that does not import the builder. The window it was built for opens
-> at `2026-10-23T00:00:00Z` — after this session — so the phase's own coverage is
-> `PENDING_WINDOW_OPEN` and must stay that way until ninety days of forward bars exist. A complete
-> rehearsal is not evidence about a window that has not begun, and this report does not pretend
-> otherwise.
+> bars, verified by a program that does not import the builder. The window it was built for opened
+> at `2026-10-23T00:00:00Z`, while this package was still open, and the phase moved from
+> `PENDING_WINDOW_OPEN` to `PENDING` with **0 of 6480** bars — the first day cannot close before
+> `2026-10-24T00:00:00Z`. A complete rehearsal is still not evidence about coverage that has not
+> been earned, and this report does not pretend otherwise.
+>
+> **The blocker is no longer the calendar.** It is the forward observer, stopped since
+> `2026-10-22T18:00:00Z`: an observer that returns after `2026-10-23T20:00Z` has already lost the
+> day to the declared two-hour lag bound, and a quarantined day is never re-fetched (`DEF-02G-10`).
 
 ---
 
