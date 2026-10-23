@@ -862,6 +862,60 @@ def session_growth(out: Path) -> dict[str, Any]:
     return result
 
 
+def evidence_manifest(out: Path) -> dict[str, Any]:
+    """Hash every file this package ships, and record the Git object id when it has one.
+
+    Two magnitudes, never presented as one: ``sha256`` is the digest of the bytes in this
+    checkout (which carry CRLF under ``core.autocrlf``), and ``git_blob_sha`` is the object id
+    at HEAD, which is the same in every clone.
+    """
+    import hashlib
+
+    targets: list[Path] = list(sorted(item for item in out.rglob("*") if item.is_file()))
+    targets.extend(
+        [
+            REPO_ROOT / "scripts" / "exp004a_wp051_02i_storage.py",
+            REPO_ROOT / "scripts" / "exp004a_wp051_02i_verify.py",
+            REPO_ROOT / "scripts" / "edge04_watchdog.py",
+            REPO_ROOT / "tests" / "unit" / "research" / "test_exp004a_wp051_02i.py",
+        ]
+    )
+    entries: list[dict[str, Any]] = []
+    for path in targets:
+        if path.name == "EVIDENCE_MANIFEST.json" or not path.is_file():
+            continue
+        relative = str(path.resolve().relative_to(REPO_ROOT)).replace("\\", "/")
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        entry: dict[str, Any] = {
+            "path": relative,
+            "bytes": path.stat().st_size,
+            "sha256": digest,
+        }
+        blob = git(REPO_ROOT, "rev-parse", f"HEAD:{relative}")
+        if blob:
+            entry["git_blob_sha"] = blob
+        entries.append(entry)
+    unique = {item["path"]: item for item in entries}
+    ordered = [unique[key] for key in sorted(unique)]
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "package": PACKAGE,
+        "sealed_at_utc": iso(now_ms()),
+        "head": git(REPO_ROOT, "rev-parse", "HEAD"),
+        "hash_semantics": (
+            "sha256 hashes the bytes in this checkout; git_blob_sha is the Git object id at "
+            "HEAD. They are different magnitudes and are never presented as the same value."
+        ),
+        "entries": ordered,
+        "entry_count": len(ordered),
+        "missing_git_blob": [item["path"] for item in ordered if "git_blob_sha" not in item],
+        "not_a_certification": (
+            "a manifest says what is in the package. It does not say the package is right, and "
+            "it promotes nothing."
+        ),
+    }
+
+
 def survey() -> dict[str, Any]:
     """A filesystem survey of the volume, one level deeper where the bytes are.
 
@@ -1158,6 +1212,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--state-root", type=Path, default=None)
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--audit", action="store_true", help="measure and write the report")
+    parser.add_argument("--manifest", action="store_true", help="hash the package's files")
     parser.add_argument("--survey", action="store_true", help="measure the volume's consumers")
     parser.add_argument("--sweep", action="store_true", help="list reclaimable caches")
     parser.add_argument("--apply", action="store_true", help="delete them (needs --sweep)")
@@ -1167,6 +1222,14 @@ def main(argv: list[str] | None = None) -> int:
     main_root = args.main_root.resolve()
     state_root = (args.state_root or main_root / "data" / "forward" / "edge04").resolve()
     out = args.out.resolve()
+
+    if args.manifest:
+        payload = evidence_manifest(out)
+        write_json(out / "EVIDENCE_MANIFEST.json", payload)
+        print(f"manifest  {payload['entry_count']} entries, head {payload['head'][:10]}")
+        if payload["missing_git_blob"]:
+            print(f"  without a Git blob: {payload['missing_git_blob']}")
+        return 0
 
     if args.survey:
         payload = survey()

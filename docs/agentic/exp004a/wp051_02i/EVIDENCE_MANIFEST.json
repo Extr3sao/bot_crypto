@@ -1,0 +1,90 @@
+{
+  "entries": [
+    {
+      "bytes": 4986,
+      "git_blob_sha": "b3391356967985925a521d9dbb0e8f600b06bf22",
+      "path": "docs/agentic/exp004a/wp051_02i/FILESYSTEM_SURVEY.json",
+      "sha256": "f4efb6f3b56818e82c883e01e95831c3e4b4f9448d28a1611b980de91510de9b"
+    },
+    {
+      "bytes": 16978,
+      "git_blob_sha": "8ba47016bad42992d140590bdfbb4c25b892d95c",
+      "path": "docs/agentic/exp004a/wp051_02i/FINAL_REPORT.md",
+      "sha256": "860e2c44338772d4c6b2fd93df1561dfc3b86eede51995883a8cbce4ee226b98"
+    },
+    {
+      "bytes": 5409,
+      "git_blob_sha": "feb286457b891873fd04ce563424883c7b9ab0cd",
+      "path": "docs/agentic/exp004a/wp051_02i/GROWTH_DIAGNOSIS.md",
+      "sha256": "5a169314d2c6bf1c0ab9ad7b02b45ac48f3b12109a5476e0233535dc895904d3"
+    },
+    {
+      "bytes": 4333,
+      "git_blob_sha": "f6131454aae981b8899439d80572ed6d2cbbf43e",
+      "path": "docs/agentic/exp004a/wp051_02i/INDEPENDENT_VERIFICATION.json",
+      "sha256": "27e922218abf307f972160664d110bbf81457f180c4fc975e5ddc1cacc05a9be"
+    },
+    {
+      "bytes": 8397,
+      "git_blob_sha": "6473c456f3cfb39b51fa7799724bc2d59396039e",
+      "path": "docs/agentic/exp004a/wp051_02i/RUN_REPORT.json",
+      "sha256": "270ccc4c980381ff03a85c3d12a5dac0bc6d392f19e9dce97e66622dc5ec34bd"
+    },
+    {
+      "bytes": 7103,
+      "git_blob_sha": "1324feca14104b1ac666660753f42384726a5b33",
+      "path": "docs/agentic/exp004a/wp051_02i/RUN_REPORT.md",
+      "sha256": "7d06c90b5398248f658fe06b4a0d5538cfdd46f537afbde0a5e084c9df161746"
+    },
+    {
+      "bytes": 31840,
+      "git_blob_sha": "07a77bdd226193ae1ed22c1cf53fc053b5223c2a",
+      "path": "docs/agentic/exp004a/wp051_02i/STORAGE_CAPACITY_REPORT.json",
+      "sha256": "d5261d0fd409ec36e1f33d07015297a9963ec4a58e7da4e8b6eb660202810a13"
+    },
+    {
+      "bytes": 2212,
+      "git_blob_sha": "fced47906e2c6fba24db6a7b0ca0737255b70c6e",
+      "path": "docs/agentic/exp004a/wp051_02i/SWEEP_EVIDENCE.json",
+      "sha256": "7f036d9e832cc8da1807e595d64b0bdb4f93f68d132f2a91cdc59ae88c879921"
+    },
+    {
+      "bytes": 657,
+      "git_blob_sha": "50950463d72a6d7a7a1671dca1f4825b12dd7256",
+      "path": "docs/agentic/exp004a/wp051_02i/samples.jsonl",
+      "sha256": "0c3c76bc848e323318bba46b4c07c3c5817af03227090077c3babfa7a2152306"
+    },
+    {
+      "bytes": 26907,
+      "git_blob_sha": "21fc0639fcc40520e6cebc608dc9ddec40811940",
+      "path": "scripts/edge04_watchdog.py",
+      "sha256": "57e49cd791015b632085a681a830603597c6880fad90e72cf27b7300abf928fa"
+    },
+    {
+      "bytes": 54421,
+      "git_blob_sha": "742de7414f8d1c00efd716db70318a68345056ef",
+      "path": "scripts/exp004a_wp051_02i_storage.py",
+      "sha256": "9cbeaaffdd7aa82d0a0ea48bf5af06759c58cd5436d9e37043eddf8a854697e7"
+    },
+    {
+      "bytes": 25920,
+      "git_blob_sha": "788a999b7f05eca960144e49c905a4cfc0510c93",
+      "path": "scripts/exp004a_wp051_02i_verify.py",
+      "sha256": "20240d38e7249327093bff1709d268cbe0a93ed40db848c5bddaa25d080886ec"
+    },
+    {
+      "bytes": 17131,
+      "git_blob_sha": "22e09f9d8d09c8d210a8805b084ffa98037577d1",
+      "path": "tests/unit/research/test_exp004a_wp051_02i.py",
+      "sha256": "defe4df952e67c9c041f13a7a96089d3c173d113f1e5f596928377b5cdab53bd"
+    }
+  ],
+  "entry_count": 13,
+  "hash_semantics": "sha256 hashes the bytes in this checkout; git_blob_sha is the Git object id at HEAD. They are different magnitudes and are never presented as the same value.",
+  "head": "522c07fde6c9ed29c91ba8e89e0f72ecc78dfc29",
+  "missing_git_blob": [],
+  "not_a_certification": "a manifest says what is in the package. It does not say the package is right, and it promotes nothing.",
+  "package": "WP-051-02I",
+  "schema_version": "EXP004A_WP051_02I_STORAGE_V1",
+  "sealed_at_utc": "2026-10-23T11:01:59Z"
+}
