@@ -1,0 +1,105 @@
+{
+ "schema": "wp00307-trunk-format-baseline/1",
+ "work_package": "WP-003-07",
+ "generated_at_utc": "2026-10-23T11:30:58Z",
+ "repository": "https://github.com/Extr3sao/bot_crypto.git",
+ "method": "every value is the output of a command run in this session against the tree named beside it; nothing is copied from an earlier report without naming the sha it came from",
+ "git_authority": {
+  "origin_main": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+  "local_main": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+  "recovery_trunk_sync": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+  "base": "1d2192b0",
+  "branch": "recovery/trunk-format-001",
+  "format_commit": "026ea574c32ab15a477d70e850cc9fecbdf1ec47",
+  "format_commit_subject": "Apply the project formatter to the trunk, exempting the files that committed pins certify",
+  "main_synced": false,
+  "main_untouched": false,
+  "origin_main_untouched": true,
+  "history_shape": "linear, zero merge commits",
+  "base_is_ancestor": true
+ },
+ "base_choice": {
+  "sha": "1d2192b0",
+  "why": "main, recovery/trunk-sync and origin/recovery/trunk-sync all resolve to this commit, and it is an ancestor of every recovery branch; no history was reconciled, merged or rebased to create the working base"
+ },
+ "inventory": {
+  "tracked_python_at_base": 807,
+  "fmt_check_base_full": "433 files would be reformatted, 374 files already formatted",
+  "fmt_check_head_full": "24 files would be reformatted, 784 files already formatted",
+  "parsed_base_files_to_reformat": 433,
+  "parsed_base_already_formatted": 374,
+  "files_reformatted": 409,
+  "files_exempt_because_pinned": 24,
+  "additions": 29793,
+  "deletions": 13943,
+  "by_area": {
+   "scripts": 209,
+   "tests": 110,
+   "src": 90
+  },
+  "comment_tokens_compared": 7305,
+  "control_comments_preserved": 409,
+  "literal_representation_changes": 152,
+  "literal_content_changes": 0
+ },
+ "gates": {
+  "format": {
+   "base": 433,
+   "head": 24,
+   "head_flagged_are_exactly_the_exemptions": true,
+   "source": "ruff 0.15.20, `ruff format --check .`"
+  },
+  "lint": {
+   "base": 100,
+   "head": 100,
+   "delta": 0,
+   "source": "ruff 0.15.20, `ruff check .`"
+  },
+  "mypy": {
+   "base_errors": 253,
+   "base_files_with_errors": 29,
+   "base_checked": 801,
+   "head_errors": 253,
+   "head_files_with_errors": 29,
+   "head_checked": 802,
+   "delta_errors": 0,
+   "note": "head checks one more file than base because the verifier is added in the evidence commit; the verifier itself reports zero errors under mypy strict",
+   "source": "mypy 2.1.0, `mypy .` (the CI command, not `mypy src scripts`)"
+  },
+  "collection": {
+   "base_errors": 0,
+   "head_errors": 0,
+   "source": "pytest --collect-only -m 'not slow and not market'",
+   "corrects_inherited_claim": "WP-003-05 recorded 4 collection errors at this same sha, attributed to four tests importing trading_bot.ops; git grep at 1d2192b0 finds no reference to trading_bot.ops anywhere in src/ or tests/, and those four modules run 73 tests green"
+  }
+ },
+ "inherited_claims_reviewed": [
+  {
+   "claim": "428 vs 433 formatted files (tracked vs raw)",
+   "status": "CONFIRMED",
+   "evidence": "ff-wt-min at baf5b560 prints `433 files would be reformatted, 386 already formatted` for the whole tree and has 5 untracked .py files under .tmp/, so tracked = 428. Measured this session."
+  },
+  {
+   "claim": "the trunk has 4 collection errors from trading_bot.ops",
+   "status": "REFUTED",
+   "evidence": "`git grep -n 'trading_bot.ops|from .ops|import ops' 1d2192b0 -- src tests` returns nothing; collection exits 0 with 3339 tests; the four named modules pass 73 tests at this sha."
+  },
+  {
+   "claim": "the trunk suite is 81 failed / 3213 passed / 14 errors",
+   "status": "CONFIRMED",
+   "evidence": "measured twice this session at 1d2192b0, 558 s and 552 s"
+  }
+ ],
+ "pins": {
+  "scanned_json_artefacts": 417,
+  "pinned_python_paths": 46,
+  "why_it_matters": "a pinned file cannot be reformatted without invalidating the artefact that certifies it, so the format gate can never reach zero for these files by formatting alone"
+ },
+ "status": {
+  "BASE_ESTABLISHED": "PASS",
+  "INVENTORY_REPRODUCED": "PASS",
+  "GATE_DELTA_ATTRIBUTED": "PASS",
+  "INHERITED_CLAIMS_CHECKED": "PASS (1 refuted, 1 confirmed, 1 confirmed)",
+  "MAIN_TOUCHED": "NO"
+ }
+}
