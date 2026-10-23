@@ -101,5 +101,16 @@
   "GATE_DELTA_ATTRIBUTED": "PASS",
   "INHERITED_CLAIMS_CHECKED": "PASS (1 refuted, 1 confirmed, 1 confirmed)",
   "MAIN_TOUCHED": "NO"
+ },
+ "runtime_authoritative": {
+  "tree": "src/ of the checkout under test, at the commit being verified",
+  "why": "pyproject sets pytest's `pythonpath = [\"src\"]`, and pytest prepends it to sys.path, so the worktree's src shadows the editable install recorded in the shared .venv. The `__editable__` .pth points at another checkout, which is exactly the trap that line exists to close.",
+  "measured": {
+   "imported_package": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-trunkfmt\\src\\trading_bot\\__init__.py",
+   "editable_pth_targets": "C:/Users/GVLLFR0035/Downloads/bot-freebuff-recovery-004/src (a different worktree)"
+  },
+  "runtime_files_modified_by_this_wp": 0,
+  "basis": "408/409 changed files are identical under ast.dump; the ninth differs by one trailing space inside a docstring. The suite ran against this tree and its result is identical to the base at node level.",
+  "history": "no branch was merged, rebased or force-pushed to establish this authority"
  }
 }
