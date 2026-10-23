@@ -16,12 +16,12 @@
     "lost_days": [
       "2026-10-23"
     ],
-    "recovery_latency_seconds": 900.0,
+    "recovery_latency_seconds": 899.0,
     "rows_reachable": 6408,
     "store_silence_minutes": 345.02
   },
-  "generated_at_utc": "2026-10-23T06:56:42.263Z",
-  "head": "b1c29d32a15b51825d5b3171c455ff1940e4b134",
+  "generated_at_utc": "2026-10-23T07:43:55.665Z",
+  "head": "6987afcf2ab6150414496a096ef249c367768316",
   "independent_verification": {
     "checks": 17,
     "failed": [],
@@ -33,19 +33,19 @@
     "blocked_ticks": 36,
     "by_outcome": {
       "DISK_BUDGET_EXCEEDED": 36,
-      "OBSERVED": 16
+      "OBSERVED": 19
     },
-    "last_tick_age_seconds": 43.3,
+    "last_tick_age_seconds": 119.7,
     "min_free_gib": 0.0,
     "observer_task": {
-      "last_run_time": "/Date(1792738554000)/",
-      "last_task_result": 5,
+      "last_run_time": "/Date(1792741254000)/",
+      "last_task_result": 0,
       "missed_runs": 0,
-      "next_run_time": "/Date(1792739453000)/"
+      "next_run_time": "/Date(1792742153000)/"
     },
-    "resumed_new_bars": 9,
-    "resumed_observation": "FWD-EDGE04-20261023T060000Z",
-    "ticks_since_reference": 52,
+    "resumed_new_bars": 12,
+    "resumed_observation": "FWD-EDGE04-20261023T070000Z",
+    "ticks_since_reference": 55,
     "verdict": "OBSERVER_RUNNING"
   },
   "root_cause": {

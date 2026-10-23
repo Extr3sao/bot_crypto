@@ -1,21 +1,21 @@
 {
-  "at_utc": "2026-10-23T06:56:48.097Z",
+  "at_utc": "2026-10-23T07:44:00.603Z",
   "certification_allowed": false,
   "certification_blocked_by": "COVERAGE_CEILING_BELOW_DECLARED",
   "check_count": 17,
   "checks": [
     {
-      "detail": "914 tick record(s) parsed; the package claims 914 \u2014 equal",
+      "detail": "917 tick record(s) parsed; the package claims 917 \u2014 equal",
       "name": "TICK_LOG_READABLE",
       "ok": true
     },
     {
-      "detail": "newest tick 2026-10-23T06:55:57.000Z, age 45.5s (limit 2700s); the package says 43.3s, outcome DISK_BUDGET_EXCEEDED",
+      "detail": "newest tick 2026-10-23T07:40:57.000Z, age 178.9s (limit 2700s); the package says 119.7s, outcome OBSERVED",
       "name": "OBSERVER_LIVENESS",
       "ok": true
     },
     {
-      "detail": "first observation after the last refusal is FWD-EDGE04-20261023T060000Z; the package claims FWD-EDGE04-20261023T060000Z",
+      "detail": "first observation after the last refusal is FWD-EDGE04-20261023T070000Z; the package claims FWD-EDGE04-20261023T070000Z",
       "name": "RECOVERY_CLAIM",
       "ok": true
     },
@@ -25,17 +25,17 @@
       "ok": true
     },
     {
-      "detail": "715 sealed slot(s), 0 sealed twice; 2 tick(s) were refused because another held the lease",
+      "detail": "718 sealed slot(s), 0 sealed twice; 2 tick(s) were refused because another held the lease",
       "name": "NO_DUPLICATE_TICKS",
       "ok": true
     },
     {
-      "detail": "recomputed store silence 345.02 min; the package claims 345.02 min (recovery latency after the last refusal: 900.0 s)",
+      "detail": "recomputed store silence 44.97 min; the package claims 44.97 min (recovery latency after the last refusal: 899.0 s)",
       "name": "STORE_SILENCE_REPRODUCED",
       "ok": true
     },
     {
-      "detail": "newest BTC bar 2026-10-23T05:00:00.000Z; the package says 2026-10-23T05:00:00.000Z; 02G's reference instant was 2026-10-22T18:00:00Z",
+      "detail": "newest BTC bar 2026-10-23T06:00:00.000Z; the package says 2026-10-23T06:00:00.000Z; 02G's reference instant was 2026-10-22T18:00:00Z",
       "name": "STORE_ADVANCED",
       "ok": true
     },
@@ -65,7 +65,7 @@
       "ok": true
     },
     {
-      "detail": "the scheduler holds LastTaskResult=8 for TradingAgentic-EDGE04-Watchdog (a non-zero result is the alarm: 8 blocked, 9 stale)",
+      "detail": "the scheduler holds LastTaskResult=1 for TradingAgentic-EDGE04-Watchdog (a non-zero result is the alarm: 8 blocked, 9 stale)",
       "name": "WATCHDOG_ALARM_REACHES_OS",
       "ok": true
     },
@@ -92,8 +92,8 @@
   ],
   "detail": {
     "newest_tick": {
-      "outcome": "DISK_BUDGET_EXCEEDED",
-      "started_at_utc": "2026-10-23T06:55:57.000Z"
+      "outcome": "OBSERVED",
+      "started_at_utc": "2026-10-23T07:40:57.000Z"
     },
     "recovery_tick": {
       "alerts": [
@@ -131,35 +131,35 @@
       "decisions_digest": "8ef36cea4e1f0d2bebad8cfc2b6ecb6255c9f5bf0179d499edecbe8317286ade",
       "disk": {
         "critical_free_bytes": 2147483648,
-        "free_bytes": 2419122176,
-        "free_gib": 2.253,
+        "free_bytes": 4683231232,
+        "free_gib": 4.3616,
         "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
         "status": "WARNING",
         "total_bytes": 255041990656,
         "total_gib": 237.5264,
-        "used_percent": 99.05,
+        "used_percent": 98.16,
         "warning_free_bytes": 5368709120
       },
       "disk_after": {
         "critical_free_bytes": 2147483648,
-        "free_bytes": 2429272064,
-        "free_gib": 2.2624,
+        "free_bytes": 4635111424,
+        "free_gib": 4.3168,
         "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
         "status": "WARNING",
         "total_bytes": 255041990656,
         "total_gib": 237.5264,
-        "used_percent": 99.05,
+        "used_percent": 98.18,
         "warning_free_bytes": 5368709120
       },
       "due_only": true,
-      "duration_seconds": 59.76,
+      "duration_seconds": 46.76,
       "errors": [],
       "exit_code": 0,
       "expectation_series": [
         {
           "appended": 1,
           "expected": 1,
-          "high_water_ts": 1792728000000,
+          "high_water_ts": 1792731600000,
           "missing": 0,
           "outcome": "ingested",
           "series": "1h:BTC"
@@ -167,7 +167,7 @@
         {
           "appended": 1,
           "expected": 1,
-          "high_water_ts": 1792728000000,
+          "high_water_ts": 1792731600000,
           "missing": 0,
           "outcome": "ingested",
           "series": "1h:ETH"
@@ -175,84 +175,84 @@
         {
           "appended": 1,
           "expected": 1,
-          "high_water_ts": 1792728000000,
+          "high_water_ts": 1792731600000,
           "missing": 0,
           "outcome": "ingested",
           "series": "1h:SOL"
         },
         {
-          "appended": 2,
-          "expected": 2,
-          "high_water_ts": 1792732500000,
+          "appended": 3,
+          "expected": 3,
+          "high_water_ts": 1792735200000,
           "missing": 0,
           "outcome": "ingested",
           "series": "15m:BTC"
         },
         {
-          "appended": 2,
-          "expected": 2,
-          "high_water_ts": 1792732500000,
+          "appended": 3,
+          "expected": 3,
+          "high_water_ts": 1792735200000,
           "missing": 0,
           "outcome": "ingested",
           "series": "15m:ETH"
         },
         {
-          "appended": 2,
-          "expected": 2,
-          "high_water_ts": 1792732500000,
+          "appended": 3,
+          "expected": 3,
+          "high_water_ts": 1792735200000,
           "missing": 0,
           "outcome": "ingested",
           "series": "15m:SOL"
         }
       ],
-      "expected_new_bars": 9,
-      "finished_at_ms": 1792735917897,
-      "finished_at_utc": "2026-10-23T06:11:57Z",
+      "expected_new_bars": 12,
+      "finished_at_ms": 1792739503702,
+      "finished_at_utc": "2026-10-23T07:11:43Z",
       "health_status": "DEGRADED",
       "host": "DESKTOP-4CHO695",
       "hypothetical": true,
       "hypothetical_net_usdt": -59.141704,
       "latency": {
         "15m:BTC": {
-          "fresh_bars": 2,
-          "fresh_max_seconds": 1562.385,
-          "fresh_median_seconds": 1112.385
+          "fresh_bars": 3,
+          "fresh_max_seconds": 2458.73,
+          "fresh_median_seconds": 1558.73
         },
         "15m:ETH": {
-          "fresh_bars": 2,
-          "fresh_max_seconds": 1562.385,
-          "fresh_median_seconds": 1112.385
+          "fresh_bars": 3,
+          "fresh_max_seconds": 2458.73,
+          "fresh_median_seconds": 1558.73
         },
         "15m:SOL": {
-          "fresh_bars": 2,
-          "fresh_max_seconds": 1562.385,
-          "fresh_median_seconds": 1112.385
+          "fresh_bars": 3,
+          "fresh_max_seconds": 2458.73,
+          "fresh_median_seconds": 1558.73
         },
         "1h:BTC": {
           "fresh_bars": 1,
-          "fresh_max_seconds": 662.385,
-          "fresh_median_seconds": 662.385
+          "fresh_max_seconds": 658.73,
+          "fresh_median_seconds": 658.73
         },
         "1h:ETH": {
           "fresh_bars": 1,
-          "fresh_max_seconds": 662.385,
-          "fresh_median_seconds": 662.385
+          "fresh_max_seconds": 658.73,
+          "fresh_median_seconds": 658.73
         },
         "1h:SOL": {
           "fresh_bars": 1,
-          "fresh_max_seconds": 662.385,
-          "fresh_median_seconds": 662.385
+          "fresh_max_seconds": 658.73,
+          "fresh_median_seconds": 658.73
         }
       },
       "lease": {
         "acquired": true,
         "holder": {
-          "acquired_at": 1792735858,
+          "acquired_at": 1792739456,
           "campaign_id": "EDGE04_FORWARD_OBSERVER",
           "host": "DESKTOP-4CHO695",
           "lease_version": "CAMPAIGN_LEASE_V1",
-          "pid": 29832,
-          "renewed_at": 1792735858,
+          "pid": 36004,
+          "renewed_at": 1792739456,
           "stale_after_seconds": 300
         },
         "previous_holder": null,
@@ -262,18 +262,18 @@
         "released": true,
         "status": "RELEASED"
       },
-      "market_instant_utc": "2026-10-23T06:11:02Z",
+      "market_instant_utc": "2026-10-23T07:10:58Z",
       "market_requests": 7,
       "missing_bars": 0,
       "mode": "SCHEDULED",
-      "new_bars": 9,
+      "new_bars": 12,
       "order_sent": false,
       "outcome": "OBSERVED",
-      "outcome_reason": "9 new closed bar(s) stored",
+      "outcome_reason": "12 new closed bar(s) stored",
       "parity_verdict": "PARITY_PASS",
       "payload_error": null,
-      "pid": 29832,
-      "previous_consuming_run_id": "FWD-EDGE04-20261023T053000Z",
+      "pid": 36004,
+      "previous_consuming_run_id": "FWD-EDGE04-20261023T061500Z",
       "promotion": "NONE",
       "prospective_observation_days": 7,
       "pruned_rows": {
@@ -285,72 +285,72 @@
         "ran": false,
         "reason": "the publication cadence has not elapsed"
       },
-      "published_at_utc": "2026-10-23T06:11:57Z",
+      "published_at_utc": "2026-10-23T07:11:43Z",
       "python": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
       "refusals": 1840,
       "ruleset": {
         "agrees_with_publication": true,
         "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77"
       },
-      "run_id": "FWD-EDGE04-20261023T060000Z",
+      "run_id": "FWD-EDGE04-20261023T070000Z",
       "schema_version": "EDGE04_TICK_V1",
       "signals": 367,
       "signals_this_publication": 0,
       "signals_today": 0,
       "slot_already_observed": false,
-      "slot_end_utc": "2026-10-23T06:15Z",
-      "slot_key": "2026-10-23T06:00Z",
+      "slot_end_utc": "2026-10-23T07:15Z",
+      "slot_key": "2026-10-23T07:00Z",
       "slot_sealed": true,
-      "slot_start_utc": "2026-10-23T06:00Z",
+      "slot_start_utc": "2026-10-23T07:00Z",
       "stale_series": [],
-      "started_at_ms": 1792735858137,
-      "started_at_utc": "2026-10-23T06:10:58Z",
+      "started_at_ms": 1792739456942,
+      "started_at_utc": "2026-10-23T07:10:56Z",
       "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
       "store": {
         "series": {
           "15m:BTC": {
-            "bars": 1513,
-            "last_ts": 1792734300000,
-            "sha256": "20c3a5614830a2b4"
+            "bars": 1517,
+            "last_ts": 1792737900000,
+            "sha256": "176a7888a6baa2c5"
           },
           "15m:ETH": {
-            "bars": 1513,
-            "last_ts": 1792734300000,
-            "sha256": "7c8b8d096b741642"
+            "bars": 1517,
+            "last_ts": 1792737900000,
+            "sha256": "f722f19871024cc5"
           },
           "15m:SOL": {
-            "bars": 1513,
-            "last_ts": 1792734300000,
-            "sha256": "4f169b6ea6c86101"
+            "bars": 1517,
+            "last_ts": 1792737900000,
+            "sha256": "69cfe0a67b4aea23"
           },
           "1h:BTC": {
-            "bars": 5670,
-            "last_ts": 1792731600000,
-            "sha256": "e0a918fa282327cd"
+            "bars": 5671,
+            "last_ts": 1792735200000,
+            "sha256": "8b5e5c29e4c5a151"
           },
           "1h:ETH": {
-            "bars": 5670,
-            "last_ts": 1792731600000,
-            "sha256": "2c544643433a51f0"
+            "bars": 5671,
+            "last_ts": 1792735200000,
+            "sha256": "638cdb6b7114d71e"
           },
           "1h:SOL": {
-            "bars": 5670,
-            "last_ts": 1792731600000,
-            "sha256": "ebec0329adfad5a2"
+            "bars": 5671,
+            "last_ts": 1792735200000,
+            "sha256": "b1678240486837ac"
           }
         },
-        "total_bars": 21549
+        "total_bars": 21564
       },
       "store_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03",
       "trades": 137,
       "trades_today": 0,
       "window_observation_days": 236
     },
-    "watchdog_task_result": 8
+    "watchdog_task_result": 1
   },
   "experiment_certified": false,
   "failed_checks": [],
-  "head": "b1c29d32a15b51825d5b3171c455ff1940e4b134",
+  "head": "6987afcf2ab6150414496a096ef249c367768316",
   "note": "a PASS here says the package measured what it says it measured. It does not say the experiment is complete, recoverable in full, or worth anything.",
   "package": "WP-051-02H",
   "schema_version": "1.0",

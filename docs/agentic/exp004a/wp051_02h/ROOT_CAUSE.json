@@ -5,7 +5,7 @@
       "evidence": {
         "claimed_last_bar_utc": "2026-10-22T18:00:00Z",
         "live_last_bar_is_newer": true,
-        "live_last_bar_utc": "2026-10-23T05:00:00.000Z",
+        "live_last_bar_utc": "2026-10-23T06:00:00.000Z",
         "worktree_copy": "data/forward/ is git-ignored; the 02G worktree holds a copy"
       },
       "id": "RC1",
@@ -26,29 +26,21 @@
     {
       "claim": "the observer resumed by itself after the audited episode, without any intervention",
       "evidence": {
-        "a_newer_episode_is_still_open": true,
+        "a_newer_episode_is_still_open": false,
         "audited_episode": {
-          "blocked_ticks": 22,
-          "first_blocked_start_utc": "2026-10-23T00:10:56.000Z",
-          "last_block_free_gib": 0.0218,
-          "last_block_health": "BLOCKED",
-          "last_block_reason": "0.0218 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
-          "last_blocked_start_utc": "2026-10-23T05:25:57.000Z"
-        },
-        "open_episode": {
           "blocked_ticks": 2,
           "first_blocked_start_utc": "2026-10-23T06:40:57.000Z",
           "last_block_free_gib": 0.6594,
+          "last_block_health": "BLOCKED",
           "last_block_reason": "0.6594 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
-          "last_blocked_start_utc": "2026-10-23T06:55:57.000Z",
-          "minutes_open": 15.72,
-          "resumed": false
+          "last_blocked_start_utc": "2026-10-23T06:55:57.000Z"
         },
-        "recovery_latency_seconds": 900.0,
+        "open_episode": null,
+        "recovery_latency_seconds": 899.0,
         "resume": {
-          "new_bars": 87,
-          "run_id": "FWD-EDGE04-20261023T053000Z",
-          "started_at_utc": "2026-10-23T05:40:57.000Z"
+          "new_bars": 12,
+          "run_id": "FWD-EDGE04-20261023T070000Z",
+          "started_at_utc": "2026-10-23T07:10:56.000Z"
         }
       },
       "id": "RC3",
@@ -91,8 +83,8 @@
     }
   ],
   "finding": "It did not. The store 02G measured is a copy of data/forward made inside that package's worktree for a rehearsal, and a copy stops when the copying stops. The live store kept growing; the real interruption was elsewhere and shorter.",
-  "generated_at_utc": "2026-10-23T06:56:42.225Z",
-  "head": "b1c29d32a15b51825d5b3171c455ff1940e4b134",
+  "generated_at_utc": "2026-10-23T07:43:55.619Z",
+  "head": "6987afcf2ab6150414496a096ef249c367768316",
   "not_the_cause": [
     "the scheduler was never disabled or unregistered",
     "no duplicate observer contended for the lease",

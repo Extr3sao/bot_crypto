@@ -543,8 +543,8 @@
     {
       "assets": {
         "BTC": {
-          "admissible": 3,
-          "bars_in_store": 6,
+          "admissible": 4,
+          "bars_in_store": 7,
           "classification": "DAY_OPEN_ALREADY_DOOMED",
           "inadmissible": [
             {
@@ -571,7 +571,6 @@
           ],
           "lost": true,
           "missing_opens": [
-            "2026-10-23T06:00:00.000Z",
             "2026-10-23T07:00:00.000Z",
             "2026-10-23T08:00:00.000Z",
             "2026-10-23T09:00:00.000Z",
@@ -592,8 +591,8 @@
           ]
         },
         "ETH": {
-          "admissible": 3,
-          "bars_in_store": 6,
+          "admissible": 4,
+          "bars_in_store": 7,
           "classification": "DAY_OPEN_ALREADY_DOOMED",
           "inadmissible": [
             {
@@ -620,7 +619,6 @@
           ],
           "lost": true,
           "missing_opens": [
-            "2026-10-23T06:00:00.000Z",
             "2026-10-23T07:00:00.000Z",
             "2026-10-23T08:00:00.000Z",
             "2026-10-23T09:00:00.000Z",
@@ -641,8 +639,8 @@
           ]
         },
         "SOL": {
-          "admissible": 3,
-          "bars_in_store": 6,
+          "admissible": 4,
+          "bars_in_store": 7,
           "classification": "DAY_OPEN_ALREADY_DOOMED",
           "inadmissible": [
             {
@@ -669,7 +667,6 @@
           ],
           "lost": true,
           "missing_opens": [
-            "2026-10-23T06:00:00.000Z",
             "2026-10-23T07:00:00.000Z",
             "2026-10-23T08:00:00.000Z",
             "2026-10-23T09:00:00.000Z",
@@ -698,8 +695,8 @@
     {
       "assets": {
         "BTC": {
-          "admissible": 3,
-          "bars_in_store": 6,
+          "admissible": 4,
+          "bars_in_store": 7,
           "classification": "DAY_OPEN_ALREADY_DOOMED",
           "inadmissible": [
             {
@@ -726,7 +723,6 @@
           ],
           "lost": true,
           "missing_opens": [
-            "2026-10-23T06:00:00.000Z",
             "2026-10-23T07:00:00.000Z",
             "2026-10-23T08:00:00.000Z",
             "2026-10-23T09:00:00.000Z",
@@ -747,8 +743,8 @@
           ]
         },
         "ETH": {
-          "admissible": 3,
-          "bars_in_store": 6,
+          "admissible": 4,
+          "bars_in_store": 7,
           "classification": "DAY_OPEN_ALREADY_DOOMED",
           "inadmissible": [
             {
@@ -775,7 +771,6 @@
           ],
           "lost": true,
           "missing_opens": [
-            "2026-10-23T06:00:00.000Z",
             "2026-10-23T07:00:00.000Z",
             "2026-10-23T08:00:00.000Z",
             "2026-10-23T09:00:00.000Z",
@@ -796,8 +791,8 @@
           ]
         },
         "SOL": {
-          "admissible": 3,
-          "bars_in_store": 6,
+          "admissible": 4,
+          "bars_in_store": 7,
           "classification": "DAY_OPEN_ALREADY_DOOMED",
           "inadmissible": [
             {
@@ -824,7 +819,6 @@
           ],
           "lost": true,
           "missing_opens": [
-            "2026-10-23T06:00:00.000Z",
             "2026-10-23T07:00:00.000Z",
             "2026-10-23T08:00:00.000Z",
             "2026-10-23T09:00:00.000Z",
@@ -890,8 +884,8 @@
     "sha256": "baeffad097f7d9370cd5b3aa3ab91517ee01d409b7dcbb00c96aad82e54a2cfe",
     "start_utc": "2026-10-23T00:00:00Z"
   },
-  "generated_at_utc": "2026-10-23T06:56:40.305Z",
-  "head": "b1c29d32a15b51825d5b3171c455ff1940e4b134",
+  "generated_at_utc": "2026-10-23T07:43:53.736Z",
+  "head": "6987afcf2ab6150414496a096ef249c367768316",
   "not_applied": "no bar was re-fetched, no timestamp was synthesised, and no threshold moved. The alternatives in FINAL_REPORT §4 are proposals for the owner of the declaration, and none of them is implemented here.",
   "package": "WP-051-02H",
   "phase_impact": {
@@ -925,14 +919,14 @@
     "status_now": "CEILING_BELOW_DECLARED"
   },
   "recovery_boundary": {
-    "audited_at_utc": "2026-10-23T06:56:40.305Z",
+    "audited_at_utc": "2026-10-23T07:43:53.736Z",
     "block_episode": {
-      "blocked_ticks": 22,
-      "first_blocked_start_utc": "2026-10-23T00:10:56.000Z",
-      "last_block_free_gib": 0.0218,
+      "blocked_ticks": 2,
+      "first_blocked_start_utc": "2026-10-23T06:40:57.000Z",
+      "last_block_free_gib": 0.6594,
       "last_block_health": "BLOCKED",
-      "last_block_reason": "0.0218 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
-      "last_blocked_start_utc": "2026-10-23T05:25:57.000Z"
+      "last_block_reason": "0.6594 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
+      "last_blocked_start_utc": "2026-10-23T06:55:57.000Z"
     },
     "episode_boundaries": [
       {
@@ -1406,13 +1400,17 @@
           "started_at_utc": "2026-10-23T06:25:58.000Z"
         },
         "min_free_gib": 0.6594,
-        "recovery_latency_seconds": null,
-        "resume": null,
-        "store_silence_minutes": null,
-        "store_silence_seconds": null
+        "recovery_latency_seconds": 899.0,
+        "resume": {
+          "new_bars": 12,
+          "run_id": "FWD-EDGE04-20261023T070000Z",
+          "started_at_utc": "2026-10-23T07:10:56.000Z"
+        },
+        "store_silence_minutes": 44.97,
+        "store_silence_seconds": 2698.0
       }
     ],
-    "episode_in_progress": true,
+    "episode_in_progress": false,
     "episodes": [
       {
         "blocked_ticks": 3,
@@ -1585,26 +1583,18 @@
     ],
     "last_consuming_tick_before": {
       "new_bars": 3,
-      "run_id": "FWD-EDGE04-20261022T234500Z",
-      "started_at_utc": "2026-10-22T23:55:56.000Z"
+      "run_id": "FWD-EDGE04-20261023T061500Z",
+      "started_at_utc": "2026-10-23T06:25:58.000Z"
     },
-    "open_episode": {
-      "blocked_ticks": 2,
-      "first_blocked_start_utc": "2026-10-23T06:40:57.000Z",
-      "last_block_free_gib": 0.6594,
-      "last_block_reason": "0.6594 GiB free is below the 2147483648 byte critical floor: the tick refused before making a market request",
-      "last_blocked_start_utc": "2026-10-23T06:55:57.000Z",
-      "minutes_open": 15.72,
-      "resumed": false
-    },
-    "recovery_latency_seconds": 900.0,
+    "open_episode": null,
+    "recovery_latency_seconds": 899.0,
     "resume": {
-      "new_bars": 87,
-      "run_id": "FWD-EDGE04-20261023T053000Z",
-      "started_at_utc": "2026-10-23T05:40:57.000Z"
+      "new_bars": 12,
+      "run_id": "FWD-EDGE04-20261023T070000Z",
+      "started_at_utc": "2026-10-23T07:10:56.000Z"
     },
-    "store_silence_minutes": 345.02,
-    "store_silence_seconds": 20701.0,
+    "store_silence_minutes": 44.97,
+    "store_silence_seconds": 2698.0,
     "worst_episode": {
       "blocked_ticks": 22,
       "first_blocked_start_utc": "2026-10-23T00:10:56.000Z",
@@ -1675,10 +1665,10 @@
         ],
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines"
       },
-      "rows": 5670,
+      "rows": 5671,
       "span": {
         "first_open_utc": "2026-03-01T00:00:00.000Z",
-        "last_open_utc": "2026-10-23T05:00:00.000Z"
+        "last_open_utc": "2026-10-23T06:00:00.000Z"
       }
     },
     "1h:ETH": {
@@ -1708,10 +1698,10 @@
         ],
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines"
       },
-      "rows": 5670,
+      "rows": 5671,
       "span": {
         "first_open_utc": "2026-03-01T00:00:00.000Z",
-        "last_open_utc": "2026-10-23T05:00:00.000Z"
+        "last_open_utc": "2026-10-23T06:00:00.000Z"
       }
     },
     "1h:SOL": {
@@ -1741,10 +1731,10 @@
         ],
         "source": "BINANCE_PUBLIC_REST:/api/v3/klines"
       },
-      "rows": 5670,
+      "rows": 5671,
       "span": {
         "first_open_utc": "2026-03-01T00:00:00.000Z",
-        "last_open_utc": "2026-10-23T05:00:00.000Z"
+        "last_open_utc": "2026-10-23T06:00:00.000Z"
       }
     }
   },

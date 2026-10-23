@@ -7,35 +7,38 @@
 > fourth tick or so it refused to fetch, because the volume it writes to was under its own
 > critical free-space floor. The store went silent for **345 minutes**, one day of the phase is
 > gone for all three assets, and the phase can no longer reach `COVERAGE_COMPLETE`. It can still
-> reach the declared 0.9 floor. The cause is the host's free space, not the lane's code, and the
-> lane is still one bad afternoon away from losing another day.
+> reach the declared 0.9 floor. The cause is the host's free space, not the lane's code — and it
+> came back before this package closed: the volume reached **0 MB**, the owner cleared `%TEMP%`,
+> and the tick at `07:10:56Z` resumed the store with **12 bars**. The box ends with the observer
+> capturing, on a volume that is `98 %` full and will do this again.
 
 ---
 
 ## 1. The real state, first
 
-Measured at `2026-10-23T06:57Z` from the **live** lane, not from a worktree copy.
+Measured at `2026-10-23T07:44Z` from the **live** lane, not from a worktree copy.
 
 | Reading | Value | Source |
 | --- | --- | --- |
 | Observer task | `TradingAgentic-EDGE04-Forward`, installed, last result `0` | OS scheduler |
 | Cadence | `PT15M` for `P3650D`, `StartWhenAvailable`, restart 3×`PT5M`, `MultipleInstances=IgnoreNew` | OS scheduler |
-| Last tick | `FWD-EDGE04-20261023T065500Z` at `06:55:57Z`, **refused** | `runs.jsonl` |
-| The refusal that started the open episode | `FWD-EDGE04-20261023T064000Z` at `06:40:57Z` on `1.6262 GiB` free | `runs.jsonl` |
-| Last consuming tick | `FWD-EDGE04-20261023T061500Z` finished `06:26:51Z`, 3 new bars | `runs.jsonl` |
-| Tick age at audit | `767.1 s` (limit `2700 s`) | `health.json`, `runs.jsonl` |
-| Ticks in the audited window | **52** — 16 `OBSERVED`, 36 `DISK_BUDGET_EXCEEDED` | `runs.jsonl` |
+| Last tick | `FWD-EDGE04-20261023T074000Z` at `07:40:57Z`, `OBSERVED`, 3 new bars | `runs.jsonl` |
+| The episode that nearly cost a second day | `06:40:57Z` → `06:55:57Z`, 2 refused ticks, `1.6262` → `0.6594 GiB` free | `runs.jsonl` |
+| Restoring tick | `FWD-EDGE04-20261023T070000Z` at `07:10:56Z`, **12 new bars**, `899 s` after the last refusal | `runs.jsonl` |
+| Tick age at audit | `119.7 s` (limit `2700 s`) | `health.json`, `runs.jsonl` |
+| Ticks in the audited window | **55** — 19 `OBSERVED`, 36 `DISK_BUDGET_EXCEEDED` | `runs.jsonl` |
 | Health | `DEGRADED` (below the 5 GiB warning floor; growth volatile) | `health.json` |
-| Watchdog | installed, 15-minute cadence; raised a real `BLOCKED` alarm (`exit 8`, `LastTaskResult=8`) at `06:47:02Z` | OS scheduler, `WATCHDOG.json` |
-| Free space | `1.43 GiB` of `237.5 GiB` — **99 % full**, and falling | `WATCHDOG.json`, `df` |
+| Watchdog | installed, 15-minute cadence; raised a real `BLOCKED` alarm (`exit 8`) at `06:47:02Z`, lowered by the next healthy run | OS scheduler, `WATCHDOG.json` |
+| Free space | `5.59 GiB` of `237.5 GiB` — **98 % full**, after the owner cleared `%TEMP%` | `df` |
 | Orders | `order_sent: false`, `promotion: NONE` in every record read | tick log, daily shard |
 
-The recovery is real and the risk is still live: **the lane was refused again at `06:40:57Z`
-and once more at `06:55:57Z`**, on `1.6262 GiB` and then `1.42 GiB` free, and at `06:47:02Z` the new
-watchdog raised `ATTENTION_REQUIRED.txt` for the first time — a `BLOCKED` verdict with free space
-falling from `2.30 GiB` to `1.43 GiB` inside twenty minutes. The episode audited below is the closed
-one that cost the day; the open one is a second hole forming while this paragraph is written, and
-the tick at `07:10:57Z` will say which way it went.
+The risk did not stay theoretical. The lane was refused at `06:40:57Z` and `06:55:57Z`, the volume
+then hit **0 MB free**, and at `06:47:02Z` the new watchdog raised `ATTENTION_REQUIRED.txt` for the
+first time — a `BLOCKED` verdict, worded with its reason, exactly as designed. The owner authorised
+clearing `%TEMP%`; free space went to `5.59 GiB`, and the next scheduled tick (`07:10:56Z`) resumed
+the store with 12 bars, followed by `07:25:57Z` (+3) and `07:40:57Z` (+3). **The episode cost no
+bookable hour**: the `07:00` bar was fetched at `07:11`, lag ~11 min, inside the 120 min bound. The
+`2026-10-23` loss belongs to the morning episode, not to this one.
 
 Two independent programs agree on that table (`exp004a_wp051_02h_audit.py`,
 `exp004a_wp051_02h_verify.py`), and a third that predates this package
@@ -48,8 +51,8 @@ Two independent programs agree on that table (`exp004a_wp051_02h_audit.py`,
 - **RC1 — the instant 02G named was a copy.** `data/forward/` is git-ignored; the 02G worktree's
   `18:00Z` was the end of a *copy*, not of the live store. The live store held bars to
   `2026-10-23T05:00Z` at audit time.
-- **RC2 — the live store has a real hole, and the disk guard caused it.** 34 refusals between
-  `2026-10-22T18:10:56Z` and `2026-10-23T05:55:56Z`; the lowest reading was **0.0 GiB** free; each
+- **RC2 — the live store has a real hole, and the disk guard caused it.** 36 refusals between
+  `2026-10-22T18:10:56Z` and `2026-10-23T06:55:57Z`; the lowest reading was **0.0 GiB** free; each
   refusal is the observer's own guard: *"0.4797 GiB free is below the 2147483648 byte critical
   floor: the tick refused before making a market request"*.
 - **RC3 — the observer resumed by itself.** No process was restarted, no lock was cleared, no
@@ -172,7 +175,7 @@ and is not presented as if it did.
 | `tests/unit/research/test_exp004a_wp051_02g.py` (unchanged, 49 tests) | **49 passed** (36.55 s) | 02G's frozen behaviour is intact under this package's changes |
 | `scripts/exp004a_wp051_02h_verify.py` (independent) | **17 checks, 0 failed, `PASS`** | the reports survive a second implementation reading the same bytes |
 | `scripts/edge04_verify.py` (pre-existing, independent) | **15/15 `VERIFY_PASS`** | the live lane's artefacts, including today's daily shard |
-| Real ticks | 16 `OBSERVED` inside the audited window, 2 real `ALREADY_RUNNING` refusals | the mechanism, not a simulation |
+| Real ticks | 19 `OBSERVED` inside the audited window, 2 real `ALREADY_RUNNING` refusals | the mechanism, not a simulation |
 | Real alarm | `BLOCKED` at `06:47:02Z`, `exit 8`, marker written and worded with its reason | `C7`/`C9` hold in production, not only in a unit test |
 
 Named scenarios from the mission, and where each stands: normal start (real, `06:25:58Z`); concurrent
@@ -194,18 +197,20 @@ A unit test is never counted here as a production proof: the rows above separate
   lane itself owns `14 228 034` bytes of its `268 435 456` byte budget, so the pressure is the
   host's, not the lane's.
 
-  **Correction, added after the fact because it happened after this section was first written:**
+  **How this defect played out, in order, because the sequence matters more than the summary:**
   at `06:57Z` the volume reached **0 MB free** — below anything the guard was designed for, since a
-  tick that cannot write its own refusal has nothing left to say. This session then reclaimed only
+  tick that cannot write its own refusal has nothing left to say. This session first reclaimed only
   its **own** scratch: `%TEMP%/pytest-of-GVLLFR0035` (**528 MB**, its test-run leftovers) and the
   worktree's `__pycache__` (**19 MB**). Free space went `0 → 523 MB` at `07:00:00Z` and back to
-  **22 MB at `07:00:23Z`**, so the reclamation bought minutes, not coverage: it is a quarter of the
-  2 GiB floor and it did not clear it. Measured consumers at that moment, none of them this
-  project: `freebuff-desktop/projects/*/desktop-v2.db` 244 MB, `WebCacheV01.dat` 83 MB, Discord
-  cache 66 MB, Cisco Spark store 65 MB, Claude cache 34 MB, plus `data/forward/edge05/watchdog.jsonl`
-  at 38 MB (another lane's log). **Deleting other applications' caches or another lane's evidence is
-  an owner decision and was not done here.** Until the volume is fixed, expect more refused ticks
-  and more lost days; the coverage floor survives one or two such days, not thirty.
+  **22 MB at `07:00:23Z`**: that bought minutes, not coverage. The measured consumers at that
+  moment were none of them this project — `freebuff-desktop/projects/*/desktop-v2.db` 244 MB,
+  `WebCacheV01.dat` 83 MB, Discord cache 66 MB, Cisco Spark store 65 MB, Claude cache 34 MB, plus
+  `data/forward/edge05/watchdog.jsonl` at 38 MB (another lane's log) — so the decision was put to
+  the owner rather than taken. The owner authorised clearing `%TEMP%`; it held **8.3 GB**, and free
+  space went to **5.59 GiB** at `07:44Z`. The `07:10:56Z` tick was the first to get through and it
+  resumed the store with 12 bars. **Nothing else was deleted, and no other lane's evidence was
+  touched.** The defect is mitigated, not closed: a volume at 98 % will refill, and the coverage
+  floor survives one or two such days, not thirty.
 - **`DEF-02H-02` — C3 is conditional on an interactive logon.** The task principal is
   `InteractiveToken`: after a reboot the task resumes only when that user signs in. Changing it to
   "run whether the user is logged on" needs administrator rights and was **not** performed. This is
@@ -234,7 +239,7 @@ A unit test is never counted here as a production proof: the rows above separate
 
 | Verdict | Value | Basis |
 | --- | --- | --- |
-| `RECOVERY_PASS` | **`true`**, for the audited hole | observer running (task fired on cadence, tick age `767 s`), a real forward capture (`06:10:58Z`, 9/9 bars, persisted, `store_sha256` recorded), no duplicates, the hole quantified (345.02 min), coverage classified per the existing contract. A **new** refusal episode opened at `06:40:57Z` and is reported open, not recovered |
+| `RECOVERY_PASS` | **`true`** | observer running (tick age `119.7 s`, last three ticks `OBSERVED`), real forward captures — `06:10:58Z` (9/9 bars), `07:10:56Z` (12 bars, `899 s` after the last refusal), `07:25:57Z`, `07:40:57Z` — each persisted with `store_sha256`, no duplicates, the hole quantified (345.02 min), coverage classified per the existing contract |
 | `CONTINUITY_PASS` | **`true`, with `DEF-02H-02` recorded** | supervision operative, restart and resume exercised for real, data preserved and append-only, health and alarm readable by the OS, independent verifier agrees |
 | `EXPERIMENT_CERTIFIED` | **`false`** | 0 of 90 days complete; `CEILING_BELOW_DECLARED`; this package certifies nothing |
 
@@ -255,16 +260,14 @@ and the one number that would have made the phase look whole — `6480` — appe
 
 ## 11. What happens next
 
-1. **Immediately, and it is not an engineering problem:** the volume is at **22 MB free** and the
-   lane refuses below 2 GiB, so every tick until the space is reclaimed costs coverage that cannot
-   be bought back. The fastest safe win is the owner's: `%TEMP%` held **8.3 GB** before this session
-   cleared its own 528 MB, and the application caches named in `DEF-02H-01` hold a further ~0.5 GB.
-2. **Then tomorrow, without a human step:** if free space is above the floor before
-   `2026-10-24T00:00Z`, that day's grid starts clean and `TradingAgentic-EDGE04-Forward` fills it at
-   the same cadence it kept all night; if it is not, `2026-10-24` joins `2026-10-23` on the lost list
-   and the ceiling drops with it.
-2. **Daily, without a human step:** `TradingAgentic-EDGE04-Forward` keeps ticking; tomorrow's shard
-   is written by the same publication step that wrote today's, and `edge04_verify.py` judges it.
+1. **Watch the volume, not the observer.** The lane is capturing again on `5.59 GiB` free after the
+   `%TEMP%` cleanup, and the watchdog will say `BLOCKED` (exit 8) the moment it drops under 2 GiB.
+   That alarm is the only thing standing between a full disk and another silent day.
+2. **`2026-10-24T00:00Z` is the next day that can count.** If the floor holds, its grid starts clean
+   and `TradingAgentic-EDGE04-Forward` fills it at the cadence it kept all night; if it does not,
+   `2026-10-24` joins `2026-10-23` and the ceiling drops with it.
+3. **Daily, without a human step:** the same publication step that wrote `2026-10-23.json` writes
+   tomorrow's shard, and `edge04_verify.py` judges it.
 3. **At the end of the window:** the coverage verdict is phrased against the 0.9 floor and against
    `CEILING_BELOW_DECLARED`. `COVERAGE_COMPLETE` is off the table for phase 3 unless §4 option 2 is
    taken, and that is a declaration decision, not an engineering one.

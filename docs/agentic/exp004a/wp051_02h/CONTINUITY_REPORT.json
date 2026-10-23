@@ -1,7 +1,7 @@
 {
   "blocking": [],
-  "generated_at_utc": "2026-10-23T06:56:42.186Z",
-  "head": "b1c29d32a15b51825d5b3171c455ff1940e4b134",
+  "generated_at_utc": "2026-10-23T07:43:55.579Z",
+  "head": "6987afcf2ab6150414496a096ef249c367768316",
   "not_a_certification": "this reads the scheduler's own registration. It is evidence that a schedule exists, never evidence that a bar was stored; the tick log is that evidence",
   "package": "WP-051-02H",
   "requirements": [
@@ -60,10 +60,10 @@
     },
     {
       "evidence": {
-        "age_seconds": 45.2,
-        "generated_at_utc": "2026-10-23T06:55:57Z",
+        "age_seconds": 178.6,
+        "generated_at_utc": "2026-10-23T07:41:54Z",
         "health_path": "C:/Users/GVLLFR0035/Downloads/bot freebuff/data/forward/edge04/health.json",
-        "status": "BLOCKED"
+        "status": "DEGRADED"
       },
       "id": "C6_HEARTBEAT",
       "requirement": "health can be read without asking the observer",
@@ -71,7 +71,7 @@
     },
     {
       "evidence": {
-        "consecutive_non_observations": 2,
+        "consecutive_non_observations": 0,
         "outcomes_in_window": {
           "ALREADY_OBSERVED": 3,
           "DISK_BUDGET_EXCEEDED": 42,
@@ -86,21 +86,22 @@
     },
     {
       "evidence": {
-        "alert_lines": 61,
+        "alert_lines": 62,
         "alerts_path": "C:/Users/GVLLFR0035/Downloads/bot freebuff/data/forward/edge04/alerts.jsonl",
         "last_alert": {
-          "at_utc": "2026-10-23T06:40:57Z",
+          "at_utc": "2026-10-23T07:10:56Z",
           "hypothetical": true,
-          "kind": "HEALTH_BLOCKED",
+          "kind": "HEALTH_DEGRADED",
           "order_sent": false,
           "reasons": [
-            "the volume is below the critical floor"
+            "the volume is below the warning floor: the heavy publication waits",
+            "the measured growth rate is volatile"
           ],
-          "run_id": "FWD-EDGE04-20261023T063000Z",
+          "run_id": "FWD-EDGE04-20261023T070000Z",
           "schema_version": "EDGE04_TICK_V1",
-          "severity": "CRITICAL",
-          "slot_key": "2026-10-23T06:30Z",
-          "state": "BLOCKED"
+          "severity": "WARNING",
+          "slot_key": "2026-10-23T07:00Z",
+          "state": "DEGRADED"
         }
       },
       "id": "C8_INTERRUPTION_LOG",
@@ -138,10 +139,10 @@
     "enabled": null,
     "installed": true,
     "last_run": {
-      "last_run_time": "/Date(1792738554000)/",
-      "last_task_result": 5,
+      "last_run_time": "/Date(1792741254000)/",
+      "last_task_result": 0,
       "missed_runs": 0,
-      "next_run_time": "/Date(1792739453000)/"
+      "next_run_time": "/Date(1792742153000)/"
     },
     "note": "read through the OS scheduler; never through the repository's install.json",
     "principal": {
@@ -181,10 +182,10 @@
       "enabled": null,
       "installed": true,
       "last_run": {
-        "last_run_time": "/Date(1792738021000)/",
-        "last_task_result": 8,
+        "last_run_time": "/Date(1792740721000)/",
+        "last_task_result": 1,
         "missed_runs": 0,
-        "next_run_time": "/Date(1792738920000)/"
+        "next_run_time": "/Date(1792741620000)/"
       },
       "note": "read through the OS scheduler; never through the repository's install.json",
       "principal": {
