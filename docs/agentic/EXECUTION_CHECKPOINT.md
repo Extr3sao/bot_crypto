@@ -1914,3 +1914,74 @@ PY="$MAIN/.venv/Scripts/python.exe"
 "$PY" scripts/exp004a_wp051_02j_verify.py                 # 15/15 PASS
 schtasks /query /tn TradingAgentic-EDGE04-Alarm /v        # último resultado 0
 ```
+
+---
+
+## 2026-10-23 · WP-051-02K — el déficit tiene dueño, y no es la campaña
+
+**Objetivo:** resolver el bloqueo `capacity=INSUFFICIENT` de 02J y demostrar que la campaña puede
+continuar sin perder trazabilidad. **Rama:** `wp/exp004a-051-02h` · **HEAD de partida:** `7f9758d9`.
+
+**Hecho**
+
+1. **Capacidad re-medida con dos instrumentos** (`shutil` y `GetDiskFreeSpaceExW`, delta 0 B):
+   1,4558 GiB libres a las 13:39Z, 1,4985 GiB tras la limpieza propia. Déficit **13,066 GiB**.
+   **El volumen perdió 1,8 GiB entre 11:32Z y 13:39Z**: el margen de 8 días de 02J se está gastando.
+2. **Presupuesto recalculado, no redefinido:** 11 días completos, p90 12,467 GiB, suelo 2 GiB,
+   huella propia 0,0967 GiB → **14,564 GiB** (02J: 14,565). El criterio sigue siendo p90 + suelo +
+   propio; el máximo se publica al lado y no se usa.
+3. **`DEF-02K-01` (nuevo, abierto):** el veredicto de 02J hacía `and not refused_total` con 167
+   rechazos históricos inmutables, así que **nunca** podía devolver `SUFFICIENT`. 02K separa los dos
+   hechos (el presupuesto decide capacidad; los rechazos son historia) sin tocar el umbral.
+4. **Inventario del disco entero:** 9.155 filas en 139 s, sin truncar, saltando *junctions*. La
+   partición de primer nivel explica **230,38 de 236,09 GiB (97,58 %)**; los 5,70 GiB restantes están
+   en árboles ilegibles (`System Volume Information`, `Recovery`, ficheros bloqueados).
+5. **La campaña no es el consumidor:** store completo **14 MB**, crecimiento **1,15 MB/día**
+   (0,0967 GiB en 90 días) = **0,04 % del volumen**. Los 4–15 GiB/día son del host: `python.exe`,
+   `bun.exe`, `SearchIndexer.exe`, `chrome.exe` — y ningún árbol vigilado crece.
+6. **Liberado: 61.520.363 B (58,7 MiB) en 209 directorios**, todos cachés byte-compiladas sin
+   seguimiento, en este worktree y en el repo de la campaña. Es el 0,5 % del déficit y se declara
+   como tal.
+7. **Petición exacta, sin administrador y reversible:** 5 rutas, **14,16 GiB** contra un objetivo de
+   14,066 (déficit + 1 GiB de holgura) — `ms-playwright` 3,27 · `hermes` 2,00 · `.cache` 1,30 ·
+   `%LOCALAPPDATA%\Temp` 6,59 · `Downloads\bot_crypto_004g` 0,99 (con `git bundle` previo).
+   Deliberadamente **no** pedidos: `pagefile.sys`, WSL (exportar 6 GiB no cabe en 1,5), `C:\ESD`,
+   Msty, perfiles de Edge/OneDrive y los documentos del usuario (`NEVER_OFFER` por ruta).
+8. **Continuidad probada:** `STORE_INTEGRITY` **19/19** — prefijos de los 5 append-only intactos, los
+   11 shards write-once con sha256 **y** `mtime_ns` idénticos, contrato de `health.json` igual.
+   **0** filas re-fetcheadas, **0** re-timbradas, `git diff` del contrato vacío.
+9. **Umbral operativo ya cruzado, medido:** 167 rechazos históricos, **29 hoy**, el último
+   `13:40:55Z` con 1.547.677.696 B. El guard rechaza ticks antes de escribir sin espacio: no hubo que
+   inventar un umbral.
+10. **WP-051-02J registrado en Git con su veredicto real `BLOCKED`** (`e508f3c9`), alcance
+    controlado: watchdog, toast, recurso, verificador, tests y artefactos del paquete.
+11. **Verificación independiente 18/18 PASS**, exit 0, sin importar el constructor: re-mide el
+    volumen, **re-deriva el presupuesto del log del observador** (delta 0 B), re-hashea los shards,
+    re-ejecuta la suite (32 passed) y lee el commit de 02J en Git.
+
+**Pendiente / bloqueado**
+
+- **`DEF-02I-01` sigue `BLOCKED`:** 13,066 GiB de déficit. La solución existe, está medida y no
+  necesita administrador; necesita la autorización del dueño del host (`AUTHORISATION_REQUEST.json`).
+- **`DEF-02I-07` ABIERTO:** `LogonType=Interactive` sin probar (requiere administrador).
+- **`DEF-02I-08` ABIERTO:** el directorio `tests/unit/research` sigue roto por el import preexistente
+  de `test_exp004a_wp051_02g.py`; las suites de estos paquetes se ejecutan por fichero.
+- **`ALERT_REMOTE` ABIERTO:** sin webhook ni SMTP; una avería nocturna se registra, no se entrega.
+- **`DEF-02K-01` ABIERTO:** composición del veredicto de 02J.
+- **No ejecutado:** ninguna operación con privilegios, ningún borrado fuera de la familia del repo,
+  ningún re-fetch y ningún re-timestamp.
+
+**Reanudación verificable**
+
+```bash
+cd "/c/Users/GVLLFR0035/Downloads/bot-freebuff-exp004a-02h"
+PY="/c/Users/GVLLFR0035/Downloads/bot freebuff/.venv/Scripts/python.exe"
+
+"$PY" scripts/exp004a_wp051_02k_capacity.py --before          # 2 instrumentos, déficit
+"$PY" scripts/exp004a_wp051_02k_capacity.py --inventory       # ~140 s, 9.155 filas
+"$PY" scripts/exp004a_wp051_02k_capacity.py --clean           # solo cachés propios sin seguimiento
+"$PY" scripts/exp004a_wp051_02k_capacity.py --after           # 19/19 integridad del store
+"$PY" scripts/exp004a_wp051_02k_capacity.py --report --final  # BLOCKED
+"$PY" scripts/exp004a_wp051_02k_verify.py                     # 18/18 PASS, exit 0
+"$PY" -m pytest tests/unit/research/test_exp004a_wp051_02k.py -q   # 32 passed
+```

@@ -1,0 +1,94 @@
+{
+  "capacity": {
+    "after_free_gib": 1.4985,
+    "before_free_gib": 1.4558,
+    "free_gib": 1.4985,
+    "recovered_by_this_package_gib": 0.0573,
+    "required_gib": 14.564,
+    "shortfall_gib": 13.066,
+    "verdict": "INSUFFICIENT"
+  },
+  "continuity": {
+    "campaign_observed_while_blocked": true,
+    "contract_unchanged": true,
+    "rows_refetched": 0,
+    "rows_retimestamped": 0,
+    "store_integrity": "PASS",
+    "store_integrity_checks": 19,
+    "store_integrity_failed": 0
+  },
+  "generated_at_utc": "2026-10-23T13:45:41Z",
+  "head": "e508f3c9d54eebdb7741cd975a5f0a5fd1c98c26",
+  "open_defects": [
+    {
+      "id": "DEF-02I-07",
+      "status": "OPEN",
+      "why": "LogonType=Interactive is still unproven: proving it needs administrator rights"
+    },
+    {
+      "id": "DEF-02I-08",
+      "status": "OPEN",
+      "why": "running the tests/unit/research directory still breaks on a pre-existing import"
+    },
+    {
+      "id": "ALERT_REMOTE",
+      "status": "OPEN",
+      "why": "no remote channel: an overnight failure is recorded on this host, not delivered"
+    },
+    {
+      "id": "DEF-02K-01",
+      "status": "OPEN",
+      "why": "the 02J capacity verdict folds 162 historical refusals into a present-tense decision, so it could never return SUFFICIENT even with a full volume; 02K keeps the arithmetic and reports refusals as history instead of changing the criterion"
+    }
+  ],
+  "package": "WP-051-02K",
+  "recovery_ask": {
+    "deleted_without_authorisation": 61520363,
+    "gap_gib": 13.066,
+    "items": [
+      "playwright-browsers",
+      "hermes-tooling-cache",
+      ".cache-tooling-cache",
+      "scratch-temp",
+      "worktree-bot_crypto_004g"
+    ],
+    "needs_admin": false,
+    "target_gib": 14.066,
+    "total_gib": 14.16
+  },
+  "schema_version": "EXP004A_WP051_02K_CAPACITY_V1",
+  "tests": {
+    "command": "python -m pytest tests/unit/research/test_exp004a_wp051_02k.py -q",
+    "covers": [
+      "a pass needs the whole p90 budget, never a fraction of it",
+      "p90 is the budget and the maximum is only reported",
+      "a refusal is history, not a present-tense capacity decision",
+      "appends keep their prefix; rewrites, shrinks and moved shards are caught",
+      "a foreign tree is never SAFE_OWNED; a recent write, a tracked cache and an unanswerable git are protected",
+      "document folders and profile roots are never candidates",
+      "only experiment worktrees may be offered for bundling",
+      "the ask carries a 1 GiB margin, never counts a parent and its child twice, and is cheapest-first"
+    ],
+    "duration_seconds": 1.2,
+    "exit_code": 0,
+    "failed": 0,
+    "generated_at_utc": "2026-10-23T13:44:23Z",
+    "passed": 32,
+    "schema_version": "EXP004A_WP051_02K_TESTS_V1",
+    "skipped": 0,
+    "status": "PASS",
+    "stdout_tail": [
+      "................................                                         [100%]",
+      "32 passed in 0.58s"
+    ],
+    "suite_sha256": "a0e78131e12b98c79d8f6873b83a8f83d6d255f9efdcd90523770f36666f487b"
+  },
+  "verdict": "BLOCKED",
+  "verdict_note": "BLOCKED is the only honest verdict: the volume holds 1.5 GiB against a 14.6 GiB budget, and every byte that could close the gap belongs to an owner who has not been asked yet. The ask is exact, reversible where possible and needs no administrator.",
+  "verification": {
+    "failed": 0,
+    "passed": 18,
+    "verdict": "PASS"
+  },
+  "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h"
+}
