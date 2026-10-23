@@ -31,7 +31,7 @@ from pathlib import Path
 
 import pytest
 
-from trading_bot.ops import single_writer
+from trading_bot.ops import single_writer, windowless
 from trading_bot.ops.single_writer import (
     LockLost,
     LockRefused,
@@ -130,7 +130,9 @@ def _record(path: Path, **overrides: object) -> dict[str, object]:
 
 
 def _spawn(script: str, *args: Path) -> subprocess.Popen[bytes]:
-    return subprocess.Popen(
+    #: ``windowless.spawn`` is the repository's only launcher: a child that can draw a
+    #: console is a defect the ops audit flags, and these tests must not introduce one.
+    return windowless.spawn(
         [sys.executable, "-c", script, *(str(arg) for arg in args)],
         cwd=str(REPO),
         stdout=subprocess.PIPE,
@@ -321,6 +323,23 @@ def test_only_one_of_many_processes_reclaims_the_same_lock(tmp_path: Path) -> No
     stored = json.loads(path.read_text(encoding="utf-8"))
     assert stored["token"] == winners[0]["token"], "the file names the one winner"
     assert int(stored["fence"]) == int(winners[0]["fence"])
+
+
+def test_repeated_recovery_has_no_second_effect_and_keeps_the_fence_monotonic(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "STREAM.jsonl.lock"
+    _record(path, pid=_dead_pid_or_skip(), process_start_ms=None, fence=4)
+
+    first = reclaim_abandoned(path)
+    assert first is not None and first["fence"] == 5
+    #: The lock is gone now, so a second recovery is a no-op: it cannot "recover again" and
+    #: it cannot invent a second evidence record for one crash.
+    assert reclaim_abandoned(path) is None
+
+    again = SingleWriter(path, purpose="after-recovery").acquire()
+    assert again["status"] == "ACQUIRED"
+    assert again["fence"] == 6, "the fence counts acquisitions, so no owner can reuse one"
 
 
 def test_a_crash_during_recovery_leaves_a_recoverable_arbiter(tmp_path: Path) -> None:

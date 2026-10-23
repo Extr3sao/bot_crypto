@@ -37,6 +37,7 @@ REPO = Path(__file__).resolve().parents[1]
 if str(REPO / "src") not in sys.path:
     sys.path.insert(0, str(REPO / "src"))
 
+from trading_bot.ops import windowless  # noqa: E402
 from trading_bot.ops.single_writer import SingleWriter, diagnose_lock  # noqa: E402
 from trading_bot.vision.ledger import read_entries, verify_chain  # noqa: E402
 
@@ -79,14 +80,18 @@ def start_session(
         argv.append("--resume")
     log.parent.mkdir(parents=True, exist_ok=True)
     handle = log.open("wb")
-    #: A process group, so the kill takes the interpreters the launcher started with it.
-    return subprocess.Popen(
+    #: A process group, so the kill takes the interpreters the launcher started with it, and
+    #: the shared launcher, because a child that can draw a console is an ops defect here.
+    process = windowless.spawn(
         argv,
         cwd=str(REPO),
         stdout=handle,
         stderr=subprocess.STDOUT,
-        start_new_session=os.name != "nt",
+        new_group=True,
     )
+    #: The child holds its own duplicated handle; ours is not needed once it exists.
+    handle.close()
+    return process
 
 
 def kill_tree(proc: subprocess.Popen[bytes]) -> dict[str, Any]:

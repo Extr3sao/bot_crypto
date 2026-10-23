@@ -29,6 +29,7 @@ import pytest
 
 from trading_bot.config.settings import load_settings
 from trading_bot.market_data.minute_collector import MINUTE_MS, KlinePage
+from trading_bot.ops import windowless
 from trading_bot.vision import prospective
 from trading_bot.vision.ledger import read_entries, verify_chain
 from trading_bot.vision.prospective import (
@@ -103,7 +104,9 @@ class _Venue:
 def _dead_pid() -> int:
     """A pid that existed and no longer does: spawned, reaped, then asked again."""
 
-    proc = subprocess.Popen([sys.executable, "-c", "pass"])
+    #: ``windowless.spawn`` is this repository's only launcher: a child that can draw a
+    #: console is an ops defect the audit flags.
+    proc = windowless.spawn([sys.executable, "-c", "pass"], cwd=str(REPO))
     proc.wait()
     return int(proc.pid)
 
