@@ -261,3 +261,38 @@ def test_a_crashed_session_resumes_by_reclaiming_its_locks(
     written = json.loads((out / "LOCKS_RECLAIMED.json").read_text(encoding="utf-8"))
     assert {item["pid"] for item in written["locks"]} == {pid}
     assert "ORDER" not in {row["kind"] for row in rows}
+
+
+def test_a_crash_inside_a_cycle_leaves_a_lock_the_resume_reclaims(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The stream lock was never the only one: a cycle's ledger has its own.
+
+    A crash during cycle N leaves ``cycles/cycle-NNNN/ledger.jsonl.lock``, and the resumed
+    session reuses that directory. Before this test's subject existed, the stream was
+    reclaimed and the run then died on the cycle lock it never looked at.
+    """
+
+    out = tmp_path / "session"
+    pid = _dead_pid_or_skip()
+    _lock(out / "cycles" / "cycle-0001" / "ledger.jsonl.lock", pid)
+
+    clock = _Clock(T0 + 300 * MINUTE_MS)
+    venue = _Venue(clock)
+    monkeypatch.setattr(prospective, "_default_source", lambda: venue)
+
+    summary = _build(tmp_path, out=out, clock=clock, root=_fake_root(tmp_path), max_cycles=1).run()
+
+    assert summary["cycles_executed"] == 1
+    rows = [row["entry"] for row in read_entries(out / "STREAM.jsonl")]
+    reclaimed = [
+        row
+        for row in rows
+        if row["kind"] == "LOCK_RECLAIMED" and row.get("scope") == "cycle_ledger"
+    ]
+    assert len(reclaimed) == 1
+    assert reclaimed[0]["cycle"] == 1
+    assert reclaimed[0]["locks"][0]["reason"] == "OWNER_PROCESS_DEAD"
+    assert reclaimed[0]["locks"][0]["pid"] == pid
+    assert verify_chain(out / "cycles" / "cycle-0001" / "ledger.jsonl")["ok"] is True
+    assert verify_chain(out / "STREAM.jsonl")["ok"] is True
