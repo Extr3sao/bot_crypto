@@ -192,10 +192,20 @@ A unit test is never counted here as a production proof: the rows above separate
 - **`DEF-02H-01` — the volume is the experiment's real risk, and it is not fixed.** Free space
   oscillated between `0.02` and `8.2 GiB` inside six hours against a `2 GiB` critical floor. The
   lane itself owns `14 228 034` bytes of its `268 435 456` byte budget, so the pressure is the
-  host's, not the lane's. **Nothing in this package frees disk space** — that is an owner decision
-  on a shared volume, and deleting another lane's evidence is not this package's to do. Until it is
-  addressed, expect more refused ticks and more lost days; the coverage floor survives one or two
-  such days, not thirty.
+  host's, not the lane's.
+
+  **Correction, added after the fact because it happened after this section was first written:**
+  at `06:57Z` the volume reached **0 MB free** — below anything the guard was designed for, since a
+  tick that cannot write its own refusal has nothing left to say. This session then reclaimed only
+  its **own** scratch: `%TEMP%/pytest-of-GVLLFR0035` (**528 MB**, its test-run leftovers) and the
+  worktree's `__pycache__` (**19 MB**). Free space went `0 → 523 MB` at `07:00:00Z` and back to
+  **22 MB at `07:00:23Z`**, so the reclamation bought minutes, not coverage: it is a quarter of the
+  2 GiB floor and it did not clear it. Measured consumers at that moment, none of them this
+  project: `freebuff-desktop/projects/*/desktop-v2.db` 244 MB, `WebCacheV01.dat` 83 MB, Discord
+  cache 66 MB, Cisco Spark store 65 MB, Claude cache 34 MB, plus `data/forward/edge05/watchdog.jsonl`
+  at 38 MB (another lane's log). **Deleting other applications' caches or another lane's evidence is
+  an owner decision and was not done here.** Until the volume is fixed, expect more refused ticks
+  and more lost days; the coverage floor survives one or two such days, not thirty.
 - **`DEF-02H-02` — C3 is conditional on an interactive logon.** The task principal is
   `InteractiveToken`: after a reboot the task resumes only when that user signs in. Changing it to
   "run whether the user is logged on" needs administrator rights and was **not** performed. This is
@@ -245,10 +255,14 @@ and the one number that would have made the phase look whole — `6480` — appe
 
 ## 11. What happens next
 
-1. **Before the next hour passes:** the owner decides on the volume in `DEF-02H-01`. Every hour at
-   99 % capacity is another chance to lose a day that cannot be recovered. `%TEMP%` alone held
-   **8.3 GB** of reclaimable scratch at audit time; `data/raw` holds 189 MB and `data/forward`
-   82 MB, and none of it is this package's to delete.
+1. **Immediately, and it is not an engineering problem:** the volume is at **22 MB free** and the
+   lane refuses below 2 GiB, so every tick until the space is reclaimed costs coverage that cannot
+   be bought back. The fastest safe win is the owner's: `%TEMP%` held **8.3 GB** before this session
+   cleared its own 528 MB, and the application caches named in `DEF-02H-01` hold a further ~0.5 GB.
+2. **Then tomorrow, without a human step:** if free space is above the floor before
+   `2026-10-24T00:00Z`, that day's grid starts clean and `TradingAgentic-EDGE04-Forward` fills it at
+   the same cadence it kept all night; if it is not, `2026-10-24` joins `2026-10-23` on the lost list
+   and the ceiling drops with it.
 2. **Daily, without a human step:** `TradingAgentic-EDGE04-Forward` keeps ticking; tomorrow's shard
    is written by the same publication step that wrote today's, and `edge04_verify.py` judges it.
 3. **At the end of the window:** the coverage verdict is phrased against the 0.9 floor and against
