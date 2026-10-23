@@ -19,10 +19,10 @@
       "sha256": "5a169314d2c6bf1c0ab9ad7b02b45ac48f3b12109a5476e0233535dc895904d3"
     },
     {
-      "bytes": 4333,
-      "git_blob_sha": "f6131454aae981b8899439d80572ed6d2cbbf43e",
+      "bytes": 5345,
+      "git_blob_sha": "2d79d63046bbd473fedea03bdf8a5e8d4b8ab6a4",
       "path": "docs/agentic/exp004a/wp051_02i/INDEPENDENT_VERIFICATION.json",
-      "sha256": "27e922218abf307f972160664d110bbf81457f180c4fc975e5ddc1cacc05a9be"
+      "sha256": "3d8d6136e7ce02fbdefc55ca54c8acbf97226a33768751e9ee5b40f05f4ba0bb"
     },
     {
       "bytes": 8397,
@@ -67,24 +67,24 @@
       "sha256": "9cbeaaffdd7aa82d0a0ea48bf5af06759c58cd5436d9e37043eddf8a854697e7"
     },
     {
-      "bytes": 25920,
-      "git_blob_sha": "788a999b7f05eca960144e49c905a4cfc0510c93",
+      "bytes": 27509,
+      "git_blob_sha": "d007d65757e76b0f6ec9a8c4de28bc4cf3234422",
       "path": "scripts/exp004a_wp051_02i_verify.py",
-      "sha256": "20240d38e7249327093bff1709d268cbe0a93ed40db848c5bddaa25d080886ec"
+      "sha256": "0adb54a3ac484eb912657005d1d909e44a8e5ee09df88f91243146d5d56dad68"
     },
     {
-      "bytes": 17131,
-      "git_blob_sha": "22e09f9d8d09c8d210a8805b084ffa98037577d1",
+      "bytes": 18404,
+      "git_blob_sha": "91f112e0f1c1115bb0aefcbe5e0ff309edd422e7",
       "path": "tests/unit/research/test_exp004a_wp051_02i.py",
-      "sha256": "defe4df952e67c9c041f13a7a96089d3c173d113f1e5f596928377b5cdab53bd"
+      "sha256": "f7bd89208c7b3cf80686374d25d05a7c246a71567bf3f73c56ca140895f2acd4"
     }
   ],
   "entry_count": 13,
   "hash_semantics": "sha256 hashes the bytes in this checkout; git_blob_sha is the Git object id at HEAD. They are different magnitudes and are never presented as the same value.",
-  "head": "65e33c1c984d1c681eeb59b8e154ef6ec7a99057",
+  "head": "193abbccd0faa725624769be7e33f1794597f531",
   "missing_git_blob": [],
   "not_a_certification": "a manifest says what is in the package. It does not say the package is right, and it promotes nothing.",
   "package": "WP-051-02I",
   "schema_version": "EXP004A_WP051_02I_STORAGE_V1",
-  "sealed_at_utc": "2026-10-23T11:02:00Z"
+  "sealed_at_utc": "2026-10-23T11:04:41Z"
 }
