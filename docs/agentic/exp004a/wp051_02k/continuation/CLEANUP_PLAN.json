@@ -1,0 +1,267 @@
+{
+  "budget": {
+    "basis": "02J p90 drawdown 12.467 GiB + 2 GiB protection floor + 0.0972 GiB campaign growth over the 90-day window; frozen because the store that produced it is absent in this tree",
+    "recomputable": false,
+    "required_bytes": 15637975925,
+    "required_gib": 14.564,
+    "source": "FROZEN_02J_P90",
+    "why_not_recomputed": "no readings at C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl (store absent or empty); the figure is carried, not reduced"
+  },
+  "generated_at_utc": "2026-10-23T18:43:57Z",
+  "package": "WP-051-02K",
+  "refused_by_policy": [
+    {
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\hermes",
+      "why": "owner did not authorise this tree"
+    },
+    {
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot_crypto_004g",
+      "why": "owner did not authorise this worktree"
+    }
+  ],
+  "schema_version": "EXP004A_WP051_02K_CONTINUATION_V1",
+  "state": "RECONNAISSANCE_AFTER_CLEANUP",
+  "state_note": "this file describes what is left to free now; what was planned and actually removed is recorded in CLEANUP_EVIDENCE.json, and the two differ by design once the cleanup has run",
+  "targets": [
+    {
+      "bytes_reclaimable": 0,
+      "consumer_scan": {
+        "manifests": 9,
+        "roots": [
+          "C:\\Users\\GVLLFR0035\\node_modules",
+          "C:\\Users\\GVLLFR0035\\AppData\\Local\\npm-cache",
+          "C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs",
+          "C:\\Users\\GVLLFR0035\\AppData\\Local\\OpenAI",
+          "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\npm",
+          "C:\\Users\\GVLLFR0035\\.cache",
+          "C:\\Users\\GVLLFR0035\\.vscode\\extensions"
+        ],
+        "truncated": false
+      },
+      "consumers": [
+        {
+          "exists": false,
+          "link": "03ad074dcbee90d4c670623869ae78412611af2e",
+          "status": "STALE_LINK",
+          "target": "C:\\Users\\GVLLFR0035\\AppData\\Local\\uv\\cache\\archive-v0\\1e_KVrR536w5ejck\\Lib\\site-packages\\playwright\\driver\\package"
+        },
+        {
+          "exists": true,
+          "link": "23a5d188dd5ca1af0fb5bc90a18b9f220ffbcb35",
+          "requires": [
+            "1187",
+            "1357",
+            "1485",
+            "1490",
+            "2203"
+          ],
+          "status": "CONSUMER",
+          "target": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\playwright\\driver\\package"
+        },
+        {
+          "exists": true,
+          "link": "255c8e6500da2f2881d373cec57158664ab95496",
+          "requires": [
+            "1187",
+            "1357",
+            "1485",
+            "1490",
+            "2203"
+          ],
+          "status": "CONSUMER",
+          "target": "C:\\Users\\GVLLFR0035\\sondas_apps\\venv\\Lib\\site-packages\\playwright\\driver\\package"
+        },
+        {
+          "exists": false,
+          "link": "3d7f453e8de56cdc61b5eeb4c54b509da32d4182",
+          "status": "STALE_LINK",
+          "target": "C:\\Users\\GVLLFR0035\\Downloads\\daily_stock_analysis-main\\daily_stock_analysis-main\\apps\\dsa-web\\node_modules\\playwright-core"
+        },
+        {
+          "exists": false,
+          "link": "6c44415ccf452bf357ac56dc58f50683e2c80ad0",
+          "status": "STALE_LINK",
+          "target": "C:\\Users\\GVLLFR0035\\Downloads\\Deures Dylan\\DylanRepas-worktrees\\RFC-014-RHYTHM\\.venv\\Lib\\site-packages\\playwright\\driver\\package"
+        },
+        {
+          "exists": true,
+          "link": "8887e3656a92fdc6743a69c41d445837e6395dd7",
+          "requires": [
+            "1187",
+            "1357",
+            "1485",
+            "1490",
+            "2203"
+          ],
+          "status": "CONSUMER",
+          "target": "C:\\Users\\GVLLFR0035\\Saga_validació\\Saga_validacio\\.venv\\Lib\\site-packages\\playwright\\driver\\package"
+        },
+        {
+          "exists": true,
+          "link": "dea0f8401d0c7b2265c90e62dfd053cf7e1404ca",
+          "requires": [
+            "1194",
+            "1371",
+            "1490",
+            "1495",
+            "2215"
+          ],
+          "status": "CONSUMER",
+          "target": "C:\\Users\\GVLLFR0035\\node_modules\\playwright-core"
+        }
+      ],
+      "kept": [
+        {
+          "bytes": 359790911,
+          "name": "chromium-1187",
+          "revision": "1187",
+          "why": "installed consumer asks for it"
+        },
+        {
+          "bytes": 360723065,
+          "name": "chromium-1194",
+          "revision": "1194",
+          "why": "installed consumer asks for it"
+        },
+        {
+          "bytes": 412504847,
+          "name": "chromium-1208",
+          "revision": "1208",
+          "why": "installed consumer asks for it"
+        },
+        {
+          "bytes": 212913872,
+          "name": "chromium_headless_shell-1187",
+          "revision": "1187",
+          "why": "installed consumer asks for it"
+        },
+        {
+          "bytes": 212289492,
+          "name": "chromium_headless_shell-1194",
+          "revision": "1194",
+          "why": "installed consumer asks for it"
+        },
+        {
+          "bytes": 270257465,
+          "name": "chromium_headless_shell-1208",
+          "revision": "1208",
+          "why": "installed consumer asks for it"
+        },
+        {
+          "bytes": 3517342,
+          "name": "ffmpeg-1011",
+          "revision": null,
+          "why": "revision is not a browser build"
+        },
+        {
+          "bytes": 305129350,
+          "name": "firefox-1490",
+          "revision": "1490",
+          "why": "installed consumer asks for it"
+        },
+        {
+          "bytes": 306876180,
+          "name": "firefox-1495",
+          "revision": "1495",
+          "why": "installed consumer asks for it"
+        },
+        {
+          "bytes": 167101778,
+          "name": "webkit-2203",
+          "revision": "2203",
+          "why": "installed consumer asks for it"
+        },
+        {
+          "bytes": 169090113,
+          "name": "webkit-2215",
+          "revision": "2215",
+          "why": "installed consumer asks for it"
+        },
+        {
+          "bytes": 258560,
+          "name": "winldd-1007",
+          "revision": null,
+          "why": "revision is not a browser build"
+        }
+      ],
+      "key": "playwright-obsolete",
+      "obsolete": [],
+      "required_revisions": [
+        "1187",
+        "1194",
+        "1200",
+        "1208",
+        "1217",
+        "1226",
+        "1234",
+        "1289",
+        "1295",
+        "1357",
+        "1371",
+        "1380",
+        "1401",
+        "1417",
+        "1427",
+        "1433",
+        "1485",
+        "1490",
+        "1493",
+        "1495",
+        "1497",
+        "1504",
+        "1505",
+        "1509",
+        "1511",
+        "1521",
+        "1526",
+        "1528",
+        "1538",
+        "1542",
+        "2203",
+        "2215",
+        "2227",
+        "2248",
+        "2272",
+        "2300",
+        "2336",
+        "920619"
+      ],
+      "root": "C:\\Users\\GVLLFR0035\\AppData\\Local\\ms-playwright",
+      "rule": "a revision is retireable only when no installed consumer -- in .links or in any browsers.json found under the scanned build roots -- asks for it"
+    },
+    {
+      "bytes_preserved_as_evidence": 4341096877,
+      "bytes_reclaimable": 50331648,
+      "candidate_files": 7,
+      "cutoff_utc": "2026-10-16T18:43:49Z",
+      "key": "temp-stale",
+      "preserved_files": 16779,
+      "root": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp"
+    },
+    {
+      "bytes_reclaimable": 0,
+      "entries": [
+        {
+          "bytes": 1394267913,
+          "eligible": false,
+          "in_use_handles": [],
+          "path": "C:\\Users\\GVLLFR0035\\.cache\\codex-runtimes",
+          "why": "runtime of a tool that is running (codex-computer-use-swift.exe#28092, codex-windows-sandbox-service.exe#38040, codex.exe#14028): regenerable, but not provably unused, so not deleted"
+        }
+      ],
+      "key": "cache-regenerable",
+      "root": "C:\\Users\\GVLLFR0035\\.cache"
+    }
+  ],
+  "volume": {
+    "at_utc": "2026-10-23T18:43:57Z",
+    "free_bytes": 20818083840,
+    "free_bytes_kernel32": 20818083840,
+    "free_gib": 19.3884,
+    "instruments_agree": true,
+    "path": "C:/",
+    "total_bytes": 255041990656,
+    "used_bytes": 234223906816,
+    "used_percent": 91.84
+  }
+}

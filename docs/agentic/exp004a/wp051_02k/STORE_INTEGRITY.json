@@ -1,0 +1,118 @@
+{
+  "checks": [
+    {
+      "detail": "1062 -> 1062 B, 3 -> 3 lines",
+      "id": "APPEND_ONLY_PREFIX_INTACT",
+      "status": "PASS",
+      "subject": "ALERT_LEDGER.jsonl"
+    },
+    {
+      "detail": "2316 -> 2316 B, 4 -> 4 lines",
+      "id": "APPEND_ONLY_PREFIX_INTACT",
+      "status": "PASS",
+      "subject": "WATCHDOG_EVENTS.jsonl"
+    },
+    {
+      "detail": "20820 -> 20820 B, 63 -> 63 lines",
+      "id": "APPEND_ONLY_PREFIX_INTACT",
+      "status": "PASS",
+      "subject": "alerts.jsonl"
+    },
+    {
+      "detail": "4247224 -> 4249076 B, 940 -> 941 lines",
+      "id": "APPEND_ONLY_PREFIX_INTACT",
+      "status": "PASS",
+      "subject": "runs.jsonl"
+    },
+    {
+      "detail": "187029 -> 187029 B, 751 -> 751 lines",
+      "id": "APPEND_ONLY_PREFIX_INTACT",
+      "status": "PASS",
+      "subject": "slots.jsonl"
+    },
+    {
+      "detail": "sha256 9bfd37e08e96 -> 9bfd37e08e96",
+      "id": "WRITE_ONCE_UNCHANGED",
+      "status": "PASS",
+      "subject": "2026-10-13.json"
+    },
+    {
+      "detail": "sha256 ebe0da1bdaf5 -> ebe0da1bdaf5",
+      "id": "WRITE_ONCE_UNCHANGED",
+      "status": "PASS",
+      "subject": "2026-10-14.json"
+    },
+    {
+      "detail": "sha256 e4c1d3e187a0 -> e4c1d3e187a0",
+      "id": "WRITE_ONCE_UNCHANGED",
+      "status": "PASS",
+      "subject": "2026-10-15.json"
+    },
+    {
+      "detail": "sha256 62cf5811f8a0 -> 62cf5811f8a0",
+      "id": "WRITE_ONCE_UNCHANGED",
+      "status": "PASS",
+      "subject": "2026-10-16.json"
+    },
+    {
+      "detail": "sha256 18fc5d911b31 -> 18fc5d911b31",
+      "id": "WRITE_ONCE_UNCHANGED",
+      "status": "PASS",
+      "subject": "2026-10-17.json"
+    },
+    {
+      "detail": "sha256 38ca7acbd4c1 -> 38ca7acbd4c1",
+      "id": "WRITE_ONCE_UNCHANGED",
+      "status": "PASS",
+      "subject": "2026-10-18.json"
+    },
+    {
+      "detail": "sha256 1175aaaaad94 -> 1175aaaaad94",
+      "id": "WRITE_ONCE_UNCHANGED",
+      "status": "PASS",
+      "subject": "2026-10-19.json"
+    },
+    {
+      "detail": "sha256 8542b1fb4a7d -> 8542b1fb4a7d",
+      "id": "WRITE_ONCE_UNCHANGED",
+      "status": "PASS",
+      "subject": "2026-10-20.json"
+    },
+    {
+      "detail": "sha256 b013c482351c -> b013c482351c",
+      "id": "WRITE_ONCE_UNCHANGED",
+      "status": "PASS",
+      "subject": "2026-10-21.json"
+    },
+    {
+      "detail": "sha256 885defc4951b -> 885defc4951b",
+      "id": "WRITE_ONCE_UNCHANGED",
+      "status": "PASS",
+      "subject": "2026-10-22.json"
+    },
+    {
+      "detail": "sha256 3267c8466224 -> 3267c8466224",
+      "id": "WRITE_ONCE_UNCHANGED",
+      "status": "PASS",
+      "subject": "2026-10-23.json"
+    },
+    {
+      "id": "REWRITTEN_CONTRACT_UNCHANGED",
+      "status": "PASS",
+      "subject": "coverage.json"
+    },
+    {
+      "id": "REWRITTEN_CONTRACT_UNCHANGED",
+      "status": "PASS",
+      "subject": "health.json"
+    },
+    {
+      "id": "REWRITTEN_CONTRACT_UNCHANGED",
+      "status": "PASS",
+      "subject": "resource_budget.json"
+    }
+  ],
+  "failed": 0,
+  "passed": 19,
+  "verdict": "PASS"
+}
