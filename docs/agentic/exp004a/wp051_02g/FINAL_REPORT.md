@@ -29,6 +29,7 @@
 | `PAPER_VALIDATION` | **NOT_ATTEMPTED** |
 | `PROMOTION` | **NO_PROMOTION** |
 | `FALSE_SUCCESS` | **0** |
+| `OPERATIONAL_BLOCKER` | **`DEF-02G-10`** — the forward observer is stale (last bar `2026-10-22T18:00Z`); the phase cannot accumulate admissible bars until it resumes |
 | **Overall** | **PARTIAL** — the mechanism is delivered and verified on real data; the window's coverage is by construction not yet earned |
 
 `CAPTURE_VERIFIED` and `COVERAGE_COMPLETE` are two different sentences and this package keeps them
@@ -355,6 +356,9 @@ package, which is why the suite is reported with the path pinned.
 | `DEF-02G-08` | a sealed phase claim that says `PENDING_WINDOW_OPEN` stops verifying once the window opens: the verifier recomputes the status at *its own* clock and returns `FAIL`/`COVERAGE_RECOMPUTED` (`PENDING` ≠ `PENDING_WINDOW_OPEN`) | **OBSERVED, not worked around.** The refusal is the control doing its job — an expired phrase must not be re-certified — but it makes a historical claim dependent on `--as-of` to reproduce. The fix is a verdict word for "this claim was true at its own instant", which is a contract change and belongs to the next declaration, not to a patch under this one. §5 records both runs. |
 | `DEF-02G-07` | `DECLARATION_COMMIT_PRECEDES_WINDOW` prints the committer's local timestamp (`2026-10-23T00:10:29+02:00`) next to a `Z` window start, which reads as "10 minutes after" until it is converted | **DISPLAY DEFECT, not a control failure.** The comparison itself is done on epoch milliseconds and passes with 1 h 49 min of margin. Fixing the string would change the verifier's blob and break `GENERATOR_BLOB_RECORDED`, so it is reported for the next declaration rather than patched under a frozen one. |
 
+| `DEF-02G-09` | a sealed `sha256` is the hash of the bytes **in this checkout**, and this checkout materialises CRLF (`core.autocrlf=true`), so a manifest written over LF bytes disagrees with itself after a re-checkout | **MEASURED, pre-existing across the experiment.** Re-hashing 02D's 19 sealed artefacts shows 13 disagreements, **all** of them resolved by `CRLF→LF` normalisation: 0 content drift. 02G's own manifest was sealed over the bytes on disk and verifies 29/29 *here*; a fresh clone must use `git -c core.autocrlf=false checkout` or the digests will not match. Not patched, because the fix is a `.gitattributes` policy for the whole repository. |
+| `DEF-02G-10` | the forward observer is **stale**: `data/forward/edge03/1h/{BTC,ETH,SOL}.jsonl` stop at `2026-10-22T18:00:00Z` (last fetched `19:10:58Z`), 11 hourly bars behind the `2026-10-23T05:35Z` clock | **OPEN, operational.** 02E's `FORWARD_OBSERVER_FRESH` fails on all three series. The capture mechanism is idle, not broken — but if the observer does not resume before `2026-10-24T00:00Z`, the bars for `2026-10-23` will arrive with a lag beyond the declared 2 h bound and the day will be **quarantined**, not captured, and 90 quarantined days is 0 % coverage. This is the real next action; §10 says so. |
+
 What could not be run, and is not reported as a pass:
 
 * the **phase window's own coverage** — the window opened at `2026-10-23T00:00:00Z` and stands at
@@ -364,6 +368,27 @@ What could not be run, and is not reported as a pass:
 * **`test_edge16_pit.py`** — collection error at `HEAD` (§7).
 
 ---
+
+### The neighbouring packages, re-run at the evidence commit
+
+`8a4fd2cb`-era runs saw 02E and 02F fail on `GENERATOR_WORKTREE_UNCHANGED` while 02G's files were
+uncommitted. Re-run after commit `c05e6ba7`, with the artefacts written to a scratch directory so
+nothing frozen is touched:
+
+```
+$ PYTHONPATH=src python scripts/exp004a_wp051_02e_preflight.py --out-dir .tmp02g/02e_rerun
+  PASS  STORE_READABLE · STORE_HAS_NO_FUTURE_INGEST · ST6_TAPE_REFUSED · WINDOW_CANNOT_BE_EXTENDED
+  FAIL  SEALED_02D_PACKAGE_INTACT   19 sealed artefacts, 13 drifted  → DEF-02G-09, all 13 are CRLF
+  FAIL  FORWARD_OBSERVER_FRESH      stale series: 1h:BTC, 1h:ETH, 1h:SOL → DEF-02G-10
+  FAIL  NO_DATASET_PUBLISHED        3 datasets + 3 manifests in data/exp004a (the phase-2 files of DEF-02F-01)
+BLOCKED − 10 controls − 4 failed  (exit 2)
+$ PYTHONPATH=src python scripts/exp004a_wp051_02f_runner.py --check --out-dir .tmp02g/02f_check
+eligible_series 1h:BTC, 1h:ETH, 1h:SOL · economic_executions 0 · exit 0
+```
+
+Neither run is 02G's verdict to give, and neither is claimed as one. What the re-run establishes is
+attribution: the three failures are a line-ending policy, a stale observer and phase-2's own frozen
+dataset — **none of them imports or reads a 02G file**, and none is repaired here.
 
 ## 9. Evidence map
 
@@ -409,6 +434,15 @@ after it, `COVERAGE_COMPLETE` only if all 6480 bars are present and admissible. 
 wants to see the mechanism's incompleteness path on real data should run `--check` on any window
 that includes `2026-10-13 … 2026-10-18`: §2's table says what it will find, and it will name it
 rather than capture it.
+
+### The one thing that must happen before `2026-10-24T00:00Z`
+
+Restart the forward observer. Nothing about the mechanism blocks the phase; the data does. The
+store's last bar is `2026-10-22T18:00:00Z` and the bound is two hours, so an observer that comes
+back after `2026-10-23T20:00Z` has already lost the day: those bars will be stored late, the day
+will be written once with `admissible: false`, and the numerator will stay at zero. There is no
+re-fetch path by design (`DEF-02G-03`), which is why this is written as an operational deadline
+rather than a suggestion.
 
 Nothing in this report certifies EXP-004A, moves it towards paper, or claims an edge. The
 deliverable is a mechanism, its evidence, and an honest account of what is still owed.

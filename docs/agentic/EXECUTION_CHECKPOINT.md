@@ -1695,6 +1695,13 @@ base `937a55c3`. Nada de este paquete se escribió en el checkout compartido.
 - **`DEF-02G-02`**: el planificador es un bucle en proceso (`--schedule`); no hay cron ni servicio instalado.
 - **`DEF-02G-08`**: una afirmación sellada con la palabra `PENDING_WINDOW_OPEN` deja de verificar cuando la
   ventana abre. Reproducible con `--as-of`; el arreglo es vocabulario de veredicto en la próxima declaración.
+- **`DEF-02G-10` (bloqueo operativo real):** el observador forward está parado — último bar
+  `2026-10-22T18:00:00Z`, última escritura `19:10:58Z`, 11 barras por detrás del reloj. Si no vuelve antes de
+  `2026-10-24T00:00Z`, el día `2026-10-23` llega con lag > 2 h y se cuarentena entero: 0 % de cobertura y sin
+  re-fetch por diseño. El mecanismo no está roto; los datos no están.
+- **`DEF-02G-09`:** los `sha256` sellados son de los bytes del checkout y aquí se materializa CRLF: 13 de los 19
+  artefactos sellados de 02D "divergen" y **todos** se explican por CRLF→LF (0 deriva de contenido). Un clon
+  nuevo debe usar `git -c core.autocrlf=false checkout`.
 - **No ejecutado:** paper trading, economía, cualquier orden. `economic_executions: 0`, `live_trading: DISABLED`.
 
 **Reanudación verificable**
