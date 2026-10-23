@@ -1,0 +1,165 @@
+{
+  "at_utc": "2026-10-22T22:10:59.706Z",
+  "certification_allowed": false,
+  "certification_blocked_by": "COVERAGE_PENDING_WINDOW_OPEN",
+  "check_count": 20,
+  "checks": [
+    {
+      "detail": "claim says baeffad097f7d937, file hashes to baeffad097f7d937",
+      "name": "DECLARATION_SHA256",
+      "ok": true
+    },
+    {
+      "detail": "claim 'EXP-004A.datasets.phase3/v1' vs file 'EXP-004A.datasets.phase3/v1'",
+      "name": "DECLARATION_ID",
+      "ok": true
+    },
+    {
+      "detail": "windows, timeframes and declared row counts agree",
+      "name": "DECLARATION_ARITHMETIC",
+      "ok": true
+    },
+    {
+      "detail": "program, verifier and engine hash to the blob ids the declaration names",
+      "name": "GENERATOR_BLOB_RECORDED",
+      "ok": true
+    },
+    {
+      "detail": "the rehearsal window is disjoint from the capture window and counts for nothing",
+      "name": "REHEARSAL_DISJOINT_FROM_WINDOW",
+      "ok": true
+    },
+    {
+      "detail": "commit 2026-10-23T00:10:29+02:00 vs window start 2026-10-23T00:00:00.000Z",
+      "name": "DECLARATION_COMMIT_PRECEDES_WINDOW",
+      "ok": true
+    },
+    {
+      "detail": "no shard exists yet, so there is nothing to compare",
+      "name": "SHARD_BYTES_MATCH_MANIFESTS",
+      "ok": true
+    },
+    {
+      "detail": "no open instant appears twice across shards",
+      "name": "NO_DUPLICATE_OPENS",
+      "ok": true
+    },
+    {
+      "detail": "no shard exists yet, so no generator is named",
+      "name": "GENERATOR_CONSISTENT",
+      "ok": true
+    },
+    {
+      "detail": "0 inadmissible day(s) are named as such by their own manifests",
+      "name": "QUARANTINE_IS_DISCLOSED",
+      "ok": true
+    },
+    {
+      "detail": "the consolidated dataset rebuilds from the shards byte for byte",
+      "name": "CONSOLIDATED_IS_THE_SHARDS",
+      "ok": true
+    },
+    {
+      "detail": "0 row(s) in the consolidated dataset: none is future, late, unclosed or unbounded",
+      "name": "TEMPORAL_POLICY_IN_THE_DATASET",
+      "ok": true
+    },
+    {
+      "detail": "the claim says 'PENDING_WINDOW_OPEN'; the declaration and the bytes say 'PENDING_WINDOW_OPEN'",
+      "name": "COVERAGE_RECOMPUTED",
+      "ok": true
+    },
+    {
+      "detail": "a dataset that is not complete is never called complete",
+      "name": "COVERAGE_NOT_OVERSTATED",
+      "ok": true
+    },
+    {
+      "detail": "declared 6480 row(s) from the declaration; claim says 6480",
+      "name": "DENOMINATOR_IS_THE_DECLARATION",
+      "ok": true
+    },
+    {
+      "detail": "the builder names no order or credential entry point",
+      "name": "BUILDER_CANNOT_TRADE",
+      "ok": true
+    },
+    {
+      "detail": "certifiable=False, certification=NOT_CLAIMED_BY_BUILDER",
+      "name": "BUILDER_DID_NOT_CERTIFY",
+      "ok": true
+    },
+    {
+      "detail": "gates: {'certification': 'NOT_CLAIMED_BY_BUILDER', 'economic_executions': '0', 'live_trading': 'DISABLED', 'orders_placed': '0', 'paper_orders_placed': '0', 'promotion': 'NO_PROMOTION', 'risk_limits': 'UNCHANGED'}",
+      "name": "GATES_UNCHANGED",
+      "ok": true
+    },
+    {
+      "detail": "93 path(s) of WP-051-02B..02F are byte-identical to HEAD",
+      "name": "FROZEN_PACKAGES_INTACT",
+      "ok": true
+    },
+    {
+      "detail": "the verifier imports neither the builder, the engine nor trading_bot",
+      "name": "VERIFIER_IS_INDEPENDENT",
+      "ok": true
+    }
+  ],
+  "claim_run_id": "20261022T221043Z-a2bce8a6",
+  "coverage": {
+    "admissible_rows": 0,
+    "complete": false,
+    "declared_rows": 6480,
+    "fraction": 0.0,
+    "quarantined_days": 0,
+    "required_fraction": 0.9,
+    "status": "PENDING_WINDOW_OPEN"
+  },
+  "declaration": {
+    "code_commit": "889abf304be89164fecad5ba83b222788bdc7e2a",
+    "declaration_id": "EXP-004A.datasets.phase3/v1",
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02g\\config\\preregistrations\\EXP-004A.datasets.phase3.json",
+    "sha256": "baeffad097f7d9370cd5b3aa3ab91517ee01d409b7dcbb00c96aad82e54a2cfe",
+    "window": {
+      "end_utc": "2027-01-21T00:00:00.000Z",
+      "start_utc": "2026-10-23T00:00:00.000Z"
+    }
+  },
+  "experiment_certified": false,
+  "failed_checks": [],
+  "independent_verification": "PASS",
+  "note": "independent_verification speaks about the bytes and the manifests. It is not a certification, and certification_allowed is true only when coverage is complete.",
+  "package": "WP-051-02G",
+  "prospective": true,
+  "rehearsal": false,
+  "schema_version": "1.0",
+  "shard_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02g\\data\\exp004a\\phase3",
+  "shards": {
+    "1h:BTC": {
+      "admissible_days": 0,
+      "problems": [],
+      "quarantined_days": 0,
+      "rows": 0,
+      "shards": 0,
+      "slice": "1h:BTC"
+    },
+    "1h:ETH": {
+      "admissible_days": 0,
+      "problems": [],
+      "quarantined_days": 0,
+      "rows": 0,
+      "shards": 0,
+      "slice": "1h:ETH"
+    },
+    "1h:SOL": {
+      "admissible_days": 0,
+      "problems": [],
+      "quarantined_days": 0,
+      "rows": 0,
+      "shards": 0,
+      "slice": "1h:SOL"
+    }
+  },
+  "verdict": "PASS_PENDING_WINDOW_OPEN",
+  "verifier": "verifier-g/EXP-004A/WP-051-02G"
+}

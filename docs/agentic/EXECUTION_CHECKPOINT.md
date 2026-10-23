@@ -1649,3 +1649,60 @@ git log -1 --format='%H %s'
 > (el observer de WP-EDGE-03 corre por el planificador del host) pero **invocado a mano en el conteo**: el paso
 > es append-only e idempotente (segunda ejecución: **0** registros añadidos), así que invocarlo a diario añade solo
 > días nuevos. Engancharlo al supervisor existente es un cambio de estado del host y no se hizo aquí.
+
+---
+
+## 2026-10-23 — WP-051-02G · adquisición prospectiva incremental de EXP-004A (fase 3), reanudada y re-verificada
+
+**Objetivo:** capturar la ventana declarada de 90 días por shards inmutables, separar `CAPTURE_VERIFIED`
+de `COVERAGE_COMPLETE`, y verificarlo con un programa que no importa al constructor. Sin tocar 02B–02F,
+sin runtime económico, sin trading real.
+
+**Worktree:** `C:/Users/GVLLFR0035/Downloads/bot-freebuff-exp004a-02g`, rama `wp/exp004a-051-02g`,
+base `937a55c3`. Nada de este paquete se escribió en el checkout compartido.
+
+**Hecho en esta sesión**
+
+1. **Integridad del checkout compartido.** Se detectó un `docs/agentic/exp004a/wp051_02g/FINAL_REPORT.md`
+   huérfano (sin seguimiento) en `bot freebuff`, escrito por una herramienta con ruta relativa. Se comparó
+   con el del worktree, era la versión más reciente, se trasladó al worktree (CRLF, 415 líneas) y **se eliminó
+   del checkout compartido**. `git status` del checkout principal ya no tiene ninguna entrada de 02g.
+2. **Espacio en disco recuperado** sin tocar nada con evidencia: se eliminó **un solo** worktree,
+   `bot-freebuff-wp051-02b-clean` (`dirty=0`, solo `__pycache__` ignorado, commit `47116b2f` contenido en
+   `wp/exp004a-051-02g`). Libre: 8 386 476 KB → 8 569 688 KB (**+178 MB**). Los otros 11 worktrees
+   inspeccionados se conservaron: 9 tienen cambios pendientes y 2 (`wp003i-clean`, `wp003j-verify`) guardan
+   informes ignorados por Git que no están duplicados en el checkout principal. `git worktree list --porcelain`
+   coherente: 29 rutas listadas, 29 existentes.
+3. **Captura real, después de que la ventana abriera.** `--once` a `2026-10-23T05:34:35Z`:
+   run `20261023T053435Z-7fe919f5`, estado `NOT_DUE`, 0 shards, cobertura **0/6480 `PENDING`** (la ventana
+   abrió a las 00:00Z; el primer día cierra a las 24:00Z). Exit 3, nada promocionado.
+4. **Verificación independiente reproducida.** Rehearsal `c9a9f320`: `PASS_COVERAGE_COMPLETE`, 19/19 checks,
+   **idéntica campo a campo** salvo `at_utc`. Claim de fase pre-apertura `a2bce8a6`: idéntica solo con el reloj
+   fijado (`--as-of 2026-10-22T22:10:59Z`); con el reloj de hoy devuelve `FAIL`/`COVERAGE_RECOMPUTED`
+   (`PENDING` != `PENDING_WINDOW_OPEN`) — `DEF-02G-08`, registrado, no parcheado. Claim post-apertura
+   `7fe919f5`: `PASS_COVERAGE_INCOMPLETE`, 20/20, exit 3.
+5. **Suite 02G:** `49 passed in 38.78s`, exit 0 (`PYTHONPATH=src`, intérprete del venv compartido).
+6. **Sellado y manifiesto:** `EVIDENCE_MANIFEST.json` con **29/29** ficheros, 0 ausentes, 0 hashes
+   discrepantes; `PACKAGE_SUMMARY.json` con 5 intentos (fase y rehearsal reportados aparte).
+7. **Frontera congelada comprobada por fuera del verificador:** 84 rutas de `wp051_02{b..f}` con blob de
+   índice == blob de `HEAD` y contenido idéntico tras normalizar EOL; `git diff HEAD` vacío para `02b`–`02f`,
+   `data/exp004a`, `config/preregistrations`, `scripts/`, `src/trading_bot/` y `config/`.
+
+**Pendiente / bloqueado**
+
+- **Cobertura de fase 0/6480.** No es un fallo: el primer shard vence en `2026-10-24T00:00Z`. Nadie puede
+  adelantarlo sin violar la política temporal.
+- **`DEF-02G-02`**: el planificador es un bucle en proceso (`--schedule`); no hay cron ni servicio instalado.
+- **`DEF-02G-08`**: una afirmación sellada con la palabra `PENDING_WINDOW_OPEN` deja de verificar cuando la
+  ventana abre. Reproducible con `--as-of`; el arreglo es vocabulario de veredicto en la próxima declaración.
+- **No ejecutado:** paper trading, economía, cualquier orden. `economic_executions: 0`, `live_trading: DISABLED`.
+
+**Reanudación verificable**
+
+```bash
+cd "$(git rev-parse --show-toplevel)"
+git log -1 --format='%H %s'
+PYTHONPATH=src python scripts/exp004a_wp051_02g_capture.py --once       # primer shard: 2026-10-24T00:00Z
+PYTHONPATH=src python scripts/exp004a_wp051_02g_verify.py --claim docs/agentic/exp004a/wp051_02g/evidence/20261023T053435Z-7fe919f5/RUN_REPORT.json
+PYTHONPATH=src python -m pytest tests/unit/research/test_exp004a_wp051_02g.py -q     # 49 passed
+```

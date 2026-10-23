@@ -1,0 +1,121 @@
+{
+  "at_utc": "2026-10-22T22:10:41.702Z",
+  "declaration": "config/preregistrations/EXP-004A.datasets.phase3.json",
+  "ok": true,
+  "phase": {
+    "counts_toward_coverage": true,
+    "coverage": {
+      "admissible_rows": 0,
+      "declared_rows": 6480,
+      "fraction": 0.0,
+      "status": "PENDING_WINDOW_OPEN"
+    },
+    "plan": {
+      "already_held": [],
+      "captured_days": [],
+      "conflicts": [],
+      "counts": {
+        "INCOMPLETE_DAY": 270
+      },
+      "incomplete_days": 270,
+      "incomplete_first": [
+        {
+          "action": "INCOMPLETE_DAY",
+          "day": "2026-10-23",
+          "opens": 24,
+          "reason": "bars have not closed yet",
+          "slice": "1h:BTC",
+          "unclosed_count": 24
+        },
+        {
+          "action": "INCOMPLETE_DAY",
+          "day": "2026-10-24",
+          "opens": 24,
+          "reason": "bars have not closed yet",
+          "slice": "1h:BTC",
+          "unclosed_count": 24
+        },
+        {
+          "action": "INCOMPLETE_DAY",
+          "day": "2026-10-25",
+          "opens": 24,
+          "reason": "bars have not closed yet",
+          "slice": "1h:BTC",
+          "unclosed_count": 24
+        }
+      ],
+      "not_due": [],
+      "not_due_count": 0,
+      "refused": []
+    },
+    "window": {
+      "end_utc": "2027-01-21T00:00:00.000Z",
+      "start_utc": "2026-10-23T00:00:00.000Z"
+    }
+  },
+  "rehearsal": {
+    "counts_toward_coverage": false,
+    "coverage": {
+      "admissible_rows": 0,
+      "declared_rows": 216,
+      "fraction": 0.0,
+      "status": "BELOW_DECLARED"
+    },
+    "plan": {
+      "already_held": [],
+      "captured_days": [
+        {
+          "day": "2026-10-19",
+          "slice": "1h:BTC"
+        },
+        {
+          "day": "2026-10-20",
+          "slice": "1h:BTC"
+        },
+        {
+          "day": "2026-10-21",
+          "slice": "1h:BTC"
+        },
+        {
+          "day": "2026-10-19",
+          "slice": "1h:ETH"
+        },
+        {
+          "day": "2026-10-20",
+          "slice": "1h:ETH"
+        },
+        {
+          "day": "2026-10-21",
+          "slice": "1h:ETH"
+        },
+        {
+          "day": "2026-10-19",
+          "slice": "1h:SOL"
+        },
+        {
+          "day": "2026-10-20",
+          "slice": "1h:SOL"
+        },
+        {
+          "day": "2026-10-21",
+          "slice": "1h:SOL"
+        }
+      ],
+      "conflicts": [],
+      "counts": {
+        "CAPTURED": 9
+      },
+      "incomplete_days": 0,
+      "incomplete_first": [],
+      "not_due": [],
+      "not_due_count": 0,
+      "refused": []
+    },
+    "window": {
+      "end_utc": "2026-10-22T00:00:00.000Z",
+      "start_utc": "2026-10-19T00:00:00.000Z"
+    }
+  },
+  "state_file": "data/exp004a/phase3/state/scheduler.json",
+  "state_present": false
+}

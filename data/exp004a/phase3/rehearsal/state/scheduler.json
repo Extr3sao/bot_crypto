@@ -1,0 +1,64 @@
+{
+  "coverage_status": "COVERAGE_COMPLETE",
+  "declaration": {
+    "declaration_id": "EXP-004A.datasets.phase3/v1",
+    "path": "config/preregistrations/EXP-004A.datasets.phase3.json",
+    "sha256": "baeffad097f7d9370cd5b3aa3ab91517ee01d409b7dcbb00c96aad82e54a2cfe"
+  },
+  "note": "a watermark, not evidence: the verifier never reads this file",
+  "rehearsal": true,
+  "runs": [
+    {
+      "at_utc": "2026-10-22T22:10:44.810Z",
+      "run_id": "20261022T221044Z-c9a9f320",
+      "state": "CAPTURE_COMPLETE_AWAITING_VERIFICATION"
+    },
+    {
+      "at_utc": "2026-10-22T22:10:46.558Z",
+      "run_id": "20261022T221046Z-8a317fe4",
+      "state": "NOT_DUE"
+    },
+    {
+      "at_utc": "2026-10-22T22:10:48.059Z",
+      "run_id": "20261022T221048Z-0d5ae0a6",
+      "state": "RESUMED"
+    }
+  ],
+  "schema_version": "1.0",
+  "slices": {
+    "1h:BTC": {
+      "days": [
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21"
+      ],
+      "last_at_utc": "2026-10-22T22:10:44.810Z",
+      "last_run_id": "20261022T221044Z-c9a9f320",
+      "last_state": "CAPTURE_COMPLETE_AWAITING_VERIFICATION",
+      "rows": 72
+    },
+    "1h:ETH": {
+      "days": [
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21"
+      ],
+      "last_at_utc": "2026-10-22T22:10:44.810Z",
+      "last_run_id": "20261022T221044Z-c9a9f320",
+      "last_state": "CAPTURE_COMPLETE_AWAITING_VERIFICATION",
+      "rows": 72
+    },
+    "1h:SOL": {
+      "days": [
+        "2026-10-19",
+        "2026-10-20",
+        "2026-10-21"
+      ],
+      "last_at_utc": "2026-10-22T22:10:44.810Z",
+      "last_run_id": "20261022T221044Z-c9a9f320",
+      "last_state": "CAPTURE_COMPLETE_AWAITING_VERIFICATION",
+      "rows": 72
+    }
+  },
+  "updated_at_utc": "2026-10-22T22:10:48.059Z"
+}
