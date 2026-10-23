@@ -2,6 +2,7 @@
 
 Decision order (first match wins, fail closed):
 
+0. kill switch engaged      → NO_TRADE (``KILL_SWITCH_ACTIVE``)
 1. an agent VETO            → NO_TRADE (``AGENT_VETO``)
 2. verifier not PASS        → NO_TRADE (``VERIFIER_FAIL``)
 3. no proposal              → NO_TRADE (``NO_PROPOSAL``)
@@ -16,13 +17,23 @@ PAPER_CANDIDATE admission plus a verifier PASS. A strategy that is not
 admitted can never reach it, no matter how good its numbers look: the
 research candidate is observed in SHADOW instead, so the system keeps
 learning without pretending that an unproven edge is tradeable.
+
+Rule 0 is the only rule that never looks at the packet: a safety state does not
+depend on the strategy, the data or the risk numbers. Every ``DecisionEngine``
+consults a ``KillSwitch`` — the process-wide authority by default, an injected
+one in tests — on **both** ``intend`` and ``decide``, so nothing downstream can
+observe an authorisable intent while the switch is engaged. An unreadable state
+is treated as engaged: the gate fails closed.
 """
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from typing import Any, get_args
 
+from trading_bot.domain.enums.kill_switch import KillSwitchAction, KillSwitchState
+from trading_bot.paper.kill_switch_v2 import KillSwitch
 from trading_bot.scanner.types import RejectionReason
 
 from .contracts import (
@@ -42,6 +53,10 @@ from .contracts import (
 __all__ = [
     "CLASSIFICATIONS",
     "DECISION_ENGINE_VERSION",
+    "KILL_SWITCH_ACTIVE",
+    "KILL_SWITCH_CLASSIFICATION",
+    "KILL_SWITCH_ENV",
+    "KILL_SWITCH_STATE_UNREADABLE",
     "NO_TRADE_KINDS",
     "UNIVERSE_FILTERED",
     "UNIVERSE_REJECTION_REASONS",
@@ -50,16 +65,34 @@ __all__ = [
     "DecisionResult",
     "classification_for_scanner_rejection",
     "no_trade_kind_for",
+    "process_kill_switch",
     "unclassified_scanner_rejections",
 ]
 
 DECISION_ENGINE_VERSION = "decision-engine-v1"
+
+#: Reason a blocked decision carries. MT-0003 fixes this token: operators and
+#: audits look for it, and tests pin it, so it must not drift.
+KILL_SWITCH_ACTIVE = "KILL_SWITCH_ACTIVE"
+
+#: Reason used when the state cannot be read at all. An unreadable safety gate
+#: is not a permission, so this is a NO_TRADE too.
+KILL_SWITCH_STATE_UNREADABLE = "KILL_SWITCH_STATE_UNREADABLE"
+
+#: Classification every kill-switch NO_TRADE carries.
+KILL_SWITCH_CLASSIFICATION = "KILL_SWITCH"
+
+#: Environment variable that boots a process with the switch already engaged.
+#: Read once, at import: a running process cannot be talked out of its own
+#: safety state, and no agent sees a mutable handle to it.
+KILL_SWITCH_ENV = "TRADING_BOT_KILL_SWITCH"
 
 #: Classifications a decision can carry (machine-readable, non-narrative).
 CLASSIFICATIONS = (
     "AGENT_VETO",
     "CONTEXT_ERROR",
     "COST_KILLED",
+    KILL_SWITCH_CLASSIFICATION,
     "NO_ALPHA",
     "NO_GROSS_EDGE",
     "NO_MARKET_DATA",
@@ -99,14 +132,57 @@ _UNIVERSE_CLASSIFICATIONS: frozenset[str] = frozenset({UNIVERSE_FILTERED})
 #: Classifications where two independent reviewers disagreed with the packet.
 _CONFLICT_CLASSIFICATIONS: frozenset[str] = frozenset({"AGENT_VETO", "VERIFIER_FAIL"})
 
+#: Classifications whose cause is the SAFETY GATE itself. They are not about the
+#: strategy, the data or the risk budget: the system was told to stop, so they
+#: belong to the risk class without claiming a risk rule fired.
+_SAFETY_CLASSIFICATIONS: frozenset[str] = frozenset({KILL_SWITCH_CLASSIFICATION})
+
 #: Every classification a NO_TRADE may carry (see ``no_trade_kind_for``).
 NO_TRADE_KINDS: frozenset[str] = (
     _STRATEGIC_CLASSIFICATIONS
     | _DATA_CLASSIFICATIONS
     | _UNIVERSE_CLASSIFICATIONS
     | _CONFLICT_CLASSIFICATIONS
+    | _SAFETY_CLASSIFICATIONS
     | {"RISK_VETO"}
 )
+
+_ENV_KILL_SWITCH_STATES: dict[str, KillSwitchState] = {
+    "no_new_risk": KillSwitchState.NO_NEW_RISK,
+    "protection_only": KillSwitchState.PROTECTION_ONLY,
+    "read_only": KillSwitchState.READ_ONLY,
+    "halted": KillSwitchState.HALTED,
+}
+
+_OFF_VALUES: frozenset[str] = frozenset({"", "0", "off", "normal", "false", "no"})
+
+
+def _boot_kill_switch() -> KillSwitch:
+    """Build the authority, honouring ``KILL_SWITCH_ENV`` once at import."""
+    switch = KillSwitch()
+    raw = (os.environ.get(KILL_SWITCH_ENV) or "").strip().lower()
+    if raw in _OFF_VALUES:
+        return switch
+    switch.activate(
+        KillSwitchAction.USER,
+        target=_ENV_KILL_SWITCH_STATES.get(raw, KillSwitchState.HALTED),
+        reason=f"env:{KILL_SWITCH_ENV}={raw}",
+    )
+    return switch
+
+
+_PROCESS_KILL_SWITCH: KillSwitch = _boot_kill_switch()
+
+
+def process_kill_switch() -> KillSwitch:
+    """The safety authority every ``DecisionEngine`` consults by default.
+
+    It is the single place an operator interface (today the environment
+    variable, later the CLI) has to reach. It is deliberately *not* persisted:
+    see the MT-0003 report, gap G-1 — a restart boots it back to NORMAL.
+    """
+    return _PROCESS_KILL_SWITCH
+
 
 #: Scanner rejections whose cause is the market SELECTION: each one is a frozen,
 #: deterministic filter (liquidity, spread, volatility envelope, whitelist,
@@ -167,6 +243,8 @@ def no_trade_kind_for(classification: str) -> NoTradeKind:
     edge does not survive cost") class so a reader can never confuse "we chose
     not to trade" with "we could not decide".
     """
+    if classification in _SAFETY_CLASSIFICATIONS:
+        return NoTradeKind.NO_TRADE_RISK
     if classification == "RISK_VETO":
         return NoTradeKind.NO_TRADE_RISK
     if classification in _CONFLICT_CLASSIFICATIONS:
@@ -236,10 +314,22 @@ class DecisionResult:
 
 
 class DecisionEngine:
-    """Pure decision function: no I/O, no state, no side effects."""
+    """Pure decision function: no I/O, no per-decision state, no side effects.
 
-    def __init__(self, *, version: str = DECISION_ENGINE_VERSION) -> None:
+    The one thing it reads is the kill switch: ``_kill_switch_no_trade`` is rule
+    0 on both ``intend`` and ``decide``. An injected switch exists so a test can
+    drive the gate without touching the process-wide authority; production code
+    always gets that authority.
+    """
+
+    def __init__(
+        self,
+        *,
+        version: str = DECISION_ENGINE_VERSION,
+        kill_switch: KillSwitch | None = None,
+    ) -> None:
         self._version = version
+        self._kill_switch = kill_switch if kill_switch is not None else _PROCESS_KILL_SWITCH
 
     @property
     def version(self) -> str:
@@ -254,6 +344,9 @@ class DecisionEngine:
         pre-classification: it never authorises anything (``order_authorised``
         is always False) and ``decide`` still has the final say.
         """
+        blocked = self._kill_switch_no_trade()
+        if blocked is not None:
+            return blocked
         vetoes = [m for m in request.agent_messages if m.review_type is ReviewType.VETO]
         if vetoes:
             agents = ",".join(m.agent_id for m in vetoes)
@@ -292,6 +385,11 @@ class DecisionEngine:
         )
 
     def decide(self, request: DecisionRequest) -> DecisionResult:
+        # Rule 0, before anything reads the packet: a safety block is not
+        # something a proposal, an admission or a risk verdict can argue with.
+        blocked = self._kill_switch_no_trade()
+        if blocked is not None:
+            return blocked
         self._reject_advisory_risk_on_an_order(request)
         vetoes = [m for m in request.agent_messages if m.review_type is ReviewType.VETO]
         if vetoes:
@@ -381,6 +479,22 @@ class DecisionEngine:
             raise ValueError(
                 "advisory risk review cannot accompany an order-authorising packet"
             )
+
+    def _kill_switch_no_trade(self) -> DecisionResult | None:
+        """Rule 0: the safety gate. ``None`` means "not blocked".
+
+        Fail closed on every ambiguity: a state that cannot be read, or one that
+        disagrees with ``is_active``, blocks. The gate never consults the
+        packet, so no proposal, admission or risk verdict can argue with it.
+        """
+        try:
+            state = self._kill_switch.state
+            active = self._kill_switch.is_active
+        except Exception:  # a broken gate must never authorise
+            return self._no_trade(KILL_SWITCH_STATE_UNREADABLE, KILL_SWITCH_CLASSIFICATION)
+        if active or state is not KillSwitchState.NORMAL:
+            return self._no_trade(KILL_SWITCH_ACTIVE, KILL_SWITCH_CLASSIFICATION)
+        return None
 
     def _no_trade(self, reason: str, classification: str) -> DecisionResult:
         if classification not in CLASSIFICATIONS:
