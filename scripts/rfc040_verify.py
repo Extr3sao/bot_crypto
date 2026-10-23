@@ -46,8 +46,20 @@ def _ym(ts: int) -> tuple[int, int]:
             break
         days -= ylen
         year += 1
-    ml = [31, 29 if (year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)) else 28, 31, 30,
-          31, 30, 31, 31, 30, 31, 30, 31]
+    ml = [
+        31,
+        29 if (year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)) else 28,
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+    ]
     month = 1
     for mlen in ml:
         if days < mlen:
@@ -201,15 +213,47 @@ def verify(
     d_a, d_b = _msp(splits["DISCOVERY"][0]), _msp(splits["DISCOVERY"][1])
     v_a, v_b = _msp(splits["VALIDATION"][0]), _msp(splits["VALIDATION"][1])
 
-    disc = _sim(axis, table, lookback=lookback, cost_bps=cost_bps, cap=cap,
-                start=d_a, end=d_b, two_assets=(RISK_A, RISK_B))
-    val = _sim(axis, table, lookback=lookback, cost_bps=cost_bps, cap=cap,
-               start=v_a, end=v_b, two_assets=(RISK_A, RISK_B))
-    eq_bench = _sim(axis, table, lookback=lookback, cost_bps=cost_bps, cap=cap,
-                    start=v_a, end=v_b, fixed_weight=1.0)
+    disc = _sim(
+        axis,
+        table,
+        lookback=lookback,
+        cost_bps=cost_bps,
+        cap=cap,
+        start=d_a,
+        end=d_b,
+        two_assets=(RISK_A, RISK_B),
+    )
+    val = _sim(
+        axis,
+        table,
+        lookback=lookback,
+        cost_bps=cost_bps,
+        cap=cap,
+        start=v_a,
+        end=v_b,
+        two_assets=(RISK_A, RISK_B),
+    )
+    eq_bench = _sim(
+        axis,
+        table,
+        lookback=lookback,
+        cost_bps=cost_bps,
+        cap=cap,
+        start=v_a,
+        end=v_b,
+        fixed_weight=1.0,
+    )
     weight = min(1.0, val["vol"] / eq_bench["vol"]) if eq_bench["vol"] > 0 else 1.0
-    rm = _sim(axis, table, lookback=lookback, cost_bps=cost_bps, cap=cap,
-              start=v_a, end=v_b, fixed_weight=weight)
+    rm = _sim(
+        axis,
+        table,
+        lookback=lookback,
+        cost_bps=cost_bps,
+        cap=cap,
+        start=v_a,
+        end=v_b,
+        fixed_weight=weight,
+    )
     excess = val["net_pnl"] - rm["net_pnl"]
 
     mismatches: list[str] = []
@@ -251,7 +295,9 @@ def verify(
 
     return {
         "VERIFICATION_STATUS": "PASS" if not mismatches else "FAIL",
-        "ECONOMIC_RESULT": "BUSINESS_EDGE_FAIL" if not independent_business else "BUSINESS_EDGE_PASS",
+        "ECONOMIC_RESULT": "BUSINESS_EDGE_FAIL"
+        if not independent_business
+        else "BUSINESS_EDGE_PASS",
         "builder": "small_capital_dual_momentum_v1.simulate_dual_momentum",
         "verifier": "rfc040_verify._sim (fresh implementation)",
         "mismatch_count": len(mismatches),

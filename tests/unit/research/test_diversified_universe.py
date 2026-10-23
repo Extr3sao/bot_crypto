@@ -23,15 +23,31 @@ DAY0 = 1_546_300_800_000
 FP = "test-fingerprint"
 
 
-def bars(symbol: str, n: int, *, start: int = 0, price: float = 100.0,
-         quote_volume: float = 5_000_000.0, gaps: tuple[int, ...] = ()) -> list[DailyBar]:
+def bars(
+    symbol: str,
+    n: int,
+    *,
+    start: int = 0,
+    price: float = 100.0,
+    quote_volume: float = 5_000_000.0,
+    gaps: tuple[int, ...] = (),
+) -> list[DailyBar]:
     out = []
     for i in range(n):
         if i in gaps:
             continue
-        out.append(DailyBar(symbol=symbol, timestamp=DAY0 + (start + i) * DAY, open=price,
-                            high=price + 1, low=price - 1, close=price, volume=1.0,
-                            quote_volume=quote_volume))
+        out.append(
+            DailyBar(
+                symbol=symbol,
+                timestamp=DAY0 + (start + i) * DAY,
+                open=price,
+                high=price + 1,
+                low=price - 1,
+                close=price,
+                volume=1.0,
+                quote_volume=quote_volume,
+            )
+        )
     return out
 
 
@@ -41,8 +57,11 @@ def universe(corpus: dict, listing: dict, **kw) -> DynamicAssetUniverse:
 
 def test_not_yet_listed_asset_is_excluded() -> None:
     T = DAY0 + 100 * DAY
-    uv = universe({"A": bars("A", 100), "B": bars("B", 100)},
-                  {"A": DAY0, "B": DAY0 + 200 * DAY}, min_history_days=10)
+    uv = universe(
+        {"A": bars("A", 100), "B": bars("B", 100)},
+        {"A": DAY0, "B": DAY0 + 200 * DAY},
+        min_history_days=10,
+    )
     snap = uv.snapshot(T)
     assert "A" in snap.eligible_assets
     assert snap.listing_state["B"] == "NOT_YET_LISTED"
@@ -51,8 +70,12 @@ def test_not_yet_listed_asset_is_excluded() -> None:
 
 def test_low_liquidity_asset_is_excluded() -> None:
     T = DAY0 + 100 * DAY
-    uv = universe({"A": bars("A", 100), "B": bars("B", 100, quote_volume=10.0)},
-                  {"A": DAY0, "B": DAY0}, min_history_days=10, min_median_quote_volume=1e6)
+    uv = universe(
+        {"A": bars("A", 100), "B": bars("B", 100, quote_volume=10.0)},
+        {"A": DAY0, "B": DAY0},
+        min_history_days=10,
+        min_median_quote_volume=1e6,
+    )
     snap = uv.snapshot(T)
     assert "A" in snap.eligible_assets
     assert snap.exclusion_reasons["B"] == "liquidity_below_floor"
@@ -62,8 +85,12 @@ def test_low_liquidity_asset_is_excluded() -> None:
 def test_unsynchronized_asset_is_excluded() -> None:
     T = DAY0 + 100 * DAY
     # B's last bar is 3 days before A's -> not synchronized at the feature time.
-    uv = universe({"A": bars("A", 100), "B": bars("B", 97)},
-                  {"A": DAY0, "B": DAY0}, min_history_days=10, max_stale_days=10)
+    uv = universe(
+        {"A": bars("A", 100), "B": bars("B", 97)},
+        {"A": DAY0, "B": DAY0},
+        min_history_days=10,
+        max_stale_days=10,
+    )
     snap = uv.snapshot(T)
     assert "A" in snap.eligible_assets
     assert snap.exclusion_reasons["B"] == "unsynchronized_feature_time"
@@ -81,8 +108,9 @@ def test_duplicate_bar_excludes_symbol() -> None:
 
 def test_insufficient_history_excludes_symbol() -> None:
     T = DAY0 + 100 * DAY
-    uv = universe({"A": bars("A", 100), "B": bars("B", 5)},
-                  {"A": DAY0, "B": DAY0}, min_history_days=60)
+    uv = universe(
+        {"A": bars("A", 100), "B": bars("B", 5)}, {"A": DAY0, "B": DAY0}, min_history_days=60
+    )
     snap = uv.snapshot(T)
     assert snap.exclusion_reasons["B"] == "insufficient_history"
     assert snap.history_available["B"] == 5
@@ -91,8 +119,12 @@ def test_insufficient_history_excludes_symbol() -> None:
 def test_gap_ratio_excludes_symbol() -> None:
     T = DAY0 + 100 * DAY
     gappy = bars("B", 40, gaps=tuple(range(10, 25)))
-    uv = universe({"A": bars("A", 100), "B": gappy}, {"A": DAY0, "B": DAY0},
-                  min_history_days=10, max_gap_ratio=0.05)
+    uv = universe(
+        {"A": bars("A", 100), "B": gappy},
+        {"A": DAY0, "B": DAY0},
+        min_history_days=10,
+        max_gap_ratio=0.05,
+    )
     snap = uv.snapshot(T)
     assert snap.exclusion_reasons["B"] == "data_quality_gap_ratio"
 
@@ -124,7 +156,10 @@ def test_no_eligible_assets_is_a_blocked_snapshot() -> None:
 
 
 def test_size_series_is_monotone_with_listings() -> None:
-    uv = universe({"A": bars("A", 200), "B": bars("B", 200, start=100)},
-                  {"A": DAY0, "B": DAY0 + 100 * DAY}, min_history_days=10)
+    uv = universe(
+        {"A": bars("A", 200), "B": bars("B", 200, start=100)},
+        {"A": DAY0, "B": DAY0 + 100 * DAY},
+        min_history_days=10,
+    )
     sizes = uv.size_series([DAY0 + 50 * DAY, DAY0 + 150 * DAY])
     assert sizes == [1, 2]

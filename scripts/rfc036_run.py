@@ -41,7 +41,8 @@ def iso(o: int) -> str:
 def write_pair(name: str, md_text: str, payload: Any) -> None:
     (OUT / f"{name}.md").write_text(md_text, encoding="utf-8")
     (OUT / f"{name}.json").write_text(
-        json.dumps(payload, indent=2, default=str) + "\n", encoding="utf-8")
+        json.dumps(payload, indent=2, default=str) + "\n", encoding="utf-8"
+    )
 
 
 def md_table(rows: list[dict[str, Any]], cols: list[str]) -> str:
@@ -103,8 +104,14 @@ def build_substrate() -> tuple[dict[str, Any], list[Any], list[int], dict[str, A
 # --------------------------------------------------------------------------- #
 # runs                                                                         #
 # --------------------------------------------------------------------------- #
-def run_sim(panels: list[Any], cal: list[int], lo_iso: str, hi_iso: str,
-            config: mf.BacktestConfig, capital: float) -> dict[str, Any]:
+def run_sim(
+    panels: list[Any],
+    cal: list[int],
+    lo_iso: str,
+    hi_iso: str,
+    config: mf.BacktestConfig,
+    capital: float,
+) -> dict[str, Any]:
     return mf.simulate_portfolio(panels, cal, (od(lo_iso), od(hi_iso)), config, capital)
 
 
@@ -121,30 +128,38 @@ def main() -> int:
     breadth = mf.universe_breadth(panels)
 
     # --- DATA artifacts (§78) --------------------------------------------------
-    write_pair("FUTURES_DATA_SOURCE_AUDIT",
-               "# RFC-036 FUTURES DATA SOURCE AUDIT\n\n"
-               f"- Provider: {audit['provider']}\n- Grain: {audit['grain']}\n"
-               f"- Individual contracts: {audit['individual_contracts']}\n"
-               f"- Expiry identifiable: {audit['expiry_identifiable']}\n"
-               f"- Roll observable: {audit['roll_observable']}\n"
-               f"- PIT feasible: {audit['pit_feasible']}\n"
-               f"- Paid-only: {not audit['not_paid_only']}\n"
-               f"- Licence: {audit['licence']}\n"
-               f"- G_MF_DATA = {g_data.status}\n\n"
-               + md_table(audit["per_market"],
-                          ["root", "name", "asset_class", "n_contracts", "n_rows",
-                           "first_date", "last_date"]),
-               {**audit, "gate": g_data.as_dict(), "breadth": breadth})
+    write_pair(
+        "FUTURES_DATA_SOURCE_AUDIT",
+        "# RFC-036 FUTURES DATA SOURCE AUDIT\n\n"
+        f"- Provider: {audit['provider']}\n- Grain: {audit['grain']}\n"
+        f"- Individual contracts: {audit['individual_contracts']}\n"
+        f"- Expiry identifiable: {audit['expiry_identifiable']}\n"
+        f"- Roll observable: {audit['roll_observable']}\n"
+        f"- PIT feasible: {audit['pit_feasible']}\n"
+        f"- Paid-only: {not audit['not_paid_only']}\n"
+        f"- Licence: {audit['licence']}\n"
+        f"- G_MF_DATA = {g_data.status}\n\n"
+        + md_table(
+            audit["per_market"],
+            ["root", "name", "asset_class", "n_contracts", "n_rows", "first_date", "last_date"],
+        ),
+        {**audit, "gate": g_data.as_dict(), "breadth": breadth},
+    )
 
     if g_data.status != "PASS":
         (OUT / "RFC036_PLAN.md").write_text(
             "# RFC-036\n\nG_MF_DATA FAILED -> MANAGED_FUTURES_TREND = DATA_BLOCKED\n",
-            encoding="utf-8")
-        final = {"candidate": mf.CANDIDATE_ID, "G_MF_DATA": "FAIL",
-                 "managed_futures_trend": "DATA_BLOCKED",
-                 "next": "ASSESS_P2_DATA_FEASIBILITY"}
+            encoding="utf-8",
+        )
+        final = {
+            "candidate": mf.CANDIDATE_ID,
+            "G_MF_DATA": "FAIL",
+            "managed_futures_trend": "DATA_BLOCKED",
+            "next": "ASSESS_P2_DATA_FEASIBILITY",
+        }
         (REPO / "reports" / "RFC036_FINAL_REPORT.json").write_text(
-            json.dumps(final, indent=2) + "\n", encoding="utf-8")
+            json.dumps(final, indent=2) + "\n", encoding="utf-8"
+        )
         print("G_MF_DATA FAILED -> DATA_BLOCKED")
         return 0
 
@@ -165,8 +180,8 @@ def main() -> int:
     # --- source-effect / reproduction checks -----------------------------------
     repro = {
         "spec_faithfully_implemented": True,
-        "source_effect_direction_compatible":
-            float(disc.get("net_pnl", 0.0)) > 0 or float(val.get("net_pnl", 0.0)) > 0,
+        "source_effect_direction_compatible": float(disc.get("net_pnl", 0.0)) > 0
+        or float(val.get("net_pnl", 0.0)) > 0,
         "pit_clean": pit_clean(raw["markets"], sorted(raw["markets"])[:8]),
         "roll_accounting_clean": roll_accounting_clean(disc_run, val_run),
         "cost_model_frozen": True,
@@ -191,12 +206,30 @@ def main() -> int:
     fs = mf.audit_false_success(fs_flags)
 
     # --- final synthesis -------------------------------------------------------
-    finalize(audit, breadth, g_data, g_repro, g1, g2, repro, disc, val,
-             disc_run, val_run, panels, extra, p2, fs, rounding)
+    finalize(
+        audit,
+        breadth,
+        g_data,
+        g_repro,
+        g1,
+        g2,
+        repro,
+        disc,
+        val,
+        disc_run,
+        val_run,
+        panels,
+        extra,
+        p2,
+        fs,
+        rounding,
+    )
 
     print("=== RFC-036 SUMMARY ===")
-    print(f"G_MF_DATA={g_data.status} G_MF_REPRO={g_repro.status} "
-          f"G_MF_1={g1.status} G_MF_2={g2.status}")
+    print(
+        f"G_MF_DATA={g_data.status} G_MF_REPRO={g_repro.status} "
+        f"G_MF_1={g1.status} G_MF_2={g2.status}"
+    )
     print(f"DISCOVERY net={disc.get('net_pnl'):.0f} VALIDATION net={val.get('net_pnl'):.0f}")
     return 0
 
@@ -216,6 +249,7 @@ def pit_clean(markets: dict[str, Any], roots: list[str] | None = None) -> bool:
         build_tradable_series,
         select_front_contract,
     )
+
     use = roots if roots is not None else sorted(markets)
     ok = True
     for root in use:
@@ -259,8 +293,9 @@ def roll_accounting_clean(disc_run: dict[str, Any], val_run: dict[str, Any]) -> 
 # --------------------------------------------------------------------------- #
 # robustness block (§51-§60)                                                   #
 # --------------------------------------------------------------------------- #
-def robustness(panels: list[Any], cal: list[int], base: mf.BacktestConfig,
-               capital: float) -> dict[str, Any]:
+def robustness(
+    panels: list[Any], cal: list[int], base: mf.BacktestConfig, capital: float
+) -> dict[str, Any]:
     d_lo, _d_hi = mf.SPLIT_BOUNDS["DISCOVERY"]
     v_lo, v_hi = mf.SPLIT_BOUNDS["VALIDATION"]
     full_lo = d_lo
@@ -286,42 +321,65 @@ def robustness(panels: list[Any], cal: list[int], base: mf.BacktestConfig,
         hi = f"{year}-12-31"
         r = run_sim(panels, cal, lo, hi, base, capital)
         s = period_summary(r, panels)
-        folds.append({"year": year, "net_pnl": s.get("net_pnl"),
-                      "gross_pnl": s.get("gross_pnl"), "cost_pnl": s.get("cost_pnl"),
-                      "sharpe": s.get("sharpe_net"), "max_dd_frac": s.get("max_dd_frac")})
+        folds.append(
+            {
+                "year": year,
+                "net_pnl": s.get("net_pnl"),
+                "gross_pnl": s.get("gross_pnl"),
+                "cost_pnl": s.get("cost_pnl"),
+                "sharpe": s.get("sharpe_net"),
+                "max_dd_frac": s.get("max_dd_frac"),
+            }
+        )
     # parameter stability: source +/- one neighbour (no search)
     param = {}
-    for name, lookback in (("-1", mf.LOOKBACK_DAYS - 63), ("base", mf.LOOKBACK_DAYS),
-                           ("+1", mf.LOOKBACK_DAYS + 63)):
+    for name, lookback in (
+        ("-1", mf.LOOKBACK_DAYS - 63),
+        ("base", mf.LOOKBACK_DAYS),
+        ("+1", mf.LOOKBACK_DAYS + 63),
+    ):
         cfg = mf.default_config(integer_contracts=True, lookback=lookback)
         r = run_sim(panels, cal, v_lo, v_hi, cfg, capital)
         s = period_summary(r, panels)
-        param[name] = {"lookback": lookback, "validation_net": s.get("net_pnl"),
-                       "sharpe": s.get("sharpe_net")}
-    return {"cost_stress": cost_stress, "roll_stress": roll_stress,
-            "walk_forward": folds, "parameter_stability": param}
+        param[name] = {
+            "lookback": lookback,
+            "validation_net": s.get("net_pnl"),
+            "sharpe": s.get("sharpe_net"),
+        }
+    return {
+        "cost_stress": cost_stress,
+        "roll_stress": roll_stress,
+        "walk_forward": folds,
+        "parameter_stability": param,
+    }
 
 
-def rounding_diagnostics(panels: list[Any], cal: list[int], lo: str, hi: str,
-                         base: mf.BacktestConfig) -> dict[str, Any]:
+def rounding_diagnostics(
+    panels: list[Any], cal: list[int], lo: str, hi: str, base: mf.BacktestConfig
+) -> dict[str, Any]:
     """§37: fractional-vs-integer contract rounding error across capital levels."""
     frac = run_sim(panels, cal, lo, hi, base, mf.CAPITAL_LEVELS[mf.HEADLINE_CAPITAL])
     frac_s = period_summary(frac, panels)
-    out: dict[str, Any] = {"fractional_net": frac_s.get("net_pnl"),
-                           "fractional_active_markets": (frac_s.get("mean_n_long", 0.0)
-                                                         + frac_s.get("mean_n_short", 0.0))}
+    out: dict[str, Any] = {
+        "fractional_net": frac_s.get("net_pnl"),
+        "fractional_active_markets": (
+            frac_s.get("mean_n_long", 0.0) + frac_s.get("mean_n_short", 0.0)
+        ),
+    }
     for name, cap in mf.CAPITAL_LEVELS.items():
         cfg = mf.default_config(integer_contracts=True)
         r = run_sim(panels, cal, lo, hi, cfg, cap)
         s = period_summary(r, panels)
-        out[name] = {"capital": cap, "net_pnl": s.get("net_pnl"),
-                     "active_markets": (s.get("mean_n_long", 0.0)
-                                        + s.get("mean_n_short", 0.0)),
-                     "rounding_gap": (s.get("net_pnl", 0.0)
-                                      - (frac_s.get("net_pnl", 0.0) or 0.0))}
+        out[name] = {
+            "capital": cap,
+            "net_pnl": s.get("net_pnl"),
+            "active_markets": (s.get("mean_n_long", 0.0) + s.get("mean_n_short", 0.0)),
+            "rounding_gap": (s.get("net_pnl", 0.0) - (frac_s.get("net_pnl", 0.0) or 0.0)),
+        }
     out["interpretation"] = (
         "integer contracts zero out high-notional markets at small capital, so a "
-        "diversified portfolio needs a larger research capital to be executable")
+        "diversified portfolio needs a larger research capital to be executable"
+    )
     return out
 
 
@@ -340,136 +398,224 @@ def p2_gap(panels: list[Any]) -> dict[str, Any]:
             if mx >= 2:
                 multi += 1
     reuse = "HIGH" if multi == len(panels) else ("PARTIAL" if multi > 0 else "LOW")
-    return {"p2_data_reuse": reuse, "markets_with_multiple_maturities": multi,
-            "n_markets": len(panels),
-            "reuse": ["front + next + further expiries with price/volume/OI per date",
-                      "raw contract chains and expiry labels preserved"],
-            "lacks": ["intraday/execution microstructure", "exchange margin schedules",
-                      "post-2000 history"]}
+    return {
+        "p2_data_reuse": reuse,
+        "markets_with_multiple_maturities": multi,
+        "n_markets": len(panels),
+        "reuse": [
+            "front + next + further expiries with price/volume/OI per date",
+            "raw contract chains and expiry labels preserved",
+        ],
+        "lacks": [
+            "intraday/execution microstructure",
+            "exchange margin schedules",
+            "post-2000 history",
+        ],
+    }
 
 
 # --------------------------------------------------------------------------- #
 # final artifacts                                                              #
 # --------------------------------------------------------------------------- #
-def finalize(audit: dict[str, Any], breadth: dict[str, Any], g_data: Any, g_repro: Any,
-             g1: Any, g2: Any, repro: dict[str, Any], disc: dict[str, Any],
-             val: dict[str, Any], disc_run: dict[str, Any], val_run: dict[str, Any],
-             panels: list[Any], extra: dict[str, Any], p2: dict[str, Any],
-             fs: dict[str, Any], rounding: dict[str, Any]) -> None:
+def finalize(
+    audit: dict[str, Any],
+    breadth: dict[str, Any],
+    g_data: Any,
+    g_repro: Any,
+    g1: Any,
+    g2: Any,
+    repro: dict[str, Any],
+    disc: dict[str, Any],
+    val: dict[str, Any],
+    disc_run: dict[str, Any],
+    val_run: dict[str, Any],
+    panels: list[Any],
+    extra: dict[str, Any],
+    p2: dict[str, Any],
+    fs: dict[str, Any],
+    rounding: dict[str, Any],
+) -> None:
     _ = disc_run, val_run
     # DATA remaining artifacts
-    write_pair("RFC036_PLAN",
-               "# RFC-036 PLAN\n\nFrozen pipeline, no tuning. P1=MANAGED_FUTURES_TREND.\n"
-               f"Discovery {mf.SPLIT_BOUNDS['DISCOVERY']}, Validation "
-               f"{mf.SPLIT_BOUNDS['VALIDATION']}, HOLDOUT={mf.HOLDOUT}.\n",
-               {"candidate": mf.CANDIDATE_ID, "fidelity": mf.REPRODUCTION_FIDELITY,
-                "splits": mf.SPLIT_BOUNDS, "holdout": mf.HOLDOUT,
-                "config": mf.default_config(integer_contracts=True).__dict__})
-    write_pair("SOURCE_STRATEGY_SPEC",
-               "# RFC-036 SOURCE STRATEGY SPEC\n\n"
-               f"PRIMARY = {mf.PRIMARY_REPRODUCTION_SOURCE} (Moskowitz-Ooi-Pedersen 2012).\n"
-               f"FIDELITY = {mf.REPRODUCTION_FIDELITY}\n\n" + mf.REPRODUCTION_FIDELITY_NOTE,
-               {"primary_source": mf.PRIMARY_REPRODUCTION_SOURCE,
-                "corroborating": ["S002", "S029", "S003"],
-                "fidelity": mf.REPRODUCTION_FIDELITY,
-                "signal": "sign(trailing 252-day excess return)",
-                "lookback_days": mf.LOOKBACK_DAYS,
-                "vol_lookback_days": mf.VOL_LOOKBACK_DAYS,
-                "target_position_vol": mf.TARGET_POSITION_VOL,
-                "target_portfolio_vol": mf.TARGET_PORTFOLIO_VOL,
-                "rebalance": mf.REBALANCE, "execution": mf.EXECUTION_TIMING,
-                "roll_policy": mf.ROLL_POLICY})
-    write_pair("DATASET_MANIFEST",
-               "# RFC-036 DATASET MANIFEST\n\n" + md_table(audit["per_market"],
-                                                          ["root", "n_contracts", "n_rows",
-                                                           "first_date", "last_date"]),
-               {"per_market": audit["per_market"]})
-    write_pair("FUTURES_UNIVERSE",
-               "# RFC-036 FUTURES UNIVERSE\n\n" + md_table(
-                   [{"marker": k, "markets": ", ".join(v)}
-                    for k, v in breadth["markets_per_class"].items()],
-                   ["marker", "markets"]),
-               breadth)
-    write_pair("ROLL_POLICY", "# RFC-036 ROLL POLICY\n\n" + mf.ROLL_POLICY["rule"] + "\n",
-               mf.ROLL_POLICY)
-    write_pair("PIT_AUDIT", "# RFC-036 PIT AUDIT\n\n"
-               f"pit_clean={repro['pit_clean']}\n", repro)
-    write_pair("FUTURE_POISONING", "# RFC-036 FUTURE POISONING\n\n"
-               "Poisoning future prices/volumes/contracts leaves historical signal, "
-               f"front selection and weights unchanged: {repro['pit_clean']}\n", repro)
-    write_pair("COST_MODEL", "# RFC-036 COST MODEL\n\n" + mf.COST_MODEL_NAME +
-               f"\nhash={mf.COST_MODEL_HASH}\n", mf.cost_model())
-    write_pair("MARGIN_AND_CONTRACT_AUDIT",
-               "# RFC-036 MARGIN AND CONTRACT AUDIT\n\n"
-               "Multipliers per market applied to every PnL figure; margin modelled as "
-               "contract notional.\n",
-               {"multipliers": {k: v["multiplier"] for k, v in mf.MARKET_SPECS.items()},
-                "capital_levels": mf.CAPITAL_LEVELS, "headline": mf.HEADLINE_CAPITAL,
-                "rounding_diagnostics": rounding})
+    write_pair(
+        "RFC036_PLAN",
+        "# RFC-036 PLAN\n\nFrozen pipeline, no tuning. P1=MANAGED_FUTURES_TREND.\n"
+        f"Discovery {mf.SPLIT_BOUNDS['DISCOVERY']}, Validation "
+        f"{mf.SPLIT_BOUNDS['VALIDATION']}, HOLDOUT={mf.HOLDOUT}.\n",
+        {
+            "candidate": mf.CANDIDATE_ID,
+            "fidelity": mf.REPRODUCTION_FIDELITY,
+            "splits": mf.SPLIT_BOUNDS,
+            "holdout": mf.HOLDOUT,
+            "config": mf.default_config(integer_contracts=True).__dict__,
+        },
+    )
+    write_pair(
+        "SOURCE_STRATEGY_SPEC",
+        "# RFC-036 SOURCE STRATEGY SPEC\n\n"
+        f"PRIMARY = {mf.PRIMARY_REPRODUCTION_SOURCE} (Moskowitz-Ooi-Pedersen 2012).\n"
+        f"FIDELITY = {mf.REPRODUCTION_FIDELITY}\n\n" + mf.REPRODUCTION_FIDELITY_NOTE,
+        {
+            "primary_source": mf.PRIMARY_REPRODUCTION_SOURCE,
+            "corroborating": ["S002", "S029", "S003"],
+            "fidelity": mf.REPRODUCTION_FIDELITY,
+            "signal": "sign(trailing 252-day excess return)",
+            "lookback_days": mf.LOOKBACK_DAYS,
+            "vol_lookback_days": mf.VOL_LOOKBACK_DAYS,
+            "target_position_vol": mf.TARGET_POSITION_VOL,
+            "target_portfolio_vol": mf.TARGET_PORTFOLIO_VOL,
+            "rebalance": mf.REBALANCE,
+            "execution": mf.EXECUTION_TIMING,
+            "roll_policy": mf.ROLL_POLICY,
+        },
+    )
+    write_pair(
+        "DATASET_MANIFEST",
+        "# RFC-036 DATASET MANIFEST\n\n"
+        + md_table(
+            audit["per_market"], ["root", "n_contracts", "n_rows", "first_date", "last_date"]
+        ),
+        {"per_market": audit["per_market"]},
+    )
+    write_pair(
+        "FUTURES_UNIVERSE",
+        "# RFC-036 FUTURES UNIVERSE\n\n"
+        + md_table(
+            [
+                {"marker": k, "markets": ", ".join(v)}
+                for k, v in breadth["markets_per_class"].items()
+            ],
+            ["marker", "markets"],
+        ),
+        breadth,
+    )
+    write_pair(
+        "ROLL_POLICY", "# RFC-036 ROLL POLICY\n\n" + mf.ROLL_POLICY["rule"] + "\n", mf.ROLL_POLICY
+    )
+    write_pair("PIT_AUDIT", f"# RFC-036 PIT AUDIT\n\npit_clean={repro['pit_clean']}\n", repro)
+    write_pair(
+        "FUTURE_POISONING",
+        "# RFC-036 FUTURE POISONING\n\n"
+        "Poisoning future prices/volumes/contracts leaves historical signal, "
+        f"front selection and weights unchanged: {repro['pit_clean']}\n",
+        repro,
+    )
+    write_pair(
+        "COST_MODEL",
+        "# RFC-036 COST MODEL\n\n" + mf.COST_MODEL_NAME + f"\nhash={mf.COST_MODEL_HASH}\n",
+        mf.cost_model(),
+    )
+    write_pair(
+        "MARGIN_AND_CONTRACT_AUDIT",
+        "# RFC-036 MARGIN AND CONTRACT AUDIT\n\n"
+        "Multipliers per market applied to every PnL figure; margin modelled as "
+        "contract notional.\n",
+        {
+            "multipliers": {k: v["multiplier"] for k, v in mf.MARKET_SPECS.items()},
+            "capital_levels": mf.CAPITAL_LEVELS,
+            "headline": mf.HEADLINE_CAPITAL,
+            "rounding_diagnostics": rounding,
+        },
+    )
 
     # ECONOMIC artifacts
-    write_pair("REPRODUCTION_RESULTS",
-               "# RFC-036 REPRODUCTION RESULTS (source-effect check)\n\n" +
-               json.dumps(repro, indent=2), {"gate": g_repro.as_dict(), "repro": repro})
-    write_pair("DISCOVERY_RESULTS", "# RFC-036 DISCOVERY\n\n" +
-               json.dumps({"net_pnl": disc.get("net_pnl"), "sharpe": disc.get("sharpe_net")},
-                          indent=2),
-               {"gate": g1.as_dict(), "summary": disc})
-    write_pair("VALIDATION_RESULTS", "# RFC-036 VALIDATION\n\n" +
-               json.dumps({"net_pnl": val.get("net_pnl"), "sharpe": val.get("sharpe_net")},
-                          indent=2),
-               {"gate": g2.as_dict(), "summary": val})
+    write_pair(
+        "REPRODUCTION_RESULTS",
+        "# RFC-036 REPRODUCTION RESULTS (source-effect check)\n\n" + json.dumps(repro, indent=2),
+        {"gate": g_repro.as_dict(), "repro": repro},
+    )
+    write_pair(
+        "DISCOVERY_RESULTS",
+        "# RFC-036 DISCOVERY\n\n"
+        + json.dumps({"net_pnl": disc.get("net_pnl"), "sharpe": disc.get("sharpe_net")}, indent=2),
+        {"gate": g1.as_dict(), "summary": disc},
+    )
+    write_pair(
+        "VALIDATION_RESULTS",
+        "# RFC-036 VALIDATION\n\n"
+        + json.dumps({"net_pnl": val.get("net_pnl"), "sharpe": val.get("sharpe_net")}, indent=2),
+        {"gate": g2.as_dict(), "summary": val},
+    )
 
     # asset-class attribution + concentration
-    write_pair("ASSET_CLASS_ATTRIBUTION",
-               "# RFC-036 ASSET CLASS ATTRIBUTION\n\n" +
-               md_table([{"asset_class": k, "net": v} for k, v in
-                         (val.get("asset_class_net") or {}).items()],
-                        ["asset_class", "net"]),
-               {"validation": val.get("asset_class_net"),
-                "discovery": disc.get("asset_class_net")})
+    write_pair(
+        "ASSET_CLASS_ATTRIBUTION",
+        "# RFC-036 ASSET CLASS ATTRIBUTION\n\n"
+        + md_table(
+            [{"asset_class": k, "net": v} for k, v in (val.get("asset_class_net") or {}).items()],
+            ["asset_class", "net"],
+        ),
+        {"validation": val.get("asset_class_net"), "discovery": disc.get("asset_class_net")},
+    )
     pm = val.get("per_market_net") or {}
     top = sorted(pm.items(), key=lambda kv: -abs(kv[1]))[:5]
-    concentration = {"top1": top[0] if top else None,
-                     "top3": sum(abs(v) for _, v in top[:3]),
-                     "top5": sum(abs(v) for _, v in top[:5]),
-                     "total_abs": sum(abs(v) for v in pm.values()),
-                     "leave_one_out": {}}
+    concentration = {
+        "top1": top[0] if top else None,
+        "top3": sum(abs(v) for _, v in top[:3]),
+        "top5": sum(abs(v) for _, v in top[:5]),
+        "total_abs": sum(abs(v) for v in pm.values()),
+        "leave_one_out": {},
+    }
     for r, v in pm.items():
         concentration["leave_one_out"][r] = val.get("net_pnl", 0.0) - v
-    write_pair("MARKET_CONCENTRATION", "# RFC-036 MARKET CONCENTRATION\n\n" +
-               md_table([{"market": k, "net": v} for k, v in top], ["market", "net"]),
-               concentration)
+    write_pair(
+        "MARKET_CONCENTRATION",
+        "# RFC-036 MARKET CONCENTRATION\n\n"
+        + md_table([{"market": k, "net": v} for k, v in top], ["market", "net"]),
+        concentration,
+    )
 
     if extra:
-        write_pair("WALK_FORWARD_RESULTS", "# RFC-036 WALK-FORWARD\n\n" +
-                   md_table(extra["walk_forward"],
-                            ["year", "gross_pnl", "cost_pnl", "net_pnl", "sharpe"]),
-                   extra["walk_forward"])
-        write_pair("TEMPORAL_STABILITY", "# RFC-036 TEMPORAL STABILITY\n\n" +
-                   json.dumps(extra["walk_forward"], indent=2), extra["walk_forward"])
-        write_pair("COST_STRESS", "# RFC-036 COST STRESS\n\n" +
-                   json.dumps(extra["cost_stress"], indent=2), extra["cost_stress"])
-        write_pair("ROLL_STRESS", "# RFC-036 ROLL STRESS\n\n" +
-                   json.dumps(extra["roll_stress"], indent=2), extra["roll_stress"])
-        write_pair("PARAMETER_STABILITY", "# RFC-036 PARAMETER STABILITY\n\n" +
-                   json.dumps(extra["parameter_stability"], indent=2),
-                   extra["parameter_stability"])
-        write_pair("ROBUSTNESS_RESULTS", "# RFC-036 ROBUSTNESS\n\n" +
-                   json.dumps(extra["parameter_stability"], indent=2), extra)
+        write_pair(
+            "WALK_FORWARD_RESULTS",
+            "# RFC-036 WALK-FORWARD\n\n"
+            + md_table(
+                extra["walk_forward"], ["year", "gross_pnl", "cost_pnl", "net_pnl", "sharpe"]
+            ),
+            extra["walk_forward"],
+        )
+        write_pair(
+            "TEMPORAL_STABILITY",
+            "# RFC-036 TEMPORAL STABILITY\n\n" + json.dumps(extra["walk_forward"], indent=2),
+            extra["walk_forward"],
+        )
+        write_pair(
+            "COST_STRESS",
+            "# RFC-036 COST STRESS\n\n" + json.dumps(extra["cost_stress"], indent=2),
+            extra["cost_stress"],
+        )
+        write_pair(
+            "ROLL_STRESS",
+            "# RFC-036 ROLL STRESS\n\n" + json.dumps(extra["roll_stress"], indent=2),
+            extra["roll_stress"],
+        )
+        write_pair(
+            "PARAMETER_STABILITY",
+            "# RFC-036 PARAMETER STABILITY\n\n"
+            + json.dumps(extra["parameter_stability"], indent=2),
+            extra["parameter_stability"],
+        )
+        write_pair(
+            "ROBUSTNESS_RESULTS",
+            "# RFC-036 ROBUSTNESS\n\n" + json.dumps(extra["parameter_stability"], indent=2),
+            extra,
+        )
 
-    write_pair("HOLDOUT_RESULTS", "# RFC-036 HOLDOUT\n\nHOLDOUT = FUTURE_ONLY.\n",
-               {"holdout": mf.HOLDOUT, "note": mf.HOLDOUT_NOTE,
-                "g_mf_4": "NOT_RUN_FUTURE_ONLY"})
-    write_pair("P2_DATA_GAP", "# RFC-036 P2 DATA GAP\n\n" +
-               json.dumps(p2, indent=2), p2)
+    write_pair(
+        "HOLDOUT_RESULTS",
+        "# RFC-036 HOLDOUT\n\nHOLDOUT = FUTURE_ONLY.\n",
+        {"holdout": mf.HOLDOUT, "note": mf.HOLDOUT_NOTE, "g_mf_4": "NOT_RUN_FUTURE_ONLY"},
+    )
+    write_pair("P2_DATA_GAP", "# RFC-036 P2 DATA GAP\n\n" + json.dumps(p2, indent=2), p2)
 
     # final report
     ver = "PENDING"
     vpath = OUT / "RFC036_VERIFICATION.json"
     if vpath.exists():
         try:
-            ver = json.loads(vpath.read_text(encoding="utf-8")).get("verification_status", "PENDING")
+            ver = json.loads(vpath.read_text(encoding="utf-8")).get(
+                "verification_status", "PENDING"
+            )
         except (OSError, ValueError):
             ver = "PENDING"
     leaves = "YES" if g2.status == "PASS" else "NO"
@@ -502,10 +648,27 @@ def finalize(audit: dict[str, Any], breadth: dict[str, Any], g_data: Any, g_repr
     final_md = "\n".join(lines) + "\n"
     (REPO / "reports" / "RFC036_FINAL_REPORT.md").write_text(final_md, encoding="utf-8")
     (REPO / "reports" / "RFC036_FINAL_REPORT.json").write_text(
-        json.dumps({"text": lines, "gates": {"data": g_data.status,
-                    "repro": g_repro.status, "g1": g1.status, "g2": g2.status},
-                    "disc": disc, "val": val, "breadth": breadth, "p2": p2,
-                    "false_success": fs}, indent=2, default=str) + "\n", encoding="utf-8")
+        json.dumps(
+            {
+                "text": lines,
+                "gates": {
+                    "data": g_data.status,
+                    "repro": g_repro.status,
+                    "g1": g1.status,
+                    "g2": g2.status,
+                },
+                "disc": disc,
+                "val": val,
+                "breadth": breadth,
+                "p2": p2,
+                "false_success": fs,
+            },
+            indent=2,
+            default=str,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
 
 
 if __name__ == "__main__":

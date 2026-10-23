@@ -73,9 +73,7 @@ def next_bar_close_ms(now_ms: int, interval_ms: int) -> int:
     return (now_ms // _require_interval(interval_ms) + 1) * interval_ms
 
 
-def max_settlement_ms(
-    interval_ms: int, *, grace_bars: float = DEFAULT_FRESHNESS_GRACE_BARS
-) -> int:
+def max_settlement_ms(interval_ms: int, *, grace_bars: float = DEFAULT_FRESHNESS_GRACE_BARS) -> int:
     """Largest settlement delay that still lands inside the freshness budget.
 
     A decision at ``bar_close + settlement`` sees a newest sealed bar whose
@@ -84,9 +82,7 @@ def max_settlement_ms(
     """
     _require_interval(interval_ms)
     if grace_bars <= 1.0:
-        raise ValueError(
-            f"grace_bars must be > 1.0 for a bar-close cadence, got {grace_bars}"
-        )
+        raise ValueError(f"grace_bars must be > 1.0 for a bar-close cadence, got {grace_bars}")
     return int(interval_ms * (grace_bars - 1.0))
 
 

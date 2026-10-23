@@ -101,7 +101,9 @@ def verify_governance(c: Checks) -> dict[str, str]:
     )
 
     rfc = json.loads(read(REPO / "docs" / "rfc" / "RFC-046_CONTROLLED_DISCOVERY.json"))
-    c.check("RFC-046 approved", rfc["status"] == "APPROVED" and rfc["approved"] is True, rfc["status"])
+    c.check(
+        "RFC-046 approved", rfc["status"] == "APPROVED" and rfc["approved"] is True, rfc["status"]
+    )
     c.check("RFC-046 active", rfc["active"] is True, rfc["active"])
     c.check(
         "RFC-046 runtime state still safe",
@@ -113,7 +115,11 @@ def verify_governance(c: Checks) -> dict[str, str]:
 
     reentry_md = read(REPO / "docs" / "research" / "BUSINESS_REENTRY_POLICY.md")
     reentry = json.loads(read(REPO / "docs" / "research" / "BUSINESS_REENTRY_POLICY.json"))
-    c.check("RFC-041 exemption is dated", "EXCEPCION LIMITADA Y FECHADA" in reentry_md and "2026-10-08" in reentry_md, "exemption missing")
+    c.check(
+        "RFC-041 exemption is dated",
+        "EXCEPCION LIMITADA Y FECHADA" in reentry_md and "2026-10-08" in reentry_md,
+        "exemption missing",
+    )
     exemption = reentry.get("rfc046_limited_exemption") or {}
     c.check(
         "exemption keeps G_BUSINESS_REENTRY NOT_PASS",
@@ -127,7 +133,8 @@ def verify_governance(c: Checks) -> dict[str, str]:
     )
     c.check(
         "exemption refuses orders and paper/live",
-        "real orders" in exemption.get("not_authorized", []) and "live trading" in exemption.get("not_authorized", []),
+        "real orders" in exemption.get("not_authorized", [])
+        and "live trading" in exemption.get("not_authorized", []),
         exemption.get("not_authorized"),
     )
 
@@ -135,7 +142,11 @@ def verify_governance(c: Checks) -> dict[str, str]:
     model_md = read(REPO / "docs" / "research" / "PROFITABILITY_OPERATING_MODEL.md")
     trigger = model_json["next_action_policy"]["trigger"]
     c.check("trigger admits the RFC-046 exemption", "RFC-046 limited exemption" in trigger, trigger)
-    c.check("trigger amendment is in the .md twin too", "RFC-046 limited exemption" in model_md, "md twin not amended")
+    c.check(
+        "trigger amendment is in the .md twin too",
+        "RFC-046 limited exemption" in model_md,
+        "md twin not amended",
+    )
     c.check(
         "operating model keeps the gate closed",
         model_json["next_action_policy"]["rfc046_limited_exemption"]["gate_state"]
@@ -157,9 +168,21 @@ def verify_governance(c: Checks) -> dict[str, str]:
     c.check("roadmap keeps Fase 9", "## Fase 9" in roadmap, "phase 9 lost")
 
     registry = json.loads(read(REPO / "docs" / "roadmap" / "RFC_REGISTRY.json"))
-    c.check("registry lists RFC-046", registry["numbers"]["046"]["status"] == "APPROVED / ACTIVE", registry["numbers"]["046"]["status"])
-    c.check("registry keeps RFC-045 vacant by control", registry["numbers"]["045"]["state"] == "VACANT_BY_CONTROL", registry["numbers"]["045"])
-    c.check("registry marks RFC-036 occupied", registry["numbers"]["036"]["state"] == "OCCUPIED", registry["numbers"]["036"])
+    c.check(
+        "registry lists RFC-046",
+        registry["numbers"]["046"]["status"] == "APPROVED / ACTIVE",
+        registry["numbers"]["046"]["status"],
+    )
+    c.check(
+        "registry keeps RFC-045 vacant by control",
+        registry["numbers"]["045"]["state"] == "VACANT_BY_CONTROL",
+        registry["numbers"]["045"],
+    )
+    c.check(
+        "registry marks RFC-036 occupied",
+        registry["numbers"]["036"]["state"] == "OCCUPIED",
+        registry["numbers"]["036"],
+    )
     c.check(
         "registry names the next free number",
         registry["next_free_number_above_046"] not in registry["numbers"],
@@ -170,10 +193,26 @@ def verify_governance(c: Checks) -> dict[str, str]:
 
 def verify_campaign(c: Checks) -> dict[str, Any]:
     report = json.loads(read(RUN_JSON))
-    c.check("run report records the real UTC instant", "T" in report["generated_at_utc"] and report["generated_at_utc"].endswith("Z"), report["generated_at_utc"])
-    c.check("live trading disabled in the run", report["runtime_state"]["live_trading"] == "DISABLED", report["runtime_state"])
-    c.check("no trade authorized", report["runtime_state"]["trades_authorized"] == 0, report["runtime_state"])
-    c.check("gate not relaxed", report["runtime_state"]["G_BUSINESS_REENTRY"] == "NOT_PASS", report["runtime_state"])
+    c.check(
+        "run report records the real UTC instant",
+        "T" in report["generated_at_utc"] and report["generated_at_utc"].endswith("Z"),
+        report["generated_at_utc"],
+    )
+    c.check(
+        "live trading disabled in the run",
+        report["runtime_state"]["live_trading"] == "DISABLED",
+        report["runtime_state"],
+    )
+    c.check(
+        "no trade authorized",
+        report["runtime_state"]["trades_authorized"] == 0,
+        report["runtime_state"],
+    )
+    c.check(
+        "gate not relaxed",
+        report["runtime_state"]["G_BUSINESS_REENTRY"] == "NOT_PASS",
+        report["runtime_state"],
+    )
 
     spec_hashes = {}
     for run in report["runs"]:
@@ -185,11 +224,15 @@ def verify_campaign(c: Checks) -> dict[str, Any]:
         if not spec_path.is_file():
             continue
         recomputed = hashlib.sha256(
-            json.dumps(
-                json.loads(read(spec_path)), sort_keys=True, separators=(",", ":")
-            ).encode("utf-8")
+            json.dumps(json.loads(read(spec_path)), sort_keys=True, separators=(",", ":")).encode(
+                "utf-8"
+            )
         ).hexdigest()
-        c.check(f"{hid} recorded hash matches the frozen spec", recomputed == recorded, (recorded, recomputed))
+        c.check(
+            f"{hid} recorded hash matches the frozen spec",
+            recomputed == recorded,
+            (recorded, recomputed),
+        )
 
     detail = json.loads(read(DETAIL))
     for run in detail["runs"]:
@@ -199,20 +242,25 @@ def verify_campaign(c: Checks) -> dict[str, Any]:
         asset = run["spec"]["asset"]
         prices = {
             int(row[0]): float(row[1])
-            for row in json.loads(read(REPO / "data" / "raw" / "alpha003" / "price" / f"{asset}_1h.json"))
+            for row in json.loads(
+                read(REPO / "data" / "raw" / "alpha003" / "price" / f"{asset}_1h.json")
+            )
         }
         bad_price = [
-            t for t in trades if prices.get(t["entry_time_ms"]) != t["entry_price"] or prices.get(t["exit_time_ms"]) != t["exit_price"]
+            t
+            for t in trades
+            if prices.get(t["entry_time_ms"]) != t["entry_price"]
+            or prices.get(t["exit_time_ms"]) != t["exit_price"]
         ]
         c.check(f"{hid} fills come from the raw files", not bad_price, bad_price[:1])
         bad_gross = [
-            t for t in trades if abs((t["exit_price"] / t["entry_price"] - 1.0) - t["gross_ret"]) > 1e-12
+            t
+            for t in trades
+            if abs((t["exit_price"] / t["entry_price"] - 1.0) - t["gross_ret"]) > 1e-12
         ]
         c.check(f"{hid} gross returns recompute", not bad_gross, bad_gross[:1])
         bad_net = [
-            t
-            for t in trades
-            if abs(t["gross_ret"] - 23.7906 / 10_000.0 - t["net_ret"]) > 1e-12
+            t for t in trades if abs(t["gross_ret"] - 23.7906 / 10_000.0 - t["net_ret"]) > 1e-12
         ]
         c.check(f"{hid} net = gross - audited cost", not bad_net, bad_net[:1])
         bad_stress = [
@@ -227,7 +275,12 @@ def verify_campaign(c: Checks) -> dict[str, Any]:
         recorded = gate["metrics"]["net_expectancy"]
         c.check(
             f"{hid} expectancy recomputes",
-            (expectancy is None and recorded is None) or (expectancy is not None and recorded is not None and abs(expectancy - recorded) < 1e-12),
+            (expectancy is None and recorded is None)
+            or (
+                expectancy is not None
+                and recorded is not None
+                and abs(expectancy - recorded) < 1e-12
+            ),
             (expectancy, recorded),
         )
         gains = sum(n for n in nets if n > 0)
@@ -236,7 +289,8 @@ def verify_campaign(c: Checks) -> dict[str, Any]:
         recorded_pf = gate["metrics"]["net_pf"]
         c.check(
             f"{hid} profit factor recomputes",
-            (pf is None and recorded_pf is None) or (pf is not None and recorded_pf is not None and abs(pf - recorded_pf) < 1e-12),
+            (pf is None and recorded_pf is None)
+            or (pf is not None and recorded_pf is not None and abs(pf - recorded_pf) < 1e-12),
             (pf, recorded_pf),
         )
         oos = [t["net_ret"] for t in trades if t["partition"] == "final_oos"]
@@ -258,8 +312,16 @@ def verify_campaign(c: Checks) -> dict[str, Any]:
 
     campaign = report["campaign"]
     rejected = [v for v in campaign["verdicts"].values() if v == "CANDIDATE_REJECTED"]
-    expected = "DISCOVERY_CAMPAIGN_FAILED" if rejected == list(campaign["verdicts"].values()) else campaign["campaign_status"]
-    c.check("campaign status follows from the verdicts", campaign["campaign_status"] == expected, campaign["campaign_status"])
+    expected = (
+        "DISCOVERY_CAMPAIGN_FAILED"
+        if rejected == list(campaign["verdicts"].values())
+        else campaign["campaign_status"]
+    )
+    c.check(
+        "campaign status follows from the verdicts",
+        campaign["campaign_status"] == expected,
+        campaign["campaign_status"],
+    )
     c.check("no automatic refill", "NONE" in campaign["refill"], campaign["refill"])
     return {"campaign_status": campaign["campaign_status"], "verdicts": campaign["verdicts"]}
 
@@ -278,7 +340,10 @@ def verify_pit(c: Checks) -> None:
     }
     c.check(
         "campaign module imports no market_data or execution code",
-        not any(m.startswith(("trading_bot.market_data", "trading_bot.execution")) for m in module_imports),
+        not any(
+            m.startswith(("trading_bot.market_data", "trading_bot.execution"))
+            for m in module_imports
+        ),
         sorted(module_imports),
     )
 
@@ -287,7 +352,9 @@ def verify_pit(c: Checks) -> None:
 
     spec = D.load_spec(SPECS / "HYP-002.json")
     bars = D.load_bars(REPO / "data" / "raw" / "alpha003" / "price" / f"{spec.asset}_1h.json")
-    funding = D.load_funding(REPO / "data" / "raw" / "alpha002" / "funding_rate" / f"{spec.asset}.json")
+    funding = D.load_funding(
+        REPO / "data" / "raw" / "alpha002" / "funding_rate" / f"{spec.asset}.json"
+    )
     full = D.signal_settlement_dip(bars, funding, spec.parameters)
     if not full:
         c.check("look-ahead probe has signals to probe", False, "no signals")
@@ -319,7 +386,11 @@ def scan_forbidden(c: Checks) -> None:
             if verdict in line and not any(marker in line.lower() for marker in NEGATIONS):
                 hits.append((verdict, line.strip()[:120]))
     c.check("no forbidden verdict outside a negation", not hits, hits[:2])
-    c.check("false_success reported as zero", '"false_success": 0' in read(RUN_JSON), "false_success missing")
+    c.check(
+        "false_success reported as zero",
+        '"false_success": 0' in read(RUN_JSON),
+        "false_success missing",
+    )
 
 
 def main() -> int:
@@ -348,7 +419,9 @@ def main() -> int:
         "document_hashes": hashes,
         "spec_hashes": {
             path.stem: hashlib.sha256(
-                json.dumps(json.loads(read(path)), sort_keys=True, separators=(",", ":")).encode("utf-8")
+                json.dumps(json.loads(read(path)), sort_keys=True, separators=(",", ":")).encode(
+                    "utf-8"
+                )
             ).hexdigest()
             for path in sorted(SPECS.glob("HYP-*.json"))
         },

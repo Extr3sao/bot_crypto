@@ -44,21 +44,86 @@ OUT = L.OUT_DIR
 BOOTSTRAP_N = 2000
 RNG_SEED = 20261004
 
-GRID_SWING = [(3.0, True, 1.5, 16), (3.0, True, 1.5, 32), (4.0, True, 2.0, 32), (2.0, True, 1.5, 32)]
+GRID_SWING = [
+    (3.0, True, 1.5, 16),
+    (3.0, True, 1.5, 32),
+    (4.0, True, 2.0, 32),
+    (2.0, True, 1.5, 32),
+]
 GRID_FAST = [(2.0, True, 1.0, 16), (3.0, True, 1.5, 16), (3.0, True, 2.0, 32)]
 GRID_NEAR = [(2.0, True, 1.0, 8), (2.5, True, 1.0, 16), (3.0, True, 1.5, 16)]
 
 SINGLE_ASSET_SPECS: list[dict[str, Any]] = [
-    {"hyp": "H-P0-01", "family": "compression_breakout", "sig": "compression_breakout", "tfs": ("15m", "30m", "1h", "2h"), "grid": GRID_SWING},
-    {"hyp": "H-P0-02", "family": "squeeze_magnitude", "sig": "squeeze_magnitude", "tfs": ("15m", "30m", "1h"), "grid": GRID_SWING},
-    {"hyp": "H-P0-03", "family": "vol_contraction_expansion", "sig": "vol_contraction_expansion", "tfs": ("30m", "1h", "2h"), "grid": GRID_SWING},
-    {"hyp": "H-P1-01", "family": "pullback_continuation", "sig": "pullback_continuation", "tfs": ("15m", "30m", "1h", "2h"), "grid": GRID_SWING},
-    {"hyp": "H-P1-02", "family": "breakout_retest", "sig": "breakout_retest", "tfs": ("30m", "1h", "2h"), "grid": GRID_NEAR},
-    {"hyp": "H-P1-03", "family": "regime_momentum", "sig": "regime_momentum", "tfs": ("30m", "1h", "2h"), "grid": GRID_FAST},
-    {"hyp": "H-P1-04", "family": "vol_shock_followthrough", "sig": "vol_shock_continuation", "tfs": ("30m", "1h"), "grid": GRID_NEAR},
-    {"hyp": "H-P1-04R", "family": "vol_shock_followthrough", "sig": "vol_shock_reversion", "tfs": ("30m", "1h"), "grid": GRID_NEAR},
-    {"hyp": "H-P2-02", "family": "volume_expansion", "sig": "volume_expansion", "tfs": ("30m", "1h"), "grid": GRID_NEAR},
-    {"hyp": "H-P2-03", "family": "session_conditioning", "sig": "session_conditioning", "tfs": ("30m", "1h"), "grid": GRID_NEAR},
+    {
+        "hyp": "H-P0-01",
+        "family": "compression_breakout",
+        "sig": "compression_breakout",
+        "tfs": ("15m", "30m", "1h", "2h"),
+        "grid": GRID_SWING,
+    },
+    {
+        "hyp": "H-P0-02",
+        "family": "squeeze_magnitude",
+        "sig": "squeeze_magnitude",
+        "tfs": ("15m", "30m", "1h"),
+        "grid": GRID_SWING,
+    },
+    {
+        "hyp": "H-P0-03",
+        "family": "vol_contraction_expansion",
+        "sig": "vol_contraction_expansion",
+        "tfs": ("30m", "1h", "2h"),
+        "grid": GRID_SWING,
+    },
+    {
+        "hyp": "H-P1-01",
+        "family": "pullback_continuation",
+        "sig": "pullback_continuation",
+        "tfs": ("15m", "30m", "1h", "2h"),
+        "grid": GRID_SWING,
+    },
+    {
+        "hyp": "H-P1-02",
+        "family": "breakout_retest",
+        "sig": "breakout_retest",
+        "tfs": ("30m", "1h", "2h"),
+        "grid": GRID_NEAR,
+    },
+    {
+        "hyp": "H-P1-03",
+        "family": "regime_momentum",
+        "sig": "regime_momentum",
+        "tfs": ("30m", "1h", "2h"),
+        "grid": GRID_FAST,
+    },
+    {
+        "hyp": "H-P1-04",
+        "family": "vol_shock_followthrough",
+        "sig": "vol_shock_continuation",
+        "tfs": ("30m", "1h"),
+        "grid": GRID_NEAR,
+    },
+    {
+        "hyp": "H-P1-04R",
+        "family": "vol_shock_followthrough",
+        "sig": "vol_shock_reversion",
+        "tfs": ("30m", "1h"),
+        "grid": GRID_NEAR,
+    },
+    {
+        "hyp": "H-P2-02",
+        "family": "volume_expansion",
+        "sig": "volume_expansion",
+        "tfs": ("30m", "1h"),
+        "grid": GRID_NEAR,
+    },
+    {
+        "hyp": "H-P2-03",
+        "family": "session_conditioning",
+        "sig": "session_conditioning",
+        "tfs": ("30m", "1h"),
+        "grid": GRID_NEAR,
+    },
 ]
 
 SIG_FN: dict[str, Any] = {
@@ -85,13 +150,15 @@ class Bundles:
         if key not in self._cache:
             if tf in ("2h", "4h"):
                 src = next(
-                    x for x in self._files
+                    x
+                    for x in self._files
                     if x.asset == asset and x.window == window and x.timeframe == "5m"
                 )
                 bars = L.resample(L.load_bars(src.path), int(L.TF_MIN[tf]))
             else:
                 f = next(
-                    x for x in self._files
+                    x
+                    for x in self._files
                     if x.asset == asset and x.window == window and x.timeframe == tf
                 )
                 bars = L.load_bars(f.path)
@@ -130,7 +197,9 @@ def run_single(
                 atr_stop_mult=stop,
                 hold_bars=hold,
             )
-            trades.extend(L.run_spec(spec, b, asset, window, cost_bps=cost_bps, slip_mult=slip_mult))
+            trades.extend(
+                L.run_spec(spec, b, asset, window, cost_bps=cost_bps, slip_mult=slip_mult)
+            )
             eval_bars += max(0, len(b) - WARM)
     return trades, eval_bars
 
@@ -151,12 +220,20 @@ def run_lead_lag(
                 fb = B.get(follower, window, tf)
                 sig = S.sig_lead_lag(leader, fb, int(lag))
                 spec = L.Spec(
-                    candidate_id=exp["candidate_id"], hypothesis_id="H-P1-06", family="lead_lag",
-                    timeframe=tf, signals=_const_signal(sig), warmup=WARM,
-                    atr_target_mult=target, atr_target_is_atr=True, atr_stop_mult=stop,
+                    candidate_id=exp["candidate_id"],
+                    hypothesis_id="H-P1-06",
+                    family="lead_lag",
+                    timeframe=tf,
+                    signals=_const_signal(sig),
+                    warmup=WARM,
+                    atr_target_mult=target,
+                    atr_target_is_atr=True,
+                    atr_stop_mult=stop,
                     hold_bars=int(hold),
                 )
-                trades.extend(L.run_spec(spec, fb, follower, window, cost_bps=cost_bps, slip_mult=slip_mult))
+                trades.extend(
+                    L.run_spec(spec, fb, follower, window, cost_bps=cost_bps, slip_mult=slip_mult)
+                )
                 eval_bars += max(0, len(fb) - WARM)
     return trades, eval_bars
 
@@ -181,12 +258,20 @@ def run_xsec(
                 sig[np.isfinite(r) & (r == 1.0)] = 1
                 sig[np.isfinite(r) & (r == 3.0)] = -1
                 spec = L.Spec(
-                    candidate_id=exp["candidate_id"], hypothesis_id="H-P1-05",
-                    family="cross_sectional_rs", timeframe=tf, signals=_const_signal(sig),
-                    warmup=WARM, atr_target_mult=0.0, atr_target_is_atr=False,
-                    atr_stop_mult=0.0, hold_bars=hold,
+                    candidate_id=exp["candidate_id"],
+                    hypothesis_id="H-P1-05",
+                    family="cross_sectional_rs",
+                    timeframe=tf,
+                    signals=_const_signal(sig),
+                    warmup=WARM,
+                    atr_target_mult=0.0,
+                    atr_target_is_atr=False,
+                    atr_stop_mult=0.0,
+                    hold_bars=hold,
                 )
-                trades.extend(L.run_spec(spec, b, asset, window, cost_bps=cost_bps, slip_mult=slip_mult))
+                trades.extend(
+                    L.run_spec(spec, b, asset, window, cost_bps=cost_bps, slip_mult=slip_mult)
+                )
                 eval_bars += max(0, len(b) - WARM)
     return trades, eval_bars
 
@@ -211,7 +296,13 @@ def mm(trades: list[L.Trade], eval_bars: int, tf: str) -> dict[str, Any]:
 
 def params_of(p: tuple[Any, ...]) -> dict[str, Any]:
     if len(p) == 5:
-        return {"target_mult": p[0], "target_is_atr": p[1], "stop_mult": p[2], "hold_bars": p[3], "lag_bars": p[4]}
+        return {
+            "target_mult": p[0],
+            "target_is_atr": p[1],
+            "stop_mult": p[2],
+            "hold_bars": p[3],
+            "lag_bars": p[4],
+        }
     return {"target_mult": p[0], "target_is_atr": p[1], "stop_mult": p[2], "hold_bars": p[3]}
 
 
@@ -232,8 +323,15 @@ def stage_discovery() -> list[dict[str, Any]]:
                     "params": p,
                 }
                 trades, eval_bars = run_single(exp, L.SPLITS["DISCOVERY"])
-                rows.append({**exp, "parameters": params_of(p), "trades": trades,
-                             "eval_bars": eval_bars, "metrics": mm(trades, eval_bars, tf)})
+                rows.append(
+                    {
+                        **exp,
+                        "parameters": params_of(p),
+                        "trades": trades,
+                        "eval_bars": eval_bars,
+                        "metrics": mm(trades, eval_bars, tf),
+                    }
+                )
     for lag in (1, 3):
         for p in GRID_NEAR:
             exp_no += 1
@@ -247,8 +345,15 @@ def stage_discovery() -> list[dict[str, Any]]:
                 "params": (p[0], True, p[2], p[3], lag),
             }
             trades, eval_bars = run_lead_lag(exp, L.SPLITS["DISCOVERY"])
-            rows.append({**exp, "parameters": params_of(exp["params"]), "trades": trades,
-                         "eval_bars": eval_bars, "metrics": mm(trades, eval_bars, "15m")})
+            rows.append(
+                {
+                    **exp,
+                    "parameters": params_of(exp["params"]),
+                    "trades": trades,
+                    "eval_bars": eval_bars,
+                    "metrics": mm(trades, eval_bars, "15m"),
+                }
+            )
     for hold in (32, 96):
         exp_no += 1
         exp = {
@@ -261,8 +366,15 @@ def stage_discovery() -> list[dict[str, Any]]:
             "params": (0.0, False, 0.0, hold),
         }
         trades, eval_bars = run_xsec(exp, L.SPLITS["DISCOVERY"])
-        rows.append({**exp, "parameters": {**params_of(exp["params"]), "legs": 2},
-                     "trades": trades, "eval_bars": eval_bars, "metrics": mm(trades, eval_bars, "1h")})
+        rows.append(
+            {
+                **exp,
+                "parameters": {**params_of(exp["params"]), "legs": 2},
+                "trades": trades,
+                "eval_bars": eval_bars,
+                "metrics": mm(trades, eval_bars, "1h"),
+            }
+        )
     return rows
 
 
@@ -296,7 +408,10 @@ def block_bootstrap(trades: list[L.Trade], n: int = BOOTSTRAP_N, block: int = 10
         "n_resamples": n,
         "block_size": block,
         "mean_net_bps": round(float(np.mean(net)), 4),
-        "ci95_net_bps": [round(float(np.percentile(means, 2.5)), 4), round(float(np.percentile(means, 97.5)), 4)],
+        "ci95_net_bps": [
+            round(float(np.percentile(means, 2.5)), 4),
+            round(float(np.percentile(means, 97.5)), 4),
+        ],
         "p_net_le_0": round(float(np.mean(means <= 0.0)), 4),
         "pf_median": round(float(np.median(pfs)), 4) if np.isfinite(np.median(pfs)) else None,
     }
@@ -315,7 +430,8 @@ def group_metrics(trades: list[L.Trade], key: str) -> dict[str, Any]:
             "net_pnl_usdt": round(float(net.sum()) / 1e4 * L.ROOT_NOTIONAL, 2),
             "win_rate": round(float(np.count_nonzero(net > 0)) / net.shape[0], 4),
             "verdict": (
-                "WORKS" if float(np.mean(net)) > 0 and net.shape[0] >= 10
+                "WORKS"
+                if float(np.mean(net)) > 0 and net.shape[0] >= 10
                 else ("INSUFFICIENT_SAMPLE" if net.shape[0] < 10 else "FAILS")
             ),
         }
@@ -353,7 +469,8 @@ def param_neighbourhood(exp: dict[str, Any]) -> dict[str, Any]:
         "total_cells": len(nets),
         "plateau_fraction": round(positive / len(nets), 4) if nets else None,
         "verdict": (
-            "PLATEAU" if nets and positive / len(nets) >= 0.6
+            "PLATEAU"
+            if nets and positive / len(nets) >= 0.6
             else ("PARTIAL" if nets and positive / len(nets) >= 0.3 else "ISOLATED_SPIKE")
         ),
     }
@@ -383,8 +500,13 @@ def write_registry_and_matrix(disc: list[dict[str, Any]], survivors: list[dict[s
                         "code_hash": L.sha256_obj({"sig": r["sig"], "params": r["params"]}),
                         "config_hash": L.config_hash(),
                         "status": (
-                            "INSUFFICIENT_SAMPLE" if r["metrics"].get("trades", 0) < L.MIN_TRADES
-                            else ("POSITIVE_NET" if r["metrics"].get("net_bps", -1) > 0 else "REJECTED")
+                            "INSUFFICIENT_SAMPLE"
+                            if r["metrics"].get("trades", 0) < L.MIN_TRADES
+                            else (
+                                "POSITIVE_NET"
+                                if r["metrics"].get("net_bps", -1) > 0
+                                else "REJECTED"
+                            )
                         ),
                     },
                     sort_keys=True,
@@ -393,9 +515,21 @@ def write_registry_and_matrix(disc: list[dict[str, Any]], survivors: list[dict[s
                 + "\n"
             )
     cols = [
-        "experiment_id", "candidate_id", "hypothesis", "family", "timeframe", "parameters",
-        "trades", "gross_expectancy", "net_expectancy", "edge_cost_ratio", "PF", "Sharpe", "MaxDD",
-        "discovery_status", "rejection_reason",
+        "experiment_id",
+        "candidate_id",
+        "hypothesis",
+        "family",
+        "timeframe",
+        "parameters",
+        "trades",
+        "gross_expectancy",
+        "net_expectancy",
+        "edge_cost_ratio",
+        "PF",
+        "Sharpe",
+        "MaxDD",
+        "discovery_status",
+        "rejection_reason",
     ]
     with (OUT / "EXPERIMENT_MATRIX.csv").open("w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=cols)
@@ -405,13 +539,20 @@ def write_registry_and_matrix(disc: list[dict[str, Any]], survivors: list[dict[s
             status, reason = classify(m)
             w.writerow(
                 {
-                    "experiment_id": r["experiment_id"], "candidate_id": r["candidate_id"],
-                    "hypothesis": r["hypothesis_id"], "family": r["family"],
-                    "timeframe": r["timeframe"], "parameters": json.dumps(r["parameters"]),
-                    "trades": m.get("trades"), "gross_expectancy": m.get("gross_bps"),
-                    "net_expectancy": m.get("net_bps"), "edge_cost_ratio": m.get("edge_cost_ratio"),
-                    "PF": m.get("profit_factor"), "Sharpe": m.get("sharpe"),
-                    "MaxDD": m.get("max_dd_bps"), "discovery_status": status,
+                    "experiment_id": r["experiment_id"],
+                    "candidate_id": r["candidate_id"],
+                    "hypothesis": r["hypothesis_id"],
+                    "family": r["family"],
+                    "timeframe": r["timeframe"],
+                    "parameters": json.dumps(r["parameters"]),
+                    "trades": m.get("trades"),
+                    "gross_expectancy": m.get("gross_bps"),
+                    "net_expectancy": m.get("net_bps"),
+                    "edge_cost_ratio": m.get("edge_cost_ratio"),
+                    "PF": m.get("profit_factor"),
+                    "Sharpe": m.get("sharpe"),
+                    "MaxDD": m.get("max_dd_bps"),
+                    "discovery_status": status,
                     "rejection_reason": reason,
                 }
             )
@@ -434,7 +575,8 @@ def main() -> int:
     print("=== STAGE 1 DISCOVERY (W1-W4) ===", flush=True)
     disc = stage_discovery()
     pos = [
-        r for r in disc
+        r
+        for r in disc
         if r["metrics"].get("trades", 0) >= L.MIN_TRADES
         and r["metrics"].get("net_bps", -1) > 0
         and not r["metrics"].get("single_trade_dependency")

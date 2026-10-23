@@ -105,9 +105,7 @@ def main(argv: list[str] | None = None) -> int:
         if not target.is_absolute():
             target = REPO / target
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(
-            json.dumps(status, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-        )
+        target.write_text(json.dumps(status, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         print(f"[status] payload: {target}")
     if args.json:
         # ``--json`` exists to be piped into another tool, so it must not depend

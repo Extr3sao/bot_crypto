@@ -36,11 +36,36 @@ OUT_DIR = REPO / "reports" / "external-alpha"
 CACHE_DIR = OUT_DIR / "cache"
 
 UNIVERSE = (
-    "BTCUSDT", "ETHUSDT", "BNBUSDT", "XRPUSDT", "ADAUSDT", "SOLUSDT",
-    "DOGEUSDT", "DOTUSDT", "LTCUSDT", "LINKUSDT", "BCHUSDT", "XLMUSDT",
-    "TRXUSDT", "ETCUSDT", "EOSUSDT", "XTZUSDT", "ZECUSDT", "DASHUSDT",
-    "NEOUSDT", "ATOMUSDT", "VETUSDT", "FILUSDT", "THETAUSDT", "ALGOUSDT",
-    "AVAXUSDT", "MATICUSDT", "FTTUSDT", "LUNAUSDT", "ICPUSDT", "SHIBUSDT",
+    "BTCUSDT",
+    "ETHUSDT",
+    "BNBUSDT",
+    "XRPUSDT",
+    "ADAUSDT",
+    "SOLUSDT",
+    "DOGEUSDT",
+    "DOTUSDT",
+    "LTCUSDT",
+    "LINKUSDT",
+    "BCHUSDT",
+    "XLMUSDT",
+    "TRXUSDT",
+    "ETCUSDT",
+    "EOSUSDT",
+    "XTZUSDT",
+    "ZECUSDT",
+    "DASHUSDT",
+    "NEOUSDT",
+    "ATOMUSDT",
+    "VETUSDT",
+    "FILUSDT",
+    "THETAUSDT",
+    "ALGOUSDT",
+    "AVAXUSDT",
+    "MATICUSDT",
+    "FTTUSDT",
+    "LUNAUSDT",
+    "ICPUSDT",
+    "SHIBUSDT",
 )
 
 # Chronological splits (§12 pattern reused).  All of them are post-publication.
@@ -56,13 +81,15 @@ SPLIT_ORDER = ("DISCOVERY", "VALIDATION", "HOLDOUT")
 # report GROSS factor returns.  Conservative Binance spot all-taker tiers.
 # ---------------------------------------------------------------------------
 EXT_CRYPTO_COST_MODEL_V1: dict[str, float] = {
-    "taker_fee_bps": 10.0,       # 0.10% spot taker, no BNB discount
-    "half_spread_bps": 3.0,      # crossing half-spread on liquid USDT pairs
-    "impact_bps": 2.0,           # small-size market impact
+    "taker_fee_bps": 10.0,  # 0.10% spot taker, no BNB discount
+    "half_spread_bps": 3.0,  # crossing half-spread on liquid USDT pairs
+    "impact_bps": 2.0,  # small-size market impact
 }
-PER_SIDE_COST_BPS = (EXT_CRYPTO_COST_MODEL_V1["taker_fee_bps"]
-                     + EXT_CRYPTO_COST_MODEL_V1["half_spread_bps"]
-                     + EXT_CRYPTO_COST_MODEL_V1["impact_bps"])   # 15.0
+PER_SIDE_COST_BPS = (
+    EXT_CRYPTO_COST_MODEL_V1["taker_fee_bps"]
+    + EXT_CRYPTO_COST_MODEL_V1["half_spread_bps"]
+    + EXT_CRYPTO_COST_MODEL_V1["impact_bps"]
+)  # 15.0
 
 # ---------------------------------------------------------------------------
 # SOURCE REGISTRY (§5)
@@ -81,14 +108,14 @@ SOURCES: list[dict[str, Any]] = [
         "holding_horizon": "1 week (also 1-4 week formations)",
         "sample_period": "2014-2018 (weekly)",
         "reported_gross_performance": "CMOM (momentum) and CSMB (size) factors are "
-            "significant in the crypto cross-section; a 3-factor (market, size, "
-            "momentum) model prices the cross-section (gross, no costs).",
+        "significant in the crypto cross-section; a 3-factor (market, size, "
+        "momentum) model prices the cross-section (gross, no costs).",
         "reported_net_performance": "not reported (gross factor premia only)",
         "cost_assumptions": "none (factor premia, not implementable PnL)",
         "robustness_evidence": "multifactor spanning tests; alternative formations",
         "replication_evidence": "995+ citations; foundational crypto-factor paper",
         "known_criticisms": "short early-market sample; market-cap sorting uses "
-            "data unavailable to us; gross only",
+        "data unavailable to us; gross only",
         "data_requirements": "weekly coin returns + market caps",
         "implementation_requirements": "cross-sectional sort, weekly rebalance",
         "reliability_score": 5,
@@ -107,14 +134,14 @@ SOURCES: list[dict[str, Any]] = [
         "holding_horizon": "1 month (12-month formation); 1-12 month persistence",
         "sample_period": "1965-2009 (58 liquid instruments)",
         "reported_gross_performance": "past 12-month excess return positively "
-            "predicts next-month return; diversified TSMOM portfolio has high "
-            "gross Sharpe with large returns in extreme months.",
+        "predicts next-month return; diversified TSMOM portfolio has high "
+        "gross Sharpe with large returns in extreme months.",
         "reported_net_performance": "not reported",
         "cost_assumptions": "not modelled (futures are cheap, but not zero)",
         "robustness_evidence": "58 markets, sub-samples, alternative lookbacks",
         "replication_evidence": "Hurst-Ooi-Pedersen century study; crypto extensions",
         "known_criticisms": "Huang-Li-Wang-Zhou (2020) argue the statistical "
-            "evidence is weak under stronger inference",
+        "evidence is weak under stronger inference",
         "data_requirements": "daily/monthly instrument prices",
         "implementation_requirements": "sign of trailing return + vol targeting",
         "reliability_score": 5,
@@ -133,7 +160,7 @@ SOURCES: list[dict[str, Any]] = [
         "holding_horizon": "1 month",
         "sample_period": "same instruments as MOP",
         "reported_gross_performance": "TSMOM predictability is statistically weak "
-            "once a wild-bootstrap / joint-sign inference is used.",
+        "once a wild-bootstrap / joint-sign inference is used.",
         "reported_net_performance": "n/a",
         "cost_assumptions": "n/a",
         "robustness_evidence": "alternative inference methodology",
@@ -157,7 +184,7 @@ SOURCES: list[dict[str, Any]] = [
         "holding_horizon": "1 month",
         "sample_period": "1880-2016",
         "reported_gross_performance": "trend following positive across a century, "
-            "strongest in extreme markets (gross Sharpe ~1).",
+        "strongest in extreme markets (gross Sharpe ~1).",
         "reported_net_performance": "reported after fees in later work",
         "cost_assumptions": "futures-style costs",
         "robustness_evidence": "140 years, many sub-samples",
@@ -181,7 +208,7 @@ SOURCES: list[dict[str, Any]] = [
         "holding_horizon": "1 week",
         "sample_period": "2014-2022",
         "reported_gross_performance": "both TS and XS momentum significant; max "
-            "Sharpe of a momentum strategy ~1.5.",
+        "Sharpe of a momentum strategy ~1.5.",
         "reported_net_performance": "not reported",
         "cost_assumptions": "mostly ignored",
         "robustness_evidence": "dual-family comparison, sub-samples",
@@ -205,7 +232,7 @@ SOURCES: list[dict[str, Any]] = [
         "holding_horizon": "days-months",
         "sample_period": "~2013-2022",
         "reported_gross_performance": "risk-adjusted returns with Sharpe ratios "
-            "typically 0.5-1.5 for crypto trend.",
+        "typically 0.5-1.5 for crypto trend.",
         "reported_net_performance": "not consistently reported",
         "cost_assumptions": "varies",
         "robustness_evidence": "decade of crypto, several rules",
@@ -229,7 +256,7 @@ SOURCES: list[dict[str, Any]] = [
         "holding_horizon": "weekly",
         "sample_period": "2015-2023",
         "reported_gross_performance": "momentum payoffs are tail-driven; "
-            "volatility-managed momentum improves risk-adjusted returns.",
+        "volatility-managed momentum improves risk-adjusted returns.",
         "reported_net_performance": "n/a",
         "cost_assumptions": "n/a",
         "robustness_evidence": "tail/volatility conditioning",
@@ -253,7 +280,7 @@ SOURCES: list[dict[str, Any]] = [
         "holding_horizon": "weekly",
         "sample_period": "2014-2024",
         "reported_gross_performance": "compares survivor-only vs largest-30 coin "
-            "momentum; survivorship materially changes conclusions.",
+        "momentum; survivorship materially changes conclusions.",
         "reported_net_performance": "n/a",
         "cost_assumptions": "n/a",
         "robustness_evidence": "survivorship decomposition",
@@ -277,7 +304,7 @@ SOURCES: list[dict[str, Any]] = [
         "holding_horizon": "1 week to several weeks",
         "sample_period": "2014-2020",
         "reported_gross_performance": "highly diversified cross-sectional momentum "
-            "and reversal portfolios, sorting/holding 1 week+.",
+        "and reversal portfolios, sorting/holding 1 week+.",
         "reported_net_performance": "not reported",
         "cost_assumptions": "not modelled",
         "robustness_evidence": "many sorting/holding combinations",
@@ -301,7 +328,7 @@ SOURCES: list[dict[str, Any]] = [
         "holding_horizon": "daily-monthly",
         "sample_period": "2010-2019 (BTC)",
         "reported_gross_performance": "moving-average trend signals are "
-            "economically significant for bitcoin and outperform buy-and-hold.",
+        "economically significant for bitcoin and outperform buy-and-hold.",
         "reported_net_performance": "not reported",
         "cost_assumptions": "not modelled",
         "robustness_evidence": "out-of-sample statistical tests",
@@ -325,7 +352,7 @@ SOURCES: list[dict[str, Any]] = [
         "holding_horizon": "1 month",
         "sample_period": "1980-2012",
         "reported_gross_performance": "carry predicts returns across asset "
-            "classes; diversified carry portfolio has high Sharpe.",
+        "classes; diversified carry portfolio has high Sharpe.",
         "reported_net_performance": "not reported",
         "cost_assumptions": "limited",
         "robustness_evidence": "many asset classes",
@@ -369,12 +396,12 @@ CANDIDATES: list[dict[str, Any]] = [
         "CANDIDATE_ID": "EXT-TSMOM-001",
         "family": "TIME-SERIES MOMENTUM / TREND",
         "CLAIM": "The sign of an instrument's past 12-month return positively "
-                 "predicts its next-month return (trend persistence).",
+        "predicts its next-month return (trend persistence).",
         "SOURCE": ["S02", "S04", "S03", "S05", "S06", "S10", "S12"],
         "EVIDENCE": "Peer-reviewed (JFE) + a century of independent evidence + "
-                    "crypto-specific extensions; one strong peer-reviewed critique.",
+        "crypto-specific extensions; one strong peer-reviewed critique.",
         "economic_mechanism": "trend persistence / underreaction + risk-management "
-            "demand (institutional flow), not an indicator artefact",
+        "demand (institutional flow), not an indicator artefact",
         "EVIDENCE_STRENGTH": 4,
         "ECONOMIC_HEADROOM": 4,
         "DATA_FEASIBILITY": 5,
@@ -383,17 +410,17 @@ CANDIDATES: list[dict[str, Any]] = [
         "expected_turnover": "~1 position change/asset/quarter (monthly rebalance)",
         "expected_holding": "1 month",
         "main_risks": "regime dependence; weak statistical inference (S03); "
-            "single asset class (crypto) in our data",
+        "single asset class (crypto) in our data",
         "DECISION": "REPRODUCE",
     },
     {
         "CANDIDATE_ID": "EXT-XMOM-001",
         "family": "CROSS-SECTIONAL MOMENTUM",
         "CLAIM": "Coins with high past-week returns outperform coins with low "
-                 "past-week returns (cross-sectional momentum).",
+        "past-week returns (cross-sectional momentum).",
         "SOURCE": ["S01", "S05", "S07", "S08", "S09"],
         "EVIDENCE": "Seminal JF paper + multiple post-publication re-examinations "
-                    "(including a survivorship critique).",
+        "(including a survivorship critique).",
         "economic_mechanism": "behavioural underreaction / limited attention",
         "EVIDENCE_STRENGTH": 4,
         "ECONOMIC_HEADROOM": 4,
@@ -403,7 +430,7 @@ CANDIDATES: list[dict[str, Any]] = [
         "expected_turnover": "high (weekly rebalance, full book)",
         "expected_holding": "1 week",
         "main_risks": "high turnover eats the small weekly spread; survivorship "
-            "bias; crowding decay",
+        "bias; crowding decay",
         "DECISION": "REPRODUCE",
     },
     {
@@ -412,7 +439,7 @@ CANDIDATES: list[dict[str, Any]] = [
         "CLAIM": "Extreme recent winners reverse over the following weeks.",
         "SOURCE": ["S09", "S07"],
         "EVIDENCE": "Working papers + post-publication tail studies; no "
-                    "top-tier peer-reviewed anchor in crypto.",
+        "top-tier peer-reviewed anchor in crypto.",
         "economic_mechanism": "liquidity provision / overreaction",
         "EVIDENCE_STRENGTH": 3,
         "ECONOMIC_HEADROOM": 3,
@@ -439,7 +466,7 @@ CANDIDATES: list[dict[str, Any]] = [
         "expected_turnover": "monthly",
         "expected_holding": "1 month",
         "main_risks": "our crypto carry space was already falsified (RFC-028/029): "
-            "structural funding compression makes net carry negative OOS",
+        "structural funding compression makes net carry negative OOS",
         "DECISION": "REJECT",
     },
     {
@@ -479,15 +506,16 @@ SELECTED = ("EXT-TSMOM-001", "EXT-XMOM-001")
 # panel
 # ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True, slots=True)
 class Panel:
     """Daily multi-asset panel on a common calendar (int64 ms)."""
 
-    dates: NDArray[Any]              # (n,) ms at 00:00 UTC
+    dates: NDArray[Any]  # (n,) ms at 00:00 UTC
     assets: tuple[str, ...]
-    close: NDArray[Any]              # (n, a) close, NaN where absent
-    quote_volume: NDArray[Any]       # (n, a) quote volume, NaN where absent
-    open_ms: NDArray[Any]            # (n, a) true first bar ms per asset/day
+    close: NDArray[Any]  # (n, a) close, NaN where absent
+    quote_volume: NDArray[Any]  # (n, a) quote volume, NaN where absent
+    open_ms: NDArray[Any]  # (n, a) true first bar ms per asset/day
 
     @property
     def n(self) -> int:
@@ -526,8 +554,13 @@ def build_panel() -> Panel:
         close[idx, j] = d["close"]
         qv[idx, j] = d["quote_volume"]
         oms[idx, j] = d["open_time_ms"]
-    return Panel(dates=np.array(all_days, dtype=np.int64), assets=assets,
-                 close=close, quote_volume=qv, open_ms=oms)
+    return Panel(
+        dates=np.array(all_days, dtype=np.int64),
+        assets=assets,
+        close=close,
+        quote_volume=qv,
+        open_ms=oms,
+    )
 
 
 def split_masks(panel: Panel) -> dict[str, NDArray[Any]]:
@@ -542,6 +575,7 @@ def split_masks(panel: Panel) -> dict[str, NDArray[Any]]:
 # ---------------------------------------------------------------------------
 # reproduction engine (§22-§23)
 # ---------------------------------------------------------------------------
+
 
 @dataclass(frozen=True, slots=True)
 class Rebalance:
@@ -592,9 +626,11 @@ class BacktestResult:
             "mean_turnover_notional": float(np.mean(traded)),
             "mean_abs_gross_bps": float(np.mean(abs_gross)),
             "cost_share_of_gross": float(np.sum(cost) / np.sum(np.abs(gross)))
-            if np.sum(np.abs(gross)) > 0 else None,
+            if np.sum(np.abs(gross)) > 0
+            else None,
             "without_best_net_expectancy_bps": float(np.mean(np.sort(nets)[:-1]))
-            if nets.size > 1 else None,
+            if nets.size > 1
+            else None,
             "sum_net_bps": float(np.sum(nets)),
         }
 
@@ -626,6 +662,7 @@ def _eligible(panel: Panel, day: int, lookback_days: int, min_obs: int = 20) -> 
 def _weekly_rebalance_days(panel: Panel, mask: NDArray[Any]) -> list[int]:
     """Mondays (and the first available day thereafter) inside the split."""
     import datetime as _dt
+
     days: list[int] = []
     for i in np.where(mask)[0].tolist():
         d = _dt.datetime.fromtimestamp(int(panel.dates[i]) / 1000, tz=UTC)
@@ -636,6 +673,7 @@ def _weekly_rebalance_days(panel: Panel, mask: NDArray[Any]) -> list[int]:
 
 def _monthly_rebalance_days(panel: Panel, mask: NDArray[Any]) -> list[int]:
     import datetime as _dt
+
     days: list[int] = []
     seen: set[tuple[int, int]] = set()
     for i in np.where(mask)[0].tolist():
@@ -648,8 +686,12 @@ def _monthly_rebalance_days(panel: Panel, mask: NDArray[Any]) -> list[int]:
 
 
 def _weights_for_signal(
-    panel: Panel, day: int, signal: NDArray[Any], eligible: NDArray[Any],
-    long_short: bool, quantile: float,
+    panel: Panel,
+    day: int,
+    signal: NDArray[Any],
+    eligible: NDArray[Any],
+    long_short: bool,
+    quantile: float,
 ) -> NDArray[Any]:
     """Equal-weight long top-quantile / (short bottom-quantile) of `signal`."""
     w = np.zeros(panel.a, dtype=np.float64)
@@ -667,8 +709,11 @@ def _weights_for_signal(
 
 
 def run_cross_sectional_momentum(
-    panel: Panel, split: NDArray[Any], formation_days: int = 7,
-    quantile: float = 0.2, cost_bps: float = PER_SIDE_COST_BPS,
+    panel: Panel,
+    split: NDArray[Any],
+    formation_days: int = 7,
+    quantile: float = 0.2,
+    cost_bps: float = PER_SIDE_COST_BPS,
 ) -> BacktestResult:
     """EXT-XMOM-001: weekly cross-sectional momentum (long top / short bottom)."""
     res = BacktestResult(strategy="EXT-XMOM-001", split="")
@@ -699,17 +744,28 @@ def run_cross_sectional_momentum(
         gross_bps = float(np.nansum(w * ret) * 1e4)
         traded = float(np.nansum(np.abs(w - prev)))
         cost = traded * cost_bps
-        res.rebalances.append(Rebalance(
-            idx=i, ts=int(panel.dates[i]), gross_bps=gross_bps, cost_bps=cost,
-            net_bps=gross_bps - cost, traded_notional=traded,
-            n_long=int(np.sum(w > 0)), n_short=int(np.sum(w < 0))))
+        res.rebalances.append(
+            Rebalance(
+                idx=i,
+                ts=int(panel.dates[i]),
+                gross_bps=gross_bps,
+                cost_bps=cost,
+                net_bps=gross_bps - cost,
+                traded_notional=traded,
+                n_long=int(np.sum(w > 0)),
+                n_short=int(np.sum(w < 0)),
+            )
+        )
         prev = w
     return res
 
 
 def run_time_series_momentum(
-    panel: Panel, split: NDArray[Any], formation_days: int = 365,
-    vol_target: float = 0.40, vol_lookback: int = 60,
+    panel: Panel,
+    split: NDArray[Any],
+    formation_days: int = 365,
+    vol_target: float = 0.40,
+    vol_lookback: int = 60,
     cost_bps: float = PER_SIDE_COST_BPS,
 ) -> BacktestResult:
     """EXT-TSMOM-001: sign of 12-month return, monthly rebalance, vol-scaled.
@@ -740,7 +796,7 @@ def run_time_series_momentum(
         # ex-ante volatility from the trailing vol_lookback daily returns
         vol = np.full(panel.a, np.nan)
         lo = max(0, i - vol_lookback)
-        win = panel.close[lo:i + 1]
+        win = panel.close[lo : i + 1]
         r = win[1:] / win[:-1] - 1.0
         vol = np.full(panel.a, np.nan)
         for jj in range(panel.a):
@@ -756,17 +812,25 @@ def run_time_series_momentum(
         if gross_sum <= 0:
             res.skipped += 1
             continue
-        w = raw / gross_sum          # gross book normalised to 1
+        w = raw / gross_sum  # gross book normalised to 1
         ret = np.zeros(panel.a)
         good = np.isfinite(panel.close[nxt]) & np.isfinite(panel.close[i])
         ret[good] = panel.close[nxt, good] / panel.close[i, good] - 1.0
         gross_bps = float(np.nansum(w * ret) * 1e4)
         traded = float(np.nansum(np.abs(w - prev)))
         cost = traded * cost_bps
-        res.rebalances.append(Rebalance(
-            idx=i, ts=int(panel.dates[i]), gross_bps=gross_bps, cost_bps=cost,
-            net_bps=gross_bps - cost, traded_notional=traded,
-            n_long=int(np.sum(w > 0)), n_short=int(np.sum(w < 0))))
+        res.rebalances.append(
+            Rebalance(
+                idx=i,
+                ts=int(panel.dates[i]),
+                gross_bps=gross_bps,
+                cost_bps=cost,
+                net_bps=gross_bps - cost,
+                traded_notional=traded,
+                n_long=int(np.sum(w > 0)),
+                n_short=int(np.sum(w < 0)),
+            )
+        )
         prev = w
     return res
 
@@ -783,6 +847,7 @@ PERIODS_PER_YEAR = {"EXT-TSMOM-001": 12.0, "EXT-XMOM-001": 52.0}
 # writers / hashing
 # ---------------------------------------------------------------------------
 
+
 def sha256_obj(obj: Any) -> str:
     payload = json.dumps(obj, sort_keys=True, default=str).encode("utf-8")
     return hashlib.sha256(payload).hexdigest()
@@ -798,8 +863,9 @@ def sha256_file(path: Path) -> str:
 
 def write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n",
-                    encoding="utf-8")
+    path.write_text(
+        json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8"
+    )
 
 
 def write_md(path: Path, text: str) -> None:

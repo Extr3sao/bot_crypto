@@ -151,12 +151,20 @@ def test_until_stopped_publishes_what_the_valve_and_the_disk_afford() -> None:
 
 
 def test_the_overhead_term_is_added_to_the_rate_and_the_plan_is_honest_about_it() -> None:
-    without = plan_window(hours=24.0, collector_max_bytes=100 * GB, free=16 * GB,
-                          rate_bytes_per_hour=MEASURED_BYTES_PER_HOUR,
-                          overhead_bytes_per_hour=0.0)
-    with_overhead = plan_window(hours=24.0, collector_max_bytes=100 * GB, free=16 * GB,
-                                rate_bytes_per_hour=MEASURED_BYTES_PER_HOUR,
-                                overhead_bytes_per_hour=200_000.0)
+    without = plan_window(
+        hours=24.0,
+        collector_max_bytes=100 * GB,
+        free=16 * GB,
+        rate_bytes_per_hour=MEASURED_BYTES_PER_HOUR,
+        overhead_bytes_per_hour=0.0,
+    )
+    with_overhead = plan_window(
+        hours=24.0,
+        collector_max_bytes=100 * GB,
+        free=16 * GB,
+        rate_bytes_per_hour=MEASURED_BYTES_PER_HOUR,
+        overhead_bytes_per_hour=200_000.0,
+    )
     assert with_overhead.required_bytes > without.required_bytes
     assert with_overhead.effective_rate_bytes_per_hour == pytest.approx(
         MEASURED_BYTES_PER_HOUR + 200_000.0
@@ -190,8 +198,9 @@ def test_the_launcher_costs_the_declared_window_before_starting(launcher: Any) -
     assert section["required_gb_at_stress"] > 24 * MEASURED_BYTES_PER_HOUR / GB
 
 
-def test_the_launcher_refuses_the_configuration_that_failed(launcher: Any, monkeypatch: Any,
-                                                           capsys: Any) -> None:
+def test_the_launcher_refuses_the_configuration_that_failed(
+    launcher: Any, monkeypatch: Any, capsys: Any
+) -> None:
     """Through `main()`: exit 4, nothing created, the arithmetic in the message."""
     run_id = "wp9-preflight-refusal"
     monkeypatch.setattr(
@@ -243,8 +252,9 @@ def test_the_launcher_autoscales_only_when_asked_and_the_children_get_the_new_va
     assert int(valve) == budget["collector_max_bytes"] > FAILED_VALVE_BYTES
 
 
-def test_the_launcher_refuses_a_window_the_host_cannot_pay_for(launcher: Any, monkeypatch: Any,
-                                                              capsys: Any) -> None:
+def test_the_launcher_refuses_a_window_the_host_cannot_pay_for(
+    launcher: Any, monkeypatch: Any, capsys: Any
+) -> None:
     """72 h at the measured rate needs more than this host has, so no flag lets it start."""
     monkeypatch.setattr(
         launcher.sys,
@@ -270,9 +280,7 @@ def test_the_launcher_refuses_a_window_the_host_cannot_pay_for(launcher: Any, mo
 
 
 def test_an_operator_declared_rate_overrides_the_measurement_and_says_so(launcher: Any) -> None:
-    args = launcher.parse_args(
-        ["--duration-hours", "24", "--expected-bytes-per-hour", "500000000"]
-    )
+    args = launcher.parse_args(["--duration-hours", "24", "--expected-bytes-per-hour", "500000000"])
     section, refused = launcher.disk_preflight(args)
     assert refused is not None  # 12 GB needed against a 1.1 GB default valve
     assert section["rate_source"] == "operator: --expected-bytes-per-hour"
@@ -282,8 +290,11 @@ def test_an_operator_declared_rate_overrides_the_measurement_and_says_so(launche
 def test_the_committed_audit_is_the_source_of_the_measured_rate(launcher: Any) -> None:
     """The launcher's rate is a published artefact, re-readable by anyone."""
     audit = json.loads(
-        (Path(launcher.DISK_AUDIT_PATH) if Path(launcher.DISK_AUDIT_PATH).is_absolute()
-         else _REPO_ROOT / launcher.DISK_AUDIT_PATH).read_text(encoding="utf-8")
+        (
+            Path(launcher.DISK_AUDIT_PATH)
+            if Path(launcher.DISK_AUDIT_PATH).is_absolute()
+            else _REPO_ROOT / launcher.DISK_AUDIT_PATH
+        ).read_text(encoding="utf-8")
     )
     rate, overhead, source = launcher.resolve_capture_measurement(
         launcher.parse_args(["--duration-hours", "24"])

@@ -73,9 +73,7 @@ class ExecutionMode(StrEnum):
 
 #: Modes this package must never produce. Constructing a result with one of
 #: these raises — there is no code path that legitimately reaches them here.
-FORBIDDEN_EXECUTION_MODES: Final[frozenset[ExecutionMode]] = frozenset(
-    {ExecutionMode.LIVE}
-)
+FORBIDDEN_EXECUTION_MODES: Final[frozenset[ExecutionMode]] = frozenset({ExecutionMode.LIVE})
 
 
 class LifecycleState(StrEnum):
@@ -182,13 +180,11 @@ STATE_TRANSITIONS: Final[dict[LifecycleState, frozenset[LifecycleState]]] = {
 }
 
 #: Edges that additionally require a :class:`PromotionRecord` naming evidence.
-EVIDENCE_REQUIRED_EDGES: Final[frozenset[tuple[LifecycleState, LifecycleState]]] = (
-    frozenset(
-        {
-            (LifecycleState.SHADOW, LifecycleState.ELIGIBLE),
-            (LifecycleState.ELIGIBLE, LifecycleState.ACTIVE),
-        }
-    )
+EVIDENCE_REQUIRED_EDGES: Final[frozenset[tuple[LifecycleState, LifecycleState]]] = frozenset(
+    {
+        (LifecycleState.SHADOW, LifecycleState.ELIGIBLE),
+        (LifecycleState.ELIGIBLE, LifecycleState.ACTIVE),
+    }
 )
 
 #: The only lifecycle states a strategy may be *registered* at (DEF-VERIFY-001).
@@ -222,9 +218,7 @@ def _assert_no_live_reachable() -> None:
 _assert_no_live_reachable()
 
 
-def assert_no_future_data(
-    *, data_time_ms: int, decision_time_ms: int, label: str = "data"
-) -> None:
+def assert_no_future_data(*, data_time_ms: int, decision_time_ms: int, label: str = "data") -> None:
     """Anti-lookahead guard (§25): a decision may never read data from its future.
 
     Applies to regime labels, health metrics, performance windows and shadow /
@@ -273,9 +267,7 @@ def assert_transition(
                 f"{strategy_id}: promotion record belongs to {promotion.strategy_id}"
             )
         if not promotion.evidence:
-            raise LifecycleStateError(
-                f"{strategy_id}: promotion record carries no evidence"
-            )
+            raise LifecycleStateError(f"{strategy_id}: promotion record carries no evidence")
 
 
 # --------------------------------------------------------------------------- #
@@ -428,7 +420,9 @@ class StrategyEvent:
             event_type=StrategyEventType(data["event_type"]),
             strategy_id=data["strategy_id"],
             timestamp_ms=int(data["timestamp_ms"]),
-            from_state=None if data.get("from_state") is None else LifecycleState(data["from_state"]),
+            from_state=None
+            if data.get("from_state") is None
+            else LifecycleState(data["from_state"]),
             to_state=None if data.get("to_state") is None else LifecycleState(data["to_state"]),
             reason_codes=tuple(data.get("reason_codes", ())),
             evidence=tuple(data.get("evidence", ())),

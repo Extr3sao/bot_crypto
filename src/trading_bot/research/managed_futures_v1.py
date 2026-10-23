@@ -53,7 +53,7 @@ ECONOMIC_STATUS = "NO_VALIDATED_EXECUTABLE_EDGE"
 CURRENT_DECISION = "CONTINUE_P1_MANAGED_FUTURES_TREND"
 P2_STATUS = "AUTHORIZED_WAITING"
 
-EXECUTABLE_VALIDATED_EDGE_COUNT = 0   # baseline at RFC-036 start
+EXECUTABLE_VALIDATED_EDGE_COUNT = 0  # baseline at RFC-036 start
 ROBUST_EDGE_COUNT = 0
 PAPER_CANDIDATE_COUNT = 0
 FORWARD_PROFITABLE_COUNT = 0
@@ -94,15 +94,17 @@ HOLDOUT_NOTE = (
 # --------------------------------------------------------------------------- #
 # frozen strategy parameters (S001 / MOP 2012), §5, §28, §29                    #
 # --------------------------------------------------------------------------- #
-LOOKBACK_DAYS = 252          # 12-month time-series momentum
-VOL_LOOKBACK_DAYS = 60       # ex-ante realised-vol window
-TARGET_POSITION_VOL = 0.40   # 40% annualised vol per instrument (MOP)
+LOOKBACK_DAYS = 252  # 12-month time-series momentum
+VOL_LOOKBACK_DAYS = 60  # ex-ante realised-vol window
+TARGET_POSITION_VOL = 0.40  # 40% annualised vol per instrument (MOP)
 TARGET_PORTFOLIO_VOL = 0.15  # 15% annualised portfolio vol (MOP diversified TSMOM)
-MAX_GROSS_LEVERAGE = 10.0    # sanity cap only; report actual leverage (§34)
+MAX_GROSS_LEVERAGE = 10.0  # sanity cap only; report actual leverage (§34)
 REBALANCE = "monthly (first trading day of each calendar month)"
-EXECUTION_TIMING = ("signal uses data through the last trading day of the prior month "
-                    "(T); positions execute at the first trading day of the next month at "
-                    "its close (>= T+1), never at the signal day's own close (§31)")
+EXECUTION_TIMING = (
+    "signal uses data through the last trading day of the prior month "
+    "(T); positions execute at the first trading day of the next month at "
+    "its close (>= T+1), never at the signal day's own close (§31)"
+)
 
 # research capital levels for the fractional-contract diagnostic (§37, §38)
 CAPITAL_LEVELS = {"small": 1_000_000.0, "medium": 10_000_000.0, "larger": 100_000_000.0}
@@ -124,60 +126,195 @@ ASSET_CLASSES = (
 # multiplier = contract size in the price's quoting unit; price_unit documents it.
 # cost is a conservative per-side all-in cost (commission + half-spread) in bps.
 MARKET_SPECS: dict[str, dict[str, Any]] = {
-    "sp": {"name": "S&P 500", "asset_class": "EQUITY_INDEX", "multiplier": 250.0,
-           "price_unit": "index points", "per_side_cost_bps": 3.0},
-    "aor": {"name": "All Ordinaries", "asset_class": "EQUITY_INDEX", "multiplier": 25.0,
-            "price_unit": "index points", "per_side_cost_bps": 8.0},
-    "us": {"name": "US T-Bonds", "asset_class": "GOVERNMENT_BOND_RATES", "multiplier": 1000.0,
-           "price_unit": "points (1 pt = $1000)", "per_side_cost_bps": 3.0},
-    "ed": {"name": "Eurodollar", "asset_class": "GOVERNMENT_BOND_RATES", "multiplier": 2500.0,
-           "price_unit": "100 - rate (0.01 = $25)", "per_side_cost_bps": 3.0},
-    "ad": {"name": "Australian Dollar", "asset_class": "FX", "multiplier": 100000.0,
-           "price_unit": "USD per AUD", "per_side_cost_bps": 5.0},
-    "bp": {"name": "British Pound", "asset_class": "FX", "multiplier": 62500.0,
-           "price_unit": "USD per GBP", "per_side_cost_bps": 3.0},
-    "jy": {"name": "Japanese Yen", "asset_class": "FX", "multiplier": 12500000.0,
-           "price_unit": "USD per JPY (x1e-6)", "per_side_cost_bps": 3.0},
-    "cd": {"name": "Canadian Dollar", "asset_class": "FX", "multiplier": 100000.0,
-           "price_unit": "USD per CAD", "per_side_cost_bps": 3.0},
-    "sf": {"name": "Swiss Franc", "asset_class": "FX", "multiplier": 125000.0,
-           "price_unit": "USD per CHF", "per_side_cost_bps": 3.0},
-    "dx": {"name": "US Dollar Index", "asset_class": "FX", "multiplier": 1000.0,
-           "price_unit": "index points", "per_side_cost_bps": 4.0},
-    "cl": {"name": "Crude Oil", "asset_class": "ENERGY", "multiplier": 1000.0,
-           "price_unit": "USD per barrel", "per_side_cost_bps": 3.0},
-    "ho": {"name": "Heating Oil", "asset_class": "ENERGY", "multiplier": 42000.0,
-           "price_unit": "USD per gallon", "per_side_cost_bps": 5.0},
-    "gc": {"name": "Gold", "asset_class": "METALS", "multiplier": 100.0,
-           "price_unit": "USD per ounce", "per_side_cost_bps": 3.0},
-    "si": {"name": "Silver", "asset_class": "METALS", "multiplier": 5000.0,
-           "price_unit": "USD per ounce", "per_side_cost_bps": 5.0},
-    "hg": {"name": "Copper", "asset_class": "METALS", "multiplier": 25000.0,
-           "price_unit": "USD per pound", "per_side_cost_bps": 5.0},
-    "pl": {"name": "Platinum", "asset_class": "METALS", "multiplier": 50.0,
-           "price_unit": "USD per ounce", "per_side_cost_bps": 8.0},
-    "pa": {"name": "Palladium", "asset_class": "METALS", "multiplier": 100.0,
-           "price_unit": "USD per ounce", "per_side_cost_bps": 8.0},
-    "c": {"name": "Corn", "asset_class": "AGRICULTURE", "multiplier": 5000.0,
-          "price_unit": "USD per bushel", "per_side_cost_bps": 5.0},
-    "w": {"name": "Wheat", "asset_class": "AGRICULTURE", "multiplier": 5000.0,
-          "price_unit": "USD per bushel", "per_side_cost_bps": 5.0},
-    "s": {"name": "Soybeans", "asset_class": "AGRICULTURE", "multiplier": 5000.0,
-          "price_unit": "USD per bushel", "per_side_cost_bps": 5.0},
-    "o": {"name": "Oats", "asset_class": "AGRICULTURE", "multiplier": 5000.0,
-          "price_unit": "USD per bushel", "per_side_cost_bps": 8.0},
-    "kc": {"name": "Coffee", "asset_class": "AGRICULTURE", "multiplier": 37500.0,
-           "price_unit": "USD per pound", "per_side_cost_bps": 5.0},
-    "sb": {"name": "Sugar", "asset_class": "AGRICULTURE", "multiplier": 112000.0,
-           "price_unit": "USD per pound", "per_side_cost_bps": 5.0},
-    "jo": {"name": "Orange Juice", "asset_class": "AGRICULTURE", "multiplier": 15000.0,
-           "price_unit": "USD per pound", "per_side_cost_bps": 8.0},
-    "fc": {"name": "Feeder Cattle", "asset_class": "AGRICULTURE", "multiplier": 50000.0,
-           "price_unit": "USD per pound", "per_side_cost_bps": 8.0},
-    "lh": {"name": "Live Hogs", "asset_class": "AGRICULTURE", "multiplier": 40000.0,
-           "price_unit": "USD per pound", "per_side_cost_bps": 5.0},
-    "pb": {"name": "Pork Bellies", "asset_class": "AGRICULTURE", "multiplier": 40000.0,
-           "price_unit": "USD per pound", "per_side_cost_bps": 8.0},
+    "sp": {
+        "name": "S&P 500",
+        "asset_class": "EQUITY_INDEX",
+        "multiplier": 250.0,
+        "price_unit": "index points",
+        "per_side_cost_bps": 3.0,
+    },
+    "aor": {
+        "name": "All Ordinaries",
+        "asset_class": "EQUITY_INDEX",
+        "multiplier": 25.0,
+        "price_unit": "index points",
+        "per_side_cost_bps": 8.0,
+    },
+    "us": {
+        "name": "US T-Bonds",
+        "asset_class": "GOVERNMENT_BOND_RATES",
+        "multiplier": 1000.0,
+        "price_unit": "points (1 pt = $1000)",
+        "per_side_cost_bps": 3.0,
+    },
+    "ed": {
+        "name": "Eurodollar",
+        "asset_class": "GOVERNMENT_BOND_RATES",
+        "multiplier": 2500.0,
+        "price_unit": "100 - rate (0.01 = $25)",
+        "per_side_cost_bps": 3.0,
+    },
+    "ad": {
+        "name": "Australian Dollar",
+        "asset_class": "FX",
+        "multiplier": 100000.0,
+        "price_unit": "USD per AUD",
+        "per_side_cost_bps": 5.0,
+    },
+    "bp": {
+        "name": "British Pound",
+        "asset_class": "FX",
+        "multiplier": 62500.0,
+        "price_unit": "USD per GBP",
+        "per_side_cost_bps": 3.0,
+    },
+    "jy": {
+        "name": "Japanese Yen",
+        "asset_class": "FX",
+        "multiplier": 12500000.0,
+        "price_unit": "USD per JPY (x1e-6)",
+        "per_side_cost_bps": 3.0,
+    },
+    "cd": {
+        "name": "Canadian Dollar",
+        "asset_class": "FX",
+        "multiplier": 100000.0,
+        "price_unit": "USD per CAD",
+        "per_side_cost_bps": 3.0,
+    },
+    "sf": {
+        "name": "Swiss Franc",
+        "asset_class": "FX",
+        "multiplier": 125000.0,
+        "price_unit": "USD per CHF",
+        "per_side_cost_bps": 3.0,
+    },
+    "dx": {
+        "name": "US Dollar Index",
+        "asset_class": "FX",
+        "multiplier": 1000.0,
+        "price_unit": "index points",
+        "per_side_cost_bps": 4.0,
+    },
+    "cl": {
+        "name": "Crude Oil",
+        "asset_class": "ENERGY",
+        "multiplier": 1000.0,
+        "price_unit": "USD per barrel",
+        "per_side_cost_bps": 3.0,
+    },
+    "ho": {
+        "name": "Heating Oil",
+        "asset_class": "ENERGY",
+        "multiplier": 42000.0,
+        "price_unit": "USD per gallon",
+        "per_side_cost_bps": 5.0,
+    },
+    "gc": {
+        "name": "Gold",
+        "asset_class": "METALS",
+        "multiplier": 100.0,
+        "price_unit": "USD per ounce",
+        "per_side_cost_bps": 3.0,
+    },
+    "si": {
+        "name": "Silver",
+        "asset_class": "METALS",
+        "multiplier": 5000.0,
+        "price_unit": "USD per ounce",
+        "per_side_cost_bps": 5.0,
+    },
+    "hg": {
+        "name": "Copper",
+        "asset_class": "METALS",
+        "multiplier": 25000.0,
+        "price_unit": "USD per pound",
+        "per_side_cost_bps": 5.0,
+    },
+    "pl": {
+        "name": "Platinum",
+        "asset_class": "METALS",
+        "multiplier": 50.0,
+        "price_unit": "USD per ounce",
+        "per_side_cost_bps": 8.0,
+    },
+    "pa": {
+        "name": "Palladium",
+        "asset_class": "METALS",
+        "multiplier": 100.0,
+        "price_unit": "USD per ounce",
+        "per_side_cost_bps": 8.0,
+    },
+    "c": {
+        "name": "Corn",
+        "asset_class": "AGRICULTURE",
+        "multiplier": 5000.0,
+        "price_unit": "USD per bushel",
+        "per_side_cost_bps": 5.0,
+    },
+    "w": {
+        "name": "Wheat",
+        "asset_class": "AGRICULTURE",
+        "multiplier": 5000.0,
+        "price_unit": "USD per bushel",
+        "per_side_cost_bps": 5.0,
+    },
+    "s": {
+        "name": "Soybeans",
+        "asset_class": "AGRICULTURE",
+        "multiplier": 5000.0,
+        "price_unit": "USD per bushel",
+        "per_side_cost_bps": 5.0,
+    },
+    "o": {
+        "name": "Oats",
+        "asset_class": "AGRICULTURE",
+        "multiplier": 5000.0,
+        "price_unit": "USD per bushel",
+        "per_side_cost_bps": 8.0,
+    },
+    "kc": {
+        "name": "Coffee",
+        "asset_class": "AGRICULTURE",
+        "multiplier": 37500.0,
+        "price_unit": "USD per pound",
+        "per_side_cost_bps": 5.0,
+    },
+    "sb": {
+        "name": "Sugar",
+        "asset_class": "AGRICULTURE",
+        "multiplier": 112000.0,
+        "price_unit": "USD per pound",
+        "per_side_cost_bps": 5.0,
+    },
+    "jo": {
+        "name": "Orange Juice",
+        "asset_class": "AGRICULTURE",
+        "multiplier": 15000.0,
+        "price_unit": "USD per pound",
+        "per_side_cost_bps": 8.0,
+    },
+    "fc": {
+        "name": "Feeder Cattle",
+        "asset_class": "AGRICULTURE",
+        "multiplier": 50000.0,
+        "price_unit": "USD per pound",
+        "per_side_cost_bps": 8.0,
+    },
+    "lh": {
+        "name": "Live Hogs",
+        "asset_class": "AGRICULTURE",
+        "multiplier": 40000.0,
+        "price_unit": "USD per pound",
+        "per_side_cost_bps": 5.0,
+    },
+    "pb": {
+        "name": "Pork Bellies",
+        "asset_class": "AGRICULTURE",
+        "multiplier": 40000.0,
+        "price_unit": "USD per pound",
+        "per_side_cost_bps": 8.0,
+    },
 }
 
 # markets present in the source archive but excluded from the tradable universe,
@@ -190,9 +327,9 @@ EXCLUDED_MARKETS: dict[str, str] = {
     "cac": "CAC 40 archive present but empty (zero usable rows)",
 }
 
-MIN_MARKETS_OVERALL = 12            # §23 minimum breadth (pre-registered)
-MIN_ASSET_CLASSES = 5               # §23 minimum asset-class breadth
-MIN_MARKETS_PER_CLASS = 1           # no class may be a single-market masquerade
+MIN_MARKETS_OVERALL = 12  # §23 minimum breadth (pre-registered)
+MIN_ASSET_CLASSES = 5  # §23 minimum asset-class breadth
+MIN_MARKETS_PER_CLASS = 1  # no class may be a single-market masquerade
 
 # --------------------------------------------------------------------------- #
 # cost model, frozen before Discovery (§39, §40, §41)                           #
@@ -209,11 +346,15 @@ def cost_model() -> dict[str, Any]:
         "per_market_per_side_cost_bps": {
             k: v["per_side_cost_bps"] for k, v in MARKET_SPECS.items()
         },
-        "roll_cost": ("explicit: cost charged on closing the old contract notional "
-                      "AND on opening the new contract notional (no free rolls) (§20)"),
+        "roll_cost": (
+            "explicit: cost charged on closing the old contract notional "
+            "AND on opening the new contract notional (no free rolls) (§20)"
+        ),
         "slippage_included": True,
-        "source": ("category-specific public/practitioner commission + bid-ask "
-                   "assumptions; no single crypto constant (§40)"),
+        "source": (
+            "category-specific public/practitioner commission + bid-ask "
+            "assumptions; no single crypto constant (§40)"
+        ),
     }
 
 
@@ -227,15 +368,21 @@ COST_MODEL_HASH = hashlib.sha256(
 ROLL_POLICY_NAME = "PIT_VOLUME_FRONT_MONTHLY_V1"
 ROLL_POLICY = {
     "name": ROLL_POLICY_NAME,
-    "rule": ("at each monthly rebalance date T, hold the eligible contract with the "
-             "highest trailing 20-trading-day average volume, computed using ONLY data "
-             "available by T; a contract deliverable in the current calendar month or "
-             "earlier is ineligible to hold"),
-    "fallback": ("if the held contract has no print for >5 business days before the "
-                 "next scheduled roll, roll at the first date it goes stale using the "
-                 "same PIT volume rule"),
-    "pit": ("volume used for selection is strictly trailing (<= T); a contract's "
-            "delivery month comes from its filename and is known ex-ante (§19, §26)"),
+    "rule": (
+        "at each monthly rebalance date T, hold the eligible contract with the "
+        "highest trailing 20-trading-day average volume, computed using ONLY data "
+        "available by T; a contract deliverable in the current calendar month or "
+        "earlier is ineligible to hold"
+    ),
+    "fallback": (
+        "if the held contract has no print for >5 business days before the "
+        "next scheduled roll, roll at the first date it goes stale using the "
+        "same PIT volume rule"
+    ),
+    "pit": (
+        "volume used for selection is strictly trailing (<= T); a contract's "
+        "delivery month comes from its filename and is known ex-ante (§19, §26)"
+    ),
     "no_optimisation": "the roll rule is not chosen by comparing rollout results (§18)",
 }
 
@@ -258,8 +405,20 @@ FALSE_SUCCESS_TRIGGERS: tuple[str, ...] = (
 )
 
 # month codes used by the source filenames
-MONTH_CODES = {"F": 1, "G": 2, "H": 3, "J": 4, "K": 5, "M": 6,
-               "N": 7, "Q": 8, "U": 9, "V": 10, "X": 11, "Z": 12}
+MONTH_CODES = {
+    "F": 1,
+    "G": 2,
+    "H": 3,
+    "J": 4,
+    "K": 5,
+    "M": 6,
+    "N": 7,
+    "Q": 8,
+    "U": 9,
+    "V": 10,
+    "X": 11,
+    "Z": 12,
+}
 
 
 # --------------------------------------------------------------------------- #
@@ -267,7 +426,7 @@ MONTH_CODES = {"F": 1, "G": 2, "H": 3, "J": 4, "K": 5, "M": 6,
 # --------------------------------------------------------------------------- #
 @dataclass(frozen=True)
 class ContractBar:
-    ordinal: int      # datetime.date.toordinal()
+    ordinal: int  # datetime.date.toordinal()
     open: float
     high: float
     low: float
@@ -279,8 +438,8 @@ class ContractBar:
 @dataclass(frozen=True)
 class FuturesContract:
     root: str
-    year: int          # 4-digit delivery year
-    month: int         # delivery month 1-12
+    year: int  # 4-digit delivery year
+    month: int  # delivery month 1-12
     asset_class: str
     multiplier: float
 
@@ -336,8 +495,8 @@ class TradableContractSeries:
     """The actual contracts held through time (the execution authority)."""
 
     root: str
-    held: dict[int, str]                     # date ordinal -> contract_id held after
-    close: dict[int, float]                  # date ordinal -> close of held contract
+    held: dict[int, str]  # date ordinal -> contract_id held after
+    close: dict[int, float]  # date ordinal -> close of held contract
     rolls: list[RollDecision]
     interval_contract: dict[int, str] = field(default_factory=dict)
     interval_return: dict[int, float] = field(default_factory=dict)
@@ -349,7 +508,7 @@ class ContinuousSignalSeries:
 
     root: str
     ordinals: list[int]
-    excess_return: list[float]               # daily return of the held contract
+    excess_return: list[float]  # daily return of the held contract
     construction: str
 
 
@@ -439,12 +598,12 @@ def build_market(root: str, files: dict[str, str]) -> ChainMarket:
         bars = parse_bars(text)
         if not bars:
             continue
-        contract = FuturesContract(root, year, month, spec["asset_class"],
-                                   float(spec["multiplier"]))
+        contract = FuturesContract(
+            root, year, month, spec["asset_class"], float(spec["multiplier"])
+        )
         series[contract.contract_id] = ContractSeries(contract, bars)
         all_dates.update(b.ordinal for b in bars)
-    return ChainMarket(root=root, spec=spec, series=series,
-                       dates=sorted(all_dates))
+    return ChainMarket(root=root, spec=spec, series=series, dates=sorted(all_dates))
 
 
 # --------------------------------------------------------------------------- #
@@ -456,8 +615,8 @@ class VolumeIndex:
 
     dates: list[int]
     cids: list[str]
-    csum: NDArray[Any]   # (T+1, K) cumulative sums with missing -> 0
-    ccnt: NDArray[Any]   # (T+1, K) cumulative counts of available prints
+    csum: NDArray[Any]  # (T+1, K) cumulative sums with missing -> 0
+    ccnt: NDArray[Any]  # (T+1, K) cumulative counts of available prints
     contracts: dict[str, FuturesContract]
 
     def trailing_mean(self, i: int, lookback: int) -> NDArray[Any]:
@@ -527,8 +686,9 @@ def select_front_contract(md: ChainMarket, i: int, lookback: int = 20) -> str | 
     return select_front_from_index(volume_index(md), i, lookback)
 
 
-def build_tradable_series(md: ChainMarket, split_start: int, split_end: int,
-                          roll_lookback: int = 20, stale_days: int = 5) -> TradableContractSeries:
+def build_tradable_series(
+    md: ChainMarket, split_start: int, split_end: int, roll_lookback: int = 20, stale_days: int = 5
+) -> TradableContractSeries:
     """Construct the actually-held contract series via the frozen roll policy.
 
     The held contract is re-evaluated at each monthly boundary.  Between rolls the
@@ -537,10 +697,8 @@ def build_tradable_series(md: ChainMarket, split_start: int, split_end: int,
     """
     vi = volume_index(md)
     dates = md.dates
-    by_ordinal = {cid: {b.ordinal: k for k, b in enumerate(s.bars)}
-                  for cid, s in md.series.items()}
-    closes = {cid: {b.ordinal: b.close for b in s.bars}
-              for cid, s in md.series.items()}
+    by_ordinal = {cid: {b.ordinal: k for k, b in enumerate(s.bars)} for cid, s in md.series.items()}
+    closes = {cid: {b.ordinal: b.close for b in s.bars} for cid, s in md.series.items()}
     held: dict[int, str] = {}
     close: dict[int, float] = {}
     interval_c: dict[int, str] = {}
@@ -566,8 +724,7 @@ def build_tradable_series(md: ChainMarket, split_start: int, split_end: int,
         if need_roll:
             new_c = select_front_from_index(vi, i, roll_lookback)
             if new_c is not None and new_c != current:
-                reason = "INITIAL" if current is None else (
-                    "MONTHLY" if is_month_new else "STALE")
+                reason = "INITIAL" if current is None else ("MONTHLY" if is_month_new else "STALE")
                 rolls.append(RollDecision(od, current, new_c, reason))
                 current = new_c
             elif current is None and new_c is None:
@@ -614,10 +771,14 @@ def continuous_signal_series(ts: TradableContractSeries) -> ContinuousSignalSeri
     ords = [o for o in ords if o in ts.interval_return]
     rets = [float(ts.interval_return[o]) for o in ords]
     return ContinuousSignalSeries(
-        ts.root, ords, rets,
-        construction=("daily excess return = close(contract held during interval, T)/"
-                      "close(same contract, T-1)-1; sign/vol computed on this series. "
-                      "No back-adjusted continuous price is used for PnL (§16)."),
+        ts.root,
+        ords,
+        rets,
+        construction=(
+            "daily excess return = close(contract held during interval, T)/"
+            "close(same contract, T-1)-1; sign/vol computed on this series. "
+            "No back-adjusted continuous price is used for PnL (§16)."
+        ),
     )
 
 
@@ -639,8 +800,9 @@ def max_drawdown(equity: NDArray[Any]) -> float:
     return float(np.max(peak - eq))
 
 
-def block_bootstrap_mean_ci(x: NDArray[Any], n_boot: int = 5000, block: int = 20,
-                            seed: int = 20261005, alpha: float = 0.05) -> dict[str, Any]:
+def block_bootstrap_mean_ci(
+    x: NDArray[Any], n_boot: int = 5000, block: int = 20, seed: int = 20261005, alpha: float = 0.05
+) -> dict[str, Any]:
     x = np.asarray(x, dtype=np.float64)
     x = x[np.isfinite(x)]
     if x.size < 5:
@@ -651,10 +813,13 @@ def block_bootstrap_mean_ci(x: NDArray[Any], n_boot: int = 5000, block: int = 20
     means = np.empty(n_boot, dtype=np.float64)
     for b in range(n_boot):
         starts = rng.integers(0, n, size=n_blocks)
-        sample = np.concatenate([x[s:s + block] for s in starts])[:n]
+        sample = np.concatenate([x[s : s + block] for s in starts])[:n]
         means[b] = float(np.mean(sample))
     return {
-        "status": "OK", "n": int(n), "block": int(block), "n_boot": int(n_boot),
+        "status": "OK",
+        "n": int(n),
+        "block": int(block),
+        "n_boot": int(n_boot),
         "observed_mean": float(np.mean(x)),
         "ci_low": float(np.quantile(means, alpha / 2)),
         "ci_high": float(np.quantile(means, 1 - alpha / 2)),
@@ -665,8 +830,7 @@ def block_bootstrap_mean_ci(x: NDArray[Any], n_boot: int = 5000, block: int = 20
 # --------------------------------------------------------------------------- #
 # the frozen MOP-style target (weights), PIT-safe                              #
 # --------------------------------------------------------------------------- #
-def momentum_signal(ser: ContinuousSignalSeries, i: int,
-                    lookback: int = LOOKBACK_DAYS) -> float:
+def momentum_signal(ser: ContinuousSignalSeries, i: int, lookback: int = LOOKBACK_DAYS) -> float:
     """sign of the trailing ``lookback``-day return; zero if not enough history."""
     if i - lookback < 0:
         return 0.0
@@ -676,22 +840,22 @@ def momentum_signal(ser: ContinuousSignalSeries, i: int,
     return float(np.sign(prod - 1.0))
 
 
-def trailing_vol(ser: ContinuousSignalSeries, i: int,
-                 lookback: int = VOL_LOOKBACK_DAYS) -> float:
+def trailing_vol(ser: ContinuousSignalSeries, i: int, lookback: int = VOL_LOOKBACK_DAYS) -> float:
     if i < 3:
         return float("nan")
     lo = max(0, i - lookback + 1)
-    r = np.asarray(ser.excess_return[lo:i + 1], dtype=np.float64)
+    r = np.asarray(ser.excess_return[lo : i + 1], dtype=np.float64)
     r = r[np.isfinite(r)]
     if r.size < 3:
         return float("nan")
     return float(np.std(r, ddof=1) * math.sqrt(252.0))
 
 
-def trailing_window_returns(ser: ContinuousSignalSeries, i: int,
-                            lookback: int = VOL_LOOKBACK_DAYS) -> NDArray[Any]:
+def trailing_window_returns(
+    ser: ContinuousSignalSeries, i: int, lookback: int = VOL_LOOKBACK_DAYS
+) -> NDArray[Any]:
     lo = max(0, i - lookback + 1)
-    return np.asarray(ser.excess_return[lo:i + 1], dtype=np.float64)
+    return np.asarray(ser.excess_return[lo : i + 1], dtype=np.float64)
 
 
 # --------------------------------------------------------------------------- #
@@ -712,8 +876,8 @@ class BacktestConfig:
     target_port_vol: float = TARGET_PORTFOLIO_VOL
     roll_lookback: int = 20
     max_gross_leverage: float = MAX_GROSS_LEVERAGE
-    cost_mult: float = 1.0        # transaction-cost stress (§57)
-    roll_cost_mult: float = 1.0   # roll-cost stress (§58)
+    cost_mult: float = 1.0  # transaction-cost stress (§57)
+    roll_cost_mult: float = 1.0  # roll-cost stress (§58)
     integer_contracts: bool = False  # discrete-contract realism / rounding (§37)
 
 
@@ -724,7 +888,7 @@ class MarketPanel:
     spec: dict[str, Any]
     ts: TradableContractSeries
     series: ContinuousSignalSeries
-    ser_index: dict[int, int]          # ordinal -> index in series
+    ser_index: dict[int, int]  # ordinal -> index in series
     close_by_contract: dict[str, dict[int, float]]
     global_idx_of_ordinal: dict[int, int]
     first_ordinal: int
@@ -746,18 +910,21 @@ def _close_at(panel: MarketPanel, cid: str | None, od: int) -> float | None:
     return d[max(prior)]
 
 
-def build_panel(md: ChainMarket, ts: TradableContractSeries,
-                global_cal: list[int]) -> MarketPanel:
+def build_panel(md: ChainMarket, ts: TradableContractSeries, global_cal: list[int]) -> MarketPanel:
     series = continuous_signal_series(ts)
     ser_index = {o: k for k, o in enumerate(series.ordinals)}
-    close_by_contract = {cid: {b.ordinal: b.close for b in s.bars}
-                         for cid, s in md.series.items()}
+    close_by_contract = {cid: {b.ordinal: b.close for b in s.bars} for cid, s in md.series.items()}
     gidx = {o: k for k, o in enumerate(global_cal)}
     g_of_ord = {o: gidx[o] for o in ts.held if o in gidx}
     ords = list(ts.held)
     return MarketPanel(
-        root=md.root, asset_class=md.asset_class, spec=md.spec, ts=ts, series=series,
-        ser_index=ser_index, close_by_contract=close_by_contract,
+        root=md.root,
+        asset_class=md.asset_class,
+        spec=md.spec,
+        ts=ts,
+        series=series,
+        ser_index=ser_index,
+        close_by_contract=close_by_contract,
         global_idx_of_ordinal=g_of_ord,
         first_ordinal=min(ords) if ords else 0,
         last_ordinal=max(ords) if ords else 0,
@@ -767,9 +934,13 @@ def build_panel(md: ChainMarket, ts: TradableContractSeries,
 # --------------------------------------------------------------------------- #
 # portfolio simulation (actual contracts)                                       #
 # --------------------------------------------------------------------------- #
-def simulate_portfolio(panels: list[MarketPanel], global_cal: list[int],
-                       window: tuple[int, int], config: BacktestConfig,
-                       capital: float) -> dict[str, Any]:
+def simulate_portfolio(
+    panels: list[MarketPanel],
+    global_cal: list[int],
+    window: tuple[int, int],
+    config: BacktestConfig,
+    capital: float,
+) -> dict[str, Any]:
     """Run the frozen MOP-style managed-futures trend portfolio.
 
     PnL uses the *actual held contract* and its own close-to-close move across the
@@ -802,8 +973,7 @@ def simulate_portfolio(panels: list[MarketPanel], global_cal: list[int],
     nlong_days: list[int] = []
     nshort_days: list[int] = []
     contrib: dict[str, dict[str, float]] = {
-        p.root: {"gross": 0.0, "cost": 0.0, "net": 0.0, "long": 0.0, "short": 0.0,
-                 "roll_cost": 0.0}
+        p.root: {"gross": 0.0, "cost": 0.0, "net": 0.0, "long": 0.0, "short": 0.0, "roll_cost": 0.0}
         for p in panels
     }
     roll_events: list[dict[str, Any]] = []
@@ -843,11 +1013,23 @@ def simulate_portfolio(panels: list[MarketPanel], global_cal: list[int],
                 px_new = _close_at(p, a, od)
                 if px_old is not None and px_new is not None:
                     per_side = float(p.spec["per_side_cost_bps"]) * 1e-4
-                    rc = (abs(n) * px_old + abs(n) * px_new) * mult * per_side * config.roll_cost_mult
+                    rc = (
+                        (abs(n) * px_old + abs(n) * px_new)
+                        * mult
+                        * per_side
+                        * config.roll_cost_mult
+                    )
                     day_cost += rc
                     contrib[p.root]["roll_cost"] += rc
-                    roll_events.append({"root": p.root, "ordinal": od, "from": ic, "to": a,
-                                        "reason": "MONTHLY_OR_STALE"})
+                    roll_events.append(
+                        {
+                            "root": p.root,
+                            "ordinal": od,
+                            "from": ic,
+                            "to": a,
+                            "reason": "MONTHLY_OR_STALE",
+                        }
+                    )
             prev_level[p.root] = _close_at(p, a, od)
 
         # ---- 2) monthly rebalance / resize (after mark-to-market) ---------------
@@ -891,9 +1073,15 @@ def simulate_portfolio(panels: list[MarketPanel], global_cal: list[int],
                     day_cost += c
                     contrib[p.root]["cost"] += c
                 contracts[p.root] = n_target
-            rebal_log.append({"ordinal": od, "n_active": n_active, "scale": scale,
-                              "gross": sum(abs(v) for v in w.values()),
-                              "net": sum(w.values())})
+            rebal_log.append(
+                {
+                    "ordinal": od,
+                    "n_active": n_active,
+                    "scale": scale,
+                    "gross": sum(abs(v) for v in w.values()),
+                    "net": sum(w.values()),
+                }
+            )
 
         # ---- 3) exposures + accounting -----------------------------------------
         gross_notional = 0.0
@@ -960,14 +1148,19 @@ def _last_ser_index(panel: MarketPanel, od: int) -> int | None:
     return int(pos)
 
 
-def _portfolio_scale(panels: list[MarketPanel], raw: dict[str, float],
-                     dates: list[int], oi_day: int, config: BacktestConfig) -> float:
+def _portfolio_scale(
+    panels: list[MarketPanel],
+    raw: dict[str, float],
+    dates: list[int],
+    oi_day: int,
+    config: BacktestConfig,
+) -> float:
     """Scale raw weights so ex-ante portfolio vol ~= target (PIT trailing covariance)."""
     lo = max(0, oi_day - config.vol_lookback)
     active = [p for p in panels if raw.get(p.root, 0.0) != 0.0]
     if len(active) < 2:
         return 1.0
-    win = dates[lo:oi_day + 1]
+    win = dates[lo : oi_day + 1]
     if len(win) < 10:
         return 1.0
     mat = np.full((len(win), len(active)), 0.0, dtype=np.float64)
@@ -993,8 +1186,9 @@ def _portfolio_scale(panels: list[MarketPanel], raw: dict[str, float],
 # --------------------------------------------------------------------------- #
 # run summary + asset-class attribution                                         #
 # --------------------------------------------------------------------------- #
-def summarise_run(run: dict[str, Any], panels: list[MarketPanel],
-                  ppy: float = 252.0) -> dict[str, Any]:
+def summarise_run(
+    run: dict[str, Any], panels: list[MarketPanel], ppy: float = 252.0
+) -> dict[str, Any]:
     if run.get("status") != "OK" or run.get("net_pnl", np.zeros(0)).size == 0:
         return {"status": run.get("status", "NO_RUN"), "days": int(run.get("days", 0))}
     gross = np.asarray(run["gross_pnl"], dtype=np.float64)
@@ -1006,8 +1200,9 @@ def summarise_run(run: dict[str, Any], panels: list[MarketPanel],
     ntot = float(net.sum())
     cls: dict[str, dict[str, float]] = {}
     for p in panels:
-        c = cls.setdefault(p.asset_class, {"gross": 0.0, "cost": 0.0, "net": 0.0,
-                                           "long": 0.0, "short": 0.0})
+        c = cls.setdefault(
+            p.asset_class, {"gross": 0.0, "cost": 0.0, "net": 0.0, "long": 0.0, "short": 0.0}
+        )
         pc = run["contrib"][p.root]
         c["gross"] += pc["gross"]
         c["cost"] += pc["cost"]
@@ -1019,8 +1214,11 @@ def summarise_run(run: dict[str, Any], panels: list[MarketPanel],
         "status": "OK",
         "days": int(run["days"]),
         "years": round(run["days"] / ppy, 2),
-        "gross_pnl": gtot, "cost_pnl": ctot, "net_pnl": ntot,
-        "gross_return_frac": gtot / capital, "cost_return_frac": ctot / capital,
+        "gross_pnl": gtot,
+        "cost_pnl": ctot,
+        "net_pnl": ntot,
+        "gross_return_frac": gtot / capital,
+        "cost_return_frac": ctot / capital,
         "net_return_frac": ntot / capital,
         "net_annualised_pct": (ntot / capital) / (run["days"] / ppy) * 100.0,
         "sharpe_gross": _sharpe(gross / capital, ppy),
@@ -1039,8 +1237,9 @@ def summarise_run(run: dict[str, Any], panels: list[MarketPanel],
         "asset_class_cost": {k: v["cost"] for k, v in cls.items()},
         "long_contrib": sum(run["contrib"][p.root]["long"] for p in panels),
         "short_contrib": sum(run["contrib"][p.root]["short"] for p in panels),
-        "per_market_net": {p.root: run["contrib"][p.root]["gross"]
-                           - run["contrib"][p.root]["cost"] for p in panels},
+        "per_market_net": {
+            p.root: run["contrib"][p.root]["gross"] - run["contrib"][p.root]["cost"] for p in panels
+        },
         "n_rolls": len(run["roll_events"]),
     }
 
@@ -1051,33 +1250,40 @@ def summarise_run(run: dict[str, Any], panels: list[MarketPanel],
 @dataclass(frozen=True)
 class GateResult:
     name: str
-    status: str                       # PASS / FAIL / NOT_RUN
+    status: str  # PASS / FAIL / NOT_RUN
     checks: dict[str, bool]
     detail: dict[str, Any] = field(default_factory=dict)
 
     def as_dict(self) -> dict[str, Any]:
-        return {"gate": self.name, "status": self.status,
-                "checks": self.checks, "detail": self.detail}
+        return {
+            "gate": self.name,
+            "status": self.status,
+            "checks": self.checks,
+            "detail": self.detail,
+        }
 
 
 def gate_g_mf_data(audit: dict[str, Any]) -> GateResult:
     checks = {
         "individual_contracts_available": bool(audit.get("individual_contracts", False)),
         "expiry_identifiable": bool(audit.get("expiry_identifiable", False)),
-        "tradable_contract_at_each_decision": bool(audit.get("tradable_contract_at_each_decision", False)),
+        "tradable_contract_at_each_decision": bool(
+            audit.get("tradable_contract_at_each_decision", False)
+        ),
         "multi_asset_breadth": bool(audit.get("multi_asset_breadth", False)),
         "pit_feasible": bool(audit.get("pit_feasible", False)),
         "roll_observable": bool(audit.get("roll_observable", False)),
         "not_paid_only": bool(audit.get("not_paid_only", True)),
     }
-    return GateResult("G_MF_DATA",
-                      "PASS" if all(checks.values()) else "FAIL", checks, audit)
+    return GateResult("G_MF_DATA", "PASS" if all(checks.values()) else "FAIL", checks, audit)
 
 
 def gate_g_mf_repro(repro: dict[str, Any]) -> GateResult:
     checks = {
         "spec_faithfully_implemented": bool(repro.get("spec_faithfully_implemented", False)),
-        "source_effect_direction_compatible": bool(repro.get("source_effect_direction_compatible", False)),
+        "source_effect_direction_compatible": bool(
+            repro.get("source_effect_direction_compatible", False)
+        ),
         "pit_clean": bool(repro.get("pit_clean", False)),
         "roll_accounting_clean": bool(repro.get("roll_accounting_clean", False)),
         "cost_model_frozen": bool(repro.get("cost_model_frozen", False)),
@@ -1098,9 +1304,16 @@ def gate_g_mf_1(discovery: dict[str, Any]) -> GateResult:
         "adequate_breadth": int(discovery.get("n_markets", 0)) >= MIN_MARKETS_OVERALL,
         "no_single_market_dependence": top_share < 0.5,
     }
-    return GateResult("G_MF_1_DISCOVERY", "PASS" if all(checks.values()) else "FAIL",
-                      checks, {"discovery_net": net, "top_market_share": top_share,
-                               "n_markets": discovery.get("n_markets", 0)})
+    return GateResult(
+        "G_MF_1_DISCOVERY",
+        "PASS" if all(checks.values()) else "FAIL",
+        checks,
+        {
+            "discovery_net": net,
+            "top_market_share": top_share,
+            "n_markets": discovery.get("n_markets", 0),
+        },
+    )
 
 
 def gate_g_mf_2(validation: dict[str, Any], repro_status: str) -> GateResult:
@@ -1117,24 +1330,34 @@ def gate_g_mf_2(validation: dict[str, Any], repro_status: str) -> GateResult:
         "tradable_implementation": bool(validation.get("tradable", True)),
         "repro_passed": repro_status == "PASS",
     }
-    return GateResult("G_MF_2_VALIDATION", "PASS" if all(checks.values()) else "FAIL",
-                      checks, {"validation_net": net, "top_market_share": top_share,
-                               "n_markets": validation.get("n_markets", 0)})
+    return GateResult(
+        "G_MF_2_VALIDATION",
+        "PASS" if all(checks.values()) else "FAIL",
+        checks,
+        {
+            "validation_net": net,
+            "top_market_share": top_share,
+            "n_markets": validation.get("n_markets", 0),
+        },
+    )
 
 
 def audit_false_success(flags: dict[str, bool]) -> dict[str, Any]:
     hits = [t for t in FALSE_SUCCESS_TRIGGERS if flags.get(t, False)]
-    return {"false_success_count": len(hits), "hits": hits,
-            "target": 0, "ok": len(hits) == 0}
+    return {"false_success_count": len(hits), "hits": hits, "target": 0, "ok": len(hits) == 0}
 
 
-def headroom(gross: float, transaction_cost: float, roll_cost: float,
-             net: float) -> dict[str, Any]:
+def headroom(gross: float, transaction_cost: float, roll_cost: float, net: float) -> dict[str, Any]:
     total = transaction_cost + roll_cost
     ratio = (gross / total) if total > 0 else None
-    return {"gross": gross, "transaction_cost": transaction_cost,
-            "roll_cost": roll_cost, "total_cost": total, "net": net,
-            "gross_over_cost": ratio}
+    return {
+        "gross": gross,
+        "transaction_cost": transaction_cost,
+        "roll_cost": roll_cost,
+        "total_cost": total,
+        "net": net,
+        "gross_over_cost": ratio,
+    }
 
 
 def universe_breadth(panels: list[MarketPanel]) -> dict[str, Any]:

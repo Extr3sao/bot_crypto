@@ -121,7 +121,9 @@ def sha256_file(path: Path) -> str:
 
 
 def git_head() -> str:
-    proc = subprocess.run(["git", "rev-parse", "HEAD"], cwd=REPO, capture_output=True, text=True, check=False)
+    proc = subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=REPO, capture_output=True, text=True, check=False
+    )
     return proc.stdout.strip() if proc.returncode == 0 else "UNAVAILABLE"
 
 
@@ -154,6 +156,7 @@ def completeness(fields: dict[str, dict[str, str]], names: tuple[str, ...]) -> d
 # --------------------------------------------------------------------------- #
 # sources read in this round
 # --------------------------------------------------------------------------- #
+
 
 def S(sid: str, title: str, url: str, **kw: Any) -> dict[str, Any]:
     base: dict[str, Any] = {
@@ -196,9 +199,9 @@ def S(sid: str, title: str, url: str, **kw: Any) -> dict[str, Any]:
 
 #: The fetched upstream file keeps its bytes verbatim but not a ``.py`` extension, so the project's
 #: ruff/mypy gates do not treat a third-party snapshot as project source (which would regress them).
-FREQ_STRATEGY_RAW = (REPO / "data" / "rfc035s3" / "sources" / "strategy001_raw.py.txt")
-FREQ_README = (REPO / "data" / "rfc035s3" / "sources" / "freqtrade_strategies_README.md")
-QUANTIACS_HTML = (REPO / "data" / "rfc035s3" / "sources" / "quantiacs_q24_crypto_guide.html")
+FREQ_STRATEGY_RAW = REPO / "data" / "rfc035s3" / "sources" / "strategy001_raw.py.txt"
+FREQ_README = REPO / "data" / "rfc035s3" / "sources" / "freqtrade_strategies_README.md"
+QUANTIACS_HTML = REPO / "data" / "rfc035s3" / "sources" / "quantiacs_q24_crypto_guide.html"
 
 
 def frozen_digest(path: Path) -> str:
@@ -502,25 +505,74 @@ C_02: dict[str, Any] = {
         "compatible_freqtrade": "INTERFACE_VERSION 3; the README states the strategies work with freqtrade 2022.4 or newer",
     },
     "executable": {
-        "assets_and_universe": F("UNKNOWN", "the file declares no pairlist or whitelist; the README states results depend on the user's pairs and timerange, so the universe is supplied by the user's config"),
-        "timeframe_and_calendar": F("EXPLICIT_VALUE", "timeframe = '5m'; crypto trades continuously, so no session calendar applies (process_only_new_candles = True)"),
-        "data_and_indicators": F("EXPLICIT_VALUE", "EMA(20), EMA(50), EMA(100) on close plus Heikin-Ashi open/close via qtpylib.heikinashi"),
-        "entry": F("EXPLICIT_VALUE", "enter_long where crossed_above(ema20, ema50) AND ha_close > ema20 AND ha_open < ha_close"),
-        "exit": F("EXPLICIT_VALUE", "exit_long where crossed_above(ema50, ema100) AND ha_close < ema20 AND ha_open > ha_close; plus minimal_roi {60: 0.01, 30: 0.03, 20: 0.04, 0: 0.05} and stoploss = -0.10; use_exit_signal = True and exit_profit_only = True"),
-        "sizing_and_allocation": F("UNKNOWN", "the file declares no stake or allocation; freqtrade takes stake_amount, max_open_trades and tradable_balance_ratio from the config, which the source does not fix"),
-        "parameters": F("EXPLICIT_VALUE", "EMA 20/50/100, 5m, stoploss -0.10, the ROI ladder and the exit flags are all literals in the file"),
-        "warmup": F("UNKNOWN", "no startup_candle_count is declared; EMA(100) implies a 100-bar warmup that the source leaves unbounded"),
-        "order_semantics_and_execution": F("EXPLICIT_VALUE", "order_types: entry limit, exit limit, stoploss market, stoploss_on_exchange False"),
-        "completion_conditions": F("EXPLICIT_NONE", "no time stop, expiry or terminal condition is declared, and freqtrade imposes none — the absence itself is fixed by the runtime semantics"),
+        "assets_and_universe": F(
+            "UNKNOWN",
+            "the file declares no pairlist or whitelist; the README states results depend on the user's pairs and timerange, so the universe is supplied by the user's config",
+        ),
+        "timeframe_and_calendar": F(
+            "EXPLICIT_VALUE",
+            "timeframe = '5m'; crypto trades continuously, so no session calendar applies (process_only_new_candles = True)",
+        ),
+        "data_and_indicators": F(
+            "EXPLICIT_VALUE",
+            "EMA(20), EMA(50), EMA(100) on close plus Heikin-Ashi open/close via qtpylib.heikinashi",
+        ),
+        "entry": F(
+            "EXPLICIT_VALUE",
+            "enter_long where crossed_above(ema20, ema50) AND ha_close > ema20 AND ha_open < ha_close",
+        ),
+        "exit": F(
+            "EXPLICIT_VALUE",
+            "exit_long where crossed_above(ema50, ema100) AND ha_close < ema20 AND ha_open > ha_close; plus minimal_roi {60: 0.01, 30: 0.03, 20: 0.04, 0: 0.05} and stoploss = -0.10; use_exit_signal = True and exit_profit_only = True",
+        ),
+        "sizing_and_allocation": F(
+            "UNKNOWN",
+            "the file declares no stake or allocation; freqtrade takes stake_amount, max_open_trades and tradable_balance_ratio from the config, which the source does not fix",
+        ),
+        "parameters": F(
+            "EXPLICIT_VALUE",
+            "EMA 20/50/100, 5m, stoploss -0.10, the ROI ladder and the exit flags are all literals in the file",
+        ),
+        "warmup": F(
+            "UNKNOWN",
+            "no startup_candle_count is declared; EMA(100) implies a 100-bar warmup that the source leaves unbounded",
+        ),
+        "order_semantics_and_execution": F(
+            "EXPLICIT_VALUE",
+            "order_types: entry limit, exit limit, stoploss market, stoploss_on_exchange False",
+        ),
+        "completion_conditions": F(
+            "EXPLICIT_NONE",
+            "no time stop, expiry or terminal condition is declared, and freqtrade imposes none — the absence itself is fixed by the runtime semantics",
+        ),
     },
     "evidence": {
-        "primary_source": F("EXPLICIT_VALUE", "the strategy file itself, read verbatim and hash-pinned"),
-        "version_or_snapshot": F("EXPLICIT_VALUE", "file commit 6fce5f38 and content sha256 2357996e...; the round also records the repo HEAD at review"),
-        "period": F("EXPLICIT_NONE", "no backtest period is published with the file and the README makes the user responsible for choosing one"),
-        "operations": F("EXPLICIT_NONE", "no trade list attributable to Strategy001 exists anywhere; the corpus publishes none"),
-        "results": F("EXPLICIT_NONE", "no return, drawdown or Sharpe is published for this file; the README explicitly disclaims results and says the strategies are educational starting points"),
-        "fees_and_costs": F("UNKNOWN", "no fee or slippage assumption is stated; freqtrade applies the fee the user's config supplies"),
-        "data_quality_and_provenance": F("UNKNOWN", "no dataset, exchange or date range is declared"),
+        "primary_source": F(
+            "EXPLICIT_VALUE", "the strategy file itself, read verbatim and hash-pinned"
+        ),
+        "version_or_snapshot": F(
+            "EXPLICIT_VALUE",
+            "file commit 6fce5f38 and content sha256 2357996e...; the round also records the repo HEAD at review",
+        ),
+        "period": F(
+            "EXPLICIT_NONE",
+            "no backtest period is published with the file and the README makes the user responsible for choosing one",
+        ),
+        "operations": F(
+            "EXPLICIT_NONE",
+            "no trade list attributable to Strategy001 exists anywhere; the corpus publishes none",
+        ),
+        "results": F(
+            "EXPLICIT_NONE",
+            "no return, drawdown or Sharpe is published for this file; the README explicitly disclaims results and says the strategies are educational starting points",
+        ),
+        "fees_and_costs": F(
+            "UNKNOWN",
+            "no fee or slippage assumption is stated; freqtrade applies the fee the user's config supplies",
+        ),
+        "data_quality_and_provenance": F(
+            "UNKNOWN", "no dataset, exchange or date range is declared"
+        ),
     },
     "economic": {
         "gross_per_operation_estimate": "UNKNOWN — the source fixes no per-trade or per-exposure return and no trade count",
@@ -558,25 +610,71 @@ C_07: dict[str, Any] = {
         "compatible_backtester": "the platform's own single-pass and multi-pass backtesters (qnt), as shown in the page",
     },
     "executable": {
-        "assets_and_universe": F("EXPLICIT_VALUE", "top-10 crypto by market capitalisation on the last day of each month, stablecoins excluded and hand-picking forbidden; exposed to the strategy as the is_liquid field"),
-        "timeframe_and_calendar": F("EXPLICIT_VALUE", "daily bars, rebalanced every day, no session constraint"),
-        "data_and_indicators": F("EXPLICIT_VALUE", "close plus is_liquid; SMA(15), SMA(34), RSI(14)"),
-        "entry": F("EXPLICIT_VALUE", "weight 1 where SMA(close,15) > SMA(close,34) AND is_liquid AND (RSI(close,14) < 34 OR RSI(close,14) > 68)"),
-        "exit": F("EXPLICIT_VALUE", "no stop and no target exist in the example; the position is re-evaluated daily and receives weight 0 when the signal fails; the page's runtime (qnout.clean with competition_type='crypto_daily_long') adds no stop or target, so the absence of stop and target is fixed, not merely undescribed"),
-        "sizing_and_allocation": F("UNKNOWN", "raw weights are 0/1 and the allocation scale is applied by the platform's cleaner ('Final normalization'), which the page does not document; the resulting per-asset weight is not derivable from the source"),
+        "assets_and_universe": F(
+            "EXPLICIT_VALUE",
+            "top-10 crypto by market capitalisation on the last day of each month, stablecoins excluded and hand-picking forbidden; exposed to the strategy as the is_liquid field",
+        ),
+        "timeframe_and_calendar": F(
+            "EXPLICIT_VALUE", "daily bars, rebalanced every day, no session constraint"
+        ),
+        "data_and_indicators": F(
+            "EXPLICIT_VALUE", "close plus is_liquid; SMA(15), SMA(34), RSI(14)"
+        ),
+        "entry": F(
+            "EXPLICIT_VALUE",
+            "weight 1 where SMA(close,15) > SMA(close,34) AND is_liquid AND (RSI(close,14) < 34 OR RSI(close,14) > 68)",
+        ),
+        "exit": F(
+            "EXPLICIT_VALUE",
+            "no stop and no target exist in the example; the position is re-evaluated daily and receives weight 0 when the signal fails; the page's runtime (qnout.clean with competition_type='crypto_daily_long') adds no stop or target, so the absence of stop and target is fixed, not merely undescribed",
+        ),
+        "sizing_and_allocation": F(
+            "UNKNOWN",
+            "raw weights are 0/1 and the allocation scale is applied by the platform's cleaner ('Final normalization'), which the page does not document; the resulting per-asset weight is not derivable from the source",
+        ),
         "parameters": F("EXPLICIT_VALUE", "SMA 15/34, RSI 14, thresholds 34/68, daily rebalance"),
-        "warmup": F("UNKNOWN", "SMA(34) and RSI(14) imply a warmup the page never declares; the single-pass example feeds the whole dataset"),
-        "order_semantics_and_execution": F("UNKNOWN", "no order type, fill assumption or execution model is stated; the platform's backtester is a black box to the reader"),
-        "completion_conditions": F("EXPLICIT_NONE", "the example runs indefinitely; no terminal condition is declared and the contest imposes none on the code"),
+        "warmup": F(
+            "UNKNOWN",
+            "SMA(34) and RSI(14) imply a warmup the page never declares; the single-pass example feeds the whole dataset",
+        ),
+        "order_semantics_and_execution": F(
+            "UNKNOWN",
+            "no order type, fill assumption or execution model is stated; the platform's backtester is a black box to the reader",
+        ),
+        "completion_conditions": F(
+            "EXPLICIT_NONE",
+            "the example runs indefinitely; no terminal condition is declared and the contest imposes none on the code",
+        ),
     },
     "evidence": {
-        "primary_source": F("EXPLICIT_VALUE", "the guide page read in full, including the code that defines the strategy"),
-        "version_or_snapshot": F("EXPLICIT_VALUE", "the author declares no version; the round freezes the page content sha256 88cef01b... as the snapshot"),
-        "period": F("EXPLICIT_VALUE", "the in-sample period begins 2016-01-01; the harness slices to the open end, so the end date is not fixed by the source"),
-        "operations": F("EXPLICIT_NONE", "no trade list is published; the statistics call's output is commented out in the page"),
-        "results": F("EXPLICIT_NONE", "no achieved Sharpe, return or drawdown is published; the only number is the contest requirement Sharpe >= 1.0, which is a threshold, not a result"),
-        "fees_and_costs": F("UNKNOWN", "the page contains no cost vocabulary at all — no commission, transaction cost or slippage term — so the absence is silence, not a declared absence"),
-        "data_quality_and_provenance": F("EXPLICIT_VALUE", "Quantiacs cryptodaily dataset (min_date 2015-01-01) with a coinmarketcap-derived monthly liquidity field whose PIT construction (month end for the following month) is stated"),
+        "primary_source": F(
+            "EXPLICIT_VALUE",
+            "the guide page read in full, including the code that defines the strategy",
+        ),
+        "version_or_snapshot": F(
+            "EXPLICIT_VALUE",
+            "the author declares no version; the round freezes the page content sha256 88cef01b... as the snapshot",
+        ),
+        "period": F(
+            "EXPLICIT_VALUE",
+            "the in-sample period begins 2016-01-01; the harness slices to the open end, so the end date is not fixed by the source",
+        ),
+        "operations": F(
+            "EXPLICIT_NONE",
+            "no trade list is published; the statistics call's output is commented out in the page",
+        ),
+        "results": F(
+            "EXPLICIT_NONE",
+            "no achieved Sharpe, return or drawdown is published; the only number is the contest requirement Sharpe >= 1.0, which is a threshold, not a result",
+        ),
+        "fees_and_costs": F(
+            "UNKNOWN",
+            "the page contains no cost vocabulary at all — no commission, transaction cost or slippage term — so the absence is silence, not a declared absence",
+        ),
+        "data_quality_and_provenance": F(
+            "EXPLICIT_VALUE",
+            "Quantiacs cryptodaily dataset (min_date 2015-01-01) with a coinmarketcap-derived monthly liquidity field whose PIT construction (month end for the following month) is stated",
+        ),
     },
     "economic": {
         "gross_per_operation_estimate": "UNKNOWN — no turnover, no per-trade figure and no achieved Sharpe is published",
@@ -609,9 +707,21 @@ DEEP_DIVES: list[dict[str, Any]] = [C_02, C_07]
 # the alternative search, capped at ten new primary sources
 # --------------------------------------------------------------------------- #
 
-def ALT(cid: str, title: str, source_ids: list[str], *, verdict: str, code: str, execution: str,
-        cost_model: str, rules: str, economic_read: str, reason: str,
-        cost_model_state: str = "UNKNOWN") -> dict[str, Any]:
+
+def ALT(
+    cid: str,
+    title: str,
+    source_ids: list[str],
+    *,
+    verdict: str,
+    code: str,
+    execution: str,
+    cost_model: str,
+    rules: str,
+    economic_read: str,
+    reason: str,
+    cost_model_state: str = "UNKNOWN",
+) -> dict[str, Any]:
     return {
         "candidate_id": cid,
         "title": title,
@@ -630,7 +740,9 @@ def ALT(cid: str, title: str, source_ids: list[str], *, verdict: str, code: str,
 
 ALTERNATIVES: list[dict[str, Any]] = [
     ALT(
-        "K-01", "Karaptic Research venue and pre-registered protocol", ["S3-04", "S3-05", "S3-10"],
+        "K-01",
+        "Karaptic Research venue and pre-registered protocol",
+        ["S3-04", "S3-05", "S3-10"],
         verdict="WATCH",
         code="YES (repository)",
         execution="NO (the venue note reports no result of its own)",
@@ -640,7 +752,9 @@ ALTERNATIVES: list[dict[str, Any]] = [
         reason="a venue and a protocol, not a strategy; registered as a research task and a source of independent replication evidence",
     ),
     ALT(
-        "K-02", "Cross-sectional momentum on Binance perpetuals (Karaptic replication of Liu, Tsyvinski & Wu)", ["S3-06"],
+        "K-02",
+        "Cross-sectional momentum on Binance perpetuals (Karaptic replication of Liu, Tsyvinski & Wu)",
+        ["S3-06"],
         verdict="REJECT",
         code="YES (public series repository)",
         execution="YES (338 independent weeks, 2020-01-01 to 2026-07-31)",
@@ -651,7 +765,9 @@ ALTERNATIVES: list[dict[str, Any]] = [
         reason="the strategy does not survive its own author's cost model; the effect is not distinguishable from zero net of costs and is not stable to a pre-registered specification change",
     ),
     ALT(
-        "K-03", "Time-series momentum in crypto (Grobys et al. 2025, via Karaptic Note 03)", ["S3-07"],
+        "K-03",
+        "Time-series momentum in crypto (Grobys et al. 2025, via Karaptic Note 03)",
+        ["S3-07"],
         verdict="REJECT",
         code="NO",
         execution="literature result only (416 weekly observations, 2016-01 to 2023-12); no replication was run",
@@ -661,7 +777,9 @@ ALTERNATIVES: list[dict[str, Any]] = [
         reason="the strongest recent crypto-specific study finds the effect negative and insignificant in the current regime; no amount of capital or execution skill reaches a past regime",
     ),
     ALT(
-        "K-04", "Perpetual funding carry on BTC/ETH (Karaptic Note 04)", ["S3-08"],
+        "K-04",
+        "Perpetual funding carry on BTC/ETH (Karaptic Note 04)",
+        ["S3-08"],
         verdict="REJECT",
         code="YES (measurement code in the series repository)",
         execution="YES (636 funding periods per coin, 2025-11 to 2026-05)",
@@ -672,7 +790,9 @@ ALTERNATIVES: list[dict[str, Any]] = [
         reason="measured, real, and too small to trade at this project's capital scale; the mechanism is not falsified but it is priced out",
     ),
     ALT(
-        "K-05", "Short-horizon reversal after a de-trended-volume split (Bianchi, Babiak & Dickerson 2022, via Karaptic Note 05)", ["S3-09"],
+        "K-05",
+        "Short-horizon reversal after a de-trended-volume split (Bianchi, Babiak & Dickerson 2022, via Karaptic Note 05)",
+        ["S3-09"],
         verdict="INSUFFICIENT_EVIDENCE",
         code="PARTIAL — the replicator's code is public; the paper ships none",
         execution="YES at paper level (net-of-fees table by exchange, 2017-03 to 2022-03)",
@@ -683,7 +803,9 @@ ALTERNATIVES: list[dict[str, Any]] = [
         reason="the venue where the effect survives net of fees is not ours, and the recipe is not executable as published; it is left open by the replicator for a future Gate.io test, not promoted here",
     ),
     ALT(
-        "QC-01", "Adaptive States for Crypto (QuantConnect Quant League 2025-Q2)", ["S3-11"],
+        "QC-01",
+        "Adaptive States for Crypto (QuantConnect Quant League 2025-Q2)",
+        ["S3-11"],
         verdict="REJECT",
         code="PARTIAL — two model-parameter JSON files live in private object storage and are not shared",
         execution="PARTIAL — a public backtest chart only, with no cost-adjusted figure",
@@ -710,17 +832,41 @@ REPRODUCTION: dict[str, Any] = {
     "lab_commit": BASELINE_COMMIT,
     "invariant": "PASS with zero mismatches and zero false success at the baseline commit",
     "runs": [
-        {"script": "scripts/rfc035_discovery_verify.py", "status": "PASS", "checks": 554, "mismatches": 0,
-         "false_success": 0, "exit_code": 0,
-         "registry_state": "round-2 registry (64 sources, 27 opportunities)"},
-        {"script": "scripts/rfc035e_verify.py", "status": "PASS", "checks": 107, "mismatches": 0,
-         "false_success": 0, "exit_code": 0, "registry_state": "independent of the registry"},
-        {"script": "scripts/rfc035s2_verify.py", "status": "PASS", "checks": 864, "mismatches": 0,
-         "false_success": 0, "exit_code": 0,
-         "registry_state": "round-2 registry (64 sources, 27 opportunities)"},
+        {
+            "script": "scripts/rfc035_discovery_verify.py",
+            "status": "PASS",
+            "checks": 554,
+            "mismatches": 0,
+            "false_success": 0,
+            "exit_code": 0,
+            "registry_state": "round-2 registry (64 sources, 27 opportunities)",
+        },
+        {
+            "script": "scripts/rfc035e_verify.py",
+            "status": "PASS",
+            "checks": 107,
+            "mismatches": 0,
+            "false_success": 0,
+            "exit_code": 0,
+            "registry_state": "independent of the registry",
+        },
+        {
+            "script": "scripts/rfc035s2_verify.py",
+            "status": "PASS",
+            "checks": 864,
+            "mismatches": 0,
+            "false_success": 0,
+            "exit_code": 0,
+            "registry_state": "round-2 registry (64 sources, 27 opportunities)",
+        },
     ],
     "runs_after_round_3_registry": [
-        {"script": "scripts/rfc035_discovery_verify.py", "status": "PASS", "checks": 652, "mismatches": 0},
+        {
+            "script": "scripts/rfc035_discovery_verify.py",
+            "status": "PASS",
+            "checks": 652,
+            "mismatches": 0,
+        },
         {"script": "scripts/rfc035e_verify.py", "status": "PASS", "checks": 107, "mismatches": 0},
         {"script": "scripts/rfc035s2_verify.py", "status": "PASS", "checks": 886, "mismatches": 0},
     ],
@@ -756,7 +902,8 @@ def build_integrity() -> dict[str, Any]:
         "baseline_commit": BASELINE_COMMIT,
         "head_equals_baseline": head == BASELINE_COMMIT,
         "drift_classification": (
-            "NO_DRIFT" if head == BASELINE_COMMIT
+            "NO_DRIFT"
+            if head == BASELINE_COMMIT
             else "LEGITIMATE_HEAD_ADVANCE — commits owned by other threads landed after the RFC-035 baseline was taken"
         ),
         "baseline_artifact": {
@@ -792,7 +939,9 @@ def build_manifest() -> dict[str, Any]:
             rel = path.relative_to(REPO)
             if rel.parts[:2] == ("reports", "rfc035") and rel.parts[2:3] == ("search_round_3",):
                 continue
-            entries.append({"group": name, "path": str(rel).replace("\\", "/"), "sha256": sha256_file(path)})
+            entries.append(
+                {"group": name, "path": str(rel).replace("\\", "/"), "sha256": sha256_file(path)}
+            )
     copies: list[dict[str, str]] = []
     for entry in entries:
         source = REPO / entry["path"]
@@ -800,12 +949,14 @@ def build_manifest() -> dict[str, Any]:
         target.parent.mkdir(parents=True, exist_ok=True)
         if source.resolve() != target.resolve():
             shutil.copy2(source, target)
-            copies.append({
-                "path": str(target.relative_to(REPO)).replace("\\", "/"),
-                "source": entry["path"],
-                "sha256": sha256_file(target),
-                "verified": str(sha256_file(target) == entry["sha256"]).lower(),
-            })
+            copies.append(
+                {
+                    "path": str(target.relative_to(REPO)).replace("\\", "/"),
+                    "source": entry["path"],
+                    "sha256": sha256_file(target),
+                    "verified": str(sha256_file(target) == entry["sha256"]).lower(),
+                }
+            )
     payload = {
         "manifest": "RFC035S3_GITIGNORED_ARTIFACT_MANIFEST",
         "as_of_utc": RETRIEVED_AT,
@@ -819,7 +970,9 @@ def build_manifest() -> dict[str, Any]:
         "note": "round-3 outputs are excluded from the self-copy; they are the artefact this round produces",
     }
     MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
-    MANIFEST_PATH.write_text(json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+    MANIFEST_PATH.write_text(
+        json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     return payload
 
 
@@ -832,7 +985,10 @@ def load_gates() -> dict[str, Any]:
     The builder never invents a gate result: if the file is absent the gates are reported as NOT_RUN.
     """
     if not GATES_PATH.is_file():
-        return {"status": "NOT_RUN", "note": "no measured gate results were recorded for this build"}
+        return {
+            "status": "NOT_RUN",
+            "note": "no measured gate results were recorded for this build",
+        }
     payload: dict[str, Any] = json.loads(GATES_PATH.read_text(encoding="utf-8"))
     return payload
 
@@ -848,6 +1004,7 @@ def hashed_round3_inputs() -> dict[str, str]:
 # --------------------------------------------------------------------------- #
 # markdown rendering
 # --------------------------------------------------------------------------- #
+
 
 def _fields_table(fields: dict[str, dict[str, str]], names: tuple[str, ...]) -> list[str]:
     lines = ["| field | state | note |", "| --- | --- | --- |"]
@@ -962,7 +1119,7 @@ def render_rule_contract_audit() -> str:
         "## 1. The defect this round fixes",
         "",
         "Rounds 1 and 2 scored one flat 21-field completeness counter. Under that counter a strategy that",
-        "explicitly said \"there is no stop-loss\" was scored as *incomplete*, exactly like a strategy whose",
+        'explicitly said "there is no stop-loss" was scored as *incomplete*, exactly like a strategy whose',
         "stop-loss was simply never mentioned. The two are not the same, and conflating them biased the",
         "classification against strategies whose source was precise about its own absences.",
         "",
@@ -1081,7 +1238,11 @@ def render_deep_dive() -> str:
         lines += [f"- {gap}" for gap in candidate["gaps_to_p0"]]
         lines += ["", "### Counter-evidence", ""]
         lines += [f"- {item}" for item in candidate["counter_evidence"]]
-        lines += ["", f"> **{candidate['classification']}** — {candidate['classification_reason']}", ""]
+        lines += [
+            "",
+            f"> **{candidate['classification']}** — {candidate['classification_reason']}",
+            "",
+        ]
     return "\n".join(lines) + "\n"
 
 
@@ -1131,7 +1292,9 @@ def render_economic() -> str:
     ]
     for alt in ALTERNATIVES:
         if alt["cost_model_state"] in ("DOCUMENTED_BY_AUTHOR", "DECLARED_ABSENT"):
-            lines.append(f"| {alt['candidate_id']} | `{alt['cost_model_state']}` | {alt['economic_read']} |")
+            lines.append(
+                f"| {alt['candidate_id']} | `{alt['cost_model_state']}` | {alt['economic_read']} |"
+            )
     lines += [
         "",
         "The most useful economic finding of the round is K-02: an **independently pre-registered** momentum",
@@ -1164,18 +1327,33 @@ def render_rejection() -> str:
         "| --- | --- | --- |",
     ]
     for candidate in DEEP_DIVES:
-        lines.append(f"| {candidate['candidate_id']} | **{candidate['classification']}** | "
-                     f"{candidate['classification_reason']} |")
-    lines += ["", "## Alternative-search candidates (rejected)", "",
-              "| candidate | code | execution | cost model | reason |",
-              "| --- | --- | --- | --- | --- |"]
+        lines.append(
+            f"| {candidate['candidate_id']} | **{candidate['classification']}** | "
+            f"{candidate['classification_reason']} |"
+        )
+    lines += [
+        "",
+        "## Alternative-search candidates (rejected)",
+        "",
+        "| candidate | code | execution | cost model | reason |",
+        "| --- | --- | --- | --- | --- |",
+    ]
     for alt in rejected:
-        lines.append(f"| {alt['candidate_id']} | {alt['code_available']} | {alt['execution_result_available']} | "
-                     f"`{alt['cost_model_state']}` | {alt['classification_reason']} |")
-    lines += ["", "## Alternative-search candidates (kept open, not promoted)", "",
-              "| candidate | classification | reason |", "| --- | --- | --- |"]
+        lines.append(
+            f"| {alt['candidate_id']} | {alt['code_available']} | {alt['execution_result_available']} | "
+            f"`{alt['cost_model_state']}` | {alt['classification_reason']} |"
+        )
+    lines += [
+        "",
+        "## Alternative-search candidates (kept open, not promoted)",
+        "",
+        "| candidate | classification | reason |",
+        "| --- | --- | --- |",
+    ]
     for alt in others:
-        lines.append(f"| {alt['candidate_id']} | **{alt['classification']}** | {alt['classification_reason']} |")
+        lines.append(
+            f"| {alt['candidate_id']} | **{alt['classification']}** | {alt['classification_reason']} |"
+        )
     lines += [
         "",
         f"REJECTED = {len(rejected) + len(DEEP_DIVES)} · KEPT OPEN = {len(others)} · PROMOTED = 0",
@@ -1185,7 +1363,7 @@ def render_rejection() -> str:
 
 
 def gate_status(gates: dict[str, Any]) -> str:
-    suite = (gates.get("pytest") or {})
+    suite = gates.get("pytest") or {}
     if not suite or gates.get("status") == "NOT_RUN":
         return "NOT_RUN"
     passed = suite.get("passed")
@@ -1195,7 +1373,9 @@ def gate_status(gates: dict[str, Any]) -> str:
 
 def final_payload(integrity: dict[str, Any], manifest: dict[str, Any]) -> dict[str, Any]:
     gates = load_gates()
-    rules = {c["candidate_id"]: completeness(c["executable"], EXECUTABLE_FIELDS) for c in DEEP_DIVES}
+    rules = {
+        c["candidate_id"]: completeness(c["executable"], EXECUTABLE_FIELDS) for c in DEEP_DIVES
+    }
     evidence = {c["candidate_id"]: completeness(c["evidence"], EVIDENCE_FIELDS) for c in DEEP_DIVES}
     return {
         "rfc": "RFC-035S3",
@@ -1209,7 +1389,12 @@ def final_payload(integrity: dict[str, Any], manifest: dict[str, Any]) -> dict[s
         # checkout shows the HEAD-drift mismatch, which is a legitimate change and is recorded as such.
         "baseline_validation": "VERIFIED",
         "baseline_validation_note": "VERIFIED in the isolated worktree at the baseline commit; the shared checkout reports the single HEAD-drift mismatch as a legitimate change",
-        "baseline_validation_allowed_values": ["VERIFIED", "FAILED", "ENVIRONMENT_UNVERIFIED", "INCOMPLETE"],
+        "baseline_validation_allowed_values": [
+            "VERIFIED",
+            "FAILED",
+            "ENVIRONMENT_UNVERIFIED",
+            "INCOMPLETE",
+        ],
         "source_artifact_integrity": {
             "manifest": str(MANIFEST_PATH.relative_to(REPO)).replace("\\", "/"),
             "files_hashed": manifest["file_count"],
@@ -1236,15 +1421,21 @@ def final_payload(integrity: dict[str, Any], manifest: dict[str, Any]) -> dict[s
             "cost_floor_bps": COST_FLOOR_BPS,
             "candidates_with_estimable_gross": [],
             "candidates_with_documented_cost_model": [
-                a["candidate_id"] for a in ALTERNATIVES if a["cost_model_state"] == "DOCUMENTED_BY_AUTHOR"
+                a["candidate_id"]
+                for a in ALTERNATIVES
+                if a["cost_model_state"] == "DOCUMENTED_BY_AUTHOR"
             ],
             "candidates_with_declared_absent_cost_model": [
-                a["candidate_id"] for a in ALTERNATIVES if a["cost_model_state"] == "DECLARED_ABSENT"
+                a["candidate_id"]
+                for a in ALTERNATIVES
+                if a["cost_model_state"] == "DECLARED_ABSENT"
             ],
         },
         "cost_model": {
             "project_floor_bps": COST_FLOOR_BPS,
-            "deep_dive_states": {c["candidate_id"]: c["economic"]["cost_model_state"] for c in DEEP_DIVES},
+            "deep_dive_states": {
+                c["candidate_id"]: c["economic"]["cost_model_state"] for c in DEEP_DIVES
+            },
         },
         "replication_limitations": [
             "no candidate produced an original result attributable to its code, so no replication was attempted",
@@ -1370,30 +1561,66 @@ def render_rule_contract_json() -> dict[str, Any]:
 # --------------------------------------------------------------------------- #
 
 OPP_DEFS = [
-    ("OPP-0028", "K-02", "Cross-sectional momentum on Binance perpetuals (Karaptic pre-registered replication)",
-     "an independent pre-registered replication of Liu, Tsyvinski & Wu (2022) momentum on 832 Binance perpetuals",
-     "REJECT", ["S3-04", "S3-06"], "E2",
-     "the effect is not distinguishable from zero net of the author's own documented costs and is not stable to a pre-registered specification change"),
-    ("OPP-0029", "K-03", "Time-series momentum in crypto (Grobys et al. 2025, via Karaptic Note 03)",
-     "the longest recent crypto-specific test of time-series momentum",
-     "REJECT", ["S3-07"], "E3",
-     "the post-July-2020 regime a trader would trade today is negative and not significant"),
-    ("OPP-0030", "K-04", "Perpetual funding carry on BTC/ETH (Karaptic Note 04)",
-     "measured funding carry against a realistic capital hurdle",
-     "REJECT", ["S3-08"], "E2",
-     "gross annualised funding of +2.11%/yr BTC and +1.63%/yr ETH is too small to trade at the project's capital scale"),
-    ("OPP-0031", "K-05", "Short-horizon reversal after a de-trended-volume split (Bianchi, Babiak & Dickerson 2022)",
-     "a single-exchange, one-day-holding reversal with published net-of-fees results by exchange",
-     "INSUFFICIENT_EVIDENCE", ["S3-09"], "E2",
-     "the venue where the effect survives net of fees is not ours and the recipe is not executable as published"),
-    ("OPP-0032", "QC-01", "Adaptive States for Crypto (QuantConnect Quant League 2025-Q2)",
-     "an adaptive three-state crypto system with a public backtest chart",
-     "REJECT", ["S3-11"], "E1",
-     "the state parameters live in unshared files, no costs are modelled, and the turnover measured by the author's own reviewers is expected to be fatal"),
-    ("OPP-0033", "K-01", "Karaptic Research — pre-registered crypto strategy replication series",
-     "a public research programme that prices every hypothesis gross then net of realistic execution costs",
-     "WATCH", ["S3-04", "S3-05", "S3-10"], "E2",
-     "a venue and a protocol rather than a strategy; kept as a source of independent replication evidence"),
+    (
+        "OPP-0028",
+        "K-02",
+        "Cross-sectional momentum on Binance perpetuals (Karaptic pre-registered replication)",
+        "an independent pre-registered replication of Liu, Tsyvinski & Wu (2022) momentum on 832 Binance perpetuals",
+        "REJECT",
+        ["S3-04", "S3-06"],
+        "E2",
+        "the effect is not distinguishable from zero net of the author's own documented costs and is not stable to a pre-registered specification change",
+    ),
+    (
+        "OPP-0029",
+        "K-03",
+        "Time-series momentum in crypto (Grobys et al. 2025, via Karaptic Note 03)",
+        "the longest recent crypto-specific test of time-series momentum",
+        "REJECT",
+        ["S3-07"],
+        "E3",
+        "the post-July-2020 regime a trader would trade today is negative and not significant",
+    ),
+    (
+        "OPP-0030",
+        "K-04",
+        "Perpetual funding carry on BTC/ETH (Karaptic Note 04)",
+        "measured funding carry against a realistic capital hurdle",
+        "REJECT",
+        ["S3-08"],
+        "E2",
+        "gross annualised funding of +2.11%/yr BTC and +1.63%/yr ETH is too small to trade at the project's capital scale",
+    ),
+    (
+        "OPP-0031",
+        "K-05",
+        "Short-horizon reversal after a de-trended-volume split (Bianchi, Babiak & Dickerson 2022)",
+        "a single-exchange, one-day-holding reversal with published net-of-fees results by exchange",
+        "INSUFFICIENT_EVIDENCE",
+        ["S3-09"],
+        "E2",
+        "the venue where the effect survives net of fees is not ours and the recipe is not executable as published",
+    ),
+    (
+        "OPP-0032",
+        "QC-01",
+        "Adaptive States for Crypto (QuantConnect Quant League 2025-Q2)",
+        "an adaptive three-state crypto system with a public backtest chart",
+        "REJECT",
+        ["S3-11"],
+        "E1",
+        "the state parameters live in unshared files, no costs are modelled, and the turnover measured by the author's own reviewers is expected to be fatal",
+    ),
+    (
+        "OPP-0033",
+        "K-01",
+        "Karaptic Research — pre-registered crypto strategy replication series",
+        "a public research programme that prices every hypothesis gross then net of realistic execution costs",
+        "WATCH",
+        ["S3-04", "S3-05", "S3-10"],
+        "E2",
+        "a venue and a protocol rather than a strategy; kept as a source of independent replication evidence",
+    ),
 ]
 
 
@@ -1413,10 +1640,16 @@ OPP_DETAIL: dict[str, dict[str, Any]] = {
         "required_data": "Binance USDⓈ-M perpetual daily-close panel",
         "external_code": "github.com/Silent47boryara/searching-for-edge (directory 02-momentum)",
         "external_results": "the note's own gross and net tables, pre-registered before the result was seen",
-        "ambiguities": ["the two-week specification flips sign on an arbitrary Monday choice",
-                        "shorting the bottom quintile is required, which the project's long/cash runtime cannot express"],
-        "risks": {"selection_bias": "LOW (pre-registered before the result was seen)", "overfitting": "LOW",
-                  "lookahead": "LOW (Sunday-close ranking, Monday-open entry)", "implementation": "MEDIUM"},
+        "ambiguities": [
+            "the two-week specification flips sign on an arbitrary Monday choice",
+            "shorting the bottom quintile is required, which the project's long/cash runtime cannot express",
+        ],
+        "risks": {
+            "selection_bias": "LOW (pre-registered before the result was seen)",
+            "overfitting": "LOW",
+            "lookahead": "LOW (Sunday-close ranking, Monday-open entry)",
+            "implementation": "MEDIUM",
+        },
     },
     "OPP-0029": {
         "market": "crypto, 30 large caps (plus a 2,500-coin robustness check)",
@@ -1432,9 +1665,16 @@ OPP_DETAIL: dict[str, dict[str, Any]] = {
         "required_data": "crypto weekly price panel",
         "external_code": "none",
         "external_results": "Grobys, Kolari, Sandretto, Shahzad & Äijö (2025) via Karaptic Note 03",
-        "ambiguities": ["a single 1,400% one-day outlier carries much of the raw sample",
-                        "the value-weighted 2,500-coin check was never a tradable portfolio"],
-        "risks": {"selection_bias": "LOW", "overfitting": "LOW", "lookahead": "LOW", "implementation": "HIGH"},
+        "ambiguities": [
+            "a single 1,400% one-day outlier carries much of the raw sample",
+            "the value-weighted 2,500-coin check was never a tradable portfolio",
+        ],
+        "risks": {
+            "selection_bias": "LOW",
+            "overfitting": "LOW",
+            "lookahead": "LOW",
+            "implementation": "HIGH",
+        },
     },
     "OPP-0030": {
         "market": "Binance BTCUSDT and ETHUSDT perpetual funding",
@@ -1450,8 +1690,16 @@ OPP_DETAIL: dict[str, dict[str, Any]] = {
         "required_data": "Binance funding-rate history",
         "external_code": "github.com/Silent47boryara/searching-for-edge (directory 04-carry)",
         "external_results": "the note's measured annualised funding means",
-        "ambiguities": ["no net-of-costs figure exists", "the hedge requires a short perpetual the project cannot hold"],
-        "risks": {"selection_bias": "LOW", "overfitting": "LOW", "lookahead": "LOW", "implementation": "HIGH"},
+        "ambiguities": [
+            "no net-of-costs figure exists",
+            "the hedge requires a short perpetual the project cannot hold",
+        ],
+        "risks": {
+            "selection_bias": "LOW",
+            "overfitting": "LOW",
+            "lookahead": "LOW",
+            "implementation": "HIGH",
+        },
     },
     "OPP-0031": {
         "market": "crypto pairs against USD/USDT across five exchanges",
@@ -1467,9 +1715,16 @@ OPP_DETAIL: dict[str, dict[str, Any]] = {
         "required_data": "daily OHLCV and volume per exchange",
         "external_code": "the replicator's code is public; the paper ships none",
         "external_results": "Bianchi, Babiak & Dickerson (2022) Table 7, via Karaptic Note 05",
-        "ambiguities": ["the recipe is not retail-executable as published",
-                        "the venue where the effect survives net of fees is not Binance"],
-        "risks": {"selection_bias": "MEDIUM", "overfitting": "MEDIUM", "lookahead": "MEDIUM", "implementation": "HIGH"},
+        "ambiguities": [
+            "the recipe is not retail-executable as published",
+            "the venue where the effect survives net of fees is not Binance",
+        ],
+        "risks": {
+            "selection_bias": "MEDIUM",
+            "overfitting": "MEDIUM",
+            "lookahead": "MEDIUM",
+            "implementation": "HIGH",
+        },
     },
     "OPP-0032": {
         "market": "crypto on QuantConnect",
@@ -1485,9 +1740,16 @@ OPP_DETAIL: dict[str, dict[str, Any]] = {
         "required_data": "QuantConnect crypto data plus the withheld model parameters",
         "external_code": "partial — the state parameters live in private object storage",
         "external_results": "the entry's public backtest chart only",
-        "ambiguities": ["the state parameters are withheld, so the states cannot be reproduced",
-                        "about 3,500% turnover is reported by a commenter against no cost modelling"],
-        "risks": {"selection_bias": "MEDIUM", "overfitting": "HIGH", "lookahead": "MEDIUM", "implementation": "HIGH"},
+        "ambiguities": [
+            "the state parameters are withheld, so the states cannot be reproduced",
+            "about 3,500% turnover is reported by a commenter against no cost modelling",
+        ],
+        "risks": {
+            "selection_bias": "MEDIUM",
+            "overfitting": "HIGH",
+            "lookahead": "MEDIUM",
+            "implementation": "HIGH",
+        },
     },
     "OPP-0033": {
         "market": "crypto spot and perpetuals on Binance and Gate.io",
@@ -1503,46 +1765,112 @@ OPP_DETAIL: dict[str, dict[str, Any]] = {
         "required_data": "public Binance and Gate.io market data plus the cited papers",
         "external_code": "github.com/Silent47boryara/searching-for-edge",
         "external_results": "the individual notes in the series",
-        "ambiguities": ["this is a venue and a protocol, not a strategy",
-                        "the repository declares no license and no release tag"],
-        "risks": {"selection_bias": "LOW", "overfitting": "LOW", "lookahead": "LOW", "implementation": "LOW"},
+        "ambiguities": [
+            "this is a venue and a protocol, not a strategy",
+            "the repository declares no license and no release tag",
+        ],
+        "risks": {
+            "selection_bias": "LOW",
+            "overfitting": "LOW",
+            "lookahead": "LOW",
+            "implementation": "LOW",
+        },
     },
 }
 
 
 def evidence_scores(rank: str) -> dict[str, int]:
     base = {
-        "RULE_COMPLETENESS": 0, "CODE_AVAILABILITY": 0, "DATA_REPRODUCIBILITY": 0,
-        "TRANSACTION_COST_REALISM": 0, "OOS_EVIDENCE": 0, "FORWARD_EVIDENCE": 0,
-        "LIVE_EVIDENCE": 0, "SAMPLE_SIZE": 0, "INDEPENDENT_VALIDATION": 0, "IMPLEMENTATION_FIDELITY": 0,
+        "RULE_COMPLETENESS": 0,
+        "CODE_AVAILABILITY": 0,
+        "DATA_REPRODUCIBILITY": 0,
+        "TRANSACTION_COST_REALISM": 0,
+        "OOS_EVIDENCE": 0,
+        "FORWARD_EVIDENCE": 0,
+        "LIVE_EVIDENCE": 0,
+        "SAMPLE_SIZE": 0,
+        "INDEPENDENT_VALIDATION": 0,
+        "IMPLEMENTATION_FIDELITY": 0,
     }
     table = {
-        "OPP-0028": {"RULE_COMPLETENESS": 5, "CODE_AVAILABILITY": 5, "DATA_REPRODUCIBILITY": 5,
-                     "TRANSACTION_COST_REALISM": 5, "OOS_EVIDENCE": 4, "SAMPLE_SIZE": 5,
-                     "INDEPENDENT_VALIDATION": 4, "IMPLEMENTATION_FIDELITY": 4},
-        "OPP-0029": {"RULE_COMPLETENESS": 2, "DATA_REPRODUCIBILITY": 2, "OOS_EVIDENCE": 4,
-                     "SAMPLE_SIZE": 4, "INDEPENDENT_VALIDATION": 4, "IMPLEMENTATION_FIDELITY": 1},
-        "OPP-0030": {"RULE_COMPLETENESS": 3, "CODE_AVAILABILITY": 5, "DATA_REPRODUCIBILITY": 5,
-                     "OOS_EVIDENCE": 4, "SAMPLE_SIZE": 3, "INDEPENDENT_VALIDATION": 3,
-                     "IMPLEMENTATION_FIDELITY": 3},
-        "OPP-0031": {"RULE_COMPLETENESS": 2, "DATA_REPRODUCIBILITY": 4, "TRANSACTION_COST_REALISM": 4,
-                     "OOS_EVIDENCE": 4, "SAMPLE_SIZE": 4, "INDEPENDENT_VALIDATION": 3},
-        "OPP-0032": {"RULE_COMPLETENESS": 2, "CODE_AVAILABILITY": 2, "TRANSACTION_COST_REALISM": 1,
-                     "SAMPLE_SIZE": 1},
-        "OPP-0033": {"RULE_COMPLETENESS": 1, "CODE_AVAILABILITY": 4, "DATA_REPRODUCIBILITY": 3,
-                     "TRANSACTION_COST_REALISM": 5, "INDEPENDENT_VALIDATION": 4},
+        "OPP-0028": {
+            "RULE_COMPLETENESS": 5,
+            "CODE_AVAILABILITY": 5,
+            "DATA_REPRODUCIBILITY": 5,
+            "TRANSACTION_COST_REALISM": 5,
+            "OOS_EVIDENCE": 4,
+            "SAMPLE_SIZE": 5,
+            "INDEPENDENT_VALIDATION": 4,
+            "IMPLEMENTATION_FIDELITY": 4,
+        },
+        "OPP-0029": {
+            "RULE_COMPLETENESS": 2,
+            "DATA_REPRODUCIBILITY": 2,
+            "OOS_EVIDENCE": 4,
+            "SAMPLE_SIZE": 4,
+            "INDEPENDENT_VALIDATION": 4,
+            "IMPLEMENTATION_FIDELITY": 1,
+        },
+        "OPP-0030": {
+            "RULE_COMPLETENESS": 3,
+            "CODE_AVAILABILITY": 5,
+            "DATA_REPRODUCIBILITY": 5,
+            "OOS_EVIDENCE": 4,
+            "SAMPLE_SIZE": 3,
+            "INDEPENDENT_VALIDATION": 3,
+            "IMPLEMENTATION_FIDELITY": 3,
+        },
+        "OPP-0031": {
+            "RULE_COMPLETENESS": 2,
+            "DATA_REPRODUCIBILITY": 4,
+            "TRANSACTION_COST_REALISM": 4,
+            "OOS_EVIDENCE": 4,
+            "SAMPLE_SIZE": 4,
+            "INDEPENDENT_VALIDATION": 3,
+        },
+        "OPP-0032": {
+            "RULE_COMPLETENESS": 2,
+            "CODE_AVAILABILITY": 2,
+            "TRANSACTION_COST_REALISM": 1,
+            "SAMPLE_SIZE": 1,
+        },
+        "OPP-0033": {
+            "RULE_COMPLETENESS": 1,
+            "CODE_AVAILABILITY": 4,
+            "DATA_REPRODUCIBILITY": 3,
+            "TRANSACTION_COST_REALISM": 5,
+            "INDEPENDENT_VALIDATION": 4,
+        },
     }
     base.update(table.get(rank, {}))
     return base
 
 
-def opportunity_record(oid: str, cid: str, title: str, hypothesis: str, rank: str,
-                       source_ids: list[str], grade: str, reason: str,
-                       ambiguities: list[str], market: str, timeframe: str,
-                       entry_rules: str, exit_rules: str, risk_rules: str, parameters: str,
-                       claimed_period: str, claimed_metrics: str, transaction_cost_model: str,
-                       required_data: str, external_code: str, external_results: str,
-                       assets: str, risks: dict[str, str]) -> dict[str, Any]:
+def opportunity_record(
+    oid: str,
+    cid: str,
+    title: str,
+    hypothesis: str,
+    rank: str,
+    source_ids: list[str],
+    grade: str,
+    reason: str,
+    ambiguities: list[str],
+    market: str,
+    timeframe: str,
+    entry_rules: str,
+    exit_rules: str,
+    risk_rules: str,
+    parameters: str,
+    claimed_period: str,
+    claimed_metrics: str,
+    transaction_cost_model: str,
+    required_data: str,
+    external_code: str,
+    external_results: str,
+    assets: str,
+    risks: dict[str, str],
+) -> dict[str, Any]:
     """Emit the full canonical opportunity schema.
 
     The round-1 verifier enforces ``OPP_REQUIRED`` on *every* ``OPP-*.json``, so a round-3 record that
@@ -1570,11 +1898,17 @@ def opportunity_record(oid: str, cid: str, title: str, hypothesis: str, rank: st
         "external_results": external_results,
         "forward_evidence": "SEE_SOURCE_REGISTRY",
         "live_evidence": "SEE_SOURCE_REGISTRY",
-        "counter_evidence": [reason, "reviewed in RFC-035S3; no local backtest influenced this record"],
+        "counter_evidence": [
+            reason,
+            "reviewed in RFC-035S3; no local backtest influenced this record",
+        ],
         "ambiguities": ambiguities,
         "replication_difficulty": reason,
         "evidence_quality": grade,
-        "selection_bias_risk": risks.get("selection_bias", "MEDIUM (the round was run with knowledge of 2024-2026 published results)"),
+        "selection_bias_risk": risks.get(
+            "selection_bias",
+            "MEDIUM (the round was run with knowledge of 2024-2026 published results)",
+        ),
         "overfitting_risk": risks.get("overfitting", "MEDIUM"),
         "lookahead_risk": risks.get("lookahead", "MEDIUM"),
         "implementation_risk": risks.get("implementation", "MEDIUM"),
@@ -1606,35 +1940,56 @@ def update_canonical() -> dict[str, Any]:
     if not isinstance(rounds, list):
         raise TypeError("the canonical registry rounds field is expected to be a list")
     rounds[:] = [r for r in rounds if r.get("rfc") != "RFC-035S3"]
-    rounds.append({
-        "round": 3,
-        "rfc": "RFC-035S3",
-        # the round's own source set, not just the ids appended on this build: a re-run must not
-        # report that round 3 added nothing.
-        "sources": len(SOURCES),
-        "new_on_this_build": len(added),
-        "retrieved_at_utc": RETRIEVED_AT,
-        "source_ids": [s["SOURCE_ID"] for s in SOURCES],
-        "replicate_p0_selected": "NONE",
-        "final_status": "NO_SUITABLE_EXTERNAL_STRATEGY",
-        "note": "append-only: no earlier source, round or disposition was modified",
-    })
+    rounds.append(
+        {
+            "round": 3,
+            "rfc": "RFC-035S3",
+            # the round's own source set, not just the ids appended on this build: a re-run must not
+            # report that round 3 added nothing.
+            "sources": len(SOURCES),
+            "new_on_this_build": len(added),
+            "retrieved_at_utc": RETRIEVED_AT,
+            "source_ids": [s["SOURCE_ID"] for s in SOURCES],
+            "replicate_p0_selected": "NONE",
+            "final_status": "NO_SUITABLE_EXTERNAL_STRATEGY",
+            "note": "append-only: no earlier source, round or disposition was modified",
+        }
+    )
     registry["source_registry_version"] = "RFC035_SOURCE_REGISTRY_V3"
-    registry_path.write_text(json.dumps(registry, indent=2, sort_keys=False, ensure_ascii=False) + "\n", encoding="utf-8")
+    registry_path.write_text(
+        json.dumps(registry, indent=2, sort_keys=False, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
 
     written: list[str] = []
     for oid, cid, title, hypothesis, rank, source_ids, grade, reason in OPP_DEFS:
-        record = opportunity_record(oid, cid, title, hypothesis, rank, source_ids, grade, reason,
-                                    OPP_DETAIL[oid]["ambiguities"], OPP_DETAIL[oid]["market"],
-                                    OPP_DETAIL[oid]["timeframe"], OPP_DETAIL[oid]["entry_rules"],
-                                    OPP_DETAIL[oid]["exit_rules"], OPP_DETAIL[oid]["risk_rules"],
-                                    OPP_DETAIL[oid]["parameters"], OPP_DETAIL[oid]["claimed_period"],
-                                    OPP_DETAIL[oid]["claimed_metrics"], OPP_DETAIL[oid]["transaction_cost_model"],
-                                    OPP_DETAIL[oid]["required_data"], OPP_DETAIL[oid]["external_code"],
-                                    OPP_DETAIL[oid]["external_results"], OPP_DETAIL[oid]["assets"],
-                                    OPP_DETAIL[oid]["risks"])
+        record = opportunity_record(
+            oid,
+            cid,
+            title,
+            hypothesis,
+            rank,
+            source_ids,
+            grade,
+            reason,
+            OPP_DETAIL[oid]["ambiguities"],
+            OPP_DETAIL[oid]["market"],
+            OPP_DETAIL[oid]["timeframe"],
+            OPP_DETAIL[oid]["entry_rules"],
+            OPP_DETAIL[oid]["exit_rules"],
+            OPP_DETAIL[oid]["risk_rules"],
+            OPP_DETAIL[oid]["parameters"],
+            OPP_DETAIL[oid]["claimed_period"],
+            OPP_DETAIL[oid]["claimed_metrics"],
+            OPP_DETAIL[oid]["transaction_cost_model"],
+            OPP_DETAIL[oid]["required_data"],
+            OPP_DETAIL[oid]["external_code"],
+            OPP_DETAIL[oid]["external_results"],
+            OPP_DETAIL[oid]["assets"],
+            OPP_DETAIL[oid]["risks"],
+        )
         (OPP_DIR / f"{oid}.json").write_text(
-            json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+            json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        )
         (OPP_DIR / f"{oid}.md").write_text(
             f"# {oid} — {title}\n\n"
             f"- rank: **{record['rank']}**\n"
@@ -1642,7 +1997,8 @@ def update_canonical() -> dict[str, Any]:
             f"- sources: {', '.join(source_ids)}\n"
             f"- round-3 reason: {reason}\n\n"
             "Full detail: `reports/rfc035/search_round_3/FINAL_REPORT.md`.\n",
-            encoding="utf-8")
+            encoding="utf-8",
+        )
         written.append(oid)
 
     # Reclassification is strictly ADDITIVE.  ``rank`` is the rank the round that classified the
@@ -1656,7 +2012,10 @@ def update_canonical() -> dict[str, Any]:
         record = json.loads(path.read_text(encoding="utf-8"))
         previous = record["rank"]
         history = record.setdefault("rank_history", [])
-        if not any(item.get("rank") == previous and item.get("rfc") == record.get("rfc") for item in history):
+        if not any(
+            item.get("rank") == previous and item.get("rfc") == record.get("rfc")
+            for item in history
+        ):
             history.append({"rank": previous, "rfc": record.get("rfc", "RFC-035S2")})
         record["current_rank"] = RANK_BY_CLASSIFICATION[candidate["classification"]]
         record["rank_semantics"] = (
@@ -1667,20 +2026,27 @@ def update_canonical() -> dict[str, Any]:
             "previous_rank": previous,
             "corrected_rank": RANK_BY_CLASSIFICATION[candidate["classification"]],
             "reason": candidate["classification_reason"],
-            "executable_rule_completeness": completeness(candidate["executable"], EXECUTABLE_FIELDS)["ratio"],
+            "executable_rule_completeness": completeness(
+                candidate["executable"], EXECUTABLE_FIELDS
+            )["ratio"],
             "evidence_completeness": completeness(candidate["evidence"], EVIDENCE_FIELDS)["ratio"],
             "snapshot_from": candidate["source_ids"][0],
         }
         record["status"] = "ROUND_3_SUPERSEDED_" + candidate["classification"]
         path.write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-        reclassified.append({
-            "opportunity_id": candidate["opportunity_id"],
-            "previous": previous,
-            "corrected": record["current_rank"],
-            "reason": candidate["classification_reason"],
-        })
-    return {"sources_added": [s["SOURCE_ID"] for s in added], "opportunities_written": written,
-            "reclassified": reclassified}
+        reclassified.append(
+            {
+                "opportunity_id": candidate["opportunity_id"],
+                "previous": previous,
+                "corrected": record["current_rank"],
+                "reason": candidate["classification_reason"],
+            }
+        )
+    return {
+        "sources_added": [s["SOURCE_ID"] for s in added],
+        "opportunities_written": written,
+        "reclassified": reclassified,
+    }
 
 
 def update_opportunity_registry_md(summary: dict[str, Any]) -> None:
@@ -1713,7 +2079,9 @@ def update_opportunity_registry_md(summary: dict[str, Any]) -> None:
         "| --- | --- | --- | --- |",
     ]
     for item in summary["reclassified"]:
-        block.append(f"| {item['opportunity_id']} | {item['previous']} | {item['corrected']} | {item['reason']} |")
+        block.append(
+            f"| {item['opportunity_id']} | {item['previous']} | {item['corrected']} | {item['reason']} |"
+        )
     block += ["", "Round-3 detail: `reports/rfc035/search_round_3/`.", ""]
     path.write_text(text.rstrip() + "\n" + "\n".join(block), encoding="utf-8")
 
@@ -1727,8 +2095,14 @@ def write_run_report(integrity: dict[str, Any], manifest: dict[str, Any]) -> Non
         "verifier": "scripts/rfc035s3_verify.py",
         "gates": gates,
         "deliverables": [
-            "BASELINE.md", "RULE_CONTRACT_AUDIT.md", "CANDIDATE_DEEP_DIVE.md", "ECONOMIC_EVIDENCE.md",
-            "REJECTION_LOG.md", "INDEPENDENT_VERIFICATION.md", "FINAL_REPORT.md", "FINAL_REPORT.json",
+            "BASELINE.md",
+            "RULE_CONTRACT_AUDIT.md",
+            "CANDIDATE_DEEP_DIVE.md",
+            "ECONOMIC_EVIDENCE.md",
+            "REJECTION_LOG.md",
+            "INDEPENDENT_VERIFICATION.md",
+            "FINAL_REPORT.md",
+            "FINAL_REPORT.json",
         ],
         "integrity": {
             "current_head": integrity["current_head"],
@@ -1742,7 +2116,8 @@ def write_run_report(integrity: dict[str, Any], manifest: dict[str, Any]) -> Non
         "rfc_036": "BLOCKED",
     }
     (OUT / "RUN_REPORT.json").write_text(
-        json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+        json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     lines = [
         "# RFC-035S3 — RUN_REPORT",
         "",
@@ -1767,7 +2142,9 @@ def write_run_report(integrity: dict[str, Any], manifest: dict[str, Any]) -> Non
         for name, entry in gates.items():
             if not isinstance(entry, dict):
                 continue
-            lines.append(f"| {name} | `{entry.get('command')}` | {entry.get('result')} | `{entry.get('exit_code')}` |")
+            lines.append(
+                f"| {name} | `{entry.get('command')}` | {entry.get('result')} | `{entry.get('exit_code')}` |"
+            )
     (OUT / "RUN_REPORT.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -1778,33 +2155,91 @@ def main() -> int:
 
     (OUT / "BASELINE.md").write_text(render_baseline(integrity, manifest), encoding="utf-8")
     (OUT / "BASELINE.json").write_text(
-        json.dumps({"rfc": "RFC-035S3", "artifact": "BASELINE", **integrity, "manifest_bundle_digest": manifest["bundle_digest"]},
-                   indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+        json.dumps(
+            {
+                "rfc": "RFC-035S3",
+                "artifact": "BASELINE",
+                **integrity,
+                "manifest_bundle_digest": manifest["bundle_digest"],
+            },
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     (OUT / "RULE_CONTRACT_AUDIT.md").write_text(render_rule_contract_audit(), encoding="utf-8")
     (OUT / "RULE_CONTRACT_AUDIT.json").write_text(
-        json.dumps(render_rule_contract_json(), indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+        json.dumps(render_rule_contract_json(), indent=2, sort_keys=True, ensure_ascii=False)
+        + "\n",
+        encoding="utf-8",
+    )
     (OUT / "CANDIDATE_DEEP_DIVE.md").write_text(render_deep_dive(), encoding="utf-8")
     (OUT / "CANDIDATE_DEEP_DIVE.json").write_text(
-        json.dumps({"rfc": "RFC-035S3", "artifact": "CANDIDATE_DEEP_DIVE", "candidates": DEEP_DIVES},
-                   indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+        json.dumps(
+            {"rfc": "RFC-035S3", "artifact": "CANDIDATE_DEEP_DIVE", "candidates": DEEP_DIVES},
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     (OUT / "ECONOMIC_EVIDENCE.md").write_text(render_economic(), encoding="utf-8")
     (OUT / "ECONOMIC_EVIDENCE.json").write_text(
-        json.dumps({"rfc": "RFC-035S3", "artifact": "ECONOMIC_EVIDENCE", "cost_floor_bps": COST_FLOOR_BPS,
-                    "deep_dives": [{"candidate_id": c["candidate_id"], **c["economic"]} for c in DEEP_DIVES],
-                    "alternatives": ALTERNATIVES}, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
-        encoding="utf-8")
+        json.dumps(
+            {
+                "rfc": "RFC-035S3",
+                "artifact": "ECONOMIC_EVIDENCE",
+                "cost_floor_bps": COST_FLOOR_BPS,
+                "deep_dives": [
+                    {"candidate_id": c["candidate_id"], **c["economic"]} for c in DEEP_DIVES
+                ],
+                "alternatives": ALTERNATIVES,
+            },
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     (OUT / "REJECTION_LOG.md").write_text(render_rejection(), encoding="utf-8")
     (OUT / "REJECTION_LOG.json").write_text(
-        json.dumps({"rfc": "RFC-035S3", "artifact": "REJECTION_LOG",
-                    "deep_dives": [{"candidate_id": c["candidate_id"], "classification": c["classification"],
-                                    "reason": c["classification_reason"]} for c in DEEP_DIVES],
-                    "alternatives": [{"candidate_id": a["candidate_id"], "classification": a["classification"],
-                                      "reason": a["classification_reason"]} for a in ALTERNATIVES]},
-                   indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+        json.dumps(
+            {
+                "rfc": "RFC-035S3",
+                "artifact": "REJECTION_LOG",
+                "deep_dives": [
+                    {
+                        "candidate_id": c["candidate_id"],
+                        "classification": c["classification"],
+                        "reason": c["classification_reason"],
+                    }
+                    for c in DEEP_DIVES
+                ],
+                "alternatives": [
+                    {
+                        "candidate_id": a["candidate_id"],
+                        "classification": a["classification"],
+                        "reason": a["classification_reason"],
+                    }
+                    for a in ALTERNATIVES
+                ],
+            },
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
 
     report = final_payload(integrity, manifest)
     (OUT / "FINAL_REPORT.json").write_text(
-        json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+        json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     (OUT / "FINAL_REPORT.md").write_text(render_final(report), encoding="utf-8")
 
     summary = update_canonical()
@@ -1814,10 +2249,19 @@ def main() -> int:
     print("RFC-035S3 BUILT")
     print(f"CURRENT HEAD = {integrity['current_head']}")
     print(f"BASELINE     = {BASELINE_COMMIT} (equal={integrity['head_equals_baseline']})")
-    print(f"MANIFEST     = {manifest['file_count']} files, copy_verified={manifest['copy_verified']}")
+    print(
+        f"MANIFEST     = {manifest['file_count']} files, copy_verified={manifest['copy_verified']}"
+    )
     print(f"FINAL        = {report['final_status']}")
-    for name in ("BASELINE.md", "RULE_CONTRACT_AUDIT.md", "CANDIDATE_DEEP_DIVE.md", "ECONOMIC_EVIDENCE.md",
-                 "REJECTION_LOG.md", "FINAL_REPORT.md", "FINAL_REPORT.json"):
+    for name in (
+        "BASELINE.md",
+        "RULE_CONTRACT_AUDIT.md",
+        "CANDIDATE_DEEP_DIVE.md",
+        "ECONOMIC_EVIDENCE.md",
+        "REJECTION_LOG.md",
+        "FINAL_REPORT.md",
+        "FINAL_REPORT.json",
+    ):
         print(f"  wrote {name}: {(OUT / name).is_file()}")
     return 0
 

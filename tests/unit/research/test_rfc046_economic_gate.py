@@ -125,9 +125,9 @@ def test_artefacts_exist_and_are_verified_clean(report: dict, verification: dict
     assert verification["false_success"] == 0
     assert verification["builder_equals_verifier"] is False
     assert verification["checks_passed"] == verification["checks_total"]
-    assert verification["verified_artifact_sha256"] == hashlib.sha256(
-        REPORT.read_bytes()
-    ).hexdigest(), "the verification must cover the artefact as shipped"
+    assert (
+        verification["verified_artifact_sha256"] == hashlib.sha256(REPORT.read_bytes()).hexdigest()
+    ), "the verification must cover the artefact as shipped"
 
 
 def test_the_toll_at_both_reference_sizes_recomputes_from_the_frozen_constants(
@@ -158,10 +158,7 @@ def test_the_toll_is_fee_dominated_and_the_shares_recompute(report: dict, model:
     assert dominance["exchange_fees_bps"] == pytest.approx(20.0)
     assert dominance["fees_share_of_round_trip"] == pytest.approx(20.0 / toll, abs=1e-9)
     assert dominance["fees_share_of_round_trip"] > 0.8, "the fee schedule dominates the toll"
-    parts = sum(
-        c["value_bps"]
-        for c in report["cost_audit"]["at_reference_capital"]["components"]
-    )
+    parts = sum(c["value_bps"] for c in report["cost_audit"]["at_reference_capital"]["components"])
     assert parts == pytest.approx(toll, abs=1e-9), "the published components must sum to the toll"
     assert dominance["non_fee_bps"] == pytest.approx(toll - 20.0, abs=1e-9)
 
@@ -218,9 +215,9 @@ def test_the_turnover_table_is_arithmetic_not_opinion(report: dict, model: dict)
     assert target == pytest.approx(CAPITAL * 0.20)
     for row in section["rows"]:
         per_year = row["round_trips_per_day"] * 365.0
-        assert row["annual_cost_usdt"] == pytest.approx(
-            per_year * cost_per_op, abs=1e-8
-        ), row["round_trips_per_day"]
+        assert row["annual_cost_usdt"] == pytest.approx(per_year * cost_per_op, abs=1e-8), row[
+            "round_trips_per_day"
+        ]
         assert row["annual_cost_pct_of_capital"] == pytest.approx(
             per_year * cost_per_op / CAPITAL, abs=1e-9
         )
@@ -293,12 +290,13 @@ def test_the_rfc046_confirmations_match_the_recorded_artefacts(report: dict) -> 
     review = report["rfc046_review"]
     forensics = json.loads(FORENSICS.read_text(encoding="utf-8"))
     run_report = json.loads(RUN_JSON.read_text(encoding="utf-8"))
-    assert review["sources"]["run_report_sha256"] == hashlib.sha256(
-        RUN_JSON.read_bytes()
-    ).hexdigest()
-    assert review["sources"]["cost_forensics_sha256"] == hashlib.sha256(
-        FORENSICS.read_bytes()
-    ).hexdigest()
+    assert (
+        review["sources"]["run_report_sha256"] == hashlib.sha256(RUN_JSON.read_bytes()).hexdigest()
+    )
+    assert (
+        review["sources"]["cost_forensics_sha256"]
+        == hashlib.sha256(FORENSICS.read_bytes()).hexdigest()
+    )
 
     c1 = forensics["candidates"]["CAND-046-001"]
     claim = review["confirmations"]["CAND-046-001_has_no_gross_edge_out_of_sample"]
@@ -333,10 +331,14 @@ def test_the_standing_limits_are_read_from_the_governance_documents(report: dict
     assert state["campaign_status"] == "DISCOVERY_CAMPAIGN_FAILED"
     assert state["next_campaign"] == "NOT_AUTHORIZED"
     assert state["trades_authorized"] == rfc["runtime_state"]["trades_authorized"] == 0
-    assert state["profitability_verified"] is False is rfc["runtime_state"]["profitability_verified"]
+    assert (
+        state["profitability_verified"] is False is rfc["runtime_state"]["profitability_verified"]
+    )
     assert state["live_trading"] is False is rfc["runtime_state"]["live_trading_enabled"]
     exemption = operating["next_action_policy"]["rfc046_limited_exemption"]
-    assert state["G_BUSINESS_REENTRY"] == exemption["gate_state"]["G_BUSINESS_REENTRY"] == "NOT_PASS"
+    assert (
+        state["G_BUSINESS_REENTRY"] == exemption["gate_state"]["G_BUSINESS_REENTRY"] == "NOT_PASS"
+    )
     assert state["false_success"] == 0 and report["false_success"] == 0
     assert rfc["invariants_while_active"]["real_orders"] == "REFUSED_BY_POLICY"
 

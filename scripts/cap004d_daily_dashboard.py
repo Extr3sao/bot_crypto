@@ -101,7 +101,11 @@ def _alerts_section() -> list[str]:
         store.open_alerts(), key=lambda a: (SEVERITY_ORDER.get(a.severity, 9), a.first_seen_at)
     )
     lines.append(f"- **open: {len(open_alerts)}** of {len(alerts)} episodes")
-    lines += ["", "| status | reason | severity | first seen | last seen | occurs |", "| --- | --- | --- | --- | --- | --- |"]
+    lines += [
+        "",
+        "| status | reason | severity | first seen | last seen | occurs |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
     recent = sorted(alerts, key=lambda a: a.last_seen_at, reverse=True)[:8]
     for a in recent:
         lines.append(
@@ -122,9 +126,9 @@ def _supervisor_section() -> list[str]:
             f"`{status.get('campaign_status')}` · chain: `{status.get('chain_status')}`",
             f"- last run: {status.get('last_run_utc')} · last success: "
             f"{status.get('last_success_utc')}",
-        f"- task `{sched.get('task_name')}`: enabled={sched.get('enabled')} "
-        f"result={_scheduler_result_name(sched.get('last_task_result'))} "
-        f"next={sched.get('next_run_time')}",
+            f"- task `{sched.get('task_name')}`: enabled={sched.get('enabled')} "
+            f"result={_scheduler_result_name(sched.get('last_task_result'))} "
+            f"next={sched.get('next_run_time')}",
         ]
     else:
         lines.append("_SUPERVISOR_STATUS.json not found_")
@@ -170,7 +174,9 @@ def build_dashboard() -> str:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--out", type=Path, default=REPORT_ROOT / "DAILY_DASHBOARD.md",
+        "--out",
+        type=Path,
+        default=REPORT_ROOT / "DAILY_DASHBOARD.md",
         help="output markdown path (default: reports/cap004d/DAILY_DASHBOARD.md)",
     )
     args = parser.parse_args(argv)

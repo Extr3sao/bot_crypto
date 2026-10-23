@@ -232,9 +232,7 @@ def total_score(scores: Mapping[str, int]) -> int:
 def critical_fails(scores: Mapping[str, int]) -> tuple[str, ...]:
     """§22 — critical dimensions below threshold; not compensable by the total."""
     validate_scorecard(scores)
-    return tuple(
-        dim for dim, floor in CRITICAL_THRESHOLDS.items() if int(scores[dim]) < floor
-    )
+    return tuple(dim for dim, floor in CRITICAL_THRESHOLDS.items() if int(scores[dim]) < floor)
 
 
 # --------------------------------------------------------------------------- #

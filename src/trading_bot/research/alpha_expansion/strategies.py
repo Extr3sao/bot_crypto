@@ -74,11 +74,21 @@ class Trade:
 
     def as_dict(self) -> dict[str, object]:
         return {
-            "side": self.side, "entry_ts": self.entry_ts, "exit_ts": self.exit_ts,
-            "entry": self.entry, "exit": self.exit, "reason": self.reason, "rule": self.rule,
-            "symbol": self.symbol, "notional": self.notional, "gross": self.gross,
-            "fees": self.fees, "net": self.net, "mfe_pct": self.mfe_pct,
-            "mae_pct": self.mae_pct, "duration_min": self.duration_min,
+            "side": self.side,
+            "entry_ts": self.entry_ts,
+            "exit_ts": self.exit_ts,
+            "entry": self.entry,
+            "exit": self.exit,
+            "reason": self.reason,
+            "rule": self.rule,
+            "symbol": self.symbol,
+            "notional": self.notional,
+            "gross": self.gross,
+            "fees": self.fees,
+            "net": self.net,
+            "mfe_pct": self.mfe_pct,
+            "mae_pct": self.mae_pct,
+            "duration_min": self.duration_min,
         }
 
 
@@ -127,17 +137,25 @@ def simulate_xsec_rotation(
     entry_ts = 0
     peak = 0.0
     trough = 0.0
-    last_rebalance = -10**9
+    last_rebalance = -(10**9)
     cap_excluded: str | None = None
 
     def close(sym: str, exit_price: float, exit_ts: int, reason: str) -> None:
         gross = notional * (exit_price / entry_price - 1.0)
         trades.append(
             Trade(
-                side="long", entry_ts=entry_ts, exit_ts=exit_ts,
-                entry=round(entry_price, 6), exit=round(exit_price, 6), reason=reason,
-                rule=f"xsec_{sym}", symbol=sym, notional=round(notional, 2),
-                gross=round(gross, 4), fees=round(fee_usd, 4), net=round(gross - fee_usd, 4),
+                side="long",
+                entry_ts=entry_ts,
+                exit_ts=exit_ts,
+                entry=round(entry_price, 6),
+                exit=round(exit_price, 6),
+                reason=reason,
+                rule=f"xsec_{sym}",
+                symbol=sym,
+                notional=round(notional, 2),
+                gross=round(gross, 4),
+                fees=round(fee_usd, 4),
+                net=round(gross - fee_usd, 4),
                 mfe_pct=round((peak - entry_price) / entry_price * 100.0, 4),
                 mae_pct=round((entry_price - trough) / entry_price * 100.0, 4),
                 duration_min=round((exit_ts - entry_ts) / 60_000.0, 1),
@@ -184,7 +202,9 @@ def simulate_xsec_rotation(
             leader = snap.leader() if snap is not None and snap.is_tradeable else None
             still_leader = snap is not None and snap.is_tradeable and snap.leader() == held
             cap_hit = days_held >= config.max_hold_days
-            if need_snapshot and (cap_hit or (snap is not None and snap.is_tradeable and not still_leader)):
+            if need_snapshot and (
+                cap_hit or (snap is not None and snap.is_tradeable and not still_leader)
+            ):
                 close(held, fill_open[held], fill_day, "rotate" if not cap_hit else "window_expiry")
                 exited = held
                 held = None

@@ -134,12 +134,22 @@ def build_contract(manifest: dict[str, Any], cost: float) -> ExperimentContract:
     )
 
 
-def run(corpus: dict[str, Any], *, config: IM.IntermarketConfig, cost: float,
-        force_leg: str | None = None, subset: list[str] | None = None
-        ) -> tuple[list[Any], list[Any], dict[str, Any]]:
+def run(
+    corpus: dict[str, Any],
+    *,
+    config: IM.IntermarketConfig,
+    cost: float,
+    force_leg: str | None = None,
+    subset: list[str] | None = None,
+) -> tuple[list[Any], list[Any], dict[str, Any]]:
     return IM.simulate_intermarket_rotation(
-        corpus, D.listing_times(), D.corpus_digest(), config=config,
-        cost_bps_rt=cost, force_leg=force_leg, subset=subset,
+        corpus,
+        D.listing_times(),
+        D.corpus_digest(),
+        config=config,
+        cost_bps_rt=cost,
+        force_leg=force_leg,
+        subset=subset,
     )
 
 
@@ -280,7 +290,8 @@ def main() -> None:
         "manifest_sha256": manifest_hash,
         "dataset_fingerprint_matches": build_contract(manifest, cost).implementation_config[
             "dataset_fingerprint"
-        ] == manifest["spec_contract"]["dataset_fingerprint"],
+        ]
+        == manifest["spec_contract"]["dataset_fingerprint"],
     }
 
     # §3 data authority
@@ -291,8 +302,12 @@ def main() -> None:
     split_hash = reg.register(EXPERIMENT_ID, FROZEN_SPLIT)
     split_mutation_refused = False
     try:
-        reg.register(EXPERIMENT_ID, SplitDefinition(
-            "2019-01-01", "2024-01-01", "2024-01-01", "2025-07-01", "2025-07-01", "2026-03-01"))
+        reg.register(
+            EXPERIMENT_ID,
+            SplitDefinition(
+                "2019-01-01", "2024-01-01", "2024-01-01", "2025-07-01", "2025-07-01", "2026-03-01"
+            ),
+        )
     except Exception:
         split_mutation_refused = True
 
@@ -350,12 +365,16 @@ def main() -> None:
     if dev_decision == "DEV_PASS" and canonical_ok:
         val_tr, _vs, _va = run(val_corpus, config=config, cost=cost)
         val = summary(val_tr, cost=cost)
-        val_decision = "VALIDATION_PASS" if (val["expectancy_net_bps"] or -1) > 0 else "REJECT_VALIDATION"
+        val_decision = (
+            "VALIDATION_PASS" if (val["expectancy_net_bps"] or -1) > 0 else "REJECT_VALIDATION"
+        )
 
     full_tr, full_states, full_audit = run(full_corpus, config=config, cost=cost)
     full = summary(full_tr, cost=cost)
 
-    btc_full = D.load_corpus_range([IM.BTC], start_ms=D.DEV_VAL_RANGE[0], end_ms=D.DEV_VAL_RANGE[1])[IM.BTC]
+    btc_full = D.load_corpus_range(
+        [IM.BTC], start_ms=D.DEV_VAL_RANGE[0], end_ms=D.DEV_VAL_RANGE[1]
+    )[IM.BTC]
     beta = beta_decomposition(full_tr, btc_full)
 
     # §19 passive baselines over the identical DEV+VALIDATION window
@@ -376,8 +395,7 @@ def main() -> None:
         (full["expectancy_net_bps"] or 0) - (always_btc["expectancy_net_bps"] or 0), 4
     )
     beta["asset_selection_component_bps"] = round(
-        (always_alt["expectancy_net_bps"] or 0)
-        - (equal_weight_return(full_corpus) or 0) * BPS,
+        (always_alt["expectancy_net_bps"] or 0) - (equal_weight_return(full_corpus) or 0) * BPS,
         4,
     )
 
@@ -389,7 +407,8 @@ def main() -> None:
             "trades": len(sel),
             "net_usd": round(sum(nets), 2),
             "expectancy_net_bps": round(sum(t.net / t.notional * BPS for t in sel) / len(sel), 3)
-            if sel else None,
+            if sel
+            else None,
         }
 
     state_analysis = {
@@ -408,16 +427,28 @@ def main() -> None:
         "always_ALT_leg_net_bps": always_alt["expectancy_net_bps"],
         "always_BTC_trades": always_btc["trades"],
         "always_ALT_trades": always_alt["trades"],
-        "dominant_component": "ALT_leg" if (always_alt["expectancy_net_bps"] or -1e9) > (always_btc["expectancy_net_bps"] or -1e9) else "BTC_leg",
+        "dominant_component": "ALT_leg"
+        if (always_alt["expectancy_net_bps"] or -1e9) > (always_btc["expectancy_net_bps"] or -1e9)
+        else "BTC_leg",
         "promotable": False,
     }
 
     # §22/§23/§24
     temporal = {"pnl_by_year": A.pnl_by_year(full_tr), "pnl_by_asset": A.pnl_by_asset(full_tr)}
-    regimes = A.regime_by_day([
-        OHLCV(symbol=b.symbol, timestamp=b.timestamp, open=b.open, high=b.high,
-              low=b.low, close=b.close, volume=b.volume) for b in btc_full
-    ])
+    regimes = A.regime_by_day(
+        [
+            OHLCV(
+                symbol=b.symbol,
+                timestamp=b.timestamp,
+                open=b.open,
+                high=b.high,
+                low=b.low,
+                close=b.close,
+                volume=b.volume,
+            )
+            for b in btc_full
+        ]
+    )
     regime = A.regime_pnl(full_tr, regimes)
     concentration = A.concentration_by_asset_and_period(full_tr)
     concentration["top_state_contribution"] = {
@@ -457,7 +488,14 @@ def main() -> None:
     multiple_testing = {
         "program_hypotheses_tested": 7,
         "this_phase_hypotheses": 1,
-        "graveyard": ["EXP-ARP-006", "EXP-ARP-008", "EXP-ARP-016", "EXP-ARP-017", "EXP-ARP-018", "EXP-ARP-021"],
+        "graveyard": [
+            "EXP-ARP-006",
+            "EXP-ARP-008",
+            "EXP-ARP-016",
+            "EXP-ARP-017",
+            "EXP-ARP-018",
+            "EXP-ARP-021",
+        ],
         "new_prereg_remaining": ["EXP-ARP-019", "EXP-ARP-020"],
         "note": "Negative knowledge persists; no parameter change under a terminated id.",
     }
@@ -504,7 +542,9 @@ def main() -> None:
         "final_decision": final,
         "oos_opened": False,
     }
-    (OUT / "RUN_REPORT.json").write_text(json.dumps(report, indent=2, sort_keys=True), encoding="utf-8")
+    (OUT / "RUN_REPORT.json").write_text(
+        json.dumps(report, indent=2, sort_keys=True), encoding="utf-8"
+    )
     print("wrote", OUT / "RUN_REPORT.json")
     print("DEV:", dev.get("trades"), dev.get("expectancy_net_bps"), dev_decision)
     print("VAL:", val.get("trades"), val.get("expectancy_net_bps"), val_decision)
@@ -525,47 +565,51 @@ def write_markdown(r: dict[str, Any]) -> None:
 
     files["BASELINE.md"] = f"""# BASELINE (§0)
 
-- branch: `{b['branch']}`
-- start_sha: `{b['start_sha']}`
-- code_hash: `{b['code_hash']}`
-- spec_sha256: `{b['spec_hash']}`
-- manifest_sha256: `{b['manifest_hash']}`
-- dataset_fingerprint: `{b['dataset_fingerprint']}`
-- COST_MODEL_V3 RT: `{b['cost_model_v3_rt_bps']}` bps
-- OOS opened: **NO**; dirty worktree untouched: {len(b['dirty_worktree'])} paths
+- branch: `{b["branch"]}`
+- start_sha: `{b["start_sha"]}`
+- code_hash: `{b["code_hash"]}`
+- spec_sha256: `{b["spec_hash"]}`
+- manifest_sha256: `{b["manifest_hash"]}`
+- dataset_fingerprint: `{b["dataset_fingerprint"]}`
+- COST_MODEL_V3 RT: `{b["cost_model_v3_rt_bps"]}` bps
+- OOS opened: **NO**; dirty worktree untouched: {len(b["dirty_worktree"])} paths
 """
 
     files["CONTRACT_VALIDATION.md"] = f"""# CONTRACT VALIDATION (§1-§2)
 
-- status: **`{c['status']}`** (valid={c['valid']})
-- mismatches: {len(c['mismatches'])}
-- compared_fields: {', '.join(f'`{x}`' for x in c['compared_fields'])}
-- dataset_fingerprint matches SPEC: **{c['dataset_fingerprint_matches']}**
-- split_hash: `{r['split_hash']}`; mutation refused: **{r['split_mutation_refused']}**
+- status: **`{c["status"]}`** (valid={c["valid"]})
+- mismatches: {len(c["mismatches"])}
+- compared_fields: {", ".join(f"`{x}`" for x in c["compared_fields"])}
+- dataset_fingerprint matches SPEC: **{c["dataset_fingerprint_matches"]}**
+- split_hash: `{r["split_hash"]}`; mutation refused: **{r["split_mutation_refused"]}**
 """
 
-    files["DATA_AUTHORITY.md"] = f"""# DATA AUTHORITY (§3-§4, §6-§7)
+    files["DATA_AUTHORITY.md"] = (
+        f"""# DATA AUTHORITY (§3-§4, §6-§7)
 
-input kind: **{r['data_authority']['input_kind']}**
-external macro inputs required: **{r['data_authority']['external_macro_inputs_required'] or 'NONE'}**
-external proxy substituted: **{r['data_authority']['external_proxy_substituted']}**
-derived series: `{r['data_authority']['derived_series']}`
+input kind: **{r["data_authority"]["input_kind"]}**
+external macro inputs required: **{r["data_authority"]["external_macro_inputs_required"] or "NONE"}**
+external proxy substituted: **{r["data_authority"]["external_proxy_substituted"]}**
+derived series: `{r["data_authority"]["derived_series"]}`
 
 | series | role | provider | tf | first_ts | last_ts | bars | available |
 |---|---|---|---|---|---|---|---|
-""" + "\n".join(
-        f"| {s['series_id']} | {s['role']} | {s['provider']} | {s['native_timeframe']} | "
-        f"{s['first_ts']} | {s['last_ts']} | {s['bars']} | {s['available']} |"
-        for s in r["data_authority"]["series"].values()
-    ) + f"""
-
-gaps/duplicates: {r['data_authority']['gaps_or_duplicates']}
-calendar: {r['data_authority']['calendar']}
-
-{r['data_authority']['note']}
-
-**data status: `{r['data_authority']['data_status']}`**
 """
+        + "\n".join(
+            f"| {s['series_id']} | {s['role']} | {s['provider']} | {s['native_timeframe']} | "
+            f"{s['first_ts']} | {s['last_ts']} | {s['bars']} | {s['available']} |"
+            for s in r["data_authority"]["series"].values()
+        )
+        + f"""
+
+gaps/duplicates: {r["data_authority"]["gaps_or_duplicates"]}
+calendar: {r["data_authority"]["calendar"]}
+
+{r["data_authority"]["note"]}
+
+**data status: `{r["data_authority"]["data_status"]}`**
+"""
+    )
 
     files["PIT_REPORT.md"] = """# PIT REPORT (§5)
 
@@ -579,78 +623,82 @@ crypto-24/7 calendar (no weekend/holiday alignment required); deterministic.
 
     files["DISTINCT_HYPOTHESIS.md"] = f"""# DISTINCT HYPOTHESIS (§10)
 
-verdict: **{r['distinct']['verdict']}**
+verdict: **{r["distinct"]["verdict"]}**
 
-- primary information: {r['distinct']['primary_information']}
-- vs EXP-ARP-008: {r['distinct']['vs_EXP_ARP_008']}
-- vs EXP-ARP-013: {r['distinct']['vs_EXP_ARP_013']}
-- vs EXP-ARP-016: {r['distinct']['vs_EXP_ARP_016']}
-- vs EXP-ARP-021: {r['distinct']['vs_EXP_ARP_021']}
+- primary information: {r["distinct"]["primary_information"]}
+- vs EXP-ARP-008: {r["distinct"]["vs_EXP_ARP_008"]}
+- vs EXP-ARP-013: {r["distinct"]["vs_EXP_ARP_013"]}
+- vs EXP-ARP-016: {r["distinct"]["vs_EXP_ARP_016"]}
+- vs EXP-ARP-021: {r["distinct"]["vs_EXP_ARP_021"]}
 """
 
     files["DEV_REPORT.md"] = f"""# DEV REPORT (§13)
 
 | metric | value |
 |---|---|
-| decisions | {r['dev_audit']['decisions']} |
-| trades | {dev['trades']} |
-| gross expectancy (bps) | {_f(dev['expectancy_gross_bps'],3)} |
-| net expectancy (bps) | {_f(dev['expectancy_net_bps'],3)} |
-| net (USD) | {_f(dev['net_usd'])} |
-| PF | {_f(dev['profit_factor'],4)} |
-| win rate | {_f(dev['win_rate'],4)} |
-| payoff | {_f(dev['payoff'],4)} |
-| max drawdown (bps) | {_f(dev['max_drawdown_bps'],2)} |
-| exit mix | {dev['exit_mix']} |
+| decisions | {r["dev_audit"]["decisions"]} |
+| trades | {dev["trades"]} |
+| gross expectancy (bps) | {_f(dev["expectancy_gross_bps"], 3)} |
+| net expectancy (bps) | {_f(dev["expectancy_net_bps"], 3)} |
+| net (USD) | {_f(dev["net_usd"])} |
+| PF | {_f(dev["profit_factor"], 4)} |
+| win rate | {_f(dev["win_rate"], 4)} |
+| payoff | {_f(dev["payoff"], 4)} |
+| max drawdown (bps) | {_f(dev["max_drawdown_bps"], 2)} |
+| exit mix | {dev["exit_mix"]} |
 
-risk_on_days={r['dev_audit']['risk_on_days']}, risk_off_days={r['dev_audit']['risk_off_days']}, no_signal_days={r['dev_audit']['no_signal_days']}
+risk_on_days={r["dev_audit"]["risk_on_days"]}, risk_off_days={r["dev_audit"]["risk_off_days"]}, no_signal_days={r["dev_audit"]["no_signal_days"]}
 
-**DEV decision: `{r['dev_decision']}`**
+**DEV decision: `{r["dev_decision"]}`**
 """
 
-    files["COST_REPORT.md"] = f"""# COST REPORT (§15)
+    files["COST_REPORT.md"] = (
+        f"""# COST REPORT (§15)
 
-COST_MODEL_V3 canonical RT = `{b['cost_model_v3_rt_bps']}` bps.
+COST_MODEL_V3 canonical RT = `{b["cost_model_v3_rt_bps"]}` bps.
 
 | multiple | cost bps RT | expectancy net bps | positive |
 |---|---|---|---|
-""" + "\n".join(
-        f"| {k} | {v['cost_bps_rt']} | {v['expectancy_net_bps']} | {v['positive']} |"
-        for k, v in r["cost_stress"].items()
-    ) + f"""
-
-canonical net positive: **{r['canonical_net_positive']}**
 """
+        + "\n".join(
+            f"| {k} | {v['cost_bps_rt']} | {v['expectancy_net_bps']} | {v['positive']} |"
+            for k, v in r["cost_stress"].items()
+        )
+        + f"""
+
+canonical net positive: **{r["canonical_net_positive"]}**
+"""
+    )
 
     files["VALIDATION_REPORT.md"] = f"""# VALIDATION REPORT (§16-§17)
 
-Implementation frozen at `{r['frozen_implementation_hash']}` before VALIDATION.
+Implementation frozen at `{r["frozen_implementation_hash"]}` before VALIDATION.
 
 | metric | value |
 |---|---|
-| trades | {val.get('trades')} |
-| gross expectancy (bps) | {_f(val.get('expectancy_gross_bps'),3)} |
-| net expectancy (bps) | {_f(val.get('expectancy_net_bps'),3)} |
-| net (USD) | {_f(val.get('net_usd'))} |
-| PF | {_f(val.get('profit_factor'),4)} |
-| max drawdown (bps) | {_f(val.get('max_drawdown_bps'),2)} |
+| trades | {val.get("trades")} |
+| gross expectancy (bps) | {_f(val.get("expectancy_gross_bps"), 3)} |
+| net expectancy (bps) | {_f(val.get("expectancy_net_bps"), 3)} |
+| net (USD) | {_f(val.get("net_usd"))} |
+| PF | {_f(val.get("profit_factor"), 4)} |
+| max drawdown (bps) | {_f(val.get("max_drawdown_bps"), 2)} |
 
-**VALIDATION decision: `{r['validation_decision']}`**
+**VALIDATION decision: `{r["validation_decision"]}`**
 """
 
     files["BETA_DECOMPOSITION.md"] = f"""# BETA DECOMPOSITION (§18)
 
-{json.dumps(r['beta_decomposition'], indent=2)}
+{json.dumps(r["beta_decomposition"], indent=2)}
 """
 
     files["STATE_ANALYSIS.md"] = f"""# STATE ANALYSIS (§20)
 
-{json.dumps(r['state_analysis'], indent=2)}
+{json.dumps(r["state_analysis"], indent=2)}
 """
 
     files["COMPONENT_ANALYSIS.md"] = f"""# COMPONENT ANALYSIS (§21)
 
-{json.dumps(r['component'], indent=2)}
+{json.dumps(r["component"], indent=2)}
 
 Diagnostic only — selecting the best component and promoting it would require a
 NEW experiment.
@@ -658,35 +706,35 @@ NEW experiment.
 
     files["TEMPORAL.md"] = f"""# TEMPORAL (§22)
 
-{json.dumps(r['temporal'], indent=2)}
+{json.dumps(r["temporal"], indent=2)}
 """
 
     files["REGIME.md"] = f"""# REGIME (§23)
 
-{json.dumps(r['regime'], indent=2)}
+{json.dumps(r["regime"], indent=2)}
 """
 
     files["CONCENTRATION.md"] = f"""# CONCENTRATION (§24)
 
-{json.dumps(r['concentration'], indent=2)}
+{json.dumps(r["concentration"], indent=2)}
 """
 
     files["ROBUSTNESS.md"] = f"""# ROBUSTNESS (§25-§26)
 
-reference split: `{r['robustness']['reference_split']}`
-positive fraction: {r['robustness']['positive_fraction']} (robust_ok={r['robustness']['robust_ok']})
+reference split: `{r["robustness"]["reference_split"]}`
+positive fraction: {r["robustness"]["positive_fraction"]} (robust_ok={r["robustness"]["robust_ok"]})
 
-{json.dumps(r['robustness']['perturbations'], indent=2)}
+{json.dumps(r["robustness"]["perturbations"], indent=2)}
 
-leave-one-component-out: {r['robustness']['leave_one_component_out']}
+leave-one-component-out: {r["robustness"]["leave_one_component_out"]}
 """
 
     files["NEGATIVE_KNOWLEDGE.md"] = f"""# NEGATIVE KNOWLEDGE (§27-§28)
 
-{r['multiple_testing']['note']}
+{r["multiple_testing"]["note"]}
 
-- graveyard: {', '.join(r['multiple_testing']['graveyard'])}
-- remaining preregistrations: {', '.join(r['multiple_testing']['new_prereg_remaining'])}
+- graveyard: {", ".join(r["multiple_testing"]["graveyard"])}
+- remaining preregistrations: {", ".join(r["multiple_testing"]["new_prereg_remaining"])}
 
 EXP-ARP-019 / EXP-ARP-020 are **not** auto-run.
 """
@@ -694,11 +742,11 @@ EXP-ARP-019 / EXP-ARP-020 are **not** auto-run.
     files["RUN_REPORT.md"] = f"""# RUN REPORT
 
 - experiment: `{EXPERIMENT_ID}` / `{STRATEGY_ID}`
-- start_sha: `{b['start_sha']}`
-- dev_decision: `{r['dev_decision']}`
-- validation_decision: `{r['validation_decision']}`
-- robust_ok: {r['robustness']['robust_ok']}
-- final_decision: **`{r['final_decision']}`**
+- start_sha: `{b["start_sha"]}`
+- dev_decision: `{r["dev_decision"]}`
+- validation_decision: `{r["validation_decision"]}`
+- robust_ok: {r["robustness"]["robust_ok"]}
+- final_decision: **`{r["final_decision"]}`**
 - OOS opened: **NO**
 
 Machine copy: [`RUN_REPORT.json`](RUN_REPORT.json)
@@ -706,16 +754,16 @@ Machine copy: [`RUN_REPORT.json`](RUN_REPORT.json)
 
     files["FINAL_REPORT.md"] = f"""# FINAL REPORT — EXP-ARP-022
 
-**Final decision: `{r['final_decision']}`**
+**Final decision: `{r["final_decision"]}`**
 
-Contract **`{c['status']}`**; data **`{r['data_authority']['data_status']}`**;
-holdout **`{r['holdout']['status_after']}`** (never opened); DEV
-**`{r['dev_decision']}`**; cost canonical-positive **{r['canonical_net_positive']}**;
-VALIDATION **`{r['validation_decision']}`**; robust {r['robustness']['robust_ok']}.
+Contract **`{c["status"]}`**; data **`{r["data_authority"]["data_status"]}`**;
+holdout **`{r["holdout"]["status_after"]}`** (never opened); DEV
+**`{r["dev_decision"]}`**; cost canonical-positive **{r["canonical_net_positive"]}**;
+VALIDATION **`{r["validation_decision"]}`**; robust {r["robustness"]["robust_ok"]}.
 
-DEV net expectancy {_f(dev['expectancy_net_bps'],3)} bps / {dev['trades']} trades;
-VALIDATION {_f(val.get('expectancy_net_bps'),3)} bps / {val.get('trades')} trades.
-Market beta {_f(r['beta_decomposition'].get('market_beta'),4)}.
+DEV net expectancy {_f(dev["expectancy_net_bps"], 3)} bps / {dev["trades"]} trades;
+VALIDATION {_f(val.get("expectancy_net_bps"), 3)} bps / {val.get("trades")} trades.
+Market beta {_f(r["beta_decomposition"].get("market_beta"), 4)}.
 
 No OOS, no promotion, no live capital; `FALSE_SUCCESS=0`.
 """

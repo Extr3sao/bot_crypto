@@ -18,7 +18,9 @@ import os
 import sys
 from typing import Any
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # sibling import (mypy_path includes scripts/)
+sys.path.insert(
+    0, os.path.dirname(os.path.abspath(__file__))
+)  # sibling import (mypy_path includes scripts/)
 
 import multi_family_backtest as M
 
@@ -27,8 +29,12 @@ DATA = os.path.join(HERE, "..", "reports", "strategy-baseline", "data")
 OUTDIR = os.path.join(HERE, "..", "reports", "strategy-baseline")
 
 ALL_TFS: dict[str, float] = {"5m": 5.0, "15m": 15.0, "30m": 30.0, "1h": 60.0}
-ALL_SCEN: dict[str, tuple[float, float]] = {"BASE": (1.0, 1.0), "2X_COST": (2.0, 1.0),
-                                            "STRESSED_SLIPPAGE": (1.0, 5.0), "ZERO_COST": (0.0, 0.0)}
+ALL_SCEN: dict[str, tuple[float, float]] = {
+    "BASE": (1.0, 1.0),
+    "2X_COST": (2.0, 1.0),
+    "STRESSED_SLIPPAGE": (1.0, 5.0),
+    "ZERO_COST": (0.0, 0.0),
+}
 
 
 def run_tf(tf: str, scenarios: dict[str, tuple[float, float]] | None = None) -> dict[str, Any]:
@@ -46,7 +52,9 @@ def run_tf(tf: str, scenarios: dict[str, tuple[float, float]] | None = None) -> 
         for sc, (cm, sm) in scenarios.items():
             all_trades: list[dict[str, Any]] = []
             for f in files:
-                base = os.path.basename(f)[: -len(suffix) - 5] if suffix else os.path.basename(f)[:-5]
+                base = (
+                    os.path.basename(f)[: -len(suffix) - 5] if suffix else os.path.basename(f)[:-5]
+                )
                 sym, window = base.split("_", 1)
                 with open(f, encoding="utf-8") as fh:
                     bars = json.load(fh)
@@ -70,9 +78,15 @@ def main() -> None:
     tfs = os.environ.get("TFS", "15m,30m,1h").split(",")
     scen_names = os.environ.get("SCEN", "BASE,ZERO_COST").split(",")
     scenarios = {k: ALL_SCEN[k] for k in scen_names}
-    out: dict[str, Any] = {"meta": {"windows": "W1-W7 (2026-03..2026-09-24)", "assets": ["BTC", "ETH", "SOL"],
-                                    "note": "research only; same periods as 5m baseline; ZERO_COST diagnostic",
-                                    "tfs": tfs, "scenarios": scen_names}}
+    out: dict[str, Any] = {
+        "meta": {
+            "windows": "W1-W7 (2026-03..2026-09-24)",
+            "assets": ["BTC", "ETH", "SOL"],
+            "note": "research only; same periods as 5m baseline; ZERO_COST diagnostic",
+            "tfs": tfs,
+            "scenarios": scen_names,
+        }
+    }
     for tf in tfs:
         print(f"=== TF {tf} ===", flush=True)
         res = run_tf(tf, scenarios)
@@ -81,9 +95,12 @@ def main() -> None:
             b = fam["BASE"]["totals"]
             o = fam["BASE"]["OOS_W7"]
             z = fam["ZERO_COST"]["totals"]
-            print(f"{fam_id:15s} trades={b['trades']:5d} net={b['net']:9.2f} PF={b['profit_factor']} "
-                  f"| OOS PF={o['profit_factor']} net={o['net']:8.2f} n={o['trades']:4d} "
-                  f"| ZERO gross={z['gross']:8.2f}", flush=True)
+            print(
+                f"{fam_id:15s} trades={b['trades']:5d} net={b['net']:9.2f} PF={b['profit_factor']} "
+                f"| OOS PF={o['profit_factor']} net={o['net']:8.2f} n={o['trades']:4d} "
+                f"| ZERO gross={z['gross']:8.2f}",
+                flush=True,
+            )
     with open(os.path.join(OUTDIR, "TIMEFRAME_AUDIT.json"), "w", encoding="utf-8") as fh:
         json.dump(out, fh, indent=2)
     print("-> TIMEFRAME_AUDIT.json")

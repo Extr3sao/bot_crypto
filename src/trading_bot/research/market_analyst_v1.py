@@ -128,7 +128,11 @@ def _as_tuple(value: Any) -> tuple[str, ...]:
 def validate_analyst_output(payload: Mapping[str, Any]) -> list[str]:
     """Return the schema violations (empty list == a valid, sealable answer)."""
     problems: list[str] = []
-    missing = [field for field in ANALYST_OUTPUT_FIELDS if field not in payload and field != "no_trade_reason"]
+    missing = [
+        field
+        for field in ANALYST_OUTPUT_FIELDS
+        if field not in payload and field != "no_trade_reason"
+    ]
     if missing:
         problems.append(f"missing fields: {missing}")
 

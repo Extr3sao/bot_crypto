@@ -421,8 +421,7 @@ def _readiness_status(quality_path: Path, preregistration_path: Path) -> dict[st
         }
     if not isinstance(readiness, dict):
         out["note"] = (
-            "no quality report under this root yet; readiness is unknown rather than "
-            "assumed"
+            "no quality report under this root yet; readiness is unknown rather than assumed"
         )
     return out
 
@@ -563,9 +562,7 @@ def build_status(
                 "heartbeat_age_seconds": system_age,
                 "heartbeat_is_stale": stale,
                 "uptime_seconds": heartbeat.get("uptime_seconds"),
-                "restarts": sum(
-                    int(child.get("restarts") or 0) for child in children.values()
-                ),
+                "restarts": sum(int(child.get("restarts") or 0) for child in children.values()),
                 "memory_mb": heartbeat.get("memory_mb"),
                 "stop_requested": (run_dir / STOP_FILE_NAME).exists(),
                 "stale_heartbeat_note": (
@@ -630,8 +627,10 @@ def _readiness_flags(payload: dict[str, Any]) -> dict[str, Any]:
     collector = payload.get("collector") or {}
     lab = payload.get("strategy_lab") or {}
     readiness = payload.get("readiness") or {}
-    paper_ready = bool(paper.get("available")) and not payload.get("errors") and (
-        children.get("paper", {}).get("state") in (ProcessState.RUNNING.value, "STOPPED")
+    paper_ready = (
+        bool(paper.get("available"))
+        and not payload.get("errors")
+        and (children.get("paper", {}).get("state") in (ProcessState.RUNNING.value, "STOPPED"))
     )
     # §57 — readiness has to come from the verdicts that actually exist. A
     # capture that dies on its *first* write never saves a state file, so keying
@@ -736,7 +735,9 @@ def status_summary(status: dict[str, Any]) -> str:
     )
     for name in ("M-03", "M-07"):
         entry = (status.get("readiness") or {}).get(name) or {}
-        lines.append(f"  {name}          : {_show(entry.get('verdict'))} / {_show(entry.get('state'))}")
+        lines.append(
+            f"  {name}          : {_show(entry.get('verdict'))} / {_show(entry.get('state'))}"
+        )
     flags = status.get("readiness_flags") or {}
     lines.append(
         "  ready         : "

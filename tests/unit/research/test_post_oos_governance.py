@@ -111,9 +111,7 @@ def test_spec_vs_implementation_exit_semantics_mismatch_is_caught() -> None:
     contract = _contract(
         {
             "SPEC": {"exit_rule": "signal flip OR next-open exit at max_hold"},
-            "IMPLEMENTATION": {
-                "exit_rule": "signal flip next open; max_hold forced at bar close"
-            },
+            "IMPLEMENTATION": {"exit_rule": "signal flip next open; max_hold forced at bar close"},
         }
     )
     result = ExperimentContractValidator().validate(contract)

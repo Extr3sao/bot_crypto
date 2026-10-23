@@ -36,9 +36,7 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         return []
     return [
-        json.loads(line)
-        for line in path.read_text(encoding="utf-8").splitlines()
-        if line.strip()
+        json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()
     ]
 
 
@@ -91,19 +89,19 @@ def main() -> int:
     ]
 
     performance = run_dir / "performance.json"
-    perf_payload = json.loads(performance.read_text(encoding="utf-8")) if performance.exists() else {}
+    perf_payload = (
+        json.loads(performance.read_text(encoding="utf-8")) if performance.exists() else {}
+    )
     cells = perf_payload.get("cells", {})
-    cell_sizes = {
-        key: len(cell.get("samples", [])) for key, cell in cells.items()
-    }
+    cell_sizes = {key: len(cell.get("samples", [])) for key, cell in cells.items()}
     max_cell = max(cell_sizes.values(), default=0)
     executable_cells = sum(
         1
         for cell in cells.values()
         if sum(
-            1 for s in cell.get("samples", [])
-            if s.get("mode") in ("TRADE_PAPER", "SHADOW_TRADE")
-        ) >= 20
+            1 for s in cell.get("samples", []) if s.get("mode") in ("TRADE_PAPER", "SHADOW_TRADE")
+        )
+        >= 20
     )
 
     # §19/§31 — is the frozen prior's calibration window strictly BEFORE the
@@ -120,9 +118,7 @@ def main() -> int:
         end_date = period.split("..")[-1].strip()
         try:
             calib_end_ms = int(
-                _dt.datetime.strptime(end_date, "%Y-%m-%d")
-                .replace(tzinfo=_dt.UTC)
-                .timestamp()
+                _dt.datetime.strptime(end_date, "%Y-%m-%d").replace(tzinfo=_dt.UTC).timestamp()
                 * 1000
             )
         except ValueError:
@@ -209,19 +205,21 @@ def main() -> int:
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps(
-        {
-            "ledger_sha_matches": report["ledger"]["matches_certified"],
-            "outcome_violations": report["outcome_availability"]["violations"],
-            "reference_violations": report["outcome_availability"][
-                "reference_price_time_after_decision"
-            ],
-            "experience_active": report["experience_memory"]["priority_adjustment_active"],
-            "max_cell_samples": report["experience_memory"]["max_cell_samples"],
-            "prior_asof": report["prior_asof_alignment"]["classification"],
-        },
-        indent=2,
-    ))
+    print(
+        json.dumps(
+            {
+                "ledger_sha_matches": report["ledger"]["matches_certified"],
+                "outcome_violations": report["outcome_availability"]["violations"],
+                "reference_violations": report["outcome_availability"][
+                    "reference_price_time_after_decision"
+                ],
+                "experience_active": report["experience_memory"]["priority_adjustment_active"],
+                "max_cell_samples": report["experience_memory"]["max_cell_samples"],
+                "prior_asof": report["prior_asof_alignment"]["classification"],
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

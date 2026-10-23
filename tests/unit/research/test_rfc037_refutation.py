@@ -47,21 +47,30 @@ def test_kpi_canonical_semantics() -> None:
 
 
 def test_adversarial_gate_requires_beating_both_nulls() -> None:
-    good = {"DISCOVERY": {"perm_p_null_ge_observed": 0.01, "sign_p_null_ge_observed": 0.0},
-            "VALIDATION": {"perm_p_null_ge_observed": 0.02, "sign_p_null_ge_observed": 0.0}}
+    good = {
+        "DISCOVERY": {"perm_p_null_ge_observed": 0.01, "sign_p_null_ge_observed": 0.0},
+        "VALIDATION": {"perm_p_null_ge_observed": 0.02, "sign_p_null_ge_observed": 0.0},
+    }
     assert RUN.adversarial_gate(good) == "PASS"
     bad = {"DISCOVERY": {"perm_p_null_ge_observed": 0.24, "sign_p_null_ge_observed": 0.0}}
     assert RUN.adversarial_gate(bad) == "FAIL"
 
 
 def test_capital_gate_classification() -> None:
-    assert RUN.capital_gate({"minimum_viable_capital": 2_000_000,
-                             "minimum_preferred_capital": 5_000_000}) == "PRACTICALLY_EXECUTABLE"
-    assert RUN.capital_gate({"minimum_viable_capital": None,
-                             "minimum_preferred_capital": None}) == "HIGH_CAPITAL_ONLY"
-    assert RUN.capital_gate({"minimum_viable_capital": None,
-                             "minimum_preferred_capital": 5_000_000}) == \
-        "EXECUTABLE_WITH_LIMITATIONS"
+    assert (
+        RUN.capital_gate(
+            {"minimum_viable_capital": 2_000_000, "minimum_preferred_capital": 5_000_000}
+        )
+        == "PRACTICALLY_EXECUTABLE"
+    )
+    assert (
+        RUN.capital_gate({"minimum_viable_capital": None, "minimum_preferred_capital": None})
+        == "HIGH_CAPITAL_ONLY"
+    )
+    assert (
+        RUN.capital_gate({"minimum_viable_capital": None, "minimum_preferred_capital": 5_000_000})
+        == "EXECUTABLE_WITH_LIMITATIONS"
+    )
 
 
 def test_null_randomization_is_deterministic() -> None:
@@ -79,8 +88,7 @@ def test_market_universe_matches_verifier_specs() -> None:
 def test_integer_contracts_materially_change_low_capital() -> None:
     # §34/§37: at small capital, integer contracts drop many markets
     bm = DATA.load_market("gc")
-    ts = mf.build_tradable_series(bm, date(1980, 1, 1).toordinal(),
-                                  date(2000, 3, 31).toordinal())
+    ts = mf.build_tradable_series(bm, date(1980, 1, 1).toordinal(), date(2000, 3, 31).toordinal())
     cal = sorted(ts.held)
     panel = mf.build_panel(bm, ts, cal)
     cfg_int = mf.default_config(integer_contracts=True)

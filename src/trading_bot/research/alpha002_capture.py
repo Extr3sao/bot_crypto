@@ -207,9 +207,7 @@ def find_gaps(
         right = int(current[timestamp_key])
         missing = (right - left) // step_ms - 1
         if missing > 0:
-            gaps.append(
-                {"after_ts": left, "before_ts": right, "missing_buckets": int(missing)}
-            )
+            gaps.append({"after_ts": left, "before_ts": right, "missing_buckets": int(missing)})
     return gaps
 
 

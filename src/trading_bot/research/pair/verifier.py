@@ -170,14 +170,30 @@ def verify_ledger(
 
         residuals.extend(
             [
-                FieldResidual("long_gross_pnl", long_gross, e.declared_long_gross_pnl,
-                              long_gross - e.declared_long_gross_pnl),
-                FieldResidual("short_gross_pnl", short_gross, e.declared_short_gross_pnl,
-                              short_gross - e.declared_short_gross_pnl),
-                FieldResidual("pair_gross_pnl", pair_gross, e.declared_pair_gross_pnl,
-                              pair_gross - e.declared_pair_gross_pnl),
-                FieldResidual("pair_net_pnl", pair_net, e.declared_pair_net_pnl,
-                              pair_net - e.declared_pair_net_pnl),
+                FieldResidual(
+                    "long_gross_pnl",
+                    long_gross,
+                    e.declared_long_gross_pnl,
+                    long_gross - e.declared_long_gross_pnl,
+                ),
+                FieldResidual(
+                    "short_gross_pnl",
+                    short_gross,
+                    e.declared_short_gross_pnl,
+                    short_gross - e.declared_short_gross_pnl,
+                ),
+                FieldResidual(
+                    "pair_gross_pnl",
+                    pair_gross,
+                    e.declared_pair_gross_pnl,
+                    pair_gross - e.declared_pair_gross_pnl,
+                ),
+                FieldResidual(
+                    "pair_net_pnl",
+                    pair_net,
+                    e.declared_pair_net_pnl,
+                    pair_net - e.declared_pair_net_pnl,
+                ),
             ]
         )
         total_gross_exposure += gross_exposure

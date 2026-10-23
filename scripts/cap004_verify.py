@@ -173,11 +173,15 @@ def load(path: Path) -> Any:
 def read_lines(path: Path) -> list[dict[str, Any]]:
     if not path.is_file():
         return []
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [
+        json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()
+    ]
 
 
 def canonical(payload: Any) -> str:
-    return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str)
+    return json.dumps(
+        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str
+    )
 
 
 def sha256_text(text: str) -> str:
@@ -292,7 +296,12 @@ def _rsi(closes: Sequence[float]) -> float:
     return 100.0 - (100.0 / (1.0 + (avg_gain / avg_loss)))
 
 
-def recompute_rule(*, bars_4h: Sequence[Mapping[str, Any]], bars_1d: Sequence[Mapping[str, Any]], decision_time: int) -> dict[str, Any]:
+def recompute_rule(
+    *,
+    bars_4h: Sequence[Mapping[str, Any]],
+    bars_1d: Sequence[Mapping[str, Any]],
+    decision_time: int,
+) -> dict[str, Any]:
     """Comparator B, re-derived from raw bars with no campaign code involved."""
     daily = [b for b in bars_1d if int(b["t"]) + BAR_1D <= decision_time][-RULE_INPUT_BARS_1D:]
     causal = [b for b in bars_4h if int(b["t"]) + BAR_4H <= decision_time][-RULE_INPUT_BARS_4H:]
@@ -352,16 +361,38 @@ def main() -> int:
         LEDGER_ROOT / HEARTBEAT_FILENAME,
     ):
         check(f"artifact present: {path.name}", path.is_file())
-    status = load(CAP004_ROOT / "CAMPAIGN_STATUS.json") if (CAP004_ROOT / "CAMPAIGN_STATUS.json").is_file() else {}
-    scorecard = load(CAP004_ROOT / "ALPHA_SCORECARD.json") if (CAP004_ROOT / "ALPHA_SCORECARD.json").is_file() else {}
-    metrics = load(CAP004_ROOT / "CAMPAIGN_METRICS.json") if (CAP004_ROOT / "CAMPAIGN_METRICS.json").is_file() else {}
-    selectivity = load(CAP004_ROOT / "NO_TRADE_SELECTIVITY.json") if (CAP004_ROOT / "NO_TRADE_SELECTIVITY.json").is_file() else {}
-    heartbeat = load(LEDGER_ROOT / HEARTBEAT_FILENAME) if (LEDGER_ROOT / HEARTBEAT_FILENAME).is_file() else {}
+    status = (
+        load(CAP004_ROOT / "CAMPAIGN_STATUS.json")
+        if (CAP004_ROOT / "CAMPAIGN_STATUS.json").is_file()
+        else {}
+    )
+    scorecard = (
+        load(CAP004_ROOT / "ALPHA_SCORECARD.json")
+        if (CAP004_ROOT / "ALPHA_SCORECARD.json").is_file()
+        else {}
+    )
+    metrics = (
+        load(CAP004_ROOT / "CAMPAIGN_METRICS.json")
+        if (CAP004_ROOT / "CAMPAIGN_METRICS.json").is_file()
+        else {}
+    )
+    selectivity = (
+        load(CAP004_ROOT / "NO_TRADE_SELECTIVITY.json")
+        if (CAP004_ROOT / "NO_TRADE_SELECTIVITY.json").is_file()
+        else {}
+    )
+    heartbeat = (
+        load(LEDGER_ROOT / HEARTBEAT_FILENAME)
+        if (LEDGER_ROOT / HEARTBEAT_FILENAME).is_file()
+        else {}
+    )
 
     # --- §A the frozen identity ------------------------------------------- #
     check("manifest declares its version", manifest.get("manifest_version") == MANIFEST_VERSION)
     check("campaign id is the frozen one", manifest.get("campaign_id") == CAMPAIGN_ID)
-    check("campaign version is the frozen one", manifest.get("campaign_version") == CAMPAIGN_VERSION)
+    check(
+        "campaign version is the frozen one", manifest.get("campaign_version") == CAMPAIGN_VERSION
+    )
     check("manifest is frozen (has a freeze instant)", isinstance(manifest.get("frozen_at"), int))
     check(
         "the live campaign_id constant still matches",
@@ -377,21 +408,42 @@ def main() -> int:
         "seal window is declared and frozen",
         (manifest.get("cadence") or {}).get("seal_window_seconds") == SEAL_WINDOW_SECONDS,
     )
-    check("backfill is explicitly forbidden", (manifest.get("cadence") or {}).get("backfill") == "FORBIDDEN")
+    check(
+        "backfill is explicitly forbidden",
+        (manifest.get("cadence") or {}).get("backfill") == "FORBIDDEN",
+    )
     check("analyst version is frozen", manifest.get("analyst_version") == PROMPT_VERSION)
     check("schema version is frozen", manifest.get("schema_version") == SCHEMA_VERSION)
     check("feature version is frozen", manifest.get("feature_version") == FEATURE_VERSION)
-    check("campaign provenance contract is the extended one", tuple(manifest.get("campaign_provenance_fields") or ()) == CAMPAIGN_PROVENANCE_FIELDS)
+    check(
+        "campaign provenance contract is the extended one",
+        tuple(manifest.get("campaign_provenance_fields") or ()) == CAMPAIGN_PROVENANCE_FIELDS,
+    )
     check(
         "cost model is the frozen shared round trip",
-        approx((manifest.get("cost_model") or {}).get("round_trip_fraction", -1.0), COST_ROUND_TRIP),
+        approx(
+            (manifest.get("cost_model") or {}).get("round_trip_fraction", -1.0), COST_ROUND_TRIP
+        ),
     )
-    check("evaluator identity is frozen", (manifest.get("evaluator") or {}) == {"id": EVALUATOR_ID, "version": EVALUATOR_VERSION})
+    check(
+        "evaluator identity is frozen",
+        (manifest.get("evaluator") or {}) == {"id": EVALUATOR_ID, "version": EVALUATOR_VERSION},
+    )
     baseline_b = (manifest.get("baselines") or {}).get("B") or {}
     check("comparator B definition is frozen", baseline_b.get("frozen") is True)
-    check("comparator B version is the reproducibility-fixed one", baseline_b.get("version") == RULE_VERSION, str(baseline_b.get("version")))
-    check("comparator B reads a fixed 4h window", baseline_b.get("input_bars_4h") == RULE_INPUT_BARS_4H)
-    check("comparator B reads a fixed 1d window", baseline_b.get("input_bars_1d") == RULE_INPUT_BARS_1D)
+    check(
+        "comparator B version is the reproducibility-fixed one",
+        baseline_b.get("version") == RULE_VERSION,
+        str(baseline_b.get("version")),
+    )
+    check(
+        "comparator B reads a fixed 4h window",
+        baseline_b.get("input_bars_4h") == RULE_INPUT_BARS_4H,
+    )
+    check(
+        "comparator B reads a fixed 1d window",
+        baseline_b.get("input_bars_1d") == RULE_INPUT_BARS_1D,
+    )
     baseline_d = (manifest.get("baselines") or {}).get("D") or {}
     check("comparator D seed is frozen", baseline_d.get("seed") == RANDOM_SEED)
     check(
@@ -401,15 +453,21 @@ def main() -> int:
     check("primary metric is frozen", (manifest.get("primary_metric") or {}).get("frozen") is True)
     check(
         "primary metric floor is not relaxed",
-        (manifest.get("primary_metric") or {}).get("min_evaluable_decisions") == MIN_EVALUABLE_DECISIONS,
+        (manifest.get("primary_metric") or {}).get("min_evaluable_decisions")
+        == MIN_EVALUABLE_DECISIONS,
     )
-    check("checkpoints are the declared ones", tuple(manifest.get("checkpoints") or ()) == CHECKPOINTS)
+    check(
+        "checkpoints are the declared ones", tuple(manifest.get("checkpoints") or ()) == CHECKPOINTS
+    )
     check("runtime promotion is forbidden", manifest.get("runtime_promotion") == "FORBIDDEN")
     check("no trade is authorized", manifest.get("trades_authorized") == 0)
     check("no alpha is claimed", manifest.get("alpha_claimed") == "NONE")
     check("the freeze is still active", manifest.get("alpha_research_freeze") == "ACTIVE")
     check("no alpha RFC is allowed", manifest.get("next_alpha_rfc_allowed") == "NO")
-    check("legacy cohort is declared, not silently merged", COHORT_LEGACY in (manifest.get("cohorts") or {}))
+    check(
+        "legacy cohort is declared, not silently merged",
+        COHORT_LEGACY in (manifest.get("cohorts") or {}),
+    )
     check(
         "the frozen prompt digest matches the prompt in source",
         manifest.get("prompt_digest") == frozen_prompt_digest(),
@@ -418,31 +476,47 @@ def main() -> int:
 
     # --- §B cadence and exactly-once sealing ------------------------------ #
     keys = [decision_key(item) for item in decisions]
-    check("slot keys are unique across the ledger", len(set(keys)) == len(keys), str(len(keys) - len(set(keys))))
+    check(
+        "slot keys are unique across the ledger",
+        len(set(keys)) == len(keys),
+        str(len(keys) - len(set(keys))),
+    )
     check("the campaign has at least one decision", len(decisions) >= 1)
     for entry in decisions:
         label = str(entry["decision_id"])[:12]
         slot_moment = dt.datetime.fromtimestamp(int(entry["decision_time"]), dt.UTC)
         check(
             f"decision sits on the declared UTC slot ({label})",
-            slot_moment.hour == SLOT_UTC_HOUR and slot_moment.minute == 0 and slot_moment.second == 0,
+            slot_moment.hour == SLOT_UTC_HOUR
+            and slot_moment.minute == 0
+            and slot_moment.second == 0,
             slot_moment.isoformat(),
         )
         check(
             f"decision time is on the 4H grid ({label})",
             int(entry["decision_time"]) % BAR_4H == 0,
         )
-        check(f"asset is in the frozen universe ({label})", entry["asset"] in ASSETS, str(entry["asset"]))
+        check(
+            f"asset is in the frozen universe ({label})",
+            entry["asset"] in ASSETS,
+            str(entry["asset"]),
+        )
         check(f"horizon is the frozen 24H ({label})", entry["horizon"] == HORIZON)
-        check(f"prompt version is the frozen one ({label})", entry["prompt_version"] == PROMPT_VERSION)
+        check(
+            f"prompt version is the frozen one ({label})", entry["prompt_version"] == PROMPT_VERSION
+        )
         check(
             f"scheduled slot matches the seal timestamp ({label})",
-            int(entry.get("scheduled_decision_time", entry["decision_time"])) == int(entry["decision_time"]),
+            int(entry.get("scheduled_decision_time", entry["decision_time"]))
+            == int(entry["decision_time"]),
         )
         cohort = str((entry.get("provenance") or {}).get("campaign_id") or COHORT_LEGACY)
         if cohort == CAMPAIGN_ID:
             actual = entry.get("actual_execution_time")
-            check(f"CAP-004 decision records its actual execution time ({label})", isinstance(actual, int))
+            check(
+                f"CAP-004 decision records its actual execution time ({label})",
+                isinstance(actual, int),
+            )
             delay = entry.get("delay_seconds")
             check(
                 f"seal delay is recorded and consistent ({label})",
@@ -463,23 +537,45 @@ def main() -> int:
                 ],
             )
         else:
-            check(f"legacy decision is labelled, not retro-fitted ({label})", cohort == COHORT_LEGACY)
+            check(
+                f"legacy decision is labelled, not retro-fitted ({label})", cohort == COHORT_LEGACY
+            )
             check(
                 f"legacy decision provenance was not rewritten ({label})",
                 "campaign_id" not in (entry.get("provenance") or {}),
             )
-        blanks = [f for f in BASE_PROVENANCE_FIELDS if not str((entry.get("provenance") or {}).get(f, "")).strip()]
+        blanks = [
+            f
+            for f in BASE_PROVENANCE_FIELDS
+            if not str((entry.get("provenance") or {}).get(f, "")).strip()
+        ]
         check(f"base provenance is complete ({label})", not blanks, str(blanks))
-    legacy = [item for item in decisions if str((item.get("provenance") or {}).get("campaign_id") or COHORT_LEGACY) == COHORT_LEGACY]
-    check("the adopted CAP-003 pilot cohort is exactly four decisions", len(legacy) == 4, str(len(legacy)))
+    legacy = [
+        item
+        for item in decisions
+        if str((item.get("provenance") or {}).get("campaign_id") or COHORT_LEGACY) == COHORT_LEGACY
+    ]
+    check(
+        "the adopted CAP-003 pilot cohort is exactly four decisions",
+        len(legacy) == 4,
+        str(len(legacy)),
+    )
 
     # --- §C ledger chain -------------------------------------------------- #
     decision_hashes = {str(item["decision_hash"]) for item in decisions}
     for entry in decisions:
         label = str(entry["decision_id"])[:12]
-        check(f"decision hash recomputes ({label})", decision_hash_of(entry) == entry["decision_hash"])
-        check(f"decision id derives from the hash ({label})", entry["decision_id"] == "DEC-" + str(entry["decision_hash"])[:16])
-        check(f"snapshot re-digests to its hash ({label})", sha256_text(canonical(entry["snapshot"])) == entry["snapshot_hash"])
+        check(
+            f"decision hash recomputes ({label})", decision_hash_of(entry) == entry["decision_hash"]
+        )
+        check(
+            f"decision id derives from the hash ({label})",
+            entry["decision_id"] == "DEC-" + str(entry["decision_hash"])[:16],
+        )
+        check(
+            f"snapshot re-digests to its hash ({label})",
+            sha256_text(canonical(entry["snapshot"])) == entry["snapshot_hash"],
+        )
 
     outcome_keys = [(str(item["decision_id"]), str(item["horizon"])) for item in outcomes]
     check("outcome keys are unique", len(set(outcome_keys)) == len(outcome_keys))
@@ -488,19 +584,42 @@ def main() -> int:
 
     for entry in outcomes:
         label = f"{str(entry['decision_id'])[:12]}:{entry['horizon']}"
-        check(f"outcome hash recomputes ({label})", strip_hash(entry, "outcome_hash") == entry["outcome_hash"])
-        check(f"outcome links to a known decision ({label})", str(entry["decision_hash"]) in decision_hashes)
-        check(f"outcome was produced by the evaluator ({label})", entry["evaluator"] == EVALUATOR_ID)
-        check(f"outcome uses the evaluator version ({label})", entry["evaluator_version"] == EVALUATOR_VERSION)
-        gross, costs, net = float(entry["gross_return"]), float(entry["costs"]), float(entry["net_return"])
+        check(
+            f"outcome hash recomputes ({label})",
+            strip_hash(entry, "outcome_hash") == entry["outcome_hash"],
+        )
+        check(
+            f"outcome links to a known decision ({label})",
+            str(entry["decision_hash"]) in decision_hashes,
+        )
+        check(
+            f"outcome was produced by the evaluator ({label})", entry["evaluator"] == EVALUATOR_ID
+        )
+        check(
+            f"outcome uses the evaluator version ({label})",
+            entry["evaluator_version"] == EVALUATOR_VERSION,
+        )
+        gross, costs, net = (
+            float(entry["gross_return"]),
+            float(entry["costs"]),
+            float(entry["net_return"]),
+        )
         check(f"net equals gross minus costs ({label})", approx(net, gross - costs))
         if entry["decision"] == "NO_TRADE":
             check(f"NO_TRADE pays exactly zero ({label})", costs == 0.0 and gross == 0.0)
             check(f"NO_TRADE is labelled NO_TRADE ({label})", entry["outcome"] == "NO_TRADE")
         else:
-            check(f"an active sleeve pays the shared round trip ({label})", approx(costs, COST_ROUND_TRIP))
-            expected_gross, _, expected_net = sleeve_net(entry["decision"], float(entry["entry_price"]), float(entry["exit_price"]))
-            check(f"gross recomputes from the reference prices ({label})", approx(gross, expected_gross))
+            check(
+                f"an active sleeve pays the shared round trip ({label})",
+                approx(costs, COST_ROUND_TRIP),
+            )
+            expected_gross, _, expected_net = sleeve_net(
+                entry["decision"], float(entry["entry_price"]), float(entry["exit_price"])
+            )
+            check(
+                f"gross recomputes from the reference prices ({label})",
+                approx(gross, expected_gross),
+            )
             check(
                 f"outcome label matches the net sign ({label})",
                 entry["outcome"] == ("WIN" if net > 0 else ("LOSS" if net < 0 else "FLAT")),
@@ -519,11 +638,23 @@ def main() -> int:
 
     for entry in evaluations:
         label = f"{str(entry['decision_id'])[:12]}:{entry['horizon']}"
-        check(f"evaluation hash recomputes ({label})", strip_hash(entry, "evaluation_hash") == entry["evaluation_hash"])
-        check(f"evaluation links to a known outcome ({label})", str(entry["outcome_hash"]) in {str(o["outcome_hash"]) for o in outcomes})
+        check(
+            f"evaluation hash recomputes ({label})",
+            strip_hash(entry, "evaluation_hash") == entry["evaluation_hash"],
+        )
+        check(
+            f"evaluation links to a known outcome ({label})",
+            str(entry["outcome_hash"]) in {str(o["outcome_hash"]) for o in outcomes},
+        )
         produced = {str(item["baseline_id"]) for item in entry["comparisons"]}
-        check(f"seal-time comparators are exactly B and C ({label})", produced == set(SEAL_TIME_COMPARATORS), str(sorted(produced)))
-        check(f"comparator D is not frozen into an evaluation ({label})", BASELINE_D not in produced)
+        check(
+            f"seal-time comparators are exactly B and C ({label})",
+            produced == set(SEAL_TIME_COMPARATORS),
+            str(sorted(produced)),
+        )
+        check(
+            f"comparator D is not frozen into an evaluation ({label})", BASELINE_D not in produced
+        )
         for comparison in entry["comparisons"]:
             direction = str(comparison["direction"])
             check(
@@ -550,15 +681,24 @@ def main() -> int:
                     len(str(comparison.get("rule_input_hash", ""))) == 64,
                 )
         check(f"evaluation carries MFE and MAE ({label})", "mfe" in entry and "mae" in entry)
-        check(f"evaluation shares the round trip ({label})", approx(float(entry["round_trip_cost"]), COST_ROUND_TRIP))
+        check(
+            f"evaluation shares the round trip ({label})",
+            approx(float(entry["round_trip_cost"]), COST_ROUND_TRIP),
+        )
 
     # --- §D maturity ------------------------------------------------------ #
     for entry in outcomes:
         label = f"{str(entry['decision_id'])[:12]}:{entry['horizon']}"
         expected_exit = int(entry["decision_time"]) + HORIZON_SECONDS
-        check(f"outcome stops exactly at the horizon ({label})", int(entry["exit_close_time"]) == expected_exit)
+        check(
+            f"outcome stops exactly at the horizon ({label})",
+            int(entry["exit_close_time"]) == expected_exit,
+        )
         check(f"outcome was not written before maturity ({label})", expected_exit <= now)
-        check(f"the entry bar closes at the decision time ({label})", int(entry["entry_close_time"]) == int(entry["decision_time"]))
+        check(
+            f"the entry bar closes at the decision time ({label})",
+            int(entry["entry_close_time"]) == int(entry["decision_time"]),
+        )
     settled_keys = set(outcome_keys)
     unsettled_matured = []
     for entry in decisions:
@@ -590,11 +730,15 @@ def main() -> int:
             continue
         record = raw_by_snapshot.get(str(decision["snapshot_hash"]))
         if record is None:
-            limit(f"comparator B not independently recomputed for {label}: raw evidence unregistered")
+            limit(
+                f"comparator B not independently recomputed for {label}: raw evidence unregistered"
+            )
             continue
         raw_path = LEDGER_ROOT / str(record["local_path"])
         if not raw_path.is_file():
-            limit(f"comparator B not independently recomputed for {label}: raw evidence missing locally")
+            limit(
+                f"comparator B not independently recomputed for {label}: raw evidence missing locally"
+            )
             continue
         raw = load(raw_path)
         rederived = recompute_rule(
@@ -614,7 +758,11 @@ def main() -> int:
             f"{rederived['reason']} vs {comparison.get('reason')}",
         )
     if evaluations:
-        check("comparator B was independently recomputed at least once", b_recomputed >= 1, str(b_recomputed))
+        check(
+            "comparator B was independently recomputed at least once",
+            b_recomputed >= 1,
+            str(b_recomputed),
+        )
 
     # --- §F raw evidence manifest ----------------------------------------- #
     check(
@@ -623,7 +771,10 @@ def main() -> int:
         <= {str(item["snapshot_hash"]) for item in raw_manifest},
         f"{len(raw_manifest)} registered vs {len({d['snapshot_hash'] for d in decisions})} needed",
     )
-    check("raw evidence manifest has unique snapshot hashes", len({str(i["snapshot_hash"]) for i in raw_manifest}) == len(raw_manifest))
+    check(
+        "raw evidence manifest has unique snapshot hashes",
+        len({str(i["snapshot_hash"]) for i in raw_manifest}) == len(raw_manifest),
+    )
     for record in raw_manifest:
         label = str(record["snapshot_hash"])[:12]
         check(
@@ -663,20 +814,37 @@ def main() -> int:
         random_stats = scorecard["comparators"][BASELINE_D]
         check("comparator D carries the frozen seed", random_stats["seed"] == RANDOM_SEED)
         observed = {d: directions.count(d) for d in ("LONG", "SHORT", "NO_TRADE")}
-        check("comparator D matches the analyst distribution", random_stats["distribution"] == observed, f"{random_stats['distribution']} vs {observed}")
-        check("comparator D is an exact permutation", sorted(random_stats["assignment"]) == sorted(directions))
+        check(
+            "comparator D matches the analyst distribution",
+            random_stats["distribution"] == observed,
+            f"{random_stats['distribution']} vs {observed}",
+        )
+        check(
+            "comparator D is an exact permutation",
+            sorted(random_stats["assignment"]) == sorted(directions),
+        )
         check(
             "comparator D assignment digest recomputes",
-            sha256_text(canonical(list(random_stats["assignment"]))) == random_stats["assignment_digest"],
+            sha256_text(canonical(list(random_stats["assignment"])))
+            == random_stats["assignment_digest"],
         )
     else:
-        check("comparator D is absent while no decision is evaluated", scorecard.get("comparators", {}).get(BASELINE_D) is None)
+        check(
+            "comparator D is absent while no decision is evaluated",
+            scorecard.get("comparators", {}).get(BASELINE_D) is None,
+        )
 
     # --- §H scorecard and checkpoints ------------------------------------- #
-    check("scorecard counts match the ledger", int(scorecard.get("n_decisions_evaluated", -1)) == len(evaluations))
+    check(
+        "scorecard counts match the ledger",
+        int(scorecard.get("n_decisions_evaluated", -1)) == len(evaluations),
+    )
     if evaluations:
         agent_mean = sum(float(item["net_return"]) for item in evaluations) / len(evaluations)
-        check("scorecard agent expectancy recomputes", approx(scorecard["agent"]["mean_net_return"], agent_mean))
+        check(
+            "scorecard agent expectancy recomputes",
+            approx(scorecard["agent"]["mean_net_return"], agent_mean),
+        )
         for baseline_id in SEAL_TIME_COMPARATORS:
             values = [
                 float(item["net_return"])
@@ -705,13 +873,22 @@ def main() -> int:
         expected is None or scorecard.get("gate", {}).get("conclusion") == expected,
         f"n={n_evaluated} conclusion={scorecard.get('gate', {}).get('conclusion')}",
     )
-    check("scorecard conclusion is a declared value", scorecard.get("gate", {}).get("conclusion") in EXPECTED_CONCLUSIONS)
+    check(
+        "scorecard conclusion is a declared value",
+        scorecard.get("gate", {}).get("conclusion") in EXPECTED_CONCLUSIONS,
+    )
     check(
         "no positive edge is claimed below the sample floor",
-        not (n_evaluated < MIN_EVALUABLE_DECISIONS and scorecard.get("gate", {}).get("conclusion") == CONCLUSION_POSITIVE),
+        not (
+            n_evaluated < MIN_EVALUABLE_DECISIONS
+            and scorecard.get("gate", {}).get("conclusion") == CONCLUSION_POSITIVE
+        ),
     )
     check("scorecard claims no alpha", scorecard.get("alpha_claimed") is False)
-    check("scorecard claims no profitability", scorecard.get("profitability_status") == "NOT_DEMONSTRATED")
+    check(
+        "scorecard claims no profitability",
+        scorecard.get("profitability_status") == "NOT_DEMONSTRATED",
+    )
     check("the edge KPI is still zero", scorecard.get("kpi_agentic_decision_edge") == 0)
     check(
         "extended metrics are labelled a diagnostic",
@@ -734,8 +911,7 @@ def main() -> int:
     )
     check(
         "small samples are flagged, never smoothed over",
-        (n_evaluated >= MIN_EVALUABLE_DECISIONS)
-        == (metrics.get("sample_warnings") == []),
+        (n_evaluated >= MIN_EVALUABLE_DECISIONS) == (metrics.get("sample_warnings") == []),
         str(metrics.get("sample_warnings")),
     )
     if evaluations:
@@ -766,7 +942,11 @@ def main() -> int:
     for checkpoint in CHECKPOINTS:
         path = LEDGER_ROOT / CHECKPOINT_DIRNAME / f"CHECKPOINT_{checkpoint:03d}.json"
         if not path.is_file():
-            check(f"checkpoint {checkpoint} is absent below its threshold", n_evaluated < checkpoint, str(n_evaluated))
+            check(
+                f"checkpoint {checkpoint} is absent below its threshold",
+                n_evaluated < checkpoint,
+                str(n_evaluated),
+            )
             continue
         payload = load(path)
         created.append(int(payload["checkpoint"]))
@@ -785,24 +965,43 @@ def main() -> int:
         )
         check(
             f"checkpoint {checkpoint} was not rewritten from another population",
-            int(payload["n_evaluated"]) >= checkpoint and int(payload["n_evaluated"]) <= n_evaluated,
+            int(payload["n_evaluated"]) >= checkpoint
+            and int(payload["n_evaluated"]) <= n_evaluated,
             f"n_evaluated={payload['n_evaluated']} vs current {n_evaluated}",
         )
         check(
             f"checkpoint {checkpoint} refuses an edge verdict below the floor",
-            payload.get("edge_verdict") == (
-                "NOT_PERMITTED_BELOW_SAMPLE_FLOOR" if n_evaluated < MIN_EVALUABLE_DECISIONS else "PERMITTED_AT_OR_ABOVE_SAMPLE_FLOOR"
+            payload.get("edge_verdict")
+            == (
+                "NOT_PERMITTED_BELOW_SAMPLE_FLOOR"
+                if n_evaluated < MIN_EVALUABLE_DECISIONS
+                else "PERMITTED_AT_OR_ABOVE_SAMPLE_FLOOR"
             ),
         )
-        check(f"checkpoint {checkpoint} is labelled diagnostic", payload.get("is_diagnostic_only") is True)
-        check(f"checkpoint {checkpoint} has a markdown mirror", (LEDGER_ROOT / CHECKPOINT_DIRNAME / f"CHECKPOINT_{checkpoint:03d}.md").is_file())
+        check(
+            f"checkpoint {checkpoint} is labelled diagnostic",
+            payload.get("is_diagnostic_only") is True,
+        )
+        check(
+            f"checkpoint {checkpoint} has a markdown mirror",
+            (LEDGER_ROOT / CHECKPOINT_DIRNAME / f"CHECKPOINT_{checkpoint:03d}.md").is_file(),
+        )
     check("checkpoints were created in ascending order", created == sorted(created))
 
     # --- §I state, status and heartbeat ---------------------------------- #
     population = status.get("population") or {}
-    check("status reports sealed as the ledger size", int(population.get("sealed_decisions", -1)) == len(decisions))
-    check("status reports evaluated as the evaluation count", int(population.get("evaluated_decisions", -1)) == len(evaluations))
-    check("status reports settled as the outcome count", int(population.get("settled_outcomes", -1)) == len(outcomes))
+    check(
+        "status reports sealed as the ledger size",
+        int(population.get("sealed_decisions", -1)) == len(decisions),
+    )
+    check(
+        "status reports evaluated as the evaluation count",
+        int(population.get("evaluated_decisions", -1)) == len(evaluations),
+    )
+    check(
+        "status reports settled as the outcome count",
+        int(population.get("settled_outcomes", -1)) == len(outcomes),
+    )
     check(
         "status reports matured consistently",
         int(population.get("matured_decisions", -1))
@@ -810,15 +1009,34 @@ def main() -> int:
     )
     check(
         "status keeps pending and matured as separate populations",
-        int(population.get("pending_decisions", 0)) >= 0 and len(decisions) >= int(population.get("sealed_decisions", 0)),
+        int(population.get("pending_decisions", 0)) >= 0
+        and len(decisions) >= int(population.get("sealed_decisions", 0)),
     )
-    check("campaign status uses the allowed vocabulary", status.get("campaign_status") in CAMPAIGN_STATUSES, str(status.get("campaign_status")))
-    check("status declares chain integrity", status.get("chain_status") == "INTACT", str(status.get("chain_status")))
+    check(
+        "campaign status uses the allowed vocabulary",
+        status.get("campaign_status") in CAMPAIGN_STATUSES,
+        str(status.get("campaign_status")),
+    )
+    check(
+        "status declares chain integrity",
+        status.get("chain_status") == "INTACT",
+        str(status.get("chain_status")),
+    )
     check("status carries a denominator warning", bool(status.get("denominator_note")))
     check("heartbeat declares the campaign", heartbeat.get("campaign_id") == CAMPAIGN_ID)
-    check("heartbeat process status is in the allowed vocabulary", heartbeat.get("process_status") in CAMPAIGN_STATUSES, str(heartbeat.get("process_status")))
-    check("heartbeat publishes the next decision slot", isinstance(heartbeat.get("next_decision_slot"), int))
-    check("heartbeat publishes pending maturities", isinstance(heartbeat.get("pending_maturities"), int))
+    check(
+        "heartbeat process status is in the allowed vocabulary",
+        heartbeat.get("process_status") in CAMPAIGN_STATUSES,
+        str(heartbeat.get("process_status")),
+    )
+    check(
+        "heartbeat publishes the next decision slot",
+        isinstance(heartbeat.get("next_decision_slot"), int),
+    )
+    check(
+        "heartbeat publishes pending maturities",
+        isinstance(heartbeat.get("pending_maturities"), int),
+    )
     heartbeat_stamp = as_int(heartbeat.get("timestamp"), 0)
     check(
         "heartbeat is a real record and is never dated in the future",
@@ -844,20 +1062,34 @@ def main() -> int:
     ):
         if path.is_file():
             blobs.append(path.read_text(encoding="utf-8"))
-    for path in sorted((LEDGER_ROOT / CHECKPOINT_DIRNAME).glob("*")) if (LEDGER_ROOT / CHECKPOINT_DIRNAME).is_dir() else []:
+    for path in (
+        sorted((LEDGER_ROOT / CHECKPOINT_DIRNAME).glob("*"))
+        if (LEDGER_ROOT / CHECKPOINT_DIRNAME).is_dir()
+        else []
+    ):
         blobs.append(path.read_text(encoding="utf-8"))
     offending = sorted({word for word in FORBIDDEN_STATUS_WORDS for blob in blobs if word in blob})
     check("no promotional status word appears in any report", offending == [], str(offending))
 
     # --- §J NO_TRADE as a first-class decision --------------------------- #
     no_trade_decisions = [item for item in decisions if item["decision"] == "NO_TRADE"]
-    check("NO_TRADE decisions are in the ledger, not dropped", len(no_trade_decisions) == int(status.get("analyst_distribution", {}).get("NO_TRADE", -1)))
+    check(
+        "NO_TRADE decisions are in the ledger, not dropped",
+        len(no_trade_decisions) == int(status.get("analyst_distribution", {}).get("NO_TRADE", -1)),
+    )
     check("NO_TRADE is in the reported population", "no_trade_count" in json.dumps(status))
     check("selectivity is reported as a diagnostic", selectivity.get("is_diagnostic_only") is True)
     if len(no_trade_decisions) < NO_TRADE_SELECTIVITY_MIN_SAMPLE:
-        check("selectivity stays INSUFFICIENT_SAMPLE below its floor", selectivity.get("status") == "INSUFFICIENT_SAMPLE", str(selectivity.get("status")))
+        check(
+            "selectivity stays INSUFFICIENT_SAMPLE below its floor",
+            selectivity.get("status") == "INSUFFICIENT_SAMPLE",
+            str(selectivity.get("status")),
+        )
     else:
-        check("selectivity status is a declared value", selectivity.get("status") in {"MEASURED", "INSUFFICIENT_SAMPLE"})
+        check(
+            "selectivity status is a declared value",
+            selectivity.get("status") in {"MEASURED", "INSUFFICIENT_SAMPLE"},
+        )
     for item in selectivity.get("counterfactuals", []):
         comparison_value = float(item["counterfactual_net_return"])
         check(
@@ -888,10 +1120,19 @@ def main() -> int:
     code_hits: list[str] = []
     for relative in CAMPAIGN_SOURCES:
         text = (REPO / relative).read_text(encoding="utf-8")
-        code_hits.extend(f"{relative}:{pattern}" for pattern in FORBIDDEN_CODE_PATTERNS if re.search(pattern, text))
-    check("campaign code contains no order, credential or LLM import", code_hits == [], str(code_hits))
+        code_hits.extend(
+            f"{relative}:{pattern}"
+            for pattern in FORBIDDEN_CODE_PATTERNS
+            if re.search(pattern, text)
+        )
+    check(
+        "campaign code contains no order, credential or LLM import", code_hits == [], str(code_hits)
+    )
     runner_text = (REPO / "scripts" / "cap004_campaign_runner.py").read_text(encoding="utf-8")
-    check("the runner never commits or pushes", '"push"' not in runner_text and '"commit"' not in runner_text)
+    check(
+        "the runner never commits or pushes",
+        '"push"' not in runner_text and '"commit"' not in runner_text,
+    )
     check(
         "no selftest artefact entered the campaign sample",
         all(item["prompt_version"] == PROMPT_VERSION for item in decisions),
@@ -900,12 +1141,18 @@ def main() -> int:
         "every campaign decision is a real forward decision at its own slot",
         all(int(item["decision_time"]) <= now for item in decisions),
     )
-    check("no decision was backfilled after its slot closed", all(
-        str((item.get("provenance") or {}).get("campaign_id") or COHORT_LEGACY) != CAMPAIGN_ID
-        or int(item.get("delay_seconds") or 0) <= SEAL_WINDOW_SECONDS
-        for item in decisions
-    ))
-    check("the runner exposes the four phase flags", all(flag in runner_text for flag in ("--seal", "--settle", "--score", "--verify")))
+    check(
+        "no decision was backfilled after its slot closed",
+        all(
+            str((item.get("provenance") or {}).get("campaign_id") or COHORT_LEGACY) != CAMPAIGN_ID
+            or int(item.get("delay_seconds") or 0) <= SEAL_WINDOW_SECONDS
+            for item in decisions
+        ),
+    )
+    check(
+        "the runner exposes the four phase flags",
+        all(flag in runner_text for flag in ("--seal", "--settle", "--score", "--verify")),
+    )
     check("the runner exposes continuous mode", "--continuous" in runner_text)
     check("the runner refuses a second instance", "ALREADY_RUNNING" in runner_text)
     check("the runner is idempotent per slot", "occupied_decision_keys" in runner_text)
@@ -914,9 +1161,7 @@ def main() -> int:
     if CAP003_VERIFICATION.is_file() and CAP003_VERIFIER.is_file():
         env = {
             **os.environ,
-            "PYTHONPATH": (
-                f"{REPO / 'src'}{os.pathsep}{REPO / 'scripts'}"
-            ),
+            "PYTHONPATH": (f"{REPO / 'src'}{os.pathsep}{REPO / 'scripts'}"),
             "PYTHONIOENCODING": "utf-8",
         }
         proc = subprocess.run(
@@ -934,7 +1179,9 @@ def main() -> int:
             f"status={payload.get('status')} passed={payload.get('passed')}/{payload.get('total')} exit={proc.returncode}",
         )
     else:
-        limit("CAP-003 verifier inputs are absent locally (reports/ is local-only); CAP-003 not re-verified")
+        limit(
+            "CAP-003 verifier inputs are absent locally (reports/ is local-only); CAP-003 not re-verified"
+        )
 
     # --- FALSE_SUCCESS ---------------------------------------------------- #
     false_success: list[str] = []
@@ -955,20 +1202,31 @@ def main() -> int:
     ):
         false_success.append("a slot was filled after its seal window (backfill)")
     if any(
-        not all(str((item.get("provenance") or {}).get(f, "")).strip() for f in CAMPAIGN_PROVENANCE_FIELDS)
+        not all(
+            str((item.get("provenance") or {}).get(f, "")).strip()
+            for f in CAMPAIGN_PROVENANCE_FIELDS
+        )
         for item in decisions
         if str((item.get("provenance") or {}).get("campaign_id") or COHORT_LEGACY) == CAMPAIGN_ID
     ):
         false_success.append("a CAP-004 decision lacks extended provenance")
     if scorecard.get("kpi_agentic_decision_edge") != 0:
         false_success.append("an edge KPI was raised off zero without business evidence")
-    if not (n_evaluated < MIN_EVALUABLE_DECISIONS) and scorecard.get("gate", {}).get("conclusion") == CONCLUSION_POSITIVE:
-        false_success.append("a positive edge verdict was issued at or above the floor without out-of-sample work")
+    if (
+        not (n_evaluated < MIN_EVALUABLE_DECISIONS)
+        and scorecard.get("gate", {}).get("conclusion") == CONCLUSION_POSITIVE
+    ):
+        false_success.append(
+            "a positive edge verdict was issued at or above the floor without out-of-sample work"
+        )
     if sha256_file(economic) != ECONOMIC_STATE_DIGEST:
         false_success.append("the canonical economic state was modified")
     if any(
         str((item.get("provenance") or {}).get("campaign_id") or COHORT_LEGACY) == CAMPAIGN_ID
-        and not all(str((item.get("provenance") or {}).get(f, "")).strip() for f in CAMPAIGN_PROVENANCE_FIELDS)
+        and not all(
+            str((item.get("provenance") or {}).get(f, "")).strip()
+            for f in CAMPAIGN_PROVENANCE_FIELDS
+        )
         for item in decisions
     ):
         false_success.append("an incomplete provenance record entered the campaign")

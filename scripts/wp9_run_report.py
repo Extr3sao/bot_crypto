@@ -93,9 +93,19 @@ def dig(payload: Any, path: str | None) -> Any:
 
 def counts(payload: dict[str, Any]) -> dict[str, Any]:
     out: dict[str, Any] = {}
-    for key in ("checks_total", "checks_failed", "checks_not_exercised", "sequence_total",
-                "sequence_failed", "controls_total", "controls_missed", "false_success",
-                "criteria_total", "criteria_not_met", "strategies_total"):
+    for key in (
+        "checks_total",
+        "checks_failed",
+        "checks_not_exercised",
+        "sequence_total",
+        "sequence_failed",
+        "controls_total",
+        "controls_missed",
+        "false_success",
+        "criteria_total",
+        "criteria_not_met",
+        "strategies_total",
+    ):
         if key in payload:
             out[key] = payload[key]
     return out
@@ -112,33 +122,61 @@ def build() -> dict[str, Any]:
                 payload = json.loads(path.read_text(encoding="utf-8"))
             except ValueError:
                 payload = {}
-        rows.append({
-            **step,
-            "present": exists,
-            "file": str(path.relative_to(ROOT)).replace("\\", "/"),
-            "verdict": dig(payload, step["verdict_path"]) if step["verdict_path"] else None,
-            "counts": counts(payload),
-        })
+        rows.append(
+            {
+                **step,
+                "present": exists,
+                "file": str(path.relative_to(ROOT)).replace("\\", "/"),
+                "verdict": dig(payload, step["verdict_path"]) if step["verdict_path"] else None,
+                "counts": counts(payload),
+            }
+        )
 
     verification_path = WP9 / "INDEPENDENT_VERIFICATION.json"
-    verification = json.loads(verification_path.read_text(encoding="utf-8")) if verification_path.exists() else {}
-    disk = json.loads((WP9 / "WP9_DISK_BUDGET_AUDIT.json").read_text(encoding="utf-8")) \
-        if (WP9 / "WP9_DISK_BUDGET_AUDIT.json").exists() else {}
-    readiness = json.loads((WP9 / "WP9_M03_M07_READINESS.json").read_text(encoding="utf-8")) \
-        if (WP9 / "WP9_M03_M07_READINESS.json").exists() else {}
-    blockers = json.loads((WP9 / "WP9_ACTIVE_ECONOMIC_BLOCKERS.json").read_text(encoding="utf-8")) \
-        if (WP9 / "WP9_ACTIVE_ECONOMIC_BLOCKERS.json").exists() else {}
-    runtime = json.loads((WP9 / "WP9_RUNTIME_24H_REPORT.json").read_text(encoding="utf-8")) \
-        if (WP9 / "WP9_RUNTIME_24H_REPORT.json").exists() else {}
-    ci = json.loads((WP9 / "WP9_CI_EXECUTION_REPORT.json").read_text(encoding="utf-8")) \
-        if (WP9 / "WP9_CI_EXECUTION_REPORT.json").exists() else {}
+    verification = (
+        json.loads(verification_path.read_text(encoding="utf-8"))
+        if verification_path.exists()
+        else {}
+    )
+    disk = (
+        json.loads((WP9 / "WP9_DISK_BUDGET_AUDIT.json").read_text(encoding="utf-8"))
+        if (WP9 / "WP9_DISK_BUDGET_AUDIT.json").exists()
+        else {}
+    )
+    readiness = (
+        json.loads((WP9 / "WP9_M03_M07_READINESS.json").read_text(encoding="utf-8"))
+        if (WP9 / "WP9_M03_M07_READINESS.json").exists()
+        else {}
+    )
+    blockers = (
+        json.loads((WP9 / "WP9_ACTIVE_ECONOMIC_BLOCKERS.json").read_text(encoding="utf-8"))
+        if (WP9 / "WP9_ACTIVE_ECONOMIC_BLOCKERS.json").exists()
+        else {}
+    )
+    runtime = (
+        json.loads((WP9 / "WP9_RUNTIME_24H_REPORT.json").read_text(encoding="utf-8"))
+        if (WP9 / "WP9_RUNTIME_24H_REPORT.json").exists()
+        else {}
+    )
+    ci = (
+        json.loads((WP9 / "WP9_CI_EXECUTION_REPORT.json").read_text(encoding="utf-8"))
+        if (WP9 / "WP9_CI_EXECUTION_REPORT.json").exists()
+        else {}
+    )
 
     state = {
         "disk": {
-            "planning_rate_mb_per_hour": disk.get("measurement", {}).get("planning_rate_mb_per_hour"),
+            "planning_rate_mb_per_hour": disk.get("measurement", {}).get(
+                "planning_rate_mb_per_hour"
+            ),
             "requirements_gb": [
-                {"hours": item["hours"], "mean": item["required_gb"], "stress": item["stress"]["required_gb"],
-                 "fits": item["fits"], "fits_stress": item["stress"]["fits"]}
+                {
+                    "hours": item["hours"],
+                    "mean": item["required_gb"],
+                    "stress": item["stress"]["required_gb"],
+                    "fits": item["fits"],
+                    "fits_stress": item["stress"]["fits"],
+                }
                 for item in disk.get("projections", {}).get("horizons", [])
             ],
             "findings": [f["id"] for f in disk.get("findings", [])],
@@ -146,8 +184,13 @@ def build() -> dict[str, Any]:
         "readiness": {
             hypothesis: {
                 "verdict": readiness.get("verdict", {}).get(hypothesis),
-                "criteria_not_met": readiness.get("hypotheses", {}).get(hypothesis, {}).get("criteria_not_met"),
-                "cost_to_close_hours": readiness.get("hypotheses", {}).get(hypothesis, {}).get("cost_to_close", {}).get("hours"),
+                "criteria_not_met": readiness.get("hypotheses", {})
+                .get(hypothesis, {})
+                .get("criteria_not_met"),
+                "cost_to_close_hours": readiness.get("hypotheses", {})
+                .get(hypothesis, {})
+                .get("cost_to_close", {})
+                .get("hours"),
             }
             for hypothesis in ("M-03", "M-07")
         },
@@ -159,8 +202,12 @@ def build() -> dict[str, Any]:
             "window_complete": runtime.get("window_complete"),
             "checks_not_exercised": runtime.get("checks_not_exercised"),
             "legs": [
-                {"name": leg["name"], "exit_code": leg["exit_code"], "seconds": leg["seconds"],
-                 "traces_added": leg["traces_added"]}
+                {
+                    "name": leg["name"],
+                    "exit_code": leg["exit_code"],
+                    "seconds": leg["seconds"],
+                    "traces_added": leg["traces_added"],
+                }
                 for leg in runtime.get("legs", [])
             ],
         },
@@ -257,8 +304,10 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "",
         "| leg | exit | seconds | traces added |",
         "| --- | ---: | ---: | ---: |",
-        *[f"| {leg['name']} | {leg['exit_code']} | {leg['seconds']} | {leg['traces_added']} |"
-          for leg in state["runtime"]["legs"]],
+        *[
+            f"| {leg['name']} | {leg['exit_code']} | {leg['seconds']} | {leg['traces_added']} |"
+            for leg in state["runtime"]["legs"]
+        ],
         "",
         "## 4. Governance",
         "",
@@ -284,8 +333,10 @@ def main() -> int:
     else:
         (WP9 / "RUN_REPORT.json").write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
         (WP9 / "RUN_REPORT.md").write_text(render_markdown(payload) + "\n", encoding="utf-8")
-        print(f"{payload['verdict']}: data/recovery/wp9/RUN_REPORT.json "
-              f"({len(missing)} missing artefact(s))")
+        print(
+            f"{payload['verdict']}: data/recovery/wp9/RUN_REPORT.json "
+            f"({len(missing)} missing artefact(s))"
+        )
     return 2 if missing else 0
 
 

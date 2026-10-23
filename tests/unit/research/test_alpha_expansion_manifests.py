@@ -69,11 +69,16 @@ def test_split_firewall_oos_is_never_read_when_dev_fails() -> None:
     drv = _driver()
     seen: list[str] = []
 
-    def fake_metrics(exp_id: str, split: str, cfg: Any, cost_bps_rt: float, subset: Any = None) -> dict[str, Any]:
+    def fake_metrics(
+        exp_id: str, split: str, cfg: Any, cost_bps_rt: float, subset: Any = None
+    ) -> dict[str, Any]:
         seen.append(split)
         return {
-            "trades": 40, "expectancy_gross_bps": -50.0, "expectancy_net_bps": -73.0,
-            "profit_factor": 0.5, "concentration": {"top1_share": 0.2},
+            "trades": 40,
+            "expectancy_gross_bps": -50.0,
+            "expectancy_net_bps": -73.0,
+            "profit_factor": 0.5,
+            "concentration": {"top1_share": 0.2},
         }
 
     drv.metrics = fake_metrics  # type: ignore[assignment]

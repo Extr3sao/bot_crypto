@@ -231,17 +231,13 @@ class RetentionPolicy:
             "report_retention_days": self.report_retention_days,
             "reserve_bytes": self.reserve_bytes,
             "target_operating_days": self.target_operating_days,
-            "raw_retention": (
-                f"RAW HOT: {self.raw_hot_hours} h behind the writer, then compacted"
-            ),
+            "raw_retention": (f"RAW HOT: {self.raw_hot_hours} h behind the writer, then compacted"),
             "aggregate_retention": (
                 "indefinite"
                 if self.aggregate_retention_days is None
                 else f"{self.aggregate_retention_days} days"
             ),
-            "report_retention": (
-                "indefinite" if self.report_retention_days is None else "bounded"
-            ),
+            "report_retention": ("indefinite" if self.report_retention_days is None else "bounded"),
         }
 
 
@@ -326,12 +322,7 @@ def lineage_path(root: Path, run_id: str, window_start_ms: int) -> Path:
 
 
 def aggregate_path(root: Path, run_id: str, window_start_ms: int, window_end_ms: int) -> Path:
-    return (
-        Path(root)
-        / AGGREGATED_ROOT
-        / run_id
-        / f"{window_start_ms}-{window_end_ms}.json.gz"
-    )
+    return Path(root) / AGGREGATED_ROOT / run_id / f"{window_start_ms}-{window_end_ms}.json.gz"
 
 
 # ------------------------------------------------------------------- sealing/plan
@@ -362,9 +353,7 @@ def _window_of(relative: str, rotation_seconds: int) -> tuple[int, int]:
     return start, start + width
 
 
-def verify_sealed_segment(
-    path: Path, *, grace_seconds: int, now_ms: int
-) -> tuple[bool, str]:
+def verify_sealed_segment(path: Path, *, grace_seconds: int, now_ms: int) -> tuple[bool, str]:
     """Prove a segment is finished, instead of assuming it (§8).
 
     Three independent checks: the file has been quiet for the grace period, the
@@ -502,9 +491,7 @@ def plan_retention(
             if ok:
                 sealed.append(path)
             else:
-                plan.skipped.append(
-                    {"path": path.relative_to(base).as_posix(), "reason": reason}
-                )
+                plan.skipped.append({"path": path.relative_to(base).as_posix(), "reason": reason})
                 plan.retained_raw.append(path)
         if sealed:
             plan.compactable.append((start, end, sealed))
@@ -543,9 +530,7 @@ def _write_gzip_json(path: Path, payload: Any) -> tuple[str, int]:
     return sha256_file(path)
 
 
-def _window_source(
-    root: Path, segment_paths: list[Path]
-) -> Iterator[RawEvent]:
+def _window_source(root: Path, segment_paths: list[Path]) -> Iterator[RawEvent]:
     """Stream a window's raw rows as events, one segment at a time (§34)."""
     for path in segment_paths:
         for row, partial_tail in iter_segment_rows(path):
@@ -647,9 +632,7 @@ def compact_window(
     if existing is not None:
         ok, reason = _aggregate_matches(base, existing)
         if ok:
-            return CompactionResult(
-                window_start_ms, window_end_ms, existing, True, tuple()
-            )
+            return CompactionResult(window_start_ms, window_end_ms, existing, True, tuple())
         raise StorageError(
             f"window {window_start_ms} has a lineage record whose aggregate {reason}; "
             "refusing to overwrite evidence"
@@ -820,9 +803,7 @@ def apply_retention(
     for start, end, files in plan.compactable:
         try:
             run.compacted.append(
-                compact_window(
-                    base, policy, run_id, start, end, files, gaps=gaps, now_ms=now_ms
-                )
+                compact_window(base, policy, run_id, start, end, files, gaps=gaps, now_ms=now_ms)
             )
         except StorageError as exc:
             run.refused.append({"window_start_ms": start, "reason": str(exc)})
@@ -888,7 +869,8 @@ def apply_retention(
                         "window_start_ms": window_start,
                         "window_end_ms": window_end,
                         "reason": ", ".join(
-                            f"{name}: {verdict}" for name, verdict in report.verdicts.items()
+                            f"{name}: {verdict}"
+                            for name, verdict in report.verdicts.items()
                             if verdict != PRESERVED
                         )
                         or "preservation refused deletion",
@@ -967,7 +949,9 @@ def capacity_report(
     per_hour = compressed_bytes_per_day / 24.0
     raw_hot = per_hour * policy.raw_hot_hours
     headroom = free_bytes - policy.reserve_bytes - raw_hot
-    hours_to_guard = max(0.0, (free_bytes - policy.reserve_bytes - raw_hot) / per_hour) if per_hour else 0.0
+    hours_to_guard = (
+        max(0.0, (free_bytes - policy.reserve_bytes - raw_hot) / per_hour) if per_hour else 0.0
+    )
     daily_growth = aggregate_bytes_per_day + reports_bytes_per_day
     if headroom <= 0:
         days: float | None = 0.0
@@ -1029,5 +1013,3 @@ def policy_for_host(
         reserve_bytes=reserve_bytes,
         target_operating_days=target_operating_days,
     )
-
-

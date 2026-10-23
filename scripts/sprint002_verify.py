@@ -69,7 +69,9 @@ def verify_pit() -> dict[str, Any]:
     ok_prefix = True
     for cut in (2000, 4000):
         full = L.resample(bars, 120)
-        part = L.resample(L.Bars(**{k: getattr(bars, k)[:cut] for k in ("ts", "o", "h", "lo", "c", "v")}), 120)
+        part = L.resample(
+            L.Bars(**{k: getattr(bars, k)[:cut] for k in ("ts", "o", "h", "lo", "c", "v")}), 120
+        )
         m = min(len(full), len(part))
         if not (
             np.array_equal(full.ts[:m], part.ts[:m])
@@ -83,9 +85,16 @@ def verify_pit() -> dict[str, Any]:
     b = L.build_bundle(bars, "5m")
     sig = S.sig_volume_expansion(b)
     spec = L.Spec(
-        candidate_id="pit_probe", hypothesis_id="PIT", family="volume_expansion", timeframe="5m",
-        signals=lambda _b: sig, warmup=262, atr_target_mult=2.0, atr_target_is_atr=True,
-        atr_stop_mult=1.0, hold_bars=8,
+        candidate_id="pit_probe",
+        hypothesis_id="PIT",
+        family="volume_expansion",
+        timeframe="5m",
+        signals=lambda _b: sig,
+        warmup=262,
+        atr_target_mult=2.0,
+        atr_target_is_atr=True,
+        atr_stop_mult=1.0,
+        hold_bars=8,
     )
     trades = L.run_spec(spec, b, "BTCUSDT", "W1")
     entry_ok = True
@@ -115,7 +124,8 @@ def verify_economics() -> dict[str, Any]:
     certified bars and compare to the recorded metrics."""
     raw = json.loads((OUT / "DISCOVERY_RAW.json").read_text(encoding="utf-8"))
     survivors = [
-        e for e in raw["experiments"]
+        e
+        for e in raw["experiments"]
         if e["metrics"].get("trades", 0) >= L.MIN_TRADES and e["metrics"].get("net_bps", -1) > 0
     ]
     checks: list[dict[str, Any]] = []
@@ -135,7 +145,10 @@ def verify_economics() -> dict[str, Any]:
         recorded_gross = float(e["metrics"]["gross_bps"])
         # accounting identity: net == gross - cost for every trade
         identity_ok = bool(np.allclose(net, gross - COST, atol=1e-6))
-        match = abs(recomputed_net - recorded_net) < 1e-3 and abs(recomputed_gross - recorded_gross) < 1e-3
+        match = (
+            abs(recomputed_net - recorded_net) < 1e-3
+            and abs(recomputed_gross - recorded_gross) < 1e-3
+        )
         all_ok = all_ok and identity_ok and match
         checks.append(
             {
@@ -163,12 +176,14 @@ def verify_no_cost_relaxation() -> dict[str, Any]:
     lib = (L.REPO / "scripts" / "sprint002_lib.py").read_text(encoding="utf-8")
     ok_const = "CERTIFIED_ROUND_TRIP_BPS = 23.790569" in lib
     ok_use = "g_bps - eff_cost" in lib
-    ok_stress = "\"BASE\": 23.790569" in lib
+    ok_stress = '"BASE": 23.790569' in lib
     allowed = {"23.790569", "29.738211", "35.685854", "47.581138"}
     bad: list[str] = []
     for p in (L.REPO / "scripts").glob("sprint002_*.py"):
         for i, line in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
-            for m in re.finditer(r"(?:COST|cost_bps|CERTIFIED_ROUND_TRIP_BPS)\s*=\s*([0-9]+\.[0-9]+)", line):
+            for m in re.finditer(
+                r"(?:COST|cost_bps|CERTIFIED_ROUND_TRIP_BPS)\s*=\s*([0-9]+\.[0-9]+)", line
+            ):
                 if m.group(1) not in allowed:
                     bad.append(f"{p.name}:{i}:{m.group(0)}")
     return {
@@ -184,14 +199,20 @@ def verify_holdout_isolation() -> dict[str, Any]:
     """The holdout must be unread: no artifact may contain holdout performance."""
     hits: list[str] = []
     for p in sorted(OUT.glob("*.json")):
-        if p.name in ("HOLDOUT_RESULTS.json", "SPRINT002_PLAN.json", "INDEPENDENT_VERIFICATION.json"):
+        if p.name in (
+            "HOLDOUT_RESULTS.json",
+            "SPRINT002_PLAN.json",
+            "INDEPENDENT_VERIFICATION.json",
+        ):
             continue
         t = p.read_text(encoding="utf-8")
         if '"holdout"' in t and '"trades": 0' not in t:
             hits.append(p.name)
     hold = json.loads((OUT / "HOLDOUT_RESULTS.json").read_text(encoding="utf-8"))
     return {
-        "pass": hold.get("status") == "NOT_REACHED" and hold.get("holdout_unread") is True and not hits,
+        "pass": hold.get("status") == "NOT_REACHED"
+        and hold.get("holdout_unread") is True
+        and not hits,
         "holdout_status": hold.get("status"),
         "holdout_unread_flag": hold.get("holdout_unread"),
         "artifacts_referencing_holdout_performance": hits,
@@ -200,12 +221,17 @@ def verify_holdout_isolation() -> dict[str, Any]:
 
 def verify_experiment_counts() -> dict[str, Any]:
     raw = json.loads((OUT / "DISCOVERY_RAW.json").read_text(encoding="utf-8"))
-    registry_lines = (OUT / "EXPERIMENT_REGISTRY.jsonl").read_text(encoding="utf-8").strip().split("\n")
+    registry_lines = (
+        (OUT / "EXPERIMENT_REGISTRY.jsonl").read_text(encoding="utf-8").strip().split("\n")
+    )
     with (OUT / "EXPERIMENT_MATRIX.csv").open(encoding="utf-8") as fh:
         matrix_rows = sum(1 for _ in csv.DictReader(fh))
     summary = json.loads((OUT / "PIPELINE_SUMMARY.json").read_text(encoding="utf-8"))
     return {
-        "pass": len(raw["experiments"]) == len(registry_lines) == matrix_rows == summary["experiments_total"],
+        "pass": len(raw["experiments"])
+        == len(registry_lines)
+        == matrix_rows
+        == summary["experiments_total"],
         "discovery_raw": len(raw["experiments"]),
         "registry_lines": len(registry_lines),
         "matrix_rows": matrix_rows,
@@ -223,17 +249,21 @@ def verify_no_validation_retuning() -> dict[str, Any]:
         d = disc_by_id.get(v["experiment_id"])
         if d is None:
             mismatches.append(f"{v['experiment_id']}:not_in_discovery")
-        elif json.dumps(d["parameters"], sort_keys=True) != json.dumps(v["parameters"], sort_keys=True):
+        elif json.dumps(d["parameters"], sort_keys=True) != json.dumps(
+            v["parameters"], sort_keys=True
+        ):
             mismatches.append(v["experiment_id"])
-    return {"pass": not mismatches, "mismatches": mismatches, "validation_tested": len(val["results"])}
+    return {
+        "pass": not mismatches,
+        "mismatches": mismatches,
+        "validation_tested": len(val["results"]),
+    }
 
 
 def main() -> int:
     hashes = recompute_split_hashes()
     plan = json.loads((OUT / "SPRINT002_PLAN.json").read_text(encoding="utf-8"))
-    plan_hashes = {
-        k: plan["split"][k]["sha256"] for k in ("DISCOVERY", "VALIDATION", "HOLDOUT")
-    }
+    plan_hashes = {k: plan["split"][k]["sha256"] for k in ("DISCOVERY", "VALIDATION", "HOLDOUT")}
     hash_match = all(hashes[k]["sha256"] == plan_hashes[k] for k in plan_hashes)
 
     checks = {

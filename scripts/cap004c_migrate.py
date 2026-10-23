@@ -179,7 +179,10 @@ def migrate_archive(
             entry["compression"] = {"status": "ALREADY_ARCHIVED", "bytes": target.stat().st_size}
         else:
             compression = gzip_file(source, target, level=level)
-            if compression["source_sha256"] != source_sha or compression["source_bytes"] != source_bytes:
+            if (
+                compression["source_sha256"] != source_sha
+                or compression["source_bytes"] != source_bytes
+            ):
                 blocked.append(str(source))
                 entry["compression"] = {"status": "SOURCE_CHANGED_DURING_COMPRESSION"}
                 entries.append(entry)

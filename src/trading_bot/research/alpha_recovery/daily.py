@@ -342,7 +342,9 @@ class Exp007DailyPivotFade:
     def prepare(self, bars: Sequence[OHLCV]) -> None:
         self._bars = bars
         self._atr = atr_series(
-            [b.high for b in bars], [b.low for b in bars], [b.close for b in bars],
+            [b.high for b in bars],
+            [b.low for b in bars],
+            [b.close for b in bars],
             self.config.atr_period,
         )
         pivots: list[tuple[float, float, float] | None] = [None] * len(bars)
@@ -458,7 +460,9 @@ class Exp010VolSpikeMR:
     def prepare(self, bars: Sequence[OHLCV]) -> None:
         self._bars = bars
         self._atr = atr_series(
-            [b.high for b in bars], [b.low for b in bars], [b.close for b in bars],
+            [b.high for b in bars],
+            [b.low for b in bars],
+            [b.close for b in bars],
             self.config.atr_period,
         )
         days = [day_key(b.timestamp) for b in bars]

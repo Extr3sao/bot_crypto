@@ -46,9 +46,7 @@ def checks() -> list[dict[str, Any]]:
 
     # 2. timestamp semantics: strictly ordered, no duplicates
     pit = _load("reports/orthogonal-data/PIT_AUDIT.json")
-    sem_ok = all(
-        v["duplicates"] == 0 and v["strictly_ordered"] for v in pit["sources"].values()
-    )
+    sem_ok = all(v["duplicates"] == 0 and v["strictly_ordered"] for v in pit["sources"].values())
     add("timestamp_semantics_ordered_unique", sem_ok, f"{len(pit['sources'])} series")
 
     # 3. future poisoning identical
@@ -57,26 +55,44 @@ def checks() -> list[dict[str, Any]]:
 
     # 4. registry frozen: hash of variants matches stored
     reg = _load("reports/edge-discovery/sprint003/HYPOTHESIS_REGISTRY.json")
-    add("hypothesis_registry_frozen", OL.sha256_obj(reg["variants"]) == reg["registry_hash"], reg["registry_hash"][:16])
+    add(
+        "hypothesis_registry_frozen",
+        OL.sha256_obj(reg["variants"]) == reg["registry_hash"],
+        reg["registry_hash"][:16],
+    )
 
     # 5. budget respected
     add(
         "hypothesis_budget",
-        reg["n_core"] <= reg["max_core_hypotheses"] and reg["n_variants"] <= reg["max_parameter_variants"],
+        reg["n_core"] <= reg["max_core_hypotheses"]
+        and reg["n_variants"] <= reg["max_parameter_variants"],
         f"core={reg['n_core']} variants={reg['n_variants']}",
     )
 
     # 6. experiment count == registered variants
-    rows = [json.loads(x) for x in (OUT / "EXPERIMENT_REGISTRY.jsonl").read_text(encoding="utf-8").splitlines() if x.strip()]
+    rows = [
+        json.loads(x)
+        for x in (OUT / "EXPERIMENT_REGISTRY.jsonl").read_text(encoding="utf-8").splitlines()
+        if x.strip()
+    ]
     add("experiment_count_matches_registry", len(rows) == reg["n_variants"], f"{len(rows)}")
 
     # 7. cost unchanged everywhere
     # engine reports cost rounded to 4 dp (23.7906); tolerance 1e-3 proves no relaxation
-    cost_ok = all(abs(float(r["discovery"].get("cost_bps", COST)) - COST) < 1e-3 for r in rows if r["discovery"].get("trades"))
+    cost_ok = all(
+        abs(float(r["discovery"].get("cost_bps", COST)) - COST) < 1e-3
+        for r in rows
+        if r["discovery"].get("trades")
+    )
     add("cost_model_v3_unchanged", cost_ok and L.CERTIFIED_ROUND_TRIP_BPS == COST, COST)
 
     # 8. no discovery net>0 with sufficient sample (G_EDGE_1 outcome)
-    viol = [r for r in rows if int(r["discovery"].get("trades") or 0) >= 50 and (r["discovery"].get("net_bps") or -1) > 0]
+    viol = [
+        r
+        for r in rows
+        if int(r["discovery"].get("trades") or 0) >= 50
+        and (r["discovery"].get("net_bps") or -1) > 0
+    ]
     add("g_edge_1_no_sufficient_positive_candidate", len(viol) == 0, len(viol))
 
     # 9. family-wise info null reproduced
@@ -89,7 +105,11 @@ def checks() -> list[dict[str, Any]]:
 
     # 10. holdout isolation: no bundle from W6/W7 constructed
     files_used = {f.window for f in L.dataset_files()}
-    add("holdout_windows_exist_but_unread", set(HOLDOUT_WINDOWS) <= files_used, "W6/W7 never loaded by RFC-025 scripts")
+    add(
+        "holdout_windows_exist_but_unread",
+        set(HOLDOUT_WINDOWS) <= files_used,
+        "W6/W7 never loaded by RFC-025 scripts",
+    )
 
     # 11. NOT_REACHED phases have no fabricated results
     nr = all(
@@ -134,7 +154,11 @@ def main() -> None:
     ]
     for c in ch:
         lines.append(f"| {c['check']} | **{c['status']}** | {c['detail']} |")
-    lines += ["", "Confirmado: NO FUTURE DATA, NO COST RELAXATION, NO SILENT RETUNING, NO HOLDOUT LEAK.", ""]
+    lines += [
+        "",
+        "Confirmado: NO FUTURE DATA, NO COST RELAXATION, NO SILENT RETUNING, NO HOLDOUT LEAK.",
+        "",
+    ]
     OL.write_md(OUT / "INDEPENDENT_VERIFICATION.md", "\n".join(lines))
     print(f"verifier: {payload['verdict']} ({n_pass}/{len(ch)})")
     for c in ch:

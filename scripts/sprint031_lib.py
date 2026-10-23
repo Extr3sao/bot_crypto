@@ -34,11 +34,36 @@ CACHE_DIR = RFC030_DIR / "cache"
 # frozen universe / splits / cost model (unchanged from RFC-030; §5, §23)
 # ---------------------------------------------------------------------------
 UNIVERSE: tuple[str, ...] = (
-    "BTCUSDT", "ETHUSDT", "BNBUSDT", "XRPUSDT", "ADAUSDT", "SOLUSDT",
-    "DOGEUSDT", "DOTUSDT", "LTCUSDT", "LINKUSDT", "BCHUSDT", "XLMUSDT",
-    "TRXUSDT", "ETCUSDT", "EOSUSDT", "XTZUSDT", "ZECUSDT", "DASHUSDT",
-    "NEOUSDT", "ATOMUSDT", "VETUSDT", "FILUSDT", "THETAUSDT", "ALGOUSDT",
-    "AVAXUSDT", "MATICUSDT", "FTTUSDT", "LUNAUSDT", "ICPUSDT", "SHIBUSDT",
+    "BTCUSDT",
+    "ETHUSDT",
+    "BNBUSDT",
+    "XRPUSDT",
+    "ADAUSDT",
+    "SOLUSDT",
+    "DOGEUSDT",
+    "DOTUSDT",
+    "LTCUSDT",
+    "LINKUSDT",
+    "BCHUSDT",
+    "XLMUSDT",
+    "TRXUSDT",
+    "ETCUSDT",
+    "EOSUSDT",
+    "XTZUSDT",
+    "ZECUSDT",
+    "DASHUSDT",
+    "NEOUSDT",
+    "ATOMUSDT",
+    "VETUSDT",
+    "FILUSDT",
+    "THETAUSDT",
+    "ALGOUSDT",
+    "AVAXUSDT",
+    "MATICUSDT",
+    "FTTUSDT",
+    "LUNAUSDT",
+    "ICPUSDT",
+    "SHIBUSDT",
 )
 
 SPLIT_BOUNDS: dict[str, tuple[str, str]] = {
@@ -49,9 +74,11 @@ SPLIT_BOUNDS: dict[str, tuple[str, str]] = {
 SPLIT_ORDER = ("DISCOVERY", "VALIDATION", "HOLDOUT")
 
 COST_MODEL: dict[str, float] = {
-    "taker_fee_bps": 10.0, "half_spread_bps": 3.0, "impact_bps": 2.0,
+    "taker_fee_bps": 10.0,
+    "half_spread_bps": 3.0,
+    "impact_bps": 2.0,
 }
-PER_SIDE_COST_BPS = float(sum(COST_MODEL.values()))          # 15.0
+PER_SIDE_COST_BPS = float(sum(COST_MODEL.values()))  # 15.0
 COST_STRESS_MULTIPLIERS = (1.0, 1.5, 2.0)
 
 # Frozen publication parameters of EXT-TSMOM-001 (§5, §36).
@@ -75,6 +102,7 @@ FROZEN_TSMOM: dict[str, Any] = {
 # hashing / io
 # ---------------------------------------------------------------------------
 
+
 def sha256_file(path: Path) -> str:
     h = hashlib.sha256()
     with path.open("rb") as fh:
@@ -90,8 +118,9 @@ def sha256_obj(obj: Any) -> str:
 
 def write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n",
-                    encoding="utf-8")
+    path.write_text(
+        json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8"
+    )
 
 
 def write_md(path: Path, text: str) -> None:
@@ -107,6 +136,7 @@ def read_json(path: Path) -> Any:
 # independent panel load (own code path)
 # ---------------------------------------------------------------------------
 
+
 def load_raw() -> dict[str, dict[str, NDArray[Any]]]:
     raw: dict[str, dict[str, NDArray[Any]]] = {}
     for sym in UNIVERSE:
@@ -120,13 +150,18 @@ def load_raw() -> dict[str, dict[str, NDArray[Any]]]:
 
 
 def build_calendar(raw: dict[str, dict[str, NDArray[Any]]]) -> NDArray[Any]:
-    days = sorted({int(t) for d in raw.values()
-                   for t in d["open_time_ms"].astype(np.int64).tolist()})
+    days = sorted(
+        {int(t) for d in raw.values() for t in d["open_time_ms"].astype(np.int64).tolist()}
+    )
     return np.asarray(days, dtype=np.int64)
 
 
-def build_matrix(raw: dict[str, dict[str, NDArray[Any]]], syms: list[str],
-                 days: NDArray[Any], field: str = "close") -> NDArray[Any]:
+def build_matrix(
+    raw: dict[str, dict[str, NDArray[Any]]],
+    syms: list[str],
+    days: NDArray[Any],
+    field: str = "close",
+) -> NDArray[Any]:
     di = {int(t): i for i, t in enumerate(days.tolist())}
     m = np.full((days.shape[0], len(syms)), np.nan, dtype=np.float64)
     for j, s in enumerate(syms):
@@ -160,6 +195,7 @@ def first_index(close: NDArray[Any]) -> NDArray[Any]:
 # calendars / masks
 # ---------------------------------------------------------------------------
 
+
 def _ts(lo: str, hi: str) -> tuple[int, int]:
     lo_ms = int(datetime.fromisoformat(lo + "T00:00:00+00:00").timestamp() * 1000)
     hi_ms = int(datetime.fromisoformat(hi + "T23:59:59+00:00").timestamp() * 1000)
@@ -184,16 +220,25 @@ def month_first_days(days: NDArray[Any]) -> list[int]:
 
 
 def week_mondays(days: NDArray[Any]) -> list[int]:
-    return [i for i, t in enumerate(days.tolist())
-            if datetime.fromtimestamp(t / 1000, tz=UTC).weekday() == 0]
+    return [
+        i
+        for i, t in enumerate(days.tolist())
+        if datetime.fromtimestamp(t / 1000, tz=UTC).weekday() == 0
+    ]
 
 
 # ---------------------------------------------------------------------------
 # frozen TSMOM weight construction (independent re-derivation)
 # ---------------------------------------------------------------------------
 
-def tsmom_target(close: NDArray[Any], i: int, formation: int = 365,
-                 vol_target: float = 0.40, vol_lookback: int = 60) -> dict[str, Any]:
+
+def tsmom_target(
+    close: NDArray[Any],
+    i: int,
+    formation: int = 365,
+    vol_target: float = 0.40,
+    vol_lookback: int = 60,
+) -> dict[str, Any]:
     """Return the frozen EXT-TSMOM-001 target book for decision day ``i``.
 
     Uses ONLY data with index <= i (PIT-safe signal).  Reproduces the RFC-030
@@ -202,9 +247,12 @@ def tsmom_target(close: NDArray[Any], i: int, formation: int = 365,
     """
     a = close.shape[1]
     out: dict[str, Any] = {
-        "eligible": np.zeros(a, dtype=bool), "signal": np.zeros(a),
-        "vol": np.full(a, np.nan), "scale": np.zeros(a),
-        "weights": np.zeros(a), "formation_end_idx": None,
+        "eligible": np.zeros(a, dtype=bool),
+        "signal": np.zeros(a),
+        "vol": np.full(a, np.nan),
+        "scale": np.zeros(a),
+        "weights": np.zeros(a),
+        "formation_end_idx": None,
     }
     back = i - formation
     if back < 0:
@@ -216,7 +264,7 @@ def tsmom_target(close: NDArray[Any], i: int, formation: int = 365,
     sig[elig] = np.sign(close[i, elig] / close[back, elig] - 1.0)
     out["signal"] = sig
     lo = max(0, i - vol_lookback)
-    win = close[lo:i + 1]
+    win = close[lo : i + 1]
     r = win[1:] / win[:-1] - 1.0
     vol = np.full(a, np.nan)
     for j in range(a):
@@ -236,11 +284,18 @@ def tsmom_target(close: NDArray[Any], i: int, formation: int = 365,
     return out
 
 
-def run_tsmom(close: NDArray[Any], days: NDArray[Any], mask: NDArray[Any],
-              columns: NDArray[Any] | None = None, formation: int = 365,
-              vol_target: float = 0.40, vol_lookback: int = 60,
-              cost_bps: float = PER_SIDE_COST_BPS, exec_lag: int = 0,
-              collect_detail: bool = False) -> dict[str, Any]:
+def run_tsmom(
+    close: NDArray[Any],
+    days: NDArray[Any],
+    mask: NDArray[Any],
+    columns: NDArray[Any] | None = None,
+    formation: int = 365,
+    vol_target: float = 0.40,
+    vol_lookback: int = 60,
+    cost_bps: float = PER_SIDE_COST_BPS,
+    exec_lag: int = 0,
+    collect_detail: bool = False,
+) -> dict[str, Any]:
     """Frozen TSMOM simulation.
 
     ``exec_lag=0`` reproduces RFC-030 exactly (signal close T, fill close T).
@@ -289,24 +344,36 @@ def run_tsmom(close: NDArray[Any], days: NDArray[Any], mask: NDArray[Any],
         short_c.append(float(np.nansum(np.where(w < 0, w * ret, 0.0)) * 1e4))
         net_exp.append(float(np.sum(w)))
         if collect_detail:
-            detail.append({
-                "rebalance_idx": int(i), "decision_time": _iso(int(days[i])),
-                "lookback_end": _iso(int(days[tgt["formation_end_idx"]]))
-                if tgt["formation_end_idx"] is not None else None,
-                "exec_time": _iso(int(days[e0])),
-                "n_long": int(np.sum(w > 0)), "n_short": int(np.sum(w < 0)),
-                "gross_exposure": float(np.sum(np.abs(w))),
-                "net_exposure": float(np.sum(w)),
-                "traded_notional": tn, "cost_bps": c,
-                "gross_bps": g, "net_bps": g - c,
-                "long_contrib_bps": long_c[-1], "short_contrib_bps": short_c[-1],
-            })
+            detail.append(
+                {
+                    "rebalance_idx": int(i),
+                    "decision_time": _iso(int(days[i])),
+                    "lookback_end": _iso(int(days[tgt["formation_end_idx"]]))
+                    if tgt["formation_end_idx"] is not None
+                    else None,
+                    "exec_time": _iso(int(days[e0])),
+                    "n_long": int(np.sum(w > 0)),
+                    "n_short": int(np.sum(w < 0)),
+                    "gross_exposure": float(np.sum(np.abs(w))),
+                    "net_exposure": float(np.sum(w)),
+                    "traded_notional": tn,
+                    "cost_bps": c,
+                    "gross_bps": g,
+                    "net_bps": g - c,
+                    "long_contrib_bps": long_c[-1],
+                    "short_contrib_bps": short_c[-1],
+                }
+            )
         prev = w
     return {
-        "nets": np.asarray(nets), "gross": np.asarray(gross),
-        "costs": np.asarray(costs), "traded": np.asarray(traded),
-        "long_contrib": np.asarray(long_c), "short_contrib": np.asarray(short_c),
-        "net_exposure": np.asarray(net_exp), "skipped": skipped,
+        "nets": np.asarray(nets),
+        "gross": np.asarray(gross),
+        "costs": np.asarray(costs),
+        "traded": np.asarray(traded),
+        "long_contrib": np.asarray(long_c),
+        "short_contrib": np.asarray(short_c),
+        "net_exposure": np.asarray(net_exp),
+        "skipped": skipped,
         "detail": detail,
     }
 
@@ -318,6 +385,7 @@ def _iso(ms: int) -> str:
 # ---------------------------------------------------------------------------
 # statistics (hand-rolled; scipy not installed)
 # ---------------------------------------------------------------------------
+
 
 def summarise(run: dict[str, Any], periods_per_year: float = 12.0) -> dict[str, Any]:
     nets = np.asarray(run["nets"], dtype=np.float64)
@@ -358,8 +426,9 @@ def _sharpe(x: NDArray[Any], ppy: float) -> float | None:
     return float(np.mean(x) / np.std(x, ddof=1) * math.sqrt(ppy))
 
 
-def bootstrap_mean_ci(x: NDArray[Any], n_boot: int = 5000, block: int = 1,
-                      seed: int = 20261005, alpha: float = 0.05) -> dict[str, Any]:
+def bootstrap_mean_ci(
+    x: NDArray[Any], n_boot: int = 5000, block: int = 1, seed: int = 20261005, alpha: float = 0.05
+) -> dict[str, Any]:
     """Percentile bootstrap CI + P(mean<=0); block length >1 for serial dependence."""
     x = np.asarray(x, dtype=np.float64)
     if x.size < 3:
@@ -374,14 +443,18 @@ def bootstrap_mean_ci(x: NDArray[Any], n_boot: int = 5000, block: int = 1,
         n_blocks = math.ceil(n / block)
         for b in range(n_boot):
             starts = rng.integers(0, n, size=n_blocks)
-            sample = np.concatenate([x[s:s + block] for s in starts])[:n]
+            sample = np.concatenate([x[s : s + block] for s in starts])[:n]
             means[b] = float(np.mean(sample))
     lo = float(np.quantile(means, alpha / 2))
     hi = float(np.quantile(means, 1 - alpha / 2))
     return {
-        "status": "OK", "n": int(n), "block": int(block), "n_boot": int(n_boot),
+        "status": "OK",
+        "n": int(n),
+        "block": int(block),
+        "n_boot": int(n_boot),
         "observed_mean": float(np.mean(x)),
-        "ci_low": lo, "ci_high": hi,
+        "ci_low": lo,
+        "ci_high": hi,
         "p_mean_le_zero": float(np.mean(means <= 0.0)),
         "boot_std": float(np.std(means)),
     }
@@ -399,8 +472,7 @@ def ols_beta(y: NDArray[Any], x: NDArray[Any]) -> dict[str, Any]:
     beta = float(np.sum(xm * ym) / np.sum(xm * xm))
     alpha = float(np.mean(y) - beta * np.mean(x))
     resid = ym - beta * xm
-    ss_res = float(np.sum(resid ** 2))
-    ss_tot = float(np.sum(ym ** 2))
+    ss_res = float(np.sum(resid**2))
+    ss_tot = float(np.sum(ym**2))
     r2 = 1.0 - ss_res / ss_tot if ss_tot > 0 else None
-    return {"status": "OK", "alpha_bps": alpha, "beta": beta, "r2": r2,
-            "n": int(y.size)}
+    return {"status": "OK", "alpha_bps": alpha, "beta": beta, "r2": r2, "n": int(y.size)}

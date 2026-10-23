@@ -63,7 +63,11 @@ def load_bars(symbol: str, start: int, end: int) -> list[dict[str, Any]]:
 
 
 def sim_exp008(
-    bars: Sequence[dict[str, Any]], *, lookback: int, max_hold: int, cost_bps_rt: float,
+    bars: Sequence[dict[str, Any]],
+    *,
+    lookback: int,
+    max_hold: int,
+    cost_bps_rt: float,
     entry_delay: int = 0,
 ) -> list[dict[str, Any]]:
     """Independent reimplementation of the frozen long-only TSMOM contract.
@@ -82,15 +86,26 @@ def sim_exp008(
     def sig(i: int) -> bool:
         return i >= lookback and closes[i] > closes[i - lookback]
 
-    def emit(ei: int, epx: float, xi: int, xpx: float, ts: int, reason: str,
-             peak: float, trough: float) -> None:
+    def emit(
+        ei: int, epx: float, xi: int, xpx: float, ts: int, reason: str, peak: float, trough: float
+    ) -> None:
         gross = NOTIONAL * (xpx / epx - 1.0)
-        trades.append({
-            "entry_i": ei, "exit_i": xi, "entry_ts": int(bars[ei]["ts"]), "exit_ts": ts,
-            "entry": epx, "exit": xpx, "reason": reason,
-            "mfe_pct": (peak - epx) / epx * 100.0, "mae_pct": (epx - trough) / epx * 100.0,
-            "gross": gross, "fees": fee, "net": gross - fee,
-        })
+        trades.append(
+            {
+                "entry_i": ei,
+                "exit_i": xi,
+                "entry_ts": int(bars[ei]["ts"]),
+                "exit_ts": ts,
+                "entry": epx,
+                "exit": xpx,
+                "reason": reason,
+                "mfe_pct": (peak - epx) / epx * 100.0,
+                "mae_pct": (epx - trough) / epx * 100.0,
+                "gross": gross,
+                "fees": fee,
+                "net": gross - fee,
+            }
+        )
 
     open_i: int | None = None
     open_px = 0.0
@@ -111,8 +126,16 @@ def sim_exp008(
             peak = max(peak, float(bar["high"]))
             trough = min(trough, float(bar["low"]))
             if i - open_i >= max_hold:
-                emit(open_i, open_px, i, float(bar["close"]), int(bar["ts"]),
-                     "window_expiry", peak, trough)
+                emit(
+                    open_i,
+                    open_px,
+                    i,
+                    float(bar["close"]),
+                    int(bar["ts"]),
+                    "window_expiry",
+                    peak,
+                    trough,
+                )
                 open_i, pending_exit = None, False
         if i >= n - 1:
             break
@@ -123,18 +146,36 @@ def sim_exp008(
         elif open_i is not None and not pending_exit and not sig(i):
             pending_exit = True
     if open_i is not None:
-        emit(open_i, open_px, n - 1, float(bars[-1]["close"]), int(bars[-1]["ts"]),
-             "window_expiry", peak, trough)
+        emit(
+            open_i,
+            open_px,
+            n - 1,
+            float(bars[-1]["close"]),
+            int(bars[-1]["ts"]),
+            "window_expiry",
+            peak,
+            trough,
+        )
     return trades
 
 
 def summarize(trades: Sequence[dict[str, Any]]) -> dict[str, Any]:
     n = len(trades)
     if n == 0:
-        return {"trades": 0, "gross_usd": 0.0, "net_usd": 0.0, "expectancy_gross_bps": None,
-                "expectancy_net_bps": None, "profit_factor": None, "win_rate": None,
-                "payoff": None, "max_drawdown_bps": None, "avg_mfe_pct": None,
-                "avg_mae_pct": None, "avg_hold_days": None}
+        return {
+            "trades": 0,
+            "gross_usd": 0.0,
+            "net_usd": 0.0,
+            "expectancy_gross_bps": None,
+            "expectancy_net_bps": None,
+            "profit_factor": None,
+            "win_rate": None,
+            "payoff": None,
+            "max_drawdown_bps": None,
+            "avg_mfe_pct": None,
+            "avg_mae_pct": None,
+            "avg_hold_days": None,
+        }
     g = sum(t["gross"] for t in trades)
     net = sum(t["net"] for t in trades)
     wins = [t["net"] for t in trades if t["net"] > 0]
@@ -153,7 +194,8 @@ def summarize(trades: Sequence[dict[str, Any]]) -> dict[str, Any]:
         "profit_factor": round(sum(wins) / abs(sum(losses)), 4) if losses else None,
         "win_rate": round(len(wins) / n, 4),
         "payoff": round(statistics.fmean(wins) / abs(statistics.fmean(losses)), 4)
-        if wins and losses else None,
+        if wins and losses
+        else None,
         "max_drawdown_bps": round(worst / NOTIONAL * BPS, 3),
         "avg_mfe_pct": round(statistics.fmean([t["mfe_pct"] for t in trades]), 4),
         "avg_mae_pct": round(statistics.fmean([t["mae_pct"] for t in trades]), 4),
@@ -161,14 +203,22 @@ def summarize(trades: Sequence[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def run(split: str, *, cost: float, lookback: int = LOOKBACK, max_hold: int = MAX_HOLD,
-        entry_delay: int = 0, assets: Sequence[str] = ASSETS) -> list[dict[str, Any]]:
+def run(
+    split: str,
+    *,
+    cost: float,
+    lookback: int = LOOKBACK,
+    max_hold: int = MAX_HOLD,
+    entry_delay: int = 0,
+    assets: Sequence[str] = ASSETS,
+) -> list[dict[str, Any]]:
     start, end = SPLITS[split]
     out: list[dict[str, Any]] = []
     for sym in assets:  # BTC, ETH, SOL order (matches the builder's ledger ordering)
         bars = load_bars(sym, start, end)
-        for t in sim_exp008(bars, lookback=lookback, max_hold=max_hold, cost_bps_rt=cost,
-                            entry_delay=entry_delay):
+        for t in sim_exp008(
+            bars, lookback=lookback, max_hold=max_hold, cost_bps_rt=cost, entry_delay=entry_delay
+        ):
             t["symbol"] = sym
             out.append(t)
     return out
@@ -179,21 +229,32 @@ def run(split: str, *, cost: float, lookback: int = LOOKBACK, max_hold: int = MA
 
 def pnl_by_year(trades: Sequence[dict[str, Any]]) -> dict[str, Any]:
     from datetime import UTC, datetime
+
     by: dict[int, list[float]] = defaultdict(list)
     for t in trades:
         by[datetime.fromtimestamp(t["exit_ts"] / 1000, tz=UTC).year].append(t["net"])
-    return {str(y): {"trades": len(v), "net_usd": round(sum(v), 2),
-                     "expectancy_net_bps": round(sum(v) / len(v) / NOTIONAL * BPS, 3)}
-            for y, v in sorted(by.items())}
+    return {
+        str(y): {
+            "trades": len(v),
+            "net_usd": round(sum(v), 2),
+            "expectancy_net_bps": round(sum(v) / len(v) / NOTIONAL * BPS, 3),
+        }
+        for y, v in sorted(by.items())
+    }
 
 
 def pnl_by_asset(trades: Sequence[dict[str, Any]]) -> dict[str, Any]:
     by: dict[str, list[float]] = defaultdict(list)
     for t in trades:
         by[t["symbol"]].append(t["net"])
-    return {s: {"trades": len(v), "net_usd": round(sum(v), 2),
-                "expectancy_net_bps": round(sum(v) / len(v) / NOTIONAL * BPS, 3)}
-            for s, v in sorted(by.items())}
+    return {
+        s: {
+            "trades": len(v),
+            "net_usd": round(sum(v), 2),
+            "expectancy_net_bps": round(sum(v) / len(v) / NOTIONAL * BPS, 3),
+        }
+        for s, v in sorted(by.items())
+    }
 
 
 def concentration(trades: Sequence[dict[str, Any]]) -> dict[str, Any]:
@@ -203,6 +264,7 @@ def concentration(trades: Sequence[dict[str, Any]]) -> dict[str, Any]:
     if not pos or tot <= 0:
         return {}
     from datetime import UTC, datetime
+
     by_asset: dict[str, float] = defaultdict(float)
     by_year: dict[int, float] = defaultdict(float)
     for t in trades:
@@ -228,7 +290,7 @@ def regime_labels(benchmark: Sequence[OHLCV], *, lookback: int = 60) -> dict[int
     for i in range(len(benchmark)):
         if i + 1 < lookback:
             continue
-        snap = engine.detect(list(benchmark[i + 1 - lookback: i + 1]))
+        snap = engine.detect(list(benchmark[i + 1 - lookback : i + 1]))
         primary = snap.primary_regime or "UNKNOWN"
         if snap.is_active("BULL"):
             primary = "BULL"
@@ -243,9 +305,18 @@ def regime_labels(benchmark: Sequence[OHLCV], *, lookback: int = 60) -> dict[int
 
 
 def to_ohlcv(bars: Sequence[dict[str, Any]]) -> list[OHLCV]:
-    return [OHLCV(symbol="BTCUSDT", timestamp=int(b["ts"]), open=float(b["open"]),
-                  high=float(b["high"]), low=float(b["low"]), close=float(b["close"]),
-                  volume=float(b["volume"])) for b in bars]
+    return [
+        OHLCV(
+            symbol="BTCUSDT",
+            timestamp=int(b["ts"]),
+            open=float(b["open"]),
+            high=float(b["high"]),
+            low=float(b["low"]),
+            close=float(b["close"]),
+            volume=float(b["volume"]),
+        )
+        for b in bars
+    ]
 
 
 def regime_pnl(trades: Sequence[dict[str, Any]], labels: dict[int, str]) -> dict[str, Any]:
@@ -253,9 +324,14 @@ def regime_pnl(trades: Sequence[dict[str, Any]], labels: dict[int, str]) -> dict
     for t in trades:
         day = (t["entry_ts"] // MS_PER_DAY) * MS_PER_DAY
         buckets[labels.get(day, "UNKNOWN")].append(t["net"])
-    return {r: {"trades": len(v), "net_usd": round(sum(v), 2),
-                "expectancy_net_bps": round(sum(v) / len(v) / NOTIONAL * BPS, 3)}
-            for r, v in sorted(buckets.items())}
+    return {
+        r: {
+            "trades": len(v),
+            "net_usd": round(sum(v), 2),
+            "expectancy_net_bps": round(sum(v) / len(v) / NOTIONAL * BPS, 3),
+        }
+        for r, v in sorted(buckets.items())
+    }
 
 
 def exposure(trades: Sequence[dict[str, Any]], total_bars: int) -> float:
@@ -275,14 +351,17 @@ def buy_and_hold(symbol: str, start: int, end: int) -> dict[str, Any]:
         eq = r
         peak = max(peak, eq)
         worst = max(worst, peak - eq)
-    return {"symbol": symbol,
-            "ret_bps": round((closes[-1] / entry - 1.0) * BPS, 2),
-            "max_dd_bps": round(worst * BPS, 2)}
+    return {
+        "symbol": symbol,
+        "ret_bps": round((closes[-1] / entry - 1.0) * BPS, 2),
+        "max_dd_bps": round(worst * BPS, 2),
+    }
 
 
 def corpus_audit() -> dict[str, Any]:
     """Independently re-derive the corpus manifest: digest, shas, completeness."""
     import hashlib
+
     shards = sorted(p for p in CORPUS.glob("*.json") if not p.name.startswith("_"))
 
     def sha(path: Path) -> str:
@@ -305,7 +384,9 @@ def corpus_audit() -> dict[str, Any]:
         misaligned += sum(1 for t in ts if t % MS_PER_DAY != 0)
         listings[p.stem] = ts[0]
     return {
-        "shards": len(shards), "bars": bars, "duplicate_bars": dup,
+        "shards": len(shards),
+        "bars": bars,
+        "duplicate_bars": dup,
         "non_utc_aligned_ts": misaligned,
         "digest_recomputed": comb.hexdigest(),
         "digest_matches_manifest": comb.hexdigest() == man.get("corpus_digest"),
@@ -337,10 +418,13 @@ def pit_audit() -> dict[str, Any]:
                     violations.append(f"{split}/{sym} entry {ei}: entry price != open")
                 if int(bars[xi]["ts"]) < int(bars[ei]["ts"]):
                     violations.append(f"{split}/{sym} exit {xi}: before entry")
-                if t["reason"] == "signal_flip" and xi > 0 and closes[xi - 1] > closes[xi - 1 - LOOKBACK]:
+                if (
+                    t["reason"] == "signal_flip"
+                    and xi > 0
+                    and closes[xi - 1] > closes[xi - 1 - LOOKBACK]
+                ):
                     violations.append(f"{split}/{sym} exit {xi}: signal still true")
-    return {"trades_checked": checks, "violations": len(violations),
-            "examples": violations[:5]}
+    return {"trades_checked": checks, "violations": len(violations), "examples": violations[:5]}
 
 
 def survivorship() -> dict[str, Any]:
@@ -390,8 +474,17 @@ def trend_baseline(split_start: int, split_end: int, *, cost: float) -> dict[str
         pending_in = pending_out = False
 
         def add(ei: int, xi: int, g: float, fee_usd: float, symbol: str) -> None:
-            all_trades.append({"entry_i": ei, "exit_i": xi, "gross": g, "net": g - fee_usd,
-                               "mfe_pct": 0.0, "mae_pct": 0.0, "symbol": symbol})
+            all_trades.append(
+                {
+                    "entry_i": ei,
+                    "exit_i": xi,
+                    "gross": g,
+                    "net": g - fee_usd,
+                    "mfe_pct": 0.0,
+                    "mae_pct": 0.0,
+                    "symbol": symbol,
+                }
+            )
 
         for i in range(len(bars)):
             op = float(bars[i]["open"])
@@ -408,13 +501,19 @@ def trend_baseline(split_start: int, split_end: int, *, cost: float) -> dict[str
             elif not want and open_i is not None:
                 pending_out = True
         if open_i is not None:
-            add(open_i, len(bars) - 1,
-                NOTIONAL * (float(bars[-1]["close"]) / open_px - 1.0), fee, sym)
+            add(
+                open_i,
+                len(bars) - 1,
+                NOTIONAL * (float(bars[-1]["close"]) / open_px - 1.0),
+                fee,
+                sym,
+            )
     return summarize(all_trades)
 
 
 def recompute_code_hash() -> dict[str, Any]:
     import hashlib
+
     files = (
         "src/trading_bot/research/diversified/__init__.py",
         "src/trading_bot/research/diversified/data.py",
@@ -439,8 +538,11 @@ def main() -> None:
     cost = cost_model_v3_rt_bps()
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "tmp").mkdir(parents=True, exist_ok=True)
-    report: dict[str, Any] = {"verifier": "ARP-007", "cost_bps_rt": cost,
-                              "cost_model": "COST_MODEL_V3"}
+    report: dict[str, Any] = {
+        "verifier": "ARP-007",
+        "cost_bps_rt": cost,
+        "cost_model": "COST_MODEL_V3",
+    }
 
     dev_tr = run("DEV", cost=cost)
     val_tr = run("VALIDATION", cost=cost)
@@ -452,9 +554,11 @@ def main() -> None:
     # cost stress: gross expectation minus m * cost (cost scales linearly on notional)
     gross_dev = report["DEV"]["expectancy_gross_bps"]
     report["cost_stress"] = {
-        f"{m}x": {"cost_bps_rt": round(cost * m, 4),
-                  "expectancy_net_bps": round(gross_dev - cost * m, 4),
-                  "positive": gross_dev - cost * m > 0}
+        f"{m}x": {
+            "cost_bps_rt": round(cost * m, 4),
+            "expectancy_net_bps": round(gross_dev - cost * m, 4),
+            "positive": gross_dev - cost * m > 0,
+        }
         for m in (0.5, 1.0, 1.25, 1.5, 2.0)
     }
 
@@ -469,8 +573,9 @@ def main() -> None:
         rob[f"cost_{m}x"] = summarize(run("VALIDATION", cost=cost * m))
     for sym in ASSETS:
         rob[f"asset_{sym}"] = summarize(run("VALIDATION", cost=cost, assets=(sym,)))
-    positives = [v["expectancy_net_bps"] for v in rob.values()
-                 if v["expectancy_net_bps"] is not None]
+    positives = [
+        v["expectancy_net_bps"] for v in rob.values() if v["expectancy_net_bps"] is not None
+    ]
     report["robustness"] = rob
     report["robustness_summary"] = {
         "perturbations": len(positives),
@@ -482,8 +587,9 @@ def main() -> None:
     # builder's own basis: no warm-up reset at the internal DEV/VALIDATION boundary)
     full: list[dict[str, Any]] = []
     for sym in ASSETS:
-        for t in sim_exp008(load_bars(sym, _2019, _2025_07), lookback=LOOKBACK,
-                            max_hold=MAX_HOLD, cost_bps_rt=cost):
+        for t in sim_exp008(
+            load_bars(sym, _2019, _2025_07), lookback=LOOKBACK, max_hold=MAX_HOLD, cost_bps_rt=cost
+        ):
             t["symbol"] = sym
             full.append(t)
     report["temporal"] = pnl_by_year(full)
@@ -492,9 +598,7 @@ def main() -> None:
     bench = to_ohlcv(load_bars("BTCUSDT", _2019, _2025_07))
     labels = regime_labels(bench)
     report["regime"] = regime_pnl(full, labels)
-    report["regime_sample_warning"] = [
-        r for r, v in report["regime"].items() if v["trades"] < 10
-    ]
+    report["regime_sample_warning"] = [r for r, v in report["regime"].items() if v["trades"] < 10]
 
     # exposure / long-bias
     report["exposure"] = {
@@ -510,7 +614,9 @@ def main() -> None:
         "strategy_trades": len(full),
         "strategy_exposure": round(
             sum(t["exit_i"] - t["entry_i"] for t in full)
-            / sum(len(load_bars(s, _2019, _2025_07)) for s in ASSETS), 4),
+            / sum(len(load_bars(s, _2019, _2025_07)) for s in ASSETS),
+            4,
+        ),
     }
 
     # §14 long-bias + §15 baselines (reference only; no subjective winner)
@@ -520,7 +626,9 @@ def main() -> None:
         "regime_expectancy_bps": {r: v["expectancy_net_bps"] for r, v in report["regime"].items()},
         "bull_share_of_positive_net": round(
             report["regime"].get("BULL", {}).get("net_usd", 0.0)
-            / max(1.0, sum(max(0.0, v["net_usd"]) for v in report["regime"].values())), 4),
+            / max(1.0, sum(max(0.0, v["net_usd"]) for v in report["regime"].values())),
+            4,
+        ),
     }
     report["baselines"]["trend_ema20_50"] = trend_baseline(_2019, _2025_07, cost=cost)
     report["code_hash_recomputed"] = recompute_code_hash()
@@ -532,25 +640,37 @@ def main() -> None:
 
     # §5 cross-check the builder's own RESULTS.json (read-only; the verifier does
     # NOT use it to compute anything)
-    builder = json.loads((REPO / "reports/alpha-diversified-v1/RESULTS.json").read_text(encoding="utf-8"))
+    builder = json.loads(
+        (REPO / "reports/alpha-diversified-v1/RESULTS.json").read_text(encoding="utf-8")
+    )
     b8 = builder["experiments"]["EXP-ARP-008"]
     report["cross_check"] = {
         "DEV_match": b8["DEV"]["trades"] == report["DEV"]["trades"]
         and b8["DEV"]["expectancy_gross_bps"] == report["DEV"]["expectancy_gross_bps"]
         and b8["DEV"]["expectancy_net_bps"] == report["DEV"]["expectancy_net_bps"]
         and b8["DEV"]["profit_factor"] == report["DEV"]["profit_factor"],
-        "VALIDATION_match": b8["VALIDATION"]["expectancy_net_bps"] == report["VALIDATION"]["expectancy_net_bps"]
+        "VALIDATION_match": b8["VALIDATION"]["expectancy_net_bps"]
+        == report["VALIDATION"]["expectancy_net_bps"]
         and b8["VALIDATION"]["trades"] == report["VALIDATION"]["trades"],
         "builder_code_hash": builder["code_hash"],
         "builder_cost_bps_rt": builder["cost_bps_rt"],
     }
 
     (OUT / "tmp/independent_verify.json").write_text(
-        json.dumps(report, indent=2, sort_keys=True, default=str), encoding="utf-8")
-    print(json.dumps({"DEV": report["DEV"], "VALIDATION": report["VALIDATION"],
-                      "robustness_summary": report["robustness_summary"],
-                      "concentration_full": report["concentration_full"]},
-                     indent=2, default=str))
+        json.dumps(report, indent=2, sort_keys=True, default=str), encoding="utf-8"
+    )
+    print(
+        json.dumps(
+            {
+                "DEV": report["DEV"],
+                "VALIDATION": report["VALIDATION"],
+                "robustness_summary": report["robustness_summary"],
+                "concentration_full": report["concentration_full"],
+            },
+            indent=2,
+            default=str,
+        )
+    )
 
 
 if __name__ == "__main__":

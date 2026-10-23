@@ -71,8 +71,13 @@ def _corpus_5m(root: Path, label: str, tf: str) -> dict[str, Any]:
             shards.append({"file": p.name, "sha256": _sha(p)})
         if not rows:
             continue
-        rec = {"asset": sym, "timeframe": tf, "provider": PROVIDER,
-               "corpus": label, "shards": shards}
+        rec = {
+            "asset": sym,
+            "timeframe": tf,
+            "provider": PROVIDER,
+            "corpus": label,
+            "shards": shards,
+        }
         rec.update(_audit(rows, TF_MS[tf]))
         out[sym] = rec
     return out
@@ -88,8 +93,13 @@ def _expansion_1h() -> dict[str, Any]:
             shards.append({"file": p.name, "sha256": _sha(p)})
         if not rows:
             continue
-        rec = {"asset": sym, "timeframe": "1h", "provider": PROVIDER,
-               "corpus": "expansion", "shards": shards}
+        rec = {
+            "asset": sym,
+            "timeframe": "1h",
+            "provider": PROVIDER,
+            "corpus": "expansion",
+            "shards": shards,
+        }
         rec.update(_audit(rows, TF_MS["1h"]))
         rec["shards"] = shards
         out[sym] = rec
@@ -106,8 +116,12 @@ def _derived_htf() -> dict[str, Any]:
                 rows = [{"ts": b.open_ms} for b in bars]
                 a = _audit(rows, TF_MS[tf])
                 rec["assets"][key] = {
-                    "first_ts": a["first_ts"], "last_ts": a["last_ts"], "bars": a["bars"],
-                    "calendar_days": a["calendar_days"], "gaps": a["gaps"], "duplicates": a["duplicates"],
+                    "first_ts": a["first_ts"],
+                    "last_ts": a["last_ts"],
+                    "bars": a["bars"],
+                    "calendar_days": a["calendar_days"],
+                    "gaps": a["gaps"],
+                    "duplicates": a["duplicates"],
                 }
             out[f"{split}_{tf}"] = rec
     return out

@@ -87,16 +87,36 @@ def main() -> int:
         m = r["metrics"]
         rows.append(
             [
-                r["experiment_id"], r["candidate_id"], r["hypothesis_id"], r["timeframe"],
-                m.get("trades"), fmt(m.get("gross_bps")), fmt(m.get("net_bps")),
-                fmt(m.get("edge_cost_ratio"), 3), fmt(m.get("profit_factor"), 3),
-                fmt(m.get("t_stat"), 3), fmt(m.get("net_bps_ex_best_trade")),
+                r["experiment_id"],
+                r["candidate_id"],
+                r["hypothesis_id"],
+                r["timeframe"],
+                m.get("trades"),
+                fmt(m.get("gross_bps")),
+                fmt(m.get("net_bps")),
+                fmt(m.get("edge_cost_ratio"), 3),
+                fmt(m.get("profit_factor"), 3),
+                fmt(m.get("t_stat"), 3),
+                fmt(m.get("net_bps_ex_best_trade")),
                 L.edge_cost_band(float(m.get("edge_cost_ratio", 0) or 0)),
             ]
         )
     lines += table(
         rows,
-        ["exp", "candidate", "hyp", "tf", "n", "gross", "net", "ratio", "PF", "t", "net_ex_best", "band"],
+        [
+            "exp",
+            "candidate",
+            "hyp",
+            "tf",
+            "n",
+            "gross",
+            "net",
+            "ratio",
+            "PF",
+            "t",
+            "net_ex_best",
+            "band",
+        ],
     )
     lines += [
         "",
@@ -122,7 +142,8 @@ def main() -> int:
         d, s = v["discovery"], v["validation"]
         rows.append(
             [
-                v["candidate_id"], json.dumps(v["parameters"]),
+                v["candidate_id"],
+                json.dumps(v["parameters"]),
                 f"{d.get('trades')}/{s.get('trades')}",
                 f"{fmt(d.get('gross_bps'))}/{fmt(s.get('gross_bps'))}",
                 f"{fmt(d.get('net_bps'))}/{fmt(s.get('net_bps'))}",
@@ -131,7 +152,10 @@ def main() -> int:
                 v["pass"],
             ]
         )
-    lines += table(rows, ["candidate", "parameters", "n D/V", "gross D/V", "net D/V", "ratio D/V", "PF D/V", "pass"])
+    lines += table(
+        rows,
+        ["candidate", "parameters", "n D/V", "gross D/V", "net D/V", "ratio D/V", "PF D/V", "pass"],
+    )
     lines += [
         "",
         "## Why each survivor failed validation",
@@ -170,13 +194,43 @@ def main() -> int:
     for d in diag["diagnostics"]:
         wf = d["walk_forward"]
         for f in wf["folds"]:
-            wf_rows.append([d["candidate_id"], json.dumps(d["parameters"]), f["test_window"], f["trades"], fmt(f["net_bps"]), fmt(f["profit_factor"], 3), fmt(f["max_dd_bps"])])
+            wf_rows.append(
+                [
+                    d["candidate_id"],
+                    json.dumps(d["parameters"]),
+                    f["test_window"],
+                    f["trades"],
+                    fmt(f["net_bps"]),
+                    fmt(f["profit_factor"], 3),
+                    fmt(f["max_dd_bps"]),
+                ]
+            )
         pn = d["parameter_neighbourhood"]
-        ps_rows.append([d["candidate_id"], json.dumps(d["parameters"]), pn.get("positive_cells"), pn.get("total_cells"), pn.get("plateau_fraction"), pn.get("verdict")])
+        ps_rows.append(
+            [
+                d["candidate_id"],
+                json.dumps(d["parameters"]),
+                pn.get("positive_cells"),
+                pn.get("total_cells"),
+                pn.get("plateau_fraction"),
+                pn.get("verdict"),
+            ]
+        )
         for reg, rv in (d["regime"] or {}).items():
-            rg_rows.append([d["candidate_id"], reg, rv["trades"], fmt(rv["net_bps"]), rv["win_rate"], rv["verdict"]])
+            rg_rows.append(
+                [
+                    d["candidate_id"],
+                    reg,
+                    rv["trades"],
+                    fmt(rv["net_bps"]),
+                    rv["win_rate"],
+                    rv["verdict"],
+                ]
+            )
         for name, cv in d["cost_stress"]["scenarios"].items():
-            cs_rows.append([d["candidate_id"], name, cv["cost_bps"], cv["trades"], fmt(cv["net_bps"])])
+            cs_rows.append(
+                [d["candidate_id"], name, cv["cost_bps"], cv["trades"], fmt(cv["net_bps"])]
+            )
 
     (OUT / "WALK_FORWARD_RESULTS.md").write_text(
         "\n".join(
@@ -187,9 +241,24 @@ def main() -> int:
                 "(no fitting, no train/test contamination). Fold test windows are individual",
                 "DISCOVERY weeks.",
                 "",
-                *table(wf_rows, ["candidate", "parameters", "test window", "trades", "net bps", "PF", "maxDD bps"]),
+                *table(
+                    wf_rows,
+                    [
+                        "candidate",
+                        "parameters",
+                        "test window",
+                        "trades",
+                        "net bps",
+                        "PF",
+                        "maxDD bps",
+                    ],
+                ),
                 "",
-                "Verdicts: " + ", ".join(f"{d['candidate_id']}={d['walk_forward']['verdict']} ({d['walk_forward']['positive_folds']}/{d['walk_forward']['total_folds']} folds positive)" for d in diag["diagnostics"]),
+                "Verdicts: "
+                + ", ".join(
+                    f"{d['candidate_id']}={d['walk_forward']['verdict']} ({d['walk_forward']['positive_folds']}/{d['walk_forward']['total_folds']} folds positive)"
+                    for d in diag["diagnostics"]
+                ),
                 "",
                 "DIAGNOSTIC ONLY: these candidates never passed validation, so no formal",
                 "walk-forward gate was awarded.",
@@ -208,7 +277,17 @@ def main() -> int:
                 "neighbourhood is positive in most cells; ISOLATED_SPIKE means only the",
                 "selected point works.",
                 "",
-                *table(ps_rows, ["candidate", "frozen parameters", "positive cells", "total cells", "plateau fraction", "verdict"]),
+                *table(
+                    ps_rows,
+                    [
+                        "candidate",
+                        "frozen parameters",
+                        "positive cells",
+                        "total cells",
+                        "plateau fraction",
+                        "verdict",
+                    ],
+                ),
                 "",
                 "DIAGNOSTIC ONLY.",
             ]
@@ -224,7 +303,9 @@ def main() -> int:
                 "Regime labels are ONLINE and PIT-safe (the runtime's own",
                 "`classify_regime` thresholds applied per bar). Used for analysis only.",
                 "",
-                *table(rg_rows, ["candidate", "regime", "trades", "net bps", "win rate", "verdict"]),
+                *table(
+                    rg_rows, ["candidate", "regime", "trades", "net bps", "win rate", "verdict"]
+                ),
                 "",
                 "DIAGNOSTIC ONLY.",
             ]
@@ -272,9 +353,12 @@ def main() -> int:
                 *table(
                     [
                         [
-                            d["candidate_id"], json.dumps(d["parameters"]),
-                            d["walk_forward"]["verdict"], d["cost_stress"]["verdict"],
-                            d["cost_stress"]["max_survivable_cost_bps"], d["slippage_stress"]["verdict"],
+                            d["candidate_id"],
+                            json.dumps(d["parameters"]),
+                            d["walk_forward"]["verdict"],
+                            d["cost_stress"]["verdict"],
+                            d["cost_stress"]["max_survivable_cost_bps"],
+                            d["slippage_stress"]["verdict"],
                             d["parameter_neighbourhood"].get("verdict"),
                             fmt((d["bootstrap"].get("ci95_net_bps") or [None])[0]),
                             fmt((d["bootstrap"].get("ci95_net_bps") or [None, None])[1]),
@@ -282,7 +366,18 @@ def main() -> int:
                         ]
                         for d in diag["diagnostics"]
                     ],
-                    ["candidate", "parameters", "walk-fwd", "cost stress", "max survivable cost", "slippage", "params", "boot P2.5", "boot P97.5", "P(net<=0)"],
+                    [
+                        "candidate",
+                        "parameters",
+                        "walk-fwd",
+                        "cost stress",
+                        "max survivable cost",
+                        "slippage",
+                        "params",
+                        "boot P2.5",
+                        "boot P97.5",
+                        "P(net<=0)",
+                    ],
                 ),
                 "",
                 "Both survivors are bootstrap-fragile: the 95% block-bootstrap interval for net",
@@ -324,8 +419,14 @@ def main() -> int:
             "timeframe": r["timeframe"],
             "parameters": r["parameters"],
             "state": (
-                "REJECTED_VALIDATION" if r["metrics"].get("trades", 0) >= L.MIN_TRADES and r["metrics"].get("net_bps", -1) > 0
-                else ("REJECTED_DISCOVERY" if r["metrics"].get("trades", 0) >= L.MIN_TRADES else "MAGNITUDE_REJECTED")
+                "REJECTED_VALIDATION"
+                if r["metrics"].get("trades", 0) >= L.MIN_TRADES
+                and r["metrics"].get("net_bps", -1) > 0
+                else (
+                    "REJECTED_DISCOVERY"
+                    if r["metrics"].get("trades", 0) >= L.MIN_TRADES
+                    else "MAGNITUDE_REJECTED"
+                )
             ),
             "discovery_net_bps": r["metrics"].get("net_bps"),
             "discovery_ratio": r["metrics"].get("edge_cost_ratio"),
@@ -355,11 +456,24 @@ def main() -> int:
         "never used.",
         "",
         *table(
-            [[s["candidate_id"], s["hypothesis_id"], s["timeframe"], json.dumps(s["parameters"]), fmt(s["discovery_net_bps"]), fmt(s["discovery_ratio"], 3), s["state"]] for s in states],
+            [
+                [
+                    s["candidate_id"],
+                    s["hypothesis_id"],
+                    s["timeframe"],
+                    json.dumps(s["parameters"]),
+                    fmt(s["discovery_net_bps"]),
+                    fmt(s["discovery_ratio"], 3),
+                    s["state"],
+                ]
+                for s in states
+            ],
             ["candidate", "hypothesis", "tf", "parameters", "D net", "D ratio", "state"],
         ),
     ]
-    (OUT / "STRATEGY_CANDIDATE_REGISTRY.md").write_text("\n".join(reg_lines) + "\n", encoding="utf-8")
+    (OUT / "STRATEGY_CANDIDATE_REGISTRY.md").write_text(
+        "\n".join(reg_lines) + "\n", encoding="utf-8"
+    )
 
     # ---------------- GENERALIZATION DIAGNOSIS (CASO C) ----------------
     gen_lines = [
@@ -462,7 +576,10 @@ def main() -> int:
                 "",
                 "Split hashes:",
                 "",
-                *[f"- {k}: {v['sha256']} ({v['files']} files, {v['rows']} rows)" for k, v in summ["dataset_hashes"].items()],
+                *[
+                    f"- {k}: {v['sha256']} ({v['files']} files, {v['rows']} rows)"
+                    for k, v in summ["dataset_hashes"].items()
+                ],
             ]
         )
         + "\n",
@@ -565,21 +682,56 @@ def main() -> int:
         *table(
             [
                 [
-                    r["candidate_id"], r["hypothesis_id"], r["family"], r["timeframe"],
-                    json.dumps(r["parameters"]), r["metrics"].get("trades"),
+                    r["candidate_id"],
+                    r["hypothesis_id"],
+                    r["family"],
+                    r["timeframe"],
+                    json.dumps(r["parameters"]),
+                    r["metrics"].get("trades"),
                     fmt(r["metrics"].get("trades_per_day"), 2),
-                    fmt(r["metrics"].get("gross_bps")), COST, fmt(r["metrics"].get("net_bps")),
+                    fmt(r["metrics"].get("gross_bps")),
+                    COST,
+                    fmt(r["metrics"].get("net_bps")),
                     fmt(r["metrics"].get("edge_cost_ratio"), 3),
-                    fmt(r["metrics"].get("gross_pnl_usdt")), fmt(r["metrics"].get("net_pnl_usdt")),
-                    fmt(r["metrics"].get("profit_factor"), 3), fmt(r["metrics"].get("sharpe"), 3),
-                    fmt(r["metrics"].get("sortino"), 3), fmt(r["metrics"].get("max_dd_bps")),
-                    fmt(r["metrics"].get("avg_hold_min"), 1), fmt(r["metrics"].get("avg_mfe_bps")),
+                    fmt(r["metrics"].get("gross_pnl_usdt")),
+                    fmt(r["metrics"].get("net_pnl_usdt")),
+                    fmt(r["metrics"].get("profit_factor"), 3),
+                    fmt(r["metrics"].get("sharpe"), 3),
+                    fmt(r["metrics"].get("sortino"), 3),
+                    fmt(r["metrics"].get("max_dd_bps")),
+                    fmt(r["metrics"].get("avg_hold_min"), 1),
+                    fmt(r["metrics"].get("avg_mfe_bps")),
                     fmt(r["metrics"].get("avg_mae_bps")),
-                    "REJECTED_VALIDATION" if r["metrics"].get("net_bps", -1) > 0 and r["metrics"].get("trades", 0) >= L.MIN_TRADES else "REJECTED_DISCOVERY",
+                    "REJECTED_VALIDATION"
+                    if r["metrics"].get("net_bps", -1) > 0
+                    and r["metrics"].get("trades", 0) >= L.MIN_TRADES
+                    else "REJECTED_DISCOVERY",
                 ]
                 for r in top5
             ],
-            ["candidate", "hyp", "family", "tf", "parameters", "n", "n/day", "gross", "cost", "net", "ratio", "gross PnL", "net PnL", "PF", "Sharpe", "Sortino", "maxDD", "hold min", "MFE", "MAE", "status"],
+            [
+                "candidate",
+                "hyp",
+                "family",
+                "tf",
+                "parameters",
+                "n",
+                "n/day",
+                "gross",
+                "cost",
+                "net",
+                "ratio",
+                "gross PnL",
+                "net PnL",
+                "PF",
+                "Sharpe",
+                "Sortino",
+                "maxDD",
+                "hold min",
+                "MFE",
+                "MAE",
+                "status",
+            ],
         ),
         "",
         "## Signal / Horizon / Cost diagnosis (§53)",

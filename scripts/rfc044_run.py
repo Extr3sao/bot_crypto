@@ -355,8 +355,7 @@ def build_ledger(entry: dict[str, Any], generated_at: str) -> dict[str, Any]:
                 "trigger": "NONE",
                 "decision": "NO_ACTION",
                 "reason": (
-                    "NO_NEW_EVENT = TRUE: no post-RFC-042 evidence or trigger A-E "
-                    "has been recorded"
+                    "NO_NEW_EVENT = TRUE: no post-RFC-042 evidence or trigger A-E has been recorded"
                 ),
             },
         ],
@@ -554,7 +553,8 @@ def false_success_audit(state: dict[str, Any], registry: dict[str, Any]) -> dict
         "benchmark_missing": missing_benchmark,
         "strategy_implemented": False,
         "freeze_released_without_pass": state["alpha_research_freeze"] != rw.ALPHA_RESEARCH_FREEZE,
-        "more_than_one_candidate_authorized": state["authorized_candidates"] > rw.MAX_AUTHORIZED_CANDIDATES,
+        "more_than_one_candidate_authorized": state["authorized_candidates"]
+        > rw.MAX_AUTHORIZED_CANDIDATES,
     }
     return {
         "triggers": list(rw.FALSE_SUCCESS_TRIGGERS),

@@ -132,8 +132,12 @@ def config_hash() -> str:
 
 def validate_manifests() -> dict[str, Any]:
     """Verify the frozen ARP-003 manifests still match config / data / cost."""
-    report: dict[str, Any] = {"config_hash": config_hash(), "dataset_fingerprint": C.corpus_digest(),
-                              "cost_bps_rt": C.cost_model_v3_rt_bps(), "experiments": {}}
+    report: dict[str, Any] = {
+        "config_hash": config_hash(),
+        "dataset_fingerprint": C.corpus_digest(),
+        "cost_bps_rt": C.cost_model_v3_rt_bps(),
+        "experiments": {},
+    }
     problems: list[str] = []
     for exp_id in IDENTITY:
         manifest_path = V12_EXP / exp_id / "MANIFEST.json"
@@ -200,7 +204,9 @@ def run_split(
     return out
 
 
-def summarize(exp_id: str, split: str, params: dict[str, Any], cost_bps_rt: float) -> dict[str, Any]:
+def summarize(
+    exp_id: str, split: str, params: dict[str, Any], cost_bps_rt: float
+) -> dict[str, Any]:
     trades = run_split(exp_id, split, params, cost_bps_rt=cost_bps_rt)
     return C.summarize_run(trades, cost_bps_rt=cost_bps_rt)
 
@@ -293,9 +299,13 @@ def cost_gate(exp_id: str, params: dict[str, Any], base_bps: float) -> dict[str,
         result = "REJECT_COST_FRAGILE"
     else:
         result = "REJECT_COSTS"
-    return {"result": result, "base_cost_bps_rt": round(base_bps, 4),
-            "gross_kill_bps": GROSS_KILL_BPS, "break_even_cost_bps": break_even,
-            "stress": stress}
+    return {
+        "result": result,
+        "base_cost_bps_rt": round(base_bps, 4),
+        "gross_kill_bps": GROSS_KILL_BPS,
+        "break_even_cost_bps": break_even,
+        "stress": stress,
+    }
 
 
 def validation_verdict(dev: dict[str, Any], val: dict[str, Any]) -> dict[str, Any]:
@@ -303,14 +313,24 @@ def validation_verdict(dev: dict[str, Any], val: dict[str, Any]) -> dict[str, An
     dg, vg = d["expectancy_gross_bps"], v["expectancy_gross_bps"]
     checks = {
         "val_gross_positive": bool(vg is not None and vg > 0),
-        "no_material_collapse": bool(dg is not None and vg is not None and dg > 0 and vg >= 0.5 * dg),
-        "val_net_positive": bool(v["expectancy_net_bps"] is not None and v["expectancy_net_bps"] > 0),
+        "no_material_collapse": bool(
+            dg is not None and vg is not None and dg > 0 and vg >= 0.5 * dg
+        ),
+        "val_net_positive": bool(
+            v["expectancy_net_bps"] is not None and v["expectancy_net_bps"] > 0
+        ),
     }
     passed = all(checks.values())
-    return {"result": "PASS" if passed else "REJECT_VALIDATION", "checks": checks,
-            "dev_gross_bps": dg, "val_gross_bps": vg,
-            "dev_net_bps": d["expectancy_net_bps"], "val_net_bps": v["expectancy_net_bps"],
-            "dev_trades": d["trades"], "val_trades": v["trades"]}
+    return {
+        "result": "PASS" if passed else "REJECT_VALIDATION",
+        "checks": checks,
+        "dev_gross_bps": dg,
+        "val_gross_bps": vg,
+        "dev_net_bps": d["expectancy_net_bps"],
+        "val_net_bps": v["expectancy_net_bps"],
+        "dev_trades": d["trades"],
+        "val_trades": v["trades"],
+    }
 
 
 def robustness(exp_id: str, params: dict[str, Any], base_bps: float) -> dict[str, Any]:
@@ -323,8 +343,12 @@ def robustness(exp_id: str, params: dict[str, Any], base_bps: float) -> dict[str
             run_split(exp_id, "DEV", merged, cost_bps_rt=base_bps), cost_bps_rt=base_bps
         )["combined"]
         g = comb["expectancy_gross_bps"]
-        out[name] = {"params": merged, "trades": comb["trades"],
-                     "expectancy_gross_bps": g, "expectancy_net_bps": comb["expectancy_net_bps"]}
+        out[name] = {
+            "params": merged,
+            "trades": comb["trades"],
+            "expectancy_gross_bps": g,
+            "expectancy_net_bps": comb["expectancy_net_bps"],
+        }
         if g is not None:
             gross_bps.append(g)
     base = C.summarize_run(
@@ -350,8 +374,12 @@ def robustness(exp_id: str, params: dict[str, Any], base_bps: float) -> dict[str
     }
     positives = [g for g in gross_bps if g > 0]
     one_point = bool(base is not None and base > 0 and len(positives) <= 1)
-    return {"result": "REJECT_FRAGILE" if one_point else "PASS", "one_point_optimum": one_point,
-            "base_gross_bps": base, "variants": out}
+    return {
+        "result": "REJECT_FRAGILE" if one_point else "PASS",
+        "one_point_optimum": one_point,
+        "base_gross_bps": base,
+        "variants": out,
+    }
 
 
 # ------------------------------------------------------------------ capture
@@ -369,10 +397,13 @@ def capture_ratio(exp_id: str, params: dict[str, Any], dev: dict[str, Any]) -> d
     measured = dev["combined"]["expectancy_gross_bps"]
     available = round(statistics.fmean(avail), 4) if avail else None
     ratio = round(measured / available, 4) if measured and available else None
-    return {"measured_gross_bps_per_trade": measured, "available_1d_move_bps": available,
-            "capture_ratio": ratio,
-            "caveat": "available move is the mean |1-day move| over all DEV days; a mechanism "
-            "captures only a fraction and this is descriptive, not evidence of edge."}
+    return {
+        "measured_gross_bps_per_trade": measured,
+        "available_1d_move_bps": available,
+        "capture_ratio": ratio,
+        "caveat": "available move is the mean |1-day move| over all DEV days; a mechanism "
+        "captures only a fraction and this is descriptive, not evidence of edge.",
+    }
 
 
 # ------------------------------------------------------------------ pipeline
@@ -383,8 +414,15 @@ def run_experiment(exp_id: str) -> dict[str, Any]:
     identity = IDENTITY[exp_id]
     params = {
         "EXP-ARP-007": {"atr_period": 14, "stop_atr": 1.0, "max_hold_days": 3},
-        "EXP-ARP-010": {"atr_period": 14, "vol_lookback_days": 60, "vol_z_entry": 2.0,
-                        "ret_atr": 1.0, "stop_atr": 2.0, "target_atr": 1.0, "max_hold_days": 2},
+        "EXP-ARP-010": {
+            "atr_period": 14,
+            "vol_lookback_days": 60,
+            "vol_z_entry": 2.0,
+            "ret_atr": 1.0,
+            "stop_atr": 2.0,
+            "target_atr": 1.0,
+            "max_hold_days": 2,
+        },
     }[exp_id]
     base_cost = C.cost_model_v3_rt_bps()
 
@@ -396,8 +434,13 @@ def run_experiment(exp_id: str) -> dict[str, Any]:
     dev["capture"] = capture_ratio(exp_id, params, dev)
     write_json(out_dir / "DEV.json", dev)
 
-    decision: dict[str, Any] = {"experiment_id": exp_id, "identity": identity, "stages": {},
-                                "oos_opened": False, "final": None}
+    decision: dict[str, Any] = {
+        "experiment_id": exp_id,
+        "identity": identity,
+        "stages": {},
+        "oos_opened": False,
+        "final": None,
+    }
     decision["stages"]["DEV"] = dev["verdict"]["result"]
     if dev["verdict"]["result"] != "PASS":
         decision["final"] = dev["verdict"]["result"]
@@ -459,8 +502,9 @@ def run_experiment(exp_id: str) -> dict[str, Any]:
     return {"experiment_id": exp_id, "decision": decision, "dev": dev}
 
 
-def write_decision_md(out_dir: Path, exp_id: str, params: dict[str, Any],
-                      decision: dict[str, Any], **stages: Any) -> None:
+def write_decision_md(
+    out_dir: Path, exp_id: str, params: dict[str, Any], decision: dict[str, Any], **stages: Any
+) -> None:
     lines = [
         f"# {exp_id} — DECISION",
         "",
@@ -474,8 +518,13 @@ def write_decision_md(out_dir: Path, exp_id: str, params: dict[str, Any],
     ]
     for stage, res in decision["stages"].items():
         lines.append(f"- {stage}: **{res}**")
-    lines += ["", f"## FINAL: **{decision['final']}**", "",
-              f"OOS opened: `{decision['oos_opened']}`", ""]
+    lines += [
+        "",
+        f"## FINAL: **{decision['final']}**",
+        "",
+        f"OOS opened: `{decision['oos_opened']}`",
+        "",
+    ]
     if "dev" in stages:
         c = stages["dev"]["combined"]
         cap = stages["dev"]["capture"]
@@ -493,13 +542,20 @@ def write_decision_md(out_dir: Path, exp_id: str, params: dict[str, Any],
         ]
     if "val" in stages:
         c = stages["val"]["combined"]
-        lines += ["## VALIDATION metrics (combined)", "", f"- trades: {c['trades']}",
-                  f"- gross expectancy: {c['expectancy_gross_bps']} bps",
-                  f"- net expectancy: {c['expectancy_net_bps']} bps", ""]
+        lines += [
+            "## VALIDATION metrics (combined)",
+            "",
+            f"- trades: {c['trades']}",
+            f"- gross expectancy: {c['expectancy_gross_bps']} bps",
+            f"- net expectancy: {c['expectancy_net_bps']} bps",
+            "",
+        ]
     if "cost" in stages:
         lines += ["## COST_MODEL_V3 stress (DEV)", ""]
         for k, v in stages["cost"]["stress"].items():
-            lines.append(f"- {k}: net {v['expectancy_net_bps']} bps (gross {v['expectancy_gross_bps']})")
+            lines.append(
+                f"- {k}: net {v['expectancy_net_bps']} bps (gross {v['expectancy_gross_bps']})"
+            )
         lines.append("")
     (out_dir / "DECISION.md").write_text("\n".join(lines), encoding="utf-8")
 
@@ -512,9 +568,14 @@ def main() -> int:
         print("FROZEN MANIFEST MISMATCH — STOP")
         print(json.dumps(manifest, indent=2))
         return 2
-    env = {"code_hash": code_hash(), "config_hash": config_hash(),
-           "dataset_fingerprint": C.corpus_digest(), "cost_bps_rt": C.cost_model_v3_rt_bps(),
-           "code_files": list(CODE_FILES), "branch_head": _head()}
+    env = {
+        "code_hash": code_hash(),
+        "config_hash": config_hash(),
+        "dataset_fingerprint": C.corpus_digest(),
+        "cost_bps_rt": C.cost_model_v3_rt_bps(),
+        "code_files": list(CODE_FILES),
+        "branch_head": _head(),
+    }
     write_json(OUT / "ENVIRONMENT.json", env)
     print(f"code_hash = {env['code_hash']}")
     print(f"cost_bps_rt = {env['cost_bps_rt']:.6f}")
@@ -533,8 +594,10 @@ def main() -> int:
             "dev_gross_bps": dev["expectancy_gross_bps"],
             "dev_net_bps": dev["expectancy_net_bps"],
         }
-        print(f"{exp_id}: DEV trades={dev['trades']} gross={dev['expectancy_gross_bps']} "
-              f"net={dev['expectancy_net_bps']} -> {dec['final']}")
+        print(
+            f"{exp_id}: DEV trades={dev['trades']} gross={dev['expectancy_gross_bps']} "
+            f"net={dev['expectancy_net_bps']} -> {dec['final']}"
+        )
     write_json(OUT / "RUN_REPORT.json", {"environment": env, "experiments": summary})
     return 0
 

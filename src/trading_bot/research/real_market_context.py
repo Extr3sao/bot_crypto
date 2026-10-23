@@ -120,9 +120,7 @@ def fetch_provider_ohlcv(
     )
 
 
-def completed_rows(
-    rows: Sequence[OHLCV], *, decision_ms: int, interval_key: str
-) -> list[OHLCV]:
+def completed_rows(rows: Sequence[OHLCV], *, decision_ms: int, interval_key: str) -> list[OHLCV]:
     """Only bars that had fully closed at ``decision_ms`` (never the live one)."""
     bar_ms = BAR_SECONDS[interval_key] * 1_000
     kept = [row for row in rows if int(row.timestamp) + bar_ms <= decision_ms]
@@ -154,7 +152,9 @@ def to_contract_bars(rows: Sequence[OHLCV]) -> list[dict[str, float | int]]:
 
 def daily_bars(rows: Sequence[OHLCV]) -> list[ab.DailyBar]:
     """RFC-039 daily bars (open time seconds + close) for the SMA(200) baseline."""
-    return [ab.DailyBar(open_time=int(row.timestamp) // 1_000, close=float(row.close)) for row in rows]
+    return [
+        ab.DailyBar(open_time=int(row.timestamp) // 1_000, close=float(row.close)) for row in rows
+    ]
 
 
 # --------------------------------------------------------------------------- #
@@ -211,12 +211,16 @@ def return_over(rows: Sequence[OHLCV], lookback: int) -> float:
     return 0.0 if start <= 0.0 else end / start - 1.0
 
 
-def relative_strength_value(asset_rows_4h: Sequence[OHLCV], reference_rows_4h: Sequence[OHLCV]) -> float:
+def relative_strength_value(
+    asset_rows_4h: Sequence[OHLCV], reference_rows_4h: Sequence[OHLCV]
+) -> float:
     return return_over(asset_rows_4h, 30) - return_over(reference_rows_4h, 30)
 
 
 def _digest(payload: Any) -> str:
-    text = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str)
+    text = json.dumps(
+        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str
+    )
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 

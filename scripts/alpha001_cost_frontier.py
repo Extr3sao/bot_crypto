@@ -76,7 +76,9 @@ def build(artifacts: dict[str, Any]) -> dict[str, Any]:
         )
         # Secondary reading: the same frontier using the cell's own realised
         # dispersion and effective sample size instead of the design constants.
-        own_statistical = Z_975 * float(summary["sigma_bps"]) / (float(summary["n_effective"]) ** 0.5)
+        own_statistical = (
+            Z_975 * float(summary["sigma_bps"]) / (float(summary["n_effective"]) ** 0.5)
+        )
         per_hypothesis_own_data[hypothesis_id] = cost_frontier(
             gross_bps=float(summary["gross_bps"]),
             statistical_bps=own_statistical,
@@ -123,13 +125,9 @@ def build(artifacts: dict[str, Any]) -> dict[str, Any]:
         "hurdle_over_best_gross": round(hurdle_bps / best_gross, 6),
         "frontier_admission_cost_bps": round(frontier_admission_cost, 6),
         "frontier_net_cost_bps": round(frontier_net_cost, 6),
-        "cost_reduction_to_admit_fraction": round(
-            1.0 - frontier_admission_cost / COST_BPS_V3, 6
-        ),
+        "cost_reduction_to_admit_fraction": round(1.0 - frontier_admission_cost / COST_BPS_V3, 6),
         "cost_reduction_to_admit_bps": round(COST_BPS_V3 - frontier_admission_cost, 6),
-        "cost_reduction_to_net_positive_fraction": round(
-            1.0 - frontier_net_cost / COST_BPS_V3, 6
-        ),
+        "cost_reduction_to_net_positive_fraction": round(1.0 - frontier_net_cost / COST_BPS_V3, 6),
         "cells_admissible_at_any_cost": sum(
             1 for item in per_hypothesis.values() if item["admission_break_even_cost_bps"] >= 0.0
         ),
@@ -220,9 +218,7 @@ def build(artifacts: dict[str, Any]) -> dict[str, Any]:
             "statistical_uncertainty_bps": components["statistical_uncertainty_bps"],
             "hurdle_bps": components["min_gross_alpha_hurdle_bps"],
             "shares": {key: round(value, 6) for key, value in shares.items()},
-            "trading_cost_share": round(
-                shares["cost"] + shares["execution_uncertainty"], 6
-            ),
+            "trading_cost_share": round(shares["cost"] + shares["execution_uncertainty"], 6),
             "safety_margin_share": round(
                 shares["winners_curse_buffer"] + shares["statistical_uncertainty"], 6
             ),

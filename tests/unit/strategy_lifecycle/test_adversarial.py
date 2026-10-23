@@ -97,10 +97,20 @@ def test_high_drawdown_blocks_promotion() -> None:
 def test_regime_mismatch_is_not_selected() -> None:
     router = StrategyRouter(gates=RouterGates(require_confirmed=False, timeframe="5m"))
     ctx = SimpleNamespace(
-        asset="BTC", timestamp=1000, window_end_ts=900,
-        data_quality={"bars_in_window": 120}, market_regime="TREND_UP",
+        asset="BTC",
+        timestamp=1000,
+        window_end_ts=900,
+        data_quality={"bars_in_window": 120},
+        market_regime="TREND_UP",
     )
-    smap = {"mr": {"family": "mean_reversion", "regimes": ["RANGE"], "direction": "BOTH", "enabled": True}}
+    smap = {
+        "mr": {
+            "family": "mean_reversion",
+            "regimes": ["RANGE"],
+            "direction": "BOTH",
+            "enabled": True,
+        }
+    }
     selection = router.select_eligible_strategies(ctx, "TREND_UP", smap, lifecycle={"mr": "ACTIVE"})
     assert selection.selected == ()
     assert "REGIME_MISMATCH" in selection.by_verdict()
@@ -109,7 +119,9 @@ def test_regime_mismatch_is_not_selected() -> None:
 def test_champion_losing_one_window_does_not_demote() -> None:
     # Health still HEALTHY after a single weak window → the controller keeps ACTIVE.
     c = StrategyLifecycleController(policy=POLICY)
-    d = c.evaluate(_ctrl_inputs(LifecycleState.ACTIVE, health=health(HealthState.HEALTHY, strategy_id="mom")))
+    d = c.evaluate(
+        _ctrl_inputs(LifecycleState.ACTIVE, health=health(HealthState.HEALTHY, strategy_id="mom"))
+    )
     assert d.to_state is LifecycleState.ACTIVE
 
 
@@ -124,7 +136,9 @@ def test_challenger_winning_one_window_does_not_promote() -> None:
 
 
 def test_correlated_same_asset_buys_are_capped() -> None:
-    mgr = StrategyPortfolioManager(equity=10_000, max_asset_exposure_pct=100, max_same_direction_per_asset=2)
+    mgr = StrategyPortfolioManager(
+        equity=10_000, max_asset_exposure_pct=100, max_same_direction_per_asset=2
+    )
     series = [1.0, 2.0, 3.0, 4.0, 5.0]
     proposals = [
         PortfolioProposal("m", "BTC", "LONG", 100.0, 30.0, tuple(series)),
@@ -151,11 +165,23 @@ def test_paused_strong_shadow_still_only_reaches_shadow() -> None:
 def test_stale_context_is_rejected() -> None:
     router = StrategyRouter(gates=RouterGates(require_confirmed=False, timeframe="5m"))
     ctx = SimpleNamespace(
-        asset="BTC", timestamp=10_000_000, window_end_ts=0,
-        data_quality={"bars_in_window": 120}, market_regime="TREND_UP",
+        asset="BTC",
+        timestamp=10_000_000,
+        window_end_ts=0,
+        data_quality={"bars_in_window": 120},
+        market_regime="TREND_UP",
     )
     selection = router.select_eligible_strategies(
-        ctx, "TREND_UP", {"a": {"family": "momentum", "regimes": ["TREND_UP"], "direction": "BOTH", "enabled": True}},
+        ctx,
+        "TREND_UP",
+        {
+            "a": {
+                "family": "momentum",
+                "regimes": ["TREND_UP"],
+                "direction": "BOTH",
+                "enabled": True,
+            }
+        },
         lifecycle={"a": "ACTIVE"},
     )
     assert selection.selected == ()
@@ -171,7 +197,9 @@ def test_future_data_is_rejected() -> None:
 def test_shadow_result_cannot_reach_execution() -> None:
     pod = StrategyPod(
         descriptor=descriptor("mom", state=LifecycleState.SHADOW),
-        runtime=lambda ctx, bars: PodSignal(direction="LONG", entry_reference=100.0, confidence=0.5),
+        runtime=lambda ctx, bars: PodSignal(
+            direction="LONG", entry_reference=100.0, confidence=0.5
+        ),
     )
     runtime = ParallelShadowRuntime()
     runtime.add(pod)
@@ -182,7 +210,12 @@ def test_shadow_result_cannot_reach_execution() -> None:
 
 def test_pod_tries_to_set_leverage_is_forbidden() -> None:
     with pytest.raises(ValueError):
-        PodSignal(direction="LONG", entry_reference=1.0, confidence=0.5, advisory_metadata={"leverage": 10})
+        PodSignal(
+            direction="LONG",
+            entry_reference=1.0,
+            confidence=0.5,
+            advisory_metadata={"leverage": 10},
+        )
 
 
 def test_llm_proposed_state_change_is_ignored() -> None:

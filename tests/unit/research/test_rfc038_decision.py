@@ -44,11 +44,18 @@ def test_contract_notional_and_weight_invariants() -> None:
     assert run["status"] == "OK"
     assert len(run["records"]) > 0
     for r in run["records"]:
-        assert abs(r["actual_notional"] - r["rounded_contract_count"] * r["price"]
-                   * r["multiplier"]) < 1e-6
+        assert (
+            abs(r["actual_notional"] - r["rounded_contract_count"] * r["price"] * r["multiplier"])
+            < 1e-6
+        )
         assert abs(r["actual_weight"] - r["actual_notional"] / 1_000_000.0) < 1e-12
-        assert abs(r["raw_contract_count"] - r["weight_target"] * 1_000_000.0
-                   / (r["price"] * r["multiplier"])) < 1e-9
+        assert (
+            abs(
+                r["raw_contract_count"]
+                - r["weight_target"] * 1_000_000.0 / (r["price"] * r["multiplier"])
+            )
+            < 1e-9
+        )
 
 
 def test_fractional_pnl_is_linear_in_capital() -> None:
@@ -75,11 +82,13 @@ def test_tracking_error_rescaling_defect() -> None:
 def test_replay_reconciles_to_frozen_engine() -> None:
     panels, cal, window = _gc_panel()
     lo, hi = window
-    engine = mf.simulate_portfolio(panels, cal, (lo, hi),
-                                   mf.default_config(integer_contracts=True), 1_000_000.0)
+    engine = mf.simulate_portfolio(
+        panels, cal, (lo, hi), mf.default_config(integer_contracts=True), 1_000_000.0
+    )
     replay = CAP.replay(panels, cal, window, 1_000_000.0, "nearest")
-    assert abs(float(engine["net_pnl"].sum()) - replay["net_total"]) <= \
-        1e-9 * abs(float(engine["net_pnl"].sum()))
+    assert abs(float(engine["net_pnl"].sum()) - replay["net_total"]) <= 1e-9 * abs(
+        float(engine["net_pnl"].sum())
+    )
 
 
 def test_null_registry_is_preregistered_and_bounded() -> None:
@@ -103,8 +112,7 @@ def test_circular_shift_preserves_marginals_and_cross_market_structure() -> None
     for j in range(R.shape[1]):
         assert np.allclose(np.sort(shifted[:, j]), np.sort(R[:, j]))
     # a SHARED shift is a pure time translation -> correlation matrix unchanged
-    assert np.allclose(np.corrcoef(shifted, rowvar=False),
-                       np.corrcoef(R, rowvar=False))
+    assert np.allclose(np.corrcoef(shifted, rowvar=False), np.corrcoef(R, rowvar=False))
 
 
 def test_block_permutation_uses_shared_order_over_returns_only() -> None:
@@ -123,12 +131,18 @@ def test_block_permutation_uses_shared_order_over_returns_only() -> None:
 
 
 def test_adversarial_gate_reads_valid_nulls() -> None:
-    good = {"VALIDATION": {"NULL-2_BLOCK_CIRCULAR_SHIFT_shared":
-                           {"p_null_ge_observed": 0.01},
-                           "NULL-3_SIGN_RANDOMISATION": {"p_null_ge_observed": 0.0}}}
-    bad = {"VALIDATION": {"NULL-2_BLOCK_CIRCULAR_SHIFT_shared":
-                          {"p_null_ge_observed": 0.20},
-                          "NULL-3_SIGN_RANDOMISATION": {"p_null_ge_observed": 0.0}}}
+    good = {
+        "VALIDATION": {
+            "NULL-2_BLOCK_CIRCULAR_SHIFT_shared": {"p_null_ge_observed": 0.01},
+            "NULL-3_SIGN_RANDOMISATION": {"p_null_ge_observed": 0.0},
+        }
+    }
+    bad = {
+        "VALIDATION": {
+            "NULL-2_BLOCK_CIRCULAR_SHIFT_shared": {"p_null_ge_observed": 0.20},
+            "NULL-3_SIGN_RANDOMISATION": {"p_null_ge_observed": 0.0},
+        }
+    }
     assert RUN.adversarial_gate(good) == "PASS"
     assert RUN.adversarial_gate(bad) == "FAIL"
 
@@ -139,20 +153,35 @@ def test_null_validity_gate() -> None:
 
 
 def _provider(quote_required: bool, deprecated: bool = False) -> dict[str, Any]:
-    return {"provider": "X", "dataset": "d", "coverage": "c", "history": "h",
-            "individual_contracts": True, "term_structure": True, "volume": True,
-            "open_interest": True, "pit_suitability": "HIGH", "licence": "l",
-            "api_file_format": "API", "p1_suitability": "HIGH", "p2_suitability": "HIGH",
-            "price": "DEPRECATED" if deprecated else ("QUOTE_REQUIRED" if quote_required
-                                                      else "$1/month"),
-            "quote_required": quote_required, "source": "s"}
+    return {
+        "provider": "X",
+        "dataset": "d",
+        "coverage": "c",
+        "history": "h",
+        "individual_contracts": True,
+        "term_structure": True,
+        "volume": True,
+        "open_interest": True,
+        "pit_suitability": "HIGH",
+        "licence": "l",
+        "api_file_format": "API",
+        "p1_suitability": "HIGH",
+        "p2_suitability": "HIGH",
+        "price": "DEPRECATED"
+        if deprecated
+        else ("QUOTE_REQUIRED" if quote_required else "$1/month"),
+        "quote_required": quote_required,
+        "source": "s",
+    }
 
 
 def test_decision_state_machine() -> None:
     assert DAT.decide([_provider(quote_required=True)])["classification"] == "REQUEST_QUOTE"
     assert DAT.decide([_provider(quote_required=False)])["classification"] == "BUY_CANDIDATE"
-    assert DAT.decide([_provider(quote_required=False, deprecated=True)])[
-        "classification"] == "DO_NOT_BUY"
+    assert (
+        DAT.decide([_provider(quote_required=False, deprecated=True)])["classification"]
+        == "DO_NOT_BUY"
+    )
 
 
 def test_quote_required_providers_never_invent_a_price() -> None:

@@ -82,7 +82,9 @@ class Exp006LiquidityReversal:
         cfg = self.config
         n = len(bars)
         atr = atr_series(
-            [b.high for b in bars], [b.low for b in bars], [b.close for b in bars],
+            [b.high for b in bars],
+            [b.low for b in bars],
+            [b.close for b in bars],
             cfg.atr_period,
         )
         signals: dict[int, DailySetup] = {}
@@ -111,16 +113,22 @@ class Exp006LiquidityReversal:
                     continue
                 if down and bars[k].high >= band_low:
                     signals[k] = DailySetup(
-                        side="long", rule="exp006_void_retest_long",
-                        max_hold_days=cfg.max_hold_days, atr=a,
-                        stop_atr_mult=cfg.stop_atr, target_atr_mult=cfg.target_atr,
+                        side="long",
+                        rule="exp006_void_retest_long",
+                        max_hold_days=cfg.max_hold_days,
+                        atr=a,
+                        stop_atr_mult=cfg.stop_atr,
+                        target_atr_mult=cfg.target_atr,
                     )
                     break
                 if not down and bars[k].low <= band_high:
                     signals[k] = DailySetup(
-                        side="short", rule="exp006_void_retest_short",
-                        max_hold_days=cfg.max_hold_days, atr=a,
-                        stop_atr_mult=cfg.stop_atr, target_atr_mult=cfg.target_atr,
+                        side="short",
+                        rule="exp006_void_retest_short",
+                        max_hold_days=cfg.max_hold_days,
+                        atr=a,
+                        stop_atr_mult=cfg.stop_atr,
+                        target_atr_mult=cfg.target_atr,
                     )
                     break
         self._signals = signals
@@ -186,8 +194,13 @@ def tag_trades(by_symbol: Mapping[str, Sequence[Trade]]) -> list[TaggedTrade]:
 def to_ohlcv(bars: Sequence[DailyBar]) -> list[OHLCV]:
     return [
         OHLCV(
-            symbol=b.symbol, timestamp=b.timestamp, open=b.open, high=b.high,
-            low=b.low, close=b.close, volume=b.volume,
+            symbol=b.symbol,
+            timestamp=b.timestamp,
+            open=b.open,
+            high=b.high,
+            low=b.low,
+            close=b.close,
+            volume=b.volume,
         )
         for b in bars
     ]
@@ -209,14 +222,18 @@ def simulate_exp006(
             continue
         strategy = Exp006LiquidityReversal(config)
         result = simulate_daily(
-            strategy, to_ohlcv(bars), cost_bps_rt=cost_bps_rt,
-            notional=notional, entry_delay_days=entry_delay_days,
+            strategy,
+            to_ohlcv(bars),
+            cost_bps_rt=cost_bps_rt,
+            notional=notional,
+            entry_delay_days=entry_delay_days,
         )
         out[symbol] = result.trades
     return out
 
 
 # --------------------------------------------------------------------- EXP-ARP-008
+
 
 @dataclass(frozen=True, slots=True)
 class Exp008Config:
@@ -244,8 +261,12 @@ def simulate_exp008(
     out: dict[str, list[Trade]] = {}
     for symbol, bars in bars_by_symbol.items():
         out[symbol] = _run_exp008_one(
-            bars, lookback=cfg.lookback_days, max_hold=cfg.max_hold_days,
-            fee_usd=fee_usd, notional=notional, entry_delay_days=entry_delay_days,
+            bars,
+            lookback=cfg.lookback_days,
+            max_hold=cfg.max_hold_days,
+            fee_usd=fee_usd,
+            notional=notional,
+            entry_delay_days=entry_delay_days,
             symbol=symbol,
         )
     return out
@@ -282,13 +303,19 @@ def _run_exp008_one(
         gross = notional * (price / pos_entry - 1.0)
         trades.append(
             Trade(
-                side="long", entry_ts=int(bars[entry_index].timestamp), exit_ts=ts,
+                side="long",
+                entry_ts=int(bars[entry_index].timestamp),
+                exit_ts=ts,
                 duration_min=round((ts - bars[entry_index].timestamp) / 60_000.0, 1),
-                entry=round(pos_entry, 6), exit=round(price, 6), reason=reason,
+                entry=round(pos_entry, 6),
+                exit=round(price, 6),
+                reason=reason,
                 mfe_pct=round((peak - pos_entry) / pos_entry * 100.0, 4),
                 mae_pct=round((pos_entry - trough) / pos_entry * 100.0, 4),
-                notional=round(notional, 2), gross=round(gross, 4),
-                fees=round(fee_usd, 4), net=round(gross - fee_usd, 4),
+                notional=round(notional, 2),
+                gross=round(gross, 4),
+                fees=round(fee_usd, 4),
+                net=round(gross - fee_usd, 4),
                 rule=f"exp008_tsmom_{symbol}",
             )
         )

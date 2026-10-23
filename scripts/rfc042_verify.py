@@ -179,7 +179,8 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
     checks.check("entry:rfc041_is_ancestor", rfc041_ancestor, f"head={head}")
     checks.check(
         "entry:freeze_active_at_entry",
-        report["research_freeze_at_entry"] == "ACTIVE" and state["alpha_research_freeze"] == "ACTIVE",
+        report["research_freeze_at_entry"] == "ACTIVE"
+        and state["alpha_research_freeze"] == "ACTIVE",
     )
     checks.check(
         "entry:business_edge_count_zero_at_entry",
@@ -195,7 +196,8 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
     )
     checks.check(
         "budget:max_3_deep_reviews",
-        len(top3["reviews"]) <= MAX_DEEP_REVIEWS and top3["deep_review_count"] == len(top3["reviews"]),
+        len(top3["reviews"]) <= MAX_DEEP_REVIEWS
+        and top3["deep_review_count"] == len(top3["reviews"]),
         f"deep={len(top3['reviews'])}",
     )
 
@@ -211,7 +213,9 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
 
     # §22 no compensation: an opportunity with a critical fail is never a PASS verdict
     passing = [
-        v["opportunity_id"] for v in decision["per_opportunity_verdicts"] if v["G_BUSINESS_REENTRY"] == "PASS"
+        v["opportunity_id"]
+        for v in decision["per_opportunity_verdicts"]
+        if v["G_BUSINESS_REENTRY"] == "PASS"
     ]
     compensable_ok = True
     for v in decision["per_opportunity_verdicts"]:
@@ -231,7 +235,9 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
         (authorized == "NONE" and not passing) or (authorized in passing),
         f"authorized={authorized}",
     )
-    checks.check("authorization:result_consistent", decision["result"] == ("PASS" if passing else "FAIL"))
+    checks.check(
+        "authorization:result_consistent", decision["result"] == ("PASS" if passing else "FAIL")
+    )
 
     # -- §33 source provenance -------------------------------------------------- #
     ids = set()
@@ -251,7 +257,11 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
         referenced <= ids,
         f"missing={sorted(referenced - ids)}",
     )
-    blog_ids = {s["source_id"] for s in registry["sources"] if s["publication_type"] == "blog_discovery_only"}
+    blog_ids = {
+        s["source_id"]
+        for s in registry["sources"]
+        if s["publication_type"] == "blog_discovery_only"
+    }
     checks.check(
         "provenance:discovery_only_policy_declared",
         registry["discovery_only_policy"].startswith("blogs and social posts are DISCOVERY ONLY"),
@@ -279,11 +289,15 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
     benchmark_ok = all(
         r.get("primary_benchmark") and r.get("risk_matched_benchmark") for r in top3["reviews"]
     )
-    checks.check("benchmark:predeclared_before_code", benchmark_ok and business["benchmark_predeclared"])
+    checks.check(
+        "benchmark:predeclared_before_code", benchmark_ok and business["benchmark_predeclared"]
+    )
 
     # §11 capital-fit FAIL never reaches a deep review
     capital_fail_ids = [
-        r["opportunity_id"] for r in scorecard["rows"] if r["disposition"] == "REJECTED_CAPITAL_FIT_200"
+        r["opportunity_id"]
+        for r in scorecard["rows"]
+        if r["disposition"] == "REJECTED_CAPITAL_FIT_200"
     ]
     checks.check(
         "capital_fit:fail_never_deep_reviewed",
@@ -292,7 +306,11 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
     )
 
     # §8 same-family rehash never scored or deep-reviewed
-    rehash_ids = [r["opportunity_id"] for r in scorecard["rows"] if r["disposition"] == "REJECTED_SAME_FAMILY_REHASH"]
+    rehash_ids = [
+        r["opportunity_id"]
+        for r in scorecard["rows"]
+        if r["disposition"] == "REJECTED_SAME_FAMILY_REHASH"
+    ]
     checks.check(
         "rehash:never_scored_or_deep_reviewed",
         bool(rehash_ids) and not (set(rehash_ids) & set(deep_ids)),
@@ -305,7 +323,9 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
 
     # -- §43/§45 no strategy code, no backtest --------------------------------- #
     code = "\n".join(
-        (REPO / path).read_text(encoding="utf-8") for path in RFC042_CODE_FILES if (REPO / path).exists()
+        (REPO / path).read_text(encoding="utf-8")
+        for path in RFC042_CODE_FILES
+        if (REPO / path).exists()
     )
     offending = [
         m.group(0).strip()
@@ -322,7 +342,10 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
     checks.check(
         "freeze:transition_matches_result",
         (decision["result"] == "FAIL" and decision["transition"]["research_freeze"] == "ACTIVE")
-        or (decision["result"] == "PASS" and decision["transition"]["research_freeze"] == "RELEASED_FOR_ONE_CANDIDATE"),
+        or (
+            decision["result"] == "PASS"
+            and decision["transition"]["research_freeze"] == "RELEASED_FOR_ONE_CANDIDATE"
+        ),
     )
     checks.check(
         "freeze:tracked_state_untouched_on_fail",
@@ -352,7 +375,9 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
 
     # -- §56 final report ------------------------------------------------------ #
     first_line = (REPORTS / "RFC042_FINAL_REPORT.md").read_text(encoding="utf-8").splitlines()[0]
-    checks.check("report:first_line_exact", first_line == "RFC-042 BUSINESS OPPORTUNITY RADAR", first_line)
+    checks.check(
+        "report:first_line_exact", first_line == "RFC-042 BUSINESS OPPORTUNITY RADAR", first_line
+    )
     required_fields = (
         "reference_capital_usdt",
         "research_freeze_at_entry",
@@ -375,10 +400,14 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
     )
     missing_fields = [f for f in required_fields if f not in report]
     checks.check("report:section56_fields_present", not missing_fields, f"missing={missing_fields}")
-    checks.check("report:next_is_wait_on_fail", decision["result"] != "FAIL" or report["next"] == "WAIT")
+    checks.check(
+        "report:next_is_wait_on_fail", decision["result"] != "FAIL" or report["next"] == "WAIT"
+    )
 
     # -- §51 FALSE_SUCCESS recomputed independently ---------------------------- #
-    rehash_scored = any(bool(r.get("rehash_of")) and r["disposition"] == "SCREENED" for r in scorecard["rows"])
+    rehash_scored = any(
+        bool(r.get("rehash_of")) and r["disposition"] == "SCREENED" for r in scorecard["rows"]
+    )
     product_ignored = any(
         r.get("capital_fit") == "FAIL" and r["disposition"] == "SCREENED" for r in scorecard["rows"]
     )

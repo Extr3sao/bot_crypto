@@ -96,7 +96,9 @@ def capture_status() -> dict[str, Any]:
         return {"available": False, "note": "no capture manifest yet"}
     manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
     periodic = {
-        key: value for key, value in manifest["records"].items() if not key.startswith("funding_rate")
+        key: value
+        for key, value in manifest["records"].items()
+        if not key.startswith("funding_rate")
     }
     return {
         "available": True,
@@ -197,7 +199,9 @@ def render_preregistration(payload: dict[str, Any]) -> str:
         )
     lines.extend(["## Declared non-traded arms", ""])
     for arm in registry["non_traded_arms"]:
-        lines.append(f"- **{arm['arm_id']}** ({arm['hypothesis_id']}) {arm['name']}: `{arm['rule']}`")
+        lines.append(
+            f"- **{arm['arm_id']}** ({arm['hypothesis_id']}) {arm['name']}: `{arm['rule']}`"
+        )
         lines.append(f"  - {arm['role']}")
     lines.extend(["", "## Frozen thresholds", "", "| threshold | value |", "| --- | --- |"])
     lines.extend(f"| {key} | {value} |" for key, value in sorted(registry["thresholds"].items()))

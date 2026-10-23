@@ -22,7 +22,12 @@ def _ctx(asset="BTC", timestamp=1000, window_end=900, bars=120, regime="TREND_UP
 
 def _map(*ids):
     return {
-        sid: {"family": "momentum", "regimes": ["TREND_UP", "TREND_DOWN"], "direction": "BOTH", "enabled": True}
+        sid: {
+            "family": "momentum",
+            "regimes": ["TREND_UP", "TREND_DOWN"],
+            "direction": "BOTH",
+            "enabled": True,
+        }
         for sid in ids
     }
 
@@ -34,7 +39,10 @@ def _router():
 def test_multiple_strategies_can_be_eligible_at_once() -> None:
     router = _router()
     selection = router.select_eligible_strategies(
-        _ctx(), "TREND_UP", _map("a", "b", "c"), lifecycle={"a": "ACTIVE", "b": "ACTIVE", "c": "ACTIVE"}
+        _ctx(),
+        "TREND_UP",
+        _map("a", "b", "c"),
+        lifecycle={"a": "ACTIVE", "b": "ACTIVE", "c": "ACTIVE"},
     )
     assert set(selection.selected) == {"a", "b", "c"}
 
@@ -59,7 +67,14 @@ def test_degraded_strategy_is_not_selected() -> None:
 
 def test_regime_mismatch_verdict() -> None:
     router = _router()
-    strategy_map = {"a": {"family": "mean_reversion", "regimes": ["RANGE"], "direction": "BOTH", "enabled": True}}
+    strategy_map = {
+        "a": {
+            "family": "mean_reversion",
+            "regimes": ["RANGE"],
+            "direction": "BOTH",
+            "enabled": True,
+        }
+    }
     selection = router.select_eligible_strategies(
         _ctx(regime="TREND_UP"), "TREND_UP", strategy_map, lifecycle={"a": "ACTIVE"}
     )
@@ -98,8 +113,20 @@ def test_risk_and_portfolio_conflicts_take_precedence() -> None:
 def test_legacy_status_path_still_works() -> None:
     router = StrategyRouter(gates=RouterGates(require_confirmed=True, timeframe="5m"))
     strategy_map = {
-        "a": {"family": "momentum", "regimes": ["TREND_UP"], "direction": "BOTH", "enabled": True, "status": "PAPER_ACTIVE"},
-        "b": {"family": "momentum", "regimes": ["TREND_UP"], "direction": "BOTH", "enabled": True, "status": "RESEARCH_REQUIRED"},
+        "a": {
+            "family": "momentum",
+            "regimes": ["TREND_UP"],
+            "direction": "BOTH",
+            "enabled": True,
+            "status": "PAPER_ACTIVE",
+        },
+        "b": {
+            "family": "momentum",
+            "regimes": ["TREND_UP"],
+            "direction": "BOTH",
+            "enabled": True,
+            "status": "RESEARCH_REQUIRED",
+        },
     }
     selection = router.select_eligible_strategies(_ctx(), "TREND_UP", strategy_map)
     assert selection.selected == ("a",)
@@ -119,10 +146,6 @@ def test_a_verdict_outside_the_vocabulary_fails_loudly(monkeypatch) -> None:
     # DEF-VERIFY-009: ROUTER_VERDICTS is asserted, not decorative — a verdict
     # no consumer understands must never be emitted silently.
     router = _router()
-    monkeypatch.setattr(
-        StrategyRouter, "_verdict_for", lambda *a, **k: ("BOGUS", "nope")
-    )
+    monkeypatch.setattr(StrategyRouter, "_verdict_for", lambda *a, **k: ("BOGUS", "nope"))
     with pytest.raises(ValueError, match="unknown verdict"):
-        router.select_eligible_strategies(
-            _ctx(), "TREND_UP", _map("a"), lifecycle={"a": "ACTIVE"}
-        )
+        router.select_eligible_strategies(_ctx(), "TREND_UP", _map("a"), lifecycle={"a": "ACTIVE"})

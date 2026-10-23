@@ -146,13 +146,18 @@ def main() -> int:
 
     # 1) ledger causality, recomputed from the raw CSVs
     outcomes = load_csv_outcomes()
-    instants = [int(json.loads(line)["decision_time_ms"]) for line in
-                (run_a / "traces.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
+    instants = [
+        int(json.loads(line)["decision_time_ms"])
+        for line in (run_a / "traces.jsonl").read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
     real_hashes = ledger_state_hashes(outcomes, instants)
     # poisoning: recompute ledger states with everything after T poisoned -> must
     # be identical up to T (states are only ever read for instants <= T)
-    poisoned = {sid: [(ts, g * -5.0 if ts > t_end else g) for ts, g in rows]
-                for sid, rows in outcomes.items()}
+    poisoned = {
+        sid: [(ts, g * -5.0 if ts > t_end else g) for ts, g in rows]
+        for sid, rows in outcomes.items()
+    }
     poisoned_hashes = ledger_state_hashes(poisoned, instants)
     ledger_state_invariant = real_hashes == poisoned_hashes
 
@@ -171,9 +176,7 @@ def main() -> int:
         rows = [g for ts, g in outcomes.get(sid, []) if ts < cutoff]
         return len(rows), (round(statistics.fmean(rows), 6) if rows else None)
 
-    sample_edges = {
-        sid: mean_before(sid, t_end) for sid in ("mean_reversion@5m", "momentum@5m")
-    }
+    sample_edges = {sid: mean_before(sid, t_end) for sid in ("mean_reversion@5m", "momentum@5m")}
 
     checks = {
         "ledger_state_invariant_under_poisoning": ledger_state_invariant,
@@ -192,11 +195,7 @@ def main() -> int:
         and checks["outcome_violations"] == 0
     )
     ledger_pit_ok = ledger_state_invariant and len(mismatches) == 0
-    verdict = (
-        "PASS"
-        if market_pit_ok and ledger_pit_ok and checks["runs_exist"]
-        else "FAIL"
-    )
+    verdict = "PASS" if market_pit_ok and ledger_pit_ok and checks["runs_exist"] else "FAIL"
     report = {
         "schema": "rfc021.g2_final_verification.v1",
         "verifier": "scripts/rfc021_g2_verify.py (independent recomputation)",
@@ -209,14 +208,21 @@ def main() -> int:
     }
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(report, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8")
-    print(json.dumps({
-        "verifier_result": verdict,
-        "ledger_state_invariant": ledger_state_invariant,
-        "decision_mismatches": len(mismatches),
-        "dataset_corpus_matches": checks["dataset_corpus_matches"],
-        "outcome_violations": integrity["outcome_violations"],
-    }, indent=2))
+    out.write_text(
+        json.dumps(report, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8"
+    )
+    print(
+        json.dumps(
+            {
+                "verifier_result": verdict,
+                "ledger_state_invariant": ledger_state_invariant,
+                "decision_mismatches": len(mismatches),
+                "dataset_corpus_matches": checks["dataset_corpus_matches"],
+                "outcome_violations": integrity["outcome_violations"],
+            },
+            indent=2,
+        )
+    )
     return 0 if verdict == "PASS" else 1
 
 

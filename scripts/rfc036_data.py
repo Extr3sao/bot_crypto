@@ -36,8 +36,7 @@ def fetch_root(root: str, timeout: int = 60) -> Path:
     dst = RAW_DIR / f"{root}.zip"
     if dst.exists() and dst.stat().st_size > 0:
         return dst
-    req = urllib.request.Request(BASE_URL.format(root=root),
-                                 headers={"User-Agent": USER_AGENT})
+    req = urllib.request.Request(BASE_URL.format(root=root), headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         data = resp.read()
     dst.write_bytes(data)
@@ -72,6 +71,7 @@ def market_summary(md: ChainMarket) -> dict[str, Any]:
     min_od = min((b.ordinal for s in md.series.values() for b in s.bars), default=0)
     max_od = max((b.ordinal for s in md.series.values() for b in s.bars), default=0)
     from datetime import date
+
     return {
         "root": md.root,
         "name": md.spec["name"],

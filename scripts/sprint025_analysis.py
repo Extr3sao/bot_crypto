@@ -152,7 +152,11 @@ def build_report() -> dict[str, Any]:
     inv = json.loads((OL.ORTHO_OUT / "ORTHOGONAL_DATA_INVENTORY.json").read_text(encoding="utf-8"))
     info = json.loads((OUT / "INFORMATION_AUDIT.json").read_text(encoding="utf-8"))
     null = json.loads((OUT / "EMPIRICAL_NULL.json").read_text(encoding="utf-8"))
-    rows = [json.loads(line) for line in (OUT / "EXPERIMENT_REGISTRY.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
+    rows = [
+        json.loads(line)
+        for line in (OUT / "EXPERIMENT_REGISTRY.jsonl").read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
 
     suff = [r for r in rows if int(r["discovery"].get("trades") or 0) >= 50]
     d_net_pos = [r for r in rows if (r["discovery"].get("net_bps") or -1) > 0]
@@ -166,7 +170,9 @@ def build_report() -> dict[str, Any]:
     g_info = info["G_ORTHO_INFO_1"]
 
     best_suff = max(suff, key=lambda r: r["discovery"].get("net_bps") or -1e9) if suff else None
-    best_net_pos = max(d_net_pos, key=lambda r: r["discovery"].get("net_bps") or -1e9) if d_net_pos else None
+    best_net_pos = (
+        max(d_net_pos, key=lambda r: r["discovery"].get("net_bps") or -1e9) if d_net_pos else None
+    )
 
     classification = "C — DIRECTIONAL INFORMATION EXISTS, NOT TRADABLE AFTER COST"
 
@@ -192,8 +198,12 @@ def build_report() -> dict[str, Any]:
             "family_wise_vol_p": null["family_wise_null"]["p_family_wise_vol"],
             "family_wise_all_p": null["family_wise_null"]["p_family_wise_all"],
             "passing_cells": [
-                {"feature": p["feature"], "condition": p["condition"],
-                 "discovery_ic": p["discovery_ic"], "validation_ic": p["validation_ic"]}
+                {
+                    "feature": p["feature"],
+                    "condition": p["condition"],
+                    "discovery_ic": p["discovery_ic"],
+                    "validation_ic": p["validation_ic"],
+                }
                 for p in g_info["passing"]
             ],
         },
@@ -235,7 +245,9 @@ def _git_head() -> str:
     import subprocess
 
     try:
-        return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=str(OL.REPO)).decode().strip()
+        return (
+            subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=str(OL.REPO)).decode().strip()
+        )
     except Exception:
         return "UNKNOWN"
 
@@ -244,23 +256,79 @@ def _value_scorecard(report: dict[str, Any], info: dict[str, Any], null: dict[st
     disc = info["splits"]["DISCOVERY"]["features"]
     val = info["splits"]["VALIDATION"]["features"]
     rows: list[tuple[Any, ...]] = [
-        ("Funding", "ORTHO-FUNDING", "PASS", "8h full",
-         disc["funding_z"]["1h"]["VOL"].get("ic_spearman"), val["funding_z"]["1h"]["VOL"].get("ic_spearman"),
-         "sign flips between splits -> NOT consistent", "NONE"),
-        ("Basis (premium)", "ORTHO-BASIS", "PASS", "5m full",
-         disc["basis_z"]["1h"]["VOL"].get("ic_spearman"), val["basis_z"]["1h"]["VOL"].get("ic_spearman"),
-         f"same-sign, family-wise p={null['family_wise_null']['p_family_wise_vol']:.3f}", "COST_KILLED"),
-        ("Taker flow", "ORTHO-TAKERFLOW", "PASS", "5m full",
-         disc["taker_persist"]["1h"]["VOL"].get("ic_spearman"), val["taker_persist"]["1h"]["VOL"].get("ic_spearman"),
-         "same-sign, weak", "INSUFFICIENT_SAMPLE"),
-        ("Open interest", "ORTHO-OI", "FAIL", "30d only", None, None, "no DISCOVERY/VALIDATION coverage", "DATA_BLOCKED"),
+        (
+            "Funding",
+            "ORTHO-FUNDING",
+            "PASS",
+            "8h full",
+            disc["funding_z"]["1h"]["VOL"].get("ic_spearman"),
+            val["funding_z"]["1h"]["VOL"].get("ic_spearman"),
+            "sign flips between splits -> NOT consistent",
+            "NONE",
+        ),
+        (
+            "Basis (premium)",
+            "ORTHO-BASIS",
+            "PASS",
+            "5m full",
+            disc["basis_z"]["1h"]["VOL"].get("ic_spearman"),
+            val["basis_z"]["1h"]["VOL"].get("ic_spearman"),
+            f"same-sign, family-wise p={null['family_wise_null']['p_family_wise_vol']:.3f}",
+            "COST_KILLED",
+        ),
+        (
+            "Taker flow",
+            "ORTHO-TAKERFLOW",
+            "PASS",
+            "5m full",
+            disc["taker_persist"]["1h"]["VOL"].get("ic_spearman"),
+            val["taker_persist"]["1h"]["VOL"].get("ic_spearman"),
+            "same-sign, weak",
+            "INSUFFICIENT_SAMPLE",
+        ),
+        (
+            "Open interest",
+            "ORTHO-OI",
+            "FAIL",
+            "30d only",
+            None,
+            None,
+            "no DISCOVERY/VALIDATION coverage",
+            "DATA_BLOCKED",
+        ),
         ("Liquidations", "ORTHO-LIQ", "n/a", "none", None, None, "endpoint 404", "DATA_BLOCKED"),
-        ("Order book", "ORTHO-ORDERBOOK", "n/a", "forward only", None, None, "no history", "FORWARD_ONLY"),
-        ("Long/short ratio", "ORTHO-LSRATIO", "FAIL", "30d only", None, None, "no DISCOVERY/VALIDATION coverage", "DATA_BLOCKED"),
+        (
+            "Order book",
+            "ORTHO-ORDERBOOK",
+            "n/a",
+            "forward only",
+            None,
+            None,
+            "no history",
+            "FORWARD_ONLY",
+        ),
+        (
+            "Long/short ratio",
+            "ORTHO-LSRATIO",
+            "FAIL",
+            "30d only",
+            None,
+            None,
+            "no DISCOVERY/VALIDATION coverage",
+            "DATA_BLOCKED",
+        ),
         ("Cross-exchange", "ORTHO-CROSSEX", "n/a", "none", None, None, "no panel", "NOT_AVAILABLE"),
     ]
-    keys = ["source", "data_id", "pit", "coverage", "discovery_ic_1h_vol",
-            "validation_ic_1h_vol", "note", "status"]
+    keys = [
+        "source",
+        "data_id",
+        "pit",
+        "coverage",
+        "discovery_ic_1h_vol",
+        "validation_ic_1h_vol",
+        "note",
+        "status",
+    ]
     payload: dict[str, Any] = {
         "columns": keys,
         "rows": [dict(zip(keys, r, strict=True)) for r in rows],
@@ -273,19 +341,29 @@ def _value_scorecard(report: dict[str, Any], info: dict[str, Any], null: dict[st
         "| --- | --- | --- | --- | --- | --- |",
     ]
     for r in payload["rows"]:
-        ic = (f"{r['discovery_ic_1h_vol']} / {r['validation_ic_1h_vol']}"
-              if r["discovery_ic_1h_vol"] is not None else "—")
-        lines.append(f"| {r['source']} | {r['pit']} | {r['coverage']} | {ic} | {r['note']} | {r['status']} |")
+        ic = (
+            f"{r['discovery_ic_1h_vol']} / {r['validation_ic_1h_vol']}"
+            if r["discovery_ic_1h_vol"] is not None
+            else "—"
+        )
+        lines.append(
+            f"| {r['source']} | {r['pit']} | {r['coverage']} | {ic} | {r['note']} | {r['status']} |"
+        )
     lines.append("")
     OL.write_md(OL.ORTHO_OUT / "DATA_VALUE_SCORECARD.md", "\n".join(lines))
 
 
 def _not_reached() -> None:
     for name in ("WALK_FORWARD_RESULTS", "ROBUSTNESS_RESULTS", "HOLDOUT_RESULTS"):
-        payload = {"phase": name, "status": "NOT_REACHED",
-                   "reason": "no candidate cleared G_EDGE_1 (sufficient-sample net>0 in DISCOVERY)"}
+        payload = {
+            "phase": name,
+            "status": "NOT_REACHED",
+            "reason": "no candidate cleared G_EDGE_1 (sufficient-sample net>0 in DISCOVERY)",
+        }
         OL.write_json(OUT / f"{name}.json", payload)
-        OL.write_md(OUT / f"{name}.md", f"# {name} — RFC-025\n\n**NOT_REACHED.** {payload['reason']}.\n")
+        OL.write_md(
+            OUT / f"{name}.md", f"# {name} — RFC-025\n\n**NOT_REACHED.** {payload['reason']}.\n"
+        )
 
 
 def _final_md(report: dict[str, Any], info: dict[str, Any], null: dict[str, Any]) -> None:

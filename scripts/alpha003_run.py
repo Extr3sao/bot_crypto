@@ -197,9 +197,7 @@ class Experiment:
             leader = spec["leader"]
             lag = spec["lag"]
             self._directions[key] = [
-                ax.arm_direction(
-                    arm_id, af.cell_row(row, target=target, leader=leader, lag=lag)
-                )
+                ax.arm_direction(arm_id, af.cell_row(row, target=target, leader=leader, lag=lag))
                 for row in self.discovery[str(spec["timeframe"])]
             ]
         return self._directions[key]
@@ -231,7 +229,9 @@ def _strip(summary: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _active_pairs(
-    directions: Sequence[int | None], forwards: Sequence[float | None], rows: Sequence[Mapping[str, Any]]
+    directions: Sequence[int | None],
+    forwards: Sequence[float | None],
+    rows: Sequence[Mapping[str, Any]],
 ) -> list[tuple[int, float]]:
     out: list[tuple[int, float]] = []
     for direction, forward, row in zip(directions, forwards, rows, strict=True):
@@ -386,9 +386,7 @@ def evaluate_baselines(experiment: Experiment) -> dict[str, Any]:
                     ):
                         directions.append(ax.arm_direction(label, af.cell_row(row, target=target)))
                         forwards.append(forward)
-            summary = ax.evaluate_directions(
-                directions, forwards, hurdle_bps=experiment.hurdle_bps
-            )
+            summary = ax.evaluate_directions(directions, forwards, hurdle_bps=experiment.hurdle_bps)
             out[f"{label}|{timeframe}"] = _strip(summary)
     return out
 
@@ -414,9 +412,7 @@ def evaluate_ablations(experiment: Experiment) -> dict[str, Any]:
         hypothesis_id = str(ax.parse_cell(cell)["hypothesis_id"])
         variants: dict[str, Any] = {}
         for label in ax.ABLATIONS[hypothesis_id]:
-            arm_id = (
-                hypothesis_id if label == "FULL" else label
-            )
+            arm_id = hypothesis_id if label == "FULL" else label
             variants[label] = _strip(experiment.summary(cell, arm_id))
         out[cell] = variants
     return out
@@ -663,9 +659,7 @@ def main(argv: list[str] | None = None) -> int:
     ]
     economically_admissible = [cell for cell in ordered if bool(cells[cell]["gross_above_hurdle"])]
     best_gross = max(ordered, key=lambda cell: float(cells[cell]["gross_bps"]))
-    best_incremental = max(
-        ordered, key=lambda cell: float(cells[cell]["incremental_delta_bps"])
-    )
+    best_incremental = max(ordered, key=lambda cell: float(cells[cell]["incremental_delta_bps"]))
 
     dataset_report: dict[str, Any] = {
         "campaign": CAMPAIGN,
@@ -764,7 +758,9 @@ def main(argv: list[str] | None = None) -> int:
         "hurdle_bps": hurdle_bps,
         "design_n": design_n,
         "cells": {
-            cell: {key: value for key, value in summary.items() if key not in ("regime", "temporal")}
+            cell: {
+                key: value for key, value in summary.items() if key not in ("regime", "temporal")
+            }
             for cell, summary in cells.items()
         },
         "decisions": {

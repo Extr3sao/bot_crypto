@@ -159,9 +159,7 @@ def test_report_rejects_true_without_a_real_paper_trade(tmp_path: Path) -> None:
 
 
 def test_negative_gross_edge_is_no_trade_with_full_trace(tmp_path: Path) -> None:
-    runtime, _scanner, _broker = make_runtime(
-        run_dir=tmp_path, ledger=make_ledger(gross_bps=-4.56)
-    )
+    runtime, _scanner, _broker = make_runtime(run_dir=tmp_path, ledger=make_ledger(gross_bps=-4.56))
     summary = _run(runtime, cycles=1)
     row = summary.cycle_reports[0].assets[0]
     assert row.mode is DecisionMode.NO_TRADE
@@ -187,7 +185,9 @@ def test_silent_family_yields_no_alpha_and_a_persisted_trace(tmp_path: Path) -> 
 
 def test_strategy_exception_fails_closed(tmp_path: Path) -> None:
     runtime, _scanner, broker = make_runtime(
-        run_dir=tmp_path, ledger=make_ledger(gross_bps=4.0), families={"ema_crossover": BoomFamily()}
+        run_dir=tmp_path,
+        ledger=make_ledger(gross_bps=4.0),
+        families={"ema_crossover": BoomFamily()},
     )
     summary = _run(runtime, cycles=1)
     row = summary.cycle_reports[0].assets[0]
@@ -350,7 +350,9 @@ class _EvolvingReader:
     async def get_ohlcv(
         self, symbol: str, *, as_of_timestamp_ms: int, lookback_bars: int
     ) -> list[OHLCV]:
-        window = [b for b in self._state.history.get(symbol, []) if b.timestamp <= as_of_timestamp_ms]
+        window = [
+            b for b in self._state.history.get(symbol, []) if b.timestamp <= as_of_timestamp_ms
+        ]
         return window[-lookback_bars:]
 
 

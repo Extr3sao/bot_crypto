@@ -24,24 +24,61 @@ SRC_DIR = REPO / "data" / "rfc035s3" / "sources"
 STATES = ("EXPLICIT_VALUE", "EXPLICIT_NONE", "NOT_APPLICABLE", "UNKNOWN")
 SETTLED = ("EXPLICIT_VALUE", "EXPLICIT_NONE", "NOT_APPLICABLE")
 EXECUTABLE_FIELDS = (
-    "assets_and_universe", "timeframe_and_calendar", "data_and_indicators", "entry", "exit",
-    "sizing_and_allocation", "parameters", "warmup", "order_semantics_and_execution",
+    "assets_and_universe",
+    "timeframe_and_calendar",
+    "data_and_indicators",
+    "entry",
+    "exit",
+    "sizing_and_allocation",
+    "parameters",
+    "warmup",
+    "order_semantics_and_execution",
     "completion_conditions",
 )
 EVIDENCE_FIELDS = (
-    "primary_source", "version_or_snapshot", "period", "operations", "results", "fees_and_costs",
+    "primary_source",
+    "version_or_snapshot",
+    "period",
+    "operations",
+    "results",
+    "fees_and_costs",
     "data_quality_and_provenance",
 )
 FORBIDDEN = ("EDGE_CONFIRMED", "PROFITABLE", "READY_FOR_LIVE")
 S3_SOURCES = tuple(f"S3-{i:02d}" for i in range(1, 12))
 ROUND3_OPPORTUNITIES = ("OPP-0028", "OPP-0029", "OPP-0030", "OPP-0031", "OPP-0032", "OPP-0033")
 OPP_REQUIRED = (
-    "opportunity_id", "title", "source_ids", "economic_hypothesis", "market", "assets", "timeframe",
-    "entry_rules", "exit_rules", "risk_rules", "parameters", "claimed_period", "claimed_metrics",
-    "transaction_cost_model", "required_data", "external_code", "external_results", "forward_evidence",
-    "live_evidence", "counter_evidence", "ambiguities", "replication_difficulty", "evidence_quality",
-    "selection_bias_risk", "overfitting_risk", "lookahead_risk", "implementation_risk", "status",
-    "evidence_scores", "evidence_score_total", "rank",
+    "opportunity_id",
+    "title",
+    "source_ids",
+    "economic_hypothesis",
+    "market",
+    "assets",
+    "timeframe",
+    "entry_rules",
+    "exit_rules",
+    "risk_rules",
+    "parameters",
+    "claimed_period",
+    "claimed_metrics",
+    "transaction_cost_model",
+    "required_data",
+    "external_code",
+    "external_results",
+    "forward_evidence",
+    "live_evidence",
+    "counter_evidence",
+    "ambiguities",
+    "replication_difficulty",
+    "evidence_quality",
+    "selection_bias_risk",
+    "overfitting_risk",
+    "lookahead_risk",
+    "implementation_risk",
+    "status",
+    "evidence_scores",
+    "evidence_score_total",
+    "rank",
 )
 
 
@@ -61,16 +98,33 @@ def _score(fields: dict[str, dict[str, str]], names: tuple[str, ...]) -> int:
     return sum(1 for n in names if fields[n]["state"] in SETTLED)
 
 
-@pytest.mark.parametrize("name", ["BASELINE.json", "RULE_CONTRACT_AUDIT.json", "CANDIDATE_DEEP_DIVE.json",
-                                  "ECONOMIC_EVIDENCE.json", "REJECTION_LOG.json", "FINAL_REPORT.json",
-                                  "INDEPENDENT_VERIFICATION.json"])
+@pytest.mark.parametrize(
+    "name",
+    [
+        "BASELINE.json",
+        "RULE_CONTRACT_AUDIT.json",
+        "CANDIDATE_DEEP_DIVE.json",
+        "ECONOMIC_EVIDENCE.json",
+        "REJECTION_LOG.json",
+        "FINAL_REPORT.json",
+        "INDEPENDENT_VERIFICATION.json",
+    ],
+)
 def test_round3_artifacts_are_parseable(name: str) -> None:
     assert _load(OUT / name)
 
 
 def test_the_eight_required_deliverables_exist() -> None:
-    for name in ("BASELINE.md", "RULE_CONTRACT_AUDIT.md", "CANDIDATE_DEEP_DIVE.md", "ECONOMIC_EVIDENCE.md",
-                 "REJECTION_LOG.md", "INDEPENDENT_VERIFICATION.md", "FINAL_REPORT.md", "FINAL_REPORT.json"):
+    for name in (
+        "BASELINE.md",
+        "RULE_CONTRACT_AUDIT.md",
+        "CANDIDATE_DEEP_DIVE.md",
+        "ECONOMIC_EVIDENCE.md",
+        "REJECTION_LOG.md",
+        "INDEPENDENT_VERIFICATION.md",
+        "FINAL_REPORT.md",
+        "FINAL_REPORT.json",
+    ):
         path = OUT / name
         assert path.is_file(), f"missing deliverable {name}"
         assert path.stat().st_size > 200, f"empty deliverable {name}"
@@ -78,8 +132,11 @@ def test_the_eight_required_deliverables_exist() -> None:
 
 def test_the_round_never_asserts_a_forbidden_verdict() -> None:
     for path in OUT.glob("*.md"):
-        offenders = [line for line in path.read_text(encoding="utf-8").splitlines()
-                     if any(line.strip().startswith(v) for v in FORBIDDEN)]
+        offenders = [
+            line
+            for line in path.read_text(encoding="utf-8").splitlines()
+            if any(line.strip().startswith(v) for v in FORBIDDEN)
+        ]
         assert not offenders, (path.name, offenders)
 
 
@@ -136,14 +193,20 @@ def test_no_candidate_is_promoted_to_replication() -> None:
             and candidate["evidence"]["results"]["state"] == "EXPLICIT_VALUE"
         )
         assert not (promoted and not has_attributable_result), candidate["candidate_id"]
-        assert not (promoted and not candidate["executable_completeness"]["complete"]), candidate["candidate_id"]
-        assert not (promoted and not candidate["evidence_completeness"]["complete"]), candidate["candidate_id"]
+        assert not (promoted and not candidate["executable_completeness"]["complete"]), candidate[
+            "candidate_id"
+        ]
+        assert not (promoted and not candidate["evidence_completeness"]["complete"]), candidate[
+            "candidate_id"
+        ]
 
 
 def test_the_two_deep_dives_are_superseded_additively() -> None:
     for oid in ("OPP-0011", "OPP-0016"):
         record = _load(OPP_DIR / f"{oid}.json")
-        assert record["rank"] == "REPLICATE_P1", "the frozen rank was rewritten instead of superseded"
+        assert record["rank"] == "REPLICATE_P1", (
+            "the frozen rank was rewritten instead of superseded"
+        )
         assert record["current_rank"] not in ("REPLICATE_P0", "REPLICATE_P1")
         assert record["candidate_ref"].endswith("CANDIDATE_MATRIX.json")
         assert "REPLICATE_P1" in [item["rank"] for item in record["rank_history"]]
@@ -171,7 +234,9 @@ def test_the_integrity_manifest_re_derives() -> None:
         path = REPO / entry["path"]
         assert path.is_file(), entry["path"]
         assert hashlib.sha256(path.read_bytes()).hexdigest() == entry["sha256"], entry["path"]
-    canonical = json.dumps(manifest["files"], sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    canonical = json.dumps(
+        manifest["files"], sort_keys=True, separators=(",", ":"), ensure_ascii=False
+    )
     assert hashlib.sha256(canonical.encode("utf-8")).hexdigest() == manifest["bundle_digest"]
     assert manifest["copy_verified"] is True
     for copy in manifest["copies"]:
@@ -192,7 +257,11 @@ def test_the_frozen_snapshots_hash_to_their_recorded_digests() -> None:
 
 def test_the_quantiacs_page_declares_no_cost_model_at_all() -> None:
     """The record claims the page's cost model is silence, not a declared absence."""
-    text = (SRC_DIR / "quantiacs_q24_crypto_guide.html").read_text(encoding="utf-8", errors="replace").lower()
+    text = (
+        (SRC_DIR / "quantiacs_q24_crypto_guide.html")
+        .read_text(encoding="utf-8", errors="replace")
+        .lower()
+    )
     for term in ("commission", "transaction cost", "slippage"):
         assert term not in text, term
 
@@ -203,8 +272,14 @@ def test_the_canonical_registry_gained_round_3_without_losing_history() -> None:
     for sid in S3_SOURCES:
         assert sid in by_id, sid
         assert by_id[sid]["EVIDENCE_LEVEL"] in (
-            "REAL_EXECUTION", "FORWARD_PAPER", "INDEPENDENT_REPLICATION", "REPRODUCIBLE_CODE",
-            "ACADEMIC_PAPER", "AUTHOR_BACKTEST", "UNVERIFIED_CLAIM")
+            "REAL_EXECUTION",
+            "FORWARD_PAPER",
+            "INDEPENDENT_REPLICATION",
+            "REPRODUCIBLE_CODE",
+            "ACADEMIC_PAPER",
+            "AUTHOR_BACKTEST",
+            "UNVERIFIED_CLAIM",
+        )
         assert by_id[sid]["READ_LEVEL"] in ("full_text", "abstract_snippet", "listing")
     rounds = {r["rfc"]: r for r in registry["rounds"]}
     assert rounds["RFC-035S3"]["final_status"] == "NO_SUITABLE_EXTERNAL_STRATEGY"

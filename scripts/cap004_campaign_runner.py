@@ -108,9 +108,7 @@ def utc_iso(moment: int | None) -> str | None:
 
 
 def git_output(*args: str) -> str:
-    proc = subprocess.run(
-        ["git", *args], cwd=REPO, capture_output=True, text=True, check=False
-    )
+    proc = subprocess.run(["git", *args], cwd=REPO, capture_output=True, text=True, check=False)
     return proc.stdout.strip()
 
 
@@ -141,11 +139,14 @@ def campaigns_assets_to_fetch(ledger: dl.DecisionLedger, *, need_seal: bool, now
         wanted |= set(cm.CAMPAIGN_ASSETS)
     for item in ledger.decisions():
         pending = not ledger.has_outcome(str(item["decision_id"]), str(item["horizon"]))
-        if pending and cs.maturity_state(
-            decision_time=int(item["decision_time"]),
-            horizon=str(item["horizon"]),
-            now=now,
-        )["matured"]:
+        if (
+            pending
+            and cs.maturity_state(
+                decision_time=int(item["decision_time"]),
+                horizon=str(item["horizon"]),
+                now=now,
+            )["matured"]
+        ):
             wanted.add(str(item["asset"]))
     return sorted(wanted)
 
@@ -235,7 +236,9 @@ def seal_phase(
     artifacts: dict[str, Any] = {}
     for asset in assets:
         rows = {
-            key: rmc.completed_rows(rows_by_asset[asset][key], decision_ms=decision_ms, interval_key=key)
+            key: rmc.completed_rows(
+                rows_by_asset[asset][key], decision_ms=decision_ms, interval_key=key
+            )
             for key in rmc.CONTRACT_INTERVALS
         }
         artifacts[asset] = rmc.build_real_snapshot_artifact(
@@ -245,9 +248,9 @@ def seal_phase(
             reference_rows_4h=btc_rows_4h,
         )
     result["gate"] = {
-        asset: rmc.evaluate_g_real_market_context(
-            artifacts[asset], snapshot_at=decision_time
-        )["status"]
+        asset: rmc.evaluate_g_real_market_context(artifacts[asset], snapshot_at=decision_time)[
+            "status"
+        ]
         for asset in artifacts
     }
     if any(status != "PASS" for status in result["gate"].values()):
@@ -452,9 +455,7 @@ def settle_phase(
         daily = rows_by_asset[asset]["1D"]
         record = dl.record_from_entry(entry)
         try:
-            outcome = do.evaluate_decision(
-                record=record, asset=asset, horizon=horizon, rows=rows
-            )
+            outcome = do.evaluate_decision(record=record, asset=asset, horizon=horizon, rows=rows)
         except do.HorizonNotMaturedError as exc:
             blocked.append(
                 {
@@ -685,9 +686,7 @@ def storage_sample(
     *, report_root: Path, ledger_root: Path, now: int, max_entries: int = STORAGE_WALK_MAX_ENTRIES
 ) -> dict[str, Any]:
     """One measured storage observation: repo bytes, evidence bytes, free space."""
-    cap004_bytes, cap004_files, cap004_truncated = _tree_bytes(
-        report_root, max_entries=max_entries
-    )
+    cap004_bytes, cap004_files, cap004_truncated = _tree_bytes(report_root, max_entries=max_entries)
     evidence_bytes, evidence_files, evidence_truncated = _tree_bytes(
         ledger_root, max_entries=max_entries
     )
@@ -844,11 +843,19 @@ def run_cycle(
     )
     if not chain_ok:
         errors.append(
-            {"code": "INTEGRITY_FAILURE", "detail": "ledger chain does not re-derive", "broken": chain["broken"]}
+            {
+                "code": "INTEGRITY_FAILURE",
+                "detail": "ledger chain does not re-derive",
+                "broken": chain["broken"],
+            }
         )
     if drift["status"] != "NO_DRIFT":
         errors.append(
-            {"code": drift["status"], "detail": "frozen manifest knob changed", "drifted": drift["drifted"]}
+            {
+                "code": drift["status"],
+                "detail": "frozen manifest knob changed",
+                "drifted": drift["drifted"],
+            }
         )
 
     result: dict[str, Any] = {
@@ -976,7 +983,10 @@ def run_cycle(
         disk=disk,
     )
     c1.write_json(REPORT_ROOT / "CAMPAIGN_STATUS.json", status_payload)
-    c1.write_md(REPORT_ROOT / "CAMPAIGN_STATUS.md", cr.render_status_md(status_payload, metrics=score["metrics"]))
+    c1.write_md(
+        REPORT_ROOT / "CAMPAIGN_STATUS.md",
+        cr.render_status_md(status_payload, metrics=score["metrics"]),
+    )
 
     # Bounded read: only today's compact events, filtered while streaming.
     daily = cr.daily_report(
@@ -1022,7 +1032,9 @@ def run_cycle(
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="CAP-004 autonomous campaign runner")
-    parser.add_argument("--once", action="store_true", help="run seal, settle, score and verify once")
+    parser.add_argument(
+        "--once", action="store_true", help="run seal, settle, score and verify once"
+    )
     parser.add_argument("--seal", action="store_true")
     parser.add_argument("--settle", action="store_true")
     parser.add_argument("--score", action="store_true")
@@ -1055,7 +1067,9 @@ def print_status(now: int) -> int:
     )
     heartbeat = cr.read_heartbeat(LEDGER_ROOT)
     print(f"campaign = {cm.CAMPAIGN_ID} v{cm.CAMPAIGN_VERSION}")
-    print(f"status = {status}   chain = {ledger.verify_chain()['status']}   drift = {drift['status']}")
+    print(
+        f"status = {status}   chain = {ledger.verify_chain()['status']}   drift = {drift['status']}"
+    )
     for key in (
         "sealed_decisions",
         "pending_decisions",
@@ -1130,7 +1144,9 @@ def _print_cycle(result: dict[str, Any]) -> None:
     seal = result.get("seal") or {}
     if seal:
         print(f"  slot={seal.get('slot_utc')} delay={seal.get('delay_seconds')}s")
-        print(f"  sealed={len(seal.get('sealed', []))} already_used={len(seal.get('already_used', []))}")
+        print(
+            f"  sealed={len(seal.get('sealed', []))} already_used={len(seal.get('already_used', []))}"
+        )
         print(
             f"  awaiting_answer={len(seal.get('pending_answers', []))} "
             f"missed={len(seal.get('missed', []))}"
@@ -1148,7 +1164,12 @@ def _print_cycle(result: dict[str, Any]) -> None:
         "  population: "
         + " ".join(
             f"{key}={counters.get(key)}"
-            for key in ("sealed_decisions", "matured_decisions", "settled_outcomes", "evaluated_decisions")
+            for key in (
+                "sealed_decisions",
+                "matured_decisions",
+                "settled_outcomes",
+                "evaluated_decisions",
+            )
         )
     )
     score = result.get("score") or {}
@@ -1157,7 +1178,9 @@ def _print_cycle(result: dict[str, Any]) -> None:
         print(f"  checkpoints={[item['status'] for item in checkpoints]}")
     verify = result.get("verify")
     if verify:
-        print(f"  verify={verify.get('status')} checks={verify.get('passed')}/{verify.get('total')}")
+        print(
+            f"  verify={verify.get('status')} checks={verify.get('passed')}/{verify.get('total')}"
+        )
     errors = result.get("errors") or []
     print(f"  errors={[item.get('code') for item in errors]}")
 

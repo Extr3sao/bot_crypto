@@ -85,9 +85,7 @@ def now_utc() -> str:
 
 
 def git(args: list[str]) -> str:
-    proc = subprocess.run(
-        ["git", *args], cwd=REPO, capture_output=True, text=True, check=False
-    )
+    proc = subprocess.run(["git", *args], cwd=REPO, capture_output=True, text=True, check=False)
     return proc.stdout.strip()
 
 
@@ -332,7 +330,9 @@ def section_sources() -> dict[str, Any]:
                     }
                 ],
                 "post_publication_evidence": "Reproduced only by the authors and blog replications; no peer-reviewed or independent institutional replication located.",
-                "counter_evidence": ["Parameter-rich canary rules are prone to overfitting the 2000-2008 equity bear."],
+                "counter_evidence": [
+                    "Parameter-rich canary rules are prone to overfitting the 2000-2008 equity bear."
+                ],
                 "evidence_strength_0_5": 2,
                 "independent_sources": 0,
                 "verdict": "RESEARCH_ONLY_4_FAMILIES_ADMITTED (§25: not filled for obligation)",
@@ -501,9 +501,7 @@ def section_scorecard() -> dict[str, Any]:
         "critical_minimums": CRITICAL_MIN,
         "rows": rows,
         "eligible_and_passing": [
-            r["id"]
-            for r in rows
-            if r["eligible"] and r["critical_dimensions_pass"]
+            r["id"] for r in rows if r["eligible"] and r["critical_dimensions_pass"]
         ],
     }
 
@@ -665,20 +663,30 @@ def section_robustness(ds: sc.Dataset, series: list[sc.PriceSeries]) -> dict[str
     folds: list[dict[str, Any]] = []
     for span in WALK_FORWARD_FOLDS:
         r = run_window(ds, span)
-        folds.append({"span": [list(span[0]), list(span[1])], "net_pnl_usdt": round(r.net_pnl, 4), "cagr": round(r.cagr(), 6)})
+        folds.append(
+            {
+                "span": [list(span[0]), list(span[1])],
+                "net_pnl_usdt": round(r.net_pnl, 4),
+                "cagr": round(r.cagr(), 6),
+            }
+        )
     wf_pass = all(f["net_pnl_usdt"] > 0.0 for f in folds)
 
     costs: list[dict[str, Any]] = []
     for mult in COST_STRESS:
         r = run_window(ds, _in_sample_span(), cost_bps_per_side=sc.COST_BPS_PER_SIDE * mult)
-        costs.append({"multiple": mult, "net_pnl_usdt": round(r.net_pnl, 4), "cagr": round(r.cagr(), 6)})
+        costs.append(
+            {"multiple": mult, "net_pnl_usdt": round(r.net_pnl, 4), "cagr": round(r.cagr(), 6)}
+        )
     cost_pass = all(c["net_pnl_usdt"] > 0.0 for c in costs)
 
     loo: list[dict[str, Any]] = []
     for sym in ds.symbols:
         sub = sc.build_dataset([s for s in series if s.symbol != sym])
         r = run_window(sub, SPLITS["VALIDATION"])
-        loo.append({"dropped": sym, "net_pnl_usdt": round(r.net_pnl, 4), "cagr": round(r.cagr(), 6)})
+        loo.append(
+            {"dropped": sym, "net_pnl_usdt": round(r.net_pnl, 4), "cagr": round(r.cagr(), 6)}
+        )
     loo_pass = all(x["net_pnl_usdt"] > 0.0 for x in loo)
 
     recent = run_window(ds, RECENT_PERIOD)
@@ -687,7 +695,9 @@ def section_robustness(ds: sc.Dataset, series: list[sc.PriceSeries]) -> dict[str
     neighbours: list[dict[str, Any]] = []
     for w in PARAM_NEIGHBOURS:
         r = run_window(ds, SPLITS["VALIDATION"], window=w)
-        neighbours.append({"sma_window": w, "net_pnl_usdt": round(r.net_pnl, 4), "cagr": round(r.cagr(), 6)})
+        neighbours.append(
+            {"sma_window": w, "net_pnl_usdt": round(r.net_pnl, 4), "cagr": round(r.cagr(), 6)}
+        )
     param_pass = all(n["net_pnl_usdt"] > 0.0 for n in neighbours)
 
     checks = {
@@ -701,7 +711,10 @@ def section_robustness(ds: sc.Dataset, series: list[sc.PriceSeries]) -> dict[str
         "walk_forward_folds": folds,
         "cost_stress": costs,
         "leave_one_out": loo,
-        "recent_period": {**summarize(recent), "span": [list(RECENT_PERIOD[0]), list(RECENT_PERIOD[1])]},
+        "recent_period": {
+            **summarize(recent),
+            "span": [list(RECENT_PERIOD[0]), list(RECENT_PERIOD[1])],
+        },
         "parameter_neighbours": neighbours,
         "checks": checks,
         "result": "PASS" if all(checks.values()) else "FAIL",
@@ -712,9 +725,7 @@ def section_holdout(ds: sc.Dataset) -> dict[str, Any]:
     r = run_window(ds, SPLITS["HOLDOUT"])
     s = summarize(r)
     return {
-        "split": {
-            k: list(v) for k, v in zip(["start", "end"], SPLITS["HOLDOUT"], strict=True)
-        },
+        "split": {k: list(v) for k, v in zip(["start", "end"], SPLITS["HOLDOUT"], strict=True)},
         "results": s,
         "untouched_before_this_run": True,
         "checks": {"holdout_net_positive": s["net_pnl"] > 0.0},
@@ -737,7 +748,12 @@ def false_success_audit(gates: dict[str, str], *, bought_paid_data: bool = False
         "historical_called_live_profit": False,
     }
     count = sum(1 for v in triggers.values() if v)
-    return {"triggers": triggers, "FALSE_SUCCESS": count, "target": 0, "result": "PASS" if count == 0 else "FAIL"}
+    return {
+        "triggers": triggers,
+        "FALSE_SUCCESS": count,
+        "target": 0,
+        "result": "PASS" if count == 0 else "FAIL",
+    }
 
 
 def final_report_payload(
@@ -764,7 +780,8 @@ def final_report_payload(
         "finalists": [P1_ID, P2_ID],
         "P1_SMALL_CAPITAL": P1_ID,
         "gates": gates,
-        "did_we_achieve_200_usdt_executable_validated_edge": gates.get("G_SC_2_VALIDATION") == "PASS",
+        "did_we_achieve_200_usdt_executable_validated_edge": gates.get("G_SC_2_VALIDATION")
+        == "PASS",
         "discovery_net_usdt": d["net_pnl"],
         "validation_net_usdt": v.get("net_pnl"),
         "validation_sharpe": v.get("sharpe"),
@@ -782,7 +799,9 @@ def final_report_payload(
             "validation_total_net_usdt": v.get("net_pnl"),
             "annual_cost_usdt": cost["example"]["cost_usdt_per_year"],
         },
-        "SMALL_CAPITAL_EXECUTABLE_VALIDATED_EDGE_COUNT": kpis["SMALL_CAPITAL_EXECUTABLE_VALIDATED_EDGE_COUNT"],
+        "SMALL_CAPITAL_EXECUTABLE_VALIDATED_EDGE_COUNT": kpis[
+            "SMALL_CAPITAL_EXECUTABLE_VALIDATED_EDGE_COUNT"
+        ],
         "PAPER_ELIGIBILITY": gates.get("PAPER_ELIGIBILITY", "NOT_ELIGIBLE"),
         "FORWARD_PROFITABLE": 0,
         "LIVE_PROFITABLE": 0,
@@ -902,30 +921,56 @@ def main() -> int:
 
     # §0 entry gate
     entry = section_entry_gate()
-    emit(OUT, "RFC039_PLAN", render_md("RFC-039 PLAN", {
-        "mission": "find ONE strategy executable with ~200 USDT, externally evidenced, low turnover, faithful reproduction, chronological validation, without tuning",
-        "primary_kpi": "SMALL_CAPITAL_EXECUTABLE_VALIDATED_EDGE_COUNT",
-        "primary_kpi_initial": 0,
-        "primary_kpi_target": 1,
-        "secondary_kpis_initial": {
-            "SMALL_CAPITAL_ROBUST_EDGE_COUNT": 0,
-            "SMALL_CAPITAL_PAPER_CANDIDATE_COUNT": 0,
-            "SMALL_CAPITAL_FORWARD_PROFITABLE_COUNT": 0,
-            "SMALL_CAPITAL_LIVE_PROFITABLE_COUNT": 0,
-        },
-        "sequence": [
-            "VERIFY REPOSITORY", "FREEZE CAPITAL = 200 USDT", "AUDIT REAL EXECUTION SURFACES",
-            "RESEARCH MAX 5 FAMILIES", "MAX 2 FINALISTS", "SELECT EXACTLY 1 BEFORE BACKTEST",
-            "FREEZE P1", "REPRODUCE", "DISCOVERY", "VALIDATION", "ROBUSTNESS", "PAPER ELIGIBILITY",
-        ],
-        "prohibitions": [
-            "second implemented strategy", "parameter rescue", "new alpha family after failure",
-            "paid data", "institutional-capital strategy", "live trading",
-        ],
-        "entry_gate": entry,
-    }), {"entry_gate": entry})
+    emit(
+        OUT,
+        "RFC039_PLAN",
+        render_md(
+            "RFC-039 PLAN",
+            {
+                "mission": "find ONE strategy executable with ~200 USDT, externally evidenced, low turnover, faithful reproduction, chronological validation, without tuning",
+                "primary_kpi": "SMALL_CAPITAL_EXECUTABLE_VALIDATED_EDGE_COUNT",
+                "primary_kpi_initial": 0,
+                "primary_kpi_target": 1,
+                "secondary_kpis_initial": {
+                    "SMALL_CAPITAL_ROBUST_EDGE_COUNT": 0,
+                    "SMALL_CAPITAL_PAPER_CANDIDATE_COUNT": 0,
+                    "SMALL_CAPITAL_FORWARD_PROFITABLE_COUNT": 0,
+                    "SMALL_CAPITAL_LIVE_PROFITABLE_COUNT": 0,
+                },
+                "sequence": [
+                    "VERIFY REPOSITORY",
+                    "FREEZE CAPITAL = 200 USDT",
+                    "AUDIT REAL EXECUTION SURFACES",
+                    "RESEARCH MAX 5 FAMILIES",
+                    "MAX 2 FINALISTS",
+                    "SELECT EXACTLY 1 BEFORE BACKTEST",
+                    "FREEZE P1",
+                    "REPRODUCE",
+                    "DISCOVERY",
+                    "VALIDATION",
+                    "ROBUSTNESS",
+                    "PAPER ELIGIBILITY",
+                ],
+                "prohibitions": [
+                    "second implemented strategy",
+                    "parameter rescue",
+                    "new alpha family after failure",
+                    "paid data",
+                    "institutional-capital strategy",
+                    "live trading",
+                ],
+                "entry_gate": entry,
+            },
+        ),
+        {"entry_gate": entry},
+    )
 
-    emit(OUT, "CAPITAL_PRODUCT_CONSTRAINTS", render_md("CAPITAL PRODUCT CONSTRAINTS", section_capital_constraints()), section_capital_constraints())
+    emit(
+        OUT,
+        "CAPITAL_PRODUCT_CONSTRAINTS",
+        render_md("CAPITAL PRODUCT CONSTRAINTS", section_capital_constraints()),
+        section_capital_constraints(),
+    )
 
     rdata.ensure_cache(UNIVERSE)
     digest = rdata.dataset_digest(UNIVERSE)
@@ -938,8 +983,14 @@ def main() -> int:
     sources = section_sources()
     emit(OUT, "EXTERNAL_SOURCE_REGISTRY", render_md("EXTERNAL SOURCE REGISTRY", sources), sources)
 
-    universe_payload = {"families_researched": 5, "families_admitted": 4, "rows": list(STRATEGY_UNIVERSE)}
-    emit(OUT, "STRATEGY_UNIVERSE", render_md("STRATEGY UNIVERSE", universe_payload), universe_payload)
+    universe_payload = {
+        "families_researched": 5,
+        "families_admitted": 4,
+        "rows": list(STRATEGY_UNIVERSE),
+    }
+    emit(
+        OUT, "STRATEGY_UNIVERSE", render_md("STRATEGY UNIVERSE", universe_payload), universe_payload
+    )
 
     scorecard = section_scorecard()
     emit(OUT, "STRATEGY_SCORECARD", render_md("STRATEGY SCORECARD", scorecard), scorecard)
@@ -949,7 +1000,12 @@ def main() -> int:
 
     spec = p1_spec()
     freeze = section_freeze(spec)
-    emit(OUT, "SMALL_CAPITAL_SELECTION_FREEZE", render_md("SMALL CAPITAL SELECTION FREEZE", freeze), freeze)
+    emit(
+        OUT,
+        "SMALL_CAPITAL_SELECTION_FREEZE",
+        render_md("SMALL CAPITAL SELECTION FREEZE", freeze),
+        freeze,
+    )
 
     # §41-§46 + §64-§66 artefacts (written before results)
     emit(OUT, "P1_SOURCE_SPEC", render_md("P1 SOURCE SPEC", spec), spec)
@@ -970,8 +1026,21 @@ def main() -> int:
     emit(OUT, "P1_DISCOVERY_RESULTS", render_md("P1 DISCOVERY RESULTS", disc), disc)
 
     if repro["result"] != "PASS" or disc["result"] != "PASS":
-        return _terminate_no_edge(entry, freeze, spec, surface, sources, scorecard, top2,
-                                  data_audit, pit, cost, cap_audit, repro, disc)
+        return _terminate_no_edge(
+            entry,
+            freeze,
+            spec,
+            surface,
+            sources,
+            scorecard,
+            top2,
+            data_audit,
+            pit,
+            cost,
+            cap_audit,
+            repro,
+            disc,
+        )
 
     val = section_validation(ds)
     emit(OUT, "P1_VALIDATION_RESULTS", render_md("P1 VALIDATION RESULTS", val), val)
@@ -980,15 +1049,35 @@ def main() -> int:
     holdout: dict[str, Any] | None = None
     if val["result"] == "PASS":
         robust = section_robustness(ds, series)
-        emit(OUT, "P1_WALK_FORWARD", render_md("P1 WALK FORWARD", {"folds": robust["walk_forward_folds"]}), {"folds": robust["walk_forward_folds"]})
+        emit(
+            OUT,
+            "P1_WALK_FORWARD",
+            render_md("P1 WALK FORWARD", {"folds": robust["walk_forward_folds"]}),
+            {"folds": robust["walk_forward_folds"]},
+        )
         emit(OUT, "P1_ROBUSTNESS", render_md("P1 ROBUSTNESS", robust), robust)
         if robust["result"] == "PASS":
             holdout = section_holdout(ds)
             emit(OUT, "P1_HOLDOUT", render_md("P1 HOLDOUT", holdout), holdout)
 
     return _finish(
-        entry, freeze, spec, surface, sources, scorecard, top2, data_audit, pit, cost,
-        cap_audit, repro, disc, val, robust, holdout, digest,
+        entry,
+        freeze,
+        spec,
+        surface,
+        sources,
+        scorecard,
+        top2,
+        data_audit,
+        pit,
+        cost,
+        cap_audit,
+        repro,
+        disc,
+        val,
+        robust,
+        holdout,
+        digest,
     )
 
 
@@ -1042,7 +1131,9 @@ def _finish(
     verification = rverify.verify(series, spec, SPLITS)
     emit(OUT, "RFC039_VERIFICATION", render_md("RFC039 VERIFICATION", verification), verification)
 
-    g_product = "PASS" if surface["surfaces"][1]["classification"] == "SMALL_INTEGRATION" else "FAIL"
+    g_product = (
+        "PASS" if surface["surfaces"][1]["classification"] == "SMALL_INTEGRATION" else "FAIL"
+    )
     g_capital = cap_audit["gate_G_SC_CAPITAL"]["result"]
     g_repro = repro["result"]
     g1 = disc["result"]
@@ -1050,8 +1141,16 @@ def _finish(
     g3 = (robust or {}).get("result", "NOT_RUN")
     g4 = (holdout or {}).get("result", "NOT_RUN")
     edge = 1 if g2 == "PASS" else 0
-    paper = "PAPER_CERTIFICATION_ELIGIBLE" if (g2 == "PASS" and g3 == "PASS" and g4 == "PASS") else "NOT_ELIGIBLE"
-    next_step = "SMALL_CAPITAL_PAPER_CERTIFICATION" if paper.startswith("PAPER") else "SMALL_CAPITAL_STRATEGIC_DECISION"
+    paper = (
+        "PAPER_CERTIFICATION_ELIGIBLE"
+        if (g2 == "PASS" and g3 == "PASS" and g4 == "PASS")
+        else "NOT_ELIGIBLE"
+    )
+    next_step = (
+        "SMALL_CAPITAL_PAPER_CERTIFICATION"
+        if paper.startswith("PAPER")
+        else "SMALL_CAPITAL_STRATEGIC_DECISION"
+    )
     gates = {
         "G_SC_PRODUCT": g_product,
         "G_SC_CAPITAL": g_capital,
@@ -1073,29 +1172,61 @@ def _finish(
     }
     fs = false_success_audit(gates)
     final = final_report_payload(
-        gates, kpis, spec=spec, repro=repro, disc=disc, val=val, robust=robust,
-        holdout=holdout, cap_audit=cap_audit, cost=cost, verification=verification,
+        gates,
+        kpis,
+        spec=spec,
+        repro=repro,
+        disc=disc,
+        val=val,
+        robust=robust,
+        holdout=holdout,
+        cap_audit=cap_audit,
+        cost=cost,
+        verification=verification,
         false_success=fs,
     )
 
     final["spec_sha256"] = freeze["spec_canonical_sha256"]
-    md = final_report_md(final, gates, spec, repro, disc, val, robust, holdout, cap_audit, cost, verification, fs)
+    md = final_report_md(
+        final, gates, spec, repro, disc, val, robust, holdout, cap_audit, cost, verification, fs
+    )
     write_md(OUT.parent / "RFC039_FINAL_REPORT.md", md)
     write_json(OUT.parent / "RFC039_FINAL_REPORT.json", final)
     _write_tracked_doc(final, gates)
 
-    print(json.dumps({"gates": gates, "kpis": kpis, "FALSE_SUCCESS": fs["FALSE_SUCCESS"], "VERIFICATION": verification["VERIFICATION_STATUS"]}, indent=2))
+    print(
+        json.dumps(
+            {
+                "gates": gates,
+                "kpis": kpis,
+                "FALSE_SUCCESS": fs["FALSE_SUCCESS"],
+                "VERIFICATION": verification["VERIFICATION_STATUS"],
+            },
+            indent=2,
+        )
+    )
     return 0
 
 
 def _terminate_no_edge(
-    entry: dict[str, Any], freeze: dict[str, Any], spec: dict[str, Any], surface: dict[str, Any],
-    sources: dict[str, Any], scorecard: dict[str, Any], top2: dict[str, Any], data_audit: dict[str, Any],
-    pit: dict[str, Any], cost: dict[str, Any], cap_audit: dict[str, Any], repro: dict[str, Any],
+    entry: dict[str, Any],
+    freeze: dict[str, Any],
+    spec: dict[str, Any],
+    surface: dict[str, Any],
+    sources: dict[str, Any],
+    scorecard: dict[str, Any],
+    top2: dict[str, Any],
+    data_audit: dict[str, Any],
+    pit: dict[str, Any],
+    cost: dict[str, Any],
+    cap_audit: dict[str, Any],
+    repro: dict[str, Any],
     disc: dict[str, Any],
 ) -> int:
     gates = {
-        "G_SC_PRODUCT": "PASS" if surface["surfaces"][1]["classification"] == "SMALL_INTEGRATION" else "FAIL",
+        "G_SC_PRODUCT": "PASS"
+        if surface["surfaces"][1]["classification"] == "SMALL_INTEGRATION"
+        else "FAIL",
         "G_SC_CAPITAL": cap_audit["gate_G_SC_CAPITAL"]["result"],
         "G_SC_REPRO": repro["result"],
         "G_SC_1_DISCOVERY": disc["result"],
@@ -1114,7 +1245,11 @@ def _terminate_no_edge(
         "early_stop": True,
         "no_p2_substitution": True,
     }
-    md = "RFC-039 SMALL-CAPITAL PROFITABILITY SPRINT\n\n" + json.dumps(final, indent=2, ensure_ascii=False) + "\n"
+    md = (
+        "RFC-039 SMALL-CAPITAL PROFITABILITY SPRINT\n\n"
+        + json.dumps(final, indent=2, ensure_ascii=False)
+        + "\n"
+    )
     write_md(OUT.parent / "RFC039_FINAL_REPORT.md", md)
     write_json(OUT.parent / "RFC039_FINAL_REPORT.json", final)
     _write_tracked_doc(final, gates)
@@ -1124,7 +1259,9 @@ def _terminate_no_edge(
 
 def section_reproduction(ds: sc.Dataset) -> dict[str, Any]:
     disc = run_window(ds, SPLITS["DISCOVERY"])
-    bh = sc.simulate_fixed_weights(ds, {"SPY": 1.0}, start_ms=ms(*SPLITS["DISCOVERY"][0]), end_ms=ms(*SPLITS["DISCOVERY"][1]))
+    bh = sc.simulate_fixed_weights(
+        ds, {"SPY": 1.0}, start_ms=ms(*SPLITS["DISCOVERY"][0]), end_ms=ms(*SPLITS["DISCOVERY"][1])
+    )
     s = summarize(disc)
     bh_dd = sc.max_drawdown(bh.equity)
     strat_dd = sc.max_drawdown(disc.equity)
@@ -1132,7 +1269,8 @@ def section_reproduction(ds: sc.Dataset) -> dict[str, Any]:
     checks = {
         "fidelity_close_or_exact": True,
         "discovery_net_positive": s["net_pnl"] > 0.0,
-        "drawdown_reduction_vs_spy_buyhold": improvement >= THRESHOLDS["repro_maxdd_improvement_vs_spy_bh"],
+        "drawdown_reduction_vs_spy_buyhold": improvement
+        >= THRESHOLDS["repro_maxdd_improvement_vs_spy_bh"],
         "pit_pass": True,
         "cost_model_frozen": True,
     }
@@ -1179,9 +1317,7 @@ def section_discovery(ds: sc.Dataset) -> dict[str, Any]:
         ),
     }
     return {
-        "split": {
-            k: list(v) for k, v in zip(["start", "end"], SPLITS["DISCOVERY"], strict=True)
-        },
+        "split": {k: list(v) for k, v in zip(["start", "end"], SPLITS["DISCOVERY"], strict=True)},
         "results": s,
         "single_event_dependence": se,
         "checks": checks,
@@ -1192,8 +1328,15 @@ def section_discovery(ds: sc.Dataset) -> dict[str, Any]:
 def section_validation(ds: sc.Dataset) -> dict[str, Any]:
     val = run_window(ds, SPLITS["VALIDATION"])
     s = summarize(val)
-    bh = sc.simulate_fixed_weights(ds, {"SPY": 1.0}, start_ms=ms(*SPLITS["VALIDATION"][0]), end_ms=ms(*SPLITS["VALIDATION"][1]))
-    f64 = sc.simulate_fixed_weights(ds, {"SPY": 0.6, "IEF": 0.4}, start_ms=ms(*SPLITS["VALIDATION"][0]), end_ms=ms(*SPLITS["VALIDATION"][1]))
+    bh = sc.simulate_fixed_weights(
+        ds, {"SPY": 1.0}, start_ms=ms(*SPLITS["VALIDATION"][0]), end_ms=ms(*SPLITS["VALIDATION"][1])
+    )
+    f64 = sc.simulate_fixed_weights(
+        ds,
+        {"SPY": 0.6, "IEF": 0.4},
+        start_ms=ms(*SPLITS["VALIDATION"][0]),
+        end_ms=ms(*SPLITS["VALIDATION"][1]),
+    )
     b_s = summarize(bh)
     f_s = summarize(f64)
     checks = {
@@ -1201,19 +1344,20 @@ def section_validation(ds: sc.Dataset) -> dict[str, Any]:
         "realistic_cost_included": s["total_cost"] > 0.0,
         "same_mechanism": True,
         "executable_at_200": True,
-        "no_accounting_or_pit_defect": s["mean_weight_error"] <= THRESHOLDS["min_capital_fit_mean_weight_error"],
+        "no_accounting_or_pit_defect": s["mean_weight_error"]
+        <= THRESHOLDS["min_capital_fit_mean_weight_error"],
     }
     return {
-        "split": {
-            k: list(v) for k, v in zip(["start", "end"], SPLITS["VALIDATION"], strict=True)
-        },
+        "split": {k: list(v) for k, v in zip(["start", "end"], SPLITS["VALIDATION"], strict=True)},
         "results": s,
         "benchmarks": {"spy_buyhold": b_s, "sixty_forty": f_s},
         "benchmark_delta": {
             "net_pnl_advantage_vs_spy_buyhold_usdt": round(s["net_pnl"] - b_s["net_pnl"], 4),
             "sharpe_delta_vs_spy_buyhold": round(s["sharpe"] - b_s["sharpe"], 4),
             "sharpe_delta_vs_sixty_forty": round(s["sharpe"] - f_s["sharpe"], 4),
-            "maxdd_advantage_vs_spy_buyhold": round(abs(sc.max_drawdown(bh.equity)) - abs(sc.max_drawdown(val.equity)), 6),
+            "maxdd_advantage_vs_spy_buyhold": round(
+                abs(sc.max_drawdown(bh.equity)) - abs(sc.max_drawdown(val.equity)), 6
+            ),
         },
         "checks": checks,
         "result": "PASS" if all(checks.values()) else "FAIL",

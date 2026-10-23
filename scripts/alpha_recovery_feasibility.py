@@ -78,8 +78,10 @@ def main() -> int:
     print(f"cost_bps_rt = {cost_bps_rt:.6f}")
     print(f"dataset_fingerprint = {payload['dataset_fingerprint']}")
     print(f"series = {len(window_rows)}  (DEV+VALIDATION only; OOS not read)")
-    print(f"{'horizon':>8} {'bars':>6} {'gross_bps':>10} {'median':>9} {'p90':>9} "
-          f"{'frac>=cost':>10} {'ratio':>7}")
+    print(
+        f"{'horizon':>8} {'bars':>6} {'gross_bps':>10} {'median':>9} {'p90':>9} "
+        f"{'frac>=cost':>10} {'ratio':>7}"
+    )
     for label, row in frontier["per_horizon"].items():
         print(
             f"{label:>8} {row['horizon_bars']:>6} {row['gross_opportunity_bps']:>10.3f} "

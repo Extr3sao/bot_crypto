@@ -891,8 +891,7 @@ def verify(
         and registry_number is not None
         and bool(documents.get("rfc_document"))
         and bool(documents.get("rfc_document_json"))
-        and (documents.get("rfc_document_json") or {}).get("status")
-        == report.get("RFC047_STATUS"),
+        and (documents.get("rfc_document_json") or {}).get("status") == report.get("RFC047_STATUS"),
         {
             "missing": missing_deliverables,
             "registry_entry": registry_number,

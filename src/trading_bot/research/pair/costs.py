@@ -343,9 +343,7 @@ class PairCostModelV1:
 
         if not short.is_known:
             reason = (
-                "SHORT_LEG_UNCOSTED"
-                if short_instrument.borrow_required
-                else "SHORT_COST_UNKNOWN"
+                "SHORT_LEG_UNCOSTED" if short_instrument.borrow_required else "SHORT_COST_UNKNOWN"
             )
             return PairCostBreakdown(
                 long_cost=long_cost,
@@ -363,9 +361,7 @@ class PairCostModelV1:
         assert short.total_short_cost is not None  # guaranteed by is_known above
         short_total = float(short.total_short_cost)
         short_knowledge = (
-            CostKnowledge.OBSERVED
-            if short.source not in ("", "NONE")
-            else CostKnowledge.CONFIGURED
+            CostKnowledge.OBSERVED if short.source not in ("", "NONE") else CostKnowledge.CONFIGURED
         )
         total = long_cost + short_total
         return PairCostBreakdown(

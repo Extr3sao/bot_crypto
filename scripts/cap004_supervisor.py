@@ -181,7 +181,9 @@ def utc_iso(moment: int | None) -> str | None:
 
 def canonical_json(payload: Any) -> str:
     """The one canonicalisation both the supervisor and its verifier agree on."""
-    return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str)
+    return json.dumps(
+        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str
+    )
 
 
 def digest_text(text: str) -> str:
@@ -234,7 +236,9 @@ def last_verification_time(entries: Sequence[Mapping[str, Any]]) -> int | None:
     # ``started_at`` shares the cycle clock (``ended_at`` is wall-clock completion),
     # so the daily cadence is measured on the same timeline the gate is evaluated on.
     stamps = [
-        int(entry.get("started_at", 0)) for entry in entries if str(entry.get("verification")) == "PASS"
+        int(entry.get("started_at", 0))
+        for entry in entries
+        if str(entry.get("verification")) == "PASS"
     ]
     return max(stamps) if stamps else None
 
@@ -497,7 +501,9 @@ def heartbeat_fresh(
 def configure_logging(log_dir: Path = LOG_DIR, *, capture_stdout: bool = True) -> logging.Logger:
     logger = logging.getLogger(SUPERVISOR_NAME)
     logger.setLevel(logging.INFO)
-    if not any(isinstance(handler, logging.handlers.RotatingFileHandler) for handler in logger.handlers):
+    if not any(
+        isinstance(handler, logging.handlers.RotatingFileHandler) for handler in logger.handlers
+    ):
         Path(log_dir).mkdir(parents=True, exist_ok=True)
         file_handler = logging.handlers.RotatingFileHandler(
             Path(log_dir) / LOG_FILENAME,
@@ -602,7 +608,9 @@ def run_supervised_cycle(
             operation_id=operation_id,
             disk=disk,
         )
-        result.update({"acquired": False, "status": "ALREADY_RUNNING", "holder": acquisition.get("holder")})
+        result.update(
+            {"acquired": False, "status": "ALREADY_RUNNING", "holder": acquisition.get("holder")}
+        )
         return result
 
     stop_requested = lock.stop_requested()
@@ -644,7 +652,9 @@ def run_supervised_cycle(
             modes = plan_modes(due)
             store = _seed_store(heartbeat, interval_seconds=interval_seconds)
             runner = cycle_fn or campaign.run_cycle
-            cycle_result = runner(modes=modes, now=started_at, cycle=int(store["cycle"]), store=store)
+            cycle_result = runner(
+                modes=modes, now=started_at, cycle=int(store["cycle"]), store=store
+            )
             seal = cycle_result.get("seal") or {}
             settle = cycle_result.get("settle") or {}
             sealed = len(seal.get("sealed") or [])
@@ -732,7 +742,9 @@ def run_supervised_cycle(
         task_state=(scheduler_probe or scheduler_status_safe)(),
         errors=[] if not error else [{"code": error_type, "detail": error}],
         last_run=ended_at,
-        last_success=entry["ended_at"] if exit_code == 0 else _as_int((heartbeat or {}).get("last_successful_score")),
+        last_success=entry["ended_at"]
+        if exit_code == 0
+        else _as_int((heartbeat or {}).get("last_successful_score")),
         disk=disk,
     )
     cr.write_json_atomic(Path(report_root) / SUPERVISOR_STATUS_FILENAME, status_payload)
@@ -761,7 +773,9 @@ def first_settlement_payload(*, ledger_root: Path, now: int) -> dict[str, Any]:
     """The first real settlement artifact (CAP-004B §27)."""
     ledger = dl.DecisionLedger(ledger_root)
     outcomes = ledger.outcomes()
-    achievements = {f"{item['decision_id']}|{item['horizon']}": item for item in ledger.evaluations()}
+    achievements = {
+        f"{item['decision_id']}|{item['horizon']}": item for item in ledger.evaluations()
+    }
     decisions = {str(item["decision_id"]): item for item in ledger.decisions()}
     performances = ledger.rebuilt_evaluations()
     entries: list[dict[str, Any]] = []
@@ -1004,7 +1018,9 @@ def run_verifier(name: str, *, timeout: int = 600) -> dict[str, Any]:
     }
 
 
-def daily_verification(*, report_root: Path, code_commit: str, operation_id: str | None = None) -> dict[str, Any]:
+def daily_verification(
+    *, report_root: Path, code_commit: str, operation_id: str | None = None
+) -> dict[str, Any]:
     """One-a-day double verification, recorded to the operational ledger."""
     ops_path = OPS_LEDGER
     entries = read_operations(ops_path)
@@ -1290,13 +1306,23 @@ def install_scheduler(
             task_state=after,
             operation_id=operation_id,
         )
-    return {"status": status, "scheduler_type": kind, "task_name": task_name, "task": after, "xml": xml}
+    return {
+        "status": status,
+        "scheduler_type": kind,
+        "task_name": task_name,
+        "task": after,
+        "xml": xml,
+    }
 
 
 def enable_scheduler(*, enabled: bool, task_name: str = TASK_NAME) -> dict[str, Any]:
     flag = "/enable" if enabled else "/disable"
     proc = _schtasks(["/change", "/tn", task_name, flag])
-    return {"status": "OK" if proc["ok"] else "FAILED", "enabled": enabled, "output": proc["stdout"].strip()}
+    return {
+        "status": "OK" if proc["ok"] else "FAILED",
+        "enabled": enabled,
+        "output": proc["stdout"].strip(),
+    }
 
 
 def uninstall_scheduler(*, task_name: str = TASK_NAME) -> dict[str, Any]:
@@ -1306,7 +1332,11 @@ def uninstall_scheduler(*, task_name: str = TASK_NAME) -> dict[str, Any]:
 
 def run_task_now(*, task_name: str = TASK_NAME) -> dict[str, Any]:
     proc = _schtasks(["/run", "/tn", task_name])
-    return {"status": "OK" if proc["ok"] else "FAILED", "output": proc["stdout"].strip(), "stderr": proc["stderr"].strip()}
+    return {
+        "status": "OK" if proc["ok"] else "FAILED",
+        "output": proc["stdout"].strip(),
+        "stderr": proc["stderr"].strip(),
+    }
 
 
 def probe_market_data(*, report_root: Path = REPORT_ROOT, now: int | None = None) -> dict[str, Any]:
@@ -1337,9 +1367,7 @@ def probe_market_data(*, report_root: Path = REPORT_ROOT, now: int | None = None
         rows = rmc.fetch_provider_ohlcv(connector, "BINANCE:BTCUSDT", "4h")
         payload["ok"] = True
         payload["n_bars"] = len(rows)
-        payload["last_bar_open_time"] = (
-            int(rows[-1].timestamp // 1000) if rows else None
-        )
+        payload["last_bar_open_time"] = int(rows[-1].timestamp // 1000) if rows else None
         payload["last_bar_open_time_utc"] = (
             utc_iso(int(rows[-1].timestamp // 1000)) if rows else None
         )

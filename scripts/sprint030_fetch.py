@@ -43,22 +43,57 @@ CACHE_DIR = OUT_DIR / "cache"
 
 # A broad, liquid USDT spot universe.  Two dead names are kept on purpose.
 UNIVERSE = (
-    "BTCUSDT", "ETHUSDT", "BNBUSDT", "XRPUSDT", "ADAUSDT", "SOLUSDT",
-    "DOGEUSDT", "DOTUSDT", "LTCUSDT", "LINKUSDT", "BCHUSDT", "XLMUSDT",
-    "TRXUSDT", "ETCUSDT", "EOSUSDT", "XTZUSDT", "ZECUSDT", "DASHUSDT",
-    "NEOUSDT", "ATOMUSDT", "VETUSDT", "FILUSDT", "THETAUSDT", "ALGOUSDT",
-    "AVAXUSDT", "MATICUSDT", "FTTUSDT", "LUNAUSDT", "ICPUSDT", "SHIBUSDT",
+    "BTCUSDT",
+    "ETHUSDT",
+    "BNBUSDT",
+    "XRPUSDT",
+    "ADAUSDT",
+    "SOLUSDT",
+    "DOGEUSDT",
+    "DOTUSDT",
+    "LTCUSDT",
+    "LINKUSDT",
+    "BCHUSDT",
+    "XLMUSDT",
+    "TRXUSDT",
+    "ETCUSDT",
+    "EOSUSDT",
+    "XTZUSDT",
+    "ZECUSDT",
+    "DASHUSDT",
+    "NEOUSDT",
+    "ATOMUSDT",
+    "VETUSDT",
+    "FILUSDT",
+    "THETAUSDT",
+    "ALGOUSDT",
+    "AVAXUSDT",
+    "MATICUSDT",
+    "FTTUSDT",
+    "LUNAUSDT",
+    "ICPUSDT",
+    "SHIBUSDT",
 )
 
 START = date(2018, 1, 1)
 END = date(2026, 9, 30)
 
 SPOT_KLINES_BASE = "https://data.binance.vision/data/spot/monthly/klines"
-US_THRESHOLD = 10**14   # ms epoch ~1.7e12; us epoch ~1.7e15
+US_THRESHOLD = 10**14  # ms epoch ~1.7e12; us epoch ~1.7e15
 
 KLINES_COLUMNS = (
-    "open_time", "open", "high", "low", "close", "volume", "close_time",
-    "quote_volume", "count", "taker_buy_volume", "taker_buy_quote_volume", "ignore",
+    "open_time",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "close_time",
+    "quote_volume",
+    "count",
+    "taker_buy_volume",
+    "taker_buy_quote_volume",
+    "ignore",
 )
 
 
@@ -114,8 +149,7 @@ def fetch_symbol(symbol: str) -> dict[str, Any]:
         if parsed and parsed[0] and parsed[0][0] == "open_time":
             parsed = parsed[1:]
         rows.extend(r for r in parsed if r)
-    return {"symbol": symbol, "rows": rows, "missing_months": missing,
-            "present_months": present}
+    return {"symbol": symbol, "rows": rows, "missing_months": missing, "present_months": present}
 
 
 def canonicalize_daily(rows: list[list[str]]) -> dict[str, NDArray[Any]]:
@@ -126,8 +160,7 @@ def canonicalize_daily(rows: list[list[str]]) -> dict[str, NDArray[Any]]:
     for r in rows:
         try:
             raw = int(r[0])
-            o, h, lo, c, v = (float(r[1]), float(r[2]), float(r[3]),
-                              float(r[4]), float(r[5]))
+            o, h, lo, c, v = (float(r[1]), float(r[2]), float(r[3]), float(r[4]), float(r[5]))
             qv = float(r[7]) if len(r) > 7 and r[7] != "" else float("nan")
             cnt = float(r[8]) if len(r) > 8 and r[8] != "" else float("nan")
         except (ValueError, IndexError):
@@ -141,12 +174,17 @@ def canonicalize_daily(rows: list[list[str]]) -> dict[str, NDArray[Any]]:
         if start_ms <= t <= end_ms + 86_400_000:
             seen[t] = (o, h, lo, c, v, qv, cnt)
     ts = np.array(sorted(seen), dtype=np.int64)
-    arrs = {k: np.array([seen[t][i] for t in ts], dtype=np.float64)
-            for i, k in enumerate(("open", "high", "low", "close", "volume",
-                                   "quote_volume", "trades"))}
-    return {"open_time_ms": ts} | arrs | {
-        "_unit_hist": np.array([json.dumps(unit_hist)]),
+    arrs = {
+        k: np.array([seen[t][i] for t in ts], dtype=np.float64)
+        for i, k in enumerate(("open", "high", "low", "close", "volume", "quote_volume", "trades"))
     }
+    return (
+        {"open_time_ms": ts}
+        | arrs
+        | {
+            "_unit_hist": np.array([json.dumps(unit_hist)]),
+        }
+    )
 
 
 def _save_npz(path: Path, cols: dict[str, NDArray[Any]]) -> None:
@@ -195,7 +233,8 @@ def main() -> None:
             print(f"[fetch030] {sym}: rows={n} months={len(raw['present_months'])}", flush=True)
 
     (OUT_DIR / "_fetch_source_audit.json").write_text(
-        json.dumps(audit, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8")
+        json.dumps(audit, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8"
+    )
     print("[fetch030] done", flush=True)
 
 

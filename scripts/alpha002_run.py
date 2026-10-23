@@ -191,7 +191,9 @@ def build_rows_for(
         oi=oi,
         taker=parse_taker(load_raw_series("taker_long_short_ratio", symbol, timeframe)),
         funding=parse_funding(load_raw_series("funding_rate", symbol, timeframe)),
-        ls_global=parse_ratio(load_raw_series("global_long_short_account_ratio", symbol, timeframe)),
+        ls_global=parse_ratio(
+            load_raw_series("global_long_short_account_ratio", symbol, timeframe)
+        ),
         ls_top_position=parse_ratio(
             load_raw_series("top_long_short_position_ratio", symbol, timeframe)
         ),
@@ -218,9 +220,7 @@ def build_rows_for(
     return rows, meta
 
 
-def _directions(
-    rows: Sequence[dict[str, Any]], builder: Any
-) -> list[int | None]:
+def _directions(rows: Sequence[dict[str, Any]], builder: Any) -> list[int | None]:
     return [builder(row) for row in rows]
 
 
@@ -239,9 +239,7 @@ def evaluate_cells(
             if ax.in_window(int(row["decision_ms"]), discovery_window)
         ),
     )
-    hurdle = a1.min_gross_hurdle_bps(
-        n_effective=design_n, sigma_trade_bps=ax.DESIGN_SIGMA_BPS
-    )
+    hurdle = a1.min_gross_hurdle_bps(n_effective=design_n, sigma_trade_bps=ax.DESIGN_SIGMA_BPS)
     hurdle_bps = float(hurdle["min_gross_alpha_hurdle_bps"])
 
     cells: dict[str, Any] = {}
@@ -256,7 +254,9 @@ def evaluate_cells(
                     for row in rows_by_key.get((symbol, timeframe), [])
                     if ax.in_window(int(row["decision_ms"]), discovery_window)
                 )
-            directions = _directions(sliced, lambda r, h=hypothesis_id: ax.preregistered_direction(h, r))
+            directions = _directions(
+                sliced, lambda r, h=hypothesis_id: ax.preregistered_direction(h, r)
+            )
             forwards = [row.get("forward_return") for row in sliced]
             summary = ax.evaluate_directions(directions, forwards, hurdle_bps=hurdle_bps)
             cells[key] = summary
@@ -283,7 +283,11 @@ def evaluate_cells(
     bh = a1.benjamini_hochberg(pvalues, q=ax.BH_Q)
     holm_pass = a1.holm(pvalues, alpha=ax.HOLM_ALPHA)
     multiplicity = {
-        key: {"p_raw": round(pvalues[index], 8), "bh_pass": bool(bh[index]), "holm_pass": bool(holm_pass[index])}
+        key: {
+            "p_raw": round(pvalues[index], 8),
+            "bh_pass": bool(bh[index]),
+            "holm_pass": bool(holm_pass[index]),
+        }
         for index, key in enumerate(primary_ids)
     }
 
@@ -391,9 +395,17 @@ def main(argv: list[str] | None = None) -> int:
     # and a split that started in the price-only stretch would spend the discovery
     # slice on bars where no derivative existed yet.
     entry_meta = [item for item in meta if item["timeframe"] in ENTRY_TIMEFRAMES]
-    span_starts = [int(item["derivative_first_ms"]) for item in entry_meta if item["derivative_first_ms"]]
-    span_ends = [int(item["derivative_last_ms"]) for item in entry_meta if item["derivative_last_ms"]]
-    price_ends = [int(item["price_last_ms"]) - af.period_ms(item["timeframe"]) for item in entry_meta if item["price_last_ms"]]
+    span_starts = [
+        int(item["derivative_first_ms"]) for item in entry_meta if item["derivative_first_ms"]
+    ]
+    span_ends = [
+        int(item["derivative_last_ms"]) for item in entry_meta if item["derivative_last_ms"]
+    ]
+    price_ends = [
+        int(item["price_last_ms"]) - af.period_ms(item["timeframe"])
+        for item in entry_meta
+        if item["price_last_ms"]
+    ]
     common_start = max(span_starts)
     common_end = min(min(span_ends), min(price_ends))
     boundaries = ax.calendar_boundaries(common_start, common_end)
@@ -574,8 +586,7 @@ def _coverage(
     for (symbol, timeframe), rows in sorted(rows_by_key.items()):
         sliced = [row for row in rows if ax.in_window(int(row["decision_ms"]), window)]
         eligible = {
-            name: sum(1 for row in sliced if row.get(name) is not None)
-            for name in af.FEATURE_NAMES
+            name: sum(1 for row in sliced if row.get(name) is not None) for name in af.FEATURE_NAMES
         }
         coverage[f"{symbol}|{timeframe}"] = {
             "rows": len(sliced),
@@ -609,7 +620,13 @@ def _dataset_md(report: dict[str, Any]) -> str:
     ]
     for name, value in sorted(report["calendar"]["boundaries"].items()):
         lines.append(f"| {name} | {value[0]} | {value[1]} |")
-    lines += ["", "## Per series", "", "| symbol | tf | price bars | rows |", "| --- | --- | --- | --- |"]
+    lines += [
+        "",
+        "## Per series",
+        "",
+        "| symbol | tf | price bars | rows |",
+        "| --- | --- | --- | --- |",
+    ]
     for item in report["per_series"]:
         if item["timeframe"] not in ("5m", "15m", "1h"):
             continue
@@ -633,7 +650,13 @@ def _feature_md(report: dict[str, Any]) -> str:
     ]
     for key, value in sorted(report["feature_config"].items()):
         lines.append(f"| {key} | {value} |")
-    lines += ["", "## Point-in-time coverage (discovery slice)", "", "| series | rows | pit ok |", "| --- | --- | --- |"]
+    lines += [
+        "",
+        "## Point-in-time coverage (discovery slice)",
+        "",
+        "| series | rows | pit ok |",
+        "| --- | --- | --- |",
+    ]
     for key, value in sorted(report["feature_coverage"].items()):
         lines.append(f"| {key} | {value['rows']} | {value['point_in_time_ok']} |")
     return "\n".join(lines) + "\n"
@@ -665,19 +688,39 @@ def _development_md(report: dict[str, Any]) -> str:
             f"{'PASS' if cell['gross_above_hurdle'] else 'FAIL'} | "
             f"{'PASS' if decision['passed'] else 'FAIL'} | **{decision['verdict']}** |"
         )
-    lines += ["", "## All evaluated cells (5m primary, 15m replication)", "", "| cell | n | gross bps | net bps | p_raw | power |", "| --- | --- | --- | --- | --- | --- |"]
+    lines += [
+        "",
+        "## All evaluated cells (5m primary, 15m replication)",
+        "",
+        "| cell | n | gross bps | net bps | p_raw | power |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
     for key, summary in sorted(report["cells"].items()):
         lines.append(
             f"| {key} | {summary['n']} | {summary['gross_bps']} | {summary['net_bps']} | "
             f"{summary['p_raw']} | {summary['power_class']} |"
         )
-    lines += ["", "## Per-asset breakdown (primary timeframe)", "", "| cell | asset | n | gross bps | p_raw |", "| --- | --- | --- | --- | --- |"]
+    lines += [
+        "",
+        "## Per-asset breakdown (primary timeframe)",
+        "",
+        "| cell | asset | n | gross bps | p_raw |",
+        "| --- | --- | --- | --- | --- |",
+    ]
     for key, assets in sorted(report["per_asset"].items()):
         if not key.endswith(PRIMARY_TIMEFRAME):
             continue
         for symbol, summary in sorted(assets.items()):
-            lines.append(f"| {key} | {symbol} | {summary['n']} | {summary['gross_bps']} | {summary['p_raw']} |")
-    lines += ["", "## Declared non-traded arms (reported, never promoted)", "", "| arm | n | mean forward bps |", "| --- | --- | --- |"]
+            lines.append(
+                f"| {key} | {symbol} | {summary['n']} | {summary['gross_bps']} | {summary['p_raw']} |"
+            )
+    lines += [
+        "",
+        "## Declared non-traded arms (reported, never promoted)",
+        "",
+        "| arm | n | mean forward bps |",
+        "| --- | --- | --- |",
+    ]
     for key, value in sorted(report["nontraded_arms"].items()):
         lines.append(f"| {key} | {value['n']} | {value['mean_forward_bps']} |")
     return "\n".join(lines) + "\n"
@@ -761,17 +804,31 @@ def _final_md(report: dict[str, Any]) -> str:
 
 
 def _baseline_md(report: dict[str, Any]) -> str:
-    lines = ["# ALPHA-002 — BASELINE COMPARISON", "", "| baseline | n | gross bps | net bps |", "| --- | --- | --- | --- |"]
+    lines = [
+        "# ALPHA-002 — BASELINE COMPARISON",
+        "",
+        "| baseline | n | gross bps | net bps |",
+        "| --- | --- | --- | --- |",
+    ]
     for key, summary in sorted(report["baselines"].items()):
         lines.append(f"| {key} | {summary['n']} | {summary['gross_bps']} | {summary['net_bps']} |")
     return "\n".join(lines) + "\n"
 
 
 def _ablation_md(report: dict[str, Any]) -> str:
-    lines = ["# ALPHA-002 — ABLATION REPORT", "", "Attribution only.  A better non-preregistered variant is a `NEW_HYPOTHESIS` for a future campaign, never a promotion here.", "", "| cell | variant | n | gross bps | net bps |", "| --- | --- | --- | --- | --- |"]
+    lines = [
+        "# ALPHA-002 — ABLATION REPORT",
+        "",
+        "Attribution only.  A better non-preregistered variant is a `NEW_HYPOTHESIS` for a future campaign, never a promotion here.",
+        "",
+        "| cell | variant | n | gross bps | net bps |",
+        "| --- | --- | --- | --- | --- |",
+    ]
     for key, variants in sorted(report["ablations"].items()):
         for label, summary in variants.items():  # keep declared order
-            lines.append(f"| {key} | {label} | {summary['n']} | {summary['gross_bps']} | {summary['net_bps']} |")
+            lines.append(
+                f"| {key} | {label} | {summary['n']} | {summary['gross_bps']} | {summary['net_bps']} |"
+            )
     return "\n".join(lines) + "\n"
 
 

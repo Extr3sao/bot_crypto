@@ -39,8 +39,8 @@ CAP = ADV.CAP
 WINDOWS = ADV.WINDOWS
 N_SIMS = 1000
 SEED = 20261005
-MIN_LAG = 252               # block shift at least one momentum lookback
-BLOCK = 252                 # block length for the block-permutation variant
+MIN_LAG = 252  # block shift at least one momentum lookback
+BLOCK = 252  # block length for the block-permutation variant
 
 
 def _stats(observed: float, null: NDArray[Any]) -> dict[str, Any]:
@@ -143,9 +143,11 @@ def run() -> dict[str, Any]:
 def registry() -> dict[str, Any]:
     """Pre-registered randomization registry (§23)."""
     return {
-        "statistic": ("return-space proxy sum(W * R) * CAP on the frozen weight matrix "
-                      "(same construction as RFC-037; multipliers/costs are applied by "
-                      "the real engine and are NOT in this proxy -- documented limitation)"),
+        "statistic": (
+            "return-space proxy sum(W * R) * CAP on the frozen weight matrix "
+            "(same construction as RFC-037; multipliers/costs are applied by "
+            "the real engine and are NOT in this proxy -- documented limitation)"
+        ),
         "capital": CAP,
         "n_sims": N_SIMS,
         "seed": SEED,
@@ -154,35 +156,54 @@ def registry() -> dict[str, Any]:
         "families": {
             "NULL-1_MARKET_LABEL_PERMUTATION": {
                 "purpose": "test whether the signal->market IDENTITY assignment is informative",
-                "preserves": ["per-market marginal return distribution", "per-market realized vol",
-                              "per-market serial dependence", "cross-market eigen-spectrum"],
-                "destroys": ["signal->return pairing by market identity",
-                             "consistency between a position's risk scaling and the vol of the "
-                             "series it is applied to"],
-                "expected_interpretation": ("p>0.05 alone does NOT invalidate the trend; the null "
-                                            "is partially mis-specified (risk scaling broken)"),
+                "preserves": [
+                    "per-market marginal return distribution",
+                    "per-market realized vol",
+                    "per-market serial dependence",
+                    "cross-market eigen-spectrum",
+                ],
+                "destroys": [
+                    "signal->return pairing by market identity",
+                    "consistency between a position's risk scaling and the vol of the "
+                    "series it is applied to",
+                ],
+                "expected_interpretation": (
+                    "p>0.05 alone does NOT invalidate the trend; the null "
+                    "is partially mis-specified (risk scaling broken)"
+                ),
             },
             "NULL-2_BLOCK_CIRCULAR_SHIFT": {
                 "purpose": "test whether the signal->TIMING alignment is informative",
-                "preserves": ["per-market return distribution", "volatility clustering",
-                              "market identity", "cost structure (weights unchanged)",
-                              "cross-market dependence (shared shift)"],
+                "preserves": [
+                    "per-market return distribution",
+                    "volatility clustering",
+                    "market identity",
+                    "cost structure (weights unchanged)",
+                    "cross-market dependence (shared shift)",
+                ],
                 "destroys": ["signal(t) -> return(t+k) temporal alignment"],
-                "expected_interpretation": ("the cleanest market-preserving null; a small p-value "
-                                            "supports the trend edge"),
+                "expected_interpretation": (
+                    "the cleanest market-preserving null; a small p-value supports the trend edge"
+                ),
             },
             "NULL-3_SIGN_RANDOMISATION": {
                 "purpose": "test whether the trend SIGN carries information beyond random +/-",
-                "preserves": ["weight magnitudes (vol scaling)", "market identity",
-                              "cross-market dependence"],
+                "preserves": [
+                    "weight magnitudes (vol scaling)",
+                    "market identity",
+                    "cross-market dependence",
+                ],
                 "destroys": ["trend direction"],
-                "expected_interpretation": ("a small p-value means the realized long/short "
-                                            "direction is informative"),
+                "expected_interpretation": (
+                    "a small p-value means the realized long/short direction is informative"
+                ),
             },
         },
-        "primary_families": ["NULL-1_MARKET_LABEL_PERMUTATION",
-                             "NULL-2_BLOCK_CIRCULAR_SHIFT",
-                             "NULL-3_SIGN_RANDOMISATION"],
+        "primary_families": [
+            "NULL-1_MARKET_LABEL_PERMUTATION",
+            "NULL-2_BLOCK_CIRCULAR_SHIFT",
+            "NULL-3_SIGN_RANDOMISATION",
+        ],
         "rule": "at most three primary families; no adding nulls until a favourable p appears",
     }
 
@@ -192,25 +213,31 @@ def validity() -> dict[str, Any]:
         "NULL-1_MARKET_LABEL_PERMUTATION": {
             "valid": False,
             "classification": "NULL_MODEL_PARTIALLY_INVALID",
-            "rationale": ("permuting market labels relocates each market's risk weight onto a "
-                          "different return series, so the ex-ante vol scaling no longer matches "
-                          "the traded series. The resulting null worlds are not internally "
-                          "consistent alternative economies, so its p-value is not a clean "
-                          "rejection of the trend edge."),
+            "rationale": (
+                "permuting market labels relocates each market's risk weight onto a "
+                "different return series, so the ex-ante vol scaling no longer matches "
+                "the traded series. The resulting null worlds are not internally "
+                "consistent alternative economies, so its p-value is not a clean "
+                "rejection of the trend edge."
+            ),
         },
         "NULL-2_BLOCK_CIRCULAR_SHIFT": {
             "valid": True,
             "classification": "NULL_MODEL_VALID",
-            "rationale": ("a shared circular shift keeps every market's own series and the whole "
-                          "cross-market dependence structure intact and only breaks the "
-                          "signal->future temporal alignment. This is the appropriate null for "
-                          "'no trend edge'."),
+            "rationale": (
+                "a shared circular shift keeps every market's own series and the whole "
+                "cross-market dependence structure intact and only breaks the "
+                "signal->future temporal alignment. This is the appropriate null for "
+                "'no trend edge'."
+            ),
         },
         "NULL-3_SIGN_RANDOMISATION": {
             "valid": True,
             "classification": "NULL_MODEL_VALID",
-            "rationale": ("flipping the trend sign keeps position magnitudes and cross-market "
-                          "structure and isolates the information in the realized direction."),
+            "rationale": (
+                "flipping the trend sign keeps position magnitudes and cross-market "
+                "structure and isolates the information in the realized direction."
+            ),
         },
     }
 
@@ -219,15 +246,22 @@ def main() -> int:
     res = run()
     payload = {"registry": registry(), "validity": validity(), "results": res}
     (OUT / "NULL_MODEL_AUDIT_RAW.json").write_text(
-        json.dumps(payload, indent=2, default=str) + "\n", encoding="utf-8")
+        json.dumps(payload, indent=2, default=str) + "\n", encoding="utf-8"
+    )
     for w, d in res.items():
         print(f"=== {w}  observed={d['observed']:,.0f} ===")
-        for k in ("NULL-1_MARKET_LABEL_PERMUTATION", "NULL-2_BLOCK_CIRCULAR_SHIFT_shared",
-                  "NULL-2_BLOCK_CIRCULAR_SHIFT_independent", "NULL-2b_BLOCK_PERMUTATION_shared",
-                  "NULL-3_SIGN_RANDOMISATION"):
+        for k in (
+            "NULL-1_MARKET_LABEL_PERMUTATION",
+            "NULL-2_BLOCK_CIRCULAR_SHIFT_shared",
+            "NULL-2_BLOCK_CIRCULAR_SHIFT_independent",
+            "NULL-2b_BLOCK_PERMUTATION_shared",
+            "NULL-3_SIGN_RANDOMISATION",
+        ):
             s = d[k]
-            print(f"  {k:42s} p={s['p_null_ge_observed']:.3f} med={s['null_median']:>14,.0f} "
-                  f"p95={s['null_p95']:>14,.0f} eff={s['effect_size_vs_null_median']}")
+            print(
+                f"  {k:42s} p={s['p_null_ge_observed']:.3f} med={s['null_median']:>14,.0f} "
+                f"p95={s['null_p95']:>14,.0f} eff={s['effect_size_vs_null_median']}"
+            )
     return 0
 
 

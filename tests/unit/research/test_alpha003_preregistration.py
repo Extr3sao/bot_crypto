@@ -114,26 +114,18 @@ def test_no_machine_learning_in_the_campaign() -> None:
 
 
 def test_every_traded_hypothesis_has_exactly_one_signal() -> None:
-    declared = {
-        item["hypothesis_id"] for item in a3.HYPOTHESES if bool(item["traded"])
-    }
+    declared = {item["hypothesis_id"] for item in a3.HYPOTHESES if bool(item["traded"])}
     assert set(a3.SIGNALS) == declared
 
 
 def test_non_traded_arms_are_declared_and_are_not_signals() -> None:
-    declared = {
-        item["arm_id"] for item in a3.PREREGISTRATION["non_traded_arms"]
-    }
+    declared = {item["arm_id"] for item in a3.PREREGISTRATION["non_traded_arms"]}
     assert set(a3.NON_TRADED_ARMS) == declared
     assert not declared & set(a3.SIGNALS)
 
 
 def test_required_features_cover_every_declared_arm() -> None:
-    arms = (
-        set(a3.SIGNALS)
-        | set(a3.NON_TRADED_ARMS)
-        | set(ax.BASELINES)
-    )
+    arms = set(a3.SIGNALS) | set(a3.NON_TRADED_ARMS) | set(ax.BASELINES)
     assert set(af.REQUIRED_FEATURES) == arms
     for arm, required in af.REQUIRED_FEATURES.items():
         for name in required:
@@ -166,16 +158,24 @@ def test_every_ablation_arm_is_directional() -> None:
     for hypothesis_id, arms in ax.ABLATIONS.items():
         for label in arms:
             arm_id = hypothesis_id if label == "FULL" else label
-            resolved = ax.preregistered_direction(arm_id, features(leader_ret_z=2.0, target_ret_z=0.5))
+            resolved = ax.preregistered_direction(
+                arm_id, features(leader_ret_z=2.0, target_ret_z=0.5)
+            )
             assert resolved is not None, f"{arm_id} is not evaluable as a direction"
 
 
 def test_leader_only_baseline_is_the_directional_twin_of_the_contrast() -> None:
     assert ax.arm_direction("A3-B4_LEADER_ONLY", features(leader_ret_z=2.0, target_ret_z=9.0)) == 1
-    assert ax.arm_direction("A3-B4_LEADER_ONLY", features(leader_ret_z=-2.0, target_ret_z=-9.0)) == -1
+    assert (
+        ax.arm_direction("A3-B4_LEADER_ONLY", features(leader_ret_z=-2.0, target_ret_z=-9.0)) == -1
+    )
     assert ax.arm_direction("A3-B4_LEADER_ONLY", features(leader_ret_z=0.5)) == 0
     # the boolean contrast and the directional twin agree on when to act
-    for row in (features(leader_ret_z=2.0), features(leader_ret_z=0.5), features(leader_ret_z=-1.5)):
+    for row in (
+        features(leader_ret_z=2.0),
+        features(leader_ret_z=0.5),
+        features(leader_ret_z=-1.5),
+    ):
         acts = ax.arm_direction("A3-B4_LEADER_ONLY", row) != 0
         assert acts is bool(a3.h1_leader_only_contrast(row))
 

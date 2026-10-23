@@ -24,13 +24,29 @@ COST = 23.559016994374947
 
 
 def flat_bar(symbol: str, i: int, close: float) -> DailyBar:
-    return DailyBar(symbol=symbol, timestamp=DAY0 + i * DAY, open=close, high=close + 1,
-                    low=close - 1, close=close, volume=1.0, quote_volume=1e7)
+    return DailyBar(
+        symbol=symbol,
+        timestamp=DAY0 + i * DAY,
+        open=close,
+        high=close + 1,
+        low=close - 1,
+        close=close,
+        volume=1.0,
+        quote_volume=1e7,
+    )
 
 
 def bar(symbol: str, i: int, o: float, h: float, low: float, c: float) -> DailyBar:
-    return DailyBar(symbol=symbol, timestamp=DAY0 + i * DAY, open=o, high=h, low=low,
-                    close=c, volume=1.0, quote_volume=1e7)
+    return DailyBar(
+        symbol=symbol,
+        timestamp=DAY0 + i * DAY,
+        open=o,
+        high=h,
+        low=low,
+        close=c,
+        volume=1.0,
+        quote_volume=1e7,
+    )
 
 
 def void_then_retest(symbol: str = "BTCUSDT") -> list[DailyBar]:
@@ -79,32 +95,59 @@ def test_exp008_enters_and_exits_at_next_open() -> None:
     bars = {f"S{i}": [flat_bar(f"S{i}", j, c) for j, c in enumerate(closes)] for i in range(1)}
     sym = "S0"
     bars[sym] = [
-        DailyBar(symbol=sym, timestamp=DAY0 + j * DAY, open=c, high=c + 1, low=c - 1,
-                 close=c, volume=1.0, quote_volume=1e7)
+        DailyBar(
+            symbol=sym,
+            timestamp=DAY0 + j * DAY,
+            open=c,
+            high=c + 1,
+            low=c - 1,
+            close=c,
+            volume=1.0,
+            quote_volume=1e7,
+        )
         for j, c in enumerate(closes)
     ]
-    out = simulate_exp008(bars, cost_bps_rt=COST, config=Exp008Config(lookback_days=3, max_hold_days=100))
+    out = simulate_exp008(
+        bars, cost_bps_rt=COST, config=Exp008Config(lookback_days=3, max_hold_days=100)
+    )
     trades = out[sym]
     assert trades, "expected a trend trade"
     t = trades[0]
-    assert t.entry_ts == DAY0 + 4 * DAY   # long signal at bar 3 -> fill open bar 4
-    assert t.exit_ts == DAY0 + 7 * DAY    # flip at bar 6 -> exit open bar 7
+    assert t.entry_ts == DAY0 + 4 * DAY  # long signal at bar 3 -> fill open bar 4
+    assert t.exit_ts == DAY0 + 7 * DAY  # flip at bar 6 -> exit open bar 7
 
 
 def test_exp008_is_deterministic() -> None:
     closes = [10, 11, 12, 11, 13, 12, 14, 15, 14, 16, 15, 17]
     bars = {"S": [flat_bar("S", j, c) for j, c in enumerate(closes)]}
-    a = simulate_exp008(bars, cost_bps_rt=COST, config=Exp008Config(lookback_days=2, max_hold_days=5))
-    b = simulate_exp008(bars, cost_bps_rt=COST, config=Exp008Config(lookback_days=2, max_hold_days=5))
+    a = simulate_exp008(
+        bars, cost_bps_rt=COST, config=Exp008Config(lookback_days=2, max_hold_days=5)
+    )
+    b = simulate_exp008(
+        bars, cost_bps_rt=COST, config=Exp008Config(lookback_days=2, max_hold_days=5)
+    )
     assert a["S"] == b["S"]
 
 
 def test_tag_trades_binds_symbols() -> None:
     from trading_bot.research.alpha_recovery.simulate import Trade
 
-    trade = Trade(side="long", entry_ts=1, exit_ts=2, duration_min=1.0, entry=1.0, exit=2.0,
-                  reason="x", mfe_pct=1.0, mae_pct=0.0, notional=500.0, gross=500.0,
-                  fees=1.0, net=499.0, rule="r")
+    trade = Trade(
+        side="long",
+        entry_ts=1,
+        exit_ts=2,
+        duration_min=1.0,
+        entry=1.0,
+        exit=2.0,
+        reason="x",
+        mfe_pct=1.0,
+        mae_pct=0.0,
+        notional=500.0,
+        gross=500.0,
+        fees=1.0,
+        net=499.0,
+        rule="r",
+    )
     tagged = tag_trades({"BTCUSDT": [trade]})
     assert tagged[0].symbol == "BTCUSDT"
     assert tagged[0].net == 499.0

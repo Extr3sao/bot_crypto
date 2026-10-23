@@ -189,14 +189,10 @@ class ExecutionOutcome:
                 else round(self.expected_effective_cost_bps, 4)
             ),
             "expected_slippage_bps": (
-                None
-                if self.expected_slippage_bps is None
-                else round(self.expected_slippage_bps, 4)
+                None if self.expected_slippage_bps is None else round(self.expected_slippage_bps, 4)
             ),
             "adverse_selection_bps": (
-                None
-                if self.adverse_selection_bps is None
-                else round(self.adverse_selection_bps, 4)
+                None if self.adverse_selection_bps is None else round(self.adverse_selection_bps, 4)
             ),
             "status": self.status,
             "notes": self.notes,

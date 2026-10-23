@@ -315,6 +315,7 @@ def test_risk_remains_the_final_veto_after_a_full_book() -> None:
 # The book survives a state round-trip — DEF-VERIFY-011
 # --------------------------------------------------------------------------- #
 
+
 def test_extract_state_carries_the_real_open_book() -> None:
     # DEF-VERIFY-011: extract_state used to hardcode ``open_positions: {}`` so a
     # restore rebuilt an empty book and the exposure clamps were blind.

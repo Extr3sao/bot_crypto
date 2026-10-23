@@ -107,7 +107,15 @@ def test_p_best_ge_observed_wilson() -> None:
 
 
 def test_summarise_null_reports_hypothesis_count() -> None:
-    draws = [{"best_net_bps": float(i), "best_hypothesis_index": 0, "best_hypothesis_id": "H-DIR-01", "n_valid": 6} for i in range(1, 51)]
+    draws = [
+        {
+            "best_net_bps": float(i),
+            "best_hypothesis_index": 0,
+            "best_hypothesis_id": "H-DIR-01",
+            "n_valid": 6,
+        }
+        for i in range(1, 51)
+    ]
     s = R.summarise_null(draws)
     assert s["n_hypotheses"] == len(R.REGISTRY)
     assert s["max_best_net_bps"] == 50.0
@@ -129,9 +137,30 @@ def test_mde_matches_formula() -> None:
 
 def test_power_row_flags_underpowered_for_small_n() -> None:
     h = R.REGISTRY[0]
-    disc = [L.Trade("c", h["hypothesis_id"], h["family"], "X", "W1", h["timeframe"], "LONG",
-                    0.0, 1.0, 100.0, 101.0, "target", 1, 30.0, 23.79, 6.2, 0.0, 0.0, 0.0)
-            for _ in range(150)]
+    disc = [
+        L.Trade(
+            "c",
+            h["hypothesis_id"],
+            h["family"],
+            "X",
+            "W1",
+            h["timeframe"],
+            "LONG",
+            0.0,
+            1.0,
+            100.0,
+            101.0,
+            "target",
+            1,
+            30.0,
+            23.79,
+            6.2,
+            0.0,
+            0.0,
+            0.0,
+        )
+        for _ in range(150)
+    ]
     val = disc[:15]
     row = R.power_row(h, disc, val)
     assert row["verdict"] == "UNDERPOWERED"
@@ -175,12 +204,20 @@ def test_signal_values_are_in_int8_set() -> None:
 
 
 def _truncate(bars: L.Bars, n: int) -> L.Bars:
-    return L.Bars(ts=bars.ts[:n], o=bars.o[:n], h=bars.h[:n], lo=bars.lo[:n], c=bars.c[:n], v=bars.v[:n])
+    return L.Bars(
+        ts=bars.ts[:n], o=bars.o[:n], h=bars.h[:n], lo=bars.lo[:n], c=bars.c[:n], v=bars.v[:n]
+    )
 
 
-@pytest.mark.parametrize("sig_name", ["shock_trend_continuation", "shock_confirm_followthrough", "shock_range_location"])
+@pytest.mark.parametrize(
+    "sig_name", ["shock_trend_continuation", "shock_confirm_followthrough", "shock_range_location"]
+)
 def test_signals_are_point_in_time(sig_name: str) -> None:
-    f = next(x for x in L.dataset_files() if x.asset == "BTCUSDT" and x.window == "W1" and x.timeframe == "30m")
+    f = next(
+        x
+        for x in L.dataset_files()
+        if x.asset == "BTCUSDT" and x.window == "W1" and x.timeframe == "30m"
+    )
     bars = L.load_bars(f.path)
     full = L.build_bundle(bars, "30m")
     n = 500

@@ -133,9 +133,7 @@ def _log_returns(closes: Sequence[float]) -> list[float]:
     return out
 
 
-def through_origin_beta(
-    returns: Sequence[float], market_returns: Sequence[float]
-) -> float:
+def through_origin_beta(returns: Sequence[float], market_returns: Sequence[float]) -> float:
     """Through-origin OLS slope of ``returns`` on ``market_returns`` (§22).
 
     Fails closed (raises) when the market window has zero variance or the lengths
@@ -425,9 +423,7 @@ def beta_diagnostic(
         ]
         names_excl_formation += len(candidates) - len(with_formation)
         # beta history: every exact bar in the 61-observation beta window
-        with_beta = [
-            s for s in with_formation if all(ts in closes_by_symbol[s] for ts in window)
-        ]
+        with_beta = [s for s in with_formation if all(ts in closes_by_symbol[s] for ts in window)]
         names_excl_beta += len(with_formation) - len(with_beta)
 
         scored: list[tuple[float, str]] = []

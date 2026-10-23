@@ -168,15 +168,11 @@ def v_metrics(trades: list[Any]) -> dict[str, Any]:
         "gross_loss_usd": round(sum(neg), 2),
         "profit_factor": round(pf, 4) if pf is not None else None,
         "win_rate": round(len(positives_bps) / n, 4),
-        "payoff": round(
-            statistics.fmean(positives_bps) / abs(statistics.fmean(losses_bps)), 4
-        )
+        "payoff": round(statistics.fmean(positives_bps) / abs(statistics.fmean(losses_bps)), 4)
         if positives_bps and losses_bps
         else None,
         "pnl_drawdown_bps_of_reference_notional": round(worst / NOTIONAL * BPS, 3),
-        "avg_alloc_per_position": round(
-            statistics.fmean([t.notional for t in trades]), 4
-        ),
+        "avg_alloc_per_position": round(statistics.fmean([t.notional for t in trades]), 4),
     }
 
 
@@ -274,9 +270,7 @@ def beta_regression(trades: list[Any], btc_bars: list[Any]) -> dict[str, Any]:
         by_day[ed].append(r)
     day_means = [statistics.fmean(v) for v in by_day.values()]
     n_days = len(day_means)
-    se_cluster = (
-        statistics.pstdev(day_means) / math.sqrt(n_days) if n_days > 2 else float("nan")
-    )
+    se_cluster = statistics.pstdev(day_means) / math.sqrt(n_days) if n_days > 2 else float("nan")
     return {
         "observations": n,
         "dependent_variable": "per-position GROSS return = gross/notional over [entry_ts, exit_ts]",
@@ -311,8 +305,15 @@ def beta_regression(trades: list[Any], btc_bars: list[Any]) -> dict[str, Any]:
 def regime_analysis(trades: list[Any], btc_bars: list[Any]) -> dict[str, Any]:
     regimes = A.regime_by_day(
         [
-            OHLCV(symbol=b.symbol, timestamp=b.timestamp, open=b.open, high=b.high,
-                  low=b.low, close=b.close, volume=b.volume)
+            OHLCV(
+                symbol=b.symbol,
+                timestamp=b.timestamp,
+                open=b.open,
+                high=b.high,
+                low=b.low,
+                close=b.close,
+                volume=b.volume,
+            )
             for b in btc_bars
         ]
     )
@@ -367,11 +368,13 @@ def _pearson(xs: list[float], ys: list[float]) -> float | None:
 
 def breadth_predictive(full_corpus: dict[str, Any]) -> dict[str, Any]:
     index_by_sym = {s: {b.timestamp: b for b in bars} for s, bars in full_corpus.items()}
-    uverse = DynamicAssetUniverse(full_corpus, D.listing_times(), D.corpus_digest(), UniverseConfig())
+    uverse = DynamicAssetUniverse(
+        full_corpus, D.listing_times(), D.corpus_digest(), UniverseConfig()
+    )
     calendar = sorted({ts for d in index_by_sym.values() for ts in d})
     xs: list[float] = []
     fwd: dict[int, list[float]] = {h: [] for h in HORIZONS}
-    for day in calendar[:-max(HORIZONS)]:
+    for day in calendar[: -max(HORIZONS)]:
         snap = uverse.snapshot(day + DAY)
         eligible = [s for s in snap.eligible_assets if s in index_by_sym]
         if len(eligible) < 5:
@@ -408,7 +411,9 @@ def breadth_predictive(full_corpus: dict[str, Any]) -> dict[str, Any]:
     return out
 
 
-def _block_bootstrap_se(xs: list[float], ys: list[float], *, block: int, iters: int) -> float | None:
+def _block_bootstrap_se(
+    xs: list[float], ys: list[float], *, block: int, iters: int
+) -> float | None:
     n = len(xs)
     if n < block * 3:
         return None
@@ -475,7 +480,9 @@ def block_bootstrap_episodes(groups: list[dict[str, Any]], *, iters: int = 2000)
 # --------------------------------------------------------------------------- #
 def market_daily_returns(full_corpus: dict[str, Any], calendar: list[int]) -> dict[int, float]:
     index_by_sym = {s: {b.timestamp: b for b in bars} for s, bars in full_corpus.items()}
-    uverse = DynamicAssetUniverse(full_corpus, D.listing_times(), D.corpus_digest(), UniverseConfig())
+    uverse = DynamicAssetUniverse(
+        full_corpus, D.listing_times(), D.corpus_digest(), UniverseConfig()
+    )
     out: dict[int, float] = {}
     for i, day in enumerate(calendar[:-1]):
         nxt = calendar[i + 1]
@@ -567,9 +574,7 @@ def turnover_exposure(groups: list[dict[str, Any]], audit: dict[str, Any]) -> di
         if groups
         else 0,
         "one_round_trip_per_episode": True,
-        "cost_charged_per_episode_usd": round(
-            statistics.fmean([g["fees_usd"] for g in groups]), 4
-        )
+        "cost_charged_per_episode_usd": round(statistics.fmean([g["fees_usd"] for g in groups]), 4)
         if groups
         else 0,
     }
@@ -675,8 +680,11 @@ def main() -> None:
 
     # ALWAYS_LONG_SAME_BASKET control (§21)
     always_tr, _ar, _aa = B.simulate_breadth_regime(
-        full_corpus, D.listing_times(), D.corpus_digest(),
-        config=B.breadth_config(entry_breadth=0.0, exit_breadth=-1.0), cost_bps_rt=cost,
+        full_corpus,
+        D.listing_times(),
+        D.corpus_digest(),
+        config=B.breadth_config(entry_breadth=0.0, exit_breadth=-1.0),
+        cost_bps_rt=cost,
     )
     always = v_metrics(always_tr)
     always_group = episode_groups(always_tr)
@@ -743,8 +751,11 @@ def main() -> None:
     perturbations: dict[str, Any] = {}
     for name, ov in specs.items():
         tr, _r, _a = B.simulate_breadth_regime(
-            val_corpus, D.listing_times(), D.corpus_digest(),
-            config=B.breadth_config(**ov), cost_bps_rt=cost,
+            val_corpus,
+            D.listing_times(),
+            D.corpus_digest(),
+            config=B.breadth_config(**ov),
+            cost_bps_rt=cost,
         )
         m = v_metrics(tr)
         perturbations[name] = {
@@ -843,12 +854,26 @@ def main() -> None:
     (OUT / "verification.json").write_text(
         json.dumps(report, indent=2, sort_keys=True, default=str), encoding="utf-8"
     )
-    print("DEV trades", dev.get("trades"), "net_usd", dev.get("total_net_pnl_usd"),
-          "port_bps", dev.get("portfolio_return_bps"))
-    print("VAL trades", val.get("trades"), "net_usd", val.get("total_net_pnl_usd"),
-          "port_bps", val.get("portfolio_return_bps"))
+    print(
+        "DEV trades",
+        dev.get("trades"),
+        "net_usd",
+        dev.get("total_net_pnl_usd"),
+        "port_bps",
+        dev.get("portfolio_return_bps"),
+    )
+    print(
+        "VAL trades",
+        val.get("trades"),
+        "net_usd",
+        val.get("total_net_pnl_usd"),
+        "port_bps",
+        val.get("portfolio_return_bps"),
+    )
     print("FULL trades", full.get("trades"), "net_usd", full.get("total_net_pnl_usd"))
-    print("beta", beta_full.get("market_beta"), "alpha", beta_full.get("timing_alpha_residual_mean"))
+    print(
+        "beta", beta_full.get("market_beta"), "alpha", beta_full.get("timing_alpha_residual_mean")
+    )
     print("robust", robustness["positive_count"], "/", robustness["total"])
     print("value add bps", gate_value_add["breadth_value_add_bps"])
     print("wrote", OUT / "verification.json")

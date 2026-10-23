@@ -107,9 +107,7 @@ def canonical_hash(obj: Any) -> str:
 
 
 def load_manifest() -> dict[str, Any]:
-    loaded: dict[str, Any] = json.loads(
-        (EXP_DIR / "MANIFEST.json").read_text(encoding="utf-8")
-    )
+    loaded: dict[str, Any] = json.loads((EXP_DIR / "MANIFEST.json").read_text(encoding="utf-8"))
     return loaded
 
 
@@ -339,7 +337,9 @@ def main() -> None:
     try:
         split_registry.register(
             EXPERIMENT_ID,
-            SplitDefinition("2019-01-01", "2024-01-01", "2024-01-01", "2025-07-01", "2025-07-01", "2026-03-01"),
+            SplitDefinition(
+                "2019-01-01", "2024-01-01", "2024-01-01", "2025-07-01", "2025-07-01", "2026-03-01"
+            ),
         )
     except Exception:  # SplitMutationError
         split_mutation_refused = True
@@ -381,7 +381,9 @@ def main() -> None:
 
     dev_corpus = D.load_corpus(split="DEV")
     val_corpus = D.load_corpus(split="VALIDATION")
-    full_corpus = D.load_corpus_range(symbols=None, start_ms=D.DEV_VAL_RANGE[0], end_ms=D.DEV_VAL_RANGE[1])
+    full_corpus = D.load_corpus_range(
+        symbols=None, start_ms=D.DEV_VAL_RANGE[0], end_ms=D.DEV_VAL_RANGE[1]
+    )
 
     dev_trades, _dev_census = run_split(dev_corpus, config=config, cost=cost)
     dev = summarize(dev_trades, cost=cost)
@@ -407,15 +409,28 @@ def main() -> None:
     if dev_decision == "DEV_PASS" and canonical_ok:
         val_trades, _val_census = run_split(val_corpus, config=config, cost=cost)
         val = summarize(val_trades, cost=cost)
-        val_decision = "VALIDATION_PASS" if (val["expectancy_net_bps"] or -1) > 0 else "REJECT_VALIDATION"
+        val_decision = (
+            "VALIDATION_PASS" if (val["expectancy_net_bps"] or -1) > 0 else "REJECT_VALIDATION"
+        )
 
     # analytics on the DEV+VAL full run
     full_trades, full_census = run_split(full_corpus, config=config, cost=cost)
-    bench_bars = D.load_corpus_range(["BTCUSDT"], start_ms=D.DEV_VAL_RANGE[0], end_ms=D.DEV_VAL_RANGE[1])["BTCUSDT"]
+    bench_bars = D.load_corpus_range(
+        ["BTCUSDT"], start_ms=D.DEV_VAL_RANGE[0], end_ms=D.DEV_VAL_RANGE[1]
+    )["BTCUSDT"]
     regimes = A.regime_by_day(
-        [OHLCV(
-            symbol=b.symbol, timestamp=b.timestamp, open=b.open, high=b.high,
-            low=b.low, close=b.close, volume=b.volume) for b in bench_bars]
+        [
+            OHLCV(
+                symbol=b.symbol,
+                timestamp=b.timestamp,
+                open=b.open,
+                high=b.high,
+                low=b.low,
+                close=b.close,
+                volume=b.volume,
+            )
+            for b in bench_bars
+        ]
     )
     temporal = {
         "pnl_by_year": A.pnl_by_year(full_trades),
@@ -438,7 +453,8 @@ def main() -> None:
         "raw_control_dev_expectancy_net_bps": ctl_dev["expectancy_net_bps"],
         "frozen_full_expectancy_net_bps": summarize(full_trades, cost=cost)["expectancy_net_bps"],
         "raw_control_full_expectancy_net_bps": ctl_full["expectancy_net_bps"],
-        "vol_adjustment_adds_value": (dev["expectancy_net_bps"] or -1) > (ctl_dev["expectancy_net_bps"] or -1),
+        "vol_adjustment_adds_value": (dev["expectancy_net_bps"] or -1)
+        > (ctl_dev["expectancy_net_bps"] or -1),
         "control_promotable": False,
     }
 
@@ -465,12 +481,22 @@ def main() -> None:
     for m in (1.25, 1.5, 2.0):
         tr, _ = run_split(val_ref, config=config, cost=cost * m)
         perturbations[f"cost_{m}x"] = summarize(tr, cost=cost * m)["expectancy_net_bps"]
-    top_assets = [s for s, _ in sorted(A.pnl_by_asset(full_trades).items(), key=lambda kv: kv[1], reverse=True)[:5]]
+    top_assets = [
+        s
+        for s, _ in sorted(A.pnl_by_asset(full_trades).items(), key=lambda kv: kv[1], reverse=True)[
+            :5
+        ]
+    ]
     loo: dict[str, Any] = {}
     for sym in top_assets:
         subset = [s for s in D.available_symbols() if s != sym]
         tr = R.simulate_riskadj_xsec(
-            val_ref, D.listing_times(), D.corpus_digest(), config=config, cost_bps_rt=cost, subset=subset
+            val_ref,
+            D.listing_times(),
+            D.corpus_digest(),
+            config=config,
+            cost_bps_rt=cost,
+            subset=subset,
         )[0]
         loo[sym] = summarize(tr, cost=cost)["expectancy_net_bps"]
     positive = [v for v in perturbations.values() if v is not None and v > 0]
@@ -560,16 +586,16 @@ def write_markdown(r: dict[str, Any]) -> None:
 
     files["BASELINE.md"] = f"""# BASELINE (§0)
 
-- branch: `{b['branch']}`
-- start_sha: `{b['start_sha']}`
-- code_hash: `{b['code_hash']}`
-- spec_sha256: `{b['spec_hash']}`
-- manifest_sha256: `{b['manifest_hash']}`
-- dataset_fingerprint: `{b['dataset_fingerprint']}`
-- config_hash: `{b['config_hash']}`
-- COST_MODEL_V3 RT: `{b['cost_model_v3_rt_bps']}` bps (live CostEngine; never hardcoded)
+- branch: `{b["branch"]}`
+- start_sha: `{b["start_sha"]}`
+- code_hash: `{b["code_hash"]}`
+- spec_sha256: `{b["spec_hash"]}`
+- manifest_sha256: `{b["manifest_hash"]}`
+- dataset_fingerprint: `{b["dataset_fingerprint"]}`
+- config_hash: `{b["config_hash"]}`
+- COST_MODEL_V3 RT: `{b["cost_model_v3_rt_bps"]}` bps (live CostEngine; never hardcoded)
 - OOS opened: **NO**
-- dirty worktree (pre-existing, untouched): {len(b['dirty_worktree'])} paths
+- dirty worktree (pre-existing, untouched): {len(b["dirty_worktree"])} paths
 """
 
     files["CONTRACT_VALIDATION.md"] = f"""# CONTRACT VALIDATION (§1-§2, §5)
@@ -577,11 +603,11 @@ def write_markdown(r: dict[str, Any]) -> None:
 Five frozen views compared by `ExperimentContractValidator`
 (SPEC · MANIFEST · IMPLEMENTATION · SPLITS · COST_MODEL).
 
-- status: **`{c['status']}`** (valid={c['valid']})
-- compared_fields: {', '.join(f'`{x}`' for x in c['compared_fields'])}
-- mismatches: {len(c['mismatches'])}
-- dataset_fingerprint matches SPEC: **{c['dataset_fingerprint_matches']}**
-- split_hash: `{r['split_hash']}`; split-mutation refused: **{r['split_mutation_refused']}**
+- status: **`{c["status"]}`** (valid={c["valid"]})
+- compared_fields: {", ".join(f"`{x}`" for x in c["compared_fields"])}
+- mismatches: {len(c["mismatches"])}
+- dataset_fingerprint matches SPEC: **{c["dataset_fingerprint_matches"]}**
+- split_hash: `{r["split_hash"]}`; split-mutation refused: **{r["split_mutation_refused"]}**
 
 The implementation config is built from the **actual** runnable `RiskAdjConfig`
 (lookback 90 / max_hold 30) and the live corpus digest, so a PASS here is not
@@ -590,19 +616,19 @@ vacuous: SPEC == MANIFEST == IMPLEMENTATION == SPLITS == COST_MODEL.
 
     files["DISTINCT_HYPOTHESIS.md"] = f"""# DISTINCT HYPOTHESIS (§4)
 
-verdict: **{r['distinct']['verdict']}** — not `REJECT_DUPLICATE`.
+verdict: **{r["distinct"]["verdict"]}** — not `REJECT_DUPLICATE`.
 
 ## vs EXP-ARP-016 (nearest neighbour)
-- rank feature: {r['distinct']['vs_EXP_ARP_016']['rank_feature']}
-- vol normalisation: {r['distinct']['vs_EXP_ARP_016']['vol_normalisation']}
-- skip: {r['distinct']['vs_EXP_ARP_016']['skip']}
-- selection: {r['distinct']['vs_EXP_ARP_016']['selection']}
+- rank feature: {r["distinct"]["vs_EXP_ARP_016"]["rank_feature"]}
+- vol normalisation: {r["distinct"]["vs_EXP_ARP_016"]["vol_normalisation"]}
+- skip: {r["distinct"]["vs_EXP_ARP_016"]["skip"]}
+- selection: {r["distinct"]["vs_EXP_ARP_016"]["selection"]}
 
 ## vs EXP-ARP-013
-- {r['distinct']['vs_EXP_ARP_013']['feature']}
+- {r["distinct"]["vs_EXP_ARP_013"]["feature"]}
 
 ## vs EXP-ARP-008
-- {r['distinct']['vs_EXP_ARP_008']['mechanism']}
+- {r["distinct"]["vs_EXP_ARP_008"]["mechanism"]}
 """
 
     files["PIT_REPORT.md"] = """# PIT REPORT (§5-§9)
@@ -625,77 +651,81 @@ Survivorship: `SURVIVORSHIP_DATA_LIMITATION` binds every cross-sectional claim.
 
 | metric | value |
 |---|---|
-| trades | {dev['trades']} |
-| expectancy gross (bps) | {_f(dev['expectancy_gross_bps'],3)} |
-| expectancy cost (bps) | {_f(dev['expectancy_cost_bps'],3)} |
-| expectancy net (bps) | {_f(dev['expectancy_net_bps'],3)} |
-| net (USD) | {_f(dev['net_usd'])} |
-| win rate | {_f(dev['win_rate'],4)} |
-| payoff | {_f(dev['payoff'],4)} |
-| profit factor | {_f(dev['profit_factor'],4)} |
-| max drawdown (bps) | {_f(dev['max_drawdown_bps'],2)} |
-| sharpe / trade | {_f(dev['sharpe_per_trade'],4)} |
-| top1 concentration | {_f(dev['concentration'].get('top1_share'),4)} |
-| exit mix | {dev['exit_mix']} |
+| trades | {dev["trades"]} |
+| expectancy gross (bps) | {_f(dev["expectancy_gross_bps"], 3)} |
+| expectancy cost (bps) | {_f(dev["expectancy_cost_bps"], 3)} |
+| expectancy net (bps) | {_f(dev["expectancy_net_bps"], 3)} |
+| net (USD) | {_f(dev["net_usd"])} |
+| win rate | {_f(dev["win_rate"], 4)} |
+| payoff | {_f(dev["payoff"], 4)} |
+| profit factor | {_f(dev["profit_factor"], 4)} |
+| max drawdown (bps) | {_f(dev["max_drawdown_bps"], 2)} |
+| sharpe / trade | {_f(dev["sharpe_per_trade"], 4)} |
+| top1 concentration | {_f(dev["concentration"].get("top1_share"), 4)} |
+| exit mix | {dev["exit_mix"]} |
 
-**DEV decision: `{r['dev_decision']}`** (min_trades={MIN_TRADES}).
+**DEV decision: `{r["dev_decision"]}`** (min_trades={MIN_TRADES}).
 """
 
-    files["COST_REPORT.md"] = f"""# COST REPORT (§11)
+    files["COST_REPORT.md"] = (
+        f"""# COST REPORT (§11)
 
-COST_MODEL_V3 canonical RT = `{b['cost_model_v3_rt_bps']}` bps (live CostEngine).
+COST_MODEL_V3 canonical RT = `{b["cost_model_v3_rt_bps"]}` bps (live CostEngine).
 
 | multiple | cost bps RT | expectancy net bps | positive |
 |---|---|---|---|
-""" + "\n".join(
-        f"| {k} | {v['cost_bps_rt']} | {v['expectancy_net_bps']} | {v['positive']} |"
-        for k, v in r["cost_stress"].items()
-    ) + f"""
-
-canonical net positive: **{r['canonical_net_positive']}**
 """
+        + "\n".join(
+            f"| {k} | {v['cost_bps_rt']} | {v['expectancy_net_bps']} | {v['positive']} |"
+            for k, v in r["cost_stress"].items()
+        )
+        + f"""
+
+canonical net positive: **{r["canonical_net_positive"]}**
+"""
+    )
 
     files["VALIDATION_REPORT.md"] = f"""# VALIDATION REPORT (§12)
 
-Implementation frozen at `{r['frozen_implementation_hash']}` **before** VALIDATION.
+Implementation frozen at `{r["frozen_implementation_hash"]}` **before** VALIDATION.
 
 | metric | value |
 |---|---|
-| trades | {val.get('trades')} |
-| expectancy gross (bps) | {_f(val.get('expectancy_gross_bps'),3)} |
-| expectancy net (bps) | {_f(val.get('expectancy_net_bps'),3)} |
-| net (USD) | {_f(val.get('net_usd'))} |
-| win rate | {_f(val.get('win_rate'),4)} |
-| profit factor | {_f(val.get('profit_factor'),4)} |
-| max drawdown (bps) | {_f(val.get('max_drawdown_bps'),2)} |
+| trades | {val.get("trades")} |
+| expectancy gross (bps) | {_f(val.get("expectancy_gross_bps"), 3)} |
+| expectancy net (bps) | {_f(val.get("expectancy_net_bps"), 3)} |
+| net (USD) | {_f(val.get("net_usd"))} |
+| win rate | {_f(val.get("win_rate"), 4)} |
+| profit factor | {_f(val.get("profit_factor"), 4)} |
+| max drawdown (bps) | {_f(val.get("max_drawdown_bps"), 2)} |
 
-**VALIDATION decision: `{r['validation_decision']}`**
+**VALIDATION decision: `{r["validation_decision"]}`**
 """
 
     files["TEMPORAL.md"] = f"""# TEMPORAL (§13)
 
-pnl_by_year: {json.dumps(r['temporal']['pnl_by_year'])}
-pnl_by_asset: {json.dumps(r['temporal']['pnl_by_asset'])}
+pnl_by_year: {json.dumps(r["temporal"]["pnl_by_year"])}
+pnl_by_asset: {json.dumps(r["temporal"]["pnl_by_asset"])}
 """
 
     files["CONCENTRATION.md"] = f"""# CONCENTRATION (§17)
 
-{json.dumps(r['concentration'], indent=2)}
+{json.dumps(r["concentration"], indent=2)}
 """
 
     files["REGIME.md"] = f"""# REGIME (§14)
 
-{json.dumps(r['regime'], indent=2)}
+{json.dumps(r["regime"], indent=2)}
 """
 
     files["BETA_DECOMPOSITION.md"] = f"""# BETA DECOMPOSITION (§20)
 
-{json.dumps(r['beta_decomposition'], indent=2)}
+{json.dumps(r["beta_decomposition"], indent=2)}
 """
 
     files["RISK_ADJUSTMENT_ANALYSIS.md"] = f"""# RISK-ADJUSTMENT ANALYSIS (§22)
 
-{json.dumps(r['risk_adjustment'], indent=2)}
+{json.dumps(r["risk_adjustment"], indent=2)}
 
 The raw-return control uses the identical construction with `risk_adjusted=False`;
 it is **not promotable** and exists only to attribute the volatility normalisation.
@@ -703,23 +733,23 @@ it is **not promotable** and exists only to attribute the volatility normalisati
 
     files["ROBUSTNESS.md"] = f"""# ROBUSTNESS (§21, §23)
 
-reference split: `{r['robustness']['reference_split']}`
-positive fraction: {r['robustness']['positive_fraction']} (robust_ok={r['robustness']['robust_ok']})
+reference split: `{r["robustness"]["reference_split"]}`
+positive fraction: {r["robustness"]["positive_fraction"]} (robust_ok={r["robustness"]["robust_ok"]})
 
 ## pre-declared perturbations (expectancy net bps)
-{json.dumps(r['robustness']['perturbations'], indent=2)}
+{json.dumps(r["robustness"]["perturbations"], indent=2)}
 
 ## leave-one-asset-out (top 5 contributors)
-{json.dumps(r['robustness']['leave_one_out_top5'], indent=2)}
+{json.dumps(r["robustness"]["leave_one_out_top5"], indent=2)}
 """
 
     files["NEGATIVE_KNOWLEDGE.md"] = f"""# NEGATIVE KNOWLEDGE (§24)
 
-{r['multiple_testing']['note']}
+{r["multiple_testing"]["note"]}
 
-- program hypotheses tested: {r['multiple_testing']['program_hypotheses_tested']}
-- graveyard: {', '.join(r['multiple_testing']['graveyard'])}
-- remaining preregistrations: {', '.join(r['multiple_testing']['new_prereg_remaining'])}
+- program hypotheses tested: {r["multiple_testing"]["program_hypotheses_tested"]}
+- graveyard: {", ".join(r["multiple_testing"]["graveyard"])}
+- remaining preregistrations: {", ".join(r["multiple_testing"]["new_prereg_remaining"])}
 
 If EXP-ARP-021 terminates, its configuration is frozen terminal: no parameter
 change is applied under this id; a different parameter set is a new hypothesis.
@@ -728,11 +758,11 @@ change is applied under this id; a different parameter set is a new hypothesis.
     files["RUN_REPORT.md"] = f"""# RUN REPORT (§26)
 
 - experiment: `{EXPERIMENT_ID}` / `{STRATEGY_ID}`
-- start_sha: `{b['start_sha']}`
-- dev_decision: `{r['dev_decision']}`
-- validation_decision: `{r['validation_decision']}`
-- robust_ok: {r['robustness']['robust_ok']}
-- final_decision: **`{r['final_decision']}`**
+- start_sha: `{b["start_sha"]}`
+- dev_decision: `{r["dev_decision"]}`
+- validation_decision: `{r["validation_decision"]}`
+- robust_ok: {r["robustness"]["robust_ok"]}
+- final_decision: **`{r["final_decision"]}`**
 - OOS opened: **NO**
 
 Machine copy: [`RUN_REPORT.json`](RUN_REPORT.json)
@@ -740,18 +770,18 @@ Machine copy: [`RUN_REPORT.json`](RUN_REPORT.json)
 
     files["FINAL_REPORT.md"] = f"""# FINAL REPORT — EXP-ARP-021 (§27)
 
-**Final decision: `{r['final_decision']}`**
+**Final decision: `{r["final_decision"]}`**
 
 The frozen risk-adjusted cross-sectional rotation was executed contract-first:
-contract **`{c['status']}`**, holdout **`{r['holdout']['status_after']}`**
-(never opened), DEV **`{r['dev_decision']}`**, cost canonical-positive
-**{r['canonical_net_positive']}**, VALIDATION **`{r['validation_decision']}`**,
-robust **{r['robustness']['robust_ok']}.
+contract **`{c["status"]}`**, holdout **`{r["holdout"]["status_after"]}`**
+(never opened), DEV **`{r["dev_decision"]}`**, cost canonical-positive
+**{r["canonical_net_positive"]}**, VALIDATION **`{r["validation_decision"]}`**,
+robust **{r["robustness"]["robust_ok"]}.
 
-DEV net expectancy {_f(dev['expectancy_net_bps'],3)} bps over {dev['trades']} positions.
-VAL net expectancy {_f(val.get('expectancy_net_bps'),3)} bps over {val.get('trades')} positions.
-Market beta {_f(r['beta_decomposition'].get('market_beta'),4)};
-cross-sectional alpha {_f(r['beta_decomposition'].get('cross_sectional_alpha'),6)}.
+DEV net expectancy {_f(dev["expectancy_net_bps"], 3)} bps over {dev["trades"]} positions.
+VAL net expectancy {_f(val.get("expectancy_net_bps"), 3)} bps over {val.get("trades")} positions.
+Market beta {_f(r["beta_decomposition"].get("market_beta"), 4)};
+cross-sectional alpha {_f(r["beta_decomposition"].get("cross_sectional_alpha"), 6)}.
 
 No OOS was opened; no promotion; no live capital; `FALSE_SUCCESS=0`.
 """

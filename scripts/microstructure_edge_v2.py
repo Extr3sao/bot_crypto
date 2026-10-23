@@ -191,8 +191,7 @@ def kline_volatility(asset: str) -> dict[str, Any]:
         "last_open_ms": int(klines[-1][0]),
         "realized_vol_bps_5m": round(statistics.pstdev(all_returns), 6),
         "realized_vol_bps_5m_by_split": {
-            k: (round(statistics.pstdev(v), 6) if len(v) > 1 else None)
-            for k, v in by_split.items()
+            k: (round(statistics.pstdev(v), 6) if len(v) > 1 else None) for k, v in by_split.items()
         },
         "source": os.path.relpath(path, ROOT).replace("\\", "/"),
     }
@@ -251,7 +250,9 @@ def observed_spreads(forward_dir: str) -> dict[str, Any]:
                 by_kind[kind] = by_kind.get(kind, 0) + 1
                 receive = record.get("receive_time")
                 if isinstance(receive, int):
-                    first_receive = receive if first_receive is None else min(first_receive, receive)
+                    first_receive = (
+                        receive if first_receive is None else min(first_receive, receive)
+                    )
                     last_receive = receive if last_receive is None else max(last_receive, receive)
                 if kind != "bookTicker":
                     continue
@@ -451,7 +452,10 @@ def classify(
         return "INSUFFICIENT_DATA", "sample or OOS profit factor below the admission bar"
     if not filters["filter5_material_margin"]:
         return "COST_STRESS_FAILED", "net margin below 0.25x of cost"
-    return "RESEARCH_CANDIDATE", "survived every pre-registered filter; needs independent verification"
+    return (
+        "RESEARCH_CANDIDATE",
+        "survived every pre-registered filter; needs independent verification",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -521,12 +525,15 @@ def run_m07(days: list[DayData], cost_bps: dict[str, float]) -> list[dict[str, A
         oi = load_open_interest(asset)
         coverage[asset] = len(oi)
         primary = PRIMARY_HORIZON["M-07"]
-        per_state: dict[str, list[float]] = {s: [] for s in (
-            "PRICE_UP_OI_UP",
-            "PRICE_UP_OI_DOWN",
-            "PRICE_DOWN_OI_UP",
-            "PRICE_DOWN_OI_DOWN",
-        )}
+        per_state: dict[str, list[float]] = {
+            s: []
+            for s in (
+                "PRICE_UP_OI_UP",
+                "PRICE_UP_OI_DOWN",
+                "PRICE_DOWN_OI_UP",
+                "PRICE_DOWN_OI_DOWN",
+            )
+        }
         per_state_split: dict[str, dict[str, list[float]]] = {
             s: {k: [] for k in ("DEV", "VAL", "OOS")} for s in per_state
         }
@@ -595,9 +602,7 @@ def run_m07(days: list[DayData], cost_bps: dict[str, float]) -> list[dict[str, A
                     if forward is None:
                         continue
                     records.append((day.split, 1.0, forward))
-        info = information_content(
-            [s for _sp, s, _f in records], [f for _sp, _s, f in records]
-        )
+        info = information_content([s for _sp, s, _f in records], [f for _sp, _s, f in records])
         distribution = conditional_stats(
             {state: per_state_context[state][primary] for state in per_state}
         )
@@ -919,14 +924,20 @@ def main() -> None:
                 "status": "NEWLY_TESTED",
                 "primary_horizon_bars": PRIMARY_HORIZON[h],
                 "context_horizons": list(CONTEXT_HORIZONS[h]),
-                "classification": [r["classification"] for r in results if r["hypothesis"].startswith(h)],
+                "classification": [
+                    r["classification"] for r in results if r["hypothesis"].startswith(h)
+                ],
             }
             for h in ("M-02", "M-07", "M-09", "M-10")
         ]
         + [
             {"hypothesis_id": h, "status": status, "evidence": evidence}
             for h, status, evidence in (
-                ("M-01", "PREVIOUSLY_TESTED", "docs/MICROSTRUCTURE_RESULTS_V1.json (flow_imbalance_z)"),
+                (
+                    "M-01",
+                    "PREVIOUSLY_TESTED",
+                    "docs/MICROSTRUCTURE_RESULTS_V1.json (flow_imbalance_z)",
+                ),
                 ("M-03", "NOT_TESTABLE", "no historical book: LIVE_ONLY (SRC-07)"),
                 ("M-04", "PREVIOUSLY_TESTED", "docs/AGGTRADES_RESULTS_V1.json (A-03)"),
                 ("M-05", "PREVIOUSLY_TESTED", "docs/MICROSTRUCTURE_RESULTS_V1.json (funding_z)"),
@@ -997,12 +1008,11 @@ def main() -> None:
     information: dict[str, Any] = {
         "model": "MICROSTRUCTURE_INFORMATION_CONTENT_V2",
         "hypotheses_doc": "docs/MICROSTRUCTURE_HYPOTHESES_V2.md",
-        "candidates": {
-            r["candidate_id"]: r["information_content"] for r in results
-        },
+        "candidates": {r["candidate_id"]: r["information_content"] for r in results},
         "classification_counts": counts,
         "informative_candidates": [
-            cid for cid, ic in ((r["candidate_id"], r["information_content"]) for r in results)
+            cid
+            for cid, ic in ((r["candidate_id"], r["information_content"]) for r in results)
             if ic.get("status") == "HAS_INFORMATION"
         ],
     }

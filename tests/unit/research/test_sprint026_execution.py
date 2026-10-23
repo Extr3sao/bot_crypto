@@ -22,10 +22,25 @@ import sprint026_lib as X  # noqa: E402
 
 def _trade(asset: str, gross_bps: float) -> L.Trade:
     return L.Trade(
-        candidate_id="t", hypothesis_id="h", family="f", asset=asset, window="W1",
-        timeframe="1h", side="LONG", entry_ts=0.0, exit_ts=1.0, entry=100.0, exit=100.0,
-        reason="time_stop", hold_bars=16, gross_bps=gross_bps, cost_bps=0.0,
-        net_bps=gross_bps, mfe_bps=0.0, mae_bps=0.0, atr_bps_at_entry=10.0,
+        candidate_id="t",
+        hypothesis_id="h",
+        family="f",
+        asset=asset,
+        window="W1",
+        timeframe="1h",
+        side="LONG",
+        entry_ts=0.0,
+        exit_ts=1.0,
+        entry=100.0,
+        exit=100.0,
+        reason="time_stop",
+        hold_bars=16,
+        gross_bps=gross_bps,
+        cost_bps=0.0,
+        net_bps=gross_bps,
+        mfe_bps=0.0,
+        mae_bps=0.0,
+        atr_bps_at_entry=10.0,
     )
 
 
@@ -72,8 +87,10 @@ def test_conservative_break_even_is_min_estimator() -> None:
     cons = be["conservative_break_even_cost_bps"]
     assert cons <= be["break_even_cost_bps"]
     assert cons == min(
-        be["bootstrap_ci90_low_bps"], be["gross_median_bps"],
-        be["trimmed_mean_bps"], be["ex_best_trade_mean_bps"],
+        be["bootstrap_ci90_low_bps"],
+        be["gross_median_bps"],
+        be["trimmed_mean_bps"],
+        be["ex_best_trade_mean_bps"],
     )
     assert be["alpha_uncertainty_high"] is True
 

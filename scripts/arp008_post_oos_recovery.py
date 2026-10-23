@@ -382,18 +382,20 @@ def main() -> None:
     )
     shutil.copyfile(ARP007 / "OOS_RESULT.json", OUT / "tmp_old_oos_result.json")
 
-    print(json.dumps(
-        {
-            "head_sha": run_report["head_sha"],
-            "exp008_contract": exp008_result.status,
-            "exp008_mismatch_fields": [m.field for m in exp008_result.mismatches],
-            "new_contracts_all_pass": contract_validation["new_contracts_all_pass"],
-            "old_oos_status": registry.status("HOLDOUT-ARP-006-OOS").value,
-            "new_holdout_classification": run_report["new_holdout_classification"],
-            "oos_opened": run_report["oos_opened"],
-        },
-        indent=2,
-    ))
+    print(
+        json.dumps(
+            {
+                "head_sha": run_report["head_sha"],
+                "exp008_contract": exp008_result.status,
+                "exp008_mismatch_fields": [m.field for m in exp008_result.mismatches],
+                "new_contracts_all_pass": contract_validation["new_contracts_all_pass"],
+                "old_oos_status": registry.status("HOLDOUT-ARP-006-OOS").value,
+                "new_holdout_classification": run_report["new_holdout_classification"],
+                "oos_opened": run_report["oos_opened"],
+            },
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":

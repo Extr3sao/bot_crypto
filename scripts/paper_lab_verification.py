@@ -290,11 +290,15 @@ def check_retention_safety(capture_root: Path, forward_root: Path) -> dict[str, 
             checked.append(entry)
             if not ok:
                 broken.append({**entry, "reason": "lineage does not match the aggregate"})
-    report_root_touched = [
-        str(path.relative_to(capture_root))
-        for path in (capture_root / "reports").rglob("*")
-        if path.is_file()
-    ] if (capture_root / "reports").exists() else []
+    report_root_touched = (
+        [
+            str(path.relative_to(capture_root))
+            for path in (capture_root / "reports").rglob("*")
+            if path.is_file()
+        ]
+        if (capture_root / "reports").exists()
+        else []
+    )
     return {
         "id": "RETENTION_LINEAGE_AND_ORDER",
         "ok": not broken,
@@ -404,16 +408,12 @@ def check_strategy_gate(ledger_path: Path) -> dict[str, Any]:
     ]
     promotion_without_record_denied = False
     try:
-        assert_transition(
-            "x@5m", AdmissionStatus.PAPER_CANDIDATE, AdmissionStatus.PAPER_ACTIVE
-        )
+        assert_transition("x@5m", AdmissionStatus.PAPER_CANDIDATE, AdmissionStatus.PAPER_ACTIVE)
     except StrategyStateError:
         promotion_without_record_denied = True
     research_jump_denied = False
     try:
-        assert_transition(
-            "x@5m", AdmissionStatus.RESEARCH_REQUIRED, AdmissionStatus.PAPER_ACTIVE
-        )
+        assert_transition("x@5m", AdmissionStatus.RESEARCH_REQUIRED, AdmissionStatus.PAPER_ACTIVE)
     except StrategyStateError:
         research_jump_denied = True
 
@@ -462,12 +462,13 @@ def check_def_auto(ledger_path: Path) -> dict[str, Any]:
     )
     payload = support.to_dict()
     effective = {str(asset).upper() for asset in payload.get("effective", [])}
-    unsupported = {str(asset).upper(): reason for asset, reason in (payload.get("unsupported") or {}).items()}
+    unsupported = {
+        str(asset).upper(): reason for asset, reason in (payload.get("unsupported") or {}).items()
+    }
     # §39 — never silently ignore a configured asset: each one is either in the
     # effective universe or carries a reason for being out of it.
     explained = all(
-        str(asset).upper() in effective or str(asset).upper() in unsupported
-        for asset in configured
+        str(asset).upper() in effective or str(asset).upper() in unsupported for asset in configured
     ) and bool(unsupported)
     unregistered = {asset: reason for asset, reason in unsupported.items() if asset == "BNB"}
 
@@ -480,9 +481,7 @@ def check_def_auto(ledger_path: Path) -> dict[str, Any]:
         }
     monotonic = all(
         freshness[a]["stale_threshold_ms"] < freshness[b]["stale_threshold_ms"]
-        for a, b in zip(
-            ("1m", "5m", "15m", "30m"), ("5m", "15m", "30m", "1h"), strict=True
-        )
+        for a, b in zip(("1m", "5m", "15m", "30m"), ("5m", "15m", "30m", "1h"), strict=True)
     )
     unknown_raises = False
     try:
@@ -502,15 +501,14 @@ def check_def_auto(ledger_path: Path) -> dict[str, Any]:
         REPO_ROOT / "src" / "trading_bot" / "autonomous" / "strategy_state.py",
     ]
     assigned_confirmed = [
-        offender for path in entrypoints if path.exists() for offender in _confirmed_status_literals(path)
+        offender
+        for path in entrypoints
+        if path.exists()
+        for offender in _confirmed_status_literals(path)
     ]
 
     ok = (
-        explained
-        and bool(unregistered)
-        and monotonic
-        and unknown_raises
-        and not assigned_confirmed
+        explained and bool(unregistered) and monotonic and unknown_raises and not assigned_confirmed
     )
     return {
         "id": "DEF_AUTO_2_3_4",
@@ -654,7 +652,9 @@ def check_supervisor_isolation() -> dict[str, Any]:
     }
 
 
-def check_safe_stop_and_restart(lab_run_dir: Path, paper_root: Path, forward_root: Path) -> dict[str, Any]:
+def check_safe_stop_and_restart(
+    lab_run_dir: Path, paper_root: Path, forward_root: Path
+) -> dict[str, Any]:
     """Clean shutdown, persisted state, and a resumed capture with no duplicate ids."""
     lab_report = _read_json(lab_run_dir / "LAB_RUN_REPORT.json")
     heartbeat = _read_json(lab_run_dir / "SYSTEM_HEARTBEAT.json")
@@ -750,9 +750,7 @@ def check_final_head_executed(
     status = _git("status", "--short")
     integrated_path, integrated = _latest_manifest(forward_root)
     cert_path, certification = _latest_manifest(capture_root)
-    paper_descriptor = _read_json(
-        REPO_ROOT / args.paper_root / lab_run_dir.name / "PAPER_RUN.json"
-    )
+    paper_descriptor = _read_json(REPO_ROOT / args.paper_root / lab_run_dir.name / "PAPER_RUN.json")
 
     # Every capture under the lab roots, so a short post-run smoke at the final
     # HEAD counts as evidence that the final HEAD was executed.
@@ -776,15 +774,15 @@ def check_final_head_executed(
     # has to exist as its own evidence.
     changed_since_integrated: list[str] = []
     if integrated_commit and not integrated_matches:
-        changed = _git(
-            "diff", "--name-only", integrated_commit, head, "--", *RUNTIME_PATHS
-        )
+        changed = _git("diff", "--name-only", integrated_commit, head, "--", *RUNTIME_PATHS)
         changed_since_integrated = [line for line in changed.splitlines() if line.strip()]
 
     cert_commit = (certification or {}).get("commit") or ""
     writer_changed_since_certification: list[str] = []
     if cert_commit and cert_commit != head:
-        changed = _git("diff", "--name-only", cert_commit, head, "--", "src/trading_bot/research/forward")
+        changed = _git(
+            "diff", "--name-only", cert_commit, head, "--", "src/trading_bot/research/forward"
+        )
         writer_changed_since_certification = [line for line in changed.splitlines() if line.strip()]
 
     head_matches_integrated = integrated_matches or (
@@ -801,17 +799,13 @@ def check_final_head_executed(
         "ok": bool(ok),
         "detail": {
             "verified_head": head,
-            "integrated_run_manifest": _rel(integrated_path)
-            if integrated_path
-            else None,
+            "integrated_run_manifest": _rel(integrated_path) if integrated_path else None,
             "integrated_run_commit": integrated_commit,
             "integrated_run_commit_matches_head": integrated_matches,
             "captures_stamped_with_head": stamped_with_head,
             "runtime_paths_changed_since_integrated_run": changed_since_integrated,
             "runtime_surface": list(RUNTIME_PATHS),
-            "writer_certification_manifest": _rel(cert_path)
-            if cert_path
-            else None,
+            "writer_certification_manifest": _rel(cert_path) if cert_path else None,
             "writer_certification_commit": cert_commit,
             "writer_modules_changed_since_certification": writer_changed_since_certification,
             "paper_run_stamp": (paper_descriptor or {}).get("commit"),
@@ -835,15 +829,14 @@ def check_microstructure_hypotheses() -> dict[str, Any]:
     states = {key: value.get("state") for key, value in rows.items()}
     registered_at = (payload or {}).get("preregistered_at")
     version = (payload or {}).get("preregistration_version")
-    registered = bool(rows) and bool(registered_at) and bool(version) and all(
-        value.get("minimum_data") and value.get("quality_gates") for value in rows.values()
+    registered = (
+        bool(rows)
+        and bool(registered_at)
+        and bool(version)
+        and all(value.get("minimum_data") and value.get("quality_gates") for value in rows.values())
     )
-    evidence = [
-        _rel(candidate)
-        for candidate in (REPO_ROOT / "reports").rglob("*M-03*")
-    ] + [
-        _rel(candidate)
-        for candidate in (REPO_ROOT / "reports").rglob("*M-07*")
+    evidence = [_rel(candidate) for candidate in (REPO_ROOT / "reports").rglob("*M-03*")] + [
+        _rel(candidate) for candidate in (REPO_ROOT / "reports").rglob("*M-07*")
     ]
     ok = (
         payload is not None
@@ -1144,7 +1137,9 @@ def check_preservation_gate(tmp_path: Path) -> dict[str, Any]:
     envelope["aggregation"]["book"][key][0]["spread_bps_mean"] = "999.99"
     with gzip.open(aggregate, "wt", encoding="utf-8") as handle:
         json.dump(envelope, handle)
-    tampered = preservation_for_window(root, run_id, window_start, files, policy=PreservationPolicy())
+    tampered = preservation_for_window(
+        root, run_id, window_start, files, policy=PreservationPolicy()
+    )
     sub_minute = preservation_for_window(
         root,
         run_id,
@@ -1168,14 +1163,11 @@ def check_preservation_gate(tmp_path: Path) -> dict[str, Any]:
             "preserved": report.verdicts,
             "preserved_allows_deletion": report.deletion_allowed,
             "comparisons": [
-                {"feature": item.feature, "compared": item.compared}
-                for item in report.comparisons
+                {"feature": item.feature, "compared": item.compared} for item in report.comparisons
             ],
             "tampered_verdict": tampered.verdicts,
             "sub_minute_verdict": sub_minute.verdicts,
-            "not_covered_without_raw_quotes": report.as_dict()[
-                "not_covered_without_raw_quotes"
-            ],
+            "not_covered_without_raw_quotes": report.as_dict()["not_covered_without_raw_quotes"],
         },
         "claim": (
             "the preregistered M-03/M-07 series survive compaction at their preregistered "
@@ -1307,7 +1299,8 @@ def check_operator_surface() -> dict[str, Any]:
     ok = (
         status_payload is not None
         and status_payload.get("schema_version") == "paper-lab-status-v1"
-        and flags >= {
+        and flags
+        >= {
             "PAPER_READY",
             "COLLECTOR_READY",
             "STORAGE_READY",

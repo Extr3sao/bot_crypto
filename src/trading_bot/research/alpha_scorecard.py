@@ -186,9 +186,7 @@ def alpha_scorecard(
     no_trade = [item for item in performances if item.decision == "NO_TRADE"]
     no_trade_counterfactual = [
         value
-        for value in (
-            item.comparison(do.BASELINE_ID_BUY_AND_HOLD) for item in no_trade
-        )
+        for value in (item.comparison(do.BASELINE_ID_BUY_AND_HOLD) for item in no_trade)
         if value is not None and value.available
     ]
 

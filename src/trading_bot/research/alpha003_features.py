@@ -233,7 +233,11 @@ def _regime_series(bars: Sequence[Sequence[float]]) -> list[float | None]:
             returns[index] = closes[index] / closes[index - 1] - 1.0
     out: list[float | None] = [None] * len(bars)
     for index in range(len(bars)):
-        trailing = [value for value in returns[max(0, index - VOL_REGIME_BASELINE_WINDOW + 1) : index + 1] if value is not None]
+        trailing = [
+            value
+            for value in returns[max(0, index - VOL_REGIME_BASELINE_WINDOW + 1) : index + 1]
+            if value is not None
+        ]
         if len(trailing) < MIN_VOL_REGIME_OBSERVATIONS:
             continue
         short_window = trailing[-VOL_REGIME_SHORT_WINDOW:]
@@ -319,9 +323,7 @@ def build_frame(
                 else None
             )
             row[f"vol_regime_{symbol}"] = (
-                _regime_at(
-                    regime_opens[symbol], regimes[symbol], decision_ms, context_step
-                )
+                _regime_at(regime_opens[symbol], regimes[symbol], decision_ms, context_step)
                 if regime_bars_by_symbol
                 else None
             )

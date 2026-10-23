@@ -28,8 +28,14 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 # RFC-036 traded universe: 26 markets, 6 asset classes, all CME-Group-listed
 # (CME / CBOT / NYMEX / COMEX), so a single CME-Group feed can cover P1 end to end.
-RFC036_UNIVERSE_ASSET_CLASSES = ["EQUITY_INDEX", "GOVERNMENT_BOND_RATES", "FX",
-                                 "ENERGY", "METALS", "AGRICULTURE"]
+RFC036_UNIVERSE_ASSET_CLASSES = [
+    "EQUITY_INDEX",
+    "GOVERNMENT_BOND_RATES",
+    "FX",
+    "ENERGY",
+    "METALS",
+    "AGRICULTURE",
+]
 
 
 def provider_matrix() -> list[dict[str, Any]]:
@@ -50,8 +56,8 @@ def provider_matrix() -> list[dict[str, Any]]:
             "p1_suitability": "HIGH",
             "p2_suitability": "HIGH (expiry metadata -> simultaneous maturities)",
             "price": "usage-based (metered by uncompressed bytes) or subscription "
-                     "(Standard $179-$199/month, 15+ yr history); full-history firm "
-                     "licence advertised at ~$4,500/month",
+            "(Standard $179-$199/month, 15+ yr history); full-history firm "
+            "licence advertised at ~$4,500/month",
             "quote_required": False,
             "source": "https://databento.com/pricing ; https://databento.com/futures",
         },
@@ -70,7 +76,7 @@ def provider_matrix() -> list[dict[str, Any]]:
             "p1_suitability": "HIGH",
             "p2_suitability": "HIGH",
             "price": "QUOTE_REQUIRED (dataset/subscription pricing; historical product "
-                     "guide cited ~$1,200/month for some datasets)",
+            "guide cited ~$1,200/month for some datasets)",
             "quote_required": True,
             "source": "https://www.cmegroup.com/datamine.html",
         },
@@ -175,25 +181,37 @@ def _tok(x: str) -> str:
 
 def score(p: dict[str, Any]) -> float:
     """DATA_RESEARCH_VALUE (§33): weighted, frozen before ranking."""
+
     def b(x: bool) -> float:
         return 1.0 if x else 0.0
+
     p1t, p2t = _tok(p["p1_suitability"]), _tok(p["p2_suitability"])
     p1 = 3.0 * b(p1t in ("HIGH", "MEDIUM")) + b(p1t == "HIGH")
     p2 = 3.0 * b(p2t in ("HIGH", "MEDIUM")) + b(p2t == "HIGH")
-    modern = 2.0 if not p.get("historical_only", False) and not str(
-        p["price"]).startswith("DEPRECATED") else 0.0
-    quality = (b(p["individual_contracts"]) + b(p["volume"]) + b(p["open_interest"])
-               + b(p["term_structure"]))
+    modern = (
+        2.0
+        if not p.get("historical_only", False) and not str(p["price"]).startswith("DEPRECATED")
+        else 0.0
+    )
+    quality = (
+        b(p["individual_contracts"])
+        + b(p["volume"])
+        + b(p["open_interest"])
+        + b(p["term_structure"])
+    )
     pit = b(_tok(p["pit_suitability"]) in ("HIGH", "MEDIUM-HIGH"))
     reusability = 2.0 if (p1t in ("HIGH", "MEDIUM") and p2t in ("HIGH", "MEDIUM")) else 0.0
     return float(p1 + p2 + modern + quality + pit + reusability)
 
 
 def eligible(p: dict[str, Any]) -> bool:
-    return bool(p["individual_contracts"] and p["term_structure"]
-                and _tok(p["p1_suitability"]) in ("HIGH", "MEDIUM")
-                and _tok(p["p2_suitability"]) in ("HIGH", "MEDIUM")
-                and not str(p["price"]).startswith("DEPRECATED"))
+    return bool(
+        p["individual_contracts"]
+        and p["term_structure"]
+        and _tok(p["p1_suitability"]) in ("HIGH", "MEDIUM")
+        and _tok(p["p2_suitability"]) in ("HIGH", "MEDIUM")
+        and not str(p["price"]).startswith("DEPRECATED")
+    )
 
 
 def decide(matrix: list[dict[str, Any]]) -> dict[str, Any]:
@@ -204,9 +222,14 @@ def decide(matrix: list[dict[str, Any]]) -> dict[str, Any]:
     elig = [p for p in matrix if eligible(p)]
     for p in matrix:
         p["data_research_value"] = score(p)
-    elig.sort(key=lambda p: (p["data_research_value"],
-                             not p["quote_required"],
-                             "API" in p["api_file_format"]), reverse=True)
+    elig.sort(
+        key=lambda p: (
+            p["data_research_value"],
+            not p["quote_required"],
+            "API" in p["api_file_format"],
+        ),
+        reverse=True,
+    )
     best = elig[0] if elig else None
     if best is None:
         classification = "DO_NOT_BUY"
@@ -216,15 +239,19 @@ def decide(matrix: list[dict[str, Any]]) -> dict[str, Any]:
         classification = "BUY_CANDIDATE"
     return {
         "eligible": [p["provider"] for p in elig],
-        "ranked": [p["provider"] for p in sorted(
-            matrix, key=lambda p: p["data_research_value"], reverse=True)],
+        "ranked": [
+            p["provider"]
+            for p in sorted(matrix, key=lambda p: p["data_research_value"], reverse=True)
+        ],
         "best_provider": best["provider"] if best else None,
         "best_dataset": best["dataset"] if best else None,
         "best_price": best["price"] if best else None,
         "classification": classification,
-        "rule": ("among eligible datasets (individual contracts + term structure + P1&P2 "
-                 "MEDIUM+ + live), pick highest DATA_RESEARCH_VALUE; tie-break public "
-                 "price then API. BUY_CANDIDATE never purchases -- it needs human approval."),
+        "rule": (
+            "among eligible datasets (individual contracts + term structure + P1&P2 "
+            "MEDIUM+ + live), pick highest DATA_RESEARCH_VALUE; tie-break public "
+            "price then API. BUY_CANDIDATE never purchases -- it needs human approval."
+        ),
     }
 
 

@@ -568,15 +568,9 @@ def test_independent_verifier_recomputes_from_raw_ledger() -> None:
     assert report.verified is True
     assert report.n_pairs == 2
     assert report.recomputed_total_pair_net_pnl == pytest.approx(ledger.total_pair_net_pnl)
-    assert report.recomputed_final_equity == pytest.approx(
-        ledger.portfolio_state().equity
-    )
-    assert report.recomputed_total_gross_exposure == pytest.approx(
-        ledger.total_gross_exposure
-    )
-    assert report.recomputed_total_net_exposure == pytest.approx(
-        ledger.total_net_exposure
-    )
+    assert report.recomputed_final_equity == pytest.approx(ledger.portfolio_state().equity)
+    assert report.recomputed_total_gross_exposure == pytest.approx(ledger.total_gross_exposure)
+    assert report.recomputed_total_net_exposure == pytest.approx(ledger.total_net_exposure)
 
 
 def test_verifier_accepts_plain_dicts_and_detects_fabrication() -> None:

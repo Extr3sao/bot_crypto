@@ -42,7 +42,13 @@ def load_survivors() -> list[dict[str, Any]]:
     for e in out:
         prm = e["parameters"]
         if e["sig"] == "lead_lag":
-            e["params"] = (prm["target_mult"], True, prm["stop_mult"], prm["hold_bars"], prm["lag_bars"])
+            e["params"] = (
+                prm["target_mult"],
+                True,
+                prm["stop_mult"],
+                prm["hold_bars"],
+                prm["lag_bars"],
+            )
         elif e["sig"] == "cross_sectional_rs":
             e["params"] = (0.0, False, 0.0, prm["hold_bars"])
         else:

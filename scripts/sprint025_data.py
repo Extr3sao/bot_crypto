@@ -69,7 +69,11 @@ def manifest() -> dict[str, Any]:
         ("BASIS_ETHUSDT.json", "ETHUSDT", "basis"),
         ("BASIS_SOLUSDT.json", "SOLUSDT", "basis"),
     ]
-    out: dict[str, Any] = {"provider": PROVIDER, "source_dir": str(OL.MICRO_DIR.relative_to(OL.REPO)), "files": {}}
+    out: dict[str, Any] = {
+        "provider": PROVIDER,
+        "source_dir": str(OL.MICRO_DIR.relative_to(OL.REPO)),
+        "files": {},
+    }
     for name, asset, metric in files:
         path = OL.MICRO_DIR / name
         if not path.exists():
@@ -343,7 +347,9 @@ def pit_audit() -> dict[str, Any]:
 
 def future_poisoning() -> dict[str, Any]:
     rng = np.random.default_rng(20261025)
-    out: dict[str, Any] = {"method": "poison every raw value strictly after T; features <= T must match"}
+    out: dict[str, Any] = {
+        "method": "poison every raw value strictly after T; features <= T must match"
+    }
     per_asset: dict[str, Any] = {}
     for asset in OL.ASSETS:
         kl = OL.load_klines(asset)
@@ -368,9 +374,7 @@ def future_poisoning() -> dict[str, Any]:
         f_rate_b = f_rate.copy()
         fmask = f_avail > cut
         f_rate_b[fmask] = rng.normal(0, 1.0, int(fmask.sum())) * 1.0
-        fb = OL.features_from_arrays(
-            kl["ts"], p_avail, p_val_b, f_avail, f_rate_b, vol_b, tb_b
-        )
+        fb = OL.features_from_arrays(kl["ts"], p_avail, p_val_b, f_avail, f_rate_b, vol_b, tb_b)
 
         diffs: dict[str, int] = {}
         maxd = 0.0
@@ -381,7 +385,11 @@ def future_poisoning() -> dict[str, Any]:
             if int(finite.sum()) == 0:
                 diffs[name] = 0
                 continue
-            bad = int(np.sum(finite & ~np.isclose(np.nan_to_num(a, nan=-1e18), np.nan_to_num(b, nan=-1e18))))
+            bad = int(
+                np.sum(
+                    finite & ~np.isclose(np.nan_to_num(a, nan=-1e18), np.nan_to_num(b, nan=-1e18))
+                )
+            )
             diffs[name] = bad
             va = a[finite]
             vb = b[finite]
@@ -396,7 +404,9 @@ def future_poisoning() -> dict[str, Any]:
             "identical": bool(max(diffs.values()) == 0),
         }
     out["assets"] = per_asset
-    out["verdict"] = "NO_LOOKAHEAD" if all(v["identical"] for v in per_asset.values()) else "LOOKAHEAD_DETECTED"
+    out["verdict"] = (
+        "NO_LOOKAHEAD" if all(v["identical"] for v in per_asset.values()) else "LOOKAHEAD_DETECTED"
+    )
     return out
 
 
@@ -510,7 +520,11 @@ def _write_markdowns(man: dict[str, Any], pit: dict[str, Any], fp: dict[str, Any
             f"| {key} | {d['rows']} | {d['duplicates']} | {d['strictly_ordered']} | {d['gaps']} | "
             f"{d['worst_gap_ms']} | {d['available_at_rule']} |"
         )
-    pit_lines += ["", f"Staleness funding: {pit['staleness']['note']} (median gap {pit['staleness']['funding_median_gap_ms']} ms).", ""]
+    pit_lines += [
+        "",
+        f"Staleness funding: {pit['staleness']['note']} (median gap {pit['staleness']['funding_median_gap_ms']} ms).",
+        "",
+    ]
     OL.write_md(OUT / "PIT_AUDIT.md", "\n".join(pit_lines))
 
     fp_lines = [

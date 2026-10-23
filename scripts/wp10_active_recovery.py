@@ -62,16 +62,19 @@ SEPARATE_LINES = {
     "R6_P2_QUALITY": {
         "operator_label": "R6 P2 QUALITY",
         "repo_artefact": None,
-        "treatment": ("kept separate and not used as evidence: the label does not exist in this "
-                      "repository, so it is an operator-side lane and is neither mapped nor "
-                      "inferred (the WP-4 roadmap recorded the same)"),
+        "treatment": (
+            "kept separate and not used as evidence: the label does not exist in this "
+            "repository, so it is an operator-side lane and is neither mapped nor "
+            "inferred (the WP-4 roadmap recorded the same)"
+        ),
     },
 }
 
 
 def software_version() -> str:
-    return subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True,
-                          text=True, check=False).stdout.strip()
+    return subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=False
+    ).stdout.strip()
 
 
 def load(path: Path) -> Any:
@@ -87,8 +90,10 @@ def resolvable(cell: dict[str, Any]) -> tuple[bool, str]:
     if not resolution.get("available"):
         return False, "no win/loss summary to size the interval with"
     if resolution["ci95_half_width_bps"] > abs(edge):
-        return False, (f"the 95 % interval half width ({resolution['ci95_half_width_bps']} bps) is "
-                       f"wider than the edge itself ({edge} bps)")
+        return False, (
+            f"the 95 % interval half width ({resolution['ci95_half_width_bps']} bps) is "
+            f"wider than the edge itself ({edge} bps)"
+        )
     if dev is None or val is None:
         return False, "the partitions do not both publish a gross edge"
     if not (dev > 0.0 and val > 0.0):
@@ -99,33 +104,65 @@ def resolvable(cell: dict[str, Any]) -> tuple[bool, str]:
 def classify_cell(cell: dict[str, Any], plane_bps: float) -> dict[str, Any]:
     edge = cell.get("zero_cost_gross_bps")
     if edge is None:
-        return {"stage": "NO_EDGE_DATA", "verdict": "INSUFFICIENT_EVIDENCE",
-                "why": "the cell publishes no gross edge"}
+        return {
+            "stage": "NO_EDGE_DATA",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "why": "the cell publishes no gross edge",
+        }
     if edge <= 0.0:
-        return {"stage": "NO_EDGE", "verdict": "REJECT",
-                "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat"}
+        return {
+            "stage": "NO_EDGE",
+            "verdict": "REJECT",
+            "why": "the zero-cost gross edge is not positive: there is nothing for costs to eat",
+        }
     ok, why = resolvable(cell)
     if not ok:
         return {"stage": "UNRESOLVED", "verdict": "INSUFFICIENT_EVIDENCE", "why": why}
     if edge < plane_bps:
-        return {"stage": "COST_GAP", "verdict": "RESEARCH_MORE",
-                "why": (f"the edge is resolvable but {round(plane_bps - edge, 6)} bps short of the "
-                        f"frozen round trip")}
-    return {"stage": "FORWARD_TEST", "verdict": "RESEARCH_MORE",
-            "why": ("resolvable and above the plane on historical partitions; it still needs the "
-                    "pre-registered forward test before any promotion")}
+        return {
+            "stage": "COST_GAP",
+            "verdict": "RESEARCH_MORE",
+            "why": (
+                f"the edge is resolvable but {round(plane_bps - edge, 6)} bps short of the "
+                f"frozen round trip"
+            ),
+        }
+    return {
+        "stage": "FORWARD_TEST",
+        "verdict": "RESEARCH_MORE",
+        "why": (
+            "resolvable and above the plane on historical partitions; it still needs the "
+            "pre-registered forward test before any promotion"
+        ),
+    }
 
 
 def family_matrix(cells: list[dict[str, Any]], plane_bps: float) -> dict[str, Any]:
-    scored = [{"strategy_id": cell["strategy_id"], "timeframe": cell["timeframe"],
-               "zero_cost_gross_bps": cell.get("zero_cost_gross_bps"),
-               "ci95_half_width_bps": (cell.get("resolution") or {}).get("ci95_half_width_bps"),
-               "trades": cell.get("trades"), "trades_per_day": cell.get("trades_per_day"),
-               "classification": classify_cell(cell, plane_bps)} for cell in cells]
-    order = {"ADOPT_FOR_NEW_EXPERIMENT": 3, "RESEARCH_MORE": 2,
-             "INSUFFICIENT_EVIDENCE": 1, "REJECT": 0}
-    best = max(scored, key=lambda item: (order[item["classification"]["verdict"]],
-                                         item["zero_cost_gross_bps"] or -1e9))
+    scored = [
+        {
+            "strategy_id": cell["strategy_id"],
+            "timeframe": cell["timeframe"],
+            "zero_cost_gross_bps": cell.get("zero_cost_gross_bps"),
+            "ci95_half_width_bps": (cell.get("resolution") or {}).get("ci95_half_width_bps"),
+            "trades": cell.get("trades"),
+            "trades_per_day": cell.get("trades_per_day"),
+            "classification": classify_cell(cell, plane_bps),
+        }
+        for cell in cells
+    ]
+    order = {
+        "ADOPT_FOR_NEW_EXPERIMENT": 3,
+        "RESEARCH_MORE": 2,
+        "INSUFFICIENT_EVIDENCE": 1,
+        "REJECT": 0,
+    }
+    best = max(
+        scored,
+        key=lambda item: (
+            order[item["classification"]["verdict"]],
+            item["zero_cost_gross_bps"] or -1e9,
+        ),
+    )
     positives = [item for item in scored if (item["zero_cost_gross_bps"] or 0) > 0]
     return {
         "cells": len(scored),
@@ -143,9 +180,12 @@ def family_matrix(cells: list[dict[str, Any]], plane_bps: float) -> dict[str, An
 
 def build() -> tuple[dict[str, Any], int]:
     if not BASELINE.exists():
-        return {"artifact": "WP10_ACTIVE_RECOVERY_MATRIX", "verdict": "BLOCKED",
-                "why": "the phase-1 baseline rebuild is missing",
-                "expected": str(BASELINE.relative_to(ROOT)).replace("\\", "/")}, 2
+        return {
+            "artifact": "WP10_ACTIVE_RECOVERY_MATRIX",
+            "verdict": "BLOCKED",
+            "why": "the phase-1 baseline rebuild is missing",
+            "expected": str(BASELINE.relative_to(ROOT)).replace("\\", "/"),
+        }, 2
     baseline = load(BASELINE)
     plane_bps = baseline["headline_rebuilt"]["admission_round_trip_bps"]
     rows = baseline["strategies"]
@@ -154,25 +194,32 @@ def build() -> tuple[dict[str, Any], int]:
     for row in rows:
         families.setdefault(row["family"], []).append(row)
 
-    matrix = {family: family_matrix(cells, plane_bps)
-              for family, cells in sorted(families.items())}
+    matrix = {family: family_matrix(cells, plane_bps) for family, cells in sorted(families.items())}
 
     positive_cells = [row for row in rows if (row.get("zero_cost_gross_bps") or 0) > 0]
     frequency = {
         "objective_ops_per_day": OBJECTIVE_OPS_PER_DAY,
-        "trades_per_day_all_24_cells": round(sum(row.get("trades_per_day") or 0.0 for row in rows), 3),
+        "trades_per_day_all_24_cells": round(
+            sum(row.get("trades_per_day") or 0.0 for row in rows), 3
+        ),
         "trades_per_day_positive_cells": round(
-            sum(row.get("trades_per_day") or 0.0 for row in positive_cells), 3),
+            sum(row.get("trades_per_day") or 0.0 for row in positive_cells), 3
+        ),
         "where_frequency_exists": [
-            {"strategy_id": row["strategy_id"], "trades_per_day": row["trades_per_day"],
-             "zero_cost_gross_bps": row["zero_cost_gross_bps"],
-             "net_vs_admission_floor_bps": row.get("net_vs_admission_floor_bps")}
+            {
+                "strategy_id": row["strategy_id"],
+                "trades_per_day": row["trades_per_day"],
+                "zero_cost_gross_bps": row["zero_cost_gross_bps"],
+                "net_vs_admission_floor_bps": row.get("net_vs_admission_floor_bps"),
+            }
             for row in sorted(rows, key=lambda r: r.get("trades_per_day") or 0.0, reverse=True)[:6]
         ],
-        "reading": ("frequency is not the binding constraint: several cells already trade far "
-                    "above the objective's daily rate, and every one of them is net-negative. "
-                    "The objective is unmet because the net expectancy is, not because "
-                    "opportunities are rare — and no entry may be manufactured to close the gap"),
+        "reading": (
+            "frequency is not the binding constraint: several cells already trade far "
+            "above the objective's daily rate, and every one of them is net-negative. "
+            "The objective is unmet because the net expectancy is, not because "
+            "opportunities are rare — and no entry may be manufactured to close the gap"
+        ),
     }
 
     hurdle = {
@@ -180,11 +227,13 @@ def build() -> tuple[dict[str, Any], int]:
         "best_zero_cost_gross_bps": baseline["headline_rebuilt"]["best_gross_bps"],
         "shortfall_bps": round(plane_bps - baseline["headline_rebuilt"]["best_gross_bps"], 6),
         "required_move_per_round_trip_bps": plane_bps,
-        "what_it_means": ("a signal has to capture a price move larger than "
-                          f"{round(plane_bps, 3)} bps per round trip before it can be net "
-                          "positive at the frozen plane; that is the number a new hypothesis "
-                          "must beat, and no threshold in this repository may be lowered to "
-                          "make it easier"),
+        "what_it_means": (
+            "a signal has to capture a price move larger than "
+            f"{round(plane_bps, 3)} bps per round trip before it can be net "
+            "positive at the frozen plane; that is the number a new hypothesis "
+            "must beat, and no threshold in this repository may be lowered to "
+            "make it easier"
+        ),
     }
 
     measured = None
@@ -194,13 +243,17 @@ def build() -> tuple[dict[str, Any], int]:
         measured = {
             "state": assessment.get("state"),
             "source": str(E1.relative_to(ROOT)).replace("\\", "/"),
-            "observed_round_trip_microstructure_bps_median":
-                assessment.get("observed_round_trip_microstructure_bps_median_across_books"),
+            "observed_round_trip_microstructure_bps_median": assessment.get(
+                "observed_round_trip_microstructure_bps_median_across_books"
+            ),
             "plane_known_fee_term_bps": assessment.get("plane_known_fee_term_bps"),
-            "best_gross_edge_covers_known_fees_alone":
-                assessment.get("best_gross_edge_covers_known_fees_alone"),
-            "consequence": ("cheaper execution narrows the bar; it does not clear it. The fee legs "
-                            "alone already exceed the best gross edge in the register"),
+            "best_gross_edge_covers_known_fees_alone": assessment.get(
+                "best_gross_edge_covers_known_fees_alone"
+            ),
+            "consequence": (
+                "cheaper execution narrows the bar; it does not clear it. The fee legs "
+                "alone already exceed the best gross edge in the register"
+            ),
         }
 
     e2 = load(E2) if E2.exists() else None
@@ -208,25 +261,33 @@ def build() -> tuple[dict[str, Any], int]:
         "e2_state": (e2 or {}).get("verdict", {}).get("e2"),
         "gate": (e2 or {}).get("verdict", {}).get("gate"),
         "reserved_from": ((e2 or {}).get("windows") or {}).get("reserved_from"),
-        "role": ("stage 4 of the chain above: nothing may be ADOPT_FOR_NEW_EXPERIMENT until a "
-                 "pre-registered rule returns PROMOTE on the reserved forward window"),
+        "role": (
+            "stage 4 of the chain above: nothing may be ADOPT_FOR_NEW_EXPERIMENT until a "
+            "pre-registered rule returns PROMOTE on the reserved forward window"
+        ),
     }
 
     discovery = load(DISCOVERY2)
     separate: dict[str, Any] = dict(SEPARATE_LINES)
     separate["RFC049_DISCOVERY2"] = {
-        "artefact": str(DISCOVERY2.relative_to(ROOT)).replace("\\", "/") if DISCOVERY2.exists() else None,
+        "artefact": str(DISCOVERY2.relative_to(ROOT)).replace("\\", "/")
+        if DISCOVERY2.exists()
+        else None,
         "present": DISCOVERY2 is not None,
-        "treatment": ("its two hypotheses were rejected at the development/validation stage on "
-                      "sign decay, drawdown over the limit and failure to beat the baselines; "
-                      "they are new hypotheses and are not members of the 24-strategy register, so "
-                      "they are neither re-opened nor counted as families"),
+        "treatment": (
+            "its two hypotheses were rejected at the development/validation stage on "
+            "sign decay, drawdown over the limit and failure to beat the baselines; "
+            "they are new hypotheses and are not members of the 24-strategy register, so "
+            "they are neither re-opened nor counted as families"
+        ),
         "headline": (discovery or {}).get("summary") or (discovery or {}).get("verdict"),
     }
     separate["M03_M07_MICROSTRUCTURE"] = {
-        "treatment": ("gated behind the forward-history requirements in "
-                      "config/microstructure_preregistration.json; not a family and not scorable "
-                      "until the history exists"),
+        "treatment": (
+            "gated behind the forward-history requirements in "
+            "config/microstructure_preregistration.json; not a family and not scorable "
+            "until the history exists"
+        ),
         "artefact": "data/recovery/wp9/WP9_M03_M07_READINESS.json",
     }
 
@@ -244,16 +305,23 @@ def build() -> tuple[dict[str, Any], int]:
         "sources": {
             "baseline": str(BASELINE.relative_to(ROOT)).replace("\\", "/"),
             "execution_cost": str(E1.relative_to(ROOT)).replace("\\", "/") if E1.exists() else None,
-            "e2_preregistration": str(E2.relative_to(ROOT)).replace("\\", "/") if E2.exists() else None,
+            "e2_preregistration": str(E2.relative_to(ROOT)).replace("\\", "/")
+            if E2.exists()
+            else None,
         },
         "classes_definition": {
-            "ADOPT_FOR_NEW_EXPERIMENT": ("a pre-registered rule returned PROMOTE on a reserved "
-                                         "forward window"),
-            "RESEARCH_MORE": ("an edge exists and is resolvable, but it is short of the plane, or "
-                              "it has not yet passed the forward test"),
-            "INSUFFICIENT_EVIDENCE": ("a positive edge is claimed but cannot be believed yet: the "
-                                      "interval is wider than the edge or the sign does not hold "
-                                      "across partitions"),
+            "ADOPT_FOR_NEW_EXPERIMENT": (
+                "a pre-registered rule returned PROMOTE on a reserved forward window"
+            ),
+            "RESEARCH_MORE": (
+                "an edge exists and is resolvable, but it is short of the plane, or "
+                "it has not yet passed the forward test"
+            ),
+            "INSUFFICIENT_EVIDENCE": (
+                "a positive edge is claimed but cannot be believed yet: the "
+                "interval is wider than the edge or the sign does not hold "
+                "across partitions"
+            ),
             "REJECT": "no cell of the family shows a positive zero-cost gross edge",
             "no_family_may_be_added_to_inflate_the_count": True,
         },
@@ -273,16 +341,26 @@ def build() -> tuple[dict[str, Any], int]:
             "trades_authorized": 0,
         },
         "checks": [
-            {"check": "every one of the 24 registered cells is classified",
-             "ok": sum(family["cells"] for family in matrix.values()) == 24},
-            {"check": "no family is classified ADOPT without a forward PROMOTE",
-             "ok": counts.get("ADOPT_FOR_NEW_EXPERIMENT", 0) == 0},
-            {"check": "the plane quoted is the rebuilt one, not a copy",
-             "ok": abs(plane_bps - 23.353553391) < 1e-6},
-            {"check": "the low-frequency operator line is kept separate and unmapped",
-             "ok": SEPARATE_LINES["R6_P2_QUALITY"]["repo_artefact"] is None},
-            {"check": "frequency is reported next to expectancy so the two are not confused",
-             "ok": "reading" in frequency},
+            {
+                "check": "every one of the 24 registered cells is classified",
+                "ok": sum(family["cells"] for family in matrix.values()) == 24,
+            },
+            {
+                "check": "no family is classified ADOPT without a forward PROMOTE",
+                "ok": counts.get("ADOPT_FOR_NEW_EXPERIMENT", 0) == 0,
+            },
+            {
+                "check": "the plane quoted is the rebuilt one, not a copy",
+                "ok": abs(plane_bps - 23.353553391) < 1e-6,
+            },
+            {
+                "check": "the low-frequency operator line is kept separate and unmapped",
+                "ok": SEPARATE_LINES["R6_P2_QUALITY"]["repo_artefact"] is None,
+            },
+            {
+                "check": "frequency is reported next to expectancy so the two are not confused",
+                "ok": "reading" in frequency,
+            },
             {"check": "no frozen criterion, threshold or cost is modified", "ok": True},
         ],
         "verdict": (
@@ -303,8 +381,11 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "",
         "Each family goes through an ordered chain and fails at exactly one stage:",
         "",
-        *[f"* **{name}** — {text}" for name, text in payload["classes_definition"].items()
-          if name != "no_family_may_be_added_to_inflate_the_count"],
+        *[
+            f"* **{name}** — {text}"
+            for name, text in payload["classes_definition"].items()
+            if name != "no_family_may_be_added_to_inflate_the_count"
+        ],
         "",
         "## 1. The matrix",
         "",
@@ -337,8 +418,10 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "| --- | ---: | ---: | ---: |",
     ]
     for row in payload["frequency"]["where_frequency_exists"]:
-        lines.append(f"| `{row['strategy_id']}` | {row['trades_per_day']} | "
-                     f"{row['zero_cost_gross_bps']} | {row['net_vs_admission_floor_bps']} |")
+        lines.append(
+            f"| `{row['strategy_id']}` | {row['trades_per_day']} | "
+            f"{row['zero_cost_gross_bps']} | {row['net_vs_admission_floor_bps']} |"
+        )
     lines += [
         "",
         payload["frequency"]["reading"] + ".",
@@ -408,8 +491,10 @@ def main() -> int:
     md_path.write_text(render_markdown(payload) + "\n", encoding="utf-8")
     payload["payload_sha256"] = hashlib.sha256(json_path.read_bytes()).hexdigest()
     json_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-    print(f"{payload['verdict'].split(' — ')[0]}: {json_path.relative_to(ROOT)} — "
-          f"{json.dumps(payload['verdict_counts'])} (exit {exit_code})")
+    print(
+        f"{payload['verdict'].split(' — ')[0]}: {json_path.relative_to(ROOT)} — "
+        f"{json.dumps(payload['verdict_counts'])} (exit {exit_code})"
+    )
     return exit_code
 
 

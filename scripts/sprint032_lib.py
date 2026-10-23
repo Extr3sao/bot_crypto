@@ -45,15 +45,41 @@ def is_forward_evidence(timestamp_ms: int, forward_evidence_start_ms: int) -> bo
     """§67: only data at or after the frozen forward boundary is forward evidence."""
     return int(timestamp_ms) >= int(forward_evidence_start_ms)
 
+
 # ---------------------------------------------------------------------------
 # frozen universe / splits / cost model (identical to EXT-TSMOM-001; §25, §22)
 # ---------------------------------------------------------------------------
 UNIVERSE: tuple[str, ...] = (
-    "BTCUSDT", "ETHUSDT", "BNBUSDT", "XRPUSDT", "ADAUSDT", "SOLUSDT",
-    "DOGEUSDT", "DOTUSDT", "LTCUSDT", "LINKUSDT", "BCHUSDT", "XLMUSDT",
-    "TRXUSDT", "ETCUSDT", "EOSUSDT", "XTZUSDT", "ZECUSDT", "DASHUSDT",
-    "NEOUSDT", "ATOMUSDT", "VETUSDT", "FILUSDT", "THETAUSDT", "ALGOUSDT",
-    "AVAXUSDT", "MATICUSDT", "FTTUSDT", "LUNAUSDT", "ICPUSDT", "SHIBUSDT",
+    "BTCUSDT",
+    "ETHUSDT",
+    "BNBUSDT",
+    "XRPUSDT",
+    "ADAUSDT",
+    "SOLUSDT",
+    "DOGEUSDT",
+    "DOTUSDT",
+    "LTCUSDT",
+    "LINKUSDT",
+    "BCHUSDT",
+    "XLMUSDT",
+    "TRXUSDT",
+    "ETCUSDT",
+    "EOSUSDT",
+    "XTZUSDT",
+    "ZECUSDT",
+    "DASHUSDT",
+    "NEOUSDT",
+    "ATOMUSDT",
+    "VETUSDT",
+    "FILUSDT",
+    "THETAUSDT",
+    "ALGOUSDT",
+    "AVAXUSDT",
+    "MATICUSDT",
+    "FTTUSDT",
+    "LUNAUSDT",
+    "ICPUSDT",
+    "SHIBUSDT",
 )
 
 SPLIT_BOUNDS: dict[str, tuple[str, str]] = {
@@ -64,9 +90,11 @@ SPLIT_BOUNDS: dict[str, tuple[str, str]] = {
 SPLIT_ORDER = ("DISCOVERY", "VALIDATION", "HOLDOUT")
 
 COST_MODEL: dict[str, float] = {
-    "taker_fee_bps": 10.0, "half_spread_bps": 3.0, "impact_bps": 2.0,
+    "taker_fee_bps": 10.0,
+    "half_spread_bps": 3.0,
+    "impact_bps": 2.0,
 }
-PER_SIDE_COST_BPS = float(sum(COST_MODEL.values()))          # 15.0
+PER_SIDE_COST_BPS = float(sum(COST_MODEL.values()))  # 15.0
 COST_STRESS_MULTIPLIERS = (1.0, 1.5, 2.0)
 
 # Frozen publication parameters of EXT-TSMOM-002 (§4, §7).
@@ -75,15 +103,18 @@ FROZEN_TSMOM_002: dict[str, Any] = {
     "source_candidate": SOURCE_CANDIDATE,
     "signal": "sign(trailing 365-calendar-day total return) [unchanged from EXT-TSMOM-001]",
     "instrument": "Binance USDT spot",
-    "long_cash_semantics": ("positive signal -> LONG spot; negative or zero signal -> "
-                            "CASH (weight 0)"),
+    "long_cash_semantics": (
+        "positive signal -> LONG spot; negative or zero signal -> CASH (weight 0)"
+    ),
     "execution_timing": "decision after close T is available; fill at the T+1 daily OPEN",
     "executable_field": "open",
     "executable_field_note": "pre-registered before computing PnL; not chosen by results",
     "formation_days": 365,
     "rebalance": "monthly (first available daily bar of each calendar month)",
-    "weighting": ("same frozen RFC-030 weighting: raw = signal*vol_scale; long book "
-                  "renormalised so sum(long_weights) = 1"),
+    "weighting": (
+        "same frozen RFC-030 weighting: raw = signal*vol_scale; long book "
+        "renormalised so sum(long_weights) = 1"
+    ),
     "vol_target": 0.40,
     "vol_lookback_days": 60,
     "vol_clip": (0.0, 4.0),
@@ -97,16 +128,25 @@ FROZEN_TSMOM_002: dict[str, Any] = {
         "R1 negative desired weight -> 0/CASH",
         "R2 close-T decision -> T+1 open execution",
     ],
-    "prohibited_changes": ["lookback", "vol_target", "rebalance_frequency",
-                           "asset_ranking", "universe", "signal_threshold",
-                           "weighting_method", "cost_assumptions", "risk_scaling",
-                           "portfolio_leverage"],
+    "prohibited_changes": [
+        "lookback",
+        "vol_target",
+        "rebalance_frequency",
+        "asset_ranking",
+        "universe",
+        "signal_threshold",
+        "weighting_method",
+        "cost_assumptions",
+        "risk_scaling",
+        "portfolio_leverage",
+    ],
 }
 
 
 # ---------------------------------------------------------------------------
 # hashing / io
 # ---------------------------------------------------------------------------
+
 
 def sha256_file(path: Path) -> str:
     h = hashlib.sha256()
@@ -123,8 +163,9 @@ def sha256_obj(obj: Any) -> str:
 
 def write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n",
-                    encoding="utf-8")
+    path.write_text(
+        json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8"
+    )
 
 
 def write_md(path: Path, text: str) -> None:
@@ -140,6 +181,7 @@ def read_json(path: Path) -> Any:
 # independent panel load (own code path)
 # ---------------------------------------------------------------------------
 
+
 def load_raw() -> dict[str, dict[str, NDArray[Any]]]:
     raw: dict[str, dict[str, NDArray[Any]]] = {}
     for sym in UNIVERSE:
@@ -153,13 +195,18 @@ def load_raw() -> dict[str, dict[str, NDArray[Any]]]:
 
 
 def build_calendar(raw: dict[str, dict[str, NDArray[Any]]]) -> NDArray[Any]:
-    days = sorted({int(t) for d in raw.values()
-                   for t in d["open_time_ms"].astype(np.int64).tolist()})
+    days = sorted(
+        {int(t) for d in raw.values() for t in d["open_time_ms"].astype(np.int64).tolist()}
+    )
     return np.asarray(days, dtype=np.int64)
 
 
-def build_matrix(raw: dict[str, dict[str, NDArray[Any]]], syms: list[str],
-                 days: NDArray[Any], field: str = "close") -> NDArray[Any]:
+def build_matrix(
+    raw: dict[str, dict[str, NDArray[Any]]],
+    syms: list[str],
+    days: NDArray[Any],
+    field: str = "close",
+) -> NDArray[Any]:
     di = {int(t): i for i, t in enumerate(days.tolist())}
     m = np.full((days.shape[0], len(syms)), np.nan, dtype=np.float64)
     for j, s in enumerate(syms):
@@ -192,6 +239,7 @@ def first_index(close: NDArray[Any]) -> NDArray[Any]:
 # calendars / masks
 # ---------------------------------------------------------------------------
 
+
 def _ts(lo: str, hi: str) -> tuple[int, int]:
     lo_ms = int(datetime.fromisoformat(lo + "T00:00:00+00:00").timestamp() * 1000)
     hi_ms = int(datetime.fromisoformat(hi + "T23:59:59+00:00").timestamp() * 1000)
@@ -223,9 +271,14 @@ def _iso(ms: int) -> str:
 # long-or-cash target construction (R1 applied; independent re-derivation)
 # ---------------------------------------------------------------------------
 
-def tsmom_long_cash_target(close: NDArray[Any], i: int, formation: int = 365,
-                           vol_target: float = 0.40,
-                           vol_lookback: int = 60) -> dict[str, Any]:
+
+def tsmom_long_cash_target(
+    close: NDArray[Any],
+    i: int,
+    formation: int = 365,
+    vol_target: float = 0.40,
+    vol_lookback: int = 60,
+) -> dict[str, Any]:
     """Return the frozen EXT-TSMOM-002 long-or-cash book for decision day ``i``.
 
     Uses ONLY data with index <= i (PIT-safe signal).  Reproduces the RFC-030
@@ -236,9 +289,13 @@ def tsmom_long_cash_target(close: NDArray[Any], i: int, formation: int = 365,
     """
     a = close.shape[1]
     out: dict[str, Any] = {
-        "eligible": np.zeros(a, dtype=bool), "signal": np.zeros(a),
-        "vol": np.full(a, np.nan), "scale": np.zeros(a),
-        "weights": np.zeros(a), "n_long": 0, "n_short": 0,
+        "eligible": np.zeros(a, dtype=bool),
+        "signal": np.zeros(a),
+        "vol": np.full(a, np.nan),
+        "scale": np.zeros(a),
+        "weights": np.zeros(a),
+        "n_long": 0,
+        "n_short": 0,
         "formation_end_idx": None,
     }
     back = i - formation
@@ -251,7 +308,7 @@ def tsmom_long_cash_target(close: NDArray[Any], i: int, formation: int = 365,
     sig[elig] = np.sign(close[i, elig] / close[back, elig] - 1.0)
     out["signal"] = sig
     lo = max(0, i - vol_lookback)
-    win = close[lo:i + 1]
+    win = close[lo : i + 1]
     r = win[1:] / win[:-1] - 1.0
     vol = np.full(a, np.nan)
     for j in range(a):
@@ -265,7 +322,7 @@ def tsmom_long_cash_target(close: NDArray[Any], i: int, formation: int = 365,
     scale[good] = np.clip(vol_target / vol[good], 0.0, 4.0)
     out["scale"] = scale
     raw = sig * scale
-    raw = np.where(raw > 0.0, raw, 0.0)      # R1: negative -> cash, never a short
+    raw = np.where(raw > 0.0, raw, 0.0)  # R1: negative -> cash, never a short
     s = float(np.sum(raw))
     if s > 0:
         out["weights"] = raw / s
@@ -274,11 +331,18 @@ def tsmom_long_cash_target(close: NDArray[Any], i: int, formation: int = 365,
     return out
 
 
-def run_tsmom002(close: NDArray[Any], open_: NDArray[Any], days: NDArray[Any],
-                 mask: NDArray[Any], exec_mode: str = "next_open",
-                 formation: int = 365, vol_target: float = 0.40,
-                 vol_lookback: int = 60, cost_bps: float = PER_SIDE_COST_BPS,
-                 collect_detail: bool = False) -> dict[str, Any]:
+def run_tsmom002(
+    close: NDArray[Any],
+    open_: NDArray[Any],
+    days: NDArray[Any],
+    mask: NDArray[Any],
+    exec_mode: str = "next_open",
+    formation: int = 365,
+    vol_target: float = 0.40,
+    vol_lookback: int = 60,
+    cost_bps: float = PER_SIDE_COST_BPS,
+    collect_detail: bool = False,
+) -> dict[str, Any]:
     """Frozen EXT-TSMOM-002 simulation.
 
     ``exec_mode="next_open"`` is the candidate (R2): signal from closes through T,
@@ -330,31 +394,39 @@ def run_tsmom002(close: NDArray[Any], open_: NDArray[Any], days: NDArray[Any],
         invested.append(float(np.sum(w)))
         nlong.append(float(np.sum(w > 0)))
         if collect_detail:
-            detail.append({
-                "rebalance_idx": int(i),
-                "decision_time": _iso(int(days[i])),
-                "exec_time": _iso(int(days[e0])),
-                "n_long": int(np.sum(w > 0)),
-                "invested_capital": float(np.sum(w)),
-                "gross_exposure": float(np.sum(np.abs(w))),
-                "net_exposure": float(np.sum(w)),
-                "traded_notional": tn,
-                "cost_bps": c,
-                "gross_bps": g,
-                "net_bps": g - c,
-            })
+            detail.append(
+                {
+                    "rebalance_idx": int(i),
+                    "decision_time": _iso(int(days[i])),
+                    "exec_time": _iso(int(days[e0])),
+                    "n_long": int(np.sum(w > 0)),
+                    "invested_capital": float(np.sum(w)),
+                    "gross_exposure": float(np.sum(np.abs(w))),
+                    "net_exposure": float(np.sum(w)),
+                    "traded_notional": tn,
+                    "cost_bps": c,
+                    "gross_bps": g,
+                    "net_bps": g - c,
+                }
+            )
         prev = w
     return {
-        "nets": np.asarray(nets), "gross": np.asarray(gross),
-        "costs": np.asarray(costs), "traded": np.asarray(traded),
-        "net_exposure": np.asarray(net_exp), "invested": np.asarray(invested),
-        "n_long": np.asarray(nlong), "skipped": skipped, "detail": detail,
+        "nets": np.asarray(nets),
+        "gross": np.asarray(gross),
+        "costs": np.asarray(costs),
+        "traded": np.asarray(traded),
+        "net_exposure": np.asarray(net_exp),
+        "invested": np.asarray(invested),
+        "n_long": np.asarray(nlong),
+        "skipped": skipped,
+        "detail": detail,
     }
 
 
 # ---------------------------------------------------------------------------
 # statistics (hand-rolled; scipy is not installed)
 # ---------------------------------------------------------------------------
+
 
 def _sharpe(x: NDArray[Any], ppy: float) -> float | None:
     x = np.asarray(x, dtype=np.float64)
@@ -399,8 +471,9 @@ def summarise(run: dict[str, Any], periods_per_year: float = 12.0) -> dict[str, 
     }
 
 
-def bootstrap_mean_ci(x: NDArray[Any], n_boot: int = 5000, block: int = 1,
-                      seed: int = 20261005, alpha: float = 0.05) -> dict[str, Any]:
+def bootstrap_mean_ci(
+    x: NDArray[Any], n_boot: int = 5000, block: int = 1, seed: int = 20261005, alpha: float = 0.05
+) -> dict[str, Any]:
     """Percentile bootstrap CI + P(mean<=0); block length >1 for serial dependence."""
     x = np.asarray(x, dtype=np.float64)
     if x.size < 3:
@@ -415,10 +488,13 @@ def bootstrap_mean_ci(x: NDArray[Any], n_boot: int = 5000, block: int = 1,
         n_blocks = math.ceil(n / block)
         for b in range(n_boot):
             starts = rng.integers(0, n, size=n_blocks)
-            sample = np.concatenate([x[s:s + block] for s in starts])[:n]
+            sample = np.concatenate([x[s : s + block] for s in starts])[:n]
             means[b] = float(np.mean(sample))
     return {
-        "status": "OK", "n": int(n), "block": int(block), "n_boot": int(n_boot),
+        "status": "OK",
+        "n": int(n),
+        "block": int(block),
+        "n_boot": int(n_boot),
         "observed_mean": float(np.mean(x)),
         "ci_low": float(np.quantile(means, alpha / 2)),
         "ci_high": float(np.quantile(means, 1 - alpha / 2)),
@@ -438,8 +514,7 @@ def ols_beta(y: NDArray[Any], x: NDArray[Any]) -> dict[str, Any]:
     beta = float(np.sum(xm * ym) / np.sum(xm * xm))
     alpha = float(np.mean(y) - beta * np.mean(x))
     resid = ym - beta * xm
-    ss_res = float(np.sum(resid ** 2))
-    ss_tot = float(np.sum(ym ** 2))
+    ss_res = float(np.sum(resid**2))
+    ss_tot = float(np.sum(ym**2))
     r2 = 1.0 - ss_res / ss_tot if ss_tot > 0 else None
-    return {"status": "OK", "alpha_bps": alpha, "beta": beta, "r2": r2,
-            "n": int(y.size)}
+    return {"status": "OK", "alpha_bps": alpha, "beta": beta, "r2": r2, "n": int(y.size)}

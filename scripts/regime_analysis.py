@@ -32,7 +32,9 @@ TFS = ["15m", "30m"]
 ASSET_IDX = {"BTCUSDT": 0, "ETHUSDT": 1, "SOLUSDT": 2}
 
 
-def load_regimes(tf: str) -> tuple[dict[str, dict[str, dict[int, str]]], dict[str, dict[str, dict[int, int]]]]:
+def load_regimes(
+    tf: str,
+) -> tuple[dict[str, dict[str, dict[int, str]]], dict[str, dict[str, dict[int, int]]]]:
     """Return {(window, sym): {bar_index: regime}}, {(window, sym): {ts: bar_index}}."""
     suffix = f"_5m_{tf}"
     regimes: dict[str, dict[str, dict[int, str]]] = {}
@@ -49,12 +51,12 @@ def load_regimes(tf: str) -> tuple[dict[str, dict[str, dict[int, str]]], dict[st
             if i < 100:
                 vols.append(0.0)
                 continue
-            w = rets[i - 100: i]
+            w = rets[i - 100 : i]
             mu = sum(w) / 100.0
             vols.append((sum((x - mu) ** 2 for x in w) / 100.0) ** 0.5)
         reg: dict[int, str] = {}
         for i in range(100, len(vols)):
-            hist = vols[max(0, i - 720): i]
+            hist = vols[max(0, i - 720) : i]
             med = sorted(hist)[len(hist) // 2]
             reg[i] = "HIGH" if vols[i] >= med else "LOW"
         regimes.setdefault(window, {})[sym] = reg
@@ -78,9 +80,13 @@ def pf(trades: list[dict[str, Any]]) -> float | None:
 
 
 def main() -> None:
-    results: dict[str, Any] = {"meta": {"regime_def": "vol100 vs trailing-720 median (PIT)",
-                                        "cells": len(FAMS) * len(TFS) * 2,
-                                        "gate": "ZERO gross>12bps DEV n>=30 & ZERO VAL gross>0"}}
+    results: dict[str, Any] = {
+        "meta": {
+            "regime_def": "vol100 vs trailing-720 median (PIT)",
+            "cells": len(FAMS) * len(TFS) * 2,
+            "gate": "ZERO gross>12bps DEV n>=30 & ZERO VAL gross>0",
+        }
+    }
     passing: list[str] = []
     for fam in FAMS:
         for tf in TFS:
@@ -94,7 +100,8 @@ def main() -> None:
             with open(path, encoding="utf-8") as fh:
                 rows = list(csv.DictReader(fh))
             buckets: dict[str, dict[str, list[dict[str, Any]]]] = {
-                reg: {"DEV": [], "VAL": [], "OOS": []} for reg in ("HIGH", "LOW")}
+                reg: {"DEV": [], "VAL": [], "OOS": []} for reg in ("HIGH", "LOW")
+            }
             skipped = 0
             for r in rows:
                 window = str(r["window"]).split("_5m_")[0]  # CSV carries the tf suffix
@@ -109,10 +116,19 @@ def main() -> None:
                 if i is None or i not in reg_map:
                     skipped += 1
                     continue
-                split = "DEV" if wi in ("W1", "W2", "W3", "W4") else ("VAL" if wi in ("W5", "W6") else "OOS")
-                buckets[reg_map[i]][split].append({
-                    "gross": float(r["gross"]), "net": float(r["net"]),
-                    "mfe": float(r["mfe_pct"]), "mae": float(r["mae_pct"])})
+                split = (
+                    "DEV"
+                    if wi in ("W1", "W2", "W3", "W4")
+                    else ("VAL" if wi in ("W5", "W6") else "OOS")
+                )
+                buckets[reg_map[i]][split].append(
+                    {
+                        "gross": float(r["gross"]),
+                        "net": float(r["net"]),
+                        "mfe": float(r["mfe_pct"]),
+                        "mae": float(r["mae_pct"]),
+                    }
+                )
             cell: dict[str, Any] = {"skipped_rows": skipped}
             for reg in ("HIGH", "LOW"):
                 dev, val, oos = (buckets[reg]["DEV"], buckets[reg]["VAL"], buckets[reg]["OOS"])
@@ -122,7 +138,11 @@ def main() -> None:
                     "VAL": {"n": len(val), "gross": round(sum(t["gross"] for t in val), 2)},
                     "OOS": {"n": len(oos), "gross_bps": round(bps(oos), 2)},
                 }
-                gate = stats["DEV"]["n"] >= 30 and stats["DEV"]["gross_bps"] > 12.0 and stats["VAL"]["gross"] > 0
+                gate = (
+                    stats["DEV"]["n"] >= 30
+                    and stats["DEV"]["gross_bps"] > 12.0
+                    and stats["VAL"]["gross"] > 0
+                )
                 stats["gate_pass"] = gate
                 cell[reg] = stats
                 if gate:
@@ -141,9 +161,11 @@ def main() -> None:
             continue
         for reg in ("HIGH", "LOW"):
             s = cell[reg]
-            print(f"{key:28s} {reg:4s} DEV n={s['DEV']['n']:4d} bps={s['DEV']['gross_bps']:7.2f} "
-                  f"| VAL n={s['VAL']['n']:4d} gross={s['VAL']['gross']:8.2f} "
-                  f"| OOS n={s['OOS']['n']:4d} bps={s['OOS']['gross_bps']:7.2f} gate={s['gate_pass']}")
+            print(
+                f"{key:28s} {reg:4s} DEV n={s['DEV']['n']:4d} bps={s['DEV']['gross_bps']:7.2f} "
+                f"| VAL n={s['VAL']['n']:4d} gross={s['VAL']['gross']:8.2f} "
+                f"| OOS n={s['OOS']['n']:4d} bps={s['OOS']['gross_bps']:7.2f} gate={s['gate_pass']}"
+            )
 
 
 if __name__ == "__main__":

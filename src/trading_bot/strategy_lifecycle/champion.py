@@ -185,7 +185,10 @@ class ChampionChallenger:
             return 0, 0
         wins = 0
         for i in range(n):
-            if challenger.window_net_bps[i] > champion.window_net_bps[i] + self.window_win_margin_bps:
+            if (
+                challenger.window_net_bps[i]
+                > champion.window_net_bps[i] + self.window_win_margin_bps
+            ):
                 wins += 1
         return wins, n
 

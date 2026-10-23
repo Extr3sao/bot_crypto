@@ -40,15 +40,32 @@ EXPECTED_STATUS = {
 }
 
 EXPECTED_RFCS = {
-    "RFC-010B", "RFC-020", "RFC-021", "RFC-022", "RFC-023", "RFC-024",
-    "RFC-025", "RFC-026", "RFC-027", "RFC-028", "RFC-029", "RFC-030",
-    "RFC-031", "RFC-032", "RFC-033",
+    "RFC-010B",
+    "RFC-020",
+    "RFC-021",
+    "RFC-022",
+    "RFC-023",
+    "RFC-024",
+    "RFC-025",
+    "RFC-026",
+    "RFC-027",
+    "RFC-028",
+    "RFC-029",
+    "RFC-030",
+    "RFC-031",
+    "RFC-032",
+    "RFC-033",
 }
 
 REQUIRED_ARTIFACTS = [
-    "RFC034_PLAN", "ECONOMIC_RESEARCH_LEDGER", "CANDIDATE_REGISTRY",
-    "PROJECT_ECONOMIC_STATUS", "ALPHA_REENTRY_POLICY",
-    "ALPHA_ADMISSION_SCORECARD", "EVIDENCE_ARCHIVE_INDEX", "PROJECT_SCORECARD",
+    "RFC034_PLAN",
+    "ECONOMIC_RESEARCH_LEDGER",
+    "CANDIDATE_REGISTRY",
+    "PROJECT_ECONOMIC_STATUS",
+    "ALPHA_REENTRY_POLICY",
+    "ALPHA_ADMISSION_SCORECARD",
+    "EVIDENCE_ARCHIVE_INDEX",
+    "PROJECT_SCORECARD",
 ]
 
 
@@ -91,9 +108,12 @@ def main() -> int:
     # 2. marker zeros (§1)
     checks["marker_statistical_effect_yes"] = marker["statistical_historical_effect"] == 1
     for key in (
-        "executable_validated_net_edge", "robust_executable_net_edge",
-        "executable_holdout_pass", "certified_paper_candidate",
-        "forward_paper_profitable", "live_profitable",
+        "executable_validated_net_edge",
+        "robust_executable_net_edge",
+        "executable_holdout_pass",
+        "certified_paper_candidate",
+        "forward_paper_profitable",
+        "live_profitable",
     ):
         checks[f"marker_{key}_zero"] = marker[key] == 0
 
@@ -105,10 +125,14 @@ def main() -> int:
     checks["next_alpha_rfc_disallowed"] = status["next_alpha_rfc_allowed"] is False
     checks["active_candidates_zero"] = status["active_candidates"] == 0
     checks["final_marker_zeros"] = all(
-        final["economic_marker"][k] == 0 for k in (
-            "executable_validated_net_edge", "robust_executable_net_edge",
-            "executable_holdout_pass", "certified_paper_candidate",
-            "forward_paper_profitable", "live_profitable",
+        final["economic_marker"][k] == 0
+        for k in (
+            "executable_validated_net_edge",
+            "robust_executable_net_edge",
+            "executable_holdout_pass",
+            "certified_paper_candidate",
+            "forward_paper_profitable",
+            "live_profitable",
         )
     )
 
@@ -177,13 +201,16 @@ def main() -> int:
     # 8. re-entry policy consistency (§41-§43)
     states = policy["states"]
     checks["reentry_state_machine"] = (
-        states[0] == "PAUSED" and states[-1] == "REPRODUCTION"
-        and len(states) == 5
+        states[0] == "PAUSED" and states[-1] == "REPRODUCTION" and len(states) == 5
     )
     bounds = [h["upper_bound"] for h in policy["headroom_classes"]]
     checks["headroom_monotonic"] = bounds == sorted(bounds)
     checks["headroom_classes"] = [h["class"] for h in policy["headroom_classes"]] == [
-        "REJECT", "TOO_THIN", "WEAK", "POTENTIALLY_RESEARCHABLE", "STRONG_HEADROOM"
+        "REJECT",
+        "TOO_THIN",
+        "WEAK",
+        "POTENTIALLY_RESEARCHABLE",
+        "STRONG_HEADROOM",
     ]
     valid = set(policy["valid_reopen_triggers"])
     invalid = set(policy["invalid_reopen_triggers"])
@@ -266,19 +293,22 @@ def main() -> int:
         f"checks_passed = {checks_passed}/{checks_total}\n\n"
         f"FALSE_SUCCESS = {false_success}\n\n"
         f"agrees_with_builder = {payload['agrees_with_builder']}\n\n"
-        "## Checks\n\n"
-        + "\n".join(f"- {k}: {v}" for k, v in sorted(checks.items()))
-        + "\n",
+        "## Checks\n\n" + "\n".join(f"- {k}: {v}" for k, v in sorted(checks.items())) + "\n",
         encoding="utf-8",
     )
 
-    print(json.dumps({
-        "verification_status": verification_status_final,
-        "checks_passed": checks_passed,
-        "checks_total": checks_total,
-        "false_success": false_success,
-        "agrees_with_builder": payload["agrees_with_builder"],
-    }, indent=2))
+    print(
+        json.dumps(
+            {
+                "verification_status": verification_status_final,
+                "checks_passed": checks_passed,
+                "checks_total": checks_total,
+                "false_success": false_success,
+                "agrees_with_builder": payload["agrees_with_builder"],
+            },
+            indent=2,
+        )
+    )
     return 0 if (checks_passed == checks_total and false_success == 0) else 1
 
 

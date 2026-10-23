@@ -104,9 +104,7 @@ def test_no_active_candidate_with_order_violation_is_promotable() -> None:
 
 
 def test_independent_reproduction_plus_negative_validation() -> None:
-    out = EC.regression_verification_and_economic(
-        reproduction_exact=True, validation_status="FAIL"
-    )
+    out = EC.regression_verification_and_economic(reproduction_exact=True, validation_status="FAIL")
     assert out["verification_status"] == "PASS"
     assert out["economic_result"] == "FAIL"
     assert out["false_success"] == 0
@@ -232,9 +230,21 @@ def test_canonical_project_marker() -> None:
 def test_ledger_covers_all_economic_rfcs() -> None:
     rfcs = {row.rfc for row in EC.LEDGER}
     assert {
-        "RFC-010B", "RFC-020", "RFC-021", "RFC-022", "RFC-023", "RFC-024",
-        "RFC-025", "RFC-026", "RFC-027", "RFC-028", "RFC-029", "RFC-030",
-        "RFC-031", "RFC-032", "RFC-033",
+        "RFC-010B",
+        "RFC-020",
+        "RFC-021",
+        "RFC-022",
+        "RFC-023",
+        "RFC-024",
+        "RFC-025",
+        "RFC-026",
+        "RFC-027",
+        "RFC-028",
+        "RFC-029",
+        "RFC-030",
+        "RFC-031",
+        "RFC-032",
+        "RFC-033",
     } <= rfcs
 
 

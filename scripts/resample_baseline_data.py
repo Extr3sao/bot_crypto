@@ -35,9 +35,16 @@ def resample(bars: list[dict[str, Any]], tf_min: int) -> list[dict[str, Any]]:
             bucket = bk
         if bk != bucket:
             if len(cur) == bars_per:  # complete bucket only
-                out.append({"ts": cur[0]["ts"], "open": cur[0]["open"], "high": max(x["high"] for x in cur),
-                            "low": min(x["low"] for x in cur), "close": cur[-1]["close"],
-                            "volume": sum(x["volume"] for x in cur)})
+                out.append(
+                    {
+                        "ts": cur[0]["ts"],
+                        "open": cur[0]["open"],
+                        "high": max(x["high"] for x in cur),
+                        "low": min(x["low"] for x in cur),
+                        "close": cur[-1]["close"],
+                        "volume": sum(x["volume"] for x in cur),
+                    }
+                )
             cur, bucket = [], bk
         cur.append(b)
     return out

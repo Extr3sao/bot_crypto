@@ -43,8 +43,15 @@ def five_min_day(day_index: int, closes: Sequence[float], *, pad: float = 0.5) -
     """A contiguous run of 5-minute bars for one UTC day (288 closes = complete)."""
     base = day_index * MS_PER_DAY
     return [
-        OHLCV(symbol=SYM, timestamp=base + k * MS_PER_5M, open=c, high=c + pad,
-              low=c - pad, close=c, volume=1.0)
+        OHLCV(
+            symbol=SYM,
+            timestamp=base + k * MS_PER_5M,
+            open=c,
+            high=c + pad,
+            low=c - pad,
+            close=c,
+            volume=1.0,
+        )
         for k, c in enumerate(closes)
     ]
 
@@ -155,10 +162,18 @@ def test_exp010_signal_and_pit_invariance() -> None:
 
     # appending a later, wildly different day must not change the day-4 decision
     future = [
-        OHLCV(symbol=SYM, timestamp=6 * MS_PER_DAY, open=79.0, high=200.0, low=1.0, close=2.0,
-              volume=1.0),
-        OHLCV(symbol=SYM, timestamp=7 * MS_PER_DAY, open=2.0, high=2.0, low=1.0, close=1.0,
-              volume=1.0),
+        OHLCV(
+            symbol=SYM,
+            timestamp=6 * MS_PER_DAY,
+            open=79.0,
+            high=200.0,
+            low=1.0,
+            close=2.0,
+            volume=1.0,
+        ),
+        OHLCV(
+            symbol=SYM, timestamp=7 * MS_PER_DAY, open=2.0, high=2.0, low=1.0, close=1.0, volume=1.0
+        ),
     ]
     s_cut = Exp010VolSpikeMR(vols, _exp010_cfg())
     s_cut.prepare(bars[:5])
@@ -182,8 +197,15 @@ def test_exp010_zscore_window_requires_day_contiguity() -> None:
     holed = list(control)
     for k in range(5, 10):
         b = holed[k]
-        holed[k] = OHLCV(symbol=SYM, timestamp=(k + 2) * MS_PER_DAY, open=b.open, high=b.high,
-                         low=b.low, close=b.close, volume=b.volume)
+        holed[k] = OHLCV(
+            symbol=SYM,
+            timestamp=(k + 2) * MS_PER_DAY,
+            open=b.open,
+            high=b.high,
+            low=b.low,
+            close=b.close,
+            volume=b.volume,
+        )
     hvols = {day_key(b.timestamp): a for b, a in zip(holed, amps, strict=True)}
     s_hole = Exp010VolSpikeMR(hvols, _exp010_cfg())
     s_hole.prepare(holed)
@@ -210,22 +232,29 @@ class _OneShot:
     def entry(self, i: int) -> DailySetup | None:
         if i == self.at and not self._fired:
             self._fired = True
-            return DailySetup(side="long", rule="t", max_hold_days=self.max_hold,
-                              stop=self._bars[i].close * 0.90, target=self._bars[i].close * 1.10)
+            return DailySetup(
+                side="long",
+                rule="t",
+                max_hold_days=self.max_hold,
+                stop=self._bars[i].close * 0.90,
+                target=self._bars[i].close * 1.10,
+            )
         return None
 
 
 def test_daily_entry_fills_at_next_open_not_signal_close() -> None:
-    bars = daily_bars([(100.0, 101.0, 99.0, 100.0), (105.0, 108.0, 104.0, 106.0),
-                       (106.0, 107.0, 100.0, 101.0)])
+    bars = daily_bars(
+        [(100.0, 101.0, 99.0, 100.0), (105.0, 108.0, 104.0, 106.0), (106.0, 107.0, 100.0, 101.0)]
+    )
     res = simulate_daily(_OneShot(0, max_hold=1), bars, cost_bps_rt=0.0)
     assert len(res.trades) == 1
     assert res.trades[0].entry == pytest.approx(105.0)  # open of bar 1, not close of bar 0
 
 
 def test_daily_stop_first_on_intrabar_ambiguity() -> None:
-    bars = daily_bars([(100.0, 101.0, 99.0, 100.0), (105.0, 130.0, 80.0, 120.0),
-                       (120.0, 121.0, 119.0, 120.0)])
+    bars = daily_bars(
+        [(100.0, 101.0, 99.0, 100.0), (105.0, 130.0, 80.0, 120.0), (120.0, 121.0, 119.0, 120.0)]
+    )
     res = simulate_daily(_OneShot(0), bars, cost_bps_rt=20.0, notional=500.0)
     t = res.trades[0]
     assert t.reason == "stop"  # both stop and target inside bar 1 -> stop wins
@@ -243,9 +272,13 @@ def test_daily_max_hold_forces_exit() -> None:
 
 
 def test_daily_simulation_is_deterministic() -> None:
-    specs = [(100.0, 101.0, 99.0, 100.0), (100.0, 102.0, 98.0, 101.0),
-             (101.0, 103.0, 99.0, 100.0), (100.0, 101.0, 95.0, 96.0),
-             (96.0, 98.0, 94.0, 97.0)]
+    specs = [
+        (100.0, 101.0, 99.0, 100.0),
+        (100.0, 102.0, 98.0, 101.0),
+        (101.0, 103.0, 99.0, 100.0),
+        (100.0, 101.0, 95.0, 96.0),
+        (96.0, 98.0, 94.0, 97.0),
+    ]
     bars = daily_bars(specs)
     a = simulate_daily(_OneShot(0), bars, cost_bps_rt=23.559)
     b = simulate_daily(_OneShot(0), bars, cost_bps_rt=23.559)

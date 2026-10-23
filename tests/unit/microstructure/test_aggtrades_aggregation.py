@@ -105,10 +105,7 @@ def test_header_row_is_skipped() -> None:
 
 
 def test_mixed_timestamp_units_fail_closed() -> None:
-    text = (
-        "1,100.0,1.0,1,1,1783814400000000,false,true\n"
-        "2,100.0,1.0,2,2,1783814400000,false,true\n"
-    )
+    text = "1,100.0,1.0,1,1,1783814400000000,false,true\n2,100.0,1.0,2,2,1783814400000,false,true\n"
     with pytest.raises(ValueError, match="mixed timestamp units"):
         fetch.aggregate_day(_zip_with_csv(text))
 

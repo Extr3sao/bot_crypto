@@ -82,9 +82,7 @@ def test_an_unverified_provider_is_reported_and_not_a_failure() -> None:
 
 
 def test_an_undeclared_strategy_universe_is_reported_as_undeclared() -> None:
-    support = preflight_universe(
-        configured=["BTC"], asset_agents=("BTC",), strategy_assets=None
-    )
+    support = preflight_universe(configured=["BTC"], asset_agents=("BTC",), strategy_assets=None)
     assert support.ok
     assert support.strategy_universe_source == "UNDECLARED"
     assert support.strategy_supported == ()
@@ -101,9 +99,7 @@ def test_assets_are_normalised_and_deduplicated() -> None:
 def test_research_universe_is_read_from_the_ledger_sources(tmp_path: Path) -> None:
     doc = tmp_path / "docs" / "STRATEGY_DISCOVERY_V3_RESULTS.json"
     doc.parent.mkdir(parents=True)
-    doc.write_text(
-        json.dumps({"dataset": {"assets": ["BTC", "eth", "SOL"]}}), encoding="utf-8"
-    )
+    doc.write_text(json.dumps({"dataset": {"assets": ["BTC", "eth", "SOL"]}}), encoding="utf-8")
     assets, source = research_universe_from_sources(
         [{"path": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json", "sha256": "0" * 64}],
         repo_root=tmp_path,

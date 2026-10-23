@@ -153,9 +153,7 @@ def window_of(event_time: int) -> tuple[str, str]:
 def _utc(ms: int) -> str:
     import datetime
 
-    return datetime.datetime.fromtimestamp(ms / 1000, tz=datetime.UTC).strftime(
-        "%Y-%m-%dT%H:%M"
-    )
+    return datetime.datetime.fromtimestamp(ms / 1000, tz=datetime.UTC).strftime("%Y-%m-%dT%H:%M")
 
 
 # --------------------------------------------------------------------------
@@ -190,10 +188,20 @@ def build_matrix(bars: list[MicroBar], symbol: str) -> dict[str, Any]:
         "premium_z": premium_z,
         "oi_change_z": oi_change_z,
     }
-    anchors = {"flow_imbalance": 20, "flow_imbalance_z": 20, "funding_z": 21,
-               "premium_z": 21, "oi_change_z": 21}
-    return {"bars": bars, "closes": closes, "decisions": decisions,
-            "features": features, "anchors": anchors}
+    anchors = {
+        "flow_imbalance": 20,
+        "flow_imbalance_z": 20,
+        "funding_z": 21,
+        "premium_z": 21,
+        "oi_change_z": 21,
+    }
+    return {
+        "bars": bars,
+        "closes": closes,
+        "decisions": decisions,
+        "features": features,
+        "anchors": anchors,
+    }
 
 
 def _z_of(series: list[float | None], window: int) -> list[float | None]:
@@ -282,9 +290,9 @@ def filter0(matrix: dict[str, Any]) -> dict[str, Any]:
                 sl = order[d * size : (d + 1) * size]
                 dmeans.append(mean(ys[i] for i in sl))
             spread = dmeans[-1] - dmeans[0]
-            steps = sum(
-                1 for k in range(len(dmeans) - 1) if dmeans[k + 1] >= dmeans[k]
-            ) / (len(dmeans) - 1)
+            steps = sum(1 for k in range(len(dmeans) - 1) if dmeans[k + 1] >= dmeans[k]) / (
+                len(dmeans) - 1
+            )
             monotone = steps if steps >= 0.5 else steps - 1.0  # signed
             per_h[str(h)] = {
                 "n": len(xs),
@@ -332,8 +340,15 @@ def simulate(
 
 def summarize(trades: list[dict[str, Any]]) -> dict[str, Any]:
     if not trades:
-        return {"n": 0, "gross_bps": 0.0, "net_bps": 0.0, "pf": 0.0, "win_rate": 0.0,
-                "max_dd_bps": 0.0, "splits": {}}
+        return {
+            "n": 0,
+            "gross_bps": 0.0,
+            "net_bps": 0.0,
+            "pf": 0.0,
+            "win_rate": 0.0,
+            "max_dd_bps": 0.0,
+            "splits": {},
+        }
     gross = [t["gross"] for t in trades]
     net = [t["net"] for t in trades]
     wins = [x for x in net if x > 0]
@@ -446,8 +461,7 @@ def run_signals(mats: dict[str, dict[str, Any]]) -> dict[str, Any]:
             "horizon_bars": h,
             "direction": "contrarian_pre_registered",
             "scenarios": {
-                k: simulate(pos, cl, dc, h, RT_COST_BPS * mlt)
-                for k, mlt in COST_STRESS.items()
+                k: simulate(pos, cl, dc, h, RT_COST_BPS * mlt) for k, mlt in COST_STRESS.items()
             },
         }
     # M-06 OI+price, M-07 funding+OI+price (per asset; OI only recent 30d)
@@ -459,7 +473,10 @@ def run_signals(mats: dict[str, dict[str, Any]]) -> dict[str, Any]:
         oz = m["features"]["oi_change_z"]
         fz = m["features"]["funding_z"]
         cells: dict[str, list[int]] = {
-            "up_oi_up": [], "up_oi_dn": [], "dn_oi_up": [], "dn_oi_dn": []
+            "up_oi_up": [],
+            "up_oi_dn": [],
+            "dn_oi_up": [],
+            "dn_oi_dn": [],
         }
         pos6 = [0] * len(closes)
         pos7 = [0] * len(closes)
@@ -519,8 +536,7 @@ def run_signals(mats: dict[str, dict[str, Any]]) -> dict[str, Any]:
             "horizon_bars": 1,
             "direction": "momentum_prev_btc_bar",
             "scenarios": {
-                k: simulate(pos, cl, dc, 1, RT_COST_BPS * mlt)
-                for k, mlt in COST_STRESS.items()
+                k: simulate(pos, cl, dc, 1, RT_COST_BPS * mlt) for k, mlt in COST_STRESS.items()
             },
         }
     return results

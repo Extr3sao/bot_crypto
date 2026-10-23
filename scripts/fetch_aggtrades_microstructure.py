@@ -61,13 +61,18 @@ def _to_ms(raw_ts: int) -> tuple[int, str]:
         return raw_ts // 1000, "microseconds"
     return raw_ts, "milliseconds"
 
+
 # PRE-REGISTERED day sample — see docs/AGGTRADES_HYPOTHESES_V1.md §1.1.
 SAMPLE_DAYS: dict[str, list[str]] = {
     "DEV": [
-        "2026-03-12", "2026-03-24",
-        "2026-04-12", "2026-04-24",
-        "2026-05-12", "2026-05-24",
-        "2026-06-12", "2026-06-24",
+        "2026-03-12",
+        "2026-03-24",
+        "2026-04-12",
+        "2026-04-24",
+        "2026-05-12",
+        "2026-05-24",
+        "2026-06-12",
+        "2026-06-24",
     ],
     "VAL": ["2026-07-12", "2026-07-24", "2026-08-12", "2026-08-24"],
     "OOS": ["2026-09-12", "2026-09-24"],
@@ -251,7 +256,9 @@ def rebuild_manifest() -> dict[str, Any]:
         "total_minute_rows": sum(int(f["rows"]) for f in files),
         "total_source_zip_bytes": sum(int(f.get("source_zip_bytes") or 0) for f in files),
     }
-    with open(os.path.join(DATA, "MANIFEST_AGGTRADES.json"), "w", encoding="utf-8", newline="\n") as fh:
+    with open(
+        os.path.join(DATA, "MANIFEST_AGGTRADES.json"), "w", encoding="utf-8", newline="\n"
+    ) as fh:
         json.dump(manifest, fh, indent=2)
         fh.write("\n")
     return manifest
@@ -323,9 +330,7 @@ def main() -> None:
                     "source_timestamp_unit": existing.get("aggregation", {}).get(
                         "source_timestamp_unit"
                     ),
-                    "derived_sha256": _sha256_bytes(
-                        json.dumps(existing, sort_keys=True).encode()
-                    ),
+                    "derived_sha256": _sha256_bytes(json.dumps(existing, sort_keys=True).encode()),
                     "cached": True,
                 }
             )
@@ -374,7 +379,9 @@ def main() -> None:
                 "derived_sha256": _sha256_bytes(json.dumps(obj, sort_keys=True).encode()),
             }
         )
-        print(f"  -> {len(rows)} minute rows (zip {src_bytes} bytes, sha {src_hash[:12]})", flush=True)
+        print(
+            f"  -> {len(rows)} minute rows (zip {src_bytes} bytes, sha {src_hash[:12]})", flush=True
+        )
         time.sleep(0.2)
 
     manifest["source_timestamp_units"] = sorted(
@@ -383,8 +390,12 @@ def main() -> None:
     manifest["files"].sort(key=lambda f: (f["day"], f["symbol"]))
     manifest["total_files"] = len(manifest["files"])
     manifest["total_minute_rows"] = sum(int(f["rows"]) for f in manifest["files"])
-    manifest["total_source_zip_bytes"] = sum(int(f.get("source_zip_bytes", 0)) for f in manifest["files"])
-    with open(os.path.join(DATA, "MANIFEST_AGGTRADES.json"), "w", encoding="utf-8", newline="\n") as fh:
+    manifest["total_source_zip_bytes"] = sum(
+        int(f.get("source_zip_bytes", 0)) for f in manifest["files"]
+    )
+    with open(
+        os.path.join(DATA, "MANIFEST_AGGTRADES.json"), "w", encoding="utf-8", newline="\n"
+    ) as fh:
         json.dump(manifest, fh, indent=2)
         fh.write("\n")
     print(

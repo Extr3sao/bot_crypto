@@ -173,10 +173,24 @@ def render_ledger(generated: str, source: str) -> str:
     for r in rows:
         lines.append(f"## {r['rfc']} — {r['family']}")
         for key in (
-            "hypothesis", "data", "assets", "timeframe", "gross_edge", "cost",
-            "net_edge", "sample_size", "discovery", "validation", "walk_forward",
-            "robustness", "holdout", "tradability", "pit", "classification",
-            "rejection_reason", "economic_lesson",
+            "hypothesis",
+            "data",
+            "assets",
+            "timeframe",
+            "gross_edge",
+            "cost",
+            "net_edge",
+            "sample_size",
+            "discovery",
+            "validation",
+            "walk_forward",
+            "robustness",
+            "holdout",
+            "tradability",
+            "pit",
+            "classification",
+            "rejection_reason",
+            "economic_lesson",
         ):
             lines.append(f"- {key}: {r[key]}")
         lines.append("")
@@ -401,13 +415,21 @@ def render_scorecard_template(generated: str) -> str:
     ]
     examples: dict[str, dict[str, int]] = {
         "reject_weak_evidence": {
-            "evidence_strength": 1, "economic_headroom": 3, "data_feasibility": 4,
-            "tradability": 4, "orthogonality": 4, "implementation_cost": 4,
+            "evidence_strength": 1,
+            "economic_headroom": 3,
+            "data_feasibility": 4,
+            "tradability": 4,
+            "orthogonality": 4,
+            "implementation_cost": 4,
             "independent_replication": 2,
         },
         "approve_strong": {
-            "evidence_strength": 4, "economic_headroom": 4, "data_feasibility": 5,
-            "tradability": 4, "orthogonality": 4, "implementation_cost": 5,
+            "evidence_strength": 4,
+            "economic_headroom": 4,
+            "data_feasibility": 5,
+            "tradability": 4,
+            "orthogonality": 4,
+            "implementation_cost": 5,
             "independent_replication": 4,
         },
     }
@@ -686,45 +708,69 @@ def main() -> int:
 
     # RFC034_PLAN
     write_md(OUT / "RFC034_PLAN.md", render_plan(gate, generated))
-    write_json(OUT / "RFC034_PLAN.json", {
-        "generated_at": generated, "source_commit": source, "entry_gate": gate,
-        "prohibited": [
-            "new alpha", "new indicator", "new agent", "new market",
-            "new execution optimisation", "new strategy family",
-            "new dataset for alpha search",
-        ],
-        "pipeline": [
-            "VERIFY_REPOSITORY", "AUDIT_ALL_ECONOMIC_RFCS",
-            "BUILD_CANONICAL_CANDIDATE_REGISTRY", "REMOVE_STALE_PROMOTION_STATES",
-            "FREEZE_PROJECT_ECONOMIC_STATUS",
-            "SEPARATE_VERIFICATION_FROM_ECONOMIC_RESULT", "BUILD_REENTRY_POLICY",
-            "BUILD_ALPHA_RESEARCH_PLAYBOOK", "VERIFY_CLOSURE",
-            "PAUSE_PROFITABILITY_RESEARCH",
-        ],
-    })
+    write_json(
+        OUT / "RFC034_PLAN.json",
+        {
+            "generated_at": generated,
+            "source_commit": source,
+            "entry_gate": gate,
+            "prohibited": [
+                "new alpha",
+                "new indicator",
+                "new agent",
+                "new market",
+                "new execution optimisation",
+                "new strategy family",
+                "new dataset for alpha search",
+            ],
+            "pipeline": [
+                "VERIFY_REPOSITORY",
+                "AUDIT_ALL_ECONOMIC_RFCS",
+                "BUILD_CANONICAL_CANDIDATE_REGISTRY",
+                "REMOVE_STALE_PROMOTION_STATES",
+                "FREEZE_PROJECT_ECONOMIC_STATUS",
+                "SEPARATE_VERIFICATION_FROM_ECONOMIC_RESULT",
+                "BUILD_REENTRY_POLICY",
+                "BUILD_ALPHA_RESEARCH_PLAYBOOK",
+                "VERIFY_CLOSURE",
+                "PAUSE_PROFITABILITY_RESEARCH",
+            ],
+        },
+    )
 
     # ECONOMIC_RESEARCH_LEDGER
     ledger_rows = [asdict(r) for r in EC.LEDGER]
     write_md(OUT / "ECONOMIC_RESEARCH_LEDGER.md", render_ledger(generated, source))
-    write_json(OUT / "ECONOMIC_RESEARCH_LEDGER.json", {
-        "generated_at": generated, "source_commit": source,
-        "rows": ledger_rows,
-    })
+    write_json(
+        OUT / "ECONOMIC_RESEARCH_LEDGER.json",
+        {
+            "generated_at": generated,
+            "source_commit": source,
+            "rows": ledger_rows,
+        },
+    )
 
     # CANDIDATE_REGISTRY
-    registry = [{
-        **asdict(c),
-        "promotable": c.promotable,
-        "blocking_gates": list(c.blocking_gates),
-    } for c in EC.CANDIDATES]
+    registry = [
+        {
+            **asdict(c),
+            "promotable": c.promotable,
+            "blocking_gates": list(c.blocking_gates),
+        }
+        for c in EC.CANDIDATES
+    ]
     write_md(OUT / "CANDIDATE_REGISTRY.md", render_registry(generated, source))
-    write_json(OUT / "CANDIDATE_REGISTRY.json", {
-        "generated_at": generated, "source_commit": source,
-        "candidates": registry,
-        "superseded_claims": list(EC.SUPERSEDED_CLAIMS),
-        "active_candidates": EC.active_candidate_count(),
-        "mandatory_gates": list(EC.mandatory_gate_names()),
-    })
+    write_json(
+        OUT / "CANDIDATE_REGISTRY.json",
+        {
+            "generated_at": generated,
+            "source_commit": source,
+            "candidates": registry,
+            "superseded_claims": list(EC.SUPERSEDED_CLAIMS),
+            "active_candidates": EC.active_candidate_count(),
+            "mandatory_gates": list(EC.mandatory_gate_names()),
+        },
+    )
 
     # PROJECT_ECONOMIC_STATUS (report + tracked)
     payload = status_payload(source, generated)
@@ -736,58 +782,70 @@ def main() -> int:
 
     # ALPHA_REENTRY_POLICY
     write_md(OUT / "ALPHA_REENTRY_POLICY.md", render_reentry_policy(generated))
-    write_json(OUT / "ALPHA_REENTRY_POLICY.json", {
-        "generated_at": generated,
-        "states": list(EC.REENTRY_STATES),
-        "start_sources": list(EC.REENTRY_START_SOURCES),
-        "min_evidence_sources": EC.REENTRY_MIN_EVIDENCE_SOURCES,
-        "credible_source_types": list(EC.REENTRY_CREDIBLE_SOURCE_TYPES),
-        "headroom_classes": [
-            {"upper_bound": b, "class": n} for b, n in EC.HEADROOM_CLASSES
-        ],
-        "valid_reopen_triggers": list(EC.VALID_REOPEN_TRIGGERS),
-        "invalid_reopen_triggers": list(EC.INVALID_REOPEN_TRIGGERS),
-        "budget": {
-            "max_strategies": EC.MAX_STRATEGIES,
-            "max_core_variants_per_strategy": EC.MAX_CORE_VARIANTS_PER_STRATEGY,
+    write_json(
+        OUT / "ALPHA_REENTRY_POLICY.json",
+        {
+            "generated_at": generated,
+            "states": list(EC.REENTRY_STATES),
+            "start_sources": list(EC.REENTRY_START_SOURCES),
+            "min_evidence_sources": EC.REENTRY_MIN_EVIDENCE_SOURCES,
+            "credible_source_types": list(EC.REENTRY_CREDIBLE_SOURCE_TYPES),
+            "headroom_classes": [{"upper_bound": b, "class": n} for b, n in EC.HEADROOM_CLASSES],
+            "valid_reopen_triggers": list(EC.VALID_REOPEN_TRIGGERS),
+            "invalid_reopen_triggers": list(EC.INVALID_REOPEN_TRIGGERS),
+            "budget": {
+                "max_strategies": EC.MAX_STRATEGIES,
+                "max_core_variants_per_strategy": EC.MAX_CORE_VARIANTS_PER_STRATEGY,
+            },
+            "gate_order": list(EC.GATE_ORDER),
         },
-        "gate_order": list(EC.GATE_ORDER),
-    })
+    )
 
     # ALPHA_ADMISSION_SCORECARD
     write_md(OUT / "ALPHA_ADMISSION_SCORECARD.md", render_scorecard_template(generated))
-    write_json(OUT / "ALPHA_ADMISSION_SCORECARD.json", {
-        "generated_at": generated,
-        "dimensions": list(EC.SCORECARD_DIMENSIONS),
-        "critical_dimensions": list(EC.CRITICAL_DIMENSIONS),
-        "rule": "no critical dimension <= 1; all critical >= 3 to approve",
-    })
+    write_json(
+        OUT / "ALPHA_ADMISSION_SCORECARD.json",
+        {
+            "generated_at": generated,
+            "dimensions": list(EC.SCORECARD_DIMENSIONS),
+            "critical_dimensions": list(EC.CRITICAL_DIMENSIONS),
+            "rule": "no critical dimension <= 1; all critical >= 3 to approve",
+        },
+    )
 
     # EVIDENCE_ARCHIVE_INDEX
     ev_rows = evidence_index(generated, source)
     write_md(OUT / "EVIDENCE_ARCHIVE_INDEX.md", render_evidence_index(ev_rows, generated))
-    write_json(OUT / "EVIDENCE_ARCHIVE_INDEX.json", {
-        "generated_at": generated, "entries": ev_rows,
-        "regeneration_commands": REGEN_COMMANDS,
-    })
+    write_json(
+        OUT / "EVIDENCE_ARCHIVE_INDEX.json",
+        {
+            "generated_at": generated,
+            "entries": ev_rows,
+            "regeneration_commands": REGEN_COMMANDS,
+        },
+    )
 
     # PROJECT_SCORECARD
     write_md(OUT / "PROJECT_SCORECARD.md", render_project_scorecard(generated, source))
-    write_json(OUT / "PROJECT_SCORECARD.json", {
-        "generated_at": generated, "source_commit": source,
-        "axes": {
-            "runtime_data_integrity": "PASS",
-            "research_integrity": "PASS",
-            "cost_modeling": "PASS",
-            "independent_verification": "PASS",
-            "governance": "PASS",
-            "alpha_discovery": "INCONCLUSIVE_UNTIL_NEW_EVIDENCE",
-            "validated_executable_edge": "NONE",
-            "paper_readiness": "NONE",
-            "live_readiness": "NONE",
+    write_json(
+        OUT / "PROJECT_SCORECARD.json",
+        {
+            "generated_at": generated,
+            "source_commit": source,
+            "axes": {
+                "runtime_data_integrity": "PASS",
+                "research_integrity": "PASS",
+                "cost_modeling": "PASS",
+                "independent_verification": "PASS",
+                "governance": "PASS",
+                "alpha_discovery": "INCONCLUSIVE_UNTIL_NEW_EVIDENCE",
+                "validated_executable_edge": "NONE",
+                "paper_readiness": "NONE",
+                "live_readiness": "NONE",
+            },
+            "single_readiness_percentage": None,
         },
-        "single_readiness_percentage": None,
-    })
+    )
 
     # tracked playbook + where-we-are
     write_md(DOCS / "ALPHA_RESEARCH_PLAYBOOK.md", render_playbook(source, generated))
@@ -796,27 +854,32 @@ def main() -> int:
     # final report
     final_md = render_final_report(source, generated)
     write_md(REPO / "reports" / "RFC034_FINAL_REPORT.md", final_md)
-    write_json(REPO / "reports" / "RFC034_FINAL_REPORT.json", {
-        "rfc": "RFC-034",
-        "title": "PROFITABILITY RESEARCH CLOSURE",
-        "source_commit": source,
-        "status_date": generated,
-        "profitability_research_status": EC.PROFITABILITY_RESEARCH_STATUS,
-        "platform_status": EC.PLATFORM_STATUS,
-        "economic_status": EC.ECONOMIC_STATUS,
-        "current_decision": EC.CURRENT_DECISION,
-        "economic_marker": asdict(EC.ECONOMIC_MARKER),
-        "closed_candidate_statuses": EC.canonical_candidates(),
-        "active_candidates": EC.active_candidate_count(),
-        "next_alpha_rfc_allowed": EC.NEXT_ALPHA_RFC_ALLOWED,
-        "reentry_policy": "ACTIVE",
-        "false_success": 0,
-        "head": gate["head"],
-    })
+    write_json(
+        REPO / "reports" / "RFC034_FINAL_REPORT.json",
+        {
+            "rfc": "RFC-034",
+            "title": "PROFITABILITY RESEARCH CLOSURE",
+            "source_commit": source,
+            "status_date": generated,
+            "profitability_research_status": EC.PROFITABILITY_RESEARCH_STATUS,
+            "platform_status": EC.PLATFORM_STATUS,
+            "economic_status": EC.ECONOMIC_STATUS,
+            "current_decision": EC.CURRENT_DECISION,
+            "economic_marker": asdict(EC.ECONOMIC_MARKER),
+            "closed_candidate_statuses": EC.canonical_candidates(),
+            "active_candidates": EC.active_candidate_count(),
+            "next_alpha_rfc_allowed": EC.NEXT_ALPHA_RFC_ALLOWED,
+            "reentry_policy": "ACTIVE",
+            "false_success": 0,
+            "head": gate["head"],
+        },
+    )
 
     print(f"RFC-034 artifacts written. source_commit={source} generated_at={generated}")
-    print(f"active_candidates={EC.active_candidate_count()} marker_zeros="
-          f"{EC.ECONOMIC_MARKER.all_execution_zeros}")
+    print(
+        f"active_candidates={EC.active_candidate_count()} marker_zeros="
+        f"{EC.ECONOMIC_MARKER.all_execution_zeros}"
+    )
     return 0
 
 

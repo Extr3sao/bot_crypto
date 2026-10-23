@@ -21,13 +21,34 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "recovery"
 
 COMMANDS: list[dict[str, str]] = [
-    {"step": "campaign state view (WP-2)", "command": ".venv/Scripts/python.exe scripts/campaign_state_view.py"},
-    {"step": "state view determinism", "command": ".venv/Scripts/python.exe scripts/campaign_state_view.py --check"},
-    {"step": "ACTIVE economic audit (WP-3)", "command": ".venv/Scripts/python.exe scripts/active_economic_audit.py"},
-    {"step": "audit determinism", "command": ".venv/Scripts/python.exe scripts/active_economic_audit.py --check"},
-    {"step": "independent verification", "command": ".venv/Scripts/python.exe scripts/recovery_verify.py"},
-    {"step": "new contract tests", "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_active_recovery_wp.py -q"},
-    {"step": "research suite (regression)", "command": ".venv/Scripts/python.exe -m pytest tests/unit/research -q"},
+    {
+        "step": "campaign state view (WP-2)",
+        "command": ".venv/Scripts/python.exe scripts/campaign_state_view.py",
+    },
+    {
+        "step": "state view determinism",
+        "command": ".venv/Scripts/python.exe scripts/campaign_state_view.py --check",
+    },
+    {
+        "step": "ACTIVE economic audit (WP-3)",
+        "command": ".venv/Scripts/python.exe scripts/active_economic_audit.py",
+    },
+    {
+        "step": "audit determinism",
+        "command": ".venv/Scripts/python.exe scripts/active_economic_audit.py --check",
+    },
+    {
+        "step": "independent verification",
+        "command": ".venv/Scripts/python.exe scripts/recovery_verify.py",
+    },
+    {
+        "step": "new contract tests",
+        "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_active_recovery_wp.py -q",
+    },
+    {
+        "step": "research suite (regression)",
+        "command": ".venv/Scripts/python.exe -m pytest tests/unit/research -q",
+    },
 ]
 
 ARTIFACTS = [
@@ -74,14 +95,22 @@ def run(command: str) -> dict[str, Any]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--execute", action="store_true", help="re-run the commands before writing the report")
+    parser.add_argument(
+        "--execute", action="store_true", help="re-run the commands before writing the report"
+    )
     args = parser.parse_args()
 
-    placeholder = [{**entry, "exit_code": None, "result": "NOT_EXECUTED", "output_tail": "",
-                    "executed": False} for entry in COMMANDS]
+    placeholder = [
+        {**entry, "exit_code": None, "result": "NOT_EXECUTED", "output_tail": "", "executed": False}
+        for entry in COMMANDS
+    ]
 
-    head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
-    branch = subprocess.run(["git", "branch", "--show-current"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    head = subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True
+    ).stdout.strip()
+    branch = subprocess.run(
+        ["git", "branch", "--show-current"], cwd=ROOT, capture_output=True, text=True
+    ).stdout.strip()
 
     def assemble(steps: list[dict[str, Any]]) -> dict[str, Any]:
         return {
@@ -97,13 +126,20 @@ def main() -> int:
                 "files": 24,
                 "scope": "this lane's RFC-049 closure artefacts only",
                 "excluded_lanes": [
-                    "data/st6/* (forward-regime lane)", "evidence/real_decisions/* (paper lane)",
-                    "docs/source_registry.md", "root RUN_REPORT.json|md", "root FINAL_REPORT.md",
-                    "scripts/cap004c_verify.py", "scripts/st6_scheduler_witness.py",
+                    "data/st6/* (forward-regime lane)",
+                    "evidence/real_decisions/* (paper lane)",
+                    "docs/source_registry.md",
+                    "root RUN_REPORT.json|md",
+                    "root FINAL_REPORT.md",
+                    "scripts/cap004c_verify.py",
+                    "scripts/st6_scheduler_witness.py",
                 ],
             },
             "steps": steps,
-            "artifacts": [{"path": rel, "exists": (ROOT / rel).exists(), "sha256": sha256(rel)} for rel in ARTIFACTS],
+            "artifacts": [
+                {"path": rel, "exists": (ROOT / rel).exists(), "sha256": sha256(rel)}
+                for rel in ARTIFACTS
+            ],
             "checks_failed": sum(1 for step in steps if step["result"] == "FAIL"),
             "notes": [
                 "a command not executed in this invocation is reported as NOT_EXECUTED, never as passing",
@@ -122,19 +158,28 @@ def main() -> int:
         for entry in COMMANDS:
             result = run(entry["command"])
             steps.append({**entry, **result, "executed": True})
-            render(assemble(steps))          # progressive, so a later crash keeps the earlier results
+            render(assemble(steps))  # progressive, so a later crash keeps the earlier results
 
     payload = assemble(steps or placeholder)
     render(payload)
 
-    print(json.dumps({"steps": len(payload["steps"]),
-                      "executed": sum(1 for s in payload["steps"] if s["executed"]),
-                      "checks_failed": payload["checks_failed"]}, indent=2))
+    print(
+        json.dumps(
+            {
+                "steps": len(payload["steps"]),
+                "executed": sum(1 for s in payload["steps"] if s["executed"]),
+                "checks_failed": payload["checks_failed"],
+            },
+            indent=2,
+        )
+    )
     return 1 if payload["checks_failed"] else 0
 
 
 def render(payload: dict[str, Any]) -> None:
-    (OUT / "RUN_REPORT.json").write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    (OUT / "RUN_REPORT.json").write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     steps = payload["steps"]
     lines: list[str] = [
         "# RUN REPORT — POST RFC-049 / ACTIVE RECOVERY",
@@ -150,7 +195,9 @@ def render(payload: dict[str, Any]) -> None:
         "| --- | --- | ---: | --- |",
     ]
     for step in steps:
-        lines.append(f"| {step['step']} | `{step['command']}` | {step['exit_code']} | **{step['result']}** |")
+        lines.append(
+            f"| {step['step']} | `{step['command']}` | {step['exit_code']} | **{step['result']}** |"
+        )
     lines += ["", "## Artefacts", "", "| path | exists | sha256 |", "| --- | --- | --- |"]
     for entry in payload["artifacts"]:
         lines.append(f"| `{entry['path']}` | {entry['exists']} | `{str(entry['sha256'])[:16]}` |")

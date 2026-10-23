@@ -113,9 +113,7 @@ def test_signal_is_contrarian(monkeypatch) -> None:
     feat[201] = -3.0  # low feature
     shock = np.ones(n, dtype=bool)
     b = _bundle(n)
-    monkeypatch.setattr(
-        OL, "ortho_on_bundle", lambda asset, bundle, at="close": {"basis_z": feat}
-    )
+    monkeypatch.setattr(OL, "ortho_on_bundle", lambda asset, bundle, at="close": {"basis_z": feat})
     monkeypatch.setattr(OL, "vol_shock_of", lambda bundle: shock)
     sig = SG.signal_array("BTCUSDT", b, "basis_z", 1.5, cond_vol=False)
     assert sig[200] == -1  # high -> short
@@ -128,9 +126,7 @@ def test_signal_vol_conditioning_mutes_non_shock(monkeypatch) -> None:
     feat[200] = 3.0
     shock = np.zeros(n, dtype=bool)  # no vol event
     b = _bundle(n)
-    monkeypatch.setattr(
-        OL, "ortho_on_bundle", lambda asset, bundle, at="close": {"basis_z": feat}
-    )
+    monkeypatch.setattr(OL, "ortho_on_bundle", lambda asset, bundle, at="close": {"basis_z": feat})
     monkeypatch.setattr(OL, "vol_shock_of", lambda bundle: shock)
     sig = SG.signal_array("BTCUSDT", b, "basis_z", 1.5, cond_vol=True)
     assert sig[200] == 0
@@ -146,7 +142,11 @@ def test_signal_uses_certified_vol_detector() -> None:
     c = 100.0 * np.cumprod(1.0 + rng.normal(0, 0.002, n))
     bars = L.Bars(
         ts=np.arange(n, dtype=np.float64) * 300000.0,
-        o=c, h=c * 1.001, lo=c * 0.999, c=c, v=np.ones(n),
+        o=c,
+        h=c * 1.001,
+        lo=c * 0.999,
+        c=c,
+        v=np.ones(n),
     )
     b = L.build_bundle(bars, "5m")
     assert np.array_equal(OL.vol_shock_of(b), np.asarray(S._vol_shock(b)))
@@ -176,7 +176,11 @@ def test_ortho_on_bundle_missing_stays_nan(monkeypatch) -> None:
     )
     bars = L.Bars(
         ts=np.array([0.0, 300000.0, 600000.0]),
-        o=np.ones(3), h=np.ones(3), lo=np.ones(3), c=np.ones(3), v=np.ones(3),
+        o=np.ones(3),
+        h=np.ones(3),
+        lo=np.ones(3),
+        c=np.ones(3),
+        v=np.ones(3),
     )
     b = L.build_bundle(bars, "5m")
     out = OL.ortho_on_bundle("BTCUSDT", b, at="open")

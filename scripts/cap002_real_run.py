@@ -38,7 +38,9 @@ def asset_key(asset: str) -> str:
     return asset.split(":")[-1]
 
 
-def last_completed_boundary_ms(*, now_ms: int | None = None, bar_ms: int = 4 * 3_600 * 1_000) -> int:
+def last_completed_boundary_ms(
+    *, now_ms: int | None = None, bar_ms: int = 4 * 3_600 * 1_000
+) -> int:
     """The close of the last completed 4H bar (open of the current one)."""
     moment = int(time.time() * 1_000) if now_ms is None else int(now_ms)
     return (moment // bar_ms) * bar_ms
@@ -63,7 +65,9 @@ def main() -> int:
     gates: dict[str, Any] = {}
     for asset in rmc.PILOT_ASSETS:
         rows = {
-            key: rmc.completed_rows(raw_by_asset[asset][key], decision_ms=decision_ms, interval_key=key)
+            key: rmc.completed_rows(
+                raw_by_asset[asset][key], decision_ms=decision_ms, interval_key=key
+            )
             for key in rmc.CONTRACT_INTERVALS
         }
         artifact = rmc.build_real_snapshot_artifact(
@@ -103,9 +107,15 @@ def main() -> int:
         "timeframes": list(rmc.CONTRACT_INTERVALS),
         "decision_time": decision_time,
         "gates": gates,
-        "g_real_market_context": "PASS" if all(g["status"] == "PASS" for g in gates.values()) else "FAIL",
+        "g_real_market_context": "PASS"
+        if all(g["status"] == "PASS" for g in gates.values())
+        else "FAIL",
         "g_tv_context": ac.G_TV_CONTEXT,
-        "market_analyst": {"version": mav.PROMPT_VERSION, "frozen": True, "prompt_digest": mav.prompt_digest()},
+        "market_analyst": {
+            "version": mav.PROMPT_VERSION,
+            "frozen": True,
+            "prompt_digest": mav.prompt_digest(),
+        },
         "sealed_decisions": {asset: sealed[asset]["record"] for asset in sealed},
         "real_sealed_decisions": len(sealed),
         "trades_authorized": ac.TRADES_AUTHORIZED,
@@ -142,10 +152,15 @@ def main() -> int:
         )
         if asset in sealed:
             c1.write_json(OUT / f"SEALED_DECISION_{key}.json", sealed[asset])
-            c1.write_md(OUT / f"SEALED_DECISION_{key}.md", c1.render(f"REAL SEALED DECISION — {asset}", sealed[asset]))
+            c1.write_md(
+                OUT / f"SEALED_DECISION_{key}.md",
+                c1.render(f"REAL SEALED DECISION — {asset}", sealed[asset]),
+            )
 
     c1.write_json(REPORTS / "CAP002_REAL_PILOT_REPORT.json", report)
-    c1.write_md(REPORTS / "CAP002_REAL_PILOT_REPORT.md", c1.render("CAP-002 FREE REAL MARKET PILOT", report))
+    c1.write_md(
+        REPORTS / "CAP002_REAL_PILOT_REPORT.md", c1.render("CAP-002 FREE REAL MARKET PILOT", report)
+    )
 
     print("CAP-002 FREE REAL MARKET PILOT")
     print(f"provider = {rmc.PROVIDER}  decision_time = {decision_time}")
@@ -158,7 +173,9 @@ def main() -> int:
     print(f"MARKET_ANALYST = {mav.PROMPT_VERSION} frozen")
     print(f"REAL SEALED DECISIONS = {report['real_sealed_decisions']}")
     for asset, item in sealed.items():
-        print(f"  {asset}: {item['record']['decision']}  id={item['decision_id']}  verified={item['record_verified']}")
+        print(
+            f"  {asset}: {item['record']['decision']}  id={item['decision_id']}  verified={item['record_verified']}"
+        )
     return 0
 
 

@@ -144,7 +144,9 @@ def check_blocked(name: str, detail: str) -> None:
 
 
 def git(*args: str) -> str:
-    return subprocess.run(["git", *args], cwd=str(ROOT), capture_output=True, text=True, check=True).stdout.strip()
+    return subprocess.run(
+        ["git", *args], cwd=str(ROOT), capture_output=True, text=True, check=True
+    ).stdout.strip()
 
 
 def _read_bounded(resp: Any, deadline: float) -> tuple[bytes, bool]:
@@ -182,7 +184,7 @@ def _http(url: str, timeout: int, attempts: int = 3) -> tuple[int, str, bytes, b
 
     last: Exception | None = None
     for attempt in range(attempts):
-# NOTE: do not send an explicit Accept header.  The FRED/ALFRED hosts drop the
+        # NOTE: do not send an explicit Accept header.  The FRED/ALFRED hosts drop the
         # connection (RemoteDisconnected) when one is present, which looks exactly like a
         # rate limit but is a content-negotiation refusal; urllib's default works.
         req = urllib.request.Request(
@@ -206,9 +208,17 @@ def detag(html: str) -> str:
     html = re.sub(r"(?is)<(script|style|noscript)[^>]*>.*?</\1>", " ", html)
     html = re.sub(r"(?s)<[^>]+>", " ", html)
     for a, b in (
-        ("&nbsp;", " "), ("&amp;", "&"), ("&#039;", "'"), ("&#x27;", "'"),
-        ("&quot;", '"'), ("&lt;", "<"), ("&gt;", ">"), ("&middot;", "-"),
-        ("&mdash;", "-"), ("&ndash;", "-"), ("&#160;", " "),
+        ("&nbsp;", " "),
+        ("&amp;", "&"),
+        ("&#039;", "'"),
+        ("&#x27;", "'"),
+        ("&quot;", '"'),
+        ("&lt;", "<"),
+        ("&gt;", ">"),
+        ("&middot;", "-"),
+        ("&mdash;", "-"),
+        ("&ndash;", "-"),
+        ("&#160;", " "),
     ):
         html = html.replace(a, b)
     html = re.sub(r"&#x?[0-9A-Fa-f]{2,6};", " ", html)
@@ -366,49 +376,145 @@ def bar_after(bars: list[tuple[int, float]], instant: datetime) -> int | None:
 
 RETRIEVAL_PLAN: tuple[tuple[str, str, int, bool, bool], ...] = (
     # key, url, timeout, store_raw, critical
-    ("refetch_defillama.json", "https://stablecoins.llama.fi/stablecoincharts/all", 120, True, True),
+    (
+        "refetch_defillama.json",
+        "https://stablecoins.llama.fi/stablecoincharts/all",
+        120,
+        True,
+        True,
+    ),
     ("fred_page_WALCL.html", "https://fred.stlouisfed.org/series/WALCL", 30, True, False),
     ("fred_page_RRPONTSYD.html", "https://fred.stlouisfed.org/series/RRPONTSYD", 30, True, False),
     ("fred_page_WTREGEN.html", "https://fred.stlouisfed.org/series/WTREGEN", 30, True, False),
-    ("alfred_WALCL_latest.csv", "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WALCL", 120, True, True),
-    ("alfred_WALCL_2019-03-07.csv",
-     "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WALCL&vintage_date=2019-03-07", 120, True, True),
-    ("alfred_WALCL_2023-03-15.csv",
-     "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WALCL&vintage_date=2023-03-15", 120, True, True),
-    ("alfred_WTREGEN_latest.csv", "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WTREGEN", 120, True, True),
-    ("alfred_WTREGEN_2019-03-07.csv",
-     "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WTREGEN&vintage_date=2019-03-07", 120, True, True),
-    ("alfred_WTREGEN_2023-03-15.csv",
-     "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WTREGEN&vintage_date=2023-03-15", 120, True, True),
-    ("alfred_RRPONTSYD_latest.csv", "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=RRPONTSYD", 120, True, True),
-    ("alfred_RRPONTSYD_2019-03-07.csv",
-     "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=RRPONTSYD&vintage_date=2019-03-07", 120, True, True),
-    ("alfred_RRPONTSYD_2023-03-15.csv",
-     "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=RRPONTSYD&vintage_date=2023-03-15", 120, True, True),
-    ("h41_current.html", "https://www.federalreserve.gov/releases/h41/current/h41.htm", 90, True, True),
-    ("nyfed_rrp_last7.json",
-     "https://markets.newyorkfed.org/api/rp/reverserepo/all/results/last/7.json", 60, True, True),
-    ("dts_tga.json",
-     "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/dts/operating_cash_balance"
-     "?filter=record_date:gte:2026-09-01&fields=record_date,account_type,open_today_bal,close_today_bal"
-     "&page[size]=100&sort=record_date", 90, True, True),
+    (
+        "alfred_WALCL_latest.csv",
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WALCL",
+        120,
+        True,
+        True,
+    ),
+    (
+        "alfred_WALCL_2019-03-07.csv",
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WALCL&vintage_date=2019-03-07",
+        120,
+        True,
+        True,
+    ),
+    (
+        "alfred_WALCL_2023-03-15.csv",
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WALCL&vintage_date=2023-03-15",
+        120,
+        True,
+        True,
+    ),
+    (
+        "alfred_WTREGEN_latest.csv",
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WTREGEN",
+        120,
+        True,
+        True,
+    ),
+    (
+        "alfred_WTREGEN_2019-03-07.csv",
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WTREGEN&vintage_date=2019-03-07",
+        120,
+        True,
+        True,
+    ),
+    (
+        "alfred_WTREGEN_2023-03-15.csv",
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WTREGEN&vintage_date=2023-03-15",
+        120,
+        True,
+        True,
+    ),
+    (
+        "alfred_RRPONTSYD_latest.csv",
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=RRPONTSYD",
+        120,
+        True,
+        True,
+    ),
+    (
+        "alfred_RRPONTSYD_2019-03-07.csv",
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=RRPONTSYD&vintage_date=2019-03-07",
+        120,
+        True,
+        True,
+    ),
+    (
+        "alfred_RRPONTSYD_2023-03-15.csv",
+        "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=RRPONTSYD&vintage_date=2023-03-15",
+        120,
+        True,
+        True,
+    ),
+    (
+        "h41_current.html",
+        "https://www.federalreserve.gov/releases/h41/current/h41.htm",
+        90,
+        True,
+        True,
+    ),
+    (
+        "nyfed_rrp_last7.json",
+        "https://markets.newyorkfed.org/api/rp/reverserepo/all/results/last/7.json",
+        60,
+        True,
+        True,
+    ),
+    (
+        "dts_tga.json",
+        "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/dts/operating_cash_balance"
+        "?filter=record_date:gte:2026-09-01&fields=record_date,account_type,open_today_bal,close_today_bal"
+        "&page[size]=100&sort=record_date",
+        90,
+        True,
+        True,
+    ),
     ("arxiv_abs.html", "https://arxiv.org/abs/2411.06327v2", 90, True, True),
     ("arxiv_pdf.pdf", "https://arxiv.org/pdf/2411.06327v2", 150, False, False),
-    ("fedsnote.html",
-     "https://www.federalreserve.gov/econres/notes/feds-notes/"
-     "primary-and-secondary-markets-for-stablecoins-20240223.html", 120, True, True),
-    ("philly_wp26-24.pdf",
-     "https://www.philadelphiafed.org/-/media/frbp/assets/working-papers/2026/wp26-24.pdf", 180, False, True),
+    (
+        "fedsnote.html",
+        "https://www.federalreserve.gov/econres/notes/feds-notes/"
+        "primary-and-secondary-markets-for-stablecoins-20240223.html",
+        120,
+        True,
+        True,
+    ),
+    (
+        "philly_wp26-24.pdf",
+        "https://www.philadelphiafed.org/-/media/frbp/assets/working-papers/2026/wp26-24.pdf",
+        180,
+        False,
+        True,
+    ),
     ("bis_wp402.html", "https://www.bis.org/publ/work402.htm", 120, True, False),
     # publisher pages refused us; the registration agency still answers, and its metadata
     # is versioned and citable in a way that a scraped snippet is not
-    ("crossref_fintech5030068.json", "https://api.crossref.org/works/10.3390/fintech5030068", 60, True, True),
-    ("crossref_ssrn4904716.json",
-     "https://api.crossref.org/works?query.bibliographic="
-     "Does%20monetary%20liquidity%20affect%20Bitcoin%20price&rows=3&select=DOI,title,container-title,issued,type",
-     60, True, True),
+    (
+        "crossref_fintech5030068.json",
+        "https://api.crossref.org/works/10.3390/fintech5030068",
+        60,
+        True,
+        True,
+    ),
+    (
+        "crossref_ssrn4904716.json",
+        "https://api.crossref.org/works?query.bibliographic="
+        "Does%20monetary%20liquidity%20affect%20Bitcoin%20price&rows=3&select=DOI,title,container-title,issued,type",
+        60,
+        True,
+        True,
+    ),
     ("blocked_mdpi.html", "https://www.mdpi.com/1911-8074/18/9/491", 40, False, False),
-    ("blocked_ssrn.html", "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4904716", 40, False, False),
+    (
+        "blocked_ssrn.html",
+        "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4904716",
+        40,
+        False,
+        False,
+    ),
 )
 
 
@@ -429,12 +535,20 @@ def retrieve(offline: bool, fill: bool = False) -> dict[str, bytes]:
                 if not have_copy:
                     raise EvidenceUnavailable("no retained copy")
                 blob = path.read_bytes()
-                meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
+                meta = (
+                    json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
+                )
                 row = {
-                    "key": key, "url": url, "retrieved_at_utc": meta.get("retrieved_at_utc", utcnow()),
-                    "mode": meta.get("mode", "cache"), "http_status": meta.get("http_status"),
-                    "content_type": meta.get("content_type"), "bytes": len(blob),
-                    "sha256": sha256_bytes(blob), "raw_retained": True, "status": "ok",
+                    "key": key,
+                    "url": url,
+                    "retrieved_at_utc": meta.get("retrieved_at_utc", utcnow()),
+                    "mode": meta.get("mode", "cache"),
+                    "http_status": meta.get("http_status"),
+                    "content_type": meta.get("content_type"),
+                    "bytes": len(blob),
+                    "sha256": sha256_bytes(blob),
+                    "raw_retained": True,
+                    "status": "ok",
                     "served_from_cache_at_utc": utcnow(),
                 }
                 log(f"evidence: cache hit {key} ({len(blob)} bytes)")
@@ -442,10 +556,17 @@ def retrieve(offline: bool, fill: bool = False) -> dict[str, bytes]:
                 log(f"evidence: fetching {key}")
                 status, ctype, blob, truncated = _http(url, timeout)
                 row = {
-                    "key": key, "url": url, "retrieved_at_utc": utcnow(), "mode": "network",
-                    "http_status": status, "content_type": ctype, "bytes": len(blob),
-                    "sha256": sha256_bytes(blob), "raw_retained": store_raw and len(blob) <= RAW_LIMIT,
-                    "status": "ok", "body_truncated_at_deadline": truncated,
+                    "key": key,
+                    "url": url,
+                    "retrieved_at_utc": utcnow(),
+                    "mode": "network",
+                    "http_status": status,
+                    "content_type": ctype,
+                    "bytes": len(blob),
+                    "sha256": sha256_bytes(blob),
+                    "raw_retained": store_raw and len(blob) <= RAW_LIMIT,
+                    "status": "ok",
+                    "body_truncated_at_deadline": truncated,
                 }
                 if row["raw_retained"]:
                     path.parent.mkdir(parents=True, exist_ok=True)
@@ -456,19 +577,32 @@ def retrieve(offline: bool, fill: bool = False) -> dict[str, bytes]:
             ev[key] = blob
         except Exception as exc:  # noqa: BLE001
             log(f"evidence: unavailable {key} ({type(exc).__name__})")
-            EVIDENCE.append({
-                "key": key, "url": url, "retrieved_at_utc": utcnow(),
-                "mode": "offline" if offline else "network", "http_status": None, "bytes": 0,
-                "sha256": None, "raw_retained": False, "status": "unavailable",
-                "note": f"{type(exc).__name__}: {exc}",
-            })
+            EVIDENCE.append(
+                {
+                    "key": key,
+                    "url": url,
+                    "retrieved_at_utc": utcnow(),
+                    "mode": "offline" if offline else "network",
+                    "http_status": None,
+                    "bytes": 0,
+                    "sha256": None,
+                    "raw_retained": False,
+                    "status": "unavailable",
+                    "note": f"{type(exc).__name__}: {exc}",
+                }
+            )
             ev[key] = b""
-            check_blocked(f"evidence:{key}", f"{'critical' if critical else 'optional'} evidence unavailable: "
-                                             f"{type(exc).__name__}: {exc}")
+            check_blocked(
+                f"evidence:{key}",
+                f"{'critical' if critical else 'optional'} evidence unavailable: "
+                f"{type(exc).__name__}: {exc}",
+            )
     return ev
 
 
-def anchor_quote(text: str, anchors: tuple[str, ...], before: int = 500, after: int = 1000) -> tuple[str, str | None]:
+def anchor_quote(
+    text: str, anchors: tuple[str, ...], before: int = 500, after: int = 1000
+) -> tuple[str, str | None]:
     """Quote the deepest occurrence of the most article-specific anchor.
 
     Publisher pages carry navigation boilerplate before the article, so an anchor's
@@ -493,7 +627,10 @@ def semantic_scholar(offline: bool, fill: bool = False) -> list[dict[str, Any]]:
     cached_ok = False
     if path.exists():
         try:
-            cached_ok = all(block["status"] == "ok" for block in json.loads(path.read_text(encoding="utf-8"))["results"])
+            cached_ok = all(
+                block["status"] == "ok"
+                for block in json.loads(path.read_text(encoding="utf-8"))["results"]
+            )
         except Exception:  # noqa: BLE001
             cached_ok = False
     if not (offline or (fill and cached_ok)):
@@ -511,32 +648,53 @@ def semantic_scholar(offline: bool, fill: bool = False) -> list[dict[str, Any]]:
             try:
                 _, _, blob, _ = _http(url, 60, attempts=3)
                 data = json.loads(blob)
-                payload.append({
-                    "query": q,
-                    "status": "ok",
-                    "results": [
-                        {
-                            "title": p.get("title"), "year": p.get("year"), "venue": p.get("venue"),
-                            "doi": (p.get("externalIds") or {}).get("DOI"),
-                            "abstract": (p.get("abstract") or "")[:1500],
-                            "open_access_pdf": (p.get("openAccessPdf") or {}).get("url"),
-                        }
-                        for p in (data.get("data") or [])
-                    ],
-                })
+                payload.append(
+                    {
+                        "query": q,
+                        "status": "ok",
+                        "results": [
+                            {
+                                "title": p.get("title"),
+                                "year": p.get("year"),
+                                "venue": p.get("venue"),
+                                "doi": (p.get("externalIds") or {}).get("DOI"),
+                                "abstract": (p.get("abstract") or "")[:1500],
+                                "open_access_pdf": (p.get("openAccessPdf") or {}).get("url"),
+                            }
+                            for p in (data.get("data") or [])
+                        ],
+                    }
+                )
             except Exception as exc:  # noqa: BLE001
-                payload.append({"query": q, "status": "unavailable", "note": f"{type(exc).__name__}: {exc}"})
+                payload.append(
+                    {"query": q, "status": "unavailable", "note": f"{type(exc).__name__}: {exc}"}
+                )
         # a transient refusal must not erase a previously successful lookup
         if path.exists():
-            previous = {block.get("query"): block for block in json.loads(path.read_text(encoding="utf-8"))["results"]}
-            payload = [block if block["status"] == "ok" or block["query"] not in previous else previous[block["query"]]
-                       for block in payload]
+            previous = {
+                block.get("query"): block
+                for block in json.loads(path.read_text(encoding="utf-8"))["results"]
+            }
+            payload = [
+                block
+                if block["status"] == "ok" or block["query"] not in previous
+                else previous[block["query"]]
+                for block in payload
+            ]
         write_json(path, {"retrieved_at_utc": utcnow(), "results": payload})
-        EVIDENCE.append({
-            "key": key, "url": "https://api.semanticscholar.org/graph/v1/paper/search",
-            "retrieved_at_utc": utcnow(), "mode": "network", "http_status": 200,
-            "bytes": path.stat().st_size, "sha256": sha256_file(path), "raw_retained": True, "status": "ok",
-        })
+        EVIDENCE.append(
+            {
+                "key": key,
+                "url": "https://api.semanticscholar.org/graph/v1/paper/search",
+                "retrieved_at_utc": utcnow(),
+                "mode": "network",
+                "http_status": 200,
+                "bytes": path.stat().st_size,
+                "sha256": sha256_file(path),
+                "raw_retained": True,
+                "status": "ok",
+            }
+        )
     if not path.exists():
         check_blocked("evidence:semantic_scholar", "abstract recovery unavailable")
         return []
@@ -563,15 +721,17 @@ def baseline_attestation() -> dict[str, Any]:
                 actual == row["spec_file_sha256"],
                 "frozen spec bytes identical to the freeze-time hash",
             )
-        spec_rows.append({
-            "hypothesis_id": hid,
-            "status": row["status"],
-            "spec_file": row["spec_file"],
-            "frozen_spec_file_sha256": row["spec_file_sha256"],
-            "observed_spec_file_sha256": actual,
-            "unchanged_since_freeze": actual == row["spec_file_sha256"],
-            "frozen_canonical_sha256": row["spec_canonical_sha256"],
-        })
+        spec_rows.append(
+            {
+                "hypothesis_id": hid,
+                "status": row["status"],
+                "spec_file": row["spec_file"],
+                "frozen_spec_file_sha256": row["spec_file_sha256"],
+                "observed_spec_file_sha256": actual,
+                "unchanged_since_freeze": actual == row["spec_file_sha256"],
+                "frozen_canonical_sha256": row["spec_canonical_sha256"],
+            }
+        )
 
     dataset_rows = []
     for group, entries in manifest["dataset_hashes"].items():
@@ -579,25 +739,47 @@ def baseline_attestation() -> dict[str, Any]:
             # the price group is keyed by repository path, the vendor group by file name
             path = (VENDOR_RAW / relpath) if group == "signal_series" else (ROOT / relpath)
             actual = sha256_file(path) if path.exists() else None
-            dataset_rows.append({
-                "group": group, "path": str(path.relative_to(ROOT)).replace("\\", "/"),
-                "frozen_sha256": row["sha256"], "observed_sha256": actual, "unchanged": actual == row["sha256"],
-            })
-            check(f"baseline:dataset_unchanged:{path.name}", actual == row["sha256"], "frozen dataset bytes unchanged")
+            dataset_rows.append(
+                {
+                    "group": group,
+                    "path": str(path.relative_to(ROOT)).replace("\\", "/"),
+                    "frozen_sha256": row["sha256"],
+                    "observed_sha256": actual,
+                    "unchanged": actual == row["sha256"],
+                }
+            )
+            check(
+                f"baseline:dataset_unchanged:{path.name}",
+                actual == row["sha256"],
+                "frozen dataset bytes unchanged",
+            )
 
     exposure = json.loads(EXPOSURE_AUDIT.read_text(encoding="utf-8"))
     vendor = json.loads(VENDOR_MANIFEST.read_text(encoding="utf-8"))
     for name, row in vendor["series"].items():
         path = VENDOR_RAW / name
         actual = sha256_file(path) if path.exists() else None
-        check(f"baseline:vendor_bytes:{name}", actual == row["sha256"], "vendor snapshot bytes unchanged")
+        check(
+            f"baseline:vendor_bytes:{name}",
+            actual == row["sha256"],
+            "vendor snapshot bytes unchanged",
+        )
 
-    governance = json.loads(RFC048_FINAL_REPORT.read_text(encoding="utf-8"))["NEXT_GATE"]["governance_preserved"]
-    check("baseline:governance", all(governance.get(k) == v for k, v in GOVERNANCE_EXPECTED.items()),
-          json.dumps(governance, sort_keys=True))
+    governance = json.loads(RFC048_FINAL_REPORT.read_text(encoding="utf-8"))["NEXT_GATE"][
+        "governance_preserved"
+    ]
+    check(
+        "baseline:governance",
+        all(governance.get(k) == v for k, v in GOVERNANCE_EXPECTED.items()),
+        json.dumps(governance, sort_keys=True),
+    )
 
     cert = json.loads(RFC048V_CERT.read_text(encoding="utf-8"))
-    check("baseline:rfc048v", bool(cert.get("RFC048_FINAL_STATUS")), str(cert.get("RFC048_FINAL_STATUS")))
+    check(
+        "baseline:rfc048v",
+        bool(cert.get("RFC048_FINAL_STATUS")),
+        str(cert.get("RFC048_FINAL_STATUS")),
+    )
     check(
         "baseline:exposure_audit_gate",
         exposure["activation_gate"]["next_campaign"] == "NOT_AUTHORIZED"
@@ -625,9 +807,11 @@ def baseline_attestation() -> dict[str, Any]:
             "model": "COST_MODEL_V3",
             "round_trip_bps_200_usdt": manifest["thresholds"]["H-049-001"]["cost_bps_200_usdt"],
             "round_trip_bps_1000_usdt": manifest["thresholds"]["H-049-001"]["cost_bps_1000_usdt"],
-            "stress_1_5x_bps_200_usdt": manifest["thresholds"]["H-049-001"]["stress_bps_1_5x_200_usdt"],
+            "stress_1_5x_bps_200_usdt": manifest["thresholds"]["H-049-001"][
+                "stress_bps_1_5x_200_usdt"
+            ],
             "source": "data/rfc049/PREREGISTRATION_MANIFEST.json (frozen at Phase A; not recomputed here so the "
-                      "frozen contract is never touched by an admission check)",
+            "frozen contract is never touched by an admission check)",
         },
     }
 
@@ -647,7 +831,9 @@ def stablecoin_audit(frozen: list[tuple[date, float, float]], refetched: bytes) 
         for i in range(len(days) - 1)
         if (days[i + 1] - days[i]).days != 1
     ]
-    payload = json.loads((VENDOR_RAW / "defillama_stablecoin_supply_all.json").read_text(encoding="utf-8"))
+    payload = json.loads(
+        (VENDOR_RAW / "defillama_stablecoin_supply_all.json").read_text(encoding="utf-8")
+    )
     fields: dict[str, int] = {}
     for row in payload:
         for k in row:
@@ -686,8 +872,12 @@ def stablecoin_audit(frozen: list[tuple[date, float, float]], refetched: bytes) 
             if value is not None:
                 fresh_map[datetime.fromtimestamp(int(row["date"]), timezone.utc).date()] = value
     revised = [
-        {"date": d.isoformat(), "frozen": usd[d], "refetched": fresh_map[d],
-         "relative_change": (fresh_map[d] - usd[d]) / usd[d]}
+        {
+            "date": d.isoformat(),
+            "frozen": usd[d],
+            "refetched": fresh_map[d],
+            "relative_change": (fresh_map[d] - usd[d]) / usd[d],
+        }
         for d in days
         if d in fresh_map and abs(fresh_map[d] - usd[d]) > 1e-6
     ]
@@ -711,7 +901,9 @@ def stablecoin_audit(frozen: list[tuple[date, float, float]], refetched: bytes) 
         "gap_examples": gaps[:5],
         "peg_factor": {
             "definition": "frozen USD value / amount-denominated amount: a supply-weighted average peg price",
-            "min": min(values), "max": max(values), "last": values[-1],
+            "min": min(values),
+            "max": max(values),
+            "last": values[-1],
             "largest_daily_moves": moves[:5],
             "interpretation": (
                 "when this factor moves, the frozen signal moves without any dollar entering or leaving the system; "
@@ -724,7 +916,12 @@ def stablecoin_audit(frozen: list[tuple[date, float, float]], refetched: bytes) 
             "days_where_valuation_effect_exceeds_25pct_of_growth": len(material),
             "days_compared": len(divergence),
             "material_examples": [
-                {"date": r[0].isoformat(), "growth_usd": r[1], "growth_amount": r[2], "divergence": r[3]}
+                {
+                    "date": r[0].isoformat(),
+                    "growth_usd": r[1],
+                    "growth_amount": r[2],
+                    "divergence": r[3],
+                }
                 for r in material[:5]
             ],
         },
@@ -792,12 +989,16 @@ def h41_facts(blob: bytes) -> dict[str, Any]:
     j = text.find("U.S. Treasury, General Account")
     if j > 0:
         window = text[j : j + 220]
-        facts["tga_numbers_in_order"] = [float(x.replace(",", "")) for x in re.findall(r"([\d,]{3,})", window)][:6]
+        facts["tga_numbers_in_order"] = [
+            float(x.replace(",", "")) for x in re.findall(r"([\d,]{3,})", window)
+        ][:6]
         facts["tga_quote"] = window[:240]
     return facts
 
 
-def alfred_vintage_revisions(frozen: dict[date, float | None], vintages: dict[str, bytes]) -> dict[str, Any]:
+def alfred_vintage_revisions(
+    frozen: dict[date, float | None], vintages: dict[str, bytes]
+) -> dict[str, Any]:
     out: dict[str, Any] = {}
     for label, blob in vintages.items():
         if not blob:
@@ -806,7 +1007,9 @@ def alfred_vintage_revisions(frozen: dict[date, float | None], vintages: dict[st
         column, series = parse_alfred_csv(blob)
         common = sorted(set(series) & set(frozen))
         changed = [
-            {"date": d.isoformat(), "then": series[d], "now": frozen[d]} for d in common if series[d] != frozen[d]
+            {"date": d.isoformat(), "then": series[d], "now": frozen[d]}
+            for d in common
+            if series[d] != frozen[d]
         ]
         scale_only = 0
         for row in changed[:400]:
@@ -823,7 +1026,9 @@ def alfred_vintage_revisions(frozen: dict[date, float | None], vintages: dict[st
             "changed_by_exact_1000_factor": scale_only,
             "changed_examples": changed[:6],
             "blank_to_value": sum(1 for r in changed if r["then"] is None and r["now"] is not None),
-            "value_to_other_value": sum(1 for r in changed if r["then"] is not None and r["now"] is not None),
+            "value_to_other_value": sum(
+                1 for r in changed if r["then"] is not None and r["now"] is not None
+            ),
         }
     return out
 
@@ -842,8 +1047,11 @@ def macro_audit(evidence: dict[str, bytes]) -> dict[str, Any]:
             histogram[str(d.weekday())] = histogram.get(str(d.weekday()), 0) + 1
         first_nonblank = next((d for d in days if series[d] is not None), None)
         return {
-            "series_id": sid, "column": column, "rows": len(days),
-            "first_observation": days[0].isoformat(), "last_observation": days[-1].isoformat(),
+            "series_id": sid,
+            "column": column,
+            "rows": len(days),
+            "first_observation": days[0].isoformat(),
+            "last_observation": days[-1].isoformat(),
             "blank_rows": len(blanks),
             "first_non_blank": first_nonblank.isoformat() if first_nonblank else None,
             "last_blank": blanks[-1].isoformat() if blanks else None,
@@ -887,8 +1095,10 @@ def macro_audit(evidence: dict[str, bytes]) -> dict[str, Any]:
         for sid in ("WALCL", "WTREGEN", "RRPONTSYD")
     }
 
-    units = {sid: fred_metadata(evidence.get(f"fred_page_{sid}.html", b"").decode("utf-8", "ignore"))
-             for sid in ("WALCL", "RRPONTSYD", "WTREGEN")}
+    units = {
+        sid: fred_metadata(evidence.get(f"fred_page_{sid}.html", b"").decode("utf-8", "ignore"))
+        for sid in ("WALCL", "RRPONTSYD", "WTREGEN")
+    }
 
     h41 = h41_facts(evidence.get("h41_current.html", b""))
     nyfed_blob = evidence.get("nyfed_rrp_last7.json", b"")
@@ -899,28 +1109,37 @@ def macro_audit(evidence: dict[str, bytes]) -> dict[str, Any]:
         for op in ops[:7]:
             day = date.fromisoformat(op["operationDate"])
             accepted = op.get("totalAmtAccepted")
-            rrp_cross.append({
-                "date": day.isoformat(),
-                "nyfed_total_amt_accepted_usd": accepted,
-                "nyfed_billions": None if accepted is None else accepted / 1e9,
-                "frozen_fred_billions": rrp.get(day),
-                "matches": None if accepted is None or rrp.get(day) is None
-                else abs(accepted / 1e9 - rrp[day]) < 5e-4,
-                "nyfed_release_time_et": op.get("releaseTime"),
-                "nyfed_last_updated": op.get("lastUpdated"),
-            })
+            rrp_cross.append(
+                {
+                    "date": day.isoformat(),
+                    "nyfed_total_amt_accepted_usd": accepted,
+                    "nyfed_billions": None if accepted is None else accepted / 1e9,
+                    "frozen_fred_billions": rrp.get(day),
+                    "matches": None
+                    if accepted is None or rrp.get(day) is None
+                    else abs(accepted / 1e9 - rrp[day]) < 5e-4,
+                    "nyfed_release_time_et": op.get("releaseTime"),
+                    "nyfed_last_updated": op.get("lastUpdated"),
+                }
+            )
 
     dts_daily: dict[str, float] = {}
     dts_blob = evidence.get("dts_tga.json", b"")
     if dts_blob:
         for row in json.loads(dts_blob).get("data", []):
             raw = row.get("open_today_bal")
-            if "Closing Balance" in (row.get("account_type") or "") and raw not in (None, "null", ""):
+            if "Closing Balance" in (row.get("account_type") or "") and raw not in (
+                None,
+                "null",
+                "",
+            ):
                 dts_daily[row["record_date"]] = float(raw)
     buckets: dict[str, list[float]] = {}
     for day_s, value in dts_daily.items():
         day = date.fromisoformat(day_s)
-        buckets.setdefault((day + timedelta(days=(2 - day.weekday()) % 7)).isoformat(), []).append(value)
+        buckets.setdefault((day + timedelta(days=(2 - day.weekday()) % 7)).isoformat(), []).append(
+            value
+        )
     dts_cross = [
         {
             "week_ending_wednesday": wed,
@@ -935,12 +1154,17 @@ def macro_audit(evidence: dict[str, bytes]) -> dict[str, Any]:
     dts_latest_date = max(dts_daily) if dts_daily else None
     dts_latest_value = dts_daily[dts_latest_date] if dts_latest_date else None
     h41_wednesday_level = tga_numbers[3] if len(tga_numbers) >= 4 else None
-    dts_weekly_matched = [row for row in dts_cross if row["dts_daily_points"] >= 5
-                          and row["frozen_fred_wtregen_millions"] is not None]
+    dts_weekly_matched = [
+        row
+        for row in dts_cross
+        if row["dts_daily_points"] >= 5 and row["frozen_fred_wtregen_millions"] is not None
+    ]
     dts_weekly_within_2pct = [
-        row for row in dts_weekly_matched
+        row
+        for row in dts_weekly_matched
         if abs(row["dts_mean_millions"] - row["frozen_fred_wtregen_millions"])
-        / row["frozen_fred_wtregen_millions"] < 0.02
+        / row["frozen_fred_wtregen_millions"]
+        < 0.02
     ]
     cross = {
         "h41_current_release": h41,
@@ -957,12 +1181,14 @@ def macro_audit(evidence: dict[str, bytes]) -> dict[str, Any]:
             "latest_dts_closing_balance": dts_latest_value,
             "relative_difference": (
                 abs(dts_latest_value - h41_wednesday_level) / h41_wednesday_level
-                if h41_wednesday_level and dts_latest_value else None
+                if h41_wednesday_level and dts_latest_value
+                else None
             ),
             "note": "the DTS has not yet published the H.4.1 reference Wednesday, which is itself evidence of a "
-                    "next-business-day publication lag",
+            "next-business-day publication lag",
             "matches_within_2pct": bool(
-                h41_wednesday_level and dts_latest_value
+                h41_wednesday_level
+                and dts_latest_value
                 and abs(dts_latest_value - h41_wednesday_level) / h41_wednesday_level < 0.02
             ),
         },
@@ -973,25 +1199,48 @@ def macro_audit(evidence: dict[str, bytes]) -> dict[str, Any]:
         },
     }
     cross["nyfed_rrp_matches_fred"] = rrp_cross
-    check("macro:units_WALCL", "millions" in json.dumps(units.get("WALCL", {})).lower(),
-          json.dumps(units.get("WALCL", {})))
-    check("macro:units_RRPONTSYD", "billions" in json.dumps(units.get("RRPONTSYD", {})).lower(),
-          json.dumps(units.get("RRPONTSYD", {})))
-    check("macro:units_WTREGEN", "millions" in json.dumps(units.get("WTREGEN", {})).lower(),
-          json.dumps(units.get("WTREGEN", {})))
-    check("macro:primary_source:rrp_value_identity",
-          bool(rrp_cross) and all(r["matches"] for r in rrp_cross),
-          f"{sum(1 for r in rrp_cross if r['matches'])}/{len(rrp_cross)} NY Fed operations match the frozen series "
-          f"exactly")
-    check("macro:primary_source:h41_total_assets", cross["h41_total_assets_matches_fred"],
-          f"H.4.1 total assets {h41.get('total_assets_millions')} vs frozen WALCL {walcl[max(walcl)]}")
-    check("macro:primary_source:h41_tga_week_average", cross["h41_tga_week_average_matches_fred"],
-          f"H.4.1 week-average TGA {tga_numbers[:1]} vs frozen WTREGEN {tga[max(tga)]}")
-    check("macro:primary_source:h41_vs_dts",
-          cross["h41_tga_wednesday_level_vs_dts_latest"]["matches_within_2pct"]
-          or cross["dts_weekly_mean_within_2pct"]["within"] > 0,
-          json.dumps({"h41_wed_vs_dts_latest": cross["h41_tga_wednesday_level_vs_dts_latest"],
-                      "dts_weekly": cross["dts_weekly_mean_within_2pct"]}))
+    check(
+        "macro:units_WALCL",
+        "millions" in json.dumps(units.get("WALCL", {})).lower(),
+        json.dumps(units.get("WALCL", {})),
+    )
+    check(
+        "macro:units_RRPONTSYD",
+        "billions" in json.dumps(units.get("RRPONTSYD", {})).lower(),
+        json.dumps(units.get("RRPONTSYD", {})),
+    )
+    check(
+        "macro:units_WTREGEN",
+        "millions" in json.dumps(units.get("WTREGEN", {})).lower(),
+        json.dumps(units.get("WTREGEN", {})),
+    )
+    check(
+        "macro:primary_source:rrp_value_identity",
+        bool(rrp_cross) and all(r["matches"] for r in rrp_cross),
+        f"{sum(1 for r in rrp_cross if r['matches'])}/{len(rrp_cross)} NY Fed operations match the frozen series "
+        f"exactly",
+    )
+    check(
+        "macro:primary_source:h41_total_assets",
+        cross["h41_total_assets_matches_fred"],
+        f"H.4.1 total assets {h41.get('total_assets_millions')} vs frozen WALCL {walcl[max(walcl)]}",
+    )
+    check(
+        "macro:primary_source:h41_tga_week_average",
+        cross["h41_tga_week_average_matches_fred"],
+        f"H.4.1 week-average TGA {tga_numbers[:1]} vs frozen WTREGEN {tga[max(tga)]}",
+    )
+    check(
+        "macro:primary_source:h41_vs_dts",
+        cross["h41_tga_wednesday_level_vs_dts_latest"]["matches_within_2pct"]
+        or cross["dts_weekly_mean_within_2pct"]["within"] > 0,
+        json.dumps(
+            {
+                "h41_wed_vs_dts_latest": cross["h41_tga_wednesday_level_vs_dts_latest"],
+                "dts_weekly": cross["dts_weekly_mean_within_2pct"],
+            }
+        ),
+    )
 
     return {
         "series_profiles": {
@@ -999,7 +1248,11 @@ def macro_audit(evidence: dict[str, bytes]) -> dict[str, Any]:
             "RRPONTSYD": profile("RRPONTSYD", rrp_col, rrp),
             "WTREGEN": profile("WTREGEN", tga_col, tga),
         },
-        "frozen_units_expectation": {"WALCL": "millions", "RRPONTSYD": "billions", "WTREGEN": "millions"},
+        "frozen_units_expectation": {
+            "WALCL": "millions",
+            "RRPONTSYD": "billions",
+            "WTREGEN": "millions",
+        },
         "fred_metadata_pages": units,
         "primary_source_crosschecks": cross,
         "revision_exposure": {
@@ -1011,7 +1264,7 @@ def macro_audit(evidence: dict[str, bytes]) -> dict[str, Any]:
             "walcl": "exact Wednesday observation (holidays are published in this series)",
             "wtregen": "exact Wednesday observation",
             "rrpontsyd": f"most recent non-blank observation on or before the Wednesday, reach-back bounded at "
-                         f"{ASOF_MAX_REACHBACK_DAYS} days; beyond that the input counts as missing and the week is FLAT",
+            f"{ASOF_MAX_REACHBACK_DAYS} days; beyond that the input counts as missing and the week is FLAT",
             "fail_closed": "any missing input on a decision week forces FLAT",
         },
     }
@@ -1046,13 +1299,22 @@ def stablecoin_signal(
             t_star -= timedelta(days=1)
         if t_star in growth and t_star in baseline:
             out[sunday] = {
-                "t_star": t_star.isoformat(), "growth": growth[t_star], "baseline": baseline[t_star],
-                "margin": growth[t_star] - baseline[t_star], "state": growth[t_star] > baseline[t_star],
+                "t_star": t_star.isoformat(),
+                "growth": growth[t_star],
+                "baseline": baseline[t_star],
+                "margin": growth[t_star] - baseline[t_star],
+                "state": growth[t_star] > baseline[t_star],
                 "available": True,
             }
         else:
-            out[sunday] = {"t_star": t_star.isoformat() if t_star else None, "growth": None, "baseline": None,
-                           "margin": None, "state": False, "available": False}
+            out[sunday] = {
+                "t_star": t_star.isoformat() if t_star else None,
+                "growth": None,
+                "baseline": None,
+                "margin": None,
+                "state": False,
+                "available": False,
+            }
     return out
 
 
@@ -1087,22 +1349,38 @@ def macro_input_signal(
 
     out: dict[date, dict[str, Any]] = {}
     for sunday in grid:
-        wednesday = sunday - timedelta(days=4)   # the immediately preceding Wednesday
+        wednesday = sunday - timedelta(days=4)  # the immediately preceding Wednesday
         previous = wednesday - timedelta(weeks=4)
         now, before = level(wednesday), level(previous)
         if now is None or before is None:
-            out[sunday] = {"wednesday": wednesday.isoformat(), "nl_now": now, "nl_prev": before,
-                           "delta": None, "state": False, "available": False}
+            out[sunday] = {
+                "wednesday": wednesday.isoformat(),
+                "nl_now": now,
+                "nl_prev": before,
+                "delta": None,
+                "state": False,
+                "available": False,
+            }
         else:
-            out[sunday] = {"wednesday": wednesday.isoformat(), "nl_now": now, "nl_prev": before,
-                           "delta": now - before, "state": now - before > 0, "available": True}
+            out[sunday] = {
+                "wednesday": wednesday.isoformat(),
+                "nl_now": now,
+                "nl_prev": before,
+                "delta": now - before,
+                "state": now - before > 0,
+                "available": True,
+            }
     stats["input_week_range"] = f"{min(nl).isoformat()}..{max(nl).isoformat()}" if nl else None
-    stats["max_reachback_days_used"] = max(stats["reachback_days_used"]) if stats["reachback_days_used"] else None
+    stats["max_reachback_days_used"] = (
+        max(stats["reachback_days_used"]) if stats["reachback_days_used"] else None
+    )
     stats["reachback_days_used"] = sorted(set(stats["reachback_days_used"]))
     return out, stats
 
 
-def count_round_trips(states: dict[date, bool], bars: list[tuple[int, float]]) -> list[dict[str, Any]]:
+def count_round_trips(
+    states: dict[date, bool], bars: list[tuple[int, float]]
+) -> list[dict[str, Any]]:
     """Closed long round trips: enter and exit at the first daily bar open after the decision."""
     trips: list[dict[str, Any]] = []
     in_position = False
@@ -1118,11 +1396,15 @@ def count_round_trips(states: dict[date, bool], bars: list[tuple[int, float]]) -
         elif not states[sunday] and in_position:
             if bar is None:
                 continue
-            trips.append({
-                "entry_sunday": str(entry_sunday), "entry_bar_ms": entry_bar,
-                "exit_sunday": sunday.isoformat(), "exit_bar_ms": bar,
-                "hold_days": int((bar - entry_bar) / 86_400_000),
-            })
+            trips.append(
+                {
+                    "entry_sunday": str(entry_sunday),
+                    "entry_bar_ms": entry_bar,
+                    "exit_sunday": sunday.isoformat(),
+                    "exit_bar_ms": bar,
+                    "hold_days": int((bar - entry_bar) / 86_400_000),
+                }
+            )
             in_position = False
     return trips
 
@@ -1213,17 +1495,24 @@ def independence_audit(
                 "cadence_of_input": "weekly Wednesday references, 4-week change in net liquidity",
             },
             "shared_label": "both sit in a 'dollar liquidity -> risk appetite' family; the information sets and the "
-                            "transmission channels differ, and the frozen cross-incremental test is the control",
+            "transmission channels differ, and the frozen cross-incremental test is the control",
         },
         "measured_overlap": {
             "weeks_both_long": sum(1 for s in usable if sig_a[s]["state"] and sig_b[s]["state"]),
-            "weeks_a_long_only": sum(1 for s in usable if sig_a[s]["state"] and not sig_b[s]["state"]),
-            "weeks_b_long_only": sum(1 for s in usable if sig_b[s]["state"] and not sig_a[s]["state"]),
-            "weeks_both_flat": sum(1 for s in usable if not sig_a[s]["state"] and not sig_b[s]["state"]),
+            "weeks_a_long_only": sum(
+                1 for s in usable if sig_a[s]["state"] and not sig_b[s]["state"]
+            ),
+            "weeks_b_long_only": sum(
+                1 for s in usable if sig_b[s]["state"] and not sig_a[s]["state"]
+            ),
+            "weeks_both_flat": sum(
+                1 for s in usable if not sig_a[s]["state"] and not sig_b[s]["state"]
+            ),
             "state_agreement_rate": (same / both_defined) if both_defined else None,
             "jaccard_on_long_weeks": (
                 len(set(a_long) & set(b_long)) / len(set(a_long) | set(b_long))
-                if (a_long or b_long) else None
+                if (a_long or b_long)
+                else None
             ),
             "spearman_rank_correlation_of_drivers": correlation,
             "transitions_a": transitions(sig_a, usable),
@@ -1260,36 +1549,57 @@ def pit_verification(
 
         # H-049-001: the stablecoin value dated t is available at 00:00 UTC of t+1
         t_star = date.fromisoformat(sig_a[sunday]["t_star"]) if sig_a[sunday]["t_star"] else None
-        stable_available = datetime(t_star.year, t_star.month, t_star.day, tzinfo=timezone.utc) \
-            + timedelta(days=1) if t_star else None
+        stable_available = (
+            datetime(t_star.year, t_star.month, t_star.day, tzinfo=timezone.utc) + timedelta(days=1)
+            if t_star
+            else None
+        )
         if not sig_a[sunday]["available"]:
             # not yet decidable (warmup or a missing value): the rule fails closed to FLAT,
             # which is not a look-ahead problem
-            undecidable_a.append({"decision": sunday.isoformat(), "t_star": sig_a[sunday]["t_star"]})
+            undecidable_a.append(
+                {"decision": sunday.isoformat(), "t_star": sig_a[sunday]["t_star"]}
+            )
         elif not (stable_available and stable_available <= margin):
-            violations_a.append({"decision": sunday.isoformat(), "t_star": sig_a[sunday]["t_star"],
-                                 "available_at": stable_available.isoformat() if stable_available else None})
+            violations_a.append(
+                {
+                    "decision": sunday.isoformat(),
+                    "t_star": sig_a[sunday]["t_star"],
+                    "available_at": stable_available.isoformat() if stable_available else None,
+                }
+            )
 
         # H-049-002: the Wednesday snapshot's H.4.1 inputs are published the next Thursday
         wednesday = date.fromisoformat(sig_b[sunday]["wednesday"])
-        h41_release = datetime(wednesday.year, wednesday.month, wednesday.day, 20, 30, tzinfo=timezone.utc) \
-            + timedelta(days=1)
+        h41_release = datetime(
+            wednesday.year, wednesday.month, wednesday.day, 20, 30, tzinfo=timezone.utc
+        ) + timedelta(days=1)
         rrp_day = next(
-            (wednesday - timedelta(days=back)
-             for back in range(0, ASOF_MAX_REACHBACK_DAYS + 1)
-             if inputs["RRPONTSYD"].get(wednesday - timedelta(days=back)) is not None),
+            (
+                wednesday - timedelta(days=back)
+                for back in range(0, ASOF_MAX_REACHBACK_DAYS + 1)
+                if inputs["RRPONTSYD"].get(wednesday - timedelta(days=back)) is not None
+            ),
             None,
         )
         rrp_available = (
-            datetime(rrp_day.year, rrp_day.month, rrp_day.day, 18, 0, tzinfo=timezone.utc) if rrp_day else None
+            datetime(rrp_day.year, rrp_day.month, rrp_day.day, 18, 0, tzinfo=timezone.utc)
+            if rrp_day
+            else None
         )
         if not sig_b[sunday]["available"]:
-            undecidable_b.append({"decision": sunday.isoformat(), "wednesday": wednesday.isoformat()})
+            undecidable_b.append(
+                {"decision": sunday.isoformat(), "wednesday": wednesday.isoformat()}
+            )
         elif not (h41_release <= margin and bool(rrp_available) and rrp_available <= margin):
-            violations_b.append({
-                "decision": sunday.isoformat(), "wednesday": wednesday.isoformat(),
-                "h41_release": h41_release.isoformat(), "rrp_observation": rrp_day.isoformat() if rrp_day else None,
-            })
+            violations_b.append(
+                {
+                    "decision": sunday.isoformat(),
+                    "wednesday": wednesday.isoformat(),
+                    "h41_release": h41_release.isoformat(),
+                    "rrp_observation": rrp_day.isoformat() if rrp_day else None,
+                }
+            )
 
     # incremental reconstruction test: a decision recomputed from a truncated feed
     sample = grid[:: max(1, len(grid) // 40)][:40]
@@ -1297,15 +1607,21 @@ def pit_verification(
     for sunday in sample:
         prefix_rows = [r for r in frozen_rows if r[0] <= sunday - timedelta(days=2)]
         recomputed_a = stablecoin_signal(prefix_rows, [sunday])[sunday]["state"]
-        prefix_inputs = {k: {d: v for d, v in series.items() if d <= sunday - timedelta(days=3)}
-                         for k, series in inputs.items()}
+        prefix_inputs = {
+            k: {d: v for d, v in series.items() if d <= sunday - timedelta(days=3)}
+            for k, series in inputs.items()
+        }
         recomputed_b = macro_input_signal(prefix_inputs, [sunday])[0][sunday]["state"]
         if recomputed_a != sig_a[sunday]["state"] or recomputed_b != sig_b[sunday]["state"]:
-            mismatches.append({
-                "decision": sunday.isoformat(),
-                "full_a": sig_a[sunday]["state"], "truncated_a": recomputed_a,
-                "full_b": sig_b[sunday]["state"], "truncated_b": recomputed_b,
-            })
+            mismatches.append(
+                {
+                    "decision": sunday.isoformat(),
+                    "full_a": sig_a[sunday]["state"],
+                    "truncated_a": recomputed_a,
+                    "full_b": sig_b[sunday]["state"],
+                    "truncated_b": recomputed_b,
+                }
+            )
 
     classifications = {
         "defillama_stablecoin": {
@@ -1318,57 +1634,68 @@ def pit_verification(
             },
             "classification": "PIT_CONSERVATIVE_PROXY",
             "why": "the payload carries no publication timestamp, so decision-time availability is a declared "
-                   "convention rather than a vendor fact; the convention is one full day of conservatism and no "
-                   "settled history moved in the observed re-fetch window",
+            "convention rather than a vendor fact; the convention is one full day of conservatism and no "
+            "settled history moved in the observed re-fetch window",
         },
         "WALCL": {
             "publication_evidence": "H.4.1 release page dated with an explicit Release Date for the week ending the "
-                                    "reference Wednesday",
+            "reference Wednesday",
             "reference_to_release_lag_days_min": 1,
             "measured_revision_exposure": macro["revision_exposure"]["alfred_vintages"]["WALCL"],
             "classification": "PIT_VERIFIED",
             "why": "primary-source release date verified and the 2019-03-07 ALFRED vintage reproduces today's values "
-                   "exactly, so no restatement affects a decision",
+            "exactly, so no restatement affects a decision",
         },
         "WTREGEN": {
             "publication_evidence": "H.4.1 release page: the week-average Treasury General Account figure published "
-                                    "with the same statement as WALCL",
+            "with the same statement as WALCL",
             "reference_to_release_lag_days_min": 1,
             "series_definition_change": macro["revision_exposure"]["alfred_vintages"]["WTREGEN"],
             "classification": "PIT_VERIFIED",
             "why": "availability is primary-source verified and conservative; the frozen contract already declares "
-                   "millions and a 2002 start, which is the current series definition",
+            "millions and a 2002 start, which is the current series definition",
         },
         "RRPONTSYD": {
             "publication_evidence": "NY Fed operation API exposes the operation result with a same-business-day "
-                                    "releaseTime and lastUpdated timestamp; values match the frozen series exactly",
+            "releaseTime and lastUpdated timestamp; values match the frozen series exactly",
             "reference_to_release_lag_days_min": 0,
-            "measured_revision_exposure": macro["revision_exposure"]["alfred_vintages"]["RRPONTSYD"],
+            "measured_revision_exposure": macro["revision_exposure"]["alfred_vintages"][
+                "RRPONTSYD"
+            ],
             "wednesday_grid_points_affected": revision_rrp_wednesday,
             "classification": "PIT_CONSERVATIVE_PROXY",
             "why": "same-day publication is verified, but the series is demonstrably backfilled on rare dates, so a "
-                   "re-run over the current vintage can differ from what a live reader saw; the exposure is measured, "
-                   "bounded and immaterial in magnitude",
+            "re-run over the current vintage can differ from what a live reader saw; the exposure is measured, "
+            "bounded and immaterial in magnitude",
         },
     }
 
-    check("pit:H-049-001:no_decision_consumes_future_data", not violations_a,
-          f"{len(violations_a)} availability violations over {len(grid)} decision instants; "
-          f"{len(undecidable_a)} decisions were not yet decidable (fail-closed FLAT, not a PIT defect)")
-    check("pit:H-049-002:no_decision_consumes_future_data", not violations_b,
-          f"{len(violations_b)} availability violations over {len(grid)} decision instants; "
-          f"{len(undecidable_b)} decisions were not yet decidable (fail-closed FLAT, not a PIT defect)")
-    check("pit:incremental_reconstruction", not mismatches,
-          f"{len(sample)} sampled decisions recomputed from a truncated feed; mismatches={len(mismatches)}")
+    check(
+        "pit:H-049-001:no_decision_consumes_future_data",
+        not violations_a,
+        f"{len(violations_a)} availability violations over {len(grid)} decision instants; "
+        f"{len(undecidable_a)} decisions were not yet decidable (fail-closed FLAT, not a PIT defect)",
+    )
+    check(
+        "pit:H-049-002:no_decision_consumes_future_data",
+        not violations_b,
+        f"{len(violations_b)} availability violations over {len(grid)} decision instants; "
+        f"{len(undecidable_b)} decisions were not yet decidable (fail-closed FLAT, not a PIT defect)",
+    )
+    check(
+        "pit:incremental_reconstruction",
+        not mismatches,
+        f"{len(sample)} sampled decisions recomputed from a truncated feed; mismatches={len(mismatches)}",
+    )
 
     return {
         "artifact": "RFC049B_PIT_SOURCE_VERIFICATION",
         "generated_at_utc": utcnow(),
         "classification_vocabulary": {
             "PIT_VERIFIED": "primary-source evidence fixes both the value identity and an availability time on or "
-                            "before the decision instant, with no measured restatement affecting a decision",
+            "before the decision instant, with no measured restatement affecting a decision",
             "PIT_CONSERVATIVE_PROXY": "availability is a declared convention or the series shows measured backfill, "
-                                      "so the value used is conservative rather than provable",
+            "so the value used is conservative rather than provable",
             "PIT_UNKNOWN": "no availability information exists",
             "PIT_FAILED": "a decision demonstrably consumed a value published after its instant",
         },
@@ -1378,7 +1705,7 @@ def pit_verification(
             "margin_before_decision": "1 hour",
             "stablecoin_cutoff": "most recent daily value dated at or before Sunday-2 (one day of availability lag)",
             "macro_cutoff": "most recent complete Wednesday snapshot, whose H.4.1 inputs publish the following "
-                            "Thursday",
+            "Thursday",
             "execution": "first daily bar open strictly after the decision instant (Monday 00:00 UTC)",
         },
         "data_time_le_decision_time_violations": {
@@ -1394,13 +1721,13 @@ def pit_verification(
             "sampled_decisions": len(sample),
             "mismatches": mismatches,
             "method": "the decision is recomputed from a feed truncated at the decision instant and compared with the "
-                      "full-history value; equality means the signal is a function of past data only",
+            "full-history value; equality means the signal is a function of past data only",
         },
         "def_htf_pit_001_assessment": {
             "defect": DEF_HTF_PIT_001,
             "applies_here": False,
             "reason": "both frozen rules consume completed daily values and closed weekly references; no higher-"
-                      "timeframe bar is read while still forming, and execution is deferred to the next bar open",
+            "timeframe bar is read while still forming, and execution is deferred to the next bar open",
         },
         "higher_timeframe_check": {
             "timeframes_used": ["1d closed bars", "weekly Wednesday reference dates"],
@@ -1430,7 +1757,9 @@ def feasibility_audit(
     declared_dev_start_b: str,
     effective_start_b: str,
 ) -> dict[str, Any]:
-    def analyze(trips: list[dict[str, Any]], grid: list[date], declared: str | None, effective: str) -> dict[str, Any]:
+    def analyze(
+        trips: list[dict[str, Any]], grid: list[date], declared: str | None, effective: str
+    ) -> dict[str, Any]:
         counts = window_counts(trips)
         first = date.fromisoformat(grid[0].isoformat()) if grid else None
         last = date.fromisoformat(grid[-1].isoformat()) if grid else None
@@ -1454,7 +1783,8 @@ def feasibility_audit(
             "frozen_floor": "20 closed round trips or 24 months, whichever comes first",
             "sealed_window_risk": (
                 "INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION"
-                if rate_month * 24 < 20 else "floor reachable within 24 months at the measured rate"
+                if rate_month * 24 < 20
+                else "floor reachable within 24 months at the measured rate"
             ),
             "median_hold_days": (
                 statistics.median([t["hold_days"] for t in trips]) if trips else None
@@ -1462,29 +1792,39 @@ def feasibility_audit(
         }
 
     grid_a_usable = [s for s in grid_a]
-    analysis_a = analyze(trips_a, grid_a_usable, None, grid_a_usable[0].isoformat() if grid_a_usable else "n/a")
+    analysis_a = analyze(
+        trips_a, grid_a_usable, None, grid_a_usable[0].isoformat() if grid_a_usable else "n/a"
+    )
     analysis_b = analyze(trips_b, grid_b, declared_dev_start_b, effective_start_b)
 
     precision = []
     for ir in (0.15, 0.20, 0.25, 0.30, 0.40):
         n = math.ceil((1.645 / ir) ** 2)
-        precision.append({
-            "per_trip_information_ratio": ir,
-            "round_trips_for_one_sided_95pct_precision": n,
-            "months_at_h001_measured_rate": round(n / analysis_a["round_trips_per_month_all_exposed"], 1)
-            if analysis_a["round_trips_per_month_all_exposed"] else None,
-            "months_at_h002_measured_rate": round(n / analysis_b["round_trips_per_month_all_exposed"], 1)
-            if analysis_b["round_trips_per_month_all_exposed"] else None,
-        })
+        precision.append(
+            {
+                "per_trip_information_ratio": ir,
+                "round_trips_for_one_sided_95pct_precision": n,
+                "months_at_h001_measured_rate": round(
+                    n / analysis_a["round_trips_per_month_all_exposed"], 1
+                )
+                if analysis_a["round_trips_per_month_all_exposed"]
+                else None,
+                "months_at_h002_measured_rate": round(
+                    n / analysis_b["round_trips_per_month_all_exposed"], 1
+                )
+                if analysis_b["round_trips_per_month_all_exposed"]
+                else None,
+            }
+        )
 
     return {
         "artifact": "RFC049B_OOS_SAMPLE_FEASIBILITY",
         "generated_at_utc": utcnow(),
         "method": "frozen rules applied to research-exposed inputs; only trade counts and dates are produced. "
-                  "No return, no PnL and no profit factor is computed, and the sealed window is untouched.",
+        "No return, no PnL and no profit factor is computed, and the sealed window is untouched.",
         "thresholds_changed": False,
         "statistical_criterion_unchanged": "20 round trips or 24 months, whichever comes first; fewer than 20 at 24 "
-                                           "months is INSUFFICIENT_OOS_SAMPLE and is neither PASS nor REJECT",
+        "months is INSUFFICIENT_OOS_SAMPLE and is neither PASS nor REJECT",
         "H-049-001": analysis_a,
         "H-049-002": analysis_b,
         "precision_requirements": precision,
@@ -1503,9 +1843,16 @@ def retain_derived(name: str, text: str, url: str, source_key: str) -> None:
     path = RAW / name
     path.write_text(text[:400_000], encoding="utf-8")
     row = {
-        "key": name, "url": url, "retrieved_at_utc": utcnow(), "mode": "derived",
-        "http_status": None, "bytes": path.stat().st_size, "sha256": sha256_file(path),
-        "raw_retained": True, "status": "ok", "derived_from": source_key,
+        "key": name,
+        "url": url,
+        "retrieved_at_utc": utcnow(),
+        "mode": "derived",
+        "http_status": None,
+        "bytes": path.stat().st_size,
+        "sha256": sha256_file(path),
+        "raw_retained": True,
+        "status": "ok",
+        "derived_from": source_key,
     }
     (RAW / f"{name}.meta.json").write_text(json.dumps(row, indent=2) + "\n", encoding="utf-8")
     EVIDENCE.append(row)
@@ -1544,7 +1891,9 @@ def crossref_record(blob: bytes, doi_hint: str | None = None) -> dict[str, Any] 
     }
 
 
-def source_evidence_audit(evidence: dict[str, bytes], scholar: list[dict[str, Any]]) -> dict[str, Any]:
+def source_evidence_audit(
+    evidence: dict[str, bytes], scholar: list[dict[str, Any]]
+) -> dict[str, Any]:
     def quote(text: str, start: int, length: int = 900) -> str:
         return text[start : start + length].strip()
 
@@ -1552,7 +1901,9 @@ def source_evidence_audit(evidence: dict[str, bytes], scholar: list[dict[str, An
     arxiv_text = detag(arxiv_html)
     i = arxiv_text.find("Abstract:")
     arxiv_abs = quote(arxiv_text, i + len("Abstract:"), 1100) if i >= 0 else ""
-    arxiv_pdf_text = pdf_text(evidence.get("arxiv_pdf.pdf", b"")) if evidence.get("arxiv_pdf.pdf") else ""
+    arxiv_pdf_text = (
+        pdf_text(evidence.get("arxiv_pdf.pdf", b"")) if evidence.get("arxiv_pdf.pdf") else ""
+    )
     if not arxiv_pdf_text and (RAW / "arxiv_2411.06327v2.extracted.txt").exists():
         arxiv_pdf_text = (RAW / "arxiv_2411.06327v2.extracted.txt").read_text(encoding="utf-8")
 
@@ -1561,21 +1912,37 @@ def source_evidence_audit(evidence: dict[str, bytes], scholar: list[dict[str, An
         fedsnote_text, ("redemption", "mints", "primary market", "depeg"), before=400, after=1100
     )
 
-    philly_text = pdf_text(evidence.get("philly_wp26-24.pdf", b"")) if evidence.get("philly_wp26-24.pdf") else ""
+    philly_text = (
+        pdf_text(evidence.get("philly_wp26-24.pdf", b""))
+        if evidence.get("philly_wp26-24.pdf")
+        else ""
+    )
     if not philly_text and (RAW / "philly_wp26-24.extracted.txt").exists():
         philly_text = (RAW / "philly_wp26-24.extracted.txt").read_text(encoding="utf-8")
-    retain_derived("philly_wp26-24.extracted.txt", philly_text,
-                   "https://www.philadelphiafed.org/-/media/frbp/assets/working-papers/2026/wp26-24.pdf",
-                   "philly_wp26-24.pdf")
-    retain_derived("arxiv_2411.06327v2.extracted.txt", arxiv_pdf_text, "https://arxiv.org/pdf/2411.06327v2",
-                   "arxiv_pdf.pdf")
+    retain_derived(
+        "philly_wp26-24.extracted.txt",
+        philly_text,
+        "https://www.philadelphiafed.org/-/media/frbp/assets/working-papers/2026/wp26-24.pdf",
+        "philly_wp26-24.pdf",
+    )
+    retain_derived(
+        "arxiv_2411.06327v2.extracted.txt",
+        arxiv_pdf_text,
+        "https://arxiv.org/pdf/2411.06327v2",
+        "arxiv_pdf.pdf",
+    )
     # the extracted text keeps publisher letter-spacing and the abstract heading is not always
     # recoverable, so the window is anchored on the decisive sentence instead
-    philly_abs, philly_anchor = anchor_quote(philly_text, ("lifeline", "flight-to-safety", "muted")) \
-        if philly_text else ("", None)
+    philly_abs, philly_anchor = (
+        anchor_quote(philly_text, ("lifeline", "flight-to-safety", "muted"))
+        if philly_text
+        else ("", None)
+    )
 
     bis_text = detag(evidence.get("bis_wp402.html", b"").decode("utf-8", "ignore"))
-    bis_quote, bis_anchor = anchor_quote(bis_text, ("global liquidity", "priced factor"), before=300, after=1000)
+    bis_quote, bis_anchor = anchor_quote(
+        bis_text, ("global liquidity", "priced factor"), before=300, after=1000
+    )
 
     scholar_index: dict[str, dict[str, Any]] = {}
     for block in scholar:
@@ -1598,7 +1965,7 @@ def source_evidence_audit(evidence: dict[str, bytes], scholar: list[dict[str, An
             "what": "DefiLlama stablecoin charts API",
             "read_level": "FULL_PAYLOAD_AND_HASH",
             "evidence": "data/rfc049/vendor/raw/defillama_stablecoin_supply_all.json + a fresh re-fetch in "
-                        "data/rfc049/admission/raw/refetch_defillama.json",
+            "data/rfc049/admission/raw/refetch_defillama.json",
             "supports": "the frozen signal variable exists, is contiguous, and its exact field is identified",
             "limits": "no publication timestamp; USD valuation of supply, not a flow",
         },
@@ -1607,9 +1974,10 @@ def source_evidence_audit(evidence: dict[str, bytes], scholar: list[dict[str, An
             "read_level": "ABSTRACT_ONLY" if not arxiv_pdf_text else "FULL_TEXT_VERIFIED",
             "abstract_verified_from": "https://arxiv.org/abs/2411.06327v2",
             "abstract_quote": arxiv_abs,
-            "pdf_text_extraction": "succeeded" if arxiv_pdf_text else
-                                   "failed: the PDF maps glyphs through a subset font encoding, so no reliable text "
-                                   "can be recovered; the file is recorded by hash instead of being paraphrased",
+            "pdf_text_extraction": "succeeded"
+            if arxiv_pdf_text
+            else "failed: the PDF maps glyphs through a subset font encoding, so no reliable text "
+            "can be recovered; the file is recorded by hash instead of being paraphrased",
             "registry_characterisation_verified": (
                 "matches the abstract: the predictability is for USDT net inflows *into exchanges* at 1-6 hour "
                 "intraday intervals, and ETH net inflows carry the opposite sign"
@@ -1623,7 +1991,7 @@ def source_evidence_audit(evidence: dict[str, bytes], scholar: list[dict[str, An
             "what": "FEDS Notes (2024-02-23) Primary and Secondary Markets for Stablecoins",
             "read_level": "FULL_TEXT_VERIFIED",
             "source_url": "https://www.federalreserve.gov/econres/notes/feds-notes/"
-                          "primary-and-secondary-markets-for-stablecoins-20240223.html",
+            "primary-and-secondary-markets-for-stablecoins-20240223.html",
             "quote": note_quote,
             "quote_anchor": note_anchor,
             "supports": "primary-market mints/redemptions change supply, while depegs appear in the secondary market",
@@ -1640,9 +2008,18 @@ def source_evidence_audit(evidence: dict[str, bytes], scholar: list[dict[str, An
             "abstract_quote": philly_abs,
             "quote_anchor": philly_anchor,
             "direction_tokens_found": (
-                {t: bool(re.search(t, "".join(philly_text.split()).lower()))
-                 for t in ("lifeline", "muted", "stabilizing", "flighttosafety", "networkdependent")}
-                if philly_text else None
+                {
+                    t: bool(re.search(t, "".join(philly_text.split()).lower()))
+                    for t in (
+                        "lifeline",
+                        "muted",
+                        "stabilizing",
+                        "flighttosafety",
+                        "networkdependent",
+                    )
+                }
+                if philly_text
+                else None
             ),
             "DIRECTION_FINDING": (
                 "the paper's own framing is not 'stablecoin inflows predict positive BTC returns': its extracted abstract "
@@ -1652,17 +2029,18 @@ def source_evidence_audit(evidence: dict[str, bytes], scholar: list[dict[str, An
                 "recorded"
             ),
             "finding_basis": "the quoted extracted abstract above; the verifier re-checks the tokens against the retained "
-                             "derived text",
+            "derived text",
             "action": "recorded as a defect against the Phase A source characterisation; the frozen rules are unaffected "
-                      "because they never depended on this source",
+            "because they never depended on this source",
         },
         "SRC-049-005": {
             "what": "peer-reviewed counter-evidence on stablecoin/crypto return relationships",
             "read_level": "ABSTRACT_ONLY" if (cr005 or src005) else "CLAIM_ONLY",
             "publisher_blocked": "https://www.mdpi.com/1911-8074/18/9/491 returned HTTP 403 to this agent",
             "abstract_recovered_via": "Crossref metadata (DOI registration agency); Semantic Scholar kept as "
-                                      "secondary",
-            "verified_record": cr005 or {
+            "secondary",
+            "verified_record": cr005
+            or {
                 "title": (src005 or {}).get("title"),
                 "journal": (src005 or {}).get("venue"),
                 "year": (src005 or {}).get("year"),
@@ -1685,14 +2063,14 @@ def source_evidence_audit(evidence: dict[str, bytes], scholar: list[dict[str, An
             "bibliographic_identity_verified": cr006,
             "text_read": False,
             "limits": "a single working paper with a practitioner-constructed measure. Its identity is verified through "
-                      "the registration agency, but its text was not read; the frozen H-049-002 rule does not replicate "
-                      "its measure in any case, it uses the Federal Reserve's own accounts",
+            "the registration agency, but its text was not read; the frozen H-049-002 rule does not replicate "
+            "its measure in any case, it uses the Federal Reserve's own accounts",
         },
         "SRC-049-007": {
             "what": "Eickmeier, Gambacorta & Hofmann (2013), Understanding Global Liquidity, BIS WP 402",
             "read_level": "ABSTRACT_ONLY",
             "extraction_note": "the BIS PDF endpoint serves the landing page to non-browser clients; the landing-page "
-                               "abstract is retained",
+            "abstract is retained",
             "quote": bis_quote,
             "quote_anchor": bis_anchor,
             "supports": "the framework: global liquidity is a priced factor in risk assets",
@@ -1712,7 +2090,12 @@ def source_evidence_audit(evidence: dict[str, bytes], scholar: list[dict[str, An
     return {
         "artifact": "RFC049B_SOURCE_EVIDENCE",
         "generated_at_utc": utcnow(),
-        "read_level_vocabulary": ["FULL_TEXT_VERIFIED", "ABSTRACT_ONLY", "CLAIM_ONLY", "FULL_PAYLOAD_AND_HASH"],
+        "read_level_vocabulary": [
+            "FULL_TEXT_VERIFIED",
+            "ABSTRACT_ONLY",
+            "CLAIM_ONLY",
+            "FULL_PAYLOAD_AND_HASH",
+        ],
         "sources": sources,
         "read_level_upgrades_vs_phase_a": {
             "SRC-049-003": "introduction/background -> full note read",
@@ -1729,7 +2112,7 @@ def source_evidence_audit(evidence: dict[str, bytes], scholar: list[dict[str, An
         },
         "citation_verification": {
             "method": "DOI registration agency (Crossref REST API), which is versioned and citable, for every source "
-                      "whose publisher page refused this agent",
+            "whose publisher page refused this agent",
             "SRC-049-005": cr005,
             "SRC-049-006": cr006,
         },
@@ -1760,10 +2143,10 @@ def build_defects(
             "id": "RFC049B-DEF-01",
             "severity": "documentation",
             "finding": "the frozen H-049-002 text attributes WTREGEN's availability to the Daily Treasury Statement, "
-                       "while the FRED series is the weekly-average General Account figure published inside H.4.1 on the "
-                       "Thursday after the reference Wednesday",
+            "while the FRED series is the weekly-average General Account figure published inside H.4.1 on the "
+            "Thursday after the reference Wednesday",
             "evidence": "H.4.1 release page (Release Date for the week ending 2026-10-07) matches the frozen WTREGEN "
-                        "value exactly; both mechanisms imply a lag of at least one day",
+            "value exactly; both mechanisms imply a lag of at least one day",
             "pit_impact": "none: the declared lag is verified either way, and the decision instant is three days later",
             "action": "correct the provenance wording in the Phase B implementation notes; the frozen rule is not edited",
             "changes_frozen_rule": False,
@@ -1772,23 +2155,23 @@ def build_defects(
             "id": "RFC049B-DEF-02",
             "severity": "contract-interpretation",
             "finding": "the frozen H-049-002 development period starts on the first decidable week on or after "
-                       "2004-01-01, but the price history the rules execute against starts in 2017",
+            "2004-01-01, but the price history the rules execute against starts in 2017",
             "evidence": "data/rfc049/PREREGISTRATION_MANIFEST.json dataset hashes for the BTC/ETH daily series and their "
-                        "first observation",
+            "first observation",
             "pit_impact": "none; the conservative reading starts later and therefore uses fewer data",
             "action": "record the interpretation effective_start = max(declared start, first price bar + warmup) before "
-                      "the campaign opens; this audit uses that reading in every count it reports",
+            "the campaign opens; this audit uses that reading in every count it reports",
             "changes_frozen_rule": False,
         },
         {
             "id": "RFC049B-DEF-03",
             "severity": "units",
             "finding": "the WTREGEN series definition changed across FRED vintages: the 2019 vintage is expressed in "
-                       "billions and begins in 1986, the current vintage in millions and begins in 2002",
+            "billions and begins in 1986, the current vintage in millions and begins in 2002",
             "evidence": f"{tga_rev.get('changed_values')} of {tga_rev.get('common_dates')} shared dates differ across "
-                        f"vintages, {tga_rev.get('changed_by_exact_1000_factor')} of them by exactly a factor of 1000",
+            f"vintages, {tga_rev.get('changed_by_exact_1000_factor')} of them by exactly a factor of 1000",
             "pit_impact": "none for this campaign: the frozen contract declares millions, which is the current vintage, "
-                          "and the vendor snapshot was taken from it",
+            "and the vendor snapshot was taken from it",
             "action": "the Phase B ingestion must assert the fetched units per retrieval instead of assuming them",
             "changes_frozen_rule": False,
         },
@@ -1797,9 +2180,9 @@ def build_defects(
             "severity": "data-revision",
             "finding": "the RRPONTSYD series is backfilled on rare dates, including one Wednesday grid point",
             "evidence": f"{rrp_rev.get('changed_values')} changed dates out of {rrp_rev.get('common_dates')} shared "
-                        f"dates against the 2023-03-15 vintage; one of them falls on a Wednesday reference",
+            f"dates against the 2023-03-15 vintage; one of them falls on a Wednesday reference",
             "pit_impact": "bounded and immaterial: the largest change is 0.103 billion against roughly 6,700 billion of "
-                          "net liquidity (about 0.002%)",
+            "net liquidity (about 0.002%)",
             "action": "none beyond declaring it; the affected dates are listed in the PIT artifact",
             "changes_frozen_rule": False,
         },
@@ -1807,11 +2190,11 @@ def build_defects(
             "id": "RFC049B-DEF-05",
             "severity": "source-direction",
             "finding": "read in full, SRC-049-004 does not support the directional claim registered for it: it reports a "
-                       "more muted, stabilizing USDT role for Bitcoin and flight-to-safety behaviour during stress",
+            "more muted, stabilizing USDT role for Bitcoin and flight-to-safety behaviour during stress",
             "evidence": source_evidence["sources"]["SRC-049-004"]["abstract_quote"][:400],
             "pit_impact": "none",
             "action": "recorded as strengthened counter-evidence for H-049-001; the frozen rule is unaffected because it "
-                      "never depended on this source",
+            "never depended on this source",
             "changes_frozen_rule": False,
         },
         {
@@ -1821,17 +2204,17 @@ def build_defects(
             "evidence": "Semantic Scholar verified record: MDPI FinTech 5(3):68, DOI 10.3390/fintech5030068",
             "pit_impact": "none",
             "action": "the corrected record is stored in the admission artifact; the substance of the counter-evidence "
-                      "is unchanged",
+            "is unchanged",
             "changes_frozen_rule": False,
         },
         {
             "id": "RFC049B-DEF-07",
             "severity": "vendor-semantics",
             "finding": "the vendor payload has no publication timestamp and its current day is still forming (it moved "
-                       "intraday between two retrievals)",
+            "intraday between two retrievals)",
             "evidence": json.dumps(stable["revision_exposure"]["revisions"]),
             "pit_impact": "the frozen t+1 convention is what makes this safe; sealed collection must read the settled "
-                          "value and retain the retrieval record",
+            "value and retain the retrieval record",
             "action": "specified for the sealed-period collector; no frozen rule is edited",
             "changes_frozen_rule": False,
         },
@@ -1839,19 +2222,21 @@ def build_defects(
             "id": "RFC049B-DEF-08",
             "severity": "signal-attribution",
             "finding": "the frozen H-049-001 field is a USD valuation of circulating supply, so a depeg moves the signal "
-                       "without any dollar entering or leaving",
+            "without any dollar entering or leaving",
             "evidence": json.dumps(stable["quantity_vs_valuation_30d_growth"])[:400],
             "pit_impact": "none",
             "action": "the amount-denominated field in the same payload is the disclosed diagnostic; a campaign that "
-                      "passes must survive the incremental controls, and this is reported as a residual attribution risk",
+            "passes must survive the incremental controls, and this is reported as a residual attribution risk",
             "changes_frozen_rule": False,
         },
         {
             "id": "RFC049B-DEF-09",
             "severity": "power",
             "finding": "the frozen 20-round-trip floor may not be reachable inside the 24-month sealed window at the "
-                       "measured exposed-history turnover",
-            "evidence": json.dumps({h: feasibility[h]["sealed_window_risk"] for h in ("H-049-001", "H-049-002")}),
+            "measured exposed-history turnover",
+            "evidence": json.dumps(
+                {h: feasibility[h]["sealed_window_risk"] for h in ("H-049-001", "H-049-002")}
+            ),
             "pit_impact": "none",
             "action": "the correct outcome in that case is INSUFFICIENT_OOS_SAMPLE; the threshold is not lowered",
             "changes_frozen_rule": False,
@@ -1937,12 +2322,14 @@ def emit(
         "| input | frozen units | verified units | observation | publication evidence |",
         "| --- | --- | --- | --- | --- |",
         "| WALCL | millions | "
-        + str(macro["fred_metadata_pages"]["WALCL"].get("units", "?")) + " | weekly Wednesday | H.4.1, Thursday |",
+        + str(macro["fred_metadata_pages"]["WALCL"].get("units", "?"))
+        + " | weekly Wednesday | H.4.1, Thursday |",
         "| RRPONTSYD | billions | "
         + str(macro["fred_metadata_pages"]["RRPONTSYD"].get("units", "?"))
         + " | daily business day | NY Fed operation API, same day |",
         "| WTREGEN | millions | "
-        + str(macro["fred_metadata_pages"]["WTREGEN"].get("units", "?")) + " | weekly Wednesday | H.4.1, Thursday |",
+        + str(macro["fred_metadata_pages"]["WTREGEN"].get("units", "?"))
+        + " | weekly Wednesday | H.4.1, Thursday |",
         "",
         f"- H.4.1 total assets match the frozen WALCL value: "
         f"**{macro['primary_source_crosschecks']['h41_total_assets_matches_fred']}**",
@@ -2001,10 +2388,7 @@ def emit(
         "## 8. Admission decisions",
         "",
     ]
-    md += [
-        f"- **{hid}**: `{row['state']}` — {row['reason']}"
-        for hid, row in admission.items()
-    ]
+    md += [f"- **{hid}**: `{row['state']}` — {row['reason']}" for hid, row in admission.items()]
     md += [
         "",
         "## 9. Limits of this audit",
@@ -2073,7 +2457,9 @@ def emit(
         "SAMPLE_FEASIBILITY": {
             hid: {
                 "round_trips_per_year": feasibility[hid]["round_trips_per_year_all_exposed"],
-                "expected_in_24_months": feasibility[hid]["expected_round_trips_in_24_month_sealed_window"],
+                "expected_in_24_months": feasibility[hid][
+                    "expected_round_trips_in_24_month_sealed_window"
+                ],
                 "risk": feasibility[hid]["sealed_window_risk"],
             }
             for hid in ("H-049-001", "H-049-002")
@@ -2114,7 +2500,9 @@ def emit(
         "## PIT",
         "",
     ]
-    lines += [f"- {k}: `{v}`" for k, v in pit["composite_classification"].items() if k.startswith("H-")]
+    lines += [
+        f"- {k}: `{v}`" for k, v in pit["composite_classification"].items() if k.startswith("H-")
+    ]
     lines += [
         "",
         "## Source evidence",
@@ -2169,9 +2557,14 @@ def emit(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="RFC-049B admission check builder")
-    parser.add_argument("--offline", action="store_true", help="reuse retained evidence instead of re-fetching")
-    parser.add_argument("--fill", action="store_true",
-                        help="use retained evidence when present and fetch only what is missing")
+    parser.add_argument(
+        "--offline", action="store_true", help="reuse retained evidence instead of re-fetching"
+    )
+    parser.add_argument(
+        "--fill",
+        action="store_true",
+        help="use retained evidence when present and fetch only what is missing",
+    )
     args = parser.parse_args()
 
     ADM.mkdir(parents=True, exist_ok=True)
@@ -2189,8 +2582,11 @@ def main() -> int:
     stable = stablecoin_audit(frozen_rows, evidence.get("refetch_defillama.json", b""))
     log("stage: macro audit")
     macro = macro_audit(evidence)
-    inputs = {"WALCL": load_vendor_series("WALCL")[1], "RRPONTSYD": load_vendor_series("RRPONTSYD")[1],
-              "WTREGEN": load_vendor_series("WTREGEN")[1]}
+    inputs = {
+        "WALCL": load_vendor_series("WALCL")[1],
+        "RRPONTSYD": load_vendor_series("RRPONTSYD")[1],
+        "WTREGEN": load_vendor_series("WTREGEN")[1],
+    }
     bars = load_bars(PRICE_1D)
     price_first = datetime.fromtimestamp(bars[0][0] / 1000, timezone.utc).date()
     price_last = datetime.fromtimestamp(bars[-1][0] / 1000, timezone.utc).date()
@@ -2199,31 +2595,46 @@ def main() -> int:
     first_signal = frozen_rows[0][0] + timedelta(days=395)
     grid_start = max(first_signal, price_first + timedelta(days=60), date(2013, 1, 1))
     grid = sundays(grid_start, price_last)
-    check("grid:non_empty", len(grid) > 100, f"{len(grid)} weekly decision instants from {grid[0]} to {grid[-1]}")
+    check(
+        "grid:non_empty",
+        len(grid) > 100,
+        f"{len(grid)} weekly decision instants from {grid[0]} to {grid[-1]}",
+    )
 
     log(f"stage: frozen-rule states over {len(grid)} weekly decisions")
     sig_a = stablecoin_signal(frozen_rows, grid)
     sig_b, macro_stats = macro_input_signal(inputs, grid)
 
-    declared_b = json.loads((SPECS / "H-049-002.json").read_text(encoding="utf-8"))["development_period"]
+    declared_b = json.loads((SPECS / "H-049-002.json").read_text(encoding="utf-8"))[
+        "development_period"
+    ]
     effective_first_b = next((s for s in grid if sig_b[s]["available"]), None)
     if effective_first_b and effective_first_b != grid[0]:
-        check("defect:declared_start_precedes_data", True,
-              f"declared start '{declared_b[:60]}...' resolves to the effective first decidable week "
-              f"{effective_first_b} because the price history begins {price_first}")
-    check("macro:grid_decidable", effective_first_b is not None,
-          f"first decidable macro week {effective_first_b}; "
-          f"{macro_stats['wednesdays_with_missing_input']} Wednesday references with a missing input (fail-closed "
-          f"FLAT); reach-back days used {macro_stats['reachback_days_used']}")
+        check(
+            "defect:declared_start_precedes_data",
+            True,
+            f"declared start '{declared_b[:60]}...' resolves to the effective first decidable week "
+            f"{effective_first_b} because the price history begins {price_first}",
+        )
+    check(
+        "macro:grid_decidable",
+        effective_first_b is not None,
+        f"first decidable macro week {effective_first_b}; "
+        f"{macro_stats['wednesdays_with_missing_input']} Wednesday references with a missing input (fail-closed "
+        f"FLAT); reach-back days used {macro_stats['reachback_days_used']}",
+    )
 
     rrp_rev = macro["revision_exposure"]["alfred_vintages"]["RRPONTSYD"].get("2023-03-15", {})
     affected_wednesdays = [
-        r["date"] for r in rrp_rev.get("changed_examples", [])
+        r["date"]
+        for r in rrp_rev.get("changed_examples", [])
         if date.fromisoformat(r["date"]).weekday() == 2
     ]
 
     log("stage: PIT verification")
-    pit = pit_verification(frozen_rows, inputs, grid, sig_a, sig_b, stable, macro, affected_wednesdays)
+    pit = pit_verification(
+        frozen_rows, inputs, grid, sig_a, sig_b, stable, macro, affected_wednesdays
+    )
     log("stage: independence")
     independence = independence_audit(grid, sig_a, sig_b)
     log("stage: round-trip counts")
@@ -2231,7 +2642,11 @@ def main() -> int:
     trips_b = count_round_trips({s: sig_b[s]["state"] for s in grid}, bars)
     log(f"stage: feasibility (trips {len(trips_a)} / {len(trips_b)})")
     feasibility = feasibility_audit(
-        trips_a, trips_b, grid, grid, declared_b,
+        trips_a,
+        trips_b,
+        grid,
+        grid,
+        declared_b,
         effective_first_b.isoformat() if effective_first_b else "n/a",
     )
     log("stage: source evidence")
@@ -2242,9 +2657,9 @@ def main() -> int:
         "H-049-001": {
             "state": "READY_FOR_AUTHORIZED_TEST",
             "reason": "variable semantics identified at the vendor payload, contiguous daily history with no gaps, "
-                      "conservative declared availability convention, and a frozen rule with two incremental controls. "
-                      "Its source evidence is weaker than Phase A claimed and is recorded as such, but nothing blocks a "
-                      "valid test.",
+            "conservative declared availability convention, and a frozen rule with two incremental controls. "
+            "Its source evidence is weaker than Phase A claimed and is recorded as such, but nothing blocks a "
+            "valid test.",
             "flags": [
                 "PIT_CONSERVATIVE_PROXY (no vendor publication timestamp; measured backfill on settled days: 0)",
                 "signal is a USD valuation of supply, so depeg moves are a residual attribution risk (DEF-08)",
@@ -2254,9 +2669,9 @@ def main() -> int:
         "H-049-002": {
             "state": "READY_FOR_AUTHORIZED_TEST",
             "reason": "every traded input is verified against its primary source for value, units, observation dates and "
-                      "publication timing; decision-time availability is proven for every decision instant; the "
-                      "declared development start is wider than the available price history, which is recorded as an "
-                      "interpretation defect rather than a reason to touch the rule.",
+            "publication timing; decision-time availability is proven for every decision instant; the "
+            "declared development start is wider than the available price history, which is recorded as an "
+            "interpretation defect rather than a reason to touch the rule.",
             "flags": [
                 "PIT_VERIFIED",
                 "WTREGEN publication mechanism misattributed in the frozen text (DEF-01, no PIT impact)",
@@ -2274,35 +2689,73 @@ def main() -> int:
         "authorized": False,
         "consequence": "no economic evaluation, no OOS opening and no implementation is performed by this audit",
     }
-    check("governance:flags_unchanged",
-          all(governance.get(k) == v for k, v in GOVERNANCE_EXPECTED.items()),
-          json.dumps({k: governance.get(k) for k in GOVERNANCE_EXPECTED}, sort_keys=True))
-    check("scope:no_returns_computed", True,
-          "this module computes no return, no PnL, no drawdown and no profit factor")
-    check("scope:sealed_oos_untouched",
-          True,
-          f"the sealed window starts {baseline['sealed_oos_start_utc']}; no observation from it exists yet")
-    forbidden = ("PROFITABLE", "CERTIFIED_ALPHA", "PRODUCTION_READY", "EDGE_CONFIRMED", "PROFITABILITY_VERIFIED")
+    check(
+        "governance:flags_unchanged",
+        all(governance.get(k) == v for k, v in GOVERNANCE_EXPECTED.items()),
+        json.dumps({k: governance.get(k) for k in GOVERNANCE_EXPECTED}, sort_keys=True),
+    )
+    check(
+        "scope:no_returns_computed",
+        True,
+        "this module computes no return, no PnL, no drawdown and no profit factor",
+    )
+    check(
+        "scope:sealed_oos_untouched",
+        True,
+        f"the sealed window starts {baseline['sealed_oos_start_utc']}; no observation from it exists yet",
+    )
+    forbidden = (
+        "PROFITABLE",
+        "CERTIFIED_ALPHA",
+        "PRODUCTION_READY",
+        "EDGE_CONFIRMED",
+        "PROFITABILITY_VERIFIED",
+    )
     blobs = "\n".join(
-        [json.dumps(stable), json.dumps(macro), json.dumps(independence), json.dumps(feasibility),
-         json.dumps(source_evidence), json.dumps(admission)]
+        [
+            json.dumps(stable),
+            json.dumps(macro),
+            json.dumps(independence),
+            json.dumps(feasibility),
+            json.dumps(source_evidence),
+            json.dumps(admission),
+        ]
     )
     hits = [w for w in forbidden if w in blobs]
     check("labels:no_forbidden_claim", not hits, f"hits={hits}" if hits else "clean")
 
     log("stage: emitting artifacts")
-    report = emit(baseline, stable, macro, pit, independence, feasibility, source_evidence, defects, admission, governance)
+    report = emit(
+        baseline,
+        stable,
+        macro,
+        pit,
+        independence,
+        feasibility,
+        source_evidence,
+        defects,
+        admission,
+        governance,
+    )
 
-    print(json.dumps({
-        "status": report["HYPOTHESIS_001_ADMISSION"] + " / " + report["HYPOTHESIS_002_ADMISSION"],
-        "checks_total": report["checks_total"],
-        "checks_failed": report["checks_failed"],
-        "checks_blocked": report["checks_blocked"],
-        "pit": pit["composite_classification"],
-        "independence": independence["measured_overlap"],
-        "feasibility": report["SAMPLE_FEASIBILITY"],
-        "defects": report["DEFECTS"],
-    }, indent=2, default=str))
+    print(
+        json.dumps(
+            {
+                "status": report["HYPOTHESIS_001_ADMISSION"]
+                + " / "
+                + report["HYPOTHESIS_002_ADMISSION"],
+                "checks_total": report["checks_total"],
+                "checks_failed": report["checks_failed"],
+                "checks_blocked": report["checks_blocked"],
+                "pit": pit["composite_classification"],
+                "independence": independence["measured_overlap"],
+                "feasibility": report["SAMPLE_FEASIBILITY"],
+                "defects": report["DEFECTS"],
+            },
+            indent=2,
+            default=str,
+        )
+    )
     return 1 if report["checks_failed"] else 0
 
 

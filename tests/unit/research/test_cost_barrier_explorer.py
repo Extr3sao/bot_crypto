@@ -93,20 +93,23 @@ def test_reachability_is_strictly_above_the_stressed_line(built):
     seen = 0
     for row in built["reachability"]["matrix"]:
         cfg = next(
-            c for c in built["venue_grid"]
+            c
+            for c in built["venue_grid"]
             if (c["scenario_id"], c["order_mode"], c["size_usd"], c["liquidity_regime"])
             == (row["scenario_id"], row["order_mode"], row["size_usd"], row["liquidity_regime"])
         )
         for multiple in (1.0, 1.25, 1.5, 2.0):
             required = cfg["round_trip_bps"] * multiple
             expected = sorted(
-                c["cell_id"] for c in built["cells"]
+                c["cell_id"]
+                for c in built["cells"]
                 if c["zero_cost_gross_bps"] is not None and c["zero_cost_gross_bps"] > required
             )
             assert row["reachable_counts_by_stress"][f"{multiple}x"] == len(expected)
             seen += 1
         assert sorted(row["reachable_cell_ids"]) == sorted(
-            c["cell_id"] for c in built["cells"]
+            c["cell_id"]
+            for c in built["cells"]
             if c["zero_cost_gross_bps"] is not None
             and c["zero_cost_gross_bps"] > cfg["round_trip_bps"]
         )
@@ -136,12 +139,18 @@ def test_horizon_claims_are_measured(built):
     assert funding["minute_per_interval_derived"] == 480.0
     drift = [
         abs(float(row["funding_carry_bps"]) - float(row["analytic_carry_bps"]))
-        for row in funding["rows"] if row["analytic_carry_bps"] is not None
+        for row in funding["rows"]
+        if row["analytic_carry_bps"] is not None
     ]
     assert drift and max(drift) <= 1e-9
     by_horizon = {
-        (row["scenario_id"], row["order_mode"], row["funding_rate_bps_per_interval"], row["horizon_minutes"]):
-        row["funding_carry_bps"] for row in funding["rows"]
+        (
+            row["scenario_id"],
+            row["order_mode"],
+            row["funding_rate_bps_per_interval"],
+            row["horizon_minutes"],
+        ): row["funding_carry_bps"]
+        for row in funding["rows"]
     }
     key = ("BINANCE_USDM_PERP_TAKER", "taker", 1.0)
     assert by_horizon[(*key, 1440.0)] > by_horizon[(*key, 480.0)] > by_horizon[(*key, 240.0)] == 0.5
@@ -160,12 +169,21 @@ def test_the_market_horizon_is_reused_not_redefined(built):
 
 def test_a_missing_edge_is_unknown_and_never_counted(explorer, built):
     cells = [dict(c) for c in built["cells"]]
-    cells.append({
-        "cell_id": "synthetic@99m", "strategy_id": "synthetic@99m", "family": "synthetic",
-        "timeframe": "99m", "ledger_status": "NO_GROSS_EDGE", "admitted_for_paper": False,
-        "zero_cost_gross_bps": None, "gross_evidence": "ZERO_COST",
-        "trades": None, "sample_sufficient": False, "runtime_admission_rt_bps": None,
-    })
+    cells.append(
+        {
+            "cell_id": "synthetic@99m",
+            "strategy_id": "synthetic@99m",
+            "family": "synthetic",
+            "timeframe": "99m",
+            "ledger_status": "NO_GROSS_EDGE",
+            "admitted_for_paper": False,
+            "zero_cost_gross_bps": None,
+            "gross_evidence": "ZERO_COST",
+            "trades": None,
+            "sample_sufficient": False,
+            "runtime_admission_rt_bps": None,
+        }
+    )
     reach = explorer.reachability(cells, built["venue_grid"])
     row = next(r for r in reach["cell_view"] if r["cell_id"] == "synthetic@99m")
     assert row["verdict"] == "UNKNOWN_GROSS_EDGE_NOT_PUBLISHED"
@@ -179,17 +197,24 @@ def test_boundary_is_strict_and_a_fabricated_edge_flips_the_verdict(explorer, bu
     rows = built["venue_grid"]
     for label, gross, expected in (
         ("exactly at the cheapest line", line, "NOT_REACHABLE_AT_ANY_MODELED_VENUE"),
-        ("one bps above the cheapest line", line + 1.0,
-         "REACHABLE_MAKER_ONLY_ASSUMED_FILL_MODEL"),
+        ("one bps above the cheapest line", line + 1.0, "REACHABLE_MAKER_ONLY_ASSUMED_FILL_MODEL"),
     ):
         cells = [dict(c) for c in built["cells"]]
-        cells.append({
-            "cell_id": f"synthetic:{label}", "strategy_id": f"synthetic:{label}",
-            "family": "synthetic", "timeframe": "99m", "ledger_status": "NO_GROSS_EDGE",
-            "admitted_for_paper": False, "zero_cost_gross_bps": gross,
-            "gross_evidence": "SYNTHETIC TEST CELL", "trades": 1000,
-            "sample_sufficient": True, "runtime_admission_rt_bps": None,
-        })
+        cells.append(
+            {
+                "cell_id": f"synthetic:{label}",
+                "strategy_id": f"synthetic:{label}",
+                "family": "synthetic",
+                "timeframe": "99m",
+                "ledger_status": "NO_GROSS_EDGE",
+                "admitted_for_paper": False,
+                "zero_cost_gross_bps": gross,
+                "gross_evidence": "SYNTHETIC TEST CELL",
+                "trades": 1000,
+                "sample_sufficient": True,
+                "runtime_admission_rt_bps": None,
+            }
+        )
         reach = explorer.reachability(cells, rows)
         row = next(r for r in reach["cell_view"] if r["cell_id"] == f"synthetic:{label}")
         assert row["verdict"] == expected, label
@@ -201,14 +226,18 @@ def test_the_three_operations_frequency_axis_is_cost_only(built):
     assert frequency["requirement_round_trips_per_year"] == 1095.0
     for row in frequency["rows"]:
         assert row["annual_cost_bps"] == pytest.approx(row["round_trip_bps"] * 1095.0, rel=1e-12)
-        assert row["annual_cost_bps"] == pytest.approx(row["annual_cost_pct_of_stake"] * 100.0,
-                                                       rel=1e-9)
+        assert row["annual_cost_bps"] == pytest.approx(
+            row["annual_cost_pct_of_stake"] * 100.0, rel=1e-9
+        )
 
 
 def test_the_verifier_accepts_the_committed_artefact(verifier, stored):
     truth = verifier.recompute()
     assert verifier.compare(stored, truth) == []
-    assert truth["cells"][truth["best_cell"]]["gross"] < truth["configs"][truth["cheapest_observed"]]["round_trip_bps"]
+    assert (
+        truth["cells"][truth["best_cell"]]["gross"]
+        < truth["configs"][truth["cheapest_observed"]]["round_trip_bps"]
+    )
 
 
 def test_the_verifier_rejects_a_fabricated_edge(verifier, stored):
@@ -259,7 +288,11 @@ def test_governance_flags_stay_unauthorized(built):
     assert claims["authorization_state"] == "NOT_AUTHORIZED"
     assert claims["trades_authorized"] == 0
     assert claims["false_success"] == 0
-    for flag in ("promotion_claimed", "rentable_claimed", "certified_claimed",
-                 "production_ready_claimed"):
+    for flag in (
+        "promotion_claimed",
+        "rentable_claimed",
+        "certified_claimed",
+        "production_ready_claimed",
+    ):
         assert claims[flag] is False
     assert built["checks_failed"] == 0

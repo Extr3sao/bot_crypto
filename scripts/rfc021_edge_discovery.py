@@ -213,8 +213,12 @@ def metrics_for(trades: list[Trade], tf: str) -> dict[str, Any]:
         "max_dd_bps": round(_max_dd(net), 4),
         "edge_cost_ratio": round(statistics.fmean(gross) / COST_BPS, 4),
         "trades_per_day": round(
-            n / max(1.0, (max(t.exit_ts for t in trades) - min(t.entry_ts for t in trades))
-                    / (1000.0 * 86400)),
+            n
+            / max(
+                1.0,
+                (max(t.exit_ts for t in trades) - min(t.entry_ts for t in trades))
+                / (1000.0 * 86400),
+            ),
             3,
         ),
     }
@@ -282,46 +286,57 @@ def main() -> int:
         if m_disc.get("trades", 0) < MIN_TRADES:
             status, reason = "REJECTED_DISCOVERY", "insufficient trades on DISCOVERY"
         elif m_disc.get("net_bps", -1) <= 0:
-            status, reason = "REJECTED_DISCOVERY", "NET_EXPECTANCY <= 0 (gross below certified cost)"
+            status, reason = (
+                "REJECTED_DISCOVERY",
+                "NET_EXPECTANCY <= 0 (gross below certified cost)",
+            )
         else:
             status, reason = "PASSED_DISCOVERY", ""
 
         res = CandidateResult(
-            candidate_id=cid, family=family, timeframe=tf, status=status, reason=reason,
+            candidate_id=cid,
+            family=family,
+            timeframe=tf,
+            status=status,
+            reason=reason,
             metrics=m_disc,
             split_metrics={"DISCOVERY": m_disc, "VALIDATION": m_val, "HOLDOUT": m_hold},
         )
         results[cid] = res
-        registry_rows.append({
-            "experiment_id": f"EXP-S001-{exp_no:03d}",
-            "candidate_id": cid,
-            "family": family,
-            "timeframe": tf,
-            "parameters": "family defaults (pre-registered)",
-            "dataset": "strategy-baseline W1-W7 5m-derived",
-            "period": "DISCOVERY W1-W4",
-            "result": m_disc,
-            "status": status,
-            "reason": reason,
-        })
-        matrix_rows.append({
-            "experiment_id": f"EXP-S001-{exp_no:03d}",
-            "strategy_family": family,
-            "strategy": cid,
-            "asset": "BTC+ETH+SOL",
-            "timeframe": tf,
-            "parameters": "defaults",
-            "discovery_net_expectancy": m_disc.get("net_bps"),
-            "validation_net_expectancy": m_val.get("net_bps"),
-            "holdout_net_expectancy": m_hold.get("net_bps"),
-            "trades": m_disc.get("trades"),
-            "profit_factor": m_disc.get("profit_factor"),
-            "sharpe": m_disc.get("sharpe"),
-            "drawdown": m_disc.get("max_dd_bps"),
-            "edge_cost_ratio": m_disc.get("edge_cost_ratio"),
-            "status": status,
-            "rejection_reason": reason,
-        })
+        registry_rows.append(
+            {
+                "experiment_id": f"EXP-S001-{exp_no:03d}",
+                "candidate_id": cid,
+                "family": family,
+                "timeframe": tf,
+                "parameters": "family defaults (pre-registered)",
+                "dataset": "strategy-baseline W1-W7 5m-derived",
+                "period": "DISCOVERY W1-W4",
+                "result": m_disc,
+                "status": status,
+                "reason": reason,
+            }
+        )
+        matrix_rows.append(
+            {
+                "experiment_id": f"EXP-S001-{exp_no:03d}",
+                "strategy_family": family,
+                "strategy": cid,
+                "asset": "BTC+ETH+SOL",
+                "timeframe": tf,
+                "parameters": "defaults",
+                "discovery_net_expectancy": m_disc.get("net_bps"),
+                "validation_net_expectancy": m_val.get("net_bps"),
+                "holdout_net_expectancy": m_hold.get("net_bps"),
+                "trades": m_disc.get("trades"),
+                "profit_factor": m_disc.get("profit_factor"),
+                "sharpe": m_disc.get("sharpe"),
+                "drawdown": m_disc.get("max_dd_bps"),
+                "edge_cost_ratio": m_disc.get("edge_cost_ratio"),
+                "status": status,
+                "rejection_reason": reason,
+            }
+        )
 
     # 1h aggregates -> discovery-only candidates
     for cid, agg in sorted(one_h.items()):
@@ -329,32 +344,64 @@ def main() -> int:
         family, tf = cid.split("@")
         net = agg["net_bps"]
         status = "REJECTED_DISCOVERY" if net <= 0 else "PASSED_DISCOVERY"
-        reason = "" if status == "PASSED_DISCOVERY" else "NET_EXPECTANCY <= 0 (gross below certified cost)"
+        reason = (
+            ""
+            if status == "PASSED_DISCOVERY"
+            else "NET_EXPECTANCY <= 0 (gross below certified cost)"
+        )
         m_disc = {
-            "trades": agg["trades"], "gross_bps": round(agg["gross_bps"], 4),
-            "cost_bps": COST_BPS, "net_bps": round(net, 4),
-            "profit_factor": agg["pf"], "win_rate": agg["win_rate"],
-            "source": agg["source"], "edge_cost_ratio": round(agg["gross_bps"] / COST_BPS, 4),
+            "trades": agg["trades"],
+            "gross_bps": round(agg["gross_bps"], 4),
+            "cost_bps": COST_BPS,
+            "net_bps": round(net, 4),
+            "profit_factor": agg["pf"],
+            "win_rate": agg["win_rate"],
+            "source": agg["source"],
+            "edge_cost_ratio": round(agg["gross_bps"] / COST_BPS, 4),
         }
         results[cid] = CandidateResult(
-            candidate_id=cid, family=family, timeframe=tf, status=status, reason=reason,
-            metrics=m_disc, split_metrics={"DISCOVERY": m_disc},
+            candidate_id=cid,
+            family=family,
+            timeframe=tf,
+            status=status,
+            reason=reason,
+            metrics=m_disc,
+            split_metrics={"DISCOVERY": m_disc},
         )
-        registry_rows.append({
-            "experiment_id": f"EXP-S001-{exp_no:03d}", "candidate_id": cid, "family": family,
-            "timeframe": tf, "parameters": "family defaults (pre-registered)",
-            "dataset": "strategy-baseline W1-W7 resampled 1h",
-            "period": "DISCOVERY W1-W4", "result": m_disc, "status": status, "reason": reason,
-        })
-        matrix_rows.append({
-            "experiment_id": f"EXP-S001-{exp_no:03d}", "strategy_family": family, "strategy": cid,
-            "asset": "BTC+ETH+SOL", "timeframe": tf, "parameters": "defaults",
-            "discovery_net_expectancy": m_disc["net_bps"], "validation_net_expectancy": None,
-            "holdout_net_expectancy": None, "trades": m_disc["trades"],
-            "profit_factor": m_disc["profit_factor"], "sharpe": None, "drawdown": None,
-            "edge_cost_ratio": m_disc["edge_cost_ratio"], "status": status,
-            "rejection_reason": reason,
-        })
+        registry_rows.append(
+            {
+                "experiment_id": f"EXP-S001-{exp_no:03d}",
+                "candidate_id": cid,
+                "family": family,
+                "timeframe": tf,
+                "parameters": "family defaults (pre-registered)",
+                "dataset": "strategy-baseline W1-W7 resampled 1h",
+                "period": "DISCOVERY W1-W4",
+                "result": m_disc,
+                "status": status,
+                "reason": reason,
+            }
+        )
+        matrix_rows.append(
+            {
+                "experiment_id": f"EXP-S001-{exp_no:03d}",
+                "strategy_family": family,
+                "strategy": cid,
+                "asset": "BTC+ETH+SOL",
+                "timeframe": tf,
+                "parameters": "defaults",
+                "discovery_net_expectancy": m_disc["net_bps"],
+                "validation_net_expectancy": None,
+                "holdout_net_expectancy": None,
+                "trades": m_disc["trades"],
+                "profit_factor": m_disc["profit_factor"],
+                "sharpe": None,
+                "drawdown": None,
+                "edge_cost_ratio": m_disc["edge_cost_ratio"],
+                "status": status,
+                "rejection_reason": reason,
+            }
+        )
 
     survivors = [c for c in results.values() if c.status == "PASSED_DISCOVERY"]
     ratio_bands: dict[str, int] = defaultdict(int)
@@ -372,18 +419,23 @@ def main() -> int:
         writer.writerows(matrix_rows)
 
     (out / "DATA_SPLIT.json").write_text(
-        json.dumps({
-            "schema": "rfc021.data_split.v1",
-            "chronological": True,
-            "shuffled": False,
-            "splits": {
-                "DISCOVERY": {"windows": ["W1", "W2", "W3", "W4"]},
-                "VALIDATION": {"windows": ["W5"]},
-                "HOLDOUT": {"windows": ["W6", "W7"], "locked": True},
+        json.dumps(
+            {
+                "schema": "rfc021.data_split.v1",
+                "chronological": True,
+                "shuffled": False,
+                "splits": {
+                    "DISCOVERY": {"windows": ["W1", "W2", "W3", "W4"]},
+                    "VALIDATION": {"windows": ["W5"]},
+                    "HOLDOUT": {"windows": ["W6", "W7"], "locked": True},
+                },
+                "hashes": data_hashes,
+                "cost_bps": COST_BPS,
             },
-            "hashes": data_hashes,
-            "cost_bps": COST_BPS,
-        }, indent=2, sort_keys=True) + "\n",
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
         encoding="utf-8",
     )
 
@@ -392,8 +444,11 @@ def main() -> int:
         "cost_bps": COST_BPS,
         "candidates": [
             {
-                "candidate_id": c.candidate_id, "family": c.family, "timeframe": c.timeframe,
-                "status": c.status, "reason": c.reason,
+                "candidate_id": c.candidate_id,
+                "family": c.family,
+                "timeframe": c.timeframe,
+                "status": c.status,
+                "reason": c.reason,
                 "hypothesis": HYPOTHESES.get(c.family, {}).get("hypothesis", ""),
                 "discovery": c.metrics,
             }
@@ -401,7 +456,8 @@ def main() -> int:
         ],
     }
     (out / "STRATEGY_CANDIDATE_REGISTRY.json").write_text(
-        json.dumps(candidate_registry, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8"
+        json.dumps(candidate_registry, indent=2, sort_keys=True, default=str) + "\n",
+        encoding="utf-8",
     )
 
     discovery = {
@@ -428,23 +484,33 @@ def main() -> int:
         json.dumps(not_reached, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
     (out / "ROBUSTNESS_RESULTS.json").write_text(
-        json.dumps({
-            "schema": "rfc021.robustness_results.v1",
-            "status": "NOT_REACHED",
-            "reason": "no candidate passed DISCOVERY/VALIDATION",
-            "G_EDGE_3": "NOT_REACHED",
-        }, indent=2, sort_keys=True) + "\n",
+        json.dumps(
+            {
+                "schema": "rfc021.robustness_results.v1",
+                "status": "NOT_REACHED",
+                "reason": "no candidate passed DISCOVERY/VALIDATION",
+                "G_EDGE_3": "NOT_REACHED",
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
         encoding="utf-8",
     )
     (out / "HOLDOUT_RESULTS.json").write_text(
-        json.dumps({
-            "schema": "rfc021.holdout_results.v1",
-            "status": "NOT_REACHED",
-            "reason": "no finalist cleared discovery+validation+robustness",
-            "holdout_windows": ["W6", "W7"],
-            "holdout_unread": True,
-            "G_EDGE_4": "NOT_REACHED",
-        }, indent=2, sort_keys=True) + "\n",
+        json.dumps(
+            {
+                "schema": "rfc021.holdout_results.v1",
+                "status": "NOT_REACHED",
+                "reason": "no finalist cleared discovery+validation+robustness",
+                "holdout_windows": ["W6", "W7"],
+                "holdout_unread": True,
+                "G_EDGE_4": "NOT_REACHED",
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
         encoding="utf-8",
     )
 
@@ -454,8 +520,12 @@ def main() -> int:
         "G_EDGE_1": discovery["G_EDGE_1"],
         "best": sorted(
             (
-                {"candidate_id": c.candidate_id, "gross_bps": c.metrics.get("gross_bps"),
-                 "net_bps": c.metrics.get("net_bps"), "ratio": c.metrics.get("edge_cost_ratio")}
+                {
+                    "candidate_id": c.candidate_id,
+                    "gross_bps": c.metrics.get("gross_bps"),
+                    "net_bps": c.metrics.get("net_bps"),
+                    "ratio": c.metrics.get("edge_cost_ratio"),
+                }
                 for c in results.values()
             ),
             key=lambda x: -float(x["gross_bps"] or 0.0),

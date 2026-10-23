@@ -300,7 +300,9 @@ def main() -> int:
             "schema": "rfc022.validation_results.v1",
             "split": "VALIDATION W5",
             "cost_bps": COST,
-            "G_EDGE_2": "PASS" if any(v["pass"] for v in val) else ("FAIL" if pos else "NOT_REACHED"),
+            "G_EDGE_2": "PASS"
+            if any(v["pass"] for v in val)
+            else ("FAIL" if pos else "NOT_REACHED"),
             "results": [{k: v for k, v in r.items() if k != "params"} for r in val],
         },
     )

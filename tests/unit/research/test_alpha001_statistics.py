@@ -219,14 +219,17 @@ def test_cost_frontier_is_monotone_in_gross_and_cost() -> None:
     cheaper = a1.cost_frontier(
         gross_bps=18.575939, statistical_bps=FROZEN_STATISTICAL_BPS, cost_bps=10.0
     )
-    assert cheaper["hurdle_bps"] < a1.cost_frontier(
-        gross_bps=18.575939, statistical_bps=FROZEN_STATISTICAL_BPS
-    )["hurdle_bps"]
+    assert (
+        cheaper["hurdle_bps"]
+        < a1.cost_frontier(gross_bps=18.575939, statistical_bps=FROZEN_STATISTICAL_BPS)[
+            "hurdle_bps"
+        ]
+    )
     # a cheaper venue moves the hurdle but never the required gross
     assert cheaper["admission_break_even_cost_bps"] == pytest.approx(
-        a1.cost_frontier(
-            gross_bps=18.575939, statistical_bps=FROZEN_STATISTICAL_BPS
-        )["admission_break_even_cost_bps"],
+        a1.cost_frontier(gross_bps=18.575939, statistical_bps=FROZEN_STATISTICAL_BPS)[
+            "admission_break_even_cost_bps"
+        ],
         abs=1e-9,
     )
 

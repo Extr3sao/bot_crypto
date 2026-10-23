@@ -144,8 +144,11 @@ def test_breadth_rotation_fills_at_next_open() -> None:
 def test_always_long_control_enters_immediately() -> None:
     corpus = _corpus()
     trades, _r, _a = B.simulate_breadth_regime(
-        corpus, {s: START for s in corpus}, "fp",
-        config=B.breadth_config(entry_breadth=0.0, exit_breadth=-1.0), cost_bps_rt=23.559,
+        corpus,
+        {s: START for s in corpus},
+        "fp",
+        config=B.breadth_config(entry_breadth=0.0, exit_breadth=-1.0),
+        cost_bps_rt=23.559,
     )
     assert trades
 
@@ -153,8 +156,14 @@ def test_always_long_control_enters_immediately() -> None:
 def test_breadth_rotation_is_deterministic() -> None:
     corpus = _corpus()
     args = (corpus, {s: START for s in corpus}, "fp")
-    a = [t.as_dict() for t in B.simulate_breadth_regime(*args, config=B.breadth_config(), cost_bps_rt=23.559)[0]]
-    b = [t.as_dict() for t in B.simulate_breadth_regime(*args, config=B.breadth_config(), cost_bps_rt=23.559)[0]]
+    a = [
+        t.as_dict()
+        for t in B.simulate_breadth_regime(*args, config=B.breadth_config(), cost_bps_rt=23.559)[0]
+    ]
+    b = [
+        t.as_dict()
+        for t in B.simulate_breadth_regime(*args, config=B.breadth_config(), cost_bps_rt=23.559)[0]
+    ]
     assert a == b
 
 
@@ -204,16 +213,25 @@ def test_split_mutation_is_refused() -> None:
     reg = ImmutableSplitRegistry()
     reg.register("EXP-ARP-019", FROZEN_SPLIT)
     with pytest.raises(SplitMutationError):
-        reg.register("EXP-ARP-019", SplitDefinition(
-            "2019-01-01", "2024-01-01", "2024-01-01", "2025-07-01", "2025-07-01", "2026-03-01"))
+        reg.register(
+            "EXP-ARP-019",
+            SplitDefinition(
+                "2019-01-01", "2024-01-01", "2024-01-01", "2025-07-01", "2025-07-01", "2026-03-01"
+            ),
+        )
 
 
 def test_forward_holdout_stays_untouched() -> None:
     reg = HoldoutRegistry()
-    reg.register(Holdout(
-        holdout_id="HOLDOUT-ARP-019-FORWARD", start="2026-03-01", end="2027-03-01",
-        assets=("DYNAMIC_ASSET_UNIVERSE(ARP-006-UNIVERSE-v1)",),
-        dataset_hash=D.corpus_digest(), forward_only=True,
-    ))
+    reg.register(
+        Holdout(
+            holdout_id="HOLDOUT-ARP-019-FORWARD",
+            start="2026-03-01",
+            end="2027-03-01",
+            assets=("DYNAMIC_ASSET_UNIVERSE(ARP-006-UNIVERSE-v1)",),
+            dataset_hash=D.corpus_digest(),
+            forward_only=True,
+        )
+    )
     assert reg.status("HOLDOUT-ARP-019-FORWARD") is HoldoutStatus.UNTOUCHED
     reg.assert_untouched("HOLDOUT-ARP-019-FORWARD")

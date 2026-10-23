@@ -420,9 +420,13 @@ def build_registry() -> None:
         "approved_at": APPROVAL_DATE,
         "approval_record": f"tasks/decisions.md {ADR_ID}",
         "prior_artefacts": taken.get("prior_artefacts") or [],
-        "mentions_only_before_this_rfc": taken.get("naming_mentions") or taken.get("mentions") or [],
+        "mentions_only_before_this_rfc": taken.get("naming_mentions")
+        or taken.get("mentions")
+        or [],
     }
-    unversioned = sorted(n for n, e in numbers.items() if e.get("declaration_strength") == "UNVERSIONED_ARTEFACT")
+    unversioned = sorted(
+        n for n, e in numbers.items() if e.get("declaration_strength") == "UNVERSIONED_ARTEFACT"
+    )
     registry = {
         "registry": "RFC_IDENTIFIER_REGISTRY",
         "schema_version": 1,
@@ -439,7 +443,9 @@ def build_registry() -> None:
         },
         "counts": {
             "occupied": sum(1 for e in numbers.values() if e["state"] == "OCCUPIED"),
-            "vacant_by_control": sum(1 for e in numbers.values() if e["state"] == "VACANT_BY_CONTROL"),
+            "vacant_by_control": sum(
+                1 for e in numbers.values() if e["state"] == "VACANT_BY_CONTROL"
+            ),
             "unversioned_occupancy": len(unversioned),
         },
         "unversioned_occupancy_numbers": unversioned,
@@ -466,6 +472,7 @@ def _next_free(numbers: dict[str, dict[str, Any]]) -> str:
 # --------------------------------------------------------------------------- #
 # 7 - RFC-046 status flip
 # --------------------------------------------------------------------------- #
+
 
 def activate_rfc046() -> None:
     json_path = REPO / "docs" / "rfc" / "RFC-046_CONTROLLED_DISCOVERY.json"

@@ -380,9 +380,7 @@ class ProcessRuntime:
         process = self._process
         return process is not None and process.poll() is None
 
-    def stop(
-        self, *, timeout: float = 10.0, hard: bool = False, escalated: bool = False
-    ) -> None:
+    def stop(self, *, timeout: float = 10.0, hard: bool = False, escalated: bool = False) -> None:
         """End this child, and say whether we had to overrule it.
 
         ``escalated`` means the child was asked to stop and did not finalise in
@@ -548,9 +546,7 @@ class Supervisor:
             "asked_to_finalise": sorted(asked_names),
             "escalated": sorted(escalated),
             "failed_children": sorted(failed),
-            "exit_codes": {
-                runtime.spec.name: runtime.exit_code for runtime in self.processes
-            },
+            "exit_codes": {runtime.spec.name: runtime.exit_code for runtime in self.processes},
             "verdict": "CLEAN" if not escalated and not failed else "FAILED",
             "note": (
                 "a child that exits non-zero, or that has to be killed because it "
@@ -650,8 +646,9 @@ class Supervisor:
 
     def system_state(self) -> SystemState:
         critical_failed = [
-            runtime for runtime in self.processes if runtime.spec.critical
-            and runtime.state is ProcessState.FAILED
+            runtime
+            for runtime in self.processes
+            if runtime.spec.critical and runtime.state is ProcessState.FAILED
         ]
         if critical_failed:
             return SystemState.FAILED
@@ -679,7 +676,9 @@ class Supervisor:
 
     def status(self) -> dict[str, Any]:
         state = self.system_state()
-        children = {name: self.read_child_heartbeat(path) for name, path in self.child_heartbeats.items()}
+        children = {
+            name: self.read_child_heartbeat(path) for name, path in self.child_heartbeats.items()
+        }
         free = disk_free_bytes(self.run_dir if self.run_dir.exists() else ".")
         self.disk.observe(free)
         payload: dict[str, Any] = {

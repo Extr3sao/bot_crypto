@@ -147,9 +147,7 @@ class TerminalExperimentRegistry:
     def to_dict(self) -> dict[str, Any]:
         return {
             "experiments": {eid: r.to_dict() for eid, r in self._records.items()},
-            "registry_hash": canonical_hash(
-                {eid: r.to_dict() for eid, r in self._records.items()}
-            ),
+            "registry_hash": canonical_hash({eid: r.to_dict() for eid, r in self._records.items()}),
         }
 
     def save(self, path: Path | str) -> None:

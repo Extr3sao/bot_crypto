@@ -151,9 +151,7 @@ def yaml_scalar(text: str, key: str) -> str | None:
 def recomputed_costs() -> dict[str, Any]:
     """Fee + spread + slippage + impact, from COST_MODEL_V3.json and nothing else."""
     doc = read_json(COST_MODEL)
-    scenario = next(
-        s for s in doc["scenarios"] if s["evaluation"]["scenario_id"] == ADMISSION
-    )
+    scenario = next(s for s in doc["scenarios"] if s["evaluation"]["scenario_id"] == ADMISSION)
     spec = scenario["spec"]
     evaluation = scenario["evaluation"]
     constants = doc["model_constants"]
@@ -241,9 +239,16 @@ def verify_cost_audit(c: Checks, report: dict[str, Any], costs: dict[str, Any]) 
         (DOCUMENTED_SIZE, audit["at_documented_reference_size"]["round_trip_bps"]),
         (CAPITAL, audit["at_reference_capital"]["round_trip_bps"]),
     ):
-        library = default_model(ADMISSION).evaluate(
-            size_usd=size, liquidity_regime="normal", entry_order_type="market", exit_order_type="market"
-        ).round_trip_bps
+        library = (
+            default_model(ADMISSION)
+            .evaluate(
+                size_usd=size,
+                liquidity_regime="normal",
+                entry_order_type="market",
+                exit_order_type="market",
+            )
+            .round_trip_bps
+        )
         c.close(f"the cost model library agrees at {size:.0f} USD", library, report_value, EXACT)
 
     c.close(
@@ -262,7 +267,12 @@ def verify_cost_audit(c: Checks, report: dict[str, Any], costs: dict[str, Any]) 
     matrix_maker = next(
         r["maker_rt_cost_bps_theoretical"] for r in matrix["rows"] if r["scenario_id"] == MAKER
     )
-    c.close("the venue matrix's maker column agrees with the model", matrix_maker, costs["maker_recomputed"], 1e-4)
+    c.close(
+        "the venue matrix's maker column agrees with the model",
+        matrix_maker,
+        costs["maker_recomputed"],
+        1e-4,
+    )
     c.close(
         "the maker path is not presented as cheaper than taking",
         audit["maker_path"]["premium_over_taker_bps"],
@@ -311,10 +321,7 @@ def verify_cost_audit(c: Checks, report: dict[str, Any], costs: dict[str, Any]) 
         "the model contains no fixed cost beyond the instrument minimum",
         "none" in audit["fixed_costs"]["fixed_cash_costs_in_model"].lower()
         and audit["fixed_costs"]["min_notional_usd"] == 5.0
-        and abs(
-            audit["fixed_costs"]["min_position_fraction_of_capital"] - 5.0 / CAPITAL
-        )
-        < 1e-9,
+        and abs(audit["fixed_costs"]["min_position_fraction_of_capital"] - 5.0 / CAPITAL) < 1e-9,
         audit["fixed_costs"],
     )
     row = next(r for r in audit["applicability"] if r["assumption"].startswith("min notional"))
@@ -361,7 +368,11 @@ def verify_runtime(c: Checks, report: dict[str, Any]) -> None:
         ),
         [row["assumption"] for row in report["cost_audit"]["applicability"]],
     )
-    c.check("live trading is disabled in the config", yaml_scalar(EXCHANGE_CFG.read_text(encoding="utf-8"), "sandbox") == "true", None)
+    c.check(
+        "live trading is disabled in the config",
+        yaml_scalar(EXCHANGE_CFG.read_text(encoding="utf-8"), "sandbox") == "true",
+        None,
+    )
     c.check(
         "reference capital is the runtime's 200 USDT",
         runtime_cfg["reference_capital_usdt"] == CAPITAL,
@@ -404,7 +415,10 @@ def verify_horizons(c: Checks, report: dict[str, Any]) -> None:
     published = report["horizon_measurement"]["per_horizon"]
     for horizon, values in measured.items():
         reported = published[horizon]
-        relative = abs(values["median"] - reported["median_abs_move_bps"]) / reported["median_abs_move_bps"]
+        relative = (
+            abs(values["median"] - reported["median_abs_move_bps"])
+            / reported["median_abs_move_bps"]
+        )
         c.check(
             f"median move at {horizon} reproduces from the 1h/15m/5m series (shifted windows)",
             relative <= MEDIAN_TOLERANCE,
@@ -481,15 +495,30 @@ def verify_break_even(c: Checks, report: dict[str, Any], costs: dict[str, Any]) 
     toll = costs["recomputed_200"]
     cost_per_op = CAPITAL * toll / BPS
     stress = costs["stress_multiple"]
-    c.close("minimum gross move per round trip", section["minimum_gross_move_bps_per_round_trip"], toll, EXACT)
-    c.close("minimum gross move in USDT", section["minimum_gross_move_usdt_per_round_trip"], cost_per_op, MONEY)
+    c.close(
+        "minimum gross move per round trip",
+        section["minimum_gross_move_bps_per_round_trip"],
+        toll,
+        EXACT,
+    )
+    c.close(
+        "minimum gross move in USDT",
+        section["minimum_gross_move_usdt_per_round_trip"],
+        cost_per_op,
+        MONEY,
+    )
     c.close(
         "minimum expectancy to be net positive is the toll",
         section["minimum_expectancy_bps_to_be_net_positive"],
         toll,
         EXACT,
     )
-    c.close("stressed requirement uses the documented multiple", section["required_gross_edge_bps_at_1p5x_stress"], toll * stress, EXACT)
+    c.close(
+        "stressed requirement uses the documented multiple",
+        section["required_gross_edge_bps_at_1p5x_stress"],
+        toll * stress,
+        EXACT,
+    )
     stress_field = f"required_gross_edge_bps_at_{str(stress).replace('.', 'p')}x_stress"
     c.check(
         "the published stress field name encodes the multiple actually used",
@@ -497,9 +526,24 @@ def verify_break_even(c: Checks, report: dict[str, Any], costs: dict[str, Any]) 
         (stress_field, sorted(section)),
     )
     frozen = section["frozen_campaign_comparison"]
-    c.close("the frozen campaign figure is quoted", frozen["frozen_admission_bps"], costs["recorded_1000"], EXACT)
-    c.close("the frozen stress threshold is quoted", frozen["frozen_stress_threshold_bps"], costs["recorded_1000"] * stress, EXACT)
-    c.close("the delta to the 200 USDT toll is right", frozen["delta_vs_200_usdt_bps"], toll - costs["recorded_1000"], EXACT)
+    c.close(
+        "the frozen campaign figure is quoted",
+        frozen["frozen_admission_bps"],
+        costs["recorded_1000"],
+        EXACT,
+    )
+    c.close(
+        "the frozen stress threshold is quoted",
+        frozen["frozen_stress_threshold_bps"],
+        costs["recorded_1000"] * stress,
+        EXACT,
+    )
+    c.close(
+        "the delta to the 200 USDT toll is right",
+        frozen["delta_vs_200_usdt_bps"],
+        toll - costs["recorded_1000"],
+        EXACT,
+    )
     c.check(
         "the frozen gate is stated to be at least as demanding as the 200 USDT stress",
         frozen["stress_delta_bps"] >= 0.0,
@@ -507,8 +551,12 @@ def verify_break_even(c: Checks, report: dict[str, Any], costs: dict[str, Any]) 
     )
 
     maker = section["maker_modality"]
-    c.close("maker modality cost", maker["round_trip_bps_at_200_usdt"], costs["maker_recomputed"], EXACT)
-    c.check("the maker modality is not admissible", maker["admissible"] is False, maker["admissible"])
+    c.close(
+        "maker modality cost", maker["round_trip_bps_at_200_usdt"], costs["maker_recomputed"], EXACT
+    )
+    c.check(
+        "the maker modality is not admissible", maker["admissible"] is False, maker["admissible"]
+    )
     c.check(
         "the maker modality is declared size-invariant",
         maker["size_invariant"] is True,
@@ -517,7 +565,12 @@ def verify_break_even(c: Checks, report: dict[str, Any], costs: dict[str, Any]) 
 
     three = section["three_daily_round_trips_illustrative"]
     c.close("three round trips cost per day", three["cost_per_day_usdt"], cost_per_op * 3, MONEY)
-    c.close("three round trips annual multiple of capital", three["cost_per_year_multiple_of_capital"], cost_per_op * 3 * 365 / CAPITAL, EXACT)
+    c.close(
+        "three round trips annual multiple of capital",
+        three["cost_per_year_multiple_of_capital"],
+        cost_per_op * 3 * 365 / CAPITAL,
+        EXACT,
+    )
 
     for row in section["size_sensitivity"]:
         size = float(row["size_usd"])
@@ -545,7 +598,12 @@ def verify_break_even(c: Checks, report: dict[str, Any], costs: dict[str, Any]) 
         and read_json(OPERATING_MODEL)["reference_capital_usdt"] == CAPITAL,
         None,
     )
-    c.close("the target is 20% of the 200 USDT capital", section["turnover_sensitivity"]["target_net_usdt"], target_usdt, MONEY)
+    c.close(
+        "the target is 20% of the 200 USDT capital",
+        section["turnover_sensitivity"]["target_net_usdt"],
+        target_usdt,
+        MONEY,
+    )
     for row in section["turnover_sensitivity"]["rows"]:
         per_day = float(row["round_trips_per_day"])
         per_year = per_day * 365.0
@@ -553,17 +611,35 @@ def verify_break_even(c: Checks, report: dict[str, Any], costs: dict[str, Any]) 
         net_margin = (target_usdt / per_year) / CAPITAL * BPS
         gross = toll + net_margin
         c.close(f"{per_day}/day: annual cost", row["annual_cost_usdt"], annual_cost, MONEY)
-        c.close(f"{per_day}/day: cost vs capital", row["annual_cost_pct_of_capital"], annual_cost / CAPITAL, EXACT)
-        c.close(f"{per_day}/day: net margin needed", row["net_margin_bps_per_trade"], net_margin, EXACT)
-        c.close(f"{per_day}/day: gross needed", row["gross_bps_per_trade_to_net_target"], gross, EXACT)
-        c.close(f"{per_day}/day: margin share", row["net_margin_share_of_gross"], net_margin / gross, EXACT)
-    high = next(r for r in section["turnover_sensitivity"]["rows"] if r["round_trips_per_day"] == 10.0)
+        c.close(
+            f"{per_day}/day: cost vs capital",
+            row["annual_cost_pct_of_capital"],
+            annual_cost / CAPITAL,
+            EXACT,
+        )
+        c.close(
+            f"{per_day}/day: net margin needed", row["net_margin_bps_per_trade"], net_margin, EXACT
+        )
+        c.close(
+            f"{per_day}/day: gross needed", row["gross_bps_per_trade_to_net_target"], gross, EXACT
+        )
+        c.close(
+            f"{per_day}/day: margin share",
+            row["net_margin_share_of_gross"],
+            net_margin / gross,
+            EXACT,
+        )
+    high = next(
+        r for r in section["turnover_sensitivity"]["rows"] if r["round_trips_per_day"] == 10.0
+    )
     c.check(
         "high turnover is shown to leave a thin margin over the toll",
         high["net_margin_share_of_gross"] < 0.05,
         high["net_margin_share_of_gross"],
     )
-    low = next(r for r in section["turnover_sensitivity"]["rows"] if r["round_trips_per_day"] == 0.2)
+    low = next(
+        r for r in section["turnover_sensitivity"]["rows"] if r["round_trips_per_day"] == 0.2
+    )
     c.check(
         "low turnover leaves a materially larger margin over the toll",
         low["net_margin_share_of_gross"] > high["net_margin_share_of_gross"],
@@ -630,7 +706,8 @@ def verify_rfc046_review(c: Checks, report: dict[str, Any]) -> None:
     c.check(
         "the three candidates are still the rejected set",
         all(
-            forensics["candidates"][cid]["verdict"] in ("COST_DISQUALIFIED", "NO_GROSS_EDGE", "ZERO_SAMPLE")
+            forensics["candidates"][cid]["verdict"]
+            in ("COST_DISQUALIFIED", "NO_GROSS_EDGE", "ZERO_SAMPLE")
             for cid in ("CAND-046-001", "CAND-046-002", "CAND-046-003")
         ),
         {cid: forensics["candidates"][cid]["verdict"] for cid in forensics["candidates"]},
@@ -683,7 +760,8 @@ def verify_policy(c: Checks, report: dict[str, Any]) -> None:
 
     c.check(
         "the campaign is still the failed one",
-        run_report["campaign"]["campaign_status"] == "DISCOVERY_CAMPAIGN_FAILED"
+        run_report["campaign"]["campaign_status"]
+        == "DISCOVERY_CAMPAIGN_FAILED"
         == state["campaign_status"]
         == state["discovery_campaign_failed"],
         state["campaign_status"],
@@ -706,8 +784,7 @@ def verify_policy(c: Checks, report: dict[str, Any]) -> None:
     )
     c.check(
         "the business reentry gate stays closed",
-        exemption["gate_state"]["G_BUSINESS_REENTRY"] == "NOT_PASS"
-        == state["G_BUSINESS_REENTRY"],
+        exemption["gate_state"]["G_BUSINESS_REENTRY"] == "NOT_PASS" == state["G_BUSINESS_REENTRY"],
         state["G_BUSINESS_REENTRY"],
     )
     c.check(
@@ -732,13 +809,19 @@ def verify_policy(c: Checks, report: dict[str, Any]) -> None:
         state["risk_engine"] == "DETERMINISTIC",
         state["risk_engine"],
     )
-    c.check("false success is zero", state["false_success"] == 0 and report["false_success"] == 0, state["false_success"])
+    c.check(
+        "false success is zero",
+        state["false_success"] == 0 and report["false_success"] == 0,
+        state["false_success"],
+    )
     c.check(
         "the report names the stop rule a cost overrun would trigger",
         any("ST-6" in item for item in report["decision"]["violated_if"]),
         report["decision"]["violated_if"],
     )
-    stop_rules = (REPO / "docs" / "governance" / "DISCOVERY_STOP_RULES.md").read_text(encoding="utf-8")
+    stop_rules = (REPO / "docs" / "governance" / "DISCOVERY_STOP_RULES.md").read_text(
+        encoding="utf-8"
+    )
     c.check(
         "ST-6 exists in the stop rules (the cited rule is real)",
         "ST-6" in stop_rules and "realised cost" in stop_rules.lower(),
@@ -766,7 +849,9 @@ def verify_verdicts(c: Checks, report: dict[str, Any]) -> None:
     text = REPORT_MD.read_text(encoding="utf-8")
     payload = json.dumps(report, ensure_ascii=False)
     for token in FORBIDDEN_TOKENS:
-        c.check(f"the artefact never claims {token}", token not in payload and token not in text, token)
+        c.check(
+            f"the artefact never claims {token}", token not in payload and token not in text, token
+        )
     for field in REQUIRED_FIELDS:
         c.check(f"required field present: {field}", field in report, field)
     stamp = report["generated_at_utc"]
@@ -788,7 +873,8 @@ def verify_verdicts(c: Checks, report: dict[str, Any]) -> None:
     )
     c.check(
         "the builder is not the verifier",
-        report["builder_equals_verifier"] is False and report["builder"].endswith("rfc046_economic_gate.py"),
+        report["builder_equals_verifier"] is False
+        and report["builder"].endswith("rfc046_economic_gate.py"),
         report["builder"],
     )
     c.check(

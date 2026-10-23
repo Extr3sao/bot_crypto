@@ -162,8 +162,7 @@ def _stage_verifier() -> tuple[int, str]:
 
     evidence = verification.collect_evidence()
     return evidence.rows, (
-        f"segments={len(evidence.files)} book_rows_retained=0 "
-        f"books={len(evidence.books.summary())}"
+        f"segments={len(evidence.files)} book_rows_retained=0 books={len(evidence.books.summary())}"
     )
 
 
@@ -199,9 +198,7 @@ def run_benchmark(run_id: str | None = None) -> dict[str, Any]:
                     else None
                 ),
                 "rss_growth_from_baseline_mb": (
-                    round(peak - baseline, 3)
-                    if peak is not None and baseline is not None
-                    else None
+                    round(peak - baseline, 3) if peak is not None and baseline is not None else None
                 ),
                 "samples": len(watch.samples),
                 "detail": detail,
@@ -234,9 +231,7 @@ def run_benchmark(run_id: str | None = None) -> dict[str, Any]:
     materialised_mb = (
         round(rows_total * per_row / 1e6, 1) if per_row is not None and rows_total else None
     )
-    worst_growth = max(
-        (stage["rss_growth_from_baseline_mb"] or 0.0) for stage in stages
-    )
+    worst_growth = max((stage["rss_growth_from_baseline_mb"] or 0.0) for stage in stages)
     # Bounded means the growth is a fixed working set, not a function of the row
     # count. The bar is deliberately loose: it only has to separate "constant" from
     # "proportional", so ten percent of the materialised cost is far below.

@@ -31,27 +31,46 @@ def _tok(x: str) -> str:
 
 
 def _eligible_independent(p: dict[str, Any]) -> bool:
-    return bool(p["individual_contracts"] and p["term_structure"]
-                and _tok(p["p1_suitability"]) in ("HIGH", "MEDIUM")
-                and _tok(p["p2_suitability"]) in ("HIGH", "MEDIUM")
-                and not str(p["price"]).startswith("DEPRECATED"))
+    return bool(
+        p["individual_contracts"]
+        and p["term_structure"]
+        and _tok(p["p1_suitability"]) in ("HIGH", "MEDIUM")
+        and _tok(p["p2_suitability"]) in ("HIGH", "MEDIUM")
+        and not str(p["price"]).startswith("DEPRECATED")
+    )
 
 
-def verify(capital: dict[str, Any], nulls: dict[str, Any], registry: dict[str, Any],
-           validity: dict[str, Any], matrix: list[dict[str, Any]],
-           decision: dict[str, Any], g_cap: str, g_adv: str, path: str) -> dict[str, Any]:
+def verify(
+    capital: dict[str, Any],
+    nulls: dict[str, Any],
+    registry: dict[str, Any],
+    validity: dict[str, Any],
+    matrix: list[dict[str, Any]],
+    decision: dict[str, Any],
+    g_cap: str,
+    g_adv: str,
+    path: str,
+) -> dict[str, Any]:
     # --- capital arithmetic --------------------------------------------------
     grid = capital["grid"]
-    inv_max = max(max(g["invariant_max_abs_notional_residual"],
-                      g["invariant_max_abs_weight_residual"]) for g in grid)
+    inv_max = max(
+        max(g["invariant_max_abs_notional_residual"], g["invariant_max_abs_weight_residual"])
+        for g in grid
+    )
     large = [g for g in grid if g["capital"] >= 25_000_000.0]
     med_large = [g["granularity"]["median_abs_allocation_error"] for g in large]
-    granularity_monotone = all(med_large[i + 1] <= med_large[i] * 1.001
-                              for i in range(len(med_large) - 1))
+    granularity_monotone = all(
+        med_large[i + 1] <= med_large[i] * 1.001 for i in range(len(med_large) - 1)
+    )
     te037_large = max(abs(g["tracking_error_rfc037"]) for g in large)
     te_corr_large = max(abs(g["tracking_error_corrected"]) for g in large)
-    capital_ok = (capital["replay_reconciles"] and inv_max < 1e-6
-                  and granularity_monotone and te037_large > 1.0 and te_corr_large <= 0.15)
+    capital_ok = (
+        capital["replay_reconciles"]
+        and inv_max < 1e-6
+        and granularity_monotone
+        and te037_large > 1.0
+        and te_corr_large <= 0.15
+    )
 
     # --- null definitions / reproducibility / p-values -----------------------
     rerun = NUL.run()
@@ -73,8 +92,7 @@ def verify(capital: dict[str, Any], nulls: dict[str, Any], registry: dict[str, A
             adv_recomputed = "FAIL"
         if w["NULL-3_SIGN_RANDOMISATION"]["p_null_ge_observed"] > 0.05:
             adv_recomputed = "FAIL"
-    nulls_ok = deterministic and null1_invalid and len(valid_nulls) >= 2 \
-        and adv_recomputed == g_adv
+    nulls_ok = deterministic and null1_invalid and len(valid_nulls) >= 2 and adv_recomputed == g_adv
 
     # --- provider claims + decision rule -------------------------------------
     claims_ok = True
@@ -84,26 +102,36 @@ def verify(capital: dict[str, Any], nulls: dict[str, Any], registry: dict[str, A
         if not p["quote_required"] and not str(p["price"]).strip():
             claims_ok = False
     elig = [p["provider"] for p in matrix if _eligible_independent(p)]
-    best = max((p for p in matrix if p["provider"] in elig),
-               key=lambda p: (p["data_research_value"],
-                              not p["quote_required"], "API" in p["api_file_format"]),
-               default=None)
-    decision_ok = (best is not None and decision["best_provider"] == best["provider"]
-                   and decision["classification"] in ("DO_NOT_BUY", "REQUEST_QUOTE",
-                                                      "BUY_CANDIDATE"))
+    best = max(
+        (p for p in matrix if p["provider"] in elig),
+        key=lambda p: (
+            p["data_research_value"],
+            not p["quote_required"],
+            "API" in p["api_file_format"],
+        ),
+        default=None,
+    )
+    decision_ok = (
+        best is not None
+        and decision["best_provider"] == best["provider"]
+        and decision["classification"] in ("DO_NOT_BUY", "REQUEST_QUOTE", "BUY_CANDIDATE")
+    )
 
     # --- status + no-purchase ------------------------------------------------
-    p1_ok = True   # MF-TREND-001 historical status is preserved (see KPI in report)
-    p2_ok = True   # P2 remains AUTHORIZED_WAITING (not implemented)
-    modern_status = "PAID_CANDIDATE" if decision["classification"] in (
-        "BUY_CANDIDATE", "REQUEST_QUOTE") else "FREE_BLOCKED"
+    p1_ok = True  # MF-TREND-001 historical status is preserved (see KPI in report)
+    p2_ok = True  # P2 remains AUTHORIZED_WAITING (not implemented)
+    modern_status = (
+        "PAID_CANDIDATE"
+        if decision["classification"] in ("BUY_CANDIDATE", "REQUEST_QUOTE")
+        else "FREE_BLOCKED"
+    )
     no_purchase = modern_status in ("FREE_BLOCKED", "PAID_CANDIDATE")
 
     # --- FALSE_SUCCESS triggers (§50) ---------------------------------------
     triggers = {
         "unexplained_780pct_accepted": not capital_ok,
         "invalid_permutation_null_treated_as_proof": not null1_invalid,
-        "p_values_cherry_picked": False,   # all families pre-registered and reported
+        "p_values_cherry_picked": False,  # all families pre-registered and reported
         "mf_trend_called_modern_validated": False,
         "free_data_block_treated_as_economic_failure": False,
         "provider_cost_invented": not claims_ok,
@@ -143,7 +171,8 @@ def verify(capital: dict[str, Any], nulls: dict[str, Any], registry: dict[str, A
         "path": path,
     }
     (OUT / "RFC038_VERIFICATION.json").write_text(
-        json.dumps(payload, indent=2, default=str) + "\n", encoding="utf-8")
+        json.dumps(payload, indent=2, default=str) + "\n", encoding="utf-8"
+    )
     (OUT / "RFC038_VERIFICATION.md").write_text(
         "# RFC-038 INDEPENDENT VERIFICATION\n\n"
         f"- VERIFICATION = {verdict}\n"
@@ -153,7 +182,9 @@ def verify(capital: dict[str, Any], nulls: dict[str, Any], registry: dict[str, A
         f"- provider claims = {claims_ok}\n"
         f"- decision rule recomputes = {decision_ok}\n"
         f"- no automatic purchase = {no_purchase}\n"
-        f"- FALSE_SUCCESS = {len(fs_hits)}\n", encoding="utf-8")
+        f"- FALSE_SUCCESS = {len(fs_hits)}\n",
+        encoding="utf-8",
+    )
     return payload
 
 
@@ -164,8 +195,17 @@ def main() -> int:
     for p in matrix:
         p["data_research_value"] = DAT.score(p)
     decision = DAT.decide(matrix)
-    res = verify(cap, raw["results"], raw["registry"], raw["validity"], matrix, decision,
-                 cap["G_CAP_RECON"], "PASS", "A")
+    res = verify(
+        cap,
+        raw["results"],
+        raw["registry"],
+        raw["validity"],
+        matrix,
+        decision,
+        cap["G_CAP_RECON"],
+        "PASS",
+        "A",
+    )
     print(json.dumps(res, indent=2, default=str))
     return 0
 

@@ -59,8 +59,7 @@ class MicroBar:
             )
         if self.available_at <= self.event_time:
             raise ValueError(
-                f"available_at ({self.available_at}) must be after event_time "
-                f"({self.event_time})"
+                f"available_at ({self.available_at}) must be after event_time ({self.event_time})"
             )
 
 

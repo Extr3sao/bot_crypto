@@ -168,13 +168,13 @@ def _assert_no_live_state() -> None:
         status.value for status in AdmissionStatus if status.value.upper() in LIVE_STATUS_NAMES
     )
     if offenders:
-        raise StrategyStateError(
-            f"LIVE must not be reachable from the PAPER runtime: {offenders}"
-        )
+        raise StrategyStateError(f"LIVE must not be reachable from the PAPER runtime: {offenders}")
     for source, targets in STATE_TRANSITIONS.items():
         for target in targets:
             if target.value.upper() in LIVE_STATUS_NAMES:
-                raise StrategyStateError(f"transition {source.value} -> {target.value} reaches LIVE")
+                raise StrategyStateError(
+                    f"transition {source.value} -> {target.value} reaches LIVE"
+                )
 
 
 _assert_no_live_state()
@@ -387,9 +387,7 @@ class StrategyRegistry:
         asset_list = tuple(dict.fromkeys(str(a).upper() for a in assets))
         records: dict[str, StrategyRecord] = {}
         for strategy_id, entry in sorted(ledger.entries().items()):
-            records[strategy_id] = _record_for(
-                strategy_id, entry, assets=asset_list, ledger=ledger
-            )
+            records[strategy_id] = _record_for(strategy_id, entry, assets=asset_list, ledger=ledger)
         registry = cls(
             records=records,
             source=ledger.source_path,
@@ -495,9 +493,7 @@ class StrategyRegistry:
         disagree about what the ledger says.
         """
         counts = self.counts_by_status()
-        states = " ".join(
-            f"{state}={counts[state]}" for state in sorted(counts) if counts[state]
-        )
+        states = " ".join(f"{state}={counts[state]}" for state in sorted(counts) if counts[state])
         lines = [
             f"[registry] {states or 'no strategies'}",
             f"[registry] paper-executable on {timeframe}: "

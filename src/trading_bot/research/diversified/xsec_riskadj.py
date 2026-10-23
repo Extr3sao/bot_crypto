@@ -217,9 +217,7 @@ def summarize_positions(
             "exit_mix": {},
             "concentration": {},
         }
-    gross_bps = [
-        (t.gross / t.notional * BPS) if t.notional else 0.0 for t in trades
-    ]
+    gross_bps = [(t.gross / t.notional * BPS) if t.notional else 0.0 for t in trades]
     net_bps = [(t.net / t.notional * BPS) if t.notional else 0.0 for t in trades]
     nets = [t.net for t in trades]
     wins = [x for x in net_bps if x > 0]
@@ -246,7 +244,9 @@ def summarize_positions(
         "fees_usd": round(sum(t.fees for t in trades), 2),
         "net_usd": round(sum(nets), 2),
         "expectancy_gross_bps": round(statistics.fmean(gross_bps), 3),
-        "expectancy_cost_bps": round(statistics.fmean([t.fees / t.notional * BPS for t in trades]), 3)
+        "expectancy_cost_bps": round(
+            statistics.fmean([t.fees / t.notional * BPS for t in trades]), 3
+        )
         if all(t.notional for t in trades)
         else round(cost_bps_rt, 3),
         "expectancy_net_bps": round(statistics.fmean(net_bps), 3),
@@ -259,7 +259,9 @@ def summarize_positions(
         "max_drawdown_bps": round(worst / total_notional * BPS, 3),
         "sharpe_per_trade": sharpe,
         "portfolio_net_bps": round(sum(nets) / total_notional * BPS, 3),
-        "exit_mix": {r: sum(1 for t in trades if t.reason == r) for r in sorted({t.reason for t in trades})},
+        "exit_mix": {
+            r: sum(1 for t in trades if t.reason == r) for r in sorted({t.reason for t in trades})
+        },
         "concentration": {
             "positive_trades": len(pos),
             "total_positive_net_bps": round(total_pos, 3),
@@ -322,8 +324,12 @@ def simulate_riskadj_xsec(
                 gross=round(gross, 6),
                 fees=round(fee, 6),
                 net=round(gross - fee, 6),
-                mfe_pct=round((holding.peak - holding.entry_price) / holding.entry_price * 100.0, 4),
-                mae_pct=round((holding.entry_price - holding.trough) / holding.entry_price * 100.0, 4),
+                mfe_pct=round(
+                    (holding.peak - holding.entry_price) / holding.entry_price * 100.0, 4
+                ),
+                mae_pct=round(
+                    (holding.entry_price - holding.trough) / holding.entry_price * 100.0, 4
+                ),
                 duration_min=round((exit_ts - holding.entry_ts) / 60_000.0, 1),
             )
         )
@@ -343,9 +349,7 @@ def simulate_riskadj_xsec(
         fill_day = calendar[i + 1]
 
         snapshot = uverse.snapshot(day + MS_PER_DAY)
-        scored = compute_scores(
-            corpus, day, config, symbols=snapshot.eligible_assets
-        )
+        scored = compute_scores(corpus, day, config, symbols=snapshot.eligible_assets)
         target = select_top(scored, config)
         census[str(day + MS_PER_DAY)] = {
             "eligible": len(snapshot.eligible_assets),

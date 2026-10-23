@@ -171,7 +171,10 @@ class StrategyHealthMonitor:
 
         # Hit-rate drift
         base_hr = baseline["hit_rate"]
-        if base_hr > 0 and abs(current["hit_rate"] - base_hr) > self.policy.hit_rate_drift_frac * base_hr:
+        if (
+            base_hr > 0
+            and abs(current["hit_rate"] - base_hr) > self.policy.hit_rate_drift_frac * base_hr
+        ):
             flags.append(Flag.HIT_RATE_DRIFT)
             evidence.append(f"hit_rate {current['hit_rate']:.2f} vs baseline {base_hr:.2f}")
 
@@ -216,14 +219,14 @@ class StrategyHealthMonitor:
         if inputs.bar_count and inputs.bar_count > 0:
             rate = medium.sample_count / inputs.bar_count
             base_rate = (
-                long.sample_count / max(inputs.bar_count, long.sample_count)
-                if long
-                else rate
+                long.sample_count / max(inputs.bar_count, long.sample_count) if long else rate
             )
             if base_rate > 0 and rate > base_rate * self.policy.signal_explosion_multiple:
                 flags.append(Flag.ABNORMAL_SIGNAL_EXPLOSION)
                 evidence.append(f"signal rate {rate:.3f} vs baseline {base_rate:.3f}")
-            elif base_rate > 0 and rate < base_rate * (1.0 - self.policy.signal_frequency_drift_frac):
+            elif base_rate > 0 and rate < base_rate * (
+                1.0 - self.policy.signal_frequency_drift_frac
+            ):
                 flags.append(Flag.SIGNAL_FREQUENCY_DRIFT)
                 evidence.append(f"signal rate {rate:.3f} fell from {base_rate:.3f}")
 
@@ -246,9 +249,7 @@ class StrategyHealthMonitor:
 
         score = max(0.0, 1.0 - sum(_FLAG_WEIGHTS.get(f, 0.1) for f in flags))
         state = self._state_for(score, current, flags)
-        return self._report(
-            inputs, state, score, tuple(flags), metrics, baseline, tuple(evidence)
-        )
+        return self._report(inputs, state, score, tuple(flags), metrics, baseline, tuple(evidence))
 
     # -- helpers -----------------------------------------------------------
 
@@ -264,9 +265,7 @@ class StrategyHealthMonitor:
                 run = 0
         return worst
 
-    def _state_for(
-        self, score: float, current: dict[str, float], flags: list[str]
-    ) -> HealthState:
+    def _state_for(self, score: float, current: dict[str, float], flags: list[str]) -> HealthState:
         pf = current["profit_factor"]
         exp = current["net_expectancy_bps"]
         if pf < self.policy.min_profit_factor and exp < 0:
@@ -297,7 +296,10 @@ class StrategyHealthMonitor:
             score=score,
             metrics=metrics,
             baseline=baseline,
-            current={k: metrics.get(k, 0.0) for k in ("net_expectancy_bps", "profit_factor", "max_drawdown_bps")},
+            current={
+                k: metrics.get(k, 0.0)
+                for k in ("net_expectancy_bps", "profit_factor", "max_drawdown_bps")
+            },
             degradation_flags=flags,
             evidence=ev,
             window="medium",

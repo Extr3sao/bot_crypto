@@ -332,11 +332,7 @@ def source_quality_sufficient(qualities: Sequence[str]) -> bool:
 def minimum_evidence_met(sources: Sequence[Mapping[str, Any]]) -> bool:
     """§12-§13 — >=2 independent high-quality sources, or one strong source
     that provably survives post-publication."""
-    high = [
-        s
-        for s in sources
-        if str(s.get("quality", "")).strip().upper() in HIGH_QUALITY_SOURCES
-    ]
+    high = [s for s in sources if str(s.get("quality", "")).strip().upper() in HIGH_QUALITY_SOURCES]
     independent_high = [s for s in high if bool(s.get("independent", False))]
     if len(independent_high) >= MIN_INDEPENDENT_HIGH_QUALITY_SOURCES:
         return True

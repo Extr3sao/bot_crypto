@@ -140,9 +140,7 @@ def test_replay_status_is_partial_without_an_outcome(tmp_path: Path) -> None:
 def test_replay_status_is_full_once_the_outcome_exists(tmp_path: Path) -> None:
     store = DecisionTraceStore(tmp_path)
     trace = store.append(_shadow_trace("d-1"))
-    record = OutcomeEvaluator().evaluate(
-        trace=trace, bars=bars("BTC/USDT", 6, rising=True)
-    ).record
+    record = OutcomeEvaluator().evaluate(trace=trace, bars=bars("BTC/USDT", 6, rising=True)).record
     assert record is not None
     store.append_outcome(record)
     replay = store.replay("d-1")
@@ -329,7 +327,9 @@ def test_resolve_pending_skips_traces_without_a_hypothesis() -> None:
 # -- experience -------------------------------------------------------------
 
 
-def _outcome(decision_id: str, net: float, *, mode: DecisionMode = DecisionMode.SHADOW_TRADE) -> Any:
+def _outcome(
+    decision_id: str, net: float, *, mode: DecisionMode = DecisionMode.SHADOW_TRADE
+) -> Any:
     return OutcomeRecord(
         run_id="run-1",
         decision_id=decision_id,

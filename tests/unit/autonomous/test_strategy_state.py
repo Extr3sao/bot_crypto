@@ -111,9 +111,10 @@ def test_only_paper_candidate_may_be_promoted_to_active() -> None:
 
 
 def test_both_admitted_states_authorise_paper_and_nothing_else_does() -> None:
-    assert frozenset(
-        {AdmissionStatus.PAPER_CANDIDATE, AdmissionStatus.PAPER_ACTIVE}
-    ) == PAPER_AUTHORISING_STATUSES
+    assert (
+        frozenset({AdmissionStatus.PAPER_CANDIDATE, AdmissionStatus.PAPER_ACTIVE})
+        == PAPER_AUTHORISING_STATUSES
+    )
     for status in AdmissionStatus:
         expected = status in PAPER_AUTHORISING_STATUSES
         assert is_paper_executable(status) is expected
@@ -320,7 +321,11 @@ def test_a_retired_strategy_cannot_be_admitted() -> None:
             admitted_for_paper=True,
             expected_gross_edge_bps=1.0,
             edge_evidence=EdgeEvidence(
-                source_doc="docs/x.json", metric="m", value_bps=1.0, knowledge="ESTIMATED", sample_trades=1
+                source_doc="docs/x.json",
+                metric="m",
+                value_bps=1.0,
+                knowledge="ESTIMATED",
+                sample_trades=1,
             ),
             source_doc="docs/x.json",
             rationale="",

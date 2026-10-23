@@ -39,7 +39,17 @@ def test_monthly_equivalent_is_annual_over_twelve() -> None:
 
 
 def test_capital_and_return_scenarios_are_complete() -> None:
-    assert PM.CAPITAL_SCENARIOS == (200.0, 500.0, 1000.0, 2500.0, 5000.0, 10000.0, 25000.0, 50000.0, 100000.0)
+    assert PM.CAPITAL_SCENARIOS == (
+        200.0,
+        500.0,
+        1000.0,
+        2500.0,
+        5000.0,
+        10000.0,
+        25000.0,
+        50000.0,
+        100000.0,
+    )
     assert PM.CAPITAL_SCENARIOS[:6] == PM.DISPLAY_CAPITAL_SCENARIOS
     assert PM.RETURN_SCENARIOS == (0.05, 0.10, 0.15, 0.20, 0.25, 0.30)
     assert PM.HIGH_RISK_RETURN_SCENARIOS == (0.40, 0.50)
@@ -195,9 +205,10 @@ def test_milestone_sequence_and_index() -> None:
 
 
 def test_capital_scale_gate_requires_every_condition() -> None:
-    assert PM.capital_scale_gate(dict.fromkeys(PM.G_CAPITAL_SCALE_CONDITIONS, True))[
-        "G_CAPITAL_SCALE"
-    ] == "PASS"
+    assert (
+        PM.capital_scale_gate(dict.fromkeys(PM.G_CAPITAL_SCALE_CONDITIONS, True))["G_CAPITAL_SCALE"]
+        == "PASS"
+    )
     partial = dict.fromkeys(PM.G_CAPITAL_SCALE_CONDITIONS, True)
     partial["human_approval"] = False
     gate = PM.capital_scale_gate(partial)
@@ -251,30 +262,42 @@ def test_capital_tier_ladder() -> None:
 
 
 def test_profit_levels_do_not_invent_a_threshold() -> None:
-    assert PM.profit_level(
-        realized_net_pnl=0.0,
-        annual_net_profit=0.0,
-        execution_and_operational_costs=0.0,
-        materially_larger_capital_deployed=False,
-    ) == "NONE"
-    assert PM.profit_level(
-        realized_net_pnl=40.0,
-        annual_net_profit=40.0,
-        execution_and_operational_costs=100.0,
-        materially_larger_capital_deployed=False,
-    ) == "LEVEL_A_PROOF_OF_PROFITABILITY"
-    assert PM.profit_level(
-        realized_net_pnl=5000.0,
-        annual_net_profit=5000.0,
-        execution_and_operational_costs=500.0,
-        materially_larger_capital_deployed=False,
-    ) == "LEVEL_B_ECONOMICALLY_NOTICEABLE"
-    assert PM.profit_level(
-        realized_net_pnl=5000.0,
-        annual_net_profit=5000.0,
-        execution_and_operational_costs=500.0,
-        materially_larger_capital_deployed=True,
-    ) == "LEVEL_C_MEANINGFUL_INCOME_CONTRIBUTION"
+    assert (
+        PM.profit_level(
+            realized_net_pnl=0.0,
+            annual_net_profit=0.0,
+            execution_and_operational_costs=0.0,
+            materially_larger_capital_deployed=False,
+        )
+        == "NONE"
+    )
+    assert (
+        PM.profit_level(
+            realized_net_pnl=40.0,
+            annual_net_profit=40.0,
+            execution_and_operational_costs=100.0,
+            materially_larger_capital_deployed=False,
+        )
+        == "LEVEL_A_PROOF_OF_PROFITABILITY"
+    )
+    assert (
+        PM.profit_level(
+            realized_net_pnl=5000.0,
+            annual_net_profit=5000.0,
+            execution_and_operational_costs=500.0,
+            materially_larger_capital_deployed=False,
+        )
+        == "LEVEL_B_ECONOMICALLY_NOTICEABLE"
+    )
+    assert (
+        PM.profit_level(
+            realized_net_pnl=5000.0,
+            annual_net_profit=5000.0,
+            execution_and_operational_costs=500.0,
+            materially_larger_capital_deployed=True,
+        )
+        == "LEVEL_C_MEANINGFUL_INCOME_CONTRIBUTION"
+    )
 
 
 # --------------------------------------------------------------------------- #
@@ -324,7 +347,9 @@ HAS_ARTIFACTS = (OUT / "CAPITAL_RETURN_MATRIX.json").exists()
 @pytest.mark.skipif(not HAS_ARTIFACTS, reason="RFC-043 artifacts not generated in this checkout")
 def test_artifacts_record_the_operating_model() -> None:
     model = json.loads(
-        (REPO / "docs" / "research" / "PROFITABILITY_OPERATING_MODEL.json").read_text(encoding="utf-8")
+        (REPO / "docs" / "research" / "PROFITABILITY_OPERATING_MODEL.json").read_text(
+            encoding="utf-8"
+        )
     )
     assert model["current_milestone"] == "M0"
     assert model["capital_scale_authorized"] is False
@@ -342,5 +367,7 @@ def test_final_report_shape_and_first_line() -> None:
     assert report["next_alpha_rfc_allowed"] == "NO"
     assert report["capital_scale_authorized"] == "NO"
     assert report["next"] == "WAIT FOR BUSINESS EDGE"
-    first_line = (REPO / "reports" / "RFC043_FINAL_REPORT.md").read_text(encoding="utf-8").splitlines()[0]
+    first_line = (
+        (REPO / "reports" / "RFC043_FINAL_REPORT.md").read_text(encoding="utf-8").splitlines()[0]
+    )
     assert first_line == "RFC-043 CAPITAL SCALE & PROFITABILITY OPERATING MODEL"

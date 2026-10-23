@@ -78,8 +78,7 @@ def known_lead_lag(n: int = 12_000, seed: int = 101) -> dict[str, list[list[floa
 def independent(n: int = 12_000, seed: int = 202) -> dict[str, list[list[float]]]:
     rng = random.Random(seed)
     return {
-        symbol: bars_from_returns([rng.gauss(0.0, 0.002) for _ in range(n)])
-        for symbol in SYMBOLS
+        symbol: bars_from_returns([rng.gauss(0.0, 0.002) for _ in range(n)]) for symbol in SYMBOLS
     }
 
 
@@ -88,9 +87,7 @@ def common_factor_only(n: int = 12_000, seed: int = 303) -> dict[str, list[list[
     rng = random.Random(seed)
     factor = [rng.gauss(0.0, 0.002) for _ in range(n)]
     return {
-        symbol: bars_from_returns(
-            [0.9 * factor[i] + rng.gauss(0.0, 0.0012) for i in range(n)]
-        )
+        symbol: bars_from_returns([0.9 * factor[i] + rng.gauss(0.0, 0.0012) for i in range(n)])
         for symbol in SYMBOLS
     }
 
@@ -105,7 +102,9 @@ def cell_arms(
     spec = ax.parse_cell(cell_id)
     target = str(spec["target"])
     directions = [
-        ax.arm_direction(arm_id, af.cell_row(row, target=target, leader=spec["leader"], lag=spec["lag"]))
+        ax.arm_direction(
+            arm_id, af.cell_row(row, target=target, leader=spec["leader"], lag=spec["lag"])
+        )
         for row in frame
     ]
     forwards = [af.forward_return_for(row, target) for row in frame]
@@ -402,9 +401,7 @@ def test_a_cell_whose_edge_lives_in_one_window_cannot_be_promoted() -> None:
 
 
 def test_an_underpowered_cell_is_inconclusive_not_negative() -> None:
-    full = ax.evaluate_directions(
-        [1] * 6, [0.05, -0.05, 0.06, -0.04, 0.05, -0.05], hurdle_bps=60.0
-    )
+    full = ax.evaluate_directions([1] * 6, [0.05, -0.05, 0.06, -0.04, 0.05, -0.05], hurdle_bps=60.0)
     assert full["power_class"] == "UNDERPOWERED"
     gate = ax.promotion_gate(
         summary=full,

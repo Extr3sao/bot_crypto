@@ -239,7 +239,9 @@ def regime_labels(bars: Sequence[OHLCV]) -> list[str]:
 Runner = Callable[[], Any]
 
 
-def _run_single_asset(factory: Runner, split: str, cost_bps_rt: float, entry_delay: int) -> dict[str, list[Trade]]:
+def _run_single_asset(
+    factory: Runner, split: str, cost_bps_rt: float, entry_delay: int
+) -> dict[str, list[Trade]]:
     out: dict[str, list[Trade]] = {}
     for key, sym in SYMBOLS.items():
         trades: list[Trade] = []
@@ -248,13 +250,17 @@ def _run_single_asset(factory: Runner, split: str, cost_bps_rt: float, entry_del
             if not bars:
                 continue
             trades.extend(
-                simulate(factory(), bars, cost_bps_rt=cost_bps_rt, entry_delay_bars=entry_delay).trades
+                simulate(
+                    factory(), bars, cost_bps_rt=cost_bps_rt, entry_delay_bars=entry_delay
+                ).trades
             )
         out[key] = trades
     return out
 
 
-def _run_exp003(config: Exp003Config, split: str, cost_bps_rt: float, entry_delay: int) -> dict[str, list[Trade]]:
+def _run_exp003(
+    config: Exp003Config, split: str, cost_bps_rt: float, entry_delay: int
+) -> dict[str, list[Trade]]:
     out: dict[str, list[Trade]] = {}
     for key, (leader, laggard) in PAIRS.items():
         trades: list[Trade] = []
@@ -282,7 +288,9 @@ def run_experiment(
     """Run one experiment on one split. Returns trades keyed by asset/pair label."""
     if experiment_id == "EXP-ARP-001":
         cfg001 = Exp001Config(**params)
-        return _run_single_asset(lambda: Exp001PullbackContinuation(cfg001), split, cost_bps_rt, entry_delay)
+        return _run_single_asset(
+            lambda: Exp001PullbackContinuation(cfg001), split, cost_bps_rt, entry_delay
+        )
     if experiment_id == "EXP-ARP-002":
         cfg002 = Exp002Config(**params)
         return _run_single_asset(lambda: Exp002VoidRetest(cfg002), split, cost_bps_rt, entry_delay)
@@ -324,10 +332,7 @@ def _regime_bucket(trades: Sequence[Trade], symbol: str) -> dict[str, dict[str, 
             else:
                 label = "HIGH" if cur > statistics.median(seg) else "LOW"
         by_regime[label].append(t.net)
-    return {
-        lab: {"n": len(v), "net_usd": round(sum(v), 2)}
-        for lab, v in sorted(by_regime.items())
-    }
+    return {lab: {"n": len(v), "net_usd": round(sum(v), 2)} for lab, v in sorted(by_regime.items())}
 
 
 def summarize_run(

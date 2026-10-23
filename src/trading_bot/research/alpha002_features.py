@@ -167,9 +167,7 @@ def _index_at_or_before(keys: Sequence[int], limit_ms: int) -> int | None:
     return position - 1 if position > 0 else None
 
 
-def _newest_closed_bucket(
-    starts: Sequence[int], decision_ms: int, period: str
-) -> int | None:
+def _newest_closed_bucket(starts: Sequence[int], decision_ms: int, period: str) -> int | None:
     """Index of the newest bucket that had *finished* by ``decision_ms``.
 
     The venue stamps a periodic derivative bucket with the *start* of its

@@ -69,7 +69,12 @@ def _demo() -> dict[str, Any]:
                         correct=net > 0,
                     )
                 )
-    health_lines = ["# STRATEGY_HEALTH_REPORT", "", "Fixture: deterministic demo cells (not runtime evidence).", ""]
+    health_lines = [
+        "# STRATEGY_HEALTH_REPORT",
+        "",
+        "Fixture: deterministic demo cells (not runtime evidence).",
+        "",
+    ]
     health_lines.append("| strategy | regime | state | score | flags |")
     health_lines.append("|---|---|---|---|---|")
     matrix: dict[str, dict[str, Any]] = {}
@@ -85,7 +90,9 @@ def _demo() -> dict[str, Any]:
                 f"{', '.join(report.degradation_flags) or '-'} |"
             )
     # Champion/challenger fixture.
-    champ = ChallengerEvaluation("momentum", 200, 12.0, 1.6, 60.0, window_net_bps=(40.0, 40.0, 40.0))
+    champ = ChallengerEvaluation(
+        "momentum", 200, 12.0, 1.6, 60.0, window_net_bps=(40.0, 40.0, 40.0)
+    )
     chal = ChallengerEvaluation("trend", 200, 18.0, 1.9, 80.0, window_net_bps=(60.0, 60.0, 60.0))
     assert eco.champion is not None
     comparison = eco.champion.compare(
@@ -111,7 +118,12 @@ def main() -> int:
     )
 
     # Regime matrix MD.
-    lines = ["# STRATEGY_REGIME_MATRIX", "", "Fixture: net expectancy bps by strategy x regime.", ""]
+    lines = [
+        "# STRATEGY_REGIME_MATRIX",
+        "",
+        "Fixture: net expectancy bps by strategy x regime.",
+        "",
+    ]
     lines.append("| strategy | regime | samples | net_expectancy_bps | profit_factor | health |")
     lines.append("|---|---|---|---|---|---|")
     for family, by_regime in demo["matrix"].items():
@@ -178,11 +190,14 @@ def main() -> int:
             "```",
             "",
         ]
-        (OUT / "STRATEGY_ACTIVATION_CHURN.md").write_text(
-            "\n".join(churn_lines), encoding="utf-8"
-        )
+        (OUT / "STRATEGY_ACTIVATION_CHURN.md").write_text("\n".join(churn_lines), encoding="utf-8")
 
-        hist_lines = ["# STRATEGY_LIFECYCLE_HISTORY", "", "| strategy | from | to | reasons |", "|---|---|---|---|"]
+        hist_lines = [
+            "# STRATEGY_LIFECYCLE_HISTORY",
+            "",
+            "| strategy | from | to | reasons |",
+            "|---|---|---|---|",
+        ]
         for t in meta.get("transitions", []):
             hist_lines.append(
                 f"| {t['strategy_id']} | {t['from_state']} | {t['to_state']} | "

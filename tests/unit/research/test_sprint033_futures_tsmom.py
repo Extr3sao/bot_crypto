@@ -39,13 +39,13 @@ def _matrix(cols: list[np.ndarray]) -> np.ndarray:
     return np.column_stack(cols).astype(np.float64)
 
 
-def _funding_book(n_syms: int, rates_by_sym: dict[int, list[float]],
-                  first_ms: int = _START) -> L.FundingBook:
+def _funding_book(
+    n_syms: int, rates_by_sym: dict[int, list[float]], first_ms: int = _START
+) -> L.FundingBook:
     fb = L.FundingBook([f"S{i}USDT" for i in range(n_syms)])
     for j in range(n_syms):
         rates = rates_by_sym.get(j, [])
-        t = np.array([first_ms + (k + 1) * _DAY // 3 for k in range(len(rates))],
-                     dtype=np.int64)
+        t = np.array([first_ms + (k + 1) * _DAY // 3 for k in range(len(rates))], dtype=np.int64)
         fb.t[j] = t
         fb.cum[j] = np.concatenate([[0.0], np.cumsum(rates)]) if rates else np.zeros(1)
         fb.n_events[j] = len(rates)
@@ -56,13 +56,20 @@ def _funding_book(n_syms: int, rates_by_sym: dict[int, list[float]],
 # listing / PIT
 # ---------------------------------------------------------------------------
 
+
 def test_listing_dates_and_first_index() -> None:
     days = _days(10)
     raw = {
-        "AAAUSDT": {"open_time_ms": days, "close": np.arange(10.0) + 100.0,
-                    "open": np.arange(10.0) + 100.0},
-        "BBBUSDT": {"open_time_ms": days[5:], "close": np.arange(5.0) + 50.0,
-                    "open": np.arange(5.0) + 50.0},
+        "AAAUSDT": {
+            "open_time_ms": days,
+            "close": np.arange(10.0) + 100.0,
+            "open": np.arange(10.0) + 100.0,
+        },
+        "BBBUSDT": {
+            "open_time_ms": days[5:],
+            "close": np.arange(5.0) + 50.0,
+            "open": np.arange(5.0) + 50.0,
+        },
     }
     listing = L.listing_dates(raw)
     assert listing["AAAUSDT"] == "2020-01-01"
@@ -73,17 +80,17 @@ def test_listing_dates_and_first_index() -> None:
     fi = L.first_index(close)
     assert fi[0] == 0
     assert fi[1] == 5
-    assert np.isnan(close[0, 1])          # no pre-listing observation
+    assert np.isnan(close[0, 1])  # no pre-listing observation
 
 
 def test_no_prelisting_weight() -> None:
     a = np.zeros((40, 2))
     a[:, 0] = 100.0 * (1.01 ** np.arange(40))
     a[:, 1] = 100.0
-    a[:30, 1] = np.nan                    # second asset lists late
+    a[:30, 1] = np.nan  # second asset lists late
     i = 35
     tgt = L.tsmom_perp_target(a, i, formation=5, vol_lookback=3)
-    assert tgt["weights"][1] == 0.0       # cannot hold before listing
+    assert tgt["weights"][1] == 0.0  # cannot hold before listing
 
 
 def test_split_and_holdout_isolation() -> None:
@@ -103,16 +110,17 @@ def test_split_and_holdout_isolation() -> None:
 # signal -> long/short mapping
 # ---------------------------------------------------------------------------
 
+
 def test_long_short_mapping_no_neutralisation() -> None:
     n = 30
     rng = np.random.default_rng(3)
-    noise = rng.normal(0.0, 0.004, n)      # non-zero vol so the book is not scaled away
+    noise = rng.normal(0.0, 0.004, n)  # non-zero vol so the book is not scaled away
     up = 100.0 * np.cumprod(1.0 + 0.02 + noise)
     down = 100.0 * np.cumprod(1.0 - 0.02 + noise)
     close = _matrix([up, down])
     tgt = L.tsmom_perp_target(close, n - 1, formation=5, vol_lookback=3)
-    assert tgt["weights"][0] > 0          # uptrend -> long
-    assert tgt["weights"][1] < 0          # downtrend -> short (NOT neutralised)
+    assert tgt["weights"][0] > 0  # uptrend -> long
+    assert tgt["weights"][1] < 0  # downtrend -> short (NOT neutralised)
     assert tgt["n_short"] == 1
 
 
@@ -121,15 +129,14 @@ def test_flat_signal_is_not_traded() -> None:
     flat = np.full(n, 100.0)
     close = _matrix([flat])
     tgt = L.tsmom_perp_target(close, n - 1, formation=5, vol_lookback=3)
-    assert tgt["weights"][0] == 0.0       # zero-momentum -> zero weight
+    assert tgt["weights"][0] == 0.0  # zero-momentum -> zero weight
 
 
 def test_gross_leverage_capped() -> None:
     n = 30
     # tiny vol -> raw scale clipped at 4 on many assets -> desired gross far above 1
     rng = np.random.default_rng(5)
-    cols = [100.0 * np.cumprod(1.0 + 0.02 + rng.normal(0.0, 0.0005, n))
-            for _ in range(6)]
+    cols = [100.0 * np.cumprod(1.0 + 0.02 + rng.normal(0.0, 0.0005, n)) for _ in range(6)]
     close = _matrix(cols)
     tgt = L.tsmom_perp_target(close, n - 1, formation=5, vol_lookback=3)
     assert tgt["desired_gross"] > 1.0
@@ -139,6 +146,7 @@ def test_gross_leverage_capped() -> None:
 # ---------------------------------------------------------------------------
 # execution
 # ---------------------------------------------------------------------------
+
 
 def _panel(n: int = 130, syms: int = 4) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     days = _days(n)
@@ -158,10 +166,12 @@ def test_t_plus_1_uses_next_open() -> None:
     low = open_ * 0.97
     fb = _funding_book(4, {})
     full = np.ones(days.shape[0], dtype=bool)
-    nxt = L.run_tsmom003(close, open_, high, low, days, fb, full, exec_mode="next_open",
-                         formation=5, vol_lookback=3)
-    cot = L.run_tsmom003(close, open_, high, low, days, fb, full, exec_mode="cotimed",
-                         formation=5, vol_lookback=3)
+    nxt = L.run_tsmom003(
+        close, open_, high, low, days, fb, full, exec_mode="next_open", formation=5, vol_lookback=3
+    )
+    cot = L.run_tsmom003(
+        close, open_, high, low, days, fb, full, exec_mode="cotimed", formation=5, vol_lookback=3
+    )
     assert nxt["nets"].size == cot["nets"].size > 0
     assert not np.allclose(nxt["nets"], cot["nets"])
 
@@ -170,12 +180,13 @@ def test_t_plus_1_uses_next_open() -> None:
 # funding
 # ---------------------------------------------------------------------------
 
+
 def test_funding_sign_long_pays_short_receives() -> None:
     long_only = np.array([[1.0]])
     fb = _funding_book(1, {0: [0.001, 0.001, 0.001]})
     t_left, t_right = _START, _START + 2 * _DAY
     total = fb.window_sum(0, t_left, t_right)
-    assert total == pytest.approx(0.003)          # three events inside the window
+    assert total == pytest.approx(0.003)  # three events inside the window
     # long weight +1 with positive funding -> pays -> negative cashflow
     assert -float(long_only[0, 0] * total) < 0
     # short weight -1 with positive funding -> receives -> positive cashflow
@@ -189,11 +200,10 @@ def test_funding_enters_net_and_accounting_identity() -> None:
     rates = [0.0005] * 200
     fb = _funding_book(4, {j: rates for j in range(4)})
     full = np.ones(days.shape[0], dtype=bool)
-    r = L.run_tsmom003(close, open_, high, low, days, fb, full,
-                       formation=5, vol_lookback=3)
+    r = L.run_tsmom003(close, open_, high, low, days, fb, full, formation=5, vol_lookback=3)
     identity = r["nets"] - (r["price"] + r["funding"] - r["costs"])
     assert np.max(np.abs(identity)) <= 1e-9
-    assert np.any(r["funding"] != 0.0)             # funding is actually charged
+    assert np.any(r["funding"] != 0.0)  # funding is actually charged
 
 
 def test_funding_scale_is_separate_from_cost() -> None:
@@ -202,17 +212,18 @@ def test_funding_scale_is_separate_from_cost() -> None:
     low = open_ * 0.97
     fb = _funding_book(4, {j: [0.0007] * 200 for j in range(4)})
     full = np.ones(days.shape[0], dtype=bool)
-    base = L.run_tsmom003(close, open_, high, low, days, fb, full,
-                          formation=5, vol_lookback=3)
-    stressed = L.run_tsmom003(close, open_, high, low, days, fb, full,
-                              formation=5, vol_lookback=3, funding_scale=2.0)
-    assert np.allclose(stressed["costs"], base["costs"])            # costs unchanged
-    assert not np.allclose(stressed["funding"], base["funding"])    # funding scaled
+    base = L.run_tsmom003(close, open_, high, low, days, fb, full, formation=5, vol_lookback=3)
+    stressed = L.run_tsmom003(
+        close, open_, high, low, days, fb, full, formation=5, vol_lookback=3, funding_scale=2.0
+    )
+    assert np.allclose(stressed["costs"], base["costs"])  # costs unchanged
+    assert not np.allclose(stressed["funding"], base["funding"])  # funding scaled
 
 
 # ---------------------------------------------------------------------------
 # turnover / cost
 # ---------------------------------------------------------------------------
+
 
 def test_turnover_and_cost_reconciliation() -> None:
     days, close, open_ = _panel()
@@ -221,11 +232,11 @@ def test_turnover_and_cost_reconciliation() -> None:
     fb = _funding_book(4, {})
     full = np.ones(days.shape[0], dtype=bool)
     per_side = L.PER_SIDE_COST_BPS
-    r = L.run_tsmom003(close, open_, high, low, days, fb, full,
-                       formation=5, vol_lookback=3)
+    r = L.run_tsmom003(close, open_, high, low, days, fb, full, formation=5, vol_lookback=3)
     assert np.allclose(r["costs"], r["traded"] * per_side)
-    double = L.run_tsmom003(close, open_, high, low, days, fb, full,
-                            formation=5, vol_lookback=3, cost_mult=2.0)
+    double = L.run_tsmom003(
+        close, open_, high, low, days, fb, full, formation=5, vol_lookback=3, cost_mult=2.0
+    )
     assert np.allclose(double["costs"], r["costs"] * 2.0)
 
 
@@ -233,15 +244,15 @@ def test_turnover_and_cost_reconciliation() -> None:
 # margin / liquidation
 # ---------------------------------------------------------------------------
 
+
 def test_margin_uses_signed_adverse_excursion() -> None:
     days, close, open_ = _panel()
-    high = open_ * 1.10          # sharp adverse for shorts
+    high = open_ * 1.10  # sharp adverse for shorts
     low = open_ * 0.90
     fb = _funding_book(4, {})
     full = np.ones(days.shape[0], dtype=bool)
-    r = L.run_tsmom003(close, open_, high, low, days, fb, full,
-                       formation=5, vol_lookback=3)
-    assert (r["worst_adverse"] <= 0).all()       # adverse excursions are losses
+    r = L.run_tsmom003(close, open_, high, low, days, fb, full, formation=5, vol_lookback=3)
+    assert (r["worst_adverse"] <= 0).all()  # adverse excursions are losses
     assert float(np.min(r["worst_adverse"])) < 0.0
 
 
@@ -251,11 +262,10 @@ def test_margin_safe_at_one_x_gross() -> None:
     low = open_ * 0.97
     fb = _funding_book(4, {})
     full = np.ones(days.shape[0], dtype=bool)
-    r = L.run_tsmom003(close, open_, high, low, days, fb, full,
-                       formation=5, vol_lookback=3)
+    r = L.run_tsmom003(close, open_, high, low, days, fb, full, formation=5, vol_lookback=3)
     worst = float(np.min(r["worst_adverse"]))
     equity_after = 1.0 + worst
-    maintenance_floor = 0.02 * 1.0               # 2% of 1x gross
+    maintenance_floor = 0.02 * 1.0  # 2% of 1x gross
     assert equity_after > maintenance_floor
 
 
@@ -263,13 +273,14 @@ def test_margin_safe_at_one_x_gross() -> None:
 # future poisoning (PIT)
 # ---------------------------------------------------------------------------
 
+
 def test_future_poisoning_pre_t_weights_identical() -> None:
     n = 500
     rng = np.random.default_rng(11)
     close = 100.0 * np.cumprod(1.0 + rng.normal(0.0, 0.02, (n, 3)), axis=0)
     cutoff = 460
     pre = [i for i in L.month_first_days(_days(n)) if 365 <= i < cutoff]
-    assert pre                                # there is at least one decision day
+    assert pre  # there is at least one decision day
     base = {i: L.tsmom_perp_target(close, i)["weights"] for i in pre}
     poisoned = close.copy()
     poisoned[cutoff:] = poisoned[cutoff:] * 5.0
@@ -281,6 +292,7 @@ def test_future_poisoning_pre_t_weights_identical() -> None:
 # ---------------------------------------------------------------------------
 # certification gate ordering (reused from RFC-032)
 # ---------------------------------------------------------------------------
+
 
 def test_gate_missing_is_not_pass() -> None:
     res = evaluate_promotion({"G_VALIDATION": GateStatus.PASS})

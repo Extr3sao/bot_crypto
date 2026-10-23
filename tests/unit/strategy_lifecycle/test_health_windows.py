@@ -30,7 +30,9 @@ def _series(eco: DynamicStrategyEcosystem, values: list[float]) -> None:
         eco.performance.record(observation("s", net_bps=net, timestamp_ms=i * 1000))
 
 
-def _eco(windows: RollingWindows, *, min_samples: int = 10, n: int = 30) -> DynamicStrategyEcosystem:
+def _eco(
+    windows: RollingWindows, *, min_samples: int = 10, n: int = 30
+) -> DynamicStrategyEcosystem:
     eco = DynamicStrategyEcosystem(
         performance=ContextualPerformanceStore(windows=windows),
         health_policy=HealthPolicy(min_samples=min_samples),

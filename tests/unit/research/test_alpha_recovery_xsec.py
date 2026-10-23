@@ -36,8 +36,15 @@ def daily(symbol: str, closes: Sequence[float], pads: Sequence[float] | None = N
     for i, c in enumerate(closes):
         p = pads[i] if pads is not None else 0.0
         out.append(
-            OHLCV(symbol=symbol, timestamp=i * MS_PER_DAY, open=c, high=c + p, low=c - p,
-                  close=c, volume=1.0)
+            OHLCV(
+                symbol=symbol,
+                timestamp=i * MS_PER_DAY,
+                open=c,
+                high=c + p,
+                low=c - p,
+                close=c,
+                volume=1.0,
+            )
         )
     return out
 
@@ -76,7 +83,9 @@ def test_non_contiguous_window_is_rejected() -> None:
     # a one-day hole before the end breaks the contiguous 3-day window
     holed = daily("A", [100.0, 100.0, 100.0, 100.0])
     holed = [holed[0], holed[1], holed[3]]
-    ru = ranker.rank({"A": holed, "B": daily("B", [1.0, 2.0, 3.0])}, 3 * MS_PER_DAY, lookback_days=3)
+    ru = ranker.rank(
+        {"A": holed, "B": daily("B", [1.0, 2.0, 3.0])}, 3 * MS_PER_DAY, lookback_days=3
+    )
     assert "A" not in ru.members
     assert "A" in ru.stale_excluded
 
@@ -85,7 +94,8 @@ def test_deterministic_tie_break_by_symbol() -> None:
     ranker = CrossSectionalRanker()
     ru = ranker.rank(
         {"B": daily("B", [100.0, 110.0]), "A": daily("A", [100.0, 110.0])},
-        MS_PER_DAY, lookback_days=1,
+        MS_PER_DAY,
+        lookback_days=1,
     )
     assert ru.ranking == ("A", "B")  # equal values -> symbol ascending
 
@@ -105,7 +115,9 @@ def test_xsec_holds_the_leader_and_fills_at_next_open() -> None:
         "C": [100.0 - k for k in range(8)],
     }
     series = {s: daily(s, c) for s, c in closes.items()}
-    res = simulate_xsec(series, config=XsecConfig(lookback_days=2, max_hold_days=30), cost_bps_rt=0.0)
+    res = simulate_xsec(
+        series, config=XsecConfig(lookback_days=2, max_hold_days=30), cost_bps_rt=0.0
+    )
     assert res.trades, "the rising leader should be held"
     assert all(t.side == "long" for t in res.trades)
     assert all(t.rule == "exp009_xsec_A" for t in res.trades)
@@ -115,8 +127,12 @@ def test_xsec_is_deterministic() -> None:
     closes = {"A": [100.0, 101.0, 103.0, 102.0, 105.0], "B": [100.0, 99.0, 98.0, 99.0, 100.0]}
     series_a = {s: daily(s, c) for s, c in closes.items()}
     series_b = {s: daily(s, c) for s, c in closes.items()}
-    r1 = simulate_xsec(series_a, config=XsecConfig(lookback_days=1, max_hold_days=30), cost_bps_rt=23.559)
-    r2 = simulate_xsec(series_b, config=XsecConfig(lookback_days=1, max_hold_days=30), cost_bps_rt=23.559)
+    r1 = simulate_xsec(
+        series_a, config=XsecConfig(lookback_days=1, max_hold_days=30), cost_bps_rt=23.559
+    )
+    r2 = simulate_xsec(
+        series_b, config=XsecConfig(lookback_days=1, max_hold_days=30), cost_bps_rt=23.559
+    )
     assert [t.as_dict() for t in r1.trades] == [t.as_dict() for t in r2.trades]
 
 
@@ -131,15 +147,27 @@ def test_exp006_detects_void_and_is_pit_invariant() -> None:
     specs[4] = (95.0, 95.5, 88.0, 89.0)
     specs[5] = (89.0, 89.5, 82.0, 83.0)
     specs[6] = (83.0, 90.0, 82.5, 88.0)  # retests the origin band -> long fade
-    bars = [OHLCV(symbol="X", timestamp=i * MS_PER_DAY, open=o, high=h, low=lo, close=c, volume=1.0)
-            for i, (o, h, lo, c) in enumerate(specs)]
+    bars = [
+        OHLCV(symbol="X", timestamp=i * MS_PER_DAY, open=o, high=h, low=lo, close=c, volume=1.0)
+        for i, (o, h, lo, c) in enumerate(specs)
+    ]
     strat = Exp006LiquidityVoidReversal(cfg)
     strat.prepare(bars)
     setup = strat.entry(6)
     assert setup is not None and setup.side == "long"
     # append unrelated future bars -> the day-6 decision must not change
-    future = [*bars, OHLCV(symbol="X", timestamp=7 * MS_PER_DAY, open=88.0, high=200.0, low=1.0,
-                           close=2.0, volume=1.0)]
+    future = [
+        *bars,
+        OHLCV(
+            symbol="X",
+            timestamp=7 * MS_PER_DAY,
+            open=88.0,
+            high=200.0,
+            low=1.0,
+            close=2.0,
+            volume=1.0,
+        ),
+    ]
     strat2 = Exp006LiquidityVoidReversal(cfg)
     strat2.prepare(future)
     assert strat2.entry(6) == setup
@@ -152,14 +180,26 @@ def test_exp011_breakout_requires_vol_expansion_and_is_pit_safe() -> None:
     cfg = Exp011Config(atr_period=2, breakout_lookback_days=3, vol_gate_days=3)
     specs = [(100.0, 101.0, 99.0, 100.0) for _ in range(10)]
     specs[6] = (100.0, 130.0, 100.0, 128.0)  # breakout + big range (vol expansion)
-    bars = [OHLCV(symbol="X", timestamp=i * MS_PER_DAY, open=o, high=h, low=lo, close=c, volume=1.0)
-            for i, (o, h, lo, c) in enumerate(specs)]
+    bars = [
+        OHLCV(symbol="X", timestamp=i * MS_PER_DAY, open=o, high=h, low=lo, close=c, volume=1.0)
+        for i, (o, h, lo, c) in enumerate(specs)
+    ]
     strat = Exp011VolExpansionBreakout(cfg)
     strat.prepare(bars)
     setup = strat.entry(6)
     assert setup is not None and setup.side == "long"
-    future = [*bars, OHLCV(symbol="X", timestamp=10 * MS_PER_DAY, open=128.0, high=300.0, low=1.0,
-                           close=2.0, volume=1.0)]
+    future = [
+        *bars,
+        OHLCV(
+            symbol="X",
+            timestamp=10 * MS_PER_DAY,
+            open=128.0,
+            high=300.0,
+            low=1.0,
+            close=2.0,
+            volume=1.0,
+        ),
+    ]
     strat2 = Exp011VolExpansionBreakout(cfg)
     strat2.prepare(future)
     assert strat2.entry(6) == setup
@@ -168,9 +208,15 @@ def test_exp011_breakout_requires_vol_expansion_and_is_pit_safe() -> None:
 def test_exp006_and_exp011_run_through_simulator() -> None:
     specs = [(100.0, 101.0, 99.0, 100.0)] * 12
     specs[6] = (100.0, 130.0, 100.0, 128.0)
-    bars = [OHLCV(symbol="X", timestamp=i * MS_PER_DAY, open=o, high=h, low=lo, close=c, volume=1.0)
-            for i, (o, h, lo, c) in enumerate(specs)]
-    res = simulate_daily(Exp011VolExpansionBreakout(Exp011Config(atr_period=2, breakout_lookback_days=3,
-                                                                 vol_gate_days=3)),
-                         bars, cost_bps_rt=10.0)
+    bars = [
+        OHLCV(symbol="X", timestamp=i * MS_PER_DAY, open=o, high=h, low=lo, close=c, volume=1.0)
+        for i, (o, h, lo, c) in enumerate(specs)
+    ]
+    res = simulate_daily(
+        Exp011VolExpansionBreakout(
+            Exp011Config(atr_period=2, breakout_lookback_days=3, vol_gate_days=3)
+        ),
+        bars,
+        cost_bps_rt=10.0,
+    )
     assert isinstance(res.trades, list)

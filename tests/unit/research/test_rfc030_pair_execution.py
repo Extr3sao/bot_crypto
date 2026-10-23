@@ -418,14 +418,18 @@ def test_ledger_refuses_a_one_leg_entry() -> None:
     assert result.ledger_entry is None
     with pytest.raises(PairAccountingError):
         # a full-fill entry with a non-filled status must be rejected
-        good = _sim().execute(
-            _plan(),
-            long_entry_ref=100.0,
-            long_exit_ref=105.0,
-            short_entry_ref=100.0,
-            short_exit_ref=95.0,
-            short_leg_cost=_short_cost(),
-        ).ledger_entry
+        good = (
+            _sim()
+            .execute(
+                _plan(),
+                long_entry_ref=100.0,
+                long_exit_ref=105.0,
+                short_entry_ref=100.0,
+                short_exit_ref=95.0,
+                short_leg_cost=_short_cost(),
+            )
+            .ledger_entry
+        )
         assert good is not None
         import dataclasses
 

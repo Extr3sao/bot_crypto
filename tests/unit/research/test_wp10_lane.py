@@ -71,8 +71,13 @@ def test_the_decision_re_derives_the_plane_it_names(decision_module: Any) -> Non
     assert abs(planes["frozen_admission"]["round_trip_bps"] - PLANE_BPS) < 1e-6
     assert planes["frozen_admission"]["fees_bps"] == 20.0
     # the measured plane is the KNOWN fee legs plus the measured non-fee cost, and nothing else
-    assert abs(planes["measured"]["round_trip_bps"]
-               - (planes["measured"]["fees_bps"] + planes["measured"]["non_fee_bps"])) < 1e-9
+    assert (
+        abs(
+            planes["measured"]["round_trip_bps"]
+            - (planes["measured"]["fees_bps"] + planes["measured"]["non_fee_bps"])
+        )
+        < 1e-9
+    )
     assert abs(planes["measured_worst_tail"]["round_trip_bps"] - 24.58632) < 1e-4
 
 
@@ -95,8 +100,7 @@ def test_a_register_whose_best_cell_clears_the_plane_is_admitted(decision_module
     cells = [dict(cell) for cell in payload["readjudication"]["cells"]]
     cells[0]["zero_cost_gross_bps"] = PLANE_BPS + 1.0
     plane = payload["planes"]["frozen_admission"]["round_trip_bps"]
-    admitted = [cell["strategy_id"] for cell in cells
-                if cell["zero_cost_gross_bps"] - plane > 0]
+    admitted = [cell["strategy_id"] for cell in cells if cell["zero_cost_gross_bps"] - plane > 0]
     assert admitted == [cells[0]["strategy_id"]]
 
 
@@ -161,8 +165,11 @@ def test_the_run_report_folds_every_artefact_and_validates(run_report_module: An
 def test_the_run_report_refuses_to_publish_without_an_artefact(
     run_report_module: Any, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(run_report_module, "ARTEFACTS",
-                        run_report_module.ARTEFACTS + (("ghost", "NOT_A_FILE.json", "ghost"),))
+    monkeypatch.setattr(
+        run_report_module,
+        "ARTEFACTS",
+        run_report_module.ARTEFACTS + (("ghost", "NOT_A_FILE.json", "ghost"),),
+    )
     payload, exit_code = run_report_module.build()
     assert exit_code == 2
     assert "NOT_A_FILE.json" in payload["validation"][0]["missing"]

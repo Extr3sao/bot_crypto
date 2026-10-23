@@ -199,9 +199,7 @@ def heartbeat_payload(
         "campaign_id": campaign_id,
         "campaign_version": campaign_version,
         "timestamp": int(now),
-        "timestamp_utc": dt.datetime.fromtimestamp(int(now), dt.UTC).strftime(
-            "%Y-%m-%dT%H:%M:%SZ"
-        ),
+        "timestamp_utc": dt.datetime.fromtimestamp(int(now), dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "process_status": process_status,
         "cycle": int(cycle),
         "interval_seconds": int(interval_seconds),
@@ -366,9 +364,7 @@ def read_cycle_journal(
     return list(kept)
 
 
-def journal_read_diagnostics(
-    root: Path, *, day: str | None = None
-) -> dict[str, int]:
+def journal_read_diagnostics(root: Path, *, day: str | None = None) -> dict[str, int]:
     """Counters of what a bounded read had to skip (forensics, never silent)."""
     stats = {"lines": 0, "oversized_lines": 0, "unparsable_lines": 0, "filtered_lines": 0}
     kept: deque[dict[str, Any]] = deque(maxlen=0)
@@ -466,9 +462,7 @@ def cycle_event(
             else None
         ),
         "actions_due": modes,
-        "actions_completed": {
-            mode: _action_outcomes(record, mode) for mode in modes
-        },
+        "actions_completed": {mode: _action_outcomes(record, mode) for mode in modes},
         "sealed_count_delta": len(seal.get("sealed") or []),
         "settled_count_delta": len(settle.get("settled") or []),
         "evaluated_count_delta": _delta(
@@ -733,7 +727,9 @@ def status_payload(
         "chain_status": chain.get("status"),
         "chain_broken": chain.get("broken"),
         "provenance_status": (
-            "COMPLETE" if model_drift.get("status") == "NO_DRIFT" else str(model_drift.get("status"))
+            "COMPLETE"
+            if model_drift.get("status") == "NO_DRIFT"
+            else str(model_drift.get("status"))
         ),
         "drift_status": drift.get("status"),
         "drift_knobs": drift.get("drifted"),
@@ -937,10 +933,7 @@ def checkpoint_decision_set_hash(performances: Sequence[do.DecisionPerformance])
     never claim the same population twice.
     """
     return ac.payload_digest(
-        sorted(
-            [item.decision_id, item.outcome_hash, item.evaluation_hash]
-            for item in performances
-        )
+        sorted([item.decision_id, item.outcome_hash, item.evaluation_hash] for item in performances)
     )
 
 

@@ -75,15 +75,22 @@ def resolve_api(obs: StrategyEcosystemObservatory, path: str) -> tuple[int, str,
         return _json(obs.topology().to_dict())
     if tail == ["runs"]:
         current = obs.current_run()
-        return _json({"runs": [{"run_id": r.run_id, "path": str(r.run_dir)} for r in obs.list_runs()],
-                      "current": current.run_id if current else None})
+        return _json(
+            {
+                "runs": [{"run_id": r.run_id, "path": str(r.run_dir)} for r in obs.list_runs()],
+                "current": current.run_id if current else None,
+            }
+        )
     if tail == ["strategies"]:
         return _json(obs.strategies_view())
     if len(tail) >= 2 and tail[0] == "strategies":
         sid = tail[1]
         if len(tail) == 2:
             detail = obs.strategy_detail(sid)
-            return _json(detail if detail is not None else {"error": "unknown strategy"}, 200 if detail else 404)
+            return _json(
+                detail if detail is not None else {"error": "unknown strategy"},
+                200 if detail else 404,
+            )
         if tail[2] == "performance":
             detail = obs.strategy_detail(sid)
             if detail is None:
@@ -111,10 +118,15 @@ def resolve_api(obs: StrategyEcosystemObservatory, path: str) -> tuple[int, str,
         if len(tail) == 2:
             agents = obs.agents_view()["agents"]
             match = next((a for a in agents if a["agent_id"] == aid), None)
-            return _json(match if match is not None else {"error": "unknown agent"}, 200 if match else 404)
+            return _json(
+                match if match is not None else {"error": "unknown agent"}, 200 if match else 404
+            )
         if tail[2] in ("activity", "messages"):
             activity = obs.agent_activity(aid)
-            return _json(activity if activity is not None else {"error": "unknown agent"}, 200 if activity else 404)
+            return _json(
+                activity if activity is not None else {"error": "unknown agent"},
+                200 if activity else 404,
+            )
     if tail == ["lifecycle"]:
         return _json(obs.lifecycle_view())
     if tail == ["routing", "comparisons"] or tail == ["routing"]:
@@ -129,7 +141,9 @@ def resolve_api(obs: StrategyEcosystemObservatory, path: str) -> tuple[int, str,
         return _json(obs.traces_view())
     if len(tail) == 2 and tail[0] == "traces":
         detail = obs.trace_detail(tail[1])
-        return _json(detail if detail is not None else {"error": "unknown trace"}, 200 if detail else 404)
+        return _json(
+            detail if detail is not None else {"error": "unknown trace"}, 200 if detail else 404
+        )
     if tail == ["campaigns"]:
         return _json(obs.campaigns_view())
     if tail == ["snapshot"]:
@@ -153,7 +167,9 @@ def _pulse(obs: StrategyEcosystemObservatory) -> dict[str, Any]:
 # ------------------------------------------------------------------- handler
 
 
-def make_handler(obs: StrategyEcosystemObservatory, *, stream_seconds: int) -> type[BaseHTTPRequestHandler]:
+def make_handler(
+    obs: StrategyEcosystemObservatory, *, stream_seconds: int
+) -> type[BaseHTTPRequestHandler]:
     class Handler(BaseHTTPRequestHandler):
         server_version = "strategy-ecosystem-dashboard/1.0"
 
@@ -179,9 +195,18 @@ def make_handler(obs: StrategyEcosystemObservatory, *, stream_seconds: int) -> t
                 return
             if path == "/healthz":
                 current = obs.current_run()
-                self._send(200, "application/json; charset=utf-8", json.dumps(
-                    {"ok": True, "read_only": True, "run_id": current.run_id if current else None}
-                ).encode("utf-8") + b"\n")
+                self._send(
+                    200,
+                    "application/json; charset=utf-8",
+                    json.dumps(
+                        {
+                            "ok": True,
+                            "read_only": True,
+                            "run_id": current.run_id if current else None,
+                        }
+                    ).encode("utf-8")
+                    + b"\n",
+                )
                 return
             if path == "/api/events/stream":
                 self._stream(obs)
@@ -211,8 +236,11 @@ def make_handler(obs: StrategyEcosystemObservatory, *, stream_seconds: int) -> t
                 return  # a disconnected client is not an error
 
         def _refuse(self) -> None:
-            self._send(405, "application/json; charset=utf-8",
-                       b'{"error":"this dashboard is read-only","allowed":["GET"]}\n')
+            self._send(
+                405,
+                "application/json; charset=utf-8",
+                b'{"error":"this dashboard is read-only","allowed":["GET"]}\n',
+            )
 
         do_POST = _refuse
         do_PUT = _refuse
@@ -264,7 +292,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.once:
         print((STATIC_DIR / "index.html").read_text(encoding="utf-8"))
         return 0
-    server = ThreadingHTTPServer((args.host, args.port), make_handler(obs, stream_seconds=args.stream_seconds))
+    server = ThreadingHTTPServer(
+        (args.host, args.port), make_handler(obs, stream_seconds=args.stream_seconds)
+    )
     print(f"[dashboard] read-only strategy ecosystem console on http://{args.host}:{args.port}")
     print("[dashboard] no mutating endpoints; GET only; Ctrl-C to exit")
     try:

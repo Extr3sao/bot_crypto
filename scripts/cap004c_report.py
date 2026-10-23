@@ -45,7 +45,9 @@ def read_json(path: Path) -> dict[str, Any]:
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
     if not path.is_file():
         return []
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [
+        json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()
+    ]
 
 
 def bytes_of(path: Path) -> int:
@@ -83,7 +85,11 @@ def collect() -> dict[str, Any]:
     heartbeat = read_json(LEDGER / "heartbeat.json")
     disk = shutil.disk_usage(REPO)
     commit_ts = min(
-        (int(manifest.get("timestamp", 0)) for manifest in manifests if manifest.get("mode") == "COMMIT"),
+        (
+            int(manifest.get("timestamp", 0))
+            for manifest in manifests
+            if manifest.get("mode") == "COMMIT"
+        ),
         default=0,
     )
     # Strictly after the boundary: the sample taken at the migration instant still
@@ -371,7 +377,15 @@ def render_root_cause(rc: dict[str, Any]) -> str:
         "",
     ]
     lines.extend(f"- {item}" for item in rc["mechanism"])
-    lines.extend(["", "## Measured", "", "| file | GiB | records | archive MiB | ratio |", "| --- | --- | --- | --- | --- |"])
+    lines.extend(
+        [
+            "",
+            "## Measured",
+            "",
+            "| file | GiB | records | archive MiB | ratio |",
+            "| --- | --- | --- | --- | --- |",
+        ]
+    )
     for item in rc["measured"]["files"]:
         lines.append(
             f"| {item['path']} | {item['gib']} | {item['records']} | "
@@ -407,7 +421,10 @@ def render_classification(rows: list[dict[str, str]]) -> str:
         "| artifact | class | retention | why |",
         "| --- | --- | --- | --- |",
     ]
-    lines.extend(f"| `{row['artifact']}` | {row['class']} | {row['retention']} | {row['why']} |" for row in rows)
+    lines.extend(
+        f"| `{row['artifact']}` | {row['class']} | {row['retention']} | {row['why']} |"
+        for row in rows
+    )
     lines.append("")
     return "\n".join(lines)
 
@@ -603,17 +620,22 @@ def render_final(data: dict[str, Any]) -> dict[str, Any]:
     return {
         "report": "CAP004C_FINAL_REPORT",
         "generated_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "verdict": "STORAGE_STABILIZED" if verification.get("status") == "PASS" else "STORAGE_BLOCKED",
+        "verdict": "STORAGE_STABILIZED"
+        if verification.get("status") == "PASS"
+        else "STORAGE_BLOCKED",
         "how_much_space_did_we_save_gib": round(data["reclaimed"] / GIB, 4),
         "reclaimed_bytes": data["reclaimed"],
         "new_growth_rate_kib_per_day": round(
-            (measured or {}).get("bytes_per_day", storage.get("projected_bytes_per_day", 0)) / 1024, 3
+            (measured or {}).get("bytes_per_day", storage.get("projected_bytes_per_day", 0)) / 1024,
+            3,
         ),
         "new_growth_rate_source": "measured post-migration samples"
         if measured
         else "projected from the compact contract",
         "projected_bytes_per_day": storage.get("projected_bytes_per_day"),
-        "days_until_warning": (data["heartbeat"].get("disk") or {}).get("estimated_days_to_warning"),
+        "days_until_warning": (data["heartbeat"].get("disk") or {}).get(
+            "estimated_days_to_warning"
+        ),
         "first_real_settlement_survived": bool(data["first_settlement"]),
         "first_real_settlement": {
             "operation_id": data["first_settlement"].get("operation_id"),
@@ -757,7 +779,8 @@ def main(argv: list[str] | None = None) -> int:
     (OUT / "STORAGE_MIGRATION_PLAN.md").write_text(render_plan(data), encoding="utf-8")
     for manifest in data["manifests"]:
         (OUT / "STORAGE_MIGRATION_MANIFEST.json").write_text(
-            json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
+            json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+            encoding="utf-8",
         )
     before_after = {
         "report": "CAP004C_BEFORE_AFTER_STORAGE",
@@ -792,7 +815,8 @@ def main(argv: list[str] | None = None) -> int:
     }
     (OUT / "BEFORE_AFTER_STORAGE.md").write_text(render_before_after(data), encoding="utf-8")
     (OUT / "BEFORE_AFTER_STORAGE.json").write_text(
-        json.dumps(before_after, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
+        json.dumps(before_after, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+        encoding="utf-8",
     )
     disk_guard = {
         "report": "CAP004C_DISK_GUARD",
@@ -815,7 +839,8 @@ def main(argv: list[str] | None = None) -> int:
     }
     (OUT / "DISK_GUARD_REPORT.md").write_text(render_disk_guard(data), encoding="utf-8")
     (OUT / "DISK_GUARD_REPORT.json").write_text(
-        json.dumps(disk_guard, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
+        json.dumps(disk_guard, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+        encoding="utf-8",
     )
     (OUT / "REPLAY_VERIFICATION.md").write_text(render_replay(data), encoding="utf-8")
     run_report = {
@@ -846,7 +871,8 @@ def main(argv: list[str] | None = None) -> int:
                 f"({run_report['verification']['passed']}/{run_report['verification']['checks']})",
                 "- delegated verifiers: "
                 + ", ".join(
-                    f"{name}={item['status']}" for name, item in (run_report["delegated"] or {}).items()
+                    f"{name}={item['status']}"
+                    for name, item in (run_report["delegated"] or {}).items()
                 ),
                 f"- compact journal events: {run_report['journal_events']}",
                 f"- operations events: {run_report['operations_events']}",
@@ -865,7 +891,8 @@ def main(argv: list[str] | None = None) -> int:
         encoding="utf-8",
     )
     (OUT / "RUN_REPORT.json").write_text(
-        json.dumps(run_report, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
+        json.dumps(run_report, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
+        encoding="utf-8",
     )
     (OUT / "FINAL_REPORT.json").write_text(
         json.dumps(final, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"

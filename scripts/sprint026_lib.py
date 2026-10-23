@@ -101,7 +101,7 @@ OFFICIAL_FEES: dict[str, dict[str, Any]] = {
         "access_date": "2026-09-26",
         "instrument": "BTCUSDT/ETHUSDT/SOLUSDT perp",
         "discount": "periodic 0% maker promo POSSIBLE, not applicable; product "
-                    "excluded from the runtime",
+        "excluded from the runtime",
     },
 }
 
@@ -112,9 +112,24 @@ OFFICIAL_FEES: dict[str, dict[str, Any]] = {
 # ---------------------------------------------------------------------------
 
 V4_MEASURED_SPOT: dict[str, dict[str, Any]] = {
-    "BTCUSDT": {"spread_bps": 0.0012, "slippage_impact_bps": 3.4988, "rt_total_bps": 23.500, "n": 37},
-    "ETHUSDT": {"spread_bps": 0.0375, "slippage_impact_bps": 3.7233, "rt_total_bps": 23.761, "n": 37},
-    "SOLUSDT": {"spread_bps": 0.8422, "slippage_impact_bps": 3.8445, "rt_total_bps": 24.687, "n": 37},
+    "BTCUSDT": {
+        "spread_bps": 0.0012,
+        "slippage_impact_bps": 3.4988,
+        "rt_total_bps": 23.500,
+        "n": 37,
+    },
+    "ETHUSDT": {
+        "spread_bps": 0.0375,
+        "slippage_impact_bps": 3.7233,
+        "rt_total_bps": 23.761,
+        "n": 37,
+    },
+    "SOLUSDT": {
+        "spread_bps": 0.8422,
+        "slippage_impact_bps": 3.8445,
+        "rt_total_bps": 24.687,
+        "n": 37,
+    },
 }
 V4_SPOT_FEE_BPS_PER_SIDE = 10.0
 
@@ -133,7 +148,7 @@ FROZEN_ALPHA: tuple[dict[str, Any], ...] = (
         "direction": "contrarian",
         "role": "PRIMARY",
         "rationale": "best gross expectancy among RFC-025 variants with a "
-                     "sufficient sample (n=61 DISCOVERY)",
+        "sufficient sample (n=61 DISCOVERY)",
     },
     {
         "candidate_id": "funding_z@30m|VOL|z1.0",
@@ -174,7 +189,16 @@ RUNTIME_MEASURED_LATENCY_MS: int | None = None  # no certified runtime measureme
 
 # Feasibility frontier (§7) — diagnostic re-costing, trades unchanged.
 FRONTIER_COSTS_BPS: tuple[float, ...] = (
-    0.0, 5.0, 10.0, 15.0, 20.0, CURRENT_COST_BPS, 25.0, 30.0, 35.0, 40.0,
+    0.0,
+    5.0,
+    10.0,
+    15.0,
+    20.0,
+    CURRENT_COST_BPS,
+    25.0,
+    30.0,
+    35.0,
+    40.0,
 )
 
 
@@ -195,8 +219,13 @@ def run_candidate(candidate: dict[str, Any], windows: tuple[str, ...]) -> tuple[
     for asset in ASSETS:
         for window in windows:
             b = OL.bundle_for(asset, window, tf)
-            sig = SG.signal_array(asset, b, str(candidate["feature"]),
-                                  float(candidate["z_thr"]), candidate["condition"] == "VOL")
+            sig = SG.signal_array(
+                asset,
+                b,
+                str(candidate["feature"]),
+                float(candidate["z_thr"]),
+                candidate["condition"] == "VOL",
+            )
             spec = L.Spec(
                 candidate_id=str(candidate["candidate_id"]),
                 hypothesis_id=str(candidate["hypothesis_id"]),
@@ -284,7 +313,9 @@ def break_even_analysis(trades: list[L.Trade]) -> dict[str, Any]:
         "conservative_break_even_cost_bps": round(conservative, 4),
         "current_cost_bps": CURRENT_COST_BPS,
         "required_cost_reduction_bps": round(CURRENT_COST_BPS - mean, 4),
-        "required_cost_reduction_pct": round((CURRENT_COST_BPS - mean) / CURRENT_COST_BPS * 100.0, 2),
+        "required_cost_reduction_pct": round(
+            (CURRENT_COST_BPS - mean) / CURRENT_COST_BPS * 100.0, 2
+        ),
         "alpha_uncertainty_high": bool(conservative <= 0.0),
     }
 
@@ -348,69 +379,110 @@ def policy_registry() -> list[ExecutionPolicy]:
     return [
         ExecutionPolicy(
             policy_id="E0_CURRENT_TAKER",
-            entry_mode="taker_market", exit_mode="taker_market", timeout_s=None, fallback=None,
-            latency_ms=0, fee_model="COST_MODEL_V3 BINANCE_SPOT_STANDARD_TAKER",
-            fill_model="deterministic_cross", spread_model="V3 constant 1.0",
+            entry_mode="taker_market",
+            exit_mode="taker_market",
+            timeout_s=None,
+            fallback=None,
+            latency_ms=0,
+            fee_model="COST_MODEL_V3 BINANCE_SPOT_STANDARD_TAKER",
+            fill_model="deterministic_cross",
+            spread_model="V3 constant 1.0",
             slippage_model="V3 modelled 2.632456+0.158114",
-            data_requirements=("none",), status="CERTIFIED_EMPIRICAL",
+            data_requirements=("none",),
+            status="CERTIFIED_EMPIRICAL",
             round_trip_cost_bps=CURRENT_COST_BPS,
             notes="certified baseline/control — unchanged",
         ),
         ExecutionPolicy(
             policy_id="E1_EMPIRICAL_TAKER_SPOT",
-            entry_mode="taker_market", exit_mode="taker_market", timeout_s=None, fallback=None,
-            latency_ms=0, fee_model="SPOT VIP0 taker 10/side (SRC-01)",
-            fill_model="deterministic_cross", spread_model="V4 measured per asset",
+            entry_mode="taker_market",
+            exit_mode="taker_market",
+            timeout_s=None,
+            fallback=None,
+            latency_ms=0,
+            fee_model="SPOT VIP0 taker 10/side (SRC-01)",
+            fill_model="deterministic_cross",
+            spread_model="V4 measured per asset",
             slippage_model="V4 inherited V3 slippage+impact",
-            data_requirements=("forward bookTicker",), status="EMPIRICAL_PARTIAL",
+            data_requirements=("forward bookTicker",),
+            status="EMPIRICAL_PARTIAL",
             round_trip_cost_bps=round(v4_mid, 6),
             notes="measured spread, forward-only normal regime",
         ),
         ExecutionPolicy(
             policy_id="E2_MAKER_ENTRY_MAKER_EXIT_SPOT",
-            entry_mode="limit_post_only", exit_mode="limit_post_only", timeout_s=None, fallback=None,
-            latency_ms=0, fee_model="SPOT VIP0 maker 10/side (SRC-01)",
+            entry_mode="limit_post_only",
+            exit_mode="limit_post_only",
+            timeout_s=None,
+            fallback=None,
+            latency_ms=0,
+            fee_model="SPOT VIP0 maker 10/side (SRC-01)",
             fill_model="UNMODELLED — no historical L2 book",
-            spread_model="V4 measured", slippage_model="n/a",
+            spread_model="V4 measured",
+            slippage_model="n/a",
             data_requirements=("historical L2 book", "queue", "trade-through"),
-            status="NOT_TESTABLE", round_trip_cost_bps=None,
+            status="NOT_TESTABLE",
+            round_trip_cost_bps=None,
             notes="maker==taker on spot VIP0: no fee saving even if fills",
         ),
         ExecutionPolicy(
             policy_id="E3_MAKER_ENTRY_TAKER_EXIT_SPOT",
-            entry_mode="limit_post_only", exit_mode="taker_market", timeout_s=None, fallback=None,
-            latency_ms=0, fee_model="SPOT VIP0 maker 10 / taker 10 (SRC-01)",
+            entry_mode="limit_post_only",
+            exit_mode="taker_market",
+            timeout_s=None,
+            fallback=None,
+            latency_ms=0,
+            fee_model="SPOT VIP0 maker 10 / taker 10 (SRC-01)",
             fill_model="UNMODELLED — no historical L2 book",
-            spread_model="V4 measured", slippage_model="V4 inherited",
+            spread_model="V4 measured",
+            slippage_model="V4 inherited",
             data_requirements=("historical L2 book", "queue"),
-            status="NOT_TESTABLE", round_trip_cost_bps=None,
+            status="NOT_TESTABLE",
+            round_trip_cost_bps=None,
             notes="protected exit is taker; entry fill still unverified",
         ),
         ExecutionPolicy(
             policy_id="E4_TAKER_ENTRY_MAKER_EXIT_SPOT",
-            entry_mode="taker_market", exit_mode="limit_post_only", timeout_s=None, fallback=None,
-            latency_ms=0, fee_model="SPOT VIP0 taker 10 / maker 10 (SRC-01)",
+            entry_mode="taker_market",
+            exit_mode="limit_post_only",
+            timeout_s=None,
+            fallback=None,
+            latency_ms=0,
+            fee_model="SPOT VIP0 taker 10 / maker 10 (SRC-01)",
             fill_model="UNMODELLED — no historical L2 book",
-            spread_model="V4 measured", slippage_model="V4 inherited",
+            spread_model="V4 measured",
+            slippage_model="V4 inherited",
             data_requirements=("historical L2 book", "queue"),
-            status="NOT_TESTABLE", round_trip_cost_bps=None,
+            status="NOT_TESTABLE",
+            round_trip_cost_bps=None,
             notes="exit fill unverified; worst of both worlds on spot fees",
         ),
         ExecutionPolicy(
             policy_id="E5_LIMIT_TIMEOUT_FALLBACK_SPOT",
-            entry_mode="limit_timeout_then_taker", exit_mode="taker_market",
-            timeout_s=30.0, fallback="taker_market", latency_ms=100,
-            fee_model="SPOT VIP0", fill_model="UNMODELLED — needs fill probability",
-            spread_model="V4 measured", slippage_model="V4 inherited",
+            entry_mode="limit_timeout_then_taker",
+            exit_mode="taker_market",
+            timeout_s=30.0,
+            fallback="taker_market",
+            latency_ms=100,
+            fee_model="SPOT VIP0",
+            fill_model="UNMODELLED — needs fill probability",
+            spread_model="V4 measured",
+            slippage_model="V4 inherited",
             data_requirements=("historical L2 book", "queue", "forward fill evidence"),
-            status="NOT_TESTABLE", round_trip_cost_bps=None,
+            status="NOT_TESTABLE",
+            round_trip_cost_bps=None,
             notes="hybrid maker->fallback needs fill rates from a forward collector",
         ),
         ExecutionPolicy(
             policy_id="E6_PERP_TAKER_INFORMATIONAL",
-            entry_mode="taker_market", exit_mode="taker_market", timeout_s=None, fallback=None,
-            latency_ms=0, fee_model="USDM PERP VIP0 taker 5/side (SRC-02)",
-            fill_model="deterministic_cross", spread_model="V4 measured (perp proxy)",
+            entry_mode="taker_market",
+            exit_mode="taker_market",
+            timeout_s=None,
+            fallback=None,
+            latency_ms=0,
+            fee_model="USDM PERP VIP0 taker 5/side (SRC-02)",
+            fill_model="deterministic_cross",
+            spread_model="V4 measured (perp proxy)",
             slippage_model="V4 inherited",
             data_requirements=("perp klines",),
             status="BOUNDED_ESTIMATE",
@@ -419,12 +491,18 @@ def policy_registry() -> list[ExecutionPolicy]:
         ),
         ExecutionPolicy(
             policy_id="E7_PERP_MAKER_THEORETICAL_UPPER_BOUND",
-            entry_mode="limit_post_only", exit_mode="limit_post_only", timeout_s=None, fallback=None,
-            latency_ms=0, fee_model="USDM PERP VIP0 maker 2/side (SRC-02)",
+            entry_mode="limit_post_only",
+            exit_mode="limit_post_only",
+            timeout_s=None,
+            fallback=None,
+            latency_ms=0,
+            fee_model="USDM PERP VIP0 maker 2/side (SRC-02)",
             fill_model="perfection_assumed (FORBIDDEN for admission)",
-            spread_model="zero_assumed", slippage_model="zero_assumed",
+            spread_model="zero_assumed",
+            slippage_model="zero_assumed",
             data_requirements=("historical L2 book",),
-            status="THEORETICAL_ONLY", round_trip_cost_bps=round(fee_perp_maker, 6),
+            status="THEORETICAL_ONLY",
+            round_trip_cost_bps=round(fee_perp_maker, 6),
             notes="unattainable bound: zero spread/slippage + certain fills",
         ),
     ]
@@ -458,14 +536,16 @@ def feasibility_frontier(trades: list[L.Trade], costs: tuple[float, ...]) -> lis
         wins = net[net > 0]
         losses = net[net < 0]
         pf = float(wins.sum() / abs(losses.sum())) if losses.shape[0] else None
-        out.append({
-            "total_round_trip_cost_bps": round(c, 6),
-            "n_trades": n,
-            "net_expectancy_bps": round(float(np.mean(net)), 4) if n else None,
-            "net_pnl_usdt": round(float(net.sum()) / 1e4 * L.ROOT_NOTIONAL, 2) if n else None,
-            "profit_factor": round(pf, 4) if pf is not None else None,
-            "win_rate": round(float(wins.shape[0]) / n, 4) if n else None,
-        })
+        out.append(
+            {
+                "total_round_trip_cost_bps": round(c, 6),
+                "n_trades": n,
+                "net_expectancy_bps": round(float(np.mean(net)), 4) if n else None,
+                "net_pnl_usdt": round(float(net.sum()) / 1e4 * L.ROOT_NOTIONAL, 2) if n else None,
+                "profit_factor": round(pf, 4) if pf is not None else None,
+                "win_rate": round(float(wins.shape[0]) / n, 4) if n else None,
+            }
+        )
     return out
 
 
@@ -565,7 +645,8 @@ def _spread_stats(sps: NDArray[Any], mids: NDArray[Any]) -> dict[str, Any]:
         res["low_vol_mean_spread_bps"] = round(float(np.mean(sps[lo])), 6) if lo.any() else None
         res["vol_spread_ratio"] = (
             round(float(np.mean(sps[hi]) / np.mean(sps[lo])), 4)
-            if hi.any() and lo.any() and np.mean(sps[lo]) > 0 else None
+            if hi.any() and lo.any() and np.mean(sps[lo]) > 0
+            else None
         )
     return res
 
@@ -583,18 +664,22 @@ def microstructure_inventory() -> dict[str, Any]:
         "historical_order_book": {
             "available": False,
             "reason": "Binance exposes bookTicker/depth only as a live stream; no "
-                      "historical L2 endpoint (confirmed by RFC-025 probes)",
+            "historical L2 endpoint (confirmed by RFC-025 probes)",
         },
         "historical_aggTrades": {
             "available": True,
             "detail": "reports/microstructure-v1/aggtrades/AGG_<SYM>_<day>.json — "
-                      f"{v1_agg} files, 14 discontinuous days 2026-03..2026-09",
+            f"{v1_agg} files, 14 discontinuous days 2026-03..2026-09",
             "granularity": "minute aggregates (no intra-minute price path, no bid/ask)",
             "usable_for": ["signed flow", "aggressor volume"],
             "not_usable_for": ["trade-through", "queue", "realized slippage", "adverse selection"],
         },
-        "forward_book_ticker": {"available": True, "n_files_spot": bt_spot, "n_files_perp": bt_perp,
-                                "regime": "FORWARD_RESEARCH_ONLY (2026-09-28..10-01)"},
+        "forward_book_ticker": {
+            "available": True,
+            "n_files_spot": bt_spot,
+            "n_files_perp": bt_perp,
+            "regime": "FORWARD_RESEARCH_ONLY (2026-09-28..10-01)",
+        },
         "forward_depth_snapshot": {"available": True, "n_files": depth},
         "forward_agg_trade": {"available": True, "n_files": aggt},
         "historical_order_book_feasible": False,
@@ -611,13 +696,22 @@ def maker_fill_bounds() -> dict[str, Any]:
     return {
         "status": "NOT_TESTABLE_HISTORICALLY",
         "reason": "no historical best-bid/ask/depth/queue; fill probability, partial "
-                  "fills and adverse selection cannot be measured ex-post",
-        "optimistic_bound": {"fill_prob": 1.0, "effective_cost_bps": None,
-                             "label": "99th-percentile, unattainable, never admission"},
-        "neutral_bound": {"fill_prob": 0.5, "effective_cost_bps": None,
-                          "label": "V3 modelling constant (ASSUMED), diagnostic"},
-        "conservative_bound": {"fill_prob": 0.2, "effective_cost_bps": None,
-                               "label": "adverse-selection heavy, diagnostic"},
+        "fills and adverse selection cannot be measured ex-post",
+        "optimistic_bound": {
+            "fill_prob": 1.0,
+            "effective_cost_bps": None,
+            "label": "99th-percentile, unattainable, never admission",
+        },
+        "neutral_bound": {
+            "fill_prob": 0.5,
+            "effective_cost_bps": None,
+            "label": "V3 modelling constant (ASSUMED), diagnostic",
+        },
+        "conservative_bound": {
+            "fill_prob": 0.2,
+            "effective_cost_bps": None,
+            "label": "adverse-selection heavy, diagnostic",
+        },
         "certifiable": False,
     }
 
@@ -626,7 +720,7 @@ def adverse_selection_bounds() -> dict[str, Any]:
     return {
         "status": "NOT_TESTABLE_HISTORICALLY",
         "reason": "post-fill markout requires actual passive fills; none are observable "
-                  "in the repository history",
+        "in the repository history",
         "post_fill_horizons_s": [1, 5, 30, 60, 300],
         "certifiable": False,
     }

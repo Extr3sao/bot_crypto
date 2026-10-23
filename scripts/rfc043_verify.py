@@ -318,7 +318,8 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
     # -- §15/§17 capital tiers and no automatic scale ------------------------- #
     checks.check(
         "tiers:ordered_and_complete",
-        tuple((t["tier"], float(t["capital_usdt"])) for t in tiers["capital_tiers"]) == CAPITAL_TIERS,
+        tuple((t["tier"], float(t["capital_usdt"])) for t in tiers["capital_tiers"])
+        == CAPITAL_TIERS,
     )
     checks.check("tiers:none_authorized", tiers["any_tier_authorized"] is False)
     checks.check(
@@ -381,9 +382,7 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
     )
 
     # -- §42-§43 scoreboard --------------------------------------------------- #
-    mismatched = [
-        k for k, v in EXPECTED_SCOREBOARD.items() if scoreboard.get(k) != v
-    ]
+    mismatched = [k for k, v in EXPECTED_SCOREBOARD.items() if scoreboard.get(k) != v]
     checks.check("scoreboard:expected_values", not mismatched, f"mismatch={mismatched}")
 
     # -- §37/§38 freeze remains active, no new alpha RFC ---------------------- #
@@ -445,14 +444,15 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
         "deposit_called_trading_profit": not all(
             float(r["growth_from_trading_usdt"]) == 0.0 for r in contributions["rows"]
         ),
-        "capital_increase_treated_as_alpha": bool(reviews["MF-TREND-001"]["capital_fit_at_200"] == "PASS"),
+        "capital_increase_treated_as_alpha": bool(
+            reviews["MF-TREND-001"]["capital_fit_at_200"] == "PASS"
+        ),
         "leverage_proposed_to_solve_low_capital": False,
         "live_capital_authorized": report["live_capital_authorized"] != 0,
         "new_strategy_created": bool(offending),
         "research_freeze_released": state["alpha_research_freeze"] != "ACTIVE",
         "old_failed_candidate_promoted": any(
-            r["capital_fit_at_200"] == "PASS"
-            or "APPROVED" in str(r["business_edge"]).upper()
+            r["capital_fit_at_200"] == "PASS" or "APPROVED" in str(r["business_edge"]).upper()
             for r in candidate_review["rows"]
         ),
     }

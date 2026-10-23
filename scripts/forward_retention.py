@@ -258,11 +258,7 @@ def main() -> int:
         if wait_for_stop_file(stop_file, min(args.interval, 60.0)):
             print("[retention] stop requested while waiting for a capture")
             return 0
-    report_path = (
-        Path(args.report)
-        if args.report
-        else root / "reports" / "RETENTION_REPORT.json"
-    )
+    report_path = Path(args.report) if args.report else root / "reports" / "RETENTION_REPORT.json"
     iterations = 0
     last: dict[str, Any] = {}
     while True:

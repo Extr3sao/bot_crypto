@@ -59,9 +59,21 @@ CODE_FILES: tuple[str, ...] = (
 )
 
 IDENTITY: dict[str, dict[str, Any]] = {
-    "EXP-ARP-006": {"strategy_id": "STRAT-CAND-016-VARIANT-B", "arm": "PROJECT_DERIVED_VARIANT", "min_trades": 10},
-    "EXP-ARP-008": {"strategy_id": "H-DAILY-TSMOM-001", "arm": "PROJECT_DERIVED_VARIANT", "min_trades": 20},
-    "EXP-ARP-016": {"strategy_id": "H-XSEC-MOM-LONG-002", "arm": "NEW_HYPOTHESIS", "min_trades": 20},
+    "EXP-ARP-006": {
+        "strategy_id": "STRAT-CAND-016-VARIANT-B",
+        "arm": "PROJECT_DERIVED_VARIANT",
+        "min_trades": 10,
+    },
+    "EXP-ARP-008": {
+        "strategy_id": "H-DAILY-TSMOM-001",
+        "arm": "PROJECT_DERIVED_VARIANT",
+        "min_trades": 20,
+    },
+    "EXP-ARP-016": {
+        "strategy_id": "H-XSEC-MOM-LONG-002",
+        "arm": "NEW_HYPOTHESIS",
+        "min_trades": 20,
+    },
     "EXP-ARP-017": {"strategy_id": "H-XSEC-REV-002", "arm": "NEW_HYPOTHESIS", "min_trades": 20},
     "EXP-ARP-018": {"strategy_id": "H-XSEC-LOWVOL-002", "arm": "NEW_HYPOTHESIS", "min_trades": 15},
 }
@@ -99,8 +111,14 @@ def xsec_corpus(split: str) -> dict[str, Any]:
     return D.load_corpus(split=split)
 
 
-def run_xsec(exp_id: str, corpus: dict[str, Any], *, cost: float, subset: Sequence[str] | None = None,
-             override: X.XsecUniverseConfig | None = None) -> tuple[list[Any], dict[str, int]]:
+def run_xsec(
+    exp_id: str,
+    corpus: dict[str, Any],
+    *,
+    cost: float,
+    subset: Sequence[str] | None = None,
+    override: X.XsecUniverseConfig | None = None,
+) -> tuple[list[Any], dict[str, int]]:
     cfg = override or X.xsec_universe_configs()[exp_id]
     return X.simulate_universe_xsec(
         corpus, D.listing_times(), D.corpus_digest(), config=cfg, cost_bps_rt=cost, subset=subset
@@ -136,14 +154,23 @@ def cost_stress(gross_bps: float | None, base_cost: float) -> dict[str, Any]:
 def params_key(exp_id: str) -> dict[str, Any]:
     if exp_id == "EXP-ARP-006":
         c6 = DL.Exp006Config()
-        return {"void_min_days": c6.void_min_days, "retest_lookback_days": c6.retest_lookback_days,
-                "stop_atr": c6.stop_atr, "target_atr": c6.target_atr, "max_hold_days": c6.max_hold_days}
+        return {
+            "void_min_days": c6.void_min_days,
+            "retest_lookback_days": c6.retest_lookback_days,
+            "stop_atr": c6.stop_atr,
+            "target_atr": c6.target_atr,
+            "max_hold_days": c6.max_hold_days,
+        }
     if exp_id == "EXP-ARP-008":
         c8 = DL.Exp008Config()
         return {"lookback_days": c8.lookback_days, "max_hold_days": c8.max_hold_days}
     cx = X.xsec_universe_configs()[exp_id]
-    return {"ranking_window": cx.ranking_window, "rebalance_days": cx.rebalance_days,
-            "max_hold_days": cx.max_hold_days, "ascending": cx.ascending}
+    return {
+        "ranking_window": cx.ranking_window,
+        "rebalance_days": cx.rebalance_days,
+        "max_hold_days": cx.max_hold_days,
+        "ascending": cx.ascending,
+    }
 
 
 # --------------------------------------------------------------------- robustness
@@ -161,9 +188,19 @@ def robustness_daily(exp_id: str, *, cost: float, base: dict[str, Any]) -> dict[
             "hold_6": DL.Exp006Config(max_hold_days=6),
         }
         for name6, cfg6 in neigh6.items():
-            tr = [t for v in DL.simulate_exp006(val, cost_bps_rt=cost, config=cfg6).values() for t in v]
+            tr = [
+                t
+                for v in DL.simulate_exp006(val, cost_bps_rt=cost, config=cfg6).values()
+                for t in v
+            ]
             out[f"neighborhood_{name6}"] = summarize(tr, cost_bps_rt=cost)
-        tr = [t for v in DL.simulate_exp006(val, cost_bps_rt=cost, config=c6, entry_delay_days=1).values() for t in v]
+        tr = [
+            t
+            for v in DL.simulate_exp006(
+                val, cost_bps_rt=cost, config=c6, entry_delay_days=1
+            ).values()
+            for t in v
+        ]
         out["execution_delay_1d"] = summarize(tr, cost_bps_rt=cost)
     else:
         c8 = DL.Exp008Config()
@@ -174,9 +211,19 @@ def robustness_daily(exp_id: str, *, cost: float, base: dict[str, Any]) -> dict[
             "hold_28": DL.Exp008Config(max_hold_days=28),
         }
         for name8, cfg8 in neigh8.items():
-            tr = [t for v in DL.simulate_exp008(val, cost_bps_rt=cost, config=cfg8).values() for t in v]
+            tr = [
+                t
+                for v in DL.simulate_exp008(val, cost_bps_rt=cost, config=cfg8).values()
+                for t in v
+            ]
             out[f"neighborhood_{name8}"] = summarize(tr, cost_bps_rt=cost)
-        tr = [t for v in DL.simulate_exp008(val, cost_bps_rt=cost, config=c8, entry_delay_days=1).values() for t in v]
+        tr = [
+            t
+            for v in DL.simulate_exp008(
+                val, cost_bps_rt=cost, config=c8, entry_delay_days=1
+            ).values()
+            for t in v
+        ]
         out["execution_delay_1d"] = summarize(tr, cost_bps_rt=cost)
     for m in (1.25, 1.5, 2.0):
         tr = run_daily(exp_id, val, cost=cost * m)
@@ -196,20 +243,55 @@ def robustness_daily(exp_id: str, *, cost: float, base: dict[str, Any]) -> dict[
     return out
 
 
-def robustness_xsec(exp_id: str, *, cost: float, base: dict[str, Any], val_corpus: dict[str, Any],
-                    full_corpus: dict[str, Any]) -> dict[str, Any]:
+def robustness_xsec(
+    exp_id: str,
+    *,
+    cost: float,
+    base: dict[str, Any],
+    val_corpus: dict[str, Any],
+    full_corpus: dict[str, Any],
+) -> dict[str, Any]:
     cfg = X.xsec_universe_configs()[exp_id]
     out: dict[str, Any] = {}
     neigh = {
-        "window_minus": X.XsecUniverseConfig(cfg.ranking_feature, max(2, int(cfg.ranking_window * 0.8)), cfg.ascending, cfg.rebalance_days, cfg.max_hold_days),
-        "window_plus": X.XsecUniverseConfig(cfg.ranking_feature, int(cfg.ranking_window * 1.2), cfg.ascending, cfg.rebalance_days, cfg.max_hold_days),
-        "rebalance_plus": X.XsecUniverseConfig(cfg.ranking_feature, cfg.ranking_window, cfg.ascending, cfg.rebalance_days + 2, cfg.max_hold_days),
+        "window_minus": X.XsecUniverseConfig(
+            cfg.ranking_feature,
+            max(2, int(cfg.ranking_window * 0.8)),
+            cfg.ascending,
+            cfg.rebalance_days,
+            cfg.max_hold_days,
+        ),
+        "window_plus": X.XsecUniverseConfig(
+            cfg.ranking_feature,
+            int(cfg.ranking_window * 1.2),
+            cfg.ascending,
+            cfg.rebalance_days,
+            cfg.max_hold_days,
+        ),
+        "rebalance_plus": X.XsecUniverseConfig(
+            cfg.ranking_feature,
+            cfg.ranking_window,
+            cfg.ascending,
+            cfg.rebalance_days + 2,
+            cfg.max_hold_days,
+        ),
     }
     for name, oc in neigh.items():
         tr, _ = run_xsec(exp_id, val_corpus, cost=cost, override=oc)
         out[f"neighborhood_{name}"] = summarize(tr, cost_bps_rt=cost)
-    tr, _ = run_xsec(exp_id, val_corpus, cost=cost, override=X.XsecUniverseConfig(
-        cfg.ranking_feature, cfg.ranking_window, cfg.ascending, cfg.rebalance_days, cfg.max_hold_days, entry_delay_days=1))
+    tr, _ = run_xsec(
+        exp_id,
+        val_corpus,
+        cost=cost,
+        override=X.XsecUniverseConfig(
+            cfg.ranking_feature,
+            cfg.ranking_window,
+            cfg.ascending,
+            cfg.rebalance_days,
+            cfg.max_hold_days,
+            entry_delay_days=1,
+        ),
+    )
     out["execution_delay_1d"] = summarize(tr, cost_bps_rt=cost)
     for m in (1.25, 1.5, 2.0):
         tr, _ = run_xsec(exp_id, val_corpus, cost=cost * m)
@@ -232,8 +314,10 @@ def robustness_xsec(exp_id: str, *, cost: float, base: dict[str, Any], val_corpu
     bench = DL.to_ohlcv(D.load_corpus_range(["BTCUSDT"], *D.DEV_VAL_RANGE)["BTCUSDT"])
     regimes = A.regime_by_day(bench)
     out["pnl_by_regime"] = A.regime_pnl(full_trades, regimes)
-    out["eligible_count_by_decision"] = {"min": min(elig.values()) if elig else 0,
-                                         "max": max(elig.values()) if elig else 0}
+    out["eligible_count_by_decision"] = {
+        "min": min(elig.values()) if elig else 0,
+        "max": max(elig.values()) if elig else 0,
+    }
     return out
 
 
@@ -255,7 +339,9 @@ def universe_census() -> dict[str, Any]:
         sizes_by_split[split] = uverse.size_series(times)
     lt = D.listing_times()
     listings = {
-        "first": min(lt.values()), "last_max": max(lt.values()), "count": len(lt),
+        "first": min(lt.values()),
+        "last_max": max(lt.values()),
+        "count": len(lt),
     }
     return {
         "assets_available": len(D.available_symbols()),
@@ -293,8 +379,10 @@ def main() -> None:
         dev = summarize(dev_tr, cost_bps_rt=base_cost)
         decision = decision_from(dev, min_trades=IDENTITY[exp_id]["min_trades"], cost=base_cost)
         entry: dict[str, Any] = {
-            "identity": IDENTITY[exp_id], "params": params_key(exp_id),
-            "DEV": dev, "DEV_decision": decision,
+            "identity": IDENTITY[exp_id],
+            "params": params_key(exp_id),
+            "DEV": dev,
+            "DEV_decision": decision,
             "COST_stress": cost_stress(dev["expectancy_gross_bps"], base_cost),
         }
         if decision == "DEV_PASS":
@@ -302,14 +390,18 @@ def main() -> None:
             val = summarize(val_tr, cost_bps_rt=base_cost)
             entry["VALIDATION"] = val
             entry["VALIDATION_decision"] = (
-                "VALIDATION_PASS" if (val["expectancy_net_bps"] or -1) > 0 and val["trades"] >= IDENTITY[exp_id]["min_trades"]
+                "VALIDATION_PASS"
+                if (val["expectancy_net_bps"] or -1) > 0
+                and val["trades"] >= IDENTITY[exp_id]["min_trades"]
                 else "REJECT_VALIDATION"
             )
             if entry["VALIDATION_decision"] == "VALIDATION_PASS":
                 entry["ROBUSTNESS"] = robustness_daily(exp_id, cost=base_cost, base=dev)
                 rob = entry["ROBUSTNESS"]
                 robust_ok = _robust_ok(rob)
-                entry["ROBUSTNESS_decision"] = "ROBUSTNESS_SURVIVOR" if robust_ok else "ROBUSTNESS_FAILED"
+                entry["ROBUSTNESS_decision"] = (
+                    "ROBUSTNESS_SURVIVOR" if robust_ok else "ROBUSTNESS_FAILED"
+                )
         report["experiments"][exp_id] = entry
 
     xsec_val = xsec_corpus("VALIDATION")
@@ -321,10 +413,14 @@ def main() -> None:
         dev["concentration_broad"] = A.concentration_by_asset_and_period(dev_tr)
         decision = decision_from(dev, min_trades=IDENTITY[exp_id]["min_trades"], cost=base_cost)
         entry = {
-            "identity": IDENTITY[exp_id], "params": params_key(exp_id),
-            "DEV": dev, "DEV_decision": decision,
-            "DEV_eligible_universe": {"min": min(dev_elig.values()) if dev_elig else 0,
-                                      "max": max(dev_elig.values()) if dev_elig else 0},
+            "identity": IDENTITY[exp_id],
+            "params": params_key(exp_id),
+            "DEV": dev,
+            "DEV_decision": decision,
+            "DEV_eligible_universe": {
+                "min": min(dev_elig.values()) if dev_elig else 0,
+                "max": max(dev_elig.values()) if dev_elig else 0,
+            },
             "COST_stress": cost_stress(dev["expectancy_gross_bps"], base_cost),
         }
         if decision == "DEV_PASS":
@@ -334,24 +430,48 @@ def main() -> None:
             entry["VALIDATION"] = val
             conc_ok = (val["concentration_broad"].get("top_asset_share") or 0) <= 0.5
             entry["VALIDATION_decision"] = (
-                "VALIDATION_PASS" if (val["expectancy_net_bps"] or -1) > 0 and val["trades"] >= IDENTITY[exp_id]["min_trades"] and conc_ok
+                "VALIDATION_PASS"
+                if (val["expectancy_net_bps"] or -1) > 0
+                and val["trades"] >= IDENTITY[exp_id]["min_trades"]
+                and conc_ok
                 else "REJECT_VALIDATION"
             )
             if entry["VALIDATION_decision"] == "VALIDATION_PASS":
-                entry["ROBUSTNESS"] = robustness_xsec(exp_id, cost=base_cost, base=dev,
-                                                      val_corpus=xsec_val, full_corpus=xsec_full)
-                entry["ROBUSTNESS_decision"] = "ROBUSTNESS_SURVIVOR" if _robust_ok(entry["ROBUSTNESS"]) else "ROBUSTNESS_FAILED"
+                entry["ROBUSTNESS"] = robustness_xsec(
+                    exp_id, cost=base_cost, base=dev, val_corpus=xsec_val, full_corpus=xsec_full
+                )
+                entry["ROBUSTNESS_decision"] = (
+                    "ROBUSTNESS_SURVIVOR"
+                    if _robust_ok(entry["ROBUSTNESS"])
+                    else "ROBUSTNESS_FAILED"
+                )
             elif exp_id == "EXP-ARP-017":
                 entry["VALIDATION_NOTE"] = "previous reversal VALIDATION consumed by EXP-ARP-014"
         report["experiments"][exp_id] = entry
         print(f"   DEV={decision} net={dev['expectancy_net_bps']}", flush=True)
 
-    survivors = [e for e in report["experiments"].values() if e.get("ROBUSTNESS_decision") == "ROBUSTNESS_SURVIVOR"]
+    survivors = [
+        e
+        for e in report["experiments"].values()
+        if e.get("ROBUSTNESS_decision") == "ROBUSTNESS_SURVIVOR"
+    ]
     report["summary"] = {
-        "dev_survivors": [k for k, v in report["experiments"].items() if v["DEV_decision"] == "DEV_PASS"],
-        "cost_survivors": [k for k, v in report["experiments"].items() if v["DEV_decision"] == "DEV_PASS"],
-        "validation_survivors": [k for k, v in report["experiments"].items() if v.get("VALIDATION_decision") == "VALIDATION_PASS"],
-        "robustness_survivors": [k for k, v in report["experiments"].items() if v.get("ROBUSTNESS_decision") == "ROBUSTNESS_SURVIVOR"],
+        "dev_survivors": [
+            k for k, v in report["experiments"].items() if v["DEV_decision"] == "DEV_PASS"
+        ],
+        "cost_survivors": [
+            k for k, v in report["experiments"].items() if v["DEV_decision"] == "DEV_PASS"
+        ],
+        "validation_survivors": [
+            k
+            for k, v in report["experiments"].items()
+            if v.get("VALIDATION_decision") == "VALIDATION_PASS"
+        ],
+        "robustness_survivors": [
+            k
+            for k, v in report["experiments"].items()
+            if v.get("ROBUSTNESS_decision") == "ROBUSTNESS_SURVIVOR"
+        ],
         "oos_opened": False,
         "oos_survivors": [],
         # OOS is closed, so no strategy is a promotion candidate yet: survivors are
@@ -361,7 +481,9 @@ def main() -> None:
         ],
         "promotion_candidates": [],
     }
-    (OUT / "RESULTS.json").write_text(json.dumps(report, indent=2, sort_keys=True), encoding="utf-8")
+    (OUT / "RESULTS.json").write_text(
+        json.dumps(report, indent=2, sort_keys=True), encoding="utf-8"
+    )
     print("survivors:", report["summary"]["robustness_survivors"], flush=True)
     print("wrote", OUT / "RESULTS.json", flush=True)
 
@@ -370,7 +492,9 @@ def _robust_ok(rob: dict[str, Any]) -> bool:
     """A robustness survivor must keep positive net in the majority of perturbations."""
     vals: list[float] = []
     for key, v in rob.items():
-        perturbed = key.startswith(("neighborhood_", "cost_", "asset_")) or key == "execution_delay_1d"
+        perturbed = (
+            key.startswith(("neighborhood_", "cost_", "asset_")) or key == "execution_delay_1d"
+        )
         if perturbed and isinstance(v, dict) and v.get("expectancy_net_bps") is not None:
             vals.append(float(v["expectancy_net_bps"]))
     if not vals:

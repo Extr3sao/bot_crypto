@@ -49,6 +49,7 @@ def _load_json(p: Path) -> Any:
 # independent panel
 # ---------------------------------------------------------------------------
 
+
 def load_panel() -> tuple[dict[str, dict[str, NDArray[Any]]], list[str]]:
     assets = {}
     for p in sorted(CACHE.glob("daily_*.npz")):
@@ -65,8 +66,9 @@ def make_calendar(assets: dict[str, dict[str, NDArray[Any]]]) -> list[int]:
     return sorted(days)
 
 
-def matrix(assets: dict[str, dict[str, NDArray[Any]]], syms: list[str],
-           days: list[int], field: str) -> tuple[NDArray[Any], dict[str, int]]:
+def matrix(
+    assets: dict[str, dict[str, NDArray[Any]]], syms: list[str], days: list[int], field: str
+) -> tuple[NDArray[Any], dict[str, int]]:
     di = {t: i for i, t in enumerate(days)}
     m = np.full((len(days), len(syms)), np.nan)
     si = {s: j for j, s in enumerate(syms)}
@@ -108,9 +110,15 @@ def mask_of(days: list[int], name: str) -> NDArray[Any]:
 # independent simulators
 # ---------------------------------------------------------------------------
 
-def sim_xmom(close: NDArray[Any], days: list[int], mask: NDArray[Any],
-             formation: int = 7, quantile: float = 0.2,
-             cost: float = PER_SIDE) -> dict[str, Any]:
+
+def sim_xmom(
+    close: NDArray[Any],
+    days: list[int],
+    mask: NDArray[Any],
+    formation: int = 7,
+    quantile: float = 0.2,
+    cost: float = PER_SIDE,
+) -> dict[str, Any]:
     _n, a = close.shape
     rebal = [i for i in week_days(days) if mask[i]]
     prev = np.zeros(a)
@@ -143,9 +151,14 @@ def sim_xmom(close: NDArray[Any], days: list[int], mask: NDArray[Any],
     return _stats(nets, gross, costs, traded, 52.0)
 
 
-def sim_tsmom(close: NDArray[Any], days: list[int], mask: NDArray[Any],
-              formation: int = 365, vol_target: float = 0.40,
-              cost: float = PER_SIDE) -> dict[str, Any]:
+def sim_tsmom(
+    close: NDArray[Any],
+    days: list[int],
+    mask: NDArray[Any],
+    formation: int = 365,
+    vol_target: float = 0.40,
+    cost: float = PER_SIDE,
+) -> dict[str, Any]:
     _n, a = close.shape
     rebal = [i for i in month_first_days(days) if mask[i]]
     prev = np.zeros(a)
@@ -161,7 +174,7 @@ def sim_tsmom(close: NDArray[Any], days: list[int], mask: NDArray[Any],
         m = elig
         sig[m] = np.sign(close[i, m] / close[i - formation, m] - 1.0)
         lo = max(0, i - 60)
-        w_ = close[lo:i + 1]
+        w_ = close[lo : i + 1]
         rr = w_[1:] / w_[:-1] - 1.0
         vol = np.full(a, np.nan)
         for jj in range(a):
@@ -191,8 +204,7 @@ def sim_tsmom(close: NDArray[Any], days: list[int], mask: NDArray[Any],
     return _stats(nets, gross, costs, traded, 12.0)
 
 
-def _stats(nets: Any, gross: Any, costs: Any, traded: Any,
-           ppy: float) -> dict[str, Any]:
+def _stats(nets: Any, gross: Any, costs: Any, traded: Any, ppy: float) -> dict[str, Any]:
     nets = np.array(nets, dtype=np.float64)
     if nets.size == 0:
         return {"status": "NO_TRADES", "rebalances": 0}
@@ -210,6 +222,7 @@ def _stats(nets: Any, gross: Any, costs: Any, traded: Any,
 # ---------------------------------------------------------------------------
 # PIT: independent masking check
 # ---------------------------------------------------------------------------
+
 
 def pit_masking_ok(close: NDArray[Any], days: list[int], kind: str) -> bool:
     mask = np.ones(len(days), dtype=bool)
@@ -235,7 +248,7 @@ def pit_masking_ok(close: NDArray[Any], days: list[int], kind: str) -> bool:
         sig = np.zeros(cmat.shape[1])
         sig[elig] = np.sign(cmat[i, elig] / cmat[i - 365, elig] - 1.0)
         lo = max(0, i - 60)
-        w_ = cmat[lo:i + 1]
+        w_ = cmat[lo : i + 1]
         rr = w_[1:] / w_[:-1] - 1.0
         vol = np.full(cmat.shape[1], np.nan)
         for j in range(cmat.shape[1]):
@@ -249,12 +262,13 @@ def pit_masking_ok(close: NDArray[Any], days: list[int], kind: str) -> bool:
         s = float(np.sum(np.abs(raw)))
         return raw / s if s > 0 else raw
 
-    tests = [i for i in (week_days(days) if kind == "XMOM" else month_first_days(days))
-             if mask[i]][1:8]
+    tests = [i for i in (week_days(days) if kind == "XMOM" else month_first_days(days)) if mask[i]][
+        1:8
+    ]
     for i in tests:
         full = weights(i, close)
         cut = close.copy()
-        cut[i + 1:, :] = np.nan
+        cut[i + 1 :, :] = np.nan
         if not np.allclose(full, weights(i, cut), equal_nan=True):
             return False
     return True
@@ -264,6 +278,7 @@ def pit_masking_ok(close: NDArray[Any], days: list[int], kind: str) -> bool:
 # main
 # ---------------------------------------------------------------------------
 
+
 def main() -> int:
     assets_raw, syms = load_panel()
     days = make_calendar(assets_raw)
@@ -272,29 +287,54 @@ def main() -> int:
     # --- registry integrity ---
     reg = _load_json(OUT / "SOURCE_REGISTRY.json")
     sources = reg["sources"]
-    required = ["SOURCE_ID", "title", "authors", "publication", "year", "URL",
-                "artifact_type", "asset_class", "strategy_family",
-                "holding_horizon", "sample_period", "reported_gross_performance",
-                "reported_net_performance", "cost_assumptions",
-                "robustness_evidence", "replication_evidence",
-                "known_criticisms", "data_requirements",
-                "implementation_requirements", "reliability_score"]
+    required = [
+        "SOURCE_ID",
+        "title",
+        "authors",
+        "publication",
+        "year",
+        "URL",
+        "artifact_type",
+        "asset_class",
+        "strategy_family",
+        "holding_horizon",
+        "sample_period",
+        "reported_gross_performance",
+        "reported_net_performance",
+        "cost_assumptions",
+        "robustness_evidence",
+        "replication_evidence",
+        "known_criticisms",
+        "data_requirements",
+        "implementation_requirements",
+        "reliability_score",
+    ]
     check("registry_size>=10", len(sources) >= 10, f"n={len(sources)}")
-    check("registry_fields_complete",
-          all(all(k in s for k in required) for s in sources))
+    check("registry_fields_complete", all(all(k in s for k in required) for s in sources))
     ids = [s["SOURCE_ID"] for s in sources]
     check("registry_ids_unique", len(ids) == len(set(ids)))
-    ladder = {"PEER-REVIEWED PAPER", "OFFICIAL WORKING PAPER / UNIVERSITY",
-              "REPRODUCED ACADEMIC RESULT", "OFFICIAL EXCHANGE RESEARCH",
-              "HIGH-QUALITY QUANT RESEARCH (aggregator)",
-              "HIGH-QUALITY QUANT RESEARCH", "SOURCE CODE WITH REAL RESULTS",
-              "REAL EXPERIMENT", "BLOG / SOCIAL MEDIA"}
-    check("registry_authority_valid",
-          all(s["authority_level"] in ladder for s in sources))
-    check("no_net_claim_without_costs",
-          all(not (str(s["reported_net_performance"]).lower().startswith("reported")
-                   and str(s["cost_assumptions"]).lower().startswith("n/a"))
-              for s in sources))
+    ladder = {
+        "PEER-REVIEWED PAPER",
+        "OFFICIAL WORKING PAPER / UNIVERSITY",
+        "REPRODUCED ACADEMIC RESULT",
+        "OFFICIAL EXCHANGE RESEARCH",
+        "HIGH-QUALITY QUANT RESEARCH (aggregator)",
+        "HIGH-QUALITY QUANT RESEARCH",
+        "SOURCE CODE WITH REAL RESULTS",
+        "REAL EXPERIMENT",
+        "BLOG / SOCIAL MEDIA",
+    }
+    check("registry_authority_valid", all(s["authority_level"] in ladder for s in sources))
+    check(
+        "no_net_claim_without_costs",
+        all(
+            not (
+                str(s["reported_net_performance"]).lower().startswith("reported")
+                and str(s["cost_assumptions"]).lower().startswith("n/a")
+            )
+            for s in sources
+        ),
+    )
 
     # --- selection frozen & recomputable ---
     score = _load_json(OUT / "STRATEGY_SCORECARD.json")
@@ -302,19 +342,21 @@ def main() -> int:
     axes = score["score_axes"]
     ranked = sorted(
         score["candidates"],
-        key=lambda c: (-sum(c[k] for k in axes), -len(c["SOURCE"]), c["CANDIDATE_ID"]))
+        key=lambda c: (-sum(c[k] for k in axes), -len(c["SOURCE"]), c["CANDIDATE_ID"]),
+    )
     recomputed_order = [c["CANDIDATE_ID"] for c in ranked]
     stored_order = [r["CANDIDATE_ID"] for r in sel["ranking"]]
-    check("selection_ranking_recomputes", recomputed_order == stored_order,
-          f"{recomputed_order} vs {stored_order}")
+    check(
+        "selection_ranking_recomputes",
+        recomputed_order == stored_order,
+        f"{recomputed_order} vs {stored_order}",
+    )
     passing = [c["CANDIDATE_ID"] for c in ranked if c["DECISION"] == "REPRODUCE"]
     top2 = passing[:2]
     check("selection_top2_by_rule", sel["selected"] == top2, f"{sel['selected']}")
     lib_src = (REPO / "scripts" / "sprint030_lib.py").read_text(encoding="utf-8")
-    check("frozen_constant_matches",
-          "SELECTED = (\"EXT-TSMOM-001\", \"EXT-XMOM-001\")" in lib_src)
-    check("selection_before_backtests",
-          sel.get("frozen_before_backtests") is True)
+    check("frozen_constant_matches", 'SELECTED = ("EXT-TSMOM-001", "EXT-XMOM-001")' in lib_src)
+    check("selection_before_backtests", sel.get("frozen_before_backtests") is True)
 
     # --- hashes ---
     hashes = _load_json(OUT / "_hashes.json")
@@ -324,11 +366,18 @@ def main() -> int:
         if hashes["data_hashes"].get(s) != h:
             data_ok = False
     check("data_hashes_match", data_ok)
-    cfg = hashlib.sha256(json.dumps({
-        "universe": tuple(syms) if False else None, "splits": SPLIT_BOUNDS,
-        "cost": {"taker_fee_bps": 10.0, "half_spread_bps": 3.0, "impact_bps": 2.0},
-        "selected": ["EXT-TSMOM-001", "EXT-XMOM-001"]}, sort_keys=True,
-        default=str).encode()).hexdigest()
+    cfg = hashlib.sha256(
+        json.dumps(
+            {
+                "universe": tuple(syms) if False else None,
+                "splits": SPLIT_BOUNDS,
+                "cost": {"taker_fee_bps": 10.0, "half_spread_bps": 3.0, "impact_bps": 2.0},
+                "selected": ["EXT-TSMOM-001", "EXT-XMOM-001"],
+            },
+            sort_keys=True,
+            default=str,
+        ).encode()
+    ).hexdigest()
     check("config_hash_present", bool(hashes.get("config_hash")), cfg[:12])
 
     # --- PIT independent ---
@@ -359,48 +408,79 @@ def main() -> int:
     vx = ref_x_val["sections"]["VALIDATION"]
     vt = ref_t_val["sections"]["VALIDATION"]
 
-    check("xmom_full_net_reproduced",
-          close_to(rx.get("net_expectancy_bps"), my_x_full["net_expectancy_bps"]),
-          f"{rx.get('net_expectancy_bps')} vs {my_x_full['net_expectancy_bps']}")
-    check("xmom_full_gross_reproduced",
-          close_to(rx.get("gross_expectancy_bps"), my_x_full["gross_expectancy_bps"]))
-    check("xmom_cost_charged",
-          (rx.get("cost_expectancy_bps") or 0) > 0 and my_x_full["status"] == "OK")
-    check("xmom_full_turnover_reproduced",
-          close_to(rx.get("mean_turnover_notional"), my_x_full["mean_turnover_notional"]))
-    check("xmom_validation_net_reproduced",
-          close_to(vx.get("net_expectancy_bps"), my_x_val["net_expectancy_bps"]),
-          f"{vx.get('net_expectancy_bps')} vs {my_x_val['net_expectancy_bps']}")
+    check(
+        "xmom_full_net_reproduced",
+        close_to(rx.get("net_expectancy_bps"), my_x_full["net_expectancy_bps"]),
+        f"{rx.get('net_expectancy_bps')} vs {my_x_full['net_expectancy_bps']}",
+    )
+    check(
+        "xmom_full_gross_reproduced",
+        close_to(rx.get("gross_expectancy_bps"), my_x_full["gross_expectancy_bps"]),
+    )
+    check(
+        "xmom_cost_charged",
+        (rx.get("cost_expectancy_bps") or 0) > 0 and my_x_full["status"] == "OK",
+    )
+    check(
+        "xmom_full_turnover_reproduced",
+        close_to(rx.get("mean_turnover_notional"), my_x_full["mean_turnover_notional"]),
+    )
+    check(
+        "xmom_validation_net_reproduced",
+        close_to(vx.get("net_expectancy_bps"), my_x_val["net_expectancy_bps"]),
+        f"{vx.get('net_expectancy_bps')} vs {my_x_val['net_expectancy_bps']}",
+    )
 
-    check("tsmom_full_net_reproduced",
-          close_to(rt.get("net_expectancy_bps"), my_t_full["net_expectancy_bps"]),
-          f"{rt.get('net_expectancy_bps')} vs {my_t_full['net_expectancy_bps']}")
-    check("tsmom_full_gross_reproduced",
-          close_to(rt.get("gross_expectancy_bps"), my_t_full["gross_expectancy_bps"]))
-    check("tsmom_cost_charged",
-          (rt.get("cost_expectancy_bps") or 0) > 0 and my_t_full["status"] == "OK")
-    check("tsmom_full_rebalances_reproduced",
-          rt.get("rebalances") == my_t_full["rebalances"],
-          f"{rt.get('rebalances')} vs {my_t_full['rebalances']}")
-    check("tsmom_validation_net_reproduced",
-          close_to(vt.get("net_expectancy_bps"), my_t_val["net_expectancy_bps"]),
-          f"{vt.get('net_expectancy_bps')} vs {my_t_val['net_expectancy_bps']}")
+    check(
+        "tsmom_full_net_reproduced",
+        close_to(rt.get("net_expectancy_bps"), my_t_full["net_expectancy_bps"]),
+        f"{rt.get('net_expectancy_bps')} vs {my_t_full['net_expectancy_bps']}",
+    )
+    check(
+        "tsmom_full_gross_reproduced",
+        close_to(rt.get("gross_expectancy_bps"), my_t_full["gross_expectancy_bps"]),
+    )
+    check(
+        "tsmom_cost_charged",
+        (rt.get("cost_expectancy_bps") or 0) > 0 and my_t_full["status"] == "OK",
+    )
+    check(
+        "tsmom_full_rebalances_reproduced",
+        rt.get("rebalances") == my_t_full["rebalances"],
+        f"{rt.get('rebalances')} vs {my_t_full['rebalances']}",
+    )
+    check(
+        "tsmom_validation_net_reproduced",
+        close_to(vt.get("net_expectancy_bps"), my_t_val["net_expectancy_bps"]),
+        f"{vt.get('net_expectancy_bps')} vs {my_t_val['net_expectancy_bps']}",
+    )
 
     # --- publication parameters unchanged (§24, §57) ---
-    check("xmom_publication_params",
-          "run_cross_sectional_momentum" in lib_src and "formation_days: int = 7" in lib_src
-          and "quantile: float = 0.2" in lib_src)
-    check("tsmom_publication_params",
-          "formation_days: int = 365" in lib_src and "vol_target: float = 0.40" in lib_src)
+    check(
+        "xmom_publication_params",
+        "run_cross_sectional_momentum" in lib_src
+        and "formation_days: int = 7" in lib_src
+        and "quantile: float = 0.2" in lib_src,
+    )
+    check(
+        "tsmom_publication_params",
+        "formation_days: int = 365" in lib_src and "vol_target: float = 0.40" in lib_src,
+    )
 
     # --- cost model integrity ---
     cm = _load_json(OUT / "strategy_EXT-XMOM-001" / "COST_MODEL.json")
-    check("per_side_cost_is_15bps", cm.get("per_side_cost_bps") == 15.0,
-          str(cm.get("per_side_cost_bps")))
+    check(
+        "per_side_cost_is_15bps",
+        cm.get("per_side_cost_bps") == 15.0,
+        str(cm.get("per_side_cost_bps")),
+    )
     spec = _load_json(OUT / "strategy_EXT-TSMOM-001" / "REPRODUCTION_SPEC.json")
-    check("fidelity_declared", spec.get("classification") in
-          ("EXACT_REPRODUCTION", "CLOSE_REPRODUCTION", "CONCEPTUAL_REPRODUCTION"),
-          str(spec.get("classification")))
+    check(
+        "fidelity_declared",
+        spec.get("classification")
+        in ("EXACT_REPRODUCTION", "CLOSE_REPRODUCTION", "CONCEPTUAL_REPRODUCTION"),
+        str(spec.get("classification")),
+    )
 
     # --- holdout discipline + classification consistency ---
     final = _load_json(REPO / "reports" / "RFC030_FINAL_REPORT.json")
@@ -412,33 +492,50 @@ def main() -> int:
         h = _load_json(OUT / f"strategy_{sid}" / "HOLDOUT_RESULTS.json")["sections"]["HOLDOUT"]
         if (vnet or 0) <= 0 and h.get("status") != "NOT_OPENED":
             holdout_ok = False
-        if st["CLASSIFICATION"] in ("VALIDATED_NET_EDGE", "ROBUST_NET_EDGE",
-                                    "HOLDOUT_PASS") and (vnet or 0) <= 0:
+        if (
+            st["CLASSIFICATION"] in ("VALIDATED_NET_EDGE", "ROBUST_NET_EDGE", "HOLDOUT_PASS")
+            and (vnet or 0) <= 0
+        ):
             class_ok = False
-        if st["CLASSIFICATION"] == "EDGE_DECAYED" and \
-                (st.get("discovery_net_expectancy_bps") or 0) <= 0:
+        if (
+            st["CLASSIFICATION"] == "EDGE_DECAYED"
+            and (st.get("discovery_net_expectancy_bps") or 0) <= 0
+        ):
             class_ok = False
     check("holdout_not_opened_early", holdout_ok)
     check("classification_consistent_with_net", class_ok)
 
     da = _load_json(OUT / "DATA_AUDIT.json")
-    check("survivorship_disclosed",
-          "survivorship" in da.get("survivorship_disclosure", "").lower()
-          or len(da.get("survivorship_disclosure", "")) > 0)
+    check(
+        "survivorship_disclosed",
+        "survivorship" in da.get("survivorship_disclosure", "").lower()
+        or len(da.get("survivorship_disclosure", "")) > 0,
+    )
 
     failed = [c for c in CHECKS if not c["ok"]]
     payload = {
-        "checks_total": len(CHECKS), "checks_passed": len(CHECKS) - len(failed),
-        "FALSE_SUCCESS": len(failed), "failed": failed, "checks": CHECKS,
-        "verifier_note": ("independent re-implementation; builder != verifier; "
-                          "own panel load, signals, positions, costs, PnL"),
+        "checks_total": len(CHECKS),
+        "checks_passed": len(CHECKS) - len(failed),
+        "FALSE_SUCCESS": len(failed),
+        "failed": failed,
+        "checks": CHECKS,
+        "verifier_note": (
+            "independent re-implementation; builder != verifier; "
+            "own panel load, signals, positions, costs, PnL"
+        ),
     }
     (OUT / "RFC030_VERIFICATION.json").write_text(
-        json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    md = ["# RFC-030 — INDEPENDENT VERIFICATION", "",
-          f"- checks: {payload['checks_passed']}/{payload['checks_total']} passed",
-          f"- FALSE_SUCCESS: **{payload['FALSE_SUCCESS']}**", "",
-          "| check | ok | detail |", "| --- | --- | --- |"]
+        json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    md = [
+        "# RFC-030 — INDEPENDENT VERIFICATION",
+        "",
+        f"- checks: {payload['checks_passed']}/{payload['checks_total']} passed",
+        f"- FALSE_SUCCESS: **{payload['FALSE_SUCCESS']}**",
+        "",
+        "| check | ok | detail |",
+        "| --- | --- | --- |",
+    ]
     for c in CHECKS:
         md.append(f"| {c['name']} | {'PASS' if c['ok'] else 'FAIL'} | {c['detail']} |")
     md.append("")

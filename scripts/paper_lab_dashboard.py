@@ -108,18 +108,13 @@ def _card(title: str, rows: list[tuple[str, Any]], *, tone: str = "") -> str:
         f"<span class='v'>{_escape(_format(value))}</span></div>"
         for label, value in rows
     )
-    return (
-        f"<section class='card {tone}'><h2>{_escape(title)}</h2>{body}</section>"
-    )
+    return f"<section class='card {tone}'><h2>{_escape(title)}</h2>{body}</section>"
 
 
 def _escape(value: Any) -> str:
     text = "" if value is None else str(value)
     return (
-        text.replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-        .replace('"', "&quot;")
+        text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
     )
 
 
@@ -157,8 +152,10 @@ def render_page(payload: dict[str, Any]) -> str:
     dashboard = payload.get("dashboard") or {}
 
     state = system.get("state") or "UNKNOWN"
-    tone = "ok" if state in ("HEALTHY",) and not system.get("heartbeat_is_stale") else (
-        "bad" if state == "FAILED" else "warn"
+    tone = (
+        "ok"
+        if state in ("HEALTHY",) and not system.get("heartbeat_is_stale")
+        else ("bad" if state == "FAILED" else "warn")
     )
     cards = [
         _card(
@@ -186,7 +183,9 @@ def render_page(payload: dict[str, Any]) -> str:
                 ("estimated hours left", disk.get("estimated_hours_remaining")),
                 ("guidance", disk.get("guidance")),
             ],
-            tone="bad" if disk.get("level") in ("STOP", "CRITICAL") else ("warn" if disk.get("level") == "WARNING" else "ok"),
+            tone="bad"
+            if disk.get("level") in ("STOP", "CRITICAL")
+            else ("warn" if disk.get("level") == "WARNING" else "ok"),
         ),
         _card(
             "PAPER",
@@ -286,7 +285,7 @@ def render_page(payload: dict[str, Any]) -> str:
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PAPER lab — {_escape(payload.get('run_id') or 'no run')}</title>
+<title>PAPER lab — {_escape(payload.get("run_id") or "no run")}</title>
 <style>
 :root {{ color-scheme: dark; }}
 body {{ margin:0; padding:24px; background:#0f1115; color:#e6e8eb;
@@ -318,13 +317,13 @@ footer {{ margin-top:20px; color:#8b93a1; }}
 code {{ background:#1b1f27; padding:2px 6px; border-radius:4px; }}
 </style></head>
 <body>
-<h1>PAPER LAB — {_escape(payload.get('run_id') or 'no run')}</h1>
-<div class="sub">generated {_escape(payload.get('generated_at_iso'))} · mode {_escape(payload.get('mode'))}
- · read-only · auto-refresh {_escape(dashboard.get('auto_refresh_seconds'))}s ·
+<h1>PAPER LAB — {_escape(payload.get("run_id") or "no run")}</h1>
+<div class="sub">generated {_escape(payload.get("generated_at_iso"))} · mode {_escape(payload.get("mode"))}
+ · read-only · auto-refresh {_escape(dashboard.get("auto_refresh_seconds"))}s ·
  <a href="/api/status" style="color:#7fb2ff">raw JSON</a></div>
-<div class="banner {tone}">{_escape(state)}{' — STALE HEARTBEAT' if system.get('heartbeat_is_stale') else ''}</div>
+<div class="banner {tone}">{_escape(state)}{" — STALE HEARTBEAT" if system.get("heartbeat_is_stale") else ""}</div>
 <div class="flags">{flags_html}</div>
-<div class="grid">{''.join(cards)}</div>
+<div class="grid">{"".join(cards)}</div>
 <h2 style="font-size:13px;letter-spacing:.08em;color:#8b93a1;margin-top:22px">CHILD PROCESSES</h2>
 <table><tr><th>process</th><th>state</th><th>pid</th><th>alive</th><th>uptime</th><th>restarts</th><th>exit</th><th>last error</th></tr>
 {children or "<tr><td colspan='8'>no children reported</td></tr>"}</table>
@@ -335,16 +334,16 @@ code {{ background:#1b1f27; padding:2px 6px; border-radius:4px; }}
 {_card("CONTROLS", [("read only", controls.get("read_only")), ("mutating endpoints", controls.get("mutating_endpoints")), ("start", controls.get("start")), ("status", controls.get("status")), ("stop", controls.get("stop")), ("restart", controls.get("restart"))])}
 </div>
 <footer>No LIVE control is presented because no LIVE path exists: every plane is PAPER or read-only market data.
-Controls are commands, not endpoints — <code>{_escape(controls.get('why'))}</code></footer>
+Controls are commands, not endpoints — <code>{_escape(controls.get("why"))}</code></footer>
 <script>
 async function refresh() {{
   try {{
     const response = await fetch('/api/status', {{cache: 'no-store'}});
     if (response.ok) {{ /* full re-render keeps one source of truth */ }}
   }} catch (error) {{ /* a dashboard that cannot reach itself shows the last page */ }}
-  setTimeout(refresh, {int(dashboard.get('auto_refresh_seconds') or 15) * 1000});
+  setTimeout(refresh, {int(dashboard.get("auto_refresh_seconds") or 15) * 1000});
 }}
-setTimeout(refresh, {int(dashboard.get('auto_refresh_seconds') or 15) * 1000});
+setTimeout(refresh, {int(dashboard.get("auto_refresh_seconds") or 15) * 1000});
 </script>
 </body></html>
 """

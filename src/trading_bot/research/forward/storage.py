@@ -531,9 +531,7 @@ class SegmentWriter:
         self._written_paths.add(relative)
         path.parent.mkdir(parents=True, exist_ok=True)
         handle = _open_segment_append(path, self.compresslevel)
-        segment = _OpenSegment(
-            handle=handle, path=path, relative=relative, bucket_start=bucket
-        )
+        segment = _OpenSegment(handle=handle, path=path, relative=relative, bucket_start=bucket)
         self._open[self._key(event)] = segment
         return segment
 

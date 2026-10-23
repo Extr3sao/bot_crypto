@@ -160,7 +160,9 @@ def test_synthetic_null_does_not_show_an_effect() -> None:
 
 
 def test_non_decisions_are_not_counted() -> None:
-    summary = ax.evaluate_directions([None, 1, 0, None], [0.001, 0.001, 0.001, 0.001], hurdle_bps=1.0)
+    summary = ax.evaluate_directions(
+        [None, 1, 0, None], [0.001, 0.001, 0.001, 0.001], hurdle_bps=1.0
+    )
     # two rows carried a decision; only one of them was a trade
     assert summary["n_evaluated"] == 2
     assert summary["n"] == 1
@@ -225,21 +227,30 @@ def test_promotion_requires_every_gate() -> None:
     # each single failure, holding everything else at pass, is a REJECT
     assert (
         ax.promotion_gate(
-            summary=summary, bh_pass=False, holm_pass=True, baseline_delta_bps=1.0,
+            summary=summary,
+            bh_pass=False,
+            holm_pass=True,
+            baseline_delta_bps=1.0,
             p_null_best_ge_observed=0.01,
         )["passed"]
         is False
     )
     assert (
         ax.promotion_gate(
-            summary=summary, bh_pass=True, holm_pass=True, baseline_delta_bps=-1.0,
+            summary=summary,
+            bh_pass=True,
+            holm_pass=True,
+            baseline_delta_bps=-1.0,
             p_null_best_ge_observed=0.01,
         )["passed"]
         is False
     )
     assert (
         ax.promotion_gate(
-            summary=summary, bh_pass=True, holm_pass=True, baseline_delta_bps=1.0,
+            summary=summary,
+            bh_pass=True,
+            holm_pass=True,
+            baseline_delta_bps=1.0,
             p_null_best_ge_observed=0.5,
         )["passed"]
         is False
@@ -252,7 +263,10 @@ def test_a_below_hurdle_cell_is_rejected_not_promoted() -> None:
     summary["concentration"] = {"classification": "ROBUST"}
     summary["stability"] = {"consistent": True}
     gate = ax.promotion_gate(
-        summary=summary, bh_pass=True, holm_pass=True, baseline_delta_bps=1.0,
+        summary=summary,
+        bh_pass=True,
+        holm_pass=True,
+        baseline_delta_bps=1.0,
         p_null_best_ge_observed=0.01,
     )
     assert gate["passed"] is False

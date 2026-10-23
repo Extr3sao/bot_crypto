@@ -276,7 +276,10 @@ def build_gate_audit(snapshot_problems: list[str], snapshot_usable: bool) -> dic
             "OAuth 2.1 authorization of the official MCP server in an LLM client",
             "explicit user authorization to use the account for this experiment",
         ],
-        "gate_statuses": {"G0_TV_CONTEXT": ac.G_TV_CONTEXT, **{gate: "NOT_STARTED" for gate in ac.GATES[1:]}},
+        "gate_statuses": {
+            "G0_TV_CONTEXT": ac.G_TV_CONTEXT,
+            **{gate: "NOT_STARTED" for gate in ac.GATES[1:]},
+        },
         "would_pass_with_real_data": "BEFORE_DATA",
     }
 
@@ -324,7 +327,9 @@ def build_final_report(
     }
 
 
-def final_report_md(report: dict[str, Any], gate: dict[str, Any], verification: dict[str, Any]) -> str:
+def final_report_md(
+    report: dict[str, Any], gate: dict[str, Any], verification: dict[str, Any]
+) -> str:
     lines = [f"{ac.SPIKE_ID} {ac.SPIKE_NAME}", ""]
     for key, value in report.items():
         if key == "spike":
@@ -333,7 +338,11 @@ def final_report_md(report: dict[str, Any], gate: dict[str, Any], verification: 
     lines.append("")
     lines.append("## G_TV_CONTEXT")
     lines.append("")
-    lines.extend(md_table(["requirement", "state"], [[item, "MISSING"] for item in gate["blocking_requirements"]]))
+    lines.extend(
+        md_table(
+            ["requirement", "state"], [[item, "MISSING"] for item in gate["blocking_requirements"]]
+        )
+    )
     lines.append("")
     lines.append("## Independent verification")
     lines.append("")
@@ -363,62 +372,87 @@ def contract_md(boundaries: dict[str, Any], snapshot_artifact: dict[str, Any]) -
         "## MarketSnapshot contract",
         "",
     ]
-    lines.extend(md_table(["field", "meaning"], [
-        ["timestamp", "unix seconds UTC of the snapshot"],
-        ["asset", "EXCHANGE:TICKER, e.g. BINANCE:BTCUSDT"],
-        ["price_state", "last, change_pct, bar_interval, bar_count"],
-        ["multi_timeframe", "one entry per interval (technicals are single-interval per call)"],
-        ["technical_state", "RSI/MACD/ADX/momentum/SMA/EMA + Recommend aggregate"],
-        ["relative_strength", "symbol vs reference"],
-        ["volume_state", "last volume and its ratio to the trailing average"],
-        ["market_regime", "analyst-supplied regime label (non-deterministic domain)"],
-        ["news", "symbol headlines (title, published, provider, urgency)"],
-        ["macro_events", "calendar events (name, country, when, importance, actual)"],
-        ["evidence", "mechanically collected evidence items with their MCP source"],
-        ["data_freshness", "snapshot_at, source timestamps, age_seconds, level, degraded"],
-    ]))
-    lines.extend([
-        "",
-        "## Authority",
-        "",
-    ])
-    lines.extend(md_table(["subject", "authority"], [[k, v] for k, v in boundaries["authority_map"].items()]))
-    lines.extend([
-        "",
-        "## Determinism split",
-        "",
-        "Non-deterministic (the agent owns these):",
-        "",
-    ])
+    lines.extend(
+        md_table(
+            ["field", "meaning"],
+            [
+                ["timestamp", "unix seconds UTC of the snapshot"],
+                ["asset", "EXCHANGE:TICKER, e.g. BINANCE:BTCUSDT"],
+                ["price_state", "last, change_pct, bar_interval, bar_count"],
+                [
+                    "multi_timeframe",
+                    "one entry per interval (technicals are single-interval per call)",
+                ],
+                ["technical_state", "RSI/MACD/ADX/momentum/SMA/EMA + Recommend aggregate"],
+                ["relative_strength", "symbol vs reference"],
+                ["volume_state", "last volume and its ratio to the trailing average"],
+                ["market_regime", "analyst-supplied regime label (non-deterministic domain)"],
+                ["news", "symbol headlines (title, published, provider, urgency)"],
+                ["macro_events", "calendar events (name, country, when, importance, actual)"],
+                ["evidence", "mechanically collected evidence items with their MCP source"],
+                ["data_freshness", "snapshot_at, source timestamps, age_seconds, level, degraded"],
+            ],
+        )
+    )
+    lines.extend(
+        [
+            "",
+            "## Authority",
+            "",
+        ]
+    )
+    lines.extend(
+        md_table(["subject", "authority"], [[k, v] for k, v in boundaries["authority_map"].items()])
+    )
+    lines.extend(
+        [
+            "",
+            "## Determinism split",
+            "",
+            "Non-deterministic (the agent owns these):",
+            "",
+        ]
+    )
     lines.extend(f"- {item}" for item in boundaries["non_deterministic_domains"])
     lines.extend(["", "Deterministic (never delegated to an LLM):", ""])
     lines.extend(f"- {item}" for item in boundaries["deterministic_domains"])
-    lines.extend([
-        "",
-        "## Real MCP constraints",
-        "",
-    ])
-    lines.extend(md_table(["constraint", "detail"], [[k, v] for k, v in boundaries["mcp_constraints"].items()]))
-    lines.extend([
-        "",
-        "## Gate status",
-        "",
-        f"- G_TV_CONTEXT = {ac.G_TV_CONTEXT}",
-        "- every later gate = NOT_STARTED",
-        "",
-        "## Snapshot produced in this spike",
-        "",
-        f"- source: {snapshot_artifact['_source']}",
-        f"- usable: {snapshot_artifact['_usable']}",
-        f"- freshness: {snapshot_artifact['data_freshness']['level']}",
-        f"- evidence items: {len(snapshot_artifact['evidence'])}",
-        "",
-    ])
+    lines.extend(
+        [
+            "",
+            "## Real MCP constraints",
+            "",
+        ]
+    )
+    lines.extend(
+        md_table(
+            ["constraint", "detail"], [[k, v] for k, v in boundaries["mcp_constraints"].items()]
+        )
+    )
+    lines.extend(
+        [
+            "",
+            "## Gate status",
+            "",
+            f"- G_TV_CONTEXT = {ac.G_TV_CONTEXT}",
+            "- every later gate = NOT_STARTED",
+            "",
+            "## Snapshot produced in this spike",
+            "",
+            f"- source: {snapshot_artifact['_source']}",
+            f"- usable: {snapshot_artifact['_usable']}",
+            f"- freshness: {snapshot_artifact['data_freshness']['level']}",
+            f"- evidence items: {len(snapshot_artifact['evidence'])}",
+            "",
+        ]
+    )
     return "\n".join(lines)
 
 
 def spike_md(
-    gate: dict[str, Any], snapshot_artifact: dict[str, Any], decision: dict[str, Any], boundaries: dict[str, Any]
+    gate: dict[str, Any],
+    snapshot_artifact: dict[str, Any],
+    decision: dict[str, Any],
+    boundaries: dict[str, Any],
 ) -> str:
     lines = [
         "# CAP-001 — AGENTIC MARKET INTELLIGENCE CAPABILITY SPIKE",
@@ -439,54 +473,71 @@ def spike_md(
         "",
     ]
     lines.extend(f"- {item}" for item in NOT_ALLOWED)
-    lines.extend([
-        "",
-        "## G_TV_CONTEXT",
-        "",
-        f"- status: {gate['status']}",
-        f"- reason: {gate['status_reason']}",
-        "- blocking requirements:",
-    ])
-    lines.extend(f"  - {item}" for item in gate["blocking_requirements"])
-    lines.extend([
-        "",
-        "## Snapshot (synthetic fixture)",
-        "",
-    ])
-    lines.extend(md_table(
-        ["field", "value"],
+    lines.extend(
         [
-            ["asset", snapshot_artifact["asset"]],
-            ["timestamp", snapshot_artifact["timestamp"]],
-            ["multi_timeframe", ", ".join(tf["interval"] for tf in snapshot_artifact["multi_timeframe"])],
-            ["market_regime", snapshot_artifact["market_regime"]],
-            ["freshness", snapshot_artifact["data_freshness"]["level"]],
-            ["usable", snapshot_artifact["_usable"]],
-            ["evidence items", len(snapshot_artifact["evidence"])],
-        ],
-    ))
-    lines.extend([
-        "",
-        "## Immutable decision record",
-        "",
-        f"- llm_invoked: {decision['llm_invoked']}",
-        f"- illustrative record: {decision['agent_decision_real'] is False}",
-        f"- record verified: {decision['record_verified']}",
-        f"- hash changes when the decision is altered: {decision['tamper_detection']['hash_changes_on_alteration']}",
-        "- tampered indices detected: " + str(decision["tamper_detection"]["detected_indices"]),
-        "",
-        "## Budget before G3",
-        "",
-    ])
-    lines.extend(md_table(["limit", "value"], [[k, str(v)] for k, v in boundaries["budget_before_g3"].items()]))
-    lines.extend([
-        "",
-        "## Next step",
-        "",
-        "Authorize a TradingView account so G_TV_CONTEXT can be evaluated against real data.",
-        "Until then the gate stays NOT_VERIFIED and no RFC is created.",
-        "",
-    ])
+            "",
+            "## G_TV_CONTEXT",
+            "",
+            f"- status: {gate['status']}",
+            f"- reason: {gate['status_reason']}",
+            "- blocking requirements:",
+        ]
+    )
+    lines.extend(f"  - {item}" for item in gate["blocking_requirements"])
+    lines.extend(
+        [
+            "",
+            "## Snapshot (synthetic fixture)",
+            "",
+        ]
+    )
+    lines.extend(
+        md_table(
+            ["field", "value"],
+            [
+                ["asset", snapshot_artifact["asset"]],
+                ["timestamp", snapshot_artifact["timestamp"]],
+                [
+                    "multi_timeframe",
+                    ", ".join(tf["interval"] for tf in snapshot_artifact["multi_timeframe"]),
+                ],
+                ["market_regime", snapshot_artifact["market_regime"]],
+                ["freshness", snapshot_artifact["data_freshness"]["level"]],
+                ["usable", snapshot_artifact["_usable"]],
+                ["evidence items", len(snapshot_artifact["evidence"])],
+            ],
+        )
+    )
+    lines.extend(
+        [
+            "",
+            "## Immutable decision record",
+            "",
+            f"- llm_invoked: {decision['llm_invoked']}",
+            f"- illustrative record: {decision['agent_decision_real'] is False}",
+            f"- record verified: {decision['record_verified']}",
+            f"- hash changes when the decision is altered: {decision['tamper_detection']['hash_changes_on_alteration']}",
+            "- tampered indices detected: " + str(decision["tamper_detection"]["detected_indices"]),
+            "",
+            "## Budget before G3",
+            "",
+        ]
+    )
+    lines.extend(
+        md_table(
+            ["limit", "value"], [[k, str(v)] for k, v in boundaries["budget_before_g3"].items()]
+        )
+    )
+    lines.extend(
+        [
+            "",
+            "## Next step",
+            "",
+            "Authorize a TradingView account so G_TV_CONTEXT can be evaluated against real data.",
+            "Until then the gate stays NOT_VERIFIED and no RFC is created.",
+            "",
+        ]
+    )
     return "\n".join(lines)
 
 
@@ -499,7 +550,9 @@ def main() -> int:
     gate_state = entry_gate()
     fixture = json.loads(FIXTURE.read_text(encoding="utf-8"))
     snapshot, snapshot_artifact = build_snapshot_artifact(fixture)
-    decision = build_decision_artifact(snapshot_artifact["_evidence_snapshot_hash"], snapshot.timestamp)
+    decision = build_decision_artifact(
+        snapshot_artifact["_evidence_snapshot_hash"], snapshot.timestamp
+    )
     boundaries = build_boundaries_artifact()
     gate = build_gate_audit(snapshot_artifact["_validation_problems"], snapshot_artifact["_usable"])
     digest_after = file_digest(ECONOMIC_STATE)
@@ -522,18 +575,29 @@ def main() -> int:
     }
 
     write_json(OUT / "CAP001_MARKET_SNAPSHOT.json", snapshot_artifact)
-    write_md(OUT / "CAP001_MARKET_SNAPSHOT.md", render("CAP-001 — MarketSnapshot (synthetic fixture)", snapshot_artifact))
+    write_md(
+        OUT / "CAP001_MARKET_SNAPSHOT.md",
+        render("CAP-001 — MarketSnapshot (synthetic fixture)", snapshot_artifact),
+    )
     write_json(OUT / "CAP001_AGENTIC_BOUNDARIES.json", boundaries)
-    write_md(OUT / "CAP001_AGENTIC_BOUNDARIES.md", render("CAP-001 — agentic boundaries", boundaries))
+    write_md(
+        OUT / "CAP001_AGENTIC_BOUNDARIES.md", render("CAP-001 — agentic boundaries", boundaries)
+    )
     write_json(OUT / "CAP001_GATE_AUDIT.json", gate)
     write_md(OUT / "CAP001_GATE_AUDIT.md", render("CAP-001 — gate audit", gate))
     write_json(OUT / "CAP001_DECISION_RECORD.json", decision)
-    write_md(OUT / "CAP001_DECISION_RECORD.md", render("CAP-001 — sealed decision record", decision))
+    write_md(
+        OUT / "CAP001_DECISION_RECORD.md", render("CAP-001 — sealed decision record", decision)
+    )
     write_json(OUT / "CAP001_ENTRY_GATE.json", gate_state)
 
     write_json(DOCS / "AGENTIC_MARKET_INTELLIGENCE_CONTRACT.json", boundaries)
-    write_md(DOCS / "AGENTIC_MARKET_INTELLIGENCE_CONTRACT.md", contract_md(boundaries, snapshot_artifact))
-    write_md(DOCS / "CAP001_CAPABILITY_SPIKE.md", spike_md(gate, snapshot_artifact, decision, boundaries))
+    write_md(
+        DOCS / "AGENTIC_MARKET_INTELLIGENCE_CONTRACT.md", contract_md(boundaries, snapshot_artifact)
+    )
+    write_md(
+        DOCS / "CAP001_CAPABILITY_SPIKE.md", spike_md(gate, snapshot_artifact, decision, boundaries)
+    )
 
     verification = {
         "status": "PENDING",

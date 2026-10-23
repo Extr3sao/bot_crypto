@@ -314,7 +314,9 @@ def snapshot_is_usable(snapshot: MarketSnapshot) -> bool:
     """A snapshot is only usable when it is contract-valid and not stale."""
     if validate_snapshot(snapshot):
         return False
-    return snapshot.data_freshness.level in ("FRESH", "AGING") and not snapshot.data_freshness.degraded
+    return (
+        snapshot.data_freshness.level in ("FRESH", "AGING") and not snapshot.data_freshness.degraded
+    )
 
 
 def market_snapshot_fields() -> tuple[str, ...]:
@@ -482,7 +484,9 @@ SEALED_RECORD_FIELDS: tuple[str, ...] = (
 
 def canonical_json(payload: Any) -> str:
     """Deterministic serialization used for every hash in this module."""
-    return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str)
+    return json.dumps(
+        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str
+    )
 
 
 def payload_digest(payload: Any) -> str:
@@ -712,9 +716,9 @@ def brier_score(pairs: Sequence[tuple[float, bool]]) -> float:
     """Confidence calibration: mean squared error of stated confidence."""
     if not pairs:
         raise ValueError("brier_score needs at least one (confidence, outcome) pair")
-    return math.fsum((confidence - (1.0 if outcome else 0.0)) ** 2 for confidence, outcome in pairs) / len(
-        pairs
-    )
+    return math.fsum(
+        (confidence - (1.0 if outcome else 0.0)) ** 2 for confidence, outcome in pairs
+    ) / len(pairs)
 
 
 # --------------------------------------------------------------------------- #

@@ -136,9 +136,7 @@ class OutcomeEvaluator:
 
         outcome_bar = usable[0]
         outcome_time_ms = availability_ms(outcome_bar, interval_ms)
-        reference_bars = closed_bar_slice(
-            bars, trace.decision_time_ms, interval_ms=interval_ms
-        )
+        reference_bars = closed_bar_slice(bars, trace.decision_time_ms, interval_ms=interval_ms)
         reference_price_time_ms = (
             availability_ms(reference_bars[-1], interval_ms)
             if reference_bars
@@ -225,7 +223,5 @@ class OutcomeEvaluator:
                     )
                 )
                 continue
-            evaluations.append(
-                self.evaluate(trace=trace, bars=bars, created_at_ms=created_at_ms)
-            )
+            evaluations.append(self.evaluate(trace=trace, bars=bars, created_at_ms=created_at_ms))
         return evaluations

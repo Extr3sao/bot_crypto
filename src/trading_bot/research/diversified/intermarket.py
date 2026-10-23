@@ -108,9 +108,7 @@ def intermarket_config(**overrides: object) -> IntermarketConfig:
     return IntermarketConfig(**base)  # type: ignore[arg-type]
 
 
-def risk_on_state(
-    ratio_series: Sequence[float], lookback_days: int
-) -> bool | None:
+def risk_on_state(ratio_series: Sequence[float], lookback_days: int) -> bool | None:
     """``True`` when the latest ratio exceeds the mean of the trailing window.
 
     ``ratio_series`` must be ordered oldest -> newest and end at the decision bar.
@@ -260,8 +258,16 @@ def simulate_intermarket_rotation(
             if len(basket) < config.min_members:
                 no_signal_days += 1
                 states.append(
-                    StateRecord(day, ratios[-1], sma, True, "NO_SIGNAL",
-                                len(alt_eligible), basket, "no_signal")
+                    StateRecord(
+                        day,
+                        ratios[-1],
+                        sma,
+                        True,
+                        "NO_SIGNAL",
+                        len(alt_eligible),
+                        basket,
+                        "no_signal",
+                    )
                 )
                 continue
             target_leg = "ALT"
@@ -301,8 +307,7 @@ def simulate_intermarket_rotation(
                 action = "membership"
 
         states.append(
-            StateRecord(day, ratios[-1], sma, risk_on, target_leg,
-                        len(basket), basket, action)
+            StateRecord(day, ratios[-1], sma, risk_on, target_leg, len(basket), basket, action)
         )
 
     if holdings and calendar:

@@ -118,22 +118,49 @@ def test_microbar_taker_buy_gt_volume_fails_closed() -> None:
 def test_microbar_available_before_event_fails_closed() -> None:
     with pytest.raises(ValueError):
         MicroBar(
-            event_time=1000, available_at=500, open=1, high=2, low=0.5, close=1,
-            volume=1, quote_volume=1, trades=1, taker_buy_base=0.5, taker_buy_quote=0.5,
+            event_time=1000,
+            available_at=500,
+            open=1,
+            high=2,
+            low=0.5,
+            close=1,
+            volume=1,
+            quote_volume=1,
+            trades=1,
+            taker_buy_base=0.5,
+            taker_buy_quote=0.5,
         )
 
 
 def test_microbar_high_below_low_fails_closed() -> None:
     with pytest.raises(ValueError):
         MicroBar(
-            event_time=0, available_at=1, open=1, high=0.5, low=1.0, close=1,
-            volume=1, quote_volume=1, trades=1, taker_buy_base=0.5, taker_buy_quote=0.5,
+            event_time=0,
+            available_at=1,
+            open=1,
+            high=0.5,
+            low=1.0,
+            close=1,
+            volume=1,
+            quote_volume=1,
+            trades=1,
+            taker_buy_base=0.5,
+            taker_buy_quote=0.5,
         )
 
 
 def test_microbar_negative_trades_fails_closed() -> None:
     with pytest.raises(ValueError):
         MicroBar(
-            event_time=0, available_at=1, open=1, high=2, low=0.5, close=1,
-            volume=1, quote_volume=1, trades=-1, taker_buy_base=0.5, taker_buy_quote=0.5,
+            event_time=0,
+            available_at=1,
+            open=1,
+            high=2,
+            low=0.5,
+            close=1,
+            volume=1,
+            quote_volume=1,
+            trades=-1,
+            taker_buy_base=0.5,
+            taker_buy_quote=0.5,
         )

@@ -40,63 +40,117 @@ class Hypothesis:
 HYPOTHESES: tuple[Hypothesis, ...] = (
     # ---- family P0_oi : price x open interest -----------------------------
     Hypothesis(
-        "H-OI-01", "P0_oi", ("ret1", "oi_z"), "sign_ret_oi_z",
+        "H-OI-01",
+        "P0_oi",
+        ("ret1", "oi_z"),
+        "sign_ret_oi_z",
         "price up + OI up -> continuation (and the down/down mirror)",
-        prior="continuation"),
+        prior="continuation",
+    ),
     Hypothesis(
-        "H-OI-02", "P0_oi", ("ret1", "oi_z"), "sign_ret_neg_oi_z",
+        "H-OI-02",
+        "P0_oi",
+        ("ret1", "oi_z"),
+        "sign_ret_neg_oi_z",
         "price up + OI down -> exhaustion / short-covering",
-        prior="reversal"),
+        prior="reversal",
+    ),
     Hypothesis(
-        "H-OI-03", "P0_oi", ("ret1", "oi_z"), "neg_sign_ret_oi_z",
+        "H-OI-03",
+        "P0_oi",
+        ("ret1", "oi_z"),
+        "neg_sign_ret_oi_z",
         "price down + OI up -> downside continuation",
-        prior="continuation", mirror_of="H-OI-02"),
+        prior="continuation",
+        mirror_of="H-OI-02",
+    ),
     Hypothesis(
-        "H-OI-04", "P0_oi", ("ret1", "oi_z"), "neg_sign_ret_neg_oi_z",
+        "H-OI-04",
+        "P0_oi",
+        ("ret1", "oi_z"),
+        "neg_sign_ret_neg_oi_z",
         "price down + OI down -> liquidation exhaustion",
-        prior="reversal", mirror_of="H-OI-01"),
+        prior="reversal",
+        mirror_of="H-OI-01",
+    ),
     Hypothesis(
-        "H-OI-ACCEL", "P0_oi", ("oi_accel",), "z_oi_accel",
+        "H-OI-ACCEL",
+        "P0_oi",
+        ("oi_accel",),
+        "z_oi_accel",
         "OI acceleration (second difference) predicts continuation",
-        prior="continuation"),
+        prior="continuation",
+    ),
     Hypothesis(
-        "H-OI-LEVEL", "P0_oi", ("oi_z",), "z_oi",
+        "H-OI-LEVEL",
+        "P0_oi",
+        ("oi_z",),
+        "z_oi",
         "OI level z-score (positioning build-up) predicts drift",
-        prior="unspecified"),
+        prior="unspecified",
+    ),
     Hypothesis(
-        "H-OI-OI-VALUE", "P0_oi", ("oi_value",), "z_oi_value",
+        "H-OI-OI-VALUE",
+        "P0_oi",
+        ("oi_value",),
+        "z_oi_value",
         "OI notional z-score predicts drift",
-        prior="unspecified"),
+        prior="unspecified",
+    ),
     # ---- family P0_crowd : crowding / top-vs-global -----------------------
     Hypothesis(
-        "H-CROWD-GLOBAL", "P0_crowd", ("ls_global",), "neg_z_ls_global",
+        "H-CROWD-GLOBAL",
+        "P0_crowd",
+        ("ls_global",),
+        "neg_z_ls_global",
         "extreme global crowd long/short -> reversal",
-        prior="contrarian"),
+        prior="contrarian",
+    ),
     Hypothesis(
-        "H-CROWD-TOP", "P0_crowd", ("ls_top",), "neg_z_ls_top",
+        "H-CROWD-TOP",
+        "P0_crowd",
+        ("ls_top",),
+        "neg_z_ls_top",
         "extreme top-trader long/short -> reversal",
-        prior="contrarian"),
+        prior="contrarian",
+    ),
     Hypothesis(
-        "H-TOP-DIV", "P0_crowd", ("top_global_div",), "top_global_div",
+        "H-TOP-DIV",
+        "P0_crowd",
+        ("top_global_div",),
+        "top_global_div",
         "top-trader vs global divergence -> continuation of the smart side",
-        prior="continuation"),
+        prior="continuation",
+    ),
     # ---- family P1_taker : aggressive flow --------------------------------
     Hypothesis(
-        "H-TAKER-FADE", "P1_taker", ("taker",), "neg_z_taker",
+        "H-TAKER-FADE",
+        "P1_taker",
+        ("taker",),
+        "neg_z_taker",
         "extreme taker long/short volume ratio -> reversal",
-        prior="contrarian"),
+        prior="contrarian",
+    ),
     Hypothesis(
-        "H-TAKER-OI", "P1_taker", ("taker", "doi"), "z_taker_sign_doi",
+        "H-TAKER-OI",
+        "P1_taker",
+        ("taker", "doi"),
+        "z_taker_sign_doi",
         "aggressive flow that adds OI -> continuation; flow that closes -> fade",
-        prior="unspecified"),
+        prior="unspecified",
+    ),
     Hypothesis(
-        "H-TAKER-PERSIST", "P1_taker", ("taker_persist",), "neg_z_taker_persist",
+        "H-TAKER-PERSIST",
+        "P1_taker",
+        ("taker_persist",),
+        "neg_z_taker_persist",
         "persistent one-sided taker flow -> reversal (exhaustion)",
-        prior="contrarian"),
+        prior="contrarian",
+    ),
 )
 
 FAMILIES = ("P0_oi", "P0_crowd", "P1_taker")
-CONDITIONS = ("ALL", "VOL")   # VOL = signal gated by the certified vol context
+CONDITIONS = ("ALL", "VOL")  # VOL = signal gated by the certified vol context
 
 
 def vol_event(panel: L.Panel) -> NDArray[Any]:
@@ -153,9 +207,12 @@ class Variant:
 
     def as_dict(self) -> dict[str, Any]:
         return {
-            "variant_id": self.variant_id, "hypothesis_id": self.hid,
-            "family": self.family, "horizon_bars": self.horizon_bars,
-            "horizon_label": self.horizon_label, "condition": self.condition,
+            "variant_id": self.variant_id,
+            "hypothesis_id": self.hid,
+            "family": self.family,
+            "horizon_bars": self.horizon_bars,
+            "horizon_label": self.horizon_label,
+            "condition": self.condition,
         }
 
 
@@ -170,11 +227,16 @@ def build_variants() -> list[Variant]:
     for h in core_hypotheses():
         for hb in L.HORIZON_BARS:
             for cond in CONDITIONS:
-                out.append(Variant(
-                    variant_id=f"{h.hid}@{L.HORIZON_LABEL[hb]}|{cond}",
-                    hid=h.hid, family=h.family, horizon_bars=hb,
-                    horizon_label=L.HORIZON_LABEL[hb], condition=cond,
-                ))
+                out.append(
+                    Variant(
+                        variant_id=f"{h.hid}@{L.HORIZON_LABEL[hb]}|{cond}",
+                        hid=h.hid,
+                        family=h.family,
+                        horizon_bars=hb,
+                        horizon_label=L.HORIZON_LABEL[hb],
+                        condition=cond,
+                    )
+                )
     return out
 
 

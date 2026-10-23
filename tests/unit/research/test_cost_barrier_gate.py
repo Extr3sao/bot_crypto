@@ -129,7 +129,10 @@ def test_the_gate_reproduces_the_committed_state_in_full_mode():
     assert check_by_name(report, "reproduce:explorer_rebuilds_identically")["result"] == "PASS"
     assert check_by_name(report, "reproduce:verifier_passes")["result"] == "PASS"
     assert check_by_name(report, "reproduce:verification_document_unchanged")["result"] == "PASS"
-    assert check_by_name(report, "inputs:published_pins_match_the_declared_sources")["result"] == "PASS"
+    assert (
+        check_by_name(report, "inputs:published_pins_match_the_declared_sources")["result"]
+        == "PASS"
+    )
 
 
 def test_check_mode_is_partial_and_says_so():
@@ -151,9 +154,7 @@ def test_the_cli_has_one_exit_code_per_state(tmp_path):
     )
     assert clean_check.returncode == 2, clean_check.stdout + clean_check.stderr
 
-    full = subprocess.run(
-        [sys.executable, str(GATE)], cwd=ROOT, capture_output=True, text=True
-    )
+    full = subprocess.run([sys.executable, str(GATE)], cwd=ROOT, capture_output=True, text=True)
     assert full.returncode == 0, full.stdout + full.stderr
 
     doc, path = copy_explorer(tmp_path)
@@ -161,7 +162,9 @@ def test_the_cli_has_one_exit_code_per_state(tmp_path):
     path.write_text(json.dumps(doc), encoding="utf-8")
     tampered = subprocess.run(
         [sys.executable, str(GATE), "--check", "--explorer", str(path)],
-        cwd=ROOT, capture_output=True, text=True,
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
     )
     assert tampered.returncode == 5
     assert "INTEGRITY_FAILURE" in tampered.stdout
@@ -200,7 +203,10 @@ def test_a_reproduction_divergence_is_its_own_state_when_nothing_is_contradictor
     """FULL_REPRODUCTION_FAIL exists for exactly this case, and is not a pass."""
     gate = load_gate()
     status = gate.decide_status(
-        mode="full", integrity=[], reproduction=["the rebuild differed"], blocked=[],
+        mode="full",
+        integrity=[],
+        reproduction=["the rebuild differed"],
+        blocked=[],
         advisories=[],
     )
     assert status == gate.FULL_REPRODUCTION_FAIL
@@ -270,9 +276,7 @@ def test_a_foreign_pin_is_content_drift_and_fails_the_gate(tmp_path):
 def test_the_published_market_horizon_section_reproduces_from_the_pinned_source():
     gate = load_gate()
     explorer = json.loads((RECOVERY / "COST_BARRIER_EXPLORER.json").read_text(encoding="utf-8"))
-    barrier = json.loads(
-        (ROOT / gate.MARKET_HORIZON_SOURCE).read_text(encoding="utf-8")
-    )
+    barrier = json.loads((ROOT / gate.MARKET_HORIZON_SOURCE).read_text(encoding="utf-8"))
     assert gate.market_horizon_failures(explorer, barrier) == []
     rows = gate.market_horizon_rows(barrier)
     assert len(rows) == 12  # four timeframes x three assets
@@ -300,9 +304,10 @@ def test_a_moved_published_lines_block_is_caught(tmp_path):
     path.write_text(json.dumps(doc), encoding="utf-8")
     report = gate.build_report(args_for(gate, explorer=str(path), check=True))
     assert report["status"] == gate.INTEGRITY_FAILURE
-    assert "published_lines_bps" in check_by_name(
-        report, "source:market_horizon_rows_match_the_pinned_source"
-    )["detail"]
+    assert (
+        "published_lines_bps"
+        in check_by_name(report, "source:market_horizon_rows_match_the_pinned_source")["detail"]
+    )
 
 
 # --------------------------------------------------------------------------- #
@@ -328,35 +333,56 @@ def test_the_state_contract_is_total_and_only_one_state_certifies():
     # One code per outcome, with the two check-only states deliberately sharing the
     # partial code - and neither of them being zero.
     assert gate.exit_code(gate.FULL_REPRODUCTION_PASS) == 0
-    assert gate.exit_code(gate.CHECK_ONLY_PASS) == gate.exit_code(
-        gate.CHECK_ONLY_WITH_ADVISORIES
-    ) == gate.EXIT_PARTIAL != 0
+    assert (
+        gate.exit_code(gate.CHECK_ONLY_PASS)
+        == gate.exit_code(gate.CHECK_ONLY_WITH_ADVISORIES)
+        == gate.EXIT_PARTIAL
+        != 0
+    )
     assert len({gate.exit_code(name) for name in gate.STATUS_CONTRACT}) == 5
 
     common = {"advisories": []}
-    assert gate.decide_status(mode="full", integrity=[], reproduction=[], blocked=[], **common) \
+    assert (
+        gate.decide_status(mode="full", integrity=[], reproduction=[], blocked=[], **common)
         == gate.FULL_REPRODUCTION_PASS
-    assert gate.decide_status(mode="full", integrity=[], reproduction=["a"], blocked=[], **common) \
+    )
+    assert (
+        gate.decide_status(mode="full", integrity=[], reproduction=["a"], blocked=[], **common)
         == gate.FULL_REPRODUCTION_FAIL
-    assert gate.decide_status(mode="check", integrity=[], reproduction=[], blocked=[], **common) \
+    )
+    assert (
+        gate.decide_status(mode="check", integrity=[], reproduction=[], blocked=[], **common)
         == gate.CHECK_ONLY_PASS
-    assert gate.decide_status(
-        mode="check", integrity=[], reproduction=[], blocked=[], advisories=["absent"]
-    ) == gate.CHECK_ONLY_WITH_ADVISORIES
-    assert gate.decide_status(
-        mode="full", integrity=[], reproduction=[], blocked=["absent"], **common
-    ) == gate.BLOCKED_MISSING_INPUT
-    assert gate.decide_status(
-        mode="check", integrity=["tampered"], reproduction=[], blocked=[], **common
-    ) == gate.INTEGRITY_FAILURE
+    )
+    assert (
+        gate.decide_status(
+            mode="check", integrity=[], reproduction=[], blocked=[], advisories=["absent"]
+        )
+        == gate.CHECK_ONLY_WITH_ADVISORIES
+    )
+    assert (
+        gate.decide_status(mode="full", integrity=[], reproduction=[], blocked=["absent"], **common)
+        == gate.BLOCKED_MISSING_INPUT
+    )
+    assert (
+        gate.decide_status(
+            mode="check", integrity=["tampered"], reproduction=[], blocked=[], **common
+        )
+        == gate.INTEGRITY_FAILURE
+    )
     # An integrity failure outranks everything, and no run that leaves anything
     # unresolved can reach the one state that certifies.
-    assert gate.decide_status(
-        mode="full", integrity=["tampered"], reproduction=[], blocked=["absent"], **common
-    ) == gate.INTEGRITY_FAILURE
+    assert (
+        gate.decide_status(
+            mode="full", integrity=["tampered"], reproduction=[], blocked=["absent"], **common
+        )
+        == gate.INTEGRITY_FAILURE
+    )
     for status in (
         gate.decide_status(mode="check", integrity=[], reproduction=[], blocked=[], **common),
-        gate.decide_status(mode="check", integrity=[], reproduction=[], blocked=["absent"], **common),
+        gate.decide_status(
+            mode="check", integrity=[], reproduction=[], blocked=["absent"], **common
+        ),
         gate.decide_status(mode="check", integrity=["t"], reproduction=[], blocked=[], **common),
         gate.decide_status(mode="full", integrity=[], reproduction=["r"], blocked=[], **common),
         gate.decide_status(mode="full", integrity=[], reproduction=[], blocked=["a"], **common),
@@ -366,18 +392,30 @@ def test_the_state_contract_is_total_and_only_one_state_certifies():
 
 def test_advisories_are_escalated_only_under_strict():
     gate = load_gate()
-    assert gate.decide_status(
-        mode="check", integrity=[], reproduction=[], blocked=[], advisories=[], strict=False
-    ) == gate.CHECK_ONLY_PASS
-    assert gate.decide_status(
-        mode="check", integrity=[], reproduction=[], blocked=[], advisories=["x"], strict=False
-    ) == gate.CHECK_ONLY_WITH_ADVISORIES
-    assert gate.decide_status(
-        mode="check", integrity=[], reproduction=[], blocked=[], advisories=["x"], strict=True
-    ) == gate.INTEGRITY_FAILURE
-    assert gate.decide_status(
-        mode="full", integrity=[], reproduction=[], blocked=[], advisories=["x"], strict=True
-    ) == gate.FULL_REPRODUCTION_FAIL
+    assert (
+        gate.decide_status(
+            mode="check", integrity=[], reproduction=[], blocked=[], advisories=[], strict=False
+        )
+        == gate.CHECK_ONLY_PASS
+    )
+    assert (
+        gate.decide_status(
+            mode="check", integrity=[], reproduction=[], blocked=[], advisories=["x"], strict=False
+        )
+        == gate.CHECK_ONLY_WITH_ADVISORIES
+    )
+    assert (
+        gate.decide_status(
+            mode="check", integrity=[], reproduction=[], blocked=[], advisories=["x"], strict=True
+        )
+        == gate.INTEGRITY_FAILURE
+    )
+    assert (
+        gate.decide_status(
+            mode="full", integrity=[], reproduction=[], blocked=[], advisories=["x"], strict=True
+        )
+        == gate.FULL_REPRODUCTION_FAIL
+    )
 
 
 def test_a_missing_required_input_blocks_rather_than_fails(monkeypatch):
@@ -390,7 +428,9 @@ def test_a_missing_required_input_blocks_rather_than_fails(monkeypatch):
     report = gate.build_report(args_for(gate))
     assert report["status"] == gate.BLOCKED_MISSING_INPUT
     assert report["exit_code"] == gate.EXIT_BLOCKED
-    assert "does/not/exist.json" in check_by_name(report, "inputs:declared_inputs_present")["detail"]
+    assert (
+        "does/not/exist.json" in check_by_name(report, "inputs:declared_inputs_present")["detail"]
+    )
 
 
 # --------------------------------------------------------------------------- #
@@ -432,7 +472,9 @@ def test_a_changed_producer_is_a_named_failure(tmp_path, monkeypatch):
     assert all(row["pin_status"] == gate.PIN_EXACT for row in clean_rows)
 
     edited = tree / "scripts" / "cost_barrier.py"
-    edited.write_text(edited.read_text(encoding="utf-8") + "\n# an unrecorded edit\n", encoding="utf-8")
+    edited.write_text(
+        edited.read_text(encoding="utf-8") + "\n# an unrecorded edit\n", encoding="utf-8"
+    )
     rows, defects = gate.producer_rows(manifest)
     drifted = [row for row in rows if row["pin_status"] == gate.PIN_DRIFT]
     assert defects == []
@@ -478,8 +520,7 @@ def test_a_pruned_workflow_filter_is_caught(tmp_path, monkeypatch):
     target.parent.mkdir(parents=True, exist_ok=True)
     text = WORKFLOW.read_text(encoding="utf-8")
     pruned = "\n".join(
-        line for line in text.splitlines(keepends=True)
-        if "cost_model_v3.py" not in line
+        line for line in text.splitlines(keepends=True) if "cost_model_v3.py" not in line
     )
     target.write_text(pruned, encoding="utf-8")
     monkeypatch.setattr(gate, "ROOT", tmp_path)
@@ -521,7 +562,9 @@ def test_an_absent_workflow_fails_closed(tmp_path, monkeypatch):
 def test_all_six_self_controls_detect_a_tamper():
     gate = load_gate()
     explorer = json.loads((RECOVERY / "COST_BARRIER_EXPLORER.json").read_text(encoding="utf-8"))
-    verification = json.loads((RECOVERY / "COST_BARRIER_VERIFICATION.json").read_text(encoding="utf-8"))
+    verification = json.loads(
+        (RECOVERY / "COST_BARRIER_VERIFICATION.json").read_text(encoding="utf-8")
+    )
     controls = gate.self_controls(explorer, verification)
     assert len(controls) == 6
     missed = [row for row in controls if not row["detected"]]
@@ -531,12 +574,15 @@ def test_all_six_self_controls_detect_a_tamper():
 
 def test_a_gate_run_leaves_the_published_artefacts_and_inputs_byte_identical():
     gate = load_gate()
-    watched = [RECOVERY / "COST_BARRIER_EXPLORER.json",
-               RECOVERY / "COST_BARRIER_VERIFICATION.json",
-               RECOVERY / "ACTIVE_ECONOMIC_AUDIT.json",
-               EVIDENCE_DIR / "COST_BARRIER.json",
-               EVIDENCE_DIR / "PRODUCER_PINS.json",
-               ROOT / gate.BUILDER, ROOT / gate.VERIFIER]
+    watched = [
+        RECOVERY / "COST_BARRIER_EXPLORER.json",
+        RECOVERY / "COST_BARRIER_VERIFICATION.json",
+        RECOVERY / "ACTIVE_ECONOMIC_AUDIT.json",
+        EVIDENCE_DIR / "COST_BARRIER.json",
+        EVIDENCE_DIR / "PRODUCER_PINS.json",
+        ROOT / gate.BUILDER,
+        ROOT / gate.VERIFIER,
+    ]
     before = {str(path): path.read_bytes() for path in watched}
     report = gate.build_report(args_for(gate))
     assert report["status"] == gate.FULL_REPRODUCTION_PASS
@@ -552,8 +598,12 @@ def test_the_report_claims_nothing_and_names_its_own_bytes():
     assert claims["authorization_state"] == "NOT_AUTHORIZED"
     assert claims["trades_authorized"] == 0
     assert claims["false_success"] == 0
-    for flag in ("promotion_claimed", "rentable_claimed", "certified_claimed",
-                 "production_ready_claimed"):
+    for flag in (
+        "promotion_claimed",
+        "rentable_claimed",
+        "certified_claimed",
+        "production_ready_claimed",
+    ):
         assert claims[flag] is False
     assert report["gate_sha256"] == hashlib.sha256(GATE.read_bytes()).hexdigest()
     assert report["environment"]["python"]
@@ -564,10 +614,15 @@ def test_the_report_claims_nothing_and_names_its_own_bytes():
     assert certification["partial_result_may_certify_economic_results"] is False
 
 
-@pytest.mark.parametrize("name", ["artifact:explorer_self_hash_and_checks",
-                                  "producers:digests_match_the_pinned_manifest",
-                                  "ci:activation_contract_covers_every_declared_input",
-                                  "source:market_horizon_rows_match_the_pinned_source"])
+@pytest.mark.parametrize(
+    "name",
+    [
+        "artifact:explorer_self_hash_and_checks",
+        "producers:digests_match_the_pinned_manifest",
+        "ci:activation_contract_covers_every_declared_input",
+        "source:market_horizon_rows_match_the_pinned_source",
+    ],
+)
 def test_integrity_checks_are_tagged_as_such(name):
     gate = load_gate()
     report = gate.build_report(args_for(gate, check=True))
@@ -577,9 +632,7 @@ def test_integrity_checks_are_tagged_as_such(name):
 
 def test_missing_subjects_are_an_integrity_failure_and_a_named_check(tmp_path):
     gate = load_gate()
-    report = gate.build_report(
-        args_for(gate, explorer=str(tmp_path / "absent.json"), check=True)
-    )
+    report = gate.build_report(args_for(gate, explorer=str(tmp_path / "absent.json"), check=True))
     assert report["status"] == gate.INTEGRITY_FAILURE
     assert report["exit_code"] == gate.EXIT_INTEGRITY_FAILURE
     assert check_by_name(report, "subjects:present")["severity"] == gate.SEVERITY_INTEGRITY

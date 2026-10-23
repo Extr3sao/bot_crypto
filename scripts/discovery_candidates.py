@@ -47,8 +47,12 @@ DAILY_LOSS_PCT = 1.0
 START_EQUITY = 10_000.0
 START_EVAL = 60  # warmup bars before any evaluation (parity with V1 engine)
 
-SCENARIOS: dict[str, tuple[float, float]] = {"BASE": (1.0, 1.0), "2X_COST": (2.0, 1.0),
-                                             "STRESSED_SLIPPAGE": (1.0, 5.0), "ZERO_COST": (0.0, 0.0)}
+SCENARIOS: dict[str, tuple[float, float]] = {
+    "BASE": (1.0, 1.0),
+    "2X_COST": (2.0, 1.0),
+    "STRESSED_SLIPPAGE": (1.0, 5.0),
+    "ZERO_COST": (0.0, 0.0),
+}
 
 # ----------------------------- signal generators ----------------------------
 
@@ -68,9 +72,13 @@ class VolZRev:
         ret = w[-1]["close"] / w[0]["close"] - 1.0
         trs = []
         for i in range(len(bars) - 14, len(bars)):
-            trs.append(max(bars[i]["high"] - bars[i]["low"],
-                           abs(bars[i]["high"] - bars[i - 1]["close"]),
-                           abs(bars[i]["low"] - bars[i - 1]["close"])))
+            trs.append(
+                max(
+                    bars[i]["high"] - bars[i]["low"],
+                    abs(bars[i]["high"] - bars[i - 1]["close"]),
+                    abs(bars[i]["low"] - bars[i - 1]["close"]),
+                )
+            )
         atr = mean(trs)
         if atr <= 0:
             return None
@@ -94,10 +102,10 @@ class SqueezeBreakout:
     def signal(self, bars: list[dict[str, Any]]) -> str | None:
         if len(bars) < self.min_bars + 1:
             return None
-        rng = bars[-self.range_len:]
+        rng = bars[-self.range_len :]
         hi = max(b["high"] for b in rng)
         lo = min(b["low"] for b in rng)
-        prev_rng = bars[-self.range_len - 1: -1]
+        prev_rng = bars[-self.range_len - 1 : -1]
         widths = [b["high"] - b["low"] for b in prev_rng]
         if not widths or mean(widths) <= 0:
             return None
@@ -131,13 +139,18 @@ class RelMomentum:
             w = bars[-25:]
             r = w[-1]["close"] / w[0]["close"] - 1.0
             rets[sym] = r
-            vols[sym] = math.sqrt(sum((w[i]["close"] / w[i - 1]["close"] - 1.0) ** 2
-                                      for i in range(1, len(w))) / 24.0) or 1e-12
+            vols[sym] = (
+                math.sqrt(
+                    sum((w[i]["close"] / w[i - 1]["close"] - 1.0) ** 2 for i in range(1, len(w)))
+                    / 24.0
+                )
+                or 1e-12
+            )
         ranked = sorted(rets, key=lambda s: rets[s] / vols[s], reverse=True)
         lead = ranked[0]
         vals = sorted(rets[s] / vols[s] for s in rets)
         mid = vals[1]
-        z_rel = (rets[lead] / vols[lead] - mid)
+        z_rel = rets[lead] / vols[lead] - mid
         if z_rel > 1.0:
             self._prev_leader = lead
             return lead
@@ -153,14 +166,25 @@ def day_key(ts_ms: int) -> int:
 
 
 def atr14(bars: list[dict[str, Any]]) -> float:
-    trs = [max(bars[i]["high"] - bars[i]["low"],
-               abs(bars[i]["high"] - bars[i - 1]["close"]),
-               abs(bars[i]["low"] - bars[i - 1]["close"])) for i in range(1, len(bars))]
+    trs = [
+        max(
+            bars[i]["high"] - bars[i]["low"],
+            abs(bars[i]["high"] - bars[i - 1]["close"]),
+            abs(bars[i]["low"] - bars[i - 1]["close"]),
+        )
+        for i in range(1, len(bars))
+    ]
     return mean(trs) if trs else 0.0
 
 
-def simulate_single(candidate: VolZRev | SqueezeBreakout, symbol: str, bars: list[dict[str, Any]],
-                    fees: float, slip: float, tf_min: float) -> dict[str, Any]:
+def simulate_single(
+    candidate: VolZRev | SqueezeBreakout,
+    symbol: str,
+    bars: list[dict[str, Any]],
+    fees: float,
+    slip: float,
+    tf_min: float,
+) -> dict[str, Any]:
     eq = START_EQUITY
     peak = eq
     max_dd = 0.0
@@ -183,12 +207,22 @@ def simulate_single(candidate: VolZRev | SqueezeBreakout, symbol: str, bars: lis
         net = gross - f
         eq += net
         consec = 0 if net > 0 else consec + 1
-        trades.append({"window": bars[0]["ts"], "asset": symbol, "net": round(net, 4),
-                       "gross": round(gross, 4), "fees": round(f, 4), "reason": reason,
-                       "side": pp["side"], "mfe_pct": round(pp["mfe"] / pp["entry"] * 100.0, 4),
-                       "mae_pct": round(pp["mae"] / pp["entry"] * 100.0, 4),
-                       "entry_ts": pp["entry_ts"], "exit_ts": ts,
-                       "duration_min": round((ts - pp["entry_ts"]) / 60_000, 1)})
+        trades.append(
+            {
+                "window": bars[0]["ts"],
+                "asset": symbol,
+                "net": round(net, 4),
+                "gross": round(gross, 4),
+                "fees": round(f, 4),
+                "reason": reason,
+                "side": pp["side"],
+                "mfe_pct": round(pp["mfe"] / pp["entry"] * 100.0, 4),
+                "mae_pct": round(pp["mae"] / pp["entry"] * 100.0, 4),
+                "entry_ts": pp["entry_ts"],
+                "exit_ts": ts,
+                "duration_min": round((ts - pp["entry_ts"]) / 60_000, 1),
+            }
+        )
         pos = None
 
     for i in range(START_EVAL, len(bars)):
@@ -215,31 +249,45 @@ def simulate_single(candidate: VolZRev | SqueezeBreakout, symbol: str, bars: lis
                 close(cl, ts, "time_stop")
         if not locked and (daily_start - eq) / daily_start * 100.0 >= DAILY_LOSS_PCT:
             locked = True
-        if pos is None and not locked and trades_today < MAX_TRADES_DAY \
-                and not (consec >= COOLDOWN_LOSSES and d <= cooldown_day):
+        if (
+            pos is None
+            and not locked
+            and trades_today < MAX_TRADES_DAY
+            and not (consec >= COOLDOWN_LOSSES and d <= cooldown_day)
+        ):
             side = candidate.signal(bars[: i + 1])
             if side is not None:
                 entry_ref = cl
-                atr = atr14(bars[max(0, i - 14): i + 1])
+                atr = atr14(bars[max(0, i - 14) : i + 1])
                 if atr <= 0:
                     continue
                 if candidate.candidate_id == "D-02_vol_z_rev":
                     tp_d, sl_d = 1.0 * atr, 1.5 * atr
                 else:  # D-03: tp 1.5x broken range, sl opposite side
                     range_len = getattr(candidate, "range_len", 12)
-                    rng = bars[max(0, i - range_len): i]
+                    rng = bars[max(0, i - range_len) : i]
                     hi = max(x["high"] for x in rng)
                     lo = min(x["low"] for x in rng)
                     if side == "buy":
                         tp_d, sl_d = 1.5 * (hi - lo), max(entry_ref - lo, 1e-9)
                     else:
                         tp_d, sl_d = 1.5 * (hi - lo), max(hi - entry_ref, 1e-9)
-                notional = min(MAX_NOTIONAL, max(MIN_NOTIONAL, eq * (RISK_PCT / 100.0) / (sl_d / entry_ref)))
+                notional = min(
+                    MAX_NOTIONAL, max(MIN_NOTIONAL, eq * (RISK_PCT / 100.0) / (sl_d / entry_ref))
+                )
                 fill = cl * (1 + slip) if side == "buy" else cl * (1 - slip)
-                pos = {"side": side, "entry": fill, "qty": notional / fill, "notional": notional,
-                       "sl": fill - sl_d if side == "buy" else fill + sl_d,
-                       "tp": fill + tp_d if side == "buy" else fill - tp_d,
-                       "mfe": 0.0, "mae": 0.0, "age": 0, "entry_ts": ts}
+                pos = {
+                    "side": side,
+                    "entry": fill,
+                    "qty": notional / fill,
+                    "notional": notional,
+                    "sl": fill - sl_d if side == "buy" else fill + sl_d,
+                    "tp": fill + tp_d if side == "buy" else fill - tp_d,
+                    "mfe": 0.0,
+                    "mae": 0.0,
+                    "age": 0,
+                    "entry_ts": ts,
+                }
                 trades_today += 1
                 if consec >= COOLDOWN_LOSSES:
                     cooldown_day = d
@@ -248,8 +296,13 @@ def simulate_single(candidate: VolZRev | SqueezeBreakout, symbol: str, bars: lis
     return {"trades": trades, "final_equity": round(eq, 2), "max_dd_pct": round(max_dd, 4)}
 
 
-def simulate_rel_momo(candidate: RelMomentum, files_by_window: dict[str, dict[str, list[dict[str, Any]]]],
-                      fees: float, slip: float, tf_min: float) -> dict[str, Any]:
+def simulate_rel_momo(
+    candidate: RelMomentum,
+    files_by_window: dict[str, dict[str, list[dict[str, Any]]]],
+    fees: float,
+    slip: float,
+    tf_min: float,
+) -> dict[str, Any]:
     eq = START_EQUITY
     peak = eq
     max_dd = 0.0
@@ -294,28 +347,51 @@ def simulate_rel_momo(candidate: RelMomentum, files_by_window: dict[str, dict[st
                     net = gross - f
                     eq += net
                     consec = 0 if net > 0 else consec + 1
-                    trades.append({"window": wname, "asset": leader_seen, "net": round(net, 4),
-                                   "gross": round(gross, 4), "fees": round(f, 4),
-                                   "reason": "stop_loss" if sl_hit and not tp_hit else
-                                             ("take_profit" if tp_hit else "time_stop"),
-                                   "side": "buy", "mfe_pct": round(entry["mfe"] / entry["entry"] * 100.0, 4),
-                                   "mae_pct": round(entry["mae"] / entry["entry"] * 100.0, 4),
-                                   "entry_ts": entry["entry_ts"], "exit_ts": timestamps[i]["ts"],
-                                   "duration_min": round((timestamps[i]["ts"] - entry["entry_ts"]) / 60_000, 1)})
+                    trades.append(
+                        {
+                            "window": wname,
+                            "asset": leader_seen,
+                            "net": round(net, 4),
+                            "gross": round(gross, 4),
+                            "fees": round(f, 4),
+                            "reason": "stop_loss"
+                            if sl_hit and not tp_hit
+                            else ("take_profit" if tp_hit else "time_stop"),
+                            "side": "buy",
+                            "mfe_pct": round(entry["mfe"] / entry["entry"] * 100.0, 4),
+                            "mae_pct": round(entry["mae"] / entry["entry"] * 100.0, 4),
+                            "entry_ts": entry["entry_ts"],
+                            "exit_ts": timestamps[i]["ts"],
+                            "duration_min": round(
+                                (timestamps[i]["ts"] - entry["entry_ts"]) / 60_000, 1
+                            ),
+                        }
+                    )
                     entry = None
             if not locked and (daily_start - eq) / daily_start * 100.0 >= DAILY_LOSS_PCT:
                 locked = True
-            if entry is None and not locked and trades_today < MAX_TRADES_DAY \
-                    and not (consec >= COOLDOWN_LOSSES and d <= cooldown_day):
+            if (
+                entry is None
+                and not locked
+                and trades_today < MAX_TRADES_DAY
+                and not (consec >= COOLDOWN_LOSSES and d <= cooldown_day)
+            ):
                 sub = {s: bars[: i + 1] for s, bars in series.items()}
                 lead = candidate.leader(sub)
                 if lead is not None and lead != leader_seen:
                     cl = series[lead][i]["close"]
                     notional = min(MAX_NOTIONAL, max(MIN_NOTIONAL, eq * (RISK_PCT / 100.0) / 0.01))
                     fill = cl * (1 + slip)
-                    entry = {"entry": fill, "qty": notional / fill, "notional": notional,
-                             "sl": fill * 0.99, "tp": fill * 1.01, "mfe": 0.0, "mae": 0.0,
-                             "entry_ts": series[lead][i]["ts"]}
+                    entry = {
+                        "entry": fill,
+                        "qty": notional / fill,
+                        "notional": notional,
+                        "sl": fill * 0.99,
+                        "tp": fill * 1.01,
+                        "mfe": 0.0,
+                        "mae": 0.0,
+                        "entry_ts": series[lead][i]["ts"],
+                    }
                     leader_seen = lead
                     trades_today += 1
                     if consec >= COOLDOWN_LOSSES:
@@ -331,18 +407,20 @@ def aggregate(trades: list[dict[str, Any]]) -> dict[str, Any]:
     losses = [n for n in nets if n <= 0]
     gw, gl = sum(wins), abs(sum(losses))
     n = len(trades)
-    return {"trades": n,
-            "gross": round(sum(t["gross"] for t in trades), 2),
-            "fees": round(sum(t["fees"] for t in trades), 2),
-            "net": round(sum(nets), 2),
-            "expectancy_gross": round(mean([t["gross"] for t in trades]), 4) if n else 0.0,
-            "expectancy": round(mean(nets), 4) if n else 0.0,
-            "avg_mfe_pct": round(mean([t["mfe_pct"] for t in trades]), 4) if n else 0.0,
-            "avg_mae_pct": round(mean([t["mae_pct"] for t in trades]), 4) if n else 0.0,
-            "avg_duration_min": round(mean([t["duration_min"] for t in trades]), 1) if n else 0.0,
-            "win_rate": round(100.0 * len(wins) / n, 2) if n else 0.0,
-            "profit_factor": round(gw / gl, 4) if gl else None,
-            "max_dd_pct": None}
+    return {
+        "trades": n,
+        "gross": round(sum(t["gross"] for t in trades), 2),
+        "fees": round(sum(t["fees"] for t in trades), 2),
+        "net": round(sum(nets), 2),
+        "expectancy_gross": round(mean([t["gross"] for t in trades]), 4) if n else 0.0,
+        "expectancy": round(mean(nets), 4) if n else 0.0,
+        "avg_mfe_pct": round(mean([t["mfe_pct"] for t in trades]), 4) if n else 0.0,
+        "avg_mae_pct": round(mean([t["mae_pct"] for t in trades]), 4) if n else 0.0,
+        "avg_duration_min": round(mean([t["duration_min"] for t in trades]), 1) if n else 0.0,
+        "win_rate": round(100.0 * len(wins) / n, 2) if n else 0.0,
+        "profit_factor": round(gw / gl, 4) if gl else None,
+        "max_dd_pct": None,
+    }
 
 
 def main() -> None:
@@ -368,8 +446,14 @@ def main() -> None:
                 for sym, f in entries:
                     with open(f, encoding="utf-8") as fh:
                         bars = json.load(fh)
-                    res = simulate_single(cand, sym.replace("USDT", "/USDT"), bars, FEES * cm, SLIP * sm,
-                                          {"15m": 15.0, "30m": 30.0}[tf])
+                    res = simulate_single(
+                        cand,
+                        sym.replace("USDT", "/USDT"),
+                        bars,
+                        FEES * cm,
+                        SLIP * sm,
+                        {"15m": 15.0, "30m": 30.0}[tf],
+                    )
                     for t in res["trades"]:
                         t["window"] = window
                     all_trades.extend(res["trades"])
@@ -378,12 +462,18 @@ def main() -> None:
             oos = [t for t in all_trades if str(t["window"]).startswith("W7")]
             agg = aggregate(all_trades)
             agg["max_dd_pct"] = None
-            results[cand.candidate_id][sc] = {"totals": agg, "DEV_W1_W4": aggregate(dev),
-                                              "VAL_W5_W6": aggregate(val), "OOS_W7": aggregate(oos)}
+            results[cand.candidate_id][sc] = {
+                "totals": agg,
+                "DEV_W1_W4": aggregate(dev),
+                "VAL_W5_W6": aggregate(val),
+                "OOS_W7": aggregate(oos),
+            }
             t = results[cand.candidate_id][sc]["totals"]
-            print(f"{cand.candidate_id} [{sc}]: trades={t['trades']} gross={t['gross']} net={t['net']} "
-                  f"PF={t['profit_factor']} WR={t['win_rate']} mfe={t['avg_mfe_pct']} mae={t['avg_mae_pct']}",
-                  flush=True)
+            print(
+                f"{cand.candidate_id} [{sc}]: trades={t['trades']} gross={t['gross']} net={t['net']} "
+                f"PF={t['profit_factor']} WR={t['win_rate']} mfe={t['avg_mfe_pct']} mae={t['avg_mae_pct']}",
+                flush=True,
+            )
             if sc == "BASE":
                 for tr in all_trades:
                     row = dict(tr)
@@ -407,12 +497,19 @@ def main() -> None:
         dev = [t for t in res["trades"] if str(t["window"]).startswith(("W1", "W2", "W3", "W4"))]
         val = [t for t in res["trades"] if str(t["window"]).startswith(("W5", "W6"))]
         oos = [t for t in res["trades"] if str(t["window"]).startswith("W7")]
-        results[cand4.candidate_id][sc] = {"totals": aggregate(res["trades"]),
-                                           "DEV_W1_W4": aggregate(dev), "VAL_W5_W6": aggregate(val),
-                                           "OOS_W7": aggregate(oos), "max_dd_pct": res["max_dd_pct"]}
+        results[cand4.candidate_id][sc] = {
+            "totals": aggregate(res["trades"]),
+            "DEV_W1_W4": aggregate(dev),
+            "VAL_W5_W6": aggregate(val),
+            "OOS_W7": aggregate(oos),
+            "max_dd_pct": res["max_dd_pct"],
+        }
         t = results[cand4.candidate_id][sc]["totals"]
-        print(f"{cand4.candidate_id} [{sc}]: trades={t['trades']} gross={t['gross']} net={t['net']} "
-              f"PF={t['profit_factor']} WR={t['win_rate']}", flush=True)
+        print(
+            f"{cand4.candidate_id} [{sc}]: trades={t['trades']} gross={t['gross']} net={t['net']} "
+            f"PF={t['profit_factor']} WR={t['win_rate']}",
+            flush=True,
+        )
         if sc == "BASE":
             for tr in res["trades"]:
                 row = dict(tr)
@@ -423,9 +520,25 @@ def main() -> None:
     with open(os.path.join(OUTDIR, "DISCOVERY_CANDIDATES.json"), "w", encoding="utf-8") as fh:
         json.dump(results, fh, indent=2)
     if dump_rows:
-        cols = ["scenario", "candidate", "window", "asset", "side", "entry_ts", "exit_ts",
-                "duration_min", "reason", "mfe_pct", "mae_pct", "gross", "fees", "net"]
-        with open(os.path.join(OUTDIR, "TRADES_DISCOVERY.csv"), "w", newline="", encoding="utf-8") as fh:
+        cols = [
+            "scenario",
+            "candidate",
+            "window",
+            "asset",
+            "side",
+            "entry_ts",
+            "exit_ts",
+            "duration_min",
+            "reason",
+            "mfe_pct",
+            "mae_pct",
+            "gross",
+            "fees",
+            "net",
+        ]
+        with open(
+            os.path.join(OUTDIR, "TRADES_DISCOVERY.csv"), "w", newline="", encoding="utf-8"
+        ) as fh:
             w = csv.DictWriter(fh, fieldnames=cols)
             w.writeheader()
             for r in dump_rows:

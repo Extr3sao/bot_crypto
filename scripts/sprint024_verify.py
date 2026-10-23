@@ -44,7 +44,9 @@ def main() -> int:
 
     # 2. no hypothesis silently removed (ids unique and complete)
     ids = [h["hypothesis_id"] for h in R.REGISTRY]
-    checks["no_hypothesis_removed"] = len(set(ids)) == 6 and all(i.startswith("H-DIR-") for i in ids)
+    checks["no_hypothesis_removed"] = len(set(ids)) == 6 and all(
+        i.startswith("H-DIR-") for i in ids
+    )
 
     # 3. cost model unchanged
     checks["cost_unchanged"] = L.CERTIFIED_ROUND_TRIP_BPS == 23.790569 == R.COST
@@ -52,9 +54,12 @@ def main() -> int:
     # 4. splits unchanged (certified hashes)
     sh = L.split_hashes()
     checks["split_hashes_unchanged"] = (
-        sh["DISCOVERY"]["sha256"] == "6b0d8f61e0a5d98117dc2af241d9f8487cfa26b6e3e82c074ea4ff7498b00892"
-        and sh["VALIDATION"]["sha256"] == "7b2ed3a086ec5ce0ebeaf122e8fcadeaf6c6e9185050ea20b7e512a429d7756e"
-        and sh["HOLDOUT"]["sha256"] == "3acc341089247b3c142f87eae62845057ac09db7923b7c253a7ea03ce4b23238"
+        sh["DISCOVERY"]["sha256"]
+        == "6b0d8f61e0a5d98117dc2af241d9f8487cfa26b6e3e82c074ea4ff7498b00892"
+        and sh["VALIDATION"]["sha256"]
+        == "7b2ed3a086ec5ce0ebeaf122e8fcadeaf6c6e9185050ea20b7e512a429d7756e"
+        and sh["HOLDOUT"]["sha256"]
+        == "3acc341089247b3c142f87eae62845057ac09db7923b7c253a7ea03ce4b23238"
     )
     detail["split_files"] = {k: v["files"] for k, v in sh.items()}
 
@@ -86,12 +91,13 @@ def main() -> int:
 
     # 7. multiple-testing correction correct (recompute BH + Holm + raw p)
     mt = json.loads((OUT / "MULTIPLE_TESTING_REPORT.json").read_text(encoding="utf-8"))
-    pairs = [(hid, v["t_stat_discovery"]) for hid, v in run["hypotheses"].items()
-             if v["t_stat_discovery"] is not None]
+    pairs = [
+        (hid, v["t_stat_discovery"])
+        for hid, v in run["hypotheses"].items()
+        if v["t_stat_discovery"] is not None
+    ]
     pv = {hid: norm_sf(float(t)) for hid, t in pairs}
-    checks["raw_p_recomputed"] = all(
-        abs(pv[hid] - mt["raw_p"][hid]) <= 1e-3 for hid in pv
-    )
+    checks["raw_p_recomputed"] = all(abs(pv[hid] - mt["raw_p"][hid]) <= 1e-3 for hid in pv)
     # BH at q=0.10
     order = sorted(pv.items(), key=lambda kv: kv[1])
     m = len(order)
@@ -141,7 +147,12 @@ def main() -> int:
     passed = all(checks.values())
     result = {"checks": checks, "detail": detail, "verifier_result": "PASS" if passed else "FAIL"}
     R.write_json(OUT / "RFC024_VERIFICATION.json", result)
-    md = ["# RFC-024 — INDEPENDENT VERIFICATION", "", f"VERIFIER_RESULT = {result['verifier_result']}", ""]
+    md = [
+        "# RFC-024 — INDEPENDENT VERIFICATION",
+        "",
+        f"VERIFIER_RESULT = {result['verifier_result']}",
+        "",
+    ]
     for key, val in checks.items():
         md.append(f"- {key}: {'PASS' if val else 'FAIL'}")
     md += ["", "```text", json.dumps(detail, indent=2), "```"]

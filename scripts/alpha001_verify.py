@@ -101,7 +101,11 @@ def canonical(value: Any) -> str:
     if isinstance(value, (list, tuple)):
         return "[" + ",".join(canonical(item) for item in value) + "]"
     if isinstance(value, dict):
-        return "{" + ",".join(f"{canonical(str(key))}:{canonical(value[key])}" for key in sorted(value)) + "}"
+        return (
+            "{"
+            + ",".join(f"{canonical(str(key))}:{canonical(value[key])}" for key in sorted(value))
+            + "}"
+        )
     return json.dumps(str(value), ensure_ascii=False)
 
 
@@ -362,7 +366,11 @@ def load_candles(symbol: str, timeframe: str) -> list[list[float]]:
 
 def dataset_hash(rows: list[list[float]]) -> str:
     payload = ",".join(
-        "[" + str(int(row[0])) + "," + ",".join(repr(round(float(value), 8)) for value in row[1:6]) + "]"
+        "["
+        + str(int(row[0]))
+        + ","
+        + ",".join(repr(round(float(value), 8)) for value in row[1:6])
+        + "]"
         for row in rows
     )
     return digest("[" + payload + "]")
@@ -516,7 +524,10 @@ def compare_cell(
             worst = max(worst, abs(float(a) - float(b)))
     if worst > 1e-9:
         reasons.append(f"max |delta| {worst:.3e}")
-    return (not reasons, "; ".join(reasons) or f"{name} reproduced exactly (max |delta| {worst:.1e})")
+    return (
+        not reasons,
+        "; ".join(reasons) or f"{name} reproduced exactly (max |delta| {worst:.1e})",
+    )
 
 
 # --------------------------------------------------------------------------- #
@@ -552,7 +563,12 @@ def verify_registry(verifier: Verifier, artifacts: dict[str, Any]) -> None:
         "the evidence copy and the importing module describe the same registry",
     )
     ids = [item["hypothesis_id"] for item in registry["hypotheses"]]
-    verifier.check("HYPOTHESIS_COUNT", len(ids) == EXPECTED_HYPOTHESIS_COUNT, EXPECTED_HYPOTHESIS_COUNT, len(ids))
+    verifier.check(
+        "HYPOTHESIS_COUNT",
+        len(ids) == EXPECTED_HYPOTHESIS_COUNT,
+        EXPECTED_HYPOTHESIS_COUNT,
+        len(ids),
+    )
     verifier.check(
         "HYPOTHESIS_IDS_CONTIGUOUS",
         ids == EXPECTED_HYPOTHESES,
@@ -561,12 +577,17 @@ def verify_registry(verifier: Verifier, artifacts: dict[str, Any]) -> None:
         "no hypothesis added after results, no loser removed",
     )
     families = [item["family_id"] for item in registry["families"]]
-    verifier.check("FAMILY_COUNT", len(families) == EXPECTED_FAMILY_COUNT, EXPECTED_FAMILY_COUNT, len(families))
+    verifier.check(
+        "FAMILY_COUNT", len(families) == EXPECTED_FAMILY_COUNT, EXPECTED_FAMILY_COUNT, len(families)
+    )
     verifier.check(
         "ARTIFACT_COUNTS_MATCH_REGISTRY",
         artifacts["hypothesis_count"] == len(ids) and artifacts["family_count"] == len(families),
         {"hypothesis_count": len(ids), "family_count": len(families)},
-        {"hypothesis_count": artifacts["hypothesis_count"], "family_count": artifacts["family_count"]},
+        {
+            "hypothesis_count": artifacts["hypothesis_count"],
+            "family_count": artifacts["family_count"],
+        },
     )
     verifier.limitations.append(
         "Preregistration *timing* is attested by the frozen hash plus the versioned code; it is not "
@@ -576,7 +597,9 @@ def verify_registry(verifier: Verifier, artifacts: dict[str, Any]) -> None:
 
 def verify_dataset_hashes(verifier: Verifier, artifacts: dict[str, Any]) -> None:
     recorded = artifacts["dataset_hashes"]
-    recomputed = {symbol: dataset_hash(load_candles(symbol, "1d")) for symbol in artifacts["universe"]}
+    recomputed = {
+        symbol: dataset_hash(load_candles(symbol, "1d")) for symbol in artifacts["universe"]
+    }
     recomputed[SESSION_SYMBOL] = dataset_hash(load_candles("BTC/USDT", "4h"))
     mismatched = [symbol for symbol, value in recomputed.items() if recorded.get(symbol) != value]
     verifier.check(
@@ -603,9 +626,13 @@ def verify_holdout(verifier: Verifier, artifacts: dict[str, Any], series: dict[s
     )
     verifier.check(
         "SPLIT_INDICES",
-        recorded_panel["discovery_end"] == discovery_end and recorded_panel["validation_end"] == validation_end,
+        recorded_panel["discovery_end"] == discovery_end
+        and recorded_panel["validation_end"] == validation_end,
         {"discovery_end": discovery_end, "validation_end": validation_end},
-        {"discovery_end": recorded_panel["discovery_end"], "validation_end": recorded_panel["validation_end"]},
+        {
+            "discovery_end": recorded_panel["discovery_end"],
+            "validation_end": recorded_panel["validation_end"],
+        },
     )
 
     discovery_stamp = panel.calendar[discovery_end]
@@ -619,12 +646,18 @@ def verify_holdout(verifier: Verifier, artifacts: dict[str, Any], series: dict[s
         f"{held_out} 4h bars at or after the validation boundary",
         "the holdout is present in the cache, so excluding it is a real decision",
     )
-    daily_ok = all(item["n"] <= recorded_panel["discovery_end"] for item in artifacts["summaries"].values())
+    daily_ok = all(
+        item["n"] <= recorded_panel["discovery_end"] for item in artifacts["summaries"].values()
+    )
     verifier.check(
         "DAILY_DECISIONS_INSIDE_WINDOW",
         daily_ok,
         "every daily hypothesis has n <= discovery_end",
-        {hid: item["n"] for hid, item in artifacts["summaries"].items() if hid not in ("A1-H11", "A1-H12")},
+        {
+            hid: item["n"]
+            for hid, item in artifacts["summaries"].items()
+            if hid not in ("A1-H11", "A1-H12")
+        },
     )
 
     session_start = 60
@@ -680,12 +713,16 @@ def verify_holdout(verifier: Verifier, artifacts: dict[str, Any], series: dict[s
     )
 
 
-def verify_information(verifier: Verifier, artifacts: dict[str, Any], series: dict[str, Any]) -> None:
+def verify_information(
+    verifier: Verifier, artifacts: dict[str, Any], series: dict[str, Any]
+) -> None:
     worst = 0.0
     worst_id = ""
     for hid in EXPECTED_HYPOTHESES:
         row = series[hid]
-        ic = spearman([float(value) for value in row["signal"]], [float(value) for value in row["forward"]])
+        ic = spearman(
+            [float(value) for value in row["signal"]], [float(value) for value in row["forward"]]
+        )
         recorded = artifacts["summaries"][hid]["ic"]
         if abs(ic - recorded) > worst:
             worst, worst_id = abs(ic - recorded), hid
@@ -696,7 +733,9 @@ def verify_information(verifier: Verifier, artifacts: dict[str, Any], series: di
         f"{worst_id or 'none'} max deviation {worst:.9f}",
         "rank IC recomputed from the delivered signal/forward series",
     )
-    informational = sum(1 for hid in EXPECTED_HYPOTHESES if abs(artifacts["summaries"][hid]["ic"]) >= 0.02)
+    informational = sum(
+        1 for hid in EXPECTED_HYPOTHESES if abs(artifacts["summaries"][hid]["ic"]) >= 0.02
+    )
     document = load_json(DISCOVERY_PATH)
     verifier.check(
         "EVIDENCE_DOCUMENT_MATCHES_ARTIFACTS",
@@ -745,7 +784,11 @@ def verify_economics(verifier: Verifier, artifacts: dict[str, Any], series: dict
         n_eff = effective_sample_size(contributions)
         se = sigma / math.sqrt(n_eff) if n_eff > 0 and sigma > 0 else float("inf")
         t_stat = gross / se if se not in (0.0, float("inf")) else 0.0
-        power = "POWERED" if mde_bps(sigma, int(max(1, round(n_eff)))) <= artifacts["hurdle_bps"] else "UNDERPOWERED"
+        power = (
+            "POWERED"
+            if mde_bps(sigma, int(max(1, round(n_eff)))) <= artifacts["hurdle_bps"]
+            else "UNDERPOWERED"
+        )
         checks = {
             "n": len(contributions) == row["n"],
             "gross": verifier.close(gross, row["gross_bps"], 1e-4),
@@ -753,9 +796,7 @@ def verify_economics(verifier: Verifier, artifacts: dict[str, Any], series: dict
             "t": verifier.close(t_stat, row["t_stat"], 1e-6),
             "n_eff": verifier.close(n_eff, row["n_effective"], 1e-3),
             "p": verifier.close(one_sided_p(t_stat), row["p_raw"], 1e-8),
-            "mde": verifier.close(
-                mde_bps(sigma, int(max(1, round(n_eff)))), row["mde_bps"], 1e-4
-            ),
+            "mde": verifier.close(mde_bps(sigma, int(max(1, round(n_eff)))), row["mde_bps"], 1e-4),
             "power": power == row["power_class"],
             "net": verifier.close(row["gross_bps"] - COST_BPS_V3, row["net_bps"], 1e-6),
         }
@@ -814,9 +855,13 @@ def verify_hurdle(verifier: Verifier, artifacts: dict[str, Any]) -> None:
             6,
         ),
     )
-    above = [hid for hid in EXPECTED_HYPOTHESES if artifacts["summaries"][hid]["gross_above_hurdle"]]
+    above = [
+        hid for hid in EXPECTED_HYPOTHESES if artifacts["summaries"][hid]["gross_above_hurdle"]
+    ]
     recomputed = [
-        hid for hid in EXPECTED_HYPOTHESES if artifacts["summaries"][hid]["gross_bps"] >= artifacts["hurdle_bps"]
+        hid
+        for hid in EXPECTED_HYPOTHESES
+        if artifacts["summaries"][hid]["gross_bps"] >= artifacts["hurdle_bps"]
     ]
     verifier.check(
         "ECONOMICALLY_VIABLE_COUNT",
@@ -847,9 +892,7 @@ def verify_cost_frontier(verifier: Verifier, artifacts: dict[str, Any]) -> None:
     non_cost_bar = WINNERS_CURSE_BUFFER_BPS + statistical
 
     free_execution = [
-        hid
-        for hid in EXPECTED_HYPOTHESES
-        if summaries[hid]["gross_bps"] >= non_cost_bar
+        hid for hid in EXPECTED_HYPOTHESES if summaries[hid]["gross_bps"] >= non_cost_bar
     ]
     verifier.check(
         "COST_FRONTIER_NOTHING_SURVIVES_FREE_EXECUTION",
@@ -884,9 +927,9 @@ def verify_cost_frontier(verifier: Verifier, artifacts: dict[str, Any]) -> None:
         hid
         for hid in EXPECTED_HYPOTHESES
         if not verifier.close(
-            a1.cost_frontier(
-                gross_bps=summaries[hid]["gross_bps"], statistical_bps=statistical
-            )["admission_break_even_cost_bps"],
+            a1.cost_frontier(gross_bps=summaries[hid]["gross_bps"], statistical_bps=statistical)[
+                "admission_break_even_cost_bps"
+            ],
             round(admission_break_even_cost_bps(summaries[hid]["gross_bps"], statistical), 6),
             1e-6,
         )
@@ -968,7 +1011,10 @@ def verify_multiplicity(verifier: Verifier, artifacts: dict[str, Any]) -> None:
         "HOLM_CORRECTION",
         computed_holm == [row["holm_pass"] for row in rows],
         {"alpha": HOLM_ALPHA, "survivors": [ids[i] for i, ok in enumerate(computed_holm) if ok]},
-        {"alpha": HOLM_ALPHA, "survivors": [row["hypothesis_id"] for row in rows if row["holm_pass"]]},
+        {
+            "alpha": HOLM_ALPHA,
+            "survivors": [row["hypothesis_id"] for row in rows if row["holm_pass"]],
+        },
     )
     verifier.check(
         "MULTIPLICITY_N_IS_EXACT_HYPOTHESIS_COUNT",
@@ -996,7 +1042,10 @@ def verify_multiplicity(verifier: Verifier, artifacts: dict[str, Any]) -> None:
 def verify_best_of_n(verifier: Verifier, artifacts: dict[str, Any], series: dict[str, Any]) -> None:
     # The campaign's "best observed" is the largest per-cell gross mean; a cell's own
     # denominator (including its flat days) is the one used by its summary.
-    gross = {hid: mean([float(value) for value in series[hid]["contributions"]]) for hid in EXPECTED_HYPOTHESES}
+    gross = {
+        hid: mean([float(value) for value in series[hid]["contributions"]])
+        for hid in EXPECTED_HYPOTHESES
+    }
     observed = max(gross.values())
     best_id = max(EXPECTED_HYPOTHESES, key=lambda hid: gross[hid])
     verifier.check(
@@ -1042,9 +1091,18 @@ def verify_best_of_n(verifier: Verifier, artifacts: dict[str, Any], series: dict
         reproduced["draws"] == null["draws"]
         and all(
             verifier.close(reproduced[key], null[key], 1e-6)
-            for key in ("null_median", "null_p95", "null_p99", "null_max", "p_null_best_ge_observed")
+            for key in (
+                "null_median",
+                "null_p95",
+                "null_p99",
+                "null_max",
+                "p_null_best_ge_observed",
+            )
         ),
-        {key: null[key] for key in ("draws", "null_median", "null_p95", "null_p99", "p_null_best_ge_observed")},
+        {
+            key: null[key]
+            for key in ("draws", "null_median", "null_p95", "null_p99", "p_null_best_ge_observed")
+        },
         reproduced,
         "permutation null re-run from the delivered series with the recorded seed",
     )
@@ -1096,7 +1154,10 @@ def verify_concentration_and_stability(
         )
         and recomputed["classification"] == recorded["classification"],
         {"classification": recorded["classification"], "top1_share": recorded["top1_share"]},
-        {"classification": recomputed["classification"], "top1_share": round(recomputed["top1_share"], 6)},
+        {
+            "classification": recomputed["classification"],
+            "top1_share": round(recomputed["top1_share"], 6),
+        },
         "a single-trade edge is not an edge",
     )
     verifier.check(
@@ -1113,14 +1174,19 @@ def verify_concentration_and_stability(
     verifier.check(
         "STABILITY_WINDOWS",
         len(stability["windows"]) == len(windows)
-        and all(verifier.close(value, stability["windows"][index], 1e-4) for index, value in enumerate(windows)),
+        and all(
+            verifier.close(value, stability["windows"][index], 1e-4)
+            for index, value in enumerate(windows)
+        ),
         {"windows": [round(value, 6) for value in windows]},
         {"windows": stability["windows"]},
         "no window was dropped to improve the result",
     )
     verifier.check(
         "STABILITY_NOT_CONSISTENT",
-        stability["consistent"] is False and stability["n_positive"] > 0 and stability["n_negative"] > 0,
+        stability["consistent"] is False
+        and stability["n_positive"] > 0
+        and stability["n_negative"] > 0,
         "both positive and negative windows",
         {"n_positive": stability["n_positive"], "n_negative": stability["n_negative"]},
     )
@@ -1179,7 +1245,9 @@ def verify_admission_and_validation(
         "no per-cell threshold tuning",
     )
     underpowered = [
-        hid for hid in EXPECTED_HYPOTHESES if artifacts["summaries"][hid]["power_class"] == "UNDERPOWERED"
+        hid
+        for hid in EXPECTED_HYPOTHESES
+        if artifacts["summaries"][hid]["power_class"] == "UNDERPOWERED"
     ]
     verifier.check(
         "UNDERPOWERED_ARE_NOT_CALLED_NEGATIVE",
@@ -1201,7 +1269,9 @@ def verify_false_success(verifier: Verifier, artifacts: dict[str, Any]) -> None:
         path.read_text(encoding="utf-8").upper()
         for path in (ARTIFACTS_PATH, REGISTRY_PATH, INVENTORY_PATH, NEGATIVE_PATH)
     ]
-    promoted = sorted({word for word in FORBIDDEN_VERDICT_WORDS if any(word in blob for blob in blobs)})
+    promoted = sorted(
+        {word for word in FORBIDDEN_VERDICT_WORDS if any(word in blob for blob in blobs)}
+    )
     verifier.check(
         "NO_FORBIDDEN_VERDICT_WORDS",
         not promoted,
@@ -1260,7 +1330,9 @@ def render_markdown(result: dict[str, Any]) -> str:
         lines.append(f"- `{name}`: `{value}`")
     lines.extend(["", "| check | status | expected | actual |", "| --- | --- | --- | --- |"])
     for item in result["checks"]:
-        lines.append(f"| {item['check']} | **{item['status']}** | {item['expected']} | {item['actual']} |")
+        lines.append(
+            f"| {item['check']} | **{item['status']}** | {item['expected']} | {item['actual']} |"
+        )
     lines.extend(["", "## Limitations declared by the verifier", ""])
     lines.extend(f"- {note}" for note in result["limitations_list"])
     lines.extend(["", "## False-success candidates", ""])
@@ -1295,7 +1367,9 @@ def main(argv: list[str] | None = None) -> int:
         ("A1-H09", rebuid_a1_h09(list(artifacts["universe"]), artifacts["panel"]["discovery_end"])),
     ):
         ok, detail = compare_cell(
-            hid, paired(rebuilt), {key: series[hid][key] for key in ("signal", "forward", "contributions")}
+            hid,
+            paired(rebuilt),
+            {key: series[hid][key] for key in ("signal", "forward", "contributions")},
         )
         verifier.check(
             f"{hid}_SERIES_RECOMPUTED",
@@ -1305,9 +1379,13 @@ def main(argv: list[str] | None = None) -> int:
         )
 
     verified_files = {
-        "src/trading_bot/research/alpha001.py": file_sha256(REPO / "src/trading_bot/research/alpha001.py"),
+        "src/trading_bot/research/alpha001.py": file_sha256(
+            REPO / "src/trading_bot/research/alpha001.py"
+        ),
         "scripts/alpha001_run.py": file_sha256(REPO / "scripts/alpha001_run.py"),
-        "scripts/alpha001_cost_frontier.py": file_sha256(REPO / "scripts/alpha001_cost_frontier.py"),
+        "scripts/alpha001_cost_frontier.py": file_sha256(
+            REPO / "scripts/alpha001_cost_frontier.py"
+        ),
         "reports/alpha001/ALPHA001_ARTIFACTS.json": file_sha256(ARTIFACTS_PATH),
         "reports/alpha001/ALPHA001_SERIES.json": file_sha256(SERIES_PATH),
         "reports/alpha001/ALPHA001_HYPOTHESIS_REGISTRY.json": file_sha256(REGISTRY_PATH),

@@ -181,11 +181,7 @@ class AdmissionLedger:
         A timeframe with no measured evidence yields no candidates at all: the
         runtime cannot invent an expected edge for a horizon nobody studied.
         """
-        return {
-            sid: entry
-            for sid, entry in self._entries.items()
-            if entry.timeframe == timeframe
-        }
+        return {sid: entry for sid, entry in self._entries.items() if entry.timeframe == timeframe}
 
     def key_for(self, family: str, timeframe: str) -> str:
         """Ledger key convention: ``<family>@<timeframe>``."""

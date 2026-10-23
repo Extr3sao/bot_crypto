@@ -247,17 +247,13 @@ def simulate_dual_momentum(
                 else:
                     # no usable price yet: keep the current book unchanged
                     target_qty = {s: qty[s] for s in ds.symbols}
-                traded = sum(
-                    abs(target_qty[s] - qty[s]) * (px[s] or 0.0) for s in ds.symbols
-                )
+                traded = sum(abs(target_qty[s] - qty[s]) * (px[s] or 0.0) for s in ds.symbols)
                 cost = traded * cost_rate
                 invested = sum(target_qty[s] * (px[s] or 0.0) for s in ds.symbols)
                 if invested + cost > equity:
                     scale = (equity - cost) / invested if invested > 0.0 else 0.0
                     target_qty = {s: _round_qty(target_qty[s] * scale) for s in ds.symbols}
-                    traded = sum(
-                        abs(target_qty[s] - qty[s]) * (px[s] or 0.0) for s in ds.symbols
-                    )
+                    traded = sum(abs(target_qty[s] - qty[s]) * (px[s] or 0.0) for s in ds.symbols)
                     cost = traded * cost_rate
                     invested = sum(target_qty[s] * (px[s] or 0.0) for s in ds.symbols)
                 if hold != last_hold and last_hold:

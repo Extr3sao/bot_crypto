@@ -282,9 +282,7 @@ def test_the_store_deduplicates_on_channel_and_record_id(events, tmp_path: Path)
     assert len(events.load_store(store)) == 1
 
 
-def test_the_store_is_replaced_atomically_and_never_half_written(
-    events, tmp_path: Path
-) -> None:
+def test_the_store_is_replaced_atomically_and_never_half_written(events, tmp_path: Path) -> None:
     store = tmp_path / "WINDOWS_EVENTS.jsonl"
     records = [
         events.normalise_event(
@@ -324,7 +322,9 @@ def test_the_watermark_is_held_back_when_a_fragment_could_not_be_read(
         lambda text: {"parsed": True, "enabled": True, "retention": "false"},
     )
     monkeypatch.setattr(
-        events, "parse_log_info", lambda text: {"parsed": True, "records_present": 5, "oldest_record_number": 1}
+        events,
+        "parse_log_info",
+        lambda text: {"parsed": True, "records_present": 5, "oldest_record_number": 1},
     )
     outcome = events.ingest(
         now=datetime(2026, 10, 9, 16, 0, tzinfo=UTC),
@@ -342,9 +342,7 @@ def test_the_watermark_is_held_back_when_a_fragment_could_not_be_read(
     ) is None
 
 
-def test_a_disabled_channel_yields_no_records_and_no_advance(
-    events, tmp_path: Path
-) -> None:
+def test_a_disabled_channel_yields_no_records_and_no_advance(events, tmp_path: Path) -> None:
     outcome = events.ingest(
         now=datetime(2026, 10, 9, 16, 0, tzinfo=UTC),
         store_path=tmp_path / "store.jsonl",
@@ -358,9 +356,7 @@ def test_a_disabled_channel_yields_no_records_and_no_advance(
     assert events.load_store(tmp_path / "store.jsonl") == []
 
 
-def test_the_live_state_is_kept_apart_from_the_immutable_store(
-    events, tmp_path: Path
-) -> None:
+def test_the_live_state_is_kept_apart_from_the_immutable_store(events, tmp_path: Path) -> None:
     store = tmp_path / "store.jsonl"
     live = tmp_path / "live.json"
     events.ingest(
@@ -392,7 +388,8 @@ def test_a_declaration_quoting_a_record_that_does_not_exist_verifies_nothing(
 ) -> None:
     path = tmp_path / "EVENT_SEMANTICS.json"
     path.write_text(
-        json.dumps({"verified_against": {"channel": "c", "event_record_id": 4242}}), encoding="utf-8"
+        json.dumps({"verified_against": {"channel": "c", "event_record_id": 4242}}),
+        encoding="utf-8",
     )
     status = events.semantics_status([], path)
     assert status["state"] == "NOT_VERIFIED_ON_THIS_HOST"
@@ -426,7 +423,9 @@ def test_the_ledger_keeps_its_own_vocabulary_and_gains_one_block(ledger_module) 
     entries = ledger["slots"]
     assert len(entries) == 84
     for entry in entries:
-        for field in ledger_module.LEDGER_V1_FIELDS if hasattr(ledger_module, "LEDGER_V1_FIELDS") else ():
+        for field in (
+            ledger_module.LEDGER_V1_FIELDS if hasattr(ledger_module, "LEDGER_V1_FIELDS") else ()
+        ):
             assert field in entry
         block = entry["windows_event_evidence"]
         assert block["block_version"] == "RFC047_WINDOWS_EVIDENCE_V1"

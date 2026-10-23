@@ -404,11 +404,15 @@ def verify() -> tuple[Checks, dict[str, Any], dict[str, Any]]:
         all(all(str(e.get(f, "")).strip() for f in LEDGER_ENTRY_FIELDS) for e in entries),
     )
     by_id = {str(e["review_id"]): e for e in entries}
-    checks.check("ledger:rfc042_no_reentry", by_id.get("RFC042", {}).get("decision") == "NO_REENTRY")
+    checks.check(
+        "ledger:rfc042_no_reentry", by_id.get("RFC042", {}).get("decision") == "NO_REENTRY"
+    )
     checks.check("ledger:rfc044_no_action", by_id.get("RFC044", {}).get("decision") == "NO_ACTION")
 
     # -- §14 duplicate-family rejection (independent) ------------------------ #
-    archived = {str(c["candidate_id"]): family_tokens(c.get("family", "")) for c in archive["candidates"]}
+    archived = {
+        str(c["candidate_id"]): family_tokens(c.get("family", "")) for c in archive["candidates"]
+    }
     registry_families = {family_tokens(i.get("MECHANISM", "")) for i in registry["items"]}
     rehash = any(tokens and tokens in set(archived.values()) for tokens in registry_families)
     checks.check(

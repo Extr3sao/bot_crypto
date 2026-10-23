@@ -40,9 +40,7 @@ PROFITABILITY_RESEARCH_STATUS = "PAUSED"
 CURRENT_DECISION = "PAUSE_TRADING_PROJECT"
 NEXT_ALPHA_RFC_ALLOWED = False
 
-PAUSE_REASON = (
-    "NO STRATEGY HAS DEMONSTRATED EXECUTABLE, VALIDATED, ROBUST, NET POSITIVE EDGE"
-)
+PAUSE_REASON = "NO STRATEGY HAS DEMONSTRATED EXECUTABLE, VALIDATED, ROBUST, NET POSITIVE EDGE"
 
 
 @dataclass(frozen=True, slots=True)
@@ -491,9 +489,7 @@ CANDIDATES: tuple[Candidate, ...] = (
         candidate_id="EXT-TSMOM-001",
         family="time-series momentum / trend",
         status="INVALIDATED_TRADABILITY",
-        invalidation_reason=(
-            "unsupported spot shorts (P0) + same-close execution (RFC-031)"
-        ),
+        invalidation_reason=("unsupported spot shorts (P0) + same-close execution (RFC-031)"),
         validation_status="PASS",
         robustness_status="PASS",
         holdout_status="PASS",

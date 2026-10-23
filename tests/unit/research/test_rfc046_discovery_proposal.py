@@ -73,7 +73,9 @@ def state() -> dict:
 
 
 def _git(*args: str) -> str:
-    proc = subprocess.run(["git", *args], cwd=str(REPO), capture_output=True, text=True, check=False)
+    proc = subprocess.run(
+        ["git", *args], cwd=str(REPO), capture_output=True, text=True, check=False
+    )
     return proc.stdout if proc.returncode == 0 else ""
 
 
@@ -101,7 +103,9 @@ def test_the_tracked_audit_remains_the_pre_approval_snapshot(state: dict) -> Non
     It must not be edited to look prescient, and the *current* contract is the approval record.
     """
     snapshot = json.loads(AUDIT.read_text(encoding="utf-8"))
-    assert snapshot["status"] == "PROPOSED", "the pre-approval snapshot must keep saying what it said"
+    assert snapshot["status"] == "PROPOSED", (
+        "the pre-approval snapshot must keep saying what it said"
+    )
     assert snapshot["governance"]["invariants"]["rfc_status_proposed"] is True
     assert state["approved"] is True and state["active"] is True
     text = RFC_MD.read_text(encoding="utf-8")
@@ -111,14 +115,22 @@ def test_the_tracked_audit_remains_the_pre_approval_snapshot(state: dict) -> Non
 
 def test_the_activation_amended_exactly_the_documented_documents() -> None:
     roadmap = (REPO / "tasks" / "roadmap.md").read_text(encoding="utf-8")
-    operating = json.loads((REPO / "docs" / "research" / "PROFITABILITY_OPERATING_MODEL.json").read_text(encoding="utf-8"))
-    freeze = (REPO / "docs" / "governance" / "PROFITABILITY_FIRST_FREEZE.md").read_text(encoding="utf-8")
+    operating = json.loads(
+        (REPO / "docs" / "research" / "PROFITABILITY_OPERATING_MODEL.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    freeze = (REPO / "docs" / "governance" / "PROFITABILITY_FIRST_FREEZE.md").read_text(
+        encoding="utf-8"
+    )
     decisions = (REPO / "tasks" / "decisions.md").read_text(encoding="utf-8")
 
     assert "Fase 10" in roadmap and "RFC-046" in roadmap
     assert "RFC-046 limited exemption" in operating["next_action_policy"]["trigger"]
     assert (
-        operating["next_action_policy"]["rfc046_limited_exemption"]["gate_state"]["G_BUSINESS_REENTRY"]
+        operating["next_action_policy"]["rfc046_limited_exemption"]["gate_state"][
+            "G_BUSINESS_REENTRY"
+        ]
         == "NOT_PASS"
     )
     assert "ADDENDUM DE CIERRE" in freeze and "ACTIVE_RFC: **RFC-035" in freeze
@@ -127,8 +139,12 @@ def test_the_activation_amended_exactly_the_documented_documents() -> None:
 
 
 def test_live_trading_stays_disabled_and_no_trade_is_authorized(state: dict) -> None:
-    assert "live_trading_enabled: false" in (REPO / "config" / "runtime.yaml").read_text(encoding="utf-8")
-    assert "live_trading_enabled: false" in (REPO / "config" / "risk.yaml").read_text(encoding="utf-8")
+    assert "live_trading_enabled: false" in (REPO / "config" / "runtime.yaml").read_text(
+        encoding="utf-8"
+    )
+    assert "live_trading_enabled: false" in (REPO / "config" / "risk.yaml").read_text(
+        encoding="utf-8"
+    )
     runtime = state["runtime_state"]
     assert runtime["mode"] == "paper"
     assert runtime["trades_authorized"] == 0
@@ -148,11 +164,25 @@ def test_the_new_code_cannot_place_an_order() -> None:
                 imported |= {a.name.split(".")[0] for a in node.names}
             elif isinstance(node, ast.ImportFrom) and node.module:
                 imported.add(node.module.split(".")[0])
-        assert imported <= {"argparse", "ast", "hashlib", "json", "re", "subprocess", "sys", "pathlib", "typing",
-                            "datetime", "trading_bot", "__future__"}, f"{path.name} imports {sorted(imported)}"
+        assert imported <= {
+            "argparse",
+            "ast",
+            "hashlib",
+            "json",
+            "re",
+            "subprocess",
+            "sys",
+            "pathlib",
+            "typing",
+            "datetime",
+            "trading_bot",
+            "__future__",
+        }, f"{path.name} imports {sorted(imported)}"
         for token in ("create_order", "place_order", "fetch_balance", "ccxt"):
             assert token not in body, f"{path.name} must not touch execution: {token}"
-        assert "api_key" not in body and "API_SECRET" not in body, f"{path.name} must not handle credentials"
+        assert "api_key" not in body and "API_SECRET" not in body, (
+            f"{path.name} must not handle credentials"
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -161,8 +191,12 @@ def test_the_new_code_cannot_place_an_order() -> None:
 def test_the_tracked_audit_is_head_free_and_timestamp_free(audit: dict) -> None:
     assert audit["intentionally_excluded"] == ["current_head", "timestamps"]
     text = AUDIT.read_text(encoding="utf-8")
-    assert not re.search(r"\b[0-9a-f]{40}\b", text), "a tracked artefact must not embed the live HEAD"
-    assert not re.search(r"\b20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}", text), "TD-4: no author-typed timestamps"
+    assert not re.search(r"\b[0-9a-f]{40}\b", text), (
+        "a tracked artefact must not embed the live HEAD"
+    )
+    assert not re.search(r"\b20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}", text), (
+        "TD-4: no author-typed timestamps"
+    )
 
 
 def test_document_hashes_only_changed_where_the_approval_says_they_did(audit: dict) -> None:
@@ -174,7 +208,9 @@ def test_document_hashes_only_changed_where_the_approval_says_they_did(audit: di
     import json as _json
 
     recorded = audit["document_hashes"]
-    activation = _json.loads((REPO / "data" / "rfc046" / "ACTIVATION.json").read_text(encoding="utf-8"))
+    activation = _json.loads(
+        (REPO / "data" / "rfc046" / "ACTIVATION.json").read_text(encoding="utf-8")
+    )
     post_activation = activation["document_hashes"]
     for path in TRACKED_DOCS:
         rel = str(path.relative_to(REPO)).replace("\\", "/")
@@ -196,16 +232,28 @@ def test_collision_audit_is_recorded_and_honest(audit: dict) -> None:
     assert collision["vacant_by_control"]["045"]["assertion_count"] >= 4
     assert collision["occupancy_evidence_note"]
     assert collision["excluded_reason"]
-    unversioned = [t for t, v in collision["occupied"].items() if not v.get("declared_in_tracked_docs")]
-    assert unversioned, "the audit must record which occupied numbers have no versioned declaration (TD-5)"
+    unversioned = [
+        t for t, v in collision["occupied"].items() if not v.get("declared_in_tracked_docs")
+    ]
+    assert unversioned, (
+        "the audit must record which occupied numbers have no versioned declaration (TD-5)"
+    )
 
 
 def test_rfc_045_stays_empty_by_control() -> None:
     tree = _git("ls-tree", "-r", "--name-only", "HEAD")
-    assert not re.search(r"RFC-?045", tree), "creating an RFC-045 artefact would break four campaign verifiers"
-    asserting = [ln for ln in _git("grep", "-l", "no RFC-045 artifact exists", "HEAD", "--", ".").splitlines() if ln]
+    assert not re.search(r"RFC-?045", tree), (
+        "creating an RFC-045 artefact would break four campaign verifiers"
+    )
+    asserting = [
+        ln
+        for ln in _git("grep", "-l", "no RFC-045 artifact exists", "HEAD", "--", ".").splitlines()
+        if ln
+    ]
     scripts = [ln for ln in asserting if "scripts/cap00" in ln]
-    assert len(scripts) >= 4, f"the RFC-045 control must be asserted by four verifier scripts: {scripts}"
+    assert len(scripts) >= 4, (
+        f"the RFC-045 control must be asserted by four verifier scripts: {scripts}"
+    )
 
 
 def test_rfc_036_is_not_reused_for_discovery() -> None:
@@ -223,13 +271,19 @@ def test_cost_floor_is_re_derived_from_the_model_not_copied(audit: dict) -> None
     from trading_bot.research.microstructure import cost_model_v3 as model_module
 
     cost = model_module.default_model("BINANCE_SPOT_STANDARD_TAKER").evaluate(
-        size_usd=1_000.0, liquidity_regime="normal", horizon_minutes=25.0,
-        entry_order_type="market", exit_order_type="market",
+        size_usd=1_000.0,
+        liquidity_regime="normal",
+        horizon_minutes=25.0,
+        entry_order_type="market",
+        exit_order_type="market",
     )
     recorded = audit["cost_baseline"]
     assert recorded["round_trip_bps"] == round(cost.round_trip_bps, 4)
     assert recorded["required_gross_edge_stressed_bps"] == round(cost.required_edge_bps(1.5), 4)
-    assert recorded["known_bps"] + recorded["estimated_bps"] + recorded["assumed_bps"] == recorded["round_trip_bps"]
+    assert (
+        recorded["known_bps"] + recorded["estimated_bps"] + recorded["assumed_bps"]
+        == recorded["round_trip_bps"]
+    )
     assert recorded["arithmetic_check"] is True
 
 
@@ -237,14 +291,26 @@ def test_the_cost_knowledge_split_is_not_silently_promoted(audit: dict) -> None:
     recorded = audit["cost_baseline"]
     assert recorded["known_bps"] == 20.0, "the VIP0 taker fee is the published, irreversible term"
     assert recorded["assumed_bps"] == 0.0
-    assert {c["knowledge"] for c in recorded["components"]} <= {"KNOWN", "OBSERVED", "ESTIMATED", "ASSUMED"}
+    assert {c["knowledge"] for c in recorded["components"]} <= {
+        "KNOWN",
+        "OBSERVED",
+        "ESTIMATED",
+        "ASSUMED",
+    }
     assert recorded["documented_reference_bps"] == 23.791
 
 
 def test_the_rfc_states_the_cost_surface_it_is_valid_for() -> None:
     text = RFC_MD.read_text(encoding="utf-8")
-    for token in ("23.7906", "35.6859", "BINANCE_SPOT_STANDARD_TAKER", "VIP0", "taker on both legs",
-                  "1,000 USD", "2026-09-27"):
+    for token in (
+        "23.7906",
+        "35.6859",
+        "BINANCE_SPOT_STANDARD_TAKER",
+        "VIP0",
+        "taker on both legs",
+        "1,000 USD",
+        "2026-09-27",
+    ):
         assert token in text, token
     assert "`market`, **taker on both legs**" in text
 
@@ -274,7 +340,9 @@ def test_profitability_gate_v1_has_eleven_frozen_requirements(state: dict) -> No
 
 def test_gate_continuity_with_the_pre_registered_criteria() -> None:
     criteria = (REPO / "docs" / "STRATEGY_ADMISSION_CRITERIA.md").read_text(encoding="utf-8")
-    assert "Profit factor BASE > 1.0" in criteria, "the criteria this RFC builds on must still exist"
+    assert "Profit factor BASE > 1.0" in criteria, (
+        "the criteria this RFC builds on must still exist"
+    )
     assert "≥ 100 trades totales y ≥ 30 en OOS" in criteria
     assert "c1ffbaa" in RFC_MD.read_text(encoding="utf-8")
 
@@ -294,7 +362,9 @@ def test_pit_enforcement_is_mechanical_and_rooted_in_a_real_defect(state: dict) 
     text = RFC_MD.read_text(encoding="utf-8")
     assert "DEF-HTF-PIT-001" in text
     assert "900 *milliseconds*" in text
-    work_package = REPO / "docs" / "research" / "work_packages" / "WP-HTF-PIT-001_htf_availability_unit_fix.md"
+    work_package = (
+        REPO / "docs" / "research" / "work_packages" / "WP-HTF-PIT-001_htf_availability_unit_fix.md"
+    )
     assert work_package.is_file()
     assert "htf_pit" in work_package.read_text(encoding="utf-8")
 
@@ -315,7 +385,9 @@ def test_verification_boundary_is_structural(state: dict) -> None:
     assert state["verification"]["false_success_target"] == 0
     assert state["verification"]["incomplete_verifier"] == "BLOCKS_PROMOTION"
     assert state["verification"]["crashing_verifier"] == "IS_A_DEFECT"
-    assert (REPO / "scripts" / "rfc046_verify.py").resolve() != (REPO / "scripts" / "rfc046_audit.py").resolve()
+    assert (REPO / "scripts" / "rfc046_verify.py").resolve() != (
+        REPO / "scripts" / "rfc046_audit.py"
+    ).resolve()
 
 
 def test_paper_and_live_keep_their_own_gates() -> None:
@@ -341,7 +413,9 @@ def test_the_five_debt_incidents_are_registered(audit: dict) -> None:
     assert mapping["TD-5"]["mitigation"]
 
 
-def _verdicts_outside_the_forbidden_list(node, skip: bool = False, out: list[str] | None = None) -> list[str]:
+def _verdicts_outside_the_forbidden_list(
+    node, skip: bool = False, out: list[str] | None = None
+) -> list[str]:
     if out is None:
         out = []
     if isinstance(node, dict):
@@ -381,12 +455,16 @@ def test_no_tracked_document_reports_strategy_performance() -> None:
             continue
         text = path.read_text(encoding="utf-8").lower()
         for token in ("sharpe", "cagr", "annualised return", "annualized return", "win rate"):
-            assert token not in text, f"{path.name} reports {token}; this RFC may not claim performance"
+            assert token not in text, (
+                f"{path.name} reports {token}; this RFC may not claim performance"
+            )
 
 
 def test_the_report_surface_stays_consistent_when_present() -> None:
     if not REPORT_JSON.is_file():
-        pytest.skip("reports/rfc046 is a gitignored working surface; the tracked contract is data/rfc046/audit.json")
+        pytest.skip(
+            "reports/rfc046 is a gitignored working surface; the tracked contract is data/rfc046/audit.json"
+        )
     report = json.loads(REPORT_JSON.read_text(encoding="utf-8"))
     assert report["flags"]["live_trading"] == "DISABLED"
     assert report["flags"]["trades_authorized"] == 0
@@ -399,9 +477,19 @@ def test_the_report_surface_stays_consistent_when_present() -> None:
     # ancestor of HEAD - never a fabricated hash, never a commit that has not happened yet.
     recorded = report["evaluated_head"]
     assert re.fullmatch(r"[0-9a-f]{40}", recorded), recorded
-    exists = subprocess.run(["git", "cat-file", "-e", f"{recorded}^{{commit}}"], cwd=str(REPO),
-                            capture_output=True, check=False)
+    exists = subprocess.run(
+        ["git", "cat-file", "-e", f"{recorded}^{{commit}}"],
+        cwd=str(REPO),
+        capture_output=True,
+        check=False,
+    )
     assert exists.returncode == 0, f"{recorded} is not a commit in this repository"
-    ancestor = subprocess.run(["git", "merge-base", "--is-ancestor", recorded, "HEAD"], cwd=str(REPO),
-                              capture_output=True, check=False)
-    assert ancestor.returncode == 0, f"{recorded} is not an ancestor of HEAD; the report predates this history"
+    ancestor = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", recorded, "HEAD"],
+        cwd=str(REPO),
+        capture_output=True,
+        check=False,
+    )
+    assert ancestor.returncode == 0, (
+        f"{recorded} is not an ancestor of HEAD; the report predates this history"
+    )

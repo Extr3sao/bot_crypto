@@ -53,24 +53,28 @@ def test_maker_effective_cost_full_fill_equals_round_trip() -> None:
 
 def test_negative_component_rejected() -> None:
     with pytest.raises(ValueError):
-        CostScenario(
-            name="bad", fee_bps_per_side=-1.0, spread_bps=0.0, slippage_bps_per_side=0.0
-        )
+        CostScenario(name="bad", fee_bps_per_side=-1.0, spread_bps=0.0, slippage_bps_per_side=0.0)
 
 
 def test_negative_funding_rejected() -> None:
     with pytest.raises(ValueError):
         CostScenario(
-            name="bad", fee_bps_per_side=1.0, spread_bps=0.0,
-            slippage_bps_per_side=0.0, funding_bps_per_day=-0.1,
+            name="bad",
+            fee_bps_per_side=1.0,
+            spread_bps=0.0,
+            slippage_bps_per_side=0.0,
+            funding_bps_per_day=-0.1,
         )
 
 
 def test_fill_prob_out_of_range_rejected() -> None:
     with pytest.raises(ValueError):
         CostScenario(
-            name="bad", fee_bps_per_side=1.0, spread_bps=0.0,
-            slippage_bps_per_side=0.0, maker_fill_prob=1.5,
+            name="bad",
+            fee_bps_per_side=1.0,
+            spread_bps=0.0,
+            slippage_bps_per_side=0.0,
+            maker_fill_prob=1.5,
         )
 
 

@@ -436,9 +436,7 @@ def collect_evidence() -> Evidence:
             delay = receive - event_time
             evidence.delay_counts[delay] = evidence.delay_counts.get(delay, 0) + 1
             if not backfilled:
-                evidence.live_delay_counts[delay] = (
-                    evidence.live_delay_counts.get(delay, 0) + 1
-                )
+                evidence.live_delay_counts[delay] = evidence.live_delay_counts.get(delay, 0) + 1
 
         if event_type == "agg_trade":
             stream_key = f"{row.get('market')}/{row.get('symbol')}"
@@ -698,9 +696,7 @@ class BookRebuilder:
                     )
             return
         if differences:
-            state.mismatches.append(
-                {"at_ms": row.get("receive_time"), "differences": differences}
-            )
+            state.mismatches.append({"at_ms": row.get("receive_time"), "differences": differences})
         else:
             state.matches += 1
 
@@ -1309,15 +1305,11 @@ def verify_forward_collection() -> dict[str, Any]:
 
     # 15. Recovered rows are labelled, and the reported latency is the live one.
     quality_path = DOCS / "FORWARD_DATA_QUALITY_REPORT.json"
-    quality = (
-        json.loads(quality_path.read_text(encoding="utf-8")) if quality_path.exists() else {}
-    )
+    quality = json.loads(quality_path.read_text(encoding="utf-8")) if quality_path.exists() else {}
     reported_latency = (quality.get("event_latency_ms") or {}).get("p99")
     live_p99 = _histogram_percentile(live_delays, 0.99)
     live_samples = sum(live_delays.values())
-    latency_agrees = (
-        reported_latency is None and live_p99 is None
-    ) or (
+    latency_agrees = (reported_latency is None and live_p99 is None) or (
         reported_latency is not None
         and live_p99 is not None
         and abs(float(reported_latency) - float(live_p99)) <= 1.0
@@ -1335,8 +1327,7 @@ def verify_forward_collection() -> dict[str, Any]:
             "latency_note": (quality.get("event_latency_ms") or {}).get("note"),
         },
         labelled_backfilled == int(manifest.get("integrity", {}).get("backfilled_events") or 0)
-        and labelled_backfilled
-        == int((quality.get("loss") or {}).get("backfilled_events") or 0)
+        and labelled_backfilled == int((quality.get("loss") or {}).get("backfilled_events") or 0)
         and latency_agrees,
     )
 
@@ -1440,11 +1431,7 @@ def verify_forward_collection() -> dict[str, Any]:
 
     # 20. Coexistence with PAPER is demonstrated, not asserted (§19, §20).
     coexist_path = DOCS / "FORWARD_DATA_PAPER_COEXISTENCE.json"
-    coexist = (
-        json.loads(coexist_path.read_text(encoding="utf-8"))
-        if coexist_path.exists()
-        else {}
-    )
+    coexist = json.loads(coexist_path.read_text(encoding="utf-8")) if coexist_path.exists() else {}
     with_collector = coexist.get("with_collector", {})
     without = coexist.get("without_collector", {})
     record(
@@ -1472,9 +1459,7 @@ def verify_forward_collection() -> dict[str, Any]:
             transport_problems.append(
                 {"event_type": event_type, "expected": ["ws"], "observed": observed}
             )
-        elif event_type in REST_ONLY_EVENT_TYPES and any(
-            value == "ws" for value in observed
-        ):
+        elif event_type in REST_ONLY_EVENT_TYPES and any(value == "ws" for value in observed):
             transport_problems.append(
                 {"event_type": event_type, "expected": "rest-only", "observed": observed}
             )
@@ -1558,12 +1543,9 @@ def verify_forward_collection() -> dict[str, Any]:
     reported_health = quality.get("health") or {}
     reported_degraded = (reported_health.get("live") or {}).get("degraded_seconds")
     reported_capture = (reported_health.get("live") or {}).get("healthy_seconds")
-    health_agrees = (
-        reported_degraded is not None
-        and abs(float(reported_degraded) - union_ms / 1000.0) <= 0.001 + 0.001 * len(
-            recovery_windows
-        )
-    )
+    health_agrees = reported_degraded is not None and abs(
+        float(reported_degraded) - union_ms / 1000.0
+    ) <= 0.001 + 0.001 * len(recovery_windows)
     record(
         "the health accounting is re-derivable from the gap windows",
         "report degraded_seconds == the verifier's union of the recorded windows"
@@ -1575,13 +1557,9 @@ def verify_forward_collection() -> dict[str, Any]:
             "union_seconds_from_manifest": round(union_ms / 1000.0, 3),
             "reported_degraded_seconds": reported_degraded,
             "reported_healthy_seconds": reported_capture,
-            "reported_failed_seconds": (reported_health.get("live") or {}).get(
-                "failed_seconds"
-            ),
+            "reported_failed_seconds": (reported_health.get("live") or {}).get("failed_seconds"),
             "reconnect_downtime": reported_health.get("reconnect_downtime"),
-            "collector_state_sticky": (reported_health.get("collector_state") or {}).get(
-                "sticky"
-            ),
+            "collector_state_sticky": (reported_health.get("collector_state") or {}).get("sticky"),
             "accounting_agrees": health_agrees,
         },
         bool(reported_health) and health_agrees,
@@ -1592,9 +1570,7 @@ def verify_forward_collection() -> dict[str, Any]:
     storage = resource.get("storage_capacity", {})
     guard_test_path = DOCS / "FORWARD_DATA_DISK_GUARD.json"
     guard_test = (
-        json.loads(guard_test_path.read_text(encoding="utf-8"))
-        if guard_test_path.exists()
-        else {}
+        json.loads(guard_test_path.read_text(encoding="utf-8")) if guard_test_path.exists() else {}
     )
     record(
         "the disk guard is armed, and a controlled low-budget run stopped cleanly",

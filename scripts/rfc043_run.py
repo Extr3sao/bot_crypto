@@ -506,16 +506,12 @@ def build_model_payload(generated_at: str) -> dict[str, Any]:
                 "no new infrastructure)"
             ),
         },
-        "profitability_definition": (
-            "PROFITABILITY = NET_RETURN + CAPITAL + TIME + RISK + COST"
-        ),
+        "profitability_definition": ("PROFITABILITY = NET_RETURN + CAPITAL + TIME + RISK + COST"),
         "real_profit_equation": pf.REAL_PROFIT_EQUATION,
         "capital_tiers": [dict(t) for t in pf.CAPITAL_TIERS],
         "any_tier_authorized": pf.ANY_TIER_AUTHORIZED,
         "capital_scale_gate_conditions": list(pf.G_CAPITAL_SCALE_CONDITIONS),
-        "milestones": [
-            {"milestone": m, "meaning": pf.MILESTONE_MEANING[m]} for m in pf.MILESTONES
-        ],
+        "milestones": [{"milestone": m, "meaning": pf.MILESTONE_MEANING[m]} for m in pf.MILESTONES],
         "profit_levels": dict(pf.PROFIT_LEVELS),
         "leverage_policy": pf.LEVERAGE_POLICY,
         "priority_order": list(pf.PRIORITY_ORDER),
@@ -711,7 +707,12 @@ def tiers_md(payload: dict[str, Any]) -> str:
 
 
 def candidate_review_md(payload: dict[str, Any]) -> str:
-    lines = ["# RFC-043 CANDIDATE CAPITAL REVIEW", "", "Capital growth never approves a strategy (§29-§34).", ""]
+    lines = [
+        "# RFC-043 CANDIDATE CAPITAL REVIEW",
+        "",
+        "Capital growth never approves a strategy (§29-§34).",
+        "",
+    ]
     for row in payload["rows"]:
         lines.append(f"## {row['candidate_id']} — {row['family']}")
         lines.append("")
@@ -998,7 +999,10 @@ def main() -> int:
     write_json(OUT / "RFC043_PLAN.json", build_plan(entry, generated_at))
     write_md(
         OUT / "RFC043_PLAN.md",
-        render("RFC-043 PLAN — CAPITAL SCALE & PROFITABILITY OPERATING MODEL", build_plan(entry, generated_at)),
+        render(
+            "RFC-043 PLAN — CAPITAL SCALE & PROFITABILITY OPERATING MODEL",
+            build_plan(entry, generated_at),
+        ),
     )
 
     write_json(OUT / "CAPITAL_RETURN_MATRIX.json", capital_matrix)
@@ -1071,7 +1075,9 @@ def main() -> int:
 
     report = build_final_report(entry, scoreboard, scale, false_success, generated_at, "PENDING")
     write_json(REPORTS / "RFC043_FINAL_REPORT.json", report)
-    write_md(REPORTS / "RFC043_FINAL_REPORT.md", final_report_md(report, capital_matrix, profit_targets))
+    write_md(
+        REPORTS / "RFC043_FINAL_REPORT.md", final_report_md(report, capital_matrix, profit_targets)
+    )
 
     print(
         json.dumps(

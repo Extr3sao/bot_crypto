@@ -39,7 +39,9 @@ def _int(value: Any) -> int:
 
 
 def canonical_json(payload: dict[str, Any]) -> str:
-    return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str)
+    return json.dumps(
+        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str
+    )
 
 
 def recompute_dataset() -> dict[str, Any]:
@@ -61,8 +63,13 @@ def recompute_dataset() -> dict[str, Any]:
         by_ts: dict[int, set[tuple[float, ...]]] = {}
         for r in payload:
             by_ts.setdefault(int(r["ts"]), set()).add(
-                (float(r["open"]), float(r["high"]), float(r["low"]), float(r["close"]),
-                 float(r["volume"]))
+                (
+                    float(r["open"]),
+                    float(r["high"]),
+                    float(r["low"]),
+                    float(r["close"]),
+                    float(r["volume"]),
+                )
             )
         for key, vals in by_ts.items():
             if len(vals) > 1:
@@ -77,7 +84,10 @@ def recompute_dataset() -> dict[str, Any]:
                 gaps += (b - a) // interval - 1
         for r in payload:
             o, h, low, c, v = (
-                float(r["open"]), float(r["high"]), float(r["low"]), float(r["close"]),
+                float(r["open"]),
+                float(r["high"]),
+                float(r["low"]),
+                float(r["close"]),
                 float(r["volume"]),
             )
             if h < max(o, c) or h < low or low > min(o, c) or v < 0:
@@ -180,7 +190,9 @@ def main() -> int:
     ds = recompute_dataset()
     checks["dataset"] = ds
     checks["dataset_ok"] = (
-        ds["corpus_matches"] and ds["monotonic"] and ds["conflicting_duplicates"] == 0
+        ds["corpus_matches"]
+        and ds["monotonic"]
+        and ds["conflicting_duplicates"] == 0
         and ds["bar_invariant_violations"] == 0
     )
 
@@ -206,14 +218,19 @@ def main() -> int:
     ).get("_period")
 
     # independent runtime result: the RFC-020 re-execution must match RFC-010B
-    baseline = json.loads((REPO / "reports" / "rfc010" / "baseline_dev.json").read_text(encoding="utf-8"))
+    baseline = json.loads(
+        (REPO / "reports" / "rfc010" / "baseline_dev.json").read_text(encoding="utf-8")
+    )
     rfc020_summary = REPO / "reports" / "rfc020" / "RFC020-DEV_summary.json"
     if rfc020_summary.exists():
         current = json.loads(rfc020_summary.read_text(encoding="utf-8"))
-        same = all(
-            current["totals"].get(k) == baseline["totals"].get(k)
-            for k in ("shadow_trades", "paper_trades", "orders_created", "traces_persisted")
-        ) and current["final_equity"] == baseline["final_equity"]
+        same = (
+            all(
+                current["totals"].get(k) == baseline["totals"].get(k)
+                for k in ("shadow_trades", "paper_trades", "orders_created", "traces_persisted")
+            )
+            and current["final_equity"] == baseline["final_equity"]
+        )
         checks["runtime_result"] = {
             "rfc020_totals": current["totals"],
             "rfc010b_totals": baseline["totals"],
@@ -254,19 +271,23 @@ def main() -> int:
     }
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(report, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8")
-    print(json.dumps(
-        {
-            "verifier_result": verdict,
-            "dataset_ok": checks["dataset_ok"],
-            "chain_ok": checks["chain"]["ok"],
-            "provenance_violations": checks["provenance"]["violations"],
-            "outcome_violations": checks["outcomes"]["violations"],
-            "runtime_equivalent": checks["runtime_result"].get("semantically_equivalent"),
-            "ledger_prior_asof": report["ledger_prior_asof"],
-        },
-        indent=2,
-    ))
+    out.write_text(
+        json.dumps(report, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8"
+    )
+    print(
+        json.dumps(
+            {
+                "verifier_result": verdict,
+                "dataset_ok": checks["dataset_ok"],
+                "chain_ok": checks["chain"]["ok"],
+                "provenance_violations": checks["provenance"]["violations"],
+                "outcome_violations": checks["outcomes"]["violations"],
+                "runtime_equivalent": checks["runtime_result"].get("semantically_equivalent"),
+                "ledger_prior_asof": report["ledger_prior_asof"],
+            },
+            indent=2,
+        )
+    )
     return 0
 
 
@@ -278,9 +299,7 @@ def _calib_end_ms(period: Any) -> int:
         return 0
     end = text.split("..")[-1].strip()
     try:
-        return int(
-            dt.datetime.strptime(end, "%Y-%m-%d").replace(tzinfo=dt.UTC).timestamp() * 1000
-        )
+        return int(dt.datetime.strptime(end, "%Y-%m-%d").replace(tzinfo=dt.UTC).timestamp() * 1000)
     except ValueError:
         return 0
 

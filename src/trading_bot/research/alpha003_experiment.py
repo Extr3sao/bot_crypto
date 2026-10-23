@@ -351,9 +351,7 @@ def evaluate_directions(
     se = sigma / math.sqrt(n_eff) if n_eff > 0 and sigma > 0 else float("inf")
     t_stat = gross / se if se not in (0.0, float("inf")) else 0.0
     p_raw = _one_sided_p(t_stat)
-    ic = (
-        a1.spearman([d for d, _ in active], [f for _, f in active]) if len(active) >= 5 else 0.0
-    )
+    ic = a1.spearman([d for d, _ in active], [f for _, f in active]) if len(active) >= 5 else 0.0
     power = a1.power_class(n_effective=n_eff, sigma_bps=sigma, hurdle_bps=hurdle_bps)
     concentration = a1.concentration([value for value in contributions if value != 0.0])
     stability = a1.stability_by_window(contributions, windows=STABILITY_WINDOWS)

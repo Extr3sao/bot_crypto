@@ -52,7 +52,9 @@ def concentration(nets: Sequence[float]) -> dict[str, Any]:
     }
 
 
-def summarize(trades: Sequence[Trade], *, cost_bps_rt: float, notional: float = NOTIONAL_USD) -> dict[str, Any]:
+def summarize(
+    trades: Sequence[Trade], *, cost_bps_rt: float, notional: float = NOTIONAL_USD
+) -> dict[str, Any]:
     """§11 metrics for one split/scenario."""
     n = len(trades)
     nets = [t.net for t in trades]
@@ -61,6 +63,7 @@ def summarize(trades: Sequence[Trade], *, cost_bps_rt: float, notional: float = 
     net = sum(nets)
     wins = [t.net for t in trades if t.net > 0]
     losses = [t.net for t in trades if t.net <= 0]
+
     def bps(usd: float) -> float:
         return round(usd / notional * BPS, 3)
 
@@ -88,8 +91,12 @@ def summarize(trades: Sequence[Trade], *, cost_bps_rt: float, notional: float = 
         "profit_factor": round(sum(wins) / abs(sum(losses)), 4) if losses else None,
         "avg_mfe_pct": round(statistics.fmean([t.mfe_pct for t in trades]), 4) if n else None,
         "avg_mae_pct": round(statistics.fmean([t.mae_pct for t in trades]), 4) if n else None,
-        "avg_duration_min": round(statistics.fmean([t.duration_min for t in trades]), 2) if n else None,
-        "median_duration_min": round(statistics.median([t.duration_min for t in trades]), 2) if n else None,
+        "avg_duration_min": round(statistics.fmean([t.duration_min for t in trades]), 2)
+        if n
+        else None,
+        "median_duration_min": round(statistics.median([t.duration_min for t in trades]), 2)
+        if n
+        else None,
         "max_drawdown_bps": max_drawdown_bps(nets),
         "sharpe_per_trade": sharpe,
         "exit_mix": dict(Counter(t.reason for t in trades)),

@@ -206,9 +206,7 @@ PAPER_AUTHORISING_STATUSES: frozenset[AdmissionStatus] = frozenset(
 )
 
 #: §17 — the only status a strategy may be *promoted to* by an explicit record.
-PAPER_PROMOTABLE_STATUSES: frozenset[AdmissionStatus] = frozenset(
-    {AdmissionStatus.PAPER_CANDIDATE}
-)
+PAPER_PROMOTABLE_STATUSES: frozenset[AdmissionStatus] = frozenset({AdmissionStatus.PAPER_CANDIDATE})
 
 #: Statuses that may still be observed in SHADOW (research interest only).
 SHADOW_ELIGIBLE_STATUSES: frozenset[AdmissionStatus] = frozenset(
@@ -262,9 +260,7 @@ class AdmissionEntry:
                 "(a strategy cannot be active without an admission)"
             )
         if self.status is AdmissionStatus.PAPER_RETIRED and self.admitted_for_paper:
-            raise ValueError(
-                f"{self.strategy_id}: PAPER_RETIRED cannot be admitted for paper"
-            )
+            raise ValueError(f"{self.strategy_id}: PAPER_RETIRED cannot be admitted for paper")
 
     @property
     def shadow_eligible(self) -> bool:
@@ -813,10 +809,7 @@ class DecisionTrace:
                 raise ValueError("only a NO_TRADE trace may carry a no_trade_kind")
             if self.no_trade_kind not in {k.value for k in NoTradeKind}:
                 raise ValueError(f"unknown no_trade_kind {self.no_trade_kind!r}")
-            if (
-                self.no_trade_kind == NoTradeKind.NO_TRADE_DATA.value
-                and self.proposal is not None
-            ):
+            if self.no_trade_kind == NoTradeKind.NO_TRADE_DATA.value and self.proposal is not None:
                 # A DATA no-decision means there was nothing usable to reason
                 # about: it cannot carry a trade proposal.
                 raise ValueError("a NO_TRADE_DATA decision cannot carry a trade proposal")

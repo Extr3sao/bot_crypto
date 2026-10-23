@@ -197,7 +197,9 @@ class Exp002VoidRetest:
     def prepare(self, bars: Sequence[OHLCV]) -> None:
         self._bars = bars
         self._atr = atr_series(
-            [b.high for b in bars], [b.low for b in bars], [b.close for b in bars],
+            [b.high for b in bars],
+            [b.low for b in bars],
+            [b.close for b in bars],
             self.config.atr_period,
         )
 
@@ -301,7 +303,9 @@ class Exp003RelativeStrength:
     def prepare(self, bars: Sequence[OHLCV]) -> None:
         self._bars = bars
         self._lag_atr = atr_series(
-            [b.high for b in bars], [b.low for b in bars], [b.close for b in bars],
+            [b.high for b in bars],
+            [b.low for b in bars],
+            [b.close for b in bars],
             self.config.atr_period,
         )
         self._leader_idx = {b.timestamp: k for k, b in enumerate(self._leader)}
@@ -326,13 +330,19 @@ class Exp003RelativeStrength:
         # leader makes the extreme, laggard does not -> resolve laggard toward leader
         if hi_a and not hi_b:
             return Setup(
-                side="long", stop=bar.low, target=bar.close + atr,
-                rule="exp003_divergence_up", max_hold_bars=w,
+                side="long",
+                stop=bar.low,
+                target=bar.close + atr,
+                rule="exp003_divergence_up",
+                max_hold_bars=w,
             )
         if lo_a and not lo_b:
             return Setup(
-                side="short", stop=bar.high, target=bar.close - atr,
-                rule="exp003_divergence_down", max_hold_bars=w,
+                side="short",
+                stop=bar.high,
+                target=bar.close - atr,
+                rule="exp003_divergence_down",
+                max_hold_bars=w,
             )
         return None
 
@@ -375,7 +385,9 @@ class Exp005PivotFade:
     def prepare(self, bars: Sequence[OHLCV]) -> None:
         self._bars = bars
         self._atr = atr_series(
-            [b.high for b in bars], [b.low for b in bars], [b.close for b in bars],
+            [b.high for b in bars],
+            [b.low for b in bars],
+            [b.close for b in bars],
             self.config.atr_period,
         )
         # prior completed UTC day -> (P, R1, S1)
@@ -410,13 +422,19 @@ class Exp005PivotFade:
         # first touch of R1 in the session -> short; first touch of S1 -> long
         if bar.high >= r1 and not any(self._bars[k].high >= r1 for k in range(start, i)):
             return Setup(
-                side="short", stop=bar.close + self.config.stop_atr_mult * atr, target=p,
-                rule="exp005_r1_short", exit_on_session_end=True,
+                side="short",
+                stop=bar.close + self.config.stop_atr_mult * atr,
+                target=p,
+                rule="exp005_r1_short",
+                exit_on_session_end=True,
             )
         if bar.low <= s1 and not any(self._bars[k].low <= s1 for k in range(start, i)):
             return Setup(
-                side="long", stop=bar.close - self.config.stop_atr_mult * atr, target=p,
-                rule="exp005_s1_long", exit_on_session_end=True,
+                side="long",
+                stop=bar.close - self.config.stop_atr_mult * atr,
+                target=p,
+                rule="exp005_s1_long",
+                exit_on_session_end=True,
             )
         return None
 

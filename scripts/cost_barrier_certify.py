@@ -106,9 +106,7 @@ def sha256_file(rel: str) -> str | None:
 
 
 def git_value(*argv: str) -> str:
-    out = subprocess.run(
-        ["git", *argv], cwd=ROOT, capture_output=True, text=True, check=False
-    )
+    out = subprocess.run(["git", *argv], cwd=ROOT, capture_output=True, text=True, check=False)
     return out.stdout.strip()
 
 
@@ -171,7 +169,10 @@ def evaluate(
                 "the drift gate could not start because a required input was missing: "
                 + "; ".join((gate_report.get("blocked") or ["no detail"])[:2])
             )
-        elif gate_status == PARTIAL or gate_status in ("CHECK_ONLY_PASS", "CHECK_ONLY_WITH_ADVISORIES"):
+        elif gate_status == PARTIAL or gate_status in (
+            "CHECK_ONLY_PASS",
+            "CHECK_ONLY_WITH_ADVISORIES",
+        ):
             reasons.append(
                 f"the gate ran in {gate_report.get('mode')!r} mode and ended "
                 f"{gate_status!r}: a check-only run is useful evidence and is never a full "
@@ -231,7 +232,8 @@ def evaluate(
                 "substrate must be materialized before a detection rate counts as evidence"
                 + (
                     f" - {(adversarial.get('substrate') or {}).get('why')}"
-                    if adversarial.get("substrate") else ""
+                    if adversarial.get("substrate")
+                    else ""
                 )
             )
         elif substrate_present is not True:
@@ -260,9 +262,11 @@ def evaluate(
     if blocked_reasons:
         status = BLOCKED
     elif reasons:
-        status = PARTIAL if gate_status in (
-            "CHECK_ONLY_PASS", "CHECK_ONLY_WITH_ADVISORIES", PARTIAL
-        ) else FAILED
+        status = (
+            PARTIAL
+            if gate_status in ("CHECK_ONLY_PASS", "CHECK_ONLY_WITH_ADVISORIES", PARTIAL)
+            else FAILED
+        )
     else:
         status = CERTIFIED
 
@@ -280,7 +284,10 @@ def dirty_watched() -> list[str]:
     """Watched paths modified relative to HEAD - a record describes a commit."""
     out = subprocess.run(
         ["git", "status", "--porcelain", "--", *EVIDENCE_PATHS],
-        cwd=ROOT, capture_output=True, text=True, check=False,
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
     )
     return [line.strip() for line in out.stdout.splitlines() if line.strip()]
 
@@ -319,7 +326,8 @@ def build_record(
     decision = evaluate(
         gate_report=gate_report,
         contract_tests=steps.get("contract_tests"),
-        adversarial=adversarial_report if adversarial_report is not None
+        adversarial=adversarial_report
+        if adversarial_report is not None
         else (steps.get("adversarial") or {}),
         integrity=integrity,
     )
@@ -344,7 +352,9 @@ def build_record(
     # re-issued. A re-issue that dropped the previous identity would be indistinguishable
     # from a certification that always said the new thing.
     previous = committed_record(out_path)
-    previous_supersession = (previous or {}).get("supersession") if isinstance(previous, dict) else None
+    previous_supersession = (
+        (previous or {}).get("supersession") if isinstance(previous, dict) else None
+    )
     supersession: dict[str, Any] | None = None
     if isinstance(previous_supersession, dict):
         # the committed record already names what it replaced and this run reproduced the same
@@ -353,9 +363,12 @@ def build_record(
             **previous_supersession,
             "reproduced": True,
             "note": "this run reproduced the same identity, so the supersession recorded here still "
-                    "stands; re-running the certifier may not erase it",
+            "stands; re-running the certifier may not erase it",
         }
-    if isinstance(previous, dict) and previous.get("evidence_fingerprint") not in (None, fingerprint):
+    if isinstance(previous, dict) and previous.get("evidence_fingerprint") not in (
+        None,
+        fingerprint,
+    ):
         supersession = {
             "previous_fingerprint": previous["evidence_fingerprint"],
             "previous_candidate_head": (previous.get("candidate") or {}).get("head"),
@@ -363,13 +376,14 @@ def build_record(
             "previous_evidence_digests_sha256": hashlib.sha256(
                 json.dumps(previous.get("evidence_digests"), sort_keys=True).encode("utf-8")
             ).hexdigest(),
-            "reason": supersession_reason or (
+            "reason": supersession_reason
+            or (
                 "the fingerprinted evidence changed, so this record is re-issued; the previous "
                 "record's identity is preserved here instead of being overwritten silently"
             ),
             "how": "the record file is replaced, but the previous fingerprint, candidate head and a "
-                   "digest of its evidence table are kept here, so a reader can see that the "
-                   "certification was re-issued and what it replaced",
+            "digest of its evidence table are kept here, so a reader can see that the "
+            "certification was re-issued and what it replaced",
             "superseded_chain": previous_supersession,
         }
     return {
@@ -399,9 +413,9 @@ def build_record(
             },
             "5_adversarial_controls": {
                 "status": (adversarial_report or {}).get("status"),
-                "substrate_present": (
-                    (adversarial_report or {}).get("substrate") or {}
-                ).get("present"),
+                "substrate_present": ((adversarial_report or {}).get("substrate") or {}).get(
+                    "present"
+                ),
                 "attacks_total": (adversarial_report or {}).get("attacks_total"),
                 "attacks_evaded": (adversarial_report or {}).get("attacks_evaded"),
                 "legs_failed": (adversarial_report or {}).get("legs_failed"),
@@ -423,9 +437,7 @@ def build_record(
         "supersession": supersession,
         "adversarial_summary": {
             "status": (adversarial_report or {}).get("status"),
-            "substrate_present": (
-                (adversarial_report or {}).get("substrate") or {}
-            ).get("present"),
+            "substrate_present": ((adversarial_report or {}).get("substrate") or {}).get("present"),
             "attacks_total": (adversarial_report or {}).get("attacks_total"),
             "attacks_detected": (adversarial_report or {}).get("attacks_detected"),
             "attacks_evaded": (adversarial_report or {}).get("attacks_evaded"),
@@ -486,15 +498,24 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--out", default=CERTIFICATION, help="where to write the record")
     parser.add_argument("--json", action="store_true", help="print the record as JSON")
-    parser.add_argument("--workdir", default=None,
-                        help="keep the intermediate reports here instead of a temporary directory")
-    parser.add_argument("--supersedes-reason", default=None,
-                        help="why this record replaces the one committed at HEAD, if it does")
+    parser.add_argument(
+        "--workdir",
+        default=None,
+        help="keep the intermediate reports here instead of a temporary directory",
+    )
+    parser.add_argument(
+        "--supersedes-reason",
+        default=None,
+        help="why this record replaces the one committed at HEAD, if it does",
+    )
     args = parser.parse_args(argv)
 
     temporary = args.workdir is None
-    workdir = Path(tempfile.mkdtemp(prefix="cost_barrier_certify_")) if temporary \
+    workdir = (
+        Path(tempfile.mkdtemp(prefix="cost_barrier_certify_"))
+        if temporary
         else Path(args.workdir).resolve()
+    )
     workdir.mkdir(parents=True, exist_ok=True)
 
     steps: dict[str, dict[str, Any]] = {}

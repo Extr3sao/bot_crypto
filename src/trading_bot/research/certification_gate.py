@@ -81,15 +81,17 @@ def evaluate_promotion(gates: Mapping[str, str]) -> CertificationGateResult:
     )
 
 
-def check_no_unsupported_short_spot(negative_weight_count: int,
-                                    borrow_evidence_present: bool) -> GateCheck:
+def check_no_unsupported_short_spot(
+    negative_weight_count: int, borrow_evidence_present: bool
+) -> GateCheck:
     """Spot books must not carry short exposure without explicit borrow evidence."""
     passed = negative_weight_count == 0 or borrow_evidence_present
     return GateCheck(
         check_id="no_unsupported_short_spot",
         passed=passed,
-        detail=(f"negative_weights={negative_weight_count} "
-                f"borrow_evidence={borrow_evidence_present}"),
+        detail=(
+            f"negative_weights={negative_weight_count} borrow_evidence={borrow_evidence_present}"
+        ),
     )
 
 
@@ -105,16 +107,19 @@ def check_instrument_feasible(spot_variants: Mapping[str, bool]) -> GateCheck:
     )
 
 
-def check_execution_timing(signal_time_index: int, execution_time_index: int,
-                           require_t_plus_1: bool) -> GateCheck:
+def check_execution_timing(
+    signal_time_index: int, execution_time_index: int, require_t_plus_1: bool
+) -> GateCheck:
     """Execution must be strictly after the decision data when T+1 is required."""
     passed = (execution_time_index > signal_time_index) if require_t_plus_1 else True
     return GateCheck(
         check_id="execution_timing",
         passed=passed,
-        detail=(f"signal_index={signal_time_index} "
-                f"execution_index={execution_time_index} "
-                f"require_t_plus_1={require_t_plus_1}"),
+        detail=(
+            f"signal_index={signal_time_index} "
+            f"execution_index={execution_time_index} "
+            f"require_t_plus_1={require_t_plus_1}"
+        ),
     )
 
 
@@ -127,15 +132,18 @@ def check_cost_reconciled(max_abs_diff_bps: float, tol_bps: float = 1e-6) -> Gat
     )
 
 
-def check_universe_pit(listing_dates_respected: bool,
-                       forward_fill_before_listing: bool) -> GateCheck:
+def check_universe_pit(
+    listing_dates_respected: bool, forward_fill_before_listing: bool
+) -> GateCheck:
     """Universe construction must respect listing dates and avoid forward-fill."""
     passed = listing_dates_respected and not forward_fill_before_listing
     return GateCheck(
         check_id="universe_pit",
         passed=passed,
-        detail=(f"listing_dates_respected={listing_dates_respected} "
-                f"forward_fill_before_listing={forward_fill_before_listing}"),
+        detail=(
+            f"listing_dates_respected={listing_dates_respected} "
+            f"forward_fill_before_listing={forward_fill_before_listing}"
+        ),
     )
 
 
@@ -152,6 +160,9 @@ def check_gate_order(gates: Mapping[str, str]) -> GateCheck:
     return GateCheck(
         check_id="gate_order",
         passed=not order_violation,
-        detail=("later gate PASS after earlier FAIL" if order_violation
-                else "no later-pass/earlier-fail ordering violation"),
+        detail=(
+            "later gate PASS after earlier FAIL"
+            if order_violation
+            else "no later-pass/earlier-fail ordering violation"
+        ),
     )

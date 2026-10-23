@@ -66,8 +66,13 @@ def xsec_universe_configs() -> dict[str, XsecUniverseConfig]:
 def _to_ohlcv(bars: Sequence[DailyBar]) -> list[OHLCV]:
     return [
         OHLCV(
-            symbol=b.symbol, timestamp=b.timestamp, open=b.open, high=b.high,
-            low=b.low, close=b.close, volume=b.volume,
+            symbol=b.symbol,
+            timestamp=b.timestamp,
+            open=b.open,
+            high=b.high,
+            low=b.low,
+            close=b.close,
+            volume=b.volume,
         )
         for b in bars
     ]
@@ -93,9 +98,7 @@ def simulate_universe_xsec(
     symbols = sorted(subset) if subset is not None else sorted(bars_by_symbol)
     corpus = {s: bars_by_symbol[s] for s in symbols}
     listing = {s: listing_time.get(s, 0) for s in symbols}
-    uverse = DynamicAssetUniverse(
-        corpus, listing, data_fingerprint, universe_config
-    )
+    uverse = DynamicAssetUniverse(corpus, listing, data_fingerprint, universe_config)
     builder = CrossSectionalSnapshotBuilder(min_members=config.min_members)
     index: dict[str, dict[int, DailyBar]] = {
         s: {b.timestamp: b for b in bars} for s, bars in corpus.items()
@@ -118,17 +121,25 @@ def simulate_universe_xsec(
     entry_ts = 0
     peak = 0.0
     trough = 0.0
-    last_rebalance = -10**9
+    last_rebalance = -(10**9)
     cap_excluded: str | None = None
 
     def close(sym: str, exit_price: float, exit_ts: int, reason: str) -> None:
         gross = notional * (exit_price / entry_price - 1.0)
         trades.append(
             Trade(
-                side="long", entry_ts=entry_ts, exit_ts=exit_ts,
-                entry=round(entry_price, 6), exit=round(exit_price, 6), reason=reason,
-                rule=f"xsec2_{sym}", symbol=sym, notional=round(notional, 2),
-                gross=round(gross, 4), fees=round(fee_usd, 4), net=round(gross - fee_usd, 4),
+                side="long",
+                entry_ts=entry_ts,
+                exit_ts=exit_ts,
+                entry=round(entry_price, 6),
+                exit=round(exit_price, 6),
+                reason=reason,
+                rule=f"xsec2_{sym}",
+                symbol=sym,
+                notional=round(notional, 2),
+                gross=round(gross, 4),
+                fees=round(fee_usd, 4),
+                net=round(gross - fee_usd, 4),
                 mfe_pct=round((peak - entry_price) / entry_price * 100.0, 4),
                 mae_pct=round((entry_price - trough) / entry_price * 100.0, 4),
                 duration_min=round((exit_ts - entry_ts) / 60_000.0, 1),
@@ -157,9 +168,7 @@ def simulate_universe_xsec(
             eligible_counts[str(day + MS_PER_DAY)] = len(u_snap.eligible_assets)
             eligible = u_snap.eligible_assets
             if eligible:
-                trimmed = {
-                    s: ohlcv[s][: bisect.bisect_right(stamps[s], day)] for s in eligible
-                }
+                trimmed = {s: ohlcv[s][: bisect.bisect_right(stamps[s], day)] for s in eligible}
                 snap = builder.build(
                     trimmed,
                     SnapshotRequest(
@@ -179,7 +188,9 @@ def simulate_universe_xsec(
             still_leader = snap is not None and snap.is_tradeable and snap.leader() == held
             leader = snap.leader() if snap is not None and snap.is_tradeable else None
             cap_hit = days_held >= config.max_hold_days
-            if need_snapshot and (cap_hit or (snap is not None and snap.is_tradeable and not still_leader)):
+            if need_snapshot and (
+                cap_hit or (snap is not None and snap.is_tradeable and not still_leader)
+            ):
                 close(held, fill_open[held], fill_day, "rotate" if not cap_hit else "window_expiry")
                 exited = held
                 held = None

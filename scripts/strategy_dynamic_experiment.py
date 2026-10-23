@@ -58,7 +58,12 @@ OUTDIR = REPO / "reports" / "strategy-dynamic"
 DATA_DIR = REPO / "reports" / "strategy-baseline" / "data"
 ASSET = "BTCUSDT"
 WINDOWS = {
-    "DEV": ["BTCUSDT_W1_2026-03.json", "BTCUSDT_W2_2026-04.json", "BTCUSDT_W3_2026-05.json", "BTCUSDT_W4_2026-06.json"],
+    "DEV": [
+        "BTCUSDT_W1_2026-03.json",
+        "BTCUSDT_W2_2026-04.json",
+        "BTCUSDT_W3_2026-05.json",
+        "BTCUSDT_W4_2026-06.json",
+    ],
     "VALIDATION": ["BTCUSDT_W5_2026-07.json", "BTCUSDT_W6_2026-08.json"],
     "OOS_LOCKED": ["BTCUSDT_W7_2026-09.json"],
 }
@@ -320,15 +325,11 @@ def main() -> int:
     dynamic_report = split_report(dynamic_by_window)
 
     def total(report: dict[str, Any]) -> float:
-        return round(
-            float(report["DEV"]["net"]) + float(report["VALIDATION"]["net"]), 2
-        )
+        return round(float(report["DEV"]["net"]) + float(report["VALIDATION"]["net"]), 2)
 
     static_val = total(static_report)
     dynamic_val = total(dynamic_report)
-    dynamic_trades = sum(
-        dynamic_report[s]["trades"] for s in ("DEV", "VALIDATION")
-    )
+    dynamic_trades = sum(dynamic_report[s]["trades"] for s in ("DEV", "VALIDATION"))
     if dynamic_trades == 0:
         # An abstaining arm is NOT a winning arm. Zero trades demonstrates no
         # measurable value; it is reported as DO_NOT_PROMOTE, never as an
@@ -357,8 +358,11 @@ def main() -> int:
         "static_family": static_family,
         "families": FAMILIES,
         "economics": {
-            "fees": hb.FEES, "slippage": hb.SLIP, "tp_pct": hb.TP_PCT,
-            "risk_pct": hb.RISK_PCT, "start_equity": hb.START_EQUITY,
+            "fees": hb.FEES,
+            "slippage": hb.SLIP,
+            "tp_pct": hb.TP_PCT,
+            "risk_pct": hb.RISK_PCT,
+            "start_equity": hb.START_EQUITY,
         },
         "static": static_report,
         "dynamic": dynamic_report,
@@ -388,8 +392,7 @@ def main() -> int:
 
     # Authoritative, immutable evidence lives under the run directory (§8).
     dataset_files = [
-        DATA_DIR / f
-        for f in [*WINDOWS["DEV"], *WINDOWS["VALIDATION"], *WINDOWS["OOS_LOCKED"]]
+        DATA_DIR / f for f in [*WINDOWS["DEV"], *WINDOWS["VALIDATION"], *WINDOWS["OOS_LOCKED"]]
     ]
     manifest = build_manifest(
         experiment_id=EXPERIMENT_ID,
@@ -428,9 +431,7 @@ def main() -> int:
     # authoritative artifact is the immutable run directory above.
     result["evidence_status"] = "POINTER / NON-EVIDENCE"
     result["authoritative_run_dir"] = run_dir.relative_to(REPO).as_posix()
-    (OUTDIR / f"{EXPERIMENT_ID}.json").write_text(
-        json.dumps(result, indent=2), encoding="utf-8"
-    )
+    (OUTDIR / f"{EXPERIMENT_ID}.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
     (OUTDIR / f"{EXPERIMENT_ID}.md").write_text(markdown, encoding="utf-8")
     # A bare, ambiguous exp.log must never linger as if it were current evidence.
     stale_log = OUTDIR / "exp.log"

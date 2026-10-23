@@ -175,17 +175,17 @@ def rfc036_state(payload: dict[str, Any]) -> dict[str, Any]:
             },
         },
         "gate_position": "this gate does NOT validate, promote or endorse RFC-036; it reports that the "
-                         "artifact exists, quotes its own claim verbatim as an unverified claim, and "
-                         "records that its holdout gate is " + str(find("G_MF_4_HOLDOUT")),
+        "artifact exists, quotes its own claim verbatim as an unverified claim, and "
+        "records that its holdout gate is " + str(find("G_MF_4_HOLDOUT")),
         "reservation_conflict": {
             "claimed_by": "reports/rfc035/search_round_2 and search_round_3 (RFC-035 = BLOCKED, RFC-036 "
-                          "described as reserved for exact replication) and this gate's own brief",
+            "described as reserved for exact replication) and this gate's own brief",
             "contradicted_by": "scripts/rfc036_run.py and tests/unit/research/test_rfc036_managed_futures.py, "
-                               "tracked since d0efb51 on 2026-10-05",
+            "tracked since d0efb51 on 2026-10-05",
             "roadmap_says": "nothing: tasks/roadmap.md contains no RFC-035/036/044/045/046 reference at all, "
-                            "so no document actually reserves the number",
+            "so no document actually reserves the number",
             "resolution": "NOT THIS GATE'S TO DECIDE: the conflict is recorded and handed to the amendment "
-                          "in the proposal; this gate reserves no number and reuses none",
+            "in the proposal; this gate reserves no number and reuses none",
         },
     }
 
@@ -193,8 +193,12 @@ def rfc036_state(payload: dict[str, Any]) -> dict[str, Any]:
 def audit_baseline() -> dict[str, Any]:
     head = git("rev-parse", "HEAD")
     short_log = git("log", "--oneline", "-8").splitlines()
-    tracked = [line for line in git("status", "--porcelain").splitlines() if not line.startswith("??")]
-    untracked = [line for line in git("status", "--porcelain").splitlines() if line.startswith("??")]
+    tracked = [
+        line for line in git("status", "--porcelain").splitlines() if not line.startswith("??")
+    ]
+    untracked = [
+        line for line in git("status", "--porcelain").splitlines() if line.startswith("??")
+    ]
     registry = load(RESEARCH / "source_registry.json") or {}
     sources = registry.get("sources") or []
     ids = [s.get("SOURCE_ID") for s in sources]
@@ -215,9 +219,12 @@ def audit_baseline() -> dict[str, Any]:
     frozen = [oid for oid, record in opportunities.items() if record.get("frozen_selection")]
 
     verifications = {}
-    for name in ("rfc035/RFC035_VERIFICATION.json", "rfc035e/INDEPENDENT_VERIFICATION.json",
-                 "rfc035/search_round_2/INDEPENDENT_VERIFICATION.json",
-                 "rfc035/search_round_3/INDEPENDENT_VERIFICATION.json"):
+    for name in (
+        "rfc035/RFC035_VERIFICATION.json",
+        "rfc035e/INDEPENDENT_VERIFICATION.json",
+        "rfc035/search_round_2/INDEPENDENT_VERIFICATION.json",
+        "rfc035/search_round_3/INDEPENDENT_VERIFICATION.json",
+    ):
         payload = load(REPO / "reports" / name)
         verifications[name] = {
             "status": (payload or {}).get("status"),
@@ -228,8 +235,12 @@ def audit_baseline() -> dict[str, Any]:
             "mismatch_detail": (payload or {}).get("mismatch_detail"),
         }
     verdicts = {}
-    for name in ("rfc035/FINAL_REPORT.json", "rfc035e/FINAL_REPORT.json",
-                 "rfc035/search_round_2/FINAL_REPORT.json", "rfc035/search_round_3/FINAL_REPORT.json"):
+    for name in (
+        "rfc035/FINAL_REPORT.json",
+        "rfc035e/FINAL_REPORT.json",
+        "rfc035/search_round_2/FINAL_REPORT.json",
+        "rfc035/search_round_3/FINAL_REPORT.json",
+    ):
         payload = load(REPO / "reports" / name) or {}
         verdicts[name] = {
             "final_status": payload.get("final_status"),
@@ -249,7 +260,10 @@ def audit_baseline() -> dict[str, Any]:
         "rfc035s3_commits": {
             "expected": list(RFC035S3_COMMITS),
             "all_in_history": all(
-                subprocess.run(["git", "cat-file", "-e", c], cwd=REPO, capture_output=True, check=False).returncode == 0
+                subprocess.run(
+                    ["git", "cat-file", "-e", c], cwd=REPO, capture_output=True, check=False
+                ).returncode
+                == 0
                 for c in RFC035S3_COMMITS
             ),
         },
@@ -320,9 +334,14 @@ def audit_baseline() -> dict[str, Any]:
             "invariant": (round3_baseline.get("reproduction") or {}).get("invariant"),
             "runs": (round3_baseline.get("reproduction") or {}).get("runs"),
             "runs_after_round_3_registry": (round3_baseline.get("reproduction") or {}).get(
-                "runs_after_round_3_registry"),
-            "count_growth_note": (round3_baseline.get("reproduction") or {}).get("count_growth_note"),
-            "concurrency_experiment": (round3_baseline.get("reproduction") or {}).get("concurrency_experiment"),
+                "runs_after_round_3_registry"
+            ),
+            "count_growth_note": (round3_baseline.get("reproduction") or {}).get(
+                "count_growth_note"
+            ),
+            "concurrency_experiment": (round3_baseline.get("reproduction") or {}).get(
+                "concurrency_experiment"
+            ),
             "defect_observed": (round3_baseline.get("reproduction") or {}).get("defect_observed"),
             "note": "read from round 3's own recording; this gate does not re-run the historic verifiers",
         },
@@ -364,7 +383,8 @@ def pending_defects() -> dict[str, Any]:
     gates = load_gates()
     mypy = gates.get("mypy_repo") or {}
     defect = (load(REPO / "reports" / "rfc035" / "search_round_3" / "BASELINE.json") or {}).get(
-        "reproduction", {}).get("defect_observed") or {}
+        "reproduction", {}
+    ).get("defect_observed") or {}
     return {
         "rfc035e_missing_input_defect": {
             "script": defect.get("script", "scripts/rfc035e_verify.py"),
@@ -400,6 +420,7 @@ def pending_defects() -> dict[str, Any]:
 # 05/06 — cost feasibility, evaluated from the project's own model
 # --------------------------------------------------------------------------- #
 
+
 def cost_feasibility() -> dict[str, Any]:
     # Local import so the CLI stays fast when only the registry is read.
     from trading_bot.research.microstructure.cost_model_v3 import (
@@ -410,9 +431,16 @@ def cost_feasibility() -> dict[str, Any]:
     )
 
     spec = VENUE_SPECS[ADMISSION_SCENARIO_ID]
-    cost = cost_model_v3_all_in(spec, size_usd=1000.0, liquidity_regime="normal", horizon_minutes=25.0)
+    cost = cost_model_v3_all_in(
+        spec, size_usd=1000.0, liquidity_regime="normal", horizon_minutes=25.0
+    )
     components: list[dict[str, Any]] = [
-        {"name": c.name, "value_bps": round(c.value_bps, 4), "knowledge": c.knowledge, "source_id": c.source_id}
+        {
+            "name": c.name,
+            "value_bps": round(c.value_bps, 4),
+            "knowledge": c.knowledge,
+            "source_id": c.source_id,
+        }
         for c in cost.components
     ]
     known = sum(float(c["value_bps"]) for c in components if c["knowledge"] == "KNOWN")
@@ -421,47 +449,74 @@ def cost_feasibility() -> dict[str, Any]:
     scenarios = []
     for sid, venue in VENUE_SPECS.items():
         try:
-            rt = CostModelV3(spec=venue).evaluate(
-                size_usd=1000.0, liquidity_regime="normal", horizon_minutes=25.0
-            ).round_trip_bps
+            rt = (
+                CostModelV3(spec=venue)
+                .evaluate(size_usd=1000.0, liquidity_regime="normal", horizon_minutes=25.0)
+                .round_trip_bps
+            )
         except Exception:  # pragma: no cover - a venue spec without a valid spread would land here
             rt = float("nan")
-        scenarios.append({
-            "scenario_id": sid,
-            "venue": venue.venue,
-            "product": venue.product,
-            "tier": venue.tier,
-            "maker_fee_bps": venue.maker_fee_bps,
-            "taker_fee_bps": venue.taker_fee_bps,
-            "spread_bps": venue.default_taker_spread_bps,
-            "discount_applicability": venue.discount_applicability,
-            "integration_status": venue.integration_status,
-            "round_trip_bps": round(rt, 4),
-            "is_admission": sid == ADMISSION_SCENARIO_ID,
-        })
+        scenarios.append(
+            {
+                "scenario_id": sid,
+                "venue": venue.venue,
+                "product": venue.product,
+                "tier": venue.tier,
+                "maker_fee_bps": venue.maker_fee_bps,
+                "taker_fee_bps": venue.taker_fee_bps,
+                "spread_bps": venue.default_taker_spread_bps,
+                "discount_applicability": venue.discount_applicability,
+                "integration_status": venue.integration_status,
+                "round_trip_bps": round(rt, 4),
+                "is_admission": sid == ADMISSION_SCENARIO_ID,
+            }
+        )
 
     model = CostModelV3(spec=spec)
     size_sensitivity = [
-        {"size_usd": size, "round_trip_bps": round(model.evaluate(
-            size_usd=size, liquidity_regime="normal", horizon_minutes=25.0).round_trip_bps, 4)}
+        {
+            "size_usd": size,
+            "round_trip_bps": round(
+                model.evaluate(
+                    size_usd=size, liquidity_regime="normal", horizon_minutes=25.0
+                ).round_trip_bps,
+                4,
+            ),
+        }
         for size in (200.0, 500.0, 1000.0, 5000.0, 10000.0)
     ]
     regimes: tuple[Any, ...] = ("deep", "normal", "thin")
     liquidity_sensitivity = [
-        {"liquidity_regime": regime, "round_trip_bps": round(model.evaluate(
-            size_usd=1000.0, liquidity_regime=regime, horizon_minutes=25.0).round_trip_bps, 4)}
+        {
+            "liquidity_regime": regime,
+            "round_trip_bps": round(
+                model.evaluate(
+                    size_usd=1000.0, liquidity_regime=regime, horizon_minutes=25.0
+                ).round_trip_bps,
+                4,
+            ),
+        }
         for regime in regimes
     ]
     # The drag is computed from the *measured* round trip, never from the rounded documented figure,
     # so the arithmetic in the report is internally consistent and independently checkable.
     measured = cost.round_trip_bps
     turnover = [
-        {"round_trips_per_year": n, "label": label,
-         "annual_drag_bps": round(measured * n, 4),
-         "annual_drag_pct": round(measured * n / 100.0, 4),
-         "annual_drag_stressed_pct": round(measured * n * COST_STRESS_MULTIPLE / 100.0, 4)}
-        for n, label in ((12, "monthly"), (26, "biweekly"), (52, "weekly"), (104, "twice weekly"),
-                         (365, "daily"), (8760, "hourly"))
+        {
+            "round_trips_per_year": n,
+            "label": label,
+            "annual_drag_bps": round(measured * n, 4),
+            "annual_drag_pct": round(measured * n / 100.0, 4),
+            "annual_drag_stressed_pct": round(measured * n * COST_STRESS_MULTIPLE / 100.0, 4),
+        }
+        for n, label in (
+            (12, "monthly"),
+            (26, "biweekly"),
+            (52, "weekly"),
+            (104, "twice weekly"),
+            (365, "daily"),
+            (8760, "hourly"),
+        )
     ]
     return {
         "admission_scenario_id": ADMISSION_SCENARIO_ID,
@@ -491,8 +546,8 @@ def cost_feasibility() -> dict[str, Any]:
         "round_trip_bps": round(cost.round_trip_bps, 4),
         "documented_reference_bps": COST_FLOOR_BPS,
         "measured_vs_documented_note": "the documented admission figure is 23.791 bps; the model reproduces "
-                                        "23.7906 bps, the same number rounded. The turnover arithmetic below "
-                                        "uses the measured value.",
+        "23.7906 bps, the same number rounded. The turnover arithmetic below "
+        "uses the measured value.",
         "components": components,
         "known_bps": round(known, 4),
         "estimated_bps": round(estimated, 4),
@@ -533,12 +588,19 @@ def cost_feasibility() -> dict[str, Any]:
 # 03 — root-cause review
 # --------------------------------------------------------------------------- #
 
+
 def root_cause_review(cost: dict[str, Any]) -> dict[str, Any]:
     round2_log = load(REPO / "reports" / "rfc035" / "search_round_2" / "REJECTION_LOG.json") or {}
     reason_counts = round2_log.get("reason_counts") or {}
     per_cause: dict[str, dict[str, Any]] = {
-        code: {"code": code, "cause": cause, "owner": owner, "reason_code_hits": 0,
-               "reason_codes": [], "round_3_candidates": []}
+        code: {
+            "code": code,
+            "cause": cause,
+            "owner": owner,
+            "reason_code_hits": 0,
+            "reason_codes": [],
+            "round_3_candidates": [],
+        }
         for code, cause, owner in ROOT_CAUSES
     }
     unmapped = []
@@ -559,31 +621,42 @@ def root_cause_review(cost: dict[str, Any]) -> dict[str, Any]:
         "round_2_reason_counts": reason_counts,
         "unmapped_reason_codes": sorted(unmapped),
         "coverage_caveat": "the reason-code counts come from the round-2 rejection log and therefore cover round 2 "
-                           "only; the round-3 candidates are folded in separately in the last column, which is why "
-                           "a cause can show zero round-2 hits and still be evidenced in round 3",
+        "only; the round-3 candidates are folded in separately in the last column, which is why "
+        "a cause can show zero round-2 hits and still be evidenced in round 3",
         "rc3_note": "RC-3 carries zero round-2 reason codes because the round-2 log has no 'no cost model' code; "
-                    "its evidence is round 3's OPP-0030 and OPP-0032, whose rejection logs record the absence of a "
-                    "cost vocabulary rather than a failed cost check",
+        "its evidence is round 3's OPP-0030 and OPP-0032, whose rejection logs record the absence of a "
+        "cost vocabulary rather than a failed cost check",
         "rc1_note": "RC-1 is the most frequent cause and the one that would have been cheapest to satisfy: a source "
-                    "that fixes every material rule field, including the exit, needs no new data, no venue and no "
-                    "capital — only a paper complete enough to be executable",
+        "that fixes every material rule field, including the exit, needs no new data, no venue and no "
+        "capital — only a paper complete enough to be executable",
         "ownership_totals": {
-            "SOURCE": sum(e["reason_code_hits"] for e in per_cause.values() if e["owner"] == "SOURCE"),
-            "MARKET": sum(e["reason_code_hits"] for e in per_cause.values() if e["owner"] == "MARKET"),
-            "CONTRACT": sum(e["reason_code_hits"] for e in per_cause.values() if e["owner"] == "CONTRACT"),
+            "SOURCE": sum(
+                e["reason_code_hits"] for e in per_cause.values() if e["owner"] == "SOURCE"
+            ),
+            "MARKET": sum(
+                e["reason_code_hits"] for e in per_cause.values() if e["owner"] == "MARKET"
+            ),
+            "CONTRACT": sum(
+                e["reason_code_hits"] for e in per_cause.values() if e["owner"] == "CONTRACT"
+            ),
             "CONTRACT_AND_RUNTIME": sum(
-                e["reason_code_hits"] for e in per_cause.values() if e["owner"] == "CONTRACT_AND_RUNTIME"),
+                e["reason_code_hits"]
+                for e in per_cause.values()
+                if e["owner"] == "CONTRACT_AND_RUNTIME"
+            ),
         },
         "market_cause_quantified": {
             "statement": "the one cause that is a property of the market rather than of a source or of our "
-                         "contract is the ratio between the measured gross edge and the venue fee",
+            "contract is the ratio between the measured gross edge and the venue fee",
             "cost_floor_bps": cost["round_trip_bps"],
             "known_fee_bps": cost["known_bps"],
-            "best_internal_tick_gross_bps": cost["internal_measured_gross_bps"]["best_tick_gross_bps"],
+            "best_internal_tick_gross_bps": cost["internal_measured_gross_bps"][
+                "best_tick_gross_bps"
+            ],
             "ratio": cost["internal_measured_gross_bps"]["ratio_tick_to_cost"],
             "interpretation": "the tick-level line's best measured gross edge is about two orders of magnitude "
-                              "below the fee alone, so that family is closed by arithmetic rather than by "
-                              "documentation",
+            "below the fee alone, so that family is closed by arithmetic rather than by "
+            "documentation",
         },
         "not_concluded": [
             "this review does NOT conclude that no profitable opportunity exists; it concludes that the sources "
@@ -616,13 +689,13 @@ def routes() -> dict[str, Any]:
             "title": "Keep the external search closed and wait for new evidence",
             "ratings": {
                 "proximity_to_verified_net_profitability": "UNCHANGED — three rounds produced no candidate, "
-                                                           "and waiting does not change the measured cost or the "
-                                                           "runtime constraint",
+                "and waiting does not change the measured cost or the "
+                "runtime constraint",
                 "required_data": "NONE new — but also no mechanism to obtain the missing kind of evidence "
-                                 "(a source that ships rules, a period, a trade count, metrics and a cost model)",
+                "(a source that ships rules, a period, a trade count, metrics and a cost model)",
                 "falsifiability": "WEAK — there is no defined event that would end the wait, so the decision "
-                                  "cannot be falsified; the operating model names the trigger as a NEW QUALIFIED "
-                                  "OPPORTUNITY, which is external and unschedulable",
+                "cannot be falsified; the operating model names the trigger as a NEW QUALIFIED "
+                "OPPORTUNITY, which is external and unschedulable",
                 "development_time": "ZERO",
                 "overfitting_risk": "NONE",
                 "runtime_compatibility": "NOT_APPLICABLE (nothing runs)",
@@ -640,24 +713,24 @@ def routes() -> dict[str, Any]:
             "title": "Controlled Strategy Discovery from external economic hypotheses, preregistered, with OOS",
             "ratings": {
                 "proximity_to_verified_net_profitability": "INDIRECT — it does not start from an existing edge; "
-                                                           "it is the only route that can *produce* the missing "
-                                                           "evidence (a result attributable to a code, with a cost "
-                                                           "model), but it starts from a hypothesis, not a result",
+                "it is the only route that can *produce* the missing "
+                "evidence (a result attributable to a code, with a cost "
+                "model), but it starts from a hypothesis, not a result",
                 "required_data": "PIT market data we can already obtain, plus the external hypothesis each "
-                                 "candidate must cite; no proprietary feed is required if the net-edge gate is "
-                                 "honoured",
+                "candidate must cite; no proprietary feed is required if the net-edge gate is "
+                "honoured",
                 "falsifiability": "STRONG — a preregistered rule set, a frozen cost model and a separated OOS "
-                                  "window make each candidate objectively refutable, with a STOP rule on a "
-                                  "negative result",
+                "window make each candidate objectively refutable, with a STOP rule on a "
+                "negative result",
                 "development_time": "MEDIUM-HIGH — the protocol itself, the PIT data contract and the "
-                                    "preregistration harness must exist before the first candidate",
+                "preregistration harness must exist before the first candidate",
                 "overfitting_risk": "HIGH — this is the route's dominant risk and the reason its protocol must "
-                                    "cap candidates and control multiple testing",
+                "cap candidates and control multiple testing",
                 "runtime_compatibility": "CONTROLLED — the protocol can require long/cash spot majors, which is "
-                                         "what the runtime already is",
+                "what the runtime already is",
                 "operating_cost": "MEDIUM — research time and compute, no capital at risk",
                 "ease_of_independent_validation": "HIGH — preregistration plus a separate verifier is precisely "
-                                                  "what makes this verifiable",
+                "what makes this verifiable",
             },
             "evidence": [
                 "round 3 closed with no candidate because the corpus lacked the combination of rules, result and "
@@ -672,7 +745,7 @@ def routes() -> dict[str, Any]:
             "title": "First investigate whether cost and runtime restrictions make the pursued family infeasible",
             "ratings": {
                 "proximity_to_verified_net_profitability": "ALREADY ANSWERED for the pursued family — the cost "
-                                                           "audit below is decisive and needs no new experiment",
+                "audit below is decisive and needs no new experiment",
                 "required_data": "NONE new — the cost model and the internal measurements already exist",
                 "falsifiability": "N/A — this is an audit, not a hypothesis",
                 "development_time": "ZERO (already done in this gate)",
@@ -709,12 +782,14 @@ def routes() -> dict[str, Any]:
 def route_matrix(route_data: dict[str, Any]) -> list[dict[str, str]]:
     rows = []
     for criterion in ROUTE_CRITERIA:
-        rows.append({
-            "criterion": criterion,
-            "A": route_data["A"]["ratings"][criterion],
-            "B": route_data["B"]["ratings"][criterion],
-            "C": route_data["C"]["ratings"][criterion],
-        })
+        rows.append(
+            {
+                "criterion": criterion,
+                "A": route_data["A"]["ratings"][criterion],
+                "B": route_data["B"]["ratings"][criterion],
+                "C": route_data["C"]["ratings"][criterion],
+            }
+        )
     return rows
 
 
@@ -723,46 +798,85 @@ def route_matrix(route_data: dict[str, Any]) -> list[dict[str, str]]:
 # --------------------------------------------------------------------------- #
 
 PROPOSAL_PROTOCOL = (
-    ("P-01", "Explicit economic hypothesis",
-     "Every candidate declares the economic mechanism in one sentence and the external source it comes from. "
-     "A candidate with no external source is out of scope for this programme."),
-    ("P-02", "Identified external source",
-     "The hypothesis must be traceable to a registered source in research/profitability/source_registry.json, "
-     "read at full-text level. Sources already closed by an earlier round are inadmissible as new."),
-    ("P-03", "Market and assets defined",
-     "Long/cash spot only, majors or a preregistered liquid universe, on the runtime's venue. No derivatives. "
-     "The universe is frozen with the candidate and is not re-selected after seeing results."),
-    ("P-04", "Frozen rules and parameters",
-     "Entry, exit (including stop and target, or an explicit statement that none exists), sizing, warmup and "
-     "order semantics are frozen and hashed BEFORE any measurement. No parameter search."),
-    ("P-05", "Point-in-time data",
-     "Every input carries a PIT availability rule and a unit check. A feature whose publication timestamp "
-     "cannot be pinned is not used."),
-    ("P-06", "Costs and execution model",
-     "The admission cost is the project's own cost model at the candidate's venue, size and liquidity regime; "
-     "the project's 23.791 bps floor applies unless a cheaper scenario is explicitly justified and recorded. "
-     "No result is reported gross and called net."),
-    ("P-07", "Development and OOS separation",
-     "A development window is frozen first; the out-of-sample window is opened once, after the candidate is "
-     "hashed. Touching OOS to select or tune a candidate invalidates the candidate."),
-    ("P-08", "Capped candidates and experiments",
-     "A hard cap on candidates and on experiments per candidate, declared before the programme starts, so that "
-     "the number of attempts is visible in the result."),
-    ("P-09", "Multiple-testing control",
-     "The programme records the total number of hypotheses and experiments and applies an explicit correction "
-     "or an explicit honesty statement about the effective significance level."),
-    ("P-10", "Net-profitability gate",
-     "A candidate passes only if its net edge after the frozen cost model is positive AND exceeds the "
-     "benchmark alternative; DO_NOT_TRADE is a first-class benchmark, not an afterthought."),
-    ("P-11", "Robustness test",
-     "A predeclared battery: cost stress at 1.25x and 1.5x, sub-period stability, sign stability across "
-     "splits, and a sensitivity check that was named before the result was seen."),
-    ("P-12", "Independent verifier",
-     "A second program re-derives the candidate's rules, data lineage, cost model and result, and may return "
-     "FAIL even when the author recommends promotion. Builder != verifier."),
-    ("P-13", "STOP on a negative result",
-     "A failed candidate closes; it is not re-tuned. The programme stops when the cap is reached or when a "
-     "predeclared stop rule fires, and the result is written up whether positive or negative."),
+    (
+        "P-01",
+        "Explicit economic hypothesis",
+        "Every candidate declares the economic mechanism in one sentence and the external source it comes from. "
+        "A candidate with no external source is out of scope for this programme.",
+    ),
+    (
+        "P-02",
+        "Identified external source",
+        "The hypothesis must be traceable to a registered source in research/profitability/source_registry.json, "
+        "read at full-text level. Sources already closed by an earlier round are inadmissible as new.",
+    ),
+    (
+        "P-03",
+        "Market and assets defined",
+        "Long/cash spot only, majors or a preregistered liquid universe, on the runtime's venue. No derivatives. "
+        "The universe is frozen with the candidate and is not re-selected after seeing results.",
+    ),
+    (
+        "P-04",
+        "Frozen rules and parameters",
+        "Entry, exit (including stop and target, or an explicit statement that none exists), sizing, warmup and "
+        "order semantics are frozen and hashed BEFORE any measurement. No parameter search.",
+    ),
+    (
+        "P-05",
+        "Point-in-time data",
+        "Every input carries a PIT availability rule and a unit check. A feature whose publication timestamp "
+        "cannot be pinned is not used.",
+    ),
+    (
+        "P-06",
+        "Costs and execution model",
+        "The admission cost is the project's own cost model at the candidate's venue, size and liquidity regime; "
+        "the project's 23.791 bps floor applies unless a cheaper scenario is explicitly justified and recorded. "
+        "No result is reported gross and called net.",
+    ),
+    (
+        "P-07",
+        "Development and OOS separation",
+        "A development window is frozen first; the out-of-sample window is opened once, after the candidate is "
+        "hashed. Touching OOS to select or tune a candidate invalidates the candidate.",
+    ),
+    (
+        "P-08",
+        "Capped candidates and experiments",
+        "A hard cap on candidates and on experiments per candidate, declared before the programme starts, so that "
+        "the number of attempts is visible in the result.",
+    ),
+    (
+        "P-09",
+        "Multiple-testing control",
+        "The programme records the total number of hypotheses and experiments and applies an explicit correction "
+        "or an explicit honesty statement about the effective significance level.",
+    ),
+    (
+        "P-10",
+        "Net-profitability gate",
+        "A candidate passes only if its net edge after the frozen cost model is positive AND exceeds the "
+        "benchmark alternative; DO_NOT_TRADE is a first-class benchmark, not an afterthought.",
+    ),
+    (
+        "P-11",
+        "Robustness test",
+        "A predeclared battery: cost stress at 1.25x and 1.5x, sub-period stability, sign stability across "
+        "splits, and a sensitivity check that was named before the result was seen.",
+    ),
+    (
+        "P-12",
+        "Independent verifier",
+        "A second program re-derives the candidate's rules, data lineage, cost model and result, and may return "
+        "FAIL even when the author recommends promotion. Builder != verifier.",
+    ),
+    (
+        "P-13",
+        "STOP on a negative result",
+        "A failed candidate closes; it is not re-tuned. The programme stops when the cap is reached or when a "
+        "predeclared stop rule fires, and the result is written up whether positive or negative.",
+    ),
 )
 
 
@@ -879,6 +993,7 @@ def write_proposal(routes_data: dict[str, Any], cost: dict[str, Any]) -> str:
 # renderers
 # --------------------------------------------------------------------------- #
 
+
 def rounds_text(baseline: dict[str, Any]) -> str:
     parts = []
     for entry in baseline["catalogue"]["rounds"]:
@@ -886,9 +1001,15 @@ def rounds_text(baseline: dict[str, Any]) -> str:
     return ", ".join(parts)
 
 
-def render_final(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[str, Any],
-                 routes_data: dict[str, Any], defects: dict[str, Any], proposal_path: str,
-                 gates: dict[str, Any]) -> str:
+def render_final(
+    baseline: dict[str, Any],
+    cost: dict[str, Any],
+    causes: dict[str, Any],
+    routes_data: dict[str, Any],
+    defects: dict[str, Any],
+    proposal_path: str,
+    gates: dict[str, Any],
+) -> str:
     iv = baseline["independent_verifications"]
     lines = [
         "# PROFITABILITY-GATE-035 — FINAL REPORT",
@@ -926,8 +1047,10 @@ def render_final(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[st
         "| --- | --- | --- | --- | --- |",
     ]
     for name, entry in iv.items():
-        lines.append(f"| `{name}` | **{entry['status']}** | {entry['passed']}/{entry['checks']} | "
-                     f"{entry['mismatches']} | {entry['false_success']} |")
+        lines.append(
+            f"| `{name}` | **{entry['status']}** | {entry['passed']}/{entry['checks']} | "
+            f"{entry['mismatches']} | {entry['false_success']} |"
+        )
     lines += [
         "",
         "The single mismatch in `reports/rfc035/RFC035_VERIFICATION.json` is the baseline-commit-versus-HEAD "
@@ -944,12 +1067,16 @@ def render_final(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[st
             "| --- | --- | --- | ---: | ---: | ---: | ---: |",
         ]
         for run in hist["runs"]:
-            lines.append(f"| `{run.get('script')}` | {run.get('registry_state')} | **{run.get('status')}** | "
-                         f"{run.get('checks')} | {run.get('mismatches')} | {run.get('false_success')} | "
-                         f"`{run.get('exit_code')}` |")
+            lines.append(
+                f"| `{run.get('script')}` | {run.get('registry_state')} | **{run.get('status')}** | "
+                f"{run.get('checks')} | {run.get('mismatches')} | {run.get('false_success')} | "
+                f"`{run.get('exit_code')}` |"
+            )
         for run in hist.get("runs_after_round_3_registry") or []:
-            lines.append(f"| `{run.get('script')}` | after the round-3 registry | **{run.get('status')}** | "
-                         f"{run.get('checks')} | {run.get('mismatches')} | — | — |")
+            lines.append(
+                f"| `{run.get('script')}` | after the round-3 registry | **{run.get('status')}** | "
+                f"{run.get('checks')} | {run.get('mismatches')} | — | — |"
+            )
         lines += [
             "",
             f"- lab commit: `{hist.get('lab_commit')}`",
@@ -1009,8 +1136,10 @@ def render_final(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[st
         "| --- | --- | ---: | --- |",
     ]
     for entry in causes["causes"]:
-        lines.append(f"| **{entry['code']}** {entry['cause']} | {entry['owner']} | {entry['reason_code_hits']} | "
-                     f"{', '.join(entry['round_3_candidates']) or '—'} |")
+        lines.append(
+            f"| **{entry['code']}** {entry['cause']} | {entry['owner']} | {entry['reason_code_hits']} | "
+            f"{', '.join(entry['round_3_candidates']) or '—'} |"
+        )
     lines += [
         "",
         f"> {causes['coverage_caveat']}",
@@ -1103,8 +1232,10 @@ def render_final(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[st
         for name, entry in gates.items():
             if not isinstance(entry, dict):
                 continue
-            lines.append(f"| {name} | `{entry.get('command')}` | {entry.get('result')} | "
-                         f"`{entry.get('exit_code')}` |")
+            lines.append(
+                f"| {name} | `{entry.get('command')}` | {entry.get('result')} | "
+                f"`{entry.get('exit_code')}` |"
+            )
     lines += [
         "",
         "## 9. Vocabulary",
@@ -1116,9 +1247,15 @@ def render_final(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[st
     return "\n".join(lines) + "\n"
 
 
-def final_payload(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[str, Any],
-                  routes_data: dict[str, Any], defects: dict[str, Any], proposal_path: str,
-                  gates: dict[str, Any]) -> dict[str, Any]:
+def final_payload(
+    baseline: dict[str, Any],
+    cost: dict[str, Any],
+    causes: dict[str, Any],
+    routes_data: dict[str, Any],
+    defects: dict[str, Any],
+    proposal_path: str,
+    gates: dict[str, Any],
+) -> dict[str, Any]:
     sup = baseline["opportunities"]["superseded_in_round_3"]
     r36 = baseline.get("rfc036_actual_state") or {}
     return {
@@ -1133,7 +1270,7 @@ def final_payload(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[s
             "PROFITABILITY_VERIFIED": False,
             "TRADES_AUTHORIZED": 0,
             "scope": "the universe of sources investigated and the criteria applied, not the non-existence of "
-                     "profitable opportunities",
+            "profitable opportunities",
             "criteria_lowered": False,
             "artifacts_preserved": True,
         },
@@ -1142,7 +1279,7 @@ def final_payload(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[s
             "REPLICATE_P0": 0,
             "superseded_replication_ranks": sup,
             "note": "the two REPLICATE_P1 ranks were superseded in round 3 after the four-state audit; their "
-                    "frozen ranks are preserved and their current rank is INSUFFICIENT_EVIDENCE",
+            "frozen ranks are preserved and their current rank is INSUFFICIENT_EVIDENCE",
         },
         "baseline_audit": baseline,
         "baseline_reproduction": audit_reproduced(),
@@ -1153,7 +1290,7 @@ def final_payload(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[s
             "exchange_sandbox": True,
             "require_manual_confirmation_for_live": True,
             "strategy_states": "research / paper only, with a mandated progression research -> paper -> "
-                               "live_candidate -> live",
+            "live_candidate -> live",
             "no_trade_is_first_class": True,
             "risk_engine": "deterministic (src/trading_bot/risk/manager.py)",
             "reference_capital_usdt": 200.0,
@@ -1175,14 +1312,14 @@ def final_payload(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[s
             "proposed_id": "RFC-046",
             "numbering": {
                 "RFC-036": "NOT available: already used by commit d0efb51 on 2026-10-05 for a managed-futures "
-                           "trend reproduction. The RFC-035 lineage's description of it as reserved for exact "
-                           "replication is not supported by the repository.",
+                "trend reproduction. The RFC-035 lineage's description of it as reserved for exact "
+                "replication is not supported by the repository.",
                 "RFC-044": "taken by an earlier programme",
                 "RFC-045": "excluded by the standing next-action policy (no periodic RFC)",
                 "RFC-046": "the free number this proposal takes",
                 "blocked_reason": "RFC-036_REPLICATION = BLOCKED because REPLICATE_P0 = NONE: there is no "
-                                  "RFC-035 candidate to replicate. The number being occupied is a separate "
-                                  "fact, reported rather than relied on.",
+                "RFC-035 candidate to replicate. The number being occupied is a separate "
+                "fact, reported rather than relied on.",
             },
             "required_changes": [
                 "tasks/roadmap.md gains the discovery phase and names RFC-046",
@@ -1191,7 +1328,7 @@ def final_payload(baseline: dict[str, Any], cost: dict[str, Any], causes: dict[s
                 "tasks/decisions.md records one ADR",
             ],
             "blocking_conflict": "the operating model admits only a NEW QUALIFIED OPPORTUNITY or a MATERIAL "
-                                 "CAPITAL / INSTRUMENT CHANGE as a trigger, and this programme has neither",
+            "CAPITAL / INSTRUMENT CHANGE as a trigger, and this programme has neither",
         },
         "independent_verification": "SEE_INDEPENDENT_VERIFICATION",
         "false_success": "SEE_INDEPENDENT_VERIFICATION",
@@ -1231,7 +1368,9 @@ def render_postmortem(baseline: dict[str, Any], causes: dict[str, Any]) -> str:
         "| --- | --- | ---: |",
     ]
     for entry in causes["causes"]:
-        lines.append(f"| **{entry['code']}** {entry['cause']} | {entry['owner']} | {entry['reason_code_hits']} |")
+        lines.append(
+            f"| **{entry['code']}** {entry['cause']} | {entry['owner']} | {entry['reason_code_hits']} |"
+        )
     lines += [
         "",
         "The ranking matters. The three most frequent causes are *contract-shaped*: the corpus does not state "
@@ -1286,8 +1425,10 @@ def render_economic(cost: dict[str, Any], r36: dict[str, Any]) -> str:
         "| --- | ---: | --- | --- |",
     ]
     for component in cost["components"]:
-        lines.append(f"| {component['name']} | {component['value_bps']:.4f} | {component['knowledge']} | "
-                     f"{component['source_id']} |")
+        lines.append(
+            f"| {component['name']} | {component['value_bps']:.4f} | {component['knowledge']} | "
+            f"{component['source_id']} |"
+        )
     lines += [
         f"| **round trip** | **{cost['round_trip_bps']:.4f}** | | |",
         "",
@@ -1315,10 +1456,12 @@ def render_economic(cost: dict[str, Any], r36: dict[str, Any]) -> str:
     ]
     for scenario in cost["scenarios"]:
         star = " **(admission)**" if scenario["is_admission"] else ""
-        lines.append(f"| `{scenario['scenario_id']}`{star} | {scenario['venue']} | {scenario['product']} | "
-                     f"{scenario['tier'][:38]} | {scenario['maker_fee_bps']:.1f} | {scenario['taker_fee_bps']:.1f} | "
-                     f"{scenario['spread_bps']:.2f} | {scenario['round_trip_bps']:.3f} | "
-                     f"{scenario['integration_status']} |")
+        lines.append(
+            f"| `{scenario['scenario_id']}`{star} | {scenario['venue']} | {scenario['product']} | "
+            f"{scenario['tier'][:38]} | {scenario['maker_fee_bps']:.1f} | {scenario['taker_fee_bps']:.1f} | "
+            f"{scenario['spread_bps']:.2f} | {scenario['round_trip_bps']:.3f} | "
+            f"{scenario['integration_status']} |"
+        )
     lines += [
         "",
         "Two readings matter. **Maker is more expensive than taker at VIP0** (41.250 vs 23.791 bps), because "
@@ -1350,8 +1493,10 @@ def render_economic(cost: dict[str, Any], r36: dict[str, Any]) -> str:
         "| --- | ---: | ---: | ---: |",
     ]
     for entry in cost["turnover_cost_drag"]:
-        lines.append(f"| {entry['label']} | {entry['round_trips_per_year']} | {entry['annual_drag_pct']:.2f}% | "
-                     f"{entry['annual_drag_stressed_pct']:.2f}% |")
+        lines.append(
+            f"| {entry['label']} | {entry['round_trips_per_year']} | {entry['annual_drag_pct']:.2f}% | "
+            f"{entry['annual_drag_stressed_pct']:.2f}% |"
+        )
     lines += [
         "",
         "This is the single most useful number the gate produces. Daily trading must earn about **87% per year "
@@ -1384,12 +1529,16 @@ def render_economic(cost: dict[str, Any], r36: dict[str, Any]) -> str:
         "| window | gross pnl | cost pnl | net pnl | cost share of gross |",
         "| --- | ---: | ---: | ---: | ---: |",
     ]
-    for window, block in (("discovery", r36.get("cost_ratio", {}).get("discovery", {})),
-                          ("validation", r36.get("cost_ratio", {}).get("validation", {}))):
+    for window, block in (
+        ("discovery", r36.get("cost_ratio", {}).get("discovery", {})),
+        ("validation", r36.get("cost_ratio", {}).get("validation", {})),
+    ):
         if not block:
             continue
-        lines.append(f"| {window} | {block.get('gross_pnl'):.0f} | {block.get('cost_pnl'):.0f} | "
-                     f"{block.get('net_pnl'):.0f} | {block.get('cost_share_of_gross', 0) * 100:.2f}% |")
+        lines.append(
+            f"| {window} | {block.get('gross_pnl'):.0f} | {block.get('cost_pnl'):.0f} | "
+            f"{block.get('net_pnl'):.0f} | {block.get('cost_share_of_gross', 0) * 100:.2f}% |"
+        )
     lines += [
         "",
         f"The contrast with this gate's own arithmetic is the point: monthly rebalancing pays a small "
@@ -1488,7 +1637,8 @@ def write_run_report(baseline: dict[str, Any], gates: dict[str, Any], proposal_p
         "gates": gates,
     }
     (OUT / "RUN_REPORT.json").write_text(
-        json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+        json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     lines = [
         "# PROFITABILITY-GATE-035 — RUN_REPORT",
         "",
@@ -1510,7 +1660,9 @@ def write_run_report(baseline: dict[str, Any], gates: dict[str, Any], proposal_p
         for name, entry in gates.items():
             if not isinstance(entry, dict):
                 continue
-            lines.append(f"| {name} | `{entry.get('command')}` | {entry.get('result')} | `{entry.get('exit_code')}` |")
+            lines.append(
+                f"| {name} | `{entry.get('command')}` | {entry.get('result')} | `{entry.get('exit_code')}` |"
+            )
     (OUT / "RUN_REPORT.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -1524,41 +1676,89 @@ def main() -> int:
     defects = pending_defects()
 
     (OUT / "BASELINE.json").write_text(
-        json.dumps({"gate": "PROFITABILITY-GATE-035", "artifact": "BASELINE_AUDIT", **baseline,
-                    "reproduction": audit_reproduced(), "defects": defects},
-                   indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+        json.dumps(
+            {
+                "gate": "PROFITABILITY-GATE-035",
+                "artifact": "BASELINE_AUDIT",
+                **baseline,
+                "reproduction": audit_reproduced(),
+                "defects": defects,
+            },
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     (OUT / "ROOT_CAUSES.json").write_text(
-        json.dumps({"gate": "PROFITABILITY-GATE-035", "artifact": "ROOT_CAUSES", **causes},
-                   indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+        json.dumps(
+            {"gate": "PROFITABILITY-GATE-035", "artifact": "ROOT_CAUSES", **causes},
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     (OUT / "ECONOMIC_FEASIBILITY.json").write_text(
-        json.dumps({"gate": "PROFITABILITY-GATE-035", "artifact": "ECONOMIC_FEASIBILITY", **cost},
-                   indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+        json.dumps(
+            {"gate": "PROFITABILITY-GATE-035", "artifact": "ECONOMIC_FEASIBILITY", **cost},
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     (OUT / "ALTERNATIVE_PATHS.json").write_text(
-        json.dumps({"gate": "PROFITABILITY-GATE-035", "artifact": "ALTERNATIVE_PATHS",
-                    "routes": routes_data, "comparison_matrix": route_matrix(routes_data)},
-                   indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+        json.dumps(
+            {
+                "gate": "PROFITABILITY-GATE-035",
+                "artifact": "ALTERNATIVE_PATHS",
+                "routes": routes_data,
+                "comparison_matrix": route_matrix(routes_data),
+            },
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
 
     proposal_path = write_proposal(routes_data, cost)
 
     (OUT / "SEARCH_POSTMORTEM.md").write_text(render_postmortem(baseline, causes), encoding="utf-8")
     (OUT / "ECONOMIC_FEASIBILITY.md").write_text(
-        render_economic(cost, baseline.get("rfc036_actual_state") or {}), encoding="utf-8")
+        render_economic(cost, baseline.get("rfc036_actual_state") or {}), encoding="utf-8"
+    )
     (OUT / "ALTERNATIVE_PATHS.md").write_text(render_alternatives(routes_data), encoding="utf-8")
     report = final_payload(baseline, cost, causes, routes_data, defects, proposal_path, gates)
     (OUT / "FINAL_REPORT.json").write_text(
-        json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
+        json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     (OUT / "FINAL_REPORT.md").write_text(
-        render_final(baseline, cost, causes, routes_data, defects, proposal_path, gates), encoding="utf-8")
+        render_final(baseline, cost, causes, routes_data, defects, proposal_path, gates),
+        encoding="utf-8",
+    )
     write_run_report(baseline, gates, proposal_path)
 
     print("PROFITABILITY-GATE-035 BUILT")
     print(f"CURRENT HEAD   = {baseline['current_head']}")
     print(f"RFC-035        = {report['rfc_035_final_status']}")
-    print(f"COST           = {cost['round_trip_bps']} bps ({cost['known_bps']} KNOWN, {cost['estimated_bps']} ESTIMATED)")
+    print(
+        f"COST           = {cost['round_trip_bps']} bps ({cost['known_bps']} KNOWN, {cost['estimated_bps']} ESTIMATED)"
+    )
     print(f"RECOMMENDATION = route {routes_data['recommendation']} (PROPOSED)")
     print(f"PROPOSAL       = {proposal_path}")
-    for name in ("FINAL_REPORT.md", "FINAL_REPORT.json", "SEARCH_POSTMORTEM.md", "ECONOMIC_FEASIBILITY.md",
-                 "ALTERNATIVE_PATHS.md"):
+    for name in (
+        "FINAL_REPORT.md",
+        "FINAL_REPORT.json",
+        "SEARCH_POSTMORTEM.md",
+        "ECONOMIC_FEASIBILITY.md",
+        "ALTERNATIVE_PATHS.md",
+    ):
         print(f"  wrote {name}: {(OUT / name).is_file()}")
     return 0
 

@@ -65,8 +65,20 @@ SPECS: dict[str, tuple[str, str, float, float]] = {
     "lh": ("Live Hogs", "AGRICULTURE", 40000.0, 5.0),
     "pb": ("Pork Bellies", "AGRICULTURE", 40000.0, 8.0),
 }
-MONTHS = {"F": 1, "G": 2, "H": 3, "J": 4, "K": 5, "M": 6,
-          "N": 7, "Q": 8, "U": 9, "V": 10, "X": 11, "Z": 12}
+MONTHS = {
+    "F": 1,
+    "G": 2,
+    "H": 3,
+    "J": 4,
+    "K": 5,
+    "M": 6,
+    "N": 7,
+    "Q": 8,
+    "U": 9,
+    "V": 10,
+    "X": 11,
+    "Z": 12,
+}
 LOOKBACK = 252
 VOL_LB = 60
 TGT_POS = 0.40
@@ -168,9 +180,9 @@ def build_market(root: str) -> Market:
             if not rows:
                 continue
             cid = stem.lower()
-            m.contracts[cid] = Contract(root, y, MONTHS[mc],
-                                        {o: c for o, c, _ in rows},
-                                        {o: v for o, _, v in rows})
+            m.contracts[cid] = Contract(
+                root, y, MONTHS[mc], {o: c for o, c, _ in rows}, {o: v for o, _, v in rows}
+            )
     dates: set[int] = set()
     for c in m.contracts.values():
         dates.update(c.closes)
@@ -244,8 +256,7 @@ def held_series(m: Market, lo: int, hi: int) -> dict[str, Any]:
             held[od] = cur
             last_ic = cur
             last_od = od
-    return {"held": held, "interval_c": interval_c, "interval_r": interval_r,
-            "rolls": rolls}
+    return {"held": held, "interval_c": interval_c, "interval_r": interval_r, "rolls": rolls}
 
 
 def _at(d: dict[int, float], od: int) -> float | None:
@@ -264,7 +275,7 @@ def signal_vol(ords: list[int], rets: list[float], k: int) -> tuple[float, float
             prod *= 1.0 + rets[j]
         sig = float(np.sign(prod - 1.0))
     lo = max(0, k - VOL_LB + 1)
-    r = np.asarray(rets[lo:k + 1], dtype=np.float64)
+    r = np.asarray(rets[lo : k + 1], dtype=np.float64)
     vol = float(np.std(r, ddof=1) * math.sqrt(252.0)) if r.size >= 3 else float("nan")
     return sig, vol
 
@@ -284,9 +295,12 @@ def run(markets: dict[str, Market], cal: list[int], lo: int, hi: int) -> dict[st
     for r, m in markets.items():
         hs = held_series(m, d2o("1970-01-01"), d2o("2000-12-31"))
         ords = sorted(hs["held"])
-        series[r] = {"hs": hs, "ords": ords,
-                     "rets": [hs["interval_r"].get(o, 0.0) for o in ords],
-                     "idx": {o: j for j, o in enumerate(ords)}}
+        series[r] = {
+            "hs": hs,
+            "ords": ords,
+            "rets": [hs["interval_r"].get(o, 0.0) for o in ords],
+            "idx": {o: j for j, o in enumerate(ords)},
+        }
 
     contracts = {r: 0.0 for r in markets}
     prev_level: dict[str, float | None] = {r: None for r in markets}
@@ -360,23 +374,30 @@ def run(markets: dict[str, Market], cal: list[int], lo: int, hi: int) -> dict[st
         gross += day_pnl
         cost += day_cost
         prev_od = od
-    return {"net": net, "gross": gross, "cost": cost, "days": len(dates),
-            "mean_long": float(np.mean(count_long)) if count_long else 0.0,
-            "mean_short": float(np.mean(count_short)) if count_short else 0.0}
+    return {
+        "net": net,
+        "gross": gross,
+        "cost": cost,
+        "days": len(dates),
+        "mean_long": float(np.mean(count_long)) if count_long else 0.0,
+        "mean_short": float(np.mean(count_short)) if count_short else 0.0,
+    }
 
 
 def _last(ords: list[int], od: int) -> int | None:
     import bisect
+
     p = bisect.bisect_right(ords, od) - 1
     return p if p >= 0 else None
 
 
-def _scale(info: dict[str, Any], raw: dict[str, float], active: list[str],
-           dates: list[int], oi: int) -> float:
+def _scale(
+    info: dict[str, Any], raw: dict[str, float], active: list[str], dates: list[int], oi: int
+) -> float:
     if len(active) < 2:
         return 1.0
     lo = max(0, oi - VOL_LB)
-    win = dates[lo:oi + 1]
+    win = dates[lo : oi + 1]
     if len(win) < 10:
         return 1.0
     mat = np.zeros((len(win), len(active)))
@@ -459,9 +480,12 @@ def main() -> int:
         "economic_status": ("G_MF_2_PASS" if val["net"] > 0 else "G_MF_2_FAIL"),
         "independent": {
             "n_markets": len(markets),
-            "discovery_net": disc["net"], "validation_net": val["net"],
-            "discovery_cost": disc["cost"], "validation_cost": val["cost"],
-            "discovery_mean_long": disc["mean_long"], "discovery_mean_short": disc["mean_short"],
+            "discovery_net": disc["net"],
+            "validation_net": val["net"],
+            "discovery_cost": disc["cost"],
+            "validation_cost": val["cost"],
+            "discovery_mean_long": disc["mean_long"],
+            "discovery_mean_short": disc["mean_short"],
         },
         "builder": {"discovery_net": b_disc.get("net_pnl"), "validation_net": b_val.get("net_pnl")},
         "checks": checks,
@@ -469,7 +493,8 @@ def main() -> int:
         "false_success_hits": false_success,
     }
     (OUT / "RFC036_VERIFICATION.json").write_text(
-        json.dumps(payload, indent=2, default=str) + "\n", encoding="utf-8")
+        json.dumps(payload, indent=2, default=str) + "\n", encoding="utf-8"
+    )
     (OUT / "RFC036_VERIFICATION.md").write_text(
         "# RFC-036 INDEPENDENT VERIFICATION\n\n"
         f"- VERIFICATION_STATUS = {verdict}\n"
@@ -479,10 +504,13 @@ def main() -> int:
         f"- Builder discovery net = {b_disc.get('net_pnl')}\n"
         f"- Builder validation net = {b_val.get('net_pnl')}\n"
         f"- FALSE_SUCCESS = {len(false_success)}\n",
-        encoding="utf-8")
+        encoding="utf-8",
+    )
     print(f"VERIFICATION={verdict} economic={payload['economic_status']}")
-    print(f"indep disc={disc['net']:.0f} val={val['net']:.0f} "
-          f"builder disc={b_disc.get('net_pnl')} val={b_val.get('net_pnl')}")
+    print(
+        f"indep disc={disc['net']:.0f} val={val['net']:.0f} "
+        f"builder disc={b_disc.get('net_pnl')} val={b_val.get('net_pnl')}"
+    )
     print(f"FALSE_SUCCESS={len(false_success)}")
     return 0
 

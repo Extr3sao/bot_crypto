@@ -47,20 +47,20 @@ files: dict[str, str] = {}
 
 files["BASELINE.md"] = f"""# BASELINE (§1) — INDEPENDENT VERIFICATION START
 
-- branch: `{b['branch']}`
-- **VERIFICATION_START_SHA (HEAD): `{b['start_sha']}`** — matches the expected
+- branch: `{b["branch"]}`
+- **VERIFICATION_START_SHA (HEAD): `{b["start_sha"]}`** — matches the expected
   EXP-ARP-019 implementation commit `77d43bd…`.
-- builder code_hash (frozen file set): `{b['code_hash']}`
-- spec_sha256: `{b['spec_sha256']}`
-- manifest_sha256: `{b['manifest_sha256']}`
-- breadth.py sha256: `{b['breadth_sha256']}`
-- dataset_fingerprint: `{b['dataset_fingerprint']}`
-- config hash: `{b['config_hash']}`
-- COST_MODEL_V3 RT: `{b['cost_model_v3_rt_bps']}` bps
-- split_hash: `{b['split_hash']}`
-- holdout: `{b['holdout_id']}` = **`{b['holdout_status_before']}`**
+- builder code_hash (frozen file set): `{b["code_hash"]}`
+- spec_sha256: `{b["spec_sha256"]}`
+- manifest_sha256: `{b["manifest_sha256"]}`
+- breadth.py sha256: `{b["breadth_sha256"]}`
+- dataset_fingerprint: `{b["dataset_fingerprint"]}`
+- config hash: `{b["config_hash"]}`
+- COST_MODEL_V3 RT: `{b["cost_model_v3_rt_bps"]}` bps
+- split_hash: `{b["split_hash"]}`
+- holdout: `{b["holdout_id"]}` = **`{b["holdout_status_before"]}`**
 - **OOS opened: NO**
-- dirty worktree (pre-existing, UNRELATED, untouched): {len(b['dirty_worktree'])} paths
+- dirty worktree (pre-existing, UNRELATED, untouched): {len(b["dirty_worktree"])} paths
 
 No pre-existing dirty file was read as authority nor modified.
 """
@@ -71,12 +71,12 @@ Frozen BEFORE any verification computation; nothing here was changed.
 
 | item | value |
 |---|---|
-| SPEC sha256 | `{b['spec_sha256']}` |
-| MANIFEST sha256 | `{b['manifest_sha256']}` |
-| implementation sha256 (breadth.py) | `{b['breadth_sha256']}` |
-| dataset fingerprint | `{b['dataset_fingerprint']}` |
-| cost model | `COST_MODEL_V3` = `{b['cost_model_v3_rt_bps']}` bps round-trip |
-| split | `{json.dumps(b['split_definition'])}` |
+| SPEC sha256 | `{b["spec_sha256"]}` |
+| MANIFEST sha256 | `{b["manifest_sha256"]}` |
+| implementation sha256 (breadth.py) | `{b["breadth_sha256"]}` |
+| dataset fingerprint | `{b["dataset_fingerprint"]}` |
+| cost model | `COST_MODEL_V3` = `{b["cost_model_v3_rt_bps"]}` bps round-trip |
+| split | `{json.dumps(b["split_definition"])}` |
 
 ## Frozen mechanism (read, not modified)
 
@@ -110,10 +110,10 @@ recomputed every field with verifier-owned code. No builder aggregate was truste
 
 | unit | definition | DEV | VALIDATION | FULL |
 |---|---|---|---|---|
-| **asset-position / "trade"** | one `Trade` object = one constituent held from entry fill to exit fill | {f(dev['trades'],0)} | {f(val['trades'],0)} | {f(full['trades'],0)} |
-| **basket episode** | one contiguous LONG state = one `close_basket` round-trip | {f(dev['episodes'],0)} | {f(val['episodes'],0)} | {f(full['episodes'],0)} |
-| **daily decision** | one `BreadthRecord` per calendar day | {f(ess['daily_decisions_DEV'],0)} | n/a | {f(ess['daily_decisions_FULL'],0)} |
-| **rebalance** | a state transition FLAT→LONG or LONG→FLAT | {f(dev['episodes'],0)} entries | {f(val['episodes'],0)} entries | {f(full['episodes'],0)} entries |
+| **asset-position / "trade"** | one `Trade` object = one constituent held from entry fill to exit fill | {f(dev["trades"], 0)} | {f(val["trades"], 0)} | {f(full["trades"], 0)} |
+| **basket episode** | one contiguous LONG state = one `close_basket` round-trip | {f(dev["episodes"], 0)} | {f(val["episodes"], 0)} | {f(full["episodes"], 0)} |
+| **daily decision** | one `BreadthRecord` per calendar day | {f(ess["daily_decisions_DEV"], 0)} | n/a | {f(ess["daily_decisions_FULL"], 0)} |
+| **rebalance** | a state transition FLAT→LONG or LONG→FLAT | {f(dev["episodes"], 0)} entries | {f(val["episodes"], 0)} entries | {f(full["episodes"], 0)} entries |
 
 Each economic record carries: `decision_id(decision_ts) · timestamp · asset ·
 direction(long) · entry · exit · quantity/notional(alloc) · gross_pnl_usd ·
@@ -123,8 +123,8 @@ aggregate reconciliation is below.)
 
 ## The 2998 + 1534 ≠ 4617 problem — RESOLVED
 
-- DEV trades **{f(dev['trades'],0)}** + VALIDATION trades **{f(val['trades'],0)}** = **{f(rec['DEV_plus_VALIDATION'],0)}**.
-- FULL (STATE) trades **{f(full['trades'],0)}**. Difference = **{f(rec['FULL_minus_sum_delta'],0)}**.
+- DEV trades **{f(dev["trades"], 0)}** + VALIDATION trades **{f(val["trades"], 0)}** = **{f(rec["DEV_plus_VALIDATION"], 0)}**.
+- FULL (STATE) trades **{f(full["trades"], 0)}**. Difference = **{f(rec["FULL_minus_sum_delta"], 0)}**.
 
 **Explanation (boundary effect, not a defect).** DEV, VALIDATION and FULL are
 three *independent* simulations, not slices of one:
@@ -137,9 +137,9 @@ three *independent* simulations, not slices of one:
    across the 2024-01-01 boundary is a *single* episode and the universe history
    is never truncated.
 
-The same effect explains the USD gap: DEV {f(dev['total_net_pnl_usd'],2)} +
-VALIDATION {f(val['total_net_pnl_usd'],2)} = {f(rec['DEV_plus_VALIDATION_net_usd'],2)} vs
-FULL {f(full['total_net_pnl_usd'],2)} (Δ = {f(rec['FULL_minus_sum_net_usd'],2)} USD).
+The same effect explains the USD gap: DEV {f(dev["total_net_pnl_usd"], 2)} +
+VALIDATION {f(val["total_net_pnl_usd"], 2)} = {f(rec["DEV_plus_VALIDATION_net_usd"], 2)} vs
+FULL {f(full["total_net_pnl_usd"], 2)} (Δ = {f(rec["FULL_minus_sum_net_usd"], 2)} USD).
 Every count/total is internally consistent **within its own run**. The
 **+3018.3 USD / 4617 trade "STATE" figure is exactly the FULL DEV+VALIDATION run**,
 reproduced to the cent.
@@ -163,13 +163,13 @@ expectancy_net_bps = mean(net_bps)
 ```
 
 - **denominator = each trade's own `notional`** = its per-asset allocation
-  `alloc = 500 / len(fillable_basket)` (DEV average alloc = {f(dev['avg_alloc_per_position'],4)} USD).
+  `alloc = 500 / len(fillable_basket)` (DEV average alloc = {f(dev["avg_alloc_per_position"], 4)} USD).
 - It is **NOT** portfolio notional, NOT decision notional, NOT capital, NOT a
   cumulative return.
 - Therefore `expectancy_net_bps` is the **equal-weighted average per-asset-position
   return over a multi-day holding episode**. Because every position in a basket
   shares the same episode, it is numerically ≈ **the average per-episode basket
-  return** (DEV per-episode mean = {f(unc['DEV']['mean_portfolio_bps'],1)} bps vs expectancy {f(dev['avg_net_return_bps_per_trade'],1)} bps).
+  return** (DEV per-episode mean = {f(unc["DEV"]["mean_portfolio_bps"], 1)} bps vs expectancy {f(dev["avg_net_return_bps_per_trade"], 1)} bps).
 
 ## Other builder metrics and their real meaning
 
@@ -190,7 +190,7 @@ documentation here (`EXPECTANCY_RECONCILIATION.md`), not by renaming the harness
 
 **`DEF-METRIC-PROFIT-FACTOR-001`** — `profit_factor` is computed in bps-space
 (equal position weights) rather than currency; on skewed allocations the two
-differ (DEV bps-PF {f(2.9298,4)} vs currency-PF {f(dev['profit_factor'],4)}).
+differ (DEV bps-PF {f(2.9298, 4)} vs currency-PF {f(dev["profit_factor"], 4)}).
 """
 
 files["EXPECTANCY_RECONCILIATION.md"] = f"""# EXPECTANCY RECONCILIATION (§7, §8)
@@ -199,16 +199,16 @@ files["EXPECTANCY_RECONCILIATION.md"] = f"""# EXPECTANCY RECONCILIATION (§7, §
 
 | quantity | DEV | VALIDATION | FULL (DEV+VAL) |
 |---|---|---|---|
-| TOTAL_NET_PNL_USD | {f(dev['total_net_pnl_usd'],2)} | {f(val['total_net_pnl_usd'],2)} | {f(full['total_net_pnl_usd'],2)} |
-| TOTAL_GROSS_PNL_USD | {f(dev['total_gross_pnl_usd'],2)} | {f(val['total_gross_pnl_usd'],2)} | {f(full['total_gross_pnl_usd'],2)} |
-| avg net/trade USD | {f(dev['avg_net_pnl_per_trade_usd'],4)} | {f(val['avg_net_pnl_per_trade_usd'],4)} | {f(full['avg_net_pnl_per_trade_usd'],4)} |
-| avg gross/trade USD | {f(dev['avg_gross_pnl_per_trade_usd'],4)} | {f(val['avg_gross_pnl_per_trade_usd'],4)} | {f(full['avg_gross_pnl_per_trade_usd'],4)} |
-| **avg net return bps/position** | {f(dev['avg_net_return_bps_per_trade'],3)} | {f(val['avg_net_return_bps_per_trade'],3)} | {f(full['avg_net_return_bps_per_trade'],3)} |
-| median net return bps/position | {f(dev['median_net_return_bps_per_trade'],3)} | {f(val['median_net_return_bps_per_trade'],3)} | {f(full['median_net_return_bps_per_trade'],3)} |
-| **PORTFOLIO_RETURN_BPS** (÷500) | {f(dev['portfolio_return_bps'],1)} | {f(val['portfolio_return_bps'],1)} | {f(full['portfolio_return_bps'],1)} |
+| TOTAL_NET_PNL_USD | {f(dev["total_net_pnl_usd"], 2)} | {f(val["total_net_pnl_usd"], 2)} | {f(full["total_net_pnl_usd"], 2)} |
+| TOTAL_GROSS_PNL_USD | {f(dev["total_gross_pnl_usd"], 2)} | {f(val["total_gross_pnl_usd"], 2)} | {f(full["total_gross_pnl_usd"], 2)} |
+| avg net/trade USD | {f(dev["avg_net_pnl_per_trade_usd"], 4)} | {f(val["avg_net_pnl_per_trade_usd"], 4)} | {f(full["avg_net_pnl_per_trade_usd"], 4)} |
+| avg gross/trade USD | {f(dev["avg_gross_pnl_per_trade_usd"], 4)} | {f(val["avg_gross_pnl_per_trade_usd"], 4)} | {f(full["avg_gross_pnl_per_trade_usd"], 4)} |
+| **avg net return bps/position** | {f(dev["avg_net_return_bps_per_trade"], 3)} | {f(val["avg_net_return_bps_per_trade"], 3)} | {f(full["avg_net_return_bps_per_trade"], 3)} |
+| median net return bps/position | {f(dev["median_net_return_bps_per_trade"], 3)} | {f(val["median_net_return_bps_per_trade"], 3)} | {f(full["median_net_return_bps_per_trade"], 3)} |
+| **PORTFOLIO_RETURN_BPS** (÷500) | {f(dev["portfolio_return_bps"], 1)} | {f(val["portfolio_return_bps"], 1)} | {f(full["portfolio_return_bps"], 1)} |
 
 Note the **median is deeply negative** on every split
-(DEV {f(dev['median_net_return_bps_per_trade'],1)} bps) while the mean is strongly
+(DEV {f(dev["median_net_return_bps_per_trade"], 1)} bps) while the mean is strongly
 positive: the strategy is a low-win-rate, fat-right-tail distribution — a handful of
 large winners drive the result. This is characteristic of beta/trend exposure, not
 of a broad edge.
@@ -217,14 +217,14 @@ of a broad edge.
 
 Three different concepts, all reconciled:
 
-1. **+{f(full['total_net_pnl_usd'],2)} USD** = total net PnL of the **FULL continuous DEV+VAL run** (4617 positions; = builder "STATE LONG" {f(rec['builder_state_LONG_net_usd'],2)}). A **USD portfolio total**.
-2. **+{f(dev['avg_net_return_bps_per_trade'],1)} bps** = DEV **average per-position (≈ per-episode) net return**, denominator = position's own allocation. A **per-episode rate**, not a total and not a portfolio figure.
-3. **+{f(val['avg_net_return_bps_per_trade'],1)} bps** = same concept on VALIDATION.
+1. **+{f(full["total_net_pnl_usd"], 2)} USD** = total net PnL of the **FULL continuous DEV+VAL run** (4617 positions; = builder "STATE LONG" {f(rec["builder_state_LONG_net_usd"], 2)}). A **USD portfolio total**.
+2. **+{f(dev["avg_net_return_bps_per_trade"], 1)} bps** = DEV **average per-position (≈ per-episode) net return**, denominator = position's own allocation. A **per-episode rate**, not a total and not a portfolio figure.
+3. **+{f(val["avg_net_return_bps_per_trade"], 1)} bps** = same concept on VALIDATION.
 
-Consistency check: DEV total {f(dev['total_net_pnl_usd'],2)} USD ÷ 500 x 1e4 =
-{f(dev['portfolio_return_bps'],1)} bps = {f(dev['episodes'],0)} episodes x {f(unc['DEV']['mean_portfolio_bps'],1)} bps/episode.
-The per-position mean {f(dev['avg_net_return_bps_per_trade'],1)} ≈ the per-episode
-mean {f(unc['DEV']['mean_portfolio_bps'],1)} because basket constituents share one
+Consistency check: DEV total {f(dev["total_net_pnl_usd"], 2)} USD ÷ 500 x 1e4 =
+{f(dev["portfolio_return_bps"], 1)} bps = {f(dev["episodes"], 0)} episodes x {f(unc["DEV"]["mean_portfolio_bps"], 1)} bps/episode.
+The per-position mean {f(dev["avg_net_return_bps_per_trade"], 1)} ≈ the per-episode
+mean {f(unc["DEV"]["mean_portfolio_bps"], 1)} because basket constituents share one
 episode. All three numbers are the *same economics* at different aggregation bases.
 
 ## Verdict
@@ -238,7 +238,7 @@ files["COST_ACCOUNTING.md"] = f"""# COST ACCOUNTING (§9)
 ## COST_MODEL_V3 recomputed independently
 
 `cost_model_v3_rt_bps(size_usd=500, horizon_minutes=30)` via the live `CostEngine`
-→ `{b['cost_model_v3_rt_bps']}` bps round-trip (never hardcoded; identical to the
+→ `{b["cost_model_v3_rt_bps"]}` bps round-trip (never hardcoded; identical to the
 builder baseline).
 
 ## Per-episode charge (correct simultaneous-basket handling)
@@ -247,16 +247,16 @@ builder baseline).
   round-trip fee on the same position.
 - Summed over a basket: `Σ alloc * 23.559/1e4 = 500 * 23.559/1e4 = **1.178 USD per
   basket round-trip**`.
-- Verified: charge per episode = `{f(turn['DEV']['cost_charged_per_episode_usd'],4)}`
-  (DEV), `{f(turn['VALIDATION']['cost_charged_per_episode_usd'],4)}` (VALIDATION).
+- Verified: charge per episode = `{f(turn["DEV"]["cost_charged_per_episode_usd"], 4)}`
+  (DEV), `{f(turn["VALIDATION"]["cost_charged_per_episode_usd"], 4)}` (VALIDATION).
 - Fees scale exactly with episode count, not constituent count:
-  DEV {f(turn['DEV']['episodes'],0)} episodes x 1.178 = {f(dev['total_fees_usd'],2)} = total fees ✓;
-  VALIDATION {f(turn['VALIDATION']['episodes'],0)} x 1.178 = {f(val['total_fees_usd'],2)} ✓.
+  DEV {f(turn["DEV"]["episodes"], 0)} episodes x 1.178 = {f(dev["total_fees_usd"], 2)} = total fees ✓;
+  VALIDATION {f(turn["VALIDATION"]["episodes"], 0)} x 1.178 = {f(val["total_fees_usd"], 2)} ✓.
 
 ## Verdict
 
 **NOT undercharged.** Each asset-position pays cost on its own allocation, so a
-single portfolio decision containing ~{f(turn['FULL']['avg_episode_size_names'],0)} asset
+single portfolio decision containing ~{f(turn["FULL"]["avg_episode_size_names"], 0)} asset
 trades still pays exactly **one** basket round-trip on 500 USD. There is no
 basket/holding cost leakage. Cost is charged **per round-trip per rebalance**, and
 that equals per-position x per-rebalance correctly aggregated.
@@ -269,18 +269,18 @@ whole basket each episode, so turnover is round-trip per episode.
 
 | metric | DEV | VALIDATION | FULL |
 |---|---|---|---|
-| episodes | {f(turn['DEV']['episodes'],0)} | {f(turn['VALIDATION']['episodes'],0)} | {f(turn['FULL']['episodes'],0)} |
-| entry notional USD | {f(turn['DEV']['entry_notional_usd'],0)} | {f(turn['VALIDATION']['entry_notional_usd'],0)} | {f(turn['FULL']['entry_notional_usd'],0)} |
-| exit notional USD | {f(turn['DEV']['exit_notional_usd'],0)} | {f(turn['VALIDATION']['exit_notional_usd'],0)} | {f(turn['FULL']['exit_notional_usd'],0)} |
-| **gross turnover USD** | {f(turn['DEV']['gross_turnover_usd'],0)} | {f(turn['VALIDATION']['gross_turnover_usd'],0)} | {f(turn['FULL']['gross_turnover_usd'],0)} |
-| total fees USD | {f(dev['total_fees_usd'],2)} | {f(val['total_fees_usd'],2)} | {f(full['total_fees_usd'],2)} |
+| episodes | {f(turn["DEV"]["episodes"], 0)} | {f(turn["VALIDATION"]["episodes"], 0)} | {f(turn["FULL"]["episodes"], 0)} |
+| entry notional USD | {f(turn["DEV"]["entry_notional_usd"], 0)} | {f(turn["VALIDATION"]["entry_notional_usd"], 0)} | {f(turn["FULL"]["entry_notional_usd"], 0)} |
+| exit notional USD | {f(turn["DEV"]["exit_notional_usd"], 0)} | {f(turn["VALIDATION"]["exit_notional_usd"], 0)} | {f(turn["FULL"]["exit_notional_usd"], 0)} |
+| **gross turnover USD** | {f(turn["DEV"]["gross_turnover_usd"], 0)} | {f(turn["VALIDATION"]["gross_turnover_usd"], 0)} | {f(turn["FULL"]["gross_turnover_usd"], 0)} |
+| total fees USD | {f(dev["total_fees_usd"], 2)} | {f(val["total_fees_usd"], 2)} | {f(full["total_fees_usd"], 2)} |
 
-- **Daily turnover (FULL)** = {f(turn['FULL']['gross_turnover_usd'],0)} / 2372 days ≈
-  **{f(turn['FULL']['gross_turnover_usd']/2372,1)} USD/day** on a 500 base.
+- **Daily turnover (FULL)** = {f(turn["FULL"]["gross_turnover_usd"], 0)} / 2372 days ≈
+  **{f(turn["FULL"]["gross_turnover_usd"] / 2372, 1)} USD/day** on a 500 base.
 - **Rebalance turnover** ≈ 500 in + ~500 out per episode = 2x500 per rebalance.
 - Costs are **not** undercharged because one decision spawns many asset trades
-  (see `COST_ACCOUNTING.md`): total fees {f(full['total_fees_usd'],2)} =
-  {f(turn['FULL']['episodes'],0)} x 1.178.
+  (see `COST_ACCOUNTING.md`): total fees {f(full["total_fees_usd"], 2)} =
+  {f(turn["FULL"]["episodes"], 0)} x 1.178.
 """
 
 files["CAPITAL_MODEL.md"] = f"""# CAPITAL MODEL (§11) — economically critical
@@ -289,10 +289,10 @@ files["CAPITAL_MODEL.md"] = f"""# CAPITAL MODEL (§11) — economically critical
 
 - The builder sets `alloc = notional / len(fillable)` with `notional = 500`, and
   every constituent `Trade.notional` equals that **allocation**, not 500.
-- Verified: average deployed capital per episode = `{f(turn['DEV']['avg_deployed_capital_usd'],2)}`
-  USD (DEV), `{f(turn['VALIDATION']['avg_deployed_capital_usd'],2)}` (VALIDATION) —
-  i.e. exactly 500 while long, regardless of basket size (~{f(turn['FULL']['avg_episode_size_names'],0)} names).
-- Average `Trade.notional` = {f(dev['avg_alloc_per_position'],4)} USD (DEV), {f(val['avg_alloc_per_position'],4)} (VALIDATION) — the per-name slice of 500.
+- Verified: average deployed capital per episode = `{f(turn["DEV"]["avg_deployed_capital_usd"], 2)}`
+  USD (DEV), `{f(turn["VALIDATION"]["avg_deployed_capital_usd"], 2)}` (VALIDATION) —
+  i.e. exactly 500 while long, regardless of basket size (~{f(turn["FULL"]["avg_episode_size_names"], 0)} names).
+- Average `Trade.notional` = {f(dev["avg_alloc_per_position"], 4)} USD (DEV), {f(val["avg_alloc_per_position"], 4)} (VALIDATION) — the per-name slice of 500.
 
 ## Model
 
@@ -318,18 +318,18 @@ episodes (marked at close_d)` — fixed-500, non-compounding, 1x.
 
 | metric | DEV | VALIDATION | FULL |
 |---|---|---|---|
-| **EQUITY_RETURN_BPS** | {f(eq['DEV']['equity_return_bps'],1)} | {f(eq['VALIDATION']['equity_return_bps'],1)} | {f(eq['FULL']['equity_return_bps'],1)} |
-| final equity USD | {f(eq['DEV']['final_equity_usd'],2)} | {f(eq['VALIDATION']['final_equity_usd'],2)} | {f(eq['FULL']['final_equity_usd'],2)} |
-| **EQUITY_MAX_DRAWDOWN_BPS** | {f(eq['DEV']['equity_max_drawdown_bps'],1)} | {f(eq['VALIDATION']['equity_max_drawdown_bps'],1)} | {f(eq['FULL']['equity_max_drawdown_bps'],1)} |
-| EQUITY_MAX_DRAWDOWN USD | {f(eq['DEV']['equity_max_drawdown_usd'],2)} | {f(eq['VALIDATION']['equity_max_drawdown_usd'],2)} | {f(eq['FULL']['equity_max_drawdown_usd'],2)} |
+| **EQUITY_RETURN_BPS** | {f(eq["DEV"]["equity_return_bps"], 1)} | {f(eq["VALIDATION"]["equity_return_bps"], 1)} | {f(eq["FULL"]["equity_return_bps"], 1)} |
+| final equity USD | {f(eq["DEV"]["final_equity_usd"], 2)} | {f(eq["VALIDATION"]["final_equity_usd"], 2)} | {f(eq["FULL"]["final_equity_usd"], 2)} |
+| **EQUITY_MAX_DRAWDOWN_BPS** | {f(eq["DEV"]["equity_max_drawdown_bps"], 1)} | {f(eq["VALIDATION"]["equity_max_drawdown_bps"], 1)} | {f(eq["FULL"]["equity_max_drawdown_bps"], 1)} |
+| EQUITY_MAX_DRAWDOWN USD | {f(eq["DEV"]["equity_max_drawdown_usd"], 2)} | {f(eq["VALIDATION"]["equity_max_drawdown_usd"], 2)} | {f(eq["FULL"]["equity_max_drawdown_usd"], 2)} |
 
 `EQUITY_RETURN` == `portfolio_net_bps` (÷500) — the two agree exactly, confirming
 the capital base is 500 total. A valid equity curve **does** exist here, so
 `EQUITY_METRICS_UNDEFINED` is **not** invoked.
 
-**Caveat**: an equity return of {f(eq['FULL']['equity_return_bps']/10000,2)}x on a
+**Caveat**: an equity return of {f(eq["FULL"]["equity_return_bps"] / 10000, 2)}x on a
 500 base over 6.4 years is *non-compounding* (fixed bet sizing), so it is not an
-annualised CAGR. The peak-to-trough USD drawdown of ~{f(eq['DEV']['equity_max_drawdown_usd'],0)} USD
+annualised CAGR. The peak-to-trough USD drawdown of ~{f(eq["DEV"]["equity_max_drawdown_usd"], 0)} USD
 on 500 deployed is **~47% of deployed capital** — economically severe for a
 long-only crypto timer.
 """
@@ -343,8 +343,8 @@ sequence (emission order) divided by 500 x 1e4:
 
 | split | builder | verifier (reproduced) |
 |---|---|---|
-| DEV | 4704.519 | {f(dev['pnl_drawdown_bps_of_reference_notional'],3)} |
-| VALIDATION | 4534.442 | {f(val['pnl_drawdown_bps_of_reference_notional'],3)} |
+| DEV | 4704.519 | {f(dev["pnl_drawdown_bps_of_reference_notional"], 3)} |
+| VALIDATION | 4534.442 | {f(val["pnl_drawdown_bps_of_reference_notional"], 3)} |
 
 **Renamed conceptually**: `PNL_DRAWDOWN_BPS_OF_REFERENCE_NOTIONAL`.
 
@@ -357,11 +357,11 @@ unrealised excursion of open positions.
 
 | split | EQUITY_MAX_DRAWDOWN_BPS (mark-to-market) | episode-ordered realised DD bps |
 |---|---|---|
-| DEV | {f(eq['DEV']['equity_max_drawdown_bps'],1)} | {f(D['exit_ordered_drawdown']['DEV']['episode_ordered_drawdown_bps_of_500'],1)} |
-| VALIDATION | {f(eq['VALIDATION']['equity_max_drawdown_bps'],1)} | {f(D['exit_ordered_drawdown']['VALIDATION']['episode_ordered_drawdown_bps_of_500'],1)} |
+| DEV | {f(eq["DEV"]["equity_max_drawdown_bps"], 1)} | {f(D["exit_ordered_drawdown"]["DEV"]["episode_ordered_drawdown_bps_of_500"], 1)} |
+| VALIDATION | {f(eq["VALIDATION"]["equity_max_drawdown_bps"], 1)} | {f(D["exit_ordered_drawdown"]["VALIDATION"]["episode_ordered_drawdown_bps_of_500"], 1)} |
 
-The mark-to-market equity DD ({f(eq['DEV']['equity_max_drawdown_bps'],1)} bps DEV) is
-close to but distinct from the PnL drawdown ({f(dev['pnl_drawdown_bps_of_reference_notional'],1)} bps):
+The mark-to-market equity DD ({f(eq["DEV"]["equity_max_drawdown_bps"], 1)} bps DEV) is
+close to but distinct from the PnL drawdown ({f(dev["pnl_drawdown_bps_of_reference_notional"], 1)} bps):
 the realised-order metric slightly understates the true excursion. Both are now
 reported under unambiguous names.
 """
@@ -373,10 +373,10 @@ Two valid but different definitions; both are reported.
 | definition | DEV | VALIDATION |
 |---|---|---|
 | **builder** `sum(net_bps>0)/|sum(net_bps<=0)|` (bps-space, equal position weight) | 2.9298 | 1.3746 |
-| **verifier** gross profit USD / |gross loss USD| (**currency**, economically standard) | **{f(dev['profit_factor'],4)}** | **{f(val['profit_factor'],4)}** |
+| **verifier** gross profit USD / |gross loss USD| (**currency**, economically standard) | **{f(dev["profit_factor"], 4)}** | **{f(val["profit_factor"], 4)}** |
 
-- DEV gross profit {f(dev['gross_profit_usd'],2)} / gross loss {f(abs(dev['gross_loss_usd']),2)} = {f(dev['profit_factor'],4)}.
-- VALIDATION gross profit {f(val['gross_profit_usd'],2)} / gross loss {f(abs(val['gross_loss_usd']),2)} = {f(val['profit_factor'],4)}.
+- DEV gross profit {f(dev["gross_profit_usd"], 2)} / gross loss {f(abs(dev["gross_loss_usd"]), 2)} = {f(dev["profit_factor"], 4)}.
+- VALIDATION gross profit {f(val["gross_profit_usd"], 2)} / gross loss {f(abs(val["gross_loss_usd"]), 2)} = {f(val["profit_factor"], 4)}.
 
 The builder's ≈2.93 / ≈1.37 are **reproduced exactly** as the bps-space ratio. The
 currency PF is slightly higher because large winners sit in larger baskets. Both
@@ -390,50 +390,52 @@ Frozen split 2019-01-01..2024-01-01; raw bars; verifier-owned metrics.
 
 | metric | builder | verifier | match |
 |---|---|---|---|
-| trades | 2998 | {f(dev['trades'],0)} | ✓ |
-| episodes | (n/a) | {f(dev['episodes'],0)} | — |
-| gross PnL bps/pos | 1271.375 | {f(dev['avg_gross_return_bps_per_trade'],3)} | ✓ |
-| net PnL bps/pos | 1247.816 | {f(dev['avg_net_return_bps_per_trade'],3)} | ✓ |
-| total net USD | 2666.0 | {f(dev['total_net_pnl_usd'],2)} | ✓ |
-| portfolio net bps | 53319.999 | {f(dev['portfolio_return_bps'],1)} | ✓ |
-| fees USD | 49.47 | {f(dev['total_fees_usd'],2)} | ✓ |
-| win rate | 0.4253 | {f(dev['win_rate'],4)} | ✓ |
-| PF | 2.9298 | {f(dev['profit_factor'],4)} (currency) / 2.9298 (bps) | ✓ (space) |
-| PnL drawdown bps | 4704.519 | {f(dev['pnl_drawdown_bps_of_reference_notional'],3)} | ✓ |
+| trades | 2998 | {f(dev["trades"], 0)} | ✓ |
+| episodes | (n/a) | {f(dev["episodes"], 0)} | — |
+| gross PnL bps/pos | 1271.375 | {f(dev["avg_gross_return_bps_per_trade"], 3)} | ✓ |
+| net PnL bps/pos | 1247.816 | {f(dev["avg_net_return_bps_per_trade"], 3)} | ✓ |
+| total net USD | 2666.0 | {f(dev["total_net_pnl_usd"], 2)} | ✓ |
+| portfolio net bps | 53319.999 | {f(dev["portfolio_return_bps"], 1)} | ✓ |
+| fees USD | 49.47 | {f(dev["total_fees_usd"], 2)} | ✓ |
+| win rate | 0.4253 | {f(dev["win_rate"], 4)} | ✓ |
+| PF | 2.9298 | {f(dev["profit_factor"], 4)} (currency) / 2.9298 (bps) | ✓ (space) |
+| PnL drawdown bps | 4704.519 | {f(dev["pnl_drawdown_bps_of_reference_notional"], 3)} | ✓ |
 
 Entry-price integrity: **2998/2998** fills equal the raw next-open bar (0 mismatches).
 `DEV_PASS` confirmed. No builder result parser was used as authority.
 """
 
-files["VALIDATION_REPRODUCTION.md"] = f"""# VALIDATION REPRODUCTION (§17) — most important economic evidence
+files[
+    "VALIDATION_REPRODUCTION.md"
+] = f"""# VALIDATION REPRODUCTION (§17) — most important economic evidence
 
 Frozen split 2024-01-01..2025-07-01.
 
 | metric | builder | verifier | match |
 |---|---|---|---|
-| trades | 1534 | {f(val['trades'],0)} | ✓ |
-| episodes | (n/a) | {f(val['episodes'],0)} | — |
-| gross PnL bps/pos | 262.281 | {f(val['avg_gross_return_bps_per_trade'],3)} | ✓ |
-| net PnL bps/pos | 238.722 | {f(val['avg_net_return_bps_per_trade'],3)} | ✓ |
-| total net USD | 192.11 | {f(val['total_net_pnl_usd'],2)} | ✓ |
-| portfolio net bps | 3842.274 | {f(val['portfolio_return_bps'],1)} | ✓ |
-| PF | 1.3746 | {f(val['profit_factor'],4)} (currency) | ✓ (space) |
-| win rate | 0.2855 | {f(val['win_rate'],4)} | ✓ |
+| trades | 1534 | {f(val["trades"], 0)} | ✓ |
+| episodes | (n/a) | {f(val["episodes"], 0)} | — |
+| gross PnL bps/pos | 262.281 | {f(val["avg_gross_return_bps_per_trade"], 3)} | ✓ |
+| net PnL bps/pos | 238.722 | {f(val["avg_net_return_bps_per_trade"], 3)} | ✓ |
+| total net USD | 192.11 | {f(val["total_net_pnl_usd"], 2)} | ✓ |
+| portfolio net bps | 3842.274 | {f(val["portfolio_return_bps"], 1)} | ✓ |
+| PF | 1.3746 | {f(val["profit_factor"], 4)} (currency) | ✓ (space) |
+| win rate | 0.2855 | {f(val["win_rate"], 4)} | ✓ |
 
 ## Is VALIDATION *genuinely* positive under correct accounting?
 
 **Directionally yes; statistically not demonstrable.**
 
-- Portfolio return {f(val['portfolio_return_bps'],1)} bps on 500 = +{f(val['total_net_pnl_usd'],2)} USD.
-- **Per-episode mean** = {f(unc['VALIDATION']['mean_portfolio_bps'],1)} bps over only
-  **{f(val['episodes'],0)} basket episodes**; block-bootstrap 95% CI
-  **[+{f(unc['VALIDATION']['mean_ci95'][0],0)}, +{f(unc['VALIDATION']['mean_ci95'][1],0)}] bps**
-  — **includes zero**; P(mean ≤ 0) ≈ {f(unc['VALIDATION']['mean_p_leq_zero'],2)}.
-- Median position return is **-{f(abs(val['median_net_return_bps_per_trade']),0)} bps**:
+- Portfolio return {f(val["portfolio_return_bps"], 1)} bps on 500 = +{f(val["total_net_pnl_usd"], 2)} USD.
+- **Per-episode mean** = {f(unc["VALIDATION"]["mean_portfolio_bps"], 1)} bps over only
+  **{f(val["episodes"], 0)} basket episodes**; block-bootstrap 95% CI
+  **[+{f(unc["VALIDATION"]["mean_ci95"][0], 0)}, +{f(unc["VALIDATION"]["mean_ci95"][1], 0)}] bps**
+  — **includes zero**; P(mean ≤ 0) ≈ {f(unc["VALIDATION"]["mean_p_leq_zero"], 2)}.
+- Median position return is **-{f(abs(val["median_net_return_bps_per_trade"]), 0)} bps**:
   the positive total is a right-tail artifact of a few episodes.
 
 So VALIDATION does not repeat the DEV→negative reversal (unlike EXP-ARP-008/021/022),
-but with n = {f(val['episodes'],0)} independent episodes it cannot reject zero. This
+but with n = {f(val["episodes"], 0)} independent episodes it cannot reject zero. This
 is **positive-but-insufficient**, not a demonstrated edge.
 """
 
@@ -453,15 +455,15 @@ Builder `beta_decomposition` reproduced by independent OLS/through-origin regres
 
 | sample | beta | mean pos return | mean BTC return | residual stdev |
 |---|---|---|---|---|
-| FULL | **{f(beta['FULL']['market_beta'],4)}** (builder 1.7143) | 0.097695 | 0.022534 | {f(beta['FULL']['residual_stdev'],6)} |
-| DEV | {f(beta['DEV']['market_beta'],4)} | — | — | — |
-| VALIDATION | {f(beta['VALIDATION']['market_beta'],4)} | — | — | — |
+| FULL | **{f(beta["FULL"]["market_beta"], 4)}** (builder 1.7143) | 0.097695 | 0.022534 | {f(beta["FULL"]["residual_stdev"], 6)} |
+| DEV | {f(beta["DEV"]["market_beta"], 4)} | — | — | — |
+| VALIDATION | {f(beta["VALIDATION"]["market_beta"], 4)} | — | — | — |
 
-Beta ≈ 1.71 (VAL {f(beta['VALIDATION']['market_beta'],4)}) ⇒ **the basket is ~1.7x
+Beta ≈ 1.71 (VAL {f(beta["VALIDATION"]["market_beta"], 4)}) ⇒ **the basket is ~1.7x
 BTC beta**. Note the dependent variable is per-position and BTC positions appear on
 *both* sides (BTC is a constituent), and the 4617 "observations" are ~
-{f(turn['FULL']['avg_episode_size_names'],0)}-way correlated within only
-{f(full['episodes'],0)} episodes — so the naive observation count is not an
+{f(turn["FULL"]["avg_episode_size_names"], 0)}-way correlated within only
+{f(full["episodes"], 0)} episodes — so the naive observation count is not an
 independent sample.
 
 **The residual mean is NOT "alpha" by itself** — see `TIMING_ALPHA_ANALYSIS.md`.
@@ -472,7 +474,7 @@ files["TIMING_ALPHA_ANALYSIS.md"] = f"""# TIMING ALPHA ANALYSIS (§19)
 ## What the builder calls "timing alpha"
 
 `timing_alpha` = **mean residual of a through-origin regression of gross
-per-position return on BTC return** = {f(beta['FULL']['timing_alpha_residual_mean'],6)}
+per-position return on BTC return** = {f(beta["FULL"]["timing_alpha_residual_mean"], 6)}
 (FULL). Units: a **fractional return per position-episode** (0.0591 = +5.9% per
 position over its holding window), **not** an alpha in bps/day and **not** a
 risk-adjusted return.
@@ -487,41 +489,45 @@ Independent tests:
 
 | test | statistic | value | interpretation |
 |---|---|---|---|
-| naive SE (per position) | SE = {f(beta['FULL']['se_naive_per_position'],6)} → t = {f(beta['FULL']['t_naive'],2)} | huge | **invalid**: ignores within-episode correlation |
-| **clustered by entry day** | SE = {f(beta['FULL']['se_clustered_by_entry_day'],6)} → t = {f(beta['FULL']['t_clustered'],2)} (n_days = {f(beta['FULL']['n_distinct_entry_days'],0)}) | t ≈ 2.1 | weak, borderline |
-| OLS **with intercept** (FULL) | intercept = {f(beta['FULL']['ols_with_intercept_intercept'],6)} ± {f(beta['FULL']['ols_with_intercept_se_intercept'],6)} → t = {f(beta['FULL']['ols_with_intercept_t'],2)} | positive | positive intercept on FULL |
-| OLS with intercept (**VALIDATION**) | intercept = {f(beta['VALIDATION']['ols_with_intercept_intercept'],6)} ± {f(beta['VALIDATION']['ols_with_intercept_se_intercept'],6)} → t = {f(beta['VALIDATION']['ols_with_intercept_t'],2)} | **negative** | does not carry forward |
-| OLS with intercept (**DEV**) | t = {f(beta['DEV']['ols_with_intercept_t'],2)} | positive | DEV-only |
+| naive SE (per position) | SE = {f(beta["FULL"]["se_naive_per_position"], 6)} → t = {f(beta["FULL"]["t_naive"], 2)} | huge | **invalid**: ignores within-episode correlation |
+| **clustered by entry day** | SE = {f(beta["FULL"]["se_clustered_by_entry_day"], 6)} → t = {f(beta["FULL"]["t_clustered"], 2)} (n_days = {f(beta["FULL"]["n_distinct_entry_days"], 0)}) | t ≈ 2.1 | weak, borderline |
+| OLS **with intercept** (FULL) | intercept = {f(beta["FULL"]["ols_with_intercept_intercept"], 6)} ± {f(beta["FULL"]["ols_with_intercept_se_intercept"], 6)} → t = {f(beta["FULL"]["ols_with_intercept_t"], 2)} | positive | positive intercept on FULL |
+| OLS with intercept (**VALIDATION**) | intercept = {f(beta["VALIDATION"]["ols_with_intercept_intercept"], 6)} ± {f(beta["VALIDATION"]["ols_with_intercept_se_intercept"], 6)} → t = {f(beta["VALIDATION"]["ols_with_intercept_t"], 2)} | **negative** | does not carry forward |
+| OLS with intercept (**DEV**) | t = {f(beta["DEV"]["ols_with_intercept_t"], 2)} | positive | DEV-only |
 
 ## Verdict
 
 A `+0.0591` residual mean is **not demonstrated alpha**. Once the cross-sectional
 dependence is respected (clustering by entry day) the FULL-window effect is
 borderline (t ≈ 2.1), and on the untouched VALIDATION window the intercept is
-**negative** (t = {f(beta['VALIDATION']['ols_with_intercept_t'],2)}). Any timing
+**negative** (t = {f(beta["VALIDATION"]["ols_with_intercept_t"], 2)}). Any timing
 "alpha" present in DEV does not survive into VALIDATION with a well-specified model.
 """
 
-files["REGIME_ANALYSIS.md"] = """# REGIME ANALYSIS (§20)
+files["REGIME_ANALYSIS.md"] = (
+    """# REGIME ANALYSIS (§20)
 
 Builder `88.6%` bull-share reproduced. **Total net by regime, with sample sizes:**
 
 | regime | asset-positions | net USD | % of total net | positive net USD | share of positive net |
 |---|---|---|---|---|---|
-""" + "\n".join(
-    f"| {k} | {f(v['trades'],0)} | {f(v['net_usd'],2)} | {f(v['net_pct_of_total'],2)}% | {f(v['positive_net_usd'],2)} | {f(v['share_of_all_positive_net'],4)} |"
-    for k, v in reg["by_regime"].items()
-) + f"""
+"""
+    + "\n".join(
+        f"| {k} | {f(v['trades'], 0)} | {f(v['net_usd'], 2)} | {f(v['net_pct_of_total'], 2)}% | {f(v['positive_net_usd'], 2)} | {f(v['share_of_all_positive_net'], 4)} |"
+        for k, v in reg["by_regime"].items()
+    )
+    + f"""
 
-- total positive net USD: {f(reg['total_positive_net_usd'],2)}
-- **BULL share of all positive net = {f(reg['by_regime']['BULL']['share_of_all_positive_net'],4)}** (builder 0.886) ✓
-- **BULL share of TOTAL net = {f(reg['by_regime']['BULL']['net_pct_of_total'],2)}%**
+- total positive net USD: {f(reg["total_positive_net_usd"], 2)}
+- **BULL share of all positive net = {f(reg["by_regime"]["BULL"]["share_of_all_positive_net"], 4)}** (builder 0.886) ✓
+- **BULL share of TOTAL net = {f(reg["by_regime"]["BULL"]["net_pct_of_total"], 2)}%**
 
 RANGE is absent because `RegimeEngine` emits BULL/BEAR/HIGH_VOL/LOW_VOL/MIXED (the
 manifest's "RANGE" maps to MIXED here; reported explicitly rather than silently
 dropped). The result is unambiguously **BULL-dominated**: the entire positive net is
 a bull-market phenomenon; BEAR/LOW_VOL add little and HIGH_VOL/MIXED are negative.
 """
+)
 
 files["ALWAYS_LONG_CONTROL.md"] = f"""# ALWAYS-LONG CONTROL (§21) — critical
 
@@ -531,18 +537,18 @@ re-deployed every 30 days by the same `max_hold` cap).
 
 | strategy | portfolio return bps | total net USD | asset-positions | episodes |
 |---|---|---|---|---|
-| ALWAYS_LONG_SAME_BASKET | {f(gva['always_long_same_basket']['portfolio_return_bps'],1)} | {f(gva['always_long_same_basket']['total_net_pnl_usd'],2)} | {f(gva['always_long_same_basket']['trades'],0)} | {f(gva['always_long_same_basket']['episodes'],0)} |
-| BREADTH GATE (frozen) | {f(gva['breadth_gate']['portfolio_return_bps'],1)} | {f(gva['breadth_gate']['total_net_pnl_usd'],2)} | {f(gva['breadth_gate']['trades'],0)} | {f(gva['breadth_gate']['episodes'],0)} |
-| **value-add** | **+{f(gva['breadth_value_add_bps'],1)}** | **+{f(gva['breadth_value_add_usd'],2)}** | | |
+| ALWAYS_LONG_SAME_BASKET | {f(gva["always_long_same_basket"]["portfolio_return_bps"], 1)} | {f(gva["always_long_same_basket"]["total_net_pnl_usd"], 2)} | {f(gva["always_long_same_basket"]["trades"], 0)} | {f(gva["always_long_same_basket"]["episodes"], 0)} |
+| BREADTH GATE (frozen) | {f(gva["breadth_gate"]["portfolio_return_bps"], 1)} | {f(gva["breadth_gate"]["total_net_pnl_usd"], 2)} | {f(gva["breadth_gate"]["trades"], 0)} | {f(gva["breadth_gate"]["episodes"], 0)} |
+| **value-add** | **+{f(gva["breadth_value_add_bps"], 1)}** | **+{f(gva["breadth_value_add_usd"], 2)}** | | |
 
 ## Isolating timing value from crypto beta
 
-- Always-long earns **{f(gva['always_long_same_basket']['portfolio_return_bps'],1)} bps**;
-  the gate earns {f(gva['breadth_gate']['portfolio_return_bps'],1)} bps.
-- The gate's **timing value-add is only +{f(gva['breadth_value_add_bps'],1)} bps**
-  (+{f(gva['breadth_value_add_usd'],2)} USD) over {f(2025-2019,0)} years —
-  **~{f(gva['breadth_value_add_bps']/gva['always_long_same_basket']['portfolio_return_bps']*100,1)}%** of the always-long result.
-- **≈{f(gva['always_long_same_basket']['portfolio_return_bps']/gva['breadth_gate']['portfolio_return_bps']*100,0)}% of the gate's profit is simply long crypto beta**, not timing.
+- Always-long earns **{f(gva["always_long_same_basket"]["portfolio_return_bps"], 1)} bps**;
+  the gate earns {f(gva["breadth_gate"]["portfolio_return_bps"], 1)} bps.
+- The gate's **timing value-add is only +{f(gva["breadth_value_add_bps"], 1)} bps**
+  (+{f(gva["breadth_value_add_usd"], 2)} USD) over {f(2025 - 2019, 0)} years —
+  **~{f(gva["breadth_value_add_bps"] / gva["always_long_same_basket"]["portfolio_return_bps"] * 100, 1)}%** of the always-long result.
+- **≈{f(gva["always_long_same_basket"]["portfolio_return_bps"] / gva["breadth_gate"]["portfolio_return_bps"] * 100, 0)}% of the gate's profit is simply long crypto beta**, not timing.
 
 Verdict: the breadth gate is a **beta-exposure timer** with a small, marginal
 timing increment — not an independent source of edge.
@@ -550,18 +556,18 @@ timing increment — not an independent source of edge.
 
 files["RANDOM_TIMING_CONTROL.md"] = f"""# RANDOM TIMING CONTROL (§22) — diagnostic only
 
-Same number of LONG days ({f(rnd['long_days'],0)}), same universe; the *timing* of
-exposure is randomized with **fixed recorded seeds** `{rnd['seeds'][0]}..{rnd['seeds'][-1]}`.
+Same number of LONG days ({f(rnd["long_days"], 0)}), same universe; the *timing* of
+exposure is randomized with **fixed recorded seeds** `{rnd["seeds"][0]}..{rnd["seeds"][-1]}`.
 Return = sum of daily equal-weight eligible-universe returns over the chosen days
 (500 base, bps). Not promotable — a diagnostic.
 
 | quantity | portfolio bps |
 |---|---|
-| REAL breadth-gate exposure days | {f(rnd['real_portfolio_bps'],1)} |
-| random mean | {f(rnd['random_mean_portfolio_bps'],1)} |
-| random p05 | {f(rnd['random_p05'],1)} |
-| random p95 | {f(rnd['random_p95'],1)} |
-| **real percentile** | **{f(rnd['real_percentile'],4)}** |
+| REAL breadth-gate exposure days | {f(rnd["real_portfolio_bps"], 1)} |
+| random mean | {f(rnd["random_mean_portfolio_bps"], 1)} |
+| random p05 | {f(rnd["random_p05"], 1)} |
+| random p95 | {f(rnd["random_p95"], 1)} |
+| **real percentile** | **{f(rnd["real_percentile"], 4)}** |
 
 ## Interpretation (careful)
 
@@ -574,28 +580,32 @@ tradeable alternative. It is therefore a weak positive signal of *clustering*, n
 proof of predictive timing — and it cannot be promoted.
 """
 
-files["BREADTH_PREDICTIVE_VALUE.md"] = """# BREADTH PREDICTIVE VALUE (§23)
+files["BREADTH_PREDICTIVE_VALUE.md"] = (
+    """# BREADTH PREDICTIVE VALUE (§23)
 
 Only the horizons **pre-declared in ARP-011** (1/5/10/20/30 d) are reported.
 
 | horizon | corr(B_t, fwd basket return) | block-bootstrap SE (20d blocks) | n |
 |---|---|---|---|
-""" + "\n".join(
-    f"| {h.replace('h','')}d | {f(rp[h]['corr'],4)} | {f(rp[h]['corr_se_block20'],4)} | {rp[h]['n']} |"
-    for h in ["h1", "h5", "h10", "h20", "h30"]
-) + f"""
+"""
+    + "\n".join(
+        f"| {h.replace('h', '')}d | {f(rp[h]['corr'], 4)} | {f(rp[h]['corr_se_block20'], 4)} | {rp[h]['n']} |"
+        for h in ["h1", "h5", "h10", "h20", "h30"]
+    )
+    + f"""
 
-- `observations = {rp['observations']}` daily decision points.
-- Strongest at **10d**: corr {f(rp['h10']['corr'],4)} ± {f(rp['h10']['corr_se_block20'],4)}
-  (≈{f(rp['h10']['corr']/rp['h10']['corr_se_block20'],1)}sigma) and **5d**:
-  {f(rp['h5']['corr'],4)} ± {f(rp['h5']['corr_se_block20'],4)}.
+- `observations = {rp["observations"]}` daily decision points.
+- Strongest at **10d**: corr {f(rp["h10"]["corr"], 4)} ± {f(rp["h10"]["corr_se_block20"], 4)}
+  (≈{f(rp["h10"]["corr"] / rp["h10"]["corr_se_block20"], 1)}sigma) and **5d**:
+  {f(rp["h5"]["corr"], 4)} ± {f(rp["h5"]["corr_se_block20"], 4)}.
 - At **20d/30d the correlation is statistically indistinguishable from zero**
-  ({f(rp['h20']['corr'],4)}, {f(rp['h30']['corr'],4)}).
+  ({f(rp["h20"]["corr"], 4)}, {f(rp["h30"]["corr"], 4)}).
 
 So breadth carries a **weak, short-horizon** (≤10d) predictive signal, with effect
 size well under R²≈0.03. It is not a strong return predictor and the point estimates
 are fragile across horizons.
 """
+)
 
 files["STATISTICAL_UNCERTAINTY.md"] = f"""# STATISTICAL UNCERTAINTY (§24)
 
@@ -604,66 +614,70 @@ temporal dependence and overlapping exposure.
 
 | split | episodes | mean bps/episode | 95% CI | bootstrap SE | P(mean ≤ 0) |
 |---|---|---|---|---|---|
-| DEV | {unc['DEV']['episodes']} | {f(unc['DEV']['mean_portfolio_bps'],1)} | [{f(unc['DEV']['mean_ci95'][0],0)}, {f(unc['DEV']['mean_ci95'][1],0)}] | {f(unc['DEV']['mean_bootstrap_se'],1)} | {f(unc['DEV']['mean_p_leq_zero'],4)} |
-| VALIDATION | {unc['VALIDATION']['episodes']} | {f(unc['VALIDATION']['mean_portfolio_bps'],1)} | [{f(unc['VALIDATION']['mean_ci95'][0],0)}, {f(unc['VALIDATION']['mean_ci95'][1],0)}] | {f(unc['VALIDATION']['mean_bootstrap_se'],1)} | {f(unc['VALIDATION']['mean_p_leq_zero'],4)} |
-| FULL | {unc['FULL']['episodes']} | {f(unc['FULL']['mean_portfolio_bps'],1)} | [{f(unc['FULL']['mean_ci95'][0],0)}, {f(unc['FULL']['mean_ci95'][1],0)}] | {f(unc['FULL']['mean_bootstrap_se'],1)} | {f(unc['FULL']['mean_p_leq_zero'],4)} |
+| DEV | {unc["DEV"]["episodes"]} | {f(unc["DEV"]["mean_portfolio_bps"], 1)} | [{f(unc["DEV"]["mean_ci95"][0], 0)}, {f(unc["DEV"]["mean_ci95"][1], 0)}] | {f(unc["DEV"]["mean_bootstrap_se"], 1)} | {f(unc["DEV"]["mean_p_leq_zero"], 4)} |
+| VALIDATION | {unc["VALIDATION"]["episodes"]} | {f(unc["VALIDATION"]["mean_portfolio_bps"], 1)} | [{f(unc["VALIDATION"]["mean_ci95"][0], 0)}, {f(unc["VALIDATION"]["mean_ci95"][1], 0)}] | {f(unc["VALIDATION"]["mean_bootstrap_se"], 1)} | {f(unc["VALIDATION"]["mean_p_leq_zero"], 4)} |
+| FULL | {unc["FULL"]["episodes"]} | {f(unc["FULL"]["mean_portfolio_bps"], 1)} | [{f(unc["FULL"]["mean_ci95"][0], 0)}, {f(unc["FULL"]["mean_ci95"][1], 0)}] | {f(unc["FULL"]["mean_bootstrap_se"], 1)} | {f(unc["FULL"]["mean_p_leq_zero"], 4)} |
 
 ## Reading
 
-- DEV is robustly positive (P(≤0) = {f(unc['DEV']['mean_p_leq_zero'],3)}).
-- **VALIDATION is NOT**: its 95% CI **includes zero** and the bootstrap puts ~{f(unc['VALIDATION']['mean_p_leq_zero']*100,0)}% mass at or below zero.
+- DEV is robustly positive (P(≤0) = {f(unc["DEV"]["mean_p_leq_zero"], 3)}).
+- **VALIDATION is NOT**: its 95% CI **includes zero** and the bootstrap puts ~{f(unc["VALIDATION"]["mean_p_leq_zero"] * 100, 0)}% mass at or below zero.
 - The headline "net expectancy" of a whole split hides this because it pools thousands of correlated positions; at the correct (episode) resolution VALIDATION is statistically indistinguishable from zero.
 """
 
 files["EFFECTIVE_SAMPLE_SIZE.md"] = f"""# EFFECTIVE SAMPLE SIZE (§25)
 
 2998 / 1534 **asset-positions** massively overstate independent evidence because
-~{f(turn['FULL']['avg_episode_size_names'],0)} positions are opened **simultaneously**
+~{f(turn["FULL"]["avg_episode_size_names"], 0)} positions are opened **simultaneously**
 inside one basket decision.
 
 | level | DEV | VALIDATION | FULL |
 |---|---|---|---|
-| asset-positions ("trades") | {ess['asset_positions_DEV']} | {ess['asset_positions_VALIDATION']} | {ess['asset_positions_FULL']} |
-| **basket episodes (independent rebalances)** | **{ess['basket_episodes_DEV']}** | **{ess['basket_episodes_VALIDATION']}** | **{ess['basket_episodes_FULL']}** |
-| daily decisions | {ess['daily_decisions_DEV']} | n/a | {ess['daily_decisions_FULL']} |
-| constituents / episode | ~71 | ~110 | {f(ess['avg_constituents_per_episode'],0)} |
+| asset-positions ("trades") | {ess["asset_positions_DEV"]} | {ess["asset_positions_VALIDATION"]} | {ess["asset_positions_FULL"]} |
+| **basket episodes (independent rebalances)** | **{ess["basket_episodes_DEV"]}** | **{ess["basket_episodes_VALIDATION"]}** | **{ess["basket_episodes_FULL"]}** |
+| daily decisions | {ess["daily_decisions_DEV"]} | n/a | {ess["daily_decisions_FULL"]} |
+| constituents / episode | ~71 | ~110 | {f(ess["avg_constituents_per_episode"], 0)} |
 
 ## Effective sample estimate
 
-- DEV: {ess['asset_positions_DEV']} positions ÷ {ess['basket_episodes_DEV']} episodes ≈
-  shrinkage of **~{f(ess['asset_positions_DEV']/ess['basket_episodes_DEV'],0)}x**.
-- **VALIDATION independent evidence ≈ {ess['basket_episodes_VALIDATION']} episodes.**
+- DEV: {ess["asset_positions_DEV"]} positions ÷ {ess["basket_episodes_DEV"]} episodes ≈
+  shrinkage of **~{f(ess["asset_positions_DEV"] / ess["basket_episodes_DEV"], 0)}x**.
+- **VALIDATION independent evidence ≈ {ess["basket_episodes_VALIDATION"]} episodes.**
 - A defensible effective-n is bounded by the **episode count**, not the position
-  count. On DEV the effective n ≈ {ess['basket_episodes_DEV']}; on VALIDATION ≈
-  {ess['basket_episodes_VALIDATION']}.
+  count. On DEV the effective n ≈ {ess["basket_episodes_DEV"]}; on VALIDATION ≈
+  {ess["basket_episodes_VALIDATION"]}.
 
 This is why every uncertainty estimate in `STATISTICAL_UNCERTAINTY.md` is computed on
 episodes. Any p-value or CI built from the 4617 positions would be inflated by roughly
 an order of magnitude.
 """
 
-files["ROBUSTNESS_REPRODUCTION.md"] = f"""# ROBUSTNESS REPRODUCTION (§26)
+files["ROBUSTNESS_REPRODUCTION.md"] = (
+    f"""# ROBUSTNESS REPRODUCTION (§26)
 
-All **{rob['positive_count']}/{rob['total']}** pre-declared perturbations, re-run on
+All **{rob["positive_count"]}/{rob["total"]}** pre-declared perturbations, re-run on
 VALIDATION with **corrected economic accounting** (total net USD > 0, not bps-only).
 The builder ran 5 config perturbations + 3 cost multiples = 8; the 5 leave-one-out
 top-5 assets were also reproduced earlier but are not part of the 8.
 
 | perturbation | asset-positions | net USD | portfolio bps | expectancy bps | PASS |
 |---|---|---|---|---|---|
-""" + "\n".join(
-    f"| {k} | {f(v['trades'],0)} | {f(v['total_net_pnl_usd'],2)} | {f(v['portfolio_return_bps'],1)} | {f(v['expectancy_net_bps'],1)} | {'✓' if v['positive'] else '✗'} |"
-    for k, v in rob["perturbations"].items()
-) + f"""
+"""
+    + "\n".join(
+        f"| {k} | {f(v['trades'], 0)} | {f(v['total_net_pnl_usd'], 2)} | {f(v['portfolio_return_bps'], 1)} | {f(v['expectancy_net_bps'], 1)} | {'✓' if v['positive'] else '✗'} |"
+        for k, v in rob["perturbations"].items()
+    )
+    + f"""
 
-- positive fraction: **{f(rob['positive_fraction'],4)}**; reproduced: **{rob['reproduced']}**.
+- positive fraction: **{f(rob["positive_fraction"], 4)}**; reproduced: **{rob["reproduced"]}**.
 - A perturbation counts PASS only if **corrected net economics remain positive** —
-  all {rob['total']} do.
+  all {rob["total"]} do.
 
 **Caveat**: all 8 are re-runs on the *same* VALIDATION window with n ≈
-{f(val['episodes'],0)} episodes. 8/8 positive raises confidence in sign stability but
+{f(val["episodes"], 0)} episodes. 8/8 positive raises confidence in sign stability but
 **cannot** overcome the effective-sample limit; it is not independent confirmation.
 """
+)
 
 files["CONCENTRATION.md"] = f"""# CONCENTRATION (§27)
 
@@ -671,22 +685,22 @@ Recomputed from true portfolio contribution (FULL DEV+VAL):
 
 | measure | value |
 |---|---|
-| trades | {f(conc['trades'],0)} |
-| top-1 trade share of positive net | {f(conc['top1_trade_share'],4)} |
-| top-5 trade share | {f(conc['top5_trade_share'],4)} |
-| top asset share | {f(conc['top_asset_share'],4)} ({conc['distinct_assets']} assets) |
-| top period share | {f(conc['top_period_share'],4)} ({conc['distinct_periods']} periods) |
-| positive net USD | {f(conc['positive_net_usd'],2)} |
+| trades | {f(conc["trades"], 0)} |
+| top-1 trade share of positive net | {f(conc["top1_trade_share"], 4)} |
+| top-5 trade share | {f(conc["top5_trade_share"], 4)} |
+| top asset share | {f(conc["top_asset_share"], 4)} ({conc["distinct_assets"]} assets) |
+| top period share | {f(conc["top_period_share"], 4)} ({conc["distinct_periods"]} periods) |
+| positive net USD | {f(conc["positive_net_usd"], 2)} |
 
 ## Portfolio-level (episode) concentration
 
-At the correct resolution the unit is the **episode**: {f(full['episodes'],0)} episodes
-carry the whole result. The builder's "top-1 trade share {f(conc['top1_trade_share'],4)}"
+At the correct resolution the unit is the **episode**: {f(full["episodes"], 0)} episodes
+carry the whole result. The builder's "top-1 trade share {f(conc["top1_trade_share"], 4)}"
 is *position*-level and therefore **understates** true concentration — one episode can
-contain ~{f(turn['FULL']['avg_episode_size_names'],0)} positions shown as many "trades".
+contain ~{f(turn["FULL"]["avg_episode_size_names"], 0)} positions shown as many "trades".
 
 Regime concentration (`REGIME_ANALYSIS.md`) is the dominant factor: 92.9% of total net
-in BULL. Asset-level concentration is low (top asset {f(conc['top_asset_share'],4)}),
+in BULL. Asset-level concentration is low (top asset {f(conc["top_asset_share"], 4)}),
 so the risk is **temporal/regime**, not single-name.
 """
 
@@ -698,25 +712,25 @@ files["INDEPENDENT_VERIFICATION.md"] = f"""# INDEPENDENT VERIFICATION (§28) —
 
 - Contract, split, dataset fingerprint, holdout — all match; PIT intact (next-open
   fills, 4617/4617 verified).
-- DEV: {f(dev['trades'],0)} positions, net {f(dev['total_net_pnl_usd'],2)} USD
-  ({f(dev['portfolio_return_bps'],1)} bps), PF {f(dev['profit_factor'],4)} (currency);
+- DEV: {f(dev["trades"], 0)} positions, net {f(dev["total_net_pnl_usd"], 2)} USD
+  ({f(dev["portfolio_return_bps"], 1)} bps), PF {f(dev["profit_factor"], 4)} (currency);
   **reproduced exactly**.
-- VALIDATION: {f(val['trades'],0)} positions, net {f(val['total_net_pnl_usd'],2)} USD
-  ({f(val['portfolio_return_bps'],1)} bps); **reproduced exactly**.
-- Beta **{f(beta['FULL']['market_beta'],4)}**; bull share
-  **{f(reg['by_regime']['BULL']['share_of_all_positive_net'],4)}**; robustness **8/8** —
+- VALIDATION: {f(val["trades"], 0)} positions, net {f(val["total_net_pnl_usd"], 2)} USD
+  ({f(val["portfolio_return_bps"], 1)} bps); **reproduced exactly**.
+- Beta **{f(beta["FULL"]["market_beta"], 4)}**; bull share
+  **{f(reg["by_regime"]["BULL"]["share_of_all_positive_net"], 4)}**; robustness **8/8** —
   all reproduced.
 
 ## Why NOT `ECONOMIC_EDGE_REPRODUCED`
 
 1. **Metric naming defects** (`DEF-METRIC-EXPECTANCY-001`, `DEF-METRIC-PROFIT-FACTOR-001`)
    but the numbers themselves **reconcile** — so it is **not** `METRIC_ARTIFACT`.
-2. **Beta dominates**: beta {f(beta['FULL']['market_beta'],4)}; the always-long control
-   earns {f(gva['always_long_same_basket']['portfolio_return_bps'],1)} of the gate's
-   {f(gva['breadth_gate']['portfolio_return_bps'],1)} bps → the gate's timing adds only
-   **+{f(gva['breadth_value_add_bps'],1)} bps** over 6.4 years.
-3. **Not statistically demonstrable on VALIDATION**: {f(val['episodes'],0)} episodes,
-   95% CI [{f(unc['VALIDATION']['mean_ci95'][0],0)}, {f(unc['VALIDATION']['mean_ci95'][1],0)}] bps
+2. **Beta dominates**: beta {f(beta["FULL"]["market_beta"], 4)}; the always-long control
+   earns {f(gva["always_long_same_basket"]["portfolio_return_bps"], 1)} of the gate's
+   {f(gva["breadth_gate"]["portfolio_return_bps"], 1)} bps → the gate's timing adds only
+   **+{f(gva["breadth_value_add_bps"], 1)} bps** over 6.4 years.
+3. **Not statistically demonstrable on VALIDATION**: {f(val["episodes"], 0)} episodes,
+   95% CI [{f(unc["VALIDATION"]["mean_ci95"][0], 0)}, {f(unc["VALIDATION"]["mean_ci95"][1], 0)}] bps
    **includes zero**.
 
 ## Why NOT `INSUFFICIENT_EVIDENCE` as the *primary* label
@@ -732,13 +746,15 @@ just a sample-size limitation. `INSUFFICIENT_EVIDENCE` is recorded as the
 - **Primary: `{CLASSIFICATION}`** — positive expectancy is real and correctly
   accounted, but is dominated by crypto market beta; the breadth gate is a
   marginal, beta-exposed exposure timer, not an independent economic edge.
-- **Secondary (VALIDATION): `INSUFFICIENT_EVIDENCE`** — {f(val['episodes'],0)} episodes
+- **Secondary (VALIDATION): `INSUFFICIENT_EVIDENCE`** — {f(val["episodes"], 0)} episodes
   cannot reject zero.
 
 `FALSE_SUCCESS = 0`. No builder claim was accepted without independent recomputation.
 """
 
-files["MARKET_NEUTRAL_NEXT_SPEC.md"] = f"""# MARKET-NEUTRAL RELATIVE VALUE — RESEARCH SPECIFICATION (§30)
+files[
+    "MARKET_NEUTRAL_NEXT_SPEC.md"
+] = f"""# MARKET-NEUTRAL RELATIVE VALUE — RESEARCH SPECIFICATION (§30)
 
 **Specification only. No strategy is implemented in this phase.** No profitability
 is asserted or implied.
@@ -776,7 +792,7 @@ beta).
 - **Borrow cost** is assumed, not observed — a *stated* parameter, never fitted.
 - **Short availability** in crypto spot is not modelled by the corpus; a funding/basis
   series is required for a defensible short leg → likely `EXTERNAL_DATA_REQUIRED`.
-- With only ~{f(ess['basket_episodes_FULL'],0)} independent episodes per family before,
+- With only ~{f(ess["basket_episodes_FULL"], 0)} independent episodes per family before,
   **effective sample** is the binding constraint; a market-neutral family must be
   constructed with enough **independent rebalances** to have power.
 
@@ -790,11 +806,11 @@ files["RUN_REPORT.md"] = f"""# RUN REPORT — ARP-012
 
 - experiment: `EXP-ARP-019` / `H-BREADTH-REGIME-001`
 - role: **INDEPENDENT VERIFIER** (BUILDER != VERIFIER)
-- START_SHA: `{b['start_sha']}`
-- holdout `{b['holdout_id']}`: **{D['holdout_status_after']}**; OOS opened: **NO**
-- DEV reproduced: **{f(dev['total_net_pnl_usd'],2)} USD / {f(dev['portfolio_return_bps'],1)} bps / {f(dev['trades'],0)} positions / {f(dev['episodes'],0)} episodes**
-- VALIDATION reproduced: **{f(val['total_net_pnl_usd'],2)} USD / {f(val['portfolio_return_bps'],1)} bps / {f(val['trades'],0)} positions / {f(val['episodes'],0)} episodes**
-- beta {f(beta['FULL']['market_beta'],4)}; bull share {f(reg['by_regime']['BULL']['share_of_all_positive_net'],4)}; robustness {rob['positive_count']}/{rob['total']}
+- START_SHA: `{b["start_sha"]}`
+- holdout `{b["holdout_id"]}`: **{D["holdout_status_after"]}**; OOS opened: **NO**
+- DEV reproduced: **{f(dev["total_net_pnl_usd"], 2)} USD / {f(dev["portfolio_return_bps"], 1)} bps / {f(dev["trades"], 0)} positions / {f(dev["episodes"], 0)} episodes**
+- VALIDATION reproduced: **{f(val["total_net_pnl_usd"], 2)} USD / {f(val["portfolio_return_bps"], 1)} bps / {f(val["trades"], 0)} positions / {f(val["episodes"], 0)} episodes**
+- beta {f(beta["FULL"]["market_beta"], 4)}; bull share {f(reg["by_regime"]["BULL"]["share_of_all_positive_net"], 4)}; robustness {rob["positive_count"]}/{rob["total"]}
 - **classification: `{CLASSIFICATION}`**
 - machine copy: [`RUN_REPORT.json`](RUN_REPORT.json)
 
@@ -802,31 +818,33 @@ No strategy/threshold/asset/universe/cost/split was modified. No pre-existing di
 file was touched.
 """
 
-files["FINAL_REPORT.md"] = f"""# FINAL REPORT — ARP-012 EXP-ARP-019 INDEPENDENT ECONOMIC VERIFICATION
+files[
+    "FINAL_REPORT.md"
+] = f"""# FINAL REPORT — ARP-012 EXP-ARP-019 INDEPENDENT ECONOMIC VERIFICATION
 
 **Classification: `{CLASSIFICATION}`** (secondary: `INSUFFICIENT_EVIDENCE` on VALIDATION).
 
 All builder headline numbers were **independently reproduced** from raw bars:
-DEV {f(dev['total_net_pnl_usd'],2)} USD / {f(dev['portfolio_return_bps'],1)} bps,
-VALIDATION {f(val['total_net_pnl_usd'],2)} USD / {f(val['portfolio_return_bps'],1)} bps,
-beta {f(beta['FULL']['market_beta'],4)}, bull share {f(reg['by_regime']['BULL']['share_of_all_positive_net'],4)},
-robustness {rob['positive_count']}/{rob['total']}. The reported "+3018.3 USD / 4617 trades"
+DEV {f(dev["total_net_pnl_usd"], 2)} USD / {f(dev["portfolio_return_bps"], 1)} bps,
+VALIDATION {f(val["total_net_pnl_usd"], 2)} USD / {f(val["portfolio_return_bps"], 1)} bps,
+beta {f(beta["FULL"]["market_beta"], 4)}, bull share {f(reg["by_regime"]["BULL"]["share_of_all_positive_net"], 4)},
+robustness {rob["positive_count"]}/{rob["total"]}. The reported "+3018.3 USD / 4617 trades"
 is the FULL continuous DEV+VAL run (reproduced to the cent).
 
 Two **naming/semantics defects** were registered and reconciled — not accounting
 errors: `expectancy_*_bps` is per-position (denominator = own alloc), and
 `profit_factor` is bps-space. The `max_drawdown_bps` field is re-named conceptually
 `PNL_DRAWDOWN_BPS_OF_REFERENCE_NOTIONAL`; a true mark-to-market `EQUITY_MAX_DRAWDOWN`
-was built separately (DEV {f(eq['DEV']['equity_max_drawdown_bps'],1)} bps).
+was built separately (DEV {f(eq["DEV"]["equity_max_drawdown_bps"], 1)} bps).
 
-**Why not an economic edge**: (i) beta {f(beta['FULL']['market_beta'],4)}; (ii) the
-always-long same-basket control earns {f(gva['always_long_same_basket']['portfolio_return_bps'],1)}
-of the gate's {f(gva['breadth_gate']['portfolio_return_bps'],1)} bps, leaving only
-+{f(gva['breadth_value_add_bps'],1)} bps of timing value over 6.4 years; (iii) at the
-correct episode resolution VALIDATION has only {f(val['episodes'],0)} independent
+**Why not an economic edge**: (i) beta {f(beta["FULL"]["market_beta"], 4)}; (ii) the
+always-long same-basket control earns {f(gva["always_long_same_basket"]["portfolio_return_bps"], 1)}
+of the gate's {f(gva["breadth_gate"]["portfolio_return_bps"], 1)} bps, leaving only
++{f(gva["breadth_value_add_bps"], 1)} bps of timing value over 6.4 years; (iii) at the
+correct episode resolution VALIDATION has only {f(val["episodes"], 0)} independent
 observations and its 95% CI includes zero.
 
-**HOLDOUT `{b['holdout_id']}`: {D['holdout_status_after']}. OOS OPENED: NO.** No OOS
+**HOLDOUT `{b["holdout_id"]}`: {D["holdout_status_after"]}. OOS OPENED: NO.** No OOS
 authorization. Next authorized step: the MARKET-NEUTRAL RELATIVE VALUE **specification**
 only (no implementation, no OOS).
 """

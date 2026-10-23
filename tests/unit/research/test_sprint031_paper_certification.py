@@ -22,8 +22,9 @@ DAY = 86_400_000
 START = int(datetime(2018, 1, 1, tzinfo=UTC).timestamp() * 1000)
 
 
-def _panel(n_days: int = 420, n_assets: int = 8, seed: int = 7,
-           trend: float = 0.0) -> tuple[np.ndarray, np.ndarray]:
+def _panel(
+    n_days: int = 420, n_assets: int = 8, seed: int = 7, trend: float = 0.0
+) -> tuple[np.ndarray, np.ndarray]:
     rng = np.random.default_rng(seed)
     days = np.array([START + i * DAY for i in range(n_days)], dtype=np.int64)
     logr = rng.normal(0.0005 + trend, 0.02, size=(n_days, n_assets))
@@ -37,6 +38,7 @@ FULL = slice(None)
 # ---------------------------------------------------------------------------
 # cost model (§23)
 # ---------------------------------------------------------------------------
+
 
 def test_cost_model_is_15bps_per_side() -> None:
     assert L.PER_SIDE_COST_BPS == 15.0
@@ -66,6 +68,7 @@ def test_first_rebalance_turnover_is_full_book() -> None:
 # instrument feasibility: negative signal -> SHORT SPOT (§7-§8)
 # ---------------------------------------------------------------------------
 
+
 def test_downtrend_creates_short_spot_positions() -> None:
     close, days = _panel(trend=-0.01, seed=1)
     r = L.run_tsmom(close, days, np.ones(len(days), dtype=bool), collect_detail=True)
@@ -93,6 +96,7 @@ def test_short_leg_contributes_pnl_separately() -> None:
 # cash state / portfolio accounting (§41-§42)
 # ---------------------------------------------------------------------------
 
+
 def test_weights_are_gross_normalised_or_cash() -> None:
     close, _ = _panel()
     i = 400
@@ -107,8 +111,9 @@ def test_portfolio_accounting_identity() -> None:
     m = L.summarise(r)
     # ending = sum of per-rebalance net; net = gross - cost
     assert abs(m["net_pnl_bps"] - float(np.sum(r["nets"]))) < 1e-6
-    assert abs(m["net_expectancy_bps"]
-               - (m["gross_expectancy_bps"] - m["cost_expectancy_bps"])) < 1e-6
+    assert (
+        abs(m["net_expectancy_bps"] - (m["gross_expectancy_bps"] - m["cost_expectancy_bps"])) < 1e-6
+    )
 
 
 def test_cash_when_no_signal_keeps_weights_zero() -> None:
@@ -121,6 +126,7 @@ def test_cash_when_no_signal_keeps_weights_zero() -> None:
 # ---------------------------------------------------------------------------
 # listing dates / PIT eligibility (§13-§15)
 # ---------------------------------------------------------------------------
+
 
 def test_no_prelisting_use_and_listing_dates_respected() -> None:
     close, _ = _panel()
@@ -153,12 +159,13 @@ def test_no_negative_index_wrap() -> None:
 # signal timing / T+1 execution (§19-§22)
 # ---------------------------------------------------------------------------
 
+
 def test_signal_is_pit_safe_under_future_poisoning() -> None:
     close, _ = _panel()
     for i in (370, 390, 410):
         a = L.tsmom_target(close, i)["weights"]
         poisoned = close.copy()
-        poisoned[i + 1:, :] = -1e6
+        poisoned[i + 1 :, :] = -1e6
         b = L.tsmom_target(poisoned, i)["weights"]
         assert np.allclose(a, b, equal_nan=True)
 
@@ -178,6 +185,7 @@ def test_exec_lag_changes_execution_day_only() -> None:
 # ---------------------------------------------------------------------------
 # benchmark independence (§27)
 # ---------------------------------------------------------------------------
+
 
 def test_benchmark_is_independent_of_strategy_weights() -> None:
     close, days = _panel()
@@ -201,6 +209,7 @@ def test_benchmark_is_independent_of_strategy_weights() -> None:
 # determinism / replay / hash immutability (§57, §67, §77)
 # ---------------------------------------------------------------------------
 
+
 def test_paper_replay_is_deterministic() -> None:
     close, days = _panel()
     m = np.ones(len(days), dtype=bool)
@@ -221,6 +230,7 @@ def test_frozen_candidate_hash_immutable() -> None:
 # ---------------------------------------------------------------------------
 # artifact-level gates (skipped when gitignored artifacts are absent)
 # ---------------------------------------------------------------------------
+
 
 def test_verification_artifact_zero_false_success() -> None:
     vp = REPO / "reports" / "paper-certification" / "RFC031_VERIFICATION.json"

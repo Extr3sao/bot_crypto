@@ -114,7 +114,9 @@ def render_md(report: dict[str, Any]) -> str:
                 sha=run["spec_hash"][:16],
                 n=metrics["trades_total"],
                 oos=metrics["trades_oos"],
-                exp="n/a" if metrics["net_expectancy"] is None else f"{metrics['net_expectancy'] * 1e4:.2f} bps",
+                exp="n/a"
+                if metrics["net_expectancy"] is None
+                else f"{metrics['net_expectancy'] * 1e4:.2f} bps",
                 pf="n/a" if metrics["net_pf"] is None else f"{metrics['net_pf']:.3f}",
                 verdict=gate["verdict"],
                 failed=", ".join(gate["failed"]) or "—",
@@ -132,9 +134,7 @@ def render_md(report: dict[str, Any]) -> str:
         "| --- | --- |",
     ]
     for part in report["runs"][0]["spec"]["partitions"]:
-        lines.append(
-            f"| {part['name']} | {_iso(part['start_ms'])} → {_iso(part['end_ms'])} |"
-        )
+        lines.append(f"| {part['name']} | {_iso(part['start_ms'])} → {_iso(part['end_ms'])} |")
     lines += [
         "",
         "## Gate detail (PROFITABILITY_GATE_V1, PG-1..PG-11)",

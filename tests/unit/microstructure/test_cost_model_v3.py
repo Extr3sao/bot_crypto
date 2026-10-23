@@ -88,9 +88,7 @@ def test_standard_maker_costs_more_than_taker_at_vip0() -> None:
     penalty, so it must come out strictly more expensive.
     """
     model = default_model("BINANCE_SPOT_STANDARD_TAKER")
-    taker = model.evaluate(
-        entry_order_type="market", exit_order_type="market", spread_bps=1.0
-    )
+    taker = model.evaluate(entry_order_type="market", exit_order_type="market", spread_bps=1.0)
     maker = default_model("BINANCE_SPOT_STANDARD_MAKER").evaluate(
         entry_order_type="limit_post_only", exit_order_type="limit_post_only"
     )
@@ -116,16 +114,16 @@ def test_mexc_zero_maker_fee_still_costs_adverse_selection() -> None:
 def test_maker_pays_no_spread_taker_pays_it_once() -> None:
     model = default_model("OKX_SPOT_TAKER")
     taker = model.evaluate(entry_order_type="market", exit_order_type="market", spread_bps=4.0)
-    maker = model.evaluate(
-        entry_order_type="limit_post_only", exit_order_type="limit_post_only"
-    )
+    maker = model.evaluate(entry_order_type="limit_post_only", exit_order_type="limit_post_only")
     assert taker.component("spread") == pytest.approx(4.0)
     assert maker.component("spread") == 0.0
 
 
 def test_half_taker_legs_pay_half_the_spread() -> None:
     model = default_model("OKX_SPOT_TAKER")
-    cost = model.evaluate(entry_order_type="market", exit_order_type="limit_post_only", spread_bps=6.0)
+    cost = model.evaluate(
+        entry_order_type="market", exit_order_type="limit_post_only", spread_bps=6.0
+    )
     assert cost.component("spread") == pytest.approx(3.0)
 
 
@@ -243,9 +241,7 @@ def test_unknown_knowledge_class_is_rejected() -> None:
 
 def test_funding_must_not_be_negative() -> None:
     with pytest.raises(ValueError, match="funding_rate_bps_per_interval"):
-        default_model("BINANCE_USDM_PERP_TAKER").evaluate(
-            funding_rate_bps_per_interval=-1.0
-        )
+        default_model("BINANCE_USDM_PERP_TAKER").evaluate(funding_rate_bps_per_interval=-1.0)
 
 
 def test_funding_carry_increases_cost_for_longer_holding() -> None:

@@ -134,13 +134,18 @@ def main() -> int:
     (out / "STALE_DATA_AUDIT.json").write_text(
         json.dumps(stale, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
-    print(json.dumps({
-        "htf_status": htf["HTF_PIT_STATUS"],
-        "stale_status": stale["STALE_STATUS"],
-        "fresh": stale["fresh"],
-        "stale": stale["stale"],
-        "fail_closed": stale["fail_closed_no_trade_data"],
-    }, indent=2))
+    print(
+        json.dumps(
+            {
+                "htf_status": htf["HTF_PIT_STATUS"],
+                "stale_status": stale["STALE_STATUS"],
+                "fresh": stale["fresh"],
+                "stale": stale["stale"],
+                "fail_closed": stale["fail_closed_no_trade_data"],
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

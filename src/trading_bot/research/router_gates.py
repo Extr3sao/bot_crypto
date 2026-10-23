@@ -69,9 +69,7 @@ def stale_threshold_for_timeframe(
     """
     width = timeframe_ms(timeframe)
     if width is None:
-        raise ValueError(
-            f"unknown timeframe {timeframe!r}; known: {sorted(TIMEFRAME_MS)}"
-        )
+        raise ValueError(f"unknown timeframe {timeframe!r}; known: {sorted(TIMEFRAME_MS)}")
     if grace_bars <= 0:
         raise ValueError(f"grace_bars must be > 0, got {grace_bars}")
     return int(width * grace_bars)
@@ -100,9 +98,7 @@ class RouterGates:
 
     def __post_init__(self) -> None:
         if self.timeframe is not None and timeframe_ms(self.timeframe) is None:
-            raise ValueError(
-                f"unknown timeframe {self.timeframe!r}; known: {sorted(TIMEFRAME_MS)}"
-            )
+            raise ValueError(f"unknown timeframe {self.timeframe!r}; known: {sorted(TIMEFRAME_MS)}")
         if self.freshness_ms is not None and self.freshness_ms <= 0:
             raise ValueError(f"freshness_ms must be > 0, got {self.freshness_ms}")
         if self.require_fresh_context and self.freshness_ms is not None and self.timeframe:

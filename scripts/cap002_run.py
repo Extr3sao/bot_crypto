@@ -71,7 +71,10 @@ def synthetic_daily_bars(*, decision_time: int, count: int = 220) -> list[ab.Dai
     """Deterministic daily closes, all fully closed before ``decision_time``."""
     last_open = decision_time - 2 * 86_400
     start = last_open - (count - 1) * 86_400
-    return [ab.DailyBar(open_time=start + index * 86_400, close=100.0 + index * 0.8) for index in range(count)]
+    return [
+        ab.DailyBar(open_time=start + index * 86_400, close=100.0 + index * 0.8)
+        for index in range(count)
+    ]
 
 
 def build_hypothesis(snapshot: ac.MarketSnapshot) -> ac.MarketHypothesis:
@@ -89,7 +92,9 @@ def build_hypothesis(snapshot: ac.MarketSnapshot) -> ac.MarketHypothesis:
     )
 
 
-def build_proposal(snapshot: ac.MarketSnapshot, hypothesis: ac.MarketHypothesis) -> ac.TradeProposal:
+def build_proposal(
+    snapshot: ac.MarketSnapshot, hypothesis: ac.MarketHypothesis
+) -> ac.TradeProposal:
     last = snapshot.price_state.last
     return ac.TradeProposal(
         asset=snapshot.asset,
@@ -128,7 +133,9 @@ def seal_decision(
 # --------------------------------------------------------------------------- #
 
 
-def build_immutability_artifact(record: ac.DecisionRecord, outcome: ab.OutcomeRecord) -> dict[str, Any]:
+def build_immutability_artifact(
+    record: ac.DecisionRecord, outcome: ab.OutcomeRecord
+) -> dict[str, Any]:
     ledger = ac.DecisionLedger()
     ledger.append(record)
     tampered = dataclasses.replace(record, decision="SHORT")
@@ -217,13 +224,18 @@ def build_report(
         "agent_gross_return": outcome.gross_return,
         "agent_costs": outcome.costs,
         "agent_net_return": outcome.net_return,
-        "agentic_incremental_edge_vs_b_buy_and_hold": None if headline is None else headline["edge"],
+        "agentic_incremental_edge_vs_b_buy_and_hold": None
+        if headline is None
+        else headline["edge"],
         "incremental_edges": [dict(edge) for edge in outcome.incremental_edges],
         "snapshot_source": snapshot_artifact["_source"],
         "snapshot_usable": snapshot_artifact["_usable"],
         "immutability": immutability,
         "economic_state_digest_unchanged": economic_state_digest_after,
-        "gates": {gate_name: (ac.G_TV_CONTEXT if gate_name == "G0_TV_CONTEXT" else "NOT_STARTED") for gate_name in ac.GATES},
+        "gates": {
+            gate_name: (ac.G_TV_CONTEXT if gate_name == "G0_TV_CONTEXT" else "NOT_STARTED")
+            for gate_name in ac.GATES
+        },
         "hard_stop": (
             "WIRING ONLY. No real data, no LLM, no edge claim. G_TV_CONTEXT stays NOT_VERIFIED until a "
             "credentialled, user-authorized real TradingView snapshot exists."
@@ -262,7 +274,9 @@ def main() -> int:
     hypothesis_problems = ac.validate_hypothesis(hypothesis)
     proposal_problems = ac.validate_proposal(proposal)
 
-    record = seal_decision(snapshot_artifact["_evidence_snapshot_hash"], snapshot.timestamp, hypothesis)
+    record = seal_decision(
+        snapshot_artifact["_evidence_snapshot_hash"], snapshot.timestamp, hypothesis
+    )
     future = synthetic_future(snapshot.price_state.last, snapshot.timestamp)
     bars = synthetic_daily_bars(decision_time=snapshot.timestamp)
     outcome = ab.build_outcome_record(
@@ -309,7 +323,9 @@ def main() -> int:
         immutability=immutability,
         economic_state_digest_after=digest_after,
     )
-    report["economic_state_unchanged_in_run"] = digest_after == gate_state["economic_state_digest_before"]
+    report["economic_state_unchanged_in_run"] = (
+        digest_after == gate_state["economic_state_digest_before"]
+    )
     report["entry_gate"] = {
         "branch": gate_state["branch"],
         "head_short": gate_state["head_short"],
@@ -320,15 +336,32 @@ def main() -> int:
 
     c1.write_json(OUT / "CAP002_ENTRY_GATE.json", gate_state)
     c1.write_json(OUT / "CAP002_DECISION_RECORD.json", decision_artifact)
-    c1.write_md(OUT / "CAP002_DECISION_RECORD.md", c1.render("CAP-002 sealed (synthetic) decision", decision_artifact))
+    c1.write_md(
+        OUT / "CAP002_DECISION_RECORD.md",
+        c1.render("CAP-002 sealed (synthetic) decision", decision_artifact),
+    )
     c1.write_json(OUT / "CAP002_BASELINES.json", baselines_artifact)
-    c1.write_md(OUT / "CAP002_BASELINES.md", c1.render("CAP-002 baseline outcomes (synthetic)", baselines_artifact))
+    c1.write_md(
+        OUT / "CAP002_BASELINES.md",
+        c1.render("CAP-002 baseline outcomes (synthetic)", baselines_artifact),
+    )
     c1.write_json(OUT / "CAP002_OUTCOME_RECORD.json", outcome.to_dict())
-    c1.write_md(OUT / "CAP002_OUTCOME_RECORD.md", c1.render("CAP-002 outcome (synthetic)", outcome.to_dict()))
+    c1.write_md(
+        OUT / "CAP002_OUTCOME_RECORD.md",
+        c1.render("CAP-002 outcome (synthetic)", outcome.to_dict()),
+    )
     c1.write_json(OUT / "CAP002_IMMUTABILITY.json", immutability)
-    c1.write_md(OUT / "CAP002_IMMUTABILITY.md", c1.render("CAP-002 immutability checks", immutability))
+    c1.write_md(
+        OUT / "CAP002_IMMUTABILITY.md", c1.render("CAP-002 immutability checks", immutability)
+    )
 
-    verification = {"status": "PENDING", "passed": 0, "total": 0, "mismatches": 0, "false_success": 0}
+    verification = {
+        "status": "PENDING",
+        "passed": 0,
+        "total": 0,
+        "mismatches": 0,
+        "false_success": 0,
+    }
     c1.write_json(REPORTS / "CAP002_FINAL_REPORT.json", {**report, "verification": verification})
     c1.write_md(REPORTS / "CAP002_FINAL_REPORT.md", final_report_md(report, verification))
 
@@ -337,7 +370,9 @@ def main() -> int:
     print(f"baseline_available = {report['baseline_available']}")
     print(f"baseline_unavailable_reason = {report['baseline_unavailable_reason']}")
     print(f"agent_net_return = {outcome.net_return}")
-    print(f"agentic_incremental_edge_vs_b_buy_and_hold = {report['agentic_incremental_edge_vs_b_buy_and_hold']}")
+    print(
+        f"agentic_incremental_edge_vs_b_buy_and_hold = {report['agentic_incremental_edge_vs_b_buy_and_hold']}"
+    )
     print(f"immutability = {immutability}")
     print(f"real_sealed_decisions = {report['real_sealed_decisions']}")
     print(f"valid_pilot_decisions = {report['valid_pilot_decisions']}")

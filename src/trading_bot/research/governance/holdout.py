@@ -174,8 +174,7 @@ class HoldoutRegistry:
             holdout,
             status=HoldoutStatus.OPENED,
             accessed_by=accessed,
-            first_access_timestamp=holdout.first_access_timestamp
-            or (timestamp or utc_now_iso()),
+            first_access_timestamp=holdout.first_access_timestamp or (timestamp or utc_now_iso()),
         )
         self._holdouts[holdout_id] = updated
         return updated
@@ -192,8 +191,7 @@ class HoldoutRegistry:
             holdout,
             status=HoldoutStatus.CONSUMED,
             accessed_by=accessed,
-            first_access_timestamp=holdout.first_access_timestamp
-            or (timestamp or utc_now_iso()),
+            first_access_timestamp=holdout.first_access_timestamp or (timestamp or utc_now_iso()),
         )
         self._holdouts[holdout_id] = updated
         return updated
@@ -213,7 +211,9 @@ class HoldoutRegistry:
         }
 
     def save(self, path: Path | str) -> None:
-        Path(path).write_text(json.dumps(self.to_dict(), indent=2, sort_keys=True), encoding="utf-8")
+        Path(path).write_text(
+            json.dumps(self.to_dict(), indent=2, sort_keys=True), encoding="utf-8"
+        )
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> HoldoutRegistry:

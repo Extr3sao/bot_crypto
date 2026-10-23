@@ -72,8 +72,12 @@ def main() -> None:
             raw = fetch_klines(sym, start, end)
             candles = [
                 {
-                    "ts": k[0], "open": float(k[1]), "high": float(k[2]),
-                    "low": float(k[3]), "close": float(k[4]), "volume": float(k[5]),
+                    "ts": k[0],
+                    "open": float(k[1]),
+                    "high": float(k[2]),
+                    "low": float(k[3]),
+                    "close": float(k[4]),
+                    "volume": float(k[5]),
                 }
                 for k in raw
             ]

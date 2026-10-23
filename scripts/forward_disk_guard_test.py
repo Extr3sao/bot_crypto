@@ -237,7 +237,11 @@ def run_guard_test() -> dict[str, Any]:
         "result": (
             "PASS: guard tripped, intake stopped, writer flushed and sealed, manifest "
             "finalised, exit 0"
-            if tripped and intake_stopped and clean_exit and sealed and finalised
+            if tripped
+            and intake_stopped
+            and clean_exit
+            and sealed
+            and finalised
             and partial_tails == 0
             else "FAIL: see the two runs above"
         ),

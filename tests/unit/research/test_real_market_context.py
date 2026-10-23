@@ -168,9 +168,18 @@ def test_gate_fails_when_freshness_is_broken() -> None:
 def test_gate_fails_on_a_future_bar() -> None:
     rows = _all_rows()
     bar_ms = rmc.BAR_SECONDS["4h"] * 1_000
-    rows["4h"] = [*rows["4h"], OHLCV(
-        symbol="BTC/USDT", timestamp=DECISION_MS + bar_ms, open=1, high=1, low=1, close=1, volume=1
-    )]
+    rows["4h"] = [
+        *rows["4h"],
+        OHLCV(
+            symbol="BTC/USDT",
+            timestamp=DECISION_MS + bar_ms,
+            open=1,
+            high=1,
+            low=1,
+            close=1,
+            volume=1,
+        ),
+    ]
     # The builder refuses to fetch a future bar into the snapshot; the gate check
     # is exercised directly on a deliberately poisoned artifact instead.
     artifact = rmc.build_real_snapshot_artifact(
@@ -221,19 +230,31 @@ def test_valid_analyst_answer_passes() -> None:
 def test_no_trade_requires_a_reason() -> None:
     payload = _analyst(decision="NO_TRADE", evidence=[], no_trade_reason="")
     assert any("no_trade_reason" in problem for problem in mav.validate_analyst_output(payload))
-    assert mav.validate_analyst_output(
-        _analyst(decision="NO_TRADE", evidence=[], no_trade_reason="no edge")
-    ) == []
+    assert (
+        mav.validate_analyst_output(
+            _analyst(decision="NO_TRADE", evidence=[], no_trade_reason="no edge")
+        )
+        == []
+    )
 
 
 def test_analyst_horizon_and_decision_are_restricted() -> None:
-    assert any("horizon" in problem for problem in mav.validate_analyst_output(_analyst(horizon="1W")))
-    assert any("decision" in problem for problem in mav.validate_analyst_output(_analyst(decision="MAYBE")))
+    assert any(
+        "horizon" in problem for problem in mav.validate_analyst_output(_analyst(horizon="1W"))
+    )
+    assert any(
+        "decision" in problem for problem in mav.validate_analyst_output(_analyst(decision="MAYBE"))
+    )
 
 
 def test_analyst_confidence_is_bounded() -> None:
-    assert any("confidence" in problem for problem in mav.validate_analyst_output(_analyst(confidence=1.4)))
-    assert any("confidence" in problem for problem in mav.validate_analyst_output(_analyst(confidence="high")))
+    assert any(
+        "confidence" in problem for problem in mav.validate_analyst_output(_analyst(confidence=1.4))
+    )
+    assert any(
+        "confidence" in problem
+        for problem in mav.validate_analyst_output(_analyst(confidence="high"))
+    )
 
 
 def test_analyst_may_never_emit_sizing() -> None:
@@ -246,13 +267,13 @@ def test_analyst_may_never_emit_sizing() -> None:
 
 
 def test_directional_answer_needs_evidence() -> None:
-    assert any("evidence" in problem for problem in mav.validate_analyst_output(_analyst(evidence=[])))
+    assert any(
+        "evidence" in problem for problem in mav.validate_analyst_output(_analyst(evidence=[]))
+    )
 
 
 def test_seal_is_verified_and_binds_the_snapshot() -> None:
-    record = mav.seal_analyst_decision(
-        _analyst(), snapshot_hash="a" * 64, raw_data_hash="b" * 64
-    )
+    record = mav.seal_analyst_decision(_analyst(), snapshot_hash="a" * 64, raw_data_hash="b" * 64)
     assert record.is_verified() is True
     assert record.decision == "LONG"
     assert record.prompt_version == "MARKET_ANALYST_V1.0"

@@ -45,8 +45,15 @@ OUT = ROOT / "data" / "recovery" / "wp8" / "evidence" / "ECONOMIC_INVARIANCE.jso
 
 # Every field the audit publishes as a *finding*. The headline is among them.
 AUDIT_FINDING_KEYS = (
-    "strategy_count", "strategies", "failure_categories", "aggregates", "answers",
-    "paper_lane", "declared_source_discrepancies", "defects", "cost_plane",
+    "strategy_count",
+    "strategies",
+    "failure_categories",
+    "aggregates",
+    "answers",
+    "paper_lane",
+    "declared_source_discrepancies",
+    "defects",
+    "cost_plane",
 )
 
 # The state view's findings. ``campaigns`` is compared through ``effective_state`` only:
@@ -62,19 +69,27 @@ EXPECTED_CHANGES = (
 
 
 def git_show(rel: str, rev: str) -> Any:
-    out = subprocess.run(["git", "show", f"{rev}:{rel}"], cwd=ROOT, capture_output=True, check=False)
+    out = subprocess.run(
+        ["git", "show", f"{rev}:{rel}"], cwd=ROOT, capture_output=True, check=False
+    )
     if out.returncode != 0:
-        raise SystemExit(f"cannot read {rel} at {rev}: {out.stderr.decode('utf-8', 'replace').strip()}")
+        raise SystemExit(
+            f"cannot read {rel} at {rev}: {out.stderr.decode('utf-8', 'replace').strip()}"
+        )
     return json.loads(out.stdout.decode("utf-8"))
 
 
 def rev_parse(rev: str) -> str:
-    out = subprocess.run(["git", "rev-parse", rev], cwd=ROOT, capture_output=True, text=True, check=False)
+    out = subprocess.run(
+        ["git", "rev-parse", rev], cwd=ROOT, capture_output=True, text=True, check=False
+    )
     return out.stdout.strip()
 
 
 def same(left: Any, right: Any) -> bool:
-    return json.dumps(left, sort_keys=True, ensure_ascii=False) == json.dumps(right, sort_keys=True, ensure_ascii=False)
+    return json.dumps(left, sort_keys=True, ensure_ascii=False) == json.dumps(
+        right, sort_keys=True, ensure_ascii=False
+    )
 
 
 def compare(before_rev: str = BEFORE_REV, after_rev: str = AFTER_REV) -> dict[str, Any]:
@@ -93,7 +108,7 @@ def compare(before_rev: str = BEFORE_REV, after_rev: str = AFTER_REV) -> dict[st
         "after_commit": rev_parse(after_rev),
         "after_rev": after_rev,
         "method": "compare every published finding field of the pre-repair artefact with the "
-                  "post-repair one, key by key, from the committed blobs",
+        "post-repair one, key by key, from the committed blobs",
         "expected_changes": list(EXPECTED_CHANGES),
         "audit": {"comparisons": [], "identical_findings": [], "changed_findings": []},
         "state_view": {"comparisons": [], "identical_findings": [], "changed_findings": []},
@@ -112,7 +127,8 @@ def compare(before_rev: str = BEFORE_REV, after_rev: str = AFTER_REV) -> dict[st
         bucket = "identical_findings" if identical else "changed_findings"
         report["state_view"][bucket].append(key)
     report["state_view"]["comparisons"].append(
-        {"field": "campaigns[*.effective_state]", "identical": True, "note": "compared below"})
+        {"field": "campaigns[*.effective_state]", "identical": True, "note": "compared below"}
+    )
 
     before_effective = {c["id"]: c["effective_state"] for c in view_before["campaigns"]}
     after_effective = {c["id"]: c["effective_state"] for c in view_after["campaigns"]}
@@ -139,8 +155,11 @@ def compare(before_rev: str = BEFORE_REV, after_rev: str = AFTER_REV) -> dict[st
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--check", action="store_true",
-                        help="re-derive and compare with the committed evidence instead of writing it")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="re-derive and compare with the committed evidence instead of writing it",
+    )
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
 
@@ -151,15 +170,27 @@ def main(argv: list[str] | None = None) -> int:
         if committed is None:
             print(json.dumps({"action": "check", "status": "MISSING_EVIDENCE", "path": str(OUT)}))
             return 3
-        drifting = [key for key in ("verdict", "headline", "before_commit", "after_commit")
-                    if not same(report.get(key), committed.get(key))]
+        drifting = [
+            key
+            for key in ("verdict", "headline", "before_commit", "after_commit")
+            if not same(report.get(key), committed.get(key))
+        ]
         for side in ("audit", "state_view"):
             for field in ("identical_findings", "changed_findings"):
                 if committed.get(side, {}).get(field) != report[side][field]:
                     drifting.append(f"{side}.{field}")
         code = 0 if not drifting else 1
-        print(json.dumps({"action": "check", "status": "STABLE" if not drifting else "DRIFT",
-                          "verdict": report["verdict"], "drifting": drifting}, indent=2))
+        print(
+            json.dumps(
+                {
+                    "action": "check",
+                    "status": "STABLE" if not drifting else "DRIFT",
+                    "verdict": report["verdict"],
+                    "drifting": drifting,
+                },
+                indent=2,
+            )
+        )
         return code
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
@@ -167,14 +198,19 @@ def main(argv: list[str] | None = None) -> int:
     if args.json:
         print(json.dumps(report, indent=2, ensure_ascii=False))
     else:
-        print(json.dumps({
-            "verdict": report["verdict"],
-            "before": report["before_commit"][:12],
-            "after": report["after_commit"][:12],
-            "headline": report["headline"],
-            "audit_changed": report["audit"]["changed_findings"],
-            "state_view_changed": report["state_view"]["changed_findings"],
-        }, indent=2))
+        print(
+            json.dumps(
+                {
+                    "verdict": report["verdict"],
+                    "before": report["before_commit"][:12],
+                    "after": report["after_commit"][:12],
+                    "headline": report["headline"],
+                    "audit_changed": report["audit"]["changed_findings"],
+                    "state_view_changed": report["state_view"]["changed_findings"],
+                },
+                indent=2,
+            )
+        )
     return 0 if report["verdict"] == "IDENTICAL" else 2
 
 

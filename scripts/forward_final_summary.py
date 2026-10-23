@@ -172,7 +172,10 @@ def build_summary(run_id: str | None = None) -> dict[str, Any]:
             "materialised_equivalent_mb": streaming.get("materialised_equivalent_mb"),
             "rows_measured": streaming.get("rows_measured"),
             "stages": [
-                {k: stage.get(k) for k in ("stage", "rows", "elapsed_seconds", "rss_growth_from_baseline_mb")}
+                {
+                    k: stage.get(k)
+                    for k in ("stage", "rows", "elapsed_seconds", "rss_growth_from_baseline_mb")
+                }
                 for stage in streaming.get("stages", [])
             ],
         },
@@ -200,7 +203,9 @@ def build_summary(run_id: str | None = None) -> dict[str, Any]:
             "armed": resource.get("disk_guard", {}).get("enabled"),
             "stopped_on_disk_budget": manifest.get("stopped_on_disk_budget"),
             "controlled_test_tripped": guard_test.get("bounded_duration_note", {}).get("tripped"),
-            "controlled_test_clean_exit": bool(guard_test.get("bounded_run", {}).get("manifest_finalised")),
+            "controlled_test_clean_exit": bool(
+                guard_test.get("bounded_run", {}).get("manifest_finalised")
+            ),
             "note": guard_test.get("bounded_duration_note", {}).get("detail"),
         },
         "paper_coexistence": {
@@ -300,7 +305,11 @@ def main() -> int:
         json.dumps(summary, ensure_ascii=False, indent=2, sort_keys=True, default=str),
         encoding="utf-8",
     )
-    print(json.dumps({k: v for k, v in summary.items() if k != "evidence_files"}, indent=2, default=str))
+    print(
+        json.dumps(
+            {k: v for k, v in summary.items() if k != "evidence_files"}, indent=2, default=str
+        )
+    )
     print(f"\nwritten -> {target}")
     return 0
 

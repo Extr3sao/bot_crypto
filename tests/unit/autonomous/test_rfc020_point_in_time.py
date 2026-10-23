@@ -124,12 +124,19 @@ def test_pit_016_outcome_never_resolves_before_horizon() -> None:
 
     decision = TS0
     proposal = _proposal(
-        decision_id="d-1", market_time_ms=decision, decision_time_ms=decision,
-        horizon_minutes=25.0, entry_reference=100.0, expected_gross_edge_bps=4.0,
-        expected_cost_bps=21.0, expected_net_edge_bps=-17.0,
+        decision_id="d-1",
+        market_time_ms=decision,
+        decision_time_ms=decision,
+        horizon_minutes=25.0,
+        entry_reference=100.0,
+        expected_gross_edge_bps=4.0,
+        expected_cost_bps=21.0,
+        expected_net_edge_bps=-17.0,
     )
     trace = _trace(
-        decision_id="d-1", market_time_ms=decision, decision_time_ms=decision,
+        decision_id="d-1",
+        market_time_ms=decision,
+        decision_time_ms=decision,
         proposal=proposal.to_dict(),
     )
     evaluator = OutcomeEvaluator()

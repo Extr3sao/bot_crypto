@@ -170,9 +170,11 @@ def test_outcome_key_is_the_stable_decision_plus_horizon_identity() -> None:
 
 def test_appending_the_same_outcome_twice_creates_one_record(tmp_path: Path) -> None:
     store = DecisionTraceStore(tmp_path)
-    record = OutcomeEvaluator().evaluate(
-        trace=_trace_for_outcome(), bars=bars("BTC/USDT", 6, rising=True)
-    ).record
+    record = (
+        OutcomeEvaluator()
+        .evaluate(trace=_trace_for_outcome(), bars=bars("BTC/USDT", 6, rising=True))
+        .record
+    )
     assert record is not None
     first = store.append_outcome(record)
     second = store.append_outcome(replace(record, created_at_ms=999))

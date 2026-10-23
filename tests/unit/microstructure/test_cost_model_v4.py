@@ -194,7 +194,11 @@ def test_maker_row_is_never_cheaper_by_assumption() -> None:
 
 
 def test_model_payload_is_deterministic_and_multi_asset() -> None:
-    markets = [_market("BTC"), _market("ETH", spread=0.04, vol=10.0), _market("SOL", spread=0.83, vol=18.0)]
+    markets = [
+        _market("BTC"),
+        _market("ETH", spread=0.04, vol=10.0),
+        _market("SOL", spread=0.83, vol=18.0),
+    ]
     first = execution_cost_model_v4(markets)
     second = execution_cost_model_v4(markets)
     assert first == second

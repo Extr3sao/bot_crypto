@@ -300,7 +300,9 @@ def test_stop_all_asks_before_it_kills(tmp_path: Path) -> None:
     """The child must be given the chance to seal and finalise, not killed."""
     stop_file = tmp_path / "STOP"
     sealed = tmp_path / "sealed.txt"
-    spec = _spec("collector", GRACEFUL_CHILD, args=(str(stop_file), str(sealed)), stop_file=stop_file)
+    spec = _spec(
+        "collector", GRACEFUL_CHILD, args=(str(stop_file), str(sealed)), stop_file=stop_file
+    )
     supervisor = _supervisor(tmp_path, [spec])
     supervisor.start_all()
     assert not sealed.exists()
@@ -341,7 +343,10 @@ def test_a_stale_stop_file_cannot_stop_a_fresh_start(tmp_path: Path) -> None:
     stop_file = tmp_path / "STOP"
     stop_file.write_text("stop requested earlier\n", encoding="utf-8")
     spec = _spec(
-        "collector", GRACEFUL_CHILD, args=(str(stop_file), str(tmp_path / "sealed.txt")), stop_file=stop_file
+        "collector",
+        GRACEFUL_CHILD,
+        args=(str(stop_file), str(tmp_path / "sealed.txt")),
+        stop_file=stop_file,
     )
     supervisor = _supervisor(tmp_path, [spec])
     supervisor.start_all()
@@ -358,7 +363,9 @@ def test_supervise_forever_applies_the_stop_grace(tmp_path: Path) -> None:
     """The bounded run stops through the same polite path as an operator stop."""
     stop_file = tmp_path / "STOP"
     sealed = tmp_path / "sealed.txt"
-    spec = _spec("collector", GRACEFUL_CHILD, args=(str(stop_file), str(sealed)), stop_file=stop_file)
+    spec = _spec(
+        "collector", GRACEFUL_CHILD, args=(str(stop_file), str(sealed)), stop_file=stop_file
+    )
     supervisor = _supervisor(tmp_path, [spec])
     supervisor.start_all()
 

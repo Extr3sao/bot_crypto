@@ -58,7 +58,12 @@ _TECHNICAL_KEYS: dict[str, tuple[str, ...]] = {
     "sma50": ("SMA50", "SMA.50", "sma50"),
     "ema200": ("EMA200", "EMA.200", "ema200"),
 }
-_RECOMMENDATION_KEYS: tuple[str, ...] = ("Recommend.Summary", "Recommend", "recommendation", "summary")
+_RECOMMENDATION_KEYS: tuple[str, ...] = (
+    "Recommend.Summary",
+    "Recommend",
+    "recommendation",
+    "summary",
+)
 
 
 # --------------------------------------------------------------------------- #
@@ -107,7 +112,9 @@ def extract_bars(payload: Any) -> tuple[dict[str, Any], ...]:
     if not isinstance(raw, (list, tuple)) or not raw:
         raise ValueError("get_ohlcv payload bars must be a non-empty sequence")
     if len(raw) > MCP_MAX_OHLCV_BARS:
-        raise ValueError(f"get_ohlcv returned {len(raw)} bars, above the documented {MCP_MAX_OHLCV_BARS}")
+        raise ValueError(
+            f"get_ohlcv returned {len(raw)} bars, above the documented {MCP_MAX_OHLCV_BARS}"
+        )
     bars: list[dict[str, Any]] = []
     for bar in raw:
         if not isinstance(bar, Mapping):
@@ -121,17 +128,13 @@ def extract_bars(payload: Any) -> tuple[dict[str, Any], ...]:
 
 def closes(bars: Sequence[Mapping[str, Any]]) -> tuple[float, ...]:
     return tuple(
-        value
-        for bar in bars
-        if (value := _as_float(bar.get("c", bar.get("close")))) is not None
+        value for bar in bars if (value := _as_float(bar.get("c", bar.get("close")))) is not None
     )
 
 
 def volumes(bars: Sequence[Mapping[str, Any]]) -> tuple[float, ...]:
     return tuple(
-        value
-        for bar in bars
-        if (value := _as_float(bar.get("v", bar.get("volume")))) is not None
+        value for bar in bars if (value := _as_float(bar.get("v", bar.get("volume")))) is not None
     )
 
 
@@ -204,7 +207,9 @@ def timeframe_state(symbol: str, interval: str, payload: Any) -> TimeframeState:
     )
 
 
-def multi_timeframe_states(per_interval: Mapping[str, Any], symbol: str) -> tuple[TimeframeState, ...]:
+def multi_timeframe_states(
+    per_interval: Mapping[str, Any], symbol: str
+) -> tuple[TimeframeState, ...]:
     """Compose the multi-timeframe block (technicals are single-TF per call)."""
     ordered = [interval for interval in TIMEFRAME_ORDER if interval in per_interval]
     ordered.extend(sorted(interval for interval in per_interval if interval not in TIMEFRAME_ORDER))
@@ -230,7 +235,11 @@ def technical_state_from_rating(payload: Mapping[str, Any]) -> TechnicalState:
 
 
 def news_items(payload: Any) -> tuple[NewsItem, ...]:
-    raw = payload.get("items", payload.get("headlines", payload)) if isinstance(payload, Mapping) else payload
+    raw = (
+        payload.get("items", payload.get("headlines", payload))
+        if isinstance(payload, Mapping)
+        else payload
+    )
     if not isinstance(raw, (list, tuple)):
         return ()
     items: list[NewsItem] = []
@@ -254,7 +263,11 @@ def news_items(payload: Any) -> tuple[NewsItem, ...]:
 
 
 def macro_events(payload: Any) -> tuple[MacroEvent, ...]:
-    raw = payload.get("events", payload.get("items", payload)) if isinstance(payload, Mapping) else payload
+    raw = (
+        payload.get("events", payload.get("items", payload))
+        if isinstance(payload, Mapping)
+        else payload
+    )
     if not isinstance(raw, (list, tuple)):
         return ()
     events: list[MacroEvent] = []
@@ -279,7 +292,9 @@ def macro_events(payload: Any) -> tuple[MacroEvent, ...]:
 
 
 def relative_strength(symbol: str, reference: str, value: float | None) -> RelativeStrength:
-    return RelativeStrength(symbol=symbol, reference=reference, value=0.0 if value is None else value)
+    return RelativeStrength(
+        symbol=symbol, reference=reference, value=0.0 if value is None else value
+    )
 
 
 # --------------------------------------------------------------------------- #
@@ -428,7 +443,9 @@ def build_snapshot(
     return MarketSnapshot(
         timestamp=snapshot_at,
         asset=asset,
-        price_state=price_state_from_ohlcv(asset, primary_interval, ohlcv_by_interval[primary_interval]),
+        price_state=price_state_from_ohlcv(
+            asset, primary_interval, ohlcv_by_interval[primary_interval]
+        ),
         multi_timeframe=multi,
         technical_state=technicals,
         relative_strength=rs,

@@ -32,7 +32,7 @@ import sprint027_signals as SG  # noqa: E402
 POS = L.POS_DIR
 OUT = L.OUT_DIR
 INDEPENDENT_SEED = 20261027
-INDEPENDENT_BLOCK = 12          # 6h — different from the builder's 48
+INDEPENDENT_BLOCK = 12  # 6h — different from the builder's 48
 INDEPENDENT_PERMS = 120
 
 
@@ -82,8 +82,12 @@ def _circular_shift(n: int, rng: np.random.Generator) -> NDArray[Any]:
 
 
 def _family_null_independent(
-    panel: L.Panel, disc_idx: NDArray[Any], family: str,
-    block: int, n_perm: int, seed: int,
+    panel: L.Panel,
+    disc_idx: NDArray[Any],
+    family: str,
+    block: int,
+    n_perm: int,
+    seed: int,
 ) -> dict[str, Any]:
     variants = [v for v in SG.build_variants() if v.family == family]
     sigs = {v.variant_id: SG.variant_signal(v, panel)[disc_idx] for v in variants}
@@ -99,8 +103,7 @@ def _family_null_independent(
         if block > 0:
             nb = math.ceil(n / block)
             order = rng.permutation(nb)
-            perm = np.concatenate([np.arange(b * block, min((b + 1) * block, n))
-                                   for b in order])
+            perm = np.concatenate([np.arange(b * block, min((b + 1) * block, n)) for b in order])
         else:
             perm = _circular_shift(n, rng)
         mx = 0.0
@@ -111,9 +114,14 @@ def _family_null_independent(
                 mx = max(mx, abs(v))
         null_max[p] = mx
     p_fw = float((1 + int(np.sum(null_max >= observed_max))) / (n_perm + 1))
-    return {"family": family, "observed_max_abs_ic": round(observed_max, 5),
-            "family_wise_p": round(p_fw, 5), "n_permutations": n_perm, "block_bars": block,
-            "best_variant": max(obs_fin, key=lambda k: abs(obs_fin[k])) if obs_fin else None}
+    return {
+        "family": family,
+        "observed_max_abs_ic": round(observed_max, 5),
+        "family_wise_p": round(p_fw, 5),
+        "n_permutations": n_perm,
+        "block_bars": block,
+        "best_variant": max(obs_fin, key=lambda k: abs(obs_fin[k])) if obs_fin else None,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -125,8 +133,9 @@ def _dataset_and_pit_checks() -> list[dict[str, Any]]:
     checks: list[dict[str, Any]] = []
 
     def chk(name: str, ok: bool, detail: str = "") -> None:
-        checks.append({"name": name, "result": "PASS" if ok else "FAIL", "ok": bool(ok),
-                       "detail": detail})
+        checks.append(
+            {"name": name, "result": "PASS" if ok else "FAIL", "ok": bool(ok), "detail": detail}
+        )
 
     manifest = json.loads((POS / "DATASET_MANIFEST.json").read_text(encoding="utf-8"))
     sha_ok = True
@@ -167,13 +176,19 @@ def _dataset_and_pit_checks() -> list[dict[str, Any]]:
 
     # schema stability + documented width
     sch = json.loads((POS / "SCHEMA_AUDIT.json").read_text(encoding="utf-8"))
-    chk("schema_stable_8_columns", bool(sch["schema_stable_8_columns"])
-        and sch["observed_row_widths"] == ["8"], f"widths={sch['observed_row_widths']}")
+    chk(
+        "schema_stable_8_columns",
+        bool(sch["schema_stable_8_columns"]) and sch["observed_row_widths"] == ["8"],
+        f"widths={sch['observed_row_widths']}",
+    )
 
     # history depth + gate
     dq = json.loads((POS / "DATA_QUALITY_FINAL.json").read_text(encoding="utf-8"))
-    chk("history_months_at_least_12", float(dq["history_months"]) >= 12.0,
-        f"history_months={dq['history_months']}")
+    chk(
+        "history_months_at_least_12",
+        float(dq["history_months"]) >= 12.0,
+        f"history_months={dq['history_months']}",
+    )
     chk("g_pos_data_recomputed", dq["result"] == "PASS", f"result={dq['result']}")
     return checks
 
@@ -182,8 +197,9 @@ def _research_checks(panel: L.Panel, disc_idx: NDArray[Any]) -> list[dict[str, A
     checks: list[dict[str, Any]] = []
 
     def chk(name: str, ok: bool, detail: str = "") -> None:
-        checks.append({"name": name, "result": "PASS" if ok else "FAIL", "ok": bool(ok),
-                       "detail": detail})
+        checks.append(
+            {"name": name, "result": "PASS" if ok else "FAIL", "ok": bool(ok), "detail": detail}
+        )
 
     final = json.loads((REPO / "reports" / "RFC027_FINAL_REPORT.json").read_text(encoding="utf-8"))
     fam_art = json.loads((OUT / "FAMILY_NULL_ANALYSIS.json").read_text(encoding="utf-8"))
@@ -191,15 +207,23 @@ def _research_checks(panel: L.Panel, disc_idx: NDArray[Any]) -> list[dict[str, A
     # budgets (§25)
     n_hyp = len(SG.core_hypotheses())
     n_var = len(SG.build_variants())
-    chk("hypothesis_budget", n_hyp <= 12,
-        f"n_core_hypotheses={n_hyp} (of {len(SG.HYPOTHESES)} registered)")
+    chk(
+        "hypothesis_budget",
+        n_hyp <= 12,
+        f"n_core_hypotheses={n_hyp} (of {len(SG.HYPOTHESES)} registered)",
+    )
     chk("variant_budget", n_var <= 120, f"n_variants={n_var}")
 
     # cost model unchanged
-    chk("cost_model_v3_unchanged", abs(L.COST_MODEL_V3_BPS - 23.790569) < 1e-9,
-        f"cost_model_v3_bps={L.COST_MODEL_V3_BPS}")
-    chk("cost_model_consistent_with_report",
-        abs(float(final["cost_model_v3_bps"]) - L.COST_MODEL_V3_BPS) < 1e-9)
+    chk(
+        "cost_model_v3_unchanged",
+        abs(L.COST_MODEL_V3_BPS - 23.790569) < 1e-9,
+        f"cost_model_v3_bps={L.COST_MODEL_V3_BPS}",
+    )
+    chk(
+        "cost_model_consistent_with_report",
+        abs(float(final["cost_model_v3_bps"]) - L.COST_MODEL_V3_BPS) < 1e-9,
+    )
 
     # EXPERIMENT_REGISTRY.jsonl / MATRIX.csv completeness
     reg_path = OUT / "EXPERIMENT_REGISTRY.jsonl"
@@ -217,39 +241,56 @@ def _research_checks(panel: L.Panel, disc_idx: NDArray[Any]) -> list[dict[str, A
         v = next(v for v in SG.build_variants() if v.variant_id == best["variant_id"])
         sig = SG.variant_signal(v, panel)
         ic_d = _ic_independent(sig[disc_idx], panel.fwd_bps[v.horizon_bars][disc_idx])
-        same = (ic_d is not None and best.get("ic_discovery") is not None
-                and np.sign(ic_d) == np.sign(best["ic_discovery"]))
-        chk("best_information_ic_reproduced",
+        same = (
+            ic_d is not None
+            and best.get("ic_discovery") is not None
+            and np.sign(ic_d) == np.sign(best["ic_discovery"])
+        )
+        chk(
+            "best_information_ic_reproduced",
             same and abs(ic_d - best["ic_discovery"]) < 0.01,
-            f"indep={ic_d} artifact={best.get('ic_discovery')}")
+            f"indep={ic_d} artifact={best.get('ic_discovery')}",
+        )
     else:
         chk("best_information_ic_reproduced", True, "no survivor with p<alpha (nothing to check)")
 
     # independent family-wise null on the strongest family
-    family = max(SG.FAMILIES,
-                 key=lambda f: (fam_art["families"][f].get("observed_max_abs_ic") or 0.0))
-    same_block = _family_null_independent(panel, disc_idx, family, 48,
-                                          INDEPENDENT_PERMS, INDEPENDENT_SEED)
-    alt_block = _family_null_independent(panel, disc_idx, family, INDEPENDENT_BLOCK,
-                                         INDEPENDENT_PERMS, INDEPENDENT_SEED + 1)
+    family = max(
+        SG.FAMILIES, key=lambda f: fam_art["families"][f].get("observed_max_abs_ic") or 0.0
+    )
+    same_block = _family_null_independent(
+        panel, disc_idx, family, 48, INDEPENDENT_PERMS, INDEPENDENT_SEED
+    )
+    alt_block = _family_null_independent(
+        panel, disc_idx, family, INDEPENDENT_BLOCK, INDEPENDENT_PERMS, INDEPENDENT_SEED + 1
+    )
     builder = fam_art["families"][family]
-    chk("family_null_observed_max_reproduced",
+    chk(
+        "family_null_observed_max_reproduced",
         abs(same_block["observed_max_abs_ic"] - builder["observed_max_abs_ic"]) < 1e-4,
         f"family={family} indep={same_block['observed_max_abs_ic']} "
-        f"artifact={builder['observed_max_abs_ic']}")
-    chk("family_null_seed_stable",
+        f"artifact={builder['observed_max_abs_ic']}",
+    )
+    chk(
+        "family_null_seed_stable",
         abs(same_block["family_wise_p"] - builder["family_wise_p"]) < 0.1,
-        f"indep_p={same_block['family_wise_p']} artifact_p={builder['family_wise_p']}")
+        f"indep_p={same_block['family_wise_p']} artifact_p={builder['family_wise_p']}",
+    )
     surv_builder = builder["family_wise_p"] < 0.05
     surv_indep = alt_block["family_wise_p"] < 0.05
-    chk("family_null_verdict_stable_across_permutation",
+    chk(
+        "family_null_verdict_stable_across_permutation",
         surv_builder == surv_indep,
-        f"builder_p={builder['family_wise_p']} alt_block_p={alt_block['family_wise_p']}")
+        f"builder_p={builder['family_wise_p']} alt_block_p={alt_block['family_wise_p']}",
+    )
 
     # gates states valid + classification reproduced from the gates
     valid_states = {"PASS", "FAIL", "NOT_REACHED"}
-    chk("gate_states_valid", all(v in valid_states for v in final["gates"].values()),
-        f"gates={final['gates']}")
+    chk(
+        "gate_states_valid",
+        all(v in valid_states for v in final["gates"].values()),
+        f"gates={final['gates']}",
+    )
     g = final["gates"]
     if g["G_POS_DATA"] != "PASS":
         reproduced = "POS-A"
@@ -265,16 +306,25 @@ def _research_checks(panel: L.Panel, disc_idx: NDArray[Any]) -> list[dict[str, A
         reproduced = "POS-F"
     else:
         reproduced = "POS-G"
-    chk("classification_reproduced", reproduced == final["global_classification"],
-        f"reproduced={reproduced} artifact={final['global_classification']}")
+    chk(
+        "classification_reproduced",
+        reproduced == final["global_classification"],
+        f"reproduced={reproduced} artifact={final['global_classification']}",
+    )
 
     # HOLDOUT never read for analytics unless G_EDGE_3 PASS (§19/§52)
     opened = final.get("holdout_analytics_read") is True
     justified = g.get("G_EDGE_3") == "PASS"
-    chk("holdout_not_read_unless_justified", (not opened) or justified,
-        f"holdout_read={opened} g_edge_3={g.get('G_EDGE_3')}")
-    chk("holdout_boundary_respected", float(L.SPLIT_FRACTIONS["VALIDATION"][1]) <= 0.8,
-        "analytics loader truncates at the VALIDATION boundary (0.8)")
+    chk(
+        "holdout_not_read_unless_justified",
+        (not opened) or justified,
+        f"holdout_read={opened} g_edge_3={g.get('G_EDGE_3')}",
+    )
+    chk(
+        "holdout_boundary_respected",
+        float(L.SPLIT_FRACTIONS["VALIDATION"][1]) <= 0.8,
+        "analytics loader truncates at the VALIDATION boundary (0.8)",
+    )
 
     return checks
 
@@ -288,7 +338,7 @@ def verify_all() -> dict[str, Any]:
     false_success = sum(1 for c in checks if not c["ok"])
     return {
         "verifier": f"RFC-027 independent recomputation (seed {INDEPENDENT_SEED}, "
-                    f"block {INDEPENDENT_BLOCK})",
+        f"block {INDEPENDENT_BLOCK})",
         "false_success": false_success,
         "checks": checks,
         "n_checks": len(checks),
@@ -296,9 +346,14 @@ def verify_all() -> dict[str, Any]:
 
 
 def _md(payload: dict[str, Any]) -> str:
-    lines = ["# RFC027_INDEPENDENT_VERIFICATION", "",
-             f"FALSE_SUCCESS = **{payload['false_success']}** ({payload['n_checks']} checks)",
-             "", "| check | result | detail |", "| --- | --- | --- |"]
+    lines = [
+        "# RFC027_INDEPENDENT_VERIFICATION",
+        "",
+        f"FALSE_SUCCESS = **{payload['false_success']}** ({payload['n_checks']} checks)",
+        "",
+        "| check | result | detail |",
+        "| --- | --- | --- |",
+    ]
     for c in payload["checks"]:
         lines.append(f"| {c['name']} | {c['result']} | {c['detail']} |")
     return "\n".join(lines) + "\n"
@@ -312,18 +367,22 @@ def _patch_final(result: dict[str, Any]) -> None:
     L.write_json(fj, final)
 
     g = final["gates"]
-    lines = ["# RFC-027 — HISTORICAL POSITIONING EDGE DISCOVERY", "",
-             f"- G_POS_DATA = {g['G_POS_DATA']}",
-             f"- G_POS_INFO = {g['G_POS_INFO']}",
-             f"- HISTORY_MONTHS = {final['history_months']}",
-             f"- G_EDGE_1 = {g['G_EDGE_1']}",
-             f"- G_EDGE_2 = {g['G_EDGE_2']}",
-             f"- G_EDGE_3 = {g['G_EDGE_3']}",
-             f"- G_EDGE_4 = {g['G_EDGE_4']}",
-             f"- GLOBAL_CLASSIFICATION = {final['global_classification']}",
-             f"- NEXT GATE = {final['next_gate']}", "",
-             f"FALSE_SUCCESS = {final['false_success']}",
-             f"INDEPENDENT VERIFICATION = {final['independent_verification']}"]
+    lines = [
+        "# RFC-027 — HISTORICAL POSITIONING EDGE DISCOVERY",
+        "",
+        f"- G_POS_DATA = {g['G_POS_DATA']}",
+        f"- G_POS_INFO = {g['G_POS_INFO']}",
+        f"- HISTORY_MONTHS = {final['history_months']}",
+        f"- G_EDGE_1 = {g['G_EDGE_1']}",
+        f"- G_EDGE_2 = {g['G_EDGE_2']}",
+        f"- G_EDGE_3 = {g['G_EDGE_3']}",
+        f"- G_EDGE_4 = {g['G_EDGE_4']}",
+        f"- GLOBAL_CLASSIFICATION = {final['global_classification']}",
+        f"- NEXT GATE = {final['next_gate']}",
+        "",
+        f"FALSE_SUCCESS = {final['false_success']}",
+        f"INDEPENDENT VERIFICATION = {final['independent_verification']}",
+    ]
     L.write_md(REPO / "reports" / "RFC027_FINAL_REPORT.md", "\n".join(lines) + "\n")
 
 
@@ -332,8 +391,13 @@ def main() -> None:
     L.write_json(OUT / "INDEPENDENT_VERIFICATION.json", result)
     L.write_md(OUT / "INDEPENDENT_VERIFICATION.md", _md(result))
     _patch_final(result)
-    print("independent verifier: FALSE_SUCCESS =", result["false_success"],
-          "of", result["n_checks"], "checks")
+    print(
+        "independent verifier: FALSE_SUCCESS =",
+        result["false_success"],
+        "of",
+        result["n_checks"],
+        "checks",
+    )
     for c in result["checks"]:
         if not c["ok"]:
             print("  FAIL:", c["name"], c["detail"])

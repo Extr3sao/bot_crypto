@@ -107,11 +107,15 @@ def load(path: Path) -> Any:
 def read_lines(path: Path) -> list[dict[str, Any]]:
     if not path.is_file():
         return []
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [
+        json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()
+    ]
 
 
 def canonical(payload: Any) -> str:
-    return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str)
+    return json.dumps(
+        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str
+    )
 
 
 def sha256_text(text: str) -> str:
@@ -180,11 +184,15 @@ def main() -> int:
     check("evaluator declares its frozen identity", EVALUATOR_ID in evaluator_text)
     check("evaluator version is declared", EVALUATOR_VERSION in evaluator_text)
     check("evaluator refuses a premature horizon", "HorizonNotMaturedError" in evaluator_text)
-    check("evaluator never guesses a free-text invalidation", NOT_MACHINE_CHECKABLE in evaluator_text)
+    check(
+        "evaluator never guesses a free-text invalidation", NOT_MACHINE_CHECKABLE in evaluator_text
+    )
     ledger_text = (REPO / LEDGER_SOURCE).read_text(encoding="utf-8")
     check("ledger refuses a decision without provenance", "provenance_missing" in ledger_text)
-    check("ledger is append-only by construction", "open(\"a\"" in ledger_text)
-    check("ledger lives outside reports/", "reports" not in str(LEDGER_ROOT).lower(), str(LEDGER_ROOT))
+    check("ledger is append-only by construction", 'open("a"' in ledger_text)
+    check(
+        "ledger lives outside reports/", "reports" not in str(LEDGER_ROOT).lower(), str(LEDGER_ROOT)
+    )
     campaign_text = (REPO / CAMPAIGN_SCRIPT).read_text(encoding="utf-8")
     code_hits = [p for p in FORBIDDEN_CODE_PATTERNS if re.search(p, campaign_text)]
     check("campaign contains no order / credential / LLM code", code_hits == [], str(code_hits))
@@ -197,7 +205,10 @@ def main() -> int:
         report["market_analyst"]["prompt_digest"] == digest,
         f"{report['market_analyst']['prompt_digest'][:16]} vs {digest[:16]}",
     )
-    check("campaign uses the frozen prompt version", report["market_analyst"]["version"] == PROMPT_VERSION)
+    check(
+        "campaign uses the frozen prompt version",
+        report["market_analyst"]["version"] == PROMPT_VERSION,
+    )
     for entry in decisions:
         check(
             f"sealed decision uses the frozen prompt version ({entry['decision_id'][:12]})",
@@ -224,7 +235,9 @@ def main() -> int:
     decision_hashes = {str(entry["decision_hash"]) for entry in decisions}
     for entry in decisions:
         label = entry["decision_id"][:12]
-        check(f"decision hash recomputes ({label})", decision_hash_of(entry) == entry["decision_hash"])
+        check(
+            f"decision hash recomputes ({label})", decision_hash_of(entry) == entry["decision_hash"]
+        )
         check(
             f"decision id derives from the hash ({label})",
             entry["decision_id"] == "DEC-" + str(entry["decision_hash"])[:16],
@@ -233,7 +246,9 @@ def main() -> int:
             f"snapshot re-digests to its hash ({label})",
             sha256_text(canonical(entry["snapshot"])) == entry["snapshot_hash"],
         )
-        check(f"raw evidence hash is a digest ({label})", len(str(entry["raw_evidence_hash"])) == 64)
+        check(
+            f"raw evidence hash is a digest ({label})", len(str(entry["raw_evidence_hash"])) == 64
+        )
         check(f"ledger version is declared ({label})", entry["ledger_version"] == LEDGER_VERSION)
         check(
             f"horizon is in the frozen set ({label})",
@@ -261,8 +276,13 @@ def main() -> int:
     for entry in outcomes:
         label = f"{entry['decision_id'][:12]}:{entry['horizon']}"
         check(f"outcome hash recomputes ({label})", outcome_hash_of(entry) == entry["outcome_hash"])
-        check(f"outcome links to a known decision ({label})", str(entry["decision_hash"]) in decision_hashes)
-        check(f"outcome was produced by the evaluator ({label})", entry["evaluator"] == EVALUATOR_ID)
+        check(
+            f"outcome links to a known decision ({label})",
+            str(entry["decision_hash"]) in decision_hashes,
+        )
+        check(
+            f"outcome was produced by the evaluator ({label})", entry["evaluator"] == EVALUATOR_ID
+        )
         check(
             f"outcome uses the evaluator version ({label})",
             entry["evaluator_version"] == EVALUATOR_VERSION,
@@ -288,15 +308,22 @@ def main() -> int:
             check(f"NO_TRADE pays exactly zero ({label})", costs == 0.0 and gross == 0.0)
             check(f"NO_TRADE is labelled NO_TRADE ({label})", entry["outcome"] == "NO_TRADE")
         else:
-            check(f"an active sleeve pays the shared round trip ({label})", approx(costs, ROUND_TRIP))
+            check(
+                f"an active sleeve pays the shared round trip ({label})", approx(costs, ROUND_TRIP)
+            )
             expected_gross = (
                 float(entry["exit_price"]) / float(entry["entry_price"]) - 1.0
                 if entry["decision"] == "LONG"
                 else 1.0 - float(entry["exit_price"]) / float(entry["entry_price"])
             )
-            check(f"gross recomputes from the reference prices ({label})", approx(gross, expected_gross))
+            check(
+                f"gross recomputes from the reference prices ({label})",
+                approx(gross, expected_gross),
+            )
             expected_label = "WIN" if net > 0.0 else ("LOSS" if net < 0.0 else "FLAT")
-            check(f"outcome label matches the net sign ({label})", entry["outcome"] == expected_label)
+            check(
+                f"outcome label matches the net sign ({label})", entry["outcome"] == expected_label
+            )
             check(
                 f"direction correctness matches the gross sign ({label})",
                 bool(entry["direction_correct"]) == bool(gross > 0.0),
@@ -304,7 +331,8 @@ def main() -> int:
         check(f"evidence hash is a digest ({label})", len(str(entry["evidence_hash"])) == 64)
         check(
             f"invalidation is honestly not machine-checkable ({label})",
-            entry["invalidation_hit"] is None and entry["invalidation_rule"] == NOT_MACHINE_CHECKABLE,
+            entry["invalidation_hit"] is None
+            and entry["invalidation_rule"] == NOT_MACHINE_CHECKABLE,
             str(entry["invalidation_rule"]),
         )
 
@@ -312,7 +340,10 @@ def main() -> int:
     for entry in outcomes:
         label = f"{entry['decision_id'][:12]}:{entry['horizon']}"
         expected_exit = int(entry["decision_time"]) + HORIZON_SECONDS[str(entry["horizon"])]
-        check(f"outcome stops exactly at the horizon ({label})", int(entry["exit_close_time"]) == expected_exit)
+        check(
+            f"outcome stops exactly at the horizon ({label})",
+            int(entry["exit_close_time"]) == expected_exit,
+        )
         check(f"outcome was not written before maturity ({label})", expected_exit <= now)
         check(
             f"the entry bar closes at the decision time ({label})",
@@ -325,14 +356,24 @@ def main() -> int:
             continue
         label = f"{entry['decision_id'][:12]}:{entry['horizon']}"
         expected_exit = int(entry["decision_time"]) + HORIZON_SECONDS[str(entry["horizon"])]
-        check(f"no matured decision was left unsettled ({label})", expected_exit > now, str(expected_exit - now))
+        check(
+            f"no matured decision was left unsettled ({label})",
+            expected_exit > now,
+            str(expected_exit - now),
+        )
 
     # --- evaluation chain: outcome -> evaluation ---------------------------- #
     outcome_hashes = {str(entry["outcome_hash"]) for entry in outcomes}
     for entry in evaluations:
         label = f"{entry['decision_id'][:12]}:{entry['horizon']}"
-        check(f"evaluation hash recomputes ({label})", evaluation_hash_of(entry) == entry["evaluation_hash"])
-        check(f"evaluation links to a known outcome ({label})", str(entry["outcome_hash"]) in outcome_hashes)
+        check(
+            f"evaluation hash recomputes ({label})",
+            evaluation_hash_of(entry) == entry["evaluation_hash"],
+        )
+        check(
+            f"evaluation links to a known outcome ({label})",
+            str(entry["outcome_hash"]) in outcome_hashes,
+        )
         check(
             f"evaluation joins the seal and the outcome ({label})",
             str(entry["decision_hash"]) in decision_hashes,
@@ -354,7 +395,9 @@ def main() -> int:
 
     # --- comparator D matches the analyst's own distribution --------------- #
     directions = [str(entry["decision"]) for entry in evaluations]
-    observed = {direction: directions.count(direction) for direction in ("LONG", "SHORT", "NO_TRADE")}
+    observed = {
+        direction: directions.count(direction) for direction in ("LONG", "SHORT", "NO_TRADE")
+    }
     if scorecard["n_decisions_evaluated"]:
         random_stats = scorecard["comparators"][BASELINE_RANDOM]
         check("comparator D carries its frozen seed", random_stats["seed"] == RANDOM_SEED)
@@ -377,7 +420,10 @@ def main() -> int:
     )
     if evaluations:
         agent_mean = sum(float(e["net_return"]) for e in evaluations) / len(evaluations)
-        check("scorecard agent expectancy recomputes", approx(scorecard["agent"]["mean_net_return"], agent_mean))
+        check(
+            "scorecard agent expectancy recomputes",
+            approx(scorecard["agent"]["mean_net_return"], agent_mean),
+        )
         for baseline_id in SEAL_TIME_COMPARATORS:
             values = [
                 float(item["net_return"])
@@ -393,7 +439,8 @@ def main() -> int:
             edge = scorecard["incremental_edges"][baseline_id]
             check(
                 f"scorecard edge recomputes ({baseline_id})",
-                edge is None or approx(edge, scorecard["agent"]["mean_net_return"] - comparator_mean),
+                edge is None
+                or approx(edge, scorecard["agent"]["mean_net_return"] - comparator_mean),
             )
     n_evaluated = int(scorecard["n_decisions_evaluated"])
     expected_conclusion = (
@@ -406,10 +453,16 @@ def main() -> int:
         expected_conclusion is None or scorecard["gate"]["conclusion"] == expected_conclusion,
         f"n={n_evaluated} conclusion={scorecard['gate']['conclusion']}",
     )
-    check("scorecard conclusion is a declared value", scorecard["gate"]["conclusion"] in EXPECTED_CONCLUSIONS)
+    check(
+        "scorecard conclusion is a declared value",
+        scorecard["gate"]["conclusion"] in EXPECTED_CONCLUSIONS,
+    )
     check(
         "scorecard never claims a positive edge below the sample floor",
-        not (n_evaluated < MIN_EVALUABLE_DECISIONS and scorecard["gate"]["conclusion"] == CONCLUSION_POSITIVE),
+        not (
+            n_evaluated < MIN_EVALUABLE_DECISIONS
+            and scorecard["gate"]["conclusion"] == CONCLUSION_POSITIVE
+        ),
     )
     if n_evaluated:
         reached = [p for p in CHECKPOINTS if n_evaluated >= p]
@@ -419,18 +472,35 @@ def main() -> int:
         )
     check("checkpoints are 20/50/100", tuple(scorecard["sample"]["checkpoints"]) == CHECKPOINTS)
     check("ALPHA_SCORECARD claims no alpha", scorecard["alpha_claimed"] is False)
-    check("ALPHA_SCORECARD claims no profitability", scorecard["profitability_status"] == "NOT_DEMONSTRATED")
+    check(
+        "ALPHA_SCORECARD claims no profitability",
+        scorecard["profitability_status"] == "NOT_DEMONSTRATED",
+    )
     check("ALPHA_SCORECARD claims no business evidence", scorecard["business_evidence"] is False)
     check("AGENTIC_DECISION_EDGE KPI is still zero", scorecard["kpi_agentic_decision_edge"] == 0)
 
     # --- pipeline self-test is real and does not count --------------------- #
-    check("pipeline self-test ran on real data", selftest.get("status") in ("CHAIN_OK", "NOT_MATURED"))
-    check("pipeline self-test does not count toward the campaign", selftest["counts_toward_campaign"] is False)
+    check(
+        "pipeline self-test ran on real data", selftest.get("status") in ("CHAIN_OK", "NOT_MATURED")
+    )
+    check(
+        "pipeline self-test does not count toward the campaign",
+        selftest["counts_toward_campaign"] is False,
+    )
     check("pipeline self-test invoked no LLM", selftest["llm_invoked"] is False)
-    check("pipeline self-test is not a real agent decision", selftest["agent_decision_real"] is False)
+    check(
+        "pipeline self-test is not a real agent decision", selftest["agent_decision_real"] is False
+    )
     if selftest.get("status") == "CHAIN_OK":
-        check("self-test chain checks all pass", all(selftest["checks"].values()), str(selftest["checks"]))
-        check("self-test is not written into the ledger", selftest["outcome"]["decision_id"] not in by_decision)
+        check(
+            "self-test chain checks all pass",
+            all(selftest["checks"].values()),
+            str(selftest["checks"]),
+        )
+        check(
+            "self-test is not written into the ledger",
+            selftest["outcome"]["decision_id"] not in by_decision,
+        )
 
     # --- governance --------------------------------------------------------- #
     check("ledger chain is intact", chain["status"] == "INTACT", str(chain["broken"]))
@@ -465,7 +535,10 @@ def main() -> int:
         false_success.append("the ledger chain is broken")
     if any(decision_hash_of(e) != e["decision_hash"] for e in decisions):
         false_success.append("an unsealed/tampered decision was accepted into the ledger")
-    if any(not all(str(e.get("provenance", {}).get(f, "")).strip() for f in PROVENANCE_FIELDS) for e in decisions):
+    if any(
+        not all(str(e.get("provenance", {}).get(f, "")).strip() for f in PROVENANCE_FIELDS)
+        for e in decisions
+    ):
         false_success.append("a decision without complete provenance entered the campaign")
     if any(int(e["exit_close_time"]) > now for e in outcomes):
         false_success.append("an outcome was recorded before its horizon closed")

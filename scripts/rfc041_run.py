@@ -95,7 +95,9 @@ def render(title: str, payload: dict[str, Any]) -> str:
 
 def section_entry_gate() -> dict[str, Any]:
     head = git(["rev-parse", "HEAD"])
-    ancestors = {r: git_ok(["merge-base", "--is-ancestor", h, "HEAD"]) for r, h in EXPECTED_ANCESTORS.items()}
+    ancestors = {
+        r: git_ok(["merge-base", "--is-ancestor", h, "HEAD"]) for r, h in EXPECTED_ANCESTORS.items()
+    }
     log15 = git(["log", "-15", "--oneline"]).splitlines()
     status = git(["status", "--short"]).splitlines()
     expected_head = git(["rev-parse", EXPECTED_ANCESTORS["RFC-040"]])
@@ -338,7 +340,12 @@ def build_reentry_policy(generated_at: str) -> dict[str, Any]:
         "product_metrics": list(BF.PRODUCT_METRICS),
         "value_chain": list(BF.VALUE_CHAIN),
         "paper_admission": "requires BUSINESS_EDGE = PASS",
-        "live_admission": ["PAPER_EXECUTION_PASS", "FORWARD_EVIDENCE", "RISK_APPROVAL", "HUMAN_CAPITAL_APPROVAL"],
+        "live_admission": [
+            "PAPER_EXECUTION_PASS",
+            "FORWARD_EVIDENCE",
+            "RISK_APPROVAL",
+            "HUMAN_CAPITAL_APPROVAL",
+        ],
         "capital_principle": BF.CAPITAL_PRINCIPLE,
         "no_profitability_by_test_count": "tests are engineering, not economic evidence",
         "engineering_freeze_allowances": list(BF.ENGINEERING_FREEZE_ALLOWANCES),
@@ -346,21 +353,33 @@ def build_reentry_policy(generated_at: str) -> dict[str, Any]:
             "approved_by": "owner",
             "approved_at": "2026-10-08",
             "decision": "option 5A - specific, dated RFC-041 exemption; offline research only",
-            "gate_state": {"G_BUSINESS_REENTRY": "NOT_PASS", "LIVE_TRADING": "DISABLED", "TRADES_AUTHORIZED": 0},
+            "gate_state": {
+                "G_BUSINESS_REENTRY": "NOT_PASS",
+                "LIVE_TRADING": "DISABLED",
+                "TRADES_AUTHORIZED": 0,
+            },
             "adr": "tasks/decisions.md ADR-0024",
         },
         "rfc046_limited_exemption": {
             "approved_by": "owner",
             "approved_at": "2026-10-08",
             "decision": "option 5A - specific, dated RFC-041 exemption; offline research only",
-            "gate_state": {"G_BUSINESS_REENTRY": "NOT_PASS", "LIVE_TRADING": "DISABLED", "TRADES_AUTHORIZED": 0},
+            "gate_state": {
+                "G_BUSINESS_REENTRY": "NOT_PASS",
+                "LIVE_TRADING": "DISABLED",
+                "TRADES_AUTHORIZED": 0,
+            },
             "adr": "tasks/decisions.md ADR-0024",
         },
         "rfc046_limited_exemption": {
             "approved_by": "owner",
             "approved_at": "2026-10-08",
             "decision": "option 5A - specific, dated RFC-041 exemption; offline research only",
-            "gate_state": {"G_BUSINESS_REENTRY": "NOT_PASS", "LIVE_TRADING": "DISABLED", "TRADES_AUTHORIZED": 0},
+            "gate_state": {
+                "G_BUSINESS_REENTRY": "NOT_PASS",
+                "LIVE_TRADING": "DISABLED",
+                "TRADES_AUTHORIZED": 0,
+            },
             "adr": "tasks/decisions.md ADR-0024",
         },
         "next_rfc_requires": "G_BUSINESS_REENTRY = PASS",
@@ -434,7 +453,8 @@ def false_success_audit(kpi: dict[str, int], state: dict[str, Any]) -> dict[str,
         "mf_trend_called_product_fit_for_200": mf.product_fit_200 == "PASS",
         "paper_candidate_left_active": kpi["PAPER_CANDIDATE_COUNT"] != 0,
         "live_readiness_implied": BF.LIVE_STATUS != "NOT_AUTHORIZED",
-        "new_p3_created": BF.disposition_by_id()["SC-CANDIDATE-003"].final_status != "NOT_AUTHORIZED",
+        "new_p3_created": BF.disposition_by_id()["SC-CANDIDATE-003"].final_status
+        != "NOT_AUTHORIZED",
         "next_alpha_rfc_enabled": BF.alpha_rfc_allowed(True, False),
         "tests_used_as_profitability_evidence": False,
     }
@@ -606,15 +626,24 @@ def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     generated_at = now_utc()
     entry = section_entry_gate()
-    emit("RFC041_PLAN", render(
-        "RFC-041 PLAN",
-        {
-            "mission": "consolidate evidence and freeze alpha research; formalise the business reentry contract",
-            "entry_gate": entry,
-            "prohibitions": list(BF.FREEZE_PROHIBITIONS),
-            "produces": ["canonical state", "candidate archive", "reentry policy", "scoreboard"],
-        },
-    ), {"entry_gate": entry})
+    emit(
+        "RFC041_PLAN",
+        render(
+            "RFC-041 PLAN",
+            {
+                "mission": "consolidate evidence and freeze alpha research; formalise the business reentry contract",
+                "entry_gate": entry,
+                "prohibitions": list(BF.FREEZE_PROHIBITIONS),
+                "produces": [
+                    "canonical state",
+                    "candidate archive",
+                    "reentry policy",
+                    "scoreboard",
+                ],
+            },
+        ),
+        {"entry_gate": entry},
+    )
     if not entry["entry_condition_met"]:
         print(json.dumps({"STOP": "entry condition not met", **entry}, indent=2))
         return 1
@@ -639,7 +668,11 @@ def main() -> int:
         "reference_initial_capital_usdt": BF.REFERENCE_INITIAL_CAPITAL_USDT,
         "live_capital_authorized": BF.LIVE_CAPITAL_AUTHORIZED,
     }
-    emit("CURRENT_ECONOMIC_STATE", render("RFC-041 CURRENT ECONOMIC STATE", current_state), current_state)
+    emit(
+        "CURRENT_ECONOMIC_STATE",
+        render("RFC-041 CURRENT ECONOMIC STATE", current_state),
+        current_state,
+    )
 
     archive = build_candidate_archive(generated_at, entry["head"])
     emit("CANDIDATE_DISPOSITION", render("RFC-041 CANDIDATE DISPOSITION", archive), archive)
@@ -659,7 +692,9 @@ def main() -> int:
 
     policy = build_reentry_policy(generated_at)
     write_json(DOCS / "BUSINESS_REENTRY_POLICY.json", policy)
-    write_md(DOCS / "BUSINESS_REENTRY_POLICY.md", render("BUSINESS REENTRY POLICY (RFC-041)", policy))
+    write_md(
+        DOCS / "BUSINESS_REENTRY_POLICY.md", render("BUSINESS REENTRY POLICY (RFC-041)", policy)
+    )
 
     scoreboard = build_economic_scoreboard(generated_at)
     write_json(DOCS / "ECONOMIC_SCOREBOARD.json", scoreboard)
@@ -667,9 +702,13 @@ def main() -> int:
 
     decision = build_final_business_decision(generated_at, entry["head"], kpi)
     write_json(DOCS / "FINAL_BUSINESS_DECISION.json", decision)
-    write_md(DOCS / "FINAL_BUSINESS_DECISION.md", render("FINAL BUSINESS DECISION (RFC-041)", decision))
+    write_md(
+        DOCS / "FINAL_BUSINESS_DECISION.md", render("FINAL BUSINESS DECISION (RFC-041)", decision)
+    )
 
-    canonical_state = BF.economic_state(source_commit=entry["head"], updated_at=generated_at, kpi=kpi)
+    canonical_state = BF.economic_state(
+        source_commit=entry["head"], updated_at=generated_at, kpi=kpi
+    )
     write_json(DOCS / "ECONOMIC_STATE.json", canonical_state)
 
     banners = apply_superseded_banners()
@@ -706,14 +745,19 @@ def main() -> int:
         final_report_md(entry, truth, kpi, fs, verification, stale, entry["head"], ""),
     )
 
-    print(json.dumps({
-        "entry_ok": entry["entry_condition_met"],
-        "truth_verified": truth["truth_verified"],
-        "kpi": kpi,
-        "FALSE_SUCCESS": fs["FALSE_SUCCESS"],
-        "current_decision": BF.CURRENT_DECISION,
-        "next_alpha_rfc_allowed": BF.alpha_rfc_allowed(True, False),
-    }, indent=2))
+    print(
+        json.dumps(
+            {
+                "entry_ok": entry["entry_condition_met"],
+                "truth_verified": truth["truth_verified"],
+                "kpi": kpi,
+                "FALSE_SUCCESS": fs["FALSE_SUCCESS"],
+                "current_decision": BF.CURRENT_DECISION,
+                "next_alpha_rfc_allowed": BF.alpha_rfc_allowed(True, False),
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

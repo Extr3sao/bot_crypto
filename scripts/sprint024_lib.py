@@ -196,7 +196,10 @@ REGISTRY: list[dict[str, Any]] = [
 ]
 
 REGISTRY_HASH = L.sha256_obj(
-    [{k: v for k, v in h.items() if k != "exit_horizon"} | {"exit_horizon": h["exit_horizon"]} for h in REGISTRY]
+    [
+        {k: v for k, v in h.items() if k != "exit_horizon"} | {"exit_horizon": h["exit_horizon"]}
+        for h in REGISTRY
+    ]
 )
 
 _EXIT_OVERRIDE_KEYS = ("target_mult", "target_is_atr", "stop_mult", "hold_bars")
@@ -250,7 +253,9 @@ def run_hypothesis(
                     atr_stop_mult=float(ex["stop_mult"]),
                     hold_bars=int(ex["hold_bars"]),
                 )
-                trades.extend(L.run_spec(spec, b, asset, window, cost_bps=cost_bps, slip_mult=slip_mult))
+                trades.extend(
+                    L.run_spec(spec, b, asset, window, cost_bps=cost_bps, slip_mult=slip_mult)
+                )
                 eval_bars += max(0, len(b) - P.WARM)
         return trades, eval_bars
     fn = D.SIG_FN[h["signal"]]
@@ -345,7 +350,9 @@ def _forward_from_entry(b: L.Bundle, h_bars: int) -> NDArray[Any]:
     return out
 
 
-def directional_info(h: dict[str, Any], split: str, horizons: tuple[int, ...] = HORIZONS) -> dict[str, Any]:
+def directional_info(
+    h: dict[str, Any], split: str, horizons: tuple[int, ...] = HORIZONS
+) -> dict[str, Any]:
     rows: dict[int, dict[str, list[float]]] = {
         hz: {"sig": [], "ret": [], "signed": []} for hz in horizons
     }
@@ -500,10 +507,15 @@ def _permuted_trades(h: dict[str, Any], rng: np.random.Generator) -> list[L.Trad
             sigs = D.xsec_shock_signal(bundles)
             for asset, b in bundles.items():
                 spec = L.Spec(
-                    candidate_id=f"{h['signal']}@{tf}", hypothesis_id=h["hypothesis_id"],
-                    family=h["family"], timeframe=tf, signals=_const_signal(_permute_sig(sigs[asset], rng)),
-                    warmup=P.WARM, atr_target_mult=float(ex["target_mult"]),
-                    atr_target_is_atr=bool(ex["target_is_atr"]), atr_stop_mult=float(ex["stop_mult"]),
+                    candidate_id=f"{h['signal']}@{tf}",
+                    hypothesis_id=h["hypothesis_id"],
+                    family=h["family"],
+                    timeframe=tf,
+                    signals=_const_signal(_permute_sig(sigs[asset], rng)),
+                    warmup=P.WARM,
+                    atr_target_mult=float(ex["target_mult"]),
+                    atr_target_is_atr=bool(ex["target_is_atr"]),
+                    atr_stop_mult=float(ex["stop_mult"]),
                     hold_bars=int(ex["hold_bars"]),
                 )
                 trades.extend(L.run_spec(spec, b, asset, window))
@@ -511,10 +523,15 @@ def _permuted_trades(h: dict[str, Any], rng: np.random.Generator) -> list[L.Trad
     fn = D.SIG_FN[h["signal"]]
     for asset, window, b in G.split_bundles("DISCOVERY", tf):
         spec = L.Spec(
-            candidate_id=f"{h['signal']}@{tf}", hypothesis_id=h["hypothesis_id"],
-            family=h["family"], timeframe=tf, signals=_const_signal(_permute_sig(fn(b), rng)),
-            warmup=P.WARM, atr_target_mult=float(ex["target_mult"]),
-            atr_target_is_atr=bool(ex["target_is_atr"]), atr_stop_mult=float(ex["stop_mult"]),
+            candidate_id=f"{h['signal']}@{tf}",
+            hypothesis_id=h["hypothesis_id"],
+            family=h["family"],
+            timeframe=tf,
+            signals=_const_signal(_permute_sig(fn(b), rng)),
+            warmup=P.WARM,
+            atr_target_mult=float(ex["target_mult"]),
+            atr_target_is_atr=bool(ex["target_is_atr"]),
+            atr_stop_mult=float(ex["stop_mult"]),
             hold_bars=int(ex["hold_bars"]),
         )
         trades.extend(L.run_spec(spec, b, asset, window))
@@ -540,12 +557,16 @@ def null_draws(n_draws: int, seed: int) -> list[dict[str, Any]]:
                 best_val = m
                 best_hyp = j
         if nets:
-            out.append({
-                "best_net_bps": best_val,
-                "best_hypothesis_index": best_hyp,
-                "best_hypothesis_id": REGISTRY[best_hyp]["hypothesis_id"] if best_hyp >= 0 else None,
-                "n_valid": len(nets),
-            })
+            out.append(
+                {
+                    "best_net_bps": best_val,
+                    "best_hypothesis_index": best_hyp,
+                    "best_hypothesis_id": REGISTRY[best_hyp]["hypothesis_id"]
+                    if best_hyp >= 0
+                    else None,
+                    "n_valid": len(nets),
+                }
+            )
     return out
 
 
@@ -597,7 +618,9 @@ def mde(sigma: float, n: int) -> float:
     return factor * sigma / math.sqrt(max(1, n))
 
 
-def power_row(h: dict[str, Any], disc_trades: list[L.Trade], val_trades: list[L.Trade]) -> dict[str, Any]:
+def power_row(
+    h: dict[str, Any], disc_trades: list[L.Trade], val_trades: list[L.Trade]
+) -> dict[str, Any]:
     dn = G.net_of(disc_trades)
     vn = G.net_of(val_trades)
     sigma_d = float(np.std(dn, ddof=1)) if dn.shape[0] >= 2 else 0.0

@@ -30,8 +30,20 @@ def _msp(pair: list[int] | tuple[int, int, int]) -> int:
     for yy in range(1970, y):
         leap = yy % 4 == 0 and (yy % 100 != 0 or yy % 400 == 0)
         days += 366 if leap else 365
-    ml = [31, 29 if (y % 4 == 0 and (y % 100 != 0 or y % 400 == 0)) else 28, 31, 30, 31, 30,
-          31, 31, 30, 31, 30, 31]
+    ml = [
+        31,
+        29 if (y % 4 == 0 and (y % 100 != 0 or y % 400 == 0)) else 28,
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+    ]
     days += sum(ml[: m - 1]) + (d - 1)
     return days * MS_PER_DAY
 
@@ -47,8 +59,20 @@ def _ym(ts: int) -> tuple[int, int]:
             year += 1
             continue
         break
-    ml = [31, 29 if (year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)) else 28, 31, 30,
-          31, 30, 31, 31, 30, 31, 30, 31]
+    ml = [
+        31,
+        29 if (year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)) else 28,
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+    ]
     month = 1
     for mlen in ml:
         if days < mlen:
@@ -106,7 +130,11 @@ def _independent_backtest(
                 for s in symbols:
                     c_t = table[s][dec]
                     m_t = smas[s][dec]
-                    w[s] = (1.0 / len(symbols)) if (c_t is not None and m_t is not None and c_t > m_t) else 0.0
+                    w[s] = (
+                        (1.0 / len(symbols))
+                        if (c_t is not None and m_t is not None and c_t > m_t)
+                        else 0.0
+                    )
                 tq: dict[str, float] = {}
                 for s in symbols:
                     p = px[s]
@@ -163,7 +191,9 @@ def verify(series: list[Any], spec: dict[str, Any], splits: dict[str, Any]) -> d
     # selection-freeze integrity
     freeze_path = OUT / "SMALL_CAPITAL_SELECTION_FREEZE.json"
     freeze = json.loads(freeze_path.read_text(encoding="utf-8"))
-    p2_has_results = any((OUT / f"P2_{x}_RESULTS.json").exists() for x in ("DISCOVERY", "VALIDATION"))
+    p2_has_results = any(
+        (OUT / f"P2_{x}_RESULTS.json").exists() for x in ("DISCOVERY", "VALIDATION")
+    )
     freeze_checks = {
         "p1_recorded": freeze.get("P1_SMALL_CAPITAL") == spec["id"],
         "single_implementation_no_p2_results": not p2_has_results,

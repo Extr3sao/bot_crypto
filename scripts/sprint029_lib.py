@@ -41,32 +41,36 @@ SRC_MS = L.SRC_MS
 FUNDING_INTERVAL_MS = L.FUNDING_INTERVAL_MS
 
 # ---- frozen cost / capital model (RFC-028 CARRY_COST_MODEL_V1) -------------
-ROUND_TRIP_COST_BPS = L.ROUND_TRIP_COST_BPS          # 39.0 bps
+ROUND_TRIP_COST_BPS = L.ROUND_TRIP_COST_BPS  # 39.0 bps
 SPOT_SIDE_BPS = L.SPOT_SIDE_BPS
 PERP_SIDE_BPS = L.PERP_SIDE_BPS
-COST_MODEL_V3_BPS = L.COST_MODEL_V3_BPS              # deliberately NOT used
-PERP_LEVERAGE = L.PERP_LEVERAGE                      # 3.0
-COMMITTED_CAPITAL = L.COMMITTED_CAPITAL              # 1 + 1/3
+COST_MODEL_V3_BPS = L.COST_MODEL_V3_BPS  # deliberately NOT used
+PERP_LEVERAGE = L.PERP_LEVERAGE  # 3.0
+COMMITTED_CAPITAL = L.COMMITTED_CAPITAL  # 1 + 1/3
 SPLIT_FRACTIONS = L.SPLIT_FRACTIONS
 
 HOLDOUT_ANALYTICS_READ = False
 
 # ---- pre-registered long-horizon set (§10-§11) -----------------------------
 HORIZON_PERIODS: dict[str, int] = {
-    "7d": 21, "14d": 42, "21d": 63, "30d": 90, "45d": 135,
+    "7d": 21,
+    "14d": 42,
+    "21d": 63,
+    "30d": 90,
+    "45d": 135,
 }
-REFERENCE_HORIZON = "7d"                              # RFC-028 reference (§65)
-CORE_HORIZONS = ("14d", "21d", "30d", "45d")          # 4 core horizons
+REFERENCE_HORIZON = "7d"  # RFC-028 reference (§65)
+CORE_HORIZONS = ("14d", "21d", "30d", "45d")  # 4 core horizons
 HORIZON_ORDER = ("7d", "14d", "21d", "30d", "45d")
 
 # ---- pre-registered entry-policy constants (§12-§16) -----------------------
-TRAILING_WINDOW = 21          # fixed 7d causal trailing window (periods)
-PERSIST_N = 3                 # one pre-registered persistence length
-SAFETY_MARGIN_BPS = 10.0      # policy C pre-registered safety margin
-BASIS_FLOOR_BPS = -75.0       # policy D frozen basis floor
-MIN_HOLD_PERIODS = 21         # minimum hold before a regime/target exit (7d)
-EXIT_C_MARGIN_BPS = 10.0      # policy/exit C pre-registered target margin
-PERIODS_PER_DAY = 3           # 8h funding schedule
+TRAILING_WINDOW = 21  # fixed 7d causal trailing window (periods)
+PERSIST_N = 3  # one pre-registered persistence length
+SAFETY_MARGIN_BPS = 10.0  # policy C pre-registered safety margin
+BASIS_FLOOR_BPS = -75.0  # policy D frozen basis floor
+MIN_HOLD_PERIODS = 21  # minimum hold before a regime/target exit (7d)
+EXIT_C_MARGIN_BPS = 10.0  # policy/exit C pre-registered target margin
+PERIODS_PER_DAY = 3  # 8h funding schedule
 
 POLICIES = ("A_POSITIVE_REGIME", "B_PERSISTENCE", "C_ECONOMIC", "D_BASIS_SAFE")
 POLICY_LABELS = {
@@ -83,12 +87,13 @@ MIN_VALIDATION_EPISODES = 6
 
 # Allocation: 4 policies x 4 core horizons x 3 assets = 48 core cells (§17).
 # The 7d row is the RFC-028 reference, recomputed for one policy only.
-CORE_CELLS = len(POLICIES) * len(CORE_HORIZONS) * len(ASSETS)   # 48
+CORE_CELLS = len(POLICIES) * len(CORE_HORIZONS) * len(ASSETS)  # 48
 
 
 # ---------------------------------------------------------------------------
 # data assembly (reuses the RFC-028 epoch-normalized cache)
 # ---------------------------------------------------------------------------
+
 
 def _asset_series(asset: str) -> tuple[NDArray[Any], ...]:
     spot = L.load_spot(asset)
@@ -105,13 +110,13 @@ def _asset_series(asset: str) -> tuple[NDArray[Any], ...]:
 @dataclass(frozen=True, slots=True)
 class AssetPanel:
     asset: str
-    ts: NDArray[Any]        # funding payment times (ms)
+    ts: NDArray[Any]  # funding payment times (ms)
     spot: NDArray[Any]
     perp: NDArray[Any]
     basis: NDArray[Any]
-    funding: NDArray[Any]   # realized rate in bps
+    funding: NDArray[Any]  # realized rate in bps
     f_mean_w: NDArray[Any]  # strictly-past mean over TRAILING_WINDOW
-    f_persist_n: NDArray[Any]   # strictly-past fraction positive over PERSIST_N
+    f_persist_n: NDArray[Any]  # strictly-past fraction positive over PERSIST_N
 
     def n(self) -> int:
         return int(self.ts.shape[0])
@@ -124,7 +129,12 @@ def asset_panel(asset: str) -> AssetPanel:
     if asset not in _PANEL_CACHE:
         ts, s, p, r, b = _asset_series(asset)
         _PANEL_CACHE[asset] = AssetPanel(
-            asset=asset, ts=ts, spot=s, perp=p, basis=b, funding=r,
+            asset=asset,
+            ts=ts,
+            spot=s,
+            perp=p,
+            basis=b,
+            funding=r,
             f_mean_w=L._mean_of_lag(r, TRAILING_WINDOW),
             f_persist_n=L._persist_of_lag(r, PERSIST_N),
         )
@@ -152,6 +162,7 @@ def _fsum(cs: NDArray[Any], cn: NDArray[Any], a: int, b: int) -> float | None:
 # entry policies (§12-§16)
 # ---------------------------------------------------------------------------
 
+
 def entry_mask(panel: AssetPanel, policy: str, horizon_key: str) -> NDArray[Any]:
     if policy == "A_POSITIVE_REGIME":
         m = np.isfinite(panel.f_mean_w) & (panel.f_mean_w > 0.0)
@@ -161,8 +172,12 @@ def entry_mask(panel: AssetPanel, policy: str, horizon_key: str) -> NDArray[Any]
         exp = panel.f_mean_w * float(HORIZON_PERIODS[horizon_key])
         m = np.isfinite(exp) & (exp > ROUND_TRIP_COST_BPS + SAFETY_MARGIN_BPS)
     elif policy == "D_BASIS_SAFE":
-        m = (np.isfinite(panel.f_mean_w) & (panel.f_mean_w > 0.0)
-             & np.isfinite(panel.basis) & (panel.basis > BASIS_FLOOR_BPS))
+        m = (
+            np.isfinite(panel.f_mean_w)
+            & (panel.f_mean_w > 0.0)
+            & np.isfinite(panel.basis)
+            & (panel.basis > BASIS_FLOOR_BPS)
+        )
     else:
         raise ValueError(f"unknown policy {policy}")
     return np.asarray(m, dtype=bool)
@@ -171,6 +186,7 @@ def entry_mask(panel: AssetPanel, policy: str, horizon_key: str) -> NDArray[Any]
 # ---------------------------------------------------------------------------
 # simulation (non-overlapping, one active position per asset per strategy)
 # ---------------------------------------------------------------------------
+
 
 @dataclass(frozen=True, slots=True)
 class Trade029:
@@ -194,8 +210,9 @@ class Trade029:
     breakeven_periods: int | None
 
 
-def _breakeven(panel: AssetPanel, i: int, j: int, cost: float,
-               cs: NDArray[Any], cn: NDArray[Any]) -> int | None:
+def _breakeven(
+    panel: AssetPanel, i: int, j: int, cost: float, cs: NDArray[Any], cn: NDArray[Any]
+) -> int | None:
     for k in range(i + 1, j + 1):
         fb = _fsum(cs, cn, i + 1, k + 1)
         if fb is None:
@@ -207,8 +224,12 @@ def _breakeven(panel: AssetPanel, i: int, j: int, cost: float,
 
 
 def simulate(
-    panel: AssetPanel, policy: str, horizon_key: str,
-    exit_model: str = PRIMARY_EXIT_MODEL, lo: float = 0.0, hi: float = 1.0,
+    panel: AssetPanel,
+    policy: str,
+    horizon_key: str,
+    exit_model: str = PRIMARY_EXIT_MODEL,
+    lo: float = 0.0,
+    hi: float = 1.0,
     cost: float = ROUND_TRIP_COST_BPS,
 ) -> list[Trade029]:
     """Non-overlapping event simulation; next entry only after the previous exit."""
@@ -254,35 +275,50 @@ def simulate(
         basis_pnl = spot_pnl + perp_pnl
         net = spot_pnl + perp_pnl + fsum - cost
         hp = j - i
-        trades.append(Trade029(
-            asset=panel.asset, policy=policy, horizon_key=horizon_key,
-            exit_model=exit_model, entry_idx=i, exit_idx=j,
-            entry_ts=int(panel.ts[i]), exit_ts=int(panel.ts[j]),
-            holding_periods=hp, funding_pnl_bps=fsum,
-            spot_pnl_bps=spot_pnl, perp_pnl_bps=perp_pnl, basis_pnl_bps=basis_pnl,
-            cost_bps=cost, net_bps=net,
-            return_on_committed=(net / 1e4) / COMMITTED_CAPITAL,
-            capital_days=COMMITTED_CAPITAL * (hp / PERIODS_PER_DAY),
-            breakeven_periods=_breakeven(panel, i, j, cost, cs, cn),
-        ))
+        trades.append(
+            Trade029(
+                asset=panel.asset,
+                policy=policy,
+                horizon_key=horizon_key,
+                exit_model=exit_model,
+                entry_idx=i,
+                exit_idx=j,
+                entry_ts=int(panel.ts[i]),
+                exit_ts=int(panel.ts[j]),
+                holding_periods=hp,
+                funding_pnl_bps=fsum,
+                spot_pnl_bps=spot_pnl,
+                perp_pnl_bps=perp_pnl,
+                basis_pnl_bps=basis_pnl,
+                cost_bps=cost,
+                net_bps=net,
+                return_on_committed=(net / 1e4) / COMMITTED_CAPITAL,
+                capital_days=COMMITTED_CAPITAL * (hp / PERIODS_PER_DAY),
+                breakeven_periods=_breakeven(panel, i, j, cost, cs, cn),
+            )
+        )
         i = j + 1
     return trades
 
 
 def simulate_portfolio(
-    policy: str, horizon_key: str, exit_model: str = PRIMARY_EXIT_MODEL,
-    lo: float = 0.0, hi: float = 1.0, cost: float = ROUND_TRIP_COST_BPS,
+    policy: str,
+    horizon_key: str,
+    exit_model: str = PRIMARY_EXIT_MODEL,
+    lo: float = 0.0,
+    hi: float = 1.0,
+    cost: float = ROUND_TRIP_COST_BPS,
 ) -> list[Trade029]:
     out: list[Trade029] = []
     for asset in ASSETS:
-        out.extend(simulate(asset_panel(asset), policy, horizon_key,
-                            exit_model, lo, hi, cost))
+        out.extend(simulate(asset_panel(asset), policy, horizon_key, exit_model, lo, hi, cost))
     return out
 
 
 # ---------------------------------------------------------------------------
 # aggregation
 # ---------------------------------------------------------------------------
+
 
 def _sharpe(x: NDArray[Any]) -> float | None:
     x = np.asarray(x, dtype=np.float64)
@@ -337,7 +373,8 @@ def aggregate(trades: list[Trade029]) -> dict[str, Any]:
         "sum_roc": round(float(np.sum(roc)), 8),
         "capital_days": round(capital_days, 6),
         "return_per_capital_day": round(net_return / capital_days, 10)
-        if capital_days > 0 else None,
+        if capital_days > 0
+        else None,
         "win_rate": round(float(np.mean(net > 0)), 4),
         "pf": round(gp / gl, 4) if gl > 0 else None,
         "sharpe": _sharpe(roc),
@@ -345,16 +382,19 @@ def aggregate(trades: list[Trade029]) -> dict[str, Any]:
         "be_fraction": round(len(be_probs) / net.size, 4),
         "median_be_periods": float(np.median(be_probs)) if be_probs else None,
         "funding_share_of_gross": round(float(np.sum(fund) / (np.sum(fund) + np.sum(basis))), 6)
-        if (np.sum(fund) + np.sum(basis)) != 0 else None,
+        if (np.sum(fund) + np.sum(basis)) != 0
+        else None,
         "basis_share_of_gross": round(float(np.sum(basis) / (np.sum(fund) + np.sum(basis))), 6)
-        if (np.sum(fund) + np.sum(basis)) != 0 else None,
+        if (np.sum(fund) + np.sum(basis)) != 0
+        else None,
         "top1_share": round(float(order[0] / order.sum()), 6) if order.sum() != 0 else None,
-        "top3_share": round(float(order[:3].sum() / order.sum()), 6)
-        if order.sum() != 0 else None,
+        "top3_share": round(float(order[:3].sum() / order.sum()), 6) if order.sum() != 0 else None,
         "without_best_mean_bps": round(float(np.mean(np.sort(net)[:-1])), 4)
-        if net.size > 1 else None,
+        if net.size > 1
+        else None,
         "without_best3_mean_bps": round(float(np.mean(np.sort(net)[:-3])), 4)
-        if net.size > 3 else None,
+        if net.size > 3
+        else None,
     }
 
 
@@ -366,11 +406,12 @@ def per_asset(trades: list[Trade029]) -> dict[str, Any]:
 # funding persistence / survival / cumulative funding / break-even metrics
 # ---------------------------------------------------------------------------
 
+
 def fwd_funding(panel: AssetPanel, i: int, h: int) -> float | None:
     r = panel.funding
     if i + h >= panel.n():
         return None
-    win = r[i + 1:i + h + 1]
+    win = r[i + 1 : i + h + 1]
     if not np.all(np.isfinite(win)):
         return None
     return float(np.sum(win))
@@ -379,14 +420,15 @@ def fwd_funding(panel: AssetPanel, i: int, h: int) -> float | None:
 def trailing_mean_at(panel: AssetPanel, k: int, w: int = TRAILING_WINDOW) -> float | None:
     if k - w < 0 or k >= panel.n():
         return None
-    win = panel.funding[k - w:k]
+    win = panel.funding[k - w : k]
     if not np.all(np.isfinite(win)):
         return None
     return float(np.mean(win))
 
 
-def _entry_indices(panel: AssetPanel, policy: str, horizon_key: str,
-                   lo: float, hi: float) -> NDArray[Any]:
+def _entry_indices(
+    panel: AssetPanel, policy: str, horizon_key: str, lo: float, hi: float
+) -> NDArray[Any]:
     """Non-overlapping entry indices (fully-available forward window inside split)."""
     n = panel.n()
     a, b = int(n * lo), int(n * hi)
@@ -395,7 +437,7 @@ def _entry_indices(panel: AssetPanel, policy: str, horizon_key: str,
     out: list[int] = []
     i = a
     while i + h < b:
-        if mask[i] and np.all(np.isfinite(panel.funding[i + 1:i + h + 1])):
+        if mask[i] and np.all(np.isfinite(panel.funding[i + 1 : i + h + 1])):
             out.append(i)
             i += h + 1
         else:
@@ -403,8 +445,9 @@ def _entry_indices(panel: AssetPanel, policy: str, horizon_key: str,
     return np.asarray(out, dtype=np.int64)
 
 
-def cumulative_funding_distribution(policy: str, horizon_key: str,
-                                    lo: float, hi: float) -> dict[str, Any]:
+def cumulative_funding_distribution(
+    policy: str, horizon_key: str, lo: float, hi: float
+) -> dict[str, Any]:
     h = HORIZON_PERIODS[horizon_key]
     vals: list[float] = []
     for asset in ASSETS:
@@ -418,10 +461,14 @@ def cumulative_funding_distribution(policy: str, horizon_key: str,
     arr = np.asarray(vals, dtype=np.float64)
     qs = np.percentile(arr, [10, 25, 50, 75, 90])
     return {
-        "status": "OK", "n": int(arr.size),
-        "p10": round(float(qs[0]), 4), "p25": round(float(qs[1]), 4),
-        "median": round(float(qs[2]), 4), "mean": round(float(np.mean(arr)), 4),
-        "p75": round(float(qs[3]), 4), "p90": round(float(qs[4]), 4),
+        "status": "OK",
+        "n": int(arr.size),
+        "p10": round(float(qs[0]), 4),
+        "p25": round(float(qs[1]), 4),
+        "median": round(float(qs[2]), 4),
+        "mean": round(float(np.mean(arr)), 4),
+        "p75": round(float(qs[3]), 4),
+        "p90": round(float(qs[4]), 4),
         "cost_bps": ROUND_TRIP_COST_BPS,
         "prob_positive": round(float(np.mean(arr > 0.0)), 4),
         "prob_above_cost": round(float(np.mean(arr > ROUND_TRIP_COST_BPS)), 4),
@@ -450,8 +497,12 @@ def survival_curve(policy: str, horizon_key: str, lo: float, hi: float) -> dict[
             if tm > 0:
                 pos += 1
         per_day[d] = {"n": tot, "p_positive": round(pos / tot, 4) if tot else None}
-    return {"policy": policy, "horizon": horizon_key, "entries": len(entries_all),
-            "survival": per_day}
+    return {
+        "policy": policy,
+        "horizon": horizon_key,
+        "entries": len(entries_all),
+        "survival": per_day,
+    }
 
 
 def persistence_profile(policy: str, horizon_key: str, lo: float, hi: float) -> dict[str, Any]:
@@ -472,7 +523,8 @@ def persistence_profile(policy: str, horizon_key: str, lo: float, hi: float) -> 
         prof[f"{d}d"] = {
             "mean_bps": round(m, 4) if m is not None else None,
             "ratio_to_entry": round(m / base, 4)
-            if (m is not None and base is not None and base != 0) else None,
+            if (m is not None and base is not None and base != 0)
+            else None,
             "n": len(offsets[d]),
         }
     half_life: float | None = None
@@ -483,13 +535,18 @@ def persistence_profile(policy: str, horizon_key: str, lo: float, hi: float) -> 
                 if m <= base / 2.0:
                     half_life = float(d)
                     break
-    return {"policy": policy, "horizon": horizon_key,
-            "entry_mean_bps": round(base, 4) if base is not None else None,
-            "profile": prof, "half_life_days": half_life}
+    return {
+        "policy": policy,
+        "horizon": horizon_key,
+        "entry_mean_bps": round(base, 4) if base is not None else None,
+        "profile": prof,
+        "half_life_days": half_life,
+    }
 
 
-def time_to_break_even(policy: str, horizon_key: str, lo: float, hi: float,
-                       cost: float = ROUND_TRIP_COST_BPS) -> dict[str, Any]:
+def time_to_break_even(
+    policy: str, horizon_key: str, lo: float, hi: float, cost: float = ROUND_TRIP_COST_BPS
+) -> dict[str, Any]:
     """Distribution of first time cumulative realized carry > round-trip cost."""
     h = HORIZON_PERIODS[horizon_key]
     periods: list[float] = []
@@ -510,7 +567,9 @@ def time_to_break_even(policy: str, horizon_key: str, lo: float, hi: float,
     arr = np.asarray(periods, dtype=np.float64)
     qs = np.percentile(arr, [25, 50, 75, 90])
     return {
-        "status": "OK", "entries": total, "censored": censored,
+        "status": "OK",
+        "entries": total,
+        "censored": censored,
         "crossed": int(arr.size),
         "p25_periods": round(float(qs[0]), 3),
         "median_periods": round(float(qs[1]), 3),
@@ -536,8 +595,7 @@ def break_even_probability(policy: str, horizon_key: str, lo: float, hi: float) 
             ff = fwd_funding(p, int(i), h)
             if ff is None:
                 continue
-            bp = (p.spot[int(i) + h] / p.spot[int(i)]
-                  - p.perp[int(i) + h] / p.perp[int(i)]) * 1e4
+            bp = (p.spot[int(i) + h] / p.spot[int(i)] - p.perp[int(i) + h] / p.perp[int(i)]) * 1e4
             if not np.isfinite(bp):
                 continue
             tot += 1
@@ -546,8 +604,10 @@ def break_even_probability(policy: str, horizon_key: str, lo: float, hi: float) 
         out[asset] = {"n": tot, "prob": round(hit / tot, 4) if tot else None}
         pooled_hit += hit
         pooled_tot += tot
-    out["POOLED"] = {"n": pooled_tot,
-                     "prob": round(pooled_hit / pooled_tot, 4) if pooled_tot else None}
+    out["POOLED"] = {
+        "n": pooled_tot,
+        "prob": round(pooled_hit / pooled_tot, 4) if pooled_tot else None,
+    }
     return out
 
 

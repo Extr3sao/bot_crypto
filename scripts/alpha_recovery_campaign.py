@@ -144,8 +144,11 @@ def dev_verdict(exp_id: str, dev: dict[str, Any]) -> dict[str, Any]:
         result = "REJECT_NO_EDGE"
     else:
         result = "PASS"
-    return {"result": result, "checks": checks, "thresholds": {
-        "gross_bps_min": spec["kill_gross_bps"], "min_trades": MIN_TRADES}}
+    return {
+        "result": result,
+        "checks": checks,
+        "thresholds": {"gross_bps_min": spec["kill_gross_bps"], "min_trades": MIN_TRADES},
+    }
 
 
 def validation_verdict(dev: dict[str, Any], val: dict[str, Any]) -> dict[str, Any]:
@@ -156,12 +159,20 @@ def validation_verdict(dev: dict[str, Any], val: dict[str, Any]) -> dict[str, An
     checks["no_material_collapse"] = bool(
         dg is not None and vg is not None and dg > 0 and vg >= 0.5 * dg
     )
-    checks["val_net_positive"] = bool(v["expectancy_net_bps"] is not None and v["expectancy_net_bps"] > 0)
+    checks["val_net_positive"] = bool(
+        v["expectancy_net_bps"] is not None and v["expectancy_net_bps"] > 0
+    )
     passed = all(checks.values())
-    return {"result": "PASS" if passed else "REJECT_NO_EDGE", "checks": checks,
-            "dev_gross_bps": dg, "val_gross_bps": vg,
-            "dev_net_bps": d["expectancy_net_bps"], "val_net_bps": v["expectancy_net_bps"],
-            "dev_trades": d["trades"], "val_trades": v["trades"]}
+    return {
+        "result": "PASS" if passed else "REJECT_NO_EDGE",
+        "checks": checks,
+        "dev_gross_bps": dg,
+        "val_gross_bps": vg,
+        "dev_net_bps": d["expectancy_net_bps"],
+        "val_net_bps": v["expectancy_net_bps"],
+        "dev_trades": d["trades"],
+        "val_trades": v["trades"],
+    }
 
 
 def cost_gate(exp_id: str, params: dict[str, Any], base_bps: float) -> dict[str, Any]:
@@ -215,8 +226,11 @@ def robustness(exp_id: str, params: dict[str, Any], cost: float) -> dict[str, An
         "expectancy_gross_bps": delayed_comb["expectancy_gross_bps"],
         "expectancy_net_bps": delayed_comb["expectancy_net_bps"],
     }
-    return {"result": "REJECT_FRAGILE" if one_point else "PASS", "one_point_optimum": one_point,
-            "variants": out}
+    return {
+        "result": "REJECT_FRAGILE" if one_point else "PASS",
+        "one_point_optimum": one_point,
+        "variants": out,
+    }
 
 
 def run_experiment(exp_id: str) -> dict[str, Any]:
@@ -274,8 +288,9 @@ def run_experiment(exp_id: str) -> dict[str, Any]:
     }
 
 
-def write_decision_md(exp_dir: Path, exp_id: str, manifest: dict[str, Any], decision: dict[str, Any],
-                      **stages: Any) -> None:
+def write_decision_md(
+    exp_dir: Path, exp_id: str, manifest: dict[str, Any], decision: dict[str, Any], **stages: Any
+) -> None:
     lines = [
         f"# {exp_id} — DECISION",
         "",
@@ -290,7 +305,13 @@ def write_decision_md(exp_dir: Path, exp_id: str, manifest: dict[str, Any], deci
     ]
     for stage, res in decision["stages"].items():
         lines.append(f"- {stage}: **{res}**")
-    lines += ["", f"## FINAL: **{decision['final']}**", "", f"OOS opened: `{decision['oos_opened']}`", ""]
+    lines += [
+        "",
+        f"## FINAL: **{decision['final']}**",
+        "",
+        f"OOS opened: `{decision['oos_opened']}`",
+        "",
+    ]
     if "dev" in stages:
         c = stages["dev"]["combined"]
         lines += [
@@ -317,7 +338,9 @@ def write_decision_md(exp_dir: Path, exp_id: str, manifest: dict[str, Any], deci
     if "cost" in stages:
         lines += ["## COST_MODEL_V3 stress (DEV)", ""]
         for k, v in stages["cost"]["stress"].items():
-            lines.append(f"- {k}: net {v['expectancy_net_bps']} bps (gross {v['expectancy_gross_bps']})")
+            lines.append(
+                f"- {k}: net {v['expectancy_net_bps']} bps (gross {v['expectancy_gross_bps']})"
+            )
         lines.append("")
     (exp_dir / "DECISION.md").write_text("\n".join(lines), encoding="utf-8")
 
@@ -358,7 +381,9 @@ def run_diagnostics() -> dict[str, Any]:
         "deterministic": h1 == h2,
         "arp001_compat_lf_sha256": hbase,
         "hashes": {
-            "code": C.sha256_file(REPO / "src/trading_bot/research/strategy_failure_diagnostics.py"),
+            "code": C.sha256_file(
+                REPO / "src/trading_bot/research/strategy_failure_diagnostics.py"
+            ),
             "data": C.sha256_file(DIAG_INPUTS),
             "config": config_hash(),
             "corpus_used_21_files": C.corpus_digest(),

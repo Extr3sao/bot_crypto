@@ -39,6 +39,7 @@ G_REM_1_CRITERIA: dict[str, str] = {
 # helpers
 # ---------------------------------------------------------------------------
 
+
 def _git(rev: str = "HEAD") -> str:
     try:
         return subprocess.check_output(["git", "rev-parse", rev], text=True).strip()
@@ -110,15 +111,20 @@ def _stat_block(x: NDArray[Any], ppy: float = 12.0) -> dict[str, Any]:
         return {"status": "TOO_FEW"}
     cum = np.cumsum(x)
     peak = np.maximum.accumulate(cum)
-    return {"status": "OK", "net_expectancy_bps": float(np.mean(x)),
-            "net_median_bps": float(np.median(x)),
-            "sharpe": L._sharpe(x, ppy), "max_dd_bps": float(np.max(peak - cum)),
-            "rebalances": int(x.size)}
+    return {
+        "status": "OK",
+        "net_expectancy_bps": float(np.mean(x)),
+        "net_median_bps": float(np.median(x)),
+        "sharpe": L._sharpe(x, ppy),
+        "max_dd_bps": float(np.max(peak - cum)),
+        "rebalances": int(x.size),
+    }
 
 
 # ---------------------------------------------------------------------------
 # §7 freeze artifact
 # ---------------------------------------------------------------------------
+
 
 def freeze_spec(world: World) -> dict[str, Any]:
     data_hashes = {s: L.sha256_file(L.CACHE_DIR / f"daily_{s}.npz") for s in world.syms}
@@ -132,34 +138,44 @@ def freeze_spec(world: World) -> dict[str, Any]:
         "code_hash_sprint032_lib": code_hash,
         "config_hash": cfg_hash,
         "evidence_class": "HISTORICAL_DIAGNOSTIC_CORPUS (NOT fresh Validation/Holdout)",
-        "freeze_rule": ("Frozen before performance. Any material change to candidate, "
-                        "code, config, universe rules or cost invalidates the campaign "
-                        "(§35). No change is allowed to recover PnL (§6)."),
+        "freeze_rule": (
+            "Frozen before performance. Any material change to candidate, "
+            "code, config, universe rules or cost invalidates the campaign "
+            "(§35). No change is allowed to recover PnL (§6)."
+        ),
     }
-    md = "\n".join([
-        "# RFC-032 — EXT-TSMOM-002 FROZEN SPEC", "",
-        f"- candidate_id: `{FROZEN['candidate_id']}`",
-        f"- source_candidate: `{FROZEN['source_candidate']}`",
-        f"- signal: {FROZEN['signal']}",
-        f"- instrument: {FROZEN['instrument']}",
-        f"- long/cash semantics: {FROZEN['long_cash_semantics']}",
-        f"- execution: {FROZEN['execution_timing']} (field: `{FROZEN['executable_field']}`)",
-        f"- lookback: {FROZEN['formation_days']} days  |  rebalance: {FROZEN['rebalance']}",
-        f"- weighting: {FROZEN['weighting']}",
-        f"- vol target {FROZEN['vol_target']} (lookback {FROZEN['vol_lookback_days']}d, "
-        f"clip {FROZEN['vol_clip']})",
-        f"- cost: {FROZEN['cost_model']} = {FROZEN['per_side_cost_bps']} bps/side  |  "
-        f"cash yield: {FROZEN['cash_yield']}",
-        f"- short exposure: {FROZEN['short_exposure']}",
-        f"- leverage: {FROZEN['leverage']}",
-        f"- universe: {len(FROZEN['universe'])} USDT pairs",
-        f"- remediations: {', '.join(FROZEN['remediations'])}",
-        f"- code hash (sprint032_lib.py): `{code_hash}`",
-        f"- config hash: `{cfg_hash}`", "",
-        "## Data hashes (per-asset daily panel)", "",
-        _table([{"asset": k, "sha256": v[:16] + "..."} for k, v in
-                sorted(data_hashes.items())], ["asset", "sha256"]), "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-032 — EXT-TSMOM-002 FROZEN SPEC",
+            "",
+            f"- candidate_id: `{FROZEN['candidate_id']}`",
+            f"- source_candidate: `{FROZEN['source_candidate']}`",
+            f"- signal: {FROZEN['signal']}",
+            f"- instrument: {FROZEN['instrument']}",
+            f"- long/cash semantics: {FROZEN['long_cash_semantics']}",
+            f"- execution: {FROZEN['execution_timing']} (field: `{FROZEN['executable_field']}`)",
+            f"- lookback: {FROZEN['formation_days']} days  |  rebalance: {FROZEN['rebalance']}",
+            f"- weighting: {FROZEN['weighting']}",
+            f"- vol target {FROZEN['vol_target']} (lookback {FROZEN['vol_lookback_days']}d, "
+            f"clip {FROZEN['vol_clip']})",
+            f"- cost: {FROZEN['cost_model']} = {FROZEN['per_side_cost_bps']} bps/side  |  "
+            f"cash yield: {FROZEN['cash_yield']}",
+            f"- short exposure: {FROZEN['short_exposure']}",
+            f"- leverage: {FROZEN['leverage']}",
+            f"- universe: {len(FROZEN['universe'])} USDT pairs",
+            f"- remediations: {', '.join(FROZEN['remediations'])}",
+            f"- code hash (sprint032_lib.py): `{code_hash}`",
+            f"- config hash: `{cfg_hash}`",
+            "",
+            "## Data hashes (per-asset daily panel)",
+            "",
+            _table(
+                [{"asset": k, "sha256": v[:16] + "..."} for k, v in sorted(data_hashes.items())],
+                ["asset", "sha256"],
+            ),
+            "",
+        ]
+    )
     _emit("EXT_TSMOM_002_FROZEN_SPEC", payload, md)
     return payload
 
@@ -168,12 +184,28 @@ def freeze_spec(world: World) -> dict[str, Any]:
 # §5/§6 remediation diff
 # ---------------------------------------------------------------------------
 
+
 def remediation_diff(frozen: dict[str, Any]) -> dict[str, Any]:
     ref = L.read_json(L.RFC031_DIR / "TSMOM_FROZEN_SPEC.json")
-    param_keys = ["formation_days", "rebalance", "vol_target", "vol_lookback_days",
-                  "vol_clip", "per_side_cost_bps", "universe"]
-    param_diff = [{k: {"ext_tsmom_001": ref.get(k), "ext_tsmom_002": frozen.get(k),
-                       "changed": ref.get(k) != frozen.get(k)} for k in param_keys}]
+    param_keys = [
+        "formation_days",
+        "rebalance",
+        "vol_target",
+        "vol_lookback_days",
+        "vol_clip",
+        "per_side_cost_bps",
+        "universe",
+    ]
+    param_diff = [
+        {
+            k: {
+                "ext_tsmom_001": ref.get(k),
+                "ext_tsmom_002": frozen.get(k),
+                "changed": ref.get(k) != frozen.get(k),
+            }
+            for k in param_keys
+        }
+    ]
     remediation = {
         "R1": {
             "description": "negative desired weight -> 0 / CASH",
@@ -196,26 +228,37 @@ def remediation_diff(frozen: dict[str, Any]) -> dict[str, Any]:
         "remediations": remediation,
         "parameter_diff": param_diff[0],
         "any_parameter_changed": any(r["changed"] for r in param_diff[0].values()),
-        "compliance": ("ONLY the two allowed remediations were applied (§5). No lookback, "
-                       "vol target, rebalance frequency, ranking, universe, threshold, "
-                       "weighting method, cost or leverage was changed (§6)."),
+        "compliance": (
+            "ONLY the two allowed remediations were applied (§5). No lookback, "
+            "vol target, rebalance frequency, ranking, universe, threshold, "
+            "weighting method, cost or leverage was changed (§6)."
+        ),
         "would_be_new_candidate_if_more_changes": "EXT-TSMOM-003 (out of scope)",
     }
     rows = [{"parameter": k, **v} for k, v in param_diff[0].items()]
-    md = "\n".join([
-        "# RFC-032 — REMEDIATION DIFF (EXT-TSMOM-001 -> EXT-TSMOM-002)", "",
-        "## Allowed remediations", "",
-        f"- **R1 — {remediation['R1']['description']}**",
-        f"  - before: {remediation['R1']['before']}",
-        f"  - after:  {remediation['R1']['after']}",
-        f"- **R2 — {remediation['R2']['description']}**",
-        f"  - before: {remediation['R2']['before']}",
-        f"  - after:  {remediation['R2']['after']}", "",
-        "## Frozen parameter diff (must be identical)", "",
-        _table(rows, ["parameter", "ext_tsmom_001", "ext_tsmom_002", "changed"]), "",
-        f"- any frozen parameter changed: **{payload['any_parameter_changed']}**", "",
-        f"> {payload['compliance']}", "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-032 — REMEDIATION DIFF (EXT-TSMOM-001 -> EXT-TSMOM-002)",
+            "",
+            "## Allowed remediations",
+            "",
+            f"- **R1 — {remediation['R1']['description']}**",
+            f"  - before: {remediation['R1']['before']}",
+            f"  - after:  {remediation['R1']['after']}",
+            f"- **R2 — {remediation['R2']['description']}**",
+            f"  - before: {remediation['R2']['before']}",
+            f"  - after:  {remediation['R2']['after']}",
+            "",
+            "## Frozen parameter diff (must be identical)",
+            "",
+            _table(rows, ["parameter", "ext_tsmom_001", "ext_tsmom_002", "changed"]),
+            "",
+            f"- any frozen parameter changed: **{payload['any_parameter_changed']}**",
+            "",
+            f"> {payload['compliance']}",
+            "",
+        ]
+    )
     _emit("REMEDIATION_DIFF", payload, md)
     return payload
 
@@ -223,6 +266,7 @@ def remediation_diff(frozen: dict[str, Any]) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 # §20/§21/§28 PIT + execution audit
 # ---------------------------------------------------------------------------
+
 
 def _future_poisoning(world: World) -> dict[str, Any]:
     """Mutate prices AFTER a cutoff; every decision <= cutoff must be identical."""
@@ -236,11 +280,15 @@ def _future_poisoning(world: World) -> dict[str, Any]:
             break
         base_sig.append(L.tsmom_long_cash_target(world.close, i)["weights"].tolist())
         poi_sig.append(L.tsmom_long_cash_target(c2, i)["weights"].tolist())
-    same = (len(base_sig) == len(poi_sig)
-            and all(np.allclose(a, b, atol=1e-12) for a, b in zip(base_sig, poi_sig, strict=True)))
-    return {"passed": bool(same), "cutoff_index": cutoff,
-            "decisions_before_cutoff": len(base_sig),
-            "note": "signals/weights for T<=cutoff unchanged when all future prices mutate"}
+    same = len(base_sig) == len(poi_sig) and all(
+        np.allclose(a, b, atol=1e-12) for a, b in zip(base_sig, poi_sig, strict=True)
+    )
+    return {
+        "passed": bool(same),
+        "cutoff_index": cutoff,
+        "decisions_before_cutoff": len(base_sig),
+        "note": "signals/weights for T<=cutoff unchanged when all future prices mutate",
+    }
 
 
 def _warmup_check(world: World) -> bool:
@@ -282,8 +330,11 @@ def gap_analysis(world: World, mask: NDArray[Any]) -> dict[str, Any]:
         "mean_btc_entry_gap_bps": float(np.mean(btc_gap)) if btc_gap else None,
         "gross_cotimed_bps": cot.get("gross_expectancy_bps"),
         "gross_next_open_bps": nxo.get("gross_expectancy_bps"),
-        "gap_contribution_bps": (float((nxo.get("gross_expectancy_bps") or 0.0)
-                                       - (cot.get("gross_expectancy_bps") or 0.0))),
+        "gap_contribution_bps": (
+            float(
+                (nxo.get("gross_expectancy_bps") or 0.0) - (cot.get("gross_expectancy_bps") or 0.0)
+            )
+        ),
         "rebalances": len(grid),
     }
 
@@ -293,8 +344,10 @@ def pit_execution_audit(world: World, frozen: dict[str, Any]) -> dict[str, Any]:
     warmup = _warmup_check(world)
     neg = _no_negative_weights(world, world.full)
     gap = gap_analysis(world, world.full)
-    n_short_obs = sum(int(np.sum(L.tsmom_long_cash_target(
-        world.close, i)["weights"] < 0)) for i in L.month_first_days(world.days))
+    n_short_obs = sum(
+        int(np.sum(L.tsmom_long_cash_target(world.close, i)["weights"] < 0))
+        for i in L.month_first_days(world.days)
+    )
     payload: dict[str, Any] = {
         "generated": _now(),
         "decision_time": "after close T is available",
@@ -312,26 +365,32 @@ def pit_execution_audit(world: World, frozen: dict[str, Any]) -> dict[str, Any]:
         "gap": gap,
         "exec_lag": 1,
     }
-    md = "\n".join([
-        "# RFC-032 — PIT / EXECUTION AUDIT", "",
-        f"- decision_time: {payload['decision_time']}",
-        f"- signal inputs: {payload['signal_inputs']}",
-        f"- execution: {payload['execution_time']} (field `{payload['executable_field']}`, "
-        f"pre-registered = {payload['field_was_preregistered']})",
-        f"- future poisoning (mutate all future prices): "
-        f"**{'PASS' if poison['passed'] else 'FAIL'}** ({poison['decisions_before_cutoff']} "
-        f"decisions <= cutoff unchanged)",
-        f"- warm-up (no negative-index wrap): **{'PASS' if warmup else 'FAIL'}**",
-        f"- negative weights in book: {neg}  |  short observations: {n_short_obs}  |  "
-        f"no short spot: **{payload['no_short_spot']}**", "",
-        "## §21 Gap risk (close_T -> exec_T+1)", "",
-        f"- mean book entry gap: {_r(gap['mean_book_entry_gap_bps'], 3)} bps",
-        f"- mean BTC entry gap: {_r(gap['mean_btc_entry_gap_bps'], 3)} bps",
-        f"- gross co-timed: {_r(gap['gross_cotimed_bps'], 3)} bps; gross T+1 open: "
-        f"{_r(gap['gross_next_open_bps'], 3)} bps",
-        f"- T+1-minus-cotimed gross contribution: {_r(gap['gap_contribution_bps'], 3)} bps "
-        f"(NOT hidden)", "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-032 — PIT / EXECUTION AUDIT",
+            "",
+            f"- decision_time: {payload['decision_time']}",
+            f"- signal inputs: {payload['signal_inputs']}",
+            f"- execution: {payload['execution_time']} (field `{payload['executable_field']}`, "
+            f"pre-registered = {payload['field_was_preregistered']})",
+            f"- future poisoning (mutate all future prices): "
+            f"**{'PASS' if poison['passed'] else 'FAIL'}** ({poison['decisions_before_cutoff']} "
+            f"decisions <= cutoff unchanged)",
+            f"- warm-up (no negative-index wrap): **{'PASS' if warmup else 'FAIL'}**",
+            f"- negative weights in book: {neg}  |  short observations: {n_short_obs}  |  "
+            f"no short spot: **{payload['no_short_spot']}**",
+            "",
+            "## §21 Gap risk (close_T -> exec_T+1)",
+            "",
+            f"- mean book entry gap: {_r(gap['mean_book_entry_gap_bps'], 3)} bps",
+            f"- mean BTC entry gap: {_r(gap['mean_btc_entry_gap_bps'], 3)} bps",
+            f"- gross co-timed: {_r(gap['gross_cotimed_bps'], 3)} bps; gross T+1 open: "
+            f"{_r(gap['gross_next_open_bps'], 3)} bps",
+            f"- T+1-minus-cotimed gross contribution: {_r(gap['gap_contribution_bps'], 3)} bps "
+            f"(NOT hidden)",
+            "",
+        ]
+    )
     _emit("PIT_EXECUTION_AUDIT", payload, md)
     return payload
 
@@ -340,24 +399,29 @@ def pit_execution_audit(world: World, frozen: dict[str, Any]) -> dict[str, Any]:
 # §8/§12/§29 historical diagnostic
 # ---------------------------------------------------------------------------
 
+
 def historical_diagnostic(world: World) -> dict[str, Any]:
     full = world.summary(world.full)
     splits = {name: world.summary(L.split_mask(world.days, name)) for name in L.SPLIT_ORDER}
     # §12 recompute the RFC-031 long-or-cash diagnostic prior from raw (co-timed).
-    prior = L.summarise(world.run(L.split_mask(world.days, "VALIDATION"),
-                                  exec_mode="cotimed"))
+    prior = L.summarise(world.run(L.split_mask(world.days, "VALIDATION"), exec_mode="cotimed"))
     prior_full = L.summarise(world.run(world.full, exec_mode="cotimed"))
     ref_v = L.read_json(L.RFC031_DIR / "BENCHMARK_COMPARISON.json")
     reported = ref_v.get("volscaled_tsmom_long_only_validation_net_bps")
     recomputed = prior.get("net_expectancy_bps")
-    match = (reported is not None and recomputed is not None
-             and abs(reported - recomputed) <= max(TOL, abs(reported) * 1e-6))
+    match = (
+        reported is not None
+        and recomputed is not None
+        and abs(reported - recomputed) <= max(TOL, abs(reported) * 1e-6)
+    )
     payload: dict[str, Any] = {
         "generated": _now(),
         "evidence_class": L.EVIDENCE_CLASS_HISTORICAL + "_ONLY",
-        "why_not_confirmatory": ("this corpus was already observed by RFC-030/RFC-031; no "
-                                 "historical subset may be renamed fresh Validation/Holdout "
-                                 "(§8, §9)"),
+        "why_not_confirmatory": (
+            "this corpus was already observed by RFC-030/RFC-031; no "
+            "historical subset may be renamed fresh Validation/Holdout "
+            "(§8, §9)"
+        ),
         "candidate": L.CANDIDATE_ID,
         "full": full,
         "splits_diagnostic_only": splits,
@@ -386,30 +450,61 @@ def historical_diagnostic(world: World) -> dict[str, Any]:
             "mean_short_exposure": 0.0,
         },
     }
-    md = "\n".join([
-        "# RFC-032 — HISTORICAL DIAGNOSTIC (EXT-TSMOM-002)", "",
-        "- evidence class: **HISTORICAL_DIAGNOSTIC_ONLY** (not fresh Validation/Holdout)", "",
-        _table([{"quantity": k, "value": _r(full.get(k), 4)} for k in
-                ("rebalances", "net_expectancy_bps", "gross_expectancy_bps",
-                 "cost_expectancy_bps", "net_median_bps", "sharpe", "max_dd_bps",
-                 "mean_turnover_notional", "win_rate")],
-               ["quantity", "value"]), "",
-        "## Diagnostic splits (labels are HISTORICAL, not fresh evidence)", "",
-        _table([{"split": k, "net_expectancy_bps": _r(v.get("net_expectancy_bps"), 3),
-                 "sharpe": _r(v.get("sharpe"), 3), "rebalances": v.get("rebalances")}
-                for k, v in splits.items()],
-               ["split", "net_expectancy_bps", "sharpe", "rebalances"]), "",
-        "## §12 RFC-031 long-or-cash prior recomputed from raw", "",
-        f"- RFC-031 reported (co-timed long-or-cash validation): "
-        f"{_r(reported, 4)} bps/month",
-        f"- RFC-032 recomputed from raw: {_r(recomputed, 4)} bps/month  -> match "
-        f"**{match}**",
-        f"- RFC-032 recomputed full long-or-cash: "
-        f"{_r(prior_full.get('net_expectancy_bps'), 4)} bps/month", "",
-        "## §17 Attribution", "",
-        _table([{"metric": k, "value": _r(v, 4)} for k, v in
-                payload["attribution"].items()], ["metric", "value"]), "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-032 — HISTORICAL DIAGNOSTIC (EXT-TSMOM-002)",
+            "",
+            "- evidence class: **HISTORICAL_DIAGNOSTIC_ONLY** (not fresh Validation/Holdout)",
+            "",
+            _table(
+                [
+                    {"quantity": k, "value": _r(full.get(k), 4)}
+                    for k in (
+                        "rebalances",
+                        "net_expectancy_bps",
+                        "gross_expectancy_bps",
+                        "cost_expectancy_bps",
+                        "net_median_bps",
+                        "sharpe",
+                        "max_dd_bps",
+                        "mean_turnover_notional",
+                        "win_rate",
+                    )
+                ],
+                ["quantity", "value"],
+            ),
+            "",
+            "## Diagnostic splits (labels are HISTORICAL, not fresh evidence)",
+            "",
+            _table(
+                [
+                    {
+                        "split": k,
+                        "net_expectancy_bps": _r(v.get("net_expectancy_bps"), 3),
+                        "sharpe": _r(v.get("sharpe"), 3),
+                        "rebalances": v.get("rebalances"),
+                    }
+                    for k, v in splits.items()
+                ],
+                ["split", "net_expectancy_bps", "sharpe", "rebalances"],
+            ),
+            "",
+            "## §12 RFC-031 long-or-cash prior recomputed from raw",
+            "",
+            f"- RFC-031 reported (co-timed long-or-cash validation): {_r(reported, 4)} bps/month",
+            f"- RFC-032 recomputed from raw: {_r(recomputed, 4)} bps/month  -> match **{match}**",
+            f"- RFC-032 recomputed full long-or-cash: "
+            f"{_r(prior_full.get('net_expectancy_bps'), 4)} bps/month",
+            "",
+            "## §17 Attribution",
+            "",
+            _table(
+                [{"metric": k, "value": _r(v, 4)} for k, v in payload["attribution"].items()],
+                ["metric", "value"],
+            ),
+            "",
+        ]
+    )
     _emit("HISTORICAL_DIAGNOSTIC", payload, md)
     return payload
 
@@ -418,11 +513,13 @@ def historical_diagnostic(world: World) -> dict[str, Any]:
 # §15/§16 temporal diagnostic
 # ---------------------------------------------------------------------------
 
-ERAS = (("2018-2019", "2018-01-01", "2019-12-31"),
-        ("2020-2021", "2020-01-01", "2021-12-31"),
-        ("2022", "2022-01-01", "2022-12-31"),
-        ("2023-2024", "2023-01-01", "2024-12-31"),
-        ("2025-2026", "2025-01-01", "2026-12-31"))
+ERAS = (
+    ("2018-2019", "2018-01-01", "2019-12-31"),
+    ("2020-2021", "2020-01-01", "2021-12-31"),
+    ("2022", "2022-01-01", "2022-12-31"),
+    ("2023-2024", "2023-01-01", "2024-12-31"),
+    ("2025-2026", "2025-01-01", "2026-12-31"),
+)
 
 
 def _recent(nets: NDArray[Any], n: int) -> dict[str, Any]:
@@ -436,20 +533,26 @@ def temporal_diagnostic(world: World) -> dict[str, Any]:
         lo_ms, hi_ms = L._ts(lo, hi)
         mask = (world.days >= lo_ms) & (world.days <= hi_ms)
         s = world.summary(mask)
-        eras[name] = {"net_expectancy_bps": s.get("net_expectancy_bps"),
-                      "gross_expectancy_bps": s.get("gross_expectancy_bps"),
-                      "cost_expectancy_bps": s.get("cost_expectancy_bps"),
-                      "rebalances": s.get("rebalances"), "sharpe": s.get("sharpe"),
-                      "max_dd_bps": s.get("max_dd_bps"),
-                      "turnover": s.get("mean_turnover_notional"),
-                      "net_exposure": s.get("mean_net_exposure"),
-                      "status": s.get("status")}
+        eras[name] = {
+            "net_expectancy_bps": s.get("net_expectancy_bps"),
+            "gross_expectancy_bps": s.get("gross_expectancy_bps"),
+            "cost_expectancy_bps": s.get("cost_expectancy_bps"),
+            "rebalances": s.get("rebalances"),
+            "sharpe": s.get("sharpe"),
+            "max_dd_bps": s.get("max_dd_bps"),
+            "turnover": s.get("mean_turnover_notional"),
+            "net_exposure": s.get("mean_net_exposure"),
+            "status": s.get("status"),
+        }
     full_run = world.run(world.full)
     nets = np.asarray(full_run["nets"])
     r12 = _recent(nets, 12)
     r24 = _recent(nets, 24)
-    nets_by_era = {k: v["net_expectancy_bps"] for k, v in eras.items()
-                   if v.get("status") == "OK" and v["net_expectancy_bps"] is not None}
+    nets_by_era = {
+        k: v["net_expectancy_bps"]
+        for k, v in eras.items()
+        if v.get("status") == "OK" and v["net_expectancy_bps"] is not None
+    }
     positive_eras = sum(1 for x in nets_by_era.values() if (x or 0) > 0)
     best = max(nets_by_era.items(), key=lambda kv: kv[1] or -1e9) if nets_by_era else None
     worst = min(nets_by_era.items(), key=lambda kv: kv[1] or 1e9) if nets_by_era else None
@@ -467,26 +570,53 @@ def temporal_diagnostic(world: World) -> dict[str, Any]:
         "recent_24m": r24,
         "diagnostic_note": "recent windows are diagnostics, never optimised from (§16)",
     }
-    md = "\n".join([
-        "# RFC-032 — TEMPORAL DIAGNOSTIC", "",
-        _table([{"era": k, "gross": _r(v["gross_expectancy_bps"], 2),
-                 "cost": _r(v["cost_expectancy_bps"], 2),
-                 "net": _r(v["net_expectancy_bps"], 2),
-                 "sharpe": _r(v["sharpe"], 3), "max_dd": _r(v["max_dd_bps"], 1),
-                 "turnover": _r(v["turnover"], 3), "net_exp": _r(v["net_exposure"], 3)}
-                for k, v in eras.items()],
-               ["era", "gross", "cost", "net", "sharpe", "max_dd", "turnover",
-                "net_exp"]), "",
-        f"- positive eras: {positive_eras}/{len(nets_by_era)}",
-        f"- best era: {payload['best_era']} ({_r(payload['best_era_bps'], 2)} bps)",
-        f"- worst era: {payload['worst_era']} ({_r(payload['worst_era_bps'], 2)} bps)", "",
-        "## §16 Recent windows", "",
-        _table([{"window": "last 12m", "net_bps": _r(r12.get("net_expectancy_bps"), 2),
-                 "sharpe": _r(r12.get("sharpe"), 3), "max_dd_bps": _r(r12.get("max_dd_bps"), 1)},
-                {"window": "last 24m", "net_bps": _r(r24.get("net_expectancy_bps"), 2),
-                 "sharpe": _r(r24.get("sharpe"), 3), "max_dd_bps": _r(r24.get("max_dd_bps"), 1)}],
-               ["window", "net_bps", "sharpe", "max_dd_bps"]), "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-032 — TEMPORAL DIAGNOSTIC",
+            "",
+            _table(
+                [
+                    {
+                        "era": k,
+                        "gross": _r(v["gross_expectancy_bps"], 2),
+                        "cost": _r(v["cost_expectancy_bps"], 2),
+                        "net": _r(v["net_expectancy_bps"], 2),
+                        "sharpe": _r(v["sharpe"], 3),
+                        "max_dd": _r(v["max_dd_bps"], 1),
+                        "turnover": _r(v["turnover"], 3),
+                        "net_exp": _r(v["net_exposure"], 3),
+                    }
+                    for k, v in eras.items()
+                ],
+                ["era", "gross", "cost", "net", "sharpe", "max_dd", "turnover", "net_exp"],
+            ),
+            "",
+            f"- positive eras: {positive_eras}/{len(nets_by_era)}",
+            f"- best era: {payload['best_era']} ({_r(payload['best_era_bps'], 2)} bps)",
+            f"- worst era: {payload['worst_era']} ({_r(payload['worst_era_bps'], 2)} bps)",
+            "",
+            "## §16 Recent windows",
+            "",
+            _table(
+                [
+                    {
+                        "window": "last 12m",
+                        "net_bps": _r(r12.get("net_expectancy_bps"), 2),
+                        "sharpe": _r(r12.get("sharpe"), 3),
+                        "max_dd_bps": _r(r12.get("max_dd_bps"), 1),
+                    },
+                    {
+                        "window": "last 24m",
+                        "net_bps": _r(r24.get("net_expectancy_bps"), 2),
+                        "sharpe": _r(r24.get("sharpe"), 3),
+                        "max_dd_bps": _r(r24.get("max_dd_bps"), 1),
+                    },
+                ],
+                ["window", "net_bps", "sharpe", "max_dd_bps"],
+            ),
+            "",
+        ]
+    )
     _emit("TEMPORAL_DIAGNOSTIC", payload, md)
     return payload
 
@@ -494,6 +624,7 @@ def temporal_diagnostic(world: World) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 # §18 benchmark diagnostic
 # ---------------------------------------------------------------------------
+
 
 def _long_only_book(world: World, i: int, mode: str) -> NDArray[Any]:
     """Signal-independent long-only controls (§18).  No short, no leverage."""
@@ -557,26 +688,41 @@ def benchmark_diagnostic(world: World) -> dict[str, Any]:
         "delta_vs_ew_bps": float(np.mean(cand) - np.mean(ew)) if ew.size else None,
         "delta_vs_volscaled_bps": float(np.mean(cand) - np.mean(vs)) if vs.size else None,
         "delta_vs_btc_bps": float(np.mean(cand) - np.mean(btc)) if btc.size else None,
-        "timing_signal_adds_value_vs_long_only": bool(
-            ew.size and np.mean(cand) > np.mean(ew)),
-        "note": ("benchmarks are diagnostic only; the candidate is NOT modified to beat "
-                 "them (§19)"),
+        "timing_signal_adds_value_vs_long_only": bool(ew.size and np.mean(cand) > np.mean(ew)),
+        "note": (
+            "benchmarks are diagnostic only; the candidate is NOT modified to beat them (§19)"
+        ),
     }
-    md = "\n".join([
-        "# RFC-032 — BENCHMARK DIAGNOSTIC", "",
-        f"- {payload['periods']}", "",
-        _table([{"series": k, "net_bps": _r(v.get("net_expectancy_bps"), 2),
-                 "median_bps": _r(v.get("net_median_bps"), 2),
-                 "sharpe": _r(v.get("sharpe"), 3), "max_dd_bps": _r(v.get("max_dd_bps"), 1)}
-                for k, v in payload["benchmarks"].items()],
-               ["series", "net_bps", "median_bps", "sharpe", "max_dd_bps"]), "",
-        f"- delta vs EW long-only: {_r(payload['delta_vs_ew_bps'], 2)} bps/month",
-        f"- delta vs vol-scaled long-only: {_r(payload['delta_vs_volscaled_bps'], 2)} bps/month",
-        f"- delta vs BTC buy-and-hold: {_r(payload['delta_vs_btc_bps'], 2)} bps/month",
-        f"- timing signal adds value vs EW long-only: "
-        f"**{payload['timing_signal_adds_value_vs_long_only']}**", "",
-        f"> {payload['note']}", "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-032 — BENCHMARK DIAGNOSTIC",
+            "",
+            f"- {payload['periods']}",
+            "",
+            _table(
+                [
+                    {
+                        "series": k,
+                        "net_bps": _r(v.get("net_expectancy_bps"), 2),
+                        "median_bps": _r(v.get("net_median_bps"), 2),
+                        "sharpe": _r(v.get("sharpe"), 3),
+                        "max_dd_bps": _r(v.get("max_dd_bps"), 1),
+                    }
+                    for k, v in payload["benchmarks"].items()
+                ],
+                ["series", "net_bps", "median_bps", "sharpe", "max_dd_bps"],
+            ),
+            "",
+            f"- delta vs EW long-only: {_r(payload['delta_vs_ew_bps'], 2)} bps/month",
+            f"- delta vs vol-scaled long-only: {_r(payload['delta_vs_volscaled_bps'], 2)} bps/month",
+            f"- delta vs BTC buy-and-hold: {_r(payload['delta_vs_btc_bps'], 2)} bps/month",
+            f"- timing signal adds value vs EW long-only: "
+            f"**{payload['timing_signal_adds_value_vs_long_only']}**",
+            "",
+            f"> {payload['note']}",
+            "",
+        ]
+    )
     _emit("BENCHMARK_DIAGNOSTIC", payload, md)
     return payload
 
@@ -585,8 +731,10 @@ def benchmark_diagnostic(world: World) -> dict[str, Any]:
 # §10 G_REM_0 / §11 G_REM_1
 # ---------------------------------------------------------------------------
 
-def implementation_audit(pit: dict[str, Any], cost_ok: bool, frozen: dict[str, Any],
-                         verify: dict[str, Any]) -> dict[str, Any]:
+
+def implementation_audit(
+    pit: dict[str, Any], cost_ok: bool, frozen: dict[str, Any], verify: dict[str, Any]
+) -> dict[str, Any]:
     checks = {
         "no_short_spot": bool(pit["no_short_spot"]),
         "t_plus_1_execution": bool(pit["exec_lag"] == 1 and pit["executable_field"] == "open"),
@@ -603,20 +751,31 @@ def implementation_audit(pit: dict[str, Any], cost_ok: bool, frozen: dict[str, A
         "result": "PASS" if passed else "FAIL",
         "candidate": L.CANDIDATE_ID,
     }
-    md = "\n".join([
-        "# RFC-032 — IMPLEMENTATION AUDIT (G_REM_0)", "",
-        _table([{"check": k, "result": "PASS" if v else "FAIL"} for k, v in checks.items()],
-               ["check", "result"]), "",
-        f"- **G_REM_0_IMPLEMENTATION = {payload['result']}**", "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-032 — IMPLEMENTATION AUDIT (G_REM_0)",
+            "",
+            _table(
+                [{"check": k, "result": "PASS" if v else "FAIL"} for k, v in checks.items()],
+                ["check", "result"],
+            ),
+            "",
+            f"- **G_REM_0_IMPLEMENTATION = {payload['result']}**",
+            "",
+        ]
+    )
     _emit("IMPLEMENTATION_AUDIT", payload, md)
     return payload
 
 
-def admission_decision(world: World, historical: dict[str, Any],
-                       temporal: dict[str, Any], impl: dict[str, Any],
-                       benchmark: dict[str, Any],
-                       verify: dict[str, Any] | None = None) -> dict[str, Any]:
+def admission_decision(
+    world: World,
+    historical: dict[str, Any],
+    temporal: dict[str, Any],
+    impl: dict[str, Any],
+    benchmark: dict[str, Any],
+    verify: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     full_net = historical["full"].get("net_expectancy_bps")
     median = historical["full"].get("net_median_bps")
     pos_eras = temporal.get("positive_eras")
@@ -657,37 +816,58 @@ def admission_decision(world: World, historical: dict[str, Any],
         "decision": decision,
         "paper_status": paper_status,
         "next": next_step,
-        "statement": ("THE EXECUTABLE VERSION DOES NOT PRESERVE THE HISTORICAL ECONOMIC "
-                      "EDGE" if g_rem_1 == "FAIL" else
-                      "THE EXECUTABLE VERSION IS PLAUSIBLE ENOUGH TO OBSERVE FORWARD"),
+        "statement": (
+            "THE EXECUTABLE VERSION DOES NOT PRESERVE THE HISTORICAL ECONOMIC EDGE"
+            if g_rem_1 == "FAIL"
+            else "THE EXECUTABLE VERSION IS PLAUSIBLE ENOUGH TO OBSERVE FORWARD"
+        ),
         "benchmark_context": {
             "delta_vs_ew_bps": benchmark.get("delta_vs_ew_bps"),
             "delta_vs_btc_bps": benchmark.get("delta_vs_btc_bps"),
-            "timing_signal_adds_value_vs_long_only":
-                benchmark.get("timing_signal_adds_value_vs_long_only"),
+            "timing_signal_adds_value_vs_long_only": benchmark.get(
+                "timing_signal_adds_value_vs_long_only"
+            ),
         },
-        "no_auto_next_candidate": ("REJECTED path does NOT create EXT-TSMOM-003 "
-                                   "automatically (§30, §73)"),
+        "no_auto_next_candidate": (
+            "REJECTED path does NOT create EXT-TSMOM-003 automatically (§30, §73)"
+        ),
         "evidence_class": "HISTORICAL_DIAGNOSTIC_ONLY",
         "verifier_G_REM_1_independent": (verify or {}).get("G_REM_1_independent"),
         "verifier_agrees": ((verify or {}).get("G_REM_1_independent") == g_rem_1)
-        if verify else None,
+        if verify
+        else None,
     }
-    md = "\n".join([
-        "# RFC-032 — ADMISSION DECISION (G_REM_1)", "",
-        _table([{"criterion": k, "definition": G_REM_1_CRITERIA[k],
-                 "result": "PASS" if v else "FAIL"} for k, v in crit.items()],
-               ["criterion", "definition", "result"]), "",
-        f"- full net: {_r(full_net, 3)} bps/month | median: {_r(median, 3)} bps",
-        f"- positive eras: {pos_eras}/{n_eras}",
-        f"- recent 12m: {_r(r12, 3)} bps | recent 24m: {_r(r24, 3)} bps", "",
-        f"- G_REM_0_IMPLEMENTATION = **{impl['result']}**",
-        f"- G_REM_1_HISTORICAL_PLAUSIBILITY = **{g_rem_1}**", "",
-        f"- **decision: {decision}**",
-        f"- PAPER STATUS: **{paper_status}**",
-        f"- NEXT: **{next_step}**", "",
-        f"> {payload['statement']}", "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-032 — ADMISSION DECISION (G_REM_1)",
+            "",
+            _table(
+                [
+                    {
+                        "criterion": k,
+                        "definition": G_REM_1_CRITERIA[k],
+                        "result": "PASS" if v else "FAIL",
+                    }
+                    for k, v in crit.items()
+                ],
+                ["criterion", "definition", "result"],
+            ),
+            "",
+            f"- full net: {_r(full_net, 3)} bps/month | median: {_r(median, 3)} bps",
+            f"- positive eras: {pos_eras}/{n_eras}",
+            f"- recent 12m: {_r(r12, 3)} bps | recent 24m: {_r(r24, 3)} bps",
+            "",
+            f"- G_REM_0_IMPLEMENTATION = **{impl['result']}**",
+            f"- G_REM_1_HISTORICAL_PLAUSIBILITY = **{g_rem_1}**",
+            "",
+            f"- **decision: {decision}**",
+            f"- PAPER STATUS: **{paper_status}**",
+            f"- NEXT: **{next_step}**",
+            "",
+            f"> {payload['statement']}",
+            "",
+        ]
+    )
     _emit("ADMISSION_DECISION", payload, md)
     return payload
 
@@ -696,8 +876,10 @@ def admission_decision(world: World, historical: dict[str, Any],
 # §32/§36/§48/§70 forward paper campaign (only if G_REM_1 = PASS)
 # ---------------------------------------------------------------------------
 
-def paper_campaign_spec(frozen: dict[str, Any], world: World,
-                        temporal: dict[str, Any]) -> dict[str, Any]:
+
+def paper_campaign_spec(
+    frozen: dict[str, Any], world: World, temporal: dict[str, Any]
+) -> dict[str, Any]:
     nets = np.asarray(world.run(world.full)["nets"])
     band = {
         "monthly_return_p05_bps": float(np.quantile(nets, 0.05)),
@@ -719,18 +901,36 @@ def paper_campaign_spec(frozen: dict[str, Any], world: World,
         "llm_in_trading_path": False,
         "deterministic": True,
         "no_backfill": True,
-        "state_machine": ["PAPER_NOT_STARTED", "PAPER_OBSERVING", "PAPER_EVIDENCE_SUFFICIENT",
-                          "PAPER_FAIL", "PAPER_PASS"],
+        "state_machine": [
+            "PAPER_NOT_STARTED",
+            "PAPER_OBSERVING",
+            "PAPER_EVIDENCE_SUFFICIENT",
+            "PAPER_FAIL",
+            "PAPER_PASS",
+        ],
         "checkpoints_monthly_rebalances": [3, 6, 12],
-        "first_three_labels": ["EARLY_POSITIVE", "EARLY_NEGATIVE", "WITHIN_EXPECTATION",
-                               "DRIFT_WARNING"],
+        "first_three_labels": [
+            "EARLY_POSITIVE",
+            "EARLY_NEGATIVE",
+            "WITHIN_EXPECTATION",
+            "DRIFT_WARNING",
+        ],
         "baselines_tracked": ["BTC buy-and-hold", "equal-weight eligible universe"],
-        "drift_types": ["DATA_DRIFT", "UNIVERSE_DRIFT", "SIGNAL_DRIFT", "TURNOVER_DRIFT",
-                        "COST_DRIFT", "PERFORMANCE_DRIFT"],
+        "drift_types": [
+            "DATA_DRIFT",
+            "UNIVERSE_DRIFT",
+            "SIGNAL_DRIFT",
+            "TURNOVER_DRIFT",
+            "COST_DRIFT",
+            "PERFORMANCE_DRIFT",
+        ],
         "reference_bands": band,
-        "gates": {"G_FWD_0_OPERATIONAL": "SEE_PAPER_STATUS", "G_FWD_1_INTEGRITY":
-                  "SEE_PAPER_STATUS", "G_FWD_2_EVIDENCE": "NOT_REACHED",
-                  "G_FWD_3_PROFITABILITY": "NOT_REACHED"},
+        "gates": {
+            "G_FWD_0_OPERATIONAL": "SEE_PAPER_STATUS",
+            "G_FWD_1_INTEGRITY": "SEE_PAPER_STATUS",
+            "G_FWD_2_EVIDENCE": "NOT_REACHED",
+            "G_FWD_3_PROFITABILITY": "NOT_REACHED",
+        },
         "live_gate": "NONE in RFC-032 (would need a separate LIVE READINESS/CANARY RFC)",
         "paper_status": "PAPER_OBSERVING",
     }
@@ -739,39 +939,86 @@ def paper_campaign_spec(frozen: dict[str, Any], world: World,
         L.write_json(PAPER / f"{name}.json", obj)
         L.write_md(PAPER / f"{name}.md", md)
 
-    _w("PAPER_CAMPAIGN_SPEC", payload,
-       "\n".join(["# RFC-032 — PAPER CAMPAIGN SPEC (EXT-TSMOM-002)", "",
-                  f"- candidate: `{payload['candidate_id']}`",
-                  f"- candidate hash: `{payload['candidate_hash']}`",
-                  f"- capital: {payload['capital']}",
-                  f"- rebalance: {payload['rebalance_frequency']}",
-                  f"- checkpoints: {payload['checkpoints_monthly_rebalances']}",
-                  f"- status: **{payload['paper_status']}**", "",
-                  f"> {payload['live_gate']}", ""]))
-    _w("CANDIDATE_SNAPSHOT", {
-        "candidate_id": L.CANDIDATE_ID, "config_hash": frozen["config_hash"],
-        "code_hash_sprint032_lib": frozen["code_hash_sprint032_lib"],
-        "data_hashes": frozen["data_hashes"], "universe": frozen["universe"],
-        "cost_model": frozen["cost_model"], "frozen_spec": frozen,
-       }, "\n".join(["# RFC-032 — CANDIDATE SNAPSHOT", "",
-                     f"- config hash: `{frozen['config_hash']}`",
-                     f"- code hash: `{frozen['code_hash_sprint032_lib']}`", ""]))
-    _w("REFERENCE_BANDS", band,
-       "\n".join(["# RFC-032 — REFERENCE BANDS (frozen pre-campaign)", "",
-                  _table([{"metric": k, "value": _r(v, 4)} for k, v in band.items()],
-                         ["metric", "value"]), ""]))
-    _w("PAPER_STATUS", {"candidate_id": L.CANDIDATE_ID, "paper_status": "PAPER_OBSERVING",
-                        "real_orders": False, "backfill": False},
-       "\n".join(["# RFC-032 — PAPER STATUS", "",
-                  f"- candidate: `{L.CANDIDATE_ID}`",
-                  "- paper status: **PAPER_OBSERVING** (simulated capital only)",
-                  "- real orders: NO  |  backfill: NO", ""]))
+    _w(
+        "PAPER_CAMPAIGN_SPEC",
+        payload,
+        "\n".join(
+            [
+                "# RFC-032 — PAPER CAMPAIGN SPEC (EXT-TSMOM-002)",
+                "",
+                f"- candidate: `{payload['candidate_id']}`",
+                f"- candidate hash: `{payload['candidate_hash']}`",
+                f"- capital: {payload['capital']}",
+                f"- rebalance: {payload['rebalance_frequency']}",
+                f"- checkpoints: {payload['checkpoints_monthly_rebalances']}",
+                f"- status: **{payload['paper_status']}**",
+                "",
+                f"> {payload['live_gate']}",
+                "",
+            ]
+        ),
+    )
+    _w(
+        "CANDIDATE_SNAPSHOT",
+        {
+            "candidate_id": L.CANDIDATE_ID,
+            "config_hash": frozen["config_hash"],
+            "code_hash_sprint032_lib": frozen["code_hash_sprint032_lib"],
+            "data_hashes": frozen["data_hashes"],
+            "universe": frozen["universe"],
+            "cost_model": frozen["cost_model"],
+            "frozen_spec": frozen,
+        },
+        "\n".join(
+            [
+                "# RFC-032 — CANDIDATE SNAPSHOT",
+                "",
+                f"- config hash: `{frozen['config_hash']}`",
+                f"- code hash: `{frozen['code_hash_sprint032_lib']}`",
+                "",
+            ]
+        ),
+    )
+    _w(
+        "REFERENCE_BANDS",
+        band,
+        "\n".join(
+            [
+                "# RFC-032 — REFERENCE BANDS (frozen pre-campaign)",
+                "",
+                _table(
+                    [{"metric": k, "value": _r(v, 4)} for k, v in band.items()], ["metric", "value"]
+                ),
+                "",
+            ]
+        ),
+    )
+    _w(
+        "PAPER_STATUS",
+        {
+            "candidate_id": L.CANDIDATE_ID,
+            "paper_status": "PAPER_OBSERVING",
+            "real_orders": False,
+            "backfill": False,
+        },
+        "\n".join(
+            [
+                "# RFC-032 — PAPER STATUS",
+                "",
+                f"- candidate: `{L.CANDIDATE_ID}`",
+                "- paper status: **PAPER_OBSERVING** (simulated capital only)",
+                "- real orders: NO  |  backfill: NO",
+                "",
+            ]
+        ),
+    )
     return payload
 
 
 # ---------------------------------------------------------------------------
 # §69 plan
 # ---------------------------------------------------------------------------
+
 
 def write_plan(head: str) -> dict[str, Any]:
     payload: dict[str, Any] = {
@@ -782,16 +1029,33 @@ def write_plan(head: str) -> dict[str, Any]:
         "source_commit": _git("HEAD"),
         "entry_head_expected": "8cd10cc (RFC-031)",
         "entry_head_verified": head,
-        "question": ("Does the executable long-or-cash spot version of the frozen TSMOM "
-                     "signal keep enough historical economics to justify fresh forward "
-                     "paper evidence?"),
-        "not": ["new alpha", "parameter tuning", "reuse of old Validation/Holdout as fresh "
-                "evidence", "real capital", "auto EXT-TSMOM-003"],
+        "question": (
+            "Does the executable long-or-cash spot version of the frozen TSMOM "
+            "signal keep enough historical economics to justify fresh forward "
+            "paper evidence?"
+        ),
+        "not": [
+            "new alpha",
+            "parameter tuning",
+            "reuse of old Validation/Holdout as fresh evidence",
+            "real capital",
+            "auto EXT-TSMOM-003",
+        ],
         "remediations_allowed": ["R1 negative weight -> 0/CASH", "R2 close-T -> T+1 open"],
-        "phases": ["ENTRY_GATE", "FREEZE_SPEC", "REMEDIATION_DIFF", "PIT_EXECUTION",
-                   "HISTORICAL_DIAGNOSTIC", "TEMPORAL_DIAGNOSTIC", "BENCHMARK_DIAGNOSTIC",
-                   "G_REM_0_IMPLEMENTATION", "G_REM_1_PLAUSIBILITY", "ADMISSION_DECISION",
-                   "INDEPENDENT_VERIFY", "FINAL_REPORT"],
+        "phases": [
+            "ENTRY_GATE",
+            "FREEZE_SPEC",
+            "REMEDIATION_DIFF",
+            "PIT_EXECUTION",
+            "HISTORICAL_DIAGNOSTIC",
+            "TEMPORAL_DIAGNOSTIC",
+            "BENCHMARK_DIAGNOSTIC",
+            "G_REM_0_IMPLEMENTATION",
+            "G_REM_1_PLAUSIBILITY",
+            "ADMISSION_DECISION",
+            "INDEPENDENT_VERIFY",
+            "FINAL_REPORT",
+        ],
         "pre_registered_G_REM_1_criteria": G_REM_1_CRITERIA,
         "marker_correction": {
             "statistical_historical_effect": 1,
@@ -803,21 +1067,32 @@ def write_plan(head: str) -> dict[str, Any]:
             "live_profitable": 0,
         },
     }
-    md = "\n".join([
-        "# RFC-032 — EXECUTABLE TSMOM REMEDIATION (PLAN)", "",
-        f"- candidate: `{payload['candidate']}`",
-        f"- generated: `{payload['generated']}`  |  source commit: "
-        f"`{payload['source_commit']}`",
-        f"- entry head expected {payload['entry_head_expected']}; verified "
-        f"`{payload['entry_head_verified']}`", "",
-        f"> {payload['question']}", "",
-        "## Allowed remediations", "",
-        "\n".join(f"- {x}" for x in payload["remediations_allowed"]), "",
-        "## Pre-registered G_REM_1 admission criteria", "",
-        "\n".join(f"- **{k}**: {v}" for k, v in G_REM_1_CRITERIA.items()), "",
-        "## Economic marker (corrected)", "",
-        "\n".join(f"- {k} = {v}" for k, v in payload["marker_correction"].items()), "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-032 — EXECUTABLE TSMOM REMEDIATION (PLAN)",
+            "",
+            f"- candidate: `{payload['candidate']}`",
+            f"- generated: `{payload['generated']}`  |  source commit: "
+            f"`{payload['source_commit']}`",
+            f"- entry head expected {payload['entry_head_expected']}; verified "
+            f"`{payload['entry_head_verified']}`",
+            "",
+            f"> {payload['question']}",
+            "",
+            "## Allowed remediations",
+            "",
+            "\n".join(f"- {x}" for x in payload["remediations_allowed"]),
+            "",
+            "## Pre-registered G_REM_1 admission criteria",
+            "",
+            "\n".join(f"- **{k}**: {v}" for k, v in G_REM_1_CRITERIA.items()),
+            "",
+            "## Economic marker (corrected)",
+            "",
+            "\n".join(f"- {k} = {v}" for k, v in payload["marker_correction"].items()),
+            "",
+        ]
+    )
     _emit("RFC032_PLAN", payload, md)
     return payload
 
@@ -825,6 +1100,7 @@ def write_plan(head: str) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 # §75 cost reconciliation (RFC-031 convention)
 # ---------------------------------------------------------------------------
+
 
 def cost_reconciliation(world: World) -> dict[str, Any]:
     r = world.run(world.full)
@@ -834,14 +1110,17 @@ def cost_reconciliation(world: World) -> dict[str, Any]:
     recomputed = traded * per_side
     max_abs = float(np.max(np.abs(costs - recomputed))) if costs.size else 0.0
     s = L.summarise(r)
-    ok = bool(max_abs <= TOL and abs(float(np.mean(recomputed))
-                                     - (s.get("cost_expectancy_bps") or 0.0)) <= TOL)
+    ok = bool(
+        max_abs <= TOL
+        and abs(float(np.mean(recomputed)) - (s.get("cost_expectancy_bps") or 0.0)) <= TOL
+    )
     stress: dict[str, Any] = {}
     for mult in L.COST_STRESS_MULTIPLIERS:
         for name in L.SPLIT_ORDER:
             m = L.split_mask(world.days, name)
             stress[f"x{mult}_{name}"] = world.summary(m, cost_bps=per_side * mult).get(
-                "net_expectancy_bps")
+                "net_expectancy_bps"
+            )
     return {
         "generated": _now(),
         "per_side_cost_bps": per_side,
@@ -861,6 +1140,7 @@ def cost_reconciliation(world: World) -> dict[str, Any]:
 # driver
 # ---------------------------------------------------------------------------
 
+
 def run(stage: str) -> None:
     world = World()
     if stage == "artifacts":
@@ -872,36 +1152,59 @@ def run(stage: str) -> None:
         historical = historical_diagnostic(world)
         temporal = temporal_diagnostic(world)
         benchmark = benchmark_diagnostic(world)
-        L.write_json(OUT / "_rfc032_intermediate.json", {
-            "frozen": frozen, "cost": cost, "pit": pit, "historical": historical,
-            "temporal": temporal, "benchmark": benchmark,
-        })
+        L.write_json(
+            OUT / "_rfc032_intermediate.json",
+            {
+                "frozen": frozen,
+                "cost": cost,
+                "pit": pit,
+                "historical": historical,
+                "temporal": temporal,
+                "benchmark": benchmark,
+            },
+        )
         # also persist the cost reconciliation as its own remediation artifact
-        _emit("COST_RECONCILIATION", cost, "\n".join([
-            "# RFC-032 — COST RECONCILIATION", "",
-            f"- per-side cost: {cost['per_side_cost_bps']} bps",
-            f"- mean turnover: {_r(cost['mean_turnover_notional'], 4)}",
-            f"- cost expectancy: {_r(cost['cost_expectancy_bps'], 4)} bps",
-            f"- reconciliation: **{'PASS' if cost['reconciliation_ok'] else 'FAIL'}**", "",
-            _table([{"scenario": k, "net_bps": _r(v, 3)} for k, v in cost["stress"].items()],
-                   ["scenario", "net_bps"]), ""]))
+        _emit(
+            "COST_RECONCILIATION",
+            cost,
+            "\n".join(
+                [
+                    "# RFC-032 — COST RECONCILIATION",
+                    "",
+                    f"- per-side cost: {cost['per_side_cost_bps']} bps",
+                    f"- mean turnover: {_r(cost['mean_turnover_notional'], 4)}",
+                    f"- cost expectancy: {_r(cost['cost_expectancy_bps'], 4)} bps",
+                    f"- reconciliation: **{'PASS' if cost['reconciliation_ok'] else 'FAIL'}**",
+                    "",
+                    _table(
+                        [{"scenario": k, "net_bps": _r(v, 3)} for k, v in cost["stress"].items()],
+                        ["scenario", "net_bps"],
+                    ),
+                    "",
+                ]
+            ),
+        )
         print("[run032] artifacts written", flush=True)
-        print(f"[run032] full net = {historical['full'].get('net_expectancy_bps')} bps",
-              flush=True)
+        print(f"[run032] full net = {historical['full'].get('net_expectancy_bps')} bps", flush=True)
     elif stage == "final":
         inter = L.read_json(OUT / "_rfc032_intermediate.json")
         vpath = OUT / "RFC032_VERIFICATION.json"
         verify = L.read_json(vpath) if vpath.exists() else {}
-        impl = implementation_audit(inter["pit"], inter["cost"]["reconciliation_ok"],
-                                    inter["frozen"], verify)
-        adm = admission_decision(world, inter["historical"], inter["temporal"], impl,
-                                 inter["benchmark"], verify)
+        impl = implementation_audit(
+            inter["pit"], inter["cost"]["reconciliation_ok"], inter["frozen"], verify
+        )
+        adm = admission_decision(
+            world, inter["historical"], inter["temporal"], impl, inter["benchmark"], verify
+        )
         paper = None
         if adm["G_REM_1"] == "PASS":
             paper = paper_campaign_spec(inter["frozen"], world, inter["temporal"])
         write_final_report(world, inter, verify, impl, adm, paper)
-        print(f"[run032] G_REM_0 = {impl['result']}  G_REM_1 = {adm['G_REM_1']}  "
-              f"decision = {adm['decision']}", flush=True)
+        print(
+            f"[run032] G_REM_0 = {impl['result']}  G_REM_1 = {adm['G_REM_1']}  "
+            f"decision = {adm['decision']}",
+            flush=True,
+        )
     else:
         raise SystemExit(f"unknown stage {stage!r}")
 
@@ -909,18 +1212,26 @@ def run(stage: str) -> None:
 def forward_boundary(world: World, forward_start_ms: int) -> dict[str, Any]:
     """§33/§67: nothing in the already-observed diagnostic corpus is forward data."""
     last_ts = int(world.days.max())
-    n_forward = int(sum(1 for t in world.days.tolist()
-                        if L.is_forward_evidence(int(t), forward_start_ms)))
-    return {"forward_evidence_start_ms": forward_start_ms,
-            "diagnostic_corpus_last_ts_ms": last_ts,
-            "diagnostic_days_that_are_forward": n_forward,
-            "last_ts_is_forward": L.is_forward_evidence(last_ts, forward_start_ms),
-            "rule": "only timestamps >= FORWARD_EVIDENCE_START count as forward (§67)"}
+    n_forward = int(
+        sum(1 for t in world.days.tolist() if L.is_forward_evidence(int(t), forward_start_ms))
+    )
+    return {
+        "forward_evidence_start_ms": forward_start_ms,
+        "diagnostic_corpus_last_ts_ms": last_ts,
+        "diagnostic_days_that_are_forward": n_forward,
+        "last_ts_is_forward": L.is_forward_evidence(last_ts, forward_start_ms),
+        "rule": "only timestamps >= FORWARD_EVIDENCE_START count as forward (§67)",
+    }
 
 
-def write_final_report(world: World, inter: dict[str, Any], verify: dict[str, Any],
-                       impl: dict[str, Any], adm: dict[str, Any],
-                       paper: dict[str, Any] | None) -> None:
+def write_final_report(
+    world: World,
+    inter: dict[str, Any],
+    verify: dict[str, Any],
+    impl: dict[str, Any],
+    adm: dict[str, Any],
+    paper: dict[str, Any] | None,
+) -> None:
     hist = inter["historical"]
     temp = inter["temporal"]
     bench = inter["benchmark"]
@@ -951,8 +1262,9 @@ def write_final_report(world: World, inter: dict[str, Any], verify: dict[str, An
         "benchmark_comparison": {
             "delta_vs_ew_bps": bench.get("delta_vs_ew_bps"),
             "delta_vs_btc_bps": bench.get("delta_vs_btc_bps"),
-            "timing_signal_adds_value_vs_long_only":
-                bench.get("timing_signal_adds_value_vs_long_only"),
+            "timing_signal_adds_value_vs_long_only": bench.get(
+                "timing_signal_adds_value_vs_long_only"
+            ),
         },
         "decision": adm["decision"],
         "paper_status": paper_status,
@@ -987,46 +1299,52 @@ def write_final_report(world: World, inter: dict[str, Any], verify: dict[str, An
 
 
 def _final_md(p: dict[str, Any]) -> str:
-    return "\n".join([
-        "# RFC-032 EXECUTABLE TSMOM REMEDIATION", "",
-        "```text",
-        f"CANDIDATE = {p['candidate']}",
-        f"REMEDIATION = {p['remediation']}",
-        "",
-        f"G_REM_0_IMPLEMENTATION = {p['G_REM_0_IMPLEMENTATION']}",
-        f"G_REM_1_HISTORICAL_PLAUSIBILITY = {p['G_REM_1_HISTORICAL_PLAUSIBILITY']}",
-        "",
-        f"HISTORICAL EVIDENCE STATUS = {p['historical_evidence_status']}",
-        f"HISTORICAL MEAN NET = {_r(p['historical_mean_net_bps'], 3)} bps/month",
-        f"HISTORICAL MEDIAN NET = {_r(p['historical_median_net_bps'], 3)} bps",
-        f"RECENT 12m = {_r(p['recent_12m_bps'], 3)} bps/month",
-        f"RECENT 24m = {_r(p['recent_24m_bps'], 3)} bps/month",
-        f"POSITIVE ERAS = {p['positive_eras']}/{p['n_eras']}",
-        f"LONG EXPOSURE (time) = {_r(p['long_exposure_pct_time'], 3)}",
-        f"CASH EXPOSURE (time) = {_r(p['cash_exposure_pct_time'], 3)}",
-        f"SHORT EXPOSURE = {p['short_exposure']}",
-        "",
-        f"BENCHMARK DELTA vs EW = {_r(p['benchmark_comparison']['delta_vs_ew_bps'], 2)} bps",
-        f"BENCHMARK DELTA vs BTC = {_r(p['benchmark_comparison']['delta_vs_btc_bps'], 2)} bps",
-        "",
-        f"DECISION = {p['decision']}",
-        f"PAPER STATUS = {p['paper_status']}",
-        f"FORWARD_EVIDENCE_START = {p['forward_evidence_start']}",
-        "",
-        f"G_FWD_0 = {p['G_FWD_0']}",
-        f"G_FWD_1 = {p['G_FWD_1']}",
-        f"G_FWD_2 = {p['G_FWD_2']}",
-        f"G_FWD_3 = {p['G_FWD_3']}",
-        "",
-        f"FALSE_SUCCESS = {p['FALSE_SUCCESS']}",
-        f"INDEPENDENT VERIFICATION = {p['independent_verification']}",
-        "",
-        f"STATEMENT = {p['statement']}",
-        f"NEXT = {p['next']}",
-        "```", "",
-        "## Economic marker", "",
-        "\n".join(f"- {k} = {v}" for k, v in p["marker"].items()), "",
-    ])
+    return "\n".join(
+        [
+            "# RFC-032 EXECUTABLE TSMOM REMEDIATION",
+            "",
+            "```text",
+            f"CANDIDATE = {p['candidate']}",
+            f"REMEDIATION = {p['remediation']}",
+            "",
+            f"G_REM_0_IMPLEMENTATION = {p['G_REM_0_IMPLEMENTATION']}",
+            f"G_REM_1_HISTORICAL_PLAUSIBILITY = {p['G_REM_1_HISTORICAL_PLAUSIBILITY']}",
+            "",
+            f"HISTORICAL EVIDENCE STATUS = {p['historical_evidence_status']}",
+            f"HISTORICAL MEAN NET = {_r(p['historical_mean_net_bps'], 3)} bps/month",
+            f"HISTORICAL MEDIAN NET = {_r(p['historical_median_net_bps'], 3)} bps",
+            f"RECENT 12m = {_r(p['recent_12m_bps'], 3)} bps/month",
+            f"RECENT 24m = {_r(p['recent_24m_bps'], 3)} bps/month",
+            f"POSITIVE ERAS = {p['positive_eras']}/{p['n_eras']}",
+            f"LONG EXPOSURE (time) = {_r(p['long_exposure_pct_time'], 3)}",
+            f"CASH EXPOSURE (time) = {_r(p['cash_exposure_pct_time'], 3)}",
+            f"SHORT EXPOSURE = {p['short_exposure']}",
+            "",
+            f"BENCHMARK DELTA vs EW = {_r(p['benchmark_comparison']['delta_vs_ew_bps'], 2)} bps",
+            f"BENCHMARK DELTA vs BTC = {_r(p['benchmark_comparison']['delta_vs_btc_bps'], 2)} bps",
+            "",
+            f"DECISION = {p['decision']}",
+            f"PAPER STATUS = {p['paper_status']}",
+            f"FORWARD_EVIDENCE_START = {p['forward_evidence_start']}",
+            "",
+            f"G_FWD_0 = {p['G_FWD_0']}",
+            f"G_FWD_1 = {p['G_FWD_1']}",
+            f"G_FWD_2 = {p['G_FWD_2']}",
+            f"G_FWD_3 = {p['G_FWD_3']}",
+            "",
+            f"FALSE_SUCCESS = {p['FALSE_SUCCESS']}",
+            f"INDEPENDENT VERIFICATION = {p['independent_verification']}",
+            "",
+            f"STATEMENT = {p['statement']}",
+            f"NEXT = {p['next']}",
+            "```",
+            "",
+            "## Economic marker",
+            "",
+            "\n".join(f"- {k} = {v}" for k, v in p["marker"].items()),
+            "",
+        ]
+    )
 
 
 if __name__ == "__main__":

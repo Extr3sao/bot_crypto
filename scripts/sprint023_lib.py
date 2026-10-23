@@ -147,7 +147,10 @@ def bootstrap_ci(
         "status": "OK",
         "n_resamples": n,
         "point": round(float(np.mean(v)) if stat == "mean" else float(np.median(v)), 4),
-        "ci95": [round(float(np.percentile(draws, 2.5)), 4), round(float(np.percentile(draws, 97.5)), 4)],
+        "ci95": [
+            round(float(np.percentile(draws, 2.5)), 4),
+            round(float(np.percentile(draws, 97.5)), 4),
+        ],
         "p_le_0": round(float(np.mean(draws <= 0.0)), 4),
     }
 
@@ -168,7 +171,9 @@ def z_power(power: float = 0.80) -> float:
 # ---------------------------------------------------------------------------
 
 
-def split_bundles(split: str, tf: str, assets: tuple[str, ...] = L.ASSETS) -> list[tuple[str, str, L.Bundle]]:
+def split_bundles(
+    split: str, tf: str, assets: tuple[str, ...] = L.ASSETS
+) -> list[tuple[str, str, L.Bundle]]:
     windows = L.SPLITS[split]
     out: list[tuple[str, str, L.Bundle]] = []
     for asset in assets:
@@ -208,10 +213,16 @@ def _permuted_experiment(exp: dict[str, Any], rng: np.random.Generator) -> list[
                     fb = P.B.get(follower, window, tf)
                     sig = _permute_signal(S.sig_lead_lag(leader, fb, lag), rng)
                     spec = L.Spec(
-                        candidate_id=exp["candidate_id"], hypothesis_id="H-P1-06", family="lead_lag",
-                        timeframe=tf, signals=P._const_signal(sig), warmup=P.WARM,
-                        atr_target_mult=exp["params"][0], atr_target_is_atr=True,
-                        atr_stop_mult=exp["params"][2], hold_bars=int(exp["params"][3]),
+                        candidate_id=exp["candidate_id"],
+                        hypothesis_id="H-P1-06",
+                        family="lead_lag",
+                        timeframe=tf,
+                        signals=P._const_signal(sig),
+                        warmup=P.WARM,
+                        atr_target_mult=exp["params"][0],
+                        atr_target_is_atr=True,
+                        atr_stop_mult=exp["params"][2],
+                        hold_bars=int(exp["params"][3]),
                     )
                     trades.extend(L.run_spec(spec, fb, follower, window))
         return trades
@@ -225,12 +236,20 @@ def _permuted_experiment(exp: dict[str, Any], rng: np.random.Generator) -> list[
                     base = np.zeros(len(b), dtype=np.int8)
                     base[:] = 0
                     # random half long / half short at random timestamps (count preserved later by permute of combined)
-                    sig = _permute_signal(np.where(np.arange(len(b)) % 2 == 0, 1, -1).astype(np.int8), rng)
+                    sig = _permute_signal(
+                        np.where(np.arange(len(b)) % 2 == 0, 1, -1).astype(np.int8), rng
+                    )
                     spec = L.Spec(
-                        candidate_id=exp["candidate_id"], hypothesis_id="H-P1-05",
-                        family="cross_sectional_rs", timeframe=tf, signals=P._const_signal(sig),
-                        warmup=P.WARM, atr_target_mult=0.0, atr_target_is_atr=False,
-                        atr_stop_mult=0.0, hold_bars=hold,
+                        candidate_id=exp["candidate_id"],
+                        hypothesis_id="H-P1-05",
+                        family="cross_sectional_rs",
+                        timeframe=tf,
+                        signals=P._const_signal(sig),
+                        warmup=P.WARM,
+                        atr_target_mult=0.0,
+                        atr_target_is_atr=False,
+                        atr_stop_mult=0.0,
+                        hold_bars=hold,
                     )
                     trades.extend(L.run_spec(spec, b, asset, window))
         return trades
@@ -240,10 +259,16 @@ def _permuted_experiment(exp: dict[str, Any], rng: np.random.Generator) -> list[
     for asset, window, b in split_bundles("DISCOVERY", tf, exp.get("asset_scope", L.ASSETS)):
         sig = _permute_signal(fn(b), rng)
         spec = L.Spec(
-            candidate_id=exp["candidate_id"], hypothesis_id=exp["hypothesis_id"], family=exp["family"],
-            timeframe=tf, signals=P._const_signal(sig), warmup=P.WARM,
-            atr_target_mult=exp["params"][0], atr_target_is_atr=exp["params"][1],
-            atr_stop_mult=exp["params"][2], hold_bars=int(exp["params"][3]),
+            candidate_id=exp["candidate_id"],
+            hypothesis_id=exp["hypothesis_id"],
+            family=exp["family"],
+            timeframe=tf,
+            signals=P._const_signal(sig),
+            warmup=P.WARM,
+            atr_target_mult=exp["params"][0],
+            atr_target_is_atr=exp["params"][1],
+            atr_stop_mult=exp["params"][2],
+            hold_bars=int(exp["params"][3]),
         )
         trades.extend(L.run_spec(spec, b, asset, window))
     return trades
@@ -270,12 +295,14 @@ def null_draws(n_draws: int, seed: int) -> list[dict[str, Any]]:
             s = m.get("sharpe")
             sharpes.append(float(s) if s is not None else 0.0)
         if nets:
-            out.append({
-                "best_net_bps": max(nets),
-                "best_sharpe": max(sharpes),
-                "best_pnl_usdt": max(pnls),
-                "n_valid": len(nets),
-            })
+            out.append(
+                {
+                    "best_net_bps": max(nets),
+                    "best_sharpe": max(sharpes),
+                    "best_pnl_usdt": max(pnls),
+                    "n_valid": len(nets),
+                }
+            )
     return out
 
 
@@ -333,7 +360,9 @@ def family_level() -> dict[str, Any]:
     disc = discovery()
     fams: dict[str, dict[str, Any]] = {}
     for r in disc:
-        fams.setdefault(r["hypothesis_id"], {"family": r["family"], "nets": [], "grosses": [], "tools": []})
+        fams.setdefault(
+            r["hypothesis_id"], {"family": r["family"], "nets": [], "grosses": [], "tools": []}
+        )
         fams[r["hypothesis_id"]]["nets"].append(r["metrics"].get("net_bps"))
         fams[r["hypothesis_id"]]["grosses"].append(r["metrics"].get("gross_bps"))
     out: dict[str, Any] = {}
@@ -462,7 +491,13 @@ def concentration(trades: list[L.Trade]) -> dict[str, Any]:
         "net_bps_ex_best": round(ex_best, 4) if ex_best is not None else None,
         "net_bps_ex_top3": round(ex_top3, 4) if ex_top3 is not None else None,
         "pf_with_best": pf,
-        "pf_ex_best": (lambda: (lambda w2: round(w2 / lo, 4) if lo > 0 else None)(float(s[1:][s[1:] > 0].sum())))() if n > 1 else None,
+        "pf_ex_best": (
+            lambda: (lambda w2: round(w2 / lo, 4) if lo > 0 else None)(
+                float(s[1:][s[1:] > 0].sum())
+            )
+        )()
+        if n > 1
+        else None,
         "verdict": verdict,
     }
 
@@ -508,7 +543,9 @@ def info_for_signals(
     result: dict[str, Any] = {}
     for name in sig_names:
         fn = P.SIG_FN[name]
-        rows: dict[int, dict[str, list[float]]] = {h: {"sig": [], "fwd": [], "abs_sig": [], "abs_nosig": []} for h in horizons}
+        rows: dict[int, dict[str, list[float]]] = {
+            h: {"sig": [], "fwd": [], "abs_sig": [], "abs_nosig": []} for h in horizons
+        }
         for _asset, _window, b in bundles:
             sig = np.asarray(fn(b), dtype=np.float64)
             c = b.bars.c
@@ -583,14 +620,16 @@ def classify_direction_magnitude(info: dict[str, Any]) -> str:
 
 
 def mde_table(sigma: float, ns: tuple[int, ...] = (20, 50, 100, 250, 500, 1000)) -> dict[str, Any]:
-    factor = (z_two_sided(0.95) + z_power(0.80))  # 80% power, 95% two-sided
+    factor = z_two_sided(0.95) + z_power(0.80)  # 80% power, 95% two-sided
     out: dict[str, Any] = {}
     for n in ns:
         out[str(n)] = round(factor * sigma / math.sqrt(n), 4)
     return out
 
 
-def required_n(sigma: float, edges: tuple[float, ...] = (5.0, 10.0, 20.0), power: float = 0.80) -> dict[str, Any]:
+def required_n(
+    sigma: float, edges: tuple[float, ...] = (5.0, 10.0, 20.0), power: float = 0.80
+) -> dict[str, Any]:
     factor = z_two_sided(0.95) + z_power(power)
     return {f"{e:g}bps": math.ceil((factor * sigma / e) ** 2) for e in edges}
 
@@ -628,9 +667,12 @@ def effective_sample(split: str = "DISCOVERY", tf: str = "30m") -> dict[str, Any
         "split": split,
         "timeframe": tf,
         "bars_common": len(common),
-        "return_corr": {f"{names[i]}_{names[j]}": round(corrs[c], 4) for c, (i, j) in enumerate(
-            [(i, j) for i in range(len(names)) for j in range(i + 1, len(names))]
-        )},
+        "return_corr": {
+            f"{names[i]}_{names[j]}": round(corrs[c], 4)
+            for c, (i, j) in enumerate(
+                [(i, j) for i in range(len(names)) for j in range(i + 1, len(names))]
+            )
+        },
         "rho_bar": round(rho, 4),
         "n_bars_total": n_total,
         "effective_sample_size": round(n_eff, 1),
@@ -638,7 +680,9 @@ def effective_sample(split: str = "DISCOVERY", tf: str = "30m") -> dict[str, Any
     }
 
 
-def trade_outcome_correlation(windows: tuple[str, ...] = L.SPLITS["DISCOVERY"], tf: str = "30m") -> dict[str, Any]:
+def trade_outcome_correlation(
+    windows: tuple[str, ...] = L.SPLITS["DISCOVERY"], tf: str = "30m"
+) -> dict[str, Any]:
     """Correlation of per-day pooled trade outcomes across assets (coarse)."""
     # Use 30m bars' returns on the common axis as a proxy for co-movement of PnL.
     return effective_sample("DISCOVERY", tf)
@@ -650,7 +694,9 @@ def trade_outcome_correlation(windows: tuple[str, ...] = L.SPLITS["DISCOVERY"], 
 
 
 def _bar_features(tf: str, split: str) -> dict[str, Any]:
-    vals: dict[str, list[float]] = {k: [] for k in ("ret", "absret", "atr_pct", "rv20", "volume", "trend")}
+    vals: dict[str, list[float]] = {
+        k: [] for k in ("ret", "absret", "atr_pct", "rv20", "volume", "trend")
+    }
     for _a, _w, b in split_bundles(split, tf):
         r = b.ret1
         e50 = b.ema50
@@ -692,8 +738,18 @@ def distribution_shift(tf: str = "30m") -> dict[str, Any]:
             "std_shift_z": round(z, 4) if z is not None else None,
             "material": bool(z is not None and abs(z) >= 0.20),
         }
-    verdict = "NO_MATERIAL_SHIFT" if material == 0 else ("COVARIATE_SHIFT" if material >= 2 else "COVARIATE_SHIFT_WEAK")
-    return {"status": "OK", "timeframe": tf, "features": out, "n_material": material, "verdict": verdict}
+    verdict = (
+        "NO_MATERIAL_SHIFT"
+        if material == 0
+        else ("COVARIATE_SHIFT" if material >= 2 else "COVARIATE_SHIFT_WEAK")
+    )
+    return {
+        "status": "OK",
+        "timeframe": tf,
+        "features": out,
+        "n_material": material,
+        "verdict": verdict,
+    }
 
 
 def regime_composition(tf: str = "30m") -> dict[str, Any]:
@@ -746,7 +802,9 @@ def dataset_adequacy() -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 
-def winners_curse(null_summary: dict[str, Any], observed_best: float, validation_net: float) -> dict[str, Any]:
+def winners_curse(
+    null_summary: dict[str, Any], observed_best: float, validation_net: float
+) -> dict[str, Any]:
     med = null_summary.get("median_best_net_bps")
     return {
         "status": "OK" if med is not None else "N/A",
@@ -756,8 +814,12 @@ def winners_curse(null_summary: dict[str, Any], observed_best: float, validation
         "validation_net_bps": round(validation_net, 4),
         "discovery_to_validation_drop_bps": round(observed_best - validation_net, 4),
         "drop_consistent_with_regression_to_mean": (
-            bool(med is not None and abs((observed_best - validation_net) - (observed_best - med)) <= 12.0)
-            if med is not None else None
+            bool(
+                med is not None
+                and abs((observed_best - validation_net) - (observed_best - med)) <= 12.0
+            )
+            if med is not None
+            else None
         ),
     }
 
@@ -767,23 +829,41 @@ def winners_curse(null_summary: dict[str, Any], observed_best: float, validation
 # ---------------------------------------------------------------------------
 
 
-def _spec_net(basename: str, hyp: str, family: str, tf: str, sig_by_key: dict[str, NDArray[Any]], params: tuple[Any, ...]) -> list[L.Trade]:
+def _spec_net(
+    basename: str,
+    hyp: str,
+    family: str,
+    tf: str,
+    sig_by_key: dict[str, NDArray[Any]],
+    params: tuple[Any, ...],
+) -> list[L.Trade]:
     trades: list[L.Trade] = []
     for asset, window, b in split_bundles("DISCOVERY", tf):
         sig = sig_by_key.get(f"{asset}|{window}")
         if sig is None:
             continue
         spec = L.Spec(
-            candidate_id=basename, hypothesis_id=hyp, family=family, timeframe=tf,
-            signals=P._const_signal(sig), warmup=P.WARM,
-            atr_target_mult=params[0], atr_target_is_atr=bool(params[1]),
-            atr_stop_mult=params[2], hold_bars=int(params[3]),
+            candidate_id=basename,
+            hypothesis_id=hyp,
+            family=family,
+            timeframe=tf,
+            signals=P._const_signal(sig),
+            warmup=P.WARM,
+            atr_target_mult=params[0],
+            atr_target_is_atr=bool(params[1]),
+            atr_stop_mult=params[2],
+            hold_bars=int(params[3]),
         )
         trades.extend(L.run_spec(spec, b, asset, window))
     return trades
 
 
-def null_baselines(tf: str = "30m", params: tuple[Any, ...] = (4.0, True, 2.0, 32), resamples: int = 200, seed: int = SEED) -> dict[str, Any]:
+def null_baselines(
+    tf: str = "30m",
+    params: tuple[Any, ...] = (4.0, True, 2.0, 32),
+    resamples: int = 200,
+    seed: int = SEED,
+) -> dict[str, Any]:
     fn = P.SIG_FN["squeeze_magnitude"]
     real_sig: dict[str, NDArray[Any]] = {}
     for asset, window, b in split_bundles("DISCOVERY", tf):
@@ -822,13 +902,17 @@ def null_baselines(tf: str = "30m", params: tuple[Any, ...] = (4.0, True, 2.0, 3
             "median_net_bps": round(float(np.nanmedian(rand_dir_nets)), 4),
             "p95_net_bps": round(float(np.nanpercentile(rand_dir_nets, 95)), 4),
             "p99_net_bps": round(float(np.nanpercentile(rand_dir_nets, 99)), 4),
-            "p_real_exceeds_p95": bool(real and float(np.mean(net_of(real))) > float(np.nanpercentile(rand_dir_nets, 95))),
+            "p_real_exceeds_p95": bool(
+                real and float(np.mean(net_of(real))) > float(np.nanpercentile(rand_dir_nets, 95))
+            ),
         },
         "random_timestamp_same_count": {
             "median_net_bps": round(float(np.nanmedian(rand_ts_nets)), 4),
             "p95_net_bps": round(float(np.nanpercentile(rand_ts_nets, 95)), 4),
             "p99_net_bps": round(float(np.nanpercentile(rand_ts_nets, 99)), 4),
-            "p_real_exceeds_p95": bool(real and float(np.mean(net_of(real))) > float(np.nanpercentile(rand_ts_nets, 95))),
+            "p_real_exceeds_p95": bool(
+                real and float(np.mean(net_of(real))) > float(np.nanpercentile(rand_ts_nets, 95))
+            ),
         },
         "n_resamples": resamples,
     }
@@ -848,7 +932,9 @@ def event_study(split: str = "DISCOVERY", horizons: tuple[int, ...] = HORIZONS) 
     for sig_name, tfs in hyp_tf_map().items():
         tf = tfs[0]
         fn = P.SIG_FN[sig_name]
-        per_h: dict[int, dict[str, list[float]]] = {h: {"ret": [], "mfe": [], "mae": []} for h in horizons}
+        per_h: dict[int, dict[str, list[float]]] = {
+            h: {"ret": [], "mfe": [], "mae": []} for h in horizons
+        }
         for _a, _w, b in split_bundles(split, tf):
             sig = np.asarray(fn(b))
             c, hh, lo, op = b.bars.c, b.bars.h, b.bars.lo, b.bars.o
@@ -865,8 +951,16 @@ def event_study(split: str = "DISCOVERY", horizons: tuple[int, ...] = HORIZONS) 
                     ret = sgn * (float(c[ei + h]) / entry - 1.0) * 1e4
                     window_hi = float(np.max(hh[ei : ei + h + 1]))
                     window_lo = float(np.min(lo[ei : ei + h + 1]))
-                    mfe = (window_hi / entry - 1.0) * 1e4 if sgn > 0 else (entry / window_lo - 1.0) * 1e4
-                    mae = (entry / window_lo - 1.0) * 1e4 if sgn > 0 else (window_hi / entry - 1.0) * 1e4
+                    mfe = (
+                        (window_hi / entry - 1.0) * 1e4
+                        if sgn > 0
+                        else (entry / window_lo - 1.0) * 1e4
+                    )
+                    mae = (
+                        (entry / window_lo - 1.0) * 1e4
+                        if sgn > 0
+                        else (window_hi / entry - 1.0) * 1e4
+                    )
                     per_h[h]["ret"].append(ret)
                     per_h[h]["mfe"].append(mfe)
                     per_h[h]["mae"].append(mae)

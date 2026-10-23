@@ -145,9 +145,12 @@ def test_h1_requires_all_four_confirmations() -> None:
         )
         == 0
     )
-    assert a2.h1_breakout_confirmation(
-        row(ret_z=1.5, oi_chg=0.01, taker_imbalance=0.10, funding=0.0002)
-    ) == 1
+    assert (
+        a2.h1_breakout_confirmation(
+            row(ret_z=1.5, oi_chg=0.01, taker_imbalance=0.10, funding=0.0002)
+        )
+        == 1
+    )
 
 
 def test_h1_short_covering_arm_is_the_oi_collapse_case() -> None:
@@ -158,9 +161,7 @@ def test_h1_short_covering_arm_is_the_oi_collapse_case() -> None:
 
 def test_h2_requires_crowding_carry_and_deterioration_and_is_short_only() -> None:
     assert (
-        a2.h2_crowded_reversal(
-            row(ls_global_pctile=0.95, funding=0.0005, momentum_delta=-0.01)
-        )
+        a2.h2_crowded_reversal(row(ls_global_pctile=0.95, funding=0.0005, momentum_delta=-0.01))
         == -1
     )
     # crowding by size counts too
@@ -175,15 +176,15 @@ def test_h2_requires_crowding_carry_and_deterioration_and_is_short_only() -> Non
         == 0
     )
     assert (
-        a2.h2_crowded_reversal(row(ls_global_pctile=0.95, funding=0.0, momentum_delta=-0.01))
-        == 0
+        a2.h2_crowded_reversal(row(ls_global_pctile=0.95, funding=0.0, momentum_delta=-0.01)) == 0
     )
     assert (
-        a2.h2_crowded_reversal(row(ls_global_pctile=0.95, funding=0.0005, momentum_delta=0.01))
-        == 0
+        a2.h2_crowded_reversal(row(ls_global_pctile=0.95, funding=0.0005, momentum_delta=0.01)) == 0
     )
     # never long, whatever the input
-    assert a2.h2_crowded_reversal(row(ls_global_pctile=0.99, funding=0.001, momentum_delta=-1.0)) == -1
+    assert (
+        a2.h2_crowded_reversal(row(ls_global_pctile=0.99, funding=0.001, momentum_delta=-1.0)) == -1
+    )
 
 
 def test_h3_takes_the_sign_of_the_move_and_needs_expansion_and_aligned_flow() -> None:

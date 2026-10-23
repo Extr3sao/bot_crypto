@@ -84,7 +84,9 @@ class PerformanceObservation:
     def from_dict(cls, data: dict[str, Any]) -> PerformanceObservation:
         context = data.get("context")
         return cls(
-            context=ContextKey.from_dict(context) if isinstance(context, dict) else ContextKey.from_str(str(context)),
+            context=ContextKey.from_dict(context)
+            if isinstance(context, dict)
+            else ContextKey.from_str(str(context)),
             timestamp_ms=int(data["timestamp_ms"]),
             gross_bps=float(data["gross_bps"]),
             net_bps=float(data["net_bps"]),
@@ -157,7 +159,9 @@ def derive_cell(
         max_drawdown_bps=_max_drawdown_bps(net),
         exposure_usdt=sum(o.notional_usdt for o in observations),
         turnover_usdt=sum(o.notional_usdt for o in observations),
-        cost_bps=(sum(o.cost_bps for o in observations) / len(observations)) if observations else 0.0,
+        cost_bps=(sum(o.cost_bps for o in observations) / len(observations))
+        if observations
+        else 0.0,
         slippage_bps=None,
         positive_windows=positive_windows,
         window_count=len(sub),
@@ -260,7 +264,9 @@ class ContextualPerformanceStore:
     def cells(self, context: ContextKey) -> dict[str, PerformanceCell]:
         return {w: self.cell(context, w) for w in ("short", "medium", "long")}
 
-    def contexts_for(self, strategy_id: str | None = None, asset: str | None = None) -> list[ContextKey]:
+    def contexts_for(
+        self, strategy_id: str | None = None, asset: str | None = None
+    ) -> list[ContextKey]:
         """All cells, optionally filtered by strategy and/or asset (§6/§14)."""
         out: list[ContextKey] = []
         for key in self._observations:
@@ -271,7 +277,9 @@ class ContextualPerformanceStore:
             out.append(key)
         return sorted(out, key=str)
 
-    def regime_matrix(self, strategy_id: str, asset: str, timeframe: str, window: str = "medium") -> dict[str, PerformanceCell]:
+    def regime_matrix(
+        self, strategy_id: str, asset: str, timeframe: str, window: str = "medium"
+    ) -> dict[str, PerformanceCell]:
         """strategy x asset x timeframe x regime table (§14)."""
         out: dict[str, PerformanceCell] = {}
         for key in self._observations:

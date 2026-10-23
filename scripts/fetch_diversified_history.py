@@ -57,9 +57,37 @@ CUTOFF_MS = 1_624_992_000_000  # 2021-06-30T00:00:00Z
 SOURCE = "BINANCE_PUBLIC_REST:/api/v3/klines"
 
 STABLE_BASES = {
-    "USDC", "TUSD", "BUSD", "FDUSD", "DAI", "USDP", "PAX", "SUSD", "UST", "USTC",
-    "AEUR", "EURI", "EUR", "GBP", "BIDR", "IDRT", "BKRW", "BVND", "TRY", "BRL",
-    "ARS", "ZAR", "RUB", "UAH", "NGN", "PLN", "RON", "CZK", "JPY", "MXN", "COP",
+    "USDC",
+    "TUSD",
+    "BUSD",
+    "FDUSD",
+    "DAI",
+    "USDP",
+    "PAX",
+    "SUSD",
+    "UST",
+    "USTC",
+    "AEUR",
+    "EURI",
+    "EUR",
+    "GBP",
+    "BIDR",
+    "IDRT",
+    "BKRW",
+    "BVND",
+    "TRY",
+    "BRL",
+    "ARS",
+    "ZAR",
+    "RUB",
+    "UAH",
+    "NGN",
+    "PLN",
+    "RON",
+    "CZK",
+    "JPY",
+    "MXN",
+    "COP",
 }
 
 
@@ -167,12 +195,18 @@ def main() -> None:
             ts = int(k[0])
             if ts < START_MS or ts + DAY_MS > END_MS:
                 continue  # drop partial/incomplete days (PIT: complete bars only)
-            bars.append({
-                "ts": ts,
-                "open": float(k[1]), "high": float(k[2]), "low": float(k[3]),
-                "close": float(k[4]), "volume": float(k[5]),
-                "quote_volume": float(k[7]), "trades": int(k[8]),
-            })
+            bars.append(
+                {
+                    "ts": ts,
+                    "open": float(k[1]),
+                    "high": float(k[2]),
+                    "low": float(k[3]),
+                    "close": float(k[4]),
+                    "volume": float(k[5]),
+                    "quote_volume": float(k[7]),
+                    "trades": int(k[8]),
+                }
+            )
         path = Path(OUT) / f"{sym}.json"
         path.write_text(json.dumps(bars), encoding="utf-8")
         ts_all = [b["ts"] for b in bars]

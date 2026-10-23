@@ -67,13 +67,21 @@ def test_full_chain_is_traceable() -> None:
         )
         assert health_report.health_state.value in {"HEALTHY", "WATCH"}
         d1 = eco.lifecycle_decision(
-            strategy_id=sid, asset="BTC", timeframe="5m", regime="TREND_UP",
-            now_ms=now, verification_passed=True,
+            strategy_id=sid,
+            asset="BTC",
+            timeframe="5m",
+            regime="TREND_UP",
+            now_ms=now,
+            verification_passed=True,
         )
         assert d1.to_state is LifecycleState.ELIGIBLE, d1.reason_codes
         d2 = eco.lifecycle_decision(
-            strategy_id=sid, asset="BTC", timeframe="5m", regime="TREND_UP",
-            now_ms=now + 10_000_000, verification_passed=True,
+            strategy_id=sid,
+            asset="BTC",
+            timeframe="5m",
+            regime="TREND_UP",
+            now_ms=now + 10_000_000,
+            verification_passed=True,
         )
         assert d2.to_state is LifecycleState.ACTIVE, d2.reason_codes
 
@@ -83,11 +91,16 @@ def test_full_chain_is_traceable() -> None:
         runtime.add(
             StrategyPod(
                 descriptor=eco.registry.descriptor(sid),
-                runtime=lambda ctx, bars: PodSignal(direction="LONG", entry_reference=100.0, confidence=0.6),
+                runtime=lambda ctx, bars: PodSignal(
+                    direction="LONG", entry_reference=100.0, confidence=0.6
+                ),
             )
         )
     pod_results = runtime.evaluate_all(
-        context=_ctx(), bars=[], context_key=ContextKey("mom", "BTC", "5m", "TREND_UP"), timestamp_ms=now
+        context=_ctx(),
+        bars=[],
+        context_key=ContextKey("mom", "BTC", "5m", "TREND_UP"),
+        timestamp_ms=now,
     )
     assert all(r.is_shadow for r in pod_results)
 
@@ -124,16 +137,32 @@ def test_full_chain_is_traceable() -> None:
 
 def test_risk_remains_the_final_veto() -> None:
     risk = Risk(
-        max_risk_per_trade_pct=0.25, max_daily_loss_pct=1.0, max_weekly_loss_pct=3.0,
-        max_daily_drawdown_pct=2.0, max_total_drawdown_pct=5.0, max_open_positions=3,
-        max_trades_per_day=20, max_consecutive_losses=3, consecutive_loss_cooldown_minutes=60,
-        max_asset_exposure_pct=10, max_total_exposure_pct=25, min_order_notional_usdt=20,
-        max_order_notional_usdt=500, default_stop_loss_pct=0.5, default_take_profit_pct=0.75,
+        max_risk_per_trade_pct=0.25,
+        max_daily_loss_pct=1.0,
+        max_weekly_loss_pct=3.0,
+        max_daily_drawdown_pct=2.0,
+        max_total_drawdown_pct=5.0,
+        max_open_positions=3,
+        max_trades_per_day=20,
+        max_consecutive_losses=3,
+        consecutive_loss_cooldown_minutes=60,
+        max_asset_exposure_pct=10,
+        max_total_exposure_pct=25,
+        min_order_notional_usdt=20,
+        max_order_notional_usdt=500,
+        default_stop_loss_pct=0.5,
+        default_take_profit_pct=0.75,
     )
     manager = RiskManager(risk=risk, equity=10_000.0)
     signal = Signal(
-        symbol="BTC/USDT", side="buy", strategy_name="mom", timeframe="5m",
-        confidence=0.6, price=100.0, stop_loss_pct=0.5, take_profit_pct=0.75,
+        symbol="BTC/USDT",
+        side="buy",
+        strategy_name="mom",
+        timeframe="5m",
+        confidence=0.6,
+        price=100.0,
+        stop_loss_pct=0.5,
+        take_profit_pct=0.75,
     )
     # Fill the asset's exposure budget: the ecosystem may want the trade, risk says no.
     manager.sync_open_positions({"BTC/USDT": {"notional_usdt": 1000.0}})
@@ -145,8 +174,12 @@ def test_risk_remains_the_final_veto() -> None:
 def test_shadow_engine_never_calls_risk_directly() -> None:
     eco = _ecosystem()
     router = StrategyRouter(gates=RouterGates(require_confirmed=False, timeframe="5m"))
-    strategy_map = {"mom": {"family": "momentum", "regimes": ["TREND_UP"], "direction": "BOTH", "enabled": True}}
-    selection = eco.select_eligible(router, context=_ctx(), regime="TREND_UP", strategy_map=strategy_map)
+    strategy_map = {
+        "mom": {"family": "momentum", "regimes": ["TREND_UP"], "direction": "BOTH", "enabled": True}
+    }
+    selection = eco.select_eligible(
+        router, context=_ctx(), regime="TREND_UP", strategy_map=strategy_map
+    )
     assert selection.selected == ()  # not ACTIVE yet → not routable
     assert "NOT_APPLICABLE" in selection.by_verdict()
 

@@ -13,7 +13,9 @@ from trading_bot.research.diversified.xsec_riskadj import summarize_positions
 BPS = 10_000.0
 
 
-def _trade(symbol: str, notional: float, ret: float, cost_bps: float, entry_ts: int, exit_ts: int) -> Trade:
+def _trade(
+    symbol: str, notional: float, ret: float, cost_bps: float, entry_ts: int, exit_ts: int
+) -> Trade:
     gross = notional * ret
     fee = notional * cost_bps / BPS
     return Trade(
@@ -39,9 +41,7 @@ def test_expectancy_denominator_is_per_position_notional() -> None:
         _trade("B", 2.0, 0.25, 23.559, 0, 100),
     ]
     out = summarize_positions(trades, cost_bps_rt=23.559)
-    per_position = [
-        t.net / t.notional * BPS for t in trades
-    ]
+    per_position = [t.net / t.notional * BPS for t in trades]
     assert out["expectancy_net_bps"] == round(sum(per_position) / len(per_position), 3)
     # the portfolio-notional reading (sum(net)/500) is a DIFFERENT number
     portfolio_reading = sum(t.net for t in trades) / 500.0 * BPS
@@ -54,7 +54,7 @@ def test_profit_factor_is_bps_space_not_currency() -> None:
     """The builder PF weights positions equally (bps); currency PF can differ."""
     # big winner with a SMALL allocation, small loser with a LARGE allocation
     trades = [
-        _trade("WIN", 2.0, 1.0, 0.0, 0, 100),   # +20000 bps, +2 USD
+        _trade("WIN", 2.0, 1.0, 0.0, 0, 100),  # +20000 bps, +2 USD
         _trade("LOSE", 20.0, -0.05, 0.0, 0, 100),  # -500 bps, -1 USD
     ]
     out = summarize_positions(trades, cost_bps_rt=0.0)

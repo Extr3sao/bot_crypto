@@ -113,7 +113,10 @@ def test_clean_and_partial_are_distinguished(harness):
 def test_blocked_is_its_own_state(harness):
     assert harness.verdict("BLOCKED", contract(status="BLOCKED_MISSING_INPUT", exit_code=3)) is True
     assert harness.verdict("BLOCKED", contract(status="FULL_REPRODUCTION_PASS")) is False
-    assert harness.verdict("BLOCKED", {"vocabulary": "legacy", "status": "FAIL", "exit_code": 1}) is True
+    assert (
+        harness.verdict("BLOCKED", {"vocabulary": "legacy", "status": "FAIL", "exit_code": 1})
+        is True
+    )
 
 
 def test_an_unknown_expectation_is_an_error_not_a_pass(harness):
@@ -211,7 +214,9 @@ def test_a_sweep_without_its_substrate_refuses_to_report_a_rate(harness, tmp_pat
     mutation that could not land is recorded as invalid rather than detected.
     """
     monkeypatch.setattr(harness, "MARKET_HORIZON", "reports/strategy-baseline/absent.json")
-    report = harness.run_all(workdir=tmp_path, gate_source=None, gate_label="no substrate", only="A06")
+    report = harness.run_all(
+        workdir=tmp_path, gate_source=None, gate_label="no substrate", only="A06"
+    )
     assert report["status"] == "NOT_EVALUABLE"
     assert report["substrate"]["present"] is False
     assert report["attacks_invalid"] == 1
@@ -283,8 +288,11 @@ def test_a_partial_run_cannot_certify(certifier):
 
 def test_a_blocked_input_is_blocked_not_failed(certifier):
     outcome = certifier.evaluate(
-        gate_report={"status": "BLOCKED_MISSING_INPUT", "mode": "full",
-                     "blocked": ["reports/strategy-baseline/COST_BARRIER.json absent"]},
+        gate_report={
+            "status": "BLOCKED_MISSING_INPUT",
+            "mode": "full",
+            "blocked": ["reports/strategy-baseline/COST_BARRIER.json absent"],
+        },
         contract_tests=TESTS_OK,
         adversarial=ADVERSARIAL_OK,
         integrity={"status": "BLOCKED_MISSING_INPUT", "message": "bundle incomplete"},
@@ -297,13 +305,20 @@ def test_a_blocked_input_is_blocked_not_failed(certifier):
     "overrides",
     [
         {"contract_tests": {"passed": False, "exit_code": 1, "stderr_tail": "1 failed"}},
-        {"adversarial": {**ADVERSARIAL_OK, "attacks_evaded": 1,
-                         "escapes": [{"attack_id": "A07"}]}},
+        {"adversarial": {**ADVERSARIAL_OK, "attacks_evaded": 1, "escapes": [{"attack_id": "A07"}]}},
         {"adversarial": {**ADVERSARIAL_OK, "legs_failed": ["A13:leg"]}},
         {"adversarial": {"attacks_total": 0, "attacks_evaded": 0, "legs_failed": []}},
-        {"adversarial": {**ADVERSARIAL_OK, "status": "NOT_EVALUABLE",
-                         "substrate": {"path": "reports/strategy-baseline/COST_BARRIER.json",
-                                       "present": False, "why": "materialize first"}}},
+        {
+            "adversarial": {
+                **ADVERSARIAL_OK,
+                "status": "NOT_EVALUABLE",
+                "substrate": {
+                    "path": "reports/strategy-baseline/COST_BARRIER.json",
+                    "present": False,
+                    "why": "materialize first",
+                },
+            }
+        },
         {"adversarial": {**ADVERSARIAL_OK, "substrate": {"present": False}}},
         {"adversarial": {**ADVERSARIAL_OK, "substrate": None}},
         {"integrity": {"status": "INTEGRITY_FAILURE", "failures": ["the copy drifted"]}},
@@ -347,9 +362,7 @@ def test_the_certification_record_digests_content_not_a_checkout(harness, certif
     digests = record["evidence_digests"]
     assert digests, "the record identifies nothing"
     for rel, digest in digests.items():
-        expected = hashlib.sha256(
-            (ROOT / rel).read_bytes().replace(b"\r\n", b"\n")
-        ).hexdigest()
+        expected = hashlib.sha256((ROOT / rel).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
         assert digest == expected, rel
 
 

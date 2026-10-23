@@ -178,7 +178,9 @@ class Exp011VolExpansionBreakout:
         self._bars = bars
         n = len(bars)
         self._atr = atr_series(
-            [b.high for b in bars], [b.low for b in bars], [b.close for b in bars],
+            [b.high for b in bars],
+            [b.low for b in bars],
+            [b.close for b in bars],
             self.config.atr_period,
         )
         lb = self.config.breakout_lookback_days
@@ -330,4 +332,3 @@ def simulate_xsec(
         close(held_sym, index[held_sym][last_day].close, last_day, "window_expiry")
 
     return SimulationResult(trades=trades, eval_bars=len(calendar))
-

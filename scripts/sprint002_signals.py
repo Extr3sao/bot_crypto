@@ -27,7 +27,9 @@ def _empty(b: Bundle) -> NDArray[Any]:
 # ---------------------------------------------------------------------------
 
 
-def sig_compression_breakout(b: Bundle, rank_w: int = 120, level_w: int = 40, q: float = 0.20) -> NDArray[Any]:
+def sig_compression_breakout(
+    b: Bundle, rank_w: int = 120, level_w: int = 40, q: float = 0.20
+) -> NDArray[Any]:
     sig = _empty(b)
     comp = b.rank_atr[rank_w] <= q
     lvl_up = shift1(b.hh[level_w])
@@ -82,9 +84,7 @@ def sig_vol_contraction_expansion(b: Bundle, rank_w: int = 120, q: float = 0.20)
 # ---------------------------------------------------------------------------
 
 
-def sig_pullback_continuation(
-    b: Bundle, touch_w: int = 5, rsi_cap: float = 60.0
-) -> NDArray[Any]:
+def sig_pullback_continuation(b: Bundle, touch_w: int = 5, rsi_cap: float = 60.0) -> NDArray[Any]:
     sig = _empty(b)
     c = b.bars.c
     lo = b.bars.lo
@@ -92,12 +92,22 @@ def sig_pullback_continuation(
     touched_up = np.zeros(len(b), dtype=bool)
     touched_dn = np.zeros(len(b), dtype=bool)
     for i in range(touch_w, len(b)):
-        touched_up[i] = bool(np.any(lo[i - touch_w + 1 : i + 1] <= b.ema21[i - touch_w + 1 : i + 1]))
-        touched_dn[i] = bool(np.any(hi[i - touch_w + 1 : i + 1] >= b.ema21[i - touch_w + 1 : i + 1]))
+        touched_up[i] = bool(
+            np.any(lo[i - touch_w + 1 : i + 1] <= b.ema21[i - touch_w + 1 : i + 1])
+        )
+        touched_dn[i] = bool(
+            np.any(hi[i - touch_w + 1 : i + 1] >= b.ema21[i - touch_w + 1 : i + 1])
+        )
     reclaim_up = (c > b.ema9) & (shift1(c) <= shift1(b.ema9))
     reclaim_dn = (c < b.ema9) & (shift1(c) >= shift1(b.ema9))
     up = (b.ema21 > b.ema50) & (b.ema9 > b.ema21) & touched_up & reclaim_up & (b.rsi14 < rsi_cap)
-    dn = (b.ema21 < b.ema50) & (b.ema9 < b.ema21) & touched_dn & reclaim_dn & (b.rsi14 > (100.0 - rsi_cap))
+    dn = (
+        (b.ema21 < b.ema50)
+        & (b.ema9 < b.ema21)
+        & touched_dn
+        & reclaim_dn
+        & (b.rsi14 > (100.0 - rsi_cap))
+    )
     sig[up] = 1
     sig[dn] = -1
     return sig
@@ -149,7 +159,9 @@ def sig_regime_momentum(b: Bundle, ret_w: int = 20, vol_q: float = 0.70) -> NDAr
     return sig
 
 
-def _vol_shock(b: Bundle, rank_w: int = 240, rank_q: float = 0.70, mult: float = 2.5) -> NDArray[Any]:
+def _vol_shock(
+    b: Bundle, rank_w: int = 240, rank_q: float = 0.70, mult: float = 2.5
+) -> NDArray[Any]:
     """Volatility shock = an unusually large single-bar move relative to its own
     trailing baseline, confirmed by a high ATR percentile.
 
@@ -212,7 +224,9 @@ def sig_session_conditioning(
 # ---------------------------------------------------------------------------
 
 
-def sig_lead_lag(leader: Bundle, follower: Bundle, lag_bars: int, threshold: float = 0.0) -> NDArray[Any]:
+def sig_lead_lag(
+    leader: Bundle, follower: Bundle, lag_bars: int, threshold: float = 0.0
+) -> NDArray[Any]:
     """Follower signal driven by the LEADER's bar at t - lag (never a future bar).
 
     The leader and follower are aligned on the union of their timestamps; a
@@ -245,9 +259,7 @@ def cross_sectional_ranks(bundles: dict[str, Bundle], ret_w: int = 40) -> dict[s
     """Per-asset rank (1 = strongest) of the trailing return, aligned by timestamp."""
     ts_sets = [{int(t) for t in b.bars.ts} for b in bundles.values()]
     common = sorted(set.intersection(*ts_sets)) if ts_sets else []
-    idx = {
-        a: {int(t): k for k, t in enumerate(b.bars.ts)} for a, b in bundles.items()
-    }
+    idx = {a: {int(t): k for k, t in enumerate(b.bars.ts)} for a, b in bundles.items()}
     ranks: dict[str, NDArray[Any]] = {
         a: np.full(len(b.bars.ts), np.nan, dtype=np.float64) for a, b in bundles.items()
     }

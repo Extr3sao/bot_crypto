@@ -37,9 +37,12 @@ def main() -> int:
     # 1. dataset integrity (certified hashes, unchanged)
     sh = L.split_hashes()
     checks["dataset_hashes_unchanged"] = (
-        sh["DISCOVERY"]["sha256"] == "6b0d8f61e0a5d98117dc2af241d9f8487cfa26b6e3e82c074ea4ff7498b00892"
-        and sh["VALIDATION"]["sha256"] == "7b2ed3a086ec5ce0ebeaf122e8fcadeaf6c6e9185050ea20b7e512a429d7756e"
-        and sh["HOLDOUT"]["sha256"] == "3acc341089247b3c142f87eae62845057ac09db7923b7c253a7ea03ce4b23238"
+        sh["DISCOVERY"]["sha256"]
+        == "6b0d8f61e0a5d98117dc2af241d9f8487cfa26b6e3e82c074ea4ff7498b00892"
+        and sh["VALIDATION"]["sha256"]
+        == "7b2ed3a086ec5ce0ebeaf122e8fcadeaf6c6e9185050ea20b7e512a429d7756e"
+        and sh["HOLDOUT"]["sha256"]
+        == "3acc341089247b3c142f87eae62845057ac09db7923b7c253a7ea03ce4b23238"
     )
     detail["split_files"] = {k: v["files"] for k, v in sh.items()}
 
@@ -47,7 +50,8 @@ def main() -> int:
     disc = G.discovery()
     checks["experiment_count_106"] = len(disc) == 106
     winners = [
-        r for r in disc
+        r
+        for r in disc
         if r["metrics"].get("trades", 0) >= G.MIN_TRADES
         and r["metrics"].get("net_bps", -1) > 0
         and not r["metrics"].get("single_trade_dependency")
@@ -61,9 +65,15 @@ def main() -> int:
         tr, _ = P.rerun(w, L.SPLITS["VALIDATION"])
         net = G.net_of(tr)
         m = L.metrics(tr, 1, L.TF_MIN[str(w["timeframe"]).split("+")[0]])
-        if m.get("trades", 0) >= G.MIN_TRADES and m.get("net_bps", -1) > 0 and not m.get("single_trade_dependency"):
+        if (
+            m.get("trades", 0) >= G.MIN_TRADES
+            and m.get("net_bps", -1) > 0
+            and not m.get("single_trade_dependency")
+        ):
             vpass += 1
-        detail.setdefault("validation_net", {})[w["experiment_id"]] = round(float(np.mean(net)), 4) if net.shape[0] else None
+        detail.setdefault("validation_net", {})[w["experiment_id"]] = (
+            round(float(np.mean(net)), 4) if net.shape[0] else None
+        )
     checks["validation_passes_0"] = vpass == 0
 
     # 4. best-of-N null recomputed independently from the cached draws
@@ -100,27 +110,41 @@ def main() -> int:
 
     # 8. no new strategy / no retuning: analysis scripts import the frozen signals
     src = (REPO / "scripts" / "sprint023_lib.py").read_text(encoding="utf-8")
-    checks["imports_frozen_signals"] = "import sprint002_signals as S" in src and "import sprint002_pipeline as P" in src
+    checks["imports_frozen_signals"] = (
+        "import sprint002_signals as S" in src and "import sprint002_pipeline as P" in src
+    )
     checks["no_new_signal_definitions"] = not re.search(r"^def sig_", src, flags=re.MULTILINE)
 
     # 9. holdout access state
     checks["holdout_windows_locked"] = L.SPLITS["HOLDOUT"] == ("W6", "W7")
     used_holdout = False
-    for name in ("sprint023_lib.py", "sprint023_null.py", "sprint023_analysis.py", "sprint023_verify.py"):
+    for name in (
+        "sprint023_lib.py",
+        "sprint023_null.py",
+        "sprint023_analysis.py",
+        "sprint023_verify.py",
+    ):
         text = (REPO / "scripts" / name).read_text(encoding="utf-8")
-        if re.search(r'SPLITS\["HOLDOUT"\]\s*\)', text) or re.search(r'split_bundles\(\s*"HOLDOUT"', text):
+        if re.search(r'SPLITS\["HOLDOUT"\]\s*\)', text) or re.search(
+            r'split_bundles\(\s*"HOLDOUT"', text
+        ):
             used_holdout = True
     checks["holdout_not_read"] = not used_holdout
 
     # 10. no silent experiment deletion (registry size conserved)
-    registry = (OUT.parent / "edge-discovery" / "sprint002" / "EXPERIMENT_REGISTRY.jsonl")
+    registry = OUT.parent / "edge-discovery" / "sprint002" / "EXPERIMENT_REGISTRY.jsonl"
     n_reg = sum(1 for _ in registry.open(encoding="utf-8")) if registry.exists() else -1
     checks["no_experiment_deleted"] = n_reg == 106
 
     passed = all(checks.values())
     result = {"checks": checks, "detail": detail, "verifier_result": "PASS" if passed else "FAIL"}
     G.write_json(OUT / "RFC023_VERIFICATION.json", result)
-    md = ["# RFC-023 — INDEPENDENT VERIFICATION", "", f"VERIFIER_RESULT = {result['verifier_result']}", ""]
+    md = [
+        "# RFC-023 — INDEPENDENT VERIFICATION",
+        "",
+        f"VERIFIER_RESULT = {result['verifier_result']}",
+        "",
+    ]
     for k, v in checks.items():
         md.append(f"- {k}: {'PASS' if v else 'FAIL'}")
     md += ["", "```text", json.dumps(detail, indent=2), "```"]

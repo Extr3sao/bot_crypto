@@ -128,7 +128,9 @@ def section_entry_gate() -> dict[str, Any]:
     )
     disc_m = (RFC039 / "P1_DISCOVERY_RESULTS.json").stat().st_mtime
     freeze_m = (RFC039 / "SMALL_CAPITAL_SELECTION_FREEZE.json").stat().st_mtime
-    p2_before_p1 = bool(freeze_m < disc_m) and top2.get("backtest_run_before_this_selection") is False
+    p2_before_p1 = (
+        bool(freeze_m < disc_m) and top2.get("backtest_run_before_this_selection") is False
+    )
     head = git(["rev-parse", "HEAD"])
     rfc039_ancestor = git_ok(["merge-base", "--is-ancestor", "35abb18", "HEAD"])
     rfc038_ancestor = git_ok(["merge-base", "--is-ancestor", "3938eee", "HEAD"])
@@ -253,7 +255,12 @@ def section_instrument_accessibility() -> dict[str, Any]:
     return {
         "gate": "G_BUSINESS_PRODUCT",
         "rejected_by_default": [
-            "SPY", "QQQ", "TLT", "GLD", "AGG", "EFA",
+            "SPY",
+            "QQQ",
+            "TLT",
+            "GLD",
+            "AGG",
+            "EFA",
         ],
         "rejection_reason": (
             "US-domiciled ETFs have no PRIIPs KID and are not purchasable by EU retail "
@@ -354,7 +361,9 @@ def _summ(res: sc.SimResult | dm.DMResult) -> dict[str, Any]:
     return d
 
 
-def section_benchmarks(ds: sc.Dataset, span: tuple[tuple[int, int, int], tuple[int, int, int]]) -> dict[str, Any]:
+def section_benchmarks(
+    ds: sc.Dataset, span: tuple[tuple[int, int, int], tuple[int, int, int]]
+) -> dict[str, Any]:
     a, b = _span(span)
     strategy = dm.simulate_dual_momentum(ds, start_ms=a, end_ms=b)
     equity = sc.simulate_fixed_weights(ds, {dm.EQUITY_BENCH: 1.0}, start_ms=a, end_ms=b)
@@ -471,7 +480,9 @@ def section_validation(ds: sc.Dataset) -> dict[str, Any]:
     }
 
 
-def section_business_edge(ds: sc.Dataset, benchmarks: dict[str, Any], validation: dict[str, Any]) -> dict[str, Any]:
+def section_business_edge(
+    ds: sc.Dataset, benchmarks: dict[str, Any], validation: dict[str, Any]
+) -> dict[str, Any]:
     s = validation["results"]
     rm = benchmarks["risk_matched_passive"]
     excess = benchmarks["net_excess_vs_risk_matched_eur"]
@@ -585,8 +596,12 @@ def false_success_audit() -> dict[str, Any]:
         "live_trading_started": False,
     }
     count = sum(1 for v in triggers.values() if v)
-    return {"triggers": triggers, "FALSE_SUCCESS": count, "target": 0,
-            "result": "PASS" if count == 0 else "FAIL"}
+    return {
+        "triggers": triggers,
+        "FALSE_SUCCESS": count,
+        "target": 0,
+        "result": "PASS" if count == 0 else "FAIL",
+    }
 
 
 def final_report_md(
@@ -703,19 +718,36 @@ def final_report_md(
 def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     entry = section_entry_gate()
-    emit("RFC040_PLAN", render("RFC-040 PLAN", {
-        "mission": "last authorized candidate; is it economically BETTER than a simple passive alternative, risk-matched?",
-        "entry_gate": entry,
-        "prohibitions": ["new families", "P3", "more selection", "live", "broker integration"],
-    }), {"entry_gate": entry})
+    emit(
+        "RFC040_PLAN",
+        render(
+            "RFC-040 PLAN",
+            {
+                "mission": "last authorized candidate; is it economically BETTER than a simple passive alternative, risk-matched?",
+                "entry_gate": entry,
+                "prohibitions": [
+                    "new families",
+                    "P3",
+                    "more selection",
+                    "live",
+                    "broker integration",
+                ],
+            },
+        ),
+        {"entry_gate": entry},
+    )
     if not entry["entry_condition_met"]:
         print(json.dumps({"STOP": "entry condition not met", **entry}, indent=2))
         return 1
 
     p1 = section_p1_reclassification()
     emit("P1_RECLASSIFICATION", render("P1 RECLASSIFICATION", p1), p1)
-    kpi_initial = {"BUSINESS_VALIDATED_EDGE_COUNT": 0, "PAPER_CANDIDATE": 0,
-                   "FORWARD_PROFITABLE": 0, "LIVE_PROFITABLE": 0}
+    kpi_initial = {
+        "BUSINESS_VALIDATED_EDGE_COUNT": 0,
+        "PAPER_CANDIDATE": 0,
+        "FORWARD_PROFITABLE": 0,
+        "LIVE_PROFITABLE": 0,
+    }
     emit("BUSINESS_KPI", render("BUSINESS KPI", kpi_initial), kpi_initial)
     capital = section_capital_constraints()
     emit("CAPITAL_CONSTRAINTS", render("CAPITAL CONSTRAINTS", capital), capital)
@@ -766,53 +798,100 @@ def main() -> int:
     fs = false_success_audit()
 
     verification = rverify.verify(
-        series, {"lookback_days": dm.LOOKBACK, "cost_bps_per_side": dm.COST_BPS_PER_SIDE,
-                 "reference_capital_eur": dm.REFERENCE_CAPITAL}, SPLITS, freeze,
+        series,
+        {
+            "lookback_days": dm.LOOKBACK,
+            "cost_bps_per_side": dm.COST_BPS_PER_SIDE,
+            "reference_capital_eur": dm.REFERENCE_CAPITAL,
+        },
+        SPLITS,
+        freeze,
         {"DM_DISCOVERY": disc, "DM_VALIDATION": val, "BUSINESS_EDGE_GATE": business},
     )
     emit("RFC040_VERIFICATION", render("RFC040 VERIFICATION", verification), verification)
 
-    md = final_report_md(entry, p1, product, freeze, repro, disc, val, bench, business,
-                         robustness, holdout, scaling, verification, kpi, fs, gates, next_step)
+    md = final_report_md(
+        entry,
+        p1,
+        product,
+        freeze,
+        repro,
+        disc,
+        val,
+        bench,
+        business,
+        robustness,
+        holdout,
+        scaling,
+        verification,
+        kpi,
+        fs,
+        gates,
+        next_step,
+    )
     write_md(OUT.parent / "RFC040_FINAL_REPORT.md", md)
-    write_json(OUT.parent / "RFC040_FINAL_REPORT.json", {
-        "reference_capital_eur": dm.REFERENCE_CAPITAL, "gates": gates, "kpi": kpi,
-        "next": next_step, "false_success": fs, "verification": verification,
-        "search_status": "PAUSED" if not business_pass else "ACTIVE",
-        "no_p3": True, "spec_sha256": freeze["spec_canonical_sha256"],
-        "dataset_sha256": freeze["dataset_sha256"],
-    })
-    tracked = "\n".join([
-        "# SMALL_CAPITAL_DUAL_MOMENTUM_V1 (RFC-040, tracked canonical)",
-        "",
-        f"generated_at = {now_utc()}",
-        f"reference_capital_eur = {dm.REFERENCE_CAPITAL}",
-        "",
-        "## Primary KPI",
-        f"BUSINESS_VALIDATED_EDGE_COUNT = {kpi['BUSINESS_VALIDATED_EDGE_COUNT']}",
-        "",
-        "## Gate summary",
-        *[f"- {k} = {v}" for k, v in gates.items()],
-        "",
-        f"P2 = {P2_ID} (dual momentum, UCITS, fidelity CLOSE)",
-        f"P1 = {P1_ID} reclassified VALIDATED_DEFENSIVE / BUSINESS_FAIL (evidence retained)",
-        "",
-        f"SMALL_CAPITAL_PROFITABILITY_SEARCH = {'PAUSED' if not business_pass else 'ACTIVE'}",
-        f"NEXT = {next_step}",
-        "",
-        "> Research evidence only. No live trading, no orders, no paid data, no broker integration.",
-        "> Historical net edge != live profit.",
-        "",
-    ])
+    write_json(
+        OUT.parent / "RFC040_FINAL_REPORT.json",
+        {
+            "reference_capital_eur": dm.REFERENCE_CAPITAL,
+            "gates": gates,
+            "kpi": kpi,
+            "next": next_step,
+            "false_success": fs,
+            "verification": verification,
+            "search_status": "PAUSED" if not business_pass else "ACTIVE",
+            "no_p3": True,
+            "spec_sha256": freeze["spec_canonical_sha256"],
+            "dataset_sha256": freeze["dataset_sha256"],
+        },
+    )
+    tracked = "\n".join(
+        [
+            "# SMALL_CAPITAL_DUAL_MOMENTUM_V1 (RFC-040, tracked canonical)",
+            "",
+            f"generated_at = {now_utc()}",
+            f"reference_capital_eur = {dm.REFERENCE_CAPITAL}",
+            "",
+            "## Primary KPI",
+            f"BUSINESS_VALIDATED_EDGE_COUNT = {kpi['BUSINESS_VALIDATED_EDGE_COUNT']}",
+            "",
+            "## Gate summary",
+            *[f"- {k} = {v}" for k, v in gates.items()],
+            "",
+            f"P2 = {P2_ID} (dual momentum, UCITS, fidelity CLOSE)",
+            f"P1 = {P1_ID} reclassified VALIDATED_DEFENSIVE / BUSINESS_FAIL (evidence retained)",
+            "",
+            f"SMALL_CAPITAL_PROFITABILITY_SEARCH = {'PAUSED' if not business_pass else 'ACTIVE'}",
+            f"NEXT = {next_step}",
+            "",
+            "> Research evidence only. No live trading, no orders, no paid data, no broker integration.",
+            "> Historical net edge != live profit.",
+            "",
+        ]
+    )
     write_md(DOCS / "SMALL_CAPITAL_DUAL_MOMENTUM_V1.md", tracked)
-    write_json(DOCS / "SMALL_CAPITAL_DUAL_MOMENTUM_V1.json", {
-        "gates": gates, "kpi": kpi, "next": next_step,
-        "spec_sha256": freeze["spec_canonical_sha256"],
-        "search_status": "PAUSED" if not business_pass else "ACTIVE",
-    })
-    print(json.dumps({"gates": gates, "kpi": kpi, "NEXT": next_step,
-                      "FALSE_SUCCESS": fs["FALSE_SUCCESS"],
-                      "VERIFICATION": verification["VERIFICATION_STATUS"]}, indent=2))
+    write_json(
+        DOCS / "SMALL_CAPITAL_DUAL_MOMENTUM_V1.json",
+        {
+            "gates": gates,
+            "kpi": kpi,
+            "next": next_step,
+            "spec_sha256": freeze["spec_canonical_sha256"],
+            "search_status": "PAUSED" if not business_pass else "ACTIVE",
+        },
+    )
+    print(
+        json.dumps(
+            {
+                "gates": gates,
+                "kpi": kpi,
+                "NEXT": next_step,
+                "FALSE_SUCCESS": fs["FALSE_SUCCESS"],
+                "VERIFICATION": verification["VERIFICATION_STATUS"],
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

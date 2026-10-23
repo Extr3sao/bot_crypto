@@ -90,10 +90,16 @@ SECRET_PATTERNS: tuple[tuple[str, str], ...] = (
     ("private_key_block", r"-----BEGIN [A-Z ]*PRIVATE KEY-----"),
     ("openai_style", r"\bsk-[A-Za-z0-9]{20,}"),
     ("aws_access_key", r"\bAKIA[0-9A-Z]{16}\b"),
-    ("binance_key_shape", r"(?i)\b(api[_-]?key|secret[_-]?key|api[_-]?secret)\b\s*[:=]\s*"
-                          r"[\"']?[A-Za-z0-9/+_=-]{24,}"),
-    ("generic_password", r"(?i)\b(pass(word|phrase)|secret|token)\b\s*[:=]\s*"
-                         r"[\"'][^\"'\s]{16,}[\"']"),
+    (
+        "binance_key_shape",
+        r"(?i)\b(api[_-]?key|secret[_-]?key|api[_-]?secret)\b\s*[:=]\s*"
+        r"[\"']?[A-Za-z0-9/+_=-]{24,}",
+    ),
+    (
+        "generic_password",
+        r"(?i)\b(pass(word|phrase)|secret|token)\b\s*[:=]\s*"
+        r"[\"'][^\"'\s]{16,}[\"']",
+    ),
     ("bearer", r"(?i)\bauthorization\b\s*[:=]\s*[\"']?bearer\s+[A-Za-z0-9._-]{20,}"),
     ("env_file_content", r"(?m)^\s*[A-Z][A-Z0-9_]{3,}\s*=\s*[A-Za-z0-9/+_=-]{20,}\s*$"),
 )
@@ -147,8 +153,11 @@ def lane_commit(requested: str | None) -> dict[str, Any]:
     else:
         sha = git("log", "-1", "--format=%H", "--", LANE_PATH).stdout.strip()
     if not sha:
-        return {"sha": None, "resolved": False,
-                "why": f"no commit touches {LANE_PATH} in this history"}
+        return {
+            "sha": None,
+            "resolved": False,
+            "why": f"no commit touches {LANE_PATH} in this history",
+        }
     meta = git("show", "-s", "--format=%H%x00%s%x00%an%x00%aI", sha).stdout.strip().split("\x00")
     return {
         "sha": meta[0],
@@ -165,8 +174,10 @@ def scope_report(sha: str) -> dict[str, Any]:
     classes: dict[str, list[str]] = defaultdict(list)
     for path in paths:
         classes[classify(path)].append(path)
-    exceptions = [{"path": path, "reason": DECLARED_EXCEPTIONS[path]}
-                  for path in classes["declared_exception"]]
+    exceptions = [
+        {"path": path, "reason": DECLARED_EXCEPTIONS[path]}
+        for path in classes["declared_exception"]
+    ]
     return {
         "files_touched": len(paths),
         "owned": classes["owned"],
@@ -219,8 +230,16 @@ class Rehearsal:
         env.pop("PYTHONSTARTUP", None)
         return env
 
-    def run(self, ident: str, what: str, argv: list[str], *, expect: int = 0,
-            timeout: int = 600, stdout_to: str | None = None) -> dict[str, Any]:
+    def run(
+        self,
+        ident: str,
+        what: str,
+        argv: list[str],
+        *,
+        expect: int = 0,
+        timeout: int = 600,
+        stdout_to: str | None = None,
+    ) -> dict[str, Any]:
         assert self.path is not None
         # Some of the lane's evidence files are literally the tool's stdout; reproducing them
         # means reproducing the redirected stream, not a paraphrase of it.
@@ -232,14 +251,30 @@ class Rehearsal:
         started = time.monotonic()
         try:
             if sink is None:
-                completed = subprocess.run(argv, cwd=self.path, capture_output=True, text=True,
-                                           timeout=timeout, check=False, env=self.child_env(),
-                                           encoding="utf-8", errors="replace")
+                completed = subprocess.run(
+                    argv,
+                    cwd=self.path,
+                    capture_output=True,
+                    text=True,
+                    timeout=timeout,
+                    check=False,
+                    env=self.child_env(),
+                    encoding="utf-8",
+                    errors="replace",
+                )
             else:
-                completed = subprocess.run(argv, cwd=self.path, stdout=sink,
-                                           stderr=subprocess.PIPE, text=True, timeout=timeout,
-                                           check=False, env=self.child_env(), encoding="utf-8",
-                                           errors="replace")
+                completed = subprocess.run(
+                    argv,
+                    cwd=self.path,
+                    stdout=sink,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                    timeout=timeout,
+                    check=False,
+                    env=self.child_env(),
+                    encoding="utf-8",
+                    errors="replace",
+                )
             code = completed.returncode
             out = (completed.stdout or "") if sink is None else ""
             err = completed.stderr or ""
@@ -252,8 +287,9 @@ class Rehearsal:
         entry = {
             "id": ident,
             "what": what,
-            "command": " ".join(Path(part).name if part.startswith(str(self.path)) else part
-                                for part in argv),
+            "command": " ".join(
+                Path(part).name if part.startswith(str(self.path)) else part for part in argv
+            ),
             "stdout_to": stdout_to,
             "exit_code": code,
             "expected_exit_code": expect,
@@ -264,7 +300,9 @@ class Rehearsal:
             # is long enough to carry the exception line rather than only its context.
             "stderr_tail": "\n".join(err.splitlines()[-12:]),
         }
-        entry["missing_input_named"] = named_missing_input(entry["stdout_tail"] + entry["stderr_tail"])
+        entry["missing_input_named"] = named_missing_input(
+            entry["stdout_tail"] + entry["stderr_tail"]
+        )
         self.results.append(entry)
         return entry
 
@@ -280,8 +318,12 @@ class Rehearsal:
             shutil.rmtree(tmp, ignore_errors=True)
         added = git("worktree", "add", "--detach", str(tmp), self.sha)
         if added.returncode != 0:
-            return {"created": False, "path": str(tmp), "stderr": added.stderr.strip()[-400:],
-                    "stdout": added.stdout.strip()[-200:]}
+            return {
+                "created": False,
+                "path": str(tmp),
+                "stderr": added.stderr.strip()[-400:],
+                "stdout": added.stdout.strip()[-200:],
+            }
         self.path = tmp
         head = git("rev-parse", "HEAD", cwd=tmp).stdout.strip()
         status = git("status", "--porcelain", cwd=tmp).stdout.strip()
@@ -292,7 +334,12 @@ class Rehearsal:
         shutil.copytree(tmp / "data" / "recovery" / "wp9", self.pristine)
         probe = subprocess.run(
             [self.python, "-c", "import trading_bot, sys; print(trading_bot.__file__)"],
-            cwd=tmp, capture_output=True, text=True, check=False, env=self.child_env())
+            cwd=tmp,
+            capture_output=True,
+            text=True,
+            check=False,
+            env=self.child_env(),
+        )
         resolved = probe.stdout.strip()
         return {
             "created": True,
@@ -321,17 +368,37 @@ class Rehearsal:
 #: Keys allowed to differ between the committed artefact and the regenerated one. They
 #: record *when* a run happened, not what it found; anything else that differs is a
 #: disagreement between the commit and its own producers.
-VOLATILE_KEYS: frozenset[str] = frozenset({
-    "generated_at_utc", "measured_at_utc", "run_timestamp", "started_at", "ended_at",
-    "seconds", "stage_seconds", "measure_seconds", "elapsed_seconds", "duration_seconds",
-    "free_bytes_now", "free_disk_bytes", "traces_added", "hours_executed", "generated_at",
-})
+VOLATILE_KEYS: frozenset[str] = frozenset(
+    {
+        "generated_at_utc",
+        "measured_at_utc",
+        "run_timestamp",
+        "started_at",
+        "ended_at",
+        "seconds",
+        "stage_seconds",
+        "measure_seconds",
+        "elapsed_seconds",
+        "duration_seconds",
+        "free_bytes_now",
+        "free_disk_bytes",
+        "traces_added",
+        "hours_executed",
+        "generated_at",
+    }
+)
 
 #: Artefacts whose content is a *run*, not a state: their timings and trace counts move by
 #: construction. They are compared on the projection that carries the finding.
 RUN_RECORDS: dict[str, tuple[str, ...]] = {
-    "WP9_RUNTIME_24H_REPORT.json": ("verdict", "hours_target", "window_complete", "legs",
-                                    "checks_total", "checks_not_exercised"),
+    "WP9_RUNTIME_24H_REPORT.json": (
+        "verdict",
+        "hours_target",
+        "window_complete",
+        "legs",
+        "checks_total",
+        "checks_not_exercised",
+    ),
 }
 
 #: Evidence files that are the launcher's own output and must agree with the committed
@@ -378,12 +445,14 @@ def project(node: Any, keys: tuple[str, ...]) -> Any:
 
 
 def digest(value: Any) -> str:
-    return hashlib.sha256(json.dumps(value, sort_keys=True, default=str)
-                          .encode("utf-8")).hexdigest()[:16]
+    return hashlib.sha256(
+        json.dumps(value, sort_keys=True, default=str).encode("utf-8")
+    ).hexdigest()[:16]
 
 
-def compare(regenerated_dir: Path, reference_dir: Path,
-            producer_result: dict[str, str]) -> dict[str, Any]:
+def compare(
+    regenerated_dir: Path, reference_dir: Path, producer_result: dict[str, str]
+) -> dict[str, Any]:
     """Compare regenerated artefacts with the committed ones, by name.
 
     An artefact whose producer did not run (or failed) is reported as NOT_REPRODUCED and
@@ -396,27 +465,44 @@ def compare(regenerated_dir: Path, reference_dir: Path,
         producer = ARTIFACT_PRODUCER.get(name)
         ran = producer_result.get(producer or "") == "PASS"
         if producer and not ran:
-            rows.append({
-                "artifact": name,
-                "producer": producer,
-                "producer_result": producer_result.get(producer, "NOT_RUN"),
-                "comparison": "NOT_REPRODUCED",
-                "identical": None,
-                "why": ("the step that writes this artefact did not run, so the file in the "
-                        "checkout is the commit's own copy"),
-            })
+            rows.append(
+                {
+                    "artifact": name,
+                    "producer": producer,
+                    "producer_result": producer_result.get(producer, "NOT_RUN"),
+                    "comparison": "NOT_REPRODUCED",
+                    "identical": None,
+                    "why": (
+                        "the step that writes this artefact did not run, so the file in the "
+                        "checkout is the commit's own copy"
+                    ),
+                }
+            )
             continue
         reference = reference_dir / name
         if not reference.exists():
-            rows.append({"artifact": name, "producer": producer, "comparison": "NO_REFERENCE",
-                         "identical": False, "why": "the commit does not carry this artefact"})
+            rows.append(
+                {
+                    "artifact": name,
+                    "producer": producer,
+                    "comparison": "NO_REFERENCE",
+                    "identical": False,
+                    "why": "the commit does not carry this artefact",
+                }
+            )
             continue
         try:
             left = json.loads(reference.read_text(encoding="utf-8"))
             right = json.loads(path.read_text(encoding="utf-8"))
         except ValueError as exc:
-            rows.append({"artifact": name, "comparison": "UNPARSEABLE", "identical": False,
-                         "why": type(exc).__name__})
+            rows.append(
+                {
+                    "artifact": name,
+                    "comparison": "UNPARSEABLE",
+                    "identical": False,
+                    "why": type(exc).__name__,
+                }
+            )
             continue
         removed: list[str] = []
         if name in RUN_RECORDS:
@@ -427,25 +513,33 @@ def compare(regenerated_dir: Path, reference_dir: Path,
             left_cmp = scrub(left, removed)
             right_cmp = scrub(right, removed)
             mode = "full document, volatile keys excluded"
-        rows.append({
-            "artifact": name,
-            "producer": producer,
-            "producer_result": producer_result.get(producer or "", "NOT_RUN"),
-            "comparison": mode,
-            "excluded_keys": sorted(set(removed)),
-            "digest_committed": digest(left_cmp),
-            "digest_regenerated": digest(right_cmp),
-            "identical": left_cmp == right_cmp,
-        })
+        rows.append(
+            {
+                "artifact": name,
+                "producer": producer,
+                "producer_result": producer_result.get(producer or "", "NOT_RUN"),
+                "comparison": mode,
+                "excluded_keys": sorted(set(removed)),
+                "digest_committed": digest(left_cmp),
+                "digest_regenerated": digest(right_cmp),
+                "identical": left_cmp == right_cmp,
+            }
+        )
 
     for path in sorted((regenerated_dir / "evidence").glob("*.out")):
         name = f"evidence/{path.name}"
         producer = ARTIFACT_PRODUCER.get(name)
         if producer and producer_result.get(producer) != "PASS":
-            rows.append({"artifact": name, "producer": producer,
-                         "producer_result": producer_result.get(producer, "NOT_RUN"),
-                         "comparison": "NOT_REPRODUCED", "identical": None,
-                         "why": "the command that writes this file did not run"})
+            rows.append(
+                {
+                    "artifact": name,
+                    "producer": producer,
+                    "producer_result": producer_result.get(producer, "NOT_RUN"),
+                    "comparison": "NOT_REPRODUCED",
+                    "identical": None,
+                    "why": "the command that writes this file did not run",
+                }
+            )
             continue
         reference = reference_dir / "evidence" / path.name
         if not reference.exists():
@@ -455,26 +549,38 @@ def compare(regenerated_dir: Path, reference_dir: Path,
             left = json.loads(reference.read_text(encoding="utf-8"))
             right = json.loads(path.read_text(encoding="utf-8"))
         except ValueError:
-            rows.append({"artifact": name, "comparison": "NOT_JSON", "identical": None,
-                         "why": "compared by the exit code of the command that wrote it"})
+            rows.append(
+                {
+                    "artifact": name,
+                    "comparison": "NOT_JSON",
+                    "identical": None,
+                    "why": "compared by the exit code of the command that wrote it",
+                }
+            )
             continue
         left_cmp = project(left, EVIDENCE_PROJECTION)
         right_cmp = project(right, EVIDENCE_PROJECTION)
-        rows.append({
-            "artifact": name,
-            "producer": producer,
-            "producer_result": producer_result.get(producer or "", "NOT_RUN"),
-            "comparison": f"projection({', '.join(EVIDENCE_PROJECTION)})",
-            "digest_committed": digest(left_cmp),
-            "digest_regenerated": digest(right_cmp),
-            "identical": left_cmp == right_cmp,
-        })
+        rows.append(
+            {
+                "artifact": name,
+                "producer": producer,
+                "producer_result": producer_result.get(producer or "", "NOT_RUN"),
+                "comparison": f"projection({', '.join(EVIDENCE_PROJECTION)})",
+                "digest_committed": digest(left_cmp),
+                "digest_regenerated": digest(right_cmp),
+                "identical": left_cmp == right_cmp,
+            }
+        )
 
     mismatches = [row["artifact"] for row in rows if row["identical"] is False]
     not_reproduced = [row["artifact"] for row in rows if row["comparison"] == "NOT_REPRODUCED"]
     compared = [row["artifact"] for row in rows if row["identical"] is not None]
-    return {"artifacts": rows, "compared": len(compared), "mismatches": mismatches,
-            "not_reproduced": not_reproduced}
+    return {
+        "artifacts": rows,
+        "compared": len(compared),
+        "mismatches": mismatches,
+        "not_reproduced": not_reproduced,
+    }
 
 
 def mutate_reference(directory: Path, artifact: str = "WP9_M03_M07_READINESS.json") -> str | None:
@@ -512,7 +618,9 @@ def free_bytes() -> int | None:
         return None
 
 
-def build(requested_sha: str | None, *, run_rehearsal: bool, run_runtime_legs: bool) -> dict[str, Any]:
+def build(
+    requested_sha: str | None, *, run_rehearsal: bool, run_runtime_legs: bool
+) -> dict[str, Any]:
     started = datetime.now(UTC)
     head = git("rev-parse", "HEAD").stdout.strip()
     branch = git("rev-parse", "--abbrev-ref", "HEAD").stdout.strip()
@@ -538,16 +646,27 @@ def build(requested_sha: str | None, *, run_rehearsal: bool, run_runtime_legs: b
     controls.append(classifier_control)
 
     if not commit.get("resolved"):
-        return {"artifact": "WP10_PHASE0_WP9_CLOSURE", "verdict": "BLOCKED",
-                "head": head, "branch": branch, "lane_commit": commit,
-                "why": "the lane commit could not be resolved"}
+        return {
+            "artifact": "WP10_PHASE0_WP9_CLOSURE",
+            "verdict": "BLOCKED",
+            "head": head,
+            "branch": branch,
+            "lane_commit": commit,
+            "why": "the lane commit could not be resolved",
+        }
 
     sha = commit["sha"]
     scope = scope_report(sha)
-    secrets = secrets_report(sha, scope["owned"] + [p["path"] for p in scope["declared_exceptions"]])
-    controls.append({"id": "control-secret-canary",
-                     "what": "the secret scanner sees a synthetic credential",
-                     "detected": secrets["canary_detected"]})
+    secrets = secrets_report(
+        sha, scope["owned"] + [p["path"] for p in scope["declared_exceptions"]]
+    )
+    controls.append(
+        {
+            "id": "control-secret-canary",
+            "what": "the secret scanner sees a synthetic credential",
+            "detected": secrets["canary_detected"],
+        }
+    )
 
     payload: dict[str, Any] = {
         "artifact": "WP10_PHASE0_WP9_CLOSURE",
@@ -573,57 +692,113 @@ def build(requested_sha: str | None, *, run_rehearsal: bool, run_runtime_legs: b
         setup = rehearsal.prepare()
         payload["clean_checkout"] = setup
         if not setup.get("created") or not setup.get("module_resolved_inside_checkout"):
-            payload["verdict"] = ("BLOCKED — the clean checkout could not be established with the "
-                                 "module resolved inside it")
+            payload["verdict"] = (
+                "BLOCKED — the clean checkout could not be established with the "
+                "module resolved inside it"
+            )
             payload["not_exercised"].append("every producer: the checkout was not usable")
             payload["inputs_absent_from_the_commit"] = []
             payload["controls"] = controls
             return payload
         python = sys.executable
         evidence = "data/recovery/wp9/evidence"
-        rehearsal.run("disk-audit", "the disk budget audit (the defect)",
-                      [python, "scripts/wp9_disk_budget_audit.py"])
-        rehearsal.run("readiness", "M-03 / M-07 readiness",
-                      [python, "scripts/wp9_m03_m07_readiness.py"])
-        rehearsal.run("economics", "ACTIVE economic blockers",
-                      [python, "scripts/wp9_economic_blockers.py"])
-        rehearsal.run("preflight-refusal",
-                      "the launcher refuses a 24 h window its collector budget cannot pay for",
-                      [python, "scripts/start_paper_lab.py", "--duration-hours", "24", "--dry-run"],
-                      expect=4, stdout_to=f"{evidence}/preflight_refusal.out")
-        rehearsal.run("preflight-refusal-default",
-                      "the same refusal on the default budget, with the run named",
-                      [python, "scripts/start_paper_lab.py", "--duration-hours", "24", "--dry-run",
-                       "--run-id", "wp9-preflight-refusal-default"],
-                      expect=4, stdout_to=f"{evidence}/preflight_refusal_default.out")
-        rehearsal.run("preflight-autoscale",
-                      "the same window, with the collector budget autoscaled, is accepted",
-                      [python, "scripts/start_paper_lab.py", "--duration-hours", "24", "--dry-run",
-                       "--autoscale-collector-budget", "--run-id", "wp9-preflight-autoscale"],
-                      expect=0, stdout_to=f"{evidence}/preflight_autoscale.out")
-        rehearsal.run("focused-tests", "the WP-9 focused test file",
-                      [python, "-m", "pytest", "-q", "tests/unit/research/test_wp9_disk_budget.py"],
-                      timeout=900)
+        rehearsal.run(
+            "disk-audit",
+            "the disk budget audit (the defect)",
+            [python, "scripts/wp9_disk_budget_audit.py"],
+        )
+        rehearsal.run(
+            "readiness", "M-03 / M-07 readiness", [python, "scripts/wp9_m03_m07_readiness.py"]
+        )
+        rehearsal.run(
+            "economics", "ACTIVE economic blockers", [python, "scripts/wp9_economic_blockers.py"]
+        )
+        rehearsal.run(
+            "preflight-refusal",
+            "the launcher refuses a 24 h window its collector budget cannot pay for",
+            [python, "scripts/start_paper_lab.py", "--duration-hours", "24", "--dry-run"],
+            expect=4,
+            stdout_to=f"{evidence}/preflight_refusal.out",
+        )
+        rehearsal.run(
+            "preflight-refusal-default",
+            "the same refusal on the default budget, with the run named",
+            [
+                python,
+                "scripts/start_paper_lab.py",
+                "--duration-hours",
+                "24",
+                "--dry-run",
+                "--run-id",
+                "wp9-preflight-refusal-default",
+            ],
+            expect=4,
+            stdout_to=f"{evidence}/preflight_refusal_default.out",
+        )
+        rehearsal.run(
+            "preflight-autoscale",
+            "the same window, with the collector budget autoscaled, is accepted",
+            [
+                python,
+                "scripts/start_paper_lab.py",
+                "--duration-hours",
+                "24",
+                "--dry-run",
+                "--autoscale-collector-budget",
+                "--run-id",
+                "wp9-preflight-autoscale",
+            ],
+            expect=0,
+            stdout_to=f"{evidence}/preflight_autoscale.out",
+        )
+        rehearsal.run(
+            "focused-tests",
+            "the WP-9 focused test file",
+            [python, "-m", "pytest", "-q", "tests/unit/research/test_wp9_disk_budget.py"],
+            timeout=900,
+        )
         if run_runtime_legs:
             rehearsal.run(
-                "runtime-legs", "the runtime rehearsal: four legs, a controlled stop and a resume",
-                [python, "scripts/wp9_runtime_rehearsal.py", "--run-id", "wp10-phase0-legs",
-                 "--interval", "20", "--cycles", "3", "--bar-close-cycles", "1",
-                 "--stop-after-seconds", "45"],
-                timeout=900)
+                "runtime-legs",
+                "the runtime rehearsal: four legs, a controlled stop and a resume",
+                [
+                    python,
+                    "scripts/wp9_runtime_rehearsal.py",
+                    "--run-id",
+                    "wp10-phase0-legs",
+                    "--interval",
+                    "20",
+                    "--cycles",
+                    "3",
+                    "--bar-close-cycles",
+                    "1",
+                    "--stop-after-seconds",
+                    "45",
+                ],
+                timeout=900,
+            )
         else:
             payload["not_exercised"].append(
                 "the four runtime legs: they start the real launcher and a scheduler, so the "
-                "closure runs them only when asked for explicitly (--run-runtime-legs)")
-        rehearsal.run("verifier", "the independent verifier, after the artefacts it checks exist",
-                      [python, "scripts/wp9_verify.py"], timeout=900)
-        rehearsal.run("run-report", "the run report, folded from the regenerated artefacts",
-                      [python, "scripts/wp9_run_report.py"])
+                "closure runs them only when asked for explicitly (--run-runtime-legs)"
+            )
+        rehearsal.run(
+            "verifier",
+            "the independent verifier, after the artefacts it checks exist",
+            [python, "scripts/wp9_verify.py"],
+            timeout=900,
+        )
+        rehearsal.run(
+            "run-report",
+            "the run report, folded from the regenerated artefacts",
+            [python, "scripts/wp9_run_report.py"],
+        )
         payload["rehearsal"] = rehearsal.results
         payload["not_exercised"].append(
             "the CI execution report: regenerating it re-runs two other lanes' workflow "
             "sequences (~9 min) and does not verify WP-9's own claims, which wp9_verify.py "
-            "re-derives from the workflow text instead")
+            "re-derives from the workflow text instead"
+        )
 
         produced = rehearsal.path / "data" / "recovery" / "wp9"
         reference = rehearsal.pristine
@@ -640,36 +815,50 @@ def build(requested_sha: str | None, *, run_rehearsal: bool, run_runtime_legs: b
         changed = mutate_reference(mutated)
         mutated_result = compare(produced, mutated, producer_result)
         shutil.rmtree(mutated, ignore_errors=True)
-        payload["controls"].append({
-            "id": "control-reproduction",
-            "what": "a comparison against a mutated reference is flagged",
-            "mutation": changed,
-            "detected": bool(mutated_result["mismatches"]),
-            "flagged": mutated_result["mismatches"][:5],
-        })
+        payload["controls"].append(
+            {
+                "id": "control-reproduction",
+                "what": "a comparison against a mutated reference is flagged",
+                "mutation": changed,
+                "detected": bool(mutated_result["mismatches"]),
+                "flagged": mutated_result["mismatches"][:5],
+            }
+        )
         # The falsifier for the gating itself: feed the comparison a status map in which one
         # producer failed and check that exactly its artefact is excluded. The artefacts are
         # compared against themselves here, so only the gate can produce a NOT_REPRODUCED.
-        synthetic = {name: ("FAIL" if name == "disk-audit" else "PASS")
-                     for name in set(ARTIFACT_PRODUCER.values())}
+        synthetic = {
+            name: ("FAIL" if name == "disk-audit" else "PASS")
+            for name in set(ARTIFACT_PRODUCER.values())
+        }
         gated = compare(produced, produced, synthetic)
-        payload["controls"].append({
-            "id": "control-nothing-ran",
-            "what": "an artefact whose producer did not run is excluded from the identity claim",
-            "detected": (
-                "WP9_DISK_BUDGET_AUDIT.json" in gated["not_reproduced"]
-                and "WP9_M03_M07_READINESS.json" not in gated["not_reproduced"]
-                and any(row["artifact"] == "WP9_ACTIVE_ECONOMIC_BLOCKERS.json"
-                        and row["identical"] is not None for row in gated["artifacts"])),
-            "excluded_when_its_producer_failed": gated["not_reproduced"],
-        })
+        payload["controls"].append(
+            {
+                "id": "control-nothing-ran",
+                "what": "an artefact whose producer did not run is excluded from the identity claim",
+                "detected": (
+                    "WP9_DISK_BUDGET_AUDIT.json" in gated["not_reproduced"]
+                    and "WP9_M03_M07_READINESS.json" not in gated["not_reproduced"]
+                    and any(
+                        row["artifact"] == "WP9_ACTIVE_ECONOMIC_BLOCKERS.json"
+                        and row["identical"] is not None
+                        for row in gated["artifacts"]
+                    )
+                ),
+                "excluded_when_its_producer_failed": gated["not_reproduced"],
+            }
+        )
         payload["clean_checkout_removed"] = rehearsal.teardown()
 
         failed_producers = [row for row in rehearsal.results if row["result"] != "PASS"]
         payload["producers_failed"] = [row["id"] for row in failed_producers]
-        payload["inputs_absent_from_the_commit"] = sorted({
-            row["missing_input_named"] for row in failed_producers if row.get("missing_input_named")
-        })
+        payload["inputs_absent_from_the_commit"] = sorted(
+            {
+                row["missing_input_named"]
+                for row in failed_producers
+                if row.get("missing_input_named")
+            }
+        )
         if payload["inputs_absent_from_the_commit"]:
             payload["finding"] = (
                 "the lane's artefacts are functions of (this commit, untracked campaign inputs). "
@@ -706,21 +895,25 @@ def verdict_of(payload: dict[str, Any], exit_code: int) -> str:
     sha = (payload.get("lane_commit") or {}).get("sha") or ""
     if exit_code == 0 and "reproduction" in payload:
         reproduction = payload["reproduction"]
-        return (f"PASS — commit {sha[:8]} touches only its own files, carries no credential "
-                f"material, and rebuilds from a clean checkout: "
-                f"{reproduction['compared']} artefact(s) compared with 0 mismatches, "
-                f"{len(reproduction['not_reproduced'])} not reproduced by this run, "
-                f"every control detected")
+        return (
+            f"PASS — commit {sha[:8]} touches only its own files, carries no credential "
+            f"material, and rebuilds from a clean checkout: "
+            f"{reproduction['compared']} artefact(s) compared with 0 mismatches, "
+            f"{len(reproduction['not_reproduced'])} not reproduced by this run, "
+            f"every control detected"
+        )
     if exit_code == 0:
-        return ("PASS (scope and secrets only) — the rehearsal was not requested "
-                "(pass --run-rehearsal)")
+        return (
+            "PASS (scope and secrets only) — the rehearsal was not requested (pass --run-rehearsal)"
+        )
     parts = [f"exit {exit_code}"]
     if payload.get("producers_failed"):
         parts.append(f"producers failed: {', '.join(payload['producers_failed'])}")
     reproduction = payload.get("reproduction") or {}
     if reproduction.get("mismatches"):
-        parts.append(f"artefacts that did not match the commit: "
-                     f"{', '.join(reproduction['mismatches'])}")
+        parts.append(
+            f"artefacts that did not match the commit: {', '.join(reproduction['mismatches'])}"
+        )
     absent = payload.get("inputs_absent_from_the_commit") or []
     if absent:
         parts.append(f"inputs the commit does not carry: {len(absent)} named in this file")
@@ -775,8 +968,10 @@ def render_markdown(payload: dict[str, Any]) -> str:
             "| --- | ---: | ---: | --- | ---: | --- |",
         ]
         for row in payload.get("rehearsal") or []:
-            lines.append(f"| `{row['id']}` | {row['exit_code']} | {row['expected_exit_code']} | "
-                         f"{row['result']} | {row['seconds']} | {row['what']} |")
+            lines.append(
+                f"| `{row['id']}` | {row['exit_code']} | {row['expected_exit_code']} | "
+                f"{row['result']} | {row['seconds']} | {row['what']} |"
+            )
         reproduction = payload.get("reproduction") or {}
         lines += [
             "",
@@ -790,10 +985,12 @@ def render_markdown(payload: dict[str, Any]) -> str:
             "| --- | --- | --- | --- | --- | --- |",
         ]
         for row in reproduction.get("artifacts") or []:
-            lines.append(f"| `{row['artifact']}` | `{row.get('producer') or '—'}` | "
-                         f"{row['comparison']} | "
-                         f"`{row.get('digest_committed') or '—'}` | "
-                         f"`{row.get('digest_regenerated') or '—'}` | {row['identical']} |")
+            lines.append(
+                f"| `{row['artifact']}` | `{row.get('producer') or '—'}` | "
+                f"{row['comparison']} | "
+                f"`{row.get('digest_committed') or '—'}` | "
+                f"`{row.get('digest_regenerated') or '—'}` | {row['identical']} |"
+            )
         if payload.get("inputs_absent_from_the_commit"):
             lines += ["", "Inputs a producer said it could not find in the clean checkout:", ""]
             lines += [f"* `{path}`" for path in payload["inputs_absent_from_the_commit"]]
@@ -809,17 +1006,25 @@ def render_markdown(payload: dict[str, Any]) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--commit", default=None,
-                        help="commit to close (default: the last commit that touched the lane)")
-    parser.add_argument("--run-rehearsal", action="store_true",
-                        help="rebuild the artefacts in a clean worktree of the commit")
-    parser.add_argument("--run-runtime-legs", action="store_true",
-                        help="also re-run the four runtime legs (~4 min)")
+    parser.add_argument(
+        "--commit",
+        default=None,
+        help="commit to close (default: the last commit that touched the lane)",
+    )
+    parser.add_argument(
+        "--run-rehearsal",
+        action="store_true",
+        help="rebuild the artefacts in a clean worktree of the commit",
+    )
+    parser.add_argument(
+        "--run-runtime-legs", action="store_true", help="also re-run the four runtime legs (~4 min)"
+    )
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
 
-    payload = build(args.commit, run_rehearsal=args.run_rehearsal,
-                    run_runtime_legs=args.run_runtime_legs)
+    payload = build(
+        args.commit, run_rehearsal=args.run_rehearsal, run_runtime_legs=args.run_runtime_legs
+    )
     if args.json:
         print(json.dumps(payload, indent=2, default=str))
         return int(payload.get("exit_code") or 0)

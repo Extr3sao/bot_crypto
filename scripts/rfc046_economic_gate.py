@@ -238,8 +238,9 @@ def _size_factor(size_usd: float) -> float:
     return 1.0 + math.sqrt(size_usd / DOCUMENTED_REFERENCE_NOTIONAL_USD)
 
 
-def _independent_spot_taker_bps(size_usd: float, maker_fee_bps: float, taker_fee_bps: float,
-                                spread_bps: float) -> float:
+def _independent_spot_taker_bps(
+    size_usd: float, maker_fee_bps: float, taker_fee_bps: float, spread_bps: float
+) -> float:
     """Fee + spread + slippage + impact, computed outside the model, for the cross-check below."""
     fee = 2.0 * taker_fee_bps
     spread = spread_bps * 1.0  # two taker legs x half-spread
@@ -282,7 +283,9 @@ def _components(scenario_id: str, size_usd: float) -> tuple[dict[str, Any], floa
         ],
         "knowledge_class": cost.knowledge_class,
         "size_factor": round(_size_factor(size_usd), 6),
-        "size_invariant": not any(c.name in ("slippage", "market_impact", "spread") for c in cost.components),
+        "size_invariant": not any(
+            c.name in ("slippage", "market_impact", "spread") for c in cost.components
+        ),
     }
     return published, exact_total, exact_sum
 
@@ -295,7 +298,9 @@ def cost_audit(
     Returns the publishable document plus the exact (unrounded) round-trip costs at 200 USDT and
     ​1,000 USD, so downstream arithmetic never starts from a rounded figure.
     """
-    at_1000, exact_1000, sum_1000 = _components(ADMISSION_SCENARIO_ID, DOCUMENTED_REFERENCE_SIZE_USD)
+    at_1000, exact_1000, sum_1000 = _components(
+        ADMISSION_SCENARIO_ID, DOCUMENTED_REFERENCE_SIZE_USD
+    )
     at_200, exact_200, sum_200 = _components(ADMISSION_SCENARIO_ID, REFERENCE_CAPITAL_USDT)
     maker_1000, maker_exact_1000, maker_sum_1000 = _components(
         "BINANCE_SPOT_STANDARD_MAKER", DOCUMENTED_REFERENCE_SIZE_USD
@@ -308,7 +313,11 @@ def cost_audit(
     for label, exact, component_sum in (
         (f"{ADMISSION_SCENARIO_ID}@{DOCUMENTED_REFERENCE_SIZE_USD}", exact_1000, sum_1000),
         (f"{ADMISSION_SCENARIO_ID}@{REFERENCE_CAPITAL_USDT}", exact_200, sum_200),
-        (f"BINANCE_SPOT_STANDARD_MAKER@{DOCUMENTED_REFERENCE_SIZE_USD}", maker_exact_1000, maker_sum_1000),
+        (
+            f"BINANCE_SPOT_STANDARD_MAKER@{DOCUMENTED_REFERENCE_SIZE_USD}",
+            maker_exact_1000,
+            maker_sum_1000,
+        ),
         (f"BINANCE_SPOT_STANDARD_MAKER@{REFERENCE_CAPITAL_USDT}", maker_exact_200, maker_sum_200),
     ):
         if abs(exact - component_sum) > 1e-12 * max(1.0, abs(exact)):
@@ -332,7 +341,9 @@ def cost_audit(
                 f"independent={independent} model={exact}"
             )
 
-    fee_total = sum(c["value_bps"] for c in at_200["components"] if c["name"].startswith("exchange_fee"))
+    fee_total = sum(
+        c["value_bps"] for c in at_200["components"] if c["name"].startswith("exchange_fee")
+    )
     spread = sum(c["value_bps"] for c in at_200["components"] if c["name"] == "spread")
     slippage = sum(c["value_bps"] for c in at_200["components"] if c["name"] == "slippage")
     impact = sum(c["value_bps"] for c in at_200["components"] if c["name"] == "market_impact")
@@ -498,7 +509,9 @@ def cost_audit(
             "scenario_id": "BINANCE_SPOT_STANDARD_MAKER",
             "at_documented_reference_size": maker_1000,
             "at_reference_capital": maker_200,
-            "premium_over_taker_bps": round(maker_1000["round_trip_bps"] - at_1000["round_trip_bps"], 6),
+            "premium_over_taker_bps": round(
+                maker_1000["round_trip_bps"] - at_1000["round_trip_bps"], 6
+            ),
             "execution_model_status": execution["status"],
             "execution_model_reason": execution["status_reason"],
         },
@@ -593,14 +606,18 @@ def break_even(cost_audit_doc: dict[str, Any], toll_exact: float) -> dict[str, A
             "frozen_admission_bps": frozen_admission,
             "frozen_stress_threshold_bps": round(frozen_admission * stress_multiple, 9),
             "delta_vs_200_usdt_bps": round(taker - frozen_admission, 9),
-            "stress_delta_bps": round(frozen_admission * stress_multiple - taker * stress_multiple, 9),
+            "stress_delta_bps": round(
+                frozen_admission * stress_multiple - taker * stress_multiple, 9
+            ),
             "note": "the frozen gate is marginally *more* demanding than a 1.5x stress at 200 USDT, "
             "so the campaign did not overstate the difficulty of the toll",
         },
         "maker_modality": {
             "round_trip_bps_at_200_usdt": maker,
             "cost_per_round_trip_usdt": round(REFERENCE_CAPITAL_USDT * maker / BPS, 9),
-            "size_invariant": cost_audit_doc["maker_path"]["at_reference_capital"]["size_invariant"],
+            "size_invariant": cost_audit_doc["maker_path"]["at_reference_capital"][
+                "size_invariant"
+            ],
             "admissible": False,
             "reason": cost_audit_doc["maker_path"]["execution_model_reason"],
         },
@@ -609,7 +626,9 @@ def break_even(cost_audit_doc: dict[str, Any], toll_exact: float) -> dict[str, A
             "cost_per_day_usdt": round(cost_per_op * 3, 9),
             "cost_per_day_pct_of_capital": round(cost_per_op * 3 / REFERENCE_CAPITAL_USDT, 9),
             "cost_per_year_usdt": round(cost_per_op * 3 * 365, 9),
-            "cost_per_year_multiple_of_capital": round(cost_per_op * 3 * 365 / REFERENCE_CAPITAL_USDT, 9),
+            "cost_per_year_multiple_of_capital": round(
+                cost_per_op * 3 * 365 / REFERENCE_CAPITAL_USDT, 9
+            ),
             "note": "illustrative arithmetic at full deployment, never a forecast: it is the gross "
             "profit the account must extract from the market just to pay the venue",
         },
@@ -626,7 +645,9 @@ def break_even(cost_audit_doc: dict[str, Any], toll_exact: float) -> dict[str, A
         },
         "taker_vs_maker_at_1000_usd": {
             "taker_bps": taker_1000,
-            "maker_bps": cost_audit_doc["maker_path"]["at_documented_reference_size"]["round_trip_bps"],
+            "maker_bps": cost_audit_doc["maker_path"]["at_documented_reference_size"][
+                "round_trip_bps"
+            ],
         },
     }
 
@@ -826,8 +847,9 @@ def rfc046_review() -> dict[str, Any]:
 # --------------------------------------------------------------------------- #
 
 
-def standing_state(run_report: dict[str, Any], rfc: dict[str, Any],
-                   operating_model: dict[str, Any]) -> dict[str, Any]:
+def standing_state(
+    run_report: dict[str, Any], rfc: dict[str, Any], operating_model: dict[str, Any]
+) -> dict[str, Any]:
     exemption = operating_model["next_action_policy"]["rfc046_limited_exemption"]
     state = {
         "campaign_status": run_report["campaign"]["campaign_status"],
@@ -846,8 +868,9 @@ def standing_state(run_report: dict[str, Any], rfc: dict[str, Any],
     return state
 
 
-def decision(cost_audit_doc: dict[str, Any], families: dict[str, Any],
-             break_even_doc: dict[str, Any]) -> dict[str, Any]:
+def decision(
+    cost_audit_doc: dict[str, Any], families: dict[str, Any], break_even_doc: dict[str, Any]
+) -> dict[str, Any]:
     """The scope recommendation, in the allowed vocabulary only."""
     toll = break_even_doc["minimum_gross_move_bps_per_round_trip"]
     compatible = [
@@ -872,7 +895,9 @@ def decision(cost_audit_doc: dict[str, Any], families: dict[str, Any],
             "execution": "market/taker on both legs (the cheapest permitted posture at VIP0)",
             "round_trip_bps_at_200_usdt": toll,
             "minimum_gross_edge_bps": toll,
-            "required_gross_edge_bps_at_1p5x": break_even_doc["required_gross_edge_bps_at_1p5x_stress"],
+            "required_gross_edge_bps_at_1p5x": break_even_doc[
+                "required_gross_edge_bps_at_1p5x_stress"
+            ],
             "horizon_region": "holding periods from about one day upwards, where the measured "
             "median move is at least seven times the toll",
             "turnover_region": "low: each round trip costs "
@@ -1147,7 +1172,8 @@ def render_md(report: dict[str, Any]) -> str:
     lines += [
         "",
         f"**{families['a_family_that_can_cover_commissions_is_not_validated'] and 'A family that can cover commissions is not thereby validated'}.** "
-        + families["edge_existence_basis"] + ".",
+        + families["edge_existence_basis"]
+        + ".",
         "",
         "## 5. RFC-046 evidence review (confirmations only)",
         "",

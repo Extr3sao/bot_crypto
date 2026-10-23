@@ -87,9 +87,18 @@ FEATURES: tuple[dict[str, str], ...] = (
         "definition": "(takerBuyVolume - takerSellVolume) / (takerBuyVolume + takerSellVolume)",
     },
     {"name": "funding", "definition": "most recent settled funding rate, as a decimal"},
-    {"name": "ls_global_pctile", "definition": "trailing percentile of the global long/short account ratio"},
-    {"name": "ls_top_position_pctile", "definition": "trailing percentile of the top-trader position long/short ratio"},
-    {"name": "momentum_delta", "definition": "change in short-horizon price momentum, the deterioration term"},
+    {
+        "name": "ls_global_pctile",
+        "definition": "trailing percentile of the global long/short account ratio",
+    },
+    {
+        "name": "ls_top_position_pctile",
+        "definition": "trailing percentile of the top-trader position long/short ratio",
+    },
+    {
+        "name": "momentum_delta",
+        "definition": "change in short-horizon price momentum, the deterioration term",
+    },
     {"name": "vol_regime", "definition": "1h volatility regime: +1 expanding, -1 contracting"},
 )
 
@@ -274,7 +283,9 @@ def h1_breakout_confirmation(row: Mapping[str, float]) -> int:
 
 def h1_short_covering_arm(row: Mapping[str, float]) -> bool:
     """A2-NT-01: the declared, non-traded short-covering comparator."""
-    return row["ret_z"] > THRESHOLDS["breakout_ret_z"] and row["oi_chg"] < THRESHOLDS["oi_expanding"]
+    return (
+        row["ret_z"] > THRESHOLDS["breakout_ret_z"] and row["oi_chg"] < THRESHOLDS["oi_expanding"]
+    )
 
 
 def h2_crowded_reversal(row: Mapping[str, float]) -> int:
@@ -303,7 +314,10 @@ def h3_flow_continuation(row: Mapping[str, float]) -> int:
 
 def h3_exhaustion_arm(row: Mapping[str, float]) -> bool:
     """A2-NT-02: the declared NO_TRADE arm — a strong move on collapsing OI."""
-    return abs(row["ret_z"]) > THRESHOLDS["breakout_ret_z"] and row["oi_chg"] < THRESHOLDS["oi_expanding"]
+    return (
+        abs(row["ret_z"]) > THRESHOLDS["breakout_ret_z"]
+        and row["oi_chg"] < THRESHOLDS["oi_expanding"]
+    )
 
 
 #: Every declared traded hypothesis must appear here, and nothing else may.  A test
@@ -321,6 +335,4 @@ NON_TRADED_ARMS: dict[str, Callable[[Mapping[str, float]], bool]] = {
 }
 
 #: The frozen hypothesis tuples, in registry order.
-HYPOTHESES: tuple[dict[str, Any], ...] = tuple(
-    dict(item) for item in PREREGISTRATION["hypotheses"]
-)
+HYPOTHESES: tuple[dict[str, Any], ...] = tuple(dict(item) for item in PREREGISTRATION["hypotheses"])

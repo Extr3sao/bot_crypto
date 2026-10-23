@@ -50,18 +50,23 @@ ASSETS = ("BTCUSDT", "ETHUSDT", "SOLUSDT")
 # RFC-027 legacy control only — NOT the carry cost (§16).
 COST_MODEL_V3_BPS = 23.790569
 
-ROOT_NOTIONAL = 1.0        # per unit notional per leg (PnL reported in bps)
-PERP_LEVERAGE = 3.0        # conservative; liquidation economically remote (§32-§33)
-SPOT_LEG_CAPITAL = 1.0     # spot bought outright
+ROOT_NOTIONAL = 1.0  # per unit notional per leg (PnL reported in bps)
+PERP_LEVERAGE = 3.0  # conservative; liquidation economically remote (§32-§33)
+SPOT_LEG_CAPITAL = 1.0  # spot bought outright
 PERP_LEG_CAPITAL = 1.0 / PERP_LEVERAGE
-COMMITTED_CAPITAL = SPOT_LEG_CAPITAL + PERP_LEG_CAPITAL   # §31
+COMMITTED_CAPITAL = SPOT_LEG_CAPITAL + PERP_LEG_CAPITAL  # §31
 
-SRC_MS = 5 * 60 * 1000          # 5m source grid
-FUNDING_INTERVAL_MS = 8 * 60 * 60 * 1000   # 8h funding schedule
+SRC_MS = 5 * 60 * 1000  # 5m source grid
+FUNDING_INTERVAL_MS = 8 * 60 * 60 * 1000  # 8h funding schedule
 
 # Holding horizons expressed in FUNDING PERIODS (§9).
 HORIZON_PERIODS: dict[str, int] = {
-    "8h": 1, "16h": 2, "24h": 3, "48h": 6, "72h": 9, "7d": 21,
+    "8h": 1,
+    "16h": 2,
+    "24h": 3,
+    "48h": 6,
+    "72h": 9,
+    "7d": 21,
 }
 HORIZON_ORDER = ("8h", "16h", "24h", "48h", "72h", "7d")
 
@@ -69,20 +74,24 @@ HORIZON_ORDER = ("8h", "16h", "24h", "48h", "72h", "7d")
 # CARRY_COST_MODEL_V1 (§16-§18) — conservative official public all-taker tiers.
 # ---------------------------------------------------------------------------
 CARRY_COST_MODEL_V1: dict[str, float] = {
-    "spot_fee_bps": 10.0,          # Binance spot taker 0.10% (no BNB discount)
-    "spot_half_spread_bps": 2.0,   # crossing half-spread, conservative
-    "spot_impact_bps": 1.0,        # small-size market impact
-    "perp_fee_bps": 5.0,           # USDⓈ-M perp taker 0.05%
+    "spot_fee_bps": 10.0,  # Binance spot taker 0.10% (no BNB discount)
+    "spot_half_spread_bps": 2.0,  # crossing half-spread, conservative
+    "spot_impact_bps": 1.0,  # small-size market impact
+    "perp_fee_bps": 5.0,  # USDⓈ-M perp taker 0.05%
     "perp_half_spread_bps": 1.0,
     "perp_impact_bps": 0.5,
 }
-SPOT_SIDE_BPS = (CARRY_COST_MODEL_V1["spot_fee_bps"]
-                 + CARRY_COST_MODEL_V1["spot_half_spread_bps"]
-                 + CARRY_COST_MODEL_V1["spot_impact_bps"])
-PERP_SIDE_BPS = (CARRY_COST_MODEL_V1["perp_fee_bps"]
-                 + CARRY_COST_MODEL_V1["perp_half_spread_bps"]
-                 + CARRY_COST_MODEL_V1["perp_impact_bps"])
-ROUND_TRIP_COST_BPS = 2.0 * SPOT_SIDE_BPS + 2.0 * PERP_SIDE_BPS   # 39.0 bps
+SPOT_SIDE_BPS = (
+    CARRY_COST_MODEL_V1["spot_fee_bps"]
+    + CARRY_COST_MODEL_V1["spot_half_spread_bps"]
+    + CARRY_COST_MODEL_V1["spot_impact_bps"]
+)
+PERP_SIDE_BPS = (
+    CARRY_COST_MODEL_V1["perp_fee_bps"]
+    + CARRY_COST_MODEL_V1["perp_half_spread_bps"]
+    + CARRY_COST_MODEL_V1["perp_impact_bps"]
+)
+ROUND_TRIP_COST_BPS = 2.0 * SPOT_SIDE_BPS + 2.0 * PERP_SIDE_BPS  # 39.0 bps
 
 # Trailing funding window (periods) used by the persistence signal (§21).
 FUNDING_MEAN_K = 3
@@ -97,6 +106,7 @@ HOLDOUT_ANALYTICS_READ = False
 # ---------------------------------------------------------------------------
 # raw canonical loaders
 # ---------------------------------------------------------------------------
+
 
 def _npz(path: Path) -> dict[str, NDArray[Any]]:
     with np.load(path, allow_pickle=False) as z:
@@ -123,6 +133,7 @@ def load_metrics(asset: str) -> dict[str, NDArray[Any]]:
 # as-of join + rolling primitives
 # ---------------------------------------------------------------------------
 
+
 def _asof(times: NDArray[Any], values: NDArray[Any], decisions: NDArray[Any]) -> NDArray[Any]:
     """Backward / as-of join: latest value with time <= decision (ms)."""
     order = np.argsort(times, kind="mergesort")
@@ -147,7 +158,7 @@ def _rolling_mean(x: NDArray[Any], n: int) -> NDArray[Any]:
     cnt = finite.sum(axis=1)
     tot = np.where(finite, w, 0.0).sum(axis=1)
     with np.errstate(invalid="ignore", divide="ignore"):
-        out[n - 1:] = np.where(cnt == n, tot / cnt, np.nan)
+        out[n - 1 :] = np.where(cnt == n, tot / cnt, np.nan)
     return out
 
 
@@ -157,7 +168,7 @@ def _rolling_std(x: NDArray[Any], n: int) -> NDArray[Any]:
         return out
     w = np.lib.stride_tricks.sliding_window_view(x, n)
     finite = np.isfinite(w).sum(axis=1)
-    out[n - 1:] = np.where(finite == n, np.nanstd(w, axis=1), np.nan)
+    out[n - 1 :] = np.where(finite == n, np.nanstd(w, axis=1), np.nan)
     return out
 
 
@@ -187,19 +198,20 @@ def _persist_of_lag(x: NDArray[Any], k: int) -> NDArray[Any]:
 # carry panel
 # ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True, slots=True)
 class CarryPanel:
     """A pooled, PIT-safe carry decision panel (one row per funding period)."""
 
-    ts: NDArray[Any]              # decision time = funding payment time (ms)
+    ts: NDArray[Any]  # decision time = funding payment time (ms)
     asset: NDArray[Any]
     spot: NDArray[Any]
     perp: NDArray[Any]
-    basis: NDArray[Any]           # (perp/spot - 1) * 1e4 bps
-    funding: NDArray[Any]         # realized rate paid AT ts (bps)
+    basis: NDArray[Any]  # (perp/spot - 1) * 1e4 bps
+    funding: NDArray[Any]  # realized rate paid AT ts (bps)
     features: dict[str, NDArray[Any]]
-    fwd_funding: dict[int, NDArray[Any]]     # sum of next h realized rates (bps)
-    fwd_basis_pnl: dict[int, NDArray[Any]]   # basis/residual PnL over h (bps)
+    fwd_funding: dict[int, NDArray[Any]]  # sum of next h realized rates (bps)
+    fwd_basis_pnl: dict[int, NDArray[Any]]  # basis/residual PnL over h (bps)
 
     def __len__(self) -> int:
         return int(self.ts.shape[0])
@@ -220,7 +232,7 @@ def _asset_carry(asset: str) -> dict[str, Any]:
     s_close = _asof(s_close_t, spot["close"], gts)
     p_close = _asof(p_close_t, perp["close"], gts)
 
-    basis = (p_close / s_close - 1.0) * 1e4          # bps
+    basis = (p_close / s_close - 1.0) * 1e4  # bps
     rate_bps = np.asarray(fund["funding_rate"], dtype=np.float64) * 1e4
 
     # trailing funding features (strictly past: never the rate paid at ts)
@@ -247,7 +259,7 @@ def _asset_carry(asset: str) -> dict[str, Any]:
     avail = metr["available_time_ms"].astype(np.int64)
     oi = _asof(avail, metr["sum_open_interest"], gts)
     oi_chg = np.full(oi.shape, np.nan, dtype=np.float64)
-    prev = _shift(oi, 3)         # 24h ago (3 periods)
+    prev = _shift(oi, 3)  # 24h ago (3 periods)
     with np.errstate(invalid="ignore", divide="ignore"):
         oi_chg = np.where(prev > 0, oi / prev - 1.0, np.nan)
     ls_global = _asof(avail, metr["count_long_short_ratio"], gts)
@@ -255,11 +267,19 @@ def _asset_carry(asset: str) -> dict[str, Any]:
     crowd_z = _zscore(crowd, 63)
 
     feats: dict[str, NDArray[Any]] = {
-        "f_mean_k": f_mean_k, "f_mean_9": f_mean_9, "f_mean_21": f_mean_21,
-        "f_persist_k": f_persist_k, "f_last": f_last,
-        "basis": basis, "basis_mean_k": b_mean_k, "basis_last": b_last,
-        "vol_real": vol_real, "vol_z": vol_z,
-        "oi_chg": oi_chg, "crowd": crowd, "crowd_z": crowd_z,
+        "f_mean_k": f_mean_k,
+        "f_mean_9": f_mean_9,
+        "f_mean_21": f_mean_21,
+        "f_persist_k": f_persist_k,
+        "f_last": f_last,
+        "basis": basis,
+        "basis_mean_k": b_mean_k,
+        "basis_last": b_last,
+        "vol_real": vol_real,
+        "vol_z": vol_z,
+        "oi_chg": oi_chg,
+        "crowd": crowd,
+        "crowd_z": crowd_z,
     }
 
     fwd_funding: dict[int, NDArray[Any]] = {}
@@ -271,15 +291,21 @@ def _asset_carry(asset: str) -> dict[str, Any]:
             j = i + h
             if j >= n:
                 break
-            ff[i] = float(np.nansum(rate_bps[i + 1: j + 1]))
+            ff[i] = float(np.nansum(rate_bps[i + 1 : j + 1]))
             fb[i] = float((s_close[j] / s_close[i] - p_close[j] / p_close[i]) * 1e4)
         fwd_funding[h] = ff
         fwd_basis[h] = fb
 
     return {
-        "asset": asset, "ts": gts, "spot": s_close, "perp": p_close,
-        "basis": basis, "funding": rate_bps, "features": feats,
-        "fwd_funding": fwd_funding, "fwd_basis_pnl": fwd_basis,
+        "asset": asset,
+        "ts": gts,
+        "spot": s_close,
+        "perp": p_close,
+        "basis": basis,
+        "funding": rate_bps,
+        "features": feats,
+        "fwd_funding": fwd_funding,
+        "fwd_basis_pnl": fwd_basis,
     }
 
 
@@ -293,14 +319,24 @@ def _zscore(x: NDArray[Any], n: int) -> NDArray[Any]:
         mu = np.nanmean(w, axis=1)
         sd = np.nanstd(w, axis=1)
         good = (finite == n) & (sd > 0)
-        out[n - 1:] = np.where(good, (x[n - 1:] - mu) / sd, np.nan)
+        out[n - 1 :] = np.where(good, (x[n - 1 :] - mu) / sd, np.nan)
     return out
 
 
 FEATURE_NAMES = (
-    "f_mean_k", "f_mean_9", "f_mean_21", "f_persist_k", "f_last",
-    "basis", "basis_mean_k", "basis_last",
-    "vol_real", "vol_z", "oi_chg", "crowd", "crowd_z",
+    "f_mean_k",
+    "f_mean_9",
+    "f_mean_21",
+    "f_persist_k",
+    "f_last",
+    "basis",
+    "basis_mean_k",
+    "basis_last",
+    "vol_real",
+    "vol_z",
+    "oi_chg",
+    "crowd",
+    "crowd_z",
 )
 
 
@@ -327,12 +363,17 @@ def build_carry_panel(upto: str = "VALIDATION") -> CarryPanel:
         sub["asset_idx"] = np.full(cut, ai, dtype=np.int64)
         per_asset.append(sub)
 
-    feats = {name: np.concatenate([a["features"][name] for a in per_asset])
-             for name in FEATURE_NAMES}
-    fwd_f = {h: np.concatenate([a["fwd_funding"][h] for a in per_asset])
-             for h in per_asset[0]["fwd_funding"]}
-    fwd_b = {h: np.concatenate([a["fwd_basis_pnl"][h] for a in per_asset])
-             for h in per_asset[0]["fwd_basis_pnl"]}
+    feats = {
+        name: np.concatenate([a["features"][name] for a in per_asset]) for name in FEATURE_NAMES
+    }
+    fwd_f = {
+        h: np.concatenate([a["fwd_funding"][h] for a in per_asset])
+        for h in per_asset[0]["fwd_funding"]
+    }
+    fwd_b = {
+        h: np.concatenate([a["fwd_basis_pnl"][h] for a in per_asset])
+        for h in per_asset[0]["fwd_basis_pnl"]
+    }
     return CarryPanel(
         ts=np.concatenate([a["ts"] for a in per_asset]),
         asset=np.concatenate([a["asset_idx"] for a in per_asset]),
@@ -340,7 +381,9 @@ def build_carry_panel(upto: str = "VALIDATION") -> CarryPanel:
         perp=np.concatenate([a["perp"] for a in per_asset]),
         basis=np.concatenate([a["basis"] for a in per_asset]),
         funding=np.concatenate([a["funding"] for a in per_asset]),
-        features=feats, fwd_funding=fwd_f, fwd_basis_pnl=fwd_b,
+        features=feats,
+        fwd_funding=fwd_f,
+        fwd_basis_pnl=fwd_b,
     )
 
 
@@ -358,9 +401,9 @@ def split_masks(panel: CarryPanel) -> dict[str, NDArray[Any]]:
         d0, d1 = SPLIT_FRACTIONS["DISCOVERY"]
         v0, v1 = SPLIT_FRACTIONS["VALIDATION"]
         h0, h1 = SPLIT_FRACTIONS["HOLDOUT"]
-        m_disc[idx[int(m * d0): int(m * d1)]] = True
-        m_val[idx[int(m * v0): int(m * v1)]] = True
-        m_hold[idx[int(m * h0): int(m * h1)]] = True
+        m_disc[idx[int(m * d0) : int(m * d1)]] = True
+        m_val[idx[int(m * v0) : int(m * v1)]] = True
+        m_hold[idx[int(m * h0) : int(m * h1)]] = True
     return {"DISCOVERY": m_disc, "VALIDATION": m_val, "HOLDOUT": m_hold}
 
 
@@ -368,9 +411,14 @@ def split_masks(panel: CarryPanel) -> dict[str, NDArray[Any]]:
 # multi-leg accounting (§13-§15)
 # ---------------------------------------------------------------------------
 
+
 def carry_trade(
-    spot0: float, spot1: float, perp0: float, perp1: float,
-    funding_sum_bps: float, cost_bps: float = ROUND_TRIP_COST_BPS,
+    spot0: float,
+    spot1: float,
+    perp0: float,
+    perp1: float,
+    funding_sum_bps: float,
+    cost_bps: float = ROUND_TRIP_COST_BPS,
 ) -> dict[str, float]:
     """Account a single LONG SPOT + SHORT PERP round trip in bps of notional."""
     spot_ret = spot1 / spot0 - 1.0
@@ -401,6 +449,7 @@ def residual_delta(spot0: float, perp0: float) -> float:
 # event-driven strategy simulation (non-overlapping, PIT-clean)
 # ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True, slots=True)
 class Trade:
     asset: int
@@ -417,8 +466,11 @@ class Trade:
 
 
 def simulate_candidate(
-    panel: CarryPanel, mask: NDArray[Any], entry_signal: NDArray[Any],
-    horizon_key: str, cost_bps: float = ROUND_TRIP_COST_BPS,
+    panel: CarryPanel,
+    mask: NDArray[Any],
+    entry_signal: NDArray[Any],
+    horizon_key: str,
+    cost_bps: float = ROUND_TRIP_COST_BPS,
 ) -> dict[str, Any]:
     """Non-overlapping event simulation of one pre-registered candidate.
 
@@ -442,25 +494,40 @@ def simulate_candidate(
             if not mask[j]:
                 i += 1
                 continue
-            vals = (panel.spot[i], panel.spot[j], panel.perp[i], panel.perp[j],
-                    panel.fwd_funding[h][i])
+            vals = (
+                panel.spot[i],
+                panel.spot[j],
+                panel.perp[i],
+                panel.perp[j],
+                panel.fwd_funding[h][i],
+            )
             if not all(np.isfinite(v) for v in vals):
-                i += 1   # missing datum excludes the observation — no imputation (§12)
+                i += 1  # missing datum excludes the observation — no imputation (§12)
                 continue
             acc = carry_trade(
-                panel.spot[i], panel.spot[j], panel.perp[i], panel.perp[j],
-                panel.fwd_funding[h][i], cost_bps,
+                panel.spot[i],
+                panel.spot[j],
+                panel.perp[i],
+                panel.perp[j],
+                panel.fwd_funding[h][i],
+                cost_bps,
             )
-            trades.append(Trade(
-                asset=ai, entry_idx=i, exit_idx=j,
-                entry_ts=int(panel.ts[i]), exit_ts=int(panel.ts[j]),
-                funding_pnl_bps=acc["funding_pnl_bps"],
-                basis_pnl_bps=acc["basis_pnl_bps"],
-                spot_pnl_bps=acc["spot_pnl_bps"],
-                perp_pnl_bps=acc["perp_pnl_bps"],
-                cost_bps=acc["cost_bps"], net_bps=acc["net_bps"],
-            ))
-            i = j + 1   # non-overlapping: next entry after this exit
+            trades.append(
+                Trade(
+                    asset=ai,
+                    entry_idx=i,
+                    exit_idx=j,
+                    entry_ts=int(panel.ts[i]),
+                    exit_ts=int(panel.ts[j]),
+                    funding_pnl_bps=acc["funding_pnl_bps"],
+                    basis_pnl_bps=acc["basis_pnl_bps"],
+                    spot_pnl_bps=acc["spot_pnl_bps"],
+                    perp_pnl_bps=acc["perp_pnl_bps"],
+                    cost_bps=acc["cost_bps"],
+                    net_bps=acc["net_bps"],
+                )
+            )
+            i = j + 1  # non-overlapping: next entry after this exit
     nets = np.array([t.net_bps for t in trades], dtype=np.float64)
     if nets.size == 0:
         return {"status": "NO_TRADES", "trades": 0}
@@ -502,7 +569,8 @@ def simulate_candidate(
         "top3_share": float(order[:3].sum() / order.sum()) if order.sum() != 0 else None,
         "without_best_mean": float(np.mean(np.sort(nets)[:-1])) if nets.size > 1 else None,
         "funding_share_of_gross": float(np.sum(fund) / (np.sum(fund) + np.sum(basis)))
-        if (np.sum(fund) + np.sum(basis)) != 0 else None,
+        if (np.sum(fund) + np.sum(basis)) != 0
+        else None,
         "trades_list": trades,
     }
 
@@ -531,6 +599,7 @@ def _max_drawdown(cum: NDArray[Any]) -> float:
 # ---------------------------------------------------------------------------
 # statistics primitives
 # ---------------------------------------------------------------------------
+
 
 def _rank(x: NDArray[Any]) -> NDArray[Any]:
     v = np.asarray(x, dtype=np.float64)
@@ -575,18 +644,22 @@ def quantile_spread(sig: NDArray[Any], fwd: NDArray[Any], q: int = 5) -> dict[st
     order = np.argsort(x, kind="mergesort")
     ys = y[order]
     size = n // q
-    means = [float(np.mean(ys[kk * size: (kk + 1) * size])) for kk in range(q)]
+    means = [float(np.mean(ys[kk * size : (kk + 1) * size])) for kk in range(q)]
     steps = sum(1 for kk in range(q - 1) if means[kk + 1] >= means[kk]) / (q - 1)
     mono = steps if steps >= 0.5 else steps - 1.0
-    return {"status": "OK", "n": int(n),
-            "quantile_means_bps": [round(v, 4) for v in means],
-            "top_minus_bottom_bps": round(means[-1] - means[0], 4),
-            "monotonicity": round(mono, 3)}
+    return {
+        "status": "OK",
+        "n": int(n),
+        "quantile_means_bps": [round(v, 4) for v in means],
+        "top_minus_bottom_bps": round(means[-1] - means[0], 4),
+        "monotonicity": round(mono, 3),
+    }
 
 
 # ---------------------------------------------------------------------------
 # break-even metrics (§38-§39)
 # ---------------------------------------------------------------------------
+
 
 def break_even_funding_bps(horizon_key: str) -> float:
     """Minimum per-period funding rate (bps) for the trade to break even."""
@@ -608,16 +681,19 @@ def break_even_holding_hours(mean_funding_bps_per_period: float) -> float | None
 # writers / hashing
 # ---------------------------------------------------------------------------
 
+
 def sha256_obj(obj: Any) -> str:
     import hashlib
+
     payload = json.dumps(obj, sort_keys=True, default=str).encode("utf-8")
     return hashlib.sha256(payload).hexdigest()
 
 
 def write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n",
-                    encoding="utf-8")
+    path.write_text(
+        json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8"
+    )
 
 
 def write_md(path: Path, text: str) -> None:

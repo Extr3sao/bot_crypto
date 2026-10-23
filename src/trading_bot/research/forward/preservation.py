@@ -528,8 +528,7 @@ def preservation_for_window(
             # stays. Cheap to keep, and the honest direction to fail in.
             report.verdicts[M03] = RAW_NOT_DELETABLE_FOR_M03
             report.reasons.append(
-                "no M-03 rows in this window to compare, so preservation cannot be "
-                "demonstrated"
+                "no M-03 rows in this window to compare, so preservation cannot be demonstrated"
             )
         elif resolution < BASE_INTERVAL_MINUTES:
             report.verdicts[M03] = RAW_NOT_DELETABLE_FOR_M03
@@ -549,16 +548,13 @@ def preservation_for_window(
     if policy.require_m07:
         resolution = policy.m07_min_resolution_minutes
         raw_state = derive_m07_from_raw(raw_paths, interval_minutes=max(1, resolution))
-        compact_state = derive_m07_from_aggregate(
-            aggregation, interval_minutes=max(1, resolution)
-        )
+        compact_state = derive_m07_from_aggregate(aggregation, interval_minutes=max(1, resolution))
         oi = compare_features("M-07 open interest x price", raw_state, compact_state, M07_FIELDS)
         report.comparisons.append(oi)
         if oi.compared == 0:
             report.verdicts[M07] = RAW_NOT_DELETABLE_FOR_M07
             report.reasons.append(
-                "no M-07 rows in this window to compare, so preservation cannot be "
-                "demonstrated"
+                "no M-07 rows in this window to compare, so preservation cannot be demonstrated"
             )
         elif oi.ok:
             report.verdicts[M07] = PRESERVED

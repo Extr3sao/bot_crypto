@@ -182,9 +182,7 @@ def cost_frontier(
         "admission_gap_bps": round(gross_bps - hurdle, 6),
         "admission_break_even_cost_bps": round(break_even, 6),
         "required_rebate_bps": round(required_rebate, 6),
-        "cost_reduction_needed_fraction": (
-            None if reduction is None else round(reduction, 6)
-        ),
+        "cost_reduction_needed_fraction": (None if reduction is None else round(reduction, 6)),
         "net_break_even_cost_bps": round(gross_bps, 6),
         "net_cost_reduction_needed_fraction": (
             None if net_reduction is None else round(net_reduction, 6)
@@ -246,9 +244,7 @@ def _normal_cdf(z: float) -> float:
     return 0.5 * (1.0 + math.erf(z / math.sqrt(2.0)))
 
 
-def mde_bps(
-    *, sigma_bps: float, n: int, alpha: float = 0.05, power: float = 0.8
-) -> float:
+def mde_bps(*, sigma_bps: float, n: int, alpha: float = 0.05, power: float = 0.8) -> float:
     """Minimum detectable effect (bps) for a one-sided mean test at ``power``."""
     if n <= 0 or sigma_bps <= 0:
         return float("inf")
@@ -271,8 +267,21 @@ def _probit(p: float) -> float:
         -3.066479806614716e01,
         2.506628277459239e00,
     ]
-    b = [-5.447609879822406e01, 1.615858368580409e02, -1.556989798598866e02, 6.680131188771972e01, -1.328068155288572e01]
-    c = [-7.784894002430293e-03, -3.223964580411365e-01, -2.400758277161838e00, -2.549732539343734e00, 4.374664141464968e00, 2.938163982698783e00]
+    b = [
+        -5.447609879822406e01,
+        1.615858368580409e02,
+        -1.556989798598866e02,
+        6.680131188771972e01,
+        -1.328068155288572e01,
+    ]
+    c = [
+        -7.784894002430293e-03,
+        -3.223964580411365e-01,
+        -2.400758277161838e00,
+        -2.549732539343734e00,
+        4.374664141464968e00,
+        2.938163982698783e00,
+    ]
     d = [7.784695709041462e-03, 3.224671290700398e-01, 2.445134137142996e00, 3.754408661907416e00]
     low, high = 0.02425, 1.0 - 0.02425
     if p < low:
@@ -303,9 +312,7 @@ def effective_sample_size(series: Sequence[float]) -> float:
         return float(n)
     factor = 1.0
     for lag in range(1, min(10, n - 1) + 1):
-        cov = sum(
-            (series[index] - mu) * (series[index - lag] - mu) for index in range(lag, n)
-        ) / n
+        cov = sum((series[index] - mu) * (series[index - lag] - mu) for index in range(lag, n)) / n
         rho = cov / var
         if rho <= 0.0:
             break
@@ -313,7 +320,9 @@ def effective_sample_size(series: Sequence[float]) -> float:
     return max(1.0, n / factor)
 
 
-def power_class(*, n_effective: float, sigma_bps: float, hurdle_bps: float) -> dict[str, float | str]:
+def power_class(
+    *, n_effective: float, sigma_bps: float, hurdle_bps: float
+) -> dict[str, float | str]:
     detectable = mde_bps(sigma_bps=sigma_bps, n=int(max(1, round(n_effective))))
     return {
         "n_effective": round(n_effective, 3),
@@ -366,9 +375,11 @@ def best_of_n_null(observed_best: float, null_best: Sequence[float]) -> dict[str
     n = len(draws)
     if n == 0:
         return {"draws": 0}
+
     def quantile(level: float) -> float:
         position = min(n - 1, max(0, math.ceil(level * n) - 1))
         return draws[position]
+
     at_least = sum(1 for value in draws if value >= observed_best)
     return {
         "draws": n,
@@ -403,8 +414,10 @@ def concentration(contributions: Sequence[float]) -> dict[str, Any]:
     """Trade-contribution concentration.  A single-trade edge is not an edge."""
     total = sum(contributions)
     ranked = sorted(contributions, reverse=True)
+
     def share(k: int) -> float:
         return sum(ranked[:k]) / total if total else 0.0
+
     top1 = share(1)
     top3 = share(3)
     top5 = share(5)
@@ -437,9 +450,7 @@ def sign_concentration(contributions: Sequence[float]) -> dict[str, Any]:
     }
 
 
-def stability_by_window(
-    contributions: Sequence[float], *, windows: int = 4
-) -> dict[str, Any]:
+def stability_by_window(contributions: Sequence[float], *, windows: int = 4) -> dict[str, Any]:
     """Per-sub-window gross mean.  Reported as-is: no retroactive filtering."""
     if windows <= 0 or not contributions:
         return {"windows": [], "n_positive": 0, "n_negative": 0, "consistent": False}
@@ -680,7 +691,9 @@ HYPOTHESES: tuple[dict[str, Any], ...] = (
 
 
 def hypothesis_registry_hash(
-    *, hypotheses: Sequence[Mapping[str, Any]] = HYPOTHESES, families: Sequence[Mapping[str, Any]] = FAMILIES
+    *,
+    hypotheses: Sequence[Mapping[str, Any]] = HYPOTHESES,
+    families: Sequence[Mapping[str, Any]] = FAMILIES,
 ) -> str:
     """Stable hash of the registry (adding or removing a hypothesis changes it)."""
     import hashlib

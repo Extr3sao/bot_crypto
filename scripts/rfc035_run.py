@@ -109,8 +109,7 @@ def build() -> dict[str, Any]:
         for f in SP.STRATEGY_FAMILIES
     ]
     plan_md = (
-        header
-        + "\n## Objective\n"
+        header + "\n## Objective\n"
         "Find the most promising path to the first EXECUTABLE, VALIDATED, NET POSITIVE\n"
         "EDGE before writing any strategy code (EDGE FIRST, FREQUENCY SECOND).\n\n"
         "## Scope\n"
@@ -149,9 +148,7 @@ def build() -> dict[str, Any]:
         + "\n".join(f"{i + 1}. {t}" for i, t in enumerate(SP.SOURCE_AUTHORITY_LADDER))
         + "\n\nLevels 6-8 clarify implementation but are not economic evidence alone.\n\n"
         "## Registry (§17)\n"
-        + _md_table(
-            ["id", "type", "year", "family", "role", "reliability", "strong?"], src_rows
-        )
+        + _md_table(["id", "type", "year", "family", "role", "reliability", "strong?"], src_rows)
         + "\n\n"
         + "\n".join(
             f"- **{s.source_id}** ({s.authors}, {s.year}) {s.title}. {s.url} "
@@ -196,9 +193,7 @@ def build() -> dict[str, Any]:
             for f in SP.STRATEGY_FAMILIES
         )
     )
-    _artifact_pair(
-        "STRATEGY_UNIVERSE", {"families": _jsonable(SP.STRATEGY_FAMILIES)}, uni_md
-    )
+    _artifact_pair("STRATEGY_UNIVERSE", {"families": _jsonable(SP.STRATEGY_FAMILIES)}, uni_md)
 
     # ---- STRATEGY_SCORECARD -------------------------------------------- #
     sc_rows = [
@@ -210,8 +205,7 @@ def build() -> dict[str, Any]:
         for f in SP.STRATEGY_FAMILIES
     ]
     sc_md = (
-        header
-        + "\n## Scorecard (§38-§41)\n"
+        header + "\n## Scorecard (§38-§41)\n"
         "Priority: evidence > economics > tradability > data. Critical dims "
         "(evidence, data, tradability) <= 1 block finalist status (§39).\n\n"
         + _md_table(["family", *SP.SCORECARD_DIMENSIONS, "weak critical"], sc_rows)
@@ -292,8 +286,7 @@ def build() -> dict[str, Any]:
         for f in SP.STRATEGY_FAMILIES
     ]
     hr_md = (
-        header
-        + "\n## Economic headroom (§22-§26)\n"
+        header + "\n## Economic headroom (§22-§26)\n"
         "HEADROOM_RATIO = expected gross edge / realistic cost. Bands: "
         + ", ".join(f"{b} {n}" for b, n in SP.HEADROOM_BANDS)
         + "\n\n"
@@ -349,14 +342,13 @@ def build() -> dict[str, Any]:
         for f in SP.STRATEGY_FAMILIES
     ]
     pp_md = (
-        header
-        + "\n## Post-publication survival (§19, §72-§73)\n"
-        "Classes: " + ", ".join(SP.POST_PUBLICATION_CLASSES) + "\n\n"
+        header + "\n## Post-publication survival (§19, §72-§73)\n"
+        "Classes: "
+        + ", ".join(SP.POST_PUBLICATION_CLASSES)
+        + "\n\n"
         + _md_table(["family", "survival", "score"], pp_rows)
         + "\n\n"
-        + "\n".join(
-            f"- **{f.family_id}**: {f.counter_evidence}" for f in SP.STRATEGY_FAMILIES
-        )
+        + "\n".join(f"- **{f.family_id}**: {f.counter_evidence}" for f in SP.STRATEGY_FAMILIES)
     )
     _artifact_pair(
         "POST_PUBLICATION_REVIEW",
@@ -416,7 +408,8 @@ def build() -> dict[str, Any]:
             ],
             dec_rows,
         )
-        + "\n\nDecision values are exactly: " + ", ".join(SP.DECISIONS)
+        + "\n\nDecision values are exactly: "
+        + ", ".join(SP.DECISIONS)
     )
     _artifact_pair(
         "FINAL_DECISION_MATRIX",
@@ -501,8 +494,7 @@ def build() -> dict[str, Any]:
         f"- Live profitable = {SP.LIVE_PROFITABLE_COUNT}\n\n"
         "## Next\n"
         + (
-            f"Phase 2 = REENTRY_APPROVED. NEXT_RFC_TYPE = {SP.NEXT_RFC_TYPE}, "
-            f"candidate = {p1}."
+            f"Phase 2 = REENTRY_APPROVED. NEXT_RFC_TYPE = {SP.NEXT_RFC_TYPE}, candidate = {p1}."
             if gate.status is SP.ReentryStatus.PASS
             else "NO STRATEGY CURRENTLY JUSTIFIES IMPLEMENTATION. Remain PAUSED."
         )
@@ -512,8 +504,7 @@ def build() -> dict[str, Any]:
 
     # ---- tracked plan --------------------------------------------------- #
     tracked_md = (
-        header
-        + "\n## Current state\n"
+        header + "\n## Current state\n"
         f"- platform_status = {SP.PLATFORM_STATUS}\n"
         f"- economic_status = {SP.ECONOMIC_STATUS}\n"
         f"- profitability_research_status = {SP.profitability_research_status(gate)}\n"

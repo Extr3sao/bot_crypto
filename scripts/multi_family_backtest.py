@@ -69,8 +69,14 @@ FAMILIES: dict[str, Any] = {
     "mean_reversion": MeanReversionFamily(),
     "volatility": VolatilityFamily(),
 }
-MIN_BARS = {"ema_crossover": 22, "momentum": 36, "breakout": 21,
-            "trend": 56, "mean_reversion": 22, "volatility": 33}
+MIN_BARS = {
+    "ema_crossover": 22,
+    "momentum": 36,
+    "breakout": 21,
+    "trend": 56,
+    "mean_reversion": 22,
+    "volatility": 33,
+}
 
 
 def day_key(ts_ms: int) -> int:
@@ -78,12 +84,23 @@ def day_key(ts_ms: int) -> int:
 
 
 def to_ohlcv(bars: list[dict[str, Any]]) -> list[OHLCV]:
-    return [OHLCV(symbol="X", timestamp=b["ts"], open=b["open"], high=b["high"],
-                  low=b["low"], close=b["close"], volume=b["volume"]) for b in bars]
+    return [
+        OHLCV(
+            symbol="X",
+            timestamp=b["ts"],
+            open=b["open"],
+            high=b["high"],
+            low=b["low"],
+            close=b["close"],
+            volume=b["volume"],
+        )
+        for b in bars
+    ]
 
 
-def simulate_family(fam_id: str, symbol: str, bars: list[dict[str, Any]], cost_mult: float,
-                    slip_mult: float) -> dict[str, Any]:
+def simulate_family(
+    fam_id: str, symbol: str, bars: list[dict[str, Any]], cost_mult: float, slip_mult: float
+) -> dict[str, Any]:
     fam = FAMILIES[fam_id]
     min_bars = MIN_BARS[fam_id]
     fees = FEES * cost_mult
@@ -112,14 +129,25 @@ def simulate_family(fam_id: str, symbol: str, bars: list[dict[str, Any]], cost_m
         eq += net
         consec = 0 if net > 0 else consec + 1
         entry = pp["entry"]
-        trades.append({"window": bars[0]["ts"], "asset": symbol, "net": round(net, 4),
-                       "gross": round(gross, 4), "fees": round(f, 4), "reason": reason,
-                       "side": pp["side"], "entry": round(entry, 6), "exit": round(fill, 6),
-                       "mfe_pct": round(pp["mfe"] / entry * 100.0, 4),
-                       "mae_pct": round(pp["mae"] / entry * 100.0, 4),
-                       "notional": round(pp["notional"], 2),
-                       "entry_ts": pp["entry_ts"], "exit_ts": ts,
-                       "duration_min": round((ts - pp["entry_ts"]) / 60_000, 1)})
+        trades.append(
+            {
+                "window": bars[0]["ts"],
+                "asset": symbol,
+                "net": round(net, 4),
+                "gross": round(gross, 4),
+                "fees": round(f, 4),
+                "reason": reason,
+                "side": pp["side"],
+                "entry": round(entry, 6),
+                "exit": round(fill, 6),
+                "mfe_pct": round(pp["mfe"] / entry * 100.0, 4),
+                "mae_pct": round(pp["mae"] / entry * 100.0, 4),
+                "notional": round(pp["notional"], 2),
+                "entry_ts": pp["entry_ts"],
+                "exit_ts": ts,
+                "duration_min": round((ts - pp["entry_ts"]) / 60_000, 1),
+            }
+        )
         pos = None
 
     for i in range(max(START_EVAL, min_bars + 1), len(bars)):
@@ -143,7 +171,7 @@ def simulate_family(fam_id: str, symbol: str, bars: list[dict[str, Any]], cost_m
                 close(pos["tp"], ts, "take_profit")
         if not locked and (daily_start - eq) / daily_start * 100.0 >= DAILY_LOSS_PCT:
             locked = True
-        pit = bars[max(0, i - WINDOW + 1):i + 1]
+        pit = bars[max(0, i - WINDOW + 1) : i + 1]
         if len(pit) >= min_bars:
             ohlcv = to_ohlcv(pit)
             try:
@@ -151,26 +179,45 @@ def simulate_family(fam_id: str, symbol: str, bars: list[dict[str, Any]], cost_m
                 alphas = fam.generate(ohlcv, indicators, None)
             except Exception:
                 alphas = []
-            alpha = alphas[-1] if alphas else None  # family emits <=1 per direction; last wins deterministically
-            if alpha is not None and pos is None and not locked and trades_today < MAX_TRADES_DAY \
-                    and not (consec >= COOLDOWN_LOSSES and d <= cooldown_day):
+            alpha = (
+                alphas[-1] if alphas else None
+            )  # family emits <=1 per direction; last wins deterministically
+            if (
+                alpha is not None
+                and pos is None
+                and not locked
+                and trades_today < MAX_TRADES_DAY
+                and not (consec >= COOLDOWN_LOSSES and d <= cooldown_day)
+            ):
                 direction = str(alpha.direction).upper()
                 side = "buy" if direction == "LONG" else "sell"
                 entry_ref = float(alpha.entry_reference)
                 stop = float(getattr(alpha, "effective_stop", 0.0) or 0.0) or float(
-                    getattr(alpha, "structural_stop", 0.0) or 0.0)
+                    getattr(alpha, "structural_stop", 0.0) or 0.0
+                )
                 # adapter default when the structural stop is not below price
                 # (SHORT stops sit ABOVE price -> flat 1% default, runtime quirk)
                 sl_pct = abs(entry_ref - stop) / entry_ref * 100.0 if 0 < stop < entry_ref else 1.0
                 if sl_pct <= 0:
                     sl_pct = 1.0
-                notional = min(MAX_NOTIONAL, max(MIN_NOTIONAL, eq * (RISK_PCT / 100.0) / (sl_pct / 100.0)))
+                notional = min(
+                    MAX_NOTIONAL, max(MIN_NOTIONAL, eq * (RISK_PCT / 100.0) / (sl_pct / 100.0))
+                )
                 fill = cl * (1 + slip) if side == "buy" else cl * (1 - slip)
                 stop_dist = fill * sl_pct / 100.0
-                pos = {"side": side, "entry": fill, "qty": notional / fill, "notional": notional,
-                       "sl": fill - stop_dist if side == "buy" else fill + stop_dist,
-                       "tp": fill * (1 + TP_PCT / 100.0) if side == "buy" else fill * (1 - TP_PCT / 100.0),
-                       "mfe": 0.0, "mae": 0.0, "entry_ts": ts}
+                pos = {
+                    "side": side,
+                    "entry": fill,
+                    "qty": notional / fill,
+                    "notional": notional,
+                    "sl": fill - stop_dist if side == "buy" else fill + stop_dist,
+                    "tp": fill * (1 + TP_PCT / 100.0)
+                    if side == "buy"
+                    else fill * (1 - TP_PCT / 100.0),
+                    "mfe": 0.0,
+                    "mae": 0.0,
+                    "entry_ts": ts,
+                }
                 trades_today += 1
                 if consec >= COOLDOWN_LOSSES:
                     cooldown_day = d
@@ -183,17 +230,27 @@ def simulate_family(fam_id: str, symbol: str, bars: list[dict[str, Any]], cost_m
         equity_curve.append(eq)
 
     # simple per-bar Sharpe/Sortino proxy (annualized on 5m bars)
-    rets = [(equity_curve[i] / equity_curve[i - 1] - 1) for i in range(1, len(equity_curve)) if equity_curve[i - 1] > 0]
+    rets = [
+        (equity_curve[i] / equity_curve[i - 1] - 1)
+        for i in range(1, len(equity_curve))
+        if equity_curve[i - 1] > 0
+    ]
     sharpe = sortino = None
     if len(rets) > 100:
         mu, sd = mean(rets), (sum((r - mean(rets)) ** 2 for r in rets) / len(rets)) ** 0.5
         downside = (sum(min(r, 0.0) ** 2 for r in rets) / len(rets)) ** 0.5
         bars_per_year = (60.0 / TF_MIN) * 24 * 365
-        ann = bars_per_year ** 0.5
+        ann = bars_per_year**0.5
         sharpe = round(mu / sd * ann, 3) if sd > 0 else None
         sortino = round(mu / downside * ann, 3) if downside > 0 else None
-    return {"trades": trades, "final_equity": round(eq, 2), "max_dd_pct": round(max_dd, 4),
-            "sharpe_proxy": sharpe, "sortino_proxy": sortino, "eval_bars": len(equity_curve)}
+    return {
+        "trades": trades,
+        "final_equity": round(eq, 2),
+        "max_dd_pct": round(max_dd, 4),
+        "sharpe_proxy": sharpe,
+        "sortino_proxy": sortino,
+        "eval_bars": len(equity_curve),
+    }
 
 
 def aggregate(trades: list[dict[str, Any]], eval_bars: int = 0) -> dict[str, Any]:
@@ -216,23 +273,45 @@ def aggregate(trades: list[dict[str, Any]], eval_bars: int = 0) -> dict[str, Any
         "avg_mae_pct": round(mean([t["mae_pct"] for t in trades]), 4) if n else 0.0,
         "avg_duration_min": round(mean([t["duration_min"] for t in trades]), 1) if n else 0.0,
         "median_duration_min": round(median([t["duration_min"] for t in trades]), 1) if n else 0.0,
-        "exposure_pct": round(100.0 * sum(t["duration_min"] for t in trades) / (eval_bars * TF_MIN), 2)
-        if n and eval_bars else None,
-        "wins": len(wins), "losses": len(losses),
+        "exposure_pct": round(
+            100.0 * sum(t["duration_min"] for t in trades) / (eval_bars * TF_MIN), 2
+        )
+        if n and eval_bars
+        else None,
+        "wins": len(wins),
+        "losses": len(losses),
         "win_rate": round(100.0 * len(wins) / n, 2) if n else 0.0,
         "avg_win": round(mean(wins), 4) if wins else 0.0,
         "avg_loss": round(mean(losses), 4) if losses else 0.0,
         "payoff": round(mean(wins) / abs(mean(losses)), 4) if wins and losses else None,
         "profit_factor": round(gw / gl, 4) if gl else None,
-        "exit_mix": {"stop": sum(1 for t in trades if t["reason"] == "stop_loss"),
-                     "tp": sum(1 for t in trades if t["reason"] == "take_profit"),
-                     "flip": sum(1 for t in trades if t["reason"] == "signal_flip")},
+        "exit_mix": {
+            "stop": sum(1 for t in trades if t["reason"] == "stop_loss"),
+            "tp": sum(1 for t in trades if t["reason"] == "take_profit"),
+            "flip": sum(1 for t in trades if t["reason"] == "signal_flip"),
+        },
     }
     return out
 
 
-TRADE_COLS = ["scenario", "window", "asset", "side", "entry_ts", "exit_ts", "duration_min",
-              "entry", "exit", "reason", "mfe_pct", "mae_pct", "notional", "gross", "fees", "net"]
+TRADE_COLS = [
+    "scenario",
+    "window",
+    "asset",
+    "side",
+    "entry_ts",
+    "exit_ts",
+    "duration_min",
+    "entry",
+    "exit",
+    "reason",
+    "mfe_pct",
+    "mae_pct",
+    "notional",
+    "gross",
+    "fees",
+    "net",
+]
 
 
 def dump_trades_csv(fam_id: str, rows: list[dict[str, Any]]) -> None:
@@ -251,14 +330,19 @@ def main() -> None:
     suffix = "" if ds_tf == "5m" else f"_5m_{ds_tf}"
     if ds_tf != "5m":
         # minutes per bar for the chosen dataset timeframe ("15m" -> 15, "1h" -> 60)
-        M_TF_MIN = (
-            float(ds_tf[:-1]) * 60.0 if ds_tf.endswith("h") else float(ds_tf.rstrip("m"))
-        )
+        M_TF_MIN = float(ds_tf[:-1]) * 60.0 if ds_tf.endswith("h") else float(ds_tf.rstrip("m"))
         globals()["TF_MIN"] = M_TF_MIN
-    files = sorted(f for f in glob.glob(os.path.join(DATA, f"*{suffix}.json"))
-                   if suffix or "_5m_" not in os.path.basename(f))  # default = 5m baseline only
-    scenarios = {"BASE": (1.0, 1.0), "2X_COST": (2.0, 1.0), "STRESSED_SLIPPAGE": (1.0, 5.0),
-                 "ZERO_COST": (0.0, 0.0)}
+    files = sorted(
+        f
+        for f in glob.glob(os.path.join(DATA, f"*{suffix}.json"))
+        if suffix or "_5m_" not in os.path.basename(f)
+    )  # default = 5m baseline only
+    scenarios = {
+        "BASE": (1.0, 1.0),
+        "2X_COST": (2.0, 1.0),
+        "STRESSED_SLIPPAGE": (1.0, 5.0),
+        "ZERO_COST": (0.0, 0.0),
+    }
     dump = os.environ.get("DUMP_TRADES", "") == "1"
     results: dict[str, Any] = {}
     fam_filter = os.environ.get("FAM")
@@ -296,9 +380,12 @@ def main() -> None:
                 "per_window": per_window,
             }
             t = results[fam_id][sc]["totals"]
-            print(f"{fam_id} [{sc}]: trades={t['trades']} gross={t['gross']} fees={t['fees']} "
-                  f"net={t['net']} PF={t['profit_factor']} WR={t['win_rate']} mfe={t['avg_mfe_pct']} "
-                  f"mae={t['avg_mae_pct']} dur={t['avg_duration_min']} exit={t['exit_mix']}", flush=True)
+            print(
+                f"{fam_id} [{sc}]: trades={t['trades']} gross={t['gross']} fees={t['fees']} "
+                f"net={t['net']} PF={t['profit_factor']} WR={t['win_rate']} mfe={t['avg_mfe_pct']} "
+                f"mae={t['avg_mae_pct']} dur={t['avg_duration_min']} exit={t['exit_mix']}",
+                flush=True,
+            )
             if dump:
                 for tr in all_trades:
                     row = dict(tr)
@@ -310,7 +397,9 @@ def main() -> None:
     os.makedirs(OUTDIR, exist_ok=True)
     fam_sfx = f"_{fam_filter}" if fam_filter else ""
     tf_sfx = "" if ds_tf == "5m" else f"_{ds_tf}"
-    with open(os.path.join(OUTDIR, f"MULTI_FAMILY_RESULTS{fam_sfx}{tf_sfx}.json"), "w", encoding="utf-8") as fh:
+    with open(
+        os.path.join(OUTDIR, f"MULTI_FAMILY_RESULTS{fam_sfx}{tf_sfx}.json"), "w", encoding="utf-8"
+    ) as fh:
         json.dump(results, fh, indent=2)
     print(f"-> MULTI_FAMILY_RESULTS{fam_sfx}{tf_sfx}.json")
 

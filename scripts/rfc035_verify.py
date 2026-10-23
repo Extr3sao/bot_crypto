@@ -154,9 +154,7 @@ def verify() -> dict[str, Any]:
     ]
     c.check("source_registry_complete_fields", not incomplete, f"incomplete={incomplete}")
     c.check("source_count_sufficient", len(sources) >= 20, f"count={len(sources)}")
-    strong_ids = {
-        s["source_id"] for s in sources if s.get("source_type") in STRONG_SOURCE_TYPES
-    }
+    strong_ids = {s["source_id"] for s in sources if s.get("source_type") in STRONG_SOURCE_TYPES}
     c.check("strong_sources_exist", len(strong_ids) >= 10, f"strong={len(strong_ids)}")
     counter = [s for s in sources if s.get("evidence_role") == "counter"]
     c.check("counter_evidence_present", len(counter) >= 3, f"counter={len(counter)}")

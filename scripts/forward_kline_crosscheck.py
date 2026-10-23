@@ -119,7 +119,9 @@ def crosscheck(run_id: str | None, docs_dir: Path) -> dict[str, Any]:
                 "buckets": compared,
                 "note": "the public kline endpoint was unreachable; no comparison was made",
             }
-        wanted = [(b, size) for (sym, b), size in buckets.items() if sym == symbol and start <= b <= end]
+        wanted = [
+            (b, size) for (sym, b), size in buckets.items() if sym == symbol and start <= b <= end
+        ]
         wanted.sort()
         used = 0
         for open_ms, size in wanted:
@@ -140,7 +142,9 @@ def crosscheck(run_id: str | None, docs_dir: Path) -> dict[str, Any]:
                 excluded.append({"symbol": symbol, "open_time_ms": open_ms, "reason": "no_kline"})
                 continue
             if volume <= 0:
-                excluded.append({"symbol": symbol, "open_time_ms": open_ms, "reason": "zero_volume"})
+                excluded.append(
+                    {"symbol": symbol, "open_time_ms": open_ms, "reason": "zero_volume"}
+                )
                 continue
             compared.append(
                 {

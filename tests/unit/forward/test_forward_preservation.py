@@ -388,9 +388,7 @@ def test_retention_keeps_the_raw_when_preservation_refuses(tmp_path: Path) -> No
     assert run.compacted
     assert run.deleted == []
     assert _window_files(root), "verified-unpreserved raw must not be deleted"
-    assert any(
-        RAW_NOT_DELETABLE_FOR_M03 in str(entry.get("reason")) for entry in run.refused
-    )
+    assert any(RAW_NOT_DELETABLE_FOR_M03 in str(entry.get("reason")) for entry in run.refused)
     assert run.preservation[0]["deletion_allowed"] is False
 
 

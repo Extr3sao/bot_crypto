@@ -77,8 +77,9 @@ def read_json(path: Path) -> dict[str, Any]:
 # --------------------------------------------------------------------------- #
 
 
-def gather_evidence(*, now: int, policy: ch.CampaignHealthPolicy,
-                    skip_live_scheduler: bool) -> dict[str, Any]:
+def gather_evidence(
+    *, now: int, policy: ch.CampaignHealthPolicy, skip_live_scheduler: bool
+) -> dict[str, Any]:
     """Collect decided evidence from the existing artifacts, bounded reads only."""
     supervisor_status = read_json(SUPERVISOR_REPORT_ROOT / "SUPERVISOR_STATUS.json")
     campaign_id = str(
@@ -239,16 +240,20 @@ def _alerts_table() -> str:
     alerts = read_json(alerts_path).get("alerts", [])
     if not isinstance(alerts, list) or not alerts:
         return "No alerts recorded."
-    rows = ["| alert | reason | severity | status | occurrences | first seen | last seen |",
-            "| --- | --- | --- | --- | --- | --- | --- |"]
+    rows = [
+        "| alert | reason | severity | status | occurrences | first seen | last seen |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+    ]
     for alert in alerts:
         rows.append(
             "| {alert_id} | {reason_code} | {severity} | {status} | {occurrence_count} | "
             "{first} | {last} |".format(
                 first=utc_iso(int(alert.get("first_seen_at", 0))),
                 last=utc_iso(int(alert.get("last_seen_at", 0))),
-                **{k: alert.get(k) for k in
-                   ("alert_id", "reason_code", "severity", "status", "occurrence_count")},
+                **{
+                    k: alert.get(k)
+                    for k in ("alert_id", "reason_code", "severity", "status", "occurrence_count")
+                },
             )
         )
     return "\n".join(rows) + "\n"
@@ -286,8 +291,13 @@ def _human_bytes(size: int | None) -> str:
 # --------------------------------------------------------------------------- #
 
 
-def run_health_check(*, now: int | None = None, policy: ch.CampaignHealthPolicy | None = None,
-                     notify: bool = True, skip_live_scheduler: bool = False) -> dict[str, Any]:
+def run_health_check(
+    *,
+    now: int | None = None,
+    policy: ch.CampaignHealthPolicy | None = None,
+    notify: bool = True,
+    skip_live_scheduler: bool = False,
+) -> dict[str, Any]:
     moment = now if now is not None else now_seconds()
     health_policy = policy or ch.CampaignHealthPolicy()
 
@@ -300,8 +310,9 @@ def run_health_check(*, now: int | None = None, policy: ch.CampaignHealthPolicy 
         observed_at=moment,
         scheduler=evidence["scheduler"],
         heartbeat=evidence["heartbeat"],
-        cycle_journal=ch.cycle_journal_facts(CAMPAIGN_REPORT_ROOT, now=moment,
-                                             policy=health_policy),
+        cycle_journal=ch.cycle_journal_facts(
+            CAMPAIGN_REPORT_ROOT, now=moment, policy=health_policy
+        ),
         verify_status=ch.last_verify_status(evidence["verifier"]),
         chain_status=evidence["chain_status"],
         drift_status=evidence["drift_status"],
@@ -316,9 +327,7 @@ def run_health_check(*, now: int | None = None, policy: ch.CampaignHealthPolicy 
         json.dumps(snapshot.to_dict(), indent=2, sort_keys=True, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
-    (REPORT_ROOT / "CAMPAIGN_HEALTH.md").write_text(
-        render_health_md(snapshot), encoding="utf-8"
-    )
+    (REPORT_ROOT / "CAMPAIGN_HEALTH.md").write_text(render_health_md(snapshot), encoding="utf-8")
     event = ch.append_health_event(REPORT_ROOT, snapshot)
 
     # §32.4 — alert lifecycle
@@ -349,8 +358,11 @@ def run_health_check(*, now: int | None = None, policy: ch.CampaignHealthPolicy 
     (REPORT_ROOT / "ALERTS.json").write_text(
         json.dumps(
             {"as_of": moment, "alerts": [a.to_dict() for a in store.all()]},
-            indent=2, sort_keys=True, ensure_ascii=False,
-        ) + "\n",
+            indent=2,
+            sort_keys=True,
+            ensure_ascii=False,
+        )
+        + "\n",
         encoding="utf-8",
     )
 
@@ -393,9 +405,11 @@ def print_summary(summary: dict[str, Any]) -> None:
     print(f"  status   : {summary['health_status']}")
     reasons = ",".join(summary["reason_codes"]) if summary["reason_codes"] else "(none)"
     print(f"  reasons  : {reasons}")
-    print(f"  alerts   : {summary['alerts_open']} open "
-          f"({len(summary['alerts_newly_opened'])} new, "
-          f"{len(summary['alerts_resolved'])} resolved)")
+    print(
+        f"  alerts   : {summary['alerts_open']} open "
+        f"({len(summary['alerts_newly_opened'])} new, "
+        f"{len(summary['alerts_resolved'])} resolved)"
+    )
 
 
 def main(argv: list[str] | None = None) -> int:

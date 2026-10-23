@@ -46,9 +46,7 @@ def test_a_thirty_minute_context_is_fresh_past_fifteen_minutes() -> None:
     """The exact case the old constant got wrong."""
     gates = RouterGates(timeframe="30m")
     assert gates.stale_after_ms() > STALE_THRESHOLD_MS
-    context = _Context(
-        timestamp=10_000_000, window_end_ts=10_000_000 - 20 * MINUTE_MS
-    )
+    context = _Context(timestamp=10_000_000, window_end_ts=10_000_000 - 20 * MINUTE_MS)
     router = StrategyRouter(gates=gates)
     decision = router.route(context, "TREND_UP", {"s": {"enabled": True, "status": "PAPER_ACTIVE"}})
     assert not decision.is_no_trade

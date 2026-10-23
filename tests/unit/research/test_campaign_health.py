@@ -114,17 +114,13 @@ def test_hlt_005_deterministic() -> None:
 
 
 def test_sch_001_enabled() -> None:
-    facts = ch.scheduler_facts(
-        {"installed": True, "enabled": True, "last_task_result": 0}
-    )
+    facts = ch.scheduler_facts({"installed": True, "enabled": True, "last_task_result": 0})
     assert facts["enabled"] is True
     assert facts["last_result_failed"] is False
 
 
 def test_sch_002_disabled() -> None:
-    facts = ch.scheduler_facts(
-        {"installed": True, "enabled": False, "last_task_result": 0}
-    )
+    facts = ch.scheduler_facts({"installed": True, "enabled": False, "last_task_result": 0})
     assert facts["enabled"] is False
 
 
@@ -134,28 +130,22 @@ def test_sch_003_overdue_unknown_query() -> None:
 
 
 def test_sch_004_failed_result() -> None:
-    facts = ch.scheduler_facts(
-        {"installed": True, "enabled": True, "last_task_result": 2}
-    )
+    facts = ch.scheduler_facts({"installed": True, "enabled": True, "last_task_result": 2})
     assert facts["last_result_failed"] is True
 
 
 def test_sch_005_task_running_is_not_failure() -> None:
     """0x41301 means the task is running right now — never a failure."""
-    facts = ch.scheduler_facts(
-        {"installed": True, "enabled": True, "last_task_result": 267009}
-    )
+    facts = ch.scheduler_facts({"installed": True, "enabled": True, "last_task_result": 267009})
     assert facts["last_result_failed"] is False
 
 
 def test_sch_006_disabled_with_pending_settlements_is_critical() -> None:
     """§07: disabled + overdue settlements escalates past plain DEGRADED."""
     evidence = _healthy_evidence()
-    evidence["scheduler"] = {"installed": True, "enabled": False,
-                             "last_task_result": 0}
+    evidence["scheduler"] = {"installed": True, "enabled": False, "last_task_result": 0}
     evidence["settlements"] = ch.SettlementFacts(
-        pending=[{"decision_time": NOW - 10 * CADENCE,
-                  "horizon_seconds": 86_400}],
+        pending=[{"decision_time": NOW - 10 * CADENCE, "horizon_seconds": 86_400}],
         now=NOW,
     )
     # The pending decision is not yet mature, so settlements are legitimate;
@@ -213,8 +203,9 @@ def test_cyc_001_fresh(tmp_path: Path) -> None:
 
 def test_cyc_002_stale(tmp_path: Path) -> None:
     with (tmp_path / "cycles.jsonl").open("a", encoding="utf-8") as handle:
-        handle.write(json.dumps({"cycle": 1, "finished_at": NOW - 9 * CADENCE,
-                                 "error_codes": []}) + "\n")
+        handle.write(
+            json.dumps({"cycle": 1, "finished_at": NOW - 9 * CADENCE, "error_codes": []}) + "\n"
+        )
     facts = ch.cycle_journal_facts(tmp_path, now=NOW, policy=_policy())
     assert facts["cycle_age_seconds"] > _policy().cycle_stalled_after
 
@@ -230,10 +221,16 @@ def test_cyc_004_informational_slot_note_is_not_failure(tmp_path: Path) -> None:
     """MISSED_DECISION_SLOT is the campaign declining, not a cycle failing."""
     with (tmp_path / "cycles.jsonl").open("a", encoding="utf-8") as handle:
         for cycle in (97, 98):
-            handle.write(json.dumps({
-                "cycle": cycle, "finished_at": NOW - 60,
-                "error_codes": ["MISSED_DECISION_SLOT"] * 4,
-            }) + "\n")
+            handle.write(
+                json.dumps(
+                    {
+                        "cycle": cycle,
+                        "finished_at": NOW - 60,
+                        "error_codes": ["MISSED_DECISION_SLOT"] * 4,
+                    }
+                )
+                + "\n"
+            )
     facts = ch.cycle_journal_facts(tmp_path, now=NOW, policy=_policy())
     assert facts["consecutive_cycle_failures"] == 0
 
@@ -241,10 +238,16 @@ def test_cyc_004_informational_slot_note_is_not_failure(tmp_path: Path) -> None:
 def test_cyc_005_real_error_states_count(tmp_path: Path) -> None:
     with (tmp_path / "cycles.jsonl").open("a", encoding="utf-8") as handle:
         for cycle in (97, 98):
-            handle.write(json.dumps({
-                "cycle": cycle, "finished_at": NOW - 60,
-                "error_codes": ["ANALYST_FAILED"],
-            }) + "\n")
+            handle.write(
+                json.dumps(
+                    {
+                        "cycle": cycle,
+                        "finished_at": NOW - 60,
+                        "error_codes": ["ANALYST_FAILED"],
+                    }
+                )
+                + "\n"
+            )
     facts = ch.cycle_journal_facts(tmp_path, now=NOW, policy=_policy())
     assert facts["consecutive_cycle_failures"] == 2
 
@@ -272,8 +275,7 @@ def test_set_002_pending_not_due() -> None:
 
 def test_set_003_overdue() -> None:
     health = ch.SettlementFacts(
-        pending=[{"decision_time": NOW - 86_400 - 7200,
-                  "horizon_seconds": 86_400}],
+        pending=[{"decision_time": NOW - 86_400 - 7200, "horizon_seconds": 86_400}],
         now=NOW,
     ).health(_policy())
     assert health.overdue_count == 1
@@ -284,8 +286,7 @@ def test_set_003_overdue() -> None:
 def test_set_004_stalled_progress() -> None:
     evidence = _healthy_evidence()
     evidence["settlements"] = ch.SettlementFacts(
-        pending=[{"decision_time": NOW - 86_400 - 10 * CADENCE,
-                  "horizon_seconds": 86_400}],
+        pending=[{"decision_time": NOW - 86_400 - 10 * CADENCE, "horizon_seconds": 86_400}],
         last_settlement_progress_at=NOW - 10 * CADENCE,
         now=NOW,
     )
@@ -307,9 +308,12 @@ def test_dsk_001_healthy() -> None:
 
 def test_dsk_002_warning_is_degraded() -> None:
     evidence = _healthy_evidence()
-    evidence["disk"] = {"status": "WARNING", "free_bytes": 4 * 1024**3,
-                        "estimated_days_to_warning": 2.0,
-                        "estimated_days_to_critical": 6.0}
+    evidence["disk"] = {
+        "status": "WARNING",
+        "free_bytes": 4 * 1024**3,
+        "estimated_days_to_warning": 2.0,
+        "estimated_days_to_critical": 6.0,
+    }
     snapshot = _evaluator().evaluate(**evidence)
     assert snapshot.health_status == "DEGRADED"
     assert "DISK_WARNING" in snapshot.reason_codes
@@ -317,9 +321,12 @@ def test_dsk_002_warning_is_degraded() -> None:
 
 def test_dsk_003_critical() -> None:
     evidence = _healthy_evidence()
-    evidence["disk"] = {"status": "CRITICAL", "free_bytes": 1 * 1024**3,
-                        "estimated_days_to_warning": 0.0,
-                        "estimated_days_to_critical": 0.5}
+    evidence["disk"] = {
+        "status": "CRITICAL",
+        "free_bytes": 1 * 1024**3,
+        "estimated_days_to_warning": 0.0,
+        "estimated_days_to_critical": 0.5,
+    }
     snapshot = _evaluator().evaluate(**evidence)
     assert snapshot.health_status == "CRITICAL"
     assert "DISK_CRITICAL" in snapshot.reason_codes
@@ -333,8 +340,11 @@ def test_dsk_003_critical() -> None:
 def test_alt_001_open(tmp_path: Path) -> None:
     store = ch.AlertStore(tmp_path / "ALERTS.jsonl")
     alert, opened = store.observe(
-        reason_code="HEARTBEAT_STALE", severity="STALLED", observed_at=NOW,
-        scope="C1", source_snapshot_hash="h",
+        reason_code="HEARTBEAT_STALE",
+        severity="STALLED",
+        observed_at=NOW,
+        scope="C1",
+        source_snapshot_hash="h",
     )
     assert opened and alert.status == "OPEN"
     store.save()
@@ -348,8 +358,10 @@ def test_alt_002_dedupe(tmp_path: Path) -> None:
     ids: set[str] = set()
     for tick in range(5):
         alert, opened = store.observe(
-            reason_code="HEARTBEAT_STALE", severity="STALLED",
-            observed_at=NOW + tick * CADENCE, scope="C1",
+            reason_code="HEARTBEAT_STALE",
+            severity="STALLED",
+            observed_at=NOW + tick * CADENCE,
+            scope="C1",
             source_snapshot_hash=f"h{tick}",
         )
         ids.add(alert.alert_id)
@@ -365,8 +377,11 @@ def test_alt_003_occurrence_count(tmp_path: Path) -> None:
     store = ch.AlertStore(tmp_path / "ALERTS.jsonl")
     for tick in range(3):
         store.observe(
-            reason_code="HEARTBEAT_STALE", severity="STALLED",
-            observed_at=NOW + tick, scope="C1", source_snapshot_hash="h",
+            reason_code="HEARTBEAT_STALE",
+            severity="STALLED",
+            observed_at=NOW + tick,
+            scope="C1",
+            source_snapshot_hash="h",
         )
     alert = store.open_alerts()[0]
     assert alert.occurrence_count == 3
@@ -378,8 +393,11 @@ def test_alt_004_resolve(tmp_path: Path) -> None:
     """§26: condition gone → RESOLVED, history conserved."""
     store = ch.AlertStore(tmp_path / "ALERTS.jsonl")
     store.observe(
-        reason_code="HEARTBEAT_STALE", severity="STALLED", observed_at=NOW,
-        scope="C1", source_snapshot_hash="h",
+        reason_code="HEARTBEAT_STALE",
+        severity="STALLED",
+        observed_at=NOW,
+        scope="C1",
+        source_snapshot_hash="h",
     )
     resolved = store.resolve_missing(active_reasons=set(), observed_at=NOW + 60)
     assert [a.status for a in resolved] == ["RESOLVED"]
@@ -393,13 +411,19 @@ def test_alt_004_resolve(tmp_path: Path) -> None:
 def test_alt_005_returning_condition_gets_fresh_row(tmp_path: Path) -> None:
     store = ch.AlertStore(tmp_path / "ALERTS.jsonl")
     store.observe(
-        reason_code="HEARTBEAT_STALE", severity="STALLED", observed_at=NOW,
-        scope="C1", source_snapshot_hash="h",
+        reason_code="HEARTBEAT_STALE",
+        severity="STALLED",
+        observed_at=NOW,
+        scope="C1",
+        source_snapshot_hash="h",
     )
     store.resolve_missing(active_reasons=set(), observed_at=NOW + 60)
     alert, opened = store.observe(
-        reason_code="HEARTBEAT_STALE", severity="STALLED",
-        observed_at=NOW + 120, scope="C1", source_snapshot_hash="h2",
+        reason_code="HEARTBEAT_STALE",
+        severity="STALLED",
+        observed_at=NOW + 120,
+        scope="C1",
+        source_snapshot_hash="h2",
     )
     assert opened
     assert alert.occurrence_count == 1
@@ -421,9 +445,14 @@ class _RecordingSink:
 
 def _stale_alert(observed_at: int) -> ch.CampaignHealthAlert:
     return ch.CampaignHealthAlert(
-        alert_id="ALERT-x", reason_code="HEARTBEAT_STALE", severity="STALLED",
-        first_seen_at=observed_at, last_seen_at=observed_at,
-        occurrence_count=1, status="OPEN", source_snapshot_hash="h",
+        alert_id="ALERT-x",
+        reason_code="HEARTBEAT_STALE",
+        severity="STALLED",
+        first_seen_at=observed_at,
+        last_seen_at=observed_at,
+        occurrence_count=1,
+        status="OPEN",
+        source_snapshot_hash="h",
     )
 
 
@@ -504,10 +533,17 @@ def test_mem_003_cycle_tail_is_bounded(tmp_path: Path) -> None:
     """§09: the cycle-journal health reads a bounded tail, never the file."""
     with (tmp_path / "cycles.jsonl").open("a", encoding="utf-8") as handle:
         for cycle in range(200):
-            handle.write(json.dumps({
-                "event_version": cr.CYCLE_JOURNAL_VERSION, "cycle": cycle,
-                "finished_at": NOW - cycle, "error_codes": [],
-            }) + "\n")
+            handle.write(
+                json.dumps(
+                    {
+                        "event_version": cr.CYCLE_JOURNAL_VERSION,
+                        "cycle": cycle,
+                        "finished_at": NOW - cycle,
+                        "error_codes": [],
+                    }
+                )
+                + "\n"
+            )
     facts = ch.cycle_journal_facts(tmp_path, now=NOW, policy=_policy())
     assert facts["last_cycle_id"] == 199
     assert facts["event_count"] <= ch.CYC_TAIL
@@ -527,9 +563,7 @@ def test_str_001_linear_growth(tmp_path: Path) -> None:
         # Rebuild the journal as if `day` days of checks had accumulated.
         with journal.open("w", encoding="utf-8") as handle:
             for tick in range(96 * day):
-                snapshot = evaluator.evaluate(
-                    **_healthy_evidence(now=NOW + tick * CADENCE)
-                )
+                snapshot = evaluator.evaluate(**_healthy_evidence(now=NOW + tick * CADENCE))
                 event = ch.health_event(snapshot)
                 handle.write(json.dumps(event, sort_keys=True) + "\n")
         sizes.append(journal.stat().st_size)

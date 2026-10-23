@@ -144,7 +144,9 @@ class CostModel:
 
     @property
     def per_side_fraction(self) -> float:
-        return (self.fee_bps_per_side + self.spread_bps_per_side + self.slippage_bps_per_side) / 10_000.0
+        return (
+            self.fee_bps_per_side + self.spread_bps_per_side + self.slippage_bps_per_side
+        ) / 10_000.0
 
     @property
     def round_trip_fraction(self) -> float:
@@ -257,7 +259,9 @@ def cash_baseline() -> BaselineOutcome:
     )
 
 
-def _long_only_net(*, entry_price: float, exit_price: float, cost_model: CostModel) -> tuple[float, float, float]:
+def _long_only_net(
+    *, entry_price: float, exit_price: float, cost_model: CostModel
+) -> tuple[float, float, float]:
     if entry_price <= 0.0 or exit_price <= 0.0:
         raise ValueError("entry and exit prices must be positive")
     gross = exit_price / entry_price - 1.0
@@ -269,7 +273,9 @@ def buy_and_hold_baseline(
     *, entry_price: float, exit_price: float, cost_model: CostModel
 ) -> BaselineOutcome:
     """B — long the same asset over the exact same window as the decision."""
-    gross, cost, net = _long_only_net(entry_price=entry_price, exit_price=exit_price, cost_model=cost_model)
+    gross, cost, net = _long_only_net(
+        entry_price=entry_price, exit_price=exit_price, cost_model=cost_model
+    )
     return BaselineOutcome(
         baseline_id=BASELINE_ID_BUY_AND_HOLD,
         evaluator_label=EVALUATOR_LABELS[BASELINE_ID_BUY_AND_HOLD],
@@ -296,7 +302,9 @@ def simple_trend_baseline(
     With fewer than ``SMA_WINDOW`` completed observations (or any ``None`` SMA)
     the baseline is ``BASELINE_UNAVAILABLE`` — never a shorter average.
     """
-    closes = completed_daily_closes(daily_bars, decision_time=decision_time, bar_seconds=bar_seconds)
+    closes = completed_daily_closes(
+        daily_bars, decision_time=decision_time, bar_seconds=bar_seconds
+    )
     if len(closes) < SMA_WINDOW:
         return _unavailable(BASELINE_ID_SIMPLE_TREND, INSUFFICIENT_SMA200_HISTORY)
     values: list[float | None] = [float(close) for close in closes]
@@ -314,7 +322,9 @@ def simple_trend_baseline(
             net_return=0.0,
             reason="SIGNAL_CASH",
         )
-    gross, cost, net = _long_only_net(entry_price=entry_price, exit_price=exit_price, cost_model=cost_model)
+    gross, cost, net = _long_only_net(
+        entry_price=entry_price, exit_price=exit_price, cost_model=cost_model
+    )
     return BaselineOutcome(
         baseline_id=BASELINE_ID_SIMPLE_TREND,
         evaluator_label=EVALUATOR_LABELS[BASELINE_ID_SIMPLE_TREND],
@@ -353,7 +363,9 @@ def passive_benchmark_baseline(
         return _unavailable(BASELINE_ID_PASSIVE, NO_PREDECLARED_CANONICAL_MAPPING)
     if entry_price is None or exit_price is None:
         return _unavailable(BASELINE_ID_PASSIVE, "BENCHMARK_PRICES_MISSING")
-    gross, cost, net = _long_only_net(entry_price=entry_price, exit_price=exit_price, cost_model=cost_model)
+    gross, cost, net = _long_only_net(
+        entry_price=entry_price, exit_price=exit_price, cost_model=cost_model
+    )
     return BaselineOutcome(
         baseline_id=BASELINE_ID_PASSIVE,
         evaluator_label=EVALUATOR_LABELS[BASELINE_ID_PASSIVE],
@@ -363,7 +375,9 @@ def passive_benchmark_baseline(
         cost=cost,
         net_return=net,
         reason=f"BENCHMARK={resolved[asset]}",
-        economically_equivalent=passive_benchmark_equals_buy_and_hold(asset=asset, mapping=resolved),
+        economically_equivalent=passive_benchmark_equals_buy_and_hold(
+            asset=asset, mapping=resolved
+        ),
     )
 
 

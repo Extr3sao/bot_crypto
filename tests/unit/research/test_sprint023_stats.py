@@ -91,7 +91,10 @@ def test_p_best_ge_observed_wilson_bounds() -> None:
 
 
 def test_summarise_null_percentiles() -> None:
-    draws = [{"best_net_bps": float(i), "best_sharpe": 0.0, "best_pnl_usdt": 0.0, "n_valid": 80} for i in range(1, 101)]
+    draws = [
+        {"best_net_bps": float(i), "best_sharpe": 0.0, "best_pnl_usdt": 0.0, "n_valid": 80}
+        for i in range(1, 101)
+    ]
     s = G.summarise_null(draws)
     assert s["n_draws"] == 100
     assert s["median_best_net_bps"] == pytest.approx(50.5, abs=1.0)
@@ -130,10 +133,25 @@ def test_classify_direction_magnitude_cells() -> None:
 
 def _trade(net: float) -> L.Trade:
     return L.Trade(
-        candidate_id="T", hypothesis_id="H", family="f", asset="X", window="W1",
-        timeframe="30m", side="LONG", entry_ts=0.0, exit_ts=1.0, entry=100.0, exit=101.0,
-        reason="target", hold_bars=1, gross_bps=net + 20.0, cost_bps=20.0, net_bps=net,
-        mfe_bps=0.0, mae_bps=0.0, atr_bps_at_entry=0.0,
+        candidate_id="T",
+        hypothesis_id="H",
+        family="f",
+        asset="X",
+        window="W1",
+        timeframe="30m",
+        side="LONG",
+        entry_ts=0.0,
+        exit_ts=1.0,
+        entry=100.0,
+        exit=101.0,
+        reason="target",
+        hold_bars=1,
+        gross_bps=net + 20.0,
+        cost_bps=20.0,
+        net_bps=net,
+        mfe_bps=0.0,
+        mae_bps=0.0,
+        atr_bps_at_entry=0.0,
     )
 
 

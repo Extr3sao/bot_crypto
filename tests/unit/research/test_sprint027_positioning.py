@@ -31,9 +31,14 @@ def _panel(n: int = 600, seed: int = 7) -> L.Panel:
     feats["vol_z"] = rng.normal(size=n)
     fwd = {h: rng.normal(size=n) * 100.0 for h in L.HORIZON_BARS}
     return L.Panel(
-        ts=ts, asset=np.zeros(n, dtype=np.int64),
-        open=np.ones(n), high=np.ones(n), low=np.ones(n), close=np.ones(n),
-        features=feats, fwd_bps=fwd,
+        ts=ts,
+        asset=np.zeros(n, dtype=np.int64),
+        open=np.ones(n),
+        high=np.ones(n),
+        low=np.ones(n),
+        close=np.ones(n),
+        features=feats,
+        fwd_bps=fwd,
     )
 
 

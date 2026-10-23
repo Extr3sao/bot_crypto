@@ -317,9 +317,7 @@ def test_a_failed_capture_cannot_claim_continuous_data(tmp_path: Path) -> None:
     assert manifest.status == CaptureStatus.FAILED.value
     assert manifest.continuity == CONTINUITY_INCOMPLETE
     stored = json.loads(
-        (tmp_path / "capture" / "manifest" / f"{collector.run_id}.json").read_text(
-            encoding="utf-8"
-        )
+        (tmp_path / "capture" / "manifest" / f"{collector.run_id}.json").read_text(encoding="utf-8")
     )
     assert stored["continuity"] == CONTINUITY_INCOMPLETE
 
@@ -437,7 +435,9 @@ def test_the_cli_exits_zero_for_a_controlled_stop(
     assert collector_cli.main(["--mode", "run", "--symbols", "BTCUSDT"]) == EXIT_COMPLETE
 
 
-def test_the_data_root_flag_moves_everything_the_capture_writes(collector_cli: Any, tmp_path: Path) -> None:
+def test_the_data_root_flag_moves_everything_the_capture_writes(
+    collector_cli: Any, tmp_path: Path
+) -> None:
     """§16 — a capture can be pointed at another volume without moving code."""
     args = collector_cli.build_parser().parse_args(
         ["--mode", "run", "--out", "reports/ignored", "--data-root", str(tmp_path / "elsewhere")]

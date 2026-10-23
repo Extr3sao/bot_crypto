@@ -170,7 +170,9 @@ def sha256_file(path: Path) -> str:
 
 
 def canonical(payload: Any) -> str:
-    return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str)
+    return json.dumps(
+        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str
+    )
 
 
 def main() -> int:
@@ -197,20 +199,30 @@ def main() -> int:
 
     # --- report surface -----------------------------------------------------
     report_md = (REPORTS / "CAP001_FINAL_REPORT.md").read_text(encoding="utf-8").splitlines()
-    check("final report starts with the exact spike header", report_md[0] == f"{SPIKE_ID} {SPIKE_NAME}")
+    check(
+        "final report starts with the exact spike header",
+        report_md[0] == f"{SPIKE_ID} {SPIKE_NAME}",
+    )
     check("governance framing", report["governance_framing"] == GOVERNANCE_FRAMING)
     check("freeze stays ACTIVE", report["alpha_research_freeze"] == "ACTIVE")
     check("next alpha RFC stays NO", report["next_alpha_rfc_allowed"] == "NO")
     check("no RFC created", report["rfc_created"] == "NONE")
     check("no alpha claimed", report["alpha_claimed"] == "NONE")
     check("no trade authorized", report["trades_authorized"] == 0)
-    check("snapshot contract declares 12 fields", report["snapshot_contract_fields"] == len(SNAPSHOT_FIELDS))
+    check(
+        "snapshot contract declares 12 fields",
+        report["snapshot_contract_fields"] == len(SNAPSHOT_FIELDS),
+    )
     check("multi-timeframe is 1h/4h/1D", report["multi_timeframe"] == list(TIMEFRAMES_V1))
 
     # --- snapshot -----------------------------------------------------------
     expected_keys = set(SNAPSHOT_FIELDS)
     present = {key for key in snapshot if not key.startswith("_")}
-    check("snapshot carries every contract field", expected_keys.issubset(present), str(sorted(expected_keys - present)))
+    check(
+        "snapshot carries every contract field",
+        expected_keys.issubset(present),
+        str(sorted(expected_keys - present)),
+    )
     check("snapshot has no undeclared top-level field", not (present - expected_keys))
     check("snapshot validation is clean", snapshot["_validation_problems"] == [])
     check("snapshot is marked usable", snapshot["_usable"] is True)
@@ -218,20 +230,33 @@ def main() -> int:
     check("snapshot is flagged synthetic", snapshot["_synthetic"] is True)
     tf_intervals = [tf["interval"] for tf in snapshot["multi_timeframe"]]
     check("timeframe order matches the contract order", tf_intervals == list(TIMEFRAMES_V1))
-    check("no forbidden intraday timeframe present", not any(tf in FORBIDDEN_TIMEFRAMES for tf in tf_intervals))
+    check(
+        "no forbidden intraday timeframe present",
+        not any(tf in FORBIDDEN_TIMEFRAMES for tf in tf_intervals),
+    )
     check("freshness is computed, not asserted", snapshot["data_freshness"]["level"] == "FRESH")
     check(
         "freshness age is consistent with the source timestamps",
         snapshot["data_freshness"]["age_seconds"]
-        == snapshot["data_freshness"]["snapshot_at"] - snapshot["data_freshness"]["newest_source_at"],
+        == snapshot["data_freshness"]["snapshot_at"]
+        - snapshot["data_freshness"]["newest_source_at"],
     )
     kinds = {item["kind"] for item in snapshot["evidence"]}
-    check("every evidence kind is declared", kinds.issubset(set(EVIDENCE_KINDS)), str(sorted(kinds)))
-    check("evidence carries an MCP source", all(item["source"].startswith("tradingview_mcp.") for item in snapshot["evidence"]))
+    check(
+        "every evidence kind is declared", kinds.issubset(set(EVIDENCE_KINDS)), str(sorted(kinds))
+    )
+    check(
+        "evidence carries an MCP source",
+        all(item["source"].startswith("tradingview_mcp.") for item in snapshot["evidence"]),
+    )
 
     # --- MCP surface --------------------------------------------------------
     used = snapshot["_tools_used"]
-    check("only read-only MCP tools were used", all(tool in READ_ONLY_TOOLS for tool in used), str(used))
+    check(
+        "only read-only MCP tools were used",
+        all(tool in READ_ONLY_TOOLS for tool in used),
+        str(used),
+    )
     check("no write MCP tool was used", not any(tool in WRITE_TOOLS for tool in used))
     check("report records zero write tools", report["write_tools_used"] == [])
 
@@ -251,15 +276,21 @@ def main() -> int:
     )
     check("LLM sizing is forbidden", boundaries["llm_sizing_forbidden"] is True)
     check("LLM leverage is forbidden", boundaries["llm_leverage_forbidden"] is True)
-    check("read-only tool list is exact", tuple(boundaries["read_only_mcp_tools"]) == READ_ONLY_TOOLS)
+    check(
+        "read-only tool list is exact", tuple(boundaries["read_only_mcp_tools"]) == READ_ONLY_TOOLS
+    )
     check("write tool list is exact", tuple(boundaries["write_mcp_tools_forbidden"]) == WRITE_TOOLS)
     check("budget before G3 is exact", boundaries["budget_before_g3"] == BUDGET_BEFORE_G3)
     check(
         "forbidden roadmap list is complete",
         tuple(boundaries["forbidden_during_roadmap"]) == FORBIDDEN_DURING_ROADMAP,
     )
-    check("universe has the 7 declared instruments", tuple(boundaries["universe_v1"]) == UNIVERSE_V1)
-    check("V1 timeframes exclude intraday noise", tuple(boundaries["timeframes_v1"]) == TIMEFRAMES_V1)
+    check(
+        "universe has the 7 declared instruments", tuple(boundaries["universe_v1"]) == UNIVERSE_V1
+    )
+    check(
+        "V1 timeframes exclude intraday noise", tuple(boundaries["timeframes_v1"]) == TIMEFRAMES_V1
+    )
     check("all three KPIs are zero", all(value == 0 for value in boundaries["kpi_values"].values()))
 
     # --- decision record ----------------------------------------------------
@@ -276,9 +307,15 @@ def main() -> int:
     }
     recomputed = sha256_text(canonical(sealed))
     check("sealed decision hash recomputes", recomputed == record["decision_hash"])
-    check("the ledger holds one record", report["decision_ledger_records"] == len(decision["records"]) == 1)
+    check(
+        "the ledger holds one record",
+        report["decision_ledger_records"] == len(decision["records"]) == 1,
+    )
     check("immutability check is PASS", report["immutability_check"] == "PASS")
-    check("a decision change changes the hash", decision["tamper_detection"]["hash_changes_on_alteration"] is True)
+    check(
+        "a decision change changes the hash",
+        decision["tamper_detection"]["hash_changes_on_alteration"] is True,
+    )
     check(
         "the tampered record is detected and the original is not",
         decision["tamper_detection"]["detected_indices"] == [0],
@@ -294,13 +331,22 @@ def main() -> int:
     check("G_TV_CONTEXT is not PASS", gate["status"] != "PASS")
     check("G_TV_CONTEXT is exactly NOT_VERIFIED", gate["status"] == "NOT_VERIFIED")
     check("report agrees on G_TV_CONTEXT", report["g_tv_context"] == gate["status"])
-    check("every later gate is NOT_STARTED", all(v == "NOT_STARTED" for k, v in gate["gate_statuses"].items() if k != "G0_TV_CONTEXT"))
+    check(
+        "every later gate is NOT_STARTED",
+        all(v == "NOT_STARTED" for k, v in gate["gate_statuses"].items() if k != "G0_TV_CONTEXT"),
+    )
     check("gate lists the missing credentials", len(gate["blocking_requirements"]) >= 2)
-    check("synthetic data is declared in the gate audit", gate["contract_checks"]["synthetic_only"] is True)
+    check(
+        "synthetic data is declared in the gate audit",
+        gate["contract_checks"]["synthetic_only"] is True,
+    )
 
     # --- economic state untouched ------------------------------------------
     economic = load(DOCS / "ECONOMIC_STATE.json")
-    check("freeze is still ACTIVE in the canonical state", economic["alpha_research_freeze"] == "ACTIVE")
+    check(
+        "freeze is still ACTIVE in the canonical state",
+        economic["alpha_research_freeze"] == "ACTIVE",
+    )
     check("next_alpha_rfc_allowed is still false", economic["next_alpha_rfc_allowed"] is False)
     check("research status is still paused", economic["research_status"] == "PAUSED")
     check(
@@ -324,7 +370,10 @@ def main() -> int:
 
     contract_doc = (DOCS / "AGENTIC_MARKET_INTELLIGENCE_CONTRACT.md").read_text(encoding="utf-8")
     check("contract doc names the spike", SPIKE_ID in contract_doc)
-    check("contract doc states the freeze", "ALPHA_RESEARCH_FREEZE" in contract_doc or "alpha research freeze" in contract_doc.lower())
+    check(
+        "contract doc states the freeze",
+        "ALPHA_RESEARCH_FREEZE" in contract_doc or "alpha research freeze" in contract_doc.lower(),
+    )
 
     # --- FALSE_SUCCESS (independent recomputation) --------------------------
     false_success: list[str] = []

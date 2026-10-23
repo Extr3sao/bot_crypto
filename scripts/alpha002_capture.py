@@ -118,7 +118,9 @@ def retention_floor_ms(now_ms: int) -> int:
     return now_ms - int(RETAINED_DAYS * 86_400_000)
 
 
-def fetch_window(series: dict[str, Any], symbol: str, period: str, start_ms: int, end_ms: int) -> list[dict[str, Any]]:
+def fetch_window(
+    series: dict[str, Any], symbol: str, period: str, start_ms: int, end_ms: int
+) -> list[dict[str, Any]]:
     """One explicit window request, newest page's worth of rows."""
     page = get_json(
         f"{series['path']}?symbol={symbol}&period={period}&limit={PAGE_LIMIT}"
@@ -251,11 +253,7 @@ def fill_gaps(
     merged = list(stored)
     for _ in range(max_passes):
         gaps = find_gaps(merged, step_ms=step, timestamp_key=key)
-        repairable = [
-            gap
-            for gap in gaps
-            if int(gap["before_ts"]) + step > floor
-        ]
+        repairable = [gap for gap in gaps if int(gap["before_ts"]) + step > floor]
         if not repairable:
             break
         before = len(merged)
@@ -347,9 +345,7 @@ def capture_series(
                 series, symbol, period, stored, max_pages=max_pages, now_ms=now_ms
             )
         merged = merge_records(stored, fetched, timestamp_key=key)
-        healed, gap_requests, _grown, key = fill_gaps(
-            series, symbol, period, merged, now_ms=now_ms
-        )
+        healed, gap_requests, _grown, key = fill_gaps(series, symbol, period, merged, now_ms=now_ms)
         if healed:
             fetched = [*fetched, *healed]
             merged = merge_records(merged, healed, timestamp_key=key)
@@ -485,9 +481,7 @@ def main(argv: list[str] | None = None) -> int:
         if series["series_id"] not in wanted_series:
             continue
         for symbol in symbols:
-            targets: list[str | None] = (
-                sorted(wanted_periods) if series["periodic"] else [None]
-            )
+            targets: list[str | None] = sorted(wanted_periods) if series["periodic"] else [None]
             for period in targets:
                 entry = capture_series(
                     series,

@@ -106,7 +106,11 @@ def sha256(path: Path) -> str:
 
 
 def head_tree_paths() -> list[str]:
-    return [line.strip() for line in git(["ls-tree", "-r", "--name-only", "HEAD"]).splitlines() if line.strip()]
+    return [
+        line.strip()
+        for line in git(["ls-tree", "-r", "--name-only", "HEAD"]).splitlines()
+        if line.strip()
+    ]
 
 
 def head_grep(pattern: str) -> list[str]:
@@ -136,12 +140,19 @@ def is_this_rfcs_output(rel: str) -> bool:
     """
     if rel in RFC046_PATHS:
         return True
-    if "/rfc046/" in rel or rel.endswith("/rfc046") or rel == "data/rfc046" or rel.startswith("data/rfc046/"):
+    if (
+        "/rfc046/" in rel
+        or rel.endswith("/rfc046")
+        or rel == "data/rfc046"
+        or rel.startswith("data/rfc046/")
+    ):
         return True
     if rel.startswith("docs/rfc/RFC-046_") or rel.startswith("docs/governance/DISCOVERY_"):
         return True
-    return rel in ("docs/architecture/DISCOVERY_EXECUTION_FLOW.md",
-                   "docs/roadmap/PROFITABILITY_ROADMAP_AMENDMENT.md")
+    return rel in (
+        "docs/architecture/DISCOVERY_EXECUTION_FLOW.md",
+        "docs/roadmap/PROFITABILITY_ROADMAP_AMENDMENT.md",
+    )
 
 
 def report_artefacts(tag: str) -> list[str]:
@@ -170,7 +181,9 @@ def declared_in_tracked_docs(tag: str) -> list[str]:
         if is_this_rfcs_output(rel):
             continue
         text = (REPO / rel).read_text(encoding="utf-8", errors="replace")
-        if re.search(rf'"rfc"\s*:\s*"RFC-{tag}"', text) or re.search(rf"^#\s+RFC-{tag}\b", text, flags=re.MULTILINE):
+        if re.search(rf'"rfc"\s*:\s*"RFC-{tag}"', text) or re.search(
+            rf"^#\s+RFC-{tag}\b", text, flags=re.MULTILINE
+        ):
             out.append(rel)
     return out
 
@@ -189,7 +202,9 @@ def collision_audit() -> dict[str, Any]:
             }
     # this RFC's own outputs must not be read as pre-existing occupancy
     if "046" in occupied:
-        occupied["046"]["artefacts"] = [a for a in occupied["046"]["artefacts"] if not is_this_rfcs_output(a)]
+        occupied["046"]["artefacts"] = [
+            a for a in occupied["046"]["artefacts"] if not is_this_rfcs_output(a)
+        ]
         occupied["046"]["declared_in_tracked_docs"] = [
             d for d in occupied["046"]["declared_in_tracked_docs"] if not is_this_rfcs_output(d)
         ]
@@ -209,7 +224,8 @@ def collision_audit() -> dict[str, Any]:
     mentions = {f"{n:03d}": head_grep(f"RFC-{n:03d}") for n in NUMBER_RANGE}
     # 045 and 046 have their own classes below; this list is only the prose-only numbers.
     mentioned_only = sorted(
-        tag for tag, paths in mentions.items()
+        tag
+        for tag, paths in mentions.items()
         if paths and tag not in occupied and tag not in ("045", "046")
     )
 
@@ -219,19 +235,20 @@ def collision_audit() -> dict[str, Any]:
             "prior_artefacts": [],
             "prior_mentions": mentions["046"],
             "note": "mentioned before only by the RFC-035 closure lineage, which named it as the vehicle; "
-                    "no artefact existed under this number before this RFC",
+            "no artefact existed under this number before this RFC",
         }
     }
     free = sorted(
-        tag for tag, paths in mentions.items()
+        tag
+        for tag, paths in mentions.items()
         if tag not in occupied and tag not in vacant_by_control and tag not in taken and not paths
     )
     return {
         "method": "artefact presence under reports/ (on disk) + tracked documents declaring an rfc field + text "
-                  "references at HEAD, classified by number",
+        "references at HEAD, classified by number",
         "occupancy_evidence_note": "every RFC-nnn final-report artefact lives in the gitignored reports/ tree, so the "
-                                   "only versioned occupancy evidence is the tracked documents that declare the number "
-                                   "(TD-5 in the RFC)",
+        "only versioned occupancy evidence is the tracked documents that declare the number "
+        "(TD-5 in the RFC)",
         "registry_exists": False,
         "registry_proposed_path": "docs/roadmap/RFC_REGISTRY.json",
         "occupied": occupied,
@@ -242,8 +259,10 @@ def collision_audit() -> dict[str, Any]:
         "excluded_paths": list(RFC046_PATHS),
         "excluded_reason": "files added or authored by this RFC would otherwise pollute the pre-existing audit",
         "namespace_separate": {
-            "RFC-STRAT-*": ["docs/research/strategy_lifecycle/rfc/RFC-STRAT-013-dynamic-strategy-lifecycle-and-pods.md",
-                            "docs/research/strategy_lifecycle/rfc/RFC-STRAT-014-champion-challenger-and-portfolio-allocation.md"],
+            "RFC-STRAT-*": [
+                "docs/research/strategy_lifecycle/rfc/RFC-STRAT-013-dynamic-strategy-lifecycle-and-pods.md",
+                "docs/research/strategy_lifecycle/rfc/RFC-STRAT-014-champion-challenger-and-portfolio-allocation.md",
+            ],
         },
     }
 
@@ -296,15 +315,23 @@ def cost_baseline() -> dict[str, Any]:
 def turnover_drag() -> list[dict[str, Any]]:
     floor_bps = cost_baseline()["round_trip_bps"]
     rows = []
-    for label, per_year in (("monthly", 12), ("biweekly", 26), ("weekly", 52),
-                            ("twice weekly", 104), ("daily", 365), ("hourly", 8760)):
+    for label, per_year in (
+        ("monthly", 12),
+        ("biweekly", 26),
+        ("weekly", 52),
+        ("twice weekly", 104),
+        ("daily", 365),
+        ("hourly", 8760),
+    ):
         drag = floor_bps * per_year
-        rows.append({
-            "cadence": label,
-            "round_trips_per_year": per_year,
-            "annual_drag_pct": round(drag / 100.0, 4),
-            "annual_drag_stressed_pct": round(drag * 1.5 / 100.0, 4),
-        })
+        rows.append(
+            {
+                "cadence": label,
+                "round_trips_per_year": per_year,
+                "annual_drag_pct": round(drag / 100.0, 4),
+                "annual_drag_stressed_pct": round(drag * 1.5 / 100.0, 4),
+            }
+        )
     return rows
 
 
@@ -335,8 +362,10 @@ def invariants() -> dict[str, Any]:
         "runtime_live_disabled": "live_trading_enabled: false" in runtime_text,
         "risk_live_disabled": "live_trading_enabled: false" in risk_text,
         "runtime_mode_paper": 'mode: "paper"' in runtime_text,
-        "manual_confirmation_required_for_live": "require_manual_confirmation_for_live: true" in runtime_text,
-        "exchange_sandbox": "sandbox: true" in (REPO / "config" / "exchange.yaml").read_text(encoding="utf-8"),
+        "manual_confirmation_required_for_live": "require_manual_confirmation_for_live: true"
+        in runtime_text,
+        "exchange_sandbox": "sandbox: true"
+        in (REPO / "config" / "exchange.yaml").read_text(encoding="utf-8"),
         "rfc_status_proposed": rfc_json["status"] == "PROPOSED" and rfc_json["active"] is False,
         "reentry_gate_still_requires_pass": _reentry_requires_pass(),
     }
@@ -406,7 +435,11 @@ def debt_register() -> dict[str, Any]:
             "mitigation": "mirrored into tracked docs/rfc/ and data/rfc046/",
         },
     ]
-    return {"items": items, "all_recorded": len(items) == 5, "any_blocks_gate": any(i["blocks_this_rfc"] for i in items)}
+    return {
+        "items": items,
+        "all_recorded": len(items) == 5,
+        "any_blocks_gate": any(i["blocks_this_rfc"] for i in items),
+    }
 
 
 def tests_and_heads(run_full_suite: bool, skip_tests: bool) -> dict[str, Any]:
@@ -442,14 +475,33 @@ def _last_summary(out: str) -> str:
 
 
 def tooling() -> dict[str, Any]:
-    ruff_code, ruff_out = run([sys.executable, "-m", "ruff", "check", "scripts/rfc046_audit.py",
-                               "scripts/rfc046_verify.py", "tests/unit/research/test_rfc046_discovery_proposal.py"])
-    mypy_code, mypy_out = run([sys.executable, "-m", "mypy", "scripts/rfc046_audit.py", "scripts/rfc046_verify.py"])
+    ruff_code, ruff_out = run(
+        [
+            sys.executable,
+            "-m",
+            "ruff",
+            "check",
+            "scripts/rfc046_audit.py",
+            "scripts/rfc046_verify.py",
+            "tests/unit/research/test_rfc046_discovery_proposal.py",
+        ]
+    )
+    mypy_code, mypy_out = run(
+        [sys.executable, "-m", "mypy", "scripts/rfc046_audit.py", "scripts/rfc046_verify.py"]
+    )
     return {
-        "ruff": {"exit_code": ruff_code, "summary": "clean" if ruff_code == 0 else ruff_out.strip()[-300:]},
-        "mypy_own_scripts": {"exit_code": mypy_code,
-                             "summary": "Success" if mypy_code == 0 else mypy_out.strip()[-300:]},
-        "mypy_repo_wide": {"command": "python -m mypy .", "status": "FAILS - see TD-1; recorded, not this RFC's ownership"},
+        "ruff": {
+            "exit_code": ruff_code,
+            "summary": "clean" if ruff_code == 0 else ruff_out.strip()[-300:],
+        },
+        "mypy_own_scripts": {
+            "exit_code": mypy_code,
+            "summary": "Success" if mypy_code == 0 else mypy_out.strip()[-300:],
+        },
+        "mypy_repo_wide": {
+            "command": "python -m mypy .",
+            "status": "FAILS - see TD-1; recorded, not this RFC's ownership",
+        },
     }
 
 
@@ -685,7 +737,10 @@ def build(run_full_suite: bool, skip_tests: bool, run_verifier: bool) -> dict[st
         "governance": {
             "collision": collision_audit(),
             "invariants": invariants(),
-            "amendment_options": ["5A explicit dated RFC-041 exemption (recommended)", "5B no exemption: stay PROPOSED"],
+            "amendment_options": [
+                "5A explicit dated RFC-041 exemption (recommended)",
+                "5B no exemption: stay PROPOSED",
+            ],
             "amendments_required": [
                 "docs/research/BUSINESS_REENTRY_POLICY.md - explicit dated exemption or the programme does not start",
                 "docs/research/PROFITABILITY_OPERATING_MODEL.json - amend next_action_policy.trigger",
@@ -696,7 +751,9 @@ def build(run_full_suite: bool, skip_tests: bool, run_verifier: bool) -> dict[st
         },
         "facts": {"cost": cost, "turnover_drag": turnover_drag()},
         "debt": debt_register(),
-        "document_hashes": {str(p.relative_to(REPO)).replace("\\", "/"): sha256(p) for p in TRACKED_DOCS},
+        "document_hashes": {
+            str(p.relative_to(REPO)).replace("\\", "/"): sha256(p) for p in TRACKED_DOCS
+        },
         "deliverables_present": sorted(
             str(p.relative_to(REPO)).replace("\\", "/")
             for p in (*TRACKED_DOCS, IMPACT, FINAL_MD, FINAL_JSON, AUDIT_PATH)
@@ -731,55 +788,66 @@ def build(run_full_suite: bool, skip_tests: bool, run_verifier: bool) -> dict[st
     OUT.mkdir(parents=True, exist_ok=True)
     IMPACT.write_text(render_impact(block), encoding="utf-8")
     FINAL_MD.write_text(render_final_md(block), encoding="utf-8")
-    FINAL_JSON.write_text(json.dumps(
-        {
-            "artifact": "RFC-046_FINAL_REPORT",
-            "rfc": "RFC-046",
-            "status": "PROPOSED",
-            "current_head": block["current_head"],
-            "evaluated_head": block["current_head"],
-            "generated_at_utc": block["generated_at_utc"],
-            "flags": {
-                "live_trading": "DISABLED",
-                "trades_authorized": 0,
-                "profitability_verified": False,
-                "discovery": "NOT_ACTIVE",
-                "approach": "documentation and governance only",
+    FINAL_JSON.write_text(
+        json.dumps(
+            {
+                "artifact": "RFC-046_FINAL_REPORT",
+                "rfc": "RFC-046",
+                "status": "PROPOSED",
+                "current_head": block["current_head"],
+                "evaluated_head": block["current_head"],
+                "generated_at_utc": block["generated_at_utc"],
+                "flags": {
+                    "live_trading": "DISABLED",
+                    "trades_authorized": 0,
+                    "profitability_verified": False,
+                    "discovery": "NOT_ACTIVE",
+                    "approach": "documentation and governance only",
+                },
+                "implementation_proposal": rfc_md_summary(),
+                "rfc_collision_audit": block["governance"]["collision"],
+                "governance_invariants": block["governance"]["invariants"],
+                "roadmap_diff_applied": "NONE",
+                "governance_impact": "reports/rfc046/IMPACT_ASSESSMENT.md#1",
+                "risk_impact": "reports/rfc046/IMPACT_ASSESSMENT.md#4",
+                "tests": block["tests"],
+                "tooling": block["tooling"],
+                "evidence": {
+                    "cost_rederived_from": cost["rederived_from"],
+                    "cost_round_trip_bps": cost["round_trip_bps"],
+                    "cost_components": cost["components"],
+                    "cost_arithmetic_check": cost["arithmetic_check"],
+                    "tracked_audit_record": "data/rfc046/audit.json",
+                    "document_hashes": block["document_hashes"],
+                    "pit_defect": "docs/research/work_packages/WP-HTF-PIT-001_htf_availability_unit_fix.md",
+                    "gate_continuity": "docs/STRATEGY_ADMISSION_CRITERIA.md (c1ffbaa)",
+                },
+                "open_defects": block["debt"]["items"],
+                "false_success": None,
+                "independent_verification": {
+                    "status": "PENDING",
+                    "mismatches": None,
+                    "false_success": None,
+                },
+                "approval_required": block["governance"]["amendments_required"],
+                "next_gate": "APPROVAL_REQUIRED",
+                "forbidden_verdicts": ["PROFITABLE", "EDGE_CONFIRMED", "PRODUCTION_READY"],
             },
-            "implementation_proposal": rfc_md_summary(),
-            "rfc_collision_audit": block["governance"]["collision"],
-            "governance_invariants": block["governance"]["invariants"],
-            "roadmap_diff_applied": "NONE",
-            "governance_impact": "reports/rfc046/IMPACT_ASSESSMENT.md#1",
-            "risk_impact": "reports/rfc046/IMPACT_ASSESSMENT.md#4",
-            "tests": block["tests"],
-            "tooling": block["tooling"],
-            "evidence": {
-                "cost_rederived_from": cost["rederived_from"],
-                "cost_round_trip_bps": cost["round_trip_bps"],
-                "cost_components": cost["components"],
-                "cost_arithmetic_check": cost["arithmetic_check"],
-                "tracked_audit_record": "data/rfc046/audit.json",
-                "document_hashes": block["document_hashes"],
-                "pit_defect": "docs/research/work_packages/WP-HTF-PIT-001_htf_availability_unit_fix.md",
-                "gate_continuity": "docs/STRATEGY_ADMISSION_CRITERIA.md (c1ffbaa)",
-            },
-            "open_defects": block["debt"]["items"],
-            "false_success": None,
-            "independent_verification": {"status": "PENDING", "mismatches": None, "false_success": None},
-            "approval_required": block["governance"]["amendments_required"],
-            "next_gate": "APPROVAL_REQUIRED",
-            "forbidden_verdicts": ["PROFITABLE", "EDGE_CONFIRMED", "PRODUCTION_READY"],
-        },
-        indent=2,
-        ensure_ascii=False,
-    ) + "\n", encoding="utf-8")
+            indent=2,
+            ensure_ascii=False,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
 
     if run_verifier:
         code, out = run([sys.executable, str(REPO / "scripts" / "rfc046_verify.py")])
         if code != 0:
-            print("WARNING: the independent verifier returned FAIL; the report records the failure and this "
-                  "build must not be treated as green", file=sys.stderr)
+            print(
+                "WARNING: the independent verifier returned FAIL; the report records the failure and this "
+                "build must not be treated as green",
+                file=sys.stderr,
+            )
         report = json.loads(FINAL_JSON.read_text(encoding="utf-8"))
         report["independent_verification"] = {
             "command": "python scripts/rfc046_verify.py",
@@ -790,9 +858,15 @@ def build(run_full_suite: bool, skip_tests: bool, run_verifier: bool) -> dict[st
             "stdout_tail": out.strip().splitlines()[-6:],
         }
         report["false_success"] = report["independent_verification"]["false_success"]
-        FINAL_JSON.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-        FINAL_MD.write_text(render_final_md({**block, "independent_verification": report["independent_verification"]}),
-                            encoding="utf-8")
+        FINAL_JSON.write_text(
+            json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        )
+        FINAL_MD.write_text(
+            render_final_md(
+                {**block, "independent_verification": report["independent_verification"]}
+            ),
+            encoding="utf-8",
+        )
         block["independent_verification"] = report["independent_verification"]
         block["verifier_exit_code"] = code
 
@@ -812,24 +886,34 @@ def _utc_now() -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build the RFC-046 audit and reports.")
-    parser.add_argument("--full-suite", action="store_true", help="run the whole pytest suite and record the result")
+    parser.add_argument(
+        "--full-suite", action="store_true", help="run the whole pytest suite and record the result"
+    )
     parser.add_argument("--skip-tests", action="store_true", help="skip pytest entirely")
-    parser.add_argument("--no-verify", action="store_true", help="do not run the independent verifier")
+    parser.add_argument(
+        "--no-verify", action="store_true", help="do not run the independent verifier"
+    )
     args = parser.parse_args()
 
-    block = build(run_full_suite=args.full_suite, skip_tests=args.skip_tests, run_verifier=not args.no_verify)
+    block = build(
+        run_full_suite=args.full_suite, skip_tests=args.skip_tests, run_verifier=not args.no_verify
+    )
     inv = block["governance"]["invariants"]
     print(f"HEAD                 = {block['current_head']}")
     print(f"collision occupied   = {len(block['governance']['collision']['occupied'])} numbers")
-    print(f"cost round trip      = {block['facts']['cost']['round_trip_bps']} bps "
-          f"(arithmetic_check={block['facts']['cost']['arithmetic_check']})")
+    print(
+        f"cost round trip      = {block['facts']['cost']['round_trip_bps']} bps "
+        f"(arithmetic_check={block['facts']['cost']['arithmetic_check']})"
+    )
     print(f"roadmap unchanged    = {inv['roadmap_unchanged']}")
     print(f"freeze still RFC-035 = {inv['freeze_still_active_on_rfc035']}")
     print(f"no ADR for RFC-046   = {inv['no_adr_for_rfc046']}")
     status = block.get("independent_verification", {}).get("status", "SKIPPED")
     unit_status = block["tests"]["rfc046_tests"].get("status", "NOT_RUN_IN_BUILD")
     print(f"independent verify   = {status}")
-    print(f"rfc046 unit tests    = {unit_status} {block['tests']['rfc046_tests'].get('summary', '')}")
+    print(
+        f"rfc046 unit tests    = {unit_status} {block['tests']['rfc046_tests'].get('summary', '')}"
+    )
     print(f"artifacts            = {OUT.relative_to(REPO)} + {AUDIT_PATH.relative_to(REPO)}")
     if status == "FAIL":
         return 1

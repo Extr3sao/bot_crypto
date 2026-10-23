@@ -76,9 +76,7 @@ def ensure_cache(symbols: tuple[str, ...] = SMALL_CAP_UNIVERSE, *, refresh: bool
         path = cache_path(sym)
         if path.exists() and not refresh:
             continue
-        path.write_text(
-            json.dumps(fetch_symbol(sym), separators=(",", ":")), encoding="utf-8"
-        )
+        path.write_text(json.dumps(fetch_symbol(sym), separators=(",", ":")), encoding="utf-8")
 
 
 def load_series(symbol: str) -> PriceSeries:

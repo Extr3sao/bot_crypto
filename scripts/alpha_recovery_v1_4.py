@@ -71,42 +71,79 @@ CODE_FILES: tuple[str, ...] = (
 )
 
 IDENTITY: dict[str, dict[str, Any]] = {
-    "EXP-ARP-009": {"strategy_id": "H-XSEC-RELSTR-001", "dataset": "baseline",
-                    "kind": "xsec", "min_trades": 20, "max_hold_days": 30},
-    "EXP-ARP-011": {"strategy_id": "H-VOLEXP-BREAK-001", "dataset": "baseline",
-                    "kind": "daily", "min_trades": 10, "max_hold_days": 10},
-    "EXP-ARP-012": {"strategy_id": "STRAT-CAND-016-VARIANT-B", "dataset": "extended",
-                    "kind": "daily", "min_trades": 10, "max_hold_days": 5},
+    "EXP-ARP-009": {
+        "strategy_id": "H-XSEC-RELSTR-001",
+        "dataset": "baseline",
+        "kind": "xsec",
+        "min_trades": 20,
+        "max_hold_days": 30,
+    },
+    "EXP-ARP-011": {
+        "strategy_id": "H-VOLEXP-BREAK-001",
+        "dataset": "baseline",
+        "kind": "daily",
+        "min_trades": 10,
+        "max_hold_days": 10,
+    },
+    "EXP-ARP-012": {
+        "strategy_id": "STRAT-CAND-016-VARIANT-B",
+        "dataset": "extended",
+        "kind": "daily",
+        "min_trades": 10,
+        "max_hold_days": 5,
+    },
 }
 
 BASE_PARAMS: dict[str, dict[str, Any]] = {
     "EXP-ARP-009": {"lookback_days": 30, "max_hold_days": 30, "long_only": True},
-    "EXP-ARP-011": {"atr_period": 14, "breakout_lookback_days": 20, "vol_gate_days": 20,
-                    "stop_atr": 1.5, "target_atr": 3.0, "max_hold_days": 10},
-    "EXP-ARP-012": {"atr_period": 14, "void_min_days": 3, "void_min_atr": 2.0,
-                    "retest_lookback_days": 10, "stop_atr": 1.5, "target_atr": 3.0,
-                    "max_hold_days": 5},
+    "EXP-ARP-011": {
+        "atr_period": 14,
+        "breakout_lookback_days": 20,
+        "vol_gate_days": 20,
+        "stop_atr": 1.5,
+        "target_atr": 3.0,
+        "max_hold_days": 10,
+    },
+    "EXP-ARP-012": {
+        "atr_period": 14,
+        "void_min_days": 3,
+        "void_min_atr": 2.0,
+        "retest_lookback_days": 10,
+        "stop_atr": 1.5,
+        "target_atr": 3.0,
+        "max_hold_days": 5,
+    },
 }
 
 #: Robustness perturbations declared BEFORE any result is read (§13).
 ROBUSTNESS: dict[str, dict[str, Any]] = {
     "EXP-ARP-009": {
-        "lookback_20": {"lookback_days": 20}, "lookback_40": {"lookback_days": 40},
-        "max_hold_20": {"max_hold_days": 20}, "max_hold_45": {"max_hold_days": 45},
+        "lookback_20": {"lookback_days": 20},
+        "lookback_40": {"lookback_days": 40},
+        "max_hold_20": {"max_hold_days": 20},
+        "max_hold_45": {"max_hold_days": 45},
     },
     "EXP-ARP-011": {
         "breakout_lookback_15": {"breakout_lookback_days": 15},
         "breakout_lookback_25": {"breakout_lookback_days": 25},
-        "vol_gate_15": {"vol_gate_days": 15}, "vol_gate_25": {"vol_gate_days": 25},
-        "stop_atr_1_25": {"stop_atr": 1.25}, "stop_atr_1_75": {"stop_atr": 1.75},
-        "max_hold_5": {"max_hold_days": 5}, "max_hold_15": {"max_hold_days": 15},
+        "vol_gate_15": {"vol_gate_days": 15},
+        "vol_gate_25": {"vol_gate_days": 25},
+        "stop_atr_1_25": {"stop_atr": 1.25},
+        "stop_atr_1_75": {"stop_atr": 1.75},
+        "max_hold_5": {"max_hold_days": 5},
+        "max_hold_15": {"max_hold_days": 15},
     },
     "EXP-ARP-012": {
-        "stop_atr_1_25": {"stop_atr": 1.25}, "stop_atr_1_75": {"stop_atr": 1.75},
-        "target_atr_2_5": {"target_atr": 2.5}, "target_atr_3_5": {"target_atr": 3.5},
-        "retest_7": {"retest_lookback_days": 7}, "retest_13": {"retest_lookback_days": 13},
-        "void_atr_1_75": {"void_min_atr": 1.75}, "void_atr_2_25": {"void_min_atr": 2.25},
-        "max_hold_3": {"max_hold_days": 3}, "max_hold_7": {"max_hold_days": 7},
+        "stop_atr_1_25": {"stop_atr": 1.25},
+        "stop_atr_1_75": {"stop_atr": 1.75},
+        "target_atr_2_5": {"target_atr": 2.5},
+        "target_atr_3_5": {"target_atr": 3.5},
+        "retest_7": {"retest_lookback_days": 7},
+        "retest_13": {"retest_lookback_days": 13},
+        "void_atr_1_75": {"void_min_atr": 1.75},
+        "void_atr_2_25": {"void_min_atr": 2.25},
+        "max_hold_3": {"max_hold_days": 3},
+        "max_hold_7": {"max_hold_days": 7},
     },
 }
 
@@ -152,7 +189,9 @@ def load_daily(symbol: str, exp_id: str, split: str) -> list[OHLCV]:
     return daily_bars_from_5m(bars5)
 
 
-def load_daily_with_vol(symbol: str, exp_id: str, split: str) -> tuple[list[OHLCV], dict[int, float]]:
+def load_daily_with_vol(
+    symbol: str, exp_id: str, split: str
+) -> tuple[list[OHLCV], dict[int, float]]:
     bars5: list[OHLCV] = []
     for window in split_windows(exp_id, split):
         bars5.extend(E.load_ext_bars(symbol, window))
@@ -163,8 +202,11 @@ def load_daily_with_vol(symbol: str, exp_id: str, split: str) -> tuple[list[OHLC
 
 
 def validate_manifests() -> dict[str, Any]:
-    report: dict[str, Any] = {"config_hash": config_hash(), "cost_bps_rt": C.cost_model_v3_rt_bps(),
-                              "experiments": {}}
+    report: dict[str, Any] = {
+        "config_hash": config_hash(),
+        "cost_bps_rt": C.cost_model_v3_rt_bps(),
+        "experiments": {},
+    }
     problems: list[str] = []
     for exp_id in IDENTITY:
         manifest_path = V14_EXP / exp_id / "MANIFEST.json"
@@ -179,8 +221,10 @@ def validate_manifests() -> dict[str, Any]:
             "config_hash_match": manifest["config_hash"] == report["config_hash"],
             "dataset_fingerprint_match": manifest["data"]["dataset_fingerprint"] == dataset,
             "cost_model_match": manifest["cost_model"]["version"] == "COST_MODEL_V3",
-            "splits_match": all(manifest["splits"][s] == expected_splits[s]
-                                for s in ("DEV", "VALIDATION", "OOS_LOCK")),
+            "splits_match": all(
+                manifest["splits"][s] == expected_splits[s]
+                for s in ("DEV", "VALIDATION", "OOS_LOCK")
+            ),
             "oos_locked": manifest["splits"]["oos_opened"] is False,
             "strategy_id_match": manifest["strategy_id"] == IDENTITY[exp_id]["strategy_id"],
         }
@@ -201,8 +245,14 @@ def make_daily_strategy(exp_id: str, params: dict[str, Any]) -> Any:
     return Exp006LiquidityVoidReversal(Exp006Config(**params))
 
 
-def run_daily_split(exp_id: str, split: str, params: dict[str, Any], *, cost_bps_rt: float,
-                    entry_delay_days: int = 0) -> dict[str, list[Any]]:
+def run_daily_split(
+    exp_id: str,
+    split: str,
+    params: dict[str, Any],
+    *,
+    cost_bps_rt: float,
+    entry_delay_days: int = 0,
+) -> dict[str, list[Any]]:
     out: dict[str, list[Any]] = {}
     for key, symbol in C.SYMBOLS.items():
         daily = load_daily(symbol, exp_id, split)
@@ -210,34 +260,50 @@ def run_daily_split(exp_id: str, split: str, params: dict[str, Any], *, cost_bps
             out[key] = []
             continue
         strategy = make_daily_strategy(exp_id, params)
-        out[key] = simulate_daily(strategy, daily, cost_bps_rt=cost_bps_rt,
-                                  entry_delay_days=entry_delay_days).trades
+        out[key] = simulate_daily(
+            strategy, daily, cost_bps_rt=cost_bps_rt, entry_delay_days=entry_delay_days
+        ).trades
     return out
 
 
-def run_xsec_split(exp_id: str, split: str, params: dict[str, Any], *, cost_bps_rt: float) -> dict[str, list[Any]]:
+def run_xsec_split(
+    exp_id: str, split: str, params: dict[str, Any], *, cost_bps_rt: float
+) -> dict[str, list[Any]]:
     series = {s: load_daily(s, exp_id, split) for s in C.SYMBOLS.values()}
-    cfg = XsecConfig(lookback_days=int(params["lookback_days"]),
-                     max_hold_days=int(params["max_hold_days"]),
-                     long_only=bool(params.get("long_only", True)))
+    cfg = XsecConfig(
+        lookback_days=int(params["lookback_days"]),
+        max_hold_days=int(params["max_hold_days"]),
+        long_only=bool(params.get("long_only", True)),
+    )
     result = simulate_xsec(series, config=cfg, cost_bps_rt=cost_bps_rt)
     return {"XSEC": result.trades}
 
 
-def run_split(exp_id: str, split: str, params: dict[str, Any], *, cost_bps_rt: float,
-              entry_delay_days: int = 0) -> dict[str, list[Any]]:
+def run_split(
+    exp_id: str,
+    split: str,
+    params: dict[str, Any],
+    *,
+    cost_bps_rt: float,
+    entry_delay_days: int = 0,
+) -> dict[str, list[Any]]:
     if IDENTITY[exp_id]["kind"] == "xsec":
         return run_xsec_split(exp_id, split, params, cost_bps_rt=cost_bps_rt)
-    return run_daily_split(exp_id, split, params, cost_bps_rt=cost_bps_rt,
-                           entry_delay_days=entry_delay_days)
+    return run_daily_split(
+        exp_id, split, params, cost_bps_rt=cost_bps_rt, entry_delay_days=entry_delay_days
+    )
 
 
-def summarize(exp_id: str, split: str, params: dict[str, Any], cost_bps_rt: float) -> dict[str, Any]:
+def summarize(
+    exp_id: str, split: str, params: dict[str, Any], cost_bps_rt: float
+) -> dict[str, Any]:
     trades = run_split(exp_id, split, params, cost_bps_rt=cost_bps_rt)
     return C.summarize_run(trades, cost_bps_rt=cost_bps_rt)
 
 
-def sample_stats(exp_id: str, split: str, params: dict[str, Any], cost_bps_rt: float) -> dict[str, Any]:
+def sample_stats(
+    exp_id: str, split: str, params: dict[str, Any], cost_bps_rt: float
+) -> dict[str, Any]:
     """§10 sample-sufficiency descriptors (not thresholds)."""
     trades = run_split(exp_id, split, params, cost_bps_rt=cost_bps_rt)
     all_trades = [t for ts in trades.values() for t in ts]
@@ -256,7 +322,9 @@ def sample_stats(exp_id: str, split: str, params: dict[str, Any], cost_bps_rt: f
         "active_trading_days": active_days,
         "zero_trade_days": n_days - active_days,
         "median_holding_minutes": round(statistics.median(durations), 1) if durations else None,
-        "median_holding_days": round(statistics.median(durations) / 1440.0, 2) if durations else None,
+        "median_holding_days": round(statistics.median(durations) / 1440.0, 2)
+        if durations
+        else None,
     }
 
 
@@ -282,8 +350,11 @@ def dev_verdict(exp_id: str, dev: dict[str, Any]) -> dict[str, Any]:
         result = "REJECT_FRAGILE"
     else:
         result = "PASS"
-    return {"result": result, "checks": checks,
-            "thresholds": {"min_trades": min_trades, "top1_share_max": 0.5}}
+    return {
+        "result": result,
+        "checks": checks,
+        "thresholds": {"min_trades": min_trades, "top1_share_max": 0.5},
+    }
 
 
 def duplicate_check(exp_id: str, params: dict[str, Any]) -> dict[str, Any]:
@@ -293,9 +364,13 @@ def duplicate_check(exp_id: str, params: dict[str, Any]) -> dict[str, Any]:
     trades = run_xsec_split(exp_id, "DEV", params, cost_bps_rt=0.0)["XSEC"]
     held_symbols = sorted({t.rule for t in trades})
     degenerate = len(held_symbols) <= 1
-    return {"applicable": True, "episodes": len(trades), "held_symbols": held_symbols,
-            "degenerate_single_name": degenerate,
-            "result": "REJECT_DUPLICATE" if degenerate else "PASS"}
+    return {
+        "applicable": True,
+        "episodes": len(trades),
+        "held_symbols": held_symbols,
+        "degenerate_single_name": degenerate,
+        "result": "REJECT_DUPLICATE" if degenerate else "PASS",
+    }
 
 
 def cost_gate(exp_id: str, params: dict[str, Any], base_bps: float) -> dict[str, Any]:
@@ -304,7 +379,8 @@ def cost_gate(exp_id: str, params: dict[str, Any], base_bps: float) -> dict[str,
         cost = base_bps * mult
         comb = summarize(exp_id, "DEV", params, cost)["combined"]
         stress[f"{mult}x"] = {
-            "cost_bps_rt": round(cost, 4), "trades": comb["trades"],
+            "cost_bps_rt": round(cost, 4),
+            "trades": comb["trades"],
             "expectancy_gross_bps": comb["expectancy_gross_bps"],
             "expectancy_net_bps": comb["expectancy_net_bps"],
             "profit_factor": comb["profit_factor"],
@@ -316,8 +392,13 @@ def cost_gate(exp_id: str, params: dict[str, Any], base_bps: float) -> dict[str,
         result = "PASS"
     else:
         result = "REJECT_COSTS"
-    return {"result": result, "base_cost_bps_rt": round(base_bps, 4),
-            "gross_kill_bps": GROSS_KILL_BPS, "break_even_cost_bps": break_even, "stress": stress}
+    return {
+        "result": result,
+        "base_cost_bps_rt": round(base_bps, 4),
+        "gross_kill_bps": GROSS_KILL_BPS,
+        "break_even_cost_bps": break_even,
+        "stress": stress,
+    }
 
 
 def validation_verdict(dev: dict[str, Any], val: dict[str, Any]) -> dict[str, Any]:
@@ -325,11 +406,21 @@ def validation_verdict(dev: dict[str, Any], val: dict[str, Any]) -> dict[str, An
     dg, vg = d["expectancy_gross_bps"], v["expectancy_gross_bps"]
     checks = {
         "val_gross_positive": bool(vg is not None and vg > 0),
-        "no_material_collapse": bool(dg is not None and vg is not None and dg > 0 and vg >= 0.5 * dg),
-        "val_net_positive": bool(v["expectancy_net_bps"] is not None and v["expectancy_net_bps"] > 0),
+        "no_material_collapse": bool(
+            dg is not None and vg is not None and dg > 0 and vg >= 0.5 * dg
+        ),
+        "val_net_positive": bool(
+            v["expectancy_net_bps"] is not None and v["expectancy_net_bps"] > 0
+        ),
     }
-    return {"result": "PASS" if all(checks.values()) else "REJECT_VALIDATION", "checks": checks,
-            "dev_gross_bps": dg, "val_gross_bps": vg, "dev_trades": d["trades"], "val_trades": v["trades"]}
+    return {
+        "result": "PASS" if all(checks.values()) else "REJECT_VALIDATION",
+        "checks": checks,
+        "dev_gross_bps": dg,
+        "val_gross_bps": vg,
+        "dev_trades": d["trades"],
+        "val_trades": v["trades"],
+    }
 
 
 def robustness(exp_id: str, params: dict[str, Any], base_bps: float) -> dict[str, Any]:
@@ -340,15 +431,23 @@ def robustness(exp_id: str, params: dict[str, Any], base_bps: float) -> dict[str
         merged.update(delta)
         comb = summarize(exp_id, "DEV", merged, base_bps)["combined"]
         g = comb["expectancy_gross_bps"]
-        out[name] = {"params": merged, "trades": comb["trades"], "expectancy_gross_bps": g,
-                     "expectancy_net_bps": comb["expectancy_net_bps"]}
+        out[name] = {
+            "params": merged,
+            "trades": comb["trades"],
+            "expectancy_gross_bps": g,
+            "expectancy_net_bps": comb["expectancy_net_bps"],
+        }
         if g is not None:
             gross_bps.append(g)
     base = summarize(exp_id, "DEV", params, base_bps)["combined"]["expectancy_gross_bps"]
     positives = [g for g in gross_bps if g > 0]
     one_point = bool(base is not None and base > 0 and len(positives) <= 1)
-    return {"result": "REJECT_FRAGILE" if one_point else "PASS", "one_point_optimum": one_point,
-            "base_gross_bps": base, "variants": out}
+    return {
+        "result": "REJECT_FRAGILE" if one_point else "PASS",
+        "one_point_optimum": one_point,
+        "base_gross_bps": base,
+        "variants": out,
+    }
 
 
 # ------------------------------------------------------------- pipeline
@@ -368,8 +467,13 @@ def run_experiment(exp_id: str) -> dict[str, Any]:
     dev["duplicate_check"] = duplicate_check(exp_id, params)
     write_json(out_dir / "DEV.json", dev)
 
-    decision: dict[str, Any] = {"experiment_id": exp_id, "identity": identity, "stages": {},
-                               "oos_opened": False, "final": None}
+    decision: dict[str, Any] = {
+        "experiment_id": exp_id,
+        "identity": identity,
+        "stages": {},
+        "oos_opened": False,
+        "final": None,
+    }
     decision["stages"]["DEV"] = dev["verdict"]["result"]
     if dev["verdict"]["result"] != "PASS":
         decision["final"] = dev["verdict"]["result"]
@@ -430,11 +534,15 @@ def main() -> int:
         print("FROZEN MANIFEST MISMATCH — STOP")
         print(json.dumps(manifest, indent=2))
         return 2
-    env = {"code_hash": code_hash(), "config_hash": config_hash(),
-           "cost_bps_rt": C.cost_model_v3_rt_bps(),
-           "baseline_dataset_fingerprint": C.corpus_digest(),
-           "extended_corpus_digest": E.ext_corpus_digest(),
-           "code_files": list(CODE_FILES), "branch_head": _head()}
+    env = {
+        "code_hash": code_hash(),
+        "config_hash": config_hash(),
+        "cost_bps_rt": C.cost_model_v3_rt_bps(),
+        "baseline_dataset_fingerprint": C.corpus_digest(),
+        "extended_corpus_digest": E.ext_corpus_digest(),
+        "code_files": list(CODE_FILES),
+        "branch_head": _head(),
+    }
     write_json(OUT / "ENVIRONMENT.json", env)
     print(f"code_hash = {env['code_hash']}")
     print(f"extended_corpus_digest = {env['extended_corpus_digest']}")
@@ -445,13 +553,19 @@ def main() -> int:
         dec = res["decision"]
         comb = res["dev"]["combined"]
         summary[exp_id] = {
-            "strategy_id": IDENTITY[exp_id]["strategy_id"], "dataset": IDENTITY[exp_id]["dataset"],
-            "stages": dec["stages"], "final": dec["final"], "oos_opened": dec["oos_opened"],
-            "dev_trades": comb["trades"], "dev_gross_bps": comb["expectancy_gross_bps"],
+            "strategy_id": IDENTITY[exp_id]["strategy_id"],
+            "dataset": IDENTITY[exp_id]["dataset"],
+            "stages": dec["stages"],
+            "final": dec["final"],
+            "oos_opened": dec["oos_opened"],
+            "dev_trades": comb["trades"],
+            "dev_gross_bps": comb["expectancy_gross_bps"],
             "dev_net_bps": comb["expectancy_net_bps"],
         }
-        print(f"{exp_id}: DEV trades={comb['trades']} gross={comb['expectancy_gross_bps']} "
-              f"net={comb['expectancy_net_bps']} -> {dec['final']}")
+        print(
+            f"{exp_id}: DEV trades={comb['trades']} gross={comb['expectancy_gross_bps']} "
+            f"net={comb['expectancy_net_bps']} -> {dec['final']}"
+        )
     write_json(OUT / "RUN_REPORT.json", {"environment": env, "experiments": summary})
     return 0
 
@@ -460,8 +574,9 @@ def _head() -> str:
     import subprocess
 
     try:
-        return subprocess.run(["git", "rev-parse", "HEAD"], cwd=REPO, capture_output=True,
-                              text=True, check=True).stdout.strip()
+        return subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=REPO, capture_output=True, text=True, check=True
+        ).stdout.strip()
     except Exception:
         return "UNKNOWN"
 

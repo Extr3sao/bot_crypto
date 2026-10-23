@@ -60,9 +60,9 @@ def test_canonical_json_is_byte_stable() -> None:
     assert (
         canonical_json(payload).encode("utf-8")
         == canonical_json(payload).encode("utf-8")
-        == json.dumps(
-            payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True
-        ).encode("utf-8")
+        == json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode(
+            "utf-8"
+        )
     )
 
 

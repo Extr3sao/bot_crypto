@@ -205,7 +205,12 @@ def build_manifest(path: str, records: list[dict[str, Any]]) -> dict[str, Any]:
     out_of_order = 0
     seen: set[tuple[str, str, int, Any]] = set()
     for r in records:
-        key = (r["kind"], r["symbol"], int(r["receive_time"]), r.get("agg_trade_id") or r.get("last_update_id"))
+        key = (
+            r["kind"],
+            r["symbol"],
+            int(r["receive_time"]),
+            r.get("agg_trade_id") or r.get("last_update_id"),
+        )
         if key in seen:
             duplicates += 1
         seen.add(key)
@@ -248,7 +253,13 @@ def build_manifest(path: str, records: list[dict[str, Any]]) -> dict[str, Any]:
                 holes += 1
                 worst = max(worst, d)
         seq_gaps.append(
-            {"symbol": sym, "kind": "aggTrade", "n_ids": len(ids), "holes": holes, "worst_step": worst}
+            {
+                "symbol": sym,
+                "kind": "aggTrade",
+                "n_ids": len(ids),
+                "holes": holes,
+                "worst_step": worst,
+            }
         )
 
     depth_ids: list[dict[str, Any]] = []
@@ -307,7 +318,12 @@ def run(
                 for collector in (collect_book_ticker, lambda s: collect_depth(s, depth)):
                     try:
                         batch.append(collector(sym))
-                    except (urllib.error.URLError, urllib.error.HTTPError, ValueError, KeyError) as exc:
+                    except (
+                        urllib.error.URLError,
+                        urllib.error.HTTPError,
+                        ValueError,
+                        KeyError,
+                    ) as exc:
                         batch.append(_rec("error", sym, error=repr(exc)))
                 try:
                     batch.extend(collect_agg_trades(sym))

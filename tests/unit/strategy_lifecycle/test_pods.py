@@ -22,7 +22,9 @@ KEY = ContextKey("mom", "BTC", "5m", "TREND_UP")
 
 
 def _pod(sid="mom", runtime=None) -> StrategyPod:
-    rt = runtime or (lambda ctx, bars: PodSignal(direction="LONG", entry_reference=100.0, confidence=0.5))
+    rt = runtime or (
+        lambda ctx, bars: PodSignal(direction="LONG", entry_reference=100.0, confidence=0.5)
+    )
     return StrategyPod(descriptor=descriptor(sid, state=LifecycleState.SHADOW), runtime=rt)
 
 
@@ -56,12 +58,22 @@ def test_pod_runtime_must_return_a_pod_signal() -> None:
 
 def test_pod_may_not_set_leverage() -> None:
     with pytest.raises(ValueError):
-        PodSignal(direction="LONG", entry_reference=100.0, confidence=0.5, advisory_metadata={"leverage": 5})
+        PodSignal(
+            direction="LONG",
+            entry_reference=100.0,
+            confidence=0.5,
+            advisory_metadata={"leverage": 5},
+        )
 
 
 def test_pod_may_not_set_sizing() -> None:
     with pytest.raises(ValueError):
-        PodSignal(direction="LONG", entry_reference=100.0, confidence=0.5, advisory_metadata={"notional_usdt": 500})
+        PodSignal(
+            direction="LONG",
+            entry_reference=100.0,
+            confidence=0.5,
+            advisory_metadata={"notional_usdt": 500},
+        )
 
 
 def test_pod_not_applicable_for_unsupported_asset() -> None:

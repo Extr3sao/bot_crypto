@@ -111,7 +111,9 @@ def diagnose(note: str) -> None:
 
 
 def canonical(payload: Any) -> str:
-    return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str)
+    return json.dumps(
+        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str
+    )
 
 
 def event_hash(record: dict[str, Any]) -> str:
@@ -122,7 +124,9 @@ def event_hash(record: dict[str, Any]) -> str:
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
     if not path.is_file():
         return []
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [
+        json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()
+    ]
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -178,7 +182,11 @@ def _child(parent: ET.Element | None, tag: str) -> ET.Element | None:
 
 
 def scheduler_snapshot() -> dict[str, Any]:
-    result: dict[str, Any] = {"scheduler_type": scheduler_type(), "installed": False, "enabled": False}
+    result: dict[str, Any] = {
+        "scheduler_type": scheduler_type(),
+        "installed": False,
+        "enabled": False,
+    }
     if result["scheduler_type"] != "windows_task_scheduler":
         return result
     code, stdout, stderr = _run(["schtasks", "/query", "/tn", TASK_NAME, "/xml", "ONE"])
@@ -264,7 +272,10 @@ def main() -> int:
     )
     check(
         "every operations event carries a CAP-004B ops version",
-        all(re.fullmatch(OPS_VERSION_PATTERN, str(item.get("ops_version", ""))) for item in operations),
+        all(
+            re.fullmatch(OPS_VERSION_PATTERN, str(item.get("ops_version", "")))
+            for item in operations
+        ),
     )
     ops_versions = {str(item.get("ops_version")) for item in operations}
     check(
@@ -274,11 +285,17 @@ def main() -> int:
     )
     check(
         "no operations event is dated in the future",
-        all(int(item.get("started_at", 0)) <= now + 5 and int(item.get("ended_at", 0)) <= now + 5 for item in operations),
+        all(
+            int(item.get("started_at", 0)) <= now + 5 and int(item.get("ended_at", 0)) <= now + 5
+            for item in operations
+        ),
     )
     check(
         "the operations ledger records real supervisor runs",
-        any(str(item.get("action")) in ("RUN", "NOOP", "PREFLIGHT_BLOCKED", "STOPPED") for item in operations),
+        any(
+            str(item.get("action")) in ("RUN", "NOOP", "PREFLIGHT_BLOCKED", "STOPPED")
+            for item in operations
+        ),
     )
     check(
         "the supervisor status file records the same ops version",
@@ -298,7 +315,9 @@ def main() -> int:
         str(sched["scheduler_type"]),
     )
     check("the supervisor is registered in the OS scheduler", bool(sched.get("installed")))
-    check("the registered task is enabled", bool(sched.get("enabled")), f"state={sched.get('state')}")
+    check(
+        "the registered task is enabled", bool(sched.get("enabled")), f"state={sched.get('state')}"
+    )
     expected_script = "cap004_supervisor.py"
     arguments = str(sched.get("arguments") or "")
     check(
@@ -327,7 +346,8 @@ def main() -> int:
         str(sched.get("privilege")),
     )
     definition_text = " ".join(
-        str(sched.get(key) or "") for key in ("command", "arguments", "working_directory", "raw_xml")
+        str(sched.get(key) or "")
+        for key in ("command", "arguments", "working_directory", "raw_xml")
     )
     check(
         "the task definition embeds no credential",
@@ -356,7 +376,8 @@ def main() -> int:
 
     # --- §D ledger integrity (independent of the CAP-004 verifier) -------- #
     decision_keys = [
-        f"{item.get('asset')}|{int(item.get('decision_time', 0))}|{item.get('horizon')}" for item in decisions
+        f"{item.get('asset')}|{int(item.get('decision_time', 0))}|{item.get('horizon')}"
+        for item in decisions
     ]
     check("no decision slot was sealed twice", len(set(decision_keys)) == len(decision_keys))
     outcome_keys = [f"{item.get('decision_id')}|{item.get('horizon')}" for item in outcomes]
@@ -366,7 +387,8 @@ def main() -> int:
     check(
         "every decision sits on the 16:00 UTC slot grid",
         all(
-            dt.datetime.fromtimestamp(int(item.get("decision_time", 0)), dt.UTC).hour == SLOT_UTC_HOUR
+            dt.datetime.fromtimestamp(int(item.get("decision_time", 0)), dt.UTC).hour
+            == SLOT_UTC_HOUR
             and dt.datetime.fromtimestamp(int(item.get("decision_time", 0)), dt.UTC).minute == 0
             for item in decisions
         ),
@@ -420,7 +442,9 @@ def main() -> int:
 
     if CAP003_VERIFICATION.is_file():
         cap003 = load_json(CAP003_VERIFICATION)
-        check("the CAP-003 verifier passes", cap003.get("status") == "PASS", str(cap003.get("status")))
+        check(
+            "the CAP-003 verifier passes", cap003.get("status") == "PASS", str(cap003.get("status"))
+        )
     else:
         limit("the CAP-003 verification report is absent locally; CAP-003 re-check deferred")
 

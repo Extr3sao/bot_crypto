@@ -158,7 +158,9 @@ def trigger_path_matches(pattern: str) -> int:
         directory, _, name = pattern.rpartition("/")
         out = git("ls-tree", "-r", "--name-only", "HEAD", directory)
         regex = re.compile("^" + re.escape(name).replace(r"\*", "[^/]*") + "$")
-        return len([line for line in out.stdout.splitlines() if regex.match(line.rpartition("/")[2])])
+        return len(
+            [line for line in out.stdout.splitlines() if regex.match(line.rpartition("/")[2])]
+        )
     return 1 if committed_exists(pattern) else 0
 
 
@@ -174,14 +176,21 @@ def commands_of(step: Step) -> list[str]:
 
 
 def referenced_paths(command: str) -> list[str]:
-    return [match.group(1) for match in re.finditer(r"(scripts/[\w./-]+\.py|tests/[\w./-]+\.py)", command)]
+    return [
+        match.group(1)
+        for match in re.finditer(r"(scripts/[\w./-]+\.py|tests/[\w./-]+\.py)", command)
+    ]
 
 
 def audit_workflow(relative: str) -> dict[str, Any]:
     path = ROOT / relative
     problems: list[str] = []
     if not path.exists():
-        return {"path": relative, "present": False, "problems": ["the workflow file does not exist"]}
+        return {
+            "path": relative,
+            "present": False,
+            "problems": ["the workflow file does not exist"],
+        }
     parsed = parse_workflow(path)
     jobs = []
     for job in parsed["jobs"]:
@@ -220,7 +229,7 @@ def audit_workflow(relative: str) -> dict[str, Any]:
     if isinstance(triggers, dict):
         for event in ("push", "pull_request"):
             entry = triggers.get(event) or {}
-            for pattern in (entry.get("paths") or []):
+            for pattern in entry.get("paths") or []:
                 matches = trigger_path_matches(str(pattern))
                 if matches == 0:
                     # A path that exists only in the reader's head cannot be the reason a
@@ -231,22 +240,29 @@ def audit_workflow(relative: str) -> dict[str, Any]:
                     # materialised on the runner by design, which the gate's own
                     # activation contract requires to be listed.
                     inert = ignored_by_git(str(pattern))
-                    declared = git("grep", "-q", "-F", str(pattern), "HEAD", "--", "scripts/").returncode == 0
-                    stale_triggers.append({
-                        "event": event,
-                        "path": str(pattern),
-                        "matches": 0,
-                        "class": "INERT_MATERIALISED_INPUT" if inert and declared else "DEAD_FILTER",
-                        "declared_in_head_code": declared,
-                        "why": (
-                            "gitignored by design and materialised from evidence on the "
-                            "runner; listed because the gate's activation contract requires "
-                            "every declared input to be covered"
-                            if inert
-                            else "the path is not ignored and not committed either: this filter "
-                            "entry can never be the reason the workflow starts"
-                        ),
-                    })
+                    declared = (
+                        git("grep", "-q", "-F", str(pattern), "HEAD", "--", "scripts/").returncode
+                        == 0
+                    )
+                    stale_triggers.append(
+                        {
+                            "event": event,
+                            "path": str(pattern),
+                            "matches": 0,
+                            "class": "INERT_MATERIALISED_INPUT"
+                            if inert and declared
+                            else "DEAD_FILTER",
+                            "declared_in_head_code": declared,
+                            "why": (
+                                "gitignored by design and materialised from evidence on the "
+                                "runner; listed because the gate's activation contract requires "
+                                "every declared input to be covered"
+                                if inert
+                                else "the path is not ignored and not committed either: this filter "
+                                "entry can never be the reason the workflow starts"
+                            ),
+                        }
+                    )
     return {
         "path": relative,
         "present": True,
@@ -359,8 +375,14 @@ def run_sequence(workflow: dict[str, Any], *, timeout: int) -> list[dict[str, An
         argv = [*shell, command] if shell else command
         started = time.monotonic()
         completed = subprocess.run(
-            argv, cwd=ROOT, shell=not shell, capture_output=True, text=True,
-            timeout=timeout, check=False, env=shell_env(),
+            argv,
+            cwd=ROOT,
+            shell=not shell,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            check=False,
+            env=shell_env(),
         )
         results.append(
             {
@@ -446,7 +468,12 @@ def probe_push(dry_run_branch: str) -> dict[str, Any]:
     env = {**os.environ, "GIT_TERMINAL_PROMPT": "0", "GCM_INTERACTIVE": "never"}
     completed = subprocess.run(
         ["git", "push", "--dry-run", "origin", f"HEAD:refs/heads/{dry_run_branch}"],
-        cwd=ROOT, capture_output=True, text=True, env=env, timeout=120, check=False,
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        env=env,
+        timeout=120,
+        check=False,
     )
     output = (completed.stdout + completed.stderr).strip()
     authenticated = completed.returncode == 0 and "could not read Username" not in output
@@ -516,9 +543,7 @@ def audit(run: bool, timeout: int) -> dict[str, Any]:
         "artifact": "WP9_CI_EXECUTION_REPORT",
         "work_package": "WP-9A (CI RUNTIME CERTIFICATION)",
         "generated_at_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "runner": (
-            "GITHUB_ACTIONS" if os.environ.get("GITHUB_ACTIONS") else "LOCAL"
-        ),
+        "runner": ("GITHUB_ACTIONS" if os.environ.get("GITHUB_ACTIONS") else "LOCAL"),
         "ci_certified": False,
         "certification": {
             "ci_certified": False,
@@ -574,7 +599,9 @@ def render_markdown(payload: dict[str, Any]) -> str:
     ]
     if certification["blocked_by"]:
         lines += ["Blocked by:", ""]
-        lines += [f"{index}. {reason}" for index, reason in enumerate(certification["blocked_by"], 1)]
+        lines += [
+            f"{index}. {reason}" for index, reason in enumerate(certification["blocked_by"], 1)
+        ]
         lines.append("")
     lines += [
         "## 2. The workflows, read as the runner reads them",
@@ -596,9 +623,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
                 f"  * {job['steps_total']} steps, {job['steps_that_run_commands']} that run commands, "
                 f"referenced paths all tracked: {job['referenced_paths_all_tracked']}"
             )
-        lines.append(
-            f"* problems: {workflow['problems'] or 'none'}"
-        )
+        lines.append(f"* problems: {workflow['problems'] or 'none'}")
         lines.append("")
     lines += [
         "## 3. What GitHub actually has",
@@ -608,7 +633,8 @@ def render_markdown(payload: dict[str, Any]) -> str:
         f"`{payload['github']['repository']['default_branch']}`",
         f"* registered workflows: {payload['github'].get('registered_total')} — "
         + ", ".join(
-            f"`{w['path']}` ({w['state']})" for w in payload["github"].get("registered_workflows") or []
+            f"`{w['path']}` ({w['state']})"
+            for w in payload["github"].get("registered_workflows") or []
         ),
         f"* remote head `{payload['github'].get('remote_head')}` vs local "
         f"`{payload['github'].get('local_head')}`: "
@@ -665,7 +691,9 @@ def render_markdown(payload: dict[str, Any]) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--json", action="store_true")
-    parser.add_argument("--no-run", action="store_true", help="audit the workflows, execute nothing")
+    parser.add_argument(
+        "--no-run", action="store_true", help="audit the workflows, execute nothing"
+    )
     parser.add_argument("--timeout", type=int, default=1800, help="per-step timeout (seconds)")
     parser.add_argument("--out", default=None)
     parser.add_argument("--report", default=None)

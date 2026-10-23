@@ -22,7 +22,9 @@ def _p(sid, *, asset="BTC", direction="LONG", notional=100.0, edge=10.0, series=
 
 
 def test_three_uncorrelated_bets_survive_if_within_budget() -> None:
-    mgr = StrategyPortfolioManager(equity=10_000, max_asset_exposure_pct=10, max_total_exposure_pct=25)
+    mgr = StrategyPortfolioManager(
+        equity=10_000, max_asset_exposure_pct=10, max_total_exposure_pct=25
+    )
     decision = mgr.arbitrate(
         [
             _p("mom", notional=100.0, series=(1.0, -1.0, 2.0, -2.0)),
@@ -35,7 +37,9 @@ def test_three_uncorrelated_bets_survive_if_within_budget() -> None:
 
 
 def test_correlated_same_asset_proposals_are_rejected() -> None:
-    mgr = StrategyPortfolioManager(equity=10_000, max_asset_exposure_pct=100, correlation_threshold=0.7)
+    mgr = StrategyPortfolioManager(
+        equity=10_000, max_asset_exposure_pct=100, correlation_threshold=0.7
+    )
     series = [1.0, 2.0, 3.0, 4.0, 5.0]
     decision = mgr.arbitrate(
         [
@@ -50,7 +54,9 @@ def test_correlated_same_asset_proposals_are_rejected() -> None:
 
 
 def test_per_asset_concentration_is_enforced() -> None:
-    mgr = StrategyPortfolioManager(equity=10_000, max_asset_exposure_pct=1.0, max_total_exposure_pct=50)
+    mgr = StrategyPortfolioManager(
+        equity=10_000, max_asset_exposure_pct=1.0, max_total_exposure_pct=50
+    )
     # 1% of 10_000 = 100 budget on BTC; second proposal of 60 would exceed it.
     decision = mgr.arbitrate(
         [
@@ -64,7 +70,10 @@ def test_per_asset_concentration_is_enforced() -> None:
 
 def test_total_exposure_budget_is_enforced() -> None:
     mgr = StrategyPortfolioManager(
-        equity=1_000, max_asset_exposure_pct=100, max_total_exposure_pct=5, max_same_direction_per_asset=10
+        equity=1_000,
+        max_asset_exposure_pct=100,
+        max_total_exposure_pct=5,
+        max_same_direction_per_asset=10,
     )
     # total budget = 50
     decision = mgr.arbitrate(
@@ -79,7 +88,10 @@ def test_total_exposure_budget_is_enforced() -> None:
 
 def test_same_direction_cluster_is_capped() -> None:
     mgr = StrategyPortfolioManager(
-        equity=10_000, max_asset_exposure_pct=100, max_total_exposure_pct=100, max_same_direction_per_asset=2
+        equity=10_000,
+        max_asset_exposure_pct=100,
+        max_total_exposure_pct=100,
+        max_same_direction_per_asset=2,
     )
     decision = mgr.arbitrate(
         [
@@ -93,7 +105,9 @@ def test_same_direction_cluster_is_capped() -> None:
 
 
 def test_merged_exposure_is_reported() -> None:
-    mgr = StrategyPortfolioManager(equity=10_000, max_asset_exposure_pct=100, max_total_exposure_pct=100)
+    mgr = StrategyPortfolioManager(
+        equity=10_000, max_asset_exposure_pct=100, max_total_exposure_pct=100
+    )
     decision = mgr.arbitrate(
         [
             _p("a", asset="BTC", notional=40.0, edge=20.0),

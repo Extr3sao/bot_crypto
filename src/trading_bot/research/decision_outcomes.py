@@ -235,7 +235,9 @@ def deterministic_rule_state(
             "bar_seconds": bar_seconds,
             "daily_bar_seconds": daily_bar_seconds,
             "bars_4h": [[_open_time_seconds(row), float(row.close)] for row in causal],
-            "daily_closes": [[int(bar.open_time), float(bar.close)] for bar in daily_bars[-RULE_INPUT_BARS_1D:]],
+            "daily_closes": [
+                [int(bar.open_time), float(bar.close)] for bar in daily_bars[-RULE_INPUT_BARS_1D:]
+            ],
         }
     )
 
@@ -452,7 +454,9 @@ class DecisionOutcome:
 
 def outcome_payload_hash(payload: Mapping[str, Any]) -> str:
     """Digest of an outcome payload, ignoring its own hash field."""
-    return ac.payload_digest({key: value for key, value in payload.items() if key != "outcome_hash"})
+    return ac.payload_digest(
+        {key: value for key, value in payload.items() if key != "outcome_hash"}
+    )
 
 
 def analyst_payload(record: ac.DecisionRecord) -> Mapping[str, Any]:
@@ -582,7 +586,9 @@ def evaluate_decision(
         invalidation_hit=invalidation_hit,
         invalidation_rule=invalidation_rule,
         outcome=_outcome_label(record.decision, net),
-        evidence_hash=ac.payload_digest(_window_evidence(window, source=source, bar_seconds=bar_seconds)),
+        evidence_hash=ac.payload_digest(
+            _window_evidence(window, source=source, bar_seconds=bar_seconds)
+        ),
         evaluator=EVALUATOR_ID,
         evaluator_version=EVALUATOR_VERSION,
         source=source,

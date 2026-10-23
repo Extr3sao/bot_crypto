@@ -135,8 +135,10 @@ def test_compute_scores_excludes_short_history() -> None:
 
 def _corpus(n_symbols: int = 6, n_bars: int = 160) -> dict[str, list[DailyBar]]:
     return {
-        f"S{k}": _bars(f"S{k}", [100.0 + k * 10.0 + i * (0.5 + 0.05 * k) + ((i * 7 + k) % 5)
-                                  for i in range(n_bars)])
+        f"S{k}": _bars(
+            f"S{k}",
+            [100.0 + k * 10.0 + i * (0.5 + 0.05 * k) + ((i * 7 + k) % 5) for i in range(n_bars)],
+        )
         for k in range(n_symbols)
     }
 
@@ -233,20 +235,25 @@ def test_split_mutation_is_refused() -> None:
     reg = ImmutableSplitRegistry()
     reg.register("EXP-ARP-021", FROZEN_SPLIT)
     with pytest.raises(SplitMutationError):
-        reg.register("EXP-ARP-021", SplitDefinition(
-            "2019-01-01", "2024-01-01", "2024-01-01", "2025-07-01", "2025-07-01", "2026-03-01"
-        ))
+        reg.register(
+            "EXP-ARP-021",
+            SplitDefinition(
+                "2019-01-01", "2024-01-01", "2024-01-01", "2025-07-01", "2025-07-01", "2026-03-01"
+            ),
+        )
 
 
 def test_forward_holdout_stays_untouched() -> None:
     reg = HoldoutRegistry()
-    reg.register(Holdout(
-        holdout_id="HOLDOUT-ARP-019-FORWARD",
-        start="2026-03-01",
-        end="2027-03-01",
-        assets=("DYNAMIC_ASSET_UNIVERSE(ARP-006-UNIVERSE-v1)",),
-        dataset_hash=D.corpus_digest(),
-        forward_only=True,
-    ))
+    reg.register(
+        Holdout(
+            holdout_id="HOLDOUT-ARP-019-FORWARD",
+            start="2026-03-01",
+            end="2027-03-01",
+            assets=("DYNAMIC_ASSET_UNIVERSE(ARP-006-UNIVERSE-v1)",),
+            dataset_hash=D.corpus_digest(),
+            forward_only=True,
+        )
+    )
     assert reg.status("HOLDOUT-ARP-019-FORWARD") is HoldoutStatus.UNTOUCHED
     reg.assert_untouched("HOLDOUT-ARP-019-FORWARD")

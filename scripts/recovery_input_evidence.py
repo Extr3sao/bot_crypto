@@ -148,9 +148,11 @@ DECLARED_INPUTS: tuple[dict[str, Any], ...] = (
         "role": "forward-regime lane's health and standing-state declaration (governance mirror)",
         "required_for_reproduction": True,
         "authority": {"kind": DATED_SNAPSHOT, "artifact": SIDECAR},
-        "attested_fields": (("status", "LANE_STATE"),
-                            ("standing_state.NEXT_CAMPAIGN", "NEXT_CAMPAIGN"),
-                            ("standing_state.LIVE_TRADING", "LIVE_TRADING")),
+        "attested_fields": (
+            ("status", "LANE_STATE"),
+            ("standing_state.NEXT_CAMPAIGN", "NEXT_CAMPAIGN"),
+            ("standing_state.LIVE_TRADING", "LIVE_TRADING"),
+        ),
         "consumers": ("campaign_state_view", "recovery_verify"),
     },
     {
@@ -250,7 +252,9 @@ def content_grade(pin: dict[str, Any] | None, data: bytes | None) -> str:
 
 
 def git(*args: str, root: Path | None = None) -> str | None:
-    out = subprocess.run(["git", *args], cwd=str(root or ROOT), capture_output=True, text=True, check=False)
+    out = subprocess.run(
+        ["git", *args], cwd=str(root or ROOT), capture_output=True, text=True, check=False
+    )
     return out.stdout if out.returncode == 0 else None
 
 
@@ -265,20 +269,34 @@ def committed_bytes(rel: str, root: Path | None = None) -> bytes | None:
     if key in _HEAD_CACHE:
         cached: bytes | None = _HEAD_CACHE[key]
         return cached
-    out = subprocess.run(["git", "show", f"HEAD:{rel}"], cwd=str(base), capture_output=True, check=False)
+    out = subprocess.run(
+        ["git", "show", f"HEAD:{rel}"], cwd=str(base), capture_output=True, check=False
+    )
     data = out.stdout if out.returncode == 0 else None
     _HEAD_CACHE[key] = data
     return data
 
 
 def tracked(rel: str) -> bool:
-    return subprocess.run(["git", "ls-files", "--error-unmatch", rel], cwd=str(ROOT),
-                          capture_output=True, text=True, check=False).returncode == 0
+    return (
+        subprocess.run(
+            ["git", "ls-files", "--error-unmatch", rel],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            check=False,
+        ).returncode
+        == 0
+    )
 
 
 def committed_tree_entries(prefix: str) -> list[str]:
     """Paths committed at HEAD under ``prefix``: the repository's own view of its tree."""
-    return [line for line in (git("ls-tree", "-r", "--name-only", "HEAD", prefix) or "").splitlines() if line]
+    return [
+        line
+        for line in (git("ls-tree", "-r", "--name-only", "HEAD", prefix) or "").splitlines()
+        if line
+    ]
 
 
 def reset() -> None:
@@ -415,15 +433,22 @@ def authority_pin(rel: str) -> dict[str, Any] | None:
         for group in ("price_series", "signal_series"):
             record = ((manifest.get("dataset_hashes") or {}).get(group) or {}).get(rel)
             if record and record.get("sha256"):
-                return {"source": f"{MANIFEST}:dataset_hashes.{group}.{rel}", "sha256": record["sha256"]}
+                return {
+                    "source": f"{MANIFEST}:dataset_hashes.{group}.{rel}",
+                    "sha256": record["sha256"],
+                }
         return None
     if kind == DATED_SNAPSHOT:
         record = (sidecar_document().get("inputs") or {}).get(rel) or {}
         if not record.get("sha256_lf"):
             return None
-        return {"source": f"{SIDECAR}:inputs.{rel}", "sha256_lf": record["sha256_lf"],
-                "sha256_crlf": record.get("sha256_crlf"), "sha256": record.get("sha256"),
-                "captured_commit": record.get("captured_commit")}
+        return {
+            "source": f"{SIDECAR}:inputs.{rel}",
+            "sha256_lf": record["sha256_lf"],
+            "sha256_crlf": record.get("sha256_crlf"),
+            "sha256": record.get("sha256"),
+            "captured_commit": record.get("captured_commit"),
+        }
     artifact = entry["authority"]["artifact"]
     data = committed_bytes(artifact)
     if data is None:
@@ -435,8 +460,12 @@ def authority_pin(rel: str) -> dict[str, Any] | None:
     for row in payload.get("sources") or []:
         if str(row.get("path")) == rel:
             if row.get("sha256_lf"):
-                return {"source": f"{artifact}:sources[].sha256_lf", "sha256_lf": row["sha256_lf"],
-                        "sha256_crlf": row.get("sha256_crlf"), "sha256": row.get("sha256")}
+                return {
+                    "source": f"{artifact}:sources[].sha256_lf",
+                    "sha256_lf": row["sha256_lf"],
+                    "sha256_crlf": row.get("sha256_crlf"),
+                    "sha256": row.get("sha256"),
+                }
             if row.get("sha256"):
                 return {"source": f"{artifact}:sources[].sha256", "sha256": row["sha256"]}
     return None
@@ -500,13 +529,16 @@ def observe(rel: str) -> dict[str, Any]:
         "present_on_this_machine": live is not None,
         "local_forms": forms,
         "local_reproduces_the_authority": (
-            (grade(pin.get("sha256"), live) == VERIFIED
-             or content_grade(pin, live) == VERIFIED) if (pin and live is not None) else None
+            (grade(pin.get("sha256"), live) == VERIFIED or content_grade(pin, live) == VERIFIED)
+            if (pin and live is not None)
+            else None
         ),
     }
     if entry.get("attested_fields"):
         payload = json.loads(live.decode("utf-8")) if live is not None else {}
-        record["attested_field_values"] = {dotted: dig(payload, dotted) for dotted, _field in entry["attested_fields"]}
+        record["attested_field_values"] = {
+            dotted: dig(payload, dotted) for dotted, _field in entry["attested_fields"]
+        }
         snapshot = resolve_bytes(rel)
         snapshot_payload = json.loads((snapshot or b"{}").decode("utf-8")) if snapshot else {}
         record["attested_fields_match_the_snapshot"] = record["attested_field_values"] == {
@@ -519,7 +551,9 @@ def observe(rel: str) -> dict[str, Any]:
                 grade(pin.get("sha256"), copy) == VERIFIED or content_grade(pin, copy) == VERIFIED
             )
         record["local_matches_the_evidence_copy"] = (
-            live is not None and forms is not None and content_forms(copy)["sha256_lf"] == forms["sha256_lf"]
+            live is not None
+            and forms is not None
+            and content_forms(copy)["sha256_lf"] == forms["sha256_lf"]
         )
     if entry.get("class") == EXTERNAL_LIVE:
         record["note"] = (
@@ -549,15 +583,22 @@ def reproduction_evidence_failures() -> list[str]:
             continue
         evidence = record.get("evidence_copy")
         if not evidence:
-            failures.append(f"{rel} carries no evidence copy, so a clean checkout cannot reconstruct it")
+            failures.append(
+                f"{rel} carries no evidence copy, so a clean checkout cannot reconstruct it"
+            )
             continue
         if not evidence.get("in_head"):
-            failures.append(f"{record['evidence_path']} is not committed, so a clean checkout cannot use it")
+            failures.append(
+                f"{record['evidence_path']} is not committed, so a clean checkout cannot use it"
+            )
         pin = authority_pin(rel)
         if not pin:
             failures.append(f"{rel} has no published authority digest to answer to")
             continue
-        data = committed_bytes(record["evidence_path"]) or (ROOT / record["evidence_path"]).read_bytes()
+        data = (
+            committed_bytes(record["evidence_path"])
+            or (ROOT / record["evidence_path"]).read_bytes()
+        )
         if not (grade(pin.get("sha256"), data) == VERIFIED or content_grade(pin, data) == VERIFIED):
             failures.append(
                 f"{record['evidence_path']} does not reproduce the digest {pin['source']} records for {rel}"
@@ -599,20 +640,28 @@ def check(name: str, ok: bool, detail: str) -> dict[str, Any]:
     return {"check": name, "result": "PASS" if ok else "FAIL", "detail": detail}
 
 
-def _capture_generated(rel: str, entry: dict[str, Any], checks: list[dict[str, Any]],
-                       failures: list[str]) -> dict[str, Any] | None:
+def _capture_generated(
+    rel: str, entry: dict[str, Any], checks: list[dict[str, Any]], failures: list[str]
+) -> dict[str, Any] | None:
     target = ROOT / rel
     pin = authority_pin(rel)
     if not target.exists():
         failures.append(f"{rel} is not on this machine, so there is nothing to capture")
         return None
     if not pin:
-        failures.append(f"{rel} has no published authority digest; capturing it would create evidence nobody published")
+        failures.append(
+            f"{rel} has no published authority digest; capturing it would create evidence nobody published"
+        )
         return None
     data = target.read_bytes()
     status = grade(pin.get("sha256"), data)
-    checks.append(check(f"capture:{rel}:reproduces_the_published_pin", status == VERIFIED,
-                        f"status {status} against {pin['source']} = {str(pin.get('sha256'))[:16]}..."))
+    checks.append(
+        check(
+            f"capture:{rel}:reproduces_the_published_pin",
+            status == VERIFIED,
+            f"status {status} against {pin['source']} = {str(pin.get('sha256'))[:16]}...",
+        )
+    )
     if status != VERIFIED:
         failures.append(
             f"{rel} does not reproduce the digest {pin['source']} recorded ({status}); capturing it "
@@ -622,8 +671,9 @@ def _capture_generated(rel: str, entry: dict[str, Any], checks: list[dict[str, A
     return {"pin": pin, "data": data}
 
 
-def _capture_live(rel: str, entry: dict[str, Any], checks: list[dict[str, Any]],
-                  failures: list[str]) -> dict[str, Any] | None:
+def _capture_live(
+    rel: str, entry: dict[str, Any], checks: list[dict[str, Any]], failures: list[str]
+) -> dict[str, Any] | None:
     """Snapshot a live lane file without letting a governance change slide in.
 
     A live file cannot answer to a digest published once. What is certified is the
@@ -636,13 +686,23 @@ def _capture_live(rel: str, entry: dict[str, Any], checks: list[dict[str, Any]],
         return None
     data = target.read_bytes()
     fields = entry.get("attested_fields") or ()
-    projection = {dotted: dig(json.loads(data.decode("utf-8")), dotted) for dotted, _field in fields}
+    projection = {
+        dotted: dig(json.loads(data.decode("utf-8")), dotted) for dotted, _field in fields
+    }
     previous = (sidecar_document().get("inputs") or {}).get(rel) or {}
     previous_projection = previous.get("attested_fields") or {}
-    changed = {k: (previous_projection.get(k), v) for k, v in projection.items()
-               if k in previous_projection and previous_projection[k] != v}
-    checks.append(check(f"capture:{rel}:attested_fields_unchanged_since_the_last_snapshot", not changed,
-                        f"attested {projection}" + (f"; changed {changed}" if changed else "")))
+    changed = {
+        k: (previous_projection.get(k), v)
+        for k, v in projection.items()
+        if k in previous_projection and previous_projection[k] != v
+    }
+    checks.append(
+        check(
+            f"capture:{rel}:attested_fields_unchanged_since_the_last_snapshot",
+            not changed,
+            f"attested {projection}" + (f"; changed {changed}" if changed else ""),
+        )
+    )
     if changed:
         failures.append(
             f"{rel} states different values for its attested governance fields than the snapshot it "
@@ -651,11 +711,19 @@ def _capture_live(rel: str, entry: dict[str, Any], checks: list[dict[str, Any]],
         return None
     # the snapshot must not silently contradict what the published view already certifies
     certified = _published_certified(rel, fields)
-    contradictory = {field: (certified.get(field), projection[dotted])
-                     for dotted, field in fields
-                     if certified.get(field) is not None and certified.get(field) != projection[dotted]}
-    checks.append(check(f"capture:{rel}:agrees_with_the_published_view", not contradictory,
-                        f"published {certified}" + (f"; contradictions {contradictory}" if contradictory else "")))
+    contradictory = {
+        field: (certified.get(field), projection[dotted])
+        for dotted, field in fields
+        if certified.get(field) is not None and certified.get(field) != projection[dotted]
+    }
+    checks.append(
+        check(
+            f"capture:{rel}:agrees_with_the_published_view",
+            not contradictory,
+            f"published {certified}"
+            + (f"; contradictions {contradictory}" if contradictory else ""),
+        )
+    )
     if contradictory:
         failures.append(
             f"{rel} contradicts the values the published state view certifies for {rel} "
@@ -666,9 +734,14 @@ def _capture_live(rel: str, entry: dict[str, Any], checks: list[dict[str, Any]],
     matched = None
     if published and previous.get("sha256"):
         matched = grade(previous["sha256"], data) == VERIFIED
-    return {"pin": {"source": f"{SIDECAR}:inputs.{rel}", "how": "the dated snapshot this run writes"},
-            "data": data, "attested": projection, "certified": certified,
-            "published_pin_at_capture": published, "published_pin_matched": matched}
+    return {
+        "pin": {"source": f"{SIDECAR}:inputs.{rel}", "how": "the dated snapshot this run writes"},
+        "data": data,
+        "attested": projection,
+        "certified": certified,
+        "published_pin_at_capture": published,
+        "published_pin_matched": matched,
+    }
 
 
 def _published_certified(rel: str, fields: Any) -> dict[str, Any]:
@@ -696,9 +769,11 @@ def capture() -> tuple[dict[str, Any], int]:
     for rel, entry in sorted(DECLARATION.items()):
         if not entry.get("slug"):
             continue
-        captured = (_capture_live(rel, entry, checks, failures)
-                    if entry["class"] == EXTERNAL_LIVE
-                    else _capture_generated(rel, entry, checks, failures))
+        captured = (
+            _capture_live(rel, entry, checks, failures)
+            if entry["class"] == EXTERNAL_LIVE
+            else _capture_generated(rel, entry, checks, failures)
+        )
         if captured is None:
             continue
         evidence = ROOT / INPUTS_DIR / entry["slug"]
@@ -718,13 +793,18 @@ def capture() -> tuple[dict[str, Any], int]:
                 "built from."
             ),
             **content_forms(captured["data"]),
-            "pin_authority": {**captured["pin"], "how": (
-                "the published artefact recorded this digest for this input when it was built; the copy "
-                "is admissible only while it reproduces that digest")},
+            "pin_authority": {
+                **captured["pin"],
+                "how": (
+                    "the published artefact recorded this digest for this input when it was built; the copy "
+                    "is admissible only while it reproduces that digest"
+                ),
+            },
             "not_a_signature": (
                 "integrity here is a digest chain anchored in the commit that carries it, not a "
                 "signature: a party able to rewrite the artefact, this copy and the checker together "
-                "defeats it, and that is stated as a limitation rather than hidden"),
+                "defeats it, and that is stated as a limitation rather than hidden"
+            ),
         }
         if entry["class"] == EXTERNAL_LIVE:
             record["attested_fields"] = captured["attested"]
@@ -732,8 +812,10 @@ def capture() -> tuple[dict[str, Any], int]:
             record["pin_authority"] = {
                 "kind": DATED_SNAPSHOT,
                 "source": f"{SIDECAR}:inputs.{rel}",
-                "how": ("a live lane file moves by design, so its authority is this dated capture and the "
-                        "attested field projection it records, not a digest published once"),
+                "how": (
+                    "a live lane file moves by design, so its authority is this dated capture and the "
+                    "attested field projection it records, not a digest published once"
+                ),
             }
             record["published_pin_at_capture"] = captured["published_pin_at_capture"]
             record["published_pin_matched"] = captured["published_pin_matched"]
@@ -787,19 +869,35 @@ def verify() -> tuple[dict[str, Any], int]:
         evidence_rel = record["evidence_path"]
         data = committed_bytes(evidence_rel)
         if data is None:
-            checks.append(check(f"verify:{rel}:evidence_copy_committed", False, f"{evidence_rel} is not in HEAD"))
+            checks.append(
+                check(
+                    f"verify:{rel}:evidence_copy_committed", False, f"{evidence_rel} is not in HEAD"
+                )
+            )
             failures.append(f"{evidence_rel} is absent from the commit")
             continue
         forms = content_forms(data)
         if forms["sha256_lf"] != record["sha256_lf"]:
-            checks.append(check(f"verify:{rel}:evidence_content_unchanged", False,
-                                f"{forms['sha256_lf'][:16]} != captured {record['sha256_lf'][:16]}"))
+            checks.append(
+                check(
+                    f"verify:{rel}:evidence_content_unchanged",
+                    False,
+                    f"{forms['sha256_lf'][:16]} != captured {record['sha256_lf'][:16]}",
+                )
+            )
             failures.append(f"{evidence_rel} content changed since capture")
             continue
-        checks.append(check(f"verify:{rel}:evidence_content_unchanged", True, forms["sha256_lf"][:16]))
+        checks.append(
+            check(f"verify:{rel}:evidence_content_unchanged", True, forms["sha256_lf"][:16])
+        )
         if record.get("published_pin_matched") is False:
-            checks.append(check(f"verify:{rel}:published_pin_matched_at_capture", False,
-                                "the live file had already moved past the published digest when it was snapshotted"))
+            checks.append(
+                check(
+                    f"verify:{rel}:published_pin_matched_at_capture",
+                    False,
+                    "the live file had already moved past the published digest when it was snapshotted",
+                )
+            )
     failures.extend(declared_input_failures())
     failures.extend(reproduction_evidence_failures())
     return {
@@ -840,7 +938,9 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Input authority for the ACTIVE recovery lane.")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--capture", action="store_true", help="author: record the evidence bundle")
-    group.add_argument("--materialize", action="store_true", help="verify, then place the gitignored targets")
+    group.add_argument(
+        "--materialize", action="store_true", help="verify, then place the gitignored targets"
+    )
     group.add_argument("--verify", action="store_true", help="verify the bundle (default)")
     parser.add_argument("--json", action="store_true", help="print the full report")
     args = parser.parse_args(argv)
@@ -854,9 +954,17 @@ def main(argv: list[str] | None = None) -> int:
     if args.json:
         print(json.dumps(report, indent=2, ensure_ascii=False))
     else:
-        print(json.dumps({"action": report.get("action"), "status": report.get("status"),
-                          "failures": report.get("failures", [])[:8], "checks_failed": report.get("checks_failed")},
-                         indent=2))
+        print(
+            json.dumps(
+                {
+                    "action": report.get("action"),
+                    "status": report.get("status"),
+                    "failures": report.get("failures", [])[:8],
+                    "checks_failed": report.get("checks_failed"),
+                },
+                indent=2,
+            )
+        )
     return code
 
 

@@ -220,14 +220,20 @@ def render_preregistration(payload: dict[str, Any]) -> str:
         lines.append(f"- **{item['baseline_id']}**: `{item['rule']}` — {item['role']}")
     lines.extend(["", "## Declared non-traded arms", ""])
     for arm in registry["non_traded_arms"]:
-        lines.append(f"- **{arm['arm_id']}** ({arm['hypothesis_id']}) {arm['name']}: `{arm['rule']}`")
+        lines.append(
+            f"- **{arm['arm_id']}** ({arm['hypothesis_id']}) {arm['name']}: `{arm['rule']}`"
+        )
         lines.append(f"  - {arm['role']}")
-    lines.extend(["", "## Frozen thresholds (ATR units)", "", "| threshold | value |", "| --- | --- |"])
+    lines.extend(
+        ["", "## Frozen thresholds (ATR units)", "", "| threshold | value |", "| --- | --- |"]
+    )
     lines.extend(f"| {key} | {value} |" for key, value in sorted(registry["thresholds"].items()))
     lines.extend(["", "## Features (the only inputs a hypothesis may read)", ""])
     lines.extend(f"- `{item['name']}`: {item['definition']}" for item in registry["features"])
     lines.extend(["", "## Context statistics (reported, never inputs)", ""])
-    lines.extend(f"- `{item['name']}`: {item['definition']}" for item in payload["context_statistics"])
+    lines.extend(
+        f"- `{item['name']}`: {item['definition']}" for item in payload["context_statistics"]
+    )
     lines.extend(["", "## Feature construction constants", "", "| key | value |", "| --- | --- |"])
     lines.extend(f"| {key} | {value} |" for key, value in sorted(payload["feature_config"].items()))
     lines.extend(["", "## Statistical gate", ""])

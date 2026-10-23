@@ -235,7 +235,9 @@ class StartupReconcilerV4:
         book = dict(risk_state.get("open_positions", {}) or {})
         if not book:
             book = {
-                str(row.get("symbol")): dict(row) for row in state.open_positions if row.get("symbol")
+                str(row.get("symbol")): dict(row)
+                for row in state.open_positions
+                if row.get("symbol")
             }
         self._risk.restore_state(
             daily_pnl=float(risk_state.get("daily_pnl", 0.0)),

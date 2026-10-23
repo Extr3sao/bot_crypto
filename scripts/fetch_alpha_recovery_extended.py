@@ -86,8 +86,12 @@ def main() -> None:
                 raw = fetch_klines(sym, start, end)
                 rows = [
                     {
-                        "ts": k[0], "open": float(k[1]), "high": float(k[2]),
-                        "low": float(k[3]), "close": float(k[4]), "volume": float(k[5]),
+                        "ts": k[0],
+                        "open": float(k[1]),
+                        "high": float(k[2]),
+                        "low": float(k[3]),
+                        "close": float(k[4]),
+                        "volume": float(k[5]),
                     }
                     for k in raw
                 ]
@@ -96,7 +100,9 @@ def main() -> None:
                 time.sleep(0.4)
             entries.append(
                 {
-                    "symbol": sym, "window": name, "file": os.path.basename(path),
+                    "symbol": sym,
+                    "window": name,
+                    "file": os.path.basename(path),
                     "rows": len(rows),
                     "start_ms": rows[0]["ts"] if rows else None,
                     "end_ms": rows[-1]["ts"] if rows else None,

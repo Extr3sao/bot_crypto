@@ -82,9 +82,7 @@ def test_maker_with_evidence_reports_effective_cost() -> None:
 def test_zero_maker_fee_still_has_positive_effective_cost() -> None:
     """A 0% maker fee is not a free option: adverse selection remains."""
     model = MakerExecutionModel(maker_fee_bps=0.0)
-    out = model.evaluate(
-        FillEvidence(n_orders=500, fill_rate=0.5, adverse_move_after_fill_bps=2.0)
-    )
+    out = model.evaluate(FillEvidence(n_orders=500, fill_rate=0.5, adverse_move_after_fill_bps=2.0))
     assert out.expected_effective_cost_bps is not None
     assert out.expected_effective_cost_bps > 0.0
 

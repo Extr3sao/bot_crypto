@@ -190,9 +190,7 @@ def _ess(values: Sequence[float]) -> float:
     return max(1.0, n / factor)
 
 
-def recompute_arm(
-    rows: Sequence[dict[str, Any]], hypothesis_id: str
-) -> dict[str, Any]:
+def recompute_arm(rows: Sequence[dict[str, Any]], hypothesis_id: str) -> dict[str, Any]:
     directions = [ax.preregistered_direction(hypothesis_id, row) for row in rows]
     forwards = [row.get("forward_return") for row in rows]
     active = [
@@ -298,7 +296,11 @@ def main() -> int:
                     [], _rows(series_id, symbol, period), timestamp_key=str(series["timestamp_key"])
                 )
                 digests[f"{series_id}|{symbol}|{period}"] = cap.series_digest(merged)
-    check("series_digests_computed", len(digests) == len(cap.SERIES) * len(a2.UNIVERSE), str(len(digests)))
+    check(
+        "series_digests_computed",
+        len(digests) == len(cap.SERIES) * len(a2.UNIVERSE),
+        str(len(digests)),
+    )
     check(
         "series_digests_well_formed",
         all(len(value) == 64 and int(value, 16) >= 0 for value in digests.values()),
@@ -425,9 +427,7 @@ def main() -> int:
             for row in rows_by_key[(symbol, PRIMARY_TIMEFRAME)]
             if ax.in_window(int(row["decision_ms"]), discovery_window)
         ]
-        price_only = [
-            ax.ablation_direction(hypothesis_id, "PRICE_ONLY", row) for row in sliced
-        ]
+        price_only = [ax.ablation_direction(hypothesis_id, "PRICE_ONLY", row) for row in sliced]
         forwards = [row.get("forward_return") for row in sliced]
         contributions = [
             int(direction) * float(forward) * 1e4
@@ -450,7 +450,9 @@ def main() -> int:
             str(decision["verdict"]),
         )
     candidates = sorted(
-        hid for hid, decision in artifact["decisions"].items() if decision["verdict"] == "OOS_CANDIDATE"
+        hid
+        for hid, decision in artifact["decisions"].items()
+        if decision["verdict"] == "OOS_CANDIDATE"
     )
     check("oos_candidate_count", artifact["oos_candidates"] == candidates, str(candidates))
 

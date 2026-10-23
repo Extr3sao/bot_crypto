@@ -244,7 +244,10 @@ def test_reentry_requires_a_valid_trigger() -> None:
         ({"headroom": None}, "insufficient_cost_headroom"),
         ({"benchmark_adjusted_value_credible": False}, "no_credible_benchmark_adjusted_value"),
         ({"fast_falsification_defined": False}, "no_fast_falsification_path"),
-        ({"materially_better_than_archive": False}, "not_materially_better_than_archived_candidates"),
+        (
+            {"materially_better_than_archive": False},
+            "not_materially_better_than_archived_candidates",
+        ),
     ],
 )
 def test_each_missing_condition_blocks_reentry(override: dict[str, Any], expected: str) -> None:
@@ -361,5 +364,7 @@ def test_final_report_shape_and_zero_kpis() -> None:
     assert report["kpi"]["BUSINESS_VALIDATED_EDGE_COUNT"] == 0
     assert report["next_alpha_rfc_allowed"] == "NO"
     assert report["next"] == "WAIT"
-    first_line = (REPO / "reports" / "RFC042_FINAL_REPORT.md").read_text(encoding="utf-8").splitlines()[0]
+    first_line = (
+        (REPO / "reports" / "RFC042_FINAL_REPORT.md").read_text(encoding="utf-8").splitlines()[0]
+    )
     assert first_line == "RFC-042 BUSINESS OPPORTUNITY RADAR"

@@ -68,7 +68,7 @@ def rsi_series(closes: list[float], period: int = 14) -> list[float | None]:
     for i in range(period + 1, len(closes)):
         d = closes[i] - closes[i - 1]
         ag = (ag * (period - 1) + max(d, 0.0)) / period
-        al = (al * ( period - 1) + max(-d, 0.0)) / period
+        al = (al * (period - 1) + max(-d, 0.0)) / period
         out[i] = 100.0 if al == 0 else 100.0 - 100.0 / (1.0 + ag / al)
     return out
 
@@ -98,7 +98,9 @@ def day_key(ts_ms: int) -> int:
     return ts_ms // 86_400_000
 
 
-def simulate(symbol: str, bars: list[dict[str, Any]], equity: float) -> tuple[dict[str, Any], float]:
+def simulate(
+    symbol: str, bars: list[dict[str, Any]], equity: float
+) -> tuple[dict[str, Any], float]:
     closes = [b["close"] for b in bars]
     e9 = ema_series(closes, 9)
     e21 = ema_series(closes, 21)
@@ -128,14 +130,23 @@ def simulate(symbol: str, bars: list[dict[str, Any]], equity: float) -> tuple[di
         eq += net
         win = net > 0
         consec_losses = 0 if win else consec_losses + 1
-        trades.append({
-            "asset": symbol, "entry_ts": p["entry_ts"], "exit_ts": ts,
-            "side": p["side"], "entry": p["entry"], "exit": exit_fill,
-            "notional": p["notional"], "gross": round(gross, 4),
-            "fees": round(fees, 4), "net": round(net, 4), "reason": reason,
-            "duration_min": round((ts - p["entry_ts"]) / 60_000, 1),
-            "ret_pct": round(gross / p["notional"] * 100.0, 4),
-        })
+        trades.append(
+            {
+                "asset": symbol,
+                "entry_ts": p["entry_ts"],
+                "exit_ts": ts,
+                "side": p["side"],
+                "entry": p["entry"],
+                "exit": exit_fill,
+                "notional": p["notional"],
+                "gross": round(gross, 4),
+                "fees": round(fees, 4),
+                "net": round(net, 4),
+                "reason": reason,
+                "duration_min": round((ts - p["entry_ts"]) / 60_000, 1),
+                "ret_pct": round(gross / p["notional"] * 100.0, 4),
+            }
+        )
         pos = None
 
     for i in range(WARMUP, len(bars)):
@@ -164,8 +175,11 @@ def simulate(symbol: str, bars: list[dict[str, Any]], equity: float) -> tuple[di
             daily_loss_veto_days += 1
         # ---- entries (closed-bar decision, next-bar fill semantics approximated
         #      by same-bar close like the paper runtime's snapshot close)
-        if pos is None and not daily_locked and trades_today < MAX_TRADES_DAY and not (
-            consec_losses >= COOLDOWN_LOSSES and d <= cooldown_until_day
+        if (
+            pos is None
+            and not daily_locked
+            and trades_today < MAX_TRADES_DAY
+            and not (consec_losses >= COOLDOWN_LOSSES and d <= cooldown_until_day)
         ):
             f9, f21, fr, fa = e9[i], e21[i], rsi[i], atr[i]
             if f9 is not None and f21 is not None and fr is not None and fa and fa > 0:
@@ -177,14 +191,22 @@ def simulate(symbol: str, bars: list[dict[str, Any]], equity: float) -> tuple[di
                 if side is not None:
                     stop_dist = fa * STOP_ATR_MULT
                     stop_dist_pct = stop_dist / cl * 100.0
-                    notional = min(MAX_NOTIONAL, max(MIN_NOTIONAL, eq * (RISK_PCT / 100.0) / (stop_dist_pct / 100.0)))
+                    notional = min(
+                        MAX_NOTIONAL,
+                        max(MIN_NOTIONAL, eq * (RISK_PCT / 100.0) / (stop_dist_pct / 100.0)),
+                    )
                     fill = cl * (1 + SLIP) if side == "buy" else cl * (1 - SLIP)
                     pos = {
-                        "side": side, "entry": fill, "qty": notional / fill,
+                        "side": side,
+                        "entry": fill,
+                        "qty": notional / fill,
                         "notional": notional,
                         "sl": fill - stop_dist if side == "buy" else fill + stop_dist,
-                        "tp": fill * (1 + TP_PCT / 100.0) if side == "buy" else fill * (1 - TP_PCT / 100.0),
-                        "entry_ts": ts, "stop_dist_pct": stop_dist_pct,
+                        "tp": fill * (1 + TP_PCT / 100.0)
+                        if side == "buy"
+                        else fill * (1 - TP_PCT / 100.0),
+                        "entry_ts": ts,
+                        "stop_dist_pct": stop_dist_pct,
                     }
                     trades_today += 1
                     if consec_losses >= COOLDOWN_LOSSES:
@@ -210,8 +232,11 @@ def aggregate(trades: list[dict[str, Any]]) -> dict[str, Any]:
     gw, gl = sum(wins), abs(sum(losses))
     return {
         "trades": len(trades),
-        "gross": round(gross, 2), "fees": round(fees, 2), "net": round(sum(nets), 2),
-        "wins": len(wins), "losses": len(losses),
+        "gross": round(gross, 2),
+        "fees": round(fees, 2),
+        "net": round(sum(nets), 2),
+        "wins": len(wins),
+        "losses": len(losses),
         "win_rate": round(100.0 * len(wins) / len(nets), 2) if nets else 0.0,
         "avg_win": round(mean(wins), 4) if wins else 0.0,
         "avg_loss": round(mean(losses), 4) if losses else 0.0,
@@ -241,14 +266,19 @@ def main() -> None:
             continue
         res, equity = simulate(sym.replace("USDT", "/USDT"), bars, equity)
         agg = aggregate(res["trades"])
-        results[base] = {"window": window, "bars": len(bars), **agg,
-                         "max_dd_pct_window": res["max_dd_pct"],
-                         "daily_lock_days": res["daily_lock_days"]}
+        results[base] = {
+            "window": window,
+            "bars": len(bars),
+            **agg,
+            "max_dd_pct_window": res["max_dd_pct"],
+            "daily_lock_days": res["daily_lock_days"],
+        }
         for t in res["trades"]:
             t["window"] = window
         all_trades.extend(res["trades"])
 
     n = len(all_trades)
+
     # DEVELOPMENT (W1-W4) / VALIDATION (W5-W6) / OOS (W7) by window order
     def split(
         tr: list[dict[str, Any]],
@@ -261,10 +291,17 @@ def main() -> None:
     dev, val, oos = split(all_trades)
     out = {
         "contract": {
-            "ema": "9/21", "rsi": "14 (>50/<50)", "stop": "1.5*ATR14",
-            "tp_pct": TP_PCT, "risk_pct": RISK_PCT, "notional_clamp": [MIN_NOTIONAL, MAX_NOTIONAL],
-            "fees_bps": 5, "slippage_bps": 1, "cooldown_losses": COOLDOWN_LOSSES,
-            "daily_loss_pct": DAILY_LOSS_PCT, "max_trades_day": MAX_TRADES_DAY,
+            "ema": "9/21",
+            "rsi": "14 (>50/<50)",
+            "stop": "1.5*ATR14",
+            "tp_pct": TP_PCT,
+            "risk_pct": RISK_PCT,
+            "notional_clamp": [MIN_NOTIONAL, MAX_NOTIONAL],
+            "fees_bps": 5,
+            "slippage_bps": 1,
+            "cooldown_losses": COOLDOWN_LOSSES,
+            "daily_loss_pct": DAILY_LOSS_PCT,
+            "max_trades_day": MAX_TRADES_DAY,
             "both_hit_policy": "stop_first",
         },
         "per_window_asset": results,
@@ -276,15 +313,29 @@ def main() -> None:
         },
         "trade_count_total": n,
         "sample_class": (
-            "TINY_SAMPLE" if n < 20 else "SMALL_SAMPLE" if n < 60 else
-            "PRELIMINARY_SAMPLE" if n < 150 else "ANALYZABLE_SAMPLE"
+            "TINY_SAMPLE"
+            if n < 20
+            else "SMALL_SAMPLE"
+            if n < 60
+            else "PRELIMINARY_SAMPLE"
+            if n < 150
+            else "ANALYZABLE_SAMPLE"
         ),
     }
     os.makedirs(OUTDIR, exist_ok=True)
     with open(os.path.join(OUTDIR, "BASELINE_RESULTS.json"), "w", encoding="utf-8") as fh:
         json.dump(out, fh, indent=2)
-    print(json.dumps({"totals": out["totals"], "splits": out["splits"],
-                      "sample_class": out["sample_class"], "windows": len(results)}, indent=2))
+    print(
+        json.dumps(
+            {
+                "totals": out["totals"],
+                "splits": out["splits"],
+                "sample_class": out["sample_class"],
+                "windows": len(results),
+            },
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":

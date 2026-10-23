@@ -152,9 +152,7 @@ def equity_metrics(
         gross_loss=gross_loss,
         profit_factor=(gross_profit / gross_loss) if gross_loss > 0.0 else None,
         mean_net_pnl=(statistics.fmean(nets) if nets else 0.0),
-        turnover_ratio=(
-            ledger.total_gross_exposure / initial if initial > 0.0 else None
-        ),
+        turnover_ratio=(ledger.total_gross_exposure / initial if initial > 0.0 else None),
         mean_gross_exposure=(statistics.fmean([e.gross_exposure for e in entries]) if n else 0.0),
         mean_net_exposure=(statistics.fmean([e.net_exposure for e in entries]) if n else 0.0),
         mean_beta_before=(statistics.fmean([e.beta_before for e in entries]) if n else 0.0),

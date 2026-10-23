@@ -47,8 +47,7 @@ def string_loader() -> type:
         pass
 
     Loader.yaml_implicit_resolvers = {
-        key: [(tag, regexp) for tag, regexp in resolvers
-              if tag != "tag:yaml.org,2002:bool"]
+        key: [(tag, regexp) for tag, regexp in resolvers if tag != "tag:yaml.org,2002:bool"]
         for key, resolvers in base.yaml_implicit_resolvers.items()
     }
     return Loader
@@ -93,8 +92,7 @@ def test_every_path_the_gate_depends_on_can_activate_the_workflow():
     gate = load_gate()
     push = filtered_paths("push")
     missing = [
-        rel for rel in gate.CI_WATCHED
-        if not any(fnmatch.fnmatch(rel, pattern) for pattern in push)
+        rel for rel in gate.CI_WATCHED if not any(fnmatch.fnmatch(rel, pattern) for pattern in push)
     ]
     assert missing == [], f"a change to {missing} would not run the gate"
     # The independent parser and the gate's own scanner must agree.
@@ -104,8 +102,12 @@ def test_every_path_the_gate_depends_on_can_activate_the_workflow():
 def test_the_declared_inputs_and_the_pinned_artefacts_are_watched():
     gate = load_gate()
     push = filtered_paths("push")
-    for rel in (*(rel for rel, _role, _pinned in gate.DECLARED_INPUTS),
-                gate.EXPLORER, gate.VERIFICATION, gate.PRODUCER_PINS_PATH):
+    for rel in (
+        *(rel for rel, _role, _pinned in gate.DECLARED_INPUTS),
+        gate.EXPLORER,
+        gate.VERIFICATION,
+        gate.PRODUCER_PINS_PATH,
+    ):
         assert any(fnmatch.fnmatch(rel, pattern) for pattern in push), rel
 
 
@@ -158,7 +160,10 @@ def project_files() -> list[str]:
     """Tracked files plus untracked-but-not-ignored ones: the tree a checkout sees."""
     out = subprocess.run(
         ["git", "ls-files", "--cached", "--others", "--exclude-standard"],
-        cwd=ROOT, capture_output=True, text=True, check=False,
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
     )
     assert out.returncode == 0, out.stderr
     return out.stdout.splitlines()
@@ -179,8 +184,12 @@ def test_tests_ci_and_the_runtime_all_run_the_same_bytes():
         assert (ROOT / matches[0]).exists()
 
     workflow_text = WORKFLOW.read_text(encoding="utf-8")
-    for name in ("cost_barrier_gate", "cost_barrier_evidence",
-                 "cost_barrier_adversarial", "cost_barrier_certify"):
+    for name in (
+        "cost_barrier_gate",
+        "cost_barrier_evidence",
+        "cost_barrier_adversarial",
+        "cost_barrier_certify",
+    ):
         assert f"scripts/{name}.py" in workflow_text, name
 
     gate = load_gate()
@@ -205,7 +214,10 @@ def _load(path: Path):
 def git_blob(rel: str) -> bytes:
     """The bytes git stores for a path - what a checkout on any platform starts from."""
     out = subprocess.run(
-        ["git", "show", f"HEAD:{rel}"], cwd=ROOT, capture_output=True, check=False,
+        ["git", "show", f"HEAD:{rel}"],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
     )
     assert out.returncode == 0, out.stderr
     return out.stdout
@@ -237,7 +249,7 @@ def test_the_producer_pins_survive_a_checkout_that_rewrites_line_endings():
             status = evidence.eol_status(row["sha256"], data)
             assert evidence.admissible(status), (row["path"], status)
         # Content drift is still drift, whichever convention it arrives in.
-        changed = lf[: len(lf) // 2] + b"\n# edited by an attacker\n" + lf[len(lf) // 2:]
+        changed = lf[: len(lf) // 2] + b"\n# edited by an attacker\n" + lf[len(lf) // 2 :]
         assert evidence.eol_status(row["sha256"], changed) == evidence.PIN_DRIFT, row["path"]
         assert not evidence.admissible(evidence.PIN_DRIFT)
 

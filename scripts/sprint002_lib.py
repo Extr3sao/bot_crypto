@@ -178,9 +178,7 @@ def load_bars(path: Path) -> Bars:
     )
 
 
-def _emit(
-    bars: Bars, idx: NDArray[Any], acc: dict[str, list[float]]
-) -> None:
+def _emit(bars: Bars, idx: NDArray[Any], acc: dict[str, list[float]]) -> None:
     acc["ts"].append(float(bars.ts[idx[0]]))
     acc["o"].append(float(bars.o[idx[0]]))
     acc["h"].append(float(np.max(bars.h[idx])))
@@ -353,7 +351,7 @@ def rolling_rank_pct(x: NDArray[Any], n: int) -> NDArray[Any]:
 
 
 def ema(x: NDArray[Any], n: int) -> NDArray[Any]:
-    """Runtime-parity EMA: seed = mean(first n), multiplier 1.0 + ignore. """
+    """Runtime-parity EMA: seed = mean(first n), multiplier 1.0 + ignore."""
     out = np.full(x.shape, np.nan, dtype=np.float64)
     if x.shape[0] < n:
         return out
@@ -475,10 +473,7 @@ def build_bundle(bars: Bars, timeframe: str) -> Bundle:
         hh={n: rolling_max(h, n) for n in LEVEL_WINDOWS},
         ll={n: rolling_min(lo, n) for n in LEVEL_WINDOWS},
         vol_rank={n: rolling_rank_pct(v, n) for n in RANK_WINDOWS},
-        ret={
-            n: np.concatenate((np.full(n, np.nan), c[n:] / c[:-n] - 1.0))
-            for n in RET_WINDOWS
-        },
+        ret={n: np.concatenate((np.full(n, np.nan), c[n:] / c[:-n] - 1.0)) for n in RET_WINDOWS},
     )
 
 
@@ -840,5 +835,3 @@ def write_json(path: Path, payload: Any) -> None:
         json.dumps(payload, indent=2, sort_keys=True, ensure_ascii=False, default=str) + "\n",
         encoding="utf-8",
     )
-
-

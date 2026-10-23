@@ -122,7 +122,10 @@ class StrategyLifecycleController:
         medium = inputs.cells.get("medium")
         if self._degraded(inputs, medium):
             evidence.append("active strategy met demotion criteria")
-            return LifecycleState.DEGRADED, [RationaleCode.DEMOTION_EARNED.value, RationaleCode.HEALTH_DEGRADED.value]
+            return LifecycleState.DEGRADED, [
+                RationaleCode.DEMOTION_EARNED.value,
+                RationaleCode.HEALTH_DEGRADED.value,
+            ]
         return LifecycleState.ACTIVE, [RationaleCode.SELECTED.value]
 
     def _from_degraded(
@@ -175,10 +178,16 @@ class StrategyLifecycleController:
             evidence.append("eligibility lapsed; returning to SHADOW")
             return LifecycleState.SHADOW, reasons
         # Activation dwell + cooldown (churn control §24).
-        if inputs.eligible_since_ms and inputs.now_ms - inputs.eligible_since_ms < self.policy.eligibility_dwell_ms:
+        if (
+            inputs.eligible_since_ms
+            and inputs.now_ms - inputs.eligible_since_ms < self.policy.eligibility_dwell_ms
+        ):
             evidence.append("activation blocked by eligibility dwell")
             return LifecycleState.ELIGIBLE, [RationaleCode.COOLDOWN_ACTIVE.value]
-        if inputs.last_activation_ms and inputs.now_ms - inputs.last_activation_ms < self.policy.activation_cooldown_ms:
+        if (
+            inputs.last_activation_ms
+            and inputs.now_ms - inputs.last_activation_ms < self.policy.activation_cooldown_ms
+        ):
             evidence.append("activation blocked by activation cooldown")
             return LifecycleState.ELIGIBLE, [RationaleCode.COOLDOWN_ACTIVE.value]
         return LifecycleState.ACTIVE, [RationaleCode.PROMOTION_EARNED.value]
@@ -201,9 +210,7 @@ class StrategyLifecycleController:
         # DEGRADED/CRITICAL must not be promoted on a numeric cell alone. The
         # health verdict is a first-class refusal, checked before any metric.
         if inputs.health.health_state in (HealthState.DEGRADED, HealthState.CRITICAL):
-            evidence.append(
-                f"promotion refused: health is {inputs.health.health_state.value}"
-            )
+            evidence.append(f"promotion refused: health is {inputs.health.health_state.value}")
             return False, [RationaleCode.HEALTH_DEGRADED.value]
         medium = inputs.cells.get("medium")
         if medium is None or medium.sample_count < p.minimum_samples:
@@ -219,7 +226,10 @@ class StrategyLifecycleController:
             reasons.append(RationaleCode.INSUFFICIENT_EVIDENCE.value)
         if medium.max_drawdown_bps > p.maximum_drawdown_bps:
             reasons.append(RationaleCode.DRAWDOWN_BREACH.value)
-        if medium.window_count and (medium.positive_windows / medium.window_count) < p.minimum_stability:
+        if (
+            medium.window_count
+            and (medium.positive_windows / medium.window_count) < p.minimum_stability
+        ):
             reasons.append(RationaleCode.INSUFFICIENT_EVIDENCE.value)
         if medium.positive_windows < p.minimum_positive_windows:
             reasons.append(RationaleCode.INSUFFICIENT_EVIDENCE.value)

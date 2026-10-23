@@ -112,7 +112,9 @@ def load_candles(symbol: str, timeframe: str, since_iso: str) -> list[list[float
 
 
 def dataset_hash(rows: Sequence[Sequence[float]]) -> str:
-    payload = json.dumps([[int(r[0])] + [round(float(v), 8) for v in r[1:6]] for r in rows], separators=(",", ":"))
+    payload = json.dumps(
+        [[int(r[0])] + [round(float(v), 8) for v in r[1:6]] for r in rows], separators=(",", ":")
+    )
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
@@ -170,7 +172,9 @@ def build_panel(daily: Mapping[str, Sequence[Sequence[float]]]) -> Panel:
 # --------------------------------------------------------------------------- #
 
 
-def rolling_mean_std(values: Sequence[float], window: int) -> tuple[list[float | None], list[float | None]]:
+def rolling_mean_std(
+    values: Sequence[float], window: int
+) -> tuple[list[float | None], list[float | None]]:
     means: list[float | None] = []
     stds: list[float | None] = []
     for position in range(len(values)):
@@ -194,7 +198,9 @@ def sign(value: float) -> float:
 # --------------------------------------------------------------------------- #
 
 
-def _asset_forward(panel: Panel, symbol: str, start: int, end: int, horizon: int) -> list[float | None]:
+def _asset_forward(
+    panel: Panel, symbol: str, start: int, end: int, horizon: int
+) -> list[float | None]:
     out: list[float | None] = []
     for position in range(start, end):
         if position + horizon >= len(panel.calendar):
@@ -202,16 +208,22 @@ def _asset_forward(panel: Panel, symbol: str, start: int, end: int, horizon: int
             continue
         price_now = panel.price(symbol, panel.calendar[position])
         price_then = panel.price(symbol, panel.calendar[position + horizon])
-        out.append(price_then / price_now - 1.0 if price_now and price_then and price_now > 0 else None)
+        out.append(
+            price_then / price_now - 1.0 if price_now and price_then and price_now > 0 else None
+        )
     return out
 
 
-def _basket(closes: Mapping[str, Mapping[int, float]], calendar: Sequence[int], position: int) -> list[float]:
+def _basket(
+    closes: Mapping[str, Mapping[int, float]], calendar: Sequence[int], position: int
+) -> list[float]:
     values = [closes[symbol].get(calendar[position]) for symbol in closes]
     return [value for value in values if value]
 
 
-def build_dispersion(panel: Panel, start: int, end: int, *, change: bool, horizon: int = 1) -> dict[str, list[Any]]:
+def build_dispersion(
+    panel: Panel, start: int, end: int, *, change: bool, horizon: int = 1
+) -> dict[str, list[Any]]:
     # cross-sectional std of 1d returns, causal (uses t-1 -> t)
     dispersion: list[float | None] = [None]
     for position in range(1, len(panel.calendar)):
@@ -238,7 +250,9 @@ def build_dispersion(panel: Panel, start: int, end: int, *, change: bool, horizo
     return {"signal": signal, "forward": forward, "contributions": contributions}
 
 
-def build_lead_lag(panel: Panel, start: int, end: int, *, lag_days: int, horizon: int = 1) -> dict[str, list[Any]]:
+def build_lead_lag(
+    panel: Panel, start: int, end: int, *, lag_days: int, horizon: int = 1
+) -> dict[str, list[Any]]:
     btc = panel.closes["BTC/USDT"]
     calendar = panel.calendar
     alts = [symbol for symbol in panel.closes if symbol != "BTC/USDT"]
@@ -253,7 +267,9 @@ def build_lead_lag(panel: Panel, start: int, end: int, *, lag_days: int, horizon
             continue
         price_then = btc.get(calendar[position - lag_days])
         price_now = btc.get(calendar[position])
-        sig = (price_now / price_then - 1.0) if price_then and price_now and price_then > 0 else None
+        sig = (
+            (price_now / price_then - 1.0) if price_then and price_now and price_then > 0 else None
+        )
         returns: list[float] = []
         for symbol in alts:
             p_now = panel.price(symbol, calendar[position])
@@ -267,7 +283,9 @@ def build_lead_lag(panel: Panel, start: int, end: int, *, lag_days: int, horizon
     return {"signal": signal, "forward": forward, "contributions": contributions}
 
 
-def build_breadth(panel: Panel, start: int, end: int, *, change_days: int | None, horizon: int) -> dict[str, list[Any]]:
+def build_breadth(
+    panel: Panel, start: int, end: int, *, change_days: int | None, horizon: int
+) -> dict[str, list[Any]]:
     calendar = panel.calendar
     breadth: list[float | None] = []
     for position in range(len(calendar)):
@@ -326,7 +344,9 @@ def _mean_forward(panel: Panel, symbols: Sequence[str], position: int, horizon: 
     return statistics.fmean(values) if values else 0.0
 
 
-def build_vol_ratio_xsec(panel: Panel, start: int, end: int, *, horizon: int = 5) -> dict[str, list[Any]]:
+def build_vol_ratio_xsec(
+    panel: Panel, start: int, end: int, *, horizon: int = 5
+) -> dict[str, list[Any]]:
     calendar = panel.calendar
 
     def realised(symbol: str, position: int, window: int) -> float | None:
@@ -368,7 +388,9 @@ def build_vol_ratio_xsec(panel: Panel, start: int, end: int, *, horizon: int = 5
     return {"signal": signal, "forward": forward, "contributions": contributions}
 
 
-def build_vol_ratio_ts(panel: Panel, start: int, end: int, *, horizon: int = 1) -> dict[str, list[Any]]:
+def build_vol_ratio_ts(
+    panel: Panel, start: int, end: int, *, horizon: int = 1
+) -> dict[str, list[Any]]:
     calendar = panel.calendar
     rets: list[float | None] = [None]
     for position in range(1, len(calendar)):
@@ -394,7 +416,9 @@ def build_vol_ratio_ts(panel: Panel, start: int, end: int, *, horizon: int = 1) 
     return {"signal": signal, "forward": forward, "contributions": contributions}
 
 
-def build_vol_shock(panel: Panel, start: int, end: int, *, reverse: bool, horizon: int = 1) -> dict[str, list[Any]]:
+def build_vol_shock(
+    panel: Panel, start: int, end: int, *, reverse: bool, horizon: int = 1
+) -> dict[str, list[Any]]:
     calendar = panel.calendar
     rets: list[float | None] = [None]
     for position in range(1, len(calendar)):
@@ -477,7 +501,9 @@ def _one_sided_p(t_stat: float) -> float:
     return max(0.0, min(1.0, 0.5 * math.erfc(t_stat / math.sqrt(2.0))))
 
 
-def summarise(names: dict[str, Any], built: Mapping[str, list[Any]], *, hurdle_bps: float) -> dict[str, Any]:
+def summarise(
+    names: dict[str, Any], built: Mapping[str, list[Any]], *, hurdle_bps: float
+) -> dict[str, Any]:
     paired = [
         (float(sig), float(fwd))
         for sig, fwd in zip(built["signal"], built["forward"], strict=True)
@@ -666,8 +692,12 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     best_id = observed_best_id
-    conc = a1.concentration([value for value in summaries[best_id]["contributions"] if value != 0.0])
-    signs = a1.sign_concentration([value for value in summaries[best_id]["contributions"] if value != 0.0])
+    conc = a1.concentration(
+        [value for value in summaries[best_id]["contributions"] if value != 0.0]
+    )
+    signs = a1.sign_concentration(
+        [value for value in summaries[best_id]["contributions"] if value != 0.0]
+    )
     stability = a1.stability_by_window(summaries[best_id]["contributions"], windows=4)
 
     # admission
@@ -679,7 +709,8 @@ def main(argv: list[str] | None = None) -> int:
             and item["gross_above_hurdle"]
             and bh[ids.index(hid)]
             and item["power_class"] == "POWERED"
-            and a1.concentration([v for v in item["contributions"] if v != 0.0])["classification"] == "ROBUST"
+            and a1.concentration([v for v in item["contributions"] if v != 0.0])["classification"]
+            == "ROBUST"
         )
         if ok:
             admitted.append(hid)
@@ -704,7 +735,9 @@ def main(argv: list[str] | None = None) -> int:
         elif hid == "A1-H04":
             vbuilt = build_lead_lag(panel, discovery_end, validation_end, lag_days=3)
         elif hid == "A1-H05":
-            vbuilt = build_breadth(panel, discovery_end, validation_end, change_days=None, horizon=3)
+            vbuilt = build_breadth(
+                panel, discovery_end, validation_end, change_days=None, horizon=3
+            )
         elif hid == "A1-H06":
             vbuilt = build_breadth(panel, discovery_end, validation_end, change_days=5, horizon=1)
         elif hid == "A1-H07":
@@ -716,13 +749,17 @@ def main(argv: list[str] | None = None) -> int:
         else:
             vbuilt = build_vol_shock(panel, discovery_end, validation_end, reverse=True)
         vsum = summarise(names[hid], vbuilt, hurdle_bps=hurdle_bps)
-        reproduced = vsum["gross_bps"] > 0 and sign(vsum["gross_bps"]) == sign(summaries[hid]["gross_bps"])
+        reproduced = vsum["gross_bps"] > 0 and sign(vsum["gross_bps"]) == sign(
+            summaries[hid]["gross_bps"]
+        )
         classification = (
             "REPRODUCED"
             if reproduced and vsum["gross_bps"] >= hurdle_bps
             else ("UNDERPOWERED" if vsum["power_class"] == "UNDERPOWERED" else "NOT_REPRODUCED")
         )
-        validation[hid] = {k: v for k, v in vsum.items() if k not in ("contributions", "signal", "forward")}
+        validation[hid] = {
+            k: v for k, v in vsum.items() if k not in ("contributions", "signal", "forward")
+        }
         validation[hid]["classification"] = classification
 
     registry_hash = a1.hypothesis_registry_hash()
@@ -791,15 +828,20 @@ def main(argv: list[str] | None = None) -> int:
     _write_json("ALPHA001_ARTIFACTS.json", artifacts)
     _write_json("ALPHA001_SERIES.json", series)
 
-    print(json.dumps({
-        "registry_hash": registry_hash,
-        "hurdle_bps": hurdle_bps,
-        "observed_best_bps": observed_best,
-        "best_hypothesis": best_id,
-        "p_null_best_ge_observed": best_null.get("p_null_best_ge_observed"),
-        "admitted": admitted,
-        "validation": {k: v["classification"] for k, v in validation.items()},
-    }, indent=2))
+    print(
+        json.dumps(
+            {
+                "registry_hash": registry_hash,
+                "hurdle_bps": hurdle_bps,
+                "observed_best_bps": observed_best,
+                "best_hypothesis": best_id,
+                "p_null_best_ge_observed": best_null.get("p_null_best_ge_observed"),
+                "admitted": admitted,
+                "validation": {k: v["classification"] for k, v in validation.items()},
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

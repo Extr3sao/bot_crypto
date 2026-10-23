@@ -122,8 +122,14 @@ async def run_variant(
     run_dir.mkdir(parents=True, exist_ok=True)
     clock = ReplayClock(instants[0])
     runtime, _registry = build_runtime(
-        assets=assets, timeframe=timeframe, bars_by_symbol=bars_by_symbol, clock=clock,
-        run_dir=run_dir, initial_equity=10_000.0, size_usd=1_000.0, lookback_bars=120,
+        assets=assets,
+        timeframe=timeframe,
+        bars_by_symbol=bars_by_symbol,
+        clock=clock,
+        run_dir=run_dir,
+        initial_equity=10_000.0,
+        size_usd=1_000.0,
+        lookback_bars=120,
         spread_bps=1.0,
     )
     for i, instant in enumerate(instants, start=1):
@@ -138,8 +144,15 @@ def htf_audit() -> dict[str, Any]:
 
     # 1h bar reopening: open 00:00, close 01:00 (epoch-ms candles)
     open_ms = 1_772_323_200_000
-    bar = OHLCV(symbol="BTC/USDT", timestamp=open_ms, open=100.0, high=110.0, low=90.0,
-                close=105.0, volume=1.0)
+    bar = OHLCV(
+        symbol="BTC/USDT",
+        timestamp=open_ms,
+        open=100.0,
+        high=110.0,
+        low=90.0,
+        close=105.0,
+        volume=1.0,
+    )
     # signal in SECONDS (the helper's declared unit) would mis-scale ms candles;
     # evaluate the helper as the (orphan) callers do, and detect the discrepancy.
     just_before = get_completed_htf_state_at([bar], "1h", open_ms + 3_599_000)
@@ -223,8 +236,11 @@ async def main_async(args: argparse.Namespace) -> dict[str, Any]:
     projections: dict[str, dict[str, dict[str, Any]]] = {}
     for name, data in variants.items():
         projections[name] = await run_variant(
-            run_id=f"RFC020-FUTURE-{name}", bars_by_symbol=data, instants=instants,
-            assets=assets, timeframe=timeframe,
+            run_id=f"RFC020-FUTURE-{name}",
+            bars_by_symbol=data,
+            instants=instants,
+            assets=assets,
+            timeframe=timeframe,
         )
 
     base = projections["A_truncated"]
@@ -254,8 +270,7 @@ async def main_async(args: argparse.Namespace) -> dict[str, Any]:
     feat = feature_mutation(base_bars["BTC/USDT"], interval_ms)
 
     overall = (
-        all(v["pass"] for v in results.values())
-        and provenance["all_decisions_at_or_before_T"]
+        all(v["pass"] for v in results.values()) and provenance["all_decisions_at_or_before_T"]
     )
     report = {
         "schema": "rfc020.future_injection.v1",

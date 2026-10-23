@@ -64,7 +64,7 @@ def test_parse_contract_filename() -> None:
 def test_parse_bars_both_date_formats() -> None:
     txt = (
         '"Date","Open","High","Low","Close","Volume","OpenInt"\n'
-        '01/19/2001,94.50,94.50,94.50,94.50,0,0\n'
+        "01/19/2001,94.50,94.50,94.50,94.50,0,0\n"
         "900822,29.05,31.30,29.05,31.22,69375,70893\n"
     )
     bars = mf.parse_bars(txt)
@@ -105,9 +105,10 @@ def test_pit_front_selection_ignores_future_bars() -> None:
     full = mf.select_front_contract(md, i, 20)
     # truncate all bars strictly after the decision date
     cut = md.dates[i]
-    trunc = {cid: mf.ContractSeries(
-        s.contract, [b for b in s.bars if b.ordinal <= cut])
-        for cid, s in md.series.items()}
+    trunc = {
+        cid: mf.ContractSeries(s.contract, [b for b in s.bars if b.ordinal <= cut])
+        for cid, s in md.series.items()
+    }
     tdates = sorted({b.ordinal for s in trunc.values() for b in s.bars})
     md_t = mf.ChainMarket(md.root, md.spec, trunc, tdates)
     assert mf.select_front_contract(md_t, len(md_t.dates) - 1, 20) == full
@@ -147,6 +148,7 @@ def test_interval_return_uses_held_contract_not_a_roll_gap() -> None:
 
 def test_no_back_adjusted_series_is_used_for_pnl() -> None:
     from pathlib import Path
+
     src = Path(mf.__file__).read_text(encoding="utf-8")
     # the module must not import a back-adjustment routine for PnL
     assert "back_adjust" not in src
@@ -169,8 +171,9 @@ def test_multiplier_scales_pnl_linearly(monkeypatch) -> None:  # type: ignore[no
     cfg = _cfg()
     r1 = mf.simulate_portfolio(panels, cal, (cal[0], cal[-1]), cfg, 1e7)
     # double the multiplier -> notional (and hence PnL) is invariant
-    md2 = mf.ChainMarket(md.root, {**md.spec, "multiplier": md.spec["multiplier"] * 2},
-                         md.series, md.dates)
+    md2 = mf.ChainMarket(
+        md.root, {**md.spec, "multiplier": md.spec["multiplier"] * 2}, md.series, md.dates
+    )
     panels2, _ = _panels(md2)
     r2 = mf.simulate_portfolio(panels2, cal, (cal[0], cal[-1]), cfg, 1e7)
     assert r1["status"] == "OK" and r2["status"] == "OK"
@@ -219,10 +222,12 @@ def test_long_short_accounting() -> None:
 def test_rounding_zeroes_high_notional_markets() -> None:
     md = _chain()
     panels, cal = _panels(md)
-    frac = mf.simulate_portfolio(panels, cal, (cal[0], cal[-1]),
-                                 _cfg(integer_contracts=False), 500_000.0)
-    ints = mf.simulate_portfolio(panels, cal, (cal[0], cal[-1]),
-                                 _cfg(integer_contracts=True), 500_000.0)
+    frac = mf.simulate_portfolio(
+        panels, cal, (cal[0], cal[-1]), _cfg(integer_contracts=False), 500_000.0
+    )
+    ints = mf.simulate_portfolio(
+        panels, cal, (cal[0], cal[-1]), _cfg(integer_contracts=True), 500_000.0
+    )
     # at a tiny capital the integer version must take <= the fractional turnover
     assert float(ints["cost_pnl"].sum()) <= float(frac["cost_pnl"].sum()) + 1e-6
 
@@ -238,17 +243,26 @@ def test_split_isolation_windows_are_disjoint() -> None:
 
 
 def test_g_mf_data_gate_logic() -> None:
-    ok = {"individual_contracts": True, "expiry_identifiable": True,
-          "tradable_contract_at_each_decision": True, "multi_asset_breadth": True,
-          "pit_feasible": True, "roll_observable": True, "not_paid_only": True}
+    ok = {
+        "individual_contracts": True,
+        "expiry_identifiable": True,
+        "tradable_contract_at_each_decision": True,
+        "multi_asset_breadth": True,
+        "pit_feasible": True,
+        "roll_observable": True,
+        "not_paid_only": True,
+    }
     assert mf.gate_g_mf_data(ok).status == "PASS"
     bad = {**ok, "tradable_contract_at_each_decision": False}
     assert mf.gate_g_mf_data(bad).status == "FAIL"
 
 
 def test_g_mf_2_requires_positive_validation_net() -> None:
-    good: dict[str, object] = {"net_pnl": 1.0, "n_markets": 26,
-                               "per_market_net": {f"m{i}": 1.0 for i in range(26)}}
+    good: dict[str, object] = {
+        "net_pnl": 1.0,
+        "n_markets": 26,
+        "per_market_net": {f"m{i}": 1.0 for i in range(26)},
+    }
     assert mf.gate_g_mf_2(good, "PASS").status == "PASS"
     bad = {**good, "net_pnl": -1.0}
     assert mf.gate_g_mf_2(bad, "PASS").status == "FAIL"

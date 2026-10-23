@@ -94,9 +94,7 @@ class StrategyPortfolioManager:
         notes: list[str] = []
 
         # Deterministic order: best net edge first, then strategy id.
-        ordered = sorted(
-            proposals, key=lambda p: (-p.expected_net_edge_bps, p.strategy_id)
-        )
+        ordered = sorted(proposals, key=lambda p: (-p.expected_net_edge_bps, p.strategy_id))
 
         asset_budget = self.equity * (self.max_asset_exposure_pct / 100.0)
         total_budget = self.equity * (self.max_total_exposure_pct / 100.0)
@@ -152,7 +150,9 @@ class StrategyPortfolioManager:
             merged[p.asset] = merged.get(p.asset, 0.0) + p.notional_usdt
 
         if not reasons:
-            reasons = [RationaleCode.SELECTED.value] if accepted else [RationaleCode.NOT_APPLICABLE.value]
+            reasons = (
+                [RationaleCode.SELECTED.value] if accepted else [RationaleCode.NOT_APPLICABLE.value]
+            )
         if not accepted:
             notes.append("no proposal survived portfolio arbitration; NO_TRADE is a valid outcome")
 

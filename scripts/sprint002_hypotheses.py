@@ -256,9 +256,7 @@ HYPOTHESIS_META: dict[str, dict[str, Any]] = {
             "mean reversion."
         ),
         "why_edge_may_exist": "Perp crowding is observable through funding.",
-        "why_move_can_exceed_cost": (
-            "Funding is a cash flow; basis convergence is a single move."
-        ),
+        "why_move_can_exceed_cost": ("Funding is a cash flow; basis convergence is a single move."),
         "expected_regime": "Any",
         "entry_concept": "NOT DEFINED - data unavailable",
         "exit_concept": "NOT DEFINED",
@@ -295,7 +293,10 @@ HYPOTHESIS_META: dict[str, dict[str, Any]] = {
         "assets": ["BTC", "ETH", "SOL"],
         "timeframes": ["30m", "1h"],
         "required_data": "OHLCV only (volume included)",
-        "known_failure_modes": ["noisy exchange-specific volume", "correlated with the shock event"],
+        "known_failure_modes": [
+            "noisy exchange-specific volume",
+            "correlated with the shock event",
+        ],
     },
     "H-P2-03": {
         "family": "session_conditioning",
@@ -307,9 +308,7 @@ HYPOTHESIS_META: dict[str, dict[str, Any]] = {
             "Liquidity and information arrival are not uniform across the day; the US session "
             "carries the deepest flow."
         ),
-        "why_edge_may_exist": (
-            "Session-conditioned execution avoids thin, mean-reverting hours."
-        ),
+        "why_edge_may_exist": ("Session-conditioned execution avoids thin, mean-reverting hours."),
         "why_move_can_exceed_cost": (
             "Larger intraday amplitude during the US session relative to cost."
         ),

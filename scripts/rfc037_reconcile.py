@@ -54,10 +54,14 @@ def reconcile() -> dict[str, Any]:
         diffs[r] = d
         if d > worst:
             worst, worst_root = d, r
-    return {"markets": len(diffs), "max_abs_diff": worst, "worst_market": worst_root,
-            "per_market_abs_diff": {k: round(v, 6) for k, v in diffs.items()},
-            "first_divergence_found": "hg @ 1995-12-15 (verifier roll-staleness init)",
-            "classification": "ROLL_SELECTION"}
+    return {
+        "markets": len(diffs),
+        "max_abs_diff": worst,
+        "worst_market": worst_root,
+        "per_market_abs_diff": {k: round(v, 6) for k, v in diffs.items()},
+        "first_divergence_found": "hg @ 1995-12-15 (verifier roll-staleness init)",
+        "classification": "ROLL_SELECTION",
+    }
 
 
 def main() -> int:
@@ -65,8 +69,10 @@ def main() -> int:
     bm = load_all_markets(roots)
     cfg = mf.default_config()
 
-    print(f"{'root':5s} {'builder_net':>14s} {'verifier_net':>14s} {'diff':>12s} "
-          f"{'rolls_b':>7s} {'rolls_v':>7s}")
+    print(
+        f"{'root':5s} {'builder_net':>14s} {'verifier_net':>14s} {'diff':>12s} "
+        f"{'rolls_b':>7s} {'rolls_v':>7s}"
+    )
     worst = None
     for r in roots:
         md = bm[r]
@@ -83,8 +89,10 @@ def main() -> int:
             continue
         bnet = float(b["net_pnl"].sum())
         diff = bnet - v["net"]
-        print(f"{r:5s} {bnet:14.0f} {v['net']:14.0f} {diff:12.0f} "
-              f"{len(b['roll_events']):7d} {int(v.get('rolls', 0)):7d}")
+        print(
+            f"{r:5s} {bnet:14.0f} {v['net']:14.0f} {diff:12.0f} "
+            f"{len(b['roll_events']):7d} {int(v.get('rolls', 0)):7d}"
+        )
         if worst is None or abs(diff) > abs(worst[1]):
             worst = (r, diff)
     print("worst:", worst)

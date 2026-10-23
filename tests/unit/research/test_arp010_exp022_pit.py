@@ -121,8 +121,11 @@ def test_gapped_eth_produces_no_signal_days() -> None:
     # remove a mid-board ETH bar so some decisions cannot form the ratio window
     corpus[IM.ETH] = [b for b in corpus[IM.ETH] if b.timestamp != START + 120 * MS_PER_DAY]
     _tr, _st, audit = IM.simulate_intermarket_rotation(
-        corpus, {s: START for s in corpus}, "fp",
-        config=IM.intermarket_config(), cost_bps_rt=23.559,
+        corpus,
+        {s: START for s in corpus},
+        "fp",
+        config=IM.intermarket_config(),
+        cost_bps_rt=23.559,
     )
     no_signal = audit["no_signal_days"]
     assert isinstance(no_signal, int) and no_signal >= 1
@@ -142,8 +145,11 @@ def test_crypto_calendar_needs_no_weekend_alignment() -> None:
 def test_rotation_fills_at_next_open() -> None:
     corpus = _corpus()
     trades, _states, _audit = IM.simulate_intermarket_rotation(
-        corpus, {s: START for s in corpus}, "fp",
-        config=IM.intermarket_config(), cost_bps_rt=23.559,
+        corpus,
+        {s: START for s in corpus},
+        "fp",
+        config=IM.intermarket_config(),
+        cost_bps_rt=23.559,
     )
     assert trades, "synthetic corpus must trade"
     index = {s: _index(bars) for s, bars in corpus.items()}
@@ -156,20 +162,37 @@ def test_rotation_fills_at_next_open() -> None:
 def test_rotation_is_deterministic() -> None:
     corpus = _corpus()
     args = (corpus, {s: START for s in corpus}, "fp")
-    a = [t.as_dict() for t in IM.simulate_intermarket_rotation(*args, config=IM.intermarket_config(), cost_bps_rt=23.559)[0]]
-    b = [t.as_dict() for t in IM.simulate_intermarket_rotation(*args, config=IM.intermarket_config(), cost_bps_rt=23.559)[0]]
+    a = [
+        t.as_dict()
+        for t in IM.simulate_intermarket_rotation(
+            *args, config=IM.intermarket_config(), cost_bps_rt=23.559
+        )[0]
+    ]
+    b = [
+        t.as_dict()
+        for t in IM.simulate_intermarket_rotation(
+            *args, config=IM.intermarket_config(), cost_bps_rt=23.559
+        )[0]
+    ]
     assert a == b
 
 
 def test_one_leg_at_a_time() -> None:
     corpus = _corpus()
     trades, _st, _audit = IM.simulate_intermarket_rotation(
-        corpus, {s: START for s in corpus}, "fp",
-        config=IM.intermarket_config(), cost_bps_rt=23.559,
+        corpus,
+        {s: START for s in corpus},
+        "fp",
+        config=IM.intermarket_config(),
+        cost_bps_rt=23.559,
     )
     # a BTC position episode must never overlap an alt episode in wall-clock
-    btc_episodes: list[tuple[int, int]] = [(int(t.entry_ts), int(t.exit_ts)) for t in trades if t.symbol == IM.BTC]
-    alt_episodes: list[tuple[int, int]] = [(int(t.entry_ts), int(t.exit_ts)) for t in trades if t.symbol != IM.BTC]
+    btc_episodes: list[tuple[int, int]] = [
+        (int(t.entry_ts), int(t.exit_ts)) for t in trades if t.symbol == IM.BTC
+    ]
+    alt_episodes: list[tuple[int, int]] = [
+        (int(t.entry_ts), int(t.exit_ts)) for t in trades if t.symbol != IM.BTC
+    ]
     for bs, be in btc_episodes:
         for a_s, a_e in alt_episodes:
             assert be <= a_s or a_e <= bs
@@ -221,16 +244,25 @@ def test_split_mutation_is_refused() -> None:
     reg = ImmutableSplitRegistry()
     reg.register("EXP-ARP-022", FROZEN_SPLIT)
     with pytest.raises(SplitMutationError):
-        reg.register("EXP-ARP-022", SplitDefinition(
-            "2019-01-01", "2024-01-01", "2024-01-01", "2025-07-01", "2025-07-01", "2026-03-01"))
+        reg.register(
+            "EXP-ARP-022",
+            SplitDefinition(
+                "2019-01-01", "2024-01-01", "2024-01-01", "2025-07-01", "2025-07-01", "2026-03-01"
+            ),
+        )
 
 
 def test_forward_holdout_stays_untouched() -> None:
     reg = HoldoutRegistry()
-    reg.register(Holdout(
-        holdout_id="HOLDOUT-ARP-019-FORWARD", start="2026-03-01", end="2027-03-01",
-        assets=("DYNAMIC_ASSET_UNIVERSE(ARP-006-UNIVERSE-v1)",),
-        dataset_hash=D.corpus_digest(), forward_only=True,
-    ))
+    reg.register(
+        Holdout(
+            holdout_id="HOLDOUT-ARP-019-FORWARD",
+            start="2026-03-01",
+            end="2027-03-01",
+            assets=("DYNAMIC_ASSET_UNIVERSE(ARP-006-UNIVERSE-v1)",),
+            dataset_hash=D.corpus_digest(),
+            forward_only=True,
+        )
+    )
     assert reg.status("HOLDOUT-ARP-019-FORWARD") is HoldoutStatus.UNTOUCHED
     reg.assert_untouched("HOLDOUT-ARP-019-FORWARD")

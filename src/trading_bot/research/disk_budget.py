@@ -148,8 +148,9 @@ def plan_window(
     the free space each afford.
     """
     if rate_bytes_per_hour is None:
-        rate_bytes_per_hour, rate_source = DECLARED_FALLBACK_BYTES_PER_HOUR, (
-            rate_source or DECLARED_FALLBACK_SOURCE
+        rate_bytes_per_hour, rate_source = (
+            DECLARED_FALLBACK_BYTES_PER_HOUR,
+            (rate_source or DECLARED_FALLBACK_SOURCE),
         )
     rate = max(0.0, rate_bytes_per_hour) + max(0.0, overhead_bytes_per_hour)
     source = rate_source or "declared"

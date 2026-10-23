@@ -219,7 +219,9 @@ class DynamicAssetUniverse:
             )
 
         # §9 synchronization: only assets sharing the max (most recent) usable bar.
-        feature_time = max(self._stamps[s][self._count_at(s, decision_time) - 1] for s in candidates)
+        feature_time = max(
+            self._stamps[s][self._count_at(s, decision_time) - 1] for s in candidates
+        )
         eligible: list[str] = []
         for symbol in candidates:
             last = self._stamps[symbol][self._count_at(symbol, decision_time) - 1]

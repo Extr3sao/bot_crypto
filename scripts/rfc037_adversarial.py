@@ -28,8 +28,7 @@ from trading_bot.research import managed_futures_v1 as mf  # noqa: E402
 OUT = REPO / "reports" / "managed-futures-refutation"
 OUT.mkdir(parents=True, exist_ok=True)
 CAP = 10_000_000.0
-WINDOWS = {"DISCOVERY": ("1985-01-01", "1993-12-31"),
-           "VALIDATION": ("1994-01-01", "2000-03-31")}
+WINDOWS = {"DISCOVERY": ("1985-01-01", "1993-12-31"), "VALIDATION": ("1994-01-01", "2000-03-31")}
 N_SIMS = 1000
 SEED = 20261005
 
@@ -57,6 +56,7 @@ class MarketData:
 
     def last(self, r: str, od: int) -> int:
         import bisect
+
         return bisect.bisect_right(self.ords[r], od) - 1
 
     def signal_vol(self, r: str, k: int) -> tuple[float, float]:
@@ -116,12 +116,11 @@ def weight_matrix(md: MarketData, lo: int, hi: int) -> tuple[NDArray[Any], NDArr
     return R, W, dates
 
 
-def _scale(md: MarketData, raw: NDArray[Any], nz: NDArray[Any], dates: list[int],
-           oi: int) -> float:
+def _scale(md: MarketData, raw: NDArray[Any], nz: NDArray[Any], dates: list[int], oi: int) -> float:
     if len(nz) < 2:
         return 1.0
     lo = max(0, oi - 1 - mf.VOL_LOOKBACK_DAYS)
-    win = dates[lo:oi + 1]
+    win = dates[lo : oi + 1]
     if len(win) < 10:
         return 1.0
     mat = np.zeros((len(win), len(nz)))
@@ -178,22 +177,41 @@ def run_capital() -> dict[str, object]:
             panels.append(mf.build_panel(md, ts, sorted(ts.held)))
     cal = sorted({o for p in panels for o in p.ts.held})
     lo, hi = d2o("1994-01-01"), d2o("2000-03-31")
-    frac = float(mf.simulate_portfolio(panels, cal, (lo, hi), mf.default_config(),
-                                       CAP)["net_pnl"].sum())
-    levels = [250_000, 500_000, 1_000_000, 2_000_000, 5_000_000,
-              10_000_000, 25_000_000, 50_000_000, 100_000_000]
+    frac = float(
+        mf.simulate_portfolio(panels, cal, (lo, hi), mf.default_config(), CAP)["net_pnl"].sum()
+    )
+    levels = [
+        250_000,
+        500_000,
+        1_000_000,
+        2_000_000,
+        5_000_000,
+        10_000_000,
+        25_000_000,
+        50_000_000,
+        100_000_000,
+    ]
     grid = []
     n_markets = len(panels)
     for cap in levels:
-        run = mf.simulate_portfolio(panels, cal, (lo, hi),
-                                    mf.default_config(integer_contracts=True), cap)
+        run = mf.simulate_portfolio(
+            panels, cal, (lo, hi), mf.default_config(integer_contracts=True), cap
+        )
         active = float(np.mean(run["n_long"] + run["n_short"]))
         net = float(run["net_pnl"].sum())
-        grid.append({"capital": cap, "net": net, "active_markets": active,
-                     "lost_markets": max(0.0, n_markets - active),
-                     "tracking_error": (net - frac) / abs(frac)})
+        grid.append(
+            {
+                "capital": cap,
+                "net": net,
+                "active_markets": active,
+                "lost_markets": max(0.0, n_markets - active),
+                "tracking_error": (net - frac) / abs(frac),
+            }
+        )
     viable = [g for g in grid if g["active_markets"] >= 20.0 and abs(g["tracking_error"]) <= 0.15]
-    preferred = [g for g in grid if g["active_markets"] >= 24.0 and abs(g["tracking_error"]) <= 0.10]
+    preferred = [
+        g for g in grid if g["active_markets"] >= 24.0 and abs(g["tracking_error"]) <= 0.10
+    ]
     return {
         "n_markets": n_markets,
         "fractional_net": frac,
@@ -212,9 +230,11 @@ def main() -> int:
     nulls = run_nulls(md)
     capital = run_capital()
     (OUT / "ADVERSARIAL_NULLS_RAW.json").write_text(
-        json.dumps(nulls, indent=2) + "\n", encoding="utf-8")
+        json.dumps(nulls, indent=2) + "\n", encoding="utf-8"
+    )
     (OUT / "CAPITAL_FEASIBILITY_RAW.json").write_text(
-        json.dumps(capital, indent=2) + "\n", encoding="utf-8")
+        json.dumps(capital, indent=2) + "\n", encoding="utf-8"
+    )
     print(json.dumps({"nulls": nulls, "capital": capital}, indent=2))
     return 0
 

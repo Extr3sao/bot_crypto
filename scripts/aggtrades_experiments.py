@@ -219,7 +219,10 @@ def compute_features(bars: list[dict[str, Any]]) -> dict[str, list[float | None]
     f3 = [imbal(b["large_buy_vol"], b["large_sell_vol"]) for b in bars]
     ntr = [float(b["n_trades"]) for b in bars]
     f4 = _zscore(ntr, ROLLING_WINDOW)
-    mia = [float(b["min_interarrival_ms"]) if b["min_interarrival_ms"] is not None else None for b in bars]
+    mia = [
+        float(b["min_interarrival_ms"]) if b["min_interarrival_ms"] is not None else None
+        for b in bars
+    ]
     med = _rolling(mia, ROLLING_WINDOW, _median)
     f5: list[float | None] = []
     for i in range(n):
@@ -393,7 +396,9 @@ def _sign(x: float | None) -> float:
     return 1.0 if x > 0 else -1.0
 
 
-def signal_series(name: str, feats: dict[str, list[float | None]], btc_f1: list[float | None] | None) -> list[float]:
+def signal_series(
+    name: str, feats: dict[str, list[float | None]], btc_f1: list[float | None] | None
+) -> list[float]:
     n = len(feats["F1_signed_flow_imbalance"])
     sig = [0.0] * n
     if name == "A-01":
@@ -510,7 +515,11 @@ def run_signal(
     # edge gets promoted by choosing the evaluation period after the fact, so it
     # is reported explicitly instead of being left for the reader to notice.
     gross_sign = {
-        s: (0 if gross_stats[s].get("n", 0) == 0 else (1 if gross_stats[s].get("mean_bps", 0.0) > 0 else -1))
+        s: (
+            0
+            if gross_stats[s].get("n", 0) == 0
+            else (1 if gross_stats[s].get("mean_bps", 0.0) > 0 else -1)
+        )
         for s in ("DEV", "VAL", "OOS")
     }
     nonzero = [v for v in gross_sign.values() if v != 0]
@@ -616,10 +625,14 @@ def main() -> None:
     }
 
     os.makedirs(OUT, exist_ok=True)
-    with open(os.path.join(OUT, "AGGTRADES_INFO_CONTENT.json"), "w", encoding="utf-8", newline="\n") as fh:
+    with open(
+        os.path.join(OUT, "AGGTRADES_INFO_CONTENT.json"), "w", encoding="utf-8", newline="\n"
+    ) as fh:
         json.dump(info, fh, indent=2)
         fh.write("\n")
-    with open(os.path.join(OUT, "AGGTRADES_RESULTS.json"), "w", encoding="utf-8", newline="\n") as fh:
+    with open(
+        os.path.join(OUT, "AGGTRADES_RESULTS.json"), "w", encoding="utf-8", newline="\n"
+    ) as fh:
         json.dump(payload, fh, indent=2)
         fh.write("\n")
 

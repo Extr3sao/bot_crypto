@@ -81,7 +81,9 @@ def abs_move_bps(closes: Sequence[float], horizon: int) -> list[float]:
     return out
 
 
-def signed_move_bps(closes: Sequence[float], horizon: int, *, non_overlapping: bool = True) -> list[float]:
+def signed_move_bps(
+    closes: Sequence[float], horizon: int, *, non_overlapping: bool = True
+) -> list[float]:
     """Forward returns in bps.
 
     ``non_overlapping=True`` (default) takes independent samples every
@@ -180,11 +182,15 @@ def horizon_frontier(
             "gross_opportunity_bps": round(statistics.fmean(pooled_abs), 4) if pooled_abs else None,
             "median_abs_bps": round(statistics.median(pooled_abs), 4) if pooled_abs else None,
             "p90_abs_bps": round(_percentile(pooled_abs, 0.90), 4) if pooled_abs else None,
-            "frac_abs_ge_cost": round(sum(1 for m in pooled_abs if m >= cost_bps_rt) / len(pooled_abs), 6)
+            "frac_abs_ge_cost": round(
+                sum(1 for m in pooled_abs if m >= cost_bps_rt) / len(pooled_abs), 6
+            )
             if pooled_abs
             else None,
             "drift_bps": round(statistics.fmean(pooled_signed), 4) if pooled_signed else None,
-            "drift_stderr_bps": round(statistics.pstdev(pooled_signed) / math.sqrt(len(pooled_signed)), 4)
+            "drift_stderr_bps": round(
+                statistics.pstdev(pooled_signed) / math.sqrt(len(pooled_signed)), 4
+            )
             if len(pooled_signed) > 1
             else None,
             "opportunity_to_cost_ratio": round(statistics.fmean(pooled_abs) / cost_bps_rt, 4)
@@ -192,7 +198,9 @@ def horizon_frontier(
             else None,
             "by_asset": {
                 asset: {
-                    "gross_opportunity_bps": round(statistics.fmean(b["abs"]), 4) if b["abs"] else None,
+                    "gross_opportunity_bps": round(statistics.fmean(b["abs"]), 4)
+                    if b["abs"]
+                    else None,
                     "opportunity_to_cost_ratio": round(statistics.fmean(b["abs"]) / cost_bps_rt, 4)
                     if b["abs"] and cost_bps_rt > 0
                     else None,

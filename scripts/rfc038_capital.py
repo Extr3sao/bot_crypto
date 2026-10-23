@@ -43,10 +43,21 @@ from trading_bot.research import managed_futures_v1 as mf  # noqa: E402
 OUT = REPO / "reports" / "managed-futures-decision"
 OUT.mkdir(parents=True, exist_ok=True)
 
-WINDOW = ("1994-01-01", "2000-03-31")   # the RFC-037 capital window
-LEVELS = [25_000.0, 50_000.0, 100_000.0, 250_000.0, 500_000.0, 1_000_000.0,
-          2_000_000.0, 5_000_000.0, 10_000_000.0, 25_000_000.0, 50_000_000.0,
-          100_000_000.0]
+WINDOW = ("1994-01-01", "2000-03-31")  # the RFC-037 capital window
+LEVELS = [
+    25_000.0,
+    50_000.0,
+    100_000.0,
+    250_000.0,
+    500_000.0,
+    1_000_000.0,
+    2_000_000.0,
+    5_000_000.0,
+    10_000_000.0,
+    25_000_000.0,
+    50_000_000.0,
+    100_000_000.0,
+]
 REFERENCE_CAPITAL = 10_000_000.0
 # PRIMARY rounding policy is frozen from RFC-036 (`round()` = nearest); floor is
 # reported only as a comparison and is NOT used to select a better result.
@@ -86,8 +97,9 @@ def _round(x: float, policy: str) -> float:
     return float(round(x))
 
 
-def replay(panels: list[Any], cal: list[int], window: tuple[int, int],
-           capital: float, rounding: str) -> dict[str, Any]:
+def replay(
+    panels: list[Any], cal: list[int], window: tuple[int, int], capital: float, rounding: str
+) -> dict[str, Any]:
     """Independent sizing replay of the frozen engine; returns PnL + sizing records.
 
     Mirrors `managed_futures_v1.simulate_portfolio` exactly for rounding="nearest"
@@ -185,19 +197,23 @@ def replay(panels: list[Any], cal: list[int], window: tuple[int, int],
                 contracts[p.root] = rounded
                 if weight != 0.0:
                     actual_notional = rounded * px * mult
-                    records.append({
-                        "ordinal": od, "root": p.root,
-                        "weight_target": weight,
-                        "price": px, "multiplier": mult,
-                        "single_contract_notional": px * mult,
-                        "target_notional": target_notional,
-                        "raw_contract_count": n_target,
-                        "rounded_contract_count": rounded,
-                        "actual_notional": actual_notional,
-                        "actual_weight": actual_notional / capital,
-                        "allocation_error": (actual_notional - target_notional)
-                        / abs(target_notional),
-                    })
+                    records.append(
+                        {
+                            "ordinal": od,
+                            "root": p.root,
+                            "weight_target": weight,
+                            "price": px,
+                            "multiplier": mult,
+                            "single_contract_notional": px * mult,
+                            "target_notional": target_notional,
+                            "raw_contract_count": n_target,
+                            "rounded_contract_count": rounded,
+                            "actual_notional": actual_notional,
+                            "actual_weight": actual_notional / capital,
+                            "allocation_error": (actual_notional - target_notional)
+                            / abs(target_notional),
+                        }
+                    )
 
         gnotional = 0.0
         net_notional = 0.0
@@ -225,10 +241,11 @@ def replay(panels: list[Any], cal: list[int], window: tuple[int, int],
 
     net = np.asarray(net_days, dtype=np.float64)
     return {
-        "status": "OK", "days": len(dates),
-        "net_pnl": net, "net_total": float(net.sum()),
-        "mean_active_markets": float(np.mean(np.asarray(nlong_days)
-                                             + np.asarray(nshort_days))),
+        "status": "OK",
+        "days": len(dates),
+        "net_pnl": net,
+        "net_total": float(net.sum()),
+        "mean_active_markets": float(np.mean(np.asarray(nlong_days) + np.asarray(nshort_days))),
         "max_gross_exposure": float(np.max(gross_exp_days)) if gross_exp_days else 0.0,
         "mean_gross_exposure": float(np.mean(gross_exp_days)) if gross_exp_days else 0.0,
         "max_gross_notional": max_gross_notional,
@@ -237,8 +254,9 @@ def replay(panels: list[Any], cal: list[int], window: tuple[int, int],
 
 
 def fractional_net(panels: list[Any], cal: list[int], capital: float) -> float:
-    run = mf.simulate_portfolio(panels, cal, (d2o(WINDOW[0]), d2o(WINDOW[1])),
-                                mf.default_config(), capital)
+    run = mf.simulate_portfolio(
+        panels, cal, (d2o(WINDOW[0]), d2o(WINDOW[1])), mf.default_config(), capital
+    )
     return float(run["net_pnl"].sum())
 
 
@@ -257,20 +275,27 @@ def audit() -> dict[str, Any]:
     n_markets = len(panels)
 
     # frozen engine reference at the RFC-037 capital
-    engine_ref = mf.simulate_portfolio(panels, cal, (d2o(WINDOW[0]), d2o(WINDOW[1])),
-                                       mf.default_config(integer_contracts=True),
-                                       REFERENCE_CAPITAL)
+    engine_ref = mf.simulate_portfolio(
+        panels,
+        cal,
+        (d2o(WINDOW[0]), d2o(WINDOW[1])),
+        mf.default_config(integer_contracts=True),
+        REFERENCE_CAPITAL,
+    )
     engine_ref_net = float(engine_ref["net_pnl"].sum())
 
     # replay reconciliation (rounding=nearest must equal the frozen engine)
-    replay_ref = replay(panels, cal, (d2o(WINDOW[0]), d2o(WINDOW[1])),
-                        REFERENCE_CAPITAL, PRIMARY_ROUNDING)
+    replay_ref = replay(
+        panels, cal, (d2o(WINDOW[0]), d2o(WINDOW[1])), REFERENCE_CAPITAL, PRIMARY_ROUNDING
+    )
     replay_reconciles = abs(replay_ref["net_total"] - engine_ref_net) <= 1e-6 * abs(engine_ref_net)
 
     # fractional linearity: net_frac(C) should scale linearly with C
     frac_by_level = {c: fractional_net(panels, cal, c) for c in LEVELS}
     per_unit = [frac_by_level[c] / c for c in LEVELS if frac_by_level[c] != 0]
-    linearity_spread = (max(per_unit) - min(per_unit)) / abs(np.mean(per_unit)) if per_unit else None
+    linearity_spread = (
+        (max(per_unit) - min(per_unit)) / abs(np.mean(per_unit)) if per_unit else None
+    )
 
     grid: list[dict[str, Any]] = []
     rfc037_te: list[dict[str, Any]] = []
@@ -280,15 +305,17 @@ def audit() -> dict[str, Any]:
         frac_c = frac_by_level[c]
         te_corrected = ((run_near["net_total"] - frac_c) / abs(frac_c)) if frac_c else None
         # RFC-037's defective formula: reference NOT rescaled to the level
-        te_rfc037 = ((run_near["net_total"] - frac_by_level[REFERENCE_CAPITAL])
-                     / abs(frac_by_level[REFERENCE_CAPITAL]))
+        te_rfc037 = (run_near["net_total"] - frac_by_level[REFERENCE_CAPITAL]) / abs(
+            frac_by_level[REFERENCE_CAPITAL]
+        )
         pts = _points(run_near["records"])
         # invariants
         max_inv_notional = 0.0
         max_inv_weight = 0.0
         for r in run_near["records"]:
-            v1 = abs(r["actual_notional"] - r["rounded_contract_count"]
-                     * r["price"] * r["multiplier"])
+            v1 = abs(
+                r["actual_notional"] - r["rounded_contract_count"] * r["price"] * r["multiplier"]
+            )
             v2 = abs(r["actual_weight"] - r["actual_notional"] / c)
             max_inv_notional = max(max_inv_notional, v1)
             max_inv_weight = max(max_inv_weight, v2)
@@ -302,55 +329,82 @@ def audit() -> dict[str, Any]:
             if tot > 0:
                 max_conc = max(max_conc, abs(r["actual_notional"]) / tot)
         margin_proxy = run_near["max_gross_notional"] * 0.10
-        grid.append({
-            "capital": c,
-            "used_contracts": True,
-            "net_integer_nearest": run_near["net_total"],
-            "net_integer_floor": run_floor["net_total"],
-            "net_fractional_at_level": frac_c,
-            "net_fractional_rescaled": frac_by_level[REFERENCE_CAPITAL]
-            * c / REFERENCE_CAPITAL,
-            "tracking_error_rfc037": te_rfc037,
-            "tracking_error_corrected": te_corrected,
-            "active_markets": run_near["mean_active_markets"],
-            "active_markets_floor": run_floor["mean_active_markets"],
-            "mean_gross_exposure": run_near["mean_gross_exposure"],
-            "max_gross_exposure": run_near["max_gross_exposure"],
-            "max_single_market_concentration": max_conc,
-            "margin_proxy_10pct": margin_proxy,
-            "cash_buffer_proxy": c - margin_proxy,
-            "margin_ok": margin_proxy < c,
-            "n_markets": n_markets,
-            "granularity": pts,
-            "invariant_max_abs_notional_residual": max_inv_notional,
-            "invariant_max_abs_weight_residual": max_inv_weight,
-        })
-        rfc037_te.append({"capital": c, "tracking_error_rfc037": te_rfc037,
-                          "tracking_error_corrected": te_corrected})
+        grid.append(
+            {
+                "capital": c,
+                "used_contracts": True,
+                "net_integer_nearest": run_near["net_total"],
+                "net_integer_floor": run_floor["net_total"],
+                "net_fractional_at_level": frac_c,
+                "net_fractional_rescaled": frac_by_level[REFERENCE_CAPITAL] * c / REFERENCE_CAPITAL,
+                "tracking_error_rfc037": te_rfc037,
+                "tracking_error_corrected": te_corrected,
+                "active_markets": run_near["mean_active_markets"],
+                "active_markets_floor": run_floor["mean_active_markets"],
+                "mean_gross_exposure": run_near["mean_gross_exposure"],
+                "max_gross_exposure": run_near["max_gross_exposure"],
+                "max_single_market_concentration": max_conc,
+                "margin_proxy_10pct": margin_proxy,
+                "cash_buffer_proxy": c - margin_proxy,
+                "margin_ok": margin_proxy < c,
+                "n_markets": n_markets,
+                "granularity": pts,
+                "invariant_max_abs_notional_residual": max_inv_notional,
+                "invariant_max_abs_weight_residual": max_inv_weight,
+            }
+        )
+        rfc037_te.append(
+            {
+                "capital": c,
+                "tracking_error_rfc037": te_rfc037,
+                "tracking_error_corrected": te_corrected,
+            }
+        )
 
-    viable = [g for g in grid if g["active_markets"] >= 20.0
-              and g["tracking_error_corrected"] is not None
-              and abs(g["tracking_error_corrected"]) <= 0.15]
-    preferred = [g for g in grid if g["active_markets"] >= 24.0
-                 and g["tracking_error_corrected"] is not None
-                 and abs(g["tracking_error_corrected"]) <= 0.10]
+    viable = [
+        g
+        for g in grid
+        if g["active_markets"] >= 20.0
+        and g["tracking_error_corrected"] is not None
+        and abs(g["tracking_error_corrected"]) <= 0.15
+    ]
+    preferred = [
+        g
+        for g in grid
+        if g["active_markets"] >= 24.0
+        and g["tracking_error_corrected"] is not None
+        and abs(g["tracking_error_corrected"]) <= 0.10
+    ]
     # granularity monotonicity over the large-capital region (>= 10M)
-    large = [g for g in grid if g["capital"] >= 10_000_000.0
-             and g["granularity"]["median_abs_allocation_error"] is not None]
+    large = [
+        g
+        for g in grid
+        if g["capital"] >= 10_000_000.0
+        and g["granularity"]["median_abs_allocation_error"] is not None
+    ]
     gran_med = [g["granularity"]["median_abs_allocation_error"] for g in large]
-    granularity_shrinks = all(gran_med[i + 1] <= gran_med[i] * 1.001
-                              for i in range(len(gran_med) - 1)) if len(gran_med) > 1 else False
+    granularity_shrinks = (
+        all(gran_med[i + 1] <= gran_med[i] * 1.001 for i in range(len(gran_med) - 1))
+        if len(gran_med) > 1
+        else False
+    )
 
-    invariant_ok = all(g["invariant_max_abs_notional_residual"] < 1e-6
-                       and g["invariant_max_abs_weight_residual"] < 1e-9 for g in grid)
+    invariant_ok = all(
+        g["invariant_max_abs_notional_residual"] < 1e-6
+        and g["invariant_max_abs_weight_residual"] < 1e-9
+        for g in grid
+    )
     # the RFC-037 defect is scoped to the capital region where its conclusion was
     # drawn: large capital, where the book is fully populated and granularity is
     # small.  At tiny capital a large error is REAL (almost nothing is investable).
     large = [g for g in grid if g["capital"] >= 25_000_000.0]
     rfc037_te_explodes = max(abs(g["tracking_error_rfc037"]) for g in large)
     corrected_te_max_large = max(abs(g["tracking_error_corrected"]) for g in large)
-    corrected_te_max_all = max(abs(g["tracking_error_corrected"]) for g in grid
-                               if g["tracking_error_corrected"] is not None)
+    corrected_te_max_all = max(
+        abs(g["tracking_error_corrected"])
+        for g in grid
+        if g["tracking_error_corrected"] is not None
+    )
 
     defect_found = bool(rfc037_te_explodes > 1.0 and corrected_te_max_large <= 0.15)
     g_cap_recon = "PASS" if (replay_reconciles and invariant_ok and defect_found) else "FAIL"
@@ -375,19 +429,23 @@ def audit() -> dict[str, Any]:
                 "(net_integer(C) - net_fractional(10M)) / |net_fractional(10M)|  -- the "
                 "fractional reference was never rescaled to the tested capital level, so "
                 "for a strategy whose PnL is linear in capital the numerator grows with C "
-                "while the denominator is fixed, producing an artificial blow-up."),
+                "while the denominator is fixed, producing an artificial blow-up."
+            ),
             "corrected_formula": (
                 "(net_integer(C) - net_fractional(C)) / |net_fractional(C)|  -- reference "
-                "run/rescaled at the SAME capital level."),
+                "run/rescaled at the SAME capital level."
+            ),
             "rfc037_max_abs_tracking_error_large_capital": rfc037_te_explodes,
             "corrected_max_abs_tracking_error_large_capital": corrected_te_max_large,
             "corrected_max_abs_tracking_error_all_levels": corrected_te_max_all,
             "large_capital_levels": [g["capital"] for g in large],
-            "headline": ("the +780% at $100M is a RESCALING ARTEFACT of the RFC-037 "
-                         "reference, not a granularity blow-up: at large capital the "
-                         "fractional reference must be rescaled (or re-run) at the "
-                         "tested capital, and the corrected tracking error is bounded "
-                         "(<=15%) while median allocation error keeps shrinking."),
+            "headline": (
+                "the +780% at $100M is a RESCALING ARTEFACT of the RFC-037 "
+                "reference, not a granularity blow-up: at large capital the "
+                "fractional reference must be rescaled (or re-run) at the "
+                "tested capital, and the corrected tracking error is bounded "
+                "(<=15%) while median allocation error keeps shrinking."
+            ),
         },
         "replay_reconciles": replay_reconciles,
         "invariants_ok": invariant_ok,
@@ -403,14 +461,16 @@ def audit() -> dict[str, Any]:
 def main() -> int:
     result = audit()
     (OUT / "CAPITAL_ACCOUNTING_AUDIT_RAW.json").write_text(
-        json.dumps(result, indent=2, default=str) + "\n", encoding="utf-8")
-    print(json.dumps({k: v for k, v in result.items() if k != "grid"}, indent=2,
-                     default=str))
+        json.dumps(result, indent=2, default=str) + "\n", encoding="utf-8"
+    )
+    print(json.dumps({k: v for k, v in result.items() if k != "grid"}, indent=2, default=str))
     for g in result["grid"]:
-        print(f"cap={g['capital']:>13,.0f} te037={g['tracking_error_rfc037']:+.3f} "
-              f"te_corr={g['tracking_error_corrected']:+.4f} "
-              f"active={g['active_markets']:.1f} "
-              f"med_alloc_err={g['granularity']['median_abs_allocation_error']:.4g}")
+        print(
+            f"cap={g['capital']:>13,.0f} te037={g['tracking_error_rfc037']:+.3f} "
+            f"te_corr={g['tracking_error_corrected']:+.4f} "
+            f"active={g['active_markets']:.1f} "
+            f"med_alloc_err={g['granularity']['median_abs_allocation_error']:.4g}"
+        )
     return 0
 
 

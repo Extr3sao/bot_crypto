@@ -52,11 +52,16 @@ def run_variant(name: str, overrides: dict[str, Any]) -> dict[str, Any]:
         per_window[window] = per_window.get(window, 0.0) + sum(t["net"] for t in res["trades"])
         all_trades.extend(res["trades"])
     bt.TP_PCT, bt.STOP_ATR_MULT = old
-    return {"totals": bt.aggregate(all_trades), "per_window_net": per_window,
-            "final_equity": round(equity, 2)}
+    return {
+        "totals": bt.aggregate(all_trades),
+        "per_window_net": per_window,
+        "final_equity": round(equity, 2),
+    }
 
 
-def _simulate_with(fast: int, slow: int, symbol: str, bars: list[dict[str, Any]], equity: float) -> tuple[dict[str, Any], float]:
+def _simulate_with(
+    fast: int, slow: int, symbol: str, bars: list[dict[str, Any]], equity: float
+) -> tuple[dict[str, Any], float]:
     """Re-implements bt.simulate but with configurable EMA windows (minimal
     duplication; the rest of the contract is shared via bt constants)."""
     closes = [b["close"] for b in bars]
@@ -86,10 +91,19 @@ def _simulate_with(fast: int, slow: int, symbol: str, bars: list[dict[str, Any]]
         net = gross - fees
         eq += net
         consec_losses = 0 if net > 0 else consec_losses + 1
-        trades.append({"asset": symbol, "window": bars[0]["ts"], "entry_ts": pp["entry_ts"],
-                       "exit_ts": ts, "net": round(net, 4), "gross": round(gross, 4),
-                       "fees": round(fees, 4), "reason": reason,
-                       "duration_min": round((ts - pp["entry_ts"]) / 60_000, 1)})
+        trades.append(
+            {
+                "asset": symbol,
+                "window": bars[0]["ts"],
+                "entry_ts": pp["entry_ts"],
+                "exit_ts": ts,
+                "net": round(net, 4),
+                "gross": round(gross, 4),
+                "fees": round(fees, 4),
+                "reason": reason,
+                "duration_min": round((ts - pp["entry_ts"]) / 60_000, 1),
+            }
+        )
         pos = None
 
     for i in range(bt.WARMUP, len(bars)):
@@ -107,21 +121,38 @@ def _simulate_with(fast: int, slow: int, symbol: str, bars: list[dict[str, Any]]
                 close_pos(pos["tp"], ts, "take_profit")
         if not daily_locked and (daily_start - eq) / daily_start * 100.0 >= bt.DAILY_LOSS_PCT:
             daily_locked = True
-        if pos is None and not daily_locked and trades_today < bt.MAX_TRADES_DAY and not (
-            consec_losses >= bt.COOLDOWN_LOSSES and d <= cooldown_until_day
+        if (
+            pos is None
+            and not daily_locked
+            and trades_today < bt.MAX_TRADES_DAY
+            and not (consec_losses >= bt.COOLDOWN_LOSSES and d <= cooldown_until_day)
         ):
             f9, f21, fr, fa = e9[i], e21[i], rsi[i], atr[i]
             if f9 is not None and f21 is not None and fr is not None and fa and fa > 0:
-                side = "buy" if (f9 > f21 and fr > 50) else ("sell" if (f9 < f21 and fr < 50) else None)
+                side = (
+                    "buy"
+                    if (f9 > f21 and fr > 50)
+                    else ("sell" if (f9 < f21 and fr < 50) else None)
+                )
                 if side is not None:
                     stop_dist = fa * bt.STOP_ATR_MULT
                     stop_dist_pct = stop_dist / cl * 100.0
-                    notional = min(bt.MAX_NOTIONAL, max(bt.MIN_NOTIONAL, eq * (bt.RISK_PCT / 100.0) / (stop_dist_pct / 100.0)))
+                    notional = min(
+                        bt.MAX_NOTIONAL,
+                        max(bt.MIN_NOTIONAL, eq * (bt.RISK_PCT / 100.0) / (stop_dist_pct / 100.0)),
+                    )
                     fill = cl * (1 + bt.SLIP) if side == "buy" else cl * (1 - bt.SLIP)
-                    pos = {"side": side, "entry": fill, "qty": notional / fill, "notional": notional,
-                           "sl": fill - stop_dist if side == "buy" else fill + stop_dist,
-                           "tp": fill * (1 + bt.TP_PCT / 100.0) if side == "buy" else fill * (1 - bt.TP_PCT / 100.0),
-                           "entry_ts": ts}
+                    pos = {
+                        "side": side,
+                        "entry": fill,
+                        "qty": notional / fill,
+                        "notional": notional,
+                        "sl": fill - stop_dist if side == "buy" else fill + stop_dist,
+                        "tp": fill * (1 + bt.TP_PCT / 100.0)
+                        if side == "buy"
+                        else fill * (1 - bt.TP_PCT / 100.0),
+                        "entry_ts": ts,
+                    }
                     trades_today += 1
                     if consec_losses >= bt.COOLDOWN_LOSSES:
                         cooldown_until_day = d
@@ -132,8 +163,10 @@ def _simulate_with(fast: int, slow: int, symbol: str, bars: list[dict[str, Any]]
 
 def regime_attribution() -> dict[str, Any]:
     """Classify each window by BTC return/vol; aggregate trades per regime."""
-    btc_files = {os.path.basename(f)[:-5].split("_", 1)[1]: f
-                 for f in glob.glob(os.path.join(DATA, "BTCUSDT_*.json"))}
+    btc_files = {
+        os.path.basename(f)[:-5].split("_", 1)[1]: f
+        for f in glob.glob(os.path.join(DATA, "BTCUSDT_*.json"))
+    }
     with open(os.path.join(OUTDIR, "BASELINE_RESULTS.json"), encoding="utf-8") as fh:
         base = json.load(fh)
     regimes: dict[str, dict[str, Any]] = {}
@@ -142,7 +175,11 @@ def regime_attribution() -> dict[str, Any]:
             bars = json.load(fh)
         ret = (bars[-1]["close"] / bars[0]["close"] - 1) * 100.0
         atr = [v for v in bt.atr_series(bars) if v is not None]
-        vol = mean([a / b["close"] * 100.0 for a, b in zip(atr, bars[15:], strict=False)]) if atr else 0.0
+        vol = (
+            mean([a / b["close"] * 100.0 for a, b in zip(atr, bars[15:], strict=False)])
+            if atr
+            else 0.0
+        )
         direction = "UP" if ret > 2 else ("DOWN" if ret < -2 else "RANGE")
         vol_class = "HIGHVOL" if vol > 0.25 else ("LOWVOL" if vol < 0.15 else "MIDVOL")
         # aggregate the three assets' trades for this window from per-window stats
@@ -155,7 +192,9 @@ def regime_attribution() -> dict[str, Any]:
         r["windows"].append(window)
         r["net"] = round(r["net"] + net, 2)
         r["trades"] += trades
-        print(f"{window}: BTC ret={ret:+.1f}% vol={vol:.3f}% -> {key} | net={net:+.2f} trades={trades}")
+        print(
+            f"{window}: BTC ret={ret:+.1f}% vol={vol:.3f}% -> {key} | net={net:+.2f} trades={trades}"
+        )
     return regimes
 
 
@@ -164,8 +203,11 @@ def main() -> None:
     for name, ov in VARIANTS:
         variants[name] = run_variant(name, ov)
         t = variants[name]["totals"]
-        print(f"{name}: trades={t['trades']} net={t['net']} PF={t['profit_factor']} "
-              f"WR={t['win_rate']} exit={t['exit_mix']}", flush=True)
+        print(
+            f"{name}: trades={t['trades']} net={t['net']} PF={t['profit_factor']} "
+            f"WR={t['win_rate']} exit={t['exit_mix']}",
+            flush=True,
+        )
     regimes = regime_attribution()
     out = {"variants": variants, "regimes": regimes}
     with open(os.path.join(OUTDIR, "ROBUSTNESS_VARIANTS.json"), "w", encoding="utf-8") as fh:

@@ -29,7 +29,13 @@ DELIVERABLES = (
     "CAMPAIGN_CLOSURE.md",
 )
 
-FORBIDDEN_CLAIMS = ("PROFITABLE", "CERTIFIED_ALPHA", "PRODUCTION_READY", "EDGE_CONFIRMED", "PROFITABILITY_VERIFIED")
+FORBIDDEN_CLAIMS = (
+    "PROFITABLE",
+    "CERTIFIED_ALPHA",
+    "PRODUCTION_READY",
+    "EDGE_CONFIRMED",
+    "PROFITABILITY_VERIFIED",
+)
 VERDICTS = {"CANDIDATE_REJECTED", "PENDING_SEALED_OOS"}
 
 
@@ -79,7 +85,10 @@ def test_authorization_record_matches_the_adr() -> None:
     assert auth["next_campaign"] == "AUTHORIZED"
     assert auth["authorization_scope"] == "OFFLINE_DEV_VAL_ONLY"
     assert auth["historical_artifacts_rewritten"] is False
-    assert auth["charter_control_check"]["additional_unsatisfied_authorization_for_authorized_scope"] == "NONE"
+    assert (
+        auth["charter_control_check"]["additional_unsatisfied_authorization_for_authorized_scope"]
+        == "NONE"
+    )
     excluded = auth["explicitly_excluded"]
     assert excluded["live_trading"] == "DISABLED"
     assert excluded["trades_authorized"] == 0
@@ -123,10 +132,15 @@ def test_partitions_and_pit_are_enforced() -> None:
 
 
 def test_counts_match_the_rfc049b_publication() -> None:
-    feas = json.loads((DATA / "admission" / "OOS_SAMPLE_FEASIBILITY.json").read_text(encoding="utf-8"))
+    feas = json.loads(
+        (DATA / "admission" / "OOS_SAMPLE_FEASIBILITY.json").read_text(encoding="utf-8")
+    )
     results = load("ECONOMIC_RESULTS.json")
     for hid in ("H-049-001", "H-049-002"):
-        assert results[hid]["per_asset"]["BTCUSDT"]["all_exposed"]["round_trips"] == feas[hid]["round_trips"]["all_exposed"]
+        assert (
+            results[hid]["per_asset"]["BTCUSDT"]["all_exposed"]["round_trips"]
+            == feas[hid]["round_trips"]["all_exposed"]
+        )
 
 
 def test_eligibility_keeps_the_floor_and_flags_the_sealed_risk() -> None:
@@ -156,7 +170,10 @@ def test_active_audit_reports_zero_operations_and_no_label() -> None:
     assert audit["ledger"]["admitted_for_paper"] == 0
     funnel = audit["funnel"]["current"]
     assert funnel["proposals"] == 0 and funnel["authorized"] == 0 and funnel["executed"] == 0
-    assert audit["objective_3_ops_per_day"]["assessment"] == "NOT_ACHIEVABLE_FROM_CURRENT_ADMITTED_PIPELINE"
+    assert (
+        audit["objective_3_ops_per_day"]["assessment"]
+        == "NOT_ACHIEVABLE_FROM_CURRENT_ADMITTED_PIPELINE"
+    )
     assert audit["low_frequency_line"]["label_found_in_repository"] is False
     assert audit["checks_failed"] == 0
 
@@ -224,7 +241,9 @@ def test_sealed_oos_is_retired_unused_and_not_opened() -> None:
     assert closure["governance_flags_after_closure"]["OOS_OPENED"] is False
     # the frozen Phase A declaration survives untouched: it is superseded, not rewritten
     manifest = json.loads((DATA / "PREREGISTRATION_MANIFEST.json").read_text(encoding="utf-8"))
-    assert manifest["partition_policy"]["sealed_oos"].startswith("forward observations strictly after")
+    assert manifest["partition_policy"]["sealed_oos"].startswith(
+        "forward observations strictly after"
+    )
     assert manifest["freeze_timestamp_utc"] == "2026-10-10T11:26:20Z"
     assert load("ECONOMIC_RESULTS.json")["result_scope"]["sealed_oos_opened"] is False
 

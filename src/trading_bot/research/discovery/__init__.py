@@ -107,7 +107,8 @@ class HypothesisSpec:
             "parameters": dict(self.parameters),
             "period": {"start_ms": self.period_start_ms, "end_ms": self.period_end_ms},
             "partitions": [
-                {"name": p.name, "start_ms": p.start_ms, "end_ms": p.end_ms} for p in self.partitions
+                {"name": p.name, "start_ms": p.start_ms, "end_ms": p.end_ms}
+                for p in self.partitions
             ],
             "cost_bps": self.cost_bps,
             "evidence_level": self.evidence_level,
@@ -127,7 +128,9 @@ def spec_hash_from_file(path: Path | str) -> str:
     edit to the registered file is detectable even if the loader would drop the edited field.
     """
     payload = json.loads(Path(path).read_text(encoding="utf-8"))
-    return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
 
 
 def load_spec(path: Path | str) -> HypothesisSpec:
@@ -147,7 +150,9 @@ def load_spec(path: Path | str) -> HypothesisSpec:
     )
     names = [p.name for p in parts]
     if names != list(PARTITIONS):
-        raise SpecError(f"{data.get('hypothesis_id')}: partitions must be {list(PARTITIONS)}, got {names}")
+        raise SpecError(
+            f"{data.get('hypothesis_id')}: partitions must be {list(PARTITIONS)}, got {names}"
+        )
     if float(data["cost_bps"]) != ROUND_TRIP_BPS:
         raise SpecError(
             f"{data.get('hypothesis_id')}: cost_bps must be the audited {ROUND_TRIP_BPS}, "
@@ -193,7 +198,9 @@ class Bar:
 
 def load_bars(path: Path | str) -> list[Bar]:
     raw = json.loads(Path(path).read_text(encoding="utf-8"))
-    bars = [Bar(int(r[0]), float(r[1]), float(r[2]), float(r[3]), float(r[4]), float(r[5])) for r in raw]
+    bars = [
+        Bar(int(r[0]), float(r[1]), float(r[2]), float(r[3]), float(r[4]), float(r[5])) for r in raw
+    ]
     bars.sort(key=lambda b: b.open_time_ms)
     for prev, nxt in itertools.pairwise(bars):
         if nxt.open_time_ms <= prev.open_time_ms:
@@ -362,12 +369,7 @@ def signal_weekend_rebound(
         weekday = _weekday(bar.open_time_ms)
         if weekday == 0 and hour == 0:
             week_start_close = bar.close
-        if (
-            weekday == 4
-            and hour == entry_hour
-            and week_start_close
-            and len(returns) >= lookback
-        ):
+        if weekday == 4 and hour == entry_hour and week_start_close and len(returns) >= lookback:
             window = returns[-lookback:]
             mean = sum(window) / len(window)
             var = sum((r - mean) ** 2 for r in window) / (len(window) - 1)
@@ -469,7 +471,9 @@ def max_drawdown(returns: Sequence[float]) -> float:
     return worst
 
 
-def block_bootstrap_lcb(returns: Sequence[float], *, seed: int, alpha: float, block: int = 5, draws: int = 2000) -> float | None:
+def block_bootstrap_lcb(
+    returns: Sequence[float], *, seed: int, alpha: float, block: int = 5, draws: int = 2000
+) -> float | None:
     """Lower confidence bound of the mean return under serial dependence.
 
     A moving-block bootstrap, never an i.i.d. t-test (PG-6). ``alpha`` is the already-corrected
@@ -559,7 +563,12 @@ def evaluate_gate(spec: HypothesisSpec, trades: Sequence[Trade], trials: int) ->
             {name: (len(v), sum(v)) for name, v in by_partition.items()},
         ),
         ("PG-6", "block-bootstrap LCB > 0", lcb is not None and lcb > 0, lcb),
-        ("PG-7", "1.5x cost stress > 0", stressed_expectancy is not None and stressed_expectancy > 0, stressed_expectancy),
+        (
+            "PG-7",
+            "1.5x cost stress > 0",
+            stressed_expectancy is not None and stressed_expectancy > 0,
+            stressed_expectancy,
+        ),
         ("PG-8", "no risk-engine violation (<=1x, DD <= 10%)", dd <= 0.10, dd),
         (
             "PG-9",
@@ -567,7 +576,12 @@ def evaluate_gate(spec: HypothesisSpec, trades: Sequence[Trade], trials: int) ->
             share <= 0.40 and q_share <= 0.60,
             {"trade_share": share, "quarter_share": q_share, "trade_index": share_index},
         ),
-        ("PG-10", "multiple-testing correction applied", trials >= 1 and alpha < 0.05, {"trials": trials, "alpha": alpha}),
+        (
+            "PG-10",
+            "multiple-testing correction applied",
+            trials >= 1 and alpha < 0.05,
+            {"trials": trials, "alpha": alpha},
+        ),
         ("PG-11", "no look-ahead / PIT violation", pit_violations == 0, pit_violations),
     ]
     failed = [rid for rid, _, ok, _ in requirements if not ok]

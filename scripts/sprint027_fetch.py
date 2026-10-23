@@ -152,8 +152,14 @@ def fetch_metrics_asset(symbol: str, start: date, end: date, workers: int = 12) 
                 continue
             per_day[day.isoformat()] = len(rows)
             raw_rows.extend(rows)
-    return {"symbol": symbol, "rows": raw_rows, "missing_days": sorted(missing),
-            "per_day_count": per_day, "n_days_requested": len(days), "n_days_downloaded": done}
+    return {
+        "symbol": symbol,
+        "rows": raw_rows,
+        "missing_days": sorted(missing),
+        "per_day_count": per_day,
+        "n_days_requested": len(days),
+        "n_days_downloaded": done,
+    }
 
 
 def canonicalize_metrics(symbol: str, raw_rows: list[list[str]]) -> dict[str, NDArray[Any]]:
@@ -249,9 +255,13 @@ def fetch_klines_asset(symbol: str, start: date, end: date) -> dict[str, Any]:
 
 
 def canonicalize_klines(rows: list[list[str]]) -> dict[str, NDArray[Any]]:
-    start_ms = int(datetime(COMMON_START.year, COMMON_START.month, COMMON_START.day,
-                            tzinfo=UTC).timestamp() * 1000)
-    end_ms = int(datetime(COMMON_END.year, COMMON_END.month, COMMON_END.day, tzinfo=UTC).timestamp() * 1000)
+    start_ms = int(
+        datetime(COMMON_START.year, COMMON_START.month, COMMON_START.day, tzinfo=UTC).timestamp()
+        * 1000
+    )
+    end_ms = int(
+        datetime(COMMON_END.year, COMMON_END.month, COMMON_END.day, tzinfo=UTC).timestamp() * 1000
+    )
     seen: dict[int, tuple[float, float, float, float, float]] = {}
     for r in rows:
         try:
@@ -262,8 +272,10 @@ def canonicalize_klines(rows: list[list[str]]) -> dict[str, NDArray[Any]]:
         if start_ms <= t <= end_ms + 86_400_000:
             seen[t] = (o, h, lo, c, v)
     ts = np.array(sorted(seen), dtype=np.int64)
-    arrs = {k: np.array([seen[t][i] for t in ts], dtype=np.float64)
-            for i, k in enumerate(("open", "high", "low", "close", "volume"))}
+    arrs = {
+        k: np.array([seen[t][i] for t in ts], dtype=np.float64)
+        for i, k in enumerate(("open", "high", "low", "close", "volume"))
+    }
     return {"open_time_ms": ts} | arrs
 
 
@@ -316,8 +328,11 @@ def main() -> None:
             "per_day_row_modes": sorted({v for v in m["per_day_count"].values()}),
             "expected_rows_per_day": rows_variants,
         }
-        print(f"[fetch] metrics {sym}: rows={canon['create_time_ms'].shape[0]} "
-              f"missing_days={len(m['missing_days'])}", flush=True)
+        print(
+            f"[fetch] metrics {sym}: rows={canon['create_time_ms'].shape[0]} "
+            f"missing_days={len(m['missing_days'])}",
+            flush=True,
+        )
 
         print(f"[fetch] klines  {sym} {COMMON_START}..{COMMON_END}", flush=True)
         k = fetch_klines_asset(sym, COMMON_START, COMMON_END)

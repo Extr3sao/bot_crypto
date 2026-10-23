@@ -36,8 +36,9 @@ CANONICAL_KPI = {
 
 def wp(name: str, md: str, payload: Any) -> None:
     (OUT / f"{name}.md").write_text(md, encoding="utf-8")
-    (OUT / f"{name}.json").write_text(json.dumps(payload, indent=2, default=str) + "\n",
-                                      encoding="utf-8")
+    (OUT / f"{name}.json").write_text(
+        json.dumps(payload, indent=2, default=str) + "\n", encoding="utf-8"
+    )
 
 
 def adversarial_gate(nulls: dict[str, Any]) -> str:
@@ -70,25 +71,32 @@ def main() -> int:
     g_adv = adversarial_gate(nulls)
 
     # ---- §0-§3 plan + status reconciliation --------------------------------
-    wp("RFC038_PLAN", "# RFC-038 PLAN\n\n"
-       "DO NOT search for new alpha. Audit whether RFC-037 rejected MF-TREND-001 "
-       "for VALID reasons (capital accounting + adversarial nulls), then decide "
-       "whether modern futures data is worth acquiring for P1+P2. No P2 impl, no "
-       "P1 tuning, no paper, no purchase.\n\n"
-       f"- capital grid: {CAP.LEVELS}\n- capital window: {CAP.WINDOW}\n"
-       f"- primary rounding: {CAP.PRIMARY_ROUNDING}\n"
-       f"- null families: {registry['primary_families']}\n"
-       f"- null sims/seed: {registry['n_sims']}/{registry['seed']}\n",
-       {"capital_levels": CAP.LEVELS, "window": CAP.WINDOW,
-        "rounding_policy": CAP.PRIMARY_ROUNDING,
-        "preregistered_rule": CAP.PREREGISTERED_RULE,
-        "null_registry": registry})
+    wp(
+        "RFC038_PLAN",
+        "# RFC-038 PLAN\n\n"
+        "DO NOT search for new alpha. Audit whether RFC-037 rejected MF-TREND-001 "
+        "for VALID reasons (capital accounting + adversarial nulls), then decide "
+        "whether modern futures data is worth acquiring for P1+P2. No P2 impl, no "
+        "P1 tuning, no paper, no purchase.\n\n"
+        f"- capital grid: {CAP.LEVELS}\n- capital window: {CAP.WINDOW}\n"
+        f"- primary rounding: {CAP.PRIMARY_ROUNDING}\n"
+        f"- null families: {registry['primary_families']}\n"
+        f"- null sims/seed: {registry['n_sims']}/{registry['seed']}\n",
+        {
+            "capital_levels": CAP.LEVELS,
+            "window": CAP.WINDOW,
+            "rounding_policy": CAP.PRIMARY_ROUNDING,
+            "preregistered_rule": CAP.PREREGISTERED_RULE,
+            "null_registry": registry,
+        },
+    )
 
     status = {
         "MF-TREND-001": "MODERN_VALIDATION_DATA_BLOCKED",
         "why_not_rejected_modern_transport": (
             "G_REFUTE_2 was never run, so no modern transport evidence exists; "
-            "rejection would require economic evidence, not an untested gate."),
+            "rejection would require economic evidence, not an untested gate."
+        ),
         "historical_executable_validation": "PASS",
         "historical_robustness": "PASS",
         "modern_data": "BLOCKED (free block resolved to a paid candidate, §27)",
@@ -97,143 +105,196 @@ def main() -> int:
         "P2": "AUTHORIZED_WAITING",
         "CANDIDATE_ID": "MF-TREND-001",
     }
-    wp("RFC037_STATUS_RECONCILIATION", "# RFC-038 RFC-037 STATUS RECONCILIATION\n\n"
-       + "\n".join(f"- {k}: {v}" for k, v in status.items()) + "\n",
-       status)
+    wp(
+        "RFC037_STATUS_RECONCILIATION",
+        "# RFC-038 RFC-037 STATUS RECONCILIATION\n\n"
+        + "\n".join(f"- {k}: {v}" for k, v in status.items())
+        + "\n",
+        status,
+    )
 
     # ---- BLOCK A: capital ------------------------------------------------
     grid_md = "\n".join(
         f"| {g['capital']:,.0f} | {g['tracking_error_rfc037']:+.3f} | "
         f"{g['tracking_error_corrected']:+.4f} | {g['active_markets']:.1f} | "
         f"{g['granularity']['median_abs_allocation_error']:.4g} |"
-        for g in capital["grid"])
-    wp("CAPITAL_ACCOUNTING_AUDIT", "# RFC-038 CAPITAL ACCOUNTING AUDIT\n\n"
-       f"- G_CAP_RECON = {g_cap}\n"
-       f"- classification = {capital['defect']['classification']}\n"
-       f"- replay reconciles to frozen engine: {capital['replay_reconciles']}\n"
-       f"- invariants hold (notional = contracts*price*mult; weight = notional/capital): "
-       f"{capital['invariants_ok']}\n"
-       f"- granularity shrinks with capital: {capital['granularity_shrinks_with_capital']}\n"
-       f"- RFC-037 max |tracking error| at large capital = "
-       f"{capital['defect']['rfc037_max_abs_tracking_error_large_capital']:.3f}\n"
-       f"- corrected max |tracking error| at large capital = "
-       f"{capital['defect']['corrected_max_abs_tracking_error_large_capital']:.4f}\n\n"
-       "## Cause of the +780%\n\n"
-       "RFC-037 compared net_integer(C) against a fractional reference computed ONCE "
-       "at $10M and never rescaled to the tested capital. Because the frozen strategy's "
-       "PnL is exactly linear in capital, the numerator grows with C while the "
-       "denominator is fixed, so the ratio explodes. It is a RESCALING ARTEFACT, not a "
-       "granularity blow-up. Corrected (reference at the same capital), the tracking "
-       "error at large capital is bounded (<=15%) and median allocation error keeps "
-       "shrinking as capital rises.\n\n"
-       "## Invariants\n\n"
-       "For every (date, market, capital): actual_notional = contracts * price * "
-       "multiplier and actual_weight = actual_notional / capital, within 1e-6 / 1e-9.\n",
-       capital)
+        for g in capital["grid"]
+    )
+    wp(
+        "CAPITAL_ACCOUNTING_AUDIT",
+        "# RFC-038 CAPITAL ACCOUNTING AUDIT\n\n"
+        f"- G_CAP_RECON = {g_cap}\n"
+        f"- classification = {capital['defect']['classification']}\n"
+        f"- replay reconciles to frozen engine: {capital['replay_reconciles']}\n"
+        f"- invariants hold (notional = contracts*price*mult; weight = notional/capital): "
+        f"{capital['invariants_ok']}\n"
+        f"- granularity shrinks with capital: {capital['granularity_shrinks_with_capital']}\n"
+        f"- RFC-037 max |tracking error| at large capital = "
+        f"{capital['defect']['rfc037_max_abs_tracking_error_large_capital']:.3f}\n"
+        f"- corrected max |tracking error| at large capital = "
+        f"{capital['defect']['corrected_max_abs_tracking_error_large_capital']:.4f}\n\n"
+        "## Cause of the +780%\n\n"
+        "RFC-037 compared net_integer(C) against a fractional reference computed ONCE "
+        "at $10M and never rescaled to the tested capital. Because the frozen strategy's "
+        "PnL is exactly linear in capital, the numerator grows with C while the "
+        "denominator is fixed, so the ratio explodes. It is a RESCALING ARTEFACT, not a "
+        "granularity blow-up. Corrected (reference at the same capital), the tracking "
+        "error at large capital is bounded (<=15%) and median allocation error keeps "
+        "shrinking as capital rises.\n\n"
+        "## Invariants\n\n"
+        "For every (date, market, capital): actual_notional = contracts * price * "
+        "multiplier and actual_weight = actual_notional / capital, within 1e-6 / 1e-9.\n",
+        capital,
+    )
 
-    wp("CAPITAL_FEASIBILITY_CURVE", "# RFC-038 CAPITAL FEASIBILITY CURVE\n\n"
-       f"- minimum_viable_capital = {capital['minimum_viable_capital']}\n"
-       f"- minimum_preferred_capital = {capital['minimum_preferred_capital']}\n"
-       f"- rule (frozen, RFC-037): {CAP.PREREGISTERED_RULE}\n"
-       f"- primary rounding: {CAP.PRIMARY_ROUNDING}\n"
-       f"- margin assumption: {CAP.MARGIN_ASSUMPTION}\n\n"
-       "| capital | TE (RFC-037) | TE (corrected) | active mkts | median alloc err |\n"
-       "| --- | --- | --- | --- | --- |\n" + grid_md + "\n\n"
-       "floor rounding is reported in the JSON as a comparison only; it is NOT used to "
-       "select a better result.\n",
-       {"minimum_viable_capital": capital["minimum_viable_capital"],
-        "minimum_preferred_capital": capital["minimum_preferred_capital"],
-        "preregistered_rule": CAP.PREREGISTERED_RULE, "grid": capital["grid"],
-        "margin_assumption": CAP.MARGIN_ASSUMPTION})
+    wp(
+        "CAPITAL_FEASIBILITY_CURVE",
+        "# RFC-038 CAPITAL FEASIBILITY CURVE\n\n"
+        f"- minimum_viable_capital = {capital['minimum_viable_capital']}\n"
+        f"- minimum_preferred_capital = {capital['minimum_preferred_capital']}\n"
+        f"- rule (frozen, RFC-037): {CAP.PREREGISTERED_RULE}\n"
+        f"- primary rounding: {CAP.PRIMARY_ROUNDING}\n"
+        f"- margin assumption: {CAP.MARGIN_ASSUMPTION}\n\n"
+        "| capital | TE (RFC-037) | TE (corrected) | active mkts | median alloc err |\n"
+        "| --- | --- | --- | --- | --- |\n" + grid_md + "\n\n"
+        "floor rounding is reported in the JSON as a comparison only; it is NOT used to "
+        "select a better result.\n",
+        {
+            "minimum_viable_capital": capital["minimum_viable_capital"],
+            "minimum_preferred_capital": capital["minimum_preferred_capital"],
+            "preregistered_rule": CAP.PREREGISTERED_RULE,
+            "grid": capital["grid"],
+            "margin_assumption": CAP.MARGIN_ASSUMPTION,
+        },
+    )
 
     # ---- BLOCK B: nulls --------------------------------------------------
     null_rows = []
     for w in nulls.values():
         for k, s in w.items():
             if isinstance(s, dict) and "p_null_ge_observed" in s:
-                null_rows.append(f"| {k} | {s['observed']:,.0f} | {s['null_median']:,.0f} | "
-                                 f"{s['null_p95']:,.0f} | {s['p_null_ge_observed']:.3f} | "
-                                 f"{s['effect_size_vs_null_median']} |")
-    wp("NULL_MODEL_AUDIT", "# RFC-038 NULL MODEL AUDIT\n\n"
-       "NULL-1 market-label permutation (RFC-037's failing null) is classified "
-       f"{validity['NULL-1_MARKET_LABEL_PERMUTATION']['classification']}: permuting "
-       "market labels relocates each market's risk weight onto a different return "
-       "series, breaking the ex-ante vol scaling, so its null worlds are not "
-       "internally consistent. NULL-2 (shared block circular shift) and NULL-3 "
-       "(sign randomisation) are VALID market-preserving nulls.\n\n"
-       "| null | observed | null median | null P95 | p(null>=obs) | effect size |\n"
-       "| --- | --- | --- | --- | --- | --- |\n" + "\n".join(null_rows) + "\n",
-       {"registry": registry, "validity": validity, "results": nulls,
-        "gate_G_NULL_VALIDITY": g_null_val})
+                null_rows.append(
+                    f"| {k} | {s['observed']:,.0f} | {s['null_median']:,.0f} | "
+                    f"{s['null_p95']:,.0f} | {s['p_null_ge_observed']:.3f} | "
+                    f"{s['effect_size_vs_null_median']} |"
+                )
+    wp(
+        "NULL_MODEL_AUDIT",
+        "# RFC-038 NULL MODEL AUDIT\n\n"
+        "NULL-1 market-label permutation (RFC-037's failing null) is classified "
+        f"{validity['NULL-1_MARKET_LABEL_PERMUTATION']['classification']}: permuting "
+        "market labels relocates each market's risk weight onto a different return "
+        "series, breaking the ex-ante vol scaling, so its null worlds are not "
+        "internally consistent. NULL-2 (shared block circular shift) and NULL-3 "
+        "(sign randomisation) are VALID market-preserving nulls.\n\n"
+        "| null | observed | null median | null P95 | p(null>=obs) | effect size |\n"
+        "| --- | --- | --- | --- | --- | --- |\n" + "\n".join(null_rows) + "\n",
+        {
+            "registry": registry,
+            "validity": validity,
+            "results": nulls,
+            "gate_G_NULL_VALIDITY": g_null_val,
+        },
+    )
 
     adv_md = "\n".join(
         f"- {w}: NULL-2 shared p={d['NULL-2_BLOCK_CIRCULAR_SHIFT_shared']['p_null_ge_observed']:.3f}"
         f", NULL-3 sign p={d['NULL-3_SIGN_RANDOMISATION']['p_null_ge_observed']:.3f}"
         f", NULL-2b block p={d['NULL-2b_BLOCK_PERMUTATION_shared']['p_null_ge_observed']:.3f} "
         f"(borderline variant)"
-        for w, d in nulls.items())
-    wp("ADVERSARIAL_RETEST", "# RFC-038 ADVERSARIAL RETEST\n\n"
-       f"- G_ADVERSARIAL = {g_adv}\n"
-       "- the VALID primary nulls REJECT (p<=0.05) in both windows, so the RFC-037 "
-       "adversarial failure was driven by the invalid market-label null.\n"
-       f"{adv_md}\n\n"
-       "Effect sizes are large (>=3 sigma vs the null median) for NULL-2/NULL-3. The "
-       "block-permutation variant is borderline (p~0.05) and is reported honestly.\n",
-       {"gate_G_ADVERSARIAL": g_adv, "results": nulls})
+        for w, d in nulls.items()
+    )
+    wp(
+        "ADVERSARIAL_RETEST",
+        "# RFC-038 ADVERSARIAL RETEST\n\n"
+        f"- G_ADVERSARIAL = {g_adv}\n"
+        "- the VALID primary nulls REJECT (p<=0.05) in both windows, so the RFC-037 "
+        "adversarial failure was driven by the invalid market-label null.\n"
+        f"{adv_md}\n\n"
+        "Effect sizes are large (>=3 sigma vs the null median) for NULL-2/NULL-3. The "
+        "block-permutation variant is borderline (p~0.05) and is reported honestly.\n",
+        {"gate_G_ADVERSARIAL": g_adv, "results": nulls},
+    )
 
     # ---- BLOCK C: data ---------------------------------------------------
     rev_rows = "\n".join(
         f"| {p['provider']} | {p['history']} | {p['individual_contracts']} | "
         f"{p['p1_suitability']} | {p['p2_suitability']} | {p['price']} | "
-        f"{p['data_research_value']:.1f} |" for p in matrix)
-    wp("MODERN_DATA_PROVIDER_REVIEW", "# RFC-038 MODERN DATA PROVIDER REVIEW\n\n"
-       "No free independent modern dataset exists; modern data must be paid for. "
-       "Public facts only; unknown prices are QUOTE_REQUIRED (never invented).\n\n"
-       "| provider | history | indiv. contracts | P1 | P2 | price | value |\n"
-       "| --- | --- | --- | --- | --- | --- | --- |\n" + rev_rows + "\n",
-       {"matrix": matrix, "decision": decision})
+        f"{p['data_research_value']:.1f} |"
+        for p in matrix
+    )
+    wp(
+        "MODERN_DATA_PROVIDER_REVIEW",
+        "# RFC-038 MODERN DATA PROVIDER REVIEW\n\n"
+        "No free independent modern dataset exists; modern data must be paid for. "
+        "Public facts only; unknown prices are QUOTE_REQUIRED (never invented).\n\n"
+        "| provider | history | indiv. contracts | P1 | P2 | price | value |\n"
+        "| --- | --- | --- | --- | --- | --- | --- |\n" + rev_rows + "\n",
+        {"matrix": matrix, "decision": decision},
+    )
 
     shared = {
         "universe": "RFC-036's 26 markets are all CME-Group listed, so one CME-Group "
-                    "feed covers P1 end to end",
+        "feed covers P1 end to end",
         "P1_MANAGED_FUTURES_TREND": "needs individual tradable contracts + expiry metadata "
-                                    "+ volume + PIT history",
+        "+ volume + PIT history",
         "P2_FUTURES_CURVE_CARRY": "needs simultaneous contract maturities (term structure)",
         "shared_dataset": decision["best_dataset"],
         "shared_provider": decision["best_provider"],
         "reason": "expiry metadata yields both the executable contract chain (P1) and "
-                  "simultaneous maturities (P2) from a single purchase",
+        "simultaneous maturities (P2) from a single purchase",
     }
-    wp("P1_P2_SHARED_DATA_MATRIX", "# RFC-038 P1/P2 SHARED DATA MATRIX\n\n"
-       + "\n".join(f"- {k}: {v}" for k, v in shared.items()) + "\n", shared)
+    wp(
+        "P1_P2_SHARED_DATA_MATRIX",
+        "# RFC-038 P1/P2 SHARED DATA MATRIX\n\n"
+        + "\n".join(f"- {k}: {v}" for k, v in shared.items())
+        + "\n",
+        shared,
+    )
 
-    wp("DATA_ACQUISITION_DECISION", "# RFC-038 DATA ACQUISITION DECISION\n\n"
-       f"- decision = {decision['classification']}\n"
-       f"- best option = {decision['best_provider']} -- {decision['best_dataset']}\n"
-       f"- price = {decision['best_price']}\n"
-       "- NO PURCHASE WAS MADE (§36). BUY_CANDIDATE requires your explicit approval "
-       "before any spend, subscription, API purchase or account creation.\n\n"
-       f"- rule: {decision['rule']}\n",
-       decision)
-    return _finish(capital, nulls, registry, validity, matrix, decision,
-                   g_cap, g_null_val, g_adv, status)
+    wp(
+        "DATA_ACQUISITION_DECISION",
+        "# RFC-038 DATA ACQUISITION DECISION\n\n"
+        f"- decision = {decision['classification']}\n"
+        f"- best option = {decision['best_provider']} -- {decision['best_dataset']}\n"
+        f"- price = {decision['best_price']}\n"
+        "- NO PURCHASE WAS MADE (§36). BUY_CANDIDATE requires your explicit approval "
+        "before any spend, subscription, API purchase or account creation.\n\n"
+        f"- rule: {decision['rule']}\n",
+        decision,
+    )
+    return _finish(
+        capital, nulls, registry, validity, matrix, decision, g_cap, g_null_val, g_adv, status
+    )
 
 
-def _finish(capital: dict[str, Any], nulls: dict[str, Any], registry: dict[str, Any],
-            validity: dict[str, Any], matrix: list[dict[str, Any]],
-            decision: dict[str, Any], g_cap: str, g_null_val: str, g_adv: str,
-            status: dict[str, Any]) -> int:
+def _finish(
+    capital: dict[str, Any],
+    nulls: dict[str, Any],
+    registry: dict[str, Any],
+    validity: dict[str, Any],
+    matrix: list[dict[str, Any]],
+    decision: dict[str, Any],
+    g_cap: str,
+    g_null_val: str,
+    g_adv: str,
+    status: dict[str, Any],
+) -> int:
     import rfc038_verify as VER
 
     # ---- decision tree (§42) ---------------------------------------------
     capital_ok = g_cap == "PASS"
     nulls_supportive = g_adv == "PASS"
-    data_worth_it = (decision["classification"] in ("BUY_CANDIDATE", "REQUEST_QUOTE")
-                     and decision["best_provider"] is not None)
+    data_worth_it = (
+        decision["classification"] in ("BUY_CANDIDATE", "REQUEST_QUOTE")
+        and decision["best_provider"] is not None
+    )
     if capital_ok and nulls_supportive and data_worth_it:
         path = "A"
-        path_text = ("CAPITAL TEST FIXED + NULLS SUPPORTIVE + PAID DATA WORTH IT "
-                     "-> DATA ACQUISITION DECISION")
+        path_text = (
+            "CAPITAL TEST FIXED + NULLS SUPPORTIVE + PAID DATA WORTH IT "
+            "-> DATA ACQUISITION DECISION"
+        )
     elif not capital_ok and nulls_supportive:
         path = "C"
         path_text = "CAPITAL IMPRACTICAL -> CLOSE P1 PRACTICAL PATH -> P2"
@@ -244,18 +305,22 @@ def _finish(capital: dict[str, Any], nulls: dict[str, Any], registry: dict[str, 
         path = "E"
         path_text = "EVIDENCE REMAINS AMBIGUOUS -> BLOCKED"
 
-    modern_data_status = ("PAID_CANDIDATE" if decision["classification"] in
-                          ("BUY_CANDIDATE", "REQUEST_QUOTE") else "FREE_BLOCKED")
+    modern_data_status = (
+        "PAID_CANDIDATE"
+        if decision["classification"] in ("BUY_CANDIDATE", "REQUEST_QUOTE")
+        else "FREE_BLOCKED"
+    )
 
-    verification = VER.verify(capital, nulls, registry, validity, matrix, decision,
-                              g_cap, g_adv, path)
+    verification = VER.verify(
+        capital, nulls, registry, validity, matrix, decision, g_cap, g_adv, path
+    )
     ver_status = verification.get("verification_status", "FAIL")
 
     horizons = {
         "MF-TREND-001_status": "MODERN_VALIDATION_DATA_BLOCKED",
-        "path": path, "path_text": path_text,
-        "gates": {"G_CAP_RECON": g_cap, "G_NULL_VALIDITY": g_null_val,
-                  "G_ADVERSARIAL": g_adv},
+        "path": path,
+        "path_text": path_text,
+        "gates": {"G_CAP_RECON": g_cap, "G_NULL_VALIDITY": g_null_val, "G_ADVERSARIAL": g_adv},
         "kpi": {**CANONICAL_KPI, "MODERN_DATA_STATUS": modern_data_status},
         "verification": verification,
     }
@@ -310,12 +375,18 @@ def _finish(capital: dict[str, Any], nulls: dict[str, Any], registry: dict[str, 
         "whether to authorize the purchase; after approval the FIRST experiment is the "
         "FROZEN MF-TREND-001 modern transport validation (not P2).",
     ]
-    (REPO / "reports" / "RFC038_FINAL_REPORT.md").write_text("\n".join(lines) + "\n",
-                                                             encoding="utf-8")
+    (REPO / "reports" / "RFC038_FINAL_REPORT.md").write_text(
+        "\n".join(lines) + "\n", encoding="utf-8"
+    )
     (REPO / "reports" / "RFC038_FINAL_REPORT.json").write_text(
-        json.dumps({"text": lines, **horizons, "capital": capital, "nulls": nulls,
-                    "decision": decision}, indent=2, default=str) + "\n",
-        encoding="utf-8")
+        json.dumps(
+            {"text": lines, **horizons, "capital": capital, "nulls": nulls, "decision": decision},
+            indent=2,
+            default=str,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
 
     # ---- §48 tracked decision doc ---------------------------------------
     doc = [
@@ -374,21 +445,34 @@ def _finish(capital: dict[str, Any], nulls: dict[str, Any], registry: dict[str, 
         "validation; P2 stays AUTHORIZED_WAITING.",
         "",
     ]
-    (DOCS / "MANAGED_FUTURES_DECISION_RFC038.md").write_text("\n".join(doc) + "\n",
-                                                             encoding="utf-8")
+    (DOCS / "MANAGED_FUTURES_DECISION_RFC038.md").write_text(
+        "\n".join(doc) + "\n", encoding="utf-8"
+    )
     (DOCS / "MANAGED_FUTURES_DECISION_RFC038.json").write_text(
-        json.dumps({"kpi": {**CANONICAL_KPI, "MODERN_DATA_STATUS": modern_data_status},
-                    "gates": horizons["gates"], "path": path,
-                    "capital_classification": capital["defect"]["classification"],
-                    "minimum_viable_capital": capital["minimum_viable_capital"],
-                    "minimum_preferred_capital": capital["minimum_preferred_capital"],
-                    "decision": decision, "status": status},
-                   indent=2, default=str) + "\n", encoding="utf-8")
+        json.dumps(
+            {
+                "kpi": {**CANONICAL_KPI, "MODERN_DATA_STATUS": modern_data_status},
+                "gates": horizons["gates"],
+                "path": path,
+                "capital_classification": capital["defect"]["classification"],
+                "minimum_viable_capital": capital["minimum_viable_capital"],
+                "minimum_preferred_capital": capital["minimum_preferred_capital"],
+                "decision": decision,
+                "status": status,
+            },
+            indent=2,
+            default=str,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
 
     print("=== RFC-038 ===")
     print(f"G_CAP_RECON={g_cap} G_NULL_VALIDITY={g_null_val} G_ADVERSARIAL={g_adv}")
-    print(f"path={path} data={decision['classification']} "
-          f"MODERN_DATA_STATUS={modern_data_status} VERIFICATION={ver_status}")
+    print(
+        f"path={path} data={decision['classification']} "
+        f"MODERN_DATA_STATUS={modern_data_status} VERIFICATION={ver_status}"
+    )
     return 0
 
 

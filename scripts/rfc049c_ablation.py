@@ -83,7 +83,8 @@ def main() -> int:
     # note: a conjunctive filter does not select a subset of the base's trades: gating can
     # also split one base position into several shorter ones, so trip counts can move either way.
     base_by_partition = {
-        part: [t for t in base_trips if t["partition"] == part] for part in ("development", "validation")
+        part: [t for t in base_trips if t["partition"] == part]
+        for part in ("development", "validation")
     }
     deltas: dict[str, dict] = {}
     for name, st in states.items():
@@ -103,7 +104,8 @@ def main() -> int:
                 "base_trips_preserved_exactly": identical,
                 "base_trips_reshaped_or_dropped": len(base_t) - identical,
                 "net_sum_delta_bps": a["net_sum_bps"] - b["net_sum_bps"],
-                "expectancy_delta_bps": (a["net_expectancy_bps"] or 0) - (b["net_expectancy_bps"] or 0),
+                "expectancy_delta_bps": (a["net_expectancy_bps"] or 0)
+                - (b["net_expectancy_bps"] or 0),
                 "max_drawdown_base": b["max_drawdown"],
                 "max_drawdown_arm": a["max_drawdown"],
                 "max_drawdown_delta": a["max_drawdown"] - b["max_drawdown"],
@@ -114,9 +116,15 @@ def main() -> int:
     regimes = {"both_long": [], "stablecoin_only": [], "macro_only": [], "neither": []}
     for t in base_trips:
         s = date.fromisoformat(t["entry_sunday"])
-        key = ("both_long" if sig_a[s]["state"] and sig_b[s]["state"] else
-               "stablecoin_only" if sig_a[s]["state"] else
-               "macro_only" if sig_b[s]["state"] else "neither")
+        key = (
+            "both_long"
+            if sig_a[s]["state"] and sig_b[s]["state"]
+            else "stablecoin_only"
+            if sig_a[s]["state"]
+            else "macro_only"
+            if sig_b[s]["state"]
+            else "neither"
+        )
         regimes[key].append(t)
     regime_rows = {}
     for key, rows in regimes.items():
@@ -128,14 +136,20 @@ def main() -> int:
         }
 
     # cross-check: the base arm must reproduce the engine's trend comparator
-    trend_dev = results["H-049-002"]["per_asset"]["BTCUSDT"]["incrementals"]["development"]["trend_200d_net_compounded"]
-    trend_val = results["H-049-002"]["per_asset"]["BTCUSDT"]["incrementals"]["validation"]["trend_200d_net_compounded"]
+    trend_dev = results["H-049-002"]["per_asset"]["BTCUSDT"]["incrementals"]["development"][
+        "trend_200d_net_compounded"
+    ]
+    trend_val = results["H-049-002"]["per_asset"]["BTCUSDT"]["incrementals"]["validation"][
+        "trend_200d_net_compounded"
+    ]
     base_dev = arms["base"]["development"]["net_compounded"]
     base_val = arms["base"]["validation"]["net_compounded"]
     checks = [
         {
             "check": "base_reproduces_engine_trend_comparator",
-            "result": "PASS" if abs(base_dev - trend_dev) < 1e-12 and abs(base_val - trend_val) < 1e-12 else "FAIL",
+            "result": "PASS"
+            if abs(base_dev - trend_dev) < 1e-12 and abs(base_val - trend_val) < 1e-12
+            else "FAIL",
             "detail": f"dev {base_dev} vs {trend_dev}; val {base_val} vs {trend_val}",
         }
     ]
@@ -143,7 +157,9 @@ def main() -> int:
     out = {
         "artifact": "RFC049_DISCOVERY2_FILTER_ABLATION",
         "generated_at_utc": E.utcnow(),
-        "head_at_run": subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip(),
+        "head_at_run": subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True
+        ).stdout.strip(),
         "classification": "DIAGNOSTIC (non-confirmatory, RESEARCH_EXPOSED); no adoption follows from any result",
         "hypothesis_record": {
             "id": "E-049-ABL-001",
@@ -172,7 +188,12 @@ def main() -> int:
         },
         "checks": checks,
         "checks_failed": sum(1 for c in checks if c["result"] != "PASS"),
-        "scope": {"sealed_oos_opened": False, "trading": "not performed", "h_049_001_modified": False, "h_049_002_modified": False},
+        "scope": {
+            "sealed_oos_opened": False,
+            "trading": "not performed",
+            "h_049_001_modified": False,
+            "h_049_002_modified": False,
+        },
     }
     (D2 / "FILTER_ABLATION.json").write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
 
@@ -223,19 +244,36 @@ def main() -> int:
     ]
     for key, row in regime_rows.items():
         mean = row["mean_net_bps"]
-        lines.append(f"| {key} | {row['round_trips']} | {row['net_sum_bps']:.1f} | {mean:.1f} |" if mean is not None else f"| {key} | 0 | 0.0 | n/a |")
+        lines.append(
+            f"| {key} | {row['round_trips']} | {row['net_sum_bps']:.1f} | {mean:.1f} |"
+            if mean is not None
+            else f"| {key} | 0 | 0.0 | n/a |"
+        )
     lines += [
         "",
         "## Adoption",
         "",
         "**NOT_ADOPTED.** " + " ".join(out["adoption"]["reasons"]),
         "",
-        "A future decision requires: " + "; ".join(out["adoption"]["prerequisites_for_a_future_decision"]) + ".",
+        "A future decision requires: "
+        + "; ".join(out["adoption"]["prerequisites_for_a_future_decision"])
+        + ".",
         "",
         f"- base reproduces the engine's trend comparator: **{checks[0]['result']}** ({checks[0]['detail']})",
     ]
     (D2 / "FILTER_ABLATION.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(json.dumps({"checks": checks, "arms": {k: {p: arms[k][p]["round_trips"] for p in ("development", "validation")} for k in states}}, indent=2))
+    print(
+        json.dumps(
+            {
+                "checks": checks,
+                "arms": {
+                    k: {p: arms[k][p]["round_trips"] for p in ("development", "validation")}
+                    for k in states
+                },
+            },
+            indent=2,
+        )
+    )
     return 1 if out["checks_failed"] else 0
 
 

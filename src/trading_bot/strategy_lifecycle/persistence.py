@@ -82,7 +82,9 @@ def _default(obj: Any) -> Any:
 
 
 def _canonical(obj: Any) -> str:
-    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True, default=_default)
+    return json.dumps(
+        obj, sort_keys=True, separators=(",", ":"), ensure_ascii=True, default=_default
+    )
 
 
 def _sha256(text: str) -> str:
@@ -94,7 +96,9 @@ def _sha256(text: str) -> str:
 # --------------------------------------------------------------------------- #
 
 
-def _event_log(registry: DynamicStrategyRegistry, *, run_id: str, commit_sha: str) -> list[dict[str, Any]]:
+def _event_log(
+    registry: DynamicStrategyRegistry, *, run_id: str, commit_sha: str
+) -> list[dict[str, Any]]:
     """Derive the mandated audit rows from the registry's append-only events."""
     descriptors = {sid: registry.descriptor(sid) for sid in registry.strategy_ids()}
     rows: list[dict[str, Any]] = []
@@ -241,7 +245,9 @@ def load_ecosystem(path: Path, eco: DynamicStrategyEcosystem) -> dict[str, Any]:
     try:
         payload: dict[str, Any] = json.loads(raw)
     except json.JSONDecodeError as exc:
-        raise LifecycleCorruptionError(f"persisted lifecycle state is not valid JSON: {exc}") from exc
+        raise LifecycleCorruptionError(
+            f"persisted lifecycle state is not valid JSON: {exc}"
+        ) from exc
     restore_ecosystem(eco, payload)
     return payload
 

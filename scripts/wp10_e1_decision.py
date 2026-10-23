@@ -76,8 +76,9 @@ def digest(path: Path) -> str:
 
 def head() -> str:
     try:
-        return subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True,
-                              text=True, check=False).stdout.strip()
+        return subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=False
+        ).stdout.strip()
     except Exception:  # pragma: no cover - git is optional
         return ""
 
@@ -102,25 +103,39 @@ def build() -> tuple[dict[str, Any], int]:
     cells = baseline["strategies"]
 
     if len(cells) != 24:
-        return {"artifact": "WP10_E1_DECISION", "verdict": "BLOCKED",
-                "why": f"the register carries {len(cells)} cells, not 24"}, 2
+        return {
+            "artifact": "WP10_E1_DECISION",
+            "verdict": "BLOCKED",
+            "why": f"the register carries {len(cells)} cells, not 24",
+        }, 2
     if abs(plane["round_trip_bps"] - FROZEN_ROUND_TRIP_BPS) > 1e-6:
-        return {"artifact": "WP10_E1_DECISION", "verdict": "BLOCKED",
-                "why": ("the distribution's plane does not re-derive to the frozen value: "
-                        f"{plane['round_trip_bps']}")}, 2
+        return {
+            "artifact": "WP10_E1_DECISION",
+            "verdict": "BLOCKED",
+            "why": (
+                "the distribution's plane does not re-derive to the frozen value: "
+                f"{plane['round_trip_bps']}"
+            ),
+        }, 2
 
     # ------------------------------------------------------------------ the planes
     fee_term = assessment["plane_known_fee_term_bps"]
-    micro_term = assessment["plane_spread_term_bps"] + assessment["plane_slippage_plus_impact_term_bps"]
+    micro_term = (
+        assessment["plane_spread_term_bps"] + assessment["plane_slippage_plus_impact_term_bps"]
+    )
     measured_micro_median = assessment["observed_round_trip_microstructure_bps_median_across_books"]
     realised = assessment["realised_round_trip_bps_by_book"]
-    worst_realised_p95 = max(record["effective_half_spread_bps"]["p95"] * 2
-                             for record in distribution["realised_trades"])
+    worst_realised_p95 = max(
+        record["effective_half_spread_bps"]["p95"] * 2 for record in distribution["realised_trades"]
+    )
     # The falsifier for "cost is the problem": charge the ledger the KNOWN fee legs and
     # nothing else, i.e. a book that costs zero to cross. If that admits nothing, no
     # execution improvement available in this capture can.
-    admitted_at_fee_only = [row["strategy_id"] for row in cells
-                            if (row["zero_cost_gross_bps"] or 0.0) - FROZEN_KNOWN_FEE_BPS > 0]
+    admitted_at_fee_only = [
+        row["strategy_id"]
+        for row in cells
+        if (row["zero_cost_gross_bps"] or 0.0) - FROZEN_KNOWN_FEE_BPS > 0
+    ]
     baseline_arm_bps = 2 * (BASELINE_ARM_FEE_BPS_PER_SIDE + BASELINE_ARM_SLIPPAGE_BPS_PER_SIDE)
 
     planes = {
@@ -184,22 +199,25 @@ def build() -> tuple[dict[str, Any], int]:
         register.append(entry)
 
     admitted_by_plane = {
-        name: [row["strategy_id"] for row in register
-               if row["net_bps_at_plane"][name] > 0]
+        name: [row["strategy_id"] for row in register if row["net_bps_at_plane"][name] > 0]
         for name in planes
     }
 
     best = register[0]
     best_gross = best["zero_cost_gross_bps"]
-    required_plane_for_best_bps = best_gross                       # net > 0 needs plane < gross
+    required_plane_for_best_bps = best_gross  # net > 0 needs plane < gross
     required_fee_per_side_bps = max(0.0, (best_gross - measured_micro_median) / 2.0)
     required_gross_for_measured_plane_bps = planes["measured"]["round_trip_bps"]
 
     # ------------------------------------------------------------ uncertainty layer
-    resolvable = [row for row in register
-                  if row["zero_cost_gross_bps"] > 0 and row["ci95_half_width_bps"] is not None]
-    separated = [row for row in resolvable
-                 if row["zero_cost_gross_bps"] - row["ci95_half_width_bps"] > 0]
+    resolvable = [
+        row
+        for row in register
+        if row["zero_cost_gross_bps"] > 0 and row["ci95_half_width_bps"] is not None
+    ]
+    separated = [
+        row for row in resolvable if row["zero_cost_gross_bps"] - row["ci95_half_width_bps"] > 0
+    ]
     best_ci = best["ci95_half_width_bps"]
 
     # ------------------------------------------------------------------ funding drag
@@ -209,83 +227,87 @@ def build() -> tuple[dict[str, Any], int]:
     answers = {
         "q1_does_the_plane_over_or_understate": {
             "answer": "It overstates the *centre* of observable execution cost and sits near the "
-                      "tail: at the median the measured non-fee cost is "
-                      f"{measured_micro_median:.6f} bps against the plane's "
-                      f"{micro_term:.6f} bps ESTIMATED non-fee allowance "
-                      f"({micro_term / measured_micro_median:.0f}x), but the plane's allowance is "
-                      f"*below* the p95 of realised taker cost on the worst book "
-                      f"({worst_realised_p95:.4f} bps). It is conservative as a median estimate and "
-                      "roughly a p95-p99 allowance, so it is not uniformly generous and the "
-                      "difference is not free budget.",
+            "tail: at the median the measured non-fee cost is "
+            f"{measured_micro_median:.6f} bps against the plane's "
+            f"{micro_term:.6f} bps ESTIMATED non-fee allowance "
+            f"({micro_term / measured_micro_median:.0f}x), but the plane's allowance is "
+            f"*below* the p95 of realised taker cost on the worst book "
+            f"({worst_realised_p95:.4f} bps). It is conservative as a median estimate and "
+            "roughly a p95-p99 allowance, so it is not uniformly generous and the "
+            "difference is not free budget.",
             "observed": "round trip microstructure median across four books "
-                        f"{measured_micro_median:.6f} bps; realised aggressor round trips "
-                        f"{realised}; worst book p95 {worst_realised_p95:.4f} bps; worst single "
-                        f"checkpoint {assessment['observed_worst_book_max_bps']:.4f} bps",
+            f"{measured_micro_median:.6f} bps; realised aggressor round trips "
+            f"{realised}; worst book p95 {worst_realised_p95:.4f} bps; worst single "
+            f"checkpoint {assessment['observed_worst_book_max_bps']:.4f} bps",
             "assumed": "that the plane's non-fee terms were ever intended as a median rather than "
-                       "as a conservative allowance — the artefacts do not say which",
+            "as a conservative allowance — the artefacts do not say which",
         },
         "q2_where_are_costs_materially_lower": {
             "answer": "Only in the fee schedule, and only by a factor of ~2.3 bps: the non-fee "
-                      "component measured at or near its floor "
-                      f"({measured_micro_median:.6f} bps median, 0.0 bps of book walk at every "
-                      "size up to 2000 USDT), so no re-optimisation of order placement can move a "
-                      f"round trip by more than ~{micro_term:.2f} bps. The published "
-                      f"token-discounted tier moves it by "
-                      f"{fee_term - planes['discounted_fee_tier']['fees_bps']:.1f} bps, and that is "
-                      "an account/tier decision, not an execution-skill finding.",
+            "component measured at or near its floor "
+            f"({measured_micro_median:.6f} bps median, 0.0 bps of book walk at every "
+            "size up to 2000 USDT), so no re-optimisation of order placement can move a "
+            f"round trip by more than ~{micro_term:.2f} bps. The published "
+            f"token-discounted tier moves it by "
+            f"{fee_term - planes['discounted_fee_tier']['fees_bps']:.1f} bps, and that is "
+            "an account/tier decision, not an execution-skill finding.",
             "observed": "fees are 20 of the 23.3536 bps and are KNOWN from the schedule; measured "
-                        "walk beyond best 0.0 bps at every size on all four books",
+            "walk beyond best 0.0 bps at every size on all four books",
             "assumed": "that any future order would in fact receive the tier the schedule "
-                       "publishes — no account statement exists in this repository",
+            "publishes — no account statement exists in this repository",
         },
         "q3_are_those_conditions_frequent_and_executable": {
             "answer": "The fee tier is available on essentially every taker order and therefore "
-                      "frequent and executable; the measured cheap execution is *evidence about a "
-                      "book state*, not about a fill. Nothing in the capture records order "
-                      "lifecycle, queue position or partial fills, so maker execution cannot be "
-                      "claimed as available at all.",
+            "frequent and executable; the measured cheap execution is *evidence about a "
+            "book state*, not about a fill. Nothing in the capture records order "
+            "lifecycle, queue position or partial fills, so maker execution cannot be "
+            "claimed as available at all.",
             "observed": "the measured window is one 4.1 h session of a single regime; 496 "
-                        "checkpoints; no order was placed",
+            "checkpoints; no order was placed",
             "assumed": "nothing: the maker question is reported INSUFFICIENT_EVIDENCE rather than "
-                       "assumed away",
+            "assumed away",
         },
         "q4_what_explains_most_of_the_cost": {
             "answer": f"The fee schedule: {_pct(assessment['share_of_plane_that_is_known_fees'])} of "
-                      "the plane is two KNOWN exchange fee legs, which no market condition in this "
-                      "capture could change. Everything the venue's book contributed, at the "
-                      f"median, is {measured_micro_median / plane['round_trip_bps'] * 100:.2f} % of "
-                      "the plane.",
+            "the plane is two KNOWN exchange fee legs, which no market condition in this "
+            "capture could change. Everything the venue's book contributed, at the "
+            f"median, is {measured_micro_median / plane['round_trip_bps'] * 100:.2f} % of "
+            "the plane.",
             "observed": "plane decomposition rebuilt in-process; measured non-fee cost across four "
-                        "books and a 50-2000 USDT size ladder",
+            "books and a 50-2000 USDT size ladder",
             "assumed": "the published fee schedule applies (a documented policy, not a measurement)",
         },
         "q5_any_asset_or_modality_worth_more_research": {
             "answer": "No asset in this seal offers a materially better net condition: the "
-                      "difference between the best and worst book's realised round trip "
-                      f"({min(realised.values()):.4f} vs {max(realised.values()):.4f} bps) is two "
-                      "orders of magnitude below the fee floor, so asset selection is not where the "
-                      "economics are decided. The only modality that could change the answer is "
-                      "maker execution priced from order-level evidence, which requires a capture "
-                      "this campaign does not have; it is recorded as a gap, not recommended as a "
-                      "result.",
+            "difference between the best and worst book's realised round trip "
+            f"({min(realised.values()):.4f} vs {max(realised.values()):.4f} bps) is two "
+            "orders of magnitude below the fee floor, so asset selection is not where the "
+            "economics are decided. The only modality that could change the answer is "
+            "maker execution priced from order-level evidence, which requires a capture "
+            "this campaign does not have; it is recorded as a gap, not recommended as a "
+            "result.",
             "observed": "BTC and ETH only; no third asset exists in the seal",
             "assumed": "that BTC/ETH generalise to the alts in the register — they are not tested "
-                       "here and are not claimed to",
+            "here and are not claimed to",
         },
         "q6_observed_versus_assumed": {
             "answer": "The measured layer is OBSERVED_FORWARD and cannot promote anything: the best "
-                      f"gross edge in the register is {best_gross} bps and the KNOWN fee legs alone "
-                      f"are {fee_term} bps, so even a hypothetically free non-fee component leaves "
-                      f"{len(admitted_at_fee_only)} of the 24 cells net positive "
-                      f"({admitted_at_fee_only or 'none'}). The fee level, the tiers and any change "
-                      "to the plane are governance assumptions, not measurements.",
-            "observed": ("forward book, trades, latency and funding from the sealed window: "
-                         f"{distribution['verdict']['checkpoints_reproduced']} checkpoints reproduced, "
-                         f"{distribution['verdict']['look_ahead_violations']} look-ahead violations, "
-                         f"{sum(record['prints_joined'] for record in distribution['realised_trades'])} "
-                         "real aggressor prints joined"),
-            "assumed": ("the fee schedule; that a static book walk approximates a live order; that "
-                        "one 4.1 h session represents the regimes the strategies would meet"),
+            f"gross edge in the register is {best_gross} bps and the KNOWN fee legs alone "
+            f"are {fee_term} bps, so even a hypothetically free non-fee component leaves "
+            f"{len(admitted_at_fee_only)} of the 24 cells net positive "
+            f"({admitted_at_fee_only or 'none'}). The fee level, the tiers and any change "
+            "to the plane are governance assumptions, not measurements.",
+            "observed": (
+                "forward book, trades, latency and funding from the sealed window: "
+                f"{distribution['verdict']['checkpoints_reproduced']} checkpoints reproduced, "
+                f"{distribution['verdict']['look_ahead_violations']} look-ahead violations, "
+                f"{sum(record['prints_joined'] for record in distribution['realised_trades'])} "
+                "real aggressor prints joined"
+            ),
+            "assumed": (
+                "the fee schedule; that a static book walk approximates a live order; that "
+                "one 4.1 h session represents the regimes the strategies would meet"
+            ),
         },
     }
 
@@ -308,8 +330,10 @@ def build() -> tuple[dict[str, Any], int]:
                 "headline": baseline["headline_rebuilt"],
             },
             "fee_schedule_context": plane["fee_schedule_context"],
-            "baseline_arm_source": ("scripts/multi_family_backtest.py — documented execution "
-                                    "contract, BASE scenario multipliers (1.0, 1.0)"),
+            "baseline_arm_source": (
+                "scripts/multi_family_backtest.py — documented execution "
+                "contract, BASE scenario multipliers (1.0, 1.0)"
+            ),
         },
         "planes": planes,
         "answers": answers,
@@ -323,13 +347,19 @@ def build() -> tuple[dict[str, Any], int]:
             "required_fee_per_side_bps_for_best_cell": round(required_fee_per_side_bps, 6),
             "required_gross_bps_at_measured_plane": required_gross_for_measured_plane_bps,
             "required_gross_multiple_of_best": round(
-                required_gross_for_measured_plane_bps / best_gross, 4) if best_gross else None,
+                required_gross_for_measured_plane_bps / best_gross, 4
+            )
+            if best_gross
+            else None,
             "admitted_on_a_zero_microstructure_plane": admitted_at_fee_only,
-            "admitted_on_a_completely_free_plane": [row["strategy_id"] for row in cells
-                                                    if (row["zero_cost_gross_bps"] or 0.0) > 0],
-            "reading": ("the plane is not the binding constraint: no plane at or above the best "
-                        "cell's own gross edge admits anything, and the best cell's gross edge is "
-                        "the number that has to move"),
+            "admitted_on_a_completely_free_plane": [
+                row["strategy_id"] for row in cells if (row["zero_cost_gross_bps"] or 0.0) > 0
+            ],
+            "reading": (
+                "the plane is not the binding constraint: no plane at or above the best "
+                "cell's own gross edge admits anything, and the best cell's gross edge is "
+                "the number that has to move"
+            ),
         },
         "resolution": {
             "positive_cells": len(positive),
@@ -337,19 +367,25 @@ def build() -> tuple[dict[str, Any], int]:
             "positive_cells_separated_from_zero": len(separated),
             "separated_cells": [row["strategy_id"] for row in separated],
             "best_cell_ci95_half_width_bps": best_ci,
-            "reading": ("the best gross edge is quoted from "
-                        f"{best['trades']} trades and its own 95 % envelope is "
-                        f"±{best_ci} bps, so an E-1 improvement of ~3 bps is two orders of "
-                        "magnitude smaller than the uncertainty in the quantity it would have to "
-                        "rescue" if best_ci is not None else "no interval is available"),
+            "reading": (
+                "the best gross edge is quoted from "
+                f"{best['trades']} trades and its own 95 % envelope is "
+                f"±{best_ci} bps, so an E-1 improvement of ~3 bps is two orders of "
+                "magnitude smaller than the uncertainty in the quantity it would have to "
+                "rescue"
+                if best_ci is not None
+                else "no interval is available"
+            ),
         },
         "funding": {
             "median_bps_per_interval": funding["median"] if funding["n"] else None,
             "intervals_per_day": 3,
             "median_bps_per_day": round(funding_per_day, 6) if funding_per_day else None,
-            "reading": ("a position that spans a funding stamp pays the measured median; at a 30 "
-                        "min horizon the expected drag is a small fraction of one stamp, and it "
-                        "never favours the strategy because the sign is not controlled"),
+            "reading": (
+                "a position that spans a funding stamp pays the measured median; at a 30 "
+                "min horizon the expected drag is a small fraction of one stamp, and it "
+                "never favours the strategy because the sign is not controlled"
+            ),
         },
         "limitations": [
             "one sealed window of "
@@ -369,21 +405,39 @@ def build() -> tuple[dict[str, Any], int]:
             "authorises no campaign",
         ],
         "checks": [
-            {"check": "the register holds 24 cells and every one is re-adjudicated at every plane",
-             "ok": len(register) == 24},
-            {"check": "the plane under test re-derives to the frozen value",
-             "ok": abs(plane["round_trip_bps"] - FROZEN_ROUND_TRIP_BPS) < 1e-6},
-            {"check": "the KNOWN fee legs are carried as KNOWN and the measured layer as OBSERVED",
-             "ok": plane["components"]["exchange_fee_entry"]["knowledge"] == "KNOWN"},
-            {"check": "no strategy is admitted, promoted or re-classified by this decision",
-             "ok": True, "admitted": 0},
-            {"check": "no threshold, criterion or cost model is modified",
-             "ok": True, "frozen_artifacts_modified": 0},
-            {"check": "the measured layer is used to describe cost, never to declare edge",
-             "ok": "PROFITABILITY_VERIFIED" not in (
-                 json.dumps(distribution) + json.dumps(baseline) + VERDICT)},
-            {"check": "every answer separates the observed part from the assumed part",
-             "ok": all("observed" in answer and "assumed" in answer for answer in answers.values())},
+            {
+                "check": "the register holds 24 cells and every one is re-adjudicated at every plane",
+                "ok": len(register) == 24,
+            },
+            {
+                "check": "the plane under test re-derives to the frozen value",
+                "ok": abs(plane["round_trip_bps"] - FROZEN_ROUND_TRIP_BPS) < 1e-6,
+            },
+            {
+                "check": "the KNOWN fee legs are carried as KNOWN and the measured layer as OBSERVED",
+                "ok": plane["components"]["exchange_fee_entry"]["knowledge"] == "KNOWN",
+            },
+            {
+                "check": "no strategy is admitted, promoted or re-classified by this decision",
+                "ok": True,
+                "admitted": 0,
+            },
+            {
+                "check": "no threshold, criterion or cost model is modified",
+                "ok": True,
+                "frozen_artifacts_modified": 0,
+            },
+            {
+                "check": "the measured layer is used to describe cost, never to declare edge",
+                "ok": "PROFITABILITY_VERIFIED"
+                not in (json.dumps(distribution) + json.dumps(baseline) + VERDICT),
+            },
+            {
+                "check": "every answer separates the observed part from the assumed part",
+                "ok": all(
+                    "observed" in answer and "assumed" in answer for answer in answers.values()
+                ),
+            },
         ],
         "no_promotion": {
             "strategies_admitted": 0,
@@ -407,8 +461,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
     lines = [
         "# WP-10 E-1 — DECISIÓN ECONÓMICA",
         "",
-        f"> `{payload['generated_at_utc']}` · head `{payload['head']}` · "
-        f"modo `{payload['mode']}`",
+        f"> `{payload['generated_at_utc']}` · head `{payload['head']}` · modo `{payload['mode']}`",
         "",
         payload["verdict"],
         "",
@@ -418,8 +471,10 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "| --- | ---: | ---: | ---: | --- |",
     ]
     for name, row in planes.items():
-        lines.append(f"| `{name}` | {row['round_trip_bps']:.6f} | {row['fees_bps']:.6f} | "
-                     f"{row['non_fee_bps']:.6f} | {row['knowledge']} |")
+        lines.append(
+            f"| `{name}` | {row['round_trip_bps']:.6f} | {row['fees_bps']:.6f} | "
+            f"{row['non_fee_bps']:.6f} | {row['knowledge']} |"
+        )
     lines += [
         "",
         "La planicie de admisión congelada es contra la que se tomaron los 24 veredictos; la "
@@ -470,7 +525,10 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "",
         "| planicie | admitidas |",
         "| --- | ---: |",
-        *[f"| `{name}` | {len(ids)} |" for name, ids in readjudication["admitted_by_plane"].items()],
+        *[
+            f"| `{name}` | {len(ids)} |"
+            for name, ids in readjudication["admitted_by_plane"].items()
+        ],
         "",
         f"* mejor celda del registro: `{readjudication['best_cell']}` con "
         f"{readjudication['best_gross_bps']} bps a coste cero",

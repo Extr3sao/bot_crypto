@@ -55,17 +55,11 @@ def series(asset: str, window: str, tf: str) -> L.Bundle:
     files = L.dataset_files()
     if tf in ("2h", "4h"):
         src = next(
-            x
-            for x in files
-            if x.asset == asset and x.window == window and x.timeframe == "5m"
+            x for x in files if x.asset == asset and x.window == window and x.timeframe == "5m"
         )
         bars = L.resample(L.load_bars(src.path), int(L.TF_MIN[tf]))
     else:
-        f = next(
-            x
-            for x in files
-            if x.asset == asset and x.window == window and x.timeframe == tf
-        )
+        f = next(x for x in files if x.asset == asset and x.window == window and x.timeframe == tf)
         bars = L.load_bars(f.path)
     return L.build_bundle(bars, tf)
 

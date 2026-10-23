@@ -136,7 +136,12 @@ class _OneShot:
     def entry(self, i: int) -> Setup | None:
         if i == 1 and not self._fired:
             self._fired = True
-            return Setup(side="long", stop=self._bars[i].close * 0.95, target=self._bars[i].close * 1.10, rule="t")
+            return Setup(
+                side="long",
+                stop=self._bars[i].close * 0.95,
+                target=self._bars[i].close * 1.10,
+                rule="t",
+            )
         return None
 
     def exit_reason(self, i: int, pos: object) -> str | None:
@@ -145,9 +150,33 @@ class _OneShot:
 
 def test_stop_first_on_ambiguity_and_cost_math() -> None:
     bars = [
-        OHLCV(symbol="X", timestamp=START_MS, open=100.0, high=101.0, low=99.0, close=100.0, volume=1.0),
-        OHLCV(symbol="X", timestamp=START_MS + STEP_MS, open=100.0, high=101.0, low=99.0, close=100.0, volume=1.0),
-        OHLCV(symbol="X", timestamp=START_MS + 2 * STEP_MS, open=100.0, high=111.0, low=94.0, close=105.0, volume=1.0),
+        OHLCV(
+            symbol="X",
+            timestamp=START_MS,
+            open=100.0,
+            high=101.0,
+            low=99.0,
+            close=100.0,
+            volume=1.0,
+        ),
+        OHLCV(
+            symbol="X",
+            timestamp=START_MS + STEP_MS,
+            open=100.0,
+            high=101.0,
+            low=99.0,
+            close=100.0,
+            volume=1.0,
+        ),
+        OHLCV(
+            symbol="X",
+            timestamp=START_MS + 2 * STEP_MS,
+            open=100.0,
+            high=111.0,
+            low=94.0,
+            close=105.0,
+            volume=1.0,
+        ),
     ]
     res = simulate(_OneShot(), bars, cost_bps_rt=20.0, notional=500.0)
     assert len(res.trades) == 1

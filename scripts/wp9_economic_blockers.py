@@ -62,12 +62,12 @@ BUCKETS: dict[str, dict[str, Any]] = {
     "INSUFFICIENT_DATA": {
         "categories": ["DATA_QUALITY", "INSUFFICIENT_SAMPLE"],
         "reads": "evidence the audit could not measure (no published drawdown, no observed "
-                 "spread) or a sample below the pre-registered bar",
+        "spread) or a sample below the pre-registered bar",
     },
     "ROBUSTNESS": {
         "categories": ["REGIME_MISMATCH", "ROBUSTNESS_FAILURE"],
         "reads": "sign or magnitude that does not survive a regime change or a parameter "
-                 "neighbourhood",
+        "neighbourhood",
     },
     "RUNTIME_FAILURE": {
         "categories": ["IMPLEMENTATION_DEFECT"],
@@ -76,7 +76,7 @@ BUCKETS: dict[str, dict[str, Any]] = {
     "GOVERNANCE": {
         "categories": ["GOVERNANCE_BLOCK"],
         "reads": "nothing may be promoted: the ledger admits no strategy and paper "
-                 "promotion is NOT_AUTHORIZED",
+        "promotion is NOT_AUTHORIZED",
     },
 }
 
@@ -98,7 +98,9 @@ def occupied_rfc_numbers() -> list[int]:
             continue
         for path in root.rglob("*"):
             if path.is_file():
-                numbers.update(int(match) for match in re.findall(r"rfc0*(\d{2,3})", str(path).lower()))
+                numbers.update(
+                    int(match) for match in re.findall(r"rfc0*(\d{2,3})", str(path).lower())
+                )
     return sorted(numbers)
 
 
@@ -139,8 +141,8 @@ def classify(audit: dict[str, Any]) -> dict[str, Any]:
         "strategies_total": len(strategies),
         "primary_total": sum(len(items) for items in primary.values()),
         "rule": "primary = the reason the strategy failed; flagged = present and not what "
-                "decided it. A category that flags everything and decides nothing describes "
-                "the pipeline rather than the strategies.",
+        "decided it. A category that flags everything and decides nothing describes "
+        "the pipeline rather than the strategies.",
     }
 
 
@@ -154,15 +156,17 @@ def economics(audit: dict[str, Any]) -> dict[str, Any]:
         net = (strategy.get("economics") or {}).get("net_expectancy_bps")
         if gross is None:
             continue
-        cells.append({
-            "strategy_id": key,
-            "timeframe": strategy.get("timeframe"),
-            "ledger_status": strategy.get("ledger_status"),
-            "zero_cost_gross_bps": gross,
-            "net_expectancy_bps": net,
-            "gap_to_cost_plane_bps": round(plane["round_trip_bps_200_usdt"] - gross, 4),
-            "clears_the_plane": bool(gross > plane["round_trip_bps_200_usdt"]),
-        })
+        cells.append(
+            {
+                "strategy_id": key,
+                "timeframe": strategy.get("timeframe"),
+                "ledger_status": strategy.get("ledger_status"),
+                "zero_cost_gross_bps": gross,
+                "net_expectancy_bps": net,
+                "gap_to_cost_plane_bps": round(plane["round_trip_bps_200_usdt"] - gross, 4),
+                "clears_the_plane": bool(gross > plane["round_trip_bps_200_usdt"]),
+            }
+        )
     cells.sort(key=lambda item: item["zero_cost_gross_bps"], reverse=True)
     return {
         "cost_plane_bps": plane["round_trip_bps_200_usdt"],
@@ -187,7 +191,8 @@ def economics(audit: dict[str, Any]) -> dict[str, Any]:
             "best_measured_gross_bps_per_trade": objective["best_measured_gross_bps_per_trade"],
             "assessment": objective["assessment"],
             "shortfall_per_trip_bps": round(
-                objective["break_even_gross_bps_per_trip"] - objective["best_measured_gross_bps_per_trade"],
+                objective["break_even_gross_bps_per_trip"]
+                - objective["best_measured_gross_bps_per_trade"],
                 4,
             ),
             "no_forcing_note": objective["no_forcing_note"],
@@ -224,8 +229,8 @@ def rfc_state(occupied: list[int]) -> dict[str, Any]:
         "tree_occupancy": occupied,
         "derived_next_free": next_number,
         "derived_from": "the highest number the working tree actually occupies, because the "
-                        "registry's own field is stale (it still calls 048 free while 048 and "
-                        "049 are occupied)",
+        "registry's own field is stale (it still calls 048 free while 048 and "
+        "049 are occupied)",
         "cost_and_entry_rfc_exists": bool(existing),
         "existing_files": existing,
         "verdict": (
@@ -247,8 +252,8 @@ def draft_rfc(number: int, economics_payload: dict[str, Any], rfc: dict[str, Any
 > Prepared by WP-9E. Nothing in this file has been run, and nothing here authorises a run.
 > The operator authorises campaigns; an audit only prepares one.
 
-Number derived from tree occupancy ({', '.join(str(n) for n in rfc['tree_occupancy'][-6:])}) and
-not from the registry's stale `next_free_number_above_046 = {rfc['registry_says_next_free']}`.
+Number derived from tree occupancy ({", ".join(str(n) for n in rfc["tree_occupancy"][-6:])}) and
+not from the registry's stale `next_free_number_above_046 = {rfc["registry_says_next_free"]}`.
 
 ## Why this campaign, and not a strategy search
 
@@ -259,13 +264,13 @@ close:
 | --- | ---: |
 | frozen round-trip cost plane at 200 USDT | **{plane:.3f} bps** |
 | best measured gross edge in the registry | **{best:.3f} bps** |
-| shortfall per trip | **{economics_payload['objective']['shortfall_per_trip_bps']:.3f} bps** |
-| cells above the plane | **{economics_payload['cells_clearing_the_plane']} of {len(economics_payload['cells'])}** |
-| net-positive cells | **{economics_payload['net_positive_count']}** |
+| shortfall per trip | **{economics_payload["objective"]["shortfall_per_trip_bps"]:.3f} bps** |
+| cells above the plane | **{economics_payload["cells_clearing_the_plane"]} of {len(economics_payload["cells"])}** |
+| net-positive cells | **{economics_payload["net_positive_count"]}** |
 
-The objective of 3 operations/day is {objective['round_trips_per_year']:.0f} round trips a
-year, which at the frozen plane is **{objective['annual_cost_bps']:.0f} bps**
-({objective['annual_cost_pct_of_stake']:.1f} % of stake). {objective['no_forcing_note']}
+The objective of 3 operations/day is {objective["round_trips_per_year"]:.0f} round trips a
+year, which at the frozen plane is **{objective["annual_cost_bps"]:.0f} bps**
+({objective["annual_cost_pct_of_stake"]:.1f} % of stake). {objective["no_forcing_note"]}
 
 ## Two stages, in this order
 
@@ -293,8 +298,9 @@ year, which at the frozen plane is **{objective['annual_cost_bps']:.0f} bps**
 """
 
 
-def ask_blockers(audit: dict[str, Any], classification: dict[str, Any],
-                 economics_payload: dict[str, Any]) -> list[dict[str, Any]]:
+def ask_blockers(
+    audit: dict[str, Any], classification: dict[str, Any], economics_payload: dict[str, Any]
+) -> list[dict[str, Any]]:
     """Prioritise the evidence that could make a future strategy viable, with its cost."""
     return [
         {
@@ -336,7 +342,7 @@ def ask_blockers(audit: dict[str, Any], classification: dict[str, Any],
             ),
             "cost": "a code change with contract tests, no new data",
             "unblocks": "nothing economically on its own, and everything if the map order is why "
-                        "the wrong candidate is ranked first",
+            "the wrong candidate is ranked first",
         },
         {
             "priority": 5,
@@ -359,9 +365,12 @@ def audit() -> dict[str, Any]:
     economics_payload = economics(audit_payload)
     rfc = rfc_state(occupied)
 
-    ledger_count = len(ledger.get("entries") or ledger.get("strategies") or ledger) if ledger else None
+    ledger_count = (
+        len(ledger.get("entries") or ledger.get("strategies") or ledger) if ledger else None
+    )
     reconciles = (
-        sum(economics_payload["ledger_status_counts"].values()) == classification["strategies_total"]
+        sum(economics_payload["ledger_status_counts"].values())
+        == classification["strategies_total"]
     )
     return {
         "artifact": "WP9_ACTIVE_ECONOMIC_BLOCKERS",
@@ -395,24 +404,32 @@ def audit() -> dict[str, Any]:
             ),
         },
         "checks": [
-            {"check": "the ledger's status counts reconcile with the per-strategy records",
-             "result": "PASS" if reconciles else "FAIL"},
-            {"check": "primary and flagged taxonomy roles are not collapsed",
-             "result": "PASS"},
-            {"check": "the cost plane reproduces its frozen value",
-             "result": "PASS" if economics_payload["cost_plane_reproduces_frozen_value"] else "FAIL"},
-            {"check": "every net-positive cell is counted from the artefact, not asserted",
-             "result": "PASS"},
-            {"check": "no frozen criterion was modified by this audit",
-             "result": "PASS"},
-            {"check": "a cost-and-entry RFC is either found or prepared as a draft that cannot run",
-             "result": "PASS"},
+            {
+                "check": "the ledger's status counts reconcile with the per-strategy records",
+                "result": "PASS" if reconciles else "FAIL",
+            },
+            {"check": "primary and flagged taxonomy roles are not collapsed", "result": "PASS"},
+            {
+                "check": "the cost plane reproduces its frozen value",
+                "result": "PASS"
+                if economics_payload["cost_plane_reproduces_frozen_value"]
+                else "FAIL",
+            },
+            {
+                "check": "every net-positive cell is counted from the artefact, not asserted",
+                "result": "PASS",
+            },
+            {"check": "no frozen criterion was modified by this audit", "result": "PASS"},
+            {
+                "check": "a cost-and-entry RFC is either found or prepared as a draft that cannot run",
+                "result": "PASS",
+            },
         ],
         "verdict": {
             "profitable_strategies": 0,
             "strategies_with_demonstrable_net_advantage": economics_payload["net_positive_count"],
             "binding_blocker": "EXECUTION_COSTS (primary for 7, flagged for 24) on top of "
-                               "NO_ECONOMIC_ADVANTAGE (primary for 17)",
+            "NO_ECONOMIC_ADVANTAGE (primary for 17)",
             "next_experiment": "E-1 — measure the cost plane; then E-2 — the 30m entry screen",
             "ledger_entries": ledger_count,
         },
@@ -558,7 +575,7 @@ def main() -> int:
             Path(args.draft)
             if args.draft
             else OUT_DIR / f"RFC_{payload['rfc_cost_and_entry']['derived_next_free']:03d}"
-                          "_COST_AND_ENTRY_DRAFT.md"
+            "_COST_AND_ENTRY_DRAFT.md"
         )
         out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
         report.write_text(render_markdown(payload, draft) + "\n", encoding="utf-8")

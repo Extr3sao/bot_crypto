@@ -200,7 +200,9 @@ class DynamicStrategyRegistry:
 
         event_type = event_for_state(target)
         if event_type is not None:
-            self._emit(event_type, sid, now, current, target, decision.reason_codes, decision.evidence)
+            self._emit(
+                event_type, sid, now, current, target, decision.reason_codes, decision.evidence
+            )
         elif target is not LifecycleState.VALIDATING:
             self._emit(
                 StrategyEventType.STRATEGY_PROMOTION_REJECTED,
@@ -240,10 +242,16 @@ class DynamicStrategyRegistry:
         return [self._descriptors[sid] for sid in self.strategy_ids()]
 
     def by_state(self, state: LifecycleState) -> list[str]:
-        return [sid for sid in self.strategy_ids() if self._descriptors[sid].lifecycle_state is state]
+        return [
+            sid for sid in self.strategy_ids() if self._descriptors[sid].lifecycle_state is state
+        ]
 
     def active_ids(self) -> list[str]:
-        return [sid for sid in self.strategy_ids() if self._descriptors[sid].lifecycle_state is LifecycleState.ACTIVE]
+        return [
+            sid
+            for sid in self.strategy_ids()
+            if self._descriptors[sid].lifecycle_state is LifecycleState.ACTIVE
+        ]
 
     def version_history(self, strategy_id: str) -> list[StrategyDescriptor]:
         return list(self._versions.get(strategy_id, []))
@@ -271,10 +279,19 @@ class DynamicStrategyRegistry:
     def churn(self, strategy_id: str | None = None) -> dict[str, Any]:
         if strategy_id is not None:
             return ChurnMetrics(**_coerce(self._churn.get(strategy_id, {}))).to_dict()
-        totals = {k: sum(c.get(k, 0) for c in self._churn.values()) for k in (
-            "activations", "pauses", "reactivations", "promotions", "reversals",
-            "time_active_ms", "time_shadow_ms", "transitions",
-        )}
+        totals = {
+            k: sum(c.get(k, 0) for c in self._churn.values())
+            for k in (
+                "activations",
+                "pauses",
+                "reactivations",
+                "promotions",
+                "reversals",
+                "time_active_ms",
+                "time_shadow_ms",
+                "transitions",
+            )
+        }
         return ChurnMetrics(**totals).to_dict()
 
     # -- helpers -------------------------------------------------------------
@@ -295,11 +312,19 @@ class DynamicStrategyRegistry:
         target: LifecycleState,
         now: int,
     ) -> None:
-        churn = self._churn.setdefault(sid, {
-            "activations": 0, "pauses": 0, "reactivations": 0,
-            "promotions": 0, "reversals": 0, "time_active_ms": 0,
-            "time_shadow_ms": 0, "transitions": 0,
-        })
+        churn = self._churn.setdefault(
+            sid,
+            {
+                "activations": 0,
+                "pauses": 0,
+                "reactivations": 0,
+                "promotions": 0,
+                "reversals": 0,
+                "time_active_ms": 0,
+                "time_shadow_ms": 0,
+                "transitions": 0,
+            },
+        )
         churn["transitions"] += 1
         if target is LifecycleState.ACTIVE:
             churn["activations"] += 1
@@ -320,11 +345,19 @@ class DynamicStrategyRegistry:
     def _bump_dwell(self, sid: str, state: LifecycleState, now: int) -> None:
         since = self._state_since.get(sid, now)
         elapsed = max(0, now - since)
-        churn = self._churn.setdefault(sid, {
-            "activations": 0, "pauses": 0, "reactivations": 0,
-            "promotions": 0, "reversals": 0, "time_active_ms": 0,
-            "time_shadow_ms": 0, "transitions": 0,
-        })
+        churn = self._churn.setdefault(
+            sid,
+            {
+                "activations": 0,
+                "pauses": 0,
+                "reactivations": 0,
+                "promotions": 0,
+                "reversals": 0,
+                "time_active_ms": 0,
+                "time_shadow_ms": 0,
+                "transitions": 0,
+            },
+        )
         if state is LifecycleState.ACTIVE:
             churn["time_active_ms"] += elapsed
         if state is LifecycleState.SHADOW:
@@ -399,13 +432,26 @@ class DynamicStrategyRegistry:
         for sid, hist in (payload.get("history") or {}).items():
             reg._history[sid] = [_HistoryEntry.from_dict(h) for h in hist]
         reg._events = [StrategyEvent.from_dict(e) for e in payload.get("events", [])]
-        reg._churn = {sid: {k: int(v) for k, v in c.items()} for sid, c in (payload.get("churn") or {}).items()}
+        reg._churn = {
+            sid: {k: int(v) for k, v in c.items()}
+            for sid, c in (payload.get("churn") or {}).items()
+        }
         reg._state_since = {k: int(v) for k, v in (payload.get("state_since") or {}).items()}
-        reg._degraded_streak = {k: int(v) for k, v in (payload.get("degraded_streak") or {}).items()}
-        reg._recovery_streak = {k: int(v) for k, v in (payload.get("recovery_streak") or {}).items()}
-        reg._last_activation_ms = {k: int(v) for k, v in (payload.get("last_activation_ms") or {}).items()}
-        reg._last_demotion_ms = {k: int(v) for k, v in (payload.get("last_demotion_ms") or {}).items()}
-        reg._eligible_since_ms = {k: int(v) for k, v in (payload.get("eligible_since_ms") or {}).items()}
+        reg._degraded_streak = {
+            k: int(v) for k, v in (payload.get("degraded_streak") or {}).items()
+        }
+        reg._recovery_streak = {
+            k: int(v) for k, v in (payload.get("recovery_streak") or {}).items()
+        }
+        reg._last_activation_ms = {
+            k: int(v) for k, v in (payload.get("last_activation_ms") or {}).items()
+        }
+        reg._last_demotion_ms = {
+            k: int(v) for k, v in (payload.get("last_demotion_ms") or {}).items()
+        }
+        reg._eligible_since_ms = {
+            k: int(v) for k, v in (payload.get("eligible_since_ms") or {}).items()
+        }
         reg.schema_version = payload.get("schema_version", REGISTRY_SCHEMA_VERSION)
         return reg
 
@@ -434,7 +480,13 @@ def _replace_state(
 
 def _coerce(raw: dict[str, int]) -> dict[str, int]:
     keys = (
-        "activations", "pauses", "reactivations", "promotions", "reversals",
-        "time_active_ms", "time_shadow_ms", "transitions",
+        "activations",
+        "pauses",
+        "reactivations",
+        "promotions",
+        "reversals",
+        "time_active_ms",
+        "time_shadow_ms",
+        "transitions",
     )
     return {k: int(raw.get(k, 0)) for k in keys}

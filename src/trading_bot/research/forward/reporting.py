@@ -383,9 +383,7 @@ class _RowScan:
     """Everything the quality report needs, from one streaming pass (§34)."""
 
     scans: dict[str, _StreamScan] = field(default_factory=lambda: defaultdict(_StreamScan))
-    checkpoints: dict[str, list[dict[str, Any]]] = field(
-        default_factory=lambda: defaultdict(list)
-    )
+    checkpoints: dict[str, list[dict[str, Any]]] = field(default_factory=lambda: defaultdict(list))
     #: Transport transitions only: one per connect/disconnect, so bounded.
     lifecycle: list[dict[str, Any]] = field(default_factory=list)
 
@@ -650,9 +648,7 @@ def build_health_accounting(
     episodes: list[dict[str, Any]] = []
     for start, end in merged:
         inside = [
-            gap
-            for gap in all_gaps
-            if int(gap["start_ms"]) <= end and int(gap["end_ms"]) >= start
+            gap for gap in all_gaps if int(gap["start_ms"]) <= end and int(gap["end_ms"]) >= start
         ]
         recovered = [g for g in inside if g.get("recovered")]
         partial = [g for g in inside if not g.get("recovered") and g.get("recovered_events")]
@@ -686,10 +682,7 @@ def build_health_accounting(
                 "gaps_with_no_data_loss": len(inside) - len(recovered) - len(partial) - len(lost),
                 "reasons": sorted({str(g.get("reason")) for g in inside}),
                 "streams": sorted(
-                    {
-                        f"{g.get('market')}/{g.get('symbol')}/{g.get('event_type')}"
-                        for g in inside
-                    }
+                    {f"{g.get('market')}/{g.get('symbol')}/{g.get('event_type')}" for g in inside}
                 ),
             }
         )
@@ -810,9 +803,7 @@ def _loss_estimate_semantics(gaps: list[dict[str, Any]]) -> dict[str, Any]:
         "per_stream": dict(sorted(by_stream.items())),
         "id_steps_that_are_an_event_count": counted,
         "id_steps_that_are_a_sequence_span_only": spanned,
-        "lost_wall_clock_seconds": round(
-            sum(slot["seconds"] for slot in by_stream.values()), 6
-        ),
+        "lost_wall_clock_seconds": round(sum(slot["seconds"] for slot in by_stream.values()), 6),
         "note": (
             "only agg_trade ids name discrete events; for depth_diff an id step is a "
             "position in a sequence, and the affected book was invalidated and "
@@ -1181,9 +1172,7 @@ def _free_disk_bytes(path: Path) -> int | None:
         return None
 
 
-def _storage_capacity(
-    base: Path, stored_bytes: int, stored_gb_per_hour: float
-) -> dict[str, Any]:
+def _storage_capacity(base: Path, stored_bytes: int, stored_gb_per_hour: float) -> dict[str, Any]:
     """§14 — can this volume actually carry continuous collection?
 
     The free-disk figure is read at report time, i.e. *after* the capture, so the
@@ -1197,9 +1186,7 @@ def _storage_capacity(
     per_day_gb = stored_gb_per_hour * 24.0
     per_hour_bytes = stored_gb_per_hour * 1e9
     capacity_hours = (
-        round(free_now / per_hour_bytes, 3)
-        if free_now is not None and per_hour_bytes > 0
-        else None
+        round(free_now / per_hour_bytes, 3) if free_now is not None and per_hour_bytes > 0 else None
     )
     capacity_days = round(capacity_hours / 24.0, 3) if capacity_hours is not None else None
     if capacity_days is None:

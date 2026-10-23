@@ -130,8 +130,19 @@ def percentile(values: list[float], q: float) -> float | None:
 def describe(values: list[float]) -> dict[str, Any]:
     """A distribution as a reader needs it: n, centre, tails, extremes."""
     if not values:
-        return {"n": 0, "median": None, "mean": None, "p05": None, "p25": None, "p75": None,
-                "p95": None, "p99": None, "min": None, "max": None, "stdev": None}
+        return {
+            "n": 0,
+            "median": None,
+            "mean": None,
+            "p05": None,
+            "p25": None,
+            "p75": None,
+            "p95": None,
+            "p99": None,
+            "min": None,
+            "max": None,
+            "stdev": None,
+        }
     return {
         "n": len(values),
         "median": round(statistics.median(values), 6),
@@ -160,8 +171,9 @@ def share_over(values: list[float], threshold: float) -> float | None:
 TRUNCATED: list[dict[str, Any]] = []
 
 
-def iter_rows(path: Path, run_id: str | None = None,
-              truncations: list[dict[str, Any]] | None = None) -> Iterator[dict[str, Any]]:
+def iter_rows(
+    path: Path, run_id: str | None = None, truncations: list[dict[str, Any]] | None = None
+) -> Iterator[dict[str, Any]]:
     """One segment, forward, skipping rows that belong to another run.
 
     A truncated tail ends the file early and is recorded instead of raised: the rows that
@@ -184,7 +196,8 @@ def iter_rows(path: Path, run_id: str | None = None,
                     yield row
     except (EOFError, gzip.BadGzipFile, OSError) as exc:
         entry = {
-            "file": str(path.relative_to(ROOT)).replace("\\", "/") if path.is_absolute()
+            "file": str(path.relative_to(ROOT)).replace("\\", "/")
+            if path.is_absolute()
             else str(path).replace("\\", "/"),
             "error": type(exc).__name__,
             "rows_read_before_truncation": read,
@@ -199,9 +212,14 @@ def segment_files(root: Path, market: str, symbol: str, stream: str) -> list[Pat
     return sorted(base.rglob("*.jsonl.gz"))
 
 
-def stream_events(market: str, symbol: str, stream: str, run_id: str,
-                  truncations: list[dict[str, Any]],
-                  inversions: dict[str, int] | None = None) -> Iterator[tuple[int, int, dict[str, Any]]]:
+def stream_events(
+    market: str,
+    symbol: str,
+    stream: str,
+    run_id: str,
+    truncations: list[dict[str, Any]],
+    inversions: dict[str, int] | None = None,
+) -> Iterator[tuple[int, int, dict[str, Any]]]:
     """One stream in the collector's own write order, read lazily from disk.
 
     Segment names sort in rotation order and rows were appended in ``write_seq``
@@ -293,8 +311,12 @@ def load_sealed_runs() -> dict[str, Any]:
                 for stream in payload.get("streams") or []
             },
             "book_health": {
-                key: {"health": value.get("health"), "counters": value.get("counters"),
-                      "bid_levels": value.get("bid_levels"), "ask_levels": value.get("ask_levels")}
+                key: {
+                    "health": value.get("health"),
+                    "counters": value.get("counters"),
+                    "bid_levels": value.get("bid_levels"),
+                    "ask_levels": value.get("ask_levels"),
+                }
                 for key, value in (payload.get("book_health") or {}).items()
             },
         }
@@ -307,8 +329,14 @@ def load_sealed_runs() -> dict[str, Any]:
 #: *where the data is* and *how much of it this run owns*, and both are already certified.
 CERTIFIED_COUNT_STREAMS = ("book_ticker", "depth_diff")
 #: Streams re-read here in full, because their sizes are small and their contents matter.
-REREAD_STREAMS = ("depth_snapshot", "book_checkpoint", "agg_trade", "funding",
-                  "mark_price", "open_interest")
+REREAD_STREAMS = (
+    "depth_snapshot",
+    "book_checkpoint",
+    "agg_trade",
+    "funding",
+    "mark_price",
+    "open_interest",
+)
 
 
 def coverage_of(run_id: str) -> dict[str, Any]:
@@ -356,7 +384,8 @@ def coverage_of(run_id: str) -> dict[str, Any]:
                     "last_receive_time": last_recv,
                     "last_receive_utc": fmt_utc(last_recv),
                     "span_hours": round((last_recv - first_recv) / 3.6e6, 6)
-                    if first_recv and last_recv else None,
+                    if first_recv and last_recv
+                    else None,
                     "rows_with_exchange_event_time": with_event_time,
                 }
             for stream in CERTIFIED_COUNT_STREAMS:
@@ -369,14 +398,21 @@ def coverage_of(run_id: str) -> dict[str, Any]:
                     "certified_path": str(REPLAY.relative_to(ROOT)).replace("\\", "/"),
                     "files": len(files),
                     "rows": certified.get(key),
-                    "note": ("row counts for the highest-volume streams come from the campaign's "
-                             "own replay verification, which counted them independently and "
-                             "matched them against the manifest; this script does not re-count "
-                             "ten million rows to re-derive a certified number"),
+                    "note": (
+                        "row counts for the highest-volume streams come from the campaign's "
+                        "own replay verification, which counted them independently and "
+                        "matched them against the manifest; this script does not re-count "
+                        "ten million rows to re-derive a certified number"
+                    ),
                 }
-    return {"streams": out, "truncated_files": truncated,
-            "provenance_note": ("every stream row carries the source of its count: 're-read here' "
-                                "or 'certified replay verification'")}
+    return {
+        "streams": out,
+        "truncated_files": truncated,
+        "provenance_note": (
+            "every stream row carries the source of its count: 're-read here' "
+            "or 'certified replay verification'"
+        ),
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -384,7 +420,9 @@ def coverage_of(run_id: str) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 
-def reconstruct_book(market: str, symbol: str, run_id: str, sizes: tuple[float, ...]) -> dict[str, Any]:
+def reconstruct_book(
+    market: str, symbol: str, run_id: str, sizes: tuple[float, ...]
+) -> dict[str, Any]:
     """Rebuild one book and price a market order through it at every checkpoint.
 
     The certified reconstruction is reproduced exactly: the collector's own row
@@ -392,9 +430,10 @@ def reconstruct_book(market: str, symbol: str, run_id: str, sizes: tuple[float, 
     each ``book_checkpoint`` used as an *independent* witness of the rebuilt top of
     book. A mismatch voids the measurement rather than being averaged away.
     """
-    policy = (SequencePolicy.SPOT_UPDATE_ID if market == "spot"
-              else SequencePolicy.FUTURES_PREV_ID)
-    syncer = BookSyncer(symbol=symbol, market=market, policy=policy, depth_n=10, stale_after_ms=5_000)
+    policy = SequencePolicy.SPOT_UPDATE_ID if market == "spot" else SequencePolicy.FUTURES_PREV_ID
+    syncer = BookSyncer(
+        symbol=symbol, market=market, policy=policy, depth_n=10, stale_after_ms=5_000
+    )
 
     snapshots = 0
     diffs = 0
@@ -415,8 +454,10 @@ def reconstruct_book(market: str, symbol: str, run_id: str, sizes: tuple[float, 
     # Same global order as sorting the whole window (`write_seq`, then `receive_time`),
     # obtained by merging the three already-ascending streams instead of buffering them.
     merged = heapq.merge(
-        *(stream_events(market, symbol, stream, run_id, truncated_here, order_inversions)
-          for stream in ("depth_snapshot", "depth_diff", "book_checkpoint")),
+        *(
+            stream_events(market, symbol, stream, run_id, truncated_here, order_inversions)
+            for stream in ("depth_snapshot", "depth_diff", "book_checkpoint")
+        ),
         key=lambda item: (item[0], item[1]),
     )
 
@@ -430,15 +471,21 @@ def reconstruct_book(market: str, symbol: str, run_id: str, sizes: tuple[float, 
             try:
                 bids = parse_depth_levels(event.bids or [], "bids")
                 asks = parse_depth_levels(event.asks or [], "asks")
-                syncer.on_snapshot(int(event.exchange_event_id or 0), bids, asks, event.receive_time)
+                syncer.on_snapshot(
+                    int(event.exchange_event_id or 0), bids, asks, event.receive_time
+                )
                 snapshots += 1
             except BookStateError:
                 rejected_rows += 1
         elif event.event_type is EventType.DEPTH_DIFF:
             try:
                 update = DepthUpdate(
-                    first_id=int(event.sequence.first) if event.sequence and event.sequence.first is not None else 0,
-                    last_id=int(event.sequence.last) if event.sequence and event.sequence.last is not None else 0,
+                    first_id=int(event.sequence.first)
+                    if event.sequence and event.sequence.first is not None
+                    else 0,
+                    last_id=int(event.sequence.last)
+                    if event.sequence and event.sequence.last is not None
+                    else 0,
                     prev_id=event.sequence.prev if event.sequence else None,
                     bids=parse_depth_levels(event.bids or [], "bids"),
                     asks=parse_depth_levels(event.asks or [], "asks"),
@@ -459,9 +506,13 @@ def reconstruct_book(market: str, symbol: str, run_id: str, sizes: tuple[float, 
             best_ask = rebuilt.best_ask()
             mid = rebuilt.mid()
             checkpoint_times.append(event.receive_time)
-            if (best_bid is None or best_ask is None or mid is None
-                    or str(best_bid) != str(row.get("bid"))
-                    or str(best_ask) != str(row.get("ask"))):
+            if (
+                best_bid is None
+                or best_ask is None
+                or mid is None
+                or str(best_bid) != str(row.get("bid"))
+                or str(best_ask) != str(row.get("ask"))
+            ):
                 continue
             matches += 1
             book_levels.append(len(rebuilt))
@@ -483,8 +534,10 @@ def reconstruct_book(market: str, symbol: str, run_id: str, sizes: tuple[float, 
                 exit_avg, exit_filled = walk(bids, size)
                 if not (entry_filled and exit_filled):
                     if expanded is None:
-                        expanded = [[(float(p), float(q)) for p, q in rebuilt.top(WALK_LEVELS, side)]
-                                    for side in ("ask", "bid")]
+                        expanded = [
+                            [(float(p), float(q)) for p, q in rebuilt.top(WALK_LEVELS, side)]
+                            for side in ("ask", "bid")
+                        ]
                     entry_avg, entry_filled = walk(expanded[0], size)
                     exit_avg, exit_filled = walk(expanded[1], size)
                 if not (entry_filled and exit_filled):
@@ -523,7 +576,10 @@ def reconstruct_book(market: str, symbol: str, run_id: str, sizes: tuple[float, 
         "stream_order_verified": sum(order_inversions.values()) == 0,
         "measurement_qualifier": (
             "the rows that could be read were measured; a truncated tail is reported here "
-            "rather than silently ending the sample" if truncated_here else None),
+            "rather than silently ending the sample"
+            if truncated_here
+            else None
+        ),
         "syncer_counters": syncer.counters.as_dict(),
         "checkpoint_health_mix": dict(health_mix),
         "book_levels_median": int(statistics.median(book_levels)) if book_levels else None,
@@ -561,8 +617,12 @@ def realised_trade_cost(market: str, symbol: str, run_id: str) -> dict[str, Any]
     if not quotes:
         return None
     quotes.sort(key=lambda item: item[0])
-    if not any(row.get("exchange_event_time") for row in
-               iter_rows(next(iter(segment_files(FORWARD_ROOT, market, symbol, "book_ticker"))), run_id)):
+    if not any(
+        row.get("exchange_event_time")
+        for row in iter_rows(
+            next(iter(segment_files(FORWARD_ROOT, market, symbol, "book_ticker"))), run_id
+        )
+    ):
         quote_clock = "receive_time (exchange event time absent on this stream)"
 
     half_spreads: list[float] = []
@@ -625,9 +685,15 @@ def realised_trade_cost(market: str, symbol: str, run_id: str) -> dict[str, Any]
 def frozen_plane(stake_usd: float) -> dict[str, Any]:
     model = default_model(ADMISSION_SCENARIO_ID)
     cost = model.evaluate(size_usd=stake_usd)
-    components = {c.name: {"value_bps": round(c.value_bps, 6), "knowledge": c.knowledge,
-                           "source_id": c.source_id, "note": c.note}
-                  for c in cost.components}
+    components = {
+        c.name: {
+            "value_bps": round(c.value_bps, 6),
+            "knowledge": c.knowledge,
+            "source_id": c.source_id,
+            "note": c.note,
+        }
+        for c in cost.components
+    }
     return {
         "scenario_id": ADMISSION_SCENARIO_ID,
         "stake_usd": stake_usd,
@@ -654,8 +720,13 @@ def frozen_plane(stake_usd: float) -> dict[str, Any]:
             "taker_legs": 2,
         },
         "fee_schedule_context": [
-            {"scenario_id": scenario, "fee_source_id": source, "maker_fee_bps": maker,
-             "taker_fee_bps": taker, "in_venue_registry": scenario in VENUE_SPECS}
+            {
+                "scenario_id": scenario,
+                "fee_source_id": source,
+                "maker_fee_bps": maker,
+                "taker_fee_bps": taker,
+                "in_venue_registry": scenario in VENUE_SPECS,
+            }
             for scenario, source, maker, taker in FEE_SCHEDULE_CONTEXT
         ],
     }
@@ -714,17 +785,23 @@ def move_sizes(market: str, symbol: str, run_id: str) -> dict[str, Any]:
         while cursor < len(mids):
             t0, mid0 = mids[cursor]
             target = t0 + step_ms
-            follow_index = next((i for i in range(cursor + 1, len(mids)) if mids[i][0] >= target), None)
+            follow_index = next(
+                (i for i in range(cursor + 1, len(mids)) if mids[i][0] >= target), None
+            )
             if follow_index is None:
                 break
             independent.append(abs(mids[follow_index][1] - mid0) / mid0 * 1e4)
             cursor = follow_index
         out["horizons"][str(minutes)] = {
             "overlapping_windows": describe(overlapping),
-            "independent_windows": {"n": len(independent),
-                                    "values_bps": [round(v, 6) for v in independent]},
-            "note": ("overlapping windows are correlated and are not an effective sample "
-                     "size; the independent count is the honest one"),
+            "independent_windows": {
+                "n": len(independent),
+                "values_bps": [round(v, 6) for v in independent],
+            },
+            "note": (
+                "overlapping windows are correlated and are not an effective sample "
+                "size; the independent count is the honest one"
+            ),
         }
     return out
 
@@ -744,8 +821,16 @@ def truncation_scan(run_id: str, per_stream_last_files: int = 1) -> list[dict[st
     found: list[dict[str, Any]] = []
     for market in ("spot", "perp"):
         for symbol in ("BTCUSDT", "ETHUSDT", "SOLUSDT"):
-            for stream in ("depth_snapshot", "depth_diff", "book_checkpoint", "book_ticker",
-                           "agg_trade", "funding", "mark_price", "open_interest"):
+            for stream in (
+                "depth_snapshot",
+                "depth_diff",
+                "book_checkpoint",
+                "book_ticker",
+                "agg_trade",
+                "funding",
+                "mark_price",
+                "open_interest",
+            ):
                 files = segment_files(FORWARD_ROOT, market, symbol, stream)
                 for path in files[-per_stream_last_files:]:
                     rows = 0
@@ -754,9 +839,14 @@ def truncation_scan(run_id: str, per_stream_last_files: int = 1) -> list[dict[st
                             for _line in handle:
                                 rows += 1
                     except (EOFError, gzip.BadGzipFile, OSError) as exc:
-                        found.append({"file": str(path.relative_to(ROOT)).replace("\\", "/"),
-                                      "error": type(exc).__name__,
-                                      "rows_read_before_truncation": rows, "run_id": run_id})
+                        found.append(
+                            {
+                                "file": str(path.relative_to(ROOT)).replace("\\", "/"),
+                                "error": type(exc).__name__,
+                                "rows_read_before_truncation": rows,
+                                "run_id": run_id,
+                            }
+                        )
     return found
 
 
@@ -774,7 +864,9 @@ def latency_and_conditions(run_id: str, manifest: dict[str, Any] | None = None) 
     for market in ("spot", "perp"):
         for symbol in ("BTCUSDT", "ETHUSDT"):
             for stream in ("book_ticker", "agg_trade"):
-                for path in segment_files(FORWARD_ROOT, market, symbol, stream)[:LATENCY_FILES_SAMPLED]:
+                for path in segment_files(FORWARD_ROOT, market, symbol, stream)[
+                    :LATENCY_FILES_SAMPLED
+                ]:
                     for row in iter_rows(path, run_id):
                         value = row.get("network_delay_ms")
                         if value is not None and 0 <= float(value) < 60_000:
@@ -786,16 +878,24 @@ def latency_and_conditions(run_id: str, manifest: dict[str, Any] | None = None) 
                 rate = row.get("funding_rate")
                 if rate is not None:
                     funding_rates.append(float(rate) * 1e4)
-    mark_rows = sum(1 for symbol in ("BTCUSDT", "ETHUSDT")
-                    for path in segment_files(FORWARD_ROOT, "perp", symbol, "mark_price")
-                    for _ in iter_rows(path, run_id))
-    oi_rows = sum(1 for symbol in ("BTCUSDT", "ETHUSDT")
-                  for path in segment_files(FORWARD_ROOT, "perp", symbol, "open_interest")
-                  for _ in iter_rows(path, run_id))
+    mark_rows = sum(
+        1
+        for symbol in ("BTCUSDT", "ETHUSDT")
+        for path in segment_files(FORWARD_ROOT, "perp", symbol, "mark_price")
+        for _ in iter_rows(path, run_id)
+    )
+    oi_rows = sum(
+        1
+        for symbol in ("BTCUSDT", "ETHUSDT")
+        for path in segment_files(FORWARD_ROOT, "perp", symbol, "open_interest")
+        for _ in iter_rows(path, run_id)
+    )
     return {
         "network_delay_ms": {key: describe(values) for key, values in sorted(latency.items())},
-        "network_delay_sampling": (f"first {LATENCY_FILES_SAMPLED} files of each stream, ~"
-                                   f"{LATENCY_FILES_SAMPLED * 900} s of the window"),
+        "network_delay_sampling": (
+            f"first {LATENCY_FILES_SAMPLED} files of each stream, ~"
+            f"{LATENCY_FILES_SAMPLED * 900} s of the window"
+        ),
         "network_delay_published_by_the_manifest": (manifest or {}).get("network_delay_published"),
         "funding_rate_bps_per_interval": describe(funding_rates),
         "funding_samples": len(funding_rates),
@@ -809,13 +909,20 @@ def latency_and_conditions(run_id: str, manifest: dict[str, Any] | None = None) 
 # ---------------------------------------------------------------------------
 
 
-def assess(plane: dict[str, Any], books: list[dict[str, Any]], trades: list[dict[str, Any]]) -> dict[str, Any]:
+def assess(
+    plane: dict[str, Any], books: list[dict[str, Any]], trades: list[dict[str, Any]]
+) -> dict[str, Any]:
     """Compare the two ESTIMATED plane terms with what the window actually quoted."""
     spread_term = plane["components"]["spread"]["value_bps"]
-    walk_term = plane["components"]["slippage"]["value_bps"] + plane["components"]["market_impact"]["value_bps"]
+    walk_term = (
+        plane["components"]["slippage"]["value_bps"]
+        + plane["components"]["market_impact"]["value_bps"]
+    )
     estimated_micro = spread_term + walk_term
-    fee_term = (plane["components"]["exchange_fee_entry"]["value_bps"]
-                + plane["components"]["exchange_fee_exit"]["value_bps"])
+    fee_term = (
+        plane["components"]["exchange_fee_entry"]["value_bps"]
+        + plane["components"]["exchange_fee_exit"]["value_bps"]
+    )
 
     stake_key = f"{PLANE_STAKE_USDT:.0f}"
     per_book: dict[str, Any] = {}
@@ -832,8 +939,10 @@ def assess(plane: dict[str, Any], books: list[dict[str, Any]], trades: list[dict
             "round_trip_microstructure_bps": sizes["round_trip_microstructure_bps"],
         }
     if not per_book:
-        return {"state": "INSUFFICIENT_EVIDENCE",
-                "why": "no book reproduced a checkpoint, so nothing can be measured"}
+        return {
+            "state": "INSUFFICIENT_EVIDENCE",
+            "why": "no book reproduced a checkpoint, so nothing can be measured",
+        }
 
     medians = [record["round_trip_microstructure_bps"]["median"] for record in per_book.values()]
     spread_medians = [record["spread_legs_bps"]["median"] for record in per_book.values()]
@@ -847,12 +956,21 @@ def assess(plane: dict[str, Any], books: list[dict[str, Any]], trades: list[dict
     under_estimate_shares = {
         key: {
             "spread_share_over_plane_pct": share_over(
-                [record["spread_legs_bps"]["median"], record["spread_legs_bps"]["p95"],
-                 record["spread_legs_bps"]["max"]], spread_term),
+                [
+                    record["spread_legs_bps"]["median"],
+                    record["spread_legs_bps"]["p95"],
+                    record["spread_legs_bps"]["max"],
+                ],
+                spread_term,
+            ),
             "round_trip_share_over_plane_pct": share_over(
-                [record["round_trip_microstructure_bps"]["median"],
-                 record["round_trip_microstructure_bps"]["p95"],
-                 record["round_trip_microstructure_bps"]["max"]], estimated_micro),
+                [
+                    record["round_trip_microstructure_bps"]["median"],
+                    record["round_trip_microstructure_bps"]["p95"],
+                    record["round_trip_microstructure_bps"]["max"],
+                ],
+                estimated_micro,
+            ),
         }
         for key, record in per_book.items()
     }
@@ -863,8 +981,10 @@ def assess(plane: dict[str, Any], books: list[dict[str, Any]], trades: list[dict
     else:
         state = "PLANE_REPRESENTATIVE"
 
-    realised = {f"{record['market']}/{record['symbol']}": record["effective_round_trip_bps"]["estimate"]
-                for record in trades}
+    realised = {
+        f"{record['market']}/{record['symbol']}": record["effective_round_trip_bps"]["estimate"]
+        for record in trades
+    }
     best_gross = BEST_GROSS_EDGE_BPS
     return {
         "state": state,
@@ -874,7 +994,8 @@ def assess(plane: dict[str, Any], books: list[dict[str, Any]], trades: list[dict
         "plane_known_fee_term_bps": round(fee_term, 6),
         "share_of_plane_that_is_known_fees": round(fee_term / plane["round_trip_bps"], 6),
         "observed_round_trip_microstructure_bps_by_book": {
-            key: record["round_trip_microstructure_bps"]["median"] for key, record in per_book.items()
+            key: record["round_trip_microstructure_bps"]["median"]
+            for key, record in per_book.items()
         },
         "observed_round_trip_microstructure_bps_median_across_books": round(median_observed, 6),
         "observed_spread_legs_bps_median_across_books": round(median_spread, 6),
@@ -910,8 +1031,9 @@ def assess(plane: dict[str, Any], books: list[dict[str, Any]], trades: list[dict
 
 def _head() -> str:
     try:
-        return subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True,
-                              text=True, check=False).stdout.strip()
+        return subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=False
+        ).stdout.strip()
     except Exception:  # pragma: no cover - git is optional for the audit
         return ""
 
@@ -947,21 +1069,37 @@ def measure(run_id: str) -> dict[str, Any]:
         "measured_at_utc": started.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "coverage": stage("coverage", lambda: coverage_of(run_id)),
         "truncation_scan": stage("truncation_scan", lambda: truncation_scan(run_id)),
-        "books": stage("books", lambda: [reconstruct_book(market, symbol, run_id, SIZE_LADDER_USDT)
-                                          for market in ("spot", "perp")
-                                          for symbol in ("BTCUSDT", "ETHUSDT")]),
-        "realised_trades": stage("realised_trades", lambda: [
-            record for record in (realised_trade_cost("spot", symbol, run_id)
-                                  for symbol in ("BTCUSDT", "ETHUSDT")) if record]),
+        "books": stage(
+            "books",
+            lambda: [
+                reconstruct_book(market, symbol, run_id, SIZE_LADDER_USDT)
+                for market in ("spot", "perp")
+                for symbol in ("BTCUSDT", "ETHUSDT")
+            ],
+        ),
+        "realised_trades": stage(
+            "realised_trades",
+            lambda: [
+                record
+                for record in (
+                    realised_trade_cost("spot", symbol, run_id) for symbol in ("BTCUSDT", "ETHUSDT")
+                )
+                if record
+            ],
+        ),
         "conditions": stage("conditions", lambda: latency_and_conditions(run_id, manifest)),
-        "market_moves": stage("market_moves", lambda: {
-            f"{market}/{symbol}": move_sizes(market, symbol, run_id)
-            for market in ("spot", "perp") for symbol in ("BTCUSDT", "ETHUSDT")}),
+        "market_moves": stage(
+            "market_moves",
+            lambda: {
+                f"{market}/{symbol}": move_sizes(market, symbol, run_id)
+                for market in ("spot", "perp")
+                for symbol in ("BTCUSDT", "ETHUSDT")
+            },
+        ),
     }
     payload["truncated_segments_seen_during_measurement"] = list(TRUNCATED)
     payload["stage_seconds"] = stage_seconds
-    payload["measure_seconds"] = round(
-        (datetime.now(UTC) - started).total_seconds(), 3)
+    payload["measure_seconds"] = round((datetime.now(UTC) - started).total_seconds(), 3)
     MEASUREMENTS.parent.mkdir(parents=True, exist_ok=True)
     MEASUREMENTS.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     return payload
@@ -979,12 +1117,19 @@ def load_measurements(run_id: str) -> dict[str, Any] | None:
 def build(run_id: str | None, use_cache: bool = True) -> tuple[dict[str, Any], int]:
     sealed = load_sealed_runs()
     if not sealed:
-        return {"artifact": "WP10_EXECUTION_COST_DISTRIBUTION", "verdict": "BLOCKED",
-                "why": "no sealed forward manifest found"}, 2
+        return {
+            "artifact": "WP10_EXECUTION_COST_DISTRIBUTION",
+            "verdict": "BLOCKED",
+            "why": "no sealed forward manifest found",
+        }, 2
     chosen = run_id or sorted(sealed)[-1]
     if chosen not in sealed:
-        return {"artifact": "WP10_EXECUTION_COST_DISTRIBUTION", "verdict": "BLOCKED",
-                "why": f"manifest for run {chosen!r} not found", "manifested_runs": sorted(sealed)}, 2
+        return {
+            "artifact": "WP10_EXECUTION_COST_DISTRIBUTION",
+            "verdict": "BLOCKED",
+            "why": f"manifest for run {chosen!r} not found",
+            "manifested_runs": sorted(sealed),
+        }, 2
     manifest = sealed[chosen]
 
     measured = load_measurements(chosen) if use_cache else None
@@ -1005,8 +1150,10 @@ def build(run_id: str | None, use_cache: bool = True) -> tuple[dict[str, Any], i
     mismatches = sum(book["checkpoint_mismatches"] for book in books)
     reproduced = sum(book["checkpoints_reproduced"] for book in books)
     look_ahead = sum(record["look_ahead_violations"] for record in trades)
-    reproduces = (published.get("frozen_round_trip_bps_200_usdt") is not None
-                  and abs(plane["round_trip_bps"] - float(published["frozen_round_trip_bps_200_usdt"])) < 1e-6)
+    reproduces = (
+        published.get("frozen_round_trip_bps_200_usdt") is not None
+        and abs(plane["round_trip_bps"] - float(published["frozen_round_trip_bps_200_usdt"])) < 1e-6
+    )
     exit_code = 3 if mismatches else 4 if look_ahead else 0
 
     payload = {
@@ -1034,15 +1181,22 @@ def build(run_id: str | None, use_cache: bool = True) -> tuple[dict[str, Any], i
             "coverage": coverage,
             "truncation_scan": {
                 "segments_that_stop_early": truncation_scan_result,
-                "seen_during_measurement": measured.get("truncated_segments_seen_during_measurement") or [],
+                "seen_during_measurement": measured.get(
+                    "truncated_segments_seen_during_measurement"
+                )
+                or [],
                 "count": len(truncation_scan_result),
-                "method": ("the newest segment of every stream is read to its end; a file that "
-                           "ends before its gzip trailer is a segment the writer never "
-                           "finished, which is a signature of a hard stop rather than a "
-                           "graceful one"),
-                "consequence": ("rows lost to a truncated tail are unknown in number and are "
-                                "never extrapolated; the affected stream's sample is reported "
-                                "as what could be read"),
+                "method": (
+                    "the newest segment of every stream is read to its end; a file that "
+                    "ends before its gzip trailer is a segment the writer never "
+                    "finished, which is a signature of a hard stop rather than a "
+                    "graceful one"
+                ),
+                "consequence": (
+                    "rows lost to a truncated tail are unknown in number and are "
+                    "never extrapolated; the affected stream's sample is reported "
+                    "as what could be read"
+                ),
             },
             "measurement_cache": {
                 "path": str(MEASUREMENTS.relative_to(ROOT)).replace("\\", "/"),
@@ -1050,8 +1204,11 @@ def build(run_id: str | None, use_cache: bool = True) -> tuple[dict[str, Any], i
                 "measured_at_utc": measured["measured_at_utc"],
                 "measure_seconds": measured.get("measure_seconds"),
             },
-            "books_in_this_seal": [f"{book['market']}/{book['symbol']}" for book in books
-                                   if book["checkpoints_reproduced"]],
+            "books_in_this_seal": [
+                f"{book['market']}/{book['symbol']}"
+                for book in books
+                if book["checkpoints_reproduced"]
+            ],
             "coverage_note": (
                 "row counts are for the sealed run only; this root also carries a later, "
                 "unsealed run whose rows are excluded here rather than mixed in"
@@ -1068,26 +1225,46 @@ def build(run_id: str | None, use_cache: bool = True) -> tuple[dict[str, Any], i
         "false_success": 0 if not mismatches and not look_ahead else 1,
         "checks": [
             {"check": "sealed manifest present for the analysed run", "ok": bool(manifest)},
-            {"check": "replay verification ok and network-free",
-             "ok": bool(replay.get("ok")) and replay.get("internet_access") is False},
-            {"check": "rebuilt top of book equals every published checkpoint",
-             "ok": mismatches == 0, "mismatched": mismatches, "reproduced": reproduced},
-            {"check": "no trade was joined to a quote from the future",
-             "ok": look_ahead == 0, "violations": look_ahead},
+            {
+                "check": "replay verification ok and network-free",
+                "ok": bool(replay.get("ok")) and replay.get("internet_access") is False,
+            },
+            {
+                "check": "rebuilt top of book equals every published checkpoint",
+                "ok": mismatches == 0,
+                "mismatched": mismatches,
+                "reproduced": reproduced,
+            },
+            {
+                "check": "no trade was joined to a quote from the future",
+                "ok": look_ahead == 0,
+                "violations": look_ahead,
+            },
             {"check": "the plane re-derives to the published frozen value", "ok": reproduces},
-            {"check": "measured cost carries the OBSERVED_FORWARD label and never replaces "
-                      "ESTIMATED without the plane being changed by governance",
-             "ok": True},
+            {
+                "check": "measured cost carries the OBSERVED_FORWARD label and never replaces "
+                "ESTIMATED without the plane being changed by governance",
+                "ok": True,
+            },
             {"check": "no admission, promotion or plane change is performed", "ok": True},
-            {"check": "every measured size reports how many checkpoints priced it",
-             "ok": all(record["checkpoints_priced"] >= 0
-                       for book in books for record in book["sizes"].values())},
-            {"check": "truncated segment tails are reported rather than skipped silently",
-             "ok": True,
-             "segments_that_stop_early": len(truncation_scan_result),
-             "note": ("a truncated tail is a fact about the capture and is counted here; the "
-                      "measurements that could be made from the readable rows are labelled with "
-                      "their own sample sizes")},
+            {
+                "check": "every measured size reports how many checkpoints priced it",
+                "ok": all(
+                    record["checkpoints_priced"] >= 0
+                    for book in books
+                    for record in book["sizes"].values()
+                ),
+            },
+            {
+                "check": "truncated segment tails are reported rather than skipped silently",
+                "ok": True,
+                "segments_that_stop_early": len(truncation_scan_result),
+                "note": (
+                    "a truncated tail is a fact about the capture and is counted here; the "
+                    "measurements that could be made from the readable rows are labelled with "
+                    "their own sample sizes"
+                ),
+            },
         ],
         "limitations": [
             f"one sealed window of {manifest['duration_hours']} h in a single session regime",
@@ -1146,8 +1323,10 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "| --- | ---: | --- | --- |",
     ]
     for name, component in plane["components"].items():
-        lines.append(f"| `{name}` | {component['value_bps']:.4f} | {component['knowledge']} | "
-                     f"{component['note'] or component['source_id']} |")
+        lines.append(
+            f"| `{name}` | {component['value_bps']:.4f} | {component['knowledge']} | "
+            f"{component['note'] or component['source_id']} |"
+        )
     lines += [
         "",
         f"Under test: **{verdict['plane_spread_term_bps']} bps** of spread and "
@@ -1205,20 +1384,33 @@ def render_markdown(payload: dict[str, Any]) -> str:
         )
     lines += ["", "## 5. Conditions of execution", ""]
     for key, value in payload["conditions"]["network_delay_ms"].items():
-        lines.append(f"* `{key}` network delay ms: median {value['median']}, p95 {value['p95']}, "
-                     f"max {value['max']} (n={value['n']})")
+        lines.append(
+            f"* `{key}` network delay ms: median {value['median']}, p95 {value['p95']}, "
+            f"max {value['max']} (n={value['n']})"
+        )
     funding = payload["conditions"]["funding_rate_bps_per_interval"]
     if funding["n"]:
-        lines.append(f"* perp funding bps per interval: median {funding['median']}, "
-                     f"p95 {funding['p95']}, max {funding['max']} (n={funding['n']})")
-    lines.append(f"* mark price rows {payload['conditions']['mark_price_rows']}, "
-                 f"open interest rows {payload['conditions']['open_interest_rows']}")
-    lines += ["", "## 6. The move the cost has to be paid out of", "",
-              "| book | horizon | independent windows | values (bps) |", "| --- | ---: | ---: | --- |"]
+        lines.append(
+            f"* perp funding bps per interval: median {funding['median']}, "
+            f"p95 {funding['p95']}, max {funding['max']} (n={funding['n']})"
+        )
+    lines.append(
+        f"* mark price rows {payload['conditions']['mark_price_rows']}, "
+        f"open interest rows {payload['conditions']['open_interest_rows']}"
+    )
+    lines += [
+        "",
+        "## 6. The move the cost has to be paid out of",
+        "",
+        "| book | horizon | independent windows | values (bps) |",
+        "| --- | ---: | ---: | --- |",
+    ]
     for key, record in payload["market_moves"].items():
         for horizon, data in record["horizons"].items():
             values = ", ".join(f"{v:.2f}" for v in data["independent_windows"]["values_bps"])
-            lines.append(f"| {key} | {horizon} min | {data['independent_windows']['n']} | {values} |")
+            lines.append(
+                f"| {key} | {horizon} min | {data['independent_windows']['n']} | {values} |"
+            )
     lines += [
         "",
         "## 7. Verdict",
@@ -1241,8 +1433,11 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "",
         "| scenario | source | maker bps | taker bps |",
         "| --- | --- | ---: | ---: |",
-        *[f"| `{row['scenario_id']}` | {row['fee_source_id']} | {row['maker_fee_bps']} | "
-          f"{row['taker_fee_bps']} |" for row in plane["fee_schedule_context"]],
+        *[
+            f"| `{row['scenario_id']}` | {row['fee_source_id']} | {row['maker_fee_bps']} | "
+            f"{row['taker_fee_bps']} |"
+            for row in plane["fee_schedule_context"]
+        ],
         "",
         "These are published facts, recorded here as context for where a cheaper execution could "
         "come from. Moving the admission plane onto one of them is a governance decision, not a "
@@ -1264,8 +1459,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run-id", default=None, help="sealed run to analyse (default: latest)")
     parser.add_argument("--json", action="store_true")
-    parser.add_argument("--measure-only", action="store_true",
-                        help="build (and cache) the measurements, then stop")
+    parser.add_argument(
+        "--measure-only", action="store_true", help="build (and cache) the measurements, then stop"
+    )
     parser.add_argument("--no-cache", action="store_true", help="ignore a cached measurement")
     args = parser.parse_args()
 
@@ -1273,8 +1469,10 @@ def main() -> int:
         sealed = load_sealed_runs()
         chosen = args.run_id or sorted(sealed)[-1]
         measured = measure(chosen)
-        print(f"measured {chosen} in {measured['measure_seconds']} s -> "
-              f"{MEASUREMENTS.relative_to(ROOT)}")
+        print(
+            f"measured {chosen} in {measured['measure_seconds']} s -> "
+            f"{MEASUREMENTS.relative_to(ROOT)}"
+        )
         return 0
 
     payload, exit_code = build(args.run_id, use_cache=not args.no_cache)

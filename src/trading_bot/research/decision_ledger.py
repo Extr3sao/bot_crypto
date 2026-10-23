@@ -348,7 +348,9 @@ class DecisionLedger:
             if str(entry["decision_hash"]) not in decision_hashes:
                 broken.append({"record": "outcome", "id": decision_id, "problem": "link"})
             net = float(entry["gross_return"]) - float(entry["costs"])
-            if not math.isclose(net, float(entry["net_return"]), rel_tol=_TOLERANCE, abs_tol=_TOLERANCE):
+            if not math.isclose(
+                net, float(entry["net_return"]), rel_tol=_TOLERANCE, abs_tol=_TOLERANCE
+            ):
                 broken.append({"record": "outcome", "id": decision_id, "problem": "arithmetic"})
             if str(entry["decision"]) == "NO_TRADE" and float(entry["costs"]) != 0.0:
                 broken.append({"record": "outcome", "id": decision_id, "problem": "cost_model"})
@@ -394,14 +396,14 @@ class DecisionLedger:
             decision_id=decision_id,
             found=True,
             entry=entry,
-            outcomes=[
-                item for item in self.outcomes() if str(item["decision_id"]) == decision_id
-            ],
+            outcomes=[item for item in self.outcomes() if str(item["decision_id"]) == decision_id],
             evaluations=[
                 item for item in self.evaluations() if str(item["decision_id"]) == decision_id
             ],
-            decision_record_verified=_decision_hash_from_entry(entry) == str(entry["decision_hash"]),
-            snapshot_digest_matches=ac.payload_digest(entry["snapshot"]) == str(entry["snapshot_hash"]),
+            decision_record_verified=_decision_hash_from_entry(entry)
+            == str(entry["decision_hash"]),
+            snapshot_digest_matches=ac.payload_digest(entry["snapshot"])
+            == str(entry["snapshot_hash"]),
             provenance_complete=not ap.provenance_missing(entry.get("provenance", {})),
             raw_evidence_present=raw_present,
             raw_evidence_hash_matches=raw_matches,

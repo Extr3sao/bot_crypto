@@ -45,8 +45,9 @@ def load(name: str) -> dict[str, Any] | None:
 
 
 def git(*argv: str) -> str:
-    return subprocess.run(["git", *argv], cwd=ROOT, capture_output=True,
-                          text=True, check=False).stdout.strip()
+    return subprocess.run(
+        ["git", *argv], cwd=ROOT, capture_output=True, text=True, check=False
+    ).stdout.strip()
 
 
 def digest(path: Path) -> str:
@@ -61,9 +62,13 @@ def build() -> tuple[dict[str, Any], int]:
         if payload is None:
             missing.append(filename)
             continue
-        sections[key] = {"label": label, "artifact": payload.get("artifact"),
-                         "verdict": payload.get("verdict"), "sha256": digest(WP10 / filename),
-                         "generated_at_utc": payload.get("generated_at_utc")}
+        sections[key] = {
+            "label": label,
+            "artifact": payload.get("artifact"),
+            "verdict": payload.get("verdict"),
+            "sha256": digest(WP10 / filename),
+            "generated_at_utc": payload.get("generated_at_utc"),
+        }
 
     baseline = load("WP10_BASELINE_ECONOMIC_AUDIT.json") or {}
     distribution = load("WP10_EXECUTION_COST_DISTRIBUTION.json") or {}
@@ -87,49 +92,62 @@ def build() -> tuple[dict[str, Any], int]:
             "cost_killed": headline.get("cost_killed"),
             "best_gross_bps": headline.get("best_gross_bps"),
             "frozen_plane_bps": round(headline.get("admission_round_trip_bps") or 0.0, 6),
-            "every_published_headline_number_rebuilt": agreement
-            and all(agreement.values()),
+            "every_published_headline_number_rebuilt": agreement and all(agreement.values()),
             "discrepancies_declared": len(baseline.get("discrepancies") or []),
             "unresolvable_cells": len(baseline.get("unresolvable_cells") or []),
         },
         "execution_cost": {
             "state": assessment.get("state"),
             "measured_round_trip_microstructure_bps": assessment.get(
-                "observed_round_trip_microstructure_bps_median_across_books"),
+                "observed_round_trip_microstructure_bps_median_across_books"
+            ),
             "plane_non_fee_bps": round(
                 (assessment.get("plane_spread_term_bps") or 0.0)
-                + (assessment.get("plane_slippage_plus_impact_term_bps") or 0.0), 6),
+                + (assessment.get("plane_slippage_plus_impact_term_bps") or 0.0),
+                6,
+            ),
             "plane_fee_bps": assessment.get("plane_known_fee_term_bps"),
             "share_of_plane_that_is_fee": assessment.get("share_of_plane_that_is_known_fees"),
             "checkpoints_reproduced": (distribution.get("verdict") or {}).get(
-                "checkpoints_reproduced"),
+                "checkpoints_reproduced"
+            ),
             "look_ahead_violations": (distribution.get("verdict") or {}).get(
-                "look_ahead_violations"),
+                "look_ahead_violations"
+            ),
             "why_it_is_not_the_binding_constraint": assessment.get("promotion_note"),
         },
         "decision": {
-            "planes": {name: row.get("round_trip_bps")
-                       for name, row in (decision.get("planes") or {}).items()},
-            "admitted_by_plane": {name: len(ids) for name, ids
-                                  in readjudication.get("admitted_by_plane", {}).items()},
-            "required_fee_per_side_bps_for_the_best_cell":
-                readjudication.get("required_fee_per_side_bps_for_best_cell"),
+            "planes": {
+                name: row.get("round_trip_bps")
+                for name, row in (decision.get("planes") or {}).items()
+            },
+            "admitted_by_plane": {
+                name: len(ids) for name, ids in readjudication.get("admitted_by_plane", {}).items()
+            },
+            "required_fee_per_side_bps_for_the_best_cell": readjudication.get(
+                "required_fee_per_side_bps_for_best_cell"
+            ),
             "best_cell": readjudication.get("best_cell"),
             "best_cell_ci95_half_width_bps": resolution.get("best_cell_ci95_half_width_bps"),
             "positive_cells": resolution.get("positive_cells"),
             "positive_cells_separated_from_zero": resolution.get(
-                "positive_cells_separated_from_zero"),
+                "positive_cells_separated_from_zero"
+            ),
         },
-        "matrix": {"verdict_counts": counts,
-                   "measured_cost_layer": bool(matrix.get("measured_cost_layer"))},
+        "matrix": {
+            "verdict_counts": counts,
+            "measured_cost_layer": bool(matrix.get("measured_cost_layer")),
+        },
         "blockers": {
-            "unpublished_commits": ((blockers.get("blockers") or {})
-                                    .get("CI_RUNNER_CERTIFICATION") or {}).get(
-                "unpublished_commits"),
-            "ci_runner_state": ((blockers.get("blockers") or {})
-                                .get("CI_RUNNER_CERTIFICATION") or {}).get("state"),
-            "hours_affordable": ((blockers.get("blockers") or {}).get("VOLUME_BUDGET")
-                                 or {}).get("hours_affordable_now"),
+            "unpublished_commits": (
+                (blockers.get("blockers") or {}).get("CI_RUNNER_CERTIFICATION") or {}
+            ).get("unpublished_commits"),
+            "ci_runner_state": (
+                (blockers.get("blockers") or {}).get("CI_RUNNER_CERTIFICATION") or {}
+            ).get("state"),
+            "hours_affordable": ((blockers.get("blockers") or {}).get("VOLUME_BUDGET") or {}).get(
+                "hours_affordable_now"
+            ),
         },
         "verification": {
             "verdict": verdict_file.get("verdict"),
@@ -151,29 +169,40 @@ def build() -> tuple[dict[str, Any], int]:
         "thresholds_changed": 0,
         "cost_model_changed": False,
         "result_class": "RESEARCH_RESULT (cost measurement) — not BACKTEST, not REPLAY, "
-                        "not PAPER, not LIVE",
+        "not PAPER, not LIVE",
     }
 
     validation = [
-        {"check": "every artefact the report folds exists",
-         "ok": not missing, "missing": missing},
-        {"check": "the register's six published headline numbers were rebuilt from primary sources",
-         "ok": bool(claims["register"]["every_published_headline_number_rebuilt"])},
-        {"check": "E-1 reports a measurement and not an assertion",
-         "ok": (distribution.get("scope") or {}).get("trading") is False
-         and ((distribution.get("verdict") or {}).get("look_ahead_violations") == 0)},
-        {"check": "the independent verifier passed with every control detected",
-         "ok": verdict_file.get("verdict") == "PASS"
-         and verdict_file.get("checks_failed") == 0
-         and verdict_file.get("controls_missed") == 0
-         and verdict_file.get("false_success") == 0,
-         "detail": {"verdict": verdict_file.get("verdict"),
-                    "failed": verdict_file.get("checks_failed"),
-                    "missed_controls": verdict_file.get("controls_missed")}},
-        {"check": "nothing in WP-10 admits, promotes or reopens a strategy",
-         "ok": governance["strategies_admitted"] == 0 and governance["strategies_reopened"] == 0},
-        {"check": "the drift the verifier found is carried into the report rather than smoothed away",
-         "ok": isinstance(claims["verification"]["drift"], list)},
+        {"check": "every artefact the report folds exists", "ok": not missing, "missing": missing},
+        {
+            "check": "the register's six published headline numbers were rebuilt from primary sources",
+            "ok": bool(claims["register"]["every_published_headline_number_rebuilt"]),
+        },
+        {
+            "check": "E-1 reports a measurement and not an assertion",
+            "ok": (distribution.get("scope") or {}).get("trading") is False
+            and ((distribution.get("verdict") or {}).get("look_ahead_violations") == 0),
+        },
+        {
+            "check": "the independent verifier passed with every control detected",
+            "ok": verdict_file.get("verdict") == "PASS"
+            and verdict_file.get("checks_failed") == 0
+            and verdict_file.get("controls_missed") == 0
+            and verdict_file.get("false_success") == 0,
+            "detail": {
+                "verdict": verdict_file.get("verdict"),
+                "failed": verdict_file.get("checks_failed"),
+                "missed_controls": verdict_file.get("controls_missed"),
+            },
+        },
+        {
+            "check": "nothing in WP-10 admits, promotes or reopens a strategy",
+            "ok": governance["strategies_admitted"] == 0 and governance["strategies_reopened"] == 0,
+        },
+        {
+            "check": "the drift the verifier found is carried into the report rather than smoothed away",
+            "ok": isinstance(claims["verification"]["drift"], list),
+        },
     ]
 
     payload: dict[str, Any] = {
@@ -183,8 +212,10 @@ def build() -> tuple[dict[str, Any], int]:
         "head": git("rev-parse", "HEAD"),
         "branch": git("rev-parse", "--abbrev-ref", "HEAD"),
         "mode": "OFFLINE READ-ONLY — no network, no key, no order, no capital",
-        "lane_commit": (baseline.get("head") and {
-            "head": baseline.get("head"), "branch": baseline.get("branch")}),
+        "lane_commit": (
+            baseline.get("head")
+            and {"head": baseline.get("head"), "branch": baseline.get("branch")}
+        ),
         "sections": sections,
         "claims": claims,
         "governance": governance,
@@ -272,8 +303,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
         f"* capa de coste medida incorporada: `{claims['matrix']['measured_cost_layer']}`",
         f"* commits sin publicar: {claims['blockers']['unpublished_commits']} "
         f"(estado CI `{claims['blockers']['ci_runner_state']}`)",
-        f"* horas de ventana que el volumen puede pagar: "
-        f"{claims['blockers']['hours_affordable']}",
+        f"* horas de ventana que el volumen puede pagar: {claims['blockers']['hours_affordable']}",
         "",
         "## 6. Verificación independiente",
         "",
@@ -287,8 +317,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
         if figure == "state-view pins":
             detail = ", ".join(entry.get("paths_that_no_longer_match") or [])
         elif "right_now_gb" in entry:
-            detail = (f"{entry.get('in_the_artefact_gb')} GB → "
-                      f"{entry.get('right_now_gb')} GB")
+            detail = f"{entry.get('in_the_artefact_gb')} GB → {entry.get('right_now_gb')} GB"
         else:
             detail = f"{entry.get('in_the_artefact')} → {entry.get('right_now')}"
         lines.append(f"* deriva de estado: `{figure}` ({detail}) — {entry.get('why')}")
@@ -332,8 +361,10 @@ def main() -> int:
     payload["payload_sha256"] = hashlib.sha256(json_path.read_bytes()).hexdigest()
     json_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     failed = [check["check"] for check in payload["validation"] if not check["ok"]]
-    print(f"{'PASS' if not failed else 'PARTIAL'} -> {json_path.relative_to(ROOT)}"
-          + (f" (failed: {failed})" if failed else ""))
+    print(
+        f"{'PASS' if not failed else 'PARTIAL'} -> {json_path.relative_to(ROOT)}"
+        + (f" (failed: {failed})" if failed else "")
+    )
     return 0
 
 

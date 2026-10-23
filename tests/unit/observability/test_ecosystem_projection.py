@@ -69,7 +69,9 @@ def _admission() -> dict[str, Any]:
     }
 
 
-def _trace(decision_id: str, ts: int, *, proposed: bool, order: bool, kind: str | None) -> dict[str, Any]:
+def _trace(
+    decision_id: str, ts: int, *, proposed: bool, order: bool, kind: str | None
+) -> dict[str, Any]:
     return {
         "decision_id": decision_id,
         "created_at_ms": ts,
@@ -84,14 +86,29 @@ def _trace(decision_id: str, ts: int, *, proposed: bool, order: bool, kind: str 
         "verification": {"verdict": "PASS"},
         "proposal": {"strategy_id": "momentum_v1", "direction": "LONG"} if proposed else {},
         "strategies_considered": [
-            {"strategy_id": "momentum_v1", "emitted_alpha": True, "selected": True,
-             "lifecycle_verdict": "ACTIVE", "router_status": "SELECTED"},
-            {"strategy_id": "breakout_v1", "emitted_alpha": False, "selected": False,
-             "lifecycle_verdict": "PAUSED", "router_status": "REGIME_MISMATCH"},
+            {
+                "strategy_id": "momentum_v1",
+                "emitted_alpha": True,
+                "selected": True,
+                "lifecycle_verdict": "ACTIVE",
+                "router_status": "SELECTED",
+            },
+            {
+                "strategy_id": "breakout_v1",
+                "emitted_alpha": False,
+                "selected": False,
+                "lifecycle_verdict": "PAUSED",
+                "router_status": "REGIME_MISMATCH",
+            },
         ],
         "agent_messages": [
-            {"agent_id": "risk-adversary", "review_type": "RISK_WARNING",
-             "statement": "sized ok", "confidence": 0.6, "timestamp_ms": ts},
+            {
+                "agent_id": "risk-adversary",
+                "review_type": "RISK_WARNING",
+                "statement": "sized ok",
+                "confidence": 0.6,
+                "timestamp_ms": ts,
+            },
         ],
     }
 
@@ -100,33 +117,75 @@ def _trace(decision_id: str, ts: int, *, proposed: bool, order: bool, kind: str 
 def synthetic(tmp_path: Path) -> StrategyEcosystemObservatory:
     _write(tmp_path / "config" / "strategy_admission.json", _admission())
     run_dir = tmp_path / "reports" / "autonomous-paper" / RUN_ID
-    _write(run_dir / "PAPER_RUN.json", {
-        "state": "STOPPED", "cycles": 3, "stop_reason": "STOP file",
-        "totals": {"paper_trades": 0, "outcomes_resolved": 1, "runtime_failures": 0, "risk_VETOED": 1},
-    })
-    _write(run_dir / "heartbeat.json", {
-        "run_id": RUN_ID, "timestamp_ms": 1_700_000_000_000, "errors": [],
-        "assets": ["BTCUSDT"], "timeframe": "5m",
-    })
-    _write_jsonl(run_dir / "traces.jsonl", [
-        _trace("d1", 1_700_000_000_000, proposed=True, order=False, kind="NO_TRADE_STRATEGIC"),
-        _trace("d2", 1_700_000_060_000, proposed=True, order=False, kind="NO_TRADE_STRATEGIC"),
-        _trace("d3", 1_700_000_120_000, proposed=False, order=False, kind=None),
-    ])
-    _write_jsonl(run_dir / "routing_comparisons.jsonl", [
-        {"asset": "BTCUSDT", "legacy": {"selected": ["momentum_v1"]},
-         "lifecycle": {"selected": ["momentum_v1"], "rejected": {}},
-         "portfolio_rejected": {}},
-        {"asset": "ETHUSDT", "legacy": {"selected": ["momentum_v1"]},
-         "lifecycle": {"selected": [], "rejected": {"momentum_v1": "REGIME_MISMATCH"}},
-         "portfolio_rejected": {"breakout_v1": "OVEREXPOSURE"}},
-    ])
-    _write(run_dir / "performance.json", {"cells": {
-        "c1": {"strategy_id": "momentum_v1", "regime": "TREND_UP",
-               "samples": [{"net_bps": 10.0, "gross_bps": 20.0}, {"net_bps": -5.0, "gross_bps": 5.0}]},
-        "c2": {"strategy_id": "momentum_v1", "regime": "RANGE",
-               "samples": [{"net_bps": 3.0, "gross_bps": 8.0}]},
-    }})
+    _write(
+        run_dir / "PAPER_RUN.json",
+        {
+            "state": "STOPPED",
+            "cycles": 3,
+            "stop_reason": "STOP file",
+            "totals": {
+                "paper_trades": 0,
+                "outcomes_resolved": 1,
+                "runtime_failures": 0,
+                "risk_VETOED": 1,
+            },
+        },
+    )
+    _write(
+        run_dir / "heartbeat.json",
+        {
+            "run_id": RUN_ID,
+            "timestamp_ms": 1_700_000_000_000,
+            "errors": [],
+            "assets": ["BTCUSDT"],
+            "timeframe": "5m",
+        },
+    )
+    _write_jsonl(
+        run_dir / "traces.jsonl",
+        [
+            _trace("d1", 1_700_000_000_000, proposed=True, order=False, kind="NO_TRADE_STRATEGIC"),
+            _trace("d2", 1_700_000_060_000, proposed=True, order=False, kind="NO_TRADE_STRATEGIC"),
+            _trace("d3", 1_700_000_120_000, proposed=False, order=False, kind=None),
+        ],
+    )
+    _write_jsonl(
+        run_dir / "routing_comparisons.jsonl",
+        [
+            {
+                "asset": "BTCUSDT",
+                "legacy": {"selected": ["momentum_v1"]},
+                "lifecycle": {"selected": ["momentum_v1"], "rejected": {}},
+                "portfolio_rejected": {},
+            },
+            {
+                "asset": "ETHUSDT",
+                "legacy": {"selected": ["momentum_v1"]},
+                "lifecycle": {"selected": [], "rejected": {"momentum_v1": "REGIME_MISMATCH"}},
+                "portfolio_rejected": {"breakout_v1": "OVEREXPOSURE"},
+            },
+        ],
+    )
+    _write(
+        run_dir / "performance.json",
+        {
+            "cells": {
+                "c1": {
+                    "strategy_id": "momentum_v1",
+                    "regime": "TREND_UP",
+                    "samples": [
+                        {"net_bps": 10.0, "gross_bps": 20.0},
+                        {"net_bps": -5.0, "gross_bps": 5.0},
+                    ],
+                },
+                "c2": {
+                    "strategy_id": "momentum_v1",
+                    "regime": "RANGE",
+                    "samples": [{"net_bps": 3.0, "gross_bps": 8.0}],
+                },
+            }
+        },
+    )
     # tempo stale-ish but deterministic: pin the clock to the heartbeat for FRESH
     return StrategyEcosystemObservatory(repo_root=tmp_path, now_ms=1_700_000_120_500)
 
@@ -151,7 +210,9 @@ def test_empty_tree_reports_unknown_not_zero(tmp_path: Path) -> None:
 # ---------------------------------------------------------------- system view
 
 
-def test_system_view_is_read_only_and_carries_totals(synthetic: StrategyEcosystemObservatory) -> None:
+def test_system_view_is_read_only_and_carries_totals(
+    synthetic: StrategyEcosystemObservatory,
+) -> None:
     system = synthetic.system_view()
     assert system["environment"] == "PAPER"
     assert system["execution_mode"] == "PAPER"
@@ -212,7 +273,9 @@ def test_strategy_detail_and_404(synthetic: StrategyEcosystemObservatory) -> Non
     assert synthetic.strategy_detail("does-not-exist") is None
 
 
-def test_performance_insufficient_sample_is_labelled(synthetic: StrategyEcosystemObservatory) -> None:
+def test_performance_insufficient_sample_is_labelled(
+    synthetic: StrategyEcosystemObservatory,
+) -> None:
     detail = synthetic.strategy_detail("momentum_v1")
     assert detail is not None
     assert detail["performance"]["overall"]["status"] == INSUFFICIENT_SAMPLE
@@ -252,8 +315,9 @@ def test_topology_answer_is_no_and_lists_no_agent(synthetic: StrategyEcosystemOb
 
 
 def test_build_topology_without_agents_still_classifies_no_agent(tmp_path: Path) -> None:
-    report = build_agent_topology({"s1": {"family": "momentum", "timeframe": "5m"}},
-                                  agent_capabilities=())
+    report = build_agent_topology(
+        {"s1": {"family": "momentum", "timeframe": "5m"}}, agent_capabilities=()
+    )
     assert report.are_strategies_governed_by_independent_agents == "NO"
     assert report.entries[0].agent_type == "NO_AGENT"
     assert report.entries[0].runtime_implementation.endswith("MomentumFamily")
@@ -273,8 +337,13 @@ def test_agents_view_lists_shared_reviewers_only(synthetic: StrategyEcosystemObs
     view = synthetic.agents_view()
     assert view["governance"] == "NO"
     ids = {a["agent_id"] for a in view["agents"]}
-    assert ids == {"data-integrity", "cost-economics", "evidence-provenance",
-                   "regime-alignment", "risk-adversary"}
+    assert ids == {
+        "data-integrity",
+        "cost-economics",
+        "evidence-provenance",
+        "regime-alignment",
+        "risk-adversary",
+    }
     for agent in view["agents"]:
         assert agent["scope"] == "DECISION_LAYER_SHARED"
         assert agent["independent_state"] is False
@@ -339,7 +408,11 @@ def test_traces_view_and_detail_timeline(synthetic: StrategyEcosystemObservatory
     detail = synthetic.trace_detail("d1")
     assert detail is not None
     assert detail["decision_id"] == "d1"
-    assert [s["stage"] for s in detail["timeline"]][:3] == ["MarketContext", "AssetContext", "Strategies"]
+    assert [s["stage"] for s in detail["timeline"]][:3] == [
+        "MarketContext",
+        "AssetContext",
+        "Strategies",
+    ]
     assert synthetic.trace_detail("missing") is None
 
 
@@ -366,8 +439,19 @@ def test_campaigns_view_reads_analysis(tmp_path: Path) -> None:
 
 def test_snapshot_aggregates_all_views(synthetic: StrategyEcosystemObservatory) -> None:
     snap = synthetic.snapshot()
-    for key in ("system", "strategies", "agents", "lifecycle", "routing", "portfolio",
-                "risk", "executions", "campaigns", "topology", "freshness"):
+    for key in (
+        "system",
+        "strategies",
+        "agents",
+        "lifecycle",
+        "routing",
+        "portfolio",
+        "risk",
+        "executions",
+        "campaigns",
+        "topology",
+        "freshness",
+    ):
         assert key in snap
     assert snap["system"]["read_only"] is True
 

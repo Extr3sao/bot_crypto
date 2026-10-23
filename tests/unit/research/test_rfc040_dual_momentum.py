@@ -42,9 +42,7 @@ def _ramp(n: int, base: float, slope: float, wobble: float = 0.0, period: int = 
     return out
 
 
-def _dataset(
-    n: int = 800, *, a_slope: float = 0.20, b_slope: float = 0.01
-) -> sc.Dataset:
+def _dataset(n: int = 800, *, a_slope: float = 0.20, b_slope: float = 0.01) -> sc.Dataset:
     return sc.build_dataset(
         [
             _series(dm.RISK_A, _ramp(n, 100.0, a_slope, 2.0, 40)),
@@ -224,13 +222,17 @@ def test_splits_are_disjoint_and_ordered() -> None:
 def test_benchmarks_are_predeclared() -> None:
     spec = RUN.dm_spec()
     names = " ".join(spec["benchmarks"])
-    for needle in ("SAME_UNIVERSE_PASSIVE", "SIMPLE_EQUITY_PASSIVE", "CASH_RISK_FREE",
-                   "RISK_MATCHED_PASSIVE"):
+    for needle in (
+        "SAME_UNIVERSE_PASSIVE",
+        "SIMPLE_EQUITY_PASSIVE",
+        "CASH_RISK_FREE",
+        "RISK_MATCHED_PASSIVE",
+    ):
         assert needle in names
 
 
 def test_p1_is_reclassified_business_fail() -> None:
-    src = (RUN.RFC039 / "P1_VALIDATION_RESULTS.json")
+    src = RUN.RFC039 / "P1_VALIDATION_RESULTS.json"
     if not src.exists():  # pragma: no cover - artifacts are gitignored
         pytest.skip("RFC-039 artifacts not present in this checkout")
     p1 = RUN.section_p1_reclassification()

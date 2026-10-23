@@ -659,7 +659,12 @@ def test_a_book_that_ends_the_capture_stale_is_still_usable_history() -> None:
     call usable book history unusable and would misstate why a phase is blocked.
     """
     report = _readiness_fixture(
-        {"healthy": 114, "usable_ratio": 0.966102, "final_health": "STALE", "crossed_book_events": 0}
+        {
+            "healthy": 114,
+            "usable_ratio": 0.966102,
+            "final_health": "STALE",
+            "crossed_book_events": 0,
+        }
     )
     readiness = build_readiness(report, {"gaps": [], "integrity": {}})
     available = readiness["M-03"]["available"]

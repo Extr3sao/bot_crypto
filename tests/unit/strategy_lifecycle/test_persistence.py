@@ -37,7 +37,11 @@ _CHAINS: dict[LifecycleState, list[LifecycleState]] = {
     LifecycleState.SHADOW: [],
     LifecycleState.ELIGIBLE: [LifecycleState.ELIGIBLE],
     LifecycleState.ACTIVE: [LifecycleState.ELIGIBLE, LifecycleState.ACTIVE],
-    LifecycleState.DEGRADED: [LifecycleState.ELIGIBLE, LifecycleState.ACTIVE, LifecycleState.DEGRADED],
+    LifecycleState.DEGRADED: [
+        LifecycleState.ELIGIBLE,
+        LifecycleState.ACTIVE,
+        LifecycleState.DEGRADED,
+    ],
     LifecycleState.THROTTLED: [
         LifecycleState.ELIGIBLE,
         LifecycleState.ACTIVE,

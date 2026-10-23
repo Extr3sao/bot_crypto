@@ -28,14 +28,23 @@ def _panel(n_per_asset: int = 600, seed: int = 11) -> L.CarryPanel:
     feats["f_mean_k"] = funding
     fwd_f = {h: rng.normal(size=n) * 10 for h in sorted(set(L.HORIZON_PERIODS.values()))}
     fwd_b = {h: rng.normal(size=n) * 5 for h in sorted(set(L.HORIZON_PERIODS.values()))}
-    return L.CarryPanel(ts=ts, asset=asset, spot=spot, perp=perp, basis=basis,
-                        funding=funding, features=feats,
-                        fwd_funding=fwd_f, fwd_basis_pnl=fwd_b)
+    return L.CarryPanel(
+        ts=ts,
+        asset=asset,
+        spot=spot,
+        perp=perp,
+        basis=basis,
+        funding=funding,
+        features=feats,
+        fwd_funding=fwd_f,
+        fwd_basis_pnl=fwd_b,
+    )
 
 
 # ---------------------------------------------------------------------------
 # frozen constants
 # ---------------------------------------------------------------------------
+
 
 def test_carry_cost_model_not_v3() -> None:
     assert abs(L.ROUND_TRIP_COST_BPS - 39.0) < 1e-9
@@ -74,6 +83,7 @@ def test_break_even_math() -> None:
 # funding PIT
 # ---------------------------------------------------------------------------
 
+
 def test_shift_and_mean_are_strictly_past() -> None:
     x = np.arange(10, dtype=np.float64)
     assert np.isnan(L._shift(x, 1)[0])
@@ -103,11 +113,18 @@ def test_entry_signal_uses_only_trailing_features() -> None:
 # multi-leg accounting
 # ---------------------------------------------------------------------------
 
+
 def test_carry_trade_reconciles_exactly() -> None:
-    acc = L.carry_trade(spot0=100.0, spot1=101.0, perp0=100.5, perp1=100.4,
-                        funding_sum_bps=10.0, cost_bps=39.0)
-    assert abs(acc["net_bps"] - (acc["spot_pnl_bps"] + acc["perp_pnl_bps"]
-                                 + acc["funding_pnl_bps"] - acc["cost_bps"])) < 1e-9
+    acc = L.carry_trade(
+        spot0=100.0, spot1=101.0, perp0=100.5, perp1=100.4, funding_sum_bps=10.0, cost_bps=39.0
+    )
+    assert (
+        abs(
+            acc["net_bps"]
+            - (acc["spot_pnl_bps"] + acc["perp_pnl_bps"] + acc["funding_pnl_bps"] - acc["cost_bps"])
+        )
+        < 1e-9
+    )
     assert abs(acc["basis_pnl_bps"] - (acc["spot_pnl_bps"] + acc["perp_pnl_bps"])) < 1e-9
 
 
@@ -135,6 +152,7 @@ def test_return_on_committed_capital_uses_full_denominator() -> None:
 # simulation
 # ---------------------------------------------------------------------------
 
+
 def test_simulate_is_deterministic_and_non_overlapping() -> None:
     panel = _panel(400)
     mask = np.ones(len(panel), dtype=bool)
@@ -151,13 +169,19 @@ def test_simulate_is_deterministic_and_non_overlapping() -> None:
 def test_simulate_skips_missing_data_no_imputation() -> None:
     panel = _panel(300)
     bad = L.CarryPanel(
-        ts=panel.ts, asset=panel.asset, spot=panel.spot, perp=panel.perp,
-        basis=panel.basis, funding=panel.funding, features=panel.features,
+        ts=panel.ts,
+        asset=panel.asset,
+        spot=panel.spot,
+        perp=panel.perp,
+        basis=panel.basis,
+        funding=panel.funding,
+        features=panel.features,
         fwd_funding={h: np.full_like(v, np.nan) for h, v in panel.fwd_funding.items()},
         fwd_basis_pnl=panel.fwd_basis_pnl,
     )
-    r = L.simulate_candidate(bad, np.ones(len(bad), dtype=bool),
-                             np.ones(len(bad), dtype=bool), "8h")
+    r = L.simulate_candidate(
+        bad, np.ones(len(bad), dtype=bool), np.ones(len(bad), dtype=bool), "8h"
+    )
     assert r["status"] == "NO_TRADES"
 
 

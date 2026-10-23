@@ -655,7 +655,11 @@ EXCLUDED_BY_DEFAULT: tuple[dict[str, str], ...] = (
         "reason": "already carries its own evidence (EXT-XMOM-001)",
         "reopened": "NO",
     },
-    {"family": "funding carry", "reason": "already tested and rejected in Phase 1", "reopened": "NO"},
+    {
+        "family": "funding carry",
+        "reason": "already tested and rejected in Phase 1",
+        "reopened": "NO",
+    },
     {"family": "basis", "reason": "already tested and rejected in Phase 1", "reopened": "NO"},
     {
         "family": "positioning",
@@ -1140,7 +1144,9 @@ def reentry_decision() -> dict[str, Any]:
 
 def false_success_audit(decision: dict[str, Any]) -> dict[str, Any]:
     passing = [
-        v["opportunity_id"] for v in decision["per_opportunity_verdicts"] if v["G_BUSINESS_REENTRY"] == "PASS"
+        v["opportunity_id"]
+        for v in decision["per_opportunity_verdicts"]
+        if v["G_BUSINESS_REENTRY"] == "PASS"
     ]
     claims = {
         "old_rejected_family_renamed": any(
@@ -1149,7 +1155,8 @@ def false_success_audit(decision: dict[str, Any]) -> dict[str, Any]:
         "weak_source_treated_as_strong": False,
         "positive_return_treated_as_benchmark_edge": False,
         "product_fit_ignored": any(
-            o.product_fit_200 == "FAIL" and radar.disposition(o) == "SCREENED" for o in OPPORTUNITIES
+            o.product_fit_200 == "FAIL" and radar.disposition(o) == "SCREENED"
+            for o in OPPORTUNITIES
         ),
         "capital_200_constraint_ignored": any(
             o.capital_fit == "FAIL" and radar.disposition(o) == "SCREENED" for o in OPPORTUNITIES
@@ -1354,7 +1361,9 @@ def main() -> int:
         "screened_count": sum(1 for o in OPPORTUNITIES if radar.disposition(o) == "SCREENED"),
         "excluded_by_default": list(EXCLUDED_BY_DEFAULT),
         "rehash_rejected": [
-            o.opportunity_id for o in OPPORTUNITIES if radar.disposition(o) == "REJECTED_SAME_FAMILY_REHASH"
+            o.opportunity_id
+            for o in OPPORTUNITIES
+            if radar.disposition(o) == "REJECTED_SAME_FAMILY_REHASH"
         ],
     }
     product_fit = {

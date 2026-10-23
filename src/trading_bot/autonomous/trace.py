@@ -43,7 +43,9 @@ _GENESIS = "genesis"
 
 def canonical_json(payload: dict[str, Any]) -> str:
     """Deterministic JSON used for hashing (sorted keys, no spaces)."""
-    return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str)
+    return json.dumps(
+        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str
+    )
 
 
 def trace_hash(payload: dict[str, Any]) -> str:

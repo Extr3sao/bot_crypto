@@ -67,8 +67,7 @@ def test_a_veto_must_state_its_reason() -> None:
 
 def test_state_is_derived_from_verdict_and_evaluation() -> None:
     assert (
-        RiskReview(verdict=RiskVerdict.PASS, evaluated=True, rule="r").state
-        is RiskState.APPROVED
+        RiskReview(verdict=RiskVerdict.PASS, evaluated=True, rule="r").state is RiskState.APPROVED
     )
     assert (
         RiskReview(verdict=RiskVerdict.VETO, reason="why", evaluated=True, rule="r").state
@@ -140,9 +139,7 @@ def test_no_proposal_is_not_applicable_and_not_evaluated(tmp_path: Path) -> None
 
 def test_rejected_candidate_keeps_its_advisory_risk_verdict(tmp_path: Path) -> None:
     """A NO_TRADE_STRATEGIC decision can still show what risk WOULD have said."""
-    runtime, _scanner, _broker = make_runtime(
-        run_dir=tmp_path, ledger=make_ledger(gross_bps=-4.56)
-    )
+    runtime, _scanner, _broker = make_runtime(run_dir=tmp_path, ledger=make_ledger(gross_bps=-4.56))
     summary = _run(runtime, cycles=1)
     row = summary.cycle_reports[0].assets[0]
     assert row.mode is DecisionMode.NO_TRADE

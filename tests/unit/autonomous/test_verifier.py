@@ -171,9 +171,7 @@ def test_admission_mismatch_fails() -> None:
 
 def test_paper_mode_without_admission_fails() -> None:
     verifier = IndependentVerifier(ledger=make_ledger())
-    result = verifier.verify(
-        _request(declared_mode=DecisionMode.TRADE_PAPER, risk_reviewed=True)
-    )
+    result = verifier.verify(_request(declared_mode=DecisionMode.TRADE_PAPER, risk_reviewed=True))
     assert not result.passed
     assert "admission_recomputed" in result.failures
 

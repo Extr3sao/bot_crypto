@@ -133,7 +133,10 @@ class StrategyEcosystemObservatory:
         for child in sorted(root.iterdir()):
             if not child.is_dir():
                 continue
-            if any((child / name).exists() for name in ("PAPER_RUN.json", "traces.jsonl", "heartbeat.json")):
+            if any(
+                (child / name).exists()
+                for name in ("PAPER_RUN.json", "traces.jsonl", "heartbeat.json")
+            ):
                 out.append(RunArtifacts(run_id=child.name, run_dir=child))
         return out
 
@@ -146,6 +149,7 @@ class StrategyEcosystemObservatory:
                 if run.run_id == self.run_id:
                     return run
             return None
+
         # newest heartbeat/PAPER_RUN mtime
         def mtime(run: RunArtifacts) -> float:
             stamps = [
@@ -230,8 +234,15 @@ class StrategyEcosystemObservatory:
     def _aggregate(self, run: RunArtifacts | None) -> dict[str, Any]:
         """Stream the run's traces once into per-strategy + decision aggregates."""
         if run is None:
-            return {"strategies": {}, "decisions": 0, "no_trade_kinds": {}, "risk": {},
-                    "order_created": 0, "verification": {}, "last_activity_ms": None}
+            return {
+                "strategies": {},
+                "decisions": 0,
+                "no_trade_kinds": {},
+                "risk": {},
+                "order_created": 0,
+                "verification": {},
+                "last_activity_ms": None,
+            }
         key = f"agg:{run.run_id}"
         if key in self._cache:
             return cast(dict[str, Any], self._cache[key])
@@ -264,8 +275,12 @@ class StrategyEcosystemObservatory:
                 agg = strategies.setdefault(
                     sid,
                     {
-                        "considered": 0, "emitted_alpha": 0, "router_selected": 0,
-                        "proposed": 0, "lifecycle": {}, "router_status": {},
+                        "considered": 0,
+                        "emitted_alpha": 0,
+                        "router_selected": 0,
+                        "proposed": 0,
+                        "lifecycle": {},
+                        "router_status": {},
                         "last_activity_ms": None,
                     },
                 )
@@ -283,9 +298,12 @@ class StrategyEcosystemObservatory:
                     if isinstance(ts, int):
                         agg["last_activity_ms"] = max(agg["last_activity_ms"] or 0, ts)
         result = {
-            "strategies": strategies, "decisions": len(traces),
-            "no_trade_kinds": no_trade_kinds, "risk": risk,
-            "order_created": order_created, "verification": verification,
+            "strategies": strategies,
+            "decisions": len(traces),
+            "no_trade_kinds": no_trade_kinds,
+            "risk": risk,
+            "order_created": order_created,
+            "verification": verification,
             "last_activity_ms": last_activity,
         }
         self._cache[key] = result
@@ -332,14 +350,20 @@ class StrategyEcosystemObservatory:
                 "state": paper_run.get("state", UNKNOWN),
                 "cycles": paper_run.get("cycles", NOT_AVAILABLE),
                 "stop_reason": paper_run.get("stop_reason"),
-                "runtime_failures": (paper_run.get("totals") or {}).get("runtime_failures", NOT_AVAILABLE),
+                "runtime_failures": (paper_run.get("totals") or {}).get(
+                    "runtime_failures", NOT_AVAILABLE
+                ),
                 "storage_failures": paper_run.get("storage_failures", NOT_AVAILABLE),
             },
             "routing_mode": _routing_mode(run),
             "campaign": run.run_id if run else NOT_AVAILABLE,
             "market_data_health": _market_health(heartbeat, run),
-            "risk_engine": {"status": "DETERMINISTIC", "authority": "DETERMINISTIC",
-                            "verdicts": agg["risk"], "source": "RiskManager.check_signal"},
+            "risk_engine": {
+                "status": "DETERMINISTIC",
+                "authority": "DETERMINISTIC",
+                "verdicts": agg["risk"],
+                "source": "RiskManager.check_signal",
+            },
             "execution_mode": "PAPER",
             "live_trading_enabled": False,
             "commit": self._commit(),
@@ -355,7 +379,9 @@ class StrategyEcosystemObservatory:
                 "no_trade": agg["decisions"] - agg["order_created"],
                 "no_trade_kinds": agg["no_trade_kinds"],
                 "order_created": agg["order_created"],
-                "outcomes_resolved": (paper_run.get("totals") or {}).get("outcomes_resolved", NOT_AVAILABLE),
+                "outcomes_resolved": (paper_run.get("totals") or {}).get(
+                    "outcomes_resolved", NOT_AVAILABLE
+                ),
             },
             "false_success": 0,
             "open_critical_defects": NOT_AVAILABLE,
@@ -373,31 +399,37 @@ class StrategyEcosystemObservatory:
             st = agg["strategies"].get(sid, {})
             p = perf.get(sid, {})
             lifecycle = _dominant(st.get("lifecycle", {}))
-            rows.append({
-                "strategy_id": sid,
-                "strategy_version": sid,
-                "family": spec.get("family", UNKNOWN),
-                "timeframe": spec.get("timeframe", UNKNOWN),
-                "asset": "MULTI",
-                "admission_status": spec.get("status", UNKNOWN),
-                "admitted_for_paper": bool(spec.get("admitted_for_paper")),
-                "expected_gross_edge_bps": spec.get("expected_gross_edge_bps"),
-                "lifecycle": lifecycle,
-                "health": UNKNOWN,
-                "mode": _routing_mode(run),
-                "agent": topology[sid].agent_type if sid in topology else UNKNOWN,
-                "signals": st.get("emitted_alpha", 0),
-                "proposals": st.get("proposed", 0),
-                "considered": st.get("considered", 0),
-                "router_selected": st.get("router_selected", 0),
-                "trades": p.get("sample_count", NOT_AVAILABLE),
-                "expectancy_net_bps": p.get("net_expectancy_bps", NOT_AVAILABLE),
-                "profit_factor": p.get("profit_factor", NOT_AVAILABLE),
-                "pnl_bps": p.get("total_net_bps", NOT_AVAILABLE),
-                "drawdown_bps": p.get("max_drawdown_bps", NOT_AVAILABLE),
-                "last_activity_ms": st.get("last_activity_ms"),
-            })
-        return {"run_id": run.run_id if run else NOT_AVAILABLE, "count": len(rows), "strategies": rows}
+            rows.append(
+                {
+                    "strategy_id": sid,
+                    "strategy_version": sid,
+                    "family": spec.get("family", UNKNOWN),
+                    "timeframe": spec.get("timeframe", UNKNOWN),
+                    "asset": "MULTI",
+                    "admission_status": spec.get("status", UNKNOWN),
+                    "admitted_for_paper": bool(spec.get("admitted_for_paper")),
+                    "expected_gross_edge_bps": spec.get("expected_gross_edge_bps"),
+                    "lifecycle": lifecycle,
+                    "health": UNKNOWN,
+                    "mode": _routing_mode(run),
+                    "agent": topology[sid].agent_type if sid in topology else UNKNOWN,
+                    "signals": st.get("emitted_alpha", 0),
+                    "proposals": st.get("proposed", 0),
+                    "considered": st.get("considered", 0),
+                    "router_selected": st.get("router_selected", 0),
+                    "trades": p.get("sample_count", NOT_AVAILABLE),
+                    "expectancy_net_bps": p.get("net_expectancy_bps", NOT_AVAILABLE),
+                    "profit_factor": p.get("profit_factor", NOT_AVAILABLE),
+                    "pnl_bps": p.get("total_net_bps", NOT_AVAILABLE),
+                    "drawdown_bps": p.get("max_drawdown_bps", NOT_AVAILABLE),
+                    "last_activity_ms": st.get("last_activity_ms"),
+                }
+            )
+        return {
+            "run_id": run.run_id if run else NOT_AVAILABLE,
+            "count": len(rows),
+            "strategies": rows,
+        }
 
     def strategy_detail(self, strategy_id: str) -> dict[str, Any] | None:
         spec = self.admission_strategies().get(strategy_id)
@@ -410,8 +442,10 @@ class StrategyEcosystemObservatory:
         topo = next((e for e in self.topology().entries if e.strategy_id == strategy_id), None)
         return {
             "identity": {
-                "strategy_id": strategy_id, "strategy_version": strategy_id,
-                "family": spec.get("family", UNKNOWN), "timeframe": spec.get("timeframe", UNKNOWN),
+                "strategy_id": strategy_id,
+                "strategy_version": strategy_id,
+                "family": spec.get("family", UNKNOWN),
+                "timeframe": spec.get("timeframe", UNKNOWN),
                 "pod_id": topo.pod_id if topo else UNKNOWN,
                 "runtime_implementation": topo.runtime_implementation if topo else UNKNOWN,
                 "agent_id": topo.agent_id if topo else None,
@@ -427,7 +461,9 @@ class StrategyEcosystemObservatory:
             },
             "performance": {
                 "overall": perf["strategies"].get(strategy_id, {"status": INSUFFICIENT_DATA}),
-                "by_regime": {r: _cell_for_strategy(run, strategy_id, r) for r in sorted(perf["by_regime"])},
+                "by_regime": {
+                    r: _cell_for_strategy(run, strategy_id, r) for r in sorted(perf["by_regime"])
+                },
             },
             "funnel": self.strategy_funnel(strategy_id),
             "evidence": {
@@ -500,18 +536,20 @@ class StrategyEcosystemObservatory:
         for agent in topo.shared_agents:
             aid = agent["agent_id"]
             act = activity.get(aid, {})
-            agents.append({
-                **agent,
-                "status": "ACTIVE" if act.get("messages") else UNKNOWN,
-                "messages": act.get("messages", 0),
-                "last_activity_ms": act.get("last_activity_ms"),
-                "review_types": act.get("review_types", {}),
-                "llm_calls": 0,
-                "llm_cost": NOT_AVAILABLE,
-                "latency_ms": act.get("latency_ms", NOT_AVAILABLE),
-                "independent_state": False,
-                "note": "deterministic, shared decision-layer reviewer",
-            })
+            agents.append(
+                {
+                    **agent,
+                    "status": "ACTIVE" if act.get("messages") else UNKNOWN,
+                    "messages": act.get("messages", 0),
+                    "last_activity_ms": act.get("last_activity_ms"),
+                    "review_types": act.get("review_types", {}),
+                    "llm_calls": 0,
+                    "llm_cost": NOT_AVAILABLE,
+                    "latency_ms": act.get("latency_ms", NOT_AVAILABLE),
+                    "independent_state": False,
+                    "note": "deterministic, shared decision-layer reviewer",
+                }
+            )
         return {
             "agents": agents,
             "count": len(agents),
@@ -529,7 +567,9 @@ class StrategyEcosystemObservatory:
             ts = trace.get("created_at_ms") or trace.get("decision_time_ms")
             for msg in trace.get("agent_messages", []) or []:
                 aid = str(msg.get("agent_id", UNKNOWN))
-                row = out.setdefault(aid, {"messages": 0, "last_activity_ms": None, "review_types": {}})
+                row = out.setdefault(
+                    aid, {"messages": 0, "last_activity_ms": None, "review_types": {}}
+                )
                 row["messages"] += 1
                 rt = str(msg.get("review_type", UNKNOWN))
                 row["review_types"][rt] = row["review_types"].get(rt, 0) + 1
@@ -548,18 +588,20 @@ class StrategyEcosystemObservatory:
             for msg in trace.get("agent_messages", []) or []:
                 if str(msg.get("agent_id")) != agent_id:
                     continue
-                messages.append({
-                    "timestamp_ms": msg.get("timestamp_ms", trace.get("created_at_ms")),
-                    "decision_id": msg.get("decision_id"),
-                    "sender": agent_id,
-                    "receiver": msg.get("receiver", "decision"),
-                    "asset": msg.get("asset"),
-                    "message_type": msg.get("review_type"),
-                    "claim": msg.get("statement"),
-                    "confidence": msg.get("confidence"),
-                    "evidence": msg.get("evidence", []),
-                    "counter_evidence": msg.get("counter_evidence", []),
-                })
+                messages.append(
+                    {
+                        "timestamp_ms": msg.get("timestamp_ms", trace.get("created_at_ms")),
+                        "decision_id": msg.get("decision_id"),
+                        "sender": agent_id,
+                        "receiver": msg.get("receiver", "decision"),
+                        "asset": msg.get("asset"),
+                        "message_type": msg.get("review_type"),
+                        "claim": msg.get("statement"),
+                        "confidence": msg.get("confidence"),
+                        "evidence": msg.get("evidence", []),
+                        "counter_evidence": msg.get("counter_evidence", []),
+                    }
+                )
         return {"agent_id": agent_id, "messages": messages[-200:], "count": len(messages)}
 
     def routing_view(self) -> dict[str, Any]:
@@ -568,8 +610,12 @@ class StrategyEcosystemObservatory:
             return {"available": False, "comparisons": [], "summary": {}, "run_id": NOT_AVAILABLE}
         comps = self._comparisons(run)
         agreements = 0
-        matrix = {"legacy_selects__lifecycle_selects": 0, "legacy_selects__lifecycle_rejects": 0,
-                  "legacy_rejects__lifecycle_selects": 0, "legacy_rejects__lifecycle_rejects": 0}
+        matrix = {
+            "legacy_selects__lifecycle_selects": 0,
+            "legacy_selects__lifecycle_rejects": 0,
+            "legacy_rejects__lifecycle_selects": 0,
+            "legacy_rejects__lifecycle_rejects": 0,
+        }
         by_reason: dict[str, int] = {}
         for c in comps:
             legacy = (c.get("legacy") or {}).get("selected") or []
@@ -577,14 +623,21 @@ class StrategyEcosystemObservatory:
             ls, cs = set(legacy), set(life)
             if ls == cs:
                 agreements += 1
-            matrix[("legacy_selects" if ls else "legacy_rejects") + "__" + ("lifecycle_selects" if cs else "lifecycle_rejects")] += 1
+            matrix[
+                ("legacy_selects" if ls else "legacy_rejects")
+                + "__"
+                + ("lifecycle_selects" if cs else "lifecycle_rejects")
+            ] += 1
             for _sid, verdict in ((c.get("lifecycle") or {}).get("rejected") or {}).items():
                 by_reason[str(verdict)] = by_reason.get(str(verdict), 0) + 1
         total = len(comps)
         return {
-            "available": True, "run_id": run.run_id, "total": total,
+            "available": True,
+            "run_id": run.run_id,
+            "total": total,
             "agreement_rate": round(agreements / total, 4) if total else None,
-            "matrix": matrix, "rejections_by_reason": by_reason,
+            "matrix": matrix,
+            "rejections_by_reason": by_reason,
             "comparisons": comps[-200:],
         }
 
@@ -594,8 +647,11 @@ class StrategyEcosystemObservatory:
         paper_run = self._paper_run(run) if run else {}
         totals = paper_run.get("totals") or {}
         return {
-            "engine": "RiskManager", "status": "DETERMINISTIC", "authority": "DETERMINISTIC",
-            "verdicts": agg["risk"], "order_created": agg["order_created"],
+            "engine": "RiskManager",
+            "status": "DETERMINISTIC",
+            "authority": "DETERMINISTIC",
+            "verdicts": agg["risk"],
+            "order_created": agg["order_created"],
             "risk_approved": totals.get("risk_APPROVED", NOT_AVAILABLE),
             "risk_vetoed": totals.get("risk_VETOED", NOT_AVAILABLE),
             "open_risk": NOT_AVAILABLE,
@@ -626,14 +682,16 @@ class StrategyEcosystemObservatory:
             if not trace.get("order_created"):
                 continue
             proposal = trace.get("proposal") or {}
-            rows.append({
-                "timestamp_ms": trace.get("created_at_ms"),
-                "asset": trace.get("asset"),
-                "strategy": proposal.get("strategy_id") if isinstance(proposal, dict) else None,
-                "direction": proposal.get("direction") if isinstance(proposal, dict) else None,
-                "risk": (trace.get("risk") or {}).get("verdict"),
-                "decision_id": trace.get("decision_id"),
-            })
+            rows.append(
+                {
+                    "timestamp_ms": trace.get("created_at_ms"),
+                    "asset": trace.get("asset"),
+                    "strategy": proposal.get("strategy_id") if isinstance(proposal, dict) else None,
+                    "direction": proposal.get("direction") if isinstance(proposal, dict) else None,
+                    "risk": (trace.get("risk") or {}).get("verdict"),
+                    "decision_id": trace.get("decision_id"),
+                }
+            )
         return {"execution_mode": "PAPER", "executed": len(rows), "executions": rows}
 
     def traces_view(self, *, limit: int = 100) -> dict[str, Any]:
@@ -641,15 +699,23 @@ class StrategyEcosystemObservatory:
         traces = self._traces(run) if run else []
         rows = [
             {
-                "decision_id": t.get("decision_id"), "asset": t.get("asset"),
-                "mode": t.get("mode"), "no_trade_kind": t.get("no_trade_kind"),
-                "regime": t.get("regime"), "decision_time_ms": t.get("decision_time_ms"),
-                "trace_hash": t.get("trace_hash"), "order_created": bool(t.get("order_created")),
+                "decision_id": t.get("decision_id"),
+                "asset": t.get("asset"),
+                "mode": t.get("mode"),
+                "no_trade_kind": t.get("no_trade_kind"),
+                "regime": t.get("regime"),
+                "decision_time_ms": t.get("decision_time_ms"),
+                "trace_hash": t.get("trace_hash"),
+                "order_created": bool(t.get("order_created")),
                 "verification": (t.get("verification") or {}).get("verdict"),
             }
             for t in traces[-limit:]
         ]
-        return {"run_id": run.run_id if run else NOT_AVAILABLE, "count": len(traces), "traces": rows}
+        return {
+            "run_id": run.run_id if run else NOT_AVAILABLE,
+            "count": len(traces),
+            "traces": rows,
+        }
 
     def trace_detail(self, decision_id: str) -> dict[str, Any] | None:
         run = self.current_run()
@@ -669,15 +735,21 @@ class StrategyEcosystemObservatory:
                 analysis = read_json(child / "ANALYSIS.json")
                 if not config.exists() and analysis is None:
                     continue
-                rows.append({
-                    "campaign_id": child.name,
-                    "has_config": config.exists(),
-                    "config_path": str(config) if config.exists() else NOT_AVAILABLE,
-                    "agreement_rate": (analysis or {}).get("agreement_rate", NOT_AVAILABLE),
-                    "disagreements": (analysis or {}).get("disagreements", NOT_AVAILABLE),
-                    "cycles_with_comparisons": (analysis or {}).get("cycles_with_comparisons", NOT_AVAILABLE),
-                    "matrix_router_selection": (analysis or {}).get("matrix_router_selection", NOT_AVAILABLE),
-                })
+                rows.append(
+                    {
+                        "campaign_id": child.name,
+                        "has_config": config.exists(),
+                        "config_path": str(config) if config.exists() else NOT_AVAILABLE,
+                        "agreement_rate": (analysis or {}).get("agreement_rate", NOT_AVAILABLE),
+                        "disagreements": (analysis or {}).get("disagreements", NOT_AVAILABLE),
+                        "cycles_with_comparisons": (analysis or {}).get(
+                            "cycles_with_comparisons", NOT_AVAILABLE
+                        ),
+                        "matrix_router_selection": (analysis or {}).get(
+                            "matrix_router_selection", NOT_AVAILABLE
+                        ),
+                    }
+                )
         return {"campaigns": rows, "count": len(rows)}
 
     def snapshot(self) -> dict[str, Any]:
@@ -797,14 +869,19 @@ def _trace_timeline(trace: dict[str, Any]) -> dict[str, Any]:
         "verification": trace.get("verification"),
         "strategies_considered": trace.get("strategies_considered", []),
         "agent_messages": trace.get("agent_messages", []),
-        "portfolio_env": trace.get("portfolio") if isinstance(trace.get("portfolio"), dict) else NOT_AVAILABLE,
+        "portfolio_env": trace.get("portfolio")
+        if isinstance(trace.get("portfolio"), dict)
+        else NOT_AVAILABLE,
         "timeline": [
             {"stage": "MarketContext", "detail": _compact(trace.get("market_context"))},
             {"stage": "AssetContext", "detail": _compact(trace.get("asset_context"))},
             {"stage": "Strategies", "detail": _compact(trace.get("strategies_considered"))},
             {"stage": "Proposal", "detail": _compact(proposal)},
             {"stage": "AgentReviews", "detail": _compact(trace.get("agent_messages"))},
-            {"stage": "Decision", "detail": {"mode": trace.get("mode"), "reason": trace.get("reason")}},
+            {
+                "stage": "Decision",
+                "detail": {"mode": trace.get("mode"), "reason": trace.get("reason")},
+            },
             {"stage": "Risk", "detail": _compact(trace.get("risk"))},
             {"stage": "Execution", "detail": {"order_created": bool(trace.get("order_created"))}},
         ],
@@ -833,7 +910,12 @@ def _git_commit(repo_root: Path) -> str:
 
     try:
         out = subprocess.run(
-            ["git", "rev-parse", "HEAD"], cwd=repo_root, capture_output=True, text=True, check=True, timeout=10
+            ["git", "rev-parse", "HEAD"],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=10,
         )
         return out.stdout.strip()
     except Exception:

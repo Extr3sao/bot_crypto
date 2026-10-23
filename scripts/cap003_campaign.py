@@ -83,7 +83,9 @@ def provenance_record() -> dict[str, str]:
 
 def fetch_all(connector: Any) -> dict[str, dict[str, list[Any]]]:
     return {
-        asset: {key: rmc.fetch_provider_ohlcv(connector, asset, key) for key in rmc.CONTRACT_INTERVALS}
+        asset: {
+            key: rmc.fetch_provider_ohlcv(connector, asset, key) for key in rmc.CONTRACT_INTERVALS
+        }
         for asset in rmc.CAMPAIGN_ASSETS
     }
 
@@ -99,7 +101,9 @@ def build_contexts(
     gates: dict[str, Any] = {}
     for asset in rmc.CAMPAIGN_ASSETS:
         rows = {
-            key: rmc.completed_rows(raw_by_asset[asset][key], decision_ms=decision_ms, interval_key=key)
+            key: rmc.completed_rows(
+                raw_by_asset[asset][key], decision_ms=decision_ms, interval_key=key
+            )
             for key in rmc.CONTRACT_INTERVALS
         }
         artifact = rmc.build_real_snapshot_artifact(
@@ -216,9 +220,7 @@ def settle_phase(
         daily = raw_by_asset[asset]["1D"]
         record = dl.record_from_entry(entry)
         try:
-            outcome = do.evaluate_decision(
-                record=record, asset=asset, horizon=horizon, rows=rows
-            )
+            outcome = do.evaluate_decision(record=record, asset=asset, horizon=horizon, rows=rows)
         except do.HorizonNotMaturedError as exc:
             results[key] = {"status": "NOT_MATURED", "detail": str(exc)}
             continue
@@ -235,7 +237,10 @@ def settle_phase(
             "outcome_hash": outcome.outcome_hash,
             "evaluation_hash": performance.evaluation_hash,
         }
-        c1.write_json(OUT / f"OUTCOME_{asset_key(asset)}_{decision_id[4:12]}_{horizon}.json", outcome.to_dict())
+        c1.write_json(
+            OUT / f"OUTCOME_{asset_key(asset)}_{decision_id[4:12]}_{horizon}.json",
+            outcome.to_dict(),
+        )
     return {"settled": settled, "per_decision": results}
 
 
@@ -299,7 +304,9 @@ def selftest_phase(
 def scorecard_md(scorecard: dict[str, Any]) -> str:
     lines = ["# ALPHA_SCORECARD (CAP-003)", ""]
     lines.append(f"- decisions evaluated: {scorecard['n_decisions_evaluated']}")
-    lines.append(f"- directional / no-trade: {scorecard['n_directional']} / {scorecard['n_no_trade']}")
+    lines.append(
+        f"- directional / no-trade: {scorecard['n_directional']} / {scorecard['n_no_trade']}"
+    )
     lines.append(f"- checkpoint reached: {scorecard['sample']['checkpoint_reached']}")
     lines.append(f"- next checkpoint: {scorecard['sample']['next_checkpoint']}")
     lines.append(f"- G_AGENTIC_EDGE = {scorecard['gate']['status']}")
@@ -430,13 +437,17 @@ def main() -> int:
     print("CAP-003 CAMPAIGN CYCLE")
     print(f"provider = {rmc.PROVIDER}  decision_time = {decision_time}")
     print(f"G_REAL_MARKET_CONTEXT = {g_real}   G_TV_CONTEXT = {ac.G_TV_CONTEXT}")
-    print(f"analyst = {mav.PROMPT_VERSION} (frozen)  provenance_digest = {report['provenance_digest'][:16]}")
+    print(
+        f"analyst = {mav.PROMPT_VERSION} (frozen)  provenance_digest = {report['provenance_digest'][:16]}"
+    )
     for asset in rmc.CAMPAIGN_ASSETS:
         item = sealed.get(asset, {"status": "NO_ANALYST_ANSWER"})
         print(f"  {asset}: {item['status']}  {item.get('decision', '')} {item.get('horizon', '')}")
     print(f"sealed this cycle = {len(report['sealed_this_cycle'])}")
-    print(f"ledger: {chain['n_decisions']} decisions, {chain['n_outcomes']} outcomes, "
-          f"{chain['n_evaluations']} evaluations  CHAIN={chain['status']}")
+    print(
+        f"ledger: {chain['n_decisions']} decisions, {chain['n_outcomes']} outcomes, "
+        f"{chain['n_evaluations']} evaluations  CHAIN={chain['status']}"
+    )
     print(f"settled this cycle = {report['settled_this_cycle']}")
     print(f"selftest = {selftest['status']}  checks={selftest.get('checks')}")
     print(f"G_AGENTIC_EDGE = {scorecard['gate']['status']}  ({scorecard['gate']['conclusion']})")

@@ -149,11 +149,7 @@ class PitAdmissionLedger:
                     f"< min {self._min_sample} before decision time"
                 ),
             )
-        status = (
-            AdmissionStatus.RESEARCH_CANDIDATE
-            if gross > 0
-            else AdmissionStatus.NO_GROSS_EDGE
-        )
+        status = AdmissionStatus.RESEARCH_CANDIDATE if gross > 0 else AdmissionStatus.NO_GROSS_EDGE
         evidence = EdgeEvidence(
             source_doc="reports/strategy-baseline/TRADES_*.csv (as-of)",
             metric="family_gross_bps_per_trade_as_of",
@@ -196,4 +192,3 @@ class PitAdmissionLedger:
             "base_source_path": self._base.source_path,
             "strategies": {sid: e.to_dict() for sid, e in sorted(self.entries().items())},
         }
-

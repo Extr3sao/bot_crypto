@@ -33,9 +33,7 @@ __all__ = [
 #: §17/§19 — the lifecycle states that authorise PAPER execution. Kept as a
 #: local constant (rather than importing the autonomous package) so the research
 #: router keeps its dependency direction: it may not import the runtime.
-PAPER_EXECUTABLE_STATUS_NAMES: frozenset[str] = frozenset(
-    {"PAPER_CANDIDATE", "PAPER_ACTIVE"}
-)
+PAPER_EXECUTABLE_STATUS_NAMES: frozenset[str] = frozenset({"PAPER_CANDIDATE", "PAPER_ACTIVE"})
 
 
 @dataclass(frozen=True, slots=True)

@@ -79,8 +79,9 @@ MINIMUM_DETECTABLE_EFFECT_BPS = 23.353553391
 # ---------------------------------------------------------------------------
 
 
-def required_trades(sd_bps: float, target_bps: float = MINIMUM_DETECTABLE_EFFECT_BPS,
-                    z: float = Z_80_POWER) -> int:
+def required_trades(
+    sd_bps: float, target_bps: float = MINIMUM_DETECTABLE_EFFECT_BPS, z: float = Z_80_POWER
+) -> int:
     """Trades needed for ``z``-sized resolution of ``target_bps`` given ``sd_bps``.
 
     Called on the development partition only, so the requirement is computed from
@@ -92,8 +93,11 @@ def required_trades(sd_bps: float, target_bps: float = MINIMUM_DETECTABLE_EFFECT
     return int(math.ceil((z * sd_bps / target_bps) ** 2))
 
 
-def decide(net_bps: Sequence[float], dev_size: int | None = None,
-           target_bps: float = MINIMUM_DETECTABLE_EFFECT_BPS) -> dict[str, Any]:
+def decide(
+    net_bps: Sequence[float],
+    dev_size: int | None = None,
+    target_bps: float = MINIMUM_DETECTABLE_EFFECT_BPS,
+) -> dict[str, Any]:
     """The pre-registered verdict for one candidate, from its per-trade net bps.
 
     ``net_bps`` is already net of the frozen cost plane. The verdict is PROMOTE only
@@ -103,8 +107,11 @@ def decide(net_bps: Sequence[float], dev_size: int | None = None,
     series = list(net_bps)
     n = len(series)
     if n < 2:
-        return {"verdict": "NOT_PROMOTE", "reason": "fewer than two trades: nothing to test",
-                "n": n}
+        return {
+            "verdict": "NOT_PROMOTE",
+            "reason": "fewer than two trades: nothing to test",
+            "n": n,
+        }
     mean = sum(series) / n
     variance = sum((value - mean) ** 2 for value in series) / (n - 1)
     sd = math.sqrt(variance)
@@ -160,51 +167,79 @@ def contract_tests() -> list[dict[str, Any]]:
     tests: list[dict[str, Any]] = []
 
     def record(name: str, passed: bool, verdict: dict[str, Any], expectation: str) -> None:
-        tests.append({"test": name, "passed": bool(passed), "expectation": expectation,
-                      "verdict": verdict})
+        tests.append(
+            {"test": name, "passed": bool(passed), "expectation": expectation, "verdict": verdict}
+        )
 
     strong = _series(30.0, 20.0, 300)
     result = decide(strong, dev_size=150)
-    record("a strong, well-sampled positive edge is promoted",
-           result["verdict"] == "PROMOTE", result, "PROMOTE")
+    record(
+        "a strong, well-sampled positive edge is promoted",
+        result["verdict"] == "PROMOTE",
+        result,
+        "PROMOTE",
+    )
 
     noisy = _series(30.0, 300.0, 50)
     result = decide(noisy, dev_size=25)
-    record("a positive but noisy small sample is not promoted",
-           result["verdict"] == "NOT_PROMOTE" and "confidence" in result["reason"],
-           result, "NOT_PROMOTE, confidence bound fails")
+    record(
+        "a positive but noisy small sample is not promoted",
+        result["verdict"] == "NOT_PROMOTE" and "confidence" in result["reason"],
+        result,
+        "NOT_PROMOTE, confidence bound fails",
+    )
 
     flip = _series(30.0, 30.0, 150) + _series(-10.0, 30.0, 150)
     result = decide(flip, dev_size=150)
-    record("a series whose sign flips between partitions is not promoted even with a "
-           "positive pooled bound",
-           result["verdict"] == "NOT_PROMOTE" and "sign" in result["reason"]
-           and result["lcb_95_bps"] > 0.0, result,
-           "NOT_PROMOTE by the sign rule while the pooled bound is positive")
+    record(
+        "a series whose sign flips between partitions is not promoted even with a "
+        "positive pooled bound",
+        result["verdict"] == "NOT_PROMOTE"
+        and "sign" in result["reason"]
+        and result["lcb_95_bps"] > 0.0,
+        result,
+        "NOT_PROMOTE by the sign rule while the pooled bound is positive",
+    )
 
     negative = _series(-5.0, 20.0, 400)
     result = decide(negative, dev_size=200)
-    record("a net-negative series is not promoted",
-           result["verdict"] == "NOT_PROMOTE", result, "NOT_PROMOTE")
+    record(
+        "a net-negative series is not promoted",
+        result["verdict"] == "NOT_PROMOTE",
+        result,
+        "NOT_PROMOTE",
+    )
 
     short = _series(40.0, 100.0, 20)
     result = decide(short, dev_size=10)
-    record("a sample below the pre-registered requirement is not promoted",
-           result["verdict"] == "NOT_PROMOTE" and "sample below" in result["reason"],
-           result, "NOT_PROMOTE, sample requirement")
+    record(
+        "a sample below the pre-registered requirement is not promoted",
+        result["verdict"] == "NOT_PROMOTE" and "sample below" in result["reason"],
+        result,
+        "NOT_PROMOTE, sample requirement",
+    )
 
     shuffled = list(strong)
     random.Random(17).shuffle(shuffled)
     first = decide(shuffled, dev_size=150)
     second = decide(shuffled, dev_size=150)
-    record("the verdict depends on the numbers, not on the order they arrive in",
-           first["verdict"] == second["verdict"] and first["mean_net_bps"] == second["mean_net_bps"],
-           first, "the same verdict and the same mean")
-    partition_effect = decide(strong, dev_size=150)["verdict"] == decide(sorted(strong), dev_size=150)["verdict"]
-    tests.append({"test": "sorting the series does not change the verdict",
-                  "passed": partition_effect,
-                  "expectation": "same verdict (the rule reads values, not position)",
-                  "verdict": {"sorted_verdict": decide(sorted(strong), dev_size=150)["verdict"]}})
+    record(
+        "the verdict depends on the numbers, not on the order they arrive in",
+        first["verdict"] == second["verdict"] and first["mean_net_bps"] == second["mean_net_bps"],
+        first,
+        "the same verdict and the same mean",
+    )
+    partition_effect = (
+        decide(strong, dev_size=150)["verdict"] == decide(sorted(strong), dev_size=150)["verdict"]
+    )
+    tests.append(
+        {
+            "test": "sorting the series does not change the verdict",
+            "passed": partition_effect,
+            "expectation": "same verdict (the rule reads values, not position)",
+            "verdict": {"sorted_verdict": decide(sorted(strong), dev_size=150)["verdict"]},
+        }
+    )
 
     promoted_when_bound_negative = 0
     rng = random.Random(18)
@@ -213,19 +248,26 @@ def contract_tests() -> list[dict[str, Any]]:
         outcome = decide(candidate)
         if outcome["verdict"] == "PROMOTE" and outcome["lcb_95_bps"] <= 0.0:
             promoted_when_bound_negative += 1
-    tests.append({"test": "negative control: 200 random series never promote with a bound at "
-                          "or below zero",
-                  "passed": promoted_when_bound_negative == 0,
-                  "expectation": "0 violations",
-                  "verdict": {"violations": promoted_when_bound_negative}})
+    tests.append(
+        {
+            "test": "negative control: 200 random series never promote with a bound at "
+            "or below zero",
+            "passed": promoted_when_bound_negative == 0,
+            "expectation": "0 violations",
+            "verdict": {"violations": promoted_when_bound_negative},
+        }
+    )
 
     identical = [1.0] * 50
     result = decide(identical, dev_size=25)
-    tests.append({"test": "a zero-dispersion series neither crashes nor divides by zero",
-                  "passed": result["verdict"] in {"PROMOTE", "NOT_PROMOTE"}
-                  and result["sd_bps"] == 0.0,
-                  "expectation": "a verdict with sd 0",
-                  "verdict": result})
+    tests.append(
+        {
+            "test": "a zero-dispersion series neither crashes nor divides by zero",
+            "passed": result["verdict"] in {"PROMOTE", "NOT_PROMOTE"} and result["sd_bps"] == 0.0,
+            "expectation": "a verdict with sd 0",
+            "verdict": result,
+        }
+    )
     return tests
 
 
@@ -237,15 +279,22 @@ def contract_tests() -> list[dict[str, Any]]:
 def governance_state() -> dict[str, Any]:
     registry = json.loads(REGISTRY.read_text(encoding="utf-8")) if REGISTRY.exists() else {}
     draft_text = RFC_DRAFT.read_text(encoding="utf-8") if RFC_DRAFT.exists() else ""
-    authorization = (json.loads(RFC049_AUTH.read_text(encoding="utf-8"))
-                     if RFC049_AUTH.exists() else {})
+    authorization = (
+        json.loads(RFC049_AUTH.read_text(encoding="utf-8")) if RFC049_AUTH.exists() else {}
+    )
     v3 = json.loads(V3_RESULTS.read_text(encoding="utf-8")) if V3_RESULTS.exists() else {}
     manifests = sorted(FORWARD_MANIFEST_DIR.glob("*.json")) if FORWARD_MANIFEST_DIR.exists() else []
     sealed = []
     for path in manifests:
         payload = json.loads(path.read_text(encoding="utf-8"))
-        sealed.append({"run_id": payload.get("run_id"), "started_at": payload.get("started_at"),
-                       "ended_at": payload.get("ended_at"), "status": payload.get("status")})
+        sealed.append(
+            {
+                "run_id": payload.get("run_id"),
+                "started_at": payload.get("started_at"),
+                "ended_at": payload.get("ended_at"),
+                "status": payload.get("status"),
+            }
+        )
 
     draft_state = {
         "path": str(RFC_DRAFT.relative_to(ROOT)).replace("\\", "/") if RFC_DRAFT.exists() else None,
@@ -261,19 +310,27 @@ def governance_state() -> dict[str, Any]:
     view = json.loads(STATE_VIEW.read_text(encoding="utf-8")) if STATE_VIEW.exists() else {}
     resolved: dict[str, Any] = {}
     for resolution in view.get("resolutions") or []:
-        if resolution.get("field") in {"NEXT_CAMPAIGN", "PAPER_PROMOTION", "SEALED_OOS",
-                                       "LIVE_TRADING", "TRADES_AUTHORIZED"}:
+        if resolution.get("field") in {
+            "NEXT_CAMPAIGN",
+            "PAPER_PROMOTION",
+            "SEALED_OOS",
+            "LIVE_TRADING",
+            "TRADES_AUTHORIZED",
+        }:
             resolved[resolution["field"]] = {
                 "effective": resolution.get("effective"),
                 "decided_by": (resolution.get("decided_by") or {}).get("source"),
             }
     campaign_authorized = str(authorization.get("next_campaign") or "").upper() == "AUTHORIZED"
     scope = authorization.get("authorization_scope")
-    gate_open = bool(rfc_050_registered and campaign_authorized
-                     and not draft_state["declares_unauthorized"])
+    gate_open = bool(
+        rfc_050_registered and campaign_authorized and not draft_state["declares_unauthorized"]
+    )
     return {
         "rfc_registry": {
-            "path": str(REGISTRY.relative_to(ROOT)).replace("\\", "/") if REGISTRY.exists() else None,
+            "path": str(REGISTRY.relative_to(ROOT)).replace("\\", "/")
+            if REGISTRY.exists()
+            else None,
             "next_free_number_above_046": registry.get("next_free_number_above_046"),
             "registered_numbers": registered_numbers,
             "rfc_050_registered": rfc_050_registered,
@@ -282,22 +339,28 @@ def governance_state() -> dict[str, Any]:
         "rfc_050_draft": draft_state,
         "campaign_authorization": {
             "path": str(RFC049_AUTH.relative_to(ROOT)).replace("\\", "/")
-            if RFC049_AUTH.exists() else None,
+            if RFC049_AUTH.exists()
+            else None,
             "next_campaign": authorization.get("next_campaign"),
             "authorization_scope": scope,
             "covers_e2": False,
-            "note": ("the only campaign authorization on record is RFC-049's, scoped to offline "
-                     "development and validation of its own two hypotheses; it does not authorise a "
-                     "new campaign, and E-2 is a new campaign"),
+            "note": (
+                "the only campaign authorization on record is RFC-049's, scoped to offline "
+                "development and validation of its own two hypotheses; it does not authorise a "
+                "new campaign, and E-2 is a new campaign"
+            ),
             "resolved_by_the_state_view": resolved,
             "state_view": str(STATE_VIEW.relative_to(ROOT)).replace("\\", "/")
-            if STATE_VIEW.exists() else None,
+            if STATE_VIEW.exists()
+            else None,
         },
         "gate": {
             "state": "OPEN" if gate_open else "CLOSED",
-            "why": ("RFC-050 is not registered, the draft states AUTHORIZED = false and "
-                    "CAMPAIGN_STARTED = false, and no governance instrument authorises a new "
-                    "campaign"),
+            "why": (
+                "RFC-050 is not registered, the draft states AUTHORIZED = false and "
+                "CAMPAIGN_STARTED = false, and no governance instrument authorises a new "
+                "campaign"
+            ),
             "allowed_with_gate_closed": [
                 "write the pre-registration",
                 "synthetic contract tests of the decision rule",
@@ -317,16 +380,20 @@ def governance_state() -> dict[str, Any]:
             "excluded_paper_day": v3.get("dataset", {}).get("paper_day_excluded"),
             "sealed_book_windows_measured_by_E1": sealed,
             "rfc049_sealed_oos_from": RFC049_SEALED_OOS_FROM,
-            "note": ("W1-W7 carried the 24 registered cells and the 5m family diagnostics; RFC-049 "
-                     "spent its development and validation partitions on 2019-2023 and 2024-2026; "
-                     "its sealed OOS window opens at the timestamp above and has never been read. "
-                     "None of them may carry E-2's validation"),
+            "note": (
+                "W1-W7 carried the 24 registered cells and the 5m family diagnostics; RFC-049 "
+                "spent its development and validation partitions on 2019-2023 and 2024-2026; "
+                "its sealed OOS window opens at the timestamp above and has never been read. "
+                "None of them may carry E-2's validation"
+            ),
         },
         "reserved_for_e2": {
             "from": RESERVED_FROM,
-            "rule": ("a forward window chosen by calendar, strictly after every period already "
-                     "spent or licensed; if the window does not exist yet, the campaign waits "
-                     "rather than substituting another period"),
+            "rule": (
+                "a forward window chosen by calendar, strictly after every period already "
+                "spent or licensed; if the window does not exist yet, the campaign waits "
+                "rather than substituting another period"
+            ),
         },
     }
 
@@ -346,12 +413,15 @@ def build() -> tuple[dict[str, Any], int, str]:
         measured_cost = {
             "source": str(E1_DISTRIBUTION.relative_to(ROOT)).replace("\\", "/"),
             "state": assessment.get("state"),
-            "observed_round_trip_microstructure_bps_median":
-                assessment.get("observed_round_trip_microstructure_bps_median_across_books"),
+            "observed_round_trip_microstructure_bps_median": assessment.get(
+                "observed_round_trip_microstructure_bps_median_across_books"
+            ),
             "plane_round_trip_bps": assessment.get("plane_round_trip_bps"),
-            "role": ("secondary reporting layer only: the campaign is judged against the frozen "
-                     "plane, and the measured distribution may be reported beside the result but "
-                     "may not replace the plane or any threshold"),
+            "role": (
+                "secondary reporting layer only: the campaign is judged against the frozen "
+                "plane, and the measured distribution may be reported beside the result but "
+                "may not replace the plane or any threshold"
+            ),
         }
     tests = contract_tests()
     tests_passed = sum(1 for test in tests if test["passed"])
@@ -384,8 +454,10 @@ def build() -> tuple[dict[str, Any], int, str]:
         },
         "universe": {
             "families_eligible": ["volatility@30m", "mean_reversion@30m", "trend@30m"],
-            "why": ("the only 30m cells with a positive zero-cost gross edge in the rebuilt "
-                    "baseline; the list is taken from the phase-1 rebuild, not from a search"),
+            "why": (
+                "the only 30m cells with a positive zero-cost gross edge in the rebuilt "
+                "baseline; the list is taken from the phase-1 rebuild, not from a search"
+            ),
             "assets": ["BTCUSDT", "ETHUSDT"],
             "timeframe": "30m",
             "runtime_contract": (
@@ -456,9 +528,11 @@ def build() -> tuple[dict[str, Any], int, str]:
             "results": tests,
             "passed": tests_passed,
             "total": len(tests),
-            "note": ("synthetic series only: these test the decision rule, not the market. A rule "
-                     "that cannot be shown to reject what it should reject is not pre-registered, "
-                     "it is a hope"),
+            "note": (
+                "synthetic series only: these test the decision rule, not the market. A rule "
+                "that cannot be shown to reject what it should reject is not pre-registered, "
+                "it is a hope"
+            ),
         },
         "not_done": [
             "no window was read: the market data for E-2 does not exist yet and none was fabricated",
@@ -545,9 +619,11 @@ def render_markdown(payload: dict[str, Any]) -> str:
         f"| excluded paper day | `{governance['burned_windows']['excluded_paper_day']}` |",
         f"| RFC-049 sealed OOS (never read, licensed, not to be spent here) | "
         f"`{governance['burned_windows']['rfc049_sealed_oos_from']}` onward |",
-        *[f"| sealed book window measured by E-1 | `{row['run_id']}` "
-          f"{row['started_at']} → {row['ended_at']} |"
-          for row in governance["burned_windows"]["sealed_book_windows_measured_by_E1"]],
+        *[
+            f"| sealed book window measured by E-1 | `{row['run_id']}` "
+            f"{row['started_at']} → {row['ended_at']} |"
+            for row in governance["burned_windows"]["sealed_book_windows_measured_by_E1"]
+        ],
         "",
         "## 5. Cost plane the result will be judged against",
         "",
@@ -559,10 +635,12 @@ def render_markdown(payload: dict[str, Any]) -> str:
     ]
     measured = payload["cost_model"]["measured_layer"]
     if measured:
-        lines.append(f"* measured layer (E-1, secondary only): `{measured['state']}`, observed "
-                     f"round trip median {measured['observed_round_trip_microstructure_bps_median']} bps "
-                     f"of microstructure beside a plane of {measured['plane_round_trip_bps']} bps — "
-                     f"{measured['role']}")
+        lines.append(
+            f"* measured layer (E-1, secondary only): `{measured['state']}`, observed "
+            f"round trip median {measured['observed_round_trip_microstructure_bps_median']} bps "
+            f"of microstructure beside a plane of {measured['plane_round_trip_bps']} bps — "
+            f"{measured['role']}"
+        )
     lines += [
         "",
         "## 6. Metrics",
@@ -592,8 +670,10 @@ def render_markdown(payload: dict[str, Any]) -> str:
     for row in tests["results"]:
         verdict = row["verdict"]
         got = verdict.get("verdict") or verdict.get("violations") or verdict.get("sorted_verdict")
-        lines.append(f"| {row['test']} | {row['expectation']} | `{got}` | "
-                     f"{'yes' if row['passed'] else '**NO**'} |")
+        lines.append(
+            f"| {row['test']} | {row['expectation']} | `{got}` | "
+            f"{'yes' if row['passed'] else '**NO**'} |"
+        )
     lines += [
         "",
         "## 9. What was deliberately not done",
@@ -606,8 +686,9 @@ def render_markdown(payload: dict[str, Any]) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--self-test", action="store_true",
-                        help="run only the synthetic contract tests")
+    parser.add_argument(
+        "--self-test", action="store_true", help="run only the synthetic contract tests"
+    )
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
 
@@ -615,8 +696,10 @@ def main() -> int:
         tests = contract_tests()
         passed = sum(1 for test in tests if test["passed"])
         for test in tests:
-            print(f"[{'PASS' if test['passed'] else 'FAIL'}] {test['test']} "
-                  f"(expected: {test['expectation']})")
+            print(
+                f"[{'PASS' if test['passed'] else 'FAIL'}] {test['test']} "
+                f"(expected: {test['expectation']})"
+            )
         print(f"{passed}/{len(tests)} contract tests passed")
         return 0 if passed == len(tests) else 3
 
@@ -629,10 +712,13 @@ def main() -> int:
     md_path.write_text(markdown + "\n", encoding="utf-8")
     payload["payload_sha256"] = hashlib.sha256(md_path.read_bytes()).hexdigest()
     (OUT_DIR / "WP10_E2_PREREGISTRATION.json").write_text(
-        json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-    print(f"E-2 {payload['verdict']['e2']} · gate {payload['verdict']['gate']} · "
-          f"contract tests {payload['contract_tests']['passed']}/{payload['contract_tests']['total']} "
-          f"· {md_path.relative_to(ROOT)} (exit {exit_code})")
+        json.dumps(payload, indent=2) + "\n", encoding="utf-8"
+    )
+    print(
+        f"E-2 {payload['verdict']['e2']} · gate {payload['verdict']['gate']} · "
+        f"contract tests {payload['contract_tests']['passed']}/{payload['contract_tests']['total']} "
+        f"· {md_path.relative_to(ROOT)} (exit {exit_code})"
+    )
     return exit_code
 
 

@@ -24,8 +24,22 @@ from trading_bot.research.strategy_failure_diagnostics import (  # noqa: E402
 )
 
 TRADE_FIELDS = [
-    "family", "window", "asset", "side", "entry_ts", "exit_ts", "duration_min",
-    "entry", "exit", "reason", "mfe_pct", "mae_pct", "notional", "gross", "fees", "net",
+    "family",
+    "window",
+    "asset",
+    "side",
+    "entry_ts",
+    "exit_ts",
+    "duration_min",
+    "entry",
+    "exit",
+    "reason",
+    "mfe_pct",
+    "mae_pct",
+    "notional",
+    "gross",
+    "fees",
+    "net",
 ]
 START_TS = 1_772_323_200_000
 STEP_MS = 300_000
@@ -56,7 +70,9 @@ def _fixture(root: Path) -> DiagnosticsInputs:
     results = root / "results"
     results.mkdir()
     (results / "MULTI_FAMILY_RESULTS_trend.json").write_text(
-        json.dumps({"trend": {"BASE": {"totals": {"net": 1.0, "trades": 3}, "DEV_W1_W4": {"net": 1.0}}}}),
+        json.dumps(
+            {"trend": {"BASE": {"totals": {"net": 1.0, "trades": 3}, "DEV_W1_W4": {"net": 1.0}}}}
+        ),
         encoding="utf-8",
     )
     trades = root / "trades.csv"
@@ -84,7 +100,9 @@ def _fixture(root: Path) -> DiagnosticsInputs:
                     "net": 2.0 if k % 2 == 0 else -2.0,
                 }
             )
-    return DiagnosticsInputs(trades=trades, corpus=corpus, results_dir=results, out=root / "out.json")
+    return DiagnosticsInputs(
+        trades=trades, corpus=corpus, results_dir=results, out=root / "out.json"
+    )
 
 
 def test_determinism_hash_run1_equals_run2(tmp_path: Path) -> None:
@@ -102,11 +120,26 @@ def test_contract_fields_present_in_enriched_schema(tmp_path: Path) -> None:
     assert doc["schema_version_document"] == "arp002-strategy-failure-diagnostics-v2"
     fam = doc["families"]["trend"]
     required = {
-        "signals", "eligible_signals", "drawdown_bps", "by_timeframe", "by_asset",
-        "by_regime", "forward_returns", "cost_stress", "concentration",
-        "expectancy_gross_bps", "expectancy_net_bps", "win_rate", "avg_win_usd",
-        "avg_loss_usd", "profit_factor", "payoff", "avg_mfe_pct", "avg_mae_pct",
-        "avg_duration_min", "signal_ledger_semantics",
+        "signals",
+        "eligible_signals",
+        "drawdown_bps",
+        "by_timeframe",
+        "by_asset",
+        "by_regime",
+        "forward_returns",
+        "cost_stress",
+        "concentration",
+        "expectancy_gross_bps",
+        "expectancy_net_bps",
+        "win_rate",
+        "avg_win_usd",
+        "avg_loss_usd",
+        "profit_factor",
+        "payoff",
+        "avg_mfe_pct",
+        "avg_mae_pct",
+        "avg_duration_min",
+        "signal_ledger_semantics",
     }
     assert required <= set(fam)
     assert set(fam["forward_returns"]) == {"+1bars", "+3bars", "+6bars", "+12bars", "+24bars"}

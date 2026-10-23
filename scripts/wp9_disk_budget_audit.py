@@ -136,8 +136,11 @@ def window_from_manifest(run_id: str) -> dict[str, Any]:
             }
             for s in sorted(
                 manifest.get("streams") or [],
-                key=lambda s: (s.get("market") or "", s.get("symbol") or "",
-                               s.get("event_type") or ""),
+                key=lambda s: (
+                    s.get("market") or "",
+                    s.get("symbol") or "",
+                    s.get("event_type") or "",
+                ),
             )
         ],
         "governance_block": (
@@ -154,7 +157,9 @@ def window_from_monitor(run_id: str) -> dict[str, Any]:
     path = LAB_ROOT / run_id / "MONITOR.jsonl"
     if not path.exists():
         raise FileNotFoundError(path)
-    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    rows = [
+        json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()
+    ]
     if len(rows) < 2:
         raise ValueError(f"{path} has {len(rows)} rows: not enough to describe a window")
     first, last = rows[0], rows[-1]
@@ -189,8 +194,9 @@ def window_from_monitor(run_id: str) -> dict[str, Any]:
         if heartbeat.exists()
         else None,
         "collector_state_bytes": (read_json(state).get("events") if state.exists() else None),
-        "collector_state_stop_reason": (read_json(state).get("stop_reason")
-                                        if state.exists() else None),
+        "collector_state_stop_reason": (
+            read_json(state).get("stop_reason") if state.exists() else None
+        ),
         "manifest_published": (FORWARD_ROOT / "manifest" / f"{run_id}.json").exists(),
     }
 
@@ -211,28 +217,35 @@ def segment_files() -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     for path in sorted(root.rglob("*.jsonl.gz")):
         rel = path.relative_to(root)
-        parts = rel.parts  # <exchange>/<market>/<symbol>/<event_type>/<YYYY-MM-DD>/<HHMMSS>.jsonl.gz
+        parts = (
+            rel.parts
+        )  # <exchange>/<market>/<symbol>/<event_type>/<YYYY-MM-DD>/<HHMMSS>.jsonl.gz
         if len(parts) < 6:
             continue
         day, name = parts[-2], parts[-1]
         try:
-            start = datetime.strptime(f"{day}T{name.split('.')[0]}", "%Y-%m-%dT%H%M%S").replace(tzinfo=UTC)
+            start = datetime.strptime(f"{day}T{name.split('.')[0]}", "%Y-%m-%dT%H%M%S").replace(
+                tzinfo=UTC
+            )
         except ValueError:
             continue
-        out.append({
-            "path": str(path.relative_to(ROOT)).replace("\\", "/"),
-            "exchange": parts[0],
-            "market": parts[1],
-            "symbol": parts[2],
-            "event_type": parts[3],
-            "window_start": start,
-            "bytes": path.stat().st_size,
-        })
+        out.append(
+            {
+                "path": str(path.relative_to(ROOT)).replace("\\", "/"),
+                "exchange": parts[0],
+                "market": parts[1],
+                "symbol": parts[2],
+                "event_type": parts[3],
+                "window_start": start,
+                "bytes": path.stat().st_size,
+            }
+        )
     return out
 
 
-def attribute(files: list[dict[str, Any]], start: datetime, end: datetime,
-              rotation_seconds: int) -> dict[str, Any]:
+def attribute(
+    files: list[dict[str, Any]], start: datetime, end: datetime, rotation_seconds: int
+) -> dict[str, Any]:
     """Sum the segments whose window the run was alive for, by class."""
     span = timedelta(seconds=rotation_seconds)
     by_class: dict[str, int] = {}
@@ -273,8 +286,9 @@ def tree_bytes(root: Path) -> dict[str, int]:
 # --------------------------------------------------------------------------- #
 
 
-def plan(rate_bytes_per_hour: float, hours: float, free_bytes: int,
-         reserve_bytes: int) -> dict[str, Any]:
+def plan(
+    rate_bytes_per_hour: float, hours: float, free_bytes: int, reserve_bytes: int
+) -> dict[str, Any]:
     """What a window of ``hours`` needs, and whether this host can pay for it."""
     required = rate_bytes_per_hour * hours
     headroom = free_bytes - reserve_bytes - required
@@ -294,10 +308,18 @@ def audit() -> dict[str, Any]:
     unsealed = window_from_monitor(UNSEALED_RUN)
 
     files = segment_files()
-    first = attribute(files, parse_ts(sealed["started_at"]), parse_ts(sealed["ended_at"]),
-                      sealed["rotation_seconds"])
-    second = attribute(files, parse_ts(unsealed["started_at"]), parse_ts(unsealed["ended_at"]),
-                       sealed["rotation_seconds"])
+    first = attribute(
+        files,
+        parse_ts(sealed["started_at"]),
+        parse_ts(sealed["ended_at"]),
+        sealed["rotation_seconds"],
+    )
+    second = attribute(
+        files,
+        parse_ts(unsealed["started_at"]),
+        parse_ts(unsealed["ended_at"]),
+        sealed["rotation_seconds"],
+    )
 
     # cross-check 1: the filesystem must agree with the sealed manifest's own counter
     # (a missing file means retention removed something, which is a finding, not noise)
@@ -306,10 +328,15 @@ def audit() -> dict[str, Any]:
     rates = {
         "sealed_window_derived": sealed["bytes_per_hour_derived"],
         "sealed_window_published": sealed["bytes_per_hour_published"],
-        "unsealed_window_filesystem": round(second["bytes"] / unsealed["duration_seconds"] * 3600.0, 3),
+        "unsealed_window_filesystem": round(
+            second["bytes"] / unsealed["duration_seconds"] * 3600.0, 3
+        ),
         "unsealed_window_monitor_root_bytes": round(
             (unsealed["last_root_bytes"] - unsealed["first_root_bytes"])
-            / max(1.0, unsealed["duration_seconds"] - 300.0) * 3600.0, 3),
+            / max(1.0, unsealed["duration_seconds"] - 300.0)
+            * 3600.0,
+            3,
+        ),
         "peak_hour_observed": round(max(first["by_hour"].values()) if first["by_hour"] else 0.0, 3),
     }
     # the rate the plan is built on: the *higher* of the two windows, because a budget
@@ -378,64 +405,70 @@ def audit() -> dict[str, Any]:
     if sealed["stopped_on_disk_budget"]:
         valve = sealed["max_total_bytes"]
         hours_to_valve = valve / rates["sealed_window_derived"]
-        findings.append({
-            "id": "WP9-DISK-01",
-            "class": "CONFIGURATION_DEFECT",
+        findings.append(
+            {
+                "id": "WP9-DISK-01",
+                "class": "CONFIGURATION_DEFECT",
+                "what": (
+                    f"window 1 was launched with a {valve / 1e6:.0f} MB collector valve while its own "
+                    f"measured rate was {rates['sealed_window_derived'] / 1e6:.2f} MB/h, so the valve "
+                    f"fills in {hours_to_valve:.1f} h: 24 h was arithmetically impossible from the "
+                    "first byte, and no code defect was involved"
+                ),
+                "evidence": [sealed["manifest"]],
+                "measured": {
+                    "rate_mb_per_hour": round(rates["sealed_window_derived"] / 1e6, 3),
+                    "valve_bytes": valve,
+                    "hours_to_valve": round(hours_to_valve, 3),
+                    "target_hours": 24.0,
+                    "shortfall_bytes": int(rates["sealed_window_derived"] * 24 - valve),
+                },
+                "bounds": "the guard did what it was told: segments sealed, manifest finalised, exit 0",
+            }
+        )
+    findings.append(
+        {
+            "id": "WP9-DISK-02",
+            "class": "UNRECORDED_TERMINATION",
             "what": (
-                f"window 1 was launched with a {valve / 1e6:.0f} MB collector valve while its own "
-                f"measured rate was {rates['sealed_window_derived'] / 1e6:.2f} MB/h, so the valve "
-                f"fills in {hours_to_valve:.1f} h: 24 h was arithmetically impossible from the "
-                "first byte, and no code defect was involved"
+                f"window 2 stopped after {unsealed['duration_hours']:.2f} h with every child RUNNING, "
+                f"{unsealed['last_child_restarts']} restarts, disk at "
+                f"{unsealed['disk_free_gb_last']} GB free and the valve only "
+                f"{unsealed['last_root_bytes'] / 1e9:.2f} GB used: nothing in the record says why, "
+                "and no manifest was sealed, so the window's data cannot be used as evidence"
             ),
-            "evidence": [sealed["manifest"]],
+            "evidence": [unsealed["monitor"]],
             "measured": {
-                "rate_mb_per_hour": round(rates["sealed_window_derived"] / 1e6, 3),
-                "valve_bytes": valve,
-                "hours_to_valve": round(hours_to_valve, 3),
-                "target_hours": 24.0,
-                "shortfall_bytes": int(rates["sealed_window_derived"] * 24 - valve),
+                "duration_hours": unsealed["duration_hours"],
+                "last_state": unsealed["last_state"],
+                "collector_stop_reason": unsealed["collector_stop_reason"],
+                "manifest_published": unsealed["manifest_published"],
+                "disk_free_gb_last": unsealed["disk_free_gb_last"],
             },
-            "bounds": "the guard did what it was told: segments sealed, manifest finalised, exit 0",
-        })
-    findings.append({
-        "id": "WP9-DISK-02",
-        "class": "UNRECORDED_TERMINATION",
-        "what": (
-            f"window 2 stopped after {unsealed['duration_hours']:.2f} h with every child RUNNING, "
-            f"{unsealed['last_child_restarts']} restarts, disk at "
-            f"{unsealed['disk_free_gb_last']} GB free and the valve only "
-            f"{unsealed['last_root_bytes'] / 1e9:.2f} GB used: nothing in the record says why, "
-            "and no manifest was sealed, so the window's data cannot be used as evidence"
-        ),
-        "evidence": [unsealed["monitor"]],
-        "measured": {
-            "duration_hours": unsealed["duration_hours"],
-            "last_state": unsealed["last_state"],
-            "collector_stop_reason": unsealed["collector_stop_reason"],
-            "manifest_published": unsealed["manifest_published"],
-            "disk_free_gb_last": unsealed["disk_free_gb_last"],
-        },
-        "bounds": "the absence of a stop record is the finding; the cause is not reconstructed",
-    })
-    findings.append({
-        "id": "WP9-DISK-03",
-        "class": "SHARED_HOST_PRESSURE",
-        "what": (
-            "free space on this host moved by far more than the lane wrote, and 94 % of the "
-            "volume is already in use by other writers, so a budget that counts only this "
-            "lane's bytes budgets for a machine that does not exist"
-        ),
-        "measured": {
-            "free_bytes_now": free_bytes,
-            "volume_total_bytes": int(usage.total),
-            "volume_used_fraction": round(usage.used / usage.total, 4),
-            "free_gb_at_window_2_start": unsealed["disk_free_gb_first"],
-            "free_gb_at_window_2_end": unsealed["disk_free_gb_last"],
-            "lane_bytes_written_window_2": unsealed["last_root_bytes"],
-            "reserve_bytes": RESERVE_BYTES,
-        },
-        "bounds": "the other writers are not attributed here; only the effect on the budget is",
-    })
+            "bounds": "the absence of a stop record is the finding; the cause is not reconstructed",
+        }
+    )
+    findings.append(
+        {
+            "id": "WP9-DISK-03",
+            "class": "SHARED_HOST_PRESSURE",
+            "what": (
+                "free space on this host moved by far more than the lane wrote, and 94 % of the "
+                "volume is already in use by other writers, so a budget that counts only this "
+                "lane's bytes budgets for a machine that does not exist"
+            ),
+            "measured": {
+                "free_bytes_now": free_bytes,
+                "volume_total_bytes": int(usage.total),
+                "volume_used_fraction": round(usage.used / usage.total, 4),
+                "free_gb_at_window_2_start": unsealed["disk_free_gb_first"],
+                "free_gb_at_window_2_end": unsealed["disk_free_gb_last"],
+                "lane_bytes_written_window_2": unsealed["last_root_bytes"],
+                "reserve_bytes": RESERVE_BYTES,
+            },
+            "bounds": "the other writers are not attributed here; only the effect on the budget is",
+        }
+    )
 
     payload = {
         "artifact": "WP9_DISK_BUDGET_AUDIT",
@@ -475,8 +508,12 @@ def audit() -> dict[str, Any]:
             "lane_total_bytes": lane_total,
             "segments_share": round(segments_bytes / lane_total, 5) if lane_total else None,
             "non_segment_overhead_bytes": overhead_bytes,
-            "non_segment_overhead_share": round(overhead_bytes / lane_total, 5) if lane_total else None,
-            "overhead_bytes_per_hour": round(overhead_bytes / combined_hours, 3) if combined_hours else None,
+            "non_segment_overhead_share": round(overhead_bytes / lane_total, 5)
+            if lane_total
+            else None,
+            "overhead_bytes_per_hour": round(overhead_bytes / combined_hours, 3)
+            if combined_hours
+            else None,
             "note": (
                 "every component is measured on disk; the overhead term of the plan is this "
                 "measurement rather than a padded percentage"
@@ -518,36 +555,50 @@ def audit() -> dict[str, Any]:
         },
         "findings": findings,
         "checks": [
-            {"check": "the sealed window's published rate reproduces from its own bytes/time",
-             "result": "PASS" if sealed["rate_reproduces"] else "FAIL"},
-            {"check": "the filesystem agrees with the sealed manifest's byte counter",
-             "result": "PASS" if fs_agrees else "FAIL"},
-            {"check": "the unsealed window is measured from segment names, not from mtimes",
-             "result": "PASS" if second["files"] else "FAIL"},
-            {"check": "no SQLite/embedded database carries market data (gzip JSONL only)",
-             "result": "PASS"},
-            {"check": "retention deleted no authoritative raw data",
-             "result": "PASS" if not retention.get("deleted") else "FAIL"},
-            {"check": "every horizon is planned at the stress rate as well as the mean",
-             "result": "PASS"},
+            {
+                "check": "the sealed window's published rate reproduces from its own bytes/time",
+                "result": "PASS" if sealed["rate_reproduces"] else "FAIL",
+            },
+            {
+                "check": "the filesystem agrees with the sealed manifest's byte counter",
+                "result": "PASS" if fs_agrees else "FAIL",
+            },
+            {
+                "check": "the unsealed window is measured from segment names, not from mtimes",
+                "result": "PASS" if second["files"] else "FAIL",
+            },
+            {
+                "check": "no SQLite/embedded database carries market data (gzip JSONL only)",
+                "result": "PASS",
+            },
+            {
+                "check": "retention deleted no authoritative raw data",
+                "result": "PASS" if not retention.get("deleted") else "FAIL",
+            },
+            {
+                "check": "every horizon is planned at the stress rate as well as the mean",
+                "result": "PASS",
+            },
         ],
         "scope": {
             "read": [
-                sealed["manifest"], unsealed["monitor"],
+                sealed["manifest"],
+                unsealed["monitor"],
                 "reports/microstructure-forward-continuous/segments/** (sizes only)",
                 str(retention_path.relative_to(ROOT)).replace("\\", "/"),
             ],
             "not_read": ["every segment's contents", "any other lane's evidence"],
-            "write": ["data/recovery/wp9/WP9_DISK_BUDGET_AUDIT.json", "data/recovery/wp9/WP9_DISK_BUDGET_AUDIT.md"],
+            "write": [
+                "data/recovery/wp9/WP9_DISK_BUDGET_AUDIT.json",
+                "data/recovery/wp9/WP9_DISK_BUDGET_AUDIT.md",
+            ],
         },
     }
 
     untested = any(c["result"] != "PASS" for c in payload["checks"])
     payload["checks_total"] = len(payload["checks"])
     payload["checks_failed"] = sum(1 for c in payload["checks"] if c["result"] != "PASS")
-    payload["verdict"] = (
-        "DISK_BUDGET_MEASURED" if not untested else "DISK_BUDGET_INCONSISTENT"
-    )
+    payload["verdict"] = "DISK_BUDGET_MEASURED" if not untested else "DISK_BUDGET_INCONSISTENT"
     return payload
 
 
@@ -607,8 +658,10 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "",
         "Recommended valve per horizon "
         "(`--collector-max-bytes`): "
-        + ", ".join(f"{h} h → {v:,} B"
-                    for h, v in payload["projections"]["recommended_collector_max_bytes"].items()),
+        + ", ".join(
+            f"{h} h → {v:,} B"
+            for h, v in payload["projections"]["recommended_collector_max_bytes"].items()
+        ),
         "",
         "## 4. Where the bytes go",
         "",
@@ -649,7 +702,9 @@ def render_markdown(payload: dict[str, Any]) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--json", action="store_true", help="print the payload and write nothing")
-    parser.add_argument("--out", default=None, help="write the payload here instead of the default path")
+    parser.add_argument(
+        "--out", default=None, help="write the payload here instead of the default path"
+    )
     parser.add_argument("--report", default=None, help="Markdown report path")
     args = parser.parse_args()
 

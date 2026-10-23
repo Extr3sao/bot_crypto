@@ -54,9 +54,7 @@ def main() -> int:
     closes_by_symbol = {s: {b.timestamp: b.close for b in bs} for s, bs in bars.items()}
     digest = corpus_digest()
 
-    universe = DynamicAssetUniverse(
-        bars, listing_times(), digest, UniverseConfig()
-    )
+    universe = DynamicAssetUniverse(bars, listing_times(), digest, UniverseConfig())
 
     dev_times = _weekly_decision_times(START_MS, 1_704_067_200_000)  # .. 2024-01-01
     dev_val_times = _weekly_decision_times(START_MS, VAL_END_MS)

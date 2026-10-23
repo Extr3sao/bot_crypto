@@ -100,13 +100,20 @@ def test_cost_is_derived_and_internally_consistent(report: dict) -> None:
     assert abs(total - float(cost["round_trip_bps"])) < 1e-6
     known = sum(float(c["value_bps"]) for c in cost["components"] if c["knowledge"] == "KNOWN")
     assert abs(known - float(cost["known_bps"])) < 1e-6
-    assert abs(float(cost["known_bps"]) + float(cost["estimated_bps"])
-               - float(cost["round_trip_bps"])) < 1e-6
-    assert float(cost["round_trip_bps"]) >= 23.79, "the cost must not be reduced below the documented floor"
+    assert (
+        abs(float(cost["known_bps"]) + float(cost["estimated_bps"]) - float(cost["round_trip_bps"]))
+        < 1e-6
+    )
+    assert float(cost["round_trip_bps"]) >= 23.79, (
+        "the cost must not be reduced below the documented floor"
+    )
     assert round(float(cost["round_trip_bps"]), 3) == 23.791
     # known_share is stored to 4 decimal places, so half a unit in the last place is the tightest
     # tolerance the artifact can support.
-    assert abs(float(cost["known_share"]) - float(cost["known_bps"]) / float(cost["round_trip_bps"])) < 5e-5
+    assert (
+        abs(float(cost["known_share"]) - float(cost["known_bps"]) / float(cost["round_trip_bps"]))
+        < 5e-5
+    )
 
 
 def test_turnover_arithmetic_uses_the_measured_cost(report: dict) -> None:
@@ -123,7 +130,9 @@ def test_turnover_arithmetic_uses_the_measured_cost(report: dict) -> None:
         tol_pct = 5e-5 + 5e-5 * n / 100.0
         assert abs(float(entry["annual_drag_bps"]) - total * n) < tol_bps, entry["label"]
         assert abs(float(entry["annual_drag_pct"]) - total * n / 100.0) < tol_pct, entry["label"]
-        assert abs(float(entry["annual_drag_stressed_pct"]) - total * n * stress / 100.0) < tol_pct, entry["label"]
+        assert (
+            abs(float(entry["annual_drag_stressed_pct"]) - total * n * stress / 100.0) < tol_pct
+        ), entry["label"]
     frequencies = [e["round_trips_per_year"] for e in cost["turnover_cost_drag"]]
     assert frequencies == sorted(frequencies)
     assert len(set(frequencies)) == len(frequencies)
@@ -143,11 +152,20 @@ def test_every_scenario_and_sensitivity_is_present(report: dict) -> None:
     assert len(cost["scenarios"]) >= 8
     assert sum(1 for s in cost["scenarios"] if s["is_admission"]) == 1
     assert [e["size_usd"] for e in cost["size_sensitivity"]] == sorted(
-        e["size_usd"] for e in cost["size_sensitivity"])
+        e["size_usd"] for e in cost["size_sensitivity"]
+    )
     regimes = {e["liquidity_regime"] for e in cost["liquidity_sensitivity"]}
     assert regimes == {"deep", "normal", "thin"}
-    thin = next(e["round_trip_bps"] for e in cost["liquidity_sensitivity"] if e["liquidity_regime"] == "thin")
-    deep = next(e["round_trip_bps"] for e in cost["liquidity_sensitivity"] if e["liquidity_regime"] == "deep")
+    thin = next(
+        e["round_trip_bps"]
+        for e in cost["liquidity_sensitivity"]
+        if e["liquidity_regime"] == "thin"
+    )
+    deep = next(
+        e["round_trip_bps"]
+        for e in cost["liquidity_sensitivity"]
+        if e["liquidity_regime"] == "deep"
+    )
     assert thin > deep
 
 
@@ -159,7 +177,9 @@ def test_root_causes_cover_all_eight_and_are_owned(report: dict) -> None:
         assert entry["owner"] in ("SOURCE", "MARKET", "CONTRACT", "CONTRACT_AND_RUNTIME"), code
         assert isinstance(entry["reason_code_hits"], int)
     counts = block["round_2_reason_counts"]
-    assert sum(c["reason_code_hits"] for c in causes.values()) == sum(int(v) for v in counts.values())
+    assert sum(c["reason_code_hits"] for c in causes.values()) == sum(
+        int(v) for v in counts.values()
+    )
     assert not block["unmapped_reason_codes"]
     assert causes["RC-5"]["owner"] == "MARKET"
 
@@ -167,8 +187,10 @@ def test_root_causes_cover_all_eight_and_are_owned(report: dict) -> None:
 def test_root_cause_review_refuses_to_infer_absence_of_alpha(report: dict) -> None:
     notes = report["rejection_root_causes"]["not_concluded"]
     assert notes
-    assert any("no profitable opportunity exists" in n.lower()
-               or "not evidence of absence" in n.lower() for n in notes)
+    assert any(
+        "no profitable opportunity exists" in n.lower() or "not evidence of absence" in n.lower()
+        for n in notes
+    )
 
 
 def test_recommendation_is_a_proposal_not_a_decision(report: dict) -> None:
@@ -195,13 +217,22 @@ def test_proposal_states_the_protocol_and_stays_inactive() -> None:
     assert "PROPOSED" in text and "NOT ACTIVATED" in text
     for pid in (f"P-{i:02d}" for i in range(1, 14)):
         assert pid in text, f"missing protocol requirement {pid}"
-    for clause in ("economic hypothesis", "point-in-time", "out-of-sample", "independent verifier",
-                   "stop rule", "next_action_policy.trigger", "tasks/roadmap.md"):
+    for clause in (
+        "economic hypothesis",
+        "point-in-time",
+        "out-of-sample",
+        "independent verifier",
+        "stop rule",
+        "next_action_policy.trigger",
+        "tasks/roadmap.md",
+    ):
         assert clause in text.lower() or clause in text, clause
 
 
 def test_catalogue_and_registry_are_consistent(report: dict) -> None:
-    registry = json.loads((REPO / "research" / "profitability" / "source_registry.json").read_text(encoding="utf-8"))
+    registry = json.loads(
+        (REPO / "research" / "profitability" / "source_registry.json").read_text(encoding="utf-8")
+    )
     audit = report["baseline_audit"]
     assert audit["catalogue"]["sources"] == len(registry["sources"])
     ids = [s["SOURCE_ID"] for s in registry["sources"]]
@@ -225,13 +256,18 @@ def test_baseline_separates_observed_from_reproduced(report: dict) -> None:
 
 
 def test_cap004b_and_campaign_are_quoted_faithfully(report: dict) -> None:
-    real = json.loads((REPO / "reports" / "cap004b" / "FINAL_REPORT.json").read_text(encoding="utf-8"))
+    real = json.loads(
+        (REPO / "reports" / "cap004b" / "FINAL_REPORT.json").read_text(encoding="utf-8")
+    )
     cap = report["baseline_audit"]["cap004b"]
     assert cap["verdict"] == real["VERDICT"]
     assert cap["sealed"] == real["SEALED"]
     assert cap["false_success"] == real["FALSE_SUCCESS"]
     manifest = json.loads(
-        (REPO / "evidence" / "real_decisions" / "CAMPAIGN_MANIFEST.json").read_text(encoding="utf-8"))
+        (REPO / "evidence" / "real_decisions" / "CAMPAIGN_MANIFEST.json").read_text(
+            encoding="utf-8"
+        )
+    )
     campaign = report["baseline_audit"]["campaign"]
     assert campaign["campaign_id"] == manifest["campaign_id"]
     assert campaign["trades_authorized"] == manifest["trades_authorized"] == 0

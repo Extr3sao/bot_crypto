@@ -37,7 +37,9 @@ def sha(path: Path) -> str | None:
 
 def tracked(path: Path) -> bool:
     rel = path.relative_to(ROOT).as_posix()
-    out = subprocess.run(["git", "ls-files", "--error-unmatch", rel], cwd=ROOT, capture_output=True, text=True)
+    out = subprocess.run(
+        ["git", "ls-files", "--error-unmatch", rel], cwd=ROOT, capture_output=True, text=True
+    )
     return out.returncode == 0
 
 
@@ -53,7 +55,11 @@ def main() -> int:
     for row in strategies.values():
         status_counts[row["status"]] = status_counts.get(row["status"], 0) + 1
     check("ledger:24_strategies", len(strategies) == 24, f"{len(strategies)} entries")
-    check("ledger:none_admitted", all(not row["admitted_for_paper"] for row in strategies.values()), "admitted_for_paper=false everywhere")
+    check(
+        "ledger:none_admitted",
+        all(not row["admitted_for_paper"] for row in strategies.values()),
+        "admitted_for_paper=false everywhere",
+    )
 
     # live registry: the exact code path the paper runtime builds
     sys.path.insert(0, str(ROOT / "src"))
@@ -66,8 +72,16 @@ def main() -> int:
     activations = {tf: sorted(registry.paper_activations(tf).keys()) for tf in ("5m", "15m", "1h")}
     map_sizes = {tf: len(registry.strategy_map(tf)) for tf in ("5m", "15m", "1h")}
     refusals_1h = [line for line in registry.describe("1h") if "refused" in line]
-    check("registry:no_paper_executable", all(not v for v in activations.values()), json.dumps(activations))
-    check("registry:paper_candidates_empty", ledger.paper_candidates() == [], "ledger exposes no paper candidates")
+    check(
+        "registry:no_paper_executable",
+        all(not v for v in activations.values()),
+        json.dumps(activations),
+    )
+    check(
+        "registry:paper_candidates_empty",
+        ledger.paper_candidates() == [],
+        "ledger exposes no paper candidates",
+    )
 
     # cost arithmetic for the operator's objective
     cost_bps = 23.353553391
@@ -99,10 +113,25 @@ def main() -> int:
         "data/storage/autonomous_paper_state.json",
     ):
         p = ROOT / rel
-        evidence_files.append({"path": rel, "exists": p.exists(), "tracked": tracked(p) if p.exists() else None, "sha256": sha(p)})
+        evidence_files.append(
+            {
+                "path": rel,
+                "exists": p.exists(),
+                "tracked": tracked(p) if p.exists() else None,
+                "sha256": sha(p),
+            }
+        )
 
-    paper_24h = json.loads((ROOT / "PAPER_DATA_24H_REPORT.json").read_text(encoding="utf-8")) if (ROOT / "PAPER_DATA_24H_REPORT.json").exists() else None
-    paper_state = json.loads((ROOT / "data" / "storage" / "paper_state.json").read_text(encoding="utf-8")) if (ROOT / "data" / "storage" / "paper_state.json").exists() else None
+    paper_24h = (
+        json.loads((ROOT / "PAPER_DATA_24H_REPORT.json").read_text(encoding="utf-8"))
+        if (ROOT / "PAPER_DATA_24H_REPORT.json").exists()
+        else None
+    )
+    paper_state = (
+        json.loads((ROOT / "data" / "storage" / "paper_state.json").read_text(encoding="utf-8"))
+        if (ROOT / "data" / "storage" / "paper_state.json").exists()
+        else None
+    )
 
     funnel = {
         "definitions": {
@@ -112,7 +141,9 @@ def main() -> int:
             "executed": "a fill recorded by the paper broker",
         },
         "current": {
-            "strategy_evaluations_per_cycle": (paper_24h or {}).get("paper", {}).get("strategies_evaluated_per_cycle"),
+            "strategy_evaluations_per_cycle": (paper_24h or {})
+            .get("paper", {})
+            .get("strategies_evaluated_per_cycle"),
             "decisions_per_cycle": (paper_24h or {}).get("paper", {}).get("decisions_per_cycle"),
             "proposals": 0,
             "risk_reviews": 0,
@@ -124,12 +155,16 @@ def main() -> int:
     if paper_state:
         funnel["current"]["open_positions_in_state"] = len(paper_state.get("open_positions", []))
         funnel["current"]["sent_intents_in_state"] = len(paper_state.get("sent_intents", []))
-        funnel["current"]["trades_today_in_risk_state"] = paper_state.get("risk_state", {}).get("trades_today")
+        funnel["current"]["trades_today_in_risk_state"] = paper_state.get("risk_state", {}).get(
+            "trades_today"
+        )
 
     audit = {
         "artifact": "RFC049_DISCOVERY2_ACTIVE_STRATEGY_STATUS",
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "head_at_run": subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip(),
+        "head_at_run": subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True
+        ).stdout.strip(),
         "method": "assembled from the tracked admission ledger, the live registry code path the runtime itself uses, and the paper lane's own reports; no process was started and nothing was executed",
         "ledger": {
             "source": "config/strategy_admission.json",
@@ -152,7 +187,9 @@ def main() -> int:
         "paper_lane": {
             "last_lab_run": {
                 "cycles": (paper_24h or {}).get("paper", {}).get("cycles"),
-                "asset_evaluations": (paper_24h or {}).get("paper", {}).get("cycles", 0) * ((paper_24h or {}).get("paper", {}).get("asset_evaluations_per_cycle") or 0) or None,
+                "asset_evaluations": (paper_24h or {}).get("paper", {}).get("cycles", 0)
+                * ((paper_24h or {}).get("paper", {}).get("asset_evaluations_per_cycle") or 0)
+                or None,
                 "no_trade_kind": (paper_24h or {}).get("paper", {}).get("no_trade_kind"),
                 "paper_trades": (paper_24h or {}).get("paper", {}).get("paper_trades"),
                 "shadow_trades": (paper_24h or {}).get("paper", {}).get("shadow_trades"),
@@ -184,8 +221,11 @@ def main() -> int:
             "assessment": "NOT_ACHIEVABLE_FROM_CURRENT_ADMITTED_PIPELINE",
             "blockers": [
                 "no admitted strategy: the admission gate admits nothing (0 of 24)",
-                "no measured family edge clears the frozen cost floor: best family gross edge is " f"{best_gross} bps/trade against a {cost_bps} bps round trip",
-                "at 3 trips/day the strategy would pay ~{:.1f}% of its stake in round-trip costs every year; the gross edge would have to average above the floor per trip".format(annual_cost_bps / 100.0),
+                "no measured family edge clears the frozen cost floor: best family gross edge is "
+                f"{best_gross} bps/trade against a {cost_bps} bps round trip",
+                "at 3 trips/day the strategy would pay ~{:.1f}% of its stake in round-trip costs every year; the gross edge would have to average above the floor per trip".format(
+                    annual_cost_bps / 100.0
+                ),
             ],
             "what_would_change_it": [
                 "a new admitted hypothesis whose measured net expectancy is positive at a cadence of several trades per day after the frozen cost model",
@@ -203,9 +243,15 @@ def main() -> int:
         "evidence_files": evidence_files,
         "checks": checks,
         "checks_failed": sum(1 for c in checks if c["result"] != "PASS"),
-        "scope": {"trading": "not performed", "processes_started": 0, "state_written_outside_discovery2": False},
+        "scope": {
+            "trading": "not performed",
+            "processes_started": 0,
+            "state_written_outside_discovery2": False,
+        },
     }
-    (D2 / "ACTIVE_STRATEGY_STATUS.json").write_text(json.dumps(audit, indent=2) + "\n", encoding="utf-8")
+    (D2 / "ACTIVE_STRATEGY_STATUS.json").write_text(
+        json.dumps(audit, indent=2) + "\n", encoding="utf-8"
+    )
 
     lines = [
         "# RFC-049 DISCOVERY 2 — ACTIVE STRATEGY STATUS (AUDIT)",
@@ -247,7 +293,11 @@ def main() -> int:
         "it remains separate from the 3-ops/day objective and is untouched by this campaign.",
     ]
     (D2 / "ACTIVE_STRATEGY_STATUS.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(json.dumps({"checks": checks, "activations": activations, "status_counts": status_counts}, indent=2))
+    print(
+        json.dumps(
+            {"checks": checks, "activations": activations, "status_counts": status_counts}, indent=2
+        )
+    )
     return 1 if audit["checks_failed"] else 0
 
 

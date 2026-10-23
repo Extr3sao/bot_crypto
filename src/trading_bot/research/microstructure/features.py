@@ -212,9 +212,7 @@ def flow_features(bars: list[MicroBar], lookback: int = 20) -> dict[str, list[fl
             ret_mom.append((bars[i].close / bars[i - 12].close - 1.0) * 10_000.0)
 
     realized_vol: list[float | None] = []
-    rets = [0.0] + [
-        (bars[i].close / bars[i - 1].close - 1.0) * 10_000.0 for i in range(1, n)
-    ]
+    rets = [0.0] + [(bars[i].close / bars[i - 1].close - 1.0) * 10_000.0 for i in range(1, n)]
     for i in range(n):
         if i + 1 < lookback:
             realized_vol.append(None)

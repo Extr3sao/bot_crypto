@@ -57,8 +57,9 @@ UNSEALED_WINDOW = "paper-lab-continuous-03"
 
 
 def git(*args: str) -> str:
-    return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True,
-                          check=False).stdout.strip()
+    return subprocess.run(
+        ["git", *args], cwd=ROOT, capture_output=True, text=True, check=False
+    ).stdout.strip()
 
 
 def fmt_utc(seconds: float | None) -> str | None:
@@ -97,11 +98,19 @@ def ci_blocker() -> dict[str, Any]:
         unpublished = int(count) if count.isdigit() else None
         files = git("diff", "--name-only", f"{upstream}..HEAD")
         unpublished_files = len([line for line in files.splitlines() if line.strip()])
-    workflows = [line for line in git("ls-tree", "-r", "--name-only", "HEAD",
-                                      ".github/workflows").splitlines() if line.strip()]
-    workflow_files_on_disk = sorted(
-        str(path.relative_to(ROOT)).replace("\\", "/")
-        for path in (ROOT / ".github" / "workflows").glob("*.yml")) if (ROOT / ".github").exists() else []
+    workflows = [
+        line
+        for line in git("ls-tree", "-r", "--name-only", "HEAD", ".github/workflows").splitlines()
+        if line.strip()
+    ]
+    workflow_files_on_disk = (
+        sorted(
+            str(path.relative_to(ROOT)).replace("\\", "/")
+            for path in (ROOT / ".github" / "workflows").glob("*.yml")
+        )
+        if (ROOT / ".github").exists()
+        else []
+    )
     gh = shutil.which("gh")
     return {
         "remote": remote,
@@ -125,8 +134,10 @@ def ci_blocker() -> dict[str, Any]:
             "a workflow run on a GitHub runner whose run id, commit SHA, runner image and exit "
             "codes are recorded in WP9_CI_EXECUTION_REPORT.json's format",
         ],
-        "not_certified_by": ("the local execution of the workflow's steps, which WP-9 ran and "
-                            "recorded: a local rehearsal is a rehearsal, never a certification"),
+        "not_certified_by": (
+            "the local execution of the workflow's steps, which WP-9 ran and "
+            "recorded: a local rehearsal is a rehearsal, never a certification"
+        ),
     }
 
 
@@ -137,15 +148,24 @@ def ci_blocker() -> dict[str, Any]:
 
 def window_forensics() -> dict[str, Any]:
     run_dir = PAPER_LAB / UNSEALED_WINDOW
-    plan = (json.loads((run_dir / "LAB_PLAN.json").read_text(encoding="utf-8"))
-            if (run_dir / "LAB_PLAN.json").exists() else {})
+    plan = (
+        json.loads((run_dir / "LAB_PLAN.json").read_text(encoding="utf-8"))
+        if (run_dir / "LAB_PLAN.json").exists()
+        else {}
+    )
     monitor = read_jsonl(run_dir / "MONITOR.jsonl")
-    heartbeat = (json.loads((run_dir / "SYSTEM_HEARTBEAT.json").read_text(encoding="utf-8"))
-                 if (run_dir / "SYSTEM_HEARTBEAT.json").exists() else {})
+    heartbeat = (
+        json.loads((run_dir / "SYSTEM_HEARTBEAT.json").read_text(encoding="utf-8"))
+        if (run_dir / "SYSTEM_HEARTBEAT.json").exists()
+        else {}
+    )
     exit_artefacts = {name: (run_dir / name).exists() for name in LAUNCHER_EXIT_ARTEFACTS}
     collector_state_path = FORWARD_STATE / f"{UNSEALED_WINDOW}.json"
-    collector_state = (json.loads(collector_state_path.read_text(encoding="utf-8"))
-                       if collector_state_path.exists() else {})
+    collector_state = (
+        json.loads(collector_state_path.read_text(encoding="utf-8"))
+        if collector_state_path.exists()
+        else {}
+    )
     stop_file = FORWARD_STATE / f"{UNSEALED_WINDOW}.stop"
 
     segments = sorted(FORWARD_ROOT.rglob("*.jsonl.gz"))
@@ -169,7 +189,7 @@ def window_forensics() -> dict[str, Any]:
             truncated.append(str(path.relative_to(ROOT)).replace("\\", "/"))
 
     last_monitor = monitor[-1] if monitor else {}
-    collector_child = ((heartbeat.get("children") or {}).get("collector") or {})
+    collector_child = (heartbeat.get("children") or {}).get("collector") or {}
     processes = heartbeat.get("processes") or {}
     collector_cmd = (processes.get("collector") or {}).get("command") or []
     valve = None
@@ -182,34 +202,44 @@ def window_forensics() -> dict[str, Any]:
     exclusions = [
         {
             "suspect": "disk exhaustion or a storage guard",
-            "excluded": bool(heartbeat.get("storage_guard_stopped") == []
-                             and (heartbeat.get("disk") or {}).get("level") == "NORMAL"),
-            "evidence": (f"free {round((heartbeat.get('disk') or {}).get('free_bytes', 0) / 1e9, 3)} GB "
-                         f"at the last heartbeat, level "
-                         f"{(heartbeat.get('disk') or {}).get('level')}, "
-                         f"storage_guard_stopped={heartbeat.get('storage_guard_stopped')}, and the "
-                         f"collector had written {(last_monitor.get('root_bytes') or 0) / 1e9:.3f} GB "
-                         f"of its {0 if valve is None else valve / 1e9:.1f} GB valve"),
+            "excluded": bool(
+                heartbeat.get("storage_guard_stopped") == []
+                and (heartbeat.get("disk") or {}).get("level") == "NORMAL"
+            ),
+            "evidence": (
+                f"free {round((heartbeat.get('disk') or {}).get('free_bytes', 0) / 1e9, 3)} GB "
+                f"at the last heartbeat, level "
+                f"{(heartbeat.get('disk') or {}).get('level')}, "
+                f"storage_guard_stopped={heartbeat.get('storage_guard_stopped')}, and the "
+                f"collector had written {(last_monitor.get('root_bytes') or 0) / 1e9:.3f} GB "
+                f"of its {0 if valve is None else valve / 1e9:.1f} GB valve"
+            ),
         },
         {
             "suspect": "a stop request through the documented stop files",
             "excluded": not stop_file.exists() and collector_state.get("stop_reason") is None,
-            "evidence": (f"no stop file at {stop_file.relative_to(ROOT)}".replace("\\", "/")
-                         + f" and the collector state records stop_reason="
-                           f"{collector_state.get('stop_reason')!r}"),
+            "evidence": (
+                f"no stop file at {stop_file.relative_to(ROOT)}".replace("\\", "/")
+                + f" and the collector state records stop_reason="
+                f"{collector_state.get('stop_reason')!r}"
+            ),
         },
         {
             "suspect": "a configured duration being reached",
             "excluded": not plan.get("duration_hours"),
-            "evidence": (f"the plan declares duration_hours={plan.get('duration_hours')} which the "
-                         f"launcher turns into max_seconds=None, i.e. 'until stopped'"),
+            "evidence": (
+                f"the plan declares duration_hours={plan.get('duration_hours')} which the "
+                f"launcher turns into max_seconds=None, i.e. 'until stopped'"
+            ),
         },
         {
             "suspect": "a crash inside the launcher",
             "excluded": not any(exit_artefacts.values()),
-            "evidence": ("the launcher writes its report, snapshot and a system daily report inside "
-                         "a try/except BaseException + finally block, so even a crash leaves them; "
-                         f"{exit_artefacts} - none exists"),
+            "evidence": (
+                "the launcher writes its report, snapshot and a system daily report inside "
+                "a try/except BaseException + finally block, so even a crash leaves them; "
+                f"{exit_artefacts} - none exists"
+            ),
         },
         {
             "suspect": "an operator Ctrl+C (KeyboardInterrupt), which the same block catches",
@@ -220,16 +250,21 @@ def window_forensics() -> dict[str, Any]:
     unexplained = [entry for entry in exclusions if not entry["excluded"]]
     return {
         "run_dir": str(run_dir.relative_to(ROOT)).replace("\\", "/"),
-        "plan": {"duration_hours": plan.get("duration_hours"),
-                 "free_disk_bytes_at_plan_time": plan.get("free_disk_bytes"),
-                 "collector_max_total_bytes": valve},
+        "plan": {
+            "duration_hours": plan.get("duration_hours"),
+            "free_disk_bytes_at_plan_time": plan.get("free_disk_bytes"),
+            "collector_max_total_bytes": valve,
+        },
         "monitor": {
             "records": len(monitor),
             "first_record_utc": last_monitor and monitor[0].get("t_iso_utc"),
             "last_record_utc": last_monitor.get("t_iso_utc"),
             "last_uptime_seconds": last_monitor.get("uptime_s"),
-            "last_uptime_hours": (round(last_monitor.get("uptime_s") / 3600.0, 4)
-                                  if last_monitor.get("uptime_s") else None),
+            "last_uptime_hours": (
+                round(last_monitor.get("uptime_s") / 3600.0, 4)
+                if last_monitor.get("uptime_s")
+                else None
+            ),
             "last_state": last_monitor.get("state"),
             "children_at_last_record": last_monitor.get("children"),
             "child_restarts_at_last_record": last_monitor.get("child_restarts"),
@@ -238,21 +273,31 @@ def window_forensics() -> dict[str, Any]:
         },
         "final_heartbeat": {
             "written_utc": fmt_utc((heartbeat.get("timestamp_ms") or 0) / 1000.0)
-            if heartbeat.get("timestamp_ms") else None,
+            if heartbeat.get("timestamp_ms")
+            else None,
             "uptime_seconds": heartbeat.get("uptime_seconds"),
             "state": heartbeat.get("state"),
             "degraded": heartbeat.get("degraded"),
             "heartbeat_write_failures": heartbeat.get("heartbeat_write_failures"),
             "storage_guard_stopped": heartbeat.get("storage_guard_stopped"),
-            "children": {name: {"state": value.get("state"), "forced_stop": value.get("forced_stop"),
-                                "exit_code": value.get("exit_code"), "restarts": value.get("restarts")}
-                         for name, value in processes.items()},
+            "children": {
+                name: {
+                    "state": value.get("state"),
+                    "forced_stop": value.get("forced_stop"),
+                    "exit_code": value.get("exit_code"),
+                    "restarts": value.get("restarts"),
+                }
+                for name, value in processes.items()
+            },
         },
-        "collector": {"state_path": str(collector_state_path.relative_to(ROOT)).replace("\\", "/"),
-                      "stop_reason": collector_state.get("stop_reason"),
-                      "events": collector_state.get("events"),
-                      "saved_at_utc": fmt_utc((collector_state.get("saved_at_ms") or 0) / 1000.0)
-                      if collector_state.get("saved_at_ms") else None},
+        "collector": {
+            "state_path": str(collector_state_path.relative_to(ROOT)).replace("\\", "/"),
+            "stop_reason": collector_state.get("stop_reason"),
+            "events": collector_state.get("events"),
+            "saved_at_utc": fmt_utc((collector_state.get("saved_at_ms") or 0) / 1000.0)
+            if collector_state.get("saved_at_ms")
+            else None,
+        },
         "last_segment": {"path": last_segment, "written_utc": fmt_utc(last_segment_mtime)},
         "truncated_tails_found_in_the_tail_of_the_root": truncated,
         "exit_artefacts_present": exit_artefacts,
@@ -264,8 +309,8 @@ def window_forensics() -> dict[str, Any]:
             "lane. It is not attributable from the repository: the candidate remains an "
             "operating-system or process-tree teardown on a shared host, and no evidence in this "
             "tree distinguishes it further"
-            if not unexplained else
-            "NOT_EXCLUDED_IN_LANE — at least one in-lane suspect survives its own test; the "
+            if not unexplained
+            else "NOT_EXCLUDED_IN_LANE — at least one in-lane suspect survives its own test; the "
             "termination may be explained by it and must not be attributed outside the lane yet"
         ),
         "consequence": (
@@ -289,12 +334,14 @@ def disk_blocker() -> dict[str, Any]:
     horizons = []
     for target in (24, 48, 72, 168):
         needed = rate * target if rate else None
-        horizons.append({
-            "hours": target,
-            "needed_gb": round(needed / 1e9, 3) if needed else None,
-            "fits_in_free_now": bool(needed and needed <= usage.free),
-            "fits_at_1p5x_stress": bool(needed and needed * 1.5 <= usage.free),
-        })
+        horizons.append(
+            {
+                "hours": target,
+                "needed_gb": round(needed / 1e9, 3) if needed else None,
+                "fits_in_free_now": bool(needed and needed <= usage.free),
+                "fits_at_1p5x_stress": bool(needed and needed * 1.5 <= usage.free),
+            }
+        )
     return {
         "free_bytes_now": usage.free,
         "free_gb_now": round(usage.free / 1e9, 3),
@@ -304,10 +351,13 @@ def disk_blocker() -> dict[str, Any]:
         "planning_rate_mb_per_hour": round(rate / 1e6, 3) if rate else None,
         "hours_affordable_now": hours,
         "horizons": horizons,
-        "rule": ("do not launch a 72 h or 168 h window while the budget cannot pay for it: the "
-                 "arithmetic is done before the launch, not discovered during it"),
-        "shared_host_note": (wp9.get("findings") or [{}])[2].get("what") if len(
-            wp9.get("findings") or []) > 2 else None,
+        "rule": (
+            "do not launch a 72 h or 168 h window while the budget cannot pay for it: the "
+            "arithmetic is done before the launch, not discovered during it"
+        ),
+        "shared_host_note": (wp9.get("findings") or [{}])[2].get("what")
+        if len(wp9.get("findings") or []) > 2
+        else None,
     }
 
 
@@ -323,7 +373,9 @@ def readiness_blocker() -> dict[str, Any]:
     function adds is the one thing that could have changed since: how many admissible
     forward hours exist now, derived from the sealed manifests alone.
     """
-    prereg = json.loads(PREREGISTRATION.read_text(encoding="utf-8")) if PREREGISTRATION.exists() else {}
+    prereg = (
+        json.loads(PREREGISTRATION.read_text(encoding="utf-8")) if PREREGISTRATION.exists() else {}
+    )
     wp9 = json.loads(WP9_READINESS.read_text(encoding="utf-8")) if WP9_READINESS.exists() else {}
     # the readiness verdict cites the campaign report; nothing here re-derives it, it re-reads it
     sealed_hours = 0.0
@@ -332,18 +384,29 @@ def readiness_blocker() -> dict[str, Any]:
         payload = json.loads(path.read_text(encoding="utf-8"))
         hours = float(payload.get("duration_seconds") or 0.0) / 3600.0
         sealed_hours += hours
-        sealed_runs.append({"run_id": payload.get("run_id"), "hours": round(hours, 4),
-                            "status": payload.get("status")})
+        sealed_runs.append(
+            {
+                "run_id": payload.get("run_id"),
+                "hours": round(hours, 4),
+                "status": payload.get("status"),
+            }
+        )
     unsealed_state = FORWARD_STATE / f"{UNSEALED_WINDOW}.json"
-    unsealed = json.loads(unsealed_state.read_text(encoding="utf-8")) if unsealed_state.exists() else {}
+    unsealed = (
+        json.loads(unsealed_state.read_text(encoding="utf-8")) if unsealed_state.exists() else {}
+    )
     m03 = (wp9.get("hypotheses") or {}).get("M-03", {})
     m07 = (wp9.get("hypotheses") or {}).get("M-07", {})
     return {
         "preregistration": {
             "path": str(PREREGISTRATION.relative_to(ROOT)).replace("\\", "/"),
             "version": prereg.get("preregistration_version"),
-            "M-03_minimum": (prereg.get("hypotheses", {}).get("M-03", {}) or {}).get("minimum_data"),
-            "M-07_minimum": (prereg.get("hypotheses", {}).get("M-07", {}) or {}).get("minimum_data"),
+            "M-03_minimum": (prereg.get("hypotheses", {}).get("M-03", {}) or {}).get(
+                "minimum_data"
+            ),
+            "M-07_minimum": (prereg.get("hypotheses", {}).get("M-07", {}) or {}).get(
+                "minimum_data"
+            ),
         },
         "admissible_forward_history": {
             "sealed_hours_from_manifests": round(sealed_hours, 6),
@@ -351,30 +414,40 @@ def readiness_blocker() -> dict[str, Any]:
             "unsealed_window": {
                 "run_id": UNSEALED_WINDOW,
                 "admissible": False,
-                "why": ("no manifest was sealed, so the window cannot be counted toward any "
-                        "pre-registered minimum; counting it would be the synthetic-history "
-                        "substitution the brief forbids"),
+                "why": (
+                    "no manifest was sealed, so the window cannot be counted toward any "
+                    "pre-registered minimum; counting it would be the synthetic-history "
+                    "substitution the brief forbids"
+                ),
                 "events_recorded": unsealed.get("events"),
             },
             "hours_added_since_wp9": 0.0,
         },
-        "M-03": {"verdict": (wp9.get("verdict") or {}).get("M-03"),
-                 "criteria_met": m03.get("criteria_met"),
-                 "criteria_not_met": m03.get("criteria_not_met"),
-                 "criteria_not_measurable": m03.get("criteria_not_measurable"),
-                 "missing": m03.get("missing"),
-                 "cost_to_close": m03.get("cost_to_close")},
-        "M-07": {"verdict": (wp9.get("verdict") or {}).get("M-07"),
-                 "criteria_met": m07.get("criteria_met"),
-                 "criteria_not_met": m07.get("criteria_not_met"),
-                 "missing": m07.get("missing"),
-                 "cost_to_close": m07.get("cost_to_close")},
+        "M-03": {
+            "verdict": (wp9.get("verdict") or {}).get("M-03"),
+            "criteria_met": m03.get("criteria_met"),
+            "criteria_not_met": m03.get("criteria_not_met"),
+            "criteria_not_measurable": m03.get("criteria_not_measurable"),
+            "missing": m03.get("missing"),
+            "cost_to_close": m03.get("cost_to_close"),
+        },
+        "M-07": {
+            "verdict": (wp9.get("verdict") or {}).get("M-07"),
+            "criteria_met": m07.get("criteria_met"),
+            "criteria_not_met": m07.get("criteria_not_met"),
+            "missing": m07.get("missing"),
+            "cost_to_close": m07.get("cost_to_close"),
+        },
         "automatic_accumulation": {
             "state": "PREPARED_NOT_AUTHORISED",
-            "what_exists": ("the collector, its retention policy and the pre-registration are in "
-                            "place; the two windows that ran show the cadence meets the bar"),
-            "what_is_missing": ("authorisation for a window long enough to close the shortfall, and "
-                                "a volume whose budget can pay for it"),
+            "what_exists": (
+                "the collector, its retention policy and the pre-registration are in "
+                "place; the two windows that ran show the cadence meets the bar"
+            ),
+            "what_is_missing": (
+                "authorisation for a window long enough to close the shortfall, and "
+                "a volume whose budget can pay for it"
+            ),
         },
     }
 
@@ -389,10 +462,18 @@ def governance_blocker() -> dict[str, Any]:
     facts: dict[str, Any] = {}
     for resolution in view.get("resolutions") or []:
         field = resolution.get("field")
-        if field in {"LIVE_TRADING", "TRADES_AUTHORIZED", "PAPER_PROMOTION",
-                     "PROFITABILITY_VERIFIED", "NEXT_CAMPAIGN", "SEALED_OOS"}:
-            facts[field] = {"effective": resolution.get("effective"),
-                            "decided_by": (resolution.get("decided_by") or {}).get("source")}
+        if field in {
+            "LIVE_TRADING",
+            "TRADES_AUTHORIZED",
+            "PAPER_PROMOTION",
+            "PROFITABILITY_VERIFIED",
+            "NEXT_CAMPAIGN",
+            "SEALED_OOS",
+        }:
+            facts[field] = {
+                "effective": resolution.get("effective"),
+                "decided_by": (resolution.get("decided_by") or {}).get("source"),
+            }
     return {
         "source": str(STATE_VIEW.relative_to(ROOT)).replace("\\", "/"),
         "status": view.get("status"),
@@ -400,15 +481,20 @@ def governance_blocker() -> dict[str, Any]:
         "invariants": view.get("invariants"),
         "advisories": [entry.get("id") for entry in view.get("advisories") or []],
         "rfc_numbering": view.get("rfc_numbering"),
-        "note": ("the flags are read from the record that already arbitrates between competing "
-                 "declarations, because re-typing them would create a second home for them"),
+        "note": (
+            "the flags are read from the record that already arbitrates between competing "
+            "declarations, because re-typing them would create a second home for them"
+        ),
     }
 
 
 def build() -> tuple[dict[str, Any], int]:
     if not FORWARD_ROOT.exists():
-        return {"artifact": "WP10_OPEN_BLOCKERS", "verdict": "BLOCKED",
-                "why": "the forward data root is missing"}, 2
+        return {
+            "artifact": "WP10_OPEN_BLOCKERS",
+            "verdict": "BLOCKED",
+            "why": "the forward data root is missing",
+        }, 2
     payload = {
         "artifact": "WP10_OPEN_BLOCKERS",
         "work_package": "WP-10 (ECONOMIC EDGE RECOVERY & EXECUTION COST DISCOVERY)",
@@ -430,22 +516,36 @@ def build() -> tuple[dict[str, Any], int]:
             "unaffected by the CI, volume and history blockers",
             "reading and re-verifying existing artefacts",
         ],
-        "verdict": ("BLOCKED for the four operational items that need publication, a longer "
-                    "window, a bigger volume or an operator decision; OPEN for offline economic "
-                    "work on data already captured"),
+        "verdict": (
+            "BLOCKED for the four operational items that need publication, a longer "
+            "window, a bigger volume or an operator decision; OPEN for offline economic "
+            "work on data already captured"
+        ),
     }
     payload["checks"] = [
-        {"check": "the CI state is measured from the repository, not restated",
-         "ok": payload["blockers"]["CI_RUNNER_CERTIFICATION"]["unpublished_commits"] is not None},
-        {"check": "no in-lane suspect survives the termination forensics",
-         "ok": not payload["blockers"]["UNRECORDED_WINDOW_TERMINATION"]["unexplained_in_lane"]},
-        {"check": "the budget verdict is arithmetic on measured numbers",
-         "ok": payload["blockers"]["VOLUME_BUDGET"]["planning_rate_bytes_per_hour"] is not None},
-        {"check": "the unsealed window is explicitly not counted as history",
-         "ok": payload["blockers"]["M03_M07_HISTORY"]["admissible_forward_history"][
-             "unsealed_window"]["admissible"] is False},
-        {"check": "governance flags come from the state view's resolution",
-         "ok": bool(payload["blockers"]["GOVERNANCE"]["resolved_flags"])},
+        {
+            "check": "the CI state is measured from the repository, not restated",
+            "ok": payload["blockers"]["CI_RUNNER_CERTIFICATION"]["unpublished_commits"] is not None,
+        },
+        {
+            "check": "no in-lane suspect survives the termination forensics",
+            "ok": not payload["blockers"]["UNRECORDED_WINDOW_TERMINATION"]["unexplained_in_lane"],
+        },
+        {
+            "check": "the budget verdict is arithmetic on measured numbers",
+            "ok": payload["blockers"]["VOLUME_BUDGET"]["planning_rate_bytes_per_hour"] is not None,
+        },
+        {
+            "check": "the unsealed window is explicitly not counted as history",
+            "ok": payload["blockers"]["M03_M07_HISTORY"]["admissible_forward_history"][
+                "unsealed_window"
+            ]["admissible"]
+            is False,
+        },
+        {
+            "check": "governance flags come from the state view's resolution",
+            "ok": bool(payload["blockers"]["GOVERNANCE"]["resolved_flags"]),
+        },
     ]
     exit_code = 0 if all(check["ok"] for check in payload["checks"]) else 3
     return payload, exit_code
@@ -481,8 +581,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "",
         f"Not certified by: {ci['not_certified_by']}.",
         "",
-        "## 2. The window that ended without a record — "
-        f"`{forensics['finding'].split(' — ')[0]}`",
+        f"## 2. The window that ended without a record — `{forensics['finding'].split(' — ')[0]}`",
         "",
         f"Run `{forensics['run_dir']}`: plan duration "
         f"`{forensics['plan']['duration_hours']}` h (which the launcher reads as 'until stopped'), "
@@ -516,8 +615,10 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "| --- | --- | --- |",
     ]
     for entry in forensics["exclusions"]:
-        lines.append(f"| {entry['suspect']} | {'yes' if entry['excluded'] else '**no**'} | "
-                     f"{entry['evidence']} |")
+        lines.append(
+            f"| {entry['suspect']} | {'yes' if entry['excluded'] else '**no**'} | "
+            f"{entry['evidence']} |"
+        )
     lines += [
         "",
         f"**Finding:** {forensics['finding']}",
@@ -533,8 +634,11 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "",
         "| horizon | needed GB | fits now | fits at 1.5x |",
         "| ---: | ---: | --- | --- |",
-        *[f"| {row['hours']} h | {row['needed_gb']} | {row['fits_in_free_now']} | "
-          f"{row['fits_at_1p5x_stress']} |" for row in disk["horizons"]],
+        *[
+            f"| {row['hours']} h | {row['needed_gb']} | {row['fits_in_free_now']} | "
+            f"{row['fits_at_1p5x_stress']} |"
+            for row in disk["horizons"]
+        ],
         "",
         f"* {disk['rule']}",
         "",
@@ -555,7 +659,8 @@ def render_markdown(payload: dict[str, Any]) -> str:
         lines.append(
             f"| {name} | {record.get('verdict')} | {record.get('criteria_met')} | "
             f"{record.get('criteria_not_met')} | {record.get('criteria_not_measurable') or 0} | "
-            f"{cost.get('hours')} h / {cost.get('gb_at_measured_rate')} GB |")
+            f"{cost.get('hours')} h / {cost.get('gb_at_measured_rate')} GB |"
+        )
     lines += [
         "",
         f"* automatic accumulation: `{readiness['automatic_accumulation']['state']}` — "
@@ -567,8 +672,10 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "",
         "| flag | effective | decided by |",
         "| --- | --- | --- |",
-        *[f"| `{flag}` | `{value['effective']}` | {value['decided_by']} |"
-          for flag, value in sorted(governance["resolved_flags"].items())],
+        *[
+            f"| `{flag}` | `{value['effective']}` | {value['decided_by']} |"
+            for flag, value in sorted(governance["resolved_flags"].items())
+        ],
         "",
         f"* advisories: {', '.join(governance['advisories'])}",
         f"* derived next free RFC number: `{governance['rfc_numbering']['next_free_derived']}`",

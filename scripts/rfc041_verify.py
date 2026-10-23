@@ -91,35 +91,79 @@ def verify() -> dict[str, Any]:
 
     # -- 1. candidate statuses (§9-§20) ---------------------------------- #
     by_id = {x["candidate_id"]: x for x in archive["candidates"]}
-    status_ok = all(by_id.get(cid, {}).get("final_status") == st for cid, st in EXPECTED_STATUSES.items())
+    status_ok = all(
+        by_id.get(cid, {}).get("final_status") == st for cid, st in EXPECTED_STATUSES.items()
+    )
     c.check("candidate_statuses_exact", status_ok, f"ids={sorted(by_id)}")
     c.check("candidate_count_is_eight", len(archive["candidates"]) == 8)
-    c.check("sc_candidate_003_not_authorized", by_id["SC-CANDIDATE-003"]["final_status"] == "NOT_AUTHORIZED")
+    c.check(
+        "sc_candidate_003_not_authorized",
+        by_id["SC-CANDIDATE-003"]["final_status"] == "NOT_AUTHORIZED",
+    )
 
     # -- 2. KPI arithmetic recomputed from the archive ------------------- #
-    hist = sum(_rank(x["evidence_level"]) >= _rank("HISTORICAL_NET_EDGE") for x in archive["candidates"])
-    exe = sum(_rank(x["evidence_level"]) >= _rank("EXECUTABLE_VALIDATED_EDGE") for x in archive["candidates"])
-    biz = sum(_rank(x["evidence_level"]) >= _rank("BUSINESS_VALIDATED_EDGE") for x in archive["candidates"])
-    c.check("kpi_historical_net_recomputed", state["kpi"]["HISTORICAL_NET_EDGE_COUNT"] == hist, f"{hist}")
-    c.check("kpi_executable_recomputed", state["kpi"]["EXECUTABLE_VALIDATED_EDGE_COUNT"] == exe, f"{exe}")
-    c.check("kpi_business_recomputed_zero", state["kpi"]["BUSINESS_VALIDATED_EDGE_COUNT"] == biz == 0)
+    hist = sum(
+        _rank(x["evidence_level"]) >= _rank("HISTORICAL_NET_EDGE") for x in archive["candidates"]
+    )
+    exe = sum(
+        _rank(x["evidence_level"]) >= _rank("EXECUTABLE_VALIDATED_EDGE")
+        for x in archive["candidates"]
+    )
+    biz = sum(
+        _rank(x["evidence_level"]) >= _rank("BUSINESS_VALIDATED_EDGE")
+        for x in archive["candidates"]
+    )
+    c.check(
+        "kpi_historical_net_recomputed",
+        state["kpi"]["HISTORICAL_NET_EDGE_COUNT"] == hist,
+        f"{hist}",
+    )
+    c.check(
+        "kpi_executable_recomputed",
+        state["kpi"]["EXECUTABLE_VALIDATED_EDGE_COUNT"] == exe,
+        f"{exe}",
+    )
+    c.check(
+        "kpi_business_recomputed_zero", state["kpi"]["BUSINESS_VALIDATED_EDGE_COUNT"] == biz == 0
+    )
     c.check("kpi_paper_zero", state["kpi"]["PAPER_CANDIDATE_COUNT"] == 0)
     c.check("kpi_forward_zero", state["kpi"]["FORWARD_PROFITABLE_COUNT"] == 0)
     c.check("kpi_live_zero", state["kpi"]["LIVE_PROFITABLE_COUNT"] == 0)
 
     # -- 3. zero active candidates / freeze active ----------------------- #
-    c.check("zero_active_candidates", state["active_candidates"] == 0 and scoreboard["active_candidates"] == 0)
-    c.check("freeze_active", state["alpha_research_freeze"] == "ACTIVE" == scoreboard["research_freeze"])
-    c.check("no_paper_candidate", scoreboard["paper_candidate_count"] == 0 and decision["answer_ready_to_trade_for_profit"] == "NO")
-    c.check("no_live_authorization", state["live_status"] == "NOT_AUTHORIZED" and state["live_capital_authorized"] == 0)
+    c.check(
+        "zero_active_candidates",
+        state["active_candidates"] == 0 and scoreboard["active_candidates"] == 0,
+    )
+    c.check(
+        "freeze_active", state["alpha_research_freeze"] == "ACTIVE" == scoreboard["research_freeze"]
+    )
+    c.check(
+        "no_paper_candidate",
+        scoreboard["paper_candidate_count"] == 0
+        and decision["answer_ready_to_trade_for_profit"] == "NO",
+    )
+    c.check(
+        "no_live_authorization",
+        state["live_status"] == "NOT_AUTHORIZED" and state["live_capital_authorized"] == 0,
+    )
     c.check("no_new_alpha_candidate", biz == 0 and state["next_alpha_rfc_allowed"] is False)
 
     # -- 4. reentry conditions present (§27-§39) ------------------------- #
     c.check("reentry_five_triggers", set(policy["triggers"]) == {"A", "B", "C", "D", "E"})
     c.check("reentry_reject_conditions_present", len(policy["reject_conditions"]) >= 9)
-    c.check("reentry_budget_frozen", policy["budget"] == {"MAX_FAMILIES": 3, "MAX_FINALISTS": 2, "MAX_IMPLEMENTED": 1})
-    c.check("reentry_gate_logic_rejects_only", reentry["selftest"]["reject_only_proposal_passed"] is False)
-    c.check("reentry_gate_logic_rejects_weak_product", reentry["selftest"]["weak_product_proposal_passed"] is False)
+    c.check(
+        "reentry_budget_frozen",
+        policy["budget"] == {"MAX_FAMILIES": 3, "MAX_FINALISTS": 2, "MAX_IMPLEMENTED": 1},
+    )
+    c.check(
+        "reentry_gate_logic_rejects_only",
+        reentry["selftest"]["reject_only_proposal_passed"] is False,
+    )
+    c.check(
+        "reentry_gate_logic_rejects_weak_product",
+        reentry["selftest"]["weak_product_proposal_passed"] is False,
+    )
     c.check("freeze_blocks_next_alpha_rfc", reentry["next_alpha_rfc_allowed_now"] is False)
     c.check("next_rfc_requires_reentry_pass", "G_BUSINESS_REENTRY" in policy["next_rfc_requires"])
 
@@ -128,17 +172,34 @@ def verify() -> dict[str, Any]:
     c.check("stale_entries_present", stale["entry_count"] >= 5)
     superseded_docs = all(
         "SUPERSEDED" in (DOCS / name).read_text(encoding="utf-8")
-        for name in ("MANAGED_FUTURES_TREND_V1.md", "SMALL_CAPITAL_STRATEGY_V1.md", "PROJECT_ECONOMIC_STATUS.md")
+        for name in (
+            "MANAGED_FUTURES_TREND_V1.md",
+            "SMALL_CAPITAL_STRATEGY_V1.md",
+            "PROJECT_ECONOMIC_STATUS.md",
+        )
     )
     c.check("stale_docs_marked_superseded", superseded_docs)
-    c.check("sc_trend_ball_right", by_id["SC-TREND-001"]["disposition_class"] == "FUTURE_DEFENSIVE_OVERLAY_CANDIDATE")
+    c.check(
+        "sc_trend_ball_right",
+        by_id["SC-TREND-001"]["disposition_class"] == "FUTURE_DEFENSIVE_OVERLAY_CANDIDATE",
+    )
     c.check("mf_trend_not_product_fit", by_id["MF-TREND-001"]["product_fit_200"] == "FAIL")
 
     # -- 6. machine-readable consistency -------------------------------- #
-    c.check("kpi_state_vs_scoreboard", state["kpi"]["BUSINESS_VALIDATED_EDGE_COUNT"] == scoreboard["business_edge_count"] == 0)
+    c.check(
+        "kpi_state_vs_scoreboard",
+        state["kpi"]["BUSINESS_VALIDATED_EDGE_COUNT"] == scoreboard["business_edge_count"] == 0,
+    )
     c.check("decision_vs_state", decision["current_decision"] == state["current_decision"])
-    c.check("state_vs_final_report", final["kpi"]["BUSINESS_VALIDATED_EDGE_COUNT"] == state["kpi"]["BUSINESS_VALIDATED_EDGE_COUNT"])
-    c.check("schema_fields_present", all(k in state for k in ("schema_version", "updated_at", "source_commit", "decision_id")))
+    c.check(
+        "state_vs_final_report",
+        final["kpi"]["BUSINESS_VALIDATED_EDGE_COUNT"]
+        == state["kpi"]["BUSINESS_VALIDATED_EDGE_COUNT"],
+    )
+    c.check(
+        "schema_fields_present",
+        all(k in state for k in ("schema_version", "updated_at", "source_commit", "decision_id")),
+    )
     c.check("decision_id_canonical", state["decision_id"] == "BUSINESS-FREEZE-2026-001")
 
     # -- 7. false success ------------------------------------------------- #
@@ -220,7 +281,6 @@ def patch_final_report(result: dict[str, Any]) -> None:
     path_md.write_text(text, encoding="utf-8")
 
 
-
 def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     result = verify()
@@ -229,14 +289,19 @@ def main() -> int:
     )
     (OUT / "RFC041_VERIFICATION.md").write_text(_render_md(result), encoding="utf-8")
     patch_final_report(result)
-    print(json.dumps({
-        "VERIFICATION_STATUS": result["VERIFICATION_STATUS"],
-        "checks_total": result["checks_total"],
-        "checks_passed": result["checks_passed"],
-        "mismatch_count": result["mismatch_count"],
-        "recomputed_kpi": result["recomputed_kpi"],
-        "FALSE_SUCCESS": result["false_success"],
-    }, indent=2))
+    print(
+        json.dumps(
+            {
+                "VERIFICATION_STATUS": result["VERIFICATION_STATUS"],
+                "checks_total": result["checks_total"],
+                "checks_passed": result["checks_passed"],
+                "mismatch_count": result["mismatch_count"],
+                "recomputed_kpi": result["recomputed_kpi"],
+                "FALSE_SUCCESS": result["false_success"],
+            },
+            indent=2,
+        )
+    )
     return 0 if result["VERIFICATION_STATUS"] == "PASS" else 1
 
 

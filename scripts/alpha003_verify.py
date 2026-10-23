@@ -226,18 +226,12 @@ class VerifiedFrame:
         out: dict[str, float | None] = {}
         if leader is not None and lag is not None:
             leader_atr = self.atr[leader].get(self.opens[index])
-            out["leader_ret_z"] = _safe_div(
-                self.window_return(leader, index, lag), leader_atr
-            )
-            out["target_ret_z"] = _safe_div(
-                self.window_return(target, index, lag), target_atr
-            )
+            out["leader_ret_z"] = _safe_div(self.window_return(leader, index, lag), leader_atr)
+            out["target_ret_z"] = _safe_div(self.window_return(target, index, lag), target_atr)
         else:
             out["leader_ret_z"] = None
             out["target_ret_z"] = None
-        target_mom = _safe_div(
-            self.window_return(target, index, RELATIVE_WINDOW), target_atr
-        )
+        target_mom = _safe_div(self.window_return(target, index, RELATIVE_WINDOW), target_atr)
         market = _safe_div(self.market_return(index, RELATIVE_WINDOW), target_atr)
         out["target_mom_z"] = target_mom
         out["market_ret_z"] = market
@@ -501,9 +495,7 @@ def main(argv: list[str] | None = None) -> int:
     frames = {
         timeframe: VerifiedFrame(
             timeframe=timeframe,
-            bars_by_symbol={
-                symbol: _price(symbol, timeframe) for symbol in a3.UNIVERSE
-            },
+            bars_by_symbol={symbol: _price(symbol, timeframe) for symbol in a3.UNIVERSE},
             context_by_symbol=context,
         )
         for timeframe in ENTRY_TIMEFRAMES
@@ -614,7 +606,10 @@ def main(argv: list[str] | None = None) -> int:
     # proven by the evaluated count being exactly the discovery count for every timeframe (the
     # per-cell N checks then pin the arithmetic on that exact set).
     rows_in_holdout = sum(
-        1 for frame in frames.values() for decision_ms in frame.decisions if decision_ms >= holdout[0]
+        1
+        for frame in frames.values()
+        for decision_ms in frame.decisions
+        if decision_ms >= holdout[0]
     )
     rows_in_validation = sum(
         1
@@ -686,9 +681,7 @@ def main(argv: list[str] | None = None) -> int:
     for cell in ordered:
         active_directions: list[int] = []
         active_forwards: list[float] = []
-        for direction, forward in zip(
-            rule_directions[cell], rule_forwards[cell], strict=True
-        ):
+        for direction, forward in zip(rule_directions[cell], rule_forwards[cell], strict=True):
             if direction is None or forward is None or direction == 0:
                 continue
             active_directions.append(int(direction))
@@ -726,7 +719,11 @@ def main(argv: list[str] | None = None) -> int:
         else 1.0
     )
     published_null = artifact["permutation_null"]
-    check("null_best_arm", published_null["best_arm"] == best_arm, f"{published_null['best_arm']} vs {best_arm}")
+    check(
+        "null_best_arm",
+        published_null["best_arm"] == best_arm,
+        f"{published_null['best_arm']} vs {best_arm}",
+    )
     check(
         "null_observed_best",
         abs(float(published_null["observed_best_bps"]) - round(observed_best, 6)) < 1e-6,
@@ -742,7 +739,10 @@ def main(argv: list[str] | None = None) -> int:
     for index, cell in enumerate(ordered):
         value = summary[cell]
         verdict = _gate_verdict(
-            value, bh_pass=bool(bh[index]), holm_pass=bool(holm[index]), p_null=p_null,
+            value,
+            bh_pass=bool(bh[index]),
+            holm_pass=bool(holm[index]),
+            p_null=p_null,
             hurdle_bps=hurdle_bps,
         )
         if verdict == "VALIDATION_CANDIDATE":
@@ -793,10 +793,7 @@ def main(argv: list[str] | None = None) -> int:
     (REPORT_DIR / "ALPHA003_VERIFICATION.md").write_text(_render(payload), encoding="utf-8")
     print(
         json.dumps(
-            {
-                key: payload[key]
-                for key in ("status", "check_count", "mismatches", "false_success")
-            },
+            {key: payload[key] for key in ("status", "check_count", "mismatches", "false_success")},
             indent=2,
         )
     )

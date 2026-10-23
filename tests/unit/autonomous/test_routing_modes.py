@@ -135,8 +135,20 @@ def test_lifecycle_override_can_pause_an_otherwise_active_strategy(tmp_path: Any
 
 
 def _two_active_strategies() -> AdmissionLedger:
-    a = ledger_payload(strategy_id="a@5m", family="ema_crossover", status="PAPER_ACTIVE", admitted=True, gross_bps=40.0)
-    b = ledger_payload(strategy_id="b@5m", family="ema_crossover", status="PAPER_ACTIVE", admitted=True, gross_bps=30.0)
+    a = ledger_payload(
+        strategy_id="a@5m",
+        family="ema_crossover",
+        status="PAPER_ACTIVE",
+        admitted=True,
+        gross_bps=40.0,
+    )
+    b = ledger_payload(
+        strategy_id="b@5m",
+        family="ema_crossover",
+        status="PAPER_ACTIVE",
+        admitted=True,
+        gross_bps=30.0,
+    )
     payload = {"_period": "unit-test-window", "strategies": {**a["strategies"], **b["strategies"]}}
     return AdmissionLedger.from_dict(payload, source_path="test-ledger.json")
 
@@ -149,7 +161,9 @@ def test_lifecycle_mode_arbitrates_portfolio_conflicts(tmp_path: Any) -> None:
         run_dir=tmp_path, ledger=_two_active_strategies(), routing_mode="LIFECYCLE"
     )
     runtime._portfolio = StrategyPortfolioManager(
-        equity=10_000.0, max_asset_exposure_pct=10.0, max_total_exposure_pct=25.0,
+        equity=10_000.0,
+        max_asset_exposure_pct=10.0,
+        max_total_exposure_pct=25.0,
         max_same_direction_per_asset=1,
     )
     summary = _run(runtime, cycles=1)

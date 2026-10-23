@@ -203,7 +203,9 @@ def compute_diagnostics(inputs: DiagnosticsInputs, *, enrich: bool = False) -> d
 
     out: dict[str, Any] = {
         "schema_version": "arp001-strategy-failure-diagnostics-v1",
-        "source_trades": str(inputs.trades.relative_to(REPO)) if inputs.trades.is_relative_to(REPO) else str(inputs.trades),
+        "source_trades": str(inputs.trades.relative_to(REPO))
+        if inputs.trades.is_relative_to(REPO)
+        else str(inputs.trades),
         "runtime_cost_bps_round_trip": inputs.runtime_cost_bps_rt,
         "research_library_cost_bps_round_trip": 12.0,
         "predeclared": {
@@ -241,7 +243,9 @@ def compute_diagnostics(inputs: DiagnosticsInputs, *, enrich: bool = False) -> d
                 "n": len(vals),
                 "mean_bps": round(statistics.fmean(vals), 3) if vals else None,
                 "median_bps": round(statistics.median(vals), 3) if vals else None,
-                "share_positive": round(sum(1 for v in vals if v > 0) / len(vals), 4) if vals else None,
+                "share_positive": round(sum(1 for v in vals if v > 0) / len(vals), 4)
+                if vals
+                else None,
             }
 
         by_asset: dict[str, list[float]] = defaultdict(list)
@@ -299,18 +303,28 @@ def compute_diagnostics(inputs: DiagnosticsInputs, *, enrich: bool = False) -> d
             "win_rate": round(len(wins) / n, 4) if n else None,
             "avg_win_usd": round(statistics.fmean(wins), 4) if wins else None,
             "avg_loss_usd": round(statistics.fmean(losses), 4) if losses else None,
-            "payoff": round(statistics.fmean(wins) / abs(statistics.fmean(losses)), 4) if wins and losses else None,
+            "payoff": round(statistics.fmean(wins) / abs(statistics.fmean(losses)), 4)
+            if wins and losses
+            else None,
             "profit_factor": round(sum(wins) / abs(sum(losses)), 4) if losses else None,
             "avg_mfe_pct": round(statistics.fmean([r["mfe_pct"] for r in frows]), 4) if n else None,
             "avg_mae_pct": round(statistics.fmean([r["mae_pct"] for r in frows]), 4) if n else None,
-            "avg_duration_min": round(statistics.fmean([r["duration_min"] for r in frows]), 2) if n else None,
-            "median_duration_min": round(statistics.median([r["duration_min"] for r in frows]), 2) if n else None,
+            "avg_duration_min": round(statistics.fmean([r["duration_min"] for r in frows]), 2)
+            if n
+            else None,
+            "median_duration_min": round(statistics.median([r["duration_min"] for r in frows]), 2)
+            if n
+            else None,
             "exit_mix": dict(by_exit),
             "concentration": _concentration(nets),
             "cost_stress": stress,
             "forward_returns": fwd,
-            "by_asset": {a: {"n": len(v), "net_usd": round(sum(v), 2)} for a, v in sorted(by_asset.items())},
-            "by_regime": {a: {"n": len(v), "net_usd": round(sum(v), 2)} for a, v in sorted(by_regime.items())},
+            "by_asset": {
+                a: {"n": len(v), "net_usd": round(sum(v), 2)} for a, v in sorted(by_asset.items())
+            },
+            "by_regime": {
+                a: {"n": len(v), "net_usd": round(sum(v), 2)} for a, v in sorted(by_regime.items())
+            },
             "trade_path": dict(path),
             "exit_quality_verdict": (
                 "EXIT_OR_TRADE_MANAGEMENT_SUSPECT"
@@ -318,8 +332,13 @@ def compute_diagnostics(inputs: DiagnosticsInputs, *, enrich: bool = False) -> d
                 else "SIGNAL_EDGE_NOT_DEMONSTRATED"
             ),
             "cost_classification": (
-                "NO_GROSS_EDGE" if (gross_exp_bps or 0) <= 0
-                else ("GROSS_EDGE_BUT_COST_KILLED" if (net_exp_bps or 0) <= 0 else "NET_POSITIVE_CANDIDATE")
+                "NO_GROSS_EDGE"
+                if (gross_exp_bps or 0) <= 0
+                else (
+                    "GROSS_EDGE_BUT_COST_KILLED"
+                    if (net_exp_bps or 0) <= 0
+                    else "NET_POSITIVE_CANDIDATE"
+                )
             ),
         }
         if enrich:
@@ -332,7 +351,8 @@ def compute_diagnostics(inputs: DiagnosticsInputs, *, enrich: bool = False) -> d
             )
             family_doc["drawdown_bps"] = _max_drawdown_bps(nets)
             family_doc["by_timeframe"] = {
-                a: {"n": len(v), "net_usd": round(sum(v), 2)} for a, v in sorted(by_timeframe.items())
+                a: {"n": len(v), "net_usd": round(sum(v), 2)}
+                for a, v in sorted(by_timeframe.items())
             }
         out["families"][fam] = family_doc
 

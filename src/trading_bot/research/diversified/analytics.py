@@ -87,9 +87,7 @@ def concentration_by_asset_and_period(trades: Sequence[TradeLike]) -> dict[str, 
     return {
         "trades": len(trades),
         "top1_trade_share": round(pos[0] / total_pos, 4) if pos and total_pos > 0 else None,
-        "top5_trade_share": round(sum(pos[:5]) / total_pos, 4)
-        if pos and total_pos > 0
-        else None,
+        "top5_trade_share": round(sum(pos[:5]) / total_pos, 4) if pos and total_pos > 0 else None,
         "top_asset_share": asset.get("top_share"),
         "distinct_assets": asset.get("keys", 0),
         "top_period_share": period.get("top_share"),
@@ -110,15 +108,11 @@ def breadth_summary(universe_sizes: Sequence[int]) -> dict[str, Any]:
     }
 
 
-def universe_size_distribution(
-    sizes_by_split: Mapping[str, Sequence[int]]
-) -> dict[str, Any]:
+def universe_size_distribution(sizes_by_split: Mapping[str, Sequence[int]]) -> dict[str, Any]:
     return {split: breadth_summary(sizes) for split, sizes in sizes_by_split.items()}
 
 
-def regime_by_day(
-    benchmark_daily: Sequence[OHLCV], *, lookback: int = 60
-) -> dict[int, str]:
+def regime_by_day(benchmark_daily: Sequence[OHLCV], *, lookback: int = 60) -> dict[int, str]:
     """Map each benchmark day to its deterministic primary regime (§25).
 
     The regime is computed from a trailing window that ends at that day (only

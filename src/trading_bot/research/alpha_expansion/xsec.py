@@ -209,7 +209,9 @@ class CrossSectionalSnapshotBuilder:
                 request, assets, excluded, min_members, "insufficient_universe", feature_time
             )
 
-        ordered = sorted(eligible, key=lambda s: (values[s], s) if request.ascending else (-values[s], s))
+        ordered = sorted(
+            eligible, key=lambda s: (values[s], s) if request.ascending else (-values[s], s)
+        )
         ranks = {symbol: i + 1 for i, symbol in enumerate(ordered)}
         return CrossSectionalSnapshot(
             decision_time=request.decision_time,

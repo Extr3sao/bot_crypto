@@ -270,7 +270,10 @@ def test_drift_is_clean_when_nothing_moved() -> None:
         (lambda m: m.update(prompt_version="MARKET_ANALYST_V9.9"), "PROMPT_DRIFT"),
         (lambda m: m.update(schema_version="TAMPERED"), "FEATURE_DRIFT"),
         (lambda m: m.update(feature_version="TAMPERED"), "FEATURE_DRIFT"),
-        (lambda m: m["cost_model"].update(round_trip_fraction=0.25), "CAMPAIGN_CONFIGURATION_DRIFT"),
+        (
+            lambda m: m["cost_model"].update(round_trip_fraction=0.25),
+            "CAMPAIGN_CONFIGURATION_DRIFT",
+        ),
         (lambda m: m["baselines"]["B"].update(version="B_ROGUE"), "CAMPAIGN_CONFIGURATION_DRIFT"),
         (lambda m: m.update(horizon="4H"), "CAMPAIGN_CONFIGURATION_DRIFT"),
         (lambda m: m["cadence"].update(decision_slot_utc_hour=0), "CAMPAIGN_CONFIGURATION_DRIFT"),
@@ -307,8 +310,7 @@ def test_cohort_of_adopts_the_legacy_pilot_without_rewriting_it() -> None:
     campaign_entry["provenance"]["campaign_id"] = cm.CAMPAIGN_ID
     assert cm.cohort_of(campaign_entry) == cm.CAMPAIGN_ID
     assert (
-        cm.cohort_of(campaign_entry, expected_model="freebuff-agent-in-context")
-        == cm.CAMPAIGN_ID
+        cm.cohort_of(campaign_entry, expected_model="freebuff-agent-in-context") == cm.CAMPAIGN_ID
     )
     assert cm.MODEL_DRIFT in cm.cohort_of(campaign_entry, expected_model="a-different-model")
 
@@ -395,16 +397,18 @@ def test_populations_stay_separate_and_a_matured_unsettled_degrades(tmp_path: Pa
     assert early["pending_decisions"] == 1
     assert early["matured_decisions"] == 0
     assert early["evaluated_decisions"] == 0
-    assert cs.campaign_status_name(
-        counters=early, chain_verified=True, drift={"status": "NO_DRIFT"}
-    ) == "RUNNING"
+    assert (
+        cs.campaign_status_name(counters=early, chain_verified=True, drift={"status": "NO_DRIFT"})
+        == "RUNNING"
+    )
 
     late = cs.campaign_counters(ledger, now=DT + 86_400)
     assert late["matured_decisions"] == 1
     assert late["matured_unsettled"] == 1
-    assert cs.campaign_status_name(
-        counters=late, chain_verified=True, drift={"status": "NO_DRIFT"}
-    ) == "DEGRADED"
+    assert (
+        cs.campaign_status_name(counters=late, chain_verified=True, drift={"status": "NO_DRIFT"})
+        == "DEGRADED"
+    )
 
 
 def test_campaign_status_vocabulary_never_promises_an_outcome() -> None:
@@ -523,9 +527,9 @@ def test_no_trade_counterfactual_is_labelled_and_never_a_pnl() -> None:
 
 
 def test_no_trade_selectivity_uses_no_trade_decisions() -> None:
-    performances = [
-        _perf(index, decision="NO_TRADE", net_return=0.0) for index in range(20)
-    ] + [_perf(100 + index, decision="LONG", net_return=0.01) for index in range(20)]
+    performances = [_perf(index, decision="NO_TRADE", net_return=0.0) for index in range(20)] + [
+        _perf(100 + index, decision="LONG", net_return=0.01) for index in range(20)
+    ]
     analysis = cs.no_trade_analysis(performances)
     assert analysis["status"] == "MEASURED"
     assert analysis["no_trade_count"] == 20
@@ -547,9 +551,9 @@ def test_selectivity_stays_insufficient_below_its_floor() -> None:
 
 
 def test_no_trade_is_not_treated_as_missing_by_the_metrics() -> None:
-    performances = [
-        _perf(index, decision="NO_TRADE", net_return=0.0) for index in range(4)
-    ] + [_perf(100 + index, decision="LONG", net_return=0.02) for index in range(4)]
+    performances = [_perf(index, decision="NO_TRADE", net_return=0.0) for index in range(4)] + [
+        _perf(100 + index, decision="LONG", net_return=0.02) for index in range(4)
+    ]
     metrics = cs.campaign_metrics(performances)
     assert metrics["distribution"]["no_trade_count"] == 4
     assert metrics["distribution"]["no_trade_rate"] == pytest.approx(0.5)
@@ -577,15 +581,17 @@ def test_scorecard_records_the_assignment_digest_and_moves_with_the_set() -> Non
     performances = [_perf(index) for index in range(4)]
     first = asc.alpha_scorecard(performances)
     again = asc.alpha_scorecard(performances)
-    assert first["comparators"][do.BASELINE_ID_RANDOM_MATCHED]["assignment_digest"] == (
-        again["comparators"][do.BASELINE_ID_RANDOM_MATCHED]["assignment_digest"]
+    assert (
+        first["comparators"][do.BASELINE_ID_RANDOM_MATCHED]["assignment_digest"]
+        == (again["comparators"][do.BASELINE_ID_RANDOM_MATCHED]["assignment_digest"])
     )
     assert first["comparators"][do.BASELINE_ID_RANDOM_MATCHED]["seed"] == asc.RANDOM_BASELINE_SEED
     assert first["gate"]["conclusion"] == asc.CONCLUSION_INSUFFICIENT_SAMPLE
 
     grown = asc.alpha_scorecard([*performances, _perf(99)])
-    assert grown["comparators"][do.BASELINE_ID_RANDOM_MATCHED]["assignment_digest"] != (
-        first["comparators"][do.BASELINE_ID_RANDOM_MATCHED]["assignment_digest"]
+    assert (
+        grown["comparators"][do.BASELINE_ID_RANDOM_MATCHED]["assignment_digest"]
+        != (first["comparators"][do.BASELINE_ID_RANDOM_MATCHED]["assignment_digest"])
     )
 
 
@@ -594,7 +600,9 @@ def test_scorecard_records_the_assignment_digest_and_moves_with_the_set() -> Non
 # --------------------------------------------------------------------------- #
 
 
-def _checkpoint_payload(checkpoint: int, performances: list[do.DecisionPerformance]) -> dict[str, Any]:
+def _checkpoint_payload(
+    checkpoint: int, performances: list[do.DecisionPerformance]
+) -> dict[str, Any]:
     return cr.build_checkpoint_payload(
         checkpoint=checkpoint,
         performances=performances,
@@ -620,7 +628,9 @@ def test_checkpoint_is_written_once_and_refuses_another_population(tmp_path: Pat
     again = cr.write_checkpoint(tmp_path, _checkpoint_payload(20, [_perf(i) for i in range(20)]))
     assert again["status"] == "ALREADY_EXISTS"
 
-    different = cr.write_checkpoint(tmp_path, _checkpoint_payload(20, [_perf(i) for i in range(21)]))
+    different = cr.write_checkpoint(
+        tmp_path, _checkpoint_payload(20, [_perf(i) for i in range(21)])
+    )
     assert different["status"] == "CHECKPOINT_CONFLICT"
     assert different["existing_decision_set_hash"] == first["decision_set_hash"]
     assert cr.read_checkpoint(tmp_path, 20)["n_evaluated"] == 20
@@ -697,7 +707,10 @@ def test_a_second_instance_is_refused_while_the_lease_is_live(tmp_path: Path) ->
 
     assert lock.renew(now=DT + 10)["status"] == "RENEWED"
     assert lock.release()["status"] == "RELEASED"
-    assert cl.CampaignLock(tmp_path, campaign_id=cm.CAMPAIGN_ID).acquire(now=DT)["status"] == "ACQUIRED"
+    assert (
+        cl.CampaignLock(tmp_path, campaign_id=cm.CAMPAIGN_ID).acquire(now=DT)["status"]
+        == "ACQUIRED"
+    )
 
 
 def test_a_stale_lease_is_reclaimed_after_a_crash(tmp_path: Path) -> None:

@@ -169,9 +169,7 @@ def sma(values: list[float | None] | tuple[float | None, ...], window: int) -> l
     return out
 
 
-def precompute_sma(
-    dataset: Dataset, window: int = SMA_WINDOW
-) -> dict[str, list[float | None]]:
+def precompute_sma(dataset: Dataset, window: int = SMA_WINDOW) -> dict[str, list[float | None]]:
     """Compute the SMA of every symbol once (O(N) per symbol)."""
     return {sym: sma(dataset.closes[sym], window) for sym in dataset.symbols}
 
@@ -201,8 +199,20 @@ def _utc_year_month(ts_ms: int) -> tuple[int, int]:
             year += 1
             continue
         break
-    month_lengths = (31, 29 if (year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)) else 28,
-                     31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+    month_lengths = (
+        31,
+        29 if (year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)) else 28,
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+    )
     month = 1
     for mlen in month_lengths:
         if days < mlen:
@@ -417,9 +427,7 @@ def simulate_absolute_momentum(
                     if q * price < min_position_notional:
                         q = 0.0
                     target_qty[sym] = q
-                traded = sum(
-                    abs(target_qty[s] - qty[s]) * px.get(s, 0.0) for s in dataset.symbols
-                )
+                traded = sum(abs(target_qty[s] - qty[s]) * px.get(s, 0.0) for s in dataset.symbols)
                 cost = traded * cost_rate
                 invested = sum(target_qty[s] * px.get(s, 0.0) for s in dataset.symbols)
                 if invested + cost > equity:
@@ -430,9 +438,7 @@ def simulate_absolute_momentum(
                     )
                     cost = traded * cost_rate
                     invested = sum(target_qty[s] * px.get(s, 0.0) for s in dataset.symbols)
-                n_changed = sum(
-                    1 for s in dataset.symbols if abs(target_qty[s] - qty[s]) > 1e-12
-                )
+                n_changed = sum(1 for s in dataset.symbols if abs(target_qty[s] - qty[s]) > 1e-12)
                 held = sum(1 for s in dataset.symbols if target_qty[s] > 0.0)
                 result.max_positions_held = max(result.max_positions_held, held)
                 result.mean_positions_held += (held - result.mean_positions_held) / (
@@ -457,9 +463,7 @@ def simulate_absolute_momentum(
         result.dates_ms.append(axis[gi - lo])
         result.equity.append(equity_now)
         if equity_now > 0.0:
-            gross_notional = sum(
-                qty[s] * (dataset.closes[s][gi] or 0.0) for s in dataset.symbols
-            )
+            gross_notional = sum(qty[s] * (dataset.closes[s][gi] or 0.0) for s in dataset.symbols)
             cash_w_sum += max(0.0, 1.0 - gross_notional / equity_now)
             gross_w_sum += gross_notional / equity_now
             n_marks += 1

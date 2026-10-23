@@ -215,9 +215,9 @@ def test_passive_benchmark_reuses_a_predeclared_mapping() -> None:
     assert outcome.reason == "BENCHMARK=BINANCE:BTCUSDT"
     # Mapping the asset to itself is buy-and-hold exposure, flagged equivalent.
     assert outcome.economically_equivalent is True
-    assert ab.passive_benchmark_equals_buy_and_hold(
-        asset="BINANCE:BTCUSDT", mapping=mapping
-    ) is True
+    assert (
+        ab.passive_benchmark_equals_buy_and_hold(asset="BINANCE:BTCUSDT", mapping=mapping) is True
+    )
 
 
 def test_passive_benchmark_mapping_without_prices_is_unavailable() -> None:
@@ -382,13 +382,17 @@ def test_baseline_ids_match_the_canonical_producer_set() -> None:
 # --------------------------------------------------------------------------- #
 
 REPO = Path(__file__).resolve().parents[3]
-HAS_CAP002_ARTIFACTS = (REPO / "reports" / "agentic-spike-cap002" / "CAP002_VERIFICATION.json").is_file()
+HAS_CAP002_ARTIFACTS = (
+    REPO / "reports" / "agentic-spike-cap002" / "CAP002_VERIFICATION.json"
+).is_file()
 
 
 @pytest.mark.skipif(not HAS_CAP002_ARTIFACTS, reason="CAP-002 dry run not generated yet")
 def test_dry_run_verification_passed() -> None:
     verification = json.loads(
-        (REPO / "reports" / "agentic-spike-cap002" / "CAP002_VERIFICATION.json").read_text(encoding="utf-8")
+        (REPO / "reports" / "agentic-spike-cap002" / "CAP002_VERIFICATION.json").read_text(
+            encoding="utf-8"
+        )
     )
     assert verification["status"] == "PASS"
     assert verification["mismatches"] == 0
@@ -399,7 +403,9 @@ def test_dry_run_verification_passed() -> None:
 @pytest.mark.skipif(not HAS_CAP002_ARTIFACTS, reason="CAP-002 dry run not generated yet")
 def test_dry_run_never_presents_synthetic_data_as_real() -> None:
     outcome = json.loads(
-        (REPO / "reports" / "agentic-spike-cap002" / "CAP002_OUTCOME_RECORD.json").read_text(encoding="utf-8")
+        (REPO / "reports" / "agentic-spike-cap002" / "CAP002_OUTCOME_RECORD.json").read_text(
+            encoding="utf-8"
+        )
     )
     assert outcome["source"] == "SYNTHETIC_FIXTURE"
     assert outcome["counts_toward_pilot"] is False

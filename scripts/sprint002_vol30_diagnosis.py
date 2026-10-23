@@ -69,7 +69,8 @@ def load() -> list[dict[str, Any]]:
                     "duration_min": _f(r["duration_min"]),
                     # CSV gross is already after 1 bp/side slippage -> the pure
                     # price move adds the 2 bps round trip back.
-                    "price_move_bps": _f(r["gross"]) / notional * 1e4 + SPRINT001_SLIP_BPS_ROUND_TRIP,
+                    "price_move_bps": _f(r["gross"]) / notional * 1e4
+                    + SPRINT001_SLIP_BPS_ROUND_TRIP,
                     "sim_gross_bps": _f(r["gross"]) / notional * 1e4,
                 }
             )
@@ -179,9 +180,7 @@ def horizon_counterfactual(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "mean_bps": round(float(np.mean(arr)), 2),
             "median_bps": round(float(np.median(arr)), 2),
             "win_rate": round(float(np.count_nonzero(arr > 0)) / arr.shape[0], 4),
-            "net_of_certified_cost_bps": round(
-                float(np.mean(arr)) - L.CERTIFIED_ROUND_TRIP_BPS, 2
-            ),
+            "net_of_certified_cost_bps": round(float(np.mean(arr)) - L.CERTIFIED_ROUND_TRIP_BPS, 2),
         }
     return out
 
@@ -496,7 +495,13 @@ def main() -> int:
     ]
     md = L.OUT_DIR / "VOLATILITY_30M_DIAGNOSIS.md"
     md.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(json.dumps({"discovery": d, "validation": v, "holdout": h, "counterfactual": hc}, indent=2, default=str))
+    print(
+        json.dumps(
+            {"discovery": d, "validation": v, "holdout": h, "counterfactual": hc},
+            indent=2,
+            default=str,
+        )
+    )
     return 0
 
 

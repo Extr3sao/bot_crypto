@@ -75,57 +75,65 @@ def sealed_history() -> dict[str, Any]:
     manifests = []
     for path in sorted(MANIFEST_DIR.glob("*.json")):
         manifest = read(path)
-        manifests.append({
-            "path": str(path.relative_to(ROOT)).replace("\\", "/"),
-            "run_id": manifest.get("run_id"),
-            "hours": round(float(manifest.get("duration_seconds") or 0) / 3600.0, 6),
-            "status": manifest.get("status"),
-            "continuity": manifest.get("continuity"),
-            "started_at": manifest.get("started_at"),
-            "ended_at": manifest.get("ended_at"),
-            "gaps_unrecoverable": sum(
-                1 for gap in manifest.get("gaps") or [] if not gap.get("recovered")
-            ),
-            "longest_unrecoverable_gap_seconds": round(
-                max(
-                    [float(gap.get("duration_ms") or 0) / 1000.0
-                     for gap in manifest.get("gaps") or [] if not gap.get("recovered")],
-                    default=0.0,
+        manifests.append(
+            {
+                "path": str(path.relative_to(ROOT)).replace("\\", "/"),
+                "run_id": manifest.get("run_id"),
+                "hours": round(float(manifest.get("duration_seconds") or 0) / 3600.0, 6),
+                "status": manifest.get("status"),
+                "continuity": manifest.get("continuity"),
+                "started_at": manifest.get("started_at"),
+                "ended_at": manifest.get("ended_at"),
+                "gaps_unrecoverable": sum(
+                    1 for gap in manifest.get("gaps") or [] if not gap.get("recovered")
                 ),
-                3,
-            ),
-            "data_lost_gap_seconds": float(
-                (manifest.get("integrity") or {}).get("data_lost_gap_seconds") or 0.0
-            ),
-            "streams": {
-                f"{s['market']}|{s['symbol']}|{s['event_type']}": {
-                    "events": s.get("events"),
-                    "gaps": s.get("gaps"),
-                    "bytes": s.get("bytes"),
-                }
-                for s in manifest.get("streams") or []
-            },
-            "book_health_final": {
-                key: value.get("health") for key, value in (manifest.get("book_health") or {}).items()
-            },
-            "crossed_book_events": sum(
-                int((value.get("counters") or {}).get("crossed_book_events") or 0)
-                for value in (manifest.get("book_health") or {}).values()
-            ),
-            "books": len(manifest.get("book_health") or {}),
-        })
+                "longest_unrecoverable_gap_seconds": round(
+                    max(
+                        [
+                            float(gap.get("duration_ms") or 0) / 1000.0
+                            for gap in manifest.get("gaps") or []
+                            if not gap.get("recovered")
+                        ],
+                        default=0.0,
+                    ),
+                    3,
+                ),
+                "data_lost_gap_seconds": float(
+                    (manifest.get("integrity") or {}).get("data_lost_gap_seconds") or 0.0
+                ),
+                "streams": {
+                    f"{s['market']}|{s['symbol']}|{s['event_type']}": {
+                        "events": s.get("events"),
+                        "gaps": s.get("gaps"),
+                        "bytes": s.get("bytes"),
+                    }
+                    for s in manifest.get("streams") or []
+                },
+                "book_health_final": {
+                    key: value.get("health")
+                    for key, value in (manifest.get("book_health") or {}).items()
+                },
+                "crossed_book_events": sum(
+                    int((value.get("counters") or {}).get("crossed_book_events") or 0)
+                    for value in (manifest.get("book_health") or {}).values()
+                ),
+                "books": len(manifest.get("book_health") or {}),
+            }
+        )
     hours = sum(item["hours"] for item in manifests)
     # a stream key is ``<market>|<symbol>|<event_type>``, and not every symbol is an asset:
     # the manifest also carries venue-level rows. Only a quoted pair is an asset, and the
     # code the pre-registration names is the base, so both are normalised here rather than
     # compared as strings.
-    symbols = sorted({
-        symbol
-        for item in manifests
-        for key in item["streams"]
-        for symbol in [key.split("|")[1]]
-        if symbol.endswith("USDT") and len(symbol) > 4
-    })
+    symbols = sorted(
+        {
+            symbol
+            for item in manifests
+            for key in item["streams"]
+            for symbol in [key.split("|")[1]]
+            if symbol.endswith("USDT") and len(symbol) > 4
+        }
+    )
     assets = sorted({symbol[: -len("USDT")] for symbol in symbols})
     checkpoints = sum(
         item["streams"].get(key, {}).get("events") or 0
@@ -154,7 +162,7 @@ def sealed_history() -> dict[str, Any]:
         ),
         "data_lost_gap_seconds": sum(item["data_lost_gap_seconds"] for item in manifests),
         "rule": "a window is history only once its manifest exists; raw segments of an "
-                "unfinished window are collected_but_unsealed and are never counted",
+        "unfinished window are collected_but_unsealed and are never counted",
     }
 
 
@@ -176,8 +184,15 @@ def unsealed_history() -> dict[str, Any]:
     }
 
 
-def criterion(identifier: str, requirement: str, observed: Any, met: str,
-              shortfall: Any = None, unit: str | None = None, why: str | None = None) -> dict[str, Any]:
+def criterion(
+    identifier: str,
+    requirement: str,
+    observed: Any,
+    met: str,
+    shortfall: Any = None,
+    unit: str | None = None,
+    why: str | None = None,
+) -> dict[str, Any]:
     return {
         "criterion": identifier,
         "requirement": requirement,
@@ -189,8 +204,9 @@ def criterion(identifier: str, requirement: str, observed: Any, met: str,
     }
 
 
-def evaluate(preregistration: dict[str, Any], history: dict[str, Any],
-             rates: dict[str, Any]) -> dict[str, Any]:
+def evaluate(
+    preregistration: dict[str, Any], history: dict[str, Any], rates: dict[str, Any]
+) -> dict[str, Any]:
     hypotheses = preregistration["hypotheses"]
     hours = history["sealed_hours"]
     rate = float(rates["planning_rate_bytes_per_hour"])
@@ -335,11 +351,11 @@ def evaluate(preregistration: dict[str, Any], history: dict[str, Any],
             "criteria_total": len(m03_rows),
             "criteria_met": sum(1 for row in m03_rows if row["result"] == MET),
             "criteria_not_met": sum(1 for row in m03_rows if row["result"] == NOT_MET),
-            "criteria_not_measurable": sum(1 for row in m03_rows if row["result"] == NOT_MEASURABLE),
+            "criteria_not_measurable": sum(
+                1 for row in m03_rows if row["result"] == NOT_MEASURABLE
+            ),
             "ready": False,
-            "missing": [
-                row for row in m03_rows if row["result"] == NOT_MET
-            ],
+            "missing": [row for row in m03_rows if row["result"] == NOT_MET],
             "cost_to_close": cost(max(72.0, m03["forward_book_hours"])),
             "cost_why": (
                 "the book window is the binding criterion at 24 h, but DEV/VAL/OOS needs "
@@ -354,7 +370,9 @@ def evaluate(preregistration: dict[str, Any], history: dict[str, Any],
             "criteria_total": len(m07_rows),
             "criteria_met": sum(1 for row in m07_rows if row["result"] == MET),
             "criteria_not_met": sum(1 for row in m07_rows if row["result"] == NOT_MET),
-            "criteria_not_measurable": sum(1 for row in m07_rows if row["result"] == NOT_MEASURABLE),
+            "criteria_not_measurable": sum(
+                1 for row in m07_rows if row["result"] == NOT_MEASURABLE
+            ),
             "ready": False,
             "missing": [row for row in m07_rows if row["result"] == NOT_MET],
             "cost_to_close": cost(m07["open_interest_days"] * 24.0),
@@ -371,7 +389,9 @@ def campaign_declaration(campaign: dict[str, Any], history: dict[str, Any]) -> d
     m07 = campaign["preregistered_readiness_criteria"]["m07_open_interest_price"]
     return {
         "source": CAMPAIGN_REPORT,
-        "m03_criteria": campaign["preregistered_readiness_criteria"]["m03_order_book_microstructure"],
+        "m03_criteria": campaign["preregistered_readiness_criteria"][
+            "m03_order_book_microstructure"
+        ],
         "m07_criteria": m07,
         "m03_gate_result": campaign["preregistered_gate_results"]["m03"],
         "m07_gate_result": campaign["preregistered_gate_results"]["m07"],
@@ -439,7 +459,7 @@ def audit() -> dict[str, Any]:
                 "preregistered_at": preregistration["preregistered_at"],
                 "rule": preregistration["_rule"],
                 "state": "M-PREREG-V1 is the bar this audit evaluates; it cannot be lowered "
-                         "retroactively by its own rule",
+                "retroactively by its own rule",
             },
             "campaign": CAMPAIGN_REPORT,
             "observed": "sealed manifests only",
@@ -456,7 +476,7 @@ def audit() -> dict[str, Any]:
                 "deterministic": replay.get("deterministic"),
                 "internet_access": replay.get("internet_access"),
                 "why": "the replay gate both hypotheses share is satisfied for the window that "
-                       "exists; it is not the gate that blocks them",
+                "exists; it is not the gate that blocks them",
             },
             "retention_and_preservation": {
                 "path": str(RETENTION.relative_to(ROOT)).replace("\\", "/"),
@@ -465,7 +485,7 @@ def audit() -> dict[str, Any]:
                 ),
                 "preservation_policy": retention.get("preservation_policy"),
                 "why": "M-03/M-07 must survive compaction before raw may be deleted, so the "
-                       "aggregate tiers are the mechanism that makes a long capture affordable",
+                "aggregate tiers are the mechanism that makes a long capture affordable",
             },
             "crossed_book_events": history["crossed_book_events"],
             "data_lost_gap_seconds": history["data_lost_gap_seconds"],
@@ -485,25 +505,34 @@ def audit() -> dict[str, Any]:
         },
         "campaign": campaign_declaration(campaign, history),
         "checks": [
-            {"check": "only sealed windows are counted as history",
-             "result": "PASS" if all(m["status"] for m in history["manifests"]) else "FAIL"},
-            {"check": "the unsealed window is reported and excluded",
-             "result": "PASS" if unsealed["usable_as_evidence"] is False else "FAIL"},
-            {"check": "no threshold was changed by this audit",
-             "result": "PASS"},
-            {"check": "a criterion the evidence cannot answer is NOT_MEASURABLE, not MET",
-             "result": "PASS"},
-            {"check": "the two pre-registrations are reported separately, not merged",
-             "result": "PASS"},
-            {"check": "each hypothesis's missing history is costed in hours and bytes",
-             "result": "PASS"},
+            {
+                "check": "only sealed windows are counted as history",
+                "result": "PASS" if all(m["status"] for m in history["manifests"]) else "FAIL",
+            },
+            {
+                "check": "the unsealed window is reported and excluded",
+                "result": "PASS" if unsealed["usable_as_evidence"] is False else "FAIL",
+            },
+            {"check": "no threshold was changed by this audit", "result": "PASS"},
+            {
+                "check": "a criterion the evidence cannot answer is NOT_MEASURABLE, not MET",
+                "result": "PASS",
+            },
+            {
+                "check": "the two pre-registrations are reported separately, not merged",
+                "result": "PASS",
+            },
+            {
+                "check": "each hypothesis's missing history is costed in hours and bytes",
+                "result": "PASS",
+            },
         ],
         "verdict": {
             "M-03": "NOT_READY",
             "M-07": "NOT_READY",
             "researcher_ready": False,
             "why": "the infrastructure works and the cadence meets the bar; the history does not "
-                   "exist yet, and no sample may be synthesised to fill it",
+            "exist yet, and no sample may be synthesised to fill it",
         },
     }
 
@@ -527,8 +556,11 @@ def render_markdown(payload: dict[str, Any]) -> str:
         f"* sealed: **{history['sealed_hours']:.4f} h** "
         f"({history['sealed_days']:.4f} days, {history['sealed_segments_of_one_day']} whole-day "
         f"segment(s)) from {len(history['manifests'])} manifest(s)",
-        "* pairs captured: " + ", ".join(history["symbols_captured"])
-        + " (assets " + ", ".join(history["assets_captured"]) + ")",
+        "* pairs captured: "
+        + ", ".join(history["symbols_captured"])
+        + " (assets "
+        + ", ".join(history["assets_captured"])
+        + ")",
         f"* book checkpoints: {history['book_checkpoints']} · OI samples: {history['oi_samples']} · "
         f"crossed books: {history['crossed_book_events']} · longest unrecovered gap: "
         f"{history['longest_unrecoverable_gap_seconds']} s",

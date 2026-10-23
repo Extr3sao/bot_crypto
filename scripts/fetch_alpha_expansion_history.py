@@ -129,8 +129,12 @@ def main() -> None:
         raw = fetch_klines(sym, START_MS, END_MS)
         bars = [
             {
-                "ts": k[0], "open": float(k[1]), "high": float(k[2]),
-                "low": float(k[3]), "close": float(k[4]), "volume": float(k[5]),
+                "ts": k[0],
+                "open": float(k[1]),
+                "high": float(k[2]),
+                "low": float(k[3]),
+                "close": float(k[4]),
+                "volume": float(k[5]),
             }
             for k in raw
         ]
@@ -142,18 +146,25 @@ def main() -> None:
             path = Path(OUT) / f"{sym}_{year}.json"
             path.write_text(json.dumps(ybars), encoding="utf-8")
             files[str(year)] = {
-                "file": path.name, "bars": len(ybars),
+                "file": path.name,
+                "bars": len(ybars),
                 "sha256": _sha256_file(path),
-                "first_ts": ybars[0]["ts"], "last_ts": ybars[-1]["ts"],
+                "first_ts": ybars[0]["ts"],
+                "last_ts": ybars[-1]["ts"],
             }
         all_bars.extend(bars)
         audit = _audit(all_bars)
         manifest["symbols"][sym] = {
-            "source": SOURCE, "symbol": sym, "timeframe": INTERVAL,
+            "source": SOURCE,
+            "symbol": sym,
+            "timeframe": INTERVAL,
             "download_time_utc": manifest["downloaded_utc"],
-            "first_ts": audit["first_ts"], "last_ts": audit["last_ts"],
-            "bars": audit["bars"], "expected_bars": audit["expected_bars"],
-            "gaps": audit["gaps"], "duplicates": audit["duplicates"],
+            "first_ts": audit["first_ts"],
+            "last_ts": audit["last_ts"],
+            "bars": audit["bars"],
+            "expected_bars": audit["expected_bars"],
+            "gaps": audit["gaps"],
+            "duplicates": audit["duplicates"],
             "files": files,
             "year_bars": {y: len(b) for y, b in sorted(by_year.items())},
         }

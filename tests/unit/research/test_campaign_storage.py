@@ -56,7 +56,9 @@ def _load_runner() -> Any:
     return module
 
 
-def _cycle_record(cycle: int, *, day: str = "2026-10-07", errors: list | None = None) -> dict[str, Any]:
+def _cycle_record(
+    cycle: int, *, day: str = "2026-10-07", errors: list | None = None
+) -> dict[str, Any]:
     return {
         "cycle": cycle,
         "campaign_id": "CAP004-REAL-DECISIONS-V1",
@@ -70,7 +72,13 @@ def _cycle_record(cycle: int, *, day: str = "2026-10-07", errors: list | None = 
         "counters": {"evaluated_decisions": 0, "sealed_decisions": 4, "pending_decisions": 4},
         "chain": {"status": "INTACT"},
         "drift": {"status": "NO_DRIFT"},
-        "verify": {"status": "PASS", "passed": 192, "total": 192, "mismatches": 0, "false_success": 0},
+        "verify": {
+            "status": "PASS",
+            "passed": 192,
+            "total": 192,
+            "mismatches": 0,
+            "false_success": 0,
+        },
         "errors": list(errors or []),
     }
 
@@ -137,17 +145,9 @@ def test_journal_is_bounded_over_a_thousand_noop_cycles(
 
 def test_noop_cycle_writes_only_operational_minimum(tmp_path: Path) -> None:
     """§32: a cycle that seals/settles/evaluates nothing is small."""
-    before = sum(
-        path.stat().st_size
-        for path in tmp_path.rglob("*")
-        if path.is_file()
-    )
+    before = sum(path.stat().st_size for path in tmp_path.rglob("*") if path.is_file())
     cr.write_cycle_record(tmp_path, _cycle_record(1))
-    after = sum(
-        path.stat().st_size
-        for path in tmp_path.rglob("*")
-        if path.is_file()
-    )
+    after = sum(path.stat().st_size for path in tmp_path.rglob("*") if path.is_file())
     assert after - before <= MAX_BYTES_PER_NOOP_CYCLE
 
 
@@ -215,7 +215,9 @@ def test_daily_projection_stays_bounded_across_a_full_day(tmp_path: Path) -> Non
 
 def test_daily_projection_counts_deltas_and_keeps_failure_codes(tmp_path: Path) -> None:
     cr.write_cycle_record(tmp_path, _cycle_record(1))
-    cr.write_cycle_record(tmp_path, _cycle_record(2, errors=[{"code": "DATA_BLOCKED", "detail": "x"}]))
+    cr.write_cycle_record(
+        tmp_path, _cycle_record(2, errors=[{"code": "DATA_BLOCKED", "detail": "x"}])
+    )
     payload = cr.daily_report(
         day="2026-10-07",
         ledger=_StubLedger(),
@@ -342,7 +344,10 @@ def test_guard_refuses_new_decisions_only_when_critical(tmp_path: Path) -> None:
 
 def test_growth_rate_is_reported_only_when_it_is_stable() -> None:
     assert ds.growth_rate([])["status"] == "UNKNOWN"
-    stable = [ds.GrowthSample(timestamp=1_791_388_800 + day * 86_400, bytes=day * 100 * 86_400) for day in range(6)]
+    stable = [
+        ds.GrowthSample(timestamp=1_791_388_800 + day * 86_400, bytes=day * 100 * 86_400)
+        for day in range(6)
+    ]
     measured = ds.growth_rate(stable)
     assert measured["status"] == "MEASURED"
     assert measured["bytes_per_day"] == pytest.approx(100 * 86_400, rel=1e-6)
@@ -358,7 +363,9 @@ def test_growth_rate_is_reported_only_when_it_is_stable() -> None:
 
 def test_estimate_days_to_threshold_is_none_without_a_rate() -> None:
     assert (
-        ds.estimate_days_to_threshold(free_bytes=10**12, threshold_bytes=10**9, growth_bytes_per_day=None)
+        ds.estimate_days_to_threshold(
+            free_bytes=10**12, threshold_bytes=10**9, growth_bytes_per_day=None
+        )
         is None
     )
     assert ds.estimate_days_to_threshold(
@@ -374,16 +381,27 @@ def test_estimate_days_to_threshold_is_none_without_a_rate() -> None:
 
 def test_transition_events_are_exactly_once_per_transition() -> None:
     report = {"free_bytes": 1, "free_gib": 0.0, "warning_free_bytes": 2, "critical_free_bytes": 3}
-    first = ds.transition_event(previous_status=ds.HEALTHY, status=ds.WARNING, report=report, timestamp=10)
+    first = ds.transition_event(
+        previous_status=ds.HEALTHY, status=ds.WARNING, report=report, timestamp=10
+    )
     assert first is not None and first["event"] == "DISK_WARNING"
-    repeat = ds.transition_event(previous_status=ds.WARNING, status=ds.WARNING, report=report, timestamp=20)
+    repeat = ds.transition_event(
+        previous_status=ds.WARNING, status=ds.WARNING, report=report, timestamp=20
+    )
     assert repeat is None
-    critical = ds.transition_event(previous_status=ds.WARNING, status=ds.CRITICAL, report=report, timestamp=30)
+    critical = ds.transition_event(
+        previous_status=ds.WARNING, status=ds.CRITICAL, report=report, timestamp=30
+    )
     assert critical is not None and critical["event"] == "DISK_CRITICAL"
-    recovered = ds.transition_event(previous_status=ds.CRITICAL, status=ds.HEALTHY, report=report, timestamp=40)
+    recovered = ds.transition_event(
+        previous_status=ds.CRITICAL, status=ds.HEALTHY, report=report, timestamp=40
+    )
     assert recovered is not None and recovered["event"] == "DISK_RECOVERED"
     assert (
-        ds.transition_event(previous_status=ds.HEALTHY, status=ds.HEALTHY, report=report, timestamp=50) is None
+        ds.transition_event(
+            previous_status=ds.HEALTHY, status=ds.HEALTHY, report=report, timestamp=50
+        )
+        is None
     )
 
 
@@ -398,7 +416,8 @@ def test_guard_forecast_uses_the_measured_rate(tmp_path: Path) -> None:
     assert rate["status"] in {"MEASURED", "VOLATILE"}
     if rate["status"] == "MEASURED":
         assert report["estimated_days_to_warning"] == pytest.approx(
-            max(0.0, (report["free_bytes"] - ds.HEALTHY_FREE_BYTES) / rate["bytes_per_day"]), abs=0.01
+            max(0.0, (report["free_bytes"] - ds.HEALTHY_FREE_BYTES) / rate["bytes_per_day"]),
+            abs=0.01,
         )
 
 
@@ -415,7 +434,9 @@ def test_storage_sample_measures_the_campaign_tree(tmp_path: Path) -> None:
     ledger_root.mkdir(parents=True)
     (report_root / "blob.json").write_bytes(b"x" * 1234)
     (ledger_root / "decisions.jsonl").write_bytes(b"y" * 10)
-    sample = runner.storage_sample(report_root=report_root, ledger_root=ledger_root, now=1_791_388_800)
+    sample = runner.storage_sample(
+        report_root=report_root, ledger_root=ledger_root, now=1_791_388_800
+    )
     assert sample["reports_cap004_bytes"] == 1234
     assert sample["evidence_bytes"] == 10
     assert sample["repo_bytes"] == 1244
@@ -426,7 +447,9 @@ def test_storage_sample_measures_the_campaign_tree(tmp_path: Path) -> None:
 def test_storage_samples_are_a_bounded_ring_buffer(tmp_path: Path) -> None:
     runner = _load_runner()
     for index in range(runner.STORAGE_SAMPLE_LIMIT + 5):
-        samples = runner.append_storage_sample(tmp_path, {"timestamp": index, "reports_cap004_bytes": index})
+        samples = runner.append_storage_sample(
+            tmp_path, {"timestamp": index, "reports_cap004_bytes": index}
+        )
     assert len(samples) == runner.STORAGE_SAMPLE_LIMIT
     assert samples[-1]["timestamp"] == runner.STORAGE_SAMPLE_LIMIT + 4
     assert len(runner.load_storage_samples(tmp_path)) == runner.STORAGE_SAMPLE_LIMIT
@@ -456,7 +479,9 @@ def test_forecast_never_spans_a_certified_migration(tmp_path: Path) -> None:
     archive = tmp_path / "archive" / "legacy-20261007T1556Z"
     archive.mkdir(parents=True)
     (archive / runner.MIGRATION_MANIFEST_FILENAME).write_text(
-        json.dumps({"migration_version": "CAP004C_STORAGE_MIGRATION_V1", "timestamp": start + 1800}),
+        json.dumps(
+            {"migration_version": "CAP004C_STORAGE_MIGRATION_V1", "timestamp": start + 1800}
+        ),
         encoding="utf-8",
     )
     assert runner.storage_discontinuities(tmp_path) == start + 1800

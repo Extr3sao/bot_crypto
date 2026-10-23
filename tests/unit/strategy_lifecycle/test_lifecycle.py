@@ -66,7 +66,9 @@ def test_active_degrades_when_health_degrades() -> None:
 def test_shadow_with_insufficient_samples_does_not_promote() -> None:
     c = StrategyLifecycleController(policy=POLICY)
     d = c.evaluate(
-        _inputs(LifecycleState.SHADOW, medium=cell(strategy_id="mom", sample_count=5, regime="TREND_UP"))
+        _inputs(
+            LifecycleState.SHADOW, medium=cell(strategy_id="mom", sample_count=5, regime="TREND_UP")
+        )
     )
     assert d.to_state is LifecycleState.SHADOW
     assert RationaleCode.INSUFFICIENT_EVIDENCE.value in d.reason_codes

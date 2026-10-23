@@ -94,7 +94,9 @@ def load(path: Path) -> Any:
 
 
 def canonical(payload: Any) -> str:
-    return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str)
+    return json.dumps(
+        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str
+    )
 
 
 def sha256_text(text: str) -> str:
@@ -133,16 +135,28 @@ def main() -> int:
     producer_text = producer_path.read_text(encoding="utf-8") if producer_path.is_file() else ""
     check("producer reuses the frozen evaluator", "incremental_edge" in producer_text)
     check("producer imports the frozen RFC-039 SMA", "small_capital_v1" in producer_text)
-    check("producer declares all four canonical ids", all(bid in producer_text for bid in BASELINE_IDS))
+    check(
+        "producer declares all four canonical ids",
+        all(bid in producer_text for bid in BASELINE_IDS),
+    )
     trend_hits = [token for token in FORBIDDEN_TREND_TOKENS if re.search(token, producer_text)]
     check("producer contains no alternative window / EMA", trend_hits == [], str(trend_hits))
-    code_hits = [pattern for pattern in FORBIDDEN_CODE_PATTERNS if re.search(pattern, producer_text)]
+    code_hits = [
+        pattern for pattern in FORBIDDEN_CODE_PATTERNS if re.search(pattern, producer_text)
+    ]
     check("producer contains no forbidden code pattern", code_hits == [], str(code_hits))
-    check("SMA_WINDOW is the canonical 200 via RFC-039", "SMA_WINDOW" in producer_text and "sma(" in producer_text)
+    check(
+        "SMA_WINDOW is the canonical 200 via RFC-039",
+        "SMA_WINDOW" in producer_text and "sma(" in producer_text,
+    )
 
     # --- A / B arithmetic from the written artifacts -------------------------
     by_id = {entry["baseline_id"]: entry for entry in baselines["baselines"]}
-    check("all four canonical baselines were produced", set(by_id) == set(BASELINE_IDS), str(sorted(by_id)))
+    check(
+        "all four canonical baselines were produced",
+        set(by_id) == set(BASELINE_IDS),
+        str(sorted(by_id)),
+    )
     cash = by_id["A_NO_TRADE_CASH"]
     check("A cash exposure is zero", cash["exposure"] == 0.0)
     check("A cash gross is zero", cash["gross_return"] == 0.0)
@@ -154,8 +168,14 @@ def main() -> int:
     exit_ = outcome["exit_reference"]
     expected_gross = exit_ / entry - 1.0
     buy_hold = by_id["B_BUY_AND_HOLD"]
-    check("B gross equals exit/entry - 1 (exact window)", approx(buy_hold["gross_return"], expected_gross))
-    check("B net equals gross minus cost", approx(buy_hold["net_return"], buy_hold["gross_return"] - buy_hold["cost"]))
+    check(
+        "B gross equals exit/entry - 1 (exact window)",
+        approx(buy_hold["gross_return"], expected_gross),
+    )
+    check(
+        "B net equals gross minus cost",
+        approx(buy_hold["net_return"], buy_hold["gross_return"] - buy_hold["cost"]),
+    )
     check("B pays a positive round trip", buy_hold["cost"] > 0.0)
 
     # --- C is the canonical SMA(200) with honest unavailable paths -----------
@@ -163,7 +183,10 @@ def main() -> int:
     check("C is available from sufficient synthetic history", trend["available"] is True)
     check("C exposure is binary", trend["exposure"] in (0.0, 1.0))
     if trend["exposure"] == 1.0:
-        check("C long nets gross minus cost like B", approx(trend["net_return"], trend["gross_return"] - trend["cost"]))
+        check(
+            "C long nets gross minus cost like B",
+            approx(trend["net_return"], trend["gross_return"] - trend["cost"]),
+        )
     else:
         check("C cash nets exactly zero", trend["net_return"] == 0.0 and trend["cost"] == 0.0)
 
@@ -185,8 +208,14 @@ def main() -> int:
 
     # --- evaluator wiring ----------------------------------------------------
     edge_labels = {edge["evaluator_label"] for edge in outcome["incremental_edges"]}
-    check("edges only use labels the frozen evaluator accepts", edge_labels.issubset(set(DECLARED_EVALUATOR_BASELINES)), str(edge_labels))
-    check("no edge is produced for the unavailable baseline", len(outcome["incremental_edges"]) == 3)
+    check(
+        "edges only use labels the frozen evaluator accepts",
+        edge_labels.issubset(set(DECLARED_EVALUATOR_BASELINES)),
+        str(edge_labels),
+    )
+    check(
+        "no edge is produced for the unavailable baseline", len(outcome["incremental_edges"]) == 3
+    )
     for edge in outcome["incremental_edges"]:
         expected_edge = edge["agent_outcome"] - edge["baseline_outcome"] - edge["cost"]
         check(
@@ -194,7 +223,10 @@ def main() -> int:
             approx(edge["edge"], expected_edge),
             str(edge),
         )
-        check(f"edge uses zero extra cost for {edge['baseline_id']} (cost already net)", edge["cost"] == 0.0)
+        check(
+            f"edge uses zero extra cost for {edge['baseline_id']} (cost already net)",
+            edge["cost"] == 0.0,
+        )
 
     # --- immutability and separation ----------------------------------------
     record = decision["record"]
@@ -202,20 +234,42 @@ def main() -> int:
     recomputed = sha256_text(canonical(sealed))
     check("sealed decision hash recomputes", recomputed == record["decision_hash"])
     check("outcome links to the seal by hash", outcome["decision_hash"] == record["decision_hash"])
-    check("outcome links to the seal by derived id", outcome["decision_id"] == "DEC-" + record["decision_hash"][:16])
-    check("outcome carries no sealed-record internals", "agent_output" not in outcome and "critic_output" not in outcome)
-    check("immutability: seal verifies after the outcome", immutability["record_verified_after_outcome"] is True)
-    check("immutability: hash unchanged by the outcome", immutability["hash_unchanged_by_outcome"] is True)
-    check("immutability: same inputs give the same hash", immutability["same_inputs_same_hash"] is True)
-    check("immutability: a mutation changes the hash", immutability["mutation_changes_hash"] is True)
+    check(
+        "outcome links to the seal by derived id",
+        outcome["decision_id"] == "DEC-" + record["decision_hash"][:16],
+    )
+    check(
+        "outcome carries no sealed-record internals",
+        "agent_output" not in outcome and "critic_output" not in outcome,
+    )
+    check(
+        "immutability: seal verifies after the outcome",
+        immutability["record_verified_after_outcome"] is True,
+    )
+    check(
+        "immutability: hash unchanged by the outcome",
+        immutability["hash_unchanged_by_outcome"] is True,
+    )
+    check(
+        "immutability: same inputs give the same hash",
+        immutability["same_inputs_same_hash"] is True,
+    )
+    check(
+        "immutability: a mutation changes the hash", immutability["mutation_changes_hash"] is True
+    )
     check("immutability: a mutated record is detected", immutability["mutation_detected"] is True)
 
     # --- synthetic provenance and counters ----------------------------------
-    check("decision artefact is synthetic", decision["source"] == "SYNTHETIC_FIXTURE" and decision["synthetic"] is True)
+    check(
+        "decision artefact is synthetic",
+        decision["source"] == "SYNTHETIC_FIXTURE" and decision["synthetic"] is True,
+    )
     check("no LLM ran", decision["llm_invoked"] is False and outcome["llm_invoked"] is False)
     check("no real market data", outcome["real_market_data"] is False)
     check("no real agent decision", outcome["agent_decision_real"] is False)
-    check("synthetic outcome does not count toward the pilot", outcome["counts_toward_pilot"] is False)
+    check(
+        "synthetic outcome does not count toward the pilot", outcome["counts_toward_pilot"] is False
+    )
     check("REAL_SEALED_DECISIONS = 0", report["real_sealed_decisions"] == 0)
     check("VALID_PILOT_DECISIONS = 0", report["valid_pilot_decisions"] == 0)
     check("G_TV_CONTEXT = NOT_VERIFIED", report["g_tv_context"] == "NOT_VERIFIED")
@@ -232,8 +286,13 @@ def main() -> int:
         text = runbook.read_text(encoding="utf-8")
         check("runbook names the MCP endpoint", "https://mcp.tradingview.com/mcp" in text)
         check("runbook names OAuth 2.1", "OAuth 2.1" in text)
-        check("runbook forbids tokens in the repo", "must not" in text.lower() or "never" in text.lower())
-        check("runbook is one page or less", len(text.splitlines()) <= 60, str(len(text.splitlines())))
+        check(
+            "runbook forbids tokens in the repo",
+            "must not" in text.lower() or "never" in text.lower(),
+        )
+        check(
+            "runbook is one page or less", len(text.splitlines()) <= 60, str(len(text.splitlines()))
+        )
 
     # --- economic state untouched -------------------------------------------
     economic = load(DOCS / "ECONOMIC_STATE.json")

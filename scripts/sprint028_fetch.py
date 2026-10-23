@@ -59,8 +59,18 @@ SPOT_KLINES_BASE = "https://data.binance.vision/data/spot/monthly/klines"
 FUNDING_BASE = "https://data.binance.vision/data/futures/um/monthly/fundingRate"
 
 KLINES_COLUMNS = (
-    "open_time", "open", "high", "low", "close", "volume", "close_time",
-    "quote_volume", "count", "taker_buy_volume", "taker_buy_quote_volume", "ignore",
+    "open_time",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "close_time",
+    "quote_volume",
+    "count",
+    "taker_buy_volume",
+    "taker_buy_quote_volume",
+    "ignore",
 )
 FUNDING_COLUMNS = ("calc_time", "funding_interval_hours", "last_funding_rate")
 
@@ -68,6 +78,7 @@ FUNDING_COLUMNS = ("calc_time", "funding_interval_hours", "last_funding_rate")
 # ---------------------------------------------------------------------------
 # http helpers
 # ---------------------------------------------------------------------------
+
 
 def _http_get(url: str, timeout: float = 40.0, retries: int = 3) -> bytes | None:
     last: Exception | None = None
@@ -109,6 +120,7 @@ def _month_iter(start: date, end: date) -> list[str]:
 # spot klines
 # ---------------------------------------------------------------------------
 
+
 def fetch_spot_asset(symbol: str, start: date, end: date) -> dict[str, Any]:
     rows: list[list[str]] = []
     missing: list[str] = []
@@ -126,7 +138,7 @@ def fetch_spot_asset(symbol: str, start: date, end: date) -> dict[str, Any]:
     return {"symbol": symbol, "rows": rows, "missing_months": missing}
 
 
-US_THRESHOLD = 10**14   # a millisecond epoch is ~1.7e12; a microsecond epoch ~1.7e15
+US_THRESHOLD = 10**14  # a millisecond epoch is ~1.7e12; a microsecond epoch ~1.7e15
 
 
 def canonicalize_spot_klines(rows: list[list[str]]) -> dict[str, NDArray[Any]]:
@@ -137,18 +149,20 @@ def canonicalize_spot_klines(rows: list[list[str]]) -> dict[str, NDArray[Any]]:
     raw value is normalised here and the unit era histogram is recorded so the
     change is visible, never silently mixed.
     """
-    start_ms = int(datetime(COMMON_START.year, COMMON_START.month, COMMON_START.day,
-                            tzinfo=UTC).timestamp() * 1000)
-    end_ms = int(datetime(COMMON_END.year, COMMON_END.month, COMMON_END.day,
-                          tzinfo=UTC).timestamp() * 1000)
+    start_ms = int(
+        datetime(COMMON_START.year, COMMON_START.month, COMMON_START.day, tzinfo=UTC).timestamp()
+        * 1000
+    )
+    end_ms = int(
+        datetime(COMMON_END.year, COMMON_END.month, COMMON_END.day, tzinfo=UTC).timestamp() * 1000
+    )
     seen: dict[int, tuple[float, float, float, float, float]] = {}
     unit_hist: dict[str, int] = {}
     us_days: set[str] = set()
     for r in rows:
         try:
             raw = int(r[0])
-            o, h, lo, c, v = (float(r[1]), float(r[2]), float(r[3]),
-                              float(r[4]), float(r[5]))
+            o, h, lo, c, v = (float(r[1]), float(r[2]), float(r[3]), float(r[4]), float(r[5]))
         except (ValueError, IndexError):
             continue
         if raw >= US_THRESHOLD:
@@ -162,17 +176,24 @@ def canonicalize_spot_klines(rows: list[list[str]]) -> dict[str, NDArray[Any]]:
         if start_ms <= t <= end_ms + 86_400_000:
             seen[t] = (o, h, lo, c, v)
     ts = np.array(sorted(seen), dtype=np.int64)
-    arrs = {k: np.array([seen[t][i] for t in ts], dtype=np.float64)
-            for i, k in enumerate(("open", "high", "low", "close", "volume"))}
-    return {"open_time_ms": ts} | arrs | {
-        "_unit_hist": np.array([json.dumps(unit_hist)]),
-        "_first_us_day": np.array([min(us_days) if us_days else ""]),
+    arrs = {
+        k: np.array([seen[t][i] for t in ts], dtype=np.float64)
+        for i, k in enumerate(("open", "high", "low", "close", "volume"))
     }
+    return (
+        {"open_time_ms": ts}
+        | arrs
+        | {
+            "_unit_hist": np.array([json.dumps(unit_hist)]),
+            "_first_us_day": np.array([min(us_days) if us_days else ""]),
+        }
+    )
 
 
 # ---------------------------------------------------------------------------
 # funding rate
 # ---------------------------------------------------------------------------
+
 
 def fetch_funding_asset(symbol: str, start: date, end: date) -> dict[str, Any]:
     rows: list[list[str]] = []
@@ -193,7 +214,7 @@ def fetch_funding_asset(symbol: str, start: date, end: date) -> dict[str, Any]:
 
 def canonicalize_funding(rows: list[list[str]]) -> dict[str, NDArray[Any]]:
     """PIT-canonicalize the funding archive (§6)."""
-    seen: dict[int, tuple[float, float]] = {}   # payment_time -> (interval_h, rate)
+    seen: dict[int, tuple[float, float]] = {}  # payment_time -> (interval_h, rate)
     for r in rows:
         try:
             t = int(r[0])
@@ -215,10 +236,10 @@ def canonicalize_funding(rows: list[list[str]]) -> dict[str, NDArray[Any]]:
         interval_h[i] = ih
         rate_arr[i] = rr
         ms = int(ih * 3600 * 1000)
-        obs[i] = t - ms                # observation_time = period start
-        period_end[i] = t              # funding_period end
-        known[i] = t                   # final rate only known at payment time
-        avail[i] = t                   # available for signals at decisions >= t
+        obs[i] = t - ms  # observation_time = period start
+        period_end[i] = t  # funding_period end
+        known[i] = t  # final rate only known at payment time
+        avail[i] = t  # available for signals at decisions >= t
     return {
         "funding_time_ms": ts,
         "observation_time_ms": obs,
@@ -234,6 +255,7 @@ def canonicalize_funding(rows: list[list[str]]) -> dict[str, NDArray[Any]]:
 # persistence
 # ---------------------------------------------------------------------------
 
+
 def _save_npz(path: Path, cols: dict[str, NDArray[Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(path, **cols)
@@ -244,8 +266,7 @@ def main() -> None:
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
     audit: dict[str, Any] = {
-        "window": {"common_start": COMMON_START.isoformat(),
-                   "common_end": COMMON_END.isoformat()},
+        "window": {"common_start": COMMON_START.isoformat(), "common_end": COMMON_END.isoformat()},
         "assets": list(ASSETS),
         "spot_source": SPOT_KLINES_BASE + "/{symbol}/5m/{symbol}-5m-{YYYY-MM}.zip",
         "funding_source": FUNDING_BASE + "/{symbol}/{symbol}-fundingRate-{YYYY-MM}.zip",
@@ -288,14 +309,22 @@ def main() -> None:
             "rows": int(fc["funding_time_ms"].shape[0]),
             "missing_months": f["missing_months"],
             "intervals_hours": intervals,
-            "first_payment_ms": int(fc["funding_time_ms"][0]) if fc["funding_time_ms"].size else None,
-            "last_payment_ms": int(fc["funding_time_ms"][-1]) if fc["funding_time_ms"].size else None,
+            "first_payment_ms": int(fc["funding_time_ms"][0])
+            if fc["funding_time_ms"].size
+            else None,
+            "last_payment_ms": int(fc["funding_time_ms"][-1])
+            if fc["funding_time_ms"].size
+            else None,
         }
-        print(f"[fetch028] funding {sym}: rows={fc['funding_time_ms'].shape[0]} "
-              f"intervals={intervals}", flush=True)
+        print(
+            f"[fetch028] funding {sym}: rows={fc['funding_time_ms'].shape[0]} "
+            f"intervals={intervals}",
+            flush=True,
+        )
 
     (CARRY_DIR / "_fetch_source_audit.json").write_text(
-        json.dumps(audit, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8")
+        json.dumps(audit, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8"
+    )
     print("[fetch028] done", flush=True)
 
 

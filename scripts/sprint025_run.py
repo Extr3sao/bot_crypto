@@ -28,26 +28,76 @@ HOLD_BARS = 16
 MIN_TRADES = L.MIN_TRADES
 
 CORE_HYPOTHESES: list[dict[str, Any]] = [
-    {"id": "H-ORTHO-01", "family": "basis_reversion", "feature": "basis_z", "cond": "VOL",
-     "statement": "extreme standardised basis during a certified vol event reverts (fade the sign)"},
-    {"id": "H-ORTHO-02", "family": "basis_reversion", "feature": "basis", "cond": "VOL",
-     "statement": "extreme raw basis level during a vol event reverts"},
-    {"id": "H-ORTHO-03", "family": "basis_change", "feature": "basis_diff", "cond": "VOL",
-     "statement": "a basis jump during a vol event fades"},
-    {"id": "H-ORTHO-04", "family": "taker_persistence", "feature": "taker_persist", "cond": "VOL",
-     "statement": "persistent aggressor imbalance during a vol event reverts"},
-    {"id": "H-ORTHO-05", "family": "taker_imbalance", "feature": "taker_imbalance", "cond": "VOL",
-     "statement": "one-bar aggressor imbalance during a vol event reverts"},
-    {"id": "H-ORTHO-06", "family": "funding_reversion", "feature": "funding_z", "cond": "VOL",
-     "statement": "extreme funding during a vol event reverts (Part B sign flipped -> expected fail)"},
-    {"id": "H-ORTHO-07", "family": "basis_reversion_ablation", "feature": "basis_z", "cond": "ALL",
-     "statement": "basis reversion WITHOUT the volatility condition (ablation A)"},
-    {"id": "H-ORTHO-08", "family": "taker_reversion_ablation", "feature": "taker_persist", "cond": "ALL",
-     "statement": "taker persistence reversion WITHOUT the volatility condition (ablation A)"},
-    {"id": "H-ORTHO-09", "family": "interaction_vol_basis", "feature": "basis_z", "cond": "VOL",
-     "statement": "interaction: vol shock x basis (targets basis only where volatility expands)"},
-    {"id": "H-ORTHO-10", "family": "interaction_vol_taker", "feature": "taker_persist", "cond": "VOL",
-     "statement": "interaction: vol shock x taker persistence"},
+    {
+        "id": "H-ORTHO-01",
+        "family": "basis_reversion",
+        "feature": "basis_z",
+        "cond": "VOL",
+        "statement": "extreme standardised basis during a certified vol event reverts (fade the sign)",
+    },
+    {
+        "id": "H-ORTHO-02",
+        "family": "basis_reversion",
+        "feature": "basis",
+        "cond": "VOL",
+        "statement": "extreme raw basis level during a vol event reverts",
+    },
+    {
+        "id": "H-ORTHO-03",
+        "family": "basis_change",
+        "feature": "basis_diff",
+        "cond": "VOL",
+        "statement": "a basis jump during a vol event fades",
+    },
+    {
+        "id": "H-ORTHO-04",
+        "family": "taker_persistence",
+        "feature": "taker_persist",
+        "cond": "VOL",
+        "statement": "persistent aggressor imbalance during a vol event reverts",
+    },
+    {
+        "id": "H-ORTHO-05",
+        "family": "taker_imbalance",
+        "feature": "taker_imbalance",
+        "cond": "VOL",
+        "statement": "one-bar aggressor imbalance during a vol event reverts",
+    },
+    {
+        "id": "H-ORTHO-06",
+        "family": "funding_reversion",
+        "feature": "funding_z",
+        "cond": "VOL",
+        "statement": "extreme funding during a vol event reverts (Part B sign flipped -> expected fail)",
+    },
+    {
+        "id": "H-ORTHO-07",
+        "family": "basis_reversion_ablation",
+        "feature": "basis_z",
+        "cond": "ALL",
+        "statement": "basis reversion WITHOUT the volatility condition (ablation A)",
+    },
+    {
+        "id": "H-ORTHO-08",
+        "family": "taker_reversion_ablation",
+        "feature": "taker_persist",
+        "cond": "ALL",
+        "statement": "taker persistence reversion WITHOUT the volatility condition (ablation A)",
+    },
+    {
+        "id": "H-ORTHO-09",
+        "family": "interaction_vol_basis",
+        "feature": "basis_z",
+        "cond": "VOL",
+        "statement": "interaction: vol shock x basis (targets basis only where volatility expands)",
+    },
+    {
+        "id": "H-ORTHO-10",
+        "family": "interaction_vol_taker",
+        "feature": "taker_persist",
+        "cond": "VOL",
+        "statement": "interaction: vol shock x taker persistence",
+    },
 ]
 
 FEATURES = ("basis_z", "basis", "basis_diff", "taker_persist", "taker_imbalance")
@@ -66,17 +116,19 @@ def registry_payload() -> dict[str, Any]:
         for tf in TFS:
             for z in Z_THRS:
                 n += 1
-                variants.append({
-                    "experiment_id": f"EXP-S003-{n:04d}",
-                    "hypothesis_id": hyp["id"],
-                    "family": hyp["family"],
-                    "feature": hyp["feature"],
-                    "condition": hyp["cond"],
-                    "z_thr": z,
-                    "timeframe": tf,
-                    "direction": "contrarian (IC<0)",
-                    "exit": {"target": TARGET_MULT, "stop": STOP_MULT, "hold": HOLD_BARS},
-                })
+                variants.append(
+                    {
+                        "experiment_id": f"EXP-S003-{n:04d}",
+                        "hypothesis_id": hyp["id"],
+                        "family": hyp["family"],
+                        "feature": hyp["feature"],
+                        "condition": hyp["cond"],
+                        "z_thr": z,
+                        "timeframe": tf,
+                        "direction": "contrarian (IC<0)",
+                        "exit": {"target": TARGET_MULT, "stop": STOP_MULT, "hold": HOLD_BARS},
+                    }
+                )
         # interactions only get one tight variant each (duplicate of 01/04 with vol=True)
     return {
         "max_core_hypotheses": MAX_CORE_HYPOTHESES,
@@ -164,7 +216,14 @@ def main() -> None:
     pos = [r for r in rows if r["g_edge_1"] == "PASS_DISCOVERY"]
     print("G_EDGE_1 passes:", len(pos))
     for r in pos[:10]:
-        print("  ", r["candidate_id"], "D net", r["discovery"].get("net_bps"), "V net", r["validation"].get("net_bps"))
+        print(
+            "  ",
+            r["candidate_id"],
+            "D net",
+            r["discovery"].get("net_bps"),
+            "V net",
+            r["validation"].get("net_bps"),
+        )
 
 
 def _g_edge_1(m: dict[str, Any]) -> str:
@@ -196,23 +255,57 @@ def _json_line(row: dict[str, Any]) -> str:
 
 
 def _write_matrix(rows: list[dict[str, Any]]) -> None:
-    cols = ["experiment_id", "hypothesis_id", "feature", "condition", "z_thr", "timeframe",
-            "d_trades", "d_gross_bps", "d_net_bps", "d_pf", "d_win_rate", "d_sharpe",
-            "v_trades", "v_gross_bps", "v_net_bps", "v_pf", "v_win_rate", "v_sharpe",
-            "g_edge_1", "g_edge_2"]
+    cols = [
+        "experiment_id",
+        "hypothesis_id",
+        "feature",
+        "condition",
+        "z_thr",
+        "timeframe",
+        "d_trades",
+        "d_gross_bps",
+        "d_net_bps",
+        "d_pf",
+        "d_win_rate",
+        "d_sharpe",
+        "v_trades",
+        "v_gross_bps",
+        "v_net_bps",
+        "v_pf",
+        "v_win_rate",
+        "v_sharpe",
+        "g_edge_1",
+        "g_edge_2",
+    ]
     with (OUT / "EXPERIMENT_MATRIX.csv").open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(cols)
         for r in rows:
             d, v = r["discovery"], r["validation"]
-            w.writerow([
-                r["experiment_id"], r["hypothesis_id"], r["feature"], r["condition"], r["z_thr"],
-                r["timeframe"], d.get("trades"), d.get("gross_bps"), d.get("net_bps"),
-                d.get("profit_factor"), d.get("win_rate"), d.get("sharpe"),
-                v.get("trades"), v.get("gross_bps"), v.get("net_bps"),
-                v.get("profit_factor"), v.get("win_rate"), v.get("sharpe"),
-                r["g_edge_1"], r["g_edge_2"],
-            ])
+            w.writerow(
+                [
+                    r["experiment_id"],
+                    r["hypothesis_id"],
+                    r["feature"],
+                    r["condition"],
+                    r["z_thr"],
+                    r["timeframe"],
+                    d.get("trades"),
+                    d.get("gross_bps"),
+                    d.get("net_bps"),
+                    d.get("profit_factor"),
+                    d.get("win_rate"),
+                    d.get("sharpe"),
+                    v.get("trades"),
+                    v.get("gross_bps"),
+                    v.get("net_bps"),
+                    v.get("profit_factor"),
+                    v.get("win_rate"),
+                    v.get("sharpe"),
+                    r["g_edge_1"],
+                    r["g_edge_2"],
+                ]
+            )
 
 
 def _write_results(rows: list[dict[str, Any]]) -> None:
@@ -264,9 +357,17 @@ def _reg_md(reg: dict[str, Any]) -> None:
     ]
     for h in reg["core_hypotheses"]:
         lines.append(f"| {h['id']} | {h['family']} | {h['feature']} | {h['cond']} | contrarian |")
-    lines += ["", "## Variantes", "", "| exp | hyp | feature | cond | z | tf |", "| --- | --- | --- | --- | ---: | --- |"]
+    lines += [
+        "",
+        "## Variantes",
+        "",
+        "| exp | hyp | feature | cond | z | tf |",
+        "| --- | --- | --- | --- | ---: | --- |",
+    ]
     for v in reg["variants"]:
-        lines.append(f"| {v['experiment_id']} | {v['hypothesis_id']} | {v['feature']} | {v['condition']} | {v['z_thr']} | {v['timeframe']} |")
+        lines.append(
+            f"| {v['experiment_id']} | {v['hypothesis_id']} | {v['feature']} | {v['condition']} | {v['z_thr']} | {v['timeframe']} |"
+        )
     lines.append("")
     OL.write_md(OUT / "HYPOTHESIS_REGISTRY.md", "\n".join(lines))
 

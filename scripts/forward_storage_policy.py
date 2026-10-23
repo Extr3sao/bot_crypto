@@ -210,7 +210,9 @@ def measure_aggregate_rate(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", default="reports/microstructure-forward")
-    parser.add_argument("--out", default="reports/microstructure-forward-storage-policy/CAPACITY_REPORT.json")
+    parser.add_argument(
+        "--out", default="reports/microstructure-forward-storage-policy/CAPACITY_REPORT.json"
+    )
     parser.add_argument("--reserve-mib", type=int, default=384)
     parser.add_argument("--target-days", type=int, default=7)
     parser.add_argument("--max-raw-hot-hours", type=float, default=24.0)

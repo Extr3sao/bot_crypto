@@ -63,19 +63,28 @@ IDENTITY: dict[str, dict[str, Any]] = {
 #: Robustness perturbations declared BEFORE any result is read (§23).
 ROBUSTNESS: dict[str, dict[str, Any]] = {
     "EXP-ARP-013": {
-        "window_60": {"ranking_window": 60}, "window_120": {"ranking_window": 120},
-        "rebalance_3": {"rebalance_days": 3}, "rebalance_10": {"rebalance_days": 10},
-        "hold_20": {"max_hold_days": 20}, "hold_45": {"max_hold_days": 45},
+        "window_60": {"ranking_window": 60},
+        "window_120": {"ranking_window": 120},
+        "rebalance_3": {"rebalance_days": 3},
+        "rebalance_10": {"rebalance_days": 10},
+        "hold_20": {"max_hold_days": 20},
+        "hold_45": {"max_hold_days": 45},
     },
     "EXP-ARP-014": {
-        "window_5": {"ranking_window": 5}, "window_10": {"ranking_window": 10},
-        "rebalance_2": {"rebalance_days": 2}, "rebalance_5": {"rebalance_days": 5},
-        "hold_5": {"max_hold_days": 5}, "hold_10": {"max_hold_days": 10},
+        "window_5": {"ranking_window": 5},
+        "window_10": {"ranking_window": 10},
+        "rebalance_2": {"rebalance_days": 2},
+        "rebalance_5": {"rebalance_days": 5},
+        "hold_5": {"max_hold_days": 5},
+        "hold_10": {"max_hold_days": 10},
     },
     "EXP-ARP-015": {
-        "window_40": {"ranking_window": 40}, "window_90": {"ranking_window": 90},
-        "rebalance_5": {"rebalance_days": 5}, "rebalance_20": {"rebalance_days": 20},
-        "hold_20": {"max_hold_days": 20}, "hold_45": {"max_hold_days": 45},
+        "window_40": {"ranking_window": 40},
+        "window_90": {"ranking_window": 90},
+        "rebalance_5": {"rebalance_days": 5},
+        "rebalance_20": {"rebalance_days": 20},
+        "hold_20": {"max_hold_days": 20},
+        "hold_45": {"max_hold_days": 45},
     },
 }
 
@@ -116,8 +125,9 @@ def _head() -> str:
     import subprocess
 
     try:
-        return subprocess.run(["git", "rev-parse", "HEAD"], cwd=REPO, capture_output=True,
-                              text=True, check=True).stdout.strip()
+        return subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=REPO, capture_output=True, text=True, check=True
+        ).stdout.strip()
     except Exception:
         return "UNKNOWN"
 
@@ -153,16 +163,27 @@ def cfg_for(exp_id: str, overrides: dict[str, Any] | None = None) -> S.RotationC
     )
 
 
-def run(exp_id: str, split: str, cfg: S.RotationConfig, *, cost_bps_rt: float,
-        subset: tuple[str, ...] | None = None) -> list[Any]:
+def run(
+    exp_id: str,
+    split: str,
+    cfg: S.RotationConfig,
+    *,
+    cost_bps_rt: float,
+    subset: tuple[str, ...] | None = None,
+) -> list[Any]:
     daily = daily_for(split)
     if subset is not None:
         daily = {k: v for k, v in daily.items() if k in subset}
     return S.simulate_xsec_rotation(daily, config=cfg, cost_bps_rt=cost_bps_rt).trades
 
 
-def metrics(exp_id: str, split: str, cfg: S.RotationConfig, cost_bps_rt: float,
-            subset: tuple[str, ...] | None = None) -> dict[str, Any]:
+def metrics(
+    exp_id: str,
+    split: str,
+    cfg: S.RotationConfig,
+    cost_bps_rt: float,
+    subset: tuple[str, ...] | None = None,
+) -> dict[str, Any]:
     trades = run(exp_id, split, cfg, cost_bps_rt=cost_bps_rt, subset=subset)
     # strategies.Trade is duck-type compatible with metrics.summarize
     return summarize(cast("Sequence[Any]", trades), cost_bps_rt=cost_bps_rt)
@@ -172,8 +193,12 @@ def metrics(exp_id: str, split: str, cfg: S.RotationConfig, cost_bps_rt: float,
 
 
 def validate_manifests() -> dict[str, Any]:
-    report: dict[str, Any] = {"config_hash": config_hash(), "cost_bps_rt": C.cost_model_v3_rt_bps(),
-                              "dataset_fingerprint": D.expansion_corpus_digest(), "experiments": {}}
+    report: dict[str, Any] = {
+        "config_hash": config_hash(),
+        "cost_bps_rt": C.cost_model_v3_rt_bps(),
+        "dataset_fingerprint": D.expansion_corpus_digest(),
+        "experiments": {},
+    }
     problems: list[str] = []
     for exp_id in IDENTITY:
         manifest_path = EXP_DIR / exp_id / "MANIFEST.json"
@@ -183,12 +208,17 @@ def validate_manifests() -> dict[str, Any]:
             "manifest_sha256": _lf_digest(manifest_path),
             "spec_sha256": _lf_digest(EXP_DIR / exp_id / "SPEC.md"),
             "config_hash_match": manifest["config_hash"] == report["config_hash"],
-            "dataset_fingerprint_match": manifest["data"]["dataset_fingerprint"] == report["dataset_fingerprint"],
+            "dataset_fingerprint_match": manifest["data"]["dataset_fingerprint"]
+            == report["dataset_fingerprint"],
             "cost_model_match": manifest["cost_model"]["version"] == "COST_MODEL_V3",
-            "splits_match": all(manifest["splits"][s] == expected_splits[s] for s in ("DEV", "VALIDATION", "OOS_LOCK")),
+            "splits_match": all(
+                manifest["splits"][s] == expected_splits[s]
+                for s in ("DEV", "VALIDATION", "OOS_LOCK")
+            ),
             "oos_locked": manifest["splits"]["oos_opened"] is False,
             "strategy_id_match": manifest["strategy_id"] == IDENTITY[exp_id]["strategy_id"],
-            "baseline_untouched": manifest["data"]["baseline_fingerprint_untouched"] == C.corpus_digest(),
+            "baseline_untouched": manifest["data"]["baseline_fingerprint_untouched"]
+            == C.corpus_digest(),
         }
         if not all(v for k, v in checks.items() if k.endswith(("_match", "_locked", "_untouched"))):
             problems.append(exp_id)
@@ -219,16 +249,23 @@ def dev_verdict(exp_id: str, dev: dict[str, Any]) -> dict[str, Any]:
         result = "REJECT_FRAGILE"
     else:
         result = "PASS"
-    return {"result": result, "checks": checks,
-            "thresholds": {"min_trades": min_trades, "top1_share_max": 0.5}}
+    return {
+        "result": result,
+        "checks": checks,
+        "thresholds": {"min_trades": min_trades, "top1_share_max": 0.5},
+    }
 
 
 def duplicate_check(exp_id: str, cfg: S.RotationConfig) -> dict[str, Any]:
     trades = run(exp_id, "DEV", cfg, cost_bps_rt=0.0)
     held = sorted({t.symbol for t in trades})
     degenerate = len(held) <= 1
-    return {"episodes": len(trades), "held_symbols": held, "degenerate_single_name": degenerate,
-            "result": "REJECT_DUPLICATE" if degenerate else "PASS"}
+    return {
+        "episodes": len(trades),
+        "held_symbols": held,
+        "degenerate_single_name": degenerate,
+        "result": "REJECT_DUPLICATE" if degenerate else "PASS",
+    }
 
 
 def cost_gate(exp_id: str, cfg: S.RotationConfig, base_bps: float) -> dict[str, Any]:
@@ -236,7 +273,8 @@ def cost_gate(exp_id: str, cfg: S.RotationConfig, base_bps: float) -> dict[str, 
     for mult in COST_MULTIPLES:
         m = metrics(exp_id, "DEV", cfg, base_bps * mult)
         stress[f"{mult}x"] = {
-            "cost_bps_rt": round(base_bps * mult, 4), "trades": m["trades"],
+            "cost_bps_rt": round(base_bps * mult, 4),
+            "trades": m["trades"],
             "expectancy_gross_bps": m["expectancy_gross_bps"],
             "expectancy_net_bps": m["expectancy_net_bps"],
             "profit_factor": m["profit_factor"],
@@ -244,19 +282,33 @@ def cost_gate(exp_id: str, cfg: S.RotationConfig, base_bps: float) -> dict[str, 
     base_net = stress["1.0x"]["expectancy_net_bps"]
     gross = stress["1.0x"]["expectancy_gross_bps"]
     result = "PASS" if (base_net is not None and base_net > 0) else "REJECT_COSTS"
-    return {"result": result, "base_cost_bps_rt": round(base_bps, 4),
-            "break_even_cost_bps": round(gross, 4) if gross is not None else None, "stress": stress}
+    return {
+        "result": result,
+        "base_cost_bps_rt": round(base_bps, 4),
+        "break_even_cost_bps": round(gross, 4) if gross is not None else None,
+        "stress": stress,
+    }
 
 
 def validation_verdict(dev: dict[str, Any], val: dict[str, Any]) -> dict[str, Any]:
     dg, vg = dev["expectancy_gross_bps"], val["expectancy_gross_bps"]
     checks = {
         "val_gross_positive": bool(vg is not None and vg > 0),
-        "no_material_collapse": bool(dg is not None and vg is not None and dg > 0 and vg >= 0.5 * dg),
-        "val_net_positive": bool(val["expectancy_net_bps"] is not None and val["expectancy_net_bps"] > 0),
+        "no_material_collapse": bool(
+            dg is not None and vg is not None and dg > 0 and vg >= 0.5 * dg
+        ),
+        "val_net_positive": bool(
+            val["expectancy_net_bps"] is not None and val["expectancy_net_bps"] > 0
+        ),
     }
-    return {"result": "PASS" if all(checks.values()) else "REJECT_VALIDATION", "checks": checks,
-            "dev_gross_bps": dg, "val_gross_bps": vg, "dev_trades": dev["trades"], "val_trades": val["trades"]}
+    return {
+        "result": "PASS" if all(checks.values()) else "REJECT_VALIDATION",
+        "checks": checks,
+        "dev_gross_bps": dg,
+        "val_gross_bps": vg,
+        "dev_trades": dev["trades"],
+        "val_trades": val["trades"],
+    }
 
 
 def robustness(exp_id: str, cfg: S.RotationConfig, base_bps: float) -> dict[str, Any]:
@@ -266,15 +318,20 @@ def robustness(exp_id: str, cfg: S.RotationConfig, base_bps: float) -> dict[str,
 
     def record(name: str, m: dict[str, Any]) -> None:
         g = m["expectancy_gross_bps"]
-        variants[name] = {"trades": m["trades"], "expectancy_gross_bps": g,
-                          "expectancy_net_bps": m["expectancy_net_bps"]}
+        variants[name] = {
+            "trades": m["trades"],
+            "expectancy_gross_bps": g,
+            "expectancy_net_bps": m["expectancy_net_bps"],
+        }
         if g is not None:
             gross_bps.append(g)
 
     for name, delta in ROBUSTNESS[exp_id].items():
         record(name, metrics(exp_id, "DEV", cfg_for(exp_id, delta), base_bps))
     # execution delay (both entries and exits)
-    record("entry_delay_1d", metrics(exp_id, "DEV", cfg_for(exp_id, {"entry_delay_days": 1}), base_bps))
+    record(
+        "entry_delay_1d", metrics(exp_id, "DEV", cfg_for(exp_id, {"entry_delay_days": 1}), base_bps)
+    )
     # higher cost
     record("cost_2x", metrics(exp_id, "DEV", cfg, base_bps * 2.0))
     # asset variation: drop each asset once
@@ -291,9 +348,14 @@ def robustness(exp_id: str, cfg: S.RotationConfig, base_bps: float) -> dict[str,
     base_g = base["expectancy_gross_bps"]
     positives = [g for g in gross_bps if g > 0]
     one_point = bool(base_g is not None and base_g > 0 and len(positives) <= 1)
-    return {"result": "REJECT_FRAGILE" if one_point else "PASS", "one_point_optimum": one_point,
-            "base_gross_bps": base_g, "variants": variants,
-            "positive_variants": len(positives), "variant_count": len(gross_bps)}
+    return {
+        "result": "REJECT_FRAGILE" if one_point else "PASS",
+        "one_point_optimum": one_point,
+        "base_gross_bps": base_g,
+        "variants": variants,
+        "positive_variants": len(positives),
+        "variant_count": len(gross_bps),
+    }
 
 
 # ------------------------------------------------------------------ pipeline
@@ -310,12 +372,23 @@ def run_experiment(exp_id: str) -> dict[str, Any]:
     dev["duplicate_check"] = duplicate_check(exp_id, cfg)
     write_json(out_dir / "DEV.json", dev)
 
-    decision: dict[str, Any] = {"experiment_id": exp_id, "identity": IDENTITY[exp_id],
-                               "stages": {}, "oos_opened": False, "final": None}
+    decision: dict[str, Any] = {
+        "experiment_id": exp_id,
+        "identity": IDENTITY[exp_id],
+        "stages": {},
+        "oos_opened": False,
+        "final": None,
+    }
     decision["stages"]["DEV"] = dev["verdict"]["result"]
     if dev["verdict"]["result"] != "PASS":
-        decision["stages"].update({"COST": "NOT_REACHED", "VALIDATION": "NOT_REACHED",
-                                   "ROBUSTNESS": "NOT_REACHED", "OOS": "NOT_OPENED"})
+        decision["stages"].update(
+            {
+                "COST": "NOT_REACHED",
+                "VALIDATION": "NOT_REACHED",
+                "ROBUSTNESS": "NOT_REACHED",
+                "OOS": "NOT_OPENED",
+            }
+        )
         decision["final"] = dev["verdict"]["result"]
         write_json(out_dir / "DECISION.json", decision)
         return {"decision": decision, "dev": dev}
@@ -350,15 +423,19 @@ def run_experiment(exp_id: str) -> dict[str, Any]:
 
     # OOS gate: record the sealed range BEFORE reading it
     oos_range = list(D.SPLIT_RANGES["OOS_LOCK"])
-    write_json(out_dir / "OOS_OPEN.json", {"oos_range_ms": oos_range, "opened": True,
-                                           "opened_before_computation": True})
+    write_json(
+        out_dir / "OOS_OPEN.json",
+        {"oos_range_ms": oos_range, "opened": True, "opened_before_computation": True},
+    )
     decision["stages"]["OOS"] = "OOS_GATE_ELIGIBLE"
     oos = metrics(exp_id, "OOS_LOCK", cfg, base_cost)
     write_json(out_dir / "OOS.json", oos)
     decision["oos_opened"] = True
     oos_pass = bool(
-        oos["expectancy_gross_bps"] is not None and oos["expectancy_gross_bps"] > 0
-        and oos["expectancy_net_bps"] is not None and oos["expectancy_net_bps"] > 0
+        oos["expectancy_gross_bps"] is not None
+        and oos["expectancy_gross_bps"] > 0
+        and oos["expectancy_net_bps"] is not None
+        and oos["expectancy_net_bps"] > 0
     )
     decision["stages"]["OOS"] = "OOS_PASS" if oos_pass else "OOS_FAIL"
     decision["final"] = "PROMOTION_CANDIDATE" if oos_pass else "REJECT_VALIDATION"
@@ -375,12 +452,14 @@ def main() -> int:
         print(json.dumps(manifest, indent=2))
         return 2
     env = {
-        "code_hash": code_hash(), "config_hash": config_hash(),
+        "code_hash": code_hash(),
+        "config_hash": config_hash(),
         "cost_bps_rt": C.cost_model_v3_rt_bps(),
         "expansion_corpus_digest": D.expansion_corpus_digest(),
         "baseline_dataset_fingerprint": C.corpus_digest(),
         "splits": {k: list(v) for k, v in D.SPLIT_RANGES.items()},
-        "code_files": list(CODE_FILES), "branch_head": _head(),
+        "code_files": list(CODE_FILES),
+        "branch_head": _head(),
     }
     write_json(OUT / "ENVIRONMENT.json", env)
     print(f"code_hash = {env['code_hash']}")
@@ -392,14 +471,19 @@ def main() -> int:
         dec = res["decision"]
         dev = res["dev"]
         results[exp_id] = {
-            "strategy_id": IDENTITY[exp_id]["strategy_id"], "stages": dec["stages"],
-            "final": dec["final"], "oos_opened": dec["oos_opened"],
-            "dev_trades": dev["trades"], "dev_gross_bps": dev["expectancy_gross_bps"],
+            "strategy_id": IDENTITY[exp_id]["strategy_id"],
+            "stages": dec["stages"],
+            "final": dec["final"],
+            "oos_opened": dec["oos_opened"],
+            "dev_trades": dev["trades"],
+            "dev_gross_bps": dev["expectancy_gross_bps"],
             "dev_net_bps": dev["expectancy_net_bps"],
         }
         write_json(OUT / exp_id / "RESULT.json", results[exp_id])
-        print(f"{exp_id}: DEV trades={dev['trades']} gross={dev['expectancy_gross_bps']} "
-              f"net={dev['expectancy_net_bps']} -> {dec['final']}")
+        print(
+            f"{exp_id}: DEV trades={dev['trades']} gross={dev['expectancy_gross_bps']} "
+            f"net={dev['expectancy_net_bps']} -> {dec['final']}"
+        )
     write_json(OUT / "RUN_REPORT.json", {"environment": env, "experiments": results})
     return 0
 

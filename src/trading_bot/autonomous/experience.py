@@ -207,11 +207,11 @@ class StrategyPerformanceStore:
         timeframe: str,
     ) -> StrategyPerformance:
         """Aggregate cell, raising when there is no sample (never invent one)."""
-        result = self.get(
-            strategy_id=strategy_id, asset=asset, regime=regime, timeframe=timeframe
-        )
+        result = self.get(strategy_id=strategy_id, asset=asset, regime=regime, timeframe=timeframe)
         if result is None:
-            raise KeyError(f"no realised samples for {_cell_key(strategy_id, asset, regime, timeframe)}")
+            raise KeyError(
+                f"no realised samples for {_cell_key(strategy_id, asset, regime, timeframe)}"
+            )
         return result
 
     def _aggregate_rows(
@@ -295,9 +295,7 @@ class StrategyPerformanceStore:
         ``MIN_SAMPLES_FOR_ADJUSTMENT``: experience may nudge which strategy
         is evaluated first, never how much risk the system takes.
         """
-        cell = self.get(
-            strategy_id=strategy_id, asset=asset, regime=regime, timeframe=timeframe
-        )
+        cell = self.get(strategy_id=strategy_id, asset=asset, regime=regime, timeframe=timeframe)
         if cell is None or cell.sample_size < MIN_SAMPLES_FOR_ADJUSTMENT:
             return 0.0
         executable = cell.shadow_sample_size + cell.paper_sample_size

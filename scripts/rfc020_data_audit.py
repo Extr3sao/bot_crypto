@@ -241,15 +241,11 @@ def main() -> int:
         "total_rows": sum(int(a["rows"]) for a in audits),
         "exact_duplicates": sum(int(a["exact_duplicates"]) for a in audits),
         "conflicting_duplicates": sum(int(a["conflicting_duplicates"]) for a in audits),
-        "files_with_duplicates": [
-            a["file"] for a in audits if int(a["duplicate_rows"]) > 0
-        ],
+        "files_with_duplicates": [a["file"] for a in audits if int(a["duplicate_rows"]) > 0],
         "files_with_gaps": [a["file"] for a in audits if int(a["gap_count"]) > 0],
         "gap_count": sum(int(a["gap_count"]) for a in audits),
         "missing_bars_total": sum(int(a["missing_bars_total"]) for a in audits),
-        "bar_invariant_violations": sum(
-            int(a["bar_invariant_violations"]) for a in audits
-        ),
+        "bar_invariant_violations": sum(int(a["bar_invariant_violations"]) for a in audits),
         "per_file": [
             {
                 "file": a["file"],

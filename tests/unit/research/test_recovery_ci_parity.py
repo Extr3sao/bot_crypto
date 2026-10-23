@@ -109,7 +109,9 @@ def test_the_rehearsal_runs_in_full_scope_and_is_not_replaced_by_a_subset():
     doc = workflow()
     commands = run_commands(doc)
     assert "--scope full" in commands
-    assert "--no-report" not in commands, "a rehearsal that writes no report leaves nothing to check"
+    assert "--no-report" not in commands, (
+        "a rehearsal that writes no report leaves nothing to check"
+    )
     # the sabotage side of the rehearsal is exercised through the determinism suite, which
     # this workflow runs; the workflow must not filter those tests away
     assert "-k " not in commands, "a filtered test run would silently drop the rehearsal tests"
@@ -118,9 +120,13 @@ def test_the_rehearsal_runs_in_full_scope_and_is_not_replaced_by_a_subset():
 
 def test_the_evidence_is_kept_even_when_a_step_fails():
     doc = workflow()
-    uploads = [step for step in steps(doc) if step.get("uses", "").startswith("actions/upload-artifact")]
+    uploads = [
+        step for step in steps(doc) if step.get("uses", "").startswith("actions/upload-artifact")
+    ]
     assert uploads, "a green run has to leave an identifiable artefact behind"
-    assert any(step.get("if") == "always()" for step in uploads), [step.get("if") for step in uploads]
+    assert any(step.get("if") == "always()" for step in uploads), [
+        step.get("if") for step in uploads
+    ]
     kept = str(uploads[0]["with"]["path"])
     assert "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json" in kept
     assert "data/recovery/INDEPENDENT_VERIFICATION.json" in kept
@@ -141,8 +147,12 @@ def test_no_step_can_be_softened():
 
 def test_the_rehearsal_runs_against_a_commit_and_not_the_checked_out_tree():
     doc = workflow()
-    checkout = next(step for step in steps(doc) if step.get("uses", "").startswith("actions/checkout"))
-    assert checkout["with"]["fetch-depth"] == 0, "the rehearsal walks history to find the rehearsed commit"
+    checkout = next(
+        step for step in steps(doc) if step.get("uses", "").startswith("actions/checkout")
+    )
+    assert checkout["with"]["fetch-depth"] == 0, (
+        "the rehearsal walks history to find the rehearsed commit"
+    )
     commands = run_commands(doc)
     assert "--commit" not in commands, "the default (HEAD of the checkout) is the commit under test"
 
@@ -151,23 +161,33 @@ def test_the_workflow_does_not_claim_to_be_a_required_gate():
     """A workflow cannot make itself required; claiming it would be a false assurance."""
 
     text = WORKFLOW.read_text(encoding="utf-8").lower()
-    for claim in ("protected branch", "branch protection", "required status check", "required-check"):
+    for claim in (
+        "protected branch",
+        "branch protection",
+        "required status check",
+        "required-check",
+    ):
         assert claim not in text, claim
 
 
 def test_the_rehearsal_script_it_invokes_exists_and_refuses_a_dirty_tree():
     import importlib.util
 
-    spec = importlib.util.spec_from_file_location("clean_checkout_rehearsal",
-                                                  ROOT / "scripts" / "clean_checkout_rehearsal.py")
+    spec = importlib.util.spec_from_file_location(
+        "clean_checkout_rehearsal", ROOT / "scripts" / "clean_checkout_rehearsal.py"
+    )
     module = importlib.util.module_from_spec(spec)
     sys.modules["clean_checkout_rehearsal"] = module
     assert spec.loader is not None
     spec.loader.exec_module(module)
     assert module.EXIT_REFUSED == 4
     covered = set(module.COVERED_PATHS)
-    for rel in ("scripts/campaign_state_view.py", "scripts/active_economic_audit.py",
-                "data/recovery/CAMPAIGN_STATE_VIEW.json", "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"):
+    for rel in (
+        "scripts/campaign_state_view.py",
+        "scripts/active_economic_audit.py",
+        "data/recovery/CAMPAIGN_STATE_VIEW.json",
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+    ):
         assert rel in covered, rel
     # the workflow is not among the paths under test: it is not an input of any artefact
     assert ".github/workflows/recovery-determinism.yml" not in covered

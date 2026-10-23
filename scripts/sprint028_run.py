@@ -26,7 +26,7 @@ from numpy.typing import NDArray
 
 OUT = L.OUT_DIR
 N_PERMS = 200
-FAMILY_BLOCK = 21          # 7d block (periods) — matches the longest horizon
+FAMILY_BLOCK = 21  # 7d block (periods) — matches the longest horizon
 ALPHA = 0.05
 MIN_DISCOVERY_TRADES = 30  # pre-registered minimum "sufficient sample" for G_CARRY_1 (§42)
 MIN_VALIDATION_TRADES = 20  # pre-registered minimum for G_CARRY_2 (§45)
@@ -38,9 +38,9 @@ FAMILY_NULL_SEED = 2026102801
 # helpers
 # ---------------------------------------------------------------------------
 
+
 def _md_table(rows: list[list[Any]], header: list[str]) -> str:
-    out = ["| " + " | ".join(header) + " |",
-           "| " + " | ".join("---" for _ in header) + " |"]
+    out = ["| " + " | ".join(header) + " |", "| " + " | ".join("---" for _ in header) + " |"]
     for r in rows:
         out.append("| " + " | ".join(str(x) for x in r) + " |")
     return "\n".join(out) + "\n"
@@ -53,6 +53,7 @@ def _r(x: float | None, nd: int = 4) -> Any:
 # ---------------------------------------------------------------------------
 # 1. DATA AUDIT (§10-§11)
 # ---------------------------------------------------------------------------
+
 
 def data_audit() -> dict[str, Any]:
     src = json.loads((OUT / "_fetch_source_audit.json").read_text(encoding="utf-8"))
@@ -68,17 +69,21 @@ def data_audit() -> dict[str, Any]:
             "spot_rows": int(sts.shape[0]),
             "perp_rows": int(pts.shape[0]),
             "funding_rows": int(fts.shape[0]),
-            "spot_first": str(_iso(int(sts[0]))), "spot_last": str(_iso(int(sts[-1]))),
-            "perp_first": str(_iso(int(pts[0]))), "perp_last": str(_iso(int(pts[-1]))),
-            "funding_first": str(_iso(int(fts[0]))), "funding_last": str(_iso(int(fts[-1]))),
+            "spot_first": str(_iso(int(sts[0]))),
+            "spot_last": str(_iso(int(sts[-1]))),
+            "perp_first": str(_iso(int(pts[0]))),
+            "perp_last": str(_iso(int(pts[-1]))),
+            "funding_first": str(_iso(int(fts[0]))),
+            "funding_last": str(_iso(int(fts[-1]))),
             "spot_duplicates": int(sts.shape[0] - np.unique(sts).shape[0]),
             "perp_duplicates": int(pts.shape[0] - np.unique(pts).shape[0]),
             "funding_duplicates": int(fts.shape[0] - np.unique(fts).shape[0]),
             "spot_sorted": bool(np.all(np.diff(sts) > 0)),
             "perp_sorted": bool(np.all(np.diff(pts) > 0)),
             "funding_sorted": bool(np.all(np.diff(fts) > 0)),
-            "funding_interval_hours": sorted({float(x) for x in np.unique(
-                fund["funding_interval_hours"]).tolist()}),
+            "funding_interval_hours": sorted(
+                {float(x) for x in np.unique(fund["funding_interval_hours"]).tolist()}
+            ),
             "epoch_unit_histogram": src["assets_spot"][sym]["epoch_unit_histogram"],
             "missing_months_spot": src["assets_spot"][sym]["missing_months"],
             "missing_months_funding": src["assets_funding"][sym]["missing_months"],
@@ -107,9 +112,10 @@ def _check_mean3(rate: NDArray[Any], mean3: NDArray[Any]) -> bool:
     """Explicitly verify mean3[i] == mean(rate[i-3:i]) (strictly past)."""
     ok = True
     for i in range(3, rate.shape[0]):
-        win = rate[i - 3:i]
+        win = rate[i - 3 : i]
         if np.all(np.isfinite(win)) and not math.isclose(
-                float(mean3[i]), float(np.mean(win)), rel_tol=1e-9, abs_tol=1e-9):
+            float(mean3[i]), float(np.mean(win)), rel_tol=1e-9, abs_tol=1e-9
+        ):
             ok = False
             break
     return bool(ok)
@@ -117,12 +123,14 @@ def _check_mean3(rate: NDArray[Any], mean3: NDArray[Any]) -> bool:
 
 def _iso(ms: int) -> str:
     from datetime import UTC, datetime
+
     return datetime.fromtimestamp(ms / 1000, tz=UTC).isoformat()
 
 
 # ---------------------------------------------------------------------------
 # 2. FUNDING PIT AUDIT (§6-§7)
 # ---------------------------------------------------------------------------
+
 
 def funding_pit_audit() -> dict[str, Any]:
     per_asset: dict[str, Any] = {}
@@ -142,15 +150,16 @@ def funding_pit_audit() -> dict[str, Any]:
         rate = np.asarray(f["funding_rate"], dtype=np.float64) * 1e4
         last = L._shift(rate, 1)
         mean3 = L._mean_of_lag(rate, 3)
-        ok = (inv_obs == 0 and inv_known == 0 and inv_avail == 0)
+        ok = inv_obs == 0 and inv_known == 0 and inv_avail == 0
         ok_all = ok_all and ok
         per_asset[sym] = {
             "invariant_observation_violations": inv_obs,
             "invariant_known_time_violations": inv_known,
             "invariant_available_time_violations": inv_avail,
             "signal_lag_strictly_backward": True,
-            "sample_signal_last_eq_prev_rate": bool(np.allclose(
-                last[5:len(last) - 1], rate[4:len(rate) - 2], equal_nan=True)),
+            "sample_signal_last_eq_prev_rate": bool(
+                np.allclose(last[5 : len(last) - 1], rate[4 : len(rate) - 2], equal_nan=True)
+            ),
             "sample_signal_mean3_eq_trailing": _check_mean3(rate, mean3),
         }
     return {
@@ -174,26 +183,34 @@ def funding_pit_audit() -> dict[str, Any]:
 # 3. CARRY COST MODEL + BREAK-EVEN (§16-§17, §38-§39)
 # ---------------------------------------------------------------------------
 
+
 def cost_model() -> dict[str, Any]:
     cm: dict[str, Any] = dict(L.CARRY_COST_MODEL_V1)
-    cm.update({
-        "spot_side_bps": L.SPOT_SIDE_BPS,
-        "perp_side_bps": L.PERP_SIDE_BPS,
-        "round_trip_cost_bps": L.ROUND_TRIP_COST_BPS,
-        "legs": "spot entry + spot exit + perp entry + perp exit",
-        "fee_basis": "conservative official public all-taker tiers (no VIP/rebate/maker)",
-        "reused_cost_model_v3_bps_for_contrast": L.COST_MODEL_V3_BPS,
-        "note": "COST_MODEL_V3 is NOT used as the carry cost (§16)",
-        "perp_leverage": L.PERP_LEVERAGE,
-        "committed_capital_per_unit_notional": L.COMMITTED_CAPITAL,
-    })
+    cm.update(
+        {
+            "spot_side_bps": L.SPOT_SIDE_BPS,
+            "perp_side_bps": L.PERP_SIDE_BPS,
+            "round_trip_cost_bps": L.ROUND_TRIP_COST_BPS,
+            "legs": "spot entry + spot exit + perp entry + perp exit",
+            "fee_basis": "conservative official public all-taker tiers (no VIP/rebate/maker)",
+            "reused_cost_model_v3_bps_for_contrast": L.COST_MODEL_V3_BPS,
+            "note": "COST_MODEL_V3 is NOT used as the carry cost (§16)",
+            "perp_leverage": L.PERP_LEVERAGE,
+            "committed_capital_per_unit_notional": L.COMMITTED_CAPITAL,
+        }
+    )
     return cm
 
 
 def break_even() -> tuple[dict[str, Any], dict[str, Any]]:
-    table = {hk: {"break_even_funding_bps_per_period": L.break_even_funding_bps(hk),
-                  "periods": L.HORIZON_PERIODS[hk],
-                  "hours": L.HORIZON_PERIODS[hk] * 8} for hk in L.HORIZON_ORDER}
+    table = {
+        hk: {
+            "break_even_funding_bps_per_period": L.break_even_funding_bps(hk),
+            "periods": L.HORIZON_PERIODS[hk],
+            "hours": L.HORIZON_PERIODS[hk] * 8,
+        }
+        for hk in L.HORIZON_ORDER
+    }
     panel = L.build_carry_panel(upto="VALIDATION")
     masks = L.split_masks(panel)
     per_asset: dict[str, Any] = {}
@@ -208,16 +225,20 @@ def break_even() -> tuple[dict[str, Any], dict[str, Any]]:
             }
         mean_d = per_asset[a]["DISCOVERY"]["mean_funding_bps_per_period"] or 0.0
         per_asset[a]["DISCOVERY"]["break_even_holding_periods"] = _r(
-            L.break_even_holding_periods(mean_d), 2)
+            L.break_even_holding_periods(mean_d), 2
+        )
         per_asset[a]["DISCOVERY"]["break_even_holding_hours"] = _r(
-            L.break_even_holding_hours(mean_d), 1)
+            L.break_even_holding_hours(mean_d), 1
+        )
     funding = {
         "table": "MIN_FUNDING_RATE_REQUIRED (§39)",
         "round_trip_cost_bps": L.ROUND_TRIP_COST_BPS,
         "by_horizon": table,
         "per_asset": per_asset,
-        "verdict": ("typical funding ~0.75-0.91 bps/period is far below the "
-                    "short-horizon break-even; only long holds can break even"),
+        "verdict": (
+            "typical funding ~0.75-0.91 bps/period is far below the "
+            "short-horizon break-even; only long holds can break even"
+        ),
     }
     holding = {
         "table": "BREAK_EVEN_HOLDING_TIME (§38)",
@@ -231,17 +252,25 @@ def break_even() -> tuple[dict[str, Any], dict[str, Any]]:
 # 4. hypothesis registry
 # ---------------------------------------------------------------------------
 
+
 def hypothesis_registry() -> dict[str, Any]:
     return {
         "n_core_hypotheses": len(SG.HYPOTHESES),
         "n_variants": len(SG.build_variants()),
         "families": list(SG.FAMILIES),
-        "targets": {"FUNDING": "future realized funding (bps)",
-                    "BASIS": "basis / residual PnL (bps)"},
+        "targets": {
+            "FUNDING": "future realized funding (bps)",
+            "BASIS": "basis / residual PnL (bps)",
+        },
         "hypotheses": [
-            {"id": h.hid, "family": h.family, "signal_kind": h.signal_kind,
-             "core_feature": h.core_feature, "target_kind": h.target_kind,
-             "description": h.description}
+            {
+                "id": h.hid,
+                "family": h.family,
+                "signal_kind": h.signal_kind,
+                "core_feature": h.core_feature,
+                "target_kind": h.target_kind,
+                "description": h.description,
+            }
             for h in SG.HYPOTHESES
         ],
         "entry_rules": list(SG.ENTRY_RULES),
@@ -252,6 +281,7 @@ def hypothesis_registry() -> dict[str, Any]:
 # 5. information audit (§27)
 # ---------------------------------------------------------------------------
 
+
 def information_audit(panel: L.CarryPanel, masks: dict[str, NDArray[Any]]) -> list[dict[str, Any]]:
     d = masks["DISCOVERY"]
     out: list[dict[str, Any]] = []
@@ -260,15 +290,17 @@ def information_audit(panel: L.CarryPanel, masks: dict[str, NDArray[Any]]) -> li
         t = SG.target_array(v, panel)
         ic = L.spearman_ic(s[d], t[d])
         q = L.quantile_spread(s[d], t[d])
-        out.append({
-            **v.as_dict(),
-            "n_discovery": int((np.isfinite(s[d]) & np.isfinite(t[d])).sum()),
-            "ic_discovery": _r(ic, 5),
-            "abs_ic_discovery": _r(abs(ic), 5) if ic is not None else None,
-            "quantile_top_minus_bottom_bps": q.get("top_minus_bottom_bps"),
-            "quantile_monotonicity": q.get("monotonicity"),
-            "quantile_means_bps": q.get("quantile_means_bps"),
-        })
+        out.append(
+            {
+                **v.as_dict(),
+                "n_discovery": int((np.isfinite(s[d]) & np.isfinite(t[d])).sum()),
+                "ic_discovery": _r(ic, 5),
+                "abs_ic_discovery": _r(abs(ic), 5) if ic is not None else None,
+                "quantile_top_minus_bottom_bps": q.get("top_minus_bottom_bps"),
+                "quantile_monotonicity": q.get("monotonicity"),
+                "quantile_means_bps": q.get("quantile_means_bps"),
+            }
+        )
     return out
 
 
@@ -276,18 +308,23 @@ def information_audit(panel: L.CarryPanel, masks: dict[str, NDArray[Any]]) -> li
 # 6. family-wise null (§28)
 # ---------------------------------------------------------------------------
 
+
 def _passes_g1(r: dict[str, Any]) -> bool:
-    return bool(r.get("status") == "OK" and r.get("net_expectancy_bps", -1) > 0
-                and r.get("net_pnl_bps", -1) > 0
-                and r.get("trades", 0) >= MIN_DISCOVERY_TRADES
-                and r.get("mean_roc", -1) > 0)
+    return bool(
+        r.get("status") == "OK"
+        and r.get("net_expectancy_bps", -1) > 0
+        and r.get("net_pnl_bps", -1) > 0
+        and r.get("trades", 0) >= MIN_DISCOVERY_TRADES
+        and r.get("mean_roc", -1) > 0
+    )
 
 
-def _block_permute_idx(n: int, block: int, rng: np.random.Generator,
-                       segments: list[tuple[int, int]]) -> NDArray[Any]:
+def _block_permute_idx(
+    n: int, block: int, rng: np.random.Generator, segments: list[tuple[int, int]]
+) -> NDArray[Any]:
     """Block permutation applied within each asset segment."""
     perm = np.arange(n)
-    for (s, e) in segments:
+    for s, e in segments:
         m = e - s
         if m <= 1:
             continue
@@ -298,9 +335,14 @@ def _block_permute_idx(n: int, block: int, rng: np.random.Generator,
     return perm
 
 
-def family_null(panel: L.CarryPanel, masks: dict[str, NDArray[Any]],
-                family: str, info: list[dict[str, Any]],
-                n_perm: int = N_PERMS, seed: int = FAMILY_NULL_SEED) -> dict[str, Any]:
+def family_null(
+    panel: L.CarryPanel,
+    masks: dict[str, NDArray[Any]],
+    family: str,
+    info: list[dict[str, Any]],
+    n_perm: int = N_PERMS,
+    seed: int = FAMILY_NULL_SEED,
+) -> dict[str, Any]:
     d = masks["DISCOVERY"]
     variants = [v for v in SG.build_variants() if v.family == family]
     sigs = {v.variant_id: SG.variant_signal(v, panel)[d] for v in variants}
@@ -325,10 +367,12 @@ def family_null(panel: L.CarryPanel, masks: dict[str, NDArray[Any]],
         null_max[p] = mx
     p_fw = float((1 + int(np.sum(null_max >= observed_max))) / (n_perm + 1))
     return {
-        "family": family, "n_variants": len(variants),
+        "family": family,
+        "n_variants": len(variants),
         "observed_max_abs_ic": _r(observed_max, 5),
         "family_wise_p": _r(p_fw, 5),
-        "n_permutations": n_perm, "block_periods": FAMILY_BLOCK,
+        "n_permutations": n_perm,
+        "block_periods": FAMILY_BLOCK,
         "best_variant": (max(obs_fin, key=lambda k: abs(obs_fin[k])) if obs_fin else None),
         "significant": bool(p_fw < ALPHA),
     }
@@ -352,6 +396,7 @@ def _segments(asset_idx: NDArray[Any]) -> list[tuple[int, int]]:
 # 7. candidates + discovery / validation
 # ---------------------------------------------------------------------------
 
+
 def build_candidates(info: list[dict[str, Any]], nulls: dict[str, Any]) -> list[dict[str, Any]]:
     cands: list[dict[str, Any]] = []
     for family, na in nulls.items():
@@ -364,20 +409,29 @@ def build_candidates(info: list[dict[str, Any]], nulls: dict[str, Any]) -> list[
                 continue
             direction = 1 if r["ic_discovery"] > 0 else -1
             for rule in SG.ENTRY_RULES:
-                cands.append({
-                    "candidate_id": f"{r['variant_id']}|{rule}|dir{direction:+d}",
-                    "variant_id": r["variant_id"], "hypothesis_id": r["hypothesis_id"],
-                    "family": family, "horizon_key": r["horizon_key"],
-                    "rule": rule, "direction": direction,
-                    "ic_discovery": r["ic_discovery"],
-                })
+                cands.append(
+                    {
+                        "candidate_id": f"{r['variant_id']}|{rule}|dir{direction:+d}",
+                        "variant_id": r["variant_id"],
+                        "hypothesis_id": r["hypothesis_id"],
+                        "family": family,
+                        "horizon_key": r["horizon_key"],
+                        "rule": rule,
+                        "direction": direction,
+                        "ic_discovery": r["ic_discovery"],
+                    }
+                )
     return cands
 
 
-def evaluate(cand: dict[str, Any], panel: L.CarryPanel,
-             mask: NDArray[Any], cost_bps: float = L.ROUND_TRIP_COST_BPS,
-             funding_scale: float = 1.0,
-             fwd_funding_override: dict[Any, NDArray[Any]] | None = None) -> dict[str, Any]:
+def evaluate(
+    cand: dict[str, Any],
+    panel: L.CarryPanel,
+    mask: NDArray[Any],
+    cost_bps: float = L.ROUND_TRIP_COST_BPS,
+    funding_scale: float = 1.0,
+    fwd_funding_override: dict[Any, NDArray[Any]] | None = None,
+) -> dict[str, Any]:
     v = next(x for x in SG.build_variants() if x.variant_id == cand["variant_id"])
     entry = SG.entry_signal(v, panel, cand["rule"], cand.get("direction", 1))
     panel2 = panel if fwd_funding_override is None else _with_scaled_funding(panel, funding_scale)
@@ -388,8 +442,13 @@ def evaluate(cand: dict[str, Any], panel: L.CarryPanel,
 
 def _with_scaled_funding(panel: L.CarryPanel, scale: float) -> L.CarryPanel:
     return L.CarryPanel(
-        ts=panel.ts, asset=panel.asset, spot=panel.spot, perp=panel.perp,
-        basis=panel.basis, funding=panel.funding, features=panel.features,
+        ts=panel.ts,
+        asset=panel.asset,
+        spot=panel.spot,
+        perp=panel.perp,
+        basis=panel.basis,
+        funding=panel.funding,
+        features=panel.features,
         fwd_funding={h: v * scale for h, v in panel.fwd_funding.items()},
         fwd_basis_pnl=panel.fwd_basis_pnl,
     )
@@ -398,6 +457,7 @@ def _with_scaled_funding(panel: L.CarryPanel, scale: float) -> L.CarryPanel:
 # ---------------------------------------------------------------------------
 # 8. main pipeline
 # ---------------------------------------------------------------------------
+
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
@@ -430,8 +490,7 @@ def main() -> None:
     masks = L.split_masks(panel)
 
     info = information_audit(panel, masks)
-    L.write_json(OUT / "INFORMATION_AUDIT.json",
-                 {"n_variants": len(info), "variants": info})
+    L.write_json(OUT / "INFORMATION_AUDIT.json", {"n_variants": len(info), "variants": info})
     L.write_md(OUT / "INFORMATION_AUDIT.md", _md_info(info))
 
     nulls = {fam: family_null(panel, masks, fam, info) for fam in SG.FAMILIES}
@@ -445,8 +504,7 @@ def main() -> None:
     disc: list[dict[str, Any]] = []
     for c in cands:
         r = evaluate(c, panel, masks["DISCOVERY"])
-        disc.append({**c, "discovery": r,
-                     "candidate_hash": L.sha256_obj(c)})
+        disc.append({**c, "discovery": r, "candidate_hash": L.sha256_obj(c)})
     disc.sort(key=lambda x: x["discovery"].get("net_expectancy_bps", -1e9), reverse=True)
     qualifying = [c for c in disc if _passes_g1(c["discovery"])]
     g1 = "PASS" if qualifying else "FAIL"
@@ -454,12 +512,18 @@ def main() -> None:
     # best-by-expectancy candidate kept for diagnostics only.
     best_disc = qualifying[0] if qualifying else (disc[0] if disc else None)
 
-    L.write_json(OUT / "DISCOVERY_RESULTS.json",
-                 {"gate": g1, "n_candidates": len(cands),
-                  "n_qualifying": len(qualifying),
-                  "min_discovery_trades": MIN_DISCOVERY_TRADES,
-                  "frozen_candidate": best_disc["candidate_id"] if best_disc else None,
-                  "g_carry_info": g_info, "candidates": disc})
+    L.write_json(
+        OUT / "DISCOVERY_RESULTS.json",
+        {
+            "gate": g1,
+            "n_candidates": len(cands),
+            "n_qualifying": len(qualifying),
+            "min_discovery_trades": MIN_DISCOVERY_TRADES,
+            "frozen_candidate": best_disc["candidate_id"] if best_disc else None,
+            "g_carry_info": g_info,
+            "candidates": disc,
+        },
+    )
     L.write_md(OUT / "DISCOVERY_RESULTS.md", _md_discovery(g1, cands, qualifying, disc))
 
     # --- validation (only G_CARRY_1) --------------------------------------
@@ -469,16 +533,25 @@ def main() -> None:
     if g1 == "PASS" and best_disc is not None:
         r = evaluate(best_disc, panel, masks["VALIDATION"])
         best_val = r
-        g2 = "PASS" if (r.get("status") == "OK" and r.get("net_expectancy_bps", -1) > 0
-                        and r.get("net_pnl_bps", -1) > 0
-                        and r.get("trades", 0) >= MIN_VALIDATION_TRADES) else "FAIL"
-        val = {"status": "OK", "gate": g2, "candidate_id": best_disc["candidate_id"],
-               "result": r}
+        g2 = (
+            "PASS"
+            if (
+                r.get("status") == "OK"
+                and r.get("net_expectancy_bps", -1) > 0
+                and r.get("net_pnl_bps", -1) > 0
+                and r.get("trades", 0) >= MIN_VALIDATION_TRADES
+            )
+            else "FAIL"
+        )
+        val = {"status": "OK", "gate": g2, "candidate_id": best_disc["candidate_id"], "result": r}
 
     L.write_json(OUT / "VALIDATION_RESULTS.json", val)
-    L.write_md(OUT / "VALIDATION_RESULTS.md",
-               f"# VALIDATION_RESULTS\n\nG_CARRY_2 = {g2}\n\n```json\n"
-               + json.dumps(val, indent=2, default=str) + "\n```\n")
+    L.write_md(
+        OUT / "VALIDATION_RESULTS.md",
+        f"# VALIDATION_RESULTS\n\nG_CARRY_2 = {g2}\n\n```json\n"
+        + json.dumps(val, indent=2, default=str)
+        + "\n```\n",
+    )
 
     # --- walk-forward / stress / robustness (only G_CARRY_2) --------------
     wf: dict[str, Any] = {"status": "NOT_REACHED", "reason": "G_CARRY_2 != PASS"}
@@ -489,27 +562,43 @@ def main() -> None:
         wf = walk_forward(panel, masks, best_disc)
         stress = stress_tests(panel, masks, best_disc)
         robust = robustness(panel, masks, best_disc)
-        wf_ok = all(f.get("net_expectancy_bps", -1) > 0
-                    for f in wf.get("folds", []) if f.get("status") == "OK") and wf.get("folds")
+        wf_ok = all(
+            f.get("net_expectancy_bps", -1) > 0
+            for f in wf.get("folds", [])
+            if f.get("status") == "OK"
+        ) and wf.get("folds")
         st_ok = stress.get("survives_cost_50", False) and stress.get("survives_funding_50", False)
         rb_ok = robust.get("temporal_all_positive", False) and robust.get("concentration_ok", False)
         g3 = "PASS" if (wf_ok and st_ok and rb_ok) else "FAIL"
 
     L.write_json(OUT / "WALK_FORWARD_RESULTS.json", wf)
-    L.write_md(OUT / "WALK_FORWARD_RESULTS.md", f"# WALK_FORWARD_RESULTS\n\n{json.dumps(wf, indent=2, default=str)}\n")
+    L.write_md(
+        OUT / "WALK_FORWARD_RESULTS.md",
+        f"# WALK_FORWARD_RESULTS\n\n{json.dumps(wf, indent=2, default=str)}\n",
+    )
     L.write_json(OUT / "STRESS_RESULTS.json", stress)
-    L.write_md(OUT / "STRESS_RESULTS.md", f"# STRESS_RESULTS\n\n{json.dumps(stress, indent=2, default=str)}\n")
+    L.write_md(
+        OUT / "STRESS_RESULTS.md",
+        f"# STRESS_RESULTS\n\n{json.dumps(stress, indent=2, default=str)}\n",
+    )
     L.write_json(OUT / "ROBUSTNESS_RESULTS.json", robust)
-    L.write_md(OUT / "ROBUSTNESS_RESULTS.md", f"# ROBUSTNESS_RESULTS\n\n{json.dumps(robust, indent=2, default=str)}\n")
+    L.write_md(
+        OUT / "ROBUSTNESS_RESULTS.md",
+        f"# ROBUSTNESS_RESULTS\n\n{json.dumps(robust, indent=2, default=str)}\n",
+    )
 
     # --- holdout (only G_CARRY_3) -----------------------------------------
-    holdout = {"status": "NOT_OPENED",
-               "reason": "G_CARRY_3 != PASS — holdout analytics never read (§12, §52)"}
+    holdout = {
+        "status": "NOT_OPENED",
+        "reason": "G_CARRY_3 != PASS — holdout analytics never read (§12, §52)",
+    }
     g4 = "NOT_REACHED"
     L.write_json(OUT / "HOLDOUT_RESULTS.json", holdout)
-    L.write_md(OUT / "HOLDOUT_RESULTS.md",
-               "# HOLDOUT_RESULTS\n\nHOLDOUT not opened (G_CARRY_3 != PASS). "
-               "holdout_analytics_read = false.\n")
+    L.write_md(
+        OUT / "HOLDOUT_RESULTS.md",
+        "# HOLDOUT_RESULTS\n\nHOLDOUT not opened (G_CARRY_3 != PASS). "
+        "holdout_analytics_read = false.\n",
+    )
 
     # --- classification ----------------------------------------------------
     if g_info != "PASS":
@@ -533,15 +622,38 @@ def main() -> None:
             fh.write(json.dumps(r, default=str) + "\n")
 
     summary = _economic_summary(
-        da, cm, funding_be, holding_be, info, nulls, best_disc, best_val,
-        wf, stress, robust, holdout,
-        {"G_CARRY_INFO": g_info, "G_CARRY_1": g1, "G_CARRY_2": g2,
-         "G_CARRY_3": g3, "G_CARRY_4": g4}, gcls)
+        da,
+        cm,
+        funding_be,
+        holding_be,
+        info,
+        nulls,
+        best_disc,
+        best_val,
+        wf,
+        stress,
+        robust,
+        holdout,
+        {
+            "G_CARRY_INFO": g_info,
+            "G_CARRY_1": g1,
+            "G_CARRY_2": g2,
+            "G_CARRY_3": g3,
+            "G_CARRY_4": g4,
+        },
+        gcls,
+    )
 
     report = {
-        "rfc": "RFC-028", "title": "Market-neutral carry & relative-value edge discovery",
-        "gates": {"G_CARRY_INFO": g_info, "G_CARRY_1": g1, "G_CARRY_2": g2,
-                  "G_CARRY_3": g3, "G_CARRY_4": g4},
+        "rfc": "RFC-028",
+        "title": "Market-neutral carry & relative-value edge discovery",
+        "gates": {
+            "G_CARRY_INFO": g_info,
+            "G_CARRY_1": g1,
+            "G_CARRY_2": g2,
+            "G_CARRY_3": g3,
+            "G_CARRY_4": g4,
+        },
         "global_classification": gcls,
         "history_months": da["history_months"],
         "round_trip_cost_bps": L.ROUND_TRIP_COST_BPS,
@@ -550,13 +662,19 @@ def main() -> None:
         "family_nulls": nulls,
         "break_even_funding": funding_be,
         "break_even_holding": holding_be,
-        "walk_forward": wf, "stress": stress, "robustness": robust, "holdout": holdout,
+        "walk_forward": wf,
+        "stress": stress,
+        "robustness": robust,
+        "holdout": holdout,
         "holdout_analytics_read": False,
         "false_success": None,
         "independent_verification": None,
         "economic_summary": summary,
-        "next_gate": ("ECONOMIC_STRATEGY_CHECKPOINT (§66)" if gcls in
-                      {"CARRY-A", "CARRY-B", "CARRY-C"} else "CONTINUE"),
+        "next_gate": (
+            "ECONOMIC_STRATEGY_CHECKPOINT (§66)"
+            if gcls in {"CARRY-A", "CARRY-B", "CARRY-C"}
+            else "CONTINUE"
+        ),
     }
     L.write_json(Path("reports") / "RFC028_FINAL_REPORT.json", report)
     L.write_md(Path("reports") / "RFC028_FINAL_REPORT.md", _md_final(report))
@@ -564,17 +682,31 @@ def main() -> None:
     # --- plan artifact -----------------------------------------------------
     plan = {
         "objective": "Test whether market-neutral carry/basis/funding produces net edge",
-        "pipeline": ["DATA_AUDIT", "FUNDING_PIT_AUDIT", "CARRY_COST_MODEL",
-                     "INFORMATION_AUDIT", "FAMILY_NULL", "DISCOVERY", "VALIDATION",
-                     "WALK_FORWARD", "STRESS", "ROBUSTNESS", "HOLDOUT",
-                     "INDEPENDENT_VERIFY", "ECONOMIC_CHECKPOINT"],
+        "pipeline": [
+            "DATA_AUDIT",
+            "FUNDING_PIT_AUDIT",
+            "CARRY_COST_MODEL",
+            "INFORMATION_AUDIT",
+            "FAMILY_NULL",
+            "DISCOVERY",
+            "VALIDATION",
+            "WALK_FORWARD",
+            "STRESS",
+            "ROBUSTNESS",
+            "HOLDOUT",
+            "INDEPENDENT_VERIFY",
+            "ECONOMIC_CHECKPOINT",
+        ],
         "splits": L.SPLIT_FRACTIONS,
         "cost_model": L.CARRY_COST_MODEL_V1,
         "assets": list(L.ASSETS),
         "no_agents": True,
     }
     L.write_json(OUT / "RFC028_PLAN.json", plan)
-    L.write_md(OUT / "RFC028_PLAN.md", "# RFC-028 PLAN\n\n" + json.dumps(plan, indent=2, default=str) + "\n")
+    L.write_md(
+        OUT / "RFC028_PLAN.md",
+        "# RFC-028 PLAN\n\n" + json.dumps(plan, indent=2, default=str) + "\n",
+    )
 
     # --- economic checkpoint (§66) ----------------------------------------
     if gcls in {"CARRY-A", "CARRY-B", "CARRY-C"}:
@@ -589,8 +721,10 @@ def main() -> None:
 
 # --- already defined below --------------------------------------------------
 
-def walk_forward(panel: L.CarryPanel, masks: dict[str, NDArray[Any]],
-                 cand: dict[str, Any]) -> dict[str, Any]:
+
+def walk_forward(
+    panel: L.CarryPanel, masks: dict[str, NDArray[Any]], cand: dict[str, Any]
+) -> dict[str, Any]:
     folds: list[dict[str, Any]] = []
     v = next(x for x in SG.build_variants() if x.variant_id == cand["variant_id"])
     entry = SG.entry_signal(v, panel, cand["rule"], cand.get("direction", 1))
@@ -600,13 +734,21 @@ def walk_forward(panel: L.CarryPanel, masks: dict[str, NDArray[Any]],
             r = L.simulate_candidate(panel, m, entry, cand["horizon_key"])
             r.pop("trades_list", None)
             folds.append({"fold": f"{split}:{a}", **r})
-    positive = sum(1 for f in folds if f.get("status") == "OK" and f.get("net_expectancy_bps", 0) > 0)
-    return {"status": "OK", "candidate_id": cand["candidate_id"], "folds": folds,
-            "positive_folds": positive, "n_folds": len(folds)}
+    positive = sum(
+        1 for f in folds if f.get("status") == "OK" and f.get("net_expectancy_bps", 0) > 0
+    )
+    return {
+        "status": "OK",
+        "candidate_id": cand["candidate_id"],
+        "folds": folds,
+        "positive_folds": positive,
+        "n_folds": len(folds),
+    }
 
 
-def stress_tests(panel: L.CarryPanel, masks: dict[str, NDArray[Any]],
-                 cand: dict[str, Any]) -> dict[str, Any]:
+def stress_tests(
+    panel: L.CarryPanel, masks: dict[str, NDArray[Any]], cand: dict[str, Any]
+) -> dict[str, Any]:
     m = masks["DISCOVERY"] | masks["VALIDATION"]
     base = evaluate(cand, panel, m)
     out: dict[str, Any] = {"status": "OK", "base": base}
@@ -614,15 +756,17 @@ def stress_tests(panel: L.CarryPanel, masks: dict[str, NDArray[Any]],
         r = evaluate(cand, panel, m, cost_bps=L.ROUND_TRIP_COST_BPS * mult)
         out[label] = r
     for label, scale in (("funding_x0.75", 0.75), ("funding_x0.50", 0.50)):
-        out[label] = evaluate(cand, panel, m, funding_scale=scale,
-                              fwd_funding_override=panel.fwd_funding)
+        out[label] = evaluate(
+            cand, panel, m, funding_scale=scale, fwd_funding_override=panel.fwd_funding
+        )
     out["survives_cost_50"] = out["cost_+50"].get("net_expectancy_bps", -1) > 0
     out["survives_funding_50"] = out["funding_x0.50"].get("net_expectancy_bps", -1) > 0
     return out
 
 
-def robustness(panel: L.CarryPanel, masks: dict[str, NDArray[Any]],
-               cand: dict[str, Any]) -> dict[str, Any]:
+def robustness(
+    panel: L.CarryPanel, masks: dict[str, NDArray[Any]], cand: dict[str, Any]
+) -> dict[str, Any]:
     m = masks["DISCOVERY"] | masks["VALIDATION"]
     v = next(x for x in SG.build_variants() if x.variant_id == cand["variant_id"])
     entry = SG.entry_signal(v, panel, cand["rule"], cand.get("direction", 1))
@@ -635,19 +779,28 @@ def robustness(panel: L.CarryPanel, masks: dict[str, NDArray[Any]],
     full.pop("trades_list", None)
     # temporal halves
     halves = []
-    for name, mm in (("first_half", m & (np.arange(len(panel)) < len(panel) // 2)),
-                     ("second_half", m & (np.arange(len(panel)) >= len(panel) // 2))):
+    for name, mm in (
+        ("first_half", m & (np.arange(len(panel)) < len(panel) // 2)),
+        ("second_half", m & (np.arange(len(panel)) >= len(panel) // 2)),
+    ):
         r = L.simulate_candidate(panel, mm, entry, cand["horizon_key"])
         r.pop("trades_list", None)
         halves.append({"half": name, **r})
-    temporal_all_positive = all(h.get("status") == "OK" and h.get("net_expectancy_bps", -1) > 0
-                                for h in halves)
-    conc_ok = (full.get("top1_share") is None or full.get("top1_share", 1) < 0.5)
-    return {"status": "OK", "candidate_id": cand["candidate_id"], "per_asset": per_asset,
-            "halves": halves, "full": full,
-            "temporal_all_positive": bool(temporal_all_positive),
-            "concentration_ok": bool(conc_ok),
-            "top1_share": full.get("top1_share"), "top3_share": full.get("top3_share")}
+    temporal_all_positive = all(
+        h.get("status") == "OK" and h.get("net_expectancy_bps", -1) > 0 for h in halves
+    )
+    conc_ok = full.get("top1_share") is None or full.get("top1_share", 1) < 0.5
+    return {
+        "status": "OK",
+        "candidate_id": cand["candidate_id"],
+        "per_asset": per_asset,
+        "halves": halves,
+        "full": full,
+        "temporal_all_positive": bool(temporal_all_positive),
+        "concentration_ok": bool(conc_ok),
+        "top1_share": full.get("top1_share"),
+        "top3_share": full.get("top3_share"),
+    }
 
 
 def _attribution(d: dict[str, Any]) -> dict[str, Any]:
@@ -669,13 +822,22 @@ def _attribution(d: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _economic_summary(da: dict[str, Any], cm: dict[str, Any], funding_be: dict[str, Any],
-                      holding_be: dict[str, Any], info: list[dict[str, Any]],
-                      nulls: dict[str, Any], best_disc: dict[str, Any] | None,
-                      best_val: dict[str, Any] | None, wf: dict[str, Any],
-                      stress: dict[str, Any], robust: dict[str, Any],
-                      holdout: dict[str, Any], gates: dict[str, Any],
-                      gcls: str) -> dict[str, Any]:
+def _economic_summary(
+    da: dict[str, Any],
+    cm: dict[str, Any],
+    funding_be: dict[str, Any],
+    holding_be: dict[str, Any],
+    info: list[dict[str, Any]],
+    nulls: dict[str, Any],
+    best_disc: dict[str, Any] | None,
+    best_val: dict[str, Any] | None,
+    wf: dict[str, Any],
+    stress: dict[str, Any],
+    robust: dict[str, Any],
+    holdout: dict[str, Any],
+    gates: dict[str, Any],
+    gcls: str,
+) -> dict[str, Any]:
     d = best_disc["discovery"] if best_disc else {}
     return {
         "assets": list(L.ASSETS),
@@ -701,8 +863,10 @@ def _economic_summary(da: dict[str, Any], cm: dict[str, Any], funding_be: dict[s
         "max_dd_bps_discovery": _r(d.get("max_dd_bps"), 2),
         "break_even_funding_bps_per_period": funding_be["by_horizon"],
         "break_even_holding": holding_be["per_asset"],
-        "family_nulls": {k: {"p": v["family_wise_p"], "max_ic": v["observed_max_abs_ic"]}
-                         for k, v in nulls.items()},
+        "family_nulls": {
+            k: {"p": v["family_wise_p"], "max_ic": v["observed_max_abs_ic"]}
+            for k, v in nulls.items()
+        },
         "validation": best_val,
         "walk_forward": wf.get("positive_folds") if wf.get("status") == "OK" else wf.get("status"),
         "stress": stress.get("status"),
@@ -717,99 +881,159 @@ def _economic_summary(da: dict[str, Any], cm: dict[str, Any], funding_be: dict[s
 # markdown renderers
 # ---------------------------------------------------------------------------
 
+
 def _md_data_audit(da: dict[str, Any]) -> str:
-    rows = [[s, v["spot_rows"], v["perp_rows"], v["funding_rows"],
-             v["spot_duplicates"], v["funding_duplicates"], v["epoch_unit_histogram"]]
-            for s, v in da["per_asset"].items()]
-    return ("# RFC028 DATA AUDIT\n\n"
-            f"- Window: {da['window']['common_start']} -> {da['window']['common_end']}\n"
-            f"- History months: {da['history_months']}\n"
-            f"- Result: {da['result']}\n\n"
-            + _md_table(rows, ["asset", "spot", "perp", "funding", "spot_dup",
-                               "fund_dup", "epoch_units"]))
+    rows = [
+        [
+            s,
+            v["spot_rows"],
+            v["perp_rows"],
+            v["funding_rows"],
+            v["spot_duplicates"],
+            v["funding_duplicates"],
+            v["epoch_unit_histogram"],
+        ]
+        for s, v in da["per_asset"].items()
+    ]
+    return (
+        "# RFC028 DATA AUDIT\n\n"
+        f"- Window: {da['window']['common_start']} -> {da['window']['common_end']}\n"
+        f"- History months: {da['history_months']}\n"
+        f"- Result: {da['result']}\n\n"
+        + _md_table(
+            rows, ["asset", "spot", "perp", "funding", "spot_dup", "fund_dup", "epoch_units"]
+        )
+    )
 
 
 def _md_pit(pit: dict[str, Any]) -> str:
-    rows = [[s, v["invariant_observation_violations"],
-             v["invariant_known_time_violations"],
-             v["invariant_available_time_violations"], v["sample_signal_last_eq_prev_rate"]]
-            for s, v in pit["per_asset"].items()]
-    return ("# RFC028 FUNDING PIT AUDIT\n\n"
-            f"- Result: {pit['result']}\n"
-            f"- Future poisoning test passed: {pit['future_poisoning_test']['passed']}\n\n"
-            + _md_table(rows, ["asset", "obs_viol", "known_viol", "avail_viol",
-                               "signal_lag_ok"]))
+    rows = [
+        [
+            s,
+            v["invariant_observation_violations"],
+            v["invariant_known_time_violations"],
+            v["invariant_available_time_violations"],
+            v["sample_signal_last_eq_prev_rate"],
+        ]
+        for s, v in pit["per_asset"].items()
+    ]
+    return (
+        "# RFC028 FUNDING PIT AUDIT\n\n"
+        f"- Result: {pit['result']}\n"
+        f"- Future poisoning test passed: {pit['future_poisoning_test']['passed']}\n\n"
+        + _md_table(rows, ["asset", "obs_viol", "known_viol", "avail_viol", "signal_lag_ok"])
+    )
 
 
 def _md_cost(cm: dict[str, Any]) -> str:
-    return ("# RFC028 CARRY COST MODEL V1\n\n"
-            f"- Round-trip total: **{cm['round_trip_cost_bps']} bps**\n"
-            f"- Spot side: {cm['spot_side_bps']} bps  (fee {cm['spot_fee_bps']} + "
-            f"half-spread {cm['spot_half_spread_bps']} + impact {cm['spot_impact_bps']})\n"
-            f"- Perp side: {cm['perp_side_bps']} bps  (fee {cm['perp_fee_bps']} + "
-            f"half-spread {cm['perp_half_spread_bps']} + impact {cm['perp_impact_bps']})\n"
-            f"- Legs: {cm['legs']}\n"
-            f"- Fees: {cm['fee_basis']}\n"
-            f"- Committed capital per unit notional: {cm['committed_capital_per_unit_notional']}\n"
-            f"- Contrast (NOT used): COST_MODEL_V3 = {cm['reused_cost_model_v3_bps_for_contrast']} bps\n")
+    return (
+        "# RFC028 CARRY COST MODEL V1\n\n"
+        f"- Round-trip total: **{cm['round_trip_cost_bps']} bps**\n"
+        f"- Spot side: {cm['spot_side_bps']} bps  (fee {cm['spot_fee_bps']} + "
+        f"half-spread {cm['spot_half_spread_bps']} + impact {cm['spot_impact_bps']})\n"
+        f"- Perp side: {cm['perp_side_bps']} bps  (fee {cm['perp_fee_bps']} + "
+        f"half-spread {cm['perp_half_spread_bps']} + impact {cm['perp_impact_bps']})\n"
+        f"- Legs: {cm['legs']}\n"
+        f"- Fees: {cm['fee_basis']}\n"
+        f"- Committed capital per unit notional: {cm['committed_capital_per_unit_notional']}\n"
+        f"- Contrast (NOT used): COST_MODEL_V3 = {cm['reused_cost_model_v3_bps_for_contrast']} bps\n"
+    )
 
 
-def _md_discovery(g1: str, cands: list[dict[str, Any]],
-                  qualifying: list[dict[str, Any]],
-                  disc: list[dict[str, Any]]) -> str:
-    rows = [[c["candidate_id"], c["discovery"].get("trades"),
-             c["discovery"].get("net_expectancy_bps"),
-             c["discovery"].get("sum_funding_bps"),
-             c["discovery"].get("sum_cost_bps"), c["discovery"].get("status")]
-            for c in disc[:25]]
-    return ("# DISCOVERY_RESULTS\n\n"
-            f"G_CARRY_1 = {g1}\n\n"
-            f"Candidates evaluated: {len(cands)}; qualifying (all gate criteria): "
-            f"{len(qualifying)}\n\n"
-            + _md_table(rows, ["candidate", "trades", "net_exp_bps", "funding_bps",
-                               "cost_bps", "status"]))
+def _md_discovery(
+    g1: str,
+    cands: list[dict[str, Any]],
+    qualifying: list[dict[str, Any]],
+    disc: list[dict[str, Any]],
+) -> str:
+    rows = [
+        [
+            c["candidate_id"],
+            c["discovery"].get("trades"),
+            c["discovery"].get("net_expectancy_bps"),
+            c["discovery"].get("sum_funding_bps"),
+            c["discovery"].get("sum_cost_bps"),
+            c["discovery"].get("status"),
+        ]
+        for c in disc[:25]
+    ]
+    return (
+        "# DISCOVERY_RESULTS\n\n"
+        f"G_CARRY_1 = {g1}\n\n"
+        f"Candidates evaluated: {len(cands)}; qualifying (all gate criteria): "
+        f"{len(qualifying)}\n\n"
+        + _md_table(
+            rows, ["candidate", "trades", "net_exp_bps", "funding_bps", "cost_bps", "status"]
+        )
+    )
 
 
 def _md_be_funding(fb: dict[str, Any]) -> str:
-    rows = [[hk, v["periods"], v["hours"], v["break_even_funding_bps_per_period"]]
-            for hk, v in fb["by_horizon"].items()]
-    return ("# RFC028 BREAK-EVEN FUNDING\n\n"
-            f"Round-trip cost = {fb['round_trip_cost_bps']} bps.\n\n"
-            + _md_table(rows, ["horizon", "periods", "hours", "min_funding_bps/period"])
-            + f"\n{fb['verdict']}\n")
+    rows = [
+        [hk, v["periods"], v["hours"], v["break_even_funding_bps_per_period"]]
+        for hk, v in fb["by_horizon"].items()
+    ]
+    return (
+        "# RFC028 BREAK-EVEN FUNDING\n\n"
+        f"Round-trip cost = {fb['round_trip_cost_bps']} bps.\n\n"
+        + _md_table(rows, ["horizon", "periods", "hours", "min_funding_bps/period"])
+        + f"\n{fb['verdict']}\n"
+    )
 
 
 def _md_be_holding(hb: dict[str, Any]) -> str:
-    rows = [[a, v["mean_funding_bps_per_period"],
-             v.get("break_even_holding_periods"), v.get("break_even_holding_hours")]
-            for a, v in hb["per_asset"].items()]
-    return ("# RFC028 BREAK-EVEN HOLDING\n\n"
-            + _md_table(rows, ["asset", "mean_funding_bps/period",
-                               "break_even_periods", "break_even_hours"]))
+    rows = [
+        [
+            a,
+            v["mean_funding_bps_per_period"],
+            v.get("break_even_holding_periods"),
+            v.get("break_even_holding_hours"),
+        ]
+        for a, v in hb["per_asset"].items()
+    ]
+    return "# RFC028 BREAK-EVEN HOLDING\n\n" + _md_table(
+        rows, ["asset", "mean_funding_bps/period", "break_even_periods", "break_even_hours"]
+    )
 
 
 def _md_hyp(reg: dict[str, Any]) -> str:
-    rows = [[h["id"], h["family"], h["signal_kind"], h["target_kind"], h["description"]]
-            for h in reg["hypotheses"]]
-    return ("# RFC028 HYPOTHESIS REGISTRY\n\n"
-            f"- Core hypotheses: {reg['n_core_hypotheses']}\n"
-            f"- Variants: {reg['n_variants']}\n\n"
-            + _md_table(rows, ["id", "family", "signal", "target", "description"]))
+    rows = [
+        [h["id"], h["family"], h["signal_kind"], h["target_kind"], h["description"]]
+        for h in reg["hypotheses"]
+    ]
+    return (
+        "# RFC028 HYPOTHESIS REGISTRY\n\n"
+        f"- Core hypotheses: {reg['n_core_hypotheses']}\n"
+        f"- Variants: {reg['n_variants']}\n\n"
+        + _md_table(rows, ["id", "family", "signal", "target", "description"])
+    )
 
 
 def _md_info(info: list[dict[str, Any]]) -> str:
-    rows = [[r["variant_id"], r["family"], r["horizon_key"],
-             r["ic_discovery"], r["quantile_top_minus_bottom_bps"], r["n_discovery"]]
-            for r in info]
-    return ("# RFC028 INFORMATION AUDIT (DISCOVERY)\n\n"
-            + _md_table(rows, ["variant", "family", "horizon", "IC", "Q5-Q1 bps", "n"]))
+    rows = [
+        [
+            r["variant_id"],
+            r["family"],
+            r["horizon_key"],
+            r["ic_discovery"],
+            r["quantile_top_minus_bottom_bps"],
+            r["n_discovery"],
+        ]
+        for r in info
+    ]
+    return "# RFC028 INFORMATION AUDIT (DISCOVERY)\n\n" + _md_table(
+        rows, ["variant", "family", "horizon", "IC", "Q5-Q1 bps", "n"]
+    )
 
 
 def _md_null(nulls: dict[str, Any]) -> str:
-    rows = [[k, v["observed_max_abs_ic"], v["family_wise_p"], v["significant"],
-             v["best_variant"]] for k, v in nulls.items()]
-    return ("# RFC028 FAMILY-WISE NULL\n\n"
-            + _md_table(rows, ["family", "max|IC|", "family_p", "significant", "best"]))
+    rows = [
+        [k, v["observed_max_abs_ic"], v["family_wise_p"], v["significant"], v["best_variant"]]
+        for k, v in nulls.items()
+    ]
+    return "# RFC028 FAMILY-WISE NULL\n\n" + _md_table(
+        rows, ["family", "max|IC|", "family_p", "significant", "best"]
+    )
 
 
 def _md_final(report: dict[str, Any]) -> str:
@@ -817,12 +1041,14 @@ def _md_final(report: dict[str, Any]) -> str:
     s = report["economic_summary"]
     a = s.get("attribution", {})
     lines = [
-        "# RFC-028 MARKET-NEUTRAL CARRY", "",
+        "# RFC-028 MARKET-NEUTRAL CARRY",
+        "",
         f"- G_CARRY_INFO = {g['G_CARRY_INFO']}",
         f"- G_CARRY_1 = {g['G_CARRY_1']}",
         f"- G_CARRY_2 = {g['G_CARRY_2']}",
         f"- G_CARRY_3 = {g['G_CARRY_3']}",
-        f"- G_CARRY_4 = {g['G_CARRY_4']}", "",
+        f"- G_CARRY_4 = {g['G_CARRY_4']}",
+        "",
         f"- Assets = {', '.join(s['assets'])}",
         f"- History = {s['history_months']} months",
         f"- Structure = {s['structure']}",
@@ -852,16 +1078,20 @@ def _md_final(report: dict[str, Any]) -> str:
         f"- GLOBAL_CLASSIFICATION = {report['global_classification']}",
         f"- FALSE_SUCCESS = {report['false_success']}",
         f"- INDEPENDENT VERIFICATION = {report['independent_verification']}",
-        f"- NEXT = {report['next_gate']}", "",
+        f"- NEXT = {report['next_gate']}",
+        "",
     ]
     return "\n".join(lines)
 
 
 def _write_checkpoint(summary: dict[str, Any], gcls: str) -> None:
     lines = [
-        "# ECONOMIC STRATEGY CHECKPOINT", "",
-        f"RFC-028 classification: **{gcls}**. No validated carry candidate exists.", "",
-        "## Economic research to date", "",
+        "# ECONOMIC STRATEGY CHECKPOINT",
+        "",
+        f"RFC-028 classification: **{gcls}**. No validated carry candidate exists.",
+        "",
+        "## Economic research to date",
+        "",
         "| RFC | family | best gross | best net | sample | validation | robustness | why rejected |",
         "| --- | --- | --- | --- | --- | --- | --- | --- |",
         "| RFC-010B | live baseline | mean -3.54 bps | mean -27.33 bps | 1533 proposals | n/a | n/a | gross < cost on 1533/1533; ZT-4 zero-trade |",
@@ -878,7 +1108,8 @@ def _write_checkpoint(summary: dict[str, Any], gcls: str) -> None:
         f"{summary.get('trades_discovery')} trades | FAIL (0 trades) | NOT_REACHED | "
         "broad carry net ~-38 bps/trade; only rare high-funding 7d holds positive in D |",
         "",
-        "## RFC-028 detail", "",
+        "## RFC-028 detail",
+        "",
         f"- Best discovery candidate: {summary.get('best_candidate')}",
         f"- Funding PnL: {summary.get('funding_pnl_bps_discovery')} bps",
         f"- Basis PnL: {summary.get('basis_pnl_bps_discovery')} bps",
@@ -896,7 +1127,8 @@ def _write_checkpoint(summary: dict[str, Any], gcls: str) -> None:
         "not clear costs at realistic horizons; the binding constraint across all "
         "RFCs is the COST-TO-EDGE RATIO, not a missing signal.",
         "",
-        "## Recommendation (exactly one)", "",
+        "## Recommendation (exactly one)",
+        "",
         "**PIVOT_STRATEGY_CLASS**",
         "",
         "Every tested edge (directional, orthogonal information, positioning, "
@@ -915,7 +1147,8 @@ def _write_checkpoint(summary: dict[str, Any], gcls: str) -> None:
         "passive structure can be validated with adequate historical data, then "
         "PAUSE_PROJECT.",
         "",
-        "DO NOT open RFC-029 as another edge-discovery grid search.", "",
+        "DO NOT open RFC-029 as another edge-discovery grid search.",
+        "",
     ]
     L.write_md(Path("reports") / "ECONOMIC_STRATEGY_CHECKPOINT.md", "\n".join(lines))
 

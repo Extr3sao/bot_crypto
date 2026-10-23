@@ -136,9 +136,7 @@ def test_compaction_records_full_lineage_and_marks_the_window(tmp_path: Path) ->
     bucket = _window_start_ms()
     segment = _capture_window(tmp_path, bucket_start_ms=bucket, trades=7)
     policy = _policy()
-    result = compact_window(
-        tmp_path, policy, RUN_ID, bucket, bucket + ROTATION * 1000, [segment]
-    )
+    result = compact_window(tmp_path, policy, RUN_ID, bucket, bucket + ROTATION * 1000, [segment])
     record = result.lineage
     digest, size = sha256_file(segment)
     assert record.policy_version == RETENTION_POLICY_VERSION
@@ -189,9 +187,7 @@ def test_aggregation_output_is_byte_for_byte_deterministic(tmp_path: Path) -> No
     copy = other_root / segment.relative_to(tmp_path)
     copy.parent.mkdir(parents=True, exist_ok=True)
     copy.write_bytes(segment.read_bytes())
-    second = compact_window(
-        other_root, policy, RUN_ID, bucket, bucket + ROTATION * 1000, [copy]
-    )
+    second = compact_window(other_root, policy, RUN_ID, bucket, bucket + ROTATION * 1000, [copy])
     assert second.lineage.output_sha256 == first.lineage.output_sha256
     assert second.lineage.output_bytes == first.lineage.output_bytes
 
@@ -418,9 +414,7 @@ def test_policy_for_host_keeps_a_safety_margin_for_the_disk_guard() -> None:
 
 def test_policy_for_host_rejects_a_nonsense_fill_fraction() -> None:
     with pytest.raises(ValueError, match="fill_fraction"):
-        policy_for_host(
-            free_bytes=int(2e9), compressed_bytes_per_day=8.598e9, fill_fraction=1.5
-        )
+        policy_for_host(free_bytes=int(2e9), compressed_bytes_per_day=8.598e9, fill_fraction=1.5)
 
 
 def test_policy_for_host_floors_at_one_hour_when_nothing_fits() -> None:

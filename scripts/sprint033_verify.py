@@ -28,7 +28,7 @@ FORMATION = 365
 VOL_TARGET = 0.40
 VOL_LOOKBACK = 60
 GROSS_CAP = 1.0
-PER_SIDE_COST_BPS = 8.5     # taker 5 + half spread 2 + impact 1.5, recomputed here
+PER_SIDE_COST_BPS = 8.5  # taker 5 + half spread 2 + impact 1.5, recomputed here
 
 DISCOVERY = ("2020-01-01", "2023-06-30")
 VALIDATION = ("2023-07-01", "2025-03-31")
@@ -67,8 +67,7 @@ def load_funding(s: str) -> tuple[np.ndarray[Any, Any], np.ndarray[Any, Any]]:
 def main() -> int:
     syms = load_universe()
     panels = {s: load_panel(s) for s in syms}
-    all_days = sorted({int(t) for d in panels.values()
-                       for t in d["open_time_ms"].tolist()})
+    all_days = sorted({int(t) for d in panels.values() for t in d["open_time_ms"].tolist()})
     days = np.asarray(all_days, np.int64)
     di = {int(t): i for i, t in enumerate(all_days)}
     n, a = days.shape[0], len(syms)
@@ -124,7 +123,7 @@ def main() -> int:
         sig = np.zeros(a)
         sig[elig] = np.sign(close[i, elig] / close[back, elig] - 1.0)
         lo = max(0, i - VOL_LOOKBACK)
-        win = close[lo:i + 1]
+        win = close[lo : i + 1]
         r = win[1:] / win[:-1] - 1.0
         vol = np.full(a, np.nan)
         for j in range(a):
@@ -174,10 +173,10 @@ def main() -> int:
             spx.append(float(np.nansum(px[w < 0]) * 1e4))
             adv = 0.0
             for jj in range(a):
-                if w[jj] > 0 and np.isfinite(lowp[e0:e1 + 1, jj]).any():
-                    adv += w[jj] * (float(np.nanmin(lowp[e0:e1 + 1, jj])) / openp[e0, jj] - 1.0)
-                elif w[jj] < 0 and np.isfinite(highp[e0:e1 + 1, jj]).any():
-                    adv += w[jj] * (float(np.nanmax(highp[e0:e1 + 1, jj])) / openp[e0, jj] - 1.0)
+                if w[jj] > 0 and np.isfinite(lowp[e0 : e1 + 1, jj]).any():
+                    adv += w[jj] * (float(np.nanmin(lowp[e0 : e1 + 1, jj])) / openp[e0, jj] - 1.0)
+                elif w[jj] < 0 and np.isfinite(highp[e0 : e1 + 1, jj]).any():
+                    adv += w[jj] * (float(np.nanmax(highp[e0 : e1 + 1, jj])) / openp[e0, jj] - 1.0)
             worst.append(adv)
             prev = w
         pa = np.asarray(price)
@@ -216,17 +215,22 @@ def main() -> int:
         return bool(abs(float(x) - float(y)) <= tol)
 
     checks: dict[str, bool] = {}
-    checks["universe_matches"] = (len(syms) > 0)
+    checks["universe_matches"] = len(syms) > 0
     checks["validation_net_reproduced"] = close_to(
-        val["net_expectancy_bps"], b_val.get("net_expectancy_bps"), 1e-4)
+        val["net_expectancy_bps"], b_val.get("net_expectancy_bps"), 1e-4
+    )
     checks["validation_price_reproduced"] = close_to(
-        val["price_expectancy_bps"], b_val.get("price_expectancy_bps"), 1e-4)
+        val["price_expectancy_bps"], b_val.get("price_expectancy_bps"), 1e-4
+    )
     checks["validation_funding_reproduced"] = close_to(
-        val["funding_expectancy_bps"], b_val.get("funding_expectancy_bps"), 1e-4)
+        val["funding_expectancy_bps"], b_val.get("funding_expectancy_bps"), 1e-4
+    )
     checks["validation_cost_reproduced"] = close_to(
-        val["cost_expectancy_bps"], b_val.get("cost_expectancy_bps"), 1e-4)
+        val["cost_expectancy_bps"], b_val.get("cost_expectancy_bps"), 1e-4
+    )
     checks["discovery_net_reproduced"] = close_to(
-        disc["net_expectancy_bps"], b_disc.get("net_expectancy_bps"), 1e-4)
+        disc["net_expectancy_bps"], b_disc.get("net_expectancy_bps"), 1e-4
+    )
     checks["funding_sign_convention_ok"] = True
     checks["price_pnl_accounted"] = val["price_expectancy_bps"] is not None
     checks["funding_included_in_net"] = True
@@ -241,16 +245,16 @@ def main() -> int:
 
     # §54 FALSE_SUCCESS triggers
     fs: dict[str, bool] = {}
-    fs["future_futures_listing_known_early"] = False   # entry only after finite price (listing)
-    fs["future_funding_used_for_signal"] = False        # signal = close ratio only
-    fs["funding_omitted_from_pnl"] = False              # funding term present
+    fs["future_futures_listing_known_early"] = False  # entry only after finite price (listing)
+    fs["future_funding_used_for_signal"] = False  # signal = close ratio only
+    fs["funding_omitted_from_pnl"] = False  # funding term present
     fs["short_treated_as_costless_spot_short"] = False  # native perp short with funding
-    fs["margin_ignored"] = False                        # margin model present
-    fs["liquidation_ignored_under_leverage"] = False    # 1x gross cap; safety computed
-    fs["same_close_fill_reintroduced"] = False          # T+1 open
-    fs["validation_retuned"] = False                    # no parameter change
+    fs["margin_ignored"] = False  # margin model present
+    fs["liquidation_ignored_under_leverage"] = False  # 1x gross cap; safety computed
+    fs["same_close_fill_reintroduced"] = False  # T+1 open
+    fs["validation_retuned"] = False  # no parameter change
     fs["failed_robustness_bypassed"] = False
-    fs["holdout_opened_early"] = False                  # G_PERP_2 failed -> holdout not opened
+    fs["holdout_opened_early"] = False  # G_PERP_2 failed -> holdout not opened
     false_success = int(sum(1 for v in fs.values() if v))
 
     builder_g2 = readj("VALIDATION_RESULTS.json")
@@ -263,8 +267,7 @@ def main() -> int:
         "universe_size": len(syms),
         "checks_total": len(checks),
         "checks_passed": int(sum(1 for v in checks.values() if v)),
-        "reproduction_exact": bool(all(checks[k] for k in checks
-                                       if k.endswith("_reproduced"))),
+        "reproduction_exact": bool(all(checks[k] for k in checks if k.endswith("_reproduced"))),
         "checks": checks,
         "discovery_independent": disc,
         "validation_independent": val,
@@ -276,25 +279,37 @@ def main() -> int:
         "FALSE_SUCCESS": false_success,
     }
     (OUT / "RFC033_VERIFICATION.json").write_text(
-        json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8")
-    md = "\n".join([
-        "# RFC-033 — INDEPENDENT VERIFICATION", "",
-        f"- universe: {len(syms)} perps",
-        f"- checks passed: {payload['checks_passed']}/{payload['checks_total']}",
-        f"- reproduction exact: **{payload['reproduction_exact']}**",
-        f"- independent Discovery net: `{disc['net_expectancy_bps']}` bps/month",
-        f"- independent Validation net: `{val['net_expectancy_bps']}` bps/month",
-        f"- G_PERP_1 independent: **{payload['G_PERP_1_independent']}**",
-        f"- G_PERP_2 independent: **{g2_indep}** (builder: FAIL)",
-        f"- FALSE_SUCCESS: **{false_success}** / {len(fs)}", "",
-        "## Checks", "",
-        "\n".join(f"- {k}: {v}" for k, v in checks.items()), "",
-        "## FALSE_SUCCESS triggers", "",
-        "\n".join(f"- {k}: {v}" for k, v in fs.items()), "",
-    ])
+        json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8"
+    )
+    md = "\n".join(
+        [
+            "# RFC-033 — INDEPENDENT VERIFICATION",
+            "",
+            f"- universe: {len(syms)} perps",
+            f"- checks passed: {payload['checks_passed']}/{payload['checks_total']}",
+            f"- reproduction exact: **{payload['reproduction_exact']}**",
+            f"- independent Discovery net: `{disc['net_expectancy_bps']}` bps/month",
+            f"- independent Validation net: `{val['net_expectancy_bps']}` bps/month",
+            f"- G_PERP_1 independent: **{payload['G_PERP_1_independent']}**",
+            f"- G_PERP_2 independent: **{g2_indep}** (builder: FAIL)",
+            f"- FALSE_SUCCESS: **{false_success}** / {len(fs)}",
+            "",
+            "## Checks",
+            "",
+            "\n".join(f"- {k}: {v}" for k, v in checks.items()),
+            "",
+            "## FALSE_SUCCESS triggers",
+            "",
+            "\n".join(f"- {k}: {v}" for k, v in fs.items()),
+            "",
+        ]
+    )
     (OUT / "RFC033_VERIFICATION.md").write_text(md, encoding="utf-8")
-    print(f"[verify033] checks {payload['checks_passed']}/{payload['checks_total']} "
-          f"FALSE_SUCCESS={false_success} G_PERP_2_indep={g2_indep}", flush=True)
+    print(
+        f"[verify033] checks {payload['checks_passed']}/{payload['checks_total']} "
+        f"FALSE_SUCCESS={false_success} G_PERP_2_indep={g2_indep}",
+        flush=True,
+    )
     return 0
 
 

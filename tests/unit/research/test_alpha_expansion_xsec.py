@@ -29,13 +29,24 @@ DAY = 86_400_000
 DAY0 = 1546300800000
 
 
-def daily(symbol: str, closes: list[float], *, start_day: int = 0, gaps: tuple[int, ...] = ()) -> list[OHLCV]:
+def daily(
+    symbol: str, closes: list[float], *, start_day: int = 0, gaps: tuple[int, ...] = ()
+) -> list[OHLCV]:
     out = []
     for i, c in enumerate(closes):
         if i in gaps:
             continue
-        out.append(OHLCV(symbol=symbol, timestamp=DAY0 + (start_day + i) * DAY,
-                         open=c, high=c + 1, low=c - 1, close=c, volume=1.0))
+        out.append(
+            OHLCV(
+                symbol=symbol,
+                timestamp=DAY0 + (start_day + i) * DAY,
+                open=c,
+                high=c + 1,
+                low=c - 1,
+                close=c,
+                volume=1.0,
+            )
+        )
     return out
 
 
@@ -71,10 +82,15 @@ def test_different_asset_timestamps_exclude_the_laggard() -> None:
 def test_stale_asset_is_excluded() -> None:
     b = CrossSectionalSnapshotBuilder(min_members=2)
     stale = daily("C", [100.0, 100.0])
-    stale[-1] = OHLCV(symbol="C", timestamp=DAY0 + DAY, open=100.0, high=101.0, low=99.0,
-                      close=100.0, volume=1.0)  # one day behind
+    stale[-1] = OHLCV(
+        symbol="C", timestamp=DAY0 + DAY, open=100.0, high=101.0, low=99.0, close=100.0, volume=1.0
+    )  # one day behind
     snap = b.build(
-        {"A": daily("A", [100.0, 110.0, 121.0]), "B": daily("B", [100.0, 105.0, 111.0]), "C": stale},
+        {
+            "A": daily("A", [100.0, 110.0, 121.0]),
+            "B": daily("B", [100.0, 105.0, 111.0]),
+            "C": stale,
+        },
         req(2),
     )
     assert "C" not in snap.eligible_assets
@@ -83,7 +99,10 @@ def test_stale_asset_is_excluded() -> None:
 
 def test_future_asset_bar_is_never_read() -> None:
     b = CrossSectionalSnapshotBuilder()
-    series = {"A": daily("A", [100.0, 110.0, 121.0, 999.0]), "B": daily("B", [100.0, 100.0, 100.0, 1.0])}
+    series = {
+        "A": daily("A", [100.0, 110.0, 121.0, 999.0]),
+        "B": daily("B", [100.0, 100.0, 100.0, 1.0]),
+    }
     snap = b.build(series, req(2))
     assert snap.feature_time <= snap.decision_time
     # values reflect bars up to day 2 only; the day-3 bar cannot move them
@@ -93,8 +112,18 @@ def test_future_asset_bar_is_never_read() -> None:
 def test_duplicate_asset_bar_excludes_symbol() -> None:
     b = CrossSectionalSnapshotBuilder()
     dup = daily("D", [100.0, 100.0, 100.0])
-    dup_with_dup = [*dup, OHLCV(symbol="D", timestamp=dup[-1].timestamp, open=100.0, high=101.0,
-                                 low=99.0, close=100.0, volume=1.0)]
+    dup_with_dup = [
+        *dup,
+        OHLCV(
+            symbol="D",
+            timestamp=dup[-1].timestamp,
+            open=100.0,
+            high=101.0,
+            low=99.0,
+            close=100.0,
+            volume=1.0,
+        ),
+    ]
     snap = b.build({"A": daily("A", [1.0, 2.0, 3.0]), "D": dup_with_dup}, req(2))
     assert "D" not in snap.eligible_assets
     assert snap.exclusion_reasons["D"] == "duplicate_bar"
@@ -146,19 +175,34 @@ def test_insufficient_universe_is_blocked_fail_closed() -> None:
 def test_snapshot_enforces_feature_time_not_after_decision_time() -> None:
     with pytest.raises(CrossSectionalError):
         CrossSectionalSnapshot(
-            decision_time=DAY0, assets=("A",), feature_time=DAY0 + DAY,
-            ranking_feature="trailing_return", ranking_window=1, ranks={}, eligible_assets=(),
-            excluded_assets=(), exclusion_reasons={}, values={}, min_members=2,
+            decision_time=DAY0,
+            assets=("A",),
+            feature_time=DAY0 + DAY,
+            ranking_feature="trailing_return",
+            ranking_window=1,
+            ranks={},
+            eligible_assets=(),
+            excluded_assets=(),
+            exclusion_reasons={},
+            values={},
+            min_members=2,
         )
 
 
 def test_snapshot_requires_permutation_ranks() -> None:
     with pytest.raises(CrossSectionalError):
         CrossSectionalSnapshot(
-            decision_time=DAY0 + DAY, assets=("A", "B"), feature_time=DAY0,
-            ranking_feature="trailing_return", ranking_window=1, ranks={"A": 2, "B": 2},
-            eligible_assets=("A", "B"), excluded_assets=(), exclusion_reasons={},
-            values={"A": 1.0, "B": 1.0}, min_members=2,
+            decision_time=DAY0 + DAY,
+            assets=("A", "B"),
+            feature_time=DAY0,
+            ranking_feature="trailing_return",
+            ranking_window=1,
+            ranks={"A": 2, "B": 2},
+            eligible_assets=("A", "B"),
+            excluded_assets=(),
+            exclusion_reasons={},
+            values={"A": 1.0, "B": 1.0},
+            min_members=2,
         )
 
 

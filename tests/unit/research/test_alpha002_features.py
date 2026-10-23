@@ -140,9 +140,7 @@ def test_a_bucket_is_unavailable_until_its_interval_closes() -> None:
     series = bars(20)
     step = STEP_5M
     # A bucket stamped at the decision instant has *not* closed yet.
-    stamped_at_decision = {
-        int(bar[0]) + step: 5000.0 + index for index, bar in enumerate(series)
-    }
+    stamped_at_decision = {int(bar[0]) + step: 5000.0 + index for index, bar in enumerate(series)}
     rows = build(series, oi=stamped_at_decision)
     # The newest closed bucket at decision T is the one stamped T - step.
     for row in rows:

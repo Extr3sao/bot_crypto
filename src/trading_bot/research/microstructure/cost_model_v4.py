@@ -195,9 +195,7 @@ class AssetCostV4:
             "minimum_gross_edge_bps": round(self.minimum_gross_edge_bps, 4),
             "required_gross_edge_bps": round(self.required_gross_edge_bps, 4),
             "stress_bps": {k: round(v, 4) for k, v in self.stress_bps.items()},
-            "maker_round_trip_bps_theoretical": round(
-                self.maker_round_trip_bps_theoretical, 4
-            ),
+            "maker_round_trip_bps_theoretical": round(self.maker_round_trip_bps_theoretical, 4),
             "maker_status": self.maker_status,
             "maker_note": self.maker_note,
             "knowledge_class": self.knowledge_class,
@@ -289,9 +287,7 @@ def asset_cost_v4(
         funding_carry_bps=totals["funding_carry"],
         other_bps=totals["other"],
         taker_round_trip_bps=taker.round_trip_bps,
-        required_gross_edge_bps=required_gross_edge_bps(
-            taker.round_trip_bps, safety_multiple
-        ),
+        required_gross_edge_bps=required_gross_edge_bps(taker.round_trip_bps, safety_multiple),
         stress_bps={
             "1.25x": taker.stress(1.25),
             "1.5x": taker.stress(1.5),

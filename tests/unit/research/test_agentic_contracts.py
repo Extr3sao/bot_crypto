@@ -31,15 +31,30 @@ def _snapshot(**overrides: Any) -> ac.MarketSnapshot:
             ac.TimeframeState(interval="1D", last=64000.0, change_pct=2.4, trend="up"),
         ),
         "technical_state": ac.TechnicalState(
-            rsi=61.0, macd=410.0, adx=28.0, momentum=3.0, sma50=61000.0, ema200=55000.0, recommendation="BUY"
+            rsi=61.0,
+            macd=410.0,
+            adx=28.0,
+            momentum=3.0,
+            sma50=61000.0,
+            ema200=55000.0,
+            recommendation="BUY",
         ),
-        "relative_strength": ac.RelativeStrength(symbol="BINANCE:BTCUSDT", reference="SP:SPX", value=1.8),
+        "relative_strength": ac.RelativeStrength(
+            symbol="BINANCE:BTCUSDT", reference="SP:SPX", value=1.8
+        ),
         "volume_state": ac.VolumeState(last=1200.0, relative=1.2),
         "market_regime": "trend_up_low_volatility",
         "news": (ac.NewsItem(title="synthetic", published=1767223000, provider="x", urgency=1),),
-        "macro_events": (ac.MacroEvent(name="US CPI", country="US", when=1767225600, importance=1),),
+        "macro_events": (
+            ac.MacroEvent(name="US CPI", country="US", when=1767225600, importance=1),
+        ),
         "evidence": (
-            ac.Evidence(kind="technical", source="tradingview_mcp.get_technicals_rating", detail="RSI=61", value=61.0),
+            ac.Evidence(
+                kind="technical",
+                source="tradingview_mcp.get_technicals_rating",
+                detail="RSI=61",
+                value=61.0,
+            ),
         ),
         "data_freshness": ac.DataFreshness(
             snapshot_at=1767225600,
@@ -102,7 +117,14 @@ def test_kpis_and_budget_are_frozen_at_zero_and_two() -> None:
 
 @pytest.mark.parametrize(
     ("age", "expected"),
-    [(-1, "UNKNOWN"), (0, "FRESH"), (3600, "FRESH"), (3601, "AGING"), (86400, "AGING"), (86401, "STALE")],
+    [
+        (-1, "UNKNOWN"),
+        (0, "FRESH"),
+        (3600, "FRESH"),
+        (3601, "AGING"),
+        (86400, "AGING"),
+        (86401, "STALE"),
+    ],
 )
 def test_freshness_class_boundaries(age: int, expected: str) -> None:
     assert ac.freshness_class(age) == expected
@@ -274,11 +296,15 @@ def test_valid_proposal_has_no_problems() -> None:
 
 
 def test_proposal_cannot_be_no_trade() -> None:
-    assert any("NO_TRADE" in problem for problem in ac.validate_proposal(_proposal(direction="NO_TRADE")))
+    assert any(
+        "NO_TRADE" in problem for problem in ac.validate_proposal(_proposal(direction="NO_TRADE"))
+    )
 
 
 def test_proposal_requires_invalidation() -> None:
-    assert any("invalidation" in problem for problem in ac.validate_proposal(_proposal(invalidation="")))
+    assert any(
+        "invalidation" in problem for problem in ac.validate_proposal(_proposal(invalidation=""))
+    )
 
 
 def test_proposal_zone_order_is_checked() -> None:
@@ -390,16 +416,21 @@ def test_incremental_edge_subtracts_baseline_and_cost() -> None:
     )
     assert edge.edge == pytest.approx(25.0)
     assert edge.positive is True
-    assert ac.incremental_edge(
-        agent_outcome=1.0, baseline_outcome=1.0, cost=0.5, baseline="A_NO_TRADE"
-    ).positive is False
+    assert (
+        ac.incremental_edge(
+            agent_outcome=1.0, baseline_outcome=1.0, cost=0.5, baseline="A_NO_TRADE"
+        ).positive
+        is False
+    )
 
 
 def test_incremental_edge_guards_its_inputs() -> None:
     with pytest.raises(ValueError, match="baseline must be one of"):
         ac.incremental_edge(agent_outcome=1.0, baseline_outcome=1.0, cost=0.0, baseline="E_RANDOM")
     with pytest.raises(ValueError, match="cost must not be negative"):
-        ac.incremental_edge(agent_outcome=1.0, baseline_outcome=1.0, cost=-1.0, baseline="A_NO_TRADE")
+        ac.incremental_edge(
+            agent_outcome=1.0, baseline_outcome=1.0, cost=-1.0, baseline="A_NO_TRADE"
+        )
 
 
 def test_hit_rate_and_expectancy() -> None:
@@ -453,7 +484,9 @@ def test_final_report_header_and_gate_are_honest() -> None:
 @pytest.mark.skipif(not HAS_ARTIFACTS, reason="CAP-001 artifacts not generated yet")
 def test_verification_artifact_passed() -> None:
     verification = json.loads(
-        (REPO / "reports" / "agentic-spike-cap001" / "CAP001_VERIFICATION.json").read_text(encoding="utf-8")
+        (REPO / "reports" / "agentic-spike-cap001" / "CAP001_VERIFICATION.json").read_text(
+            encoding="utf-8"
+        )
     )
     assert verification["status"] == "PASS"
     assert verification["mismatches"] == 0
@@ -464,7 +497,9 @@ def test_verification_artifact_passed() -> None:
 @pytest.mark.skipif(not HAS_ARTIFACTS, reason="CAP-001 artifacts not generated yet")
 def test_artifacts_never_present_synthetic_data_as_live() -> None:
     snapshot = json.loads(
-        (REPO / "reports" / "agentic-spike-cap001" / "CAP001_MARKET_SNAPSHOT.json").read_text(encoding="utf-8")
+        (REPO / "reports" / "agentic-spike-cap001" / "CAP001_MARKET_SNAPSHOT.json").read_text(
+            encoding="utf-8"
+        )
     )
     assert snapshot["_synthetic"] is True
     assert snapshot["_source"] == "SYNTHETIC_FIXTURE"

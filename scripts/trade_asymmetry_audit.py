@@ -79,26 +79,28 @@ def main() -> None:
             planned_risk = planned_reward = planned_rr = actual_rr = stop_gap_pct = None
             src = "UNMATCHED"
             unmatched += 1
-        rows.append({
-            "trade_id": f'{t["symbol"]}-{t["opened_at"]:.0f}',
-            "asset": t["symbol"],
-            "strategy": t.get("strategy_name"),
-            "entry_price": entry,
-            "exit_price": exitp,
-            "notional": round(notional, 2),
-            "planned_risk_usdt": round(planned_risk, 2) if planned_risk else None,
-            "planned_reward_usdt": round(planned_reward, 2) if planned_reward else None,
-            "planned_RR": round(planned_rr, 3) if planned_rr else None,
-            "actual_gross_pnl": round(gross, 2),
-            "fees": round(fees, 2),
-            "net_pnl": round(float(t["pnl"]), 2),
-            "actual_return_pct": round(ret_pct, 3),
-            "actual_R": round(actual_rr, 3) if actual_rr else None,
-            "stop_slippage_pct_beyond_stop": round(stop_gap_pct, 3) if stop_gap_pct else None,
-            "exit_reason": t.get("exit_reason"),
-            "duration_min": round((float(t["closed_at"]) - float(t["opened_at"])) / 60.0, 1),
-            "source": src,
-        })
+        rows.append(
+            {
+                "trade_id": f"{t['symbol']}-{t['opened_at']:.0f}",
+                "asset": t["symbol"],
+                "strategy": t.get("strategy_name"),
+                "entry_price": entry,
+                "exit_price": exitp,
+                "notional": round(notional, 2),
+                "planned_risk_usdt": round(planned_risk, 2) if planned_risk else None,
+                "planned_reward_usdt": round(planned_reward, 2) if planned_reward else None,
+                "planned_RR": round(planned_rr, 3) if planned_rr else None,
+                "actual_gross_pnl": round(gross, 2),
+                "fees": round(fees, 2),
+                "net_pnl": round(float(t["pnl"]), 2),
+                "actual_return_pct": round(ret_pct, 3),
+                "actual_R": round(actual_rr, 3) if actual_rr else None,
+                "stop_slippage_pct_beyond_stop": round(stop_gap_pct, 3) if stop_gap_pct else None,
+                "exit_reason": t.get("exit_reason"),
+                "duration_min": round((float(t["closed_at"]) - float(t["opened_at"])) / 60.0, 1),
+                "source": src,
+            }
+        )
 
     stops = [r for r in rows if r["exit_reason"] == "stop_loss" and r["source"] == "matched"]
     tps = [r for r in rows if r["exit_reason"] == "take_profit" and r["source"] == "matched"]
@@ -108,13 +110,27 @@ def main() -> None:
         "planned_RR_obs": sorted({r["planned_RR"] for r in rows if r["planned_RR"] is not None}),
         "stop_exits": {
             "count": len(stops),
-            "avg_actual_R": round(mean([r["actual_R"] for r in stops if r["actual_R"] is not None]), 3) if stops else None,
-            "max_stop_slippage_pct": max([r["stop_slippage_pct_beyond_stop"] or 0.0 for r in stops], default=None),
-            "avg_stop_slippage_pct": round(mean([r["stop_slippage_pct_beyond_stop"] or 0.0 for r in stops]), 3) if stops else None,
+            "avg_actual_R": round(
+                mean([r["actual_R"] for r in stops if r["actual_R"] is not None]), 3
+            )
+            if stops
+            else None,
+            "max_stop_slippage_pct": max(
+                [r["stop_slippage_pct_beyond_stop"] or 0.0 for r in stops], default=None
+            ),
+            "avg_stop_slippage_pct": round(
+                mean([r["stop_slippage_pct_beyond_stop"] or 0.0 for r in stops]), 3
+            )
+            if stops
+            else None,
         },
         "tp_exits": {
             "count": len(tps),
-            "avg_actual_R": round(mean([r["actual_R"] for r in tps if r["actual_R"] is not None]), 3) if tps else None,
+            "avg_actual_R": round(
+                mean([r["actual_R"] for r in tps if r["actual_R"] is not None]), 3
+            )
+            if tps
+            else None,
         },
         "worst_5_losses": sorted(rows, key=lambda r: r["net_pnl"])[:5],
         "classification": None,

@@ -29,8 +29,15 @@ DAY0 = 1546300800000
 
 def hourly(closes: list[float], *, start: int = DAY0, symbol: str = "X") -> list[OHLCV]:
     return [
-        OHLCV(symbol=symbol, timestamp=start + i * HOUR_MS, open=c, high=c + 1.0, low=c - 1.0,
-              close=c, volume=1.0)
+        OHLCV(
+            symbol=symbol,
+            timestamp=start + i * HOUR_MS,
+            open=c,
+            high=c + 1.0,
+            low=c - 1.0,
+            close=c,
+            volume=1.0,
+        )
         for i, c in enumerate(closes)
     ]
 

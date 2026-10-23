@@ -202,7 +202,10 @@ def test_the_evidence_identity_names_strategy_asset_timeframe_and_cost_model(
     assert trace.cost_model_version == "COST_MODEL_V3"
     # And the same identity is what the performance cell is keyed by.
     cell = runtime.performance_store.get(
-        strategy_id="ema_crossover@5m", asset="BTC", regime=trace.regime or "UNKNOWN", timeframe="5m"
+        strategy_id="ema_crossover@5m",
+        asset="BTC",
+        regime=trace.regime or "UNKNOWN",
+        timeframe="5m",
     )
     assert cell is None  # nothing resolved yet: no cell is invented
 
@@ -226,9 +229,7 @@ def test_expected_edge_carries_historical_estimate_provenance(tmp_path: Any) -> 
 
 def test_admission_status_comes_from_the_ledger_not_the_proposal(tmp_path: Any) -> None:
     """A proposal cannot promote itself; the ledger wins (recomputed)."""
-    runtime, _scanner, _broker = make_runtime(
-        run_dir=tmp_path, ledger=make_ledger(gross_bps=4.0)
-    )
+    runtime, _scanner, _broker = make_runtime(run_dir=tmp_path, ledger=make_ledger(gross_bps=4.0))
     _run(runtime, cycles=1)
     proposal = runtime.trace_store.read()[0].proposal
     assert proposal["admission_status"] == AdmissionStatus.COST_KILLED.value

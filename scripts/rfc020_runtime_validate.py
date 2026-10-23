@@ -72,9 +72,16 @@ def projection(run_dir: Path) -> dict[str, dict[str, Any]]:
 
 async def run_baseline(run_id: str) -> dict[str, Any]:
     args = argparse.Namespace(
-        assets="BTC,ETH,SOL", windows="W1,W2,W3,W4", timeframe="5m", step=60,
-        max_bars=0, initial_equity=10_000.0, size_usd=1_000.0, lookback_bars=120,
-        spread_bps=1.0, run_id=run_id,
+        assets="BTC,ETH,SOL",
+        windows="W1,W2,W3,W4",
+        timeframe="5m",
+        step=60,
+        max_bars=0,
+        initial_equity=10_000.0,
+        size_usd=1_000.0,
+        lookback_bars=120,
+        spread_bps=1.0,
+        run_id=run_id,
         out=f"reports/rfc020/{run_id}_summary.json",
     )
     return dict(await H.run(args))
@@ -102,8 +109,16 @@ def main() -> int:
 
     ref = json.loads((REPO / args.reference).read_text(encoding="utf-8"))
 
-    counted = ["asset_cycle_evaluations", "paper_trades", "shadow_trades", "no_trades",
-               "orders_created", "traces_persisted", "outcomes_resolved", "outcomes_pending"]
+    counted = [
+        "asset_cycle_evaluations",
+        "paper_trades",
+        "shadow_trades",
+        "no_trades",
+        "orders_created",
+        "traces_persisted",
+        "outcomes_resolved",
+        "outcomes_pending",
+    ]
     compare: dict[str, Any] = {}
     mismatches: list[str] = []
     for key in counted:
@@ -156,15 +171,17 @@ def main() -> int:
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(json.dumps(
-        {
-            "baseline_equivalent": report["baseline_semantically_equivalent"],
-            "baseline_mismatch_fields": mismatches,
-            "replay_invariance": report["replay_invariance"]["pass"],
-            "rfc020_totals": first["totals"],
-        },
-        indent=2,
-    ))
+    print(
+        json.dumps(
+            {
+                "baseline_equivalent": report["baseline_semantically_equivalent"],
+                "baseline_mismatch_fields": mismatches,
+                "replay_invariance": report["replay_invariance"]["pass"],
+                "rfc020_totals": first["totals"],
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

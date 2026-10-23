@@ -172,9 +172,7 @@ class LifecycleRoutingAdapter:
     policy_version: str = ROUTING_BRIDGE_SCHEMA_VERSION
     lifecycle_override: dict[str, str] = field(default_factory=dict)
 
-    def lifecycle_map(
-        self, strategy_map: dict[str, Any], ledger: Any
-    ) -> dict[str, str]:
+    def lifecycle_map(self, strategy_map: dict[str, Any], ledger: Any) -> dict[str, str]:
         out: dict[str, str] = {}
         for sid in strategy_map:
             override = self.lifecycle_override.get(sid)

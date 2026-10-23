@@ -411,8 +411,6 @@ class PairSimulator:
             beta_after=beta_after,
             holding_days=holding_days,
             cost_knowledge=(
-                "UNKNOWN"
-                if cost.short_knowledge.value == "UNKNOWN"
-                else cost.short_knowledge.value
+                "UNKNOWN" if cost.short_knowledge.value == "UNKNOWN" else cost.short_knowledge.value
             ),
         )

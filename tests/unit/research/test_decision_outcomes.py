@@ -30,7 +30,9 @@ DT = BAR * 118_055
 ROUND_TRIP = ab.DEFAULT_COST_MODEL.round_trip_fraction
 
 
-def _bar(open_time: int, close: float, *, high: float | None = None, low: float | None = None) -> OHLCV:
+def _bar(
+    open_time: int, close: float, *, high: float | None = None, low: float | None = None
+) -> OHLCV:
     return OHLCV(
         symbol="BTC/USDT",
         timestamp=open_time * 1_000,
@@ -42,7 +44,9 @@ def _bar(open_time: int, close: float, *, high: float | None = None, low: float 
     )
 
 
-def _rows_4h(*, n_before: int = 8, n_after: int = 6, start: float = 100.0, step: float = 1.0) -> list[OHLCV]:
+def _rows_4h(
+    *, n_before: int = 8, n_after: int = 6, start: float = 100.0, step: float = 1.0
+) -> list[OHLCV]:
     rows: list[OHLCV] = []
     open_time = DT - n_before * BAR
     price = start
@@ -73,7 +77,9 @@ def _daily_rows(count: int = 220, *, final: float = 130.0) -> list[OHLCV]:
     return rows
 
 
-def _record(direction: str = "LONG", *, horizon: str = "24H", confidence: float = 0.6) -> ac.DecisionRecord:
+def _record(
+    direction: str = "LONG", *, horizon: str = "24H", confidence: float = 0.6
+) -> ac.DecisionRecord:
     return ac.seal_decision_record(
         timestamp=DT,
         prompt_version="CAP-003-TEST-NOT-AN-LLM-RUN",
@@ -217,7 +223,11 @@ def test_rule_ignores_bars_after_the_decision_time() -> None:
 
 
 def test_rule_is_a_pure_function_of_its_inputs() -> None:
-    args = {"rows_4h": _rows_4h(step=-1.0), "daily_rows": _daily_rows(final=90.0), "decision_time": DT}
+    args = {
+        "rows_4h": _rows_4h(step=-1.0),
+        "daily_rows": _daily_rows(final=90.0),
+        "decision_time": DT,
+    }
     assert do.deterministic_trend_direction(**args) == do.deterministic_trend_direction(**args)
 
 
@@ -356,9 +366,13 @@ def test_performance_rule_stays_causal_at_seal_time() -> None:
     rows = _rows_4h()
     record = _record("LONG")
     outcome = _outcome("LONG", record=record)
-    first = do.build_performance(record=record, outcome=outcome, rows_4h=rows, daily_rows=_daily_rows())
+    first = do.build_performance(
+        record=record, outcome=outcome, rows_4h=rows, daily_rows=_daily_rows()
+    )
     wider = [*rows, *[_bar(DT + (4 + i) * BAR, 5_000.0) for i in range(6)]]
-    second = do.build_performance(record=record, outcome=outcome, rows_4h=wider, daily_rows=_daily_rows())
+    second = do.build_performance(
+        record=record, outcome=outcome, rows_4h=wider, daily_rows=_daily_rows()
+    )
     assert first.comparisons == second.comparisons
 
 
@@ -522,9 +536,10 @@ def test_scorecard_random_comparator_matches_the_distribution_and_seed() -> None
     assert random_stats["distribution"] == do.direction_distribution(
         [item.decision for item in performances]
     )
-    assert random_stats["assignment"] == second["comparators"][do.BASELINE_ID_RANDOM_MATCHED][
-        "assignment"
-    ]
+    assert (
+        random_stats["assignment"]
+        == second["comparators"][do.BASELINE_ID_RANDOM_MATCHED]["assignment"]
+    )
 
 
 def test_scorecard_counts_no_trade_as_a_real_decision() -> None:

@@ -195,9 +195,7 @@ def parse_minute_row(raw: Mapping[str, object]) -> MinuteRow:
         low=_as_float(raw, "low"),
         max_trade_qty=_as_float(raw, "max_trade_qty"),
         min_interarrival_ms=(
-            None
-            if raw.get("min_interarrival_ms") is None
-            else _as_int(raw, "min_interarrival_ms")
+            None if raw.get("min_interarrival_ms") is None else _as_int(raw, "min_interarrival_ms")
         ),
     )
 
@@ -233,8 +231,7 @@ class PanelBar:
             raise ValueError("vwap must be > 0 when present")
         if self.available_at_ms <= self.open_time_ms:
             raise ValueError(
-                "available_at_ms must be after open_time_ms (a bar is knowable only "
-                "at its close)"
+                "available_at_ms must be after open_time_ms (a bar is knowable only at its close)"
             )
 
     @property
@@ -340,9 +337,7 @@ class PanelSlice:
         if len({b.open_time_ms for b in self.bars}) != 1:
             raise PanelAlignmentError("panel slice assets disagree on open time")
         if self.decision_time_ms != self.bars[0].available_at_ms:
-            raise PanelAlignmentError(
-                "decision_time_ms must equal the shared bar availability"
-            )
+            raise PanelAlignmentError("decision_time_ms must equal the shared bar availability")
 
     @property
     def symbols(self) -> tuple[str, ...]:
@@ -425,10 +420,7 @@ def summarize_panel(panel: Sequence[PanelSlice]) -> PanelSummary:
     if not panel:
         return PanelSummary((), 0, None, None, 0, 0)
     decisions = [s.decision_time_ms for s in panel]
-    gaps = [
-        decisions[i] - decisions[i - 1]
-        for i in range(1, len(decisions))
-    ]
+    gaps = [decisions[i] - decisions[i - 1] for i in range(1, len(decisions))]
     return PanelSummary(
         symbols=panel[0].symbols,
         slices=len(panel),
@@ -607,9 +599,7 @@ def spearman(xs: Sequence[float], ys: Sequence[float]) -> float:
     return num / (dx * dy) if dx > 0.0 and dy > 0.0 else 0.0
 
 
-def quantile_table(
-    xs: Sequence[float], ys: Sequence[float], buckets: int = 5
-) -> dict[str, object]:
+def quantile_table(xs: Sequence[float], ys: Sequence[float], buckets: int = 5) -> dict[str, object]:
     """Bucket ``ys`` by ``xs`` quantile and report each bucket's mean.
 
     ``monotone_score`` is the Spearman correlation between bucket index and

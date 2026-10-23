@@ -56,9 +56,7 @@ def _free_port() -> int:
 
 @contextmanager
 def _serving(obs: StrategyEcosystemObservatory) -> Iterator[tuple[str, int]]:
-    httpd = DASH.ThreadingHTTPServer(
-        ("127.0.0.1", 0), DASH.make_handler(obs, stream_seconds=0)
-    )
+    httpd = DASH.ThreadingHTTPServer(("127.0.0.1", 0), DASH.make_handler(obs, stream_seconds=0))
     thread = threading.Thread(target=httpd.serve_forever, daemon=True)
     thread.start()
     try:
@@ -74,14 +72,25 @@ def _obs() -> StrategyEcosystemObservatory:
 
 
 ALL_GET_PATHS = [
-    "/api/system", "/api/topology", "/api/runs", "/api/strategies",
+    "/api/system",
+    "/api/topology",
+    "/api/runs",
+    "/api/strategies",
     "/api/strategies/BTC_5m_trend_momentum_v1/performance",
     "/api/strategies/BTC_5m_trend_momentum_v1/funnel",
     "/api/strategies/BTC_5m_trend_momentum_v1/lifecycle",
     "/api/strategies/BTC_5m_trend_momentum_v1/evidence",
-    "/api/agents", "/api/agents/data-integrity", "/api/agents/data-integrity/activity",
-    "/api/lifecycle", "/api/routing/comparisons", "/api/portfolio", "/api/risk",
-    "/api/executions", "/api/traces", "/api/campaigns", "/api/snapshot",
+    "/api/agents",
+    "/api/agents/data-integrity",
+    "/api/agents/data-integrity/activity",
+    "/api/lifecycle",
+    "/api/routing/comparisons",
+    "/api/portfolio",
+    "/api/risk",
+    "/api/executions",
+    "/api/traces",
+    "/api/campaigns",
+    "/api/snapshot",
 ]
 
 

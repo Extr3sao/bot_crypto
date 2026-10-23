@@ -717,9 +717,7 @@ class AutonomousPaperRuntime:
                 classification="CONTEXT_ERROR",
                 market_context=market_context,
                 strategies_considered=strategies_considered,
-                no_trade_kind=(
-                    None if failure is not None else NoTradeKind.NO_TRADE_DATA.value
-                ),
+                no_trade_kind=(None if failure is not None else NoTradeKind.NO_TRADE_DATA.value),
                 failure_kind=failure,
             )
 
@@ -821,7 +819,12 @@ class AutonomousPaperRuntime:
             row["emitted_alpha"] = True
             considered_rows.append(row)
             emitting.append(
-                (self._ledger.expected_gross_edge_bps(strategy_id) or -999.0, strategy_id, alpha, routed)
+                (
+                    self._ledger.expected_gross_edge_bps(strategy_id) or -999.0,
+                    strategy_id,
+                    alpha,
+                    routed,
+                )
             )
 
         # §12 — portfolio conflict arbitration (LIFECYCLE mode only, §13). It can
@@ -844,9 +847,7 @@ class AutonomousPaperRuntime:
                 )
                 for edge, sid, _alpha, routed in emitting
             ]
-            portfolio_decision = self._portfolio.arbitrate(
-                proposals, timestamp_ms=decision_time_ms
-            )
+            portfolio_decision = self._portfolio.arbitrate(proposals, timestamp_ms=decision_time_ms)
             accepted_ids = set(portfolio_decision.accepted_proposals)
             for _edge, sid, _alpha, _routed in emitting:
                 if sid not in accepted_ids:

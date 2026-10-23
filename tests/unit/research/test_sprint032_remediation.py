@@ -30,8 +30,9 @@ DAY = 86_400_000
 START = int(datetime(2018, 1, 1, tzinfo=UTC).timestamp() * 1000)
 
 
-def _panel(n_days: int = 800, n_assets: int = 8, seed: int = 7,
-           trend: float = 0.0) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+def _panel(
+    n_days: int = 800, n_assets: int = 8, seed: int = 7, trend: float = 0.0
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     rng = np.random.default_rng(seed)
     days = np.array([START + i * DAY for i in range(n_days)], dtype=np.int64)
     logr = rng.normal(0.0005 + trend, 0.02, size=(n_days, n_assets))
@@ -42,8 +43,7 @@ def _panel(n_days: int = 800, n_assets: int = 8, seed: int = 7,
     return close, open_, days
 
 
-def _downtrend(n_days: int = 800, n_assets: int = 6) -> tuple[np.ndarray, np.ndarray,
-                                                              np.ndarray]:
+def _downtrend(n_days: int = 800, n_assets: int = 6) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     days = np.array([START + i * DAY for i in range(n_days)], dtype=np.int64)
     close = 100.0 * np.exp(-0.02 * np.arange(n_days))[:, None] * np.ones((1, n_assets))
     open_ = np.empty_like(close)
@@ -59,6 +59,7 @@ def _full(days: np.ndarray) -> np.ndarray:
 # ---------------------------------------------------------------------------
 # §22 cost model
 # ---------------------------------------------------------------------------
+
 
 def test_cost_model_is_15bps_per_side() -> None:
     assert L.PER_SIDE_COST_BPS == 15.0
@@ -77,6 +78,7 @@ def test_cost_charged_on_turnover() -> None:
 # ---------------------------------------------------------------------------
 # §4/§64 R1: negative signal -> CASH (never a negative quantity)
 # ---------------------------------------------------------------------------
+
 
 def test_downtrend_is_all_cash_no_shorts() -> None:
     close, open_, days = _downtrend()
@@ -105,11 +107,10 @@ def test_negative_signal_asset_is_cash_while_positive_stays_long() -> None:
     days = np.array([START + i * DAY for i in range(n)], dtype=np.int64)
     up = 0.004 + rng.normal(0.0, 0.02, size=n)
     dn = -0.004 + rng.normal(0.0, 0.02, size=n)
-    close = np.column_stack([100.0 * np.exp(np.cumsum(up)),
-                             100.0 * np.exp(np.cumsum(dn))])
+    close = np.column_stack([100.0 * np.exp(np.cumsum(up)), 100.0 * np.exp(np.cumsum(dn))])
     i = next(k for k in L.month_first_days(days) if k - 365 >= 0)
     t = L.tsmom_long_cash_target(close, i)
-    assert t["signal"][0] > 0 and t["weights"][0] > 0    # uptrend -> long
+    assert t["signal"][0] > 0 and t["weights"][0] > 0  # uptrend -> long
     assert t["signal"][1] < 0 and t["weights"][1] == 0.0  # downtrend -> cash
 
 
@@ -129,6 +130,7 @@ def test_no_short_spot_positions_up_and_down() -> None:
 # §24 portfolio constraint
 # ---------------------------------------------------------------------------
 
+
 def test_long_book_never_leverages() -> None:
     close, _, days = _panel(trend=0.005, seed=3)
     for i in L.month_first_days(days):
@@ -141,6 +143,7 @@ def test_long_book_never_leverages() -> None:
 # ---------------------------------------------------------------------------
 # §20 R2: T+1 execution at the next OPEN
 # ---------------------------------------------------------------------------
+
 
 def test_execution_uses_next_open_not_same_close() -> None:
     close, open_, days = _panel(seed=5)
@@ -166,10 +169,11 @@ def test_execution_uses_next_open_not_same_close() -> None:
 # §25 listing dates / PIT eligibility
 # ---------------------------------------------------------------------------
 
+
 def test_pre_listing_asset_is_ineligible() -> None:
     close, _, days = _panel(n_assets=5, seed=9)
     close2 = close.copy()
-    close2[:500, 0] = np.nan          # asset 0 lists late
+    close2[:500, 0] = np.nan  # asset 0 lists late
     for i in L.month_first_days(days):
         if 365 <= i < 500:
             t = L.tsmom_long_cash_target(close2, i)
@@ -180,6 +184,7 @@ def test_pre_listing_asset_is_ineligible() -> None:
 # ---------------------------------------------------------------------------
 # §28 future poisoning
 # ---------------------------------------------------------------------------
+
 
 def test_future_poisoning_does_not_change_past_weights() -> None:
     close, _, days = _panel(seed=13)
@@ -200,6 +205,7 @@ def test_future_poisoning_does_not_change_past_weights() -> None:
 # §23 cash accounting
 # ---------------------------------------------------------------------------
 
+
 def test_cash_month_has_zero_gross() -> None:
     close, open_, days = _downtrend()
     r = L.run_tsmom002(close, open_, days, _full(days))
@@ -213,6 +219,7 @@ def test_cash_month_has_zero_gross() -> None:
 # determinism / replay
 # ---------------------------------------------------------------------------
 
+
 def test_replay_is_deterministic() -> None:
     close, open_, days = _panel(seed=21)
     mask = _full(days)
@@ -225,6 +232,7 @@ def test_replay_is_deterministic() -> None:
 # candidate hashing (§7, §35)
 # ---------------------------------------------------------------------------
 
+
 def test_candidate_hash_is_stable_and_sensitive() -> None:
     base = {"candidate_id": L.CANDIDATE_ID, "vol_target": 0.40}
     assert L.sha256_obj(base) == L.sha256_obj(dict(base))
@@ -235,6 +243,7 @@ def test_candidate_hash_is_stable_and_sensitive() -> None:
 # ---------------------------------------------------------------------------
 # §66/§67 evidence labelling + forward boundary
 # ---------------------------------------------------------------------------
+
 
 def test_historical_evidence_label_is_not_validation_or_holdout() -> None:
     assert L.EVIDENCE_CLASS_HISTORICAL == "HISTORICAL_DIAGNOSTIC"
@@ -252,10 +261,18 @@ def test_forward_boundary_excludes_past_data() -> None:
 # §61-§63 reusable certification gate + regressions
 # ---------------------------------------------------------------------------
 
+
 def test_promotable_only_when_all_mandatory_gates_pass() -> None:
-    gates = {g: GateStatus.PASS for g in (
-        "G_VALIDATION", "G_ROBUSTNESS", "G_HOLDOUT", "G_TRADABILITY",
-        "G_INDEPENDENT_VERIFICATION")}
+    gates = {
+        g: GateStatus.PASS
+        for g in (
+            "G_VALIDATION",
+            "G_ROBUSTNESS",
+            "G_HOLDOUT",
+            "G_TRADABILITY",
+            "G_INDEPENDENT_VERIFICATION",
+        )
+    }
     result = evaluate_promotion(gates)
     assert result.promotable is True
     assert result.blocking_gates == ()
@@ -278,15 +295,23 @@ def test_xmom_regression_robustness_fail_holdout_pass() -> None:
 
 
 def test_tsmom001_regression_unsupported_short_spot() -> None:
-    short_check = check_no_unsupported_short_spot(negative_weight_count=47,
-                                                  borrow_evidence_present=False)
+    short_check = check_no_unsupported_short_spot(
+        negative_weight_count=47, borrow_evidence_present=False
+    )
     assert short_check.passed is False
     instrument = check_instrument_feasible({"LONG_SPOT": True, "SHORT_SPOT": True})
     assert instrument.passed is False
     # tradability therefore FAILs and the candidate cannot be promotable
-    gates = {g: GateStatus.PASS for g in (
-        "G_VALIDATION", "G_ROBUSTNESS", "G_HOLDOUT", "G_TRADABILITY",
-        "G_INDEPENDENT_VERIFICATION")}
+    gates = {
+        g: GateStatus.PASS
+        for g in (
+            "G_VALIDATION",
+            "G_ROBUSTNESS",
+            "G_HOLDOUT",
+            "G_TRADABILITY",
+            "G_INDEPENDENT_VERIFICATION",
+        )
+    }
     gates["G_TRADABILITY"] = GateStatus.FAIL
     assert evaluate_promotion(gates).promotable is False
 

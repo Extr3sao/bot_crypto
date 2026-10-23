@@ -119,7 +119,9 @@ def test_volume_state_compares_to_the_trailing_average() -> None:
     state = tva.volume_state_from_ohlcv(BUNDLE["ohlcv"]["4h"])
     assert state.last > 0.0
     assert state.relative > 0.0
-    assert tva.volume_state_from_ohlcv({"bars": [{"c": 1.0, "v": 5.0}]}) == ac.VolumeState(last=5.0, relative=0.0)
+    assert tva.volume_state_from_ohlcv({"bars": [{"c": 1.0, "v": 5.0}]}) == ac.VolumeState(
+        last=5.0, relative=0.0
+    )
 
 
 def test_multi_timeframe_is_composed_in_contract_order() -> None:
@@ -175,7 +177,9 @@ def test_news_items_are_mapped() -> None:
 
 
 def test_news_entries_without_title_or_date_are_dropped() -> None:
-    payload = {"items": [{"title": "ok", "published": 1}, {"title": "", "published": 2}, {"published": 3}]}
+    payload = {
+        "items": [{"title": "ok", "published": 1}, {"title": "", "published": 2}, {"published": 3}]
+    }
     assert len(tva.news_items(payload)) == 1
     assert tva.news_items("nonsense") == ()
     assert tva.news_items(None) == ()
@@ -249,7 +253,9 @@ def test_freshness_without_sources_is_unknown_and_degraded() -> None:
 
 def test_degraded_flag_propagates() -> None:
     freshness = tva.data_freshness(
-        snapshot_at=int(BUNDLE["snapshot_at"]), source_timestamps=BUNDLE["source_timestamps"], degraded=True
+        snapshot_at=int(BUNDLE["snapshot_at"]),
+        source_timestamps=BUNDLE["source_timestamps"],
+        degraded=True,
     )
     assert freshness.degraded is True
 

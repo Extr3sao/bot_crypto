@@ -197,7 +197,7 @@ def ledger_payload(
                 "timeframe": timeframe,
                 "known": True,
             }
-        }
+        },
     }
 
 
@@ -274,16 +274,17 @@ def make_runtime(
             for strategy_id, entry in ledger.entries_for_timeframe(timeframe).items()
         }
     if families is None:
-        families = {entry.family: StaticFamily(entry.family) for entry in ledger.entries_for_timeframe(timeframe).values()}
+        families = {
+            entry.family: StaticFamily(entry.family)
+            for entry in ledger.entries_for_timeframe(timeframe).values()
+        }
     if history is None:
         history = {f"{a}/USDT": bars(f"{a}/USDT", 80) for a in assets}
     if snapshots is None:
         # The scanner snapshot is taken when the newest bar has CLOSED, so the
         # fixture matches real data (a forming bar is never handed to a decision).
         snapshots = [
-            FakeSnapshot(
-                symbol=f"{a}/USDT", timestamp=history[f"{a}/USDT"][-1].timestamp + BAR_MS
-            )
+            FakeSnapshot(symbol=f"{a}/USDT", timestamp=history[f"{a}/USDT"][-1].timestamp + BAR_MS)
             for a in assets
         ]
 

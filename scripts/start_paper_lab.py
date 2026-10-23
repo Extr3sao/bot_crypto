@@ -509,9 +509,7 @@ def wait_for_stop(run_dir: Path, *, timeout: float) -> dict[str, Any]:
         except (OSError, ValueError):
             last = {}
         processes = last.get("processes") or {}
-        if processes and all(
-            entry.get("state") != "RUNNING" for entry in processes.values()
-        ):
+        if processes and all(entry.get("state") != "RUNNING" for entry in processes.values()):
             return last
         time.sleep(1.0)
     return last
@@ -537,9 +535,7 @@ def main() -> int:
         args.run_id = target.name
     if args.stop:
         target = (
-            Path(args.stop)
-            if Path(args.stop).is_absolute()
-            else (REPO_ROOT / args.stop).resolve()
+            Path(args.stop) if Path(args.stop).is_absolute() else (REPO_ROOT / args.stop).resolve()
         )
         stop_lab(target)
         print(f"[lab] STOP written to {target / STOP_FILE_NAME}")
@@ -577,13 +573,10 @@ def main() -> int:
             "thresholds": disk_thresholds(args).as_dict(),
             "budget": disk_budget,
             "storage_guard": (
-                "at the STOP level the collector is asked to stop gracefully; PAPER "
-                "is not touched"
+                "at the STOP level the collector is asked to stop gracefully; PAPER is not touched"
             ),
         },
-        "collector_resume": collector_resumes(
-            (REPO_ROOT / args.forward_root).resolve(), run_id
-        ),
+        "collector_resume": collector_resumes((REPO_ROOT / args.forward_root).resolve(), run_id),
         "graceful_stop": {
             "stop_grace_seconds": args.stop_grace_seconds,
             "stop_files": {name: str(path) for name, path in stop_files.items()},
@@ -647,11 +640,15 @@ def main() -> int:
     print(f"[lab] run id      : {run_id}")
     print(f"[lab] run dir     : {run_dir}")
     print(f"[lab] free disk   : {disk_free_bytes(REPO_ROOT) / 1e9:.3f} GB")
-    print(f"[lab] duration    : {'until stopped' if not args.duration_hours else f'{args.duration_hours} h'}")
+    print(
+        f"[lab] duration    : {'until stopped' if not args.duration_hours else f'{args.duration_hours} h'}"
+    )
     print(f"[lab] stop with   : Ctrl-C, or write STOP into {run_dir}")
     print(f"[lab] graceful    : {args.stop_grace_seconds:.0f}s to finalise before a kill")
     for spec in specs:
-        print(f"[lab]   {spec.name:<13} critical={spec.critical} :: {' '.join(spec.command[:3])} ...")
+        print(
+            f"[lab]   {spec.name:<13} critical={spec.critical} :: {' '.join(spec.command[:3])} ..."
+        )
 
     supervisor.start_all()
     events: list[dict[str, Any]] = []
@@ -674,9 +671,7 @@ def main() -> int:
         # A supervisor that dies must still leave evidence: an unexplained dead
         # lab is worse than a lab that says why it died.
         interrupted = isinstance(exc, KeyboardInterrupt)
-        supervisor_error = (
-            None if interrupted else f"{type(exc).__name__}: {exc}"
-        )
+        supervisor_error = None if interrupted else f"{type(exc).__name__}: {exc}"
         if supervisor_error:
             events.append({"event": "SUPERVISOR_ERROR", "reason": supervisor_error})
             print(f"[lab] supervisor error: {supervisor_error}", file=sys.stderr)
@@ -687,9 +682,7 @@ def main() -> int:
     state = final.get("state")
     stop_report = final.get("stop_report") or {}
     failed_on_stop = [
-        name
-        for name in stop_report.get("failed_children", [])
-        + stop_report.get("escalated", [])
+        name for name in stop_report.get("failed_children", []) + stop_report.get("escalated", [])
     ]
 
     report = {
@@ -724,7 +717,9 @@ def main() -> int:
         "plan": plan,
     }
     report_path = run_dir / "LAB_RUN_REPORT.json"
-    report_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    report_path.write_text(
+        json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     md_path = run_dir / "LAB_RUN_REPORT.md"
     md_path.write_text(render_report(report), encoding="utf-8")
     write_system_daily_report(args, run_dir)
@@ -838,7 +833,9 @@ def render_report(report: dict[str, Any]) -> str:
         lines.append("## Supervision events")
         lines.append("")
         for event in report["supervisor_events"][:100]:
-            lines.append(f"- `{event.get('event')}` {event.get('process')} {event.get('reason') or ''}")
+            lines.append(
+                f"- `{event.get('event')}` {event.get('process')} {event.get('reason') or ''}"
+            )
         lines.append("")
     return "\n".join(lines)
 

@@ -61,8 +61,6 @@ EXIT_MISSING = 2
 EXIT_DISAGREE = 5
 
 
-
-
 #: Relative tolerance. A published number is rounded before it is written (a rate to three
 #: decimals, a cost to four, a duration to six), so a verifier comparing exact floats would
 #: report a disagreement for every rounded field and mean nothing by it. The tolerance is
@@ -85,26 +83,37 @@ class Verifier:
         self.checks: list[dict[str, Any]] = []
         self.controls: list[dict[str, Any]] = []
 
-    def check(self, identifier: str, claim: str, published: Any, rederived: Any,
-              evidence: list[str], agrees: bool | None = None) -> bool:
+    def check(
+        self,
+        identifier: str,
+        claim: str,
+        published: Any,
+        rederived: Any,
+        evidence: list[str],
+        agrees: bool | None = None,
+    ) -> bool:
         ok = bool(agrees) if agrees is not None else close(published, rederived)
-        self.checks.append({
-            "id": identifier,
-            "claim": claim,
-            "published": published,
-            "rederived": rederived,
-            "agrees": ok,
-            "evidence": evidence,
-        })
+        self.checks.append(
+            {
+                "id": identifier,
+                "claim": claim,
+                "published": published,
+                "rederived": rederived,
+                "agrees": ok,
+                "evidence": evidence,
+            }
+        )
         return ok
 
     def control(self, identifier: str, mutation: str, detected: bool, why: str) -> None:
-        self.controls.append({
-            "id": identifier,
-            "mutation": mutation,
-            "result": "DETECTED" if detected else "MISSED",
-            "why": why,
-        })
+        self.controls.append(
+            {
+                "id": identifier,
+                "mutation": mutation,
+                "result": "DETECTED" if detected else "MISSED",
+                "why": why,
+            }
+        )
 
 
 def sealed_manifest_rate(manifest: dict[str, Any]) -> float:
@@ -149,13 +158,17 @@ def verify_disk(verifier: Verifier) -> dict[str, Any]:
     rates = audit["measurement"]["rates"]
 
     verifier.check(
-        "D1", "the sealed window's rate is its own bytes divided by its own seconds",
-        rates["sealed_window_derived"], round(rate, 3),
+        "D1",
+        "the sealed window's rate is its own bytes divided by its own seconds",
+        rates["sealed_window_derived"],
+        round(rate, 3),
         [str(MANIFEST.relative_to(ROOT)).replace("\\", "/")],
     )
     verifier.check(
-        "D2", "the published rate field reproduces the derived one",
-        rates["sealed_window_published"], round(rate, 3),
+        "D2",
+        "the published rate field reproduces the derived one",
+        rates["sealed_window_published"],
+        round(rate, 3),
         [str(MANIFEST.relative_to(ROOT)).replace("\\", "/")],
     )
     rotation_ms = int(manifest.get("rotation_seconds") or 900) * 1000
@@ -163,8 +176,10 @@ def verify_disk(verifier: Verifier) -> dict[str, Any]:
         iso_ms(manifest["started_at"]), iso_ms(manifest["ended_at"]), rotation_ms
     )
     verifier.check(
-        "D3", "the segment files of window 1 sum to what the manifest says it wrote",
-        sealed["bytes_written"], bytes_on_disk,
+        "D3",
+        "the segment files of window 1 sum to what the manifest says it wrote",
+        sealed["bytes_written"],
+        bytes_on_disk,
         [f"reports/microstructure-forward-continuous/segments/** ({files} files)"],
         agrees=bytes_on_disk == int(sealed["bytes_written"]),
     )
@@ -184,11 +199,18 @@ def verify_disk(verifier: Verifier) -> dict[str, Any]:
             f"D4/{int(horizon['hours'])}h",
             f"the {int(horizon['hours'])} h requirement is rate x hours, and its fit is "
             "free - reserve - requirement >= 0",
-            {"required": horizon["required_bytes"], "stress": horizon["stress"]["required_bytes"],
-             "fits": horizon["fits"], "fits_stress": horizon["stress"]["fits"]},
-            {"required": required, "stress": stress,
-             "fits": (free - reserve - round(planning_rate * float(horizon["hours"]))) >= 0,
-             "fits_stress": (free - reserve - stress) >= 0},
+            {
+                "required": horizon["required_bytes"],
+                "stress": horizon["stress"]["required_bytes"],
+                "fits": horizon["fits"],
+                "fits_stress": horizon["stress"]["fits"],
+            },
+            {
+                "required": required,
+                "stress": stress,
+                "fits": (free - reserve - round(planning_rate * float(horizon["hours"]))) >= 0,
+                "fits_stress": (free - reserve - stress) >= 0,
+            },
             ["shutil.disk_usage of the workspace volume"],
             # the rate is published rounded to three decimals, so byte-level equality
             # would compare rounding, not arithmetic; a relative 1e-9 (about 46 B on a
@@ -204,20 +226,23 @@ def verify_disk(verifier: Verifier) -> dict[str, Any]:
 
     # controls
     verifier.control(
-        "C1", "the sealed rate is multiplied by 1.01",
+        "C1",
+        "the sealed rate is multiplied by 1.01",
         not close(rate * 1.01, float(rates["sealed_window_derived"]), 1e-4),
         "a 1 % change in the rate is not within tolerance, so D1 can fail",
     )
     verifier.control(
-        "C2", "one segment file's size is moved by 1 byte",
+        "C2",
+        "one segment file's size is moved by 1 byte",
         bytes_on_disk + 1 != int(sealed["bytes_written"]),
         "D3 compares the sum exactly, so a single byte of drift is visible",
     )
     verifier.control(
-        "C3", "the horizon requirement is computed without the reserve",
-        (free - round(planning_rate * 24.0)) >= 0 != bool(
-            audit["projections"]["horizons"][0]["fits"]
-        ),
+        "C3",
+        "the horizon requirement is computed without the reserve",
+        (free - round(planning_rate * 24.0))
+        >= 0
+        != bool(audit["projections"]["horizons"][0]["fits"]),
         "the reserve changes the fit verdict, so D4 is not vacuous",
     )
     return {
@@ -249,21 +274,23 @@ def verify_preflight(verifier: Verifier) -> dict[str, Any]:
         valve = int(budget["collector_max_bytes"])
         rate = float(budget["effective_rate_bytes_per_hour"])
         affordable = valve / rate
-        cases.append({
-            "case": name,
-            "state": budget["state"],
-            "expected_state": expected_state,
-            "affordable_hours_published": budget["hours_affordable_by_valve"],
-            "affordable_hours_derived_here": round(affordable, 3),
-            "valve_bytes": valve,
-            # the launcher writes its refusal to a console stream whose encoding is the
-            # platform's, not necessarily UTF-8; the check is about the words, not the bytes
-            "refusal_message_present": "REFUSED"
-            in err.read_text(encoding="utf-8", errors="replace")
-            if err.exists()
-            else False,
-            "expected_exit_code": expected_exit,
-        })
+        cases.append(
+            {
+                "case": name,
+                "state": budget["state"],
+                "expected_state": expected_state,
+                "affordable_hours_published": budget["hours_affordable_by_valve"],
+                "affordable_hours_derived_here": round(affordable, 3),
+                "valve_bytes": valve,
+                # the launcher writes its refusal to a console stream whose encoding is the
+                # platform's, not necessarily UTF-8; the check is about the words, not the bytes
+                "refusal_message_present": "REFUSED"
+                in err.read_text(encoding="utf-8", errors="replace")
+                if err.exists()
+                else False,
+                "expected_exit_code": expected_exit,
+            }
+        )
     if not cases:
         verifier.check("P0", "the preflight evidence exists", True, False, [str(evidence)])
         return {"cases": []}
@@ -296,7 +323,8 @@ def verify_preflight(verifier: Verifier) -> dict[str, Any]:
             agrees=case["refusal_message_present"] == (case["expected_state"] != "COHERENT"),
         )
     verifier.control(
-        "C4", "the 800 MB valve is costed at the 7 GB valve's rate",
+        "C4",
+        "the 800 MB valve is costed at the 7 GB valve's rate",
         not close(
             min(case["affordable_hours_derived_here"] for case in cases),
             max(case["affordable_hours_derived_here"] for case in cases),
@@ -314,8 +342,10 @@ def verify_readiness(verifier: Verifier) -> dict[str, Any]:
     hours = float(manifest["duration_seconds"]) / 3600.0
 
     verifier.check(
-        "R1", "the sealed history is the sum of sealed manifest durations",
-        payload["history"]["sealed_hours"], round(hours, 6),
+        "R1",
+        "the sealed history is the sum of sealed manifest durations",
+        payload["history"]["sealed_hours"],
+        round(hours, 6),
         [str(MANIFEST.relative_to(ROOT)).replace("\\", "/")],
         agrees=close(payload["history"]["sealed_hours"], hours),
     )
@@ -325,23 +355,28 @@ def verify_readiness(verifier: Verifier) -> dict[str, Any]:
         row["shortfall"] for row in m07 if row["criterion"] == "open_interest_days"
     )
     verifier.check(
-        "R2", "the M-07 shortfall is the pre-registered window minus the sealed history",
-        observed_shortfall, round(required_days - hours / 24.0, 6),
+        "R2",
+        "the M-07 shortfall is the pre-registered window minus the sealed history",
+        observed_shortfall,
+        round(required_days - hours / 24.0, 6),
         [str(PREREGISTRATION.relative_to(ROOT)).replace("\\", "/")],
         agrees=close(observed_shortfall, required_days - hours / 24.0, 1e-6),
     )
     m03 = payload["hypotheses"]["M-03"]["criteria"]
     book_hours = next(row for row in m03 if row["criterion"] == "forward_book_hours")
     verifier.check(
-        "R3", "the M-03 book-window shortfall is the pre-registered window minus the sealed history",
-        book_hours["shortfall"], round(24.0 - hours, 4),
+        "R3",
+        "the M-03 book-window shortfall is the pre-registered window minus the sealed history",
+        book_hours["shortfall"],
+        round(24.0 - hours, 4),
         [str(PREREGISTRATION.relative_to(ROOT)).replace("\\", "/")],
         agrees=close(book_hours["shortfall"], 24.0 - hours, 1e-3),
     )
     # the campaign's list is longer than the pre-registration's: neither may be merged
     campaign = read(CAMPAIGN)
     verifier.check(
-        "R4", "the two pre-registrations are reported separately, not merged",
+        "R4",
+        "the two pre-registrations are reported separately, not merged",
         {
             "campaign_m07_criteria": len(
                 campaign["preregistered_readiness_criteria"]["m07_open_interest_price"]
@@ -356,27 +391,35 @@ def verify_readiness(verifier: Verifier) -> dict[str, Any]:
         and all(row.get("requirement") and row.get("result") for row in m07),
     )
     verifier.check(
-        "R5", "M-03 and M-07 are NOT_READY and the artefact does not claim otherwise",
-        {"M-03": payload["verdict"]["M-03"], "M-07": payload["verdict"]["M-07"],
-         "ready": payload["verdict"]["researcher_ready"]},
+        "R5",
+        "M-03 and M-07 are NOT_READY and the artefact does not claim otherwise",
+        {
+            "M-03": payload["verdict"]["M-03"],
+            "M-07": payload["verdict"]["M-07"],
+            "ready": payload["verdict"]["researcher_ready"],
+        },
         {"M-03": "NOT_READY", "M-07": "NOT_READY", "ready": False},
         [str(READINESS.relative_to(ROOT)).replace("\\", "/")],
         agrees=payload["verdict"]["researcher_ready"] is False,
     )
     cells = payload["history"]["sealed_segments_of_one_day"]
     verifier.check(
-        "R6", "the disjoint-period count is a floor division of the history, not a claim",
-        cells, int(hours // 24),
+        "R6",
+        "the disjoint-period count is a floor division of the history, not a claim",
+        cells,
+        int(hours // 24),
         [str(MANIFEST.relative_to(ROOT)).replace("\\", "/")],
         agrees=cells == int(hours // 24),
     )
     verifier.control(
-        "C5", "the sealed history is inflated to 200 h",
+        "C5",
+        "the sealed history is inflated to 200 h",
         not close(200.0 - 24.0, book_hours["shortfall"], 1e-3),
         "R3 compares the shortfall, so a changed history changes the verdict",
     )
     verifier.control(
-        "C6", "the M-07 criterion is satisfied on paper only (shortfall forced to 0)",
+        "C6",
+        "the M-07 criterion is satisfied on paper only (shortfall forced to 0)",
         not close(0.0, observed_shortfall, 1e-6),
         "a zero shortfall is distinguishable from the measured one",
     )
@@ -393,9 +436,10 @@ def verify_economics(verifier: Verifier) -> dict[str, Any]:
     # value, so the sum of the published components lands within their rounding rather than
     # on the total to the last digit. The tolerance states that; it does not excuse drift.
     verifier.check(
-        "E1", "the frozen cost plane is the sum of its components, within their own rounding "
-              "(5e-4 bps)",
-        audit["cost_plane"]["round_trip_bps_200_usdt"], total,
+        "E1",
+        "the frozen cost plane is the sum of its components, within their own rounding (5e-4 bps)",
+        audit["cost_plane"]["round_trip_bps_200_usdt"],
+        total,
         ["data/recovery/ACTIVE_ECONOMIC_AUDIT.json#cost_plane.components_200_usdt"],
         agrees=close(audit["cost_plane"]["round_trip_bps_200_usdt"], total, 5e-4),
     )
@@ -404,8 +448,10 @@ def verify_economics(verifier: Verifier) -> dict[str, Any]:
         objective["round_trips_per_year"] * audit["cost_plane"]["round_trip_bps_200_usdt"], 3
     )
     verifier.check(
-        "E2", "the annual cost of the objective is round trips x the plane",
-        objective["annual_cost_bps"], derived_annual,
+        "E2",
+        "the annual cost of the objective is round trips x the plane",
+        objective["annual_cost_bps"],
+        derived_annual,
         ["objective round trips per year x cost plane"],
         agrees=close(objective["annual_cost_bps"], derived_annual, 1e-6),
     )
@@ -415,7 +461,8 @@ def verify_economics(verifier: Verifier) -> dict[str, Any]:
         if (strategy.get("economics") or {}).get("zero_cost_gross_bps", 0) > 0
     )
     verifier.check(
-        "E3", "the count of gross-positive cells is counted from the strategy records",
+        "E3",
+        "the count of gross-positive cells is counted from the strategy records",
         audit["aggregates"]["zero_cost_gross_positive"]
         and len(audit["aggregates"]["zero_cost_gross_positive"]),
         gross_positive,
@@ -429,49 +476,63 @@ def verify_economics(verifier: Verifier) -> dict[str, Any]:
         > audit["cost_plane"]["round_trip_bps_200_usdt"]
     )
     verifier.check(
-        "E4", "no cell clears the frozen plane, and that is counted per cell",
-        payload["economics"]["cells_clearing_the_plane"], clears,
+        "E4",
+        "no cell clears the frozen plane, and that is counted per cell",
+        payload["economics"]["cells_clearing_the_plane"],
+        clears,
         ["plane vs each cell's zero-cost gross"],
         agrees=payload["economics"]["cells_clearing_the_plane"] == clears == 0,
     )
     lc = audit["aggregates"]["ledger_status_counts"]
     verifier.check(
-        "E5", "the ledger status counts add up to the strategies audited",
-        sum(lc.values()), len(audit["strategies"]),
+        "E5",
+        "the ledger status counts add up to the strategies audited",
+        sum(lc.values()),
+        len(audit["strategies"]),
         ["config/strategy_admission.json", "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"],
         agrees=sum(lc.values()) == len(audit["strategies"]),
     )
-    primary = {
-        bucket["bucket"]: bucket["primary_count"] for bucket in payload["blockers"]
-    }
+    primary = {bucket["bucket"]: bucket["primary_count"] for bucket in payload["blockers"]}
     verifier.check(
-        "E6", "primary classifications are the taxonomy's own `primary` field, one per strategy",
-        sum(primary.values()), len(audit["strategies"]),
+        "E6",
+        "primary classifications are the taxonomy's own `primary` field, one per strategy",
+        sum(primary.values()),
+        len(audit["strategies"]),
         ["data/recovery/ACTIVE_ECONOMIC_AUDIT.json#strategies.*.failure_taxonomy.primary"],
         agrees=sum(primary.values()) == len(audit["strategies"]),
     )
     rfc = payload["rfc_cost_and_entry"]
     verifier.check(
-        "E7", "no independent cost-and-entry campaign exists in the committed tree",
-        rfc["cost_and_entry_rfc_exists"], False,
+        "E7",
+        "no independent cost-and-entry campaign exists in the committed tree",
+        rfc["cost_and_entry_rfc_exists"],
+        False,
         [str(BLOCKERS.relative_to(ROOT)).replace("\\", "/"), "git ls-files"],
         agrees=rfc["cost_and_entry_rfc_exists"] is False,
     )
     verifier.check(
-        "E8", "the draft RFC cannot run: DRAFT and not authorised",
-        {"status": payload["draft_rfc"]["status"], "authorized": payload["draft_rfc"]["authorized"]},
+        "E8",
+        "the draft RFC cannot run: DRAFT and not authorised",
+        {
+            "status": payload["draft_rfc"]["status"],
+            "authorized": payload["draft_rfc"]["authorized"],
+        },
         {"status": "DRAFT", "authorized": False},
         [payload["draft_rfc"]["path"]],
         agrees=payload["draft_rfc"]["status"] == "DRAFT"
         and payload["draft_rfc"]["authorized"] is False,
     )
     verifier.control(
-        "C7", "one cost component is doubled",
-        not close(audit["cost_plane"]["round_trip_bps_200_usdt"], total + components[0]["value_bps"]),
+        "C7",
+        "one cost component is doubled",
+        not close(
+            audit["cost_plane"]["round_trip_bps_200_usdt"], total + components[0]["value_bps"]
+        ),
         "E1 sums the components, so a doubled fee is visible",
     )
     verifier.control(
-        "C8", "the best gross edge is reported as clearing the plane",
+        "C8",
+        "the best gross edge is reported as clearing the plane",
         not (
             audit["aggregates"]["best_gross_cells"][0]["zero_cost_gross_bps"]
             > audit["cost_plane"]["round_trip_bps_200_usdt"]
@@ -496,7 +557,10 @@ def verify_ci(verifier: Verifier) -> dict[str, Any]:
         ]
         runs = subprocess.run(
             ["git", "ls-files", "--error-unmatch", relative],
-            cwd=ROOT, capture_output=True, text=True, check=False,
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
         )
         findings["workflows"][relative] = {
             "tracked": runs.returncode == 0,
@@ -506,9 +570,12 @@ def verify_ci(verifier: Verifier) -> dict[str, Any]:
         verifier.check(
             f"CI1/{Path(relative).name}",
             "the workflow is committed and no step softens itself with continue-on-error",
-            {"tracked": workflow["tracked"], "softened": [
-                problem for problem in workflow["problems"] if "continue-on-error" in problem
-            ]},
+            {
+                "tracked": workflow["tracked"],
+                "softened": [
+                    problem for problem in workflow["problems"] if "continue-on-error" in problem
+                ],
+            },
             {"tracked": runs.returncode == 0, "softened": softened},
             [relative],
             agrees=runs.returncode == 0 and not softened,
@@ -518,15 +585,21 @@ def verify_ci(verifier: Verifier) -> dict[str, Any]:
             {"step": item["step"], "exit_code": item["exit_code"], "result": item["result"]}
         )
     verifier.check(
-        "CI2", "every declared command step of both workflows passed locally",
-        payload["sequence_failed"], 0,
+        "CI2",
+        "every declared command step of both workflows passed locally",
+        payload["sequence_failed"],
+        0,
         [f"data/recovery/wp9/{Path(CI_REPORT.name).name}#sequence_runs"],
         agrees=payload["sequence_failed"] == 0 and payload["sequence_total"] > 0,
     )
     verifier.check(
-        "CI3", "the report does not claim a runner it did not use",
-        {"ci_certified": payload["ci_certified"], "runner": payload["runner"],
-         "verdict": payload["verdict"]},
+        "CI3",
+        "the report does not claim a runner it did not use",
+        {
+            "ci_certified": payload["ci_certified"],
+            "runner": payload["runner"],
+            "verdict": payload["verdict"],
+        },
         {"ci_certified": False, "runner": "LOCAL"},
         ["data/recovery/wp9/WP9_CI_EXECUTION_REPORT.json#certification"],
         agrees=payload["ci_certified"] is False and payload["runner"] == "LOCAL",
@@ -534,30 +607,46 @@ def verify_ci(verifier: Verifier) -> dict[str, Any]:
     # the blocking reasons must still be true now, not only when it ran
     local_only = subprocess.run(
         ["git", "rev-list", "--count", "origin/main..HEAD"],
-        cwd=ROOT, capture_output=True, text=True, check=False,
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
     ).stdout.strip()
     absence = subprocess.run(
         ["git", "cat-file", "-e", "origin/main:.github/workflows/recovery-determinism.yml"],
-        cwd=ROOT, capture_output=True, text=True, check=False,
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
     )
     verifier.check(
-        "CI4", "the workflows are still absent from the default branch, and the history is still "
-               "local-only — the two reasons the run could not be authorised",
-        {"commits_local_only": payload["github"]["commits_local_ahead_of_remote"],
-         "on_default_branch": payload["github"]["workflow_presence_on_default_branch"]},
-        {"commits_local_only": int(local_only or 0),
-         "on_default_branch": {".github/workflows/recovery-determinism.yml": absence.returncode == 0}},
+        "CI4",
+        "the workflows are still absent from the default branch, and the history is still "
+        "local-only — the two reasons the run could not be authorised",
+        {
+            "commits_local_only": payload["github"]["commits_local_ahead_of_remote"],
+            "on_default_branch": payload["github"]["workflow_presence_on_default_branch"],
+        },
+        {
+            "commits_local_only": int(local_only or 0),
+            "on_default_branch": {
+                ".github/workflows/recovery-determinism.yml": absence.returncode == 0
+            },
+        },
         ["git rev-list origin/main..HEAD", "git cat-file -e origin/main:<workflow>"],
         agrees=int(local_only or 0) > 0 and absence.returncode != 0,
     )
     verifier.check(
-        "CI5", "no credentials are available in this environment, so the probe's verdict holds",
-        payload["push_probe"]["authenticated"], False,
+        "CI5",
+        "no credentials are available in this environment, so the probe's verdict holds",
+        payload["push_probe"]["authenticated"],
+        False,
         ["git push --dry-run (recorded in the report)"],
         agrees=payload["push_probe"]["authenticated"] is False,
     )
     verifier.control(
-        "C9", "a workflow step is given continue-on-error: true",
+        "C9",
+        "a workflow step is given continue-on-error: true",
         True,
         "CI1 reads the YAML itself, so a softened step is found by the verifier rather than "
         "taken from the report",
@@ -567,15 +656,21 @@ def verify_ci(verifier: Verifier) -> dict[str, Any]:
 
 def verify_runtime(verifier: Verifier) -> dict[str, Any]:
     payload = read(RUNTIME_REPORT)
-    traces = [
-        json.loads(line)
-        for line in TRACES.read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ] if TRACES.exists() else []
+    traces = (
+        [
+            json.loads(line)
+            for line in TRACES.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+        if TRACES.exists()
+        else []
+    )
 
     verifier.check(
-        "T1", "the report's trace count is the number of records on disk",
-        payload["trace_records"], len(traces),
+        "T1",
+        "the report's trace count is the number of records on disk",
+        payload["trace_records"],
+        len(traces),
         [str(TRACES.relative_to(ROOT)).replace("\\", "/")],
         agrees=payload["trace_records"] == len(traces),
     )
@@ -585,28 +680,33 @@ def verify_runtime(verifier: Verifier) -> dict[str, Any]:
         for index, record in enumerate(traces)
     )
     verifier.check(
-        "T2", "the trace chain links are recomputed here rather than trusted",
+        "T2",
+        "the trace chain links are recomputed here rather than trusted",
         {"linked": True, "records": payload["trace_records"]},
         {"linked": links_ok, "records": len(traces)},
         [str(TRACES.relative_to(ROOT)).replace("\\", "/")],
         agrees=links_ok and len(traces) == payload["trace_records"],
     )
     identity = all(
-        leg["run_report"]
-        and (entry["left"] == entry["right"])
+        leg["run_report"] and (entry["left"] == entry["right"])
         for leg, entry in zip(payload["legs"], payload["identity"], strict=True)
     )
     verifier.check(
-        "T3", "the accounting identity holds in every leg and no order was created",
+        "T3",
+        "the accounting identity holds in every leg and no order was created",
         {"identity_holds": True, "orders_created": payload["governance"]["orders_created"]},
         {"identity_holds": identity, "orders_created": 0},
         [leg["run_report"] for leg in payload["legs"]],
         agrees=identity and payload["governance"]["orders_created"] == 0,
     )
     verifier.check(
-        "T4", "the window is declared incomplete and no stability verdict is issued",
-        {"window_complete": payload["window_complete"], "stability": payload["stability_declared"],
-         "hours": payload["hours_executed"]},
+        "T4",
+        "the window is declared incomplete and no stability verdict is issued",
+        {
+            "window_complete": payload["window_complete"],
+            "stability": payload["stability_declared"],
+            "hours": payload["hours_executed"],
+        },
         {"window_complete": False, "stability": False, "hours_less_than_target": True},
         ["data/recovery/wp9/WP9_RUNTIME_24H_REPORT.json#declaration"],
         agrees=payload["window_complete"] is False
@@ -618,8 +718,10 @@ def verify_runtime(verifier: Verifier) -> dict[str, Any]:
         for previous, leg in zip(payload["legs"], payload["legs"][1:], strict=False)
     )
     verifier.check(
-        "T5", "each leg began where the previous one ended — the resume is continuous",
-        contiguous, True,
+        "T5",
+        "each leg began where the previous one ended — the resume is continuous",
+        contiguous,
+        True,
         [str(RUNTIME_LEGS.relative_to(ROOT)).replace("\\", "/")],
         agrees=contiguous and all(leg["exit_code"] == 0 for leg in payload["legs"]),
     )
@@ -633,29 +735,34 @@ def verify_runtime(verifier: Verifier) -> dict[str, Any]:
         for leg, record in zip(payload["legs"], recorded, strict=False)
     ) and len(recorded) == len(payload["legs"])
     verifier.check(
-        "T6", "the leg windows in the report are the ones the run recorded",
+        "T6",
+        "the leg windows in the report are the ones the run recorded",
         [leg["traces_before"] for leg in payload["legs"]],
         [record.get("traces_before") for record in recorded],
         [str(RUNTIME_LEGS.relative_to(ROOT)).replace("\\", "/")],
         agrees=same_windows,
     )
-    shifted = [{"name": leg["name"], "traces_before": leg["traces_before"] + 1}
-               for leg in payload["legs"]]
+    shifted = [
+        {"name": leg["name"], "traces_before": leg["traces_before"] + 1} for leg in payload["legs"]
+    ]
     shifted_matches_report = all(
         leg["traces_before"] == record.get("traces_before")
         for leg, record in zip(payload["legs"], shifted, strict=False)
     )
     verifier.control(
-        "C12", "every leg's recorded trace window is shifted by one record",
+        "C12",
+        "every leg's recorded trace window is shifted by one record",
         shifted_matches_report is False,
         "T6 compares the report's boundaries with the run's record using this same predicate, "
         "so a moved boundary is visible",
     )
     verifier.control(
-        "C10", "the window is declared complete although it ran less than a day",
+        "C10",
+        "the window is declared complete although it ran less than a day",
         not (payload["hours_executed"] >= payload["hours_target"]),
         "T4 compares the executed hours against the target the report itself declares",
     )
+
     def chain_intact(records: list[dict[str, Any]]) -> bool:
         return all(
             record.get("prev_hash")
@@ -667,7 +774,8 @@ def verify_runtime(verifier: Verifier) -> dict[str, Any]:
     if len(mutated) >= 2:
         mutated[1]["prev_hash"] = "sabotage"
     verifier.control(
-        "C11", "a trace record's prev_hash is replaced with a foreign value",
+        "C11",
+        "a trace record's prev_hash is replaced with a foreign value",
         bool(mutated) and chain_intact(mutated) is False,
         "T2 walks the chain with this same predicate, so a substituted link is visible — "
         "the control fails the predicate on a mutated copy rather than asserting it holds",
@@ -736,7 +844,7 @@ def main() -> int:
         "context": context,
         "volatile": {
             "note": "these two are allowed to move between the build and the verification; they are "
-                    "recorded, not reproduced",
+            "recorded, not reproduced",
             "head": head,
             "free_bytes_now": context["disk"]["free_bytes_now"],
         },
@@ -762,8 +870,10 @@ def main() -> int:
         print(json.dumps(payload, indent=2))
     else:
         VERIFICATION_OUT.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-        print(f"{payload['verdict']}: {len(verifier.checks)} checks, "
-              f"{len(failed)} failed, {len(missed)} of {len(verifier.controls)} controls missed")
+        print(
+            f"{payload['verdict']}: {len(verifier.checks)} checks, "
+            f"{len(failed)} failed, {len(missed)} of {len(verifier.controls)} controls missed"
+        )
     return EXIT_OK if payload["verdict"] == "PASS" else EXIT_DISAGREE
 
 

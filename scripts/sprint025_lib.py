@@ -224,9 +224,7 @@ def build_asset_grid(asset: str) -> dict[str, Any]:
     return {"asset": asset, "ts": kl["ts"], "features": feats}
 
 
-def ortho_on_bundle(
-    asset: str, bundle: L.Bundle, at: str = "close"
-) -> dict[str, NDArray[Any]]:
+def ortho_on_bundle(asset: str, bundle: L.Bundle, at: str = "close") -> dict[str, NDArray[Any]]:
     """Map the asset grid features onto a certified bundle's bar axis by ts.
 
     ``at="close"`` (default) uses, for each bundle bar, the last 5m grid bar
@@ -368,9 +366,7 @@ def pearson(a: NDArray[Any], b: NDArray[Any]) -> float | None:
     return float(np.corrcoef(x, y)[0, 1])
 
 
-def quantile_spread(
-    sig: NDArray[Any], fwd: NDArray[Any], q: int = 5
-) -> dict[str, Any]:
+def quantile_spread(sig: NDArray[Any], fwd: NDArray[Any], q: int = 5) -> dict[str, Any]:
     """Top-minus-bottom mean forward return (equal-count quantiles) + monotonicity."""
     x = np.asarray(sig, dtype=np.float64)
     y = np.asarray(fwd, dtype=np.float64)

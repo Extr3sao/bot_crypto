@@ -203,12 +203,18 @@ def _sample_single(pid: int) -> dict[str, Any]:
                     psapi.GetProcessMemoryInfo(process, ctypes.byref(counters), counters.cb)
                 )
                 creation, exit_time, kernel, user = (
-                    _FILETIME(), _FILETIME(), _FILETIME(), _FILETIME(),
+                    _FILETIME(),
+                    _FILETIME(),
+                    _FILETIME(),
+                    _FILETIME(),
                 )
                 times_ok = bool(
                     kernel32.GetProcessTimes(
-                        process, ctypes.byref(creation), ctypes.byref(exit_time),
-                        ctypes.byref(kernel), ctypes.byref(user),
+                        process,
+                        ctypes.byref(creation),
+                        ctypes.byref(exit_time),
+                        ctypes.byref(kernel),
+                        ctypes.byref(user),
                     )
                 )
             finally:
@@ -258,14 +264,22 @@ def leg_command(args: argparse.Namespace, leg: Leg) -> list[str]:
     return [
         sys.executable,
         ENTRYPOINT,
-        "--assets", args.assets,
-        "--timeframe", args.timeframe,
-        "--provider", args.provider,
-        "--run-id", args.run_id,
-        "--run-root", str(args.run_root),
-        "--state-path", str(args.state_path),
-        "--horizon-minutes", str(args.horizon_minutes),
-        "--size-usd", str(args.size_usd),
+        "--assets",
+        args.assets,
+        "--timeframe",
+        args.timeframe,
+        "--provider",
+        args.provider,
+        "--run-id",
+        args.run_id,
+        "--run-root",
+        str(args.run_root),
+        "--state-path",
+        str(args.state_path),
+        "--horizon-minutes",
+        str(args.horizon_minutes),
+        "--size-usd",
+        str(args.size_usd),
         "--no-verify-provider" if args.offline else "--verify-provider",
         *leg.args,
     ]
@@ -341,15 +355,13 @@ def run_leg(args: argparse.Namespace, leg: Leg, run_dir: Path) -> dict[str, Any]
             "peak_rss_mb_max": max((s["peak_rss_mb"] or 0) for s in measured) if measured else None,
             "cpu_seconds": max((s["cpu_seconds"] or 0) for s in measured) if measured else None,
             "cpu_utilisation": (
-                round(
-                    max((s["cpu_seconds"] or 0) for s in measured) / elapsed, 4
-                )
+                round(max((s["cpu_seconds"] or 0) for s in measured) / elapsed, 4)
                 if measured and elapsed
                 else None
             ),
-            "processes_in_the_tree_max": max(
-                (s.get("processes") or 1) for s in measured
-            ) if measured else None,
+            "processes_in_the_tree_max": max((s.get("processes") or 1) for s in measured)
+            if measured
+            else None,
             "method": measured[0]["method"] if measured else "NOT_MEASURED",
         },
         "disk": {
@@ -372,8 +384,11 @@ def reconstruct_leg(args: argparse.Namespace, leg: Leg, run_dir: Path) -> dict[s
     belongs to the leg — is on disk and is read here.
     """
     legs_dir = run_dir / "legs" / leg.name
-    previous = json.loads((run_dir / "LEGS.json").read_text(encoding="utf-8")) \
-        if (run_dir / "LEGS.json").exists() else []
+    previous = (
+        json.loads((run_dir / "LEGS.json").read_text(encoding="utf-8"))
+        if (run_dir / "LEGS.json").exists()
+        else []
+    )
     recorded = next((item for item in previous if item.get("name") == leg.name), None)
     base = {
         "name": leg.name,
@@ -419,7 +434,9 @@ def reported_cycles(path: Path) -> int | None:
 def load_traces(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         return []
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [
+        json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()
+    ]
 
 
 def load_reports(legs: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -452,15 +469,17 @@ def analyse(args: argparse.Namespace, legs: list[dict[str, Any]], run_dir: Path)
             links_ok, broken_at = False, index
             break
     chain_summary = [(entry["report"] or {}).get("trace_chain") or {} for entry in reports]
-    checks.append(check(
-        "decisions are persisted and the trace chain is intact",
-        PASS if traces and links_ok else FAIL,
-        f"{len(traces)} persisted records, links {'intact' if links_ok else f'broken at {broken_at}'}"
-        + "; the runtime's own summary agrees"
-        if all(s.get("ok") for s in chain_summary)
-        else "; the runtime's own summary disagrees",
-        [str((run_dir / "traces.jsonl").relative_to(ROOT)).replace("\\", "/")],
-    ))
+    checks.append(
+        check(
+            "decisions are persisted and the trace chain is intact",
+            PASS if traces and links_ok else FAIL,
+            f"{len(traces)} persisted records, links {'intact' if links_ok else f'broken at {broken_at}'}"
+            + "; the runtime's own summary agrees"
+            if all(s.get("ok") for s in chain_summary)
+            else "; the runtime's own summary disagrees",
+            [str((run_dir / "traces.jsonl").relative_to(ROOT)).replace("\\", "/")],
+        )
+    )
 
     # 2. point-in-time: a decision may only consume bars that had already sealed
     violations = [
@@ -469,17 +488,19 @@ def analyse(args: argparse.Namespace, legs: list[dict[str, Any]], run_dir: Path)
         if (r.get("asset_context") or {}).get("window_end_ts")
         and r["decision_time_ms"] < (r["asset_context"]["window_end_ts"])
     ]
-    checks.append(check(
-        "no look-ahead: every decision consumed only sealed bars",
-        PASS if traces and not violations else (NOT_EXERCISED if not traces else FAIL),
-        (
-            f"every one of {len(traces)} traces has window_end_ts <= decision_time_ms "
-            f"(window_end is the newest bar's open, so the sealed bar closes before the decision)"
-            if traces and not violations
-            else f"{len(violations)} trace(s) consumed a bar that had not sealed"
-        ),
-        [str((run_dir / "traces.jsonl").relative_to(ROOT)).replace("\\", "/")],
-    ))
+    checks.append(
+        check(
+            "no look-ahead: every decision consumed only sealed bars",
+            PASS if traces and not violations else (NOT_EXERCISED if not traces else FAIL),
+            (
+                f"every one of {len(traces)} traces has window_end_ts <= decision_time_ms "
+                f"(window_end is the newest bar's open, so the sealed bar closes before the decision)"
+                if traces and not violations
+                else f"{len(violations)} trace(s) consumed a bar that had not sealed"
+            ),
+            [str((run_dir / "traces.jsonl").relative_to(ROOT)).replace("\\", "/")],
+        )
+    )
 
     # 3. market-data freshness, measured against the runtime's own grace budget
     ages = [
@@ -507,9 +528,7 @@ def analyse(args: argparse.Namespace, legs: list[dict[str, Any]], run_dir: Path)
             "age_ms_max": max(leg_ages) if leg_ages else None,
             "age_ms_min": min(leg_ages) if leg_ages else None,
             "stale_evaluations": sum(1 for age in leg_ages if age > grace_ms),
-            "stale_share": round(
-                sum(1 for age in leg_ages if age > grace_ms) / len(leg_ages), 4
-            )
+            "stale_share": round(sum(1 for age in leg_ages if age > grace_ms) / len(leg_ages), 4)
             if leg_ages
             else None,
             "router_reasons": sorted({reason for reason in stale_reasons if reason}),
@@ -537,23 +556,24 @@ def analyse(args: argparse.Namespace, legs: list[dict[str, Any]], run_dir: Path)
             for candidate in r.get("strategies_considered") or []
         )
     ]
-    checks.append(check(
-        "the freshness gate is enforced: a late context cannot reach a proposal",
-        PASS
-        if ages and not late_with_a_proposal
-        and len(late_rejected_by_the_router) == len(stale)
-        else (NOT_EXERCISED if not ages else FAIL),
-        (
-            f"max age {max(ages) / 1000:.1f} s against a {grace_ms / 1000:.0f} s budget "
-            f"({DEFAULT_FRESHNESS_GRACE_BARS} bars of {args.timeframe}); {len(stale)} of "
-            f"{len(ages)} evaluations were late, {len(late_rejected_by_the_router)} of them were "
-            f"rejected by the router for exactly that reason, and {len(late_with_a_proposal)} "
-            "produced a proposal"
-            if ages
-            else "no evaluation happened"
-        ),
-        ["traces.jsonl asset_context.window_end_ts", "traces.jsonl strategies_considered"],
-    ))
+    checks.append(
+        check(
+            "the freshness gate is enforced: a late context cannot reach a proposal",
+            PASS
+            if ages and not late_with_a_proposal and len(late_rejected_by_the_router) == len(stale)
+            else (NOT_EXERCISED if not ages else FAIL),
+            (
+                f"max age {max(ages) / 1000:.1f} s against a {grace_ms / 1000:.0f} s budget "
+                f"({DEFAULT_FRESHNESS_GRACE_BARS} bars of {args.timeframe}); {len(stale)} of "
+                f"{len(ages)} evaluations were late, {len(late_rejected_by_the_router)} of them were "
+                f"rejected by the router for exactly that reason, and {len(late_with_a_proposal)} "
+                "produced a proposal"
+                if ages
+                else "no evaluation happened"
+            ),
+            ["traces.jsonl asset_context.window_end_ts", "traces.jsonl strategies_considered"],
+        )
+    )
 
     # 4. the strategy router ran and its verdicts are self-consistent
     considered = [(r, c) for r in traces for c in r.get("strategies_considered") or []]
@@ -563,13 +583,17 @@ def analyse(args: argparse.Namespace, legs: list[dict[str, Any]], run_dir: Path)
         for _, c in considered
         if c.get("selected") and not c.get("emitted_alpha")
     ]
-    checks.append(check(
-        "the strategy router ran and never selected a candidate that emitted no alpha",
-        PASS if considered and not selected_without_alpha else (NOT_EXERCISED if not considered else FAIL),
-        f"{len(considered)} candidate evaluations, statuses {statuses}, "
-        f"{len({c.get('strategy_id') for _, c in considered})} distinct strategies",
-        ["traces.jsonl strategies_considered"],
-    ))
+    checks.append(
+        check(
+            "the strategy router ran and never selected a candidate that emitted no alpha",
+            PASS
+            if considered and not selected_without_alpha
+            else (NOT_EXERCISED if not considered else FAIL),
+            f"{len(considered)} candidate evaluations, statuses {statuses}, "
+            f"{len({c.get('strategy_id') for _, c in considered})} distinct strategies",
+            ["traces.jsonl strategies_considered"],
+        )
+    )
 
     # 5. risk: every proposal is reviewed, and nothing order-authorising is advisory
     with_proposal = [r for r in traces if r.get("proposal")]
@@ -581,76 +605,87 @@ def analyse(args: argparse.Namespace, legs: list[dict[str, Any]], run_dir: Path)
     advisory_on_order = [
         r.get("decision_id")
         for r in traces
-        if (r.get("risk") or {}).get("advisory") and (r.get("order_created") or r.get("orders_created"))
+        if (r.get("risk") or {}).get("advisory")
+        and (r.get("order_created") or r.get("orders_created"))
     ]
     order_authorising = [r for r in traces if r.get("mode") == "TRADE_PAPER"]
     risk_states = sorted({(r.get("risk") or {}).get("state") for r in traces})
     if not with_proposal:
-        checks.append(check(
-            "the risk engine reviewed every proposal (deterministic, binding on orders)",
-            NOT_EXERCISED,
-            (
-                "no evaluation carried a proposal, so the binding path was never entered: "
-                f"{len(traces)} rows are NO_TRADE with risk {risk_states}; the runtime reviews "
-                "risk only when there is something to review (§3 of the runtime document)"
-            ),
-            ["traces.jsonl risk"],
-        ))
+        checks.append(
+            check(
+                "the risk engine reviewed every proposal (deterministic, binding on orders)",
+                NOT_EXERCISED,
+                (
+                    "no evaluation carried a proposal, so the binding path was never entered: "
+                    f"{len(traces)} rows are NO_TRADE with risk {risk_states}; the runtime reviews "
+                    "risk only when there is something to review (§3 of the runtime document)"
+                ),
+                ["traces.jsonl risk"],
+            )
+        )
     else:
-        checks.append(check(
-            "the risk engine reviewed every proposal (deterministic, binding on orders)",
-            PASS if not unreviewed and not advisory_on_order else FAIL,
-            f"{len(with_proposal)} proposal(s) reviewed, {len(order_authorising)} order-authorising, "
-            f"{len(advisory_on_order)} advisory reviews on an order",
-            ["traces.jsonl risk"],
-        ))
+        checks.append(
+            check(
+                "the risk engine reviewed every proposal (deterministic, binding on orders)",
+                PASS if not unreviewed and not advisory_on_order else FAIL,
+                f"{len(with_proposal)} proposal(s) reviewed, {len(order_authorising)} order-authorising, "
+                f"{len(advisory_on_order)} advisory reviews on an order",
+                ["traces.jsonl risk"],
+            )
+        )
 
     # 6. the independent verifier — the runtime's own answer, when it was asked
     verdicts = sorted({(r.get("verification") or {}).get("verdict") for r in traces})
-    checks.append(check(
-        "the independent verifier graded the decisions it was asked to grade",
-        PASS if verdicts and verdicts != ["NOT_RUN"] else NOT_EXERCISED,
-        (
-            f"verifier verdicts {verdicts}: a NO_TRADE row with no proposal is not sent to the "
-            "verifier, so this branch is NOT_EXERCISED in a window whose router rejects everything"
-            if verdicts == ["NOT_RUN"]
-            else f"verifier verdicts {verdicts}"
-        ),
-        ["traces.jsonl verification.verdict"],
-    ))
+    checks.append(
+        check(
+            "the independent verifier graded the decisions it was asked to grade",
+            PASS if verdicts and verdicts != ["NOT_RUN"] else NOT_EXERCISED,
+            (
+                f"verifier verdicts {verdicts}: a NO_TRADE row with no proposal is not sent to the "
+                "verifier, so this branch is NOT_EXERCISED in a window whose router rejects everything"
+                if verdicts == ["NOT_RUN"]
+                else f"verifier verdicts {verdicts}"
+            ),
+            ["traces.jsonl verification.verdict"],
+        )
+    )
 
     # 7. agents
     agent_messages = sum(len(r.get("agent_messages") or []) for r in traces)
-    checks.append(check(
-        "the agents were reachable from the live path",
-        PASS if agent_messages else NOT_EXERCISED,
-        (
-            f"{agent_messages} agent message(s) recorded; with no proposal the registry is never "
-            "consulted, so the live window cannot prove the agents are reachable and says so"
-            if not agent_messages
-            else f"{agent_messages} agent message(s) recorded"
-        ),
-        ["traces.jsonl agent_messages"],
-    ))
+    checks.append(
+        check(
+            "the agents were reachable from the live path",
+            PASS if agent_messages else NOT_EXERCISED,
+            (
+                f"{agent_messages} agent message(s) recorded; with no proposal the registry is never "
+                "consulted, so the live window cannot prove the agents are reachable and says so"
+                if not agent_messages
+                else f"{agent_messages} agent message(s) recorded"
+            ),
+            ["traces.jsonl agent_messages"],
+        )
+    )
 
     # 8. checkpoint/resume: the state is written and a later leg continues the chain
     state_path = Path(args.state_path)
     resumes = [leg for leg in legs if leg["traces_before"] > 0]
-    checks.append(check(
-        "checkpoint and resume: a later run continues the same chain",
-        PASS if resumes and links_ok else (NOT_EXERCISED if not resumes else FAIL),
-        (
-            f"{state_path.name} exists={state_path.exists()}; "
-            + "; ".join(
-                f"leg {leg['name']} continued from record {leg['traces_before']} and added "
-                f"{leg['traces_added']}"
-                for leg in resumes
-            )
-            if resumes
-            else "no leg ran after another, so no resume was exercised"
-        ),
-        [str(state_path.relative_to(ROOT)).replace("\\", "/")],
-    ))
+    checks.append(
+        check(
+            "checkpoint and resume: a later run continues the same chain",
+            PASS if resumes and links_ok else (NOT_EXERCISED if not resumes else FAIL),
+            (
+                f"{state_path.name} exists={state_path.exists()}; "
+                + "; ".join(
+                    f"leg {leg['name']} continued from record {leg['traces_before']} and added "
+                    f"{leg['traces_added']}"
+                    for leg in resumes
+                )
+                if resumes
+                else "no leg ran after another, so no resume was exercised"
+            ),
+            [str(state_path.relative_to(ROOT)).replace("\\", "/")],
+        )
+    )
 
     # 9. accounting identity and failure accounting, per leg's own report
     identity: list[dict[str, Any]] = []
@@ -663,98 +698,143 @@ def analyse(args: argparse.Namespace, legs: list[dict[str, Any]], run_dir: Path)
             + int(totals.get("runtime_failures") or 0)
         )
         right = int(totals.get("asset_cycle_evaluations") or 0)
-        identity.append({
-            "leg": entry["leg"],
-            "left": left,
-            "right": right,
-            "holds": left == right,
-            "runtime_failures": int(totals.get("runtime_failures") or 0),
-            "orders_created": int(totals.get("orders_created") or 0),
-            "production_actions": int(entry["report"].get("production_actions") or 0),
-        })
-    checks.append(check(
-        "every evaluation is accounted for and no order was created",
-        PASS if identity and all(item["holds"] for item in identity)
-        and all(item["orders_created"] == 0 for item in identity) else FAIL,
-        f"{sum(i['right'] for i in identity)} evaluations across {len(identity)} leg(s), "
-        f"{sum(i['runtime_failures'] for i in identity)} runtime failure(s), "
-        f"{sum(i['orders_created'] for i in identity)} order(s), "
-        f"{sum(i['production_actions'] for i in identity)} production action(s)",
-        [entry["leg"] + "/RUN_REPORT.json" for entry in reports],
-    ))
+        identity.append(
+            {
+                "leg": entry["leg"],
+                "left": left,
+                "right": right,
+                "holds": left == right,
+                "runtime_failures": int(totals.get("runtime_failures") or 0),
+                "orders_created": int(totals.get("orders_created") or 0),
+                "production_actions": int(entry["report"].get("production_actions") or 0),
+            }
+        )
+    checks.append(
+        check(
+            "every evaluation is accounted for and no order was created",
+            PASS
+            if identity
+            and all(item["holds"] for item in identity)
+            and all(item["orders_created"] == 0 for item in identity)
+            else FAIL,
+            f"{sum(i['right'] for i in identity)} evaluations across {len(identity)} leg(s), "
+            f"{sum(i['runtime_failures'] for i in identity)} runtime failure(s), "
+            f"{sum(i['orders_created'] for i in identity)} order(s), "
+            f"{sum(i['production_actions'] for i in identity)} production action(s)",
+            [entry["leg"] + "/RUN_REPORT.json" for entry in reports],
+        )
+    )
 
     # 10. replay purity
     replays = [(entry["leg"], entry["report"].get("replay") or {}) for entry in reports]
     replay_ok = all(
-        replay.get("failed") == 0 and replay.get("market_data_accessed") is False
+        replay.get("failed") == 0
+        and replay.get("market_data_accessed") is False
         and replay.get("attempted") == replay.get("ok")
         for _, replay in replays
     )
-    checks.append(check(
-        "replay reconstructs each decision without reading the market again",
-        PASS if replays and replay_ok else FAIL,
-        "; ".join(
-            f"{leg}: {replay.get('ok')}/{replay.get('attempted')} ok, failed={replay.get('failed')}, "
-            f"market_data_accessed={replay.get('market_data_accessed')}"
-            for leg, replay in replays
-        ) or "no leg produced a replay summary",
-        [leg + "/RUN_REPORT.json#replay" for leg, _ in replays],
-    ))
+    checks.append(
+        check(
+            "replay reconstructs each decision without reading the market again",
+            PASS if replays and replay_ok else FAIL,
+            "; ".join(
+                f"{leg}: {replay.get('ok')}/{replay.get('attempted')} ok, failed={replay.get('failed')}, "
+                f"market_data_accessed={replay.get('market_data_accessed')}"
+                for leg, replay in replays
+            )
+            or "no leg produced a replay summary",
+            [leg + "/RUN_REPORT.json#replay" for leg, _ in replays],
+        )
+    )
 
     # 11. errors, timeouts and latency
-    errors = [
-        error
-        for entry in reports
-        for error in (entry["report"].get("errors") or [])
-    ]
+    errors = [error for entry in reports for error in (entry["report"].get("errors") or [])]
     cycle_times = []
     for entry in reports:
         for cycle in entry["report"].get("cycles_detail") or []:
             if cycle.get("started_at_ms") and cycle.get("ended_at_ms"):
                 cycle_times.append(int(cycle["ended_at_ms"]) - int(cycle["started_at_ms"]))
     leg_seconds = sum(leg["seconds"] for leg in legs)
-    checks.append(check(
-        "no hidden critical error, and the cycle latency is measured",
-        PASS if not errors and cycle_times else (FAIL if errors else NOT_EXERCISED),
-        f"{len(errors)} error(s) in the leg reports; {len(cycle_times)} cycle(s) with "
-        f"latency min {min(cycle_times) if cycle_times else 'n/a'} ms / max "
-        f"{max(cycle_times) if cycle_times else 'n/a'} ms",
-        [entry["leg"] + "/RUN_REPORT.json#errors" for entry in reports],
-    ))
+    checks.append(
+        check(
+            "no hidden critical error, and the cycle latency is measured",
+            PASS if not errors and cycle_times else (FAIL if errors else NOT_EXERCISED),
+            f"{len(errors)} error(s) in the leg reports; {len(cycle_times)} cycle(s) with "
+            f"latency min {min(cycle_times) if cycle_times else 'n/a'} ms / max "
+            f"{max(cycle_times) if cycle_times else 'n/a'} ms",
+            [entry["leg"] + "/RUN_REPORT.json#errors" for entry in reports],
+        )
+    )
 
     # 11b. how much of the real flow the window actually reached. This is the honest
     # answer to "what percentage of the pipeline did you exercise": the stages are counted
     # from the traces, not asserted from the design.
     stages = [
-        {"stage": "scan and bar history fetched", "reached": len(traces),
-         "of": len(traces), "evidence": "traces.jsonl asset_context.bar_count"},
-        {"stage": "regime and context built", "reached": sum(
-            1 for r in traces if r.get("regime")), "of": len(traces),
-         "evidence": "traces.jsonl regime"},
-        {"stage": "router consulted", "reached": sum(
-            1 for r in traces if r.get("strategies_considered")), "of": len(traces),
-         "evidence": "traces.jsonl strategies_considered"},
-        {"stage": "proposal built", "reached": len(with_proposal), "of": len(traces),
-         "evidence": "traces.jsonl proposal"},
-        {"stage": "agents consulted", "reached": sum(
-            1 for r in traces if r.get("agent_messages")), "of": len(with_proposal),
-         "evidence": "traces.jsonl agent_messages"},
-        {"stage": "risk engine evaluated", "reached": sum(
-            1 for r in traces if (r.get("risk") or {}).get("risk_evaluated")),
-         "of": len(with_proposal), "evidence": "traces.jsonl risk.risk_evaluated"},
-        {"stage": "independent verifier ran", "reached": sum(
-            1 for r in traces if (r.get("verification") or {}).get("verdict") != "NOT_RUN"),
-         "of": len(with_proposal), "evidence": "traces.jsonl verification.verdict"},
-        {"stage": "decision persisted to the trace chain", "reached": len(traces),
-         "of": len(traces), "evidence": "traces.jsonl"},
-        {"stage": "order created (TRADE_PAPER)", "reached": sum(
-            1 for r in traces if r.get("mode") == "TRADE_PAPER"), "of": len(traces),
-         "evidence": "traces.jsonl mode"},
-        {"stage": "broker reconciliation / outcome resolved", "reached": sum(
-            int(entry["report"].get("totals", {}).get("outcomes_resolved") or 0)
-            for entry in reports),
-         "of": len(with_proposal),
-         "evidence": "legs/*/RUN_REPORT.json totals.outcomes_resolved"},
+        {
+            "stage": "scan and bar history fetched",
+            "reached": len(traces),
+            "of": len(traces),
+            "evidence": "traces.jsonl asset_context.bar_count",
+        },
+        {
+            "stage": "regime and context built",
+            "reached": sum(1 for r in traces if r.get("regime")),
+            "of": len(traces),
+            "evidence": "traces.jsonl regime",
+        },
+        {
+            "stage": "router consulted",
+            "reached": sum(1 for r in traces if r.get("strategies_considered")),
+            "of": len(traces),
+            "evidence": "traces.jsonl strategies_considered",
+        },
+        {
+            "stage": "proposal built",
+            "reached": len(with_proposal),
+            "of": len(traces),
+            "evidence": "traces.jsonl proposal",
+        },
+        {
+            "stage": "agents consulted",
+            "reached": sum(1 for r in traces if r.get("agent_messages")),
+            "of": len(with_proposal),
+            "evidence": "traces.jsonl agent_messages",
+        },
+        {
+            "stage": "risk engine evaluated",
+            "reached": sum(1 for r in traces if (r.get("risk") or {}).get("risk_evaluated")),
+            "of": len(with_proposal),
+            "evidence": "traces.jsonl risk.risk_evaluated",
+        },
+        {
+            "stage": "independent verifier ran",
+            "reached": sum(
+                1 for r in traces if (r.get("verification") or {}).get("verdict") != "NOT_RUN"
+            ),
+            "of": len(with_proposal),
+            "evidence": "traces.jsonl verification.verdict",
+        },
+        {
+            "stage": "decision persisted to the trace chain",
+            "reached": len(traces),
+            "of": len(traces),
+            "evidence": "traces.jsonl",
+        },
+        {
+            "stage": "order created (TRADE_PAPER)",
+            "reached": sum(1 for r in traces if r.get("mode") == "TRADE_PAPER"),
+            "of": len(traces),
+            "evidence": "traces.jsonl mode",
+        },
+        {
+            "stage": "broker reconciliation / outcome resolved",
+            "reached": sum(
+                int(entry["report"].get("totals", {}).get("outcomes_resolved") or 0)
+                for entry in reports
+            ),
+            "of": len(with_proposal),
+            "evidence": "legs/*/RUN_REPORT.json totals.outcomes_resolved",
+        },
     ]
     reached_stage_count = sum(1 for stage in stages if stage["reached"])
     # Whether a strategy emits alpha is a property of the *market at the sampled instants*,
@@ -763,46 +843,53 @@ def analyse(args: argparse.Namespace, legs: list[dict[str, Any]], run_dir: Path)
     # traces — every stage that ran is backed by a record, and no order was created — and
     # reports the rest as NOT_EXERCISED with the reason, instead of inventing a threshold
     # the window cannot control.
-    stages_with_records = all(
-        stage["reached"] <= max(1, len(traces)) for stage in stages
-    )
+    stages_with_records = all(stage["reached"] <= max(1, len(traces)) for stage in stages)
     unreached = [stage["stage"] for stage in stages if not stage["reached"]]
-    deep_stages = {"proposal built", "agents consulted", "risk engine evaluated",
-                   "independent verifier ran"}
+    deep_stages = {
+        "proposal built",
+        "agents consulted",
+        "risk engine evaluated",
+        "independent verifier ran",
+    }
     deep_reached = deep_stages - set(unreached)
-    checks.append(check(
-        "the executed window's flow coverage matches its own records",
-        PASS
-        if traces and stages_with_records and not any(
-            stage["reached"] and not stage["of"] and stage["stage"] in deep_stages
-            for stage in stages
+    checks.append(
+        check(
+            "the executed window's flow coverage matches its own records",
+            PASS
+            if traces
+            and stages_with_records
+            and not any(
+                stage["reached"] and not stage["of"] and stage["stage"] in deep_stages
+                for stage in stages
+            )
+            else FAIL,
+            "stages reached: "
+            + ", ".join(f"{stage['stage']} {stage['reached']}/{stage['of']}" for stage in stages)
+            + (
+                ""
+                if deep_reached == deep_stages
+                else "; not exercised in this window: "
+                + ", ".join(sorted(deep_stages - deep_reached))
+                + " (the router admitted no candidate that emitted alpha; which stages a real "
+                "window reaches depends on the market, so the rest is reported, not asserted)"
+            ),
+            ["traces.jsonl", "legs/*/RUN_REPORT.json"],
         )
-        else FAIL,
-        "stages reached: "
-        + ", ".join(
-            f"{stage['stage']} {stage['reached']}/{stage['of']}" for stage in stages
-        )
-        + (
-            ""
-            if deep_reached == deep_stages
-            else "; not exercised in this window: " + ", ".join(sorted(deep_stages - deep_reached))
-            + " (the router admitted no candidate that emitted alpha; which stages a real "
-            "window reaches depends on the market, so the rest is reported, not asserted)"
-        ),
-        ["traces.jsonl", "legs/*/RUN_REPORT.json"],
-    ))
+    )
 
     # 12. the window itself
     hours = leg_seconds / 3600.0
     complete = hours >= TARGET_HOURS
-    checks.append(check(
-        f"the window reached the {TARGET_HOURS:.0f} h the operator asked for",
-        PASS if complete else NOT_EXERCISED,
-        f"{hours:.4f} h executed of {TARGET_HOURS:.1f} h "
-        f"({hours / TARGET_HOURS:.3%} of the target): the rehearsal is prepared and driven, the "
-        "window is not complete, so no stability verdict is issued",
-        ["this report"],
-    ))
+    checks.append(
+        check(
+            f"the window reached the {TARGET_HOURS:.0f} h the operator asked for",
+            PASS if complete else NOT_EXERCISED,
+            f"{hours:.4f} h executed of {TARGET_HOURS:.1f} h "
+            f"({hours / TARGET_HOURS:.3%} of the target): the rehearsal is prepared and driven, the "
+            "window is not complete, so no stability verdict is issued",
+            ["this report"],
+        )
+    )
 
     failed = [c for c in checks if c["result"] == FAIL]
     return {
@@ -816,8 +903,9 @@ def analyse(args: argparse.Namespace, legs: list[dict[str, Any]], run_dir: Path)
             "evaluations": len(traces),
             "proposal_share": round(len(with_proposal) / len(traces), 4) if traces else None,
             "order_creating_stages_reached": sum(
-                1 for stage in stages if stage["stage"].startswith(("order", "broker"))
-                and stage["reached"]
+                1
+                for stage in stages
+                if stage["stage"].startswith(("order", "broker")) and stage["reached"]
             ),
             "why_the_rest_was_not_reached": (
                 "a decision may only create an order when a strategy is admitted and its net "
@@ -838,8 +926,10 @@ def analyse(args: argparse.Namespace, legs: list[dict[str, Any]], run_dir: Path)
         "checks_failed": len(failed),
         "checks_not_exercised": sum(1 for c in checks if c["result"] == NOT_EXERCISED),
         "verdict": (
-            "RUNTIME_REHEARSAL_FAILED" if failed
-            else "WINDOW_INCOMPLETE" if not complete
+            "RUNTIME_REHEARSAL_FAILED"
+            if failed
+            else "WINDOW_INCOMPLETE"
+            if not complete
             else "RUNTIME_REHEARSAL_PASS"
         ),
         "stability_declared": False,
@@ -854,7 +944,14 @@ def build_legs(args: argparse.Namespace) -> list[Leg]:
     return [
         Leg(
             name="1-interval-cadence",
-            args=["--cadence", "interval", "--cycles", str(args.cycles), "--interval", str(args.interval)],
+            args=[
+                "--cadence",
+                "interval",
+                "--cycles",
+                str(args.cycles),
+                "--interval",
+                str(args.interval),
+            ],
             notes="free-running loop: the cadence that loses part of its cycles to the freshness gate",
         ),
         Leg(
@@ -890,12 +987,16 @@ def main() -> int:
     parser.add_argument("--stop-after-seconds", type=float, default=40.0)
     parser.add_argument("--horizon-minutes", type=float, default=5.0)
     parser.add_argument("--size-usd", type=float, default=1_000.0)
-    parser.add_argument("--offline", action="store_true", help="skip the provider universe preflight")
+    parser.add_argument(
+        "--offline", action="store_true", help="skip the provider universe preflight"
+    )
     parser.add_argument("--legs", default="all", help="comma-separated leg names, or 'all'")
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--out", default=None)
     parser.add_argument("--report", default=None)
-    parser.add_argument("--plan-only", action="store_true", help="print the legs and exit, run nothing")
+    parser.add_argument(
+        "--plan-only", action="store_true", help="print the legs and exit, run nothing"
+    )
     parser.add_argument(
         "--analyse-only",
         action="store_true",
@@ -918,11 +1019,20 @@ def main() -> int:
         legs = [leg for leg in legs if leg.name in wanted or leg.name.split("-")[0] in wanted]
 
     if args.plan_only:
-        print(json.dumps(
-            [{"name": leg.name, "args": leg.args, "command": " ".join(leg_command(args, leg)),
-              "notes": leg.notes} for leg in legs],
-            indent=2,
-        ))
+        print(
+            json.dumps(
+                [
+                    {
+                        "name": leg.name,
+                        "args": leg.args,
+                        "command": " ".join(leg_command(args, leg)),
+                        "notes": leg.notes,
+                    }
+                    for leg in legs
+                ],
+                indent=2,
+            )
+        )
         return 0
 
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -990,9 +1100,7 @@ def main() -> int:
         "governance": {
             "LIVE_TRADING": "DISABLED",
             "TRADES_AUTHORIZED": 0,
-            "orders_created": sum(
-                item["orders_created"] for item in analysis["identity"]
-            ),
+            "orders_created": sum(item["orders_created"] for item in analysis["identity"]),
             "false_success": 0,
             "not_claimed": [
                 "24 h of continuous operation",

@@ -321,15 +321,21 @@ def scheduler_facts(scheduler: Mapping[str, Any] | None) -> dict[str, Any]:
     """
     scheduler = dict(scheduler or {})
     if not scheduler:
-        return {"installed": None, "enabled": None, "last_result": None,
-                "last_result_failed": None,
-                "last_run_at": None, "next_run_at": None}
+        return {
+            "installed": None,
+            "enabled": None,
+            "last_result": None,
+            "last_result_failed": None,
+            "last_run_at": None,
+            "next_run_at": None,
+        }
     errored = "error" in scheduler or bool(scheduler.get("query_stderr"))
     installed = bool(scheduler.get("installed"))
     enabled = None if errored else bool(installed and scheduler.get("enabled"))
     last_result = (
         int(scheduler["last_task_result"])
-        if scheduler.get("last_task_result") is not None else None
+        if scheduler.get("last_task_result") is not None
+        else None
     )
     last_result_failed = None if last_result is None else last_result not in _SCHED_OK_CODES
     return {
@@ -353,8 +359,9 @@ def last_verify_status(verifier: Mapping[str, Any] | None) -> str | None:
     return str(status) if status else None
 
 
-def cycle_journal_facts(report_root: Path, *, now: int,
-                        policy: CampaignHealthPolicy) -> dict[str, Any]:
+def cycle_journal_facts(
+    report_root: Path, *, now: int, policy: CampaignHealthPolicy
+) -> dict[str, Any]:
     """§09: bounded tail of the cycle journal — never the whole file.
 
     Reads at most the last ``CYC_TAIL`` events plus the chain check the
@@ -398,8 +405,9 @@ def cycle_journal_facts(report_root: Path, *, now: int,
 CYC_TAIL = 24
 
 
-def chain_and_drift(ledger_chain: Mapping[str, Any] | None,
-                    drift: Mapping[str, Any] | None) -> dict[str, str]:
+def chain_and_drift(
+    ledger_chain: Mapping[str, Any] | None, drift: Mapping[str, Any] | None
+) -> dict[str, str]:
     """§12/§13: consume the existing semantics, never reinterpret them."""
     chain_status = str((ledger_chain or {}).get("status") or "UNKNOWN")
     drift_status = str((drift or {}).get("status") or "UNKNOWN")
@@ -410,8 +418,12 @@ def disk_facts(guard_report: Mapping[str, Any] | None) -> dict[str, Any]:
     """§17: re-use the disk guard's own report verbatim (no duplicate guard)."""
     report = dict(guard_report or {})
     if not report:
-        return {"status": "UNKNOWN", "free_bytes": None,
-                "days_until_warning": None, "days_until_critical": None}
+        return {
+            "status": "UNKNOWN",
+            "free_bytes": None,
+            "days_until_warning": None,
+            "days_until_critical": None,
+        }
     warning = report.get("estimated_days_to_warning")
     critical = report.get("estimated_days_to_critical")
     return {
@@ -488,7 +500,10 @@ class CampaignHealthEvaluator:
         if cycle_age is None or int(cycle_age) > policy.cycle_stalled_after:
             reasons.add("CYCLE_JOURNAL_STALE")
         failures = int(cyc.get("consecutive_cycle_failures", 0) or 0)
-        if failures >= policy.consecutive_failures_critical or failures >= policy.consecutive_failures_degraded:
+        if (
+            failures >= policy.consecutive_failures_critical
+            or failures >= policy.consecutive_failures_degraded
+        ):
             reasons.add("CONSECUTIVE_CYCLE_FAILURES")
 
         # -- verify (§11) -----------------------------------------------------
@@ -580,8 +595,9 @@ class CampaignHealthEvaluator:
         )
         return snapshot
 
-    def _aggregate(self, reasons: set[str], *, cycle_age: Any, hb_age: Any,
-                   policy: CampaignHealthPolicy) -> str:
+    def _aggregate(
+        self, reasons: set[str], *, cycle_age: Any, hb_age: Any, policy: CampaignHealthPolicy
+    ) -> str:
         """Highest severity wins; a HEALTHY signal can never mask a CRITICAL."""
         if not reasons:
             return "HEALTHY"
@@ -745,8 +761,10 @@ class AlertStore:
         return f"ALERT-{hashlib.sha256(f'{reason_code}|{scope}'.encode()).hexdigest()[:16]}"
 
     def save(self) -> None:
-        lines = [json.dumps(a.to_dict(), sort_keys=True, ensure_ascii=False) for a in
-                 self._alerts.values()]
+        lines = [
+            json.dumps(a.to_dict(), sort_keys=True, ensure_ascii=False)
+            for a in self._alerts.values()
+        ]
         self.path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     def all(self) -> list[CampaignHealthAlert]:
@@ -759,7 +777,8 @@ class AlertStore:
         """The most recent row for a condition — the base row or its latest
         suffixed episode, whichever was seen last."""
         candidates = [
-            alert for alert_id, alert in self._alerts.items()
+            alert
+            for alert_id, alert in self._alerts.items()
             if alert_id == base_id or alert_id.startswith(f"{base_id}-")
         ]
         if not candidates:
@@ -816,8 +835,9 @@ class AlertStore:
         existing.occurrence_count += 1
         return existing, False
 
-    def resolve_missing(self, *, active_reasons: set[str],
-                        observed_at: int) -> list[CampaignHealthAlert]:
+    def resolve_missing(
+        self, *, active_reasons: set[str], observed_at: int
+    ) -> list[CampaignHealthAlert]:
         """§26: OPEN alerts whose condition vanished become RESOLVED."""
         resolved: list[CampaignHealthAlert] = []
         for alert in self._alerts.values():

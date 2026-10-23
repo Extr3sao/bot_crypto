@@ -155,8 +155,22 @@ def main() -> None:
             f" | VOL obs={out['features'][f]['VOL']['observed_ic']} p={out['features'][f]['VOL']['p_two_sided']}"
         )
     fw = out["family_wise_null"]
-    print("family-wise ALL p:", fw["p_family_wise_all"], "obs_max:", fw["observed_max_abs_ic_all"], "null p95:", fw["null_max_abs_ic_p95"])
-    print("family-wise VOL p:", fw["p_family_wise_vol"], "obs_max:", fw["observed_max_abs_ic_vol"], "null p95:", fw["null_max_abs_ic_vol_p95"])
+    print(
+        "family-wise ALL p:",
+        fw["p_family_wise_all"],
+        "obs_max:",
+        fw["observed_max_abs_ic_all"],
+        "null p95:",
+        fw["null_max_abs_ic_p95"],
+    )
+    print(
+        "family-wise VOL p:",
+        fw["p_family_wise_vol"],
+        "obs_max:",
+        fw["observed_max_abs_ic_vol"],
+        "null p95:",
+        fw["null_max_abs_ic_vol_p95"],
+    )
 
 
 def _md(out: dict[str, Any]) -> None:

@@ -114,7 +114,6 @@ FORBIDDEN_STATUS_WORDS: tuple[str, ...] = (
 )
 
 
-
 def maturity_state(*, decision_time: int, horizon: str, now: int) -> dict[str, Any]:
     """Whether a horizon has closed.  Never a partial or extrapolated outcome."""
     seconds = do.horizon_seconds(horizon)
@@ -258,9 +257,7 @@ BAD_WINDOW_COMPARATOR = do.BASELINE_ID_BUY_AND_HOLD
 NO_TRADE_SELECTIVITY_MIN_SAMPLE = 20
 
 
-def no_trade_counterfactual(
-    *, net_return: float, comparison_net_return: float
-) -> dict[str, Any]:
+def no_trade_counterfactual(*, net_return: float, comparison_net_return: float) -> dict[str, Any]:
     """What the analyst avoided or forgone by not taking the comparator's side."""
     return {
         "label": "COUNTERFACTUAL",
@@ -280,6 +277,7 @@ def no_trade_analysis(performances: Sequence[do.DecisionPerformance]) -> dict[st
     frequencies, not a model.  Below the declared sample floor the answer is
     ``INSUFFICIENT_SAMPLE``.
     """
+
     def comparator_net(item: do.DecisionPerformance) -> float | None:
         comparison = item.comparison(BAD_WINDOW_COMPARATOR)
         if comparison is None or not comparison.available:
@@ -309,9 +307,7 @@ def no_trade_analysis(performances: Sequence[do.DecisionPerformance]) -> dict[st
         value = comparator_net(item)
         if value is None:
             continue
-        record = no_trade_counterfactual(
-            net_return=item.net_return, comparison_net_return=value
-        )
+        record = no_trade_counterfactual(net_return=item.net_return, comparison_net_return=value)
         counterfactuals.append({"decision_id": item.decision_id, **record})
         avoided += record["avoided_loss"]
         missed += record["missed_gain"]
@@ -391,9 +387,7 @@ def campaign_metrics(performances: Sequence[do.DecisionPerformance]) -> dict[str
             "mean_net_return": statistics.fmean(values) if values else None,
             "median_net_return": _median(values),
             "direction_accuracy": (
-                sum(1 for item in items if item.direction_correct) / len(items)
-                if items
-                else None
+                sum(1 for item in items if item.direction_correct) / len(items) if items else None
             ),
         }
 
@@ -403,11 +397,7 @@ def campaign_metrics(performances: Sequence[do.DecisionPerformance]) -> dict[str
             groups.setdefault(str(getattr(item, key)), []).append(item)
         return {name: bucket(name, group) for name, group in groups.items()}
 
-    warning = (
-        "INSUFFICIENT_SAMPLE"
-        if n < asc.MIN_EVALUABLE_DECISIONS
-        else None
-    )
+    warning = "INSUFFICIENT_SAMPLE" if n < asc.MIN_EVALUABLE_DECISIONS else None
     return {
         "n_decisions": n,
         "distribution": {
@@ -415,7 +405,9 @@ def campaign_metrics(performances: Sequence[do.DecisionPerformance]) -> dict[str
             "short_count": sum(1 for item in performances if item.decision == "SHORT"),
             "no_trade_count": sum(1 for item in performances if item.decision == "NO_TRADE"),
             "long_rate": (sum(1 for i in performances if i.decision == "LONG") / n) if n else None,
-            "short_rate": (sum(1 for i in performances if i.decision == "SHORT") / n) if n else None,
+            "short_rate": (sum(1 for i in performances if i.decision == "SHORT") / n)
+            if n
+            else None,
             "no_trade_rate": (
                 sum(1 for i in performances if i.decision == "NO_TRADE") / n if n else None
             ),
@@ -436,11 +428,20 @@ def campaign_metrics(performances: Sequence[do.DecisionPerformance]) -> dict[str
             else None
         ),
         "excursions": {
-            "mean_mfe": statistics.fmean([item.mfe for item in performances]) if performances else None,
-            "mean_mae": statistics.fmean([item.mae for item in performances]) if performances else None,
+            "mean_mfe": statistics.fmean([item.mfe for item in performances])
+            if performances
+            else None,
+            "mean_mae": statistics.fmean([item.mae for item in performances])
+            if performances
+            else None,
         },
         "confidence_buckets": [
-            {"bucket": label, **bucket(label, [i for i in directional if confidence_bucket_for(i.confidence) == label])}
+            {
+                "bucket": label,
+                **bucket(
+                    label, [i for i in directional if confidence_bucket_for(i.confidence) == label]
+                ),
+            }
             for label, _low, _high in CONFIDENCE_BUCKETS
         ],
         "per_asset": grouped(performances, "asset"),
@@ -473,9 +474,9 @@ def canonical_content_digest(payload: Any) -> str:
     one price would look like nothing.
     """
     return hashlib.sha256(
-        json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str).encode(
-            "utf-8"
-        )
+        json.dumps(
+            payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str
+        ).encode("utf-8")
     ).hexdigest()
 
 
@@ -658,12 +659,13 @@ def replay_extended(
     )
     random_by_id = dict(zip(order, assigned, strict=True)) if order else {}
 
-    evaluation = next(
-        (item for item in evaluations if item.decision_id == decision_id), None
-    )
+    evaluation = next((item for item in evaluations if item.decision_id == decision_id), None)
     state = next(
-        (item for item in decision_states(ledger, now=now, chain_verified=chain_verified)
-         if item["decision_id"] == decision_id),
+        (
+            item
+            for item in decision_states(ledger, now=now, chain_verified=chain_verified)
+            if item["decision_id"] == decision_id
+        ),
         None,
     )
 
@@ -684,9 +686,7 @@ def replay_extended(
     if evaluation is None:
         return payload
 
-    comparisons = {
-        item.baseline_id: item.to_dict() for item in evaluation.comparisons
-    }
+    comparisons = {item.baseline_id: item.to_dict() for item in evaluation.comparisons}
     contribution: dict[str, Any] = {}
     for baseline_id, comparison in comparisons.items():
         contribution[baseline_id] = evaluation.net_return - comparison["net_return"]

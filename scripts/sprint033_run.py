@@ -60,11 +60,13 @@ G_PERP_4_CRITERIA: dict[str, str] = {
     "H4_accounting_clean": "price + funding - cost reconciles on Holdout",
 }
 
-ERAS = (("2021", "2021-01-01", "2021-12-31"),
-        ("2022", "2022-01-01", "2022-12-31"),
-        ("2023", "2023-01-01", "2023-12-31"),
-        ("2024", "2024-01-01", "2024-12-31"),
-        ("2025-2026", "2025-01-01", "2026-12-31"))
+ERAS = (
+    ("2021", "2021-01-01", "2021-12-31"),
+    ("2022", "2022-01-01", "2022-12-31"),
+    ("2023", "2023-01-01", "2023-12-31"),
+    ("2024", "2024-01-01", "2024-12-31"),
+    ("2025-2026", "2025-01-01", "2026-12-31"),
+)
 
 
 def _git(rev: str = "HEAD") -> str:
@@ -102,6 +104,7 @@ def _emit(name: str, payload: dict[str, Any], md: str) -> None:
 # world
 # ---------------------------------------------------------------------------
 
+
 class World:
     def __init__(self) -> None:
         self.syms = L.universe_from_cache()
@@ -127,8 +130,9 @@ class World:
         self.full = np.ones(self.days.shape[0], dtype=bool)
 
     def run(self, mask: NDArray[Any], **kw: Any) -> dict[str, Any]:
-        return L.run_tsmom003(self.close, self.open, self.high, self.low, self.days,
-                              self.funding, mask, **kw)
+        return L.run_tsmom003(
+            self.close, self.open, self.high, self.low, self.days, self.funding, mask, **kw
+        )
 
     def summary(self, mask: NDArray[Any], **kw: Any) -> dict[str, Any]:
         return L.summarise(self.run(mask, **kw))
@@ -137,6 +141,7 @@ class World:
 # ---------------------------------------------------------------------------
 # §13/§56 data inventory
 # ---------------------------------------------------------------------------
+
 
 def data_inventory(world: World) -> dict[str, Any]:
     per_sym: dict[str, Any] = {}
@@ -158,35 +163,61 @@ def data_inventory(world: World) -> dict[str, Any]:
         "source_commit": _git("HEAD"),
         "venue": "Binance USD-M (data.binance.vision monthly public archives)",
         "datasets": {
-            "perpetual_ohlcv": {"available": True, "resolution": "1d",
-                                "symbols": len(world.syms), "rows": total_klines},
-            "funding_history": {"available": True,
-                                "symbols_with_funding": int(sum(1 for n in world.funding.n_events if n > 0))},
-            "mark_price": {"available": False,
-                           "note": "only forward one-day segments for BTC/ETH/SOL; no history"},
+            "perpetual_ohlcv": {
+                "available": True,
+                "resolution": "1d",
+                "symbols": len(world.syms),
+                "rows": total_klines,
+            },
+            "funding_history": {
+                "available": True,
+                "symbols_with_funding": int(sum(1 for n in world.funding.n_events if n > 0)),
+            },
+            "mark_price": {
+                "available": False,
+                "note": "only forward one-day segments for BTC/ETH/SOL; no history",
+            },
             "index_price": {"available": False, "note": "no historical index archive cached"},
             "listing_dates": {"available": True, "derived_from": "first kline timestamp"},
             "delisting_dates": {"available": "partial", "derived_from": "last kline timestamp"},
             "fees": {"available": True, "source": "published Binance USD-M public schedule"},
-            "open_interest": {"available": False, "required": False, "note": "not required for TSMOM"},
+            "open_interest": {
+                "available": False,
+                "required": False,
+                "note": "not required for TSMOM",
+            },
         },
-        "coverage": {"first_day": first_day, "last_day": last_day,
-                     "calendar_days": int(world.days.shape[0])},
+        "coverage": {
+            "first_day": first_day,
+            "last_day": last_day,
+            "calendar_days": int(world.days.shape[0]),
+        },
         "per_symbol": per_sym,
     }
-    md = "\n".join([
-        "# RFC-033 — DATA INVENTORY", "",
-        f"- venue: {payload['venue']}",
-        f"- symbols with 1d perp klines: {len(world.syms)}",
-        f"- coverage: {first_day} → {last_day} ({world.days.shape[0]} calendar days)",
-        f"- symbols with funding history: {payload['datasets']['funding_history']['symbols_with_funding']}",
-        "", "## Dataset availability", "",
-        _table([{"dataset": k, "available": str(v['available']), "note": v.get('note', '')}
-                for k, v in payload["datasets"].items()],
-               ["dataset", "available", "note"]), "",
-        "Mark price and index price histories are NOT available; OHLCV (1d) and funding are",
-        "the two series used.  OI is documented as not required (§13).", "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-033 — DATA INVENTORY",
+            "",
+            f"- venue: {payload['venue']}",
+            f"- symbols with 1d perp klines: {len(world.syms)}",
+            f"- coverage: {first_day} → {last_day} ({world.days.shape[0]} calendar days)",
+            f"- symbols with funding history: {payload['datasets']['funding_history']['symbols_with_funding']}",
+            "",
+            "## Dataset availability",
+            "",
+            _table(
+                [
+                    {"dataset": k, "available": str(v["available"]), "note": v.get("note", "")}
+                    for k, v in payload["datasets"].items()
+                ],
+                ["dataset", "available", "note"],
+            ),
+            "",
+            "Mark price and index price histories are NOT available; OHLCV (1d) and funding are",
+            "the two series used.  OI is documented as not required (§13).",
+            "",
+        ]
+    )
     _emit("DATA_INVENTORY", payload, md)
     return payload
 
@@ -195,19 +226,21 @@ def data_inventory(world: World) -> dict[str, Any]:
 # §10-§12 futures universe + PIT audit
 # ---------------------------------------------------------------------------
 
+
 def universe_audit(world: World) -> dict[str, Any]:
     listings = world.listing
     by_year: dict[str, int] = {}
     for s in world.syms:
         by_year[listings[s][:4]] = by_year.get(listings[s][:4], 0) + 1
-    delisted = [s for s in world.syms
-                if world.last_date[s] < L._iso(int(world.days.max()))]
+    delisted = [s for s in world.syms if world.last_date[s] < L._iso(int(world.days.max()))]
     payload: dict[str, Any] = {
         "generated": _now(),
         "universe_size": len(world.syms),
-        "eligibility_rule": ("USDT-margined Binance perpetual with a public monthly "
-                             "kline archive in 2021-06 (PIT archive existence); symbols "
-                             "that later delisted retain their files and are kept"),
+        "eligibility_rule": (
+            "USDT-margined Binance perpetual with a public monthly "
+            "kline archive in 2021-06 (PIT archive existence); symbols "
+            "that later delisted retain their files and are kept"
+        ),
         "classification": "POINT_IN_TIME_FUTURES_UNIVERSE",
         "no_known_future_universe_leakage": True,
         "entry_rule": "a symbol may only be held when the perpetual exists at T (finite price)",
@@ -221,21 +254,35 @@ def universe_audit(world: World) -> dict[str, Any]:
     # exposure before listing must be impossible: first_idx is NaN-guarded
     payload["exposure_before_listing_check"] = "ENFORCED (NaN before first kline)"
     payload["discovery_window_days"] = int(a.sum())
-    md = "\n".join([
-        "# RFC-033 — FUTURES UNIVERSE AUDIT", "",
-        f"- universe size: **{len(world.syms)}** USDT perpetuals",
-        "- classification: **POINT_IN_TIME_FUTURES_UNIVERSE**",
-        f"- eligibility: {payload['eligibility_rule']}",
-        f"- no known material future-universe leakage: {payload['no_known_future_universe_leakage']}",
-        f"- delisted names retained: {len(delisted)} "
-        f"({', '.join(delisted) if delisted else 'none'})", "",
-        "## Listings by year", "",
-        _table([{"year": k, "count": v} for k, v in sorted(by_year.items())],
-               ["year", "count"]), "",
-        "## Listings / last dates", "",
-        _table([{"asset": s, "listing": listings[s], "last": world.last_date[s]}
-                for s in world.syms], ["asset", "listing", "last"]), "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-033 — FUTURES UNIVERSE AUDIT",
+            "",
+            f"- universe size: **{len(world.syms)}** USDT perpetuals",
+            "- classification: **POINT_IN_TIME_FUTURES_UNIVERSE**",
+            f"- eligibility: {payload['eligibility_rule']}",
+            f"- no known material future-universe leakage: {payload['no_known_future_universe_leakage']}",
+            f"- delisted names retained: {len(delisted)} "
+            f"({', '.join(delisted) if delisted else 'none'})",
+            "",
+            "## Listings by year",
+            "",
+            _table(
+                [{"year": k, "count": v} for k, v in sorted(by_year.items())], ["year", "count"]
+            ),
+            "",
+            "## Listings / last dates",
+            "",
+            _table(
+                [
+                    {"asset": s, "listing": listings[s], "last": world.last_date[s]}
+                    for s in world.syms
+                ],
+                ["asset", "listing", "last"],
+            ),
+            "",
+        ]
+    )
     _emit("FUTURES_UNIVERSE_AUDIT", payload, md)
     return payload
 
@@ -243,6 +290,7 @@ def universe_audit(world: World) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 # §15/§16 PIT audit + future poisoning
 # ---------------------------------------------------------------------------
+
 
 def _poison_targets(close: NDArray[Any], i: int) -> NDArray[Any]:
     t = L.tsmom_perp_target(close, i)
@@ -285,17 +333,21 @@ def future_poisoning(world: World) -> dict[str, Any]:
         "universe_membership_cannot_enter_pre_listing": True,
         "verdict": verdict,
     }
-    md = "\n".join([
-        "# RFC-033 — PIT AUDIT (future poisoning)", "",
-        f"- price mutated after `{payload['poisoned_after_time']}` "
-        f"(idx {cutoff}); {len(pre)} pre-T decision days re-checked",
-        f"- max |Δweight| pre-T: `{max_diff}`",
-        f"- signals / weights / orders identical pre-T: "
-        f"**{payload['signals_identical']}**",
-        "- future funding cannot influence a prior signal: True",
-        "- pre-listing universe entry impossible: True", "",
-        f"VERDICT = **{verdict}**", "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-033 — PIT AUDIT (future poisoning)",
+            "",
+            f"- price mutated after `{payload['poisoned_after_time']}` "
+            f"(idx {cutoff}); {len(pre)} pre-T decision days re-checked",
+            f"- max |Δweight| pre-T: `{max_diff}`",
+            f"- signals / weights / orders identical pre-T: **{payload['signals_identical']}**",
+            "- future funding cannot influence a prior signal: True",
+            "- pre-listing universe entry impossible: True",
+            "",
+            f"VERDICT = **{verdict}**",
+            "",
+        ]
+    )
     _emit("PIT_AUDIT", payload, md)
     return payload
 
@@ -304,7 +356,7 @@ def future_poisoning(world: World) -> dict[str, Any]:
 # §22-§25 margin model
 # ---------------------------------------------------------------------------
 
-MAINTENANCE_MARGIN = 0.02     # conservative maintenance fraction (2%)
+MAINTENANCE_MARGIN = 0.02  # conservative maintenance fraction (2%)
 
 
 def margin_model(world: World, disc_run: dict[str, Any]) -> dict[str, Any]:
@@ -312,7 +364,7 @@ def margin_model(world: World, disc_run: dict[str, Any]) -> dict[str, Any]:
     gross = np.asarray(run["gross_exposure"], dtype=np.float64)
     adverse = np.asarray(run["worst_adverse"], dtype=np.float64)  # fraction of capital
     max_gross = float(np.max(gross)) if gross.size else 0.0
-    worst_adv = float(np.min(adverse)) if adverse.size else 0.0   # most negative
+    worst_adv = float(np.min(adverse)) if adverse.size else 0.0  # most negative
     equity_after = 1.0 + worst_adv
     maintenance_equity = MAINTENANCE_MARGIN * max_gross
     liq = bool(equity_after <= maintenance_equity)
@@ -328,24 +380,32 @@ def margin_model(world: World, disc_run: dict[str, Any]) -> dict[str, Any]:
         "maintenance_equity_floor": maintenance_equity,
         "liquidation_triggered": liq,
         "maintenance_schedules_available": False,
-        "limitation": ("exact historical per-asset maintenance-margin schedules are not "
-                       "available; a conservative flat 2% maintenance fraction plus a 1x "
-                       "gross cap keeps liquidation remote and is documented as a limitation"),
+        "limitation": (
+            "exact historical per-asset maintenance-margin schedules are not "
+            "available; a conservative flat 2% maintenance fraction plus a 1x "
+            "gross cap keeps liquidation remote and is documented as a limitation"
+        ),
         "margin_safety": "PASS" if not liq else "FAIL",
     }
-    md = "\n".join([
-        "# RFC-033 — MARGIN MODEL", "",
-        f"- initial margin: {payload['initial_margin_rule']}",
-        f"- gross leverage cap: {payload['gross_leverage_cap']}x",
-        f"- max realised gross exposure: `{_r(max_gross, 4)}`",
-        f"- maintenance margin fraction: {MAINTENANCE_MARGIN}",
-        f"- worst intraperiod adverse excursion: `{_r(worst_adv, 4)}` of capital",
-        f"- equity after worst excursion: `{_r(equity_after, 4)}` vs floor "
-        f"`{_r(maintenance_equity, 6)}`",
-        f"- liquidation triggered: **{liq}**", "",
-        f"LIMITATION: {payload['limitation']}", "",
-        f"MARGIN SAFETY = **{payload['margin_safety']}**", "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-033 — MARGIN MODEL",
+            "",
+            f"- initial margin: {payload['initial_margin_rule']}",
+            f"- gross leverage cap: {payload['gross_leverage_cap']}x",
+            f"- max realised gross exposure: `{_r(max_gross, 4)}`",
+            f"- maintenance margin fraction: {MAINTENANCE_MARGIN}",
+            f"- worst intraperiod adverse excursion: `{_r(worst_adv, 4)}` of capital",
+            f"- equity after worst excursion: `{_r(equity_after, 4)}` vs floor "
+            f"`{_r(maintenance_equity, 6)}`",
+            f"- liquidation triggered: **{liq}**",
+            "",
+            f"LIMITATION: {payload['limitation']}",
+            "",
+            f"MARGIN SAFETY = **{payload['margin_safety']}**",
+            "",
+        ]
+    )
     _emit("MARGIN_MODEL", payload, md)
     return payload
 
@@ -353,6 +413,7 @@ def margin_model(world: World, disc_run: dict[str, Any]) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 # §17/§21 cost model + reconciliation
 # ---------------------------------------------------------------------------
+
 
 def cost_model(world: World) -> dict[str, Any]:
     run = world.run(world.full)
@@ -378,17 +439,22 @@ def cost_model(world: World) -> dict[str, Any]:
         "factor_of_two_ambiguity": "NONE (independently reconciled)",
         "reconciliation_ok": bool(max_abs <= TOL),
     }
-    md = "\n".join([
-        "# RFC-033 — COST MODEL (TSMOM_PERP_COST_MODEL_V1)", "",
-        f"- components: {L.COST_MODEL}",
-        f"- per-side cost: **{per_side} bps** (public taker tier; no rebate/maker/VIP)",
-        f"- charging rule: {payload['chargen_rule']}",
-        f"- mean turnover: `{_r(payload['mean_turnover_notional'], 4)}`",
-        f"- cost expectancy: `{_r(payload['cost_expectancy_bps'], 4)}` bps",
-        f"- reconciliation: **{'PASS' if payload['reconciliation_ok'] else 'FAIL'}**", "",
-        "Funding is accounted SEPARATELY (see FUNDING_ACCOUNTING_AUDIT), never inside a",
-        "generic transaction-cost constant (§17).", "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-033 — COST MODEL (TSMOM_PERP_COST_MODEL_V1)",
+            "",
+            f"- components: {L.COST_MODEL}",
+            f"- per-side cost: **{per_side} bps** (public taker tier; no rebate/maker/VIP)",
+            f"- charging rule: {payload['chargen_rule']}",
+            f"- mean turnover: `{_r(payload['mean_turnover_notional'], 4)}`",
+            f"- cost expectancy: `{_r(payload['cost_expectancy_bps'], 4)}` bps",
+            f"- reconciliation: **{'PASS' if payload['reconciliation_ok'] else 'FAIL'}**",
+            "",
+            "Funding is accounted SEPARATELY (see FUNDING_ACCOUNTING_AUDIT), never inside a",
+            "generic transaction-cost constant (§17).",
+            "",
+        ]
+    )
     _emit("COST_MODEL", payload, md)
     return payload
 
@@ -396,6 +462,7 @@ def cost_model(world: World) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 # §18/§19/§28 funding accounting audit
 # ---------------------------------------------------------------------------
+
 
 def funding_accounting(world: World) -> dict[str, Any]:
     run = world.run(world.full, collect_detail=True)
@@ -421,16 +488,20 @@ def funding_accounting(world: World) -> dict[str, Any]:
         "symbols_with_funding": symbols_with_funding,
         "symbols_total": len(world.syms),
     }
-    md = "\n".join([
-        "# RFC-033 — FUNDING ACCOUNTING AUDIT", "",
-        f"- formula: `{payload['formula']}`",
-        "- long pays when funding rate > 0 (cashflow negative); short receives (positive)",
-        f"- funding expectancy: `{_r(payload['funding_expectancy_bps'], 4)}` bps/month",
-        f"- long-leg funding: `{_r(payload['long_funding_bps'], 2)}` bps  |  short-leg "
-        f"funding: `{_r(payload['short_funding_bps'], 2)}` bps",
-        f"- recompute diff: `{diff}`  |  every payment reconciled: "
-        f"**{payload['every_payment_reconciled']}**", "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-033 — FUNDING ACCOUNTING AUDIT",
+            "",
+            f"- formula: `{payload['formula']}`",
+            "- long pays when funding rate > 0 (cashflow negative); short receives (positive)",
+            f"- funding expectancy: `{_r(payload['funding_expectancy_bps'], 4)}` bps/month",
+            f"- long-leg funding: `{_r(payload['long_funding_bps'], 2)}` bps  |  short-leg "
+            f"funding: `{_r(payload['short_funding_bps'], 2)}` bps",
+            f"- recompute diff: `{diff}`  |  every payment reconciled: "
+            f"**{payload['every_payment_reconciled']}**",
+            "",
+        ]
+    )
     _emit("FUNDING_ACCOUNTING_AUDIT", payload, md)
     return payload
 
@@ -439,6 +510,7 @@ def funding_accounting(world: World) -> dict[str, Any]:
 # §35/§44/§57 freeze
 # ---------------------------------------------------------------------------
 
+
 def freeze_spec(world: World) -> dict[str, Any]:
     data_hashes = {s: L.sha256_file(L.CACHE_DIR / f"perp_daily_{s}.npz") for s in world.syms}
     code_hash = L.sha256_file(REPO / "scripts" / "sprint033_lib.py")
@@ -446,39 +518,51 @@ def freeze_spec(world: World) -> dict[str, Any]:
     cost_hash = L.sha256_obj(L.COST_MODEL)
     cfg_hash = L.sha256_obj({**FROZEN, "data_hashes": data_hashes, "universe_hash": universe_hash})
     payload: dict[str, Any] = {
-        **FROZEN, "generated": _now(), "source_commit": _git("HEAD"),
-        "universe": world.syms, "universe_hash": universe_hash,
-        "data_hashes": data_hashes, "code_hash_sprint033_lib": code_hash,
-        "config_hash": cfg_hash, "cost_hash": cost_hash,
-        "holdout_start": L.HOLDOUT_START, "holdout_end": L.HOLDOUT_END,
+        **FROZEN,
+        "generated": _now(),
+        "source_commit": _git("HEAD"),
+        "universe": world.syms,
+        "universe_hash": universe_hash,
+        "data_hashes": data_hashes,
+        "code_hash_sprint033_lib": code_hash,
+        "config_hash": cfg_hash,
+        "cost_hash": cost_hash,
+        "holdout_start": L.HOLDOUT_START,
+        "holdout_end": L.HOLDOUT_END,
         "holdout_analytics_read_at_freeze": L.HOLDOUT_ANALYTICS_READ_AT_FREEZE,
-        "freeze_rule": ("Frozen before Validation/Holdout. Any material change to the "
-                        "candidate, code, config, universe rules, cost model, funding "
-                        "rule or margin model invalidates the campaign (§35). No change "
-                        "is allowed to recover PnL (§68)."),
+        "freeze_rule": (
+            "Frozen before Validation/Holdout. Any material change to the "
+            "candidate, code, config, universe rules, cost model, funding "
+            "rule or margin model invalidates the campaign (§35). No change "
+            "is allowed to recover PnL (§68)."
+        ),
     }
-    md = "\n".join([
-        "# RFC-033 — EXT-TSMOM-003 FROZEN SPEC", "",
-        f"- candidate: `{FROZEN['candidate_id']}`  |  product: {FROZEN['product']}",
-        f"- instrument: {FROZEN['instrument']}",
-        f"- signal: {FROZEN['signal']}",
-        f"- long/short: {FROZEN['long_short_semantics']}",
-        f"- execution: {FROZEN['execution_timing']} (field `{FROZEN['executable_field']}`)",
-        f"- weighting: {FROZEN['weighting']}",
-        f"- vol target {FROZEN['vol_target']}, lookback {FROZEN['formation_days']}d, "
-        f"rebalance {FROZEN['rebalance']}",
-        f"- gross leverage cap: {FROZEN['gross_leverage_cap']}x",
-        f"- cost model: {FROZEN['cost_model']} = {FROZEN['per_side_cost_bps']} bps/side",
-        f"- funding: {FROZEN['funding']}",
-        f"- splits: DISCOVERY {L.SPLIT_BOUNDS['DISCOVERY']}, VALIDATION "
-        f"{L.SPLIT_BOUNDS['VALIDATION']}, HOLDOUT {L.SPLIT_BOUNDS['HOLDOUT']}",
-        f"- universe: {len(world.syms)} PIT-eligible USDT perpetuals",
-        f"- universe hash: `{universe_hash}`",
-        f"- code hash: `{code_hash}`",
-        f"- cost hash: `{cost_hash}`",
-        f"- config hash: `{cfg_hash}`",
-        f"- HOLDOUT_ANALYTICS_READ at freeze: {L.HOLDOUT_ANALYTICS_READ_AT_FREEZE}", "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-033 — EXT-TSMOM-003 FROZEN SPEC",
+            "",
+            f"- candidate: `{FROZEN['candidate_id']}`  |  product: {FROZEN['product']}",
+            f"- instrument: {FROZEN['instrument']}",
+            f"- signal: {FROZEN['signal']}",
+            f"- long/short: {FROZEN['long_short_semantics']}",
+            f"- execution: {FROZEN['execution_timing']} (field `{FROZEN['executable_field']}`)",
+            f"- weighting: {FROZEN['weighting']}",
+            f"- vol target {FROZEN['vol_target']}, lookback {FROZEN['formation_days']}d, "
+            f"rebalance {FROZEN['rebalance']}",
+            f"- gross leverage cap: {FROZEN['gross_leverage_cap']}x",
+            f"- cost model: {FROZEN['cost_model']} = {FROZEN['per_side_cost_bps']} bps/side",
+            f"- funding: {FROZEN['funding']}",
+            f"- splits: DISCOVERY {L.SPLIT_BOUNDS['DISCOVERY']}, VALIDATION "
+            f"{L.SPLIT_BOUNDS['VALIDATION']}, HOLDOUT {L.SPLIT_BOUNDS['HOLDOUT']}",
+            f"- universe: {len(world.syms)} PIT-eligible USDT perpetuals",
+            f"- universe hash: `{universe_hash}`",
+            f"- code hash: `{code_hash}`",
+            f"- cost hash: `{cost_hash}`",
+            f"- config hash: `{cfg_hash}`",
+            f"- HOLDOUT_ANALYTICS_READ at freeze: {L.HOLDOUT_ANALYTICS_READ_AT_FREEZE}",
+            "",
+        ]
+    )
     _emit("EXT_TSMOM_003_FROZEN_SPEC", payload, md)
     return payload
 
@@ -487,41 +571,51 @@ def freeze_spec(world: World) -> dict[str, Any]:
 # §33-§36 Discovery / Validation
 # ---------------------------------------------------------------------------
 
+
 def _stat_block(run: dict[str, Any], ppy: float = 12.0) -> dict[str, Any]:
     nets = np.asarray(run["nets"], dtype=np.float64)
     if nets.size < 2:
         return {"status": "TOO_FEW", "rebalances": int(nets.size)}
     cum = np.cumsum(nets)
     peak = np.maximum.accumulate(cum)
-    return {"status": "OK", "net_expectancy_bps": float(np.mean(nets)),
-            "net_median_bps": float(np.median(nets)),
-            "net_pnl_bps": float(np.sum(nets)),
-            "sharpe": L._sharpe(nets, ppy), "max_dd_bps": float(np.max(peak - cum)),
-            "win_rate": float(np.mean(nets > 0)), "rebalances": int(nets.size)}
+    return {
+        "status": "OK",
+        "net_expectancy_bps": float(np.mean(nets)),
+        "net_median_bps": float(np.median(nets)),
+        "net_pnl_bps": float(np.sum(nets)),
+        "sharpe": L._sharpe(nets, ppy),
+        "max_dd_bps": float(np.max(peak - cum)),
+        "win_rate": float(np.mean(nets > 0)),
+        "rebalances": int(nets.size),
+    }
 
 
-def _results_artifact(name: str, title: str, run: dict[str, Any],
-                      mask: NDArray[Any], world: World) -> dict[str, Any]:
+def _results_artifact(
+    name: str, title: str, run: dict[str, Any], mask: NDArray[Any], world: World
+) -> dict[str, Any]:
     s = L.summarise(run)
     ci = L.bootstrap_mean_ci(np.asarray(run["nets"]), block=3)
-    payload: dict[str, Any] = {"generated": _now(), "phase": title, "summary": s,
-                               "bootstrap": ci}
-    md = "\n".join([
-        f"# RFC-033 — {title}", "",
-        f"- rebalances: {s.get('rebalances')}",
-        f"- net expectancy: **{_r(s.get('net_expectancy_bps'), 3)} bps/month**",
-        f"- net PnL: `{_r(s.get('net_pnl_bps'), 2)} bps`",
-        f"- price PnL: `{_r(s.get('price_pnl_bps'), 2)}` bps  |  funding PnL: "
-        f"`{_r(s.get('funding_pnl_bps'), 2)}` bps  |  cost: `{_r(s.get('cost_pnl_bps'), 2)}` bps",
-        f"- median: `{_r(s.get('net_median_bps'), 3)}`  |  Sharpe: "
-        f"`{_r(s.get('sharpe'), 3)}`  |  MaxDD: `{_r(s.get('max_dd_bps'), 1)}` bps",
-        f"- mean gross exposure: `{_r(s.get('mean_gross_exposure'), 4)}`  |  mean net "
-        f"exposure: `{_r(s.get('mean_net_exposure'), 4)}`",
-        f"- long PnL: `{_r(s.get('long_price_bps'), 2)}`  |  short PnL: "
-        f"`{_r(s.get('short_price_bps'), 2)}`",
-        f"- bootstrap 95% CI of mean: [{_r(ci.get('ci_low'), 3)}, {_r(ci.get('ci_high'), 3)}] "
-        f"| P(mean<=0)={_r(ci.get('p_mean_le_zero'), 3)}", "",
-    ])
+    payload: dict[str, Any] = {"generated": _now(), "phase": title, "summary": s, "bootstrap": ci}
+    md = "\n".join(
+        [
+            f"# RFC-033 — {title}",
+            "",
+            f"- rebalances: {s.get('rebalances')}",
+            f"- net expectancy: **{_r(s.get('net_expectancy_bps'), 3)} bps/month**",
+            f"- net PnL: `{_r(s.get('net_pnl_bps'), 2)} bps`",
+            f"- price PnL: `{_r(s.get('price_pnl_bps'), 2)}` bps  |  funding PnL: "
+            f"`{_r(s.get('funding_pnl_bps'), 2)}` bps  |  cost: `{_r(s.get('cost_pnl_bps'), 2)}` bps",
+            f"- median: `{_r(s.get('net_median_bps'), 3)}`  |  Sharpe: "
+            f"`{_r(s.get('sharpe'), 3)}`  |  MaxDD: `{_r(s.get('max_dd_bps'), 1)}` bps",
+            f"- mean gross exposure: `{_r(s.get('mean_gross_exposure'), 4)}`  |  mean net "
+            f"exposure: `{_r(s.get('mean_net_exposure'), 4)}`",
+            f"- long PnL: `{_r(s.get('long_price_bps'), 2)}`  |  short PnL: "
+            f"`{_r(s.get('short_price_bps'), 2)}`",
+            f"- bootstrap 95% CI of mean: [{_r(ci.get('ci_low'), 3)}, {_r(ci.get('ci_high'), 3)}] "
+            f"| P(mean<=0)={_r(ci.get('p_mean_le_zero'), 3)}",
+            "",
+        ]
+    )
     _emit(name, payload, md)
     return payload
 
@@ -541,7 +635,7 @@ def discovery_validation(world: World) -> dict[str, Any]:
         "D3_funding_included": True,
         "D4_realistic_costs": True,
         "D5_sample_adequate": bool((ds.get("rebalances") or 0) >= 24),
-        "D6_pit_clean": True,       # filled by caller with poisoning verdict
+        "D6_pit_clean": True,  # filled by caller with poisoning verdict
         "D7_no_accounting_defect": True,
     }
     g1 = "PASS" if all(d_ok.values()) else "FAIL"
@@ -554,9 +648,11 @@ def discovery_validation(world: World) -> dict[str, Any]:
     g2 = "PASS" if all(v_ok.values()) else "FAIL"
     payload: dict[str, Any] = {
         "generated": _now(),
-        "G_PERP_1_criteria": G_PERP_1_CRITERIA, "G_PERP_1_checks": d_ok,
+        "G_PERP_1_criteria": G_PERP_1_CRITERIA,
+        "G_PERP_1_checks": d_ok,
         "G_PERP_1": g1,
-        "G_PERP_2_criteria": G_PERP_2_CRITERIA, "G_PERP_2_checks": v_ok,
+        "G_PERP_2_criteria": G_PERP_2_CRITERIA,
+        "G_PERP_2_checks": v_ok,
         "G_PERP_2": g2,
         "discovery_net_expectancy_bps": ds.get("net_expectancy_bps"),
         "discovery_net_pnl_bps": ds.get("net_pnl_bps"),
@@ -564,7 +660,8 @@ def discovery_validation(world: World) -> dict[str, Any]:
         "validation_net_pnl_bps": vs.get("net_pnl_bps"),
         "first_executable_validated_net_edge": g2 == "PASS",
         "early_kill_triggered": bool(g1 == "FAIL" or g2 == "FAIL"),
-        "discovery": d_artifact, "validation": v_artifact,
+        "discovery": d_artifact,
+        "validation": v_artifact,
     }
     return payload
 
@@ -573,11 +670,14 @@ def discovery_validation(world: World) -> dict[str, Any]:
 # §37 walk-forward / §38 temporal / §39 asset / §40-§42 stress
 # ---------------------------------------------------------------------------
 
+
 def _fold_bounds() -> list[tuple[str, str, str]]:
-    return [("F1", "2021-01-01", "2022-06-30"),
-            ("F2", "2022-07-01", "2023-12-31"),
-            ("F3", "2024-01-01", "2025-06-30"),
-            ("F4", "2025-07-01", "2026-09-30")]
+    return [
+        ("F1", "2021-01-01", "2022-06-30"),
+        ("F2", "2022-07-01", "2023-12-31"),
+        ("F3", "2024-01-01", "2025-06-30"),
+        ("F4", "2025-07-01", "2026-09-30"),
+    ]
 
 
 def robustness(world: World) -> dict[str, Any]:
@@ -590,42 +690,98 @@ def robustness(world: World) -> dict[str, Any]:
     folds: list[dict[str, Any]] = []
     for name, a, b in _fold_bounds():
         s = world.summary(sub(a, b))
-        folds.append({"fold": name, "start": a, "end": b,
-                      "net_expectancy_bps": s.get("net_expectancy_bps"),
-                      "price_bps": s.get("price_pnl_bps"),
-                      "funding_bps": s.get("funding_pnl_bps"),
-                      "cost_bps": s.get("cost_pnl_bps"),
-                      "sharpe": s.get("sharpe"), "max_dd_bps": s.get("max_dd_bps"),
-                      "rebalances": s.get("rebalances")})
+        folds.append(
+            {
+                "fold": name,
+                "start": a,
+                "end": b,
+                "net_expectancy_bps": s.get("net_expectancy_bps"),
+                "price_bps": s.get("price_pnl_bps"),
+                "funding_bps": s.get("funding_pnl_bps"),
+                "cost_bps": s.get("cost_pnl_bps"),
+                "sharpe": s.get("sharpe"),
+                "max_dd_bps": s.get("max_dd_bps"),
+                "rebalances": s.get("rebalances"),
+            }
+        )
     fold_nets = [f["net_expectancy_bps"] for f in folds if f["net_expectancy_bps"] is not None]
-    r1 = bool(fold_nets and np.mean(fold_nets) > 0
-              and np.mean([n > 0 for n in fold_nets]) >= 0.6)
-    _emit("WALK_FORWARD_RESULTS",
-          {"generated": _now(), "folds": folds, "mean_fold_net_bps":
-           float(np.mean(fold_nets)) if fold_nets else None, "R1": r1},
-          "\n".join(["# RFC-033 — WALK-FORWARD RESULTS", "",
-                     _table(folds, ["fold", "start", "end", "net_expectancy_bps",
-                                    "price_bps", "funding_bps", "cost_bps", "sharpe",
-                                    "rebalances"]), ""]))
+    r1 = bool(fold_nets and np.mean(fold_nets) > 0 and np.mean([n > 0 for n in fold_nets]) >= 0.6)
+    _emit(
+        "WALK_FORWARD_RESULTS",
+        {
+            "generated": _now(),
+            "folds": folds,
+            "mean_fold_net_bps": float(np.mean(fold_nets)) if fold_nets else None,
+            "R1": r1,
+        },
+        "\n".join(
+            [
+                "# RFC-033 — WALK-FORWARD RESULTS",
+                "",
+                _table(
+                    folds,
+                    [
+                        "fold",
+                        "start",
+                        "end",
+                        "net_expectancy_bps",
+                        "price_bps",
+                        "funding_bps",
+                        "cost_bps",
+                        "sharpe",
+                        "rebalances",
+                    ],
+                ),
+                "",
+            ]
+        ),
+    )
 
     # §38 temporal
     eras: list[dict[str, Any]] = []
     for name, a, b in ERAS:
         run_e = world.run(sub(a, b))
         s = L.summarise(run_e)
-        eras.append({"era": name, "net_expectancy_bps": s.get("net_expectancy_bps"),
-                     "long_price_bps": s.get("long_price_bps"),
-                     "short_price_bps": s.get("short_price_bps"),
-                     "rebalances": s.get("rebalances")})
+        eras.append(
+            {
+                "era": name,
+                "net_expectancy_bps": s.get("net_expectancy_bps"),
+                "long_price_bps": s.get("long_price_bps"),
+                "short_price_bps": s.get("short_price_bps"),
+                "rebalances": s.get("rebalances"),
+            }
+        )
     pos_eras = sum(1 for e in eras if (e["net_expectancy_bps"] or 0) > 0)
     r2 = bool(pos_eras >= 3)
-    _emit("TEMPORAL_STABILITY",
-          {"generated": _now(), "eras": eras, "positive_eras":
-           int(pos_eras), "n_eras": len(eras), "R2": r2},
-          "\n".join(["# RFC-033 — TEMPORAL STABILITY", "",
-                     _table(eras, ["era", "net_expectancy_bps", "long_price_bps",
-                                   "short_price_bps", "rebalances"]),
-                     "", f"positive eras: {pos_eras}/{len(eras)}  |  R2 = {r2}", ""]))
+    _emit(
+        "TEMPORAL_STABILITY",
+        {
+            "generated": _now(),
+            "eras": eras,
+            "positive_eras": int(pos_eras),
+            "n_eras": len(eras),
+            "R2": r2,
+        },
+        "\n".join(
+            [
+                "# RFC-033 — TEMPORAL STABILITY",
+                "",
+                _table(
+                    eras,
+                    [
+                        "era",
+                        "net_expectancy_bps",
+                        "long_price_bps",
+                        "short_price_bps",
+                        "rebalances",
+                    ],
+                ),
+                "",
+                f"positive eras: {pos_eras}/{len(eras)}  |  R2 = {r2}",
+                "",
+            ]
+        ),
+    )
 
     # §39 asset concentration (leave-one-out + contribution)
     contrib = _asset_contribution(world)
@@ -637,54 +793,104 @@ def robustness(world: World) -> dict[str, Any]:
         j = world.syms.index(s_asset)
         keep = [j2 for j2 in range(len(world.syms)) if j2 != j]
         nets = _loo_nets(world, keep)
-        loo.append({"removed": s_asset,
-                    "net_expectancy_bps": float(np.mean(nets)) if nets.size else None})
+        loo.append(
+            {"removed": s_asset, "net_expectancy_bps": float(np.mean(nets)) if nets.size else None}
+        )
     loo_all_pos = all((x["net_expectancy_bps"] or 0) > 0 for x in loo)
     r3 = bool(top1 <= 0.40 and loo_all_pos)
-    _emit("ASSET_CONCENTRATION",
-          {"generated": _now(), "contribution_bps": contrib, "top1_share": top1,
-           "top3_share": float(sum(abs(v) for _, v in top_sorted[:3]) / total_abs),
-           "top5_share": float(sum(abs(v) for _, v in top_sorted[:5]) / total_abs),
-           "leave_one_out": loo, "R3": r3},
-          "\n".join(["# RFC-033 — ASSET CONCENTRATION", "",
-                     f"- top-1 share of |net contribution|: `{_r(top1, 3)}`",
-                     f"- LOO mean stays > 0 for all removals: {loo_all_pos}  |  R3 = {r3}",
-                     "", _table([{"asset": k, "contribution_bps": _r(v, 1)}
-                                 for k, v in top_sorted[:15]],
-                                ["asset", "contribution_bps"]), "",
-                     _table(loo, ["removed", "net_expectancy_bps"]), ""]))
+    _emit(
+        "ASSET_CONCENTRATION",
+        {
+            "generated": _now(),
+            "contribution_bps": contrib,
+            "top1_share": top1,
+            "top3_share": float(sum(abs(v) for _, v in top_sorted[:3]) / total_abs),
+            "top5_share": float(sum(abs(v) for _, v in top_sorted[:5]) / total_abs),
+            "leave_one_out": loo,
+            "R3": r3,
+        },
+        "\n".join(
+            [
+                "# RFC-033 — ASSET CONCENTRATION",
+                "",
+                f"- top-1 share of |net contribution|: `{_r(top1, 3)}`",
+                f"- LOO mean stays > 0 for all removals: {loo_all_pos}  |  R3 = {r3}",
+                "",
+                _table(
+                    [{"asset": k, "contribution_bps": _r(v, 1)} for k, v in top_sorted[:15]],
+                    ["asset", "contribution_bps"],
+                ),
+                "",
+                _table(loo, ["removed", "net_expectancy_bps"]),
+                "",
+            ]
+        ),
+    )
 
     # §40 cost stress
     cost_stress = {}
     for mult in L.COST_STRESS_MULTIPLIERS:
         s = world.summary(world.full, cost_mult=mult)
-        cost_stress[f"x{mult}"] = {"net_expectancy_bps": s.get("net_expectancy_bps"),
-                                   "cost_expectancy_bps": s.get("cost_expectancy_bps")}
+        cost_stress[f"x{mult}"] = {
+            "net_expectancy_bps": s.get("net_expectancy_bps"),
+            "cost_expectancy_bps": s.get("cost_expectancy_bps"),
+        }
     r4 = bool((cost_stress["x2.0"]["net_expectancy_bps"] or -1) > 0)
-    _emit("COST_STRESS",
-          {"generated": _now(), "stress": cost_stress, "funding_multiplied": False, "R4": r4},
-          "\n".join(["# RFC-033 — COST STRESS (funding NOT multiplied)", "",
-                     _table([{"scenario": k, "net_expectancy_bps":
-                              _r(v["net_expectancy_bps"], 3)} for k, v in cost_stress.items()],
-                            ["scenario", "net_expectancy_bps"]),
-                     "", f"R4 (net>0 at 2.0x): {r4}", ""]))
+    _emit(
+        "COST_STRESS",
+        {"generated": _now(), "stress": cost_stress, "funding_multiplied": False, "R4": r4},
+        "\n".join(
+            [
+                "# RFC-033 — COST STRESS (funding NOT multiplied)",
+                "",
+                _table(
+                    [
+                        {"scenario": k, "net_expectancy_bps": _r(v["net_expectancy_bps"], 3)}
+                        for k, v in cost_stress.items()
+                    ],
+                    ["scenario", "net_expectancy_bps"],
+                ),
+                "",
+                f"R4 (net>0 at 2.0x): {r4}",
+                "",
+            ]
+        ),
+    )
 
     # §41 funding stress: scale funding adverse by empirical quantiles
     fund_stress = {}
     for q in L.FUNDING_STRESS_QUANTILES:
         s = world.summary(world.full, funding_scale=1.0 + q)
-        fund_stress[f"adverse_q{int(q*100)}"] = {"net_expectancy_bps": s.get("net_expectancy_bps"),
-                                                 "funding_expectancy_bps": s.get("funding_expectancy_bps")}
+        fund_stress[f"adverse_q{int(q * 100)}"] = {
+            "net_expectancy_bps": s.get("net_expectancy_bps"),
+            "funding_expectancy_bps": s.get("funding_expectancy_bps"),
+        }
     r5 = bool(all((v["net_expectancy_bps"] or -1) > 0 for v in fund_stress.values()))
-    _emit("FUNDING_STRESS",
-          {"generated": _now(), "stress": fund_stress,
-           "note": "adverse funding scaled by 1+q so long-pay/short-receive moves against positions",
-           "R5": r5},
-          "\n".join(["# RFC-033 — FUNDING STRESS", "",
-                     _table([{"scenario": k, "net_expectancy_bps":
-                              _r(v["net_expectancy_bps"], 3)} for k, v in fund_stress.items()],
-                            ["scenario", "net_expectancy_bps"]),
-                     "", f"R5 (net>0 under all adverse funding quantiles): {r5}", ""]))
+    _emit(
+        "FUNDING_STRESS",
+        {
+            "generated": _now(),
+            "stress": fund_stress,
+            "note": "adverse funding scaled by 1+q so long-pay/short-receive moves against positions",
+            "R5": r5,
+        },
+        "\n".join(
+            [
+                "# RFC-033 — FUNDING STRESS",
+                "",
+                _table(
+                    [
+                        {"scenario": k, "net_expectancy_bps": _r(v["net_expectancy_bps"], 3)}
+                        for k, v in fund_stress.items()
+                    ],
+                    ["scenario", "net_expectancy_bps"],
+                ),
+                "",
+                f"R5 (net>0 under all adverse funding quantiles): {r5}",
+                "",
+            ]
+        ),
+    )
 
     # §42 parameter stability (diagnostic only)
     param = {}
@@ -692,28 +898,69 @@ def robustness(world: World) -> dict[str, Any]:
         s = world.summary(world.full, formation=lb)
         param[f"lookback_{lb}"] = {"net_expectancy_bps": s.get("net_expectancy_bps")}
     r6 = bool(all((v["net_expectancy_bps"] or -1) > 0 for v in param.values()))
-    _emit("PARAMETER_STABILITY",
-          {"generated": _now(), "primary": "lookback_365", "neighbours": param,
-           "diagnostic_only": True, "R6": r6},
-          "\n".join(["# RFC-033 — PARAMETER STABILITY (diagnostic only, no grid)", "",
-                     _table([{"config": k, "net_expectancy_bps":
-                              _r(v["net_expectancy_bps"], 3)} for k, v in param.items()],
-                            ["config", "net_expectancy_bps"]),
-                     "", f"R6: {r6}", ""]))
+    _emit(
+        "PARAMETER_STABILITY",
+        {
+            "generated": _now(),
+            "primary": "lookback_365",
+            "neighbours": param,
+            "diagnostic_only": True,
+            "R6": r6,
+        },
+        "\n".join(
+            [
+                "# RFC-033 — PARAMETER STABILITY (diagnostic only, no grid)",
+                "",
+                _table(
+                    [
+                        {"config": k, "net_expectancy_bps": _r(v["net_expectancy_bps"], 3)}
+                        for k, v in param.items()
+                    ],
+                    ["config", "net_expectancy_bps"],
+                ),
+                "",
+                f"R6: {r6}",
+                "",
+            ]
+        ),
+    )
 
-    checks = {"R1_walk_forward": r1, "R2_temporal_stability": r2,
-              "R3_asset_diversification": r3, "R4_cost_robustness": r4,
-              "R5_funding_robustness": r5, "R6_param_non_fragility": r6}
+    checks = {
+        "R1_walk_forward": r1,
+        "R2_temporal_stability": r2,
+        "R3_asset_diversification": r3,
+        "R4_cost_robustness": r4,
+        "R5_funding_robustness": r5,
+        "R6_param_non_fragility": r6,
+    }
     g3 = "PASS" if all(checks.values()) else "FAIL"
-    payload: dict[str, Any] = {"generated": _now(), "G_PERP_3_criteria": G_PERP_3_CRITERIA,
-                               "G_PERP_3_checks": checks, "G_PERP_3": g3,
-                               "folds": folds, "eras": eras, "top1_share": top1,
-                               "leave_one_out": loo, "cost_stress": cost_stress,
-                               "funding_stress": fund_stress, "param_stability": param}
-    _emit("ROBUSTNESS_RESULTS", payload,
-          "\n".join(["# RFC-033 — ROBUSTNESS RESULTS", "",
-                     "\n".join(f"- **{k}**: {v}" for k, v in checks.items()), "",
-                     f"G_PERP_3 = **{g3}**", ""]))
+    payload: dict[str, Any] = {
+        "generated": _now(),
+        "G_PERP_3_criteria": G_PERP_3_CRITERIA,
+        "G_PERP_3_checks": checks,
+        "G_PERP_3": g3,
+        "folds": folds,
+        "eras": eras,
+        "top1_share": top1,
+        "leave_one_out": loo,
+        "cost_stress": cost_stress,
+        "funding_stress": fund_stress,
+        "param_stability": param,
+    }
+    _emit(
+        "ROBUSTNESS_RESULTS",
+        payload,
+        "\n".join(
+            [
+                "# RFC-033 — ROBUSTNESS RESULTS",
+                "",
+                "\n".join(f"- **{k}**: {v}" for k, v in checks.items()),
+                "",
+                f"G_PERP_3 = **{g3}**",
+                "",
+            ]
+        ),
+    )
     return payload
 
 
@@ -759,6 +1006,7 @@ def _loo_nets(world: World, keep: list[int]) -> NDArray[Any]:
 # §46 benchmarks / §47 trend value-add / §48 headroom
 # ---------------------------------------------------------------------------
 
+
 def benchmark_diagnostic(world: World) -> dict[str, Any]:
     mask = world.full
     strat = L.summarise(world.run(mask))
@@ -767,25 +1015,45 @@ def benchmark_diagnostic(world: World) -> dict[str, Any]:
 
     def btc_fn(close: NDArray[Any], i: int) -> dict[str, Any]:
         if i - 365 < 0:
-            return {"formation_end_idx": None, "weights": np.zeros(a),
-                    "desired_gross": 0.0, "n_long": 0, "n_short": 0}
+            return {
+                "formation_end_idx": None,
+                "weights": np.zeros(a),
+                "desired_gross": 0.0,
+                "n_long": 0,
+                "n_short": 0,
+            }
         w = np.zeros(a)
         if np.isfinite(close[i, btc_j]):
             w[btc_j] = 1.0
-        return {"formation_end_idx": 0, "weights": w, "desired_gross": float(abs(w).sum()),
-                "n_long": int((w > 0).sum()), "n_short": 0}
+        return {
+            "formation_end_idx": 0,
+            "weights": w,
+            "desired_gross": float(abs(w).sum()),
+            "n_long": int((w > 0).sum()),
+            "n_short": 0,
+        }
 
     def ew_fn(close: NDArray[Any], i: int) -> dict[str, Any]:
         if i - 365 < 0:
-            return {"formation_end_idx": None, "weights": np.zeros(a),
-                    "desired_gross": 0.0, "n_long": 0, "n_short": 0}
+            return {
+                "formation_end_idx": None,
+                "weights": np.zeros(a),
+                "desired_gross": 0.0,
+                "n_long": 0,
+                "n_short": 0,
+            }
         elig = np.isfinite(close[i])
         w = np.zeros(a)
         n = int(elig.sum())
         if n:
             w[elig] = 1.0 / n
-        return {"formation_end_idx": 0, "weights": w, "desired_gross": 1.0,
-                "n_long": n, "n_short": 0}
+        return {
+            "formation_end_idx": 0,
+            "weights": w,
+            "desired_gross": 1.0,
+            "n_long": n,
+            "n_short": 0,
+        }
 
     def volscaled_fn(close: NDArray[Any], i: int) -> dict[str, Any]:
         t = L.tsmom_perp_target(close, i)
@@ -796,8 +1064,13 @@ def benchmark_diagnostic(world: World) -> dict[str, Any]:
         g = float(np.sum(raw))
         if g > 0:
             w = raw / g
-        return {"formation_end_idx": t["formation_end_idx"], "weights": w,
-                "desired_gross": g, "n_long": int((w > 0).sum()), "n_short": 0}
+        return {
+            "formation_end_idx": t["formation_end_idx"],
+            "weights": w,
+            "desired_gross": g,
+            "n_long": int((w > 0).sum()),
+            "n_short": 0,
+        }
 
     btc = L.summarise(world.run(mask, target_fn=btc_fn))
     ew = L.summarise(world.run(mask, target_fn=ew_fn))
@@ -820,21 +1093,33 @@ def benchmark_diagnostic(world: World) -> dict[str, Any]:
         "trend_alpha_bps": reg.get("alpha_bps"),
         "trend_alpha_r2": reg.get("r2"),
         "timing_adds_value_vs_long_only": bool((strat.get("net_pnl_bps") or 0) > 0),
-        "benchmark_note": ("all benchmarks use the same monthly dates, same T+1 open "
-                           "execution, same perp cost and funding accounting"),
+        "benchmark_note": (
+            "all benchmarks use the same monthly dates, same T+1 open "
+            "execution, same perp cost and funding accounting"
+        ),
     }
-    md = "\n".join([
-        "# RFC-033 — BENCHMARK DIAGNOSTIC", "",
-        _table([{"book": "EXT_TSMOM_003", "net_bps": _r(strat.get("net_pnl_bps"), 2)},
-                {"book": "BTC perp long", "net_bps": _r(btc.get("net_pnl_bps"), 2)},
-                {"book": "EW perp long-only", "net_bps": _r(ew.get("net_pnl_bps"), 2)},
-                {"book": "vol-scaled long-only", "net_bps": _r(vs.get("net_pnl_bps"), 2)},
-                {"book": "cash", "net_bps": 0.0}], ["book", "net_bps"]), "",
-        f"- delta vs EW: `{_r(payload['delta_vs_ew_bps'], 2)}` bps",
-        f"- delta vs BTC: `{_r(payload['delta_vs_btc_bps'], 2)}` bps",
-        f"- beta vs BTC: `{_r(reg.get('beta'), 3)}`  |  alpha: "
-        f"`{_r(reg.get('alpha_bps'), 3)}` bps", "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-033 — BENCHMARK DIAGNOSTIC",
+            "",
+            _table(
+                [
+                    {"book": "EXT_TSMOM_003", "net_bps": _r(strat.get("net_pnl_bps"), 2)},
+                    {"book": "BTC perp long", "net_bps": _r(btc.get("net_pnl_bps"), 2)},
+                    {"book": "EW perp long-only", "net_bps": _r(ew.get("net_pnl_bps"), 2)},
+                    {"book": "vol-scaled long-only", "net_bps": _r(vs.get("net_pnl_bps"), 2)},
+                    {"book": "cash", "net_bps": 0.0},
+                ],
+                ["book", "net_bps"],
+            ),
+            "",
+            f"- delta vs EW: `{_r(payload['delta_vs_ew_bps'], 2)}` bps",
+            f"- delta vs BTC: `{_r(payload['delta_vs_btc_bps'], 2)}` bps",
+            f"- beta vs BTC: `{_r(reg.get('beta'), 3)}`  |  alpha: "
+            f"`{_r(reg.get('alpha_bps'), 3)}` bps",
+            "",
+        ]
+    )
     _emit("BENCHMARK_DIAGNOSTIC", payload, md)
     return payload
 
@@ -843,46 +1128,86 @@ def benchmark_diagnostic(world: World) -> dict[str, Any]:
 # §56 RFC033_PLAN
 # ---------------------------------------------------------------------------
 
+
 def write_plan(head: str) -> dict[str, Any]:
     payload: dict[str, Any] = {
         "rfc": "RFC-033",
         "title": "EXECUTABLE FUTURES TSMOM PRODUCT PIVOT",
-        "candidate": L.CANDIDATE_ID, "product": L.PRODUCT,
-        "generated": _now(), "source_commit": _git("HEAD"),
+        "candidate": L.CANDIDATE_ID,
+        "product": L.PRODUCT,
+        "generated": _now(),
+        "source_commit": _git("HEAD"),
         "entry_head_expected": "45ac4db (RFC-032)",
         "entry_head_verified": head,
         "strategic_decision": "PIVOT_PRODUCT (spot TSMOM -> executable long/short USDT perps)",
-        "question": ("Does the same external TSMOM effect become a real executable net edge "
-                     "when shorts are implemented natively on perpetual futures?"),
-        "not": ["new alpha", "parameter tuning", "spot-signal/perp-execution porting",
-                "real capital", "auto EXT-TSMOM-004 on failure"],
-        "phases": ["ENTRY_GATE", "DATA_INVENTORY", "FUTURES_UNIVERSE", "PIT_AUDIT",
-                   "FREEZE_SPEC", "COST_MODEL", "FUNDING_ACCOUNTING", "MARGIN_MODEL",
-                   "DISCOVERY", "VALIDATION", "WALK_FORWARD", "TEMPORAL", "ASSET",
-                   "COST_STRESS", "FUNDING_STRESS", "PARAMETER", "HOLDOUT",
-                   "INDEPENDENT_VERIFY", "FINAL_REPORT"],
-        "pre_registered_gates": {"G_PERP_1": G_PERP_1_CRITERIA, "G_PERP_2": G_PERP_2_CRITERIA,
-                                 "G_PERP_3": G_PERP_3_CRITERIA, "G_PERP_4": G_PERP_4_CRITERIA},
+        "question": (
+            "Does the same external TSMOM effect become a real executable net edge "
+            "when shorts are implemented natively on perpetual futures?"
+        ),
+        "not": [
+            "new alpha",
+            "parameter tuning",
+            "spot-signal/perp-execution porting",
+            "real capital",
+            "auto EXT-TSMOM-004 on failure",
+        ],
+        "phases": [
+            "ENTRY_GATE",
+            "DATA_INVENTORY",
+            "FUTURES_UNIVERSE",
+            "PIT_AUDIT",
+            "FREEZE_SPEC",
+            "COST_MODEL",
+            "FUNDING_ACCOUNTING",
+            "MARGIN_MODEL",
+            "DISCOVERY",
+            "VALIDATION",
+            "WALK_FORWARD",
+            "TEMPORAL",
+            "ASSET",
+            "COST_STRESS",
+            "FUNDING_STRESS",
+            "PARAMETER",
+            "HOLDOUT",
+            "INDEPENDENT_VERIFY",
+            "FINAL_REPORT",
+        ],
+        "pre_registered_gates": {
+            "G_PERP_1": G_PERP_1_CRITERIA,
+            "G_PERP_2": G_PERP_2_CRITERIA,
+            "G_PERP_3": G_PERP_3_CRITERIA,
+            "G_PERP_4": G_PERP_4_CRITERIA,
+        },
         "marker_initial": {
             "statistical_historical_effect": 1,
             "executable_validated_net_edge": 0,
             "robust_executable_net_edge": 0,
             "executable_holdout_pass": 0,
             "certified_paper_candidate": 0,
-            "forward_paper_profitable": 0, "live_profitable": 0,
+            "forward_paper_profitable": 0,
+            "live_profitable": 0,
         },
     }
-    md = "\n".join([
-        "# RFC-033 — EXECUTABLE FUTURES TSMOM (PLAN)", "",
-        f"- candidate: `{L.CANDIDATE_ID}`  |  product: {L.PRODUCT}",
-        f"- strategic decision: **{payload['strategic_decision']}**",
-        f"- source commit: `{payload['source_commit']}`  |  entry head (verified): "
-        f"`{head}` (expected {payload['entry_head_expected']})", "",
-        f"> {payload['question']}", "",
-        "## Pre-registered gates", "",
-        "\n".join(f"- **{g}**: " + "; ".join(f"{k}" for k in v)
-                  for g, v in payload["pre_registered_gates"].items()), "",
-    ])
+    md = "\n".join(
+        [
+            "# RFC-033 — EXECUTABLE FUTURES TSMOM (PLAN)",
+            "",
+            f"- candidate: `{L.CANDIDATE_ID}`  |  product: {L.PRODUCT}",
+            f"- strategic decision: **{payload['strategic_decision']}**",
+            f"- source commit: `{payload['source_commit']}`  |  entry head (verified): "
+            f"`{head}` (expected {payload['entry_head_expected']})",
+            "",
+            f"> {payload['question']}",
+            "",
+            "## Pre-registered gates",
+            "",
+            "\n".join(
+                f"- **{g}**: " + "; ".join(f"{k}" for k in v)
+                for g, v in payload["pre_registered_gates"].items()
+            ),
+            "",
+        ]
+    )
     _emit("RFC033_PLAN", payload, md)
     return payload
 
@@ -890,6 +1215,7 @@ def write_plan(head: str) -> dict[str, Any]:
 # ---------------------------------------------------------------------------
 # driver
 # ---------------------------------------------------------------------------
+
 
 def run_artifacts() -> None:
     world = World()
@@ -909,19 +1235,38 @@ def run_artifacts() -> None:
     margin = margin_model(world, world.run(world.full))
     bench = benchmark_diagnostic(world)
     gm = L.summarise(world.run(world.full))
-    headroom = L.headroom_class(gm.get("net_expectancy_bps") or 0.0,
-                                gm.get("cost_expectancy_bps") or 0.0,
-                                min(0.0, gm.get("funding_expectancy_bps") or 0.0))
-    L.write_json(OUT / "_rfc033_intermediate.json", {
-        "inventory": inv, "universe": uni, "frozen": frozen, "pit": poison,
-        "cost": cost, "funding": fund, "margin": margin, "discovery": disc,
-        "benchmark": bench, "full_summary": gm, "headroom": headroom,
-    })
+    headroom = L.headroom_class(
+        gm.get("net_expectancy_bps") or 0.0,
+        gm.get("cost_expectancy_bps") or 0.0,
+        min(0.0, gm.get("funding_expectancy_bps") or 0.0),
+    )
+    L.write_json(
+        OUT / "_rfc033_intermediate.json",
+        {
+            "inventory": inv,
+            "universe": uni,
+            "frozen": frozen,
+            "pit": poison,
+            "cost": cost,
+            "funding": fund,
+            "margin": margin,
+            "discovery": disc,
+            "benchmark": bench,
+            "full_summary": gm,
+            "headroom": headroom,
+        },
+    )
     print(f"[run033] G_PERP_1 = {disc['G_PERP_1']}  G_PERP_2 = {disc['G_PERP_2']}", flush=True)
-    print(f"[run033] discovery net = {disc['discovery_net_expectancy_bps']}  "
-          f"validation net = {disc['validation_net_expectancy_bps']}", flush=True)
-    print(f"[run033] pit = {poison['verdict']}  margin = {margin['margin_safety']}  "
-          f"headroom = {headroom['classification']}", flush=True)
+    print(
+        f"[run033] discovery net = {disc['discovery_net_expectancy_bps']}  "
+        f"validation net = {disc['validation_net_expectancy_bps']}",
+        flush=True,
+    )
+    print(
+        f"[run033] pit = {poison['verdict']}  margin = {margin['margin_safety']}  "
+        f"headroom = {headroom['classification']}",
+        flush=True,
+    )
 
 
 def run_robustness() -> None:
@@ -945,17 +1290,34 @@ def run_holdout() -> None:
     vrun = world.run(vmask)
     hs = L.summarise(vrun)
     held = _results_artifact("HOLDOUT_RESULTS", "Holdout Results", vrun, vmask, world)
-    checks = {"H1_net_positive": bool((hs.get("net_expectancy_bps") or 0) > 0),
-              "H2_net_pnl_positive": bool((hs.get("net_pnl_bps") or 0) > 0),
-              "H3_same_mechanism": True,
-              "H4_accounting_clean": True}
+    checks = {
+        "H1_net_positive": bool((hs.get("net_expectancy_bps") or 0) > 0),
+        "H2_net_pnl_positive": bool((hs.get("net_pnl_bps") or 0) > 0),
+        "H3_same_mechanism": True,
+        "H4_accounting_clean": True,
+    }
     g4 = "PASS" if all(checks.values()) else "FAIL"
-    payload = {"generated": _now(), "G_PERP_4_criteria": G_PERP_4_CRITERIA,
-               "G_PERP_4_checks": checks, "G_PERP_4": g4, "holdout": held}
-    _emit("HOLDOUT_RESULTS", payload,
-          "\n".join(["# RFC-033 — HOLDOUT RESULTS", "",
-                     "\n".join(f"- **{k}**: {v}" for k, v in checks.items()), "",
-                     f"G_PERP_4 = **{g4}**", ""]))
+    payload = {
+        "generated": _now(),
+        "G_PERP_4_criteria": G_PERP_4_CRITERIA,
+        "G_PERP_4_checks": checks,
+        "G_PERP_4": g4,
+        "holdout": held,
+    }
+    _emit(
+        "HOLDOUT_RESULTS",
+        payload,
+        "\n".join(
+            [
+                "# RFC-033 — HOLDOUT RESULTS",
+                "",
+                "\n".join(f"- **{k}**: {v}" for k, v in checks.items()),
+                "",
+                f"G_PERP_4 = **{g4}**",
+                "",
+            ]
+        ),
+    )
     inter["holdout"] = payload
     L.write_json(OUT / "_rfc033_intermediate.json", inter)
     print(f"[run033] G_PERP_4 = {g4}", flush=True)
@@ -985,7 +1347,8 @@ def write_final_report(inter: dict[str, Any], verify: dict[str, Any]) -> None:
         "robust_executable_net_edge": 1 if g3 == "PASS" else 0,
         "executable_holdout_pass": 1 if g4 == "PASS" else 0,
         "certified_paper_candidate": 1 if g4 == "PASS" else 0,
-        "forward_paper_profitable": 0, "live_profitable": 0,
+        "forward_paper_profitable": 0,
+        "live_profitable": 0,
     }
     if g4 == "PASS":
         nxt = "PAPER_CANDIDATE_CERTIFICATION (forward paper only, no live capital)"
@@ -1002,11 +1365,15 @@ def write_final_report(inter: dict[str, Any], verify: dict[str, Any]) -> None:
     payload: dict[str, Any] = {
         "rfc": "RFC-033",
         "title": "RFC-033 EXECUTABLE FUTURES TSMOM",
-        "candidate": L.CANDIDATE_ID, "product": L.PRODUCT,
+        "candidate": L.CANDIDATE_ID,
+        "product": L.PRODUCT,
         "generated": _now(),
         "source_commit": verify.get("source_commit", _git("HEAD")),
         "executable_validated_net_edge": edge,
-        "G_PERP_1": g1, "G_PERP_2": g2, "G_PERP_3": g3, "G_PERP_4": g4,
+        "G_PERP_1": g1,
+        "G_PERP_2": g2,
+        "G_PERP_3": g3,
+        "G_PERP_4": g4,
         "discovery_net_expectancy_bps": disc["discovery_net_expectancy_bps"],
         "validation_net_expectancy_bps": disc["validation_net_expectancy_bps"],
         "price_pnl_bps": gm.get("price_pnl_bps"),
@@ -1038,7 +1405,8 @@ def write_final_report(inter: dict[str, Any], verify: dict[str, Any]) -> None:
             "independent_G_PERP_2": verify.get("G_PERP_2_independent"),
             "agrees": verify.get("G_PERP_2_independent") == g2,
         },
-        "decision": decision, "next": nxt,
+        "decision": decision,
+        "next": nxt,
         "marker": marker,
         "statement": _statement(edge, g3, g4),
     }
@@ -1057,25 +1425,34 @@ def _statement(edge: bool, g3: str, g4: str) -> str:
 
 
 def write_strategic_decision(final_p: dict[str, Any]) -> None:
-    text = "\n".join([
-        "# RFC-033 — FINAL STRATEGIC PROJECT DECISION", "",
-        "Review of the executable-research line RFC-010B → RFC-033:", "",
-        "- The external crypto TSMOM *statistical* effect is real on spot (RFC-030/031).",
-        "- Converting it to an *executable* spot long-or-cash form destroyed the recent",
-        "  economics (RFC-032: G_REM_1 FAIL).",
-        "- The natural economic implementation — native long/short perpetual futures — was",
-        f"  tested as EXT-TSMOM-003 and the Validation gate returned **{final_p['G_PERP_2']}**.",
-        "- No single-token miracle, no parameter tuning and no favourable holdout can",
-        "  override a failed Validation/robustness gate (§62).",
-        "", "## Decision", "",
-        "Exactly one of:", "",
-        "- CONTINUE_AS_RESEARCH_PLATFORM",
-        "- PIVOT_TO_TRADITIONAL_MANAGED_FUTURES",
-        "- PAUSE_TRADING_PROJECT", "",
-        "Selected: **PAUSE_TRADING_PROJECT** (no executable net edge survived validation;",
-        "the TSMOM line is closed per §68).  The research platform and its certification",
-        "gate remain available if a genuinely new, independently-sourced hypothesis appears.", "",
-    ])
+    text = "\n".join(
+        [
+            "# RFC-033 — FINAL STRATEGIC PROJECT DECISION",
+            "",
+            "Review of the executable-research line RFC-010B → RFC-033:",
+            "",
+            "- The external crypto TSMOM *statistical* effect is real on spot (RFC-030/031).",
+            "- Converting it to an *executable* spot long-or-cash form destroyed the recent",
+            "  economics (RFC-032: G_REM_1 FAIL).",
+            "- The natural economic implementation — native long/short perpetual futures — was",
+            f"  tested as EXT-TSMOM-003 and the Validation gate returned **{final_p['G_PERP_2']}**.",
+            "- No single-token miracle, no parameter tuning and no favourable holdout can",
+            "  override a failed Validation/robustness gate (§62).",
+            "",
+            "## Decision",
+            "",
+            "Exactly one of:",
+            "",
+            "- CONTINUE_AS_RESEARCH_PLATFORM",
+            "- PIVOT_TO_TRADITIONAL_MANAGED_FUTURES",
+            "- PAUSE_TRADING_PROJECT",
+            "",
+            "Selected: **PAUSE_TRADING_PROJECT** (no executable net edge survived validation;",
+            "the TSMOM line is closed per §68).  The research platform and its certification",
+            "gate remain available if a genuinely new, independently-sourced hypothesis appears.",
+            "",
+        ]
+    )
     L.write_md(REPO / "reports" / "FINAL_STRATEGIC_PROJECT_DECISION.md", text)
 
 
@@ -1086,53 +1463,59 @@ def _final_md(p: dict[str, Any]) -> str:
     cs_line = "; ".join(f"{k}={_r(v['net_expectancy_bps'], 1)}" for k, v in cs.items()) or "N/A"
     fs = p.get("funding_stress") or {}
     fs_line = "; ".join(f"{k}={_r(v['net_expectancy_bps'], 1)}" for k, v in fs.items()) or "N/A"
-    return "\n".join([
-        "# RFC-033 EXECUTABLE FUTURES TSMOM", "",
-        "```text",
-        f"CANDIDATE = {p['candidate']}",
-        f"PRODUCT = {p['product']}",
-        "",
-        "Did the futures implementation produce",
-        "EXECUTABLE VALIDATED NET EDGE?",
-        f"{'YES' if p['executable_validated_net_edge'] else 'NO'}",
-        "",
-        f"G_PERP_1 = {p['G_PERP_1']}",
-        f"G_PERP_2 = {p['G_PERP_2']}",
-        f"G_PERP_3 = {p['G_PERP_3']}",
-        f"G_PERP_4 = {p['G_PERP_4']}",
-        "",
-        f"Discovery net = {_r(p['discovery_net_expectancy_bps'], 3)} bps/month",
-        f"Validation net = {_r(p['validation_net_expectancy_bps'], 3)} bps/month",
-        "",
-        f"Price PnL = {_r(p['price_pnl_bps'], 2)} bps",
-        f"Funding PnL = {_r(p['funding_pnl_bps'], 2)} bps",
-        f"Trading cost = {_r(p['trading_cost_bps'], 2)} bps",
-        f"Net PnL = {_r(p['net_pnl_bps'], 2)} bps",
-        "",
-        f"Long PnL = {_r(p['long_pnl_bps'], 2)} bps",
-        f"Short PnL = {_r(p['short_pnl_bps'], 2)} bps",
-        f"Average gross exposure = {_r(p['avg_gross_exposure'], 4)}",
-        f"Average net exposure = {_r(p['avg_net_exposure'], 4)}",
-        f"Max leverage = {_r(p['max_leverage'], 4)}",
-        f"Margin safety = {p['margin_safety']}",
-        "",
-        f"Walk-forward = {wf_line}",
-        f"Cost stress = {cs_line}",
-        f"Funding stress = {fs_line}",
-        f"Holdout = {_r((p.get('holdout') or {}).get('net_expectancy_bps'), 3)}",
-        "",
-        f"FALSE_SUCCESS = {p['FALSE_SUCCESS']}",
-        f"Independent verification = {p['independent_verification']}",
-        "",
-        f"HEADROOM = {p['headroom']['classification']} (net/cost "
-        f"{_r(p['headroom']['net_over_cost'], 3)})",
-        f"STATEMENT = {p['statement']}",
-        f"DECISION = {p['decision']}",
-        f"NEXT = {p['next']}",
-        "```", "",
-        "## Economic marker", "",
-        "\n".join(f"- {k} = {v}" for k, v in p["marker"].items()), "",
-    ])
+    return "\n".join(
+        [
+            "# RFC-033 EXECUTABLE FUTURES TSMOM",
+            "",
+            "```text",
+            f"CANDIDATE = {p['candidate']}",
+            f"PRODUCT = {p['product']}",
+            "",
+            "Did the futures implementation produce",
+            "EXECUTABLE VALIDATED NET EDGE?",
+            f"{'YES' if p['executable_validated_net_edge'] else 'NO'}",
+            "",
+            f"G_PERP_1 = {p['G_PERP_1']}",
+            f"G_PERP_2 = {p['G_PERP_2']}",
+            f"G_PERP_3 = {p['G_PERP_3']}",
+            f"G_PERP_4 = {p['G_PERP_4']}",
+            "",
+            f"Discovery net = {_r(p['discovery_net_expectancy_bps'], 3)} bps/month",
+            f"Validation net = {_r(p['validation_net_expectancy_bps'], 3)} bps/month",
+            "",
+            f"Price PnL = {_r(p['price_pnl_bps'], 2)} bps",
+            f"Funding PnL = {_r(p['funding_pnl_bps'], 2)} bps",
+            f"Trading cost = {_r(p['trading_cost_bps'], 2)} bps",
+            f"Net PnL = {_r(p['net_pnl_bps'], 2)} bps",
+            "",
+            f"Long PnL = {_r(p['long_pnl_bps'], 2)} bps",
+            f"Short PnL = {_r(p['short_pnl_bps'], 2)} bps",
+            f"Average gross exposure = {_r(p['avg_gross_exposure'], 4)}",
+            f"Average net exposure = {_r(p['avg_net_exposure'], 4)}",
+            f"Max leverage = {_r(p['max_leverage'], 4)}",
+            f"Margin safety = {p['margin_safety']}",
+            "",
+            f"Walk-forward = {wf_line}",
+            f"Cost stress = {cs_line}",
+            f"Funding stress = {fs_line}",
+            f"Holdout = {_r((p.get('holdout') or {}).get('net_expectancy_bps'), 3)}",
+            "",
+            f"FALSE_SUCCESS = {p['FALSE_SUCCESS']}",
+            f"Independent verification = {p['independent_verification']}",
+            "",
+            f"HEADROOM = {p['headroom']['classification']} (net/cost "
+            f"{_r(p['headroom']['net_over_cost'], 3)})",
+            f"STATEMENT = {p['statement']}",
+            f"DECISION = {p['decision']}",
+            f"NEXT = {p['next']}",
+            "```",
+            "",
+            "## Economic marker",
+            "",
+            "\n".join(f"- {k} = {v}" for k, v in p["marker"].items()),
+            "",
+        ]
+    )
 
 
 def run(stage: str) -> None:

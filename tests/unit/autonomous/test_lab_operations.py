@@ -166,9 +166,7 @@ def test_a_compactable_window_is_reported_as_would_compact(
     _capture(tmp_path, window_start_ms=bucket)
     before = _tree_snapshot(tmp_path)
 
-    payload = retention_driver.dry_run_once(
-        _args(raw_hot_hours=0.0), "run-lab-ops", tmp_path
-    )
+    payload = retention_driver.dry_run_once(_args(raw_hot_hours=0.0), "run-lab-ops", tmp_path)
 
     assert payload["would_compact_windows"] == 1
     assert payload["would_compact_segments"] == 1
@@ -281,9 +279,7 @@ def test_every_child_that_must_finalise_is_stopped_by_a_file(lab_launcher: Any) 
     )
 
 
-def test_a_restart_tells_the_collector_it_owns_the_root(
-    tmp_path: Path, lab_launcher: Any
-) -> None:
+def test_a_restart_tells_the_collector_it_owns_the_root(tmp_path: Path, lab_launcher: Any) -> None:
     """Without ``--resume`` the writer refuses its own past and the capture dies.
 
     Leg 2 of the first Stop/restart pair reused the run id without it and wrote
@@ -313,27 +309,37 @@ def test_a_restart_tells_the_collector_it_owns_the_root(
     assert "--resume" not in again["retention"].command
 
 
-def test_the_stop_reason_is_read_from_the_evidence(
-    tmp_path: Path, lab_launcher: Any
-) -> None:
+def test_the_stop_reason_is_read_from_the_evidence(tmp_path: Path, lab_launcher: Any) -> None:
     """A duration-limited run stopped early must not be reported as completed."""
     stop_file = tmp_path / "STOP"
     # A signal beats everything: the handler knew why it stopped.
-    assert lab_launcher.resolve_stop_reason(
-        reason="signal 2", stop_file=stop_file, configured_duration_hours=2.0
-    ) == "signal 2"
+    assert (
+        lab_launcher.resolve_stop_reason(
+            reason="signal 2", stop_file=stop_file, configured_duration_hours=2.0
+        )
+        == "signal 2"
+    )
     # A STOP file on a 2 h run is a STOP file, not a reached duration.
     stop_file.write_text("stop\n", encoding="utf-8")
-    assert lab_launcher.resolve_stop_reason(
-        reason=None, stop_file=stop_file, configured_duration_hours=2.0
-    ) == "STOP file"
+    assert (
+        lab_launcher.resolve_stop_reason(
+            reason=None, stop_file=stop_file, configured_duration_hours=2.0
+        )
+        == "STOP file"
+    )
     stop_file.unlink()
-    assert lab_launcher.resolve_stop_reason(
-        reason=None, stop_file=stop_file, configured_duration_hours=2.0
-    ) == "duration reached"
-    assert lab_launcher.resolve_stop_reason(
-        reason=None, stop_file=stop_file, configured_duration_hours=0.0
-    ) == "STOP file"
+    assert (
+        lab_launcher.resolve_stop_reason(
+            reason=None, stop_file=stop_file, configured_duration_hours=2.0
+        )
+        == "duration reached"
+    )
+    assert (
+        lab_launcher.resolve_stop_reason(
+            reason=None, stop_file=stop_file, configured_duration_hours=0.0
+        )
+        == "STOP file"
+    )
 
 
 def test_one_command_writes_the_stop_file(
@@ -343,9 +349,7 @@ def test_one_command_writes_the_stop_file(
     from trading_bot.autonomous.paper_loop import STOP_FILE_NAME
 
     target = tmp_path / "lab-run"
-    monkeypatch.setattr(
-        sys, "argv", ["start_paper_lab.py", "--stop", str(target)]
-    )
+    monkeypatch.setattr(sys, "argv", ["start_paper_lab.py", "--stop", str(target)])
     assert lab_launcher.main() == 0
     stop_file = target / STOP_FILE_NAME
     assert stop_file.exists()
@@ -376,9 +380,7 @@ def _paper_run_dir(root: Path, **overrides: Any) -> Path:
         "errors": [],
         **overrides,
     }
-    (run_dir / "PAPER_DAILY_REPORT.json").write_text(
-        json.dumps(payload), encoding="utf-8"
-    )
+    (run_dir / "PAPER_DAILY_REPORT.json").write_text(json.dumps(payload), encoding="utf-8")
     (run_dir / "heartbeat.json").write_text(
         json.dumps({"cycle": 7, "state_age_seconds": 12.0, "mode": "PAPER"}),
         encoding="utf-8",
@@ -531,12 +533,13 @@ def test_paper_and_forward_and_lab_are_folded_into_one_report(
     assert "PAPER trades  : 0" in markdown
     assert "reconnects    : 3" in markdown
     assert "REJECTED=2" in markdown
-    assert "0 experiments and 0 candidates" in "\n".join(payload["honesty_notes"]) or "NONE" in markdown
+    assert (
+        "0 experiments and 0 candidates" in "\n".join(payload["honesty_notes"])
+        or "NONE" in markdown
+    )
 
 
-def test_the_system_report_writes_both_renditions(
-    tmp_path: Path, system_report: Any
-) -> None:
+def test_the_system_report_writes_both_renditions(tmp_path: Path, system_report: Any) -> None:
     lab_dir = tmp_path / "lab"
     lab_dir.mkdir(parents=True, exist_ok=True)
     stem = lab_dir / "SYSTEM_DAILY_REPORT"
@@ -629,12 +632,16 @@ def test_the_reported_plan_is_the_plan_the_real_pass_executes(
     assert dry["would_compact_windows"] == len(planned.compactable)
     assert dry["would_retain_raw_segments"] == len(planned.retained_raw)
 
-    real = retention_driver.run_once(_args(raw_hot_hours=0.0, dry_run=False), "run-lab-ops", tmp_path)
+    real = retention_driver.run_once(
+        _args(raw_hot_hours=0.0, dry_run=False), "run-lab-ops", tmp_path
+    )
     assert len(real["result"]["compacted_windows"]) == len(planned.compactable)
     assert real["deleted"] == 0, "deletion is demand driven and was not demanded"
 
 
-def test_a_missing_root_is_not_an_error(retention_driver: Any, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_a_missing_root_is_not_an_error(
+    retention_driver: Any, monkeypatch: pytest.MonkeyPatch
+) -> None:
     monkeypatch.setattr(
         sys,
         "argv",

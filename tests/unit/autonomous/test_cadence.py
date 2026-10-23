@@ -117,9 +117,7 @@ def test_bar_close_cadence_is_fresh_where_the_legacy_phase_was_stale() -> None:
 
 @pytest.mark.parametrize("interval_ms", [ONE_MIN_MS, FIVE_MIN_MS, FIFTEEN_MIN_MS])
 @pytest.mark.parametrize("settlement", [0.0, 1.0, 5.0])
-def test_cadence_decision_is_fresh_for_every_timeframe(
-    interval_ms: int, settlement: float
-) -> None:
+def test_cadence_decision_is_fresh_for_every_timeframe(interval_ms: int, settlement: float) -> None:
     timeframe = {ONE_MIN_MS: "1m", FIVE_MIN_MS: "5m", FIFTEEN_MIN_MS: "15m"}[interval_ms]
     budget = RouterGates(require_confirmed=False, timeframe=timeframe).stale_after_ms()
     close_ms = 7 * interval_ms
@@ -158,9 +156,7 @@ def test_cadence_constants_are_distinct() -> None:
 
 
 def _bar(ts: int, symbol: str = "BTC/USDT") -> OHLCV:
-    return OHLCV(
-        symbol=symbol, timestamp=ts, open=1.0, high=1.0, low=1.0, close=1.0, volume=1.0
-    )
+    return OHLCV(symbol=symbol, timestamp=ts, open=1.0, high=1.0, low=1.0, close=1.0, volume=1.0)
 
 
 def test_bar_close_aligned_decision_uses_the_sealed_bar_only() -> None:
@@ -179,9 +175,7 @@ def test_phase_never_changes_which_bar_is_usable() -> None:
     # is returned just after a close and near the end of the bar.
     bars = [_bar(k * FIVE_MIN_MS) for k in range(5)]
     just_after = closed_bar_slice(bars, 3 * FIVE_MIN_MS + 1, interval_ms=FIVE_MIN_MS)
-    almost_next = closed_bar_slice(
-        bars, 3 * FIVE_MIN_MS + 299_000, interval_ms=FIVE_MIN_MS
-    )
+    almost_next = closed_bar_slice(bars, 3 * FIVE_MIN_MS + 299_000, interval_ms=FIVE_MIN_MS)
     assert [b.timestamp for b in just_after] == [b.timestamp for b in almost_next]
 
 

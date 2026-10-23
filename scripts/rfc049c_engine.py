@@ -160,7 +160,11 @@ def verified_inputs() -> dict[str, Any]:
         if row["status"] != "SPEC_FROZEN":
             continue
         digest = sha256_file(ROOT / row["spec_file"])
-        check(f"input:spec:{hid}", digest == row["spec_file_sha256"], f"{row['spec_file']} sha256={digest[:16]}…")
+        check(
+            f"input:spec:{hid}",
+            digest == row["spec_file_sha256"],
+            f"{row['spec_file']} sha256={digest[:16]}…",
+        )
         spec_ref[hid] = digest
 
     for rel, row in manifest["dataset_hashes"]["price_series"].items():
@@ -171,11 +175,20 @@ def verified_inputs() -> dict[str, Any]:
         check(f"input:signal:{name}", digest == row["sha256"], f"vendor/raw/{name}")
 
     cost_path = ROOT / "docs" / "COST_MODEL_V3.json"
-    check("input:cost_model", sha256_file(cost_path) == manifest["cost_model_hash"], "docs/COST_MODEL_V3.json")
+    check(
+        "input:cost_model",
+        sha256_file(cost_path) == manifest["cost_model_hash"],
+        "docs/COST_MODEL_V3.json",
+    )
 
     # vendor manifest byte agreement for the traded series
     vendor_series = vendor.get("series", {})
-    for name in ("defillama_stablecoin_supply_all.json", "fred_WALCL.csv", "fred_RRPONTSYD.csv", "fred_WTREGEN.csv"):
+    for name in (
+        "defillama_stablecoin_supply_all.json",
+        "fred_WALCL.csv",
+        "fred_RRPONTSYD.csv",
+        "fred_WTREGEN.csv",
+    ):
         row = vendor_series.get(name)
         if row is None:
             continue
@@ -240,7 +253,9 @@ def sundays(first: date, last: date) -> list[date]:
     return out
 
 
-def asof(series: dict[date, float | None], when: date, max_reachback_days: int = ASOF_MAX_REACHBACK_DAYS) -> tuple[float | None, date | None]:
+def asof(
+    series: dict[date, float | None], when: date, max_reachback_days: int = ASOF_MAX_REACHBACK_DAYS
+) -> tuple[float | None, date | None]:
     for back in range(0, max_reachback_days + 1):
         day = when - timedelta(days=back)
         value = series.get(day)
@@ -250,7 +265,9 @@ def asof(series: dict[date, float | None], when: date, max_reachback_days: int =
 
 
 def decision_instant(sunday: date) -> datetime:
-    return datetime(sunday.year, sunday.month, sunday.day, DECISION_HOUR_UTC, 0, tzinfo=timezone.utc)
+    return datetime(
+        sunday.year, sunday.month, sunday.day, DECISION_HOUR_UTC, 0, tzinfo=timezone.utc
+    )
 
 
 def bar_after(bars: list[tuple[int, float, float]], instant: datetime) -> int | None:
@@ -266,7 +283,9 @@ def bar_after(bars: list[tuple[int, float, float]], instant: datetime) -> int | 
 # --------------------------------------------------------------------------- #
 
 
-def build_grid(stable: list[tuple[date, float, float]], bars: list[tuple[int, float, float]]) -> list[date]:
+def build_grid(
+    stable: list[tuple[date, float, float]], bars: list[tuple[int, float, float]]
+) -> list[date]:
     price_first = datetime.fromtimestamp(bars[0][0] / 1000, timezone.utc).date()
     price_last = datetime.fromtimestamp(bars[-1][0] / 1000, timezone.utc).date()
     first_signal = stable[0][0] + timedelta(days=395)
@@ -282,7 +301,9 @@ def build_grid(stable: list[tuple[date, float, float]], bars: list[tuple[int, fl
     return grid
 
 
-def stablecoin_states(rows: list[tuple[date, float, float]], grid: list[date]) -> dict[date, dict[str, Any]]:
+def stablecoin_states(
+    rows: list[tuple[date, float, float]], grid: list[date]
+) -> dict[date, dict[str, Any]]:
     """H-049-001: r30 growth vs its causal 365-day median, value dated t available at 00:00 t+1."""
     days = [r[0] for r in rows]
     series = {r[0]: r[1] for r in rows}
@@ -309,7 +330,9 @@ def stablecoin_states(rows: list[tuple[date, float, float]], grid: list[date]) -
             continue
         if t_star in growth and t_star in baseline:
             g, b = growth[t_star], baseline[t_star]
-            availability = datetime(t_star.year, t_star.month, t_star.day, 0, 0, tzinfo=timezone.utc) + timedelta(days=1)
+            availability = datetime(
+                t_star.year, t_star.month, t_star.day, 0, 0, tzinfo=timezone.utc
+            ) + timedelta(days=1)
             out[sunday] = {
                 "state": g > b,
                 "available": True,
@@ -319,7 +342,11 @@ def stablecoin_states(rows: list[tuple[date, float, float]], grid: list[date]) -
                 "availability_utc": availability.strftime("%Y-%m-%dT%H:%M:%SZ"),
             }
         else:
-            out[sunday] = {"state": False, "available": False, "t_star": t_star.isoformat() if t_star else None}
+            out[sunday] = {
+                "state": False,
+                "available": False,
+                "t_star": t_star.isoformat() if t_star else None,
+            }
     return out
 
 
@@ -366,7 +393,9 @@ def macro_states(
         delta = now["value"] - before["value"]
         serial_now = [sunday.year, sunday.month, sunday.day]
         availability = datetime(*serial_now, 0, 0, tzinfo=timezone.utc) - timedelta(days=4)
-        availability += timedelta(days=1)  # conservative ≥1-day publication lag after the reference Wednesday
+        availability += timedelta(
+            days=1
+        )  # conservative ≥1-day publication lag after the reference Wednesday
         out[sunday] = {
             "state": delta > 0,
             "available": True,
@@ -378,7 +407,9 @@ def macro_states(
             "availability_utc": availability.strftime("%Y-%m-%dT%H:%M:%SZ"),
         }
     stats["reachback_days_used"] = sorted(set(stats["reachback_days_used"]))
-    stats["max_reachback_days_used"] = max(stats["reachback_days_used"]) if stats["reachback_days_used"] else None
+    stats["max_reachback_days_used"] = (
+        max(stats["reachback_days_used"]) if stats["reachback_days_used"] else None
+    )
     return out, stats
 
 
@@ -401,7 +432,9 @@ def trend200_states(bars: list[tuple[int, float, float]], grid: list[date]) -> d
 # --------------------------------------------------------------------------- #
 
 
-def simulate(states: dict[date, bool], bars: list[tuple[int, float, float]]) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+def simulate(
+    states: dict[date, bool], bars: list[tuple[int, float, float]]
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """Closed long round trips; entry/exit at the first bar open strictly after the decision."""
     trips: list[dict[str, Any]] = []
     in_position = False
@@ -434,7 +467,11 @@ def simulate(states: dict[date, bool], bars: list[tuple[int, float, float]]) -> 
             in_position = False
             entry = None
     if in_position and entry is not None:
-        open_at_end = {"entry_sunday": entry["sunday"].isoformat(), "entry_ms": entry["ms"], "entry_price": entry["price"]}
+        open_at_end = {
+            "entry_sunday": entry["sunday"].isoformat(),
+            "entry_ms": entry["ms"],
+            "entry_price": entry["price"],
+        }
     return trips, {"open_position_at_data_end": open_at_end, "transitions": len(trips)}
 
 
@@ -447,7 +484,9 @@ def partition_of(entry_sunday: str) -> str:
 # --------------------------------------------------------------------------- #
 
 
-def stationary_bootstrap_means(net: list[float], draws: int, block_obs: int, seed: int) -> list[float]:
+def stationary_bootstrap_means(
+    net: list[float], draws: int, block_obs: int, seed: int
+) -> list[float]:
     n = len(net)
     rng = random.Random(seed)
     p = 1.0 / block_obs
@@ -532,7 +571,9 @@ def subwindow_splits(first: date, last: date, count: int) -> list[tuple[date, da
     return out
 
 
-def metrics_for(trips: list[dict[str, Any]], cost_bps: float, span: tuple[date, date]) -> dict[str, Any]:
+def metrics_for(
+    trips: list[dict[str, Any]], cost_bps: float, span: tuple[date, date]
+) -> dict[str, Any]:
     net = [t["gross_ret"] - cost_bps / 10_000.0 for t in trips]
     net125 = [t["gross_ret"] - cost_bps * 1.25 / 10_000.0 for t in trips]
     net150 = [t["gross_ret"] - cost_bps * 1.5 / 10_000.0 for t in trips]
@@ -542,7 +583,7 @@ def metrics_for(trips: list[dict[str, Any]], cost_bps: float, span: tuple[date, 
     lcb2 = bootstrap_lcb(net, 2)
     lcb3 = bootstrap_lcb(net, 3)
     thirds = []
-    for (s, e) in subwindow_splits(span[0], span[1], SUBWINDOW_COUNT):
+    for s, e in subwindow_splits(span[0], span[1], SUBWINDOW_COUNT):
         window = [t for t in trips if s <= date.fromisoformat(t["entry_sunday"]) <= e]
         wnet = [t["gross_ret"] - cost_bps / 10_000.0 for t in window]
         thirds.append(
@@ -569,7 +610,11 @@ def metrics_for(trips: list[dict[str, Any]], cost_bps: float, span: tuple[date, 
         "lcb_95_net_expectancy_bps": lcb["lcb_bps"],
         "bootstrap_p_le_zero": lcb["p_le_zero"],
         "bootstrap_block_obs": block_obs,
-        "lcb_block_sensitivity_bps": {"block_1": lcb["lcb_bps"], "block_2": lcb2["lcb_bps"], "block_3": lcb3["lcb_bps"]},
+        "lcb_block_sensitivity_bps": {
+            "block_1": lcb["lcb_bps"],
+            "block_2": lcb2["lcb_bps"],
+            "block_3": lcb3["lcb_bps"],
+        },
         "mean_entry_spacing_days": spacing,
         "subwindows": thirds,
         "subwindows_positive": sum(1 for t in thirds if t["positive"] is True),
@@ -578,7 +623,9 @@ def metrics_for(trips: list[dict[str, Any]], cost_bps: float, span: tuple[date, 
     }
 
 
-def bh_net(bars: list[tuple[int, float, float]], first_sunday: date, last_sunday: date, cost_bps: float) -> dict[str, Any]:
+def bh_net(
+    bars: list[tuple[int, float, float]], first_sunday: date, last_sunday: date, cost_bps: float
+) -> dict[str, Any]:
     i = bar_after(bars, decision_instant(first_sunday))
     j = bar_after(bars, decision_instant(last_sunday))
     if i is None or j is None or j <= i:
@@ -662,32 +709,41 @@ def analyze_candidate(
             "development": {
                 "strategy_net_compounded": dev_m["net_compounded"],
                 "buy_and_hold_net": bh_dev["net_ret"],
-                "buy_and_hold_incremental_bps": (dev_m["net_compounded"] - bh_dev["net_ret"]) * 10_000.0,
+                "buy_and_hold_incremental_bps": (dev_m["net_compounded"] - bh_dev["net_ret"])
+                * 10_000.0,
                 "trend_200d_net_compounded": trend_net(trend_dev),
                 "trend_200d_incremental_bps": (
-                    None if trend_net(trend_dev) is None else (dev_m["net_compounded"] - trend_net(trend_dev)) * 10_000.0
+                    None
+                    if trend_net(trend_dev) is None
+                    else (dev_m["net_compounded"] - trend_net(trend_dev)) * 10_000.0
                 ),
                 "trend_200d_round_trips": len(trend_dev),
             },
             "validation": {
                 "strategy_net_compounded": val_m["net_compounded"],
                 "buy_and_hold_net": bh_val["net_ret"],
-                "buy_and_hold_incremental_bps": (val_m["net_compounded"] - bh_val["net_ret"]) * 10_000.0,
+                "buy_and_hold_incremental_bps": (val_m["net_compounded"] - bh_val["net_ret"])
+                * 10_000.0,
                 "trend_200d_net_compounded": trend_net(trend_val),
                 "trend_200d_incremental_bps": (
-                    None if trend_net(trend_val) is None else (val_m["net_compounded"] - trend_net(trend_val)) * 10_000.0
+                    None
+                    if trend_net(trend_val) is None
+                    else (val_m["net_compounded"] - trend_net(trend_val)) * 10_000.0
                 ),
                 "trend_200d_round_trips": len(trend_val),
             },
         }
-        straddlers = [t for t in trips if partition_of(t["entry_sunday"]) != partition_of(t["exit_sunday"])]
+        straddlers = [
+            t for t in trips if partition_of(t["entry_sunday"]) != partition_of(t["exit_sunday"])
+        ]
         per_asset[asset] = {
             "development": dev_m,
             "validation": val_m,
             "all_exposed": all_m,
             "incrementals": incrementals,
             "straddling_trips": [
-                {"entry_sunday": t["entry_sunday"], "exit_sunday": t["exit_sunday"]} for t in straddlers
+                {"entry_sunday": t["entry_sunday"], "exit_sunday": t["exit_sunday"]}
+                for t in straddlers
             ],
             "simulation": sim_meta,
             "trend200_states_long_weeks": sum(1 for s in grid if trend_states[s]),
@@ -702,29 +758,91 @@ def analyze_candidate(
         criteria[name] = {"observed": value, "pass": ok, "scope": scope}
 
     dev, val = primary["development"], primary["validation"]
-    row("net_expectancy_positive:development", dev["net_expectancy_bps"], dev["net_expectancy_bps"] is not None and dev["net_expectancy_bps"] > 0, "computable")
-    row("net_expectancy_positive:validation", val["net_expectancy_bps"], val["net_expectancy_bps"] is not None and val["net_expectancy_bps"] > 0, "computable")
-    row("net_profit_factor_min:development", dev["net_profit_factor"], dev["net_profit_factor"] is not None and dev["net_profit_factor"] >= 1.1, "computable")
-    row("net_profit_factor_min:validation", val["net_profit_factor"], val["net_profit_factor"] is not None and val["net_profit_factor"] >= 1.1, "computable")
-    row("lcb_95_net_expectancy_positive:development", dev["lcb_95_net_expectancy_bps"], dev["lcb_95_net_expectancy_bps"] is not None and dev["lcb_95_net_expectancy_bps"] > 0, "computable")
-    row("lcb_95_net_expectancy_positive:validation", val["lcb_95_net_expectancy_bps"], val["lcb_95_net_expectancy_bps"] is not None and val["lcb_95_net_expectancy_bps"] > 0, "computable")
-    row("cost_stress_1_5x_net_positive:development", dev["stress_1_5x_net_sum_bps"], dev["stress_1_5x_net_sum_bps"] > 0, "computable")
-    row("cost_stress_1_5x_net_positive:validation", val["stress_1_5x_net_sum_bps"], val["stress_1_5x_net_sum_bps"] > 0, "computable")
-    row("positive_in_every_partition:development", dev["net_sum_bps"], dev["net_sum_bps"] > 0, "computable")
-    row("positive_in_every_partition:validation", val["net_sum_bps"], val["net_sum_bps"] > 0, "computable")
+    row(
+        "net_expectancy_positive:development",
+        dev["net_expectancy_bps"],
+        dev["net_expectancy_bps"] is not None and dev["net_expectancy_bps"] > 0,
+        "computable",
+    )
+    row(
+        "net_expectancy_positive:validation",
+        val["net_expectancy_bps"],
+        val["net_expectancy_bps"] is not None and val["net_expectancy_bps"] > 0,
+        "computable",
+    )
+    row(
+        "net_profit_factor_min:development",
+        dev["net_profit_factor"],
+        dev["net_profit_factor"] is not None and dev["net_profit_factor"] >= 1.1,
+        "computable",
+    )
+    row(
+        "net_profit_factor_min:validation",
+        val["net_profit_factor"],
+        val["net_profit_factor"] is not None and val["net_profit_factor"] >= 1.1,
+        "computable",
+    )
+    row(
+        "lcb_95_net_expectancy_positive:development",
+        dev["lcb_95_net_expectancy_bps"],
+        dev["lcb_95_net_expectancy_bps"] is not None and dev["lcb_95_net_expectancy_bps"] > 0,
+        "computable",
+    )
+    row(
+        "lcb_95_net_expectancy_positive:validation",
+        val["lcb_95_net_expectancy_bps"],
+        val["lcb_95_net_expectancy_bps"] is not None and val["lcb_95_net_expectancy_bps"] > 0,
+        "computable",
+    )
+    row(
+        "cost_stress_1_5x_net_positive:development",
+        dev["stress_1_5x_net_sum_bps"],
+        dev["stress_1_5x_net_sum_bps"] > 0,
+        "computable",
+    )
+    row(
+        "cost_stress_1_5x_net_positive:validation",
+        val["stress_1_5x_net_sum_bps"],
+        val["stress_1_5x_net_sum_bps"] > 0,
+        "computable",
+    )
+    row(
+        "positive_in_every_partition:development",
+        dev["net_sum_bps"],
+        dev["net_sum_bps"] > 0,
+        "computable",
+    )
+    row(
+        "positive_in_every_partition:validation",
+        val["net_sum_bps"],
+        val["net_sum_bps"] > 0,
+        "computable",
+    )
     row("positive_in_every_partition:sealed_oos", None, None, "deferred")
-    row("max_drawdown_le_0.25:development", dev["max_drawdown"], dev["max_drawdown"] <= 0.25, "computable")
-    row("max_drawdown_le_0.25:validation", val["max_drawdown"], val["max_drawdown"] <= 0.25, "computable")
+    row(
+        "max_drawdown_le_0.25:development",
+        dev["max_drawdown"],
+        dev["max_drawdown"] <= 0.25,
+        "computable",
+    )
+    row(
+        "max_drawdown_le_0.25:validation",
+        val["max_drawdown"],
+        val["max_drawdown"] <= 0.25,
+        "computable",
+    )
     row(
         "single_trade_share_le_0.4:development",
         dev["single_trade_share_of_positive_net"],
-        dev["single_trade_share_of_positive_net"] is None or dev["single_trade_share_of_positive_net"] <= 0.4,
+        dev["single_trade_share_of_positive_net"] is None
+        or dev["single_trade_share_of_positive_net"] <= 0.4,
         "computable",
     )
     row(
         "single_trade_share_le_0.4:validation",
         val["single_trade_share_of_positive_net"],
-        val["single_trade_share_of_positive_net"] is None or val["single_trade_share_of_positive_net"] <= 0.4,
+        val["single_trade_share_of_positive_net"] is None
+        or val["single_trade_share_of_positive_net"] <= 0.4,
         "computable",
     )
     for part in ("development", "validation"):
@@ -764,7 +882,10 @@ def analyze_candidate(
             "frozen criteria computable on the exposed partitions fail; the acceptance list can no longer "
             "be satisfied, so the candidate is closed at the DEV/VAL stage (policy §6)"
         )
-    elif "SIGN_UNSTABLE:development" in robustness_flags or "SIGN_UNSTABLE:validation" in robustness_flags:
+    elif (
+        "SIGN_UNSTABLE:development" in robustness_flags
+        or "SIGN_UNSTABLE:validation" in robustness_flags
+    ):
         verdict = "CANDIDATE_REJECTED"
         verdict_reason = "robustness battery: SIGN_UNSTABLE (hard robustness criterion, ST-3)"
     else:
@@ -790,26 +911,51 @@ def pit_audit(
     sig_b: dict[date, dict[str, Any]],
 ) -> dict[str, Any]:
     """Every decision consumes only inputs available at least one hour before its instant."""
-    audit: dict[str, Any] = {"H-049-001": {"violations": [], "max_value_date": None}, "H-049-002": {"violations": [], "max_value_date": None}}
+    audit: dict[str, Any] = {
+        "H-049-001": {"violations": [], "max_value_date": None},
+        "H-049-002": {"violations": [], "max_value_date": None},
+    }
     for sunday in grid:
         cutoff = decision_instant(sunday) - timedelta(hours=1)
         a = sig_a[sunday]
         if a.get("available"):
-            avail = datetime.strptime(a["availability_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+            avail = datetime.strptime(a["availability_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(
+                tzinfo=timezone.utc
+            )
             if avail > cutoff:
-                audit["H-049-001"]["violations"].append({"sunday": sunday.isoformat(), "availability": a["availability_utc"]})
-            if audit["H-049-001"]["max_value_date"] is None or a["t_star"] > audit["H-049-001"]["max_value_date"]:
+                audit["H-049-001"]["violations"].append(
+                    {"sunday": sunday.isoformat(), "availability": a["availability_utc"]}
+                )
+            if (
+                audit["H-049-001"]["max_value_date"] is None
+                or a["t_star"] > audit["H-049-001"]["max_value_date"]
+            ):
                 audit["H-049-001"]["max_value_date"] = a["t_star"]
         b = sig_b[sunday]
         if b.get("available"):
-            avail = datetime.strptime(b["availability_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+            avail = datetime.strptime(b["availability_utc"], "%Y-%m-%dT%H:%M:%SZ").replace(
+                tzinfo=timezone.utc
+            )
             if avail > cutoff:
-                audit["H-049-002"]["violations"].append({"sunday": sunday.isoformat(), "availability": b["availability_utc"]})
+                audit["H-049-002"]["violations"].append(
+                    {"sunday": sunday.isoformat(), "availability": b["availability_utc"]}
+                )
             for d in b["obs_dates"]:
-                if audit["H-049-002"]["max_value_date"] is None or d > audit["H-049-002"]["max_value_date"]:
+                if (
+                    audit["H-049-002"]["max_value_date"] is None
+                    or d > audit["H-049-002"]["max_value_date"]
+                ):
                     audit["H-049-002"]["max_value_date"] = d
-    check("pit:H-049-001:no_future_input", not audit["H-049-001"]["violations"], f"{len(audit['H-049-001']['violations'])} violations")
-    check("pit:H-049-002:no_future_input", not audit["H-049-002"]["violations"], f"{len(audit['H-049-002']['violations'])} violations")
+    check(
+        "pit:H-049-001:no_future_input",
+        not audit["H-049-001"]["violations"],
+        f"{len(audit['H-049-001']['violations'])} violations",
+    )
+    check(
+        "pit:H-049-002:no_future_input",
+        not audit["H-049-002"]["violations"],
+        f"{len(audit['H-049-002']['violations'])} violations",
+    )
     for hid in audit:
         check(
             f"pit:{hid}:sealed_window_untouched",
@@ -831,7 +977,9 @@ def eligibility(
 
     def feasibility(trips: list[dict[str, Any]]) -> dict[str, Any]:
         counts = {
-            "development": sum(1 for t in trips if partition_of(t["entry_sunday"]) == "development"),
+            "development": sum(
+                1 for t in trips if partition_of(t["entry_sunday"]) == "development"
+            ),
             "validation": sum(1 for t in trips if partition_of(t["entry_sunday"]) == "validation"),
             "all_exposed": len(trips),
         }
@@ -842,8 +990,12 @@ def eligibility(
             "round_trips_per_year": round(len(trips) / years, 2),
             "round_trips_per_month": round(rate_month, 3),
             "expected_round_trips_in_24_month_sealed_window": round(rate_month * 24, 1),
-            "months_to_reach_20_round_trips_at_measured_rate": round(20 / rate_month, 1) if rate_month else None,
-            "sealed_window_risk": "INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION" if rate_month * 24 < 20 else "floor reachable within 24 months at the measured rate",
+            "months_to_reach_20_round_trips_at_measured_rate": round(20 / rate_month, 1)
+            if rate_month
+            else None,
+            "sealed_window_risk": "INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION"
+            if rate_month * 24 < 20
+            else "floor reachable within 24 months at the measured rate",
         }
 
     def precision(rate_month: float) -> list[dict[str, Any]]:
@@ -863,7 +1015,10 @@ def eligibility(
         "statistical_criterion_unchanged": "20 round trips or 24 months, whichever comes first; fewer than 20 at 24 months is INSUFFICIENT_OOS_SAMPLE and is neither PASS nor REJECT",
         "thresholds_changed": False,
     }
-    for hid, trips, analysis in (("H-049-001", trips_a, analysis_a), ("H-049-002", trips_b, analysis_b)):
+    for hid, trips, analysis in (
+        ("H-049-001", trips_a, analysis_a),
+        ("H-049-002", trips_b, analysis_b),
+    ):
         feas = feasibility(trips)
         verdict = analysis["verdict"]
         economic = {
@@ -905,7 +1060,9 @@ def eligibility(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="RFC-049 Discovery 2 DEV/VAL engine (builder)")
-    parser.add_argument("--trades", action="store_true", help="also write per-candidate trade ledgers")
+    parser.add_argument(
+        "--trades", action="store_true", help="also write per-candidate trade ledgers"
+    )
     args = parser.parse_args()
 
     D2.mkdir(parents=True, exist_ok=True)
@@ -913,7 +1070,11 @@ def main() -> int:
     verified = verified_inputs()
     plan_sha = sha256_file(EXECUTION_PLAN)
     auth = load_json(AUTHORIZATION)
-    check("authorization:scope", auth["authorization_scope"] == "OFFLINE_DEV_VAL_ONLY", auth["authorization_scope"])
+    check(
+        "authorization:scope",
+        auth["authorization_scope"] == "OFFLINE_DEV_VAL_ONLY",
+        auth["authorization_scope"],
+    )
 
     log("stage: cost model re-derivation")
     cost = derived_cost_bps()
@@ -935,14 +1096,26 @@ def main() -> int:
 
     trips_a, sim_a = simulate({s: sig_a[s]["state"] for s in grid}, bars_by_asset["BTCUSDT"])
     trips_b, sim_b = simulate({s: sig_b[s]["state"] for s in grid}, bars_by_asset["BTCUSDT"])
-    counts_a = {"development": sum(1 for t in trips_a if partition_of(t["entry_sunday"]) == "development"),
-                "validation": sum(1 for t in trips_a if partition_of(t["entry_sunday"]) == "validation"),
-                "all_exposed": len(trips_a)}
-    counts_b = {"development": sum(1 for t in trips_b if partition_of(t["entry_sunday"]) == "development"),
-                "validation": sum(1 for t in trips_b if partition_of(t["entry_sunday"]) == "validation"),
-                "all_exposed": len(trips_b)}
-    check("counts:H-049-001:match_rfc049b", counts_a == EXPECTED_TRIPS["H-049-001"], json.dumps(counts_a))
-    check("counts:H-049-002:match_rfc049b", counts_b == EXPECTED_TRIPS["H-049-002"], json.dumps(counts_b))
+    counts_a = {
+        "development": sum(1 for t in trips_a if partition_of(t["entry_sunday"]) == "development"),
+        "validation": sum(1 for t in trips_a if partition_of(t["entry_sunday"]) == "validation"),
+        "all_exposed": len(trips_a),
+    }
+    counts_b = {
+        "development": sum(1 for t in trips_b if partition_of(t["entry_sunday"]) == "development"),
+        "validation": sum(1 for t in trips_b if partition_of(t["entry_sunday"]) == "validation"),
+        "all_exposed": len(trips_b),
+    }
+    check(
+        "counts:H-049-001:match_rfc049b",
+        counts_a == EXPECTED_TRIPS["H-049-001"],
+        json.dumps(counts_a),
+    )
+    check(
+        "counts:H-049-002:match_rfc049b",
+        counts_b == EXPECTED_TRIPS["H-049-002"],
+        json.dumps(counts_b),
+    )
 
     log("stage: metrics and robustness")
     analysis_a = analyze_candidate("H-049-001", sig_a, grid, bars_by_asset, cost, plan_sha)
@@ -968,16 +1141,34 @@ def main() -> int:
         "artifact": "RFC049_DISCOVERY2_ECONOMIC_RESULTS",
         "generated_at_utc": utcnow(),
         "builder": "scripts/rfc049c_engine.py",
-        "head_at_run": subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip(),
-        "execution_plan": {"path": "data/rfc049/discovery2/DISCOVERY2_EXECUTION_PLAN.md", "sha256": plan_sha},
+        "head_at_run": subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True
+        ).stdout.strip(),
+        "execution_plan": {
+            "path": "data/rfc049/discovery2/DISCOVERY2_EXECUTION_PLAN.md",
+            "sha256": plan_sha,
+        },
         "authorization": "data/rfc049/discovery2/CAMPAIGN_AUTHORIZATION.json",
         "frozen_inputs": {k: v for k, v in verified["spec_hashes"].items()},
         "cost_model": cost,
         "grid": {"first": grid[0].isoformat(), "last": grid[-1].isoformat(), "instants": len(grid)},
-        "pit_audit": {"H-049-001": {"violations": len(pit["H-049-001"]["violations"]), "max_value_date": pit["H-049-001"]["max_value_date"]},
-                       "H-049-002": {"violations": len(pit["H-049-002"]["violations"]), "max_value_date": pit["H-049-002"]["max_value_date"]}},
+        "pit_audit": {
+            "H-049-001": {
+                "violations": len(pit["H-049-001"]["violations"]),
+                "max_value_date": pit["H-049-001"]["max_value_date"],
+            },
+            "H-049-002": {
+                "violations": len(pit["H-049-002"]["violations"]),
+                "max_value_date": pit["H-049-002"]["max_value_date"],
+            },
+        },
         "macro_stats": macro_stats,
-        "partition_policy": {"development": "entry Sunday <= 2023-12-31", "validation": "2024-01-01..2026-10-04", "sealed_oos": "CLOSED, not computed", "attribution": "partition of the entry Sunday; straddling trips listed"},
+        "partition_policy": {
+            "development": "entry Sunday <= 2023-12-31",
+            "validation": "2024-01-01..2026-10-04",
+            "sealed_oos": "CLOSED, not computed",
+            "attribution": "partition of the entry Sunday; straddling trips listed",
+        },
         "H-049-001": analysis_a,
         "H-049-002": analysis_b,
         "multiple_testing": corrections,
@@ -1005,15 +1196,31 @@ def main() -> int:
                 {
                     "hypothesis": hid,
                     "verdict": res["verdict"],
-                    "development": {"trips": m["development"]["round_trips"], "net_sum_bps": round(m["development"]["net_sum_bps"], 2), "expectancy_bps": round(m["development"]["net_expectancy_bps"], 2) if m["development"]["net_expectancy_bps"] is not None else None},
-                    "validation": {"trips": m["validation"]["round_trips"], "net_sum_bps": round(m["validation"]["net_sum_bps"], 2), "expectancy_bps": round(m["validation"]["net_expectancy_bps"], 2) if m["validation"]["net_expectancy_bps"] is not None else None},
+                    "development": {
+                        "trips": m["development"]["round_trips"],
+                        "net_sum_bps": round(m["development"]["net_sum_bps"], 2),
+                        "expectancy_bps": round(m["development"]["net_expectancy_bps"], 2)
+                        if m["development"]["net_expectancy_bps"] is not None
+                        else None,
+                    },
+                    "validation": {
+                        "trips": m["validation"]["round_trips"],
+                        "net_sum_bps": round(m["validation"]["net_sum_bps"], 2),
+                        "expectancy_bps": round(m["validation"]["net_expectancy_bps"], 2)
+                        if m["validation"]["net_expectancy_bps"] is not None
+                        else None,
+                    },
                     "failed": res["failed_criteria"],
                     "flags": res["robustness_flags"],
                 },
                 indent=2,
             )
         )
-    print(json.dumps({"checks_total": len(CHECKS), "checks_failed": results["checks_failed"]}, indent=2))
+    print(
+        json.dumps(
+            {"checks_total": len(CHECKS), "checks_failed": results["checks_failed"]}, indent=2
+        )
+    )
     return 1 if results["checks_failed"] else 0
 
 

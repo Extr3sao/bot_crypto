@@ -132,9 +132,7 @@ def test_no_authorization_on_paid_data() -> None:
 
 
 def test_net_evidence_exception_allows_thin_headroom() -> None:
-    exc = _variant(
-        "MANAGED_FUTURES_TREND", headroom_ratio=1.2, net_evidence_exception=True
-    )
+    exc = _variant("MANAGED_FUTURES_TREND", headroom_ratio=1.2, net_evidence_exception=True)
     assert SP.candidate_passes_reentry(exc) is True
 
 

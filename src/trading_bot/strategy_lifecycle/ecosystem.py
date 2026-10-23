@@ -190,7 +190,9 @@ class DynamicStrategyEcosystem:
             timestamp_ms=now_ms,
         )
 
-    def _window_sums(self, strategy_id: str, asset: str, timeframe: str, regime: str) -> tuple[float, ...]:
+    def _window_sums(
+        self, strategy_id: str, asset: str, timeframe: str, regime: str
+    ) -> tuple[float, ...]:
         key = ContextKey(strategy_id, asset, timeframe, regime)
         obs = self.performance.observations(key)
         if not obs:
@@ -268,4 +270,3 @@ class DynamicStrategyEcosystem:
             "registry": self.registry.as_dict(),
             "churn": self.registry.churn(),
         }
-

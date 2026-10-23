@@ -158,9 +158,7 @@ def test_resample_reproduces_certified_derived_files() -> None:
     for tf in ("15m", "30m", "1h"):
         out = L.resample(bars, int(L.TF_MIN[tf]))
         stored = next(
-            x
-            for x in files
-            if x.asset == f.asset and x.window == f.window and x.timeframe == tf
+            x for x in files if x.asset == f.asset and x.window == f.window and x.timeframe == tf
         )
         ref = L.load_bars(stored.path)
         assert np.array_equal(out.ts, ref.ts)
@@ -234,9 +232,7 @@ def test_stop_takes_priority_over_target() -> None:
 def test_time_stop_exits_at_open_after_hold_bars() -> None:
     bars = synth(400)
     bundle = L.build_bundle(bars, "30m")
-    trades = L.run_spec(
-        _spec(_spike(300), tgt=1000.0, stop=1000.0, hold=20), bundle, "X", "W1"
-    )
+    trades = L.run_spec(_spec(_spike(300), tgt=1000.0, stop=1000.0, hold=20), bundle, "X", "W1")
     assert len(trades) == 1
     t = trades[0]
     assert t.reason == "time_stop"

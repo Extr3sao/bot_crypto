@@ -133,9 +133,7 @@ PRIMARY_METRIC: dict[str, Any] = {
 
 def decision_slot_unix(day: dt.date) -> int:
     """Unix seconds of 16:00 UTC on ``day`` — the authoritative CAP-003 slot."""
-    moment = dt.datetime(
-        day.year, day.month, day.day, DECISION_SLOT_UTC_HOUR, 0, 0, tzinfo=dt.UTC
-    )
+    moment = dt.datetime(day.year, day.month, day.day, DECISION_SLOT_UTC_HOUR, 0, 0, tzinfo=dt.UTC)
     return int(moment.timestamp())
 
 
@@ -154,9 +152,7 @@ def next_decision_slot(now_seconds: int) -> int:
     return slot + 86_400 if now_seconds >= slot else slot
 
 
-def decision_key(
-    *, asset: str, decision_time: int, horizon: str, analyst_version: str
-) -> str:
+def decision_key(*, asset: str, decision_time: int, horizon: str, analyst_version: str) -> str:
     """Deterministic slot identity: the same slot can never be sealed twice."""
     return f"{CAMPAIGN_ID}|{asset}|{int(decision_time)}|{horizon}|{analyst_version}"
 

@@ -208,8 +208,7 @@ SOURCES: tuple[Source, ...] = (
         asset_class="equity index, government bond, FX, commodity futures",
         sample="58 liquid futures, 1965-2009",
         reported_effect=(
-            "diversified TSMOM portfolio alpha ~20.7% p.a., vol 15.74%, "
-            "Sharpe ~1.31, MaxDD ~-33.9%"
+            "diversified TSMOM portfolio alpha ~20.7% p.a., vol 15.74%, Sharpe ~1.31, MaxDD ~-33.9%"
         ),
         cost_assumption="gross; no explicit transaction-cost deduction",
         oos_evidence="within-sample across 58 markets; later papers extend",
@@ -1121,9 +1120,7 @@ STRATEGY_FAMILIES: tuple[StrategyFamily, ...] = (
             "beta estimation needs a survivorship-free return panel; low-vol can be done "
             "long-only with free prices"
         ),
-        tradability_notes=(
-            "BAB needs leverage and shorting high-beta; long-only low-vol is easy"
-        ),
+        tradability_notes=("BAB needs leverage and shorting high-beta; long-only low-vol is easy"),
         post_publication="WEAKENED_BUT_PRESENT",
         proxy="VALID_PROXY",
         research_cost="MEDIUM",
@@ -1305,9 +1302,7 @@ STRATEGY_FAMILIES: tuple[StrategyFamily, ...] = (
         counter_evidence=(
             "Do-Faff (S024): naive pairs returns fall and become insignificant after 2003"
         ),
-        uncertainties=(
-            "is any residual edge net of spread, borrow and turnover; crowding"
-        ),
+        uncertainties=("is any residual edge net of spread, borrow and turnover; crowding"),
         early_kill_condition=(
             "gross mean-reversion edge below round-trip cost (TOO_THIN headroom)"
         ),
@@ -1369,8 +1364,7 @@ STRATEGY_FAMILIES: tuple[StrategyFamily, ...] = (
         markets="energy, metals, agriculture, softs",
         horizon="MONTHLY",
         mechanism=(
-            "behavioural underreaction to commodity supply/demand news plus slow hedging "
-            "adjustment"
+            "behavioural underreaction to commodity supply/demand news plus slow hedging adjustment"
         ),
         scores=_scores(4, 4, 4, 3, 4, 3, 3, 3),
         headroom_ratio=3.5,
@@ -1393,9 +1387,7 @@ STRATEGY_FAMILIES: tuple[StrategyFamily, ...] = (
             "commodity premia weakened post-2008; momentum can overlap curve carry and managed "
             "futures trend"
         ),
-        uncertainties=(
-            "distinctness from managed-futures trend and curve carry; free data depth"
-        ),
+        uncertainties=("distinctness from managed-futures trend and curve carry; free data depth"),
         early_kill_condition=(
             "commodity momentum is not distinct from trend, or net edge < roll+commission cost"
         ),
@@ -1544,9 +1536,7 @@ class ReentryGate:
 
 def evaluate_reentry_gate() -> ReentryGate:
     """§51/§52/§53 - G_REENTRY = PASS iff >= 1 family passes every condition."""
-    qualifying = tuple(
-        fam.family_id for fam in STRATEGY_FAMILIES if candidate_passes_reentry(fam)
-    )
+    qualifying = tuple(fam.family_id for fam in STRATEGY_FAMILIES if candidate_passes_reentry(fam))
     authorized = authorize_reproductions()
     p1 = authorized[0].family_id if len(authorized) >= 1 else None
     p2 = authorized[1].family_id if len(authorized) >= 2 else None

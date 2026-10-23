@@ -22,16 +22,12 @@ def evaluate(fam: str, base: dict[str, Any], x2: dict[str, Any]) -> dict[str, An
     tot, oos, dev = base["totals"], base["OOS_W7"], base["DEV_W1_W4"]
 
     checks["c1_sample"] = (
-        tot["trades"] >= 100 and oos["trades"] >= 30
-        if tot["trades"] > 0
-        else None
+        tot["trades"] >= 100 and oos["trades"] >= 30 if tot["trades"] > 0 else None
     )
     checks["c2_net_positive"] = tot["net"] > 0 and tot["expectancy"] > 0
     checks["c3_pf_gt1"] = (tot["profit_factor"] or 0.0) > 1.0
     checks["c4_oos_positive"] = (
-        oos["net"] > 0 and (oos["profit_factor"] or 0.0) > 1.0
-        if oos["trades"] > 0
-        else None
+        oos["net"] > 0 and (oos["profit_factor"] or 0.0) > 1.0 if oos["trades"] > 0 else None
     )
     checks["c5_dev_consistent"] = (dev["profit_factor"] or 0.0) > 0.8
     checks["c6_dd"] = None  # filled by caller if max_dd available
@@ -39,7 +35,8 @@ def evaluate(fam: str, base: dict[str, Any], x2: dict[str, Any]) -> dict[str, An
     checks["c8_no_window_dominance"] = None  # needs per-window; filled by caller
 
     mandatory_fail = [
-        k for k, v in checks.items()
+        k
+        for k, v in checks.items()
         if k in ("c1_sample", "c2_net_positive", "c3_pf_gt1", "c4_oos_positive", "c7_survives_2x")
         and v is False
     ]
@@ -68,7 +65,9 @@ def evaluate(fam: str, base: dict[str, Any], x2: dict[str, Any]) -> dict[str, An
 def main() -> None:
     rows: dict[str, dict[str, Any]] = {}
     # ema_crossover: committed baseline (docs/EMA_CROSSOVER_PERFORMANCE_BASELINE.json)
-    with open(os.path.join(DOCS, "EMA_CROSSOVER_PERFORMANCE_BASELINE.json"), encoding="utf-8") as fh:
+    with open(
+        os.path.join(DOCS, "EMA_CROSSOVER_PERFORMANCE_BASELINE.json"), encoding="utf-8"
+    ) as fh:
         ema = json.load(fh)
     tot = ema["totals"]
     oos = ema["splits"]["oos_W7"]
@@ -90,9 +89,14 @@ def main() -> None:
         "note": "rejected by its own committed baseline (PF 0.57, OOS 0.41, negative-robust)",
     }
 
-    for suffix, fam in [("momentum", "momentum"), ("breakout", "breakout"),
-                        ("trend", "trend"), ("mean_reversion", "mean_reversion"),
-                        ("volatility", "volatility"), ("ema_crossover", "ema_crossover")]:
+    for suffix, fam in [
+        ("momentum", "momentum"),
+        ("breakout", "breakout"),
+        ("trend", "trend"),
+        ("mean_reversion", "mean_reversion"),
+        ("volatility", "volatility"),
+        ("ema_crossover", "ema_crossover"),
+    ]:
         path = os.path.join(OUTDIR, f"MULTI_FAMILY_RESULTS_{suffix}.json")
         if not fam or not os.path.exists(path):
             continue

@@ -53,9 +53,7 @@ def _run(command: tuple[str, ...]) -> dict[str, Any]:
         "exit_code": completed.returncode,
         "elapsed_seconds": elapsed,
         "summary_lines": tail,
-        "stderr_tail": [
-            line for line in completed.stderr.splitlines() if line.strip()
-        ][-8:],
+        "stderr_tail": [line for line in completed.stderr.splitlines() if line.strip()][-8:],
     }
 
 

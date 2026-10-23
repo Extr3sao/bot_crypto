@@ -123,7 +123,9 @@ MISSING_EVIDENCE = 0
 
 
 def canonical(payload: Any) -> str:
-    return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str)
+    return json.dumps(
+        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str
+    )
 
 
 def sha256_text(text: str) -> str:
@@ -255,7 +257,8 @@ def verify_ledgers(previous: dict[str, Any]) -> dict[str, Any]:
         )
         check(
             f"outcome net equals gross minus costs ({label})",
-            abs(float(entry["net_return"]) - (float(entry["gross_return"]) - float(entry["costs"]))) <= 1e-12,
+            abs(float(entry["net_return"]) - (float(entry["gross_return"]) - float(entry["costs"])))
+            <= 1e-12,
         )
     evaluation_keys = {str(entry["evaluation_hash"]) for entry in evaluations}
     for entry in evaluations:
@@ -276,7 +279,11 @@ def verify_ledgers(previous: dict[str, Any]) -> dict[str, Any]:
             if str(item["decision_id"]) == str(entry["decision_id"])
             and str(item["horizon"]) == str(entry["horizon"])
         ]
-        check(f"exactly one evaluation per settled outcome ({label})", len(linked) == 1, f"{len(linked)}")
+        check(
+            f"exactly one evaluation per settled outcome ({label})",
+            len(linked) == 1,
+            f"{len(linked)}",
+        )
 
     previous_event = GENESIS_HASH
     chain_ok = True
@@ -292,7 +299,9 @@ def verify_ledgers(previous: dict[str, Any]) -> dict[str, Any]:
             break
         previous_event = str(entry["event_hash"])
     check("operations ledger chain re-derives end to end", chain_ok, str(len(operations)))
-    check("evaluations reference known evaluation hashes", bool(evaluation_keys) == bool(evaluations))
+    check(
+        "evaluations reference known evaluation hashes", bool(evaluation_keys) == bool(evaluations)
+    )
 
     # Exactly-once settlement of the first real maturity.
     settled_ops = [entry for entry in operations if int(entry.get("settled", 0)) > 0]
@@ -340,7 +349,8 @@ def verify_ledgers(previous: dict[str, Any]) -> dict[str, Any]:
             check(f"{name} did not lose records", False, f"{len(before)} -> {len(entries)}")
             continue
         preserved = all(
-            canonical(current) == canonical(old) for current, old in zip(entries, before, strict=False)
+            canonical(current) == canonical(old)
+            for current, old in zip(entries, before, strict=False)
         )
         check(f"{name} records are preserved verbatim (append-only)", preserved)
 
@@ -425,7 +435,8 @@ def verify_migration(reference: dict[str, Any]) -> dict[str, Any]:
                 continue
             check(
                 f"archive records its source digest: {archive.name}",
-                str(payload["source_hashes"].get(str(entry["source"]))) == str(entry["source_sha256"]),
+                str(payload["source_hashes"].get(str(entry["source"])))
+                == str(entry["source_sha256"]),
             )
             rederived = decompressed_digest(archive)
             check(
@@ -436,7 +447,8 @@ def verify_migration(reference: dict[str, Any]) -> dict[str, Any]:
             )
             check(
                 f"archive digest matches the manifest destination digest: {archive.name}",
-                rederived["sha256"] == str(payload["destination_hashes"].get(str(entry["destination"]))),
+                rederived["sha256"]
+                == str(payload["destination_hashes"].get(str(entry["destination"]))),
             )
             if str(source).endswith(".jsonl"):
                 check(
@@ -465,7 +477,9 @@ def verify_migration(reference: dict[str, Any]) -> dict[str, Any]:
         "every migration entry was verified or is still uncommitted",
         result["verified"] == result["entries"]
         or all(
-            not json.loads(path.read_text(encoding="utf-8"))["reconciliation"].get("reclaimed_bytes")
+            not json.loads(path.read_text(encoding="utf-8"))["reconciliation"].get(
+                "reclaimed_bytes"
+            )
             for path in manifests
         ),
         f"{result['verified']}/{result['entries']}",
@@ -483,7 +497,7 @@ def journal_files() -> list[Path]:
     segments = CAMPAIGN_REPORT_ROOT / "cycles_segments"
     closed = sorted(segments.glob("cycles-*.jsonl")) if segments.is_dir() else []
     active = CAMPAIGN_REPORT_ROOT / "cycles.jsonl"
-    return [*closed, *( [active] if active.is_file() else [] )]
+    return [*closed, *([active] if active.is_file() else [])]
 
 
 def verify_journal() -> dict[str, Any]:
@@ -519,15 +533,23 @@ def verify_journal() -> dict[str, Any]:
                     entry = json.loads(line.decode("utf-8", errors="replace"))
                     if str(entry.get("previous_event_hash")) != previous:
                         chain_ok = False
-                        MISMATCHES.append(f"journal chain link broken at cycle {entry.get('cycle')}")
+                        MISMATCHES.append(
+                            f"journal chain link broken at cycle {entry.get('cycle')}"
+                        )
                         continue
                     if digest_of(entry, drop="event_hash") != str(entry.get("event_hash")):
                         chain_ok = False
-                        MISMATCHES.append(f"journal event_hash does not re-derive at cycle {entry.get('cycle')}")
+                        MISMATCHES.append(
+                            f"journal event_hash does not re-derive at cycle {entry.get('cycle')}"
+                        )
                         continue
                     previous = str(entry["event_hash"])
                     events += 1
-                    if events <= 3 or entry.get("settled_count_delta") or entry.get("evaluated_count_delta"):
+                    if (
+                        events <= 3
+                        or entry.get("settled_count_delta")
+                        or entry.get("evaluated_count_delta")
+                    ):
                         check(
                             f"event obeys the compact contract (cycle {entry.get('cycle')})",
                             set(entry) == set(CYCLE_EVENT_KEYS),
@@ -541,12 +563,19 @@ def verify_journal() -> dict[str, Any]:
                             f"event does not embed campaign state (cycle {entry.get('cycle')})",
                             not any(
                                 key in json.dumps(entry)
-                                for key in ('"counters"', '"daily"', '"decision_states"', '"cycles"')
+                                for key in (
+                                    '"counters"',
+                                    '"daily"',
+                                    '"decision_states"',
+                                    '"cycles"',
+                                )
                             ),
                         )
     check("journal chain re-derives end to end", chain_ok)
     check("journal contains at least one compact event", events > 0, str(events))
-    check("no oversized journal line survives in the active journal", oversized == 0, str(oversized))
+    check(
+        "no oversized journal line survives in the active journal", oversized == 0, str(oversized)
+    )
     if sizes:
         check(
             "every journal event is inside the per-event byte bound",
@@ -568,7 +597,10 @@ def verify_journal() -> dict[str, Any]:
             if not path.is_file():
                 continue
             digest, size = sha256_file(path)
-            check(f"segment digest matches its manifest: {entry['segment']}", digest == entry["sha256"])
+            check(
+                f"segment digest matches its manifest: {entry['segment']}",
+                digest == entry["sha256"],
+            )
             check(f"segment size matches its manifest: {entry['segment']}", size == entry["bytes"])
         check(
             "manifest lists the same segments that exist",
@@ -617,10 +649,14 @@ def verify_daily() -> dict[str, Any]:
         if "cycle_count" in payload:
             events = [
                 json.loads(line)
-                for line in (CAMPAIGN_REPORT_ROOT / "cycles.jsonl").read_text(encoding="utf-8").splitlines()
+                for line in (CAMPAIGN_REPORT_ROOT / "cycles.jsonl")
+                .read_text(encoding="utf-8")
+                .splitlines()
                 if line.strip()
             ]
-            expected = len([item for item in events if str(item.get("day")) == str(payload.get("day"))])
+            expected = len(
+                [item for item in events if str(item.get("day")) == str(payload.get("day"))]
+            )
             # The projection is written before the running cycle journals its own
             # event: the lag is declared and bounded by exactly one cycle.
             lag = int(payload.get("projection_lag_cycles", 0))
@@ -664,7 +700,11 @@ def verify_budget(journal: dict[str, Any]) -> dict[str, Any]:
         first, last = samples[0], samples[-1]
         span = int(last["timestamp"]) - int(first["timestamp"])
         if span > 0:
-            per_day = (int(last["reports_cap004_bytes"]) - int(first["reports_cap004_bytes"])) / span * 86_400
+            per_day = (
+                (int(last["reports_cap004_bytes"]) - int(first["reports_cap004_bytes"]))
+                / span
+                * 86_400
+            )
             result["observed_reports_growth_bytes_per_day"] = round(per_day, 3)
             result["window_seconds"] = span
             # The archive is a one-off reclaim, not campaign growth: exclude it.
@@ -718,18 +758,32 @@ def verify_budget(journal: dict[str, Any]) -> dict[str, Any]:
         state = json.loads(state_path.read_text(encoding="utf-8"))
         free = int(state.get("free_bytes", -1))
         expected = (
-            "HEALTHY" if free >= HEALTHY_FREE_BYTES else "WARNING" if free >= CRITICAL_FREE_BYTES else "CRITICAL"
+            "HEALTHY"
+            if free >= HEALTHY_FREE_BYTES
+            else "WARNING"
+            if free >= CRITICAL_FREE_BYTES
+            else "CRITICAL"
         )
-        check("disk state matches the declared thresholds", state.get("status") == expected, f"{state.get('status')} vs {expected}")
+        check(
+            "disk state matches the declared thresholds",
+            state.get("status") == expected,
+            f"{state.get('status')} vs {expected}",
+        )
         result["disk_status"] = state.get("status")
         result["disk_free_gib"] = round(free / 2**30, 4)
     events_path = CAMPAIGN_REPORT_ROOT / "disk_events.jsonl"
     if events_path.is_file():
-        transitions = [json.loads(line) for line in events_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+        transitions = [
+            json.loads(line)
+            for line in events_path.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
         result["disk_events"] = len(transitions)
         check(
             "disk events are transitions only",
-            all(str(item.get("previous_status")) != str(item.get("status")) for item in transitions),
+            all(
+                str(item.get("previous_status")) != str(item.get("status")) for item in transitions
+            ),
             str(transitions),
         )
         check(
@@ -795,7 +849,8 @@ def verify_replay(ledgers: dict[str, Any], previous: dict[str, Any]) -> dict[str
             bool(flags.get("provenance_complete")),
         )
         check(
-            f"replay links the outcome ({decision_id[:12]})", bool(flags.get("outcomes_linked")),
+            f"replay links the outcome ({decision_id[:12]})",
+            bool(flags.get("outcomes_linked")),
         )
         check(
             f"replay links the evaluation ({decision_id[:12]})",
@@ -838,7 +893,9 @@ def verify_replay(ledgers: dict[str, Any], previous: dict[str, Any]) -> dict[str
         }
     if baseline:
         result["unchanged"] = canonical(baseline) == canonical(result["decisions"])
-        check("replay results are identical to the previous verification", bool(result["unchanged"]))
+        check(
+            "replay results are identical to the previous verification", bool(result["unchanged"])
+        )
     else:
         NOTES.append("no previous replay baseline: this run records it")
     # Independent re-derivation of every hash the replay returned.
@@ -907,7 +964,10 @@ def verify_raw_evidence(ledgers: dict[str, Any]) -> dict[str, Any]:
 
 def run_delegated() -> dict[str, Any]:
     out: dict[str, Any] = {}
-    env = {"PYTHONPATH": f"{REPO / 'src'}{';' if sys.platform == 'win32' else ':'}{REPO / 'scripts'}", "PYTHONIOENCODING": "utf-8"}
+    env = {
+        "PYTHONPATH": f"{REPO / 'src'}{';' if sys.platform == 'win32' else ':'}{REPO / 'scripts'}",
+        "PYTHONIOENCODING": "utf-8",
+    }
     import os
 
     for name, path in DELEGATED.items():
@@ -938,8 +998,16 @@ def run_delegated() -> dict[str, Any]:
             "status": "PASS" if passed else "FAIL",
             "false_success": false_success,
         }
-        check(f"delegated verifier passes: {name}", passed and proc.returncode == 0, str(proc.returncode))
-        check(f"delegated verifier reports no false success: {name}", false_success == 0, str(false_success))
+        check(
+            f"delegated verifier passes: {name}",
+            passed and proc.returncode == 0,
+            str(proc.returncode),
+        )
+        check(
+            f"delegated verifier reports no false success: {name}",
+            false_success == 0,
+            str(false_success),
+        )
     return out
 
 
@@ -1074,11 +1142,7 @@ def main(argv: list[str] | None = None) -> int:
         "delegated": delegated,
         "notes": NOTES,
         "limitations": LIMITATIONS,
-        "assessment": (
-            "storage_stabilized"
-            if status == "PASS"
-            else "storage_not_verified"
-        ),
+        "assessment": ("storage_stabilized" if status == "PASS" else "storage_not_verified"),
     }
     OUT.mkdir(parents=True, exist_ok=True)
     VERIFICATION_JSON.write_text(

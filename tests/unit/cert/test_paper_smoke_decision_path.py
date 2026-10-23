@@ -218,7 +218,5 @@ def test_a_rejected_strategy_never_reaches_the_family() -> None:
     cycle = status.get("cycle") or {}
     assert cycle.get("contexts_built", 0) > 0, f"contexts_built=0: {cycle}"
     assert cycle.get("router_invocations", 0) > 0, f"router_invocations=0: {cycle}"
-    assert cycle.get("strategy_invocations", 0) == 0, (
-        f"a rejected strategy was invoked: {cycle}"
-    )
+    assert cycle.get("strategy_invocations", 0) == 0, f"a rejected strategy was invoked: {cycle}"
     assert cycle.get("orders_created", 0) == 0, f"a rejected strategy traded: {cycle}"

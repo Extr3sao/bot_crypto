@@ -187,10 +187,18 @@ def simulate_breadth_regime(
             fee = alloc * cost_bps_rt / BPS
             trades.append(
                 Trade(
-                    side="long", entry_ts=entry_day, exit_ts=fill_day,
-                    entry=round(entry_price, 6), exit=round(px, 6), reason=reason,
-                    rule=f"breadth_{symbol}", symbol=symbol, notional=round(alloc, 6),
-                    gross=round(gross, 6), fees=round(fee, 6), net=round(gross - fee, 6),
+                    side="long",
+                    entry_ts=entry_day,
+                    exit_ts=fill_day,
+                    entry=round(entry_price, 6),
+                    exit=round(px, 6),
+                    reason=reason,
+                    rule=f"breadth_{symbol}",
+                    symbol=symbol,
+                    notional=round(alloc, 6),
+                    gross=round(gross, 6),
+                    fees=round(fee, 6),
+                    net=round(gross - fee, 6),
                 )
             )
 
@@ -205,15 +213,35 @@ def simulate_breadth_regime(
 
         if len(eligible) < config.min_members:
             blocked_days += 1
-            records.append(BreadthRecord(day + MS_PER_DAY, len(eligible), 0, 0, None,
-                                         state, "basket" if state == "LONG" else "flat", excluded))
+            records.append(
+                BreadthRecord(
+                    day + MS_PER_DAY,
+                    len(eligible),
+                    0,
+                    0,
+                    None,
+                    state,
+                    "basket" if state == "LONG" else "flat",
+                    excluded,
+                )
+            )
             continue
 
         positive, evaluated = breadth_of_day(index_by_sym, day, eligible, config.lookback_days)
         if evaluated < config.min_members:
             blocked_days += 1
-            records.append(BreadthRecord(day + MS_PER_DAY, len(eligible), positive, 0, None,
-                                         state, "basket" if state == "LONG" else "flat", excluded))
+            records.append(
+                BreadthRecord(
+                    day + MS_PER_DAY,
+                    len(eligible),
+                    positive,
+                    0,
+                    None,
+                    state,
+                    "basket" if state == "LONG" else "flat",
+                    excluded,
+                )
+            )
             continue
         breadth = positive / evaluated
 
@@ -227,7 +255,9 @@ def simulate_breadth_regime(
             target = "FLAT"
             forced = True
 
-        reason = "regime_exit" if state == "LONG" and breadth <= config.exit_breadth else "window_expiry"
+        reason = (
+            "regime_exit" if state == "LONG" and breadth <= config.exit_breadth else "window_expiry"
+        )
 
         if target != state:
             if state == "LONG":
@@ -255,9 +285,18 @@ def simulate_breadth_regime(
             long_days += 1
         else:
             flat_days += 1
-        records.append(BreadthRecord(day + MS_PER_DAY, len(eligible), positive,
-                                     evaluated - positive, breadth, state,
-                                     "basket" if state == "LONG" else "flat", excluded))
+        records.append(
+            BreadthRecord(
+                day + MS_PER_DAY,
+                len(eligible),
+                positive,
+                evaluated - positive,
+                breadth,
+                state,
+                "basket" if state == "LONG" else "flat",
+                excluded,
+            )
+        )
 
     if basket:
         close_basket(calendar[-1], "end_of_sample")

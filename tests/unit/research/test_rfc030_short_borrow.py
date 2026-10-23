@@ -152,8 +152,7 @@ def test_gate_missing_rate_blocks() -> None:
 def test_gate_allows_only_when_complete_and_pit_safe() -> None:
     obs = _obs()
     assert (
-        borrow_availability_gate([obs], decision_time=DECISION)
-        is BorrowGateDecision.SHORT_ALLOWED
+        borrow_availability_gate([obs], decision_time=DECISION) is BorrowGateDecision.SHORT_ALLOWED
     )
 
 
@@ -171,10 +170,7 @@ def test_gate_never_treats_unknown_as_available() -> None:
 def test_coverage_full_period_is_viable() -> None:
     start = T0
     end = T0 + 10 * MS_PER_DAY
-    obs = [
-        _obs(asset="ETHUSDT", timestamp=start + i * MS_PER_DAY)
-        for i in range(10)
-    ]
+    obs = [_obs(asset="ETHUSDT", timestamp=start + i * MS_PER_DAY) for i in range(10)]
     report = coverage_report(
         obs, required_start=start, required_end=end, required_assets=["ETHUSDT"]
     )
@@ -208,7 +204,9 @@ def test_coverage_missing_asset_is_reported() -> None:
 def test_coverage_incomplete_observations_do_not_count() -> None:
     start = T0
     end = T0 + 5 * MS_PER_DAY
-    obs = [_obs(asset="ETHUSDT", timestamp=start + i * MS_PER_DAY, borrow_rate=None) for i in range(5)]
+    obs = [
+        _obs(asset="ETHUSDT", timestamp=start + i * MS_PER_DAY, borrow_rate=None) for i in range(5)
+    ]
     report = coverage_report(
         obs, required_start=start, required_end=end, required_assets=["ETHUSDT"]
     )

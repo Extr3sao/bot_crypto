@@ -270,9 +270,7 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     lab_run_dir = (REPO_ROOT / args.lab_run_dir).resolve()
     forward_root = (REPO_ROOT / args.forward_root).resolve()
     paper_root = REPO_ROOT / "reports" / "autonomous-paper"
-    paper_run_dir = (
-        (REPO_ROOT / args.paper_run_dir).resolve() if args.paper_run_dir else None
-    )
+    paper_run_dir = (REPO_ROOT / args.paper_run_dir).resolve() if args.paper_run_dir else None
     lab_report = (REPO_ROOT / args.lab_report).resolve() if args.lab_report else None
 
     supervisor = _read_json(lab_run_dir / "SYSTEM_HEARTBEAT.json")
@@ -500,8 +498,7 @@ def main() -> int:
     json_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     md_path.write_text(render_system_markdown(payload), encoding="utf-8")
     print(
-        "[system] "
-        + " ".join(f"{plane}={ok}" for plane, ok in payload["planes_present"].items())
+        "[system] " + " ".join(f"{plane}={ok}" for plane, ok in payload["planes_present"].items())
     )
     print(f"[system] report: {json_path}")
     print(f"[system] report: {md_path}")

@@ -152,9 +152,7 @@ def test_aggregation_drops_incomplete_bucket() -> None:
 def test_aggregation_drops_bucket_with_an_internal_hole() -> None:
     day_open = 1_600_000_200_000
     minutes = [0, 1, 3, 4]
-    rows = [
-        parse_minute_row(_minute_row("BTCUSDT", day_open + k * MINUTE_MS)) for k in minutes
-    ]
+    rows = [parse_minute_row(_minute_row("BTCUSDT", day_open + k * MINUTE_MS)) for k in minutes]
     assert aggregate_minutes_to_bars(rows) == []
 
 
@@ -186,10 +184,7 @@ def test_aggregation_ignores_minutes_off_the_utc_grid() -> None:
     # A series which is complete but shifted off the bar grid must not silently
     # become a bar: the alignment is part of the contract.
     off_grid = 1_600_000_000_000
-    rows = [
-        parse_minute_row(_minute_row("BTCUSDT", off_grid + k * MINUTE_MS))
-        for k in range(5)
-    ]
+    rows = [parse_minute_row(_minute_row("BTCUSDT", off_grid + k * MINUTE_MS)) for k in range(5)]
     assert aggregate_minutes_to_bars(rows) == []
 
 
@@ -221,7 +216,10 @@ def test_flow_imbalance_is_zero_without_volume() -> None:
 def test_build_panel_intersects_clocks() -> None:
     base = 1_600_000_000_000
     bars = {
-        "BTCUSDT": [_bar("BTCUSDT", base, 6.0, 4.0), _bar("BTCUSDT", base + 5 * MINUTE_MS, 6.0, 4.0)],
+        "BTCUSDT": [
+            _bar("BTCUSDT", base, 6.0, 4.0),
+            _bar("BTCUSDT", base + 5 * MINUTE_MS, 6.0, 4.0),
+        ],
         "ETHUSDT": [_bar("ETHUSDT", base, 3.0, 7.0)],
         "SOLUSDT": [_bar("SOLUSDT", base, 5.0, 5.0)],
     }

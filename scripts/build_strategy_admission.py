@@ -201,7 +201,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.check:
         current = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
         if current != rendered:
-            sys.stderr.write("ADMISSION_LEDGER_STALE: regenerate with build_strategy_admission.py\n")
+            sys.stderr.write(
+                "ADMISSION_LEDGER_STALE: regenerate with build_strategy_admission.py\n"
+            )
             return 1
         print("admission ledger is up to date")
         return 0

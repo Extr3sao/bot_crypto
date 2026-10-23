@@ -167,9 +167,7 @@ class PaperHeartbeat:
         """
         now = int(time.time() * 1000) if now_ms is None else now_ms
         rows = list(getattr(report, "assets", ()) or ())
-        vetoes = sum(
-            1 for row in rows if str(getattr(row, "risk_state", "")) == "VETOED"
-        )
+        vetoes = sum(1 for row in rows if str(getattr(row, "risk_state", "")) == "VETOED")
         return cls(
             run_id=run_id,
             cycle=cycle,
@@ -377,9 +375,7 @@ def build_daily_report(
 
     resolved_outcomes = [o for o in (outcomes or []) if o.get("status") == "RESOLVED"]
     pnl_values = [
-        float(o["pnl"])
-        for o in resolved_outcomes
-        if isinstance(o.get("pnl"), int | float)
+        float(o["pnl"]) for o in resolved_outcomes if isinstance(o.get("pnl"), int | float)
     ]
     gross = sum(pnl_values) if pnl_values else 0.0
     peak = 0.0
@@ -422,9 +418,7 @@ def build_daily_report(
         },
         "strategy_attribution": attribution,
         "risk_events": {
-            key: value
-            for key, value in sorted(totals.items())
-            if key.startswith("risk_") and value
+            key: value for key, value in sorted(totals.items()) if key.startswith("risk_") and value
         },
         "runtime_failures": int(totals.get("runtime_failures", 0)),
         "errors": list(errors or []),
@@ -499,8 +493,6 @@ def write_daily_report(
     directory.mkdir(parents=True, exist_ok=True)
     json_path = directory / f"{stem}.json"
     md_path = directory / f"{stem}.md"
-    json_path.write_text(
-        json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
-    )
+    json_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     md_path.write_text(render_daily_report_markdown(payload), encoding="utf-8")
     return md_path, json_path

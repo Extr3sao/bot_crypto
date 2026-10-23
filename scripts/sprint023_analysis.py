@@ -145,8 +145,15 @@ def main() -> int:
                 "discovery": G.info_for_signals([name], "DISCOVERY", tf)[name],
                 "validation": G.info_for_signals([name], "VALIDATION", tf)[name],
             }
-    md = ["# RFC-023 — SIGNAL INFORMATION AUDIT", "", "Signal vs forward return at frozen horizons (DISCOVERY).", ""]
-    md.append("| signal | tf | horizon | events | IC | hit | E[fwd\\|sig] | E[fwd\\|no] | abs-lift |")
+    md = [
+        "# RFC-023 — SIGNAL INFORMATION AUDIT",
+        "",
+        "Signal vs forward return at frozen horizons (DISCOVERY).",
+        "",
+    ]
+    md.append(
+        "| signal | tf | horizon | events | IC | hit | E[fwd\\|sig] | E[fwd\\|no] | abs-lift |"
+    )
     md.append("|---|---|---|---:|---:|---:|---:|---:|---:|")
     for _key, d in audit.items():
         for hz, v in d["discovery"]["horizons"].items():
@@ -168,10 +175,16 @@ def main() -> int:
             "discovery_class": G.classify_direction_magnitude(d["discovery"]),
             "validation_class": G.classify_direction_magnitude(d["validation"]),
         }
-    md = ["# RFC-023 — DIRECTION VS MAGNITUDE", "", "| signal | tf | discovery | validation |",
-          "|---|---|---|---|"]
+    md = [
+        "# RFC-023 — DIRECTION VS MAGNITUDE",
+        "",
+        "| signal | tf | discovery | validation |",
+        "|---|---|---|---|",
+    ]
     for _key, v in dm.items():
-        md.append(f"| {v['signal']} | {v['timeframe']} | {v['discovery_class']} | {v['validation_class']} |")
+        md.append(
+            f"| {v['signal']} | {v['timeframe']} | {v['discovery_class']} | {v['validation_class']} |"
+        )
     emit("DIRECTION_VS_MAGNITUDE", {"status": "OK", "signals": dm}, "\n".join(md))
 
     # ---- null baselines ---------------------------------------------------
@@ -199,9 +212,12 @@ def main() -> int:
 
     # ---- event study ------------------------------------------------------
     es = G.event_study("DISCOVERY")
-    lines = ["# RFC-023 — EVENT STUDY (DISCOVERY)", "",
-             "| signal | tf | horizon | events | mean fwd | median fwd | positive rate | MFE | MAE | CI95 |",
-             "|---|---|---|---:|---:|---:|---:|---:|---:|---|"]
+    lines = [
+        "# RFC-023 — EVENT STUDY (DISCOVERY)",
+        "",
+        "| signal | tf | horizon | events | mean fwd | median fwd | positive rate | MFE | MAE | CI95 |",
+        "|---|---|---|---:|---:|---:|---:|---:|---:|---|",
+    ]
     for name, d in es["signals"].items():
         for hz, v in d["horizons"].items():
             if v.get("status") != "OK":
@@ -217,9 +233,12 @@ def main() -> int:
     ds: dict[str, Any] = {}
     for tf in ("15m", "30m", "1h"):
         ds[tf] = G.distribution_shift(tf)
-    md = ["# RFC-023 — DISTRIBUTION SHIFT (DISCOVERY vs VALIDATION)", "",
-          "| tf | feature | discovery mean | validation mean | std-shift z | material |",
-          "|---|---|---:|---:|---:|---|"]
+    md = [
+        "# RFC-023 — DISTRIBUTION SHIFT (DISCOVERY vs VALIDATION)",
+        "",
+        "| tf | feature | discovery mean | validation mean | std-shift z | material |",
+        "|---|---|---:|---:|---:|---|",
+    ]
     for tf, d in ds.items():
         for k, v in d["features"].items():
             md.append(
@@ -279,9 +298,13 @@ def main() -> int:
                 f"top3={c['pct_top3']} net_ex_best={c['net_bps_ex_best']} verdict={c['verdict']}"
             )
         o = d["outliers"]
-        md.append(f"- discovery outliers: mean={o['mean_bps']} median={o['median_bps']} trimmed={o['trimmed_mean_10_bps']} tail_dependent={o['tail_dependent']}")
+        md.append(
+            f"- discovery outliers: mean={o['mean_bps']} median={o['median_bps']} trimmed={o['trimmed_mean_10_bps']} tail_dependent={o['tail_dependent']}"
+        )
         md.append(f"- temporal by window: {json.dumps(conc['temporal'][eid]['by_window'])}")
-        md.append(f"- leave-one-window-out: {json.dumps(conc['temporal'][eid]['leave_one_window_out'])}")
+        md.append(
+            f"- leave-one-window-out: {json.dumps(conc['temporal'][eid]['leave_one_window_out'])}"
+        )
         md.append("")
     emit("TRADE_CONCENTRATION", conc, "\n".join(md))
 
@@ -309,14 +332,20 @@ def main() -> int:
             f"- {split}: rho_bar={e['rho_bar']} independence_ratio={e['independence_ratio']} "
             f"N_eff={e['effective_sample_size']} (N={e['n_bars_total']})"
         )
-    md += ["", "BTC/ETH/SOL are ~0.90 correlated: three assets are far from three independent samples."]
+    md += [
+        "",
+        "BTC/ETH/SOL are ~0.90 correlated: three assets are far from three independent samples.",
+    ]
     emit("EFFECTIVE_SAMPLE_SIZE", {"status": "OK", "by_split": eff}, "\n".join(md))
 
     # ---- dataset adequacy -------------------------------------------------
     da = G.dataset_adequacy_detailed()
-    md = ["# RFC-023 — DATASET ADEQUACY", "",
-          "| tf | discovery bars | experiments | pooled trades | std | MDE@100 | class |",
-          "|---|---:|---:|---:|---:|---:|---|"]
+    md = [
+        "# RFC-023 — DATASET ADEQUACY",
+        "",
+        "| tf | discovery bars | experiments | pooled trades | std | MDE@100 | class |",
+        "|---|---:|---:|---:|---:|---:|---|",
+    ]
     for tf, v in da["timeframes"].items():
         md.append(
             f"| {tf} | {v['discovery_bars']} | {v['experiments']} | {v['pooled_trades']} | "
@@ -328,22 +357,39 @@ def main() -> int:
     stt: dict[str, Any] = {}
     for key, d in dm.items():
         dm_class = d["discovery_class"]
-        famrow = next((v for v in fam["hypotheses"].values() if v["family"] == seed_family(d["signal"])), None)
+        famrow = next(
+            (v for v in fam["hypotheses"].values() if v["family"] == seed_family(d["signal"])), None
+        )
         best = famrow["best"] if famrow else None
         if dm_class == "NO_INFORMATION":
             cls = "NO_INFORMATION" if (best is None or best <= 0) else "UNCERTAIN"
         elif dm_class == "VOLATILITY_ALPHA_ONLY":
             cls = "VOLATILITY_INFORMATION_ONLY"
         elif dm_class in ("DIRECTIONAL_ALPHA", "BOTH"):
-            cls = "DIRECTIONAL_INFORMATION" if (best is not None and best > 0) else "INFORMATION_TOO_WEAK"
+            cls = (
+                "DIRECTIONAL_INFORMATION"
+                if (best is not None and best > 0)
+                else "INFORMATION_TOO_WEAK"
+            )
         else:
             cls = "UNCERTAIN"
-        stt[key] = {"signal": d["signal"], "timeframe": d["timeframe"], "class": cls,
-                    "direction_magnitude": dm_class, "best_family_net_bps": best}
-    md = ["# RFC-023 — SIGNAL-TO-TRADE DIAGNOSIS", "", "| signal | tf | class | best net in family |",
-          "|---|---|---|---:|"]
+        stt[key] = {
+            "signal": d["signal"],
+            "timeframe": d["timeframe"],
+            "class": cls,
+            "direction_magnitude": dm_class,
+            "best_family_net_bps": best,
+        }
+    md = [
+        "# RFC-023 — SIGNAL-TO-TRADE DIAGNOSIS",
+        "",
+        "| signal | tf | class | best net in family |",
+        "|---|---|---|---:|",
+    ]
     for _key, v in stt.items():
-        md.append(f"| {v['signal']} | {v['timeframe']} | {v['class']} | {v['best_family_net_bps']} |")
+        md.append(
+            f"| {v['signal']} | {v['timeframe']} | {v['class']} | {v['best_family_net_bps']} |"
+        )
     emit("SIGNAL_TO_TRADE_DIAGNOSIS", {"status": "OK", "signals": stt}, "\n".join(md))
 
     return 0

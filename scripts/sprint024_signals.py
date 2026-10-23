@@ -106,9 +106,7 @@ def sig_shock_confirm_followthrough(b: Bundle) -> NDArray[Any]:
 # ---------------------------------------------------------------------------
 
 
-def xsec_shock_signal(
-    bundles: dict[str, Bundle], ret_w: int = 20
-) -> dict[str, NDArray[Any]]:
+def xsec_shock_signal(bundles: dict[str, Bundle], ret_w: int = 20) -> dict[str, NDArray[Any]]:
     """Shock on the strongest / weakest major -> continuation of relative strength.
 
     Ranked on the trailing ``ret[ret_w]`` at the shock bar (PIT). The shock asset

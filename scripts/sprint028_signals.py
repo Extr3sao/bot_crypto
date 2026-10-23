@@ -34,37 +34,115 @@ class Hypothesis:
 
 HYPOTHESES: tuple[Hypothesis, ...] = (
     # ---- C1 funding persistence ------------------------------------------
-    Hypothesis("H-C1-MEAN3", "FUNDING", "f_mean_k", "f_mean_k", "funding",
-               "trailing 24h funding mean predicts future funding"),
-    Hypothesis("H-C1-MEAN9", "FUNDING", "f_mean_9", "f_mean_9", "funding",
-               "trailing 72h funding mean predicts future funding"),
-    Hypothesis("H-C1-MEAN21", "FUNDING", "f_mean_21", "f_mean_21", "funding",
-               "trailing 7d funding mean predicts future funding"),
-    Hypothesis("H-C1-PERSIST", "FUNDING", "f_persist_k", "f_persist_k", "funding",
-               "trailing fraction of positive funding periods predicts funding"),
-    Hypothesis("H-C1-LAST", "FUNDING", "f_last", "f_last", "funding",
-               "last realized funding rate predicts future funding"),
+    Hypothesis(
+        "H-C1-MEAN3",
+        "FUNDING",
+        "f_mean_k",
+        "f_mean_k",
+        "funding",
+        "trailing 24h funding mean predicts future funding",
+    ),
+    Hypothesis(
+        "H-C1-MEAN9",
+        "FUNDING",
+        "f_mean_9",
+        "f_mean_9",
+        "funding",
+        "trailing 72h funding mean predicts future funding",
+    ),
+    Hypothesis(
+        "H-C1-MEAN21",
+        "FUNDING",
+        "f_mean_21",
+        "f_mean_21",
+        "funding",
+        "trailing 7d funding mean predicts future funding",
+    ),
+    Hypothesis(
+        "H-C1-PERSIST",
+        "FUNDING",
+        "f_persist_k",
+        "f_persist_k",
+        "funding",
+        "trailing fraction of positive funding periods predicts funding",
+    ),
+    Hypothesis(
+        "H-C1-LAST",
+        "FUNDING",
+        "f_last",
+        "f_last",
+        "funding",
+        "last realized funding rate predicts future funding",
+    ),
     # ---- C2 funding + basis ----------------------------------------------
-    Hypothesis("H-C2-BASISPOS", "FUNDING", "f_mean_k_basis_pos", "f_mean_k", "funding",
-               "funding persistence restricted to positive-basis regime"),
-    Hypothesis("H-C2-COMBINED", "FUNDING", "f_mean_k_basis_pos", "f_mean_k", "combined",
-               "funding persistence + basis together predict total carry"),
+    Hypothesis(
+        "H-C2-BASISPOS",
+        "FUNDING",
+        "f_mean_k_basis_pos",
+        "f_mean_k",
+        "funding",
+        "funding persistence restricted to positive-basis regime",
+    ),
+    Hypothesis(
+        "H-C2-COMBINED",
+        "FUNDING",
+        "f_mean_k_basis_pos",
+        "f_mean_k",
+        "combined",
+        "funding persistence + basis together predict total carry",
+    ),
     # ---- C3 funding + OI --------------------------------------------------
-    Hypothesis("H-C3-OIUP", "FUNDING", "f_mean_k_oi_up", "f_mean_k", "funding",
-               "funding persistence when OI is expanding"),
-    Hypothesis("H-C3-OIDN", "FUNDING", "f_mean_k_oi_dn", "f_mean_k", "funding",
-               "funding persistence when OI is contracting"),
+    Hypothesis(
+        "H-C3-OIUP",
+        "FUNDING",
+        "f_mean_k_oi_up",
+        "f_mean_k",
+        "funding",
+        "funding persistence when OI is expanding",
+    ),
+    Hypothesis(
+        "H-C3-OIDN",
+        "FUNDING",
+        "f_mean_k_oi_dn",
+        "f_mean_k",
+        "funding",
+        "funding persistence when OI is contracting",
+    ),
     # ---- C4 funding + crowding -------------------------------------------
-    Hypothesis("H-C4-CROWD", "FUNDING", "f_mean_k_crowd", "f_mean_k", "funding",
-               "funding persistence under extreme long crowding"),
+    Hypothesis(
+        "H-C4-CROWD",
+        "FUNDING",
+        "f_mean_k_crowd",
+        "f_mean_k",
+        "funding",
+        "funding persistence under extreme long crowding",
+    ),
     # ---- C5 funding + volatility -----------------------------------------
-    Hypothesis("H-C5-VOL", "FUNDING", "f_mean_k_vol", "f_mean_k", "funding",
-               "funding persistence during volatility events"),
+    Hypothesis(
+        "H-C5-VOL",
+        "FUNDING",
+        "f_mean_k_vol",
+        "f_mean_k",
+        "funding",
+        "funding persistence during volatility events",
+    ),
     # ---- C6 basis convergence --------------------------------------------
-    Hypothesis("H-C6-BASIS", "BASIS", "neg_basis", "basis", "basis",
-               "positive spot-perp basis converges (long spot / short perp)"),
-    Hypothesis("H-C6-BASIS-MEAN", "BASIS", "neg_basis_mean", "basis_mean_k", "basis",
-               "trailing positive basis mean predicts basis convergence"),
+    Hypothesis(
+        "H-C6-BASIS",
+        "BASIS",
+        "neg_basis",
+        "basis",
+        "basis",
+        "positive spot-perp basis converges (long spot / short perp)",
+    ),
+    Hypothesis(
+        "H-C6-BASIS-MEAN",
+        "BASIS",
+        "neg_basis_mean",
+        "basis_mean_k",
+        "basis",
+        "trailing positive basis mean predicts basis convergence",
+    ),
 )
 
 FAMILIES = ("FUNDING", "BASIS")
@@ -81,9 +159,12 @@ class Variant:
 
     def as_dict(self) -> dict[str, Any]:
         return {
-            "variant_id": self.variant_id, "hypothesis_id": self.hid,
-            "family": self.family, "horizon_key": self.horizon_key,
-            "horizon_periods": self.horizon_periods, "target_kind": self.target_kind,
+            "variant_id": self.variant_id,
+            "hypothesis_id": self.hid,
+            "family": self.family,
+            "horizon_key": self.horizon_key,
+            "horizon_periods": self.horizon_periods,
+            "target_kind": self.target_kind,
         }
 
 
@@ -91,11 +172,16 @@ def build_variants() -> list[Variant]:
     out: list[Variant] = []
     for h in HYPOTHESES:
         for hk in L.HORIZON_ORDER:
-            out.append(Variant(
-                variant_id=f"{h.hid}@{hk}", hid=h.hid, family=h.family,
-                horizon_key=hk, horizon_periods=L.HORIZON_PERIODS[hk],
-                target_kind=h.target_kind,
-            ))
+            out.append(
+                Variant(
+                    variant_id=f"{h.hid}@{hk}",
+                    hid=h.hid,
+                    family=h.family,
+                    horizon_key=hk,
+                    horizon_periods=L.HORIZON_PERIODS[hk],
+                    target_kind=h.target_kind,
+                )
+            )
     return out
 
 
@@ -146,8 +232,7 @@ def target_array(v: Variant, panel: L.CarryPanel) -> NDArray[Any]:
     raise ValueError(f"unknown target_kind {h.target_kind}")
 
 
-def entry_signal(v: Variant, panel: L.CarryPanel, rule: str,
-                 direction: int = 1) -> NDArray[Any]:
+def entry_signal(v: Variant, panel: L.CarryPanel, rule: str, direction: int = 1) -> NDArray[Any]:
     """Pre-registered boolean entry rules for a strategy candidate (§29).
 
     The signal is the hypothesis's own (PIT-safe) signal, oriented by the sign
@@ -168,8 +253,10 @@ def entry_signal(v: Variant, panel: L.CarryPanel, rule: str,
     if rule == "RULE_POS":
         return np.asarray(np.isfinite(s) & (s > 0.0), dtype=bool)
     if rule == "RULE_BE":
-        return np.asarray(np.isfinite(s) & (s > 0.0) & np.isfinite(core)
-                          & (core >= L.ROUND_TRIP_COST_BPS), dtype=bool)
+        return np.asarray(
+            np.isfinite(s) & (s > 0.0) & np.isfinite(core) & (core >= L.ROUND_TRIP_COST_BPS),
+            dtype=bool,
+        )
     raise ValueError(f"unknown rule {rule}")
 
 

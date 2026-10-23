@@ -168,7 +168,10 @@ def _h1_price_oi(row: Mapping[str, Any]) -> int | None:
 def _h1_price_taker(row: Mapping[str, Any]) -> int | None:
     if not _eligible(row, ("ret_z", "taker_imbalance")):
         return None
-    if row["ret_z"] <= _T["breakout_ret_z"] or row["taker_imbalance"] <= _T["taker_imbalance_confirm"]:
+    if (
+        row["ret_z"] <= _T["breakout_ret_z"]
+        or row["taker_imbalance"] <= _T["taker_imbalance_confirm"]
+    ):
         return 0
     return 1
 
@@ -215,7 +218,10 @@ def _h2_price_only(row: Mapping[str, Any]) -> int | None:
 def _h2_price_funding(row: Mapping[str, Any]) -> int | None:
     if not _eligible(row, ("momentum_delta", "funding")):
         return None
-    if row["momentum_delta"] >= _T["momentum_deteriorating"] or row["funding"] <= _T["funding_elevated"]:
+    if (
+        row["momentum_delta"] >= _T["momentum_deteriorating"]
+        or row["funding"] <= _T["funding_elevated"]
+    ):
         return 0
     return -1
 
@@ -251,9 +257,7 @@ ABLATIONS: dict[str, dict[str, Callable[[Mapping[str, Any]], int | None]]] = {
 }
 
 
-def ablation_direction(
-    hypothesis_id: str, label: str, row: Mapping[str, Any]
-) -> int | None:
+def ablation_direction(hypothesis_id: str, label: str, row: Mapping[str, Any]) -> int | None:
     """Apply one ablation variant, or the frozen rule when ``label == 'FULL'``."""
     if label == "FULL":
         return preregistered_direction(hypothesis_id, row)
@@ -318,11 +322,7 @@ def evaluate_directions(
     se = sigma / math.sqrt(n_eff) if n_eff > 0 and sigma > 0 else float("inf")
     t_stat = gross / se if se not in (0.0, float("inf")) else 0.0
     p_raw = _one_sided_p(t_stat)
-    ic = (
-        a1.spearman([d for d, _ in active], [f for _, f in active])
-        if len(active) >= 5
-        else 0.0
-    )
+    ic = a1.spearman([d for d, _ in active], [f for _, f in active]) if len(active) >= 5 else 0.0
     power = a1.power_class(n_effective=n_eff, sigma_bps=sigma, hurdle_bps=hurdle_bps)
     concentration = a1.concentration([value for value in contributions if value != 0.0])
     stability = a1.stability_by_window(contributions, windows=STABILITY_WINDOWS)

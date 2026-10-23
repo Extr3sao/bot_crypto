@@ -105,8 +105,7 @@ class IndependentVerifier:
         # The PIT slice is by bar CLOSE: a bar that had not closed by the
         # decision time carries future information and must not be consumed.
         expected = [
-            b.timestamp
-            for b in closed_bar_slice(request.raw_history, request.decision_time_ms)
+            b.timestamp for b in closed_bar_slice(request.raw_history, request.decision_time_ms)
         ]
         used = [b.timestamp for b in request.used_bars]
         if used and used != expected:
@@ -165,7 +164,9 @@ class IndependentVerifier:
                     False,
                     "TRADE_PAPER without a deterministic risk review that actually ran",
                 )
-            return VerificationCheck("paper_requires_proposal", True, "proposal + risk review present")
+            return VerificationCheck(
+                "paper_requires_proposal", True, "proposal + risk review present"
+            )
         return VerificationCheck(
             "paper_requires_proposal",
             True,
@@ -256,7 +257,9 @@ class IndependentVerifier:
                     "shadow_purity", False, f"SHADOW created {request.orders_created} order(s)"
                 )
             if request.shadow_marked is False:
-                return VerificationCheck("shadow_purity", False, "shadow decision not marked SHADOW")
+                return VerificationCheck(
+                    "shadow_purity", False, "shadow decision not marked SHADOW"
+                )
             return VerificationCheck("shadow_purity", True, "shadow: 0 orders, marked SHADOW")
         if request.declared_mode is DecisionMode.NO_TRADE and request.orders_created != 0:
             return VerificationCheck(

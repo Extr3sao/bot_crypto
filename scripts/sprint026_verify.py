@@ -73,8 +73,11 @@ def _independent_spread_btc(max_files: int = 6, per_file: int = 2000) -> dict[st
     if not sps:
         return {"n": 0, "mean_bps": None}
     arr = np.array(sps, dtype=np.float64)
-    return {"n": int(arr.shape[0]), "mean_bps": round(float(np.mean(arr)), 6),
-            "files_scanned": min(len(files), max_files)}
+    return {
+        "n": int(arr.shape[0]),
+        "mean_bps": round(float(np.mean(arr)), 6),
+        "files_scanned": min(len(files), max_files),
+    }
 
 
 def verify_all() -> dict[str, Any]:
@@ -96,43 +99,57 @@ def verify_all() -> dict[str, Any]:
     checks: list[dict[str, Any]] = []
 
     def chk(name: str, ok: bool, detail: str = "") -> None:
-        checks.append({"name": name, "result": "PASS" if ok else "FAIL", "ok": bool(ok),
-                       "detail": detail})
+        checks.append(
+            {"name": name, "result": "PASS" if ok else "FAIL", "ok": bool(ok), "detail": detail}
+        )
 
     # 1. exact replay of the frozen candidate
-    chk("primary_candidate_replay", n == 61 and abs(mean - 20.7298) < 0.01,
-        f"n={n} mean={mean:.4f}")
+    chk(
+        "primary_candidate_replay", n == 61 and abs(mean - 20.7298) < 0.01, f"n={n} mean={mean:.4f}"
+    )
 
     # 2. builder break-even == independently recomputed mean
-    chk("break_even_cost_recomputed",
+    chk(
+        "break_even_cost_recomputed",
         abs(float(primary_be["break_even_cost_bps"]) - mean) < 1e-2,
-        f"artifact={primary_be['break_even_cost_bps']} recomputed={mean:.4f}")
+        f"artifact={primary_be['break_even_cost_bps']} recomputed={mean:.4f}",
+    )
 
     # 3. independent bootstrap CI (different seed) agrees within bootstrap noise,
     #    and both lower bounds are negative (the core ALPHA_UNCERTAINTY_HIGH claim).
-    chk("bootstrap_ci_independent",
+    chk(
+        "bootstrap_ci_independent",
         abs(ci_lo - float(primary_be["bootstrap_ci90_low_bps"])) < 4.0 and ci_lo < 0.0,
-        f"indep=[{ci_lo:.3f},{ci_hi:.3f}] artifact_low={primary_be['bootstrap_ci90_low_bps']}")
+        f"indep=[{ci_lo:.3f},{ci_hi:.3f}] artifact_low={primary_be['bootstrap_ci90_low_bps']}",
+    )
 
     # 4. conservative break-even <= 0 -> alpha uncertainty high
-    chk("alpha_uncertainty_high",
+    chk(
+        "alpha_uncertainty_high",
         float(primary_be["conservative_break_even_cost_bps"]) <= 0.0,
-        f"conservative={primary_be['conservative_break_even_cost_bps']}")
+        f"conservative={primary_be['conservative_break_even_cost_bps']}",
+    )
 
     # 5. required reduction recomputed
-    chk("required_cost_reduction_recomputed",
+    chk(
+        "required_cost_reduction_recomputed",
         abs(float(primary_be["required_cost_reduction_bps"]) - (X.CURRENT_COST_BPS - mean)) < 1e-2,
-        f"artifact={primary_be['required_cost_reduction_bps']}")
+        f"artifact={primary_be['required_cost_reduction_bps']}",
+    )
 
     # 6. cost model unchanged
-    chk("cost_model_v3_unchanged",
+    chk(
+        "cost_model_v3_unchanged",
         abs(sum(X.COST_MODEL_V3_COMPONENTS.values()) - X.CURRENT_COST_BPS) < 1e-3,
-        f"components_sum={sum(X.COST_MODEL_V3_COMPONENTS.values()):.6f}")
+        f"components_sum={sum(X.COST_MODEL_V3_COMPONENTS.values()):.6f}",
+    )
 
     # 7. official fee unchanged
-    chk("official_fee_matches",
+    chk(
+        "official_fee_matches",
         X.OFFICIAL_FEES["BINANCE_SPOT_VIP0"]["taker_fee_bps"] == 10.0
-        and X.OFFICIAL_FEES["BINANCE_SPOT_VIP0"]["maker_fee_bps"] == 10.0)
+        and X.OFFICIAL_FEES["BINANCE_SPOT_VIP0"]["maker_fee_bps"] == 10.0,
+    )
 
     # 8. budgets
     chk("policy_budget_respected", int(plan["n_execution_policies"]) <= 8)
@@ -140,51 +157,81 @@ def verify_all() -> dict[str, Any]:
 
     # 9. holdout untouched
     splits = plan["validation_split"]
-    chk("holdout_untouched",
+    chk(
+        "holdout_untouched",
         all("W6" not in w and "W7" not in w for ws in splits.values() for w in ws)
-        and final.get("holdout_read") is False)
+        and final.get("holdout_read") is False,
+    )
 
     # 10. classification rule reproduced independently
     be_cons = float(primary_be["conservative_break_even_cost_bps"])
     floor = X.theoretical_floor_bps()
     g0 = "FAIL"  # no evidence-backed alternative below gross (E1 = 24.00 > 20.73)
     improved = False  # E1 cost 24.00 > current 23.79
-    reproduced = ("EX-A" if (floor["theoretical_minimum_realistic_cost_bps"] >= be_cons
-                             and not improved and g0 == "FAIL") else "EX-?")
-    chk("classification_reproduced", reproduced == final["global_classification"],
-        f"reproduced={reproduced} artifact={final['global_classification']}")
+    reproduced = (
+        "EX-A"
+        if (
+            floor["theoretical_minimum_realistic_cost_bps"] >= be_cons
+            and not improved
+            and g0 == "FAIL"
+        )
+        else "EX-?"
+    )
+    chk(
+        "classification_reproduced",
+        reproduced == final["global_classification"],
+        f"reproduced={reproduced} artifact={final['global_classification']}",
+    )
 
     # 11. net expectancy consistency
-    chk("net_expectancy_consistent",
-        abs(float(final["net_expectancy_bps"])
-            - (mean - float(final["best_realistic_execution_cost_bps"]))) < 1e-1,
-        f"net={final['net_expectancy_bps']}")
+    chk(
+        "net_expectancy_consistent",
+        abs(
+            float(final["net_expectancy_bps"])
+            - (mean - float(final["best_realistic_execution_cost_bps"]))
+        )
+        < 1e-1,
+        f"net={final['net_expectancy_bps']}",
+    )
 
     # 12. spread independently measured (raw bookTicker)
-    chk("spread_recomputed",
-        spot["n"] > 0 and artifact_btc.get("n", 0) > 0
+    chk(
+        "spread_recomputed",
+        spot["n"] > 0
+        and artifact_btc.get("n", 0) > 0
         and math.isfinite(float(spot["mean_bps"] or 0.0))
         and abs(float(spot["mean_bps"] or 0.0) - float(artifact_btc.get("mean_bps") or 0.0)) < 0.05,
-        f"indep={spot}")
+        f"indep={spot}",
+    )
 
     # 13. feasibility frontier monotone in cost
     fr = frontier["frontier"]
     nets = [r["net_expectancy_bps"] for r in fr if r["net_expectancy_bps"] is not None]
-    chk("frontier_monotone_decreasing",
-        all(nets[i] >= nets[i + 1] - 1e-9 for i in range(len(nets) - 1)))
+    chk(
+        "frontier_monotone_decreasing",
+        all(nets[i] >= nets[i + 1] - 1e-9 for i in range(len(nets) - 1)),
+    )
 
     # 14. no maker fill assumed / no rebate
     mf = json.loads((OUT / "MAKER_FILL_ANALYSIS.json").read_text(encoding="utf-8"))
-    chk("maker_fill_not_certified",
-        mf["status"] == "NOT_TESTABLE_HISTORICALLY" and mf["certifiable"] is False)
+    chk(
+        "maker_fill_not_certified",
+        mf["status"] == "NOT_TESTABLE_HISTORICALLY" and mf["certifiable"] is False,
+    )
     chk("no_rebate_assumed", all(v["rebate_bps"] == 0.0 for v in X.OFFICIAL_FEES.values()))
 
     # 15. gates valid + false-success target
-    chk("gate_states_valid",
-        all(v in ("PASS", "FAIL", "PARTIAL", "BLOCKED", "NOT_REACHED")
-            for v in final["gates"].values()))
-    chk("no_false_tradability_claim",
-        final["gates"]["G_EXEC_1"] == "FAIL" and final["gates"]["G_EXEC_0"] == "FAIL")
+    chk(
+        "gate_states_valid",
+        all(
+            v in ("PASS", "FAIL", "PARTIAL", "BLOCKED", "NOT_REACHED")
+            for v in final["gates"].values()
+        ),
+    )
+    chk(
+        "no_false_tradability_claim",
+        final["gates"]["G_EXEC_1"] == "FAIL" and final["gates"]["G_EXEC_0"] == "FAIL",
+    )
 
     false_success = sum(1 for c in checks if not c["ok"])
     return {
@@ -199,12 +246,18 @@ def verify_all() -> dict[str, Any]:
 
 
 def _md(payload: dict[str, Any]) -> str:
-    lines = ["# RFC026_VERIFICATION — independent", "",
-             f"FALSE_SUCCESS = **{payload['false_success']}** ({payload['n_checks']} checks)", "",
-             f"- independent gross mean = {payload['independent_gross_mean_bps']} bps",
-             f"- independent CI90 = {payload['independent_ci90']}",
-             f"- independent spot spread = {payload['independent_spread']}", "",
-             "| check | result | detail |", "| --- | --- | --- |"]
+    lines = [
+        "# RFC026_VERIFICATION — independent",
+        "",
+        f"FALSE_SUCCESS = **{payload['false_success']}** ({payload['n_checks']} checks)",
+        "",
+        f"- independent gross mean = {payload['independent_gross_mean_bps']} bps",
+        f"- independent CI90 = {payload['independent_ci90']}",
+        f"- independent spot spread = {payload['independent_spread']}",
+        "",
+        "| check | result | detail |",
+        "| --- | --- | --- |",
+    ]
     for c in payload["checks"]:
         lines.append(f"| {c['name']} | {c['result']} | {c['detail']} |")
     return "\n".join(lines)
@@ -222,8 +275,13 @@ def main() -> None:
     final["independent_verification"] = "PASS" if result["false_success"] == 0 else "FAIL"
     # Reuse the canonical writer so the .md never diverges from the verified .json.
     EX.write_final(final)
-    print("independent verifier: FALSE_SUCCESS =", result["false_success"],
-          "of", result["n_checks"], "checks")
+    print(
+        "independent verifier: FALSE_SUCCESS =",
+        result["false_success"],
+        "of",
+        result["n_checks"],
+        "checks",
+    )
     for c in result["checks"]:
         if not c["ok"]:
             print("  FAIL:", c["name"], c["detail"])

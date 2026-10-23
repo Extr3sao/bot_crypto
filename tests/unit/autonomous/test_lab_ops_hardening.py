@@ -107,9 +107,7 @@ def test_a_heartbeat_that_cannot_be_written_does_not_stop_the_loop(tmp_path: Pat
     writer = HeartbeatWriter(run_dir=blocked)
     failures = ArtifactWriteFailures()
 
-    result = durable_write(
-        lambda: writer.write(_heartbeat()), what="heartbeat", failures=failures
-    )
+    result = durable_write(lambda: writer.write(_heartbeat()), what="heartbeat", failures=failures)
 
     assert result is None
     assert failures.count == 1
@@ -211,7 +209,9 @@ def _guard_supervisor(tmp_path: Path) -> tuple[Supervisor, Path, Path]:
             ),
         ],
         heartbeat_seconds=0.05,
-        disk_thresholds=DiskThresholds(warning_bytes=stop_bytes, critical_bytes=stop_bytes, stop_bytes=stop_bytes),
+        disk_thresholds=DiskThresholds(
+            warning_bytes=stop_bytes, critical_bytes=stop_bytes, stop_bytes=stop_bytes
+        ),
     )
     return supervisor, collector_stop, sealed
 
@@ -269,9 +269,7 @@ def test_the_guard_is_not_armed_when_the_volume_is_fine(tmp_path: Path) -> None:
             )
         ],
         heartbeat_seconds=0.05,
-        disk_thresholds=DiskThresholds(
-            warning_bytes=1, critical_bytes=1, stop_bytes=1
-        ),
+        disk_thresholds=DiskThresholds(warning_bytes=1, critical_bytes=1, stop_bytes=1),
     )
     supervisor.start_all()
     events: list[dict[str, object]] = []
@@ -324,7 +322,11 @@ def test_the_guard_needs_a_stop_file_to_be_able_to_be_polite(tmp_path: Path) -> 
 def test_a_sleeping_child_is_still_alive_to_the_supervisor(tmp_path: Path) -> None:
     supervisor = Supervisor.build(
         tmp_path / "run",
-        [ManagedProcess(name="paper", command=[sys.executable, "-c", RUNNING_CHILD], cwd=Path.cwd())],
+        [
+            ManagedProcess(
+                name="paper", command=[sys.executable, "-c", RUNNING_CHILD], cwd=Path.cwd()
+            )
+        ],
     )
     supervisor.start_all()
     try:
@@ -407,7 +409,9 @@ def test_a_dead_collector_is_not_reported_as_ready() -> None:
     assert _readiness_flags(payload())["COLLECTOR_READY"] is True
 
     # A manifest that says FAILED is a verdict, even when the state file is missing.
-    failed_manifest = payload(manifest={"status": "FAILED", "failure_kind": "STORAGE_WRITE_FAILURE"})
+    failed_manifest = payload(
+        manifest={"status": "FAILED", "failure_kind": "STORAGE_WRITE_FAILURE"}
+    )
     assert _readiness_flags(failed_manifest)["COLLECTOR_READY"] is False
 
     # And so is a supervisor that has declared the child FAILED.
@@ -469,9 +473,7 @@ def test_a_child_log_written_in_the_console_code_page_is_not_mangled(tmp_path: P
     logs = run_dir / "logs"
     logs.mkdir(parents=True)
     # 0x97 is the cp1252 em dash and is not valid UTF-8, exactly like the real log.
-    (logs / "collector.log").write_bytes(
-        b"forward collector: FAILED \x97 refusing to exit 0\n"
-    )
+    (logs / "collector.log").write_bytes(b"forward collector: FAILED \x97 refusing to exit 0\n")
 
     found = _last_log_error(run_dir, "collector")
 

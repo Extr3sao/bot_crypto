@@ -60,7 +60,9 @@ def test_owner_approval_is_recorded_as_an_adr() -> None:
     decisions = _read(REPO / "tasks" / "decisions.md")
     assert re.search(r"^## ADR-0024\b", decisions, flags=re.MULTILINE), "ADR-0024 missing"
     assert "2026-10-08" in decisions
-    assert "exclusivamente en investigacion offline" in decisions, "the ADR must limit scope to offline"
+    assert "exclusivamente en investigacion offline" in decisions, (
+        "the ADR must limit scope to offline"
+    )
     assert "G_BUSINESS_REENTRY" in decisions and "distinto de PASS" in decisions
     assert "DISCOVERY_CAMPAIGN_FAILED" in decisions, "the stop rule must be in the approval record"
 
@@ -87,7 +89,9 @@ def test_rfc041_exemption_is_dated_and_does_not_open_production() -> None:
     assert exemption["approved_at"] == "2026-10-08"
     assert exemption["gate_state"]["G_BUSINESS_REENTRY"] == "NOT_PASS"
     assert exemption["gate_state"]["TRADES_AUTHORIZED"] == 0
-    assert policy["next_rfc_requires"] == "G_BUSINESS_REENTRY = PASS", "the production gate is unchanged"
+    assert policy["next_rfc_requires"] == "G_BUSINESS_REENTRY = PASS", (
+        "the production gate is unchanged"
+    )
     for refused in ("live trading", "real orders", "paper trading"):
         assert refused in exemption["not_authorized"]
     md = _read(REPO / "docs" / "research" / "BUSINESS_REENTRY_POLICY.md")
@@ -190,8 +194,17 @@ def test_discovery_code_cannot_touch_an_order_or_a_credential() -> None:
             if isinstance(node, ast.Import)
             for alias in node.names
         }
-        forbidden_prefixes = ("ccxt", "requests", "urllib", "trading_bot.execution", "trading_bot.market_data")
-        assert not any(i.startswith(forbidden_prefixes) for i in imports), (path.name, sorted(imports))
+        forbidden_prefixes = (
+            "ccxt",
+            "requests",
+            "urllib",
+            "trading_bot.execution",
+            "trading_bot.market_data",
+        )
+        assert not any(i.startswith(forbidden_prefixes) for i in imports), (
+            path.name,
+            sorted(imports),
+        )
 
 
 # --------------------------------------------------------------------------- #
@@ -222,7 +235,9 @@ def test_signals_need_no_data_after_their_own_exit() -> None:
 
     spec = D.load_spec(SPECS / "HYP-002.json")
     bars = D.load_bars(REPO / "data" / "raw" / "alpha003" / "price" / f"{spec.asset}_1h.json")
-    funding = D.load_funding(REPO / "data" / "raw" / "alpha002" / "funding_rate" / f"{spec.asset}.json")
+    funding = D.load_funding(
+        REPO / "data" / "raw" / "alpha002" / "funding_rate" / f"{spec.asset}.json"
+    )
     signals = D.signal_settlement_dip(bars, funding, spec.parameters)
     assert signals, "a look-ahead probe with no signals proves nothing"
     for signal in signals[:3] + signals[-3:]:

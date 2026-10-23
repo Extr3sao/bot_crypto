@@ -64,9 +64,7 @@ def test_frame_rows_are_the_universe_intersection() -> None:
     }
     frame = af.build_frame(timeframe="5m", bars_by_symbol=bars, windows=(1, 2))
     assert len(frame) == 260
-    assert [row["bar_open_ms"] for row in frame] == [
-        T0 + index * PERIOD for index in range(260)
-    ]
+    assert [row["bar_open_ms"] for row in frame] == [T0 + index * PERIOD for index in range(260)]
 
 
 def test_timestamp_drift_shrinks_the_grid_and_never_misaligns() -> None:
@@ -129,13 +127,15 @@ def test_future_bars_do_not_move_the_past() -> None:
     for index in range(151, 200):
         mutated[index][4] = float(mutated[index][4]) * 1.5
         mutated[index][2] = max(float(mutated[index][2]), float(mutated[index][4]))
-    changed = af.build_frame(
-        timeframe="5m", bars_by_symbol={"BTCUSDT": mutated}, windows=(1, 2)
-    )
+    changed = af.build_frame(timeframe="5m", bars_by_symbol={"BTCUSDT": mutated}, windows=(1, 2))
     assert base[:150] == changed[:150]
     # and row 150's features are unchanged too, only its forward label moved
-    features_only = {key: value for key, value in changed[150].items() if not key.startswith("fwd_")}
-    assert {key: value for key, value in base[150].items() if not key.startswith("fwd_")} == features_only
+    features_only = {
+        key: value for key, value in changed[150].items() if not key.startswith("fwd_")
+    }
+    assert {
+        key: value for key, value in base[150].items() if not key.startswith("fwd_")
+    } == features_only
     assert base[150]["fwd_BTCUSDT"] != changed[150]["fwd_BTCUSDT"]
 
 
@@ -159,7 +159,10 @@ def test_the_leader_window_ends_before_the_decision_for_lag_two() -> None:
 
 
 def test_point_in_time_invariant_holds_for_every_row() -> None:
-    bars = {name: bars_from_returns(random_returns(150, seed)) for seed, name in enumerate(["a", "b", "c"])}
+    bars = {
+        name: bars_from_returns(random_returns(150, seed))
+        for seed, name in enumerate(["a", "b", "c"])
+    }
     for row in af.build_frame(timeframe="5m", bars_by_symbol=bars, windows=(1, 2)):
         assert row["point_in_time_ok"] is True
         assert row["available_ms"] <= row["decision_ms"]
@@ -227,9 +230,7 @@ def test_cell_row_derivations() -> None:
     cell = af.cell_row(row, target="SOLUSDT", leader="BTCUSDT", lag=2)
     assert cell["leader_ret_z"] == pytest.approx(row["ret2_BTCUSDT"] / row["atr_pct_BTCUSDT"])
     assert cell["target_ret_z"] == pytest.approx(row["ret2_SOLUSDT"] / row["atr_pct_SOLUSDT"])
-    assert cell["target_mom_z"] == pytest.approx(
-        row["ret12_SOLUSDT"] / row["atr_pct_SOLUSDT"]
-    )
+    assert cell["target_mom_z"] == pytest.approx(row["ret12_SOLUSDT"] / row["atr_pct_SOLUSDT"])
     assert cell["market_ret_z"] == pytest.approx(row["market_ret12"] / row["atr_pct_SOLUSDT"])
     target_mom = cell["target_mom_z"]
     market = cell["market_ret_z"]

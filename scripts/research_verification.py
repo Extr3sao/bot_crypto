@@ -984,9 +984,7 @@ def main() -> None:
     equivalence = (v9.get("detail") or {}).get("writer_equivalence")
     if equivalence:
         with open(
-            REPORTS
-            / "microstructure-forward"
-            / "writer_code_equivalence.json",
+            REPORTS / "microstructure-forward" / "writer_code_equivalence.json",
             "w",
             encoding="utf-8",
             newline="\n",

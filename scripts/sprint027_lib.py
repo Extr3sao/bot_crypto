@@ -43,8 +43,8 @@ ASSETS = ("BTCUSDT", "ETHUSDT", "SOLUSDT")
 COST_MODEL_V3_BPS = 23.790569
 ROOT_NOTIONAL = 500.0
 
-TF_SRC_MIN = 5          # source kline grid
-TF_DEC_MIN = 30         # decision grid
+TF_SRC_MIN = 5  # source kline grid
+TF_DEC_MIN = 30  # decision grid
 SRC_MS = TF_SRC_MIN * 60_000
 DEC_MS = TF_DEC_MIN * 60_000
 
@@ -57,8 +57,8 @@ SPLIT_FRACTIONS = {"DISCOVERY": (0.0, 0.6), "VALIDATION": (0.6, 0.8), "HOLDOUT":
 SPLIT_ORDER = ("DISCOVERY", "VALIDATION", "HOLDOUT")
 
 # Trailing feature windows (bars on the 30m grid).
-OI_Z_WIN = 48       # 24h
-VOL_WIN_5M = 288    # 24h of 5m returns
+OI_Z_WIN = 48  # 24h
+VOL_WIN_5M = 288  # 24h of 5m returns
 VOL_Z_WIN = 48
 RET_Z_WIN = 48
 
@@ -92,8 +92,8 @@ def load_klines(asset: str) -> dict[str, NDArray[Any]]:
 class Panel:
     """A pooled, PIT-safe decision panel over the assets (analytics-ready)."""
 
-    ts: NDArray[Any]           # decision time (bar close), ms
-    asset: NDArray[Any]        # asset index per row
+    ts: NDArray[Any]  # decision time (bar close), ms
+    asset: NDArray[Any]  # asset index per row
     open: NDArray[Any]
     high: NDArray[Any]
     low: NDArray[Any]
@@ -144,6 +144,7 @@ def _asof(times: NDArray[Any], values: NDArray[Any], decisions: NDArray[Any]) ->
     t = times.tolist()
     out = np.full(decisions.shape, np.nan, dtype=np.float64)
     import bisect
+
     for k, d in enumerate(decisions):
         i = bisect.bisect_right(t, int(d)) - 1
         if i >= 0:
@@ -226,8 +227,11 @@ def _asset_rows(asset: str) -> dict[str, Any]:
         "asset": asset,
         "grid_ts": gts,
         "decision": decision,
-        "open": grid["open"], "high": grid["high"], "low": grid["low"],
-        "close": grid["close"], "volume": grid["volume"],
+        "open": grid["open"],
+        "high": grid["high"],
+        "low": grid["low"],
+        "close": grid["close"],
+        "volume": grid["volume"],
         "metrics": aligned,
         "vol_real": vol_real,
     }
@@ -250,10 +254,23 @@ def _rolling_std(x: NDArray[Any], n: int) -> NDArray[Any]:
 # ---------------------------------------------------------------------------
 
 FEATURE_NAMES = (
-    "oi", "oi_value", "doi", "pct_doi", "oi_z", "oi_accel",
-    "ls_global", "ls_top", "top_global_div", "top_global_ratio",
-    "taker", "taker_chg", "taker_persist",
-    "ret1", "ret_z", "vol_real", "vol_z",
+    "oi",
+    "oi_value",
+    "doi",
+    "pct_doi",
+    "oi_z",
+    "oi_accel",
+    "ls_global",
+    "ls_top",
+    "top_global_div",
+    "top_global_ratio",
+    "taker",
+    "taker_chg",
+    "taker_persist",
+    "ret1",
+    "ret_z",
+    "vol_real",
+    "vol_z",
 )
 
 
@@ -300,7 +317,10 @@ def build_asset_features(asset: str) -> dict[str, Any]:
         "asset": asset,
         "ts": r["grid_ts"],
         "decision": r["decision"],
-        "open": r["open"], "high": r["high"], "low": r["low"], "close": r["close"],
+        "open": r["open"],
+        "high": r["high"],
+        "low": r["low"],
+        "close": r["close"],
         "volume": r["volume"],
         "features": feats,
     }
@@ -332,8 +352,9 @@ def build_panel(upto: str = "VALIDATION") -> Panel:
 
     ts = np.concatenate([a["ts"] for a in per_asset])
     asset_idx = np.concatenate([a["asset_idx"] for a in per_asset])
-    feats = {name: np.concatenate([a["features"][name] for a in per_asset])
-             for name in FEATURE_NAMES}
+    feats = {
+        name: np.concatenate([a["features"][name] for a in per_asset]) for name in FEATURE_NAMES
+    }
     close = np.concatenate([a["close"] for a in per_asset])
 
     # forward returns per asset (never cross asset boundaries): compute on the
@@ -350,12 +371,14 @@ def build_panel(upto: str = "VALIDATION") -> Panel:
         fwd[h] = np.concatenate(cols)
 
     return Panel(
-        ts=ts, asset=asset_idx,
+        ts=ts,
+        asset=asset_idx,
         open=np.concatenate([a["open"] for a in per_asset]),
         high=np.concatenate([a["high"] for a in per_asset]),
         low=np.concatenate([a["low"] for a in per_asset]),
         close=close,
-        features=feats, fwd_bps=fwd,
+        features=feats,
+        fwd_bps=fwd,
     )
 
 
@@ -380,7 +403,7 @@ def split_masks(panel: Panel, upto: str = "VALIDATION") -> dict[str, NDArray[Any
         _a, b = SPLIT_FRACTIONS["DISCOVERY"]
         c, _d = SPLIT_FRACTIONS["VALIDATION"]
         disc = idx[: int(m * b)]
-        val = idx[int(m * c): int(m * _d)]
+        val = idx[int(m * c) : int(m * _d)]
         m_disc[disc] = True
         m_val[val] = True
     masks["DISCOVERY"] = m_disc
@@ -440,7 +463,8 @@ def quantile_spread(sig: NDArray[Any], fwd: NDArray[Any], q: int = 5) -> dict[st
     steps = sum(1 for kk in range(q - 1) if means[kk + 1] >= means[kk]) / (q - 1)
     mono = steps if steps >= 0.5 else steps - 1.0
     return {
-        "status": "OK", "n": int(n),
+        "status": "OK",
+        "n": int(n),
         "quantile_means_bps": [round(v, 4) for v in means],
         "top_minus_bottom_bps": round(means[-1] - means[0], 4),
         "monotonicity": round(mono, 3),
@@ -470,14 +494,16 @@ def mde_bps(sigma: float, n: int) -> float | None:
 
 def sha256_obj(obj: Any) -> str:
     import hashlib
+
     payload = json.dumps(obj, sort_keys=True, default=str).encode("utf-8")
     return hashlib.sha256(payload).hexdigest()
 
 
 def write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n",
-                    encoding="utf-8")
+    path.write_text(
+        json.dumps(payload, indent=2, sort_keys=True, default=str) + "\n", encoding="utf-8"
+    )
 
 
 def write_md(path: Path, text: str) -> None:

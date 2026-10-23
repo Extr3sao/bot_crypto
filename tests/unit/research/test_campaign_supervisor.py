@@ -169,11 +169,16 @@ def _utc(year: int, month: int, day: int, hour: int = 0, minute: int = 0) -> int
 
 
 def _fake_cycle(
-    ledger_root: Path, *, rows: dict[str, dict[str, list[OHLCV]]] | None = None, calls: list[int] | None = None
+    ledger_root: Path,
+    *,
+    rows: dict[str, dict[str, list[OHLCV]]] | None = None,
+    calls: list[int] | None = None,
 ) -> Any:
     """A cycle that runs the *real* CAP-004 settlement path, without the network."""
 
-    def _run(*, modes: tuple[str, ...], now: int, cycle: int, store: dict[str, Any]) -> dict[str, Any]:
+    def _run(
+        *, modes: tuple[str, ...], now: int, cycle: int, store: dict[str, Any]
+    ) -> dict[str, Any]:
         supervisor = _load_supervisor()
         ledger = dl.DecisionLedger(ledger_root)
         settle = supervisor.campaign.settle_phase(ledger, rows_by_asset=rows or {}, now=now)
@@ -281,13 +286,19 @@ def test_operations_ledger_chains_and_detects_tampering(tmp_path: Path) -> None:
 # --------------------------------------------------------------------------- #
 
 
-def test_due_work_seals_inside_the_window_and_never_reports_a_phantom_settle(tmp_path: Path) -> None:
+def test_due_work_seals_inside_the_window_and_never_reports_a_phantom_settle(
+    tmp_path: Path,
+) -> None:
     supervisor = _load_supervisor()
     slot = _utc(2026, 10, 7, 16)
     paths = _prepare(tmp_path, manifest=_manifest(campaign_start=_utc(2026, 10, 7, 15)))
     ledger = dl.DecisionLedger(paths["ledger_root"])
-    due = supervisor.due_work(ledger=ledger, manifest=_manifest(campaign_start=_utc(2026, 10, 7, 15)),
-                              now=slot + 600, last_verify=slot)
+    due = supervisor.due_work(
+        ledger=ledger,
+        manifest=_manifest(campaign_start=_utc(2026, 10, 7, 15)),
+        now=slot + 600,
+        last_verify=slot,
+    )
     assert due["decision_slot"] == slot
     assert due["seal_due"] is True
     assert due["settle_due"] is False
@@ -342,7 +353,13 @@ def test_a_missed_slot_is_reported_and_never_backfilled(tmp_path: Path) -> None:
 
 @pytest.mark.parametrize(
     "code",
-    ["NETWORK", "TEMPORARY_PROVIDER_FAILURE", "DATA_NOT_READY", "TRANSIENT", "OUTCOME_BLOCKED_DATA"],
+    [
+        "NETWORK",
+        "TEMPORARY_PROVIDER_FAILURE",
+        "DATA_NOT_READY",
+        "TRANSIENT",
+        "OUTCOME_BLOCKED_DATA",
+    ],
 )
 def test_retryable_failures_are_classified_retryable(code: str) -> None:
     assert _load_supervisor().classify_error(code) == "RETRYABLE"
@@ -379,30 +396,72 @@ def test_supervisor_health_is_operational_and_never_a_campaign_verdict() -> None
     interval = 900
     fresh = {"timestamp": DT}
     stale = {"timestamp": DT - 3 * interval}
-    assert supervisor.supervisor_health(
-        heartbeat=stale, now=DT, interval_seconds=interval, blocked=True,
-        stop_requested=False, matured_unsettled=0,
-    ) == "BLOCKED"
-    assert supervisor.supervisor_health(
-        heartbeat=stale, now=DT, interval_seconds=interval, blocked=False,
-        stop_requested=True, matured_unsettled=0,
-    ) == "STOPPED"
-    assert supervisor.supervisor_health(
-        heartbeat=fresh, now=DT, interval_seconds=interval, blocked=False,
-        stop_requested=False, matured_unsettled=0,
-    ) == "HEALTHY"
-    assert supervisor.supervisor_health(
-        heartbeat=stale, now=DT, interval_seconds=interval, blocked=False,
-        stop_requested=False, matured_unsettled=0,
-    ) == "DEGRADED"
-    assert supervisor.supervisor_health(
-        heartbeat=stale, now=DT, interval_seconds=interval, blocked=False,
-        stop_requested=False, matured_unsettled=2,
-    ) == "RECOVERING"
-    assert supervisor.supervisor_health(
-        heartbeat=None, now=DT, interval_seconds=interval, blocked=False,
-        stop_requested=False, matured_unsettled=0,
-    ) == "DEGRADED"
+    assert (
+        supervisor.supervisor_health(
+            heartbeat=stale,
+            now=DT,
+            interval_seconds=interval,
+            blocked=True,
+            stop_requested=False,
+            matured_unsettled=0,
+        )
+        == "BLOCKED"
+    )
+    assert (
+        supervisor.supervisor_health(
+            heartbeat=stale,
+            now=DT,
+            interval_seconds=interval,
+            blocked=False,
+            stop_requested=True,
+            matured_unsettled=0,
+        )
+        == "STOPPED"
+    )
+    assert (
+        supervisor.supervisor_health(
+            heartbeat=fresh,
+            now=DT,
+            interval_seconds=interval,
+            blocked=False,
+            stop_requested=False,
+            matured_unsettled=0,
+        )
+        == "HEALTHY"
+    )
+    assert (
+        supervisor.supervisor_health(
+            heartbeat=stale,
+            now=DT,
+            interval_seconds=interval,
+            blocked=False,
+            stop_requested=False,
+            matured_unsettled=0,
+        )
+        == "DEGRADED"
+    )
+    assert (
+        supervisor.supervisor_health(
+            heartbeat=stale,
+            now=DT,
+            interval_seconds=interval,
+            blocked=False,
+            stop_requested=False,
+            matured_unsettled=2,
+        )
+        == "RECOVERING"
+    )
+    assert (
+        supervisor.supervisor_health(
+            heartbeat=None,
+            now=DT,
+            interval_seconds=interval,
+            blocked=False,
+            stop_requested=False,
+            matured_unsettled=0,
+        )
+        == "DEGRADED"
+    )
     # the supervisor has its own vocabulary; it is not the campaign's
     assert supervisor.SUPERVISOR_STATES != cs.CAMPAIGN_STATUSES
     for state in ("HEALTHY", "RECOVERING", "STOPPED"):
@@ -510,7 +569,9 @@ def test_restart_recovery_settles_a_matured_decision_exactly_once(tmp_path: Path
     assert after.verify_chain()["status"] == "INTACT"
 
 
-def test_a_sealed_decision_settles_on_recovery_but_its_old_slot_is_not_resealed(tmp_path: Path) -> None:
+def test_a_sealed_decision_settles_on_recovery_but_its_old_slot_is_not_resealed(
+    tmp_path: Path,
+) -> None:
     supervisor = _load_supervisor()
     manifest = _manifest(campaign_start=_utc(2026, 10, 6, 15))
     paths = _prepare(tmp_path, manifest=manifest)
@@ -579,7 +640,9 @@ def test_informational_missed_slot_notice_is_never_a_cycle_failure(tmp_path: Pat
 
     base = _fake_cycle(paths["ledger_root"])
 
-    def cycle_with_notice(*, modes: tuple[str, ...], now: int, cycle: int, store: dict[str, Any]) -> Any:
+    def cycle_with_notice(
+        *, modes: tuple[str, ...], now: int, cycle: int, store: dict[str, Any]
+    ) -> Any:
         result = base(modes=modes, now=now, cycle=cycle, store=store)
         result["errors"] = [
             *(result.get("errors") or []),
@@ -669,7 +732,9 @@ def test_verification_runs_on_a_daily_cadence_not_on_every_cycle(tmp_path: Path)
     assert second["verification"] == "SKIPPED"
 
 
-def test_a_stale_heartbeat_degrades_the_supervisor_without_breaking_the_chain(tmp_path: Path) -> None:
+def test_a_stale_heartbeat_degrades_the_supervisor_without_breaking_the_chain(
+    tmp_path: Path,
+) -> None:
     supervisor = _load_supervisor()
     paths = _prepare(tmp_path)
     stale_stamp = DT - 10 * supervisor.DEFAULT_INTERVAL_SECONDS
@@ -733,7 +798,9 @@ def test_prompt_drift_blocks_preflight(tmp_path: Path) -> None:
     assert result["exit_code"] == 3
 
 
-def test_the_first_settlement_artifact_stays_pending_until_a_real_settlement(tmp_path: Path) -> None:
+def test_the_first_settlement_artifact_stays_pending_until_a_real_settlement(
+    tmp_path: Path,
+) -> None:
     supervisor = _load_supervisor()
     paths = _prepare(tmp_path)
     result = supervisor.write_first_settlement(
@@ -743,7 +810,9 @@ def test_the_first_settlement_artifact_stays_pending_until_a_real_settlement(tmp
     assert not (paths["report_root"] / "FIRST_REAL_SETTLEMENT.json").exists()
 
 
-def test_the_first_settlement_artifact_is_written_once_without_claiming_an_edge(tmp_path: Path) -> None:
+def test_the_first_settlement_artifact_is_written_once_without_claiming_an_edge(
+    tmp_path: Path,
+) -> None:
     supervisor = _load_supervisor()
     paths = _prepare(tmp_path)
     ledger = dl.DecisionLedger(paths["ledger_root"])
