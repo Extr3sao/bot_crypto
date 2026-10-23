@@ -127,7 +127,13 @@ def test_a_lock_whose_owner_is_gone_is_reclaimed_with_its_pid_recorded(tmp_path:
 
     record = reclaim_stale_lock(path)
 
-    assert record == {"lock": "STREAM.jsonl.lock", "pid": pid, "reason": "OWNER_PROCESS_DEAD"}
+    assert record is not None
+    assert record["lock"] == "STREAM.jsonl.lock"
+    assert record["pid"] == pid
+    assert record["reason"] == "OWNER_PROCESS_DEAD"
+    #: The fence is part of the evidence: the reclaimed lock was taken over once, so a stale
+    #: writer (`ops.single_writer`) fails its next ``assert_held`` instead of writing on.
+    assert record["fence"] >= 1
     assert not path.exists()
 
 

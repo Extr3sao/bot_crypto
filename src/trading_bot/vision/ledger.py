@@ -20,11 +20,16 @@ The writer is single-writer: an exclusive lock file is created next to the ledge
 removed on exit. Two processes writing the same chain would interleave ``prev_sha256``
 and the chain would (correctly) fail to verify, so the second writer is refused rather
 than allowed to corrupt it.
+
+CODEX: the lock is ``ops.single_writer.SingleWriter``, not a bare ``O_EXCL`` file. A lock
+left behind by a killed process used to wedge the ledger forever (the only way out was
+deleting a file by hand), and a recycled pid made it look held by a stranger. Ownership is
+now proved — dead pid, or a live pid that started at a different instant — before it is
+taken, and it is fenced, so a writer that lost it fails closed on its next ``append``.
 """
 
 from __future__ import annotations
 
-import contextlib
 import hashlib
 import json
 import os
@@ -32,6 +37,8 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
+
+from trading_bot.ops.single_writer import LockLost, LockRefused, SingleWriter
 
 
 def _utc_now() -> str:
@@ -79,7 +86,7 @@ class DecisionLedger:
     def __init__(self, path: Path | str) -> None:
         self.path = Path(path)
         self._lock_path = self.path.with_suffix(self.path.suffix + ".lock")
-        self._lock_fd: int | None = None
+        self._lock = SingleWriter(self._lock_path, purpose=f"ledger:{self.path.name}")
         self._seq = 0
         self._last_sha = GENESIS
 
@@ -87,24 +94,26 @@ class DecisionLedger:
 
     def open(self) -> DecisionLedger:
         self.path.parent.mkdir(parents=True, exist_ok=True)
+        #: A validated ledger holds the lock. An abandoned one (crash) is reclaimed with the
+        #: evidence attached to the error/record, never blindly; a live owner is refused.
         try:
-            self._lock_fd = os.open(self._lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-        except FileExistsError as exc:
+            self._lock.acquire()
+        except LockRefused as exc:
             raise LedgerLockedError(
-                f"{self._lock_path} exists: another writer owns this ledger. "
-                "If no writer is running, remove the stale lock deliberately."
+                f"{self._lock_path}: {exc}. If no writer is running, the lock can be reclaimed "
+                "only when its owner is proved gone (ops.single_writer)."
             ) from exc
-        os.write(self._lock_fd, str(os.getpid()).encode())
         if self.path.exists():
             self._seq, self._last_sha = self._tail()
         return self
 
+    @property
+    def lock_record(self) -> dict[str, Any]:
+        return dict(self._lock.record or {})
+
     def close(self) -> None:
-        if self._lock_fd is not None:
-            os.close(self._lock_fd)
-            self._lock_fd = None
-            with contextlib.suppress(FileNotFoundError):
-                self._lock_path.unlink()
+        if self._lock.record is not None:
+            self._lock.release()
 
     def __enter__(self) -> DecisionLedger:
         return self.open()
@@ -125,8 +134,12 @@ class DecisionLedger:
     # -- writing -------------------------------------------------------------
 
     def append(self, kind: str, payload: dict[str, Any], *, clock: str | None = None) -> LedgerLine:
-        if self._lock_fd is None:
-            raise LedgerLockedError("ledger.append() before open(): refusing an unlocked write")
+        #: Re-read the lock before every line: an owner that lost its lock (a paused process
+        #: whose lease was reclaimed) must fail closed rather than fork the chain.
+        try:
+            self._lock.assert_held()
+        except LockLost as exc:
+            raise LedgerLockedError(str(exc)) from exc
         entry = {
             "kind": kind,
             "recorded_at_utc": clock or _utc_now(),

@@ -30,7 +30,6 @@ Nothing here talks to an exchange account, holds a credential or can place an or
 
 from __future__ import annotations
 
-import contextlib
 import hashlib
 import json
 import os
@@ -43,6 +42,8 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Protocol
+
+from trading_bot.ops.single_writer import LockLost, LockRefused, SingleWriter
 
 MINUTE_MS = 60_000
 SOURCE_NAME = "binance_spot_rest_1m"
@@ -244,7 +245,11 @@ class MinuteStore:
     def __init__(self, path: Path | str) -> None:
         self.path = Path(path)
         self._lock_path = self.path.with_suffix(self.path.suffix + ".lock")
-        self._lock_fd: int | None = None
+        #: CODEX: a bare ``O_EXCL`` file left a collector store permanently unwritable after
+        #: a hard kill, and its plain pid could be recycled by an unrelated process. This
+        #: lock carries the owner's process start time, so a reclaimed pid is recognised as
+        #: a *different* owner and only a proved-dead or proved-reused lock is reclaimed.
+        self._lock = SingleWriter(self._lock_path, purpose=f"minutes:{self.path.name}")
         self._bars: dict[int, MinuteBar] = {}
         self._order: list[int] = []
         self._digest = hashlib.sha256()
@@ -254,21 +259,17 @@ class MinuteStore:
     def open(self) -> MinuteStore:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         try:
-            self._lock_fd = os.open(self._lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-        except FileExistsError as exc:
+            self._lock.acquire()
+        except LockRefused as exc:
             raise RuntimeError(
-                f"{self._lock_path} exists: another collector owns this store"
+                f"{self._lock_path}: {exc}; another collector owns this store"
             ) from exc
-        os.write(self._lock_fd, str(os.getpid()).encode())
         self._load()
         return self
 
     def close(self) -> None:
-        if self._lock_fd is not None:
-            os.close(self._lock_fd)
-            self._lock_fd = None
-            with contextlib.suppress(FileNotFoundError):  # pragma: no cover - already gone
-                self._lock_path.unlink()
+        if self._lock.record is not None:
+            self._lock.release()
 
     def __enter__(self) -> MinuteStore:
         return self.open()
@@ -318,8 +319,12 @@ class MinuteStore:
     def append(self, bar: MinuteBar) -> str:
         """``APPENDED``, ``DUPLICATE_IDENTICAL`` or raise on conflict/order."""
 
-        if self._lock_fd is None:
-            raise RuntimeError("MinuteStore.append() before open()")
+        try:
+            self._lock.assert_held()
+        except LockLost as exc:
+            raise RuntimeError(
+                f"MinuteStore.append() refused: {exc}"
+            ) from exc
         known = self._bars.get(bar.open_ms)
         if known is not None:
             if known.ohlcv() == bar.ohlcv():

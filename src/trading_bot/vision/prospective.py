@@ -25,10 +25,8 @@ constructor argument. Replays and benchmarks keep the default (one fill per bar 
 
 from __future__ import annotations
 
-import contextlib
 import hashlib
 import json
-import os
 import time
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field, replace
@@ -43,10 +41,11 @@ from trading_bot.market_data.minute_collector import (
     SourceUnavailable,
     aggregate_complete,
 )
+from trading_bot.ops.single_writer import LockRefused, pid_alive, reclaim_abandoned
 from trading_bot.research.economic_recovery.experiments import Bar
 from trading_bot.vision.clock import timeframe_ms
 from trading_bot.vision.lane import VisionLane
-from trading_bot.vision.ledger import DecisionLedger, read_entries
+from trading_bot.vision.ledger import DecisionLedger, LedgerLockedError, read_entries
 from trading_bot.vision.provenance import (
     RuntimeNotProvable,
     SessionIdentityMismatch,
@@ -125,71 +124,39 @@ def runtime_hashes(root: Path) -> dict[str, str]:
 
 
 def _pid_alive(pid: int) -> bool:
-    """Is this process still there? Asked without signalling it.
+    """Backwards-compatible name for the shared probe (see ``ops.single_writer``)."""
 
-    Windows has no ``kill(pid, 0)``: ``os.kill`` there terminates the process for any
-    signal it does not recognise, which would turn a liveness probe into the very crash
-    it is recovering from. ``OpenProcess`` with query-only rights answers the question and
-    distinguishes "no such process" (``ERROR_INVALID_PARAMETER``) from "exists but belongs
-    to someone else" (``ERROR_ACCESS_DENIED``), and both wrong guesses are fail-closed.
-    """
-
-    try:
-        pid = int(pid)
-    except (TypeError, ValueError):
-        return False
-    if pid <= 0:
-        return False
-    if os.name == "nt":  # pragma: no cover - exercised on the Windows host
-        import ctypes
-
-        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-        query_limited = 0x1000
-        error_invalid_parameter = 87
-        handle = kernel32.OpenProcess(query_limited, False, pid)
-        if handle:
-            kernel32.CloseHandle(handle)
-            return True
-        return int(ctypes.get_last_error()) != error_invalid_parameter
-    try:
-        os.kill(pid, 0)
-    except ProcessLookupError:
-        return False
-    except PermissionError:
-        return True
-    return True
+    return pid_alive(pid)
 
 
 def reclaim_stale_lock(path: Path) -> dict[str, Any] | None:
-    """Remove a lock whose owner is *proved* gone, or refuse and say why.
+    """Take over a lock whose owner is *proved* gone, or refuse and say why.
 
     A lock is the only thing standing between two writers and one hash chain, so this
-    function never guesses. It reclaims in exactly one situation: the file carries an
-    integer pid and that process no longer exists. A lock held by a live process, or one
-    whose owner cannot be read, is left alone and the session aborts with a code instead
-    of a traceback — deleting a lock we cannot attribute could corrupt a writer that is
-    still running, and that is worse than a manual step.
+    function never guesses. The proof lives in ``ops.single_writer``: the owner's recorded
+    process start time turns a recycled pid into evidence of death instead of a permanent
+    refusal, the takeover is serialised and atomic, and a live owner is never dispossessed.
+    A lock whose owner cannot be named here (empty, torn, or written by another host) is
+    left alone and the session aborts with a code — deleting it could corrupt a writer that
+    is still running, and that is worse than a manual step.
     """
 
-    if not path.exists():
+    try:
+        record = reclaim_abandoned(path, purpose="prospective-session")
+    except LockRefused as exc:
+        raise SessionAborted(f"RUNTIME_{exc.code}: {path}: {exc}") from exc
+    if record is None:
         return None
-    raw = ""
-    with contextlib.suppress(OSError):
-        raw = path.read_text(encoding="utf-8", errors="replace").strip()
-    if not raw.isdigit():
-        raise SessionAborted(
-            f"RUNTIME_LOCK_UNATTRIBUTED: {path} holds no pid; it was not created by this "
-            "code or it was interrupted between create and write. Not removed: a lock "
-            "whose owner cannot be named is not proved stale."
-        )
-    pid = int(raw)
-    if _pid_alive(pid):
-        raise SessionAborted(
-            f"RUNTIME_LOCK_HELD: {path} is held by live pid {pid}; a second writer would "
-            "interleave prev_sha256 and the chain would stop verifying"
-        )
-    path.unlink(missing_ok=True)
-    return {"lock": path.name, "pid": pid, "reason": "OWNER_PROCESS_DEAD"}
+    #: The evidence a reader needs: which owner, why it was considered gone, and which fence
+    #: the new owner holds, so "resumed after a crash" cannot be confused with "deleted a
+    #: lock and hoped".
+    return {
+        "lock": str(record["lock"]),
+        "pid": record.get("pid"),
+        "reason": str(record.get("reason")),
+        "fence": record.get("fence"),
+        "process_start_ms": record.get("process_start_ms"),
+    }
 
 
 def display_symbol(archive_symbol: str) -> str:
@@ -688,6 +655,22 @@ class ProspectiveSession:
         directory = self.out_dir / "cycles" / f"cycle-{cycle:04d}"
         directory.mkdir(parents=True, exist_ok=True)
         ledger_path = directory / "ledger.jsonl"
+        #: A crash inside a cycle leaves that cycle's ledger lock behind, and the resumed run
+        #: reuses the same directory. Reclaiming it with the same proof as the stream lock is
+        #: what makes "resume after a crash" a property instead of a manual ritual.
+        inherited = reclaim_stale_lock(ledger_path.with_suffix(ledger_path.suffix + ".lock"))
+        if inherited:
+            self._lock_reclaims.append(inherited)
+            self._emit_once(
+                "LOCK_RECLAIMED",
+                f"LOCK:{inherited['lock']}:{inherited.get('fence')}",
+                {
+                    "locks": [inherited],
+                    "scope": "cycle_ledger",
+                    "cycle": int(cycle),
+                    "live_orders": 0,
+                },
+            )
         if ledger_path.exists():
             ledger_path.unlink()
         # 003J: one resolution point for the signal source. The legacy branch builds the
@@ -842,7 +825,12 @@ class ProspectiveSession:
             self._lock_reclaims.append(inherited)
         if stream_path.exists() and not pin["resume"]["resumed"]:
             stream_path.unlink()
-        stream = DecisionLedger(stream_path).open()
+        try:
+            stream = DecisionLedger(stream_path).open()
+        except LedgerLockedError as exc:
+            #: A refusal is a code, not a traceback: a live second session must be visible in
+            #: the operator's log as RUNTIME_LOCK_HELD, never as exit 1 with a stack.
+            raise SessionAborted(f"RUNTIME_LOCK_HELD: {stream_path}: {exc}") from exc
         self._stream = stream
         #: On a resume the lane keeps reproducing the first session's decisions, so the
         #: prefix comparison still covers everything decided before the interruption.
