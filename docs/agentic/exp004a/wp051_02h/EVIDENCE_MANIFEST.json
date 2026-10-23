@@ -1,16 +1,16 @@
 {
   "entries": [
     {
-      "bytes": 7100,
-      "git_blob_sha": "d791efee3b80ae3181a6e6fce8f11886636fa59e",
+      "bytes": 7183,
+      "git_blob_sha": "a5d270c1ed4e2b0059e3f48467cda7b234fe6d53",
       "path": "docs/agentic/exp004a/wp051_02h/CONTINUITY_REPORT.json",
-      "sha256": "265bfe4b468d05f2fe6aa864e02130d2741ab3d5104276a919ccc6c09510ed02"
+      "sha256": "7d6309f0cb1731e6f8a80a6044033a3168119775100bb873442c2afeef4bfb6b"
     },
     {
-      "bytes": 58776,
-      "git_blob_sha": "bdf2ecdfa55ee95bfda31b496908c395598c69d3",
+      "bytes": 58299,
+      "git_blob_sha": "77633ae43a2a03ee73955ed5495a3012797c1822",
       "path": "docs/agentic/exp004a/wp051_02h/COVERAGE_GAP_REPORT.json",
-      "sha256": "e97191edc9c4df71f471fda6ced85a60f5657c5fce72e8523cf8cf611a3caae1"
+      "sha256": "6db2e05ec3e3940cc000dfe1bd7e18080f627b8ef24e7e0ab2a4d526f8e0b0a6"
     },
     {
       "bytes": 2862,
@@ -19,53 +19,53 @@
       "sha256": "55e223f867a21df8d8869173416cb511066975630eeee579c8e954bfc24d8c40"
     },
     {
-      "bytes": 19243,
-      "git_blob_sha": "4baaa574d18bc00073fa5a5a1c2bf68685fefb80",
+      "bytes": 19559,
+      "git_blob_sha": "3b90db65aebbbecdc43b3a04794c430280c500c3",
       "path": "docs/agentic/exp004a/wp051_02h/FINAL_REPORT.md",
-      "sha256": "7df20403d3bae36f8a82964add583e7cc8d7584b3892e527b4bedcfa0d8b2bf4"
+      "sha256": "df255351a6d05afd1072fbe949300b2609c9427393fa6d655efa1d29b6992652"
     },
     {
-      "bytes": 11716,
-      "git_blob_sha": "dcadee7860b10298f846afe1b0d6e84797c7e939",
+      "bytes": 11684,
+      "git_blob_sha": "c7560a34681caf288c800cb6c6a2af546945a5b0",
       "path": "docs/agentic/exp004a/wp051_02h/INDEPENDENT_VERIFICATION.json",
-      "sha256": "4f624203eb3bf74f28a74717c82f25f83e5e1d9aa21528bbe81b04b09c9b2610"
+      "sha256": "1a832e203eeeb14a223da2869d995ba0fd18123ae2bd7a1d10152e07382f04ab"
     },
     {
-      "bytes": 8570,
-      "git_blob_sha": "fe759ad2cfad616d7fe76b4191e1e6b50bf7d28d",
+      "bytes": 13664,
+      "git_blob_sha": "4d176fa6256a96f4b65cc58536e16b61c2ea3a33",
       "path": "docs/agentic/exp004a/wp051_02h/RECOVERY_REPORT.json",
-      "sha256": "de67ca850eb97deaae3c5d2fa8d1ac3c15afd981541c834a3002b9a312b868b4"
+      "sha256": "1396967ca8c3e1eefbe36a36d5295b67dfe8c9391e798438e4f0298a1c9db824"
     },
     {
-      "bytes": 4734,
-      "git_blob_sha": "ce8bf0ab30a4188da00f1d34ea8178cae41b1061",
+      "bytes": 4324,
+      "git_blob_sha": "bd03c9cb4a653bf217adff5f845d62b8a683b8d2",
       "path": "docs/agentic/exp004a/wp051_02h/ROOT_CAUSE.json",
-      "sha256": "e46f681d9f734fece8708fef4ae9f6855d720745a21f7fe0c977fe6038f604fe"
+      "sha256": "c7269b3253b30595ead4dcac25ae7b8abd334a6491b9dddb1109182ed41b80bf"
     },
     {
-      "bytes": 3763,
-      "git_blob_sha": "868194064542e00df5e7efd46a22859789493883",
+      "bytes": 3764,
+      "git_blob_sha": "a20cf9656d0f32018f7fed2d279d1a6878fc3dcd",
       "path": "docs/agentic/exp004a/wp051_02h/ROOT_CAUSE_ANALYSIS.md",
-      "sha256": "4c772ae44f66b67f8c59ac568a6feaee46019d9686a1a002abcfa44a555e5e4c"
+      "sha256": "646b207013e7827b3bafbc583a98db8d3c111c0550d0c3efbbe5d34281cc8907"
     },
     {
-      "bytes": 1886,
-      "git_blob_sha": "0e237f0930bff2e7bfcac8bc3db15a551e316283",
+      "bytes": 1888,
+      "git_blob_sha": "db05177c5ec89cfb50aab50dd5afec8b81c14779",
       "path": "docs/agentic/exp004a/wp051_02h/RUN_REPORT.json",
-      "sha256": "0384778e2cc6a58f45bb36c7e1039ad70e9fc82d3d2b9060e6aa542916a25e62"
+      "sha256": "e7fe9f00d3cd11f508fc19da7859b6bed9512c0d5c2199a4c978baadd56d577a"
     },
     {
-      "bytes": 2127,
-      "git_blob_sha": "df2608dc62ac3453f562279b7879a30679e4293b",
+      "bytes": 1892,
+      "git_blob_sha": "d4bc1372171ad4f9c3de0b8ba36c95cce8667c7e",
       "path": "docs/agentic/exp004a/wp051_02h/RUN_REPORT.md",
-      "sha256": "8a94f507bd770fb6650055ff6751cac1c312f7b42e25316adb7ce8916c66351c"
+      "sha256": "8a710d39615be8342a6f304745073bc05151f30127398e2c6a659b666546ed04"
     }
   ],
   "entry_count": 10,
   "hash_semantics": "sha256 is the bytes on disk at seal time; git_blob_sha is HEAD:<path> at seal time, so an artefact that the seal itself rewrites cannot agree with both",
-  "head": "78ca186700114ca9d7bd4029795669b958bbc246",
+  "head": "c9727fff68dd9f58af40cdf9b62705be76f729cc",
   "not_a_certification": "a manifest says what is in the package, not that the package is right",
   "package": "WP-051-02H",
   "schema_version": "1.0",
-  "sealed_at_utc": "2026-10-23T07:01:04.070Z"
+  "sealed_at_utc": "2026-10-23T07:45:10.628Z"
 }
