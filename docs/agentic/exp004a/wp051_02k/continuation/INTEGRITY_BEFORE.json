@@ -1,0 +1,169 @@
+{
+  "at_utc": "2026-10-23T18:35:14Z",
+  "count": 14,
+  "experiment": {
+    "capture_runner": {
+      "bytes": 0,
+      "exists": false,
+      "path": "scripts/exp004a_wp051_02f_runner.py"
+    },
+    "contract": {
+      "bytes": 0,
+      "exists": false,
+      "path": "config/preregistrations/EXP-004A.datasets.phase3.json"
+    },
+    "observer_watchdog": {
+      "bytes": 0,
+      "exists": false,
+      "path": "scripts/edge04_watchdog.py"
+    },
+    "store": {
+      "bytes": 0,
+      "exists": false,
+      "path": "data/forward/edge04"
+    }
+  },
+  "files": {
+    "config/preregistrations/": {
+      "exists": false
+    },
+    "docs/agentic/exp004a/wp051_02k/AUTHORISATION_REQUEST.json": {
+      "bytes": 3199,
+      "mtime_ns": 1792779181853919900,
+      "sha256": "82950154fa35a3c5cec226caabd266d137c4b29a785ab266aac881903bfdf369"
+    },
+    "docs/agentic/exp004a/wp051_02k/CAPACITY_RECOVERY.json": {
+      "bytes": 26028,
+      "mtime_ns": 1792779181853919900,
+      "sha256": "9d61774a2a8bcf47f25ac57ea97c3484fe7593a30fce58a1ef36d37304610582"
+    },
+    "docs/agentic/exp004a/wp051_02k/CAPACITY_RECOVERY_REPORT.md": {
+      "bytes": 13542,
+      "mtime_ns": 1792779181861970100,
+      "sha256": "1205ef0a29f2c73d4594135755e0f6b79ef86910326d32f4b9f1168ee0d995c4"
+    },
+    "docs/agentic/exp004a/wp051_02k/CLEANUP_EVIDENCE.json": {
+      "bytes": 33344,
+      "mtime_ns": 1792779181864765600,
+      "sha256": "fb37cfe355f50594da92f15194f2a55d4138213cc99897faeab690a0ed9b8271"
+    },
+    "docs/agentic/exp004a/wp051_02k/FINAL_REPORT.json": {
+      "bytes": 3480,
+      "mtime_ns": 1792779181866894200,
+      "sha256": "7b7cfb7af0b0bfc88085b3c3ca245ceaf21c570f97f74549a7732b19b6822518"
+    },
+    "docs/agentic/exp004a/wp051_02k/FINAL_REPORT.md": {
+      "bytes": 6106,
+      "mtime_ns": 1792779181867900300,
+      "sha256": "9a839777111ab8eb1d0968ee0282595b97f3265367f8b5a62788c5162680f78d"
+    },
+    "docs/agentic/exp004a/wp051_02k/INDEPENDENT_VERIFICATION_02K.json": {
+      "bytes": 5867,
+      "mtime_ns": 1792779181869819700,
+      "sha256": "0203079f36d7260bc83aea4b34c87b650af43b330f4377f712ffc41eff69a268"
+    },
+    "docs/agentic/exp004a/wp051_02k/SNAPSHOT_AFTER.json": {
+      "bytes": 6353,
+      "mtime_ns": 1792779181870151800,
+      "sha256": "39fb2340edf8fd7ac8caa72cac367e622f7c5c9d62ad85852c79536d003734fc"
+    },
+    "docs/agentic/exp004a/wp051_02k/SNAPSHOT_BEFORE.json": {
+      "bytes": 6354,
+      "mtime_ns": 1792779181872120200,
+      "sha256": "28b54ce7311826d710b8592681c240224c0a039803a805a863e3ca1c15b48322"
+    },
+    "docs/agentic/exp004a/wp051_02k/STORE_INTEGRITY.json": {
+      "bytes": 3037,
+      "mtime_ns": 1792779181872120200,
+      "sha256": "46aa393eccca9b51e935e2246611ffe708a51fbfeb9254ea70715a24e39213e3"
+    },
+    "docs/agentic/exp004a/wp051_02k/TEST_EVIDENCE.json": {
+      "bytes": 1144,
+      "mtime_ns": 1792779181874134700,
+      "sha256": "8002c29d152108f52464318de45c627f598ba5accd4f71296e1696015e935d9c"
+    },
+    "docs/agentic/exp004a/wp051_02k/VOLUME_INVENTORY.json": {
+      "bytes": 3314275,
+      "mtime_ns": 1792779181892604600,
+      "sha256": "9d74132846cef88331179a71bbaaef03f27d0d51361b231fab3e455bc60ba137"
+    },
+    "scripts/edge04_watchdog.py/": {
+      "exists": false
+    }
+  },
+  "git": {
+    "head": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+    "status_digest": "40b4ea0a3214447ad572d9521c9c0fd6bdfa08d471ab8a3caa083e737c8a34e1",
+    "status_lines": 21
+  },
+  "record": {
+    "commit": "9983b050c8e241ef9d8365c8ffc33c95df1658dd",
+    "files": {
+      "docs/agentic/exp004a/wp051_02k/AUTHORISATION_REQUEST.json": {
+        "commit_blob": "11b740b58718f858ebb51096c5fedb8e462ceaf6",
+        "identical": true,
+        "local_blob": "11b740b58718f858ebb51096c5fedb8e462ceaf6"
+      },
+      "docs/agentic/exp004a/wp051_02k/CAPACITY_RECOVERY.json": {
+        "commit_blob": "334fd927362c6cf8c5a231d0e2dedc798f5772fb",
+        "identical": true,
+        "local_blob": "334fd927362c6cf8c5a231d0e2dedc798f5772fb"
+      },
+      "docs/agentic/exp004a/wp051_02k/CAPACITY_RECOVERY_REPORT.md": {
+        "commit_blob": "e19daef8563a2cf4c332f3af8f4cce053875c037",
+        "identical": true,
+        "local_blob": "e19daef8563a2cf4c332f3af8f4cce053875c037"
+      },
+      "docs/agentic/exp004a/wp051_02k/CLEANUP_EVIDENCE.json": {
+        "commit_blob": "8c594a6c734277c2347c9d09013ebbc18a0e733e",
+        "identical": true,
+        "local_blob": "8c594a6c734277c2347c9d09013ebbc18a0e733e"
+      },
+      "docs/agentic/exp004a/wp051_02k/FINAL_REPORT.json": {
+        "commit_blob": "93dde7484102c0da1a65b4a10a544f9d9256c25e",
+        "identical": true,
+        "local_blob": "93dde7484102c0da1a65b4a10a544f9d9256c25e"
+      },
+      "docs/agentic/exp004a/wp051_02k/FINAL_REPORT.md": {
+        "commit_blob": "1371888311baacf752dd6b5c527545d0bea9f6c3",
+        "identical": true,
+        "local_blob": "1371888311baacf752dd6b5c527545d0bea9f6c3"
+      },
+      "docs/agentic/exp004a/wp051_02k/INDEPENDENT_VERIFICATION_02K.json": {
+        "commit_blob": "0cd5a05a8abe2c90e92bb3072da2763b3ef9d4fa",
+        "identical": true,
+        "local_blob": "0cd5a05a8abe2c90e92bb3072da2763b3ef9d4fa"
+      },
+      "docs/agentic/exp004a/wp051_02k/SNAPSHOT_AFTER.json": {
+        "commit_blob": "0cb9923e5a2f880f6d5dbc30420cc1e967c6e6fe",
+        "identical": true,
+        "local_blob": "0cb9923e5a2f880f6d5dbc30420cc1e967c6e6fe"
+      },
+      "docs/agentic/exp004a/wp051_02k/SNAPSHOT_BEFORE.json": {
+        "commit_blob": "e604ccce4151001194e95df0f9263d494bd47d3c",
+        "identical": true,
+        "local_blob": "e604ccce4151001194e95df0f9263d494bd47d3c"
+      },
+      "docs/agentic/exp004a/wp051_02k/STORE_INTEGRITY.json": {
+        "commit_blob": "e3c2a390d744f749ec057cd64eb76a630670cfb3",
+        "identical": true,
+        "local_blob": "e3c2a390d744f749ec057cd64eb76a630670cfb3"
+      },
+      "docs/agentic/exp004a/wp051_02k/TEST_EVIDENCE.json": {
+        "commit_blob": "7b1762ca030155852c446e25c87d5c4b50facc24",
+        "identical": true,
+        "local_blob": "7b1762ca030155852c446e25c87d5c4b50facc24"
+      },
+      "docs/agentic/exp004a/wp051_02k/VOLUME_INVENTORY.json": {
+        "commit_blob": "72afe2ab3548ee411b98ba387209167bddaecd0f",
+        "identical": true,
+        "local_blob": "72afe2ab3548ee411b98ba387209167bddaecd0f"
+      }
+    },
+    "present": true
+  },
+  "store": {
+    "exists": false,
+    "root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04"
+  }
+}
