@@ -1,0 +1,124 @@
+# Reissued audit backlog — Trading Agentic Portable
+#
+# The original backlog (reports/multiagent-audit/17_ATOMIC_BACKLOG.yaml) was
+# never committed and no longer exists. This file is deliberately narrower: it
+# carries only tasks whose existence is evidenced by a commit or a committed
+# file. Anything else is listed under `unrecoverable` instead of being invented.
+#
+# Written by scripts/audit/negative_controls.py runs? No — edited by hand and
+# guarded by tests/unit/test_audit_contracts_tracked.py.
+
+schema: tap.audit-backlog/v1
+generated_at_utc: "2026-10-23T18:53:56Z"
+repository: trading-agentic-portable
+
+recovery:
+  authority_branch: codepaper/supervisor-001
+  baseline_rev: "0e2ba09d47625fd899bee4e4fd3a82a0232c2d29"
+  working_branch: audit/mt0004-negative-controls
+  authority_map: docs/audit/runtime_authority_map.md
+  note: >-
+    codepaper/supervisor-001 is a moving branch. Every claim in this backlog is
+    pinned to baseline_rev, not to the branch name.
+
+tasks:
+  - id: MT-0002
+    title: Reserved CLI subcommands refuse instead of reporting success
+    status: done
+    provenance: recovered
+    source:
+      - commit: 9c83e62a4b75d9e47db6fce12dd0118782cbd6d1
+      - file: tests/unit/test_app_cli_contract.py
+      - file: src/trading_bot/app.py
+    evidence:
+      - "kill-switch and status are in NOT_IMPLEMENTED_SUBCOMMANDS (app.py:66)"
+      - "main returns 2 with an empty stdout (app.py:1392-1400)"
+      - "43 tests pass in this baseline (28 kill-switch + 15 CLI contract)"
+
+  - id: MT-0003
+    title: Stop authorising orders while the kill switch is engaged
+    status: done
+    provenance: recovered
+    source:
+      - commit: 60455b460dfb805a934c4307f9778ac8b7ffb562
+      - file: src/trading_bot/autonomous/decision.py
+      - file: tests/unit/autonomous/test_decision_kill_switch.py
+    evidence:
+      - "60455b46 is an ancestor of baseline_rev (git merge-base --is-ancestor)"
+      - "rule 0 runs before every other rule in intend and decide"
+      - "tests/unit/autonomous/test_decision_kill_switch.py passes in this tree"
+    open_gaps: [G-1, G-2, G-3, G-4]
+
+  - id: MT-0004
+    title: "(unrecoverable) tests negativos"
+    status: spec_reissue_required
+    provenance: lost
+    source:
+      - file: src/trading_bot/app.py
+        lines: "61-66"
+      - file: tests/unit/test_app_cli_contract.py
+        lines: "42-44"
+    surviving_evidence:
+      - "app.py:61-66 names MT-0004 as 'tests negativos' alongside MT-0003"
+      - "test_app_cli_contract.py:42-44 says MT-0003/MT-0004 will give the two subcommands real behaviour"
+    missing:
+      - objective beyond the parenthetical
+      - justifying evidence block
+      - dependencies beyond MT-0003
+      - allowed_paths
+      - protected_paths
+      - numbered acceptance criteria
+      - mandatory test list
+      - verification requirements
+    superseded_by: MT-0004-R1
+
+  - id: MT-0004-R1
+    title: Negative-control certification of the kill-switch gate
+    status: in_progress
+    provenance: reissued
+    contract: docs/audit/MT-0004-R1.md
+    allowed_paths:
+      - docs/audit/**
+      - tests/unit/autonomous/test_kill_switch_negative.py
+      - tests/unit/test_audit_contracts_tracked.py
+      - scripts/audit/negative_controls.py
+    protected_paths:
+      - src/**
+      - tests/unit/autonomous/test_decision_kill_switch.py
+      - tests/unit/test_app_cli_contract.py
+      - .github/**
+      - pyproject.toml
+    acceptance_criteria: [AC-1, AC-2, AC-3, AC-4, AC-5, AC-6]
+    note: >-
+      Checked box in the run report, not here: this entry is only marked done
+      after the implementation is committed and an independent verifier has
+      re-derived every criterion from the commit.
+
+contracts:
+  - path: docs/audit/runtime_authority_map.md
+    required: true
+    producer: MT-0004-R1
+  - path: docs/audit/MT-0004-R1.md
+    required: true
+    producer: MT-0004-R1
+  - path: docs/audit/AUDIT_BACKLOG.yaml
+    required: true
+    producer: MT-0004-R1
+
+unrecoverable:
+  note: >-
+    Any task id not listed under `tasks` above is unknown. The original backlog
+    claimed at least MT-0004, MT-0009, MT-0019 and MT-0040 (by recollection of
+    the blocked run). Only MT-0004 has a surviving trace in git; MT-0040
+    appears in no committed file (git log --all -S'MT-0040' is empty). None of
+    them is invented here.
+  blocked_ids: []
+
+next_ready:
+  task: null
+  reason: >-
+    After MT-0004-R1 the only evidenced work left is the gap list G-1..G-4.
+    Turning any of them into a task requires a contract that does not exist
+    yet, so naming one would be fabricating a specification. The recommended
+    next move is to open a ticket for G-2 (no hot activation surface) with its
+    own contract, because it is the only gap whose fix is entirely in-tree.
