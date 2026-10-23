@@ -100,6 +100,55 @@ tasks:
       verifier is a separate script with its own mutant literals, but it was
       written by the same author: procedural independence, not a second person.
 
+  - id: G-2
+    title: Hot activation of the kill switch for a running process
+    status: done
+    provenance: gap
+    contract: docs/audit/G-2.md
+    verified_commit: "00671e62"
+    verification: docs/audit/runs/run-20261023T201915Z-G-2/verification.json
+    run_report: docs/audit/runs/run-20261023T201915Z-G-2/RUN_REPORT.md
+    verdict: VERIFIED_SCOPED
+    allowed_paths:
+      - docs/audit/G-2.md
+      - docs/audit/AUDIT_BACKLOG.yaml
+      - docs/audit/runtime_authority_map.md
+      - docs/audit/runs/**
+      - src/trading_bot/autonomous/hot_stop.py
+      - src/trading_bot/autonomous/runtime.py
+      - src/trading_bot/app.py
+      - tests/unit/autonomous/test_hot_engage.py
+      - tests/unit/test_app_cli_contract.py
+      - scripts/audit/g2_mutants.py
+    protected_paths:
+      - src/trading_bot/autonomous/decision.py
+      - src/trading_bot/paper/**
+      - src/trading_bot/config/**
+      - src/trading_bot/execution/**
+      - tests/unit/autonomous/test_decision_kill_switch.py
+      - tests/unit/autonomous/test_kill_switch_negative.py
+      - scripts/audit/negative_controls.py
+      - .github/**
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+    acceptance_criteria: [ACC-G2-01, ACC-G2-02, ACC-G2-03, ACC-G2-04, ACC-G2-05, ACC-G2-06, ACC-G2-07, ACC-G2-08, ACC-G2-09, ACC-G2-10, ACC-G2-11, ACC-G2-12]
+    evidence:
+      - "one dispatch site in the runtime, lexically inside order_boundary (V-2)"
+      - "engage and dispatch share a lock released in finally (V-3)"
+      - "offline trace: operational -> engaged -> NO_ORDER, broker calls frozen at 1 (V-9)"
+      - "7/7 mutants killed; M1 v1 survived as an equivalent mutant and was re-specified"
+    covered_paths:
+      - scripts/autonomous_paper.py
+    uncovered_paths:
+      - trading-bot run --demo -> paper/paper_cycle.py (G-4)
+      - trading-bot place-order / --auto-trade (G-3)
+    note: >-
+      Closes G-2 only for the autonomous runtime. The filesystem permission on
+      run_dir is the authorisation boundary, the same one STOP already uses.
+      Independently re-derived by a separate script from the same author:
+      PROCEDURALLY_SEPARATED, not a second person.
+
 contracts:
   - path: docs/audit/runtime_authority_map.md
     required: true
@@ -107,6 +156,9 @@ contracts:
   - path: docs/audit/MT-0004-R1.md
     required: true
     producer: MT-0004-R1
+  - path: docs/audit/G-2.md
+    required: true
+    producer: G-2
   - path: docs/audit/AUDIT_BACKLOG.yaml
     required: true
     producer: MT-0004-R1
@@ -123,8 +175,9 @@ unrecoverable:
 next_ready:
   task: null
   reason: >-
-    After MT-0004-R1 the only evidenced work left is the gap list G-1..G-4.
-    Turning any of them into a task requires a contract that does not exist
-    yet, so naming one would be fabricating a specification. The recommended
-    next move is to open a ticket for G-2 (no hot activation surface) with its
-    own contract, because it is the only gap whose fix is entirely in-tree.
+    G-2 is closed for the autonomous path and its contract is committed. The
+    remaining gaps (G-1 persistence, G-3 live, G-4 duplicate engine) still have
+    no contract, so naming one READY would fabricate its specification. The
+    recommendation is G-1 next: it is entirely in-tree, small, and it is the
+    hole G-2 deliberately left open (a restart boots NORMAL). G-4 is larger —
+    it requires reconciling two decision paths, not adding a gate to one.

@@ -129,6 +129,7 @@ future decision-engine regression cannot reopen the path.
 | **G2-D-2** | The replay module `paper_cycle.py` remains outside both rule 0 and the gate. | **Open** (G-4, out of scope) |
 | **G2-D-3** | `git merge-base` confirms `main` still lacks `60455b46`; nothing in this run changes that. | **Open**, unchanged |
 | **G2-D-4** | `runtime.py` is not `ruff format --check` clean **at HEAD**, before this change (verified by formatting the committed file). My hunk is clean; the file's pre-existing drift is left alone rather than mixed into a safety commit. | Recorded, not fixed |
+| **G2-D-5** | The backlog guard (`test_audit_contracts_tracked.py`) rejected `provenance: gap` — its closed vocabulary only knew `recovered`, `reissued`, `lost`, so a gap-derived task was unrepresentable and the truthful entry failed the build. | Fixed by contract amendment A-1: `"gap"` added to the closed set. Recorded here because widening a guard's vocabulary is exactly the kind of change that deserves a reader's attention. |
 
 ## 7. What this run does **not** establish
 
