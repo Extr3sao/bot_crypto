@@ -10,6 +10,7 @@
 
 schema: tap.audit-backlog/v1
 generated_at_utc: "2026-10-23T18:53:56Z"
+updated_at_utc: "2026-10-23T19:45:00Z"
 repository: trading-agentic-portable
 
 recovery:
@@ -74,9 +75,13 @@ tasks:
 
   - id: MT-0004-R1
     title: Negative-control certification of the kill-switch gate
-    status: in_progress
+    status: done
     provenance: reissued
     contract: docs/audit/MT-0004-R1.md
+    verified_commit: ef7955dc5973ab863f010e02a1297a455ef276da
+    verification: docs/audit/runs/run-20261023T190725Z-MT0004-R1/verification.json
+    run_report: docs/audit/runs/run-20261023T190725Z-MT0004-R1/RUN_REPORT.md
+    verdict: VERIFIED_SCOPED
     allowed_paths:
       - docs/audit/**
       - tests/unit/autonomous/test_kill_switch_negative.py
@@ -90,9 +95,10 @@ tasks:
       - pyproject.toml
     acceptance_criteria: [AC-1, AC-2, AC-3, AC-4, AC-5, AC-6]
     note: >-
-      Checked box in the run report, not here: this entry is only marked done
-      after the implementation is committed and an independent verifier has
-      re-derived every criterion from the commit.
+      Done only after the implementation was committed and a separate verifier
+      re-derived every criterion from that commit (13/13, VERIFIED_SCOPED). The
+      verifier is a separate script with its own mutant literals, but it was
+      written by the same author: procedural independence, not a second person.
 
 contracts:
   - path: docs/audit/runtime_authority_map.md
