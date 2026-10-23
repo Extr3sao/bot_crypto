@@ -21,8 +21,8 @@
     {
       "detail": "measured 1.493 GiB against reported 1.498 GiB",
       "evidence": {
-        "measured_free_bytes": 1603620864,
-        "measured_kernel32": 1603620864
+        "measured_free_bytes": 1602916352,
+        "measured_kernel32": 1602916352
       },
       "id": "VOLUME_IS_AT_LEAST_AS_TIGHT_AS_REPORTED",
       "status": "PASS"
@@ -179,7 +179,7 @@
       "status": "PASS"
     },
     {
-      "detail": "pytest exit 0: 32 passed in 0.57s",
+      "detail": "pytest exit 0: 32 passed in 0.61s",
       "evidence": {
         "suite_sha256": "a0e78131e12b98c79d8f6873b83a8f83d6d255f9efdcd90523770f36666f487b"
       },
@@ -210,8 +210,8 @@
     }
   ],
   "failed": 0,
-  "generated_at_utc": "2026-10-23T13:45:35Z",
-  "head": "e508f3c9d54eebdb7741cd975a5f0a5fd1c98c26",
+  "generated_at_utc": "2026-10-23T13:46:11Z",
+  "head": "15abec2712cdb67781d3db3cce6f293b5fc372a3",
   "not_a_certification": "this says the report agrees with the host. It promotes nothing, it frees nothing, and it does not replace the owner's decision about whose bytes may go.",
   "package": "WP-051-02K",
   "passed": 18,
