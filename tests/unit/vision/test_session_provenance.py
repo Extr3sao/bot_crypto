@@ -245,11 +245,10 @@ def test_a_resume_accepts_the_same_facts_and_names_everything_else(tmp_path: Pat
 def test_a_resumed_block_carries_its_parent_chain(tmp_path: Path) -> None:
     root = build_repo(tmp_path / "repo")
     first = build_block(root)
-    second = build_block(
-        root,
-        started_at_ms=1_700_000_900_000,
-        resume_parent={**first, "chain": []},
-    )
+    #: The parent is the block the session actually wrote. Injecting a top-level ``chain``
+    #: here is what hid a defect: the chain is nested under ``resume``, so the reader must
+    #: find it there, and a test that supplies it at the top level proves nothing.
+    second = build_block(root, started_at_ms=1_700_000_900_000, resume_parent=first)
 
     assert second["resume"]["resumed"] is True
     assert second["resume"]["parent_session_id"] == first["session_id"]
@@ -257,6 +256,32 @@ def test_a_resumed_block_carries_its_parent_chain(tmp_path: Path) -> None:
     assert second["run_id"] == first["run_id"]
     assert second["session_id"] != first["session_id"]
     assert resume_reasons(first, second) == []
+
+
+def test_a_second_resume_keeps_the_origin_of_the_first_session(tmp_path: Path) -> None:
+    """Resuming twice must not move the origin the lane replays from.
+
+    ``origin`` is ``chain[0].started_at_ms``: the first session of the lineage, not the
+    immediate parent. When the chain was read from the wrong key it held one entry, so the
+    third session started replaying at the second session's start and the prefix comparison
+    failed on decisions that had not changed. This test pins the shape that makes the
+    replay stable across an arbitrary number of recoveries.
+    """
+
+    root = build_repo(tmp_path / "repo")
+    first = build_block(root, started_at_ms=1_700_000_000_000)
+    second = build_block(root, started_at_ms=1_700_000_900_000, resume_parent=first)
+    third = build_block(root, started_at_ms=1_700_001_800_000, resume_parent=second)
+
+    assert [item["session_id"] for item in second["resume"]["chain"]] == [first["session_id"]]
+    assert [item["session_id"] for item in third["resume"]["chain"]] == [
+        first["session_id"],
+        second["session_id"],
+    ]
+    assert third["resume"]["chain"][0]["started_at_ms"] == 1_700_000_000_000
+    assert second["resume"]["chain"][0]["started_at_ms"] == 1_700_000_000_000
+    assert third["run_id"] == first["run_id"]
+    assert third["session_id"] not in {first["session_id"], second["session_id"]}
 
 
 def test_the_block_never_claims_a_verdict(tmp_path: Path) -> None:

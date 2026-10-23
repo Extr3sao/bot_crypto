@@ -402,7 +402,16 @@ def capture_session(
     parent_id: str | None = None
     if resume_parent:
         parent_id = str(resume_parent.get("session_id") or "") or None
-        chain = [dict(item) for item in (resume_parent.get("chain") or [])]
+        #: The chain lives *inside* the parent's ``resume`` block. Reading it from the top
+        #: level (as this did) always found nothing, so every resumed block named only its
+        #: immediate parent and the origin of the lineage was lost after the second resume:
+        #: ``decision_from_ms`` then drifted to the previous session's start, the replay no
+        #: longer covered the bars the previous cycle decided on, and the session aborted
+        #: ``PREFIX_DIVERGENCE``. Measured on a six-crash campaign: iteration 2 resumed and
+        #: produced cycles, iteration 3's resume could not.
+        parent_resume = resume_parent.get("resume") or {}
+        inherited = parent_resume.get("chain") if isinstance(parent_resume, Mapping) else None
+        chain = [dict(item) for item in (inherited or [])]
         chain.append(
             {
                 "session_id": parent_id,
