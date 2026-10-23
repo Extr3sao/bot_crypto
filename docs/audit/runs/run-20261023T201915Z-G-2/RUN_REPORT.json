@@ -11,6 +11,8 @@
   "record_commit": "the commit that introduced this file",
   "record_commit_note": "A file cannot contain the hash of the commit that adds it; use `git log -1 --format=%H -- docs/audit/runs/run-20261023T201915Z-G-2/RUN_REPORT.json`.",
   "mode": "offline-only",
+  "checkout_tested": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
+  "verification_input": "git archive export of the verified commit, not the working tree",
   "preflight": {
     "gate": "G2-01",
     "result": "READY",
@@ -82,7 +84,7 @@
   },
   "false_success_known": 0,
   "artifacts": {
-    "RUN_REPORT.md": "276675cba1dd419580ad8c3937e0df32b0ba9ace38eb9480141ab6e2e144cc7f",
+    "RUN_REPORT.md": "b6a00d17dd3c863069027cda770ee80010701c29e87f27b254cd08b2002390b6",
     "FINAL_REPORT.md": "6dcbc95be5418f2b8cc8d64b006ea1a29b7a9ced0c32a9f3b898bdf5861d526f",
     "COMMITS.md": "6cb29092b8a654754d86d2d7ac88bcf7f84e78fc82b9c35f58475ed1a487c234",
     "offline_trace.py": "43aa1ff949d78977210e5c6b02b307ba73407b7df3febb33402985308148f83f",

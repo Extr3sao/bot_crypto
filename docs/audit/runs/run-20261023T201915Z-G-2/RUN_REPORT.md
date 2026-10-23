@@ -8,6 +8,23 @@
 - **Mode:** offline only. No live order, no PAPER run against a real feed, no
   deployment.
 
+## 0. Which tree was actually tested
+
+- **Checkout:** `C:\Users\GVLLFR0035\Downloads\ff-wt-mt0004` — the only tree any
+  command in this run read or wrote. No `wt-sup001`, no sibling worktree, no
+  `PYTHONPATH` borrowed from another checkout.
+- **Suite:** every test run in §4 executed with that tree's `src` on
+  `PYTHONPATH` and cwd at that root; the harness prints the resolved source and
+  refuses to score if the import lands elsewhere.
+- **Verification:** `verify_g2.py` does not trust the working tree at all. It
+  exports `00671e62` with `git archive` into a temporary directory and runs
+  every check there with `PYTHONPATH=<export>/src:<export>`. The export path is
+  transient by design; the commit is the durable address.
+- **The failure this protects against** is D-6: a subprocess that imports
+  `REPO_ROOT/src` while the mutation lives in another copy measures the wrong
+  code and reports green. Both the new suite and the harness assert
+  `TEST_TARGET == RUNTIME_TARGET` before any result is accepted.
+
 ## 1. What was asked
 
 Close G-2 — engage the kill switch on a process that is already running —
