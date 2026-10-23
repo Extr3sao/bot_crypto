@@ -62,7 +62,7 @@
     },
     {
       "bytes": 54421,
-      "git_blob_sha": "742de7414f8d1c00efd716db70318a68345056ef",
+      "git_blob_sha": "1e1100b9d3948b28aed63561d9fb3205d9b4307e",
       "path": "scripts/exp004a_wp051_02i_storage.py",
       "sha256": "9cbeaaffdd7aa82d0a0ea48bf5af06759c58cd5436d9e37043eddf8a854697e7"
     },
@@ -81,10 +81,10 @@
   ],
   "entry_count": 13,
   "hash_semantics": "sha256 hashes the bytes in this checkout; git_blob_sha is the Git object id at HEAD. They are different magnitudes and are never presented as the same value.",
-  "head": "522c07fde6c9ed29c91ba8e89e0f72ecc78dfc29",
+  "head": "65e33c1c984d1c681eeb59b8e154ef6ec7a99057",
   "missing_git_blob": [],
   "not_a_certification": "a manifest says what is in the package. It does not say the package is right, and it promotes nothing.",
   "package": "WP-051-02I",
   "schema_version": "EXP004A_WP051_02I_STORAGE_V1",
-  "sealed_at_utc": "2026-10-23T11:01:59Z"
+  "sealed_at_utc": "2026-10-23T11:02:00Z"
 }
