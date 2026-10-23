@@ -137,6 +137,19 @@ def locks_under(out: Path) -> list[dict[str, Any]]:
     return found
 
 
+def wait_for_abandoned(out: Path, *, timeout_s: float) -> tuple[list[dict[str, Any]], float | None]:
+    """Poll until every leftover lock is proved abandoned, or report what is still held."""
+
+    started = time.monotonic()
+    found = locks_under(out)
+    while found and not all(item["state"] == "ABANDONED" for item in found):
+        if time.monotonic() - started >= timeout_s:
+            return found, None
+        time.sleep(0.25)
+        found = locks_under(out)
+    return found, round(time.monotonic() - started, 2)
+
+
 def wait_for_cycles(out: Path, count: int, *, timeout_s: float) -> tuple[int, float]:
     """Wait until the stream holds ``count`` CYCLE rows; returns (cycles, waited seconds)."""
 
@@ -157,9 +170,13 @@ def main(argv: list[str] | None = None) -> int:
         default=str(REPO / "reports" / "ai-bots" / "CODEX-PAPER-UNBLOCK-001" / "lock-recovery"),
     )
     parser.add_argument("--symbols", nargs="*", default=["BTCUSDT", "ETHUSDT", "SOLUSDT"])
-    parser.add_argument("--crash-duration-s", type=int, default=900)
-    parser.add_argument("--resume-duration-s", type=int, default=300)
+    #: Both phases MUST declare the same configuration: ``duration_s`` and ``max_cycles`` are
+    #: part of the pinned identity, so a resume with different numbers is refused
+    #: ``CONFIG_CHANGED`` before it touches a lock. Measured, not assumed.
+    parser.add_argument("--duration-s", type=int, default=600)
+    parser.add_argument("--max-cycles", type=int, default=3)
     parser.add_argument("--wait-cycle-timeout-s", type=float, default=420.0)
+    parser.add_argument("--wait-abandoned-timeout-s", type=float, default=60.0)
     args = parser.parse_args(argv)
 
     out = Path(args.out)
@@ -182,8 +199,8 @@ def main(argv: list[str] | None = None) -> int:
         session,
         log=crash_log,
         resume=False,
-        duration_s=args.crash_duration_s,
-        max_cycles=6,
+        duration_s=args.duration_s,
+        max_cycles=args.max_cycles,
         symbols=list(args.symbols),
     )
     cycles, waited = wait_for_cycles(session, 1, timeout_s=args.wait_cycle_timeout_s)
@@ -206,28 +223,50 @@ def main(argv: list[str] | None = None) -> int:
     evidence["phase1"]["chain_at_crash"] = verify_chain(session / "STREAM.jsonl")
 
     # ---- phase 2: what did the crash leave, and what does the code think of it? ----
-    leftover = locks_under(session)
+    #: A process that has just been terminated is still "alive" to a liveness probe until
+    #: the OS tears its object down, and refusing to reclaim a live owner is the whole point.
+    #: So the proof is re-asked, and this records how long the platform took to give it.
+    leftover, abandoned_after_s = wait_for_abandoned(
+        session, timeout_s=args.wait_abandoned_timeout_s
+    )
     evidence["leftover_locks"] = leftover
+    evidence["abandoned_after_s"] = abandoned_after_s
 
     # ---- phase 3: resume the same directory with the same entrypoint --------------
-    resume_log = out / "phase3-resume.log"
-    resumed = start_session(
-        session,
-        log=resume_log,
-        resume=True,
-        duration_s=args.resume_duration_s,
-        max_cycles=3,
-        symbols=list(args.symbols),
-    )
-    try:
-        resume_exit = resumed.wait(timeout=args.resume_duration_s + 420)
-    except subprocess.TimeoutExpired:  # pragma: no cover - the session has its own deadline
-        kill_tree(resumed)
-        resume_exit = 124
+    attempts: list[dict[str, Any]] = []
+    resume_exit = 1
+    for attempt in (1, 2):
+        resume_log = out / (
+            "phase3-resume.log" if attempt == 1 else f"phase3-resume-retry{attempt}.log"
+        )
+        resumed = start_session(
+            session,
+            log=resume_log,
+            resume=True,
+            duration_s=args.duration_s,
+            max_cycles=args.max_cycles,
+            symbols=list(args.symbols),
+        )
+        try:
+            resume_exit = resumed.wait(timeout=args.duration_s + 420)
+        except subprocess.TimeoutExpired:  # pragma: no cover - the session has its own deadline
+            kill_tree(resumed)
+            resume_exit = 124
+        tail = resume_log.read_text(encoding="utf-8", errors="replace")[-4000:]
+        attempts.append(
+            {"attempt": attempt, "exit_code": resume_exit, "log": resume_log.name, "tail": tail}
+        )
+        #: A refusal because an owner is *still* alive is retried once, deliberately: the
+        #: alternative is a recovery loop that gives up on a process the OS has not finished
+        #: tearing down. Nothing is deleted while the owner answers.
+        if resume_exit == 0 or "RUNTIME_LOCK_HELD" not in tail:
+            break
+        time.sleep(3.0)
     evidence["phase3"] = {
         "exit_code": resume_exit,
-        "log": resume_log.name,
-        "tail": resume_log.read_text(encoding="utf-8", errors="replace")[-4000:],
+        "attempts": attempts,
+        "log": attempts[-1]["log"],
+        "tail": attempts[-1]["tail"],
     }
 
     # ---- phase 4: does the evidence hold up? -------------------------------------
