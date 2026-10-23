@@ -1,0 +1,1026 @@
+{
+  "breaches": {
+    "bar_opportunities_refused": 486,
+    "free_space_episode_count": 25,
+    "free_space_episodes": [
+      {
+        "end_at_utc": "2026-10-13T20:55:56Z",
+        "hours": 0.75,
+        "last_ms": 1791924956021,
+        "min_free_bytes": 1942904832,
+        "min_free_gib": 1.809,
+        "samples": 3,
+        "start_at_utc": "2026-10-13T20:25:56Z",
+        "start_ms": 1791923156023
+      },
+      {
+        "end_at_utc": "2026-10-13T21:40:56Z",
+        "hours": 0.5,
+        "last_ms": 1791927656150,
+        "min_free_bytes": 1903886336,
+        "min_free_gib": 1.773,
+        "samples": 2,
+        "start_at_utc": "2026-10-13T21:25:56Z",
+        "start_ms": 1791926756041
+      },
+      {
+        "end_at_utc": "2026-10-14T05:25:56Z",
+        "hours": 7.5,
+        "last_ms": 1791955556236,
+        "min_free_bytes": 891416576,
+        "min_free_gib": 0.83,
+        "samples": 30,
+        "start_at_utc": "2026-10-13T22:10:57Z",
+        "start_ms": 1791929457554
+      },
+      {
+        "end_at_utc": "2026-10-14T08:40:57Z",
+        "hours": 1.01,
+        "last_ms": 1791967257016,
+        "min_free_bytes": 1242046464,
+        "min_free_gib": 1.157,
+        "samples": 6,
+        "start_at_utc": "2026-10-14T07:55:09Z",
+        "start_ms": 1791964509147
+      },
+      {
+        "end_at_utc": "2026-10-14T13:40:56Z",
+        "hours": 1.0,
+        "last_ms": 1791985256654,
+        "min_free_bytes": 1486336000,
+        "min_free_gib": 1.384,
+        "samples": 4,
+        "start_at_utc": "2026-10-14T12:55:56Z",
+        "start_ms": 1791982556840
+      },
+      {
+        "end_at_utc": "2026-10-17T17:10:57Z",
+        "hours": 0.5,
+        "last_ms": 1792257057082,
+        "min_free_bytes": 1733435392,
+        "min_free_gib": 1.614,
+        "samples": 2,
+        "start_at_utc": "2026-10-17T16:55:57Z",
+        "start_ms": 1792256157011
+      },
+      {
+        "end_at_utc": "2026-10-17T19:55:56Z",
+        "hours": 2.0,
+        "last_ms": 1792266956349,
+        "min_free_bytes": 166592512,
+        "min_free_gib": 0.155,
+        "samples": 7,
+        "start_at_utc": "2026-10-17T18:10:57Z",
+        "start_ms": 1792260657145
+      },
+      {
+        "end_at_utc": "2026-10-17T22:40:56Z",
+        "hours": 0.25,
+        "last_ms": 1792276856098,
+        "min_free_bytes": 816218112,
+        "min_free_gib": 0.76,
+        "samples": 1,
+        "start_at_utc": "2026-10-17T22:40:56Z",
+        "start_ms": 1792276856098
+      },
+      {
+        "end_at_utc": "2026-10-17T23:10:56Z",
+        "hours": 0.25,
+        "last_ms": 1792278656208,
+        "min_free_bytes": 1907269632,
+        "min_free_gib": 1.776,
+        "samples": 1,
+        "start_at_utc": "2026-10-17T23:10:56Z",
+        "start_ms": 1792278656208
+      },
+      {
+        "end_at_utc": "2026-10-18T00:10:55Z",
+        "hours": 0.25,
+        "last_ms": 1792282255957,
+        "min_free_bytes": 2144931840,
+        "min_free_gib": 1.998,
+        "samples": 1,
+        "start_at_utc": "2026-10-18T00:10:55Z",
+        "start_ms": 1792282255957
+      },
+      {
+        "end_at_utc": "2026-10-18T02:40:56Z",
+        "hours": 0.25,
+        "last_ms": 1792291256083,
+        "min_free_bytes": 2146729984,
+        "min_free_gib": 1.999,
+        "samples": 1,
+        "start_at_utc": "2026-10-18T02:40:56Z",
+        "start_ms": 1792291256083
+      },
+      {
+        "end_at_utc": "2026-10-18T07:55:56Z",
+        "hours": 0.5,
+        "last_ms": 1792310156117,
+        "min_free_bytes": 2074984448,
+        "min_free_gib": 1.932,
+        "samples": 2,
+        "start_at_utc": "2026-10-18T07:40:56Z",
+        "start_ms": 1792309256196
+      },
+      {
+        "end_at_utc": "2026-10-18T12:25:56Z",
+        "hours": 3.5,
+        "last_ms": 1792326356727,
+        "min_free_bytes": 0,
+        "min_free_gib": 0.0,
+        "samples": 14,
+        "start_at_utc": "2026-10-18T09:10:57Z",
+        "start_ms": 1792314657005
+      },
+      {
+        "end_at_utc": "2026-10-19T02:40:55Z",
+        "hours": 7.75,
+        "last_ms": 1792377655819,
+        "min_free_bytes": 0,
+        "min_free_gib": 0.0,
+        "samples": 31,
+        "start_at_utc": "2026-10-18T19:10:57Z",
+        "start_ms": 1792350657051
+      },
+      {
+        "end_at_utc": "2026-10-20T11:40:58Z",
+        "hours": 0.25,
+        "last_ms": 1792496458965,
+        "min_free_bytes": 2077171712,
+        "min_free_gib": 1.935,
+        "samples": 1,
+        "start_at_utc": "2026-10-20T11:40:58Z",
+        "start_ms": 1792496458965
+      },
+      {
+        "end_at_utc": "2026-10-20T14:43:24Z",
+        "hours": 0.54,
+        "last_ms": 1792507404036,
+        "min_free_bytes": 978591744,
+        "min_free_gib": 0.911,
+        "samples": 2,
+        "start_at_utc": "2026-10-20T14:26:17Z",
+        "start_ms": 1792506377167
+      },
+      {
+        "end_at_utc": "2026-10-21T17:10:56Z",
+        "hours": 1.25,
+        "last_ms": 1792602656828,
+        "min_free_bytes": 282374144,
+        "min_free_gib": 0.263,
+        "samples": 5,
+        "start_at_utc": "2026-10-21T16:10:56Z",
+        "start_ms": 1792599056645
+      },
+      {
+        "end_at_utc": "2026-10-21T17:55:56Z",
+        "hours": 0.25,
+        "last_ms": 1792605356614,
+        "min_free_bytes": 1417498624,
+        "min_free_gib": 1.32,
+        "samples": 1,
+        "start_at_utc": "2026-10-21T17:55:56Z",
+        "start_ms": 1792605356614
+      },
+      {
+        "end_at_utc": "2026-10-21T19:55:57Z",
+        "hours": 1.75,
+        "last_ms": 1792612557542,
+        "min_free_bytes": 37605376,
+        "min_free_gib": 0.035,
+        "samples": 7,
+        "start_at_utc": "2026-10-21T18:25:56Z",
+        "start_ms": 1792607156726
+      },
+      {
+        "end_at_utc": "2026-10-22T14:55:56Z",
+        "hours": 0.25,
+        "last_ms": 1792680956727,
+        "min_free_bytes": 1815961600,
+        "min_free_gib": 1.691,
+        "samples": 1,
+        "start_at_utc": "2026-10-22T14:55:56Z",
+        "start_ms": 1792680956727
+      },
+      {
+        "end_at_utc": "2026-10-22T18:10:56Z",
+        "hours": 1.5,
+        "last_ms": 1792692656351,
+        "min_free_bytes": 1547952128,
+        "min_free_gib": 1.442,
+        "samples": 6,
+        "start_at_utc": "2026-10-22T16:55:56Z",
+        "start_ms": 1792688156277
+      },
+      {
+        "end_at_utc": "2026-10-22T22:10:56Z",
+        "hours": 2.5,
+        "last_ms": 1792707056424,
+        "min_free_bytes": 298143744,
+        "min_free_gib": 0.278,
+        "samples": 10,
+        "start_at_utc": "2026-10-22T19:55:56Z",
+        "start_ms": 1792698956527
+      },
+      {
+        "end_at_utc": "2026-10-23T05:25:57Z",
+        "hours": 5.5,
+        "last_ms": 1792733157456,
+        "min_free_bytes": 0,
+        "min_free_gib": 0.0,
+        "samples": 22,
+        "start_at_utc": "2026-10-23T00:10:56Z",
+        "start_ms": 1792714256434
+      },
+      {
+        "end_at_utc": "2026-10-23T05:55:56Z",
+        "hours": 0.25,
+        "last_ms": 1792734956894,
+        "min_free_bytes": 515112960,
+        "min_free_gib": 0.48,
+        "samples": 1,
+        "start_at_utc": "2026-10-23T05:55:56Z",
+        "start_ms": 1792734956894
+      },
+      {
+        "end_at_utc": "2026-10-23T06:55:57Z",
+        "hours": 0.5,
+        "last_ms": 1792738557171,
+        "min_free_bytes": 708005888,
+        "min_free_gib": 0.659,
+        "samples": 2,
+        "start_at_utc": "2026-10-23T06:40:57Z",
+        "start_ms": 1792737657599
+      }
+    ],
+    "hours_under_floor": 40.55,
+    "lowest_free_bytes": 0,
+    "lowest_free_gib": 0.0,
+    "note": "a refused tick costs its slot: the guard refuses before any request, so the bars in that slot are never fetched, and the lag policy forbids fetching them later.",
+    "refusal_episode_count": 24,
+    "refusal_episodes": [
+      {
+        "end_at_utc": "2026-10-13T20:55:56Z",
+        "hours": 0.75,
+        "last_ms": 1791924956021,
+        "start_at_utc": "2026-10-13T20:25:56Z",
+        "start_ms": 1791923156023,
+        "ticks": 3
+      },
+      {
+        "end_at_utc": "2026-10-13T21:40:56Z",
+        "hours": 0.5,
+        "last_ms": 1791927656150,
+        "start_at_utc": "2026-10-13T21:25:56Z",
+        "start_ms": 1791926756041,
+        "ticks": 2
+      },
+      {
+        "end_at_utc": "2026-10-14T05:25:56Z",
+        "hours": 7.5,
+        "last_ms": 1791955556236,
+        "start_at_utc": "2026-10-13T22:10:57Z",
+        "start_ms": 1791929457554,
+        "ticks": 30
+      },
+      {
+        "end_at_utc": "2026-10-14T08:40:57Z",
+        "hours": 1.5,
+        "last_ms": 1791967257016,
+        "start_at_utc": "2026-10-14T07:55:09Z",
+        "start_ms": 1791964509147,
+        "ticks": 6
+      },
+      {
+        "end_at_utc": "2026-10-14T13:40:56Z",
+        "hours": 1.0,
+        "last_ms": 1791985256654,
+        "start_at_utc": "2026-10-14T12:55:56Z",
+        "start_ms": 1791982556840,
+        "ticks": 4
+      },
+      {
+        "end_at_utc": "2026-10-17T17:10:57Z",
+        "hours": 0.5,
+        "last_ms": 1792257057082,
+        "start_at_utc": "2026-10-17T16:55:57Z",
+        "start_ms": 1792256157011,
+        "ticks": 2
+      },
+      {
+        "end_at_utc": "2026-10-17T19:55:56Z",
+        "hours": 1.75,
+        "last_ms": 1792266956349,
+        "start_at_utc": "2026-10-17T18:10:57Z",
+        "start_ms": 1792260657145,
+        "ticks": 7
+      },
+      {
+        "end_at_utc": "2026-10-17T22:40:56Z",
+        "hours": 0.25,
+        "last_ms": 1792276856098,
+        "start_at_utc": "2026-10-17T22:40:56Z",
+        "start_ms": 1792276856098,
+        "ticks": 1
+      },
+      {
+        "end_at_utc": "2026-10-17T23:10:56Z",
+        "hours": 0.25,
+        "last_ms": 1792278656208,
+        "start_at_utc": "2026-10-17T23:10:56Z",
+        "start_ms": 1792278656208,
+        "ticks": 1
+      },
+      {
+        "end_at_utc": "2026-10-18T00:10:55Z",
+        "hours": 0.25,
+        "last_ms": 1792282255957,
+        "start_at_utc": "2026-10-18T00:10:55Z",
+        "start_ms": 1792282255957,
+        "ticks": 1
+      },
+      {
+        "end_at_utc": "2026-10-18T07:55:56Z",
+        "hours": 0.5,
+        "last_ms": 1792310156117,
+        "start_at_utc": "2026-10-18T07:40:56Z",
+        "start_ms": 1792309256196,
+        "ticks": 2
+      },
+      {
+        "end_at_utc": "2026-10-18T12:25:56Z",
+        "hours": 3.5,
+        "last_ms": 1792326356727,
+        "start_at_utc": "2026-10-18T09:10:57Z",
+        "start_ms": 1792314657005,
+        "ticks": 14
+      },
+      {
+        "end_at_utc": "2026-10-19T02:40:55Z",
+        "hours": 7.75,
+        "last_ms": 1792377655819,
+        "start_at_utc": "2026-10-18T19:10:57Z",
+        "start_ms": 1792350657051,
+        "ticks": 31
+      },
+      {
+        "end_at_utc": "2026-10-20T11:40:58Z",
+        "hours": 0.25,
+        "last_ms": 1792496458965,
+        "start_at_utc": "2026-10-20T11:40:58Z",
+        "start_ms": 1792496458965,
+        "ticks": 1
+      },
+      {
+        "end_at_utc": "2026-10-20T14:43:24Z",
+        "hours": 0.5,
+        "last_ms": 1792507404036,
+        "start_at_utc": "2026-10-20T14:26:17Z",
+        "start_ms": 1792506377167,
+        "ticks": 2
+      },
+      {
+        "end_at_utc": "2026-10-21T17:10:56Z",
+        "hours": 1.25,
+        "last_ms": 1792602656828,
+        "start_at_utc": "2026-10-21T16:10:56Z",
+        "start_ms": 1792599056645,
+        "ticks": 5
+      },
+      {
+        "end_at_utc": "2026-10-21T17:55:56Z",
+        "hours": 0.25,
+        "last_ms": 1792605356614,
+        "start_at_utc": "2026-10-21T17:55:56Z",
+        "start_ms": 1792605356614,
+        "ticks": 1
+      },
+      {
+        "end_at_utc": "2026-10-21T19:55:57Z",
+        "hours": 1.75,
+        "last_ms": 1792612557542,
+        "start_at_utc": "2026-10-21T18:25:56Z",
+        "start_ms": 1792607156726,
+        "ticks": 7
+      },
+      {
+        "end_at_utc": "2026-10-22T14:55:56Z",
+        "hours": 0.25,
+        "last_ms": 1792680956727,
+        "start_at_utc": "2026-10-22T14:55:56Z",
+        "start_ms": 1792680956727,
+        "ticks": 1
+      },
+      {
+        "end_at_utc": "2026-10-22T18:10:56Z",
+        "hours": 1.5,
+        "last_ms": 1792692656351,
+        "start_at_utc": "2026-10-22T16:55:56Z",
+        "start_ms": 1792688156277,
+        "ticks": 6
+      },
+      {
+        "end_at_utc": "2026-10-22T22:10:56Z",
+        "hours": 2.5,
+        "last_ms": 1792707056424,
+        "start_at_utc": "2026-10-22T19:55:56Z",
+        "start_ms": 1792698956527,
+        "ticks": 10
+      },
+      {
+        "end_at_utc": "2026-10-23T05:25:57Z",
+        "hours": 5.5,
+        "last_ms": 1792733157456,
+        "start_at_utc": "2026-10-23T00:10:56Z",
+        "start_ms": 1792714256434,
+        "ticks": 22
+      },
+      {
+        "end_at_utc": "2026-10-23T05:55:56Z",
+        "hours": 0.25,
+        "last_ms": 1792734956894,
+        "start_at_utc": "2026-10-23T05:55:56Z",
+        "start_ms": 1792734956894,
+        "ticks": 1
+      },
+      {
+        "end_at_utc": "2026-10-23T06:55:57Z",
+        "hours": 0.5,
+        "last_ms": 1792738557171,
+        "start_at_utc": "2026-10-23T06:40:57Z",
+        "start_ms": 1792737657599,
+        "ticks": 2
+      }
+    ],
+    "refused_hours": 40.5,
+    "refused_ticks": 162,
+    "refused_ticks_by_day": {
+      "2026-10-13": 13,
+      "2026-10-14": 32,
+      "2026-10-17": 11,
+      "2026-10-18": 37,
+      "2026-10-19": 11,
+      "2026-10-20": 3,
+      "2026-10-21": 13,
+      "2026-10-22": 17,
+      "2026-10-23": 25
+    }
+  },
+  "consumers": [
+    {
+      "class": "PROTECTED_EVIDENCE",
+      "id": "lane_state",
+      "measured": {
+        "bytes": 14336531,
+        "bytes_gib": 0.0134,
+        "bytes_mib": 13.67,
+        "exists": true,
+        "files": 46,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+        "truncated": null
+      },
+      "measured_at_utc": "2026-10-23T10:55:13Z",
+      "owner": "this campaign",
+      "path": "data/forward/edge04",
+      "root": "main",
+      "volatile": false,
+      "why": "the forward store, its run log, its daily shards and its publications"
+    },
+    {
+      "class": "PROTECTED_EVIDENCE",
+      "id": "lane_source_store",
+      "measured": {
+        "bytes": 6695977,
+        "bytes_gib": 0.0062,
+        "bytes_mib": 6.39,
+        "exists": true,
+        "files": 6,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03",
+        "truncated": null
+      },
+      "measured_at_utc": "2026-10-23T10:55:13Z",
+      "owner": "this campaign",
+      "path": "data/forward/edge03",
+      "root": "main",
+      "volatile": false,
+      "why": "the frozen 1h/4h store the lane reads; rewritable only by the venue"
+    },
+    {
+      "class": "PROTECTED_EVIDENCE",
+      "id": "phase3_shards",
+      "measured": {
+        "bytes": 336780,
+        "bytes_gib": 0.0003,
+        "bytes_mib": 0.32,
+        "exists": true,
+        "files": 8,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\exp004a",
+        "truncated": null
+      },
+      "measured_at_utc": "2026-10-23T10:55:13Z",
+      "owner": "this campaign",
+      "path": "data/exp004a",
+      "root": "main",
+      "volatile": false,
+      "why": "write-once prospective shards, one per day per asset"
+    },
+    {
+      "class": "PROTECTED_REPOSITORY",
+      "id": "git_objects",
+      "measured": {
+        "bytes": 157898573,
+        "bytes_gib": 0.1471,
+        "bytes_mib": 150.58,
+        "exists": true,
+        "files": 2520,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.git",
+        "truncated": null
+      },
+      "measured_at_utc": "2026-10-23T10:55:13Z",
+      "owner": "the repository",
+      "path": ".git",
+      "root": "main",
+      "volatile": false,
+      "why": "history; every package's evidence manifest resolves through it"
+    },
+    {
+      "class": "FOREIGN_IN_USE",
+      "id": "other_agent_temp",
+      "measured": {
+        "bytes": 0,
+        "bytes_gib": 0.0,
+        "bytes_mib": 0.0,
+        "exists": true,
+        "files": 0,
+        "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r",
+        "truncated": null
+      },
+      "measured_at_utc": "2026-10-23T10:55:13Z",
+      "owner": "another agent (running processes)",
+      "path": "%TEMP%/edge14r",
+      "root": "temp",
+      "volatile": true,
+      "why": "two live python processes have their virtualenv and database here"
+    },
+    {
+      "class": "FOREIGN",
+      "id": "audit_baseline",
+      "measured": {
+        "bytes": 168005792,
+        "bytes_gib": 0.1565,
+        "bytes_mib": 160.22,
+        "exists": true,
+        "files": 3280,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\audit\\baseline-wt",
+        "truncated": null
+      },
+      "measured_at_utc": "2026-10-23T10:55:13Z",
+      "owner": "another agent",
+      "path": ".tmp/audit/baseline-wt",
+      "root": "main",
+      "volatile": true,
+      "why": "a second checkout of this repository, not this package's"
+    },
+    {
+      "class": "FOREIGN",
+      "id": "downloads_worktrees",
+      "measured": {
+        "bytes": 19894377686,
+        "bytes_gib": 18.5281,
+        "bytes_mib": 18972.76,
+        "exists": true,
+        "files": 388661,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads",
+        "truncated": null
+      },
+      "measured_at_utc": "2026-10-23T10:55:24Z",
+      "owner": "the user and other packages",
+      "path": "%HOME%/Downloads",
+      "root": "home",
+      "volatile": true,
+      "why": "other worktrees and user files; deleting them is not this package's call"
+    },
+    {
+      "class": "SHARED_TEMP",
+      "id": "temp",
+      "measured": {
+        "bytes": 7370908553,
+        "bytes_gib": 6.8647,
+        "bytes_mib": 7029.45,
+        "exists": true,
+        "files": 66022,
+        "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp",
+        "truncated": null
+      },
+      "measured_at_utc": "2026-10-23T10:55:31Z",
+      "owner": "every process on this host",
+      "path": "%TEMP%",
+      "root": "temp",
+      "volatile": true,
+      "why": "pytest and browser scratch, regenerable but owned by whoever is running"
+    }
+  ],
+  "daily": [
+    {
+      "day": "2026-10-13",
+      "first_at_utc": "2026-10-13T11:23:38Z",
+      "first_free_bytes": 8330788864,
+      "last_at_utc": "2026-10-13T23:55:56Z",
+      "last_free_bytes": 1393414144,
+      "max_free_bytes": 8330788864,
+      "min_free_bytes": 1285267456,
+      "net_change_bytes": -6937374720,
+      "samples": 57
+    },
+    {
+      "day": "2026-10-14",
+      "first_at_utc": "2026-10-14T00:10:56Z",
+      "first_free_bytes": 1386483712,
+      "last_at_utc": "2026-10-14T22:25:56Z",
+      "last_free_bytes": 6344228864,
+      "max_free_bytes": 6779056128,
+      "min_free_bytes": 891416576,
+      "net_change_bytes": 4957745152,
+      "samples": 92
+    },
+    {
+      "day": "2026-10-15",
+      "first_at_utc": "2026-10-15T04:56:15Z",
+      "first_free_bytes": 12989526016,
+      "last_at_utc": "2026-10-15T23:55:56Z",
+      "last_free_bytes": 8673050624,
+      "max_free_bytes": 12989526016,
+      "min_free_bytes": 7572418560,
+      "net_change_bytes": -4316475392,
+      "samples": 80
+    },
+    {
+      "day": "2026-10-16",
+      "first_at_utc": "2026-10-16T00:10:56Z",
+      "first_free_bytes": 8656515072,
+      "last_at_utc": "2026-10-16T23:55:55Z",
+      "last_free_bytes": 3159388160,
+      "max_free_bytes": 10317676544,
+      "min_free_bytes": 2160447488,
+      "net_change_bytes": -5497126912,
+      "samples": 96
+    },
+    {
+      "day": "2026-10-17",
+      "first_at_utc": "2026-10-17T00:10:55Z",
+      "first_free_bytes": 3150708736,
+      "last_at_utc": "2026-10-17T23:55:55Z",
+      "last_free_bytes": 2160099328,
+      "max_free_bytes": 6271991808,
+      "min_free_bytes": 166592512,
+      "net_change_bytes": -990609408,
+      "samples": 95
+    },
+    {
+      "day": "2026-10-18",
+      "first_at_utc": "2026-10-18T00:10:55Z",
+      "first_free_bytes": 2144931840,
+      "last_at_utc": "2026-10-18T23:55:55Z",
+      "last_free_bytes": 361795584,
+      "max_free_bytes": 5727789056,
+      "min_free_bytes": 0,
+      "net_change_bytes": -1783136256,
+      "samples": 96
+    },
+    {
+      "day": "2026-10-19",
+      "first_at_utc": "2026-10-19T00:10:55Z",
+      "first_free_bytes": 561725440,
+      "last_at_utc": "2026-10-19T23:55:55Z",
+      "last_free_bytes": 9770205184,
+      "max_free_bytes": 24597098496,
+      "min_free_bytes": 549765120,
+      "net_change_bytes": 9208479744,
+      "samples": 96
+    },
+    {
+      "day": "2026-10-20",
+      "first_at_utc": "2026-10-20T00:10:56Z",
+      "first_free_bytes": 10621313024,
+      "last_at_utc": "2026-10-20T23:55:55Z",
+      "last_free_bytes": 13321515008,
+      "max_free_bytes": 15849934848,
+      "min_free_bytes": 978591744,
+      "net_change_bytes": 2700201984,
+      "samples": 88
+    },
+    {
+      "day": "2026-10-21",
+      "first_at_utc": "2026-10-21T00:10:55Z",
+      "first_free_bytes": 13302927360,
+      "last_at_utc": "2026-10-21T23:55:56Z",
+      "last_free_bytes": 4754141184,
+      "max_free_bytes": 13424463872,
+      "min_free_bytes": 37605376,
+      "net_change_bytes": -8548786176,
+      "samples": 87
+    },
+    {
+      "day": "2026-10-22",
+      "first_at_utc": "2026-10-22T00:10:56Z",
+      "first_free_bytes": 4746178560,
+      "last_at_utc": "2026-10-22T23:55:56Z",
+      "last_free_bytes": 2380894208,
+      "max_free_bytes": 7770750976,
+      "min_free_bytes": 298143744,
+      "net_change_bytes": -2365284352,
+      "samples": 99
+    },
+    {
+      "day": "2026-10-23",
+      "first_at_utc": "2026-10-23T00:10:56Z",
+      "first_free_bytes": 1873678336,
+      "last_at_utc": "2026-10-23T10:40:56Z",
+      "last_free_bytes": 4257480704,
+      "max_free_bytes": 8815820800,
+      "min_free_bytes": 0,
+      "net_change_bytes": 2383802368,
+      "samples": 43
+    }
+  ],
+  "drawdown": {
+    "at_utc": "2026-10-19T22:55:56Z",
+    "bytes": 15658606592,
+    "day": "2026-10-19",
+    "from_bytes": 24597098496,
+    "to_bytes": 8938491904
+  },
+  "generated_at_utc": "2026-10-23T10:55:31Z",
+  "head": "611cd7178648b727a9052ebeea3f2c6e494489a8",
+  "history": {
+    "available": true,
+    "first_at_utc": "2026-10-13T11:23:38Z",
+    "last_at_utc": "2026-10-23T10:40:56Z",
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
+    "sample_count": 929,
+    "unparsable_lines": 0
+  },
+  "host_trend": {
+    "basis": "median of per-UTC-day net change, first reading to last reading of the day",
+    "days": 11,
+    "days_recovering": 4,
+    "days_spending": 7,
+    "max_bytes_per_day": 9208479744,
+    "median_bytes_per_day": -1783136256,
+    "median_gib_per_day": -1.6607,
+    "min_bytes_per_day": -8548786176,
+    "per_day_bytes": [
+      -6937374720,
+      4957745152,
+      -4316475392,
+      -5497126912,
+      -990609408,
+      -1783136256,
+      9208479744,
+      2700201984,
+      -8548786176,
+      -2365284352,
+      2383802368
+    ],
+    "status": "MEASURED"
+  },
+  "lane": {
+    "bytes": 14336531,
+    "bytes_gib": 0.0134,
+    "bytes_mib": 13.67,
+    "exists": true,
+    "files": 46,
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "state_bytes_mib": 13.67,
+    "truncated": null
+  },
+  "lane_growth": {
+    "resource_budget_bytes_per_day": 1161639,
+    "resource_budget_note": "the observer samples its own tree size into resource_budget.json; a series with fewer than two usable samples supports no rate",
+    "resource_budget_samples": 922,
+    "resource_budget_span_days": 9.938,
+    "runs_jsonl_bytes": 4202591
+  },
+  "main_checkout": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+  "note": "every byte figure here is either measured on this host or derived from a stated hypothesis. Nothing in this report moves the experiment's coverage, grades a day, or repairs a capture.",
+  "package": "WP-051-02I",
+  "projection": {
+    "current_free_bytes": 4737363968,
+    "current_free_gib": 4.412,
+    "floor_bytes": 2147483648,
+    "headroom_bytes": -13173273782,
+    "hours_to_floor_at_worst_observed_rate": 3.97,
+    "hypotheses": [
+      "the window is 90 consecutive UTC days",
+      "every day holds 72 rows (3 assets x 24 hours)",
+      "the host's own drawdown repeats at the largest rate already observed",
+      "the critical floor stays at 2 GiB and is never spent",
+      "the bytes this package cannot name are not claimed as available",
+      "recovery of free space is not planned: it has happened, and it is not a plan"
+    ],
+    "max_daily_drawdown_bytes": 15658606592,
+    "own": {
+      "adopted_basis": "the larger of the two estimates: a projection that under-states its own need is the one a full disk punishes",
+      "adopted_bytes": 104547510,
+      "from_measured_tree_bytes": 104547510,
+      "from_shard_format_bytes": 2037960
+    },
+    "required_free_bytes": 17910637750,
+    "required_free_gib": 16.681,
+    "rows_per_day": 72,
+    "verdict": "INSUFFICIENT",
+    "verdict_reasons": [
+      "free space 4.412 GiB is under the 16.681 GiB the floor plus one day's observed drawdown needs"
+    ],
+    "window_days": 90
+  },
+  "schema_version": "EXP004A_WP051_02I_STORAGE_V1",
+  "session": {
+    "first_free_bytes": 4439363584,
+    "last_free_bytes": 4742459392,
+    "note": "the samples this package took while it worked. A span under an hour sits inside the volume's own oscillation, so the delta is evidence of the session, not a rate.",
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\docs\\agentic\\exp004a\\wp051_02i\\samples.jsonl",
+    "samples": 8,
+    "span_hours": 0.411
+  },
+  "shards": {
+    "basis": "median of bytes-per-line over every non-rehearsal phase-3 shard found",
+    "bytes_per_row": 314.5,
+    "searched_roots": [
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\exp004a",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\data\\exp004a",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02g\\data\\exp004a"
+    ],
+    "shards": [
+      {
+        "bytes": 28985,
+        "lines": 14,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\exp004a\\admission_1h+15m.jsonl"
+      },
+      {
+        "bytes": 284812,
+        "lines": 234,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\exp004a\\admission_1h.jsonl"
+      },
+      {
+        "bytes": 4403,
+        "lines": 14,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\exp004a\\EXP-004A-1H-BTC.jsonl"
+      },
+      {
+        "bytes": 4348,
+        "lines": 14,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\exp004a\\EXP-004A-1H-ETH.jsonl"
+      },
+      {
+        "bytes": 4296,
+        "lines": 14,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\exp004a\\EXP-004A-1H-SOL.jsonl"
+      },
+      {
+        "bytes": 28985,
+        "lines": 14,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\data\\exp004a\\admission_1h+15m.jsonl"
+      },
+      {
+        "bytes": 284812,
+        "lines": 234,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\data\\exp004a\\admission_1h.jsonl"
+      },
+      {
+        "bytes": 4403,
+        "lines": 14,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\data\\exp004a\\EXP-004A-1H-BTC.jsonl"
+      },
+      {
+        "bytes": 4348,
+        "lines": 14,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\data\\exp004a\\EXP-004A-1H-ETH.jsonl"
+      },
+      {
+        "bytes": 4296,
+        "lines": 14,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\data\\exp004a\\EXP-004A-1H-SOL.jsonl"
+      },
+      {
+        "bytes": 28985,
+        "lines": 14,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02g\\data\\exp004a\\admission_1h+15m.jsonl"
+      },
+      {
+        "bytes": 284812,
+        "lines": 234,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02g\\data\\exp004a\\admission_1h.jsonl"
+      },
+      {
+        "bytes": 4403,
+        "lines": 14,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02g\\data\\exp004a\\EXP-004A-1H-BTC.jsonl"
+      },
+      {
+        "bytes": 4348,
+        "lines": 14,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02g\\data\\exp004a\\EXP-004A-1H-ETH.jsonl"
+      },
+      {
+        "bytes": 4296,
+        "lines": 14,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02g\\data\\exp004a\\EXP-004A-1H-SOL.jsonl"
+      }
+    ],
+    "shards_found": 15
+  },
+  "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+  "sweep": {
+    "after": {
+      "anchor": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h",
+      "critical_free_bytes": 2147483648,
+      "free_bytes": 4743647232,
+      "free_gib": 4.4179,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h",
+      "status": "WARNING",
+      "total_bytes": 255041990656,
+      "total_gib": 237.5264,
+      "used_bytes": 250298343424,
+      "used_percent": 98.14,
+      "warning_free_bytes": 5368709120
+    },
+    "applied": true,
+    "before": {
+      "anchor": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h",
+      "critical_free_bytes": 2147483648,
+      "free_bytes": 4743712768,
+      "free_gib": 4.4179,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h",
+      "status": "WARNING",
+      "total_bytes": 255041990656,
+      "total_gib": 237.5264,
+      "used_bytes": 250298277888,
+      "used_percent": 98.14,
+      "warning_free_bytes": 5368709120
+    },
+    "candidates": [],
+    "deleted_bytes": 0,
+    "deleted_bytes_note": "the top-level fields describe the most recent run; the totals here are the whole recorded history, because a later run that finds nothing does not undo an earlier one",
+    "deleted_bytes_total": 216353,
+    "directories_removed_total": 4,
+    "failures": [],
+    "generated_at_utc": "2026-10-23T10:54:22Z",
+    "history": [
+      {
+        "applied": true,
+        "at_utc": "2026-10-23T10:54:21Z",
+        "candidates": 4,
+        "deleted_bytes": 216353,
+        "removed": [
+          {
+            "bytes": 143183,
+            "path": "scripts/__pycache__"
+          },
+          {
+            "bytes": 2287,
+            "path": "tests/__pycache__"
+          },
+          {
+            "bytes": 216,
+            "path": "tests/unit/__pycache__"
+          },
+          {
+            "bytes": 70667,
+            "path": "tests/unit/research/__pycache__"
+          }
+        ]
+      },
+      {
+        "applied": true,
+        "at_utc": "2026-10-23T10:54:22Z",
+        "candidates": 0,
+        "deleted_bytes": 0,
+        "removed": []
+      }
+    ],
+    "protected_note": "the sweep never walks outside this worktree, never touches a tracked path, and never removes evidence, data, configuration or another agent's files",
+    "reclaimable_bytes": 0,
+    "reclaimable_files": 0,
+    "removed": [],
+    "runs_recorded": 2,
+    "source": "SWEEP_EVIDENCE.json",
+    "volume_delta_bytes": -65536,
+    "volume_delta_note": "the volume moves for reasons this sweep does not control: other processes write and delete while it runs, so the change in free space is not the bytes reclaimed. deleted_bytes is the quantity the sweep is responsible for."
+  },
+  "volume": {
+    "anchor": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "critical_free_bytes": 2147483648,
+    "free_bytes": 4737363968,
+    "free_gib": 4.412,
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "status": "WARNING",
+    "total_bytes": 255041990656,
+    "total_gib": 237.5264,
+    "used_bytes": 250304626688,
+    "used_percent": 98.14,
+    "warning_free_bytes": 5368709120
+  },
+  "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h"
+}
