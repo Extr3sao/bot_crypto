@@ -128,3 +128,18 @@ veto, 6 gross edge, 7 paper admission. Rule 0 reads no request field.
   `settings.risk.kill_switch_enabled`, a *config boolean*, not the runtime
   state from `kill_switch_v2`. This is the mechanism behind G-3 and it was not
   exercised, so it is recorded as an untested claim, not a verified defect.
+
+## 7. Addendum — the refs moved while this run was open
+
+`codepaper/supervisor-001` and `main` are being written by other lanes. Both
+advanced during this task, so §2 is a snapshot, not a live view. Re-measured at
+2026-10-23T19:10Z and again at commit time:
+
+| Ref | Then (§2) | Now | Does the authority decision change? |
+|---|---|---|---|
+| `main` | `1d2192b0` | `47ca8dac`, then `cedc1346` | **No.** `git merge-base --is-ancestor 60455b46 main` → NO; `git grep kill_switch_v2 main -- src/trading_bot/autonomous/decision.py` → none; `main:tests/unit/autonomous/test_decision_kill_switch.py` does not exist. |
+| `codepaper/supervisor-001` | `60455b46` | `3b758e22` | **No.** `60455b46` is still an ancestor; this branch was cut at `0e2ba09d` and is pinned by SHA. |
+
+The rule that decides is the reachability check in §3, not the tip of any
+branch: a branch with more commits is authoritative only when the gate is
+reachable from it.

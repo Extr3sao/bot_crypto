@@ -1,0 +1,10 @@
+# Adversarial control of the contract guard (V-07)
+result: exit=1 specific_test_failed=True
+
+....FFF.                                                                 [100%]
+=========================== short test summary info ===========================
+FAILED tests/unit/test_audit_contracts_tracked.py::test_no_contract_is_gitignored
+FAILED tests/unit/test_audit_contracts_tracked.py::test_every_contract_is_tracked_by_git
+FAILED tests/unit/test_audit_contracts_tracked.py::test_contracts_do_not_live_in_the_ignored_report_directory
+3 failed, 5 passed in 0.48s
+
