@@ -414,8 +414,19 @@ which is written last and lists every other file of the package.
 | `data/exp004a/phase3/rehearsal/state/scheduler.json` | the watermark (not evidence; the verifier never reads it) |
 | `config/preregistrations/EXP-004A.datasets.phase3.json` | the declaration |
 
-Hash semantics, stated once: `sha256` is the hash of the bytes in this checkout; `git_blob_sha` is
-the Git object id. They are different magnitudes and are never presented as the same value.
+Hash semantics, stated once, because a reader will re-check these and must know what they mean:
+
+* `sha256` is the hash of the bytes **on disk in this checkout** at seal time. It is what the file
+  holds, not what Git stores.
+* `git_blob_sha` is `HEAD:<path>` **at seal time** — the object id in the tree the manifest names in
+  `head`. For every artefact committed before the seal, both agree with `HEAD` and a reader can
+  confirm each one with `git rev-parse HEAD:<path>`.
+* One entry cannot agree, and the manifest says so rather than hiding it: `LATEST_RUN.json` is
+  rewritten *by the seal*, so its `git_blob_sha` is the blob of the previous seal and its `sha256`
+  is the new bytes. `head` is likewise the commit the seal ran on, which is one commit behind the
+  one that carries the manifest — a file cannot name the commit that contains it.
+* Nothing here is an EOL-normalised digest. See `DEF-02G-09`: this checkout materialises CRLF, so a
+  manifest written over LF bytes elsewhere will disagree with itself.
 
 ---
 

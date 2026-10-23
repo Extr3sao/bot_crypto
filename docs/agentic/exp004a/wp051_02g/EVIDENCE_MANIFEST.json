@@ -141,10 +141,10 @@
       "sha256": "39bb2d9140b42c78f5a84a7dcd9d5e03ccee20effff398b44a9ef21066d54294"
     },
     {
-      "bytes": 35993,
+      "bytes": 36837,
       "git_blob_sha": "3bcb9a505f78e38716347ec8af27a4ceab7ecf42",
       "path": "docs/agentic/exp004a/wp051_02g/FINAL_REPORT.md",
-      "sha256": "042012c9d56ee31fdc1669c35dd024d6031af764a83f88b019dba2c8c7662589"
+      "sha256": "38783ad0d38915e116995ae7baa3427826e88c2ed1bcfd5badc5e2f1a218de62"
     },
     {
       "bytes": 5057,
@@ -154,9 +154,9 @@
     },
     {
       "bytes": 84,
-      "git_blob_sha": "11a948c6c973a3a1da9382af6e5e41a3ac8c73ec",
+      "git_blob_sha": "2424cd249e76b1837d7aa4f6e40c7ec515fb5d86",
       "path": "docs/agentic/exp004a/wp051_02g/LATEST_RUN.json",
-      "sha256": "7a808838c2b61539bf2c2de5541a1d889d9000bcb7470ada3f9f0ba5bc7dfda1"
+      "sha256": "0aaa71a0043f690d40d8a80d621acbe1a9e62ad6dd6691687356de7ae435c7e0"
     },
     {
       "bytes": 5123,
@@ -185,12 +185,12 @@
   ],
   "entry_count": 29,
   "hash_semantics": "sha256 hashes the bytes in this checkout; git_blob_sha is the Git object id at HEAD. They are different magnitudes and are never presented as the same value.",
-  "head": "e9f28befef08e5e19d9bd8ddebdf88f85708737e",
+  "head": "ddb70fd9622f412489313d95e3f4d9d943525c73",
   "not_a_certification": "a manifest says what is in the package. It does not say the package is right, and it promotes nothing.",
   "package": "WP-051-02G",
   "run_dir": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221044Z-c9a9f320",
   "run_id": "20261022T221044Z-c9a9f320",
   "schema_version": "1.0",
-  "sealed_at_utc": "2026-10-23T05:40:22.884Z",
+  "sealed_at_utc": "2026-10-23T05:40:55.551Z",
   "state": "CAPTURE_COMPLETE_AWAITING_VERIFICATION"
 }
