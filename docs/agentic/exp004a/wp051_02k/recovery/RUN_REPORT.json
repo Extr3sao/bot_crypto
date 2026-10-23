@@ -1,0 +1,95 @@
+{
+  "generated_at_utc": "2026-10-23T19:12:07Z",
+  "guard_task": {
+    "arguments": "\"C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\scripts\\edge04_watchdog.py\" --state-root \"C:/Users/GVLLFR0035/Downloads/bot freebuff/data/forward/edge04\"",
+    "command": "\"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe\"",
+    "error": null,
+    "query_exit": 0,
+    "referenced_script": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\scripts\\edge04_watchdog.py",
+    "referenced_script_exists": false,
+    "registered": true
+  },
+  "integrity": {
+    "checks": [
+      {
+        "id": "SOURCE_COMMIT_CHECKED_OUT",
+        "status": "PASS"
+      },
+      {
+        "id": "CONTRACT_DECLARES_ITS_GENERATOR",
+        "status": "PASS"
+      },
+      {
+        "id": "CONTRACT_SUPERSEDES_HASH_MATCHES",
+        "status": "PASS"
+      },
+      {
+        "id": "PHASE3_SHARD_MANIFESTS_VERIFY",
+        "status": "PASS"
+      },
+      {
+        "id": "PUBLISHED_PREFIX_VERIFIES",
+        "status": "PASS"
+      },
+      {
+        "id": "PUBLISHED_PREFIX_VERSUS_THE_RECORD",
+        "status": "PASS"
+      },
+      {
+        "id": "RECORD_BYTES_STILL_MATCH_THEIR_COMMIT",
+        "status": "PASS"
+      },
+      {
+        "id": "GUARD_TASK_POINTS_AT_A_LIVE_SCRIPT",
+        "status": "FAIL"
+      },
+      {
+        "id": "GUARD_IS_OPERABLE",
+        "status": "PASS"
+      },
+      {
+        "id": "RUNNER_IS_EXECUTABLE",
+        "status": "PASS"
+      },
+      {
+        "id": "TESTS_PASS",
+        "status": "PASS"
+      },
+      {
+        "id": "SPACE_WITHIN_THE_FROZEN_BUDGET",
+        "status": "FAIL"
+      },
+      {
+        "id": "FORWARD_STORE_STILL_EXISTS",
+        "status": "FAIL"
+      }
+    ],
+    "failed": 3,
+    "passed": 10,
+    "skipped": 0
+  },
+  "inventory": {
+    "counts": {
+      "ABSENT": 2,
+      "FOUND_VALID": 13
+    },
+    "verdict": "INCOMPLETE"
+  },
+  "schema_version": "EXP004A_WP051_02K_RECOVERY_AUDIT_V1",
+  "source_commit": "9983b050c8e241ef9d8365c8ffc33c95df1658dd",
+  "space": {
+    "free_bytes": 15261933568,
+    "free_bytes_kernel32": 15261933568,
+    "free_gib": 14.2138,
+    "instruments_agree": true,
+    "margin_gib": -0.3502,
+    "required_gib": 14.564,
+    "verdict": "INSUFFICIENT"
+  },
+  "tests": {
+    "command": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_exp004a_wp051_02k.py tests/unit/research/test_exp004a_wp051_02k_continue.py -q",
+    "exit_code": 0,
+    "tail": "...........................................................              [100%]\n59 passed in 0.81s"
+  },
+  "verdict": "BLOCKED_WITH_EVIDENCE"
+}

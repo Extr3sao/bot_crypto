@@ -1,0 +1,875 @@
+{
+  "after": {
+    "at_utc": "2026-10-23T13:42:15Z",
+    "free_bytes": 1609052160,
+    "free_bytes_kernel32": 1609052160,
+    "free_gib": 1.4985,
+    "instrument_delta_bytes": 0,
+    "instruments_agree": true,
+    "path": "C:/",
+    "status": "CRITICAL",
+    "total_bytes": 255041990656,
+    "used_bytes": 253432938496,
+    "used_gib": 236.0278,
+    "used_percent": 99.37
+  },
+  "before": {
+    "at_utc": "2026-10-23T13:42:07Z",
+    "free_bytes": 1542246400,
+    "free_bytes_kernel32": 1542246400,
+    "free_gib": 1.4363,
+    "instrument_delta_bytes": 0,
+    "instruments_agree": true,
+    "path": "C:/",
+    "status": "CRITICAL",
+    "total_bytes": 255041990656,
+    "used_bytes": 253499744256,
+    "used_gib": 236.09,
+    "used_percent": 99.4
+  },
+  "deleted_bytes": 61520363,
+  "deleted_gib": 0.0573,
+  "generated_at_utc": "2026-10-23T13:42:15Z",
+  "kept": [],
+  "note": "only untracked byte-compiled caches inside this repository family. The volume moves for reasons this program does not control, so deleted_bytes is the quantity it is responsible for; volume_delta_bytes is reported, not claimed.",
+  "removed": [
+    {
+      "bytes": 19181797,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.mypy_cache"
+    },
+    {
+      "bytes": 8817138,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\research\\__pycache__"
+    },
+    {
+      "bytes": 6194133,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\__pycache__"
+    },
+    {
+      "bytes": 1519159,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\__pycache__"
+    },
+    {
+      "bytes": 1326434,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\vision\\__pycache__"
+    },
+    {
+      "bytes": 975660,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\tests\\unit\\autonomous\\__pycache__"
+    },
+    {
+      "bytes": 975088,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\autonomous\\__pycache__"
+    },
+    {
+      "bytes": 899283,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\tests\\unit\\autonomous\\__pycache__"
+    },
+    {
+      "bytes": 695471,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\reports\\__pycache__"
+    },
+    {
+      "bytes": 693376,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\forward\\__pycache__"
+    },
+    {
+      "bytes": 564588,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.hypothesis"
+    },
+    {
+      "bytes": 549400,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\edge01\\__pycache__"
+    },
+    {
+      "bytes": 496975,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\paper\\__pycache__"
+    },
+    {
+      "bytes": 490378,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\research\\forward\\__pycache__"
+    },
+    {
+      "bytes": 490258,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\research\\forward\\__pycache__"
+    },
+    {
+      "bytes": 490066,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\forward\\__pycache__"
+    },
+    {
+      "bytes": 472787,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\vision\\__pycache__"
+    },
+    {
+      "bytes": 461417,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\risk\\__pycache__"
+    },
+    {
+      "bytes": 449989,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\autonomous\\__pycache__"
+    },
+    {
+      "bytes": 449701,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\autonomous\\__pycache__"
+    },
+    {
+      "bytes": 431176,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\autonomous\\__pycache__"
+    },
+    {
+      "bytes": 412726,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.pytest_cache"
+    },
+    {
+      "bytes": 363225,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\strategy_lifecycle\\__pycache__"
+    },
+    {
+      "bytes": 362491,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\economic_recovery\\__pycache__"
+    },
+    {
+      "bytes": 349227,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\scripts\\__pycache__"
+    },
+    {
+      "bytes": 342152,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\market_data\\__pycache__"
+    },
+    {
+      "bytes": 314911,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\edge03\\__pycache__"
+    },
+    {
+      "bytes": 296747,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\microstructure\\__pycache__"
+    },
+    {
+      "bytes": 283911,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\scanner\\__pycache__"
+    },
+    {
+      "bytes": 279514,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\edge12\\__pycache__"
+    },
+    {
+      "bytes": 266302,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\integration\\__pycache__"
+    },
+    {
+      "bytes": 264004,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\autonomous\\__pycache__"
+    },
+    {
+      "bytes": 263106,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\paper\\__pycache__"
+    },
+    {
+      "bytes": 261432,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\market_data\\__pycache__"
+    },
+    {
+      "bytes": 255320,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\research\\__pycache__"
+    },
+    {
+      "bytes": 255120,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\research\\__pycache__"
+    },
+    {
+      "bytes": 243964,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\research\\__pycache__"
+    },
+    {
+      "bytes": 219682,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\edge05\\__pycache__"
+    },
+    {
+      "bytes": 217723,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\ops\\__pycache__"
+    },
+    {
+      "bytes": 208009,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\strategy_lifecycle\\__pycache__"
+    },
+    {
+      "bytes": 193569,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\strategy_lifecycle\\__pycache__"
+    },
+    {
+      "bytes": 193569,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\strategy_lifecycle\\__pycache__"
+    },
+    {
+      "bytes": 193449,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\strategy_lifecycle\\__pycache__"
+    },
+    {
+      "bytes": 190551,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\backtesting\\__pycache__"
+    },
+    {
+      "bytes": 183962,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\swing\\__pycache__"
+    },
+    {
+      "bytes": 177428,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\paper\\__pycache__"
+    },
+    {
+      "bytes": 162005,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\__pycache__"
+    },
+    {
+      "bytes": 152155,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\risk\\futures\\__pycache__"
+    },
+    {
+      "bytes": 152065,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\risk\\futures\\__pycache__"
+    },
+    {
+      "bytes": 151921,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\risk\\futures\\__pycache__"
+    },
+    {
+      "bytes": 145121,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\paper\\__pycache__"
+    },
+    {
+      "bytes": 144892,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\paper\\__pycache__"
+    },
+    {
+      "bytes": 144184,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\alpha_recovery\\__pycache__"
+    },
+    {
+      "bytes": 143196,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\research\\microstructure\\__pycache__"
+    },
+    {
+      "bytes": 143196,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\research\\microstructure\\__pycache__"
+    },
+    {
+      "bytes": 143106,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\research\\microstructure\\__pycache__"
+    },
+    {
+      "bytes": 142962,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\microstructure\\__pycache__"
+    },
+    {
+      "bytes": 142289,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\commit\\src\\trading_bot\\market_data\\__pycache__"
+    },
+    {
+      "bytes": 142289,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\mutant\\src\\trading_bot\\market_data\\__pycache__"
+    },
+    {
+      "bytes": 142289,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\parent\\src\\trading_bot\\market_data\\__pycache__"
+    },
+    {
+      "bytes": 139024,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\pair\\__pycache__"
+    },
+    {
+      "bytes": 132182,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\edge09\\__pycache__"
+    },
+    {
+      "bytes": 129495,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\risk\\__pycache__"
+    },
+    {
+      "bytes": 129213,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\edge08\\__pycache__"
+    },
+    {
+      "bytes": 128908,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\observability\\__pycache__"
+    },
+    {
+      "bytes": 126478,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\commit\\tests\\unit\\__pycache__"
+    },
+    {
+      "bytes": 125716,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\tests\\unit\\risk\\__pycache__"
+    },
+    {
+      "bytes": 125686,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\tests\\unit\\risk\\__pycache__"
+    },
+    {
+      "bytes": 123345,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\parent\\tests\\unit\\__pycache__"
+    },
+    {
+      "bytes": 121290,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\diversified\\__pycache__"
+    },
+    {
+      "bytes": 121047,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\tests\\unit\\research\\__pycache__"
+    },
+    {
+      "bytes": 120198,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\config\\__pycache__"
+    },
+    {
+      "bytes": 118854,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\paper\\lifecycle\\__pycache__"
+    },
+    {
+      "bytes": 117003,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\cert\\__pycache__"
+    },
+    {
+      "bytes": 116772,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\observability\\__pycache__"
+    },
+    {
+      "bytes": 114818,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\edge04r\\__pycache__"
+    },
+    {
+      "bytes": 112376,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\tests\\unit\\autonomous\\__pycache__"
+    },
+    {
+      "bytes": 109013,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\prospective\\__pycache__"
+    },
+    {
+      "bytes": 108373,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\scripts\\__pycache__"
+    },
+    {
+      "bytes": 108333,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\scripts\\__pycache__"
+    },
+    {
+      "bytes": 87825,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\market_data\\__pycache__"
+    },
+    {
+      "bytes": 87745,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\market_data\\__pycache__"
+    },
+    {
+      "bytes": 86873,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\ops\\__pycache__"
+    },
+    {
+      "bytes": 85294,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\risk\\__pycache__"
+    },
+    {
+      "bytes": 85254,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\risk\\__pycache__"
+    },
+    {
+      "bytes": 76195,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\market_data\\__pycache__"
+    },
+    {
+      "bytes": 70100,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\commit\\src\\trading_bot\\scanner\\__pycache__"
+    },
+    {
+      "bytes": 70100,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\parent\\src\\trading_bot\\scanner\\__pycache__"
+    },
+    {
+      "bytes": 70100,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\scanner\\__pycache__"
+    },
+    {
+      "bytes": 70100,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\scanner\\__pycache__"
+    },
+    {
+      "bytes": 70010,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\scanner\\__pycache__"
+    },
+    {
+      "bytes": 69866,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\scanner\\__pycache__"
+    },
+    {
+      "bytes": 68913,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\mutant\\src\\trading_bot\\__pycache__"
+    },
+    {
+      "bytes": 68680,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\commit\\src\\trading_bot\\__pycache__"
+    },
+    {
+      "bytes": 68628,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\__pycache__"
+    },
+    {
+      "bytes": 68510,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\parent\\src\\trading_bot\\__pycache__"
+    },
+    {
+      "bytes": 67678,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\edge07\\__pycache__"
+    },
+    {
+      "bytes": 64107,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\backtesting\\__pycache__"
+    },
+    {
+      "bytes": 64107,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\backtesting\\__pycache__"
+    },
+    {
+      "bytes": 64037,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\backtesting\\__pycache__"
+    },
+    {
+      "bytes": 63925,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\backtesting\\__pycache__"
+    },
+    {
+      "bytes": 62901,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\intelligence\\ai_bots\\__pycache__"
+    },
+    {
+      "bytes": 59609,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\bdd\\__pycache__"
+    },
+    {
+      "bytes": 59041,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\config\\__pycache__"
+    },
+    {
+      "bytes": 57927,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\.hypothesis"
+    },
+    {
+      "bytes": 55638,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\intelligence\\ai_bots\\__pycache__"
+    },
+    {
+      "bytes": 55087,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\commit\\src\\trading_bot\\config\\__pycache__"
+    },
+    {
+      "bytes": 55087,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\mutant\\src\\trading_bot\\config\\__pycache__"
+    },
+    {
+      "bytes": 55087,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\parent\\src\\trading_bot\\config\\__pycache__"
+    },
+    {
+      "bytes": 55087,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\config\\__pycache__"
+    },
+    {
+      "bytes": 55087,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\config\\__pycache__"
+    },
+    {
+      "bytes": 55007,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\config\\__pycache__"
+    },
+    {
+      "bytes": 48859,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\indicators\\__pycache__"
+    },
+    {
+      "bytes": 47477,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\governance\\__pycache__"
+    },
+    {
+      "bytes": 47394,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\edge06\\__pycache__"
+    },
+    {
+      "bytes": 41934,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\risk\\__pycache__"
+    },
+    {
+      "bytes": 41877,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\multiagent-audit\\tools\\__pycache__"
+    },
+    {
+      "bytes": 40999,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\alpha_expansion\\__pycache__"
+    },
+    {
+      "bytes": 40722,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\experimental\\__pycache__"
+    },
+    {
+      "bytes": 36975,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\research\\families\\__pycache__"
+    },
+    {
+      "bytes": 36793,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\families\\__pycache__"
+    },
+    {
+      "bytes": 36356,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\discovery\\__pycache__"
+    },
+    {
+      "bytes": 36108,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\storage\\__pycache__"
+    },
+    {
+      "bytes": 36067,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\mutant\\tests\\unit\\__pycache__"
+    },
+    {
+      "bytes": 34747,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\indicators\\__pycache__"
+    },
+    {
+      "bytes": 34747,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\indicators\\__pycache__"
+    },
+    {
+      "bytes": 34677,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\indicators\\__pycache__"
+    },
+    {
+      "bytes": 34565,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\indicators\\__pycache__"
+    },
+    {
+      "bytes": 33857,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\research\\asset_intelligence\\__pycache__"
+    },
+    {
+      "bytes": 33857,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\research\\asset_intelligence\\__pycache__"
+    },
+    {
+      "bytes": 33807,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\research\\asset_intelligence\\__pycache__"
+    },
+    {
+      "bytes": 33727,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\asset_intelligence\\__pycache__"
+    },
+    {
+      "bytes": 30935,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\commit\\src\\trading_bot\\trade_journal\\__pycache__"
+    },
+    {
+      "bytes": 30935,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\mutant\\src\\trading_bot\\trade_journal\\__pycache__"
+    },
+    {
+      "bytes": 30935,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\parent\\src\\trading_bot\\trade_journal\\__pycache__"
+    },
+    {
+      "bytes": 30831,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\trade_journal\\__pycache__"
+    },
+    {
+      "bytes": 28833,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\execution\\__pycache__"
+    },
+    {
+      "bytes": 28416,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\execution_cost\\__pycache__"
+    },
+    {
+      "bytes": 26833,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\.hypothesis"
+    },
+    {
+      "bytes": 25394,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\trade_journal\\__pycache__"
+    },
+    {
+      "bytes": 25334,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\strategies\\__pycache__"
+    },
+    {
+      "bytes": 25334,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\strategies\\__pycache__"
+    },
+    {
+      "bytes": 25284,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\strategies\\__pycache__"
+    },
+    {
+      "bytes": 25204,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\strategies\\__pycache__"
+    },
+    {
+      "bytes": 24817,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\ops\\__pycache__"
+    },
+    {
+      "bytes": 24797,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\ops\\__pycache__"
+    },
+    {
+      "bytes": 20025,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\execution\\__pycache__"
+    },
+    {
+      "bytes": 20025,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\execution\\__pycache__"
+    },
+    {
+      "bytes": 19995,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\execution\\__pycache__"
+    },
+    {
+      "bytes": 19980,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\commit\\src\\trading_bot\\storage\\__pycache__"
+    },
+    {
+      "bytes": 19980,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\mutant\\src\\trading_bot\\storage\\__pycache__"
+    },
+    {
+      "bytes": 19980,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\parent\\src\\trading_bot\\storage\\__pycache__"
+    },
+    {
+      "bytes": 19980,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\storage\\__pycache__"
+    },
+    {
+      "bytes": 19980,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\storage\\__pycache__"
+    },
+    {
+      "bytes": 19950,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\storage\\__pycache__"
+    },
+    {
+      "bytes": 19902,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\storage\\__pycache__"
+    },
+    {
+      "bytes": 17289,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\domain\\enums\\__pycache__"
+    },
+    {
+      "bytes": 17289,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\domain\\enums\\__pycache__"
+    },
+    {
+      "bytes": 17081,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\domain\\enums\\__pycache__"
+    },
+    {
+      "bytes": 14272,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\commit\\src\\trading_bot\\domain\\events\\__pycache__"
+    },
+    {
+      "bytes": 14272,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\mutant\\src\\trading_bot\\domain\\events\\__pycache__"
+    },
+    {
+      "bytes": 14272,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\parent\\src\\trading_bot\\domain\\events\\__pycache__"
+    },
+    {
+      "bytes": 14272,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\domain\\events\\__pycache__"
+    },
+    {
+      "bytes": 14272,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\domain\\events\\__pycache__"
+    },
+    {
+      "bytes": 14242,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\domain\\events\\__pycache__"
+    },
+    {
+      "bytes": 14194,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\domain\\events\\__pycache__"
+    },
+    {
+      "bytes": 14152,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\market_structure\\__pycache__"
+    },
+    {
+      "bytes": 11247,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\commit\\src\\trading_bot\\market_structure\\__pycache__"
+    },
+    {
+      "bytes": 11247,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\mutant\\src\\trading_bot\\market_structure\\__pycache__"
+    },
+    {
+      "bytes": 11247,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\parent\\src\\trading_bot\\market_structure\\__pycache__"
+    },
+    {
+      "bytes": 11195,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\market_structure\\__pycache__"
+    },
+    {
+      "bytes": 10966,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\commit\\src\\trading_bot\\charting\\__pycache__"
+    },
+    {
+      "bytes": 10966,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\mutant\\src\\trading_bot\\charting\\__pycache__"
+    },
+    {
+      "bytes": 10966,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\parent\\src\\trading_bot\\charting\\__pycache__"
+    },
+    {
+      "bytes": 10888,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\charting\\__pycache__"
+    },
+    {
+      "bytes": 10744,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\feedback\\__pycache__"
+    },
+    {
+      "bytes": 7930,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\unit\\charting\\__pycache__"
+    },
+    {
+      "bytes": 7160,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\feedback\\__pycache__"
+    },
+    {
+      "bytes": 4698,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\.pytest_cache"
+    },
+    {
+      "bytes": 4442,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\tests\\__pycache__"
+    },
+    {
+      "bytes": 2315,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\commit\\tests\\__pycache__"
+    },
+    {
+      "bytes": 2315,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\mutant\\tests\\__pycache__"
+    },
+    {
+      "bytes": 2315,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\parent\\tests\\__pycache__"
+    },
+    {
+      "bytes": 2315,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\tests\\__pycache__"
+    },
+    {
+      "bytes": 2315,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\tests\\__pycache__"
+    },
+    {
+      "bytes": 2295,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\tests\\__pycache__"
+    },
+    {
+      "bytes": 2263,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\tests\\__pycache__"
+    },
+    {
+      "bytes": 2248,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.ruff_cache"
+    },
+    {
+      "bytes": 1881,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\research\\asset_intelligence\\agents\\__pycache__"
+    },
+    {
+      "bytes": 1881,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\research\\asset_intelligence\\agents\\__pycache__"
+    },
+    {
+      "bytes": 1861,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\research\\asset_intelligence\\agents\\__pycache__"
+    },
+    {
+      "bytes": 1829,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\research\\asset_intelligence\\agents\\__pycache__"
+    },
+    {
+      "bytes": 575,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\__pycache__"
+    },
+    {
+      "bytes": 575,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\__pycache__"
+    },
+    {
+      "bytes": 565,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\__pycache__"
+    },
+    {
+      "bytes": 524,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\utils\\__pycache__"
+    },
+    {
+      "bytes": 421,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\tests\\unit\\__pycache__"
+    },
+    {
+      "bytes": 411,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\portfolio\\__pycache__"
+    },
+    {
+      "bytes": 337,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\intelligence\\__pycache__"
+    },
+    {
+      "bytes": 312,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\commit\\src\\trading_bot\\domain\\__pycache__"
+    },
+    {
+      "bytes": 312,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\mutant\\src\\trading_bot\\domain\\__pycache__"
+    },
+    {
+      "bytes": 312,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0002-verify\\parent\\src\\trading_bot\\domain\\__pycache__"
+    },
+    {
+      "bytes": 312,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\src\\trading_bot\\domain\\__pycache__"
+    },
+    {
+      "bytes": 312,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\src\\trading_bot\\domain\\__pycache__"
+    },
+    {
+      "bytes": 302,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\src\\trading_bot\\domain\\__pycache__"
+    },
+    {
+      "bytes": 286,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\domain\\__pycache__"
+    },
+    {
+      "bytes": 230,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\commit\\tests\\unit\\__pycache__"
+    },
+    {
+      "bytes": 230,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-verify\\mutant\\tests\\unit\\__pycache__"
+    },
+    {
+      "bytes": 220,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.tmp\\mt0003-pre\\tests\\unit\\__pycache__"
+    }
+  ],
+  "schema_version": "EXP004A_WP051_02K_CAPACITY_V1",
+  "volume_delta_bytes": 66805760
+}
