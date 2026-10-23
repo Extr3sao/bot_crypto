@@ -424,9 +424,11 @@ def run_campaign(args: argparse.Namespace) -> int:
         }
 
         #: The last episode is not killed: the resumed session is allowed to finish, so the
-        #: campaign can end with no locks and a clean stop.
+        #: campaign can end with no locks and a clean stop. Its `after` is filled in below
+        #: from the final state, once that exists.
         final = index == int(args.crashes)
         if final:
+            write(out / "episodes" / f"episode-{index:02d}.json", episode)
             break
 
         resumed = wait_for(
@@ -492,6 +494,19 @@ def run_campaign(args: argparse.Namespace) -> int:
         "result": read_json(state_dir / "SUPERVISOR_RESULT.json"),
         "finished_without_locks": bool(finished),
     }
+    if campaign["episodes"]:
+        last = campaign["episodes"][-1]
+        last["after"] = {
+            "rows": campaign["final"]["rows"],
+            "cycles": campaign["final"]["cycles"],
+            "state": campaign["final"]["state"],
+            "locks": [
+                {"path": item["path"], "state": item["state"], "reason": item["reason"]}
+                for item in campaign["final"]["locks"]
+            ],
+            "chain": campaign["final"]["chain"],
+        }
+        write(out / "episodes" / f"episode-{int(last['episode']):02d}.json", last)
     campaign["finished_at_utc"] = utc_now()
     write(out / "SUPERVISOR_STATE.json", {"journal": journal(state_dir)})
     write(out / "CAMPAIGN.json", campaign)
