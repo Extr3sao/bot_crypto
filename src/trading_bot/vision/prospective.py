@@ -25,8 +25,10 @@ constructor argument. Replays and benchmarks keep the default (one fill per bar 
 
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import json
+import os
 import time
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field, replace
@@ -119,6 +121,74 @@ def runtime_hashes(root: Path) -> dict[str, str]:
         path = root / relative
         out[relative] = _sha256_file(path) if path.exists() else "MISSING"
     return out
+
+
+def _pid_alive(pid: int) -> bool:
+    """Is this process still there? Asked without signalling it.
+
+    Windows has no ``kill(pid, 0)``: ``os.kill`` there terminates the process for any
+    signal it does not recognise, which would turn a liveness probe into the very crash
+    it is recovering from. ``OpenProcess`` with query-only rights answers the question and
+    distinguishes "no such process" (``ERROR_INVALID_PARAMETER``) from "exists but belongs
+    to someone else" (``ERROR_ACCESS_DENIED``), and both wrong guesses are fail-closed.
+    """
+
+    try:
+        pid = int(pid)
+    except (TypeError, ValueError):
+        return False
+    if pid <= 0:
+        return False
+    if os.name == "nt":  # pragma: no cover - exercised on the Windows host
+        import ctypes
+
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        query_limited = 0x1000
+        error_invalid_parameter = 87
+        handle = kernel32.OpenProcess(query_limited, False, pid)
+        if handle:
+            kernel32.CloseHandle(handle)
+            return True
+        return int(ctypes.get_last_error()) != error_invalid_parameter
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    return True
+
+
+def reclaim_stale_lock(path: Path) -> dict[str, Any] | None:
+    """Remove a lock whose owner is *proved* gone, or refuse and say why.
+
+    A lock is the only thing standing between two writers and one hash chain, so this
+    function never guesses. It reclaims in exactly one situation: the file carries an
+    integer pid and that process no longer exists. A lock held by a live process, or one
+    whose owner cannot be read, is left alone and the session aborts with a code instead
+    of a traceback — deleting a lock we cannot attribute could corrupt a writer that is
+    still running, and that is worse than a manual step.
+    """
+
+    if not path.exists():
+        return None
+    raw = ""
+    with contextlib.suppress(OSError):
+        raw = path.read_text(encoding="utf-8", errors="replace").strip()
+    if not raw.isdigit():
+        raise SessionAborted(
+            f"RUNTIME_LOCK_UNATTRIBUTED: {path} holds no pid; it was not created by this "
+            "code or it was interrupted between create and write. Not removed: a lock "
+            "whose owner cannot be named is not proved stale."
+        )
+    pid = int(raw)
+    if _pid_alive(pid):
+        raise SessionAborted(
+            f"RUNTIME_LOCK_HELD: {path} is held by live pid {pid}; a second writer would "
+            "interleave prev_sha256 and the chain would stop verifying"
+        )
+    path.unlink(missing_ok=True)
+    return {"lock": path.name, "pid": pid, "reason": "OWNER_PROCESS_DEAD"}
 
 
 def display_symbol(archive_symbol: str) -> str:
@@ -347,6 +417,9 @@ class ProspectiveSession:
     #: previous session already took (measured: 2608 ms → 4625 ms changed a DECISION row).
     _pinned_delay_ms: int | None = field(default=None, init=False)
     _measured_delay_ms: int | None = field(default=None, init=False)
+    #: CODEX: locks taken over from a process that no longer exists. Recorded, because
+    #: "the run resumed" and "the run resumed by deleting a lock" are different claims.
+    _lock_reclaims: list[dict[str, Any]] = field(default_factory=list, init=False)
 
     def __post_init__(self) -> None:
         self.out_dir = Path(self.out_dir)
@@ -491,6 +564,10 @@ class ProspectiveSession:
         if self.collector is not None:
             return self.collector
         self.out_dir.mkdir(parents=True, exist_ok=True)
+        for symbol in self.config.symbols:
+            record = reclaim_stale_lock(self.out_dir / "market-1m" / f"{symbol}.jsonl.lock")
+            if record:
+                self._lock_reclaims.append(record)
         collector = MinuteCollector(
             source=_default_source(),
             root=self.out_dir / "market-1m",
@@ -755,6 +832,13 @@ class ProspectiveSession:
         pin, origin_ms = self._pin_before_deciding(started)
         collector = self._ensure_collector()
         stream_path = self.out_dir / "STREAM.jsonl"
+        #: A process that was killed between ``O_CREAT`` and ``unlink`` leaves its lock
+        #: behind; without this, the only way to resume a crashed session is to delete
+        #: files by hand, which is exactly the manual step a sustained PAPER loop cannot
+        #: have. A live owner still refuses (measured: exit 5, RUNTIME_LOCK_HELD).
+        inherited = reclaim_stale_lock(stream_path.with_suffix(stream_path.suffix + ".lock"))
+        if inherited:
+            self._lock_reclaims.append(inherited)
         if stream_path.exists() and not pin["resume"]["resumed"]:
             stream_path.unlink()
         stream = DecisionLedger(stream_path).open()
@@ -809,6 +893,23 @@ class ProspectiveSession:
         #: the claim is on record before it can be reasonable to check it.
         stream.append("SESSION_PROVENANCE", pin)
         self._write_json("SESSION_PROVENANCE.json", pin)
+        if self._lock_reclaims:
+            #: Evidence, not housekeeping: a reader must be able to see that this session
+            #: started over a lock whose owner was proved dead, and which one.
+            stream.append(
+                "LOCK_RECLAIMED",
+                {"locks": list(self._lock_reclaims), "live_orders": 0},
+            )
+            self._write_json(
+                "LOCKS_RECLAIMED.json",
+                {
+                    "session_id": pin["session_id"],
+                    "run_id": pin["run_id"],
+                    "locks": list(self._lock_reclaims),
+                    "policy": "reclaim only when the recorded pid is provably gone",
+                },
+            )
+            self._lock_reclaims = []
         session_record = self.out_dir / "provenance" / f"session-{pin['session_id']}.json"
         session_record.parent.mkdir(parents=True, exist_ok=True)
         session_record.write_text(
