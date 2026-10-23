@@ -19,10 +19,10 @@
       "sha256": "5a169314d2c6bf1c0ab9ad7b02b45ac48f3b12109a5476e0233535dc895904d3"
     },
     {
-      "bytes": 5345,
+      "bytes": 5344,
       "git_blob_sha": "2d79d63046bbd473fedea03bdf8a5e8d4b8ab6a4",
       "path": "docs/agentic/exp004a/wp051_02i/INDEPENDENT_VERIFICATION.json",
-      "sha256": "3d8d6136e7ce02fbdefc55ca54c8acbf97226a33768751e9ee5b40f05f4ba0bb"
+      "sha256": "0fa7e1f9844fa151f9f993e66153ed31b6febf5584b93c6ab0be8e57f29d6ea1"
     },
     {
       "bytes": 8397,
@@ -81,10 +81,10 @@
   ],
   "entry_count": 13,
   "hash_semantics": "sha256 hashes the bytes in this checkout; git_blob_sha is the Git object id at HEAD. They are different magnitudes and are never presented as the same value.",
-  "head": "193abbccd0faa725624769be7e33f1794597f531",
+  "head": "2e0b13273d4d6efb23187aeaccfb394f05220180",
   "missing_git_blob": [],
   "not_a_certification": "a manifest says what is in the package. It does not say the package is right, and it promotes nothing.",
   "package": "WP-051-02I",
   "schema_version": "EXP004A_WP051_02I_STORAGE_V1",
-  "sealed_at_utc": "2026-10-23T11:04:41Z"
+  "sealed_at_utc": "2026-10-23T11:05:13Z"
 }
