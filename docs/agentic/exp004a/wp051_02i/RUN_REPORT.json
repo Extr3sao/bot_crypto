@@ -60,7 +60,7 @@
       "seq": 9,
       "command": "python -m pytest tests/unit/research/test_exp004a_wp051_02i.py -q -p no:cacheprovider",
       "exit_code": 0,
-      "note": "19 passed"
+      "note": "21 passed"
     },
     {
       "seq": 10,
@@ -206,10 +206,10 @@
   },
   "tests": {
     "new_suite": "tests/unit/research/test_exp004a_wp051_02i.py",
-    "new_tests": 19,
-    "new_passing": 19,
+    "new_tests": 21,
+    "new_passing": 21,
     "regression_suites": 6,
-    "regression_passing": 161,
+    "regression_passing": 163,
     "regression_skipped": 1,
     "independent_verification": "16/16 PASS",
     "not_run": "tests/unit/research as a whole (600 s cap, plus a pre-existing collection error in test_exp004a_wp051_02g.py)"

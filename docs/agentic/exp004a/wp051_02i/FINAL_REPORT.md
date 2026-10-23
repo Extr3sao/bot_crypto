@@ -112,7 +112,10 @@ minutes from this worktree:**
 
 The forecast is already doing its job in production: the scheduled run at `10:47:02Z` wrote
 `EDGE04_WATCHDOG_V2`, `status DEGRADED`, `forecast AT_RISK, 2.79 h` to the critical floor, and
-the task's `LastTaskResult` carried `1`.
+the task's `LastTaskResult` carried `1`. At `11:02Z` the same task ran the same code with free
+space back above 5 GiB and produced `OK` / `0`, with the transition written to
+`WATCHDOG_EVENTS.jsonl` — the state machine has now been observed in both directions on the
+real lane, not only in a test ([LIVE_ALARM_EVIDENCE.json](LIVE_ALARM_EVIDENCE.json)).
 
 ## 5. §4 — Alerts, states and recovery
 
@@ -150,7 +153,7 @@ been firing for eleven days and the only reason anyone knows is that a person re
 The pressure tests never fill C:. `shutil.disk_usage` is replaced with a reading the test
 controls and the state machine is driven across every threshold — **1.9 / 2.0 / 4.9 / 5.0 GiB**
 and back up — through the same code path a real full volume takes
-([test_exp004a_wp051_02i.py](../../../../tests/unit/research/test_exp004a_wp051_02i.py), **19
+([test_exp004a_wp051_02i.py](../../../../tests/unit/research/test_exp004a_wp051_02i.py), **21
 tests, all passing**):
 
 - the forecast needs three complete days, and says `UNKNOWN` with the reason when it has fewer;
@@ -225,7 +228,7 @@ item needs a decision this package cannot make):
 | Evidence destroyed | **0 bytes** | 13.57 MiB of untracked byte-compiled caches; nothing tracked, nothing under `data/`, `docs/` or `config/` |
 | Late capture reclassified | **0** | `A_REFUSAL_IS_NOT_A_CAPTURE` recomputed; store byte-identical after the watchdog |
 | `FALSE_SUCCESS` | **0** | verifier 16/16; the storage report carries no coverage or certification field |
-| Regressions | **0** in the six suites: **161 passed, 1 skipped** (environment) |
+| Regressions | **0** in the six suites: **163 passed, 1 skipped** (environment) |
 | Capture alive after the change | **true** | `10:30` and `10:45` slots `OBSERVED`, 3 bars each, at `10:40:56Z` and `10:55:56Z` |
 | Watchdog V2 live | **true** | scheduled run `10:47:02Z`: `EDGE04_WATCHDOG_V2`, `DEGRADED`, `AT_RISK 2.79 h` |
 
@@ -235,6 +238,7 @@ item needs a decision this package cannot make):
 [GROWTH_DIAGNOSIS.md](GROWTH_DIAGNOSIS.md) ·
 [FILESYSTEM_SURVEY.json](FILESYSTEM_SURVEY.json) ·
 [SWEEP_EVIDENCE.json](SWEEP_EVIDENCE.json) ·
+[LIVE_ALARM_EVIDENCE.json](LIVE_ALARM_EVIDENCE.json) ·
 [INDEPENDENT_VERIFICATION.json](INDEPENDENT_VERIFICATION.json) ·
 [RUN_REPORT.md](RUN_REPORT.md) · [RUN_REPORT.json](RUN_REPORT.json) ·
 [EVIDENCE_MANIFEST.json](EVIDENCE_MANIFEST.json)

@@ -7,10 +7,10 @@
       "sha256": "f4efb6f3b56818e82c883e01e95831c3e4b4f9448d28a1611b980de91510de9b"
     },
     {
-      "bytes": 16978,
+      "bytes": 17347,
       "git_blob_sha": "8ba47016bad42992d140590bdfbb4c25b892d95c",
       "path": "docs/agentic/exp004a/wp051_02i/FINAL_REPORT.md",
-      "sha256": "860e2c44338772d4c6b2fd93df1561dfc3b86eede51995883a8cbce4ee226b98"
+      "sha256": "d648fdb5cd7f62219cd6ad393f438be28cd9d859518215f38e904c6dbe74fc2f"
     },
     {
       "bytes": 5409,
@@ -20,21 +20,26 @@
     },
     {
       "bytes": 5344,
-      "git_blob_sha": "2d79d63046bbd473fedea03bdf8a5e8d4b8ab6a4",
+      "git_blob_sha": "d7254fdd72dd3232cf047e2e3b515310bf20d315",
       "path": "docs/agentic/exp004a/wp051_02i/INDEPENDENT_VERIFICATION.json",
       "sha256": "0fa7e1f9844fa151f9f993e66153ed31b6febf5584b93c6ab0be8e57f29d6ea1"
+    },
+    {
+      "bytes": 3213,
+      "path": "docs/agentic/exp004a/wp051_02i/LIVE_ALARM_EVIDENCE.json",
+      "sha256": "4ba09f1d08f3c0f4d99b91c51754dd47c382773d0538454424dff2c3427e7998"
     },
     {
       "bytes": 8397,
       "git_blob_sha": "6473c456f3cfb39b51fa7799724bc2d59396039e",
       "path": "docs/agentic/exp004a/wp051_02i/RUN_REPORT.json",
-      "sha256": "270ccc4c980381ff03a85c3d12a5dac0bc6d392f19e9dce97e66622dc5ec34bd"
+      "sha256": "5b44ed53f4392d447236b363b94bd2773b79be463f9d10d2603ecb3c44d82bf4"
     },
     {
       "bytes": 7103,
       "git_blob_sha": "1324feca14104b1ac666660753f42384726a5b33",
       "path": "docs/agentic/exp004a/wp051_02i/RUN_REPORT.md",
-      "sha256": "7d06c90b5398248f658fe06b4a0d5538cfdd46f537afbde0a5e084c9df161746"
+      "sha256": "de5799b7ff9c877c3c91bbf24dc06a383719ec5ab971680ca9c7893f151ee75c"
     },
     {
       "bytes": 31840,
@@ -79,12 +84,14 @@
       "sha256": "f7bd89208c7b3cf80686374d25d05a7c246a71567bf3f73c56ca140895f2acd4"
     }
   ],
-  "entry_count": 13,
+  "entry_count": 14,
   "hash_semantics": "sha256 hashes the bytes in this checkout; git_blob_sha is the Git object id at HEAD. They are different magnitudes and are never presented as the same value.",
-  "head": "2e0b13273d4d6efb23187aeaccfb394f05220180",
-  "missing_git_blob": [],
+  "head": "ef545f0b59f34fcabd26d633aceebfc7c92987de",
+  "missing_git_blob": [
+    "docs/agentic/exp004a/wp051_02i/LIVE_ALARM_EVIDENCE.json"
+  ],
   "not_a_certification": "a manifest says what is in the package. It does not say the package is right, and it promotes nothing.",
   "package": "WP-051-02I",
   "schema_version": "EXP004A_WP051_02I_STORAGE_V1",
-  "sealed_at_utc": "2026-10-23T11:05:13Z"
+  "sealed_at_utc": "2026-10-23T11:08:31Z"
 }

@@ -20,8 +20,8 @@
 | 6 | `python scripts/exp004a_wp051_02i_verify.py` | `0` | **16/16 PASS** ([INDEPENDENT_VERIFICATION.json](INDEPENDENT_VERIFICATION.json)) |
 | 7 | `python scripts/edge04_watchdog.py --state-root <main>/data/forward/edge04` | `1` | `DEGRADED`, forecast `AT_RISK` — non-zero is the alarm, not a failure |
 | 8 | `python scripts/edge04_watchdog.py ... --json --no-persist` | `1` | the verifier's control run; store byte-identical afterwards |
-| 9 | `python -m pytest tests/unit/research/test_exp004a_wp051_02i.py -q` | `0` | 19 passed |
-| 10 | `python -m pytest` (02h + 02i + capture + admission + prereg ×2) `-q` | `0` | **161 passed, 1 skipped** |
+| 9 | `python -m pytest tests/unit/research/test_exp004a_wp051_02i.py -q` | `0` | 21 passed |
+| 10 | `python -m pytest` (02h + 02i + capture + admission + prereg ×2) `-q` | `0` | **163 passed, 1 skipped** |
 | 11 | `python -m pytest tests/unit/research -q` | `2` | **did not pass**: collection error in `test_exp004a_wp051_02g.py` (imports `trading_bot.research.prospective.incremental`, absent in this worktree) and a 600 s cap on the second attempt — see §7 |
 | 12 | `eventcreate /t ERROR /id 901 /l APPLICATION /d "EDGE04 storage guard probe"` | `1` | `Acceso denegado`: the event log is not available to an unprivileged writer |
 | 13 | `schtasks /query /tn TradingAgentic-EDGE04-{Forward,Watchdog} /v` | `0` | both tasks registered; watchdog `LastTaskResult=1` at `10:47:01Z` |
