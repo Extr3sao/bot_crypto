@@ -1,0 +1,348 @@
+{
+  "tool": "verify_g3",
+  "verdict": "G3_VERIFIED_SCOPED",
+  "independence": "PROCEDURALLY_SEPARATED (same author; different artefact)",
+  "checkout": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
+  "rev": "9eeb8e87",
+  "branch": "audit/mt0004-negative-controls",
+  "checks": [
+    {
+      "check_id": "V-1",
+      "criterion": "ACC-G3-13",
+      "description": "identity: commit, branch, and no dirty source",
+      "passed": true,
+      "detail": "rev=9eeb8e87 branch=audit/mt0004-negative-controls dirty=2 dirty_source=0",
+      "evidence": {
+        "rev": "9eeb8e87",
+        "head": "9eeb8e8747328c5038c2780d3577e7398ff3dabe",
+        "branch": "audit/mt0004-negative-controls",
+        "dirty": true,
+        "dirty_paths": [
+          " M docs/audit/AUDIT_BACKLOG.yaml",
+          "?? docs/audit/runs/run-20261024T112751Z-G-3/"
+        ],
+        "checkout": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
+        "app_sha256": "834eaa27cc4f6ff770ee3a43bd4032d3add439b39e2790be6b30af75c26508cb"
+      }
+    },
+    {
+      "check_id": "V-2",
+      "criterion": "ACC-G3-08",
+      "description": "every live sink is lexically inside _live_order_boundary",
+      "passed": true,
+      "detail": "7 sink call(s), unguarded=[]",
+      "evidence": {
+        "sinks": 7,
+        "unguarded_lines": []
+      }
+    },
+    {
+      "check_id": "V-3",
+      "criterion": "ACC-G3-01",
+      "description": "without a marker the futures entry sends exactly one order",
+      "passed": true,
+      "detail": "calls=1 exit=0",
+      "evidence": {
+        "app_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\tree\\src\\trading_bot\\app.py",
+        "app_src": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\tree\\src",
+        "argv": [
+          "place-order",
+          "--symbol",
+          "BTCUSDT",
+          "--side",
+          "buy",
+          "--order-type",
+          "market",
+          "--amount",
+          "0.01",
+          "--confirm-live",
+          "--market-kind",
+          "futures",
+          "--trade-side",
+          "OPEN",
+          "--run-dir",
+          "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\ctl"
+        ],
+        "audit_lines": 0,
+        "broker_calls": 1,
+        "calls": [
+          {
+            "order_type": "market",
+            "position_id": null,
+            "price": null,
+            "qty": 0.01,
+            "reduce_only": false,
+            "side": "buy",
+            "sink": "futures.place_order",
+            "sl_price": null,
+            "symbol": "BTCUSDT",
+            "tp_price": null,
+            "trade_side": "OPEN"
+          }
+        ],
+        "entrypoint": "place-order-futures",
+        "error": "",
+        "exit_code": 0,
+        "marker_present": false,
+        "marker_reason": "",
+        "patched": {
+          "futures": "FakeFutures",
+          "spot": "FakeSpot"
+        },
+        "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\ctl",
+        "_returncode": 0
+      }
+    },
+    {
+      "check_id": "V-3b",
+      "criterion": "ACC-G3-14",
+      "description": "the probe loaded this export's trading_bot.app and the fake clients",
+      "passed": true,
+      "detail": "app_file=C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\tree\\src\\trading_bot\\app.py patched={'futures': 'FakeFutures', 'spot': 'FakeSpot'}",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-4",
+      "criterion": "ACC-G3-02/03",
+      "description": "operator CLI marker blocks the loop and the CLI entry",
+      "passed": true,
+      "detail": "engage=0 run_calls=0 cli_calls=0 cli_exit=2",
+      "evidence": {
+        "run": {
+          "app_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\tree\\src\\trading_bot\\app.py",
+          "app_src": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\tree\\src",
+          "argv": [
+            "run",
+            "--mode",
+            "live",
+            "--once",
+            "--auto-trade",
+            "--market-kind",
+            "futures",
+            "--trade-quote-usdt",
+            "50",
+            "--loop-seconds",
+            "30",
+            "--env-file",
+            "",
+            "--run-dir",
+            "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\blocked"
+          ],
+          "audit_lines": 1,
+          "broker_calls": 0,
+          "calls": [],
+          "entrypoint": "run-futures",
+          "error": "",
+          "exit_code": 0,
+          "marker_present": true,
+          "marker_reason": "g3 verifier",
+          "patched": {
+            "futures": "FakeFutures",
+            "spot": "FakeSpot"
+          },
+          "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\blocked",
+          "_returncode": 0
+        },
+        "cli": {
+          "app_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\tree\\src\\trading_bot\\app.py",
+          "app_src": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\tree\\src",
+          "argv": [
+            "place-order",
+            "--symbol",
+            "BTCUSDT",
+            "--side",
+            "buy",
+            "--order-type",
+            "market",
+            "--amount",
+            "0.01",
+            "--confirm-live",
+            "--market-kind",
+            "futures",
+            "--trade-side",
+            "OPEN",
+            "--run-dir",
+            "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\blocked"
+          ],
+          "audit_lines": 2,
+          "broker_calls": 0,
+          "calls": [],
+          "entrypoint": "place-order-futures",
+          "error": "",
+          "exit_code": 2,
+          "marker_present": true,
+          "marker_reason": "g3 verifier",
+          "patched": {
+            "futures": "FakeFutures",
+            "spot": "FakeSpot"
+          },
+          "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\blocked",
+          "_returncode": 2
+        },
+        "engage_exit": 0
+      }
+    },
+    {
+      "check_id": "V-5",
+      "criterion": "ACC-G3-04",
+      "description": "a second process over the same run_dir boots engaged",
+      "passed": true,
+      "detail": "calls=0 events=['restored', 'restored', 'restored']",
+      "evidence": {
+        "calls": 0,
+        "events": [
+          {
+            "activated_at_ms": 1792842335759,
+            "activation_error": null,
+            "actor": "boot_restore:C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\blocked\\KILL_SWITCH",
+            "boundary": "autonomous.runtime._execute_paper -> broker.execute_signal",
+            "broker_calls_allowed": 0,
+            "commit": "",
+            "event": "restored",
+            "lock_timeout": false,
+            "new_state": "halted",
+            "orders_blocked": 0,
+            "persisted": true,
+            "previous_state": "normal",
+            "reason": "g3 verifier",
+            "repeated": false,
+            "restored": true,
+            "run_id": "",
+            "version": "0.1.0"
+          },
+          {
+            "activated_at_ms": 1792842338749,
+            "activation_error": null,
+            "actor": "boot_restore:C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\blocked\\KILL_SWITCH",
+            "boundary": "autonomous.runtime._execute_paper -> broker.execute_signal",
+            "broker_calls_allowed": 0,
+            "commit": "",
+            "event": "restored",
+            "lock_timeout": false,
+            "new_state": "halted",
+            "orders_blocked": 0,
+            "persisted": true,
+            "previous_state": "normal",
+            "reason": "g3 verifier",
+            "repeated": false,
+            "restored": true,
+            "run_id": "",
+            "version": "0.1.0"
+          },
+          {
+            "activated_at_ms": 1792842341701,
+            "activation_error": null,
+            "actor": "boot_restore:C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g3-verify-oxbvje4l\\blocked\\KILL_SWITCH",
+            "boundary": "autonomous.runtime._execute_paper -> broker.execute_signal",
+            "broker_calls_allowed": 0,
+            "commit": "",
+            "event": "restored",
+            "lock_timeout": false,
+            "new_state": "halted",
+            "orders_blocked": 0,
+            "persisted": true,
+            "previous_state": "normal",
+            "reason": "g3 verifier",
+            "repeated": false,
+            "restored": true,
+            "run_id": "",
+            "version": "0.1.0"
+          }
+        ]
+      }
+    },
+    {
+      "check_id": "V-6",
+      "criterion": "ACC-G3-05",
+      "description": "a marker that cannot be read refuses entry",
+      "passed": true,
+      "detail": "calls=0 exit=2",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-7",
+      "criterion": "ACC-G3-06",
+      "description": "KILL_SWITCH_ENV blocks entry and is not persisted",
+      "passed": true,
+      "detail": "calls=0 exit=2 marker=False",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-8",
+      "criterion": "ACC-G3-07",
+      "description": "close-position still reaches the broker while stopped",
+      "passed": true,
+      "detail": "calls=1 exit=0",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-9",
+      "criterion": "ACC-G3-10",
+      "description": "kill-switch --disarm exits 2 and does nothing",
+      "passed": true,
+      "detail": "exit=2",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-10",
+      "criterion": "ACC-G3-10",
+      "description": "hot_stop.py is byte-identical to the G-1 baseline",
+      "passed": true,
+      "detail": "baseline_exit=0 equal=True",
+      "evidence": {
+        "sha256": "76cfca23d1e7758607c466eea4ff5c0a9411cb812d433eb7ca16dfb45cfdf8b1"
+      }
+    },
+    {
+      "check_id": "V-11",
+      "criterion": "ACC-G3-11",
+      "description": "focal + G-1/G-2/CLI suites pass on the exported tree",
+      "passed": true,
+      "detail": "426 passed in 216.42s (0:03:36)",
+      "evidence": {
+        "failed_tests": []
+      }
+    },
+    {
+      "check_id": "V-12",
+      "criterion": "ACC-G3-12",
+      "description": "mutation matrix: baseline green, every mutant killed",
+      "passed": true,
+      "detail": "6/6 killed",
+      "evidence": {
+        "variants": [
+          "M1",
+          "M2",
+          "M3",
+          "M4",
+          "M5",
+          "M6"
+        ]
+      }
+    },
+    {
+      "check_id": "V-12b",
+      "criterion": "ACC-G3-12",
+      "description": "the matrix ran against byte-identical app.py",
+      "passed": true,
+      "detail": "matrix_rev=9eeb8e87 same_app=True",
+      "evidence": {
+        "matrix_rev": "9eeb8e87"
+      }
+    },
+    {
+      "check_id": "V-13",
+      "criterion": "ACC-G3-13",
+      "description": "reported artefact hashes match the files on disk",
+      "passed": true,
+      "detail": "7/7 match",
+      "evidence": {
+        "mismatched": []
+      }
+    }
+  ],
+  "passed": 15,
+  "total": 15,
+  "total_seconds": 261.3,
+  "generated_at": "2026-10-24T11:49:35Z"
+}

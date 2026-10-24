@@ -1,0 +1,123 @@
+{
+  "contract": "docs/audit/G-3.md",
+  "checkout": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
+  "branch": "audit/mt0004-negative-controls",
+  "verified_commit": "9eeb8e87",
+  "baseline_commit": "a072da90",
+  "date_utc": "2026-10-24",
+  "note": "artifacts are the inputs to the verdict; the backlog, the reports and verification.json are outputs and are not self-hashed, because they change after the verifier runs",
+  "artifacts": {
+    "docs/audit/G-3.md": "b32b19444ddd49213a92c866914a9d367519a2459df099abf4531342e63d2f5f",
+    "src/trading_bot/app.py": "834eaa27cc4f6ff770ee3a43bd4032d3add439b39e2790be6b30af75c26508cb",
+    "tests/unit/test_live_hot_stop_coverage.py": "a00c1ab174ddacf209a12d284885eb0ff3786191f71ee9543b2fb2011cc5a5b7",
+    "tests/unit/test_app_demo.py": "a2376e51174d6d1b15da1a215c572aeec2fa008f9eb53d692fc029bebc5d730d",
+    "scripts/audit/g3_live_probe.py": "db5049641543fc5d9854e64d933b76db444e96610a8c0bece0fb10bf49bf15ec",
+    "scripts/audit/g3_mutants.py": "4256c36aab98fc84c96f99ce22ebda41f0fba24d8926a9e0cb70c06bdaf2c34d",
+    "scripts/audit/verify_g3.py": "a3bd3ab1e03b2976e024b0dd6a14e3e3c9f91a49b38466cf8dd05393246d9304"
+  },
+  "evidence": {
+    "docs/audit/runs/run-20261024T112751Z-G-3/evidence/red_focal_tests.txt": "721e30b2feface115477aca63a0fce490b16ad02275d2ed04a5b331623479346",
+    "docs/audit/runs/run-20261024T112751Z-G-3/evidence/baseline_stale_test.txt": "043193c98564d71aef97c1cf682e82f6e9243c6a2afffa1bc9d1f956929d42da",
+    "docs/audit/runs/run-20261024T112751Z-G-3/evidence/live_matrix_before.json": "d66ee6559c4d204407eaff4d7def98a55c01963505351ad322c15589b24b63c7",
+    "docs/audit/runs/run-20261024T112751Z-G-3/evidence/live_matrix_after.json": "c90b69cb106911360b48617194639d4b22e5e85a2f790dc64dce9b9f896c4ae8"
+  },
+  "baseline_green": true,
+  "all_mutants_killed": true,
+  "rev": "9eeb8e87",
+  "mutants": 6,
+  "matrix_seconds": 307.76,
+  "variants": [
+    {
+      "variant": "baseline",
+      "description": "unmodified tree",
+      "criterion": "ACC-G3-01",
+      "expect": "all green",
+      "exit_code": 0,
+      "killed": false,
+      "duration_s": 39.35,
+      "failing_tests": []
+    },
+    {
+      "variant": "M1",
+      "description": "the boot-time kill switch stops being consulted",
+      "criterion": "ACC-G3-06",
+      "expect": "test_env_kill_switch_blocks_entry_without_a_marker",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 47.42,
+      "failing_tests": [
+        "test_env_kill_switch_blocks_entry_without_a_marker"
+      ]
+    },
+    {
+      "variant": "M2",
+      "description": "spot entry trades while the run directory says stopped",
+      "criterion": "ACC-G3-02",
+      "expect": "test_entry_is_refused_with_a_marker[run-spot]",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 45.85,
+      "failing_tests": [
+        "test_entry_is_refused_with_a_marker[run-spot]",
+        "test_every_live_sink_is_inside_the_boundary",
+        "test_each_boundary_states_whether_it_opens_risk"
+      ]
+    },
+    {
+      "variant": "M3",
+      "description": "futures entry trades while the run directory says stopped",
+      "criterion": "ACC-G3-02",
+      "expect": "test_entry_is_refused_with_a_marker[run-futures]",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 43.12,
+      "failing_tests": [
+        "test_entry_is_refused_with_a_marker[run-futures]",
+        "test_restart_over_the_same_run_dir_stays_blocked"
+      ]
+    },
+    {
+      "variant": "M4",
+      "description": "place-order stops classifying entry as risk",
+      "criterion": "ACC-G3-02",
+      "expect": "test_entry_is_refused_with_a_marker[place-order-futures]",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 38.33,
+      "failing_tests": [
+        "test_entry_is_refused_with_a_marker[place-order-futures]",
+        "test_operator_cli_marker_blocks_the_next_process",
+        "test_unreadable_marker_blocks_entry",
+        "test_env_kill_switch_blocks_entry_without_a_marker"
+      ]
+    },
+    {
+      "variant": "M5",
+      "description": "each process invents its own run directory (no inheritance)",
+      "criterion": "ACC-G3-04",
+      "expect": "test_restart_over_the_same_run_dir_stays_blocked",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 43.3,
+      "failing_tests": [
+        "test_entry_is_refused_with_a_marker[place-order-futures]",
+        "test_entry_is_refused_with_a_marker[place-order-spot]",
+        "test_entry_is_refused_with_a_marker[run-futures]",
+        "test_entry_is_refused_with_a_marker[run-spot]",
+        "test_operator_cli_marker_blocks_the_next_process"
+      ]
+    },
+    {
+      "variant": "M6",
+      "description": "the boundary drops the lock (engage no longer waits)",
+      "criterion": "ACC-G3-09",
+      "expect": "test_engage_waits_for_the_inflight_dispatch",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 41.02,
+      "failing_tests": [
+        "test_engage_waits_for_the_inflight_dispatch"
+      ]
+    }
+  ]
+}

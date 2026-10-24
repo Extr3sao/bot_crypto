@@ -1,0 +1,70 @@
+{
+  "context": "code at 9eeb8e87; blocked runs have KILL_SWITCH in the run_dir",
+  "blocked": {
+    "close-position": {
+      "sink": "futures.flash_close_position",
+      "broker_calls": 1,
+      "exit_code": 0,
+      "marker_present": true,
+      "opens_risk": false
+    },
+    "place-order-futures": {
+      "sink": null,
+      "broker_calls": 0,
+      "exit_code": 2,
+      "marker_present": true,
+      "opens_risk": true
+    },
+    "place-order-spot": {
+      "sink": null,
+      "broker_calls": 0,
+      "exit_code": 2,
+      "marker_present": true,
+      "opens_risk": true
+    },
+    "run-futures": {
+      "sink": null,
+      "broker_calls": 0,
+      "exit_code": 0,
+      "marker_present": true,
+      "opens_risk": true
+    },
+    "run-spot": {
+      "sink": null,
+      "broker_calls": 0,
+      "exit_code": 0,
+      "marker_present": true,
+      "opens_risk": true
+    },
+    "set-tpsl": {
+      "sink": "futures.place_position_tpsl",
+      "broker_calls": 1,
+      "exit_code": 0,
+      "marker_present": true,
+      "opens_risk": false
+    }
+  },
+  "control_no_marker": {
+    "place-order-futures": {
+      "broker_calls": 1,
+      "exit_code": 0
+    },
+    "place-order-spot": {
+      "broker_calls": 1,
+      "exit_code": 0
+    },
+    "run-futures": {
+      "broker_calls": 1,
+      "exit_code": 0
+    },
+    "run-spot": {
+      "broker_calls": 1,
+      "exit_code": 0
+    }
+  },
+  "env_switch_halted": {
+    "broker_calls": 0,
+    "exit_code": 2,
+    "marker_present": false
+  }
+}
