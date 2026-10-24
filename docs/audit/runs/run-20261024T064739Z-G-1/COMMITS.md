@@ -9,12 +9,14 @@ pushed, nothing merged.
 | 2 | `0bcc100c` | implementation + tests + mutation harness + probe | **yes** — this is the commit `verify_g1.py` reads |
 | 3 | the commit that introduced this file | run reports, mutant matrix, cross-process trace, verifier, `verification.json` | no — documentation over the verified commit |
 | 4 | the commit that updates the backlog and the authority map | record | no |
+| 5 | the commit that adds `COMMANDS.md` and refreshes the artefact hashes | exact invocations, for an auditor who wants the command lines rather than the prose | no |
 
-A file cannot contain the hash of the commit that adds it. For the last two:
+A file cannot contain the hash of the commit that adds it. For the last three:
 
 ```bash
 git log -1 --format=%H -- docs/audit/runs/run-20261024T064739Z-G-1/RUN_REPORT.md
 git log -1 --format=%H -- docs/audit/AUDIT_BACKLOG.yaml
+git log -1 --format=%H -- docs/audit/runs/run-20261024T064739Z-G-1/COMMANDS.md
 ```
 
 ## What each commit does, and why in that order

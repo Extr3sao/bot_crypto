@@ -85,6 +85,8 @@ for the sources).
 | `tests/unit/test_audit_contracts_tracked.py` | **8 passed** |
 | **total** | **483 test results, every run exit 0** |
 
+Exact invocations and the observed output: [`COMMANDS.md`](COMMANDS.md).
+
 Tooling:
 
 - `ruff check` on every changed Python file → **clean**.
@@ -178,8 +180,8 @@ hashes (V-12).
 ## 10. Artefacts
 
 `G-1.md` · `RUN_REPORT.md` · `RUN_REPORT.json` · `FINAL_REPORT.md` ·
-`COMMITS.md` · `verification.json` · `mutants.json` · `cross_process_trace.py` ·
-`cross_process_trace.json` · `verify_g1.py`. SHA-256 of every artefact is in
+`COMMITS.md` · `COMMANDS.md` · `verification.json` · `mutants.json` ·
+`cross_process_trace.py` · `cross_process_trace.json` · `verify_g1.py`. SHA-256 of every artefact is in
 `verification.json` → `V-12.evidence.artifacts` (the verifier hashes the files
 present when it runs; `verification.json` and the verifier itself are excluded
 for the obvious self-reference).
