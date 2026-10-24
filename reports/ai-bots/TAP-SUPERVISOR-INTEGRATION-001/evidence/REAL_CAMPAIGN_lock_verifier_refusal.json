@@ -1,0 +1,47 @@
+{
+  "adversarial": [],
+  "artifacts": {
+    "CAMPAIGN.json": "aa1a32e039de6af4d5142772089d84d2bf1cb57ed5a7f087cd1033601ba796cb",
+    "session/STREAM.jsonl": "29ee976910644acd5b04545636b3f1c18b01e2926001610fe960331ef2d1601b",
+    "session/STREAM.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "session/cycles/cycle-0001/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0002/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0003/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0004/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0005/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/market-1m/BTCUSDT.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "session/market-1m/ETHUSDT.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "session/market-1m/SOLUSDT.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2"
+  },
+  "builder": "scripts/paper_lock_campaign.py",
+  "campaign": "C:\\Users\\GVLLFR0035\\Downloads\\ff-paper-campaign\\campaign",
+  "campaign_schema": {
+    "declared": "TAP_PAPER_SUPERVISOR_CAMPAIGN_V1",
+    "expected": "TAP_PAPER_LOCK_CAMPAIGN_V1",
+    "supported": false
+  },
+  "false_success": 0,
+  "invalid_mutations": [],
+  "judgement": {
+    "checks": {
+      "campaign_schema_is_supported": false
+    },
+    "counts": {},
+    "cycles": {},
+    "final_state": "UNKNOWN",
+    "iterations": [],
+    "verdict": "FAIL"
+  },
+  "mutations_skipped": "UNSUPPORTED_CAMPAIGN_SCHEMA",
+  "refusal": {
+    "code": "UNSUPPORTED_CAMPAIGN_SCHEMA",
+    "declared": "TAP_PAPER_SUPERVISOR_CAMPAIGN_V1",
+    "detail": "these artefacts are not the layout this verifier reads; judge them with the verifier of the producer that wrote them",
+    "expected": "TAP_PAPER_LOCK_CAMPAIGN_V1"
+  },
+  "schema_version": "TAP_PAPER_LOCK_CAMPAIGN_VERIFICATION_V1",
+  "undetected_mutations": [],
+  "verdict": "FAIL",
+  "verifier": "scripts/paper_lock_campaign_verify.py",
+  "verifier_commit": "fda956644080e48cb0582e456ee2b7e4d82faf4c"
+}

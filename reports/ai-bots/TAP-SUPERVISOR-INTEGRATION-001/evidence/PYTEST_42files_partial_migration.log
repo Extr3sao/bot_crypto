@@ -1,0 +1,340 @@
+........................F................FFF............................ [ 40%]
+............................F..F........................................ [ 81%]
+................................                                         [100%]
+================================== FAILURES ===================================
+______________ test_broker_none_result_counts_but_no_idempotency ______________
+
+    def test_broker_none_result_counts_but_no_idempotency() -> None:
+        broker = PaperBroker(equity=10_000.0)
+        engine = _engine(broker=broker)
+        bars = _bars("BTC/USDT")
+        ts = TS0 + 59 * 60_000
+        # First execution fills; second cycle same intent \u2192 duplicate rejected.
+        c1 = engine.run_cycle_sync({"BTC/USDT": list(bars)}, {"BTC/USDT": ts})
+        assert c1.orders_created == 1
+        # A NEW bar exists at the new decision ts \u2192 new intent (cloid differs);
+        # the broker already holds a same-side long \u2192 execute_signal returns
+        # None \u2192 recorded as a broker-stage rejection, NOT registered as sent.
+        c2 = engine.run_cycle_sync(
+            {"BTC/USDT": _bars("BTC/USDT", n=61)}, {"BTC/USDT": TS0 + 60 * 60_000}
+        )
+        assert c2.orders_created == 0
+        assert c2.duplicate_intents == 0
+>       assert any(r["stage"] == "broker" for r in c2.rejections)
+E       assert False
+E        +  where False = any(<generator object test_broker_none_result_counts_but_no_idempotency.<locals>.<genexpr> at 0x0000014646CBC6C0>)
+
+tests\unit\paper\test_paper_cycle.py:272: AssertionError
+---------------------------- Captured stdout call -----------------------------
+2026-10-24 13:57:59 [info     ] risk.signal_approved           confidence=0.0 notional=1000.0 risk_at_stop_usdt=10.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-24 13:57:59 [info     ] paper.fill_opened              entry_commission=0.5 notional=1000.0 price=159.51595 quantity=6.268965579931035 side=buy symbol=BTC/USDT
+_______________ test_reconcile_session_feeds_only_delta_to_risk _______________
+
+    def test_reconcile_session_feeds_only_delta_to_risk() -> None:
+        """The runner calls reconcile_session every session and forwards the
+        reported trades to RiskManager. If reconcile returned the FULL ledger
+        every time, Risk would double-count trades_today/daily_pnl cumulatively
+        (observed live: trades_today=278 with 4 fills; daily limit vetoed 764
+        intents). Regression: repeated reconciles must yield an EMPTY delta
+        unless a NEW close happened, and the runner must consume that delta."""
+        from trading_bot.paper.types import PaperExecutionSummary
+        from trading_bot.strategies.types import Signal
+    
+        broker = PaperBroker(equity=10_000.0)
+        risk = RiskManager(risk=_risk_settings(), equity=10_000.0)
+    
+        class _Snap:
+            symbol = "SOL/USDT"
+            last_price = 100.0
+    
+        # Session 1: open a position via a risk-sized signal.
+        sig = Signal(
+            symbol="SOL/USDT",
+            side="buy",
+            strategy_name="t",
+            timeframe="5m",
+            confidence=0.9,
+            price=100.0,
+            metadata={"notional_usdt": 500.0},
+        )
+>       broker.execute_signal(sig)
+
+tests\unit\paper\test_paper_recovery.py:591: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <trading_bot.paper.broker.PaperBroker object at 0x0000014646F595D0>
+signal = Signal(symbol='SOL/USDT', side='buy', strategy_name='t', timeframe='5m', confidence=0.9, price=100.0, stop_loss_pct=None, take_profit_pct=None, metadata={'notional_usdt': 500.0})
+
+    def execute_signal(self, signal: Signal) -> ClosedTrade | PaperPosition | None:
+        """Execute a signal: open a new position.
+    
+        Returns the new PaperPosition if filled, None if rejected.
+        Does NOT check risk — that's the RiskManager's job.
+        """
+        symbol = signal.symbol
+    
+        # -- DEF-RUN-015: CLOSE is a request, REVERSE does not exist ------------------
+        #
+        # This method used to close an existing position whenever a signal arrived on the
+        # opposite side, and returned the ``ClosedTrade`` to a caller that counted any
+        # non-``None`` result as a created order. An exit therefore looked like an entry,
+        # and the position the signal seemed to ask for was never opened. Three paths,
+        # three names now: an explicit CLOSE closes; a same-side signal is skipped; an
+        # opposite signal without CLOSE intent is refused and changes nothing.
+        intent = str(signal.metadata.get("intent", "OPEN") or "OPEN").upper()
+        if intent == "CLOSE":
+            return self.close_position(
+                symbol,
+                float(signal.price),
+                str(signal.metadata.get("close_reason") or "signal_close"),
+            )
+    
+        if symbol in self._positions:
+            existing = self._positions[symbol]
+            if existing.side != signal.side:
+                self._log.warning(
+                    "paper.implicit_reversal_refused",
+                    symbol=symbol,
+                    existing_side=existing.side,
+                    new_side=signal.side,
+                )
+                self._observe_refusal(signal, "IMPLICIT_REVERSAL_FORBIDDEN")
+                raise BrokerOrderError(
+                    "IMPLICIT_REVERSAL_FORBIDDEN: "
+                    f"{symbol} already holds a {existing.side} position and this signal "
+                    f"asks to open {signal.side}. Closing is an explicit action "
+                    "(metadata.intent=\"CLOSE\" or PaperBroker.close_position); a signal "
+                    "never closes and reverses in one step."
+                )
+            # Skip if already have position on this symbol (same side)
+            self._log.info("paper.skip_duplicate", symbol=symbol)
+            return None
+    
+        # DEF-RUN-014: no silent 1 % default. The protective distance is the risk
+        # engine's decision and must arrive with the signal it approved.
+        if signal.stop_loss_pct is None:
+            self._observe_refusal(signal, "STOP_LOSS_REQUIRED")
+>           raise BrokerOrderError(
+                "STOP_LOSS_REQUIRED: signal for "
+                f"{symbol} carries no stop_loss_pct. The broker never invents one: a "
+                "position without the approved stop is a position with unmeasured risk."
+            )
+E           trading_bot.paper.broker.BrokerOrderError: STOP_LOSS_REQUIRED: signal for SOL/USDT carries no stop_loss_pct. The broker never invents one: a position without the approved stop is a position with unmeasured risk.
+
+src\trading_bot\paper\broker.py:400: BrokerOrderError
+____________________ test_zero_price_never_closes_position ____________________
+
+    def test_zero_price_never_closes_position() -> None:
+        """DEF-205 regression: the scanner emits inactive snapshots with
+        last_price=0.0. Honoring that as a mark price closed a live BTC position
+        at price 0 (-100% notional) and tripped the Daily loss limit cascade.
+        Fail-closed: price <= 0 must behave like a missing price (skip)."""
+        from trading_bot.strategies.types import Signal
+    
+        broker = PaperBroker(equity=10_000.0)
+        sig = Signal(
+            symbol="BTC/USDT",
+            side="buy",
+            strategy_name="t",
+            timeframe="5m",
+            confidence=0.9,
+            price=84_000.0,
+            metadata={"notional_usdt": 500.0},
+        )
+>       broker.execute_signal(sig)
+
+tests\unit\paper\test_paper_recovery.py:641: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <trading_bot.paper.broker.PaperBroker object at 0x00000146459DC6D0>
+signal = Signal(symbol='BTC/USDT', side='buy', strategy_name='t', timeframe='5m', confidence=0.9, price=84000.0, stop_loss_pct=None, take_profit_pct=None, metadata={'notional_usdt': 500.0})
+
+    def execute_signal(self, signal: Signal) -> ClosedTrade | PaperPosition | None:
+        """Execute a signal: open a new position.
+    
+        Returns the new PaperPosition if filled, None if rejected.
+        Does NOT check risk — that's the RiskManager's job.
+        """
+        symbol = signal.symbol
+    
+        # -- DEF-RUN-015: CLOSE is a request, REVERSE does not exist ------------------
+        #
+        # This method used to close an existing position whenever a signal arrived on the
+        # opposite side, and returned the ``ClosedTrade`` to a caller that counted any
+        # non-``None`` result as a created order. An exit therefore looked like an entry,
+        # and the position the signal seemed to ask for was never opened. Three paths,
+        # three names now: an explicit CLOSE closes; a same-side signal is skipped; an
+        # opposite signal without CLOSE intent is refused and changes nothing.
+        intent = str(signal.metadata.get("intent", "OPEN") or "OPEN").upper()
+        if intent == "CLOSE":
+            return self.close_position(
+                symbol,
+                float(signal.price),
+                str(signal.metadata.get("close_reason") or "signal_close"),
+            )
+    
+        if symbol in self._positions:
+            existing = self._positions[symbol]
+            if existing.side != signal.side:
+                self._log.warning(
+                    "paper.implicit_reversal_refused",
+                    symbol=symbol,
+                    existing_side=existing.side,
+                    new_side=signal.side,
+                )
+                self._observe_refusal(signal, "IMPLICIT_REVERSAL_FORBIDDEN")
+                raise BrokerOrderError(
+                    "IMPLICIT_REVERSAL_FORBIDDEN: "
+                    f"{symbol} already holds a {existing.side} position and this signal "
+                    f"asks to open {signal.side}. Closing is an explicit action "
+                    "(metadata.intent=\"CLOSE\" or PaperBroker.close_position); a signal "
+                    "never closes and reverses in one step."
+                )
+            # Skip if already have position on this symbol (same side)
+            self._log.info("paper.skip_duplicate", symbol=symbol)
+            return None
+    
+        # DEF-RUN-014: no silent 1 % default. The protective distance is the risk
+        # engine's decision and must arrive with the signal it approved.
+        if signal.stop_loss_pct is None:
+            self._observe_refusal(signal, "STOP_LOSS_REQUIRED")
+>           raise BrokerOrderError(
+                "STOP_LOSS_REQUIRED: signal for "
+                f"{symbol} carries no stop_loss_pct. The broker never invents one: a "
+                "position without the approved stop is a position with unmeasured risk."
+            )
+E           trading_bot.paper.broker.BrokerOrderError: STOP_LOSS_REQUIRED: signal for BTC/USDT carries no stop_loss_pct. The broker never invents one: a position without the approved stop is a position with unmeasured risk.
+
+src\trading_bot\paper\broker.py:400: BrokerOrderError
+_______ test_reconcile_session_with_zero_price_snapshot_keeps_position ________
+
+    def test_reconcile_session_with_zero_price_snapshot_keeps_position() -> None:
+        """End-to-end DEF-205 path: an inactive snapshot (last_price=0.0) flowing
+        through reconcile_session must not close the position nor move equity."""
+        from trading_bot.strategies.types import Signal
+    
+        broker = PaperBroker(equity=10_000.0)
+        risk = RiskManager(risk=_risk_settings(), equity=10_000.0)
+        sig = Signal(
+            symbol="BTC/USDT",
+            side="buy",
+            strategy_name="t",
+            timeframe="5m",
+            confidence=0.9,
+            price=84_000.0,
+            metadata={"notional_usdt": 500.0},
+        )
+>       broker.execute_signal(sig)
+
+tests\unit\paper\test_paper_recovery.py:678: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <trading_bot.paper.broker.PaperBroker object at 0x0000014647086C90>
+signal = Signal(symbol='BTC/USDT', side='buy', strategy_name='t', timeframe='5m', confidence=0.9, price=84000.0, stop_loss_pct=None, take_profit_pct=None, metadata={'notional_usdt': 500.0})
+
+    def execute_signal(self, signal: Signal) -> ClosedTrade | PaperPosition | None:
+        """Execute a signal: open a new position.
+    
+        Returns the new PaperPosition if filled, None if rejected.
+        Does NOT check risk — that's the RiskManager's job.
+        """
+        symbol = signal.symbol
+    
+        # -- DEF-RUN-015: CLOSE is a request, REVERSE does not exist ------------------
+        #
+        # This method used to close an existing position whenever a signal arrived on the
+        # opposite side, and returned the ``ClosedTrade`` to a caller that counted any
+        # non-``None`` result as a created order. An exit therefore looked like an entry,
+        # and the position the signal seemed to ask for was never opened. Three paths,
+        # three names now: an explicit CLOSE closes; a same-side signal is skipped; an
+        # opposite signal without CLOSE intent is refused and changes nothing.
+        intent = str(signal.metadata.get("intent", "OPEN") or "OPEN").upper()
+        if intent == "CLOSE":
+            return self.close_position(
+                symbol,
+                float(signal.price),
+                str(signal.metadata.get("close_reason") or "signal_close"),
+            )
+    
+        if symbol in self._positions:
+            existing = self._positions[symbol]
+            if existing.side != signal.side:
+                self._log.warning(
+                    "paper.implicit_reversal_refused",
+                    symbol=symbol,
+                    existing_side=existing.side,
+                    new_side=signal.side,
+                )
+                self._observe_refusal(signal, "IMPLICIT_REVERSAL_FORBIDDEN")
+                raise BrokerOrderError(
+                    "IMPLICIT_REVERSAL_FORBIDDEN: "
+                    f"{symbol} already holds a {existing.side} position and this signal "
+                    f"asks to open {signal.side}. Closing is an explicit action "
+                    "(metadata.intent=\"CLOSE\" or PaperBroker.close_position); a signal "
+                    "never closes and reverses in one step."
+                )
+            # Skip if already have position on this symbol (same side)
+            self._log.info("paper.skip_duplicate", symbol=symbol)
+            return None
+    
+        # DEF-RUN-014: no silent 1 % default. The protective distance is the risk
+        # engine's decision and must arrive with the signal it approved.
+        if signal.stop_loss_pct is None:
+            self._observe_refusal(signal, "STOP_LOSS_REQUIRED")
+>           raise BrokerOrderError(
+                "STOP_LOSS_REQUIRED: signal for "
+                f"{symbol} carries no stop_loss_pct. The broker never invents one: a "
+                "position without the approved stop is a position with unmeasured risk."
+            )
+E           trading_bot.paper.broker.BrokerOrderError: STOP_LOSS_REQUIRED: signal for BTC/USDT carries no stop_loss_pct. The broker never invents one: a position without the approved stop is a position with unmeasured risk.
+
+src\trading_bot\paper\broker.py:400: BrokerOrderError
+__________________ test_verifier_reproduces_a_real_approval ___________________
+
+instrument = InstrumentSpec(instrument_id='BINANCE_USDM_BTCUSDT_PERP', venue='BINANCE_USDM', venue_symbol='BTCUSDT', contract_type=...rackets': '07c298cd32e3f98b41b72d5bda0855fb14e5d091960fcd6325acbdf52dedc436', 'effective_timestamp_ms': 1791530164010})
+snapshot_payload = {'schema_version': 1, 'instrument_id': 'BINANCE_USDM_BTCUSDT_PERP', 'source_hash': '786c6b99e82b167c8227573dc854ca2884...98b76a02a2209869a11c7f', 'source_hash_klines': '22b37f53db1265bec9e4f6c1d2fb1fcb477788de92ffa9abda8df270e370b9cb', ...}
+funding_history = {'schema_version': 1, 'instrument_id': 'BINANCE_USDM_BTCUSDT_PERP', 'source_hash': 'ba6f9f9c7bb50c3ec45136de06eea16f4e57e714ca1961d56176b18829bac345', 'interval_ms': 28800000, ...}
+fixtures = VerificationFixtures(instruments={'schema_version': 1, 'generated_by': 'scripts/rfc048_derive_instruments.py', 'genera...a726d76b708d703743794ef50eb7', snapshot_source_hash='979c9fff0006600afdef8dfd687a431129e761726577fc656a011d0a1acef8f8')
+
+    def test_verifier_reproduces_a_real_approval(
+        instrument, snapshot_payload, funding_history, fixtures
+    ):
+        """A decision produced here survives an independent recomputation."""
+        case = build_case(instrument, snapshot_payload, funding_history)
+        assert case["decision"]["decision"] in {"APPROVE_SIMULATION", "REDUCE_SIMULATED_SIZE"}
+        checks, _ = verify_decision(case, fixtures)
+        failed = [c.name for c in checks if not c.passed]
+>       assert failed == []
+E       AssertionError: assert ['bracket_provenance'] == []
+E         
+E         Left contains one more item: 'bracket_provenance'
+E         Use -v to get more diff
+
+tests\unit\risk\test_futures_independent_verifier.py:150: AssertionError
+_________________ test_executed_artifacts_verify_when_present _________________
+
+fixtures = VerificationFixtures(instruments={'schema_version': 1, 'generated_by': 'scripts/rfc048_derive_instruments.py', 'genera...a726d76b708d703743794ef50eb7', snapshot_source_hash='979c9fff0006600afdef8dfd687a431129e761726577fc656a011d0a1acef8f8')
+
+    def test_executed_artifacts_verify_when_present(fixtures) -> None:
+        """The artefacts of the real offline run must survive verification."""
+        scenarios_path = DATA / "RISK_SCENARIOS.json"
+        if not scenarios_path.exists():  # pragma: no cover - run script not executed yet
+            pytest.skip("data/rfc048/RISK_SCENARIOS.json not generated")
+        scenarios = json.loads(scenarios_path.read_text(encoding="utf-8"))
+        report = run_verification({"decisions": scenarios["cases"]}, fixtures)
+        assert report["decisions_verified"] == len(scenarios["cases"])
+>       assert report["checks_failed"] == []
+E       AssertionError: assert [{'decision_i...ixture'}, ...] == []
+E         
+E         Left contains 28 more items, first extra item: {'decision_id': 'RFC048-DEC-001', 'check': 'bracket_provenance', 'detail': 'ladder matches the venue payload hash recorded in the fixture'}
+E         Use -v to get more diff
+
+tests\unit\risk\test_futures_independent_verifier.py:206: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/paper/test_paper_cycle.py::test_broker_none_result_counts_but_no_idempotency
+FAILED tests/unit/paper/test_paper_recovery.py::test_reconcile_session_feeds_only_delta_to_risk
+FAILED tests/unit/paper/test_paper_recovery.py::test_zero_price_never_closes_position
+FAILED tests/unit/paper/test_paper_recovery.py::test_reconcile_session_with_zero_price_snapshot_keeps_position
+FAILED tests/unit/risk/test_futures_independent_verifier.py::test_verifier_reproduces_a_real_approval
+FAILED tests/unit/risk/test_futures_independent_verifier.py::test_executed_artifacts_verify_when_present
+6 failed, 170 passed in 17.11s
