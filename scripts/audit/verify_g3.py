@@ -461,6 +461,31 @@ def main(argv: list[str] | None = None) -> int:
                     {"variants": [v.get("variant") for v in mutated]},
                 )
             )
+            # V-12b — the matrix must have run against this code, even when its
+            # commit differs from the verified one (tools commit vs. code commit).
+            matrix_rev = str(report.get("rev") or "")
+            matrix_app = (
+                _run(["git", "show", f"{matrix_rev}:{APP_REL}"], cwd=REPO_ROOT)
+                if matrix_rev
+                else None
+            )
+            tree_text = src_app.read_text(encoding="utf-8")
+            same = bool(
+                matrix_app
+                and matrix_app.returncode == 0
+                and hashlib.sha256(matrix_app.stdout.encode()).hexdigest()
+                == hashlib.sha256(tree_text.encode()).hexdigest()
+            )
+            add(
+                Check(
+                    "V-12b",
+                    "ACC-G3-12",
+                    "the matrix ran against byte-identical app.py",
+                    same,
+                    f"matrix_rev={matrix_rev} same_app={same}",
+                    {"matrix_rev": matrix_rev},
+                )
+            )
         else:
             add(
                 Check(
