@@ -37,6 +37,7 @@ from trading_bot.autonomous.hot_stop import (
 )
 from trading_bot.charting import ChartSnapshotRequest, render_local_chart_snapshot
 from trading_bot.config import TradingMode, load_settings
+from trading_bot.execution.live_gate import LiveTradingGate
 from trading_bot.market_data.bitunix import (
     BitunixAPIError,
     BitunixSpotClient,
@@ -792,6 +793,11 @@ def _reconcile_open_trade_cases_with_positions(
 #: global latch (docs/audit/G-3.md §4.3).
 DEFAULT_LIVE_RUN_DIR: Final[str] = "data/live"
 
+#: ``LiveTradingGate.validate`` is documented as ten checks. A run that reports
+#: any other count is not a pass: a check that silently disappears must not turn
+#: into permission.
+EXPECTED_LIVE_GATE_COUNT: Final[int] = 10
+
 
 def _live_stop_gate(run_dir: str | None, *, create: bool = False) -> HotStopGate:
     """Build the gate a live command dispatches under.
@@ -816,9 +822,78 @@ def _live_stop_reason(gate: HotStopGate) -> str:
     return "process_kill_switch_active"
 
 
+def _live_stop_is_closed(gate: HotStopGate) -> bool:
+    """True when the hot stop already refuses entry, including a broken switch.
+
+    Used only to decide whether the live gate is even reached: the stop keeps
+    priority, so an entry refused by the stop must not be reported as a gate
+    failure. An authority that cannot be interrogated counts as closed.
+    """
+    if gate.engaged:
+        return True
+    try:
+        return bool(gate.kill_switch.is_active)
+    except Exception:
+        return True
+
+
+@dataclass(frozen=True, slots=True)
+class LiveGateVerdict:
+    """The pre-flight gate's answer, reduced to what a live dispatch needs."""
+
+    allowed: bool
+    reason: str = ""
+    failed_gate_ids: tuple[str, ...] = ()
+
+
+def _evaluate_live_gate(settings: Settings) -> LiveGateVerdict:
+    """Run ``LiveTradingGate`` over the *runtime* settings and fail closed.
+
+    Every one of the ten checks must run and pass. That is stricter than
+    ``GateReport.all_passed``, which only blocks critical failures: GATE-006
+    (database reachability) and GATE-008 (security) are severity ``high`` and a
+    gate that rejects them has still rejected something. The rule lives here,
+    not in the gate, so ``LiveTradingGate`` keeps its published semantics for
+    other callers.
+
+    Credentials come from the resolved settings, not from ``os.environ``: the
+    CLI reads its env file through pydantic, which does not export it.
+    """
+    try:
+        report = LiveTradingGate(
+            settings,
+            data_dir=DEFAULT_LIVE_RUN_DIR,
+            credentials=(settings.exchange.api_key, settings.exchange.api_secret),
+        ).validate()
+    except Exception as exc:  # an authority that raises is not permission
+        return LiveGateVerdict(False, f"live_gate_error:{type(exc).__name__}")
+
+    if report.total_gates != EXPECTED_LIVE_GATE_COUNT:
+        return LiveGateVerdict(
+            False, f"live_gate_incomplete:{report.total_gates}/{EXPECTED_LIVE_GATE_COUNT}"
+        )
+
+    failed = tuple(result.gate_id for result in report.results if not result.passed)
+    if failed:
+        return LiveGateVerdict(False, "live_gate_blocked:" + ",".join(failed), failed)
+    return LiveGateVerdict(True)
+
+
+def _live_refusal_reason(gate: HotStopGate, settings: Settings) -> str:
+    """Name the authority that refused, in the same order the boundary checks it."""
+    if gate.engaged:
+        return f"kill_switch_engaged_hot:{_live_stop_reason(gate)}"
+    try:
+        if gate.kill_switch.is_active:
+            return "process_kill_switch_active"
+    except Exception:
+        return "kill_switch_authority_unavailable"
+    return _evaluate_live_gate(settings).reason or "live_gate_blocked"
+
+
 @contextmanager
 def _live_order_boundary(
-    gate: HotStopGate, *, opens_risk: bool, run_id: str = ""
+    gate: HotStopGate, *, opens_risk: bool, settings: Settings, run_id: str = ""
 ) -> Iterator[bool]:
     """The only authorisation a live broker call gets.
 
@@ -828,10 +903,17 @@ def _live_order_boundary(
     hazard. The classification is a literal at each call site so the structural
     test can read it and a reviewer can argue with one line.
 
+    ``settings`` is required, not optional: an entry boundary without the data
+    the gate validates would be a bypass with a friendly signature. The gate is
+    consulted **inside** the boundary, after the stop and before
+    ``order_boundary``, so both authorities cover the same in-flight lock and a
+    refused gate never reaches the broker.
+
     Fail closed: a marker that cannot be read (``HotStopGate.poll``), an
-    authority that raises, and a lock that cannot be acquired all refuse. The
-    broker call must happen inside the ``with`` block — that lock is what makes
-    ``engage``'s ACK mean "nothing is in flight" (G-2 §4.3).
+    authority that raises, a gate that cannot be evaluated, and a lock that
+    cannot be acquired all refuse. The broker call must happen inside the
+    ``with`` block — that lock is what makes ``engage``'s ACK mean "nothing is
+    in flight" (G-2 §4.3).
     """
     if not opens_risk:
         yield True
@@ -845,6 +927,9 @@ def _live_order_boundary(
         # ``KILL_SWITCH_ENV`` boots the process authority; a live path has no
         # DecisionEngine rule 0 to catch it. Not persisted: the env token keeps
         # the boot-time semantics G-1 fixed.
+        yield False
+        return
+    if not _evaluate_live_gate(settings).allowed:
         yield False
         return
     with gate.order_boundary(run_id=run_id) as allowed:
@@ -945,11 +1030,11 @@ def _maybe_execute_live_trade(
             )
             continue
 
-        with _live_order_boundary(hot_stop, opens_risk=True) as allowed:
+        with _live_order_boundary(hot_stop, opens_risk=True, settings=settings) as allowed:
             if not allowed:
                 return {
                     "status": "SKIPPED",
-                    "reason": f"kill_switch_engaged_hot:{_live_stop_reason(hot_stop)}",
+                    "reason": _live_refusal_reason(hot_stop, settings),
                 }
             order = connector.create_order(
                 symbol=snap.symbol,
@@ -980,6 +1065,7 @@ def _close_stale_futures_positions(
     client: BitunixFuturesClient,
     hot_stop: HotStopGate,
     execution: LiveExecutionState,
+    settings: Settings,
     desired_directions: dict[str, str] | None = None,
 ) -> dict[str, object] | None:
     positions = client.get_pending_positions()
@@ -996,8 +1082,9 @@ def _close_stale_futures_positions(
                 close_reason = "signal_direction_flipped"
         if close_reason is None:
             continue
-        # Reduction, not entry: flattening must keep working while stopped.
-        with _live_order_boundary(hot_stop, opens_risk=False) as allowed:
+        # Reduction, not entry: flattening must keep working while stopped, so
+        # the live gate is not consulted for it either.
+        with _live_order_boundary(hot_stop, opens_risk=False, settings=settings) as allowed:
             if not allowed:  # defensive: opens_risk=False never refuses today
                 return {"status": "SKIPPED", "reason": "kill_switch_engaged_hot"}
             result = client.flash_close_position(position.position_id)
@@ -1070,6 +1157,7 @@ def _maybe_execute_live_futures_trade(
         client=futures_client,
         hot_stop=hot_stop,
         execution=execution,
+        settings=settings,
         desired_directions=desired_directions,
     )
     if close_event is not None:
@@ -1151,12 +1239,12 @@ def _maybe_execute_live_futures_trade(
             market_client=market_client,
         )
         try:
-            with _live_order_boundary(hot_stop, opens_risk=True) as allowed:
+            with _live_order_boundary(hot_stop, opens_risk=True, settings=settings) as allowed:
                 if not allowed:
                     _mark_trade_case_order_rejected(trade_case_id=trade_case_id)
                     return {
                         "status": "SKIPPED",
-                        "reason": f"kill_switch_engaged_hot:{_live_stop_reason(hot_stop)}",
+                        "reason": _live_refusal_reason(hot_stop, settings),
                     }
                 order = futures_client.place_order(
                     symbol=snap.symbol,
@@ -1232,6 +1320,8 @@ def _cmd_run(args: argparse.Namespace) -> int:
         sys.stderr.write("ERROR: --symbol-cooldown-seconds debe ser >= 0.\n")
         return 2
 
+    env_file = args.env_file if args.env_file else None
+
     # Built before the first iteration: the constructor adopts a marker left by
     # an earlier process, so a restart cannot dispatch in the window before the
     # loop would notice.
@@ -1241,6 +1331,28 @@ def _cmd_run(args: argparse.Namespace) -> int:
         else None
     )
 
+    # P0 — the live gate is a precondition of the process, not a detail of the
+    # first order: refuse before the scanner runs, before a client exists, and
+    # before the loop can report a healthy iteration. The stop keeps priority,
+    # so an already-stopped process keeps its G-3 behaviour (start and report
+    # the skip instead of exiting). The boundary checks the gate again at the
+    # sink; this is the fail-fast copy.
+    if hot_stop is not None and not _live_stop_is_closed(hot_stop):
+        try:
+            startup_settings = load_settings(config_dir=args.config_dir, env_file=env_file)
+        except Exception as exc:
+            sys.stderr.write(
+                "ERROR: live gate could not read the configuration "
+                f"({type(exc).__name__}); auto-trade refused, no order sent.\n"
+            )
+            return 2
+        verdict = _evaluate_live_gate(startup_settings)
+        if not verdict.allowed:
+            sys.stderr.write(
+                f"ERROR: live trading gate refused auto-trade ({verdict.reason}); no order sent.\n"
+            )
+            return 2
+
     state = RuntimeState(mode=args.mode)
     live_execution = LiveExecutionState()
     lock = Lock()
@@ -1249,7 +1361,6 @@ def _cmd_run(args: argparse.Namespace) -> int:
         web_server = _start_web_server(args.web_host, args.web_port, state, lock)
         print(f"[run] dashboard web disponible en http://{args.web_host}:{args.web_port}")
 
-    env_file = args.env_file if args.env_file else None
     loop_label = "live real" if args.mode in {"live", "shadow_live"} else "--demo"
 
     def execute_iteration(iteration: int) -> int:
@@ -1389,7 +1500,16 @@ def _cmd_place_order(args: argparse.Namespace) -> int:
         return 2
 
     env_file = args.env_file if args.env_file else None
-    settings = load_settings(config_dir=args.config_dir, env_file=env_file)
+    try:
+        settings = load_settings(config_dir=args.config_dir, env_file=env_file)
+    except Exception as exc:
+        # Fail closed: without settings there is no gate verdict, and no verdict
+        # is not permission.
+        sys.stderr.write(
+            "ERROR: no se pudo cargar la configuracion live "
+            f"({type(exc).__name__}); ninguna orden enviada.\n"
+        )
+        return 2
     if settings.runtime.mode != TradingMode.LIVE:
         sys.stderr.write("ERROR: runtime.mode debe ser 'live' para colocar una orden real.\n")
         return 2
@@ -1402,17 +1522,30 @@ def _cmd_place_order(args: argparse.Namespace) -> int:
     else:
         opens_risk = args.side == "buy"
 
+    # Fail fast, before a client is even built. The boundary runs the gate again
+    # at the sink; this copy exists so an operator sees the refusal before any
+    # object that could reach an exchange is constructed.
+    if opens_risk and not _live_stop_is_closed(hot_stop):
+        verdict = _evaluate_live_gate(settings)
+        if not verdict.allowed:
+            sys.stderr.write(
+                f"ERROR: live trading gate refused entry ({verdict.reason}); order refused.\n"
+            )
+            return 2
+
     if args.market_kind == "futures":
         futures_client = BitunixFuturesClient(
             api_key=settings.exchange.api_key,
             api_secret=settings.exchange.api_secret,
         )
         try:
-            with _live_order_boundary(hot_stop, opens_risk=opens_risk) as allowed:
+            with _live_order_boundary(
+                hot_stop, opens_risk=opens_risk, settings=settings
+            ) as allowed:
                 if not allowed:
                     sys.stderr.write(
-                        "ERROR: kill switch engaged "
-                        f"({_live_stop_reason(hot_stop)}); order refused.\n"
+                        f"ERROR: live entry refused ({_live_refusal_reason(hot_stop, settings)}); "
+                        "order refused.\n"
                     )
                     return 2
                 order = futures_client.place_order(
@@ -1456,10 +1589,11 @@ def _cmd_place_order(args: argparse.Namespace) -> int:
     )
     price = float(args.price) if args.price is not None else client.fetch_last_price(args.symbol)
     try:
-        with _live_order_boundary(hot_stop, opens_risk=opens_risk) as allowed:
+        with _live_order_boundary(hot_stop, opens_risk=opens_risk, settings=settings) as allowed:
             if not allowed:
                 sys.stderr.write(
-                    f"ERROR: kill switch engaged ({_live_stop_reason(hot_stop)}); order refused.\n"
+                    f"ERROR: live entry refused ({_live_refusal_reason(hot_stop, settings)}); "
+                    "order refused.\n"
                 )
                 return 2
             order = client.place_spot_order(
@@ -1523,7 +1657,7 @@ def _cmd_close_position(args: argparse.Namespace) -> int:
     hot_stop = _live_stop_gate(args.run_dir)
     try:
         # Flattening is risk reduction: it stays available while stopped.
-        with _live_order_boundary(hot_stop, opens_risk=False) as allowed:
+        with _live_order_boundary(hot_stop, opens_risk=False, settings=settings) as allowed:
             if not allowed:  # defensive: opens_risk=False never refuses today
                 sys.stderr.write("ERROR: kill switch engaged; close refused.\n")
                 return 2
@@ -1547,7 +1681,7 @@ def _cmd_set_tpsl(args: argparse.Namespace) -> int:
     hot_stop = _live_stop_gate(args.run_dir)
     try:
         # Protective orders are not new risk: they stay available while stopped.
-        with _live_order_boundary(hot_stop, opens_risk=False) as allowed:
+        with _live_order_boundary(hot_stop, opens_risk=False, settings=settings) as allowed:
             if not allowed:  # defensive: opens_risk=False never refuses today
                 sys.stderr.write("ERROR: kill switch engaged; set-tpsl refused.\n")
                 return 2

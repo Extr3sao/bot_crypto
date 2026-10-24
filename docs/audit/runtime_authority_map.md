@@ -169,3 +169,40 @@ scripts/autonomous_paper.py
 `grep -n "execute_signal" src/trading_bot/autonomous/runtime.py` returns exactly
 one dispatch site, which is why a single boundary is sufficient here and why a
 second one appearing later invalidates the G-2 claim.
+
+## 9. Addendum — the live gate boundary (2026-10-24, P0)
+
+G-3 installed the hot stop at the live sinks and explicitly left
+`execution/live_gate.py` out of scope. P0 (`docs/audit/P0-LIVE-GATE.md`) closed
+that defect: before P0, `grep -rn LiveTradingGate src/` matched only the module
+and its package `__init__`, so a deployment the gate would reject still sent an
+order.
+
+The live path now has two authorities at the same boundary, in this order:
+
+```text
+trading-bot run --mode live --auto-trade      trading-bot place-order
+trading-bot close-position / set-tpsl
+  → _cmd_run (pre-flight: stop? gate? → exit 2 before any client)
+      → _maybe_execute_live_* (entry)
+          → _live_order_boundary(opens_risk=True, settings=…)
+              → hot-stop switch check        (KILL_SWITCH_ENV / HotStopGate)
+              → LiveTradingGate.validate()   (ten checks, all must pass)
+                  → HotStopGate.order_boundary()  [lock held]
+                      → broker sink
+```
+
+| Path | Gate | Evidence |
+|---|---|---|
+| `run --auto-trade` futures/spot entry | **yes** | startup + boundary; 0 calls with any rejected check |
+| `place-order` futures OPEN / spot buy | **yes** | pre-client + boundary |
+| `close-position`, `set-tpsl`, futures CLOSE, spot sell | no (exempt) | 1 call with GATE-004 rejected |
+| `run --demo` → `paper_cycle` | no (G-4) | unchanged |
+
+`HotStopGate` still owns the stop and is still byte-identical to `a072da90`.
+The gate does not replace it: P0's refusal for a stopped process names the stop,
+not the gate, and an already-stopped `run` keeps G-3's start-and-report
+behaviour. The gate's verdict is the stricter `failed_gates == 0`, not
+`GateReport.all_passed`: GATE-006 and GATE-008 are rated `high` by the class, and
+a rejected check must still stop an order. That policy lives in
+`app._evaluate_live_gate`, not in the gate.

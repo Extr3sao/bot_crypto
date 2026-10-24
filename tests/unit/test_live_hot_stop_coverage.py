@@ -32,6 +32,8 @@ import pytest
 
 from trading_bot import app as app_module
 from trading_bot.autonomous.hot_stop import HOT_STOP_FILE_NAME, HotStopGate
+from trading_bot.config.runtime import TradingMode
+from trading_bot.market_data.fake import build_demo_settings
 from trading_bot.paper.kill_switch_v2 import KillSwitch
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -62,6 +64,34 @@ REDUCTION_POINTS = (
     ("place-order-futures", ("--trade-side", "CLOSE")),
     ("place-order-spot", ("--side", "sell")),
 )
+
+
+def _live_settings() -> object:
+    """Legal live settings for the in-process boundary test.
+
+    P0 made ``settings`` a required argument of ``_live_order_boundary``; this
+    helper keeps the G-3 in-flight test about the lock, not about config.
+    """
+    settings = build_demo_settings(mode="live")
+    return settings.model_copy(
+        update={
+            "exchange": settings.exchange.model_copy(
+                update={
+                    "id": "bitunix",
+                    "sandbox": False,
+                    "api_key": "test-key",
+                    "api_secret": "test-secret",
+                }
+            ),
+            "runtime": settings.runtime.model_copy(
+                update={
+                    "mode": TradingMode.LIVE,
+                    "live_trading_enabled": True,
+                    "exchange_id": "bitunix",
+                }
+            ),
+        }
+    )
 
 
 def _probe(entrypoint: str, run_dir: Path, *extra: str) -> dict[str, object]:
@@ -314,12 +344,13 @@ def test_each_boundary_states_whether_it_opens_risk() -> None:
 def test_engage_waits_for_the_inflight_dispatch(tmp_path: Path) -> None:
     switch = KillSwitch()
     gate = HotStopGate(kill_switch=switch, run_dir=tmp_path)
+    settings = _live_settings()
     entered = threading.Event()
     release = threading.Event()
     sent: list[str] = []
 
     def dispatch() -> None:
-        with app_module._live_order_boundary(gate, opens_risk=True) as allowed:
+        with app_module._live_order_boundary(gate, opens_risk=True, settings=settings) as allowed:
             assert allowed
             entered.set()
             assert release.wait(timeout=10)
@@ -345,7 +376,7 @@ def test_engage_waits_for_the_inflight_dispatch(tmp_path: Path) -> None:
     assert getattr(acks[0], "persisted", False) is True
     assert sent == ["order"]
 
-    with app_module._live_order_boundary(gate, opens_risk=True) as allowed:
+    with app_module._live_order_boundary(gate, opens_risk=True, settings=settings) as allowed:
         assert not allowed, "a dispatch began after the stop was in force"
 
 

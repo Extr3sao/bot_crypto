@@ -137,6 +137,13 @@ def _build_fakes(recorder: _Recorder) -> dict[str, Any]:
 
 
 def _live_settings() -> Any:
+    """A *legal* live configuration.
+
+    ``build_demo_settings`` is a paper fixture: sandbox=True, no exchange_id, no
+    credentials. A real ``load_settings`` rejects live+sandbox, so this fixture
+    has to be corrected before a gate can be expected to pass it. The values are
+    synthetic and never leave the process; the probe replaces the HTTP clients.
+    """
     from trading_bot.config.runtime import TradingMode
     from trading_bot.market_data.fake import build_demo_settings
 
@@ -144,10 +151,19 @@ def _live_settings() -> Any:
     return settings.model_copy(
         update={
             "exchange": settings.exchange.model_copy(
-                update={"api_key": "probe-key", "api_secret": "probe-secret"}
+                update={
+                    "id": "bitunix",
+                    "sandbox": False,
+                    "api_key": "probe-key",
+                    "api_secret": "probe-secret",
+                }
             ),
             "runtime": settings.runtime.model_copy(
-                update={"mode": TradingMode.LIVE, "live_trading_enabled": True}
+                update={
+                    "mode": TradingMode.LIVE,
+                    "live_trading_enabled": True,
+                    "exchange_id": "bitunix",
+                }
             ),
         }
     )
@@ -266,6 +282,9 @@ def main(argv: list[str] | None = None) -> int:
 
     run_dir = Path(args.run_dir).resolve()
     run_dir.mkdir(parents=True, exist_ok=True)
+    # GATE-006 resolves the configured SQLite path against the working
+    # directory; a deployment has it, a fresh `git archive` export does not.
+    (Path.cwd() / "data" / "storage").mkdir(parents=True, exist_ok=True)
 
     if args.env_kill_switch:
         # Must be set before trading_bot.autonomous.decision is imported: the

@@ -10,7 +10,7 @@
 
 schema: tap.audit-backlog/v1
 generated_at_utc: "2026-10-23T18:53:56Z"
-updated_at_utc: "2026-10-24T07:20:00Z"
+updated_at_utc: "2026-10-24T17:10:00Z"
 repository: trading-agentic-portable
 
 recovery:
@@ -264,6 +264,62 @@ tasks:
       baseline is kept in COMMANDS.md. PROCEDURALLY_SEPARATED verification,
       same author.
 
+  - id: P0-LIVE-GATE
+    title: Enforce LiveTradingGate on every live path that opens risk
+    status: in_progress
+    provenance: gap
+    contract: docs/audit/P0-LIVE-GATE.md
+    blocker: DEF-G3-03
+    allowed_paths:
+      - docs/audit/P0-LIVE-GATE.md
+      - docs/audit/G-3.md
+      - docs/audit/AUDIT_BACKLOG.yaml
+      - docs/audit/runtime_authority_map.md
+      - docs/audit/runs/**
+      - src/trading_bot/app.py
+      - src/trading_bot/execution/live_gate.py
+      - tests/unit/test_live_gate_enforcement.py
+      - tests/unit/test_live_hot_stop_coverage.py
+      - scripts/audit/g3_live_probe.py
+      - scripts/audit/p0_live_gate_probe.py
+      - scripts/audit/p0_live_gate_mutants.py
+      - scripts/audit/verify_p0_live_gate.py
+    protected_paths:
+      - src/trading_bot/autonomous/hot_stop.py
+      - src/trading_bot/autonomous/decision.py
+      - src/trading_bot/autonomous/runtime.py
+      - src/trading_bot/paper/**
+      - src/trading_bot/risk/**
+      - src/trading_bot/config/**
+      - src/trading_bot/market_data/**
+      - scripts/autonomous_paper.py
+      - config/**
+      - .github/**
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+    acceptance_criteria: [ACC-P0-01, ACC-P0-02, ACC-P0-03, ACC-P0-04, ACC-P0-05, ACC-P0-06, ACC-P0-07, ACC-P0-08, ACC-P0-09, ACC-P0-10, ACC-P0-11, ACC-P0-12, ACC-P0-13, ACC-P0-14, ACC-P0-15]
+    evidence:
+      - "before: 10/10 rejected gate configurations sent one order; gate constructed 0 times (96e211bd)"
+      - "after: 0 broker calls, exit 2 and the gate id in stderr for all ten checks"
+      - "run --auto-trade refuses at startup; place-order refuses before the client exists"
+      - "reduction (close-position, set-tpsl, CLOSE, spot sell) still reaches the broker"
+      - "GATE-006/008 block although the gate itself rates them high, not critical"
+      - "hot_stop.py byte-identical to a072da90"
+    covered_paths:
+      - trading-bot run --mode live --auto-trade (futures and spot entry)
+      - trading-bot place-order (entry)
+      - trading-bot close-position, set-tpsl and reduce-only orders (exempt)
+    uncovered_paths:
+      - real exchange acceptance of the payload (all sinks are recorders)
+      - trading-bot run --demo -> paper/paper_cycle.py (G-4) still has no gate
+      - D-6 not opened by this task
+    note: >-
+      Closes DEF-G3-03. The gate is consulted at the sink boundary and at the
+      entry of each risk-opening CLI path; all ten checks must pass, which is
+      stricter than LiveTradingGate.all_passed (critical-only) and is the point.
+      PROCEDURALLY_SEPARATED verification, same author.
+
 contracts:
   - path: docs/audit/runtime_authority_map.md
     required: true
@@ -280,6 +336,9 @@ contracts:
   - path: docs/audit/AUDIT_BACKLOG.yaml
     required: true
     producer: MT-0004-R1
+  - path: docs/audit/P0-LIVE-GATE.md
+    required: true
+    producer: P0-LIVE-GATE
 
 unrecoverable:
   note: >-
@@ -293,12 +352,12 @@ unrecoverable:
 next_ready:
   task: null
   reason: >-
-    G-1, G-2 and G-3 are closed and their contracts are committed. G-4
+    G-1, G-2, G-3 and P0-LIVE-GATE are closed and their contracts are
+    committed. P0 closed DEF-G3-03: every live entrypoint that can open risk now
+    consults LiveTradingGate, and every one of its ten checks must pass. G-4
     (paper_cycle.py has its own broker call) still has no contract, so naming it
-    READY would fabricate its specification. G-3 measured what it promised —
-    seven live sink sites, all gated, with entry separated from reduction — and
-    leaves G-4 exactly where it was: `run --demo` reaches PaperBroker through a
-    decision path that never constructs DecisionEngine, so the gate G-3 installed
-    on the live paths does not apply to it. G-4 remains the larger risk, because
-    it needs two decision paths reconciled rather than a gate added to one. D-6
-    was not opened by any of these tasks.
+    READY would fabricate its specification. `run --demo` reaches PaperBroker
+    through a decision path that never constructs DecisionEngine, so neither the
+    hot stop nor the live gate applies to it. G-4 remains the larger risk,
+    because it needs two decision paths reconciled rather than a gate added to
+    one. D-6 was not opened by any of these tasks.

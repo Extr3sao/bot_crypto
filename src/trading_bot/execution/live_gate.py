@@ -63,9 +63,26 @@ class LiveTradingGate:
             raise LiveTradingBlocked(report)
     """
 
-    def __init__(self, settings: Settings, data_dir: Path | str = "data") -> None:
+    def __init__(
+        self,
+        settings: Settings,
+        data_dir: Path | str = "data",
+        *,
+        credentials: tuple[str, str] | None = None,
+    ) -> None:
+        """``credentials`` is the (api_key, api_secret) the caller already
+        resolved from its runtime configuration.
+
+        Without it the check reads ``os.environ``. That is the right default for
+        a process whose credentials are exported, but the CLI loads its env file
+        through pydantic, which never writes to ``os.environ``: passing the
+        resolved values here is what makes the gate see the same credentials the
+        broker client will use. The values are never logged or included in a
+        message.
+        """
         self._settings = settings
         self._data_dir = Path(data_dir)
+        self._credentials = credentials
         self._log = structlog.get_logger("live_gate")
 
     def validate(self) -> GateReport:
@@ -213,9 +230,11 @@ class LiveTradingGate:
         required_vars = ["EXCHANGE_API_KEY", "EXCHANGE_API_SECRET"]
         missing: list[str] = []
 
-        for var in required_vars:
-            if not os.environ.get(var):
-                missing.append(var)
+        if self._credentials is not None:
+            values = dict(zip(required_vars, self._credentials, strict=True))
+            missing = [var for var in required_vars if not values[var]]
+        else:
+            missing = [var for var in required_vars if not os.environ.get(var)]
 
         if missing:
             return GateResult(
