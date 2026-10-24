@@ -112,7 +112,7 @@ veto, 6 gross edge, 7 paper admission. Rule 0 reads no request field.
 
 | Gap | Meaning | Status in this tree |
 |---|---|---|
-| **G-1** | Kill-switch state is not persisted; a restart boots `NORMAL` | Open. `_boot_kill_switch()` reads `TRADING_BOT_KILL_SWITCH` once at import; `KillSwitch` has no store. Pinned as executable truth by MT-0003's `test_the_state_does_not_survive_a_restart_and_that_is_the_declared_gap`. |
+| **G-1** | Kill-switch state is not persisted; a restart boots `NORMAL` | **Closed for the autonomous path** by `docs/audit/G-1.md`: `HotStopGate` adopts `<run_dir>/KILL_SWITCH` in its constructor, before any broker call, and `engage` writes the marker atomically. Scope is the run directory — a new `--run-id` is a new scope and boots operational, which the contract states and pins with a test. `KillSwitch` itself still has no store, by design. |
 | **G-2** | No hot activation from the CLI | **Closed for the autonomous path** by `docs/audit/G-2.md`: `HotStopGate` polls `<run_dir>/KILL_SWITCH` and holds the lock across `broker.execute_signal`, so an ACK means nothing is in flight. `kill-switch --run-dir … --engage` writes that file; `status` stays a stub. The `paper_cycle` and live paths remain **unprotected** (G-3/G-4). |
 | **G-3** | Live order paths that bypass `DecisionEngine` | Open. Not measured here; the CLI's live path was not exercised in this task. |
 | **G-4** | Duplicate engine `paper/paper_cycle.py` | Open, and sharper than before: that module does not import `autonomous.decision`, so the robots started by `scripts/start_paper_trading.py` are not protected by rule 0. |

@@ -10,7 +10,7 @@
 
 schema: tap.audit-backlog/v1
 generated_at_utc: "2026-10-23T18:53:56Z"
-updated_at_utc: "2026-10-23T19:45:00Z"
+updated_at_utc: "2026-10-24T07:20:00Z"
 repository: trading-agentic-portable
 
 recovery:
@@ -100,6 +100,62 @@ tasks:
       verifier is a separate script with its own mutant literals, but it was
       written by the same author: procedural independence, not a second person.
 
+  - id: G-1
+    title: The stop survives a restart over the same run directory
+    status: done
+    provenance: gap
+    contract: docs/audit/G-1.md
+    verified_commit: "0bcc100c"
+    verification: docs/audit/runs/run-20261024T064739Z-G-1/verification.json
+    run_report: docs/audit/runs/run-20261024T064739Z-G-1/RUN_REPORT.md
+    verdict: VERIFIED_SCOPED
+    allowed_paths:
+      - docs/audit/G-1.md
+      - docs/audit/AUDIT_BACKLOG.yaml
+      - docs/audit/runtime_authority_map.md
+      - docs/audit/runs/**
+      - src/trading_bot/autonomous/hot_stop.py
+      - src/trading_bot/app.py
+      - tests/unit/autonomous/test_kill_switch_persistence.py
+      - tests/unit/autonomous/test_hot_engage.py
+      - tests/unit/autonomous/test_decision_kill_switch.py
+      - scripts/audit/g1_mutants.py
+      - scripts/audit/g1_restart_probe.py
+    protected_paths:
+      - src/trading_bot/autonomous/decision.py
+      - src/trading_bot/autonomous/runtime.py
+      - src/trading_bot/paper/**
+      - src/trading_bot/config/**
+      - src/trading_bot/execution/**
+      - src/trading_bot/risk/**
+      - scripts/autonomous_paper.py
+      - scripts/start_paper_lab.py
+      - tests/unit/test_app_cli_contract.py
+      - tests/unit/autonomous/test_kill_switch_negative.py
+      - tests/conftest.py
+      - .github/**
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+    acceptance_criteria: [ACC-G1-01, ACC-G1-02, ACC-G1-03, ACC-G1-04, ACC-G1-05, ACC-G1-06, ACC-G1-07, ACC-G1-08, ACC-G1-09, ACC-G1-10, ACC-G1-11, ACC-G1-12, ACC-G1-13, ACC-G1-14]
+    evidence:
+      - "HotStopGate.restore() runs inside __post_init__; the runtime constructs the gate before it can dispatch"
+      - "two operating-system processes: the CLI writes, the probe boots with broker_calls=0 and restored=true"
+      - "8/8 mutants killed; the gap test's assertion lines are identical to the baseline"
+    covered_paths:
+      - scripts/autonomous_paper.py
+      - scripts/start_paper_lab.py (passes --run-id, so a supervised restart reuses the directory)
+    uncovered_paths:
+      - a new --run-id or a different --run-root is a new scope and boots operational
+      - trading-bot run --demo -> paper/paper_cycle.py (G-4)
+      - trading-bot place-order / --auto-trade (G-3)
+    note: >-
+      Closes G-1 only for the autonomous runtime and only inside one run
+      directory. The limit is not a footnote: it is pinned by a test, so a later
+      change to the run-id policy has to confront it. The class ``KillSwitch``
+      still has no store; durability is the gate's marker. PROCEDURALLY_SEPARATED
+      verification, same author.
+
   - id: G-2
     title: Hot activation of the kill switch for a running process
     status: done
@@ -156,6 +212,9 @@ contracts:
   - path: docs/audit/MT-0004-R1.md
     required: true
     producer: MT-0004-R1
+  - path: docs/audit/G-1.md
+    required: true
+    producer: G-1
   - path: docs/audit/G-2.md
     required: true
     producer: G-2
@@ -175,9 +234,12 @@ unrecoverable:
 next_ready:
   task: null
   reason: >-
-    G-2 is closed for the autonomous path and its contract is committed. The
-    remaining gaps (G-1 persistence, G-3 live, G-4 duplicate engine) still have
-    no contract, so naming one READY would fabricate its specification. The
-    recommendation is G-1 next: it is entirely in-tree, small, and it is the
-    hole G-2 deliberately left open (a restart boots NORMAL). G-4 is larger —
-    it requires reconciling two decision paths, not adding a gate to one.
+    G-1 and G-2 are closed for the autonomous path and their contracts are
+    committed. G-3 (live paths that never reach DecisionEngine) and G-4
+    (paper_cycle.py has its own broker call) still have no contract, so naming
+    one READY would fabricate its specification. The recommendation is G-3
+    next: it is a measurement task — enumerate the live entrypoints and show,
+    offline, which of them can reach a broker without the gate — and it decides
+    whether G-4's reconciliation is the larger risk or the smaller one. G-4 is
+    bigger: it requires reconciling two decision paths, not adding a gate to
+    one.
