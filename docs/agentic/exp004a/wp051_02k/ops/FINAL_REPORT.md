@@ -9,11 +9,11 @@
 
 | | |
 |---|---|
-| Árbol principal | `Downloads/bot freebuff` · `0e13160a` + el commit de estos informes |
+| Árbol principal | `Downloads/bot freebuff` · `0e13160a` → `c94b1a2b` → `941a524b` (herramientas, evidencias e informes de este paquete) |
 | Árbol de campaña | `Downloads/exp004a-recovery-02k` · rama `recovery/exp004a-02k-9983b050` |
 | HEAD antes | `9983b050` |
-| HEAD después | **`0e41566d`** — «Make the EDGE-04 alarm survive the case it exists for» |
-| Cambios | 1 fichero, +14/−1 (`scripts/edge04_watchdog.py`) |
+| HEAD después | **`688c5805`** |
+| Commits | `0e41566d` «Make the EDGE-04 alarm survive the case it exists for» (+14/−1) · `688c5805` «Give the observer's own cadence an action that exists» (lanzador, 12 líneas) |
 | Estado del árbol | limpio salvo artefactos de 02K de la sesión anterior, que este paquete no toca |
 
 El guard recuperado quedó **arreglado**, no sustituido: mismo fichero sellado, mismo contrato de salida, misma política.
@@ -29,7 +29,7 @@ El guard recuperado quedó **arreglado**, no sustituido: mismo fichero sellado, 
 | Componente | Estado | Evidencia |
 |---|---|---|
 | Guard (`edge04_watchdog.py`) | `FOUND_VALID` + **1 defecto reparado** | `0e41566d`, sha256 `74f75c34…` |
-| Tareas del planificador (2) | `FOUND_BROKEN` → **REPAIRED** | `LastTaskResult` 0 y 0 |
+| Tareas del planificador (3) | `FOUND_BROKEN` → **REPAIRED** | watchdog 0, alarma 0, forward probada y aparcada |
 | Corpus 1h (BTC/ETH/SOL) | **`RESTORED_AND_PINNED`** | digests en `EVIDENCE.json` |
 | Corpus 15m (BTC/ETH/SOL) | `ABSENT` · `NOT_REPRODUCIBLE` | 116/36/72 B cortos, sha ≠ |
 | Store de campaña anterior | `ABSENT` (permanente) | buscado por nombre, huella, worktrees, 91 commits colgados |
@@ -69,9 +69,13 @@ Lo que se restauró, se restauró **con su propia prueba**: los tres digests 1h 
 | `schtasks /run` watchdog | 0 | `WATCHDOG.json` = `OK`, 39.48 GiB libres, sin motivos |
 | `schtasks /run` alarma | 0 | `SUPERVISOR.json` = `WATCHDOG_ALIVE`, antigüedad 19 s |
 | Transiciones | — | `UNREADABLE → RECOVERED → OK` |
-| Tick del observador | **1** | `RUNTIME_EXCEPTION`, 21.7 s, 2 filas, 0 corruptas |
+| Tick del observador (manual) | **1** | `RUNTIME_EXCEPTION`, 21.7 s, 0 corruptas |
+| Tick del observador (por el planificador) | **1** | `mode=SCHEDULED`, misma ranura, misma `run_id`, fila persistida |
+| Filas en `runs.jsonl` | — | 3, todas `RUNTIME_EXCEPTION`, **0** observaciones |
 
 Ninguna orden, ninguna credencial, ningún mercado real: el tick no llegó a pedir una barra.
+
+Con la cadencia aparcada, el guard pasará a `STALE` en cuanto el último tick supere los 45 minutos de tolerancia. Eso es lo correcto: la lane no está observando y la alarma debe decirlo. La luz verde de hoy sólo certifica que el guard funciona.
 
 ## VERIFIER
 
@@ -104,7 +108,8 @@ Rechazos explícitos, para que nadie los lea como logros:
 2. **Restaurar el corpus 1h no es tener el corpus.** El pin sigue negándose por el shard de 15m; con tres cuartas partes del ancla no se mide nada.
 3. **Un `run_id` nuevo no es una observación.** Hay almacén persistente, reanudable y verificable, y cero barras dentro.
 4. **62 tests pasando no son readiness.** Ni 104, ni los 32 del verificador.
-5. **`BLOCKED_WITH_EVIDENCE` no es un fracaso del paquete**: los criterios 1, 2, 5 y 6 se cumplen y están medidos; el 3 y el 4 no, y se dice por qué.
+5. **Una tarea habilitada no es una cadencia.** `TradingAgentic-EDGE04-Forward` llevaba desde el 13 de octubre con salida `2` cada 15 minutos: era el intérprete diciendo «no encuentro el fichero», no el observador diciendo «ya estoy corriendo».
+6. **`BLOCKED_WITH_EVIDENCE` no es un fracaso del paquete**: los criterios 1, 2, 5 y 6 se cumplen y están medidos; el 3 y el 4 no, y se dice por qué.
 
 ## BLOCKERS
 
@@ -120,10 +125,11 @@ Rechazos explícitos, para que nadie los lea como logros:
 | ID | Severidad | Estado |
 |---|---|---|
 | DEF-02K-OPS-01 — el guard moría con `FileNotFoundError` si faltaba la raíz | alta | **reparado** (`0e41566d`) |
+| DEF-02K-OPS-04 — la salida `2` del intérprete colisiona con `ALREADY_RUNNING` del observador | alta | **registro reparado** (`688c5805`); el código sigue ambiguo |
 | DEF-02K-OPS-02 — `OK` no distingue «tick fresco» de «tick que falló la verificación» | media | abierto, por diseño del guard (informa, no repara) |
 | DEF-02K-OPS-03 — dos filas idénticas en `WATCHDOG_EVENTS.jsonl` por transición bloqueante | baja | abierto, cosmético |
 
-No se han cambiado umbrales, contratos ni criterios. Ninguna de las tres reparaciones posibles habría acercado la lane a observar.
+No se han cambiado umbrales, contratos ni criterios. Ninguna de las reparaciones hechas —ni la del guard, ni la de los tres registros— habría acercado la lane a observar una sola barra.
 
 ## DECISION
 
@@ -141,7 +147,7 @@ Lo que separa este paquete de `READY_TO_RESUME` es un fichero de 4.5 MB por acti
    Debe imprimir `15m:BTC cd1d2ea256a97f7c`, `15m:ETH b8fd5744cc66f635`, `15m:SOL 72a268137cbe944b`.
 3. Solo entonces, el primer tick real de la campaña nueva:
    `python scripts/edge04_observer.py --state-root data/forward/edge04r01 --store-root data/forward/edge03r01`
-   Esperado: `OBSERVED` o `NO_NEW_DATA`, salida 0.
+   Esperado: `OBSERVED` o `NO_NEW_DATA`, salida 0. Con la cadencia: `schtasks /change /tn TradingAgentic-EDGE04-Forward /enable`.
 4. Si no aparece ninguna copia: **no** re-congelar el corpus dentro de este paquete. Eso es una decisión de experimento nuevo (quant-researcher + backtest-engineer + ADR), no una reparación, y cambiaría el ancla contra la que se midió todo lo anterior.
 
 El guard queda arreglado, repuntado y con recibo; el espacio queda holgado; el corpus 1h queda restaurado y probado. Lo que falta es un fichero que solo puede venir de fuera.

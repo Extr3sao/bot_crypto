@@ -7,7 +7,8 @@ Cada paso de abajo se ejecutó en esta sesión; los códigos de salida son los d
 | # | WP | Acción | Salida | Resultado |
 |---|---|---|---|---|
 | S01 | 02 | 12 muestras de espacio contra el presupuesto congelado | 0 | `CAPACITY_OK` |
-| S02 | 01 | Repuntar las dos tareas programadas al guard recuperado | 0 | `CHANGED` (0 tareas creadas) |
+| S02 | 01 | Repuntar las tres tareas al código recuperado | 0 | `CHANGED` (0 tareas creadas) |
+| S02b | 01 | Probar la cadencia del observador y aparcarla | 1 | `REGISTRATION_WORKS_LANE_BLOCKED` |
 | S03 | 01 | Guard contra un `state root` inexistente | 1 → **2** | defecto reparado |
 | S04 | 01 | Seis casos de inyección de fallos | 0 | `GUARD_OPERATIONAL` 6/6 |
 | S05 | 01 | `schtasks /run` de watchdog y alarma | 0 | `LastTaskResult` 0 y 0 |
@@ -36,14 +37,25 @@ Borrados: **ninguno**. El volumen ya superaba el presupuesto antes de tocar nada
 
 ## S02/S05 — guard y planificador
 
-Antes: ambas tareas apuntaban a `bot-freebuff-exp004a-02h\scripts\edge04_watchdog.py`, un fichero borrado; último resultado `2`, es decir, un intérprete que no encontraba el script. Ahora:
+Antes había **tres** tareas, y las tres apuntaban a ficheros que ya no existen:
 
-| Tarea | Cadencia | Acción | Último resultado |
+| Tarea | Apuntaba a | Salida | Qué significaba de verdad |
 |---|---|---|---|
-| `TradingAgentic-EDGE04-Watchdog` | 15 min | `<venv> edge04_watchdog.py --state-root …/edge04r01` | **0** |
-| `TradingAgentic-EDGE04-Alarm` | 10 min | ídem `--supervise` | **0** |
+| `…-Watchdog` (15 min) | `bot-freebuff-exp004a-02h\scripts\edge04_watchdog.py` | 2 | el script no existe |
+| `…-Alarm` (10 min) | el mismo script | 2 | el script no existe |
+| `…-Forward` (15 min) | `bot freebuff\scripts\edge04_observer.py` | 2 | el intérprete no encuentra el fichero |
 
-Se han **cambiado** las dos acciones existentes; no se ha creado ninguna tarea, así que no hay monitores duplicados. Las dos siguen en modo interactivo, `LIMITED`, con los mismos umbrales (aviso 5 GiB, crítico 2 GiB, silencio ×3).
+La tercera es la peor: `2` es también el código que el observador usa para `ALREADY_RUNNING`, así que once días de cadencia inexistente se leían como una lane que ya estaba ocupada. Ahora:
+
+| Tarea | Cadencia | Acción | Estado | Último resultado |
+|---|---|---|---|---|
+| `…-Watchdog` | 15 min | `<venv> edge04_watchdog.py --state-root …/edge04r01` | Habilitada | **0** |
+| `…-Alarm` | 10 min | ídem `--supervise` | Habilitada | **0** |
+| `…-Forward` | 15 min | `edge04_forward_r01.cmd` (lanzador; el límite de acción es 261 caracteres) | **Deshabilitada** | 1 (probada) |
+
+Se han **cambiado** las tres acciones existentes; no se ha creado ninguna tarea nueva, así que no hay monitores duplicados. Watchdog y alarma siguen en modo interactivo, `LIMITED`, con los mismos umbrales (aviso 5 GiB, crítico 2 GiB, silencio ×3).
+
+La cadencia del observador se probó de verdad: habilitada, disparada por el planificador, dejó una fila `mode=SCHEDULED` con salida 1 y después se volvió a deshabilitar. Una cadencia que no puede observar sólo mantiene una luz verde sobre una lane sin evidencia; se reactiva con `schtasks /change /tn TradingAgentic-EDGE04-Forward /enable` el día que el shard 15m vuelva.
 
 Transición observada en el planificador real: `UNREADABLE → RECOVERED → OK`, con `SUPERVISOR.json` en `WATCHDOG_ALIVE` y una antigüedad del watchdog de 19 s.
 
