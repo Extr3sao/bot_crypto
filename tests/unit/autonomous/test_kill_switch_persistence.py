@@ -29,6 +29,8 @@ import json
 import os
 import subprocess
 import sys
+import threading
+import time
 from pathlib import Path
 from typing import Any
 
@@ -426,6 +428,48 @@ def test_a_failed_replace_leaves_the_previous_marker_intact(
 
     assert marker.read_text(encoding="utf-8") == "first\n"
     assert list(run_dir.glob(f"{HOT_STOP_FILE_NAME}.*.tmp")) == [], "temp file not cleaned up"
+
+
+def test_a_poll_observed_stop_waits_for_the_in_flight_dispatch(tmp_path: Path) -> None:
+    """ACC-G1-05 / REQ-G1-08: the marker path keeps G-2's linearization.
+
+    G-2 proved the barrier for a direct ``engage()``. G-1 routes the marker
+    through ``poll()`` before it reaches ``engage()``, so the property is
+    re-proved on the path an operator request actually takes: while a broker
+    call is in flight the lock is held, and the poll cannot answer before the
+    process is quiet.
+    """
+    run_dir = tmp_path / "run"
+    run_dir.mkdir()
+    gate = _gate(run_dir, boundary_timeout_seconds=10.0)
+    in_flight = threading.Event()
+    release = threading.Event()
+
+    def dispatch() -> None:
+        with gate.order_boundary(run_id="run-1") as allowed:
+            assert allowed is True
+            in_flight.set()
+            release.wait(10.0)
+
+    worker = threading.Thread(target=dispatch, daemon=True)
+    worker.start()
+    assert in_flight.wait(10.0)
+
+    write_control_file(run_dir / HOT_STOP_FILE_NAME, "operator: stop during dispatch")
+    results: list[bool] = []
+    poller = threading.Thread(target=lambda: results.append(gate.poll(run_id="run-1")), daemon=True)
+    poller.start()
+    time.sleep(0.2)
+    assert poller.is_alive(), "poll ACKed while a dispatch was in flight"
+
+    release.set()
+    poller.join(10.0)
+    worker.join(10.0)
+    assert results == [True]
+    assert gate.engaged is True
+    assert gate.stats()["broker_calls_allowed"] == 1
+    with gate.order_boundary() as allowed:
+        assert allowed is False
 
 
 def test_a_restored_gate_keeps_the_boundary_semantics(tmp_path: Path) -> None:
