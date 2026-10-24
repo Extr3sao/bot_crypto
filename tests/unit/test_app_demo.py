@@ -389,15 +389,19 @@ def test_main_kill_switch_not_implemented_returns_two(
     """MT-0002: un subcomando reservado aborta con exit 2 y no finge exito.
 
     Sustituye a ``test_main_kill_switch_stub_returns_zero``, que fijaba como
-    contrato el defecto OB-02 (exit 0 sin ejecutar nada). El subcomando sigue
-    sin implementarse: lo que cambia es que ahora lo dice y no imprime nada
-    por stdout.
+    contrato el defecto OB-02 (exit 0 sin ejecutar nada).
+
+    DEF-G3-01: desde G-2 el subcomando **existe** y exige ``--run-dir``; el
+    argparse aborta con exit 2 antes de llegar a ``main``. La propiedad que
+    MT-0002 fijaba (no fingir éxito, stdout vacío, decir por qué) no cambia:
+    solo cambia el motivo del rechazo.
     """
-    exit_code = main(["kill-switch"])
+    with pytest.raises(SystemExit) as excinfo:
+        main(["kill-switch"])
     captured = capsys.readouterr()
-    assert exit_code == 2
+    assert excinfo.value.code == 2
     assert captured.out == ""
-    assert "no esta implementado" in captured.err
+    assert "--run-dir" in captured.err
 
 
 def test_main_status_not_implemented_returns_two(

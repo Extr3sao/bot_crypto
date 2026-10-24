@@ -15,19 +15,26 @@ import asyncio
 import json
 import sys
 import time
+from collections.abc import Iterator
+from contextlib import contextmanager
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
 from html import escape
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Lock, Thread
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 from uuid import uuid4
 
 from pydantic import ValidationError
 
 from trading_bot import __version__
-from trading_bot.autonomous.hot_stop import HOT_STOP_FILE_NAME, write_control_file
+from trading_bot.autonomous.decision import process_kill_switch
+from trading_bot.autonomous.hot_stop import (
+    HOT_STOP_FILE_NAME,
+    HotStopGate,
+    write_control_file,
+)
 from trading_bot.charting import ChartSnapshotRequest, render_local_chart_snapshot
 from trading_bot.config import TradingMode, load_settings
 from trading_bot.market_data.bitunix import (
@@ -249,6 +256,11 @@ def _build_parser() -> argparse.ArgumentParser:
     run_parser.add_argument("--trade-quote-usdt", type=float, default=10.0)
     run_parser.add_argument("--max-live-orders", type=int, default=1)
     run_parser.add_argument("--symbol-cooldown-seconds", type=int, default=900)
+    run_parser.add_argument(
+        "--run-dir",
+        default=DEFAULT_LIVE_RUN_DIR,
+        help="Directorio del marcador KILL_SWITCH que vigila el proceso live.",
+    )
 
     order_parser = sub.add_parser("place-order", help="Coloca una orden real en Bitunix.")
     order_parser.add_argument("--symbol", required=True)
@@ -275,6 +287,11 @@ def _build_parser() -> argparse.ArgumentParser:
     order_parser.add_argument("--reduce-only", action="store_true")
     order_parser.add_argument("--tp-price", type=float, default=None)
     order_parser.add_argument("--sl-price", type=float, default=None)
+    order_parser.add_argument(
+        "--run-dir",
+        default=DEFAULT_LIVE_RUN_DIR,
+        help="Directorio del marcador KILL_SWITCH que autoriza esta orden.",
+    )
 
     positions_parser = sub.add_parser(
         "positions", help="Lista posiciones abiertas en futures Bitunix."
@@ -289,11 +306,21 @@ def _build_parser() -> argparse.ArgumentParser:
     close_parser.add_argument("--position-id", required=True)
     close_parser.add_argument("--config-dir", default="config")
     close_parser.add_argument("--env-file", default=".env")
+    close_parser.add_argument(
+        "--run-dir",
+        default=DEFAULT_LIVE_RUN_DIR,
+        help="Directorio del marcador KILL_SWITCH (leido, no creado).",
+    )
 
     tpsl_parser = sub.add_parser("set-tpsl", help="Configura TP/SL sobre una posicion futures.")
     tpsl_parser.add_argument("--symbol", required=True)
     tpsl_parser.add_argument("--position-id", required=True)
     tpsl_parser.add_argument("--qty", required=True, type=float)
+    tpsl_parser.add_argument(
+        "--run-dir",
+        default=DEFAULT_LIVE_RUN_DIR,
+        help="Directorio del marcador KILL_SWITCH (leido, no creado).",
+    )
     tpsl_parser.add_argument("--tp-price", type=float, default=None)
     tpsl_parser.add_argument("--sl-price", type=float, default=None)
     tpsl_parser.add_argument("--config-dir", default="config")
@@ -758,11 +785,78 @@ def _reconcile_open_trade_cases_with_positions(
     return reconciled
 
 
+#: Where a LIVE process keeps its stop marker. Stable **by default** on
+#: purpose: a live bot is one long-lived process, so a restart has to find the
+#: same directory to inherit the stop (G-1). ``--run-dir`` overrides it per
+#: command; a different directory is a different scope, and G-3 does not claim a
+#: global latch (docs/audit/G-3.md §4.3).
+DEFAULT_LIVE_RUN_DIR: Final[str] = "data/live"
+
+
+def _live_stop_gate(run_dir: str | None, *, create: bool = False) -> HotStopGate:
+    """Build the gate a live command dispatches under.
+
+    ``HotStopGate.__post_init__`` adopts a marker left by an earlier process, so
+    the stop is in force before this function returns — before any call site can
+    reach a broker. ``create`` is set only by ``run``, the command that is
+    expected to dispatch: an unwritable run directory makes a stop
+    non-durable, and the gate reports that as ``persisted: false`` rather than
+    pretending the marker is on disk.
+    """
+    path = Path(run_dir or DEFAULT_LIVE_RUN_DIR).expanduser()
+    if create:
+        path.mkdir(parents=True, exist_ok=True)
+    return HotStopGate(kill_switch=process_kill_switch(), run_dir=path)
+
+
+def _live_stop_reason(gate: HotStopGate) -> str:
+    """Why the gate is closed, for the operator-facing message."""
+    if gate.engaged:
+        return gate.engaged_reason or "engaged"
+    return "process_kill_switch_active"
+
+
+@contextmanager
+def _live_order_boundary(
+    gate: HotStopGate, *, opens_risk: bool, run_id: str = ""
+) -> Iterator[bool]:
+    """The only authorisation a live broker call gets.
+
+    ``opens_risk`` is the caller's classification: order **entry** is refused
+    while the stop is in force, while flattening and protective orders are not,
+    because a stop that also refused to close a position would be a second
+    hazard. The classification is a literal at each call site so the structural
+    test can read it and a reviewer can argue with one line.
+
+    Fail closed: a marker that cannot be read (``HotStopGate.poll``), an
+    authority that raises, and a lock that cannot be acquired all refuse. The
+    broker call must happen inside the ``with`` block — that lock is what makes
+    ``engage``'s ACK mean "nothing is in flight" (G-2 §4.3).
+    """
+    if not opens_risk:
+        yield True
+        return
+    try:
+        switch_active = bool(gate.kill_switch.is_active)
+    except Exception:  # an authority we cannot interrogate is not permission
+        yield False
+        return
+    if switch_active:
+        # ``KILL_SWITCH_ENV`` boots the process authority; a live path has no
+        # DecisionEngine rule 0 to catch it. Not persisted: the env token keeps
+        # the boot-time semantics G-1 fixed.
+        yield False
+        return
+    with gate.order_boundary(run_id=run_id) as allowed:
+        yield allowed
+
+
 def _maybe_execute_live_trade(
     *,
     settings: Settings,
     snapshots: list[MarketSnapshot],
     connector: MultiExchangeConnector,
+    hot_stop: HotStopGate,
     execution: LiveExecutionState,
     trade_quote_usdt: float,
     max_live_orders: int,
@@ -777,6 +871,15 @@ def _maybe_execute_live_trade(
         return {"status": "SKIPPED", "reason": "session_order_cap_reached"}
     if trade_quote_usdt <= 0:
         return {"status": "SKIPPED", "reason": "trade_quote_usdt_must_be_positive"}
+
+    # Cheap check before anything is built or journalled: a stopped process must
+    # not leave a trade case behind for an order it will refuse. The
+    # authoritative check is still the boundary at the sink.
+    if hot_stop.poll():
+        return {
+            "status": "SKIPPED",
+            "reason": f"kill_switch_engaged_hot:{hot_stop.engaged_reason}",
+        }
 
     active = sorted(
         (snap for snap in snapshots if snap.active), key=lambda snap: snap.rank_score, reverse=True
@@ -842,13 +945,19 @@ def _maybe_execute_live_trade(
             )
             continue
 
-        order = connector.create_order(
-            symbol=snap.symbol,
-            side="buy",
-            order_type="market",
-            amount=amount,
-            price=snap.last_price,
-        )
+        with _live_order_boundary(hot_stop, opens_risk=True) as allowed:
+            if not allowed:
+                return {
+                    "status": "SKIPPED",
+                    "reason": f"kill_switch_engaged_hot:{_live_stop_reason(hot_stop)}",
+                }
+            order = connector.create_order(
+                symbol=snap.symbol,
+                side="buy",
+                order_type="market",
+                amount=amount,
+                price=snap.last_price,
+            )
         execution.orders_sent += 1
         execution.traded_symbols[snap.symbol] = now_ts
         return {
@@ -869,6 +978,7 @@ def _close_stale_futures_positions(
     *,
     active_api_symbols: set[str],
     client: BitunixFuturesClient,
+    hot_stop: HotStopGate,
     execution: LiveExecutionState,
     desired_directions: dict[str, str] | None = None,
 ) -> dict[str, object] | None:
@@ -886,7 +996,11 @@ def _close_stale_futures_positions(
                 close_reason = "signal_direction_flipped"
         if close_reason is None:
             continue
-        result = client.flash_close_position(position.position_id)
+        # Reduction, not entry: flattening must keep working while stopped.
+        with _live_order_boundary(hot_stop, opens_risk=False) as allowed:
+            if not allowed:  # defensive: opens_risk=False never refuses today
+                return {"status": "SKIPPED", "reason": "kill_switch_engaged_hot"}
+            result = client.flash_close_position(position.position_id)
         closed_trade_case_id = _mark_trade_case_closed_from_position(
             symbol=_to_slash_symbol(position.symbol),
             position_id=position.position_id,
@@ -917,6 +1031,7 @@ def _maybe_execute_live_futures_trade(
     snapshots: list[MarketSnapshot],
     futures_client: BitunixFuturesClient,
     market_client: BitunixSpotClient,
+    hot_stop: HotStopGate,
     execution: LiveExecutionState,
     trade_quote_usdt: float,
     max_live_orders: int,
@@ -930,6 +1045,14 @@ def _maybe_execute_live_futures_trade(
         return {"status": "SKIPPED", "reason": "session_order_cap_reached"}
     if trade_quote_usdt <= 0:
         return {"status": "SKIPPED", "reason": "trade_quote_usdt_must_be_positive"}
+
+    # Same reason as the spot path: no trade case for an order that the
+    # boundary below will refuse.
+    if hot_stop.poll():
+        return {
+            "status": "SKIPPED",
+            "reason": f"kill_switch_engaged_hot:{hot_stop.engaged_reason}",
+        }
 
     active = sorted(
         (snap for snap in snapshots if snap.active), key=lambda snap: snap.rank_score, reverse=True
@@ -945,6 +1068,7 @@ def _maybe_execute_live_futures_trade(
     close_event = _close_stale_futures_positions(
         active_api_symbols=active_api_symbols,
         client=futures_client,
+        hot_stop=hot_stop,
         execution=execution,
         desired_directions=desired_directions,
     )
@@ -1027,15 +1151,22 @@ def _maybe_execute_live_futures_trade(
             market_client=market_client,
         )
         try:
-            order = futures_client.place_order(
-                symbol=snap.symbol,
-                side=side,
-                qty=qty,
-                order_type="MARKET",
-                trade_side="OPEN",
-                tp_price=tp_price,
-                sl_price=sl_price,
-            )
+            with _live_order_boundary(hot_stop, opens_risk=True) as allowed:
+                if not allowed:
+                    _mark_trade_case_order_rejected(trade_case_id=trade_case_id)
+                    return {
+                        "status": "SKIPPED",
+                        "reason": f"kill_switch_engaged_hot:{_live_stop_reason(hot_stop)}",
+                    }
+                order = futures_client.place_order(
+                    symbol=snap.symbol,
+                    side=side,
+                    qty=qty,
+                    order_type="MARKET",
+                    trade_side="OPEN",
+                    tp_price=tp_price,
+                    sl_price=sl_price,
+                )
         except Exception:
             _mark_trade_case_order_rejected(trade_case_id=trade_case_id)
             raise
@@ -1101,6 +1232,15 @@ def _cmd_run(args: argparse.Namespace) -> int:
         sys.stderr.write("ERROR: --symbol-cooldown-seconds debe ser >= 0.\n")
         return 2
 
+    # Built before the first iteration: the constructor adopts a marker left by
+    # an earlier process, so a restart cannot dispatch in the window before the
+    # loop would notice.
+    hot_stop = (
+        _live_stop_gate(args.run_dir, create=True)
+        if args.auto_trade and args.mode in {"live", "shadow_live"}
+        else None
+    )
+
     state = RuntimeState(mode=args.mode)
     live_execution = LiveExecutionState()
     lock = Lock()
@@ -1153,6 +1293,8 @@ def _cmd_run(args: argparse.Namespace) -> int:
                 return 1
 
             if args.auto_trade:
+                if hot_stop is None:  # pragma: no cover - built above
+                    raise RuntimeError("live dispatch without a hot-stop gate")
                 try:
                     if args.market_kind == "futures":
                         # Path futures: Bitunix-native (TP/SL, posiciones) y
@@ -1171,6 +1313,7 @@ def _cmd_run(args: argparse.Namespace) -> int:
                             snapshots=snapshots,
                             futures_client=futures_client,
                             market_client=market_client,
+                            hot_stop=hot_stop,
                             execution=live_execution,
                             trade_quote_usdt=args.trade_quote_usdt,
                             max_live_orders=args.max_live_orders,
@@ -1184,6 +1327,7 @@ def _cmd_run(args: argparse.Namespace) -> int:
                             settings=settings,
                             snapshots=snapshots,
                             connector=connector,
+                            hot_stop=hot_stop,
                             execution=live_execution,
                             trade_quote_usdt=args.trade_quote_usdt,
                             max_live_orders=args.max_live_orders,
@@ -1250,24 +1394,39 @@ def _cmd_place_order(args: argparse.Namespace) -> int:
         sys.stderr.write("ERROR: runtime.mode debe ser 'live' para colocar una orden real.\n")
         return 2
 
+    hot_stop = _live_stop_gate(args.run_dir)
+    # Entry vs. reduction, decided here and not by the gate: closing or reducing
+    # must keep working under a stop, opening must not.
+    if args.market_kind == "futures":
+        opens_risk = not (bool(args.reduce_only) or args.trade_side == "CLOSE")
+    else:
+        opens_risk = args.side == "buy"
+
     if args.market_kind == "futures":
         futures_client = BitunixFuturesClient(
             api_key=settings.exchange.api_key,
             api_secret=settings.exchange.api_secret,
         )
         try:
-            order = futures_client.place_order(
-                symbol=args.symbol,
-                side=args.side,
-                qty=float(args.amount),
-                order_type=args.order_type,
-                trade_side=args.trade_side,
-                price=float(args.price) if args.price is not None else None,
-                position_id=args.position_id,
-                reduce_only=bool(args.reduce_only),
-                tp_price=args.tp_price,
-                sl_price=args.sl_price,
-            )
+            with _live_order_boundary(hot_stop, opens_risk=opens_risk) as allowed:
+                if not allowed:
+                    sys.stderr.write(
+                        "ERROR: kill switch engaged "
+                        f"({_live_stop_reason(hot_stop)}); order refused.\n"
+                    )
+                    return 2
+                order = futures_client.place_order(
+                    symbol=args.symbol,
+                    side=args.side,
+                    qty=float(args.amount),
+                    order_type=args.order_type,
+                    trade_side=args.trade_side,
+                    price=float(args.price) if args.price is not None else None,
+                    position_id=args.position_id,
+                    reduce_only=bool(args.reduce_only),
+                    tp_price=args.tp_price,
+                    sl_price=args.sl_price,
+                )
         except BitunixAPIError as exc:
             print(json.dumps({"success": False, "error": str(exc)}, ensure_ascii=True))
             return 1
@@ -1297,13 +1456,19 @@ def _cmd_place_order(args: argparse.Namespace) -> int:
     )
     price = float(args.price) if args.price is not None else client.fetch_last_price(args.symbol)
     try:
-        order = client.place_spot_order(
-            symbol=args.symbol,
-            side=args.side,
-            order_type=args.order_type,
-            amount=float(args.amount),
-            price=price,
-        )
+        with _live_order_boundary(hot_stop, opens_risk=opens_risk) as allowed:
+            if not allowed:
+                sys.stderr.write(
+                    f"ERROR: kill switch engaged ({_live_stop_reason(hot_stop)}); order refused.\n"
+                )
+                return 2
+            order = client.place_spot_order(
+                symbol=args.symbol,
+                side=args.side,
+                order_type=args.order_type,
+                amount=float(args.amount),
+                price=price,
+            )
     except BitunixAPIError as exc:
         print(json.dumps({"success": False, "error": str(exc)}, ensure_ascii=True))
         return 1
@@ -1355,8 +1520,14 @@ def _cmd_close_position(args: argparse.Namespace) -> int:
         api_key=settings.exchange.api_key,
         api_secret=settings.exchange.api_secret,
     )
+    hot_stop = _live_stop_gate(args.run_dir)
     try:
-        result = client.flash_close_position(args.position_id)
+        # Flattening is risk reduction: it stays available while stopped.
+        with _live_order_boundary(hot_stop, opens_risk=False) as allowed:
+            if not allowed:  # defensive: opens_risk=False never refuses today
+                sys.stderr.write("ERROR: kill switch engaged; close refused.\n")
+                return 2
+            result = client.flash_close_position(args.position_id)
     except BitunixAPIError as exc:
         print(json.dumps({"success": False, "error": str(exc)}, ensure_ascii=True))
         return 1
@@ -1373,14 +1544,20 @@ def _cmd_set_tpsl(args: argparse.Namespace) -> int:
         api_key=settings.exchange.api_key,
         api_secret=settings.exchange.api_secret,
     )
+    hot_stop = _live_stop_gate(args.run_dir)
     try:
-        result = client.place_position_tpsl(
-            symbol=args.symbol,
-            position_id=args.position_id,
-            qty=float(args.qty),
-            tp_price=args.tp_price,
-            sl_price=args.sl_price,
-        )
+        # Protective orders are not new risk: they stay available while stopped.
+        with _live_order_boundary(hot_stop, opens_risk=False) as allowed:
+            if not allowed:  # defensive: opens_risk=False never refuses today
+                sys.stderr.write("ERROR: kill switch engaged; set-tpsl refused.\n")
+                return 2
+            result = client.place_position_tpsl(
+                symbol=args.symbol,
+                position_id=args.position_id,
+                qty=float(args.qty),
+                tp_price=args.tp_price,
+                sl_price=args.sl_price,
+            )
     except BitunixAPIError as exc:
         print(json.dumps({"success": False, "error": str(exc)}, ensure_ascii=True))
         return 1
