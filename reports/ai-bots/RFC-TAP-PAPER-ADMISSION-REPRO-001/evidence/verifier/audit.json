@@ -1,10 +1,10 @@
 {
   "schema_version": "windowless-audit-v1",
-  "generated_at_utc": "2026-10-24T10:51:25Z",
+  "generated_at_utc": "2026-10-24T11:01:23Z",
   "root": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-repro001",
   "platform": "win32",
   "scan_counts": {
-    "python": 1268,
+    "python": 1269,
     "shell": 0,
     "bat": 1,
     "ps1": 6,
@@ -58,6 +58,30 @@
       "code": "RUN_WITHOUT_WINDOWLESS",
       "path": "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/make_manifest.py",
       "line": 60,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/verify_independent.py",
+      "line": 59,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/verify_independent.py",
+      "line": 73,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/verify_independent.py",
+      "line": 77,
       "detail": "subprocess without window suppression",
       "remedy": "use trading_bot.ops.windowless.run()"
     },
@@ -3319,7 +3343,7 @@
     }
   ],
   "by_severity": {
-    "MEDIUM": 409
+    "MEDIUM": 412
   },
   "high": 0,
   "verdict": "CLEAN",

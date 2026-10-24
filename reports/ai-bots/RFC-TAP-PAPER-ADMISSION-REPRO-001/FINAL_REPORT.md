@@ -1,132 +1,138 @@
-# FINAL REPORT — RFC-TAP-PAPER-ADMISSION-REPRO-001
+# FINAL REPORT — RFC-TAP-PAPER-ADMISSION-REPRO-001 (cierre e integración)
 
 ## Respuesta
 
-**`IMPLEMENTED_VERIFIED`.** El diagnóstico ya está en Git con sus hashes, los tres defectos
-demostrados están corregidos y un verificador independiente en método da **12/12 gates PASS con
-`false_success = 0`**, repetido desde un **checkout limpio** creado en el commit que se publica.
+**`VERIFIED` con integración `NO_GO`.**
 
-**La admisión PAPER sigue en `NO_GO`.** Este RFC no cambia el veredicto económico, ni el ledger,
-ni los límites de riesgo, ni los criterios de admisión: **0 de 24 estrategias admitidas**. Lo que
-cambia es que ahora eso se puede comprobar desde un clon, no solo en este disco.
+El artefacto del RFC se sostiene: 12/12 gates, 4/4 controles negativos y `false_success 0`
+desde un clon nuevo del mismo commit, más 135 tests y el supervisor PAPER en 33/33. El
+veredicto económico sigue siendo **`NO_GO`**: 0 de 24 estrategias admitidas, ledger
+byte-idéntico al base.
 
-## 1. Commits
+Pero **no se fusiona en `main`**, y la razón no es un fallo del trabajo: el RFC está apilado
+sobre una lane de 301 commits que `main` no tiene. Un `cherry-pick` de los tres commits sobre
+`main` falla en 7 ficheros con `deleted in HEAD and modified` — los ficheros que el RFC
+repara no existen en `main`. Fusionar la rama entera arrastraría 305 commits (301 de la lane
+más los 4 del RFC) ajenos a este trabajo. Ninguna de las dos cosas es una integración de este
+RFC.
 
-| Rol | Commit | Qué contiene |
-| --- | --- | --- |
-| Base (antes de cualquier cambio) | `b4c8e3e2` | merge de `main` en `codepaper/supervisor-001`, sin conflictos |
-| **Artefacto verificado** | **`c44f912c2fa7e25a9765323aa0032a23425446ab`** | correcciones + diagnóstico versionado + evidencia + manifiesto + verificador |
-| Informes | commit siguiente a `c44f912c` | los ficheros que estás leyendo y el log del rehearsal |
+## Lo que la verificación independiente encontró (y el constructor no)
 
-`git log --oneline -- reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/FINAL_REPORT.md` nombra el
-último sin que el informe tenga que citar su propio hash.
+El rehearsal anterior corrió en un *worktree* que heredaba `core.autocrlf=false`. Un clon
+real, con el valor por defecto de Git for Windows (`true`), **falló dos gates del mismo
+commit `ddef6432`**:
 
-El checkout compartido no se modificó. El trabajo vive en la rama `repro/paper-admission-001`,
-en un worktree aparte; el worktree `wt-sup001` de la otra lane sigue en `3b758e22` con el árbol
-limpio.
-
-## 2. Cambios realizados
-
-| Defecto | Corrección | Efecto medido |
-| --- | --- | --- |
-| `test_windowless`: 3 offenders `HIGH` | los dos tests arrancan su hijo con `windowless.spawn`; `exp004a_verify.py` esconde el suyo con `CREATE_NO_WINDOW` + `STARTUPINFO/SW_HIDE` porque **no puede** importar el runtime que audita (RFC-051 §5); la auditoría acepta esa excepción **solo mientras el mecanismo esté ahí**, y si desaparece emite `DECLARED_LOCAL_HIDING_MISSING` | `HIGH 3 → 0`; 14/14 tests |
-| `paper_lock_campaign_verify` juzgaba campañas ajenas | `judge()` lee **solo** `CAMPAIGN.json.schema_version`; si no es `TAP_PAPER_LOCK_CAMPAIGN_V1`, devuelve `UNSUPPORTED_CAMPAIGN_SCHEMA`, **0 checks puntuados** y **0 mutaciones** | `FAIL 28/32 + false_success 2` → rechazo nombrado, `false_success 0` |
-| `uv.lock` sin `matplotlib` | lock regenerado; `uv sync --frozen` ya no puede construir un entorno sin el runtime | `lock --check 1 → 0`; checkout limpio importa `matplotlib 3.11.2` |
-| Diagnóstico fuera de Git | bloques de `.gitignore` para los tres directorios; se versionan los 6 documentos, `verify_claims.py`, su evidencia y la campaña del supervisor | los 7 hashes fijados en el verificador; V03 demuestra que **no** estaban en el commit base |
-
-La auditoría no se ablandó: sigue siendo un escaneo por fichero con las mismas severidades, y la
-excepción nueva tiene su propio control negativo. Lo único que cambió es que ahora un lanzador
-puede demostrar que esconde su hijo sin importar el helper.
-
-## 3. Pruebas ejecutadas y resultados reales
-
-| Prueba | Antes | Después |
-| --- | --- | --- |
-| `pytest tests/unit/ops` | 1 failed, 82 passed | **86 passed** |
-| `pytest tests/unit/ops/test_windowless.py` | 1 failed, 12 passed | **14 passed** |
-| `ops_background_audit.py` | HIGH 3 | **HIGH 0, CLEAN** |
-| `uv lock --check` | exit 1 | **exit 0** |
-| `uv sync --frozen` (checkout limpio) | exit 0 **sin `matplotlib`**: los verificadores morían con `ModuleNotFoundError` | **111 paquetes, `matplotlib` importable, lock intacto** |
-| `paper_lock_campaign_verify` sobre campaña ajena | FAIL 28/32, `false_success 2` | **rechazo, 0 checks, `false_success 0`** |
-| `paper_lock_campaign_verify` sobre campaña propia | PASS con 9 mutaciones | **PASS 33/33, 10 mutaciones, 0 invalid, 0 undetected** |
-| `paper_supervisor_verify` (código ajeno, sin tocar) | PASS 33/33 | **PASS 33/33** |
-| `test_exp004a_verify_adversarial.py` | — | **20 passed** |
-| `verify_repro.py` | — | **12/12 gates, 4/4 controles, `false_success 0`** |
-
-Checkout limpio en `c44f912c`, sin `.venv`, `--detach`: 5 comandos, **5 exit 0**.
-Transcripción: `evidence/CLEAN_CHECKOUT_REHEARSAL.log`.
-
-## 4. Verificación independiente
-
-`verify_repro.py` recalcula los hashes desde bytes (los seis documentos están **congelados dentro
-del verificador**, no leídos del manifiesto que audita), ejecuta cada gate como subproceso y lee
-el payload de la herramienta. Cuatro controles negativos demuestran que sabe fallar: byte
-alterado, campaña sin schema, excepción de ventana sin mecanismo, manifiesto manipulado.
-
-Dos verificadores que **no escribí** siguen dando el mismo veredicto que antes de tocar nada:
-`ops_background_audit.py` (V04) y `paper_supervisor_verify.py` (V08, 33/33 sobre la campaña
-real). Es la parte de la independencia que sí está fuera de mis manos.
-
-**Límite declarado:** `BUILDER != VERIFIER` se cumple en **método**, no en identidad. El
-verificador lo escribió el mismo agente que hizo las correcciones; con los agentes disponibles
-en esta sesión no hay forma de cerrar esa brecha, y no la presento como cerrada.
-
-## 5. Errores y defectos abiertos
-
-**Encontrados y corregidos durante el trabajo** (los tres, por el rehearsal o por el propio
-verificador, no por revisión a ojo):
-
-1. El manifiesto nombraba **20 logs que Git no llevaba** (la regla global `*.log` los excluía).
-   V02 lo detectó en el checkout limpio y el commit se rehízo.
-2. El manifiesto **se hasheaba a sí mismo** y quedaba obsoleto al escribirse.
-3. Un control negativo salía `false` por un bug del control (módulo sin registrar en
-   `sys.modules` antes de un `dataclass`).
-
-**Abiertos, con evidencia** (`RUN_REPORT.md` §4): `verify_claims.py` no es portable (resuelve
-`ROOT/wt-sup001`); `test_single_writer_lock` tiene una carrera sensible a la carga
-(`LOCK_UNATTRIBUTED`, 1 fallo en suite completa, 3/3 en aislamiento, fichero no tocado por este
-RFC); `uv sync --frozen` sigue saliendo 0 ante un desajuste pyproject/lock aunque el gate V09 lo
-detecte; rechazo y fallo comparten exit code 1; drift preexistente de `mypy`/`ruff format` en
-`scripts/`; y **no hay campaña de lock real** versionada, así que el `PASS` de la campaña propia
-es sobre fixture, no sobre seis crashes ejecutados.
-
-## 6. Estado de admisión PAPER
-
-- **Veredicto: `NO_GO`.** 24 estrategias en el ledger, **0** con `admitted_for_paper`.
-- Recalculado por el verificador desde `config/strategy_admission.json` (V12), no citado de un
-  informe, y con el fichero byte-idéntico al commit base: este RFC no tocó ni el ledger ni
-  `docs/STRATEGY_ADMISSION_CRITERIA.md`.
-- La razón sigue siendo económica, no de ingeniería: el mejor bruto por operación (**+8.912 bps**
-  en `volatility@30m`) no cubre la línea de costes (**12.177 bps** medidos; **23.354 bps** de
-  admisión). Nada de lo hecho aquí acerca esa brecha.
-- El siguiente experimento con valor esperado sigue siendo `EXP-COST-LINE-001`
-  (`reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/NEXT_EXPERIMENT.md`): medir la línea maker real
-  con el motor de fills de EXP-003M. Este RFC lo deja **medible**, no medido.
-
-## 7. Desviaciones del mandato
-
-1. **El cuerpo del RFC no estaba en el workspace.** Se recibió como mandato; `RFC.md` lo
-   transcribe y lo descompone en WP-00…WP-04 sin añadir criterios. Si el RFC original dice otra
-   cosa, este paquete se rebasa contra él, no al revés.
-2. **Se versionó la campaña del supervisor (3,8 MB, 140 ficheros).** El mandato pedía versionar
-   el diagnóstico; sin los artefactos que sus verificadores leen, la corrección del
-   `schema_version` solo se podría probar en la máquina que los generó. Se excluyeron los logs de
-   proceso (ruido de ejecución), no la evidencia de estado.
-3. **No se reformatearon** los cuatro ficheros con drift de `ruff format` ni se corrigió el
-   `no-untyped-def` preexistente: habría enterrado el diff real bajo ruido ajeno al mandato.
-4. **`verify_claims.py` se preservó sin tocar** aunque no sea portable. Reescribirlo habría
-   invalidado los hashes que el RFC debía conservar.
-
-## 8. Resumen para revisión externa
-
-Un revisor puede, desde un clon:
-
-```bash
-git checkout c44f912c
-uv sync --frozen
-.venv/Scripts/python.exe reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/verify_repro.py
+```
+V01_preserved_docs_byte_identical   drifted: 7/7
+V02_manifest_matches_tree          problems: 13 de 44 digests
 ```
 
-y obtener el mismo `12/12 PASS, false_success 0` sin confiar en nada de este documento. Si algo
-de lo anterior cambia, `V01`/`V02` fallan: los hashes del diagnóstico y del árbol están
-comprobados, no prometidos.
+El commit era correcto. El *checkout* reescribía los finales de línea y el manifiesto pasaba
+solo en el árbol que lo había producido — exactamente el defecto que el RFC existe para
+denunciar, esta vez dentro del RFC. `git hash-object` coincidía con el blob; los bytes en
+disco no. La evidencia cruda está en
+[CLONE_ddef6432_verify_repro_FAIL.log](evidence/CLONE_ddef6432_verify_repro_FAIL.log).
+
+Corregido en `f118e556` siguiendo la convención que el propio repositorio ya usaba para
+RFC-049, EXP-003P, EXP-004A y DEF-018: `-text` en las rutas que el manifiesto digiere, más
+`EOL_NORMALISED` como causa nombrada en el verificador, más un test que enumera el manifiesto
+y falla por nombre si alguien añade un digest sin pin.
+
+El test se validó en negativo: antes de los dos últimos pines falló señalando exactamente
+`.gitattributes` y `tests/unit/reports/test_evidence_manifest_eol.py`, los mismos dos ficheros
+que V02 marcó en el clon. Un test que nunca se ha visto fallar no prueba nada.
+
+## Commits
+
+| Commit | Contenido |
+| --- | --- |
+| `b4c8e3e2` | base medida (merge de `main` en la lane, antes de cualquier cambio) |
+| `c44f912c` | diagnóstico versionado + los tres defectos cerrados |
+| `ddef6432` | rehearsal de checkout limpio (método con el hueco que se describe arriba) |
+| `f118e556` | pines `-text`, `EOL_NORMALISED`, test de regresión; **artefacto verificado** |
+| commit de cierre | este informe, `verify_independent.py`, evidencias del clon |
+
+## Pruebas ejecutadas y resultados reales
+
+Clon nuevo de `f118e556`, `core.autocrlf=true`, árbol limpio, sin `.venv`:
+
+| Comando | Resultado |
+| --- | --- |
+| `uv sync --frozen` | exit 0, `matplotlib 3.11.2` importable |
+| `uv lock --check` | exit 0, 118 paquetes |
+| `pytest tests/unit/ops tests/unit/reports/test_evidence_manifest_eol.py` | **135 passed** |
+| `verify_repro.py` | **12/12 PASS**, 4/4 controles, `false_success 0` |
+| `paper_supervisor_verify.py` | PASS, 33/33, 12 mutaciones, `false_success 0` |
+
+Verificador independiente (`verify_independent.py`, escrito desde las premisas, sin importar
+nada de `verify_repro.py`): **9/9**. Declara los siete digests congelados por su cuenta,
+re-cuenta la admisión desde el JSON del ledger, re-ejecuta cada herramienta y comprueba por
+`git check-attr` que ningún digest depende del checkout.
+
+## Errores del propio verificador independiente
+
+El primer intento devolvió dos fallos que eran suyos, no del artefacto: leía `refusal` como
+cadena cuando el verificador de campañas publica un objeto (`{"code": ...}`), y contaba como
+«sesión abierta» los `STREAM.jsonl` versionados del fixture. Ambos corregidos; el segundo
+ahora distingue fixture versionado de sesión producida (sin `STREAM.jsonl` sin seguimiento ni
+bajo `data/`). Se registran porque un verificador que se arregla a sí mismo hasta pasar es
+justo lo que este RFC no debe aceptar en silencio: los dos fallos se corrigieron en la
+definición de la comprobación, no rebajando el umbral, y el detalle quedó en
+[verify_independent.py](verify_independent.py).
+
+## Integración: por qué `NO_GO`
+
+```
+git rev-list --count main..f118e556        305   (301 lane + 4 RFC)
+git rev-list --count f118e556..main          3
+git cherry-pick -n c44f912c   → CONFLICT en 7 ficheros
+   .gitignore, scripts/exp004a_verify.py, scripts/ops_background_audit.py,
+   scripts/paper_lock_campaign_verify.py, tests/unit/ops/test_paper_lock_campaign.py,
+   tests/unit/ops/test_session_status.py, tests/unit/ops/test_windowless.py
+```
+
+`main` no tiene `src/trading_bot/ops/windowless.py`, ni `test_windowless.py`, ni
+`paper_lock_campaign.py`, ni `session_status.py`: todo el sujeto del RFC vive en
+`codepaper/supervisor-001`, que nunca se fusionó. `main` tiene un solo merge en toda su
+historia y es lineal, así que tampoco hay convención de «merge de lane» que aplicar.
+
+**Detenido el merge** conforme a la condición 7 del mandato. El checkout compartido sigue en
+`e67194e7`, `main` sigue en `e67194e7`, y sus entradas pendientes (28 en el momento de
+cerrar, 26 al empezar) no se tocaron: no hay un solo fichero de mi propiedad entre ellas.
+
+## Alcance de los cambios
+
+`git diff --name-only b4c8e3e2` → 204 rutas: `.gitattributes`, `.gitignore`, `uv.lock`,
+3 scripts, 4 tests y 193 ficheros bajo `reports/ai-bots/`. Nada bajo `data/`, `config/risk`,
+`config/strategy_admission.json`, `src/trading_bot/{risk,autonomous,vision,paper}/`.
+
+Los 141 ficheros de `reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/` son de otra lane y se
+versionaron **sin editarlos**, porque el manifiesto y el gate V07 los necesitan para
+reproducir la campaña desde un clon. Comprobado: **140 son byte-idénticos** al árbol de
+`wt-sup001`. El que difiere, `campaign/VERIFICATION.json`, lo reescribió esa lane *después*
+de la captura (16 334 → 16 833 bytes): el commit guarda la instantánea del momento, no una
+copia viva, y así está declarado.
+
+## Defectos abiertos
+
+Los cuatro que el mandato pide registrar aparte están en [OPEN_BLOCKERS.md](OPEN_BLOCKERS.md),
+con su causa, su evidencia y lo que haría falta para cerrarlos. El más importante sigue
+siendo que **no existe una campaña de lock real**: el PASS de V07/V08 es sobre fixture.
+
+## Admisión PAPER
+
+**`NO_GO`.** 0 de 24 estrategias con `admitted_for_paper`, recalculado desde el JSON del
+ledger por dos implementaciones distintas, y el fichero es byte-idéntico al de `b4c8e3e2`.
+Este RFC no admite nada, no abre sesiones y no toca límites de riesgo.
+
+## Limitaciones de esta verificación
+
+- **La independencia es de método, no de identidad**: el verificador lo escribió el mismo
+  agente que hizo las correcciones, en otra pasada y sin reutilizar el código del primero.
+  Eso detectó el defecto de CRLF que el constructor había dado por bueno, y es la evidencia
+  más fuerte que puedo ofrecer de que la separación funcionó; no sustituye a una persona
+  distinta firmando.
+- La corrida del clon sobre el commit de cierre no puede quedar dentro de ese mismo commit.
+  Queda su comando, su salida y el commit exacto en `RUN_REPORT.json`.
+- El PASS de V07/V08 es sobre la campaña fixture, no sobre una campaña real.
+- `main` no recibe nada en esta entrega.
