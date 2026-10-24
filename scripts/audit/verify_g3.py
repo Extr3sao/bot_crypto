@@ -91,7 +91,19 @@ class Check:
 def _run(
     cmd: list[str], *, cwd: Path, env: dict[str, str] | None = None, timeout: int = 1800
 ) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(cmd, cwd=cwd, env=env, capture_output=True, text=True, timeout=timeout)
+    # The files carry UTF-8 beyond ASCII (→, —, ñ); the Windows default code page
+    # would decode them into different strings and make a byte-identical file
+    # look modified.
+    return subprocess.run(
+        cmd,
+        cwd=cwd,
+        env=env,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=timeout,
+    )
 
 
 def _env(tree: Path) -> dict[str, str]:
@@ -147,7 +159,7 @@ def _probe(tree: Path, entrypoint: str, run_dir: Path, *extra: str) -> dict[str,
     )
     if not out.is_file():
         return {"error": "probe produced no json", "stderr": completed.stderr[-1500:]}
-    payload = json.loads(out.read_text(encoding="utf-8"))
+    payload: dict[str, Any] = json.loads(out.read_text(encoding="utf-8"))
     payload["_returncode"] = completed.returncode
     return payload
 
@@ -217,7 +229,14 @@ def main(argv: list[str] | None = None) -> int:
     tmp = Path(tempfile.mkdtemp(prefix="g3-verify-"))
     head = _run(["git", "rev-parse", "HEAD"], cwd=REPO_ROOT).stdout.strip()
     branch = _run(["git", "branch", "--show-current"], cwd=REPO_ROOT).stdout.strip()
-    dirty = _run(["git", "status", "--porcelain"], cwd=REPO_ROOT).stdout.strip()
+    dirty_lines = [
+        line
+        for line in _run(["git", "status", "--porcelain"], cwd=REPO_ROOT).stdout.splitlines()
+        if line.strip()
+    ]
+    dirty_source = [
+        line for line in dirty_lines if "src/" in line or "tests/" in line or "scripts/" in line
+    ]
 
     def add(check: Check) -> None:
         checks.append(check)
@@ -232,14 +251,16 @@ def main(argv: list[str] | None = None) -> int:
             Check(
                 "V-1",
                 "ACC-G3-13",
-                "identity: commit, branch, tree state",
-                bool(src_app.is_file()),
-                f"rev={resolved_rev} branch={branch} dirty={'yes' if dirty else 'no'}",
+                "identity: commit, branch, and no dirty source",
+                bool(src_app.is_file()) and not dirty_source,
+                f"rev={resolved_rev} branch={branch} dirty={len(dirty_lines)} "
+                f"dirty_source={len(dirty_source)}",
                 {
                     "rev": resolved_rev,
                     "head": head,
                     "branch": branch,
-                    "dirty": bool(dirty),
+                    "dirty": bool(dirty_lines),
+                    "dirty_paths": dirty_lines,
                     "checkout": str(REPO_ROOT),
                     "app_sha256": _sha(src_app) if src_app.is_file() else "",
                 },
@@ -399,16 +420,21 @@ def main(argv: list[str] | None = None) -> int:
         )
 
         # V-10 — G-1's gate is byte-identical: G-3 reused it, did not rewrite it.
-        baseline = _run(["git", "show", f"{BASELINE_REV}:{HOT_STOP_REL}"], cwd=REPO_ROOT)
-        current = (tree / HOT_STOP_REL).read_text(encoding="utf-8")
+        baseline = subprocess.run(
+            ["git", "show", f"{BASELINE_REV}:{HOT_STOP_REL}"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+        )
+        current_bytes = (tree / HOT_STOP_REL).read_bytes()
+        same_bytes = baseline.returncode == 0 and baseline.stdout == current_bytes
         add(
             Check(
                 "V-10",
                 "ACC-G3-10",
-                "hot_stop.py is unchanged from the G-1 baseline",
-                baseline.returncode == 0 and baseline.stdout == current,
-                f"baseline_exit={baseline.returncode} equal={baseline.stdout == current}",
-                {"sha256": hashlib.sha256(current.encode()).hexdigest()},
+                "hot_stop.py is byte-identical to the G-1 baseline",
+                same_bytes,
+                f"baseline_exit={baseline.returncode} equal={same_bytes}",
+                {"sha256": hashlib.sha256(current_bytes).hexdigest()},
             )
         )
 
@@ -465,16 +491,18 @@ def main(argv: list[str] | None = None) -> int:
             # commit differs from the verified one (tools commit vs. code commit).
             matrix_rev = str(report.get("rev") or "")
             matrix_app = (
-                _run(["git", "show", f"{matrix_rev}:{APP_REL}"], cwd=REPO_ROOT)
+                subprocess.run(
+                    ["git", "show", f"{matrix_rev}:{APP_REL}"],
+                    cwd=REPO_ROOT,
+                    capture_output=True,
+                )
                 if matrix_rev
                 else None
             )
-            tree_text = src_app.read_text(encoding="utf-8")
             same = bool(
                 matrix_app
                 and matrix_app.returncode == 0
-                and hashlib.sha256(matrix_app.stdout.encode()).hexdigest()
-                == hashlib.sha256(tree_text.encode()).hexdigest()
+                and matrix_app.stdout == src_app.read_bytes()
             )
             add(
                 Check(

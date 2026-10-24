@@ -283,9 +283,12 @@ def main(argv: list[str] | None = None) -> int:
     fakes = _build_fakes(recorder)
     settings = _live_settings()
 
-    app_module.BitunixFuturesClient = fakes["FakeFutures"]  # type: ignore[assignment]
-    app_module.BitunixSpotClient = fakes["FakeSpot"]  # type: ignore[assignment]
-    app_module.load_settings = lambda **kwargs: settings  # type: ignore[assignment]
+    # One Any-typed alias: the module really does export these names, but
+    # assigning to them through the module type is not visible to mypy.
+    live_app: Any = app_module
+    live_app.BitunixFuturesClient = fakes["FakeFutures"]
+    live_app.BitunixSpotClient = fakes["FakeSpot"]
+    live_app.load_settings = lambda **kwargs: settings
 
     def _single_live_iteration(config_dir: str, env_file: str | None) -> Any:
         snapshots = [
@@ -307,10 +310,10 @@ def main(argv: list[str] | None = None) -> int:
         )
         return snapshots, counters, fakes["FakeConnector"](), settings
 
-    app_module._run_single_live_iteration = _single_live_iteration  # type: ignore[assignment]
-    app_module._create_futures_trade_case = lambda **kwargs: ("probe-tc-1", "")  # type: ignore[assignment]
-    app_module._mark_trade_case_order_open = lambda **kwargs: None  # type: ignore[assignment]
-    app_module._reconcile_open_trade_cases_with_positions = lambda **kwargs: []  # type: ignore[assignment]
+    live_app._run_single_live_iteration = _single_live_iteration
+    live_app._create_futures_trade_case = lambda **kwargs: ("probe-tc-1", "")
+    live_app._mark_trade_case_order_open = lambda **kwargs: None
+    live_app._reconcile_open_trade_cases_with_positions = lambda **kwargs: []
 
     cli = _argv_for(args.entrypoint, run_dir, args.trade_side, args.side)
     if _supports_run_dir(app_module, cli[0]) and "--run-dir" not in cli:
@@ -332,8 +335,8 @@ def main(argv: list[str] | None = None) -> int:
         "app_file": str(Path(app_module.__file__).resolve()),
         "app_src": str(APP_SRC),
         "patched": {
-            "futures": getattr(app_module.BitunixFuturesClient, "__name__", "?"),
-            "spot": getattr(app_module.BitunixSpotClient, "__name__", "?"),
+            "futures": live_app.BitunixFuturesClient.__name__,
+            "spot": live_app.BitunixSpotClient.__name__,
         },
         "run_dir": str(run_dir),
         "exit_code": exit_code,
