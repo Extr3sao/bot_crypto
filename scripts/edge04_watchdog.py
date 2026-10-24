@@ -170,7 +170,18 @@ def tail_lines(path: Path, count: int = 20) -> tuple[list[dict[str, Any]], int]:
 
 
 def disk_reading(path: Path) -> dict[str, Any]:
-    usage = shutil.disk_usage(path)
+    """Free space of the volume the state root lives on, even when the root itself is gone.
+
+    ``shutil.disk_usage`` needs a path that exists, so a state root that had been removed used
+    to raise ``FileNotFoundError`` here and take the whole alarm down with it -- at the exact
+    moment the watchdog exists for. The measurement walks up to the nearest existing ancestor
+    and records that it had to, instead of pretending the root was there.
+    """
+    root = Path(path)
+    probe = root
+    while not probe.exists() and probe != probe.parent:
+        probe = probe.parent
+    usage = shutil.disk_usage(probe if probe.exists() else Path.cwd())
     if usage.free < CRITICAL_FREE_BYTES:
         status = "CRITICAL"
     elif usage.free < WARNING_FREE_BYTES:
@@ -179,6 +190,8 @@ def disk_reading(path: Path) -> dict[str, Any]:
         status = "HEALTHY"
     return {
         "path": str(path),
+        "measured_at": str(probe),
+        "path_exists": root.exists(),
         "free_bytes": usage.free,
         "total_bytes": usage.total,
         "free_gib": round(usage.free / 1024**3, 4),
