@@ -17,7 +17,7 @@ credenciales, ningún límite de riesgo tocado.
 | 7 | `pytest tests/unit/paper tests/unit/autonomous -q` | **0** (395 passed) | el runtime paper, de extremo a extremo y offline |
 | 8 | `autonomous_paper.py --provider fake --cycles 2 --assets BTC` | **0** | ejecución real: 2 ciclos, `orders_created=0`, `runtime_failures=0` |
 | 9 | `wp_edge04_verify.py --raw … --reports …` | **0** (11/11) | consistencia de todo lo anterior, con otro programa |
-| 10 | `ruff check` sobre los cuatro scripts nuevos | **0** | sin hallazgos |
+| 10 | `ruff check` sobre los tres scripts, el módulo y el test nuevos | **0** | sin hallazgos |
 
 ## 2. Matriz de dependencias
 
@@ -66,5 +66,5 @@ Ver §4 del informe final. Recibos crudos en `raw/freeze.json`, `raw/mirror.json
 ```
 tests/unit/research/test_prospective_freeze.py ............ 10 passed
 tests/unit/paper + tests/unit/autonomous ................... 395 passed
-ruff check (4 scripts) ..................................... All checks passed
+ruff check (3 scripts + freeze.py + test) .................. All checks passed
 ```

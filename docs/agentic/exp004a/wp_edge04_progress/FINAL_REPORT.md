@@ -26,7 +26,7 @@ entrypoint (incluidos los **relativos**, que es donde se escondía `edge03.run`)
 | Grupo | Cuántos | Qué son |
 |---|---|---|
 | **BLOQUEADOS** | **29** | toda la familia EDGE-01/03/04/05/06/07/08/12 que lee el corpus congelado; incluye `edge03_run.py` y **`edge04_observer.py`, la lane programada** |
-| **DEGRADAN** | 15 | corren, pero una entrada se declara `available: false` — `st6_forward_regime.py` es el caso claro |
+| **DEGRADAN** | 17 | corren, pero una entrada se declara `available: false` — `st6_forward_regime.py` es el caso claro |
 | **ALCANZABLES sin el directorio** | **441** | el runtime paper, los verificadores, los productores de corpus |
 
 Los lectores del directorio ausente son seis módulos, y sólo uno lo abre de verdad por barra:
