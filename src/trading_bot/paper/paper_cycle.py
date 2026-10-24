@@ -33,6 +33,7 @@ import json
 from dataclasses import dataclass, field
 from typing import Any
 
+from trading_bot.config.risk import DefensiveBlocks
 from trading_bot.execution.idempotency import IdempotencyGuard
 from trading_bot.market_data.types import OHLCV
 from trading_bot.paper.candidate_portfolio import TradeCandidate, build_portfolio
@@ -40,6 +41,7 @@ from trading_bot.paper.signal_adapter import AdapterError, alpha_signal_to_signa
 from trading_bot.paper.snapshot_context import trim_to_pit
 from trading_bot.research.asset_intelligence.registry import CryptoAssetAgentRegistry
 from trading_bot.research.strategy_router import RouterDecision, StrategyRouter
+from trading_bot.risk.defensive_blocks import BlockVerdict, MarketConditions, evaluate_blocks
 from trading_bot.risk.manager import RiskManager
 
 __all__ = [
@@ -85,6 +87,16 @@ class CycleStageCounts:
     risk_errors: int = 0
     orders_created: int = 0
     broker_errors: int = 0
+    #: DEF-RUN-015: an exit is not an entry. ``exits_requested`` counts the exit
+    #: evaluations this cycle produced, ``exits_closed`` how many actually closed a book
+    #: position, ``reversals_refused`` an opposite signal the broker refused, and
+    #: ``same_side_skips`` a signal whose side was already held.
+    exits_requested: int = 0
+    exits_closed: int = 0
+    reversals_refused: int = 0
+    same_side_skips: int = 0
+    #: WP-EDGE-017/P0.4: one count per defensive block that fired (by block id).
+    defensive_blocks: dict[str, int] = field(default_factory=dict)
     rejections: list[dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -105,6 +117,11 @@ class CycleStageCounts:
             "risk_errors": self.risk_errors,
             "orders_created": self.orders_created,
             "broker_errors": self.broker_errors,
+            "exits_requested": self.exits_requested,
+            "exits_closed": self.exits_closed,
+            "reversals_refused": self.reversals_refused,
+            "same_side_skips": self.same_side_skips,
+            "defensive_blocks": dict(self.defensive_blocks),
             "rejections": list(self.rejections),
         }
 
@@ -166,6 +183,10 @@ class PaperCycleEngine:
         broker: Any,  # PaperBroker
         indicator_fn: Any | None = None,  # candles → dict[str, IndicatorResult]
         idempotency: IdempotencyGuard | None = None,
+        # WP-EDGE-017/P0.4: the four declared defensive blocks. ``None`` keeps the
+        # historical behaviour for callers that have not opted in; the paper
+        # launcher always supplies the policy from config/risk.yaml.
+        defensive_blocks: DefensiveBlocks | None = None,
     ) -> None:
         self._registry = asset_registry
         self._router = router
@@ -175,6 +196,7 @@ class PaperCycleEngine:
         self._broker = broker
         self._indicator_fn = indicator_fn
         self._idempotency = idempotency or IdempotencyGuard()
+        self._defensive_blocks = defensive_blocks
         # BAR_CLOSE gate state (BURN-IN-V2): per symbol, the (bar_ts, state
         # version) already evaluated. State version bumps when anything that
         # could legitimately change a decision happens (risk counters,
@@ -249,16 +271,27 @@ class PaperCycleEngine:
             bool(getattr(r, "kill_switch_active", False)),
         )
 
+    def _defensive_verdict(
+        self, symbol: str, conditions: dict[str, MarketConditions] | None
+    ) -> BlockVerdict | None:
+        """Evaluate the declared blocks, failing closed if their inputs are absent."""
+        if self._defensive_blocks is None:
+            return None
+        return evaluate_blocks(self._defensive_blocks, (conditions or {}).get(symbol))
+
     def run_cycle_sync(
         self,
         history: dict[str, list[OHLCV]],
         decision_timestamps: dict[str, int],
+        conditions: dict[str, MarketConditions] | None = None,
     ) -> CycleStageCounts:
         """Run the canonical cycle synchronously for each symbol.
 
         ``history`` maps symbol → recent OHLCV series; the PIT slice
         (bars <= decision timestamp) is taken before any feature or
-        context computation.
+        context computation. ``conditions`` carries the measured market
+        context the defensive blocks need; a symbol absent from it is blocked
+        (``market_conditions_unknown``), never waved through.
         """
         counts = CycleStageCounts()
         candidates: list[TradeCandidate] = []
@@ -376,12 +409,51 @@ class PaperCycleEngine:
                 _reject(counts, symbol, "risk", "candidate_without_alpha")
                 continue
 
+            # Idempotency first: exactly-once is about the intent, and it must keep its
+            # meaning (a repeated intent is a duplicate, not a new position signal).
             cloid = intent_cloid(
                 symbol, cand.strategy_id, cand.direction, int(getattr(alpha, "timestamp", 0))
             )
             if self._idempotency.is_duplicate(cloid):
                 counts.duplicate_intents += 1
                 _reject(counts, symbol, "idempotency", f"duplicate_intent:{cloid}")
+                continue
+
+            # -- DEF-RUN-015: occupancy is resolved BEFORE the entry gates ----------
+            #
+            # A gate that blocks an exit is a bug, not a policy (``max_open_positions``
+            # rejecting the very signal that would free a slot is the clearest case). So
+            # the position is inspected here: same side is a skip, the opposite side is an
+            # exit *request* — never an entry, and never a reversal.
+            held = self._broker.positions.get(symbol)
+            if held is not None:
+                held_side = str(getattr(held, "side", ""))
+                wanted_side = "buy" if cand.direction.upper() == "LONG" else "sell"
+                if held_side == wanted_side:
+                    counts.same_side_skips += 1
+                    _reject(counts, symbol, "position", "same_side_already_open")
+                    continue
+                counts.exits_requested += 1
+                exit_price = float(cand.entry_reference or 0.0)
+                if exit_price <= 0:
+                    _reject(counts, symbol, "exit", "EXIT_WITHOUT_PRICE")
+                    continue
+                try:
+                    closed = self._broker.close_position(
+                        symbol, exit_price, "OPPOSITE_SIGNAL_EXIT_EVALUATION"
+                    )
+                except Exception as exc:  # broker failure ⇒ no order, loud and recorded
+                    counts.broker_errors += 1
+                    _reject(counts, symbol, "broker", f"{type(exc).__name__}: {exc}")
+                    continue
+                if closed is None:
+                    _reject(counts, symbol, "exit", "exit_requested_no_position")
+                    continue
+                counts.exits_closed += 1
+                _reject(counts, symbol, "exit", "CLOSED_ON_OPPOSITE_SIGNAL")
+                #: The book changed: the next cycle must re-evaluate, not skip on the
+                #: bar gate.
+                self.bump_state_version("position_closed:opposite_signal")
                 continue
 
             try:
@@ -393,6 +465,19 @@ class PaperCycleEngine:
             except Exception as exc:  # unexpected adaptation failure
                 counts.adapter_errors += 1
                 _reject(counts, symbol, "adapter", f"{type(exc).__name__}: {exc}")
+                continue
+
+            verdict = self._defensive_verdict(symbol, conditions)
+            if verdict is not None and verdict.blocked:
+                counts.risk_rejected += 1
+                key = verdict.blocked_by or "defensive_block"
+                counts.defensive_blocks[key] = counts.defensive_blocks.get(key, 0) + 1
+                _reject(
+                    counts,
+                    symbol,
+                    "defensive_block",
+                    f"{key}: {verdict.reason or 'blocked'}",
+                )
                 continue
 
             try:
@@ -460,7 +545,14 @@ class RouteOnlyEngine:
         self,
         history: dict[str, list[OHLCV]],
         decision_timestamps: dict[str, int],
+        conditions: dict[str, Any] | None = None,
     ) -> CycleStageCounts:
+        """Route-only path: it places no orders, so there are no blocks to apply.
+
+        ``conditions`` is accepted so the caller uses one signature for both
+        engines; nothing here can trade, so nothing here is blocked.
+        """
+        del conditions
         counts = CycleStageCounts()
         for symbol in sorted(history):
             ts = int(decision_timestamps.get(symbol, 0))

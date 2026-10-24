@@ -791,6 +791,52 @@ def _load_verifier() -> Any:
     return module
 
 
+def test_a_pid_the_platform_refuses_to_answer_does_not_crash_the_lease(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The age rule decides a lease, and a probe that cannot answer must say so and not raise.
+
+    Windows answers ``os.kill(pid, 0)`` for a pid it cannot map with ``WinError 87``, raised as
+    ``SystemError`` — which is not an ``OSError``, so a probe guarding only ``OSError`` crashed the
+    process that was asking. A crashed trigger is worse than a refused one: the schedule loses the
+    observation *and* the record that would have explained it.
+    """
+    lease = tmp_path / cl.LOCK_FILENAME
+    lease.write_text(
+        json.dumps(
+            {
+                "lease_version": cl.LEASE_VERSION,
+                "campaign_id": "EDGE04_FORWARD_OBSERVER",
+                "pid": 1_234_567,
+                "host": "a host that is not this one",
+                "acquired_at": 1_000,
+                "renewed_at": 1_000,
+                "stale_after_seconds": 300,
+            }
+        ),
+        encoding="utf-8",
+    )
+    lock = cl.CampaignLock(tmp_path, campaign_id="EDGE04_FORWARD_OBSERVER", stale_after_seconds=300)
+    holder = lock.holder()
+
+    def refusing(pid: int, signal: int) -> None:  # noqa: ARG001
+        raise SystemError("<built-in function kill> returned a result with an exception set")
+
+    monkeypatch.setattr(cl.os, "kill", refusing)
+    assert cl._pid_probe(1_234_567) is None, "a platform that cannot answer must not claim to"
+    # Inside its age bound with an unanswerable probe: a refusal, never a crash and never a
+    # silent reclaim of a lease that may be held by a live runner.
+    assert lock.is_stale(holder, now=1_100) is False
+    refused = lock.acquire(now=1_100)
+    assert refused["acquired"] is False and refused["status"] == "ALREADY_RUNNING"
+    # Past the bound the age rule reclaims it, probe or no probe.
+    assert lock.is_stale(holder, now=1_400) is True
+    reclaimed = lock.acquire(now=1_400)
+    assert reclaimed["acquired"] is True
+    assert reclaimed["status"] == "STALE_LEASE_RECLAIMED"
+    assert reclaimed["previous_holder"]["pid"] == 1_234_567
+
+
 def test_verifier_treats_a_stale_heartbeat_as_a_diagnostic_not_a_failure() -> None:
     verifier = _load_verifier()
     now = 1_791_313_581

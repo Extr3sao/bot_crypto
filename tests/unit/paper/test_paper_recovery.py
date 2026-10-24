@@ -586,6 +586,8 @@ def test_reconcile_session_feeds_only_delta_to_risk() -> None:
         timeframe="5m",
         confidence=0.9,
         price=100.0,
+        stop_loss_pct=1.0,
+        take_profit_pct=2.0,
         metadata={"notional_usdt": 500.0},
     )
     broker.execute_signal(sig)
@@ -636,6 +638,8 @@ def test_zero_price_never_closes_position() -> None:
         timeframe="5m",
         confidence=0.9,
         price=84_000.0,
+        stop_loss_pct=1.0,
+        take_profit_pct=2.0,
         metadata={"notional_usdt": 500.0},
     )
     broker.execute_signal(sig)
@@ -673,6 +677,8 @@ def test_reconcile_session_with_zero_price_snapshot_keeps_position() -> None:
         timeframe="5m",
         confidence=0.9,
         price=84_000.0,
+        stop_loss_pct=1.0,
+        take_profit_pct=2.0,
         metadata={"notional_usdt": 500.0},
     )
     broker.execute_signal(sig)

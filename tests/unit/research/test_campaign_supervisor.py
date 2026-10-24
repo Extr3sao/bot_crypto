@@ -855,11 +855,23 @@ def test_the_task_definition_is_stable_and_carries_the_safety_settings() -> None
     assert exec_node.find(f"{TASK_NS}WorkingDirectory").text == "C:\\repo"
 
 
-def test_the_registered_command_points_at_this_supervisor() -> None:
+def test_the_registered_command_points_at_this_supervisor_without_a_console() -> None:
+    """WP-OPS-BACKGROUND-001: the task must not own a console window.
+
+    The previous contract was ``task_command() == python_executable()``, which is
+    exactly the defect: an ``InteractiveToken`` task running ``python.exe`` owns a
+    visible console for its whole life. The registration now names
+    ``pythonw.exe`` and the windowless launcher; the supervisor script is still
+    the argument, and the launcher still ends with the ``run`` subcommand.
+    """
     supervisor = _load_supervisor()
-    assert supervisor.task_command() == supervisor.python_executable()
-    assert str(supervisor.SCRIPT) in supervisor.task_arguments()
-    assert supervisor.task_arguments().endswith("run")
+    command = supervisor.task_command()
+    arguments = supervisor.task_arguments()
+    assert Path(command).name.lower() == "pythonw.exe"
+    assert command != supervisor.python_executable()
+    assert "windowless.py" in arguments
+    assert str(supervisor.SCRIPT) in arguments
+    assert arguments.endswith("run")
     assert supervisor.task_working_directory() == str(supervisor.REPO)
 
 
