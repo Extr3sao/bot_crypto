@@ -1,0 +1,17 @@
+FAIL  ARTIFACTS_PRESENT                        missing or unparsable: coverage.json; missing or unparsable: slots.jsonl; no daily evidence file was published
+PASS  SLOT_DISCIPLINE                          0 slot(s), no duplicates, all on the grid
+PASS  OUTCOMES_AND_EXIT_CODES                  2 run row(s) agree with the vocabulary
+PASS  NO_ORDER_PATH_OR_PROMOTION               no order path and no promotion in any artefact
+FAIL  EXPECTATION_ARITHMETIC                   no run row carries per-series expectations
+PASS  MARKET_REQUESTS_ARE_SPENT                2 run row(s) spent their requests coherently
+FAIL  RULESET_PINNED_AND_UNCHANGED             no run row carries a ruleset pin
+FAIL  COVERAGE_RULE_APPLIED                    no coverage artefact
+FAIL  BACKFILL_IS_NOT_AN_OBSERVATION           no coverage artefact
+FAIL  DAILY_EVIDENCE_CONSISTENT                no daily evidence file
+PASS  HEALTH_FOLLOWS_THE_LOG                   DEGRADED with 2 consecutive non-observation(s)
+PASS  BUDGET_DECLARED_MEASURED_AND_BOUNDED     lane 14149 bytes of 268435456 declared
+FAIL  PUBLICATION_SWAPPED_ATOMICALLY           no publication directory was captured
+FAIL  FREEZE_AND_FLOOR_DECLARED                no coverage artefact
+PASS  SCHEDULER_REGISTRATION_READ              skipped: no captured task registration to read (SKIPPED_NO_REGISTRATION)
+
+verdict  VERIFY_FAIL  (7/15)
