@@ -9,9 +9,40 @@
     "campaign_tree": "C:/Users/GVLLFR0035/Downloads/exp004a-recovery-02k",
     "campaign_branch": "recovery/exp004a-02k-9983b050",
     "campaign_head_before": "9983b050",
-    "campaign_head_after": "0e41566d",
-    "campaign_commit": "0e41566d Make the EDGE-04 alarm survive the case it exists for"
+    "campaign_head_after": "688c5805",
+    "campaign_commits": [
+      "0e41566d Make the EDGE-04 alarm survive the case it exists for",
+      "688c5805 Give the observer's own cadence an action that exists"
+    ]
   },
+  "defects": [
+    {
+      "id": "DEF-02K-OPS-01",
+      "severity": "high",
+      "status": "REPAIRED",
+      "summary": "the guard died with FileNotFoundError when the state root was absent, so its own UNREADABLE/exit 2 was unreachable exactly when it was needed",
+      "commit": "0e41566d"
+    },
+    {
+      "id": "DEF-02K-OPS-04",
+      "severity": "high",
+      "status": "REPAIRED_FOR_THIS_TASK_OPEN_AS_DESIGN",
+      "summary": "the Forward task's exit 2 was python's 'cannot open file', which is indistinguishable from the observer's own ALREADY_RUNNING code: eleven days of a cadence that never ran read like a lane that was already busy",
+      "commit": "688c5805"
+    },
+    {
+      "id": "DEF-02K-OPS-02",
+      "severity": "medium",
+      "status": "OPEN",
+      "summary": "the guard's OK certifies a fresh tick, not a valid observation: a lane whose every tick fails verification still reports OK"
+    },
+    {
+      "id": "DEF-02K-OPS-03",
+      "severity": "low",
+      "status": "OPEN",
+      "summary": "a blocking transition appends two identical rows to WATCHDOG_EVENTS.jsonl (persist() appends, then main appends the escalated copy)"
+    }
+  ],
   "steps": [
     {
       "id": "S01",
@@ -41,10 +72,30 @@
       "exit_code": 0,
       "result": "CHANGED",
       "detail": {
-        "tasks": ["TradingAgentic-EDGE04-Watchdog", "TradingAgentic-EDGE04-Alarm"],
+        "tasks_changed": ["TradingAgentic-EDGE04-Watchdog", "TradingAgentic-EDGE04-Alarm", "TradingAgentic-EDGE04-Forward"],
         "created": 0,
-        "previous_action_target": "bot-freebuff-exp004a-02h/scripts/edge04_watchdog.py (deleted file)",
-        "new_action_target": "exp004a-recovery-02k/scripts/edge04_watchdog.py"
+        "previous_action_target": [
+          "bot-freebuff-exp004a-02h/scripts/edge04_watchdog.py (deleted file, exit 2)",
+          "bot freebuff/scripts/edge04_observer.py (deleted file, exit 2)"
+        ],
+        "new_action_target": [
+          "exp004a-recovery-02k/scripts/edge04_watchdog.py",
+          "exp004a-recovery-02k/scripts/edge04_forward_r01.cmd (launcher: the action limit is 261 characters, too short for both roots)"
+        ],
+        "final_states": {"Watchdog": "ENABLED", "Alarm": "ENABLED", "Forward": "DISABLED_PENDING_THE_15M_SHARD"}
+      }
+    },
+    {
+      "id": "S02b",
+      "work_package": "WP-01",
+      "action": "prove the Forward registration works, then park it",
+      "command": "schtasks /change /tn TradingAgentic-EDGE04-Forward /enable ; schtasks /run /tn TradingAgentic-EDGE04-Forward",
+      "exit_code": 1,
+      "result": "REGISTRATION_WORKS_LANE_BLOCKED",
+      "detail": {
+        "last_task_result": 1,
+        "row_written": {"run_id": "FWD-EDGE04-20261024T071500Z", "mode": "SCHEDULED", "outcome": "RUNTIME_EXCEPTION", "exit_code": 1, "error_class": "FileNotFoundError"},
+        "then": "task disabled again: a cadence that cannot observe would keep a green light on a lane with no evidence"
       }
     },
     {
