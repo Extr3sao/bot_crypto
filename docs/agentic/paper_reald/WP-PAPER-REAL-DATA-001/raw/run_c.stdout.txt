@@ -1,0 +1,37 @@
+2026-10-24 18:57:54 [info     ] reconcile.consistent_fresh_book
+2026-10-24 19:00:20 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=be47cb9791e047bdb8ae17032d2893dc
+2026-10-24 19:00:25 [info     ] scanner.pair.processed         active=True rank_score=0.9999792232948557 rejection_reason=None scan_iteration_id=be47cb9791e047bdb8ae17032d2893dc symbol=BTC/USDT
+2026-10-24 19:00:25 [info     ] scanner.pair.processed         active=True rank_score=0.99928053154328 rejection_reason=None scan_iteration_id=be47cb9791e047bdb8ae17032d2893dc symbol=ETH/USDT
+2026-10-24 19:00:26 [info     ] scanner.pair.processed         active=True rank_score=0.9834121257360784 rejection_reason=None scan_iteration_id=be47cb9791e047bdb8ae17032d2893dc symbol=SOL/USDT
+2026-10-24 19:00:26 [info     ] scanner.iteration.completed    all_failed=False duration_ms=6473 early_exit=None pairs_active=3 pairs_inactive=0 pairs_processed=3 scan_iteration_id=be47cb9791e047bdb8ae17032d2893dc scanner_errors=0
+2026-10-24 19:00:26 [info     ] candle_filter.filtered         completed=119 removed=1 timeframe=5m total=120
+2026-10-24 19:00:27 [info     ] candle_filter.filtered         completed=119 removed=1 timeframe=5m total=120
+2026-10-24 19:00:27 [info     ] candle_filter.filtered         completed=119 removed=1 timeframe=5m total=120
+2026-10-24 19:00:27 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=buy symbol=BTC/USDT
+2026-10-24 19:00:27 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=buy symbol=BTC/USDT
+2026-10-24 19:00:27 [info     ] paper.fill_opened              entry_commission=0.25 notional=500.0 price=80227.331931 quantity=0.006232290018444438 side=buy symbol=BTC/USDT
+2026-10-24 19:00:27 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=buy symbol=ETH/USDT
+2026-10-24 19:00:27 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=buy symbol=ETH/USDT
+2026-10-24 19:00:27 [info     ] paper.fill_opened              entry_commission=0.25 notional=500.0 price=2318.6118380000003 quantity=0.21564627239688922 side=buy symbol=ETH/USDT
+2026-10-24 19:00:27 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=buy symbol=SOL/USDT
+2026-10-24 19:00:27 [info     ] risk.signal_approved           confidence=0.0 notional=500.0 side=buy symbol=SOL/USDT
+2026-10-24 19:00:27 [info     ] paper.fill_opened              entry_commission=0.25 notional=500.0 price=100.52005100000001 quantity=4.974131976912745 side=buy symbol=SOL/USDT
+[run-c] waiting 298s for the next sealed 5m bar
+2026-10-24 19:05:25 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=a9bdaa7e0612438c99f2102717a3cd31
+2026-10-24 19:05:26 [info     ] scanner.pair.processed         active=True rank_score=0.9999792287739115 rejection_reason=None scan_iteration_id=a9bdaa7e0612438c99f2102717a3cd31 symbol=BTC/USDT
+2026-10-24 19:05:27 [info     ] scanner.pair.processed         active=True rank_score=0.999280680591236 rejection_reason=None scan_iteration_id=a9bdaa7e0612438c99f2102717a3cd31 symbol=ETH/USDT
+2026-10-24 19:05:28 [info     ] scanner.pair.processed         active=True rank_score=0.9834055193242879 rejection_reason=None scan_iteration_id=a9bdaa7e0612438c99f2102717a3cd31 symbol=SOL/USDT
+2026-10-24 19:05:28 [info     ] scanner.iteration.completed    all_failed=False duration_ms=2308 early_exit=None pairs_active=3 pairs_inactive=0 pairs_processed=3 scan_iteration_id=a9bdaa7e0612438c99f2102717a3cd31 scanner_errors=0
+2026-10-24 19:05:28 [info     ] candle_filter.filtered         completed=119 removed=1 timeframe=5m total=120
+2026-10-24 19:05:28 [info     ] candle_filter.filtered         completed=119 removed=1 timeframe=5m total=120
+2026-10-24 19:05:28 [info     ] candle_filter.filtered         completed=119 removed=1 timeframe=5m total=120
+2026-10-24 19:05:28 [info     ] paper.fill_closed              entry_commission=0.25 equity=10004.449505049495 exit_commission=0.25 gross_pnl=4.949505049495013 net_pnl=4.449505049495013 reason=take_profit symbol=BTC/USDT
+2026-10-24 19:05:28 [info     ] paper.fill_closed              entry_commission=0.25 equity=10008.89901009899 exit_commission=0.25 gross_pnl=4.9495050494950705 net_pnl=4.4495050494950705 reason=take_profit symbol=ETH/USDT
+2026-10-24 19:05:28 [info     ] paper.fill_closed              entry_commission=0.25 equity=10013.348515148486 exit_commission=0.25 gross_pnl=4.949505049495023 net_pnl=4.449505049495023 reason=take_profit symbol=SOL/USDT
+2026-10-24 19:05:28 [info     ] reconcile.consistent_fresh_book
+2026-10-24 19:05:28 [info     ] paper_state.saved              open_positions=0 path=docs\agentic\paper_reald\WP-PAPER-REAL-DATA-001\raw\paper_state_run_c.json sent_intents=3
+2026-10-24 19:05:28 [info     ] reconcile.recovered            closed_trades=3 equity=10013.348515148486 intents=3 open_positions=0
+{
+  "verdict": "TEST_EXECUTION_PASS",
+  "failed": []
+}

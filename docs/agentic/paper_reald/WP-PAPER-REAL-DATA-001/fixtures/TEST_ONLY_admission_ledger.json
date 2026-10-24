@@ -1,0 +1,56 @@
+{
+  "_schema_version": "strategy-admission-ledger-v1",
+  "_fixture": "TEST_ONLY",
+  "_fixture_warning": "This file is NOT research evidence and must never be loaded by a production run. It exists so scripts/wp_prd001_controlled_exec.py can exercise the PAPER ORDER path (Decision -> Risk -> PaperBroker -> Reconciliation) deterministically. It is not referenced by config/strategy_admission.json, is never a default path, and grants no permission to operate: the only execution boundary is PaperBroker.",
+  "_generated_by": "hand-written fixture for WP-PAPER-REAL-DATA-001",
+  "_claim": "a PAPER_CANDIDATE entry allows the decision engine to reach TRADE_PAPER; the fixture supplies that admission so the order path can be validated without inventing a market edge in the committed ledger",
+  "_sources": [],
+  "_admission_cost_model": "COST_MODEL_V3 (evaluated live per cycle; never stored here)",
+  "_period": "TEST FIXTURE — no period",
+  "strategies": {
+    "test_signal@5m": {
+      "family": "test_signal",
+      "status": "PAPER_CANDIDATE",
+      "admitted_for_paper": true,
+      "expected_gross_edge_bps": 100.0,
+      "edge_evidence": {
+        "source_doc": "docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/fixtures/TEST_ONLY_admission_ledger.json",
+        "metric": "fixture.synthetic_gross_edge_bps",
+        "value_bps": 100.0,
+        "knowledge": "SYNTHETIC",
+        "sample_trades": 1000,
+        "note": "SYNTHETIC TEST VALUE. Not measured, not estimated from data, and not a claim about any strategy. It exists only to make expected_net_edge_bps > 0 so the order path is reachable in a controlled test.",
+        "evidence_class": "SYNTHETIC_TEST_ONLY",
+        "period": "TEST FIXTURE",
+        "timeframe": "5m",
+        "status": "SYNTHETIC_TEST_ONLY"
+      },
+      "source_doc": "docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/fixtures/TEST_ONLY_admission_ledger.json",
+      "rationale": "SYNTHETIC TEST ADMISSION: exercises the PAPER order path under a labelled fixture. It is not evidence of edge and cannot promote any real strategy.",
+      "timeframe": "5m",
+      "known": true
+    },
+    "test_signal@1h": {
+      "family": "test_signal",
+      "status": "PAPER_CANDIDATE",
+      "admitted_for_paper": true,
+      "expected_gross_edge_bps": 100.0,
+      "edge_evidence": {
+        "source_doc": "docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/fixtures/TEST_ONLY_admission_ledger.json",
+        "metric": "fixture.synthetic_gross_edge_bps",
+        "value_bps": 100.0,
+        "knowledge": "SYNTHETIC",
+        "sample_trades": 1000,
+        "note": "SYNTHETIC TEST VALUE (1h variant of the same fixture).",
+        "evidence_class": "SYNTHETIC_TEST_ONLY",
+        "period": "TEST FIXTURE",
+        "timeframe": "1h",
+        "status": "SYNTHETIC_TEST_ONLY"
+      },
+      "source_doc": "docs/agentic/paper_reald/WP-PAPER-REAL-DATA-001/fixtures/TEST_ONLY_admission_ledger.json",
+      "rationale": "SYNTHETIC TEST ADMISSION: exercises the PAPER order path under a labelled fixture. It is not evidence of edge and cannot promote any real strategy.",
+      "timeframe": "1h",
+      "known": true
+    }
+  }
+}

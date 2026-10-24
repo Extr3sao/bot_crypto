@@ -1,0 +1,76 @@
+{
+  "schema_version": "paper-daily-report-v1",
+  "report_date": "2026-10-24",
+  "generated_at_ms": 1792859150768,
+  "generated_at_iso": "2026-10-24T16:25:50.768000+00:00",
+  "run_id": "run-b-5m",
+  "mode": "PAPER",
+  "timeframe": "5m",
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "runtime_hours": 0.169143,
+  "cycles": 3,
+  "decisions": 9,
+  "no_trade": 9,
+  "no_trade_kinds": {
+    "no_trade_NO_TRADE_STRATEGIC": 9
+  },
+  "shadow_trades": 0,
+  "paper_trades": 0,
+  "orders_created": 0,
+  "pnl": {
+    "gross_bps_total": 0.0,
+    "resolved_outcomes": 3,
+    "pending_outcomes": 6,
+    "note": "PAPER only; no capital, no live orders. 0 trades is a PASS."
+  },
+  "drawdown": {
+    "max_drawdown_bps": 0.0,
+    "note": "computed from resolved PAPER outcomes only"
+  },
+  "strategy_attribution": {
+    "momentum@5m": {
+      "decisions": 5,
+      "paper_trades": 0,
+      "shadow_trades": 0,
+      "no_trade": 5,
+      "risk_vetoes": 0,
+      "outcomes_resolved": 0,
+      "limitations": "per-strategy PnL is not attributed yet (no admitted strategy has traded)"
+    },
+    "ema_crossover@5m": {
+      "decisions": 3,
+      "paper_trades": 0,
+      "shadow_trades": 0,
+      "no_trade": 3,
+      "risk_vetoes": 0,
+      "outcomes_resolved": 0,
+      "limitations": "per-strategy PnL is not attributed yet (no admitted strategy has traded)"
+    },
+    "trend@5m": {
+      "decisions": 1,
+      "paper_trades": 0,
+      "shadow_trades": 0,
+      "no_trade": 1,
+      "risk_vetoes": 0,
+      "outcomes_resolved": 0,
+      "limitations": "per-strategy PnL is not attributed yet (no admitted strategy has traded)"
+    }
+  },
+  "risk_events": {
+    "risk_APPROVED": 9
+  },
+  "runtime_failures": 0,
+  "errors": [],
+  "restarts": [],
+  "outcomes": {
+    "resolved": 3,
+    "pending": 6,
+    "performance_cells": 3
+  },
+  "paper_candidates": [],
+  "no_trade_is_expected": "No strategy is admitted for PAPER, so the correct behaviour is NO_TRADE with zero trades."
+}
