@@ -1,216 +1,357 @@
 {
-  "schema_version": "RFC_TAP_PAPER_ADMISSION_REPRO_RUN_REPORT_V1",
-  "rfc": "RFC-TAP-PAPER-ADMISSION-REPRO-001",
-  "status": "IMPLEMENTED_VERIFIED",
-  "artifact_commit": "c44f912c2fa7e25a9765323aa0032a23425446ab",
-  "base_commit": "b4c8e3e20c804b83540fad873c7ce81dde6dd98d",
-  "lane_commit": "3b758e22f0c9835646c9eba9db6634757970b126",
-  "main_commit": "0e13160a8d5522961978fe3bd6b904b3a14be1c3",
-  "merge_base": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
-  "branch": "repro/paper-admission-001",
-  "environment": {
-    "platform": "Windows-10-10.0.26200-SP0",
-    "python": "3.11.15",
-    "uv": "0.11.26",
-    "pytest": "9.1.1",
-    "git": "2.51.1.windows.1"
-  },
-  "work_packages": [
-    {
-      "id": "WP-00",
-      "objective": "audit and capture the pre-fix baseline",
-      "status": "DONE",
-      "evidence": [
-        "evidence/BASELINE_MERGED_pytest_windowless.log",
-        "evidence/BASELINE_MERGED_audit.json",
-        "evidence/BASELINE_MERGED_uv_lock_check.log",
-        "evidence/BASELINE_MERGED_lock_verifier.log",
-        "evidence/BASELINE_MERGED_SUPERVISOR_VERIFY.json",
-        "evidence/BASELINE_verify_claims.log"
-      ]
-    },
-    {
-      "id": "WP-01",
-      "objective": "close the three windowless offenders without weakening the audit",
-      "status": "DONE",
-      "changes": [
-        "tests/unit/ops/test_paper_lock_campaign.py",
-        "tests/unit/ops/test_session_status.py",
-        "scripts/exp004a_verify.py",
-        "scripts/ops_background_audit.py"
-      ]
-    },
-    {
-      "id": "WP-02",
-      "objective": "make the lock verifier check the campaign schema before scoring",
-      "status": "DONE",
-      "changes": [
-        "scripts/paper_lock_campaign_verify.py",
-        "tests/unit/ops/test_paper_lock_campaign.py"
-      ]
-    },
-    {
-      "id": "WP-03",
-      "objective": "restore uv reproducibility",
-      "status": "DONE",
-      "changes": ["uv.lock"]
-    },
-    {
-      "id": "WP-04",
-      "objective": "versioned evidence, independent verification and reports",
-      "status": "DONE",
-      "changes": [".gitignore", "reports/ai-bots/**"]
-    }
-  ],
-  "gates": [
-    {
-      "id": "G01",
-      "name": "windowless_audit_clean",
-      "before": {"high": 3, "exit": 1},
-      "after": {"high": 0, "verdict": "CLEAN", "exit": 0},
-      "evidence": ["evidence/BASELINE_MERGED_audit.json", "evidence/AFTER_audit.json"]
-    },
-    {
-      "id": "G02",
-      "name": "windowless_contract_tests",
-      "before": {"summary": "1 failed, 12 passed", "exit": 1},
-      "after": {"summary": "14 passed", "exit": 0},
-      "evidence": [
-        "evidence/BASELINE_MERGED_pytest_windowless.log",
-        "evidence/AFTER_pytest_ops.log"
-      ]
-    },
-    {
-      "id": "G03",
-      "name": "lock_verifier_refuses_foreign_schema",
-      "before": {"verdict": "FAIL", "checks_passed": 28, "checks_total": 32, "false_success": 2},
-      "after": {
-        "verdict": "FAIL",
-        "refusal": "UNSUPPORTED_CAMPAIGN_SCHEMA",
-        "checks_scored": 0,
-        "false_success": 0,
-        "exit": 1
-      },
-      "evidence": [
-        "evidence/BASELINE_MERGED_LOCK_VERIFIER.json",
-        "evidence/AFTER_LOCK_VERIFIER.json"
-      ]
-    },
-    {
-      "id": "G04",
-      "name": "lock_verifier_judges_its_own_schema",
-      "before": {"fixture_mutations": 9},
-      "after": {
-        "verdict": "PASS",
-        "checks_total": 33,
-        "mutations": 10,
-        "invalid": 0,
-        "undetected": 0
-      },
-      "evidence": ["evidence/VERIFICATION.json"]
-    },
-    {
-      "id": "G05",
-      "name": "supervisor_verifier_external",
-      "before": {"verdict": "PASS", "checks": 33, "false_success": 0},
-      "after": {"verdict": "PASS", "checks": 33, "false_success": 0},
-      "evidence": [
-        "evidence/BASELINE_MERGED_SUPERVISOR_VERIFY.json",
-        "evidence/AFTER_SUPERVISOR_VERIFY.json"
-      ]
-    },
-    {
-      "id": "G06",
-      "name": "uv_lock_reproducible",
-      "before": {"exit": 1, "detail": "the lockfile needs to be updated"},
-      "after": {"exit": 0, "resolved": 118},
-      "evidence": [
-        "evidence/BASELINE_MERGED_uv_lock_check.log",
-        "evidence/AFTER_uv_lock_check.log"
-      ]
-    },
-    {
-      "id": "G07",
-      "name": "clean_checkout_frozen_sync",
-      "before": {
-        "exit": 0,
-        "detail": "environment without matplotlib; the runtime does not import",
-        "evidence": "evidence/ENV_DEFECT_after_frozen_sync_lock_verifier.log"
-      },
-      "after": {
-        "exit": 0,
-        "installed_packages": 111,
-        "matplotlib": "3.11.2",
-        "lock_rewritten": false
-      },
-      "evidence": ["evidence/CLEAN_CHECKOUT_REHEARSAL.log"]
-    },
-    {
-      "id": "G08",
-      "name": "independent_verification",
-      "after": {
-        "gates": 12,
-        "passed": 12,
-        "negative_controls": 4,
-        "false_success": 0,
-        "verdict": "PASS"
-      },
-      "evidence": ["evidence/VERIFICATION.json", "evidence/CLEAN_CHECKOUT_REHEARSAL.log"]
-    },
-    {
-      "id": "G09",
-      "name": "scope_respected",
-      "after": {
-        "outside_allowlist": [],
-        "forbidden": [],
-        "ledger_admitted_for_paper": 0,
-        "note": "every changed path is one of the eight allowlisted files or lives under reports/ai-bots/"
-      },
-      "evidence": ["evidence/VERIFICATION.json"]
-    }
-  ],
-  "tests": {
-    "unit_ops": {"summary": "86 passed", "exit": 0},
-    "windowless": {"summary": "14 passed", "exit": 0},
-    "exp004a_verifier_adversarial": {"summary": "20 passed", "exit": 0},
-    "clean_checkout_unit_ops": {"summary": "86 passed", "exit": 0}
-  },
   "anomalies": [
     {
-      "id": "A-01",
-      "observation": "test_single_writer_lock::test_only_one_of_many_processes_reclaims_the_same_lock failed once with LOCK_UNATTRIBUTED under full-suite load; 3/3 in isolation, suite 86/86 on rerun",
-      "file_touched_by_this_rfc": false,
-      "classification": "PRE_EXISTING_LOAD_SENSITIVE_RACE"
+      "detail": "13 of 44 manifest digests drifted on a fresh Windows clone because core.autocrlf rewrote line endings; the previous PASS was produced in a worktree with core.autocrlf=false, so it did not survive a clone of the same commit.",
+      "evidence": "evidence/CLONE_ddef6432_verify_repro_FAIL.log",
+      "fix": "-text pins for every digested path, EOL_NORMALISED diagnosis in the verifier, regression test over the manifest",
+      "id": "A1_EOL_NORMALISED_DIGESTS",
+      "severity": "high",
+      "status": "fixed_in_f118e556"
     },
     {
-      "id": "A-02",
-      "observation": "the manifest named 20 log files git did not carry; the clean-checkout rehearsal caught it via V02 and the commit was redone",
-      "classification": "DEFECT_FOUND_AND_FIXED_BEFORE_PUBLICATION"
+      "detail": "the side verifier first read `refusal` as a string and counted versioned fixture STREAM.jsonl files as opened sessions",
+      "fix": "read the published object, and distinguish tracked fixtures from sessions this lane produced",
+      "id": "A2_INDEPENDENT_VERIFIER_OWN_BUGS",
+      "severity": "low",
+      "status": "fixed_before_closure"
     },
     {
-      "id": "A-03",
-      "observation": "the manifest hashed itself in code_changes and went stale on write; reports are now excluded from that list",
-      "classification": "DEFECT_FOUND_AND_FIXED_BEFORE_PUBLICATION"
+      "detail": "the ddef6432 rehearsal ran in a worktree of the same .git (core.autocrlf=false) and therefore could not see A1; independence of method is not independence of environment",
+      "id": "A3_REHEARSAL_METHOD",
+      "severity": "medium",
+      "status": "open_by_design"
+    }
+  ],
+  "artifact_commit": "f118e5560fd2bbc11e094af336db8b153eabb50c",
+  "branch": "repro/paper-admission-001",
+  "commits": {
+    "base_measured": "b4c8e3e20c804b83540fad873c7ce81dde6dd98d",
+    "clean_checkout_rehearsal": "ddef64327d7c22758e39572b6e0697ec27c75b00",
+    "closure": "the commit that carries this report",
+    "diagnosis_and_fixes": "c44f912c2fa7e25a9765323aa0032a23425446ab",
+    "eol_repair": "f118e5560fd2bbc11e094af336db8b153eabb50c"
+  },
+  "environment": {
+    "git": "git version 2.51.1.windows.1",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "pytest": "9.1.1",
+    "python": "3.11.15",
+    "uv": "uv 0.11.26 (396ef7ce4 2026-06-30 x86_64-pc-windows-msvc)"
+  },
+  "gates": [
+    {
+      "detail": {
+        "causes": {},
+        "checked": 7,
+        "drifted": []
+      },
+      "name": "V01_preserved_docs_byte_identical",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "causes": {},
+        "code_changes": 10,
+        "evidence": 29,
+        "preserved": 7,
+        "problems": []
+      },
+      "name": "V02_manifest_matches_tree",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "base_commit": "b4c8e3e20c804b83540fad873c7ce81dde6dd98d",
+        "documents_claimed_present": [],
+        "git_probe_confirms_absent": true
+      },
+      "name": "V03_preserved_were_unversioned_at_base",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "exit": 0,
+        "high": 0,
+        "medium": 409,
+        "verdict": "CLEAN"
+      },
+      "name": "V04_windowless_audit_clean",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "errors": false,
+        "exit": 0,
+        "failed": false,
+        "summary": "14 passed in 9.48s"
+      },
+      "name": "V05_windowless_contract_tests",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "checks_scored": 0,
+        "declared_schema": "TAP_PAPER_SUPERVISOR_CAMPAIGN_V1",
+        "exit": 1,
+        "mutations_run": 0,
+        "refusal": "UNSUPPORTED_CAMPAIGN_SCHEMA",
+        "verdict": "FAIL"
+      },
+      "name": "V06_lock_verifier_refuses_foreign_schema",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "checks_failed": [],
+        "checks_total": 33,
+        "exit": 0,
+        "invalid": [],
+        "mutations": 10,
+        "undetected": [],
+        "verdict": "PASS"
+      },
+      "name": "V07_lock_verifier_judges_its_own_schema",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "checks": 33,
+        "exit": 0,
+        "false_success": 0,
+        "mutations": 12,
+        "verdict": "PASS"
+      },
+      "name": "V08_supervisor_verifier_external",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "exit": 0,
+        "output": "Resolved 118 packages in 1ms"
+      },
+      "name": "V09_uv_lock_reproducible",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "declared_in_pyproject": true,
+        "import_exit": 0,
+        "pinned_in_lock": true,
+        "version": "3.11.2"
+      },
+      "name": "V10_declared_dependency_importable",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "changed": 203,
+        "forbidden": [],
+        "outside_allowlist": []
+      },
+      "name": "V11_scope_respected",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "admitted_for_paper": 0,
+        "ledger_unchanged_since": "b4c8e3e20c804b83540fad873c7ce81dde6dd98d",
+        "strategies": 24,
+        "touched": [],
+        "verdict": "NO_GO"
+      },
+      "name": "V12_admission_verdict_unchanged",
+      "status": "PASS"
+    }
+  ],
+  "gates_summary": {
+    "blocked": [],
+    "failed": [],
+    "false_success": 0,
+    "gates": 12,
+    "passed": 12,
+    "verdict": "PASS"
+  },
+  "independence": {
+    "builder": "same agent, earlier pass, fixes c44f912c and f118e556",
+    "found_by_independent_pass": [
+      "A1_EOL_NORMALISED_DIGESTS",
+      "A2_INDEPENDENT_VERIFIER_OWN_BUGS"
+    ],
+    "identity_separate": false,
+    "note": "independence of method only; a different person must sign before this is treated as third-party review",
+    "shared_code": false,
+    "verifier": "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/verify_repro.py + verify_independent.py"
+  },
+  "merge_review": {
+    "commits_branch_ahead_of_main": 305,
+    "commits_main_ahead_of_branch": 3,
+    "full_merge": {
+      "decision": "refused, out of scope",
+      "would_bring": "305 commits (301 supervisor lane + 4 RFC commits) unrelated to main's history"
+    },
+    "main_commit": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+    "narrow_cherry_pick": {
+      "cause": "the files this RFC repairs do not exist on main; they live only on the unmerged supervisor lane",
+      "command": "git cherry-pick -n c44f912c (on main)",
+      "commits_branch_ahead_of_main": 305,
+      "conflicted": [
+        ".gitignore",
+        "scripts/exp004a_verify.py",
+        "scripts/ops_background_audit.py",
+        "scripts/paper_lock_campaign_verify.py",
+        "tests/unit/ops/test_paper_lock_campaign.py",
+        "tests/unit/ops/test_session_status.py",
+        "tests/unit/ops/test_windowless.py"
+      ],
+      "result": "CONFLICT"
+    },
+    "shared_checkout": {
+      "head": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+      "pending_entries_at_close": 28,
+      "pending_entries_at_start": 26,
+      "touched_by_this_lane": 0
+    },
+    "target": "main"
+  },
+  "negative_controls": [
+    {
+      "control": "document_byte_flip",
+      "detected": true
+    },
+    {
+      "control": "campaign_without_schema",
+      "detected": true
+    },
+    {
+      "codes": [
+        "DECLARED_LOCAL_HIDING_MISSING",
+        "POPEN_WITHOUT_WINDOWLESS"
+      ],
+      "control": "declared_local_hiding_removed",
+      "detected": true,
+      "stderr": ""
+    },
+    {
+      "control": "manifest_hash_tamper",
+      "detected": true,
+      "subject": "FINAL_REPORT.md"
     }
   ],
   "open_defects": [
-    {"id": "4.1", "summary": "verify_claims.py resolves ROOT/wt-sup001 and is not portable", "severity": "LOW"},
-    {"id": "4.2", "summary": "LOCK_UNATTRIBUTED flake in the six-process race", "severity": "MEDIUM"},
-    {"id": "4.3", "summary": "uv sync --frozen still exits 0 on a pyproject/lock mismatch", "severity": "MEDIUM"},
-    {"id": "4.4", "summary": "refusal and judged failure share exit code 1", "severity": "LOW"},
-    {"id": "4.5", "summary": "pre-existing mypy/format drift in scripts/", "severity": "LOW"},
-    {"id": "4.6", "summary": "no real lock campaign is versioned; the PASS is on a fixture", "severity": "MEDIUM"}
+    {
+      "area": "tests/unit/ops/test_single_writer_lock.py",
+      "closing": "deterministic reproduction plus a test that fails on the wrong contract",
+      "detail": "intermittent writer race; 1 failure under load, 3/3 isolated; file not modified by this RFC",
+      "id": "B1_LOCK_UNATTRIBUTED",
+      "status": "open"
+    },
+    {
+      "area": "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/verify_claims.py",
+      "closing": "a new verifier that takes the tree as an argument, original untouched",
+      "detail": "runs only from its source tree; preserved byte-identical by mandate",
+      "id": "B2_VERIFY_CLAIMS_NOT_PORTABLE",
+      "status": "open"
+    },
+    {
+      "area": "uv itself",
+      "closing": "run uv lock --check before every frozen sync in the repo procedure",
+      "detail": "uv sync --frozen exits 0 on a lock/pyproject mismatch; uv lock --check is the only detector",
+      "id": "B3_UV_SYNC_FROZEN_EXIT_ZERO",
+      "status": "open"
+    },
+    {
+      "area": "scripts/paper_lock_campaign.py",
+      "closing": "one authorized short PAPER run whose CAMPAIGN.json/STREAM.jsonl are verified unmutated",
+      "detail": "V07/V08 judge the versioned fixture campaign, not a real PAPER session",
+      "id": "B4_NO_REAL_LOCK_CAMPAIGN",
+      "status": "open"
+    }
   ],
-  "independence": {
-    "method_independent": true,
-    "identity_independent": false,
-    "note": "the verifier recomputes from bytes and runs each gate as a subprocess, but was written by the same agent that made the fixes; the mandate's BUILDER != VERIFIER holds in method, not in principal"
-  },
   "paper_admission": {
-    "verdict": "NO_GO",
-    "changed_by_this_rfc": false,
+    "admitted": 0,
+    "ledger_byte_identical_to_base": true,
+    "note": "no PAPER or LIVE operation was executed; nothing was admitted by this RFC",
+    "operations_run": 0,
     "strategies": 24,
-    "admitted_for_paper": 0,
-    "reference": "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/STRATEGY_ECONOMIC_STATUS.md"
-  }
+    "verdict": "NO_GO"
+  },
+  "phase": "closure_and_integration_review",
+  "rfc": "RFC-TAP-PAPER-ADMISSION-REPRO-001",
+  "runs": [
+    {
+      "command": "verify_repro.py",
+      "commit": "ddef6432",
+      "detail": {
+        "drifted_digests": 13,
+        "failed": [
+          "V01",
+          "V02"
+        ],
+        "of": 44
+      },
+      "evidence": "evidence/CLONE_ddef6432_verify_repro_FAIL.log",
+      "result": "FAIL 10/12",
+      "where": "fresh clone, core.autocrlf=true"
+    },
+    {
+      "command": "pytest tests/unit/ops -q",
+      "commit": "ddef6432",
+      "evidence": "evidence/CLONE_ddef6432_pytest.log",
+      "result": "86 passed",
+      "where": "fresh clone"
+    },
+    {
+      "command": "uv sync --frozen; uv lock --check; import matplotlib",
+      "commit": "ddef6432",
+      "result": "exit 0, 118 packages, matplotlib 3.11.2",
+      "where": "fresh clone"
+    },
+    {
+      "command": "uv sync --frozen",
+      "commit": "f118e556",
+      "evidence": "evidence/CLONE_f118e556_uv_sync_frozen.log",
+      "result": "exit 0",
+      "where": "fresh clone, core.autocrlf=true, no .venv"
+    },
+    {
+      "command": "uv lock --check",
+      "commit": "f118e556",
+      "evidence": "evidence/CLONE_f118e556_uv_lock_check.log",
+      "result": "exit 0",
+      "where": "fresh clone"
+    },
+    {
+      "command": "pytest tests/unit/ops tests/unit/reports/test_evidence_manifest_eol.py -q",
+      "commit": "f118e556",
+      "evidence": "evidence/CLONE_f118e556_pytest.log",
+      "result": "135 passed in 45.39s",
+      "where": "fresh clone"
+    },
+    {
+      "command": "verify_repro.py",
+      "commit": "f118e556",
+      "evidence": "evidence/CLONE_f118e556_verify_repro.log",
+      "result": "PASS 12/12 gates, 4/4 controls, false_success 0",
+      "where": "fresh clone"
+    },
+    {
+      "command": "paper_supervisor_verify.py --campaign .../campaign",
+      "commit": "f118e556",
+      "result": "PASS 33/33 checks, 12 mutations, false_success 0",
+      "where": "fresh clone"
+    }
+  ],
+  "schema_version": "RFC_TAP_PAPER_ADMISSION_REPRO_RUN_REPORT_V2",
+  "scope": {
+    "changed_paths_vs_base": 204,
+    "digested_paths": 46,
+    "forbidden_areas_touched": [],
+    "foreign_lane_files_byte_identical": 140,
+    "foreign_lane_files_diverged": [
+      "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/VERIFICATION.json"
+    ],
+    "foreign_lane_files_versioned": 141
+  },
+  "status": "VERIFIED_NOT_MERGED",
+  "verdict_merge": "NO_GO"
 }

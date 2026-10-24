@@ -181,6 +181,30 @@
       "bytes": 6480,
       "sha256": "240f5d5f6474273a7b6569b95ae62b3636e0658f5feaff99f330e96bd40d47f4"
     },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/CLONE_ddef6432_pytest.log": {
+      "bytes": 183,
+      "sha256": "71bbdab178a8dde1a1c094439c4fdf1b48d72ea56dc92976a750740daf2f6741"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/CLONE_ddef6432_verify_repro_FAIL.log": {
+      "bytes": 3747,
+      "sha256": "5d089109fb8ac9ae3b9e05bc56051b91c2772616034c46ab3086f6f07caba050"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/CLONE_f118e556_pytest.log": {
+      "bytes": 184,
+      "sha256": "3aeb8eb9f0d56d32e4a0a770c08e460d5c015857c3cf7de51a4fdf2521410162"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/CLONE_f118e556_uv_lock_check.log": {
+      "bytes": 29,
+      "sha256": "fa03ecbcb057fe83529eb930003dcbfd1b250e049ed526959e5a8513c9f8e009"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/CLONE_f118e556_uv_sync_frozen.log": {
+      "bytes": 2686,
+      "sha256": "a770686e64fc24a287c899bc156abf3f9b5cc409028fe297c3f9e256233bc6bf"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/CLONE_f118e556_verify_repro.log": {
+      "bytes": 2574,
+      "sha256": "bb8c251ad072375f3f5345f99c2663dcf41c1ee45d8315f57de3d5dede50e46a"
+    },
     "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/ENV_DEFECT_after_frozen_sync_lock_verifier.log": {
       "bytes": 860,
       "sha256": "349032a5abbc070dc53d71ea98ce4697e878e1b59b314178d85c5afe25c65f41"
@@ -190,7 +214,7 @@
       "sha256": "03fed1de574c449463162290db2ea9efefa542262742a0f01e7fc8aadac5269e"
     }
   },
-  "generated_at_utc": "2026-10-24T10:51:10Z",
+  "generated_at_utc": "2026-10-24T11:01:16Z",
   "preserved": {
     "FINAL_REPORT.md": {
       "bytes": 10227,

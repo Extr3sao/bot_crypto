@@ -47,5 +47,5 @@
   "undetected_mutations": [],
   "verdict": "FAIL",
   "verifier": "scripts/paper_lock_campaign_verify.py",
-  "verifier_commit": "78ee2087f8feacf10e64f758309325246e8317f3"
+  "verifier_commit": "f118e5560fd2bbc11e094af336db8b153eabb50c"
 }

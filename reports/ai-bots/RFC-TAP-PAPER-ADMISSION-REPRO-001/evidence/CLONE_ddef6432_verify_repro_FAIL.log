@@ -1,0 +1,28 @@
+FAIL     V01_preserved_docs_byte_identical             {"checked": 7, "drifted": ["FINAL_REPORT.md", "NEXT_EXPERIMENT.md", "OPERATIONAL_BLOCKERS.md", "PAPER_ADMISSION_DIAGNOSIS.md", "RUNTIME_AUTHORITY_MAP.md", "STRATEGY_ECONOMIC_STATUS.md", "verify_claims.py"]}
+FAIL     V02_manifest_matches_tree                     {"code_changes": 8, "evidence": 29, "preserved": 7, "problems": ["preserved:FINAL_REPORT.md", "preserved:NEXT_EXPERIMENT.md", "preserved:OPERATIONAL_BLOCKERS.md", "preserved:PAPER_ADMISSION_DIAGNOSIS.md", "preserved:RUNTIME_AUTHORITY_MAP.md", "preserved:STRATEGY_ECONOMIC_STATUS.md", "preserved:verify_claims.py", "after:.gitignore", "after:scripts/exp004a_verify.py", "after:scripts/ops_background_audit.py", "after:scripts/paper_lock_campaign_verify.py", "after:tests/unit/ops/test_paper_lock_campaign.py", "after:tests/unit/ops/test_session_status.py", "after:tests/unit/ops/test_windowless.py", "after:uv.lock", "evidence:reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/AFTER_uv_lock_check.log", "evidence:reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_MERGED_uv_lock_check.log", "evidence:reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_uv_lock_check.log", "evidence:reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_uv_sync_frozen.log"]}
+PASS     V03_preserved_were_unversioned_at_base        {"base_commit": "b4c8e3e20c804b83540fad873c7ce81dde6dd98d", "documents_claimed_present": [], "git_probe_confirms_absent": true}
+PASS     V04_windowless_audit_clean                    {"exit": 0, "high": 0, "medium": 406, "verdict": "CLEAN"}
+PASS     V05_windowless_contract_tests                 {"errors": false, "exit": 0, "failed": false, "summary": "14 passed in 19.42s"}
+PASS     V06_lock_verifier_refuses_foreign_schema      {"checks_scored": 0, "declared_schema": "TAP_PAPER_SUPERVISOR_CAMPAIGN_V1", "exit": 1, "mutations_run": 0, "refusal": "UNSUPPORTED_CAMPAIGN_SCHEMA", "verdict": "FAIL"}
+PASS     V07_lock_verifier_judges_its_own_schema       {"checks_failed": [], "checks_total": 33, "exit": 0, "invalid": [], "mutations": 10, "undetected": [], "verdict": "PASS"}
+PASS     V08_supervisor_verifier_external              {"checks": 33, "exit": 0, "false_success": 0, "mutations": 12, "verdict": "PASS"}
+PASS     V09_uv_lock_reproducible                      {"exit": 0, "output": "Resolved 118 packages in 1ms"}
+PASS     V10_declared_dependency_importable            {"declared_in_pyproject": true, "import_exit": 0, "pinned_in_lock": true, "version": "3.11.2"}
+PASS     V11_scope_respected                           {"changed": 201, "forbidden": [], "outside_allowlist": []}
+PASS     V12_admission_verdict_unchanged               {"admitted_for_paper": 0, "ledger_unchanged_since": "b4c8e3e20c804b83540fad873c7ce81dde6dd98d", "strategies": 24, "touched": [], "verdict": "NO_GO"}
+PASS     control:document_byte_flip                    {"control": "document_byte_flip", "detected": true}
+PASS     control:campaign_without_schema               {"control": "campaign_without_schema", "detected": true}
+PASS     control:declared_local_hiding_removed         {"codes": ["DECLARED_LOCAL_HIDING_MISSING", "POPEN_WITHOUT_WINDOWLESS"], "control": "declared_local_hiding_removed", "detected": true, "stderr": ""}
+PASS     control:manifest_hash_tamper                  {"control": "manifest_hash_tamper", "detected": true, "subject": "FINAL_REPORT.md"}
+{
+  "gates": 12,
+  "passed": 10,
+  "failed": [
+    "V01_preserved_docs_byte_identical",
+    "V02_manifest_matches_tree"
+  ],
+  "blocked": [],
+  "false_success": 0,
+  "verdict": "FAIL",
+  "wrote": "reports\\ai-bots\\RFC-TAP-PAPER-ADMISSION-REPRO-001\\evidence\\VERIFICATION.json"
+}

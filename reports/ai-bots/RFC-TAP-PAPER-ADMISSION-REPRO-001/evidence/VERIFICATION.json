@@ -16,7 +16,7 @@
       "detail": {
         "causes": {},
         "code_changes": 10,
-        "evidence": 29,
+        "evidence": 35,
         "preserved": 7,
         "problems": []
       },
@@ -36,7 +36,7 @@
       "detail": {
         "exit": 0,
         "high": 0,
-        "medium": 409,
+        "medium": 412,
         "verdict": "CLEAN"
       },
       "name": "V04_windowless_audit_clean",
@@ -47,7 +47,7 @@
         "errors": false,
         "exit": 0,
         "failed": false,
-        "summary": "14 passed in 9.48s"
+        "summary": "14 passed in 7.75s"
       },
       "name": "V05_windowless_contract_tests",
       "status": "PASS"
@@ -108,7 +108,7 @@
     },
     {
       "detail": {
-        "changed": 203,
+        "changed": 204,
         "forbidden": [],
         "outside_allowlist": []
       },
