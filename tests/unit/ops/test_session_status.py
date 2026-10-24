@@ -18,11 +18,11 @@ import hashlib
 import json
 import os
 import socket
-import subprocess
 import sys
 import time
 from pathlib import Path
 
+from trading_bot.ops import windowless
 from trading_bot.ops.session_status import session_status
 from trading_bot.ops.single_writer import SingleWriter, reclaim_abandoned
 from trading_bot.vision.ledger import GENESIS, line_hash
@@ -62,9 +62,11 @@ def _start(*, resumed: bool, session_id: str = "sess-1") -> dict:
 
 
 def _dead_pid() -> int:
-    process = subprocess.Popen([sys.executable, "-c", "pass"])
+    """A pid that existed and no longer does, started through the only allowed launcher."""
+
+    process = windowless.spawn([sys.executable, "-c", "pass"])
     process.wait()
-    return process.pid
+    return int(process.pid)
 
 
 def _abandoned_record(pid: int, *, token: str = "dead-owner") -> dict:
