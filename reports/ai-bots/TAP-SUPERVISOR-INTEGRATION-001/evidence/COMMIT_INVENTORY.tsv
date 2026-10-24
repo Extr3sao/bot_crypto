@@ -1,0 +1,302 @@
+sha	date	subject	primary_area	files_in_commit	total_paths
+95bc41804661dd51253c4c592dbb3b4ecfe4a738	2026-10-12	feat(edge): run the real PAPER path and publish the WP-EDGE-00 baseline [WP-EDGE-00]	reports	23	23
+87826d489148b480bab7950f73720a0013cba2f3	2026-10-12	Report the WP-EDGE-00 outcome and the blocked publication on its own record. [WP-EDGE-00]	reports	2	2
+7436e3f8a563f73915d0576f894e4dccf36f9dbb	2026-10-12	Name the commit that carries the report in the report that states it. [WP-EDGE-00]	reports	2	2
+95297b3aa4822623103716627b44adce3e3c4883	2026-10-12	Check that the run's commit is an ancestor, not that it equals the moving HEAD. [WP-EDGE-00]	reports	4	4
+c74a3e12239efb567e222232bfecbc09d0331639	2026-10-12	State every RFC-13 field the closing report needs, in the report itself. [WP-EDGE-00]	reports	2	2
+6a3a09047bdce13977e23b512dbe075dabaa75ee	2026-10-12	Drop the duplicated line the provenance patch left in the closing report. [WP-EDGE-00]	reports	2	2
+1bf9f79483a788f6a3f4a1444610dd28dd777c02	2026-10-12	Report an inactive asset as a universe no-decision, not a data error. [WP-EDGE-00b]	reports	19	19
+4be09fb95b90669fbf10ab73073f8915a7c8020d	2026-10-12	Record the provenance consequence and the blocked push for WP-EDGE-00b. [WP-EDGE-00b]	reports	3	3
+46b72fde7d10dda421730ce2a818e09302f08b2a	2026-10-12	Add the EDGE-01 candidates, simulator, campaign harness and verifier. [WP-EDGE-01]	src	11	11
+7539633964d41d534b79f3519594ffb53f0c6570	2026-10-12	Publish the WP-EDGE-01 campaign results and their independent verification. [WP-EDGE-01]	reports	7	7
+5f6cf817a613133df2c7e1219a507592b3e55e2c	2026-10-12	Split fees from slippage in the per-strategy table and record the push block. [WP-EDGE-01]	reports	5	5
+1a0a6c85299ca09ac354d3bcf797b34a806adff2	2026-10-12	Record the final WP-EDGE-01 git state and the run-to-commit identity. [WP-EDGE-01]	reports	1	1
+ba0779b3c4254a4532984899a5ac989047f5a3ed	2026-10-12	State the missing volatility filter and the next hypotheses explicitly. [WP-EDGE-01]	reports	4	4
+c9687a8a140a7c37b5c6a084e378dff851527f70	2026-10-12	List every WP-EDGE-01 commit and the digest that identifies the measured run. [WP-EDGE-01]	reports	1	1
+d3c28e7ea098c368ef56348729b125f4c1b94537	2026-10-12	Name the commit that carries the sync status instead of chasing its own hash. [WP-EDGE-01]	reports	1	1
+042947cf58b25d3b706b28fde81b4be6986c6c2f	2026-10-12	Record ADR-0027 for the frozen research lane and cite only real commits. [WP-EDGE-01]	reports	2	2
+ab7be9c4c60e8cb01e87f659b3d3baa45d5151c1	2026-10-12	Label every trade with the benchmark market regime it was decided in. [WP-EDGE-01]	reports	12	12
+4d7a67ea49d7c5d801025ef013f447f28382b135	2026-10-12	Hash the code, not one machine's line endings, in the source digest. [WP-EDGE-01]	reports	5	5
+a76297e21e83430e52f4082a7317370681583862	2026-10-12	Refresh ADR-0027 and the sync record for the market-context and digest work. [WP-EDGE-01]	reports	2	2
+03a62bd72323c7891962e6059f11884201e6620f	2026-10-12	State the evaluated period and assets inside each strategy's results. [WP-EDGE-01]	reports	5	5
+ce42ca42c297fe2b6a6594a49b385ed811442666	2026-10-12	Carry the final WP-EDGE-01 git state, digest and verification counts in one record. [WP-EDGE-01]	reports	1	1
+90cee7327e69de1af0d599d9c5b008f43ed3b722	2026-10-12	Model the retest entry and review the 4h trend out of sample. [WP-EDGE-01]	reports	69	69
+752225531529f601c91426538579daadeafeef7f	2026-10-12	Regenerate the derived recovery view with its sources and record ADR-0031. [WP-EDGE-01]	data	8	8
+af250f27811ce7c913d4a89585f531b739fd2d2b	2026-10-12	Anchor the recovery state view to the commit that first carries ADR-0031. [WP-EDGE-01]	data	2	2
+e81eba9a1f184a67589eb7c5fedf02f474023526	2026-10-12	Publish the WP-EDGE-01 closure report with a verifier that re-derives its figures. [WP-EDGE-01]	reports	3	3
+b29f1745c9c6ec324876271869fa7e284fca8d60	2026-10-12	Record the WP-EDGE-01 closure: verdicts, digests, commits and the blocked push. [WP-EDGE-01]	reports	3	3
+94714bd3ec2b0420aef6ed0c746c8c5df5b0e82d	2026-10-12	Attribute the push probes in the closure report to the commands that produced them. [WP-EDGE-01]	reports	1	1
+87f23577e0937c95a190187f23728a7b56349065	2026-10-12	Re-derive the closure records after the report revision. [WP-EDGE-01]	reports	3	3
+cb94dd291dc5221e46d39054fb73cf468242d465	2026-10-12	Stress the frozen 4h trend reading and audit H6's 183 risk refusals. [WP-EDGE-02]	reports	23	23
+f886e53c648eb57b440cfe814e27d77b9b372662	2026-10-12	Record the WP-EDGE-02 closure: verdicts, refusals, digests and the blocked push. [WP-EDGE-02]	reports	3	3
+6070806570787585892a234413d0e004c568db95	2026-10-12	Record that a full re-run reproduces the WP-EDGE-02 tables byte for byte. [WP-EDGE-02]	reports	1	1
+8759ebdf69abaa672c11130a54cb73ff7ba440eb	2026-10-12	Correct the commit counts and list the three WP-EDGE-02 commits. [WP-EDGE-02]	reports	3	3
+ba7ec4b24444053e2bac3ccdb6c8a5c34cd7612a	2026-10-12	Anchor the commit counts to a named commit and list all four WP-EDGE-02 commits. [WP-EDGE-02]	reports	3	3
+04e413875ca3a29afdd9821fc18183242754c981	2026-10-12	Define the commit set by its tag so the record stops being rewritten per commit. [WP-EDGE-02]	reports	3	3
+51bc4976ddcae007e4eade6df4677cfd7856df84	2026-10-13	Ingest forward bars, read the frozen rulesets on them and audit risk parity. [WP-EDGE-03]	reports	25	25
+10a969ac2ec1503eaa4b7b8d3f34bc65b47b9f21	2026-10-13	Enforce the two claims the forward lane made and clear its own gate debt. [WP-EDGE-03]	src	9	9
+3e6eb00bfcde984b45973e9052d9a92e12e37ba9	2026-10-13	Publish the forward observation, its verification and the WP-EDGE-03 record. [WP-EDGE-03]	reports	13	13
+f7af46eb460b92a63d5a124fe3b40fa60267d249	2026-10-13	Record that the reports re-render offline byte for byte. [WP-EDGE-03]	reports	1	1
+1d5eda9e72b0ad07fa1807f2df33a5f5bb761668	2026-10-13	Record the report reproduction and the post-commit push probe. [WP-EDGE-03]	reports	1	1
+5b1e77163f359a048cc73ae4d6f33ae46b4ecfc8	2026-10-13	Say a pid cannot be probed instead of crashing the lease. [WP-EDGE-04]	tests	2	2
+4b845c9d86f870479c97f5130961f8a39381466b	2026-10-13	Make the forward lane tick itself, once per slot. [WP-EDGE-04]	scripts	7	7
+75cb791c189f9210822e961c54d44dfc229d6f9e	2026-10-13	Publish the forward observer's evidence, its verdict and its record. [WP-EDGE-04]	reports	36	36
+e07785b2585d0b4589a9a6dbc0aba53f4ced6802	2026-10-13	Record the post-commit re-verification and the push probe. [WP-EDGE-04]	reports	4	4
+40ba11c722240f11839f521e20c5abd51ceab784	2026-10-13	Watch the forward lane from outside it, and say which silence is a fault. [WP-EDGE-05]	src	4	4
+17d0e44f18b6794daef2ad9d76fbfe984eadd467	2026-10-13	Reconcile the store against the ticks that claim it, and name what is unowned. [WP-EDGE-05]	tests	3	3
+6d62c792e92a355e17d9a12b31fdba218d5376fa	2026-10-13	Verify the watchdog with code that shares none of it, then publish the record. [WP-EDGE-05]	scripts	2	2
+aea659a30fecd00a96c08dc10492fafc33436859	2026-10-13	Plant the market lie where it is always a lie, so the self-test cannot pass by accident. [WP-EDGE-05]	scripts	1	1
+ad2e3e745fad680e6ef77071a84500d8afb05b42	2026-10-13	Publish the watchdog's record, its reconciliation and the Spanish closing report. [WP-EDGE-05]	reports	16	16
+685a1cef314fcbf5934a6971fbc5747898096c89	2026-10-13	Say which reproduction order matters, and re-verdict at the published instant. [WP-EDGE-05]	reports	3	3
+1da979283ccdb3e11e25e23bbde13af3e225e6ab	2026-10-13	Map this work package's own runtime authority, and publish the forward days it admits. [WP-EDGE-05]	reports	13	13
+707c4c72a46a427bb8a0083c7307bd44f8f23500	2026-10-13	Map the proposed tick states onto the vocabulary the lane already has. [WP-EDGE-05]	reports	2	2
+0ad1e53a6ae0608d5858e87b7c5ae347122c8a48	2026-10-13	Stop letting the host's free space decide a test's verdict. [WP-EDGE-05]	tests	3	3
+be4c965f4786bc4fe2d421d6beee1d6ea6b5186d	2026-10-13	Record that the disk floor was crossed, instead of claiming a clean volume. [WP-EDGE-05]	reports	3	3
+5237c76a41fc6af428ee8b1d58b48e53d0f1621f	2026-10-13	Say which reading each count belongs to, so two live readings cannot read as a contradiction. [WP-EDGE-05]	reports	1	1
+2353037186fca450524edbeff5d0e49c1e35d90c	2026-10-14	Read the forward lane once, and render every report from that one reading. [WP-EDGE-05R]	scripts	8	8
+52d75f07ca2824ec537fdfb1992bfa1530608567	2026-10-14	File a tick the lane refused as resource pressure, and publish each instant in the form it was read. [WP-EDGE-05R]	tests	3	3
+f418619372e0eae0bbbdfaaebbd84f54804fdff1	2026-10-14	Publish the recovery, the reading it was rendered from, and the volume's other tenants. [WP-EDGE-05R]	reports	17	17
+bcf398e5453fe2714cbea8f5064e9e613978a482	2026-10-14	Re-read the state at the commit that published it, and record the probe one commit later. [WP-EDGE-05R]	reports	6	6
+bd23cb3ada6450e0b72a32aee3d6c2189a1500a0	2026-10-14	Regenerate the derived state view at HEAD so the rehearsal has a commit to rehearse. [WP-EDGE-06]	data	2	2
+15adfe62878d8c5743db9109f48b468f5733d557	2026-10-14	Version WP-EDGE-06's storage artefacts, which are the first readings of this work package. [WP-EDGE-06]	reports	10	10
+7ba9d999db6a51c23559517a597e57aba2ab41ea	2026-10-14	Register the Track B hypotheses and their parameters before any out-of-sample run. [WP-EDGE-06]	reports	1	1
+e00bfe5f2bca58e73e68f9a1622d11be3a75b441	2026-10-14	Make the scheduled tick the trigger for the lane's derived reading, and declare the volume in the WP-9B tests. [WP-EDGE-06]	scripts	6	6
+fe5c400d9cc69c08f797a703b8e6f376d8922ec8	2026-10-14	Audit the frozen books, decompose the intraday loss, and run three newly registered families. [WP-EDGE-06]	src	10	10
+7a798550de8e6068ebf5a81bf69865f84a960f56	2026-10-14	Render the run, final and verification reports from one reading, and record the published state. [WP-EDGE-06]	reports	7	7
+89b5e2210c8b5d8f6bfd7d11c13eefb8b693b6f1	2026-10-14	Record the published ref, and the fact that the branch is published at all. [WP-EDGE-06]	reports	1	1
+bbf6ace343bc0f3c9463f3275234e9a90f0d41ec	2026-10-14	Re-take the reading after the push, so the committed reports describe the state they were published in. [WP-EDGE-06]	reports	3	3
+edd4ef261cc2393c6ff851cc224d69883ce7d638	2026-10-14	Record the scheduler's own evidence: what it ran, and what it refused. [WP-EDGE-06]	reports	1	1
+046cfd68d955b77ab3530bdd3fa2751c41675531	2026-10-14	Register the WP-EDGE-07 trend validation before the new window is read [WP-EDGE-07]	reports	3	3
+53d905bb369a6860f0618258b83cc0cb16abab6b	2026-10-14	Recover the lane's operating margin from our own scratch, and make the cadence's re-read leave a receipt [WP-EDGE-07]	reports	9	9
+8e66e81b7686aa37098d000ec3379be9f1e31e2b	2026-10-14	Read the frozen trend book on a window nobody had read, and let the registered criteria reject it [WP-EDGE-07]	data	11	11
+e2b3b6c2e38b2d10baf9a2259a24b76d846fa346	2026-10-14	Register two ACTIVE multi-asset candidates and the cost wall they face [WP-EDGE-07]	src	4	4
+838586425b94d741477610a5f59ef598d8bdbdc1	2026-10-14	Screen the ACTIVE books, measure the ceiling they run into, and record the proposal [WP-EDGE-07]	reports	9	9
+b0ddf50914500b56e4df0c670d58b3b2b9a628ff	2026-10-14	Correct the append-only claim: run_id names the slot, not the tick [WP-EDGE-07]	reports	3	3
+85e110898280d9f3dc0b2e76484830302b8cf0d8	2026-10-14	Run the work package's own files through the formatter and the type checker [WP-EDGE-07]	scripts	9	9
+7737481e355f2c41ea4b0cce8e40c9bb8925b2a0	2026-10-14	Render the run record and the final report from one reading of the whole package [WP-EDGE-07]	reports	4	4
+62ce473048d3bcc8ff4afb1a8c950ec40f57259b	2026-10-14	Re-take the reading at the commit that publishes it [WP-EDGE-07]	reports	5	5
+196deb49475e171c4a4ef3b0a21620e0f4a8be39	2026-10-14	Read the published ref back from the remote instead of asserting it [WP-EDGE-07]	reports	7	7
+07deeb40dd3f28781e7d6f64d6701dbec0330e59	2026-10-14	Count uncommitted work, not the files a reading is in the middle of writing [WP-EDGE-07]	reports	7	7
+69f85d2f4bd19ae392b8a72b61e921d33a70f5a1	2026-10-14	Re-take the reading at the published commit, so the three reports agree with it [WP-EDGE-07]	reports	6	6
+ebdafc32a34aa43866632004610498599703b7af	2026-10-14	Render the executive report, the per-window table and the cadence receipt too [WP-EDGE-07]	reports	8	8
+52d30c08498f5a53dc4d6d074cc0edb43673423d	2026-10-14	Re-take the reading at the published commit, including the Spanish report [WP-EDGE-07]	reports	7	7
+d30d52d068c165f0da06af8bb9356e6c60a5f0f9	2026-10-14	Stop hashing the reports that the reading rewrites after hashing them [WP-EDGE-07]	reports	8	8
+9e2c04ee06f4d6dee2436b4a790a554fe0e27484	2026-10-14	Re-take the reading at the published commit, with every digest matching [WP-EDGE-07]	reports	7	7
+18e2ad9434d4cba676a8491623dd60fa13f09303	2026-10-14	Register RFC-EDGE-008 and fetch the one resource this project has not read: a cross-section.	src	28	28
+abef18eb41b597e949f73b83a9f0dc4d6e956530	2026-10-14	Screen the three QUALITY books, and record the defect the screen itself exposed [WP-EDGE-08B]	reports	5	5
+5094a0ba8cdaa219ad3b8a091e81414dc350fa5b	2026-10-14	Screen the ACTIVE books on a clock the cost barrier can pay [WP-EDGE-08C]	reports	3	3
+035bb500a0d4fe996ba226a05a1d6662da4dc8e0	2026-10-14	Publish the economic matrix: nine arms, three windows, three cost scenarios [WP-EDGE-08D]	reports	4	4
+a595cbf8cbfbe161b327e6269a4c2aff74890566	2026-10-14	Read the cross-section once, and let the registered criteria reject every arm [WP-EDGE-08E]	reports	6	6
+9436322e823078f08306fb73cc716fafea9f0182	2026-10-14	Verify the package from the outside, and prove the verifier can fail [WP-EDGE-08F]	reports	3	3
+5c34cc718ff3d6b8a6e7b82062d26be3c1be3140	2026-10-14	Read the whole package once, and render four documents from that one reading [WP-EDGE-08F]	reports	8	8
+ef5c8f2baa4a1da22d494f30c68711c661ff4e6b	2026-10-14	Re-take the reading at the published commit: nothing of this package is uncommitted [WP-EDGE-08F]	reports	5	5
+a0d947ea5b3e565cd09256b9b36ed42fa1f9dad2	2026-10-15	Audit the estate, probe the sources, and build a point-in-time panel from the forward capture [WP-EDGE-09A/B]	reports	20	20
+552423699a06e1207de5922fa75b6e71249f9d22	2026-10-15	Freeze the ladder and price the barrier before anything is measured [WP-EDGE-09C/D]	reports	7	7
+6f24216e5cdf9d99e53df7d640549eed9c825ae5	2026-10-15	Run the registered experiments, and count an opportunity the way it can be executed [WP-EDGE-09E]	reports	8	8
+9490ea5bb2d0bf51bb9fece54e8d71a75f8109f4	2026-10-15	Render the artifact names the RFC asks for, from the payloads already frozen [WP-EDGE-09F]	reports	18	18
+a60fc9d18ed731ccc3fb75b6922de547caf2436c	2026-10-15	Verify the package from the outside, and prove the verifier can fail [WP-EDGE-09F]	reports	3	3
+40b459efb6d4611be56b24923d543f7d5a242b8c	2026-10-15	Read the whole package once, and close on NO_ECONOMIC_EDGE_FOUND with DO_NOT_ADOPT [WP-EDGE-09F]	reports	8	8
+7c4dc8d7d14fbbe5b1d3b2ff400bc1a66844d4c6	2026-10-15	Re-take the reading at the published commit, and say which commit the baseline is [WP-EDGE-09F]	reports	8	8
+eceef9ee3cdddddc1b45e0e36647ee2282745da8	2026-10-15	Write the executive summary in Spanish end to end, including the verdict and the decision [WP-EDGE-09F]	reports	6	6
+d5c93bd9f7246122792694cbfb86537637c00612	2026-10-15	Run the wider research suite too, and declare the one failure it inherits [WP-EDGE-09F]	reports	9	9
+26eeea47b64cb0124d9eb46fb76a7d2846c745a0	2026-10-15	Render the declared limits in Spanish too, instead of quoting the English registration [WP-EDGE-09F]	reports	6	6
+351ecbaf0ea05c03409ea795c41a181755d3801b	2026-10-15	Make the day hashes and the publication pointer answer for what they claim. [WP-EDGE-04]	tests	3	3
+046c7dfa71b37b91d637ab97a9977b909297e055	2026-10-15	Re-run the closure three days on, and record the two refusals it earned. [WP-EDGE-04]	reports	33	33
+f1a6b3117a1e5ba50d5be011a8d5b345211db37e	2026-10-15	Record the regression, the two commits and the push probe. [WP-EDGE-04]	reports	2	2
+570ccd658f6f6b3919f9ac37bfe519ab813c33fc	2026-10-15	Re-take the evidence with the code as committed, not one edit behind. [WP-EDGE-04]	reports	18	18
+5980e37023427dd4c9053a2ddbfcc9ec2936a431	2026-10-15	Reprobe the remote after the commits instead of quoting the earlier answer. [WP-EDGE-04]	reports	2	2
+98d594eff2555b282cc8bfe3210a66ac8d2deb6b	2026-10-15	Attribute every trigger the forward lane lost, and probe what would stop it. [WP-EDGE-04R]	src	9	9
+40b3665c9c0824087cca068be8eabfe7d46fbe9d	2026-10-15	Publish the attributed continuity reading and the evidence it was taken from. [WP-EDGE-04R]	reports	14	14
+b89227365365b72a14828384d27310b762967648	2026-10-15	Name the witness so version control can carry it, instead of claiming the line. [WP-EDGE-04R]	reports	4	4
+5daa3c0c17e07a00b8aa6fa45c3a31c4b86a564f	2026-10-15	Record the published commits, the blocked push and the one inherited failure. [WP-EDGE-04R]	reports	4	4
+e6a9df8ea00fa1dc17903e5348f5511e68c33588	2026-10-15	Anchor every declared path, freeze the reading's instant, and rehearse the definition. [WP-EDGE-04R]	scripts	6	6
+04bf155375aeeb137c04ac8fc4755f64faa340e1	2026-10-15	Re-take the reading at the code that carries it, and record the four defects it closed. [WP-EDGE-04R]	reports	14	14
+151c9e0c7c5584772d6d5244ff21c54587cb9fea	2026-10-15	Record the published ref read back from the remote, not from the push. [WP-EDGE-04R]	reports	3	3
+6684791830eba153c77aa2fe6c71ed1d2e9abeda	2026-10-16	Make the forward lane's continuity provable, and stop the scan certifying itself. [WP-EDGE-12]	src	19	19
+b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce	2026-10-16	Publish the continuity reading and the mechanism that is still blocked. [WP-EDGE-12]	reports	36	36
+a89c067fea9b617d08d98de805ad2eab14dbb100	2026-10-16	Re-take the reading at the code that carries it, and name the ref the remote returned. [WP-EDGE-12]	reports	34	34
+f34e43f5817ef862fd2f555c461a6f87f6966e3e	2026-10-16	Render the sentence from the figure it sits under. [WP-EDGE-12]	reports	10	10
+c047c87a7c3ec3c31d088aae803c9df92e9b6a7a	2026-10-16	Read the Spanish report's figures instead of leaving them blank. [WP-EDGE-12]	reports	8	8
+37971887163f7bbb0cbfe99656bf021f5218abdf	2026-10-16	Ask the remote again instead of quoting the gate's earlier answer. [WP-EDGE-12]	reports	8	8
+3e27ca855a2fa778e0b63361783b71fa76c850c9	2026-10-16	Rebuild the cost contradiction from its source and audit the real trade path. [RFC-EDGE-014]	src	13	13
+60b8c47d6b1fc4d27ffa1ec6caeeaafa7fe4865d	2026-10-16	Publish the recovery evidence with its independent verdict and sabotage suite. [RFC-EDGE-014]	reports	22	22
+c4c1fae64d6676cc7ac9dee1a4b6896e5f0593e8	2026-10-16	Re-take the recorded HEAD at the commit that carries it. [RFC-EDGE-014]	reports	11	11
+256f0224d0648e90b394f099a3133d9f5654eaf1	2026-10-16	Drop an import the report renderer no longer uses. [RFC-EDGE-014]	reports	7	7
+d31fbbc8091499d8915a5cd5493801096a9f449c	2026-10-16	State the one-commit lag instead of leaving it to be found. [RFC-EDGE-014]	reports	7	7
+65f32bd640d7c6a5c5236f3890b224b174276b55	2026-10-16	Record the verification's own re-run, which differs only by its timestamp. [RFC-EDGE-014]	reports	1	1
+ee3922e9f8e8d240a4c674e8d138f8c8968cc62e	2026-10-16	Render every deliverable the brief names, and register the mapping. [RFC-EDGE-014]	reports	31	31
+dbddc585e4fe78d17a971edf7b2e31c959cef910	2026-10-16	Answer the recovery brief with executed evidence, and reconcile the paper arm's ledger. [RFC-EDGE-014R]	reports	56	56
+92327fdb4d42347b67086883cee4c0d414016fa0	2026-10-16	Repair the cross-package failures the suite surfaced, and record the autonomy policy. [RFC-EDGE-014R]	tests	5	5
+8d293c3ca0646cf0babd7bae95d9b430a16dc7c3	2026-10-16	Record the published state in the checkpoint. [RFC-EDGE-014R]	docs	1	1
+a7b3d49aad5a26929969bb1d5b02e9045578bcaa	2026-10-16	Let the published paper ledger be checked by a test, not only by a reader. [RFC-EDGE-014R]	tests	2	2
+078aeebea64fece188ba2a220713cc1a901d942c	2026-10-16	Re-verify the package at the commit that ships it, and record the final gate pass.	reports	3	3
+b4ff58892263b44de122b8fe6b08239ffb831032	2026-10-17	Freeze the WP-EDGE-015 protocol before its data, and stop trusting the builder's own arithmetic.	reports	19	19
+a6943c4c4e7d4f87d0ecf076600e837a586b486e	2026-10-17	Preregister the holdout in one commit and capture it in another, so the order is checkable.	reports	14	14
+c8c208da003554f0402d8b03f83f1eefe28a5414	2026-10-17	Write down what the search found, including the family it rejected for being a lottery.	reports	6	6
+5308b9dbba0f343b350046f943bcce9da28d0d97	2026-10-17	Verify each reversion decision against the bars it could see, not against a second guess at the list.	reports	6	6
+d45a1fa2e75641f32c329d1f009c54ce00dc812f	2026-10-17	Capture the first prospective hour, and record paths a clean checkout can follow.	scripts	5	5
+87b9c6af7bde9723595d201cc93e91b718a35edd	2026-10-17	Let the lane meet the new bars, and give the broker a clock the evidence can hash.	reports	13	13
+35eecf5bd4c183b0db3ba95f75ed1ed1645818a7	2026-10-17	Name the commit whose code produced the figures, not the one before it.	reports	4	4
+2b8a6ed7f66f6e7d30c41ab2c52150cad765bd1b	2026-10-17	Put the incumbent in the table, and let the verifier rebuild it from the policy.	reports	11	11
+6f04e59b2c44fe1064a315c9217aa905e1ec60f7	2026-10-17	Fill every exit at the bar after the close that decided it, not before.	reports	41	41
+267c7a70d2e888d89852065513b14aefa254f216	2026-10-17	Sign the evidence against the commit it describes, not against itself.	reports	7	7
+cfa72d2584bc7b259e8801e2b47c5b405e929f02	2026-10-17	Write down who owns each decision, and reconcile the repair as data.	reports	14	14
+253692835f9e9ba5822a680d90be234570ec1242	2026-10-17	Point the checkpoint at the two evidence commits that followed the repair.	docs	1	1
+5b86b656f9a5015c19e55b49b3f16456bec66b8e	2026-10-17	Charge the venue cost inside the paper book, and stop the holdout from destroying itself.	src	18	18
+ffd510589d94fa19ce589831f4943e3e704b66bf	2026-10-17	Publish WP-EDGE-017: append-only capture, a measured collector rate, and net-risk replay.	reports	44	44
+9733f12479ceceef9ceac57dbfec708b28e89c14	2026-10-17	Pin the holdout slices so a CRLF checkout cannot invalidate their digests.	other	1	1
+c3e030a6c53be524ecba79a657615673daf85b4a	2026-10-17	Regenerate the active economic audit after the paper launcher changed.	data	2	2
+1ad3a3799a9c572fb3df85547e2f52b4ba989b54	2026-10-17	Serialise the holdout capture so two collectors cannot lose each other's bars.	scripts	8	8
+1869f53584f1a41220365229a851a4ee01ee3894	2026-10-17	Refuse a futures size whose quantity quotient overflows instead of crashing.	tests	2	2
+14e892c7eae5b4367b4e478cc896eb5f79d12033	2026-10-17	Record the real recovery blocker and the evidence gathered this session.	docs	1	1
+5c81aad94e1bf67b72c56d479a5ac06034397d73	2026-10-17	Point the checkpoint at the actual remote head instead of a stale one.	docs	1	1
+9dbbbaeeddeffbcaa8a0bfdca05ddaf632e9ad6d	2026-10-17	Roll the weekly loss window at Monday 00:00 UTC instead of never.	src	6	6
+05b977e757eb4e98ddfc6cb2f124156ee7d0dae0	2026-10-17	Measure drawdown from the equity curve instead of publishing a peak level.	scripts	5	5
+ff339bb5d0610bf88284c1c4fc0e1e9d4d22ad7b	2026-10-17	Publish per-bar capture provenance and derive the report text from it.	scripts	2	2
+126cf95a7c55936503bd1505e8897b99b595c336	2026-10-17	Capture sixteen more prospective stripes and classify each by when it arrived.	reports	7	7
+7ef645815932dea1947ad058e0ffa05e08cc731d	2026-10-17	Re-verify EDGE-015 against the committed slice: 35/35.	reports	2	2
+34622f3c9adeeb2c2417b2edff3d5754f3f54ae3	2026-10-17	Re-run the net-risk replay at 1x, 2x and 3x from this code.	reports	17	17
+64da0cd8c0c2a2b72369638300e26647fb9c168c	2026-10-17	Close 017F with the suite's real result and the per-test owner of each failure.	reports	9	9
+b17644a6b458dcae5aae0000e11d2f4736b4e883	2026-10-17	Record the suite result on the published commit, not on its predecessor.	reports	6	6
+9cf91f628443edd4407b54688f8ead95df5c1806	2026-10-17	Let a vision model decide on a chart without letting it touch the risk policy.	src	21	21
+5999d186bbcee47cda0fb9b152227b81718fa9f4	2026-10-17	Publish the vision report with its blocked evidence instead of a claimed result.	reports	8	8
+091d55dfc867e13f11a67b0772a72d032a603760	2026-10-17	Refresh the blocked evidence with the exit codes of the final verification run.	reports	2	2
+520a6df970a6a77d641ae2967c4cec7cecbc231f	2026-10-17	Fix the chart's ink and refuse opinions the runtime cannot execute.	src	11	11
+317d161a3d054ec8b8b5690f362aa3cb71d5ab76	2026-10-17	Give a discretionary bot an opinion contract and a registry it cannot escape.	src	7	7
+76d3992fd180c301ac0618c6f1e2da94f623a134	2026-10-17	Run both bots on one book and publish what the run proves and what it does not.	reports	68	68
+132fd9f5b96b7f2d33b67aaa8bc0ac3971080fd7	2026-10-17	Record the published commits so the next session resumes from Git, not from a claim.	docs	1	1
+33041903f33681e41c504b4e6ce398df91f15bd8	2026-10-17	Probe the blocked live path in a scratch directory instead of over its own evidence.	scripts	1	1
+6f637a7fbce9ff5a0997c49d554ad2b21184b601	2026-10-17	Name the tests the report cites by the names the suite actually runs.	reports	1	1
+e4db7da3c8f57341c359ba627d5f6d1fae999e72	2026-10-18	Fail closed on a foreign image hash and on an answer that arrives too late	tests	4	4
+acf509f24dd0805bc595a2ab7132923910953231	2026-10-18	Run REA against the real nof1.ai bundle and refuse to certify what it cannot show	reports	29	29
+3743211679c33b18e36b104a139045564ecddb70	2026-10-18	Record the REA-FIRST session so the next one resumes from Git, not from a claim	docs	1	1
+a0ca055dc1d8e2e389b2d37fc05ddd02dc73b7f9	2026-10-18	Close the RFC file list and make the verifier check it instead of trusting the report	reports	19	19
+6403c71022c53019c91622eef4c6504d83aaeb2c	2026-10-18	Stop calling a public bundle a repository, and go measure the real commits	reports	48	48
+4dba317840e2804371d6d7c59b118376a951662a	2026-10-18	Run FenixAI's renderer offline instead of only reading it	reports	13	13
+0ca1c7c6a9a7a72e367bb98e6f026fa4c1dafc04	2026-10-18	Stop reading an exit code of zero as a successful REA operation	reports	5	5
+c4e6e3b5ec3f40090a0aa66fee2733c0b00c9546	2026-10-18	Make one number mean the same thing in all four REA reports	reports	6	6
+b5d8a08d497f89122a8e53ea543a988c5f488ab5	2026-10-18	Derive every REA report from one classified ledger	reports	23	23
+9d1c3812dc71848f007a93d64957c86d8a389c4e	2026-10-18	Keep the mutation verdict as evidence, not as console output	reports	5	5
+243ba12fd1668007b744135b3197fd999e3be0fd	2026-10-18	Hash evidence in canonical LF so a clean checkout verifies	scripts	4	4
+978c485fbc795472473066ee6a1cd6c172e837ad	2026-10-18	Give every evidence pin one hash domain and publish without deleting	reports	25	25
+b7e100ae7317a0bba71c0f4118ed8a154dd58d18	2026-10-18	Record the EVIDENCE-004F result where the next session will look for it	docs	1	1
+2557a9f229f22e1f3c60e921e5b10dc83867bb94	2026-10-18	Timestamp the vision decision when the bar closed, not when it opened	src	9	9
+2921f6d83016592b88ec1b93f709fed5a11374d1	2026-10-18	Checkpoint the closed-bar clock before the next block starts	docs	1	1
+96957a2be068322459849855735d5ca368519040	2026-10-18	Fill at a quote that exists after the answer, and check the bar you enter on	reports	68	68
+e6707f9c7d81c64b4839d6cfe222f220e7dc7e29	2026-10-18	Publish the Block B evidence with a verifier that reads the ledger on its own	reports	4	4
+ffbc0cad593bbe3a8202a99d6c90fd9a499fda03	2026-10-18	Record where Block B left the lane so the next session resumes from Git	docs	1	1
+86d4f1269dd3f64793c60aa1903e78c07ed6d516	2026-10-18	Settle an open-gap stop before the same open approves new risk	reports	42	42
+eeb0bea1049e551bd4744e5f1d4ea195f4b5d139	2026-10-18	Record the clean-archive rehearsal for the open-phase block	reports	4	4
+e7f93149090101eaaea1b3bf4807bfea4f46fb71	2026-10-18	Pin the bars a paper run consumed, not just the file it read	reports	11	11
+0841d372cdf36e6b52b6d8ed2e02b9d4e8c23a5e	2026-10-18	State why the clean-archive rehearsal still covers the published head	reports	1	1
+fe9b5e2623b0d023833249e9687b753eaacd27d4	2026-10-18	Start automated children without a console window	reports	53	53
+5fd791d877af78f855bf0c75e3358344b8a5a8f1	2026-10-19	Publish the AI-bots PAPER chain with an auditable ledger and clock	reports	169	169
+ed61ec6bde292c66655e37b122b99c3f58cf9a8d	2026-10-20	Verify EXP-003J from its raw artifacts with a second, independent program	scripts	2	2
+52c52aaa3ee8a25ca99fbb1f6beaf42ada4ff64c	2026-10-20	Give the PAPER runtime a real, opt-in signal source it can execute	scripts	10	10
+56aea83bb05ae2de5e6372e78d9de15f00b7bc8c	2026-10-20	Name the evidence run in the 003J report instead of only its timestamp	scripts	1	1
+b0e15497d967ff1c1d3015203ffb7cbfcf0a70a0	2026-10-20	Admit every existing AlphaFamily to the paper lane and prove the cost barrier	scripts	19	19
+f01481369086a218ec900e5f79fb5f54c4caff67	2026-10-20	Price maker fills against the observed trade tape instead of assuming a touch	scripts	9	9
+10919df42b13e6d941906d4f385f6138257535ba	2026-10-20	Publish the fill-reality evidence so a clean checkout can re-derive it	reports	22	22
+98009257a7c36589291f9e0d9797b438837f24b2	2026-10-20	Store the fill-reality artifacts in the bytes their seal hashes	other	1	1
+fefb0771036c33c648ecb2ed11cb28e8c2b49264	2026-10-20	Seal the fill-reality evidence without the predecessor's untracked tree	scripts	1	1
+a5bda8fa3da70d7422d4333afdbd0285c8eb42b2	2026-10-20	Freeze the gross-first protocol before publishing the numbers it explains	scripts	14	14
+cd3fc313c2121b80c0e50feaa3bd992d2ff5633b	2026-10-20	Publish the gross-first measurement so a clean checkout can re-derive it	reports	15	15
+6b0dac1ed930d66cdbd6689e2da40bcb69e12852	2026-10-21	Prove the gross-first numbers survive a checkout, then seal them	reports	20	20
+277d1dfee40be91a3ce6024ce54be534d1de9bbc	2026-10-21	Record what the sealed checkout can and cannot prove	docs	1	1
+f831c669f2e6fc34a5e828bb753b9dab2bd7da50	2026-10-21	Make the preregistration gate reusable and prove EXP-003N from a clean checkout	docs	10	10
+4ea93d815ed6e3573239ae34bd7782cff4efe9c0	2026-10-21	Freeze the independent-signal protocol before a single comparison runs	reports	12	12
+d05f8de498c175f7a9b8ccdd38e6e1067832d5e6	2026-10-21	Make an opinion that cannot be accounted for stop the run	tests	23	23
+47116b2f2c5fd37ed1a60550eefe17d8bd703638	2026-10-21	Give the gate a two-phase freeze and seal what the observer actually watched	src	25	25
+fed25aa893fa6964a22afa61a51e5e68ef930335	2026-10-21	Bind EXP-004A phase 1 to the commit that froze its measurement code	config	1	1
+47808ce1f8c06c1369c67b27ac5beed07bd97848	2026-10-21	Record the post-commit gate refusal and the byte-exact clean checkout	docs	3	3
+5f25b8813e447196e8cd38ded00b53c213d80c3d	2026-10-21	State the accumulation cadence honestly: automatic observer, invoked counter	docs	2	2
+8aac8b475a156d7961c0d15fa74c5ec9a175af50	2026-10-21	Correct the test total in the EXP-004A report to the 115 actually run	docs	1	1
+00526da1ff6d269b598a477a7e91d173da5194a1	2026-10-21	Hand the EXP-004A evidence to a verifier this commit does not write	docs	12	12
+d7181f6f05a8a1214509f12eaf89a41c5a11939d	2026-10-21	Make the handoff's own digests survive a checkout	docs	4	4
+ec895bfb50ea93cb04ffe5533c83dcd265fc969b	2026-10-21	Say which digest to compare, because the wrong one is a false mismatch	docs	5	5
+3000b9c266a3670fbc3130e98b338846ba17ce58	2026-10-21	Make the independent verifier judge the data, not its own arithmetic	reports	48	48
+78a0da82a2328535776450bdb680b347e0978a48	2026-10-21	Record what the verifier got wrong before it judged anything	scripts	1	1
+54d010c38d17c8c00c6b41852a0fb03ed3ca0b62	2026-10-21	Say INCOMPLETE when the parity holds but the coverage does not	scripts	1	1
+784046c0e97e390d411c4620505a861a67744e86	2026-10-21	Seal the independent-signal evidence at the commit that produced it	reports	8	8
+fe196d795e404a50ec74d6f743ac594fe609702c	2026-10-21	Name the two things that stop this run from being a PASS	reports	6	6
+cedfcb5c5d0370721d83f2c2f643f81c5a36a9dd	2026-10-21	Bind the sealed report to the commit that holds every line of its code	reports	5	5
+881f0610a13d971404e7aaaa24d486a15b4d7277	2026-10-21	Reproduce at HEAD, not at the commit before the report changed	reports	6	6
+a3a22e3ee8197a2061e173fd56e4ea80653c8579	2026-10-21	Recompute EXP-004A from its bytes and refuse to call this certification	docs	11	11
+f55e923a4b9221144b631b790c97e7d8976d58cb	2026-10-21	Index the verification run so its claims, tests and artifact hashes travel together	docs	2	2
+c280a1fe43743577abf22ba6d86223197e1c858c	2026-10-21	Make the lag condition universal so a late bar cannot ride the coverage budget	tests	2	2
+65b4845878a0cf7f82806df8e2381b358b9c2462	2026-10-21	Record what the paper execution boundary actually does	src	22	22
+70d63ce54cf4fb3726c607a010d70e6666a6ad4e	2026-10-21	Stop the reproduction gate from comparing a run with itself	scripts	3	3
+5b27731a02bc6d496b9ba9401b1b8b6cc785e0bf	2026-10-21	Seal the DEF evidence so a clean checkout can verify its own bytes	data	53	53
+d2aea555d952cccd1204764bea836528552d7471	2026-10-21	Record how the checkout's environment was built	scripts	1	1
+54625178d44848c14c1badef4b5c6eab61fb1f11	2026-10-21	Stop a late bar from riding the coverage budget in the recorded verdicts	docs	11	11
+4fa20f7a4bfb069c7c01b41dbc31979efc8e56f2	2026-10-21	Point the reproduction at the ledger the audit actually writes	scripts	2	2
+daa7bdefd03af292a7c36a4951630ece6a008e7d	2026-10-21	Make the declared phase-2 generator exist before the capture window opens	tests	3	3
+9488c60c99ef84b127dedea1497820666e24b8c8	2026-10-21	Mark the 20 bps alternative branch unreachable instead of moving the threshold	docs	1	1
+2d596572c51dbf81f3389fece4a94fc6e796f43f	2026-10-21	Measure the verifier's imports instead of searching for their names	scripts	3	3
+62aabbaf858aed5083ab89a36c94937024ed1638	2026-10-21	Close WP-051-02C with a differentiated verdict and a hashed evidence manifest	docs	2	2
+43d71221fa44210ac8b1cf54ff071a56bb8430e5	2026-10-21	Decide determinism by content, not by the commit a trace happens to bind	scripts	4	4
+6c970a45d3ca44b333d0d2a315280c692b2c14be	2026-10-21	Seal the environment the reproduction was installed from	scripts	3	3
+45c0b0350e1be29197046101ae2d0b337f43221a	2026-10-21	Run the broker's own suites, and run them inside the checkout	scripts	2	2
+bdd96f4cf9eda379294d92282aa78707c669ffd5	2026-10-21	Leave another experiment's suite out of this gate, and say so	scripts	2	2
+fc036d967923f09a6092cb0e5de7409afd07ebd7	2026-10-21	Make the phase-2 extractor ask who authorised it before it writes a byte	tests	5	5
+a179ed0d74bfc5fd00383b2d575c9949ca6e1f95	2026-10-21	Declare the phase-2 capture under the code that will run it	config	1	1
+ff9e3310e0f9b812faf0b4df8c76d0efe27daf74	2026-10-21	Publish the 003P artifacts the reproduction evidence refers to	reports	51	51
+e170ae1ed161240fdd57f3c2b2b0f30f3659d5b5	2026-10-21	Compare the file Git would commit, not the bytes a checkout happens to hold	src	1	1
+59c557f0d3151976e9ce377d4140292e1d6899ff	2026-10-21	Make a checkout prove its environment is its own	scripts	2	2
+421590ced3ed435c95c92c09aed6b7bbe1898185	2026-10-21	Read the checkout's environment instead of crediting the install command	scripts	2	2
+583c66379a26b6924e1ebb07488866825b45d865	2026-10-21	Put a verifier between the phase-2 declaration and its own claim of provenance	docs	11	11
+59bc7ca21ce2221e75368f55122ab51dd4c5ed89	2026-10-21	Append the environment audit to the verdict the comparer owns	scripts	1	1
+ca2a740e2305d8f9d68049a39d0b2b6f8c72bef3	2026-10-21	Compare the slice to the store's own bytes, and give the fixture the same treatment	docs	3	3
+0c54133308fb85dd5aef13d957232798326557be	2026-10-21	Let the verifier adjudicate its own control instead of the RFC doing it in advance	docs	1	1
+61c9fd61869f6b68739d051f0bc55016c0ccf565	2026-10-21	Close WP-051-02D with a sealed manifest and a verdict the builder did not write	docs	5	5
+15721195a6889d0f44253fb2f085c7a8732e4ee6	2026-10-21	Record the reproduction of 59bc7ca, including the environment it ran in	reports	5	5
+3fecd6da985873722607f872d3b47937ea4b3f36	2026-10-21	Decide the verifier's independence from its imports, not from its prose	scripts	4	4
+8ee8b5af455802304002223b6a24efbf4f472b02	2026-10-21	Number the two defects this closure found, and say what they cost	reports	4	4
+843ee5cb72421701cd291aa88b494db16b4694ff	2026-10-21	Link each run to the ledger that produced it instead of declaring it resumed	scripts	5	5
+31665af2439cc639f8d26a255993fa6275147542	2026-10-21	Say which tree the verifier judged, not only which bytes it read	tests	2	2
+176ab4c4222b855a95c11c76c21a61ec2b447d83	2026-10-21	Publish the sealed package verdict next to the reproduction verdict	tests	2	2
+8176502f4f39f733df990be64a50b1b71b602087	2026-10-21	Type the dataset digest as a sequence so the fingerprint check type-checks	scripts	1	1
+c0b86b1e0ae9f0bc85f2c48ebb7f046be0cda050	2026-10-21	Name the attempt instead of assuming it: PENDING_WINDOW, verified from outside	docs	19	19
+b74285bea94183e9e2a06fdc73cb9d5af8a73eb1	2026-10-21	Seal the 02E package against the commit that carries it, not against the worktree	docs	1	1
+a8b4dbb64ac2c432d345125577abe4d5bc637803	2026-10-21	Seal the logs the run reports point at instead of leaving dangling paths	docs	10	10
+8966daa635e1c048d7e322f38deb80975becd368	2026-10-21	Point the seal at the commit it can actually see, not the one before it	docs	1	1
+b852939f78042a8769eb7d0496669900c4229500	2026-10-21	Record the running commit in the RUN header before the first decision	src	8	8
+396b1284528b02d9191409892f3ff2814e1f928c	2026-10-21	Refuse to publish a run whose runtime is dirty and share the book id with its control	scripts	1	1
+87ad0d7ac44c6f9c3a45b7606b4836ccd80da5bb	2026-10-21	Name the verifier artifacts the run report actually reads	scripts	1	1
+9e652712c163baebdbea46bef0361011a5637d30	2026-10-22	Pin the runtime a paper session will decide with, before it decides	tests	4	4
+2b6de6fc49ea8601ed2cf37049ef5efc4348ddf7	2026-10-22	Check a session's provenance without asking the module that wrote it	tests	2	2
+4773f9ec4f318e22d682ed3c89efccd52d4727dc	2026-10-22	Run the session and measure it, instead of describing it	scripts	2	2
+f20dff9b71fd10a5f110ab6cae88e817c6f5d428	2026-10-22	Keep the delay a resumed session pinned instead of re-measuring it	tests	2	2
+2ed43ad491d542ecd82c380c50823d823d22b184	2026-10-22	Start the resumed test half a minute off the boundary	tests	1	1
+ff49e715159fde5359cf3b30ad5bf89fc4c1728b	2026-10-22	Judge a directory that holds more than one session	tests	2	2
+f7d2345e7a58c6f691e5b7a4c754face60df0424	2026-10-22	Let the replay clock advance, and add the controls that must fail	scripts	2	2
+b0a0b1db690e0b0f08bf0c8bfd7e81e5374a7032	2026-10-22	Let the A/B start where the recorded window is still wide enough	scripts	1	1
+900fd9801cd9c4c22d6ebfe3e2d6e1245a623219	2026-10-22	Compare the decisions, not the wall clock or the header we added	scripts	1	1
+5314559fb93266ea5c05343baac1eae6e450d4fe	2026-10-22	Build the evidence pack from the artifacts, not from memory	scripts	1	1
+be5b68e12541c62a33be32ef9b9af8ccf0ec7cb0	2026-10-22	Run the frozen phase-2 capture without reinterpreting it	docs	42	42
+5817184e7ab90f6233231f131a4f37029539838d	2026-10-22	Seal the report the package is judged by	docs	2	2
+f3064af7d507647677ac8af519575c28674e5bcc	2026-10-22	State the suite counts the report was deferring	docs	3	3
+ceb0b3f699150f2ed8bd7f9a911cf984d5774642	2026-10-22	Refuse the verdict when the suite it prints has failed	tests	2	2
+8639b913940648ba3c187abf6c0844957984e1f4	2026-10-22	Name the verifier and the recovery commit in the pack	scripts	1	1
+ea7240ad4d28c15b04699e7c1ca58824c6232cc8	2026-10-23	Derive the last commit instead of listing it	scripts	1	1
+5227fd543adc7514c8255aef39c8be5b83395156	2026-10-23	Name the closer among the files this package changed	scripts	1	1
+01b4393a1cd702632cd819be794c7186f39c3812	2026-10-23	Resume a killed paper session instead of dying on its lock	scripts	4	4
+dc77708fc7a49850758617a2bc033f486e5b75fd	2026-10-23	Block on a venue outage at startup instead of crashing out of bootstrap	tests	2	2
+3897fb1e3062a6a36939745275448341557238ad	2026-10-23	End a session that never warmed up with zero cycles, not an exception	tests	2	2
+133b8168f1c38e53abe3fb81c25e1491aaa934b1	2026-10-23	Fill every exit at the bar after the close that decided it	src	1	1
+b21a6e3b48797eec55e7a1fdec27effc094a459a	2026-10-23	Reclaim a crashed writer's lock only when its owner is proved gone	src	6	6
+c8f3e4198eee9834f60e2f0e345cad50045bb4e4	2026-10-23	Rehearse a real crash and resume instead of describing one	scripts	1	1
+d6442db25ed9da7cae932aedd6c86da952cfd453	2026-10-23	Rehearse the resume with the same configuration the crash ran under	scripts	1	1
+89c7f448333acf4e274adc936de4d472e11f5c09	2026-10-23	Start recovery rehearsal children through the shared windowless launcher	tests	3	3
+1705b6bef3b99fa0cc4683d21ab2cb8ce7ac2dff	2026-10-23	Prove the cycle-ledger lock is reclaimed, not just the stream lock	tests	1	1
+c3e3cb4bf81c8e38fb6cfc2ea99dbec98ff65a82	2026-10-23	Judge the lock-recovery evidence with a verifier that must also fail	scripts	1	1
+01d0a46849b96e2df2f7b3dd7f32a52fe0543ea8	2026-10-23	Prove fencing across processes, not only inside one	tests	1	1
+9c83e62a4b75d9e47db6fce12dd0118782cbd6d1	2026-10-23	Make the reserved CLI subcommands refuse instead of reporting success	tests	3	3
+ce02a8100c06ebf3b66947826b665b36e52f3624	2026-10-23	Prove repeated crash/recover cycles instead of a single one	scripts	6	6
+d9b46b72aa7c829aa74a84f146e93343f989103d	2026-10-23	Keep the resume lineage so a second recovery replays the same origin	tests	2	2
+61bcfa58e08c12d8d1cd95125f178ea87cc7482d	2026-10-23	Judge the campaign by lock identity, not by directory spelling	tests	2	2
+98bcefe72b9304eb8afe463237a34f633ff5378c	2026-10-23	Let the linter see the campaign instead of exceptions for it	scripts	4	4
+60455b460dfb805a934c4307f9778ac8b7ffb562	2026-10-23	Stop authorising orders while the kill switch is engaged	tests	2	2
+0e2ba09d47625fd899bee4e4fd3a82a0232c2d29	2026-10-23	Let a supervisor recover a crashed PAPER session, or stop by name.	tests	8	8
+cc4f15f6d7d5b47978ba7bd090a525e50a68a143	2026-10-23	Write the final episode's evidence instead of only its summary.	scripts	1	1
+3b758e22f0c9835646c9eba9db6634757970b126	2026-10-23	Say what --once actually caps instead of promising a single action.	scripts	1	1

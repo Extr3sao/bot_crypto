@@ -1,0 +1,535 @@
+{
+  "commit": "fda956644080e48cb0582e456ee2b7e4d82faf4c",
+  "config": {
+    "duration_s": 240,
+    "max_cycles": 50,
+    "max_restarts": 8,
+    "poll_s": 5.0,
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "timeframe": "1m",
+    "warmup_minutes": 120,
+    "window_bars": 20
+  },
+  "entrypoint": "scripts/def_run_019_prospective_run.py",
+  "episodes": [
+    {
+      "after": {
+        "chain": {
+          "head_sha256": "f1ee153ada136118cf18b8d677d82607336a3e450fa9767481d420325e720ff3",
+          "kinds": {
+            "CYCLE": 5,
+            "DELAY_MEASURED": 2,
+            "LOCK_RECLAIMED": 1,
+            "SESSION_END": 1,
+            "SESSION_PROVENANCE": 2,
+            "SESSION_START": 2
+          },
+          "lines": 13,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycles": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "locks": [],
+        "rows": 13,
+        "state": "RECOVERED"
+      },
+      "before": {
+        "cycles": [
+          1
+        ],
+        "fence": 1,
+        "lock_owner_pid": 23712,
+        "owner_pid": 36132,
+        "rows": 4,
+        "state": "RUNNING"
+      },
+      "crash": {
+        "abandoned": true,
+        "chain": {
+          "head_sha256": "66e707935457a5818991953a9b8da499ac73aa4adf011384c882fbdb6eb839be",
+          "kinds": {
+            "CYCLE": 1,
+            "DELAY_MEASURED": 1,
+            "SESSION_PROVENANCE": 1,
+            "SESSION_START": 1
+          },
+          "lines": 4,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycles": [
+          1
+        ],
+        "locks": [
+          {
+            "fence": 1,
+            "path": "market-1m/BTCUSDT.jsonl.lock",
+            "pid": 23712,
+            "process_start_ms": 1792841485699,
+            "reason": "OWNER_PROCESS_DEAD",
+            "record": {
+              "acquired_at_utc": "2026-10-24T11:31:29Z",
+              "fence": 1,
+              "host": "DESKTOP-4CHO695",
+              "path": "BTCUSDT.jsonl.lock",
+              "pid": 23712,
+              "process_start_ms": 1792841485699,
+              "purpose": "minutes:BTCUSDT.jsonl",
+              "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+              "token": "f36a96a6ca3649f9983efb7026989666"
+            },
+            "state": "ABANDONED",
+            "token": "f36a96a6ca3649f9983efb7026989666"
+          },
+          {
+            "fence": 1,
+            "path": "market-1m/ETHUSDT.jsonl.lock",
+            "pid": 23712,
+            "process_start_ms": 1792841485699,
+            "reason": "OWNER_PROCESS_DEAD",
+            "record": {
+              "acquired_at_utc": "2026-10-24T11:31:29Z",
+              "fence": 1,
+              "host": "DESKTOP-4CHO695",
+              "path": "ETHUSDT.jsonl.lock",
+              "pid": 23712,
+              "process_start_ms": 1792841485699,
+              "purpose": "minutes:ETHUSDT.jsonl",
+              "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+              "token": "99330fad7b3a4be1b4dc92450d73c9e6"
+            },
+            "state": "ABANDONED",
+            "token": "99330fad7b3a4be1b4dc92450d73c9e6"
+          },
+          {
+            "fence": 1,
+            "path": "market-1m/SOLUSDT.jsonl.lock",
+            "pid": 23712,
+            "process_start_ms": 1792841485699,
+            "reason": "OWNER_PROCESS_DEAD",
+            "record": {
+              "acquired_at_utc": "2026-10-24T11:31:29Z",
+              "fence": 1,
+              "host": "DESKTOP-4CHO695",
+              "path": "SOLUSDT.jsonl.lock",
+              "pid": 23712,
+              "process_start_ms": 1792841485699,
+              "purpose": "minutes:SOLUSDT.jsonl",
+              "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+              "token": "ee8f1238cb6948f6b253fd24c99c696d"
+            },
+            "state": "ABANDONED",
+            "token": "ee8f1238cb6948f6b253fd24c99c696d"
+          },
+          {
+            "fence": 1,
+            "path": "STREAM.jsonl.lock",
+            "pid": 23712,
+            "process_start_ms": 1792841485699,
+            "reason": "OWNER_PROCESS_DEAD",
+            "record": {
+              "acquired_at_utc": "2026-10-24T11:31:29Z",
+              "fence": 1,
+              "host": "DESKTOP-4CHO695",
+              "path": "STREAM.jsonl.lock",
+              "pid": 23712,
+              "process_start_ms": 1792841485699,
+              "purpose": "ledger:STREAM.jsonl",
+              "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+              "token": "79f00744dd60434d9ae5438dec9195d5"
+            },
+            "state": "ABANDONED",
+            "token": "79f00744dd60434d9ae5438dec9195d5"
+          }
+        ],
+        "rows": 4,
+        "state": "RECOVERING"
+      },
+      "episode": 1,
+      "killed": {
+        "alive_after": false,
+        "detail": "CORRECTO: el proceso con PID 11428 (proceso secundario de PID 36132)\nha sido terminado.\nCORRECTO: el proceso con PID 23712 (proceso secundario de PID 36132)\nha sido terminado.\nCORRECTO: el proceso con PID 36132 (proceso secundario de PID 27516)\nha sido terminado.",
+        "pid": 36132,
+        "taskkill_exit": 0
+      },
+      "live_probe": {
+        "bytes": 307,
+        "code": "LOCK_HELD",
+        "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\Downloads\\ff-paper-campaign\\campaign\\session\\STREAM.jsonl.lock is held by live pid 23712; a second writer would interleave prev_sha256 and the chain would stop verifying",
+        "outcome": "REFUSED",
+        "unchanged": true
+      },
+      "started_at_utc": "2026-10-24T11:31:25Z"
+    }
+  ],
+  "final": {
+    "chain": {
+      "head_sha256": "f1ee153ada136118cf18b8d677d82607336a3e450fa9767481d420325e720ff3",
+      "kinds": {
+        "CYCLE": 5,
+        "DELAY_MEASURED": 2,
+        "LOCK_RECLAIMED": 1,
+        "SESSION_END": 1,
+        "SESSION_PROVENANCE": 2,
+        "SESSION_START": 2
+      },
+      "lines": 13,
+      "ok": true,
+      "reason": "INTACT"
+    },
+    "cycle_ledgers": {
+      "cycle-0001": {
+        "head_sha256": "d0e765a980105a2b7efed31f1a9370544490d419602448c1023b6c74529c2e99",
+        "kinds": {
+          "DECISION": 3,
+          "GUARD_REJECT": 2,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 7,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "cycle-0002": {
+        "head_sha256": "7b8dbfff9eb007fe99a9434f6cf7ea0551c81d12ef7e90260037e45ade9cbfb2",
+        "kinds": {
+          "DECISION": 4,
+          "GUARD_REJECT": 2,
+          "OPINION_DEFERRED": 2,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 10,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "cycle-0003": {
+        "head_sha256": "986b593c1414a1e043ea6d19fd66716248ddf4cc6b8d1ea75eeaf9f8217cac2c",
+        "kinds": {
+          "DECISION": 7,
+          "DECISION_OUTCOME": 4,
+          "GUARD_REJECT": 2,
+          "OPINION_DEFERRED": 2,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 17,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "cycle-0004": {
+        "head_sha256": "ee7895803efbbe60d18e171471f675d67bd12669740e5bd2d5842c448561c0fd",
+        "kinds": {
+          "DECISION": 8,
+          "DECISION_OUTCOME": 4,
+          "GUARD_REJECT": 2,
+          "OPINION_DEFERRED": 4,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 20,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "cycle-0005": {
+        "head_sha256": "de371388386a81ed141a3409f029a68cab9874be2813b4d31237b6f5b1a18b97",
+        "kinds": {
+          "DECISION": 11,
+          "DECISION_OUTCOME": 8,
+          "GUARD_REJECT": 2,
+          "OPINION_DEFERRED": 4,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 27,
+        "ok": true,
+        "reason": "INTACT"
+      }
+    },
+    "cycles": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "finished_without_locks": false,
+    "last_cycle_before_finish": 1,
+    "locks": [],
+    "result": {
+      "action": "STOP_COMPLETED",
+      "attempts": [
+        {
+          "action": "START",
+          "attempt": 1,
+          "clean": false,
+          "continued": true,
+          "exit_code": 1,
+          "locks_after": 4,
+          "new_cycles": [
+            1
+          ],
+          "pid": 36132,
+          "progress": true,
+          "resumed_flag": false,
+          "rows_after": 4,
+          "rows_before": 0,
+          "start_kind": "SESSION_START",
+          "start_seq": 1,
+          "stream_readable": true
+        },
+        {
+          "action": "RESUME",
+          "attempt": 2,
+          "clean": true,
+          "continued": true,
+          "exit_code": 0,
+          "locks_after": 0,
+          "new_cycles": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "pid": 25724,
+          "progress": true,
+          "resumed_flag": true,
+          "rows_after": 13,
+          "rows_before": 4,
+          "start_kind": "SESSION_START",
+          "start_seq": 5,
+          "stream_readable": true
+        }
+      ],
+      "elapsed_s": 300.453,
+      "exit_code": 0,
+      "final_state": "RECOVERED",
+      "final_status": {
+        "checked_at_utc": "2026-10-24T11:36:26Z",
+        "fencing": {
+          "fence_files": [
+            {
+              "fence": 1,
+              "path": "cycles/cycle-0001/ledger.jsonl.lock.fence"
+            },
+            {
+              "fence": 1,
+              "path": "cycles/cycle-0002/ledger.jsonl.lock.fence"
+            },
+            {
+              "fence": 1,
+              "path": "cycles/cycle-0003/ledger.jsonl.lock.fence"
+            },
+            {
+              "fence": 1,
+              "path": "cycles/cycle-0004/ledger.jsonl.lock.fence"
+            },
+            {
+              "fence": 1,
+              "path": "cycles/cycle-0005/ledger.jsonl.lock.fence"
+            },
+            {
+              "fence": 3,
+              "path": "market-1m/BTCUSDT.jsonl.lock.fence"
+            },
+            {
+              "fence": 3,
+              "path": "market-1m/ETHUSDT.jsonl.lock.fence"
+            },
+            {
+              "fence": 3,
+              "path": "market-1m/SOLUSDT.jsonl.lock.fence"
+            },
+            {
+              "fence": 3,
+              "path": "STREAM.jsonl.lock.fence"
+            }
+          ],
+          "max_fence_in_reclaims": 2,
+          "stream_fence": 3
+        },
+        "last_attempt": {
+          "aborted": false,
+          "exit_code": 0,
+          "refused": false
+        },
+        "ledger": {
+          "chain_ok": true,
+          "chain_reason": "INTACT",
+          "cycle_directories": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cycle_ledgers": {
+            "cycle-0001": {
+              "lines": 7,
+              "ok": true,
+              "reason": "INTACT"
+            },
+            "cycle-0002": {
+              "lines": 10,
+              "ok": true,
+              "reason": "INTACT"
+            },
+            "cycle-0003": {
+              "lines": 17,
+              "ok": true,
+              "reason": "INTACT"
+            },
+            "cycle-0004": {
+              "lines": 20,
+              "ok": true,
+              "reason": "INTACT"
+            },
+            "cycle-0005": {
+              "lines": 27,
+              "ok": true,
+              "reason": "INTACT"
+            }
+          },
+          "cycle_ledgers_ok": true,
+          "cycles": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "head_sha256": "f1ee153ada136118cf18b8d677d82607336a3e450fa9767481d420325e720ff3",
+          "interrupted_cycles": [],
+          "kinds": {
+            "CYCLE": 5,
+            "DELAY_MEASURED": 2,
+            "LOCK_RECLAIMED": 1,
+            "SESSION_END": 1,
+            "SESSION_PROVENANCE": 2,
+            "SESSION_START": 2
+          },
+          "last_cycle": 5,
+          "rows": 13,
+          "seq_continuous": true
+        },
+        "locks": {
+          "abandoned_paths": [],
+          "active": [],
+          "all": [],
+          "awaiting_recovery": []
+        },
+        "out_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-paper-campaign\\campaign\\session",
+        "owner": {
+          "acquired_at_utc": null,
+          "fence": null,
+          "host": null,
+          "live": false,
+          "pid": null,
+          "process_start_ms": null
+        },
+        "read_only": true,
+        "recoveries": {
+          "count": 1,
+          "last": {
+            "cycle": null,
+            "locks": [
+              {
+                "fence": 2,
+                "lock": "BTCUSDT.jsonl.lock",
+                "pid": 23712,
+                "process_start_ms": 1792841485699,
+                "reason": "OWNER_PROCESS_DEAD"
+              },
+              {
+                "fence": 2,
+                "lock": "ETHUSDT.jsonl.lock",
+                "pid": 23712,
+                "process_start_ms": 1792841485699,
+                "reason": "OWNER_PROCESS_DEAD"
+              },
+              {
+                "fence": 2,
+                "lock": "SOLUSDT.jsonl.lock",
+                "pid": 23712,
+                "process_start_ms": 1792841485699,
+                "reason": "OWNER_PROCESS_DEAD"
+              },
+              {
+                "fence": 2,
+                "lock": "STREAM.jsonl.lock",
+                "pid": 23712,
+                "process_start_ms": 1792841485699,
+                "reason": "OWNER_PROCESS_DEAD"
+              }
+            ],
+            "scope": "session",
+            "seq": 7
+          },
+          "last_fence": 2,
+          "last_reason": "OWNER_PROCESS_DEAD",
+          "scopes": [
+            "session"
+          ]
+        },
+        "schema_version": "TAP_PAPER_SESSION_STATUS_V1",
+        "session": {
+          "ended_at_utc": null,
+          "pinned_identity": "497027bf19a0f9347dda23571270f1c4cb77cb884d8ed2c2b58e8e73d3585a09",
+          "resumed": true,
+          "resumed_starts": 1,
+          "run_id": "run-497027bf19a0f9347dda",
+          "runtime_digest": "39303dfb01220c27d766a5027db1a6e49755711788e055e3d3010c430612ad4b",
+          "runtime_stable": true,
+          "session_id": "sess-573131e230ec687facd9",
+          "started_at_utc": "2026-10-24T11:32:21Z",
+          "starts": 2
+        },
+        "state": "RECOVERED",
+        "why": []
+      },
+      "finished_at_utc": "2026-10-24T11:36:26Z",
+      "live_orders": 0,
+      "locks": [],
+      "mode": "PAPER",
+      "reason": "CLEAN_END",
+      "restarts": 1,
+      "schema_version": "TAP_PAPER_SUPERVISOR_V1",
+      "session": "C:\\Users\\GVLLFR0035\\Downloads\\ff-paper-campaign\\campaign\\session",
+      "started_at_utc": "2026-10-24T11:31:25Z",
+      "state_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-paper-campaign\\campaign\\supervisor"
+    },
+    "rows": 13,
+    "state": "RECOVERED"
+  },
+  "finished_at_utc": "2026-10-24T11:36:26Z",
+  "live_orders": 0,
+  "mode": "PAPER",
+  "schema_version": "TAP_PAPER_SUPERVISOR_CAMPAIGN_V1",
+  "started_at_utc": "2026-10-24T11:31:24Z",
+  "supervisor": "scripts/paper_supervisor.py",
+  "supervisor_exit_code": 0,
+  "supervisor_race": {
+    "acquired_rows": 1,
+    "loser_exit_code": 4,
+    "loser_real_pid": 35844,
+    "loser_refused": true,
+    "loser_spawn_pid": 1828,
+    "loser_spawned": false,
+    "spawn_pids": [
+      18924,
+      1828
+    ],
+    "winner_pid": 27516,
+    "winner_spawn_pid": 18924
+  }
+}

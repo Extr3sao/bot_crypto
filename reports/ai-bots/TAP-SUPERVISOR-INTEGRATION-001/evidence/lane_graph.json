@@ -1,0 +1,2194 @@
+{
+  "counts": {
+    "lane_only_python_files": 450,
+    "lane_only_python_unreachable_and_untested": 355,
+    "lane_python_files": 1257,
+    "main_python_files": 818,
+    "reachable_differs_in_main": 7,
+    "reachable_files": 110,
+    "reachable_missing_from_main": 35,
+    "reachable_modules": 102,
+    "reachable_present_in_main": 68
+  },
+  "lane": "codepaper/supervisor-001",
+  "lane_only_python_unreachable_and_untested": [
+    "reports/ai-bots/RFC-AI-BOTS-002/rea/targets/T-FE-FENIX/instrumentation/fenix_chart_probe.py",
+    "reports/edge-recovery/diagnostics/build_run_report.py",
+    "scripts/ai_bots_003b_verify.py",
+    "scripts/ai_bots_003c_capture.py",
+    "scripts/ai_bots_003c_verify.py",
+    "scripts/ai_bots_003g_compare.py",
+    "scripts/ai_bots_003g_paper.py",
+    "scripts/ai_bots_003g_verify.py",
+    "scripts/ai_bots_003h_verify.py",
+    "scripts/ai_bots_rea_verify.py",
+    "scripts/ai_bots_run.py",
+    "scripts/ai_bots_verify.py",
+    "scripts/ai_vision_lane.py",
+    "scripts/ai_vision_smoke.py",
+    "scripts/def_run_014_capture.py",
+    "scripts/def_run_014_report.py",
+    "scripts/def_run_016_audit.py",
+    "scripts/def_run_016_economics.py",
+    "scripts/def_run_016_verify.py",
+    "scripts/def_run_017_audit.py",
+    "scripts/def_run_017_manifest.py",
+    "scripts/def_run_017_oos.py",
+    "scripts/def_run_017_package.py",
+    "scripts/def_run_017_preflight.py",
+    "scripts/def_run_017_report.py",
+    "scripts/def_run_017_reproduce.py",
+    "scripts/def_run_017_verify.py",
+    "scripts/def_run_018_baseline.py",
+    "scripts/def_run_018_clean_replay.py",
+    "scripts/def_run_018_gate.py",
+    "scripts/def_run_018_independence_audit.py",
+    "scripts/def_run_018_seal.py",
+    "scripts/def_run_018_verify_b.py",
+    "scripts/def_run_019_close.py",
+    "scripts/def_run_019_integrity.py",
+    "scripts/def_run_019_negative_controls.py",
+    "scripts/def_run_019_provenance_run.py",
+    "scripts/def_run_019_verify.py",
+    "scripts/edge01_ablation.py",
+    "scripts/edge01_ablation_verify.py",
+    "scripts/edge01_closure_experiments.py",
+    "scripts/edge01_closure_report_check.py",
+    "scripts/edge01_closure_verify.py",
+    "scripts/edge01_mechanism_ablation.py",
+    "scripts/edge01_mechanism_ablation_verify.py",
+    "scripts/edge01_risk_ablation.py",
+    "scripts/edge01_risk_ablation_verify.py",
+    "scripts/edge01_robustness_experiments.py",
+    "scripts/edge01_run.py",
+    "scripts/edge01_verify.py",
+    "scripts/edge01_wp02_verify.py",
+    "scripts/edge03_run.py",
+    "scripts/edge03_verify.py",
+    "scripts/edge04_closure.py",
+    "scripts/edge04_observer.py",
+    "scripts/edge04_verify.py",
+    "scripts/edge04r_continuity.py",
+    "scripts/edge04r_session.py",
+    "scripts/edge04r_verify.py",
+    "scripts/edge05_closure.py",
+    "scripts/edge05_reconcile.py",
+    "scripts/edge05_verify.py",
+    "scripts/edge05_watchdog.py",
+    "scripts/edge05r_regression.py",
+    "scripts/edge05r_report.py",
+    "scripts/edge05r_snapshot.py",
+    "scripts/edge05r_storage_inventory.py",
+    "scripts/edge05r_storage_reclaim.py",
+    "scripts/edge06_economics.py",
+    "scripts/edge06_report.py",
+    "scripts/edge06_research.py",
+    "scripts/edge06_verify.py",
+    "scripts/edge06_volume_tenants.py",
+    "scripts/edge07_active.py",
+    "scripts/edge07_active_barrier.py",
+    "scripts/edge07_fetch_holdout.py",
+    "scripts/edge07_growth_evidence.py",
+    "scripts/edge07_reclaim.py",
+    "scripts/edge07_report.py",
+    "scripts/edge07_validate.py",
+    "scripts/edge07_verify.py",
+    "scripts/edge08_economics.py",
+    "scripts/edge08_fetch_universe.py",
+    "scripts/edge08_preregister.py",
+    "scripts/edge08_report.py",
+    "scripts/edge08_screen.py",
+    "scripts/edge08_universe_report.py",
+    "scripts/edge08_validate.py",
+    "scripts/edge08_verify.py",
+    "scripts/edge09_audit.py",
+    "scripts/edge09_deliverables.py",
+    "scripts/edge09_experiments.py",
+    "scripts/edge09_gates.py",
+    "scripts/edge09_panel.py",
+    "scripts/edge09_preregister.py",
+    "scripts/edge09_report.py",
+    "scripts/edge09_sources.py",
+    "scripts/edge09_suite_evidence.py",
+    "scripts/edge09_verify.py",
+    "scripts/edge12_continuity.py",
+    "scripts/edge12_gate.py",
+    "scripts/edge12_operational.py",
+    "scripts/edge12_reports.py",
+    "scripts/edge12_runner.py",
+    "scripts/edge12_storage.py",
+    "scripts/edge12_tests.py",
+    "scripts/edge12_verify.py",
+    "scripts/edge14_reports.py",
+    "scripts/edge14_run.py",
+    "scripts/edge14_verify.py",
+    "scripts/edge14r_adversarial.py",
+    "scripts/edge14r_economic_comparison.py",
+    "scripts/edge14r_engine_parity.py",
+    "scripts/edge14r_external_engines.py",
+    "scripts/edge14r_fee_reconciliation.py",
+    "scripts/edge14r_fetch_1m.py",
+    "scripts/edge14r_jesse_attempt.py",
+    "scripts/edge14r_jesse_parity.py",
+    "scripts/edge14r_oos_preregistration.py",
+    "scripts/edge14r_paper_execution.py",
+    "scripts/edge14r_reports.py",
+    "scripts/edge14r_trade_path.py",
+    "scripts/edge14r_verify.py",
+    "scripts/edge14r_vnpy_backtest.py",
+    "scripts/edge15_alphas.py",
+    "scripts/edge15_oos_preregistration.py",
+    "scripts/edge15_paper_lane.py",
+    "scripts/edge15_parity_explain.py",
+    "scripts/edge15_verify.py",
+    "scripts/edge16_adversarial.py",
+    "scripts/edge16_artifacts.py",
+    "scripts/edge16_capture.py",
+    "scripts/edge16_paper_lane.py",
+    "scripts/edge16_reports.py",
+    "scripts/edge16_verify.py",
+    "scripts/edge17_capture.py",
+    "scripts/edge17_prefix_replay.py",
+    "scripts/edge17_reports.py",
+    "scripts/edge17_verify.py",
+    "scripts/evidence004_generate.py",
+    "scripts/evidence004_ledger.py",
+    "scripts/evidence004_verify.py",
+    "scripts/exp004a_capture.py",
+    "scripts/exp004a_evidence_inventory.py",
+    "scripts/exp004a_foundation.py",
+    "scripts/exp004a_provenance_preflight.py",
+    "scripts/exp004a_provenance_verify.py",
+    "scripts/exp004a_verify.py",
+    "scripts/exp004a_wp051_02e_preflight.py",
+    "scripts/exp004a_wp051_02e_verify.py",
+    "scripts/exp004a_wp051_02f_runner.py",
+    "scripts/exp004a_wp051_02f_verify.py",
+    "scripts/exp_003j_analysis.py",
+    "scripts/exp_003j_dataset.py",
+    "scripts/exp_003j_determinism.py",
+    "scripts/exp_003j_replay.py",
+    "scripts/exp_003j_report.py",
+    "scripts/exp_003j_semantic_parity.py",
+    "scripts/exp_003j_verify.py",
+    "scripts/exp_003j_verify_external.py",
+    "scripts/exp_003k_audit.py",
+    "scripts/exp_003k_cycle.py",
+    "scripts/exp_003k_determinism.py",
+    "scripts/exp_003k_inventory.py",
+    "scripts/exp_003k_report.py",
+    "scripts/exp_003k_run.py",
+    "scripts/exp_003k_select.py",
+    "scripts/exp_003k_verdict.py",
+    "scripts/exp_003k_verify.py",
+    "scripts/exp_003m_compare.py",
+    "scripts/exp_003m_fills.py",
+    "scripts/exp_003m_pipeline.py",
+    "scripts/exp_003m_preregister.py",
+    "scripts/exp_003m_report.py",
+    "scripts/exp_003m_tape.py",
+    "scripts/exp_003m_verify.py",
+    "scripts/exp_003n_pipeline.py",
+    "scripts/exp_003n_preregister.py",
+    "scripts/exp_003n_rehearsal.py",
+    "scripts/exp_003n_report.py",
+    "scripts/exp_003n_screen.py",
+    "scripts/exp_003n_validate.py",
+    "scripts/exp_003n_verify.py",
+    "scripts/exp_003o_baseline.py",
+    "scripts/exp_003o_compare.py",
+    "scripts/exp_003o_contract.py",
+    "scripts/exp_003o_fixtures.py",
+    "scripts/exp_003o_original.py",
+    "scripts/exp_003o_pipeline.py",
+    "scripts/exp_003o_preregister.py",
+    "scripts/exp_003o_rebuilder.py",
+    "scripts/exp_003o_rehearsal.py",
+    "scripts/exp_003o_report.py",
+    "scripts/exp_003o_verify.py",
+    "scripts/exp_003p_baseline.py",
+    "scripts/exp_003p_checkout_compare.py",
+    "scripts/exp_003p_contract.py",
+    "scripts/exp_003p_controls.py",
+    "scripts/exp_003p_pipeline.py",
+    "scripts/exp_003p_preregister.py",
+    "scripts/exp_003p_rehearsal.py",
+    "scripts/exp_003p_report.py",
+    "scripts/exp_003p_schema.py",
+    "scripts/exp_003p_verify.py",
+    "scripts/ops_background_audit.py",
+    "scripts/ops_window_origin.py",
+    "scripts/ops_windowless_probe.py",
+    "scripts/tap_lock_recovery_rehearsal.py",
+    "scripts/tap_lock_recovery_verify.py",
+    "scripts/tap_unblock_audit.py",
+    "scripts/tap_unblock_paper.py",
+    "scripts/windowless.py",
+    "scripts/wp051_02c_recalculate.py",
+    "scripts/wp_edge_00_verify.py",
+    "scripts/wp_edge_00b_verify.py",
+    "src/trading_bot/intelligence/__init__.py",
+    "src/trading_bot/intelligence/ai_bots/__init__.py",
+    "src/trading_bot/paper/lifecycle/__init__.py",
+    "src/trading_bot/paper/lifecycle/contracts.py",
+    "src/trading_bot/paper/lifecycle/engine.py",
+    "src/trading_bot/paper/lifecycle/recorder.py",
+    "src/trading_bot/paper/lifecycle/store.py",
+    "src/trading_bot/paper/lifecycle/venue.py",
+    "src/trading_bot/research/economic_recovery/__init__.py",
+    "src/trading_bot/research/economic_recovery/engine_parity.py",
+    "src/trading_bot/research/economic_recovery/paper_exec.py",
+    "src/trading_bot/research/edge01/__init__.py",
+    "src/trading_bot/research/edge04r/__init__.py",
+    "src/trading_bot/research/edge05/__init__.py",
+    "src/trading_bot/research/edge06/__init__.py",
+    "src/trading_bot/research/edge06/program.py",
+    "src/trading_bot/research/edge07/__init__.py",
+    "src/trading_bot/research/edge07/active.py",
+    "src/trading_bot/research/edge07/validation.py",
+    "src/trading_bot/research/edge08/__init__.py",
+    "src/trading_bot/research/edge08/artifacts.py",
+    "src/trading_bot/research/edge08/economics.py",
+    "src/trading_bot/research/edge08/registry.py",
+    "src/trading_bot/research/edge08/runner.py",
+    "src/trading_bot/research/edge08/universe.py",
+    "src/trading_bot/research/edge09/__init__.py",
+    "src/trading_bot/research/edge09/estate.py",
+    "src/trading_bot/research/edge09/sources.py",
+    "src/trading_bot/research/edge12/__init__.py",
+    "src/trading_bot/research/edge12/render.py",
+    "src/trading_bot/research/execution_cost/__init__.py",
+    "src/trading_bot/research/prospective/__init__.py",
+    "src/trading_bot/research/prospective/independence.py",
+    "src/trading_bot/research/prospective/store.py",
+    "src/trading_bot/vision/__init__.py",
+    "tests/conftest.py",
+    "tests/integration/test_def_run_016_pipeline.py",
+    "tests/integration/test_def_run_017_pipeline.py",
+    "tests/unit/autonomous/test_decision_kill_switch.py",
+    "tests/unit/autonomous/test_universe_exclusion_classification.py",
+    "tests/unit/intelligence/ai_bots/test_registry_contracts_runner.py",
+    "tests/unit/market_data/test_binance_source_contract.py",
+    "tests/unit/market_data/test_data_integrity_003h.py",
+    "tests/unit/market_data/test_minute_collector.py",
+    "tests/unit/observability/test_vision_panel.py",
+    "tests/unit/ops/test_paper_lock_campaign.py",
+    "tests/unit/ops/test_paper_supervisor.py",
+    "tests/unit/ops/test_paper_supervisor_verifier.py",
+    "tests/unit/ops/test_session_status.py",
+    "tests/unit/ops/test_single_writer_lock.py",
+    "tests/unit/ops/test_windowless.py",
+    "tests/unit/paper/test_broker_identity.py",
+    "tests/unit/paper/test_def_run_015_close_vs_reverse.py",
+    "tests/unit/paper/test_edge17_net_risk.py",
+    "tests/unit/paper/test_execution_lifecycle.py",
+    "tests/unit/reports/test_ai_bots_003b_verify.py",
+    "tests/unit/reports/test_def_run_017_verifier.py",
+    "tests/unit/reports/test_def_run_018_code_provenance.py",
+    "tests/unit/reports/test_def_run_018_independent_verifier.py",
+    "tests/unit/reports/test_def_run_018_run_provenance.py",
+    "tests/unit/reports/test_def_run_019_close.py",
+    "tests/unit/reports/test_def_run_019_verifier.py",
+    "tests/unit/reports/test_evidence004_generate.py",
+    "tests/unit/reports/test_evidence004_ledger.py",
+    "tests/unit/reports/test_evidence004_verify.py",
+    "tests/unit/reports/test_evidence004f_identity.py",
+    "tests/unit/reports/test_exp_003k_verify.py",
+    "tests/unit/reports/test_exp_003m_fills.py",
+    "tests/unit/reports/test_exp_003m_pipeline.py",
+    "tests/unit/reports/test_exp_003n_screen.py",
+    "tests/unit/reports/test_exp_003o_signal_parity.py",
+    "tests/unit/research/test_alpha15_causality.py",
+    "tests/unit/research/test_edge01_ablation.py",
+    "tests/unit/research/test_edge01_closure_experiments.py",
+    "tests/unit/research/test_edge01_gate_and_artifacts.py",
+    "tests/unit/research/test_edge01_mechanism_ablations.py",
+    "tests/unit/research/test_edge01_pit.py",
+    "tests/unit/research/test_edge01_risk_ablation.py",
+    "tests/unit/research/test_edge01_wp02_robustness.py",
+    "tests/unit/research/test_edge03_forward.py",
+    "tests/unit/research/test_edge04_autonomous.py",
+    "tests/unit/research/test_edge04r_continuity.py",
+    "tests/unit/research/test_edge05_reading.py",
+    "tests/unit/research/test_edge05_reconcile.py",
+    "tests/unit/research/test_edge05_watchdog.py",
+    "tests/unit/research/test_edge05r_storage_reclaim.py",
+    "tests/unit/research/test_edge06_cadence.py",
+    "tests/unit/research/test_edge06_families.py",
+    "tests/unit/research/test_edge07_scheduler_evidence.py",
+    "tests/unit/research/test_edge08_cross_section.py",
+    "tests/unit/research/test_edge09_microstructure.py",
+    "tests/unit/research/test_edge12_continuity.py",
+    "tests/unit/research/test_edge12_runner.py",
+    "tests/unit/research/test_edge14_economic_recovery.py",
+    "tests/unit/research/test_edge14r_paper_ledger.py",
+    "tests/unit/research/test_edge16_causality.py",
+    "tests/unit/research/test_edge16_pit.py",
+    "tests/unit/research/test_edge17_capture.py",
+    "tests/unit/research/test_edge17_drawdown.py",
+    "tests/unit/research/test_execution_cost_measured.py",
+    "tests/unit/research/test_exp004a_capture.py",
+    "tests/unit/research/test_exp004a_evidence_inventory.py",
+    "tests/unit/research/test_exp004a_provenance.py",
+    "tests/unit/research/test_exp004a_verify_adversarial.py",
+    "tests/unit/research/test_exp004a_wp051_02e.py",
+    "tests/unit/research/test_exp004a_wp051_02f.py",
+    "tests/unit/research/test_prereg_gate.py",
+    "tests/unit/research/test_prereg_gate_escape.py",
+    "tests/unit/research/test_prereg_gate_two_phase.py",
+    "tests/unit/research/test_prospective_admission.py",
+    "tests/unit/risk/test_def_run_014_stop_contract.py",
+    "tests/unit/risk/test_edge17_defensive_blocks.py",
+    "tests/unit/risk/test_edge17_weekly_window.py",
+    "tests/unit/test_app_cli_contract.py",
+    "tests/unit/vision/test_accounting_integrity.py",
+    "tests/unit/vision/test_causal_clock.py",
+    "tests/unit/vision/test_causal_execution.py",
+    "tests/unit/vision/test_chart_determinism.py",
+    "tests/unit/vision/test_closed_trade_cycle.py",
+    "tests/unit/vision/test_compare.py",
+    "tests/unit/vision/test_contract.py",
+    "tests/unit/vision/test_def_run_014_lane_contract.py",
+    "tests/unit/vision/test_def_run_016_integrity.py",
+    "tests/unit/vision/test_def_run_016_opinion_lifecycle.py",
+    "tests/unit/vision/test_def_run_017_economics.py",
+    "tests/unit/vision/test_guards_and_controls.py",
+    "tests/unit/vision/test_integrity_and_latency.py",
+    "tests/unit/vision/test_lane_vertical.py",
+    "tests/unit/vision/test_ledger.py",
+    "tests/unit/vision/test_minute_quote_feed.py",
+    "tests/unit/vision/test_open_phase_causality.py",
+    "tests/unit/vision/test_prospective_session.py",
+    "tests/unit/vision/test_provider.py",
+    "tests/unit/vision/test_run_code_provenance.py",
+    "tests/unit/vision/test_session_lock_recovery.py",
+    "tests/unit/vision/test_session_provenance.py",
+    "tests/unit/vision/test_signal_source_families.py",
+    "tests/unit/vision/test_signal_sources.py",
+    "tests/unit/vision/test_subbar_execution.py",
+    "tests/unit/vision/test_visual_defects.py"
+  ],
+  "main": "main",
+  "merge_base": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+  "reachable": [
+    "scripts/def_run_019_prospective_run.py",
+    "scripts/paper_lock_campaign.py",
+    "scripts/paper_lock_campaign_verify.py",
+    "scripts/paper_session_status.py",
+    "scripts/paper_supervisor.py",
+    "scripts/paper_supervisor_campaign.py",
+    "scripts/paper_supervisor_verify.py",
+    "scripts/start_paper_trading.py",
+    "src/trading_bot/autonomous/admission_ledger.py",
+    "src/trading_bot/autonomous/contracts.py",
+    "src/trading_bot/autonomous/strategy_state.py",
+    "src/trading_bot/backtesting/__init__.py",
+    "src/trading_bot/backtesting/commissions.py",
+    "src/trading_bot/backtesting/engine.py",
+    "src/trading_bot/backtesting/reports.py",
+    "src/trading_bot/backtesting/slippage.py",
+    "src/trading_bot/backtesting/types.py",
+    "src/trading_bot/backtesting/walk_forward_reports.py",
+    "src/trading_bot/config/exchange.py",
+    "src/trading_bot/config/indicators.py",
+    "src/trading_bot/config/risk.py",
+    "src/trading_bot/config/runtime.py",
+    "src/trading_bot/config/settings.py",
+    "src/trading_bot/config/strategies.py",
+    "src/trading_bot/config/universe.py",
+    "src/trading_bot/execution/idempotency.py",
+    "src/trading_bot/indicators/builtin.py",
+    "src/trading_bot/indicators/exceptions.py",
+    "src/trading_bot/indicators/types.py",
+    "src/trading_bot/market_data/bitunix.py",
+    "src/trading_bot/market_data/bitunix_futures.py",
+    "src/trading_bot/market_data/candle_filter.py",
+    "src/trading_bot/market_data/exceptions.py",
+    "src/trading_bot/market_data/exchange_connector.py",
+    "src/trading_bot/market_data/fake.py",
+    "src/trading_bot/market_data/minute_collector.py",
+    "src/trading_bot/market_data/multi_exchange.py",
+    "src/trading_bot/market_data/scanner_bridge.py",
+    "src/trading_bot/market_data/timeframe.py",
+    "src/trading_bot/market_data/types.py",
+    "src/trading_bot/market_data/wiring.py",
+    "src/trading_bot/ops/__init__.py",
+    "src/trading_bot/ops/paper_supervisor.py",
+    "src/trading_bot/ops/session_status.py",
+    "src/trading_bot/ops/single_writer.py",
+    "src/trading_bot/ops/windowless.py",
+    "src/trading_bot/paper/archive.py",
+    "src/trading_bot/paper/broker.py",
+    "src/trading_bot/paper/candidate_portfolio.py",
+    "src/trading_bot/paper/expectations.py",
+    "src/trading_bot/paper/harness.py",
+    "src/trading_bot/paper/paper_cycle.py",
+    "src/trading_bot/paper/paper_orchestrator.py",
+    "src/trading_bot/paper/paper_runtime_state.py",
+    "src/trading_bot/paper/paper_state_store.py",
+    "src/trading_bot/paper/reconciliation_v4.py",
+    "src/trading_bot/paper/reporting.py",
+    "src/trading_bot/paper/signal_adapter.py",
+    "src/trading_bot/paper/snapshot_context.py",
+    "src/trading_bot/paper/snapshot_history.py",
+    "src/trading_bot/paper/types.py",
+    "src/trading_bot/research/asset_intelligence/agents/__init__.py",
+    "src/trading_bot/research/asset_intelligence/agents/base.py",
+    "src/trading_bot/research/asset_intelligence/base.py",
+    "src/trading_bot/research/asset_intelligence/features.py",
+    "src/trading_bot/research/asset_intelligence/models.py",
+    "src/trading_bot/research/asset_intelligence/registry.py",
+    "src/trading_bot/research/economic_recovery/alpha15.py",
+    "src/trading_bot/research/economic_recovery/contracts.py",
+    "src/trading_bot/research/economic_recovery/costs.py",
+    "src/trading_bot/research/economic_recovery/evidence.py",
+    "src/trading_bot/research/economic_recovery/experiments.py",
+    "src/trading_bot/research/economic_recovery/pit15.py",
+    "src/trading_bot/research/equity_drawdown.py",
+    "src/trading_bot/research/families/__init__.py",
+    "src/trading_bot/research/families/breakout_family.py",
+    "src/trading_bot/research/families/ema_crossover_family.py",
+    "src/trading_bot/research/families/mean_reversion_family.py",
+    "src/trading_bot/research/families/momentum_family.py",
+    "src/trading_bot/research/families/trend_family.py",
+    "src/trading_bot/research/families/volatility_family.py",
+    "src/trading_bot/research/router_gates.py",
+    "src/trading_bot/research/strategy_router.py",
+    "src/trading_bot/research/types.py",
+    "src/trading_bot/risk/defensive_blocks.py",
+    "src/trading_bot/risk/manager.py",
+    "src/trading_bot/scanner/__init__.py",
+    "src/trading_bot/scanner/exceptions.py",
+    "src/trading_bot/scanner/filters.py",
+    "src/trading_bot/scanner/mode_filters.py",
+    "src/trading_bot/scanner/protocols.py",
+    "src/trading_bot/scanner/registry.py",
+    "src/trading_bot/scanner/scanner.py",
+    "src/trading_bot/scanner/scoring.py",
+    "src/trading_bot/scanner/types.py",
+    "src/trading_bot/strategies/types.py",
+    "src/trading_bot/vision/chart.py",
+    "src/trading_bot/vision/clock.py",
+    "src/trading_bot/vision/contract.py",
+    "src/trading_bot/vision/execution.py",
+    "src/trading_bot/vision/guards.py",
+    "src/trading_bot/vision/lane.py",
+    "src/trading_bot/vision/ledger.py",
+    "src/trading_bot/vision/prompt.py",
+    "src/trading_bot/vision/prospective.py",
+    "src/trading_bot/vision/provenance.py",
+    "src/trading_bot/vision/provider.py",
+    "src/trading_bot/vision/quotes.py",
+    "src/trading_bot/vision/settings.py",
+    "src/trading_bot/vision/signal_sources.py"
+  ],
+  "reachable_differs_in_main": [
+    "scripts/start_paper_trading.py",
+    "src/trading_bot/autonomous/contracts.py",
+    "src/trading_bot/paper/broker.py",
+    "src/trading_bot/paper/harness.py",
+    "src/trading_bot/paper/paper_cycle.py",
+    "src/trading_bot/paper/reconciliation_v4.py",
+    "src/trading_bot/risk/manager.py"
+  ],
+  "reachable_missing_from_main": [
+    "scripts/def_run_019_prospective_run.py",
+    "scripts/paper_lock_campaign.py",
+    "scripts/paper_lock_campaign_verify.py",
+    "scripts/paper_session_status.py",
+    "scripts/paper_supervisor.py",
+    "scripts/paper_supervisor_campaign.py",
+    "scripts/paper_supervisor_verify.py",
+    "src/trading_bot/market_data/minute_collector.py",
+    "src/trading_bot/ops/__init__.py",
+    "src/trading_bot/ops/paper_supervisor.py",
+    "src/trading_bot/ops/session_status.py",
+    "src/trading_bot/ops/single_writer.py",
+    "src/trading_bot/ops/windowless.py",
+    "src/trading_bot/research/economic_recovery/alpha15.py",
+    "src/trading_bot/research/economic_recovery/contracts.py",
+    "src/trading_bot/research/economic_recovery/costs.py",
+    "src/trading_bot/research/economic_recovery/evidence.py",
+    "src/trading_bot/research/economic_recovery/experiments.py",
+    "src/trading_bot/research/economic_recovery/pit15.py",
+    "src/trading_bot/research/equity_drawdown.py",
+    "src/trading_bot/risk/defensive_blocks.py",
+    "src/trading_bot/vision/chart.py",
+    "src/trading_bot/vision/clock.py",
+    "src/trading_bot/vision/contract.py",
+    "src/trading_bot/vision/execution.py",
+    "src/trading_bot/vision/guards.py",
+    "src/trading_bot/vision/lane.py",
+    "src/trading_bot/vision/ledger.py",
+    "src/trading_bot/vision/prompt.py",
+    "src/trading_bot/vision/prospective.py",
+    "src/trading_bot/vision/provenance.py",
+    "src/trading_bot/vision/provider.py",
+    "src/trading_bot/vision/quotes.py",
+    "src/trading_bot/vision/settings.py",
+    "src/trading_bot/vision/signal_sources.py"
+  ],
+  "reachable_present_identical_in_main": [
+    "src/trading_bot/autonomous/admission_ledger.py",
+    "src/trading_bot/autonomous/strategy_state.py",
+    "src/trading_bot/backtesting/__init__.py",
+    "src/trading_bot/backtesting/commissions.py",
+    "src/trading_bot/backtesting/engine.py",
+    "src/trading_bot/backtesting/reports.py",
+    "src/trading_bot/backtesting/slippage.py",
+    "src/trading_bot/backtesting/types.py",
+    "src/trading_bot/backtesting/walk_forward_reports.py",
+    "src/trading_bot/config/exchange.py",
+    "src/trading_bot/config/indicators.py",
+    "src/trading_bot/config/risk.py",
+    "src/trading_bot/config/runtime.py",
+    "src/trading_bot/config/settings.py",
+    "src/trading_bot/config/strategies.py",
+    "src/trading_bot/config/universe.py",
+    "src/trading_bot/execution/idempotency.py",
+    "src/trading_bot/indicators/builtin.py",
+    "src/trading_bot/indicators/exceptions.py",
+    "src/trading_bot/indicators/types.py",
+    "src/trading_bot/market_data/bitunix.py",
+    "src/trading_bot/market_data/bitunix_futures.py",
+    "src/trading_bot/market_data/candle_filter.py",
+    "src/trading_bot/market_data/exceptions.py",
+    "src/trading_bot/market_data/exchange_connector.py",
+    "src/trading_bot/market_data/fake.py",
+    "src/trading_bot/market_data/multi_exchange.py",
+    "src/trading_bot/market_data/scanner_bridge.py",
+    "src/trading_bot/market_data/timeframe.py",
+    "src/trading_bot/market_data/types.py",
+    "src/trading_bot/market_data/wiring.py",
+    "src/trading_bot/paper/archive.py",
+    "src/trading_bot/paper/candidate_portfolio.py",
+    "src/trading_bot/paper/expectations.py",
+    "src/trading_bot/paper/paper_orchestrator.py",
+    "src/trading_bot/paper/paper_runtime_state.py",
+    "src/trading_bot/paper/paper_state_store.py",
+    "src/trading_bot/paper/reporting.py",
+    "src/trading_bot/paper/signal_adapter.py",
+    "src/trading_bot/paper/snapshot_context.py",
+    "src/trading_bot/paper/snapshot_history.py",
+    "src/trading_bot/paper/types.py",
+    "src/trading_bot/research/asset_intelligence/agents/__init__.py",
+    "src/trading_bot/research/asset_intelligence/agents/base.py",
+    "src/trading_bot/research/asset_intelligence/base.py",
+    "src/trading_bot/research/asset_intelligence/features.py",
+    "src/trading_bot/research/asset_intelligence/models.py",
+    "src/trading_bot/research/asset_intelligence/registry.py",
+    "src/trading_bot/research/families/__init__.py",
+    "src/trading_bot/research/families/breakout_family.py",
+    "src/trading_bot/research/families/ema_crossover_family.py",
+    "src/trading_bot/research/families/mean_reversion_family.py",
+    "src/trading_bot/research/families/momentum_family.py",
+    "src/trading_bot/research/families/trend_family.py",
+    "src/trading_bot/research/families/volatility_family.py",
+    "src/trading_bot/research/router_gates.py",
+    "src/trading_bot/research/strategy_router.py",
+    "src/trading_bot/research/types.py",
+    "src/trading_bot/scanner/__init__.py",
+    "src/trading_bot/scanner/exceptions.py",
+    "src/trading_bot/scanner/filters.py",
+    "src/trading_bot/scanner/mode_filters.py",
+    "src/trading_bot/scanner/protocols.py",
+    "src/trading_bot/scanner/registry.py",
+    "src/trading_bot/scanner/scanner.py",
+    "src/trading_bot/scanner/scoring.py",
+    "src/trading_bot/scanner/types.py",
+    "src/trading_bot/strategies/types.py"
+  ],
+  "seeds": [
+    "scripts/def_run_019_prospective_run.py",
+    "scripts/paper_supervisor.py",
+    "scripts/paper_supervisor_campaign.py",
+    "scripts/paper_supervisor_verify.py",
+    "scripts/paper_lock_campaign.py",
+    "scripts/paper_lock_campaign_verify.py",
+    "scripts/paper_session_status.py",
+    "scripts/start_paper_trading.py"
+  ],
+  "tests_per_module": {
+    "src/trading_bot/__init__.py": [
+      "tests/unit/test_app_cli_contract.py"
+    ],
+    "src/trading_bot/app.py": [
+      "tests/unit/test_app_cli_contract.py",
+      "tests/unit/test_app_demo.py",
+      "tests/unit/test_app_trade_journal.py"
+    ],
+    "src/trading_bot/autonomous/admission_ledger.py": [
+      "tests/unit/autonomous/helpers.py",
+      "tests/unit/autonomous/test_pit_ledger.py",
+      "tests/unit/autonomous/test_routing_modes.py",
+      "tests/unit/autonomous/test_strategy_state.py",
+      "tests/unit/autonomous/test_universe_preflight.py"
+    ],
+    "src/trading_bot/autonomous/agents.py": [
+      "tests/unit/autonomous/test_decision_and_agents.py"
+    ],
+    "src/trading_bot/autonomous/cadence.py": [
+      "tests/unit/autonomous/test_cadence.py"
+    ],
+    "src/trading_bot/autonomous/contracts.py": [
+      "tests/unit/autonomous/test_contracts.py",
+      "tests/unit/autonomous/test_cost_gate_risk_fixture.py",
+      "tests/unit/autonomous/test_decision_and_agents.py",
+      "tests/unit/autonomous/test_decision_kill_switch.py",
+      "tests/unit/autonomous/test_outcome_contract.py",
+      "tests/unit/autonomous/test_pit_ledger.py",
+      "tests/unit/autonomous/test_risk_observability.py",
+      "tests/unit/autonomous/test_routing_modes.py",
+      "tests/unit/autonomous/test_runtime_integration.py",
+      "tests/unit/autonomous/test_strategy_state.py",
+      "tests/unit/autonomous/test_trace_replay_outcomes.py",
+      "tests/unit/autonomous/test_universe_exclusion_classification.py",
+      "tests/unit/autonomous/test_verifier.py",
+      "tests/unit/risk/test_futures_falsification_regressions.py",
+      "tests/unit/risk/test_futures_runtime_integration.py"
+    ],
+    "src/trading_bot/autonomous/costs.py": [
+      "tests/unit/autonomous/test_runtime_integration.py",
+      "tests/unit/autonomous/test_verifier.py",
+      "tests/unit/research/test_alpha_recovery_manifests.py"
+    ],
+    "src/trading_bot/autonomous/decision.py": [
+      "tests/unit/autonomous/test_cost_gate_risk_fixture.py",
+      "tests/unit/autonomous/test_decision_and_agents.py",
+      "tests/unit/autonomous/test_decision_kill_switch.py",
+      "tests/unit/autonomous/test_risk_observability.py",
+      "tests/unit/autonomous/test_universe_exclusion_classification.py",
+      "tests/unit/risk/test_futures_falsification_regressions.py",
+      "tests/unit/risk/test_futures_runtime_integration.py"
+    ],
+    "src/trading_bot/autonomous/experience.py": [
+      "tests/unit/autonomous/test_trace_replay_outcomes.py"
+    ],
+    "src/trading_bot/autonomous/observability.py": [
+      "tests/unit/autonomous/test_lab_ops_hardening.py",
+      "tests/unit/autonomous/test_pid_identity.py"
+    ],
+    "src/trading_bot/autonomous/outcomes.py": [
+      "tests/unit/autonomous/test_outcome_contract.py",
+      "tests/unit/autonomous/test_rfc020_point_in_time.py",
+      "tests/unit/autonomous/test_trace_replay_outcomes.py"
+    ],
+    "src/trading_bot/autonomous/paper_loop.py": [
+      "tests/unit/autonomous/test_lab_operations.py",
+      "tests/unit/autonomous/test_lab_ops_hardening.py"
+    ],
+    "src/trading_bot/autonomous/pit.py": [
+      "tests/unit/autonomous/test_cadence.py",
+      "tests/unit/autonomous/test_outcome_contract.py",
+      "tests/unit/autonomous/test_rfc020_point_in_time.py"
+    ],
+    "src/trading_bot/autonomous/pit_ledger.py": [
+      "tests/unit/autonomous/test_pit_ledger.py"
+    ],
+    "src/trading_bot/autonomous/runtime.py": [
+      "tests/unit/autonomous/helpers.py",
+      "tests/unit/autonomous/test_cost_gate_risk_fixture.py",
+      "tests/unit/autonomous/test_runtime_integration.py"
+    ],
+    "src/trading_bot/autonomous/strategy_state.py": [
+      "tests/unit/autonomous/test_strategy_state.py"
+    ],
+    "src/trading_bot/autonomous/supervisor.py": [
+      "tests/unit/autonomous/test_lab_ops_hardening.py",
+      "tests/unit/autonomous/test_supervisor.py",
+      "tests/unit/forward/test_forward_exit_contract.py",
+      "tests/unit/ops/test_windowless.py"
+    ],
+    "src/trading_bot/autonomous/trace.py": [
+      "tests/unit/autonomous/test_outcome_contract.py",
+      "tests/unit/autonomous/test_trace_replay_outcomes.py"
+    ],
+    "src/trading_bot/autonomous/universe_preflight.py": [
+      "tests/unit/autonomous/test_universe_preflight.py"
+    ],
+    "src/trading_bot/autonomous/verifier.py": [
+      "tests/unit/autonomous/test_verifier.py"
+    ],
+    "src/trading_bot/backtesting/__init__.py": [
+      "tests/unit/backtesting/test_walk_forward_reports.py",
+      "tests/unit/paper/test_harness.py"
+    ],
+    "src/trading_bot/backtesting/commissions.py": [
+      "tests/unit/backtesting/test_commissions.py"
+    ],
+    "src/trading_bot/backtesting/engine.py": [
+      "tests/integration/test_v024_real_qualification.py",
+      "tests/unit/backtesting/test_engine.py"
+    ],
+    "src/trading_bot/backtesting/slippage.py": [
+      "tests/unit/backtesting/test_slippage.py"
+    ],
+    "src/trading_bot/backtesting/types.py": [
+      "tests/integration/test_v021_real_pipeline.py",
+      "tests/integration/test_v023_real_qualification.py",
+      "tests/integration/test_v024_real_qualification.py",
+      "tests/unit/backtesting/test_engine.py",
+      "tests/unit/backtesting/test_types.py"
+    ],
+    "src/trading_bot/backtesting/walk_forward_reports.py": [
+      "tests/unit/backtesting/test_walk_forward_reports.py"
+    ],
+    "src/trading_bot/charting/__init__.py": [
+      "tests/unit/charting/test_local_renderer.py"
+    ],
+    "src/trading_bot/config/__init__.py": [
+      "tests/unit/config/test_failfast.py",
+      "tests/unit/config/test_settings.py"
+    ],
+    "src/trading_bot/config/exchange.py": [
+      "tests/unit/config/test_models.py",
+      "tests/unit/market_data/test_ccxt_connector.py",
+      "tests/unit/scanner/test_mode_filters.py",
+      "tests/unit/scanner/test_universe_scanner.py"
+    ],
+    "src/trading_bot/config/indicators.py": [
+      "tests/unit/config/test_models.py",
+      "tests/unit/scanner/test_mode_filters.py",
+      "tests/unit/scanner/test_universe_scanner.py"
+    ],
+    "src/trading_bot/config/risk.py": [
+      "tests/unit/autonomous/helpers.py",
+      "tests/unit/config/test_failfast.py",
+      "tests/unit/config/test_models.py",
+      "tests/unit/paper/test_def_run_015_close_vs_reverse.py",
+      "tests/unit/paper/test_edge17_net_risk.py",
+      "tests/unit/paper/test_paper_cycle.py",
+      "tests/unit/paper/test_paper_recovery.py",
+      "tests/unit/risk/test_edge17_defensive_blocks.py",
+      "tests/unit/risk/test_edge17_weekly_window.py",
+      "tests/unit/risk/test_risk_regression_matrix.py",
+      "tests/unit/scanner/test_mode_filters.py",
+      "tests/unit/scanner/test_universe_scanner.py",
+      "tests/unit/strategy_lifecycle/test_integration.py"
+    ],
+    "src/trading_bot/config/runtime.py": [
+      "tests/integration/test_paper_e2e_001.py",
+      "tests/unit/autonomous/helpers.py",
+      "tests/unit/autonomous/test_runtime_integration.py",
+      "tests/unit/cert/test_cert_env_isolation.py",
+      "tests/unit/config/test_failfast.py",
+      "tests/unit/config/test_models.py",
+      "tests/unit/config/test_settings.py",
+      "tests/unit/paper/test_harness.py",
+      "tests/unit/scanner/conftest.py",
+      "tests/unit/scanner/test_mode_filters.py",
+      "tests/unit/scanner/test_universe_scanner.py"
+    ],
+    "src/trading_bot/config/settings.py": [
+      "tests/integration/test_def_run_016_pipeline.py",
+      "tests/integration/test_def_run_017_pipeline.py",
+      "tests/integration/test_paper_e2e_001.py",
+      "tests/unit/cert/test_cert_env_isolation.py",
+      "tests/unit/config/test_failfast.py",
+      "tests/unit/config/test_settings.py",
+      "tests/unit/intelligence/ai_bots/test_registry_contracts_runner.py",
+      "tests/unit/market_data/test_fake_freshness.py",
+      "tests/unit/paper/test_harness.py",
+      "tests/unit/reports/test_ai_bots_003b_verify.py",
+      "tests/unit/research/test_rfc046_activation_and_campaign.py",
+      "tests/unit/risk/test_def_run_014_stop_contract.py",
+      "tests/unit/scanner/conftest.py",
+      "tests/unit/scanner/test_mode_filters.py",
+      "tests/unit/scanner/test_universe_scanner.py",
+      "tests/unit/vision/test_accounting_integrity.py",
+      "tests/unit/vision/test_causal_clock.py",
+      "tests/unit/vision/test_causal_execution.py",
+      "tests/unit/vision/test_closed_trade_cycle.py",
+      "tests/unit/vision/test_def_run_014_lane_contract.py",
+      "tests/unit/vision/test_def_run_016_integrity.py",
+      "tests/unit/vision/test_def_run_016_opinion_lifecycle.py",
+      "tests/unit/vision/test_guards_and_controls.py",
+      "tests/unit/vision/test_integrity_and_latency.py",
+      "tests/unit/vision/test_lane_vertical.py",
+      "tests/unit/vision/test_minute_quote_feed.py",
+      "tests/unit/vision/test_open_phase_causality.py",
+      "tests/unit/vision/test_prospective_session.py",
+      "tests/unit/vision/test_run_code_provenance.py",
+      "tests/unit/vision/test_session_lock_recovery.py",
+      "tests/unit/vision/test_subbar_execution.py"
+    ],
+    "src/trading_bot/config/strategies.py": [
+      "tests/unit/config/test_models.py",
+      "tests/unit/scanner/test_mode_filters.py",
+      "tests/unit/scanner/test_universe_scanner.py"
+    ],
+    "src/trading_bot/config/universe.py": [
+      "tests/unit/config/test_models.py",
+      "tests/unit/scanner/test_mode_filters.py",
+      "tests/unit/scanner/test_universe_scanner.py"
+    ],
+    "src/trading_bot/domain/enums/kill_switch.py": [
+      "tests/unit/autonomous/test_decision_kill_switch.py"
+    ],
+    "src/trading_bot/execution/__init__.py": [
+      "tests/unit/microstructure/test_cost_model_v3.py"
+    ],
+    "src/trading_bot/execution/cost_model.py": [
+      "tests/unit/microstructure/test_cost_model_v3.py"
+    ],
+    "src/trading_bot/execution/idempotency.py": [
+      "tests/integration/test_paper_e2e_002.py",
+      "tests/integration/test_paper_e2e_003.py",
+      "tests/unit/paper/test_def_run_015_close_vs_reverse.py",
+      "tests/unit/paper/test_paper_cycle.py",
+      "tests/unit/paper/test_paper_recovery.py"
+    ],
+    "src/trading_bot/execution/live_gate.py": [
+      "tests/unit/research/test_rfc046_activation_and_campaign.py"
+    ],
+    "src/trading_bot/feedback/__init__.py": [
+      "tests/unit/feedback/test_evaluator.py"
+    ],
+    "src/trading_bot/indicators/__init__.py": [
+      "tests/unit/indicators/test_indicator_properties.py"
+    ],
+    "src/trading_bot/intelligence/ai_bots/bots.py": [
+      "tests/unit/intelligence/ai_bots/test_registry_contracts_runner.py"
+    ],
+    "src/trading_bot/intelligence/ai_bots/contracts.py": [
+      "tests/unit/intelligence/ai_bots/test_registry_contracts_runner.py"
+    ],
+    "src/trading_bot/intelligence/ai_bots/registry.py": [
+      "tests/unit/intelligence/ai_bots/test_registry_contracts_runner.py"
+    ],
+    "src/trading_bot/intelligence/ai_bots/runner.py": [
+      "tests/unit/intelligence/ai_bots/test_registry_contracts_runner.py"
+    ],
+    "src/trading_bot/market_data/bitunix.py": [
+      "tests/unit/market_data/test_bitunix_env_var_wiring.py"
+    ],
+    "src/trading_bot/market_data/bitunix_futures.py": [
+      "tests/unit/market_data/test_bitunix_env_var_wiring.py",
+      "tests/unit/test_app_trade_journal.py"
+    ],
+    "src/trading_bot/market_data/candle_filter.py": [
+      "tests/unit/paper/test_provider_failures.py"
+    ],
+    "src/trading_bot/market_data/exceptions.py": [
+      "tests/unit/market_data/test_ccxt_connector.py"
+    ],
+    "src/trading_bot/market_data/exchange_connector.py": [
+      "tests/unit/market_data/test_ccxt_connector.py",
+      "tests/unit/market_data/test_ohlcv_fetcher.py"
+    ],
+    "src/trading_bot/market_data/fake.py": [
+      "tests/integration/test_paper_e2e_001.py",
+      "tests/integration/test_paper_e2e_002.py",
+      "tests/integration/test_paper_e2e_003.py",
+      "tests/unit/market_data/test_fake.py",
+      "tests/unit/market_data/test_fake_freshness.py",
+      "tests/unit/paper/test_harness.py",
+      "tests/unit/scanner/conftest.py"
+    ],
+    "src/trading_bot/market_data/minute_collector.py": [
+      "tests/unit/market_data/test_binance_source_contract.py",
+      "tests/unit/market_data/test_data_integrity_003h.py",
+      "tests/unit/market_data/test_minute_collector.py",
+      "tests/unit/vision/test_prospective_session.py",
+      "tests/unit/vision/test_session_lock_recovery.py"
+    ],
+    "src/trading_bot/market_data/ohlcv_fetcher.py": [
+      "tests/unit/market_data/test_ohlcv_fetcher.py"
+    ],
+    "src/trading_bot/market_data/quota.py": [
+      "tests/unit/market_data/test_quota.py"
+    ],
+    "src/trading_bot/market_data/types.py": [
+      "tests/bdd/conftest.py",
+      "tests/integration/test_paper_e2e_002.py",
+      "tests/integration/test_paper_e2e_003.py",
+      "tests/unit/autonomous/helpers.py",
+      "tests/unit/autonomous/test_cadence.py",
+      "tests/unit/autonomous/test_rfc020_point_in_time.py",
+      "tests/unit/autonomous/test_runtime_integration.py",
+      "tests/unit/autonomous/test_verifier.py",
+      "tests/unit/cert/test_ema_crossover_family_runtime.py",
+      "tests/unit/cert/test_ema_crossover_strategy_guard.py",
+      "tests/unit/charting/test_local_renderer.py",
+      "tests/unit/feedback/test_evaluator.py",
+      "tests/unit/indicators/test_indicator_properties.py",
+      "tests/unit/market_data/test_ccxt_connector.py",
+      "tests/unit/market_data/test_fake.py",
+      "tests/unit/market_data/test_ohlcv_fetcher.py",
+      "tests/unit/market_structure/test_detector.py",
+      "tests/unit/paper/test_def_run_015_close_vs_reverse.py",
+      "tests/unit/paper/test_paper_cycle.py",
+      "tests/unit/paper/test_paper_recovery.py",
+      "tests/unit/paper/test_provider_failures.py",
+      "tests/unit/research/test_alpha_expansion_htf.py",
+      "tests/unit/research/test_alpha_expansion_xsec.py",
+      "tests/unit/research/test_alpha_recovery_daily.py",
+      "tests/unit/research/test_alpha_recovery_pit.py",
+      "tests/unit/research/test_alpha_recovery_xsec.py",
+      "tests/unit/research/test_campaign_runtime.py",
+      "tests/unit/research/test_campaign_supervisor.py",
+      "tests/unit/research/test_decision_ledger.py",
+      "tests/unit/research/test_decision_outcomes.py",
+      "tests/unit/research/test_diversified_daily.py",
+      "tests/unit/research/test_real_market_context.py",
+      "tests/unit/scanner/conftest.py",
+      "tests/unit/scanner/test_filters.py",
+      "tests/unit/scanner/test_protocols.py",
+      "tests/unit/scanner/test_universe_scanner.py",
+      "tests/unit/storage/test_ohlcv_store.py",
+      "tests/unit/test_app_trade_journal.py",
+      "tests/unit/trade_journal/test_thesis.py",
+      "tests/unit/vision/test_signal_sources.py"
+    ],
+    "src/trading_bot/market_structure/__init__.py": [
+      "tests/unit/market_structure/test_detector.py"
+    ],
+    "src/trading_bot/observability/__init__.py": [
+      "tests/unit/observability/test_dashboard_server.py",
+      "tests/unit/observability/test_ecosystem_projection.py"
+    ],
+    "src/trading_bot/observability/topology.py": [
+      "tests/unit/observability/test_ecosystem_projection.py"
+    ],
+    "src/trading_bot/ops/__init__.py": [
+      "tests/unit/ops/test_paper_supervisor.py",
+      "tests/unit/ops/test_single_writer_lock.py",
+      "tests/unit/ops/test_windowless.py",
+      "tests/unit/vision/test_session_lock_recovery.py"
+    ],
+    "src/trading_bot/ops/paper_supervisor.py": [
+      "tests/unit/ops/test_paper_supervisor.py"
+    ],
+    "src/trading_bot/ops/session_status.py": [
+      "tests/unit/ops/test_paper_supervisor.py",
+      "tests/unit/ops/test_session_status.py"
+    ],
+    "src/trading_bot/ops/single_writer.py": [
+      "tests/unit/ops/test_paper_lock_campaign.py",
+      "tests/unit/ops/test_paper_supervisor.py",
+      "tests/unit/ops/test_session_status.py",
+      "tests/unit/ops/test_single_writer_lock.py"
+    ],
+    "src/trading_bot/ops/windowless.py": [
+      "tests/unit/ops/test_paper_supervisor.py",
+      "tests/unit/ops/test_single_writer_lock.py",
+      "tests/unit/ops/test_windowless.py",
+      "tests/unit/vision/test_session_lock_recovery.py"
+    ],
+    "src/trading_bot/paper/__init__.py": [
+      "tests/unit/paper/test_harness.py"
+    ],
+    "src/trading_bot/paper/broker.py": [
+      "tests/integration/test_paper_e2e_001.py",
+      "tests/integration/test_paper_e2e_002.py",
+      "tests/integration/test_paper_e2e_003.py",
+      "tests/unit/autonomous/helpers.py",
+      "tests/unit/autonomous/test_runtime_integration.py",
+      "tests/unit/paper/test_broker_identity.py",
+      "tests/unit/paper/test_def_run_015_close_vs_reverse.py",
+      "tests/unit/paper/test_edge17_net_risk.py",
+      "tests/unit/paper/test_execution_lifecycle.py",
+      "tests/unit/paper/test_paper_cycle.py",
+      "tests/unit/paper/test_paper_recovery.py",
+      "tests/unit/vision/test_closed_trade_cycle.py",
+      "tests/unit/vision/test_guards_and_controls.py",
+      "tests/unit/vision/test_open_phase_causality.py"
+    ],
+    "src/trading_bot/paper/harness.py": [
+      "tests/integration/test_paper_e2e_001.py",
+      "tests/integration/test_paper_e2e_002.py",
+      "tests/integration/test_paper_e2e_003.py",
+      "tests/unit/paper/test_paper_recovery.py"
+    ],
+    "src/trading_bot/paper/kill_switch_v2.py": [
+      "tests/unit/autonomous/test_decision_kill_switch.py"
+    ],
+    "src/trading_bot/paper/lifecycle/__init__.py": [
+      "tests/unit/paper/test_execution_lifecycle.py"
+    ],
+    "src/trading_bot/paper/lifecycle/reconcile.py": [
+      "tests/unit/paper/test_execution_lifecycle.py"
+    ],
+    "src/trading_bot/paper/paper_cycle.py": [
+      "tests/integration/test_paper_e2e_002.py",
+      "tests/integration/test_paper_e2e_003.py",
+      "tests/unit/paper/test_def_run_015_close_vs_reverse.py",
+      "tests/unit/paper/test_paper_cycle.py",
+      "tests/unit/paper/test_paper_recovery.py",
+      "tests/unit/risk/test_edge17_defensive_blocks.py"
+    ],
+    "src/trading_bot/paper/paper_orchestrator.py": [
+      "tests/integration/test_paper_e2e_001.py"
+    ],
+    "src/trading_bot/paper/paper_runtime_state.py": [
+      "tests/unit/paper/test_paper_recovery.py"
+    ],
+    "src/trading_bot/paper/paper_state_store.py": [
+      "tests/unit/paper/test_paper_recovery.py"
+    ],
+    "src/trading_bot/paper/reconciliation_v4.py": [
+      "tests/unit/paper/test_paper_recovery.py"
+    ],
+    "src/trading_bot/paper/snapshot_context.py": [
+      "tests/unit/paper/test_provider_failures.py"
+    ],
+    "src/trading_bot/paper/snapshot_history.py": [
+      "tests/integration/test_paper_e2e_002.py",
+      "tests/integration/test_paper_e2e_003.py",
+      "tests/unit/autonomous/test_rfc020_point_in_time.py",
+      "tests/unit/paper/test_provider_failures.py"
+    ],
+    "src/trading_bot/paper/types.py": [
+      "tests/unit/paper/test_harness.py",
+      "tests/unit/paper/test_paper_recovery.py"
+    ],
+    "src/trading_bot/research/__init__.py": [
+      "tests/unit/research/test_agentic_baselines.py",
+      "tests/unit/research/test_agentic_contracts.py",
+      "tests/unit/research/test_alpha001_statistics.py",
+      "tests/unit/research/test_alpha002_experiment.py",
+      "tests/unit/research/test_alpha002_features.py",
+      "tests/unit/research/test_alpha002_preregistration.py",
+      "tests/unit/research/test_alpha003_experiment.py",
+      "tests/unit/research/test_alpha003_features.py",
+      "tests/unit/research/test_alpha003_preregistration.py",
+      "tests/unit/research/test_campaign_health.py",
+      "tests/unit/research/test_campaign_runtime.py",
+      "tests/unit/research/test_campaign_storage.py",
+      "tests/unit/research/test_campaign_supervisor.py",
+      "tests/unit/research/test_decision_ledger.py",
+      "tests/unit/research/test_decision_outcomes.py",
+      "tests/unit/research/test_prereg_gate.py",
+      "tests/unit/research/test_prereg_gate_escape.py",
+      "tests/unit/research/test_prereg_gate_two_phase.py",
+      "tests/unit/research/test_real_market_context.py",
+      "tests/unit/research/test_rfc034_strategy_closure.py",
+      "tests/unit/research/test_rfc035_strategy_admission.py",
+      "tests/unit/research/test_rfc036_managed_futures.py",
+      "tests/unit/research/test_rfc037_refutation.py",
+      "tests/unit/research/test_rfc038_decision.py",
+      "tests/unit/research/test_rfc039_small_capital.py",
+      "tests/unit/research/test_rfc040_dual_momentum.py",
+      "tests/unit/research/test_rfc041_business_freeze.py",
+      "tests/unit/research/test_rfc042_opportunity_radar.py",
+      "tests/unit/research/test_rfc043_profitability_model.py",
+      "tests/unit/research/test_rfc044_reentry_watch.py",
+      "tests/unit/research/test_rfc046_activation_and_campaign.py",
+      "tests/unit/research/test_rfc046_cost_forensics.py",
+      "tests/unit/research/test_tradingview_mcp_adapter.py"
+    ],
+    "src/trading_bot/research/agentic_baselines.py": [
+      "tests/unit/research/test_agentic_baselines.py",
+      "tests/unit/research/test_decision_outcomes.py"
+    ],
+    "src/trading_bot/research/agentic_contracts.py": [
+      "tests/unit/research/test_agentic_baselines.py",
+      "tests/unit/research/test_agentic_contracts.py",
+      "tests/unit/research/test_campaign_runtime.py",
+      "tests/unit/research/test_campaign_supervisor.py",
+      "tests/unit/research/test_decision_ledger.py",
+      "tests/unit/research/test_decision_outcomes.py",
+      "tests/unit/research/test_real_market_context.py",
+      "tests/unit/research/test_tradingview_mcp_adapter.py"
+    ],
+    "src/trading_bot/research/alpha001.py": [
+      "tests/unit/research/test_alpha001_statistics.py",
+      "tests/unit/research/test_alpha002_experiment.py",
+      "tests/unit/research/test_alpha002_preregistration.py",
+      "tests/unit/research/test_alpha003_experiment.py",
+      "tests/unit/research/test_alpha003_preregistration.py"
+    ],
+    "src/trading_bot/research/alpha002.py": [
+      "tests/unit/research/test_alpha002_experiment.py",
+      "tests/unit/research/test_alpha002_preregistration.py"
+    ],
+    "src/trading_bot/research/alpha002_capture.py": [
+      "tests/unit/research/test_alpha002_preregistration.py"
+    ],
+    "src/trading_bot/research/alpha002_experiment.py": [
+      "tests/unit/research/test_alpha002_experiment.py"
+    ],
+    "src/trading_bot/research/alpha002_features.py": [
+      "tests/unit/research/test_alpha002_experiment.py",
+      "tests/unit/research/test_alpha002_features.py"
+    ],
+    "src/trading_bot/research/alpha003.py": [
+      "tests/unit/research/test_alpha003_experiment.py",
+      "tests/unit/research/test_alpha003_preregistration.py"
+    ],
+    "src/trading_bot/research/alpha003_experiment.py": [
+      "tests/unit/research/test_alpha003_experiment.py",
+      "tests/unit/research/test_alpha003_preregistration.py"
+    ],
+    "src/trading_bot/research/alpha003_features.py": [
+      "tests/unit/research/test_alpha003_experiment.py",
+      "tests/unit/research/test_alpha003_features.py",
+      "tests/unit/research/test_alpha003_preregistration.py"
+    ],
+    "src/trading_bot/research/alpha_expansion/__init__.py": [
+      "tests/unit/research/test_alpha_expansion_manifests.py"
+    ],
+    "src/trading_bot/research/alpha_expansion/data.py": [
+      "tests/unit/research/test_alpha_expansion_manifests.py"
+    ],
+    "src/trading_bot/research/alpha_expansion/htf.py": [
+      "tests/unit/research/test_alpha_expansion_htf.py"
+    ],
+    "src/trading_bot/research/alpha_expansion/strategies.py": [
+      "tests/unit/research/test_alpha_expansion_xsec.py",
+      "tests/unit/research/test_arp012_verifier.py"
+    ],
+    "src/trading_bot/research/alpha_expansion/xsec.py": [
+      "tests/unit/research/test_alpha_expansion_xsec.py"
+    ],
+    "src/trading_bot/research/alpha_recovery/__init__.py": [
+      "tests/unit/research/test_alpha_expansion_manifests.py",
+      "tests/unit/research/test_alpha_recovery_manifests.py",
+      "tests/unit/research/test_alpha_recovery_v1_4_manifests.py"
+    ],
+    "src/trading_bot/research/alpha_recovery/campaign.py": [
+      "tests/unit/research/test_alpha_expansion_manifests.py",
+      "tests/unit/research/test_alpha_recovery_manifests.py",
+      "tests/unit/research/test_alpha_recovery_pit.py",
+      "tests/unit/research/test_alpha_recovery_v1_4_manifests.py"
+    ],
+    "src/trading_bot/research/alpha_recovery/daily.py": [
+      "tests/unit/research/test_alpha_recovery_daily.py",
+      "tests/unit/research/test_alpha_recovery_v1_4_manifests.py",
+      "tests/unit/research/test_alpha_recovery_xsec.py",
+      "tests/unit/research/test_diversified_daily.py"
+    ],
+    "src/trading_bot/research/alpha_recovery/daily_v1_4.py": [
+      "tests/unit/research/test_alpha_recovery_xsec.py"
+    ],
+    "src/trading_bot/research/alpha_recovery/experiments.py": [
+      "tests/unit/research/test_alpha_recovery_pit.py"
+    ],
+    "src/trading_bot/research/alpha_recovery/extended.py": [
+      "tests/unit/research/test_alpha_recovery_v1_4_manifests.py"
+    ],
+    "src/trading_bot/research/alpha_recovery/feasibility.py": [
+      "tests/unit/research/test_alpha_recovery_feasibility.py"
+    ],
+    "src/trading_bot/research/alpha_recovery/metrics.py": [
+      "tests/unit/research/test_arp011_exp019_pit.py"
+    ],
+    "src/trading_bot/research/alpha_recovery/series.py": [
+      "tests/unit/research/test_alpha_recovery_pit.py"
+    ],
+    "src/trading_bot/research/alpha_recovery/simulate.py": [
+      "tests/unit/research/test_alpha_recovery_pit.py",
+      "tests/unit/research/test_diversified_daily.py"
+    ],
+    "src/trading_bot/research/alpha_recovery/xsec.py": [
+      "tests/unit/research/test_alpha_recovery_xsec.py"
+    ],
+    "src/trading_bot/research/alpha_scorecard.py": [
+      "tests/unit/research/test_campaign_runtime.py",
+      "tests/unit/research/test_decision_ledger.py",
+      "tests/unit/research/test_decision_outcomes.py"
+    ],
+    "src/trading_bot/research/analyst_provenance.py": [
+      "tests/unit/research/test_campaign_runtime.py",
+      "tests/unit/research/test_campaign_supervisor.py",
+      "tests/unit/research/test_decision_ledger.py"
+    ],
+    "src/trading_bot/research/asset_intelligence/base.py": [
+      "tests/unit/autonomous/test_rfc020_point_in_time.py"
+    ],
+    "src/trading_bot/research/asset_intelligence/features.py": [
+      "tests/unit/autonomous/test_rfc020_point_in_time.py"
+    ],
+    "src/trading_bot/research/asset_intelligence/models.py": [
+      "tests/unit/autonomous/test_rfc020_point_in_time.py"
+    ],
+    "src/trading_bot/research/asset_intelligence/registry.py": [
+      "tests/integration/test_paper_e2e_002.py",
+      "tests/integration/test_paper_e2e_003.py",
+      "tests/unit/paper/test_def_run_015_close_vs_reverse.py",
+      "tests/unit/paper/test_paper_cycle.py",
+      "tests/unit/paper/test_paper_recovery.py"
+    ],
+    "src/trading_bot/research/backtest_evidence.py": [
+      "tests/integration/test_v021_real_pipeline.py",
+      "tests/integration/test_v023_real_qualification.py"
+    ],
+    "src/trading_bot/research/business_freeze.py": [
+      "tests/unit/research/test_rfc041_business_freeze.py"
+    ],
+    "src/trading_bot/research/calendar.py": [
+      "tests/integration/test_v023_real_qualification.py"
+    ],
+    "src/trading_bot/research/campaign_health.py": [
+      "tests/unit/research/test_campaign_health.py"
+    ],
+    "src/trading_bot/research/campaign_lock.py": [
+      "tests/unit/research/test_campaign_runtime.py"
+    ],
+    "src/trading_bot/research/campaign_manifest.py": [
+      "tests/unit/research/test_campaign_runtime.py",
+      "tests/unit/research/test_campaign_supervisor.py"
+    ],
+    "src/trading_bot/research/campaign_reporting.py": [
+      "tests/unit/research/test_campaign_health.py",
+      "tests/unit/research/test_campaign_runtime.py",
+      "tests/unit/research/test_campaign_storage.py",
+      "tests/unit/research/test_campaign_supervisor.py"
+    ],
+    "src/trading_bot/research/campaign_state.py": [
+      "tests/unit/research/test_campaign_runtime.py",
+      "tests/unit/research/test_campaign_supervisor.py"
+    ],
+    "src/trading_bot/research/candle_causality.py": [
+      "tests/integration/test_v021_real_pipeline.py"
+    ],
+    "src/trading_bot/research/canonical_accounting.py": [
+      "tests/integration/test_v024_real_qualification.py"
+    ],
+    "src/trading_bot/research/certification_gate.py": [
+      "tests/unit/research/test_rfc034_strategy_closure.py",
+      "tests/unit/research/test_sprint032_remediation.py",
+      "tests/unit/research/test_sprint033_futures_tsmom.py"
+    ],
+    "src/trading_bot/research/confirmation.py": [
+      "tests/integration/test_v021_real_pipeline.py"
+    ],
+    "src/trading_bot/research/cost_integrity.py": [
+      "tests/integration/test_v023_real_qualification.py"
+    ],
+    "src/trading_bot/research/decision_ledger.py": [
+      "tests/unit/research/test_campaign_runtime.py",
+      "tests/unit/research/test_campaign_supervisor.py",
+      "tests/unit/research/test_decision_ledger.py"
+    ],
+    "src/trading_bot/research/decision_outcomes.py": [
+      "tests/unit/research/test_campaign_runtime.py",
+      "tests/unit/research/test_decision_ledger.py",
+      "tests/unit/research/test_decision_outcomes.py"
+    ],
+    "src/trading_bot/research/discovery/__init__.py": [
+      "tests/unit/research/test_rfc046_activation_and_campaign.py",
+      "tests/unit/research/test_rfc046_cost_forensics.py"
+    ],
+    "src/trading_bot/research/disk_budget.py": [
+      "tests/unit/research/test_wp9_disk_budget.py"
+    ],
+    "src/trading_bot/research/disk_space.py": [
+      "tests/unit/research/test_campaign_storage.py"
+    ],
+    "src/trading_bot/research/diversified/__init__.py": [
+      "tests/unit/research/test_arp009_exp021_pit.py",
+      "tests/unit/research/test_arp010_exp022_pit.py",
+      "tests/unit/research/test_arp011_exp019_pit.py",
+      "tests/unit/research/test_arp013_exp023_spec.py",
+      "tests/unit/research/test_diversified_manifests.py"
+    ],
+    "src/trading_bot/research/diversified/breadth.py": [
+      "tests/unit/research/test_arp011_exp019_pit.py"
+    ],
+    "src/trading_bot/research/diversified/daily.py": [
+      "tests/unit/research/test_diversified_daily.py"
+    ],
+    "src/trading_bot/research/diversified/data.py": [
+      "tests/unit/research/test_arp009_exp021_pit.py",
+      "tests/unit/research/test_arp010_exp022_pit.py",
+      "tests/unit/research/test_arp011_exp019_pit.py",
+      "tests/unit/research/test_arp013_exp023_spec.py",
+      "tests/unit/research/test_diversified_daily.py",
+      "tests/unit/research/test_diversified_manifests.py",
+      "tests/unit/research/test_diversified_universe.py",
+      "tests/unit/research/test_diversified_xsec.py"
+    ],
+    "src/trading_bot/research/diversified/intermarket.py": [
+      "tests/unit/research/test_arp010_exp022_pit.py"
+    ],
+    "src/trading_bot/research/diversified/universe.py": [
+      "tests/unit/research/test_diversified_universe.py"
+    ],
+    "src/trading_bot/research/diversified/xsec.py": [
+      "tests/unit/research/test_diversified_xsec.py"
+    ],
+    "src/trading_bot/research/diversified/xsec_riskadj.py": [
+      "tests/unit/research/test_arp009_exp021_pit.py",
+      "tests/unit/research/test_arp012_verifier.py"
+    ],
+    "src/trading_bot/research/economic_closure.py": [
+      "tests/unit/research/test_rfc034_strategy_closure.py"
+    ],
+    "src/trading_bot/research/economic_recovery/__init__.py": [
+      "tests/unit/research/test_edge14_economic_recovery.py",
+      "tests/unit/research/test_edge16_causality.py",
+      "tests/unit/research/test_edge16_pit.py"
+    ],
+    "src/trading_bot/research/economic_recovery/alpha15.py": [
+      "tests/unit/research/test_alpha15_causality.py",
+      "tests/unit/research/test_edge16_causality.py",
+      "tests/unit/research/test_edge16_pit.py"
+    ],
+    "src/trading_bot/research/economic_recovery/candidates.py": [
+      "tests/unit/research/test_edge14_economic_recovery.py"
+    ],
+    "src/trading_bot/research/economic_recovery/causality.py": [
+      "tests/unit/research/test_edge16_causality.py"
+    ],
+    "src/trading_bot/research/economic_recovery/contracts.py": [
+      "tests/unit/research/test_edge14_economic_recovery.py"
+    ],
+    "src/trading_bot/research/economic_recovery/costs.py": [
+      "tests/unit/research/test_edge14_economic_recovery.py"
+    ],
+    "src/trading_bot/research/economic_recovery/experiments.py": [
+      "tests/integration/test_def_run_016_pipeline.py",
+      "tests/integration/test_def_run_017_pipeline.py",
+      "tests/unit/intelligence/ai_bots/test_registry_contracts_runner.py",
+      "tests/unit/reports/test_ai_bots_003b_verify.py",
+      "tests/unit/research/test_alpha15_causality.py",
+      "tests/unit/research/test_edge14_economic_recovery.py",
+      "tests/unit/research/test_edge16_causality.py",
+      "tests/unit/research/test_edge16_pit.py",
+      "tests/unit/vision/test_accounting_integrity.py",
+      "tests/unit/vision/test_causal_clock.py",
+      "tests/unit/vision/test_causal_execution.py",
+      "tests/unit/vision/test_chart_determinism.py",
+      "tests/unit/vision/test_closed_trade_cycle.py",
+      "tests/unit/vision/test_def_run_014_lane_contract.py",
+      "tests/unit/vision/test_def_run_016_integrity.py",
+      "tests/unit/vision/test_def_run_016_opinion_lifecycle.py",
+      "tests/unit/vision/test_guards_and_controls.py",
+      "tests/unit/vision/test_integrity_and_latency.py",
+      "tests/unit/vision/test_lane_vertical.py",
+      "tests/unit/vision/test_minute_quote_feed.py",
+      "tests/unit/vision/test_open_phase_causality.py",
+      "tests/unit/vision/test_provider.py",
+      "tests/unit/vision/test_run_code_provenance.py",
+      "tests/unit/vision/test_signal_source_families.py",
+      "tests/unit/vision/test_signal_sources.py",
+      "tests/unit/vision/test_subbar_execution.py",
+      "tests/unit/vision/test_visual_defects.py"
+    ],
+    "src/trading_bot/research/economic_recovery/frequency.py": [
+      "tests/unit/research/test_edge14_economic_recovery.py"
+    ],
+    "src/trading_bot/research/economic_recovery/parity.py": [
+      "tests/unit/research/test_edge14_economic_recovery.py"
+    ],
+    "src/trading_bot/research/economic_recovery/pit15.py": [
+      "tests/unit/research/test_edge16_causality.py",
+      "tests/unit/research/test_edge16_pit.py"
+    ],
+    "src/trading_bot/research/economic_recovery/render.py": [
+      "tests/unit/research/test_edge14_economic_recovery.py"
+    ],
+    "src/trading_bot/research/economic_recovery/trade_path.py": [
+      "tests/unit/research/test_edge14_economic_recovery.py"
+    ],
+    "src/trading_bot/research/edge01/__init__.py": [
+      "tests/unit/research/test_edge01_gate_and_artifacts.py",
+      "tests/unit/research/test_edge01_wp02_robustness.py"
+    ],
+    "src/trading_bot/research/edge01/campaign.py": [
+      "tests/unit/research/test_edge01_ablation.py",
+      "tests/unit/research/test_edge01_gate_and_artifacts.py",
+      "tests/unit/research/test_edge01_mechanism_ablations.py",
+      "tests/unit/research/test_edge01_risk_ablation.py"
+    ],
+    "src/trading_bot/research/edge01/candidates.py": [
+      "tests/unit/research/test_edge01_ablation.py",
+      "tests/unit/research/test_edge01_closure_experiments.py",
+      "tests/unit/research/test_edge01_mechanism_ablations.py",
+      "tests/unit/research/test_edge01_pit.py",
+      "tests/unit/research/test_edge01_risk_ablation.py"
+    ],
+    "src/trading_bot/research/edge01/closure.py": [
+      "tests/unit/research/test_edge01_closure_experiments.py"
+    ],
+    "src/trading_bot/research/edge01/costs.py": [
+      "tests/unit/research/test_edge01_ablation.py",
+      "tests/unit/research/test_edge01_closure_experiments.py",
+      "tests/unit/research/test_edge01_mechanism_ablations.py",
+      "tests/unit/research/test_edge01_pit.py",
+      "tests/unit/research/test_edge01_risk_ablation.py",
+      "tests/unit/research/test_edge03_forward.py",
+      "tests/unit/research/test_edge06_families.py",
+      "tests/unit/research/test_edge08_cross_section.py"
+    ],
+    "src/trading_bot/research/edge01/data.py": [
+      "tests/unit/research/test_edge01_ablation.py",
+      "tests/unit/research/test_edge01_closure_experiments.py",
+      "tests/unit/research/test_edge01_gate_and_artifacts.py",
+      "tests/unit/research/test_edge01_mechanism_ablations.py",
+      "tests/unit/research/test_edge01_pit.py",
+      "tests/unit/research/test_edge01_risk_ablation.py",
+      "tests/unit/research/test_edge03_forward.py",
+      "tests/unit/research/test_edge06_families.py",
+      "tests/unit/research/test_edge08_cross_section.py"
+    ],
+    "src/trading_bot/research/edge01/features.py": [
+      "tests/unit/research/test_edge01_ablation.py",
+      "tests/unit/research/test_edge01_mechanism_ablations.py",
+      "tests/unit/research/test_edge01_pit.py",
+      "tests/unit/research/test_edge01_risk_ablation.py"
+    ],
+    "src/trading_bot/research/edge01/retest.py": [
+      "tests/unit/research/test_edge01_closure_experiments.py"
+    ],
+    "src/trading_bot/research/edge01/risk_audit.py": [
+      "tests/unit/research/test_edge01_wp02_robustness.py"
+    ],
+    "src/trading_bot/research/edge01/robustness.py": [
+      "tests/unit/research/test_edge01_wp02_robustness.py"
+    ],
+    "src/trading_bot/research/edge01/simulator.py": [
+      "tests/unit/research/test_edge01_ablation.py",
+      "tests/unit/research/test_edge01_closure_experiments.py",
+      "tests/unit/research/test_edge01_mechanism_ablations.py",
+      "tests/unit/research/test_edge01_pit.py",
+      "tests/unit/research/test_edge01_risk_ablation.py",
+      "tests/unit/research/test_edge01_wp02_robustness.py"
+    ],
+    "src/trading_bot/research/edge03/autonomous.py": [
+      "tests/unit/research/test_edge04_autonomous.py",
+      "tests/unit/research/test_edge05_watchdog.py",
+      "tests/unit/research/test_edge12_continuity.py"
+    ],
+    "src/trading_bot/research/edge03/forward_plan.py": [
+      "tests/unit/research/test_edge03_forward.py",
+      "tests/unit/research/test_edge04_autonomous.py"
+    ],
+    "src/trading_bot/research/edge03/ingest.py": [
+      "tests/unit/research/test_edge03_forward.py",
+      "tests/unit/research/test_edge04_autonomous.py"
+    ],
+    "src/trading_bot/research/edge03/parity.py": [
+      "tests/unit/research/test_edge03_forward.py"
+    ],
+    "src/trading_bot/research/edge03/reporting.py": [
+      "tests/unit/research/test_edge03_forward.py"
+    ],
+    "src/trading_bot/research/edge03/run.py": [
+      "tests/unit/research/test_edge03_forward.py",
+      "tests/unit/research/test_edge04_autonomous.py"
+    ],
+    "src/trading_bot/research/edge03/shadow.py": [
+      "tests/unit/research/test_edge03_forward.py"
+    ],
+    "src/trading_bot/research/edge04r/__init__.py": [
+      "tests/unit/research/test_edge04r_continuity.py",
+      "tests/unit/research/test_edge12_runner.py"
+    ],
+    "src/trading_bot/research/edge04r/continuity.py": [
+      "tests/unit/research/test_edge04r_continuity.py"
+    ],
+    "src/trading_bot/research/edge04r/os_evidence.py": [
+      "tests/unit/research/test_edge04r_continuity.py"
+    ],
+    "src/trading_bot/research/edge04r/session.py": [
+      "tests/unit/research/test_edge04r_continuity.py",
+      "tests/unit/research/test_edge12_runner.py"
+    ],
+    "src/trading_bot/research/edge05/__init__.py": [
+      "tests/unit/research/test_edge05_reading.py",
+      "tests/unit/research/test_edge05_reconcile.py",
+      "tests/unit/research/test_edge05_watchdog.py",
+      "tests/unit/research/test_edge06_cadence.py"
+    ],
+    "src/trading_bot/research/edge05/reading.py": [
+      "tests/unit/research/test_edge05_reading.py"
+    ],
+    "src/trading_bot/research/edge05/reconcile.py": [
+      "tests/unit/research/test_edge05_reconcile.py",
+      "tests/unit/research/test_edge06_cadence.py"
+    ],
+    "src/trading_bot/research/edge05/watchdog.py": [
+      "tests/unit/research/test_edge05_watchdog.py"
+    ],
+    "src/trading_bot/research/edge06/families.py": [
+      "tests/unit/research/test_edge06_families.py"
+    ],
+    "src/trading_bot/research/edge08/__init__.py": [
+      "tests/unit/research/test_edge08_cross_section.py"
+    ],
+    "src/trading_bot/research/edge08/analysis.py": [
+      "tests/unit/research/test_edge08_cross_section.py"
+    ],
+    "src/trading_bot/research/edge08/books.py": [
+      "tests/unit/research/test_edge08_cross_section.py"
+    ],
+    "src/trading_bot/research/edge08/disjointness.py": [
+      "tests/unit/research/test_edge08_cross_section.py"
+    ],
+    "src/trading_bot/research/edge08/registration.py": [
+      "tests/unit/research/test_edge08_cross_section.py"
+    ],
+    "src/trading_bot/research/edge08/screens.py": [
+      "tests/unit/research/test_edge08_cross_section.py"
+    ],
+    "src/trading_bot/research/edge08/validation.py": [
+      "tests/unit/research/test_edge08_cross_section.py"
+    ],
+    "src/trading_bot/research/edge09/__init__.py": [
+      "tests/unit/research/test_edge09_microstructure.py"
+    ],
+    "src/trading_bot/research/edge09/experiments.py": [
+      "tests/unit/research/test_edge09_microstructure.py"
+    ],
+    "src/trading_bot/research/edge09/gates.py": [
+      "tests/unit/research/test_edge09_microstructure.py"
+    ],
+    "src/trading_bot/research/edge09/panel.py": [
+      "tests/unit/research/test_edge09_microstructure.py"
+    ],
+    "src/trading_bot/research/edge09/registration.py": [
+      "tests/unit/research/test_edge09_microstructure.py"
+    ],
+    "src/trading_bot/research/edge09/verdict.py": [
+      "tests/unit/research/test_edge09_microstructure.py"
+    ],
+    "src/trading_bot/research/edge12/__init__.py": [
+      "tests/unit/research/test_edge12_continuity.py",
+      "tests/unit/research/test_edge12_runner.py"
+    ],
+    "src/trading_bot/research/edge12/continuity.py": [
+      "tests/unit/research/test_edge12_continuity.py"
+    ],
+    "src/trading_bot/research/edge12/evidence.py": [
+      "tests/unit/research/test_edge12_continuity.py"
+    ],
+    "src/trading_bot/research/edge12/gate.py": [
+      "tests/unit/research/test_edge12_continuity.py"
+    ],
+    "src/trading_bot/research/edge12/operational.py": [
+      "tests/unit/research/test_edge12_continuity.py"
+    ],
+    "src/trading_bot/research/edge12/runner.py": [
+      "tests/unit/research/test_edge12_continuity.py",
+      "tests/unit/research/test_edge12_runner.py"
+    ],
+    "src/trading_bot/research/edge12/storage.py": [
+      "tests/unit/research/test_edge12_continuity.py"
+    ],
+    "src/trading_bot/research/equity_drawdown.py": [
+      "tests/unit/research/test_edge17_drawdown.py"
+    ],
+    "src/trading_bot/research/equity_reconstruction.py": [
+      "tests/integration/test_v023_real_qualification.py"
+    ],
+    "src/trading_bot/research/evidence.py": [
+      "tests/integration/test_v021_real_pipeline.py",
+      "tests/integration/test_v023_real_qualification.py",
+      "tests/integration/test_v024_real_qualification.py"
+    ],
+    "src/trading_bot/research/execution_assumptions.py": [
+      "tests/integration/test_v021_real_pipeline.py"
+    ],
+    "src/trading_bot/research/execution_cost/__init__.py": [
+      "tests/unit/research/test_execution_cost_measured.py"
+    ],
+    "src/trading_bot/research/execution_cost/measured.py": [
+      "tests/unit/research/test_execution_cost_measured.py"
+    ],
+    "src/trading_bot/research/experiment_evidence.py": [
+      "tests/unit/research/test_experiment_evidence.py"
+    ],
+    "src/trading_bot/research/families/ema_crossover_family.py": [
+      "tests/integration/test_paper_e2e_003.py",
+      "tests/unit/cert/test_ema_crossover_family_runtime.py",
+      "tests/unit/vision/test_signal_sources.py"
+    ],
+    "src/trading_bot/research/forward/__init__.py": [
+      "tests/unit/forward/test_forward_preservation.py"
+    ],
+    "src/trading_bot/research/forward/aggregation.py": [
+      "tests/unit/forward/test_forward_collector_replay.py"
+    ],
+    "src/trading_bot/research/forward/collector.py": [
+      "tests/unit/forward/test_forward_collector_replay.py",
+      "tests/unit/forward/test_forward_exit_contract.py"
+    ],
+    "src/trading_bot/research/forward/contract.py": [
+      "tests/unit/autonomous/test_lab_operations.py",
+      "tests/unit/forward/test_forward_collector_replay.py",
+      "tests/unit/forward/test_forward_contract_storage.py",
+      "tests/unit/forward/test_forward_exit_contract.py",
+      "tests/unit/forward/test_forward_latency_telemetry.py",
+      "tests/unit/forward/test_forward_preservation.py",
+      "tests/unit/forward/test_forward_retention.py"
+    ],
+    "src/trading_bot/research/forward/orderbook.py": [
+      "tests/unit/forward/test_forward_orderbook.py"
+    ],
+    "src/trading_bot/research/forward/outcome.py": [
+      "tests/unit/forward/test_forward_exit_contract.py"
+    ],
+    "src/trading_bot/research/forward/preservation.py": [
+      "tests/unit/forward/test_forward_preservation.py"
+    ],
+    "src/trading_bot/research/forward/replay.py": [
+      "tests/unit/forward/test_forward_collector_replay.py"
+    ],
+    "src/trading_bot/research/forward/reporting.py": [
+      "tests/unit/forward/test_forward_collector_replay.py"
+    ],
+    "src/trading_bot/research/forward/retention.py": [
+      "tests/unit/autonomous/test_lab_operations.py",
+      "tests/unit/forward/test_forward_preservation.py",
+      "tests/unit/forward/test_forward_retention.py"
+    ],
+    "src/trading_bot/research/forward/storage.py": [
+      "tests/unit/autonomous/test_lab_operations.py",
+      "tests/unit/forward/test_forward_contract_storage.py",
+      "tests/unit/forward/test_forward_exit_contract.py",
+      "tests/unit/forward/test_forward_latency_telemetry.py",
+      "tests/unit/forward/test_forward_preservation.py",
+      "tests/unit/forward/test_forward_retention.py"
+    ],
+    "src/trading_bot/research/gates.py": [
+      "tests/integration/test_v024_real_qualification.py"
+    ],
+    "src/trading_bot/research/governance/__init__.py": [
+      "tests/unit/research/test_arp009_exp021_pit.py",
+      "tests/unit/research/test_arp010_exp022_pit.py",
+      "tests/unit/research/test_arp011_exp019_pit.py",
+      "tests/unit/research/test_arp013_exp023_spec.py",
+      "tests/unit/research/test_post_oos_governance.py"
+    ],
+    "src/trading_bot/research/historical_data.py": [
+      "tests/integration/test_v021_real_pipeline.py",
+      "tests/integration/test_v023_real_qualification.py"
+    ],
+    "src/trading_bot/research/managed_futures_v1.py": [
+      "tests/unit/research/test_rfc036_managed_futures.py",
+      "tests/unit/research/test_rfc037_refutation.py",
+      "tests/unit/research/test_rfc038_decision.py"
+    ],
+    "src/trading_bot/research/market_analyst_v1.py": [
+      "tests/unit/research/test_campaign_runtime.py",
+      "tests/unit/research/test_campaign_supervisor.py",
+      "tests/unit/research/test_decision_ledger.py",
+      "tests/unit/research/test_real_market_context.py"
+    ],
+    "src/trading_bot/research/market_provenance.py": [
+      "tests/integration/test_v023_real_qualification.py",
+      "tests/integration/test_v024_real_qualification.py"
+    ],
+    "src/trading_bot/research/microstructure/__init__.py": [
+      "tests/unit/research/test_rfc046_discovery_proposal.py"
+    ],
+    "src/trading_bot/research/microstructure/cost_model.py": [
+      "tests/unit/microstructure/test_cost_model.py"
+    ],
+    "src/trading_bot/research/microstructure/cost_model_v3.py": [
+      "tests/unit/microstructure/test_cost_model_v3.py",
+      "tests/unit/microstructure/test_cost_model_v4.py",
+      "tests/unit/research/test_execution_cost_measured.py",
+      "tests/unit/research/test_rfc046_discovery_proposal.py"
+    ],
+    "src/trading_bot/research/microstructure/cost_model_v4.py": [
+      "tests/unit/microstructure/test_cost_model_v4.py"
+    ],
+    "src/trading_bot/research/microstructure/execution_model_v1.py": [
+      "tests/unit/microstructure/test_execution_model_v1.py"
+    ],
+    "src/trading_bot/research/microstructure/features.py": [
+      "tests/unit/microstructure/test_features.py"
+    ],
+    "src/trading_bot/research/microstructure/flow_panel.py": [
+      "tests/unit/microstructure/test_flow_panel.py"
+    ],
+    "src/trading_bot/research/microstructure/integrity.py": [
+      "tests/unit/microstructure/test_integrity.py"
+    ],
+    "src/trading_bot/research/microstructure/types.py": [
+      "tests/unit/microstructure/test_features.py",
+      "tests/unit/microstructure/test_integrity.py"
+    ],
+    "src/trading_bot/research/oos_capture.py": [
+      "tests/unit/research/test_edge17_capture.py"
+    ],
+    "src/trading_bot/research/opportunity_radar.py": [
+      "tests/unit/research/test_rfc042_opportunity_radar.py"
+    ],
+    "src/trading_bot/research/pair/__init__.py": [
+      "tests/unit/research/test_rfc030_pair_acceptance.py",
+      "tests/unit/research/test_rfc030_pair_execution.py"
+    ],
+    "src/trading_bot/research/pair/beta.py": [
+      "tests/unit/research/test_rfc030_pair_execution.py"
+    ],
+    "src/trading_bot/research/pair/borrow.py": [
+      "tests/unit/research/test_rfc030_short_borrow.py"
+    ],
+    "src/trading_bot/research/pair/costs.py": [
+      "tests/unit/research/test_rfc030_pair_acceptance.py"
+    ],
+    "src/trading_bot/research/pair/instruments.py": [
+      "tests/unit/research/test_rfc030_pair_acceptance.py"
+    ],
+    "src/trading_bot/research/pair/scenarios.py": [
+      "tests/unit/research/test_rfc030_short_borrow.py"
+    ],
+    "src/trading_bot/research/prereg_gate.py": [
+      "tests/unit/research/test_prereg_gate.py",
+      "tests/unit/research/test_prereg_gate_escape.py",
+      "tests/unit/research/test_prereg_gate_two_phase.py"
+    ],
+    "src/trading_bot/research/profitability_model.py": [
+      "tests/unit/research/test_rfc043_profitability_model.py"
+    ],
+    "src/trading_bot/research/prospective/__init__.py": [
+      "tests/unit/research/test_exp004a_provenance.py",
+      "tests/unit/research/test_prospective_admission.py"
+    ],
+    "src/trading_bot/research/prospective/admission.py": [
+      "tests/unit/research/test_prospective_admission.py"
+    ],
+    "src/trading_bot/research/prospective/ledger.py": [
+      "tests/unit/research/test_prospective_admission.py"
+    ],
+    "src/trading_bot/research/prospective/provenance.py": [
+      "tests/unit/research/test_exp004a_provenance.py"
+    ],
+    "src/trading_bot/research/qualification.py": [
+      "tests/integration/test_v021_real_pipeline.py"
+    ],
+    "src/trading_bot/research/quant_auditor_v021.py": [
+      "tests/integration/test_v021_real_pipeline.py",
+      "tests/integration/test_v023_real_qualification.py"
+    ],
+    "src/trading_bot/research/real_market_context.py": [
+      "tests/unit/research/test_campaign_runtime.py",
+      "tests/unit/research/test_campaign_supervisor.py",
+      "tests/unit/research/test_decision_outcomes.py",
+      "tests/unit/research/test_real_market_context.py"
+    ],
+    "src/trading_bot/research/reentry_watch.py": [
+      "tests/unit/research/test_rfc044_reentry_watch.py"
+    ],
+    "src/trading_bot/research/router_gates.py": [
+      "tests/unit/autonomous/test_cadence.py",
+      "tests/unit/research/test_router_gates_freshness.py",
+      "tests/unit/research/test_strategy_router.py",
+      "tests/unit/strategy_lifecycle/test_adversarial.py",
+      "tests/unit/strategy_lifecycle/test_fail_closed_hardening.py",
+      "tests/unit/strategy_lifecycle/test_integration.py",
+      "tests/unit/strategy_lifecycle/test_router_integration.py"
+    ],
+    "src/trading_bot/research/small_capital_dual_momentum_v1.py": [
+      "tests/unit/research/test_rfc040_dual_momentum.py"
+    ],
+    "src/trading_bot/research/small_capital_v1.py": [
+      "tests/unit/research/test_agentic_baselines.py",
+      "tests/unit/research/test_rfc039_small_capital.py",
+      "tests/unit/research/test_rfc040_dual_momentum.py"
+    ],
+    "src/trading_bot/research/strategic_profitability_v2.py": [
+      "tests/unit/research/test_rfc035_strategy_admission.py"
+    ],
+    "src/trading_bot/research/strategy_engineer.py": [
+      "tests/integration/test_v021_real_pipeline.py"
+    ],
+    "src/trading_bot/research/strategy_failure_diagnostics.py": [
+      "tests/unit/research/test_strategy_failure_diagnostics.py"
+    ],
+    "src/trading_bot/research/strategy_router.py": [
+      "tests/integration/test_paper_e2e_002.py",
+      "tests/integration/test_paper_e2e_003.py",
+      "tests/unit/paper/test_def_run_015_close_vs_reverse.py",
+      "tests/unit/paper/test_paper_cycle.py",
+      "tests/unit/paper/test_paper_recovery.py",
+      "tests/unit/research/test_router_gates_freshness.py",
+      "tests/unit/research/test_strategy_router.py",
+      "tests/unit/strategy_lifecycle/test_adversarial.py",
+      "tests/unit/strategy_lifecycle/test_fail_closed_hardening.py",
+      "tests/unit/strategy_lifecycle/test_integration.py",
+      "tests/unit/strategy_lifecycle/test_router_integration.py"
+    ],
+    "src/trading_bot/research/strategy_sandbox.py": [
+      "tests/integration/test_v021_real_pipeline.py"
+    ],
+    "src/trading_bot/research/tradingview_mcp_adapter.py": [
+      "tests/unit/research/test_tradingview_mcp_adapter.py"
+    ],
+    "src/trading_bot/research/types.py": [
+      "tests/integration/test_paper_e2e_002.py",
+      "tests/unit/autonomous/helpers.py",
+      "tests/unit/paper/test_def_run_015_close_vs_reverse.py",
+      "tests/unit/paper/test_paper_cycle.py",
+      "tests/unit/paper/test_paper_recovery.py"
+    ],
+    "src/trading_bot/risk/defensive_blocks.py": [
+      "tests/unit/risk/test_edge17_defensive_blocks.py"
+    ],
+    "src/trading_bot/risk/futures/__init__.py": [
+      "tests/unit/risk/test_futures_falsification_regressions.py",
+      "tests/unit/risk/test_futures_independent_verifier.py",
+      "tests/unit/risk/test_futures_risk_engine.py"
+    ],
+    "src/trading_bot/risk/futures/contracts.py": [
+      "tests/unit/risk/test_futures_runtime_integration.py"
+    ],
+    "src/trading_bot/risk/futures/engine.py": [
+      "tests/unit/risk/test_futures_falsification_regressions.py",
+      "tests/unit/risk/test_futures_independent_verifier.py",
+      "tests/unit/risk/test_futures_risk_engine.py"
+    ],
+    "src/trading_bot/risk/futures/integration.py": [
+      "tests/unit/risk/test_futures_falsification_regressions.py",
+      "tests/unit/risk/test_futures_runtime_integration.py"
+    ],
+    "src/trading_bot/risk/futures/margin.py": [
+      "tests/unit/risk/test_futures_falsification_regressions.py",
+      "tests/unit/risk/test_futures_risk_engine.py"
+    ],
+    "src/trading_bot/risk/futures_falsification.py": [
+      "tests/unit/risk/test_futures_falsification_regressions.py"
+    ],
+    "src/trading_bot/risk/futures_verification.py": [
+      "tests/unit/risk/test_futures_independent_verifier.py"
+    ],
+    "src/trading_bot/risk/manager.py": [
+      "tests/integration/test_paper_e2e_001.py",
+      "tests/integration/test_paper_e2e_002.py",
+      "tests/integration/test_paper_e2e_003.py",
+      "tests/unit/autonomous/helpers.py",
+      "tests/unit/paper/test_def_run_015_close_vs_reverse.py",
+      "tests/unit/paper/test_edge17_net_risk.py",
+      "tests/unit/paper/test_paper_cycle.py",
+      "tests/unit/paper/test_paper_recovery.py",
+      "tests/unit/research/test_edge03_forward.py",
+      "tests/unit/risk/test_def_run_014_stop_contract.py",
+      "tests/unit/risk/test_edge17_defensive_blocks.py",
+      "tests/unit/risk/test_edge17_weekly_window.py",
+      "tests/unit/risk/test_risk_regression_matrix.py",
+      "tests/unit/strategy_lifecycle/test_integration.py"
+    ],
+    "src/trading_bot/scanner/__init__.py": [
+      "tests/unit/paper/test_harness.py",
+      "tests/unit/scanner/test_scoring.py"
+    ],
+    "src/trading_bot/scanner/exceptions.py": [
+      "tests/unit/scanner/test_types.py",
+      "tests/unit/scanner/test_universe_scanner.py"
+    ],
+    "src/trading_bot/scanner/filters.py": [
+      "tests/unit/scanner/test_filters.py",
+      "tests/unit/scanner/test_mode_filters.py"
+    ],
+    "src/trading_bot/scanner/mode_filters.py": [
+      "tests/bdd/conftest.py",
+      "tests/integration/test_paper_e2e_001.py",
+      "tests/integration/test_paper_e2e_002.py",
+      "tests/integration/test_paper_e2e_003.py",
+      "tests/unit/scanner/test_mode_filters.py",
+      "tests/unit/scanner/test_universe_scanner.py"
+    ],
+    "src/trading_bot/scanner/protocols.py": [
+      "tests/unit/scanner/test_protocols.py"
+    ],
+    "src/trading_bot/scanner/registry.py": [
+      "tests/unit/scanner/test_mode_filters.py",
+      "tests/unit/scanner/test_registry.py",
+      "tests/unit/scanner/test_universe_scanner.py"
+    ],
+    "src/trading_bot/scanner/scanner.py": [
+      "tests/bdd/conftest.py",
+      "tests/integration/test_paper_e2e_001.py",
+      "tests/integration/test_paper_e2e_002.py",
+      "tests/integration/test_paper_e2e_003.py",
+      "tests/unit/scanner/test_universe_scanner.py",
+      "tests/unit/test_app_demo.py"
+    ],
+    "src/trading_bot/scanner/scoring.py": [
+      "tests/bdd/conftest.py",
+      "tests/unit/scanner/test_scoring.py"
+    ],
+    "src/trading_bot/scanner/types.py": [
+      "tests/bdd/conftest.py",
+      "tests/unit/scanner/test_protocols.py",
+      "tests/unit/scanner/test_registry.py",
+      "tests/unit/scanner/test_types.py",
+      "tests/unit/test_app_demo.py",
+      "tests/unit/test_app_trade_journal.py"
+    ],
+    "src/trading_bot/storage/ohlcv_store.py": [
+      "tests/unit/market_data/test_ohlcv_fetcher.py",
+      "tests/unit/storage/test_ohlcv_store.py"
+    ],
+    "src/trading_bot/strategies/ema_crossover.py": [
+      "tests/unit/cert/test_ema_crossover_strategy_guard.py"
+    ],
+    "src/trading_bot/strategies/types.py": [
+      "tests/integration/test_paper_e2e_001.py",
+      "tests/unit/cert/test_ema_crossover_strategy_guard.py",
+      "tests/unit/paper/test_broker_identity.py",
+      "tests/unit/paper/test_def_run_015_close_vs_reverse.py",
+      "tests/unit/paper/test_edge17_net_risk.py",
+      "tests/unit/paper/test_execution_lifecycle.py",
+      "tests/unit/paper/test_paper_cycle.py",
+      "tests/unit/paper/test_paper_recovery.py",
+      "tests/unit/risk/test_def_run_014_stop_contract.py",
+      "tests/unit/risk/test_edge17_weekly_window.py",
+      "tests/unit/risk/test_risk_regression_matrix.py",
+      "tests/unit/strategy_lifecycle/test_integration.py",
+      "tests/unit/vision/test_open_phase_causality.py"
+    ],
+    "src/trading_bot/strategy_lifecycle/champion.py": [
+      "tests/unit/strategy_lifecycle/test_adversarial.py",
+      "tests/unit/strategy_lifecycle/test_champion.py"
+    ],
+    "src/trading_bot/strategy_lifecycle/config.py": [
+      "tests/unit/strategy_lifecycle/test_adversarial.py",
+      "tests/unit/strategy_lifecycle/test_fail_closed_hardening.py",
+      "tests/unit/strategy_lifecycle/test_health.py",
+      "tests/unit/strategy_lifecycle/test_health_windows.py",
+      "tests/unit/strategy_lifecycle/test_lifecycle.py",
+      "tests/unit/strategy_lifecycle/test_performance.py"
+    ],
+    "src/trading_bot/strategy_lifecycle/contracts.py": [
+      "tests/unit/strategy_lifecycle/_helpers.py",
+      "tests/unit/strategy_lifecycle/_restart_child.py",
+      "tests/unit/strategy_lifecycle/test_adversarial.py",
+      "tests/unit/strategy_lifecycle/test_champion.py",
+      "tests/unit/strategy_lifecycle/test_contracts.py",
+      "tests/unit/strategy_lifecycle/test_fail_closed_hardening.py",
+      "tests/unit/strategy_lifecycle/test_health.py",
+      "tests/unit/strategy_lifecycle/test_health_windows.py",
+      "tests/unit/strategy_lifecycle/test_integration.py",
+      "tests/unit/strategy_lifecycle/test_lifecycle.py",
+      "tests/unit/strategy_lifecycle/test_performance.py",
+      "tests/unit/strategy_lifecycle/test_persistence.py",
+      "tests/unit/strategy_lifecycle/test_pods.py",
+      "tests/unit/strategy_lifecycle/test_portfolio.py",
+      "tests/unit/strategy_lifecycle/test_registry.py",
+      "tests/unit/strategy_lifecycle/test_runtime_bridge.py",
+      "tests/unit/strategy_lifecycle/test_store_bounds_pit.py"
+    ],
+    "src/trading_bot/strategy_lifecycle/ecosystem.py": [
+      "tests/unit/strategy_lifecycle/_restart_child.py",
+      "tests/unit/strategy_lifecycle/test_health_windows.py",
+      "tests/unit/strategy_lifecycle/test_integration.py",
+      "tests/unit/strategy_lifecycle/test_persistence.py"
+    ],
+    "src/trading_bot/strategy_lifecycle/health.py": [
+      "tests/unit/strategy_lifecycle/test_health.py"
+    ],
+    "src/trading_bot/strategy_lifecycle/lifecycle.py": [
+      "tests/unit/strategy_lifecycle/_restart_child.py",
+      "tests/unit/strategy_lifecycle/test_adversarial.py",
+      "tests/unit/strategy_lifecycle/test_fail_closed_hardening.py",
+      "tests/unit/strategy_lifecycle/test_lifecycle.py",
+      "tests/unit/strategy_lifecycle/test_persistence.py",
+      "tests/unit/strategy_lifecycle/test_registry.py"
+    ],
+    "src/trading_bot/strategy_lifecycle/performance.py": [
+      "tests/unit/strategy_lifecycle/_helpers.py",
+      "tests/unit/strategy_lifecycle/test_health_windows.py",
+      "tests/unit/strategy_lifecycle/test_performance.py",
+      "tests/unit/strategy_lifecycle/test_store_bounds_pit.py"
+    ],
+    "src/trading_bot/strategy_lifecycle/persistence.py": [
+      "tests/unit/strategy_lifecycle/_restart_child.py",
+      "tests/unit/strategy_lifecycle/test_persistence.py"
+    ],
+    "src/trading_bot/strategy_lifecycle/pods.py": [
+      "tests/unit/strategy_lifecycle/test_adversarial.py",
+      "tests/unit/strategy_lifecycle/test_integration.py",
+      "tests/unit/strategy_lifecycle/test_pods.py"
+    ],
+    "src/trading_bot/strategy_lifecycle/portfolio.py": [
+      "tests/unit/autonomous/test_routing_modes.py",
+      "tests/unit/strategy_lifecycle/test_adversarial.py",
+      "tests/unit/strategy_lifecycle/test_integration.py",
+      "tests/unit/strategy_lifecycle/test_portfolio.py"
+    ],
+    "src/trading_bot/strategy_lifecycle/registry.py": [
+      "tests/unit/strategy_lifecycle/test_fail_closed_hardening.py",
+      "tests/unit/strategy_lifecycle/test_registry.py"
+    ],
+    "src/trading_bot/strategy_lifecycle/runtime_bridge.py": [
+      "tests/unit/autonomous/test_routing_modes.py",
+      "tests/unit/strategy_lifecycle/test_runtime_bridge.py"
+    ],
+    "src/trading_bot/trade_journal/__init__.py": [
+      "tests/unit/test_app_trade_journal.py",
+      "tests/unit/trade_journal/test_store.py",
+      "tests/unit/trade_journal/test_thesis.py"
+    ],
+    "src/trading_bot/trade_journal/store.py": [
+      "tests/unit/trade_journal/test_store.py"
+    ],
+    "src/trading_bot/trade_journal/types.py": [
+      "tests/unit/charting/test_local_renderer.py",
+      "tests/unit/feedback/test_evaluator.py"
+    ],
+    "src/trading_bot/vision/__init__.py": [
+      "tests/unit/reports/test_def_run_019_verifier.py",
+      "tests/unit/vision/test_guards_and_controls.py",
+      "tests/unit/vision/test_session_lock_recovery.py",
+      "tests/unit/vision/test_session_provenance.py",
+      "tests/unit/vision/test_visual_defects.py"
+    ],
+    "src/trading_bot/vision/chart.py": [
+      "tests/unit/intelligence/ai_bots/test_registry_contracts_runner.py",
+      "tests/unit/vision/test_chart_determinism.py",
+      "tests/unit/vision/test_guards_and_controls.py",
+      "tests/unit/vision/test_lane_vertical.py",
+      "tests/unit/vision/test_provider.py",
+      "tests/unit/vision/test_signal_source_families.py",
+      "tests/unit/vision/test_signal_sources.py",
+      "tests/unit/vision/test_visual_defects.py"
+    ],
+    "src/trading_bot/vision/clock.py": [
+      "tests/unit/market_data/test_data_integrity_003h.py",
+      "tests/unit/vision/test_causal_clock.py",
+      "tests/unit/vision/test_guards_and_controls.py"
+    ],
+    "src/trading_bot/vision/compare.py": [
+      "tests/unit/vision/test_compare.py"
+    ],
+    "src/trading_bot/vision/contract.py": [
+      "tests/unit/intelligence/ai_bots/test_registry_contracts_runner.py",
+      "tests/unit/vision/test_contract.py"
+    ],
+    "src/trading_bot/vision/economic_audit.py": [
+      "tests/integration/test_def_run_017_pipeline.py",
+      "tests/unit/vision/test_def_run_017_economics.py"
+    ],
+    "src/trading_bot/vision/execution.py": [
+      "tests/unit/market_data/test_data_integrity_003h.py",
+      "tests/unit/vision/test_causal_execution.py",
+      "tests/unit/vision/test_def_run_016_integrity.py",
+      "tests/unit/vision/test_def_run_016_opinion_lifecycle.py",
+      "tests/unit/vision/test_minute_quote_feed.py",
+      "tests/unit/vision/test_open_phase_causality.py",
+      "tests/unit/vision/test_subbar_execution.py"
+    ],
+    "src/trading_bot/vision/guards.py": [
+      "tests/unit/vision/test_causal_clock.py",
+      "tests/unit/vision/test_guards_and_controls.py"
+    ],
+    "src/trading_bot/vision/lane.py": [
+      "tests/integration/test_def_run_016_pipeline.py",
+      "tests/integration/test_def_run_017_pipeline.py",
+      "tests/unit/reports/test_ai_bots_003b_verify.py",
+      "tests/unit/vision/test_accounting_integrity.py",
+      "tests/unit/vision/test_causal_clock.py",
+      "tests/unit/vision/test_causal_execution.py",
+      "tests/unit/vision/test_closed_trade_cycle.py",
+      "tests/unit/vision/test_def_run_014_lane_contract.py",
+      "tests/unit/vision/test_def_run_016_integrity.py",
+      "tests/unit/vision/test_def_run_016_opinion_lifecycle.py",
+      "tests/unit/vision/test_guards_and_controls.py",
+      "tests/unit/vision/test_integrity_and_latency.py",
+      "tests/unit/vision/test_lane_vertical.py",
+      "tests/unit/vision/test_minute_quote_feed.py",
+      "tests/unit/vision/test_open_phase_causality.py",
+      "tests/unit/vision/test_run_code_provenance.py",
+      "tests/unit/vision/test_subbar_execution.py"
+    ],
+    "src/trading_bot/vision/ledger.py": [
+      "tests/integration/test_def_run_016_pipeline.py",
+      "tests/unit/ops/test_paper_lock_campaign.py",
+      "tests/unit/ops/test_paper_supervisor.py",
+      "tests/unit/ops/test_paper_supervisor_verifier.py",
+      "tests/unit/ops/test_session_status.py",
+      "tests/unit/ops/test_single_writer_lock.py",
+      "tests/unit/reports/test_def_run_019_verifier.py",
+      "tests/unit/vision/test_accounting_integrity.py",
+      "tests/unit/vision/test_causal_clock.py",
+      "tests/unit/vision/test_causal_execution.py",
+      "tests/unit/vision/test_closed_trade_cycle.py",
+      "tests/unit/vision/test_def_run_014_lane_contract.py",
+      "tests/unit/vision/test_def_run_016_integrity.py",
+      "tests/unit/vision/test_def_run_016_opinion_lifecycle.py",
+      "tests/unit/vision/test_guards_and_controls.py",
+      "tests/unit/vision/test_integrity_and_latency.py",
+      "tests/unit/vision/test_lane_vertical.py",
+      "tests/unit/vision/test_ledger.py",
+      "tests/unit/vision/test_minute_quote_feed.py",
+      "tests/unit/vision/test_open_phase_causality.py",
+      "tests/unit/vision/test_prospective_session.py",
+      "tests/unit/vision/test_run_code_provenance.py",
+      "tests/unit/vision/test_session_lock_recovery.py",
+      "tests/unit/vision/test_subbar_execution.py"
+    ],
+    "src/trading_bot/vision/prompt.py": [
+      "tests/unit/intelligence/ai_bots/test_registry_contracts_runner.py",
+      "tests/unit/vision/test_provider.py",
+      "tests/unit/vision/test_signal_source_families.py",
+      "tests/unit/vision/test_signal_sources.py"
+    ],
+    "src/trading_bot/vision/prospective.py": [
+      "tests/integration/test_def_run_016_pipeline.py",
+      "tests/unit/vision/test_prospective_session.py",
+      "tests/unit/vision/test_session_lock_recovery.py",
+      "tests/unit/vision/test_signal_source_families.py"
+    ],
+    "src/trading_bot/vision/provenance.py": [
+      "tests/unit/reports/test_def_run_019_verifier.py",
+      "tests/unit/vision/test_prospective_session.py",
+      "tests/unit/vision/test_run_code_provenance.py",
+      "tests/unit/vision/test_session_lock_recovery.py",
+      "tests/unit/vision/test_session_provenance.py"
+    ],
+    "src/trading_bot/vision/provider.py": [
+      "tests/integration/test_def_run_016_pipeline.py",
+      "tests/integration/test_def_run_017_pipeline.py",
+      "tests/unit/intelligence/ai_bots/test_registry_contracts_runner.py",
+      "tests/unit/reports/test_ai_bots_003b_verify.py",
+      "tests/unit/vision/test_accounting_integrity.py",
+      "tests/unit/vision/test_causal_clock.py",
+      "tests/unit/vision/test_causal_execution.py",
+      "tests/unit/vision/test_closed_trade_cycle.py",
+      "tests/unit/vision/test_def_run_014_lane_contract.py",
+      "tests/unit/vision/test_def_run_016_integrity.py",
+      "tests/unit/vision/test_def_run_016_opinion_lifecycle.py",
+      "tests/unit/vision/test_guards_and_controls.py",
+      "tests/unit/vision/test_integrity_and_latency.py",
+      "tests/unit/vision/test_lane_vertical.py",
+      "tests/unit/vision/test_minute_quote_feed.py",
+      "tests/unit/vision/test_open_phase_causality.py",
+      "tests/unit/vision/test_provider.py",
+      "tests/unit/vision/test_run_code_provenance.py",
+      "tests/unit/vision/test_signal_source_families.py",
+      "tests/unit/vision/test_signal_sources.py",
+      "tests/unit/vision/test_subbar_execution.py"
+    ],
+    "src/trading_bot/vision/quotes.py": [
+      "tests/integration/test_def_run_016_pipeline.py",
+      "tests/integration/test_def_run_017_pipeline.py",
+      "tests/unit/vision/test_def_run_016_integrity.py",
+      "tests/unit/vision/test_def_run_016_opinion_lifecycle.py",
+      "tests/unit/vision/test_minute_quote_feed.py",
+      "tests/unit/vision/test_subbar_execution.py"
+    ],
+    "src/trading_bot/vision/settings.py": [
+      "tests/integration/test_def_run_016_pipeline.py",
+      "tests/integration/test_def_run_017_pipeline.py",
+      "tests/unit/intelligence/ai_bots/test_registry_contracts_runner.py",
+      "tests/unit/reports/test_ai_bots_003b_verify.py",
+      "tests/unit/vision/test_accounting_integrity.py",
+      "tests/unit/vision/test_causal_clock.py",
+      "tests/unit/vision/test_causal_execution.py",
+      "tests/unit/vision/test_closed_trade_cycle.py",
+      "tests/unit/vision/test_def_run_014_lane_contract.py",
+      "tests/unit/vision/test_def_run_016_integrity.py",
+      "tests/unit/vision/test_def_run_016_opinion_lifecycle.py",
+      "tests/unit/vision/test_guards_and_controls.py",
+      "tests/unit/vision/test_integrity_and_latency.py",
+      "tests/unit/vision/test_lane_vertical.py",
+      "tests/unit/vision/test_minute_quote_feed.py",
+      "tests/unit/vision/test_open_phase_causality.py",
+      "tests/unit/vision/test_prospective_session.py",
+      "tests/unit/vision/test_provider.py",
+      "tests/unit/vision/test_run_code_provenance.py",
+      "tests/unit/vision/test_session_lock_recovery.py",
+      "tests/unit/vision/test_subbar_execution.py",
+      "tests/unit/vision/test_visual_defects.py"
+    ],
+    "src/trading_bot/vision/signal_sources.py": [
+      "tests/unit/vision/test_signal_source_families.py",
+      "tests/unit/vision/test_signal_sources.py"
+    ]
+  }
+}
