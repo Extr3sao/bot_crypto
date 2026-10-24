@@ -1,0 +1,251 @@
+....FFFFFFFF....FFF..                                                    [100%]
+================================== FAILURES ===================================
+__________ test_entry_is_refused_with_a_marker[place-order-futures] ___________
+
+entrypoint = 'place-order-futures'
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-660/test_entry_is_refused_with_a_m0')
+
+    @pytest.mark.parametrize("entrypoint", ENTRY_POINTS)
+    def test_entry_is_refused_with_a_marker(entrypoint: str, tmp_path: Path) -> None:
+        """The marker sits in the directory the command was told to watch."""
+        run_dir = tmp_path / "run"
+        run_dir.mkdir()
+        (run_dir / HOT_STOP_FILE_NAME).write_text("operator stop\n", encoding="utf-8")
+    
+        payload = _probe(entrypoint, run_dir)
+    
+>       assert payload["broker_calls"] == 0, payload
+E       AssertionError: {'app_file': 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\g3-red\\src\\trading_bot\\app.py', 'app_src': 'C:\...red\\src', 'argv': ['place-order', '--symbol', 'BTCUSDT', '--side', 'buy', '--order-type', ...], 'audit_lines': 0, ...}
+E       assert 1 == 0
+
+tests\unit\test_live_hot_stop_coverage.py:138: AssertionError
+____________ test_entry_is_refused_with_a_marker[place-order-spot] ____________
+
+entrypoint = 'place-order-spot'
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-660/test_entry_is_refused_with_a_m1')
+
+    @pytest.mark.parametrize("entrypoint", ENTRY_POINTS)
+    def test_entry_is_refused_with_a_marker(entrypoint: str, tmp_path: Path) -> None:
+        """The marker sits in the directory the command was told to watch."""
+        run_dir = tmp_path / "run"
+        run_dir.mkdir()
+        (run_dir / HOT_STOP_FILE_NAME).write_text("operator stop\n", encoding="utf-8")
+    
+        payload = _probe(entrypoint, run_dir)
+    
+>       assert payload["broker_calls"] == 0, payload
+E       AssertionError: {'app_file': 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\g3-red\\src\\trading_bot\\app.py', 'app_src': 'C:\...ed\\src', 'argv': ['place-order', '--symbol', 'BTC/USDT', '--side', 'buy', '--order-type', ...], 'audit_lines': 0, ...}
+E       assert 1 == 0
+
+tests\unit\test_live_hot_stop_coverage.py:138: AssertionError
+______________ test_entry_is_refused_with_a_marker[run-futures] _______________
+
+entrypoint = 'run-futures'
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-660/test_entry_is_refused_with_a_m2')
+
+    @pytest.mark.parametrize("entrypoint", ENTRY_POINTS)
+    def test_entry_is_refused_with_a_marker(entrypoint: str, tmp_path: Path) -> None:
+        """The marker sits in the directory the command was told to watch."""
+        run_dir = tmp_path / "run"
+        run_dir.mkdir()
+        (run_dir / HOT_STOP_FILE_NAME).write_text("operator stop\n", encoding="utf-8")
+    
+        payload = _probe(entrypoint, run_dir)
+    
+>       assert payload["broker_calls"] == 0, payload
+E       AssertionError: {'app_file': 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\g3-red\\src\\trading_bot\\app.py', 'app_src': 'C:\...g3-red\\src', 'argv': ['run', '--mode', 'live', '--once', '--auto-trade', '--market-kind', ...], 'audit_lines': 0, ...}
+E       assert 1 == 0
+
+tests\unit\test_live_hot_stop_coverage.py:138: AssertionError
+________________ test_entry_is_refused_with_a_marker[run-spot] ________________
+
+entrypoint = 'run-spot'
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-660/test_entry_is_refused_with_a_m3')
+
+    @pytest.mark.parametrize("entrypoint", ENTRY_POINTS)
+    def test_entry_is_refused_with_a_marker(entrypoint: str, tmp_path: Path) -> None:
+        """The marker sits in the directory the command was told to watch."""
+        run_dir = tmp_path / "run"
+        run_dir.mkdir()
+        (run_dir / HOT_STOP_FILE_NAME).write_text("operator stop\n", encoding="utf-8")
+    
+        payload = _probe(entrypoint, run_dir)
+    
+>       assert payload["broker_calls"] == 0, payload
+E       AssertionError: {'app_file': 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\g3-red\\src\\trading_bot\\app.py', 'app_src': 'C:\...g3-red\\src', 'argv': ['run', '--mode', 'live', '--once', '--auto-trade', '--market-kind', ...], 'audit_lines': 0, ...}
+E       assert 1 == 0
+
+tests\unit\test_live_hot_stop_coverage.py:138: AssertionError
+______________ test_operator_cli_marker_blocks_the_next_process _______________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-660/test_operator_cli_marker_block0')
+
+    def test_operator_cli_marker_blocks_the_next_process(tmp_path: Path) -> None:
+        run_dir = tmp_path / "run"
+        run_dir.mkdir()
+        _engage_with_the_operator_cli(run_dir)
+    
+        payload = _probe("place-order-futures", run_dir)
+    
+>       assert payload["broker_calls"] == 0, payload
+E       AssertionError: {'app_file': 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\g3-red\\src\\trading_bot\\app.py', 'app_src': 'C:\...red\\src', 'argv': ['place-order', '--symbol', 'BTCUSDT', '--side', 'buy', '--order-type', ...], 'audit_lines': 0, ...}
+E       assert 1 == 0
+
+tests\unit\test_live_hot_stop_coverage.py:158: AssertionError
+______________ test_restart_over_the_same_run_dir_stays_blocked _______________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-660/test_restart_over_the_same_run0')
+
+    def test_restart_over_the_same_run_dir_stays_blocked(tmp_path: Path) -> None:
+        """Two successive processes; the second one boots engaged and stays quiet."""
+        run_dir = tmp_path / "run"
+        run_dir.mkdir()
+        _engage_with_the_operator_cli(run_dir)
+    
+        first = _probe("run-futures", run_dir)
+        second = _probe("run-futures", run_dir)
+    
+>       assert first["broker_calls"] == 0, first
+E       AssertionError: {'app_file': 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\g3-red\\src\\trading_bot\\app.py', 'app_src': 'C:\...g3-red\\src', 'argv': ['run', '--mode', 'live', '--once', '--auto-trade', '--market-kind', ...], 'audit_lines': 0, ...}
+E       assert 1 == 0
+
+tests\unit\test_live_hot_stop_coverage.py:172: AssertionError
+_____________________ test_unreadable_marker_blocks_entry _____________________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-660/test_unreadable_marker_blocks_0')
+
+    def test_unreadable_marker_blocks_entry(tmp_path: Path) -> None:
+        """A directory where the marker should be is *presence*, not absence."""
+        run_dir = tmp_path / "run"
+        (run_dir / HOT_STOP_FILE_NAME).mkdir(parents=True)
+    
+        payload = _probe("place-order-futures", run_dir)
+    
+>       assert payload["broker_calls"] == 0, payload
+E       AssertionError: {'app_file': 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\g3-red\\src\\trading_bot\\app.py', 'app_src': 'C:\...red\\src', 'argv': ['place-order', '--symbol', 'BTCUSDT', '--side', 'buy', '--order-type', ...], 'audit_lines': 0, ...}
+E       assert 1 == 0
+
+tests\unit\test_live_hot_stop_coverage.py:195: AssertionError
+_____________ test_env_kill_switch_blocks_entry_without_a_marker ______________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-660/test_env_kill_switch_blocks_en0')
+
+    def test_env_kill_switch_blocks_entry_without_a_marker(tmp_path: Path) -> None:
+        """A live path has no DecisionEngine rule 0, so the boot switch is checked here."""
+        run_dir = tmp_path / "run"
+    
+        payload = _probe("place-order-futures", run_dir, "--env-kill-switch", "halted")
+    
+>       assert payload["broker_calls"] == 0, payload
+E       AssertionError: {'app_file': 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\g3-red\\src\\trading_bot\\app.py', 'app_src': 'C:\...red\\src', 'argv': ['place-order', '--symbol', 'BTCUSDT', '--side', 'buy', '--order-type', ...], 'audit_lines': 0, ...}
+E       assert 1 == 0
+
+tests\unit\test_live_hot_stop_coverage.py:205: AssertionError
+_________________ test_every_live_sink_is_inside_the_boundary _________________
+
+    def test_every_live_sink_is_inside_the_boundary() -> None:
+        tree = ast.parse(APP_PATH.read_text(encoding="utf-8"))
+        sinks = _sink_calls(tree)
+        assert len(sinks) == 7, f"expected the 7 known live sinks, found {len(sinks)}"
+    
+        escapes: list[str] = []
+        for node in sinks:
+            guarded = False
+            for ancestor in _ancestors(tree, node):
+                if not isinstance(ancestor, ast.With):
+                    continue
+                if any(_is_boundary(item.context_expr) for item in ancestor.items):
+                    guarded = True
+                    break
+            if not guarded:
+                escapes.append(f"line {node.lineno}: {ast.unparse(node)[:80]}")
+>       assert not escapes, "live sink reached without _live_order_boundary:\n" + "\n".join(escapes)
+E       AssertionError: live sink reached without _live_order_boundary:
+E         line 845: connector.create_order(symbol=snap.symbol, side='buy', order_type='market', amou
+E         line 889: client.flash_close_position(position.position_id)
+E         line 1300: client.place_spot_order(symbol=args.symbol, side=args.side, order_type=args.orde
+E         line 1359: client.flash_close_position(args.position_id)
+E         line 1377: client.place_position_tpsl(symbol=args.symbol, position_id=args.position_id, qty
+E         line 1030: futures_client.place_order(symbol=snap.symbol, side=side, qty=qty, order_type='M
+E         line 1259: futures_client.place_order(symbol=args.symbol, side=args.side, qty=float(args.am
+E       assert not ["line 845: connector.create_order(symbol=snap.symbol, side='buy', order_type='market', amou", 'line 889: client.flash....position_id, qty', "line 1030: futures_client.place_order(symbol=snap.symbol, side=side, qty=qty, order_type='M", ...]
+
+tests\unit\test_live_hot_stop_coverage.py:285: AssertionError
+_______________ test_each_boundary_states_whether_it_opens_risk _______________
+
+    def test_each_boundary_states_whether_it_opens_risk() -> None:
+        """The classification is a literal at the call site, not a default."""
+        tree = ast.parse(APP_PATH.read_text(encoding="utf-8"))
+        boundaries = [
+            node
+            for node in ast.walk(tree)
+            if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == "_live_order_boundary"
+        ]
+        # One per live dispatch site: 7 sinks, 7 boundaries. A count that drops is a
+        # sink that lost its gate, not a refactor.
+>       assert len(boundaries) >= 7, f"expected >= 7 boundaries, found {len(boundaries)}"
+E       AssertionError: expected >= 7 boundaries, found 0
+E       assert 0 >= 7
+E        +  where 0 = len([])
+
+tests\unit\test_live_hot_stop_coverage.py:300: AssertionError
+_________________ test_engage_waits_for_the_inflight_dispatch _________________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-660/test_engage_waits_for_the_infl0')
+
+    def test_engage_waits_for_the_inflight_dispatch(tmp_path: Path) -> None:
+        switch = KillSwitch()
+        gate = HotStopGate(kill_switch=switch, run_dir=tmp_path)
+        entered = threading.Event()
+        release = threading.Event()
+        sent: list[str] = []
+    
+        def dispatch() -> None:
+            with app_module._live_order_boundary(gate, opens_risk=True) as allowed:
+                assert allowed
+                entered.set()
+                assert release.wait(timeout=10)
+                sent.append("order")
+    
+        worker = threading.Thread(target=dispatch, daemon=True)
+        worker.start()
+>       assert entered.wait(timeout=10)
+E       assert False
+E        +  where False = wait(timeout=10)
+E        +    where wait = <threading.Event at 0x1e349e38250: unset>.wait
+
+tests\unit\test_live_hot_stop_coverage.py:330: AssertionError
+============================== warnings summary ===============================
+tests/unit/test_live_hot_stop_coverage.py::test_engage_waits_for_the_inflight_dispatch
+  C:\Users\GVLLFR0035\Downloads\ff-wt-mt0004\.venv\Lib\site-packages\_pytest\threadexception.py:58: PytestUnhandledThreadExceptionWarning: Exception in thread Thread-41 (dispatch)
+  
+  Traceback (most recent call last):
+    File "C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\threading.py", line 1045, in _bootstrap_inner
+      self.run()
+    File "C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\threading.py", line 982, in run
+      self._target(*self._args, **self._kwargs)
+    File "C:\Users\GVLLFR0035\Downloads\ff-wt-mt0004\.tmp\g3-red\tests\unit\test_live_hot_stop_coverage.py", line 322, in dispatch
+      with app_module._live_order_boundary(gate, opens_risk=True) as allowed:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  AttributeError: module 'trading_bot.app' has no attribute '_live_order_boundary'
+  
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnhandledThreadExceptionWarning(msg))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/unit/test_live_hot_stop_coverage.py::test_entry_is_refused_with_a_marker[place-order-futures]
+FAILED tests/unit/test_live_hot_stop_coverage.py::test_entry_is_refused_with_a_marker[place-order-spot]
+FAILED tests/unit/test_live_hot_stop_coverage.py::test_entry_is_refused_with_a_marker[run-futures]
+FAILED tests/unit/test_live_hot_stop_coverage.py::test_entry_is_refused_with_a_marker[run-spot]
+FAILED tests/unit/test_live_hot_stop_coverage.py::test_operator_cli_marker_blocks_the_next_process
+FAILED tests/unit/test_live_hot_stop_coverage.py::test_restart_over_the_same_run_dir_stays_blocked
+FAILED tests/unit/test_live_hot_stop_coverage.py::test_unreadable_marker_blocks_entry
+FAILED tests/unit/test_live_hot_stop_coverage.py::test_env_kill_switch_blocks_entry_without_a_marker
+FAILED tests/unit/test_live_hot_stop_coverage.py::test_every_live_sink_is_inside_the_boundary
+FAILED tests/unit/test_live_hot_stop_coverage.py::test_each_boundary_states_whether_it_opens_risk
+FAILED tests/unit/test_live_hot_stop_coverage.py::test_engage_waits_for_the_inflight_dispatch
+11 failed, 10 passed, 1 warning in 50.28s
