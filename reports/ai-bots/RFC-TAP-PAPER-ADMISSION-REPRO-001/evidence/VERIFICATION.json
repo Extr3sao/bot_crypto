@@ -14,7 +14,7 @@
     {
       "detail": {
         "code_changes": 8,
-        "evidence": 28,
+        "evidence": 29,
         "preserved": 7,
         "problems": []
       },
@@ -45,7 +45,7 @@
         "errors": false,
         "exit": 0,
         "failed": false,
-        "summary": "14 passed in 14.32s"
+        "summary": "14 passed in 13.94s"
       },
       "name": "V05_windowless_contract_tests",
       "status": "PASS"
@@ -89,7 +89,7 @@
     {
       "detail": {
         "exit": 0,
-        "output": "Resolved 118 packages in 2ms"
+        "output": "Resolved 118 packages in 1ms"
       },
       "name": "V09_uv_lock_reproducible",
       "status": "PASS"
