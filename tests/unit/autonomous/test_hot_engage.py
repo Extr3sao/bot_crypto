@@ -443,7 +443,11 @@ def test_a_running_runtime_engages_between_cycles_without_restart(tmp_path: Path
         ledger=make_admitted_ledger(gross_bps=50.0),
         reader=_EvolvingReader(state),
         scanner=_EvolvingScanner(state),
-        hot_stop=None,  # the runtime builds its own gate over run_dir
+        # A gate over a fresh switch, not ``process_kill_switch()``: the test
+        # engages its runtime, and engaging the process-wide authority would
+        # stop every later test in this interpreter (G1-D-1).  The default
+        # wiring is pinned separately, without engaging it.
+        hot_stop=_gate(None, tmp_path),
         decision_engine=_AlwaysTradeEngine(),
     )
     assert runtime.hot_stop.engaged is False
@@ -471,6 +475,31 @@ def test_a_running_runtime_engages_between_cycles_without_restart(tmp_path: Path
     third = asyncio.run(runtime.run_cycle(cycle=3))
     assert third.assets[0].order_created is False
     assert broker.calls == 1
+
+
+def test_the_default_gate_wraps_the_process_authority_and_the_run_dir(tmp_path: Path) -> None:
+    """Control for the injection above: the *default* is still the real wiring.
+
+    No engagement here.  The property is composition — the gate the runtime
+    builds on its own must drive ``process_kill_switch()`` (so rule 0 and the
+    dispatch boundary share one authority) and must read this run's directory.
+    """
+    from trading_bot.autonomous.decision import process_kill_switch
+
+    history = {"BTC/USDT": bars("BTC/USDT", 80)}
+    runtime = _build_runtime(
+        run_dir=tmp_path,
+        broker=_SpyBroker(),
+        ledger=make_admitted_ledger(gross_bps=50.0),
+        reader=StaticReader(history),
+        scanner=_FixedScanner(history),
+        hot_stop=None,  # let the runtime build its own
+        decision_engine=_AlwaysTradeEngine(),
+    )
+
+    assert runtime.hot_stop.kill_switch is process_kill_switch()
+    assert Path(runtime.hot_stop.control_path) == tmp_path / HOT_STOP_FILE_NAME
+    assert runtime.hot_stop.engaged is False
 
 
 def test_an_open_gate_does_not_touch_the_switch(tmp_path: Path) -> None:

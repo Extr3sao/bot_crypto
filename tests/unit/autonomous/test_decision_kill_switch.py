@@ -416,12 +416,14 @@ def test_the_environment_can_boot_the_process_engaged(raw: str, expected: str) -
     assert completed.stdout.strip() == expected
 
 
-def test_the_state_does_not_survive_a_restart_and_that_is_the_declared_gap() -> None:
-    """Gap G-1, pinned as executable truth rather than prose.
+def test_the_bare_switch_has_no_store_and_durability_lives_in_the_gate() -> None:
+    """G-1 separates the two facts that this test used to conflate.
 
-    ``paper/kill_switch_v2.KillSwitch`` has no persistence: a new process starts
-    NORMAL. Until the state is durable, MT-0003 protects a *running* process and
-    must not be reported as protection that survives a restart.
+    ``paper/kill_switch_v2.KillSwitch`` is still a pure in-memory state machine:
+    constructing one is NORMAL. Durability is not bolted onto the class; it
+    lives in ``autonomous.hot_stop.HotStopGate``, which adopts
+    ``<run_dir>/KILL_SWITCH`` in its constructor and is the only thing a restart
+    reads. The assertion below stays because it pins the class, not the gap.
     """
     process_kill_switch().activate(KillSwitchAction.USER, target=KillSwitchState.HALTED)
     assert process_kill_switch().state is KillSwitchState.HALTED

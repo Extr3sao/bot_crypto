@@ -27,7 +27,7 @@ from uuid import uuid4
 from pydantic import ValidationError
 
 from trading_bot import __version__
-from trading_bot.autonomous.hot_stop import HOT_STOP_FILE_NAME
+from trading_bot.autonomous.hot_stop import HOT_STOP_FILE_NAME, write_control_file
 from trading_bot.charting import ChartSnapshotRequest, render_local_chart_snapshot
 from trading_bot.config import TradingMode, load_settings
 from trading_bot.market_data.bitunix import (
@@ -1423,10 +1423,11 @@ def _cmd_kill_switch(args: argparse.Namespace) -> int:
         return 2
     control = run_dir / HOT_STOP_FILE_NAME
     reason = (args.reason or "").strip() or "operator requested hot engage"
-    tmp = control.with_name(control.name + ".tmp")
     try:
-        tmp.write_text(reason + "\n", encoding="utf-8")
-        tmp.replace(control)
+        # G-1 — temp + fsync + os.replace: the request survives a crash between
+        # this write and the process's ACK, which is exactly the window in which
+        # an operator has been told "stopped" but the loop has said nothing yet.
+        write_control_file(control, reason)
     except OSError as exc:
         sys.stderr.write(
             f"ERROR: no se pudo escribir {control}: {type(exc).__name__}. "
