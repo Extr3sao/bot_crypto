@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\GVLLFR0035\Downloads\ff-wt-repro001\scripts\paper_supervisor_verify.py", line 46, in <module>
+    from trading_bot.vision.ledger import GENESIS, line_hash  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\GVLLFR0035\Downloads\ff-wt-repro001\src\trading_bot\vision\__init__.py", line 20, in <module>
+    from trading_bot.vision.chart import CHART_SPEC_VERSION, DEFAULT_WINDOW_BARS
+  File "C:\Users\GVLLFR0035\Downloads\ff-wt-repro001\src\trading_bot\vision\chart.py", line 36, in <module>
+    import matplotlib
+ModuleNotFoundError: No module named 'matplotlib'
+EXIT=1

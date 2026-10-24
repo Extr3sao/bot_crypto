@@ -4,6 +4,9 @@
 code, and never reads ``CAMPAIGN.json``'s verdict. It reconstructs the sequence of crashes
 and recoveries from the artefacts alone:
 
+* ``CAMPAIGN.json``'s declared ``schema_version`` — the *only* field it reads from that
+  file, and only to decide whether it may judge the artefacts at all: a campaign from an
+  unknown schema is refused, never scored;
 * the chained ``STREAM.jsonl`` (re-hashed with the published rule, line by line);
 * each iteration's ``POST_CRASH.json`` (whose ``rows_at_crash`` boundary is *checked*, not
   trusted: the recomputed head of that prefix must equal the recorded head);
@@ -49,6 +52,13 @@ from trading_bot.vision.ledger import GENESIS, line_hash, read_entries, verify_c
 ABANDONED_REASONS = {"OWNER_PROCESS_DEAD", "PID_REUSED"}
 GOOD_FINAL_STATES = {"RECOVERED", "READY"}
 MIN_RECOVERIES = 5
+
+#: The only campaign layout whose artefacts this verifier knows how to read. A campaign
+#: written by a different producer (the supervisor's, for instance) declares a different
+#: schema and must be refused: judging it would report its unrelated shape as a failure of
+#: *this* mechanism, which is worse than saying nothing.
+CAMPAIGN_SCHEMA = "TAP_PAPER_LOCK_CAMPAIGN_V1"
+SUPPORTED_CAMPAIGN_SCHEMAS = frozenset({CAMPAIGN_SCHEMA})
 
 
 # ----------------------------------------------------------------------- helpers
@@ -142,6 +152,38 @@ def fence_files(session: Path) -> dict[str, int | None]:
 def judge(campaign: Path) -> dict[str, Any]:
     """Re-derive every claim of the campaign from its artefacts."""
 
+    manifest = read_json(campaign / "CAMPAIGN.json")
+    declared_schema = manifest.get("schema_version")
+    schema = {
+        "declared": declared_schema,
+        "expected": CAMPAIGN_SCHEMA,
+        "supported": declared_schema in SUPPORTED_CAMPAIGN_SCHEMAS,
+    }
+    if not schema["supported"]:
+        #: Refuse before reading anything else. Every check below assumes this campaign's
+        #: layout, and a verifier that scores artefacts it cannot read reports its own
+        #: confusion as a defect of the producer.
+        return {
+            "checks": {"campaign_schema_is_supported": False},
+            "refusal": {
+                "code": "UNSUPPORTED_CAMPAIGN_SCHEMA",
+                "declared": declared_schema,
+                "expected": CAMPAIGN_SCHEMA,
+                "detail": (
+                    "these artefacts are not the layout this verifier reads; judge them "
+                    "with the verifier of the producer that wrote them"
+                ),
+            },
+            "schema": schema,
+            "iterations": [],
+            "facts": {"campaign_schema": declared_schema},
+            "chain": {},
+            "cycles": {},
+            "final_status": {"state": "UNKNOWN"},
+            "counts": {},
+            "verdict": "FAIL",
+        }
+
     session = campaign / "session"
     stream = session / "STREAM.jsonl"
     rows = read_entries(stream)
@@ -183,6 +225,7 @@ def judge(campaign: Path) -> dict[str, Any]:
 
     iterations: list[dict[str, Any]] = []
     facts: dict[str, Any] = {
+        "campaign_schema": declared_schema,
         "iterations": [],
         "rows": len(rows),
         "starts": len(starts),
@@ -343,6 +386,9 @@ def judge(campaign: Path) -> dict[str, Any]:
     stale_items = [item for item in iterations if item["stale_owner"]]
 
     checks = {
+        #: First, because every check below assumes this layout. A verifier that scores a
+        #: schema it does not know is reporting on files it does not understand.
+        "campaign_schema_is_supported": declared_schema in SUPPORTED_CAMPAIGN_SCHEMAS,
         "stream_chain_intact": bool(chain.get("ok")),
         "seq_continuous": bool(seqs) and seqs == list(range(1, len(seqs) + 1)),
         "iterations_contiguous": [item["iteration"] for item in iterations]
@@ -471,6 +517,7 @@ def judge(campaign: Path) -> dict[str, Any]:
         "iterations": iterations,
         "facts": facts,
         "chain": chain,
+        "schema": schema,
         "cycles": {
             "numbers": cycle_numbers,
             "directories": directories,
@@ -779,6 +826,24 @@ def mutations(source: Path) -> list[dict[str, Any]]:
         "a reclaim of a different process would leave the real owner unreclaimed",
     )
 
+    def relabel_schema(work: Path, witness: str) -> str:
+        path = work / "CAMPAIGN.json"
+        payload = read_json(path)
+        if not payload:
+            return ""
+        current = payload.get("schema_version")
+        payload["schema_version"] = witness
+        path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        return f"relabelled CAMPAIGN.json schema_version {current!r} -> {witness!r}"
+
+    apply(
+        "campaign_from_an_unknown_schema",
+        "campaign_schema_is_supported",
+        relabel_schema,
+        ["TAP_PAPER_SUPERVISOR_CAMPAIGN_V1"],
+        "a campaign this verifier does not know is refused, not scored on the wrong layout",
+    )
+
     return results
 
 
@@ -798,12 +863,23 @@ def main(argv: list[str] | None = None) -> int:
 
     campaign = Path(args.campaign)
     verdict = judge(campaign)
-    mutants = [] if args.skip_mutations else mutations(campaign)
+    #: A refused campaign has no meaningful mutations: there is nothing this verifier
+    #: could break that it knows how to read. The verdict stays FAIL either way.
+    mutants = (
+        []
+        if args.skip_mutations or not verdict["schema"]["supported"]
+        else mutations(campaign)
+    )
     invalid = [item for item in mutants if item["invalid"]]
     undetected = [item for item in mutants if not item["invalid"] and not item["detected"]]
     payload = {
         "schema_version": "TAP_PAPER_LOCK_CAMPAIGN_VERIFICATION_V1",
         "campaign": str(campaign),
+        "campaign_schema": verdict["schema"],
+        "refusal": verdict.get("refusal"),
+        "mutations_skipped": "UNSUPPORTED_CAMPAIGN_SCHEMA"
+        if not verdict["schema"]["supported"]
+        else None,
         "builder": "scripts/paper_lock_campaign.py",
         "verifier": "scripts/paper_lock_campaign_verify.py",
         "verifier_commit": subprocess.run(

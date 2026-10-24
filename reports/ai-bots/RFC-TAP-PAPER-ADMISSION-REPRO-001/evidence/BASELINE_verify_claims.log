@@ -1,0 +1,31 @@
+PASS  ledger.entries                               24
+PASS  ledger.admitted_for_paper                    0
+PASS  ledger.status_counts                         {'NO_GROSS_EDGE': 17, 'COST_KILLED': 7}
+PASS  ledger.sample_trades_zero                    18
+PASS  ledger.positive_gross                        7
+PASS  ledger.top_gross_rounded                     [8.91, 6.28, 5.47]
+PASS  ledger.top_gross_ids                         ['volatility@30m', 'volatility@1h', 'mean_reversion@30m']
+PASS  explorer.cells                               24
+PASS  explorer.max_gross                           {'cell': 'volatility@30m', 'gross_bps': 8.912, 'trades': 194}
+PASS  explorer.volatility_1h                       {'gross_bps': 6.276, 'trades': 96}
+PASS  explorer.mean_reversion_30m_trades           934
+PASS  explorer.cheapest_taker_rt_bps               12.176776695296637
+PASS  explorer.runtime_admission_rt_bps            23.353553390593273
+PASS  explorer.cheapest_any_is_assumed             {'rt_bps': 1.25, 'assumed': True, 'reachable_at_1x': 7}
+PASS  explorer.frontier_size                       {'configurations': 120, 'distinct_lines': 36}
+PASS  explorer.gap_to_taker_bps                    3.2647766952966357
+PASS  explorer.gap_to_runtime_bps                  14.441553390593272
+PASS  explorer.frequency                           {'rt_per_year': 1095.0, 'annual_pct_runtime': 255.72140963144997, 'annual_pct_taker': 133.33570481349818, 'annual_pct_assumed': 13.6875}
+PASS  matrix.paper_candidates_empty                []
+PASS  matrix.families_rejected                     '6 REJECT, c2/c3/c4/c7 false'
+PASS  matrix.c6_c8_unknown_for_all                 6
+PASS  cost_barrier_verification                    {'status': 'PASS', 'controls': 13, 'false_success': 0}
+PASS  exp003m.ceiling_below_floor                  {'verdict': 'REJECT', 'gross': 0.26690893, 'fees': 0.75, 'coverage': 0.35587857}
+PASS  supervisor_verifier.pass                     {'verdict': 'PASS', 'checks_passed': 33, 'checks_total': 33, 'false_success': 0}
+PASS  lock_verifier.fails_on_supervisor_campaign   {'verdict': 'FAIL', 'checks_passed': 28, 'checks_total': 32, 'false_success': 2}
+PASS  windowless.high_findings                     ['scripts/exp004a_verify.py', 'tests/unit/ops/test_paper_lock_campaign.py', 'tests/unit/ops/test_session_status.py']
+PASS  uvlock.matplotlib_missing                    {'declared_in_pyproject': True, 'entries_in_lock': 0}
+PASS  evidence.unversioned                         {'rule_line': 463, 'rule': 'reports/ai-bots/*'}
+
+28/28 PASS · wrote C:\Users\GVLLFR0035\Downloads\ff-wt-repro001\reports\ai-bots\CODEX-PAPER-ADMISSION-DIAG-001\evidence\CLAIM_CHECKS.json
+EXIT=0

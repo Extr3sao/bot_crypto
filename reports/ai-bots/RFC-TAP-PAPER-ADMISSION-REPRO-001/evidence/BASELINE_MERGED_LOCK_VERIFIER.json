@@ -1,0 +1,471 @@
+{
+  "adversarial": [
+    {
+      "changed_the_scenario": true,
+      "description": "the same cycle appears twice and every hash is recomputed: only numbering can catch it",
+      "detail": "duplicated stream row 4 (a CYCLE) and re-chained the file",
+      "detected": true,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "cycle_gaps_are_interrupted_cycles",
+        "cycle_numbers_unique",
+        "stale_owner_was_refused"
+      ],
+      "invalid": false,
+      "mutation": "duplicated_cycle_with_valid_chain",
+      "target_check": "cycle_numbers_unique",
+      "witness": 3
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "a resume whose reclaim is not on the record proves nothing about the abandoned lock",
+      "detail": "removed LOCK_RECLAIMED at row 7 and re-chained the rest",
+      "detected": false,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "stale_owner_was_refused"
+      ],
+      "invalid": false,
+      "mutation": "reclaim_row_removed",
+      "target_check": "every_recovery_is_reclaimed",
+      "witness": 6
+    },
+    {
+      "changed_the_scenario": false,
+      "description": "a takeover whose fence did not advance past the old record did not dispossess it",
+      "detail": "lowered the fence of reclaim row 7, lock 0",
+      "detected": false,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "stale_owner_was_refused"
+      ],
+      "invalid": true,
+      "mutation": "reclaim_fence_does_not_advance",
+      "target_check": "reclaim_fence_advances",
+      "witness": [
+        6,
+        0
+      ]
+    },
+    {
+      "changed_the_scenario": false,
+      "description": "a takeover whose fence did not advance past the old record did not dispossess it",
+      "detail": "lowered the fence of reclaim row 7, lock 1",
+      "detected": false,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "stale_owner_was_refused"
+      ],
+      "invalid": true,
+      "mutation": "reclaim_fence_does_not_advance",
+      "target_check": "reclaim_fence_advances",
+      "witness": [
+        6,
+        1
+      ]
+    },
+    {
+      "changed_the_scenario": false,
+      "description": "a takeover whose fence did not advance past the old record did not dispossess it",
+      "detail": "lowered the fence of reclaim row 7, lock 2",
+      "detected": false,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "stale_owner_was_refused"
+      ],
+      "invalid": true,
+      "mutation": "reclaim_fence_does_not_advance",
+      "target_check": "reclaim_fence_advances",
+      "witness": [
+        6,
+        2
+      ]
+    },
+    {
+      "changed_the_scenario": false,
+      "description": "a takeover whose fence did not advance past the old record did not dispossess it",
+      "detail": "witness (6, 0) left the scenario unchanged; witness (6, 1) left the scenario unchanged; witness (6, 2) left the scenario unchanged",
+      "detected": false,
+      "false_checks": [],
+      "invalid": true,
+      "mutation": "reclaim_fence_does_not_advance",
+      "target_check": "reclaim_fence_advances",
+      "witness": null
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "without the resumed SESSION_START there is no evidence the crash was continued",
+      "detail": "removed the resumed SESSION_START at row 5",
+      "detected": false,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "stale_owner_was_refused"
+      ],
+      "invalid": false,
+      "mutation": "resume_start_removed",
+      "target_check": "every_resume_continued_the_session",
+      "witness": 4
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "a leftover lock must fail the campaign however healthy the stream looks",
+      "detail": "planted a residual lock whose owner is this live process",
+      "detected": true,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "final_state_not_failed",
+        "no_lock_remaining_now",
+        "stale_owner_was_refused"
+      ],
+      "invalid": false,
+      "mutation": "residual_lock_presented_as_recovered",
+      "target_check": "no_lock_remaining_now",
+      "witness": "plant"
+    },
+    {
+      "changed_the_scenario": false,
+      "description": "a lock whose owner is alive must never be counted as abandoned",
+      "detail": "no witness",
+      "detected": false,
+      "false_checks": [],
+      "invalid": true,
+      "mutation": "leftover_owner_is_alive",
+      "target_check": "all_leftovers_proved_abandoned",
+      "witness": null
+    },
+    {
+      "changed_the_scenario": false,
+      "description": "a timed-out resume is not a recovery",
+      "detail": "no witness",
+      "detected": false,
+      "false_checks": [],
+      "invalid": true,
+      "mutation": "resume_did_not_exit_cleanly",
+      "target_check": "resume_exited_zero",
+      "witness": null
+    },
+    {
+      "changed_the_scenario": false,
+      "description": "two owners for one path is the state a single writer exists to forbid",
+      "detail": "no witness",
+      "detected": false,
+      "false_checks": [],
+      "invalid": true,
+      "mutation": "two_writers_claim_one_lock",
+      "target_check": "one_owner_per_path_per_crash",
+      "witness": null
+    },
+    {
+      "changed_the_scenario": false,
+      "description": "a reclaim of a different process would leave the real owner unreclaimed",
+      "detail": "reclaim row 7 names a pid that owned nothing",
+      "detected": false,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "stale_owner_was_refused"
+      ],
+      "invalid": true,
+      "mutation": "reclaim_names_the_wrong_owner",
+      "target_check": "reclaim_takes_over_the_crashed_owner",
+      "witness": 6
+    },
+    {
+      "changed_the_scenario": false,
+      "description": "a reclaim of a different process would leave the real owner unreclaimed",
+      "detail": "reclaim row 12 names a pid that owned nothing",
+      "detected": false,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "stale_owner_was_refused"
+      ],
+      "invalid": true,
+      "mutation": "reclaim_names_the_wrong_owner",
+      "target_check": "reclaim_takes_over_the_crashed_owner",
+      "witness": 11
+    },
+    {
+      "changed_the_scenario": false,
+      "description": "a reclaim of a different process would leave the real owner unreclaimed",
+      "detail": "witness 6 left the scenario unchanged; witness 11 left the scenario unchanged",
+      "detected": false,
+      "false_checks": [],
+      "invalid": true,
+      "mutation": "reclaim_names_the_wrong_owner",
+      "target_check": "reclaim_takes_over_the_crashed_owner",
+      "witness": null
+    }
+  ],
+  "artifacts": {
+    "CAMPAIGN.json": "42bd5c2849b912c36a0eddd7f418022f49b4745363400726575b099f436203e4",
+    "session/STREAM.jsonl": "3d9e83f4a32840fd7e4f69335c7fc848a470c15016bb49190c64387b0edffc73",
+    "session/STREAM.jsonl.lock.fence": "25d4f2a86deb5e2574bb3210b67bb24fcc4afb19f93a7b65a057daa874a9d18e",
+    "session/cycles/cycle-0001/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0002/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0003/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0004/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0005/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0006/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0007/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0008/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0009/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/market-1m/BTCUSDT.jsonl.lock.fence": "25d4f2a86deb5e2574bb3210b67bb24fcc4afb19f93a7b65a057daa874a9d18e",
+    "session/market-1m/ETHUSDT.jsonl.lock.fence": "25d4f2a86deb5e2574bb3210b67bb24fcc4afb19f93a7b65a057daa874a9d18e",
+    "session/market-1m/SOLUSDT.jsonl.lock.fence": "25d4f2a86deb5e2574bb3210b67bb24fcc4afb19f93a7b65a057daa874a9d18e"
+  },
+  "builder": "scripts/paper_lock_campaign.py",
+  "campaign": "reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign",
+  "false_success": 2,
+  "invalid_mutations": [
+    "reclaim_fence_does_not_advance",
+    "reclaim_fence_does_not_advance",
+    "reclaim_fence_does_not_advance",
+    "reclaim_fence_does_not_advance",
+    "leftover_owner_is_alive",
+    "resume_did_not_exit_cleanly",
+    "two_writers_claim_one_lock",
+    "reclaim_names_the_wrong_owner",
+    "reclaim_names_the_wrong_owner",
+    "reclaim_names_the_wrong_owner"
+  ],
+  "judgement": {
+    "checks": {
+      "all_leftovers_proved_abandoned": true,
+      "at_least_five_recoveries": false,
+      "both_crash_sites_covered": false,
+      "concurrent_reclaim_has_one_winner": false,
+      "crash_boundaries_match_recorded_chains": true,
+      "cycle_gaps_are_interrupted_cycles": true,
+      "cycle_numbers_ordered": true,
+      "cycle_numbers_unique": true,
+      "every_crash_left_locks": true,
+      "every_recovery_is_reclaimed": true,
+      "every_resume_continued_the_session": true,
+      "every_resume_made_progress": true,
+      "final_state_not_failed": true,
+      "iterations_contiguous": true,
+      "leftover_state_matches_recomputed_verdict": true,
+      "live_owner_was_refused": true,
+      "no_live_orders": true,
+      "no_lock_after_any_resume": true,
+      "no_lock_remaining_now": true,
+      "one_owner_per_iteration": true,
+      "one_owner_per_path_per_crash": true,
+      "owner_identity_never_repeats": true,
+      "persisted_cycle_ledgers_intact": true,
+      "reclaim_fence_advances": true,
+      "reclaim_reason_is_a_proof": true,
+      "reclaim_takes_over_the_crashed_owner": true,
+      "resume_exited_zero": true,
+      "resume_flags_are_false_then_true": true,
+      "runtime_identity_stable": true,
+      "seq_continuous": true,
+      "stale_owner_was_refused": false,
+      "stream_chain_intact": true
+    },
+    "counts": {
+      "cycles": 9,
+      "iterations": 0,
+      "reclaim_rows": 5,
+      "rows": 33,
+      "starts": 6
+    },
+    "cycles": {
+      "directories": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "fences": {
+        "STREAM.jsonl.lock.fence": 11,
+        "cycles/cycle-0001/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0002/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0003/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0004/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0005/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0006/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0007/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0008/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0009/ledger.jsonl.lock.fence": 1,
+        "market-1m/BTCUSDT.jsonl.lock.fence": 11,
+        "market-1m/ETHUSDT.jsonl.lock.fence": 11,
+        "market-1m/SOLUSDT.jsonl.lock.fence": 11
+      },
+      "interrupted": [],
+      "ledgers": {
+        "cycle-0001": {
+          "head_sha256": "35f3ffda6c951ff53dff47069be0b9a10bfedb24779bb368784b2234de02b39f",
+          "kinds": {
+            "DECISION": 4,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 2,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 10,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0002": {
+          "head_sha256": "86140b1b8644650c8e7f21f62d085660f6422a474edb1bfbd89dd9adb01affe6",
+          "kinds": {
+            "DECISION": 7,
+            "DECISION_OUTCOME": 2,
+            "FILL": 2,
+            "OPINION_DEFERRED": 2,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 15,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0003": {
+          "head_sha256": "4b41a07824cccb5d00bea12b1984a778c4a5dd8220eece5409e45b0f49e2f54b",
+          "kinds": {
+            "DECISION": 10,
+            "DECISION_OUTCOME": 2,
+            "FILL": 2,
+            "GUARD_REJECT": 1,
+            "OPINION_DEFERRED": 2,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 19,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0004": {
+          "head_sha256": "18ba377efcadf5a7955bc389afcb110b16ecfb0af5263b12f8969305ff406515",
+          "kinds": {
+            "DECISION": 12,
+            "DECISION_OUTCOME": 2,
+            "FILL": 2,
+            "GUARD_REJECT": 1,
+            "OPINION_DEFERRED": 3,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 22,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0005": {
+          "head_sha256": "11548eb4934e7d99279c2b0f937a4f49c50ddd09e8a3a45a553d14c8ce105306",
+          "kinds": {
+            "DECISION": 15,
+            "DECISION_OUTCOME": 3,
+            "FILL": 3,
+            "OPINION_DEFERRED": 3,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 26,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0006": {
+          "head_sha256": "8cdd0f8ed157d144827d0dd2401356a51c5dbe95182f76fabcf42ea6cb2bcfdb",
+          "kinds": {
+            "DECISION": 18,
+            "DECISION_OUTCOME": 3,
+            "FILL": 3,
+            "OPINION_DEFERRED": 3,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 29,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0007": {
+          "head_sha256": "a5148913a776add9b0602dd03dcfe9e5941ae5dd636539ef9623f758c8460cf8",
+          "kinds": {
+            "DECISION": 21,
+            "DECISION_OUTCOME": 3,
+            "FILL": 3,
+            "OPINION_DEFERRED": 3,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 32,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0008": {
+          "head_sha256": "fc25d468c34688645560e3864d8331446dc088516c99cd7b929ded2cba4e6d7a",
+          "kinds": {
+            "DECISION": 24,
+            "DECISION_OUTCOME": 3,
+            "FILL": 3,
+            "OPINION_DEFERRED": 3,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 35,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0009": {
+          "head_sha256": "7282eacdc13c302e6f951ab2bc21d785bf67d2a8b8d94fa9f3745c7ae3483870",
+          "kinds": {
+            "DECISION": 27,
+            "DECISION_OUTCOME": 3,
+            "FILL": 3,
+            "OPINION_DEFERRED": 3,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 38,
+          "ok": true,
+          "reason": "INTACT"
+        }
+      },
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    "final_state": "RECOVERED",
+    "iterations": [],
+    "verdict": "FAIL"
+  },
+  "schema_version": "TAP_PAPER_LOCK_CAMPAIGN_VERIFICATION_V1",
+  "undetected_mutations": [
+    "reclaim_row_removed",
+    "resume_start_removed"
+  ],
+  "verdict": "FAIL",
+  "verifier": "scripts/paper_lock_campaign_verify.py",
+  "verifier_commit": "b4c8e3e20c804b83540fad873c7ce81dde6dd98d"
+}

@@ -1203,6 +1203,28 @@ def _kill_tree(process: subprocess.Popen[bytes]) -> None:
     os.killpg(process.pid, 9)
 
 
+def hidden_window_kwargs() -> dict[str, Any]:
+    """Keep the child from drawing a console, without borrowing the runtime's helper.
+
+    RFC-051 §5 forbids this verifier from importing the code it audits, so
+    ``trading_bot.ops.windowless`` is out of reach. The two mechanisms are applied by
+    hand: ``CREATE_NO_WINDOW`` stops the child from allocating a console, and a
+    ``STARTUPINFO`` with ``STARTF_USESHOWWINDOW``/``SW_HIDE`` suppresses the window it
+    would otherwise inherit. ``scripts/ops_background_audit.py`` exempts this file only
+    while both remain present, so deleting either turns into a HIGH finding.
+    """
+
+    if sys.platform != "win32":
+        return {"start_new_session": True}
+    info = subprocess.STARTUPINFO()
+    info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    info.wShowWindow = subprocess.SW_HIDE
+    return {
+        "creationflags": subprocess.CREATE_NO_WINDOW | subprocess.CREATE_NEW_PROCESS_GROUP,
+        "startupinfo": info,
+    }
+
+
 def _run_bounded(cmd: Sequence[str], cwd: Path, timeout: int) -> dict[str, Any]:
     """Run a child with its output on a file, so a timeout can never block on an open pipe.
 
@@ -1218,8 +1240,7 @@ def _run_bounded(cmd: Sequence[str], cwd: Path, timeout: int) -> dict[str, Any]:
                 cwd=str(cwd),
                 stdout=handle,
                 stderr=subprocess.STDOUT,
-                creationflags=subprocess.CREATE_NEW_PROCESS_GROUP if sys.platform == "win32" else 0,
-                start_new_session=sys.platform != "win32",
+                **hidden_window_kwargs(),
             )
             timed_out = False
             try:

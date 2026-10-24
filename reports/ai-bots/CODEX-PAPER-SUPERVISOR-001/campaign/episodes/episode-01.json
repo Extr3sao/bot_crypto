@@ -1,0 +1,201 @@
+{
+  "after": {
+    "chain": {
+      "head_sha256": "fe57578460afcdd6180c000e88a1552dd910a74eb183639a5ec8d9a218bc35c9",
+      "kinds": {
+        "CYCLE": 2,
+        "DELAY_MEASURED": 2,
+        "LOCK_RECLAIMED": 1,
+        "SESSION_PROVENANCE": 2,
+        "SESSION_START": 2
+      },
+      "lines": 9,
+      "ok": true,
+      "reason": "INTACT"
+    },
+    "cycle_ledgers": {
+      "cycle-0001": {
+        "head_sha256": "35f3ffda6c951ff53dff47069be0b9a10bfedb24779bb368784b2234de02b39f",
+        "kinds": {
+          "DECISION": 4,
+          "GUARD_REJECT": 2,
+          "OPINION_DEFERRED": 2,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 10,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "cycle-0002": {
+        "head_sha256": "86140b1b8644650c8e7f21f62d085660f6422a474edb1bfbd89dd9adb01affe6",
+        "kinds": {
+          "DECISION": 7,
+          "DECISION_OUTCOME": 2,
+          "FILL": 2,
+          "OPINION_DEFERRED": 2,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 15,
+        "ok": true,
+        "reason": "INTACT"
+      }
+    },
+    "cycles": [
+      1,
+      2
+    ],
+    "locks": [
+      {
+        "path": "market-1m/BTCUSDT.jsonl.lock",
+        "reason": "LIVE_OWNER",
+        "state": "HELD"
+      },
+      {
+        "path": "market-1m/ETHUSDT.jsonl.lock",
+        "reason": "LIVE_OWNER",
+        "state": "HELD"
+      },
+      {
+        "path": "market-1m/SOLUSDT.jsonl.lock",
+        "reason": "LIVE_OWNER",
+        "state": "HELD"
+      },
+      {
+        "path": "STREAM.jsonl.lock",
+        "reason": "LIVE_OWNER",
+        "state": "HELD"
+      }
+    ],
+    "rows": 9,
+    "state": "RUNNING"
+  },
+  "before": {
+    "cycles": [
+      1
+    ],
+    "fence": 1,
+    "lock_owner_pid": 1448,
+    "owner_pid": 40128,
+    "rows": 4,
+    "state": "RUNNING"
+  },
+  "crash": {
+    "abandoned": true,
+    "chain": {
+      "head_sha256": "ba8f0a218615fb154e4bdd119f07d9bf27b3e3bd85b422df5c8acb6071e4b6d4",
+      "kinds": {
+        "CYCLE": 1,
+        "DELAY_MEASURED": 1,
+        "SESSION_PROVENANCE": 1,
+        "SESSION_START": 1
+      },
+      "lines": 4,
+      "ok": true,
+      "reason": "INTACT"
+    },
+    "cycles": [
+      1
+    ],
+    "locks": [
+      {
+        "fence": 1,
+        "path": "market-1m/BTCUSDT.jsonl.lock",
+        "pid": 1448,
+        "process_start_ms": 1792780438574,
+        "reason": "OWNER_PROCESS_DEAD",
+        "record": {
+          "acquired_at_utc": "2026-10-23T18:34:01Z",
+          "fence": 1,
+          "host": "DESKTOP-4CHO695",
+          "path": "BTCUSDT.jsonl.lock",
+          "pid": 1448,
+          "process_start_ms": 1792780438574,
+          "purpose": "minutes:BTCUSDT.jsonl",
+          "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+          "token": "7640b052831b47edbdf5434c9efd0ca6"
+        },
+        "state": "ABANDONED",
+        "token": "7640b052831b47edbdf5434c9efd0ca6"
+      },
+      {
+        "fence": 1,
+        "path": "market-1m/ETHUSDT.jsonl.lock",
+        "pid": 1448,
+        "process_start_ms": 1792780438574,
+        "reason": "OWNER_PROCESS_DEAD",
+        "record": {
+          "acquired_at_utc": "2026-10-23T18:34:01Z",
+          "fence": 1,
+          "host": "DESKTOP-4CHO695",
+          "path": "ETHUSDT.jsonl.lock",
+          "pid": 1448,
+          "process_start_ms": 1792780438574,
+          "purpose": "minutes:ETHUSDT.jsonl",
+          "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+          "token": "172f0bc8c549444c9a5d4d9d99333eef"
+        },
+        "state": "ABANDONED",
+        "token": "172f0bc8c549444c9a5d4d9d99333eef"
+      },
+      {
+        "fence": 1,
+        "path": "market-1m/SOLUSDT.jsonl.lock",
+        "pid": 1448,
+        "process_start_ms": 1792780438574,
+        "reason": "OWNER_PROCESS_DEAD",
+        "record": {
+          "acquired_at_utc": "2026-10-23T18:34:01Z",
+          "fence": 1,
+          "host": "DESKTOP-4CHO695",
+          "path": "SOLUSDT.jsonl.lock",
+          "pid": 1448,
+          "process_start_ms": 1792780438574,
+          "purpose": "minutes:SOLUSDT.jsonl",
+          "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+          "token": "cd413f2961c549bdabb4a29c1d52fe42"
+        },
+        "state": "ABANDONED",
+        "token": "cd413f2961c549bdabb4a29c1d52fe42"
+      },
+      {
+        "fence": 1,
+        "path": "STREAM.jsonl.lock",
+        "pid": 1448,
+        "process_start_ms": 1792780438574,
+        "reason": "OWNER_PROCESS_DEAD",
+        "record": {
+          "acquired_at_utc": "2026-10-23T18:34:01Z",
+          "fence": 1,
+          "host": "DESKTOP-4CHO695",
+          "path": "STREAM.jsonl.lock",
+          "pid": 1448,
+          "process_start_ms": 1792780438574,
+          "purpose": "ledger:STREAM.jsonl",
+          "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+          "token": "6bb933eb41a24dbba88efa98806332d8"
+        },
+        "state": "ABANDONED",
+        "token": "6bb933eb41a24dbba88efa98806332d8"
+      }
+    ],
+    "rows": 4,
+    "state": "RECOVERING"
+  },
+  "episode": 1,
+  "killed": {
+    "alive_after": false,
+    "detail": "CORRECTO: el proceso con PID 12040 (proceso secundario de PID 40128)\nha sido terminado.\nCORRECTO: el proceso con PID 1448 (proceso secundario de PID 40128)\nha sido terminado.\nCORRECTO: el proceso con PID 40128 (proceso secundario de PID 21420)\nha sido terminado.",
+    "pid": 40128,
+    "taskkill_exit": 0
+  },
+  "live_probe": {
+    "bytes": 306,
+    "code": "LOCK_HELD",
+    "detail": "LOCK_HELD: reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign\\session\\STREAM.jsonl.lock is held by live pid 1448; a second writer would interleave prev_sha256 and the chain would stop verifying",
+    "outcome": "REFUSED",
+    "unchanged": true
+  },
+  "started_at_utc": "2026-10-23T18:33:58Z"
+}

@@ -1,0 +1,393 @@
+{
+  "added_paths": [
+    "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/FINAL_REPORT.md",
+    "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/NEXT_EXPERIMENT.md",
+    "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/OPERATIONAL_BLOCKERS.md",
+    "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/PAPER_ADMISSION_DIAGNOSIS.md",
+    "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/RUNTIME_AUTHORITY_MAP.md",
+    "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/STRATEGY_ECONOMIC_STATUS.md",
+    "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/evidence/CAMPAIGN_VERIFY.json",
+    "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/evidence/CLAIM_CHECKS.json",
+    "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/evidence/LOCK_VERIFIER_STDOUT.log",
+    "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/evidence/SUPERVISOR_VERIFY.json",
+    "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/verify_claims.py",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/BASELINE.md",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/FINAL_REPORT.md",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/OPERATIONAL_BLOCKERS.md",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/RUN_REPORT.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/RUN_REPORT.md",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/VERIFICATION.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/CAMPAIGN.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/SUPERVISOR_RACE.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/SUPERVISOR_STATE.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/VERIFICATION.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/episodes/episode-01.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/episodes/episode-02.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/episodes/episode-03.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/episodes/episode-04.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/episodes/episode-05.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/SCENARIOS.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/LOCKS_RECLAIMED.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/RUN_META.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/SESSION_PROVENANCE.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/SESSION_START.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/STREAM.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/STREAM.jsonl.lock",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/STREAM.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/market-1m/BTCUSDT.jsonl.lock",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/market-1m/BTCUSDT.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/market-1m/ETHUSDT.jsonl.lock",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/market-1m/ETHUSDT.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/market-1m/SOLUSDT.jsonl.lock",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/market-1m/SOLUSDT.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/provenance/session-sess-7d5304b3e6b2193f99a2.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/session/provenance/session-sess-b15848b83e1d6911718f.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/supervisor/SUPERVISOR.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/supervisor/SUPERVISOR.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/budget/supervisor/SUPERVISOR_RESULT.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/BOOTSTRAP.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/LOCKS_RECLAIMED.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/RUN_META.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/RUN_RESULT.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/SESSION_PROVENANCE.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/SESSION_START.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/STREAM.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/STREAM.jsonl.lock",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/STREAM.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/SUMMARY.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0001/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0001/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0001/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0002/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0002/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0002/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0003/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0003/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0003/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0004/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0004/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0004/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0005/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0005/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0005/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0006/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0006/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0006/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0007/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0007/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0007/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0008/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0008/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0008/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0009/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0009/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/cycles/cycle-0009/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/market-1m/BTCUSDT.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/market-1m/BTCUSDT.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/market-1m/ETHUSDT.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/market-1m/ETHUSDT.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/market-1m/EVENTS.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/market-1m/MANIFEST.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/market-1m/SOLUSDT.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/market-1m/SOLUSDT.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/provenance/session-sess-01cc743601c26ee6177e.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/provenance/session-sess-140d9092f8d56ca27c82.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/provenance/session-sess-31000cc6898d16f260c0.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/provenance/session-sess-723fb164ad2ea88f497a.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/provenance/session-sess-8875aefa02b4944859c5.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/session/provenance/session-sess-af86cd59154abc8290e3.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/supervisor/SUPERVISOR.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/supervisor/SUPERVISOR.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/scenarios/corrupt/supervisor/SUPERVISOR_RESULT.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/BOOTSTRAP.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/LOCKS_RECLAIMED.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/RUN_META.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/RUN_RESULT.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/SESSION_PROVENANCE.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/SESSION_START.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/STREAM.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/STREAM.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/SUMMARY.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0001/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0001/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0001/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0002/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0002/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0002/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0003/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0003/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0003/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0004/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0004/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0004/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0005/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0005/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0005/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0006/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0006/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0006/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0007/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0007/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0007/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0008/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0008/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0008/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0009/ledger.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0009/ledger.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/cycles/cycle-0009/summary.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/market-1m/BTCUSDT.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/market-1m/BTCUSDT.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/market-1m/ETHUSDT.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/market-1m/ETHUSDT.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/market-1m/EVENTS.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/market-1m/MANIFEST.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/market-1m/SOLUSDT.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/market-1m/SOLUSDT.jsonl.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/provenance/session-sess-01cc743601c26ee6177e.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/provenance/session-sess-140d9092f8d56ca27c82.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/provenance/session-sess-31000cc6898d16f260c0.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/provenance/session-sess-723fb164ad2ea88f497a.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/provenance/session-sess-8875aefa02b4944859c5.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/session/provenance/session-sess-af86cd59154abc8290e3.json",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/supervisor/SUPERVISOR.jsonl",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/supervisor/SUPERVISOR.lock.fence",
+    "reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/supervisor/SUPERVISOR_RESULT.json",
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/BASELINE.md",
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/RFC.md",
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/AFTER_LOCK_VERIFIER.json",
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/AFTER_SUPERVISOR_VERIFY.json",
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/AFTER_audit.json",
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_LOCK_VERIFIER.json",
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_MERGED_LOCK_VERIFIER.json",
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_MERGED_SUPERVISOR_VERIFY.json",
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_MERGED_audit.json",
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_SUPERVISOR_VERIFY.json",
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence_manifest.json",
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/make_manifest.py",
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/verify_repro.py"
+  ],
+  "authority": {
+    "builder": "RFC-TAP-PAPER-ADMISSION-REPRO-001",
+    "note": "The verifier recomputes every hash and re-runs every gate as a subprocess. It reads this manifest only as a claim to be tested.",
+    "verifier": "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/verify_repro.py"
+  },
+  "baseline": {
+    "base_commit": "b4c8e3e20c804b83540fad873c7ce81dde6dd98d",
+    "branch": "repro/paper-admission-001",
+    "environment": {
+      "git": "2.51.1.windows.1",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "pytest": "9.1.1",
+      "python": "3.11.15",
+      "uv": "0.11.26"
+    },
+    "lane_ahead": 301,
+    "lane_behind": 1,
+    "lane_commit": "3b758e22f0c9835646c9eba9db6634757970b126",
+    "main_commit": "0e13160a8d5522961978fe3bd6b904b3a14be1c3",
+    "merge_base": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22"
+  },
+  "code_changes": [
+    {
+      "path": ".gitignore",
+      "sha256_after": "a6acff57ddfb8f43705c017d2a2585c799dc8204749a2ec45fe3a5989331c306",
+      "sha256_before": "f2c7e159be431734f8c329711f223ec2e577bf9e0042f3ac009f7e77df7ff5b1"
+    },
+    {
+      "path": "scripts/exp004a_verify.py",
+      "sha256_after": "36100644f3af22934cae191b2d59deb17abf2eb52e2136f2e5cbd5cf8ff6c03d",
+      "sha256_before": "35cdf88ec40e671d6eaac43cdabbf3e1b77a8b9f58f0a7068afd6fad5c4eb6d9"
+    },
+    {
+      "path": "scripts/ops_background_audit.py",
+      "sha256_after": "400474e4a20f37a551b81a80e58e047005a5c7fc83b6742b9727666e492e21e9",
+      "sha256_before": "df0e6d3bb3772cfde56cbcd220969c3654d8d12bd2e8e06bab915535a4726c50"
+    },
+    {
+      "path": "scripts/paper_lock_campaign_verify.py",
+      "sha256_after": "13934bd02de09c3f2b96c8c8e597a4a88e3b16997567d7892adf6ea3224f1d95",
+      "sha256_before": "20304e19763813e770eb96f8cc329fa30014366e7f500b2b4fb883d06a8a1607"
+    },
+    {
+      "path": "tests/unit/ops/test_paper_lock_campaign.py",
+      "sha256_after": "0fc709d50d469fd68c638854150a3c52abb1d4fb1269f661cc72d46dff34316c",
+      "sha256_before": "e1ff11fe513f66178fa2ad51b36fa4f00b45370ef7a4c187c07a87021874b272"
+    },
+    {
+      "path": "tests/unit/ops/test_session_status.py",
+      "sha256_after": "b2a8a827efee41e53a289df7055c82bd43af7b41decb8614826259bce0a58687",
+      "sha256_before": "12183b8945ea37df304c54d1d9044b57d5ff4543576e51c13caee98ef2d70ba8"
+    },
+    {
+      "path": "tests/unit/ops/test_windowless.py",
+      "sha256_after": "062a2ef0e94c52e3af058af08880310d06c213ae6f3f7838148d10042e84241d",
+      "sha256_before": "9378f187b6cca73d690e5d24d4ce7ad333bbec63fd51e3fd5d360ad50de12f59"
+    },
+    {
+      "path": "uv.lock",
+      "sha256_after": "35f5f17228debdda28279d9017cb2aea45765f0b61a9e1d42ef279e9c8a8f28c",
+      "sha256_before": "5508a885c5437b84fb11b07681e3126bb0709593775d2f656e4826f38fe4138b"
+    }
+  ],
+  "evidence": {
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/AFTER_LOCK_VERIFIER.json": {
+      "bytes": 2965,
+      "sha256": "e812e6c214f470c77589cc5ae3de288baa2729d8fed5baf4e04daa4b173a7028"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/AFTER_SUPERVISOR_VERIFY.json": {
+      "bytes": 16334,
+      "sha256": "2569439d5bccec381500e5dffc2be13276f073358eaf6e484526a4e3fabe0e46"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/AFTER_audit.json": {
+      "bytes": 110419,
+      "sha256": "513f33112c52a2ade78e3c8623c0e086ab3adf4000d0f2bea2dedb269e06d2df"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/AFTER_audit.log": {
+      "bytes": 94,
+      "sha256": "ba6d4b9ae030ed284e94ce8e8e1b5ed6ad6d8cbc91225632b9ecc05c6064680a"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/AFTER_lock_verifier.log": {
+      "bytes": 148,
+      "sha256": "04697403fc16ba6b8a31bf77330bc57550f7cd37afadac903217bab7005e7515"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/AFTER_pytest_ops.log": {
+      "bytes": 2121,
+      "sha256": "efe11ce5837228e39709fefacbcf9f4c4779df9eb703d2d69777238fb4960e8b"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/AFTER_pytest_ops_rerun.log": {
+      "bytes": 190,
+      "sha256": "4427ef5236325ab558583f09c56664ce2d461a4b02b73d9028fc6d62e8380442"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/AFTER_supervisor_verify.log": {
+      "bytes": 3529,
+      "sha256": "af7736285ae2025755b7de365c21d10b7ee0dad3bd28d9bf9a1a12b30612ad27"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/AFTER_uv_lock_check.log": {
+      "bytes": 36,
+      "sha256": "13c853e4017843e8969014c0adc7d659106e0f30d051e7a13794b6038abe4de5"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_LOCK_VERIFIER.json": {
+      "bytes": 16833,
+      "sha256": "e4b8796d6fb1de26c799d4ac14e835e09debcbe30c7012d0c519a3e3745ae816"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_MERGED_LOCK_VERIFIER.json": {
+      "bytes": 16833,
+      "sha256": "0d753fde672c9e568a6d0eb7beff72f997b29b858c4792b3a6db7abb660fca12"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_MERGED_SUPERVISOR_VERIFY.json": {
+      "bytes": 16334,
+      "sha256": "2569439d5bccec381500e5dffc2be13276f073358eaf6e484526a4e3fabe0e46"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_MERGED_audit.json": {
+      "bytes": 113736,
+      "sha256": "0ec57015b8950babad88972fd847810a00aa7d1791ed28930e40c2664aa89d63"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_MERGED_audit.log": {
+      "bytes": 118,
+      "sha256": "b35f0ca9b31b152ae0d679783ea1a24ad5cdb9bc62c5c506589d7dd8265bd8be"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_MERGED_lock_verifier.log": {
+      "bytes": 3772,
+      "sha256": "93a1d97be9048262aaa7fe37dd9f89f8015a76d6a22c59e46e445a398f9c9f2c"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_MERGED_pytest_windowless.log": {
+      "bytes": 2276,
+      "sha256": "086ed8a3b7b7986168c2bc13d2b2326aa68ae2c0c203e537eab65f44b1d410f1"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_MERGED_supervisor_verify.log": {
+      "bytes": 3529,
+      "sha256": "af7736285ae2025755b7de365c21d10b7ee0dad3bd28d9bf9a1a12b30612ad27"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_MERGED_uv_lock_check.log": {
+      "bytes": 152,
+      "sha256": "c75bcf10ca21538a9c2fdffce2fa65c226dd419eb41b0ffbe19af06ce176f311"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_SUPERVISOR_VERIFY.json": {
+      "bytes": 16334,
+      "sha256": "8557590b6a08afd7d0540ea8b6b8f6af9922fbf2c698cf245d9fbeaf71ed3764"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_lock_verifier.log": {
+      "bytes": 3772,
+      "sha256": "93a1d97be9048262aaa7fe37dd9f89f8015a76d6a22c59e46e445a398f9c9f2c"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_pytest_ops.log": {
+      "bytes": 2358,
+      "sha256": "a2296a0e31d4b289a96794e80d380930a4016486256e3d0471bdb7eafe6f01f7"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_supervisor_verify.log": {
+      "bytes": 3529,
+      "sha256": "af7736285ae2025755b7de365c21d10b7ee0dad3bd28d9bf9a1a12b30612ad27"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_test_windowless.log": {
+      "bytes": 2269,
+      "sha256": "51790a0a2d1e9b479a439d0255925c6835e976a363110180dea38f46fbe8a414"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_uv_lock_check.log": {
+      "bytes": 152,
+      "sha256": "0eaf8c96360c949ad8a48caaa0dabdc9d8f3c8a65afe8d02737e8013af073e27"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_uv_sync_frozen.log": {
+      "bytes": 159,
+      "sha256": "cdd10d9d926e595c1c19be5488604de973c50e0978cbf09fa1379d514dc05f7a"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/BASELINE_verify_claims.log": {
+      "bytes": 2702,
+      "sha256": "c2c908b267aa103156bb3e4c83b4f30389d66d8b28cdeb53ee334a0815c95155"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/ENV_DEFECT_after_frozen_sync_lock_verifier.log": {
+      "bytes": 860,
+      "sha256": "349032a5abbc070dc53d71ea98ce4697e878e1b59b314178d85c5afe25c65f41"
+    },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/ENV_DEFECT_after_frozen_sync_supervisor_verify.log": {
+      "bytes": 670,
+      "sha256": "03fed1de574c449463162290db2ea9efefa542262742a0f01e7fc8aadac5269e"
+    }
+  },
+  "generated_at_utc": "2026-10-24T07:09:34Z",
+  "preserved": {
+    "FINAL_REPORT.md": {
+      "bytes": 10227,
+      "committed_at": null,
+      "path": "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/FINAL_REPORT.md",
+      "sha256": "e30fa25fe329a26bcd57783659dfb880abba7ed66888ba94890f37925e21bb59"
+    },
+    "NEXT_EXPERIMENT.md": {
+      "bytes": 7229,
+      "committed_at": null,
+      "path": "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/NEXT_EXPERIMENT.md",
+      "sha256": "6759808f41571bed4b418d70b836fade46fbc497f5e3354b081841e924896997"
+    },
+    "OPERATIONAL_BLOCKERS.md": {
+      "bytes": 9612,
+      "committed_at": null,
+      "path": "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/OPERATIONAL_BLOCKERS.md",
+      "sha256": "94a9c64ef526deb730ae2a61606094312ebbc5fd7bb3777346aaf9480f7e2e97"
+    },
+    "PAPER_ADMISSION_DIAGNOSIS.md": {
+      "bytes": 8620,
+      "committed_at": null,
+      "path": "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/PAPER_ADMISSION_DIAGNOSIS.md",
+      "sha256": "36255748b45d1085588e8f7de79b7f038f12c21ffa2181e41e549a4fb46a9f03"
+    },
+    "RUNTIME_AUTHORITY_MAP.md": {
+      "bytes": 8087,
+      "committed_at": null,
+      "path": "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/RUNTIME_AUTHORITY_MAP.md",
+      "sha256": "4540e3c75bffb1011a07c6d265849439b42ee5f235b3e29a47153d0241f80b84"
+    },
+    "STRATEGY_ECONOMIC_STATUS.md": {
+      "bytes": 9987,
+      "committed_at": null,
+      "path": "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/STRATEGY_ECONOMIC_STATUS.md",
+      "sha256": "d8e9e015587af9755da637c97f304a70dacba4b5e346929b967343e9138379f3"
+    },
+    "verify_claims.py": {
+      "bytes": 12674,
+      "committed_at": null,
+      "path": "reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/verify_claims.py",
+      "sha256": "e423ef3fcd5990db83e8897bd702f76fda204646b35f56b20b64b77ed3d9c2b1"
+    }
+  },
+  "rfc": "RFC-TAP-PAPER-ADMISSION-REPRO-001",
+  "schema_version": "RFC_TAP_PAPER_ADMISSION_REPRO_MANIFEST_V1"
+}

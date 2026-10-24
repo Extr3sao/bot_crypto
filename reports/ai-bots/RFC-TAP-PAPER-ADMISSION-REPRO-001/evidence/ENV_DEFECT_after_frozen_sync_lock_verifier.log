@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "C:\Users\GVLLFR0035\Downloads\ff-wt-repro001\scripts\paper_lock_campaign_verify.py", line 45, in <module>
+    from trading_bot.ops.session_status import session_status  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\GVLLFR0035\Downloads\ff-wt-repro001\src\trading_bot\ops\session_status.py", line 40, in <module>
+    from trading_bot.vision.ledger import read_entries, verify_chain
+  File "C:\Users\GVLLFR0035\Downloads\ff-wt-repro001\src\trading_bot\vision\__init__.py", line 20, in <module>
+    from trading_bot.vision.chart import CHART_SPEC_VERSION, DEFAULT_WINDOW_BARS
+  File "C:\Users\GVLLFR0035\Downloads\ff-wt-repro001\src\trading_bot\vision\chart.py", line 36, in <module>
+    import matplotlib
+ModuleNotFoundError: No module named 'matplotlib'
+EXIT=1

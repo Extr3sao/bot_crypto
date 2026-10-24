@@ -294,3 +294,27 @@ def test_no_controlled_launcher_can_start_an_unhidden_child() -> None:
     report = module.scan(REPO)  # type: ignore[attr-defined]
     high = [finding for finding in report["findings"] if finding["severity"] == "HIGH"]
     assert not high, json.dumps(high, indent=2)
+
+
+def test_an_exempted_verifier_that_stops_hiding_its_child_is_a_high_finding(
+    tmp_path: Path,
+) -> None:
+    """The exemption is a promise the audit re-checks, not a blanket pass.
+
+    ``scripts/exp004a_verify.py`` cannot import the helper (RFC-051 §5), so it hides its
+    own children. This proves that removing the mechanism is caught instead of granted
+    by the exemption.
+    """
+
+    module = _load_script("ops_background_audit.py")
+    text = (REPO / "scripts" / "exp004a_verify.py").read_text(encoding="utf-8")
+    assert "CREATE_NO_WINDOW" in text and "SW_HIDE" in text
+
+    (tmp_path / "scripts").mkdir()
+    (tmp_path / "scripts" / "exp004a_verify.py").write_text(
+        text.replace("SW_HIDE", "SHOWN"), encoding="utf-8"
+    )
+
+    report = module.scan(tmp_path)  # type: ignore[attr-defined]
+    codes = {finding["code"] for finding in report["findings"] if finding["severity"] == "HIGH"}
+    assert "DECLARED_LOCAL_HIDING_MISSING" in codes

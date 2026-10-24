@@ -1,0 +1,157 @@
+{
+  "blocked": [],
+  "failed": [],
+  "false_success": 0,
+  "gates": [
+    {
+      "detail": {
+        "checked": 7,
+        "drifted": []
+      },
+      "name": "V01_preserved_docs_byte_identical",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "code_changes": 8,
+        "evidence": 28,
+        "preserved": 7,
+        "problems": []
+      },
+      "name": "V02_manifest_matches_tree",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "base_commit": "b4c8e3e20c804b83540fad873c7ce81dde6dd98d",
+        "documents_claimed_present": [],
+        "git_probe_confirms_absent": true
+      },
+      "name": "V03_preserved_were_unversioned_at_base",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "exit": 0,
+        "high": 0,
+        "medium": 406,
+        "verdict": "CLEAN"
+      },
+      "name": "V04_windowless_audit_clean",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "errors": false,
+        "exit": 0,
+        "failed": false,
+        "summary": "14 passed in 9.48s"
+      },
+      "name": "V05_windowless_contract_tests",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "checks_scored": 0,
+        "declared_schema": "TAP_PAPER_SUPERVISOR_CAMPAIGN_V1",
+        "exit": 1,
+        "mutations_run": 0,
+        "refusal": "UNSUPPORTED_CAMPAIGN_SCHEMA",
+        "verdict": "FAIL"
+      },
+      "name": "V06_lock_verifier_refuses_foreign_schema",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "checks_failed": [],
+        "checks_total": 33,
+        "exit": 0,
+        "invalid": [],
+        "mutations": 10,
+        "undetected": [],
+        "verdict": "PASS"
+      },
+      "name": "V07_lock_verifier_judges_its_own_schema",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "checks": 33,
+        "exit": 0,
+        "false_success": 0,
+        "mutations": 12,
+        "verdict": "PASS"
+      },
+      "name": "V08_supervisor_verifier_external",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "exit": 0,
+        "output": "Resolved 118 packages in 1ms"
+      },
+      "name": "V09_uv_lock_reproducible",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "declared_in_pyproject": true,
+        "import_exit": 0,
+        "pinned_in_lock": true,
+        "version": "3.11.2"
+      },
+      "name": "V10_declared_dependency_importable",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "changed": 8,
+        "forbidden": [],
+        "outside_allowlist": []
+      },
+      "name": "V11_scope_respected",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "admitted_for_paper": 0,
+        "ledger_unchanged_since": "b4c8e3e20c804b83540fad873c7ce81dde6dd98d",
+        "strategies": 24,
+        "touched": [],
+        "verdict": "NO_GO"
+      },
+      "name": "V12_admission_verdict_unchanged",
+      "status": "PASS"
+    }
+  ],
+  "negative_controls": [
+    {
+      "control": "document_byte_flip",
+      "detected": true
+    },
+    {
+      "control": "campaign_without_schema",
+      "detected": true
+    },
+    {
+      "codes": [
+        "DECLARED_LOCAL_HIDING_MISSING",
+        "POPEN_WITHOUT_WINDOWLESS"
+      ],
+      "control": "declared_local_hiding_removed",
+      "detected": true,
+      "stderr": ""
+    },
+    {
+      "control": "manifest_hash_tamper",
+      "detected": true,
+      "subject": "FINAL_REPORT.md"
+    }
+  ],
+  "platform": "win32",
+  "python": "3.11.15",
+  "schema_version": "RFC_TAP_PAPER_ADMISSION_REPRO_VERIFICATION_V1",
+  "verdict": "PASS",
+  "verifier": "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/verify_repro.py"
+}

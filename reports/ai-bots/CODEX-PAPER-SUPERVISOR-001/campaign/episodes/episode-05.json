@@ -1,0 +1,172 @@
+{
+  "after": {
+    "chain": {
+      "head_sha256": "dfd4f55cc095d3b4da72fd3b98962f6eb3c9193a4c01c11707124a8ccf109610",
+      "kinds": {
+        "CYCLE": 9,
+        "DELAY_MEASURED": 6,
+        "LOCK_RECLAIMED": 5,
+        "SESSION_END": 1,
+        "SESSION_PROVENANCE": 6,
+        "SESSION_START": 6
+      },
+      "lines": 33,
+      "ok": true,
+      "reason": "INTACT"
+    },
+    "cycles": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "locks": [],
+    "rows": 33,
+    "state": "RECOVERED"
+  },
+  "before": {
+    "cycles": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "fence": 9,
+    "lock_owner_pid": 17828,
+    "owner_pid": 40256,
+    "rows": 24,
+    "state": "RUNNING"
+  },
+  "crash": {
+    "abandoned": true,
+    "chain": {
+      "head_sha256": "cfed5e82e0b731e1382fae2ae0eaff7aa2de56bfca736fb0daf07a72710296fd",
+      "kinds": {
+        "CYCLE": 5,
+        "DELAY_MEASURED": 5,
+        "LOCK_RECLAIMED": 4,
+        "SESSION_PROVENANCE": 5,
+        "SESSION_START": 5
+      },
+      "lines": 24,
+      "ok": true,
+      "reason": "INTACT"
+    },
+    "cycles": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "locks": [
+      {
+        "fence": 9,
+        "path": "market-1m/BTCUSDT.jsonl.lock",
+        "pid": 17828,
+        "process_start_ms": 1792780710786,
+        "reason": "OWNER_PROCESS_DEAD",
+        "record": {
+          "acquired_at_utc": "2026-10-23T18:38:33Z",
+          "fence": 9,
+          "host": "DESKTOP-4CHO695",
+          "path": "BTCUSDT.jsonl.lock",
+          "pid": 17828,
+          "process_start_ms": 1792780710786,
+          "purpose": "minutes:BTCUSDT.jsonl",
+          "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+          "token": "67809015776648f7af5c15fe3d0223b4"
+        },
+        "state": "ABANDONED",
+        "token": "67809015776648f7af5c15fe3d0223b4"
+      },
+      {
+        "fence": 9,
+        "path": "market-1m/ETHUSDT.jsonl.lock",
+        "pid": 17828,
+        "process_start_ms": 1792780710786,
+        "reason": "OWNER_PROCESS_DEAD",
+        "record": {
+          "acquired_at_utc": "2026-10-23T18:38:33Z",
+          "fence": 9,
+          "host": "DESKTOP-4CHO695",
+          "path": "ETHUSDT.jsonl.lock",
+          "pid": 17828,
+          "process_start_ms": 1792780710786,
+          "purpose": "minutes:ETHUSDT.jsonl",
+          "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+          "token": "3101d00616324a4696b10bcd196af909"
+        },
+        "state": "ABANDONED",
+        "token": "3101d00616324a4696b10bcd196af909"
+      },
+      {
+        "fence": 9,
+        "path": "market-1m/SOLUSDT.jsonl.lock",
+        "pid": 17828,
+        "process_start_ms": 1792780710786,
+        "reason": "OWNER_PROCESS_DEAD",
+        "record": {
+          "acquired_at_utc": "2026-10-23T18:38:33Z",
+          "fence": 9,
+          "host": "DESKTOP-4CHO695",
+          "path": "SOLUSDT.jsonl.lock",
+          "pid": 17828,
+          "process_start_ms": 1792780710786,
+          "purpose": "minutes:SOLUSDT.jsonl",
+          "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+          "token": "115a639424204649a9bc767f4ddd1e0e"
+        },
+        "state": "ABANDONED",
+        "token": "115a639424204649a9bc767f4ddd1e0e"
+      },
+      {
+        "fence": 9,
+        "path": "STREAM.jsonl.lock",
+        "pid": 17828,
+        "process_start_ms": 1792780710786,
+        "reason": "OWNER_PROCESS_DEAD",
+        "record": {
+          "acquired_at_utc": "2026-10-23T18:38:33Z",
+          "fence": 9,
+          "host": "DESKTOP-4CHO695",
+          "path": "STREAM.jsonl.lock",
+          "pid": 17828,
+          "process_start_ms": 1792780710786,
+          "purpose": "ledger:STREAM.jsonl",
+          "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+          "token": "57ac01108f914c85b6e2c40065137bad"
+        },
+        "state": "ABANDONED",
+        "token": "57ac01108f914c85b6e2c40065137bad"
+      }
+    ],
+    "rows": 24,
+    "state": "RECOVERING"
+  },
+  "derived_from": [
+    "CAMPAIGN.json",
+    "session/STREAM.jsonl"
+  ],
+  "episode": 5,
+  "killed": {
+    "alive_after": false,
+    "detail": "CORRECTO: el proceso con PID 14532 (proceso secundario de PID 40256)\nha sido terminado.\nCORRECTO: el proceso con PID 17828 (proceso secundario de PID 40256)\nha sido terminado.\nCORRECTO: el proceso con PID 40256 (proceso secundario de PID 21420)\nha sido terminado.",
+    "pid": 40256,
+    "taskkill_exit": 0
+  },
+  "live_probe": {
+    "bytes": 307,
+    "code": "LOCK_HELD",
+    "detail": "LOCK_HELD: reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign\\session\\STREAM.jsonl.lock is held by live pid 17828; a second writer would interleave prev_sha256 and the chain would stop verifying",
+    "outcome": "REFUSED",
+    "unchanged": true
+  },
+  "started_at_utc": "2026-10-23T18:39:21Z"
+}
