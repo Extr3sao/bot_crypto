@@ -1,0 +1,41 @@
+{
+  "context": "marker present in every run_dir, code at a072da90",
+  "entries": {
+    "close-position": {
+      "sink": "futures.flash_close_position",
+      "broker_calls": 1,
+      "exit_code": 0,
+      "marker_present": true
+    },
+    "place-order-futures": {
+      "sink": "futures.place_order",
+      "broker_calls": 1,
+      "exit_code": 0,
+      "marker_present": true
+    },
+    "place-order-spot": {
+      "sink": "spot.place_spot_order",
+      "broker_calls": 1,
+      "exit_code": 0,
+      "marker_present": true
+    },
+    "run-futures": {
+      "sink": "futures.place_order",
+      "broker_calls": 1,
+      "exit_code": 0,
+      "marker_present": true
+    },
+    "run-spot": {
+      "sink": "connector.create_order",
+      "broker_calls": 1,
+      "exit_code": 0,
+      "marker_present": true
+    },
+    "set-tpsl": {
+      "sink": "futures.place_position_tpsl",
+      "broker_calls": 1,
+      "exit_code": 0,
+      "marker_present": true
+    }
+  }
+}
