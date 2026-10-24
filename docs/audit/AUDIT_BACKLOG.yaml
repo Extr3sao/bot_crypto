@@ -205,6 +205,65 @@ tasks:
       Independently re-derived by a separate script from the same author:
       PROCEDURALLY_SEPARATED, not a second person.
 
+  - id: G-3
+    title: The hot stop covers the LIVE execution paths
+    status: done
+    provenance: gap
+    contract: docs/audit/G-3.md
+    verified_commit: "9eeb8e87"
+    verification: docs/audit/runs/run-20261024T112751Z-G-3/verification.json
+    run_report: docs/audit/runs/run-20261024T112751Z-G-3/RUN_REPORT.md
+    verdict: G3_VERIFIED_SCOPED
+    allowed_paths:
+      - docs/audit/G-3.md
+      - docs/audit/AUDIT_BACKLOG.yaml
+      - docs/audit/runs/**
+      - src/trading_bot/app.py
+      - tests/unit/test_live_hot_stop_coverage.py
+      - tests/unit/test_app_demo.py
+      - scripts/audit/g3_live_probe.py
+      - scripts/audit/g3_mutants.py
+      - scripts/audit/verify_g3.py
+    protected_paths:
+      - src/trading_bot/autonomous/hot_stop.py
+      - src/trading_bot/autonomous/decision.py
+      - src/trading_bot/autonomous/runtime.py
+      - src/trading_bot/paper/**
+      - src/trading_bot/market_data/**
+      - src/trading_bot/risk/**
+      - src/trading_bot/config/**
+      - src/trading_bot/execution/**
+      - scripts/autonomous_paper.py
+      - .github/**
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+    acceptance_criteria: [ACC-G3-01, ACC-G3-02, ACC-G3-03, ACC-G3-04, ACC-G3-05, ACC-G3-06, ACC-G3-07, ACC-G3-08, ACC-G3-09, ACC-G3-10, ACC-G3-11, ACC-G3-12, ACC-G3-13, ACC-G3-14]
+    evidence:
+      - "7 live sink call sites, all lexically inside _live_order_boundary (V-2)"
+      - "0 broker calls with a marker written by the real kill-switch CLI; 1 without it (V-3, V-4)"
+      - "a second process over the same run_dir boots engaged and logs restored (V-5)"
+      - "KILL_SWITCH_ENV blocks entry and writes no marker (V-7)"
+      - "close-position and set-tpsl still reach the broker while stopped (V-8)"
+      - "6/6 mutants killed; hot_stop.py byte-identical to a072da90 (V-10, V-12)"
+    covered_paths:
+      - trading-bot run --mode live --auto-trade (futures and spot entry)
+      - trading-bot place-order (entry refused, reduction allowed)
+      - trading-bot close-position and set-tpsl (reduction and protection, allowed)
+    uncovered_paths:
+      - a different --run-dir, or a different checkout, is a different scope; no global latch
+      - trading-bot run --demo -> paper/paper_cycle.py (G-4) still has no gate
+      - D-6 not opened by this task
+    note: >-
+      Closes G-3 for the live entrypoints that exist today, and only those. The
+      boundary classifies order entry separately from reduction: blocking
+      close-position under a stop would trap the book, so the exemption is
+      explicit, per call site, and pinned by tests. DEF-G3-01 records that G-2
+      left tests/unit/test_app_demo.py asserting the opposite of the CLI it
+      shipped; the assertion was updated to the current contract and the red
+      baseline is kept in COMMANDS.md. PROCEDURALLY_SEPARATED verification,
+      same author.
+
 contracts:
   - path: docs/audit/runtime_authority_map.md
     required: true
@@ -234,12 +293,12 @@ unrecoverable:
 next_ready:
   task: null
   reason: >-
-    G-1 and G-2 are closed for the autonomous path and their contracts are
-    committed. G-3 (live paths that never reach DecisionEngine) and G-4
-    (paper_cycle.py has its own broker call) still have no contract, so naming
-    one READY would fabricate its specification. The recommendation is G-3
-    next: it is a measurement task — enumerate the live entrypoints and show,
-    offline, which of them can reach a broker without the gate — and it decides
-    whether G-4's reconciliation is the larger risk or the smaller one. G-4 is
-    bigger: it requires reconciling two decision paths, not adding a gate to
-    one.
+    G-1, G-2 and G-3 are closed and their contracts are committed. G-4
+    (paper_cycle.py has its own broker call) still has no contract, so naming it
+    READY would fabricate its specification. G-3 measured what it promised —
+    seven live sink sites, all gated, with entry separated from reduction — and
+    leaves G-4 exactly where it was: `run --demo` reaches PaperBroker through a
+    decision path that never constructs DecisionEngine, so the gate G-3 installed
+    on the live paths does not apply to it. G-4 remains the larger risk, because
+    it needs two decision paths reconciled rather than a gate added to one. D-6
+    was not opened by any of these tasks.
