@@ -9,7 +9,7 @@
 | Diagnóstico + tres defectos | `c44f912c` |
 | Rehearsal de checkout limpio | `ddef6432` |
 | **Artefacto verificado** | **`f118e556`** |
-| Cierre (este informe) | el commit que lo contiene |
+| Cierre | `6ae20844` (verificado desde clon; este informe viaja en el commit siguiente) |
 | `main` | `e67194e7` — **sin cambios** |
 
 ## Entorno
@@ -31,6 +31,10 @@ Todas desde clones reales (`git clone --no-hardlinks`), árbol limpio, sin `.ven
 | `f118e556` | `pytest tests/unit/ops tests/unit/reports/test_evidence_manifest_eol.py -q` | **135 passed** | `evidence/CLONE_f118e556_pytest.log` |
 | `f118e556` | `verify_repro.py` | **12/12 PASS**, 4/4 controles, `false_success 0` | `evidence/CLONE_f118e556_verify_repro.log` |
 | `f118e556` | `paper_supervisor_verify.py --campaign …/campaign` | PASS 33/33, 12 mutaciones, `false_success 0` | — |
+| `6ae20844` (cierre) | `verify_repro.py` | **12/12 PASS**, 4/4 controles, `false_success 0` | `evidence/CLONE_6ae20844_verify_repro.log` |
+| `6ae20844` | `verify_independent.py` | **9/9 PASS** | `evidence/INDEPENDENT_VERIFICATION.json` |
+| `6ae20844` | `pytest tests/unit/ops tests/unit/reports/test_evidence_manifest_eol.py -q` | **141 passed** | `evidence/CLONE_6ae20844_pytest.log` |
+| `6ae20844` | `uv sync --frozen` + `uv lock --check` | 0 / 0 | `evidence/CLONE_6ae20844_uv_*.log` |
 
 El fallo de `ddef6432` en un clon no es una regresión introducida después: es el mismo commit
 que había pasado en un worktree con `core.autocrlf=false`. La diferencia era el entorno, y eso

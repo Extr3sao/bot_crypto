@@ -1,0 +1,88 @@
+{
+  "branch": "HEAD",
+  "checks": [
+    {
+      "check": "preserved_documents_identical_on_disk_and_in_git",
+      "detail": {
+        "drifted": []
+      },
+      "ok": true
+    },
+    {
+      "check": "ledger_unchanged_and_nothing_admitted",
+      "detail": {
+        "admitted": [],
+        "blob_identical_head_vs_base": true,
+        "diff": [],
+        "strategies": 24,
+        "worktree_bytes_equal_blob": false
+      },
+      "ok": true
+    },
+    {
+      "check": "change_scope",
+      "detail": {
+        "changed": 211,
+        "forbidden": [],
+        "outside": []
+      },
+      "ok": true
+    },
+    {
+      "check": "windowless_audit_and_contract",
+      "detail": {
+        "high": 0,
+        "tests": "14 passed in 11.93s"
+      },
+      "ok": true
+    },
+    {
+      "check": "supervisor_verifier_33_checks",
+      "detail": {
+        "checks": 33,
+        "false_success": 0,
+        "verdict": "PASS"
+      },
+      "ok": true
+    },
+    {
+      "check": "foreign_schema_refused",
+      "detail": {
+        "exit": 1,
+        "refusal": "UNSUPPORTED_CAMPAIGN_SCHEMA"
+      },
+      "ok": true
+    },
+    {
+      "check": "uv_lock_and_declared_dependency",
+      "detail": {
+        "lock_exit": 0,
+        "matplotlib": "3.11.2"
+      },
+      "ok": true
+    },
+    {
+      "check": "every_digested_path_pinned_text",
+      "detail": {
+        "paths": 52,
+        "unpinned": []
+      },
+      "ok": true
+    },
+    {
+      "check": "no_session_opened_by_this_lane",
+      "detail": {
+        "tracked_fixtures": 8,
+        "under_data": [],
+        "untracked": []
+      },
+      "ok": true
+    }
+  ],
+  "commit": "6ae208445acecd8413d76c24d47b43f699e08ea8",
+  "failed": [],
+  "passed": 9,
+  "schema_version": "RFC_TAP_PAPER_ADMISSION_REPRO_INDEPENDENT_V1",
+  "verdict": "PASS"
+}
+

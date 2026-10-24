@@ -173,6 +173,12 @@
   },
   "independence": {
     "builder": "same agent, earlier pass, fixes c44f912c and f118e556",
+    "checks": {
+      "count": 9,
+      "failed": [],
+      "passed": 9
+    },
+    "evidence": "evidence/INDEPENDENT_VERIFICATION.json",
     "found_by_independent_pass": [
       "A1_EOL_NORMALISED_DIGESTS",
       "A2_INDEPENDENT_VERIFIER_OWN_BUGS"
@@ -338,6 +344,41 @@
       "command": "paper_supervisor_verify.py --campaign .../campaign",
       "commit": "f118e556",
       "result": "PASS 33/33 checks, 12 mutations, false_success 0",
+      "where": "fresh clone"
+    },
+    {
+      "command": "uv sync --frozen",
+      "commit": "6ae20844",
+      "evidence": "evidence/CLONE_6ae20844_uv_sync_frozen.log",
+      "result": "exit 0",
+      "where": "fresh clone, core.autocrlf=true, no .venv"
+    },
+    {
+      "command": "uv lock --check",
+      "commit": "6ae20844",
+      "evidence": "evidence/CLONE_6ae20844_uv_lock_check.log",
+      "result": "exit 0",
+      "where": "fresh clone"
+    },
+    {
+      "command": "verify_repro.py",
+      "commit": "6ae20844",
+      "evidence": "evidence/CLONE_6ae20844_verify_repro.log",
+      "result": "PASS 12/12 gates, 4/4 controls, false_success 0",
+      "where": "fresh clone"
+    },
+    {
+      "command": "verify_independent.py",
+      "commit": "6ae20844",
+      "evidence": "evidence/INDEPENDENT_VERIFICATION.json",
+      "result": "PASS 9/9 checks",
+      "where": "fresh clone"
+    },
+    {
+      "command": "pytest tests/unit/ops tests/unit/reports/test_evidence_manifest_eol.py -q",
+      "commit": "6ae20844",
+      "evidence": "evidence/CLONE_6ae20844_pytest.log",
+      "result": "141 passed in 38.88s",
       "where": "fresh clone"
     }
   ],

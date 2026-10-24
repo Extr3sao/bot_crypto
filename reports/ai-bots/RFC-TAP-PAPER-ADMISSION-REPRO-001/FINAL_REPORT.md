@@ -50,7 +50,8 @@ que V02 marcó en el clon. Un test que nunca se ha visto fallar no prueba nada.
 | `c44f912c` | diagnóstico versionado + los tres defectos cerrados |
 | `ddef6432` | rehearsal de checkout limpio (método con el hueco que se describe arriba) |
 | `f118e556` | pines `-text`, `EOL_NORMALISED`, test de regresión; **artefacto verificado** |
-| commit de cierre | este informe, `verify_independent.py`, evidencias del clon |
+| `6ae20844` | `verify_independent.py`, informe de cierre, evidencias de los clones |
+| commit de cierre | este informe, con el manifiesto regenerado y los logs de `6ae20844` |
 
 ## Pruebas ejecutadas y resultados reales
 
@@ -63,6 +64,10 @@ Clon nuevo de `f118e556`, `core.autocrlf=true`, árbol limpio, sin `.venv`:
 | `pytest tests/unit/ops tests/unit/reports/test_evidence_manifest_eol.py` | **135 passed** |
 | `verify_repro.py` | **12/12 PASS**, 4/4 controles, `false_success 0` |
 | `paper_supervisor_verify.py` | PASS, 33/33, 12 mutaciones, `false_success 0` |
+
+Las mismas comprobaciones se repitieron sobre `6ae20844`, el commit que introduce el
+verificador independiente y este informe: **12/12 gates, 9/9 independientes, 141 tests**.
+El `core.autocrlf` del clon era `true` en ambas corridas.
 
 Verificador independiente (`verify_independent.py`, escrito desde las premisas, sin importar
 nada de `verify_repro.py`): **9/9**. Declara los siete digests congelados por su cuenta,
