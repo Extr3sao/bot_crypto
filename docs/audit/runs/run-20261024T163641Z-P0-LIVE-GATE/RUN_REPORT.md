@@ -87,7 +87,10 @@ hashes. It does not import the test module.
   `verification-first-pass.json`.
 - Correction commit `efd97e76`; final result in `verification.json`.
 
-VERIFICATION_STATUS
+Final pass at `82e8b3ac` (archive export, clean tree): **15/15 checks —
+`P0_VERIFIED_SCOPED`** in 235.0 s. V-13 ran 473 tests in 168.9 s; V-14 read the
+mutation matrix (7/7 killed, same `app.py` hash); V-15 matched 19/19 artefacts.
+The verifier's own output is `verification.json`.
 
 ## 6. Defects
 
