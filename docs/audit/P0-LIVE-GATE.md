@@ -135,7 +135,8 @@ they now reach it through a legal configuration.
 | P8 | `close-position` | no | `_cmd_close_position` | `flash_close_position` | no | reaches the broker (exempt) |
 | P9 | `set-tpsl` | no | `_cmd_set_tpsl` | `place_position_tpsl` | no | reaches the broker (exempt) |
 | P10 | `run --demo` / `paper_cycle` | no | — | paper broker | no | unchanged; G-4 |
-| P11 | `BitunixFuturesClient.cancel_order` | n/a | — | no entrypoint | — | unreachable (G-3) |
+| P11 | `run --mode live` **without** `--auto-trade` | not consulted | `_cmd_run` | none | no | scanner only; no dispatch site |
+| P12 | `BitunixFuturesClient.cancel_order` | n/a | — | no entrypoint | — | unreachable (G-3) |
 
 ## 5. Acceptance criteria
 

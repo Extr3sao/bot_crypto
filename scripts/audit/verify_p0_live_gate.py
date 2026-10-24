@@ -100,6 +100,7 @@ _COPY_IGNORE = shutil.ignore_patterns(
 _VERDICT_PROBE = r"""
 import json
 from trading_bot import app
+from trading_bot.config.runtime import TradingMode
 from trading_bot.execution.live_gate import GateReport, GateResult, LiveTradingGate
 from trading_bot.market_data.fake import build_demo_settings
 
@@ -109,7 +110,8 @@ def legal():
         "exchange": s.exchange.model_copy(update={"id": "bitunix", "sandbox": False,
                                                   "api_key": "k", "api_secret": "s"}),
         "risk": s.risk.model_copy(update={"kill_switch_enabled": True, "live_trading_enabled": False}),
-        "runtime": s.runtime.model_copy(update={"mode": "live", "live_trading_enabled": True,
+        "runtime": s.runtime.model_copy(update={"mode": TradingMode.LIVE,
+                                                "live_trading_enabled": True,
                                                 "exchange_id": "bitunix"}),
     })
 
@@ -523,9 +525,14 @@ def main(argv: list[str] | None = None) -> int:
             cwd=tree,
             env=_env(tree),
         )
+        # structlog shares stdout with the snippet in this environment; the JSON
+        # document is the last line that starts with a brace.
+        json_lines = [
+            line for line in verdict_run.stdout.splitlines() if line.strip().startswith("{")
+        ]
         try:
-            verdict = json.loads(verdict_run.stdout)
-        except json.JSONDecodeError:
+            verdict = json.loads(json_lines[-1])
+        except (IndexError, json.JSONDecodeError):
             verdict = {}
         add(
             Check(
