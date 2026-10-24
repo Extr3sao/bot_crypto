@@ -64,6 +64,11 @@ ALLOWED_CHANGES = frozenset(
         "tests/unit/ops/test_paper_lock_campaign.py",
         "tests/unit/ops/test_session_status.py",
         "tests/unit/ops/test_windowless.py",
+        # Added by the clone-and-run: the manifest digests working-tree bytes, so the
+        # paths it covers must not be rewritten by checkout, and the test that keeps
+        # that true is itself a change this RFC has to declare.
+        ".gitattributes",
+        "tests/unit/reports/test_evidence_manifest_eol.py",
     }
 )
 
@@ -99,6 +104,34 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def blob_sha256(rel_path: str) -> str | None:
+    """The hash of ``rel_path`` as ``HEAD`` stores it (``None`` when ``HEAD`` lacks it)."""
+
+    result = subprocess.run(
+        ["git", "show", f"HEAD:{rel_path}"],
+        cwd=str(REPO),
+        capture_output=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        return None
+    return hashlib.sha256(result.stdout).hexdigest()
+
+
+def drift_cause(rel_path: str, expected: str) -> str:
+    """Name a digest mismatch instead of leaving it to be guessed at.
+
+    ``EOL_NORMALISED`` is the cause that hides: the committed bytes still hash to
+    ``expected`` and it was ``core.autocrlf`` that rewrote them on checkout.  It stays a
+    FAIL — a digest that depends on who checked the tree out is not a digest — but a gate
+    that says ``drifted`` without saying *why* sends the next reader hunting for tampering
+    that never happened.  Found by clone-and-run: 13 of 44 digests drifted on a fresh
+    Windows clone while the tree that produced them agreed with itself.
+    """
+
+    return "EOL_NORMALISED" if blob_sha256(rel_path) == expected else "CONTENT_DIFFERS"
+
+
 def run(args: list[str], *, timeout: int = 900, cwd: Path | None = None) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         args,
@@ -128,10 +161,14 @@ def pytest_summary(text: str) -> dict[str, Any]:
 def gate_preserved_docs() -> Result:
     actual = {name: sha256(DIAG / name) for name in FROZEN_SHA256}
     drifted = sorted(name for name, digest in actual.items() if digest != FROZEN_SHA256[name])
+    causes = {
+        name: drift_cause((DIAG / name).relative_to(REPO).as_posix(), FROZEN_SHA256[name])
+        for name in drifted
+    }
     return Result(
         "V01_preserved_docs_byte_identical",
         "FAIL" if drifted else "PASS",
-        {"checked": len(actual), "drifted": drifted},
+        {"checked": len(actual), "drifted": drifted, "causes": causes},
     )
 
 
@@ -141,26 +178,33 @@ def gate_manifest() -> Result:
         return Result("V02_manifest_matches_tree", "NOT_EXECUTED", {"reason": "NO_MANIFEST"})
     manifest = json.loads(path.read_text(encoding="utf-8"))
     problems: list[str] = []
+    causes: dict[str, str] = {}
     for name, entry in manifest.get("preserved", {}).items():
         if sha256(REPO / entry["path"]) != entry["sha256"]:
             problems.append(f"preserved:{name}")
+            causes[f"preserved:{name}"] = drift_cause(entry["path"], entry["sha256"])
     for entry in manifest.get("code_changes", []):
         target = REPO / entry["path"]
         if not target.is_file():
             problems.append(f"missing:{entry['path']}")
         elif sha256(target) != entry["sha256_after"]:
             problems.append(f"after:{entry['path']}")
+            causes[f"after:{entry['path']}"] = drift_cause(
+                entry["path"], entry["sha256_after"]
+            )
     for rel, entry in manifest.get("evidence", {}).items():
         target = REPO / rel
         if not target.is_file():
             problems.append(f"missing-evidence:{rel}")
         elif sha256(target) != entry["sha256"]:
             problems.append(f"evidence:{rel}")
+            causes[f"evidence:{rel}"] = drift_cause(rel, entry["sha256"])
     return Result(
         "V02_manifest_matches_tree",
         "FAIL" if problems else "PASS",
         {
             "problems": problems,
+            "causes": causes,
             "preserved": len(manifest.get("preserved", {})),
             "code_changes": len(manifest.get("code_changes", [])),
             "evidence": len(manifest.get("evidence", {})),

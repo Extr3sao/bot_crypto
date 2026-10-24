@@ -5,6 +5,7 @@
   "gates": [
     {
       "detail": {
+        "causes": {},
         "checked": 7,
         "drifted": []
       },
@@ -13,7 +14,8 @@
     },
     {
       "detail": {
-        "code_changes": 8,
+        "causes": {},
+        "code_changes": 10,
         "evidence": 29,
         "preserved": 7,
         "problems": []
@@ -34,7 +36,7 @@
       "detail": {
         "exit": 0,
         "high": 0,
-        "medium": 406,
+        "medium": 409,
         "verdict": "CLEAN"
       },
       "name": "V04_windowless_audit_clean",
@@ -45,7 +47,7 @@
         "errors": false,
         "exit": 0,
         "failed": false,
-        "summary": "14 passed in 13.94s"
+        "summary": "14 passed in 9.48s"
       },
       "name": "V05_windowless_contract_tests",
       "status": "PASS"
@@ -106,7 +108,7 @@
     },
     {
       "detail": {
-        "changed": 197,
+        "changed": 203,
         "forbidden": [],
         "outside_allowlist": []
       },
