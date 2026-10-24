@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| Árbol principal | `Downloads/bot freebuff` · `0e13160a` → `c94b1a2b` → `941a524b` (herramientas, evidencias e informes de este paquete) |
+| Árbol principal | `Downloads/bot freebuff` · `0e13160a` → `c94b1a2b` → el commit que contiene este fichero (`git log -1 -- docs/agentic/exp004a/wp051_02k/ops`) |
 | Árbol de campaña | `Downloads/exp004a-recovery-02k` · rama `recovery/exp004a-02k-9983b050` |
 | HEAD antes | `9983b050` |
 | HEAD después | **`688c5805`** |
