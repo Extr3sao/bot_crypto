@@ -167,6 +167,10 @@
       "bytes": 2702,
       "sha256": "c2c908b267aa103156bb3e4c83b4f30389d66d8b28cdeb53ee334a0815c95155"
     },
+    "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/CLEAN_CHECKOUT_REHEARSAL.log": {
+      "bytes": 6480,
+      "sha256": "240f5d5f6474273a7b6569b95ae62b3636e0658f5feaff99f330e96bd40d47f4"
+    },
     "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/ENV_DEFECT_after_frozen_sync_lock_verifier.log": {
       "bytes": 860,
       "sha256": "349032a5abbc070dc53d71ea98ce4697e878e1b59b314178d85c5afe25c65f41"
@@ -176,7 +180,7 @@
       "sha256": "03fed1de574c449463162290db2ea9efefa542262742a0f01e7fc8aadac5269e"
     }
   },
-  "generated_at_utc": "2026-10-24T07:18:06Z",
+  "generated_at_utc": "2026-10-24T07:21:10Z",
   "preserved": {
     "FINAL_REPORT.md": {
       "bytes": 10227,
