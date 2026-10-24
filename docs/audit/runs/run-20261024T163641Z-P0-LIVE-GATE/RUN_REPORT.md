@@ -75,6 +75,22 @@ Before/after table: `BEFORE_AFTER.md`. Raw evidence: `before/`, `after/`.
 Static: `ruff` clean; `mypy` clean on `app.py`, `live_gate.py` and the three P0
 scripts.
 
+### Obligatory tests, one by one
+
+| Requested test | Evidence | Result |
+|---|---|---|
+| 1. The ten checks run where applicable | V-9 (`total_gates == 10`), V-4 (`gate_validations >= 1`), 47 P0 cases | passed |
+| 2. Each rejected check stops the broker | V-4: 10/10 with 0 calls, exit 2, gate named | passed |
+| 3. Errors and missing validation data block | V-7 (settings error, gate crash), V-9 (9-check report) | passed |
+| 4. `KILL_SWITCH` keeps priority | V-8; stderr names the stop, never `live_gate_blocked` | passed |
+| 5. No alternative route opens risk unauthorised | V-2 (7 sinks, 7 boundaries), V-5 (4 entrypoints) | passed |
+| 6. Legitimate closes remain possible | V-6 (4 reduction paths, 1 call each) | passed |
+| 7. G-1/G-2/G-3 regressions | V-13: 473 passed (P0, G-3, CLI, demo, autonomy) | passed |
+| 8. Negative controls and mutations | 7/7 mutants killed, including the critical-only mutant | passed |
+
+The tree was clean (`git status --short` empty) at the verified export
+`82e8b3ac`; the evidence close is `1b4e1896`.
+
 ## 5. Independent verification
 
 `scripts/audit/verify_p0_live_gate.py` exports the commit, re-derives the

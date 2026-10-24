@@ -10,7 +10,8 @@ commit re-derives every criterion independently of the test suite.
 - Before: `96e211bd`
 - Implementation: `6c90b21d`; verifier correction: `efd97e76`
 - Verified export: `82e8b3ac`
-- Commits: `6c90b21d`, `efd97e76`, `82e8b3ac`
+- Commits: `6c90b21d` (enforcement), `efd97e76` (verifier correction),
+  `82e8b3ac` (evidence), `1b4e1896` (verification close); tree clean
 - Verifier: `docs/audit/runs/run-20261024T163641Z-P0-LIVE-GATE/verification.json`
   — 15/15 in 235.0 s
 - No exchange contacted; no live trading enabled; no push.

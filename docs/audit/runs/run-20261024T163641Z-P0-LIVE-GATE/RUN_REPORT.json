@@ -426,5 +426,18 @@
     "GATE-009/010 forced failures only",
     "G-4 (paper_cycle) remains uncovered",
     "hot stop is scoped to --run-dir"
-  ]
+  ],
+  "verified_export": "82e8b3ac",
+  "verification": "docs/audit/runs/run-20261024T163641Z-P0-LIVE-GATE/verification.json",
+  "tree_state": "clean at 82e8b3ac; evidence close 1b4e1896",
+  "obligatory_tests": {
+    "1_ten_checks_run": "V-4/V-9, 47 P0 cases",
+    "2_each_rejection_blocks": "V-4, 10/10",
+    "3_errors_block": "V-7/V-9",
+    "4_kill_switch_priority": "V-8",
+    "5_no_alternative_route": "V-2/V-5",
+    "6_reduction_possible": "V-6, 4/4",
+    "7_g1_g2_g3_regressions": "V-13, 473 passed",
+    "8_negative_controls_and_mutants": "7/7 killed"
+  }
 }
