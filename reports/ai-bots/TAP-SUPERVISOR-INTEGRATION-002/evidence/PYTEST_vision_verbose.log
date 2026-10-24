@@ -1,0 +1,1618 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.15, pytest-9.1.1, pluggy-1.6.0
+rootdir: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002
+configfile: pyproject.toml
+plugins: anyio-4.14.1, hypothesis-6.155.7, bdd-8.1.0, cov-7.1.0
+collected 329 items
+
+tests\unit\vision\test_accounting_integrity.py .....                     [  1%]
+tests\unit\vision\test_causal_clock.py .......                           [  3%]
+tests\unit\vision\test_causal_execution.py ..........                    [  6%]
+tests\unit\vision\test_chart_determinism.py ..........                   [  9%]
+tests\unit\vision\test_closed_trade_cycle.py ..........                  [ 12%]
+tests\unit\vision\test_contract.py ..................................... [ 24%]
+....                                                                     [ 25%]
+tests\unit\vision\test_def_run_014_lane_contract.py ....                 [ 26%]
+tests\unit\vision\test_def_run_016_integrity.py .......sF...             [ 30%]
+tests\unit\vision\test_def_run_016_opinion_lifecycle.py ................ [ 34%]
+.....                                                                    [ 36%]
+tests\unit\vision\test_guards_and_controls.py ..............             [ 40%]
+tests\unit\vision\test_integrity_and_latency.py ...                      [ 41%]
+tests\unit\vision\test_lane_vertical.py .............                    [ 45%]
+tests\unit\vision\test_ledger.py ........                                [ 48%]
+tests\unit\vision\test_minute_quote_feed.py FF..FFFFFFF.FFFFF            [ 53%]
+tests\unit\vision\test_open_phase_causality.py ...................       [ 58%]
+tests\unit\vision\test_prospective_session.py .......................    [ 65%]
+tests\unit\vision\test_provider.py ............                          [ 69%]
+tests\unit\vision\test_run_code_provenance.py .......                    [ 71%]
+tests\unit\vision\test_session_lock_recovery.py ......                   [ 73%]
+tests\unit\vision\test_session_provenance.py .............               [ 77%]
+tests\unit\vision\test_signal_source_families.py ....................... [ 84%]
+...............                                                          [ 89%]
+tests\unit\vision\test_signal_sources.py ...................             [ 94%]
+tests\unit\vision\test_subbar_execution.py .....F                        [ 96%]
+tests\unit\vision\test_visual_defects.py ...........                     [100%]
+
+================================== FAILURES ===================================
+____________ test_a_corrupt_or_unfinished_ledger_is_not_certified _____________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-730/test_a_corrupt_or_unfinished_l0')
+
+    def test_a_corrupt_or_unfinished_ledger_is_not_certified(tmp_path):
+        path = tmp_path / "corrupt.jsonl"
+        make_lane(path, series=bars(count=40)).run()
+>       verifier = _verifier()
+                   ^^^^^^^^^^^
+
+tests\unit\vision\test_def_run_016_integrity.py:506: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_def_run_016_integrity.py:473: in _verifier
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:936: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1073: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x0000019C08DC9D90>
+path = 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-integ002\\scripts\\def_run_016_verify.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-integ002\\scripts\\def_run_016_verify.py'
+
+<frozen importlib._bootstrap_external>:1130: FileNotFoundError
+---------------------------- Captured stdout call -----------------------------
+2026-10-24 18:50:25 [info     ] risk.signal_approved           confidence=0.8 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-24 18:50:25 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=100.12395605072518 quantity=4.993809870503799 side=buy symbol=BTC/USDT
+_________ test_the_committed_minutes_are_the_bytes_the_manifest_names _________
+
+    def test_the_committed_minutes_are_the_bytes_the_manifest_names():
+>       manifest = json.loads((DATA / "SOURCE_MANIFEST.json").read_text(encoding="utf-8"))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1058: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m/SOURCE_MANIFEST.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-integ002\\data\\quote-feed-1m\\SOURCE_MANIFEST.json'
+
+..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError
+_______________ test_the_feed_is_not_the_replays_own_bar_source _______________
+
+    def test_the_feed_is_not_the_replays_own_bar_source():
+        """Una prueba que se llama ``bar_open`` no es independiente y el contrato la rechaza."""
+    
+        proof = CoverageProof(
+            symbol=SYMBOL,
+            missing_bar_open_ms=START_MS,
+            source=BAR_OPEN_SOURCE,
+            quotes=(Quote(SYMBOL, START_MS + MINUTE_MS, 1.0), Quote(SYMBOL, START_MS + 2 * MINUTE_MS, 1.0)),
+            venue_open=True,
+        )
+        accepted, reason = proof.covers(HOUR_MS)
+        assert not accepted and "other than" in reason
+>       assert feed().name != BAR_OPEN_SOURCE
+               ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+________ test_a_symbol_absent_from_the_feed_is_not_answered_by_another ________
+
+    def test_a_symbol_absent_from_the_feed_is_not_answered_by_another():
+        with pytest.raises(KeyError, match="would prove the wrong thing"):
+>           feed().series("BTC/USDT")
+            ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+________ test_a_real_missing_hour_is_proven_by_its_sixty_real_minutes _________
+
+    def test_a_real_missing_hour_is_proven_by_its_sixty_real_minutes():
+        missing = START_MS + 21 * HOUR_MS
+>       quote_feed = feed()
+                     ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+___________________ test_one_missing_minute_is_not_coverage ___________________
+
+    def test_one_missing_minute_is_not_coverage():
+        """Rechazo, no interpolación: la prueba exige la rejilla completa."""
+    
+        missing = START_MS + 21 * HOUR_MS
+>       series = feed().series(SYMBOL)
+                 ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+_________ test_an_interval_that_is_not_whole_minutes_cannot_be_proven _________
+
+    def test_an_interval_that_is_not_whole_minutes_cannot_be_proven():
+>       covered, reason = feed().explain_coverage(SYMBOL, START_MS, HOUR_MS + 1)
+                          ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:150: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+_______________ test_an_hour_outside_the_archive_is_not_proven ________________
+
+    def test_an_hour_outside_the_archive_is_not_proven():
+>       quote_feed = feed()
+                     ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:156: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+_______ test_the_first_quote_is_never_older_than_the_instant_asked_for ________
+
+    def test_the_first_quote_is_never_older_than_the_instant_asked_for():
+>       quote_feed = feed()
+                     ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:164: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+______ test_the_horizon_is_respected_and_zero_is_not_an_unbounded_window ______
+
+    def test_the_horizon_is_respected_and_zero_is_not_an_unbounded_window():
+>       quote_feed = feed()
+                     ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+_______________ test_the_real_feed_unlocks_the_holes_it_proves ________________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-730/test_the_real_feed_unlocks_the0')
+
+    def test_the_real_feed_unlocks_the_holes_it_proves(tmp_path):
+        #: La ventana es de **dos** barras a propósito. Un hueco cuesta exactamente una barra de
+        #: edad de la opinión: su primer precio posible pasa a ser el siguiente que existe. Con
+        #: la ventana de una barra el veredicto honesto es la expiración
+        #: (``test_a_covered_hole_still_obeys_the_opinion_window``); lo que este test mide es la
+        #: otra mitad: cuando la ventana lo absorbe, el feed convierte el hueco en operación.
+        summary, rows = run_lane(
+            tmp_path,
+            series=flat_hours(remove=EXPECTED_FILL_BARS),
+>           quote_feed=feed(),
+                       ^^^^^^
+            latency_ms=900,
+            max_opinion_age_ms=2 * HOUR_MS,
+        )
+
+tests\unit\vision\test_minute_quote_feed.py:287: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+____________ test_a_proven_hole_still_costs_one_bar_of_opinion_age ____________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-730/test_a_proven_hole_still_costs0')
+
+    def test_a_proven_hole_still_costs_one_bar_of_opinion_age(tmp_path):
+        """La cobertura ejecuta el hueco; no lo abarata.
+    
+        Una orden cuyo primer precio posible es el que **sigue** al hueco llega dos barras
+        después de su decisión. Con la ventana de una barra el veredicto es la expiración: el
+        feed demuestra que el mercado siguió cotizando, no que la opinión siga siendo actual.
+        Se comprueba en el carril para que el aplazamiento no pueda confundirse con una
+        sustitución silenciosa ni con un relleno a precio viejo.
+        """
+    
+        _, rows = run_lane(
+            tmp_path,
+            series=flat_hours(remove=EXPECTED_FILL_BARS),
+>           quote_feed=feed(),
+                       ^^^^^^
+            latency_ms=900,
+        )
+
+tests\unit\vision\test_minute_quote_feed.py:317: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+_________ test_the_lane_never_uses_the_minute_feed_as_an_entry_price __________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-730/test_the_lane_never_uses_the_m0')
+
+    def test_the_lane_never_uses_the_minute_feed_as_an_entry_price(tmp_path):
+        """El feed prueba continuidad; la cotización sigue siendo una apertura de vela."""
+    
+        _, rows = run_lane(
+            tmp_path,
+            series=flat_hours(remove=EXPECTED_FILL_BARS),
+>           quote_feed=feed(),
+                       ^^^^^^
+            latency_ms=900,
+            max_opinion_age_ms=2 * HOUR_MS,
+        )
+
+tests\unit\vision\test_minute_quote_feed.py:347: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+______________ test_a_feed_without_that_hour_does_not_unlock_it _______________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-730/test_a_feed_without_that_hour_0')
+
+    def test_a_feed_without_that_hour_does_not_unlock_it(tmp_path):
+        """Un feed real pero ciego a esa hora no puede convertir el hueco en operación."""
+    
+        series = flat_hours(remove=EXPECTED_FILL_BARS)
+        shifted = [
+            Bar(ts_ms=bar.ts_ms + 5000 * HOUR_MS, open=bar.open, high=bar.high, low=bar.low,
+                close=bar.close, volume=bar.volume)
+            for bar in series
+        ]
+>       summary, rows = run_lane(tmp_path, series=shifted, quote_feed=feed())
+                                                                      ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:365: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+_____________ test_a_covered_hole_still_obeys_the_opinion_window ______________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-730/test_a_covered_hole_still_obey0')
+
+    def test_a_covered_hole_still_obeys_the_opinion_window(tmp_path):
+        """Cubrir el hueco no autoriza una respuesta rancia: el reloj sigue mandando."""
+    
+>       quote_feed = feed()
+                     ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:373: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+___ test_the_real_feed_range_excludes_the_fill_minute_and_reads_only_after ____
+
+    def test_the_real_feed_range_excludes_the_fill_minute_and_reads_only_after():
+>       feed = MinuteBarQuoteFeed.from_directory(
+            DATA, aliases={"UNIUSDT": "UNI/USDT"}, symbols=["UNI/USDT"]
+        )
+
+tests\unit\vision\test_subbar_execution.py:351: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+=========================== short test summary info ===========================
+SKIPPED [1] tests\unit\vision\test_def_run_016_integrity.py:477: scripts/def_run_016_verify.py is outside the supervisor slice and is not migrated
+FAILED tests/unit/vision/test_def_run_016_integrity.py::test_a_corrupt_or_unfinished_ledger_is_not_certified
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_the_committed_minutes_are_the_bytes_the_manifest_names
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_the_feed_is_not_the_replays_own_bar_source
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_a_symbol_absent_from_the_feed_is_not_answered_by_another
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_a_real_missing_hour_is_proven_by_its_sixty_real_minutes
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_one_missing_minute_is_not_coverage
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_an_interval_that_is_not_whole_minutes_cannot_be_proven
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_an_hour_outside_the_archive_is_not_proven
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_the_first_quote_is_never_older_than_the_instant_asked_for
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_the_horizon_is_respected_and_zero_is_not_an_unbounded_window
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_the_real_feed_unlocks_the_holes_it_proves
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_a_proven_hole_still_costs_one_bar_of_opinion_age
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_the_lane_never_uses_the_minute_feed_as_an_entry_price
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_a_feed_without_that_hour_does_not_unlock_it
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_a_covered_hole_still_obeys_the_opinion_window
+FAILED tests/unit/vision/test_subbar_execution.py::test_the_real_feed_range_excludes_the_fill_minute_and_reads_only_after
+=========== 16 failed, 312 passed, 1 skipped in 1415.81s (0:23:35) ============
+29470797710996 reason=take_profit symbol=BTC/USDT
+2026-10-24 18:47:24 [info     ] risk.trade_recorded            consecutive_losses=0 daily_pnl=2.629470797710996 equity=10002.00983883514 pnl=2.629470797710996 weekly_pnl=2.629470797710996
+____________ test_a_corrupt_or_unfinished_ledger_is_not_certified _____________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-728/test_a_corrupt_or_unfinished_l0')
+
+    def test_a_corrupt_or_unfinished_ledger_is_not_certified(tmp_path):
+        path = tmp_path / "corrupt.jsonl"
+        make_lane(path, series=bars(count=40)).run()
+>       verifier = _verifier()
+                   ^^^^^^^^^^^
+
+tests\unit\vision\test_def_run_016_integrity.py:506: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_def_run_016_integrity.py:473: in _verifier
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:936: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1073: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x0000015659B72ED0>
+path = 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-integ002\\scripts\\def_run_016_verify.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-integ002\\scripts\\def_run_016_verify.py'
+
+<frozen importlib._bootstrap_external>:1130: FileNotFoundError
+---------------------------- Captured stdout call -----------------------------
+2026-10-24 18:49:41 [info     ] risk.signal_approved           confidence=0.8 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-24 18:49:41 [info     ] paper.fill_opened              entry_commission=0.5 notional=500.0 price=100.12395605072518 quantity=4.993809870503799 side=buy symbol=BTC/USDT
+_________ test_the_committed_minutes_are_the_bytes_the_manifest_names _________
+
+    def test_the_committed_minutes_are_the_bytes_the_manifest_names():
+>       manifest = json.loads((DATA / "SOURCE_MANIFEST.json").read_text(encoding="utf-8"))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1058: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m/SOURCE_MANIFEST.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-integ002\\data\\quote-feed-1m\\SOURCE_MANIFEST.json'
+
+..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError
+_______________ test_the_feed_is_not_the_replays_own_bar_source _______________
+
+    def test_the_feed_is_not_the_replays_own_bar_source():
+        """Una prueba que se llama ``bar_open`` no es independiente y el contrato la rechaza."""
+    
+        proof = CoverageProof(
+            symbol=SYMBOL,
+            missing_bar_open_ms=START_MS,
+            source=BAR_OPEN_SOURCE,
+            quotes=(Quote(SYMBOL, START_MS + MINUTE_MS, 1.0), Quote(SYMBOL, START_MS + 2 * MINUTE_MS, 1.0)),
+            venue_open=True,
+        )
+        accepted, reason = proof.covers(HOUR_MS)
+        assert not accepted and "other than" in reason
+>       assert feed().name != BAR_OPEN_SOURCE
+               ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+________ test_a_symbol_absent_from_the_feed_is_not_answered_by_another ________
+
+    def test_a_symbol_absent_from_the_feed_is_not_answered_by_another():
+        with pytest.raises(KeyError, match="would prove the wrong thing"):
+>           feed().series("BTC/USDT")
+            ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+________ test_a_real_missing_hour_is_proven_by_its_sixty_real_minutes _________
+
+    def test_a_real_missing_hour_is_proven_by_its_sixty_real_minutes():
+        missing = START_MS + 21 * HOUR_MS
+>       quote_feed = feed()
+                     ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+___________________ test_one_missing_minute_is_not_coverage ___________________
+
+    def test_one_missing_minute_is_not_coverage():
+        """Rechazo, no interpolación: la prueba exige la rejilla completa."""
+    
+        missing = START_MS + 21 * HOUR_MS
+>       series = feed().series(SYMBOL)
+                 ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+_________ test_an_interval_that_is_not_whole_minutes_cannot_be_proven _________
+
+    def test_an_interval_that_is_not_whole_minutes_cannot_be_proven():
+>       covered, reason = feed().explain_coverage(SYMBOL, START_MS, HOUR_MS + 1)
+                          ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:150: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+_______________ test_an_hour_outside_the_archive_is_not_proven ________________
+
+    def test_an_hour_outside_the_archive_is_not_proven():
+>       quote_feed = feed()
+                     ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:156: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+_______ test_the_first_quote_is_never_older_than_the_instant_asked_for ________
+
+    def test_the_first_quote_is_never_older_than_the_instant_asked_for():
+>       quote_feed = feed()
+                     ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:164: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+______ test_the_horizon_is_respected_and_zero_is_not_an_unbounded_window ______
+
+    def test_the_horizon_is_respected_and_zero_is_not_an_unbounded_window():
+>       quote_feed = feed()
+                     ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+_______________ test_the_real_feed_unlocks_the_holes_it_proves ________________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-728/test_the_real_feed_unlocks_the0')
+
+    def test_the_real_feed_unlocks_the_holes_it_proves(tmp_path):
+        #: La ventana es de **dos** barras a propósito. Un hueco cuesta exactamente una barra de
+        #: edad de la opinión: su primer precio posible pasa a ser el siguiente que existe. Con
+        #: la ventana de una barra el veredicto honesto es la expiración
+        #: (``test_a_covered_hole_still_obeys_the_opinion_window``); lo que este test mide es la
+        #: otra mitad: cuando la ventana lo absorbe, el feed convierte el hueco en operación.
+        summary, rows = run_lane(
+            tmp_path,
+            series=flat_hours(remove=EXPECTED_FILL_BARS),
+>           quote_feed=feed(),
+                       ^^^^^^
+            latency_ms=900,
+            max_opinion_age_ms=2 * HOUR_MS,
+        )
+
+tests\unit\vision\test_minute_quote_feed.py:287: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+____________ test_a_proven_hole_still_costs_one_bar_of_opinion_age ____________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-728/test_a_proven_hole_still_costs0')
+
+    def test_a_proven_hole_still_costs_one_bar_of_opinion_age(tmp_path):
+        """La cobertura ejecuta el hueco; no lo abarata.
+    
+        Una orden cuyo primer precio posible es el que **sigue** al hueco llega dos barras
+        después de su decisión. Con la ventana de una barra el veredicto es la expiración: el
+        feed demuestra que el mercado siguió cotizando, no que la opinión siga siendo actual.
+        Se comprueba en el carril para que el aplazamiento no pueda confundirse con una
+        sustitución silenciosa ni con un relleno a precio viejo.
+        """
+    
+        _, rows = run_lane(
+            tmp_path,
+            series=flat_hours(remove=EXPECTED_FILL_BARS),
+>           quote_feed=feed(),
+                       ^^^^^^
+            latency_ms=900,
+        )
+
+tests\unit\vision\test_minute_quote_feed.py:317: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+_________ test_the_lane_never_uses_the_minute_feed_as_an_entry_price __________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-728/test_the_lane_never_uses_the_m0')
+
+    def test_the_lane_never_uses_the_minute_feed_as_an_entry_price(tmp_path):
+        """El feed prueba continuidad; la cotización sigue siendo una apertura de vela."""
+    
+        _, rows = run_lane(
+            tmp_path,
+            series=flat_hours(remove=EXPECTED_FILL_BARS),
+>           quote_feed=feed(),
+                       ^^^^^^
+            latency_ms=900,
+            max_opinion_age_ms=2 * HOUR_MS,
+        )
+
+tests\unit\vision\test_minute_quote_feed.py:347: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+______________ test_a_feed_without_that_hour_does_not_unlock_it _______________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-728/test_a_feed_without_that_hour_0')
+
+    def test_a_feed_without_that_hour_does_not_unlock_it(tmp_path):
+        """Un feed real pero ciego a esa hora no puede convertir el hueco en operación."""
+    
+        series = flat_hours(remove=EXPECTED_FILL_BARS)
+        shifted = [
+            Bar(ts_ms=bar.ts_ms + 5000 * HOUR_MS, open=bar.open, high=bar.high, low=bar.low,
+                close=bar.close, volume=bar.volume)
+            for bar in series
+        ]
+>       summary, rows = run_lane(tmp_path, series=shifted, quote_feed=feed())
+                                                                      ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:365: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+_____________ test_a_covered_hole_still_obeys_the_opinion_window ______________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-728/test_a_covered_hole_still_obey0')
+
+    def test_a_covered_hole_still_obeys_the_opinion_window(tmp_path):
+        """Cubrir el hueco no autoriza una respuesta rancia: el reloj sigue mandando."""
+    
+>       quote_feed = feed()
+                     ^^^^^^
+
+tests\unit\vision\test_minute_quote_feed.py:373: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\vision\test_minute_quote_feed.py:58: in feed
+    return MinuteBarQuoteFeed.from_directory(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+___ test_the_real_feed_range_excludes_the_fill_minute_and_reads_only_after ____
+
+    def test_the_real_feed_range_excludes_the_fill_minute_and_reads_only_after():
+>       feed = MinuteBarQuoteFeed.from_directory(
+            DATA, aliases={"UNIUSDT": "UNI/USDT"}, symbols=["UNI/USDT"]
+        )
+
+tests\unit\vision\test_subbar_execution.py:351: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'trading_bot.vision.quotes.MinuteBarQuoteFeed'>
+directory = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/quote-feed-1m')
+aliases = {'UNIUSDT': 'UNI/USDT'}, symbols = ['UNI/USDT']
+
+    @classmethod
+    def from_directory(
+        cls,
+        directory: Path | str,
+        *,
+        aliases: Mapping[str, str] | None = None,
+        symbols: Sequence[str] | None = None,
+    ) -> MinuteBarQuoteFeed:
+        """Load ``<FILE_SYMBOL>_1m_*.json`` files, mapping them to display symbols.
+    
+        ``aliases`` maps the archive's symbol (``UNIUSDT``) to the lane's symbol
+        (``UNI/USDT``); without one the file symbol is used unchanged.
+        """
+    
+        root = Path(directory)
+        mapping = dict(aliases or {})
+        wanted = set(symbols) if symbols is not None else None
+        series: dict[str, MinuteSeries] = {}
+        for path in sorted(root.glob("*_1m_*.json")):
+            file_symbol = path.name.split("_1m_", 1)[0]
+            display = mapping.get(file_symbol, file_symbol)
+            if wanted is not None and display not in wanted and file_symbol not in wanted:
+                continue
+            rows = json.loads(path.read_text(encoding="utf-8"))
+            series[display] = MinuteSeries.from_rows(display, rows)
+        if not series:
+>           raise QuoteFeedIntegrityError(f"{root}: no 1-minute series found")
+E           trading_bot.vision.quotes.QuoteFeedIntegrityError: C:\Users\GVLLFR0035\Downloads\ff-wt-integ002\data\quote-feed-1m: no 1-minute series found
+
+src\trading_bot\vision\quotes.py:164: QuoteFeedIntegrityError
+=========================== short test summary info ===========================
+SKIPPED [1] tests\unit\vision\test_def_run_016_integrity.py:477: scripts/def_run_016_verify.py is outside the supervisor slice and is not migrated
+FAILED tests/unit/vision/test_closed_trade_cycle.py::test_two_identical_runs_write_the_same_ledger
+FAILED tests/unit/vision/test_def_run_016_integrity.py::test_a_corrupt_or_unfinished_ledger_is_not_certified
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_the_committed_minutes_are_the_bytes_the_manifest_names
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_the_feed_is_not_the_replays_own_bar_source
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_a_symbol_absent_from_the_feed_is_not_answered_by_another
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_a_real_missing_hour_is_proven_by_its_sixty_real_minutes
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_one_missing_minute_is_not_coverage
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_an_interval_that_is_not_whole_minutes_cannot_be_proven
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_an_hour_outside_the_archive_is_not_proven
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_the_first_quote_is_never_older_than_the_instant_asked_for
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_the_horizon_is_respected_and_zero_is_not_an_unbounded_window
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_the_real_feed_unlocks_the_holes_it_proves
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_a_proven_hole_still_costs_one_bar_of_opinion_age
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_the_lane_never_uses_the_minute_feed_as_an_entry_price
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_a_feed_without_that_hour_does_not_unlock_it
+FAILED tests/unit/vision/test_minute_quote_feed.py::test_a_covered_hole_still_obeys_the_opinion_window
+FAILED tests/unit/vision/test_subbar_execution.py::test_the_real_feed_range_excludes_the_fill_minute_and_reads_only_after
+=========== 17 failed, 311 passed, 1 skipped in 1424.27s (0:23:44) ============
+VISION_EXIT=1

@@ -1,0 +1,80 @@
+{
+  "claims": [
+    {
+      "claim": "the work happened on a branch derived from main, and main itself did not move",
+      "detail": "branch=integ/supervisor-002 head=b489d488 main=e67194e7 base=e67194e7 commits main..HEAD=3 merge-commits=0 lane=3b758e22",
+      "evidence": [],
+      "id": "G1",
+      "method": "git rev-parse / rev-list / merge-base",
+      "status": "PASS"
+    },
+    {
+      "claim": "every migrated route is byte-identical to the lane blob it came from, except the declared edits",
+      "detail": "84 routes; 0 missing; 0 mismatched; 4 declared edits",
+      "evidence": [
+        "edited: ['.gitignore', 'scripts/paper_supervisor_verify.py', 'tests/unit/vision/test_def_run_016_integrity.py', 'uv.lock']"
+      ],
+      "id": "R1",
+      "method": "recompute sha256 of each destination and compare with ROUTE_MANIFEST.json",
+      "status": "PASS"
+    },
+    {
+      "claim": "the PAPER campaign ran multiple cycles, recovered from a crash, left no lock and sent no live order",
+      "detail": "cycles=[1, 2, 3, 4, 5] lines=13 state=RECOVERED locks=[] live_orders=[0] action=STOP_COMPLETED",
+      "evidence": [
+        "chain head 6a317fa91e164dc6107a5c107ad1b7da5cb73cee0a5a928e6a43ae47cb9a89db",
+        "problems: []"
+      ],
+      "id": "C1",
+      "method": "re-hash session/STREAM.jsonl, read CAMPAIGN.json, list *.lock, scan live_orders",
+      "status": "PASS"
+    },
+    {
+      "claim": "the campaign verifier's report is truthful: PASS, every applicable mutation detected, no false success",
+      "detail": "artifacts=18 hashed; checks=31 failed=[]; applicable mutations=10 undetected=[]",
+      "evidence": [
+        "not applicable: ['corrupt_evidence_reported_as_recovered', 'budget_overspent']"
+      ],
+      "id": "V1",
+      "method": "recompute every artefact hash, re-check the verdict fields and the mutation lists",
+      "status": "PASS"
+    },
+    {
+      "claim": "the verifier rejects absent, tampered and leftover-lock campaigns",
+      "detail": "{\"absent\": \"FAIL\", \"live_order\": \"FAIL\", \"residual_lock\": \"FAIL\", \"broken_chain\": \"FAIL\"}",
+      "evidence": [
+        "{\"absent\": {\"expected_check_failed\": true, \"failed_checks\": [\"cycle_ledgers_intact\", \"final_state_not_failed\", \"loser_refused_without_spawning\", \"no_live_orders\", \"one_run_id_and_pin\", \"one_supervisor_acquired\", \"only_one_supervisor_spawned\", \"resume_flags_are_false_then_true\", \"runtime_bytes_stable\", \"seq_continuous\", \"supervisor_finished_completed\"], \"verdict\": \"FAIL\"}, \"broken_chain\": {\"expected_check_failed\": true, \"failed_checks\": [\"stream_chain_intact\"], \"verdict\": \"FAIL\"}, \"live_order\": {\"expected_check_failed\": true, \"failed_checks\": [\"no_live_orders\", \"stream_chain_intact\"], \"verdict\": \"FAIL\"}, \"residual_lock\": {\"expected_check_failed\": true, \"failed_checks\": [\"no_lock_remaining_now\"], \"verdict\": \"FAIL\"}}"
+      ],
+      "id": "V2",
+      "method": "re-run the verifier on four constructed copies and require FAIL",
+      "status": "PASS"
+    },
+    {
+      "claim": "this checker is not blind: the campaign claim must fail on a tampered chain",
+      "detail": "tampered campaign evaluated as FAIL (cycles=[] lines=3 state=RECOVERED locks=[] live_orders=[0] action=STOP_COMPLETED)",
+      "evidence": [],
+      "id": "S1",
+      "method": "evaluate C1's own method against CONTROL_broken_chain",
+      "status": "PASS"
+    },
+    {
+      "claim": "the pytest logs support the numbers this report quotes",
+      "detail": "{\"PYTEST_paper_risk_after_tests.log\": \"PASS\", \"PYTEST_paper_risk_main_baseline.log\": \"PASS\"}",
+      "evidence": [],
+      "id": "T1",
+      "method": "parse the summary line of each log",
+      "status": "PASS"
+    }
+  ],
+  "false_success": 0,
+  "head": "b489d48825af9da6cb975d2462290134d1f45fd0",
+  "imports_from_src": false,
+  "schema_version": "TAP_SUPERVISOR_INTEGRATION_INDEPENDENT_VERIFICATION_V1",
+  "summary": {
+    "fail": 0,
+    "pass": 7,
+    "unknown": 0
+  },
+  "verdict": "PASS",
+  "verifier": "reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/tools/independent_verify.py"
+}

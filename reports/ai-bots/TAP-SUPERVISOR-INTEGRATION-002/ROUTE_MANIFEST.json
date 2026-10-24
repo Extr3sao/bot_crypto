@@ -20,8 +20,10 @@
   "merge_base": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
   "note": "2 config files are invisible to the import graph; 1 lock/1 dependency file; 1 ignore policy",
   "post_migration_edits": {
+    ".gitignore": "narrowed: main's reports/* stays in force and only this delivery's directory is re-included, instead of the lane's ~250 lines of report subtrees",
     "scripts/paper_supervisor_verify.py": "G2: a check whose evidence is absent is now NOT_APPLICABLE, not FAIL; a mutation that cannot run is not counted as invalid or detected; the verifier judges a real campaign without fabricating scenarios/SCENARIOS.json",
-    "tests/unit/vision/test_def_run_016_integrity.py": "one test loads scripts/def_run_016_verify.py, outside the slice: skipped with the reason instead of failing; the other 20 tests in the file run unchanged"
+    "tests/unit/vision/test_def_run_016_integrity.py": "one test loads scripts/def_run_016_verify.py, outside the slice: skipped with the reason instead of failing; the other 20 tests in the file run unchanged",
+    "uv.lock": "regenerated from pyproject.toml: the lane's lock is byte-identical to main's and omits matplotlib, which is the B3 defect"
   },
   "routes": [
     {
@@ -756,7 +758,7 @@
       "step": "7-scripts"
     },
     {
-      "dest_sha256": "38673d0042f38704a05614599f1774a9452af77dc78afbea1e02d93ce527559c",
+      "dest_sha256": "3ce89ea787ba6820b2dfc1af857001c92c4af59e6a9e9b5fcd1edae9cc725cc9",
       "group": "slice",
       "lane_blob": "9d07a762cdcbe708080606b369a14703da0ba6ed",
       "lane_sha256": "bde10bb8a22000f90478996c1b85b7469afdce1ec782f30908393c211ce6ca56",
@@ -1062,7 +1064,7 @@
       "step": "8-tests"
     },
     {
-      "dest_sha256": "7f4e6a1faa5e719a8a117e3e3fa538b12fdd5f8df81e99cf72d2c24fe1b19a4e",
+      "dest_sha256": "d98b8a85410647afec226a03b2978a351723d1e9348aa6958f002d96edc42715",
       "group": "verification-tests",
       "lane_blob": "10af31ad6891fbae7235359ddc55c8e3d1ecdc2d",
       "lane_sha256": "886505df16c690e53019c677a8dde643ee595444bddd6ec2e9a2e22d94c991ee",

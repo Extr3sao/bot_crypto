@@ -1,0 +1,11 @@
+{
+  "iterations": 1,
+  "state": "RECOVERED",
+  "cycles": [
+    1,
+    2,
+    3
+  ],
+  "locks": 0
+}
+LOCK_CAMPAIGN_EXIT=0

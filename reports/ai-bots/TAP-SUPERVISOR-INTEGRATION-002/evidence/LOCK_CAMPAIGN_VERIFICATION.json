@@ -1,0 +1,329 @@
+{
+  "adversarial": [
+    {
+      "changed_the_scenario": true,
+      "description": "the same cycle appears twice and every hash is recomputed: only numbering can catch it",
+      "detail": "duplicated stream row 4 (a CYCLE) and re-chained the file",
+      "detected": true,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "cycle_gaps_are_interrupted_cycles",
+        "cycle_numbers_unique",
+        "every_resume_continued_the_session"
+      ],
+      "invalid": false,
+      "mutation": "duplicated_cycle_with_valid_chain",
+      "target_check": "cycle_numbers_unique",
+      "witness": 3
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "a resume whose reclaim is not on the record proves nothing about the abandoned lock",
+      "detail": "removed LOCK_RECLAIMED at row 7 and re-chained the rest",
+      "detected": true,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "every_recovery_is_reclaimed"
+      ],
+      "invalid": false,
+      "mutation": "reclaim_row_removed",
+      "target_check": "every_recovery_is_reclaimed",
+      "witness": 6
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "a takeover whose fence did not advance past the old record did not dispossess it",
+      "detail": "lowered the fence of reclaim row 7, lock 0",
+      "detected": true,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "reclaim_fence_advances"
+      ],
+      "invalid": false,
+      "mutation": "reclaim_fence_does_not_advance",
+      "target_check": "reclaim_fence_advances",
+      "witness": [
+        6,
+        0
+      ]
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "without the resumed SESSION_START there is no evidence the crash was continued",
+      "detail": "removed the resumed SESSION_START at row 5",
+      "detected": true,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "every_resume_continued_the_session"
+      ],
+      "invalid": false,
+      "mutation": "resume_start_removed",
+      "target_check": "every_resume_continued_the_session",
+      "witness": 4
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "a leftover lock must fail the campaign however healthy the stream looks",
+      "detail": "planted a residual lock whose owner is this live process",
+      "detected": true,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "final_state_not_failed",
+        "no_lock_remaining_now"
+      ],
+      "invalid": false,
+      "mutation": "residual_lock_presented_as_recovered",
+      "target_check": "no_lock_remaining_now",
+      "witness": "plant"
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "a lock whose owner is alive must never be counted as abandoned",
+      "detail": "iteration 1 leftover 0 now names this live pid",
+      "detected": true,
+      "false_checks": [
+        "all_leftovers_proved_abandoned",
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "leftover_state_matches_recomputed_verdict",
+        "one_owner_per_iteration",
+        "owner_identity_never_repeats",
+        "reclaim_takes_over_the_crashed_owner"
+      ],
+      "invalid": false,
+      "mutation": "leftover_owner_is_alive",
+      "target_check": "all_leftovers_proved_abandoned",
+      "witness": [
+        0,
+        0
+      ]
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "a timed-out resume is not a recovery",
+      "detail": "iteration 1 resume exit set to 124",
+      "detected": true,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "resume_exited_zero"
+      ],
+      "invalid": false,
+      "mutation": "resume_did_not_exit_cleanly",
+      "target_check": "resume_exited_zero",
+      "witness": 0
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "two owners for one path is the state a single writer exists to forbid",
+      "detail": "iteration 1 now names two owners for market-1m/BTCUSDT.jsonl.lock",
+      "detected": true,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "one_owner_per_iteration",
+        "one_owner_per_path_per_crash",
+        "owner_identity_never_repeats"
+      ],
+      "invalid": false,
+      "mutation": "two_writers_claim_one_lock",
+      "target_check": "one_owner_per_path_per_crash",
+      "witness": 0
+    },
+    {
+      "changed_the_scenario": true,
+      "description": "a reclaim of a different process would leave the real owner unreclaimed",
+      "detail": "reclaim row 7 names a pid that owned nothing",
+      "detected": true,
+      "false_checks": [
+        "at_least_five_recoveries",
+        "both_crash_sites_covered",
+        "concurrent_reclaim_has_one_winner",
+        "reclaim_takes_over_the_crashed_owner"
+      ],
+      "invalid": false,
+      "mutation": "reclaim_names_the_wrong_owner",
+      "target_check": "reclaim_takes_over_the_crashed_owner",
+      "witness": 6
+    }
+  ],
+  "artifacts": {
+    "CAMPAIGN.json": "e3aa6d5b6fd4fddce0da7a58446775b608db69871d5c0828b0f4966d856e5a8a",
+    "iterations/iteration-01/LAUNCH.json": "f9b77a35b0d4b66fc2222122294a949946e42fed6ff723a68eae1972adf99fc0",
+    "iterations/iteration-01/LIVE_OWNER.json": "a972752d65bda66f14d6f40b1e3128bfbbc52572647cfd77ad7dd449e796b923",
+    "iterations/iteration-01/POST_CRASH.json": "a477f54cee912edb0a5955b0f25b00f519a9961cd4066d023d9a67abd2661c33",
+    "iterations/iteration-01/RECOVERY.json": "bc4e1a14527e507f07637c941f17d5d71320056133d9fb82000e36d651c3d2e9",
+    "iterations/iteration-01/STALE_OWNER.json": "38861dfc6e4d1e175ed41ae30acbabc776bb8b717fb36e8263529836597b84bf",
+    "iterations/iteration-01/STATUS_AT_CRASH.json": "a2d0fc87e279e01802a29eea308957ef7d450004ccdd973c41977c5c06acd5c1",
+    "iterations/iteration-01/STATUS_BEFORE_LAUNCH.json": "c433e0b7bc543e6aec0081b2358b5ae3f0e0f945dc98636a0424bb2cede8e6de",
+    "session/STREAM.jsonl": "70cc77d5e56dd41886277e67031d7b85127dba73834d00c2212bcec569d55f95",
+    "session/STREAM.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "session/cycles/cycle-0001/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0002/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0003/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/market-1m/BTCUSDT.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "session/market-1m/ETHUSDT.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2",
+    "session/market-1m/SOLUSDT.jsonl.lock.fence": "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2"
+  },
+  "builder": "scripts/paper_lock_campaign.py",
+  "campaign": "C:\\Users\\GVLLFR0035\\Downloads\\ff-lockcamp-002",
+  "false_success": 0,
+  "invalid_mutations": [],
+  "judgement": {
+    "checks": {
+      "all_leftovers_proved_abandoned": true,
+      "at_least_five_recoveries": false,
+      "both_crash_sites_covered": false,
+      "concurrent_reclaim_has_one_winner": false,
+      "crash_boundaries_match_recorded_chains": true,
+      "cycle_gaps_are_interrupted_cycles": true,
+      "cycle_numbers_ordered": true,
+      "cycle_numbers_unique": true,
+      "every_crash_left_locks": true,
+      "every_recovery_is_reclaimed": true,
+      "every_resume_continued_the_session": true,
+      "every_resume_made_progress": true,
+      "final_state_not_failed": true,
+      "iterations_contiguous": true,
+      "leftover_state_matches_recomputed_verdict": true,
+      "live_owner_was_refused": true,
+      "no_live_orders": true,
+      "no_lock_after_any_resume": true,
+      "no_lock_remaining_now": true,
+      "one_owner_per_iteration": true,
+      "one_owner_per_path_per_crash": true,
+      "owner_identity_never_repeats": true,
+      "persisted_cycle_ledgers_intact": true,
+      "reclaim_fence_advances": true,
+      "reclaim_reason_is_a_proof": true,
+      "reclaim_takes_over_the_crashed_owner": true,
+      "resume_exited_zero": true,
+      "resume_flags_are_false_then_true": true,
+      "runtime_identity_stable": true,
+      "seq_continuous": true,
+      "stale_owner_was_refused": true,
+      "stream_chain_intact": true
+    },
+    "counts": {
+      "cycles": 3,
+      "iterations": 1,
+      "reclaim_rows": 1,
+      "rows": 11,
+      "starts": 2
+    },
+    "cycles": {
+      "directories": [
+        1,
+        2,
+        3
+      ],
+      "fences": {
+        "STREAM.jsonl.lock.fence": 3,
+        "cycles/cycle-0001/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0002/ledger.jsonl.lock.fence": 1,
+        "cycles/cycle-0003/ledger.jsonl.lock.fence": 1,
+        "market-1m/BTCUSDT.jsonl.lock.fence": 3,
+        "market-1m/ETHUSDT.jsonl.lock.fence": 3,
+        "market-1m/SOLUSDT.jsonl.lock.fence": 3
+      },
+      "interrupted": [],
+      "ledgers": {
+        "cycle-0001": {
+          "head_sha256": "ce2fc36938b3881b4975b6d7f8901523c9421c6a3d749e02d8af351838635f5f",
+          "kinds": {
+            "DECISION": 3,
+            "GUARD_REJECT": 2,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 7,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0002": {
+          "head_sha256": "8bc2e98184ebf42bde06f30eba29a5cdb27aa8dca96f576e1d605e1723e1dec6",
+          "kinds": {
+            "DECISION": 4,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 2,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 10,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0003": {
+          "head_sha256": "24c02f56230624a668e8e142efcebda9b6a85f9fa67ffacecb2eafeec2136531",
+          "kinds": {
+            "DECISION": 7,
+            "DECISION_OUTCOME": 4,
+            "GUARD_REJECT": 2,
+            "OPINION_DEFERRED": 2,
+            "RUN": 1,
+            "RUN_END": 1
+          },
+          "lines": 17,
+          "ok": true,
+          "reason": "INTACT"
+        }
+      },
+      "numbers": [
+        1,
+        2,
+        3
+      ]
+    },
+    "final_state": "RECOVERED",
+    "iterations": [
+      {
+        "crash_rows": 4,
+        "crash_site": "AFTER_CYCLE",
+        "harness_locks_refused": true,
+        "iteration": 1,
+        "leftover_paths": [
+          "STREAM.jsonl.lock",
+          "market-1m/BTCUSDT.jsonl.lock",
+          "market-1m/ETHUSDT.jsonl.lock",
+          "market-1m/SOLUSDT.jsonl.lock"
+        ],
+        "live_owner_outcome": "REFUSED",
+        "live_owner_unchanged": true,
+        "new_cycles_after_resume": 2,
+        "ownership": {
+          "fences_advance": true,
+          "ok": true,
+          "reasons_proved": true
+        },
+        "prefix_head_matches": true,
+        "prefix_ok": true,
+        "reclaimed_paths": [
+          "BTCUSDT.jsonl.lock",
+          "ETHUSDT.jsonl.lock",
+          "SOLUSDT.jsonl.lock",
+          "STREAM.jsonl.lock"
+        ],
+        "resume_exit_code": 0
+      }
+    ],
+    "verdict": "FAIL"
+  },
+  "schema_version": "TAP_PAPER_LOCK_CAMPAIGN_VERIFICATION_V1",
+  "undetected_mutations": [],
+  "verdict": "FAIL",
+  "verifier": "scripts/paper_lock_campaign_verify.py",
+  "verifier_commit": "b489d48825af9da6cb975d2462290134d1f45fd0"
+}

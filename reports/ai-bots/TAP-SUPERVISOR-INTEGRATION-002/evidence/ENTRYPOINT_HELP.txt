@@ -1,0 +1,8 @@
+scripts/paper_supervisor.py EXIT=0
+scripts/paper_supervisor_campaign.py EXIT=0
+scripts/paper_supervisor_verify.py EXIT=0
+scripts/paper_lock_campaign.py EXIT=0
+scripts/paper_lock_campaign_verify.py EXIT=0
+scripts/paper_session_status.py EXIT=0
+scripts/start_paper_trading.py EXIT=0
+scripts/def_run_019_prospective_run.py EXIT=0

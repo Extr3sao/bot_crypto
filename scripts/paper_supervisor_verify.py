@@ -34,7 +34,7 @@ import socket
 import subprocess
 import sys
 import tempfile
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from pathlib import Path
 from typing import Any
 
@@ -151,7 +151,16 @@ def git(*args: str) -> str:
 # ------------------------------------------------------------------------- judge
 
 
-def judge(root: Path) -> dict[str, Any]:
+def judge(
+    root: Path, applicability: Mapping[str, bool] | None = None
+) -> dict[str, Any]:
+    """Judge one campaign.  ``applicability`` is passed by the mutation harness.
+
+    Which checks apply is a property of the *campaign being judged*, fixed before any
+    mutation.  Recomputing it per mutant let a mutation delete the evidence a check
+    depended on, the check then vanished from the verdict, and the mutation counted as
+    undetected: a verifier blindfolded by the tampering it was supposed to catch.
+    """
     session = root / "session"
     state_dir = root / "supervisor"
     rows = stream_rows(session / "STREAM.jsonl")
@@ -245,8 +254,15 @@ def judge(root: Path) -> dict[str, Any]:
         for lock in claim["entry"].get("locks") or []:
             if isinstance(lock.get("fence"), int):
                 fences_by_lock.setdefault(str(lock.get("lock")), []).append(int(lock["fence"]))
+    #: A takeover fence must be at least 2: the first acquisition writes 1, so a reclaim
+    #: can only install a higher number.  With a single reclaim there is no pair to
+    #: compare, and ``all(pairwise([2]))`` is vacuous — which is how a fence reset to 0
+    #: slipped through.  The floor is asserted explicitly, then the sequence when there is
+    #: more than one.
     fences_advance = all(
-        all(right > left for left, right in itertools.pairwise(values))
+        (all(right > left for left, right in itertools.pairwise(values)) and values[0] >= 2)
+        if len(values) > 1
+        else values[0] >= 2
         for values in fences_by_lock.values()
     )
 
@@ -408,7 +424,7 @@ def judge(root: Path) -> dict[str, Any]:
         for row in exits
         if row.get("pid") != last_pid and row.get("exit_code") not in (0, None)
     ]
-    applicability = {
+    computed_applicability = {
         "every_resume_backed_by_a_reclaim": bool(resumed_starts or resumes or reclaims),
         "reclaim_fences_advance": bool(fences_by_lock),
         "resume_decisions_match_resumed_starts": bool(resumed_starts or resumes),
@@ -425,6 +441,15 @@ def judge(root: Path) -> dict[str, Any]:
         "corrupt_evidence_was_refused": (root / "scenarios" / "SCENARIOS.json").is_file(),
         "budget_was_exhausted_not_exceeded": (root / "scenarios" / "SCENARIOS.json").is_file(),
     }
+    if applicability is None:
+        applicability = computed_applicability
+    else:
+        #: A name the caller pinned that this campaign does not even define is still
+        #: honoured as "not applicable"; the check list is unchanged.
+        applicability = {
+            name: (applicability.get(name, False) if name in computed_applicability else False)
+            for name in computed_applicability
+        }
     not_applicable = sorted(name for name, applies in applicability.items() if not applies)
     for name in not_applicable:
         checks.pop(name, None)
@@ -453,6 +478,7 @@ def judge(root: Path) -> dict[str, Any]:
     return {
         "checks": checks,
         "not_applicable": not_applicable,
+        "applicability": applicability,
         "facts": facts,
         "chain": chain,
         "cycles": {
@@ -534,7 +560,9 @@ def rechain(path: Path) -> None:
 
 
 def mutations(source: Path) -> list[dict[str, Any]]:
-    base = judge(source)["facts"]
+    base_verdict = judge(source)
+    base = base_verdict["facts"]
+    base_applicability = base_verdict["applicability"]
     results: list[dict[str, Any]] = []
 
     def apply(
@@ -567,7 +595,7 @@ def mutations(source: Path) -> list[dict[str, Any]]:
         detail = ""
         try:
             detail = builder(work)
-            verdict = judge(work)
+            verdict = judge(work, base_applicability)
             changed = verdict["facts"] != base
             results.append(
                 {
@@ -577,7 +605,15 @@ def mutations(source: Path) -> list[dict[str, Any]]:
                     "detail": detail,
                     "applicable": True,
                     "changed_the_scenario": changed,
-                    "detected": bool(changed and verdict["checks"].get(target_check) is False),
+                    "detected": bool(
+                        changed
+                        and (
+                            verdict["checks"].get(target_check) is False
+                            #: The tampering removed the evidence the check needs.  That is
+                            #: not a pass: the campaign no longer proves the property.
+                            or target_check in verdict["not_applicable"]
+                        )
+                    ),
                     "invalid": not changed,
                     "false_checks": sorted(
                         key for key, value in verdict["checks"].items() if value is False

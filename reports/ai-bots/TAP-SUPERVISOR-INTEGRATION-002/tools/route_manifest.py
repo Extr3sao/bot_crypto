@@ -204,6 +204,14 @@ TEST_EXCLUDED: dict[str, str] = {
 #: lane hash in ``lane_sha256`` and reports the local hash as ``dest_sha256``; this table
 #: is what makes the difference a decision instead of a drift.
 POST_MIGRATION_EDITS: dict[str, str] = {
+    "uv.lock": (
+        "regenerated from pyproject.toml: the lane's lock is byte-identical to main's and "
+        "omits matplotlib, which is the B3 defect"
+    ),
+    ".gitignore": (
+        "narrowed: main's reports/* stays in force and only this delivery's directory is "
+        "re-included, instead of the lane's ~250 lines of report subtrees"
+    ),
     "scripts/paper_supervisor_verify.py": (
         "G2: a check whose evidence is absent is now NOT_APPLICABLE, not FAIL; a mutation "
         "that cannot run is not counted as invalid or detected; the verifier judges a real "
