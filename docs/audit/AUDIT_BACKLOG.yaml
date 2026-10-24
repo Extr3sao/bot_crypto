@@ -105,7 +105,7 @@ tasks:
     status: done
     provenance: gap
     contract: docs/audit/G-1.md
-    verified_commit: "0bcc100c"
+    verified_commit: "9df2aa8f"
     verification: docs/audit/runs/run-20261024T064739Z-G-1/verification.json
     run_report: docs/audit/runs/run-20261024T064739Z-G-1/RUN_REPORT.md
     verdict: VERIFIED_SCOPED

@@ -6,10 +6,11 @@ pushed, nothing merged.
 | Order | Commit | What it contains | Verified? |
 |---|---|---|---|
 | 1 | `453d17ac` | `docs/audit/G-1.md` — the contract, frozen before code | n/a (specification) |
-| 2 | `0bcc100c` | implementation + tests + mutation harness + probe | **yes** — this is the commit `verify_g1.py` reads |
+| 2 | `0bcc100c` | implementation + tests + mutation harness + probe | superseded as the verification target by row 6 |
 | 3 | the commit that introduced this file | run reports, mutant matrix, cross-process trace, verifier, `verification.json` | no — documentation over the verified commit |
 | 4 | the commit that updates the backlog and the authority map | record | no |
 | 5 | the commit that adds `COMMANDS.md` and refreshes the artefact hashes | exact invocations, for an auditor who wants the command lines rather than the prose | no |
+| 6 | `9df2aa8f` | the G-1-specific concurrency test (marker observed while a dispatch is in flight) | **yes** — this is the commit `verify_g1.py` reads |
 
 A file cannot contain the hash of the commit that adds it. For the last three:
 
@@ -35,13 +36,20 @@ git log -1 --format=%H -- docs/audit/runs/run-20261024T064739Z-G-1/COMMANDS.md
 4. **Record.** Backlog entry `G-1`, the corrected G-1 row in
    `runtime_authority_map.md`, and `next_ready` recomputed (G-3 recommended,
    G-1 and G-2 closed for the autonomous path).
+5. **Commands.** `COMMANDS.md`: the exact invocations and observed exit codes,
+   including the baseline failure that exposed G1-D-1.
+6. **One more test, and a new verification.** G-1 routes a stop through
+   `poll()` before `engage()`; G-2 had proved the in-flight barrier only for a
+   direct `engage()`. Commit `9df2aa8f` adds that case and is the commit the
+   final verification reads. It changes no production source, so the claims of
+   row 2 stand; only the target of the evidence moved forward.
 
 ## Diff shape of the verified commit
 
 ```
  src/trading_bot/autonomous/hot_stop.py          | +203 -25
  src/trading_bot/app.py                          |   +9  -6
- tests/unit/autonomous/test_kill_switch_persistence.py | new (19 tests)
+ tests/unit/autonomous/test_kill_switch_persistence.py | new (20 tests)
  tests/unit/autonomous/test_hot_engage.py        |  +31
  tests/unit/autonomous/test_decision_kill_switch.py | docstring only
  scripts/audit/g1_mutants.py                     | new (8 mutants)

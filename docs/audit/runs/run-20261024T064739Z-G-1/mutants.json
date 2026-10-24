@@ -2,20 +2,20 @@
   "tool": "scripts/audit/g1_mutants.py",
   "criterion": "G-1 ACC-G1-11",
   "source": "rev",
-  "rev": "0bcc100c",
+  "rev": "9df2aa8f",
   "target_tests": [
     "tests/unit/autonomous/test_kill_switch_persistence.py"
   ],
   "python": "3.11.15",
-  "resolved_source": "0bcc100c",
-  "resolved_rev": "0bcc100c09f4d125582637a6588016fdb5b659d8",
+  "resolved_source": "9df2aa8f",
+  "resolved_rev": "9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32",
   "baseline": {
     "variant": "baseline",
     "description": "unmutated tree (control)",
     "criterion": "ACC-G1-12",
     "exit_code": 0,
     "killed": false,
-    "duration_s": 12.08,
+    "duration_s": 9.21,
     "failing_tests": []
   },
   "variants": [
@@ -25,7 +25,7 @@
       "criterion": "ACC-G1-12",
       "exit_code": 0,
       "killed": false,
-      "duration_s": 12.08,
+      "duration_s": 9.21,
       "failing_tests": []
     },
     {
@@ -34,7 +34,7 @@
       "criterion": "ACC-G1-03/04",
       "exit_code": 1,
       "killed": true,
-      "duration_s": 12.35,
+      "duration_s": 8.5,
       "failing_tests": [
         "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_a_marker_left_by_a_previous_process_engages_at_construction",
         "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_restore_is_recorded_as_a_restored_event",
@@ -49,7 +49,7 @@
       "criterion": "ACC-G1-08",
       "exit_code": 1,
       "killed": true,
-      "duration_s": 9.85,
+      "duration_s": 8.39,
       "failing_tests": [
         "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_an_unreadable_control_path_fails_closed"
       ]
@@ -60,7 +60,7 @@
       "criterion": "ACC-G1-08",
       "exit_code": 1,
       "killed": true,
-      "duration_s": 9.71,
+      "duration_s": 8.19,
       "failing_tests": [
         "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_an_unreadable_control_path_fails_closed"
       ]
@@ -71,7 +71,7 @@
       "criterion": "ACC-G1-05",
       "exit_code": 1,
       "killed": true,
-      "duration_s": 9.38,
+      "duration_s": 8.11,
       "failing_tests": [
         "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_engage_persists_the_marker_for_the_next_process",
         "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_a_failed_marker_write_is_reported_and_the_gate_stays_closed"
@@ -83,7 +83,7 @@
       "criterion": "ACC-G1-09",
       "exit_code": 1,
       "killed": true,
-      "duration_s": 11.01,
+      "duration_s": 8.24,
       "failing_tests": [
         "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_a_failed_replace_leaves_the_previous_marker_intact"
       ]
@@ -94,7 +94,7 @@
       "criterion": "ACC-G1-08",
       "exit_code": 1,
       "killed": true,
-      "duration_s": 9.08,
+      "duration_s": 8.04,
       "failing_tests": [
         "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_an_empty_marker_is_still_a_stop"
       ]
@@ -105,7 +105,7 @@
       "criterion": "ACC-G1-03",
       "exit_code": 1,
       "killed": true,
-      "duration_s": 8.7,
+      "duration_s": 10.01,
       "failing_tests": [
         "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_a_marker_left_by_a_previous_process_engages_at_construction",
         "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_restore_is_recorded_as_a_restored_event",
@@ -118,7 +118,7 @@
       "criterion": "ACC-G1-03",
       "exit_code": 1,
       "killed": true,
-      "duration_s": 8.85,
+      "duration_s": 8.62,
       "failing_tests": [
         "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_a_marker_left_by_a_previous_process_engages_at_construction",
         "FAILED tests/unit/autonomous/test_kill_switch_persistence.py::test_restore_is_recorded_as_a_restored_event",
@@ -128,6 +128,6 @@
       ]
     }
   ],
-  "total_seconds": 120.19,
+  "total_seconds": 97.95,
   "all_mutants_killed": true
 }

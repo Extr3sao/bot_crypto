@@ -26,11 +26,11 @@ uv run --frozen pytest tests/unit/autonomous/test_hot_engage.py \
 # 1 failed, 54 passed, exit 1   ← G1-D-1, the order dependence
 ```
 
-## Focal and regression (implementation commit `0bcc100c`)
+## Focal and regression (verified commit `9df2aa8f`)
 
 ```bash
 uv run --frozen pytest tests/unit/autonomous/test_kill_switch_persistence.py -q
-# 19 passed, exit 0
+# 20 passed, exit 0
 
 uv run --frozen pytest tests/unit/autonomous/test_hot_engage.py \
                        tests/unit/autonomous/test_decision_kill_switch.py -q
@@ -48,9 +48,10 @@ uv run --frozen pytest tests/unit/autonomous tests/unit/test_app_cli_contract.py
 # 382 passed, exit 0
 ```
 
-Inside the **export** of `0bcc100c` (the verifier's V-9), the same suites give
-19 / 41 / 41 / 15 / 359, plus the audit guard 8 in the checkout: **483 test
-results**, every run exit 0.
+Inside the **export** of `9df2aa8f` (the verifier's V-9), the same suites give
+20 / 41 / 41 / 15 / 360, plus the audit guard 8 in the checkout: **485 test
+results**, every run exit 0. The focal file appears twice — alone and inside
+the regression run — because each invocation is recorded separately.
 
 ## Tooling
 
@@ -76,7 +77,7 @@ git show HEAD:tests/unit/autonomous/test_decision_kill_switch.py \
 ## Mutation matrix
 
 ```bash
-uv run --frozen python scripts/audit/g1_mutants.py --rev 0bcc100c \
+uv run --frozen python scripts/audit/g1_mutants.py --rev 9df2aa8f \
     --json docs/audit/runs/run-20261024T064739Z-G-1/mutants.json
 # baseline   n/a  0   green
 # M1..M8     yes  1   all killed
@@ -105,11 +106,11 @@ uv run --frozen python scripts/audit/g1_restart_probe.py --run-dir <B>   # contr
 ```bash
 uv run --frozen python \
   docs/audit/runs/run-20261024T064739Z-G-1/verify_g1.py \
-  --rev 0bcc100c \
+  --rev 9df2aa8f \
   --json docs/audit/runs/run-20261024T064739Z-G-1/verification.json
 # 13/13 checks passed — VERIFIED_SCOPED
 ```
 
-The verifier exports `0bcc100c` with `git archive`, asserts the exported
+The verifier exports `9df2aa8f` with `git archive`, asserts the exported
 `hot_stop.py` and `app.py` byte-match the commit, runs its own scenarios in that
 export, and re-runs the suite and the mutants there.

@@ -1,8 +1,8 @@
 {
   "tool": "docs/audit/runs/run-20261024T064739Z-G-1/verify_g1.py",
   "contract": "docs/audit/G-1.md",
-  "rev_requested": "0bcc100c",
-  "rev_resolved": "0bcc100c09f4d125582637a6588016fdb5b659d8",
+  "rev_requested": "9df2aa8f",
+  "rev_resolved": "9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32",
   "checkout": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
   "branch": "audit/mt0004-negative-controls",
   "author": "same author as the implementation",
@@ -16,16 +16,16 @@
       "criterion": "ACC-G1-14",
       "description": "checkout identity: absolute path, branch, HEAD, no dirty source, resolved revision",
       "passed": true,
-      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004 @ 0bcc100c09f4 (audit/mt0004-negative-controls); dirty source files: 0",
+      "detail": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004 @ 9df2aa8f69e4 (audit/mt0004-negative-controls); dirty source files: 0",
       "evidence": {
         "checkout": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
         "branch": "audit/mt0004-negative-controls",
-        "head": "af26a823f0b6595035ed1f4d289e5b8737f617dd",
-        "status_porcelain": "M docs/audit/runs/run-20261024T064739Z-G-1/COMMITS.md\n M docs/audit/runs/run-20261024T064739Z-G-1/RUN_REPORT.md\n?? docs/audit/runs/run-20261024T064739Z-G-1/COMMANDS.md",
+        "head": "9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32",
+        "status_porcelain": "M docs/audit/AUDIT_BACKLOG.yaml\n M docs/audit/runs/run-20261024T064739Z-G-1/COMMANDS.md\n M docs/audit/runs/run-20261024T064739Z-G-1/COMMITS.md\n M docs/audit/runs/run-20261024T064739Z-G-1/FINAL_REPORT.md\n M docs/audit/runs/run-20261024T064739Z-G-1/RUN_REPORT.json\n M docs/audit/runs/run-20261024T064739Z-G-1/RUN_REPORT.md\n M docs/audit/runs/run-20261024T064739Z-G-1/cross_process_trace.json\n M docs/audit/runs/run-20261024T064739Z-G-1/mutants.json\n M docs/audit/runs/run-20261024T064739Z-G-1/verification.json",
         "source_dirty": [],
-        "rev_requested": "0bcc100c",
-        "rev_resolved": "0bcc100c09f4d125582637a6588016fdb5b659d8",
-        "export": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g1-verify-o7sdj_df\\tree"
+        "rev_requested": "9df2aa8f",
+        "rev_resolved": "9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32",
+        "export": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\tree"
       }
     },
     {
@@ -33,10 +33,22 @@
       "criterion": "ACC-G1-13",
       "description": "every changed file is inside the frozen allowed_paths and outside every protected path",
       "passed": true,
-      "detail": "8 files changed; 0 outside scope; 0 protected",
+      "detail": "20 files changed; 0 outside scope; 0 protected",
       "evidence": {
         "changed": [
+          "docs/audit/AUDIT_BACKLOG.yaml",
           "docs/audit/G-1.md",
+          "docs/audit/runs/run-20261024T064739Z-G-1/COMMANDS.md",
+          "docs/audit/runs/run-20261024T064739Z-G-1/COMMITS.md",
+          "docs/audit/runs/run-20261024T064739Z-G-1/FINAL_REPORT.md",
+          "docs/audit/runs/run-20261024T064739Z-G-1/RUN_REPORT.json",
+          "docs/audit/runs/run-20261024T064739Z-G-1/RUN_REPORT.md",
+          "docs/audit/runs/run-20261024T064739Z-G-1/cross_process_trace.json",
+          "docs/audit/runs/run-20261024T064739Z-G-1/cross_process_trace.py",
+          "docs/audit/runs/run-20261024T064739Z-G-1/mutants.json",
+          "docs/audit/runs/run-20261024T064739Z-G-1/verification.json",
+          "docs/audit/runs/run-20261024T064739Z-G-1/verify_g1.py",
+          "docs/audit/runtime_authority_map.md",
           "scripts/audit/g1_mutants.py",
           "scripts/audit/g1_restart_probe.py",
           "src/trading_bot/app.py",
@@ -127,11 +139,11 @@
         "switch_state": "halted",
         "allowed": false,
         "broker_calls_allowed": 0,
-        "module_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-o7sdj_df\\tree\\src\\trading_bot\\__init__.py",
+        "module_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\tree\\src\\trading_bot\\__init__.py",
         "first_event": {
-          "activated_at_ms": 1792827392214,
+          "activated_at_ms": 1792828203938,
           "activation_error": null,
-          "actor": "boot_restore:C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g1-verify-o7sdj_df\\work\\restore-child\\KILL_SWITCH",
+          "actor": "boot_restore:C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\work\\restore-child\\KILL_SWITCH",
           "boundary": "autonomous.runtime._execute_paper -> broker.execute_signal",
           "broker_calls_allowed": 0,
           "commit": "",
@@ -158,27 +170,27 @@
       "evidence": {
         "blocked": {
           "broker_calls": 0,
-          "control_path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-o7sdj_df\\work\\cross-blocked\\KILL_SWITCH",
+          "control_path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\work\\cross-blocked\\KILL_SWITCH",
           "engaged_after_cycle": true,
           "engaged_before_first_cycle": true,
           "mode": "TRADE_PAPER",
-          "module_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-o7sdj_df\\tree\\src\\trading_bot\\__init__.py",
+          "module_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\tree\\src\\trading_bot\\__init__.py",
           "orders_created": 0,
           "restored": true,
           "risk_verdict": "PASS",
-          "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-o7sdj_df\\work\\cross-blocked"
+          "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\work\\cross-blocked"
         },
         "control": {
           "broker_calls": 1,
-          "control_path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-o7sdj_df\\work\\cross-control\\KILL_SWITCH",
+          "control_path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\work\\cross-control\\KILL_SWITCH",
           "engaged_after_cycle": false,
           "engaged_before_first_cycle": false,
           "mode": "TRADE_PAPER",
-          "module_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-o7sdj_df\\tree\\src\\trading_bot\\__init__.py",
+          "module_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\tree\\src\\trading_bot\\__init__.py",
           "orders_created": 1,
           "restored": false,
           "risk_verdict": "PASS",
-          "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-o7sdj_df\\work\\cross-control"
+          "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\work\\cross-control"
         }
       }
     },
@@ -198,12 +210,12 @@
       "criterion": "ACC-G1-12",
       "description": "focal, both orders of the G-2 suites, the CLI/audit contract and the autonomous regression all pass",
       "passed": true,
-      "detail": "5 pytest runs, 483 test results, all exit 0",
+      "detail": "5 pytest runs, 485 test results, all exit 0",
       "evidence": {
         "focal-persistence": {
           "cwd": "export",
           "exit": 0,
-          "passed": 19
+          "passed": 20
         },
         "order-hot-then-decision": {
           "cwd": "export",
@@ -223,7 +235,7 @@
         "regression-autonomous": {
           "cwd": "export",
           "exit": 0,
-          "passed": 359
+          "passed": 360
         },
         "audit-guard": {
           "cwd": "checkout",
@@ -241,7 +253,7 @@
       "evidence": {
         "all_mutants_killed": true,
         "survivors": [],
-        "matrix": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g1-verify-o7sdj_df\\work\\mutants.json"
+        "matrix": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g1-verify-3j6e88yn\\work\\mutants.json"
       }
     },
     {
@@ -249,22 +261,22 @@
       "criterion": "ACC-G1-14",
       "description": "every run artefact exists, hashes cleanly, and names the commit this verifier read",
       "passed": true,
-      "detail": "8 artefacts hashed; RUN_REPORT verified_commit=0bcc100c09f4d125582637a6588016fdb5b659d8",
+      "detail": "8 artefacts hashed; RUN_REPORT verified_commit=9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32",
       "evidence": {
-        "resolved_rev": "0bcc100c09f4d125582637a6588016fdb5b659d8",
+        "resolved_rev": "9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32",
         "artifacts": {
-          "COMMANDS.md": "dd4176ef38b6a40a72a0bed87e69691b1a68e7534ed283f2b2e60bd4757fd4a0",
-          "COMMITS.md": "15782211eacae1a4d13b8c5ed2451d47b54bfca14f39a6785f3e528b4c1f35ca",
-          "cross_process_trace.json": "ac8032670784711e3db38b01961cc3aaf5401428ccc360e9024677389f109ef9",
+          "COMMANDS.md": "6ddad0d9cce372fb628fd667761fca9730b714b871d28c29d45e06349f64964a",
+          "COMMITS.md": "a6a8fde1b8ec9fdf28b08a5f82456a8546d9f57fc339f5398edec6b812cb7715",
+          "cross_process_trace.json": "329521f3f762486278f3fb66cc07db827b652ba394331b5f6b52b139d6281a7a",
           "cross_process_trace.py": "df76bd72b5dd65c662b18bac8926bc1095830f28cfbbd94143bb4c78e8ea22c0",
-          "FINAL_REPORT.md": "faabadfe3658ca394f20a68ce60596ef73c19e76c210d981a15050d59b9ec80e",
-          "mutants.json": "5c9bcbb90063a7c012a884ce520d3084e52f2caa2cbc8e81668549747f88123c",
-          "RUN_REPORT.json": "8991522791e3f45737caf2c5074fe4e68207486c6e79e400c0286eb85e86e6b3",
-          "RUN_REPORT.md": "1917fb024fa12daa7a256e8b0db622a43aa2f11682db1453f69541894633d779"
+          "FINAL_REPORT.md": "ad0b42b87b22dbc2ec9e2bd79546fd23b1934e0286271d93d6b1cae3d93862dc",
+          "mutants.json": "38570408866b1e7aaa3c25218398ea3abc497023e58d5a4d370a95160346b123",
+          "RUN_REPORT.json": "64759b1bb5fde6242c2baa07f66579a0e209733ac89c8e87b68bba88195930b1",
+          "RUN_REPORT.md": "da86f519f12a9de63e899a1d6394ded9cdb4af82c041500022ae5f9cccefd920"
         },
-        "run_report_verified_commit": "0bcc100c09f4d125582637a6588016fdb5b659d8"
+        "run_report_verified_commit": "9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32"
       }
     }
   ],
-  "seconds": 257.43
+  "seconds": 263.12
 }

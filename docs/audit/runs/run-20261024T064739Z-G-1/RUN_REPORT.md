@@ -3,10 +3,10 @@
 - **Run id:** `run-20261024T064739Z-G-1`
 - **Contract:** [`docs/audit/G-1.md`](../../G-1.md)
 - **Baseline:** `5238c05e2f11527606ec2afc89966dc1500a281d` (record commit of G-2)
-- **Verified commit:** `0bcc100c09f4d125582637a6588016fdb5b659d8`
+- **Verified commit:** `9df2aa8f69e4ed76cd24dfab69a9b361d5e1fd32`
 - **Branch:** `audit/mt0004-negative-controls` (not pushed, not merged)
 - **Checkout tested:** `C:\Users\GVLLFR0035\Downloads\ff-wt-mt0004`
-- **Verification input:** `git archive` export of `0bcc100c`, not the working tree
+- **Verification input:** `git archive` export of `9df2aa8f`, not the working tree
 - **Date:** 2026-10-24
 - **Mode:** offline only. No live order, no PAPER run against a real feed, no
   deployment.
@@ -61,7 +61,7 @@ second wiring site that someone can forget. `runtime.py` was **not** modified.
 |---|---|
 | `src/trading_bot/autonomous/hot_stop.py` | `restore()` + `_marker_presence()` (`os.lstat`, only `FileNotFoundError` = absent) + `_read_marker()` (returns the read fault instead of swallowing it) + `_ensure_marker()`; `engage()` persists; `EngageAck` gains `persisted`/`restored`; `write_control_file()` (temp + `fsync` + `os.replace` + best-effort directory `fsync`) |
 | `src/trading_bot/app.py` | `kill-switch --engage` uses `write_control_file`; same stdout, same exit codes |
-| `tests/unit/autonomous/test_kill_switch_persistence.py` | **new**, 19 tests |
+| `tests/unit/autonomous/test_kill_switch_persistence.py` | **new**, 20 tests |
 | `tests/unit/autonomous/test_hot_engage.py` | G1-D-1 isolation fix + one test pinning the default gate wiring |
 | `tests/unit/autonomous/test_decision_kill_switch.py` | docstring of the former gap test only; **assertion lines byte-identical** (verifier V-2) |
 | `scripts/audit/g1_mutants.py` | new, 8 mutants |
@@ -71,19 +71,23 @@ second wiring site that someone can forget. `runtime.py` was **not** modified.
 
 ## 5. Tests actually executed
 
-All of these ran inside the export of `0bcc100c` (except the audit guard, which
+All of these ran inside the export of `9df2aa8f` (except the audit guard, which
 needs `.git`; it ran in the checkout V-0 proved clean and V-11 proved identical
 for the sources).
 
 | Suite | Result |
 |---|---|
-| `tests/unit/autonomous/test_kill_switch_persistence.py` | **19 passed** |
+| `tests/unit/autonomous/test_kill_switch_persistence.py` | **20 passed** |
 | `test_hot_engage.py` then `test_decision_kill_switch.py` | **41 passed** |
 | `test_decision_kill_switch.py` then `test_hot_engage.py` | **41 passed** |
 | `tests/unit/test_app_cli_contract.py` | **15 passed** |
-| `tests/unit/autonomous` (regression) | **359 passed** |
+| `tests/unit/autonomous` (regression) | **360 passed** |
 | `tests/unit/test_audit_contracts_tracked.py` | **8 passed** |
-| **total** | **483 test results, every run exit 0** |
+| **total** | **485 test results, every run exit 0** |
+
+The focal file is counted twice — once alone, once inside the regression run —
+because the verifier records each invocation's own exit code. 485 is results,
+not distinct tests.
 
 Exact invocations and the observed output: [`COMMANDS.md`](COMMANDS.md).
 
@@ -102,7 +106,7 @@ Tooling:
 
 ## 6. Mutation matrix — 8/8 killed
 
-`scripts/audit/g1_mutants.py --rev 0bcc100c` → baseline green, every mutant
+`scripts/audit/g1_mutants.py --rev 9df2aa8f` → baseline green, every mutant
 killed. Full matrix in [`mutants.json`](mutants.json).
 
 | Mutant | Property removed | Killed by |

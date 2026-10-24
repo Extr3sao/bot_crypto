@@ -13,7 +13,7 @@ a test.
 |---|---|---|
 | **SPEC** | PASS | `docs/audit/G-1.md`, gate G1-01 passed against the tree (not against the handoff) |
 | **IMPLEMENTATION** | PASS | `HotStopGate.restore()` in `__post_init__`; `engage` persists atomically; `write_control_file` shared by the gate and the CLI |
-| **TESTS** | PASS | 19 new tests; 483 test results across six runs, all exit 0; both collection orders of the G-2 suites |
+| **TESTS** | PASS | 20 new tests; 485 test results across six runs, all exit 0; both collection orders of the G-2 suites |
 | **RUNTIME_REACHABILITY** | PASS | one dispatch site (`runtime.py:1483`) inside `order_boundary`; the gate is constructed at `runtime.py:353`; no dispatch can precede it |
 | **OFFLINE_EXECUTION** | PASS | two operating-system processes: CLI writes, probe boots, broker counter stays 0; marker-free control orders once |
 | **PAPER** | NOT RUN | no feed, no credentials, by design |
@@ -50,7 +50,7 @@ Five specific ways this task could have lied, and what closes each:
 ```bash
 cd C:/Users/GVLLFR0035/Downloads/ff-wt-mt0004
 uv run --frozen python docs/audit/runs/run-20261024T064739Z-G-1/verify_g1.py \
-    --rev 0bcc100c --json /tmp/verification.json
+    --rev 9df2aa8f --json /tmp/verification.json
 ```
 
 Expected: 13/13, exit 0. The verifier exports the commit, asserts the export is
@@ -58,7 +58,7 @@ byte-identical for the two source files (line endings normalised), and runs
 every suite plus the mutation matrix inside that export.
 
 ```bash
-uv run --frozen python scripts/audit/g1_mutants.py --rev 0bcc100c
+uv run --frozen python scripts/audit/g1_mutants.py --rev 9df2aa8f
 uv run --frozen python docs/audit/runs/run-20261024T064739Z-G-1/cross_process_trace.py
 ```
 
