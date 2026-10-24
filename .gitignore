@@ -130,3 +130,15 @@ commit_msg*.txt
 .agentic-backup/
 .freebuff/
 his.zip
+
+# ============================================================
+# TAP-SUPERVISOR-INTEGRATION-002 — this delivery's reports are evidence and are
+# versioned; the rest of reports/ stays ignored exactly as main decided. git does
+# not re-include a file whose parent is excluded, so the chain is re-opened one
+# level at a time and closed again below it.
+# ============================================================
+!reports/ai-bots/
+reports/ai-bots/*
+!reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/
+!reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/evidence/*.log
+!reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/evidence/*.txt
