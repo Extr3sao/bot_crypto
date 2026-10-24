@@ -1,0 +1,13 @@
+PASS  FREEZE_MANIFEST_ANSWERS_TO_BYTES   23 shard(s) re-hashed; 0 difference(s)
+PASS  EVERY_FROZEN_BAR_WAS_CLOSED        a shard ending on an open bar is refused at freeze time; none here is open
+PASS  FREEZING_DID_NOT_MOVE_THE_PINS     3/3 EDGE-03 1h pins still hold after the manifest was added
+PASS  MIRROR_IS_A_REAL_SECOND_COPY       23/23 shards identical in C:\Users\GVLLFR0035\exp004a-corpus-mirror\alpha-expansion-v1-data
+PASS  RESTORE_DRILL_IS_REAL              24 file(s) deleted, verify said not ok, restored digest e813921a0c91d682, reader agrees=True
+PASS  PAPER_RUN_WAS_PAPER_AND_RAN        mode=paper environment=fake:binance cycles=2 orders=0 failures=0 traces=2
+PASS  EXP004A_STILL_BLOCKED              3/3 frozen 15m shards absent; no substitute was placed under data/
+PASS  FORWARD_TASK_STILL_PARKED          TradingAgentic-EDGE04-Forward enabled=False
+PASS  MATRIX_BLOCKS_ONLY_WHAT_IT_CAN_NAME 29 blocked of 470; every blocked row names the reader that needs the absent directory
+PASS  FALSE_SUCCESS_ZERO                 0 artefact(s) claim the frozen campaign is recovered or unblocked
+PASS  BUILDER_NEQ_VERIFIER               builder: scripts/wp_edge04_freeze.py + scripts/wp_edge04_deps.py; verifier: scripts/wp_edge04_verify.py (re-hashes, re-derives pins from the source text)
+
+verdict  EVIDENCE_CONSISTENT_WITH_BLOCKED  (11/11)
