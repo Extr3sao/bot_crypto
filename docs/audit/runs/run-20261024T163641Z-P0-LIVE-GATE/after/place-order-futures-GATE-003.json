@@ -1,0 +1,41 @@
+{
+  "app_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\app.py",
+  "app_src": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src",
+  "argv": [
+    "place-order",
+    "--symbol",
+    "BTCUSDT",
+    "--side",
+    "buy",
+    "--order-type",
+    "market",
+    "--amount",
+    "0.01",
+    "--confirm-live",
+    "--market-kind",
+    "futures",
+    "--trade-side",
+    "OPEN",
+    "--run-dir",
+    "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-after-GATE-003"
+  ],
+  "break_gate": "GATE-003",
+  "broken_gate_ids": [
+    "GATE-003"
+  ],
+  "broker_calls": 0,
+  "calls": [],
+  "entrypoint": "place-order-futures",
+  "error": "",
+  "exit_code": 2,
+  "gate_crash": false,
+  "gate_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\execution\\live_gate.py",
+  "gate_validations": 1,
+  "patched": {
+    "futures": "FakeFutures"
+  },
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-after-GATE-003",
+  "settings_error": false,
+  "stderr_tail": "ERROR: live trading gate refused entry (live_gate_blocked:GATE-003); order refused.\n",
+  "stdout_tail": "\u001b[2m2026-10-24 19:11:49\u001b[0m [\u001b[32m\u001b[1minfo     \u001b[0m] \u001b[1mgate.validation_complete      \u001b[0m \u001b[36mall_passed\u001b[0m=\u001b[35mFalse\u001b[0m \u001b[36mcritical\u001b[0m=\u001b[35m1\u001b[0m \u001b[36mfailed\u001b[0m=\u001b[35m1\u001b[0m \u001b[36mpassed\u001b[0m=\u001b[35m9\u001b[0m \u001b[36mtotal\u001b[0m=\u001b[35m10\u001b[0m\n"
+}

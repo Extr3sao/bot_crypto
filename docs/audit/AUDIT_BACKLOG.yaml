@@ -266,9 +266,13 @@ tasks:
 
   - id: P0-LIVE-GATE
     title: Enforce LiveTradingGate on every live path that opens risk
-    status: in_progress
+    status: done
     provenance: gap
     contract: docs/audit/P0-LIVE-GATE.md
+    verified_commit: "efd97e76"
+    verification: docs/audit/runs/run-20261024T163641Z-P0-LIVE-GATE/verification.json
+    run_report: docs/audit/runs/run-20261024T163641Z-P0-LIVE-GATE/RUN_REPORT.md
+    verdict: P0_VERIFIED_SCOPED
     blocker: DEF-G3-03
     allowed_paths:
       - docs/audit/P0-LIVE-GATE.md
@@ -305,6 +309,8 @@ tasks:
       - "run --auto-trade refuses at startup; place-order refuses before the client exists"
       - "reduction (close-position, set-tpsl, CLOSE, spot sell) still reaches the broker"
       - "GATE-006/008 block although the gate itself rates them high, not critical"
+      - "47 P0 tests, 21 G-3 tests, 405 CLI/demo/autonomy regressions pass"
+      - "7/7 mutants killed; verifier 15/15 on the export"
       - "hot_stop.py byte-identical to a072da90"
     covered_paths:
       - trading-bot run --mode live --auto-trade (futures and spot entry)

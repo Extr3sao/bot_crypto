@@ -1,0 +1,430 @@
+{
+  "tool": "p0_live_gate_run",
+  "task": "DEF-G3-03",
+  "title": "P0 live gate enforcement",
+  "verdict": "P0_VERIFIED_SCOPED",
+  "independence": "PROCEDURALLY_SEPARATED (same author; different artefact)",
+  "branch": "audit/mt0004-negative-controls",
+  "rev_before": "96e211bd",
+  "rev_under_test": "efd97e76",
+  "implementation_commit": "6c90b21d",
+  "run_dir": "docs\\audit\\runs\\run-20261024T163641Z-P0-LIVE-GATE",
+  "before": {
+    "rev": "96e211bd",
+    "entrypoint": "place-order-futures",
+    "rows": [
+      {
+        "gate": "GATE-001",
+        "broker_calls": 1,
+        "gate_validations": 0,
+        "exit_code": 0
+      },
+      {
+        "gate": "GATE-002",
+        "broker_calls": 1,
+        "gate_validations": 0,
+        "exit_code": 0
+      },
+      {
+        "gate": "GATE-003",
+        "broker_calls": 1,
+        "gate_validations": 0,
+        "exit_code": 0
+      },
+      {
+        "gate": "GATE-004",
+        "broker_calls": 1,
+        "gate_validations": 0,
+        "exit_code": 0
+      },
+      {
+        "gate": "GATE-005",
+        "broker_calls": 1,
+        "gate_validations": 0,
+        "exit_code": 0
+      },
+      {
+        "gate": "GATE-006",
+        "broker_calls": 1,
+        "gate_validations": 0,
+        "exit_code": 0
+      },
+      {
+        "gate": "GATE-007",
+        "broker_calls": 1,
+        "gate_validations": 0,
+        "exit_code": 0
+      },
+      {
+        "gate": "GATE-008",
+        "broker_calls": 1,
+        "gate_validations": 0,
+        "exit_code": 0
+      },
+      {
+        "gate": "GATE-009",
+        "broker_calls": 1,
+        "gate_validations": 0,
+        "exit_code": 0
+      },
+      {
+        "gate": "GATE-010",
+        "broker_calls": 1,
+        "gate_validations": 0,
+        "exit_code": 0
+      }
+    ],
+    "all_sent_with_a_rejecting_gate": true,
+    "gate_never_consulted": true
+  },
+  "after": {
+    "rev_before": "96e211bd",
+    "rev_after": "efd97e76",
+    "gates": [
+      {
+        "gate": "GATE-001",
+        "before": {
+          "calls": 1,
+          "validations": 0,
+          "exit": 0
+        },
+        "after": {
+          "calls": 0,
+          "validations": 1,
+          "exit": 2,
+          "named": true,
+          "false_success": false
+        }
+      },
+      {
+        "gate": "GATE-002",
+        "before": {
+          "calls": 1,
+          "validations": 0,
+          "exit": 0
+        },
+        "after": {
+          "calls": 0,
+          "validations": 1,
+          "exit": 2,
+          "named": true,
+          "false_success": false
+        }
+      },
+      {
+        "gate": "GATE-003",
+        "before": {
+          "calls": 1,
+          "validations": 0,
+          "exit": 0
+        },
+        "after": {
+          "calls": 0,
+          "validations": 1,
+          "exit": 2,
+          "named": true,
+          "false_success": false
+        }
+      },
+      {
+        "gate": "GATE-004",
+        "before": {
+          "calls": 1,
+          "validations": 0,
+          "exit": 0
+        },
+        "after": {
+          "calls": 0,
+          "validations": 1,
+          "exit": 2,
+          "named": true,
+          "false_success": false
+        }
+      },
+      {
+        "gate": "GATE-005",
+        "before": {
+          "calls": 1,
+          "validations": 0,
+          "exit": 0
+        },
+        "after": {
+          "calls": 0,
+          "validations": 1,
+          "exit": 2,
+          "named": true,
+          "false_success": false
+        }
+      },
+      {
+        "gate": "GATE-006",
+        "before": {
+          "calls": 1,
+          "validations": 0,
+          "exit": 0
+        },
+        "after": {
+          "calls": 0,
+          "validations": 1,
+          "exit": 2,
+          "named": true,
+          "false_success": false
+        }
+      },
+      {
+        "gate": "GATE-007",
+        "before": {
+          "calls": 1,
+          "validations": 0,
+          "exit": 0
+        },
+        "after": {
+          "calls": 0,
+          "validations": 1,
+          "exit": 2,
+          "named": true,
+          "false_success": false
+        }
+      },
+      {
+        "gate": "GATE-008",
+        "before": {
+          "calls": 1,
+          "validations": 0,
+          "exit": 0
+        },
+        "after": {
+          "calls": 0,
+          "validations": 1,
+          "exit": 2,
+          "named": true,
+          "false_success": false
+        }
+      },
+      {
+        "gate": "GATE-009",
+        "before": {
+          "calls": 1,
+          "validations": 0,
+          "exit": 0
+        },
+        "after": {
+          "calls": 0,
+          "validations": 1,
+          "exit": 2,
+          "named": true,
+          "false_success": false
+        }
+      },
+      {
+        "gate": "GATE-010",
+        "before": {
+          "calls": 1,
+          "validations": 0,
+          "exit": 0
+        },
+        "after": {
+          "calls": 0,
+          "validations": 1,
+          "exit": 2,
+          "named": true,
+          "false_success": false
+        }
+      }
+    ],
+    "cases": [
+      {
+        "case": "run-futures-GATE-003",
+        "calls": 0,
+        "validations": 1,
+        "exit": 2
+      },
+      {
+        "case": "run-spot-GATE-003",
+        "calls": 0,
+        "validations": 1,
+        "exit": 2
+      },
+      {
+        "case": "place-order-spot-GATE-003",
+        "calls": 0,
+        "validations": 1,
+        "exit": 2
+      },
+      {
+        "case": "close-position-GATE-004",
+        "calls": 1,
+        "validations": 0,
+        "exit": 0
+      },
+      {
+        "case": "set-tpsl-GATE-004",
+        "calls": 1,
+        "validations": 0,
+        "exit": 0
+      },
+      {
+        "case": "place-order-futures-close-GATE-004",
+        "calls": 1,
+        "validations": 0,
+        "exit": 0
+      },
+      {
+        "case": "place-order-spot-sell-GATE-004",
+        "calls": 1,
+        "validations": 0,
+        "exit": 0
+      },
+      {
+        "case": "settings-error-place-order-futures",
+        "calls": 0,
+        "validations": 0,
+        "exit": 2
+      },
+      {
+        "case": "settings-error-run-futures",
+        "calls": 0,
+        "validations": 0,
+        "exit": 2
+      },
+      {
+        "case": "gate-crash-place-order-spot",
+        "calls": 0,
+        "validations": 1,
+        "exit": 2
+      },
+      {
+        "case": "gate-crash-run-spot",
+        "calls": 0,
+        "validations": 1,
+        "exit": 2
+      },
+      {
+        "case": "positive-place-order-futures",
+        "calls": 1,
+        "validations": 2,
+        "exit": 0
+      },
+      {
+        "case": "positive-run-futures",
+        "calls": 1,
+        "validations": 2,
+        "exit": 0
+      }
+    ],
+    "all_gates_blocked_after": true,
+    "all_gates_sent_before": true
+  },
+  "tests": {
+    "p0_unit": 47,
+    "g3_regression": 21,
+    "cli_demo_autonomy": 405,
+    "verifier_regression": 473,
+    "mutants_killed": 7,
+    "mutants_total": 7
+  },
+  "mutations": {
+    "baseline_green": true,
+    "killed": 7,
+    "total": 7,
+    "total_seconds": 135.4,
+    "app_sha256": "ddcded50643b573d780c657b39a04295c1ad40bb8923d9ce70b0719c05f75c64",
+    "variants": [
+      {
+        "variant": "baseline",
+        "killed": false,
+        "criterion": "baseline"
+      },
+      {
+        "variant": "M1",
+        "killed": true,
+        "criterion": "ACC-P0-04"
+      },
+      {
+        "variant": "M2",
+        "killed": true,
+        "criterion": "ACC-P0-02"
+      },
+      {
+        "variant": "M3",
+        "killed": true,
+        "criterion": "ACC-P0-02"
+      },
+      {
+        "variant": "M4",
+        "killed": true,
+        "criterion": "ACC-P0-03"
+      },
+      {
+        "variant": "M5",
+        "killed": true,
+        "criterion": "ACC-P0-07"
+      },
+      {
+        "variant": "M6",
+        "killed": true,
+        "criterion": "ACC-P0-05"
+      },
+      {
+        "variant": "M7",
+        "killed": true,
+        "criterion": "ACC-P0-05"
+      }
+    ]
+  },
+  "artifacts": {
+    "docs/audit/P0-LIVE-GATE.md": "f301c3aff7c9d8ca9eb4b2966a0138eee382790e9ee4bece3e57ddb2a8e1e948",
+    "docs/audit/AUDIT_BACKLOG.yaml": "81ba7b1c7111e6724692bcefea28be5a75d9ef419efa1bbe5e4625fcd7eec25f",
+    "docs/audit/G-3.md": "95e1f9312e2fdb2c1b658829a035d04b597fdd0c9b788fb65047af126a5679a3",
+    "docs/audit/runtime_authority_map.md": "5c5eaf4c497d56c9e98fbe8187e91d49f92d42b32c439ee8d83d908c36f1e4e2",
+    "src/trading_bot/app.py": "ddcded50643b573d780c657b39a04295c1ad40bb8923d9ce70b0719c05f75c64",
+    "src/trading_bot/execution/live_gate.py": "edabd6d3e5632b8fc2aaf68471dfceba09ad187865b9e0660614487816a27ed8",
+    "tests/unit/test_live_gate_enforcement.py": "fa85e1cec7cc0736d5b8ac791ec7aa9e97fe6f171b1202f308fb9d79757632f2",
+    "tests/unit/test_live_hot_stop_coverage.py": "c7a0f28b2b4840c9e802dd5b3beeea00133f815612b952fcf0d5a0800f56a989",
+    "scripts/audit/g3_live_probe.py": "8311b12aa134577c8cd6ec96ca42a813208e1603d3c04a69f7b2626e13e1c85f",
+    "scripts/audit/p0_live_gate_probe.py": "36a0c0e17105f33ab3a180f56b851db069c7c4a69158b3a1e0e33066b22424f3",
+    "scripts/audit/p0_live_gate_mutants.py": "2243545db84a8a4c9f838ca07c67919293f7a6c316b97b76d0bc71b4b228495a",
+    "scripts/audit/verify_p0_live_gate.py": "ea6ca87aa5b0fd3c0ae82647824842020e0037e721fa61169443bfa5421dcebe",
+    "docs\\audit\\runs\\run-20261024T163641Z-P0-LIVE-GATE\\before\\SUMMARY.json": "cc255d99ea22f189aa971395670274246e340ef5170f5a12bf8334540e03da8e",
+    "docs\\audit\\runs\\run-20261024T163641Z-P0-LIVE-GATE\\after\\SUMMARY.json": "386e0ef0926bd746abe5fa3775986f96e3267d64b0cf3e1bf2f65d0c48fdc082",
+    "docs\\audit\\runs\\run-20261024T163641Z-P0-LIVE-GATE\\mutations.json": "6cd6b28cc9b1ebe2cf52ee157adab6206088b6f874873e30c4ce6f1fa9340eee",
+    "docs\\audit\\runs\\run-20261024T163641Z-P0-LIVE-GATE\\COVERAGE_MATRIX.md": "78f6ddb7ae78a016ddae001a4b08c242e3d091e17a68fcfd250467b4119d694a",
+    "docs\\audit\\runs\\run-20261024T163641Z-P0-LIVE-GATE\\BEFORE_AFTER.md": "dbc41cb2dd050a75afeda24a19fa242a417fe816e6ab2bd23c947cf2ed5fc38c",
+    "docs\\audit\\runs\\run-20261024T163641Z-P0-LIVE-GATE\\TIMELINE.md": "d83e2f6cc0805bc65623c9f3fc4d49bf94b835e155482f8a3893e62170996304",
+    "docs\\audit\\runs\\run-20261024T163641Z-P0-LIVE-GATE\\COMMANDS.md": "36c85871c40317ff84d7cd0d740e5db24a14621c845c7692591a29fb312485e3"
+  },
+  "defects": [
+    {
+      "id": "DEF-G3-03",
+      "state": "closed",
+      "summary": "gate existed, no caller"
+    },
+    {
+      "id": "DEF-P0-01",
+      "state": "closed",
+      "summary": "G-3 probe fixture was not a legal live config"
+    },
+    {
+      "id": "DEF-P0-02",
+      "state": "closed",
+      "summary": "verifier built mode as str; two checks raised"
+    },
+    {
+      "id": "DEF-P0-03",
+      "state": "open",
+      "summary": "LiveTradingGate._data_dir unused; GATE-006 uses cwd"
+    },
+    {
+      "id": "DEF-P0-04",
+      "state": "open",
+      "summary": "run --auto-trade still has no --confirm-live"
+    }
+  ],
+  "limits": [
+    "all broker sinks are recorders; no exchange payload was tested",
+    "procedural independence, same author",
+    "GATE-009/010 forced failures only",
+    "G-4 (paper_cycle) remains uncovered",
+    "hot stop is scoped to --run-dir"
+  ]
+}

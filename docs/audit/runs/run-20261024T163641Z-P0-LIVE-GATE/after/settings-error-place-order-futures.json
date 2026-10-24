@@ -1,0 +1,39 @@
+{
+  "app_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\app.py",
+  "app_src": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src",
+  "argv": [
+    "place-order",
+    "--symbol",
+    "BTCUSDT",
+    "--side",
+    "buy",
+    "--order-type",
+    "market",
+    "--amount",
+    "0.01",
+    "--confirm-live",
+    "--market-kind",
+    "futures",
+    "--trade-side",
+    "OPEN",
+    "--run-dir",
+    "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-badcfg-place-order-futures"
+  ],
+  "break_gate": null,
+  "broken_gate_ids": [],
+  "broker_calls": 0,
+  "calls": [],
+  "entrypoint": "place-order-futures",
+  "error": "",
+  "exit_code": 2,
+  "gate_crash": false,
+  "gate_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\execution\\live_gate.py",
+  "gate_validations": 0,
+  "patched": {
+    "futures": "FakeFutures"
+  },
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-badcfg-place-order-futures",
+  "settings_error": true,
+  "stderr_tail": "ERROR: no se pudo cargar la configuracion live (ValueError); ninguna orden enviada.\n",
+  "stdout_tail": ""
+}

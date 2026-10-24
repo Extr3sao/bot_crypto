@@ -1,0 +1,47 @@
+{
+  "app_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\app.py",
+  "app_src": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src",
+  "argv": [
+    "set-tpsl",
+    "--symbol",
+    "BTCUSDT",
+    "--position-id",
+    "p0-pos-1",
+    "--qty",
+    "0.01",
+    "--tp-price",
+    "110",
+    "--sl-price",
+    "90",
+    "--run-dir",
+    "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-after-set-tpsl"
+  ],
+  "break_gate": "GATE-004",
+  "broken_gate_ids": [
+    "GATE-004"
+  ],
+  "broker_calls": 1,
+  "calls": [
+    {
+      "position_id": "p0-pos-1",
+      "qty": 0.01,
+      "sink": "futures.place_position_tpsl",
+      "sl_price": 90.0,
+      "symbol": "BTCUSDT",
+      "tp_price": 110.0
+    }
+  ],
+  "entrypoint": "set-tpsl",
+  "error": "",
+  "exit_code": 0,
+  "gate_crash": false,
+  "gate_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\execution\\live_gate.py",
+  "gate_validations": 0,
+  "patched": {
+    "futures": "FakeFutures"
+  },
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-after-set-tpsl",
+  "settings_error": false,
+  "stderr_tail": "",
+  "stdout_tail": "{\"success\": true, \"marketKind\": \"futures\", \"result\": {\"positionId\": \"p0-pos-1\", \"tpsl\": true}}\n"
+}

@@ -1,0 +1,38 @@
+{
+  "app_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\app.py",
+  "app_src": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src",
+  "argv": [
+    "run",
+    "--mode",
+    "live",
+    "--once",
+    "--auto-trade",
+    "--market-kind",
+    "spot",
+    "--trade-quote-usdt",
+    "50",
+    "--loop-seconds",
+    "30",
+    "--env-file",
+    "",
+    "--run-dir",
+    "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-crash-run-spot"
+  ],
+  "break_gate": null,
+  "broken_gate_ids": [],
+  "broker_calls": 0,
+  "calls": [],
+  "entrypoint": "run-spot",
+  "error": "",
+  "exit_code": 2,
+  "gate_crash": true,
+  "gate_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\execution\\live_gate.py",
+  "gate_validations": 1,
+  "patched": {
+    "futures": "FakeFutures"
+  },
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-crash-run-spot",
+  "settings_error": false,
+  "stderr_tail": "ERROR: live trading gate refused auto-trade (live_gate_error:RuntimeError); no order sent.\n",
+  "stdout_tail": ""
+}

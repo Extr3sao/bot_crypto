@@ -1,0 +1,49 @@
+{
+  "app_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\app.py",
+  "app_src": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src",
+  "argv": [
+    "run",
+    "--mode",
+    "live",
+    "--once",
+    "--auto-trade",
+    "--market-kind",
+    "spot",
+    "--trade-quote-usdt",
+    "50",
+    "--loop-seconds",
+    "30",
+    "--env-file",
+    "",
+    "--run-dir",
+    "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-before-run-spot"
+  ],
+  "break_gate": "GATE-003",
+  "broken_gate_ids": [
+    "GATE-003"
+  ],
+  "broker_calls": 1,
+  "calls": [
+    {
+      "amount": 0.5,
+      "order_type": "market",
+      "price": 100.0,
+      "side": "buy",
+      "sink": "connector.create_order",
+      "symbol": "BTC/USDT"
+    }
+  ],
+  "entrypoint": "run-spot",
+  "error": "",
+  "exit_code": 0,
+  "gate_crash": false,
+  "gate_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\execution\\live_gate.py",
+  "gate_validations": 0,
+  "patched": {
+    "futures": "FakeFutures"
+  },
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-before-run-spot",
+  "settings_error": false,
+  "stderr_tail": "",
+  "stdout_tail": "[run] ejecutando una iteracion live real (mode=live).\n[run] live-event={\"status\": \"LIVE_ORDER_OK\", \"symbol\": \"BTC/USDT\", \"score\": 0.9, \"amount\": 0.5, \"estimatedCostUsdt\": 50.0, \"orderId\": \"p0-connector-1\", \"orderStatus\": \"closed\", \"clientOrderId\": \"p0-cid\"}\n\n==============================================================================\nMarket scanner iteration -- DEMO mode (mode=live, synthetic data)\n==============================================================================\n\n  SYMBOL               LAST     VOL_24H_USDT   SPR_BPS    ATR%   SCORE  STATUS\n  ----------------------------------------------------------------------------\n  BTC/USDT           100.00        5,000,000      1.00    0.50   0.900  ACTIVE\n\nCounters (pine contract: spec section 10):\n  pairs_processed:  1\n  pairs_active:     1\n  pairs_inactive:   0\n  scanner_errors:   0\n\n"
+}
