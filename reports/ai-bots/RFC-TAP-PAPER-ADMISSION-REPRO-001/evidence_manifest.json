@@ -22,6 +22,11 @@
   },
   "code_changes": [
     {
+      "path": ".gitattributes",
+      "sha256_after": "d15df723d28de2f3159191a1471618a1974852fbbe4177bd88224b7ae858f2e2",
+      "sha256_before": "d4edda912b7e41f4458bcc906532cf9ebcae423f394f31416d79eeb2cd588e76"
+    },
+    {
       "path": ".gitignore",
       "sha256_after": "3ca53caa3bf39bd3eebe070f28d4c03dd6d3cda2cbc1836329f5550612aea2f1",
       "sha256_before": "f2c7e159be431734f8c329711f223ec2e577bf9e0042f3ac009f7e77df7ff5b1"
@@ -55,6 +60,11 @@
       "path": "tests/unit/ops/test_windowless.py",
       "sha256_after": "062a2ef0e94c52e3af058af08880310d06c213ae6f3f7838148d10042e84241d",
       "sha256_before": "9378f187b6cca73d690e5d24d4ce7ad333bbec63fd51e3fd5d360ad50de12f59"
+    },
+    {
+      "path": "tests/unit/reports/test_evidence_manifest_eol.py",
+      "sha256_after": "438eaee1e25b3590d37277ad8f2cb4e177d022c078da670f3dd7bf4e1e8bd79b",
+      "sha256_before": null
     },
     {
       "path": "uv.lock",
@@ -180,7 +190,7 @@
       "sha256": "03fed1de574c449463162290db2ea9efefa542262742a0f01e7fc8aadac5269e"
     }
   },
-  "generated_at_utc": "2026-10-24T07:21:10Z",
+  "generated_at_utc": "2026-10-24T10:49:15Z",
   "preserved": {
     "FINAL_REPORT.md": {
       "bytes": 10227,

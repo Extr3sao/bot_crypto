@@ -509,5 +509,5 @@
   "undetected_mutations": [],
   "verdict": "PASS",
   "verifier": "scripts/paper_supervisor_verify.py",
-  "verifier_commit": "c44f912c2fa7e25a9765323aa0032a23425446ab"
+  "verifier_commit": "ddef64327d7c22758e39572b6e0697ec27c75b00"
 }

@@ -1,10 +1,10 @@
 {
   "schema_version": "windowless-audit-v1",
-  "generated_at_utc": "2026-10-24T07:22:58Z",
+  "generated_at_utc": "2026-10-24T10:49:20Z",
   "root": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-repro001",
   "platform": "win32",
   "scan_counts": {
-    "python": 1267,
+    "python": 1268,
     "shell": 0,
     "bat": 1,
     "ps1": 6,
@@ -65,7 +65,15 @@
       "severity": "MEDIUM",
       "code": "RUN_WITHOUT_WINDOWLESS",
       "path": "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/verify_repro.py",
-      "line": 103,
+      "line": 110,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/verify_repro.py",
+      "line": 136,
       "detail": "subprocess without window suppression",
       "remedy": "use trading_bot.ops.windowless.run()"
     },
@@ -2944,6 +2952,22 @@
     {
       "severity": "MEDIUM",
       "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/reports/test_evidence_manifest_eol.py",
+      "line": 28,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/reports/test_evidence_manifest_eol.py",
+      "line": 69,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
       "path": "tests/unit/research/test_cost_barrier_ci_parity.py",
       "line": 159,
       "detail": "subprocess without window suppression",
@@ -3295,7 +3319,7 @@
     }
   ],
   "by_severity": {
-    "MEDIUM": 406
+    "MEDIUM": 409
   },
   "high": 0,
   "verdict": "CLEAN",

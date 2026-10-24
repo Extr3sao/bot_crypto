@@ -83,3 +83,22 @@ docs/agentic/exp004a/handoff/** -text
 data/def-run-016/** -text
 data/def-run-017/** -text
 data/quote-feed-1m/** -text
+
+# RFC-TAP-PAPER-ADMISSION-REPRO-001 publishes evidence_manifest.json: a digest of every
+# file it cites.  `core.autocrlf=true` (the Git-for-Windows default in this checkout)
+# rewrote the line endings on checkout, so the manifest agreed with itself only in the
+# tree that produced it and a fresh clone failed 13 of its 44 digests (V01/V02).  The
+# digest-covered paths are now stored exactly as they are on disk, same treatment as the
+# trees above and for the same reason: a digest that depends on who checked it out is not
+# a digest.
+reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/** -text
+reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/** -text
+reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/** -text
+scripts/exp004a_verify.py -text
+scripts/ops_background_audit.py -text
+scripts/paper_lock_campaign_verify.py -text
+tests/unit/ops/test_paper_lock_campaign.py -text
+tests/unit/ops/test_session_status.py -text
+tests/unit/ops/test_windowless.py -text
+uv.lock -text
+.gitignore -text
