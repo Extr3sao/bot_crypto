@@ -61,7 +61,22 @@ La prueba de sustitución copia los shards recién descargados a un directorio t
 - **Habilitar la tarea**: no se hizo. Requiere corpus exacto (paso 7 del WP).
 - **Re-congelar**: prohibido por el WP y por la RFC; no se ha tocado ningún umbral ni hash.
 
-## 5. Trazabilidad
+## 5. Lint, tests y alcance del cambio
+
+- `ruff check scripts/edge04_15m_*.py` → **All checks passed** (`exit 0`). El árbol no exige
+  `ruff format` en `scripts/` (los verificadores existentes tampoco lo cumplen), así que no se
+  reformatea lo ajeno.
+- No se añadieron ni modificaron tests unitarios: el WP no toca `src/`, y los tres scripts son
+  herramientas de diagnóstico cuyo contrato es el verificador independiente, no un mock.
+- No se modificó ni una línea del experimento congelado: `git diff --stat` de este WP son sólo
+  tres scripts nuevos y esta carpeta.
+
+## 6. Trazabilidad
+
+HEAD al ejecutar: `688c5805`. El commit de entrega es el que introduce
+`docs/agentic/exp004a/wp_edge04_15m/` (un informe no puede nombrar su propio commit: eso lo
+haría distinto de lo que describe; `git log --oneline -- docs/agentic/exp004a/wp_edge04_15m`
+lo resuelve sin circularidad).
 
 | Script | sha256 (16) |
 |---|---|

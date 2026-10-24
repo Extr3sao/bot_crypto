@@ -147,14 +147,27 @@ el gate está cerrado, no porque nadie sepa por qué.
 Re-congelar el corpus con los datos de hoy **no es esta reparación**: es otro experimento, con
 otro pin, y no está autorizado aquí.
 
-## 9. Verificación independiente
+## 9. Defectos encontrados durante el trabajo
+
+Los tres son míos, del verificador, y se corrigieron en vez de relajarse:
+
+| Defecto | Efecto | Corrección |
+|---|---|---|
+| El subproceso del gate heredaba sólo `PYTHONPATH` | sin `SYSTEMROOT`, Windows no abre socket (`WinError 10106`): el gate «fallaba» por red, no por corpus | entorno heredado y `SystemExit(1)` en el hijo, para que el código de salida signifique algo |
+| El ensayo de sustitución usaba un directorio temporal fuera del repo | `load_15m` registra la fuente como ruta relativa al checkout y lanzaba `ValueError` antes de llegar al pin | scratch dentro del árbol (`.tmp15m/`), nunca en `data/` |
+| El escáner de órdenes se leía a sí mismo | el verificador nombra los verbos que prohíbe, así que siempre se declaraba culpable | se examinan sólo los dos scripts que tocan el mercado, con formas de llamada y no palabras |
+
+Ninguno cambió el dictamen: los tres se detectaron precisamente porque el verificador se niega a
+aceptar su propia palabra.
+
+## 10. Verificación independiente
 
 `scripts/edge04_15m_verify.py` no importa a los otros dos scripts: relee sus JSON, re-hashea los
 bytes, re-deriva el pin y vuelve a ejecutar el gate y la prueba de sustitución. Resultado:
 **13/13, `EVIDENCE_CONSISTENT_WITH_BLOCKED`, `FALSE_SUCCESS = 0`**. Si el replay hubiera
 escrito el shard descargado en `data/raw`, la comprobación `SUBSTITUTE_IS_REFUSED` fallaría.
 
-## 10. Artefactos
+## 11. Artefactos
 
 `RUN_REPORT.md`, `RUN_REPORT.json`, `EVIDENCE.json`, `FINAL_REPORT.md`, `VERIFIER.json` y `raw/`
 (auditoría de fuentes, replay, salidas de los verificadores) en `docs/agentic/exp004a/wp_edge04_15m/`.

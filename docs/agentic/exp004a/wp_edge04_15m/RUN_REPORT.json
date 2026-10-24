@@ -119,6 +119,32 @@
       "status": "PASS"
     }
   ],
+  "defects": [
+    {
+      "defect": "the gate subprocess inherited only PYTHONPATH",
+      "effect": "Windows could not open a socket (WinError 10106); the gate looked broken for the wrong reason",
+      "fix": "inherit the environment and make the child exit 1 on the caught exception",
+      "where": "scripts/edge04_15m_verify.py"
+    },
+    {
+      "defect": "the substitution rehearsal used a temp dir outside the repo",
+      "effect": "load_15m records its source relative to the checkout and raised ValueError before reaching the pin",
+      "fix": "rehearse inside .tmp15m/ in the tree, never under data/",
+      "where": "scripts/edge04_15m_verify.py"
+    },
+    {
+      "defect": "the order scanner read its own source",
+      "effect": "the verifier always convicted itself, because it must name the verbs it forbids",
+      "fix": "scan only the two scripts that touch the venue, matching call shapes rather than words",
+      "where": "scripts/edge04_15m_verify.py"
+    },
+    {
+      "defect": "the recycle-bin walk died on an unreadable entry",
+      "effect": "the whole audit aborted and an older SOURCE_AUDIT.json was left on disk",
+      "fix": "os.walk with an error counter; unreadable entries are reported, not swallowed",
+      "where": "scripts/edge04_15m_audit.py"
+    }
+  ],
   "false_success": 0,
   "gate": {
     "assert_frozen_corpus": "FileNotFoundError: data/raw/alpha003/price/BTCUSDT_15m.json",
@@ -137,6 +163,12 @@
   },
   "generated_at_utc": "2026-10-24T11:23:24Z",
   "head_at_run": "688c5805",
+  "lint": {
+    "command": "ruff check scripts/edge04_15m_audit.py scripts/edge04_15m_refetch.py scripts/edge04_15m_verify.py",
+    "exit_code": 0,
+    "note": "ruff format is not enforced on scripts/ in this tree; existing verifiers do not satisfy it either",
+    "result": "All checks passed"
+  },
   "mode": "PAPER/OFFLINE ONLY \u2014 reads market data, writes no order, changes no risk limit",
   "replay": {
     "ccxt_version": "4.5.63",
@@ -204,6 +236,7 @@
     "note": "parked on purpose; its state reports what is true instead of a green light over an empty lane"
   },
   "tree": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k",
+  "unit_tests": "none added or changed: no file under src/ was touched, and these three scripts are diagnostic tools whose contract is the independent verifier",
   "verdict": "BLOCKED_WITH_EVIDENCE",
   "what_was_not_run_and_why": [
     "forward tick: criterion 3 requires the pin to pass first; running it would only add another failure row",
