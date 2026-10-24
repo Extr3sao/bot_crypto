@@ -1,0 +1,68 @@
+{
+  "checkout": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
+  "rev": "0bcc100c09f4d125582637a6588016fdb5b659d8",
+  "process_1_cli": {
+    "exit": 0,
+    "stdout": {
+      "status": "REQUESTED",
+      "control_file": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g1-trace-thi_pou7\\run-blocked\\KILL_SWITCH",
+      "reason": "operator: trace",
+      "enforced": false,
+      "note": "El proceso vivo confirma en kill_switch_events.jsonl (event=engaged). Exit 0 solo prueba que la peticion quedo en disco."
+    },
+    "stderr": ""
+  },
+  "process_2_blocked": {
+    "broker_calls": 0,
+    "control_path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-trace-thi_pou7\\run-blocked\\KILL_SWITCH",
+    "engaged_after_cycle": true,
+    "engaged_before_first_cycle": true,
+    "mode": "TRADE_PAPER",
+    "module_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\__init__.py",
+    "orders_created": 0,
+    "restored": true,
+    "risk_verdict": "PASS",
+    "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-trace-thi_pou7\\run-blocked"
+  },
+  "process_2_control": {
+    "broker_calls": 1,
+    "control_path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-trace-thi_pou7\\run-control\\KILL_SWITCH",
+    "engaged_after_cycle": false,
+    "engaged_before_first_cycle": false,
+    "mode": "TRADE_PAPER",
+    "module_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\__init__.py",
+    "orders_created": 1,
+    "restored": false,
+    "risk_verdict": "PASS",
+    "run_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-trace-thi_pou7\\run-control"
+  },
+  "events": [
+    {
+      "activated_at_ms": 1792825758816,
+      "activation_error": null,
+      "actor": "boot_restore:C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g1-trace-thi_pou7\\run-blocked\\KILL_SWITCH",
+      "boundary": "autonomous.runtime._execute_paper -> broker.execute_signal",
+      "broker_calls_allowed": 0,
+      "commit": "",
+      "event": "restored",
+      "lock_timeout": false,
+      "new_state": "halted",
+      "orders_blocked": 0,
+      "persisted": true,
+      "previous_state": "normal",
+      "reason": "operator: trace",
+      "repeated": false,
+      "restored": true,
+      "run_id": "",
+      "version": "0.1.0"
+    }
+  ],
+  "assertions": {
+    "blocked_broker_calls_is_zero": true,
+    "blocked_restored_before_cycle": true,
+    "control_broker_calls_is_one": true,
+    "event_is_restored": true,
+    "cli_did_not_claim_enforcement": true
+  },
+  "ok": true
+}
