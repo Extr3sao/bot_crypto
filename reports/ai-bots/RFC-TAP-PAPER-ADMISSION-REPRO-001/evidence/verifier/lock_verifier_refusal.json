@@ -1,0 +1,51 @@
+{
+  "adversarial": [],
+  "artifacts": {
+    "CAMPAIGN.json": "42bd5c2849b912c36a0eddd7f418022f49b4745363400726575b099f436203e4",
+    "session/STREAM.jsonl": "3d9e83f4a32840fd7e4f69335c7fc848a470c15016bb49190c64387b0edffc73",
+    "session/STREAM.jsonl.lock.fence": "25d4f2a86deb5e2574bb3210b67bb24fcc4afb19f93a7b65a057daa874a9d18e",
+    "session/cycles/cycle-0001/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0002/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0003/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0004/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0005/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0006/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0007/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0008/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/cycles/cycle-0009/ledger.jsonl.lock.fence": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "session/market-1m/BTCUSDT.jsonl.lock.fence": "25d4f2a86deb5e2574bb3210b67bb24fcc4afb19f93a7b65a057daa874a9d18e",
+    "session/market-1m/ETHUSDT.jsonl.lock.fence": "25d4f2a86deb5e2574bb3210b67bb24fcc4afb19f93a7b65a057daa874a9d18e",
+    "session/market-1m/SOLUSDT.jsonl.lock.fence": "25d4f2a86deb5e2574bb3210b67bb24fcc4afb19f93a7b65a057daa874a9d18e"
+  },
+  "builder": "scripts/paper_lock_campaign.py",
+  "campaign": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-repro001\\reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign",
+  "campaign_schema": {
+    "declared": "TAP_PAPER_SUPERVISOR_CAMPAIGN_V1",
+    "expected": "TAP_PAPER_LOCK_CAMPAIGN_V1",
+    "supported": false
+  },
+  "false_success": 0,
+  "invalid_mutations": [],
+  "judgement": {
+    "checks": {
+      "campaign_schema_is_supported": false
+    },
+    "counts": {},
+    "cycles": {},
+    "final_state": "UNKNOWN",
+    "iterations": [],
+    "verdict": "FAIL"
+  },
+  "mutations_skipped": "UNSUPPORTED_CAMPAIGN_SCHEMA",
+  "refusal": {
+    "code": "UNSUPPORTED_CAMPAIGN_SCHEMA",
+    "declared": "TAP_PAPER_SUPERVISOR_CAMPAIGN_V1",
+    "detail": "these artefacts are not the layout this verifier reads; judge them with the verifier of the producer that wrote them",
+    "expected": "TAP_PAPER_LOCK_CAMPAIGN_V1"
+  },
+  "schema_version": "TAP_PAPER_LOCK_CAMPAIGN_VERIFICATION_V1",
+  "undetected_mutations": [],
+  "verdict": "FAIL",
+  "verifier": "scripts/paper_lock_campaign_verify.py",
+  "verifier_commit": "9339dc04fc363298ff790f4ed60a72d389c49c48"
+}

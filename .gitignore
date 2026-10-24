@@ -551,3 +551,38 @@ reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/*
 !reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/evidence/*
 !reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/fixtures/
 !reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/fixtures/*
+
+# ------------------------------------------------------------
+# CODEX-PAPER-ADMISSION-DIAG-001 — el diagnostico se versiona tal como se emitio.
+# Los seis documentos y su verificador de claims son la entrada del RFC
+# RFC-TAP-PAPER-ADMISSION-REPRO-001: sus sha256 estan en el manifiesto del RFC y
+# cualquier reescritura posterior invalidaria la trazabilidad. La evidencia que los
+# sostiene (dos verificadores, un claim-check y el stdout del verificador de lock)
+# viaja con ellos; los .log no se recogen por la regla global, se re-incluyen aqui.
+# ------------------------------------------------------------
+!reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/
+!reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/evidence/*.log
+
+# ------------------------------------------------------------
+# CODEX-PAPER-SUPERVISOR-001 — la campana del supervisor es la evidencia que el
+# verificador de lock juzgaba sin mirar su schema_version. Sin los artefactos en Git
+# la correccion solo se puede probar en la maquina que los genero, asi que se
+# versionan la campana, sus escenarios y los informes. Los logs de los procesos se
+# quedan fuera: son ruido de ejecucion, no evidencia de estado.
+# ------------------------------------------------------------
+!reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/
+!reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/**
+reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/**/*.log
+reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/campaign/**/__pycache__/
+reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/*.log
+
+# ------------------------------------------------------------
+# RFC-TAP-PAPER-ADMISSION-REPRO-001 — este RFC publica su baseline, su manifiesto de
+# evidencia y el informe de ejecucion. El verificador independiente relee los hashes
+# y los logs desde el checkout, asi que viajan con el codigo.
+# ------------------------------------------------------------
+!reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/
+
+# Los logs del RFC son evidencia, no ruido: la regla global `*.log` los descartaba y
+# dejaba un manifiesto que nombra ficheros que el checkout no tiene.
+!reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/evidence/*.log

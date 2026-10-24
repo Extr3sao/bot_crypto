@@ -18,11 +18,11 @@ from __future__ import annotations
 
 import importlib.util
 import json
-import subprocess
 import sys
 from pathlib import Path
 from typing import Any
 
+from trading_bot.ops import windowless
 from trading_bot.ops.single_writer import SingleWriter, diagnose_lock
 from trading_bot.vision.ledger import GENESIS, line_hash
 
@@ -41,9 +41,11 @@ verifier = _load("paper_lock_campaign_verify")
 
 
 def _dead_pid() -> int:
-    process = subprocess.Popen([sys.executable, "-c", "pass"])
+    """A pid that existed and no longer does, started through the only allowed launcher."""
+
+    process = windowless.spawn([sys.executable, "-c", "pass"], cwd=str(REPO))
     process.wait()
-    return process.pid
+    return int(process.pid)
 
 
 def _write_stream(path: Path, entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -78,6 +80,17 @@ def build_campaign(root: Path) -> Path:
     out = root / "campaign"
     session = out / "session"
     session.mkdir(parents=True)
+    (out / "CAMPAIGN.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "TAP_PAPER_LOCK_CAMPAIGN_V1",
+                "mode": "PAPER",
+                "live_orders": 0,
+            },
+            sort_keys=True,
+        ),
+        encoding="utf-8",
+    )
     pids = [_dead_pid() for _ in range(6)]
     for pid in pids:
         assert diagnose_lock(_owner(pid, "x"))["state"] == "ABANDONED"
@@ -283,7 +296,7 @@ def test_the_honest_campaign_passes_every_check(tmp_path: Path) -> None:
 def test_every_mutation_is_effective_and_detected(tmp_path: Path) -> None:
     campaign_dir = build_campaign(tmp_path)
     results = verifier.mutations(campaign_dir)
-    assert len(results) == 9
+    assert len(results) == 10
     invalid = [item["mutation"] for item in results if item["invalid"]]
     undetected = [item["mutation"] for item in results if not item["detected"]]
     assert invalid == [], f"mutations that changed nothing: {invalid}"
@@ -293,6 +306,43 @@ def test_every_mutation_is_effective_and_detected(tmp_path: Path) -> None:
     assert "stream_chain_intact" not in duplicate["false_checks"], (
         "the duplicate must be caught by numbering, not by a broken chain"
     )
+
+
+def test_a_campaign_from_another_schema_is_refused_not_scored(tmp_path: Path) -> None:
+    """The supervisor's campaign is a different artefact; it must be refused by name.
+
+    Scoring it would report its unrelated layout as a failure of *this* mechanism, which
+    is how a verifier can be honest about the wrong question for 32 checks.
+    """
+
+    campaign_dir = build_campaign(tmp_path)
+    manifest = campaign_dir / "CAMPAIGN.json"
+    payload = json.loads(manifest.read_text(encoding="utf-8"))
+    payload["schema_version"] = "TAP_PAPER_SUPERVISOR_CAMPAIGN_V1"
+    manifest.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
+
+    verdict = verifier.judge(campaign_dir)
+
+    assert verdict["checks"] == {"campaign_schema_is_supported": False}, (
+        "a refused campaign must not be scored on checks it was never shaped for"
+    )
+    assert verdict["verdict"] == "FAIL"
+    assert verdict["refusal"]["code"] == "UNSUPPORTED_CAMPAIGN_SCHEMA"
+    assert verdict["schema"] == {
+        "declared": "TAP_PAPER_SUPERVISOR_CAMPAIGN_V1",
+        "expected": "TAP_PAPER_LOCK_CAMPAIGN_V1",
+        "supported": False,
+    }
+
+
+def test_a_campaign_without_a_manifest_is_refused(tmp_path: Path) -> None:
+    campaign_dir = build_campaign(tmp_path)
+    (campaign_dir / "CAMPAIGN.json").unlink()
+
+    verdict = verifier.judge(campaign_dir)
+
+    assert verdict["checks"]["campaign_schema_is_supported"] is False
+    assert verdict["verdict"] == "FAIL"
 
 
 def test_a_forged_crash_boundary_is_refused(tmp_path: Path) -> None:

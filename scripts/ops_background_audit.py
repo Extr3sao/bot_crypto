@@ -58,6 +58,12 @@ SELF_REFERENTIAL: Final[frozenset[str]] = frozenset(
     {"scripts/ops_background_audit.py", "src/trading_bot/ops/windowless.py"}
 )
 
+#: A verifier that must not import the runtime it audits (RFC-051 §5) cannot call
+#: ``windowless``, so it hides its own children with the two Windows constants directly.
+#: The exemption is not a blanket pass: the file must still contain both mechanisms, and
+#: if either disappears the audit reports a HIGH finding instead of going quiet.
+LOCAL_WINDOW_HIDING: Final[frozenset[str]] = frozenset({"scripts/exp004a_verify.py"})
+
 SKIP_DIRS: Final[frozenset[str]] = frozenset(
     {".git", ".venv", "__pycache__", "node_modules", ".mypy_cache", ".pytest_cache", ".ruff_cache"}
 )
@@ -72,6 +78,14 @@ CMD_EXE = re.compile(
     re.IGNORECASE,
 )
 WINDOWLESS_IMPORT = re.compile(r"from trading_bot\.ops import windowless|import .*windowless")
+CREATE_NO_WINDOW = re.compile(r"CREATE_NO_WINDOW")
+SW_HIDE = re.compile(r"SW_HIDE")
+
+
+def hides_its_own_window(text: str) -> bool:
+    """Both halves of the mechanism: no new console, and no inherited one shown."""
+
+    return bool(CREATE_NO_WINDOW.search(text)) and bool(SW_HIDE.search(text))
 
 
 @dataclass(frozen=True, slots=True)
@@ -113,6 +127,21 @@ def scan(root: Path | str = REPO) -> dict[str, Any]:
         except OSError:
             continue
         uses_helper = bool(WINDOWLESS_IMPORT.search(text)) or rel in SELF_REFERENTIAL
+        if rel in LOCAL_WINDOW_HIDING:
+            if hides_its_own_window(text):
+                uses_helper = True
+            else:
+                findings.append(
+                    Finding(
+                        "HIGH",
+                        "DECLARED_LOCAL_HIDING_MISSING",
+                        rel,
+                        1,
+                        "this file is exempted from the helper because it hides its own "
+                        "window, and one of the two mechanisms is gone",
+                        "restore CREATE_NO_WINDOW and a STARTUPINFO with SW_HIDE, or use the helper",
+                    )
+                )
         if uses_helper:
             counts["windowless_users"] += 1
 
