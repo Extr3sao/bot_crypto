@@ -1,0 +1,32 @@
+[verify] PASS  V-TECH-01    every required field is present
+[verify] PASS  V-TECH-02    commit, digest, window and governance status are the anchored ones
+[verify] PASS  V-TECH-03    generator at fc036d967923 is sha256 af1ab7cc23980dad..., would-run blob 052832c2252a...
+[verify] PASS  V-TECH-04    phase 1 sha256 8946f871a97b7575..., blob 43c9deea29a8..., dirty=False
+[verify] PASS  V-TECH-05    19 sealed 02D artefacts, 0 drifted
+[verify] PASS  V-TECH-06    declaration committed at 2026-10-21T15:21:23.000Z, window opens 2026-10-22T00:00:00Z, dirty=False
+[verify] PASS  V-PROV-01    eligible rehearsal exit 0, 1 file(s), verbatim=True (written under a temporary directory, never data/exp004a)
+[verify] PASS  V-PROV-02    re-running into an existing dataset returns 2; a dataset is written once
+[verify] PASS  V-PROV-03    bar fetched before the declaration took effect: exit 5, 0 file(s)
+[verify] PASS  V-PROV-04    no bar opens inside the window: exit 3, 0 file(s)
+[verify] PASS  V-PROV-05    empty source: exit 4, 0 file(s)
+[verify] PASS  V-PROV-06    st6:tape exit 2; the freeze defines no round-to-window rule
+[verify] PASS  V-PROV-07    a period past the declared window returns 2
+[verify] PASS  V-PROV-08    a declaration citing another generator blob is refused with GENERATOR_BLOB_MISMATCH (exit 2)
+[verify] PASS  V-PROV-09    the probes wrote nothing into data/exp004a: 2 file(s) before, 2 after, digests identical
+[verify] PASS  V-TEMP-01    builder claims BEFORE_WINDOW, this verifier's clock says BEFORE_WINDOW at 2026-10-21T19:27:36.289Z
+[verify] PASS  V-TEMP-02    capture status 'PENDING_WINDOW' with 0 published dataset(s) against a BEFORE_WINDOW window
+[verify] PASS  V-TEMP-03    external_timestamp='UNAVAILABLE', time_proof='TIME_PROOF_WEAK'
+[verify] PASS  V-TEMP-04    issued <= effective <= window start, and no capture predates the window
+[verify] PASS  V-TEMP-05    the run report says C_013='TIME_PROOF_WEAK'; without an external attestation it must stay weak
+[verify] PASS  V-ART-01     7 of 7 required artefacts present
+[verify] PASS  V-ART-02     6 digest(s) declared, 0 do not match the file on disk
+[verify] PASS  V-ART-03     capture report names 0 dataset(s); data/exp004a holds 0 dataset(s) and 0 manifest(s)
+[verify] PASS  V-ART-04     2 admission ledger digest(s) declared, 0 drifted
+[verify] PASS  V-ART-05     0 sealed path(s) modified in the worktree
+[verify] PASS  V-POL-01     the verifier imports no trading_bot module and no builder script
+[verify] PASS  V-POL-02     builder role 'builder' in the preflight; verifier id verifier-d/EXP-004A/WP-051-02E
+[verify] PASS  V-POL-03     6 gate states checked, 0 wrong: []
+[verify] PASS  V-POL-04     WP_051_02E='PENDING_WINDOW' with 0 published dataset(s); without a prospective capture only ['PENDING_WINDOW'] is available
+[verify] PASS  V-POL-05     L-01 probe: a bar stamped as fetched in the future returns 0; the run report declares 0
+[verify] PASS  V-POL-06     economic executions recorded by builder and verifier: [0, 0, 0]
+[verify] PASS - 31 checks

@@ -1,0 +1,39 @@
+{
+  "all_passed": true,
+  "commands": [
+    {
+      "argv": "python -m pytest tests/unit/reports/test_exp_003m_*.py -q",
+      "counts": {
+        "error": 0,
+        "failed": 0,
+        "passed": 25,
+        "skipped": 0
+      },
+      "exit_code": 0,
+      "name": "pytest",
+      "summary": "25 passed, 0 failed, 0 skipped"
+    },
+    {
+      "argv": "python -m ruff check scripts/exp_003m_*.py tests/unit/reports/test_exp_003m_*.py",
+      "counts": {},
+      "exit_code": 0,
+      "name": "ruff",
+      "summary": "clean"
+    },
+    {
+      "argv": "python -m mypy --strict scripts/exp_003m_*.py",
+      "counts": {},
+      "exit_code": 0,
+      "name": "mypy",
+      "summary": "Success: no issues found in 7 source files"
+    }
+  ],
+  "experiment": "EXP-003M-MAKER-FILL-REALITY-001",
+  "note": "exit codes are recorded as produced; a failure stops the pipeline before the seal",
+  "schema_version": "AI_BOTS_003M_TESTS_V1",
+  "totals": {
+    "failed": 0,
+    "passed": 25,
+    "skipped": 0
+  }
+}

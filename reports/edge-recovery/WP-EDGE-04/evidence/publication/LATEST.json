@@ -1,0 +1,105 @@
+{
+  "artifacts": {
+    "CUMULATIVE.json": {
+      "bytes": 49446,
+      "role": "summary",
+      "sha256": "c0f4e5b0d268640d308012763b75e56be1f8190a39fcc3af304c745b9284d69c",
+      "written_this_publish": true
+    },
+    "CUMULATIVE.md": {
+      "bytes": 5524,
+      "role": "cumulative",
+      "sha256": "72c4239f693f0a5bb0773e6cd2f04b20f79e3161df8fd7144c7ef9a43c65eff5",
+      "written_this_publish": true
+    },
+    "DAILY_2026-10-13.md": {
+      "bytes": 3548,
+      "role": null,
+      "sha256": "3634bf970619eeb6f9e114e7f065b19ed8c2c5590fcb205c9c23a0996f926022",
+      "written_this_publish": false
+    },
+    "DAILY_2026-10-14.md": {
+      "bytes": 3699,
+      "role": null,
+      "sha256": "5f466e9c9152d8b131bb366655fd870baeec30d07889794e12f7468d99511647",
+      "written_this_publish": false
+    },
+    "DAILY_2026-10-15.md": {
+      "bytes": 3612,
+      "role": "daily",
+      "sha256": "32ba55d330d216895c5166f6750d3ed76f3cae9f0d45ecaa9fe576ec3caec21f",
+      "written_this_publish": true
+    },
+    "DAILY_REPORTS.json": {
+      "bytes": 150298,
+      "role": "daily_rollup",
+      "sha256": "9de5eac76257b5edcc1f8ffdb3b49a09234cc8bae7249930944703c9bab50633",
+      "written_this_publish": true
+    },
+    "OBSERVATION.json": {
+      "bytes": 1289161,
+      "role": "observation",
+      "sha256": "3d511393717e2480b913c64a50a1c4b3dac0b822b3f72734ccf941dd3bfb94be",
+      "written_this_publish": true
+    },
+    "SHADOW_DECISIONS.jsonl": {
+      "bytes": 59304,
+      "role": "decisions",
+      "sha256": "86494c33acf997613bcd1becd5e128f70c937887ed0dbe42581728bcc0c5501a",
+      "written_this_publish": true
+    },
+    "SHADOW_EQUITY.csv": {
+      "bytes": 65480,
+      "role": "equity",
+      "sha256": "5e78bb19e8b3a32625fbeb3c041772450d1ce65e9b6ab135c3979244603f6de1",
+      "written_this_publish": true
+    },
+    "SHADOW_REFUSALS.csv": {
+      "bytes": 67755,
+      "role": "refusals",
+      "sha256": "7dc29c8d21fbc337badda1dec9620b335a752a638180f384b5406ba8d4b1b80d",
+      "written_this_publish": true
+    },
+    "SHADOW_SIGNALS.csv": {
+      "bytes": 40525,
+      "role": "signals",
+      "sha256": "c04daaaa69135eeb26cdf7fd607612313b19b7d98e9451f0ca068a72ae5f6df7",
+      "written_this_publish": true
+    },
+    "SHADOW_TRADES.csv": {
+      "bytes": 20884,
+      "role": "trades",
+      "sha256": "6e448ac63081592c9cac8c9a1ccfb9b75a61120cfe3eff6744150c99b809f71c",
+      "written_this_publish": true
+    },
+    "risk-parity/PARITY.json": {
+      "bytes": 597905,
+      "role": "json",
+      "sha256": "4a9e1fe97fa508d2e81ced0a039fdac1e954a8980ca232d5f0fd2ec4361fdc39",
+      "written_this_publish": true
+    },
+    "risk-parity/PARITY.md": {
+      "bytes": 46657,
+      "role": "markdown",
+      "sha256": "d3137ca781359ea6a7a029d5cb80e21b83cfa6c00896cc46ad199c7f56401044",
+      "written_this_publish": true
+    },
+    "risk-parity/PARITY_CASES.csv": {
+      "bytes": 136989,
+      "role": "cases_csv",
+      "sha256": "548b77a42127df3fa632008067f0b23fcb4f17e2d366a93ca831c886dad2e637",
+      "written_this_publish": true
+    }
+  },
+  "artifacts_retained": 2,
+  "artifacts_written_now": 13,
+  "hypothetical": true,
+  "inventory_reading": "every file the publication holds, keyed by its own path relative to the publication root: the files this render wrote and the ones an earlier render left behind, because a published report is never deleted and a pointer that named only the former would describe a subset of the directory while looking complete",
+  "order_sent": false,
+  "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+  "published_at_ms": 1792077397999,
+  "published_at_utc": "2026-10-15T15:16:37Z",
+  "recorded_at_ms": 1792077395829,
+  "run_id": "FWD-EDGE03-20261015T151637Z",
+  "schema_version": "EDGE04_TICK_V1"
+}

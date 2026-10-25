@@ -1,0 +1,218 @@
+{
+  "footprint_now": {
+    "lane_bytes": 13350219,
+    "state_bytes": 7457176,
+    "store_bytes": 5893043
+  },
+  "forecast": {
+    "added_gib_over_the_horizon": 0.006249,
+    "added_over_the_horizon_bytes": 6709957,
+    "fits": true,
+    "lane_budget_bytes": 268435456,
+    "lane_bytes_at_horizon": 85440412,
+    "method": "the store is projected forward at the measured bytes per bar and bars per day; the state root is not projected at all, it is summed at its retention ceiling, because a bounded log has a ceiling and an unbounded store has a rate",
+    "no_invented_volume_forecast": "the volume's own time-to-critical is not published: the lane measured its free space, but the volume is shared with everything else on this machine and a number derived from this lane's slope would be an attribution the evidence does not support",
+    "state_bytes_at_horizon": 72837412,
+    "store_bytes_at_horizon": 12603000
+  },
+  "guard": {
+    "critical_free_bytes": 2147483648,
+    "free_gib": 7.5323,
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "status": "HEALTHY",
+    "warning_free_bytes": 5368709120
+  },
+  "horizon_days": 60,
+  "hypothetical": true,
+  "order_sent": false,
+  "promotion": "NONE",
+  "refusals": {
+    "first_refusal_utc": "2026-10-13T20:25:56Z",
+    "last_refusal_utc": "2026-10-14T13:40:56Z",
+    "market_requests_at_refusal": [
+      0
+    ],
+    "reading": "the guard refused before any market request, so a refusal costs a slot and returns no false observation; the market-request figures listed here are the measurement of that",
+    "refused_slots": 43,
+    "refused_ticks": 45
+  },
+  "relocation_verdict": "NO_VOLUME_WITH_CAPACITY",
+  "retention_ceiling": {
+    "ceiling_bytes": 72837412,
+    "ceiling_within_budget": true,
+    "daily_evidence": {
+      "bounded": false,
+      "files_kept": 366,
+      "files_now": 4,
+      "mean_bytes": 146448.25,
+      "note": "never truncated: this is the durable per-day record the coverage reading is built from",
+      "projected_bytes": 53600059
+    },
+    "declared_lane_budget_bytes": 268435456,
+    "operational_logs": {
+      "alerts.jsonl": {
+        "bounded": true,
+        "bytes_now": 6575,
+        "bytes_per_row": 313.1,
+        "note": null,
+        "projected_bytes": 156547,
+        "rows_kept": 500,
+        "rows_now": 21
+      },
+      "derived_refresh.jsonl": {
+        "bounded": true,
+        "bytes_now": 138867,
+        "bytes_per_row": 873.38,
+        "note": "derived_refresh.jsonl is not truncated by the observer today; it is projected at the run-log retention because that is the cadence that writes it, and the entry is flagged rather than silently included",
+        "projected_bytes": 2515326,
+        "rows_kept": 2880,
+        "rows_now": 159
+      },
+      "ledger/INGEST_LEDGER.jsonl": {
+        "bounded": true,
+        "bytes_now": 1989936,
+        "bytes_per_row": 816.89,
+        "note": null,
+        "projected_bytes": 3293687,
+        "rows_kept": 4032,
+        "rows_now": 2436
+      },
+      "runs.jsonl": {
+        "bounded": true,
+        "bytes_now": 1097781,
+        "bytes_per_row": 4305.02,
+        "note": null,
+        "projected_bytes": 12398467,
+        "rows_kept": 2880,
+        "rows_now": 255
+      },
+      "slots.jsonl": {
+        "bounded": true,
+        "bytes_now": 49812,
+        "bytes_per_row": 249.06,
+        "note": null,
+        "projected_bytes": 717292,
+        "rows_kept": 2880,
+        "rows_now": 200
+      }
+    },
+    "reading": "a ceiling holds whatever the lane does; a fitted line holds only while the trend does, which is why the bounded logs are summed at their retention instead of extrapolated",
+    "rewritten_artefacts_bytes": 156034
+  },
+  "schema_version": "EDGE12_CAPACITY_FORECAST_V1",
+  "store_growth": {
+    "bars_per_day": 360,
+    "bytes_per_day": 111832.62,
+    "reading": "the store is append-only and never pruned, so its growth is bars-per-day times bytes-per-bar: both are measured here from the files on disk",
+    "series": [
+      {
+        "bars_per_day": 24,
+        "bytes": 1727630,
+        "bytes_per_bar": 314.0,
+        "bytes_per_day": 7536.01,
+        "rows": 5502,
+        "series": "1h:BTC"
+      },
+      {
+        "bars_per_day": 24,
+        "bytes": 1709602,
+        "bytes_per_bar": 310.72,
+        "bytes_per_day": 7457.37,
+        "rows": 5502,
+        "series": "1h:ETH"
+      },
+      {
+        "bars_per_day": 24,
+        "bytes": 1670356,
+        "bytes_per_bar": 303.59,
+        "bytes_per_day": 7286.18,
+        "rows": 5502,
+        "series": "1h:SOL"
+      },
+      {
+        "bars_per_day": 96,
+        "bytes": 264784,
+        "bytes_per_bar": 314.47,
+        "bytes_per_day": 30189.15,
+        "rows": 842,
+        "series": "15m:BTC"
+      },
+      {
+        "bars_per_day": 96,
+        "bytes": 262030,
+        "bytes_per_bar": 311.2,
+        "bytes_per_day": 29875.15,
+        "rows": 842,
+        "series": "15m:ETH"
+      },
+      {
+        "bars_per_day": 96,
+        "bytes": 258641,
+        "bytes_per_bar": 307.17,
+        "bytes_per_day": 29488.76,
+        "rows": 842,
+        "series": "15m:SOL"
+      }
+    ],
+    "store_bytes": 5893043
+  },
+  "usable_volumes": [],
+  "verdict": "NO_USABLE_VOLUME_FOR_A_MOVE",
+  "volume_trajectory": {
+    "delta_gib": -0.2305,
+    "first_gib": 7.7587,
+    "gib_per_day": -0.0825,
+    "last_gib": 7.5282,
+    "minimum_gib": 0.8302,
+    "reading": "this is the volume's free space, not the lane's footprint: the volume holds whatever else lives on this machine, and a slope measured here is not a rate this lane caused",
+    "samples": 255,
+    "span_days": 2.7933,
+    "status_counts": {
+      "CRITICAL": 45,
+      "HEALTHY": 184,
+      "WARNING": 26
+    }
+  },
+  "volumes": [
+    {
+      "capacity_gib": 237.5264,
+      "drive_letter": "C:",
+      "file_system": "NTFS",
+      "free_gib": 7.5328,
+      "is_the_current_volume": true,
+      "label": "",
+      "usable_for_this_store": false,
+      "used_percent": 96.83
+    },
+    {
+      "capacity_gib": 0.832,
+      "drive_letter": "",
+      "file_system": "NTFS",
+      "free_gib": 0.0532,
+      "is_the_current_volume": false,
+      "label": "",
+      "usable_for_this_store": false,
+      "used_percent": 93.6
+    },
+    {
+      "capacity_gib": 0.0938,
+      "drive_letter": "",
+      "file_system": "FAT32",
+      "free_gib": 0.0065,
+      "is_the_current_volume": false,
+      "label": "",
+      "usable_for_this_store": false,
+      "used_percent": 93.1
+    },
+    {
+      "capacity_gib": 237.5264,
+      "drive_letter": "G:",
+      "file_system": "FAT32",
+      "free_gib": 7.1561,
+      "is_the_current_volume": false,
+      "label": "Google Drive",
+      "usable_for_this_store": false,
+      "used_percent": 96.99
+    }
+  ]
+}

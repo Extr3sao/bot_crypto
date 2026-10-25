@@ -1,0 +1,60 @@
+{
+  "analysis": [
+    "analysis/SIGNALS.jsonl.gz",
+    "analysis/SCREENING.json",
+    "analysis/VALIDATION.json",
+    "analysis/DECISION.json",
+    "analysis/VERIFICATION.json",
+    "analysis/TESTS.json"
+  ],
+  "deliverables": [
+    "STRATEGY_UNIVERSE.md",
+    "ECONOMIC_SCREENING.csv",
+    "CANDIDATE_RANKING.md",
+    "REJECTED_CANDIDATES.md",
+    "INDEPENDENT_VERIFICATION.md",
+    "RUN_REPORT.md",
+    "RUN_REPORT.json",
+    "FINAL_REPORT.md"
+  ],
+  "design_sha256": "a0776fa3fbe6d2e122b52d0a381c3e15759a50f64fbd64c73e060ced25773714",
+  "excludes": [
+    "SEAL.json",
+    "SHA256SUMS.txt"
+  ],
+  "experiment": "EXP-003N-GROSS-FIRST-DISCOVERY-001",
+  "files": 29,
+  "holdout_opened": false,
+  "manifest": "SHA256SUMS.txt",
+  "manifest_sha256": "c65d92ef2c62b6cc2b086a709c785bdb66dd18c62dcad67a044cbfe658d10e61",
+  "order": [
+    "preregister",
+    "screen",
+    "validate",
+    "tests",
+    "verify",
+    "report",
+    "seal"
+  ],
+  "predecessor_seal_sha256": "2d8df077e6124aaa1c2b4e8b1afc4ba18bcf911cfb4cf01e2b8d84e09182386e",
+  "preregistration_is_prospective": false,
+  "preregistration_note": "the protocol was frozen on disk at design.frozen_at_utc, before the screening timestamp, but it was committed to Git after the analysis existed; the freeze is content-anchored (design_sha256 inside SCREENING.json) and not time-anchored in Git",
+  "preregistration_sha256": "a0cf20e121f8d57bf69ff2f1b90f81de8e5bf3854f064f0df398092fa134d081",
+  "schema_version": "AI_BOTS_003N_SEAL_V1",
+  "sealed_commit": "cd3fc313c2121b80c0e50feaa3bd992d2ff5633b",
+  "self_reference": "none: SHA256SUMS.txt and SEAL.json are excluded by construction",
+  "tests": {
+    "mypy": 0,
+    "pytest": 0,
+    "ruff": 0
+  },
+  "verdict": "NO_VIABLE_CANDIDATES",
+  "verification": {
+    "checks": 12,
+    "controls": 10,
+    "controls_detected": 10,
+    "failed": 0,
+    "false_success": 0,
+    "passed": 12
+  }
+}

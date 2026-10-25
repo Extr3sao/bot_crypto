@@ -1,0 +1,818 @@
+{
+  "work_package": "WP-EDGE-02",
+  "run_id": "wp-edge-02-closure",
+  "generated_at_utc": "2026-10-12T20:26:01.178928+00:00",
+  "mode": "deterministic backtests and a deterministic reconstruction over the frozen local corpus: 0 orders, 0 credentials, 0 network calls (the only network probes are the read-only git ones recorded under push)",
+  "git": {
+    "head_commit": "cb94dd291dc5221e46d39054fb73cf468242d465",
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "recent_commits": [
+      "cb94dd2 Stress the frozen 4h trend reading and audit H6's 183 risk refusals. [WP-EDGE-02]",
+      "87f2357 Re-derive the closure records after the report revision. [WP-EDGE-01]",
+      "94714bd Attribute the push probes in the closure report to the commands that produced them. [WP-EDGE-01]",
+      "b29f174 Record the WP-EDGE-01 closure: verdicts, digests, commits and the blocked push. [WP-EDGE-01]",
+      "e81eba9 Publish the WP-EDGE-01 closure report with a verifier that re-derives its figures. [WP-EDGE-01]",
+      "af250f2 Anchor the recovery state view to the commit that first carries ADR-0031. [WP-EDGE-01]",
+      "7522255 Regenerate the derived recovery view with its sources and record ADR-0031. [WP-EDGE-01]",
+      "90cee73 Model the retest entry and review the 4h trend out of sample. [WP-EDGE-01]",
+      "ce42ca4 Carry the final WP-EDGE-01 git state, digest and verification counts in one record. [WP-EDGE-01]",
+      "03a62bd State the evaluated period and assets inside each strategy's results. [WP-EDGE-01]",
+      "a76297e Refresh ADR-0027 and the sync record for the market-context and digest work. [WP-EDGE-01]",
+      "4d7a67e Hash the code, not one machine's line endings, in the source digest. [WP-EDGE-01]",
+      "ab7be9c Label every trade with the benchmark market regime it was decided in. [WP-EDGE-01]",
+      "042947c Record ADR-0027 for the frozen research lane and cite only real commits. [WP-EDGE-01]"
+    ],
+    "worktree_dirty_for_wp_paths": [],
+    "worktree_dirty_excludes": [
+      "reports/edge-recovery/WP-EDGE-02/RUN_REPORT.json",
+      "reports/edge-recovery/WP-EDGE-02/RUN_REPORT.md",
+      "reports/edge-recovery/WP-EDGE-02/FINAL_REPORT.md"
+    ],
+    "source_digest": {
+      "combined_sha256": "37d07bb1d32e6decb559b2b8aaefcfb0fdf442568a156013b14536b6a28844de",
+      "files": {
+        "src/trading_bot/research/edge01/__init__.py": "0bff4c03e469f6b2baceafd97f030d9408b0edcbb21dfe4dc3374b9e6239becb",
+        "src/trading_bot/research/edge01/campaign.py": "83970e6203401905a6b4473cee389970769f8a09690c12b565260b4305742605",
+        "src/trading_bot/research/edge01/candidates.py": "592d629ca91714d9730bf959fd44e0f08f1111ed7a06d7654f6407f51279eac3",
+        "src/trading_bot/research/edge01/closure.py": "1a072ef056e2defb7cd756fa7023628f01504d3fe3e5728060ffd90e1d1dbbf8",
+        "src/trading_bot/research/edge01/costs.py": "ebd6aba5da31d6b432d09b6979ea8775e9ca1a30c4e1c714c7cc182c26bf6f8d",
+        "src/trading_bot/research/edge01/data.py": "ac7b37f1768d1d2a5b37801f781a335869b38af8159a16ae173163b84ad495c2",
+        "src/trading_bot/research/edge01/features.py": "76c0dcbb9faef7f0d47f1de9fad1c2d12901c81c1c5496a582a311c5deb21fab",
+        "src/trading_bot/research/edge01/retest.py": "913c1f97c3d8709168f64d43df3ce3a75222a8d11de8f756679c68701155dd5d",
+        "src/trading_bot/research/edge01/risk_audit.py": "343f3a9b59abb9fbfc51dac27d4cfd286d2efb5de116211f4e72964772a7c3dc",
+        "src/trading_bot/research/edge01/robustness.py": "56e9566b4e778324f568a1545e93506b5320575ddc40b073baa48a9d0e100f81",
+        "src/trading_bot/research/edge01/simulator.py": "f8ea260e6b770d39a44bf41550f2039cf4fc5ad7ec938a07b6f89bca58cc98db",
+        "scripts/edge01_run.py": "dbfaf908042447cf582f04894bd2513292f3e1cc8f600b8c93046cb086df5d43",
+        "scripts/edge01_verify.py": "d777850c00c49aba7e032057ef1ba8d81e11695b8fe791d66dbd3ab66558f5c3",
+        "scripts/edge01_closure_experiments.py": "be214855ec0c2bdc2970fbd6629ef5e353e2232a0b6c205a4e07d40d5c045142",
+        "scripts/edge01_closure_verify.py": "3fe84cba3b35358d6636acc655dc4f9ecb44451ed31e3a3b2fcf30240b093162",
+        "scripts/edge01_robustness_experiments.py": "f10cd129a6b2f4a36711054e1f7014003f4d46c86f0925d5ab092ee19a01fd6e",
+        "scripts/edge01_wp02_verify.py": "6319a21ee976b1d22a100e0704ca6e8b30ae7b2df79213e91a857a1409d58267"
+      }
+    },
+    "commits_by_this_work_package": [
+      {
+        "sha": "cb94dd2",
+        "subject": "Stress the frozen 4h trend reading and audit H6's 183 risk refusals. [WP-EDGE-02]"
+      },
+      {
+        "sha": "f886e53",
+        "subject": "Record the WP-EDGE-02 closure: verdicts, refusals, digests and the blocked push. [WP-EDGE-02]"
+      },
+      {
+        "sha": "6070806",
+        "subject": "Record that a full re-run reproduces the WP-EDGE-02 tables byte for byte. [WP-EDGE-02]"
+      },
+      {
+        "sha": "8759ebd",
+        "subject": "Correct the commit counts and list the three WP-EDGE-02 commits. [WP-EDGE-02]"
+      }
+    ],
+    "commits_ahead_of_4be09fb": 24,
+    "commits_ahead_measured_at": "commit 8759ebd",
+    "commits_ahead_measured_by": "git rev-list --count 4be09fb..HEAD, evaluated at 8759ebd",
+    "count_discipline": "the count is stated as of the commit that wrote it (8759ebd) and is re-derivable with git rev-list --count 4be09fb..HEAD; a later commit adds one and is not folded back into this record, so the number is never a claim about a tree the reader cannot check",
+    "commits_set_defined_by": "git log --oneline --grep='\\[WP-EDGE-02\\]' 87f2357..HEAD",
+    "commits_table_scope": "the list below is a snapshot of the four commits up to 8759ebd, the commit the counts are anchored to; commits that correct this record afterwards join the set through the command above and do not rewrite the snapshot or the count"
+  },
+  "provenance": {
+    "claim": "the nine package modules WP-EDGE-01 measured are byte-identical; the package hash a new run records differs only because two modules were added, and no WP-EDGE-01 artefact or script was edited",
+    "wp01_package_modules": [
+      "src/trading_bot/research/edge01/__init__.py",
+      "src/trading_bot/research/edge01/campaign.py",
+      "src/trading_bot/research/edge01/candidates.py",
+      "src/trading_bot/research/edge01/closure.py",
+      "src/trading_bot/research/edge01/costs.py",
+      "src/trading_bot/research/edge01/data.py",
+      "src/trading_bot/research/edge01/features.py",
+      "src/trading_bot/research/edge01/retest.py",
+      "src/trading_bot/research/edge01/simulator.py"
+    ],
+    "package_digest_rule": "sha256 over name + LF-normalised bytes of src/trading_bot/research/edge01/*.py plus scripts/edge01_run.py and scripts/edge01_verify.py (_git_state)",
+    "package_digest_published_by_wp_edge01": "616a86fa7258fa9efe2faf1d3b333a87722944aef9796bfa228417014c178c5a",
+    "package_digest_was_taken_with_a_dirty_worktree": true,
+    "package_digest_now": "c63b559f1d1cb5489741837e093e017d641f9595860c204789ad1ffeb2e897ac",
+    "package_digest_over_exactly_the_wp01_file_set": "7e8c3ff315916582f0719898c9c323e97110b50aa475b9e4e6450818c5f07dbe",
+    "why_the_published_digest_cannot_be_recomputed_from_a_commit": "the artefact records worktree_dirty = True at ce42ca42c297fe2b6a6594a49b385ed811442666: it identifies the tree that ran, not a commit, so it is not reproducible from any blob set by construction",
+    "why_the_old_file_set_alone_no_longer_reproduces_it": [
+      "WP-EDGE-01 itself revised edge01_verify.py and the two closure scripts after that measurement, and WP-EDGE-02 added two modules: the live package hashes to c63b559f1d1cb5489741837e093e017d641f9595860c204789ad1ffeb2e897ac"
+    ],
+    "last_commit_touching_each_wp01_script": {
+      "scripts/edge01_run.py": "46b72fd Add the EDGE-01 candidates, simulator, campaign harness and verifier. [WP-EDGE-01]",
+      "scripts/edge01_verify.py": "ab7be9c Label every trade with the benchmark market regime it was decided in. [WP-EDGE-01]",
+      "scripts/edge01_closure_experiments.py": "90cee73 Model the retest entry and review the 4h trend out of sample. [WP-EDGE-01]",
+      "scripts/edge01_closure_verify.py": "90cee73 Model the retest entry and review the 4h trend out of sample. [WP-EDGE-01]"
+    },
+    "wp01_scripts_modified_in_the_worktree": [],
+    "identical_files": [
+      "src/trading_bot/research/edge01/__init__.py",
+      "src/trading_bot/research/edge01/campaign.py",
+      "src/trading_bot/research/edge01/candidates.py",
+      "src/trading_bot/research/edge01/closure.py",
+      "src/trading_bot/research/edge01/costs.py",
+      "src/trading_bot/research/edge01/data.py",
+      "src/trading_bot/research/edge01/features.py",
+      "src/trading_bot/research/edge01/retest.py",
+      "src/trading_bot/research/edge01/simulator.py"
+    ],
+    "added_files": [
+      "src/trading_bot/research/edge01/risk_audit.py",
+      "src/trading_bot/research/edge01/robustness.py"
+    ],
+    "files_whose_content_differs_from_the_wp01_artefact_digest": [
+      "scripts/edge01_closure_experiments.py",
+      "scripts/edge01_closure_verify.py",
+      "scripts/edge01_run.py",
+      "scripts/edge01_verify.py"
+    ],
+    "frozen_modules_all_identical": true,
+    "note": "the differing entries are the four WP-EDGE-01 experiment scripts, which WP-EDGE-01 itself edited after publishing that artefact; WP-EDGE-02 did not touch them (git status shows them unmodified)",
+    "new_modules_registered_in_package_all": false,
+    "why_not_registered": "adding their names to src/trading_bot/research/edge01/__init__.py would change one of the nine files WP-EDGE-01 measured for a purely cosmetic gain, so the package hash of the frozen lanes stays comparable"
+  },
+  "experiments": {
+    "trend_robustness": {
+      "id": "ROB-EDGE01-TREND-4H",
+      "answers": "H3",
+      "entrypoint": "scripts/edge01_robustness_experiments.py --experiment trend",
+      "verifier": "scripts/edge01_wp02_verify.py --experiment trend",
+      "decision_rule": {
+        "decision_window": "OOS",
+        "min_oos_trades": 30,
+        "concentration_criterion_pct_of_net": 0.5,
+        "min_positive_assets": 2,
+        "min_positive_periods": 2,
+        "concentration_criterion_unchanged_from": "WP-EDGE-01 OOS_TREND_DECISION.max_single_trade_share_of_net"
+      },
+      "reproduction_of_wp_edge01": {
+        "checked": true,
+        "comparisons": 16,
+        "all_equal": true,
+        "source": "reports/edge-recovery/WP-EDGE-01/oos-trend-4h/OOS_TREND.json"
+      },
+      "verdict": "INSUFFICIENT_EVIDENCE",
+      "headline": "the edge is not contradicted but the declared requirements are not met: concentration_within_limit: largest trade is 0.7987 of the OOS net (limit 0.5, unchanged from WP-EDGE-01)",
+      "decisive_failures": [],
+      "inconclusive_failures": [
+        "concentration_within_limit"
+      ],
+      "checks": [
+        {
+          "criterion": "oos_trades_floor",
+          "result": "PASS",
+          "detail": "52 OOS trades vs floor 30"
+        },
+        {
+          "criterion": "oos_net_positive",
+          "result": "PASS",
+          "detail": "OOS net 208.0056 USDT"
+        },
+        {
+          "criterion": "oos_net_positive_per_dropping_largest_winner",
+          "result": "PASS",
+          "detail": "OOS net without the largest winner 41.8740 USDT (removed 166.1317)"
+        },
+        {
+          "criterion": "concentration_within_limit",
+          "result": "FAIL",
+          "detail": "largest trade is 0.7987 of the OOS net (limit 0.5, unchanged from WP-EDGE-01)"
+        },
+        {
+          "criterion": "assets_positive",
+          "result": "PASS",
+          "detail": "2/3 single-asset OOS books positive (BTC, ETH) vs required 2"
+        },
+        {
+          "criterion": "periods_positive",
+          "result": "PASS",
+          "detail": "2/3 OOS periods positive (2025H1, 2025H2) vs required 2"
+        },
+        {
+          "criterion": "adverse_cost_plane_positive",
+          "result": "PASS",
+          "detail": "OOS net under the ADVERSE plane (fees x2, slippage/impact x3) 146.8908 USDT"
+        },
+        {
+          "criterion": "hac_interval_upper_end_positive",
+          "result": "PASS",
+          "detail": "95% HAC interval on expectancy [-9.273542, 17.273759] (lag 3)"
+        },
+        {
+          "criterion": "drawdown_below_buy_and_hold",
+          "result": "PASS",
+          "detail": "OOS max drawdown 2.5670% vs the deepest buy & hold drawdown 73.2008%"
+        }
+      ],
+      "promoted_to_paper": false,
+      "windows": {
+        "DEV:BASE": {
+          "trades": 223,
+          "net_usdt": 1921.1792,
+          "expectancy_usdt": 8.6152,
+          "profit_factor": 1.7782,
+          "max_drawdown_pct": 4.2793,
+          "sharpe_annualised": 1.2243,
+          "exposure_pct_of_time": 24.5997,
+          "largest_trade_share_of_net": 0.0673
+        },
+        "VAL:BASE": {
+          "trades": 58,
+          "net_usdt": 4.5253,
+          "expectancy_usdt": 0.078,
+          "profit_factor": 1.0068,
+          "max_drawdown_pct": 4.1002,
+          "sharpe_annualised": 0.0301,
+          "exposure_pct_of_time": 29.0259,
+          "largest_trade_share_of_net": 27.5248
+        },
+        "OOS:BASE": {
+          "trades": 52,
+          "net_usdt": 208.0056,
+          "expectancy_usdt": 4.0001,
+          "profit_factor": 1.3312,
+          "max_drawdown_pct": 2.567,
+          "sharpe_annualised": 0.6658,
+          "exposure_pct_of_time": 19.4641,
+          "largest_trade_share_of_net": 0.7987
+        },
+        "OOS:2X_FEES": {
+          "trades": 52,
+          "net_usdt": 160.6723,
+          "expectancy_usdt": 3.0899,
+          "profit_factor": 1.2461,
+          "max_drawdown_pct": 2.7025,
+          "sharpe_annualised": 0.5139,
+          "exposure_pct_of_time": 19.4641,
+          "largest_trade_share_of_net": 1.0267
+        },
+        "OOS:ADVERSE": {
+          "trades": 52,
+          "net_usdt": 146.8908,
+          "expectancy_usdt": 2.8248,
+          "profit_factor": 1.2231,
+          "max_drawdown_pct": 2.7312,
+          "sharpe_annualised": 0.4716,
+          "exposure_pct_of_time": 19.4641,
+          "largest_trade_share_of_net": 1.1205
+        }
+      },
+      "sensitivity": {
+        "leave_out_k1_net_usdt": 41.873955,
+        "leave_out_k3_net_usdt": -221.329099,
+        "dropped_top1_usdt": 166.131682,
+        "dropped_top3_usdt": 429.334736,
+        "val_leave_out_k1_net_usdt": -120.034072
+      },
+      "uncertainty": {
+        "hac": {
+          "mean": 4.000108,
+          "se": 6.611755,
+          "lag": 3,
+          "lower": -9.273542,
+          "upper": 17.273759
+        },
+        "bootstrap": {
+          "lower": -6.773517,
+          "upper": 15.630955,
+          "resamples": 5000,
+          "block_length": 5,
+          "seed": 20260101
+        },
+        "contains_zero": true
+      },
+      "contribution_oos": {
+        "by_asset_own_book": {
+          "BTC": {
+            "trades": 18,
+            "net_usdt": 3.0607,
+            "expectancy_usdt": 0.17,
+            "win_rate_pct": 50.0,
+            "max_drawdown_pct": 0.9159,
+            "return_on_drawdown": 0.03341
+          },
+          "ETH": {
+            "trades": 16,
+            "net_usdt": 281.6015,
+            "expectancy_usdt": 17.6001,
+            "win_rate_pct": 43.75,
+            "max_drawdown_pct": 0.9499,
+            "return_on_drawdown": 2.964523
+          },
+          "SOL": {
+            "trades": 18,
+            "net_usdt": -75.549,
+            "expectancy_usdt": -4.1972,
+            "win_rate_pct": 38.8889,
+            "max_drawdown_pct": 1.301,
+            "return_on_drawdown": -0.580707
+          }
+        },
+        "by_benchmark_context": {
+          "BEAR": {
+            "trades": 7,
+            "net_usdt": -58.879137,
+            "share_of_net": -0.283065,
+            "win_rate_pct": 42.857143
+          },
+          "BULL": {
+            "trades": 41,
+            "net_usdt": 177.431256,
+            "share_of_net": 0.853012,
+            "win_rate_pct": 41.463415
+          },
+          "SIDEWAYS": {
+            "trades": 4,
+            "net_usdt": 89.453517,
+            "share_of_net": 0.430053,
+            "win_rate_pct": 75.0
+          }
+        },
+        "by_period": [
+          {
+            "period": "2025H1",
+            "start_utc": "2025-01-01T00:00:00+00:00",
+            "end_utc": "2025-07-01T00:00:00+00:00",
+            "trades": 24,
+            "net_usdt": 22.7467,
+            "expectancy_usdt": 0.947778,
+            "win_rate_pct": 37.5
+          },
+          {
+            "period": "2025H2",
+            "start_utc": "2025-07-01T00:00:00+00:00",
+            "end_utc": "2026-01-01T00:00:00+00:00",
+            "trades": 21,
+            "net_usdt": 244.1381,
+            "expectancy_usdt": 11.625624,
+            "win_rate_pct": 52.381
+          },
+          {
+            "period": "2026Q1",
+            "start_utc": "2026-01-01T00:00:00+00:00",
+            "end_utc": "2026-03-01T00:00:00+00:00",
+            "trades": 7,
+            "net_usdt": -58.8791,
+            "expectancy_usdt": -8.411305,
+            "win_rate_pct": 42.8571
+          }
+        ]
+      },
+      "risk_adjusted_oos": {
+        "candidate": {
+          "return_pct": 2.0801,
+          "max_drawdown_pct": 2.567,
+          "sharpe_annualised": 0.6658,
+          "mar_ratio": 0.810306,
+          "return_on_drawdown": 0.810323,
+          "exposure_pct_of_time": 19.4641
+        },
+        "buy_and_hold": {
+          "BTC": {
+            "return_pct": -29.852665,
+            "max_drawdown_pct": 49.836972,
+            "return_on_drawdown": -0.599006
+          },
+          "ETH": {
+            "return_pct": -42.479224,
+            "max_drawdown_pct": 62.224291,
+            "return_on_drawdown": -0.682679
+          },
+          "SOL": {
+            "return_pct": -56.924744,
+            "max_drawdown_pct": 73.200811,
+            "return_on_drawdown": -0.777652
+          }
+        },
+        "buy_and_hold_best_return_on_drawdown": -0.599006,
+        "candidate_beats_every_buy_and_hold_on_return_on_drawdown": true,
+        "deepest_buy_and_hold_drawdown_pct": 73.200811
+      },
+      "corpus_coverage": {
+        "per_asset": {
+          "BTC": {
+            "bars": 15665,
+            "first_ts": 1546300800000,
+            "last_ts": 1772308800000,
+            "first_utc": "2019-01-01T00:00:00+00:00",
+            "last_utc": "2026-02-28T20:00:00+00:00"
+          },
+          "ETH": {
+            "bars": 15665,
+            "first_ts": 1546300800000,
+            "last_ts": 1772308800000,
+            "first_utc": "2019-01-01T00:00:00+00:00",
+            "last_utc": "2026-02-28T20:00:00+00:00"
+          },
+          "SOL": {
+            "bars": 12153,
+            "first_ts": 1597132800000,
+            "last_ts": 1772308800000,
+            "first_utc": "2020-08-11T08:00:00+00:00",
+            "last_utc": "2026-02-28T20:00:00+00:00"
+          }
+        },
+        "design_windows_end_ms": 1772236800000,
+        "design_windows_end_utc": "2026-02-28T00:00:00+00:00",
+        "corpus_last_bar_ms": 1772308800000,
+        "unused_bars_after_design_window": {
+          "BTC": 5,
+          "ETH": 5,
+          "SOL": 5
+        },
+        "unused_span_days": 0.8333,
+        "min_span_days_for_a_usable_period": 30,
+        "additional_independent_periods_available": false,
+        "note": "the design windows (DEV 2019-2023, VAL 2024, OOS 2025-01 -> 2026-02-28) consume the frozen 4h corpus to its last complete bar; the only bars left are 5 mop-up bars (0.83 days), far below the declared 30-day minimum for a usable extra period, so no unused independent sample exists inside this corpus"
+      },
+      "limitations": [
+        "the ruleset is untuned and frozen and VAL/OOS were already read for it in WP-EDGE-01, so this is a decomposition and a sensitivity analysis of the published run, not a second independent sample",
+        "the concentration criterion is the same 0.50 WP-EDGE-01 froze; relaxing it is proposed as a new experiment and is deliberately NOT applied here",
+        "the frozen corpus ends at the last bar of the OOS window (2026-02-28), so no unused independent period exists: an additional period needs a new corpus, which the 15m feed could supply but only as a new pre-registered experiment",
+        "the HAC interval is asymptotic and the block bootstrap resamples 52 trades: both widen the reading honestly, neither turns 52 observations into a large sample",
+        "the candidate risks a fixed share of equity per trade while buy & hold is fully invested, so the comparison is on the same window and cost plane, not on the same capital utilisation",
+        "long side only (spot); no historical order book; nothing is wired into PAPER"
+      ]
+    },
+    "h6_risk_audit": {
+      "id": "AUD-EDGE01-H6-RISK",
+      "audits": "ABL-EDGE01-H6",
+      "entrypoint": "scripts/edge01_robustness_experiments.py --experiment risk",
+      "verifier": "scripts/edge01_wp02_verify.py --experiment risk",
+      "reproduction_of_wp_edge01": {
+        "checked": true,
+        "comparisons": 90,
+        "all_equal": true,
+        "source": "reports/edge-recovery/WP-EDGE-01/retest-h6/RETEST.json"
+      },
+      "verdict": "AUDIT_PASS",
+      "headline": "every audited refusal was justified by the state the budget saw and every declared invariant holds",
+      "summary": {
+        "orders_placed": 686,
+        "orders_filled": 372,
+        "orders_refused": 183,
+        "orders_by_outcome": {
+          "filled": 372,
+          "expired": 128,
+          "refused_by_risk_budget": 183,
+          "cancelled_window_end": 3
+        },
+        "refusal_reasons": {
+          "risk_loss_cooldown": 35,
+          "risk_drawdown_halt": 148
+        },
+        "refusals_checked": 2734,
+        "refusals_correct": 2734,
+        "refusals_incorrect": 0,
+        "primary_window": "DEV:BASE",
+        "primary_arm": "plan_limit",
+        "primary_refusals": 183,
+        "primary_refusals_correct": 183,
+        "orders_refused_matches_captured_refusals": true,
+        "runtime_agreements": 2734,
+        "runtime_disagreements": 0,
+        "invariants_checked": 150,
+        "invariants_failed": 0
+      },
+      "runtime_comparison": {
+        "agreements": 2734,
+        "disagreements": 0,
+        "rules_not_modelled_by_the_research_budget": "the research budget re-implements the runtime's limits; it does NOT model the runtime's daily loss limit, weekly loss limit, daily drawdown, weekend block, spread/ATR blocks or the kill switch. A live run of the same book therefore blocks AT LEAST as often, never less."
+      },
+      "limits_unchanged": {
+        "risk_per_trade_pct": 0.25,
+        "drawdown_halt_pct": 5.0,
+        "max_open_positions": 3,
+        "max_trades_per_day": 20,
+        "max_total_exposure_pct": 25.0,
+        "max_asset_exposure_pct": 10.0,
+        "min_notional_usdt": 20.0,
+        "max_notional_usdt": 500.0
+      },
+      "invariants_checked": 150,
+      "invariants_failed": [],
+      "primary_refusals": {
+        "rows": 183,
+        "by_reason": {
+          "risk_loss_cooldown": 35,
+          "risk_drawdown_halt": 148
+        },
+        "all_justified": true
+      },
+      "limitations": [
+        "the observing wrapper records the state the frozen simulator's own entry path computed; it changes no value and is restored in a finally block, but it is the same process as the run it observes",
+        "the independent reconstruction of the same state from the published trade ledger and the local corpus is done by scripts/edge01_wp02_verify.py, in a separate process that imports nothing from the package",
+        "the research budget models a subset of the runtime Risk Engine's rules, so this audit's verdict is about the subset, never a statement that live trading would behave identically",
+        "long side only (spot); no historical order book; nothing is wired into PAPER"
+      ]
+    }
+  },
+  "defects": [
+    {
+      "id": "DEF-EDGE02-01",
+      "where": "src/trading_bot/research/edge01/risk_audit.py, the observing wrapper",
+      "symptom": "the first audit run failed 15 invariant rows, all notional_at_or_above_minimum with a notional of 0",
+      "cause": "the wrapper read the live positions mapping with `positions or {}`, and an empty-but-live dict is falsy, so a fresh dict replaced it: an entry taken while the book was flat lost its own size",
+      "fix": "read the mapping by identity and only substitute a dict when it is absent; the audit's entry invariants then passed 150/150",
+      "regression_test": "tests/unit/research/test_edge01_wp02_robustness.py::test_observer_reads_a_live_but_empty_positions_mapping"
+    }
+  ],
+  "verification": {
+    "command": "scripts/edge01_wp02_verify.py --experiment all",
+    "process": "a separate process that imports nothing from trading_bot: it reads the published artefacts, the local corpus and the WP-EDGE-01 artefacts, restates the declarations and the statistical procedures, and recomputes the claims",
+    "trend": {
+      "experiment": "trend",
+      "checks": [
+        {
+          "check": "trend_metrics_match_the_trade_ledger",
+          "result": "PASS",
+          "detail": "5 runs recomputed; 0 mismatch(es)"
+        },
+        {
+          "check": "trend_reproduces_the_wp_edge01_oos_figure",
+          "result": "PASS",
+          "detail": "OOS net 208.005600 vs the published 208.0056"
+        },
+        {
+          "check": "trend_leave_out_is_recomputed",
+          "result": "PASS",
+          "detail": "10 leave-out rows recomputed"
+        },
+        {
+          "check": "trend_intervals_are_recomputed",
+          "result": "PASS",
+          "detail": "5 intervals recomputed (HAC and block bootstrap)"
+        },
+        {
+          "check": "trend_curve_rebuilt_from_the_corpus_matches",
+          "result": "PASS",
+          "detail": "5 curves rebuilt bar by bar"
+        },
+        {
+          "check": "trend_contribution_is_recomputed",
+          "result": "PASS",
+          "detail": "35 contribution rows recomputed"
+        },
+        {
+          "check": "trend_risk_adjusted_is_recomputed",
+          "result": "PASS",
+          "detail": "5 runs recomputed"
+        },
+        {
+          "check": "trend_verdict_follows_the_frozen_rule",
+          "result": "PASS",
+          "detail": "declared INSUFFICIENT_EVIDENCE; recomputed INSUFFICIENT_EVIDENCE (decisive=none, inconclusive=['concentration_above_limit', 'interval_contains_zero'])"
+        },
+        {
+          "check": "trend_verdict_is_not_a_promotion",
+          "result": "PASS",
+          "detail": "verdict INSUFFICIENT_EVIDENCE with concentration 0.7987 and leave-one-out net 41.8740"
+        }
+      ],
+      "passed": 9,
+      "failed": 0,
+      "artifacts_dir": "reports\\edge-recovery\\WP-EDGE-02\\trend-robustness"
+    },
+    "risk": {
+      "experiment": "risk",
+      "checks": [
+        {
+          "check": "risk_orders_are_686_with_the_published_outcomes",
+          "result": "PASS",
+          "detail": "686 orders, outcomes {'filled': 372, 'expired': 128, 'refused_by_risk_budget': 183, 'cancelled_window_end': 3} vs the published {'filled': 372, 'expired': 128, 'refused_by_risk_budget': 183, 'cancelled_window_end': 3}"
+        },
+        {
+          "check": "risk_every_order_has_one_declared_outcome",
+          "result": "PASS",
+          "detail": "0 unknown outcome(s), 0 left resting"
+        },
+        {
+          "check": "risk_order_rows_are_the_published_ones",
+          "result": "PASS",
+          "detail": "686 published rows compared with 686 reconstructed; 0 mismatch(es)"
+        },
+        {
+          "check": "risk_equity_curve_is_rebuilt_from_the_corpus",
+          "result": "PASS",
+          "detail": "26113/26113 bars compared with the published curve; 0 mismatch(es)"
+        },
+        {
+          "check": "risk_accounting_identity_holds",
+          "result": "PASS",
+          "detail": "start 10,000.00 + net -495.8756 = 9,504.1244 vs the replayed curve end 9,504.1244"
+        },
+        {
+          "check": "risk_refusal_reasons_are_the_published_split",
+          "result": "PASS",
+          "detail": "183 refusals, reasons {'risk_loss_cooldown': 35, 'risk_drawdown_halt': 148} vs the published {'risk_drawdown_halt': 148, 'risk_loss_cooldown': 35}"
+        },
+        {
+          "check": "risk_every_refusal_is_justified_by_the_reconstructed_state",
+          "result": "PASS",
+          "detail": "183 refusals re-decided from the corpus; 0 disagreement(s), 0 within 0.02 percentage points of the boundary"
+        },
+        {
+          "check": "risk_refusal_instants_are_the_published_order_touches",
+          "result": "PASS",
+          "detail": "183 refusals matched against 183 refused orders"
+        },
+        {
+          "check": "risk_no_duplicate_refusals",
+          "result": "PASS",
+          "detail": "0 duplicated (asset, instant, reason) refusal(s) in the primary window"
+        },
+        {
+          "check": "risk_invariants_are_all_declared_and_hold",
+          "result": "PASS",
+          "detail": "10 invariants declared (expected 10); 0 failure(s); 150 scope rows"
+        },
+        {
+          "check": "risk_verdict_follows_the_declared_rule",
+          "result": "PASS",
+          "detail": "declared AUDIT_PASS; recomputed AUDIT_PASS"
+        },
+        {
+          "check": "risk_no_limit_was_relaxed",
+          "result": "PASS",
+          "detail": "the audit's budget matches config/risk.yaml on 8 limits"
+        }
+      ],
+      "passed": 12,
+      "failed": 0,
+      "artifacts_dir": "reports\\edge-recovery\\WP-EDGE-02\\h6-risk-audit"
+    },
+    "self_test": {
+      "command": "scripts/edge01_wp02_verify.py --experiment all --self-test",
+      "mutations": 10,
+      "undetected": 0,
+      "note": "ten deliberate sabotages (a moved net, a widened interval, a laundered refusal, a dropped order, a claimed pass) are each required to break the declared check that owns them"
+    },
+    "determinism": {
+      "command": "python scripts/edge01_robustness_experiments.py --experiment all && python scripts/edge01_wp02_verify.py --experiment all  (re-run on the frozen tree)",
+      "artifacts_compared": 12,
+      "artifacts_byte_identical": 12,
+      "excluded": [
+        "ROBUSTNESS.json",
+        "ROBUSTNESS.md",
+        "RISK_AUDIT.json",
+        "RISK_AUDIT.md"
+      ],
+      "why_excluded": "these four carry generated_at_utc and the HEAD they ran on, so their bytes are expected to differ between runs; their derived TABLES are CSV and are compared",
+      "restored": "the re-run files were restored with git checkout, so the frozen state is exactly the committed one, and the verifier was re-run on it afterwards: 21/21 green"
+    }
+  },
+  "tests": {
+    "command": "pytest tests/unit/research/test_edge01_*.py -q",
+    "files": [
+      "tests/unit/research/test_edge01_ablation.py",
+      "tests/unit/research/test_edge01_closure_experiments.py",
+      "tests/unit/research/test_edge01_gate_and_artifacts.py",
+      "tests/unit/research/test_edge01_mechanism_ablations.py",
+      "tests/unit/research/test_edge01_pit.py",
+      "tests/unit/research/test_edge01_risk_ablation.py",
+      "tests/unit/research/test_edge01_wp02_robustness.py"
+    ],
+    "result": "148 passed in 6.63s",
+    "exit_code": 0,
+    "new_file": "tests/unit/research/test_edge01_wp02_robustness.py",
+    "new_tests": 22
+  },
+  "artifacts": [
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/h6-risk-audit/RISK_AUDIT.json",
+      "bytes": 45782,
+      "sha256": "b07565d2d5ab607304c3fd96542a258c2984769bf99f679c1448df89df5f440f"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/h6-risk-audit/RISK_AUDIT.md",
+      "bytes": 22935,
+      "sha256": "d46a77fb5854f92600aefb1e37c2a8f56183ec144fda5824a4d8a901fa75cee1"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/h6-risk-audit/RISK_AUDIT_EQUITY.csv",
+      "bytes": 757924,
+      "sha256": "86c8789280e3db1d4eb640978e98bb276726ce7a0f61d79d4851f66e8d8f1b54"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/h6-risk-audit/RISK_AUDIT_INVARIANTS.csv",
+      "bytes": 14809,
+      "sha256": "f4020f34e2a1874168d50166bb9d64c05f8b55504c3194d404ab0aae9efbb50b"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/h6-risk-audit/RISK_AUDIT_ORDERS.csv",
+      "bytes": 357066,
+      "sha256": "daec77ace2bf83b4f42527bc24f20d799d1b9e655aeb8b3a0d0ca44eecda2361"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/h6-risk-audit/RISK_AUDIT_PRIMARY_REFUSALS.csv",
+      "bytes": 61315,
+      "sha256": "8a6ea8978951984d0e714beba5091f28da0264d3af9e395052292aafec161a3b"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/h6-risk-audit/RISK_AUDIT_REFUSALS.csv",
+      "bytes": 903008,
+      "sha256": "477d6e327961ca89014ef7be4518c6f9d2439ce2c503ba31767710a25416e896"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/trend-robustness/ROBUSTNESS.json",
+      "bytes": 3360259,
+      "sha256": "9915f017659b2dd4fccacc5be0223df62a70abff7d3d8ac664e6fa8c9e6cddb7"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/trend-robustness/ROBUSTNESS.md",
+      "bytes": 12138,
+      "sha256": "20a919acf444db97c58f05ce95b55df75113385eb045547d3a63aeb6d9452fc2"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/trend-robustness/ROBUSTNESS_CONTRIBUTION.csv",
+      "bytes": 2852,
+      "sha256": "c7660da87d09082b9a5a0f9cfee803b4d2d8aa99c1160b9f4c4e726f2bc144da"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/trend-robustness/ROBUSTNESS_LEAVE_OUT.csv",
+      "bytes": 1121,
+      "sha256": "069d7ab862acc6f176b62f152fb45d9507c9cbb4a1322784c1185a7a88c7b6f5"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/trend-robustness/ROBUSTNESS_RISK_ADJUSTED.csv",
+      "bytes": 717,
+      "sha256": "b667abafb69702a24fb9d908b4bcac742c34b1bef6841c94fc4a1c541f3f1f2a"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/trend-robustness/ROBUSTNESS_UNCERTAINTY.csv",
+      "bytes": 683,
+      "sha256": "c00bd60a69b23b71a3f3221bbf601d80786fbfcdd3f0138f7457cdc532f972d9"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/trend-robustness/ROBUSTNESS_WINDOWS.csv",
+      "bytes": 866,
+      "sha256": "eb7440d01c76cb9fc99e7fdc295f4ce5b4d9f20d14313cabca04e1f517cf677a"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/trend-robustness/TREND_TRADES.csv",
+      "bytes": 300292,
+      "sha256": "6443e42b85b557c3a9a47c7d2dc3f4432396c5a99f57c37a7db6b16c5a2b7b39"
+    },
+    {
+      "path": "reports/edge-recovery/WP-EDGE-02/VERIFICATION.json",
+      "bytes": 4504,
+      "sha256": "d43b3439c8e97674ef8aa60c97687c6dbb4dee8332b297cbc4c63019328a85e5"
+    }
+  ],
+  "push": {
+    "state": "BLOCKED_GITHUB_AUTH",
+    "remote": "https://github.com/Extr3sao/bot_crypto.git",
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "upstream_configured": false,
+    "probes": [
+      {
+        "command": "GIT_TERMINAL_PROMPT=0 git push --dry-run",
+        "exit_code": 128,
+        "result": "local: the branch has no upstream, so no remote write was attempted"
+      },
+      {
+        "command": "GIT_TERMINAL_PROMPT=0 git push --dry-run origin HEAD:refs/heads/agent/edge-recovery/WP-EDGE-02",
+        "exit_code": 124,
+        "result": "hung: the configured credential.helper (manager, Git Credential Manager) opens its own interactive dialog, which GIT_TERMINAL_PROMPT does not suppress; killed at the 60s cap"
+      },
+      {
+        "command": "GIT_TERMINAL_PROMPT=0 git -c credential.helper= push --dry-run origin HEAD:refs/heads/agent/edge-recovery/WP-EDGE-02",
+        "exit_code": 128,
+        "stderr": "fatal: could not read Username for 'https://github.com': terminal prompts disabled",
+        "result": "no credential is available to the process"
+      },
+      {
+        "command": "GIT_TERMINAL_PROMPT=0 git ls-remote --heads origin",
+        "exit_code": 0,
+        "result": "61 branches readable anonymously; refs/heads/agent/edge-recovery/* is empty"
+      }
+    ],
+    "secrets": "no token was read, requested, stored or printed: GITHUB_TOKEN/GH_TOKEN are not in the environment, there is no ~/.git-credentials, no gh CLI is installed and the helper is the interactive manager",
+    "unlock_procedure": [
+      "1. An operator with push rights on Extr3sao/bot_crypto creates a token (PAT with repo scope) or, preferably, installs and signs in the gh CLI.",
+      "2. Export it only for the shell that pushes: export GITHUB_TOKEN=<token> (never in a file inside the repo, never in a commit).",
+      "3. Verify it is not already leaked: git config --get credential.helper must NOT contain the token, and the token must not appear in any tracked file.",
+      "4. Push the WP branch without storing the credential: GIT_TERMINAL_PROMPT=0 git -c credential.helper='!f() { echo username=x-access-token; echo password=$GITHUB_TOKEN; }; f' push --set-upstream origin HEAD:refs/heads/agent/edge-recovery/WP-EDGE-02",
+      "5. Alternative without env vars: gh auth login (https or ssh) and then git push --set-upstream origin HEAD:refs/heads/agent/edge-recovery/WP-EDGE-02.",
+      "6. Alternative through the interactive helper: run git push once from an interactive terminal so the manager stores the credential in the OS keychain, then the dry-run above must return 'Everything up-to-date'.",
+      "7. Confirm from a clean session: GIT_TERMINAL_PROMPT=0 git ls-remote --heads origin 'refs/heads/agent/edge-recovery/*' must now list the pushed branch and its sha.",
+      "8. Record the resulting sha in this report (push.published_sha) and re-run scripts/edge01_wp02_verify.py to confirm the artefacts are the committed ones.",
+      "9. If the operator prefers, the same branch can be pushed over SSH after adding a key: git remote set-url --push origin git@github.com:Extr3sao/bot_crypto.git."
+    ],
+    "published_sha": null
+  },
+  "limitations": [
+    "the trend ruleset was already read on VAL and OOS in WP-EDGE-01, so this is a sensitivity and decomposition analysis of a published run, not a second independent sample",
+    "the concentration criterion is the 0.50 WP-EDGE-01 froze; relaxing it is a proposal for a new experiment and is not applied here",
+    "the frozen corpus ends at the last bar of the OOS window (5 mop-up bars, 0.83 days, below the declared 30-day minimum), so no unused independent period exists and a genuinely new period needs a new corpus",
+    "the research risk budget models a subset of the runtime Risk Engine's rules, so the audit's verdict is about that subset: a live run blocks at least as often, never less",
+    "the audit observes the frozen simulator's own entry path in the same process; the independent state is rebuilt by a separate process from the corpus and the trade ledger",
+    "long side only (spot); no historical order book; no capital is at risk anywhere in this WP"
+  ],
+  "not_claimed": [
+    "no CERTIFIED and no PRODUCTION_READY: no gate that would license capital was passed",
+    "nothing was wired into the PAPER runtime and no limits or parameters were changed",
+    "no historical evidence was regenerated to hide an inconsistency",
+    "no token was read, requested, stored or printed"
+  ],
+  "work_package_commits": 4
+}

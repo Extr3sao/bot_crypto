@@ -1,0 +1,68 @@
+{
+  "bootstrap_resamples": 2000,
+  "cost_multipliers": [
+    1.0,
+    2.0
+  ],
+  "datasets": {
+    "AAVE/USDT": {
+      "path": "data/quote-feed-1m/AAVEUSDT_1m_2021-01-04_2021-02-17.json",
+      "rows": 63281,
+      "sha256": "5c19ec3d9e54a1b4435dbf43043236028b0a010697f7d38ca4fd2c674235824c"
+    },
+    "UNI/USDT": {
+      "path": "data/quote-feed-1m/UNIUSDT_1m_2021-01-04_2021-02-17.json",
+      "rows": 63281,
+      "sha256": "05033895083b62b6664029181b0df1f3f2275d95c381dea213b9d9297002a6f9"
+    }
+  },
+  "executed_partition": "untouched_test",
+  "fixed": {
+    "data_delay_ms": 3620,
+    "decision_every_bars": 1,
+    "equity_usdt": 10000.0,
+    "max_opinion_age_ms": 60000,
+    "risk_config": "config/risk.yaml (sin cambios)",
+    "signal_source": "strategy_experimental",
+    "strategy_id": "ema_crossover",
+    "timeframe": "1m",
+    "variable": "vision lane opinion_lifecycle",
+    "warmup_bars": 40,
+    "window_bars": 22
+  },
+  "frozen_at_utc": "2026-10-21T09:28:33Z",
+  "generated_at_utc": "2026-10-21T09:28:33Z",
+  "lifecycles": [
+    "SUPERSEDE",
+    "DEFER"
+  ],
+  "partitions": {
+    "development": {
+      "days": 27,
+      "first_day_utc": "2021-01-04",
+      "last_day_utc": "2021-01-30"
+    },
+    "untouched_test": {
+      "days": 8,
+      "first_day_utc": "2021-02-09",
+      "last_day_utc": "2021-02-16"
+    },
+    "validation": {
+      "days": 9,
+      "first_day_utc": "2021-01-31",
+      "last_day_utc": "2021-02-08"
+    }
+  },
+  "protocol": {
+    "path": "reports\\ai-bots\\RFC-DEF-RUN-017\\OOS_PROTOCOL.md",
+    "sha256": "da03397dc77646fb7ae4e288a2d9ad527d21047f14d7ef5f8ed0a582953b2a71"
+  },
+  "schema_version": "DEF_RUN_017_OOS_V1",
+  "seed": 17017,
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "symbols": [
+    "UNI/USDT",
+    "AAVE/USDT"
+  ],
+  "total_days": 44
+}

@@ -1,0 +1,99 @@
+{
+  "book_id": "ai-vision-paper-003c-real_900ms",
+  "calls": 8,
+  "closed_trades": 2,
+  "costs_usdt": 3.198588,
+  "counters": {
+    "action:CLOSE": 2,
+    "action:LONG": 3,
+    "action:SHORT": 3,
+    "closed_trades": 2,
+    "dropped:NO_POSITION_TO_CLOSE": 2,
+    "fills": 2,
+    "gate:WEEKEND_BLOCK": 4,
+    "requote:WAITING_FOR_QUOTE": 6
+  },
+  "decision_points": 3,
+  "drawdown_pct": 0.075993,
+  "drawdown_status": "MEASURED",
+  "drawdown_usdt": 7.599295,
+  "equity_points": 200,
+  "estimated_spend_usd": 0.0,
+  "execution": {
+    "bar_interval_ms": 3600000,
+    "data_gap_policy": "fail_closed_unless_independent_coverage",
+    "exit_ts_resolutions": [
+      "OPEN_GAP",
+      "BAR_WINDOW",
+      "QUOTE"
+    ],
+    "expired_opinions": 0,
+    "fills": 2,
+    "gap_exits": 0,
+    "gap_policy": "open_on_gap",
+    "max_opinion_age_ms": 3600000,
+    "open_phase_order": "gap_close>mark>entries>intrabar",
+    "quote_lag_ms": {
+      "max": 3599100,
+      "median": 3599100,
+      "min": 3599100
+    },
+    "quote_source": "bar_open",
+    "stale_valuation_vetoes": 0,
+    "stop_coverage": "entry_at_open_full_bar",
+    "waiting_events": 6
+  },
+  "fills": 2,
+  "final_equity_usdt": 9992.400705,
+  "gross_realised_usdt": -5.599295,
+  "net_realised_usdt": -7.599295,
+  "open_positions_at_end": {},
+  "provider": "replay",
+  "reconciliation": {
+    "curve_end_equity_usdt": 9992.40070536,
+    "entry_commission_usdt": 1.0,
+    "execution_cost_usdt": 1.19858838,
+    "exit_commission_usdt": 1.0,
+    "final_equity_usdt": 9992.40070536,
+    "identities": {
+      "cash_rebuilds_from_realised_pnl": true,
+      "curve_ends_at_final_equity": true,
+      "every_close_after_its_entry_quote": true,
+      "net_pnl_nets_every_named_cost": true,
+      "risk_equity_matches_marked_equity": true
+    },
+    "initial_equity_usdt": 10000.0,
+    "marked_equity_usdt": 9992.40070536,
+    "marks_complete_at_end": true,
+    "net_realised_usdt": -7.59929464,
+    "open_gap_exits": 0,
+    "open_positions_at_end": 0,
+    "reference_gross_usdt": -4.40070626,
+    "risk_equity_usdt": 9992.40070536,
+    "tolerance_usdt": 1e-06
+  },
+  "risk_equity_usdt": 9992.400705,
+  "stop_reason": null,
+  "trades": [
+    {
+      "closed_at_utc": "2021-01-11T03:00:00Z",
+      "entry_price": 118.704839615788,
+      "exit_price": 119.36987999999998,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-11T02:00:00Z",
+      "pnl_net_usdt": -3.80123534,
+      "side": "sell",
+      "symbol": "AAVE/USDT"
+    },
+    {
+      "closed_at_utc": "2021-01-11T03:00:00Z",
+      "entry_price": 5.8333948695037225,
+      "exit_price": 5.8007505,
+      "exit_reason": "stop_loss",
+      "opened_at_utc": "2021-01-11T02:00:00Z",
+      "pnl_net_usdt": -3.7980593,
+      "side": "buy",
+      "symbol": "UNI/USDT"
+    }
+  ]
+}

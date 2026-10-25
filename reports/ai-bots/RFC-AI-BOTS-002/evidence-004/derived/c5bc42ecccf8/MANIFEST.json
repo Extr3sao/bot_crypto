@@ -1,0 +1,25 @@
+{
+  "schema": "evidence004/current-manifest/1",
+  "generated_by": "scripts/evidence004_generate.py",
+  "canonical": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/canonical/CANONICAL_RUN.json",
+  "derived_dir": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/c5bc42ecccf8",
+  "documents": [
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/c5bc42ecccf8/INFORME_EJECUTIVO_NUMEROS.md",
+      "role": "DERIVED",
+      "sha256": "5a45bf4e8d326ffccc95f61497719040d55a8d99497264b4c60fb58244bfa741"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/c5bc42ecccf8/RUN_REPORT.json",
+      "role": "DERIVED",
+      "sha256": "a8abd8cce119f8d8dbd3724c02487701ab30da66a79cd93a466a0a6f966bbdd1"
+    },
+    {
+      "path": "reports/ai-bots/RFC-AI-BOTS-002/evidence-004/derived/c5bc42ecccf8/RUN_REPORT.md",
+      "role": "DERIVED",
+      "sha256": "9fc25626cb49ba6191dde1fb0226e8aab4b7f41a1bb50a26ec934c565f7aa4e4"
+    }
+  ],
+  "canonical_sha256": "39d1f89b0257fe538ce224356b064b51f4020b93f980cbcdc6c041defd5768a1",
+  "ledger_sha256": "c5bc42ecccf86965effb52e505b3e0f9e3dadd5ea62ecb0b4bfbc0f43b629869"
+}

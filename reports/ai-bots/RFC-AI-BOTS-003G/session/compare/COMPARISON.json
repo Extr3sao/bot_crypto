@@ -1,0 +1,221 @@
+{
+  "controls": {
+    "decision_from_ms": 1792394926000,
+    "same_data_delay_ms": 2956,
+    "same_equity_usdt": 10000.0,
+    "same_latency_ms": 30000,
+    "same_provider": "paper-script",
+    "same_risk_policy": true
+  },
+  "current": {
+    "actions": {
+      "action:LONG": 4,
+      "action:NO_TRADE": 7,
+      "action:SHORT": 3,
+      "dropped:MODEL_NO_TRADE": 7,
+      "guard:RUN_ENDED_WITH_ORDER_PENDING": 1,
+      "guard:SUPERSEDED_BY_NEWER_OPINION": 6,
+      "requote:WAITING_FOR_QUOTE": 6
+    },
+    "closed_trades": 0,
+    "costs_usdt": 0,
+    "decisions": 14,
+    "drawdown_pct": 0.0,
+    "entry_quote_sources": {},
+    "execution": {
+      "bar_interval_ms": 300000,
+      "data_gap_policy": "fail_closed_unless_independent_coverage",
+      "entry_bar_range_policy": "full_bar_from_its_open",
+      "entry_quote_sources": {},
+      "exit_ts_resolutions": [
+        "OPEN_GAP",
+        "BAR_WINDOW",
+        "QUOTE"
+      ],
+      "expired_opinions": 0,
+      "fills": 0,
+      "gap_exits": 0,
+      "gap_policy": "open_on_gap",
+      "max_opinion_age_ms": 300000,
+      "open_phase_order": "gap_close>mark>entries>intrabar",
+      "quote_lag_ms": {
+        "max": null,
+        "median": null,
+        "min": null
+      },
+      "quote_source": "bar_open",
+      "stale_valuation_vetoes": 0,
+      "stop_coverage": "entry_at_open_full_bar",
+      "sub_bar_fills": 0,
+      "subbar_entries": false,
+      "waiting_events": 6
+    },
+    "fills": 0,
+    "fills_detail": [],
+    "final_equity_usdt": 10000.0,
+    "gross_realised_usdt": 0,
+    "label": "CURRENT",
+    "ledger": "CURRENT\\ledger.jsonl",
+    "ledger_sha256": "624088b79fe9f6a4d1521407b5b5226ea6465fd4062ce74c5c6c2d06a3ba69fb",
+    "median_quote_lag_ms": null,
+    "net_realised_usdt": 0,
+    "reconciliation": {
+      "curve_end_equity_usdt": 10000.0,
+      "entry_commission_usdt": 0,
+      "execution_cost_usdt": 0,
+      "exit_commission_usdt": 0,
+      "final_equity_usdt": 10000.0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "every_fill_pays_at_or_after_its_answer": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "initial_equity_usdt": 10000.0,
+      "marked_equity_usdt": 10000.0,
+      "marks_complete_at_end": true,
+      "net_realised_usdt": 0,
+      "open_gap_exits": 0,
+      "open_positions_at_end": 0,
+      "reference_gross_usdt": 0,
+      "risk_equity_usdt": 10000.0,
+      "tolerance_usdt": 1e-06
+    },
+    "sub_bar_fills": 0,
+    "subbar_entries": false
+  },
+  "dataset": {
+    "bar_interval_ms": 300000,
+    "data_time_ms": 1792396800000,
+    "symbols": {
+      "BTCUSDT": {
+        "bars": 55,
+        "incomplete_groups": [],
+        "matches_session": true,
+        "minutes": 276,
+        "sha256": "d122e5f277f6cc18c971c445fdee80c37e117c2bc17c75559037e5c9a941831b"
+      },
+      "ETHUSDT": {
+        "bars": 55,
+        "incomplete_groups": [],
+        "matches_session": true,
+        "minutes": 276,
+        "sha256": "a22b031f3ee5678d8d0fcdb6a9e918f3856743fabb8421681ff02dfd808745b6"
+      }
+    },
+    "timeframe": "5m"
+  },
+  "delta": {
+    "closed_trades": 0,
+    "drawdown_pp": 0.024483,
+    "entry_price": {
+      "matched": 0
+    },
+    "fills": 1,
+    "net_realised_usdt": 0.0,
+    "sub_bar_fills": 1
+  },
+  "gate": {
+    "detail": "0 closed trades: the 003F gate requires >= 30 to judge economics",
+    "verdict": "INSUFFICIENT_SAMPLE"
+  },
+  "proposed": {
+    "actions": {
+      "action:LONG": 4,
+      "action:NO_TRADE": 7,
+      "action:SHORT": 3,
+      "dropped:ALREADY_LONG": 3,
+      "dropped:MODEL_NO_TRADE": 7,
+      "dropped:OPPOSITE_LONG_OPEN": 3,
+      "fills": 1
+    },
+    "closed_trades": 0,
+    "costs_usdt": 0,
+    "decisions": 14,
+    "drawdown_pct": 0.024483,
+    "entry_quote_sources": {
+      "binance_spot_1m_klines": 1
+    },
+    "execution": {
+      "bar_interval_ms": 300000,
+      "data_gap_policy": "fail_closed_unless_independent_coverage",
+      "entry_bar_range_policy": "minutes_strictly_after_the_fill",
+      "entry_quote_sources": {
+        "binance_spot_1m_klines": 1
+      },
+      "exit_ts_resolutions": [
+        "OPEN_GAP",
+        "BAR_WINDOW",
+        "QUOTE"
+      ],
+      "expired_opinions": 0,
+      "fills": 1,
+      "gap_exits": 0,
+      "gap_policy": "open_on_gap",
+      "max_opinion_age_ms": 300000,
+      "open_phase_order": "gap_close>mark>entries>intrabar",
+      "quote_lag_ms": {
+        "max": 27044,
+        "median": 27044,
+        "min": 27044
+      },
+      "quote_source": "bar_open",
+      "stale_valuation_vetoes": 0,
+      "stop_coverage": "entry_bar_from_the_fill",
+      "sub_bar_fills": 1,
+      "subbar_entries": true,
+      "waiting_events": 0
+    },
+    "fills": 1,
+    "fills_detail": [
+      {
+        "position_id": "pos-paper-003g-proposed-00000001",
+        "quote_lag_ms": 27044,
+        "quote_price": 82884.01,
+        "quote_source": "binance_spot_1m_klines",
+        "quote_ts_ms": 1792395060000,
+        "received_at_ms": 1792395032956,
+        "side": "buy",
+        "symbol": "BTC/USDT"
+      }
+    ],
+    "final_equity_usdt": 10000.0,
+    "gross_realised_usdt": 0,
+    "label": "PROPOSED",
+    "ledger": "PROPOSED\\ledger.jsonl",
+    "ledger_sha256": "7ef61a6f0c3215fd6a765845040f19b863414576fcc461b70bc04fc61605c097",
+    "median_quote_lag_ms": 27044,
+    "net_realised_usdt": 0,
+    "reconciliation": {
+      "curve_end_equity_usdt": 9998.37118687,
+      "entry_commission_usdt": 0,
+      "execution_cost_usdt": 0,
+      "exit_commission_usdt": 0,
+      "final_equity_usdt": 10000.0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "every_fill_pays_at_or_after_its_answer": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "initial_equity_usdt": 10000.0,
+      "marked_equity_usdt": 9998.37118687,
+      "marks_complete_at_end": true,
+      "net_realised_usdt": 0,
+      "open_gap_exits": 0,
+      "open_positions_at_end": 1,
+      "reference_gross_usdt": 0,
+      "risk_equity_usdt": 9998.37118687,
+      "tolerance_usdt": 1e-06
+    },
+    "sub_bar_fills": 1,
+    "subbar_entries": true
+  },
+  "schema_version": "AI_BOTS_003G_COMPARISON_V1",
+  "scope": "PROSPECTIVE_SESSION_WINDOW",
+  "session": "reports\\ai-bots\\RFC-AI-BOTS-003G\\session"
+}

@@ -1,0 +1,314 @@
+{
+  "canonical_entry_gate": "RiskManager.check_signal",
+  "declared_but_not_enforced": [
+    "blocks.excessive_spread_bps",
+    "blocks.extreme_atr_pct",
+    "blocks.high_latency_ms",
+    "blocks.weekend_trading",
+    "live_trading_enabled"
+  ],
+  "lane_manual_risk_checks_remaining": [],
+  "lane_uses_canonical_engine": true,
+  "method": "grep for each field name across src/ and scripts/ (recorded per row)",
+  "policy_fields": [
+    {
+      "expected_reader": "RiskManager._compute_position_size",
+      "field": "max_risk_per_trade_pct",
+      "files_that_name_it": [
+        "src/trading_bot/execution/live_gate.py",
+        "src/trading_bot/research/edge01/campaign.py",
+        "scripts/edge01_wp02_verify.py",
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager.check_signal",
+      "field": "max_daily_loss_pct",
+      "files_that_name_it": [
+        "src/trading_bot/execution/live_gate.py",
+        "src/trading_bot/risk/futures/engine.py",
+        "scripts/edge15_paper_lane.py",
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager.check_signal",
+      "field": "max_weekly_loss_pct",
+      "files_that_name_it": [
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager.check_signal",
+      "field": "max_daily_drawdown_pct",
+      "files_that_name_it": [
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager.check_signal",
+      "field": "max_total_drawdown_pct",
+      "files_that_name_it": [
+        "src/trading_bot/execution/live_gate.py",
+        "src/trading_bot/research/edge01/campaign.py",
+        "scripts/edge01_wp02_verify.py",
+        "scripts/edge15_paper_lane.py",
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager.check_signal",
+      "field": "max_open_positions",
+      "files_that_name_it": [
+        "src/trading_bot/research/edge01/campaign.py",
+        "src/trading_bot/research/edge01/risk_audit.py",
+        "src/trading_bot/research/edge01/simulator.py",
+        "scripts/edge01_wp02_verify.py",
+        "scripts/edge15_alphas.py",
+        "scripts/edge15_paper_lane.py",
+        "scripts/edge15_verify.py",
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager.check_signal",
+      "field": "max_trades_per_day",
+      "files_that_name_it": [
+        "src/trading_bot/research/edge01/campaign.py",
+        "src/trading_bot/research/edge01/risk_audit.py",
+        "src/trading_bot/research/edge01/simulator.py",
+        "scripts/edge01_risk_ablation_verify.py",
+        "scripts/edge01_wp02_verify.py",
+        "scripts/edge15_alphas.py",
+        "scripts/edge15_paper_lane.py",
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager.check_signal (cooldown)",
+      "field": "max_consecutive_losses",
+      "files_that_name_it": [
+        "src/trading_bot/research/edge01/campaign.py",
+        "src/trading_bot/research/edge01/simulator.py",
+        "src/trading_bot/risk/futures/engine.py",
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager.check_signal (cooldown)",
+      "field": "consecutive_loss_cooldown_minutes",
+      "files_that_name_it": [
+        "src/trading_bot/research/edge01/campaign.py",
+        "src/trading_bot/research/edge01/simulator.py",
+        "src/trading_bot/research/edge03/parity.py",
+        "src/trading_bot/risk/manager.py",
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager._compute_position_size",
+      "field": "max_asset_exposure_pct",
+      "files_that_name_it": [
+        "src/trading_bot/autonomous/runtime.py",
+        "src/trading_bot/research/edge01/campaign.py",
+        "src/trading_bot/research/edge01/risk_audit.py",
+        "src/trading_bot/research/edge01/simulator.py",
+        "src/trading_bot/research/swing/contracts.py",
+        "scripts/edge01_wp02_verify.py",
+        "scripts/edge15_alphas.py",
+        "scripts/edge15_paper_lane.py",
+        "scripts/edge15_verify.py",
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager._compute_position_size",
+      "field": "max_total_exposure_pct",
+      "files_that_name_it": [
+        "src/trading_bot/autonomous/runtime.py",
+        "src/trading_bot/research/edge01/campaign.py",
+        "src/trading_bot/research/edge01/risk_audit.py",
+        "src/trading_bot/research/edge01/simulator.py",
+        "src/trading_bot/research/swing/contracts.py",
+        "scripts/edge01_wp02_verify.py",
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager._compute_position_size",
+      "field": "min_order_notional_usdt",
+      "files_that_name_it": [
+        "src/trading_bot/research/edge01/campaign.py",
+        "src/trading_bot/risk/manager.py",
+        "scripts/edge01_wp02_verify.py",
+        "scripts/edge09_gates.py",
+        "scripts/edge15_alphas.py",
+        "scripts/edge15_paper_lane.py",
+        "scripts/edge15_verify.py",
+        "scripts/edge16_artifacts.py",
+        "scripts/edge16_verify.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager._compute_position_size",
+      "field": "max_order_notional_usdt",
+      "files_that_name_it": [
+        "src/trading_bot/research/edge01/campaign.py",
+        "src/trading_bot/risk/manager.py",
+        "scripts/edge01_wp02_verify.py",
+        "scripts/edge15_alphas.py",
+        "scripts/edge15_paper_lane.py",
+        "scripts/edge15_verify.py",
+        "scripts/edge16_artifacts.py",
+        "scripts/edge16_verify.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager._compute_position_size",
+      "field": "default_stop_loss_pct",
+      "files_that_name_it": [
+        "src/trading_bot/app.py",
+        "scripts/edge15_alphas.py",
+        "scripts/edge15_paper_lane.py",
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager._compute_position_size",
+      "field": "default_take_profit_pct",
+      "files_that_name_it": [
+        "src/trading_bot/app.py",
+        "scripts/edge15_alphas.py",
+        "scripts/edge15_paper_lane.py",
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "DECLARED, NOT READ by the paper path",
+      "field": "blocks.excessive_spread_bps",
+      "files_that_name_it": [
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": false,
+      "read_by_the_lane": false,
+      "status": "DECLARED_NOT_ENFORCED"
+    },
+    {
+      "expected_reader": "DECLARED, NOT READ by the paper path",
+      "field": "blocks.extreme_atr_pct",
+      "files_that_name_it": [
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": false,
+      "read_by_the_lane": false,
+      "status": "DECLARED_NOT_ENFORCED"
+    },
+    {
+      "expected_reader": "DECLARED, NOT READ by the paper path",
+      "field": "blocks.high_latency_ms",
+      "files_that_name_it": [
+        "scripts/edge16_artifacts.py"
+      ],
+      "read_by_the_canonical_engine": false,
+      "read_by_the_lane": false,
+      "status": "DECLARED_NOT_ENFORCED"
+    },
+    {
+      "expected_reader": "DECLARED, NOT READ anywhere in the runtime",
+      "field": "blocks.weekend_trading",
+      "files_that_name_it": [
+        "scripts/edge15_paper_lane.py",
+        "scripts/edge16_artifacts.py",
+        "scripts/edge16_paper_lane.py",
+        "scripts/edge16_reports.py"
+      ],
+      "read_by_the_canonical_engine": false,
+      "read_by_the_lane": true,
+      "status": "DECLARED_NOT_ENFORCED"
+    },
+    {
+      "expected_reader": "RiskManager.check_signal",
+      "field": "kill_switch_enabled",
+      "files_that_name_it": [
+        "src/trading_bot/autonomous/runtime.py",
+        "src/trading_bot/config/settings.py",
+        "src/trading_bot/execution/live_gate.py",
+        "src/trading_bot/scanner/scanner.py",
+        "scripts/edge16_artifacts.py",
+        "scripts/start_paper_trading.py"
+      ],
+      "read_by_the_canonical_engine": true,
+      "read_by_the_lane": false,
+      "status": "ENFORCED"
+    },
+    {
+      "expected_reader": "config validator only (refuses True)",
+      "field": "live_trading_enabled",
+      "files_that_name_it": [
+        "src/trading_bot/config/risk.py",
+        "src/trading_bot/config/runtime.py",
+        "src/trading_bot/config/settings.py",
+        "src/trading_bot/execution/live_gate.py",
+        "scripts/economic001_closure.py",
+        "scripts/edge14_verify.py",
+        "scripts/edge16_artifacts.py",
+        "scripts/pgate035_verify.py",
+        "scripts/rfc046_activate.py",
+        "scripts/rfc046_campaign_verify.py",
+        "scripts/rfc046_economic_gate.py",
+        "scripts/rfc046_economic_gate_verify.py",
+        "scripts/st6_forward_regime_verify.py"
+      ],
+      "read_by_the_canonical_engine": false,
+      "read_by_the_lane": false,
+      "status": "DECLARED_NOT_ENFORCED"
+    }
+  ],
+  "reading": "the lane no longer re-implements the policy: entries are approved, sized and refused by RiskManager. The rows marked DECLARED_NOT_ENFORCED are a finding about the runtime, not about this lane: the defensive block fields exist in the model and are read by nothing on the paper path, which is why the weekend veto had to be applied by the lane.",
+  "schema_version": "EDGE16_RISK_PARITY_MATRIX_V1"
+}

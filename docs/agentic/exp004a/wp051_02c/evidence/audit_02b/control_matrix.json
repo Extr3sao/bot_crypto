@@ -1,0 +1,67 @@
+{
+  "controls": [
+    {
+      "actual": "PROSPECTIVELY_OBSERVED",
+      "control": "boundary_inclusive_at_bound",
+      "detail": {
+        "errors": [],
+        "late": 0
+      },
+      "expected": "PROSPECTIVELY_OBSERVED",
+      "ok": true
+    },
+    {
+      "actual": "DENSE_BUT_BACKFILLED",
+      "control": "one_ms_past_bound_is_refused",
+      "detail": {
+        "lag_ms": 7200001,
+        "late": 24
+      },
+      "expected": "DENSE_BUT_BACKFILLED",
+      "ok": true
+    },
+    {
+      "actual": "strict=DENSE_BUT_BACKFILLED/budget=PROSPECTIVELY_OBSERVED",
+      "control": "the_two_readings_diverge_on_22_of_24",
+      "detail": {
+        "prospective_coverage": 0.916667
+      },
+      "expected": "strict=DENSE_BUT_BACKFILLED/budget=PROSPECTIVELY_OBSERVED",
+      "ok": true
+    },
+    {
+      "actual": "INCOMPLETE",
+      "control": "absent_bars_become_INCOMPLETE",
+      "detail": {
+        "stored_coverage": 0.833333
+      },
+      "expected": "INCOMPLETE",
+      "ok": true
+    },
+    {
+      "actual": "PREFIX_DIGEST_MISMATCH",
+      "control": "prefix_mutation_is_detected",
+      "detail": {},
+      "expected": "PREFIX_DIGEST_MISMATCH",
+      "ok": true
+    },
+    {
+      "actual": "DIGEST_MISMATCH",
+      "control": "record_class_edit_breaks_its_digest",
+      "detail": {},
+      "expected": "DIGEST_MISMATCH",
+      "ok": true
+    },
+    {
+      "actual": "MATCH",
+      "control": "untouched_record_digest_reproduces",
+      "detail": {},
+      "expected": "MATCH",
+      "ok": true
+    }
+  ],
+  "failed": 0,
+  "generated_at_utc": "2026-10-21T12:16:16Z",
+  "mode": "controls",
+  "passed": 7
+}

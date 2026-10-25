@@ -1,0 +1,2864 @@
+{
+  "schema_version": "windowless-audit-v1",
+  "generated_at_utc": "2026-10-18T18:23:17Z",
+  "root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+  "platform": "win32",
+  "scan_counts": {
+    "python": 1160,
+    "shell": 3,
+    "bat": 21,
+    "ps1": 6,
+    "windowless_users": 3
+  },
+  "automation_entrypoints": [
+    {
+      "path": "scripts/start_paper_lab.py",
+      "present": true
+    },
+    {
+      "path": "scripts/start_paper_trading.py",
+      "present": true
+    },
+    {
+      "path": "scripts/autonomous_paper.py",
+      "present": true
+    },
+    {
+      "path": "scripts/cap004_supervisor.py",
+      "present": true
+    },
+    {
+      "path": "scripts/wp9_runtime_rehearsal.py",
+      "present": true
+    },
+    {
+      "path": "scripts/recovery_run_report.py",
+      "present": true
+    },
+    {
+      "path": "scripts/windowless.py",
+      "present": true
+    },
+    {
+      "path": "src/trading_bot/autonomous/supervisor.py",
+      "present": true
+    }
+  ],
+  "findings": [
+    {
+      "severity": "HIGH",
+      "code": "SCHEDULED_TASK_CMD_ACTION",
+      "path": "scripts/cap004_supervisor.py",
+      "line": 1,
+      "detail": "a task definition registered by this repository uses cmd.exe",
+      "remedy": "register pythonw.exe scripts/windowless.py as the action"
+    },
+    {
+      "severity": "HIGH",
+      "code": "SHELL_TRUE",
+      "path": "scripts/ops_background_audit.py",
+      "line": 10,
+      "detail": "shell=True goes through cmd.exe, which allocates a console",
+      "remedy": "pass an argv list to windowless.run()"
+    },
+    {
+      "severity": "HIGH",
+      "code": "SHELL_TRUE",
+      "path": "scripts/ops_background_audit.py",
+      "line": 138,
+      "detail": "shell=True goes through cmd.exe, which allocates a console",
+      "remedy": "pass an argv list to windowless.run()"
+    },
+    {
+      "severity": "HIGH",
+      "code": "SHELL_TRUE",
+      "path": "scripts/recovery_run_report.py",
+      "line": 63,
+      "detail": "shell=True goes through cmd.exe, which allocates a console",
+      "remedy": "pass an argv list to windowless.run()"
+    },
+    {
+      "severity": "HIGH",
+      "code": "POPEN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp9_runtime_rehearsal.py",
+      "line": 290,
+      "detail": "Popen without CREATE_NO_WINDOW leaves a child that can draw a console",
+      "remedy": "use trading_bot.ops.windowless.spawn()"
+    },
+    {
+      "severity": "HIGH",
+      "code": "POPEN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/autonomous/supervisor.py",
+      "line": 291,
+      "detail": "Popen without CREATE_NO_WINDOW leaves a child that can draw a console",
+      "remedy": "use trading_bot.ops.windowless.spawn()"
+    },
+    {
+      "severity": "HIGH",
+      "code": "POPEN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/ops/windowless.py",
+      "line": 222,
+      "detail": "Popen without CREATE_NO_WINDOW leaves a child that can draw a console",
+      "remedy": "use trading_bot.ops.windowless.spawn()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp7_tmp/make_run_report.py",
+      "line": 64,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp7_tmp/make_run_report.py",
+      "line": 102,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp7_tmp/make_run_report.py",
+      "line": 104,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp7_tmp/wp6_gate.py",
+      "line": 221,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp7_tmp/wp6_gate.py",
+      "line": 700,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp7_tmp/wp6_gate.py",
+      "line": 703,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp8_tmp/capture_baseline.py",
+      "line": 25,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp8_tmp/capture_baseline.py",
+      "line": 29,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp8_tmp/diagnose_state_view.py",
+      "line": 69,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp8_tmp/diagnose_state_view.py",
+      "line": 75,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp8_tmp/diagnose_v2.py",
+      "line": 28,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp8_tmp/diagnose_v3.py",
+      "line": 30,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp8_tmp/diagnose_v3.py",
+      "line": 35,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp8_tmp/diagnose_v3.py",
+      "line": 40,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp8_tmp/economic_invariance.py",
+      "line": 22,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "logs/wp8_tmp/economic_invariance.py",
+      "line": 35,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/alpha-recovery-v1-1/launch_campaign.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/alpha-recovery-v1-1/run_gates.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "reports/alpha001/run_gates.py",
+      "line": 44,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/paper-strategy-lifecycle-shadow-01/launch.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/paper-strategy-lifecycle-shadow-02/launch.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/source-runtime-verification/repro/run_pytest.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/source-runtime-verification/repro/run_repro.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/strategy-dynamic/run_exp.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/strategy-lifecycle-gate0/run_exp.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/strategy-lifecycle-hardening/run_checks.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/strategy-lifecycle-hardening/run_exp.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/strategy-lifecycle-persistence/run_checks.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/strategy-lifecycle-router/run_exp.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/strategy-lifecycle-verification/run_checks.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/strategy-lifecycle-verification/run_exp.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/strategy-lifecycle-verification/run_repro.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/strategy-lifecycle-verification/run_zero_diag.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/strategy-lifecycle/run_pytest.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/wp-strat-08/data/run_repro_base.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/wp-strat-08/data/run_research.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "reports/wp-strat-09/launch_canary.bat",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/active_economic_audit.py",
+      "line": 943,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/active_economic_audit.py",
+      "line": 944,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/ai_bots_003c_capture.py",
+      "line": 507,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/ai_bots_verify.py",
+      "line": 208,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/ai_bots_verify.py",
+      "line": 228,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "BAT_WITHOUT_WINDOWLESS",
+      "path": "scripts/alpha002_capture.cmd",
+      "line": 1,
+      "detail": "batch launcher starts a console interpreter directly",
+      "remedy": "route automation through pythonw.exe scripts/windowless.py"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/alpha_diversified_verify.py",
+      "line": 175,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/alpha_expansion_v1.py",
+      "line": 119,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/alpha_recovery_v1_3.py",
+      "line": 546,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/alpha_recovery_v1_4.py",
+      "line": 463,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/arp007_oos.py",
+      "line": 90,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/arp008_post_oos_recovery.py",
+      "line": 100,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/arp009_exp_021.py",
+      "line": 78,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/arp010_exp_022.py",
+      "line": 72,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/arp011_exp_019.py",
+      "line": 72,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/arp012_verify_exp_019.py",
+      "line": 77,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/campaign_state_view.py",
+      "line": 824,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/campaign_state_view.py",
+      "line": 825,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cap001_run.py",
+      "line": 73,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cap004_campaign_runner.py",
+      "line": 111,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cap004_campaign_runner.py",
+      "line": 600,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cap004_supervisor.py",
+      "line": 198,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cap004_supervisor.py",
+      "line": 989,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cap004_supervisor.py",
+      "line": 1157,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cap004_verify.py",
+      "line": 922,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cap004b_verify.py",
+      "line": 158,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cap004c_migrate.py",
+      "line": 55,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cap004c_verify.py",
+      "line": 936,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/clean_checkout_rehearsal.py",
+      "line": 141,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/clean_checkout_rehearsal.py",
+      "line": 154,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cost_barrier_adversarial.py",
+      "line": 174,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cost_barrier_adversarial.py",
+      "line": 1099,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cost_barrier_certify.py",
+      "line": 109,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cost_barrier_certify.py",
+      "line": 120,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cost_barrier_certify.py",
+      "line": 281,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cost_barrier_certify.py",
+      "line": 300,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cost_barrier_evidence.py",
+      "line": 157,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cost_barrier_explorer.py",
+      "line": 100,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cost_barrier_explorer.py",
+      "line": 879,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cost_barrier_explorer.py",
+      "line": 881,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cost_barrier_gate.py",
+      "line": 379,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cost_barrier_gate.py",
+      "line": 1311,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/cost_barrier_verify.py",
+      "line": 480,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/dependency_closure.py",
+      "line": 25,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/dependency_closure_files.py",
+      "line": 27,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/economic001_closure.py",
+      "line": 187,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/economic001_closure.py",
+      "line": 192,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/economic001_closure_verify.py",
+      "line": 106,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/economic001_closure_verify.py",
+      "line": 129,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge01_closure_report_check.py",
+      "line": 274,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge01_closure_report_check.py",
+      "line": 286,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge04_closure.py",
+      "line": 372,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge04r_verify.py",
+      "line": 890,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge04r_verify.py",
+      "line": 920,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge05_closure.py",
+      "line": 68,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge05r_regression.py",
+      "line": 93,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge05r_storage_inventory.py",
+      "line": 226,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge05r_storage_inventory.py",
+      "line": 252,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge05r_storage_reclaim.py",
+      "line": 99,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge05r_storage_reclaim.py",
+      "line": 112,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge06_report.py",
+      "line": 65,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge06_report.py",
+      "line": 79,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge06_verify.py",
+      "line": 251,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge06_verify.py",
+      "line": 275,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge06_verify.py",
+      "line": 293,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge07_growth_evidence.py",
+      "line": 159,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge07_reclaim.py",
+      "line": 151,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge07_report.py",
+      "line": 92,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge07_report.py",
+      "line": 106,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge08_report.py",
+      "line": 115,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge08_report.py",
+      "line": 147,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge08_verify.py",
+      "line": 131,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge09_report.py",
+      "line": 105,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge09_report.py",
+      "line": 112,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge09_suite_evidence.py",
+      "line": 43,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge09_suite_evidence.py",
+      "line": 112,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge12_reports.py",
+      "line": 484,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge12_tests.py",
+      "line": 73,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge14_reports.py",
+      "line": 32,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge14_reports.py",
+      "line": 42,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge14_run.py",
+      "line": 323,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge14r_engine_parity.py",
+      "line": 227,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge14r_engine_parity.py",
+      "line": 261,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge14r_external_engines.py",
+      "line": 84,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge14r_external_engines.py",
+      "line": 89,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge14r_external_engines.py",
+      "line": 115,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge14r_reports.py",
+      "line": 40,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge14r_verify.py",
+      "line": 540,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge15_oos_preregistration.py",
+      "line": 120,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge15_oos_preregistration.py",
+      "line": 125,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge15_oos_preregistration.py",
+      "line": 131,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge15_verify.py",
+      "line": 299,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge15_verify.py",
+      "line": 305,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge15_verify.py",
+      "line": 387,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge16_artifacts.py",
+      "line": 157,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge16_reports.py",
+      "line": 44,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge16_verify.py",
+      "line": 1030,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge17_prefix_replay.py",
+      "line": 47,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge17_prefix_replay.py",
+      "line": 179,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge17_prefix_replay.py",
+      "line": 214,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge17_reports.py",
+      "line": 366,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/edge17_reports.py",
+      "line": 372,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/forward_collection_verification.py",
+      "line": 164,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/forward_collection_verification.py",
+      "line": 177,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/forward_disk_guard_test.py",
+      "line": 79,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/forward_paper_coexistence.py",
+      "line": 62,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/forward_quality_gates.py",
+      "line": 42,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/forward_quality_gates.py",
+      "line": 112,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/paper_lab_verification.py",
+      "line": 166,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/paper_lab_verification.py",
+      "line": 234,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/paper_lab_verification.py",
+      "line": 895,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/paper_lab_verification.py",
+      "line": 1253,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/paper_lab_verification.py",
+      "line": 1378,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/paper_lab_verification.py",
+      "line": 1437,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/pgate035_closure.py",
+      "line": 107,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/pgate035_closure.py",
+      "line": 252,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/recovery_economic_invariance.py",
+      "line": 65,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/recovery_economic_invariance.py",
+      "line": 72,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/recovery_input_evidence.py",
+      "line": 253,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/recovery_input_evidence.py",
+      "line": 268,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/recovery_input_evidence.py",
+      "line": 275,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/recovery_run_report.py",
+      "line": 63,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/recovery_run_report.py",
+      "line": 83,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/recovery_run_report.py",
+      "line": 84,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/recovery_verify.py",
+      "line": 152,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/recovery_verify.py",
+      "line": 526,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/recovery_verify.py",
+      "line": 574,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/research_verification.py",
+      "line": 77,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/research_verification.py",
+      "line": 87,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc034_run.py",
+      "line": 66,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc034_run.py",
+      "line": 94,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc034_run.py",
+      "line": 95,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc034_run.py",
+      "line": 98,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc034_verify.py",
+      "line": 57,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc035_discovery_verify.py",
+      "line": 130,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc035_run.py",
+      "line": 34,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc035_verify.py",
+      "line": 121,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc035s2_search.py",
+      "line": 1657,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc035s2_verify.py",
+      "line": 154,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc035s3_closure.py",
+      "line": 124,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc035s3_verify.py",
+      "line": 484,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc035s3_verify.py",
+      "line": 515,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc035s3_verify.py",
+      "line": 579,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc035s3_verify.py",
+      "line": 597,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc039_run.py",
+      "line": 88,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc040_run.py",
+      "line": 87,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc040_run.py",
+      "line": 92,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc041_run.py",
+      "line": 58,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc041_run.py",
+      "line": 63,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc041_verify.py",
+      "line": 49,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc042_run.py",
+      "line": 917,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc042_run.py",
+      "line": 999,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc042_verify.py",
+      "line": 97,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc042_verify.py",
+      "line": 170,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc043_run.py",
+      "line": 142,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc043_run.py",
+      "line": 215,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc043_verify.py",
+      "line": 137,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc043_verify.py",
+      "line": 143,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc044_run.py",
+      "line": 76,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc044_run.py",
+      "line": 141,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc044_verify.py",
+      "line": 174,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc044_verify.py",
+      "line": 180,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc046_audit.py",
+      "line": 85,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc046_campaign.py",
+      "line": 193,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc046_campaign.py",
+      "line": 196,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc046_campaign_verify.py",
+      "line": 336,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc046_economic_gate_verify.py",
+      "line": 818,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc046_verify.py",
+      "line": 89,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc047_builder.py",
+      "line": 159,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc047_builder.py",
+      "line": 186,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc047_verify.py",
+      "line": 216,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc047_verify.py",
+      "line": 249,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc048_report.py",
+      "line": 46,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc048_run.py",
+      "line": 75,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc048_verify.py",
+      "line": 45,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc048v_certify.py",
+      "line": 201,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc048v_falsify.py",
+      "line": 90,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc048v_runtime_authority.py",
+      "line": 77,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc049_prepare.py",
+      "line": 350,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc049_prepare.py",
+      "line": 549,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc049b_admission.py",
+      "line": 147,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc049c_ablation.py",
+      "line": 146,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc049c_active_audit.py",
+      "line": 40,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc049c_active_audit.py",
+      "line": 132,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc049c_engine.py",
+      "line": 971,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/rfc049c_verify.py",
+      "line": 614,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/source_candidate_experiment.py",
+      "line": 99,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/sprint024_analysis.py",
+      "line": 26,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/sprint025_analysis.py",
+      "line": 238,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/sprint030_run.py",
+      "line": 33,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/sprint031_run.py",
+      "line": 31,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/sprint032_run.py",
+      "line": 44,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/sprint032_verify.py",
+      "line": 410,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/sprint033_run.py",
+      "line": 72,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/sprint033_verify.py",
+      "line": 39,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/st6_close_verify.py",
+      "line": 1405,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/st6_forward_regime.py",
+      "line": 177,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/st6_forward_regime.py",
+      "line": 2226,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/st6_forward_regime.py",
+      "line": 2406,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/st6_forward_regime.py",
+      "line": 2488,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/st6_scheduler_verify.py",
+      "line": 217,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/st6_scheduler_verify.py",
+      "line": 261,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/st6_scheduler_verify.py",
+      "line": 324,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/st6_scheduler_witness.py",
+      "line": 152,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/st6_scheduler_witness.py",
+      "line": 205,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/st6_state_snapshot.py",
+      "line": 115,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/st6_state_snapshot.py",
+      "line": 125,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/st6_windows_events.py",
+      "line": 173,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/start_paper_lab.py",
+      "line": 484,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/start_paper_lab.py",
+      "line": 803,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/strategy_dynamic_experiment.py",
+      "line": 290,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/swing_run.py",
+      "line": 86,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/swing_run.py",
+      "line": 283,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/swing_run.py",
+      "line": 877,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/swing_verify.py",
+      "line": 783,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/verify_l5_independent.py",
+      "line": 334,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp10_active_recovery.py",
+      "line": 73,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp10_baseline_economic_audit.py",
+      "line": 433,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp10_e1_cost_reality.py",
+      "line": 913,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp10_e1_decision.py",
+      "line": 79,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp10_open_blockers.py",
+      "line": 60,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp10_phase0_wp9_closure.py",
+      "line": 105,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp10_phase0_wp9_closure.py",
+      "line": 235,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp10_phase0_wp9_closure.py",
+      "line": 239,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp10_phase0_wp9_closure.py",
+      "line": 293,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp10_run_report.py",
+      "line": 48,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp10_verify.py",
+      "line": 135,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp10_verify.py",
+      "line": 756,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp10_verify.py",
+      "line": 944,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp9_ci_audit.py",
+      "line": 136,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp9_ci_audit.py",
+      "line": 361,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp9_ci_audit.py",
+      "line": 447,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp9_economic_blockers.py",
+      "line": 202,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp9_verify.py",
+      "line": 497,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp9_verify.py",
+      "line": 535,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp9_verify.py",
+      "line": 539,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp9_verify.py",
+      "line": 704,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp_edge_00_verify.py",
+      "line": 167,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp_edge_00_verify.py",
+      "line": 177,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp_edge_00_verify.py",
+      "line": 185,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "scripts/wp_edge_00b_verify.py",
+      "line": 411,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/autonomous/observability.py",
+      "line": 96,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/autonomous/observability.py",
+      "line": 155,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/autonomous/runtime.py",
+      "line": 1755,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/observability/ecosystem.py",
+      "line": 835,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/ops/windowless.py",
+      "line": 330,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/economic_recovery/parity.py",
+      "line": 130,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/economic_recovery/parity.py",
+      "line": 286,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/economic_recovery/render.py",
+      "line": 639,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/edge01/campaign.py",
+      "line": 3267,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/edge01/campaign.py",
+      "line": 3324,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/edge04r/os_evidence.py",
+      "line": 220,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RESEARCH_PROBE_CMD_ACTION",
+      "path": "src/trading_bot/research/edge04r/session.py",
+      "line": 137,
+      "detail": "a research probe's task definition uses cmd.exe as an action",
+      "remedy": "left unchanged on purpose: it is a probe, not a launcher"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RESEARCH_PROBE_CMD_ACTION",
+      "path": "src/trading_bot/research/edge04r/session.py",
+      "line": 141,
+      "detail": "a research probe's task definition uses cmd.exe as an action",
+      "remedy": "left unchanged on purpose: it is a probe, not a launcher"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/edge04r/session.py",
+      "line": 403,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/edge05/reading.py",
+      "line": 330,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/edge05/watchdog.py",
+      "line": 460,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/edge05/watchdog.py",
+      "line": 511,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/edge08/disjointness.py",
+      "line": 100,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/edge09/estate.py",
+      "line": 98,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/edge12/gate.py",
+      "line": 104,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/edge12/gate.py",
+      "line": 264,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/edge12/gate.py",
+      "line": 306,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/edge12/runner.py",
+      "line": 96,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/experiment_evidence.py",
+      "line": 154,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/experiment_evidence.py",
+      "line": 167,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "src/trading_bot/research/forward/collector.py",
+      "line": 2145,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/cert/test_canonical_core_lint_guard.py",
+      "line": 76,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/cert/test_ema_crossover_strategy_guard.py",
+      "line": 119,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/cert/test_ema_crossover_strategy_guard.py",
+      "line": 134,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/cert/test_paper_smoke_decision_path.py",
+      "line": 156,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/forward/test_forward_collector_replay.py",
+      "line": 619,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/forward/test_forward_collector_replay.py",
+      "line": 628,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_cost_barrier_ci_parity.py",
+      "line": 159,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_cost_barrier_ci_parity.py",
+      "line": 207,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_cost_barrier_gate.py",
+      "line": 149,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_cost_barrier_gate.py",
+      "line": 154,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_cost_barrier_gate.py",
+      "line": 162,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_economic001_evidence_closure.py",
+      "line": 85,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_economic001_evidence_closure.py",
+      "line": 181,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_edge04_autonomous.py",
+      "line": 1150,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_recovery_determinism.py",
+      "line": 185,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_rfc046_discovery_proposal.py",
+      "line": 76,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_rfc046_discovery_proposal.py",
+      "line": 402,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_rfc046_discovery_proposal.py",
+      "line": 405,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_st6_forward_regime.py",
+      "line": 831,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_st6_scheduler.py",
+      "line": 114,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_st6_scheduler.py",
+      "line": 131,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_st6_scheduler.py",
+      "line": 229,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/research/test_st6_scheduler.py",
+      "line": 960,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/risk/test_futures_independent_verifier.py",
+      "line": 135,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/strategy_lifecycle/test_restart_recovery.py",
+      "line": 20,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/test_dependency_closure_guard.py",
+      "line": 27,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/test_dependency_closure_guard.py",
+      "line": 47,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/test_dependency_closure_guard.py",
+      "line": 85,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "RUN_WITHOUT_WINDOWLESS",
+      "path": "tests/unit/test_dependency_closure_guard.py",
+      "line": 178,
+      "detail": "subprocess without window suppression",
+      "remedy": "use trading_bot.ops.windowless.run()"
+    }
+  ],
+  "by_severity": {
+    "HIGH": 7,
+    "MEDIUM": 333
+  },
+  "high": 7,
+  "verdict": "HIGH_FINDINGS",
+  "scope_note": "HIGH = a child that can outlive the call, a shell hop, or a scheduled-task action that owns a console for its whole life. MEDIUM = a bounded subprocess call that still needs the helper when its caller has no console; reported, not hidden, and not counted as fixed.",
+  "origin": {
+    "schema_version": "window-origin-v1",
+    "generated_at_utc": "2026-10-18T18:23:17Z",
+    "pid": 38180,
+    "platform": "win32",
+    "chain": [
+      {
+        "pid": 38180,
+        "image": "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11.15-windows-x86_64-none\\python.exe",
+        "exe": "python.exe",
+        "subsystem": "CONSOLE"
+      },
+      {
+        "pid": 12256,
+        "image": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "exe": "python.exe",
+        "subsystem": "CONSOLE"
+      },
+      {
+        "pid": 21356,
+        "image": "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\uv\\python\\cpython-3.11.15-windows-x86_64-none\\python.exe",
+        "exe": "python.exe",
+        "subsystem": "CONSOLE"
+      },
+      {
+        "pid": 13808,
+        "image": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "exe": "python.exe",
+        "subsystem": "CONSOLE"
+      },
+      {
+        "pid": 37128,
+        "image": "C:\\Program Files\\Git\\usr\\bin\\bash.exe",
+        "exe": "bash.exe",
+        "subsystem": "CONSOLE"
+      },
+      {
+        "pid": 30892,
+        "image": "C:\\Program Files\\Git\\usr\\bin\\bash.exe",
+        "exe": "bash.exe",
+        "subsystem": "CONSOLE"
+      },
+      {
+        "pid": 21516,
+        "image": "C:\\Program Files\\Git\\bin\\bash.exe",
+        "exe": "bash.exe",
+        "subsystem": "CONSOLE"
+      },
+      {
+        "pid": 26968,
+        "image": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs\\@codebufffreebuff-desktop\\resources\\bun\\bun.exe",
+        "exe": "bun.exe",
+        "subsystem": "CONSOLE"
+      },
+      {
+        "pid": 1260,
+        "image": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs\\@codebufffreebuff-desktop\\Freebuff.exe",
+        "exe": "Freebuff.exe",
+        "subsystem": "GUI"
+      },
+      {
+        "pid": 2684,
+        "image": "C:\\Windows\\explorer.exe",
+        "exe": "explorer.exe",
+        "subsystem": "GUI"
+      },
+      {
+        "pid": 2692,
+        "image": null,
+        "exe": null,
+        "subsystem": "UNKNOWN"
+      }
+    ],
+    "gui_ancestor": {
+      "pid": 1260,
+      "image": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs\\@codebufffreebuff-desktop\\Freebuff.exe",
+      "exe": "Freebuff.exe",
+      "subsystem": "GUI"
+    },
+    "first_console_child_of_gui": {
+      "pid": 26968,
+      "image": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs\\@codebufffreebuff-desktop\\resources\\bun\\bun.exe",
+      "exe": "bun.exe",
+      "subsystem": "CONSOLE"
+    },
+    "console_is_created_at": "Freebuff.exe (GUI) -> bun.exe (CONSOLE)",
+    "interpretation": "a GUI ancestor has no console, so the first console-subsystem child is given a new one: that allocation is the window. A console ancestor passes its console down, so no new window is created for its descendants."
+  }
+}

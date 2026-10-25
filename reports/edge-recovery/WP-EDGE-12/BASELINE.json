@@ -1,0 +1,100 @@
+{
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "campaign": "RFC-EDGE-012",
+  "certified_sources": [
+    {
+      "bytes": 21664,
+      "lines": 494,
+      "path": "scripts/edge04_observer.py",
+      "present": true,
+      "sha256": "fbfa8a1a504aadf57607d5f69159e666b6c468b279fbc59bcb8a009bcb94e014"
+    },
+    {
+      "bytes": 97245,
+      "lines": 2187,
+      "path": "src/trading_bot/research/edge03/autonomous.py",
+      "present": true,
+      "sha256": "6f512539e6635e1f0918be9a60bd5d4cb9fee5217e6555f4d7f33219ebcc650b"
+    },
+    {
+      "bytes": 14280,
+      "lines": 307,
+      "path": "src/trading_bot/research/edge03/forward_plan.py",
+      "present": true,
+      "sha256": "e9472a8a8a88db8d343aa210b4b9f5725e1942a22d5ef19bf7eeb45503269879"
+    }
+  ],
+  "generated_at_utc": "2026-10-16T06:30:35Z",
+  "head": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
+  "head_is_the_remote_ref": true,
+  "head_subject": "Publish the continuity reading and the mechanism that is still blocked. [WP-EDGE-12]",
+  "hypothetical": true,
+  "invariants": {
+    "coverage_required": 0.9,
+    "forward_days_required": 60,
+    "hypothetical": true,
+    "orders_recorded": 0,
+    "promotion": "NONE"
+  },
+  "observer": {
+    "coverage": {
+      "coverage_required": 0.9,
+      "days_with_any_data": 230,
+      "densely_covered_but_backfilled": 228,
+      "epoch_utc": "2026-03-01T00:00:00Z",
+      "generated_at_utc": "2026-10-16T06:26:41Z",
+      "prospectively_observed": 1,
+      "remaining_days": 59,
+      "required_days": 60
+    },
+    "daily_files": 4,
+    "first_tick_utc": "2026-10-13T11:23:38Z",
+    "health": {
+      "reasons": [
+        "the measured growth rate is volatile"
+      ],
+      "status": "DEGRADED",
+      "ticks_in_window": 99
+    },
+    "last_tick_utc": "2026-10-16T06:26:42Z",
+    "outcomes": {
+      "ALREADY_OBSERVED": 7,
+      "ALREADY_RUNNING": 2,
+      "DISK_BUDGET_EXCEEDED": 45,
+      "NO_NEW_DATA": 3,
+      "OBSERVED": 198
+    },
+    "runs": 255,
+    "sealed_slots": 200,
+    "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+    "store_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03"
+  },
+  "open_failures": [
+    "OPEN-EDGE12-1",
+    "OPEN-EDGE12-2",
+    "OPEN-EDGE12-3",
+    "OPEN-EDGE12-4"
+  ],
+  "order_sent": false,
+  "promotion": "NONE",
+  "remote_sha": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
+  "scheduler": {
+    "interval": "PT15M",
+    "last_run_utc": "10/16/2026 08:25:54",
+    "last_task_result": 0,
+    "logon_type": "Interactive",
+    "missed_runs": 0,
+    "multiple_instances": "IgnoreNew",
+    "next_run_utc": "10/16/2026 08:40:53",
+    "scheduler_history_enabled": false,
+    "start_when_available": "True",
+    "state": "Ready",
+    "task_name": "TradingAgentic-EDGE04-Forward",
+    "trigger_kinds": [
+      "MSFT_TaskTimeTrigger"
+    ],
+    "wake_to_run": "False"
+  },
+  "schema_version": "EDGE12_BASELINE_V1",
+  "work_package": "WP-EDGE-12A"
+}

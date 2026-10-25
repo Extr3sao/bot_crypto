@@ -1,0 +1,45 @@
+{
+  "blocked_history": [
+    {
+      "attempt": 1,
+      "cause": "no Jesse project (strategies/ + storage/) existed, so jesse.services.redis bound no client and the bundled Rust coordinator was never started",
+      "error": "'NoneType' object has no attribute 'sismember'",
+      "error_type": "AttributeError",
+      "outcome": "BLOCKED",
+      "stage": "run",
+      "what": "called jesse.modes.backtest_mode.run directly with candles in memory"
+    }
+  ],
+  "credentials_used": false,
+  "dataset_digest": "sha256:d79ed2c56bf502266d9f950be7f296b0f1e6e068f19a411513c08436c5abe26b",
+  "dataset_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-014R\\scratch\\PAPER_REPLAY_BARS.jsonl",
+  "engine": "jesse",
+  "exit_hook_note": "Jesse 3.3.5 evaluates exits in update_position(); it has no should_exit hook, so a strategy that defines one has a method the engine never calls",
+  "inside_repository_tree": false,
+  "invocations": 2,
+  "isolated_environment": "/tmp/edge14r/engines/jesse/.venv",
+  "order_sent": false,
+  "outcome": "EXECUTED",
+  "per_symbol": [
+    {
+      "client_id": "982758f4-2f94-48be-ae05-ae3a960c0722",
+      "duration_seconds": 1.87,
+      "export": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\edge14r\\jesse_ws\\storage\\json\\982758f4-2f94-48be-ae05-ae3a960c0722.json",
+      "symbol": "BTC-USDT",
+      "trades": 20
+    },
+    {
+      "client_id": "1bf27ef0-28ea-4184-8039-c0623504d4fe",
+      "duration_seconds": 1.85,
+      "export": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\edge14r\\jesse_ws\\storage\\json\\1bf27ef0-28ea-4184-8039-c0623504d4fe.json",
+      "symbol": "ETH-USDT",
+      "trades": 24
+    }
+  ],
+  "route_timeframe": "1h",
+  "schema_version": "EDGE14R_EXTERNAL_ENGINE_V1",
+  "source_timeframe": "1m",
+  "trades": 44,
+  "version": "3.3.5",
+  "work_package": "WP-EDGE-14R/P2"
+}

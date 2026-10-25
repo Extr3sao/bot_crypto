@@ -1,0 +1,187 @@
+{
+  "schema_version": "1.0",
+  "artifact": "EXP004A_CLAIM_SUBMISSION",
+  "role": "BUILDER_SUBMISSION_NOT_VERIFICATION",
+  "rfc_id": "RFC-051",
+  "builder": {
+    "agent_id": "EXP-004A_BUILDER_A",
+    "identity": "tap-foundation-2026-10-21",
+    "run_id": "exp004a-handoff-2026-10-21"
+  },
+  "verifier": {
+    "agent_id": null,
+    "run_id": null,
+    "identity": "NOT_YET_ASSIGNED"
+  },
+  "independence": {
+    "status": "BLOCKED",
+    "reason_code": "BLOCKED_MISSING_INDEPENDENT_VERIFIER",
+    "evidence": [
+      "scripts/exp004a_verify.py does not exist",
+      "docs/agentic/exp004a/independent/ does not exist",
+      "config/preregistrations/EXP-004A.json:controls.independent_verifier_identity = NOT_YET_ASSIGNED",
+      "this document was produced by the builder, therefore it cannot certify anything"
+    ]
+  },
+  "evaluated_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+  "report_commit": null,
+  "report_commit_note": "null by construction: a commit cannot contain its own hash. The commit that first carried the handoff was 00526da; this file's carrying commit is later and is recorded in RUN_REPORT.json only by reference to the branch head at read time.",
+  "evaluated_commit_note": "47116b2 introduces the 9 measurement files; the builder report's own authority.head d05f8de predates them, so the report label is stale (defect A-1) while the code is byte-identical to the clean tree",
+  "status_vocabulary": ["SUBMITTED_NOT_VERIFIED", "PASS", "FAIL", "BLOCKED", "NOT_APPLICABLE"],
+  "builder_status_note": "every claim below is SUBMITTED_NOT_VERIFIED. PASS/FAIL/BLOCKED are the verifier's vocabulary, listed here only so the schema is closed; the builder assigns none of them.",
+  "claims": [
+    {
+      "claim_id": "C-001",
+      "statement": "115 tests pass and 1 is skipped; ruff and mypy are clean",
+      "builder_value": {"passed": 115, "skipped": 1, "ruff": "clean", "mypy": "clean"},
+      "evidence_refs": [
+        "tests/unit/research/test_prereg_gate.py",
+        "tests/unit/research/test_prereg_gate_two_phase.py",
+        "tests/unit/research/test_prereg_gate_escape.py",
+        "tests/unit/research/test_prospective_admission.py",
+        "tests/unit/research/test_execution_cost_measured.py"
+      ],
+      "falsifier": "any failing test or linter finding at evaluated_commit",
+      "scope_qualifier": "the skip is test_prereg_gate.py:591 (no symlink privilege on this host) and is not a pass",
+      "builder_status": "SUBMITTED_NOT_VERIFIED"
+    },
+    {
+      "claim_id": "C-002",
+      "statement": "gate inspect exits 3 with zero defects",
+      "builder_value": {"exit_code": 3, "decision": "INSPECTION_ONLY_NO_RUN", "errors": []},
+      "evidence_refs": ["docs/agentic/exp004a/handoff/gate/INSPECT.json", "docs/agentic/exp004a/handoff/gate/INSPECT.txt"],
+      "falsifier": "exit code other than 3, or a non-empty error list",
+      "scope_qualifier": "inspection is not authorisation",
+      "builder_status": "SUBMITTED_NOT_VERIFIED"
+    },
+    {
+      "claim_id": "C-003",
+      "statement": "gate authorize exits 2 with only TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE",
+      "builder_value": {"exit_code": 2, "decision": "BLOCKED", "errors": ["TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"]},
+      "evidence_refs": ["docs/agentic/exp004a/handoff/gate/AUTHORIZE.json", "docs/agentic/exp004a/handoff/gate/AUTHORIZE.txt"],
+      "falsifier": "exit 0, or any second error code",
+      "scope_qualifier": "the single refusal is the mechanism working; it is not a defect to repair",
+      "builder_status": "SUBMITTED_NOT_VERIFIED"
+    },
+    {
+      "claim_id": "C-004",
+      "statement": "235 bar-days -> 234 settled -> 229 backfilled -> 5 prospective 1h -> 4 joint 1h+15m",
+      "builder_value": {
+        "days_with_any_data": 235,
+        "window_observation_days": 234,
+        "densely_covered_but_backfilled": 229,
+        "prospectively_observed_1h": 5,
+        "prospectively_observed_joint": 4
+      },
+      "evidence_refs": [
+        "docs/agentic/exp004a/handoff/EVIDENCE_INVENTORY.json",
+        "data/exp004a/admission_1h.jsonl",
+        "data/exp004a/admission_1h+15m.jsonl",
+        "data/forward/edge03/"
+      ],
+      "falsifier": "any count that disagrees when re-derived from bars' fetched_at_ms, or a day admitted with a bar outside its lag bound",
+      "scope_qualifier": "0 of the admitted days lie inside capture.start_utc..capture.end_utc; the 90-day requirement has 0 days of window progress",
+      "builder_status": "SUBMITTED_NOT_VERIFIED"
+    },
+    {
+      "claim_id": "C-005",
+      "statement": "234 + 702 + 14 digests verify against the store with zero byte errors",
+      "builder_value": {"ledger_records_1h": 234, "ledger_records_joint": 14, "sealed_prefixes_recomputed": 9, "prefix_mismatches": 0},
+      "evidence_refs": [
+        "docs/agentic/exp004a/handoff/EVIDENCE_INVENTORY.json#builder_observations.sealed_prefixes",
+        "data/exp004a/admission_1h.jsonl",
+        "data/exp004a/admission_1h+15m.jsonl"
+      ],
+      "falsifier": "one recomputed prefix digest that differs from the attested one",
+      "scope_qualifier": "9 prefixes were recomputed at the latest attested byte offset per series, not all 234 records x 3 series; the full sweep is the verifier's job",
+      "builder_status": "SUBMITTED_NOT_VERIFIED"
+    },
+    {
+      "claim_id": "C-006",
+      "statement": "a repeated admission run adds zero records",
+      "builder_value": {"new_records_on_repeat": 0},
+      "evidence_refs": [
+        "data/exp004a/admission_1h.jsonl",
+        "data/exp004a/admission_1h+15m.jsonl",
+        "src/trading_bot/research/prospective/ledger.py"
+      ],
+      "falsifier": "any appended or rewritten record on a re-run against the same day set",
+      "scope_qualifier": "the builder did not re-run the runner during this mission (it writes to the chains under audit), so this claim rests on the prior run and on the append-only code path",
+      "builder_status": "SUBMITTED_NOT_VERIFIED"
+    },
+    {
+      "claim_id": "C-007",
+      "statement": "ST-6 cost medians at 200 USDT are BTC 20.0012, ETH 20.0408, SOL 20.9414 bps",
+      "builder_value": {"BTC": 20.0012, "ETH": 20.0408, "SOL": 20.9414, "observed_notional_usdt": 200.0},
+      "evidence_refs": ["data/st6/ST6_OBSERVATIONS.jsonl", "src/trading_bot/research/execution_cost/measured.py"],
+      "falsifier": "a median that disagrees, or a bps definition that turns out to be one-way",
+      "scope_qualifier": "200 USDT only; whether the figure is a round trip depends on the tape's two-sided walk and is not proven here",
+      "builder_status": "SUBMITTED_NOT_VERIFIED"
+    },
+    {
+      "claim_id": "C-008",
+      "statement": "the declared 500 USDT notional was never walked",
+      "builder_value": {"declared_notional_usdt": 500.0, "observed_notional_usdt": 200.0, "status": "DECLARED_SIZE_NOT_WALKED"},
+      "evidence_refs": [
+        "config/preregistrations/EXP-004A.json#economics.declared_notional_usdt",
+        "src/trading_bot/research/execution_cost/measured.py"
+      ],
+      "falsifier": "any 500 USDT sample in the tape",
+      "scope_qualifier": "this is also a frozen acceptance stop condition, so it blocks promotion independently of verification",
+      "builder_status": "SUBMITTED_NOT_VERIFIED"
+    },
+    {
+      "claim_id": "C-009",
+      "statement": "RUN_REPORT.json used d05f8de; later commits include 8aac8b4",
+      "builder_value": {"report_claimed_head": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6", "evaluated_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638"},
+      "evidence_refs": ["docs/agentic/exp004a/RUN_REPORT.json#authority", "git diff --stat d05f8de 47116b2"],
+      "falsifier": "the measurement code existing at d05f8de",
+      "scope_qualifier": "the label is wrong and the builder says so: 47116b2 introduces those 9 files (+2368 lines). This is defect A-1 and the report was corrected in the handoff rather than rewritten.",
+      "builder_status": "SUBMITTED_NOT_VERIFIED"
+    },
+    {
+      "claim_id": "C-010",
+      "statement": "a clean checkout reproduces the sealed ledger bytes byte for byte",
+      "builder_value": {"ledger_1h_sha256": "73f8ba7b5716a725", "ledger_joint_sha256": "1f10efb48f1c1272"},
+      "evidence_refs": ["data/exp004a/admission_1h.jsonl", "data/exp004a/admission_1h+15m.jsonl"],
+      "falsifier": "a differing ledger byte from a worktree at 47116b2",
+      "scope_qualifier": "reproducing ledger bytes does not verify the source bars, which are gitignored and live; that stays SOURCE_BYTES_UNAVAILABLE for a clean checkout",
+      "builder_status": "SUBMITTED_NOT_VERIFIED"
+    },
+    {
+      "claim_id": "C-011",
+      "statement": "a Windows junction escape is refused and the privileged symlink test is skipped",
+      "builder_value": {"junction_refusal": "pass", "symlink_test": "skip", "platform": "Windows 10"},
+      "evidence_refs": ["tests/unit/research/test_prereg_gate_escape.py", "tests/unit/research/test_exp004a_evidence_inventory.py"],
+      "falsifier": "a link that escapes the repository undetected",
+      "scope_qualifier": "environment-specific: cross-platform symlink coverage is not established, and the skip is explained rather than counted as a pass",
+      "builder_status": "SUBMITTED_NOT_VERIFIED"
+    },
+    {
+      "claim_id": "C-012",
+      "statement": "economic_executions is 0 and the phase-2 capture is still open",
+      "builder_value": {"economic_executions": 0, "capture_closed": false, "capture_start_utc": "2026-10-22T00:00:00Z"},
+      "evidence_refs": [
+        "docs/agentic/exp004a/handoff/gate/INSPECT.json",
+        "config/preregistrations/EXP-004A.json#two_phase.capture"
+      ],
+      "falsifier": "any execution record, or capture.closed true",
+      "scope_qualifier": "the capture window has not opened, so phase 2 cannot be authored by anyone yet",
+      "builder_status": "SUBMITTED_NOT_VERIFIED"
+    }
+  ],
+  "promotion": {
+    "decision": "NO_PROMOTION",
+    "decided_by": "deterministic acceptance controller (RFC-051 6.4) — not the builder and not the verifier",
+    "blocking_reasons": [
+      "PHASE2_CAPTURE_OPEN",
+      "INSUFFICIENT_ADMITTED_DAYS",
+      "ZERO_ADMITTED_DAYS_INSIDE_CAPTURE_WINDOW",
+      "DECLARED_SIZE_NOT_WALKED",
+      "BLOCKED_MISSING_INDEPENDENT_VERIFIER"
+    ]
+  },
+  "economic_executions": 0,
+  "source_mutations": 0,
+  "false_success": 0
+}

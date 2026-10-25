@@ -1,0 +1,8 @@
+{
+  "verdict": "HIGH_FINDINGS",
+  "high": 7,
+  "by_severity": {
+    "HIGH": 7,
+    "MEDIUM": 333
+  }
+}

@@ -1,0 +1,358 @@
+{
+  "schema_version": "1.0",
+  "run_id": "wp051-02e/EXP-004A/2026-10-21",
+  "role": "builder",
+  "rfc": "RFC-EXP004A-051-02E",
+  "generated_at_utc": "2026-10-22T14:02:31Z",
+  "started_at_utc": "2026-10-22T14:02:21Z",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe"
+  },
+  "repo": {
+    "head": "f20dff9b71fd10a5f110ab6cae88e817c6f5d428",
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "dirty_paths": 268,
+    "note": "the dirty count is reported, not cleaned: other work packages share this checkout and this script has no business reverting their files"
+  },
+  "declaration": {
+    "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+    "declaration_id": "EXP-004A.datasets.phase2/v1",
+    "schema_version": "3.0",
+    "sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+    "commit": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95",
+    "governance_status": "AUTHORIZED_FOR_CAPTURE"
+  },
+  "generator": {
+    "path": "scripts/exp004a_capture.py",
+    "commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+    "declared_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8"
+  },
+  "capture_window": {
+    "start_utc": "2026-10-22T00:00:00.000Z",
+    "end_utc": "2027-01-20T00:00:00.000Z",
+    "declared_days": 90.0,
+    "effective_from_utc": "2026-10-21T16:00:00.000Z",
+    "state_at_preflight": "OPEN",
+    "instant_utc": "2026-10-22T14:02:21.577Z",
+    "seconds_until_open": 0
+  },
+  "declared_slices": [
+    "1h:BTC",
+    "1h:ETH",
+    "1h:SOL",
+    "st6:tape"
+  ],
+  "store": {
+    "1h:BTC": {
+      "path": "data/forward/edge03/1h/BTC.jsonl",
+      "asset": "BTC",
+      "interval": "1h",
+      "present": true,
+      "bytes": 1775383,
+      "sha256_at_read": "69f2bc7f7e5e2e844d88a25a0e850a697c7bc3f6fde8681db87816eafe920d99",
+      "bytes_at_read": 1775383,
+      "readable": true,
+      "bars": 5654,
+      "first_open_utc": "2026-03-01T00:00:00.000Z",
+      "last_open_utc": "2026-10-22T13:00:00.000Z",
+      "last_fetched_at_utc": "2026-10-22T14:00:43.904Z",
+      "bars_opening_in_window": 14,
+      "first_open_in_window_utc": "2026-10-22T00:00:00.000Z",
+      "bars_fetched_before_effective": 5631,
+      "bars_fetched_after_now": 0,
+      "unclosed_bars": 0,
+      "duplicate_opens": 0,
+      "unordered": false,
+      "negative_lag_bars": 0,
+      "bars_beyond_lag_bound": 5448,
+      "lag_bound_ms": 7200000,
+      "age_of_last_fetch_ms": 97673
+    },
+    "1h:ETH": {
+      "path": "data/forward/edge03/1h/ETH.jsonl",
+      "asset": "ETH",
+      "interval": "1h",
+      "present": true,
+      "bytes": 1756803,
+      "sha256_at_read": "27de06ee243cf687436b6727e34a601aef4475acb59eaff190fc72f86424dd74",
+      "bytes_at_read": 1756803,
+      "readable": true,
+      "bars": 5654,
+      "first_open_utc": "2026-03-01T00:00:00.000Z",
+      "last_open_utc": "2026-10-22T13:00:00.000Z",
+      "last_fetched_at_utc": "2026-10-22T14:00:43.904Z",
+      "bars_opening_in_window": 14,
+      "first_open_in_window_utc": "2026-10-22T00:00:00.000Z",
+      "bars_fetched_before_effective": 5631,
+      "bars_fetched_after_now": 0,
+      "unclosed_bars": 0,
+      "duplicate_opens": 0,
+      "unordered": false,
+      "negative_lag_bars": 0,
+      "bars_beyond_lag_bound": 5448,
+      "lag_bound_ms": 7200000,
+      "age_of_last_fetch_ms": 97673
+    },
+    "1h:SOL": {
+      "path": "data/forward/edge03/1h/SOL.jsonl",
+      "asset": "SOL",
+      "interval": "1h",
+      "present": true,
+      "bytes": 1716956,
+      "sha256_at_read": "2f11283f7888bc8f39469c009aa06b5c5c525fbef481db8752eb9f46645d27af",
+      "bytes_at_read": 1716956,
+      "readable": true,
+      "bars": 5654,
+      "first_open_utc": "2026-03-01T00:00:00.000Z",
+      "last_open_utc": "2026-10-22T13:00:00.000Z",
+      "last_fetched_at_utc": "2026-10-22T14:00:43.904Z",
+      "bars_opening_in_window": 14,
+      "first_open_in_window_utc": "2026-10-22T00:00:00.000Z",
+      "bars_fetched_before_effective": 5631,
+      "bars_fetched_after_now": 0,
+      "unclosed_bars": 0,
+      "duplicate_opens": 0,
+      "unordered": false,
+      "negative_lag_bars": 0,
+      "bars_beyond_lag_bound": 5448,
+      "lag_bound_ms": 7200000,
+      "age_of_last_fetch_ms": 97673
+    }
+  },
+  "status": "WINDOW_OPEN",
+  "checks": [
+    {
+      "control": "DECLARATION_AUTHORIZES",
+      "status": "PASS",
+      "detail": "EXP-004A.datasets.phase2/v1 binds; generator fc036d967923...",
+      "seconds": 1.0075,
+      "evidence": {
+        "provenance": {
+          "declaration_id": "EXP-004A.datasets.phase2/v1",
+          "declaration_path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+          "declaration_sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+          "declaration_commit": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95",
+          "generator": {
+            "path": "scripts/exp004a_capture.py",
+            "commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+            "sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8"
+          },
+          "supersedes": {
+            "path": "config/preregistrations/EXP-004A.datasets.json",
+            "sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211"
+          },
+          "temporal": {
+            "effective_from_utc": "2026-10-21T16:00:00.000Z",
+            "capture_window": {
+              "start_utc": "2026-10-22T00:00:00.000Z",
+              "end_utc": "2027-01-20T00:00:00.000Z"
+            },
+            "basis": "GIT_ANCESTRY_PLUS_INGEST_CLOCK",
+            "external_timestamp": "UNAVAILABLE",
+            "reading": "eligible captures must open at or after the declared window and must have been fetched at or after the declaration's effective instant; the declaration's commit must be an ancestor of the capture's commit"
+          }
+        }
+      }
+    },
+    {
+      "control": "PHASE_ONE_BYTES_INTACT",
+      "status": "PASS",
+      "detail": "phase 1 sha256 8946f871a97b7575... blob 43c9deea29a8... dirty=False",
+      "seconds": 0.1371,
+      "evidence": {
+        "sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+        "cited_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+        "git_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7",
+        "dirty": false
+      }
+    },
+    {
+      "control": "GENERATOR_IDENTITY",
+      "status": "PASS",
+      "detail": "scripts/exp004a_capture.py at fc036d967923 sha256 af1ab7cc23980dad... would-run 052832c2252a... == committed 052832c2252a...",
+      "seconds": 0.2734,
+      "evidence": {
+        "commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+        "committed_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+        "declared_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+        "would_run_blob": "052832c2252a719c63d0859628ada648c799c6ce",
+        "committed_blob": "052832c2252a719c63d0859628ada648c799c6ce"
+      }
+    },
+    {
+      "control": "SEALED_02D_PACKAGE_INTACT",
+      "status": "PASS",
+      "detail": "19 sealed artefacts, 0 drifted",
+      "seconds": 0.0409,
+      "evidence": {
+        "sealed": 19,
+        "drifted": []
+      }
+    },
+    {
+      "control": "STORE_READABLE",
+      "status": "PASS",
+      "detail": "3 series readable, 42 bar(s) open inside the window",
+      "seconds": 0.4961,
+      "evidence": {
+        "series": {
+          "1h:BTC": {
+            "path": "data/forward/edge03/1h/BTC.jsonl",
+            "asset": "BTC",
+            "interval": "1h",
+            "present": true,
+            "bytes": 1775383,
+            "sha256_at_read": "69f2bc7f7e5e2e844d88a25a0e850a697c7bc3f6fde8681db87816eafe920d99",
+            "bytes_at_read": 1775383,
+            "readable": true,
+            "bars": 5654,
+            "first_open_utc": "2026-03-01T00:00:00.000Z",
+            "last_open_utc": "2026-10-22T13:00:00.000Z",
+            "last_fetched_at_utc": "2026-10-22T14:00:43.904Z",
+            "bars_opening_in_window": 14,
+            "first_open_in_window_utc": "2026-10-22T00:00:00.000Z",
+            "bars_fetched_before_effective": 5631,
+            "bars_fetched_after_now": 0,
+            "unclosed_bars": 0,
+            "duplicate_opens": 0,
+            "unordered": false,
+            "negative_lag_bars": 0,
+            "bars_beyond_lag_bound": 5448,
+            "lag_bound_ms": 7200000,
+            "age_of_last_fetch_ms": 97673
+          },
+          "1h:ETH": {
+            "path": "data/forward/edge03/1h/ETH.jsonl",
+            "asset": "ETH",
+            "interval": "1h",
+            "present": true,
+            "bytes": 1756803,
+            "sha256_at_read": "27de06ee243cf687436b6727e34a601aef4475acb59eaff190fc72f86424dd74",
+            "bytes_at_read": 1756803,
+            "readable": true,
+            "bars": 5654,
+            "first_open_utc": "2026-03-01T00:00:00.000Z",
+            "last_open_utc": "2026-10-22T13:00:00.000Z",
+            "last_fetched_at_utc": "2026-10-22T14:00:43.904Z",
+            "bars_opening_in_window": 14,
+            "first_open_in_window_utc": "2026-10-22T00:00:00.000Z",
+            "bars_fetched_before_effective": 5631,
+            "bars_fetched_after_now": 0,
+            "unclosed_bars": 0,
+            "duplicate_opens": 0,
+            "unordered": false,
+            "negative_lag_bars": 0,
+            "bars_beyond_lag_bound": 5448,
+            "lag_bound_ms": 7200000,
+            "age_of_last_fetch_ms": 97673
+          },
+          "1h:SOL": {
+            "path": "data/forward/edge03/1h/SOL.jsonl",
+            "asset": "SOL",
+            "interval": "1h",
+            "present": true,
+            "bytes": 1716956,
+            "sha256_at_read": "2f11283f7888bc8f39469c009aa06b5c5c525fbef481db8752eb9f46645d27af",
+            "bytes_at_read": 1716956,
+            "readable": true,
+            "bars": 5654,
+            "first_open_utc": "2026-03-01T00:00:00.000Z",
+            "last_open_utc": "2026-10-22T13:00:00.000Z",
+            "last_fetched_at_utc": "2026-10-22T14:00:43.904Z",
+            "bars_opening_in_window": 14,
+            "first_open_in_window_utc": "2026-10-22T00:00:00.000Z",
+            "bars_fetched_before_effective": 5631,
+            "bars_fetched_after_now": 0,
+            "unclosed_bars": 0,
+            "duplicate_opens": 0,
+            "unordered": false,
+            "negative_lag_bars": 0,
+            "bars_beyond_lag_bound": 5448,
+            "lag_bound_ms": 7200000,
+            "age_of_last_fetch_ms": 97673
+          }
+        },
+        "unreadable": {}
+      }
+    },
+    {
+      "control": "STORE_HAS_NO_FUTURE_INGEST",
+      "status": "PASS",
+      "detail": "no stored bar claims an ingest later than this instant",
+      "seconds": 0.4875,
+      "evidence": {
+        "future_ingest": {},
+        "instant_utc": "2026-10-22T14:02:21.577Z"
+      }
+    },
+    {
+      "control": "FORWARD_OBSERVER_FRESH",
+      "status": "PASS",
+      "detail": "every series was written within its own lag bound",
+      "seconds": 0.6181,
+      "evidence": {
+        "age": {
+          "1h:BTC": {
+            "age_ms": 97673,
+            "lag_bound_ms": 7200000,
+            "fresh": true
+          },
+          "1h:ETH": {
+            "age_ms": 97673,
+            "lag_bound_ms": 7200000,
+            "fresh": true
+          },
+          "1h:SOL": {
+            "age_ms": 97673,
+            "lag_bound_ms": 7200000,
+            "fresh": true
+          }
+        }
+      }
+    },
+    {
+      "control": "NO_DATASET_PUBLISHED",
+      "status": "PASS",
+      "detail": "0 dataset(s) and 0 manifest(s) in data/exp004a",
+      "seconds": 0.0042,
+      "evidence": {
+        "datasets": [],
+        "manifests": [],
+        "window_state": "OPEN"
+      }
+    },
+    {
+      "control": "ST6_TAPE_REFUSED",
+      "status": "PASS",
+      "detail": "st6:tape exit 2: {\"ok\": false, \"error\": \"EXP-004A-ST6-TAPE declares timeframe '4h slot, 3 rounds of 15s', which is not a bar series; a slice rule for it is not defined by the de",
+      "seconds": 3.0475,
+      "evidence": {
+        "exit_code": 2
+      }
+    },
+    {
+      "control": "WINDOW_CANNOT_BE_EXTENDED",
+      "status": "PASS",
+      "detail": "period beyond the window exit 2",
+      "seconds": 3.9074,
+      "evidence": {
+        "exit_code": 2,
+        "stderr": "{\"ok\": false, \"error\": \"the requested window leaves the declared capture window; a rehearsal may cut the window short, never extend it\", \"slice\": \"1h:BTC\"}"
+      }
+    }
+  ],
+  "failed_controls": [],
+  "next_invocation": {
+    "when": "at or after 2026-10-22T00:00:00.000Z",
+    "commands": [
+      "python scripts/exp004a_capture.py --slice 1h:BTC",
+      "python scripts/exp004a_capture.py --slice 1h:ETH",
+      "python scripts/exp004a_capture.py --slice 1h:SOL"
+    ],
+    "note": "there is no scheduler in this repository that runs these. The commands are the declared ones and must be executed by an operator, or by a scheduler configured and verified separately; this report does not pretend either has happened."
+  },
+  "not_a_capture": "READY_FOR_WINDOW means the declaration binds, the store is live and the extractor refuses what it must. It is not a capture, not a PASS of capture, and not a statement about market data, cost or profitability.",
+  "economic_executions": 0
+}

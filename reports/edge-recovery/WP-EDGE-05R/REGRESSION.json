@@ -1,0 +1,112 @@
+{
+  "as_of_utc": "2026-10-14T06:44:07Z",
+  "chain": {
+    "as_of_utc": "2026-10-14T06:33:43Z",
+    "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_edge04_autonomous.py tests/unit/research/test_edge05_watchdog.py tests/unit/research/test_edge05_reconcile.py -q --tb=no -rf",
+    "counts": {
+      "deselected": 0,
+      "error": 0,
+      "failed": 0,
+      "passed": 102,
+      "skipped": 0
+    },
+    "exit_code": 0,
+    "failing_nodes": [],
+    "summary_line": "102 passed in 62.47s (0:01:02)",
+    "targets": [
+      "tests/unit/research/test_edge04_autonomous.py",
+      "tests/unit/research/test_edge05_watchdog.py",
+      "tests/unit/research/test_edge05_reconcile.py"
+    ]
+  },
+  "failures_attributed": [
+    {
+      "cause": "STALE_COMMITTED_ARTEFACT",
+      "demonstrated": "the test's own message is the diagnosis: 'the committed view is stale'.",
+      "fix_stated": "re-run scripts/campaign_state_view.py and commit the result.",
+      "node": "tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic",
+      "owner": "WP-8 / campaign state view",
+      "suite": "tests/unit/research/test_active_recovery_wp.py"
+    },
+    {
+      "cause": "STALE_COMMITTED_ARTEFACT",
+      "demonstrated": "the certification record pins a digest (51ef35aa\u2026) that the file on disk no longer hashes to (3fb11fc9\u2026): the record and the artefact it certifies have drifted apart.",
+      "fix_stated": "re-issue the certification record against the current artefact.",
+      "node": "tests/unit/research/test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout",
+      "owner": "cost barrier",
+      "suite": "tests/unit/research/test_cost_barrier_adversarial.py"
+    },
+    {
+      "cause": "STALE_COMMITTED_ARTEFACT",
+      "demonstrated": "re-running the documented reproduction moves data/recovery/CAMPAIGN_STATE_VIEW.json and CAMPAIGN_STATE_VIEW_REPORT.md: the committed view was generated from an older state than the one on disk.",
+      "fix_stated": "regenerate the committed view from the current state and commit it.",
+      "node": "tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical",
+      "owner": "WP-8 (recovery)",
+      "suite": "tests/unit/research/test_recovery_determinism.py"
+    },
+    {
+      "cause": "STALE_COMMITTED_ARTEFACT",
+      "demonstrated": "re-running the documented reproduction moves data/recovery/CAMPAIGN_STATE_VIEW.json and CAMPAIGN_STATE_VIEW_REPORT.md: the committed view was generated from an older state than the one on disk.",
+      "fix_stated": "regenerate the committed view from the current state and commit it.",
+      "node": "tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit",
+      "owner": "WP-8 (recovery)",
+      "suite": "tests/unit/research/test_recovery_determinism.py"
+    },
+    {
+      "cause": "HOST_FREE_SPACE",
+      "demonstrated": "the launcher's own preflight reads the real volume, so on a host under its floors it refuses with INSUFFICIENT_FREE_SPACE before the valve arithmetic the test is about. The same class of defect this work package removed from the forward chain's fixtures.",
+      "fix_stated": "pin the volume inside the three tests that are about the valve: monkeypatch.setattr(launcher, 'free_bytes', lambda path: 10**12) and the same for disk_free_bytes. Not applied here: that file belongs to another workstream, and its CRLF endings make a fixture edit a riskier change than it looks.",
+      "node": "tests/unit/research/test_wp9_disk_budget.py::test_the_launcher_autoscales_only_when_asked_and_the_children_get_the_new_valve",
+      "owner": "WP-9B (paper lab disk budget)",
+      "suite": "tests/unit/research/test_wp9_disk_budget.py"
+    },
+    {
+      "cause": "HOST_FREE_SPACE",
+      "demonstrated": "the launcher's own preflight reads the real volume, so on a host under its floors it refuses with INSUFFICIENT_FREE_SPACE before the valve arithmetic the test is about. The same class of defect this work package removed from the forward chain's fixtures.",
+      "fix_stated": "pin the volume inside the three tests that are about the valve: monkeypatch.setattr(launcher, 'free_bytes', lambda path: 10**12) and the same for disk_free_bytes. Not applied here: that file belongs to another workstream, and its CRLF endings make a fixture edit a riskier change than it looks.",
+      "node": "tests/unit/research/test_wp9_disk_budget.py::test_the_launcher_costs_the_declared_window_before_starting",
+      "owner": "WP-9B (paper lab disk budget)",
+      "suite": "tests/unit/research/test_wp9_disk_budget.py"
+    },
+    {
+      "cause": "HOST_FREE_SPACE",
+      "demonstrated": "the launcher's own preflight reads the real volume, so on a host under its floors it refuses with INSUFFICIENT_FREE_SPACE before the valve arithmetic the test is about. The same class of defect this work package removed from the forward chain's fixtures.",
+      "fix_stated": "pin the volume inside the three tests that are about the valve: monkeypatch.setattr(launcher, 'free_bytes', lambda path: 10**12) and the same for disk_free_bytes. Not applied here: that file belongs to another workstream, and its CRLF endings make a fixture edit a riskier change than it looks.",
+      "node": "tests/unit/research/test_wp9_disk_budget.py::test_the_launcher_refuses_the_configuration_that_failed",
+      "owner": "WP-9B (paper lab disk budget)",
+      "suite": "tests/unit/research/test_wp9_disk_budget.py"
+    }
+  ],
+  "full": {
+    "as_of_utc": "2026-10-14T06:44:07Z",
+    "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research -q --tb=no -rf",
+    "counts": {
+      "deselected": 0,
+      "error": 0,
+      "failed": 7,
+      "passed": 2226,
+      "skipped": 0
+    },
+    "exit_code": 1,
+    "failing_nodes": [
+      "tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic",
+      "tests/unit/research/test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout",
+      "tests/unit/research/test_recovery_determinism.py::test_repeated_reproduction_is_byte_identical",
+      "tests/unit/research/test_recovery_determinism.py::test_the_clean_checkout_rehearsal_passes_on_this_commit",
+      "tests/unit/research/test_wp9_disk_budget.py::test_the_launcher_autoscales_only_when_asked_and_the_children_get_the_new_valve",
+      "tests/unit/research/test_wp9_disk_budget.py::test_the_launcher_costs_the_declared_window_before_starting",
+      "tests/unit/research/test_wp9_disk_budget.py::test_the_launcher_refuses_the_configuration_that_failed"
+    ],
+    "summary_line": "7 failed, 2226 passed in 622.72s (0:10:22)",
+    "targets": [
+      "tests/unit/research"
+    ]
+  },
+  "host": "DESKTOP-4CHO695",
+  "hypothetical": true,
+  "order_sent": false,
+  "promotion": "NONE",
+  "reading": "the chain suites are the regression net for the forward observation chain; the whole research suite is run so that failures elsewhere are counted and attributed rather than left as an impression",
+  "schema_version": "EDGE05R_REGRESSION_V1",
+  "unexplained": []
+}

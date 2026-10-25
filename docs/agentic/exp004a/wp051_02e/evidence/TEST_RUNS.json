@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "run_id": "wp051-02e/EXP-004A/2026-10-21",
+  "generated_at_utc": "2026-10-21T19:25:56Z",
+  "interpreter": "python 3.11.15 (.venv)",
+  "rule": "a suite that did not finish is reported as not run; it is never reported as passed",
+  "suites": [
+    {
+      "id": "capture_provenance",
+      "command": "python -m pytest tests/unit/research/test_exp004a_capture.py tests/unit/research/test_exp004a_provenance.py -q",
+      "purpose": "the frozen extractor and the declaration contract WP-051-02D sealed",
+      "exit_code": 0,
+      "passed": 46,
+      "skipped": 0,
+      "duration_s": 27.91,
+      "summary": "46 passed in 27.91s",
+      "log": "docs/agentic/exp004a/wp051_02e/evidence/pytest_capture_provenance.log"
+    },
+    {
+      "id": "wp051_02e_unit",
+      "command": "python -m pytest tests/unit/research/test_exp004a_wp051_02e.py -q",
+      "purpose": "the 02E preflight classifier and the independent verifier's refusals",
+      "exit_code": 0,
+      "passed": 30,
+      "skipped": 0,
+      "duration_s": 41.68,
+      "summary": "30 passed in 41.68s",
+      "log": "docs/agentic/exp004a/wp051_02e/evidence/pytest_wp051_02e.log"
+    },
+    {
+      "id": "exp004a_adversarial",
+      "command": "python -m pytest tests/unit/research/test_exp004a_verify_adversarial.py -q",
+      "purpose": "adversarial cases against the 02D verifier",
+      "exit_code": 0,
+      "passed": 20,
+      "skipped": 0,
+      "duration_s": 5.24,
+      "summary": "20 passed in 5.24s",
+      "log": "docs/agentic/exp004a/wp051_02e/evidence/pytest_adversarial.log"
+    },
+    {
+      "id": "prospective_admission",
+      "command": "python -m pytest tests/unit/research/test_prospective_admission.py -q",
+      "purpose": "admission, which decides the day and which this WP did not touch",
+      "exit_code": 0,
+      "passed": 36,
+      "skipped": 0,
+      "duration_s": 1.59,
+      "summary": "36 passed in 1.59s",
+      "log": "docs/agentic/exp004a/wp051_02e/evidence/pytest_admission.log"
+    },
+    {
+      "id": "prereg_gate",
+      "command": "python -m pytest tests/unit/research/test_prereg_gate.py tests/unit/research/test_prereg_gate_two_phase.py tests/unit/research/test_prereg_gate_escape.py -q",
+      "purpose": "the preregistration gate, including the two-phase freeze",
+      "exit_code": 0,
+      "passed": 69,
+      "skipped": 1,
+      "duration_s": 107.63,
+      "summary": "69 passed, 1 skipped in 107.63s (0:01:47)",
+      "log": "docs/agentic/exp004a/wp051_02e/evidence/pytest_prereg_gate.log"
+    }
+  ],
+  "lint": {
+    "command": "python -m ruff check scripts/exp004a_wp051_02e_preflight.py scripts/exp004a_wp051_02e_verify.py tests/unit/research/test_exp004a_wp051_02e.py",
+    "exit_code": 0,
+    "summary": "All checks passed!"
+  },
+  "not_run": [
+    {
+      "suite": "tests/unit/research (complete)",
+      "reason": "WP-051-02C exhausted a 600 s budget without finishing it; running it here would report a timeout as coverage. The suites above are the ones this WP affects, plus the two that would catch a regression in the freeze.",
+      "status": "NOT_RUN"
+    }
+  ],
+  "total_passed": 201,
+  "total_skipped": 1,
+  "all_exit_zero": true
+}

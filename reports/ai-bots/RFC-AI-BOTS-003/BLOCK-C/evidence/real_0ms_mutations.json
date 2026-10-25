@@ -1,0 +1,131 @@
+{
+  "applied": 10,
+  "caught": 10,
+  "ledger": "real_0ms_ledger.jsonl",
+  "mode": "mutations",
+  "mutations": [
+    {
+      "caught": false,
+      "expected_check": "open_gap_settled_before_new_risk",
+      "mutation": "M-01",
+      "reason": "this ledger has no OPEN_GAP row",
+      "status": "SKIPPED"
+    },
+    {
+      "caught": false,
+      "expected_check": "open_gap_is_an_exact_instant_at_the_observable_open",
+      "mutation": "M-02",
+      "reason": "this ledger has no OPEN_GAP row",
+      "status": "SKIPPED"
+    },
+    {
+      "caught": false,
+      "expected_check": "open_gap_is_an_exact_instant_at_the_observable_open",
+      "mutation": "M-03",
+      "reason": "this ledger has no OPEN_GAP row",
+      "status": "SKIPPED"
+    },
+    {
+      "caught": true,
+      "expected_check": "stop_never_credited_better_than_its_level",
+      "failing_checks": [
+        "stop_never_credited_better_than_its_level"
+      ],
+      "mutation": "M-04",
+      "status": "APPLIED"
+    },
+    {
+      "caught": true,
+      "expected_check": "fill_quote_at_or_after_answer",
+      "failing_checks": [
+        "fill_quote_at_or_after_answer",
+        "fill_quote_at_or_after_decision",
+        "fill_quote_lag_is_measured"
+      ],
+      "mutation": "M-05",
+      "status": "APPLIED"
+    },
+    {
+      "caught": true,
+      "expected_check": "fill_price_has_a_declared_source",
+      "failing_checks": [
+        "fill_price_has_a_declared_source"
+      ],
+      "mutation": "M-06",
+      "status": "APPLIED"
+    },
+    {
+      "caught": true,
+      "expected_check": "risk_engine_receives_each_close",
+      "failing_checks": [
+        "risk_engine_receives_each_close"
+      ],
+      "mutation": "M-07",
+      "status": "APPLIED"
+    },
+    {
+      "caught": true,
+      "expected_check": "calendar_windows_rebuilt_from_the_rows",
+      "failing_checks": [
+        "calendar_windows_rebuilt_from_the_rows"
+      ],
+      "mutation": "M-08",
+      "status": "APPLIED"
+    },
+    {
+      "caught": true,
+      "expected_check": "exit_instant_resolution_is_declared",
+      "failing_checks": [
+        "exit_instant_resolution_is_declared"
+      ],
+      "mutation": "M-09",
+      "status": "APPLIED"
+    },
+    {
+      "caught": true,
+      "expected_check": "net_pnl_nets_every_named_cost",
+      "failing_checks": [
+        "risk_engine_receives_each_close",
+        "calendar_windows_rebuilt_from_the_rows",
+        "net_pnl_nets_every_named_cost",
+        "cash_rebuilds_from_realised_pnl"
+      ],
+      "mutation": "M-10",
+      "status": "APPLIED"
+    },
+    {
+      "caught": true,
+      "expected_check": "every_actionable_decision_is_resolved",
+      "failing_checks": [
+        "counters_match_rows",
+        "every_actionable_decision_is_resolved",
+        "position_ids_are_unique_and_owned"
+      ],
+      "mutation": "M-11",
+      "status": "APPLIED"
+    },
+    {
+      "caught": true,
+      "expected_check": "position_ids_are_unique_and_owned",
+      "failing_checks": [
+        "counters_match_rows",
+        "position_ids_are_unique_and_owned",
+        "one_ledger_holds_exactly_one_run"
+      ],
+      "mutation": "M-12",
+      "status": "APPLIED"
+    },
+    {
+      "caught": true,
+      "expected_check": "counters_match_rows",
+      "failing_checks": [
+        "counters_match_rows"
+      ],
+      "mutation": "M-13",
+      "status": "APPLIED"
+    }
+  ],
+  "skipped": 3,
+  "tool": "ai_bots_003c_verify",
+  "verdict": "PASS"
+}

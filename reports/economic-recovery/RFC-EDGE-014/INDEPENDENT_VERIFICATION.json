@@ -1,0 +1,291 @@
+{
+  "builder_imported_for_decisive_arithmetic": false,
+  "checks": [
+    {
+      "builder_agrees": true,
+      "detail": "admission share 0.8592 (published 0.8592), cross-population ratio 1.3863 (published 1.3863), per-scenario identity holds: True",
+      "name": "cost_share_is_same_population",
+      "passed": true
+    },
+    {
+      "detail": "scenarios where the fee exceeds its own round trip: none",
+      "name": "admission_fee_never_exceeds_its_own_round_trip",
+      "passed": true
+    },
+    {
+      "detail": "re-derived non-overlapping tape bound 48.018 (published 48.018); selector sum 144.061; selector > tape: True",
+      "name": "the_two_frequencies_are_not_the_same_metric",
+      "passed": true
+    },
+    {
+      "detail": "verifier counts 4 decisions (1 directional, 3 NO_TRADE), 4 settled, 42 disk vetoes; builder headline agrees: True",
+      "name": "trade_funnel_recounts_from_the_ledger",
+      "passed": true
+    },
+    {
+      "detail": "published live status VERIFIED_ZERO; order ledger present False; fill ledger present False; order-submitting actions 0; unaccounted exits 0",
+      "name": "live_status_is_verified_zero_not_assumed",
+      "passed": true
+    },
+    {
+      "detail": "verifier: 98 trades, gross 21.975396, net -1.011204; builder: 98 trades, gross 21.975396, net -1.011204",
+      "name": "neutral_arm_reproduces_with_an_independent_implementation",
+      "passed": true
+    },
+    {
+      "detail": "fill classes present in executed arms: ['BACKTEST_FILL']",
+      "name": "no_backtest_fill_is_presented_as_a_paper_or_exchange_fill",
+      "passed": true
+    },
+    {
+      "detail": "47 artefacts digested, none stale: True; declared exclusions: ['ARTIFACT_MANIFEST.json', 'INDEPENDENT_VERIFICATION.json']; unlisted and undeclared: none",
+      "name": "every_published_artefact_digest_still_recomputes",
+      "passed": true
+    },
+    {
+      "detail": "3 rejected (all with a stated reason: True), 1 retained",
+      "name": "every_rejected_candidate_names_its_duplicate",
+      "passed": true
+    },
+    {
+      "detail": "3/3 pins resolved; licence file read for all: True",
+      "name": "pins_resolve_and_licences_come_from_the_licence_file",
+      "passed": true
+    },
+    {
+      "detail": "status PAPER_BLOCKED_BY_GATE, gates relaxed [], risk changed False, forward days waived 0",
+      "name": "paper_was_blocked_without_relaxing_a_gate",
+      "passed": true
+    },
+    {
+      "detail": "30/30 tamperings detected; undetected: none",
+      "name": "sabotage_matrix_all_detected",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "generated_at_utc": "2026-10-16T13:00:13Z",
+  "n_checks": 12,
+  "n_passed": 12,
+  "n_sabotage_detected": 30,
+  "order_sent": false,
+  "promotion": "NONE",
+  "sabotage": {
+    "cases": [
+      {
+        "detail": "the components then fail to sum to the recorded round trip",
+        "detected": true,
+        "id": "S01",
+        "kind": "TAMPER_DETECTED",
+        "name": "fee_bps_and_percent_confused"
+      },
+      {
+        "detail": "a doubled fee breaks the component sum against the round trip",
+        "detected": true,
+        "id": "S02",
+        "kind": "TAMPER_DETECTED",
+        "name": "duplicated_fee"
+      },
+      {
+        "detail": "counting impact twice overshoots the recorded total",
+        "detected": true,
+        "id": "S03",
+        "kind": "TAMPER_DETECTED",
+        "name": "spread_and_impact_double_counted"
+      },
+      {
+        "detail": "a negative fee is not a rebate and is rejected",
+        "detected": true,
+        "id": "S04",
+        "kind": "TAMPER_DETECTED",
+        "name": "fabricated_rebate_as_a_negative_fee"
+      },
+      {
+        "detail": "the funding component is present and zero in the source; dropping a non-zero one would change the total",
+        "detected": true,
+        "id": "S05",
+        "kind": "TAMPER_DETECTED",
+        "name": "funding_component_dropped"
+      },
+      {
+        "detail": "the honest entries are strictly after the signal bar, and shifting them back is detectable",
+        "detected": true,
+        "id": "S06",
+        "kind": "TAMPER_DETECTED",
+        "name": "next_bar_price_used"
+      },
+      {
+        "detail": "the honest set is all-closed and the rule rejects a set containing an open bar",
+        "detected": true,
+        "id": "S07",
+        "kind": "TAMPER_DETECTED",
+        "name": "higher_timeframe_still_open"
+      },
+      {
+        "detail": "a bar available after the decision is rejected by the PIT rule",
+        "detected": true,
+        "id": "S08",
+        "kind": "TAMPER_DETECTED",
+        "name": "available_at_in_the_future"
+      },
+      {
+        "detail": "the two objects are not equal; a naive local time cannot be compared to UTC",
+        "detected": true,
+        "id": "S09",
+        "kind": "TAMPER_DETECTED",
+        "name": "utc_and_local_clock_mixed"
+      },
+      {
+        "detail": "a one-point change to a bar changes the dataset fingerprint",
+        "detected": true,
+        "id": "S10",
+        "kind": "TAMPER_DETECTED",
+        "name": "ohlcv_altered"
+      },
+      {
+        "detail": "a repeated fill id is detected",
+        "detected": true,
+        "id": "S11",
+        "kind": "TAMPER_DETECTED",
+        "name": "duplicated_fill"
+      },
+      {
+        "detail": "no fill ledger exists, so no fill can be claimed on this path",
+        "detected": true,
+        "id": "S12",
+        "kind": "POLICY_ASSERTED",
+        "name": "fill_without_a_broker"
+      },
+      {
+        "detail": "4 signals vs 0 fills are different counters",
+        "detected": true,
+        "id": "S13",
+        "kind": "TAMPER_DETECTED",
+        "name": "signal_counted_as_a_trade"
+      },
+      {
+        "detail": "removing the NO_TRADE rows no longer reproduces the published decision count",
+        "detected": true,
+        "id": "S14",
+        "kind": "TAMPER_DETECTED",
+        "name": "no_trade_rows_hidden"
+      },
+      {
+        "detail": "dropping a veto reason changes the matrix and is visible against the published one",
+        "detected": true,
+        "id": "S15",
+        "kind": "TAMPER_DETECTED",
+        "name": "veto_reason_erased"
+      },
+      {
+        "detail": "40 streams carry a positive spread; zeroing them breaks the component sum",
+        "detected": true,
+        "id": "S16",
+        "kind": "TAMPER_DETECTED",
+        "name": "fabricated_zero_spread"
+      },
+      {
+        "detail": "no maker fill model exists in this package, so a maker fill cannot be claimed",
+        "detected": true,
+        "id": "S17",
+        "kind": "POLICY_ASSERTED",
+        "name": "invented_maker_fill"
+      },
+      {
+        "detail": "3 perp and 3 spot keys are disjoint",
+        "detected": true,
+        "id": "S18",
+        "kind": "TAMPER_DETECTED",
+        "name": "parser_confuses_perp_and_spot"
+      },
+      {
+        "detail": "the executed list matches the arms whose status is EXECUTED, and only those",
+        "detected": true,
+        "id": "S19",
+        "kind": "TAMPER_DETECTED",
+        "name": "unexecuted_arm_marked_as_executed"
+      },
+      {
+        "detail": "an edited digest no longer recomputes against the artefact",
+        "detected": true,
+        "id": "S20",
+        "kind": "TAMPER_DETECTED",
+        "name": "stale_digest_polished"
+      },
+      {
+        "detail": "every corpus is declared consumed, and relabelling one would contradict the consumption record",
+        "detected": true,
+        "id": "S21",
+        "kind": "TAMPER_DETECTED",
+        "name": "spent_holdout_relabelled_fresh"
+      },
+      {
+        "detail": "the absence of an adjustment is declared on the artefact rather than left implicit",
+        "detected": true,
+        "id": "S22",
+        "kind": "TAMPER_DETECTED",
+        "name": "multiple_testing_undisclosed"
+      },
+      {
+        "detail": "the measured day count is 2113, taken from the bar span and not chosen",
+        "detected": true,
+        "id": "S23",
+        "kind": "TAMPER_DETECTED",
+        "name": "day_denominator_modified"
+      },
+      {
+        "detail": "1690 zero-trade days remain visible in the per-day series",
+        "detected": true,
+        "id": "S24",
+        "kind": "TAMPER_DETECTED",
+        "name": "per_day_results_replaced_by_mean"
+      },
+      {
+        "detail": "the arm has 508 trades and the package verdict withholds robustness",
+        "detected": true,
+        "id": "S25",
+        "kind": "TAMPER_DETECTED",
+        "name": "sample_noise_labelled_robust"
+      },
+      {
+        "detail": "every one of 3 pins carries a licence read from the file at that commit",
+        "detected": true,
+        "id": "S26",
+        "kind": "TAMPER_DETECTED",
+        "name": "licence_not_checked_before_clone"
+      },
+      {
+        "detail": "the frozen baseline keeps live trading disabled and the runtime in paper",
+        "detected": true,
+        "id": "S27",
+        "kind": "POLICY_ASSERTED",
+        "name": "runtime_change_enabling_live"
+      },
+      {
+        "detail": "the forward-capture rate stays labelled as extrapolated from a short span",
+        "detected": true,
+        "id": "S28",
+        "kind": "TAMPER_DETECTED",
+        "name": "extrapolated_rate_relabelled_measured"
+      },
+      {
+        "detail": "the target is declared non-fresh, so it cannot stand in for an OOS target",
+        "detected": true,
+        "id": "S29",
+        "kind": "TAMPER_DETECTED",
+        "name": "non_authoritative_test_target"
+      },
+      {
+        "detail": "the rendered share 85.92% is present, and editing it in the markdown alone is detectable",
+        "detected": true,
+        "id": "S30",
+        "kind": "TAMPER_DETECTED",
+        "name": "md_report_diverges_from_json"
+      }
+    ],
+    "n_cases": 30
+  },
+  "schema_version": "EDGE14_INDEPENDENT_VERIFICATION_V1",
+  "verdict": "VERIFICATION_PASS",
+  "work_package": "WP-EDGE-14F"
+}

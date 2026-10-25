@@ -1,0 +1,986 @@
+{
+  "builder": "scripts/def_run_017_audit.py",
+  "generated_at_utc": "2026-10-21T09:43:53Z",
+  "identity": {
+    "baseline": {
+      "m1_cadence1": {
+        "accounting_policy": "paper-accounting/2",
+        "config_hash": "ab77a8bd65b76ef3068123cd6f0ccd07a958a2cb892a2e506c60f7dfb73d6302",
+        "data_window_utc": {
+          "bars": 256,
+          "first_open": "2026-10-20T13:02:00Z",
+          "last_open": "2026-10-20T17:17:00Z"
+        },
+        "dataset_id": "dfd84621cbc5c37e28e7df4783f591a1a5fb605e243026e0b23a1326b32199f2",
+        "dataset_sha256": "dfd84621cbc5c37e28e7df4783f591a1a5fb605e243026e0b23a1326b32199f2",
+        "entrypoint": "vision.lane.VisionLane.run",
+        "execution_environment": "openai-compatible",
+        "fee_schedule_source": "ledger FILL.commission_bps (el broker cobr\u00f3 esa cifra; la fuente del modelo es alpha15.cost_for)",
+        "mark_to_market_policy": "last observable close of the run",
+        "model_mode": "REPLAY (proveedor determinista; no se llam\u00f3 a ning\u00fan modelo real)",
+        "risk_config_hash": "84c741a597d3e1526abdde035fde4ab69669f93b06ffb8674e3b5d6f7693a565",
+        "run_id": "def-run-016-m1_cadence1",
+        "runtime_source_hashes": {
+          "src/trading_bot/paper/broker.py": "c145960896999f6a7a7f2b9090c40471b582b8a7caa02b45563db2f8cbe33389",
+          "src/trading_bot/risk/manager.py": "493a989ef2fc220eae212df0ee9d2b91e901eb04540da0c3fa41a1127ed45440",
+          "src/trading_bot/vision/execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e82",
+          "src/trading_bot/vision/lane.py": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3"
+        },
+        "scenario_id": "def-run-016-m1_cadence1",
+        "seed": "UNKNOWN",
+        "slippage_model": "EMBEDDED_IN_FILL_PRICE",
+        "source_commit": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "symbols": [
+          "BTC/USDT"
+        ],
+        "timeframes": [
+          "1m"
+        ],
+        "timezone": "UTC",
+        "unknowns": [
+          "seed: el runtime es determinista por construcci\u00f3n y no declara semilla",
+          "slippage_model: el ledger guarda el coste aplicado, no la ecuaci\u00f3n; se audita contra los precios de referencia fila a fila",
+          "execution_environment: no se registra en la fila RUN"
+        ],
+        "worktree_state": "DECLARED"
+      },
+      "m1_cadence5": {
+        "accounting_policy": "paper-accounting/2",
+        "config_hash": "758cca7b1f6f4d26396e09d666494cc7fdceb44139a050677e8a468fb5401189",
+        "data_window_utc": {
+          "bars": 256,
+          "first_open": "2026-10-20T13:02:00Z",
+          "last_open": "2026-10-20T17:17:00Z"
+        },
+        "dataset_id": "dfd84621cbc5c37e28e7df4783f591a1a5fb605e243026e0b23a1326b32199f2",
+        "dataset_sha256": "dfd84621cbc5c37e28e7df4783f591a1a5fb605e243026e0b23a1326b32199f2",
+        "entrypoint": "vision.lane.VisionLane.run",
+        "execution_environment": "openai-compatible",
+        "fee_schedule_source": "ledger FILL.commission_bps (el broker cobr\u00f3 esa cifra; la fuente del modelo es alpha15.cost_for)",
+        "mark_to_market_policy": "last observable close of the run",
+        "model_mode": "REPLAY (proveedor determinista; no se llam\u00f3 a ning\u00fan modelo real)",
+        "risk_config_hash": "84c741a597d3e1526abdde035fde4ab69669f93b06ffb8674e3b5d6f7693a565",
+        "run_id": "def-run-016-m1_cadence5",
+        "runtime_source_hashes": {
+          "src/trading_bot/paper/broker.py": "c145960896999f6a7a7f2b9090c40471b582b8a7caa02b45563db2f8cbe33389",
+          "src/trading_bot/risk/manager.py": "493a989ef2fc220eae212df0ee9d2b91e901eb04540da0c3fa41a1127ed45440",
+          "src/trading_bot/vision/execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e82",
+          "src/trading_bot/vision/lane.py": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3"
+        },
+        "scenario_id": "def-run-016-m1_cadence5",
+        "seed": "UNKNOWN",
+        "slippage_model": "EMBEDDED_IN_FILL_PRICE",
+        "source_commit": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "symbols": [
+          "BTC/USDT"
+        ],
+        "timeframes": [
+          "1m"
+        ],
+        "timezone": "UTC",
+        "unknowns": [
+          "seed: el runtime es determinista por construcci\u00f3n y no declara semilla",
+          "slippage_model: el ledger guarda el coste aplicado, no la ecuaci\u00f3n; se audita contra los precios de referencia fila a fila",
+          "execution_environment: no se registra en la fila RUN"
+        ],
+        "worktree_state": "DECLARED"
+      },
+      "m1_hole": {
+        "accounting_policy": "paper-accounting/2",
+        "config_hash": "ab77a8bd65b76ef3068123cd6f0ccd07a958a2cb892a2e506c60f7dfb73d6302",
+        "data_window_utc": {
+          "bars": 255,
+          "first_open": "2026-10-20T13:02:00Z",
+          "last_open": "2026-10-20T17:17:00Z"
+        },
+        "dataset_id": "06a760da6ee53463571f3469016acc17b2346650b359dfaed6742f6cf06a0558",
+        "dataset_sha256": "06a760da6ee53463571f3469016acc17b2346650b359dfaed6742f6cf06a0558",
+        "entrypoint": "vision.lane.VisionLane.run",
+        "execution_environment": "openai-compatible",
+        "fee_schedule_source": "ledger FILL.commission_bps (el broker cobr\u00f3 esa cifra; la fuente del modelo es alpha15.cost_for)",
+        "mark_to_market_policy": "last observable close of the run",
+        "model_mode": "REPLAY (proveedor determinista; no se llam\u00f3 a ning\u00fan modelo real)",
+        "risk_config_hash": "84c741a597d3e1526abdde035fde4ab69669f93b06ffb8674e3b5d6f7693a565",
+        "run_id": "def-run-016-m1_hole",
+        "runtime_source_hashes": {
+          "src/trading_bot/paper/broker.py": "c145960896999f6a7a7f2b9090c40471b582b8a7caa02b45563db2f8cbe33389",
+          "src/trading_bot/risk/manager.py": "493a989ef2fc220eae212df0ee9d2b91e901eb04540da0c3fa41a1127ed45440",
+          "src/trading_bot/vision/execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e82",
+          "src/trading_bot/vision/lane.py": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3"
+        },
+        "scenario_id": "def-run-016-m1_hole",
+        "seed": "UNKNOWN",
+        "slippage_model": "EMBEDDED_IN_FILL_PRICE",
+        "source_commit": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "symbols": [
+          "BTC/USDT"
+        ],
+        "timeframes": [
+          "1m"
+        ],
+        "timezone": "UTC",
+        "unknowns": [
+          "seed: el runtime es determinista por construcci\u00f3n y no declara semilla",
+          "slippage_model: el ledger guarda el coste aplicado, no la ecuaci\u00f3n; se audita contra los precios de referencia fila a fila",
+          "execution_environment: no se registra en la fila RUN"
+        ],
+        "worktree_state": "DECLARED"
+      },
+      "m1_zero_delay": {
+        "accounting_policy": "paper-accounting/2",
+        "config_hash": "5953356271fedff8e178ae989c5bb5ba362f72589593036a62f555dbfaacb1b3",
+        "data_window_utc": {
+          "bars": 256,
+          "first_open": "2026-10-20T13:02:00Z",
+          "last_open": "2026-10-20T17:17:00Z"
+        },
+        "dataset_id": "dfd84621cbc5c37e28e7df4783f591a1a5fb605e243026e0b23a1326b32199f2",
+        "dataset_sha256": "dfd84621cbc5c37e28e7df4783f591a1a5fb605e243026e0b23a1326b32199f2",
+        "entrypoint": "vision.lane.VisionLane.run",
+        "execution_environment": "openai-compatible",
+        "fee_schedule_source": "ledger FILL.commission_bps (el broker cobr\u00f3 esa cifra; la fuente del modelo es alpha15.cost_for)",
+        "mark_to_market_policy": "last observable close of the run",
+        "model_mode": "REPLAY (proveedor determinista; no se llam\u00f3 a ning\u00fan modelo real)",
+        "risk_config_hash": "84c741a597d3e1526abdde035fde4ab69669f93b06ffb8674e3b5d6f7693a565",
+        "run_id": "def-run-016-m1_zero_delay",
+        "runtime_source_hashes": {
+          "src/trading_bot/paper/broker.py": "c145960896999f6a7a7f2b9090c40471b582b8a7caa02b45563db2f8cbe33389",
+          "src/trading_bot/risk/manager.py": "493a989ef2fc220eae212df0ee9d2b91e901eb04540da0c3fa41a1127ed45440",
+          "src/trading_bot/vision/execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e82",
+          "src/trading_bot/vision/lane.py": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3"
+        },
+        "scenario_id": "def-run-016-m1_zero_delay",
+        "seed": "UNKNOWN",
+        "slippage_model": "EMBEDDED_IN_FILL_PRICE",
+        "source_commit": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "symbols": [
+          "BTC/USDT"
+        ],
+        "timeframes": [
+          "1m"
+        ],
+        "timezone": "UTC",
+        "unknowns": [
+          "seed: el runtime es determinista por construcci\u00f3n y no declara semilla",
+          "slippage_model: el ledger guarda el coste aplicado, no la ecuaci\u00f3n; se audita contra los precios de referencia fila a fila",
+          "execution_environment: no se registra en la fila RUN"
+        ],
+        "worktree_state": "DECLARED"
+      },
+      "m3_cadence1": {
+        "accounting_policy": "paper-accounting/2",
+        "config_hash": "33998d16ca886e710b0389ac90ddd937e5d1b3a8b7833f7765c60023fa8109ef",
+        "data_window_utc": {
+          "bars": 85,
+          "first_open": "2026-10-20T13:03:00Z",
+          "last_open": "2026-10-20T17:15:00Z"
+        },
+        "dataset_id": "713eca26b1970bde4e918290d41cb0122793733e771026d16ba5e1f393e57237",
+        "dataset_sha256": "713eca26b1970bde4e918290d41cb0122793733e771026d16ba5e1f393e57237",
+        "entrypoint": "vision.lane.VisionLane.run",
+        "execution_environment": "openai-compatible",
+        "fee_schedule_source": "ledger FILL.commission_bps (el broker cobr\u00f3 esa cifra; la fuente del modelo es alpha15.cost_for)",
+        "mark_to_market_policy": "last observable close of the run",
+        "model_mode": "REPLAY (proveedor determinista; no se llam\u00f3 a ning\u00fan modelo real)",
+        "risk_config_hash": "84c741a597d3e1526abdde035fde4ab69669f93b06ffb8674e3b5d6f7693a565",
+        "run_id": "def-run-016-m3_cadence1",
+        "runtime_source_hashes": {
+          "src/trading_bot/paper/broker.py": "c145960896999f6a7a7f2b9090c40471b582b8a7caa02b45563db2f8cbe33389",
+          "src/trading_bot/risk/manager.py": "493a989ef2fc220eae212df0ee9d2b91e901eb04540da0c3fa41a1127ed45440",
+          "src/trading_bot/vision/execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e82",
+          "src/trading_bot/vision/lane.py": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3"
+        },
+        "scenario_id": "def-run-016-m3_cadence1",
+        "seed": "UNKNOWN",
+        "slippage_model": "EMBEDDED_IN_FILL_PRICE",
+        "source_commit": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "symbols": [
+          "BTC/USDT"
+        ],
+        "timeframes": [
+          "3m"
+        ],
+        "timezone": "UTC",
+        "unknowns": [
+          "seed: el runtime es determinista por construcci\u00f3n y no declara semilla",
+          "slippage_model: el ledger guarda el coste aplicado, no la ecuaci\u00f3n; se audita contra los precios de referencia fila a fila",
+          "execution_environment: no se registra en la fila RUN"
+        ],
+        "worktree_state": "DECLARED"
+      }
+    },
+    "candidate": {
+      "m1_cadence1": {
+        "accounting_policy": "paper-accounting/2",
+        "config_hash": "bf61bb0afd9aa6c446eb6a139c56ffb211a13b587a16d23b774ce780ff3274df",
+        "data_window_utc": {
+          "bars": 256,
+          "first_open": "2026-10-20T13:02:00Z",
+          "last_open": "2026-10-20T17:17:00Z"
+        },
+        "dataset_id": "dfd84621cbc5c37e28e7df4783f591a1a5fb605e243026e0b23a1326b32199f2",
+        "dataset_sha256": "dfd84621cbc5c37e28e7df4783f591a1a5fb605e243026e0b23a1326b32199f2",
+        "entrypoint": "vision.lane.VisionLane.run",
+        "execution_environment": "openai-compatible",
+        "fee_schedule_source": "ledger FILL.commission_bps (el broker cobr\u00f3 esa cifra; la fuente del modelo es alpha15.cost_for)",
+        "mark_to_market_policy": "last observable close of the run",
+        "model_mode": "REPLAY (proveedor determinista; no se llam\u00f3 a ning\u00fan modelo real)",
+        "risk_config_hash": "84c741a597d3e1526abdde035fde4ab69669f93b06ffb8674e3b5d6f7693a565",
+        "run_id": "def-run-016-m1_cadence1",
+        "runtime_source_hashes": {
+          "src/trading_bot/paper/broker.py": "c145960896999f6a7a7f2b9090c40471b582b8a7caa02b45563db2f8cbe33389",
+          "src/trading_bot/risk/manager.py": "493a989ef2fc220eae212df0ee9d2b91e901eb04540da0c3fa41a1127ed45440",
+          "src/trading_bot/vision/execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e82",
+          "src/trading_bot/vision/lane.py": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3"
+        },
+        "scenario_id": "def-run-016-m1_cadence1",
+        "seed": "UNKNOWN",
+        "slippage_model": "EMBEDDED_IN_FILL_PRICE",
+        "source_commit": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "symbols": [
+          "BTC/USDT"
+        ],
+        "timeframes": [
+          "1m"
+        ],
+        "timezone": "UTC",
+        "unknowns": [
+          "seed: el runtime es determinista por construcci\u00f3n y no declara semilla",
+          "slippage_model: el ledger guarda el coste aplicado, no la ecuaci\u00f3n; se audita contra los precios de referencia fila a fila",
+          "execution_environment: no se registra en la fila RUN"
+        ],
+        "worktree_state": "DECLARED"
+      },
+      "m1_cadence5": {
+        "accounting_policy": "paper-accounting/2",
+        "config_hash": "02032958849c963c8d1bc8c02dd27bcd3285ca9f33319d110035e0def32cd48a",
+        "data_window_utc": {
+          "bars": 256,
+          "first_open": "2026-10-20T13:02:00Z",
+          "last_open": "2026-10-20T17:17:00Z"
+        },
+        "dataset_id": "dfd84621cbc5c37e28e7df4783f591a1a5fb605e243026e0b23a1326b32199f2",
+        "dataset_sha256": "dfd84621cbc5c37e28e7df4783f591a1a5fb605e243026e0b23a1326b32199f2",
+        "entrypoint": "vision.lane.VisionLane.run",
+        "execution_environment": "openai-compatible",
+        "fee_schedule_source": "ledger FILL.commission_bps (el broker cobr\u00f3 esa cifra; la fuente del modelo es alpha15.cost_for)",
+        "mark_to_market_policy": "last observable close of the run",
+        "model_mode": "REPLAY (proveedor determinista; no se llam\u00f3 a ning\u00fan modelo real)",
+        "risk_config_hash": "84c741a597d3e1526abdde035fde4ab69669f93b06ffb8674e3b5d6f7693a565",
+        "run_id": "def-run-016-m1_cadence5",
+        "runtime_source_hashes": {
+          "src/trading_bot/paper/broker.py": "c145960896999f6a7a7f2b9090c40471b582b8a7caa02b45563db2f8cbe33389",
+          "src/trading_bot/risk/manager.py": "493a989ef2fc220eae212df0ee9d2b91e901eb04540da0c3fa41a1127ed45440",
+          "src/trading_bot/vision/execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e82",
+          "src/trading_bot/vision/lane.py": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3"
+        },
+        "scenario_id": "def-run-016-m1_cadence5",
+        "seed": "UNKNOWN",
+        "slippage_model": "EMBEDDED_IN_FILL_PRICE",
+        "source_commit": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "symbols": [
+          "BTC/USDT"
+        ],
+        "timeframes": [
+          "1m"
+        ],
+        "timezone": "UTC",
+        "unknowns": [
+          "seed: el runtime es determinista por construcci\u00f3n y no declara semilla",
+          "slippage_model: el ledger guarda el coste aplicado, no la ecuaci\u00f3n; se audita contra los precios de referencia fila a fila",
+          "execution_environment: no se registra en la fila RUN"
+        ],
+        "worktree_state": "DECLARED"
+      },
+      "m1_hole": {
+        "accounting_policy": "paper-accounting/2",
+        "config_hash": "bf61bb0afd9aa6c446eb6a139c56ffb211a13b587a16d23b774ce780ff3274df",
+        "data_window_utc": {
+          "bars": 255,
+          "first_open": "2026-10-20T13:02:00Z",
+          "last_open": "2026-10-20T17:17:00Z"
+        },
+        "dataset_id": "06a760da6ee53463571f3469016acc17b2346650b359dfaed6742f6cf06a0558",
+        "dataset_sha256": "06a760da6ee53463571f3469016acc17b2346650b359dfaed6742f6cf06a0558",
+        "entrypoint": "vision.lane.VisionLane.run",
+        "execution_environment": "openai-compatible",
+        "fee_schedule_source": "ledger FILL.commission_bps (el broker cobr\u00f3 esa cifra; la fuente del modelo es alpha15.cost_for)",
+        "mark_to_market_policy": "last observable close of the run",
+        "model_mode": "REPLAY (proveedor determinista; no se llam\u00f3 a ning\u00fan modelo real)",
+        "risk_config_hash": "84c741a597d3e1526abdde035fde4ab69669f93b06ffb8674e3b5d6f7693a565",
+        "run_id": "def-run-016-m1_hole",
+        "runtime_source_hashes": {
+          "src/trading_bot/paper/broker.py": "c145960896999f6a7a7f2b9090c40471b582b8a7caa02b45563db2f8cbe33389",
+          "src/trading_bot/risk/manager.py": "493a989ef2fc220eae212df0ee9d2b91e901eb04540da0c3fa41a1127ed45440",
+          "src/trading_bot/vision/execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e82",
+          "src/trading_bot/vision/lane.py": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3"
+        },
+        "scenario_id": "def-run-016-m1_hole",
+        "seed": "UNKNOWN",
+        "slippage_model": "EMBEDDED_IN_FILL_PRICE",
+        "source_commit": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "symbols": [
+          "BTC/USDT"
+        ],
+        "timeframes": [
+          "1m"
+        ],
+        "timezone": "UTC",
+        "unknowns": [
+          "seed: el runtime es determinista por construcci\u00f3n y no declara semilla",
+          "slippage_model: el ledger guarda el coste aplicado, no la ecuaci\u00f3n; se audita contra los precios de referencia fila a fila",
+          "execution_environment: no se registra en la fila RUN"
+        ],
+        "worktree_state": "DECLARED"
+      },
+      "m1_zero_delay": {
+        "accounting_policy": "paper-accounting/2",
+        "config_hash": "2eaf572f0a4eb723480f3fe36b6743d905a5671b31ef189dfff1b219039c12b9",
+        "data_window_utc": {
+          "bars": 256,
+          "first_open": "2026-10-20T13:02:00Z",
+          "last_open": "2026-10-20T17:17:00Z"
+        },
+        "dataset_id": "dfd84621cbc5c37e28e7df4783f591a1a5fb605e243026e0b23a1326b32199f2",
+        "dataset_sha256": "dfd84621cbc5c37e28e7df4783f591a1a5fb605e243026e0b23a1326b32199f2",
+        "entrypoint": "vision.lane.VisionLane.run",
+        "execution_environment": "openai-compatible",
+        "fee_schedule_source": "ledger FILL.commission_bps (el broker cobr\u00f3 esa cifra; la fuente del modelo es alpha15.cost_for)",
+        "mark_to_market_policy": "last observable close of the run",
+        "model_mode": "REPLAY (proveedor determinista; no se llam\u00f3 a ning\u00fan modelo real)",
+        "risk_config_hash": "84c741a597d3e1526abdde035fde4ab69669f93b06ffb8674e3b5d6f7693a565",
+        "run_id": "def-run-016-m1_zero_delay",
+        "runtime_source_hashes": {
+          "src/trading_bot/paper/broker.py": "c145960896999f6a7a7f2b9090c40471b582b8a7caa02b45563db2f8cbe33389",
+          "src/trading_bot/risk/manager.py": "493a989ef2fc220eae212df0ee9d2b91e901eb04540da0c3fa41a1127ed45440",
+          "src/trading_bot/vision/execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e82",
+          "src/trading_bot/vision/lane.py": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3"
+        },
+        "scenario_id": "def-run-016-m1_zero_delay",
+        "seed": "UNKNOWN",
+        "slippage_model": "EMBEDDED_IN_FILL_PRICE",
+        "source_commit": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "symbols": [
+          "BTC/USDT"
+        ],
+        "timeframes": [
+          "1m"
+        ],
+        "timezone": "UTC",
+        "unknowns": [
+          "seed: el runtime es determinista por construcci\u00f3n y no declara semilla",
+          "slippage_model: el ledger guarda el coste aplicado, no la ecuaci\u00f3n; se audita contra los precios de referencia fila a fila",
+          "execution_environment: no se registra en la fila RUN"
+        ],
+        "worktree_state": "DECLARED"
+      },
+      "m3_cadence1": {
+        "accounting_policy": "paper-accounting/2",
+        "config_hash": "e46aeba6463793d70285775d38cf63c875ecc43dce36675f906827856c29fba7",
+        "data_window_utc": {
+          "bars": 85,
+          "first_open": "2026-10-20T13:03:00Z",
+          "last_open": "2026-10-20T17:15:00Z"
+        },
+        "dataset_id": "713eca26b1970bde4e918290d41cb0122793733e771026d16ba5e1f393e57237",
+        "dataset_sha256": "713eca26b1970bde4e918290d41cb0122793733e771026d16ba5e1f393e57237",
+        "entrypoint": "vision.lane.VisionLane.run",
+        "execution_environment": "openai-compatible",
+        "fee_schedule_source": "ledger FILL.commission_bps (el broker cobr\u00f3 esa cifra; la fuente del modelo es alpha15.cost_for)",
+        "mark_to_market_policy": "last observable close of the run",
+        "model_mode": "REPLAY (proveedor determinista; no se llam\u00f3 a ning\u00fan modelo real)",
+        "risk_config_hash": "84c741a597d3e1526abdde035fde4ab69669f93b06ffb8674e3b5d6f7693a565",
+        "run_id": "def-run-016-m3_cadence1",
+        "runtime_source_hashes": {
+          "src/trading_bot/paper/broker.py": "c145960896999f6a7a7f2b9090c40471b582b8a7caa02b45563db2f8cbe33389",
+          "src/trading_bot/risk/manager.py": "493a989ef2fc220eae212df0ee9d2b91e901eb04540da0c3fa41a1127ed45440",
+          "src/trading_bot/vision/execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e82",
+          "src/trading_bot/vision/lane.py": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3"
+        },
+        "scenario_id": "def-run-016-m3_cadence1",
+        "seed": "UNKNOWN",
+        "slippage_model": "EMBEDDED_IN_FILL_PRICE",
+        "source_commit": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "symbols": [
+          "BTC/USDT"
+        ],
+        "timeframes": [
+          "3m"
+        ],
+        "timezone": "UTC",
+        "unknowns": [
+          "seed: el runtime es determinista por construcci\u00f3n y no declara semilla",
+          "slippage_model: el ledger guarda el coste aplicado, no la ecuaci\u00f3n; se audita contra los precios de referencia fila a fila",
+          "execution_environment: no se registra en la fila RUN"
+        ],
+        "worktree_state": "DECLARED"
+      }
+    }
+  },
+  "mechanism_inventory": {
+    "baseline": {
+      "m1_cadence1": {
+        "decisions": 235,
+        "deferrals": 0,
+        "deferred_fates": {},
+        "guard_rejects": {
+          "SUPERSEDED_BY_NEWER_OPINION": 153
+        },
+        "opinion_age_ms": [
+          56380
+        ],
+        "round_trip_cost_bps": [
+          "24.786424"
+        ],
+        "round_trip_cost_bps_median": "24.786424",
+        "stop_distance_bps": [
+          "25.9867"
+        ],
+        "stop_distance_median_bps": "25.9867",
+        "terminal_map_size": 165
+      },
+      "m1_cadence5": {
+        "decisions": 47,
+        "deferrals": 0,
+        "deferred_fates": {},
+        "guard_rejects": {},
+        "opinion_age_ms": [
+          56380,
+          56380
+        ],
+        "round_trip_cost_bps": [
+          "24.786424",
+          "24.786424"
+        ],
+        "round_trip_cost_bps_median": "24.786424",
+        "stop_distance_bps": [
+          "29.179",
+          "27.5835"
+        ],
+        "stop_distance_median_bps": "28.38125",
+        "terminal_map_size": 33
+      },
+      "m1_hole": {
+        "decisions": 234,
+        "deferrals": 0,
+        "deferred_fates": {},
+        "guard_rejects": {
+          "DATA_GAP": 1,
+          "SUPERSEDED_BY_NEWER_OPINION": 151
+        },
+        "opinion_age_ms": [
+          56380
+        ],
+        "round_trip_cost_bps": [
+          "24.786424"
+        ],
+        "round_trip_cost_bps_median": "24.786424",
+        "stop_distance_bps": [
+          "25.9867"
+        ],
+        "stop_distance_median_bps": "25.9867",
+        "terminal_map_size": 164
+      },
+      "m1_zero_delay": {
+        "decisions": 235,
+        "deferrals": 0,
+        "deferred_fates": {},
+        "guard_rejects": {},
+        "opinion_age_ms": [
+          0,
+          0,
+          0
+        ],
+        "round_trip_cost_bps": [
+          "24.786424",
+          "24.786424",
+          "24.786424"
+        ],
+        "round_trip_cost_bps_median": "24.786424",
+        "stop_distance_bps": [
+          "25.3041",
+          "27.5523",
+          "25.1915"
+        ],
+        "stop_distance_median_bps": "25.3041",
+        "terminal_map_size": 80
+      },
+      "m3_cadence1": {
+        "decisions": 64,
+        "deferrals": 0,
+        "deferred_fates": {},
+        "guard_rejects": {
+          "RUN_ENDED_WITH_ORDER_PENDING": 1,
+          "SUPERSEDED_BY_NEWER_OPINION": 39
+        },
+        "opinion_age_ms": [
+          176380,
+          176380
+        ],
+        "round_trip_cost_bps": [
+          "24.786424",
+          "24.786424"
+        ],
+        "round_trip_cost_bps_median": "24.786424",
+        "stop_distance_bps": [
+          "35.7365",
+          "29.6472"
+        ],
+        "stop_distance_median_bps": "32.69185",
+        "terminal_map_size": 42
+      }
+    },
+    "candidate": {
+      "m1_cadence1": {
+        "decisions": 194,
+        "deferrals": 41,
+        "deferred_fates": {
+          "BLOCKED_BY_RISK": 39,
+          "FILLED": 2
+        },
+        "guard_rejects": {},
+        "opinion_age_ms": [
+          56380,
+          56380
+        ],
+        "round_trip_cost_bps": [
+          "24.786424",
+          "24.786424"
+        ],
+        "round_trip_cost_bps_median": "24.786424",
+        "stop_distance_bps": [
+          "25.3041",
+          "25.1915"
+        ],
+        "stop_distance_median_bps": "25.2478",
+        "terminal_map_size": 41
+      },
+      "m1_cadence5": {
+        "decisions": 47,
+        "deferrals": 0,
+        "deferred_fates": {},
+        "guard_rejects": {},
+        "opinion_age_ms": [
+          56380,
+          56380
+        ],
+        "round_trip_cost_bps": [
+          "24.786424",
+          "24.786424"
+        ],
+        "round_trip_cost_bps_median": "24.786424",
+        "stop_distance_bps": [
+          "29.179",
+          "27.5835"
+        ],
+        "stop_distance_median_bps": "28.38125",
+        "terminal_map_size": 33
+      },
+      "m1_hole": {
+        "decisions": 194,
+        "deferrals": 40,
+        "deferred_fates": {
+          "BLOCKED_BY_RISK": 38,
+          "FILLED": 2
+        },
+        "guard_rejects": {
+          "DATA_GAP": 1
+        },
+        "opinion_age_ms": [
+          56380,
+          56380
+        ],
+        "round_trip_cost_bps": [
+          "24.786424",
+          "24.786424"
+        ],
+        "round_trip_cost_bps_median": "24.786424",
+        "stop_distance_bps": [
+          "25.3041",
+          "25.1915"
+        ],
+        "stop_distance_median_bps": "25.2478",
+        "terminal_map_size": 41
+      },
+      "m1_zero_delay": {
+        "decisions": 235,
+        "deferrals": 0,
+        "deferred_fates": {},
+        "guard_rejects": {},
+        "opinion_age_ms": [
+          0,
+          0,
+          0
+        ],
+        "round_trip_cost_bps": [
+          "24.786424",
+          "24.786424",
+          "24.786424"
+        ],
+        "round_trip_cost_bps_median": "24.786424",
+        "stop_distance_bps": [
+          "25.3041",
+          "27.5523",
+          "25.1915"
+        ],
+        "stop_distance_median_bps": "25.3041",
+        "terminal_map_size": 80
+      },
+      "m3_cadence1": {
+        "decisions": 60,
+        "deferrals": 4,
+        "deferred_fates": {
+          "BLOCKED_BY_RISK": 1,
+          "FILLED": 3
+        },
+        "guard_rejects": {
+          "RUN_ENDED_WITH_ORDER_PENDING": 1
+        },
+        "opinion_age_ms": [
+          176380,
+          176380,
+          176380
+        ],
+        "round_trip_cost_bps": [
+          "24.786424",
+          "24.786424",
+          "24.786424"
+        ],
+        "round_trip_cost_bps_median": "24.786424",
+        "stop_distance_bps": [
+          "32.4511",
+          "39.7474",
+          "39.306"
+        ],
+        "stop_distance_median_bps": "39.306",
+        "terminal_map_size": 5
+      }
+    }
+  },
+  "per_scenario": {
+    "m1_cadence1": {
+      "baseline_net_usdt": "-2.41865608",
+      "baseline_status": "PASS",
+      "buckets_usdt": {
+        "AMBIGUOUS": "0.00000000",
+        "BASELINE_ONLY": "2.41865608",
+        "CANDIDATE_ONLY": "-4.76407128",
+        "MATCHED": "0.00000000"
+      },
+      "candidate_net_usdt": "-4.76407128",
+      "candidate_status": "PASS",
+      "counts": {
+        "AMBIGUOUS": 0,
+        "BASELINE_ONLY": 1,
+        "CANDIDATE_ONLY": 2,
+        "MATCHED": 0
+      },
+      "exit_reasons_baseline": {
+        "stop_loss": 1
+      },
+      "exit_reasons_candidate": {
+        "stop_loss": 2
+      },
+      "observed_delta_usdt": "-2.34541520",
+      "reconciled": true,
+      "reconstructed_delta_usdt": "-2.34541520",
+      "residual_usdt": "0.00000000"
+    },
+    "m1_cadence5": {
+      "baseline_net_usdt": "-5.07670986",
+      "baseline_status": "PASS",
+      "buckets_usdt": {
+        "AMBIGUOUS": "0.00000000",
+        "BASELINE_ONLY": "0.00000000",
+        "CANDIDATE_ONLY": "0.00000000",
+        "MATCHED": "0.00000000"
+      },
+      "candidate_net_usdt": "-5.07670986",
+      "candidate_status": "PASS",
+      "counts": {
+        "AMBIGUOUS": 0,
+        "BASELINE_ONLY": 0,
+        "CANDIDATE_ONLY": 0,
+        "MATCHED": 2
+      },
+      "exit_reasons_baseline": {
+        "stop_loss": 2
+      },
+      "exit_reasons_candidate": {
+        "stop_loss": 2
+      },
+      "observed_delta_usdt": "0.00000000",
+      "reconciled": true,
+      "reconstructed_delta_usdt": "0.00000000",
+      "residual_usdt": "0.00000000"
+    },
+    "m1_hole": {
+      "baseline_net_usdt": "-2.41865608",
+      "baseline_status": "PASS",
+      "buckets_usdt": {
+        "AMBIGUOUS": "0.00000000",
+        "BASELINE_ONLY": "2.41865608",
+        "CANDIDATE_ONLY": "-4.76407128",
+        "MATCHED": "0.00000000"
+      },
+      "candidate_net_usdt": "-4.76407128",
+      "candidate_status": "PASS",
+      "counts": {
+        "AMBIGUOUS": 0,
+        "BASELINE_ONLY": 1,
+        "CANDIDATE_ONLY": 2,
+        "MATCHED": 0
+      },
+      "exit_reasons_baseline": {
+        "stop_loss": 1
+      },
+      "exit_reasons_candidate": {
+        "stop_loss": 2
+      },
+      "observed_delta_usdt": "-2.34541520",
+      "reconciled": true,
+      "reconstructed_delta_usdt": "-2.34541520",
+      "residual_usdt": "0.00000000"
+    },
+    "m1_zero_delay": {
+      "baseline_net_usdt": "-7.26098863",
+      "baseline_status": "PASS",
+      "buckets_usdt": {
+        "AMBIGUOUS": "0.00000000",
+        "BASELINE_ONLY": "0.00000000",
+        "CANDIDATE_ONLY": "0.00000000",
+        "MATCHED": "0.00000000"
+      },
+      "candidate_net_usdt": "-7.26098863",
+      "candidate_status": "PASS",
+      "counts": {
+        "AMBIGUOUS": 0,
+        "BASELINE_ONLY": 0,
+        "CANDIDATE_ONLY": 0,
+        "MATCHED": 3
+      },
+      "exit_reasons_baseline": {
+        "stop_loss": 3
+      },
+      "exit_reasons_candidate": {
+        "stop_loss": 3
+      },
+      "observed_delta_usdt": "0.00000000",
+      "reconciled": true,
+      "reconstructed_delta_usdt": "0.00000000",
+      "residual_usdt": "0.00000000"
+    },
+    "m3_cadence1": {
+      "baseline_net_usdt": "-5.50840479",
+      "baseline_status": "PASS",
+      "buckets_usdt": {
+        "AMBIGUOUS": "0.00000000",
+        "BASELINE_ONLY": "5.50840479",
+        "CANDIDATE_ONLY": "-8.93375613",
+        "MATCHED": "0.00000000"
+      },
+      "candidate_net_usdt": "-8.93375613",
+      "candidate_status": "PASS",
+      "counts": {
+        "AMBIGUOUS": 0,
+        "BASELINE_ONLY": 2,
+        "CANDIDATE_ONLY": 3,
+        "MATCHED": 0
+      },
+      "exit_reasons_baseline": {
+        "stop_loss": 2
+      },
+      "exit_reasons_candidate": {
+        "stop_loss": 3
+      },
+      "observed_delta_usdt": "-3.42535134",
+      "reconciled": true,
+      "reconstructed_delta_usdt": "-3.42535134",
+      "residual_usdt": "0.00000000"
+    }
+  },
+  "per_trade_economics": {
+    "baseline": {
+      "closed_trades": 9,
+      "exit_reasons": [
+        "stop_loss"
+      ],
+      "losses": 9,
+      "mean_fees_usdt": 1.0,
+      "mean_net_usdt": -2.520379,
+      "mean_slippage_usdt": 0.239087,
+      "median_net_usdt": -2.496917,
+      "total_net_usdt": "-22.68341544",
+      "win_rate": 0.0,
+      "wins": 0
+    },
+    "candidate": {
+      "closed_trades": 12,
+      "exit_reasons": [
+        "stop_loss"
+      ],
+      "losses": 12,
+      "mean_fees_usdt": 1.0,
+      "mean_net_usdt": -2.566633,
+      "mean_slippage_usdt": 0.239166,
+      "median_net_usdt": -2.440726,
+      "total_net_usdt": "-30.79959719",
+      "win_rate": 0.0,
+      "wins": 0
+    }
+  },
+  "reconciliation": {
+    "fills_match": true,
+    "reported": {
+      "baseline": [
+        {
+          "declared_calls": 235,
+          "declared_fills": 1,
+          "reconstructed_fills": 1,
+          "scenario": "m1_cadence1"
+        },
+        {
+          "declared_calls": 47,
+          "declared_fills": 2,
+          "reconstructed_fills": 2,
+          "scenario": "m1_cadence5"
+        },
+        {
+          "declared_calls": 234,
+          "declared_fills": 1,
+          "reconstructed_fills": 1,
+          "scenario": "m1_hole"
+        },
+        {
+          "declared_calls": 235,
+          "declared_fills": 3,
+          "reconstructed_fills": 3,
+          "scenario": "m1_zero_delay"
+        },
+        {
+          "declared_calls": 64,
+          "declared_fills": 2,
+          "reconstructed_fills": 2,
+          "scenario": "m3_cadence1"
+        }
+      ],
+      "candidate": [
+        {
+          "declared_calls": 194,
+          "declared_fills": 2,
+          "reconstructed_fills": 2,
+          "scenario": "m1_cadence1"
+        },
+        {
+          "declared_calls": 47,
+          "declared_fills": 2,
+          "reconstructed_fills": 2,
+          "scenario": "m1_cadence5"
+        },
+        {
+          "declared_calls": 194,
+          "declared_fills": 2,
+          "reconstructed_fills": 2,
+          "scenario": "m1_hole"
+        },
+        {
+          "declared_calls": 235,
+          "declared_fills": 3,
+          "reconstructed_fills": 3,
+          "scenario": "m1_zero_delay"
+        },
+        {
+          "declared_calls": 60,
+          "declared_fills": 3,
+          "reconstructed_fills": 3,
+          "scenario": "m3_cadence1"
+        }
+      ]
+    },
+    "totals": {
+      "accounting_note": "net = gross - fees. El slippage ya est\u00e1 dentro de los precios de relleno, as\u00ed que forma parte de gross: sumarlo otra vez lo contar\u00eda dos veces.",
+      "ambiguous": 0,
+      "baseline_fees_usdt": "9.00000000",
+      "baseline_gross_usdt": "-13.68341544",
+      "baseline_net_usdt": "-22.68341544",
+      "baseline_only": 4,
+      "baseline_only_trades_net_usdt": "-10.34571695",
+      "baseline_slippage_usdt": "2.15178537",
+      "candidate_fees_usdt": "12.00000000",
+      "candidate_gross_usdt": "-18.79959719",
+      "candidate_net_usdt": "-30.79959719",
+      "candidate_only": 7,
+      "candidate_only_trades_net_usdt": "-18.46189869",
+      "candidate_slippage_usdt": "2.86999026",
+      "delta_fees_usdt": "3.00000000",
+      "delta_from_matched_pairs_usdt": "0.00000000",
+      "delta_gross_usdt": "-5.11618174",
+      "delta_net_equals_gross_minus_fees": true,
+      "delta_net_usdt": "-8.11618174",
+      "delta_slippage_usdt": "0.71820489",
+      "matched_pairs": 5
+    }
+  },
+  "rfc": "RFC-DEF-RUN-017",
+  "scenarios": [
+    "m1_cadence1",
+    "m1_cadence5",
+    "m1_hole",
+    "m1_zero_delay",
+    "m3_cadence1"
+  ],
+  "schema_version": "DEF_RUN_017_ATTRIBUTION_V1",
+  "source_commit": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+  "status": {
+    "baseline": {
+      "m1_cadence1": "PASS",
+      "m1_cadence5": "PASS",
+      "m1_hole": "PASS",
+      "m1_zero_delay": "PASS",
+      "m3_cadence1": "PASS"
+    },
+    "candidate": {
+      "m1_cadence1": "PASS",
+      "m1_cadence5": "PASS",
+      "m1_hole": "PASS",
+      "m1_zero_delay": "PASS",
+      "m3_cadence1": "PASS"
+    }
+  },
+  "totals": {
+    "accounting_note": "net = gross - fees. El slippage ya est\u00e1 dentro de los precios de relleno, as\u00ed que forma parte de gross: sumarlo otra vez lo contar\u00eda dos veces.",
+    "ambiguous": 0,
+    "baseline_fees_usdt": "9.00000000",
+    "baseline_gross_usdt": "-13.68341544",
+    "baseline_net_usdt": "-22.68341544",
+    "baseline_only": 4,
+    "baseline_only_trades_net_usdt": "-10.34571695",
+    "baseline_slippage_usdt": "2.15178537",
+    "candidate_fees_usdt": "12.00000000",
+    "candidate_gross_usdt": "-18.79959719",
+    "candidate_net_usdt": "-30.79959719",
+    "candidate_only": 7,
+    "candidate_only_trades_net_usdt": "-18.46189869",
+    "candidate_slippage_usdt": "2.86999026",
+    "delta_fees_usdt": "3.00000000",
+    "delta_from_matched_pairs_usdt": "0.00000000",
+    "delta_gross_usdt": "-5.11618174",
+    "delta_net_equals_gross_minus_fees": true,
+    "delta_net_usdt": "-8.11618174",
+    "delta_slippage_usdt": "0.71820489",
+    "matched_pairs": 5
+  },
+  "unknowns": {
+    "baseline": [
+      "seed: el runtime es determinista por construcci\u00f3n y no declara semilla",
+      "slippage_model: el ledger guarda el coste aplicado, no la ecuaci\u00f3n; se audita contra los precios de referencia fila a fila",
+      "execution_environment: no se registra en la fila RUN"
+    ],
+    "candidate": [
+      "seed: el runtime es determinista por construcci\u00f3n y no declara semilla",
+      "slippage_model: el ledger guarda el coste aplicado, no la ecuaci\u00f3n; se audita contra los precios de referencia fila a fila",
+      "execution_environment: no se registra en la fila RUN"
+    ]
+  },
+  "verifier": "scripts/def_run_017_verify.py (no importa trading_bot)"
+}

@@ -1,0 +1,29 @@
+{
+  "arms": [
+    "NEUTRAL_MA_CROSS_1H (this project's simulator)",
+    "NEUTRAL_MA_CROSS_1H (freqtrade)",
+    "NEUTRAL_MA_CROSS_1H (vnpy_ctastrategy)",
+    "NEUTRAL_MA_CROSS_1H (jesse)",
+    "PAPER_REPLAY GATE_INTACT",
+    "PAPER_REPLAY SANDBOX_ADMISSION"
+  ],
+  "buy_and_hold_bps": {
+    "BTC/USDT": 301.7455,
+    "ETH/USDT": 30.2185
+  },
+  "csv": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-014R\\ECONOMIC_COMPARISON.csv",
+  "decisions": {
+    "NEUTRAL_MA_CROSS_1H (freqtrade)": "REJECT",
+    "NEUTRAL_MA_CROSS_1H (jesse)": "REJECT",
+    "NEUTRAL_MA_CROSS_1H (this project's simulator)": "REJECT",
+    "NEUTRAL_MA_CROSS_1H (vnpy_ctastrategy)": "REJECT",
+    "PAPER_REPLAY GATE_INTACT": "DEFER",
+    "PAPER_REPLAY SANDBOX_ADMISSION": "REJECT"
+  },
+  "order_sent": false,
+  "promotion": "NONE",
+  "rows": 6,
+  "schema_version": "EDGE14R_ECONOMIC_COMPARISON_V1",
+  "target": "ACTIVE asks for at least three executed trades per day in crypto, seven days a week, only where the economics support it; QUALITY stays independent and no arm here reaches three trades per day with a positive net",
+  "work_package": "WP-EDGE-14R/P5"
+}

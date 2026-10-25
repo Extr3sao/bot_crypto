@@ -1,0 +1,28 @@
+{
+  "manifest_version": "RFC035E_DATA_MANIFEST_V1",
+  "derived_from": [
+    "RF-01",
+    "RF-02"
+  ],
+  "derived": [
+    {
+      "name": "etf_flow_btc_daily",
+      "path": "data\\rfc035e\\derived\\etf_flow_btc_daily.json",
+      "sha256": "b58adaa74e7c73f93d6c4270eba673b88216727e4ee0c133de5334a354134900",
+      "rows": 703,
+      "rows_with_both_series": 703,
+      "transformations": [
+        "flow rows are parsed from the raw html table (blank cell = 0 USD m, counted)",
+        "BTC close is joined on the UTC calendar date of the Binance daily kline",
+        "no interpolation, no filling, no resampling: missing BTC closes stay null"
+      ],
+      "missing_observations": 0
+    }
+  ],
+  "pit_convention": {
+    "exact_publication_timestamps": "UNKNOWN",
+    "conservative_availability_rule": "flow_date + 1 calendar day at 00:00:00Z",
+    "rationale": "the provider publishes final daily flows after the US cash session; the exact historical publication timestamp per day is not published, so availability is never taken at face value: PIT_STATUS = UNKNOWN and the strategy side uses the declared conservative rule above",
+    "aggressive_rule_reported_for_contrast_only": "flow_date at 00:00:00Z (assumes the number existed before it did)"
+  }
+}

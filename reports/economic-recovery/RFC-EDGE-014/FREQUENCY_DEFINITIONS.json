@@ -1,0 +1,109 @@
+{
+  "active_target": 3.0,
+  "active_target_measured_against": "tape_bound_non_overlapping_per_day",
+  "by_horizon": {
+    "1": {
+      "horizon_seconds": 1,
+      "ratio_selector_over_tape": null,
+      "selector_condition": "|imbalance| >= 0.9588 (q90)",
+      "selector_long_only_overlapping_per_day": 0.0,
+      "selector_streams_with_an_opportunity": 0,
+      "tape_bound_non_overlapping_per_day": 0.0,
+      "tape_streams_clearing": 0,
+      "tape_total_streams": 10
+    },
+    "3600": {
+      "horizon_seconds": 3600,
+      "ratio_selector_over_tape": 0.0,
+      "selector_condition": null,
+      "selector_long_only_overlapping_per_day": 0.0,
+      "selector_streams_with_an_opportunity": 0,
+      "tape_bound_non_overlapping_per_day": 11.553,
+      "tape_streams_clearing": 0,
+      "tape_total_streams": 10
+    },
+    "5": {
+      "horizon_seconds": 5,
+      "ratio_selector_over_tape": null,
+      "selector_condition": "|imbalance| >= 0.9588 (q90)",
+      "selector_long_only_overlapping_per_day": 0.0,
+      "selector_streams_with_an_opportunity": 0,
+      "tape_bound_non_overlapping_per_day": 0.0,
+      "tape_streams_clearing": 0,
+      "tape_total_streams": 10
+    },
+    "60": {
+      "horizon_seconds": 60,
+      "ratio_selector_over_tape": 3.000146,
+      "selector_condition": "|imbalance| >= 0.9584 (q90)",
+      "selector_long_only_overlapping_per_day": 144.061,
+      "selector_streams_with_an_opportunity": 2,
+      "tape_bound_non_overlapping_per_day": 48.018,
+      "tape_streams_clearing": 3,
+      "tape_total_streams": 10
+    },
+    "900": {
+      "horizon_seconds": 900,
+      "ratio_selector_over_tape": 0.0,
+      "selector_condition": null,
+      "selector_long_only_overlapping_per_day": 0.0,
+      "selector_streams_with_an_opportunity": 0,
+      "tape_bound_non_overlapping_per_day": 179.619,
+      "tape_streams_clearing": 6,
+      "tape_total_streams": 10
+    }
+  },
+  "definitions": [
+    {
+      "direction_filter": "any",
+      "is_the_active_denominator": true,
+      "name": "tape_bound_non_overlapping",
+      "reads_as": "the ceiling on distinct non-overlapping trades the tape offers",
+      "selector_conditioned": false,
+      "source": "gates.frequency_pooled.clearing_per_day",
+      "unit": "barrier-clearing windows per day, summed across streams",
+      "window_rule": "non-overlapping"
+    },
+    {
+      "direction_filter": "any",
+      "is_the_active_denominator": false,
+      "name": "tape_any_overlapping",
+      "reads_as": "how often a barrier-clearing move starts, counting every second",
+      "selector_conditioned": false,
+      "source": "gates.frequency[*].clearing_windows_per_day_overlapping",
+      "unit": "barrier-clearing windows per day, per stream",
+      "window_rule": "overlapping"
+    },
+    {
+      "direction_filter": "long_only",
+      "is_the_active_denominator": false,
+      "name": "selector_long_only_overlapping",
+      "reads_as": "of the seconds the imbalance selector fires, how many clear the barrier long",
+      "selector_conditioned": true,
+      "source": "experiments.E-05_frequency.opportunities_per_day",
+      "unit": "selector-conditioned long-only opportunities per day, summed across streams",
+      "window_rule": "overlapping"
+    }
+  ],
+  "order_sent": false,
+  "primary_sources": {
+    "experiments": {
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-09\\experiments\\EXPERIMENTS.json",
+      "sha256": "bde376e5139b651bab24c60e39287dba8c79d29d83d94be82b4210802cab9345"
+    },
+    "gates": {
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-09\\gates\\COST_LIQUIDITY_CAPACITY.json",
+      "sha256": "a48e106e16b2346a5aaa4b6f7e3cd862887fa4a8be55c22265ea44c4d5d008f6"
+    }
+  },
+  "promotion": "NONE",
+  "schema_version": "EDGE14_FREQUENCY_DEFINITIONS_V1",
+  "the_two_numbers": {
+    "same_metric": false,
+    "selector_long_only_overlapping_per_day": 144.061,
+    "tape_bound_non_overlapping_per_day": 48.018,
+    "why": "the selector counts overlapping 60s start points conditioned on extreme imbalance; the tape bound de-overlaps before counting. Only the non-overlapping bound maps to distinct trades."
+  },
+  "verdict": "FREQUENCY_RECONCILED_BY_WINDOW_RULE",
+  "work_package": "WP-EDGE-14B"
+}

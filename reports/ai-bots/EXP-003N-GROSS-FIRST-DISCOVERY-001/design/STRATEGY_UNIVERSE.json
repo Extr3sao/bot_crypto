@@ -1,0 +1,463 @@
+{
+  "adapter_strategies": [
+    "breakout",
+    "ema_crossover",
+    "mean_reversion",
+    "momentum",
+    "trend",
+    "volatility"
+  ],
+  "alpha15_families": [
+    {
+      "classification": "RESEARCH_ONLY",
+      "differs_from": [
+        "lead_lag"
+      ],
+      "family": "cross_sectional_rotation",
+      "parameters": {
+        "lookback_hours": 72,
+        "rebalance_hours": 24,
+        "regime_ema_hours": 200,
+        "top_k": 2,
+        "universe": [
+          "AAVEUSDT",
+          "CRVUSDT",
+          "KSMUSDT",
+          "SNXUSDT",
+          "SUSHIUSDT",
+          "UNIUSDT"
+        ]
+      },
+      "prior_verdict": "WP-EDGE-015 (see PRIOR_EVIDENCE)",
+      "screened_here": false,
+      "status": "TESTED",
+      "untestable_reason": ""
+    },
+    {
+      "classification": "RESEARCH_ONLY",
+      "differs_from": [],
+      "family": "maker_only_spread_capture",
+      "parameters": {
+        "inventory_hours": 4,
+        "quote_offset_bps": 1.0
+      },
+      "prior_verdict": "WP-EDGE-015 (see PRIOR_EVIDENCE)",
+      "screened_here": false,
+      "status": "DEFER_NO_FILL_MODEL",
+      "untestable_reason": "no verifiable queue-position or fill-probability model exists in the tree, and without one a maker backtest reports fills it could not have obtained"
+    },
+    {
+      "classification": "RESEARCH_ONLY",
+      "differs_from": [
+        "breakout@5m",
+        "ema_crossover@5m",
+        "lead_lag"
+      ],
+      "family": "mean_reversion_vol_liq",
+      "parameters": {
+        "atr_hours": 24,
+        "atr_percentile_max": 0.5,
+        "atr_stop_multiple": 4.0,
+        "max_hold_hours": 48,
+        "mean_hours": 48,
+        "percentile_window_hours": 720,
+        "volume_median_hours": 168,
+        "volume_multiple_min": 1.2,
+        "z_entry": -2.0,
+        "z_exit": 0.0
+      },
+      "prior_verdict": "WP-EDGE-015 (see PRIOR_EVIDENCE)",
+      "screened_here": true,
+      "status": "TESTED",
+      "untestable_reason": ""
+    },
+    {
+      "classification": "RESEARCH_ONLY",
+      "differs_from": [
+        "ema_crossover@5m"
+      ],
+      "family": "trend_pullback",
+      "parameters": {
+        "atr_hours": 24,
+        "fast_ema_hours": 20,
+        "slow_ema_hours": 50,
+        "stop_atr_multiple": 3.0,
+        "trend_ema_hours": 200,
+        "trend_slope_hours": 24
+      },
+      "prior_verdict": "WP-EDGE-015 (see PRIOR_EVIDENCE)",
+      "screened_here": true,
+      "status": "TESTED",
+      "untestable_reason": ""
+    },
+    {
+      "classification": "RESEARCH_ONLY",
+      "differs_from": [
+        "breakout@5m",
+        "ema_crossover@5m"
+      ],
+      "family": "vol_regime_breakout",
+      "parameters": {
+        "atr_hours": 24,
+        "atr_percentile_max": 0.95,
+        "atr_percentile_min": 0.5,
+        "channel_hours": 168,
+        "percentile_window_hours": 720,
+        "regime_ema_hours": 200,
+        "trail_atr_multiple": 3.0
+      },
+      "prior_verdict": "WP-EDGE-015 (see PRIOR_EVIDENCE)",
+      "screened_here": true,
+      "status": "TESTED",
+      "untestable_reason": ""
+    }
+  ],
+  "commit": "98009257a7c36589291f9e0d9797b438837f24b2",
+  "counts": {
+    "EXPERIMENTAL": 3,
+    "RESEARCH_ONLY": 6,
+    "RUNTIME_REACHABLE": 6,
+    "TEST_ONLY": 1
+  },
+  "entries": [
+    {
+      "class": "BreakoutMachine",
+      "classification": "RESEARCH_ONLY",
+      "module": "src/trading_bot/research/economic_recovery/pit15.py",
+      "module_sha256": "dd6c7882c3074402879ce4651d096c176dfce1dc01b46bfed0f0037be210dcd6",
+      "references": {
+        "adapter": [],
+        "research": [],
+        "runtime": [],
+        "scripts": [
+          "scripts/edge16_artifacts.py",
+          "scripts/edge16_paper_lane.py"
+        ],
+        "tests": [
+          "tests/unit/research/test_edge16_causality.py",
+          "tests/unit/research/test_edge16_pit.py"
+        ]
+      },
+      "screened_here": false
+    },
+    {
+      "class": "MeanReversionMachine",
+      "classification": "RESEARCH_ONLY",
+      "module": "src/trading_bot/research/economic_recovery/pit15.py",
+      "module_sha256": "dd6c7882c3074402879ce4651d096c176dfce1dc01b46bfed0f0037be210dcd6",
+      "references": {
+        "adapter": [],
+        "research": [],
+        "runtime": [],
+        "scripts": [
+          "scripts/edge16_artifacts.py",
+          "scripts/edge16_paper_lane.py"
+        ],
+        "tests": [
+          "tests/unit/research/test_edge16_causality.py",
+          "tests/unit/research/test_edge16_pit.py"
+        ]
+      },
+      "screened_here": false
+    },
+    {
+      "class": "PullbackMachine",
+      "classification": "RESEARCH_ONLY",
+      "module": "src/trading_bot/research/economic_recovery/pit15.py",
+      "module_sha256": "dd6c7882c3074402879ce4651d096c176dfce1dc01b46bfed0f0037be210dcd6",
+      "references": {
+        "adapter": [],
+        "research": [],
+        "runtime": [],
+        "scripts": [
+          "scripts/edge16_artifacts.py",
+          "scripts/edge16_paper_lane.py"
+        ],
+        "tests": [
+          "tests/unit/research/test_edge16_causality.py",
+          "tests/unit/research/test_edge16_pit.py"
+        ]
+      },
+      "screened_here": false
+    },
+    {
+      "class": "MaPullbackFamily",
+      "classification": "EXPERIMENTAL",
+      "module": "src/trading_bot/research/experimental/cand_001_ma_pullback.py",
+      "module_sha256": "cb0df3ec416879b625b8a24f3bf0236aac88855023659f26df87c1968679d12c",
+      "references": {
+        "adapter": [],
+        "research": [
+          "src/trading_bot/research/experimental/__init__.py",
+          "src/trading_bot/research/experimental/arms.py",
+          "src/trading_bot/research/experimental/cand_002_mtf_alignment.py"
+        ],
+        "runtime": [],
+        "scripts": [],
+        "tests": []
+      },
+      "screened_here": false
+    },
+    {
+      "class": "MtfAlignedMaPullbackFamily",
+      "classification": "EXPERIMENTAL",
+      "module": "src/trading_bot/research/experimental/cand_002_mtf_alignment.py",
+      "module_sha256": "0ab6ec991d3d4565a4481a898212aa46885dacddbefe7d960a116afa05f9db5b",
+      "references": {
+        "adapter": [],
+        "research": [
+          "src/trading_bot/research/experimental/__init__.py",
+          "src/trading_bot/research/experimental/arms.py"
+        ],
+        "runtime": [],
+        "scripts": [
+          "scripts/source_candidate_experiment.py"
+        ],
+        "tests": [
+          "tests/unit/research/test_experimental_candidates_pit.py"
+        ]
+      },
+      "screened_here": false
+    },
+    {
+      "class": "MacdRegimeCrossoverFamily",
+      "classification": "EXPERIMENTAL",
+      "module": "src/trading_bot/research/experimental/cand_003_macd_regime_crossover.py",
+      "module_sha256": "cc29ad8fd7f94e97627c8914f4c0048ad56664ff388c4a8cc513adac8040d132",
+      "references": {
+        "adapter": [],
+        "research": [
+          "src/trading_bot/research/experimental/__init__.py",
+          "src/trading_bot/research/experimental/arms.py"
+        ],
+        "runtime": [],
+        "scripts": [],
+        "tests": []
+      },
+      "screened_here": false
+    },
+    {
+      "class": "BreakoutFamily",
+      "classification": "RUNTIME_REACHABLE",
+      "module": "src/trading_bot/research/families/breakout_family.py",
+      "module_sha256": "359ba1b773defee8b017e3d20c4fa8ac60a3cd737932fa7174df47f1254a0fb0",
+      "references": {
+        "adapter": [
+          "src/trading_bot/vision/signal_sources.py"
+        ],
+        "research": [
+          "src/trading_bot/research/families/__init__.py"
+        ],
+        "runtime": [],
+        "scripts": [
+          "scripts/autonomous_paper.py",
+          "scripts/multi_family_backtest.py",
+          "scripts/rfc010_baseline_replay.py",
+          "scripts/rfc021_ledger_pit.py",
+          "scripts/start_paper_trading.py"
+        ],
+        "tests": []
+      },
+      "screened_here": true
+    },
+    {
+      "class": "EmaCrossoverFamily",
+      "classification": "RUNTIME_REACHABLE",
+      "module": "src/trading_bot/research/families/ema_crossover_family.py",
+      "module_sha256": "1e7e392fd1d6efe0bd64ebc9d1295b0edbc283f5dd0ca6a28b0e6b7e274a1ba0",
+      "references": {
+        "adapter": [
+          "src/trading_bot/vision/signal_sources.py"
+        ],
+        "research": [
+          "src/trading_bot/research/families/__init__.py"
+        ],
+        "runtime": [],
+        "scripts": [
+          "scripts/autonomous_paper.py",
+          "scripts/multi_family_backtest.py",
+          "scripts/rfc010_baseline_replay.py",
+          "scripts/rfc021_ledger_pit.py",
+          "scripts/start_paper_trading.py"
+        ],
+        "tests": [
+          "tests/integration/test_paper_e2e_003.py",
+          "tests/unit/cert/test_ema_crossover_family_runtime.py",
+          "tests/unit/vision/test_signal_sources.py"
+        ]
+      },
+      "screened_here": true
+    },
+    {
+      "class": "MeanReversionFamily",
+      "classification": "RUNTIME_REACHABLE",
+      "module": "src/trading_bot/research/families/mean_reversion_family.py",
+      "module_sha256": "6fe364297f1af6b16fd5ac1a3efe9d48eb4fffcf509e1627572da8e5aefbe956",
+      "references": {
+        "adapter": [
+          "src/trading_bot/vision/signal_sources.py"
+        ],
+        "research": [
+          "src/trading_bot/research/families/__init__.py"
+        ],
+        "runtime": [],
+        "scripts": [
+          "scripts/autonomous_paper.py",
+          "scripts/multi_family_backtest.py",
+          "scripts/rfc010_baseline_replay.py",
+          "scripts/rfc021_ledger_pit.py",
+          "scripts/start_paper_trading.py"
+        ],
+        "tests": []
+      },
+      "screened_here": true
+    },
+    {
+      "class": "MomentumFamily",
+      "classification": "RUNTIME_REACHABLE",
+      "module": "src/trading_bot/research/families/momentum_family.py",
+      "module_sha256": "4a613a8e5d8efc6d98158fa048b99fa101c562ded5fe173a334d392cf155d6b8",
+      "references": {
+        "adapter": [
+          "src/trading_bot/vision/signal_sources.py"
+        ],
+        "research": [
+          "src/trading_bot/research/families/__init__.py"
+        ],
+        "runtime": [],
+        "scripts": [
+          "scripts/autonomous_paper.py",
+          "scripts/multi_family_backtest.py",
+          "scripts/rfc010_baseline_replay.py",
+          "scripts/rfc021_ledger_pit.py",
+          "scripts/start_paper_trading.py"
+        ],
+        "tests": []
+      },
+      "screened_here": true
+    },
+    {
+      "class": "TrendFamily",
+      "classification": "RUNTIME_REACHABLE",
+      "module": "src/trading_bot/research/families/trend_family.py",
+      "module_sha256": "5e1895d693b0af52fa1e1060d63b242e153bbf8b2bee1e01813f07cdd9317d86",
+      "references": {
+        "adapter": [
+          "src/trading_bot/vision/signal_sources.py"
+        ],
+        "research": [
+          "src/trading_bot/research/families/__init__.py"
+        ],
+        "runtime": [],
+        "scripts": [
+          "scripts/autonomous_paper.py",
+          "scripts/multi_family_backtest.py",
+          "scripts/rfc010_baseline_replay.py",
+          "scripts/rfc021_ledger_pit.py",
+          "scripts/start_paper_trading.py"
+        ],
+        "tests": []
+      },
+      "screened_here": true
+    },
+    {
+      "class": "VolatilityFamily",
+      "classification": "RUNTIME_REACHABLE",
+      "module": "src/trading_bot/research/families/volatility_family.py",
+      "module_sha256": "c41acd1a0bbd2a305f2670142cfcbf5785a9a93c5528894a33b62922ad580d2c",
+      "references": {
+        "adapter": [
+          "src/trading_bot/vision/signal_sources.py"
+        ],
+        "research": [
+          "src/trading_bot/research/families/__init__.py"
+        ],
+        "runtime": [],
+        "scripts": [
+          "scripts/autonomous_paper.py",
+          "scripts/multi_family_backtest.py",
+          "scripts/rfc010_baseline_replay.py",
+          "scripts/rfc021_ledger_pit.py",
+          "scripts/start_paper_trading.py"
+        ],
+        "tests": []
+      },
+      "screened_here": true
+    },
+    {
+      "class": "ManagedFuturesV1",
+      "classification": "RESEARCH_ONLY",
+      "module": "src/trading_bot/research/managed_futures_v1.py",
+      "module_sha256": "5f9c5234a97c11e0d9e004f51a711b8c1f755e59cc2f42fa7fd7414e61236f8d",
+      "references": {
+        "adapter": [],
+        "research": [],
+        "runtime": [],
+        "scripts": [
+          "scripts/rfc036_data.py",
+          "scripts/rfc036_run.py"
+        ],
+        "tests": []
+      },
+      "screened_here": false
+    },
+    {
+      "class": "SmallCapitalDualMomentumV1",
+      "classification": "RESEARCH_ONLY",
+      "module": "src/trading_bot/research/small_capital_dual_momentum_v1.py",
+      "module_sha256": "7d0c926206f80ee6af9f8623aaf2499c484cc3f0fef2678604b8d5c91aec4df5",
+      "references": {
+        "adapter": [],
+        "research": [],
+        "runtime": [],
+        "scripts": [
+          "scripts/rfc040_data.py"
+        ],
+        "tests": []
+      },
+      "screened_here": false
+    },
+    {
+      "class": "SmallCapitalV1",
+      "classification": "RESEARCH_ONLY",
+      "module": "src/trading_bot/research/small_capital_v1.py",
+      "module_sha256": "5c68d72a303fb863bea026c2b518df1c1819b1bfa3663cab5ca316cd3375bea1",
+      "references": {
+        "adapter": [],
+        "research": [
+          "src/trading_bot/research/agentic_baselines.py",
+          "src/trading_bot/research/decision_outcomes.py",
+          "src/trading_bot/research/real_market_context.py",
+          "src/trading_bot/research/small_capital_dual_momentum_v1.py"
+        ],
+        "runtime": [],
+        "scripts": [
+          "scripts/rfc039_data.py",
+          "scripts/rfc040_data.py"
+        ],
+        "tests": []
+      },
+      "screened_here": false
+    },
+    {
+      "class": "EmaCrossoverStrategy",
+      "classification": "TEST_ONLY",
+      "module": "src/trading_bot/strategies/ema_crossover.py",
+      "module_sha256": "6157327f62716bf3d0660785f265fc808f13abdd6a5cd10f8a8b85e097a54874",
+      "references": {
+        "adapter": [],
+        "research": [],
+        "runtime": [],
+        "scripts": [],
+        "tests": [
+          "tests/unit/cert/test_ema_crossover_strategy_guard.py"
+        ]
+      },
+      "screened_here": false
+    }
+  ],
+  "experiment": "EXP-003N-GROSS-FIRST-DISCOVERY-001",
+  "generated_at_utc": "2026-10-20T18:38:47Z",
+  "note": "classification is computed from import/instantiation references, not from intent: RUNTIME_AUTHORITATIVE (src/trading_bot/autonomous or config), RUNTIME_REACHABLE (the PAPER adapter in src/trading_bot/vision), RESEARCH_ONLY (research or scripts), TEST_ONLY (tests only), EXPERIMENTAL (research/experimental)",
+  "schema_version": "AI_BOTS_003N_STRATEGY_UNIVERSE_V1"
+}

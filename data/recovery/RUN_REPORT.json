@@ -1,0 +1,175 @@
+{
+  "artifact": "ACTIVE_RECOVERY_RUN_REPORT",
+  "work_package": "POST RFC-049 / ACTIVE RECOVERY (WP-1..WP-5)",
+  "generated_at_utc": "2026-10-10T20:07:02Z",
+  "head": "aed26c71efb9ee68b8d442804cbe9dd40a63212b",
+  "branch": "main",
+  "mode": "OFFLINE — no keys, no orders, no capital, no live path; only read-only audits and tests",
+  "wc1_commit": {
+    "commit": "108c44d",
+    "subject": "Close RFC-049 Discovery 2 and retire the sealed OOS opening unused",
+    "files": 24,
+    "scope": "this lane's RFC-049 closure artefacts only",
+    "excluded_lanes": [
+      "data/st6/* (forward-regime lane)",
+      "evidence/real_decisions/* (paper lane)",
+      "docs/source_registry.md",
+      "root RUN_REPORT.json|md",
+      "root FINAL_REPORT.md",
+      "scripts/cap004c_verify.py",
+      "scripts/st6_scheduler_witness.py"
+    ]
+  },
+  "steps": [
+    {
+      "step": "campaign state view (WP-2)",
+      "command": ".venv/Scripts/python.exe scripts/campaign_state_view.py",
+      "exit_code": 0,
+      "result": "PASS",
+      "output_tail": "    \"A4_append_only_drift\"\n  ],\n  \"next_free_rfc_derived\": 50,\n  \"sources_unchanged\": true,\n  \"payload_sha256\": \"16cb43e028ce371e271007f3cdde1ed8b2d6b9364f94ebbe241ba65c07aa5078\"\n}",
+      "executed": true
+    },
+    {
+      "step": "state view determinism",
+      "command": ".venv/Scripts/python.exe scripts/campaign_state_view.py --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "output_tail": "{\"check\": \"determinism:payload_sha256_stable\", \"result\": \"PASS\", \"detail\": \"16cb43e028ce371e vs 16cb43e028ce371e\"}",
+      "executed": true
+    },
+    {
+      "step": "ACTIVE economic audit (WP-3)",
+      "command": ".venv/Scripts/python.exe scripts/active_economic_audit.py",
+      "exit_code": 0,
+      "result": "PASS",
+      "output_tail": "      \"zero_cost_gross_bps\": 6.276\n    }\n  ],\n  \"checks_failed\": 0,\n  \"payload_sha256\": \"355d018b34a05a7c8d9292e81c4bae8f4cf914118f50ebf30ea58f6c9523d438\"\n}",
+      "executed": true
+    },
+    {
+      "step": "audit determinism",
+      "command": ".venv/Scripts/python.exe scripts/active_economic_audit.py --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "output_tail": "{\"check\": \"determinism:payload_sha256_stable\", \"result\": \"PASS\", \"detail\": \"355d018b34a05a7c vs 355d018b34a05a7c\"}",
+      "executed": true
+    },
+    {
+      "step": "independent verification",
+      "command": ".venv/Scripts/python.exe scripts/recovery_verify.py",
+      "exit_code": 0,
+      "result": "PASS",
+      "output_tail": "  \"C11\": \"PASS\",\n  \"C12\": \"PASS\",\n  \"controls\": 8,\n  \"controls_missed\": 0,\n  \"status\": \"PASS\"\n}",
+      "executed": true
+    },
+    {
+      "step": "new contract tests",
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_active_recovery_wp.py -q",
+      "exit_code": 0,
+      "result": "PASS",
+      "output_tail": "..........................                                               [100%]\n26 passed in 9.45s",
+      "executed": true
+    },
+    {
+      "step": "research suite (regression)",
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research -q",
+      "exit_code": 0,
+      "result": "PASS",
+      "output_tail": "........................................................................ [ 87%]\n........................................................................ [ 91%]\n........................................................................ [ 95%]\n........................................................................ [ 99%]\n.....                                                                    [100%]\n1733 passed in 182.89s (0:03:02)",
+      "executed": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "data/recovery/CAMPAIGN_STATE_VIEW.json",
+      "exists": true,
+      "sha256": "538032fb95379a4d509e36da5acac11c26e9f347959a7a30fd0b85d1cf993d96"
+    },
+    {
+      "path": "data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md",
+      "exists": true,
+      "sha256": "c76c712a775ec5d1db89aa433127de9c15cc9ab4cfb8b8bca1c8eadff6c1418d"
+    },
+    {
+      "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+      "exists": true,
+      "sha256": "31fc6d4f57248bed8b5710df29ae743040747b85d380cb6d105403b8fd8bcda4"
+    },
+    {
+      "path": "data/recovery/ACTIVE_ECONOMIC_AUDIT.md",
+      "exists": true,
+      "sha256": "24652f8ccd5ca5bf3e8cb885047559f6e5699b9465efd2e480cf1f4c294b8789"
+    },
+    {
+      "path": "data/recovery/ACTIVE_RECOVERY_ROADMAP.md",
+      "exists": true,
+      "sha256": "48d92b379b3be5e64460df4ebf9e74dcd42c9432386b31175a22db4ff45d9e85"
+    },
+    {
+      "path": "data/recovery/RFC049_POST_CLOSURE_REPORT.md",
+      "exists": true,
+      "sha256": "ab2e138c32acbcffefeb2c3f4a758d1646db246e64a01019fb833712a72b1136"
+    },
+    {
+      "path": "data/recovery/INDEPENDENT_VERIFICATION.json",
+      "exists": true,
+      "sha256": "8440436ab8b7d221c4cc654733b1a5feaebb0279fd29704e05872a39f904e424"
+    },
+    {
+      "path": "data/recovery/FINAL_REPORT.md",
+      "exists": true,
+      "sha256": "d0219388dbca59c1f95b0a40ba6711ddb339623b12970c67728f7e2f2f5d3268"
+    },
+    {
+      "path": "scripts/campaign_state_view.py",
+      "exists": true,
+      "sha256": "e94966b30b402140ae2de2d9eefbf29645afcc16065fa52fdf452063984233ea"
+    },
+    {
+      "path": "scripts/active_economic_audit.py",
+      "exists": true,
+      "sha256": "a1d55ea37777a40463e8f28d8ad29addb5e6c61ae2ad2a36b2e8218669cca51e"
+    },
+    {
+      "path": "scripts/recovery_verify.py",
+      "exists": true,
+      "sha256": "c6d1dd67b3c6a9cc74facab3f38926471c6428a914a545abfa37c57c09aaeee5"
+    },
+    {
+      "path": "tests/unit/research/test_active_recovery_wp.py",
+      "exists": true,
+      "sha256": "50d4403bd1658e99bc5ce43ee7ab8f6abe5d7b3cb5e9d2c9f770961cfcf30453"
+    }
+  ],
+  "checks_failed": 0,
+  "notes": [
+    "a command not executed in this invocation is reported as NOT_EXECUTED, never as passing",
+    "the research suite is a regression run over tests/unit/research; its count is in the output tail",
+    "the report is written once before the commands run and rewritten with their real exit codes, so the verification step can see a complete deliverable set"
+  ],
+  "wp8": {
+    "artifact": "WP8_RUN_REPORT",
+    "report": "wp8/RUN_REPORT.md",
+    "head": "e07ce6cc3c00",
+    "status": "COMPLETED",
+    "summary": "the lane's published state became a function of the commit instead of the machine: committed pinned inputs, content digests, a state view that ignores the working tree, a versioned clean-checkout rehearsal, and a verifier that re-derives the result",
+    "steps": {
+      "input_bundle_verify": "PASS",
+      "state_view": "PASS",
+      "audit": "PASS",
+      "economic_invariance": "IDENTICAL",
+      "contract_tests": "28 passed",
+      "determinism_tests": "15 (12 fast + 3 slow)",
+      "ci_parity_tests": "8 passed",
+      "global_suite": "3390 passed, 3 deselected",
+      "clean_checkout_rehearsal": "PASS on e07ce6c, 4/4 artefacts state-identical, no input modified",
+      "sabotage_proofs": "2/2 SABOTAGE_DETECTED",
+      "independent_verification": "PASS 17/17 checks, 13/13 controls, false_success 0"
+    },
+    "flags": {
+      "LIVE_TRADING": "DISABLED",
+      "PAPER_PROMOTION": "NOT_AUTHORIZED",
+      "SEALED_OOS": "CANCELLED_NOT_OPENED",
+      "FALSE_SUCCESS": 0
+    }
+  }
+}

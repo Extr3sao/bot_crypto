@@ -1,0 +1,1385 @@
+{
+  "candidate": {
+    "decision_every_bars": 24,
+    "experiment": "EXP-003L-EXECUTION-ECONOMICS-001",
+    "interval_ms": 300000,
+    "ledger_bytes": 4109435,
+    "ledger_closes": 47,
+    "ledger_net_per_signal_usdt": -0.84204578,
+    "ledger_net_pnl_usdt": -39.57615161,
+    "ledger_sha256": "bafd54e368573c37772f59e9c2e19a13d41dbf3b83a0cb8318ef15099b97f801",
+    "partition": "research",
+    "run": "reports/ai-bots/EXP-003L-EXECUTION-ECONOMICS-001/runs/5m/mean_reversion/real/research",
+    "signals": 47,
+    "strategy_id": "mean_reversion",
+    "strategy_version": "sha256:6fe364297f1af6b1",
+    "timeframe": "5m"
+  },
+  "experiment": "EXP-003M-MAKER-FILL-REALITY-001",
+  "schema_version": "AI_BOTS_003M_SIGNALS_V1",
+  "signals": [
+    {
+      "decision_ts_ms": 1782137100000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 1,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1782138900000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.63123686,
+      "limit_price": {
+        "0": 65425.97113500001,
+        "1": 65432.513405000005,
+        "2": 65439.055675
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.0076422251183448165,
+        "1": 0.007641461010449167,
+        "2": 0.0076406970553369
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000001",
+      "reference_price": 65422.7,
+      "side": "sell",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1782137100000,
+      "half_spread_bps": 1.0,
+      "improvement_bps": {
+        "0": 1.0,
+        "1": 2.0,
+        "2": 3.0
+      },
+      "index": 2,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1782138000000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.56862945,
+      "limit_price": {
+        "0": 74.657465,
+        "1": 74.66493,
+        "2": 74.67239500000001
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 6.697253918278634,
+        "1": 6.696584326805101,
+        "2": 6.695914869209698
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000003",
+      "reference_price": 74.65,
+      "side": "sell",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "decision_ts_ms": 1782237900000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 3,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1782259800000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.6294708,
+      "limit_price": {
+        "0": 62378.111094445274,
+        "1": 62371.87421886717,
+        "2": 62365.63859035241
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.008015632266308312,
+        "1": 0.008016433789458785,
+        "2": 0.008017235312609257
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000009",
+      "reference_price": 62381.23,
+      "side": "buy",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1782396300000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 4,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1782396600000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.6294708,
+      "limit_price": {
+        "0": 58915.1242437878,
+        "1": 58909.23361495775,
+        "2": 58903.344163959
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.008486785123816855,
+        "1": 0.008487633759897431,
+        "2": 0.00848848239597801
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000013",
+      "reference_price": 58918.07,
+      "side": "buy",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1782396300000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 5,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1782396600000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.6294708,
+      "limit_price": {
+        "0": 1556.1921903904804,
+        "1": 1556.0365945108233,
+        "2": 1555.8810297425641
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.32129707570023197,
+        "1": 0.32132920380139696,
+        "2": 0.32136133190256194
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000015",
+      "reference_price": 1556.27,
+      "side": "buy",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1782396300000,
+      "half_spread_bps": 1.0,
+      "improvement_bps": {
+        "0": 1.0,
+        "1": 2.0,
+        "2": 3.0
+      },
+      "index": 6,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1782396600000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.5659556,
+      "limit_price": {
+        "0": 65.11348865113489,
+        "1": 65.10697860427915,
+        "2": 65.10046985904229
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 7.6789004914004915,
+        "1": 7.679668304668304,
+        "2": 7.680436117936117
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000017",
+      "reference_price": 65.12,
+      "side": "buy",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "decision_ts_ms": 1782425100000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 7,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1782435300000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.63123686,
+      "limit_price": {
+        "0": 60135.00660000001,
+        "1": 60141.01980000001,
+        "2": 60147.033
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.008314624513569105,
+        "1": 0.00831379317581841,
+        "2": 0.008312962004293711
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000025",
+      "reference_price": 60132.0,
+      "side": "sell",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1782446700000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 8,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1782447600000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6202589,
+      "limit_price": {
+        "0": 59878.993800000004,
+        "1": 59884.981400000004,
+        "2": 59890.969000000005
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.008350173713172848,
+        "1": 0.008349338821035352,
+        "2": 0.008348504095834548
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000029",
+      "reference_price": 59876.0,
+      "side": "sell",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1782446700000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 9,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1782455700000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6202589,
+      "limit_price": {
+        "0": 1553.8876905000002,
+        "1": 1554.0430715,
+        "2": 1554.1984525
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.32177357672426965,
+        "1": 0.32174140419247704,
+        "2": 0.32170923809358254
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000031",
+      "reference_price": 1553.81,
+      "side": "sell",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1782468300000,
+      "half_spread_bps": 1.0,
+      "improvement_bps": {
+        "0": 1.0,
+        "1": 2.0,
+        "2": 3.0
+      },
+      "index": 10,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1782470400000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.68176097,
+      "limit_price": {
+        "0": 69.1130886911309,
+        "1": 69.10617876424716,
+        "2": 69.09927021893432
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 7.234519675925925,
+        "1": 7.2352430555555545,
+        "2": 7.235966435185185
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000037",
+      "reference_price": 69.12,
+      "side": "buy",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "decision_ts_ms": 1782482700000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 11,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1782486000000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.63123686,
+      "limit_price": {
+        "0": 60017.000700000004,
+        "1": 60023.002100000005,
+        "2": 60029.003500000006
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.00833097279384706,
+        "1": 0.008330139821513526,
+        "2": 0.008329307015732819
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000041",
+      "reference_price": 60014.0,
+      "side": "sell",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1782482700000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 12,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1782484200000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6202589,
+      "limit_price": {
+        "0": 1565.0982510000001,
+        "1": 1565.2547530000002,
+        "2": 1565.4112550000002
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.3194687615812817,
+        "1": 0.31943681949643626,
+        "2": 0.31940488379841114
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000043",
+      "reference_price": 1565.02,
+      "side": "sell",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1782914700000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 13,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1782915300000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6202589,
+      "limit_price": {
+        "0": 59356.4576745,
+        "1": 59362.3930235,
+        "2": 59368.3283725
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.008423683278774971,
+        "1": 0.008422841036783393,
+        "2": 0.008421998963198112
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000049",
+      "reference_price": 59353.49,
+      "side": "sell",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1782914700000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 14,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1782915300000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6202589,
+      "limit_price": {
+        "0": 1593.8396880000003,
+        "1": 1593.999064,
+        "2": 1594.1584400000002
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.3137078363429484,
+        "1": 0.31367647026422596,
+        "2": 0.31364511045715127
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000051",
+      "reference_price": 1593.76,
+      "side": "sell",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1782993900000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 15,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1782996900000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6202589,
+      "limit_price": {
+        "0": 61317.06570000001,
+        "1": 61323.197100000005,
+        "2": 61329.3285
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.008154336713473879,
+        "1": 0.008153521402099238,
+        "2": 0.008152706253746117
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000057",
+      "reference_price": 61314.0,
+      "side": "sell",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1783353900000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 16,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1783354500000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6202589,
+      "limit_price": {
+        "0": 63476.91368700001,
+        "1": 63483.261061000005,
+        "2": 63489.608435
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.007876879497725161,
+        "1": 0.007876091927910861,
+        "2": 0.007875304515571155
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000061",
+      "reference_price": 63473.74,
+      "side": "sell",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1783353900000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 17,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1783354200000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6202589,
+      "limit_price": {
+        "0": 1786.3993155,
+        "1": 1786.5779465,
+        "2": 1786.7565775
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.279892628519091,
+        "1": 0.27986464345399886,
+        "2": 0.27983666398452084
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000063",
+      "reference_price": 1786.31,
+      "side": "sell",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1783447500000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 18,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1783450500000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.63123686,
+      "limit_price": {
+        "0": 1806.3303120000003,
+        "1": 1806.5109360000001,
+        "2": 1806.6915600000002
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.2768043013386579,
+        "1": 0.27677662505996586,
+        "2": 0.27674895431514607
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000069",
+      "reference_price": 1806.24,
+      "side": "sell",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1783469100000,
+      "half_spread_bps": 1.0,
+      "improvement_bps": {
+        "0": 1.0,
+        "1": 2.0,
+        "2": 3.0
+      },
+      "index": 19,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1783472700000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.68176097,
+      "limit_price": {
+        "0": 80.68193180681932,
+        "1": 80.6738652269546,
+        "2": 80.66580025992202
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 6.197174371049696,
+        "1": 6.1977940265212546,
+        "2": 6.198413681992812
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000073",
+      "reference_price": 80.69,
+      "side": "buy",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "decision_ts_ms": 1783555500000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 20,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1783559400000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6202589,
+      "limit_price": {
+        "0": 1742.2771095000003,
+        "1": 1742.4513285000003,
+        "2": 1742.6255475000003
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.2869807548257868,
+        "1": 0.2869520610543699,
+        "2": 0.286923373020273
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000077",
+      "reference_price": 1742.19,
+      "side": "sell",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1783555500000,
+      "half_spread_bps": 1.0,
+      "improvement_bps": {
+        "0": 1.0,
+        "1": 2.0,
+        "2": 3.0
+      },
+      "index": 21,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1783559400000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.68365481,
+      "limit_price": {
+        "0": 77.757775,
+        "1": 77.76555,
+        "2": 77.773325
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 6.430225144688104,
+        "1": 6.429582250752421,
+        "2": 6.428939485356965
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000079",
+      "reference_price": 77.75,
+      "side": "sell",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "decision_ts_ms": 1783965900000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 22,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1783988100000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.6294708,
+      "limit_price": {
+        "0": 61970.911454427274,
+        "1": 61964.71529270609,
+        "2": 61958.52036990752
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.008068301534788535,
+        "1": 0.008069108324602524,
+        "2": 0.008069915114416511
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000085",
+      "reference_price": 61974.01,
+      "side": "buy",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1783965900000,
+      "half_spread_bps": 1.0,
+      "improvement_bps": {
+        "0": 1.0,
+        "1": 2.0,
+        "2": 3.0
+      },
+      "index": 23,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1783977300000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.68176097,
+      "limit_price": {
+        "0": 74.78252174782523,
+        "1": 74.7750449910018,
+        "2": 74.76756972908129
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 6.686054285332263,
+        "1": 6.686722823906939,
+        "2": 6.687391362481614
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000087",
+      "reference_price": 74.79,
+      "side": "buy",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "decision_ts_ms": 1783987500000,
+      "half_spread_bps": 1.0,
+      "improvement_bps": {
+        "0": 1.0,
+        "1": 2.0,
+        "2": 3.0
+      },
+      "index": 24,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1783989300000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.68365481,
+      "limit_price": {
+        "0": 74.917491,
+        "1": 74.924982,
+        "2": 74.93247299999999
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 6.674008877312776,
+        "1": 6.673341609878531,
+        "2": 6.672674475857751
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000091",
+      "reference_price": 74.91,
+      "side": "sell",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "decision_ts_ms": 1784095500000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 25,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1784097300000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6202589,
+      "limit_price": {
+        "0": 64897.16469600001,
+        "1": 64903.654088,
+        "2": 64910.143480000006
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.007704496834987583,
+        "1": 0.0077037265008542055,
+        "2": 0.0077029563207491455
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000097",
+      "reference_price": 64893.92,
+      "side": "sell",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1784117100000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 26,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1784118900000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6202589,
+      "limit_price": {
+        "0": 1883.1241515000002,
+        "1": 1883.3124545,
+        "2": 1883.5007575000002
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.265516216549889,
+        "1": 0.26548966891037995,
+        "2": 0.26546312657907173
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000101",
+      "reference_price": 1883.03,
+      "side": "sell",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1784275500000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 27,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1784289000000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.6294708,
+      "limit_price": {
+        "0": 62836.85815709214,
+        "1": 62830.57541368794,
+        "2": 62824.29392651837
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.007957113303628263,
+        "1": 0.007957908975175048,
+        "2": 0.007958704646721835
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000105",
+      "reference_price": 62840.0,
+      "side": "buy",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1784556300000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 28,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1784557500000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6190338,
+      "limit_price": {
+        "0": 64424.67876606169,
+        "1": 64418.23726441033,
+        "2": 64411.79705073731
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.007761001056995495,
+        "1": 0.007761777118298129,
+        "2": 0.007762553179600764
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000109",
+      "reference_price": 64427.9,
+      "side": "buy",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1784657100000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 29,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1784681100000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.6294708,
+      "limit_price": {
+        "0": 66217.80910954451,
+        "1": 66211.18832175173,
+        "2": 66204.56885778555
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.007550838765638517,
+        "1": 0.007551593811762774,
+        "2": 0.007552348857887032
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000113",
+      "reference_price": 66221.12,
+      "side": "buy",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1784657100000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 30,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1784679000000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.6294708,
+      "limit_price": {
+        "0": 1919.7340132993347,
+        "1": 1919.5420686896962,
+        "2": 1919.3501624593848
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.2604527484204331,
+        "1": 0.26047879239307653,
+        "2": 0.2605048363657199
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000115",
+      "reference_price": 1919.83,
+      "side": "buy",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1784714700000,
+      "half_spread_bps": 1.0,
+      "improvement_bps": {
+        "0": 1.0,
+        "1": 2.0,
+        "2": 3.0
+      },
+      "index": 31,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1784728200000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.68365481,
+      "limit_price": {
+        "0": 77.52775199999999,
+        "1": 77.53550399999999,
+        "2": 77.543256
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 6.449303470065791,
+        "1": 6.4486586686790615,
+        "2": 6.448013996213932
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000121",
+      "reference_price": 77.52,
+      "side": "sell",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "decision_ts_ms": 1784757900000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 32,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1784776500000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.63123686,
+      "limit_price": {
+        "0": 1936.6168260000002,
+        "1": 1936.810478,
+        "2": 1937.00413
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.25818220377271467,
+        "1": 0.25815638942448965,
+        "2": 0.2581305802378439
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000125",
+      "reference_price": 1936.52,
+      "side": "sell",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1784829900000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 33,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1784838600000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.6294708,
+      "limit_price": {
+        "0": 64713.03434828258,
+        "1": 64706.56401539768,
+        "2": 64700.094976255925
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.007726418719743893,
+        "1": 0.0077271913229857055,
+        "2": 0.0077279639262275174
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000129",
+      "reference_price": 64716.27,
+      "side": "buy",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1784930700000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 34,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1785000900000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.6294708,
+      "limit_price": {
+        "0": 1858.4970751462424,
+        "1": 1858.311253312003,
+        "2": 1858.1254686328416
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.26903459073814023,
+        "1": 0.26906149285210834,
+        "2": 0.26908839496607645
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000133",
+      "reference_price": 1858.59,
+      "side": "buy",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1785117900000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 35,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1785125400000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6202589,
+      "limit_price": {
+        "0": 1947.5273715000003,
+        "1": 1947.7221145000003,
+        "2": 1947.9168575000003
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.2567358011584177,
+        "1": 0.2567101314287613,
+        "2": 0.2566844668317677
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000137",
+      "reference_price": 1947.43,
+      "side": "sell",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1785312300000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 36,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1785338400000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.63123686,
+      "limit_price": {
+        "0": 64525.59611850001,
+        "1": 64532.04835550001,
+        "2": 64538.50059250001
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.007748862933118194,
+        "1": 0.007748088163040395,
+        "2": 0.0077473135478778815
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000141",
+      "reference_price": 64522.37,
+      "side": "sell",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1785312300000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 37,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1785327600000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.63123686,
+      "limit_price": {
+        "0": 1920.9960450000003,
+        "1": 1921.1881350000003,
+        "2": 1921.3802250000003
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.2602816394658428,
+        "1": 0.26025561520553525,
+        "2": 0.2602295961487789
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000143",
+      "reference_price": 1920.9,
+      "side": "sell",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1785449100000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 38,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1785462600000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6190338,
+      "limit_price": {
+        "0": 1922.7138643067844,
+        "1": 1922.5216217567363,
+        "2": 1922.3294176455884
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.2600490948143603,
+        "1": 0.2600750984236612,
+        "2": 0.2601011020329622
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000149",
+      "reference_price": 1922.81,
+      "side": "buy",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1785456300000,
+      "half_spread_bps": 1.0,
+      "improvement_bps": {
+        "0": 1.0,
+        "1": 2.0,
+        "2": 3.0
+      },
+      "index": 39,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1785460500000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.5659556,
+      "limit_price": {
+        "0": 74.6025397460254,
+        "1": 74.59508098380324,
+        "2": 74.58762371288614
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 6.702184693740786,
+        "1": 6.702854845195014,
+        "2": 6.703524996649242
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000151",
+      "reference_price": 74.61,
+      "side": "buy",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "decision_ts_ms": 1785729900000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 40,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1785739800000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6190338,
+      "limit_price": {
+        "0": 62935.40322983851,
+        "1": 62929.110633404984,
+        "2": 62922.8192951762
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.007944653952148564,
+        "1": 0.007945448377822496,
+        "2": 0.007946242803496427
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000157",
+      "reference_price": 62938.55,
+      "side": "buy",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1785729900000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 41,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1785739500000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6190338,
+      "limit_price": {
+        "0": 1859.9970001499921,
+        "1": 1859.811028345748,
+        "2": 1859.6250937265681
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.2688176378562328,
+        "1": 0.2688445182759974,
+        "2": 0.26887139869576204
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000159",
+      "reference_price": 1860.09,
+      "side": "buy",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1785729900000,
+      "half_spread_bps": 1.0,
+      "improvement_bps": {
+        "0": 1.0,
+        "1": 2.0,
+        "2": 3.0
+      },
+      "index": 42,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1785739200000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.68176097,
+      "limit_price": {
+        "0": 72.96270372962704,
+        "1": 72.95540891821636,
+        "2": 72.9481155653304
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 6.852816225846238,
+        "1": 6.853501438947512,
+        "2": 6.854186652048788
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000161",
+      "reference_price": 72.97,
+      "side": "buy",
+      "symbol": "SOL/USDT"
+    },
+    {
+      "decision_ts_ms": 1785765900000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 43,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1785767400000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6202589,
+      "limit_price": {
+        "0": 63246.64217400001,
+        "1": 63252.96652200001,
+        "2": 63259.29087000001
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.007905558031435611,
+        "1": 0.007904767594198054,
+        "2": 0.00790397731500843
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000169",
+      "reference_price": 63243.48,
+      "side": "sell",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1785765900000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 44,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1785767400000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.6202589,
+      "limit_price": {
+        "0": 1855.6227765,
+        "1": 1855.8083295000001,
+        "2": 1855.9938825000002
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.26945131647019316,
+        "1": 0.2694243753797097,
+        "2": 0.26939743967609764
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000171",
+      "reference_price": 1855.53,
+      "side": "sell",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1785852300000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 45,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1785867600000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.6294708,
+      "limit_price": {
+        "0": 63782.81085945702,
+        "1": 63776.43353496975,
+        "2": 63770.05748562859
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.00783910262440034,
+        "1": 0.007839886495469225,
+        "2": 0.007840670366538112
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000177",
+      "reference_price": 63786.0,
+      "side": "buy",
+      "symbol": "BTC/USDT"
+    },
+    {
+      "decision_ts_ms": 1785852300000,
+      "half_spread_bps": 0.5,
+      "improvement_bps": {
+        "0": 0.5,
+        "1": 1.5,
+        "2": 2.5
+      },
+      "index": 46,
+      "ledger_exit_reason": "take_profit",
+      "ledger_exit_ts_ms": 1785867600000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": 2.6294708,
+      "limit_price": {
+        "0": 1864.0267986600668,
+        "1": 1863.8404239364093,
+        "2": 1863.6540864783801
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 0.26823648692144286,
+        "1": 0.26826330922901964,
+        "2": 0.2682901315365964
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000179",
+      "reference_price": 1864.12,
+      "side": "buy",
+      "symbol": "ETH/USDT"
+    },
+    {
+      "decision_ts_ms": 1785852300000,
+      "half_spread_bps": 1.0,
+      "improvement_bps": {
+        "0": 1.0,
+        "1": 2.0,
+        "2": 3.0
+      },
+      "index": 47,
+      "ledger_exit_reason": "stop_loss",
+      "ledger_exit_ts_ms": 1785853200000,
+      "ledger_minutes_held": 0.0,
+      "ledger_net_usdt": -3.68176097,
+      "limit_price": {
+        "0": 73.68263173682631,
+        "1": 73.6752649470106,
+        "2": 73.66789963011097
+      },
+      "notional_usdt": 500.0,
+      "order_qty": {
+        "0": 6.7858596824535224,
+        "1": 6.786538200569955,
+        "2": 6.7872167186863885
+      },
+      "position_id": "pos-paper-003l-5m-mean_reversion-real-00000181",
+      "reference_price": 73.69,
+      "side": "buy",
+      "symbol": "SOL/USDT"
+    }
+  ]
+}

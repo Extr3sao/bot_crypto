@@ -1,0 +1,1491 @@
+{
+  "check_codes": [
+    "CHAIN_CURRENT_m1_cadence1",
+    "RUN_FIRST_CURRENT_m1_cadence1",
+    "RUN_END_LAST_CURRENT_m1_cadence1",
+    "ONE_TERMINAL_PER_OPINION_CURRENT_m1_cadence1",
+    "TERMINAL_CLASSES_BALANCE_CURRENT_m1_cadence1",
+    "POSITION_IDS_UNIQUE_CURRENT_m1_cadence1",
+    "ONE_FILL_PER_DECISION_CURRENT_m1_cadence1",
+    "ONE_CLOSE_PER_POSITION_CURRENT_m1_cadence1",
+    "NO_FILL_WITHOUT_CLOSE_CURRENT_m1_cadence1",
+    "RUN_END_NET_RECONCILED_CURRENT_m1_cadence1",
+    "RUN_END_COSTS_RECONCILED_CURRENT_m1_cadence1",
+    "RUN_END_COUNTERS_MATCH_EVENTS_CURRENT_m1_cadence1",
+    "OPINION_SELF_DECLARATION_MATCHES_CURRENT_m1_cadence1",
+    "CHAIN_CURRENT_m1_cadence5",
+    "RUN_FIRST_CURRENT_m1_cadence5",
+    "RUN_END_LAST_CURRENT_m1_cadence5",
+    "ONE_TERMINAL_PER_OPINION_CURRENT_m1_cadence5",
+    "TERMINAL_CLASSES_BALANCE_CURRENT_m1_cadence5",
+    "POSITION_IDS_UNIQUE_CURRENT_m1_cadence5",
+    "ONE_FILL_PER_DECISION_CURRENT_m1_cadence5",
+    "ONE_CLOSE_PER_POSITION_CURRENT_m1_cadence5",
+    "NO_FILL_WITHOUT_CLOSE_CURRENT_m1_cadence5",
+    "RUN_END_NET_RECONCILED_CURRENT_m1_cadence5",
+    "RUN_END_COSTS_RECONCILED_CURRENT_m1_cadence5",
+    "RUN_END_COUNTERS_MATCH_EVENTS_CURRENT_m1_cadence5",
+    "OPINION_SELF_DECLARATION_MATCHES_CURRENT_m1_cadence5",
+    "CHAIN_CURRENT_m1_hole",
+    "RUN_FIRST_CURRENT_m1_hole",
+    "RUN_END_LAST_CURRENT_m1_hole",
+    "ONE_TERMINAL_PER_OPINION_CURRENT_m1_hole",
+    "TERMINAL_CLASSES_BALANCE_CURRENT_m1_hole",
+    "POSITION_IDS_UNIQUE_CURRENT_m1_hole",
+    "ONE_FILL_PER_DECISION_CURRENT_m1_hole",
+    "ONE_CLOSE_PER_POSITION_CURRENT_m1_hole",
+    "NO_FILL_WITHOUT_CLOSE_CURRENT_m1_hole",
+    "RUN_END_NET_RECONCILED_CURRENT_m1_hole",
+    "RUN_END_COSTS_RECONCILED_CURRENT_m1_hole",
+    "RUN_END_COUNTERS_MATCH_EVENTS_CURRENT_m1_hole",
+    "OPINION_SELF_DECLARATION_MATCHES_CURRENT_m1_hole",
+    "CHAIN_CURRENT_m1_zero_delay",
+    "RUN_FIRST_CURRENT_m1_zero_delay",
+    "RUN_END_LAST_CURRENT_m1_zero_delay",
+    "ONE_TERMINAL_PER_OPINION_CURRENT_m1_zero_delay",
+    "TERMINAL_CLASSES_BALANCE_CURRENT_m1_zero_delay",
+    "POSITION_IDS_UNIQUE_CURRENT_m1_zero_delay",
+    "ONE_FILL_PER_DECISION_CURRENT_m1_zero_delay",
+    "ONE_CLOSE_PER_POSITION_CURRENT_m1_zero_delay",
+    "NO_FILL_WITHOUT_CLOSE_CURRENT_m1_zero_delay",
+    "RUN_END_NET_RECONCILED_CURRENT_m1_zero_delay",
+    "RUN_END_COSTS_RECONCILED_CURRENT_m1_zero_delay",
+    "RUN_END_COUNTERS_MATCH_EVENTS_CURRENT_m1_zero_delay",
+    "OPINION_SELF_DECLARATION_MATCHES_CURRENT_m1_zero_delay",
+    "CHAIN_CURRENT_m3_cadence1",
+    "RUN_FIRST_CURRENT_m3_cadence1",
+    "RUN_END_LAST_CURRENT_m3_cadence1",
+    "ONE_TERMINAL_PER_OPINION_CURRENT_m3_cadence1",
+    "TERMINAL_CLASSES_BALANCE_CURRENT_m3_cadence1",
+    "POSITION_IDS_UNIQUE_CURRENT_m3_cadence1",
+    "ONE_FILL_PER_DECISION_CURRENT_m3_cadence1",
+    "ONE_CLOSE_PER_POSITION_CURRENT_m3_cadence1",
+    "NO_FILL_WITHOUT_CLOSE_CURRENT_m3_cadence1",
+    "RUN_END_NET_RECONCILED_CURRENT_m3_cadence1",
+    "RUN_END_COSTS_RECONCILED_CURRENT_m3_cadence1",
+    "RUN_END_COUNTERS_MATCH_EVENTS_CURRENT_m3_cadence1",
+    "OPINION_SELF_DECLARATION_MATCHES_CURRENT_m3_cadence1",
+    "CHAIN_PROPOSED_m1_cadence1",
+    "RUN_FIRST_PROPOSED_m1_cadence1",
+    "RUN_END_LAST_PROPOSED_m1_cadence1",
+    "ONE_TERMINAL_PER_OPINION_PROPOSED_m1_cadence1",
+    "TERMINAL_CLASSES_BALANCE_PROPOSED_m1_cadence1",
+    "POSITION_IDS_UNIQUE_PROPOSED_m1_cadence1",
+    "ONE_FILL_PER_DECISION_PROPOSED_m1_cadence1",
+    "ONE_CLOSE_PER_POSITION_PROPOSED_m1_cadence1",
+    "NO_FILL_WITHOUT_CLOSE_PROPOSED_m1_cadence1",
+    "RUN_END_NET_RECONCILED_PROPOSED_m1_cadence1",
+    "RUN_END_COSTS_RECONCILED_PROPOSED_m1_cadence1",
+    "RUN_END_COUNTERS_MATCH_EVENTS_PROPOSED_m1_cadence1",
+    "OPINION_SELF_DECLARATION_MATCHES_PROPOSED_m1_cadence1",
+    "CHAIN_PROPOSED_m1_cadence5",
+    "RUN_FIRST_PROPOSED_m1_cadence5",
+    "RUN_END_LAST_PROPOSED_m1_cadence5",
+    "ONE_TERMINAL_PER_OPINION_PROPOSED_m1_cadence5",
+    "TERMINAL_CLASSES_BALANCE_PROPOSED_m1_cadence5",
+    "POSITION_IDS_UNIQUE_PROPOSED_m1_cadence5",
+    "ONE_FILL_PER_DECISION_PROPOSED_m1_cadence5",
+    "ONE_CLOSE_PER_POSITION_PROPOSED_m1_cadence5",
+    "NO_FILL_WITHOUT_CLOSE_PROPOSED_m1_cadence5",
+    "RUN_END_NET_RECONCILED_PROPOSED_m1_cadence5",
+    "RUN_END_COSTS_RECONCILED_PROPOSED_m1_cadence5",
+    "RUN_END_COUNTERS_MATCH_EVENTS_PROPOSED_m1_cadence5",
+    "OPINION_SELF_DECLARATION_MATCHES_PROPOSED_m1_cadence5",
+    "CHAIN_PROPOSED_m1_hole",
+    "RUN_FIRST_PROPOSED_m1_hole",
+    "RUN_END_LAST_PROPOSED_m1_hole",
+    "ONE_TERMINAL_PER_OPINION_PROPOSED_m1_hole",
+    "TERMINAL_CLASSES_BALANCE_PROPOSED_m1_hole",
+    "POSITION_IDS_UNIQUE_PROPOSED_m1_hole",
+    "ONE_FILL_PER_DECISION_PROPOSED_m1_hole",
+    "ONE_CLOSE_PER_POSITION_PROPOSED_m1_hole",
+    "NO_FILL_WITHOUT_CLOSE_PROPOSED_m1_hole",
+    "RUN_END_NET_RECONCILED_PROPOSED_m1_hole",
+    "RUN_END_COSTS_RECONCILED_PROPOSED_m1_hole",
+    "RUN_END_COUNTERS_MATCH_EVENTS_PROPOSED_m1_hole",
+    "OPINION_SELF_DECLARATION_MATCHES_PROPOSED_m1_hole",
+    "CHAIN_PROPOSED_m1_zero_delay",
+    "RUN_FIRST_PROPOSED_m1_zero_delay",
+    "RUN_END_LAST_PROPOSED_m1_zero_delay",
+    "ONE_TERMINAL_PER_OPINION_PROPOSED_m1_zero_delay",
+    "TERMINAL_CLASSES_BALANCE_PROPOSED_m1_zero_delay",
+    "POSITION_IDS_UNIQUE_PROPOSED_m1_zero_delay",
+    "ONE_FILL_PER_DECISION_PROPOSED_m1_zero_delay",
+    "ONE_CLOSE_PER_POSITION_PROPOSED_m1_zero_delay",
+    "NO_FILL_WITHOUT_CLOSE_PROPOSED_m1_zero_delay",
+    "RUN_END_NET_RECONCILED_PROPOSED_m1_zero_delay",
+    "RUN_END_COSTS_RECONCILED_PROPOSED_m1_zero_delay",
+    "RUN_END_COUNTERS_MATCH_EVENTS_PROPOSED_m1_zero_delay",
+    "OPINION_SELF_DECLARATION_MATCHES_PROPOSED_m1_zero_delay",
+    "CHAIN_PROPOSED_m3_cadence1",
+    "RUN_FIRST_PROPOSED_m3_cadence1",
+    "RUN_END_LAST_PROPOSED_m3_cadence1",
+    "ONE_TERMINAL_PER_OPINION_PROPOSED_m3_cadence1",
+    "TERMINAL_CLASSES_BALANCE_PROPOSED_m3_cadence1",
+    "POSITION_IDS_UNIQUE_PROPOSED_m3_cadence1",
+    "ONE_FILL_PER_DECISION_PROPOSED_m3_cadence1",
+    "ONE_CLOSE_PER_POSITION_PROPOSED_m3_cadence1",
+    "NO_FILL_WITHOUT_CLOSE_PROPOSED_m3_cadence1",
+    "RUN_END_NET_RECONCILED_PROPOSED_m3_cadence1",
+    "RUN_END_COSTS_RECONCILED_PROPOSED_m3_cadence1",
+    "RUN_END_COUNTERS_MATCH_EVENTS_PROPOSED_m3_cadence1",
+    "OPINION_SELF_DECLARATION_MATCHES_PROPOSED_m3_cadence1",
+    "ATTRIBUTION_BASELINE_NET_MATCHES",
+    "ATTRIBUTION_CANDIDATE_NET_MATCHES",
+    "ATTRIBUTION_DELTA_MATCHES",
+    "PAIR_COUNTS_MATCH_REPORT",
+    "MATCHED_PAIRS_DELTA_ZERO_OR_REPORTED",
+    "TRADE_LEDGER_COVERS_EVERY_CLOSE",
+    "TRADE_LEDGER_NET_MATCHES_LEDGERS",
+    "PAIRED_DELTA_RECONCILES_TO_DELTA",
+    "PAIRED_DELTA_STATUS_COUNTS",
+    "RFC16_EVIDENCE_HASHES_MATCH",
+    "RFC17_ARTIFACT_HASHES_MATCH",
+    "OOS_PLAN_FROZEN",
+    "OOS_PARTITION_AS_DECLARED",
+    "OOS_DATASET_DECLARED",
+    "OOS_DATASET_BYTES_MATCH",
+    "OOS_PLAN_HASH_ANCHORED",
+    "OOS_GRID_COMPLETE",
+    "OOS_CELL_ARITHMETIC",
+    "OOS_PAIRED_DELTA_ARITHMETIC",
+    "OOS_BOOTSTRAP_REPRODUCED",
+    "OOS_LIFECYCLE_ACTUALLY_DIFFERS",
+    "OOS_DECISION_RULE_REAPPLIED",
+    "OOS_DECISION_NOT_A_LIVE_AUTHORISATION",
+    "OOS_RUN_CHAINS_RECORDED",
+    "OOS_LEDGER_BYTES_MATCH_RECORD",
+    "OOS_STRESS_NOT_DECISIVE",
+    "OOS_STRESS_ARITHMETIC",
+    "OOS_STRESS_STATUS_REAPPLIED"
+  ],
+  "checks": 158,
+  "evidence_roots": {
+    "attribution": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\def-run-017\\ECONOMIC_ATTRIBUTION.json",
+    "ledgers": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\def-run-016\\ledgers\\CURRENT\\m1_cadence1.jsonl",
+    "manifest": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\def-run-016\\ARTIFACT_MANIFEST.json"
+  },
+  "failed": 0,
+  "failed_checks": [],
+  "imports_trading_bot": false,
+  "ledgers": {
+    "CURRENT": {
+      "m1_cadence1": {
+        "checks": [
+          {
+            "code": "CHAIN_CURRENT_m1_cadence1",
+            "detail": "INTACT",
+            "ok": true
+          },
+          {
+            "code": "RUN_FIRST_CURRENT_m1_cadence1",
+            "detail": "first=RUN runs=1",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_LAST_CURRENT_m1_cadence1",
+            "detail": "last=RUN_END count=1",
+            "ok": true
+          },
+          {
+            "code": "ONE_TERMINAL_PER_OPINION_CURRENT_m1_cadence1",
+            "detail": "unrecorded=0 duplicate=0 orphan=0",
+            "ok": true
+          },
+          {
+            "code": "TERMINAL_CLASSES_BALANCE_CURRENT_m1_cadence1",
+            "detail": "opinions=165 terminals=165",
+            "ok": true
+          },
+          {
+            "code": "POSITION_IDS_UNIQUE_CURRENT_m1_cadence1",
+            "detail": "1 fills, 1 positions",
+            "ok": true
+          },
+          {
+            "code": "ONE_FILL_PER_DECISION_CURRENT_m1_cadence1",
+            "detail": "1 fills, 1 decisions",
+            "ok": true
+          },
+          {
+            "code": "ONE_CLOSE_PER_POSITION_CURRENT_m1_cadence1",
+            "detail": "1 closes, 1 unique",
+            "ok": true
+          },
+          {
+            "code": "NO_FILL_WITHOUT_CLOSE_CURRENT_m1_cadence1",
+            "detail": "0 positions open at cutoff",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_NET_RECONCILED_CURRENT_m1_cadence1",
+            "detail": "cash-flow -2.41865608 vs RUN_END -2.41865608",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COSTS_RECONCILED_CURRENT_m1_cadence1",
+            "detail": "1.23895304 vs 1.23895304",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COUNTERS_MATCH_EVENTS_CURRENT_m1_cadence1",
+            "detail": "fills 1/1, closed 1/1, calls 235/235",
+            "ok": true
+          },
+          {
+            "code": "OPINION_SELF_DECLARATION_MATCHES_CURRENT_m1_cadence1",
+            "detail": "declared generated=165 unrecorded=0 duplicates=0 adds_up=True",
+            "ok": true
+          }
+        ],
+        "classes": {
+          "BLOCKED_BY_RISK": 11,
+          "CLOSED": 0,
+          "FILLED": 1,
+          "GATED": 0,
+          "REJECTED": 153
+        },
+        "closes": 1,
+        "decisions": 235,
+        "duplicate_terminals": 0,
+        "fees": "1.00000000",
+        "fills": 1,
+        "gross": "1.41865608",
+        "initial_equity": "10000.00000000",
+        "label": "CURRENT",
+        "marked_equity": "9997.58134392",
+        "max_opinion_age_ms": 60000,
+        "net": "-2.41865608",
+        "opinions": 165,
+        "orphan_terminals": 0,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\def-run-016\\ledgers\\CURRENT\\m1_cadence1.jsonl",
+        "rows": 404,
+        "run_end_marked_equity": 9997.58134392,
+        "scenario": "m1_cadence1",
+        "sha256": "08494714fbb0813a14c7ae43a947fa953a3e8b3c39cf784e8380408bebb047ab",
+        "slippage": "0.23895304",
+        "trades": [
+          {
+            "decision_seq": 121,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.418656078577551529947975118",
+            "net": "-2.4186560785775515299479752",
+            "opinion": [
+              "59630ad608616ac89f9c880a3676fab678f3fb6e47abc340121ed6d75074fe5d",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m1_cadence1-00000001",
+            "slippage": "0.2389530411395658586917365579"
+          }
+        ],
+        "unrecorded": 0
+      },
+      "m1_cadence5": {
+        "checks": [
+          {
+            "code": "CHAIN_CURRENT_m1_cadence5",
+            "detail": "INTACT",
+            "ok": true
+          },
+          {
+            "code": "RUN_FIRST_CURRENT_m1_cadence5",
+            "detail": "first=RUN runs=1",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_LAST_CURRENT_m1_cadence5",
+            "detail": "last=RUN_END count=1",
+            "ok": true
+          },
+          {
+            "code": "ONE_TERMINAL_PER_OPINION_CURRENT_m1_cadence5",
+            "detail": "unrecorded=0 duplicate=0 orphan=0",
+            "ok": true
+          },
+          {
+            "code": "TERMINAL_CLASSES_BALANCE_CURRENT_m1_cadence5",
+            "detail": "opinions=33 terminals=33",
+            "ok": true
+          },
+          {
+            "code": "POSITION_IDS_UNIQUE_CURRENT_m1_cadence5",
+            "detail": "2 fills, 2 positions",
+            "ok": true
+          },
+          {
+            "code": "ONE_FILL_PER_DECISION_CURRENT_m1_cadence5",
+            "detail": "2 fills, 2 decisions",
+            "ok": true
+          },
+          {
+            "code": "ONE_CLOSE_PER_POSITION_CURRENT_m1_cadence5",
+            "detail": "2 closes, 2 unique",
+            "ok": true
+          },
+          {
+            "code": "NO_FILL_WITHOUT_CLOSE_CURRENT_m1_cadence5",
+            "detail": "0 positions open at cutoff",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_NET_RECONCILED_CURRENT_m1_cadence5",
+            "detail": "cash-flow -5.07670986 vs RUN_END -5.07670986",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COSTS_RECONCILED_CURRENT_m1_cadence5",
+            "detail": "2.47784879 vs 2.47784879",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COUNTERS_MATCH_EVENTS_CURRENT_m1_cadence5",
+            "detail": "fills 2/2, closed 2/2, calls 47/47",
+            "ok": true
+          },
+          {
+            "code": "OPINION_SELF_DECLARATION_MATCHES_CURRENT_m1_cadence5",
+            "detail": "declared generated=33 unrecorded=0 duplicates=0 adds_up=True",
+            "ok": true
+          }
+        ],
+        "classes": {
+          "BLOCKED_BY_RISK": 31,
+          "CLOSED": 0,
+          "FILLED": 2,
+          "GATED": 0,
+          "REJECTED": 0
+        },
+        "closes": 2,
+        "decisions": 47,
+        "duplicate_terminals": 0,
+        "fees": "2.00000000",
+        "fills": 2,
+        "gross": "3.07670986",
+        "initial_equity": "10000.00000000",
+        "label": "CURRENT",
+        "marked_equity": "9994.92329014",
+        "max_opinion_age_ms": 60000,
+        "net": "-5.07670986",
+        "opinions": 33,
+        "orphan_terminals": 0,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\def-run-016\\ledgers\\CURRENT\\m1_cadence5.jsonl",
+        "rows": 86,
+        "run_end_marked_equity": 9994.92329014,
+        "scenario": "m1_cadence5",
+        "sha256": "f984eede8e0458bf11ff1d21d5a0420b17ff2fc94652603283ddbf4ca2f557d4",
+        "slippage": "0.47784879",
+        "trades": [
+          {
+            "decision_seq": 22,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.578232888466123865909379854",
+            "net": "-2.5782328884661238659093799",
+            "opinion": [
+              "2299283584cc4d8371eefa18722fcfa8ed4208997867dfeccedefcdb2531a0fb",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m1_cadence5-00000001",
+            "slippage": "0.2389148510648588023836823435"
+          },
+          {
+            "decision_seq": 26,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.498476975745799438299962306",
+            "net": "-2.4984769757457994382999623",
+            "opinion": [
+              "366caa85bb03f16a46daed18bc994ceab6560508e283dd9fe56a33da25559c5a",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m1_cadence5-00000005",
+            "slippage": "0.2389339383018612264403591264"
+          }
+        ],
+        "unrecorded": 0
+      },
+      "m1_hole": {
+        "checks": [
+          {
+            "code": "CHAIN_CURRENT_m1_hole",
+            "detail": "INTACT",
+            "ok": true
+          },
+          {
+            "code": "RUN_FIRST_CURRENT_m1_hole",
+            "detail": "first=RUN runs=1",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_LAST_CURRENT_m1_hole",
+            "detail": "last=RUN_END count=1",
+            "ok": true
+          },
+          {
+            "code": "ONE_TERMINAL_PER_OPINION_CURRENT_m1_hole",
+            "detail": "unrecorded=0 duplicate=0 orphan=0",
+            "ok": true
+          },
+          {
+            "code": "TERMINAL_CLASSES_BALANCE_CURRENT_m1_hole",
+            "detail": "opinions=164 terminals=164",
+            "ok": true
+          },
+          {
+            "code": "POSITION_IDS_UNIQUE_CURRENT_m1_hole",
+            "detail": "1 fills, 1 positions",
+            "ok": true
+          },
+          {
+            "code": "ONE_FILL_PER_DECISION_CURRENT_m1_hole",
+            "detail": "1 fills, 1 decisions",
+            "ok": true
+          },
+          {
+            "code": "ONE_CLOSE_PER_POSITION_CURRENT_m1_hole",
+            "detail": "1 closes, 1 unique",
+            "ok": true
+          },
+          {
+            "code": "NO_FILL_WITHOUT_CLOSE_CURRENT_m1_hole",
+            "detail": "0 positions open at cutoff",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_NET_RECONCILED_CURRENT_m1_hole",
+            "detail": "cash-flow -2.41865608 vs RUN_END -2.41865608",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COSTS_RECONCILED_CURRENT_m1_hole",
+            "detail": "1.23895304 vs 1.23895304",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COUNTERS_MATCH_EVENTS_CURRENT_m1_hole",
+            "detail": "fills 1/1, closed 1/1, calls 234/234",
+            "ok": true
+          },
+          {
+            "code": "OPINION_SELF_DECLARATION_MATCHES_CURRENT_m1_hole",
+            "detail": "declared generated=164 unrecorded=0 duplicates=0 adds_up=True",
+            "ok": true
+          }
+        ],
+        "classes": {
+          "BLOCKED_BY_RISK": 11,
+          "CLOSED": 0,
+          "FILLED": 1,
+          "GATED": 0,
+          "REJECTED": 152
+        },
+        "closes": 1,
+        "decisions": 234,
+        "duplicate_terminals": 0,
+        "fees": "1.00000000",
+        "fills": 1,
+        "gross": "1.41865608",
+        "initial_equity": "10000.00000000",
+        "label": "CURRENT",
+        "marked_equity": "9997.58134392",
+        "max_opinion_age_ms": 60000,
+        "net": "-2.41865608",
+        "opinions": 164,
+        "orphan_terminals": 0,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\def-run-016\\ledgers\\CURRENT\\m1_hole.jsonl",
+        "rows": 402,
+        "run_end_marked_equity": 9997.58134392,
+        "scenario": "m1_hole",
+        "sha256": "8749613030a73a78afd3e9550a9a1d3202d08865167a0f2c37d7f23ab1d64854",
+        "slippage": "0.23895304",
+        "trades": [
+          {
+            "decision_seq": 119,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.418656078577551529947975118",
+            "net": "-2.4186560785775515299479752",
+            "opinion": [
+              "59630ad608616ac89f9c880a3676fab678f3fb6e47abc340121ed6d75074fe5d",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m1_hole-00000001",
+            "slippage": "0.2389530411395658586917365579"
+          }
+        ],
+        "unrecorded": 0
+      },
+      "m1_zero_delay": {
+        "checks": [
+          {
+            "code": "CHAIN_CURRENT_m1_zero_delay",
+            "detail": "INTACT",
+            "ok": true
+          },
+          {
+            "code": "RUN_FIRST_CURRENT_m1_zero_delay",
+            "detail": "first=RUN runs=1",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_LAST_CURRENT_m1_zero_delay",
+            "detail": "last=RUN_END count=1",
+            "ok": true
+          },
+          {
+            "code": "ONE_TERMINAL_PER_OPINION_CURRENT_m1_zero_delay",
+            "detail": "unrecorded=0 duplicate=0 orphan=0",
+            "ok": true
+          },
+          {
+            "code": "TERMINAL_CLASSES_BALANCE_CURRENT_m1_zero_delay",
+            "detail": "opinions=80 terminals=80",
+            "ok": true
+          },
+          {
+            "code": "POSITION_IDS_UNIQUE_CURRENT_m1_zero_delay",
+            "detail": "3 fills, 3 positions",
+            "ok": true
+          },
+          {
+            "code": "ONE_FILL_PER_DECISION_CURRENT_m1_zero_delay",
+            "detail": "3 fills, 3 decisions",
+            "ok": true
+          },
+          {
+            "code": "ONE_CLOSE_PER_POSITION_CURRENT_m1_zero_delay",
+            "detail": "3 closes, 3 unique",
+            "ok": true
+          },
+          {
+            "code": "NO_FILL_WITHOUT_CLOSE_CURRENT_m1_zero_delay",
+            "detail": "0 positions open at cutoff",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_NET_RECONCILED_CURRENT_m1_zero_delay",
+            "detail": "cash-flow -7.26098863 vs RUN_END -7.26098863",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COSTS_RECONCILED_CURRENT_m1_zero_delay",
+            "detail": "3.71751815 vs 3.71751815",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COUNTERS_MATCH_EVENTS_CURRENT_m1_zero_delay",
+            "detail": "fills 3/3, closed 3/3, calls 235/235",
+            "ok": true
+          },
+          {
+            "code": "OPINION_SELF_DECLARATION_MATCHES_CURRENT_m1_zero_delay",
+            "detail": "declared generated=80 unrecorded=0 duplicates=0 adds_up=True",
+            "ok": true
+          }
+        ],
+        "classes": {
+          "BLOCKED_BY_RISK": 77,
+          "CLOSED": 0,
+          "FILLED": 3,
+          "GATED": 0,
+          "REJECTED": 0
+        },
+        "closes": 3,
+        "decisions": 235,
+        "duplicate_terminals": 0,
+        "fees": "3.00000000",
+        "fills": 3,
+        "gross": "4.26098863",
+        "initial_equity": "10000.00000000",
+        "label": "CURRENT",
+        "marked_equity": "9992.73901137",
+        "max_opinion_age_ms": 60000,
+        "net": "-7.26098863",
+        "opinions": 80,
+        "orphan_terminals": 0,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\def-run-016\\ledgers\\CURRENT\\m1_zero_delay.jsonl",
+        "rows": 323,
+        "run_end_marked_equity": 9992.73901137,
+        "scenario": "m1_zero_delay",
+        "sha256": "82906e889e189e9ad0d129ef7cc99e927b1254a5b53b3a21d42812b081f3ec90",
+        "slippage": "0.71751815",
+        "trades": [
+          {
+            "decision_seq": 102,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.384534244655364539994216961",
+            "net": "-2.3845342446553645399942170",
+            "opinion": [
+              "f708115a4f27f2c5b41ec653521c9856659b2c65d5d3b4e338189ff78f0bf73f",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m1_zero_delay-00000001",
+            "slippage": "0.2389612072418845890589463108"
+          },
+          {
+            "decision_seq": 106,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.496917348997493901264990026",
+            "net": "-2.4969173489974939012649900",
+            "opinion": [
+              "fc7f28e0173a32ad8dd57cb9cb5a81370a2522fb1b356e13a1d485e29e8dd1b3",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m1_zero_delay-00000005",
+            "slippage": "0.2389343115711204392041217758"
+          },
+          {
+            "decision_seq": 173,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.379537036015766171604956410",
+            "net": "-2.3795370360157661716049564",
+            "opinion": [
+              "6e667c060e4ab3b4a3f9826db772f24cf7dc8ebdca51e3c449122f3a6327df45",
+              "SHORT"
+            ],
+            "position_id": "pos-def-run-016-m1_zero_delay-00000009",
+            "slippage": "0.2396226290274406494923668097"
+          }
+        ],
+        "unrecorded": 0
+      },
+      "m3_cadence1": {
+        "checks": [
+          {
+            "code": "CHAIN_CURRENT_m3_cadence1",
+            "detail": "INTACT",
+            "ok": true
+          },
+          {
+            "code": "RUN_FIRST_CURRENT_m3_cadence1",
+            "detail": "first=RUN runs=1",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_LAST_CURRENT_m3_cadence1",
+            "detail": "last=RUN_END count=1",
+            "ok": true
+          },
+          {
+            "code": "ONE_TERMINAL_PER_OPINION_CURRENT_m3_cadence1",
+            "detail": "unrecorded=0 duplicate=0 orphan=0",
+            "ok": true
+          },
+          {
+            "code": "TERMINAL_CLASSES_BALANCE_CURRENT_m3_cadence1",
+            "detail": "opinions=42 terminals=42",
+            "ok": true
+          },
+          {
+            "code": "POSITION_IDS_UNIQUE_CURRENT_m3_cadence1",
+            "detail": "2 fills, 2 positions",
+            "ok": true
+          },
+          {
+            "code": "ONE_FILL_PER_DECISION_CURRENT_m3_cadence1",
+            "detail": "2 fills, 2 decisions",
+            "ok": true
+          },
+          {
+            "code": "ONE_CLOSE_PER_POSITION_CURRENT_m3_cadence1",
+            "detail": "2 closes, 2 unique",
+            "ok": true
+          },
+          {
+            "code": "NO_FILL_WITHOUT_CLOSE_CURRENT_m3_cadence1",
+            "detail": "0 positions open at cutoff",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_NET_RECONCILED_CURRENT_m3_cadence1",
+            "detail": "cash-flow -5.50840479 vs RUN_END -5.50840479",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COSTS_RECONCILED_CURRENT_m3_cadence1",
+            "detail": "2.47851235 vs 2.47851235",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COUNTERS_MATCH_EVENTS_CURRENT_m3_cadence1",
+            "detail": "fills 2/2, closed 2/2, calls 64/64",
+            "ok": true
+          },
+          {
+            "code": "OPINION_SELF_DECLARATION_MATCHES_CURRENT_m3_cadence1",
+            "detail": "declared generated=42 unrecorded=0 duplicates=0 adds_up=True",
+            "ok": true
+          }
+        ],
+        "classes": {
+          "BLOCKED_BY_RISK": 0,
+          "CLOSED": 0,
+          "FILLED": 2,
+          "GATED": 0,
+          "REJECTED": 40
+        },
+        "closes": 2,
+        "decisions": 64,
+        "duplicate_terminals": 0,
+        "fees": "2.00000000",
+        "fills": 2,
+        "gross": "3.50840479",
+        "initial_equity": "10000.00000000",
+        "label": "CURRENT",
+        "marked_equity": "9994.49159521",
+        "max_opinion_age_ms": 180000,
+        "net": "-5.50840479",
+        "opinions": 42,
+        "orphan_terminals": 0,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\def-run-016\\ledgers\\CURRENT\\m3_cadence1.jsonl",
+        "rows": 112,
+        "run_end_marked_equity": 9994.49159521,
+        "scenario": "m3_cadence1",
+        "sha256": "c0a350b9667335be8927142e0914e3e01c77ddadaf0dcc5b0a82e832d8c5db40",
+        "slippage": "0.47851235",
+        "trades": [
+          {
+            "decision_seq": 41,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.906029439806680821251155587",
+            "net": "-2.9060294398066808212511556",
+            "opinion": [
+              "decc3bdb60d8550fc44446946368c3f1d4ff15e54ec6bdb1a9e12311eca516e5",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m3_cadence1-00000001",
+            "slippage": "0.2388364023932139113338776070"
+          },
+          {
+            "decision_seq": 80,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.602375353186302261490509589",
+            "net": "-2.6023753531863022614905096",
+            "opinion": [
+              "dba7ce65ef061236b8c6f665382f98b0f31e75761e28aa6168d8e7a75a05e765",
+              "SHORT"
+            ],
+            "position_id": "pos-def-run-016-m3_cadence1-00000005",
+            "slippage": "0.2396759461901168977527192440"
+          }
+        ],
+        "unrecorded": 0
+      }
+    },
+    "PROPOSED": {
+      "m1_cadence1": {
+        "checks": [
+          {
+            "code": "CHAIN_PROPOSED_m1_cadence1",
+            "detail": "INTACT",
+            "ok": true
+          },
+          {
+            "code": "RUN_FIRST_PROPOSED_m1_cadence1",
+            "detail": "first=RUN runs=1",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_LAST_PROPOSED_m1_cadence1",
+            "detail": "last=RUN_END count=1",
+            "ok": true
+          },
+          {
+            "code": "ONE_TERMINAL_PER_OPINION_PROPOSED_m1_cadence1",
+            "detail": "unrecorded=0 duplicate=0 orphan=0",
+            "ok": true
+          },
+          {
+            "code": "TERMINAL_CLASSES_BALANCE_PROPOSED_m1_cadence1",
+            "detail": "opinions=41 terminals=41",
+            "ok": true
+          },
+          {
+            "code": "POSITION_IDS_UNIQUE_PROPOSED_m1_cadence1",
+            "detail": "2 fills, 2 positions",
+            "ok": true
+          },
+          {
+            "code": "ONE_FILL_PER_DECISION_PROPOSED_m1_cadence1",
+            "detail": "2 fills, 2 decisions",
+            "ok": true
+          },
+          {
+            "code": "ONE_CLOSE_PER_POSITION_PROPOSED_m1_cadence1",
+            "detail": "2 closes, 2 unique",
+            "ok": true
+          },
+          {
+            "code": "NO_FILL_WITHOUT_CLOSE_PROPOSED_m1_cadence1",
+            "detail": "0 positions open at cutoff",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_NET_RECONCILED_PROPOSED_m1_cadence1",
+            "detail": "cash-flow -4.76407128 vs RUN_END -4.76407128",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COSTS_RECONCILED_PROPOSED_m1_cadence1",
+            "detail": "2.47858384 vs 2.47858384",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COUNTERS_MATCH_EVENTS_PROPOSED_m1_cadence1",
+            "detail": "fills 2/2, closed 2/2, calls 194/194",
+            "ok": true
+          },
+          {
+            "code": "OPINION_SELF_DECLARATION_MATCHES_PROPOSED_m1_cadence1",
+            "detail": "declared generated=41 unrecorded=0 duplicates=0 adds_up=True",
+            "ok": true
+          }
+        ],
+        "classes": {
+          "BLOCKED_BY_RISK": 39,
+          "CLOSED": 0,
+          "FILLED": 2,
+          "GATED": 0,
+          "REJECTED": 0
+        },
+        "closes": 2,
+        "decisions": 194,
+        "duplicate_terminals": 0,
+        "fees": "2.00000000",
+        "fills": 2,
+        "gross": "2.76407128",
+        "initial_equity": "10000.00000000",
+        "label": "PROPOSED",
+        "marked_equity": "9995.23592872",
+        "max_opinion_age_ms": 60000,
+        "net": "-4.76407128",
+        "opinions": 41,
+        "orphan_terminals": 0,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\def-run-016\\ledgers\\PROPOSED\\m1_cadence1.jsonl",
+        "rows": 282,
+        "run_end_marked_equity": 9995.23592872,
+        "scenario": "m1_cadence1",
+        "sha256": "ebe16ee1f7baa72854bfb4f07f3055caf87f961c0a023f699848de86fd45dabd",
+        "slippage": "0.47858384",
+        "trades": [
+          {
+            "decision_seq": 78,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.384534244655318833853874026",
+            "net": "-2.3845342446553188338538740",
+            "opinion": [
+              "f708115a4f27f2c5b41ec653521c9856659b2c65d5d3b4e338189ff78f0bf73f",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m1_cadence1-00000001",
+            "slippage": "0.2389612071982712003330507758"
+          },
+          {
+            "decision_seq": 144,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.379537036015833871401919084",
+            "net": "-2.3795370360158338714019191",
+            "opinion": [
+              "6e667c060e4ab3b4a3f9826db772f24cf7dc8ebdca51e3c449122f3a6327df45",
+              "SHORT"
+            ],
+            "position_id": "pos-def-run-016-m1_cadence1-00000005",
+            "slippage": "0.2396226290759484447922379542"
+          }
+        ],
+        "unrecorded": 0
+      },
+      "m1_cadence5": {
+        "checks": [
+          {
+            "code": "CHAIN_PROPOSED_m1_cadence5",
+            "detail": "INTACT",
+            "ok": true
+          },
+          {
+            "code": "RUN_FIRST_PROPOSED_m1_cadence5",
+            "detail": "first=RUN runs=1",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_LAST_PROPOSED_m1_cadence5",
+            "detail": "last=RUN_END count=1",
+            "ok": true
+          },
+          {
+            "code": "ONE_TERMINAL_PER_OPINION_PROPOSED_m1_cadence5",
+            "detail": "unrecorded=0 duplicate=0 orphan=0",
+            "ok": true
+          },
+          {
+            "code": "TERMINAL_CLASSES_BALANCE_PROPOSED_m1_cadence5",
+            "detail": "opinions=33 terminals=33",
+            "ok": true
+          },
+          {
+            "code": "POSITION_IDS_UNIQUE_PROPOSED_m1_cadence5",
+            "detail": "2 fills, 2 positions",
+            "ok": true
+          },
+          {
+            "code": "ONE_FILL_PER_DECISION_PROPOSED_m1_cadence5",
+            "detail": "2 fills, 2 decisions",
+            "ok": true
+          },
+          {
+            "code": "ONE_CLOSE_PER_POSITION_PROPOSED_m1_cadence5",
+            "detail": "2 closes, 2 unique",
+            "ok": true
+          },
+          {
+            "code": "NO_FILL_WITHOUT_CLOSE_PROPOSED_m1_cadence5",
+            "detail": "0 positions open at cutoff",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_NET_RECONCILED_PROPOSED_m1_cadence5",
+            "detail": "cash-flow -5.07670986 vs RUN_END -5.07670986",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COSTS_RECONCILED_PROPOSED_m1_cadence5",
+            "detail": "2.47784879 vs 2.47784879",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COUNTERS_MATCH_EVENTS_PROPOSED_m1_cadence5",
+            "detail": "fills 2/2, closed 2/2, calls 47/47",
+            "ok": true
+          },
+          {
+            "code": "OPINION_SELF_DECLARATION_MATCHES_PROPOSED_m1_cadence5",
+            "detail": "declared generated=33 unrecorded=0 duplicates=0 adds_up=True",
+            "ok": true
+          }
+        ],
+        "classes": {
+          "BLOCKED_BY_RISK": 31,
+          "CLOSED": 0,
+          "FILLED": 2,
+          "GATED": 0,
+          "REJECTED": 0
+        },
+        "closes": 2,
+        "decisions": 47,
+        "duplicate_terminals": 0,
+        "fees": "2.00000000",
+        "fills": 2,
+        "gross": "3.07670986",
+        "initial_equity": "10000.00000000",
+        "label": "PROPOSED",
+        "marked_equity": "9994.92329014",
+        "max_opinion_age_ms": 60000,
+        "net": "-5.07670986",
+        "opinions": 33,
+        "orphan_terminals": 0,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\def-run-016\\ledgers\\PROPOSED\\m1_cadence5.jsonl",
+        "rows": 86,
+        "run_end_marked_equity": 9994.92329014,
+        "scenario": "m1_cadence5",
+        "sha256": "a7bee1f5c7abc71f995344b33a4610aa25f5398a06301debf4330489acf492ad",
+        "slippage": "0.47784879",
+        "trades": [
+          {
+            "decision_seq": 22,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.578232888466123865909379854",
+            "net": "-2.5782328884661238659093799",
+            "opinion": [
+              "2299283584cc4d8371eefa18722fcfa8ed4208997867dfeccedefcdb2531a0fb",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m1_cadence5-00000001",
+            "slippage": "0.2389148510648588023836823435"
+          },
+          {
+            "decision_seq": 26,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.498476975745799438299962306",
+            "net": "-2.4984769757457994382999623",
+            "opinion": [
+              "366caa85bb03f16a46daed18bc994ceab6560508e283dd9fe56a33da25559c5a",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m1_cadence5-00000005",
+            "slippage": "0.2389339383018612264403591264"
+          }
+        ],
+        "unrecorded": 0
+      },
+      "m1_hole": {
+        "checks": [
+          {
+            "code": "CHAIN_PROPOSED_m1_hole",
+            "detail": "INTACT",
+            "ok": true
+          },
+          {
+            "code": "RUN_FIRST_PROPOSED_m1_hole",
+            "detail": "first=RUN runs=1",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_LAST_PROPOSED_m1_hole",
+            "detail": "last=RUN_END count=1",
+            "ok": true
+          },
+          {
+            "code": "ONE_TERMINAL_PER_OPINION_PROPOSED_m1_hole",
+            "detail": "unrecorded=0 duplicate=0 orphan=0",
+            "ok": true
+          },
+          {
+            "code": "TERMINAL_CLASSES_BALANCE_PROPOSED_m1_hole",
+            "detail": "opinions=41 terminals=41",
+            "ok": true
+          },
+          {
+            "code": "POSITION_IDS_UNIQUE_PROPOSED_m1_hole",
+            "detail": "2 fills, 2 positions",
+            "ok": true
+          },
+          {
+            "code": "ONE_FILL_PER_DECISION_PROPOSED_m1_hole",
+            "detail": "2 fills, 2 decisions",
+            "ok": true
+          },
+          {
+            "code": "ONE_CLOSE_PER_POSITION_PROPOSED_m1_hole",
+            "detail": "2 closes, 2 unique",
+            "ok": true
+          },
+          {
+            "code": "NO_FILL_WITHOUT_CLOSE_PROPOSED_m1_hole",
+            "detail": "0 positions open at cutoff",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_NET_RECONCILED_PROPOSED_m1_hole",
+            "detail": "cash-flow -4.76407128 vs RUN_END -4.76407128",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COSTS_RECONCILED_PROPOSED_m1_hole",
+            "detail": "2.47858384 vs 2.47858384",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COUNTERS_MATCH_EVENTS_PROPOSED_m1_hole",
+            "detail": "fills 2/2, closed 2/2, calls 194/194",
+            "ok": true
+          },
+          {
+            "code": "OPINION_SELF_DECLARATION_MATCHES_PROPOSED_m1_hole",
+            "detail": "declared generated=41 unrecorded=0 duplicates=0 adds_up=True",
+            "ok": true
+          }
+        ],
+        "classes": {
+          "BLOCKED_BY_RISK": 38,
+          "CLOSED": 0,
+          "FILLED": 2,
+          "GATED": 0,
+          "REJECTED": 1
+        },
+        "closes": 2,
+        "decisions": 194,
+        "duplicate_terminals": 0,
+        "fees": "2.00000000",
+        "fills": 2,
+        "gross": "2.76407128",
+        "initial_equity": "10000.00000000",
+        "label": "PROPOSED",
+        "marked_equity": "9995.23592872",
+        "max_opinion_age_ms": 60000,
+        "net": "-4.76407128",
+        "opinions": 41,
+        "orphan_terminals": 0,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\def-run-016\\ledgers\\PROPOSED\\m1_hole.jsonl",
+        "rows": 281,
+        "run_end_marked_equity": 9995.23592872,
+        "scenario": "m1_hole",
+        "sha256": "dd1779623c757254c967bfc85bf2c0e15da5b6c4fd1d4c7acbef9aa3b53d9dcb",
+        "slippage": "0.47858384",
+        "trades": [
+          {
+            "decision_seq": 77,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.384534244655318833853874026",
+            "net": "-2.3845342446553188338538740",
+            "opinion": [
+              "f708115a4f27f2c5b41ec653521c9856659b2c65d5d3b4e338189ff78f0bf73f",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m1_hole-00000001",
+            "slippage": "0.2389612071982712003330507758"
+          },
+          {
+            "decision_seq": 143,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.379537036015833871401919084",
+            "net": "-2.3795370360158338714019191",
+            "opinion": [
+              "6e667c060e4ab3b4a3f9826db772f24cf7dc8ebdca51e3c449122f3a6327df45",
+              "SHORT"
+            ],
+            "position_id": "pos-def-run-016-m1_hole-00000005",
+            "slippage": "0.2396226290759484447922379542"
+          }
+        ],
+        "unrecorded": 0
+      },
+      "m1_zero_delay": {
+        "checks": [
+          {
+            "code": "CHAIN_PROPOSED_m1_zero_delay",
+            "detail": "INTACT",
+            "ok": true
+          },
+          {
+            "code": "RUN_FIRST_PROPOSED_m1_zero_delay",
+            "detail": "first=RUN runs=1",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_LAST_PROPOSED_m1_zero_delay",
+            "detail": "last=RUN_END count=1",
+            "ok": true
+          },
+          {
+            "code": "ONE_TERMINAL_PER_OPINION_PROPOSED_m1_zero_delay",
+            "detail": "unrecorded=0 duplicate=0 orphan=0",
+            "ok": true
+          },
+          {
+            "code": "TERMINAL_CLASSES_BALANCE_PROPOSED_m1_zero_delay",
+            "detail": "opinions=80 terminals=80",
+            "ok": true
+          },
+          {
+            "code": "POSITION_IDS_UNIQUE_PROPOSED_m1_zero_delay",
+            "detail": "3 fills, 3 positions",
+            "ok": true
+          },
+          {
+            "code": "ONE_FILL_PER_DECISION_PROPOSED_m1_zero_delay",
+            "detail": "3 fills, 3 decisions",
+            "ok": true
+          },
+          {
+            "code": "ONE_CLOSE_PER_POSITION_PROPOSED_m1_zero_delay",
+            "detail": "3 closes, 3 unique",
+            "ok": true
+          },
+          {
+            "code": "NO_FILL_WITHOUT_CLOSE_PROPOSED_m1_zero_delay",
+            "detail": "0 positions open at cutoff",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_NET_RECONCILED_PROPOSED_m1_zero_delay",
+            "detail": "cash-flow -7.26098863 vs RUN_END -7.26098863",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COSTS_RECONCILED_PROPOSED_m1_zero_delay",
+            "detail": "3.71751815 vs 3.71751815",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COUNTERS_MATCH_EVENTS_PROPOSED_m1_zero_delay",
+            "detail": "fills 3/3, closed 3/3, calls 235/235",
+            "ok": true
+          },
+          {
+            "code": "OPINION_SELF_DECLARATION_MATCHES_PROPOSED_m1_zero_delay",
+            "detail": "declared generated=80 unrecorded=0 duplicates=0 adds_up=True",
+            "ok": true
+          }
+        ],
+        "classes": {
+          "BLOCKED_BY_RISK": 77,
+          "CLOSED": 0,
+          "FILLED": 3,
+          "GATED": 0,
+          "REJECTED": 0
+        },
+        "closes": 3,
+        "decisions": 235,
+        "duplicate_terminals": 0,
+        "fees": "3.00000000",
+        "fills": 3,
+        "gross": "4.26098863",
+        "initial_equity": "10000.00000000",
+        "label": "PROPOSED",
+        "marked_equity": "9992.73901137",
+        "max_opinion_age_ms": 60000,
+        "net": "-7.26098863",
+        "opinions": 80,
+        "orphan_terminals": 0,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\def-run-016\\ledgers\\PROPOSED\\m1_zero_delay.jsonl",
+        "rows": 323,
+        "run_end_marked_equity": 9992.73901137,
+        "scenario": "m1_zero_delay",
+        "sha256": "93954c9c0a87c4b7b1d6fcb60892a3cd13615fa8715fa522827f1633599334ac",
+        "slippage": "0.71751815",
+        "trades": [
+          {
+            "decision_seq": 102,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.384534244655364539994216961",
+            "net": "-2.3845342446553645399942170",
+            "opinion": [
+              "f708115a4f27f2c5b41ec653521c9856659b2c65d5d3b4e338189ff78f0bf73f",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m1_zero_delay-00000001",
+            "slippage": "0.2389612072418845890589463108"
+          },
+          {
+            "decision_seq": 106,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.496917348997493901264990026",
+            "net": "-2.4969173489974939012649900",
+            "opinion": [
+              "fc7f28e0173a32ad8dd57cb9cb5a81370a2522fb1b356e13a1d485e29e8dd1b3",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m1_zero_delay-00000005",
+            "slippage": "0.2389343115711204392041217758"
+          },
+          {
+            "decision_seq": 173,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.379537036015766171604956410",
+            "net": "-2.3795370360157661716049564",
+            "opinion": [
+              "6e667c060e4ab3b4a3f9826db772f24cf7dc8ebdca51e3c449122f3a6327df45",
+              "SHORT"
+            ],
+            "position_id": "pos-def-run-016-m1_zero_delay-00000009",
+            "slippage": "0.2396226290274406494923668097"
+          }
+        ],
+        "unrecorded": 0
+      },
+      "m3_cadence1": {
+        "checks": [
+          {
+            "code": "CHAIN_PROPOSED_m3_cadence1",
+            "detail": "INTACT",
+            "ok": true
+          },
+          {
+            "code": "RUN_FIRST_PROPOSED_m3_cadence1",
+            "detail": "first=RUN runs=1",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_LAST_PROPOSED_m3_cadence1",
+            "detail": "last=RUN_END count=1",
+            "ok": true
+          },
+          {
+            "code": "ONE_TERMINAL_PER_OPINION_PROPOSED_m3_cadence1",
+            "detail": "unrecorded=0 duplicate=0 orphan=0",
+            "ok": true
+          },
+          {
+            "code": "TERMINAL_CLASSES_BALANCE_PROPOSED_m3_cadence1",
+            "detail": "opinions=5 terminals=5",
+            "ok": true
+          },
+          {
+            "code": "POSITION_IDS_UNIQUE_PROPOSED_m3_cadence1",
+            "detail": "3 fills, 3 positions",
+            "ok": true
+          },
+          {
+            "code": "ONE_FILL_PER_DECISION_PROPOSED_m3_cadence1",
+            "detail": "3 fills, 3 decisions",
+            "ok": true
+          },
+          {
+            "code": "ONE_CLOSE_PER_POSITION_PROPOSED_m3_cadence1",
+            "detail": "3 closes, 3 unique",
+            "ok": true
+          },
+          {
+            "code": "NO_FILL_WITHOUT_CLOSE_PROPOSED_m3_cadence1",
+            "detail": "0 positions open at cutoff",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_NET_RECONCILED_PROPOSED_m3_cadence1",
+            "detail": "cash-flow -8.93375613 vs RUN_END -8.93375613",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COSTS_RECONCILED_PROPOSED_m3_cadence1",
+            "detail": "3.71745565 vs 3.71745565",
+            "ok": true
+          },
+          {
+            "code": "RUN_END_COUNTERS_MATCH_EVENTS_PROPOSED_m3_cadence1",
+            "detail": "fills 3/3, closed 3/3, calls 60/60",
+            "ok": true
+          },
+          {
+            "code": "OPINION_SELF_DECLARATION_MATCHES_PROPOSED_m3_cadence1",
+            "detail": "declared generated=5 unrecorded=0 duplicates=0 adds_up=True",
+            "ok": true
+          }
+        ],
+        "classes": {
+          "BLOCKED_BY_RISK": 1,
+          "CLOSED": 0,
+          "FILLED": 3,
+          "GATED": 0,
+          "REJECTED": 1
+        },
+        "closes": 3,
+        "decisions": 60,
+        "duplicate_terminals": 0,
+        "fees": "3.00000000",
+        "fills": 3,
+        "gross": "5.93375613",
+        "initial_equity": "10000.00000000",
+        "label": "PROPOSED",
+        "marked_equity": "9991.06624387",
+        "max_opinion_age_ms": 180000,
+        "net": "-8.93375613",
+        "opinions": 5,
+        "orphan_terminals": 0,
+        "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\def-run-016\\ledgers\\PROPOSED\\m3_cadence1.jsonl",
+        "rows": 77,
+        "run_end_marked_equity": 9991.06624387,
+        "scenario": "m3_cadence1",
+        "sha256": "6cacaad004740f6ffad092431976cd02288743d0e2c85d1ab14c859d4539978b",
+        "slippage": "0.71745565",
+        "trades": [
+          {
+            "decision_seq": 2,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "1.741798743691816185845903262",
+            "net": "-2.7417987436918161858459033",
+            "opinion": [
+              "4d8652854f9caa9a99b2e6274bb1111bac3625da8ae20fde716572f5d7abf15a",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m3_cadence1-00000001",
+            "slippage": "0.2388757062857667493565578321"
+          },
+          {
+            "decision_seq": 10,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "2.106526456622878414352931002",
+            "net": "-3.1065264566228784143529310",
+            "opinion": [
+              "8155c2bff4949aa6fbaa54c280d698640e0b7afd27234522407adea648795071",
+              "LONG"
+            ],
+            "position_id": "pos-def-run-016-m3_cadence1-00000005",
+            "slippage": "0.2387884191687764568749597819"
+          },
+          {
+            "decision_seq": 30,
+            "exit_reason": "stop_loss",
+            "fees": "1.0",
+            "gross": "2.085430930959809572289211700",
+            "net": "-3.0854309309598095722892117",
+            "opinion": [
+              "377b47dd1764b2aad7babd06d61d6b4d68f513f7eaf212a4de02f9eabe703aea",
+              "SHORT"
+            ],
+            "position_id": "pos-def-run-016-m3_cadence1-00000009",
+            "slippage": "0.2397915240080801454200960200"
+          }
+        ],
+        "unrecorded": 0
+      }
+    }
+  },
+  "oos": {
+    "cells": {
+      "AAVE/USDT|DEFER|1.0": {
+        "closed_trades": 120,
+        "deferred_slots": 4700,
+        "net_pnl_usdt": "-247.04725633"
+      },
+      "AAVE/USDT|SUPERSEDE|1.0": {
+        "closed_trades": 120,
+        "deferred_slots": 0,
+        "net_pnl_usdt": "-239.54540826"
+      },
+      "UNI/USDT|DEFER|1.0": {
+        "closed_trades": 120,
+        "deferred_slots": 4676,
+        "net_pnl_usdt": "-194.16285175"
+      },
+      "UNI/USDT|SUPERSEDE|1.0": {
+        "closed_trades": 120,
+        "deferred_slots": 0,
+        "net_pnl_usdt": "-204.54342333"
+      }
+    },
+    "datasets_verified_in_checkout": true,
+    "economic_status": "NOT_EVIDENCED",
+    "economic_status_recomputed": "NOT_EVIDENCED",
+    "ledgers_in_checkout": true,
+    "partition": "untouched_test",
+    "runs": 32
+  },
+  "oos_stress": {
+    "cells": {
+      "UNI/USDT|DEFER|2.0": {
+        "closed_trades": 79,
+        "deferred_slots": 4874,
+        "net_pnl_usdt": "-225.77774031"
+      },
+      "UNI/USDT|SUPERSEDE|2.0": {
+        "closed_trades": 38,
+        "deferred_slots": 0,
+        "net_pnl_usdt": "-125.59730546"
+      }
+    },
+    "cost_multiplier": 2.0,
+    "runs": 16,
+    "stress_status": "NEGATIVE",
+    "stress_status_recomputed": "NEGATIVE",
+    "used_for_decision": false
+  },
+  "schema_version": "DEF_RUN_017_VERIFICATION_V1",
+  "status": "PASS",
+  "totals": {
+    "ambiguous": 0,
+    "baseline_net_usdt": "-22.68341544",
+    "baseline_only": 4,
+    "candidate_net_usdt": "-30.79959718",
+    "candidate_only": 7,
+    "delta_net_usdt": "-8.11618174",
+    "matched_pairs": 5
+  },
+  "verifier": "scripts/def_run_017_verify.py"
+}

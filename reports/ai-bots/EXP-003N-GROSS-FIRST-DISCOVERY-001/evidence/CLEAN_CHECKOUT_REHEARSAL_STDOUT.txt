@@ -1,0 +1,22 @@
+# CLEAN CHECKOUT REHEARSAL — EXP-003M reproducibility (run from the 003N audit)
+# date=2026-10-20T18:57:01Z worktree=/tmp/003n-clean
+
+$ git rev-parse HEAD
+fefb0771036c33c648ecb2ed11cb28e8c2b49264
+
+$ git status --porcelain | wc -l
+0
+
+$ sha256sum -c SHA256SUMS.txt   # published artifacts
+analysis/VERIFICATION.json: OK
+dataset/TAPE_MANIFEST.json: OK
+design/DESIGN.json: OK
+
+$ sha256sum -c DATASET_SHA256SUMS.txt   # 126 regenerable data files
+dataset/tape/SOLUSDT-2026-07-31.jsonl.gz: OK
+dataset/tape/SOLUSDT-2026-08-03.jsonl.gz: OK
+dataset/tape/SOLUSDT-2026-08-04.jsonl.gz: OK
+
+$ pytest tests/unit/reports/test_exp_003m_*
+.........................                                                [100%]
+25 passed in 1.20s

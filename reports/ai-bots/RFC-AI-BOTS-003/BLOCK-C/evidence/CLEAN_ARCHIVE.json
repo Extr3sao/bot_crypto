@@ -1,0 +1,31 @@
+{
+  "tool": "clean_archive_rehearsal",
+  "runtime_commit": "86d4f12",
+  "runtime_commit_parent": "ffbc0ca",
+  "extraction": "git archive HEAD | tar -x -C /tmp/003c_archive",
+  "root_bytes": 162000000,
+  "checks": [
+    {
+      "command": "scripts/ai_bots_003c_verify.py --scenario synthetic_gap_open --coverage ... --root .",
+      "cwd": "clean archive root",
+      "exit": 0,
+      "passed": 24,
+      "failed": 0,
+      "verdict": "PASS"
+    },
+    {
+      "command": "pytest tests/unit/vision/test_open_phase_causality.py -q -p no:warnings",
+      "cwd": "clean archive root",
+      "pythonpath": "src",
+      "exit": 0,
+      "passed": 19,
+      "failed": 0
+    }
+  ],
+  "note": "Runs from the committed tree, not the working copy: TEST_TARGET == RUNTIME_TARGET. The archive proves the code moved, not that the archive's own git metadata exists.",
+  "line_endings": "core.autocrlf rewrites on checkout; the archive is LF and the suite passes on it, so no test depends on CRLF.",
+  "code_equivalence": {
+    "published_head": "e7f9314",
+    "statement": "git diff 86d4f12 e7f9314 -- src/ tests/ is empty, so the rehearsal above also describes the published head; the later commits touch only the capture script, evidence and reports."
+  }
+}

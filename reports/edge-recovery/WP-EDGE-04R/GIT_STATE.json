@@ -1,0 +1,101 @@
+{
+  "schema_version": "EDGE04R_GIT_STATE_V1",
+  "recorded_at_utc": "2026-10-15T19:28:00Z",
+  "head": "04bf155 (the commit that first carried this record; re-read after it, and the record names itself rather than a hash that moves)",
+  "head_at_the_re_read": "04bf155",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "upstream": "origin/agent/edge-recovery/WP-EDGE-00-baseline",
+  "worktree": "C:/Users/GVLLFR0035/Downloads/bot freebuff",
+  "worktrees": [
+    "C:/Users/GVLLFR0035/Downloads/bot freebuff (this lane)",
+    "C:/Users/GVLLFR0035/Downloads/bot-freebuff-rfc035s3-lab (detached, another lane)"
+  ],
+  "commits_of_this_work_package": [
+    {
+      "sha": "98d594e",
+      "subject": "Attribute every trigger the forward lane lost, and probe what would stop it.",
+      "files": "src/trading_bot/research/edge04r/{__init__,os_evidence,continuity,session}.py, scripts/edge04r_{continuity,session,verify}.py, tests/unit/research/test_edge04r_continuity.py, .gitignore"
+    },
+    {
+      "sha": "40b3665",
+      "subject": "Publish the attributed continuity reading and the evidence it was taken from.",
+      "files": "reports/edge-recovery/WP-EDGE-04R/{RUN_REPORT.md,RUN_REPORT.json,FINAL_REPORT.md,INFORME_EJECUTIVO.md,AVAILABILITY.md,SESSION_INDEPENDENCE.md,VERIFICATION.json,evidence/*}"
+    },
+    {
+      "sha": "b892273",
+      "subject": "Name the witness so version control can carry it, instead of claiming the line.",
+      "files": "src/trading_bot/research/edge04r/session.py, evidence/probe-scratch/*.txt"
+    },
+    {
+      "sha": "5daa3c0",
+      "subject": "Record the published commits, the blocked push and the one inherited failure.",
+      "files": "reports/edge-recovery/WP-EDGE-04R/GIT_STATE.json, RUN_REPORT.{md,json}, VERIFICATION.json"
+    },
+    {
+      "sha": "e6a9df8",
+      "subject": "Anchor every declared path, freeze the reading's instant, and rehearse the definition.",
+      "files": "src/trading_bot/research/edge04r/session.py, scripts/edge04r_{continuity,session,verify}.py, tests/unit/research/test_edge04r_continuity.py, .gitattributes"
+    },
+    {
+      "sha": "04bf155",
+      "subject": "Re-take the reading at the code that carries it, and record the four defects it closed.",
+      "files": "reports/edge-recovery/WP-EDGE-04R/{RUN_REPORT.{md,json},FINAL_REPORT.md,INFORME_EJECUTIVO.md,AVAILABILITY.md,SESSION_INDEPENDENCE.md,VERIFICATION.json,GIT_STATE.json,evidence/*}"
+    },
+    {
+      "sha": "the commit that follows 04bf155",
+      "subject": "Record the published ref, read back from the remote after the push.",
+      "files": "reports/edge-recovery/WP-EDGE-04R/{GIT_STATE.json,RUN_REPORT.{md,json}}"
+    }
+  ],
+  "publication": {
+    "authorised": "only the commits this work package owns: the four the previous pass left local, plus the commits of this pass",
+    "method": "fast-forward; no force push; no branch other than the lane's own was touched; the working tree's other workstreams are untouched and uncommitted",
+    "remote_before_this_pass": "5980e37023427dd4c9053a2ddbfcc9ec2936a431",
+    "remote_before_this_pass_is_an_ancestor_of_head": true,
+    "commits_left_local_by_the_previous_pass": ["98d594e", "40b3665", "b892273", "5daa3c0"],
+    "pushed_commits": ["98d594e", "40b3665", "b892273", "5daa3c0", "e6a9df8", "04bf155"],
+    "remote_after": "04bf155375aeeb137c04ac8fc4755f64faa340e1",
+    "commits_ahead_of_upstream_after_this_pass": 0,
+    "verify_command": "git ls-remote origin refs/heads/agent/edge-recovery/WP-EDGE-00-baseline",
+    "remote_read_back": "04bf155375aeeb137c04ac8fc4755f64faa340e1",
+    "read_back_note": "the ref was read from the remote after the push, not quoted from the push command's own output; the read-back equals local HEAD at the time",
+    "earlier_blocked_probe": "the previous pass recorded BLOCKED_GITHUB_AUTH; the probe was re-taken and the credential was available, so the block is stale rather than current"
+  },
+  "regressions": {
+    "tests/unit/research/test_edge04r_continuity.py": "33 passed",
+    "tests/unit/research/test_edge04_autonomous.py": "49 passed",
+    "tests/unit/research (wider)": "2333 passed, 1 failed in 682.82 s",
+    "the_one_failure_is_the_inherited_certificate": true,
+    "no_other_failure_in_the_suite": true,
+    "failing_test": "tests/unit/research/test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout",
+    "failing_test_owner": "the cost-barrier chain that issued the certificate; not this work package",
+    "failing_test_diagnosis": "STALE_BY_PROVENANCE — see evidence/ECONOMIC_CERTIFICATE_DIAGNOSIS.json; the record matched its artefact at its own commit (57772ef) and a later re-render (7522255, [WP-EDGE-01]) moved 6 of 2985 leaf values, none of them economic",
+    "failing_test_action": "declared, not silenced: neither the certificate nor its input was edited",
+    "ruff": "clean on every file added or changed; ruff format --check clean too",
+    "mypy": "strict clean on src/trading_bot/research/edge04r and the three scripts",
+    "independent_verifier": "VERIFY_PASS 16/16 with SELF_TEST_PASS 12/12, re-taken at the commit that publishes this record",
+    "offline_reproduction": "python scripts/edge04r_continuity.py --offline --reports reports/edge-recovery/WP-EDGE-04R --until 2026-10-15T18:31:46Z re-derives evidence/EDGE04R_CONTINUITY_AUDIT.json to sha256 5e053a7de5024d12207c451325b2fc44761fc2881b1be3c7805b6341bba5f37c, the committed bytes, from a working directory outside the package and through a relative path"
+  },
+  "lane_state_after_the_pass": {
+    "observed_at_utc": "2026-10-15T20:51:04Z",
+    "scheduled_tasks_matching_EDGE04R": ["TradingAgentic-EDGE04-Forward (Ready)"],
+    "probe_tasks_left_behind": 0,
+    "task_logon_type": "Interactive",
+    "task_triggers": "one MSFT_TaskTimeTrigger, PT15M, unchanged",
+    "number_of_missed_runs": 0,
+    "last_task_result": 0,
+    "last_run_utc": "2026-10-15T20:40:54Z",
+    "next_run_utc": "2026-10-15T20:55:53Z",
+    "ticks_continuing": true,
+    "ticks_in_the_log": 216,
+    "ticks_since_the_frozen_reading": 9,
+    "last_three_ticks": ["FWD-EDGE04-20261015T200000Z SCHEDULED OBSERVED", "FWD-EDGE04-20261015T201500Z SCHEDULED OBSERVED", "FWD-EDGE04-20261015T203000Z SCHEDULED OBSERVED"],
+    "every_tick_still_hypothetical_and_orderless": true,
+    "reading": "the probes and the rehearsal registered and deleted their own throwaway tasks; the lane's own registration is exactly as WP-EDGE-04 left it, and it kept ticking through this pass: nine ticks landed after the instant this reading ends at, all SCHEDULED and OBSERVED, none of them claiming an order"
+  },
+  "false_success": 0,
+  "builder_is_not_verifier": true,
+  "hypothetical": true,
+  "order_sent": false,
+  "promotion": "NONE"
+}

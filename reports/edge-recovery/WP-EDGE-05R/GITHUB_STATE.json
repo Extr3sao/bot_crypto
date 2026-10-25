@@ -1,0 +1,40 @@
+{
+  "schema_version": "EDGE05R_GITHUB_STATE_V1",
+  "as_of_utc": "2026-10-14T06:56:56Z",
+  "remote": "origin  https://github.com/Extr3sao/bot_crypto.git",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "head": "f418619372e0eae0bbbdfaaebbd84f54804fdff1",
+  "head_subject": "Publish the recovery, the reading it was rendered from, and the volume's other tenants. [WP-EDGE-05R]",
+  "commits_on_this_branch_ahead_of_main": 57,
+  "work_package_commits": [
+    "2353037 Read the forward lane once, and render every report from that one reading. [WP-EDGE-05R]",
+    "52d75f0 File a tick the lane refused as resource pressure, and publish each instant in the form it was read. [WP-EDGE-05R]",
+    "f418619 Publish the recovery, the reading it was rendered from, and the volume's other tenants. [WP-EDGE-05R]"
+  ],
+  "commits_are_isolated": "Three commits, each with its own subject and its own files: the reading and its generators, the classification and labelling repairs with their tests, and the published artefacts. No commit stages another workstream's paths, and none of them uses a broad `git add`.",
+  "uncommitted_entries_in_the_shared_checkout": 129,
+  "uncommitted_note": "The count is the whole shared checkout, not this work package's files: those entries belong to workstreams this one did not write (the ST-6 stream's live data, CAP-004's and other reports). They are left exactly as found, and only this work package's own paths were staged, one `git add <path>` at a time.",
+  "push_state": "AVAILABLE_NOT_EXERCISED",
+  "probe_command": "GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=/bin/true timeout 60 git push --dry-run origin HEAD",
+  "probe_exit_code": 0,
+  "probe_dry_run": true,
+  "probe_stderr": "To https://github.com/Extr3sao/bot_crypto.git\n * [new branch]      HEAD -> agent/edge-recovery/WP-EDGE-00-baseline",
+  "remote_has_this_branch": false,
+  "what_changed": "WP-EDGE-05's record had this probe killed after 60 s with exit 124 and no output, which it filed as BLOCKED_GITHUB_AUTH. The same probe now exits 0 and names the branch it would create, so authentication works at this instant and publication is possible. Nothing was pushed: --dry-run touches no remote ref, and the remote does not carry this branch.",
+  "previous_state": {
+    "recorded_in": "reports/edge-recovery/WP-EDGE-05R/GITHUB_STATE.json (06:50:26Z, the same probe one commit earlier)",
+    "push": "AVAILABLE_NOT_EXERCISED",
+    "earlier_still": {
+      "recorded_in": "reports/edge-recovery/WP-EDGE-05/RUN_REPORT.json#publication",
+      "push": "BLOCKED_GITHUB_AUTH",
+      "probe_exit_code": 124,
+      "probe_result": "no output, killed after 60 s"
+    }
+  },
+  "why_not_exercised": "A push publishes the whole branch, which is an external, hard-to-reverse act the operator has not asked for. The probe answers the question the closure asks — is publication still blocked? — without answering a different one on the operator's behalf.",
+  "consequence": "The commits of this work package are local. One explicit instruction publishes them; the probe above says it takes seconds.",
+  "reproduce": "git rev-parse HEAD; git rev-list --count main..HEAD; GIT_TERMINAL_PROMPT=0 GIT_ASKPASS=/bin/true timeout 60 git push --dry-run origin HEAD",
+  "hypothetical": true,
+  "order_sent": false,
+  "promotion": "NONE"
+}

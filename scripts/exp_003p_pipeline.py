@@ -1,0 +1,673 @@
+"""exp_003p_pipeline — the ordered entry points of EXP-003P.
+
+Each phase is also a script of its own; this module fixes the order and records what each
+one actually did. ``all`` refuses to skip a failing phase: a green report built on a red
+step is the failure mode this experiment exists to make impossible.
+
+    python scripts/exp_003p_pipeline.py status
+    python scripts/exp_003p_pipeline.py all
+    python scripts/exp_003p_pipeline.py tests
+"""
+
+from __future__ import annotations
+
+import argparse
+import contextlib
+import json
+import re
+import subprocess
+import sys
+import tomllib
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
+from urllib.parse import unquote
+
+REPO = Path(__file__).resolve().parents[1]
+if str(REPO / "scripts") not in sys.path:
+    sys.path.insert(0, str(REPO / "scripts"))
+
+from exp_003p_contract import OUT, RUN_ID, git, read_json, sha256_file, write_json  # noqa: E402
+
+PYTHON = sys.executable
+ARTEFACTS = (
+    "BASELINE.md",
+    "runtime_authority_map.md",
+    "WORK_PACKAGES.md",
+    "RFC-EXP-003P-PAPER-EXECUTION.md",
+    "design/PROTOCOL.json",
+    "design/PREREGISTRATION.md",
+    "design/DESIGN.sha256",
+    "design/PAPER_INTEGRATION_PLAN.md",
+    "ORDER_EVENT_SCHEMA.md",
+    "ORDER_EVENT_SCHEMA.json",
+    "STATE_MACHINE.md",
+    "EXECUTION_TRACE.jsonl",
+    "SCENARIO_TRACE.jsonl",
+    "ORDER_LIFECYCLE.csv",
+    "ORDER_LIFECYCLE.json",
+    "RECONCILIATION.json",
+    "METRICS.json",
+    "NEGATIVE_CONTROLS.json",
+    "INDEPENDENCE_AUDIT.json",
+    "INDEPENDENCE_AUDIT.md",
+    "VERIFICATION.json",
+    "DIGESTS.json",
+    "REHEARSAL.json",
+    "evidence/BASELINE.json",
+    "evidence/TESTS.json",
+    "evidence/environment.freeze.txt",
+    "evidence/CLEAN_CHECKOUT_REPRODUCTION.json",
+    "RUN_REPORT.md",
+    "RUN_REPORT.json",
+    "FINAL_REPORT.md",
+    "SHA256SUMS.txt",
+)
+
+RUFF_TARGETS = (
+    "src/trading_bot/paper/lifecycle",
+    "scripts/exp_003p_baseline.py",
+    "scripts/exp_003p_preregister.py",
+    "scripts/exp_003p_schema.py",
+    "scripts/exp_003p_rehearsal.py",
+    "scripts/exp_003p_controls.py",
+    "scripts/exp_003p_verify.py",
+    "scripts/exp_003p_report.py",
+    "scripts/exp_003p_contract.py",
+    "scripts/exp_003p_pipeline.py",
+    "scripts/exp_003p_checkout_compare.py",
+    "tests/unit/paper/test_execution_lifecycle.py",
+    "src/trading_bot/paper/broker.py",
+    "src/trading_bot/vision/lane.py",
+)
+
+
+def _run(args: list[str], *, label: str) -> int:
+    print(f"[003p-pipeline] {label}: {Path(args[0]).name} {' '.join(args[1:])}".rstrip())
+    completed = subprocess.run([PYTHON, *args], cwd=str(REPO), check=False)
+    if completed.returncode != 0:
+        print(f"[003p-pipeline] FAIL — {label} exited {completed.returncode}", file=sys.stderr)
+    return int(completed.returncode)
+
+
+def _capture(command: list[str], *, log: Path) -> dict[str, Any]:
+    completed = subprocess.run(command, cwd=str(REPO), capture_output=True, text=True, check=False)
+    log.parent.mkdir(parents=True, exist_ok=True)
+    log.write_text(
+        completed.stdout + "\n" + completed.stderr, encoding="utf-8", newline="\n"
+    )
+    tail = [
+        line for line in (completed.stdout.strip().splitlines() or [""]) if line.strip()
+    ][-3:]
+    return {"command": " ".join(command), "exit_code": completed.returncode, "tail": tail}
+
+
+def run_tests(out: Path) -> int:
+    """The suites and gates that matter, with their real exit codes."""
+
+    evidence = out / "evidence"
+    evidence.mkdir(parents=True, exist_ok=True)
+    results: dict[str, Any] = {
+        "executed_at_utc": datetime.now(tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "suites": [
+            "tests/unit/paper",
+            "tests/unit/autonomous",
+            "tests/integration",
+        ],
+    }
+    commands = {
+        "pytest_paper": [
+            PYTHON,
+            "-m",
+            "pytest",
+            "tests/unit/paper",
+            "-q",
+            "-p",
+            "no:cacheprovider",
+        ],
+        #: ``tests/unit/reports`` is another experiment's suite and is deliberately not in
+        #: this gate: it reads artifacts under ``reports/ai-bots`` that are git-ignored, so it
+        #: is red in a clean checkout through no fault of 003P. Its observed result is
+        #: declared in FINAL_REPORT.md instead of being counted here as green or as 003P's.
+        #: The autonomous runtime is the entrypoint that constructs PaperBroker for real;
+        #: instrumenting the broker without running its own suite would leave the
+        #: "tested runtime == instrumented runtime" claim on a static reading.
+        "pytest_autonomous": [
+            PYTHON,
+            "-m",
+            "pytest",
+            "tests/unit/autonomous",
+            "-q",
+            "-p",
+            "no:cacheprovider",
+        ],
+        "pytest_integration": [
+            PYTHON,
+            "-m",
+            "pytest",
+            "tests/integration",
+            "-q",
+            "-p",
+            "no:cacheprovider",
+        ],
+        "ruff": [PYTHON, "-m", "ruff", "check", *RUFF_TARGETS],
+        "mypy": [PYTHON, "-m", "mypy", "--strict", "src/trading_bot/paper/lifecycle"],
+    }
+    failed: list[str] = []
+    collected: dict[str, Any] = {}
+    for name, command in commands.items():
+        result = _capture(command, log=evidence / f"{name}.log")
+        collected[name] = result
+        if result["exit_code"] != 0:
+            failed.append(name)
+    tests = {
+        **results,
+        "state": "PASS" if not failed else "FAIL",
+        "failed": failed,
+        "results": collected,
+    }
+    write_json(evidence / "TESTS.json", tests)
+    print(
+        "[003p-pipeline] tests "
+        f"{tests['state']} "
+        + json.dumps(
+            {name: value["exit_code"] for name, value in collected.items()}
+        )
+    )
+    return 0 if not failed else 4
+
+
+def _site_packages(python: Path) -> Path | None:
+    root = python.parent.parent
+    if sys.platform == "win32":
+        candidate = root / "Lib" / "site-packages"
+        return candidate if candidate.exists() else None
+    for candidate in sorted(root.glob("lib/python3*/site-packages")):
+        return candidate
+    return None
+
+
+def _pin(line: str) -> str:
+    stripped = line.strip()
+    if not stripped or stripped.startswith(("#", "-")):
+        return ""
+    name, sep, version = stripped.split(";")[0].partition("==")
+    if not sep:
+        return ""
+    #: PEP 503 normalisation, so `boolean.py` and `boolean-py` are the same pin.
+    return f"{re.sub(r'[-_.]+', '-', name).lower()}=={version}"
+
+
+def _foreign_paths(text: str) -> list[str]:
+    """Paths a pointer file names, without mistaking `try:` for a drive letter.
+
+    ``.pth`` files in this repository carry Python one-liners whose escaped newlines
+    look like drive separators to a naive pattern, and ``direct_url.json`` spells its
+    path as a ``file:///`` URL. Both are read as what they are.
+    """
+
+    found = [unquote(match) for match in re.findall(r"file:///([^\"'\s]+)", text)]
+    for line in text.splitlines():
+        stripped = line.strip().strip('"').strip(",")
+        if re.match(r"^[A-Za-z]:[\\/]", stripped) or stripped.startswith("/"):
+            found.append(stripped)
+    return found
+
+
+def audit_environment(
+    worktree: Path, python: Path, requirements: Path | None
+) -> dict[str, Any]:
+    """Check that the checkout's environment belongs to the checkout.
+
+    Two failures are possible and the first one was observed: a freeze file that pins the
+    project with an absolute ``-e file:///...`` entry, so the checkout imports the publishing
+    tree's ``src`` instead of its own; and an install whose pins differ from the file it
+    claims to have been synced from. The gate reads the environment rather than trusting the
+    install command it was handed.
+    """
+
+    site = _site_packages(python)
+    audit: dict[str, Any] = {
+        "site_packages": str(site) if site else None,
+        "pins_in_freeze": 0,
+        "pins_mismatch": [],
+        "paths_outside_checkout": [],
+    }
+    if site is None:
+        audit["ok"] = False
+        audit["detail"] = "no site-packages next to the checkout interpreter"
+        return audit
+
+    root = worktree.resolve()
+    pointers = [
+        *site.glob("*.pth"),
+        *site.glob("*.egg-link"),
+        *site.glob("*.dist-info/direct_url.json"),
+    ]
+    for pointer in sorted(pointers):
+        try:
+            text = pointer.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        for match in _foreign_paths(text):
+            target = Path(match.strip().rstrip("\\/"))
+            try:
+                inside = target.resolve().is_relative_to(root)
+            except OSError:
+                inside = False
+            if not inside:
+                audit["paths_outside_checkout"].append(
+                    {"pointer": pointer.name, "path": match.strip()}
+                )
+
+    project = ""
+    with contextlib.suppress(OSError, KeyError):
+        project = re.sub(
+            r"[-_.]+",
+            "-",
+            str(
+                tomllib.loads((worktree / "pyproject.toml").read_text(encoding="utf-8"))[
+                    "project"
+                ]["name"]
+            ),
+        ).lower()
+    probe = subprocess.run(
+        [
+            str(python),
+            "-c",
+            "import json, importlib.metadata as m\n"
+            "print(json.dumps(sorted('%s==%s' % (d.metadata['Name'], d.version)\n"
+            "    for d in m.distributions() if d.metadata['Name'])))\n",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    installed = (
+        {_pin(row) for row in json.loads(probe.stdout or "[]")} if probe.returncode == 0 else set()
+    )
+    installed = {pin for pin in installed if pin and not pin.startswith(f"{project}==")}
+    expected: set[str] = set()
+    if requirements is not None and requirements.exists():
+        expected = {
+            pin
+            for pin in (
+                _pin(line) for line in requirements.read_text(encoding="utf-8").splitlines()
+            )
+            if pin and "==" in pin
+        }
+    audit["pins_in_freeze"] = len(expected)
+    audit["pins_installed"] = len(installed)
+    audit["pins_mismatch"] = sorted(expected.symmetric_difference(installed))[:20]
+    audit["ok"] = (
+        not audit["paths_outside_checkout"]
+        and probe.returncode == 0
+        and (not expected or not audit["pins_mismatch"])
+    )
+    if probe.returncode != 0:
+        audit["probe_stderr"] = probe.stderr.strip().splitlines()[-3:]
+    return audit
+
+
+def run_checkout_check(
+    out: Path, install_command: str = "not recorded", requirements: str | None = None
+) -> int:
+    """Reproduce the run from a detached worktree at HEAD and compare the two directories.
+
+    The rehearsal is executed *in the checkout* by the checkout's own interpreter, and the
+    verdict comes from `exp_003p_checkout_compare.py` reading both trees — never from this
+    process comparing a file it just wrote with itself. A worktree that cannot carry the
+    code is recorded as NOT_PERFORMED, not as a pass.
+    """
+
+    evidence = out / "evidence"
+    evidence.mkdir(parents=True, exist_ok=True)
+    head = git("rev-parse", "HEAD")
+    probe = subprocess.run(
+        ["git", "cat-file", "-e", f"{head}:src/trading_bot/paper/lifecycle/store.py"],
+        cwd=str(REPO),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    present_at_head = probe.returncode == 0
+    payload: dict[str, Any] = {
+        "schema_version": "AI_BOTS_003P_CHECKOUT_REPRODUCTION_V1",
+        "run_id": RUN_ID,
+        "generated_at_utc": datetime.now(tz=UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "commit": head,
+        "branch": git("rev-parse", "--abbrev-ref", "HEAD"),
+        "dirty_lines": len([line for line in git("status", "--porcelain").splitlines() if line.strip()]),
+        "lifecycle_modules_present_at_head": present_at_head,
+    }
+    if not present_at_head:
+        payload["verdict"] = "NOT_PERFORMED"
+        payload["detail"] = (
+            "HEAD does not contain the 003P modules: the experiment's code is in the working "
+            "tree and has not been committed. A clean checkout would reproduce nothing."
+        )
+        payload["substitute_evidence"] = {
+            "two_runs_identical": (
+                read_json(out / "DIGESTS.json").get("run_digest")
+                == read_json(out / "runs" / "run-2" / "DIGESTS.json").get("run_digest")
+            ),
+            "run_digest": read_json(out / "DIGESTS.json").get("run_digest"),
+            "second_run_digest": read_json(out / "runs" / "run-2" / "DIGESTS.json").get(
+                "run_digest"
+            ),
+        }
+        payload["reports_ignored_by"] = ".gitignore:463 'reports/ai-bots/*'"
+        payload["artifact_note"] = (
+            "artifacts under reports/ai-bots are git-ignored; publishing them needs "
+            "'git add -f', and the worktree check needs them force-added to HEAD"
+        )
+        payload["commands_after_commit"] = [
+            "git add -f reports/ai-bots/EXP-003P-PAPER-EXECUTION-001",
+            "git worktree add --detach ../003p-checkout HEAD",
+            "cp -r reports/ai-bots/EXP-003K-CANDIDATE-001/dataset ../003p-checkout/reports/"
+            "ai-bots/EXP-003K-CANDIDATE-001/",
+            "cd ../003p-checkout && python scripts/exp_003p_rehearsal.py --checkout-check",
+            "compare DIGESTS.json run_digest with this run",
+        ]
+        write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", payload)
+        print(
+            "[003p-pipeline] checkout NOT_PERFORMED — HEAD lacks the 003P modules "
+            f"({head[:12]}); two-run determinism substituted and declared"
+        )
+        return 0
+    worktree = REPO.parent / "003p-checkout"
+    if worktree.resolve() == REPO.resolve():
+        # Executed from inside the checkout: the "worktree" is the tree we are standing in,
+        # so the rehearsal would overwrite the published artifacts and the digest comparison
+        # would compare a file with itself. That is a green verdict for reproducing nothing.
+        payload["verdict"] = "REFUSED_SELF_COMPARISON"
+        payload["detail"] = (
+            "this process runs inside the checkout path it would have created; comparing it "
+            "with itself proves nothing. Run the gate from the publishing tree, or compare "
+            "two directories with scripts/exp_003p_checkout_compare.py."
+        )
+        write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", payload)
+        print("[003p-pipeline] REFUSED — this is the checkout itself, not a copy of it")
+        return 7
+    added = subprocess.run(
+        ["git", "worktree", "add", "--detach", str(worktree), head],
+        cwd=str(REPO),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if added.returncode != 0:
+        # Reuse an existing checkout only when it already sits on the commit under test;
+        # anything else reproduces a different tree and must not be compared.
+        there = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=str(worktree),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if there.returncode != 0 or there.stdout.strip() != head:
+            payload["verdict"] = "FAILED"
+            payload["detail"] = (
+                f"worktree {worktree} exists but is not at {head}: {added.stderr.strip()}"
+            )
+            write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", payload)
+            print("[003p-pipeline] checkout FAILED — the worktree exists at another commit")
+            return 5
+    python = worktree / (".venv/Scripts/python.exe" if sys.platform == "win32" else ".venv/bin/python")
+    if not python.exists():
+        payload["verdict"] = "FAILED"
+        payload["detail"] = (
+            f"no interpreter at {python}: install the checkout's dependencies first (the "
+            "committed uv.lock cannot satisfy `uv sync --locked`, see FINAL_REPORT), then "
+            "re-run this phase"
+        )
+        write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", payload)
+        print("[003p-pipeline] checkout FAILED — the worktree has no environment")
+        return 5
+
+    audit = audit_environment(
+        worktree, python, Path(requirements) if requirements else None
+    )
+    payload["environment_audit"] = audit
+    if not audit["ok"]:
+        payload["verdict"] = "FAILED"
+        payload["detail"] = (
+            "the checkout's environment is not the checkout's: "
+            f"paths_outside_checkout={audit['paths_outside_checkout'][:3]} "
+            f"pins_mismatch={audit['pins_mismatch'][:5]}"
+        )
+        write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", payload)
+        print("[003p-pipeline] checkout FAILED — environment audit")
+        print(f"[003p-pipeline]   {payload['detail']}")
+        return 5
+    print(
+        f"[003p-pipeline] environment {audit['pins_installed']}/{audit['pins_in_freeze']} pins "
+        f"match, no path outside the checkout"
+    )
+
+    reproduced_out = worktree / "reports" / "ai-bots" / out.name
+    phases: tuple[list[str], ...] = (
+        ["scripts/exp_003p_baseline.py", "--out", str(reproduced_out)],
+        ["scripts/exp_003p_preregister.py"],
+        ["scripts/exp_003p_schema.py", "--out", str(reproduced_out)],
+        ["scripts/exp_003p_rehearsal.py", "--out", str(reproduced_out)],
+        [
+            "scripts/exp_003p_rehearsal.py",
+            "--out",
+            str(reproduced_out / "runs" / "run-2"),
+        ],
+        [
+            "scripts/exp_003p_controls.py",
+            "--out",
+            str(reproduced_out / "NEGATIVE_CONTROLS.json"),
+        ],
+        ["scripts/exp_003p_verify.py", "--out", str(reproduced_out)],
+        #: The suites are re-run *in the checkout* with the checkout's interpreter: a
+        #: reproduction that only re-ran the rehearsal would leave the code path the tests
+        #: exercise unverified in the tree that is supposed to reproduce it.
+        ["scripts/exp_003p_pipeline.py", "tests", "--out", str(reproduced_out)],
+    )
+    executed: list[dict[str, Any]] = []
+    for phase in phases:
+        done = subprocess.run(
+            [str(python), *phase], cwd=str(worktree), capture_output=True, text=True, check=False
+        )
+        executed.append({"script": phase[0], "exit_code": done.returncode})
+        if done.returncode != 0:
+            payload["verdict"] = "FAILED"
+            payload["detail"] = f"{phase[0]} exited {done.returncode} inside the checkout"
+            payload["phases"] = executed
+            payload["stderr_tail"] = done.stderr.strip().splitlines()[-6:]
+            write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", payload)
+            print(f"[003p-pipeline] checkout FAILED — {phase[0]} exited {done.returncode}")
+            return 5
+
+    comparison = subprocess.run(
+        [
+            PYTHON,
+            str(REPO / "scripts" / "exp_003p_checkout_compare.py"),
+            "--published",
+            str(out),
+            "--reproduced",
+            str(reproduced_out),
+            "--out",
+            str(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json"),
+            "--worktree",
+            str(worktree),
+            "--checkout-commit",
+            head,
+            "--install-command",
+            install_command,
+        ]
+        + (["--requirements", requirements] if requirements else []),
+        cwd=str(REPO),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    payload["phases"] = executed
+    #: The comparer writes the verdict and owns that file; the audit is appended here rather
+    #: than declared by it, so a passing comparison cannot describe an environment it never
+    #: looked at. Without this merge a clean verdict would arrive with no audit and the report
+    #: would refuse it, which is what happened the first time this ran.
+    recorded = read_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json")
+    recorded["environment_audit"] = audit
+    recorded["phases"] = executed
+    write_json(evidence / "CLEAN_CHECKOUT_REPRODUCTION.json", recorded)
+    print(
+        "[003p-pipeline] checkout "
+        f"{'REPRODUCED' if comparison.returncode == 0 else 'FAILED'} "
+        f"worktree={worktree} (kept for inspection)"
+    )
+    if comparison.returncode != 0:
+        print(comparison.stdout.strip() or comparison.stderr.strip())
+    return 0 if comparison.returncode == 0 else 5
+
+
+def rehearse(out: Path) -> int:
+    first = _run(
+        [str(REPO / "scripts" / "exp_003p_rehearsal.py"), "--out", str(out)], label="rehearsal-1"
+    )
+    if first != 0:
+        return first
+    second_out = out / "runs" / "run-2"
+    second = _run(
+        [str(REPO / "scripts" / "exp_003p_rehearsal.py"), "--out", str(second_out)],
+        label="rehearsal-2",
+    )
+    if second != 0:
+        return second
+    keys = (
+        "execution_trace_content_sha256",
+        "scenario_trace_content_sha256",
+        "lifecycle_csv_sha256",
+        "ledger_digest_runtime",
+        "ledger_digest_scenario",
+    )
+    a = read_json(out / "DIGESTS.json")
+    b = read_json(second_out / "DIGESTS.json")
+    differences = [key for key in keys if a.get(key) != b.get(key)]
+    #: Digests that cover `commit_sha` differ by construction if another agent commits
+    #: between the two rehearsals. They are reported, never used to call the execution
+    #: nondeterministic: the content digests above are what decide that.
+    commit_bound = [
+        key
+        for key in ("execution_trace_sha256", "scenario_trace_sha256", "run_digest")
+        if a.get(key) != b.get(key)
+    ]
+    print(
+        f"[003p-pipeline] determinism {'PASS' if not differences else 'FAIL'} "
+        f"differences={differences} "
+        f"commit_bound_differences={commit_bound} run_digest={a['run_digest'][:18]}…"
+    )
+    return 0 if not differences else 6
+
+
+def status(out: Path) -> int:
+    print(
+        f"[003p-pipeline] run={out.name} branch={git('rev-parse', '--abbrev-ref', 'HEAD')} "
+        f"head={git('rev-parse', '--short', 'HEAD')}"
+    )
+    for name in ARTEFACTS:
+        path = out / name
+        if path.exists():
+            print(f"[003p-pipeline]   present  {name:46s} {sha256_file(path)[:16]}…")
+        else:
+            print(f"[003p-pipeline]   MISSING  {name}")
+    if (out / "VERIFICATION.json").exists():
+        verdict = read_json(out / "VERIFICATION.json")
+        print(
+            f"[003p-pipeline]   checks={verdict['checks_passed']}/{verdict['checks_total']} "
+            f"technical={verdict['technical_execution_validation']} "
+            f"paper={verdict['paper_validation']}"
+        )
+    if (out / "RUN_REPORT.json").exists():
+        report = read_json(out / "RUN_REPORT.json")
+        print(f"[003p-pipeline]   status={report['status']}")
+    return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="EXP-003P pipeline")
+    parser.add_argument(
+        "phase",
+        choices=(
+            "status",
+            "baseline",
+            "preregister",
+            "schema",
+            "rehearse",
+            "controls",
+            "verify",
+            "tests",
+            "checkout",
+            "report",
+            "seal",
+            "all",
+        ),
+    )
+    parser.add_argument("--out", default=str(OUT))
+    parser.add_argument(
+        "--install-command",
+        default="not recorded",
+        help="how the checkout's environment was built; copied into the reproduction evidence",
+    )
+    parser.add_argument(
+        "--requirements",
+        default=None,
+        help="frozen freeze file the checkout's environment was synced from (hashed)",
+    )
+    args = parser.parse_args(argv)
+    out = Path(args.out)
+    scripts = REPO / "scripts"
+
+    if args.phase == "status":
+        return status(out)
+    if args.phase == "baseline":
+        return _run([str(scripts / "exp_003p_baseline.py"), "--out", str(out)], label="baseline")
+    if args.phase == "preregister":
+        return _run([str(scripts / "exp_003p_preregister.py")], label="preregister")
+    if args.phase == "schema":
+        return _run([str(scripts / "exp_003p_schema.py"), "--out", str(out)], label="schema")
+    if args.phase == "rehearse":
+        return rehearse(out)
+    if args.phase == "controls":
+        return _run(
+            [str(scripts / "exp_003p_controls.py"), "--out", str(out / "NEGATIVE_CONTROLS.json")],
+            label="controls",
+        )
+    if args.phase == "verify":
+        return _run([str(scripts / "exp_003p_verify.py"), "--out", str(out)], label="verify")
+    if args.phase == "tests":
+        return run_tests(out)
+    if args.phase == "checkout":
+        return run_checkout_check(out, args.install_command, args.requirements)
+    if args.phase == "report":
+        return _run([str(scripts / "exp_003p_report.py"), "--out", str(out)], label="report")
+    if args.phase == "seal":
+        return _run(
+            [str(scripts / "exp_003p_report.py"), "--out", str(out), "--seal"], label="seal"
+        )
+    if args.phase == "all":
+        for phase in (
+            "baseline",
+            "preregister",
+            "schema",
+            "rehearse",
+            "controls",
+            "verify",
+            "tests",
+            "checkout",
+            "report",
+            "seal",
+        ):
+            code = main([phase, "--out", str(out)])
+            if code != 0:
+                return code
+        return 0
+    return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,35 @@
+{
+  "chart": {
+    "bar_count": 120,
+    "bytes": 41856,
+    "chart_spec_version": "ai-vision-chart/1",
+    "first_open_utc": "2026-04-02T13:00:00Z",
+    "last_open_utc": "2026-04-07T12:00:00Z",
+    "sha256": "f8f707c05175f5409cee8f8ea4e85c9ebb83cb525acfea84d08be811cf722b68",
+    "symbol": "BTC/USDT",
+    "timeframe": "1h"
+  },
+  "payload": {
+    "max_tokens": 400,
+    "messages": [
+      {
+        "chars": 1561,
+        "role": "system"
+      },
+      {
+        "image": {
+          "base64_chars": 55830,
+          "data_uri_prefix": "data:image/png;base64,iVBORw0K",
+          "detail": "high"
+        },
+        "role": "user",
+        "text_chars": 333
+      }
+    ],
+    "model": "gpt-4o-mini",
+    "response_format": {
+      "type": "json_object"
+    },
+    "temperature": 0.0
+  }
+}

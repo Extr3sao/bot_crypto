@@ -1,0 +1,32 @@
+{
+  "schema_version": "paper-heartbeat-v1",
+  "run_id": "wp-edge-00b-universe-fix",
+  "mode": "PAPER",
+  "cycle": 2,
+  "timestamp_ms": 1791801602619,
+  "timestamp_iso": "2026-10-12T10:40:02.619000+00:00",
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "timeframe": "5m",
+  "strategies_evaluated": 18,
+  "decisions": 3,
+  "no_trade": 3,
+  "no_trade_kinds": {
+    "NO_TRADE_STRATEGIC": 2,
+    "NO_TRADE_UNIVERSE": 1
+  },
+  "shadow_trades": 0,
+  "paper_trades": 0,
+  "risk_vetoes": 0,
+  "runtime_failures": 0,
+  "errors": [],
+  "cycles_completed": 2,
+  "uptime_seconds": 23.288,
+  "state_age_seconds": null,
+  "paper_candidates": [],
+  "storage_failures": 0,
+  "storage_errors": []
+}

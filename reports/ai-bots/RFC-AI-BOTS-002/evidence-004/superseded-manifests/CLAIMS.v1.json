@@ -1,0 +1,55 @@
+[
+  {
+    "claim_id": "C-01",
+    "kind": "COUNTER",
+    "pointer": "counts.phase_v31.work.operations",
+    "expected": 9,
+    "text": "This iteration ran 9 REA work operations (target analysis plus its two blocked prerequisites)."
+  },
+  {
+    "claim_id": "C-02",
+    "kind": "COUNTER",
+    "pointer": "counts.phase_v31.work.executed_with_evidence_id",
+    "expected": 7,
+    "text": "7 of them returned an evidence_id from REA."
+  },
+  {
+    "claim_id": "C-03",
+    "kind": "COUNTER",
+    "pointer": "counts.phase_v31.work.not_executed",
+    "expected": 2,
+    "text": "2 did not execute: import-reference-source (unsupported_host) and compare-source-to-bundle (NOT_EXECUTED_INVALID_INPUT with exit 0)."
+  },
+  {
+    "claim_id": "C-04",
+    "kind": "COUNTER",
+    "pointer": "counts.phase_v31.work.executed_with_verified_artifact",
+    "expected": 2,
+    "text": "Only 2 of the 7 have evidence bytes on disk whose sha256 matches the declared digest."
+  },
+  {
+    "claim_id": "C-05",
+    "kind": "COUNTER",
+    "pointer": "counts.all_dossiers.distinct_evidence_ids",
+    "expected": 12,
+    "text": "The four dossiers together hold 12 distinct evidence_ids; this is a different denominator and is never added to the phase counter."
+  },
+  {
+    "claim_id": "C-06",
+    "kind": "EVIDENCE_ID",
+    "evidence_id": "ev_4b2bf9c5c313530cc7e1e399d4cde5c175ecdd0018a9f608ee12782522ea9ade",
+    "text": "REA analysed the pinned nof1 public/ tree and emitted this id."
+  },
+  {
+    "claim_id": "C-07",
+    "kind": "EVIDENCE_ID",
+    "evidence_id": "ev_be8c7d74bb6ed79011e4d135ba011c7df95df4d50fcdfc4086223f8fb5931cc6",
+    "text": "REA analysed the FenixAI dist/ build produced from the pinned commit and emitted this id."
+  },
+  {
+    "claim_id": "C-08",
+    "kind": "EVIDENCE_ID",
+    "evidence_id": "ev_9b45318c072de54798bb93a37354c38ec82b2bccf31d3cd1fbf9be0898a16b99",
+    "text": "REA analysed Semantic Signal's static dashboard and emitted this id."
+  }
+]

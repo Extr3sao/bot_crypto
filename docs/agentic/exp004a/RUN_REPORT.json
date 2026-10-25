@@ -1,0 +1,659 @@
+{
+  "mission": "TAP-EXP-004A-FOUNDATION",
+  "generated_at_utc": "2026-10-21T07:59:18Z",
+  "started_at_utc": "2026-10-21T07:56:18Z",
+  "authority": {
+    "head": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "remote": "https://github.com/Extr3sao/bot_crypto.git",
+    "worktrees": 21,
+    "dirty_entries": 274
+  },
+  "admission": {
+    "store": "data\\forward\\edge03",
+    "lag_bounds_ms": {
+      "1h": 7200000,
+      "15m": 1800000
+    },
+    "target_days": 90,
+    "lanes": {
+      "1h": {
+        "series": [
+          "1h:BTC",
+          "1h:ETH",
+          "1h:SOL"
+        ],
+        "series_first_day": {
+          "1h:BTC": "2026-03-01",
+          "1h:ETH": "2026-03-01",
+          "1h:SOL": "2026-03-01"
+        },
+        "intersection_epoch": "2026-03-01",
+        "counts": {
+          "PROSPECTIVELY_OBSERVED": 5,
+          "DENSE_BUT_BACKFILLED": 229,
+          "INCOMPLETE": 0,
+          "PENDING": 1
+        },
+        "admissible": 5,
+        "admissible_days": [
+          "2026-10-15",
+          "2026-10-16",
+          "2026-10-17",
+          "2026-10-19",
+          "2026-10-20"
+        ],
+        "remaining": 85,
+        "satisfied": false,
+        "projection": {
+          "rate_admissible_per_day": 0.021368,
+          "projected_completion_utc": "2037-09-11T07:56:18Z",
+          "readable": "5 admissible of 234 settled days; at that rate 85 more need 3978.0 days"
+        },
+        "settled_days": 234,
+        "pending_days": [
+          "2026-10-21"
+        ]
+      },
+      "15m": {
+        "series": [
+          "15m:BTC",
+          "15m:ETH",
+          "15m:SOL"
+        ],
+        "series_first_day": {
+          "15m:BTC": "2026-10-07",
+          "15m:ETH": "2026-10-07",
+          "15m:SOL": "2026-10-07"
+        },
+        "intersection_epoch": "2026-10-07",
+        "counts": {
+          "PROSPECTIVELY_OBSERVED": 4,
+          "DENSE_BUT_BACKFILLED": 9,
+          "INCOMPLETE": 1,
+          "PENDING": 1
+        },
+        "admissible": 4,
+        "admissible_days": [
+          "2026-10-16",
+          "2026-10-17",
+          "2026-10-19",
+          "2026-10-20"
+        ],
+        "remaining": 86,
+        "satisfied": false,
+        "projection": {
+          "rate_admissible_per_day": 0.285714,
+          "projected_completion_utc": "2027-08-18T07:56:18Z",
+          "readable": "4 admissible of 14 settled days; at that rate 86 more need 301.0 days"
+        },
+        "settled_days": 14,
+        "pending_days": [
+          "2026-10-21"
+        ]
+      },
+      "1h+15m": {
+        "series": [
+          "15m:BTC",
+          "15m:ETH",
+          "15m:SOL",
+          "1h:BTC",
+          "1h:ETH",
+          "1h:SOL"
+        ],
+        "series_first_day": {
+          "15m:BTC": "2026-10-07",
+          "15m:ETH": "2026-10-07",
+          "15m:SOL": "2026-10-07",
+          "1h:BTC": "2026-03-01",
+          "1h:ETH": "2026-03-01",
+          "1h:SOL": "2026-03-01"
+        },
+        "intersection_epoch": "2026-10-07",
+        "counts": {
+          "PROSPECTIVELY_OBSERVED": 4,
+          "DENSE_BUT_BACKFILLED": 9,
+          "INCOMPLETE": 1,
+          "PENDING": 1
+        },
+        "admissible": 4,
+        "admissible_days": [
+          "2026-10-16",
+          "2026-10-17",
+          "2026-10-19",
+          "2026-10-20"
+        ],
+        "remaining": 86,
+        "satisfied": false,
+        "projection": {
+          "rate_admissible_per_day": 0.285714,
+          "projected_completion_utc": "2027-08-18T07:56:18Z",
+          "readable": "4 admissible of 14 settled days; at that rate 86 more need 301.0 days"
+        },
+        "settled_days": 14,
+        "pending_days": [
+          "2026-10-21"
+        ]
+      }
+    },
+    "seals": {
+      "1h": {
+        "ledger": "data\\exp004a\\admission_1h.jsonl",
+        "records_appended_this_run": 0,
+        "records_total": 234,
+        "series_checked": 702,
+        "verified": true,
+        "admissible_from_ledger": 5,
+        "errors": [],
+        "ledger_sha256_16": "73f8ba7b5716a725"
+      },
+      "1h+15m": {
+        "ledger": "data\\exp004a\\admission_1h+15m.jsonl",
+        "records_appended_this_run": 0,
+        "records_total": 14,
+        "series_checked": 84,
+        "verified": true,
+        "admissible_from_ledger": 4,
+        "errors": [],
+        "ledger_sha256_16": "1f10efb48f1c1272"
+      }
+    }
+  },
+  "inventory_reconciliation": {
+    "the_single_figure": 235,
+    "what_it_counts": "UTC days on which the 1h series holds bars, whether or not they were observed when they closed",
+    "decomposition": {
+      "days_with_any_bar": 235,
+      "days_complete_enough_to_classify": 234,
+      "dense_but_backfilled": 229,
+      "prospectively_observed_1h_only": 5,
+      "prospectively_observed_1h_and_15m": 4
+    },
+    "why_the_numbers_differ": [
+      "235 counts days with bars; 229 of them arrived after their own close, which makes them history rather than observation",
+      "the 1h lane admits 5 days; the 15m lane starts on 2026-10-07, so a day requiring both admits 4",
+      "on 2026-10-15 the 1h series has 22 of 24 bars inside the lag bound (0.9167, admitted) while the 15m series has 79 of 96 (0.8229, refused)",
+      "no day before a series' own freeze is a forward observation for that series: the 15m corpus ends at 2026-10-07T11:30Z, so 2026-03-01..2026-10-07 is out of sample for 15m and untouched only for 1h",
+      "EXP-004A requires 90 days; the 1h lane would need 85 more at its current rate and the joint lane 86"
+    ],
+    "claim_source": "data/forward/edge04/coverage.json (a derived file, regenerated on every observer tick)",
+    "claim": {
+      "days_with_any_data": 235,
+      "window_observation_days": 234,
+      "densely_covered_but_backfilled": 229,
+      "prospectively_observed": 5,
+      "prospectively_observed_days": [
+        "2026-10-15",
+        "2026-10-16",
+        "2026-10-17",
+        "2026-10-19",
+        "2026-10-20"
+      ],
+      "required_days": 60,
+      "rule": "a day counts only if every primary asset holds at least 90% of the 24 hourly bars the calendar expects for it, and every one of those bars was stored within its timeframe's lag bound of closing ({'1h': 7200000, '15m': 1800000})",
+      "window_vs_prospective": "the window figure counts every stored bar after the freeze, the prospectively observed figure counts only days whose bars were stored as they closed: only the second one is an observation of the future"
+    },
+    "resolved_by": "re-derived from data/forward/edge03/*/*.jsonl in this run, not read from the claim",
+    "conclusion": "the 235-day figure is arithmetically correct and evidentially inert: it is a row count over a corpus that is 97.4 % backfilled, and it does not describe 235 days of anything an experiment may use"
+  },
+  "independence": {
+    "experiments": [
+      "EXP-003J",
+      "EXP-003K",
+      "EXP-003N",
+      "WP-EDGE-07"
+    ],
+    "days": [
+      "2026-03-01/2026-10-14",
+      "2026-06-21/2026-08-06",
+      "2026-08-06/2026-08-20"
+    ],
+    "usages": [
+      {
+        "experiment_id": "EXP-003K",
+        "day": "2026-08-06/2026-08-20",
+        "evidence": "dataset:7fbdfefa",
+        "dataset": "EXP-003K-CANDIDATE-001"
+      },
+      {
+        "experiment_id": "EXP-003J",
+        "day": "2026-08-06/2026-08-20",
+        "evidence": "dataset:7fbdfefa",
+        "dataset": "EXP-003J run report"
+      },
+      {
+        "experiment_id": "WP-EDGE-07",
+        "day": "2026-03-01/2026-10-14",
+        "evidence": "dataset:edge07-trend",
+        "dataset": "edge-recovery"
+      },
+      {
+        "experiment_id": "EXP-003N",
+        "day": "2026-06-21/2026-08-06",
+        "evidence": "dataset:7fbdfefa",
+        "dataset": "EXP-003N in-sample"
+      }
+    ],
+    "duplicates": [
+      {
+        "day": "2026-08-06/2026-08-20",
+        "experiments": [
+          "EXP-003J",
+          "EXP-003K"
+        ],
+        "evidence": "dataset:7fbdfefa",
+        "same_bytes": true,
+        "reading": "same bytes read by several experiments: one observation, counted once"
+      }
+    ],
+    "naive_observation_count": 4,
+    "independent_day_count": 3,
+    "overstated_by": 1,
+    "overstatement_factor": 1.3333,
+    "reading": "four experiment claims resolve to three independent windows; J and K in particular are one measurement, so a fifth negative result from that pair would be a recount rather than evidence"
+  },
+  "execution_cost": {
+    "tape": "data\\st6\\ST6_OBSERVATIONS.jsonl",
+    "quotes_loaded": 900,
+    "quotes_usable": 896,
+    "distinct_days": 14,
+    "at_200_usdt": {
+      "status": "MEASURED_AT_THE_SIZE_THE_TAPE_WALKED",
+      "assets": {
+        "BTCUSDT": {
+          "asset": "BTCUSDT",
+          "size_usdt": 200.0,
+          "observations": 224,
+          "distinct_days": 14,
+          "median_bps": 20.001213,
+          "p10_bps": 20.001196,
+          "p90_bps": 20.001228,
+          "worst_bps": 20.001237,
+          "knowledge": "OBSERVED",
+          "size_status": "OBSERVED_AT_DECLARED_SIZE",
+          "status": "MEASURED",
+          "components": [
+            {
+              "name": "fee_round_trip",
+              "bps": 20.0,
+              "knowledge": "KNOWN",
+              "source_id": "SRC-01",
+              "note": "venue schedule, 10.0 bps per side, charged on entry and exit"
+            },
+            {
+              "name": "spread_crossed",
+              "bps": 0.001213,
+              "knowledge": "OBSERVED",
+              "source_id": "ST6_OBSERVATIONS median over 224 windows",
+              "note": "half the quoted spread on entry plus half on exit is one full spread"
+            },
+            {
+              "name": "depth_impact_round_trip",
+              "bps": 0.0,
+              "knowledge": "OBSERVED",
+              "source_id": "ST6_OBSERVATIONS depth walk at 200 USDT over 224 windows",
+              "note": "buy-side plus sell-side walk of the recorded book"
+            }
+          ]
+        },
+        "ETHUSDT": {
+          "asset": "ETHUSDT",
+          "size_usdt": 200.0,
+          "observations": 224,
+          "distinct_days": 14,
+          "median_bps": 20.04082,
+          "p10_bps": 20.039507,
+          "p90_bps": 20.04185,
+          "worst_bps": 20.042739,
+          "knowledge": "OBSERVED",
+          "size_status": "OBSERVED_AT_DECLARED_SIZE",
+          "status": "MEASURED",
+          "components": [
+            {
+              "name": "fee_round_trip",
+              "bps": 20.0,
+              "knowledge": "KNOWN",
+              "source_id": "SRC-01",
+              "note": "venue schedule, 10.0 bps per side, charged on entry and exit"
+            },
+            {
+              "name": "spread_crossed",
+              "bps": 0.040823,
+              "knowledge": "OBSERVED",
+              "source_id": "ST6_OBSERVATIONS median over 224 windows",
+              "note": "half the quoted spread on entry plus half on exit is one full spread"
+            },
+            {
+              "name": "depth_impact_round_trip",
+              "bps": 0.0,
+              "knowledge": "OBSERVED",
+              "source_id": "ST6_OBSERVATIONS depth walk at 200 USDT over 224 windows",
+              "note": "buy-side plus sell-side walk of the recorded book"
+            }
+          ]
+        },
+        "SOLUSDT": {
+          "asset": "SOLUSDT",
+          "size_usdt": 200.0,
+          "observations": 224,
+          "distinct_days": 14,
+          "median_bps": 20.941398,
+          "p10_bps": 20.9042,
+          "p90_bps": 20.965018,
+          "worst_bps": 20.990638,
+          "knowledge": "OBSERVED",
+          "size_status": "OBSERVED_AT_DECLARED_SIZE",
+          "status": "MEASURED",
+          "components": [
+            {
+              "name": "fee_round_trip",
+              "bps": 20.0,
+              "knowledge": "KNOWN",
+              "source_id": "SRC-01",
+              "note": "venue schedule, 10.0 bps per side, charged on entry and exit"
+            },
+            {
+              "name": "spread_crossed",
+              "bps": 0.941575,
+              "knowledge": "OBSERVED",
+              "source_id": "ST6_OBSERVATIONS median over 224 windows",
+              "note": "half the quoted spread on entry plus half on exit is one full spread"
+            },
+            {
+              "name": "depth_impact_round_trip",
+              "bps": 0.0,
+              "knowledge": "OBSERVED",
+              "source_id": "ST6_OBSERVATIONS depth walk at 200 USDT over 224 windows",
+              "note": "buy-side plus sell-side walk of the recorded book"
+            }
+          ]
+        }
+      },
+      "rule": {
+        "outcome": "INSUFFICIENT_EVIDENCE",
+        "frozen_rule": {
+          "cost_lower_bps": 20.0,
+          "model_btc_eth_bps": 24.786,
+          "model_sol_bps": 27.31,
+          "min_observed_days": 60,
+          "min_coverage": 0.9,
+          "source": "docs/agentic/NEXT_EXPERIMENT_PROPOSAL.md §3, frozen 2026-10-21"
+        },
+        "observed_days": 14,
+        "coverage": 1.0,
+        "assets": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "SOLUSDT"
+        ],
+        "median_bps": {
+          "BTCUSDT": 20.001213,
+          "ETHUSDT": 20.04082,
+          "SOLUSDT": 20.941398
+        },
+        "delta_vs_model_bps": {
+          "BTCUSDT": -4.784787,
+          "ETHUSDT": -4.74518,
+          "SOLUSDT": -6.368602
+        },
+        "authorises": "nothing",
+        "economic_executions": 0,
+        "live_orders": 0,
+        "reading": "INSUFFICIENT_EVIDENCE: the rule cannot fire on this sample, which is a statement about the sample rather than about the venue"
+      }
+    },
+    "at_500_usdt": {
+      "status": "LOWER_BOUND_ONLY",
+      "reason": "every ST-6 window walked 200 USDT; depth is not linear, so 500 USDT is not that number scaled",
+      "assets": {
+        "BTCUSDT": {
+          "asset": "BTCUSDT",
+          "size_usdt": 500.0,
+          "observations": 224,
+          "distinct_days": 14,
+          "median_bps": 20.001213,
+          "p10_bps": 20.001196,
+          "p90_bps": 20.001228,
+          "worst_bps": 20.001237,
+          "knowledge": "OBSERVED",
+          "size_status": "DECLARED_SIZE_NOT_WALKED",
+          "status": "DECLARED_SIZE_NOT_WALKED",
+          "components": [
+            {
+              "name": "fee_round_trip",
+              "bps": 20.0,
+              "knowledge": "KNOWN",
+              "source_id": "SRC-01",
+              "note": "venue schedule, 10.0 bps per side, charged on entry and exit"
+            },
+            {
+              "name": "spread_crossed",
+              "bps": 0.001213,
+              "knowledge": "OBSERVED",
+              "source_id": "ST6_OBSERVATIONS median over 224 windows",
+              "note": "half the quoted spread on entry plus half on exit is one full spread"
+            },
+            {
+              "name": "depth_impact_round_trip",
+              "bps": null,
+              "knowledge": "ASSUMED",
+              "source_id": "not measured",
+              "note": "the tape walked [200.0] USDT, not 500; depth is not linear in size, so scaling would invent the number"
+            }
+          ]
+        },
+        "ETHUSDT": {
+          "asset": "ETHUSDT",
+          "size_usdt": 500.0,
+          "observations": 224,
+          "distinct_days": 14,
+          "median_bps": 20.04082,
+          "p10_bps": 20.039507,
+          "p90_bps": 20.04185,
+          "worst_bps": 20.042739,
+          "knowledge": "OBSERVED",
+          "size_status": "DECLARED_SIZE_NOT_WALKED",
+          "status": "DECLARED_SIZE_NOT_WALKED",
+          "components": [
+            {
+              "name": "fee_round_trip",
+              "bps": 20.0,
+              "knowledge": "KNOWN",
+              "source_id": "SRC-01",
+              "note": "venue schedule, 10.0 bps per side, charged on entry and exit"
+            },
+            {
+              "name": "spread_crossed",
+              "bps": 0.040823,
+              "knowledge": "OBSERVED",
+              "source_id": "ST6_OBSERVATIONS median over 224 windows",
+              "note": "half the quoted spread on entry plus half on exit is one full spread"
+            },
+            {
+              "name": "depth_impact_round_trip",
+              "bps": null,
+              "knowledge": "ASSUMED",
+              "source_id": "not measured",
+              "note": "the tape walked [200.0] USDT, not 500; depth is not linear in size, so scaling would invent the number"
+            }
+          ]
+        },
+        "SOLUSDT": {
+          "asset": "SOLUSDT",
+          "size_usdt": 500.0,
+          "observations": 224,
+          "distinct_days": 14,
+          "median_bps": 20.941398,
+          "p10_bps": 20.9042,
+          "p90_bps": 20.965018,
+          "worst_bps": 20.990638,
+          "knowledge": "OBSERVED",
+          "size_status": "DECLARED_SIZE_NOT_WALKED",
+          "status": "DECLARED_SIZE_NOT_WALKED",
+          "components": [
+            {
+              "name": "fee_round_trip",
+              "bps": 20.0,
+              "knowledge": "KNOWN",
+              "source_id": "SRC-01",
+              "note": "venue schedule, 10.0 bps per side, charged on entry and exit"
+            },
+            {
+              "name": "spread_crossed",
+              "bps": 0.941575,
+              "knowledge": "OBSERVED",
+              "source_id": "ST6_OBSERVATIONS median over 224 windows",
+              "note": "half the quoted spread on entry plus half on exit is one full spread"
+            },
+            {
+              "name": "depth_impact_round_trip",
+              "bps": null,
+              "knowledge": "ASSUMED",
+              "source_id": "not measured",
+              "note": "the tape walked [200.0] USDT, not 500; depth is not linear in size, so scaling would invent the number"
+            }
+          ]
+        }
+      },
+      "rule": {
+        "outcome": "INSUFFICIENT_EVIDENCE",
+        "frozen_rule": {
+          "cost_lower_bps": 20.0,
+          "model_btc_eth_bps": 24.786,
+          "model_sol_bps": 27.31,
+          "min_observed_days": 60,
+          "min_coverage": 0.9,
+          "source": "docs/agentic/NEXT_EXPERIMENT_PROPOSAL.md §3, frozen 2026-10-21"
+        },
+        "observed_days": 14,
+        "coverage": 1.0,
+        "assets": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "SOLUSDT"
+        ],
+        "median_bps": {
+          "BTCUSDT": 20.001213,
+          "ETHUSDT": 20.04082,
+          "SOLUSDT": 20.941398
+        },
+        "delta_vs_model_bps": {
+          "BTCUSDT": -4.784787,
+          "ETHUSDT": -4.74518,
+          "SOLUSDT": -6.368602
+        },
+        "authorises": "nothing",
+        "economic_executions": 0,
+        "live_orders": 0,
+        "reading": "INSUFFICIENT_EVIDENCE: the rule cannot fire on this sample, which is a statement about the sample rather than about the venue"
+      }
+    },
+    "fee_dominance": {
+      "fee_round_trip_bps": 20.0,
+      "median_measured_at_200_bps": {
+        "BTCUSDT": 20.001213,
+        "ETHUSDT": 20.04082,
+        "SOLUSDT": 20.941398
+      },
+      "share_of_total_from_fee": {
+        "BTCUSDT": 0.999939,
+        "ETHUSDT": 0.997963,
+        "SOLUSDT": 0.955046
+      },
+      "reading": "at the size the tape walked, the round trip is the venue fee plus a spread of a few hundredths of a basis point: the 4.79 bps of spread and slippage the frozen model charges on BTC is not visible in the measurement, and that gap is the whole of the COST-CONFIRM question"
+    },
+    "not_a_decision": "13 days is below the frozen 60-day floor, and the 500 USDT size was never walked; the rule is reported for its arithmetic, not for its verdict"
+  },
+  "identifier": {
+    "experiment_id": "EXP-004A",
+    "discover_existing_runs": [],
+    "spent": false,
+    "report_directory": "docs\\agentic\\exp004a",
+    "report_directory_inside_runs_root": false
+  },
+  "gate": {
+    "inspect": {
+      "decision": "INSPECTION_ONLY_NO_RUN",
+      "exit_code": 3,
+      "errors": [],
+      "checks": [
+        "DATASET_0_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+        "DATASET_0_PROVENANCE_PENDING_CAPTURE",
+        "DATASET_0_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+        "DATASET_1_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+        "DATASET_1_PROVENANCE_PENDING_CAPTURE",
+        "DATASET_1_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+        "DATASET_2_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+        "DATASET_2_PROVENANCE_PENDING_CAPTURE",
+        "DATASET_2_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+        "DATASET_3_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+        "DATASET_3_PROVENANCE_PENDING_CAPTURE",
+        "DATASET_3_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+        "IDENTIFIER_UNSPENT:EXP-004A",
+        "NO_PRIOR_RUNS:EXP-004A",
+        "OFFLINE_PREFLIGHT_ONLY_NO_ECONOMIC_EXECUTION",
+        "TWO_PHASE_PHASE_1_NOT_YET_COMMITTED"
+      ],
+      "economic_executions": 0
+    },
+    "authorize": {
+      "decision": "BLOCKED",
+      "exit_code": 2,
+      "errors": [
+        "CODE_COMMIT_NOT_ANCESTOR",
+        "GIT_NOT_TRACKED:config/preregistrations/EXP-004A.datasets.json",
+        "GIT_NOT_TRACKED:config/preregistrations/EXP-004A.json",
+        "GIT_NOT_TRACKED:config/preregistrations/EXP-004A.prior_runs.json",
+        "RUNTIME_CODE_DIRTY:src/trading_bot/research/execution_cost",
+        "RUNTIME_CODE_DIRTY:src/trading_bot/research/prospective",
+        "TWO_PHASE_PHASE_1_IS_NOT_AUTHORISABLE"
+      ],
+      "checks": [
+        "DATASET_0_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+        "DATASET_0_PROVENANCE_PENDING_CAPTURE",
+        "DATASET_0_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+        "DATASET_1_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+        "DATASET_1_PROVENANCE_PENDING_CAPTURE",
+        "DATASET_1_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+        "DATASET_2_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+        "DATASET_2_PROVENANCE_PENDING_CAPTURE",
+        "DATASET_2_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+        "DATASET_3_NORMALIZED_DIGEST_DEFERRED_TO_PHASE_2",
+        "DATASET_3_PROVENANCE_PENDING_CAPTURE",
+        "DATASET_3_RAW_DIGEST_DEFERRED_TO_PHASE_2",
+        "GIT_HEAD=d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+        "IDENTIFIER_UNSPENT:EXP-004A",
+        "NO_PRIOR_RUNS:EXP-004A",
+        "OFFLINE_PREFLIGHT_ONLY_NO_ECONOMIC_EXECUTION",
+        "TWO_PHASE_PHASE_1_NOT_YET_COMMITTED"
+      ],
+      "economic_executions": 0
+    }
+  },
+  "standing": {
+    "economic_executions": 0,
+    "live_orders": 0,
+    "promotions": 0,
+    "false_success": 0,
+    "exp004a_authorised": false,
+    "live_trading": "DISABLED",
+    "trades_authorized": 0
+  },
+  "conclusion": {
+    "can_observe_prospectively": true,
+    "can_verify_what_it_observed": true,
+    "days_admissible_1h": 5,
+    "days_required": 90,
+    "can_measure_cost": true,
+    "measured_median_1h_asset_bps": {
+      "BTCUSDT": 20.001213,
+      "ETHUSDT": 20.04082,
+      "SOLUSDT": 20.941398
+    },
+    "can_measure_cost_at_the_declared_notional": false,
+    "why_not_at_declared_notional": "the tape walked 200 USDT; 500 USDT would be an interpolation",
+    "exp004a_authorised": false,
+    "identifier_still_unspent": true,
+    "reading": "the infrastructure can watch a day, prove afterwards that it watched it, and price a round trip at the size the tape actually walked. It cannot yet do the last of those at the declared notional, and it has 4 of the 90 days EXP-004A requires, so the experiment is prepared and not authorised."
+  }
+}
