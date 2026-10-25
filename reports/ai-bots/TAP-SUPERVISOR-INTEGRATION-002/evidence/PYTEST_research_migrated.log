@@ -1,0 +1,434 @@
+FFFFFFFFFF.............................................................. [ 41%]
+...............F........................................................ [ 83%]
+.....F.............F...F.....                                            [100%]
+================================== FAILURES ===================================
+_ test_completed_history_is_reproduced_without_the_future[vol_regime_breakout-e-1h\\UNIUSDT_2021_2026_1h.json-4000] _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge08/universe-1h/UNIUSDT_2021_2026_1h.json')
+count = 4000
+family = Family(name='vol_regime_breakout', hypothesis='H: a close above the 168h high is informative only when realised volati...': 200}, status='TESTED', differs_from=('breakout@5m', 'ema_crossover@5m'), untestable_reason='', required_evidence='')
+
+    @pytest.mark.parametrize(("path", "count"), SERIES, ids=lambda value: str(value)[-30:])
+    @pytest.mark.parametrize("family", SINGLE_ASSET_FAMILIES, ids=lambda f: f.name)
+    def test_completed_history_is_reproduced_without_the_future(
+        path: Path, count: int, family: object
+    ) -> None:
+>       bars = _slice(path, count)
+               ^^^^^^^^^^^^^^^^^^^
+
+tests\unit\research\test_alpha15_causality.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge08/universe-1h/UNIUSDT_2021_2026_1h.json')
+count = 4000
+
+    def _slice(path: Path, count: int) -> list[Bar]:
+        bars = load_ohlcv(path)
+>       assert len(bars) > count, f"{path.name} is too short for the causality slice"
+E       AssertionError: UNIUSDT_2021_2026_1h.json is too short for the causality slice
+E       assert 0 > 4000
+E        +  where 0 = len([])
+
+tests\unit\research\test_alpha15_causality.py:40: AssertionError
+_ test_completed_history_is_reproduced_without_the_future[vol_regime_breakout-e-1h\\CRVUSDT_2021_2026_1h.json-4000] _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge08/universe-1h/CRVUSDT_2021_2026_1h.json')
+count = 4000
+family = Family(name='vol_regime_breakout', hypothesis='H: a close above the 168h high is informative only when realised volati...': 200}, status='TESTED', differs_from=('breakout@5m', 'ema_crossover@5m'), untestable_reason='', required_evidence='')
+
+    @pytest.mark.parametrize(("path", "count"), SERIES, ids=lambda value: str(value)[-30:])
+    @pytest.mark.parametrize("family", SINGLE_ASSET_FAMILIES, ids=lambda f: f.name)
+    def test_completed_history_is_reproduced_without_the_future(
+        path: Path, count: int, family: object
+    ) -> None:
+>       bars = _slice(path, count)
+               ^^^^^^^^^^^^^^^^^^^
+
+tests\unit\research\test_alpha15_causality.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge08/universe-1h/CRVUSDT_2021_2026_1h.json')
+count = 4000
+
+    def _slice(path: Path, count: int) -> list[Bar]:
+        bars = load_ohlcv(path)
+>       assert len(bars) > count, f"{path.name} is too short for the causality slice"
+E       AssertionError: CRVUSDT_2021_2026_1h.json is too short for the causality slice
+E       assert 0 > 4000
+E        +  where 0 = len([])
+
+tests\unit\research\test_alpha15_causality.py:40: AssertionError
+_ test_completed_history_is_reproduced_without_the_future[vol_regime_breakout-ut-1h\\BTCUSDT_holdout2026.json-3000] _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge07/holdout-1h/BTCUSDT_holdout2026.json')
+count = 3000
+family = Family(name='vol_regime_breakout', hypothesis='H: a close above the 168h high is informative only when realised volati...': 200}, status='TESTED', differs_from=('breakout@5m', 'ema_crossover@5m'), untestable_reason='', required_evidence='')
+
+    @pytest.mark.parametrize(("path", "count"), SERIES, ids=lambda value: str(value)[-30:])
+    @pytest.mark.parametrize("family", SINGLE_ASSET_FAMILIES, ids=lambda f: f.name)
+    def test_completed_history_is_reproduced_without_the_future(
+        path: Path, count: int, family: object
+    ) -> None:
+>       bars = _slice(path, count)
+               ^^^^^^^^^^^^^^^^^^^
+
+tests\unit\research\test_alpha15_causality.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge07/holdout-1h/BTCUSDT_holdout2026.json')
+count = 3000
+
+    def _slice(path: Path, count: int) -> list[Bar]:
+        bars = load_ohlcv(path)
+>       assert len(bars) > count, f"{path.name} is too short for the causality slice"
+E       AssertionError: BTCUSDT_holdout2026.json is too short for the causality slice
+E       assert 0 > 3000
+E        +  where 0 = len([])
+
+tests\unit\research\test_alpha15_causality.py:40: AssertionError
+_ test_completed_history_is_reproduced_without_the_future[trend_pullback-e-1h\\UNIUSDT_2021_2026_1h.json-4000] _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge08/universe-1h/UNIUSDT_2021_2026_1h.json')
+count = 4000
+family = Family(name='trend_pullback', hypothesis='H: in an established uptrend, a first close back below a fast mean is a cont...p_atr_multiple': 3.0}, status='TESTED', differs_from=('ema_crossover@5m',), untestable_reason='', required_evidence='')
+
+    @pytest.mark.parametrize(("path", "count"), SERIES, ids=lambda value: str(value)[-30:])
+    @pytest.mark.parametrize("family", SINGLE_ASSET_FAMILIES, ids=lambda f: f.name)
+    def test_completed_history_is_reproduced_without_the_future(
+        path: Path, count: int, family: object
+    ) -> None:
+>       bars = _slice(path, count)
+               ^^^^^^^^^^^^^^^^^^^
+
+tests\unit\research\test_alpha15_causality.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge08/universe-1h/UNIUSDT_2021_2026_1h.json')
+count = 4000
+
+    def _slice(path: Path, count: int) -> list[Bar]:
+        bars = load_ohlcv(path)
+>       assert len(bars) > count, f"{path.name} is too short for the causality slice"
+E       AssertionError: UNIUSDT_2021_2026_1h.json is too short for the causality slice
+E       assert 0 > 4000
+E        +  where 0 = len([])
+
+tests\unit\research\test_alpha15_causality.py:40: AssertionError
+_ test_completed_history_is_reproduced_without_the_future[trend_pullback-e-1h\\CRVUSDT_2021_2026_1h.json-4000] _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge08/universe-1h/CRVUSDT_2021_2026_1h.json')
+count = 4000
+family = Family(name='trend_pullback', hypothesis='H: in an established uptrend, a first close back below a fast mean is a cont...p_atr_multiple': 3.0}, status='TESTED', differs_from=('ema_crossover@5m',), untestable_reason='', required_evidence='')
+
+    @pytest.mark.parametrize(("path", "count"), SERIES, ids=lambda value: str(value)[-30:])
+    @pytest.mark.parametrize("family", SINGLE_ASSET_FAMILIES, ids=lambda f: f.name)
+    def test_completed_history_is_reproduced_without_the_future(
+        path: Path, count: int, family: object
+    ) -> None:
+>       bars = _slice(path, count)
+               ^^^^^^^^^^^^^^^^^^^
+
+tests\unit\research\test_alpha15_causality.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge08/universe-1h/CRVUSDT_2021_2026_1h.json')
+count = 4000
+
+    def _slice(path: Path, count: int) -> list[Bar]:
+        bars = load_ohlcv(path)
+>       assert len(bars) > count, f"{path.name} is too short for the causality slice"
+E       AssertionError: CRVUSDT_2021_2026_1h.json is too short for the causality slice
+E       assert 0 > 4000
+E        +  where 0 = len([])
+
+tests\unit\research\test_alpha15_causality.py:40: AssertionError
+_ test_completed_history_is_reproduced_without_the_future[trend_pullback-ut-1h\\BTCUSDT_holdout2026.json-3000] _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge07/holdout-1h/BTCUSDT_holdout2026.json')
+count = 3000
+family = Family(name='trend_pullback', hypothesis='H: in an established uptrend, a first close back below a fast mean is a cont...p_atr_multiple': 3.0}, status='TESTED', differs_from=('ema_crossover@5m',), untestable_reason='', required_evidence='')
+
+    @pytest.mark.parametrize(("path", "count"), SERIES, ids=lambda value: str(value)[-30:])
+    @pytest.mark.parametrize("family", SINGLE_ASSET_FAMILIES, ids=lambda f: f.name)
+    def test_completed_history_is_reproduced_without_the_future(
+        path: Path, count: int, family: object
+    ) -> None:
+>       bars = _slice(path, count)
+               ^^^^^^^^^^^^^^^^^^^
+
+tests\unit\research\test_alpha15_causality.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge07/holdout-1h/BTCUSDT_holdout2026.json')
+count = 3000
+
+    def _slice(path: Path, count: int) -> list[Bar]:
+        bars = load_ohlcv(path)
+>       assert len(bars) > count, f"{path.name} is too short for the causality slice"
+E       AssertionError: BTCUSDT_holdout2026.json is too short for the causality slice
+E       assert 0 > 3000
+E        +  where 0 = len([])
+
+tests\unit\research\test_alpha15_causality.py:40: AssertionError
+_ test_completed_history_is_reproduced_without_the_future[mean_reversion_vol_liq-e-1h\\UNIUSDT_2021_2026_1h.json-4000] _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge08/universe-1h/UNIUSDT_2021_2026_1h.json')
+count = 4000
+family = Family(name='mean_reversion_vol_liq', hypothesis='H: a two-sigma stretch below a 48h mean reverts only when volatility...tus='TESTED', differs_from=('breakout@5m', 'ema_crossover@5m', 'lead_lag'), untestable_reason='', required_evidence='')
+
+    @pytest.mark.parametrize(("path", "count"), SERIES, ids=lambda value: str(value)[-30:])
+    @pytest.mark.parametrize("family", SINGLE_ASSET_FAMILIES, ids=lambda f: f.name)
+    def test_completed_history_is_reproduced_without_the_future(
+        path: Path, count: int, family: object
+    ) -> None:
+>       bars = _slice(path, count)
+               ^^^^^^^^^^^^^^^^^^^
+
+tests\unit\research\test_alpha15_causality.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge08/universe-1h/UNIUSDT_2021_2026_1h.json')
+count = 4000
+
+    def _slice(path: Path, count: int) -> list[Bar]:
+        bars = load_ohlcv(path)
+>       assert len(bars) > count, f"{path.name} is too short for the causality slice"
+E       AssertionError: UNIUSDT_2021_2026_1h.json is too short for the causality slice
+E       assert 0 > 4000
+E        +  where 0 = len([])
+
+tests\unit\research\test_alpha15_causality.py:40: AssertionError
+_ test_completed_history_is_reproduced_without_the_future[mean_reversion_vol_liq-e-1h\\CRVUSDT_2021_2026_1h.json-4000] _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge08/universe-1h/CRVUSDT_2021_2026_1h.json')
+count = 4000
+family = Family(name='mean_reversion_vol_liq', hypothesis='H: a two-sigma stretch below a 48h mean reverts only when volatility...tus='TESTED', differs_from=('breakout@5m', 'ema_crossover@5m', 'lead_lag'), untestable_reason='', required_evidence='')
+
+    @pytest.mark.parametrize(("path", "count"), SERIES, ids=lambda value: str(value)[-30:])
+    @pytest.mark.parametrize("family", SINGLE_ASSET_FAMILIES, ids=lambda f: f.name)
+    def test_completed_history_is_reproduced_without_the_future(
+        path: Path, count: int, family: object
+    ) -> None:
+>       bars = _slice(path, count)
+               ^^^^^^^^^^^^^^^^^^^
+
+tests\unit\research\test_alpha15_causality.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge08/universe-1h/CRVUSDT_2021_2026_1h.json')
+count = 4000
+
+    def _slice(path: Path, count: int) -> list[Bar]:
+        bars = load_ohlcv(path)
+>       assert len(bars) > count, f"{path.name} is too short for the causality slice"
+E       AssertionError: CRVUSDT_2021_2026_1h.json is too short for the causality slice
+E       assert 0 > 4000
+E        +  where 0 = len([])
+
+tests\unit\research\test_alpha15_causality.py:40: AssertionError
+_ test_completed_history_is_reproduced_without_the_future[mean_reversion_vol_liq-ut-1h\\BTCUSDT_holdout2026.json-3000] _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge07/holdout-1h/BTCUSDT_holdout2026.json')
+count = 3000
+family = Family(name='mean_reversion_vol_liq', hypothesis='H: a two-sigma stretch below a 48h mean reverts only when volatility...tus='TESTED', differs_from=('breakout@5m', 'ema_crossover@5m', 'lead_lag'), untestable_reason='', required_evidence='')
+
+    @pytest.mark.parametrize(("path", "count"), SERIES, ids=lambda value: str(value)[-30:])
+    @pytest.mark.parametrize("family", SINGLE_ASSET_FAMILIES, ids=lambda f: f.name)
+    def test_completed_history_is_reproduced_without_the_future(
+        path: Path, count: int, family: object
+    ) -> None:
+>       bars = _slice(path, count)
+               ^^^^^^^^^^^^^^^^^^^
+
+tests\unit\research\test_alpha15_causality.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/edge07/holdout-1h/BTCUSDT_holdout2026.json')
+count = 3000
+
+    def _slice(path: Path, count: int) -> list[Bar]:
+        bars = load_ohlcv(path)
+>       assert len(bars) > count, f"{path.name} is too short for the causality slice"
+E       AssertionError: BTCUSDT_holdout2026.json is too short for the causality slice
+E       assert 0 > 3000
+E        +  where 0 = len([])
+
+tests\unit\research\test_alpha15_causality.py:40: AssertionError
+_____________ test_the_rotation_family_does_not_use_future_closes _____________
+
+    def test_the_rotation_family_does_not_use_future_closes() -> None:
+        """Same statement for the portfolio rule: a truncated universe, same book."""
+        symbols = ["AAVEUSDT", "CRVUSDT", "KSMUSDT", "SNXUSDT", "SUSHIUSDT", "UNIUSDT"]
+        series = {
+            symbol: load_ohlcv(
+                REPO / "data" / "edge08" / "universe-1h" / f"{symbol}_2021_2026_1h.json"
+            )[-2_500:]
+            for symbol in symbols
+        }
+        params = FAMILY_BY_NAME["cross_sectional_rotation"].parameters
+        full = rotation_backtest(series, params)
+        entries_full = [
+            (event["symbol"], event["ts_ms"]) for event in full["events"] if event["action"] == "BUY"
+        ]
+>       assert entries_full
+E       assert []
+
+tests\unit\research\test_alpha15_causality.py:96: AssertionError
+_____ test_a_pid_the_platform_refuses_to_answer_does_not_crash_the_lease ______
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-753/test_a_pid_the_platform_refuse0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000210C3BF7E10>
+
+    def test_a_pid_the_platform_refuses_to_answer_does_not_crash_the_lease(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """The age rule decides a lease, and a probe that cannot answer must say so and not raise.
+    
+        Windows answers ``os.kill(pid, 0)`` for a pid it cannot map with ``WinError 87``, raised as
+        ``SystemError`` — which is not an ``OSError``, so a probe guarding only ``OSError`` crashed the
+        process that was asking. A crashed trigger is worse than a refused one: the schedule loses the
+        observation *and* the record that would have explained it.
+        """
+        lease = tmp_path / cl.LOCK_FILENAME
+        lease.write_text(
+            json.dumps(
+                {
+                    "lease_version": cl.LEASE_VERSION,
+                    "campaign_id": "EDGE04_FORWARD_OBSERVER",
+                    "pid": 1_234_567,
+                    "host": "a host that is not this one",
+                    "acquired_at": 1_000,
+                    "renewed_at": 1_000,
+                    "stale_after_seconds": 300,
+                }
+            ),
+            encoding="utf-8",
+        )
+        lock = cl.CampaignLock(tmp_path, campaign_id="EDGE04_FORWARD_OBSERVER", stale_after_seconds=300)
+        holder = lock.holder()
+    
+        def refusing(pid: int, signal: int) -> None:  # noqa: ARG001
+            raise SystemError("<built-in function kill> returned a result with an exception set")
+    
+        monkeypatch.setattr(cl.os, "kill", refusing)
+>       assert cl._pid_probe(1_234_567) is None, "a platform that cannot answer must not claim to"
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\research\test_campaign_runtime.py:826: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\trading_bot\research\campaign_lock.py:55: in _pid_probe
+    os.kill(pid, 0)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+pid = 1234567, signal = 0
+
+    def refusing(pid: int, signal: int) -> None:  # noqa: ARG001
+>       raise SystemError("<built-in function kill> returned a result with an exception set")
+E       SystemError: <built-in function kill> returned a result with an exception set
+
+tests\unit\research\test_campaign_runtime.py:823: SystemError
+___ test_the_registered_command_points_at_this_supervisor_without_a_console ___
+
+    def test_the_registered_command_points_at_this_supervisor_without_a_console() -> None:
+        """WP-OPS-BACKGROUND-001: the task must not own a console window.
+    
+        The previous contract was ``task_command() == python_executable()``, which is
+        exactly the defect: an ``InteractiveToken`` task running ``python.exe`` owns a
+        visible console for its whole life. The registration now names
+        ``pythonw.exe`` and the windowless launcher; the supervisor script is still
+        the argument, and the launcher still ends with the ``run`` subcommand.
+        """
+        supervisor = _load_supervisor()
+        command = supervisor.task_command()
+        arguments = supervisor.task_arguments()
+>       assert Path(command).name.lower() == "pythonw.exe"
+E       AssertionError: assert 'python.exe' == 'pythonw.exe'
+E         
+E         - pythonw.exe
+E         ?       -
+E         + python.exe
+
+tests\unit\research\test_campaign_supervisor.py:870: AssertionError
+_______________ test_signals_need_no_data_after_their_own_exit ________________
+
+    def test_signals_need_no_data_after_their_own_exit() -> None:
+        import sys
+    
+        sys.path.insert(0, str(REPO / "src"))
+        from trading_bot.research import discovery as D
+    
+        spec = D.load_spec(SPECS / "HYP-002.json")
+>       bars = D.load_bars(REPO / "data" / "raw" / "alpha003" / "price" / f"{spec.asset}_1h.json")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\research\test_rfc046_activation_and_campaign.py:224: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\trading_bot\research\discovery\__init__.py:195: in load_bars
+    raw = json.loads(Path(path).read_text(encoding="utf-8"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1058: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/data/raw/alpha003/price/ETHUSDT_1h.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-integ002\\data\\raw\\alpha003\\price\\ETHUSDT_1h.json'
+
+..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError
+_______________ test_zero_sample_hypothesis_is_recorded_as_such _______________
+
+    def test_zero_sample_hypothesis_is_recorded_as_such() -> None:
+>       detail = json.loads(CAMPAIGN_DETAIL.read_text(encoding="utf-8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\research\test_rfc046_activation_and_campaign.py:291: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1058: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/GVLLFR0035/Downloads/ff-wt-integ002/reports/rfc046/CAMPAIGN_DETAIL.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-integ002\\reports\\rfc046\\CAMPAIGN_DETAIL.json'
+
+..\..\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/unit/research/test_alpha15_causality.py::test_completed_history_is_reproduced_without_the_future[vol_regime_breakout-e-1h\\UNIUSDT_2021_2026_1h.json-4000]
+FAILED tests/unit/research/test_alpha15_causality.py::test_completed_history_is_reproduced_without_the_future[vol_regime_breakout-e-1h\\CRVUSDT_2021_2026_1h.json-4000]
+FAILED tests/unit/research/test_alpha15_causality.py::test_completed_history_is_reproduced_without_the_future[vol_regime_breakout-ut-1h\\BTCUSDT_holdout2026.json-3000]
+FAILED tests/unit/research/test_alpha15_causality.py::test_completed_history_is_reproduced_without_the_future[trend_pullback-e-1h\\UNIUSDT_2021_2026_1h.json-4000]
+FAILED tests/unit/research/test_alpha15_causality.py::test_completed_history_is_reproduced_without_the_future[trend_pullback-e-1h\\CRVUSDT_2021_2026_1h.json-4000]
+FAILED tests/unit/research/test_alpha15_causality.py::test_completed_history_is_reproduced_without_the_future[trend_pullback-ut-1h\\BTCUSDT_holdout2026.json-3000]
+FAILED tests/unit/research/test_alpha15_causality.py::test_completed_history_is_reproduced_without_the_future[mean_reversion_vol_liq-e-1h\\UNIUSDT_2021_2026_1h.json-4000]
+FAILED tests/unit/research/test_alpha15_causality.py::test_completed_history_is_reproduced_without_the_future[mean_reversion_vol_liq-e-1h\\CRVUSDT_2021_2026_1h.json-4000]
+FAILED tests/unit/research/test_alpha15_causality.py::test_completed_history_is_reproduced_without_the_future[mean_reversion_vol_liq-ut-1h\\BTCUSDT_holdout2026.json-3000]
+FAILED tests/unit/research/test_alpha15_causality.py::test_the_rotation_family_does_not_use_future_closes
+FAILED tests/unit/research/test_campaign_runtime.py::test_a_pid_the_platform_refuses_to_answer_does_not_crash_the_lease
+FAILED tests/unit/research/test_campaign_supervisor.py::test_the_registered_command_points_at_this_supervisor_without_a_console
+FAILED tests/unit/research/test_rfc046_activation_and_campaign.py::test_signals_need_no_data_after_their_own_exit
+FAILED tests/unit/research/test_rfc046_activation_and_campaign.py::test_zero_sample_hypothesis_is_recorded_as_such
+14 failed, 159 passed in 189.11s (0:03:09)

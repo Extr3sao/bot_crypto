@@ -1,0 +1,67 @@
+{
+  "checked_at_utc": "2026-10-25T10:26:47Z",
+  "fencing": {
+    "fence_files": [],
+    "max_fence_in_reclaims": 0,
+    "stream_fence": null
+  },
+  "last_attempt": {
+    "aborted": false,
+    "exit_code": null,
+    "refused": false
+  },
+  "ledger": {
+    "chain_ok": false,
+    "chain_reason": "MISSING",
+    "cycle_directories": [],
+    "cycle_ledgers": {},
+    "cycle_ledgers_ok": true,
+    "cycles": [],
+    "head_sha256": null,
+    "interrupted_cycles": [],
+    "kinds": {},
+    "last_cycle": null,
+    "rows": 0,
+    "seq_continuous": false
+  },
+  "locks": {
+    "abandoned_paths": [],
+    "active": [],
+    "all": [],
+    "awaiting_recovery": []
+  },
+  "out_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-lockcamp-full2\\session",
+  "owner": {
+    "acquired_at_utc": null,
+    "fence": null,
+    "host": null,
+    "live": false,
+    "pid": null,
+    "process_start_ms": null
+  },
+  "read_only": true,
+  "recoveries": {
+    "count": 0,
+    "last": null,
+    "last_fence": null,
+    "last_reason": null,
+    "scopes": []
+  },
+  "schema_version": "TAP_PAPER_SESSION_STATUS_V1",
+  "session": {
+    "ended_at_utc": null,
+    "pinned_identity": null,
+    "resumed": null,
+    "resumed_starts": 0,
+    "run_id": null,
+    "runtime_digest": null,
+    "runtime_stable": false,
+    "session_id": null,
+    "started_at_utc": null,
+    "starts": 0
+  },
+  "state": "ABSENT",
+  "why": [
+    "CHAIN_MISSING"
+  ]
+}
