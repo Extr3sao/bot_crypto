@@ -1,0 +1,1397 @@
+{
+  "generated_at_ms": 1792933698454,
+  "discovery": {
+    "families": [
+      {
+        "family": "ema_crossover",
+        "class": "EmaCrossoverFamily",
+        "module": "trading_bot.research.families.ema_crossover_family",
+        "source_sha256": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c"
+      },
+      {
+        "family": "momentum",
+        "class": "MomentumFamily",
+        "module": "trading_bot.research.families.momentum_family",
+        "source_sha256": "633a8a7f61cc21615d32018c639cd143aad95987d69a075511a7927a3eb74685"
+      },
+      {
+        "family": "breakout",
+        "class": "BreakoutFamily",
+        "module": "trading_bot.research.families.breakout_family",
+        "source_sha256": "9825f38950c5b975457df47fbd58490a5826121d1d733a15e8aa9a2ed73165a7"
+      },
+      {
+        "family": "trend",
+        "class": "TrendFamily",
+        "module": "trading_bot.research.families.trend_family",
+        "source_sha256": "1d88358cc4da07d2adc55a8e4f60d8addc362974f418536d61a1ec8c67fc1471"
+      },
+      {
+        "family": "mean_reversion",
+        "class": "MeanReversionFamily",
+        "module": "trading_bot.research.families.mean_reversion_family",
+        "source_sha256": "07d019114e776a5dbb701a6d3772ef1f423736b60b4a15c287884a529950a349"
+      },
+      {
+        "family": "volatility",
+        "class": "VolatilityFamily",
+        "module": "trading_bot.research.families.volatility_family",
+        "source_sha256": "b1717c10016ee0036b0fef7ea77ea6c0cb77a981e458544d131d43487555a4e9"
+      }
+    ],
+    "protocol_implementations": [
+      {
+        "class": "EmaCrossoverStrategy",
+        "module": "trading_bot.strategies.ema_crossover",
+        "strategy_name": "ema_crossover"
+      }
+    ],
+    "declared_config_strategies": [
+      {
+        "name": "trend_pullback_scalping",
+        "enabled": false,
+        "state": "research"
+      },
+      {
+        "name": "range_reversion_scalping",
+        "enabled": false,
+        "state": "research"
+      },
+      {
+        "name": "breakout_volume_scalping",
+        "enabled": false,
+        "state": "research"
+      },
+      {
+        "name": "vwap_reclaim_scalping",
+        "enabled": false,
+        "state": "research"
+      },
+      {
+        "name": "momentum_microtrend_scalping",
+        "enabled": false,
+        "state": "disabled"
+      }
+    ],
+    "runtime_entrypoints": [
+      {
+        "path": "scripts/autonomous_paper.py",
+        "exists": true,
+        "sha256": "65d0836b3cbce65c5401e715a89df8105e2b5cf1eb9468f6e2a72b7a57beef48",
+        "role": "PAPER runtime; instantiates the six families and gates them on the admission ledger",
+        "paper_runtime": true
+      },
+      {
+        "path": "scripts/start_paper_trading.py",
+        "exists": true,
+        "sha256": "8cd8832010353ff10d1e1b04287720d40e732d61b1313683c20c54b76f0d0106",
+        "role": "paper starter; same family registry",
+        "paper_runtime": true
+      },
+      {
+        "path": "src/trading_bot/app.py",
+        "exists": true,
+        "sha256": "43e33ee0fabf7ffb6b30efd319659ad853abc055366d2b15f111bb73034de49e",
+        "role": "application wiring (scanner -> strategy pipeline -> risk -> execution)",
+        "paper_runtime": false
+      },
+      {
+        "path": "scripts/multi_family_backtest.py",
+        "exists": true,
+        "sha256": "17904a18db507ba5a14835ce96f1997d42d9d63200517c187bff5be4daed330b",
+        "role": "research backtest of the six families",
+        "paper_runtime": false
+      },
+      {
+        "path": "scripts/rfc010_baseline_replay.py",
+        "exists": true,
+        "sha256": "b2d9e79161f04298b3063082b922b146b8d22f16d1fbe296d246530300daa606",
+        "role": "research replay of the baseline",
+        "paper_runtime": false
+      }
+    ],
+    "runtime_map": {
+      "families_in_paper_runtime": [
+        "breakout",
+        "ema_crossover",
+        "mean_reversion",
+        "momentum",
+        "trend",
+        "volatility"
+      ],
+      "admitted_for_paper": [],
+      "protocol_implementations": [
+        {
+          "class": "EmaCrossoverStrategy",
+          "module": "trading_bot.strategies.ema_crossover",
+          "strategy_name": "ema_crossover"
+        }
+      ],
+      "declared_config_strategies": [
+        {
+          "name": "trend_pullback_scalping",
+          "enabled": false,
+          "state": "research"
+        },
+        {
+          "name": "range_reversion_scalping",
+          "enabled": false,
+          "state": "research"
+        },
+        {
+          "name": "breakout_volume_scalping",
+          "enabled": false,
+          "state": "research"
+        },
+        {
+          "name": "vwap_reclaim_scalping",
+          "enabled": false,
+          "state": "research"
+        },
+        {
+          "name": "momentum_microtrend_scalping",
+          "enabled": false,
+          "state": "disabled"
+        }
+      ]
+    }
+  },
+  "registry_rows": 30,
+  "measured_rows": 24,
+  "eligible_rows": 0,
+  "eligible": [],
+  "active_track_eligible": [],
+  "hold_net_positive": [],
+  "dev_net_positive": [],
+  "best_hold_gross": {
+    "candidate_id": "TDM12-volatility@5m",
+    "gross": 7.0531
+  },
+  "metrics_by_cell": {
+    "TDM12-breakout@15m": {
+      "dev": {
+        "trades": 1088,
+        "days": 90.62,
+        "trades_per_day": 12.006,
+        "gross_mean": -2.7431,
+        "gross_sd": 59.8674,
+        "net_mean": -26.5337,
+        "net_mean_cheapest_cost": -11.9931,
+        "required_n_at_cost": 40,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -25.2946,
+          "ETH": -26.8879,
+          "SOL": -27.3731
+        },
+        "first_half_net": -25.4289,
+        "second_half_net": -27.6385,
+        "max_drawdown_bps": -28868.66
+      },
+      "hold": {
+        "trades": 351,
+        "days": 28.5,
+        "trades_per_day": 12.316,
+        "gross_mean": 1.9396,
+        "gross_sd": 42.6132,
+        "net_mean": -21.851,
+        "net_mean_cheapest_cost": -7.3104,
+        "required_n_at_cost": 20,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -18.8761,
+          "ETH": -24.343,
+          "SOL": -22.0185
+        },
+        "first_half_net": -21.7741,
+        "second_half_net": -21.9273,
+        "max_drawdown_bps": -7701.96
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-breakout@1h": {
+      "dev": {
+        "trades": 290,
+        "days": 87.54,
+        "trades_per_day": 3.313,
+        "gross_mean": 11.2977,
+        "gross_sd": 87.1259,
+        "net_mean": -12.4929,
+        "net_mean_cheapest_cost": 2.0477,
+        "required_n_at_cost": 83,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -14.7326,
+          "ETH": -8.7475,
+          "SOL": -13.6838
+        },
+        "first_half_net": -16.7014,
+        "second_half_net": -8.2843,
+        "max_drawdown_bps": -3793.04
+      },
+      "hold": {
+        "trades": 85,
+        "days": 24.42,
+        "trades_per_day": 3.481,
+        "gross_mean": -6.7611,
+        "gross_sd": 72.6608,
+        "net_mean": -30.5517,
+        "net_mean_cheapest_cost": -16.0111,
+        "required_n_at_cost": 58,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -43.1,
+          "ETH": -22.7979,
+          "SOL": -27.5329
+        },
+        "first_half_net": -24.643,
+        "second_half_net": -36.3229,
+        "max_drawdown_bps": -2596.89
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-breakout@30m": {
+      "dev": {
+        "trades": 593,
+        "days": 89.35,
+        "trades_per_day": 6.637,
+        "gross_mean": -0.7114,
+        "gross_sd": 59.6257,
+        "net_mean": -24.502,
+        "net_mean_cheapest_cost": -9.9614,
+        "required_n_at_cost": 39,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -23.0534,
+          "ETH": -22.8775,
+          "SOL": -27.5658
+        },
+        "first_half_net": -22.3008,
+        "second_half_net": -26.6957,
+        "max_drawdown_bps": -14529.66
+      },
+      "hold": {
+        "trades": 180,
+        "days": 27.52,
+        "trades_per_day": 6.54,
+        "gross_mean": 2.7933,
+        "gross_sd": 41.3502,
+        "net_mean": -20.9973,
+        "net_mean_cheapest_cost": -6.4567,
+        "required_n_at_cost": 19,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -22.4247,
+          "ETH": -18.2395,
+          "SOL": -22.4671
+        },
+        "first_half_net": -20.7675,
+        "second_half_net": -21.2271,
+        "max_drawdown_bps": -3782.54
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-breakout@5m": {
+      "dev": {
+        "trades": 2690,
+        "days": 91.58,
+        "trades_per_day": 29.372,
+        "gross_mean": -2.0418,
+        "gross_sd": 44.5197,
+        "net_mean": -25.8324,
+        "net_mean_cheapest_cost": -11.2918,
+        "required_n_at_cost": 22,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -25.2632,
+          "ETH": -26.0833,
+          "SOL": -26.1216
+        },
+        "first_half_net": -25.3719,
+        "second_half_net": -26.2929,
+        "max_drawdown_bps": -69827.13
+      },
+      "hold": {
+        "trades": 836,
+        "days": 29.29,
+        "trades_per_day": 28.541,
+        "gross_mean": -3.5688,
+        "gross_sd": 42.261,
+        "net_mean": -27.3594,
+        "net_mean_cheapest_cost": -12.8188,
+        "required_n_at_cost": 20,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -25.1546,
+          "ETH": -28.8059,
+          "SOL": -27.9754
+        },
+        "first_half_net": -24.9938,
+        "second_half_net": -29.725,
+        "max_drawdown_bps": -22872.45
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-ema_crossover@15m": {
+      "dev": {
+        "trades": 8199,
+        "days": 90.94,
+        "trades_per_day": 90.161,
+        "gross_mean": -0.303,
+        "gross_sd": 36.7437,
+        "net_mean": -24.0936,
+        "net_mean_cheapest_cost": -9.553,
+        "required_n_at_cost": 15,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -24.1381,
+          "ETH": -23.7993,
+          "SOL": -24.3435
+        },
+        "first_half_net": -24.2711,
+        "second_half_net": -23.9162,
+        "max_drawdown_bps": -197635.57
+      },
+      "hold": {
+        "trades": 2574,
+        "days": 28.58,
+        "trades_per_day": 90.052,
+        "gross_mean": -0.6473,
+        "gross_sd": 32.3064,
+        "net_mean": -24.4379,
+        "net_mean_cheapest_cost": -9.8973,
+        "required_n_at_cost": 12,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -24.3008,
+          "ETH": -23.1377,
+          "SOL": -25.8683
+        },
+        "first_half_net": -24.0409,
+        "second_half_net": -24.8348,
+        "max_drawdown_bps": -63040.56
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-ema_crossover@1h": {
+      "dev": {
+        "trades": 2890,
+        "days": 87.79,
+        "trades_per_day": 32.919,
+        "gross_mean": 0.6555,
+        "gross_sd": 49.848,
+        "net_mean": -23.1351,
+        "net_mean_cheapest_cost": -8.5945,
+        "required_n_at_cost": 28,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -21.4629,
+          "ETH": -22.5971,
+          "SOL": -25.3323
+        },
+        "first_half_net": -22.8801,
+        "second_half_net": -23.39,
+        "max_drawdown_bps": -66874.25
+      },
+      "hold": {
+        "trades": 832,
+        "days": 25.42,
+        "trades_per_day": 32.734,
+        "gross_mean": -1.0807,
+        "gross_sd": 46.6619,
+        "net_mean": -24.8713,
+        "net_mean_cheapest_cost": -10.3307,
+        "required_n_at_cost": 24,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -24.5278,
+          "ETH": -24.6162,
+          "SOL": -25.469
+        },
+        "first_half_net": -24.8092,
+        "second_half_net": -24.9333,
+        "max_drawdown_bps": -20768.7
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-ema_crossover@30m": {
+      "dev": {
+        "trades": 5972,
+        "days": 89.9,
+        "trades_per_day": 66.432,
+        "gross_mean": 0.5109,
+        "gross_sd": 36.4806,
+        "net_mean": -23.2797,
+        "net_mean_cheapest_cost": -8.7391,
+        "required_n_at_cost": 15,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -23.2084,
+          "ETH": -22.5698,
+          "SOL": -24.0572
+        },
+        "first_half_net": -23.2481,
+        "second_half_net": -23.3112,
+        "max_drawdown_bps": -139061.12
+      },
+      "hold": {
+        "trades": 1814,
+        "days": 27.54,
+        "trades_per_day": 65.864,
+        "gross_mean": 0.4622,
+        "gross_sd": 33.7438,
+        "net_mean": -23.3284,
+        "net_mean_cheapest_cost": -8.7878,
+        "required_n_at_cost": 13,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -24.0975,
+          "ETH": -23.6311,
+          "SOL": -22.2308
+        },
+        "first_half_net": -24.3465,
+        "second_half_net": -22.3102,
+        "max_drawdown_bps": -42494.49
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-ema_crossover@5m": {
+      "dev": {
+        "trades": 10976,
+        "days": 91.63,
+        "trades_per_day": 119.788,
+        "gross_mean": -0.5339,
+        "gross_sd": 35.6837,
+        "net_mean": -24.3245,
+        "net_mean_cheapest_cost": -9.7839,
+        "required_n_at_cost": 14,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -24.3957,
+          "ETH": -23.9481,
+          "SOL": -24.6291
+        },
+        "first_half_net": -24.4034,
+        "second_half_net": -24.2456,
+        "max_drawdown_bps": -267356.62
+      },
+      "hold": {
+        "trades": 3511,
+        "days": 29.28,
+        "trades_per_day": 119.892,
+        "gross_mean": -0.7049,
+        "gross_sd": 33.8191,
+        "net_mean": -24.4955,
+        "net_mean_cheapest_cost": -9.9549,
+        "required_n_at_cost": 13,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -24.6659,
+          "ETH": -23.7569,
+          "SOL": -25.0621
+        },
+        "first_half_net": -24.4537,
+        "second_half_net": -24.5373,
+        "max_drawdown_bps": -86114.06
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-mean_reversion@15m": {
+      "dev": {
+        "trades": 920,
+        "days": 90.51,
+        "trades_per_day": 10.165,
+        "gross_mean": 2.0097,
+        "gross_sd": 42.111,
+        "net_mean": -21.7809,
+        "net_mean_cheapest_cost": -7.2403,
+        "required_n_at_cost": 20,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -20.3928,
+          "ETH": -21.0514,
+          "SOL": -24.023
+        },
+        "first_half_net": -21.2395,
+        "second_half_net": -22.3223,
+        "max_drawdown_bps": -20038.44
+      },
+      "hold": {
+        "trades": 279,
+        "days": 28.07,
+        "trades_per_day": 9.938,
+        "gross_mean": 2.319,
+        "gross_sd": 30.4312,
+        "net_mean": -21.4716,
+        "net_mean_cheapest_cost": -6.931,
+        "required_n_at_cost": 11,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -21.1591,
+          "ETH": -21.5494,
+          "SOL": -21.7216
+        },
+        "first_half_net": -22.1876,
+        "second_half_net": -20.7607,
+        "max_drawdown_bps": -5990.57
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-mean_reversion@1h": {
+      "dev": {
+        "trades": 226,
+        "days": 87.54,
+        "trades_per_day": 2.582,
+        "gross_mean": -0.0294,
+        "gross_sd": 39.3292,
+        "net_mean": -23.82,
+        "net_mean_cheapest_cost": -9.2794,
+        "required_n_at_cost": 17,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -21.9815,
+          "ETH": -25.8027,
+          "SOL": -23.5929
+        },
+        "first_half_net": -22.8201,
+        "second_half_net": -24.8199,
+        "max_drawdown_bps": -5383.33
+      },
+      "hold": {
+        "trades": 73,
+        "days": 23.5,
+        "trades_per_day": 3.106,
+        "gross_mean": -3.9109,
+        "gross_sd": 80.1175,
+        "net_mean": -27.7015,
+        "net_mean_cheapest_cost": -13.1609,
+        "required_n_at_cost": 71,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -25.2326,
+          "ETH": -35.0021,
+          "SOL": -23.8981
+        },
+        "first_half_net": -30.2292,
+        "second_half_net": -25.2422,
+        "max_drawdown_bps": -2097.4
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-mean_reversion@30m": {
+      "dev": {
+        "trades": 499,
+        "days": 89.04,
+        "trades_per_day": 5.604,
+        "gross_mean": -2.3789,
+        "gross_sd": 37.56,
+        "net_mean": -26.1695,
+        "net_mean_cheapest_cost": -11.6289,
+        "required_n_at_cost": 16,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -25.7187,
+          "ETH": -25.9189,
+          "SOL": -26.8459
+        },
+        "first_half_net": -26.4754,
+        "second_half_net": -25.8648,
+        "max_drawdown_bps": -13058.57
+      },
+      "hold": {
+        "trades": 150,
+        "days": 27.31,
+        "trades_per_day": 5.492,
+        "gross_mean": 0.9583,
+        "gross_sd": 37.5058,
+        "net_mean": -22.8323,
+        "net_mean_cheapest_cost": -8.2917,
+        "required_n_at_cost": 16,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -25.157,
+          "ETH": -24.2518,
+          "SOL": -17.8
+        },
+        "first_half_net": -23.6251,
+        "second_half_net": -22.0395,
+        "max_drawdown_bps": -3424.84
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-mean_reversion@5m": {
+      "dev": {
+        "trades": 2443,
+        "days": 91.58,
+        "trades_per_day": 26.676,
+        "gross_mean": 1.4854,
+        "gross_sd": 38.8122,
+        "net_mean": -22.3052,
+        "net_mean_cheapest_cost": -7.7646,
+        "required_n_at_cost": 17,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -22.9036,
+          "ETH": -21.4358,
+          "SOL": -22.6456
+        },
+        "first_half_net": -22.1691,
+        "second_half_net": -22.4412,
+        "max_drawdown_bps": -54883.36
+      },
+      "hold": {
+        "trades": 771,
+        "days": 29.28,
+        "trades_per_day": 26.328,
+        "gross_mean": -0.1137,
+        "gross_sd": 37.9496,
+        "net_mean": -23.9043,
+        "net_mean_cheapest_cost": -9.3637,
+        "required_n_at_cost": 16,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -22.966,
+          "ETH": -24.4619,
+          "SOL": -24.2048
+        },
+        "first_half_net": -23.6979,
+        "second_half_net": -24.1102,
+        "max_drawdown_bps": -18430.22
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-momentum@15m": {
+      "dev": {
+        "trades": 3621,
+        "days": 90.9,
+        "trades_per_day": 39.837,
+        "gross_mean": -0.831,
+        "gross_sd": 46.8624,
+        "net_mean": -24.6216,
+        "net_mean_cheapest_cost": -10.081,
+        "required_n_at_cost": 24,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -23.8103,
+          "ETH": -23.8702,
+          "SOL": -25.8014
+        },
+        "first_half_net": -24.122,
+        "second_half_net": -25.1209,
+        "max_drawdown_bps": -89229.82
+      },
+      "hold": {
+        "trades": 1105,
+        "days": 28.58,
+        "trades_per_day": 38.659,
+        "gross_mean": -0.7442,
+        "gross_sd": 39.7989,
+        "net_mean": -24.5348,
+        "net_mean_cheapest_cost": -9.9942,
+        "required_n_at_cost": 18,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -26.8092,
+          "ETH": -22.497,
+          "SOL": -24.7537
+        },
+        "first_half_net": -24.4468,
+        "second_half_net": -24.6227,
+        "max_drawdown_bps": -27136.37
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-momentum@1h": {
+      "dev": {
+        "trades": 1955,
+        "days": 87.79,
+        "trades_per_day": 22.269,
+        "gross_mean": 1.7826,
+        "gross_sd": 52.0131,
+        "net_mean": -22.008,
+        "net_mean_cheapest_cost": -7.4674,
+        "required_n_at_cost": 30,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -21.5298,
+          "ETH": -24.2047,
+          "SOL": -20.4707
+        },
+        "first_half_net": -23.0536,
+        "second_half_net": -20.9635,
+        "max_drawdown_bps": -43025.68
+      },
+      "hold": {
+        "trades": 578,
+        "days": 25.42,
+        "trades_per_day": 22.741,
+        "gross_mean": -3.706,
+        "gross_sd": 50.2418,
+        "net_mean": -27.4966,
+        "net_mean_cheapest_cost": -12.956,
+        "required_n_at_cost": 28,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -26.3217,
+          "ETH": -27.6308,
+          "SOL": -28.3173
+        },
+        "first_half_net": -26.6563,
+        "second_half_net": -28.3368,
+        "max_drawdown_bps": -15968.85
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-momentum@30m": {
+      "dev": {
+        "trades": 3285,
+        "days": 89.88,
+        "trades_per_day": 36.551,
+        "gross_mean": 0.0626,
+        "gross_sd": 41.1158,
+        "net_mean": -23.728,
+        "net_mean_cheapest_cost": -9.1874,
+        "required_n_at_cost": 19,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -24.0807,
+          "ETH": -23.3965,
+          "SOL": -23.7657
+        },
+        "first_half_net": -23.3771,
+        "second_half_net": -24.0787,
+        "max_drawdown_bps": -78064.75
+      },
+      "hold": {
+        "trades": 1002,
+        "days": 27.54,
+        "trades_per_day": 36.381,
+        "gross_mean": -0.1053,
+        "gross_sd": 37.6267,
+        "net_mean": -23.8959,
+        "net_mean_cheapest_cost": -9.3553,
+        "required_n_at_cost": 16,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -23.5857,
+          "ETH": -21.364,
+          "SOL": -26.101
+        },
+        "first_half_net": -22.3635,
+        "second_half_net": -25.4283,
+        "max_drawdown_bps": -23946.75
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-momentum@5m": {
+      "dev": {
+        "trades": 3316,
+        "days": 91.62,
+        "trades_per_day": 36.192,
+        "gross_mean": -1.6095,
+        "gross_sd": 50.8435,
+        "net_mean": -25.4001,
+        "net_mean_cheapest_cost": -10.8595,
+        "required_n_at_cost": 29,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -23.9685,
+          "ETH": -25.0427,
+          "SOL": -26.3968
+        },
+        "first_half_net": -24.0949,
+        "second_half_net": -26.7054,
+        "max_drawdown_bps": -84529.16
+      },
+      "hold": {
+        "trades": 1020,
+        "days": 29.27,
+        "trades_per_day": 34.847,
+        "gross_mean": 0.1327,
+        "gross_sd": 48.9993,
+        "net_mean": -23.6579,
+        "net_mean_cheapest_cost": -9.1173,
+        "required_n_at_cost": 27,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -26.9549,
+          "ETH": -22.3563,
+          "SOL": -23.1645
+        },
+        "first_half_net": -24.099,
+        "second_half_net": -23.2167,
+        "max_drawdown_bps": -24260.45
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-trend@15m": {
+      "dev": {
+        "trades": 1041,
+        "days": 90.75,
+        "trades_per_day": 11.471,
+        "gross_mean": 0.3655,
+        "gross_sd": 65.3077,
+        "net_mean": -23.4251,
+        "net_mean_cheapest_cost": -8.8845,
+        "required_n_at_cost": 47,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -20.1667,
+          "ETH": -26.372,
+          "SOL": -22.6753
+        },
+        "first_half_net": -23.9797,
+        "second_half_net": -22.8715,
+        "max_drawdown_bps": -24385.53
+      },
+      "hold": {
+        "trades": 272,
+        "days": 27.3,
+        "trades_per_day": 9.963,
+        "gross_mean": -3.1257,
+        "gross_sd": 55.0327,
+        "net_mean": -26.9163,
+        "net_mean_cheapest_cost": -12.3757,
+        "required_n_at_cost": 34,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -27.4553,
+          "ETH": -27.0006,
+          "SOL": -26.7592
+        },
+        "first_half_net": -27.1776,
+        "second_half_net": -26.6551,
+        "max_drawdown_bps": -7389.65
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-trend@1h": {
+      "dev": {
+        "trades": 1044,
+        "days": 87.33,
+        "trades_per_day": 11.954,
+        "gross_mean": 1.5867,
+        "gross_sd": 65.0035,
+        "net_mean": -22.2039,
+        "net_mean_cheapest_cost": -7.6633,
+        "required_n_at_cost": 47,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -20.4011,
+          "ETH": -25.3871,
+          "SOL": -20.6773
+        },
+        "first_half_net": -21.4657,
+        "second_half_net": -22.9421,
+        "max_drawdown_bps": -23180.91
+      },
+      "hold": {
+        "trades": 252,
+        "days": 25.38,
+        "trades_per_day": 9.931,
+        "gross_mean": 2.6547,
+        "gross_sd": 62.1964,
+        "net_mean": -21.1359,
+        "net_mean_cheapest_cost": -6.5953,
+        "required_n_at_cost": 43,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -24.8605,
+          "ETH": -26.9115,
+          "SOL": -14.5749
+        },
+        "first_half_net": -25.4518,
+        "second_half_net": -16.82,
+        "max_drawdown_bps": -5470.52
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-trend@30m": {
+      "dev": {
+        "trades": 1311,
+        "days": 89.71,
+        "trades_per_day": 14.614,
+        "gross_mean": 0.8455,
+        "gross_sd": 50.1011,
+        "net_mean": -22.9451,
+        "net_mean_cheapest_cost": -8.4045,
+        "required_n_at_cost": 28,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -22.1467,
+          "ETH": -24.154,
+          "SOL": -22.3499
+        },
+        "first_half_net": -23.0031,
+        "second_half_net": -22.8873,
+        "max_drawdown_bps": -30081.07
+      },
+      "hold": {
+        "trades": 345,
+        "days": 27.29,
+        "trades_per_day": 12.641,
+        "gross_mean": 0.6542,
+        "gross_sd": 46.1526,
+        "net_mean": -23.1364,
+        "net_mean_cheapest_cost": -8.5958,
+        "required_n_at_cost": 24,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -29.2274,
+          "ETH": -18.612,
+          "SOL": -24.3355
+        },
+        "first_half_net": -22.6921,
+        "second_half_net": -23.578,
+        "max_drawdown_bps": -7985.07
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-trend@5m": {
+      "dev": {
+        "trades": 481,
+        "days": 91.11,
+        "trades_per_day": 5.279,
+        "gross_mean": -1.7744,
+        "gross_sd": 83.7062,
+        "net_mean": -25.565,
+        "net_mean_cheapest_cost": -11.0244,
+        "required_n_at_cost": 77,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -16.3506,
+          "ETH": -23.6677,
+          "SOL": -29.7923
+        },
+        "first_half_net": -21.3201,
+        "second_half_net": -29.7923,
+        "max_drawdown_bps": -12407.78
+      },
+      "hold": {
+        "trades": 125,
+        "days": 29.24,
+        "trades_per_day": 4.275,
+        "gross_mean": -7.7519,
+        "gross_sd": 64.0955,
+        "net_mean": -31.5425,
+        "net_mean_cheapest_cost": -17.0019,
+        "required_n_at_cost": 45,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -39.2061,
+          "ETH": -31.3166,
+          "SOL": -30.2698
+        },
+        "first_half_net": -33.4632,
+        "second_half_net": -29.6524,
+        "max_drawdown_bps": -3966.25
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-volatility@15m": {
+      "dev": {
+        "trades": 156,
+        "days": 89.06,
+        "trades_per_day": 1.752,
+        "gross_mean": -7.3492,
+        "gross_sd": 40.9339,
+        "net_mean": -31.1398,
+        "net_mean_cheapest_cost": -16.5992,
+        "required_n_at_cost": 19,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -23.4905,
+          "ETH": -33.1285,
+          "SOL": -34.4729
+        },
+        "first_half_net": -30.9226,
+        "second_half_net": -31.357,
+        "max_drawdown_bps": -4857.81
+      },
+      "hold": {
+        "trades": 55,
+        "days": 25.4,
+        "trades_per_day": 2.166,
+        "gross_mean": -9.1915,
+        "gross_sd": 26.9803,
+        "net_mean": -32.9821,
+        "net_mean_cheapest_cost": -18.4415,
+        "required_n_at_cost": 8,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -28.8324,
+          "ETH": -30.4909,
+          "SOL": -40.8416
+        },
+        "first_half_net": -29.5996,
+        "second_half_net": -36.2438,
+        "max_drawdown_bps": -1814.02
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-volatility@1h": {
+      "dev": {
+        "trades": 48,
+        "days": 81.71,
+        "trades_per_day": 0.587,
+        "gross_mean": 4.1595,
+        "gross_sd": 41.4946,
+        "net_mean": -19.6311,
+        "net_mean_cheapest_cost": -5.0905,
+        "required_n_at_cost": 19,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -1.6606,
+          "ETH": -23.8812,
+          "SOL": -29.8302
+        },
+        "first_half_net": -12.4454,
+        "second_half_net": -26.8168,
+        "max_drawdown_bps": -1042.29
+      },
+      "hold": {
+        "trades": 17,
+        "days": 21.88,
+        "trades_per_day": 0.777,
+        "gross_mean": -7.7612,
+        "gross_sd": 46.5855,
+        "net_mean": -31.5518,
+        "net_mean_cheapest_cost": -17.0112,
+        "required_n_at_cost": 24,
+        "power_sufficient": false,
+        "per_asset_net": {
+          "BTC": -27.3919,
+          "ETH": -27.8729,
+          "SOL": -38.6972
+        },
+        "first_half_net": -31.3179,
+        "second_half_net": -31.7597,
+        "max_drawdown_bps": -563.3
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": false,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-volatility@30m": {
+      "dev": {
+        "trades": 110,
+        "days": 89.25,
+        "trades_per_day": 1.232,
+        "gross_mean": -2.1048,
+        "gross_sd": 35.5814,
+        "net_mean": -25.8954,
+        "net_mean_cheapest_cost": -11.3548,
+        "required_n_at_cost": 14,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -20.6488,
+          "ETH": -31.0825,
+          "SOL": -24.3823
+        },
+        "first_half_net": -23.1162,
+        "second_half_net": -28.6746,
+        "max_drawdown_bps": -2848.49
+      },
+      "hold": {
+        "trades": 31,
+        "days": 23.62,
+        "trades_per_day": 1.312,
+        "gross_mean": -2.3799,
+        "gross_sd": 50.812,
+        "net_mean": -26.1705,
+        "net_mean_cheapest_cost": -11.6299,
+        "required_n_at_cost": 29,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -30.5644,
+          "ETH": -35.2492,
+          "SOL": -19.416
+        },
+        "first_half_net": -33.3753,
+        "second_half_net": -19.416,
+        "max_drawdown_bps": -945.57
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    },
+    "TDM12-volatility@5m": {
+      "dev": {
+        "trades": 274,
+        "days": 91.09,
+        "trades_per_day": 3.008,
+        "gross_mean": 0.0664,
+        "gross_sd": 38.2952,
+        "net_mean": -23.7242,
+        "net_mean_cheapest_cost": -9.1836,
+        "required_n_at_cost": 17,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -20.0433,
+          "ETH": -27.547,
+          "SOL": -21.7517
+        },
+        "first_half_net": -24.0564,
+        "second_half_net": -23.3921,
+        "max_drawdown_bps": -6589.15
+      },
+      "hold": {
+        "trades": 58,
+        "days": 27.66,
+        "trades_per_day": 2.097,
+        "gross_mean": 7.0531,
+        "gross_sd": 36.0847,
+        "net_mean": -16.7375,
+        "net_mean_cheapest_cost": -2.1969,
+        "required_n_at_cost": 15,
+        "power_sufficient": true,
+        "per_asset_net": {
+          "BTC": -24.3847,
+          "ETH": -18.4407,
+          "SOL": -11.6692
+        },
+        "first_half_net": -21.409,
+        "second_half_net": -12.0659,
+        "max_drawdown_bps": -1129.07
+      },
+      "gates": {
+        "runtime_reachable": true,
+        "admitted_for_paper": false,
+        "lookahead_gate": true,
+        "stale_data_gate": true,
+        "parameter_freeze": true,
+        "cost_verified": false,
+        "sample_sufficient": true,
+        "net_positive_hold": false,
+        "net_positive_dev": false
+      }
+    }
+  },
+  "elapsed_s": 261.9
+}

@@ -1,0 +1,134 @@
+{
+  "artifact": "tdm10-dev-dataset-v1",
+  "venue": "Binance spot (public klines, no credentials)",
+  "fetched_at_ms": 1792924755739,
+  "window": {
+    "start": "2026-06-25T00:00:00Z",
+    "end": "2026-09-25T00:00:00Z",
+    "end_ms": 1790294400000
+  },
+  "sealing_rule": "close_time <= fetched_at AND close_time <= window end",
+  "files": [
+    {
+      "asset": "BTC",
+      "timeframe": "5m",
+      "path": "data/tdm10/BTC_5m.json",
+      "sha256": "7185907c6c847214797de177b088a9556a83141e4acd4ebaf41b839f87a31f6e",
+      "bars": 26496,
+      "first_bar_ms": 1782345600000,
+      "last_bar_ms": 1790294100000,
+      "requests": 27
+    },
+    {
+      "asset": "BTC",
+      "timeframe": "15m",
+      "path": "data/tdm10/BTC_15m.json",
+      "sha256": "aa38cfd3678dbe0c938cefd5330ed1ba1efce2c83886b6c3cee8153e784350f2",
+      "bars": 8832,
+      "first_bar_ms": 1782345600000,
+      "last_bar_ms": 1790293500000,
+      "requests": 9
+    },
+    {
+      "asset": "BTC",
+      "timeframe": "30m",
+      "path": "data/tdm10/BTC_30m.json",
+      "sha256": "7eed75ae36c74b353781e51c3e94f08a7b389a3687b025a70b447fef15b0700f",
+      "bars": 4416,
+      "first_bar_ms": 1782345600000,
+      "last_bar_ms": 1790292600000,
+      "requests": 5
+    },
+    {
+      "asset": "BTC",
+      "timeframe": "1h",
+      "path": "data/tdm10/BTC_1h.json",
+      "sha256": "95b3d29655ef9722cfcd342bef935cf6f28f64fe04f3a8218cbe00dbde8be607",
+      "bars": 2208,
+      "first_bar_ms": 1782345600000,
+      "last_bar_ms": 1790290800000,
+      "requests": 3
+    },
+    {
+      "asset": "ETH",
+      "timeframe": "5m",
+      "path": "data/tdm10/ETH_5m.json",
+      "sha256": "078a70969decbee24b13f70d5b33c0496047689ece06f58b533f1611c4fc06eb",
+      "bars": 26496,
+      "first_bar_ms": 1782345600000,
+      "last_bar_ms": 1790294100000,
+      "requests": 27
+    },
+    {
+      "asset": "ETH",
+      "timeframe": "15m",
+      "path": "data/tdm10/ETH_15m.json",
+      "sha256": "d3dc523bff863efb11ddc7c5d198cf9c0c20ac93520eab8c07aaf39c5e3de11b",
+      "bars": 8832,
+      "first_bar_ms": 1782345600000,
+      "last_bar_ms": 1790293500000,
+      "requests": 9
+    },
+    {
+      "asset": "ETH",
+      "timeframe": "30m",
+      "path": "data/tdm10/ETH_30m.json",
+      "sha256": "957e5b90abf38fdbf8ede2f233bf28b464e1e7cb9bb4bb9bd42e1355b8af7180",
+      "bars": 4416,
+      "first_bar_ms": 1782345600000,
+      "last_bar_ms": 1790292600000,
+      "requests": 5
+    },
+    {
+      "asset": "ETH",
+      "timeframe": "1h",
+      "path": "data/tdm10/ETH_1h.json",
+      "sha256": "e32c3ed8302c4d687b4d03555f20a0dbb06373ca33dda956afe387fbd3436e72",
+      "bars": 2208,
+      "first_bar_ms": 1782345600000,
+      "last_bar_ms": 1790290800000,
+      "requests": 3
+    },
+    {
+      "asset": "SOL",
+      "timeframe": "5m",
+      "path": "data/tdm10/SOL_5m.json",
+      "sha256": "3bfdaf60fcc605119d567369e8d56239205138bc7386cb278bd1f32b0d415e64",
+      "bars": 26496,
+      "first_bar_ms": 1782345600000,
+      "last_bar_ms": 1790294100000,
+      "requests": 27
+    },
+    {
+      "asset": "SOL",
+      "timeframe": "15m",
+      "path": "data/tdm10/SOL_15m.json",
+      "sha256": "b74e8e92a1efb20809479dad8c694d755830bc1b331f2bd6bdeae9126e2a5075",
+      "bars": 8832,
+      "first_bar_ms": 1782345600000,
+      "last_bar_ms": 1790293500000,
+      "requests": 9
+    },
+    {
+      "asset": "SOL",
+      "timeframe": "30m",
+      "path": "data/tdm10/SOL_30m.json",
+      "sha256": "43a004b6b2c423fc433a6feb39a4a821703aa7d0079da7aebb9e3461d6219b13",
+      "bars": 4416,
+      "first_bar_ms": 1782345600000,
+      "last_bar_ms": 1790292600000,
+      "requests": 5
+    },
+    {
+      "asset": "SOL",
+      "timeframe": "1h",
+      "path": "data/tdm10/SOL_1h.json",
+      "sha256": "96776edbca673e9940fc8022caacfa6d9b81fe082de64ff25834a87f998564d2",
+      "bars": 2208,
+      "first_bar_ms": 1782345600000,
+      "last_bar_ms": 1790290800000,
+      "requests": 3
+    }
+  ],
+  "total_bars": 125856
+}
