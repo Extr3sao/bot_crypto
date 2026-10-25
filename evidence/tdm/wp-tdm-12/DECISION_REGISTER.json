@@ -1,0 +1,73 @@
+{
+  "artifact": "tdm12-decision-register-v1",
+  "generated_at_utc": "2026-10-25T13:12:13.891393+00:00",
+  "decision": "NO_ELIGIBLE_CANDIDATE",
+  "prereg_candidates": [],
+  "tracks": {
+    "ACTIVE": {
+      "requirement": ">=3 executed trades per day, 7 days a week, portfolio-wide",
+      "candidates_at_or_above_frequency": 20,
+      "candidates_frequency_and_positive_net": 0,
+      "verdict": "NO_ELIGIBLE_CANDIDATE",
+      "detail": "20 of 24 measured cells already fire at >=3 trades/day, so the frequency constraint is not the binding one; none of them is net-positive, so raising frequency cannot select a candidate"
+    },
+    "QUALITY": {
+      "requirement": "positive net edge after costs with robustness, any frequency",
+      "candidates_positive_net": 0,
+      "verdict": "NO_ELIGIBLE_CANDIDATE",
+      "detail": "0 of 24 measured cells is net-positive on the holdout; 0 is net-positive on DEV"
+    }
+  },
+  "eligible_candidates": [],
+  "rejected_candidates": {
+    "TDM12-breakout@15m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-breakout@1h": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-breakout@30m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-breakout@5m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-ema_crossover@15m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-ema_crossover@1h": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-ema_crossover@30m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-ema_crossover@5m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-mean_reversion@15m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-mean_reversion@1h": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-mean_reversion@30m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-mean_reversion@5m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-momentum@15m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-momentum@1h": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-momentum@30m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-momentum@5m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-trend@15m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-trend@1h": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-trend@30m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-trend@5m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-volatility@15m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-volatility@1h": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-volatility@30m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW",
+    "TDM12-volatility@5m": "NET_NOT_POSITIVE_IN_EITHER_WINDOW"
+  },
+  "measured_obstacles": [
+    {
+      "obstacle": "negative gross edge in both windows",
+      "measurement": "best holdout gross +7.05 bps (volatility@5m, 58 trades) and best DEV gross +11.30 bps (breakout@1h, 290 trades) against a 23.79 bps primary cost"
+    },
+    {
+      "obstacle": "admission ledger already refuses every strategy",
+      "measurement": "config/strategy_admission.json: admitted_for_paper = [] for all entries"
+    },
+    {
+      "obstacle": "cost of the short side unverified (funding, maker fill) and spread estimated",
+      "measurement": "COST_MODEL_AUDIT.md; no OBSERVED spread anywhere in the datasets"
+    },
+    {
+      "obstacle": "no confirmatory sample for any hypothesis",
+      "measurement": "earliest admissible window 2026-10-24T16:00Z, ~1 expected trade per day"
+    },
+    {
+      "obstacle": "authorship independence unavailable in this workspace",
+      "measurement": "INDEPENDENCE_NOT_DEMONSTRATED"
+    }
+  ],
+  "next_gate": "a new RFC is required, and it must start from an entry whose gross edge exceeds cost before any regime filter; no promotion, no paper, no parameter change in this WP",
+  "paper_orders": 0,
+  "live_orders": 0
+}
