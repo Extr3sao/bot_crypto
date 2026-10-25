@@ -52,6 +52,34 @@ OUTPUT_SPEC: tuple[tuple[str, str], ...] = (
 #: Scratch state no replay may inherit. Deleted, then proven absent.
 WIPE: tuple[str, ...] = (".tdm12", ".replay-out")
 
+#: Guards the clone. Two replays in one clone destroy the very property this RFC
+#: measures: the second run's review.json lands in .tdm12 and the first run's output
+#: check then counts it as its own. Observed, not hypothesised.
+LOCK = ".replay-lock"
+
+
+class LockHeld(RuntimeError):
+    pass
+
+
+def acquire_lock(clone: Path, run_id: str) -> Path:
+    path = clone / LOCK
+    try:
+        handle = path.open("x", encoding="utf-8")
+    except FileExistsError as exc:
+        holder = path.read_text(encoding="utf-8").strip() if path.is_file() else "<unreadable>"
+        raise LockHeld(
+            f"{clone} is already being replayed by {holder}; two runs in one clone would let one "
+            "run's outputs pass as the other's"
+        ) from exc
+    with handle:
+        handle.write(f"{run_id} pid={os.getpid()} at={utc_now()}\n")
+    return path
+
+
+def release_lock(path: Path) -> None:
+    path.unlink(missing_ok=True)
+
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
@@ -283,6 +311,12 @@ def main(argv: list[str] | None = None) -> int:
         report_path = HERE / report_path
     report_path.parent.mkdir(parents=True, exist_ok=True)
 
+    try:
+        lock_path = acquire_lock(clone, args.run_id)
+    except LockHeld as exc:
+        print(str(exc))
+        return 3
+
     run_started = time.time()
     report: dict[str, Any] = {
         "rfc_id": "RFC-TDM-014A",
@@ -324,6 +358,7 @@ def main(argv: list[str] | None = None) -> int:
         report["failure"] = f"clone HEAD {head[:8]} != target {target[:8]}"
         report_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
         print(report["failure"])
+        release_lock(lock_path)
         return 1
     if diff_index != 0 or diff_cached != 0:
         report["status"] = "FAIL"
@@ -332,6 +367,7 @@ def main(argv: list[str] | None = None) -> int:
         )
         report_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
         print(report["failure"])
+        release_lock(lock_path)
         return 1
 
     manifest_path = clone / MANIFEST_RELPATH
@@ -340,6 +376,7 @@ def main(argv: list[str] | None = None) -> int:
         report["failure"] = f"missing sealed input manifest {MANIFEST_RELPATH}"
         report_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
         print(report["failure"])
+        release_lock(lock_path)
         return 1
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     report["inputs"] = restore_inputs(clone, manifest)
@@ -349,6 +386,7 @@ def main(argv: list[str] | None = None) -> int:
         report["failure"] = "restored inputs do not match the sealed bundle"
         report_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
         print(report["failure"])
+        release_lock(lock_path)
         return 1
 
     injected: dict[str, Any] | None = None
@@ -380,6 +418,7 @@ def main(argv: list[str] | None = None) -> int:
         report["failure"] = "could not isolate replay outputs"
         report_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
         print(report["failure"])
+        release_lock(lock_path)
         return 1
 
     before = snapshot_outputs(clone, out_dir)
@@ -436,6 +475,7 @@ def main(argv: list[str] | None = None) -> int:
     report["finished_utc"] = utc_now()
     report["duration_seconds"] = round(time.time() - run_started, 1)
     report_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    release_lock(lock_path)
     print(
         json.dumps(
             {
