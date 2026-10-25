@@ -250,6 +250,13 @@ stream** (17 cycles, 6 reclaims whose fences advance, 6 `SESSION_END`, 6 resumes
 verifier report truthfulness incl. artifact hashes; `V2` four negative controls; `S1`/`S2`
 self-controls; `T1` log numbers match this report.
 
+**Reproducibility.** The lock campaign ran at `59ddebda` and the supervisor campaign at the
+commit before it. Every commit after that one is evidence-only: `git diff 59ddebda..HEAD --
+src scripts` is empty and the only test changes are two `ruff format` reflows, so the code
+under test is byte-identical to the code delivered. `evidence/INDEPENDENT_VERIFICATION.json`
+records `head = 7f53c75a`; the commits after it only publish that evidence, because a run
+cannot hash its own output.
+
 `L1` earned its keep on the first run: it **failed** on the committed campaign because the
 check itself demanded strictly increasing fences for the four locks *inside* one reclaim,
 while a single reclaim takes them all over at the same fence. The campaign was right and the
