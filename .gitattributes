@@ -15,3 +15,15 @@ data/recovery/wp7/evidence/** -text
 # in a clean checkout with exactly the bytes its published artefact recorded, so git
 # must not normalise them on the way in or out.
 data/recovery/wp8/evidence/** -text
+
+# The admission chain is digest-pinned by the ledger that quotes it: `config/strategy_admission.json`
+# records the SHA-256 of the discovery results and of the admission matrix, and the WP-7 cost-barrier
+# explorer pins the ledger itself.  Those digests are hashes of the committed bytes, so a checkout
+# that normalises line endings changes the file and breaks the anchor without touching its content.
+# That is what happened on a Windows host whose system-wide `core.autocrlf=true` turned all 614
+# lines of the matrix into CRLF: the ledger's test then failed with a digest mismatch on a checkout
+# nobody had edited.  Pinning the four files keeps the chain verifiable wherever it is cloned.
+config/strategy_admission.json -text
+docs/STRATEGY_ADMISSION_MATRIX.json -text
+docs/STRATEGY_DISCOVERY_V3_RESULTS.json -text
+docs/COST_MODEL_V3.json -text

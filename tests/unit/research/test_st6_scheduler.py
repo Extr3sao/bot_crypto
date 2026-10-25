@@ -237,8 +237,17 @@ def test_the_task_cannot_carry_a_credential() -> None:
 
 
 def test_the_run_log_is_compact_self_consistent_and_unique() -> None:
+    if not RUN_LOG.exists():
+        # The log is host runtime evidence, written by the tick and never versioned. In a fresh
+        # clone there is nothing to inspect, and whether this host has ever ticked is not a
+        # property of the repository — asserting "it has ticked" there made the test depend on
+        # another test in the same session having run a tick first.
+        pytest.skip(
+            "no ST-6 run log in this checkout: it is produced by scripts/st6_forward_regime.py "
+            "--due/--collect on this host and is not versioned"
+        )
     runs = read_jsonl(RUN_LOG)
-    assert runs, "the autonomous layer has never ticked"
+    assert runs, "the run log exists but is empty"
     ids = [run["run_id"] for run in runs]
     assert len(set(ids)) == len(ids)
     for run in runs:
@@ -999,6 +1008,11 @@ def test_the_run_log_records_who_invoked_the_tick() -> None:
     Rows written before the field existed carry no provenance and are left alone; every row that
     does carry one must use the declared vocabulary.
     """
+    if not RUN_LOG.exists():
+        pytest.skip(
+            "no ST-6 run log in this checkout: the provenance of its rows cannot be asserted "
+            "where the rows do not exist"
+        )
     rows = read_jsonl(RUN_LOG)
     assert rows
     for run in rows:
