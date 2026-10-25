@@ -131,15 +131,15 @@ commit_msg*.txt
 .freebuff/
 his.zip
 
+# Nested `git worktree` checkouts created inside the main checkout by the
+# verification lanes (`wt-sup001/`, `tdm14a-base/`, …). Same rule: the branch
+# is published, the physical folder never is.
+wt-*/
+tdm14a-*/
+
 # ============================================================
 # Entornos virtuales de recuperación creados por carriles de
 # agente (`.venv_<lane>`) — mismas reglas que `.venv/` arriba.
 # ============================================================
 .venv_*/
 
-# ============================================================
-# Worktree anidado dentro del checkout principal (`git worktree`
-# apunta a `.git/worktrees/…`). Igual criterio que `.worktrees/`:
-# la rama se publica, la carpeta física no.
-# ============================================================
-wt-*/
