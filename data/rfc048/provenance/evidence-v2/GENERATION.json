@@ -1,0 +1,130 @@
+{
+  "schema_version": "rfc048-provenance-v2",
+  "generation": "evidence-v2",
+  "purpose": "self-contained RFC-048 evidence regenerated against provenance v2 (digests of the bytes the repository stores), built by a script",
+  "generated_at_utc": "2026-10-24T12:10:21Z",
+  "generator": {
+    "path": "scripts/rfc048_evidence_v2.py",
+    "sha256": "bbfef29b44c387b3bfe057ade1c252944d4348fc2ff4a017c8a60b2c06f61eaf",
+    "builder": "scripts/rfc048_run.py",
+    "builder_sha256": "dd8be7b2d97057619dc73516eed66743243437448917574e9b9aca51f063eaaa"
+  },
+  "regenerate_with": "PYTHONPATH=src python scripts/rfc048_evidence_v2.py",
+  "check_with": "PYTHONPATH=src python scripts/rfc048_evidence_v2.py --check",
+  "inputs": {
+    "PROVENANCE@v2.json": "749b6a76b853b7ab03e2c15773bdef9cb92e75284cc40149cfdadfb3deac5620",
+    "INSTRUMENTS@v2.json": "f8db0c5437dd21f01605dc52fa26e19a19932e4796c5df3803e39adcf4b11b2c"
+  },
+  "files": {
+    "ADVERSARIAL_FINDINGS.json": {
+      "sha256": "c87748a687aea31cbbddf30905f583d6f1a299775fd4a2a6b73d28d17fa947e6",
+      "bytes": 131522
+    },
+    "ADVERSARIAL_FINDINGS.md": {
+      "sha256": "6c3bfadf26d664c95a72c884bf136ef9912d26f274e07cee2543a0b28d38de64",
+      "bytes": 8644
+    },
+    "DELIVERY_COMMIT_VERIFICATION.json": {
+      "sha256": "1bf2ad6baf43326f06b400e9683640400d3b837522f62326c7ca50b6839381ab",
+      "bytes": 2257
+    },
+    "DELIVERY_COMMIT_VERIFICATION.md": {
+      "sha256": "3889232dd567a72133349ed79cd8f61e261b7befc70c78606908ce1db3173f8b",
+      "bytes": 1393
+    },
+    "ECONOMIC_FEASIBILITY.json": {
+      "sha256": "6e27bb21cc48cba2c01419cd67815e34e0618072d17a07214f46db019f19a1b0",
+      "bytes": 21308
+    },
+    "FINAL_CERTIFICATION_REPORT.json": {
+      "sha256": "b0a8a1b1f4db2cabb9337ca5f824f55e56bec57428fcfd130292f11de8f8f071",
+      "bytes": 14712
+    },
+    "FINAL_CERTIFICATION_REPORT.md": {
+      "sha256": "915c5b97a07b5d9aba7c936e1040905d8a07c0bca4c50c72267294ad8ddc8ea9",
+      "bytes": 6704
+    },
+    "FINAL_REPORT.json": {
+      "sha256": "0a46f3b2e7e414d76ca9295c894a8cb4d376ea730de614d0a05b389db5fd8779",
+      "bytes": 19618
+    },
+    "FINAL_REPORT.md": {
+      "sha256": "e10d2b3dea4f10275433144343120941e04020be93835ecda94605a01ce9918a",
+      "bytes": 12513
+    },
+    "FUNDING_HISTORY.json": {
+      "sha256": "2dc8c366f4e5aacbc3f6b2ded194e3a0171bd285138266dfe74a004f8999ddee",
+      "bytes": 29613
+    },
+    "INDEPENDENT_CERTIFICATION.json": {
+      "sha256": "966c352e0bdf3e9d83b107030fd15b835a0a89d9d5422a4523e365a7b31d3177",
+      "bytes": 42602
+    },
+    "INDEPENDENT_CERTIFICATION.md": {
+      "sha256": "d0aaeaeb928d076bab930ec4ad5348459b9b95f4859a4965f6dd7b7d53c94895",
+      "bytes": 5102
+    },
+    "INSTRUMENTS.json": {
+      "sha256": "f8db0c5437dd21f01605dc52fa26e19a19932e4796c5df3803e39adcf4b11b2c",
+      "bytes": 9512
+    },
+    "MARGIN_LIQUIDATION_CASES.json": {
+      "sha256": "0e4820ab1221bbe55ed817b9d10b9465338df44db605c70191710c39f5e4b85b",
+      "bytes": 33389
+    },
+    "MARKET_SNAPSHOT.json": {
+      "sha256": "2d79fa7530b208a605819f5be68de26d2f2f827df7f02d02fee6167dccd8b24d",
+      "bytes": 212700
+    },
+    "PROVENANCE.json": {
+      "sha256": "749b6a76b853b7ab03e2c15773bdef9cb92e75284cc40149cfdadfb3deac5620",
+      "bytes": 4910
+    },
+    "RISK_SCENARIOS.json": {
+      "sha256": "fe0ca50bff0deb946c7d497fb232904b2f10d5440b285616646183f38743b42f",
+      "bytes": 354512
+    },
+    "RUNTIME_AUTHORITY_VERIFICATION.json": {
+      "sha256": "eab502797d1fb1d2c9e4bb5aad439a16b3682e6c59694ad89470f73be11d3123",
+      "bytes": 22959
+    },
+    "RUNTIME_AUTHORITY_VERIFICATION.md": {
+      "sha256": "00c7401753ab527f34cb95439d347488949a4788ba0204fed1f66fd273c17eda",
+      "bytes": 1569
+    },
+    "RUNTIME_EXECUTION_REPORT.json": {
+      "sha256": "c654ca6f446070089f6cf1f54e4e6ef525938021cafa2922c098c59f22ad28a7",
+      "bytes": 5537
+    },
+    "raw/binance_usdm_btcusdt_5m_klines.json": {
+      "sha256": "3d529db560a2114332abd47fee822308f26641900a381adf2c0b33bfca32fd8b",
+      "bytes": 202841
+    },
+    "raw/binance_usdm_depth_btcusdt_100.json": {
+      "sha256": "979c9fff0006600afdef8dfd687a431129e761726577fc656a011d0a1acef8f8",
+      "bytes": 9112
+    },
+    "raw/binance_usdm_exchange_info.json": {
+      "sha256": "ceb70da7f3661f3d0d602bf8270ed9f41cdfa4a3c40577e58bc11599a833e37f",
+      "bytes": 1881990
+    },
+    "raw/binance_usdm_funding_rate_btcusdt.json": {
+      "sha256": "4cab9b070c9621b859a7734fb59ed5efa1e3a726d76b708d703743794ef50eb7",
+      "bytes": 32415
+    },
+    "raw/binance_usdm_leverage_brackets_btcusdt.json": {
+      "sha256": "f38d9df89565a66d4e53b2ea5d8097c08c6788588d0498cd376ac41587ed170d",
+      "bytes": 4123
+    },
+    "raw/binance_usdm_premium_index_btcusdt.json": {
+      "sha256": "fa7abe17d11e886ce3265cf122fbc927015e3cbc3db75ba34ab46feb68f70cfc",
+      "bytes": 264
+    },
+    "raw/esma_cfd_product_intervention_2026-02-24.html": {
+      "sha256": "a15c6ee3095a334313bace2d6b4871b0862182aa267a6a6c8206a7f94ad98e0c",
+      "bytes": 60166
+    }
+  },
+  "v1_untouched": true,
+  "note": "v1 artifacts in data/rfc048 top level are preserved untouched and remain the historical record; they are no longer the verified generation."
+}

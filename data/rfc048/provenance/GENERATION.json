@@ -1,0 +1,17 @@
+{
+  "schema_version": "rfc048-provenance-v2",
+  "generator": {
+    "path": "scripts/rfc048_provenance_v2.py",
+    "sha256": "d0b1b541ba409e42f78a16b9a6600d00947872f8d07da4606e4d5f504ec1d0a2"
+  },
+  "inputs": {
+    "PROVENANCE.json": "cf738c4ca9f1b7b544b7363fd12594a7f0067937417dfa16513cee17be39a6f6",
+    "INSTRUMENTS.json": "188c8333d1a648ee674f2ecb9fa32da7049aa8b8acca7ee8701205a7573143ac"
+  },
+  "outputs": {
+    "provenance/PROVENANCE@v2.json": "749b6a76b853b7ab03e2c15773bdef9cb92e75284cc40149cfdadfb3deac5620",
+    "provenance/INSTRUMENTS@v2.json": "f8db0c5437dd21f01605dc52fa26e19a19932e4796c5df3803e39adcf4b11b2c"
+  },
+  "v1_untouched": true,
+  "regenerate_with": "PYTHONPATH=src python scripts/rfc048_provenance_v2.py --write"
+}

@@ -1,0 +1,3750 @@
+{
+  "schema_version": "rfc048v-adversarial-findings-v1",
+  "rfc": "RFC-048V",
+  "falsifier_version": "RFC048V-FALSIFIER-v1",
+  "generated_at_utc": "2026-10-10T09:29:39Z",
+  "current_head": "081201f1eeaf77985f55dc488ffec373939d8c02",
+  "prefix_commit": "19b1a0b",
+  "seed": 20261010,
+  "random_search_count": 4000,
+  "method": {
+    "builder": "trading_bot.risk.futures (imported by the DRIVER only)",
+    "falsifier": "trading_bot.risk.futures_falsification (imports no builder code)",
+    "liquidation": "numeric root of the venue margin condition (bisection, 200 steps)",
+    "invariants": [
+      "I1_APPROVED_RISK_LE_BUDGET",
+      "I2_MARGIN_LE_AVAILABLE",
+      "I3_NOTIONAL_LE_MAX_ALLOWED",
+      "I4_DATA_ORDER",
+      "I5_UNKNOWN_CRITICAL_INPUT",
+      "I6_UNSUPPORTED_CONTRACT",
+      "I7_LIQUIDATION_KNOWN_AND_SAFE",
+      "I8_LIVE_ROUTE_BLOCKED",
+      "I9_NO_ORDER_AUTHORISED",
+      "I10_ROUNDING_REDUCES"
+    ]
+  },
+  "totals": {
+    "catalogue_cases": 31,
+    "counterexample_replays": 12,
+    "random_scenarios": 4000,
+    "liquidation_grid_points": 50,
+    "engine_approvals_in_sweep": 229,
+    "engine_refusals_in_sweep": 3771
+  },
+  "invariant_status": {
+    "I1_APPROVED_RISK_LE_BUDGET": "HELD",
+    "I2_MARGIN_LE_AVAILABLE": "HELD",
+    "I3_NOTIONAL_LE_MAX_ALLOWED": "HELD",
+    "I4_DATA_ORDER": "HELD",
+    "I5_UNKNOWN_CRITICAL_INPUT": "HELD",
+    "I6_UNSUPPORTED_CONTRACT": "HELD",
+    "I7_LIQUIDATION_KNOWN_AND_SAFE": "HELD",
+    "I8_LIVE_ROUTE_BLOCKED": "HELD",
+    "I9_NO_ORDER_AUTHORISED": "HELD",
+    "I10_ROUNDING_REDUCES": "HELD"
+  },
+  "all_invariants_hold": true,
+  "false_approval_count": 0,
+  "false_success": 0,
+  "engine_raised": 0,
+  "counterexamples": {
+    "replay": {
+      "cases": [
+        {
+          "defect": "DEF-048V-01",
+          "invariant": "I5_UNKNOWN_CRITICAL_INPUT",
+          "case": "NaN mark price reached an approval",
+          "prefix_commit": "19b1a0b",
+          "prefix_observed": "19b1a0b: decision=REDUCE_SIMULATED_SIZE with mark_price=NaN (the market-validity gate compared with <= and NaN satisfied it)",
+          "postfix_decision": "DATA_INVALID",
+          "postfix_reasons": [
+            "INVALID_NUMERIC_INPUT"
+          ],
+          "postfix_is_safe_refusal": true,
+          "oracle_expected": "REFUSE",
+          "oracle_refusal_class": "DATA_INVALID",
+          "regression_test": "test_non_finite_mark_is_not_silently_treated_as_present"
+        },
+        {
+          "defect": "DEF-048V-01",
+          "invariant": "I5_UNKNOWN_CRITICAL_INPUT",
+          "case": "infinite mark price reached an approval",
+          "prefix_commit": "19b1a0b",
+          "prefix_observed": "19b1a0b: decision=REDUCE_SIMULATED_SIZE with mark_price=inf",
+          "postfix_decision": "DATA_INVALID",
+          "postfix_reasons": [
+            "INVALID_NUMERIC_INPUT"
+          ],
+          "postfix_is_safe_refusal": true,
+          "oracle_expected": "REFUSE",
+          "oracle_refusal_class": "DATA_INVALID",
+          "regression_test": "test_non_finite_mark_is_not_silently_treated_as_present"
+        },
+        {
+          "defect": "DEF-048V-01",
+          "invariant": "I2_MARGIN_LE_AVAILABLE",
+          "case": "NaN leverage produced an approval with a NaN margin",
+          "prefix_commit": "19b1a0b",
+          "prefix_observed": "19b1a0b: decision=REDUCE_SIMULATED_SIZE, required_margin=NaN (min(NaN, cap, ceiling) stayed NaN and every comparison passed)",
+          "postfix_decision": "DATA_INVALID",
+          "postfix_reasons": [
+            "INVALID_NUMERIC_INPUT"
+          ],
+          "postfix_is_safe_refusal": true,
+          "oracle_expected": "REFUSE",
+          "oracle_refusal_class": "DATA_INVALID",
+          "regression_test": "test_non_finite_proposal_fields_are_refused"
+        },
+        {
+          "defect": "DEF-048V-01",
+          "invariant": "I4_DATA_ORDER",
+          "case": "NaN spread reached int() and raised",
+          "prefix_commit": "19b1a0b",
+          "prefix_observed": "19b1a0b: ValueError('cannot convert float NaN to integer')",
+          "postfix_decision": "DATA_INVALID",
+          "postfix_reasons": [
+            "INVALID_NUMERIC_INPUT"
+          ],
+          "postfix_is_safe_refusal": true,
+          "oracle_expected": "REFUSE",
+          "oracle_refusal_class": "DATA_INVALID",
+          "regression_test": "test_non_finite_spread_is_refused"
+        },
+        {
+          "defect": "DEF-048V-02",
+          "invariant": "I4_DATA_ORDER",
+          "case": "NaN horizon reached int() and raised",
+          "prefix_commit": "19b1a0b",
+          "prefix_observed": "19b1a0b: ValueError('cannot convert float NaN to integer')",
+          "postfix_decision": "DATA_INVALID",
+          "postfix_reasons": [
+            "INVALID_NUMERIC_INPUT"
+          ],
+          "postfix_is_safe_refusal": true,
+          "oracle_expected": "REFUSE",
+          "oracle_refusal_class": "DATA_INVALID",
+          "regression_test": "test_non_finite_proposal_fields_are_refused"
+        },
+        {
+          "defect": "DEF-048V-02",
+          "invariant": "I4_DATA_ORDER",
+          "case": "NaN stop price reached int() and raised",
+          "prefix_commit": "19b1a0b",
+          "prefix_observed": "19b1a0b: ValueError('cannot convert float NaN to integer')",
+          "postfix_decision": "DATA_INVALID",
+          "postfix_reasons": [
+            "INVALID_NUMERIC_INPUT"
+          ],
+          "postfix_is_safe_refusal": true,
+          "oracle_expected": "REFUSE",
+          "oracle_refusal_class": "DATA_INVALID",
+          "regression_test": "test_non_finite_proposal_fields_are_refused"
+        },
+        {
+          "defect": "DEF-048V-02",
+          "invariant": "I4_DATA_ORDER",
+          "case": "NaN equity reached int() and raised",
+          "prefix_commit": "19b1a0b",
+          "prefix_observed": "19b1a0b: ValueError('cannot convert float NaN to integer')",
+          "postfix_decision": "DATA_INVALID",
+          "postfix_reasons": [
+            "INVALID_NUMERIC_INPUT"
+          ],
+          "postfix_is_safe_refusal": true,
+          "oracle_expected": "REFUSE",
+          "oracle_refusal_class": "DATA_INVALID",
+          "regression_test": "test_non_finite_snapshot_state_is_refused"
+        },
+        {
+          "defect": "DEF-048V-06",
+          "invariant": "I5_UNKNOWN_CRITICAL_INPUT",
+          "case": "NaN stress scenario silently modelled as no stress",
+          "prefix_commit": "19b1a0b",
+          "prefix_observed": "19b1a0b: decision=REDUCE_SIMULATED_SIZE; the NaN path produced no breach and the declared stress was silently ignored",
+          "postfix_decision": "DATA_INVALID",
+          "postfix_reasons": [
+            "INVALID_NUMERIC_INPUT"
+          ],
+          "postfix_is_safe_refusal": true,
+          "oracle_expected": "REFUSE",
+          "oracle_refusal_class": "DATA_INVALID",
+          "regression_test": "test_unmodelable_stress_is_refused_by_the_engine"
+        },
+        {
+          "defect": "DEF-048V-06",
+          "invariant": "I5_UNKNOWN_CRITICAL_INPUT",
+          "case": "NaN stress funding rate silently charged zero",
+          "prefix_commit": "19b1a0b",
+          "prefix_observed": "19b1a0b: decision=REDUCE_SIMULATED_SIZE with buffer 9874.5 bps",
+          "postfix_decision": "DATA_INVALID",
+          "postfix_reasons": [
+            "INVALID_NUMERIC_INPUT"
+          ],
+          "postfix_is_safe_refusal": true,
+          "oracle_expected": "APPROVE_OR_REDUCE",
+          "oracle_refusal_class": null,
+          "regression_test": "test_unmodelable_stress_is_refused_by_the_engine"
+        },
+        {
+          "defect": "DEF-048V-01",
+          "invariant": "I5_UNKNOWN_CRITICAL_INPUT",
+          "case": "NaN open-position notional defeated the exposure ceilings",
+          "prefix_commit": "19b1a0b",
+          "prefix_observed": "19b1a0b: NaN exposure made every cap comparison False",
+          "postfix_decision": "DATA_INVALID",
+          "postfix_reasons": [
+            "INVALID_NUMERIC_INPUT"
+          ],
+          "postfix_is_safe_refusal": true,
+          "oracle_expected": "APPROVE_OR_REDUCE",
+          "oracle_refusal_class": null,
+          "regression_test": "test_non_finite_open_position_is_refused"
+        },
+        {
+          "defect": "DEF-048V-05",
+          "invariant": "I2_MARGIN_LE_AVAILABLE",
+          "case": "NaN reservation poisoned the ledger",
+          "prefix_commit": "19b1a0b",
+          "prefix_observed": "19b1a0b: try_reserve(NaN) returned (True, nan); free became NaN",
+          "postfix_decision": "try_reserve(NaN) -> ok=False, reason=INVALID_NUMERIC_INPUT",
+          "postfix_reasons": [
+            "INVALID_NUMERIC_INPUT"
+          ],
+          "postfix_is_safe_refusal": true,
+          "oracle_expected": "REFUSE",
+          "oracle_refusal_class": "INVALID_NUMERIC_INPUT",
+          "regression_test": "test_ledger_refuses_non_finite_amounts"
+        },
+        {
+          "defect": "DEF-048V-03",
+          "invariant": "I2_MARGIN_LE_AVAILABLE",
+          "case": "a repeated decision id reserved twice",
+          "prefix_commit": "19b1a0b",
+          "prefix_observed": "19b1a0b: two reservations of 82.5 for the same decision id (165 total)",
+          "postfix_decision": "duplicate reserve -> reserved=82.5",
+          "postfix_reasons": [],
+          "postfix_is_safe_refusal": true,
+          "oracle_expected": "REFUSE",
+          "oracle_refusal_class": "SHARED_COLLATERAL_CONFLICT",
+          "regression_test": "test_repeated_decision_id_is_idempotent"
+        }
+      ],
+      "all_replay_safe": true,
+      "case_count": 12
+    }
+  },
+  "catalogue_cross_check": {
+    "classifications": {
+      "AGREE": 27,
+      "CONSERVATIVE_DIVERGENCE": 4
+    },
+    "cases": [
+      {
+        "scenario": {
+          "scenario_id": "S01",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "engine_reasons": [],
+        "oracle": {
+          "expected": "APPROVE_OR_REDUCE",
+          "refusal_class": null,
+          "refusal_reasons": [],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 0.7427004562062753,
+            "effective_leverage": 5.0,
+            "initial_margin": 16.500009846376,
+            "maintenance_margin": 0.66000039385504,
+            "margin_utilization_pct": 8.250004923188,
+            "portfolio_cap": 120.0,
+            "liquidation_safety_usdt": 1.0312506153985,
+            "liquidation_price": 67300.49196878,
+            "liquidation_buffer_bps": 1842.3694779113566,
+            "mark_price": 82500.04923188,
+            "requested_notional": 400.0,
+            "order_authorised_invariant": "MUST_BE_FALSE"
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "approved decision satisfies every re-derived invariant",
+          "numbers": {
+            "engine_decision": "REDUCE_SIMULATED_SIZE",
+            "engine_models": {
+              "approved_notional": 82.50004923188,
+              "effective_leverage": 5.0,
+              "required_margin": 16.500009846376,
+              "modeled_worst_loss": 0.74270045620629,
+              "liquidation_price": 67300.49196877761,
+              "liquidation_buffer_bps": 1842.3694779116458
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 0.7427004562062753,
+              "effective_leverage": 5.0,
+              "initial_margin": 16.500009846376,
+              "maintenance_margin": 0.66000039385504,
+              "margin_utilization_pct": 8.250004923188,
+              "portfolio_cap": 120.0,
+              "liquidation_safety_usdt": 1.0312506153985,
+              "liquidation_price": 67300.49196878,
+              "liquidation_buffer_bps": 1842.3694779113566,
+              "mark_price": 82500.04923188,
+              "requested_notional": 400.0,
+              "order_authorised_invariant": "MUST_BE_FALSE"
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S02",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "SHORT",
+          "entry_price": 82500.04923188,
+          "stop_price": 82912.5494780394,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "engine_reasons": [],
+        "oracle": {
+          "expected": "APPROVE_OR_REDUCE",
+          "refusal_class": null,
+          "refusal_reasons": [],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 0.7427004562062753,
+            "effective_leverage": 5.0,
+            "initial_margin": 16.500009846376,
+            "maintenance_margin": 0.66000039385504,
+            "margin_utilization_pct": 8.250004923188,
+            "portfolio_cap": 120.0,
+            "liquidation_safety_usdt": 1.0312506153985,
+            "liquidation_price": 97578.49448492,
+            "liquidation_buffer_bps": 1827.6892430281519,
+            "mark_price": 82500.04923188,
+            "requested_notional": 400.0,
+            "order_authorised_invariant": "MUST_BE_FALSE"
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "approved decision satisfies every re-derived invariant",
+          "numbers": {
+            "engine_decision": "REDUCE_SIMULATED_SIZE",
+            "engine_models": {
+              "approved_notional": 82.50004923188,
+              "effective_leverage": 5.0,
+              "required_margin": 16.500009846376,
+              "modeled_worst_loss": 0.74270045620629,
+              "liquidation_price": 97578.49448491781,
+              "liquidation_buffer_bps": 1827.6892430278874
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 0.7427004562062753,
+              "effective_leverage": 5.0,
+              "initial_margin": 16.500009846376,
+              "maintenance_margin": 0.66000039385504,
+              "margin_utilization_pct": 8.250004923188,
+              "portfolio_cap": 120.0,
+              "liquidation_safety_usdt": 1.0312506153985,
+              "liquidation_price": 97578.49448492,
+              "liquidation_buffer_bps": 1827.6892430281519,
+              "mark_price": 82500.04923188,
+              "requested_notional": 400.0,
+              "order_authorised_invariant": "MUST_BE_FALSE"
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S03",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 1.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "engine_reasons": [],
+        "oracle": {
+          "expected": "APPROVE_OR_REDUCE",
+          "refusal_class": null,
+          "refusal_reasons": [],
+          "numbers": {
+            "risk_budget": 1.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 0.7427004562062753,
+            "effective_leverage": 1.0,
+            "initial_margin": 82.50004923188,
+            "maintenance_margin": 0.33000019692752,
+            "margin_utilization_pct": 41.25002461594,
+            "portfolio_cap": 100.0,
+            "liquidation_safety_usdt": 1.0312506153985,
+            "liquidation_price": 1035.39218414,
+            "liquidation_buffer_bps": 9874.49799196727,
+            "mark_price": 82500.04923188,
+            "requested_notional": 400.0,
+            "order_authorised_invariant": "MUST_BE_FALSE"
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "approved decision satisfies every re-derived invariant",
+          "numbers": {
+            "engine_decision": "REDUCE_SIMULATED_SIZE",
+            "engine_models": {
+              "approved_notional": 82.50004923188,
+              "effective_leverage": 1.0,
+              "required_margin": 82.50004923188,
+              "modeled_worst_loss": 0.7427004562062753,
+              "liquidation_price": 1035.3921841350402,
+              "liquidation_buffer_bps": 9874.497991967872
+            },
+            "oracle": {
+              "risk_budget": 1.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 0.7427004562062753,
+              "effective_leverage": 1.0,
+              "initial_margin": 82.50004923188,
+              "maintenance_margin": 0.33000019692752,
+              "margin_utilization_pct": 41.25002461594,
+              "portfolio_cap": 100.0,
+              "liquidation_safety_usdt": 1.0312506153985,
+              "liquidation_price": 1035.39218414,
+              "liquidation_buffer_bps": 9874.49799196727,
+              "mark_price": 82500.04923188,
+              "requested_notional": 400.0,
+              "order_authorised_invariant": "MUST_BE_FALSE"
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S04",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 2.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "engine_reasons": [],
+        "oracle": {
+          "expected": "APPROVE_OR_REDUCE",
+          "refusal_class": null,
+          "refusal_reasons": [],
+          "numbers": {
+            "risk_budget": 1.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 0.7427004562062753,
+            "effective_leverage": 2.0,
+            "initial_margin": 41.25002461594,
+            "maintenance_margin": 0.33000019692752,
+            "margin_utilization_pct": 20.62501230797,
+            "portfolio_cap": 120.0,
+            "liquidation_safety_usdt": 1.0312506153985,
+            "liquidation_price": 42451.07954954,
+            "liquidation_buffer_bps": 4854.417670682324,
+            "mark_price": 82500.04923188,
+            "requested_notional": 400.0,
+            "order_authorised_invariant": "MUST_BE_FALSE"
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "approved decision satisfies every re-derived invariant",
+          "numbers": {
+            "engine_decision": "REDUCE_SIMULATED_SIZE",
+            "engine_models": {
+              "approved_notional": 82.50004923188,
+              "effective_leverage": 2.0,
+              "required_margin": 41.25002461594,
+              "modeled_worst_loss": 0.7427004562062753,
+              "liquidation_price": 42451.07954953665,
+              "liquidation_buffer_bps": 4854.417670682731
+            },
+            "oracle": {
+              "risk_budget": 1.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 0.7427004562062753,
+              "effective_leverage": 2.0,
+              "initial_margin": 41.25002461594,
+              "maintenance_margin": 0.33000019692752,
+              "margin_utilization_pct": 20.62501230797,
+              "portfolio_cap": 120.0,
+              "liquidation_safety_usdt": 1.0312506153985,
+              "liquidation_price": 42451.07954954,
+              "liquidation_buffer_bps": 4854.417670682324,
+              "mark_price": 82500.04923188,
+              "requested_notional": 400.0,
+              "order_authorised_invariant": "MUST_BE_FALSE"
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S05",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 3.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "engine_reasons": [],
+        "oracle": {
+          "expected": "APPROVE_OR_REDUCE",
+          "refusal_class": null,
+          "refusal_reasons": [],
+          "numbers": {
+            "risk_budget": 1.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 0.7427004562062753,
+            "effective_leverage": 3.0,
+            "initial_margin": 27.500016410626667,
+            "maintenance_margin": 0.33000019692752,
+            "margin_utilization_pct": 13.750008205313332,
+            "portfolio_cap": 120.0,
+            "liquidation_safety_usdt": 1.0312506153985,
+            "liquidation_price": 56256.30867134,
+            "liquidation_buffer_bps": 3181.0575635873424,
+            "mark_price": 82500.04923188,
+            "requested_notional": 400.0,
+            "order_authorised_invariant": "MUST_BE_FALSE"
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "approved decision satisfies every re-derived invariant",
+          "numbers": {
+            "engine_decision": "REDUCE_SIMULATED_SIZE",
+            "engine_models": {
+              "approved_notional": 82.50004923188,
+              "effective_leverage": 3.0,
+              "required_margin": 27.500016410626667,
+              "modeled_worst_loss": 0.7427004562062753,
+              "liquidation_price": 56256.30867133718,
+              "liquidation_buffer_bps": 3181.0575635876835
+            },
+            "oracle": {
+              "risk_budget": 1.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 0.7427004562062753,
+              "effective_leverage": 3.0,
+              "initial_margin": 27.500016410626667,
+              "maintenance_margin": 0.33000019692752,
+              "margin_utilization_pct": 13.750008205313332,
+              "portfolio_cap": 120.0,
+              "liquidation_safety_usdt": 1.0312506153985,
+              "liquidation_price": 56256.30867134,
+              "liquidation_buffer_bps": 3181.0575635873424,
+              "mark_price": 82500.04923188,
+              "requested_notional": 400.0,
+              "order_authorised_invariant": "MUST_BE_FALSE"
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S06",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82335.04913341624,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "engine_reasons": [],
+        "oracle": {
+          "expected": "APPROVE_OR_REDUCE",
+          "refusal_class": null,
+          "refusal_reasons": [],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 19.999999999999886,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 0.4952003085106368,
+            "effective_leverage": 5.0,
+            "initial_margin": 16.500009846376,
+            "maintenance_margin": 1.32000078771008,
+            "margin_utilization_pct": 8.250004923188,
+            "portfolio_cap": 120.0,
+            "liquidation_safety_usdt": 1.0312506153985,
+            "liquidation_price": 67300.49196878,
+            "liquidation_buffer_bps": 1842.3694779113566,
+            "mark_price": 82500.04923188,
+            "requested_notional": 400.0,
+            "order_authorised_invariant": "MUST_BE_FALSE"
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "approved decision satisfies every re-derived invariant",
+          "numbers": {
+            "engine_decision": "REDUCE_SIMULATED_SIZE",
+            "engine_models": {
+              "approved_notional": 82.50004923188,
+              "effective_leverage": 5.0,
+              "required_margin": 16.500009846376,
+              "modeled_worst_loss": 0.4952003085106514,
+              "liquidation_price": 67300.49196877761,
+              "liquidation_buffer_bps": 1842.3694779116458
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 19.999999999999886,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 0.4952003085106368,
+              "effective_leverage": 5.0,
+              "initial_margin": 16.500009846376,
+              "maintenance_margin": 1.32000078771008,
+              "margin_utilization_pct": 8.250004923188,
+              "portfolio_cap": 120.0,
+              "liquidation_safety_usdt": 1.0312506153985,
+              "liquidation_price": 67300.49196878,
+              "liquidation_buffer_bps": 1842.3694779113566,
+              "mark_price": 82500.04923188,
+              "requested_notional": 400.0,
+              "order_authorised_invariant": "MUST_BE_FALSE"
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S07",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 0.01,
+          "free_margin": 0.01,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "NO_TRADE",
+        "engine_reasons": [
+          "BELOW_MIN_NOTIONAL"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "NO_TRADE",
+          "refusal_reasons": [
+            "BELOW_MIN_NOTIONAL"
+          ],
+          "numbers": {
+            "risk_budget": 0.0001,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "NO_TRADE",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {
+              "risk_budget": 0.0001,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S08",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 0.0,
+          "reserved_margin": 200.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "NO_TRADE",
+        "engine_reasons": [
+          "EXPOSURE_LIMIT"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "NO_TRADE",
+          "refusal_reasons": [
+            "EXPOSURE_LIMIT"
+          ],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.002,
+            "notional": 165.00009846376,
+            "modeled_worst_loss": 1.4854009124125507,
+            "effective_leverage": 5.0,
+            "initial_margin": 33.000019692752,
+            "maintenance_margin": 0.66000039385504,
+            "margin_utilization_pct": 116.500009846376,
+            "portfolio_cap": 0.0
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "NO_TRADE",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 5.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.002,
+              "notional": 165.00009846376,
+              "modeled_worst_loss": 1.4854009124125507,
+              "effective_leverage": 5.0,
+              "initial_margin": 33.000019692752,
+              "maintenance_margin": 0.66000039385504,
+              "margin_utilization_pct": 116.500009846376,
+              "portfolio_cap": 0.0
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S09",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82499.96673183076,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "RISK_VETO",
+        "engine_reasons": [
+          "STOP_TOO_CLOSE"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "RISK_VETO",
+          "refusal_reasons": [
+            "STOP_TOO_CLOSE"
+          ],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 0.010000000000160455
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "RISK_VETO",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 0.010000000000160455
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S10",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": null,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "RISK_VETO",
+        "engine_reasons": [
+          "STOP_MISSING"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "RISK_VETO",
+          "refusal_reasons": [
+            "STOP_MISSING"
+          ],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "RISK_VETO",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S11",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 57750.03446231599,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "RISK_VETO",
+        "engine_reasons": [
+          "LIQUIDATION_BEFORE_STOP"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "RISK_VETO",
+          "refusal_reasons": [
+            "LIQUIDATION_BEFORE_STOP"
+          ],
+          "numbers": {
+            "risk_budget": 100.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 3000.0000000000005,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 25.080214979610883,
+            "effective_leverage": 5.0,
+            "initial_margin": 16.500009846376,
+            "maintenance_margin": 0.99000059078256,
+            "margin_utilization_pct": 8.250004923188,
+            "portfolio_cap": 120.0,
+            "liquidation_safety_usdt": 1.0312506153985,
+            "liquidation_price": 67300.49196878,
+            "liquidation_buffer_bps": 1842.3694779113566
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "RISK_VETO",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 5.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": 67300.49196877761,
+              "liquidation_buffer_bps": 1842.3694779116458
+            },
+            "oracle": {
+              "risk_budget": 100.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 3000.0000000000005,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 25.080214979610883,
+              "effective_leverage": 5.0,
+              "initial_margin": 16.500009846376,
+              "maintenance_margin": 0.99000059078256,
+              "margin_utilization_pct": 8.250004923188,
+              "portfolio_cap": 120.0,
+              "liquidation_safety_usdt": 1.0312506153985,
+              "liquidation_price": 67300.49196878,
+              "liquidation_buffer_bps": 1842.3694779113566
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S12",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [
+            {
+              "name": "hard_gap_40pct",
+              "adverse_move_pct": 0.4,
+              "spread_widening_bps": 0.0,
+              "funding_settlements": 0,
+              "funding_rate": 0.0,
+              "bracket_shift": true
+            }
+          ],
+          "live_route_requested": false
+        },
+        "engine_decision": "RISK_VETO",
+        "engine_reasons": [
+          "GAP_BEYOND_STOP",
+          "PARTIAL_LIQUIDATION_UNSUPPORTED"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "RISK_VETO",
+          "refusal_reasons": [
+            "GAP_BEYOND_STOP"
+          ],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 0.7427004562062753,
+            "effective_leverage": 5.0,
+            "initial_margin": 16.500009846376,
+            "maintenance_margin": 0.66000039385504,
+            "margin_utilization_pct": 8.250004923188,
+            "portfolio_cap": 120.0,
+            "liquidation_safety_usdt": 1.0312506153985,
+            "liquidation_price": 67300.49196878,
+            "liquidation_buffer_bps": 1842.3694779113566
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "RISK_VETO",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 5.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": 67300.49196877761,
+              "liquidation_buffer_bps": 1842.3694779116458
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 0.7427004562062753,
+              "effective_leverage": 5.0,
+              "initial_margin": 16.500009846376,
+              "maintenance_margin": 0.66000039385504,
+              "margin_utilization_pct": 8.250004923188,
+              "portfolio_cap": 120.0,
+              "liquidation_safety_usdt": 1.0312506153985,
+              "liquidation_price": 67300.49196878,
+              "liquidation_buffer_bps": 1842.3694779113566
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S13",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 4320.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "engine_reasons": [],
+        "oracle": {
+          "expected": "APPROVE_OR_REDUCE",
+          "refusal_class": null,
+          "refusal_reasons": [],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 29.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 0.8169505005149673,
+            "effective_leverage": 5.0,
+            "initial_margin": 16.500009846376,
+            "maintenance_margin": 0.66000039385504,
+            "margin_utilization_pct": 8.250004923188,
+            "portfolio_cap": 120.0,
+            "liquidation_safety_usdt": 1.105500659707192,
+            "liquidation_price": 67375.04020604,
+            "liquidation_buffer_bps": 1833.3333333327678,
+            "mark_price": 82500.04923188,
+            "requested_notional": 400.0,
+            "order_authorised_invariant": "MUST_BE_FALSE"
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "approved decision satisfies every re-derived invariant",
+          "numbers": {
+            "engine_decision": "REDUCE_SIMULATED_SIZE",
+            "engine_models": {
+              "approved_notional": 82.50004923188,
+              "effective_leverage": 5.0,
+              "required_margin": 16.500009846376,
+              "modeled_worst_loss": 0.816950500514982,
+              "liquidation_price": 67375.04020603534,
+              "liquidation_buffer_bps": 1833.3333333333323
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 29.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 0.8169505005149673,
+              "effective_leverage": 5.0,
+              "initial_margin": 16.500009846376,
+              "maintenance_margin": 0.66000039385504,
+              "margin_utilization_pct": 8.250004923188,
+              "portfolio_cap": 120.0,
+              "liquidation_safety_usdt": 1.105500659707192,
+              "liquidation_price": 67375.04020604,
+              "liquidation_buffer_bps": 1833.3333333327678,
+              "mark_price": 82500.04923188,
+              "requested_notional": 400.0,
+              "order_authorised_invariant": "MUST_BE_FALSE"
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S14",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 1440.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 0,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "NO_TRADE",
+        "engine_reasons": [
+          "FUNDING_UNKNOWN",
+          "COST_UNKNOWN"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "NO_TRADE",
+          "refusal_reasons": [
+            "COST_UNKNOWN"
+          ],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_UNKNOWN",
+            "worst_case_cost_bps": 20.024244,
+            "unknown_components": [
+              "funding"
+            ]
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "NO_TRADE",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_UNKNOWN",
+              "worst_case_cost_bps": 20.024244,
+              "unknown_components": [
+                "funding"
+              ]
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S15",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "NO_TRADE",
+        "engine_reasons": [
+          "FEES_EXCEED_HORIZON_EDGE"
+        ],
+        "oracle": {
+          "expected": "APPROVE_OR_REDUCE",
+          "refusal_class": null,
+          "refusal_reasons": [],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 0.7427004562062753,
+            "effective_leverage": 5.0,
+            "initial_margin": 16.500009846376,
+            "maintenance_margin": 0.66000039385504,
+            "margin_utilization_pct": 8.250004923188,
+            "portfolio_cap": 120.0,
+            "liquidation_safety_usdt": 1.0312506153985,
+            "liquidation_price": 67300.49196878,
+            "liquidation_buffer_bps": 1842.3694779113566,
+            "mark_price": 82500.04923188,
+            "requested_notional": 400.0,
+            "order_authorised_invariant": "MUST_BE_FALSE"
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "CONSERVATIVE_DIVERGENCE",
+          "violations": [],
+          "detail": "the engine refused a request the independent model permits: FEES_EXCEED_HORIZON_EDGE",
+          "numbers": {
+            "engine_decision": "NO_TRADE",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 0.7427004562062753,
+              "effective_leverage": 5.0,
+              "initial_margin": 16.500009846376,
+              "maintenance_margin": 0.66000039385504,
+              "margin_utilization_pct": 8.250004923188,
+              "portfolio_cap": 120.0,
+              "liquidation_safety_usdt": 1.0312506153985,
+              "liquidation_price": 67300.49196878,
+              "liquidation_buffer_bps": 1842.3694779113566,
+              "mark_price": 82500.04923188,
+              "requested_notional": 400.0,
+              "order_authorised_invariant": "MUST_BE_FALSE"
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S16",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 49.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 5.0,
+          "free_margin": 5.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "NO_TRADE",
+        "engine_reasons": [
+          "BELOW_MIN_NOTIONAL"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "NO_TRADE",
+          "refusal_reasons": [
+            "BELOW_MIN_NOTIONAL"
+          ],
+          "numbers": {
+            "risk_budget": 0.05,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "NO_TRADE",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {
+              "risk_budget": 0.05,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S17",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "UNSUPPORTED_INSTRUMENT",
+        "engine_reasons": [
+          "INSTRUMENT_NOT_SUPPORTED"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "NO_TRADE",
+          "refusal_reasons": [
+            "BELOW_MIN_NOTIONAL"
+          ],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "UNSUPPORTED_INSTRUMENT",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S18",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791583481730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "DATA_INVALID",
+        "engine_reasons": [
+          "STALE_DATA"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "DATA_INVALID",
+          "refusal_reasons": [
+            "STALE_DATA"
+          ],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 720000
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "DATA_INVALID",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 720000
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S19",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582766730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "DATA_INVALID",
+        "engine_reasons": [
+          "FUTURE_TIMESTAMP"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "DATA_INVALID",
+          "refusal_reasons": [
+            "FUTURE_TIMESTAMP"
+          ],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": -4000
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "DATA_INVALID",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": -4000
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S20",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": null,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "DATA_INVALID",
+        "engine_reasons": [
+          "MISSING_MARK_PRICE"
+        ],
+        "oracle": {
+          "expected": "APPROVE_OR_REDUCE",
+          "refusal_class": null,
+          "refusal_reasons": [],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 0.7427004562062753,
+            "effective_leverage": 5.0,
+            "initial_margin": 16.500009846376,
+            "maintenance_margin": 0.66000039385504,
+            "margin_utilization_pct": 8.250004923188,
+            "portfolio_cap": 120.0,
+            "liquidation_safety_usdt": 1.0312506153985,
+            "liquidation_price": 67300.49196878,
+            "liquidation_buffer_bps": 1842.3694779113566,
+            "mark_price": 82500.04923188,
+            "requested_notional": 400.0,
+            "order_authorised_invariant": "MUST_BE_FALSE"
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "CONSERVATIVE_DIVERGENCE",
+          "violations": [],
+          "detail": "the engine refused a request the independent model permits: MISSING_MARK_PRICE",
+          "numbers": {
+            "engine_decision": "DATA_INVALID",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 0.7427004562062753,
+              "effective_leverage": 5.0,
+              "initial_margin": 16.500009846376,
+              "maintenance_margin": 0.66000039385504,
+              "margin_utilization_pct": 8.250004923188,
+              "portfolio_cap": 120.0,
+              "liquidation_safety_usdt": 1.0312506153985,
+              "liquidation_price": 67300.49196878,
+              "liquidation_buffer_bps": 1842.3694779113566,
+              "mark_price": 82500.04923188,
+              "requested_notional": 400.0,
+              "order_authorised_invariant": "MUST_BE_FALSE"
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S21",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "NO_TRADE",
+        "engine_reasons": [
+          "COST_UNKNOWN"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "NO_TRADE",
+          "refusal_reasons": [
+            "COST_UNKNOWN"
+          ],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_UNKNOWN",
+            "worst_case_cost_bps": 20.024244,
+            "unknown_components": [
+              "liquidation_fee"
+            ]
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "NO_TRADE",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_UNKNOWN",
+              "worst_case_cost_bps": 20.024244,
+              "unknown_components": [
+                "liquidation_fee"
+              ]
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S22",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 5000.0,
+          "free_margin": 4400.0,
+          "reserved_margin": 600.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "NO_TRADE",
+        "engine_reasons": [
+          "CORRELATED_POSITIONS"
+        ],
+        "oracle": {
+          "expected": "APPROVE_OR_REDUCE",
+          "refusal_class": null,
+          "refusal_reasons": [],
+          "numbers": {
+            "risk_budget": 50.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.004,
+            "notional": 330.00019692752,
+            "modeled_worst_loss": 2.9708018248251014,
+            "effective_leverage": 5.0,
+            "initial_margin": 66.000039385504,
+            "maintenance_margin": 1.32000078771008,
+            "margin_utilization_pct": 13.320000787710079,
+            "portfolio_cap": 3000.0,
+            "liquidation_safety_usdt": 4.125002461594,
+            "liquidation_price": 67300.49196878,
+            "liquidation_buffer_bps": 1842.3694779113566,
+            "mark_price": 82500.04923188,
+            "requested_notional": 400.0,
+            "order_authorised_invariant": "MUST_BE_FALSE"
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "CONSERVATIVE_DIVERGENCE",
+          "violations": [],
+          "detail": "the engine refused a request the independent model permits: CORRELATED_POSITIONS",
+          "numbers": {
+            "engine_decision": "NO_TRADE",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 5.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {
+              "risk_budget": 50.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.004,
+              "notional": 330.00019692752,
+              "modeled_worst_loss": 2.9708018248251014,
+              "effective_leverage": 5.0,
+              "initial_margin": 66.000039385504,
+              "maintenance_margin": 1.32000078771008,
+              "margin_utilization_pct": 13.320000787710079,
+              "portfolio_cap": 3000.0,
+              "liquidation_safety_usdt": 4.125002461594,
+              "liquidation_price": 67300.49196878,
+              "liquidation_buffer_bps": 1842.3694779113566,
+              "mark_price": 82500.04923188,
+              "requested_notional": 400.0,
+              "order_authorised_invariant": "MUST_BE_FALSE"
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S23",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 500.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "REDUCE_SIMULATED_SIZE",
+        "engine_reasons": [],
+        "oracle": {
+          "expected": "APPROVE_OR_REDUCE",
+          "refusal_class": null,
+          "refusal_reasons": [],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 0.7427004562062753,
+            "effective_leverage": 5.0,
+            "initial_margin": 16.500009846376,
+            "maintenance_margin": 0.66000039385504,
+            "margin_utilization_pct": 8.250004923188,
+            "portfolio_cap": 120.0,
+            "liquidation_safety_usdt": 1.0312506153985,
+            "liquidation_price": 67300.49196878,
+            "liquidation_buffer_bps": 1842.3694779113566,
+            "mark_price": 82500.04923188,
+            "requested_notional": 400.0,
+            "order_authorised_invariant": "MUST_BE_FALSE"
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "approved decision satisfies every re-derived invariant",
+          "numbers": {
+            "engine_decision": "REDUCE_SIMULATED_SIZE",
+            "engine_models": {
+              "approved_notional": 82.50004923188,
+              "effective_leverage": 5.0,
+              "required_margin": 16.500009846376,
+              "modeled_worst_loss": 0.74270045620629,
+              "liquidation_price": 67300.49196877761,
+              "liquidation_buffer_bps": 1842.3694779116458
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 0.7427004562062753,
+              "effective_leverage": 5.0,
+              "initial_margin": 16.500009846376,
+              "maintenance_margin": 0.66000039385504,
+              "margin_utilization_pct": 8.250004923188,
+              "portfolio_cap": 120.0,
+              "liquidation_safety_usdt": 1.0312506153985,
+              "liquidation_price": 67300.49196878,
+              "liquidation_buffer_bps": 1842.3694779113566,
+              "mark_price": 82500.04923188,
+              "requested_notional": 400.0,
+              "order_authorised_invariant": "MUST_BE_FALSE"
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S24",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "SHORT",
+          "entry_price": 82500.04923188,
+          "stop_price": 82912.5494780394,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [
+            {
+              "name": "short_squeeze_40pct",
+              "adverse_move_pct": 0.4,
+              "spread_widening_bps": 0.0,
+              "funding_settlements": 0,
+              "funding_rate": 0.0,
+              "bracket_shift": true
+            }
+          ],
+          "live_route_requested": false
+        },
+        "engine_decision": "RISK_VETO",
+        "engine_reasons": [
+          "GAP_BEYOND_STOP",
+          "PARTIAL_LIQUIDATION_UNSUPPORTED"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "RISK_VETO",
+          "refusal_reasons": [
+            "GAP_BEYOND_STOP"
+          ],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 0.7427004562062753,
+            "effective_leverage": 5.0,
+            "initial_margin": 16.500009846376,
+            "maintenance_margin": 0.66000039385504,
+            "margin_utilization_pct": 8.250004923188,
+            "portfolio_cap": 120.0,
+            "liquidation_safety_usdt": 1.0312506153985,
+            "liquidation_price": 97578.49448492,
+            "liquidation_buffer_bps": 1827.6892430281519
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "RISK_VETO",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 5.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": 97578.49448491781,
+              "liquidation_buffer_bps": 1827.6892430278874
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 0.7427004562062753,
+              "effective_leverage": 5.0,
+              "initial_margin": 16.500009846376,
+              "maintenance_margin": 0.66000039385504,
+              "margin_utilization_pct": 8.250004923188,
+              "portfolio_cap": 120.0,
+              "liquidation_safety_usdt": 1.0312506153985,
+              "liquidation_price": 97578.49448492,
+              "liquidation_buffer_bps": 1827.6892430281519
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S25",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "RISK_VETO",
+        "engine_reasons": [
+          "LOSS_ABOVE_MARGIN"
+        ],
+        "oracle": {
+          "expected": "APPROVE_OR_REDUCE",
+          "refusal_class": null,
+          "refusal_reasons": [],
+          "numbers": {
+            "risk_budget": 120.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 21.202712665712514,
+            "effective_leverage": 5.0,
+            "initial_margin": 16.500009846376,
+            "maintenance_margin": 1.32000078771008,
+            "margin_utilization_pct": 8.250004923188,
+            "portfolio_cap": 120.0,
+            "liquidation_safety_usdt": 1.0312506153985,
+            "liquidation_price": 67300.49196878,
+            "liquidation_buffer_bps": 1842.3694779113566,
+            "mark_price": 82500.04923188,
+            "requested_notional": 400.0,
+            "order_authorised_invariant": "MUST_BE_FALSE"
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "CONSERVATIVE_DIVERGENCE",
+          "violations": [],
+          "detail": "the engine refused a request the independent model permits: LOSS_ABOVE_MARGIN",
+          "numbers": {
+            "engine_decision": "RISK_VETO",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 5.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": 67300.49196877761,
+              "liquidation_buffer_bps": 1842.3694779116458
+            },
+            "oracle": {
+              "risk_budget": 120.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 21.202712665712514,
+              "effective_leverage": 5.0,
+              "initial_margin": 16.500009846376,
+              "maintenance_margin": 1.32000078771008,
+              "margin_utilization_pct": 8.250004923188,
+              "portfolio_cap": 120.0,
+              "liquidation_safety_usdt": 1.0312506153985,
+              "liquidation_price": 67300.49196878,
+              "liquidation_buffer_bps": 1842.3694779113566,
+              "mark_price": 82500.04923188,
+              "requested_notional": 400.0,
+              "order_authorised_invariant": "MUST_BE_FALSE"
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S26",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": true
+        },
+        "engine_decision": "RISK_VETO",
+        "engine_reasons": [
+          "LIVE_ROUTE_ATTEMPTED"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "RISK_VETO",
+          "refusal_reasons": [
+            "LIVE_ROUTE_ATTEMPTED"
+          ],
+          "numbers": {},
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "RISK_VETO",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {}
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S27",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [
+            {
+              "name": "gap_50pct",
+              "adverse_move_pct": 0.5,
+              "spread_widening_bps": 0.0,
+              "funding_settlements": 0,
+              "funding_rate": 0.0,
+              "bracket_shift": true
+            }
+          ],
+          "live_route_requested": false
+        },
+        "engine_decision": "RISK_VETO",
+        "engine_reasons": [
+          "GAP_BEYOND_STOP",
+          "PARTIAL_LIQUIDATION_UNSUPPORTED"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "RISK_VETO",
+          "refusal_reasons": [
+            "GAP_BEYOND_STOP"
+          ],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.024244,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.001,
+            "notional": 82.50004923188,
+            "modeled_worst_loss": 0.7427004562062753,
+            "effective_leverage": 5.0,
+            "initial_margin": 16.500009846376,
+            "maintenance_margin": 0.66000039385504,
+            "margin_utilization_pct": 8.250004923188,
+            "portfolio_cap": 120.0,
+            "liquidation_safety_usdt": 1.0312506153985,
+            "liquidation_price": 67300.49196878,
+            "liquidation_buffer_bps": 1842.3694779113566
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "RISK_VETO",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 5.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": 67300.49196877761,
+              "liquidation_buffer_bps": 1842.3694779116458
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.024244,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.001,
+              "notional": 82.50004923188,
+              "modeled_worst_loss": 0.7427004562062753,
+              "effective_leverage": 5.0,
+              "initial_margin": 16.500009846376,
+              "maintenance_margin": 0.66000039385504,
+              "margin_utilization_pct": 8.250004923188,
+              "portfolio_cap": 120.0,
+              "liquidation_safety_usdt": 1.0312506153985,
+              "liquidation_price": 67300.49196878,
+              "liquidation_buffer_bps": 1842.3694779113566
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S28",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "DATA_INVALID",
+        "engine_reasons": [
+          "VENUE_OR_PRODUCT_NOT_ELIGIBLE"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "DATA_INVALID",
+          "refusal_reasons": [
+            "VENUE_OR_PRODUCT_NOT_ELIGIBLE"
+          ],
+          "numbers": {
+            "risk_budget": 2.0,
+            "data_age_ms": 1000
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "DATA_INVALID",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {
+              "risk_budget": 2.0,
+              "data_age_ms": 1000
+            }
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S29",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_261225",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "UNSUPPORTED_INSTRUMENT",
+        "engine_reasons": [
+          "CONTRACT_TYPE_NOT_IMPLEMENTED"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "UNSUPPORTED_INSTRUMENT",
+          "refusal_reasons": [
+            "CONTRACT_TYPE_NOT_IMPLEMENTED"
+          ],
+          "numbers": {},
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "UNSUPPORTED_INSTRUMENT",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {}
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S30",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_COINM_BTCUSD_PERP",
+          "direction": "LONG",
+          "entry_price": 82500.04923188,
+          "stop_price": 82087.5489857206,
+          "mark_price": 82500.04923188,
+          "requested_notional": 400.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 200.0,
+          "free_margin": 200.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_decision": "UNSUPPORTED_INSTRUMENT",
+        "engine_reasons": [
+          "CONTRACT_TYPE_NOT_IMPLEMENTED"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "UNSUPPORTED_INSTRUMENT",
+          "refusal_reasons": [
+            "CONTRACT_TYPE_NOT_IMPLEMENTED"
+          ],
+          "numbers": {},
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "UNSUPPORTED_INSTRUMENT",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 0.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": null,
+              "liquidation_buffer_bps": null
+            },
+            "oracle": {}
+          }
+        },
+        "engine_raised": false
+      },
+      {
+        "scenario": {
+          "scenario_id": "S31",
+          "kind": "catalogue",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "SHORT",
+          "entry_price": 82500.04923188,
+          "stop_price": 82912.5494780394,
+          "mark_price": 82500.04923188,
+          "requested_notional": 295000.0,
+          "requested_leverage": 150.0,
+          "horizon_minutes": 60.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582762730,
+          "equity": 400000.0,
+          "free_margin": 400000.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 0.012122,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [
+            {
+              "name": "bracket_shift_5pct",
+              "adverse_move_pct": 0.05,
+              "spread_widening_bps": 0.0,
+              "funding_settlements": 0,
+              "funding_rate": 0.0,
+              "bracket_shift": true
+            }
+          ],
+          "live_route_requested": false
+        },
+        "engine_decision": "RISK_VETO",
+        "engine_reasons": [
+          "LIQUIDATION_BUFFER_TOO_SMALL"
+        ],
+        "oracle": {
+          "expected": "REFUSE",
+          "refusal_class": "RISK_VETO",
+          "refusal_reasons": [
+            "LIQUIDATION_RISK_UNKNOWN"
+          ],
+          "numbers": {
+            "risk_budget": 400.0,
+            "data_age_ms": 1000,
+            "cost_status": "COST_ESTIMATED",
+            "worst_case_cost_bps": 20.07873010991437,
+            "stop_distance_bps": 49.999999999999716,
+            "quantity": 0.538,
+            "notional": 44385.02648675144,
+            "modeled_worst_loss": 399.8146821821471,
+            "effective_leverage": 150.0,
+            "initial_margin": 295.90017657834295,
+            "maintenance_margin": 177.54010594700577,
+            "margin_utilization_pct": 0.07397504414458574,
+            "portfolio_cap": 800000.0,
+            "liquidation_safety_usdt": 554.812831084393,
+            "liquidation_price": null
+          },
+          "violations": [],
+          "notes": []
+        },
+        "comparison": {
+          "classification": "AGREE",
+          "violations": [],
+          "detail": "both models refuse",
+          "numbers": {
+            "engine_decision": "RISK_VETO",
+            "engine_models": {
+              "approved_notional": 0.0,
+              "effective_leverage": 150.0,
+              "required_margin": 0.0,
+              "modeled_worst_loss": 0.0,
+              "liquidation_price": 81692.03082140839,
+              "liquidation_buffer_bps": -97.94156706507333
+            },
+            "oracle": {
+              "risk_budget": 400.0,
+              "data_age_ms": 1000,
+              "cost_status": "COST_ESTIMATED",
+              "worst_case_cost_bps": 20.07873010991437,
+              "stop_distance_bps": 49.999999999999716,
+              "quantity": 0.538,
+              "notional": 44385.02648675144,
+              "modeled_worst_loss": 399.8146821821471,
+              "effective_leverage": 150.0,
+              "initial_margin": 295.90017657834295,
+              "maintenance_margin": 177.54010594700577,
+              "margin_utilization_pct": 0.07397504414458574,
+              "portfolio_cap": 800000.0,
+              "liquidation_safety_usdt": 554.812831084393,
+              "liquidation_price": null
+            }
+          }
+        },
+        "engine_raised": false
+      }
+    ]
+  },
+  "random_search": {
+    "classifications": {
+      "AGREE": 3996,
+      "CONSERVATIVE_DIVERGENCE": 4
+    },
+    "false_approvals": [],
+    "conservative_divergences_sample": [
+      {
+        "scenario": {
+          "scenario_id": "SWEEP-00209",
+          "kind": "random",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 107281.32457819468,
+          "stop_price": 92143.19048385521,
+          "mark_price": 107281.32457819468,
+          "requested_notional": 50000.0,
+          "requested_leverage": 50.0,
+          "horizon_minutes": 480.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582761731,
+          "equity": 10000.0,
+          "free_margin": 2500.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 500.0,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 1,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_reasons": [
+          "LOSS_ABOVE_MARGIN"
+        ],
+        "oracle_expected": "APPROVE_OR_REDUCE"
+      },
+      {
+        "scenario": {
+          "scenario_id": "SWEEP-00360",
+          "kind": "random",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "LONG",
+          "entry_price": 68831.5023101602,
+          "stop_price": 58936.399065257705,
+          "mark_price": 68831.5023101602,
+          "requested_notional": 50000.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 1500.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582761731,
+          "equity": 10000.0,
+          "free_margin": 10000.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 500.0,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 50,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_reasons": [
+          "LOSS_ABOVE_MARGIN"
+        ],
+        "oracle_expected": "APPROVE_OR_REDUCE"
+      },
+      {
+        "scenario": {
+          "scenario_id": "SWEEP-02583",
+          "kind": "random",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "SHORT",
+          "entry_price": 85698.87871044711,
+          "stop_price": 95988.82729963773,
+          "mark_price": 85698.87871044711,
+          "requested_notional": 1000.0,
+          "requested_leverage": 5.0,
+          "horizon_minutes": 480.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791583061730,
+          "equity": 10000.0,
+          "free_margin": 5000.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 500.0,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 200,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_reasons": [
+          "LOSS_ABOVE_MARGIN"
+        ],
+        "oracle_expected": "APPROVE_OR_REDUCE"
+      },
+      {
+        "scenario": {
+          "scenario_id": "SWEEP-03022",
+          "kind": "random",
+          "instrument_id": "BINANCE_USDM_BTCUSDT_PERP",
+          "direction": "SHORT",
+          "entry_price": 99305.22252676975,
+          "stop_price": 112262.86569803399,
+          "mark_price": 99305.22252676975,
+          "requested_notional": 400.0,
+          "requested_leverage": 500.0,
+          "horizon_minutes": 4.0,
+          "data_timestamp_ms": 1791582761730,
+          "decision_timestamp_ms": 1791582761731,
+          "equity": 10000.0,
+          "free_margin": 5000.0,
+          "reserved_margin": 0.0,
+          "daily_pnl": 0.0,
+          "drawdown_pct": 0.0,
+          "consecutive_losses": 0,
+          "spread_bps": 500.0,
+          "depth_levels": {
+            "bids": 100,
+            "asks": 100
+          },
+          "funding_observations": 1,
+          "stress": [],
+          "live_route_requested": false
+        },
+        "engine_reasons": [
+          "LOSS_ABOVE_MARGIN"
+        ],
+        "oracle_expected": "APPROVE_OR_REDUCE"
+      }
+    ],
+    "false_approval_count": 0
+  },
+  "liquidation_cross_check": {
+    "grid_points": 50,
+    "worst_difference_bps": 5.838404776472034e-10,
+    "mismatch_count": 0,
+    "cases": [
+      {
+        "direction": "LONG",
+        "notional": 49.995,
+        "leverage": 1.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 41.41566265060241,
+        "independent_liquidation_price": 41.41566265,
+        "difference_bps": 7.301881658239643e-11
+      },
+      {
+        "direction": "LONG",
+        "notional": 49.995,
+        "leverage": 2.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 41457.07831325301,
+        "independent_liquidation_price": 41457.07831325,
+        "difference_bps": 3.6512078209356827e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 49.995,
+        "leverage": 3.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 55262.29919678714,
+        "independent_liquidation_price": 55262.29919679,
+        "difference_bps": 3.466001627120105e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 49.995,
+        "leverage": 5.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 66306.47590361445,
+        "independent_liquidation_price": 66306.47590361,
+        "difference_bps": 5.397437648339705e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 49.995,
+        "leverage": 20.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 78731.17469879518,
+        "independent_liquidation_price": 78731.1746988,
+        "difference_bps": 5.838404776472034e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 500.0325,
+        "leverage": 1.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 41.41566265060241,
+        "independent_liquidation_price": 41.41566265,
+        "difference_bps": 7.301881658239643e-11
+      },
+      {
+        "direction": "LONG",
+        "notional": 500.0325,
+        "leverage": 2.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 41457.078313253005,
+        "independent_liquidation_price": 41457.07831325,
+        "difference_bps": 3.6423884783730364e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 500.0325,
+        "leverage": 3.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 55262.29919678714,
+        "independent_liquidation_price": 55262.29919679,
+        "difference_bps": 3.466001627120105e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 500.0325,
+        "leverage": 5.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 66306.47590361445,
+        "independent_liquidation_price": 66306.47590361,
+        "difference_bps": 5.397437648339705e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 500.0325,
+        "leverage": 20.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 78731.17469879518,
+        "independent_liquidation_price": 78731.1746988,
+        "difference_bps": 5.838404776472034e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 4999.995,
+        "leverage": 1.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 41.41566265060241,
+        "independent_liquidation_price": 41.41566265,
+        "difference_bps": 7.301881658239643e-11
+      },
+      {
+        "direction": "LONG",
+        "notional": 4999.995,
+        "leverage": 2.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 41457.07831325301,
+        "independent_liquidation_price": 41457.07831325,
+        "difference_bps": 3.6512078209356827e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 4999.995,
+        "leverage": 3.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 55262.29919678715,
+        "independent_liquidation_price": 55262.29919679,
+        "difference_bps": 3.457182284557458e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 4999.995,
+        "leverage": 5.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 66306.47590361445,
+        "independent_liquidation_price": 66306.47590361,
+        "difference_bps": 5.397437648339705e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 4999.995,
+        "leverage": 20.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 78731.17469879518,
+        "independent_liquidation_price": 78731.1746988,
+        "difference_bps": 5.838404776472034e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 50000.032499999994,
+        "leverage": 1.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 41.41566265060241,
+        "independent_liquidation_price": 41.41566265,
+        "difference_bps": 7.301881658239643e-11
+      },
+      {
+        "direction": "LONG",
+        "notional": 50000.032499999994,
+        "leverage": 2.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 41457.078313253005,
+        "independent_liquidation_price": 41457.07831325,
+        "difference_bps": 3.6423884783730364e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 50000.032499999994,
+        "leverage": 3.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 55262.29919678714,
+        "independent_liquidation_price": 55262.29919679,
+        "difference_bps": 3.466001627120105e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 50000.032499999994,
+        "leverage": 5.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 66306.47590361445,
+        "independent_liquidation_price": 66306.47590361,
+        "difference_bps": 5.397437648339705e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 50000.032499999994,
+        "leverage": 20.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 78731.17469879518,
+        "independent_liquidation_price": 78731.1746988,
+        "difference_bps": 5.838404776472034e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 999999.99,
+        "leverage": 1.0,
+        "bracket_seq": 3,
+        "builder_liquidation_price": 41.25,
+        "independent_liquidation_price": 41.25,
+        "difference_bps": 0.0
+      },
+      {
+        "direction": "LONG",
+        "notional": 999999.99,
+        "leverage": 2.0,
+        "bracket_seq": 3,
+        "builder_liquidation_price": 41436.83945522144,
+        "independent_liquidation_price": 41436.83945522,
+        "difference_bps": 1.746229827404022e-10
+      },
+      {
+        "direction": "LONG",
+        "notional": 999999.99,
+        "leverage": 3.0,
+        "bracket_seq": 3,
+        "builder_liquidation_price": 55276.799193520375,
+        "independent_liquidation_price": 55276.79919352,
+        "difference_bps": 4.58605813257622e-11
+      },
+      {
+        "direction": "LONG",
+        "notional": 999999.99,
+        "leverage": 5.0,
+        "bracket_seq": 3,
+        "builder_liquidation_price": 66348.76698415953,
+        "independent_liquidation_price": 66348.76698416,
+        "difference_bps": 5.6443792400938093e-11
+      },
+      {
+        "direction": "LONG",
+        "notional": 999999.99,
+        "leverage": 20.0,
+        "bracket_seq": 3,
+        "builder_liquidation_price": 78804.73074862859,
+        "independent_liquidation_price": 78804.73074863,
+        "difference_bps": 1.7109524571534357e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 49.995,
+        "leverage": 1.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 164301.5438247012,
+        "independent_liquidation_price": 164301.5438247,
+        "difference_bps": 1.4463721802740386e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 49.995,
+        "leverage": 2.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 123215.88645418326,
+        "independent_liquidation_price": 123215.88645418,
+        "difference_bps": 3.951065468065666e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 49.995,
+        "leverage": 3.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 109520.66733067729,
+        "independent_liquidation_price": 109520.66733068,
+        "difference_bps": 3.2807954333045263e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 49.995,
+        "leverage": 5.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 98564.49203187252,
+        "independent_liquidation_price": 98564.49203187,
+        "difference_bps": 3.0514925266757155e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 49.995,
+        "leverage": 20.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 86238.79482071713,
+        "independent_liquidation_price": 86238.79482072,
+        "difference_bps": 3.4748209696827513e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 500.0325,
+        "leverage": 1.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 164301.5438247012,
+        "independent_liquidation_price": 164301.5438247,
+        "difference_bps": 1.4463721802740386e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 500.0325,
+        "leverage": 2.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 123215.88645418326,
+        "independent_liquidation_price": 123215.88645418,
+        "difference_bps": 3.951065468065666e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 500.0325,
+        "leverage": 3.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 109520.66733067729,
+        "independent_liquidation_price": 109520.66733068,
+        "difference_bps": 3.2807954333045263e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 500.0325,
+        "leverage": 5.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 98564.4920318725,
+        "independent_liquidation_price": 98564.49203187,
+        "difference_bps": 3.033853841550423e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 500.0325,
+        "leverage": 20.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 86238.79482071713,
+        "independent_liquidation_price": 86238.79482072,
+        "difference_bps": 3.4748209696827513e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 4999.995,
+        "leverage": 1.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 164301.54382470122,
+        "independent_liquidation_price": 164301.5438247,
+        "difference_bps": 1.481649550524625e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 4999.995,
+        "leverage": 2.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 123215.88645418327,
+        "independent_liquidation_price": 123215.88645418,
+        "difference_bps": 3.9687041531909597e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 4999.995,
+        "leverage": 3.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 109520.66733067729,
+        "independent_liquidation_price": 109520.66733068,
+        "difference_bps": 3.2807954333045263e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 4999.995,
+        "leverage": 5.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 98564.4920318725,
+        "independent_liquidation_price": 98564.49203187,
+        "difference_bps": 3.033853841550423e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 4999.995,
+        "leverage": 20.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 86238.79482071713,
+        "independent_liquidation_price": 86238.79482072,
+        "difference_bps": 3.4748209696827513e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 50000.032499999994,
+        "leverage": 1.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 164301.54382470122,
+        "independent_liquidation_price": 164301.5438247,
+        "difference_bps": 1.481649550524625e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 50000.032499999994,
+        "leverage": 2.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 123215.88645418327,
+        "independent_liquidation_price": 123215.88645418,
+        "difference_bps": 3.9687041531909597e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 50000.032499999994,
+        "leverage": 3.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 109520.6673306773,
+        "independent_liquidation_price": 109520.66733068,
+        "difference_bps": 3.263156748179233e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 50000.032499999994,
+        "leverage": 5.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 98564.4920318725,
+        "independent_liquidation_price": 98564.49203187,
+        "difference_bps": 3.033853841550423e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 50000.032499999994,
+        "leverage": 20.0,
+        "bracket_seq": 1,
+        "builder_liquidation_price": 86238.79482071713,
+        "independent_liquidation_price": 86238.79482072,
+        "difference_bps": 3.4748209696827513e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 999999.99,
+        "leverage": 1.0,
+        "bracket_seq": 3,
+        "builder_liquidation_price": 164016.39344385246,
+        "independent_liquidation_price": 164016.39344385,
+        "difference_bps": 2.998576471299836e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 999999.99,
+        "leverage": 2.0,
+        "bracket_seq": 3,
+        "builder_liquidation_price": 123032.7868864754,
+        "independent_liquidation_price": 123032.78688648,
+        "difference_bps": 5.573824499592637e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 999999.99,
+        "leverage": 3.0,
+        "bracket_seq": 3,
+        "builder_liquidation_price": 109371.58470068307,
+        "independent_liquidation_price": 109371.58470068,
+        "difference_bps": 3.721762561436856e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 999999.99,
+        "leverage": 5.0,
+        "bracket_seq": 3,
+        "builder_liquidation_price": 98442.62295204918,
+        "independent_liquidation_price": 98442.62295205,
+        "difference_bps": 1.0054050521417098e-10
+      },
+      {
+        "direction": "SHORT",
+        "notional": 999999.99,
+        "leverage": 20.0,
+        "bracket_seq": 3,
+        "builder_liquidation_price": 86147.54098483606,
+        "independent_liquidation_price": 86147.54098484,
+        "difference_bps": 4.780083668954444e-10
+      }
+    ]
+  },
+  "portfolio_concurrency": {
+    "simultaneous_reserve": {
+      "approved_count": 6,
+      "refused_count": 2,
+      "sum_approved_margin": 99.0000590783,
+      "ledger_reserved": 99.0000590783,
+      "policy_ceiling": 100.0,
+      "errors": [],
+      "invariants": {
+        "no_double_count": true,
+        "solvent": true,
+        "aggregate_utilization_respected": true,
+        "refusals_name_the_ceiling": true
+      }
+    },
+    "cancel_then_reserve": {
+      "first_decision": "REDUCE_SIMULATED_SIZE",
+      "reserved_after_first": 16.500009846376,
+      "released": 16.500009846376,
+      "free_after_release": 183.499990153624,
+      "second_reserve_ok": true,
+      "invariants": {
+        "release_restores_the_pool": true,
+        "re_reserve_succeeds": true
+      }
+    },
+    "failed_reserve": {
+      "ok": false,
+      "granted": 0.0,
+      "reason": "INSUFFICIENT_MARGIN",
+      "reserved": 0.0,
+      "invariants": {
+        "refused": true,
+        "pool_untouched": true,
+        "reason_is_insufficient_margin": true
+      }
+    },
+    "retry_same_decision": {
+      "reserved_after_three_attempts": 16.500009846376,
+      "released_after_cancel": 16.500009846376,
+      "reserved_after_release": 0.0,
+      "invariants": {
+        "counted_once": true,
+        "finite": true,
+        "released_back_to_zero": true
+      }
+    },
+    "snapshot_skew": {
+      "decision": "REDUCE_SIMULATED_SIZE",
+      "ledger_reserved": 66.000039385504,
+      "clamped_equity": 200.0,
+      "clamped_free_margin": 133.999960614496,
+      "invariants": {
+        "ledger_equity_authoritative": true,
+        "reserved_within_real_pool": true
+      }
+    },
+    "reserve_release_storm": {
+      "granted_total": 480.0,
+      "released_total": 480.0,
+      "ledger_reserved": 0.0,
+      "ledger_free": 1000.0,
+      "errors": [],
+      "invariants": {
+        "reserved_matches_grants_minus_releases": true,
+        "ceiling_holds": true,
+        "pool_solvent": true,
+        "no_exceptions": true
+      }
+    }
+  },
+  "defects": [
+    {
+      "id": "DEF-048V-01",
+      "severity": "HIGH",
+      "status": "FIXED",
+      "title": "non-finite numbers were not validated: NaN mark and NaN leverage reached approvals",
+      "cause": "every limit used `<=` style comparisons and NaN satisfies none of them; the engine had no finiteness gate",
+      "fix": "engine._validate_numbers refuses any non-finite or impossible input as DATA_INVALID/INVALID_NUMERIC_INPUT; the ledger refuses non-finite amounts; cost and margin models guard their own arithmetic",
+      "counterexample": "NaN mark_price -> REDUCE_SIMULATED_SIZE (pre-fix)",
+      "regression_tests": [
+        "test_non_finite_proposal_fields_are_refused",
+        "test_non_finite_snapshot_state_is_refused",
+        "test_non_finite_open_position_is_refused",
+        "test_non_finite_mark_is_not_silently_treated_as_present"
+      ]
+    },
+    {
+      "id": "DEF-048V-02",
+      "severity": "HIGH",
+      "status": "FIXED",
+      "title": "hostile numbers raised instead of refusing (NaN reached int())",
+      "cause": "round_quantity_down() and the funding-settlement conversion called int() on unvalidated floats",
+      "fix": "quantity rounding returns 0 for non-finite input (a refusal), the numeric gate rejects the request before any arithmetic, and depth levels that are not readable make the impact unknown",
+      "counterexample": "NaN spread/horizon/stop/equity -> ValueError (pre-fix)",
+      "regression_tests": [
+        "test_non_finite_spread_is_refused",
+        "test_hostile_input_matrix_never_raises"
+      ]
+    },
+    {
+      "id": "DEF-048V-03",
+      "severity": "MEDIUM",
+      "status": "FIXED",
+      "title": "a repeated decision id reserved its margin twice",
+      "cause": "MarginLedger.try_reserve appended a grant per call, with no identity",
+      "fix": "a grant for the same decision id is re-confirmed instead of counted again; a larger request for the same id is SHARED_COLLATERAL_CONFLICT",
+      "counterexample": "two evaluations of decision DUP-1 reserved 165 USDT for one decision",
+      "regression_tests": [
+        "test_repeated_decision_id_is_idempotent"
+      ]
+    },
+    {
+      "id": "DEF-048V-04",
+      "severity": "MEDIUM",
+      "status": "FIXED",
+      "title": "the aggregate margin-utilization ceiling could be exceeded by concurrent decisions",
+      "cause": "the ceiling was enforced against each decision's snapshot, not against the live reservation, so two approvals could pass 50% together",
+      "fix": "the engine hands the ceiling to the ledger, which enforces it atomically under the same lock as the reservation (MARGIN_UTILIZATION_LIMIT)",
+      "counterexample": "two sequential decisions on a stale snapshot left 660 USDT reserved on 1000 USDT of equity (66%) with a 50% policy ceiling",
+      "regression_tests": [
+        "test_aggregate_margin_utilization_holds_under_concurrency"
+      ]
+    },
+    {
+      "id": "DEF-048V-05",
+      "severity": "MEDIUM",
+      "status": "FIXED",
+      "title": "a non-finite reservation poisoned the ledger for every later decision",
+      "cause": "try_reserve accepted NaN and made reserved/free NaN",
+      "fix": "the ledger refuses non-finite amounts and non-finite equity",
+      "counterexample": "try_reserve(NaN) -> (True, nan); free became nan",
+      "regression_tests": [
+        "test_ledger_refuses_non_finite_amounts"
+      ]
+    },
+    {
+      "id": "DEF-048V-06",
+      "severity": "MEDIUM",
+      "status": "FIXED",
+      "title": "an unmodelable stress scenario was silently treated as no stress",
+      "cause": "a NaN stress path produced a NaN liquidation price and every comparison against NaN is False, so the path was skipped",
+      "fix": "the engine rejects non-finite stress parameters as DATA_INVALID and the margin model refuses a stress it cannot evaluate (LIQUIDATION_RISK_UNKNOWN)",
+      "counterexample": "StressScenario(adverse_move_pct=NaN) -> REDUCE_SIMULATED_SIZE (pre-fix)",
+      "regression_tests": [
+        "test_unmodelable_stress_is_refused_by_the_engine",
+        "test_unmodelable_stress_blocks_the_margin_model_directly"
+      ]
+    },
+    {
+      "id": "DEF-048V-07",
+      "severity": "LOW",
+      "status": "FIXED",
+      "title": "a non-finite funding observation could corrupt the funding term",
+      "cause": "funding_context() trusted every row it could see",
+      "fix": "only finite, timestamped observations are visible point-in-time; with no usable rate left, funding is UNKNOWN and the position is refused",
+      "counterexample": "all-NaN funding history with a settlement in the horizon (pre-fix: 0.0 cost)",
+      "regression_tests": [
+        "test_non_finite_funding_observation_makes_funding_unknown"
+      ]
+    },
+    {
+      "id": "DEF-048V-08",
+      "severity": "MEDIUM",
+      "status": "FIXED",
+      "title": "the closed-form liquidation solve extrapolated the maintenance amount below its zero floor",
+      "cause": "the venue floors maintenance at max(notional*rate - cum, 0); the linear solve ignored the kink, so at the deepest bracket it returned a non-positive price and a 5 bps LARGER buffer than the true model (unsafe direction: it understated the liquidation price for a long)",
+      "fix": "the solve is now piecewise: each linear branch is solved and the candidate inside its own domain is kept (the floored branch when the clamp binds)",
+      "counterexample": "LONG, notional 999999.99, 1x: builder returned liquidation_price=0.0 while the numeric root of the floored condition gives 41.25 (5.0 bps of overstated buffer)",
+      "regression_tests": [
+        "test_liquidation_respects_the_maintenance_floor"
+      ]
+    }
+  ],
+  "governance": {
+    "live_trading": "DISABLED",
+    "trades_authorised": 0,
+    "orders_emitted": 0,
+    "order_authorised_anywhere": false
+  },
+  "liquidation_defect": {
+    "id": "DEF-048V-08",
+    "found_by": "numeric-root cross-check in this campaign",
+    "pre_fix": {
+      "direction": "LONG",
+      "notional": 999999.99,
+      "leverage": 1.0,
+      "builder_liquidation_price": 0.0,
+      "independent_liquidation_price": 41.25,
+      "difference_bps": 5.0
+    },
+    "post_fix_worst_difference_bps": 5.838404776472034e-10,
+    "status": "FIXED"
+  },
+  "conclusion": "PASS \u2014 no false approval survived; every invariant held under the counterexamples, the catalogue replay, the randomized search, the numeric-root liquidation cross-check and the concurrency probes.",
+  "duration_seconds": 0.632
+}

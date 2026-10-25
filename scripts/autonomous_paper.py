@@ -151,7 +151,19 @@ def parse_args() -> argparse.Namespace:
 
 
 def build_settings(args: argparse.Namespace, assets: list[str]) -> Settings:
+    from trading_bot.config.settings_contract import (
+        SettingsContractError,
+        assert_load_settings_contract,
+    )
     from trading_bot.config.universe import PairSpec
+
+    # Fail closed on a drifted config API *before* any market data is read: the
+    # error names the missing keyword instead of surfacing as a bare TypeError
+    # from deep inside the settings loader (WP-TDM-07, DEF-TDM-07-1).
+    try:
+        assert_load_settings_contract()
+    except SettingsContractError as exc:
+        raise SystemExit(f"[config] {exc}") from exc
 
     settings = load_settings(config_dir=args.config_dir)
     pairs = [PairSpec(symbol=f"{asset}/USDT", enabled=True) for asset in assets]
