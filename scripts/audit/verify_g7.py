@@ -367,11 +367,11 @@ def _verify_replay(payload: dict[str, Any], capture_file: Path) -> list[dict[str
     _check(
         checks,
         "replay:NO_LOOKAHEAD",
-        len(snapshots) == 9
+        len(snapshots) == 12
         and no_future
         and all(row.get("data_mode") == "HISTORICAL_REPLAY" for row in snapshots)
         and all(row.get("validation_status") == "OK" for row in snapshots)
-        and len(decided) == 9,
+        and len(decided) == 12,
         {
             "snapshots": len(snapshots),
             "data_modes": sorted({row.get("data_mode") for row in snapshots}),
