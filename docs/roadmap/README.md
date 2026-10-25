@@ -1,14 +1,14 @@
 # Trading Agentic Portable — Roadmap maestro
 
-**Fecha de corte:** 2026-10-18 · **Versión actual:** 1.5 · **Estado:** inventario de gestión, NO certificado de producción.
+**Fecha de corte:** 2026-10-25 · **Versión actual:** 1.6 · **Estado:** inventario de gestión, NO certificado de producción.
 
 Este directorio conserva el seguimiento de Trading Agentic Portable en formato Excel y un espejo de datos fácilmente revisable en Git. La autoridad de cada estado viene de los commits y evidencias de las ramas, **no** de la existencia del RFC.
 
 ## Archivos
 
-- `ROADMAP_TRADING_AGENTIC_PORTABLE.xlsx`: Excel maestro con 9 hojas (RESUMEN, ROADMAP, FASES, RFC_Y_WP, BLOQUEOS, DEPENDENCIAS, EVIDENCIAS, HISTORIAL, COMO_ACTUALIZAR), 71 tareas con ID estable, filtros, prioridades y visualizaciones.
+- `ROADMAP_TRADING_AGENTIC_PORTABLE.xlsx`: Excel maestro con 9 hojas (RESUMEN, ROADMAP, FASES, RFC_Y_WP, BLOQUEOS, DEPENDENCIAS, EVIDENCIAS, HISTORIAL, COMO_ACTUALIZAR), 76 tareas con ID estable, filtros, prioridades y visualizaciones.
 - `ROADMAP_MASTER_DATA.json`: snapshot estructurado de fuentes/estados para actualizaciones y futuros automatismos.
-- `ROADMAP_MASTER.csv`: vista de las 71 tareas para diff, búsquedas y herramientas simples.
+- `ROADMAP_MASTER.csv`: vista de las 76 tareas para diff, búsquedas y herramientas simples.
 
 ## Regla para actualizar
 
@@ -60,3 +60,23 @@ Issues principales: [#10](https://github.com/Extr3sao/bot_crypto/issues/10) · [
 - **Host intacto:** seis tareas `TradingAgentic-*` auditadas en solo lectura; ninguna detenida, creada ni editada. Se midió que cinco lanzan `python.exe` cada 15 minutos y que CAP004 pasa 1 080 de 1 081 operaciones en `NOOP` sin descargar. `BL-16` conserva el bloqueo de atribución (la captura del usuario es `NOT_ATTRIBUTABLE`).
 - `MODELOS REALES` sigue en **0**: `REAL_MODEL_CALLED=false`.
 - Limitación de edición: el libro se actualizó con `openpyxl`; las extensiones XML no soportadas por esa librería (si existían) se descartan al guardar. Los valores de las nueve hojas se releyeron y contrastaron con el JSON y el CSV.
+
+
+## Revisión v1.6 — 2026-10-25
+
+- **Sincronización LOCAL -> GITHUB ejecutada.** Respaldo verificable previo
+  (`sync-backup-20261025`, 554 ficheros con `SHA256SUMS.txt`), 153 ficheros sin
+  commit convertidos en 8 commits trazables, **18 ramas publicadas** y **0 commits
+  locales sin publicar** (`git rev-list --all --not --remotes` = 0).
+- **17 PR en draft (#19-#35)**, cabeceras verificadas contra `git ls-remote`.
+  `main` **no** se forzó sobre `origin/main`.
+- **Gates medidos sobre checkouts limpios**: `origin/main` 5e6f9632 en **verde**
+  (ruff, format, mypy, 582 tests PASS); linaje local `e67194e7` en **rojo**
+  (ruff 130, format 444, mypy 297, pytest 90 failed / 3263 passed / 14 errors).
+  La sincronización no introduce esa regresión, pero tampoco la oculta.
+- **`TAP-073` y `TAP-076` quedan `BLOQUEADO`**: el shim de
+  `config/settings.py` rompe la recolección de pytest
+  (`YamlDirectorySource` no existe), por eso el PR #19 permanece en draft.
+- **Nada cambia de estado a `CERTIFIED`.** `SYNC_COMPLETE != MAIN_INTEGRATED
+  != RUNTIME_CERTIFIED != PROFITABLE`; `REAL_MODEL_CALLED=false` y la
+  rentabilidad siguen sin demostrarse.
