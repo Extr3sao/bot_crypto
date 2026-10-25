@@ -1,0 +1,225 @@
+{
+  "wp": "WP-ECONOMIC-RECOVERY-002",
+  "artefact": "RUN_REPORT",
+  "title": "Reproducibility of the evidence",
+  "status": "COMPLETE_WITH_DECLARED_REGRESSION_AND_BLOCKERS",
+  "commit_under_measurement": "64fa5112ebdea81291dbc5db07512cc8737feeb0",
+  "deliverables_commit": "the commit that contains this file (not named here, by construction)",
+  "branch": "repro/economic-recovery-002",
+  "base": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+  "commits_before_the_deliverables": [
+    {
+      "commit": "64fa5112ebdea81291dbc5db07512cc8737feeb0",
+      "subject": "test(repro): keep the admission chain byte-stable and the run log honest",
+      "files": [
+        ".gitattributes",
+        "tests/unit/research/test_st6_scheduler.py"
+      ]
+    },
+    {
+      "commit": "eb53e6311a78c09097ee9dcb9f4ce0f0d2fa6877",
+      "subject": "fix(evidence): reconstruct the admission anchor and stop tests rewriting tracked data",
+      "files": [
+        "config/strategy_admission.json",
+        "scripts/build_strategy_admission.py",
+        "scripts/rfc047_builder.py",
+        "tests/unit/research/test_rfc047_windows_evidence.py",
+        "tests/unit/research/test_st6_scheduler.py",
+        "tests/unit/research/test_strategy_admission_ledger.py"
+      ]
+    }
+  ],
+  "python": "3.11.15",
+  "git_status_untracked": [
+    "?? data/st6/ST6_RUNS.jsonl",
+    "?? docs/agentic/economic_audit/",
+    "?? scripts/wp_eco001_admission_audit.py",
+    "?? scripts/wp_eco001_cost_audit.py",
+    "?? scripts/wp_eco001_economics.py",
+    "?? scripts/wp_eco001_manifest.py",
+    "?? scripts/wp_eco001_test_baseline.py",
+    "?? scripts/wp_eco001_verify.py",
+    "?? scripts/wp_eco002_anchor.py",
+    "?? scripts/wp_eco002_dependencies.py",
+    "?? scripts/wp_eco002_report.py",
+    "?? scripts/wp_eco002_reproducibility.py",
+    "?? scripts/wp_eco002_verify.py"
+  ],
+  "baseline_measured_by_the_previous_wp": {
+    "wp": "WP-ECONOMIC-BLOCKER-001",
+    "method": "git archive HEAD | tar -x (no .git in the checkout)",
+    "working_tree_counts": {
+      "failed": 89,
+      "passed": 1845,
+      "skipped": 30,
+      "error": 14
+    },
+    "working_tree_failing_nodes": 103,
+    "clean_checkout_failing_nodes": 124,
+    "failures_only_in_the_clean_checkout": 21,
+    "healthy_counts": {
+      "passed": 447
+    }
+  },
+  "measured_now": {
+    "working_tree_counts": {
+      "failed": 90,
+      "passed": 1848,
+      "skipped": 30,
+      "error": 14
+    },
+    "working_tree_failing_nodes": 104,
+    "clean_clone_counts": {
+      "failed": 90,
+      "passed": 1847,
+      "skipped": 31,
+      "error": 14
+    },
+    "clean_clone_failing_nodes": 104,
+    "clean_clone_has_git_history": true,
+    "clean_clone_has_dot_venv": false,
+    "clean_clone_imported_its_own_source": true,
+    "healthy_counts": {
+      "passed": 447
+    },
+    "tracked_files_rewritten_by_the_suite": [],
+    "tracked_files_hashed": 2018,
+    "previously_clean_only_nodes_passing_in_both_trees": 21,
+    "previously_clean_only_nodes_total": 21,
+    "focused_run": {
+      "working_tree": {
+        "passed": 21
+      },
+      "clean_clone": {
+        "passed": 21
+      }
+    }
+  },
+  "method_correction": "the previous work package called `git archive HEAD | tar -x` a clean checkout. It carries no .git, so 17 of the 21 nodes it attributed to 'unversioned reports/**' were failing because they consult history. This work package measures a real `git clone`.",
+  "changes": [
+    {
+      "id": "PROVENANCE_ANCHOR_REPAIRED",
+      "files": [
+        "config/strategy_admission.json",
+        "scripts/build_strategy_admission.py"
+      ],
+      "evidence": "ANCHOR_REPAIR.json"
+    },
+    {
+      "id": "ADMISSION_CHAIN_PINNED_AGAINST_EOL_REWRITING",
+      "files": [
+        ".gitattributes"
+      ],
+      "evidence": "INDEPENDENT_VERIFICATION.json:the_admission_chain_survives_a_default_windows_clone"
+    },
+    {
+      "id": "LEDGER_DRIFT_NOW_FAILS_A_TEST",
+      "files": [
+        "tests/unit/research/test_strategy_admission_ledger.py"
+      ],
+      "evidence": "INDEPENDENT_VERIFICATION.json:a_test_fails_when_the_ledger_drifts"
+    },
+    {
+      "id": "TEST_SUITE_NO_LONGER_REWRITES_TRACKED_DATA",
+      "files": [
+        "scripts/rfc047_builder.py",
+        "tests/unit/research/test_rfc047_windows_evidence.py"
+      ],
+      "evidence": "INDEPENDENT_VERIFICATION.json:the_suite_rewrites_no_tracked_file"
+    },
+    {
+      "id": "TICK_TESTS_USE_THE_RUNNING_INTERPRETER",
+      "files": [
+        "tests/unit/research/test_st6_scheduler.py"
+      ],
+      "evidence": "INDEPENDENT_VERIFICATION.json:the_previously_clean_only_nodes_pass_in_a_fresh_clone"
+    },
+    {
+      "id": "RUN_LOG_READERS_SKIP_WITH_A_REASON_WHEN_THERE_IS_NO_LOG",
+      "files": [
+        "tests/unit/research/test_st6_scheduler.py"
+      ],
+      "evidence": "REPRODUCIBILITY_COMPARISON.json"
+    }
+  ],
+  "declared_regression": {
+    "id": "COST_BARRIER_PIN_DRIFT",
+    "nodes_moved_from_pass_to_fail": [
+      "tests/unit/research/test_cost_barrier_gate.py::test_a_missing_required_input_blocks_rather_than_fails"
+    ],
+    "cause": "repairing the anchor changes the bytes of a file the WP-7 cost-barrier explorer pins as a declared input, so that gate moves from CHECK_ONLY_WITH_ADVISORIES to INTEGRITY_FAILURE. The gate is right: its certified input no longer matches the pin. The repair is to regenerate and re-verify the cost-barrier evidence, which moves published economic evidence and is out of scope here; editing the pin by hand would be forging the evidence.",
+    "pin": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+    "ledger_digest_now": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+    "gate_status_now": {
+      "command": "uv run python scripts/cost_barrier_gate.py --check",
+      "exit_code": 5,
+      "headline": "cost-barrier drift gate: INTEGRITY_FAILURE (check mode) exit 5",
+      "pin_check": "[FAIL] inputs:published_pins_match_the_declared_sources - 8/9 present; pinned: 2 byte-exact, 1 state-exact, 0 line-ending-only, 1 drifted; config/strategy_admission.json content drift (pin 6c4dd0be1fc2fff2...)"
+    },
+    "not_repaired_because": "the repair is to regenerate and re-verify the WP-7 cost-barrier evidence, which moves published economic evidence and needs explicit authorisation; editing the pin by hand would forge the evidence"
+  },
+  "blockers": [
+    {
+      "id": "ADMISSION_MATRIX_NOT_RECONSTRUCTIBLE",
+      "detail": "the matrix is not reconstructible here: its builder reads six gitignored reports/strategy-baseline/MULTI_FAMILY_RESULTS_*.json files. Re-running it with them absent would silently produce a matrix with one family instead of six, which is how an anchor goes stale in the first place. The committed matrix is therefore the authoritative anchor, and its own regeneration is a declared blocker, not something this work package invents.",
+      "inputs_present": 0,
+      "inputs_total": 6
+    },
+    {
+      "id": "UNVERSIONED_DEPENDENCIES_OF_PREEXISTING_FAILURES",
+      "detail": "declared per path in DECLARED_DEPENDENCIES.json",
+      "distinct_paths": 19,
+      "by_classification": {
+        "REGENERABLE_BY_A_COMMITTED_PRODUCER": [
+          "data/raw/alpha003/price/BTCUSDT_15m.json",
+          "data/raw/alpha003/price/BTCUSDT_5m.json",
+          "reports/profitability_gate035/ALTERNATIVE_PATHS.md",
+          "reports/profitability_gate035/ECONOMIC_FEASIBILITY.md",
+          "reports/profitability_gate035/FINAL_REPORT.md",
+          "reports/profitability_gate035/INDEPENDENT_VERIFICATION.json",
+          "reports/profitability_gate035/INDEPENDENT_VERIFICATION.md",
+          "reports/profitability_gate035/SEARCH_POSTMORTEM.md",
+          "reports/rfc035/search_round_3/BASELINE.json",
+          "reports/rfc035/search_round_3/CANDIDATE_DEEP_DIVE.json",
+          "reports/rfc035/search_round_3/ECONOMIC_EVIDENCE.json",
+          "reports/rfc035/search_round_3/FINAL_REPORT.json",
+          "reports/rfc035/search_round_3/INDEPENDENT_VERIFICATION.json",
+          "reports/rfc035/search_round_3/REJECTION_LOG.json",
+          "reports/rfc035/search_round_3/RULE_CONTRACT_AUDIT.json",
+          "reports/strategy-baseline/COST_BARRIER.json"
+        ],
+        "NEVER_COMMITTED_DELIVERABLE": [
+          "docs/research/work_packages/WP-HTF-PIT-001_htf_availability_unit_fix.md",
+          "reports/rfc046/IMPACT_ASSESSMENT.md"
+        ],
+        "HOST_RUNTIME_EVIDENCE": [
+          "data/st6/ST6_HEALTH_STATUS.json"
+        ]
+      }
+    },
+    {
+      "id": "NEVER_COMMITTED_DELIVERABLES",
+      "paths": [
+        "reports/rfc046/IMPACT_ASSESSMENT.md",
+        "docs/research/work_packages/WP-HTF-PIT-001_htf_availability_unit_fix.md"
+      ]
+    },
+    {
+      "id": "PREEXISTING_RUFF_FORMAT_FAILURES",
+      "detail": "`ruff format --check .` failed before this work package (three files); the files touched here were left unformatted rather than reformatted wholesale, and the format diff was verified to be the same size before and after"
+    }
+  ],
+  "not_deleted": {
+    "path": "data/st6/ST6_RUNS.jsonl",
+    "provenance": "24 events, all ALREADY_RUNNING or REFUSED_INVALID_ARGUMENTS, zero COLLECTED: written by the tick invocations the tests themselves make, not by a scheduled collection. Left in place (unversioned) and documented instead of deleted."
+  },
+  "independent_verification": {
+    "verifier": "scripts/wp_eco002_verify.py (imports nothing from the work package's scripts)",
+    "summary": {
+      "pass": 19,
+      "fail": 0,
+      "not_assessed": 0
+    },
+    "artefact": "INDEPENDENT_VERIFICATION.json"
+  }
+}

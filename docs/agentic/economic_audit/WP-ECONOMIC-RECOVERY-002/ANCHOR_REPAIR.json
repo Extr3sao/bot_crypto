@@ -1,0 +1,79 @@
+{
+  "wp": "WP-ECONOMIC-RECOVERY-002",
+  "artefact": "ANCHOR_REPAIR",
+  "commit_under_measurement": "64fa5112ebdea81291dbc5db07512cc8737feeb0",
+  "branch": "repro/economic-recovery-002",
+  "previous_revision": "e67194e79a42",
+  "defect": "PROVENANCE_ANCHOR_STALE",
+  "ledger": "config/strategy_admission.json",
+  "anchor_source": "docs/STRATEGY_ADMISSION_MATRIX.json",
+  "recorded_before": "5f794c36829f947ff56de3995b68bb4f374d770bb32bd6147bff59a014ea05bf",
+  "recorded_now": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81",
+  "matrix_digest_on_disk": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81",
+  "matrix_digests_in_history": [
+    {
+      "commit": "3271a975c7b3",
+      "sha256": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81"
+    }
+  ],
+  "recorded_before_matches_any_committed_revision": false,
+  "matching_revisions": [],
+  "finding": "the stale digest matches no committed revision of the matrix: it was produced from a matrix state that was never committed, so `--check` could never pass and the ledger carried an anchor that pointed nowhere",
+  "ledger_rebuilt_equals_committed": true,
+  "ledger_digest_before": "92aab5415d92ff39219e7db68cb8057f746e4d7e6d6a6fb46a3971754bfc65e2",
+  "ledger_digest_now": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+  "ledger_payload_unchanged_except_sources": true,
+  "strategy_entries": 24,
+  "admitted_for_paper": [],
+  "upstream_link": {
+    "builder": "scripts/build_admission_matrix.py",
+    "inputs": [
+      {
+        "path": "reports/strategy-baseline/MULTI_FAMILY_RESULTS_momentum.json",
+        "present": false
+      },
+      {
+        "path": "reports/strategy-baseline/MULTI_FAMILY_RESULTS_breakout.json",
+        "present": false
+      },
+      {
+        "path": "reports/strategy-baseline/MULTI_FAMILY_RESULTS_trend.json",
+        "present": false
+      },
+      {
+        "path": "reports/strategy-baseline/MULTI_FAMILY_RESULTS_mean_reversion.json",
+        "present": false
+      },
+      {
+        "path": "reports/strategy-baseline/MULTI_FAMILY_RESULTS_volatility.json",
+        "present": false
+      },
+      {
+        "path": "reports/strategy-baseline/MULTI_FAMILY_RESULTS_ema_crossover.json",
+        "present": false
+      }
+    ],
+    "inputs_present": 0,
+    "reconstructible_from_this_checkout": false,
+    "declared": "the matrix is not reconstructible here: its builder reads six gitignored reports/strategy-baseline/MULTI_FAMILY_RESULTS_*.json files. Re-running it with them absent would silently produce a matrix with one family instead of six, which is how an anchor goes stale in the first place. The committed matrix is therefore the authoritative anchor, and its own regeneration is a declared blocker, not something this work package invents."
+  },
+  "cost_barrier_gate": {
+    "pin": {
+      "available": true,
+      "explorer": "data/recovery/COST_BARRIER_EXPLORER.json",
+      "pinned_sha256": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+      "pinned_state_sha256": null,
+      "gate": "scripts/cost_barrier_gate.py",
+      "declared_input_of": "WP-7 cost-barrier drift gate (pinned in the explorer's sources[])"
+    },
+    "ledger_digest_now": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+    "pin_matches_now": false,
+    "status_now": {
+      "command": "uv run python scripts/cost_barrier_gate.py --check",
+      "exit_code": 5,
+      "headline": "cost-barrier drift gate: INTEGRITY_FAILURE (check mode) exit 5",
+      "pin_check": "[FAIL] inputs:published_pins_match_the_declared_sources - 8/9 present; pinned: 2 byte-exact, 1 state-exact, 0 line-ending-only, 1 drifted; config/strategy_admission.json content drift (pin 6c4dd0be1fc2fff2...)"
+    },
+    "consequence": "repairing the anchor changes the bytes of a file the WP-7 cost-barrier explorer pins as a declared input, so that gate moves from CHECK_ONLY_WITH_ADVISORIES to INTEGRITY_FAILURE. The gate is right: its certified input no longer matches the pin. The repair is to regenerate and re-verify the cost-barrier evidence, which moves published economic evidence and is out of scope here; editing the pin by hand would be forging the evidence."
+  }
+}

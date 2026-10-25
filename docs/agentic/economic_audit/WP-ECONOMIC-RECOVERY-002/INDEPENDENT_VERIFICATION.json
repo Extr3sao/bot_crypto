@@ -1,0 +1,110 @@
+{
+  "wp": "WP-ECONOMIC-RECOVERY-002",
+  "artefact": "INDEPENDENT_VERIFICATION",
+  "commit_under_measurement": "64fa5112ebdea81291dbc5db07512cc8737feeb0",
+  "branch": "repro/economic-recovery-002",
+  "base": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+  "verifier": "scripts/wp_eco002_verify.py (imports nothing from the work package's scripts)",
+  "summary": {
+    "pass": 19,
+    "fail": 0,
+    "not_assessed": 0
+  },
+  "checks": [
+    {
+      "check": "ledger_is_what_the_builder_derives",
+      "verdict": "PASS",
+      "evidence": "`build_strategy_admission.py --check` exit 0: admission ledger is up to date"
+    },
+    {
+      "check": "every_source_digest_matches_its_file",
+      "verdict": "PASS",
+      "evidence": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json match; docs/STRATEGY_ADMISSION_MATRIX.json match"
+    },
+    {
+      "check": "ledger_bytes_are_platform_independent",
+      "verdict": "PASS",
+      "evidence": "CRLF lines in the committed ledger: 0"
+    },
+    {
+      "check": "the_repair_moved_no_admission_decision",
+      "verdict": "PASS",
+      "evidence": "payload identical to the previous revision once `_sources` is removed: True; strategies=24, admitted=0"
+    },
+    {
+      "check": "the_stale_digest_named_no_committed_matrix",
+      "verdict": "PASS",
+      "evidence": "recorded 5f794c36829f947f...; committed matrix digests examined: 1; matched: False"
+    },
+    {
+      "check": "the_anchor_now_names_the_committed_matrix",
+      "verdict": "PASS",
+      "evidence": "ledger records 4e15882cd3b9bc31..."
+    },
+    {
+      "check": "the_admission_chain_is_pinned_against_eol_rewriting",
+      "verdict": "PASS",
+      "evidence": "pinned with -text: ['config/strategy_admission.json', 'docs/STRATEGY_ADMISSION_MATRIX.json', 'docs/STRATEGY_DISCOVERY_V3_RESULTS.json', 'docs/COST_MODEL_V3.json']"
+    },
+    {
+      "check": "a_test_fails_when_the_ledger_drifts",
+      "verdict": "PASS",
+      "evidence": "4 passed in 0.21s"
+    },
+    {
+      "check": "the_suite_rewrites_no_tracked_file",
+      "verdict": "PASS",
+      "evidence": "tracked files hashed: 2018; rewritten in either tree: []"
+    },
+    {
+      "check": "working_tree_and_clean_clone_fail_the_same_nodes",
+      "verdict": "PASS",
+      "evidence": "working=104 clone=104 only_working=[] only_clone=[]"
+    },
+    {
+      "check": "the_measurement_belongs_to_this_commit",
+      "verdict": "PASS",
+      "evidence": "clone measured at 64fa5112ebde, HEAD is 64fa5112ebde"
+    },
+    {
+      "check": "no_runtime_or_configuration_logic_changed",
+      "verdict": "PASS",
+      "evidence": "src/ and config/ files in e67194e7..64fa5112: ['config/strategy_admission.json']"
+    },
+    {
+      "check": "no_fee_or_slippage_constant_changed",
+      "verdict": "PASS",
+      "evidence": "no touched path names a fee or slippage constant"
+    },
+    {
+      "check": "the_run_log_is_unversioned_and_carries_no_collection",
+      "verdict": "PASS",
+      "evidence": "tracked=False events=24 with_result_COLLECTED=0 results=['ALREADY_RUNNING', 'REFUSED_INVALID_ARGUMENTS']"
+    },
+    {
+      "check": "the_cost_barrier_pin_drift_is_recorded",
+      "verdict": "PASS",
+      "evidence": "pin matches now: False; gate: cost-barrier drift gate: INTEGRITY_FAILURE (check mode) exit 5"
+    },
+    {
+      "check": "the_upstream_matrix_builder_is_declared_unreproducible",
+      "verdict": "PASS",
+      "evidence": "matrix builder inputs present: 0/6"
+    },
+    {
+      "check": "every_declared_missing_dependency_is_absent_from_head",
+      "verdict": "PASS",
+      "evidence": "declared paths: 19; present in HEAD: []; classes: ['HOST_RUNTIME_EVIDENCE', 'NEVER_COMMITTED_DELIVERABLE', 'REGENERABLE_BY_A_COMMITTED_PRODUCER']"
+    },
+    {
+      "check": "the_previously_clean_only_nodes_pass_in_a_fresh_clone",
+      "verdict": "PASS",
+      "evidence": "25 passed in 74.32s (0:01:14); `.venv` present: False"
+    },
+    {
+      "check": "the_admission_chain_survives_a_default_windows_clone",
+      "verdict": "PASS",
+      "evidence": "CRLF lines per pinned file: {'config/strategy_admission.json': 0, 'docs/STRATEGY_ADMISSION_MATRIX.json': 0, 'docs/STRATEGY_DISCOVERY_V3_RESULTS.json': 0, 'docs/COST_MODEL_V3.json': 0}; ledger test exit 0"
+    }
+  ]
+}

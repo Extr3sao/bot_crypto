@@ -1,0 +1,22 @@
+{
+  "counts": {
+    "passed": 447
+  },
+  "failures": [],
+  "skips": [],
+  "exit_code": 0,
+  "raw_tail": [
+    "........................................................................ [ 96%]",
+    "...............                                                          [100%]",
+    "447 passed in 30.23s"
+  ],
+  "import_path": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-eco001\\src\\trading_bot\\__init__.py",
+  "tracked_data": {
+    "rewritten": [],
+    "removed": [],
+    "added": [],
+    "files_hashed_before": 2017,
+    "files_hashed_after": 2017
+  },
+  "run_in": "working tree"
+}

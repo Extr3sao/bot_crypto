@@ -1,0 +1,272 @@
+{
+  "wp": "WP-ECONOMIC-RECOVERY-002",
+  "artefact": "DECLARED_DEPENDENCIES",
+  "commit": "64fa5112ebdea81291dbc5db07512cc8737feeb0",
+  "source_transcript": "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/parts/clone_dependency_tracebacks.txt",
+  "method": "a fresh `git clone` of this commit ran the eight test files that carry most of the pre-existing failures with `--tb=line`; every FileNotFoundError and every \"missing <path>\" assertion was grouped by the path it names",
+  "summary": {
+    "distinct_missing_paths": 19,
+    "mentions": 27,
+    "by_classification": {
+      "REGENERABLE_BY_A_COMMITTED_PRODUCER": [
+        "data/raw/alpha003/price/BTCUSDT_15m.json",
+        "data/raw/alpha003/price/BTCUSDT_5m.json",
+        "reports/profitability_gate035/ALTERNATIVE_PATHS.md",
+        "reports/profitability_gate035/ECONOMIC_FEASIBILITY.md",
+        "reports/profitability_gate035/FINAL_REPORT.md",
+        "reports/profitability_gate035/INDEPENDENT_VERIFICATION.json",
+        "reports/profitability_gate035/INDEPENDENT_VERIFICATION.md",
+        "reports/profitability_gate035/SEARCH_POSTMORTEM.md",
+        "reports/rfc035/search_round_3/BASELINE.json",
+        "reports/rfc035/search_round_3/CANDIDATE_DEEP_DIVE.json",
+        "reports/rfc035/search_round_3/ECONOMIC_EVIDENCE.json",
+        "reports/rfc035/search_round_3/FINAL_REPORT.json",
+        "reports/rfc035/search_round_3/INDEPENDENT_VERIFICATION.json",
+        "reports/rfc035/search_round_3/REJECTION_LOG.json",
+        "reports/rfc035/search_round_3/RULE_CONTRACT_AUDIT.json",
+        "reports/strategy-baseline/COST_BARRIER.json"
+      ],
+      "NEVER_COMMITTED_DELIVERABLE": [
+        "docs/research/work_packages/WP-HTF-PIT-001_htf_availability_unit_fix.md",
+        "reports/rfc046/IMPACT_ASSESSMENT.md"
+      ],
+      "HOST_RUNTIME_EVIDENCE": [
+        "data/st6/ST6_HEALTH_STATUS.json"
+      ]
+    },
+    "tracked_at_head": []
+  },
+  "dependencies": [
+    {
+      "path": "reports/rfc035/search_round_3/RULE_CONTRACT_AUDIT.json",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "the RFC-035 search round producers (gitignored output)",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 5,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "data/raw/alpha003/price/BTCUSDT_5m.json",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "the market-data collector: raw prices are gitignored by design",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 2,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "reports/profitability_gate035/INDEPENDENT_VERIFICATION.json",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "scripts/profitability_gate035.py (gitignored output of the profitability search)",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 2,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "reports/rfc035/search_round_3/FINAL_REPORT.json",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "the RFC-035 search round producers (gitignored output)",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 2,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "reports/rfc035/search_round_3/INDEPENDENT_VERIFICATION.json",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "the RFC-035 search round producers (gitignored output)",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 2,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "reports/strategy-baseline/COST_BARRIER.json",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "scripts/multi_family_backtest.py (gitignored output; the cost-barrier builder reads it)",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Local/Temp/wp002-dep-uVRY/repo/tests/unit/research/test_cost_barrier_gate.py",
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 2,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "data/raw/alpha003/price/BTCUSDT_15m.json",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "the market-data collector: raw prices are gitignored by design",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 1,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "data/st6/ST6_HEALTH_STATUS.json",
+      "classification": "HOST_RUNTIME_EVIDENCE",
+      "producer": "scripts/st6_forward_regime.py / st6_health_check.py, on this host only",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 1,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": false
+    },
+    {
+      "path": "reports/profitability_gate035/ALTERNATIVE_PATHS.md",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "scripts/profitability_gate035.py (gitignored output of the profitability search)",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 1,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "reports/profitability_gate035/ECONOMIC_FEASIBILITY.md",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "scripts/profitability_gate035.py (gitignored output of the profitability search)",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 1,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "reports/profitability_gate035/FINAL_REPORT.md",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "scripts/profitability_gate035.py (gitignored output of the profitability search)",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 1,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "reports/profitability_gate035/INDEPENDENT_VERIFICATION.md",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "scripts/profitability_gate035.py (gitignored output of the profitability search)",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 1,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "reports/profitability_gate035/SEARCH_POSTMORTEM.md",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "scripts/profitability_gate035.py (gitignored output of the profitability search)",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 1,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "reports/rfc035/search_round_3/BASELINE.json",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "the RFC-035 search round producers (gitignored output)",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 1,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "reports/rfc035/search_round_3/CANDIDATE_DEEP_DIVE.json",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "the RFC-035 search round producers (gitignored output)",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 1,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "reports/rfc035/search_round_3/ECONOMIC_EVIDENCE.json",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "the RFC-035 search round producers (gitignored output)",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 1,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "reports/rfc035/search_round_3/REJECTION_LOG.json",
+      "classification": "REGENERABLE_BY_A_COMMITTED_PRODUCER",
+      "producer": "the RFC-035 search round producers (gitignored output)",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Roaming/uv/python/cpython-3.11-windows-x86_64-none/Lib/pathlib.py"
+      ],
+      "mentions": 1,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "reports/rfc046/IMPACT_ASSESSMENT.md",
+      "classification": "NEVER_COMMITTED_DELIVERABLE",
+      "producer": "an RFC-046 deliverable that the tests require and HEAD does not carry",
+      "named_by": [
+        "C:/Users/GVLLFR0035/AppData/Local/Temp/wp002-dep-uVRY/repo/tests/unit/research/test_rfc046_discovery_proposal.py"
+      ],
+      "mentions": 1,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": true
+    },
+    {
+      "path": "docs/research/work_packages/WP-HTF-PIT-001_htf_availability_unit_fix.md",
+      "classification": "NEVER_COMMITTED_DELIVERABLE",
+      "producer": "a researched work-package document the tests require and HEAD does not carry",
+      "named_by": [],
+      "mentions": 0,
+      "tracked_at_head": false,
+      "present_in_working_tree": false,
+      "ignored": false
+    }
+  ],
+  "notes": [
+    "no `reports/**` path is required by any of the 21 nodes the previous work package attributed to the clean checkout: those 21 now pass in a fresh clone (see REPRODUCIBILITY_COMPARISON.json). The `reports/**` dependencies below belong to the pre-existing failures that fail in both trees.",
+    "a dependency that is a HOST_RUNTIME_EVIDENCE file cannot be satisfied by committing it: doing so would ship a machine's log as if it were evidence, and running the tests would then rewrite a tracked file."
+  ]
+}
