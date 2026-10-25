@@ -1,0 +1,166 @@
+{
+  "artifact": "TDM09_INDEPENDENT_ALPHA_VERIFICATION",
+  "verifier": "scripts/tdm09_verify.py",
+  "builder_module_imported": false,
+  "estimator_independently_reimplemented": false,
+  "subject": "reports\\trading-decision-monitor\\WP-TDM-08\\alpha_diagnostics.json",
+  "subject_sha256": "6942a7c275c539850dbe456726033e00e43dbf86ba23a39e8c9c75966e40ee54",
+  "dataset_sha256": "af7fa95ced41f36381e67909b133d87a675274293ca3457d1901aa1a341d9d84",
+  "ledger_sha256": "583472b56b14f9791205b76325cfe3559afb7f1f99310a9b1af0048c1113a1c5",
+  "checks_total": 14,
+  "checks_failed": 0,
+  "checks": [
+    {
+      "check": "dataset_digests",
+      "passed": true,
+      "detail": "12 payloads match their recorded sha256"
+    },
+    {
+      "check": "dataset_bar_counts",
+      "passed": true,
+      "detail": "40572 sealed bars, matching the published total"
+    },
+    {
+      "check": "grid_complete",
+      "passed": true,
+      "detail": "72 asset cells = 6 families x 4 timeframes x 3 assets"
+    },
+    {
+      "check": "pooled_grid_complete",
+      "passed": true,
+      "detail": "24 family@timeframe cells"
+    },
+    {
+      "check": "research_barrier_constant",
+      "passed": true,
+      "detail": "12.0 bps (COST_MODEL_V2 base round trip)"
+    },
+    {
+      "check": "net_identities",
+      "passed": true,
+      "detail": "net = gross - 23.7906 and gross - 12.0 in every cell"
+    },
+    {
+      "check": "t_statistic",
+      "passed": true,
+      "detail": "t = mean / (stdev / sqrt(n)) reproduced in every cell"
+    },
+    {
+      "check": "ci_brackets_mean",
+      "passed": true,
+      "detail": "every published CI contains its own mean"
+    },
+    {
+      "check": "pooled_aggregation",
+      "passed": true,
+      "detail": "24 pooled cells = trade-weighted concatenation of their asset cells"
+    },
+    {
+      "check": "classification_rule",
+      "passed": true,
+      "detail": "every cell is exactly what the pre-registered rule implies"
+    },
+    {
+      "check": "headline_claims",
+      "passed": true,
+      "detail": "pooled cells with CI95 low > 0: 0/24; with net > 0 at 23.79 bps: 0/24; REJECT: ['breakout@5m', 'volatility@15m']"
+    },
+    {
+      "check": "cost_choice_invariance",
+      "passed": true,
+      "detail": "best pooled gross +7.05 bps vs cheapest cost estimate 22.56 bps: no cell can turn positive under any of the published cost references"
+    },
+    {
+      "check": "ledger_matches_research_doc",
+      "passed": true,
+      "detail": "the six 5m ledger edges equal family_5m_diagnostic_zero_cost and cite it"
+    },
+    {
+      "check": "research_vs_oos_separation",
+      "kind": "observation",
+      "passed": true,
+      "detail": "observation, not a gate: 3/6 5m cells changed sign between the research window (W1-W7) and the OOS window"
+    }
+  ],
+  "recomputed": {
+    "cells": 72,
+    "pooled_cells": 24,
+    "runtime_all_in_bps": 23.790569415042093,
+    "research_barrier_bps": 12.0,
+    "best_pooled_gross_bps": 7.0531,
+    "pooled_ci_low_positive": 0,
+    "pooled_net_positive": 0,
+    "rejected": [
+      "breakout@5m",
+      "volatility@15m"
+    ],
+    "defer": [
+      "breakout@15m",
+      "breakout@1h",
+      "breakout@30m",
+      "ema_crossover@15m",
+      "ema_crossover@1h",
+      "ema_crossover@30m",
+      "ema_crossover@5m",
+      "mean_reversion@15m",
+      "mean_reversion@1h",
+      "mean_reversion@30m",
+      "mean_reversion@5m",
+      "momentum@15m",
+      "momentum@1h",
+      "momentum@30m",
+      "momentum@5m",
+      "trend@15m",
+      "trend@1h",
+      "trend@30m",
+      "trend@5m",
+      "volatility@1h",
+      "volatility@30m",
+      "volatility@5m"
+    ],
+    "research_vs_oos_5m": [
+      {
+        "strategy_id": "breakout@5m",
+        "research_gross_bps": -0.11,
+        "oos_gross_bps": -3.5688,
+        "delta_bps": -3.4588,
+        "sign_preserved": true
+      },
+      {
+        "strategy_id": "ema_crossover@5m",
+        "research_gross_bps": -4.56,
+        "oos_gross_bps": -0.7049,
+        "delta_bps": 3.8551,
+        "sign_preserved": true
+      },
+      {
+        "strategy_id": "mean_reversion@5m",
+        "research_gross_bps": 1.49,
+        "oos_gross_bps": -0.1137,
+        "delta_bps": -1.6037,
+        "sign_preserved": false
+      },
+      {
+        "strategy_id": "momentum@5m",
+        "research_gross_bps": -1.88,
+        "oos_gross_bps": 0.1327,
+        "delta_bps": 2.0127,
+        "sign_preserved": false
+      },
+      {
+        "strategy_id": "trend@5m",
+        "research_gross_bps": -1.65,
+        "oos_gross_bps": -7.7519,
+        "delta_bps": -6.1019,
+        "sign_preserved": true
+      },
+      {
+        "strategy_id": "volatility@5m",
+        "research_gross_bps": -4.73,
+        "oos_gross_bps": 7.0531,
+        "delta_bps": 11.7831,
+        "sign_preserved": false
+      }
+    ]
+  }
+}

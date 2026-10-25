@@ -1,0 +1,151 @@
+{
+  "run_id": "tdm09-paper-bc",
+  "runtime_version": "autonomous-paper-runtime-v1",
+  "environment": "ccxt:binance",
+  "commit": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+  "mode": "paper",
+  "assets": [
+    "BTC",
+    "ETH"
+  ],
+  "timeframe": "5m",
+  "cycles": 1,
+  "started_at_ms": 1792860674282,
+  "ended_at_ms": 1792860911116,
+  "totals": {
+    "asset_cycle_evaluations": 2,
+    "paper_trades": 0,
+    "shadow_trades": 0,
+    "no_trades": 2,
+    "runtime_failures": 0,
+    "orders_created": 0,
+    "traces_persisted": 2,
+    "outcomes_resolved": 0,
+    "outcomes_pending": 2,
+    "performance_updates": 0,
+    "no_trade_NO_TRADE_STRATEGIC": 2,
+    "no_trade_NO_TRADE_RISK": 0,
+    "no_trade_NO_TRADE_DATA": 0,
+    "no_trade_NO_TRADE_CONFLICT": 0,
+    "risk_APPROVED": 2,
+    "risk_VETOED": 0,
+    "risk_NOT_APPLICABLE": 0,
+    "risk_NOT_EVALUATED": 0
+  },
+  "cycles_detail": [
+    {
+      "cycle": 1,
+      "session_id": "d9c59084febd49e5",
+      "started_at_ms": 1792860905009,
+      "ended_at_ms": 1792860911044,
+      "assets": [
+        {
+          "asset": "BTC",
+          "symbol": "BTC/USDT",
+          "regime": "LOW_VOLATILITY",
+          "market_time_ms": 1792860905009,
+          "decision_time_ms": 1792860905009,
+          "strategies_considered": [
+            "breakout@5m",
+            "ema_crossover@5m",
+            "mean_reversion@5m",
+            "momentum@5m",
+            "trend@5m",
+            "volatility@5m"
+          ],
+          "strategy_selected": "momentum@5m",
+          "mode": "NO_TRADE",
+          "reason": "gross_edge_not_positive:-1.8800bps",
+          "classification": "NO_GROSS_EDGE",
+          "no_trade_kind": "NO_TRADE_STRATEGIC",
+          "failure_kind": null,
+          "expected_gross_edge_bps": -1.88,
+          "expected_cost_bps": 22.79181630615225,
+          "expected_net_edge_bps": -24.671816306152248,
+          "verifier_verdict": "PASS",
+          "risk_verdict": "PASS",
+          "risk_state": "APPROVED",
+          "risk_evaluated": true,
+          "risk_rule": "all_limits_pass",
+          "decision_id": "d9c59084febd49e5-BTC",
+          "trace_persisted": true,
+          "order_created": false
+        },
+        {
+          "asset": "ETH",
+          "symbol": "ETH/USDT",
+          "regime": "LOW_VOLATILITY",
+          "market_time_ms": 1792860905009,
+          "decision_time_ms": 1792860905009,
+          "strategies_considered": [
+            "breakout@5m",
+            "ema_crossover@5m",
+            "mean_reversion@5m",
+            "momentum@5m",
+            "trend@5m",
+            "volatility@5m"
+          ],
+          "strategy_selected": "momentum@5m",
+          "mode": "NO_TRADE",
+          "reason": "gross_edge_not_positive:-1.8800bps",
+          "classification": "NO_GROSS_EDGE",
+          "no_trade_kind": "NO_TRADE_STRATEGIC",
+          "failure_kind": null,
+          "expected_gross_edge_bps": -1.88,
+          "expected_cost_bps": 22.876869307169116,
+          "expected_net_edge_bps": -24.756869307169115,
+          "verifier_verdict": "PASS",
+          "risk_verdict": "PASS",
+          "risk_state": "APPROVED",
+          "risk_evaluated": true,
+          "risk_rule": "all_limits_pass",
+          "decision_id": "d9c59084febd49e5-ETH",
+          "trace_persisted": true,
+          "order_created": false
+        }
+      ],
+      "paper_trades": 0,
+      "shadow_trades": 0,
+      "no_trades": 2,
+      "no_trade_kinds": {
+        "NO_TRADE_STRATEGIC": 2
+      },
+      "risk_states": {
+        "APPROVED": 2
+      },
+      "runtime_failures": 0,
+      "orders_created": 0,
+      "traces_persisted": 2,
+      "outcomes_resolved": 0,
+      "outcomes_pending": 2,
+      "performance_updates": 0,
+      "broker_fills_closed": 0,
+      "errors": []
+    }
+  ],
+  "executions": [],
+  "outcomes": [],
+  "pending_decision_ids": [
+    "d9c59084febd49e5-BTC",
+    "d9c59084febd49e5-ETH"
+  ],
+  "performance": [],
+  "trace_chain": {
+    "ok": true,
+    "records": 2,
+    "broken_at": null,
+    "detail": "hash chain intact"
+  },
+  "replay": {
+    "attempted": 2,
+    "ok": 2,
+    "failed": 0,
+    "statuses": {
+      "PARTIAL": 2
+    },
+    "failures": [],
+    "market_data_accessed": false
+  },
+  "errors": [],
+  "production_actions": 0
+}

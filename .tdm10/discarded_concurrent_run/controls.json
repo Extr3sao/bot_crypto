@@ -1,0 +1,35 @@
+{
+  "checks": [
+    {
+      "control": "planted_edge",
+      "expected_detection": true,
+      "detected_profitable": true,
+      "pass": true,
+      "trades": 557,
+      "gross_bps": 62.3727,
+      "net_bps": 38.5821,
+      "ci95_low": 59.281
+    },
+    {
+      "control": "planted_edge_inverted",
+      "expected_detection": false,
+      "detected_profitable": false,
+      "pass": true,
+      "trades": 557,
+      "gross_bps": -62.3727,
+      "net_bps": -86.1633,
+      "ci95_low": -65.2738
+    },
+    {
+      "control": "pure_noise",
+      "expected_detection": false,
+      "detected_profitable": false,
+      "pass": true,
+      "trades": 557,
+      "gross_bps": 0.0209,
+      "net_bps": -23.7696,
+      "ci95_low": -1.5547
+    }
+  ],
+  "all_pass": true
+}

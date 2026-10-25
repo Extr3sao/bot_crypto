@@ -1,0 +1,151 @@
+{
+  "checked": [
+    {
+      "dataset": "DEV",
+      "path": "data/tdm10/BTC_5m.json",
+      "sha256": "7185907c6c847214797de177b088a9556a83141e4acd4ebaf41b839f87a31f6e",
+      "match": true
+    },
+    {
+      "dataset": "DEV",
+      "path": "data/tdm10/BTC_15m.json",
+      "sha256": "aa38cfd3678dbe0c938cefd5330ed1ba1efce2c83886b6c3cee8153e784350f2",
+      "match": true
+    },
+    {
+      "dataset": "DEV",
+      "path": "data/tdm10/BTC_30m.json",
+      "sha256": "7eed75ae36c74b353781e51c3e94f08a7b389a3687b025a70b447fef15b0700f",
+      "match": true
+    },
+    {
+      "dataset": "DEV",
+      "path": "data/tdm10/BTC_1h.json",
+      "sha256": "95b3d29655ef9722cfcd342bef935cf6f28f64fe04f3a8218cbe00dbde8be607",
+      "match": true
+    },
+    {
+      "dataset": "DEV",
+      "path": "data/tdm10/ETH_5m.json",
+      "sha256": "078a70969decbee24b13f70d5b33c0496047689ece06f58b533f1611c4fc06eb",
+      "match": true
+    },
+    {
+      "dataset": "DEV",
+      "path": "data/tdm10/ETH_15m.json",
+      "sha256": "d3dc523bff863efb11ddc7c5d198cf9c0c20ac93520eab8c07aaf39c5e3de11b",
+      "match": true
+    },
+    {
+      "dataset": "DEV",
+      "path": "data/tdm10/ETH_30m.json",
+      "sha256": "957e5b90abf38fdbf8ede2f233bf28b464e1e7cb9bb4bb9bd42e1355b8af7180",
+      "match": true
+    },
+    {
+      "dataset": "DEV",
+      "path": "data/tdm10/ETH_1h.json",
+      "sha256": "e32c3ed8302c4d687b4d03555f20a0dbb06373ca33dda956afe387fbd3436e72",
+      "match": true
+    },
+    {
+      "dataset": "DEV",
+      "path": "data/tdm10/SOL_5m.json",
+      "sha256": "3bfdaf60fcc605119d567369e8d56239205138bc7386cb278bd1f32b0d415e64",
+      "match": true
+    },
+    {
+      "dataset": "DEV",
+      "path": "data/tdm10/SOL_15m.json",
+      "sha256": "b74e8e92a1efb20809479dad8c694d755830bc1b331f2bd6bdeae9126e2a5075",
+      "match": true
+    },
+    {
+      "dataset": "DEV",
+      "path": "data/tdm10/SOL_30m.json",
+      "sha256": "43a004b6b2c423fc433a6feb39a4a821703aa7d0079da7aebb9e3461d6219b13",
+      "match": true
+    },
+    {
+      "dataset": "DEV",
+      "path": "data/tdm10/SOL_1h.json",
+      "sha256": "96776edbca673e9940fc8022caacfa6d9b81fe082de64ff25834a87f998564d2",
+      "match": true
+    },
+    {
+      "dataset": "HOLD",
+      "path": "data/tdm08/BTC_5m.json",
+      "sha256": "3a70c00da7404a233e4bf849f96b8eb1f29a8715feb15d20c51f06c665d2c86c",
+      "match": true
+    },
+    {
+      "dataset": "HOLD",
+      "path": "data/tdm08/BTC_15m.json",
+      "sha256": "b95cf9b70c09b3e2d225b93b8945b7b16bad6f6a24228fc5939434df9f734409",
+      "match": true
+    },
+    {
+      "dataset": "HOLD",
+      "path": "data/tdm08/BTC_30m.json",
+      "sha256": "38c1e473874545721243962eec5d69c01df163a4658f97d766a1fdf49f740d22",
+      "match": true
+    },
+    {
+      "dataset": "HOLD",
+      "path": "data/tdm08/BTC_1h.json",
+      "sha256": "29adf88af85d9c70717d99b02bd22b10e3d428c123db2d3d5b626f217d8a8c98",
+      "match": true
+    },
+    {
+      "dataset": "HOLD",
+      "path": "data/tdm08/ETH_5m.json",
+      "sha256": "95808c1dfba8e58173cb8c4d8aeb27c096ad861b09af3a5edc0cb2a316089bac",
+      "match": true
+    },
+    {
+      "dataset": "HOLD",
+      "path": "data/tdm08/ETH_15m.json",
+      "sha256": "2e5ab01fad4d9ad26192e648d9c7a28b68c95b49ac491449df64291ec750273c",
+      "match": true
+    },
+    {
+      "dataset": "HOLD",
+      "path": "data/tdm08/ETH_30m.json",
+      "sha256": "b381aa516055a0ab9c7c884c8130e2c1977494145672f70aee56d59d097960b9",
+      "match": true
+    },
+    {
+      "dataset": "HOLD",
+      "path": "data/tdm08/ETH_1h.json",
+      "sha256": "618a7af43c79e41a40e000f43f728808df9685152ff3bea24a87df26eb54c321",
+      "match": true
+    },
+    {
+      "dataset": "HOLD",
+      "path": "data/tdm08/SOL_5m.json",
+      "sha256": "cec3085e2d06b6df663de0b8799b10a4448ddaeb00e18d2e5c84e2facede5448",
+      "match": true
+    },
+    {
+      "dataset": "HOLD",
+      "path": "data/tdm08/SOL_15m.json",
+      "sha256": "f1e6de05aa4472c79b0cead39bca44e473c2c4fc21925220f1f6c2bd16079db2",
+      "match": true
+    },
+    {
+      "dataset": "HOLD",
+      "path": "data/tdm08/SOL_30m.json",
+      "sha256": "d1df8c63248ea8021ff5ada5f29815097614f05e5bf176846cbe045c6310d67e",
+      "match": true
+    },
+    {
+      "dataset": "HOLD",
+      "path": "data/tdm08/SOL_1h.json",
+      "sha256": "697d334065ab7bbb58b36e23f4b06da171d361123f50d7146a11d77eb71c8fae",
+      "match": true
+    }
+  ],
+  "mismatches": [],
+  "missing": [],
+  "status": "PASS"
+}
