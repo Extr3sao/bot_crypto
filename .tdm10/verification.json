@@ -1,0 +1,167 @@
+{
+  "artifact": "tdm10-independent-verification-v1",
+  "generated_by": "scripts/tdm10_verify.py",
+  "builder": {
+    "path": "scripts/tdm10_experiment.py",
+    "sha256": "1ffc467bcc739a79b20a819d0f2637fe866f5995c1dfcab87e24f58ef62ad9cb"
+  },
+  "spec": {
+    "path": "reports/trading-decision-monitor/WP-TDM-10/EXPERIMENT_SPEC.md",
+    "sha256": "8964d314a817fce3907627f30903e22c90486a7a140a60e8e718c6bed3d610d9"
+  },
+  "matrix": {
+    "path": "reports/trading-decision-monitor/WP-TDM-10/ALPHA_ECONOMIC_MATRIX.csv",
+    "sha256": "8210646c17439ca0fbbbb82442eaff986a77caf2883ac0ff6c2cda2eea021ebd"
+  },
+  "independence": {
+    "shares_builder_code": false,
+    "estimator": "log returns vs builder simple returns",
+    "significance": "sign-flip permutation vs builder percentile bootstrap",
+    "verifier_person_independent": false,
+    "note": "same author as the builder; independence is of code and method, not of person"
+  },
+  "checks": [
+    {
+      "id": "A1",
+      "name": "spec hash unchanged since measurement",
+      "status": "PASS",
+      "detail": {
+        "sha256": "8964d314a817fce3907627f30903e22c90486a7a140a60e8e718c6bed3d610d9"
+      }
+    },
+    {
+      "id": "A2",
+      "name": "builder run recorded complete",
+      "status": "PASS",
+      "detail": 253.352
+    },
+    {
+      "id": "B1",
+      "name": "dataset hashes recomputed from disk",
+      "status": "PASS",
+      "detail": {
+        "files": 24,
+        "failures": []
+      }
+    },
+    {
+      "id": "C1",
+      "name": "all-in cost = sum of components (recomputed)",
+      "status": "PASS",
+      "detail": {
+        "component_sum_bps": 23.79057,
+        "round_trip_bps": 23.790569,
+        "reported_bps": 23.790569,
+        "components": {
+          "exchange_fee_entry": 10.0,
+          "exchange_fee_exit": 10.0,
+          "spread": 1.0,
+          "slippage": 2.632456,
+          "market_impact": 0.158114
+        }
+      }
+    },
+    {
+      "id": "D1",
+      "name": "independent trade re-derivation finished",
+      "status": "PASS",
+      "detail": {
+        "cells": 24,
+        "seconds": 45.2
+      }
+    },
+    {
+      "id": "D2",
+      "name": "independent trade list == builder trade list (timestamps, direction, count)",
+      "status": "PASS",
+      "detail": {
+        "cells": 24,
+        "mismatched": {},
+        "max_log_vs_simple_gap_bps": 7.385621
+      }
+    },
+    {
+      "id": "D3",
+      "name": "exit_time > decision_time on every trade",
+      "status": "PASS",
+      "detail": {
+        "violations": [],
+        "count": 0
+      }
+    },
+    {
+      "id": "D4",
+      "name": "overwriting all bars after decision+h leaves past trades identical",
+      "status": "PASS",
+      "detail": {
+        "trades_before_cut": 116,
+        "trades_after_cut": 116,
+        "identical": true
+      }
+    },
+    {
+      "id": "D5",
+      "name": "DEV and HOLD share no bar timestamp",
+      "status": "PASS",
+      "detail": {
+        "overlaps": []
+      }
+    },
+    {
+      "id": "E1",
+      "name": "published aggregates == independently recomputed (trades, gross, net, PF, DD, win rate)",
+      "status": "PASS",
+      "detail": {
+        "cells": 24,
+        "failures": [],
+        "failure_count": 0,
+        "max_log_vs_simple_gap_bps": 0.271414,
+        "log_vs_simple_tolerance_bps": 0.5
+      }
+    },
+    {
+      "id": "F1",
+      "name": "sign-flip permutation vs bootstrap: same Holm-corrected conclusion",
+      "status": "PASS",
+      "detail": {
+        "method_builder": "percentile bootstrap, 2000 resamples, seed 20261025",
+        "method_verifier": "sign-flip permutation, 4000 draws, seed 424242",
+        "raw_disagreements": [
+          {
+            "cell": "volatility@5m",
+            "permutation_p": 0.073732,
+            "bootstrap_p": 0.043,
+            "permutation_holm": 1.0,
+            "bootstrap_holm": 1.0,
+            "agree_raw": false,
+            "agree_holm": true,
+            "direction": {
+              "permutation": "not_positive",
+              "bootstrap": "positive"
+            }
+          }
+        ],
+        "holm_disagreements": [],
+        "cells_positive_raw_permutation": [],
+        "cells_positive_raw_bootstrap": [
+          "volatility@5m"
+        ],
+        "cells_positive_holm_permutation": [],
+        "cells_positive_holm_bootstrap": []
+      }
+    },
+    {
+      "id": "G1",
+      "name": "verdicts re-derived from the published matrix obey \u00a78",
+      "status": "PASS",
+      "detail": {
+        "cells": 24,
+        "failures": []
+      }
+    }
+  ],
+  "overall": "PASS",
+  "failed": [],
+  "not_run": [],
+  "duration_seconds": 66.8
+}

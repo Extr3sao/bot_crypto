@@ -1,0 +1,44 @@
+{
+  "artifact": "tdm08-negative-controls-v1",
+  "run_dir": "runs/tdm09-paper-bc",
+  "controls": [
+    {
+      "control": "C1_tampered_trace_breaks_chain",
+      "detected": true,
+      "detail": "chain ok=False detail='trace_hash does not match the record body'"
+    },
+    {
+      "control": "C2_truncated_trace_refused",
+      "detected": true,
+      "detail": "records=0 chain_ok=True"
+    },
+    {
+      "control": "C3_negative_edge_cannot_be_admitted",
+      "detected": true,
+      "detail": "rejected: ema_crossover@5m: admitted_for_paper requires one of ['PAPER_ACTIVE', 'PAPER_CANDIDATE'] (got NO_GROSS_EDGE)"
+    },
+    {
+      "control": "C4_missing_ledger_fails_closed",
+      "detected": true,
+      "detail": "refused: admission ledger not found at C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\definitely-absent-ledger.json; the runtime refuses to guess which strategies are admitted (fail closed, \u00a73)"
+    },
+    {
+      "control": "C5_unknown_strategy_not_admitted",
+      "detected": true,
+      "detail": "status=UNKNOWN admitted=False"
+    },
+    {
+      "control": "C6_zero_cost_still_no_trade",
+      "detected": true,
+      "detail": "traces=2 max_gross_bps=-1.8800 positive_gross_but_refused=[]"
+    },
+    {
+      "control": "C7_cost_re_derives_from_model",
+      "detected": true,
+      "detail": "pairs=2 max_abs_diff=0.000000 bps (expected 22.7918 vs re-derived 22.7918)"
+    }
+  ],
+  "detected": 7,
+  "total": 7,
+  "false_success": false
+}
