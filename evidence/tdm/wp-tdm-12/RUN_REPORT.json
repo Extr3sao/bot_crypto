@@ -1,0 +1,301 @@
+{
+  "work_package": "WP-TDM-12",
+  "rfc": "RFC-TDM-012",
+  "run_id": "tdm12-1792934434404",
+  "commit": "fabd966146c0f9980103cf713b2c721f503f7d46",
+  "commit_role": "code and data state this run measured; the closing commit adds only the new evidence, scripts and this manifest, so it cannot be named inside itself",
+  "branch": "evidence/tdm12",
+  "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm12",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "offline": true,
+    "isolation": "git worktree on evidence/tdm12 from 504256ec",
+    "shared_checkout_written": false
+  },
+  "datasets": {
+    "dev_manifest": {
+      "path": "data/tdm10/DATASET_DEV.json",
+      "sha256": "4a9e30c47b54144c631b0cdc94964693aae033ecf1a3ef41293a57c3a5b2fe23"
+    },
+    "holdout_manifest": {
+      "path": "data/tdm08/DATASET.json",
+      "sha256": "af7fa95ced41f36381e67909b133d87a675274293ca3457d1901aa1a341d9d84"
+    },
+    "files_verified": 24,
+    "bar_files_hashed": "see TDM-11 DATASET_PROVENANCE.json (24/24 verified)",
+    "confirmatory_bars_read": 0
+  },
+  "independence_status": "INDEPENDENCE_NOT_DEMONSTRATED",
+  "inputs": {
+    "tdm11_evidence": "evidence/tdm/wp-tdm-11 @ 504256ec",
+    "datasets": [
+      "data/tdm08 (holdout, exposed)",
+      "data/tdm10 (development)"
+    ],
+    "admission_ledger": "config/strategy_admission.json",
+    "runtime_entrypoints": [
+      "scripts/autonomous_paper.py",
+      "scripts/start_paper_trading.py",
+      "src/trading_bot/app.py",
+      "scripts/multi_family_backtest.py",
+      "scripts/rfc010_baseline_replay.py"
+    ]
+  },
+  "agents": {
+    "role": "single operator, second and third implementations",
+    "independence_status": "INDEPENDENCE_NOT_DEMONSTRATED",
+    "detail": "the review is a separate implementation and a separate execution context, but not a separate author; no third-party actor is available in this workspace"
+  },
+  "strategies": {
+    "measured": 24,
+    "registry_rows": 30,
+    "runtime_reachable_families": [
+      "breakout",
+      "ema_crossover",
+      "mean_reversion",
+      "momentum",
+      "trend",
+      "volatility"
+    ],
+    "admitted_for_paper": []
+  },
+  "tests": {
+    "review_checks": {
+      "passed": 5,
+      "total": 5
+    },
+    "triage_gates": {
+      "candidates_with_power_sufficient": 23,
+      "candidates_total": 24,
+      "cost_verified": 0,
+      "lookahead_gate_failures": 0,
+      "stale_data_gate_failures": 0
+    },
+    "module_tests_run": false,
+    "module_tests_note": "no repository source file was modified"
+  },
+  "decisions": [
+    "NO_ELIGIBLE_CANDIDATE",
+    "REVIEW_PARTIAL"
+  ],
+  "decision_records": {
+    "tdm11_closure": "evidence/tdm/wp-tdm-12/TDM11_CLOSURE_DECISION.json",
+    "candidate_decision": "evidence/tdm/wp-tdm-12/DECISION_REGISTER.json"
+  },
+  "errors": [
+    {
+      "id": "E1",
+      "error": "inventory listed the Strategy Protocol itself as a candidate",
+      "cause": "AST scan matched the protocol's evaluate() stub",
+      "fix": "excluded protocols.py and the class named Strategy; registry went from 31 to 30 rows",
+      "status": "FIXED"
+    }
+  ],
+  "metrics": {
+    "tdm11_review": {
+      "trades": 115,
+      "gross_mean": -12.577,
+      "net_mean": -36.3676,
+      "day_clustered_ci95_gross": {
+        "lo": -23.2174,
+        "hi": -3.101,
+        "se": 5.2335,
+        "day_clusters": 26
+      },
+      "net_upper_bound_by_method": {
+        "1d": -26.8916,
+        "2d": -26.695,
+        "5d": -29.4407,
+        "10d": -31.5307
+      },
+      "per_asset": {
+        "BTC": {
+          "trades": 36,
+          "gross_mean": -8.1873,
+          "share": 0.313
+        },
+        "ETH": {
+          "trades": 35,
+          "gross_mean": -19.2816,
+          "share": 0.304
+        },
+        "SOL": {
+          "trades": 44,
+          "gross_mean": -10.8353,
+          "share": 0.383
+        }
+      },
+      "lookahead_advantage_bps": 29.6308
+    },
+    "triage": {
+      "measured_cells": 24,
+      "hold_net_positive": [],
+      "dev_net_positive": [],
+      "eligible": [],
+      "best_hold_gross": {
+        "candidate_id": "TDM12-volatility@5m",
+        "gross": 7.0531
+      }
+    }
+  },
+  "result": "NO_ELIGIBLE_CANDIDATE",
+  "result_detail": {
+    "alpha_status": "REJECTED_ALPHA",
+    "review_result": "REVIEW_PARTIAL",
+    "independence_status": "INDEPENDENCE_NOT_DEMONSTRATED"
+  },
+  "evidence": {
+    "BASELINE_AND_SCOPE.md": {
+      "path": "evidence/tdm/wp-tdm-12/BASELINE_AND_SCOPE.md",
+      "sha256": "df9d994f19bc2d6f02e3d4223a3aab98e8b49dd5a9fc22d82e4d53c31d37deee",
+      "bytes": 3706
+    },
+    "CANDIDATE_REGISTRY.csv": {
+      "path": "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.csv",
+      "sha256": "bfce93578bcfcb3359d6009a9209e768a4a169bc7a838f25f2dfdae8e083d580",
+      "bytes": 19100
+    },
+    "CANDIDATE_REGISTRY.json": {
+      "path": "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.json",
+      "sha256": "fa0edcac4f922e03c0d959bf1bd3926eacd8e833e43f9ec17bb1ea0a42eb3ae8",
+      "bytes": 74915
+    },
+    "COST_AND_BIAS_AUDIT.md": {
+      "path": "evidence/tdm/wp-tdm-12/COST_AND_BIAS_AUDIT.md",
+      "sha256": "ffebf3d78b2fe6272d071cb13b9334e6e658cc8d9dd23966544c622c68838010",
+      "bytes": 5184
+    },
+    "DATA_WINDOW_REGISTRY.json": {
+      "path": "evidence/tdm/wp-tdm-12/DATA_WINDOW_REGISTRY.json",
+      "sha256": "a160de7d66d7a926e174e0f5115d58588ea66a3a4eb49b81394606c4b8c2ed59",
+      "bytes": 1823
+    },
+    "DECISION_REGISTER.json": {
+      "path": "evidence/tdm/wp-tdm-12/DECISION_REGISTER.json",
+      "sha256": "9135d7eeb6adc938278ab4afec1e13b7b2d8f439445e9912a55f96f2359eacec",
+      "bytes": 3775
+    },
+    "FINAL_REPORT.md": {
+      "path": "evidence/tdm/wp-tdm-12/FINAL_REPORT.md",
+      "sha256": "dde73f77ca1cf1fca8c3893c7f42d2462a4506f2a807f938ff7cf164969e4529",
+      "bytes": 8094
+    },
+    "INDEPENDENT_REVIEW.md": {
+      "path": "evidence/tdm/wp-tdm-12/INDEPENDENT_REVIEW.md",
+      "sha256": "76e8c71a225ab0835e0a6879ff758f2f46151598bf8449ff9f55a7af5176f02f",
+      "bytes": 8095
+    },
+    "RETROSPECTIVE_TRIAGE_REPORT.md": {
+      "path": "evidence/tdm/wp-tdm-12/RETROSPECTIVE_TRIAGE_REPORT.md",
+      "sha256": "73517339c9a8c1c4ba1232a75af0f44a7a65d26a71f168acea318833de15c08c",
+      "bytes": 7125
+    },
+    "RFC-TDM-012.md": {
+      "path": "evidence/tdm/wp-tdm-12/RFC-TDM-012.md",
+      "sha256": "71b5e2791c0dbc3571242abc962a4132eae86fc3ad49a22d90ec1f19bd22c18c",
+      "bytes": 19781
+    },
+    "RUN_REPORT.md": {
+      "path": "evidence/tdm/wp-tdm-12/RUN_REPORT.md",
+      "sha256": "baf07d82355d1189be7f6a81291f0dd1bd48fb9d21272bb38cd58f2e4bbf6edc",
+      "bytes": 6218
+    },
+    "RUNTIME_AUTHORITY_MAP.md": {
+      "path": "evidence/tdm/wp-tdm-12/RUNTIME_AUTHORITY_MAP.md",
+      "sha256": "637ee8b7e2a25f74591b77e799a56f9c089c5647f697bc951eee001e1af75f1c",
+      "bytes": 5829
+    },
+    "TDM11_CLOSURE_DECISION.json": {
+      "path": "evidence/tdm/wp-tdm-12/TDM11_CLOSURE_DECISION.json",
+      "sha256": "6a2b2b69ce042a78c73063b73c8a1cfc11338c2f754e0c2f6f646ee3bb223ba9",
+      "bytes": 6538
+    }
+  },
+  "code_sha256": {
+    "tdm12_review.py": {
+      "sha256": "8a0542f2e730bd2dee4bba32a275a33e1fd8bf870254fbb8b29a6bc2e9fe9a5e",
+      "bytes": 24696
+    },
+    "tdm12_inventory.py": {
+      "sha256": "37e718435e35494e9510916ce50e9a4ea83984dfcaaf729d1788bd29c2fc8a0e",
+      "bytes": 24970
+    },
+    "tdm12_publish.py": {
+      "sha256": "72ec3b7af88b8a79c501cb42d0289ffd517456434e7fdfe4e08ef051395f69aa",
+      "bytes": 18681
+    }
+  },
+  "false_success": 0,
+  "false_success_basis": "every gate that could not be run is reported as NOT_RUN or UNVERIFIED; no candidate was promoted and no failed check was converted into a pass",
+  "paper_orders": 0,
+  "live_orders": 0,
+  "evidence_sha256": {
+    "BASELINE_AND_SCOPE.md": {
+      "path": "evidence/tdm/wp-tdm-12/BASELINE_AND_SCOPE.md",
+      "sha256": "df9d994f19bc2d6f02e3d4223a3aab98e8b49dd5a9fc22d82e4d53c31d37deee",
+      "bytes": 3706
+    },
+    "CANDIDATE_REGISTRY.csv": {
+      "path": "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.csv",
+      "sha256": "bfce93578bcfcb3359d6009a9209e768a4a169bc7a838f25f2dfdae8e083d580",
+      "bytes": 19100
+    },
+    "CANDIDATE_REGISTRY.json": {
+      "path": "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.json",
+      "sha256": "fa0edcac4f922e03c0d959bf1bd3926eacd8e833e43f9ec17bb1ea0a42eb3ae8",
+      "bytes": 74915
+    },
+    "COST_AND_BIAS_AUDIT.md": {
+      "path": "evidence/tdm/wp-tdm-12/COST_AND_BIAS_AUDIT.md",
+      "sha256": "ffebf3d78b2fe6272d071cb13b9334e6e658cc8d9dd23966544c622c68838010",
+      "bytes": 5184
+    },
+    "DATA_WINDOW_REGISTRY.json": {
+      "path": "evidence/tdm/wp-tdm-12/DATA_WINDOW_REGISTRY.json",
+      "sha256": "a160de7d66d7a926e174e0f5115d58588ea66a3a4eb49b81394606c4b8c2ed59",
+      "bytes": 1823
+    },
+    "DECISION_REGISTER.json": {
+      "path": "evidence/tdm/wp-tdm-12/DECISION_REGISTER.json",
+      "sha256": "9135d7eeb6adc938278ab4afec1e13b7b2d8f439445e9912a55f96f2359eacec",
+      "bytes": 3775
+    },
+    "FINAL_REPORT.md": {
+      "path": "evidence/tdm/wp-tdm-12/FINAL_REPORT.md",
+      "sha256": "dde73f77ca1cf1fca8c3893c7f42d2462a4506f2a807f938ff7cf164969e4529",
+      "bytes": 8094
+    },
+    "INDEPENDENT_REVIEW.md": {
+      "path": "evidence/tdm/wp-tdm-12/INDEPENDENT_REVIEW.md",
+      "sha256": "76e8c71a225ab0835e0a6879ff758f2f46151598bf8449ff9f55a7af5176f02f",
+      "bytes": 8095
+    },
+    "RETROSPECTIVE_TRIAGE_REPORT.md": {
+      "path": "evidence/tdm/wp-tdm-12/RETROSPECTIVE_TRIAGE_REPORT.md",
+      "sha256": "73517339c9a8c1c4ba1232a75af0f44a7a65d26a71f168acea318833de15c08c",
+      "bytes": 7125
+    },
+    "RFC-TDM-012.md": {
+      "path": "evidence/tdm/wp-tdm-12/RFC-TDM-012.md",
+      "sha256": "71b5e2791c0dbc3571242abc962a4132eae86fc3ad49a22d90ec1f19bd22c18c",
+      "bytes": 19781
+    },
+    "RUN_REPORT.md": {
+      "path": "evidence/tdm/wp-tdm-12/RUN_REPORT.md",
+      "sha256": "baf07d82355d1189be7f6a81291f0dd1bd48fb9d21272bb38cd58f2e4bbf6edc",
+      "bytes": 6218
+    },
+    "RUNTIME_AUTHORITY_MAP.md": {
+      "path": "evidence/tdm/wp-tdm-12/RUNTIME_AUTHORITY_MAP.md",
+      "sha256": "637ee8b7e2a25f74591b77e799a56f9c089c5647f697bc951eee001e1af75f1c",
+      "bytes": 5829
+    },
+    "TDM11_CLOSURE_DECISION.json": {
+      "path": "evidence/tdm/wp-tdm-12/TDM11_CLOSURE_DECISION.json",
+      "sha256": "6a2b2b69ce042a78c73063b73c8a1cfc11338c2f754e0c2f6f646ee3bb223ba9",
+      "bytes": 6538
+    }
+  },
+  "generated_at_ms": 1792934434672
+}

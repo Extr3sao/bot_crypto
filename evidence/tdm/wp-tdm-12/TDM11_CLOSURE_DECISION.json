@@ -1,0 +1,213 @@
+{
+  "artifact": "tdm11-closure-decision-v1",
+  "generated_at_utc": "2026-10-25T13:20:34.395526+00:00",
+  "hypothesis_id": "TDM11-H1",
+  "alpha_status": "REJECTED_ALPHA",
+  "previous_verdict": "NO_GO_ALPHA",
+  "review_result": "REVIEW_PARTIAL",
+  "review_result_basis": "integrity and reproduction verified against committed blobs; independence of authorship is not demonstrated, which is why the review is PARTIAL and not VERIFIED",
+  "integrity_status": "VERIFIED",
+  "integrity_detail": {
+    "evidence_files_checked": 10,
+    "evidence_missing": [],
+    "evidence_mismatched": [],
+    "code_files_checked": 7,
+    "code_mismatched": [],
+    "hash_basis": "git cat-file against the committed tree, not the working directory",
+    "circular_hashes": "none: RUN_REPORT.json excludes itself from its own map"
+  },
+  "reproduction_status": "REPRODUCED",
+  "reproduction_detail": {
+    "trades": 115,
+    "committed_rows": 115,
+    "row_problems": 0,
+    "gross_mean": -12.577,
+    "net_mean": -36.3676,
+    "implementation": "third implementation, re-derived from sealed bars"
+  },
+  "independence_status": "INDEPENDENCE_NOT_DEMONSTRATED",
+  "independence_detail": "the review is a separate implementation and a separate execution context, but not a separate author; no third-party actor is available in this workspace",
+  "statistical_limitations": {
+    "day_clusters": 26,
+    "trades_with_concurrent_other_asset": 49,
+    "share_concurrent": 0.4261,
+    "max_trades_per_day": 13,
+    "block_sensitivity_days": {
+      "1d": {
+        "se": 5.2335,
+        "lo": -23.2174,
+        "hi": -3.101,
+        "days": 26
+      },
+      "2d": {
+        "se": 5.2921,
+        "lo": -23.8262,
+        "hi": -2.9044,
+        "days": 26
+      },
+      "5d": {
+        "se": 3.9091,
+        "lo": -20.8397,
+        "hi": -5.6501,
+        "days": 26
+      },
+      "10d": {
+        "se": 2.619,
+        "lo": -17.6065,
+        "hi": -7.7401,
+        "days": 26
+      }
+    },
+    "net_upper_bound_by_block": {
+      "1d": -26.8916,
+      "2d": -26.695,
+      "5d": -29.4407,
+      "10d": -31.5307
+    },
+    "note": "the interval widens under day clustering but every block size keeps the net upper bound negative; the rejection is not an artefact of assuming IID trades"
+  },
+  "cost_limitations": {
+    "spread": "ESTIMATED 1 bp, never observed from a book",
+    "funding": "not charged by default in the perp scenario",
+    "maker_fill": "p=0.5 assumed, no queue model",
+    "effect_on_verdict": "none: the gross CI upper bound is negative at zero cost"
+  },
+  "contradictory_findings": [
+    {
+      "id": "F-01",
+      "claim_in_tdm11": "the directional premise reproduces as 3 of 6 buckets",
+      "finding": "the count is slicing-dependent: ranking only trend=down buckets gives 5 of 6 short-majority; ranking every regime bucket (as regime_table.csv does) gives 3 of 6",
+      "effect_on_tdm11": "the verdict does not depend on it, but the specific figure in GOVERNANCE_RECONCILIATION.md must be read as one of two rankings, not as a stable statistic",
+      "action": "recorded here; TDM-11 evidence is not rewritten",
+      "evidence": "review.json::claim"
+    }
+  ],
+  "claim_check": {
+    "cells": 24,
+    "hold_trades": 16316,
+    "slicing_a_down_only": {
+      "definition": "rank only trend=down buckets, n>=4, pooled directions",
+      "top6": [
+        {
+          "cell": "breakout@1h",
+          "axis": "trend",
+          "label": "down",
+          "n": 7,
+          "gross": 63.339,
+          "short_share": 1.0
+        },
+        {
+          "cell": "volatility@5m",
+          "axis": "trend",
+          "label": "down",
+          "n": 4,
+          "gross": 27.1776,
+          "short_share": 0.25
+        },
+        {
+          "cell": "ema_crossover@1h",
+          "axis": "trend",
+          "label": "down",
+          "n": 32,
+          "gross": 19.3442,
+          "short_share": 0.906
+        },
+        {
+          "cell": "breakout@30m",
+          "axis": "trend",
+          "label": "down",
+          "n": 12,
+          "gross": 19.1648,
+          "short_share": 0.75
+        },
+        {
+          "cell": "momentum@5m",
+          "axis": "trend",
+          "label": "down",
+          "n": 74,
+          "gross": 16.0691,
+          "short_share": 0.77
+        },
+        {
+          "cell": "breakout@15m",
+          "axis": "trend",
+          "label": "down",
+          "n": 24,
+          "gross": 13.1854,
+          "short_share": 0.917
+        }
+      ],
+      "short_majority_count": 5
+    },
+    "slicing_b_mixed_axis": {
+      "definition": "rank every regime bucket (trend and vol), n>=4, pooled directions",
+      "top6": [
+        {
+          "cell": "breakout@1h",
+          "axis": "trend",
+          "label": "down",
+          "n": 7,
+          "gross": 63.339,
+          "short_share": 1.0
+        },
+        {
+          "cell": "volatility@5m",
+          "axis": "trend",
+          "label": "down",
+          "n": 4,
+          "gross": 27.1776,
+          "short_share": 0.25
+        },
+        {
+          "cell": "volatility@5m",
+          "axis": "vol",
+          "label": "high_vol",
+          "n": 8,
+          "gross": 25.4613,
+          "short_share": 0.625
+        },
+        {
+          "cell": "ema_crossover@1h",
+          "axis": "trend",
+          "label": "down",
+          "n": 32,
+          "gross": 19.3442,
+          "short_share": 0.906
+        },
+        {
+          "cell": "breakout@30m",
+          "axis": "trend",
+          "label": "down",
+          "n": 12,
+          "gross": 19.1648,
+          "short_share": 0.75
+        },
+        {
+          "cell": "mean_reversion@1h",
+          "axis": "trend",
+          "label": "unclassified",
+          "n": 7,
+          "gross": 18.7045,
+          "short_share": 0.857
+        }
+      ],
+      "short_in_downtrend_count": 3
+    },
+    "slicing_dependent": true
+  },
+  "lookahead_control": {
+    "pit_gross_mean": -12.577,
+    "lookahead_gross_mean": 17.0538,
+    "advantage_bps": 29.6308,
+    "status": "PASS"
+  },
+  "can_promote": false,
+  "paper_orders": 0,
+  "live_orders": 0,
+  "evidence_refs": [
+    "evidence/tdm/wp-tdm-11/RUN_REPORT.json",
+    "evidence/tdm/wp-tdm-11/RETROSPECTIVE_LEDGER.csv",
+    "evidence/tdm/wp-tdm-11/PREREGISTRATION.md",
+    "evidence/tdm/wp-tdm-12/.tdm12/review.json (runtime artefact)"
+  ]
+}
