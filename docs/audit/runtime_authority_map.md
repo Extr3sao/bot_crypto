@@ -317,3 +317,32 @@ The operational limit is unchanged and explicit: the committed
 in `NO_TRADE`. The trade in the evidence uses
 `docs/audit/fixtures/g5_paper_ledger.json` (`CONTROLLED_TEST_FIXTURE`), which is
 reachability evidence, not a production admission or an edge claim.
+
+## 13. Addendum — G-6 durable PAPER execution (2026-10-25)
+
+G-6 measured the crash boundary that G-5 had left as a logical restart. The
+reachable paper launcher now uses `DurablePaperBroker` over the existing
+`PaperStateStore`; the broker records `PREPARED`, `FILLED` and `ACCOUNTED`
+before the next boundary, and `StartupReconcilerV4` is the sole recovery
+authority:
+
+- `PREPARED`/`FAILED` means the broker may have acted. The cloid is already in
+  `sent_intents`; recovery marks it `BLOCKED_UNKNOWN` and never resends it.
+- `FILLED` carries the exact position row against the pre-fill accounting
+  snapshot. Recovery materializes that position once and persists `ACCOUNTED`.
+- `ACCOUNTED` must match the restored book; if the position is closed, a
+  persisted `ClosedTrade` naming the same `position_id`/`entry_order_id`
+  converts the row to `CLOSED`. Anything else is `FATAL`.
+- The recovery outcome is persisted atomically, so a second kill/reopen sees
+  `ACCOUNTED`/`CLOSED`/`BLOCKED_UNKNOWN` and repeats no economic effect.
+
+Evidence: `docs/audit/runs/run-20261025T141859Z-G-6/` — four real
+`taskkill /F /T` terminations, two consecutive restarts, inconsistent and
+corrupt books failing closed, a kill switch blocking the broker during
+recovery, and a recovered position closed once at take-profit. Clean-export
+verifier: 17/17, `FALSE_SUCCESS=0`.
+
+What is still not true: `paper_cycle` and `autonomous.decision` remain two
+engines, the data is synthetic, and the kill/recovery uses the same disk. No
+exchange client or credential is constructed; `LIVE_NO_GO` and
+`PRODUCTION_READY=false` are unchanged.

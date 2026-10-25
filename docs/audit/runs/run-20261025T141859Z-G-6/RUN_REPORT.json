@@ -1,0 +1,1484 @@
+{
+  "schema_version": "g6-run-report/v1",
+  "run_id": "run-20261025T141859Z-G-6",
+  "generated_at_utc": "2026-10-25T14:20:01.397953+00:00",
+  "implementation_commit": "66e96e1685226508e4c03a1ea2771aecf878f5b5",
+  "branch": "audit/mt0004-negative-controls",
+  "execution_class": "PAPER_ONLY_SYNTHETIC_FIXTURE",
+  "live": false,
+  "credentials_used": false,
+  "exchange_clients_constructed": false,
+  "order_sent": false,
+  "platform": "Windows-10-10.0.26200-SP0",
+  "ledger": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\docs\\audit\\fixtures\\g6_paper_ledger.json",
+  "ledger_claim": "CONTROLLED_TEST_FIXTURE â€” not market evidence, not a production admission",
+  "evidence_sha256": "7652ce89d1a040a7119b1b87ba705adc78d0ec09b45c7b7991c1ea6035566ce5",
+  "evidence_file_sha256": "aaa11ea6294c995df8e364c599e7abd5ecd6e595c5c1d220803da5192a7ed333",
+  "worker_sha256": "c542e03d69cd5e2a5ba483b67e8879c8c1c9f51051bedb6f5e26f4eb3d27e8be",
+  "hot_stop_sha256": "76cfca23d1e7758607c466eea4ff5c0a9411cb812d433eb7ca16dfb45cfdf8b1",
+  "verification": {
+    "verdict": "G6_VERIFIED",
+    "checks_passed": 17,
+    "checks_total": 17,
+    "false_success": 0,
+    "rev": "66e96e1685226508e4c03a1ea2771aecf878f5b5",
+    "seconds": 50.31,
+    "checks": [
+      {
+        "check": "PAPER_ONLY",
+        "passed": true
+      },
+      {
+        "check": "CONTROLLED_LEDGER_LABELLED",
+        "passed": true
+      },
+      {
+        "check": "FOUR_REAL_FORCED_TERMINATIONS",
+        "passed": true
+      },
+      {
+        "check": "BEFORE_INTENT_NOTHING_DURABLE",
+        "passed": true
+      },
+      {
+        "check": "PREPARED_INTENT_BLOCKED_NOT_RESENT",
+        "passed": true
+      },
+      {
+        "check": "FILLED_ORDER_MATERIALIZED_ONCE",
+        "passed": true
+      },
+      {
+        "check": "ACCOUNTED_BOOK_RESTORED_WITHOUT_NEW_ORDER",
+        "passed": true
+      },
+      {
+        "check": "TWO_RESTARTS_IDEMPOTENT",
+        "passed": true
+      },
+      {
+        "check": "INCONSISTENT_STATE_FAILS_CLOSED",
+        "passed": true
+      },
+      {
+        "check": "CORRUPT_STATE_FAILS_CLOSED",
+        "passed": true
+      },
+      {
+        "check": "KILL_SWITCH_DURING_RECOVERY_BLOCKS_BROKER",
+        "passed": true
+      },
+      {
+        "check": "RECOVERED_POSITION_CLOSES_EXACTLY_ONCE",
+        "passed": true
+      },
+      {
+        "check": "FIVE_ACCOUNTING_IDENTITIES",
+        "passed": true
+      },
+      {
+        "check": "NO_ORDER_CLAIMED_WITHOUT_BROKER_CALL",
+        "passed": true
+      },
+      {
+        "check": "HOT_STOP_UNCHANGED",
+        "passed": true
+      },
+      {
+        "check": "G5_DEFINITIVE_COMMITS_PRESENT",
+        "passed": true
+      },
+      {
+        "check": "DETERMINISTIC_REPLAY",
+        "passed": true
+      }
+    ]
+  },
+  "scenarios": {
+    "before_intent": {
+      "crash": {
+        "point": "before_intent_persist",
+        "wrapper_pid": 42292,
+        "worker_pid": 38092,
+        "kill_method": "taskkill /F /T",
+        "kill_command": [
+          "taskkill",
+          "/F",
+          "/T",
+          "/PID",
+          "42292"
+        ],
+        "kill_exit_code": 0,
+        "worker_exit_code": 1,
+        "forced_termination": true,
+        "state_after": {
+          "exists": false,
+          "sha256": null,
+          "bytes": 0,
+          "open_positions": 0,
+          "closed_trades": 0,
+          "sent_intents": 0,
+          "orders": [],
+          "order_statuses": [],
+          "equity": 0.0,
+          "equity_identity": true
+        }
+      },
+      "restart": {
+        "worker_pid": null,
+        "exit_code": 0,
+        "reconciliation": {
+          "blocked_intents": [],
+          "checked_at_ms": 1792937984126,
+          "details": [
+            "no persisted state: starting with a fresh book"
+          ],
+          "materialized_orders": 0,
+          "recovery_persisted": false,
+          "restored_closed_trades": 0,
+          "restored_equity": null,
+          "restored_intents": 0,
+          "restored_open_positions": 0,
+          "restored_risk": {},
+          "restored_run_id": "",
+          "status": "CONSISTENT"
+        },
+        "cycle": {
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "broker_errors": 0,
+          "context_errors": 0,
+          "contexts_built": 1,
+          "defensive_blocks": {},
+          "duplicate_intents": 0,
+          "exits_closed": 0,
+          "exits_requested": 0,
+          "hot_stop_blocked": 0,
+          "orders_created": 1,
+          "rejections": [],
+          "reversals_refused": 0,
+          "risk_accepted": 1,
+          "risk_errors": 0,
+          "risk_rejected": 0,
+          "router_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "same_side_skips": 0,
+          "signals_generated": 1,
+          "strategy_errors": 0,
+          "strategy_invocations": 1
+        },
+        "broker_calls": {
+          "close_position": 0,
+          "execute_signal": 1
+        },
+        "positions": 1,
+        "closed_trades": 0,
+        "accounting_identities": {
+          "cash_equals_initial_plus_realised": true,
+          "closed_trade_costs_are_named": true,
+          "closed_trade_pnl_rebuilds": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "ledger_equity_equals_initial_plus_realised": true
+        }
+      },
+      "state_after_restart": {
+        "exists": true,
+        "sha256": "11794403dfffe7643d54dc789cde707afaabf16bb2dbe990779c51fc6b709686",
+        "bytes": 1542,
+        "open_positions": 1,
+        "closed_trades": 0,
+        "sent_intents": 1,
+        "orders": [
+          {
+            "accounted_at_ms": 1792937984132,
+            "cloid": "PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+            "created_at_ms": 1792937984130,
+            "filled_at_ms": 1792937984132,
+            "position": {
+              "commission_bps": 5.0,
+              "entry_commission": 0.25,
+              "entry_order_id": "ord-g6-46528-00000002",
+              "entry_price": 199.51995,
+              "notional_usdt": 500.0,
+              "opened_at": 1792584000.0,
+              "position_id": "pos-g6-46528-00000001",
+              "price_bps_per_side": 1.0,
+              "quantity": 2.5060150626541358,
+              "reference_entry_price": 199.5,
+              "side": "buy",
+              "stop_loss_pct": 1.5038,
+              "strategy_name": "ema_crossover",
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            },
+            "side": "buy",
+            "status": "ACCOUNTED",
+            "strategy_id": "ema_crossover",
+            "symbol": "BTC/USDT",
+            "timeframe": "5m"
+          }
+        ],
+        "order_statuses": [
+          "ACCOUNTED"
+        ],
+        "equity": 10000.0,
+        "initial_equity": 10000.0,
+        "realized_pnl": 0,
+        "equity_identity": true,
+        "run_id": "g6-46528",
+        "updated_at_ms": 1792937984144
+      }
+    },
+    "after_intent": {
+      "crash": {
+        "point": "after_intent_persist_before_order",
+        "wrapper_pid": 42200,
+        "worker_pid": 5016,
+        "kill_method": "taskkill /F /T",
+        "kill_command": [
+          "taskkill",
+          "/F",
+          "/T",
+          "/PID",
+          "42200"
+        ],
+        "kill_exit_code": 0,
+        "worker_exit_code": 1,
+        "forced_termination": true,
+        "state_after": {
+          "exists": true,
+          "sha256": "96a083bc5790ca1c8b828f9052a6fdf84aa6e7341989ce60277cee6527deda0c",
+          "bytes": 699,
+          "open_positions": 0,
+          "closed_trades": 0,
+          "sent_intents": 1,
+          "orders": [
+            {
+              "cloid": "PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+              "created_at_ms": 1792937985475,
+              "position": null,
+              "side": "buy",
+              "status": "PREPARED",
+              "strategy_id": "ema_crossover",
+              "symbol": "BTC/USDT",
+              "timeframe": "5m"
+            }
+          ],
+          "order_statuses": [
+            "PREPARED"
+          ],
+          "equity": 10000.0,
+          "initial_equity": 10000.0,
+          "realized_pnl": 0,
+          "equity_identity": true,
+          "run_id": "g6-5016",
+          "updated_at_ms": 1792937985475
+        }
+      },
+      "restart": {
+        "worker_pid": null,
+        "exit_code": 0,
+        "reconciliation": {
+          "blocked_intents": [
+            "PAPER-6adfdf69995704ff54c0ec0fbcb87bb7"
+          ],
+          "checked_at_ms": 1792937987146,
+          "details": [
+            "broker restored: equity=10000.00 open=0 closed=0",
+            "risk state restored before first decision",
+            "intent ledger restored: 1 cloids",
+            "intent blocked (unknown outcome): PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+            "risk book synced: 0 open position(s)",
+            "recovery outcome persisted"
+          ],
+          "materialized_orders": 0,
+          "recovery_persisted": true,
+          "restored_closed_trades": 0,
+          "restored_equity": 10000.0,
+          "restored_intents": 1,
+          "restored_open_positions": 0,
+          "restored_risk": {
+            "consecutive_losses": 0,
+            "daily_pnl": 0.0,
+            "day_peak_equity": 10000.0,
+            "kill_switch_active": false,
+            "last_loss_ms": 0,
+            "open_positions": {},
+            "peak_equity": 10000.0,
+            "trades_today": 0,
+            "weekly_pnl": 0.0,
+            "weekly_start_ms": 1792368000000
+          },
+          "restored_run_id": "g6-5016",
+          "status": "RECOVERED"
+        },
+        "cycle": {
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "broker_errors": 0,
+          "context_errors": 0,
+          "contexts_built": 1,
+          "defensive_blocks": {},
+          "duplicate_intents": 1,
+          "exits_closed": 0,
+          "exits_requested": 0,
+          "hot_stop_blocked": 0,
+          "orders_created": 0,
+          "rejections": [
+            {
+              "reason": "duplicate_intent:PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+              "stage": "idempotency",
+              "symbol": "BTC/USDT"
+            }
+          ],
+          "reversals_refused": 0,
+          "risk_accepted": 0,
+          "risk_errors": 0,
+          "risk_rejected": 0,
+          "router_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "same_side_skips": 0,
+          "signals_generated": 1,
+          "strategy_errors": 0,
+          "strategy_invocations": 1
+        },
+        "broker_calls": {
+          "close_position": 0,
+          "execute_signal": 0
+        },
+        "positions": 0,
+        "closed_trades": 0,
+        "accounting_identities": {
+          "cash_equals_initial_plus_realised": true,
+          "closed_trade_costs_are_named": true,
+          "closed_trade_pnl_rebuilds": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "ledger_equity_equals_initial_plus_realised": true
+        }
+      },
+      "state_after_restart": {
+        "exists": true,
+        "sha256": "1abfae30551aa8d126a8debd3fbdaf1f6d01f899c0898149de47839117ce5098",
+        "bytes": 774,
+        "open_positions": 0,
+        "closed_trades": 0,
+        "sent_intents": 1,
+        "orders": [
+          {
+            "blocked_reason": "broker outcome unknown after forced termination",
+            "cloid": "PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+            "created_at_ms": 1792937985475,
+            "position": null,
+            "side": "buy",
+            "status": "BLOCKED_UNKNOWN",
+            "strategy_id": "ema_crossover",
+            "symbol": "BTC/USDT",
+            "timeframe": "5m"
+          }
+        ],
+        "order_statuses": [
+          "BLOCKED_UNKNOWN"
+        ],
+        "equity": 10000.0,
+        "initial_equity": 10000.0,
+        "realized_pnl": 0,
+        "equity_identity": true,
+        "run_id": "g6-40484",
+        "updated_at_ms": 1792937987158
+      }
+    },
+    "after_order": {
+      "crash": {
+        "point": "after_order_record_before_accounting",
+        "wrapper_pid": 44496,
+        "worker_pid": 40076,
+        "kill_method": "taskkill /F /T",
+        "kill_command": [
+          "taskkill",
+          "/F",
+          "/T",
+          "/PID",
+          "44496"
+        ],
+        "kill_exit_code": 0,
+        "worker_exit_code": 1,
+        "forced_termination": true,
+        "state_after": {
+          "exists": true,
+          "sha256": "e7bd8ec8e983da64fd8103c5e6765c928507bb6870db5b4253977bffef9f61ec",
+          "bytes": 1115,
+          "open_positions": 0,
+          "closed_trades": 0,
+          "sent_intents": 1,
+          "orders": [
+            {
+              "cloid": "PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+              "created_at_ms": 1792937988480,
+              "filled_at_ms": 1792937988492,
+              "position": {
+                "commission_bps": 5.0,
+                "entry_commission": 0.25,
+                "entry_order_id": "ord-g6-40076-00000002",
+                "entry_price": 199.51995,
+                "notional_usdt": 500.0,
+                "opened_at": 1792584000.0,
+                "position_id": "pos-g6-40076-00000001",
+                "price_bps_per_side": 1.0,
+                "quantity": 2.5060150626541358,
+                "reference_entry_price": 199.5,
+                "side": "buy",
+                "stop_loss_pct": 1.5038,
+                "strategy_name": "ema_crossover",
+                "symbol": "BTC/USDT",
+                "take_profit_pct": 0.75
+              },
+              "side": "buy",
+              "status": "FILLED",
+              "strategy_id": "ema_crossover",
+              "symbol": "BTC/USDT",
+              "timeframe": "5m"
+            }
+          ],
+          "order_statuses": [
+            "FILLED"
+          ],
+          "equity": 10000.0,
+          "initial_equity": 10000.0,
+          "realized_pnl": 0,
+          "equity_identity": true,
+          "run_id": "g6-40076",
+          "updated_at_ms": 1792937988492
+        }
+      },
+      "restart": {
+        "worker_pid": null,
+        "exit_code": 0,
+        "reconciliation": {
+          "blocked_intents": [],
+          "checked_at_ms": 1792937990149,
+          "details": [
+            "broker restored: equity=10000.00 open=0 closed=0",
+            "risk state restored before first decision",
+            "intent ledger restored: 1 cloids",
+            "FILLED order PAPER-6adfdf69995704ff54c0ec0fbcb87bb7 materialized position BTC/USDT id=pos-g6-40076-00000001",
+            "risk book synced: 1 open position(s)",
+            "recovery outcome persisted"
+          ],
+          "materialized_orders": 1,
+          "recovery_persisted": true,
+          "restored_closed_trades": 0,
+          "restored_equity": 10000.0,
+          "restored_intents": 1,
+          "restored_open_positions": 0,
+          "restored_risk": {
+            "consecutive_losses": 0,
+            "daily_pnl": 0.0,
+            "day_peak_equity": 10000.0,
+            "kill_switch_active": false,
+            "last_loss_ms": 0,
+            "open_positions": {},
+            "peak_equity": 10000.0,
+            "trades_today": 0,
+            "weekly_pnl": 0.0,
+            "weekly_start_ms": 1792368000000
+          },
+          "restored_run_id": "g6-40076",
+          "status": "RECOVERED"
+        },
+        "cycle": {
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "broker_errors": 0,
+          "context_errors": 0,
+          "contexts_built": 1,
+          "defensive_blocks": {},
+          "duplicate_intents": 1,
+          "exits_closed": 0,
+          "exits_requested": 0,
+          "hot_stop_blocked": 0,
+          "orders_created": 0,
+          "rejections": [
+            {
+              "reason": "duplicate_intent:PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+              "stage": "idempotency",
+              "symbol": "BTC/USDT"
+            }
+          ],
+          "reversals_refused": 0,
+          "risk_accepted": 0,
+          "risk_errors": 0,
+          "risk_rejected": 0,
+          "router_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "same_side_skips": 0,
+          "signals_generated": 1,
+          "strategy_errors": 0,
+          "strategy_invocations": 1
+        },
+        "broker_calls": {
+          "close_position": 0,
+          "execute_signal": 0
+        },
+        "positions": 1,
+        "closed_trades": 0,
+        "accounting_identities": {
+          "cash_equals_initial_plus_realised": true,
+          "closed_trade_costs_are_named": true,
+          "closed_trade_pnl_rebuilds": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "ledger_equity_equals_initial_plus_realised": true
+        }
+      },
+      "state_after_restart": {
+        "exists": true,
+        "sha256": "abbcf4d3d55623b80410fc08848a72eda0776bf8b58989ab234a0a07072ecd4b",
+        "bytes": 1645,
+        "open_positions": 1,
+        "closed_trades": 0,
+        "sent_intents": 1,
+        "orders": [
+          {
+            "cloid": "PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+            "created_at_ms": 1792937988480,
+            "filled_at_ms": 1792937988492,
+            "position": {
+              "commission_bps": 5.0,
+              "entry_commission": 0.25,
+              "entry_order_id": "ord-g6-40076-00000002",
+              "entry_price": 199.51995,
+              "notional_usdt": 500.0,
+              "opened_at": 1792584000.0,
+              "position_id": "pos-g6-40076-00000001",
+              "price_bps_per_side": 1.0,
+              "quantity": 2.5060150626541358,
+              "reference_entry_price": 199.5,
+              "side": "buy",
+              "stop_loss_pct": 1.5038,
+              "strategy_name": "ema_crossover",
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            },
+            "side": "buy",
+            "status": "ACCOUNTED",
+            "strategy_id": "ema_crossover",
+            "symbol": "BTC/USDT",
+            "timeframe": "5m"
+          }
+        ],
+        "order_statuses": [
+          "ACCOUNTED"
+        ],
+        "equity": 10000.0,
+        "initial_equity": 10000.0,
+        "realized_pnl": 0,
+        "equity_identity": true,
+        "run_id": "g6-43404",
+        "updated_at_ms": 1792937990170
+      }
+    },
+    "after_accounting": {
+      "crash": {
+        "point": "after_accounting_commit_before_cycle",
+        "wrapper_pid": 43640,
+        "worker_pid": 32836,
+        "kill_method": "taskkill /F /T",
+        "kill_command": [
+          "taskkill",
+          "/F",
+          "/T",
+          "/PID",
+          "43640"
+        ],
+        "kill_exit_code": 0,
+        "worker_exit_code": 1,
+        "forced_termination": true,
+        "state_after": {
+          "exists": true,
+          "sha256": "df78be6dd6864a32cfa864c1dfd5660b7e1b06c43e5e08587156084b6841c44e",
+          "bytes": 1542,
+          "open_positions": 1,
+          "closed_trades": 0,
+          "sent_intents": 1,
+          "orders": [
+            {
+              "accounted_at_ms": 1792937991530,
+              "cloid": "PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+              "created_at_ms": 1792937991523,
+              "filled_at_ms": 1792937991527,
+              "position": {
+                "commission_bps": 5.0,
+                "entry_commission": 0.25,
+                "entry_order_id": "ord-g6-32836-00000002",
+                "entry_price": 199.51995,
+                "notional_usdt": 500.0,
+                "opened_at": 1792584000.0,
+                "position_id": "pos-g6-32836-00000001",
+                "price_bps_per_side": 1.0,
+                "quantity": 2.5060150626541358,
+                "reference_entry_price": 199.5,
+                "side": "buy",
+                "stop_loss_pct": 1.5038,
+                "strategy_name": "ema_crossover",
+                "symbol": "BTC/USDT",
+                "take_profit_pct": 0.75
+              },
+              "side": "buy",
+              "status": "ACCOUNTED",
+              "strategy_id": "ema_crossover",
+              "symbol": "BTC/USDT",
+              "timeframe": "5m"
+            }
+          ],
+          "order_statuses": [
+            "ACCOUNTED"
+          ],
+          "equity": 10000.0,
+          "initial_equity": 10000.0,
+          "realized_pnl": 0,
+          "equity_identity": true,
+          "run_id": "g6-32836",
+          "updated_at_ms": 1792937991530
+        }
+      },
+      "restart": {
+        "worker_pid": null,
+        "exit_code": 0,
+        "reconciliation": {
+          "blocked_intents": [],
+          "checked_at_ms": 1792937993253,
+          "details": [
+            "broker restored: equity=10000.00 open=1 closed=0",
+            "risk state restored before first decision",
+            "intent ledger restored: 1 cloids",
+            "risk book synced: 1 open position(s)"
+          ],
+          "materialized_orders": 0,
+          "recovery_persisted": false,
+          "restored_closed_trades": 0,
+          "restored_equity": 10000.0,
+          "restored_intents": 1,
+          "restored_open_positions": 1,
+          "restored_risk": {
+            "consecutive_losses": 0,
+            "daily_pnl": 0.0,
+            "day_peak_equity": 10000.0,
+            "kill_switch_active": false,
+            "last_loss_ms": 0,
+            "open_positions": {},
+            "peak_equity": 10000.0,
+            "trades_today": 0,
+            "weekly_pnl": 0.0,
+            "weekly_start_ms": 1792368000000
+          },
+          "restored_run_id": "g6-32836",
+          "status": "RECOVERED"
+        },
+        "cycle": {
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "broker_errors": 0,
+          "context_errors": 0,
+          "contexts_built": 1,
+          "defensive_blocks": {},
+          "duplicate_intents": 1,
+          "exits_closed": 0,
+          "exits_requested": 0,
+          "hot_stop_blocked": 0,
+          "orders_created": 0,
+          "rejections": [
+            {
+              "reason": "duplicate_intent:PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+              "stage": "idempotency",
+              "symbol": "BTC/USDT"
+            }
+          ],
+          "reversals_refused": 0,
+          "risk_accepted": 0,
+          "risk_errors": 0,
+          "risk_rejected": 0,
+          "router_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "same_side_skips": 0,
+          "signals_generated": 1,
+          "strategy_errors": 0,
+          "strategy_invocations": 1
+        },
+        "broker_calls": {
+          "close_position": 0,
+          "execute_signal": 0
+        },
+        "positions": 1,
+        "closed_trades": 0,
+        "accounting_identities": {
+          "cash_equals_initial_plus_realised": true,
+          "closed_trade_costs_are_named": true,
+          "closed_trade_pnl_rebuilds": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "ledger_equity_equals_initial_plus_realised": true
+        }
+      },
+      "state_after_restart": {
+        "exists": true,
+        "sha256": "fb80bd881037bd0b07a0e950e08eeeeb418a427db18f28e37fa32f505491f446",
+        "bytes": 1677,
+        "open_positions": 1,
+        "closed_trades": 0,
+        "sent_intents": 1,
+        "orders": [
+          {
+            "accounted_at_ms": 1792937991530,
+            "cloid": "PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+            "created_at_ms": 1792937991523,
+            "filled_at_ms": 1792937991527,
+            "position": {
+              "commission_bps": 5.0,
+              "entry_commission": 0.25,
+              "entry_order_id": "ord-g6-32836-00000002",
+              "entry_price": 199.51995,
+              "notional_usdt": 500.0,
+              "opened_at": 1792584000.0,
+              "position_id": "pos-g6-32836-00000001",
+              "price_bps_per_side": 1.0,
+              "quantity": 2.5060150626541358,
+              "reference_entry_price": 199.5,
+              "side": "buy",
+              "stop_loss_pct": 1.5038,
+              "strategy_name": "ema_crossover",
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            },
+            "side": "buy",
+            "status": "ACCOUNTED",
+            "strategy_id": "ema_crossover",
+            "symbol": "BTC/USDT",
+            "timeframe": "5m"
+          }
+        ],
+        "order_statuses": [
+          "ACCOUNTED"
+        ],
+        "equity": 10000.0,
+        "initial_equity": 10000.0,
+        "realized_pnl": 0,
+        "equity_identity": true,
+        "run_id": "g6-46552",
+        "updated_at_ms": 1792937993263
+      }
+    },
+    "two_restarts": {
+      "restart_1": {
+        "worker_pid": null,
+        "exit_code": 0,
+        "reconciliation": {
+          "blocked_intents": [],
+          "checked_at_ms": 1792937994580,
+          "details": [
+            "broker restored: equity=10000.00 open=1 closed=0",
+            "risk state restored before first decision",
+            "intent ledger restored: 1 cloids",
+            "risk book synced: 1 open position(s)"
+          ],
+          "materialized_orders": 0,
+          "recovery_persisted": false,
+          "restored_closed_trades": 0,
+          "restored_equity": 10000.0,
+          "restored_intents": 1,
+          "restored_open_positions": 1,
+          "restored_risk": {
+            "consecutive_losses": 0,
+            "daily_pnl": 0.0,
+            "day_peak_equity": 10000.0,
+            "kill_switch_active": false,
+            "last_loss_ms": 0,
+            "open_positions": {
+              "BTC/USDT": {
+                "asset": "BTC",
+                "entry_price": 199.51995,
+                "notional_usdt": 500.0,
+                "quantity": 2.5060150626541358,
+                "side": "buy",
+                "symbol": "BTC/USDT"
+              }
+            },
+            "peak_equity": 10000.0,
+            "trades_today": 0,
+            "weekly_pnl": 0.0,
+            "weekly_start_ms": 1792368000000
+          },
+          "restored_run_id": "g6-46552",
+          "status": "RECOVERED"
+        },
+        "cycle": {
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "broker_errors": 0,
+          "context_errors": 0,
+          "contexts_built": 1,
+          "defensive_blocks": {},
+          "duplicate_intents": 1,
+          "exits_closed": 0,
+          "exits_requested": 0,
+          "hot_stop_blocked": 0,
+          "orders_created": 0,
+          "rejections": [
+            {
+              "reason": "duplicate_intent:PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+              "stage": "idempotency",
+              "symbol": "BTC/USDT"
+            }
+          ],
+          "reversals_refused": 0,
+          "risk_accepted": 0,
+          "risk_errors": 0,
+          "risk_rejected": 0,
+          "router_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "same_side_skips": 0,
+          "signals_generated": 1,
+          "strategy_errors": 0,
+          "strategy_invocations": 1
+        },
+        "broker_calls": {
+          "close_position": 0,
+          "execute_signal": 0
+        },
+        "positions": 1,
+        "closed_trades": 0,
+        "accounting_identities": {
+          "cash_equals_initial_plus_realised": true,
+          "closed_trade_costs_are_named": true,
+          "closed_trade_pnl_rebuilds": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "ledger_equity_equals_initial_plus_realised": true
+        }
+      },
+      "restart_2": {
+        "worker_pid": null,
+        "exit_code": 0,
+        "reconciliation": {
+          "blocked_intents": [],
+          "checked_at_ms": 1792937995887,
+          "details": [
+            "broker restored: equity=10000.00 open=1 closed=0",
+            "risk state restored before first decision",
+            "intent ledger restored: 1 cloids",
+            "risk book synced: 1 open position(s)"
+          ],
+          "materialized_orders": 0,
+          "recovery_persisted": false,
+          "restored_closed_trades": 0,
+          "restored_equity": 10000.0,
+          "restored_intents": 1,
+          "restored_open_positions": 1,
+          "restored_risk": {
+            "consecutive_losses": 0,
+            "daily_pnl": 0.0,
+            "day_peak_equity": 10000.0,
+            "kill_switch_active": false,
+            "last_loss_ms": 0,
+            "open_positions": {
+              "BTC/USDT": {
+                "asset": "BTC",
+                "entry_price": 199.51995,
+                "notional_usdt": 500.0,
+                "quantity": 2.5060150626541358,
+                "side": "buy",
+                "symbol": "BTC/USDT"
+              }
+            },
+            "peak_equity": 10000.0,
+            "trades_today": 0,
+            "weekly_pnl": 0.0,
+            "weekly_start_ms": 1792368000000
+          },
+          "restored_run_id": "g6-48808",
+          "status": "RECOVERED"
+        },
+        "cycle": {
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "broker_errors": 0,
+          "context_errors": 0,
+          "contexts_built": 1,
+          "defensive_blocks": {},
+          "duplicate_intents": 1,
+          "exits_closed": 0,
+          "exits_requested": 0,
+          "hot_stop_blocked": 0,
+          "orders_created": 0,
+          "rejections": [
+            {
+              "reason": "duplicate_intent:PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+              "stage": "idempotency",
+              "symbol": "BTC/USDT"
+            }
+          ],
+          "reversals_refused": 0,
+          "risk_accepted": 0,
+          "risk_errors": 0,
+          "risk_rejected": 0,
+          "router_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "same_side_skips": 0,
+          "signals_generated": 1,
+          "strategy_errors": 0,
+          "strategy_invocations": 1
+        },
+        "broker_calls": {
+          "close_position": 0,
+          "execute_signal": 0
+        },
+        "positions": 1,
+        "closed_trades": 0,
+        "accounting_identities": {
+          "cash_equals_initial_plus_realised": true,
+          "closed_trade_costs_are_named": true,
+          "closed_trade_pnl_rebuilds": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "ledger_equity_equals_initial_plus_realised": true
+        }
+      },
+      "state_after_restart_1": {
+        "exists": true,
+        "sha256": "41586d2081e8bd1a993418a8b3817f2240ba80e1168ce65465e3b4ea8cdae0b7",
+        "bytes": 1677,
+        "open_positions": 1,
+        "closed_trades": 0,
+        "sent_intents": 1,
+        "orders": [
+          {
+            "accounted_at_ms": 1792937991530,
+            "cloid": "PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+            "created_at_ms": 1792937991523,
+            "filled_at_ms": 1792937991527,
+            "position": {
+              "commission_bps": 5.0,
+              "entry_commission": 0.25,
+              "entry_order_id": "ord-g6-32836-00000002",
+              "entry_price": 199.51995,
+              "notional_usdt": 500.0,
+              "opened_at": 1792584000.0,
+              "position_id": "pos-g6-32836-00000001",
+              "price_bps_per_side": 1.0,
+              "quantity": 2.5060150626541358,
+              "reference_entry_price": 199.5,
+              "side": "buy",
+              "stop_loss_pct": 1.5038,
+              "strategy_name": "ema_crossover",
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            },
+            "side": "buy",
+            "status": "ACCOUNTED",
+            "strategy_id": "ema_crossover",
+            "symbol": "BTC/USDT",
+            "timeframe": "5m"
+          }
+        ],
+        "order_statuses": [
+          "ACCOUNTED"
+        ],
+        "equity": 10000.0,
+        "initial_equity": 10000.0,
+        "realized_pnl": 0,
+        "equity_identity": true,
+        "run_id": "g6-48808",
+        "updated_at_ms": 1792937994580
+      },
+      "state_after_restart_2": {
+        "exists": true,
+        "sha256": "794bac6b79ee180a856eded7bc49efdb15d8f0ae81ccda22b25e27535ac58f44",
+        "bytes": 1677,
+        "open_positions": 1,
+        "closed_trades": 0,
+        "sent_intents": 1,
+        "orders": [
+          {
+            "accounted_at_ms": 1792937991530,
+            "cloid": "PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+            "created_at_ms": 1792937991523,
+            "filled_at_ms": 1792937991527,
+            "position": {
+              "commission_bps": 5.0,
+              "entry_commission": 0.25,
+              "entry_order_id": "ord-g6-32836-00000002",
+              "entry_price": 199.51995,
+              "notional_usdt": 500.0,
+              "opened_at": 1792584000.0,
+              "position_id": "pos-g6-32836-00000001",
+              "price_bps_per_side": 1.0,
+              "quantity": 2.5060150626541358,
+              "reference_entry_price": 199.5,
+              "side": "buy",
+              "stop_loss_pct": 1.5038,
+              "strategy_name": "ema_crossover",
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            },
+            "side": "buy",
+            "status": "ACCOUNTED",
+            "strategy_id": "ema_crossover",
+            "symbol": "BTC/USDT",
+            "timeframe": "5m"
+          }
+        ],
+        "order_statuses": [
+          "ACCOUNTED"
+        ],
+        "equity": 10000.0,
+        "initial_equity": 10000.0,
+        "realized_pnl": 0,
+        "equity_identity": true,
+        "run_id": "g6-45232",
+        "updated_at_ms": 1792937995898
+      },
+      "source": "after_accounting/paper_state.json"
+    },
+    "inconsistent": {
+      "restart": {
+        "worker_pid": null,
+        "exit_code": 2,
+        "reconciliation": {
+          "blocked_intents": [],
+          "checked_at_ms": 1792937997231,
+          "details": [
+            "broker restored: equity=10000.00 open=0 closed=0",
+            "risk state restored before first decision",
+            "intent ledger restored: 1 cloids",
+            "restore_failed: ValueError: ACCOUNTED order PAPER-6adfdf69995704ff54c0ec0fbcb87bb7 has no restored position or matching closed trade for BTC/USDT"
+          ],
+          "materialized_orders": 0,
+          "recovery_persisted": false,
+          "restored_closed_trades": 0,
+          "restored_equity": null,
+          "restored_intents": 0,
+          "restored_open_positions": 0,
+          "restored_risk": {},
+          "restored_run_id": "g6-46552",
+          "status": "FATAL"
+        },
+        "cycle": null,
+        "broker_calls": null,
+        "positions": 0,
+        "closed_trades": 0,
+        "accounting_identities": null
+      },
+      "state_after_restart": {
+        "exists": true,
+        "sha256": "407e1412afb9931e6cc45150b91e654ff96e7edbfcc5db27fe8c1f519ef120be",
+        "bytes": 1388,
+        "open_positions": 0,
+        "closed_trades": 0,
+        "sent_intents": 1,
+        "orders": [
+          {
+            "accounted_at_ms": 1792937991530,
+            "cloid": "PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+            "created_at_ms": 1792937991523,
+            "filled_at_ms": 1792937991527,
+            "position": {
+              "commission_bps": 5.0,
+              "entry_commission": 0.25,
+              "entry_order_id": "ord-g6-32836-00000002",
+              "entry_price": 199.51995,
+              "notional_usdt": 500.0,
+              "opened_at": 1792584000.0,
+              "position_id": "pos-g6-32836-00000001",
+              "price_bps_per_side": 1.0,
+              "quantity": 2.5060150626541358,
+              "reference_entry_price": 199.5,
+              "side": "buy",
+              "stop_loss_pct": 1.5038,
+              "strategy_name": "ema_crossover",
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            },
+            "side": "buy",
+            "status": "ACCOUNTED",
+            "strategy_id": "ema_crossover",
+            "symbol": "BTC/USDT",
+            "timeframe": "5m"
+          }
+        ],
+        "order_statuses": [
+          "ACCOUNTED"
+        ],
+        "equity": 10000.0,
+        "initial_equity": 10000.0,
+        "realized_pnl": 0,
+        "equity_identity": true,
+        "run_id": "g6-46552",
+        "updated_at_ms": 1792937993263
+      },
+      "tamper": "ACCOUNTED order retained, open_positions removed"
+    },
+    "corrupt": {
+      "restart": {
+        "worker_pid": null,
+        "exit_code": 2,
+        "reconciliation": {
+          "blocked_intents": [],
+          "checked_at_ms": 1792937998545,
+          "details": [
+            "paper state file docs\\audit\\runs\\run-20261025T141859Z-G-6\\scenarios\\corrupt\\paper_state.json is corrupt: Expecting value: line 1 column 36 (char 35). Refusing to start with an unknown book (fail closed)."
+          ],
+          "materialized_orders": 0,
+          "recovery_persisted": false,
+          "restored_closed_trades": 0,
+          "restored_equity": null,
+          "restored_intents": 0,
+          "restored_open_positions": 0,
+          "restored_risk": {},
+          "restored_run_id": "",
+          "status": "FATAL"
+        },
+        "cycle": null,
+        "broker_calls": null,
+        "positions": 0,
+        "closed_trades": 0,
+        "accounting_identities": null
+      },
+      "state_after_restart": {
+        "exists": true,
+        "sha256": "7681977c7faa42ea2cb44ac7b63aeeceba35ad23b91073b9a7f8b3cbf2d8f82c",
+        "bytes": 35,
+        "parse_error": "JSONDecodeError: Expecting value: line 1 column 36 (char 35)"
+      },
+      "corrupt_backup_exists": true
+    },
+    "recovery_close": {
+      "restart": {
+        "worker_pid": null,
+        "exit_code": 0,
+        "reconciliation": {
+          "blocked_intents": [],
+          "checked_at_ms": 1792937999849,
+          "details": [
+            "broker restored: equity=10000.00 open=1 closed=0",
+            "risk state restored before first decision",
+            "intent ledger restored: 1 cloids",
+            "risk book synced: 1 open position(s)"
+          ],
+          "materialized_orders": 0,
+          "recovery_persisted": false,
+          "restored_closed_trades": 0,
+          "restored_equity": 10000.0,
+          "restored_intents": 1,
+          "restored_open_positions": 1,
+          "restored_risk": {
+            "consecutive_losses": 0,
+            "daily_pnl": 0.0,
+            "day_peak_equity": 10000.0,
+            "kill_switch_active": false,
+            "last_loss_ms": 0,
+            "open_positions": {
+              "BTC/USDT": {
+                "asset": "BTC",
+                "entry_price": 199.51995,
+                "notional_usdt": 500.0,
+                "quantity": 2.5060150626541358,
+                "side": "buy",
+                "symbol": "BTC/USDT"
+              }
+            },
+            "peak_equity": 10000.0,
+            "trades_today": 0,
+            "weekly_pnl": 0.0,
+            "weekly_start_ms": 1792368000000
+          },
+          "restored_run_id": "g6-46552",
+          "status": "RECOVERED"
+        },
+        "cycle": {
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "broker_errors": 0,
+          "context_errors": 0,
+          "contexts_built": 1,
+          "defensive_blocks": {},
+          "duplicate_intents": 0,
+          "exits_closed": 0,
+          "exits_requested": 0,
+          "hot_stop_blocked": 0,
+          "orders_created": 0,
+          "rejections": [
+            {
+              "reason": "same_side_already_open",
+              "stage": "position",
+              "symbol": "BTC/USDT"
+            }
+          ],
+          "reversals_refused": 0,
+          "risk_accepted": 0,
+          "risk_errors": 0,
+          "risk_rejected": 0,
+          "router_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "same_side_skips": 1,
+          "signals_generated": 1,
+          "strategy_errors": 0,
+          "strategy_invocations": 1
+        },
+        "broker_calls": {
+          "close_position": 0,
+          "execute_signal": 0
+        },
+        "positions": 0,
+        "closed_trades": 1,
+        "accounting_identities": {
+          "cash_equals_initial_plus_realised": true,
+          "closed_trade_costs_are_named": true,
+          "closed_trade_pnl_rebuilds": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "ledger_equity_equals_initial_plus_realised": true
+        }
+      },
+      "state_after_restart": {
+        "exists": true,
+        "sha256": "6ed6088e736ccc27f5aa42b1fb80002470d639908d23c44ca4c9baa65b963399",
+        "bytes": 2017,
+        "open_positions": 0,
+        "closed_trades": 1,
+        "sent_intents": 1,
+        "orders": [
+          {
+            "accounted_at_ms": 1792937991530,
+            "cloid": "PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+            "created_at_ms": 1792937991523,
+            "filled_at_ms": 1792937991527,
+            "position": {
+              "commission_bps": 5.0,
+              "entry_commission": 0.25,
+              "entry_order_id": "ord-g6-32836-00000002",
+              "entry_price": 199.51995,
+              "notional_usdt": 500.0,
+              "opened_at": 1792584000.0,
+              "position_id": "pos-g6-32836-00000001",
+              "price_bps_per_side": 1.0,
+              "quantity": 2.5060150626541358,
+              "reference_entry_price": 199.5,
+              "side": "buy",
+              "stop_loss_pct": 1.5038,
+              "strategy_name": "ema_crossover",
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            },
+            "side": "buy",
+            "status": "ACCOUNTED",
+            "strategy_id": "ema_crossover",
+            "symbol": "BTC/USDT",
+            "timeframe": "5m"
+          }
+        ],
+        "order_statuses": [
+          "ACCOUNTED"
+        ],
+        "equity": 10049.3900164978,
+        "initial_equity": 10000.0,
+        "realized_pnl": 49.39001649780036,
+        "equity_identity": true,
+        "run_id": "g6-48436",
+        "updated_at_ms": 1792937999861
+      },
+      "source": "after_accounting/paper_state.json"
+    },
+    "kill_switch": {
+      "restart": {
+        "worker_pid": null,
+        "exit_code": 0,
+        "reconciliation": {
+          "blocked_intents": [],
+          "checked_at_ms": 1792938001247,
+          "details": [
+            "broker restored: equity=10049.39 open=0 closed=1",
+            "risk state restored before first decision",
+            "intent ledger restored: 1 cloids",
+            "ACCOUNTED order PAPER-6adfdf69995704ff54c0ec0fbcb87bb7 already closed by a persisted trade",
+            "risk book synced: 0 open position(s)",
+            "recovery outcome persisted"
+          ],
+          "materialized_orders": 0,
+          "recovery_persisted": true,
+          "restored_closed_trades": 1,
+          "restored_equity": 10049.3900164978,
+          "restored_intents": 1,
+          "restored_open_positions": 0,
+          "restored_risk": {
+            "consecutive_losses": 0,
+            "daily_pnl": 49.39001649780036,
+            "day_peak_equity": 10099.08502199725,
+            "kill_switch_active": false,
+            "last_loss_ms": 0,
+            "open_positions": {
+              "BTC/USDT": {
+                "asset": "BTC",
+                "entry_price": 199.51995,
+                "notional_usdt": 500.0,
+                "quantity": 2.5060150626541358,
+                "side": "buy",
+                "symbol": "BTC/USDT"
+              }
+            },
+            "peak_equity": 10099.08502199725,
+            "trades_today": 1,
+            "weekly_pnl": 49.39001649780036,
+            "weekly_start_ms": 1792368000000
+          },
+          "restored_run_id": "g6-48436",
+          "status": "RECOVERED"
+        },
+        "cycle": {
+          "adapter_errors": 0,
+          "bar_close_skips": 0,
+          "broker_errors": 0,
+          "context_errors": 0,
+          "contexts_built": 1,
+          "defensive_blocks": {},
+          "duplicate_intents": 0,
+          "exits_closed": 0,
+          "exits_requested": 0,
+          "hot_stop_blocked": 1,
+          "orders_created": 0,
+          "rejections": [
+            {
+              "reason": "kill_switch_active:marker:G-6 recovery stop",
+              "stage": "hot_stop",
+              "symbol": "BTC/USDT"
+            }
+          ],
+          "reversals_refused": 0,
+          "risk_accepted": 1,
+          "risk_errors": 0,
+          "risk_rejected": 0,
+          "router_errors": 0,
+          "router_invocations": 1,
+          "router_no_trade": 0,
+          "same_side_skips": 0,
+          "signals_generated": 1,
+          "strategy_errors": 0,
+          "strategy_invocations": 1
+        },
+        "broker_calls": {
+          "close_position": 0,
+          "execute_signal": 0
+        },
+        "positions": 0,
+        "closed_trades": 1,
+        "accounting_identities": {
+          "cash_equals_initial_plus_realised": true,
+          "closed_trade_costs_are_named": true,
+          "closed_trade_pnl_rebuilds": true,
+          "equity_equals_cash_plus_net_unrealised": true,
+          "ledger_equity_equals_initial_plus_realised": true
+        }
+      },
+      "state_after_restart": {
+        "exists": true,
+        "sha256": "8335a53bc8fa6fad7a11596bcb57825b078291b15986f7abd69034f077a2a4db",
+        "bytes": 1879,
+        "open_positions": 0,
+        "closed_trades": 1,
+        "sent_intents": 1,
+        "orders": [
+          {
+            "accounted_at_ms": 1792937991530,
+            "cloid": "PAPER-6adfdf69995704ff54c0ec0fbcb87bb7",
+            "created_at_ms": 1792937991523,
+            "filled_at_ms": 1792937991527,
+            "position": {
+              "commission_bps": 5.0,
+              "entry_commission": 0.25,
+              "entry_order_id": "ord-g6-32836-00000002",
+              "entry_price": 199.51995,
+              "notional_usdt": 500.0,
+              "opened_at": 1792584000.0,
+              "position_id": "pos-g6-32836-00000001",
+              "price_bps_per_side": 1.0,
+              "quantity": 2.5060150626541358,
+              "reference_entry_price": 199.5,
+              "side": "buy",
+              "stop_loss_pct": 1.5038,
+              "strategy_name": "ema_crossover",
+              "symbol": "BTC/USDT",
+              "take_profit_pct": 0.75
+            },
+            "side": "buy",
+            "status": "CLOSED",
+            "strategy_id": "ema_crossover",
+            "symbol": "BTC/USDT",
+            "timeframe": "5m"
+          }
+        ],
+        "order_statuses": [
+          "CLOSED"
+        ],
+        "equity": 10049.3900164978,
+        "initial_equity": 10000.0,
+        "realized_pnl": 49.39001649780036,
+        "equity_identity": true,
+        "run_id": "g6-47912",
+        "updated_at_ms": 1792938001266
+      },
+      "source": "recovery_close/paper_state.json"
+    }
+  },
+  "tests": {
+    "paper_recovery": {
+      "passed": 16,
+      "failed": 0
+    },
+    "focused_paper_e2e_app_autonomous": {
+      "passed": 521,
+      "failed": 0
+    },
+    "g5_live_gate_hot_stop": {
+      "passed": 79,
+      "failed": 0
+    },
+    "broad_regression": {
+      "passed": 840,
+      "failed": 2,
+      "preexisting": true
+    },
+    "baseline_0bc8a926_futures_verifier": {
+      "passed": 6,
+      "failed": 2,
+      "same_failures": true
+    },
+    "vision_panel_collection": {
+      "status": "BLOCKED",
+      "error": "ModuleNotFoundError: trading_bot.observability.vision_panel",
+      "also_on_baseline": true
+    },
+    "ruff": "PASS",
+    "mypy": "PASS"
+  },
+  "g5": {
+    "code_commit": "05b361f7bd26a4fb9d470d9ba5c68d7f967846c9",
+    "definitive_evidence_commit": "12267039",
+    "superseded_evidence_commit": "180e02b3",
+    "code_unchanged_by_amend": true,
+    "manifest_entries": 33
+  },
+  "status": {
+    "g6": "CLOSED",
+    "scope": "PAPER_ONLY",
+    "live_no_go": true,
+    "production_ready": false
+  },
+  "limitations": [
+    "Synthetic market data and CONTROLLED_TEST_FIXTURE ledger: no edge or profitability claim.",
+    "Forced kill is real, but recovery uses the same disk and file; no physical disk failure or cross-machine failover.",
+    "paper_cycle and autonomous.decision remain two engines.",
+    "Verification is PROCEDURALLY_SEPARATED, not a second person.",
+    "The two futures verifier tests and the vision_panel collection error are preexisting and unresolved.",
+    "scripts/autonomous_paper.py keeps per-session persistence; G-6 measures the canonical PaperSessionRunner runtime."
+  ]
+}
