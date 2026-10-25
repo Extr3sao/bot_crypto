@@ -1,0 +1,11 @@
+{
+  "DEV": {
+    "active_trading_days": 17,
+    "evaluable_days": 122,
+    "median_holding_days": 3.0,
+    "median_holding_minutes": 4320.0,
+    "trades": 17,
+    "trades_per_day": 0.1393,
+    "zero_trade_days": 105
+  }
+}

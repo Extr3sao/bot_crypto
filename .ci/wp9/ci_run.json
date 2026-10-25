@@ -1,0 +1,485 @@
+{
+  "artifact": "WP9_CI_EXECUTION_REPORT",
+  "work_package": "WP-9A (CI RUNTIME CERTIFICATION)",
+  "generated_at_utc": "2026-10-11T19:55:47Z",
+  "runner": "LOCAL",
+  "ci_certified": false,
+  "certification": {
+    "ci_certified": false,
+    "reason": "CI_CERTIFIED requires a run id from a real runner; this audit has none and will not invent one. What is claimed instead is stated per workflow below.",
+    "local_equivalent": false,
+    "blocked": true,
+    "blocked_by": [
+      "this environment cannot authenticate to the remote: the dry-run push reports `fatal: Cannot prompt because user interactivity has been disabled.` \u2014 no `gh` CLI, no token in the environment, and the credential helper cannot prompt",
+      "the workflows are not on the default branch, so Actions has never registered them: .github/workflows/cost-barrier-gate.yml, .github/workflows/recovery-determinism.yml (GitHub reports 1 registered workflow(s): .github/workflows/ci.yml)",
+      "the commit that carries these workflows is 256 commits ahead of the remote: running them on a runner means publishing this history to a public repository, which is a governance decision and not a side effect of an audit"
+    ]
+  },
+  "workflows": {
+    ".github/workflows/recovery-determinism.yml": {
+      "path": ".github/workflows/recovery-determinism.yml",
+      "present": true,
+      "tracked": true,
+      "name": "recovery-determinism",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "jobs": [
+        {
+          "name": "recovery-determinism",
+          "runs_on": "ubuntu-latest",
+          "runner_is_github_hosted": true,
+          "timeout_minutes": 30,
+          "timeout_declared": true,
+          "steps": [
+            {
+              "name": "Checkout",
+              "run": null,
+              "uses": "actions/checkout@v4",
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Install uv",
+              "run": null,
+              "uses": "astral-sh/setup-uv@v3",
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Set up Python (.python-version)",
+              "run": null,
+              "uses": "actions/setup-python@v5",
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Sync dependencies",
+              "run": "uv sync --all-extras --dev",
+              "uses": null,
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Prepare the evidence directory",
+              "run": "mkdir -p .ci",
+              "uses": null,
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Verify the committed input bundle",
+              "run": "uv run python scripts/recovery_input_evidence.py --verify --json > .ci/recovery_input_verify.json",
+              "uses": null,
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "The repair moved no economic finding",
+              "run": "uv run python scripts/recovery_economic_invariance.py --check --json",
+              "uses": null,
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Lane contract tests and determinism regressions",
+              "run": "uv run python -m pytest tests/unit/research/test_active_recovery_wp.py tests/unit/research/test_recovery_determinism.py tests/unit/research/test_recovery_ci_parity.py -q -p no:cacheprovider",
+              "uses": null,
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Clean-checkout rehearsal (scope full)",
+              "run": "uv run python scripts/clean_checkout_rehearsal.py --scope full --json > .ci/CLEAN_CHECKOUT_REHEARSAL_STDOUT.json",
+              "uses": null,
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Independent verification of the published artefacts",
+              "run": "uv run python scripts/recovery_verify.py --json > .ci/INDEPENDENT_VERIFICATION_STDOUT.json",
+              "uses": null,
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Keep the evidence",
+              "run": null,
+              "uses": "actions/upload-artifact@v4",
+              "continue_on_error": false,
+              "if": "always()"
+            }
+          ],
+          "steps_total": 11,
+          "steps_that_run_commands": 7,
+          "referenced_paths": [
+            "scripts/clean_checkout_rehearsal.py",
+            "scripts/recovery_economic_invariance.py",
+            "scripts/recovery_input_evidence.py",
+            "scripts/recovery_verify.py",
+            "tests/unit/research/test_active_recovery_wp.py",
+            "tests/unit/research/test_recovery_ci_parity.py",
+            "tests/unit/research/test_recovery_determinism.py"
+          ],
+          "referenced_paths_all_tracked": true,
+          "problems": []
+        }
+      ],
+      "stale_trigger_paths": [],
+      "problems": []
+    },
+    ".github/workflows/cost-barrier-gate.yml": {
+      "path": ".github/workflows/cost-barrier-gate.yml",
+      "present": true,
+      "tracked": true,
+      "name": "Cost-barrier drift gate",
+      "triggers": [
+        "pull_request",
+        "push",
+        "workflow_dispatch"
+      ],
+      "jobs": [
+        {
+          "name": "cost-barrier-gate",
+          "runs_on": "ubuntu-latest",
+          "runner_is_github_hosted": true,
+          "timeout_minutes": 30,
+          "timeout_declared": true,
+          "steps": [
+            {
+              "name": "Checkout",
+              "run": null,
+              "uses": "actions/checkout@v4",
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Install uv",
+              "run": null,
+              "uses": "astral-sh/setup-uv@v3",
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Set up Python (.python-version)",
+              "run": null,
+              "uses": "actions/setup-python@v5",
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Sync dependencies",
+              "run": "uv sync --all-extras --dev",
+              "uses": null,
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Verify and materialize the declared inputs",
+              "run": "uv run python scripts/cost_barrier_evidence.py --materialize --json",
+              "uses": null,
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Reproduce the artefacts (full reproduction)",
+              "run": "uv run python scripts/cost_barrier_gate.py --json --report .ci/cost_barrier_gate_report.json",
+              "uses": null,
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Adversarial verification of the gate",
+              "run": "uv run python scripts/cost_barrier_adversarial.py --label \"CI runner ${{ github.sha }}\" --out .ci/COST_BARRIER_ADVERSARIAL_REPORT.json --report .ci/COST_BARRIER_ADVERSARIAL_REPORT.md",
+              "uses": null,
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Certification record",
+              "run": "uv run python scripts/cost_barrier_certify.py --json --out .ci/COST_BARRIER_CERTIFICATION.json",
+              "uses": null,
+              "continue_on_error": false,
+              "if": null
+            },
+            {
+              "name": "Keep the evidence",
+              "run": null,
+              "uses": "actions/upload-artifact@v4",
+              "continue_on_error": false,
+              "if": "always()"
+            }
+          ],
+          "steps_total": 9,
+          "steps_that_run_commands": 5,
+          "referenced_paths": [
+            "scripts/cost_barrier_adversarial.py",
+            "scripts/cost_barrier_certify.py",
+            "scripts/cost_barrier_evidence.py",
+            "scripts/cost_barrier_gate.py"
+          ],
+          "referenced_paths_all_tracked": true,
+          "problems": []
+        }
+      ],
+      "stale_trigger_paths": [
+        {
+          "event": "push",
+          "path": "reports/strategy-baseline/COST_BARRIER.json",
+          "matches": 0,
+          "class": "INERT_MATERIALISED_INPUT",
+          "declared_in_head_code": true,
+          "why": "gitignored by design and materialised from evidence on the runner; listed because the gate's activation contract requires every declared input to be covered"
+        },
+        {
+          "event": "pull_request",
+          "path": "reports/strategy-baseline/COST_BARRIER.json",
+          "matches": 0,
+          "class": "INERT_MATERIALISED_INPUT",
+          "declared_in_head_code": true,
+          "why": "gitignored by design and materialised from evidence on the runner; listed because the gate's activation contract requires every declared input to be covered"
+        }
+      ],
+      "problems": []
+    }
+  },
+  "workflow_problems": [],
+  "github": {
+    "repository": {
+      "full_name": "Extr3sao/bot_crypto",
+      "visibility": "public",
+      "default_branch": "main",
+      "pushed_at": "2026-09-22T19:34:21Z",
+      "api_error": null
+    },
+    "reachable": true,
+    "registered_workflows": [
+      {
+        "name": "CI Baseline",
+        "path": ".github/workflows/ci.yml",
+        "state": "active"
+      }
+    ],
+    "registered_total": 1,
+    "recent_runs": [
+      {
+        "id": 35724120977,
+        "name": "CI Baseline",
+        "path": ".github/workflows/ci.yml",
+        "head_sha": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-09-22T11:54:55Z"
+      },
+      {
+        "id": 35714891514,
+        "name": "CI Baseline",
+        "path": ".github/workflows/ci.yml",
+        "head_sha": "767462c6867dd2262aff64139dd38c6b325c092c",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-09-22T10:14:33Z"
+      },
+      {
+        "id": 35714286192,
+        "name": "CI Baseline",
+        "path": ".github/workflows/ci.yml",
+        "head_sha": "81670670711705b033fc429f62a4138504cdaf67",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-09-22T10:07:56Z"
+      },
+      {
+        "id": 29110482789,
+        "name": "CI Baseline",
+        "path": ".github/workflows/ci.yml",
+        "head_sha": "99eeea603ad3e54ea67177e89ae5a88312c95929",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-07-10T17:18:03Z"
+      },
+      {
+        "id": 29110223546,
+        "name": "CI Baseline",
+        "path": ".github/workflows/ci.yml",
+        "head_sha": "c0c057b147cbc87b5d61f32ebddb6b83d957dbef",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure",
+        "created_at": "2026-07-10T17:13:41Z"
+      }
+    ],
+    "remote_head": "5e6f9632e8d9c15dabd60ea92ac68f350ca28c9d",
+    "local_head": "5348fcd55ab9ef404c676d8aada8daa8c85b9785",
+    "commits_remote_ahead_of_local": 0,
+    "commits_local_ahead_of_remote": 256,
+    "workflow_presence_on_default_branch": {
+      ".github/workflows/recovery-determinism.yml": false,
+      ".github/workflows/cost-barrier-gate.yml": false
+    }
+  },
+  "push_probe": {
+    "command": "git push --dry-run origin HEAD:refs/heads/wp9-ci-probe-do-not-create",
+    "creates_a_ref": false,
+    "exit_code": 128,
+    "output": [
+      "fatal: Cannot prompt because user interactivity has been disabled.",
+      "fatal: could not read Username for 'https://github.com': terminal prompts disabled"
+    ],
+    "authenticated": false
+  },
+  "sequence_runs": [
+    {
+      "job": "recovery-determinism",
+      "step": "Sync dependencies",
+      "command": "uv sync --all-extras --dev",
+      "exit_code": 0,
+      "result": "PASS",
+      "seconds": 0.094,
+      "stdout_tail": "",
+      "stderr_tail": "Resolved 111 packages in 2ms\nChecked 109 packages in 7ms",
+      "workflow": ".github/workflows/recovery-determinism.yml"
+    },
+    {
+      "job": "recovery-determinism",
+      "step": "Prepare the evidence directory",
+      "command": "mkdir -p .ci",
+      "exit_code": 1,
+      "result": "FAIL",
+      "seconds": 0.015,
+      "stdout_tail": "",
+      "stderr_tail": "Ya existe el subdirectorio o el archivo .ci.\nError mientras se procesaba: .ci.",
+      "workflow": ".github/workflows/recovery-determinism.yml"
+    },
+    {
+      "job": "recovery-determinism",
+      "step": "Verify the committed input bundle",
+      "command": "uv run python scripts/recovery_input_evidence.py --verify --json > .ci/recovery_input_verify.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "seconds": 0.422,
+      "stdout_tail": "",
+      "stderr_tail": "",
+      "workflow": ".github/workflows/recovery-determinism.yml"
+    },
+    {
+      "job": "recovery-determinism",
+      "step": "The repair moved no economic finding",
+      "command": "uv run python scripts/recovery_economic_invariance.py --check --json",
+      "exit_code": 0,
+      "result": "PASS",
+      "seconds": 0.36,
+      "stdout_tail": "{\n  \"action\": \"check\",\n  \"status\": \"STABLE\",\n  \"verdict\": \"IDENTICAL\",\n  \"drifting\": []\n}",
+      "stderr_tail": "",
+      "workflow": ".github/workflows/recovery-determinism.yml"
+    },
+    {
+      "job": "recovery-determinism",
+      "step": "Lane contract tests and determinism regressions",
+      "command": "uv run python -m pytest tests/unit/research/test_active_recovery_wp.py tests/unit/research/test_recovery_determinism.py tests/unit/research/test_recovery_ci_parity.py -q -p no:cacheprovider",
+      "exit_code": 0,
+      "result": "PASS",
+      "seconds": 65.859,
+      "stdout_tail": "...................................................                      [100%]\n51 passed in 65.13s (0:01:05)",
+      "stderr_tail": "",
+      "workflow": ".github/workflows/recovery-determinism.yml"
+    },
+    {
+      "job": "recovery-determinism",
+      "step": "Clean-checkout rehearsal (scope full)",
+      "command": "uv run python scripts/clean_checkout_rehearsal.py --scope full --json > .ci/CLEAN_CHECKOUT_REHEARSAL_STDOUT.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "seconds": 127.531,
+      "stdout_tail": "",
+      "stderr_tail": "",
+      "workflow": ".github/workflows/recovery-determinism.yml"
+    },
+    {
+      "job": "recovery-determinism",
+      "step": "Independent verification of the published artefacts",
+      "command": "uv run python scripts/recovery_verify.py --json > .ci/INDEPENDENT_VERIFICATION_STDOUT.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "seconds": 2.016,
+      "stdout_tail": "",
+      "stderr_tail": "",
+      "workflow": ".github/workflows/recovery-determinism.yml"
+    },
+    {
+      "job": "cost-barrier-gate",
+      "step": "Sync dependencies",
+      "command": "uv sync --all-extras --dev",
+      "exit_code": 0,
+      "result": "PASS",
+      "seconds": 0.078,
+      "stdout_tail": "",
+      "stderr_tail": "Resolved 111 packages in 0.97ms\nChecked 109 packages in 5ms",
+      "workflow": ".github/workflows/cost-barrier-gate.yml"
+    },
+    {
+      "job": "cost-barrier-gate",
+      "step": "Verify and materialize the declared inputs",
+      "command": "uv run python scripts/cost_barrier_evidence.py --materialize --json",
+      "exit_code": 0,
+      "result": "PASS",
+      "seconds": 0.203,
+      "stdout_tail": "    \"same_content\": true\n  },\n  \"failures\": [],\n  \"advisories\": [],\n  \"exit_code\": 0\n}",
+      "stderr_tail": "",
+      "workflow": ".github/workflows/cost-barrier-gate.yml"
+    },
+    {
+      "job": "cost-barrier-gate",
+      "step": "Reproduce the artefacts (full reproduction)",
+      "command": "uv run python scripts/cost_barrier_gate.py --json --report .ci/cost_barrier_gate_report.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "seconds": 3.172,
+      "stdout_tail": "    \"partial_result_may_promote_strategies\": false,\n    \"note\": \"a check-only run re-verifies the published numbers but never re-runs the builder; it is useful evidence on a clean checkout and is never a substitute for a full reproduction\"\n  },\n  \"exit_code\": 0,\n  \"gate_sha256\": \"8707fb90d042886ef27ee2c5e774a43f0f5b1d59dd5e023b0a7fb23f5a1d8725\"\n}",
+      "stderr_tail": "",
+      "workflow": ".github/workflows/cost-barrier-gate.yml"
+    },
+    {
+      "job": "cost-barrier-gate",
+      "step": "Adversarial verification of the gate",
+      "command": "uv run python scripts/cost_barrier_adversarial.py --label \"CI runner ${{ github.sha }}\" --out .ci/COST_BARRIER_ADVERSARIAL_REPORT.json --report .ci/COST_BARRIER_ADVERSARIAL_REPORT.md",
+      "exit_code": 0,
+      "result": "PASS",
+      "seconds": 107.344,
+      "stdout_tail": "attacks detected 17/17, escaped 0, legs failed 0",
+      "stderr_tail": "",
+      "workflow": ".github/workflows/cost-barrier-gate.yml"
+    },
+    {
+      "job": "cost-barrier-gate",
+      "step": "Certification record",
+      "command": "uv run python scripts/cost_barrier_certify.py --json --out .ci/COST_BARRIER_CERTIFICATION.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "seconds": 174.703,
+      "stdout_tail": "    \"trades_authorized\": 0,\n    \"false_success\": 0\n  },\n  \"scope\": \"certification that the published cost-barrier artefacts reproduce from their declared inputs on this candidate, and that the gate detects the tampering in the adversarial contract. It is not a claim of profitability, and it authorizes nothing: no promotion, no paper or live execution, no capital, no order path\",\n  \"record_path\": \".ci\\\\COST_BARRIER_CERTIFICATION.json\"\n}",
+      "stderr_tail": "",
+      "workflow": ".github/workflows/cost-barrier-gate.yml"
+    }
+  ],
+  "sequence_total": 12,
+  "sequence_failed": 1,
+  "local_execution_attempted": true,
+  "verdict": "SEQUENCE_FAILED",
+  "scope": {
+    "read": [
+      ".github/workflows/cost-barrier-gate.yml",
+      ".github/workflows/recovery-determinism.yml",
+      "git ls-files / cat-file against HEAD",
+      "the GitHub REST API (public data only)"
+    ],
+    "wrote_to_the_remote": false,
+    "note": "the push probe is a dry run: it contacts the remote, authenticates nothing, and creates no ref"
+  }
+}

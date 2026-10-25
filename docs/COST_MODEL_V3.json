@@ -1,0 +1,851 @@
+{
+  "model": "COST_MODEL_V3",
+  "generated_by": "scripts/venue_execution_research.py",
+  "supersedes": "COST_MODEL_V2",
+  "knowledge_classes": [
+    "KNOWN",
+    "OBSERVED",
+    "ESTIMATED",
+    "ASSUMED"
+  ],
+  "applicability_verdicts": [
+    "CONFIRMED",
+    "POSSIBLE",
+    "NOT_APPLICABLE",
+    "UNKNOWN"
+  ],
+  "reference_intent": {
+    "size_usd": 1000.0,
+    "liquidity_regime": "normal",
+    "horizon_minutes": 25.0
+  },
+  "admission_scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+  "stress_multiples": [
+    1.0,
+    1.25,
+    1.5,
+    2.0
+  ],
+  "model_constants": {
+    "liquidity_multiplier": {
+      "deep": 0.5,
+      "normal": 1.0,
+      "thin": 2.5
+    },
+    "reference_notional_usd": 10000.0,
+    "base_slippage_bps": 1.0,
+    "base_impact_bps": 0.25,
+    "maker_adverse_selection_bps": 0.5,
+    "maker_fill_prob": 0.5,
+    "maker_partial_fill_penalty_bps": 0.25,
+    "knowledge": "ASSUMED/ESTIMATED modelling constants, not observations"
+  },
+  "prohibitions_enforced": [
+    "maker rebates are not modelled",
+    "limit orders are not assumed to fill",
+    "a BNB/promotional discount can never be CONFIRMED without governance",
+    "ZERO_COST is diagnostic only"
+  ],
+  "scenarios": [
+    {
+      "spec": {
+        "scenario_id": "BINANCE_SPOT_BNB_MAKER",
+        "venue": "Binance",
+        "product": "Spot",
+        "jurisdiction": "global",
+        "symbol_class": "majors BTC/ETH/SOL vs USDT",
+        "tier": "VIP0 with BNB 25% discount",
+        "fee_payment_mode": "bnb",
+        "maker_fee_bps": 7.5,
+        "taker_fee_bps": 7.5,
+        "discount_program": "pay trading fee in BNB (-25%)",
+        "discount_applicability": "POSSIBLE",
+        "default_taker_spread_bps": 1.0,
+        "min_notional_usd": 5.0,
+        "fee_source_id": "SRC-01",
+        "spread_source_id": "SRC-07",
+        "funding_source_id": "n/a (spot: no funding)",
+        "integration_status": "RESEARCH_CANDIDATE",
+        "notes": "Maker still pays 7.5 bps; no rebate. Fill risk is unmodelled here."
+      },
+      "evaluation": {
+        "scenario_id": "BINANCE_SPOT_BNB_MAKER",
+        "venue": "Binance",
+        "product": "Spot",
+        "size_usd": 1000.0,
+        "liquidity_regime": "normal",
+        "horizon_minutes": 25.0,
+        "entry_order_type": "limit_post_only",
+        "exit_order_type": "limit_post_only",
+        "components": [
+          {
+            "name": "exchange_fee_entry",
+            "value_bps": 7.5,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-01",
+            "note": "VIP0 with BNB 25% discount, pay in bnb"
+          },
+          {
+            "name": "exchange_fee_exit",
+            "value_bps": 7.5,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-01",
+            "note": "VIP0 with BNB 25% discount, pay in bnb"
+          },
+          {
+            "name": "adverse_selection",
+            "value_bps": 1.0,
+            "knowledge": "ASSUMED",
+            "source_id": "MODEL-V3",
+            "note": "expected loss just after a passive fill; needs a forward fill model"
+          },
+          {
+            "name": "missed_fill_penalty",
+            "value_bps": 0.25,
+            "knowledge": "ASSUMED",
+            "source_id": "MODEL-V3",
+            "note": "fill probability 0.50; an unfilled leg is not free (\u00a712/\u00a747)"
+          },
+          {
+            "name": "fill_probability_inflation",
+            "value_bps": 15.0,
+            "knowledge": "ASSUMED",
+            "source_id": "MODEL-V3",
+            "note": "maker fee realised only on filled orders (p=0.50)"
+          }
+        ],
+        "round_trip_bps": 31.25,
+        "minimum_gross_edge_bps": 31.25,
+        "required_edge_bps_1p5x": 46.875,
+        "stress_bps": {
+          "1.0x": 31.25,
+          "1.25x": 39.0625,
+          "1.5x": 46.875,
+          "2.0x": 62.5
+        },
+        "knowledge_class": "ASSUMED",
+        "evidence": "fees SRC-01; spread SRC-07; model BINANCE_SPOT_BNB_MAKER"
+      }
+    },
+    {
+      "spec": {
+        "scenario_id": "BINANCE_SPOT_BNB_TAKER",
+        "venue": "Binance",
+        "product": "Spot",
+        "jurisdiction": "global",
+        "symbol_class": "majors BTC/ETH/SOL vs USDT",
+        "tier": "VIP0 with BNB 25% discount",
+        "fee_payment_mode": "bnb",
+        "maker_fee_bps": 7.5,
+        "taker_fee_bps": 7.5,
+        "discount_program": "pay trading fee in BNB (-25%)",
+        "discount_applicability": "POSSIBLE",
+        "default_taker_spread_bps": 1.0,
+        "min_notional_usd": 5.0,
+        "fee_source_id": "SRC-01",
+        "spread_source_id": "SRC-07",
+        "funding_source_id": "n/a (spot: no funding)",
+        "integration_status": "RESEARCH_CANDIDATE",
+        "notes": "Requires holding BNB; applicability to our account is UNCONFIRMED (\u00a77)."
+      },
+      "evaluation": {
+        "scenario_id": "BINANCE_SPOT_BNB_TAKER",
+        "venue": "Binance",
+        "product": "Spot",
+        "size_usd": 1000.0,
+        "liquidity_regime": "normal",
+        "horizon_minutes": 25.0,
+        "entry_order_type": "market",
+        "exit_order_type": "market",
+        "components": [
+          {
+            "name": "exchange_fee_entry",
+            "value_bps": 7.5,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-01",
+            "note": "VIP0 with BNB 25% discount, pay in bnb"
+          },
+          {
+            "name": "exchange_fee_exit",
+            "value_bps": 7.5,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-01",
+            "note": "VIP0 with BNB 25% discount, pay in bnb"
+          },
+          {
+            "name": "spread",
+            "value_bps": 1.0,
+            "knowledge": "ESTIMATED",
+            "source_id": "SRC-07",
+            "note": "2 taker leg(s) x half-spread"
+          },
+          {
+            "name": "slippage",
+            "value_bps": 2.632456,
+            "knowledge": "ESTIMATED",
+            "source_id": "MODEL-V3",
+            "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000"
+          },
+          {
+            "name": "market_impact",
+            "value_bps": 0.158114,
+            "knowledge": "ESTIMATED",
+            "source_id": "MODEL-V3",
+            "note": "size-driven displacement above the base slippage"
+          }
+        ],
+        "round_trip_bps": 18.7906,
+        "minimum_gross_edge_bps": 18.7906,
+        "required_edge_bps_1p5x": 28.1859,
+        "stress_bps": {
+          "1.0x": 18.7906,
+          "1.25x": 23.4882,
+          "1.5x": 28.1859,
+          "2.0x": 37.5811
+        },
+        "knowledge_class": "ESTIMATED",
+        "evidence": "fees SRC-01; spread SRC-07; model BINANCE_SPOT_BNB_TAKER"
+      }
+    },
+    {
+      "spec": {
+        "scenario_id": "BINANCE_SPOT_STANDARD_MAKER",
+        "venue": "Binance",
+        "product": "Spot",
+        "jurisdiction": "global (testnet for the runtime)",
+        "symbol_class": "majors BTC/ETH/SOL vs USDT",
+        "tier": "VIP0 (regular user)",
+        "fee_payment_mode": "quote_asset",
+        "maker_fee_bps": 10.0,
+        "taker_fee_bps": 10.0,
+        "discount_program": "none",
+        "discount_applicability": "NOT_APPLICABLE",
+        "default_taker_spread_bps": 1.0,
+        "min_notional_usd": 5.0,
+        "fee_source_id": "SRC-01",
+        "spread_source_id": "SRC-07",
+        "funding_source_id": "n/a (spot: no funding)",
+        "integration_status": "BASELINE",
+        "notes": "VIP0 maker == taker on Binance Spot, so passive execution saves NO fee."
+      },
+      "evaluation": {
+        "scenario_id": "BINANCE_SPOT_STANDARD_MAKER",
+        "venue": "Binance",
+        "product": "Spot",
+        "size_usd": 1000.0,
+        "liquidity_regime": "normal",
+        "horizon_minutes": 25.0,
+        "entry_order_type": "limit_post_only",
+        "exit_order_type": "limit_post_only",
+        "components": [
+          {
+            "name": "exchange_fee_entry",
+            "value_bps": 10.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-01",
+            "note": "VIP0 (regular user), pay in quote_asset"
+          },
+          {
+            "name": "exchange_fee_exit",
+            "value_bps": 10.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-01",
+            "note": "VIP0 (regular user), pay in quote_asset"
+          },
+          {
+            "name": "adverse_selection",
+            "value_bps": 1.0,
+            "knowledge": "ASSUMED",
+            "source_id": "MODEL-V3",
+            "note": "expected loss just after a passive fill; needs a forward fill model"
+          },
+          {
+            "name": "missed_fill_penalty",
+            "value_bps": 0.25,
+            "knowledge": "ASSUMED",
+            "source_id": "MODEL-V3",
+            "note": "fill probability 0.50; an unfilled leg is not free (\u00a712/\u00a747)"
+          },
+          {
+            "name": "fill_probability_inflation",
+            "value_bps": 20.0,
+            "knowledge": "ASSUMED",
+            "source_id": "MODEL-V3",
+            "note": "maker fee realised only on filled orders (p=0.50)"
+          }
+        ],
+        "round_trip_bps": 41.25,
+        "minimum_gross_edge_bps": 41.25,
+        "required_edge_bps_1p5x": 61.875,
+        "stress_bps": {
+          "1.0x": 41.25,
+          "1.25x": 51.5625,
+          "1.5x": 61.875,
+          "2.0x": 82.5
+        },
+        "knowledge_class": "ASSUMED",
+        "evidence": "fees SRC-01; spread SRC-07; model BINANCE_SPOT_STANDARD_MAKER"
+      }
+    },
+    {
+      "spec": {
+        "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+        "venue": "Binance",
+        "product": "Spot",
+        "jurisdiction": "global (testnet for the runtime)",
+        "symbol_class": "majors BTC/ETH/SOL vs USDT",
+        "tier": "VIP0 (regular user, 30d volume < 1,000,000 USD)",
+        "fee_payment_mode": "quote_asset",
+        "maker_fee_bps": 10.0,
+        "taker_fee_bps": 10.0,
+        "discount_program": "none",
+        "discount_applicability": "NOT_APPLICABLE",
+        "default_taker_spread_bps": 1.0,
+        "min_notional_usd": 5.0,
+        "fee_source_id": "SRC-01",
+        "spread_source_id": "SRC-07",
+        "funding_source_id": "n/a (spot: no funding)",
+        "integration_status": "BASELINE",
+        "notes": "Baseline for the current runtime. Fee is identical maker/taker at VIP0."
+      },
+      "evaluation": {
+        "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+        "venue": "Binance",
+        "product": "Spot",
+        "size_usd": 1000.0,
+        "liquidity_regime": "normal",
+        "horizon_minutes": 25.0,
+        "entry_order_type": "market",
+        "exit_order_type": "market",
+        "components": [
+          {
+            "name": "exchange_fee_entry",
+            "value_bps": 10.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-01",
+            "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset"
+          },
+          {
+            "name": "exchange_fee_exit",
+            "value_bps": 10.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-01",
+            "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset"
+          },
+          {
+            "name": "spread",
+            "value_bps": 1.0,
+            "knowledge": "ESTIMATED",
+            "source_id": "SRC-07",
+            "note": "2 taker leg(s) x half-spread"
+          },
+          {
+            "name": "slippage",
+            "value_bps": 2.632456,
+            "knowledge": "ESTIMATED",
+            "source_id": "MODEL-V3",
+            "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000"
+          },
+          {
+            "name": "market_impact",
+            "value_bps": 0.158114,
+            "knowledge": "ESTIMATED",
+            "source_id": "MODEL-V3",
+            "note": "size-driven displacement above the base slippage"
+          }
+        ],
+        "round_trip_bps": 23.7906,
+        "minimum_gross_edge_bps": 23.7906,
+        "required_edge_bps_1p5x": 35.6859,
+        "stress_bps": {
+          "1.0x": 23.7906,
+          "1.25x": 29.7382,
+          "1.5x": 35.6859,
+          "2.0x": 47.5811
+        },
+        "knowledge_class": "ESTIMATED",
+        "evidence": "fees SRC-01; spread SRC-07; model BINANCE_SPOT_STANDARD_TAKER"
+      }
+    },
+    {
+      "spec": {
+        "scenario_id": "BINANCE_USDM_PERP_MAKER",
+        "venue": "Binance",
+        "product": "USD\u24c8-M Perpetual",
+        "jurisdiction": "global (excluded from our runtime)",
+        "symbol_class": "majors BTC/ETH/SOL vs USDT",
+        "tier": "VIP0",
+        "fee_payment_mode": "quote_asset",
+        "maker_fee_bps": 2.0,
+        "taker_fee_bps": 5.0,
+        "discount_program": "periodic 0% maker promotions",
+        "discount_applicability": "POSSIBLE",
+        "default_taker_spread_bps": 1.0,
+        "min_notional_usd": 5.0,
+        "fee_source_id": "SRC-02",
+        "spread_source_id": "SRC-07",
+        "funding_source_id": "SRC-05",
+        "integration_status": "NEEDS_GOVERNANCE_DECISION",
+        "notes": "Maker 2 bps nominal; a 0% promo is NOT assumed as a baseline."
+      },
+      "evaluation": {
+        "scenario_id": "BINANCE_USDM_PERP_MAKER",
+        "venue": "Binance",
+        "product": "USD\u24c8-M Perpetual",
+        "size_usd": 1000.0,
+        "liquidity_regime": "normal",
+        "horizon_minutes": 25.0,
+        "entry_order_type": "limit_post_only",
+        "exit_order_type": "limit_post_only",
+        "components": [
+          {
+            "name": "exchange_fee_entry",
+            "value_bps": 2.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-02",
+            "note": "VIP0, pay in quote_asset"
+          },
+          {
+            "name": "exchange_fee_exit",
+            "value_bps": 2.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-02",
+            "note": "VIP0, pay in quote_asset"
+          },
+          {
+            "name": "adverse_selection",
+            "value_bps": 1.0,
+            "knowledge": "ASSUMED",
+            "source_id": "MODEL-V3",
+            "note": "expected loss just after a passive fill; needs a forward fill model"
+          },
+          {
+            "name": "missed_fill_penalty",
+            "value_bps": 0.25,
+            "knowledge": "ASSUMED",
+            "source_id": "MODEL-V3",
+            "note": "fill probability 0.50; an unfilled leg is not free (\u00a712/\u00a747)"
+          },
+          {
+            "name": "fill_probability_inflation",
+            "value_bps": 4.0,
+            "knowledge": "ASSUMED",
+            "source_id": "MODEL-V3",
+            "note": "maker fee realised only on filled orders (p=0.50)"
+          }
+        ],
+        "round_trip_bps": 9.25,
+        "minimum_gross_edge_bps": 9.25,
+        "required_edge_bps_1p5x": 13.875,
+        "stress_bps": {
+          "1.0x": 9.25,
+          "1.25x": 11.5625,
+          "1.5x": 13.875,
+          "2.0x": 18.5
+        },
+        "knowledge_class": "ASSUMED",
+        "evidence": "fees SRC-02; spread SRC-07; model BINANCE_USDM_PERP_MAKER"
+      }
+    },
+    {
+      "spec": {
+        "scenario_id": "BINANCE_USDM_PERP_TAKER",
+        "venue": "Binance",
+        "product": "USD\u24c8-M Perpetual",
+        "jurisdiction": "global (excluded from our runtime)",
+        "symbol_class": "majors BTC/ETH/SOL vs USDT",
+        "tier": "VIP0",
+        "fee_payment_mode": "quote_asset",
+        "maker_fee_bps": 2.0,
+        "taker_fee_bps": 5.0,
+        "discount_program": "periodic 0% maker promotions",
+        "discount_applicability": "POSSIBLE",
+        "default_taker_spread_bps": 1.0,
+        "min_notional_usd": 5.0,
+        "fee_source_id": "SRC-02",
+        "spread_source_id": "SRC-07",
+        "funding_source_id": "SRC-05",
+        "integration_status": "NEEDS_GOVERNANCE_DECISION",
+        "notes": "Carries funding (8h). Leverage and margin change the risk model entirely."
+      },
+      "evaluation": {
+        "scenario_id": "BINANCE_USDM_PERP_TAKER",
+        "venue": "Binance",
+        "product": "USD\u24c8-M Perpetual",
+        "size_usd": 1000.0,
+        "liquidity_regime": "normal",
+        "horizon_minutes": 25.0,
+        "entry_order_type": "market",
+        "exit_order_type": "market",
+        "components": [
+          {
+            "name": "exchange_fee_entry",
+            "value_bps": 5.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-02",
+            "note": "VIP0, pay in quote_asset"
+          },
+          {
+            "name": "exchange_fee_exit",
+            "value_bps": 5.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-02",
+            "note": "VIP0, pay in quote_asset"
+          },
+          {
+            "name": "spread",
+            "value_bps": 1.0,
+            "knowledge": "ESTIMATED",
+            "source_id": "SRC-07",
+            "note": "2 taker leg(s) x half-spread"
+          },
+          {
+            "name": "slippage",
+            "value_bps": 2.632456,
+            "knowledge": "ESTIMATED",
+            "source_id": "MODEL-V3",
+            "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000"
+          },
+          {
+            "name": "market_impact",
+            "value_bps": 0.158114,
+            "knowledge": "ESTIMATED",
+            "source_id": "MODEL-V3",
+            "note": "size-driven displacement above the base slippage"
+          }
+        ],
+        "round_trip_bps": 13.7906,
+        "minimum_gross_edge_bps": 13.7906,
+        "required_edge_bps_1p5x": 20.6859,
+        "stress_bps": {
+          "1.0x": 13.7906,
+          "1.25x": 17.2382,
+          "1.5x": 20.6859,
+          "2.0x": 27.5811
+        },
+        "knowledge_class": "ESTIMATED",
+        "evidence": "fees SRC-02; spread SRC-07; model BINANCE_USDM_PERP_TAKER"
+      }
+    },
+    {
+      "spec": {
+        "scenario_id": "BYBIT_SPOT_TAKER",
+        "venue": "Bybit",
+        "product": "Spot",
+        "jurisdiction": "global (not US)",
+        "symbol_class": "majors BTC/ETH/SOL vs USDT",
+        "tier": "VIP0",
+        "fee_payment_mode": "quote_asset",
+        "maker_fee_bps": 10.0,
+        "taker_fee_bps": 10.0,
+        "discount_program": "none at VIP0",
+        "discount_applicability": "NOT_APPLICABLE",
+        "default_taker_spread_bps": 1.0,
+        "min_notional_usd": 1.0,
+        "fee_source_id": "SRC-09",
+        "spread_source_id": "SRC-07",
+        "funding_source_id": "n/a (spot: no funding)",
+        "integration_status": "RESEARCH_CANDIDATE",
+        "notes": "Same headline spot fee as Binance at VIP0."
+      },
+      "evaluation": {
+        "scenario_id": "BYBIT_SPOT_TAKER",
+        "venue": "Bybit",
+        "product": "Spot",
+        "size_usd": 1000.0,
+        "liquidity_regime": "normal",
+        "horizon_minutes": 25.0,
+        "entry_order_type": "market",
+        "exit_order_type": "market",
+        "components": [
+          {
+            "name": "exchange_fee_entry",
+            "value_bps": 10.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-09",
+            "note": "VIP0, pay in quote_asset"
+          },
+          {
+            "name": "exchange_fee_exit",
+            "value_bps": 10.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-09",
+            "note": "VIP0, pay in quote_asset"
+          },
+          {
+            "name": "spread",
+            "value_bps": 1.0,
+            "knowledge": "ESTIMATED",
+            "source_id": "SRC-07",
+            "note": "2 taker leg(s) x half-spread"
+          },
+          {
+            "name": "slippage",
+            "value_bps": 2.632456,
+            "knowledge": "ESTIMATED",
+            "source_id": "MODEL-V3",
+            "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000"
+          },
+          {
+            "name": "market_impact",
+            "value_bps": 0.158114,
+            "knowledge": "ESTIMATED",
+            "source_id": "MODEL-V3",
+            "note": "size-driven displacement above the base slippage"
+          }
+        ],
+        "round_trip_bps": 23.7906,
+        "minimum_gross_edge_bps": 23.7906,
+        "required_edge_bps_1p5x": 35.6859,
+        "stress_bps": {
+          "1.0x": 23.7906,
+          "1.25x": 29.7382,
+          "1.5x": 35.6859,
+          "2.0x": 47.5811
+        },
+        "knowledge_class": "ESTIMATED",
+        "evidence": "fees SRC-09; spread SRC-07; model BYBIT_SPOT_TAKER"
+      }
+    },
+    {
+      "spec": {
+        "scenario_id": "KRAKENPRO_SPOT_TAKER",
+        "venue": "Kraken Pro",
+        "product": "Spot",
+        "jurisdiction": "global (incl. US/EU)",
+        "symbol_class": "majors BTC/ETH/SOL vs USD/USDT",
+        "tier": "lowest volume tier (< 10,000 USD 30d)",
+        "fee_payment_mode": "quote_asset",
+        "maker_fee_bps": 25.0,
+        "taker_fee_bps": 40.0,
+        "discount_program": "volume/AoP tiers",
+        "discount_applicability": "POSSIBLE",
+        "default_taker_spread_bps": 1.0,
+        "min_notional_usd": 5.0,
+        "fee_source_id": "SRC-12",
+        "spread_source_id": "SRC-07",
+        "funding_source_id": "n/a (spot: no funding)",
+        "integration_status": "RESEARCH_CANDIDATE",
+        "notes": "Regulatory-accessibility upside, but the entry-tier fee is prohibitive for intraday."
+      },
+      "evaluation": {
+        "scenario_id": "KRAKENPRO_SPOT_TAKER",
+        "venue": "Kraken Pro",
+        "product": "Spot",
+        "size_usd": 1000.0,
+        "liquidity_regime": "normal",
+        "horizon_minutes": 25.0,
+        "entry_order_type": "market",
+        "exit_order_type": "market",
+        "components": [
+          {
+            "name": "exchange_fee_entry",
+            "value_bps": 40.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-12",
+            "note": "lowest volume tier (< 10,000 USD 30d), pay in quote_asset"
+          },
+          {
+            "name": "exchange_fee_exit",
+            "value_bps": 40.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-12",
+            "note": "lowest volume tier (< 10,000 USD 30d), pay in quote_asset"
+          },
+          {
+            "name": "spread",
+            "value_bps": 1.0,
+            "knowledge": "ESTIMATED",
+            "source_id": "SRC-07",
+            "note": "2 taker leg(s) x half-spread"
+          },
+          {
+            "name": "slippage",
+            "value_bps": 2.632456,
+            "knowledge": "ESTIMATED",
+            "source_id": "MODEL-V3",
+            "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000"
+          },
+          {
+            "name": "market_impact",
+            "value_bps": 0.158114,
+            "knowledge": "ESTIMATED",
+            "source_id": "MODEL-V3",
+            "note": "size-driven displacement above the base slippage"
+          }
+        ],
+        "round_trip_bps": 83.7906,
+        "minimum_gross_edge_bps": 83.7906,
+        "required_edge_bps_1p5x": 125.6859,
+        "stress_bps": {
+          "1.0x": 83.7906,
+          "1.25x": 104.7382,
+          "1.5x": 125.6859,
+          "2.0x": 167.5811
+        },
+        "knowledge_class": "ESTIMATED",
+        "evidence": "fees SRC-12; spread SRC-07; model KRAKENPRO_SPOT_TAKER"
+      }
+    },
+    {
+      "spec": {
+        "scenario_id": "MEXC_SPOT_TAKER",
+        "venue": "MEXC",
+        "product": "Spot",
+        "jurisdiction": "global (not US)",
+        "symbol_class": "majors BTC/ETH/SOL vs USDT",
+        "tier": "standard",
+        "fee_payment_mode": "quote_asset",
+        "maker_fee_bps": 0.0,
+        "taker_fee_bps": 5.0,
+        "discount_program": "permanent 0% maker; 0-fee spot campaign on eligible pairs",
+        "discount_applicability": "POSSIBLE",
+        "default_taker_spread_bps": 5.0,
+        "min_notional_usd": 1.0,
+        "fee_source_id": "SRC-11",
+        "spread_source_id": "SRC-07",
+        "funding_source_id": "n/a (spot: no funding)",
+        "integration_status": "RESEARCH_CANDIDATE",
+        "notes": "Lowest headline spot taker fee researched. 0% maker is a REAL published rate, not a rebate; the cost that remains is adverse selection and fill risk (unmodelled). Wider spreads/less depth than Binance are ASSUMED, not observed."
+      },
+      "evaluation": {
+        "scenario_id": "MEXC_SPOT_TAKER",
+        "venue": "MEXC",
+        "product": "Spot",
+        "size_usd": 1000.0,
+        "liquidity_regime": "normal",
+        "horizon_minutes": 25.0,
+        "entry_order_type": "market",
+        "exit_order_type": "market",
+        "components": [
+          {
+            "name": "exchange_fee_entry",
+            "value_bps": 5.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-11",
+            "note": "standard, pay in quote_asset"
+          },
+          {
+            "name": "exchange_fee_exit",
+            "value_bps": 5.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-11",
+            "note": "standard, pay in quote_asset"
+          },
+          {
+            "name": "spread",
+            "value_bps": 5.0,
+            "knowledge": "ESTIMATED",
+            "source_id": "SRC-07",
+            "note": "2 taker leg(s) x half-spread"
+          },
+          {
+            "name": "slippage",
+            "value_bps": 2.632456,
+            "knowledge": "ESTIMATED",
+            "source_id": "MODEL-V3",
+            "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000"
+          },
+          {
+            "name": "market_impact",
+            "value_bps": 0.158114,
+            "knowledge": "ESTIMATED",
+            "source_id": "MODEL-V3",
+            "note": "size-driven displacement above the base slippage"
+          }
+        ],
+        "round_trip_bps": 17.7906,
+        "minimum_gross_edge_bps": 17.7906,
+        "required_edge_bps_1p5x": 26.6859,
+        "stress_bps": {
+          "1.0x": 17.7906,
+          "1.25x": 22.2382,
+          "1.5x": 26.6859,
+          "2.0x": 35.5811
+        },
+        "knowledge_class": "ESTIMATED",
+        "evidence": "fees SRC-11; spread SRC-07; model MEXC_SPOT_TAKER"
+      }
+    },
+    {
+      "spec": {
+        "scenario_id": "OKX_SPOT_TAKER",
+        "venue": "OKX",
+        "product": "Spot",
+        "jurisdiction": "global (not US)",
+        "symbol_class": "majors BTC/ETH/SOL vs USDT",
+        "tier": "Lv1 (< 500 OKB, < 100k USD 30d)",
+        "fee_payment_mode": "quote_asset",
+        "maker_fee_bps": 8.0,
+        "taker_fee_bps": 10.0,
+        "discount_program": "OKB holdings / volume tiers",
+        "discount_applicability": "POSSIBLE",
+        "default_taker_spread_bps": 1.0,
+        "min_notional_usd": 1.0,
+        "fee_source_id": "SRC-10",
+        "spread_source_id": "SRC-07",
+        "funding_source_id": "n/a (spot: no funding)",
+        "integration_status": "RESEARCH_CANDIDATE",
+        "notes": "Maker 8 bps at entry tier -> passive execution saves 2 bps."
+      },
+      "evaluation": {
+        "scenario_id": "OKX_SPOT_TAKER",
+        "venue": "OKX",
+        "product": "Spot",
+        "size_usd": 1000.0,
+        "liquidity_regime": "normal",
+        "horizon_minutes": 25.0,
+        "entry_order_type": "market",
+        "exit_order_type": "market",
+        "components": [
+          {
+            "name": "exchange_fee_entry",
+            "value_bps": 10.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-10",
+            "note": "Lv1 (< 500 OKB, < 100k USD 30d), pay in quote_asset"
+          },
+          {
+            "name": "exchange_fee_exit",
+            "value_bps": 10.0,
+            "knowledge": "KNOWN",
+            "source_id": "SRC-10",
+            "note": "Lv1 (< 500 OKB, < 100k USD 30d), pay in quote_asset"
+          },
+          {
+            "name": "spread",
+            "value_bps": 1.0,
+            "knowledge": "ESTIMATED",
+            "source_id": "SRC-07",
+            "note": "2 taker leg(s) x half-spread"
+          },
+          {
+            "name": "slippage",
+            "value_bps": 2.632456,
+            "knowledge": "ESTIMATED",
+            "source_id": "MODEL-V3",
+            "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000"
+          },
+          {
+            "name": "market_impact",
+            "value_bps": 0.158114,
+            "knowledge": "ESTIMATED",
+            "source_id": "MODEL-V3",
+            "note": "size-driven displacement above the base slippage"
+          }
+        ],
+        "round_trip_bps": 23.7906,
+        "minimum_gross_edge_bps": 23.7906,
+        "required_edge_bps_1p5x": 35.6859,
+        "stress_bps": {
+          "1.0x": 23.7906,
+          "1.25x": 29.7382,
+          "1.5x": 35.6859,
+          "2.0x": 47.5811
+        },
+        "knowledge_class": "ESTIMATED",
+        "evidence": "fees SRC-10; spread SRC-07; model OKX_SPOT_TAKER"
+      }
+    }
+  ]
+}

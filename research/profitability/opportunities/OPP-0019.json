@@ -1,0 +1,82 @@
+{
+  "opportunity_id": "OPP-0019",
+  "title": "Adaptive Regime-Based Trading on Bitcoin (15-minute, walk-forward)",
+  "source_ids": [
+    "S2-35"
+  ],
+  "economic_hypothesis": "'consistent profitability' under walk-forward evaluation, unquantified at this read level",
+  "market": "the record describes 15-minute Bitcoin data only",
+  "assets": "BTC",
+  "timeframe": "15-minute bars",
+  "entry_rules": "the rules were not readable",
+  "exit_rules": "UNKNOWN; UNKNOWN; UNKNOWN; UNKNOWN",
+  "risk_rules": "UNKNOWN; none (24/7)",
+  "parameters": "UNKNOWN",
+  "claimed_period": "January 2021 to August 2025 (per the record's abstract)",
+  "claimed_metrics": "the abstract claims consistent profitability without numbers at this read level",
+  "transaction_cost_model": "UNKNOWN",
+  "required_data": "UNKNOWN",
+  "external_code": "UNKNOWN",
+  "external_results": "the abstract of a preprint record only",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "a 15-minute cadence is structurally at odds with this project's measured cost floor",
+    "the claim could not be inspected beyond the abstract",
+    "the project's admission cost is a 23.791 bps round trip, and the source declares no cost model (UNKNOWN)",
+    "found in the RFC-035S2 strategy-first search; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "market",
+    "data_source",
+    "data_fields",
+    "entry_long",
+    "entry_short",
+    "exit_stop",
+    "exit_target",
+    "exit_time",
+    "exit_signal",
+    "parameters",
+    "sizing_rule",
+    "execution_assumption",
+    "warmup",
+    "transaction_costs",
+    "original_metrics",
+    "implementation_source",
+    "source_version"
+  ],
+  "replication_difficulty": "NOT_ESTABLISHED and doubtful: 15-minute trading on spot crypto faces the 23.791 bps round trip repeatedly",
+  "evidence_quality": "E1 — the abstract of a preprint record only",
+  "selection_bias_risk": "MEDIUM (the search was run with knowledge of 2024-2025 published results)",
+  "overfitting_risk": "MEDIUM",
+  "lookahead_risk": "MEDIUM",
+  "implementation_risk": "HIGH",
+  "status": "ROUND_2_INSUFFICIENT_EVIDENCE",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 2,
+    "CODE_AVAILABILITY": 1,
+    "DATA_REPRODUCIBILITY": 2,
+    "TRANSACTION_COST_REALISM": 1,
+    "OOS_EVIDENCE": 1,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 3,
+    "INDEPENDENT_VALIDATION": 1,
+    "IMPLEMENTATION_FIDELITY": 2
+  },
+  "evidence_score_total": 13,
+  "rank": "INSUFFICIENT_EVIDENCE",
+  "rfc": "RFC-035S2",
+  "candidate_ref": "reports/rfc035/search_round_2/CANDIDATE_MATRIX.json",
+  "rule_completeness": "4/21",
+  "gaps_to_p0": [
+    "obtain the full text and read the actual rules",
+    "no code",
+    "establish cost treatment"
+  ],
+  "rejection_reason_codes": [
+    "SOURCE_READ_LEVEL_INSUFFICIENT",
+    "NO_CODE",
+    "COST_FLOOR_HEADROOM_NOT_ESTABLISHED"
+  ]
+}

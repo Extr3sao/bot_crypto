@@ -60,6 +60,10 @@ class PaperExecutionSummary:
     fills_opened: int = 0
     fills_closed: int = 0
     closed_trades: tuple[Any, ...] = ()
+    # BURN-IN-V1 DEF-101: delta since the previous reconcile_session —
+    # the ONLY portion the runner feeds into RiskManager (re-feeding the
+    # full ledger double-counted trades_today/daily_pnl cumulatively).
+    new_closed_trades: tuple[Any, ...] = ()
     realized_pnl: float = 0.0
     ending_equity: float = 0.0
     risk_events: tuple[Any, ...] = ()

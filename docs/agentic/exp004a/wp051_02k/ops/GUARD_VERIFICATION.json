@@ -1,0 +1,132 @@
+{
+  "schema_version": "EXP004A_WP051_02K_OPS_GUARD_V1",
+  "generated_at_utc": "2026-10-24T07:15:22Z",
+  "guard": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\scripts\\edge04_watchdog.py",
+  "python": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\.venv\\Scripts\\python.exe",
+  "cases": [
+    {
+      "case": "missing_root",
+      "expected_status": "UNREADABLE",
+      "observed_status": "UNREADABLE",
+      "exit_code": 2,
+      "passed": true,
+      "reasons": [
+        "the state root holds no readable tick: the observer has never run here"
+      ],
+      "state_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge04-guard-t06p7v1u\\missing-root",
+      "artifacts": [
+        "ALERT_LEDGER.jsonl",
+        "ATTENTION_REQUIRED.txt",
+        "WATCHDOG.json",
+        "WATCHDOG_EVENTS.jsonl"
+      ],
+      "stderr_tail": [],
+      "marker_raised": true
+    },
+    {
+      "case": "fresh_tick",
+      "expected_status": "OK",
+      "observed_status": "OK",
+      "exit_code": 0,
+      "passed": true,
+      "reasons": [],
+      "state_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge04-guard-t06p7v1u\\healthy",
+      "artifacts": [
+        "WATCHDOG.json",
+        "WATCHDOG_EVENTS.jsonl",
+        "runs.jsonl"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "case": "silent_observer",
+      "expected_status": "STALE",
+      "observed_status": "STALE",
+      "exit_code": 9,
+      "passed": true,
+      "reasons": [
+        "no tick finished for 69.6 minutes, which is more than the 45 the schedule allows"
+      ],
+      "state_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge04-guard-t06p7v1u\\stale",
+      "artifacts": [
+        "ALERT_LEDGER.jsonl",
+        "ATTENTION_REQUIRED.txt",
+        "WATCHDOG.json",
+        "WATCHDOG_EVENTS.jsonl",
+        "runs.jsonl"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "case": "blocked_for_space",
+      "expected_status": "BLOCKED",
+      "observed_status": "BLOCKED",
+      "exit_code": 8,
+      "passed": true,
+      "reasons": [
+        "the last 2 tick(s) were refused for lack of space, most recently at 2026-10-24T07:14:22Z"
+      ],
+      "state_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge04-guard-t06p7v1u\\blocked",
+      "artifacts": [
+        "ALERT_LEDGER.jsonl",
+        "ATTENTION_REQUIRED.txt",
+        "WATCHDOG.json",
+        "WATCHDOG_EVENTS.jsonl",
+        "runs.jsonl"
+      ],
+      "stderr_tail": [],
+      "marker_raised": true,
+      "alert_receipt": true
+    },
+    {
+      "case": "recovery_after_block",
+      "expected_status": "RECOVERED",
+      "observed_status": "RECOVERED",
+      "exit_code": 0,
+      "passed": true,
+      "reasons": [
+        "the previous run reported BLOCKED and this one does not: the lane is alive again, and the bars it lost while it was not are not recoverable"
+      ],
+      "state_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge04-guard-t06p7v1u\\blocked",
+      "artifacts": [
+        "ALERT_LEDGER.jsonl",
+        "WATCHDOG.json",
+        "WATCHDOG_EVENTS.jsonl",
+        "runs.jsonl"
+      ],
+      "stderr_tail": [],
+      "marker_cleared": true
+    },
+    {
+      "case": "corrupt_rows",
+      "expected_status": "DEGRADED",
+      "observed_status": "DEGRADED",
+      "exit_code": 1,
+      "passed": true,
+      "reasons": [
+        "2 unreadable line(s) in the last 64 of runs.jsonl"
+      ],
+      "state_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge04-guard-t06p7v1u\\corrupt",
+      "artifacts": [
+        "WATCHDOG.json",
+        "WATCHDOG_EVENTS.jsonl",
+        "runs.jsonl"
+      ],
+      "stderr_tail": []
+    }
+  ],
+  "live_campaign": {
+    "case": "campaign_root_read_only",
+    "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\data\\forward\\edge04r01",
+    "status": "UNREADABLE",
+    "exit_code": 2,
+    "reasons": [
+      "the state root holds no readable tick: the observer has never run here"
+    ],
+    "note": "run with --no-persist: observation only, nothing written"
+  },
+  "passed": 6,
+  "failed": [],
+  "not_covered": "WARNING and CRITICAL disk branches: proving them needs the volume under its floors, which this host is not; the thresholds are read from the code and unchanged",
+  "verdict": "GUARD_OPERATIONAL"
+}
