@@ -1,0 +1,1148 @@
+{
+  "schema": "W006_MARKET_DATA_MANIFEST_V1",
+  "source": {
+    "venue": "Binance USDⓈ-M futures",
+    "endpoint": "https://fapi.binance.com/fapi/v1/klines",
+    "auth": "none (public market data)",
+    "interval": "5m",
+    "interval_ms": 300000
+  },
+  "fetched_at_utc": "2026-10-25T17:41:09.989579+00:00",
+  "requested_bars_per_symbol": 34560,
+  "datasets": {
+    "BTCUSDT": {
+      "path": "datasets/BTCUSDT_5m.json",
+      "sha256": "6ba56816a77b5fea8749ba2008d8fcec507b6da62dfc2c58f20f19d4955853c5",
+      "bytes": 3381712,
+      "bars": 34560,
+      "start_ts": 1782582000000,
+      "start_utc": "2026-06-27T17:40:00Z",
+      "end_ts": 1792949700000,
+      "end_utc": "2026-10-25T17:35:00Z",
+      "span_hours": 2879.917,
+      "step_ms_values_seen": [
+        300000
+      ],
+      "duplicate_open_times_removed": 1,
+      "gaps": [],
+      "requests": [
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1782582000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "e7c3fd56a0d12b2ea83b1c7b369b400a1f82efae935c831f08926e9bc396f57e",
+          "response_bytes": 205548,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:10.552893+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1783032000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "35c5bacf9720b82cb37f1124ac5982abc5e7a0f849ad23bc342ad3a0737899f7",
+          "response_bytes": 204451,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:11.215135+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1783482000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "2ae12e3c47aff6f2bad7960084d77cd7932a7435bb828d0b88c2bb43c23d4cdf",
+          "response_bytes": 203892,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:11.639273+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1783932000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "09e2b1f2bd9a11653024da26f16653d5060c84b884aad8ef20f7691d33304a54",
+          "response_bytes": 204407,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:12.056622+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1784382000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "e6b709c5af9b1f3dc215ad120543ab6378d9ddf1f954708d8137ea412ccce412",
+          "response_bytes": 204192,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:12.474700+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1784832000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "53330cca3e327874b13bb418a87329ea4793cf679ce5ebd0b7812d95fe889494",
+          "response_bytes": 203343,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:12.884304+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1785282000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "d349852871a9145bfd71e464d9408da96b8e09c7df5b8348be959a1c291ba7c3",
+          "response_bytes": 203815,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:13.302879+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1785732000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "76a842b29fb29094599097fecca5b4d9967364e163da87019ee052ccd34a7a57",
+          "response_bytes": 203985,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:13.737951+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1786182000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "235fac0f2e060a54cba63cfd17e2d92688b63bfa447e9b8eae519db6429047c2",
+          "response_bytes": 202778,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:14.159319+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1786632000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "deedd0d76b2ba82fffe21a9753eb09185de5089f57ed07a6b22281a4c080b3ce",
+          "response_bytes": 202321,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:15.255340+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1787082000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "f944024ccd8eb0db43f3d65e9a6eed2be6d6d4ad2aab32e3e42fc0529ab3c7bd",
+          "response_bytes": 206172,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:15.705187+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1787532000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "a2dd9a31d0f5117274dd42389b332c2fc5d4657d2ec1b1afa2d5197e447fe2f5",
+          "response_bytes": 205887,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:16.352139+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1787982000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "157e0574321be2e96039b9ad120f4db1149630076f3e33e52810fce76758e165",
+          "response_bytes": 204333,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:17.460375+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1788432000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "7bb6f82f67ebd774b977fa3eca53b55dd1e276ccf39a7804e6e83cedf290b755",
+          "response_bytes": 204177,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:18.348185+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1788882000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "f48f41d59858704cb985352451ec9a0e4e5997e827e1efcd7ef909100a7314f0",
+          "response_bytes": 203774,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:18.769080+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1789332000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "ed5cbad7a1429f3b2bf5878b901209794aff4c0114c4b1109210f9f325921ed1",
+          "response_bytes": 205607,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:19.202717+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1789782000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "5ce107f30299baabc2e840630588011ae5698f0d60b81f6889e76e368836dc63",
+          "response_bytes": 205284,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:19.655227+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1790232000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "dd53dcbb282247fee6940b8fd5c79d85e5d4e4c46e4a6f765f7e2249b924b386",
+          "response_bytes": 204060,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:20.091468+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1790682000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "9599f2b2ea75f4f9bc23b24a5731360c37470929b34734a0d6a4c2c6036b13bf",
+          "response_bytes": 204065,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:20.523268+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1791132000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "9ce992aff730bcd71386bb65c22ecf0a6592b9b9ab2b81954652c43dbdb84f58",
+          "response_bytes": 205067,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:20.949929+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1791582000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "e64f05ab246a19e75c41e774a238e9443ca5a7b47e942e5b19a07af3e2d1f406",
+          "response_bytes": 203665,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:22.073996+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1792032000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "7b7c073c5d927b792f90ab4ef75da60b4bd49c3bceea3399169a5dc8c2f5dba6",
+          "response_bytes": 204065,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:22.500011+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1792482000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "9812c0d0b457a1f4a37343fe58689b869f3aa14848f6fa4aa1049bdb1a4f51c4",
+          "response_bytes": 204402,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:23.149244+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "BTCUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1792932000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "d8913ecb810ad2d36af750ab80995aec8256895cfdf12391c466f4e0f56a8f0b",
+          "response_bytes": 8206,
+          "rows": 61,
+          "requested_at_utc": "2026-10-25T17:41:23.548403+00:00"
+        }
+      ]
+    },
+    "ETHUSDT": {
+      "path": "datasets/ETHUSDT_5m.json",
+      "sha256": "63a8f39c1f6d80701dd2d8af461db743a8deeb29177023d6a3fb6fc75b22ae55",
+      "bytes": 3408333,
+      "bars": 34560,
+      "start_ts": 1782582000000,
+      "start_utc": "2026-06-27T17:40:00Z",
+      "end_ts": 1792949700000,
+      "end_utc": "2026-10-25T17:35:00Z",
+      "span_hours": 2879.917,
+      "step_ms_values_seen": [
+        300000
+      ],
+      "duplicate_open_times_removed": 1,
+      "gaps": [],
+      "requests": [
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1782582000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "e936632189e0c8f389f72a9e8a9803819995daee0a77c1d58a277f70b7be8b81",
+          "response_bytes": 203112,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:24.319619+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1783032000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "5e4cee682a87eefb6caf0cd7eabdb1fcbdecc8706ed8ea6af326b61a5603a957",
+          "response_bytes": 202844,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:24.755233+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1783482000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "486c79f0172d5aca0be234a6216c8d115b7031e1eb8d6df30d3ab4b2e2deee00",
+          "response_bytes": 202119,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:25.168024+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1783932000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "8f514c6bedbdf3d08546accc0340649e973afc5ab99cdd204fff950198145700",
+          "response_bytes": 202828,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:25.590337+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1784382000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "1d59c1ef84cc0397e4fff4842ffc0e73a5a9deaf064001c9d221e973940ff72a",
+          "response_bytes": 202410,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:26.007500+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1784832000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "972f6acb13fe13e61a6d91cd397d687b08f49fcacf0f1c70e4cab341939a092e",
+          "response_bytes": 201890,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:26.447101+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1785282000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "fd759654366832c3a34d49a13a3094194aa458463be481d502cf61a1b50c23f8",
+          "response_bytes": 202065,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:26.865601+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1785732000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "538399b0b1f5636e4c7b3470d54c252790f8657cc9ccd3f7d2049784462578cd",
+          "response_bytes": 201806,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:27.301426+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1786182000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "b78207e23c3f2b61747a649aa196b8909d5df189724bb2cc989b69ae49a2b1bb",
+          "response_bytes": 200820,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:27.741547+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1786632000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "d3568a932a0549245bb82ee4768712bdba8a3a51e67bff8c9479aed483f53ef8",
+          "response_bytes": 199987,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:28.167760+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1787082000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "5a0c5c1b58b4173679fb362ed1e1abf8ead804fc1c8c5325b8599e9038837861",
+          "response_bytes": 204672,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:29.050763+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1787532000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "997483f713383ce5ca610fffa8c05571b74856841d026c59e6249e7fa2ee7d3d",
+          "response_bytes": 203799,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:29.499836+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1787982000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "d048902fd81c41dc1c0701083c97850d7ef239f07e21218eb96e06860e2e08d0",
+          "response_bytes": 202437,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:30.159697+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1788432000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "069f6b119022fde385d204f8ae8c490b683cb22fba2b32ab28c3336293428822",
+          "response_bytes": 202308,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:30.799637+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1788882000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "695aeb7cb546c682ba5feedd0bf71ea5f47fe772f27903167796418d3016d771",
+          "response_bytes": 202386,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:31.232849+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1789332000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "ea560841c38cfbe68f49b02f398861b1a2489aa00ddffb348f1de6bd152ade03",
+          "response_bytes": 203853,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:31.653727+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1789782000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "f477745a400358029db59fc186c0eb84505ccdcb9dd65718fc44f7d1dd29558f",
+          "response_bytes": 203590,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:32.066443+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1790232000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "0bfdd62598b48ba054a0155d292c2b5098649ff8e8ed37b140c4720f37cf02d4",
+          "response_bytes": 202079,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:32.487097+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1790682000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "be0b9b9b7f3c9553e2d046719fcf07c70e9317dac21e9070c0a74e0f0e735582",
+          "response_bytes": 201891,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:32.900083+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1791132000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "a4e846cb7598a33c0418aa8508e965dfa370729bcb2473594a357954ca1684aa",
+          "response_bytes": 202512,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:33.767642+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1791582000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "1195f77efcb60dd897d2fc76cd03e2a35af60a5172ba7f1b0a27109b29017c89",
+          "response_bytes": 201779,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:34.185383+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1792032000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "b507fcca6b43901892616792b5a2da13fe21b56419942046182e6627a670aeff",
+          "response_bytes": 202413,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:34.816218+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1792482000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "be53380f7af8d37314bc5a06caf018bbd7805bafbd9dcf5aecc0da7ee4e60711",
+          "response_bytes": 202174,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:35.232958+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "ETHUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1792932000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "7b00685542e5622e0329a6158a3c787af62872077f3116b5ce74041dea7a5fb6",
+          "response_bytes": 8174,
+          "rows": 61,
+          "requested_at_utc": "2026-10-25T17:41:35.630106+00:00"
+        }
+      ]
+    },
+    "SOLUSDT": {
+      "path": "datasets/SOLUSDT_5m.json",
+      "sha256": "7cbf41aed656b2665ca0edde50ee87b2920919f1e3635f0a26bcab6a3b75bd4d",
+      "bytes": 3195688,
+      "bars": 34560,
+      "start_ts": 1782582000000,
+      "start_utc": "2026-06-27T17:40:00Z",
+      "end_ts": 1792949700000,
+      "end_utc": "2026-10-25T17:35:00Z",
+      "span_hours": 2879.917,
+      "step_ms_values_seen": [
+        300000
+      ],
+      "duplicate_open_times_removed": 1,
+      "gaps": [],
+      "requests": [
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1782582000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "d1cc9d47e6877229cd17fdb144ae32355ca4c3da764e2a4b92c66ab4492036db",
+          "response_bytes": 203516,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:36.162633+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1783032000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "b7eebe3b3b721e654588e1affb4e09bcdcc3ce7db41badb0a31f3b683944beb7",
+          "response_bytes": 202523,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:36.567450+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1783482000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "dc21ad0ab837e1d9ead0319537edfce726574129a6cf9531fdd9750cb460e49d",
+          "response_bytes": 201728,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:37.014593+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1783932000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "5f0f475088bcd67a90791e5bdcf1d6ab89ff6b5c7e4c4925ce245ec585f152f7",
+          "response_bytes": 201716,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:37.433049+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1784382000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "90e93bcb66d4d4abfc87162c0af76276b0a604a7053febb43e6184cbb2924bcf",
+          "response_bytes": 201401,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:37.858544+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1784832000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "ecc4c8d548319ac8d976e50007cf7d6661aa04060bded84ffd2861a4d1da9c8b",
+          "response_bytes": 201290,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:38.278059+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1785282000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "820c150e22ed6f57c3cc8446365f3f30924157257410020d914961e2095b0ce6",
+          "response_bytes": 201376,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:38.718830+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1785732000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "333c61e8d861e7be718eff0c588919d2bea9b08ffbe324d6c243b3633e62806b",
+          "response_bytes": 201621,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:39.129414+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1786182000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "71d9c8b2ec4e9278cef0d27518f9f9111ee32b956facd5a622abcd5e17388e6b",
+          "response_bytes": 201428,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:39.550842+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1786632000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "7b23d8daa80526703ada2cd86c6953f959bd7b3bde9c14c69d7d9bed436d25c9",
+          "response_bytes": 200374,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:39.973728+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1787082000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "8243365fae7dc2a6daeaea982793b71b5991d2ca4d03e0ec47f7ba01cbd5a554",
+          "response_bytes": 203887,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:40.402412+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1787532000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "f04da48a958f17697de898ef9490d496f64ae87ff89dd931e9181fc55fd7dff9",
+          "response_bytes": 207468,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:40.814476+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1787982000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "d250c23a4c3ce42e2ea5c02266cf1add0b0b9e56e89ab7c5a3bcd12b1be0dd10",
+          "response_bytes": 207491,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:41.233592+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1788432000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "94abf96d275e5f5dbc05b2ce60ea01a4dde076df0519aa580b427afadf80747c",
+          "response_bytes": 208539,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:42.098788+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1788882000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "2d44ba993d7f4cc275db20970ccf29626d7aa55a31d90166dfde942531b2fdeb",
+          "response_bytes": 206824,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:42.531166+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1789332000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "0b0e4674ed12abf16c6f8235b660de1645cac7a68678aa146dbd10f224b741a6",
+          "response_bytes": 207069,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:42.965932+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1789782000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "e8bbd9df0215ca797aa1b4eec3a8335fbaf3f42a26693c1c01f0d2486f353356",
+          "response_bytes": 209569,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:43.396501+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1790232000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "98186bb69e4f5a97ae83b66bc2082ed7fde06a85353dc62a536e7a31c3638c54",
+          "response_bytes": 209407,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:43.812356+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1790682000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "9aa143f911c0ceb3a746392100923ac50f6b2c776051378dec2ae09f7bc39f7c",
+          "response_bytes": 208457,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:44.244179+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1791132000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "089cd118820a77af119e363864282d7d0cd344f2ae6c755e10c5946559f64fc7",
+          "response_bytes": 208751,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:44.660062+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1791582000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "ba97d1ac4fea37c76c3f88e545ddf71f0f11c5b7e0bd654a6d3702a1a1c387ce",
+          "response_bytes": 208165,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:45.090494+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1792032000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "02ecc0e7730186fd1ce6a540896a25cd004db3c3efc6542326be70a17f3dcda4",
+          "response_bytes": 207953,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:45.515621+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1792482000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "8f245443faee91ffccd21545850c43c0c1c55d69a022d7bb3281498e8b6a2d7f",
+          "response_bytes": 207899,
+          "rows": 1500,
+          "requested_at_utc": "2026-10-25T17:41:45.930279+00:00"
+        },
+        {
+          "url": "https://fapi.binance.com/fapi/v1/klines",
+          "params": {
+            "symbol": "SOLUSDT",
+            "interval": "5m",
+            "limit": 1500,
+            "startTime": 1792932000000,
+            "endTime": 1792950000000
+          },
+          "http_status": 200,
+          "response_sha256": "9c53fde62eec41dcbdf7350ddefadf98b82029906cefb311a837fb95222a5050",
+          "response_bytes": 8448,
+          "rows": 61,
+          "requested_at_utc": "2026-10-25T17:41:46.327085+00:00"
+        }
+      ]
+    }
+  }
+}
