@@ -1,0 +1,129 @@
+{
+  "blockers": [
+    "CAMPAIGN_STORE_ABSENT"
+  ],
+  "budget": {
+    "basis": "02J p90 drawdown 12.467 GiB + 2 GiB protection floor + 0.0972 GiB campaign growth over the 90-day window; frozen because the store that produced it is absent in this tree",
+    "recomputable": false,
+    "required_bytes": 15637975925,
+    "required_gib": 14.564,
+    "source": "FROZEN_02J_P90",
+    "why_not_recomputed": "no readings at C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\data\\forward\\edge04\\runs.jsonl (store absent or empty); the figure is carried, not reduced"
+  },
+  "capacity": {
+    "after": {
+      "free_bytes": 20204851200,
+      "free_gib": 18.8172,
+      "instruments_agree": true,
+      "margin_gib": 4.2532,
+      "required_gib": 14.564,
+      "total_bytes": 255041990656,
+      "verdict": "PASS"
+    },
+    "before": {
+      "free_bytes": 19984068608,
+      "free_gib": 18.6116,
+      "instruments_agree": true,
+      "margin_gib": 4.0476,
+      "required_gib": 14.564,
+      "total_bytes": 255041990656,
+      "verdict": "PASS"
+    },
+    "verdict": "PASS"
+  },
+  "cleanup": {
+    "manifest_entries": 0,
+    "targets": [],
+    "total_deleted_bytes": 0,
+    "total_deleted_gib": 0.0,
+    "volume_delta_bytes": 220782592
+  },
+  "generated_at_utc": "2026-10-23T19:01:25Z",
+  "guard": {
+    "note": "the guard shipped with the 02J/02K worktree, which is not in this tree; nothing here claims the campaign is protected while both the guard and the store it guards are absent",
+    "process_running": [],
+    "script": "scripts/edge04_watchdog.py",
+    "script_present": true,
+    "state": "FILE_PRESENT_NO_PROCESS",
+    "store_present": false
+  },
+  "integrity": {
+    "checks": [
+      {
+        "changed": [],
+        "detail": "196 files hashed either side; 0 differ",
+        "id": "EXPERIMENT_FILES_IDENTICAL",
+        "status": "PASS"
+      },
+      {
+        "changed": [],
+        "detail": "12 files recovered from 9983b050; 0 differ from their blob",
+        "id": "RECOVERED_RECORD_MATCHES_COMMIT",
+        "status": "PASS"
+      },
+      {
+        "absent": [
+          "store"
+        ],
+        "detail": "absent from this checkout: store; the record was recovered from Git, the live artefacts were not",
+        "id": "LIVE_EXPERIMENT_PRESENT",
+        "status": "FAIL"
+      },
+      {
+        "detail": "campaign store absent at C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\data\\forward\\edge04: continuity cannot be certified from this tree",
+        "id": "STORE_PRESENT",
+        "status": "FAIL"
+      }
+    ],
+    "verdict": "FAIL"
+  },
+  "observed_growth": {
+    "caveat": "write counters are per process and cumulative; a large writer is not necessarily the one that lowered free space, so drops and writes are reported side by side. Deferred allocation (paging, compression, delayed writes) can move the volume after the write.",
+    "dropped_bytes": 11915264,
+    "seconds": 60,
+    "share_explained_percent": 370.36,
+    "writers": [
+      {
+        "intervals": 3,
+        "name": "bun.exe",
+        "written_bytes": 20170312
+      },
+      {
+        "intervals": 3,
+        "name": "SearchIndexer.exe",
+        "written_bytes": 11008488
+      },
+      {
+        "intervals": 8,
+        "name": "msedge.exe",
+        "written_bytes": 5989233
+      },
+      {
+        "intervals": 20,
+        "name": "chrome.exe",
+        "written_bytes": 3243774
+      },
+      {
+        "intervals": 8,
+        "name": "System",
+        "written_bytes": 1720320
+      },
+      {
+        "intervals": 5,
+        "name": "ChatGPT.exe",
+        "written_bytes": 1207808
+      }
+    ]
+  },
+  "package": "WP-051-02K",
+  "refused": [],
+  "schema_version": "EXP004A_WP051_02K_CONTINUATION_V1",
+  "tree": {
+    "branch": "recovery/exp004a-02k-9983b050",
+    "dirty_paths": 4,
+    "head": "9983b050c8e241ef9d8365c8ffc33c95df1658dd",
+    "root": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k"
+  },
+  "verdict": "BLOCKED",
+  "verdict_note": "capacity PASS requires the measured free space to reach the frozen budget with both instruments agreeing; the campaign itself stays BLOCKED for any blocker that the volume cannot answer"
+}

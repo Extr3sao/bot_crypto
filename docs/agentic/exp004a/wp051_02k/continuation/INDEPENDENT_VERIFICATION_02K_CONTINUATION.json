@@ -1,0 +1,165 @@
+{
+  "checks": [
+    {
+      "detail": "shutil=19957026816 B, GetDiskFreeSpaceExW=19957026816 B, delta=0 B",
+      "id": "VOLUME_MEASURED_BY_TWO_INSTRUMENTS",
+      "status": "PASS"
+    },
+    {
+      "detail": "required=14.564 GiB, floor=14.564 GiB, source=FROZEN_02J_P90",
+      "id": "BUDGET_NOT_LOWERED",
+      "status": "PASS"
+    },
+    {
+      "detail": "basis: 02J p90 drawdown 12.467 GiB + 2 GiB protection floor + 0.0972 GiB campaign growth over the 90-day window; frozen because the store that produced it is absent in",
+      "id": "BUDGET_ARGUMENT_STATED",
+      "status": "PASS"
+    },
+    {
+      "detail": "free=18.5864 GiB, required=14.564 GiB, margin=4.0224 GiB",
+      "id": "FREE_REACHES_BUDGET_NOW",
+      "status": "PASS"
+    },
+    {
+      "detail": "recorded at snapshot=18.8172 GiB, now=18.5864 GiB, drift=-236.3 MiB (host churn, tolerance 1024 MiB)",
+      "id": "RECORDED_MEASUREMENT_STILL_STANDS",
+      "status": "PASS"
+    },
+    {
+      "detail": "report=PASS, snapshot=PASS, criterion=free>=required",
+      "id": "CAPACITY_VERDICT_MATCHES_MEASUREMENT",
+      "status": "PASS"
+    },
+    {
+      "detail": "this tree performed no cleanup, so there is no manifest to account for",
+      "id": "MANIFEST_RECORDS_EVERY_ATTEMPT",
+      "status": "SKIP"
+    },
+    {
+      "detail": "no manifest rows to check",
+      "id": "EVERY_ROW_NAMES_A_PATH_AND_A_SIZE",
+      "status": "SKIP"
+    },
+    {
+      "detail": "0 manifest paths still exist, 0 of them reported as refused by the filesystem and 0 unaccounted for",
+      "examples": [],
+      "id": "ONLY_THE_REFUSED_FILES_SURVIVE",
+      "status": "SKIP"
+    },
+    {
+      "detail": "0 manifest rows under a protected root",
+      "examples": [],
+      "id": "NO_PROTECTED_PATH_IN_MANIFEST",
+      "status": "SKIP"
+    },
+    {
+      "detail": "0 manifest rows inside a scratch tree another package cites as evidence",
+      "examples": [],
+      "id": "OTHER_PACKAGES_SCRATCH_TREES_KEPT",
+      "status": "SKIP"
+    },
+    {
+      "detail": "0 revisions kept because an installed consumer asks for them; 0 missing",
+      "examples": [],
+      "id": "REVISIONS_A_CONSUMER_NEEDS_SURVIVE",
+      "status": "SKIP"
+    },
+    {
+      "detail": "manifest names 0 browser revisions as removed ([]); 0 still on disk",
+      "examples": [],
+      "id": "OBSOLETE_REVISIONS_ACTUALLY_REMOVED",
+      "status": "SKIP"
+    },
+    {
+      "detail": "consumer manifests found=None, search truncated=None",
+      "id": "OBSOLESCENCE_ARGUED_FROM_A_SEARCH",
+      "status": "SKIP"
+    },
+    {
+      "detail": "12 recovered files compared with 9983b050; 0 differ",
+      "examples": [],
+      "id": "RECORD_STILL_MATCHES_ITS_COMMIT",
+      "status": "PASS"
+    },
+    {
+      "detail": "12 files re-hashed by this verifier; 0 disagree with the commit",
+      "examples": [],
+      "id": "RECORD_RECOMPUTED_INDEPENDENTLY",
+      "status": "PASS"
+    },
+    {
+      "detail": "196 files hashed before and after; 0 differ",
+      "examples": [],
+      "id": "EXPERIMENT_FILES_UNCHANGED_ACROSS_CLEANUP",
+      "status": "PASS"
+    },
+    {
+      "detail": "absent=['store']; declared blockers=['CAMPAIGN_STORE_ABSENT']",
+      "id": "MISSING_EXPERIMENT_ARTEFACTS_ARE_DECLARED",
+      "status": "PASS"
+    },
+    {
+      "detail": "package verdict=BLOCKED, blockers=['CAMPAIGN_STORE_ABSENT']",
+      "id": "NO_PASS_CLAIMED_WHILE_THE_CAMPAIGN_CANNOT_RUN",
+      "status": "PASS"
+    },
+    {
+      "detail": "report=FILE_PRESENT_NO_PROCESS, filesystem=FILE_PRESENT_NO_PROCESS, script_present=True",
+      "id": "GUARD_STATE_STATED_HONESTLY",
+      "status": "PASS"
+    },
+    {
+      "detail": "60 s sampled, dropped=11.4 MiB, explained=370.36%, top=['bun.exe', 'SearchIndexer.exe', 'msedge.exe']",
+      "id": "GROWTH_ATTRIBUTED_OR_DECLARED_UNKNOWN",
+      "status": "PASS"
+    },
+    {
+      "detail": "every deleted path lies outside the checkout; the experiment's tracked files are hashed above",
+      "id": "CLEANUP_DID_NOT_TOUCH_THE_REPOSITORY",
+      "status": "SKIP"
+    },
+    {
+      "command": "uv run --with pytest --no-project python -m pytest tests/unit/research/test_exp004a_wp051_02k_continue.py -q",
+      "detail": "exit=0 :: ...........................                                              [100%]\n27 passed in 0.49s",
+      "id": "TESTS_PASS",
+      "status": "PASS"
+    },
+    {
+      "command": "uv run --with pytest --no-project python -m pytest tests/unit/research/test_exp004a_wp051_02k.py -q",
+      "detail": "exit=0 :: ................................                                         [100%]\n32 passed in 0.69s",
+      "id": "RECOVERED_SUITE_STILL_EVALUABLE",
+      "status": "PASS"
+    }
+  ],
+  "failed": 0,
+  "generated_at_utc": "2026-10-23T19:01:56Z",
+  "independence": "imports nothing from the program that performed the cleanup; re-measures, re-hashes and re-reads every manifest",
+  "margin_gib": 4.0224,
+  "measured_free_bytes": 19957026816,
+  "measured_free_gib": 18.5864,
+  "passed": 15,
+  "person_independence": false,
+  "person_independence_note": "another program is not another person; the record says so",
+  "required_bytes": 15637975925,
+  "required_gib": 14.564,
+  "schema_version": "EXP004A_WP051_02K_CONTINUATION_VERIFICATION_V1",
+  "skipped": 9,
+  "tests": {
+    "continuation": {
+      "command": "uv run --with pytest --no-project python -m pytest tests/unit/research/test_exp004a_wp051_02k_continue.py -q",
+      "exit_code": 0,
+      "failing_tests": [],
+      "suite": "tests/unit/research/test_exp004a_wp051_02k_continue.py",
+      "tail": "...........................                                              [100%]\n27 passed in 0.49s"
+    },
+    "recovered_record": {
+      "command": "uv run --with pytest --no-project python -m pytest tests/unit/research/test_exp004a_wp051_02k.py -q",
+      "exit_code": 0,
+      "failing_tests": [],
+      "suite": "tests/unit/research/test_exp004a_wp051_02k.py",
+      "tail": "................................                                         [100%]\n32 passed in 0.69s"
+    }
+  },
+  "verdict": "PASS",
+  "verifier": "scripts/exp004a_wp051_02k_verify_continue.py"
+}

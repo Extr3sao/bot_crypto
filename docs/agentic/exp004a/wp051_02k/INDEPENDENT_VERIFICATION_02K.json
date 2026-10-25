@@ -19,46 +19,33 @@
       "status": "PASS"
     },
     {
-      "detail": "measured 1.493 GiB against reported 1.498 GiB",
+      "detail": "measured 40.047 GiB against reported 1.498 GiB",
       "evidence": {
-        "measured_free_bytes": 1602916352,
-        "measured_kernel32": 1602916352
+        "measured_free_bytes": 43000365056,
+        "measured_kernel32": 43000365056
       },
       "id": "VOLUME_IS_AT_LEAST_AS_TIGHT_AS_REPORTED",
-      "status": "PASS"
+      "status": "FAIL"
     },
     {
-      "detail": "p90 12.467 GiB, required 14.564 GiB, delta 0 B",
+      "detail": "p90 0.000 GiB, required 0.000 GiB, delta 15638174694 B",
       "evidence": {
-        "days": 11,
-        "drawdowns_gib": [
-          6.562,
-          4.29,
-          5.045,
-          7.597,
-          5.686,
-          5.334,
-          14.583,
-          8.996,
-          12.467,
-          6.959,
-          7.731
-        ],
-        "own_window_bytes": 103832550,
-        "p90_bytes": 13386858496,
-        "readings": 941,
-        "required_bytes": 15638174694
+        "days": 0,
+        "own_window_bytes": 0,
+        "p90_bytes": 0,
+        "readings": 0,
+        "required_bytes": 0
       },
       "id": "BUDGET_RECOMPUTED_FROM_THE_LOG",
-      "status": "PASS"
+      "status": "FAIL"
     },
     {
-      "detail": "store floor 2147483648 B; guard module carries the same constant: True",
+      "detail": "store floor None B; guard module carries the same constant: True",
       "evidence": {
         "module_constant_found": true
       },
       "id": "FLOOR_UNCHANGED",
-      "status": "PASS"
+      "status": "FAIL"
     },
     {
       "detail": "git diff exit 0, window 90 d, rows 6480",
@@ -66,57 +53,75 @@
       "status": "PASS"
     },
     {
-      "detail": "11/11 shard(s) byte-identical",
+      "detail": "0/11 shard(s) byte-identical",
       "evidence": {
-        "mismatched": []
+        "mismatched": [
+          "2026-10-13.json",
+          "2026-10-14.json",
+          "2026-10-15.json",
+          "2026-10-16.json",
+          "2026-10-17.json",
+          "2026-10-18.json",
+          "2026-10-19.json",
+          "2026-10-20.json",
+          "2026-10-21.json",
+          "2026-10-22.json",
+          "2026-10-23.json"
+        ]
       },
       "id": "WRITE_ONCE_SHARDS_UNCHANGED",
-      "status": "PASS"
+      "status": "FAIL"
     },
     {
-      "detail": "5/5 append-only file(s) unchanged up to their old length",
+      "detail": "0/5 append-only file(s) unchanged up to their old length",
       "evidence": {
-        "broken": []
+        "broken": [
+          "ALERT_LEDGER.jsonl",
+          "WATCHDOG_EVENTS.jsonl",
+          "alerts.jsonl",
+          "runs.jsonl",
+          "slots.jsonl"
+        ]
       },
       "id": "APPEND_ONLY_PREFIXES_INTACT",
-      "status": "PASS"
+      "status": "FAIL"
     },
     {
-      "detail": "5/5 append-only file(s) did not shrink",
+      "detail": "0/5 append-only file(s) did not shrink",
       "evidence": [
         {
           "before": 3,
           "file": "ALERT_LEDGER.jsonl",
-          "now": 3,
-          "ok": true
+          "now": -1,
+          "ok": false
         },
         {
           "before": 4,
           "file": "WATCHDOG_EVENTS.jsonl",
-          "now": 4,
-          "ok": true
+          "now": -1,
+          "ok": false
         },
         {
           "before": 63,
           "file": "alerts.jsonl",
-          "now": 63,
-          "ok": true
+          "now": -1,
+          "ok": false
         },
         {
           "before": 940,
           "file": "runs.jsonl",
-          "now": 941,
-          "ok": true
+          "now": -1,
+          "ok": false
         },
         {
           "before": 751,
           "file": "slots.jsonl",
-          "now": 751,
-          "ok": true
+          "now": -1,
+          "ok": false
         }
       ],
       "id": "NO_ROW_LOST_OR_INVENTED",
-      "status": "PASS"
+      "status": "FAIL"
     },
     {
       "detail": "230.38 GiB of 236.09 GiB explained (0.976) by 28 top-level row(s)",
@@ -131,10 +136,16 @@
       "detail": "209 director(ies) removed, all inside this repository family",
       "evidence": {
         "deleted_bytes": 61520363,
-        "foreign": []
+        "foreign": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\scripts\\__pycache__",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\tests\\unit\\research\\__pycache__",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\.pytest_cache",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\tests\\__pycache__",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\tests\\unit\\__pycache__"
+        ]
       },
       "id": "NOTHING_FOREIGN_WAS_DELETED",
-      "status": "PASS"
+      "status": "FAIL"
     },
     {
       "detail": "3/3 protected tree(s) still on disk",
@@ -162,7 +173,7 @@
       "status": "PASS"
     },
     {
-      "detail": "free 1.493 GiB, required 14.564 GiB, package verdict BLOCKED",
+      "detail": "free 40.047 GiB, required 14.564 GiB, package verdict BLOCKED",
       "evidence": {
         "capacity": "INSUFFICIENT"
       },
@@ -179,7 +190,7 @@
       "status": "PASS"
     },
     {
-      "detail": "pytest exit 0: 32 passed in 0.61s",
+      "detail": "pytest exit 0: 32 passed in 0.84s",
       "evidence": {
         "suite_sha256": "a0e78131e12b98c79d8f6873b83a8f83d6d255f9efdcd90523770f36666f487b"
       },
@@ -209,13 +220,13 @@
       "status": "PASS"
     }
   ],
-  "failed": 0,
-  "generated_at_utc": "2026-10-23T13:46:11Z",
-  "head": "15abec2712cdb67781d3db3cce6f293b5fc372a3",
+  "failed": 7,
+  "generated_at_utc": "2026-10-24T07:21:29Z",
+  "head": "9983b050c8e241ef9d8365c8ffc33c95df1658dd",
   "not_a_certification": "this says the report agrees with the host. It promotes nothing, it frees nothing, and it does not replace the owner's decision about whose bytes may go.",
   "package": "WP-051-02K",
-  "passed": 18,
+  "passed": 11,
   "schema_version": "EXP004A_WP051_02K_VERIFICATION_V1",
-  "verdict": "PASS",
-  "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h"
+  "verdict": "FAIL",
+  "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k"
 }

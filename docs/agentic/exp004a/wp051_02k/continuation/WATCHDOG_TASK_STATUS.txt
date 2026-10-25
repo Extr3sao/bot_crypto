@@ -1,0 +1,29 @@
+Carpeta: \
+Nombre de host:                                        DESKTOP-4CHO695
+Nombre de tarea:                                       \TradingAgentic-EDGE04-Watchdog
+Hora pr¢xima ejecuci¢n:                                23/10/2026 21:17:00
+Estado:                                                Listo
+Modo de inicio de sesi¢n:                              Solo interactivo
+éltimo tiempo de ejecuci¢n:                            23/10/2026 21:02:01
+éltimo resultado:                                      2
+Autor:                                                 DIRECTORI\GVLLFR0035
+Tarea que se ejecutar :                                "C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe" "C:\Users\GVLLFR0035\Downloads\bot-freebuff-exp004a-02h\scripts\edge04_watchdog.py" --state-root "C:/Users/GVLLFR0035/Downloads/bot freebuff/data/forward/edge04"
+Iniciar en:                                            N/A
+Comentario:                                            N/A
+Estado de tarea programada:                            Habilitado
+Tiempo de inactividad:                                 Deshabilitado
+Administraci¢n de energ¡a:                             Detener en modo Bater¡a, No iniciar en Bater¡a
+Ejecutar como usuario:                                 GVLLFR0035
+Eliminar tarea si no se vuelve a programar:            Deshabilitado
+Eliminar tarea si ejecuta durante X horas y X minutos: 72:00:00
+Programaci¢n:                                          Datos de programaci¢n no disponibles en este formato.
+Tipo de programaci¢n:                                  Solo una vez, Minuto
+Hora de inicio:                                        8:17:00
+Fecha de inicio:                                       23/10/2026
+Fecha final:                                           N/A
+D¡as:                                                  N/A
+Meses:                                                 N/A
+Repetir: cada:                                         0 hora(s), 15 minuto(s)
+Repetir: hasta: hora:                                  Ninguno
+Repetir: hasta: duraci¢n:                              Deshabilitado
+Repetir: detener si a£n se ejecuta:                    Deshabilitado
