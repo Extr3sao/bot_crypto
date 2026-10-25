@@ -1,0 +1,29 @@
+{
+  "id": "D-01",
+  "title": "parameter_hash fingerprints working-tree bytes, so it changes with checkout EOL configuration",
+  "severity": "LOW (identity field only; no metric, gate or verdict depends on it)",
+  "discovered_by": "tdm13_replay.py attempt 1 (clean clone, autocrlf inherited as true)",
+  "measurements": {
+    "core_autocrlf_original_checkout": "false",
+    "core_autocrlf_clean_clone_before_fix": "true (inherited by git clone)",
+    "file": "src/trading_bot/research/families/breakout_family.py",
+    "bytes_original_checkout": 4640,
+    "bytes_clean_clone_before_fix": 4776,
+    "sha256_original_checkout": "9825f38950c5b975",
+    "sha256_clean_clone_before_fix": "359ba1b773defee8",
+    "git_blob_id_original": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+    "git_blob_id_clean_clone": "03fbb1bf67939a76c942e4adb5b9e7e411f6b0b1",
+    "blob_ids_equal": true
+  },
+  "effect": {
+    "fields_affected": 24,
+    "example_path": "CANDIDATE_REGISTRY.json:rows[0].parameter_hash",
+    "committed_value": "9825f38950c5b975",
+    "replayed_value": "359ba1b773defee8",
+    "metrics_or_verdict_affected": false
+  },
+  "root_cause": "tdm12_inventory.py builds parameter_hash from sha256(module.__file__) bytes, i.e. the bytes on disk after checkout filters, not the committed blob id",
+  "rectification": "re-checked out the clean clone with core.autocrlf=false; bytes then matched the original checkout and parameter_hash reproduced exactly (attempt 2: 10/10 comparisons)",
+  "recommended_fix_outside_this_rfc": "fingerprint the blob id (git hash-object) or the LF-normalised content instead of working-tree bytes",
+  "present_in_committed_artefacts": "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.json (rows[*].parameter_hash)"
+}

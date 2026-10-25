@@ -1,0 +1,202 @@
+{
+  "rfc_id": "RFC-TDM-013",
+  "verifier_id": "tdm13-independent-verifier/1 (separate code path, no builder imports)",
+  "target_commit": "a96e9c80c608ed91943d1fab35db6fa1704111bb",
+  "baseline_commit_expected": "504256ec8934b97a6d405c202604ecac81a02346",
+  "identity": [
+    {
+      "check": "target_commit_resolves",
+      "ok": true,
+      "detail": "git cat-file -e a96e9c80c608ed91943d1fab35db6fa1704111bb^{commit}"
+    },
+    {
+      "check": "baseline_commit_resolves",
+      "ok": true,
+      "detail": "git cat-file -e 504256ec8934b97a6d405c202604ecac81a02346^{commit}"
+    },
+    {
+      "check": "target_parent_is_baseline",
+      "ok": true,
+      "detail": "parent of a96e9c80 is 504256ec"
+    },
+    {
+      "check": "baseline_is_ancestor_of_target",
+      "ok": true,
+      "detail": "merge-base --is-ancestor baseline target"
+    },
+    {
+      "check": "target_on_declared_branch",
+      "ok": true,
+      "detail": "branches containing target: ['evidence/tdm12', 'evidence/tdm13']"
+    },
+    {
+      "check": "target_commit_has_date",
+      "ok": true,
+      "detail": "committed 2026-10-25T14:22:19+01:00"
+    }
+  ],
+  "deliverables": {
+    "commit": "a96e9c80c608ed91943d1fab35db6fa1704111bb",
+    "deliverable_prefix": "evidence/tdm/wp-tdm-12/",
+    "expected_count": 14,
+    "present_count": 14,
+    "present": [
+      "RFC-TDM-012.md",
+      "BASELINE_AND_SCOPE.md",
+      "INDEPENDENT_REVIEW.md",
+      "TDM11_CLOSURE_DECISION.json",
+      "RUNTIME_AUTHORITY_MAP.md",
+      "CANDIDATE_REGISTRY.csv",
+      "CANDIDATE_REGISTRY.json",
+      "DATA_WINDOW_REGISTRY.json",
+      "COST_AND_BIAS_AUDIT.md",
+      "RETROSPECTIVE_TRIAGE_REPORT.md",
+      "DECISION_REGISTER.json",
+      "RUN_REPORT.md",
+      "RUN_REPORT.json",
+      "FINAL_REPORT.md"
+    ],
+    "missing": [],
+    "extra_in_directory": [],
+    "per_file": [
+      {
+        "file": "RFC-TDM-012.md",
+        "in_commit": true,
+        "sha256": "71b5e2791c0dbc3571242abc962a4132eae86fc3ad49a22d90ec1f19bd22c18c"
+      },
+      {
+        "file": "BASELINE_AND_SCOPE.md",
+        "in_commit": true,
+        "sha256": "df9d994f19bc2d6f02e3d4223a3aab98e8b49dd5a9fc22d82e4d53c31d37deee"
+      },
+      {
+        "file": "INDEPENDENT_REVIEW.md",
+        "in_commit": true,
+        "sha256": "76e8c71a225ab0835e0a6879ff758f2f46151598bf8449ff9f55a7af5176f02f"
+      },
+      {
+        "file": "TDM11_CLOSURE_DECISION.json",
+        "in_commit": true,
+        "sha256": "262b8a10a43643e250b3c9e8546c5675cdb066918b96b52cca53dc2a4036b1d1"
+      },
+      {
+        "file": "RUNTIME_AUTHORITY_MAP.md",
+        "in_commit": true,
+        "sha256": "637ee8b7e2a25f74591b77e799a56f9c089c5647f697bc951eee001e1af75f1c"
+      },
+      {
+        "file": "CANDIDATE_REGISTRY.csv",
+        "in_commit": true,
+        "sha256": "bfce93578bcfcb3359d6009a9209e768a4a169bc7a838f25f2dfdae8e083d580"
+      },
+      {
+        "file": "CANDIDATE_REGISTRY.json",
+        "in_commit": true,
+        "sha256": "fa0edcac4f922e03c0d959bf1bd3926eacd8e833e43f9ec17bb1ea0a42eb3ae8"
+      },
+      {
+        "file": "DATA_WINDOW_REGISTRY.json",
+        "in_commit": true,
+        "sha256": "a160de7d66d7a926e174e0f5115d58588ea66a3a4eb49b81394606c4b8c2ed59"
+      },
+      {
+        "file": "COST_AND_BIAS_AUDIT.md",
+        "in_commit": true,
+        "sha256": "ffebf3d78b2fe6272d071cb13b9334e6e658cc8d9dd23966544c622c68838010"
+      },
+      {
+        "file": "RETROSPECTIVE_TRIAGE_REPORT.md",
+        "in_commit": true,
+        "sha256": "73517339c9a8c1c4ba1232a75af0f44a7a65d26a71f168acea318833de15c08c"
+      },
+      {
+        "file": "DECISION_REGISTER.json",
+        "in_commit": true,
+        "sha256": "12804830a5d6d6fdf8266b409691d1b82f3180c5874bc090448b377f733d8802"
+      },
+      {
+        "file": "RUN_REPORT.md",
+        "in_commit": true,
+        "sha256": "baf07d82355d1189be7f6a81291f0dd1bd48fb9d21272bb38cd58f2e4bbf6edc"
+      },
+      {
+        "file": "RUN_REPORT.json",
+        "in_commit": true,
+        "sha256": "3e1e2eb3f24ab7a56c3dbe541ae88ed04a8cffd0550378e5e93e976da61b681a"
+      },
+      {
+        "file": "FINAL_REPORT.md",
+        "in_commit": true,
+        "sha256": "dde73f77ca1cf1fca8c3893c7f42d2462a4506f2a807f938ff7cf164969e4529"
+      }
+    ],
+    "required_fields": {
+      "required": 17,
+      "present": 17,
+      "missing": [],
+      "ok": true
+    },
+    "digests": {
+      "checked": 16,
+      "ok": 16,
+      "failures": []
+    },
+    "manifest_excludes_own_hash": true,
+    "status": "PASS"
+  },
+  "scope": {
+    "baseline": "504256ec8934b97a6d405c202604ecac81a02346",
+    "target": "a96e9c80c608ed91943d1fab35db6fa1704111bb",
+    "changed_files": [
+      "evidence/tdm/wp-tdm-12/BASELINE_AND_SCOPE.md",
+      "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.csv",
+      "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.json",
+      "evidence/tdm/wp-tdm-12/COST_AND_BIAS_AUDIT.md",
+      "evidence/tdm/wp-tdm-12/DATA_WINDOW_REGISTRY.json",
+      "evidence/tdm/wp-tdm-12/DECISION_REGISTER.json",
+      "evidence/tdm/wp-tdm-12/FINAL_REPORT.md",
+      "evidence/tdm/wp-tdm-12/INDEPENDENT_REVIEW.md",
+      "evidence/tdm/wp-tdm-12/RETROSPECTIVE_TRIAGE_REPORT.md",
+      "evidence/tdm/wp-tdm-12/RFC-TDM-012.md",
+      "evidence/tdm/wp-tdm-12/RUNTIME_AUTHORITY_MAP.md",
+      "evidence/tdm/wp-tdm-12/RUN_REPORT.json",
+      "evidence/tdm/wp-tdm-12/RUN_REPORT.md",
+      "evidence/tdm/wp-tdm-12/TDM11_CLOSURE_DECISION.json",
+      "scripts/tdm12_inventory.py",
+      "scripts/tdm12_publish.py",
+      "scripts/tdm12_review.py"
+    ],
+    "changed_count": 17,
+    "src_or_tests_modified": [],
+    "changed_outside_evidence_and_scripts": [],
+    "status": "PASS"
+  },
+  "shared_checkout": {
+    "available": true,
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+    "head": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+    "tracked_dirty": [
+      "gitattributes",
+      "config/strategy_admission.json",
+      "data/recovery/COST_BARRIER_VERIFICATION.json",
+      "data/st6/RFC047_RUNTIME_VERIFICATION.json",
+      "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "scripts/autonomous_paper.py",
+      "scripts/build_strategy_admission.py",
+      "scripts/rfc048_run.py",
+      "scripts/rfc048_verify.py",
+      "src/trading_bot/config/settings.py",
+      "src/trading_bot/market_data/exchange_connector.py",
+      "src/trading_bot/market_data/ohlcv_fetcher.py",
+      "src/trading_bot/research/__init__.py",
+      "src/trading_bot/research/admission.py",
+      "src/trading_bot/risk/futures_verification.py",
+      "tests/unit/risk/test_futures_independent_verifier.py",
+      "tests/unit/scanner/conftest.py"
+    ],
+    "tracked_dirty_count": 17,
+    "status": "PASS",
+    "detail": "read-only: recorded, not modified by this package"
+  },
+  "status": "PASS"
+}

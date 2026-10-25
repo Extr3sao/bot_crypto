@@ -1,0 +1,139 @@
+{
+  "rfc_id": "RFC-TDM-013",
+  "verifier_id": "tdm13-independent-verifier/1 (separate code path, no builder imports)",
+  "target_commit": "a96e9c80c608ed91943d1fab35db6fa1704111bb",
+  "claims": [
+    {
+      "claim": "ledger_trades",
+      "reported": 115,
+      "derived": 115,
+      "match": true,
+      "method": "count of RETROSPECTIVE_LEDGER.csv data rows",
+      "source": "evidence/tdm/wp-tdm-11/RETROSPECTIVE_LEDGER.csv"
+    },
+    {
+      "claim": "net_mean_bps",
+      "reported": -36.3676,
+      "derived": -36.3676,
+      "match": true,
+      "method": "mean(gross_bps) - 23.7906 over the ledger",
+      "source": "evidence/tdm/wp-tdm-11/RETROSPECTIVE_LEDGER.csv"
+    },
+    {
+      "claim": "net_mean_matches_manifest",
+      "reported": -36.3676,
+      "derived": -36.3676,
+      "match": true,
+      "method": "manifest metric vs independent recomputation",
+      "source": "evidence/tdm/wp-tdm-12/RUN_REPORT.json"
+    },
+    {
+      "claim": "registry_rows",
+      "reported": 30,
+      "derived": 30,
+      "match": true,
+      "method": "len(CANDIDATE_REGISTRY.json.rows)",
+      "source": "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.json"
+    },
+    {
+      "claim": "strategies_measured",
+      "reported": 24,
+      "derived": 24,
+      "match": true,
+      "method": "len(CANDIDATE_REGISTRY.json.metrics_by_cell)",
+      "source": "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.json"
+    },
+    {
+      "claim": "cells_with_measured_trades",
+      "reported": 24,
+      "derived": 24,
+      "match": true,
+      "method": "cells carrying a measured hold trade count",
+      "source": "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.json"
+    },
+    {
+      "claim": "eligible",
+      "reported": [],
+      "derived": [],
+      "match": true,
+      "method": "cells net-positive on holdout AND development AND power-sufficient",
+      "source": "evidence/tdm/wp-tdm-12/CANDIDATE_REGISTRY.json"
+    },
+    {
+      "claim": "hold_net_positive_matches_manifest",
+      "reported": [],
+      "derived": [],
+      "match": true,
+      "method": "cells with hold net_mean > 0 vs manifest list",
+      "source": "evidence/tdm/wp-tdm-12/RUN_REPORT.json"
+    },
+    {
+      "claim": "dev_net_positive_matches_manifest",
+      "reported": [],
+      "derived": [],
+      "match": true,
+      "method": "cells with dev net_mean > 0 vs manifest list",
+      "source": "evidence/tdm/wp-tdm-12/RUN_REPORT.json"
+    },
+    {
+      "claim": "decision_register_eligible_matches",
+      "reported": [],
+      "derived": [],
+      "match": true,
+      "method": "DECISION_REGISTER.eligible_candidates vs recomputation",
+      "source": "evidence/tdm/wp-tdm-12/DECISION_REGISTER.json"
+    },
+    {
+      "claim": "paper_orders",
+      "reported": 0,
+      "derived": 0,
+      "match": true,
+      "method": "manifest field",
+      "source": "evidence/tdm/wp-tdm-12/RUN_REPORT.json"
+    },
+    {
+      "claim": "live_orders",
+      "reported": 0,
+      "derived": 0,
+      "match": true,
+      "method": "manifest field",
+      "source": "evidence/tdm/wp-tdm-12/RUN_REPORT.json"
+    },
+    {
+      "claim": "verdict_matches_decision_register",
+      "reported": "NO_ELIGIBLE_CANDIDATE",
+      "derived": "NO_ELIGIBLE_CANDIDATE",
+      "match": true,
+      "method": "manifest result vs decision register",
+      "source": "evidence/tdm/wp-tdm-12/DECISION_REGISTER.json"
+    },
+    {
+      "claim": "verdict_matches_manifest",
+      "reported": "NO_ELIGIBLE_CANDIDATE",
+      "derived": "NO_ELIGIBLE_CANDIDATE",
+      "match": true,
+      "method": "manifest result field",
+      "source": "evidence/tdm/wp-tdm-12/RUN_REPORT.json"
+    },
+    {
+      "claim": "tdm11_alpha_status",
+      "reported": "REJECTED_ALPHA",
+      "derived": "REJECTED_ALPHA",
+      "match": true,
+      "method": "closure decision alpha_status",
+      "source": "evidence/tdm/wp-tdm-12/TDM11_CLOSURE_DECISION.json"
+    },
+    {
+      "claim": "no_execution_artifacts",
+      "reported": [],
+      "derived": [],
+      "match": true,
+      "method": "no PAPER/LIVE ledger inside the TDM-12 evidence tree",
+      "source": "evidence/tdm/wp-tdm-12/"
+    }
+  ],
+  "checked": 16,
+  "matched": 16,
+  "failures": [],
+  "status": "PASS"
+}
