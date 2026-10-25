@@ -1,0 +1,214 @@
+{
+  "audit": "TAP-SUPERVISOR-INTEGRATION-001",
+  "blockers": {
+    "B1_lock_unattributed": {
+      "failures": 0,
+      "runs": 8,
+      "status": "NOT_REPRODUCED",
+      "still_open": true
+    },
+    "B2_verify_claims_portability": {
+      "status": "NOT_REAUDITED"
+    },
+    "B3_uv_frozen": {
+      "added_dep_frozen_exit": 1,
+      "omitted_dep_frozen_exit": 0,
+      "status": "REFINED",
+      "still_open": true
+    },
+    "B4_real_campaign": {
+      "campaign_exists": true,
+      "status": "PARTIAL",
+      "still_open": true,
+      "verifier_exists": false
+    }
+  },
+  "branches": {
+    "audit_branch": "audit/supervisor-integration-001",
+    "lane": "3b758e22f0c9835646c9eba9db6634757970b126",
+    "main": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+    "rfc_closure": "fda956644080e48cb0582e456ee2b7e4d82faf4c"
+  },
+  "counts": {
+    "commit_inventory_rows": 301,
+    "commits_by_primary_area": {
+      "config_or_data": 8,
+      "docs": 33,
+      "other": 2,
+      "reports": 152,
+      "scripts": 54,
+      "src": 21,
+      "tests": 31
+    },
+    "commits_main_ahead": 4,
+    "commits_main_to_lane": 301,
+    "commits_main_to_rfc": 307,
+    "lane_added": 1761,
+    "lane_diff_paths": 1804,
+    "lane_modified": 43,
+    "lane_python_files": 1257,
+    "lane_reports_docs_paths": 1248,
+    "main_python_files": 818
+  },
+  "evidence": {
+    "b1": "evidence/PYTEST_b1_isolated.log",
+    "commit_inventory": "evidence/COMMIT_INVENTORY.tsv",
+    "lane_futures": "evidence/PYTEST_lane_futures_verifier.log",
+    "lane_graph": "evidence/lane_graph.json",
+    "lane_graph_broad": "evidence/lane_graph_broad.json",
+    "lane_paper": "evidence/PYTEST_lane_paper.log",
+    "lock_verifier_refusal": "evidence/REAL_CAMPAIGN_lock_verifier_refusal.json",
+    "merge_lane": "evidence/MERGE_TREE_lane.txt",
+    "merge_rfc": "evidence/MERGE_TREE_rfc_tip.txt",
+    "real_campaign": "evidence/REAL_CAMPAIGN_CAMPAIGN.json",
+    "real_session": "evidence/REAL_SESSION_SUPERVISOR_RESULT.json",
+    "slice_tests": "evidence/PYTEST_42files_partial_migration.log",
+    "supervisor_verifier_crash": "evidence/REAL_CAMPAIGN_supervisor_verifier_crash.log"
+  },
+  "false_success": 0,
+  "gates": [
+    {
+      "id": "G1",
+      "name": "risk contract reconciliation",
+      "owner": "risk-manager",
+      "status": "OPEN"
+    },
+    {
+      "id": "G2",
+      "name": "verifier that judges a real campaign",
+      "owner": "backtest-engineer",
+      "status": "OPEN"
+    },
+    {
+      "id": "G3",
+      "name": "deterministic B1 reproduction",
+      "owner": "execution-engineer",
+      "status": "OPEN"
+    }
+  ],
+  "integration_slice": {
+    "code_files": 42,
+    "commits_touching_code_files": 38,
+    "config_files": [
+      "config/vision.yaml",
+      "config/strategy_candidates_edge15.json"
+    ],
+    "dependency": "matplotlib>=3.8,<4.0 (pyproject.toml + uv.lock)",
+    "dependency_files": [
+      "pyproject.toml",
+      "uv.lock"
+    ],
+    "ignore_policy_file": ".gitignore",
+    "modified_files_blast_radius_importers": {
+      "src/trading_bot/paper/broker.py": 18,
+      "src/trading_bot/paper/harness.py": 6,
+      "src/trading_bot/paper/paper_cycle.py": 6,
+      "src/trading_bot/paper/reconciliation_v4.py": 3,
+      "src/trading_bot/risk/manager.py": 17
+    },
+    "note_ignore": "main ignores reports/*; evidence cannot land without the lane's un-ignore rule",
+    "total_paths": 47
+  },
+  "merge_simulation": {
+    "lane_merge_tree": {
+      "conflicts": 0,
+      "exit": 0,
+      "files": 1804,
+      "tree": "10538275069daa4de5202737f21f0db5d334e75b"
+    },
+    "narrow_cherry_pick": {
+      "conflicts": 7,
+      "exit": 1
+    },
+    "rfc_merge_tree": {
+      "conflicts": 0,
+      "exit": 0,
+      "files": 2012,
+      "tree": "1a2f60b5b5fd1cf630c53ec49e872967edce0fc2"
+    }
+  },
+  "not_tested": [
+    "full pytest tests/unit (600s timeout)",
+    "authenticated ccxt path",
+    "B2 re-audit"
+  ],
+  "operational": {
+    "entrypoint_help": {
+      "exit_zero": 6,
+      "tested": 6
+    },
+    "lane_test_futures_verifier": {
+      "failed": 2,
+      "passed": 6
+    },
+    "lane_tests_paper": {
+      "failed": 0,
+      "passed": 111
+    },
+    "real_campaign_lane": {
+      "chain": "INTACT",
+      "cycles": 5,
+      "duration_min": 5,
+      "episodes": 1,
+      "exit": 1,
+      "live_orders": 0,
+      "locks": [],
+      "state": "RECOVERED",
+      "stream_lines": 13
+    },
+    "real_campaign_lock_verifier": {
+      "exit": 1,
+      "expected": "TAP_PAPER_LOCK_CAMPAIGN_V1",
+      "refusal": "UNSUPPORTED_CAMPAIGN_SCHEMA"
+    },
+    "real_campaign_supervisor_verifier": {
+      "error": "FileNotFoundError scenarios/SCENARIOS.json",
+      "exit": 1
+    },
+    "real_session_lane": {
+      "credentials": false,
+      "exit": 0,
+      "live_orders": 0,
+      "restarts": 0,
+      "state": "READY",
+      "supervisor": "STOP_COMPLETED"
+    },
+    "slice_session": {
+      "cycles": 1,
+      "exit": 0,
+      "live_orders": 0,
+      "supervisor": "STOP_COMPLETED"
+    },
+    "slice_session_dirty_tree": {
+      "exit": 3,
+      "reason": "RUNTIME_PATHS_DIRTY"
+    },
+    "slice_session_without_config": {
+      "cycles": 0,
+      "exit": 3,
+      "supervisor": "STOP_BLOCKED"
+    },
+    "slice_tests_paper_risk": {
+      "failed": 6,
+      "passed": 170
+    }
+  },
+  "ready": false,
+  "runtime_authority": {
+    "broad_reachable_files": 843,
+    "classification": {
+      "dead_code_declared": 0,
+      "orphan": 107,
+      "research_reachable_from_other_scripts": 303,
+      "runtime_from_supervisor": 35,
+      "test_only": 3
+    },
+    "differ_in_main": 7,
+    "identical_in_main": 68,
+    "lane_only_python": 448,
+    "missing_from_main": 35,
+    "supervisor_reachable_files": 110
+  },
+  "schema_version": "TAP_SUPERVISOR_INTEGRATION_AUDIT_V1",
+  "verdict": "INTEGRATION_PATH_IDENTIFIED"
+}

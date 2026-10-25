@@ -1,0 +1,1125 @@
+{
+  "schema_version": "rfc048v-independent-certification-v1",
+  "rfc": "RFC-048V",
+  "generated_at_utc": "2026-10-10T09:40:10Z",
+  "current_head": "081201f1eeaf77985f55dc488ffec373939d8c02",
+  "rfc048_baseline_commit": "19b1a0b",
+  "status": "RFC048_OFFLINE_CERTIFIED",
+  "gates": {
+    "lint": {
+      "ruff_check": {
+        "command": "uv run ruff check src/trading_bot/risk/futures src/trading_bot/risk/futures_verification.py src/trading_bot/risk/futures_falsification.py tests/unit/risk/test_futures_risk_engine.py tests/unit/risk/test_futures_independent_verifier.py tests/unit/risk/test_futures_runtime_integration.py tests/unit/risk/test_futures_falsification_regressions.py scripts/rfc048_derive_instruments.py scripts/rfc048_run.py scripts/rfc048_verify.py scripts/rfc048_report.py scripts/rfc048v_falsify.py scripts/rfc048v_runtime_authority.py scripts/rfc048v_certify.py",
+        "exit_code": 0,
+        "summary": "All checks passed!",
+        "passed": true
+      },
+      "ruff_format": {
+        "command": "uv run ruff format --check src/trading_bot/risk/futures src/trading_bot/risk/futures_verification.py src/trading_bot/risk/futures_falsification.py tests/unit/risk/test_futures_risk_engine.py tests/unit/risk/test_futures_independent_verifier.py tests/unit/risk/test_futures_runtime_integration.py tests/unit/risk/test_futures_falsification_regressions.py scripts/rfc048_derive_instruments.py scripts/rfc048_run.py scripts/rfc048_verify.py scripts/rfc048_report.py scripts/rfc048v_falsify.py scripts/rfc048v_runtime_authority.py scripts/rfc048v_certify.py",
+        "exit_code": 0,
+        "summary": "22 files already formatted",
+        "passed": true
+      },
+      "mypy_strict": {
+        "command": "uv run mypy src/trading_bot/risk/futures src/trading_bot/risk/futures_verification.py src/trading_bot/risk/futures_falsification.py tests/unit/risk/test_futures_risk_engine.py tests/unit/risk/test_futures_independent_verifier.py tests/unit/risk/test_futures_runtime_integration.py tests/unit/risk/test_futures_falsification_regressions.py scripts/rfc048_derive_instruments.py scripts/rfc048_run.py scripts/rfc048_verify.py scripts/rfc048_report.py scripts/rfc048v_falsify.py scripts/rfc048v_runtime_authority.py scripts/rfc048v_certify.py",
+        "exit_code": 0,
+        "summary": "Success: no issues found in 22 source files",
+        "passed": true
+      },
+      "files": 14,
+      "passed": true
+    },
+    "verifier": {
+      "command": "uv run python scripts/rfc048_verify.py",
+      "exit_code": 0,
+      "verdict": "RFC048_OFFLINE_VERIFIED",
+      "decisions_verified": 31,
+      "checks_run": 303,
+      "checks_failed": 0,
+      "false_success": 0,
+      "negative_controls_detected": 8,
+      "negative_controls_total": 8,
+      "independent_process": true,
+      "reproducible": true,
+      "passed": true
+    },
+    "falsifier": {
+      "command": "uv run python scripts/rfc048v_falsify.py",
+      "exit_code": 0,
+      "false_approval_count": 0,
+      "false_success": 0,
+      "all_invariants_hold": true,
+      "random_scenarios": 4000,
+      "catalogue_cases": 31,
+      "conclusion": "PASS \u2014 no false approval survived; every invariant held under the counterexamples, the catalogue replay, the randomized search, the numeric-root liquidation cross-check and the concurrency probes.",
+      "defects": [
+        "DEF-048V-01",
+        "DEF-048V-02",
+        "DEF-048V-03",
+        "DEF-048V-04",
+        "DEF-048V-05",
+        "DEF-048V-06",
+        "DEF-048V-07",
+        "DEF-048V-08"
+      ],
+      "passed": true
+    },
+    "authority": {
+      "command": "uv run python scripts/rfc048v_runtime_authority.py",
+      "exit_code": 0,
+      "conclusion": "PASS",
+      "verdicts": {
+        "runtime_reachability": "PASS",
+        "veto_irreversibility": "PASS",
+        "engine_error_fail_safe": "PASS",
+        "incomplete_data_refused": "PASS",
+        "live_path_blocked": "PASS",
+        "approvals_are_not_order_permissions": "PASS"
+      },
+      "flow_cases": 31,
+      "flow_approved": 8,
+      "any_order_authorised": false,
+      "live_scan_violations": 0,
+      "passed": true
+    },
+    "tests": {
+      "risk_suite": {
+        "command": "uv run pytest tests/unit/risk -q",
+        "exit_code": 0,
+        "summary": "119 passed in 6.23s",
+        "failures": [],
+        "passed": true
+      },
+      "full_unit_suite": {
+        "command": "uv run pytest tests/unit -q",
+        "executed": true,
+        "exit_code": 0,
+        "summary": "3163 passed in 270.21s (0:04:30)",
+        "failures": [],
+        "passed": true
+      },
+      "repo_suite": {
+        "command": "uv run pytest tests -q",
+        "executed": true,
+        "exit_code": 0,
+        "summary": "3210 passed, 78 warnings in 268.08s (0:04:28)",
+        "failures": [],
+        "passed": true,
+        "failure_analysis": []
+      },
+      "passed": true
+    }
+  },
+  "quality_gates": {
+    "ruff_check": {
+      "command": "uv run ruff check src/trading_bot/risk/futures src/trading_bot/risk/futures_verification.py src/trading_bot/risk/futures_falsification.py tests/unit/risk/test_futures_risk_engine.py tests/unit/risk/test_futures_independent_verifier.py tests/unit/risk/test_futures_runtime_integration.py tests/unit/risk/test_futures_falsification_regressions.py scripts/rfc048_derive_instruments.py scripts/rfc048_run.py scripts/rfc048_verify.py scripts/rfc048_report.py scripts/rfc048v_falsify.py scripts/rfc048v_runtime_authority.py scripts/rfc048v_certify.py",
+      "exit_code": 0,
+      "summary": "All checks passed!",
+      "passed": true
+    },
+    "ruff_format": {
+      "command": "uv run ruff format --check src/trading_bot/risk/futures src/trading_bot/risk/futures_verification.py src/trading_bot/risk/futures_falsification.py tests/unit/risk/test_futures_risk_engine.py tests/unit/risk/test_futures_independent_verifier.py tests/unit/risk/test_futures_runtime_integration.py tests/unit/risk/test_futures_falsification_regressions.py scripts/rfc048_derive_instruments.py scripts/rfc048_run.py scripts/rfc048_verify.py scripts/rfc048_report.py scripts/rfc048v_falsify.py scripts/rfc048v_runtime_authority.py scripts/rfc048v_certify.py",
+      "exit_code": 0,
+      "summary": "22 files already formatted",
+      "passed": true
+    },
+    "mypy_strict": {
+      "command": "uv run mypy src/trading_bot/risk/futures src/trading_bot/risk/futures_verification.py src/trading_bot/risk/futures_falsification.py tests/unit/risk/test_futures_risk_engine.py tests/unit/risk/test_futures_independent_verifier.py tests/unit/risk/test_futures_runtime_integration.py tests/unit/risk/test_futures_falsification_regressions.py scripts/rfc048_derive_instruments.py scripts/rfc048_run.py scripts/rfc048_verify.py scripts/rfc048_report.py scripts/rfc048v_falsify.py scripts/rfc048v_runtime_authority.py scripts/rfc048v_certify.py",
+      "exit_code": 0,
+      "summary": "Success: no issues found in 22 source files",
+      "passed": true
+    },
+    "files": 14,
+    "passed": true
+  },
+  "repo_suite": {
+    "verdict": "PASS",
+    "passed": true,
+    "raw_passed": true,
+    "summary": "3210 passed, 78 warnings in 268.08s (0:04:28)",
+    "failures": [],
+    "hermeticity_probe": {
+      "observed": true,
+      "files_sampled": 6769,
+      "window_seconds": 30.0,
+      "changed_with_no_local_test_running": [],
+      "foreign_writers_detected": false,
+      "passed": true
+    }
+  },
+  "reports_hermeticity_probe": {
+    "observed": true,
+    "files_sampled": 6769,
+    "window_seconds": 30.0,
+    "changed_with_no_local_test_running": [],
+    "foreign_writers_detected": false,
+    "passed": true
+  },
+  "verification_tooling_defects": [
+    {
+      "id": "DEF-048V-09",
+      "component": "certification tooling",
+      "severity": "MEDIUM",
+      "status": "FIXED",
+      "title": "the certifier hashed its own certificate files into its manifest before rewriting them, so --verify-commit failed on a clean delivered tree",
+      "detected_by": "scripts/rfc048v_certify.py --verify-commit, run against the delivery commit after the certificates had been committed",
+      "counterexample": "on a clean tree at the delivery commit, --verify-commit returned exit 1 with 4 blob mismatches: FINAL_CERTIFICATION_REPORT.json e26e59df739f -> 2880b83b7306, FINAL_CERTIFICATION_REPORT.md 567ec006838f -> 82ba8429df9b, INDEPENDENT_CERTIFICATION.json 4a40b1ff2584 -> 93ba4810ed00, INDEPENDENT_CERTIFICATION.md 378b662ce5c7 -> e31a101617a3",
+      "root_cause": "manifest() was evaluated as an argument before write_reports() rewrote the four certificate files, so their recorded blobs were the previous generation's bytes; a document cannot contain the hash of its own final content",
+      "behaviour_before": "the manifest and the report's DELIVERABLES hashes were stale by one generation for the certificate files, and the delivery gate could never pass",
+      "behaviour_after": "the manifest excludes the certifier's own outputs and says why; DELIVERY_COMMIT_VERIFICATION.{json,md} carries their sha256 and git blob after they are written, and --verify-commit returns 0 on the delivered tree",
+      "regression_test": "`uv run python scripts/rfc048v_certify.py --verify-commit` on the delivered commit (exit 0, 0 mismatches); `--record-delivery-commit` re-hashes the six excluded files and fails if any delivered blob moved",
+      "shared_with_engine_defects": "found by the same falsification posture: the verification was executed against the artefact it had produced, instead of being assumed to hold",
+      "fixed_in": "the RFC-048V delivery commit; its exact hash is the `delivery_commit` field of data/rfc048/DELIVERY_COMMIT_VERIFICATION.json"
+    }
+  ],
+  "economic_integrity": {
+    "checks": [
+      {
+        "check": "SPOT_COST_MODEL_FROZEN",
+        "passed": true,
+        "detail": "spot round trip 23.7906 bps, source: docs/COST_MODEL_V3.json (frozen; unmodified)"
+      },
+      {
+        "check": "PUBLISHED_COSTS_EXPLAIN_NET_PNL[LINEAR_PERPETUAL_1x]",
+        "passed": true,
+        "detail": "gross 3.30000197 - cost 0.19840015 vs net 3.10160182"
+      },
+      {
+        "check": "PUBLISHED_COSTS_EXPLAIN_NET_PNL[LINEAR_PERPETUAL_2x]",
+        "passed": true,
+        "detail": "gross 3.30000197 - cost 0.39680029 vs net 2.90320168"
+      },
+      {
+        "check": "PUBLISHED_COSTS_EXPLAIN_NET_PNL[LINEAR_PERPETUAL_3x]",
+        "passed": true,
+        "detail": "gross 3.30000197 - cost 0.39680029 vs net 2.90320168"
+      },
+      {
+        "check": "PUBLISHED_COSTS_EXPLAIN_NET_PNL[LINEAR_PERPETUAL_5x]",
+        "passed": true,
+        "detail": "gross 3.30000197 - cost 0.39680029 vs net 2.90320168"
+      },
+      {
+        "check": "LEVERAGE_DOES_NOT_CREATE_GROSS_EDGE[+1.0%]",
+        "passed": true,
+        "detail": "gross PnL across leverage: [3.30000197, 3.30000197, 3.30000197, 3.30000197]"
+      },
+      {
+        "check": "COSTS_NON_DECREASING_WITH_SIZE[+1.0%]",
+        "passed": true,
+        "detail": "total costs across leverage: [0.1984, 0.3968, 0.3968, 0.3968]"
+      },
+      {
+        "check": "NET_PNL_AND_BUFFER_SHRINK_WITH_LEVERAGE[+1.0%]",
+        "passed": true,
+        "detail": "net PnL and liquidation buffer are non-increasing as leverage grows"
+      },
+      {
+        "check": "RISK_BUDGET_COMPLIANT[LINEAR_PERPETUAL_1x]",
+        "passed": true,
+        "detail": "1.48540091 <= 10.0"
+      },
+      {
+        "check": "RISK_BUDGET_COMPLIANT[LINEAR_PERPETUAL_2x]",
+        "passed": true,
+        "detail": "2.97080182 <= 10.0"
+      },
+      {
+        "check": "RISK_BUDGET_COMPLIANT[LINEAR_PERPETUAL_3x]",
+        "passed": true,
+        "detail": "2.97080182 <= 10.0"
+      },
+      {
+        "check": "RISK_BUDGET_COMPLIANT[LINEAR_PERPETUAL_5x]",
+        "passed": true,
+        "detail": "2.97080182 <= 10.0"
+      },
+      {
+        "check": "FUTURES_COST_IS_NOT_SPOT[LINEAR_PERPETUAL_1x]",
+        "passed": true,
+        "detail": "futures round trip 12.0242 bps (re-derived from fees+spread+impact+funding) vs spot 23.7906 bps"
+      },
+      {
+        "check": "FUTURES_COST_IS_NOT_SPOT[LINEAR_PERPETUAL_2x]",
+        "passed": true,
+        "detail": "futures round trip 12.0242 bps (re-derived from fees+spread+impact+funding) vs spot 23.7906 bps"
+      },
+      {
+        "check": "FUTURES_COST_IS_NOT_SPOT[LINEAR_PERPETUAL_3x]",
+        "passed": true,
+        "detail": "futures round trip 12.0242 bps (re-derived from fees+spread+impact+funding) vs spot 23.7906 bps"
+      },
+      {
+        "check": "FUTURES_COST_IS_NOT_SPOT[LINEAR_PERPETUAL_5x]",
+        "passed": true,
+        "detail": "futures round trip 12.0242 bps (re-derived from fees+spread+impact+funding) vs spot 23.7906 bps"
+      },
+      {
+        "check": "SPOT_LEG_USES_THE_FROZEN_MODEL",
+        "passed": true,
+        "detail": "spot leg cost 23.7906 bps"
+      },
+      {
+        "check": "PUBLISHED_COSTS_EXPLAIN_NET_PNL[LINEAR_PERPETUAL_1x]",
+        "passed": true,
+        "detail": "gross -3.30000197 - cost 0.19840015 vs net -3.49840211"
+      },
+      {
+        "check": "PUBLISHED_COSTS_EXPLAIN_NET_PNL[LINEAR_PERPETUAL_2x]",
+        "passed": true,
+        "detail": "gross -3.30000197 - cost 0.39680029 vs net -3.69680226"
+      },
+      {
+        "check": "PUBLISHED_COSTS_EXPLAIN_NET_PNL[LINEAR_PERPETUAL_3x]",
+        "passed": true,
+        "detail": "gross -3.30000197 - cost 0.39680029 vs net -3.69680226"
+      },
+      {
+        "check": "PUBLISHED_COSTS_EXPLAIN_NET_PNL[LINEAR_PERPETUAL_5x]",
+        "passed": true,
+        "detail": "gross -3.30000197 - cost 0.39680029 vs net -3.69680226"
+      },
+      {
+        "check": "LEVERAGE_DOES_NOT_CREATE_GROSS_EDGE[-1.0%]",
+        "passed": true,
+        "detail": "gross PnL across leverage: [-3.30000197, -3.30000197, -3.30000197, -3.30000197]"
+      },
+      {
+        "check": "COSTS_NON_DECREASING_WITH_SIZE[-1.0%]",
+        "passed": true,
+        "detail": "total costs across leverage: [0.1984, 0.3968, 0.3968, 0.3968]"
+      },
+      {
+        "check": "NET_PNL_AND_BUFFER_SHRINK_WITH_LEVERAGE[-1.0%]",
+        "passed": true,
+        "detail": "net PnL and liquidation buffer are non-increasing as leverage grows"
+      },
+      {
+        "check": "RISK_BUDGET_COMPLIANT[LINEAR_PERPETUAL_1x]",
+        "passed": true,
+        "detail": "1.48540091 <= 10.0"
+      },
+      {
+        "check": "RISK_BUDGET_COMPLIANT[LINEAR_PERPETUAL_2x]",
+        "passed": true,
+        "detail": "2.97080182 <= 10.0"
+      },
+      {
+        "check": "RISK_BUDGET_COMPLIANT[LINEAR_PERPETUAL_3x]",
+        "passed": true,
+        "detail": "2.97080182 <= 10.0"
+      },
+      {
+        "check": "RISK_BUDGET_COMPLIANT[LINEAR_PERPETUAL_5x]",
+        "passed": true,
+        "detail": "2.97080182 <= 10.0"
+      },
+      {
+        "check": "FUTURES_COST_IS_NOT_SPOT[LINEAR_PERPETUAL_1x]",
+        "passed": true,
+        "detail": "futures round trip 12.0242 bps (re-derived from fees+spread+impact+funding) vs spot 23.7906 bps"
+      },
+      {
+        "check": "FUTURES_COST_IS_NOT_SPOT[LINEAR_PERPETUAL_2x]",
+        "passed": true,
+        "detail": "futures round trip 12.0242 bps (re-derived from fees+spread+impact+funding) vs spot 23.7906 bps"
+      },
+      {
+        "check": "FUTURES_COST_IS_NOT_SPOT[LINEAR_PERPETUAL_3x]",
+        "passed": true,
+        "detail": "futures round trip 12.0242 bps (re-derived from fees+spread+impact+funding) vs spot 23.7906 bps"
+      },
+      {
+        "check": "FUTURES_COST_IS_NOT_SPOT[LINEAR_PERPETUAL_5x]",
+        "passed": true,
+        "detail": "futures round trip 12.0242 bps (re-derived from fees+spread+impact+funding) vs spot 23.7906 bps"
+      },
+      {
+        "check": "SPOT_LEG_USES_THE_FROZEN_MODEL",
+        "passed": true,
+        "detail": "spot leg cost 23.7906 bps"
+      },
+      {
+        "check": "SAME_CAPITAL_EQUAL_MARGIN[+1.0%]",
+        "passed": true,
+        "detail": "margin used across leverage: [165.000098, 165.000098, 165.000098, 165.000098]"
+      },
+      {
+        "check": "EXPOSURE_SCALES_WITH_LEVERAGE[+1.0%]",
+        "passed": true,
+        "detail": "notional across leverage: [165.000098, 330.000197, 495.000295, 825.000492]"
+      },
+      {
+        "check": "SAME_CAPITAL_EQUAL_MARGIN[-1.0%]",
+        "passed": true,
+        "detail": "margin used across leverage: [165.000098, 165.000098, 165.000098, 165.000098]"
+      },
+      {
+        "check": "EXPOSURE_SCALES_WITH_LEVERAGE[-1.0%]",
+        "passed": true,
+        "detail": "notional across leverage: [165.000098, 330.000197, 495.000295, 825.000492]"
+      },
+      {
+        "check": "LOSSES_SCALE_WITH_LEVERAGE[-1.0%]",
+        "passed": true,
+        "detail": "net PnL in the adverse move: [-1.848401, -3.696802, -5.545203, -9.242006]"
+      },
+      {
+        "check": "LEVERAGE_CREATES_ALPHA_IS_FALSE",
+        "passed": true,
+        "detail": "the matrix records leverage_creates_alpha=false"
+      },
+      {
+        "check": "NO_OOS_REUSE",
+        "passed": true,
+        "detail": "no rejected out-of-sample result is used as a selection input; every number here is a synthetic gross move applied to a "
+      },
+      {
+        "check": "SPOT_COST_LITERAL_NOT_REUSED_IN_FUTURES_CODE",
+        "passed": true,
+        "detail": "files containing 23.7906: none"
+      }
+    ],
+    "check_count": 41,
+    "failed": [],
+    "passed": true
+  },
+  "pit_funding_integrity": {
+    "checks": [
+      {
+        "check": "PIT_VISIBLE_HISTORY_USED",
+        "passed": true,
+        "detail": "decision=REDUCE_SIMULATED_SIZE"
+      },
+      {
+        "check": "ONLY_FUTURE_SETTLEMENTS_MEANS_UNKNOWN_AND_REFUSED",
+        "passed": true,
+        "detail": "decision=NO_TRADE, reasons=['FUNDING_UNKNOWN', 'COST_UNKNOWN']"
+      },
+      {
+        "check": "FUTURE_SETTLEMENT_CANNOT_CHANGE_THE_VERDICT",
+        "passed": true,
+        "detail": "decision=REDUCE_SIMULATED_SIZE (full history=REDUCE_SIMULATED_SIZE)"
+      },
+      {
+        "check": "NO_SETTLEMENT_IN_HORIZON_IS_A_CONTRACTUAL_ZERO",
+        "passed": true,
+        "detail": "60-minute horizon: the venue interval proves no settlement can occur"
+      }
+    ],
+    "passed": true,
+    "with_history": {
+      "decision": "REDUCE_SIMULATED_SIZE",
+      "funding_estimate": 0.001060950633121977
+    },
+    "future_only": {
+      "decision": "NO_TRADE",
+      "reasons": [
+        "FUNDING_UNKNOWN",
+        "COST_UNKNOWN"
+      ]
+    }
+  },
+  "governance": {
+    "checks": [
+      {
+        "check": "PROTECTED_PATHS_UNTOUCHED",
+        "passed": true,
+        "detail": "no diff vs the RFC-048 baseline for protected paths"
+      },
+      {
+        "check": "DISCOVERY_CAMPAIGN_FAILED",
+        "passed": true,
+        "detail": "True"
+      },
+      {
+        "check": "NEXT_CAMPAIGN_NOT_AUTHORIZED",
+        "passed": true,
+        "detail": "NOT_AUTHORIZED"
+      },
+      {
+        "check": "LIVE_TRADING_DISABLED",
+        "passed": true,
+        "detail": "DISABLED"
+      },
+      {
+        "check": "TRADES_AUTHORIZED_ZERO",
+        "passed": true,
+        "detail": "0"
+      },
+      {
+        "check": "PROFITABILITY_VERIFIED_FALSE",
+        "passed": true,
+        "detail": "False"
+      },
+      {
+        "check": "NO_RFC_049_OPENED",
+        "passed": true,
+        "detail": "files: none"
+      }
+    ],
+    "passed": true,
+    "protected_diff": ""
+  },
+  "manifest": {
+    "files": [
+      {
+        "path": "context/retrieval-log.md",
+        "git_blob": "b37b048b28f348457a6f92a2dde1b5f999ac209d",
+        "sha256": "8d4fcae7019835b05932b4f59de70a478231dccdfb00f4e8fdd768bd20f71a1b"
+      },
+      {
+        "path": "data/rfc048/ADVERSARIAL_FINDINGS.json",
+        "git_blob": "777a695f40da27b68a57b030e8cbace31541f7b5",
+        "sha256": "39d88cd8b47732bbd0b374e84b7533f3834ac83d5b7585cb673d1dc231a28655"
+      },
+      {
+        "path": "data/rfc048/ADVERSARIAL_FINDINGS.md",
+        "git_blob": "77a6ea3ad6df717f2f2a326d25525e5d50f3d6b0",
+        "sha256": "4666970b083eb51da25cbfcf4662784f2bc64cd3c384b1950500fa2728ba1d13"
+      },
+      {
+        "path": "data/rfc048/ECONOMIC_FEASIBILITY.json",
+        "git_blob": "efbfc54e077097d53c4c43b3861f5986f22992ba",
+        "sha256": "c6a87acf00877bfafc217e2129defb2e2e3ec765f82a27850ac14f7aca162c55"
+      },
+      {
+        "path": "data/rfc048/FINAL_REPORT.json",
+        "git_blob": "32df6bfd34993010b0caf936598206b414be0ebb",
+        "sha256": "47da499b06706210161cafdd3301d2e5c169da7f6d0a6f1d09f701370ca4cdff"
+      },
+      {
+        "path": "data/rfc048/FINAL_REPORT.md",
+        "git_blob": "704274eb7f1d4723904482307039becb18441c4a",
+        "sha256": "ee7c9d06fa7349a8b520820424645275c6540f01e697561ee9af71efac3a6b5d"
+      },
+      {
+        "path": "data/rfc048/FUNDING_HISTORY.json",
+        "git_blob": "4810822c79e58c7992cca5b737e730df81ab96aa",
+        "sha256": "73a84323e1e502c0a6bf8cb894f97dd1c6c1f55e09d4a973020b9a532ffcf590"
+      },
+      {
+        "path": "data/rfc048/INDEPENDENT_VERIFICATION.json",
+        "git_blob": "c6ad45d821692415e42b5a7b68ea1f97931b86b5",
+        "sha256": "f08daf860258572967678cb0eb084f048637699268f6b162b7fb05833dc83888"
+      },
+      {
+        "path": "data/rfc048/INSTRUMENTS.json",
+        "git_blob": "8e15b6ca8129269c676f1429f160dea7543e6682",
+        "sha256": "6f0ecd6d782bd8ac14e14d76b484374d4ccaa4c669e48f539932d04c2fe54e8d"
+      },
+      {
+        "path": "data/rfc048/MARGIN_LIQUIDATION_CASES.json",
+        "git_blob": "b0f4fd92672dbeded47a573a0b865220f03bc83d",
+        "sha256": "ba0d18285d6e9e76311f217a4e76f657c58d1fd0ec8d3aed49f98034887daea2"
+      },
+      {
+        "path": "data/rfc048/MARKET_SNAPSHOT.json",
+        "git_blob": "057672980b5e3937fcc0ff23374a859dfe481e7d",
+        "sha256": "f527ff4b3e2e7f61ce38d31fffc5b545ddce8f019e3872b3a52dc4e5ac7c4e48"
+      },
+      {
+        "path": "data/rfc048/PROVENANCE.json",
+        "git_blob": "d924ae32a1ead0bbf5a5baeea9c6c3b2944db7fc",
+        "sha256": "0a4948043624e0717439cbc6bbf7c3e9799de5e9211aa9c5b5b75d92208e16ae"
+      },
+      {
+        "path": "data/rfc048/RISK_SCENARIOS.json",
+        "git_blob": "e624c97b2036a2a87eaa48a7dc4927d9dce18d38",
+        "sha256": "af9715a156fbfc5faa122a542e2fbfa719917921be81a295272689b3fdb58016"
+      },
+      {
+        "path": "data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.json",
+        "git_blob": "35cace0cc9577635a9a56052fd306fb4f468f108",
+        "sha256": "25faa0f0cec1de2ee4d6729c7c42d9803d0bfc17a3ef7c623536ebbe0b914e8b"
+      },
+      {
+        "path": "data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.md",
+        "git_blob": "d2b821eabd93253bcedd71dcf2650ea52773fd52",
+        "sha256": "8d3397d452e68be6ea438ebf7364fd648dff1939cea103aedfeb9dfb8b4fbe4f"
+      },
+      {
+        "path": "data/rfc048/RUNTIME_EXECUTION_REPORT.json",
+        "git_blob": "3d768a2487922322263d693e2486dd5b7074eeed",
+        "sha256": "58fac2c494c1893ee414962bb8b7dbd342ff82f13fe57c5fec084927ea835334"
+      },
+      {
+        "path": "data/rfc048/raw/binance_usdm_btcusdt_5m_klines.json",
+        "git_blob": "72ffe97d2fd081c7e54fdbd85307a8e48f0cdc71",
+        "sha256": "22b37f53db1265bec9e4f6c1d2fb1fcb477788de92ffa9abda8df270e370b9cb"
+      },
+      {
+        "path": "data/rfc048/raw/binance_usdm_depth_btcusdt_100.json",
+        "git_blob": "9be6058ce8723d898e17bbe75f9628226363c35c",
+        "sha256": "786c6b99e82b167c8227573dc854ca28847cc80f1a98b76a02a2209869a11c7f"
+      },
+      {
+        "path": "data/rfc048/raw/binance_usdm_exchange_info.json",
+        "git_blob": "bafff5f0f8139b336d4fd274559ee442ac89f4eb",
+        "sha256": "ea25e393baac13a118cdb94072f6d70f6fa814cb802f3c16dc9ee3655d19b626"
+      },
+      {
+        "path": "data/rfc048/raw/binance_usdm_funding_rate_btcusdt.json",
+        "git_blob": "42b3d14b293d83b6d76bee2cb12f76e01d4ee381",
+        "sha256": "ba6f9f9c7bb50c3ec45136de06eea16f4e57e714ca1961d56176b18829bac345"
+      },
+      {
+        "path": "data/rfc048/raw/binance_usdm_leverage_brackets_btcusdt.json",
+        "git_blob": "e91646de0b1ec971057f2663487b34de29501014",
+        "sha256": "07c298cd32e3f98b41b72d5bda0855fb14e5d091960fcd6325acbdf52dedc436"
+      },
+      {
+        "path": "data/rfc048/raw/binance_usdm_premium_index_btcusdt.json",
+        "git_blob": "3b3925df3d1b402dca491cebf840fcc7df4674f9",
+        "sha256": "6eebda570e4a0251ca1e547c4925ceedbe94bb686cd1aedd404dd58417fb407e"
+      },
+      {
+        "path": "data/rfc048/raw/esma_cfd_product_intervention_2026-02-24.html",
+        "git_blob": "7793d840e2494b163742f53bf7d18a2cd10a9556",
+        "sha256": "a15c6ee3095a334313bace2d6b4871b0862182aa267a6a6c8206a7f94ad98e0c"
+      },
+      {
+        "path": "docs/architecture/RFC048_FUTURES_RISK_FLOW.md",
+        "git_blob": "9098fd98149d54bd13559e212ac8f41a9376a4a8",
+        "sha256": "9bad07b748dd2490d1811810c8214f49cedaef56a480da30748cfd996def4433"
+      },
+      {
+        "path": "docs/architecture/RFC048_RUNTIME_AUTHORITY_MAP.md",
+        "git_blob": "689ad8284629a39225dfbe18815de97f54f57e5d",
+        "sha256": "53636712b4f3c69fef5d62b3db00664a79477e2259eb2a58e35a912913e74ba0"
+      },
+      {
+        "path": "docs/research/RFC048_FUTURES_ECONOMIC_FEASIBILITY.md",
+        "git_blob": "3ddc6ae93031f874a0c2ba4149e36d1dc0767fac",
+        "sha256": "91238ddba5c2560eeab530367598dafaac5a7b5ee5cac3c1fc85fe30dd1807a3"
+      },
+      {
+        "path": "docs/rfc/RFC-048_DETERMINISTIC_FUTURES_RISK.json",
+        "git_blob": "4f2d88d479a5953dd7ef5fb1409715d8fde475da",
+        "sha256": "6d68f3de4a07c32f1d61efedfcc91813c2ee2496229da14a2db746d524314fb1"
+      },
+      {
+        "path": "docs/rfc/RFC-048_DETERMINISTIC_FUTURES_RISK.md",
+        "git_blob": "6133ce1a897ac2cd3a5f5c94bc7fd71a50a00554",
+        "sha256": "064bd14da6cc0c4399588c383ddc4d4bac1ec36819825609068187713a3d5e95"
+      },
+      {
+        "path": "scripts/rfc048_derive_instruments.py",
+        "git_blob": "28352ea1a0e0e0da65b0a640b7616bb808d3840d",
+        "sha256": "ce2f3e9e01850b1655afcad30297c563b1e21547e1b1649cd9c599983ea3d4ea"
+      },
+      {
+        "path": "scripts/rfc048_report.py",
+        "git_blob": "f0c19a593a9a6642a7345c15c44f08b6cb3ad21e",
+        "sha256": "5a416c9c21e2b9215318da65edc9ddf9e33ee28ec12a7ce7b9fc00597aa2c117"
+      },
+      {
+        "path": "scripts/rfc048_run.py",
+        "git_blob": "e49b34db6ea9ee2a200dbd013bf3a78f4c5fd6f5",
+        "sha256": "398c0fb00c89fb4b604e6e5e35f3d6e88db22ed136de6d1e8014b004dfd3298c"
+      },
+      {
+        "path": "scripts/rfc048_verify.py",
+        "git_blob": "33d72d97e37b6618674d694ff59a2cd982e01ae7",
+        "sha256": "ee1b5b31af2045198f61be0af7159ff0bdac41b7c7fbaee910e3c36d0db681f8"
+      },
+      {
+        "path": "scripts/rfc048v_certify.py",
+        "git_blob": "989ae313c2c540aa8003aece539e4d8ca0750fb1",
+        "sha256": "7f752758e4f81acf5f0c1d174de1ccad869c79e2b9243634866f052addcf4b3e"
+      },
+      {
+        "path": "scripts/rfc048v_falsify.py",
+        "git_blob": "f34dd3c215eed6079c8a997d35e792d608f8addf",
+        "sha256": "2ac2f1c5bc529971c26e5d7e06228465dc3cebf39b41b492f0f17b57b9577009"
+      },
+      {
+        "path": "scripts/rfc048v_runtime_authority.py",
+        "git_blob": "a5c32befdfa5aa8388e2f733ad6e3b275f5fb2d8",
+        "sha256": "05527040a6b9032635b1fd5540b2275463487ba16a80f7955787054bd5530ea6"
+      },
+      {
+        "path": "src/trading_bot/risk/futures/__init__.py",
+        "git_blob": "ad83993d272e4522259f46650a9784ac4eae69ac",
+        "sha256": "d00edd9d186f6ffa2ae1cdec8a49886af4f8f3be8cc04562a5836dbbe524240d"
+      },
+      {
+        "path": "src/trading_bot/risk/futures/contracts.py",
+        "git_blob": "11ed02f33b3bb42113d0dd271bd09b10bd7ca2a9",
+        "sha256": "417c7734a8cdc75b1f4d8b4ec870d2d590ef43e090cbb079b34191a4889e0f7f"
+      },
+      {
+        "path": "src/trading_bot/risk/futures/costs.py",
+        "git_blob": "1cf193272a23732950936613c157ef935522919a",
+        "sha256": "1fa40dde2c66b1dfd23c7a5bbb7b640ec472deb37a053dc2e5eff88b03d19717"
+      },
+      {
+        "path": "src/trading_bot/risk/futures/engine.py",
+        "git_blob": "69cb782291d26402982aaa72deb878ed628aa53b",
+        "sha256": "39d7ecac026c1f577be11a0ee87675d88db8a882ab2d1a95b5a115f281cc24a9"
+      },
+      {
+        "path": "src/trading_bot/risk/futures/instruments.py",
+        "git_blob": "e0de32be317904098e1f2d0d6368dd36a883832d",
+        "sha256": "a3e42dbdb4a8b0f0d2774f62fd26e2fc4557adb4f0f0053effde1c4c21439f8e"
+      },
+      {
+        "path": "src/trading_bot/risk/futures/integration.py",
+        "git_blob": "1ec021cba10ccbdcc1be814542ec58c57efc7192",
+        "sha256": "9ecd76a85a3306e3d6d291b56ec304a252e26befe2ab2e7448b9893f9dbe01af"
+      },
+      {
+        "path": "src/trading_bot/risk/futures/margin.py",
+        "git_blob": "0d75936ccd33d33fd018f98d005b44732e8757ef",
+        "sha256": "bd7692137677a796407f2ab2437f21b2ef185fcf545842b07e8d2582f8675927"
+      },
+      {
+        "path": "src/trading_bot/risk/futures/portfolio.py",
+        "git_blob": "ab731d2db34f107ae28dc78f178cff7e9c481076",
+        "sha256": "7a2657e7399cc61de0b186c958e08716a9ff34f72da65fd30a549c6418ad0a40"
+      },
+      {
+        "path": "src/trading_bot/risk/futures/sizing.py",
+        "git_blob": "19244d4e5642485777ac6c68378043664c623840",
+        "sha256": "881556c07aa3fb8814759249e11288f0ea66e95e51ca4f6a8430fcdb3a3018b7"
+      },
+      {
+        "path": "src/trading_bot/risk/futures_falsification.py",
+        "git_blob": "e56000a51c87b2c55fe7fc75ea70d0cf2a7b5301",
+        "sha256": "25d15f7688e90547b246de39a6992a01ccbb1ce29ccdf2fca859ddde87549717"
+      },
+      {
+        "path": "src/trading_bot/risk/futures_verification.py",
+        "git_blob": "4aef11702f66e5851142401fa13997a12189a6bf",
+        "sha256": "de66b36ff07939eb5864676dbc291eaafca418a0fae5336c896d0fac675a2b81"
+      },
+      {
+        "path": "tests/unit/risk/test_futures_falsification_regressions.py",
+        "git_blob": "223c8f4ad5456fd466d0985140c9bdd8ce42c735",
+        "sha256": "b1353f6bdb1f8cfe875bb65201d89a512dbeecaaa14f2fcd84e52cdd2b0e77d4"
+      },
+      {
+        "path": "tests/unit/risk/test_futures_independent_verifier.py",
+        "git_blob": "82ab76a62e64e5330bfa8492a93f496473e70506",
+        "sha256": "e19a8d5f2e619c2565d8082979ebe152b40f5ac76eb560cc7875d3a5c7434e76"
+      },
+      {
+        "path": "tests/unit/risk/test_futures_risk_engine.py",
+        "git_blob": "5c28623252fffc844a3cdd3b9d6ed4cc1cdd4448",
+        "sha256": "86f3bb2793605c2de210a02e189576422951626afe7ebc45fbe8515d0f48e21e"
+      },
+      {
+        "path": "tests/unit/risk/test_futures_runtime_integration.py",
+        "git_blob": "932481c0cc80bb20cacbc7cd78ba92ce22475096",
+        "sha256": "49dbbf5424a92cf194dae042856ba0dd84db2458c2d0ce4dab70d063024761cb"
+      }
+    ],
+    "file_count": 50,
+    "uncommitted_at_generation": [
+      "M data/rfc048/ADVERSARIAL_FINDINGS.json",
+      " M data/rfc048/ADVERSARIAL_FINDINGS.md",
+      " M data/rfc048/INDEPENDENT_VERIFICATION.json",
+      " M data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.json",
+      " M data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.md",
+      " M scripts/rfc048v_certify.py"
+    ],
+    "self_referential_excluded": [
+      "data/rfc048/FINAL_CERTIFICATION_REPORT.json",
+      "data/rfc048/FINAL_CERTIFICATION_REPORT.md",
+      "data/rfc048/INDEPENDENT_CERTIFICATION.json",
+      "data/rfc048/INDEPENDENT_CERTIFICATION.md"
+    ],
+    "self_reference_note": "a file cannot certify its own bytes; the excluded certificate files are hashed by DELIVERY_COMMIT_VERIFICATION.{json,md}, written after them"
+  },
+  "manifest_digest": "4ee673cc040a7ded5e3c6807f5e7a50fa66d92a1c0a954d7fdf9a8657772b6a9",
+  "state_change": {
+    "delivered_paths_dirty_at_generation": [
+      "M data/rfc048/ADVERSARIAL_FINDINGS.json",
+      " M data/rfc048/ADVERSARIAL_FINDINGS.md",
+      " M data/rfc048/INDEPENDENT_VERIFICATION.json",
+      " M data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.json",
+      " M data/rfc048/RUNTIME_AUTHORITY_VERIFICATION.md",
+      " M scripts/rfc048v_certify.py"
+    ],
+    "regenerated_artefacts": {
+      "data/rfc048/RUNTIME_EXECUTION_REPORT.json": {
+        "changed_fields": [
+          {
+            "field": "concurrency.approved_count",
+            "before": 8,
+            "after": 6
+          },
+          {
+            "field": "concurrency.ledger_free",
+            "before": 67.999921229,
+            "after": 100.9999409217
+          },
+          {
+            "field": "concurrency.ledger_reserved",
+            "before": 132.000078771,
+            "after": 99.0000590783
+          },
+          {
+            "field": "concurrency.refusal_reasons",
+            "before": [],
+            "after": [
+              "MARGIN_UTILIZATION_LIMIT"
+            ]
+          },
+          {
+            "field": "concurrency.refused_count",
+            "before": 0,
+            "after": 2
+          },
+          {
+            "field": "concurrency.sum_approved_margin",
+            "before": 132.000078771,
+            "after": 99.0000590783
+          },
+          {
+            "field": "current_head",
+            "before": "66cfe0867bfbfbc9fd31b37e7d500f40f6a0c6af",
+            "after": "19b1a0bf4dd1e6f042d4dc367dd83e939b44e20c"
+          },
+          {
+            "field": "duration_seconds",
+            "before": 0.022,
+            "after": 0.033
+          },
+          {
+            "field": "generated_at_utc",
+            "before": "2026-10-09T22:52:19Z",
+            "after": "2026-10-10T08:58:07Z"
+          }
+        ],
+        "concurrency_before": {
+          "probe": "8 concurrent decisions on one equity pool of 200 USDT",
+          "approved_count": 8,
+          "refused_count": 0,
+          "sum_approved_margin": 132.000078771,
+          "ledger_reserved": 132.000078771,
+          "ledger_free": 67.999921229,
+          "equity": 200.0,
+          "invariant_holds": true,
+          "refusal_reasons": []
+        },
+        "concurrency_after": {
+          "probe": "8 concurrent decisions on one equity pool of 200 USDT",
+          "approved_count": 6,
+          "refused_count": 2,
+          "sum_approved_margin": 99.0000590783,
+          "ledger_reserved": 99.0000590783,
+          "ledger_free": 100.9999409217,
+          "equity": 200.0,
+          "invariant_holds": true,
+          "refusal_reasons": [
+            "MARGIN_UTILIZATION_LIMIT"
+          ]
+        },
+        "interpretation": "the concurrency probe runs 8 simultaneous decisions on one equity pool; before the aggregate ceiling was enforced on the live reservation all 8 were approved (132 USDT reserved), after it 6 are approved and 2 are refused by MARGIN_UTILIZATION_LIMIT (99 USDT reserved). The refusals are the fix, not a regression."
+      },
+      "data/rfc048/INDEPENDENT_VERIFICATION.json": {
+        "changed_fields": [
+          {
+            "field": "generated_at_utc",
+            "before": "2026-10-09T22:59:26Z",
+            "after": "2026-10-10T09:29:38Z"
+          }
+        ],
+        "decision_level_unchanged": true,
+        "interpretation": "only the generation timestamp moved: the RFC-048 verifier returned VERIFIED against the pre-fix engine too, because it re-derives the recorded decision catalogue and that catalogue never stepped on a non-finite input, a repeated decision id or an aggregate ceiling. That is a coverage limitation of the RFC-048 verification, and it is why RFC-048V adds a generative falsifier and a runtime-authority probe instead of re-running the verifier alone."
+      }
+    },
+    "concurrency_field_changes": [
+      {
+        "field": "concurrency.approved_count",
+        "before": 8,
+        "after": 6
+      },
+      {
+        "field": "concurrency.ledger_free",
+        "before": 67.999921229,
+        "after": 100.9999409217
+      },
+      {
+        "field": "concurrency.ledger_reserved",
+        "before": 132.000078771,
+        "after": 99.0000590783
+      },
+      {
+        "field": "concurrency.refusal_reasons",
+        "before": [],
+        "after": [
+          "MARGIN_UTILIZATION_LIMIT"
+        ]
+      },
+      {
+        "field": "concurrency.refused_count",
+        "before": 0,
+        "after": 2
+      },
+      {
+        "field": "concurrency.sum_approved_margin",
+        "before": 132.000078771,
+        "after": 99.0000590783
+      }
+    ],
+    "notes": [
+      "no delivered artefact was hand-edited: both regenerated files are the output of their own generator against the corrected engine",
+      "the defects were found by the adversarial search, not by the RFC-048 verifier, and the original counterexamples are preserved in ADVERSARIAL_FINDINGS.{md,json}"
+    ]
+  },
+  "attack_family_coverage": {
+    "families": [
+      {
+        "family": "equity near zero",
+        "evidence": [
+          "S07",
+          "S16"
+        ],
+        "outcomes": [
+          "S07=NO_TRADE",
+          "S16=NO_TRADE"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "margin nearly exhausted",
+        "evidence": [
+          "S08"
+        ],
+        "outcomes": [
+          "S08=NO_TRADE"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "stop too close",
+        "evidence": [
+          "S09",
+          "S10"
+        ],
+        "outcomes": [
+          "S09=RISK_VETO",
+          "S10=RISK_VETO"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "stops with gaps",
+        "evidence": [
+          "S12",
+          "S24",
+          "S27"
+        ],
+        "outcomes": [
+          "S12=RISK_VETO",
+          "S24=RISK_VETO",
+          "S27=RISK_VETO"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "leverage above the admissible level",
+        "evidence": [
+          "S23",
+          "S31"
+        ],
+        "outcomes": [
+          "S23=REDUCE_SIMULATED_SIZE",
+          "S31=RISK_VETO"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "stale or future data",
+        "evidence": [
+          "S18",
+          "S19"
+        ],
+        "outcomes": [
+          "S18=DATA_INVALID",
+          "S19=DATA_INVALID"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "funding absent or adverse",
+        "evidence": [
+          "S14",
+          "S13"
+        ],
+        "outcomes": [
+          "S14=NO_TRADE",
+          "S13=REDUCE_SIMULATED_SIZE"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "commissions omitted or unknown",
+        "evidence": [
+          "S21",
+          "S15"
+        ],
+        "outcomes": [
+          "S21=NO_TRADE",
+          "S15=NO_TRADE"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "liquidation before the stop",
+        "evidence": [
+          "S11"
+        ],
+        "outcomes": [
+          "S11=RISK_VETO"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "maintenance bracket change",
+        "evidence": [
+          "S12",
+          "S24",
+          "S31"
+        ],
+        "outcomes": [
+          "S12=RISK_VETO",
+          "S24=RISK_VETO",
+          "S31=RISK_VETO"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "quantity rounding",
+        "evidence": [
+          "I10_ROUNDING_REDUCES"
+        ],
+        "outcomes": [
+          "I10_ROUNDING_REDUCES=HELD"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "non-finite, overflow and infinities",
+        "evidence": [
+          "DEF-048V-01",
+          "DEF-048V-02",
+          "DEF-048V-05"
+        ],
+        "outcomes": [
+          "DEF-048V-01=FIXED",
+          "DEF-048V-02=FIXED",
+          "DEF-048V-05=FIXED"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "adverse mark price",
+        "evidence": [
+          "S12",
+          "S24",
+          "S25"
+        ],
+        "outcomes": [
+          "S12=RISK_VETO",
+          "S24=RISK_VETO",
+          "S25=RISK_VETO"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "long and short",
+        "evidence": [
+          "S01",
+          "S02",
+          "S24",
+          "S31"
+        ],
+        "outcomes": [
+          "S01=REDUCE_SIMULATED_SIZE",
+          "S02=REDUCE_SIMULATED_SIZE",
+          "S24=RISK_VETO",
+          "S31=RISK_VETO"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "several correlated assets",
+        "evidence": [
+          "S22"
+        ],
+        "outcomes": [
+          "S22=NO_TRADE"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "double concurrent reserve",
+        "evidence": [
+          "simultaneous_reserve",
+          "reserve_release_storm"
+        ],
+        "outcomes": [
+          "simultaneous_reserve=invariants_hold",
+          "reserve_release_storm=invariants_hold"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "repeated decision id",
+        "evidence": [
+          "retry_same_decision",
+          "DEF-048V-03"
+        ],
+        "outcomes": [
+          "retry_same_decision=invariants_hold",
+          "DEF-048V-03=FIXED"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      },
+      {
+        "family": "portfolio snapshot skew",
+        "evidence": [
+          "snapshot_skew"
+        ],
+        "outcomes": [
+          "snapshot_skew=invariants_hold"
+        ],
+        "unresolved_evidence": [],
+        "covered": true
+      }
+    ],
+    "covered_count": 18,
+    "total": 18,
+    "catalogue_classifications": {
+      "AGREE": 27,
+      "CONSERVATIVE_DIVERGENCE": 4
+    },
+    "passed": true
+  },
+  "false_success": 0,
+  "notes": [
+    "the certification is generated against the working tree that is then committed; --verify-commit re-checks the delivered blobs read-only",
+    "FALSE_SUCCESS counts every false approval across the independent verifier, the adversarial campaign and the verifier's exit code",
+    "the repo-wide suite is recorded with the ownership of every failure: a failure that disappears in isolation and whose observation window is provably written by foreign processes is reported as EXTERNAL_NON_HERMETIC, never silently excluded and never counted as a pass"
+  ],
+  "duration_seconds": 635.015
+}

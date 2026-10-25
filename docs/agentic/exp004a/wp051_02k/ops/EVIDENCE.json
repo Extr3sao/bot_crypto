@@ -1,0 +1,317 @@
+{
+  "schema_version": "EXP004A_WP051_02K_OPS_EVIDENCE_V1",
+  "generated_at_utc": "2026-10-24T07:21:30+00:00",
+  "pin": {
+    "command": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\.venv\\Scripts\\python.exe -c import sys; sys.path.insert(0,'src')\nfrom trading_bot.research.edge03 import forward_plan as FP\ntry:\n    print('PIN_OK', FP.assert_frozen_corpus())\nexcept Exception as exc:\n    print('PIN_FAIL', type(exc).__name__, exc)\n    raise SystemExit(3)\n",
+    "exit_code": 3,
+    "stdout_tail": [
+      "PIN_FAIL FileNotFoundError [Errno 2] No such file or directory: 'C:\\\\Users\\\\GVLLFR0035\\\\Downloads\\\\exp004a-recovery-02k\\\\data\\\\raw\\\\alpha003\\\\price\\\\BTCUSDT_15m.json'"
+    ],
+    "verdict": "PIN_REFUSES"
+  },
+  "corpus": {
+    "one_hour": {
+      "accepted": [
+        {
+          "asset": "BTC",
+          "bars": 62724,
+          "first_ts": 1546300800000,
+          "last_ts": 1772319600000,
+          "corpus_digest": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57",
+          "frozen_prefix16": "f4d16c3664c142d1",
+          "matches": true
+        },
+        {
+          "asset": "ETH",
+          "bars": 62724,
+          "first_ts": 1546300800000,
+          "last_ts": 1772319600000,
+          "corpus_digest": "365046d4738aa7b1dee89a8fc2a544cdfa80b1b6d64ee66a207f504de85afab9",
+          "frozen_prefix16": "365046d4738aa7b1",
+          "matches": true
+        },
+        {
+          "asset": "SOL",
+          "bars": 48646,
+          "first_ts": 1597125600000,
+          "last_ts": 1772319600000,
+          "corpus_digest": "847d8eb45eafebd80825f3146c47e3ef34c829516ea5f8501664655f04ff1613",
+          "frozen_prefix16": "847d8eb45eafebd8",
+          "matches": true
+        }
+      ],
+      "verdict": "RESTORED_AND_PINNED"
+    },
+    "fifteen_minutes": {
+      "attempts": [
+        {
+          "asset": "BTC",
+          "window_bars": 38994,
+          "bytes": 4497772,
+          "published_bytes": 4497888,
+          "bytes_short": 116,
+          "sha256": "6e18d6f0a1d3cd6ac67c7ef5d5381ebcc35dd89bc98089a1b4d240945d7addf5",
+          "published_sha256": "60b0630153dc8e879d63c9691712c8e15d06ede0cc2ae815725340e44c4e9d7f",
+          "sha256_matches": false,
+          "digest_matches": false
+        },
+        {
+          "asset": "ETH",
+          "window_bars": 40152,
+          "bytes": 4466430,
+          "published_bytes": 4466466,
+          "bytes_short": 36,
+          "sha256": "fcc4fe7670abaf7c82d6a2bdd8df3d3a791ae851cf8b7c7f2a515bb67c239343",
+          "published_sha256": "b3b1f02e9a299500b77fc3b8d31a31c3856820daa1c99bba3921d74cec5b943e",
+          "sha256_matches": false,
+          "digest_matches": false
+        },
+        {
+          "asset": "SOL",
+          "window_bars": 40095,
+          "bytes": 4222969,
+          "published_bytes": 4223041,
+          "bytes_short": 72,
+          "sha256": "0af9b52866a4c7040c26bd12548ad88b35a58150adcfab56aae5a18cf5e90c03",
+          "published_sha256": "d3a637c2f5e98c121f8d197bf8b15229d7ec754d41d59bebf2de2e232a99d0ed",
+          "sha256_matches": false,
+          "digest_matches": false
+        }
+      ],
+      "verdict": "NOT_REPRODUCIBLE"
+    },
+    "written_into_the_tree": [
+      {
+        "name": "BTCUSDT_2019.json",
+        "bytes": 989902,
+        "sha256": "946d740d5e8b40bfa253c6ffc6e521b78c0dddd702692673aa06d3a5314de9b5"
+      },
+      {
+        "name": "BTCUSDT_2020.json",
+        "bytes": 1004906,
+        "sha256": "359ff3513778c162b23166960c0916565ff0f038b643b23b07de4d68dab88875"
+      },
+      {
+        "name": "BTCUSDT_2021.json",
+        "bytes": 1019339,
+        "sha256": "b985451d17b6035c81b838755f88b2cb47ec8734ac5919b78ca0b08082125def"
+      },
+      {
+        "name": "BTCUSDT_2022.json",
+        "bytes": 1017919,
+        "sha256": "4e9d7f77f9bcf531c68a31eb6c44f53dc128baa22be3927f8117fc0712010445"
+      },
+      {
+        "name": "BTCUSDT_2023.json",
+        "bytes": 1014506,
+        "sha256": "f96a0e3f0412cbe4840e5a42153ec6f7f32cf685e01cd40f2ee52f6a949077fe"
+      },
+      {
+        "name": "BTCUSDT_2024.json",
+        "bytes": 1012715,
+        "sha256": "8596e13b902fc53fa79dbf04daedd941988fed849dcc26f250dca355bbf1eaa9"
+      },
+      {
+        "name": "BTCUSDT_2025.json",
+        "bytes": 1029688,
+        "sha256": "e452d76f74910e7905ac7655252642f9ae7c64c42ab320bac07b1acfc193c41b"
+      },
+      {
+        "name": "BTCUSDT_2026.json",
+        "bytes": 163207,
+        "sha256": "b9beff1b0c083297029af917ff5bba83099530c283ff3bd6941c08cfe7fc3236"
+      },
+      {
+        "name": "ETHUSDT_2019.json",
+        "bytes": 950448,
+        "sha256": "6cd04b81dfff2e5636c72439465473618255a0456df31eba234b824d5459713d"
+      },
+      {
+        "name": "ETHUSDT_2020.json",
+        "bytes": 957157,
+        "sha256": "c1e64b6e40ccdab0955e97de9cd93ee8d679247ad873a94dfacd3491573b73c7"
+      },
+      {
+        "name": "ETHUSDT_2021.json",
+        "bytes": 985846,
+        "sha256": "111347358a455cbf163ab268238e9638f47508e7d63ecda55e820f7f23e250f4"
+      },
+      {
+        "name": "ETHUSDT_2022.json",
+        "bytes": 981976,
+        "sha256": "25fb24fa9988761a5a94223cc4b0a15af063190548ef880e6d87274c42471d7f"
+      },
+      {
+        "name": "ETHUSDT_2023.json",
+        "bytes": 978974,
+        "sha256": "149ac097ee475b81f716dfa091452b5b8111d16427b5431ffa182a5184125d70"
+      },
+      {
+        "name": "ETHUSDT_2024.json",
+        "bytes": 979567,
+        "sha256": "0a563ecc01e89a9abc9f670a097793c9d2bda10f67deae1bf6c0b1b455370ecd"
+      },
+      {
+        "name": "ETHUSDT_2025.json",
+        "bytes": 980057,
+        "sha256": "63c97ede498fdf27500f4b34bad12a4942368056f0b819bbe12e5269ff8ea073"
+      },
+      {
+        "name": "ETHUSDT_2026.json",
+        "bytes": 158546,
+        "sha256": "9bf01bbd60bdca97020499ac74fee7f83fcaac6619c90a0cf37190a799a2995d"
+      },
+      {
+        "name": "SOLUSDT_2020.json",
+        "bytes": 362508,
+        "sha256": "b8ccf615b9ddb5f75805f0f8b89b42fa42eae430b967e1409f080e7840534d89"
+      },
+      {
+        "name": "SOLUSDT_2021.json",
+        "bytes": 941344,
+        "sha256": "b1e962caff254657adf54a30205a19b689c56ed0b13a5faf275cc6f3e07eb0bf"
+      },
+      {
+        "name": "SOLUSDT_2022.json",
+        "bytes": 908101,
+        "sha256": "39b14e77e914c83124d79511b748f2d346045a1a4f0dce32c1990eac615f7b55"
+      },
+      {
+        "name": "SOLUSDT_2023.json",
+        "bytes": 903737,
+        "sha256": "edd5fa55da50d478bbd3ef54d3a5db2eb919b27ced40b8e7ca9d97f5a3d53a0b"
+      },
+      {
+        "name": "SOLUSDT_2024.json",
+        "bytes": 943374,
+        "sha256": "f1c68533ff3fd0b6ed2efecb0c9e2d89b274497c34be04d09f7d9742f9f49d65"
+      },
+      {
+        "name": "SOLUSDT_2025.json",
+        "bytes": 946454,
+        "sha256": "93e6bd38253327c79e81befb443ae5cbaee9fc715e94a317ef383c80ae288839"
+      },
+      {
+        "name": "SOLUSDT_2026.json",
+        "bytes": 150369,
+        "sha256": "8416595c7b42adcd6019fd5cf028d340eaf1640c8e96d7f3a123fff49ef21577"
+      }
+    ],
+    "acceptance": "1h accepted only when the corpus digest equals FROZEN_SHARD_SHA256; 15m only when the shard bytes hash to the sha256 published before this recovery"
+  },
+  "search": {
+    "C:": {
+      "source": "C:/Users/GVLLFR0035/AppData/Local/Temp/wp02k/find_corpus.txt",
+      "completed": true,
+      "hits": 27,
+      "shard_hits": 0,
+      "alpha_expansion_hits": 1,
+      "sample": [
+        "/c/Users/GVLLFR0035/AppData/Local/Temp/g1-verify-m7wadd9d/baseline/tree/data/edge07/holdout-1h/_FETCH_MANIFEST.json",
+        "/c/Users/GVLLFR0035/AppData/Local/Temp/g1-verify-m7wadd9d/baseline/tree/data/edge08/universe-1h/_FETCH_MANIFEST.json",
+        "/c/Users/GVLLFR0035/AppData/Local/Temp/g1-verify-m7wadd9d/tree/data/edge07/holdout-1h/_FETCH_MANIFEST.json",
+        "/c/Users/GVLLFR0035/AppData/Local/Temp/g1-verify-m7wadd9d/tree/data/edge08/universe-1h/_FETCH_MANIFEST.json",
+        "/c/Users/GVLLFR0035/AppData/Local/Temp/gcheck/tree/data/edge07/holdout-1h/_FETCH_MANIFEST.json"
+      ]
+    },
+    "G:": {
+      "source": "C:/Users/GVLLFR0035/AppData/Local/Temp/wp02k/find_g.txt",
+      "completed": true,
+      "hits": 0,
+      "shard_hits": 0,
+      "alpha_expansion_hits": 0,
+      "sample": []
+    }
+  },
+  "campaign": {
+    "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\data\\forward\\edge04r01",
+    "rows": [
+      {
+        "run_id": "FWD-EDGE04-20261024T071500Z",
+        "slot_key": "2026-10-24T07:15Z",
+        "mode": "MANUAL",
+        "outcome": "RUNTIME_EXCEPTION",
+        "exit_code": 1,
+        "error_class": "FileNotFoundError",
+        "payload_error": "FileNotFoundError(2, 'No such file or directory')",
+        "duration_seconds": 21.676,
+        "started_at_utc": "2026-10-24T07:15:53Z",
+        "free_gib": 39.7102
+      },
+      {
+        "run_id": "FWD-EDGE04-20261024T071500Z",
+        "slot_key": "2026-10-24T07:15Z",
+        "mode": "MANUAL",
+        "outcome": "RUNTIME_EXCEPTION",
+        "exit_code": 1,
+        "error_class": "FileNotFoundError",
+        "payload_error": "FileNotFoundError(2, 'No such file or directory')",
+        "duration_seconds": 21.552,
+        "started_at_utc": "2026-10-24T07:18:21Z",
+        "free_gib": 39.4224
+      }
+    ],
+    "distinct_run_ids": [
+      "FWD-EDGE04-20261024T071500Z"
+    ],
+    "lease_dir_empty": true,
+    "artifacts": [
+      "ALERT_LEDGER.jsonl",
+      "SUPERVISOR.json",
+      "WATCHDOG.json",
+      "WATCHDOG_EVENTS.jsonl",
+      "alerts.jsonl",
+      "health.json",
+      "resource_budget.json",
+      "runs.jsonl"
+    ],
+    "released_after_failure": true,
+    "observation_produced": false,
+    "resumed_on_the_same_slot": true
+  },
+  "verifiers": {
+    "wp051_02k_verify": {
+      "exit_code": 1,
+      "summary": [
+        "11/18 PASS, 7 FAIL -> FAIL"
+      ],
+      "artifact": "VERIFIER_02K.stdout.txt"
+    },
+    "edge04_verify": {
+      "exit_code": 1,
+      "summary": [
+        "verdict  VERIFY_FAIL  (7/15)"
+      ],
+      "artifact": "VERIFIER_EDGE04.json"
+    }
+  },
+  "provenance": {
+    "repo": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k",
+    "head": "9983b050c8e241ef9d8365c8ffc33c95df1658dd",
+    "branch": "recovery/exp004a-02k-9983b050",
+    "dirty_paths": [
+      "M docs/agentic/exp004a/wp051_02k/INDEPENDENT_VERIFICATION_02K.json",
+      " M scripts/edge04_watchdog.py",
+      "?? docs/agentic/exp004a/wp051_02k/continuation/",
+      "?? scripts/exp004a_wp051_02k_continue.py",
+      "?? scripts/exp004a_wp051_02k_recovery_audit.py",
+      "?? scripts/exp004a_wp051_02k_verify_continue.py",
+      "?? tests/unit/research/test_exp004a_wp051_02k_continue.py"
+    ],
+    "guard_sha256": "74f75c3481ed7552c49abd47827256524e2bd76370bc4938b5fec2552e1c64f8",
+    "guard_diff_stat": "scripts/edge04_watchdog.py | 15 ++++++++++++++-\n 1 file changed, 14 insertions(+), 1 deletion(-)"
+  },
+  "builder_verifier_separation": {
+    "builder": [
+      "scripts/edge04_observer.py (the tick that failed)",
+      "docs/agentic/exp004a/wp051_02k/ops/recover_frozen_corpus.py (the corpus fetch)",
+      "docs/agentic/exp004a/wp051_02k/ops/verify_guard.py (the guard harness)"
+    ],
+    "verifier": [
+      "scripts/exp004a_wp051_02k_verify.py (sealed in 9983b050)",
+      "scripts/edge04_verify.py (sealed in 9983b050)"
+    ],
+    "collector_is_independent": false,
+    "note": "this collector is builder tooling; it records the sealed verifiers' exit codes verbatim rather than restating their conclusions as its own"
+  }
+}

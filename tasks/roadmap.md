@@ -99,6 +99,21 @@
 - Kill switch probado en condiciones reales.
 - Release gate completo.
 
+## Fase 10 - Investigacion cuantitativa controlada (RFC-046)
+
+- Vehiculo: `docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md` — `APPROVED / ACTIVE` desde 2026-10-08 (ADR-0024).
+- Alcance: investigacion **offline** con presupuesto cerrado (3 hipotesis maximo, 1 candidata por
+  hipotesis); sin promocion automatica a paper ni a live.
+- Puertas: `PROFITABILITY_GATE_V1` (`docs/rfc/RFC-046_CONTROLLED_DISCOVERY.json`) y el coste auditado
+  de **23.7906 bps** round-trip (Binance Spot VIP0, taker, ~1.000 USD notional; stress 1.5x = 35.6859 bps).
+- Politicas: admision `docs/governance/DISCOVERY_ADMISSION_POLICY.md`, parada
+  `docs/governance/DISCOVERY_STOP_RULES.md`, flujo `docs/architecture/DISCOVERY_EXECUTION_FLOW.md`.
+- Evidencia: cada ejecucion versiona `RUN_REPORT.md` / `RUN_REPORT.json`; `FALSE_SUCCESS = 0`;
+  `BUILDER != VERIFIER`.
+- Parada: agotado el presupuesto se emite `DISCOVERY_CAMPAIGN_FAILED` (por candidata:
+  `CANDIDATE_REJECTED`) y la campana se detiene **sin refill automatico** de hipotesis.
+- Runtime invariante: `LIVE_TRADING = DISABLED`, `TRADES_AUTHORIZED = 0`, `G_BUSINESS_REENTRY != PASS`.
+
 ## Regla de salto
 
 Cada fase tiene una puerta que solo se abre si:

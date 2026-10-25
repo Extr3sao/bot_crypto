@@ -1,0 +1,591 @@
+{
+  "artifact": "WP9_ACTIVE_ECONOMIC_BLOCKERS",
+  "work_package": "WP-9E (ACTIVE ECONOMIC STATUS)",
+  "generated_at_utc": "2026-10-11T20:53:15Z",
+  "mode": "OFFLINE READ-ONLY AUDIT \u2014 nothing run, no threshold changed, no campaign started",
+  "sources": {
+    "data/recovery/ACTIVE_ECONOMIC_AUDIT.json": "WP-3 economic audit: per-strategy reconstruction + failure taxonomy",
+    "config/strategy_admission.json": "the tracked admission ledger (the only source of 'may this run PAPER?')",
+    "docs/roadmap/RFC_REGISTRY.json": "RFC registry (its next-free field is stale and is not trusted)",
+    "data/recovery/ACTIVE_RECOVERY_ROADMAP.md": "WP-4 roadmap: candidate experiments E-1..E-5 with kill criteria"
+  },
+  "blockers": [
+    {
+      "bucket": "NO_ECONOMIC_ADVANTAGE",
+      "reads": "no gross alpha to begin with, before any cost is applied",
+      "taxonomy_categories": [
+        "NO_ALPHA"
+      ],
+      "primary_count": 17,
+      "flagged_count": 0,
+      "primary_strategies": [
+        "breakout@15m",
+        "breakout@1h",
+        "breakout@30m",
+        "breakout@5m",
+        "ema_crossover@15m",
+        "ema_crossover@1h",
+        "ema_crossover@30m",
+        "ema_crossover@5m",
+        "mean_reversion@1h",
+        "momentum@15m",
+        "momentum@1h",
+        "momentum@30m",
+        "momentum@5m",
+        "trend@1h",
+        "trend@5m",
+        "volatility@15m",
+        "volatility@5m"
+      ],
+      "flagged_strategies": []
+    },
+    {
+      "bucket": "EXECUTION_COSTS",
+      "reads": "a gross edge that does not survive the round trip",
+      "taxonomy_categories": [
+        "EXECUTION_COST"
+      ],
+      "primary_count": 7,
+      "flagged_count": 17,
+      "primary_strategies": [
+        "mean_reversion@15m",
+        "mean_reversion@30m",
+        "mean_reversion@5m",
+        "trend@15m",
+        "trend@30m",
+        "volatility@1h",
+        "volatility@30m"
+      ],
+      "flagged_strategies": [
+        "breakout@15m",
+        "breakout@1h",
+        "breakout@30m",
+        "breakout@5m",
+        "ema_crossover@15m",
+        "ema_crossover@1h",
+        "ema_crossover@30m",
+        "ema_crossover@5m",
+        "mean_reversion@1h",
+        "momentum@15m",
+        "momentum@1h",
+        "momentum@30m",
+        "momentum@5m",
+        "trend@1h",
+        "trend@5m",
+        "volatility@15m",
+        "volatility@5m"
+      ]
+    },
+    {
+      "bucket": "INSUFFICIENT_DATA",
+      "reads": "evidence the audit could not measure (no published drawdown, no observed spread) or a sample below the pre-registered bar",
+      "taxonomy_categories": [
+        "DATA_QUALITY",
+        "INSUFFICIENT_SAMPLE"
+      ],
+      "primary_count": 0,
+      "flagged_count": 24,
+      "primary_strategies": [],
+      "flagged_strategies": [
+        "breakout@15m",
+        "breakout@1h",
+        "breakout@30m",
+        "breakout@5m",
+        "ema_crossover@15m",
+        "ema_crossover@1h",
+        "ema_crossover@30m",
+        "ema_crossover@5m",
+        "mean_reversion@15m",
+        "mean_reversion@1h",
+        "mean_reversion@30m",
+        "mean_reversion@5m",
+        "momentum@15m",
+        "momentum@1h",
+        "momentum@30m",
+        "momentum@5m",
+        "trend@15m",
+        "trend@1h",
+        "trend@30m",
+        "trend@5m",
+        "volatility@15m",
+        "volatility@1h",
+        "volatility@30m",
+        "volatility@5m"
+      ]
+    },
+    {
+      "bucket": "ROBUSTNESS",
+      "reads": "sign or magnitude that does not survive a regime change or a parameter neighbourhood",
+      "taxonomy_categories": [
+        "REGIME_MISMATCH",
+        "ROBUSTNESS_FAILURE"
+      ],
+      "primary_count": 0,
+      "flagged_count": 18,
+      "primary_strategies": [],
+      "flagged_strategies": [
+        "breakout@1h",
+        "breakout@30m",
+        "ema_crossover@15m",
+        "ema_crossover@1h",
+        "ema_crossover@30m",
+        "ema_crossover@5m",
+        "mean_reversion@1h",
+        "mean_reversion@30m",
+        "mean_reversion@5m",
+        "momentum@15m",
+        "momentum@1h",
+        "momentum@30m",
+        "trend@15m",
+        "trend@1h",
+        "trend@30m",
+        "trend@5m",
+        "volatility@1h",
+        "volatility@30m"
+      ]
+    },
+    {
+      "bucket": "RUNTIME_FAILURE",
+      "reads": "a defect in the pipeline itself rather than in the hypothesis",
+      "taxonomy_categories": [
+        "IMPLEMENTATION_DEFECT"
+      ],
+      "primary_count": 0,
+      "flagged_count": 20,
+      "primary_strategies": [],
+      "flagged_strategies": [
+        "breakout@15m",
+        "breakout@1h",
+        "breakout@30m",
+        "breakout@5m",
+        "mean_reversion@15m",
+        "mean_reversion@1h",
+        "mean_reversion@30m",
+        "mean_reversion@5m",
+        "momentum@15m",
+        "momentum@1h",
+        "momentum@30m",
+        "momentum@5m",
+        "trend@15m",
+        "trend@1h",
+        "trend@30m",
+        "trend@5m",
+        "volatility@15m",
+        "volatility@1h",
+        "volatility@30m",
+        "volatility@5m"
+      ]
+    },
+    {
+      "bucket": "GOVERNANCE",
+      "reads": "nothing may be promoted: the ledger admits no strategy and paper promotion is NOT_AUTHORIZED",
+      "taxonomy_categories": [
+        "GOVERNANCE_BLOCK"
+      ],
+      "primary_count": 0,
+      "flagged_count": 24,
+      "primary_strategies": [],
+      "flagged_strategies": [
+        "breakout@15m",
+        "breakout@1h",
+        "breakout@30m",
+        "breakout@5m",
+        "ema_crossover@15m",
+        "ema_crossover@1h",
+        "ema_crossover@30m",
+        "ema_crossover@5m",
+        "mean_reversion@15m",
+        "mean_reversion@1h",
+        "mean_reversion@30m",
+        "mean_reversion@5m",
+        "momentum@15m",
+        "momentum@1h",
+        "momentum@30m",
+        "momentum@5m",
+        "trend@15m",
+        "trend@1h",
+        "trend@30m",
+        "trend@5m",
+        "volatility@15m",
+        "volatility@1h",
+        "volatility@30m",
+        "volatility@5m"
+      ]
+    }
+  ],
+  "classification_rule": "primary = the reason the strategy failed; flagged = present and not what decided it. A category that flags everything and decides nothing describes the pipeline rather than the strategies.",
+  "strategies_total": 24,
+  "primary_classifications": 24,
+  "economics": {
+    "cost_plane_bps": 23.353553390593273,
+    "cost_plane_stress_bps": 35.03033008588991,
+    "cost_plane_reproduces_frozen_value": true,
+    "cells": [
+      {
+        "strategy_id": "volatility@30m",
+        "timeframe": "30m",
+        "ledger_status": "COST_KILLED",
+        "zero_cost_gross_bps": 8.912,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 14.4416,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "volatility@1h",
+        "timeframe": "1h",
+        "ledger_status": "COST_KILLED",
+        "zero_cost_gross_bps": 6.276,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 17.0776,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "mean_reversion@30m",
+        "timeframe": "30m",
+        "ledger_status": "COST_KILLED",
+        "zero_cost_gross_bps": 5.472,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 17.8816,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "mean_reversion@15m",
+        "timeframe": "15m",
+        "ledger_status": "COST_KILLED",
+        "zero_cost_gross_bps": 2.714,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 20.6396,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "trend@30m",
+        "timeframe": "30m",
+        "ledger_status": "COST_KILLED",
+        "zero_cost_gross_bps": 2.206,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 21.1476,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "mean_reversion@5m",
+        "timeframe": "5m",
+        "ledger_status": "COST_KILLED",
+        "zero_cost_gross_bps": 1.4854,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 21.8682,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "trend@15m",
+        "timeframe": "15m",
+        "ledger_status": "COST_KILLED",
+        "zero_cost_gross_bps": 1.284,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 22.0696,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "breakout@5m",
+        "timeframe": "5m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -0.084,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 23.4376,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "breakout@1h",
+        "timeframe": "1h",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -0.222,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 23.5756,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "ema_crossover@30m",
+        "timeframe": "30m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -0.726,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 24.0796,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "ema_crossover@1h",
+        "timeframe": "1h",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -0.964,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 24.3176,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "ema_crossover@15m",
+        "timeframe": "15m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -1.122,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 24.4756,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "trend@1h",
+        "timeframe": "1h",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -1.252,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 24.6056,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "trend@5m",
+        "timeframe": "5m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -1.6448,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 24.9984,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "breakout@30m",
+        "timeframe": "30m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -1.792,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 25.1456,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "breakout@15m",
+        "timeframe": "15m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -1.822,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 25.1756,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "momentum@5m",
+        "timeframe": "5m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -1.8835,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 25.2371,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "mean_reversion@1h",
+        "timeframe": "1h",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -2.226,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 25.5796,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "momentum@1h",
+        "timeframe": "1h",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -2.334,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 25.6876,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "momentum@30m",
+        "timeframe": "30m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -2.612,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 25.9656,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "momentum@15m",
+        "timeframe": "15m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -3.972,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 27.3256,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "ema_crossover@5m",
+        "timeframe": "5m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -4.5608,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 27.9144,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "volatility@5m",
+        "timeframe": "5m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -4.7354,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 28.089,
+        "clears_the_plane": false
+      },
+      {
+        "strategy_id": "volatility@15m",
+        "timeframe": "15m",
+        "ledger_status": "NO_GROSS_EDGE",
+        "zero_cost_gross_bps": -7.064,
+        "net_expectancy_bps": null,
+        "gap_to_cost_plane_bps": 30.4176,
+        "clears_the_plane": false
+      }
+    ],
+    "cells_gross_positive": 7,
+    "cells_clearing_the_plane": 0,
+    "best_gross_bps": 8.912,
+    "best_cell": "volatility@30m",
+    "best_cell_gap_bps": 14.4416,
+    "ledger_status_counts": {
+      "COST_KILLED": 7,
+      "NO_GROSS_EDGE": 17
+    },
+    "net_positive_count": 0,
+    "sufficient_sample_count": 23,
+    "objective": {
+      "requested": "3 operations/day, 7 days/week, multiple liquid assets when it makes sense",
+      "operations_per_day": 3.0,
+      "round_trips_per_year": 1095.0,
+      "annual_cost_bps": 25572.140962699636,
+      "annual_cost_pct_of_stake": 255.72140962699635,
+      "break_even_gross_bps_per_trip": 23.353553390593273,
+      "best_measured_gross_bps_per_trade": 8.912,
+      "assessment": "NOT_ACHIEVABLE_FROM_CURRENT_REGISTERED_FAMILIES",
+      "shortfall_per_trip_bps": 14.4416,
+      "no_forcing_note": "the objective is not a quota: no operation may be generated to satisfy a frequency target"
+    }
+  },
+  "priority_of_evidence": [
+    {
+      "priority": 1,
+      "blocker_class": "EXECUTION_COSTS",
+      "evidence_that_would_change_it": "E-1: a measured round trip on the forward book with a frozen order policy, reported as a distribution rather than a model",
+      "cost": "uses data already captured (the book is being collected); no new data window",
+      "unblocks": "the ranking of every registered family at once"
+    },
+    {
+      "priority": 2,
+      "blocker_class": "NO_ECONOMIC_ADVANTAGE",
+      "evidence_that_would_change_it": "E-2: a forward-drift entry screen at 30m, where the best gross edge lives (volatility@30m 8.912 bps)",
+      "cost": "one pre-registered candidate against the existing partitions",
+      "unblocks": "whether any entry-side variant is net-positive at all"
+    },
+    {
+      "priority": 3,
+      "blocker_class": "INSUFFICIENT_DATA",
+      "evidence_that_would_change_it": "a sealed 24 h capture window that survives the disk preflight, then the M-03 / M-07 history their gates demand (WP-9D)",
+      "cost": "72 h for a three-segment M-03, 7 days for M-07 per the pre-registration",
+      "unblocks": "the microstructure and open-interest hypotheses entirely"
+    },
+    {
+      "priority": 4,
+      "blocker_class": "RUNTIME_FAILURE",
+      "evidence_that_would_change_it": "the routing defect DEF-206, which flags 20 strategies without deciding any of them",
+      "cost": "a code change with contract tests, no new data",
+      "unblocks": "nothing economically on its own, and everything if the map order is why the wrong candidate is ranked first"
+    },
+    {
+      "priority": 5,
+      "blocker_class": "GOVERNANCE",
+      "evidence_that_would_change_it": "an admitted strategy (0 exist) plus explicit operator authorisation for paper promotion (currently NOT_AUTHORIZED)",
+      "cost": "operator decision, not data",
+      "unblocks": "paper trading, and nothing before it"
+    }
+  ],
+  "rfc_cost_and_entry": {
+    "registry": "docs/roadmap/RFC_REGISTRY.json",
+    "registry_says_next_free": "048",
+    "tree_occupancy": [
+      0,
+      10,
+      20,
+      21,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      46,
+      47,
+      48,
+      49
+    ],
+    "derived_next_free": 50,
+    "derived_from": "the highest number the working tree actually occupies, because the registry's own field is stale (it still calls 048 free while 048 and 049 are occupied)",
+    "cost_and_entry_rfc_exists": false,
+    "existing_files": [],
+    "verdict": "ABSENT \u2014 no independent cost-and-entry campaign is registered, so preparing one is not duplicating an existing line of work"
+  },
+  "governance": {
+    "ADMITTED_STRATEGIES": 0,
+    "paper_candidates": [],
+    "PAPER_PROMOTION": "NOT_AUTHORIZED",
+    "LIVE_TRADING": "DISABLED",
+    "TRADES_AUTHORIZED": 0,
+    "frozen_criteria_changed": false,
+    "r6_p2_quality": "kept separate and not used as evidence: the label does not exist in this repository, so it is an operator-side lane and is neither mapped nor inferred (WP-4 recorded the same)"
+  },
+  "checks": [
+    {
+      "check": "the ledger's status counts reconcile with the per-strategy records",
+      "result": "PASS"
+    },
+    {
+      "check": "primary and flagged taxonomy roles are not collapsed",
+      "result": "PASS"
+    },
+    {
+      "check": "the cost plane reproduces its frozen value",
+      "result": "PASS"
+    },
+    {
+      "check": "every net-positive cell is counted from the artefact, not asserted",
+      "result": "PASS"
+    },
+    {
+      "check": "no frozen criterion was modified by this audit",
+      "result": "PASS"
+    },
+    {
+      "check": "a cost-and-entry RFC is either found or prepared as a draft that cannot run",
+      "result": "PASS"
+    }
+  ],
+  "verdict": {
+    "profitable_strategies": 0,
+    "strategies_with_demonstrable_net_advantage": 0,
+    "binding_blocker": "EXECUTION_COSTS (primary for 7, flagged for 24) on top of NO_ECONOMIC_ADVANTAGE (primary for 17)",
+    "next_experiment": "E-1 \u2014 measure the cost plane; then E-2 \u2014 the 30m entry screen",
+    "ledger_entries": 24
+  },
+  "draft_rfc": {
+    "number": 50,
+    "status": "DRAFT",
+    "authorized": false,
+    "path": "data/recovery/wp9/RFC_050_COST_AND_ENTRY_DRAFT.md"
+  }
+}

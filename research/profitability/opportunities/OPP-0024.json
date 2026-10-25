@@ -1,0 +1,79 @@
+{
+  "opportunity_id": "OPP-0024",
+  "title": "Multi-Band Comparison Strategy (CRYPTO) — published Pine Script strategy",
+  "source_ids": [
+    "S2-37"
+  ],
+  "economic_hypothesis": "none read",
+  "market": "crypto",
+  "assets": "the script runs on whatever symbol the user charts",
+  "timeframe": "the chart timeframe is the user's choice",
+  "entry_rules": "the code was not read at this level",
+  "exit_rules": "UNKNOWN; UNKNOWN; UNKNOWN; UNKNOWN",
+  "risk_rules": "UNKNOWN; none (24/7)",
+  "parameters": "strategy properties were not read",
+  "claimed_period": "UNKNOWN",
+  "claimed_metrics": "UNKNOWN",
+  "transaction_cost_model": "the tester's commission and slippage settings were not read",
+  "required_data": "TradingView chart data",
+  "external_code": "the published script",
+  "external_results": "listing-level read of a published script page",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "TradingView strategies are commonly tuned to one symbol and period, and the tester's default cost settings are optimistic relative to this project's 23.791 bps floor",
+    "the project's admission cost is a 23.791 bps round trip, and the source declares no cost model (the tester's commission and slippage settings were not read)",
+    "found in the RFC-035S2 strategy-first search; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "assets",
+    "timeframe",
+    "entry_long",
+    "entry_short",
+    "exit_stop",
+    "exit_target",
+    "exit_time",
+    "exit_signal",
+    "parameters",
+    "sizing_rule",
+    "execution_assumption",
+    "warmup",
+    "transaction_costs",
+    "original_period",
+    "original_metrics",
+    "source_version"
+  ],
+  "replication_difficulty": "NOT_ASSESSED: neither the rules nor the tester settings were read",
+  "evidence_quality": "E1 — listing-level read of a published script page",
+  "selection_bias_risk": "MEDIUM (the search was run with knowledge of 2024-2025 published results)",
+  "overfitting_risk": "HIGH",
+  "lookahead_risk": "MEDIUM",
+  "implementation_risk": "HIGH",
+  "status": "ROUND_2_INSUFFICIENT_EVIDENCE",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 2,
+    "CODE_AVAILABILITY": 5,
+    "DATA_REPRODUCIBILITY": 5,
+    "TRANSACTION_COST_REALISM": 1,
+    "OOS_EVIDENCE": 1,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 0,
+    "INDEPENDENT_VALIDATION": 1,
+    "IMPLEMENTATION_FIDELITY": 0
+  },
+  "evidence_score_total": 15,
+  "rank": "INSUFFICIENT_EVIDENCE",
+  "rfc": "RFC-035S2",
+  "candidate_ref": "reports/rfc035/search_round_2/CANDIDATE_MATRIX.json",
+  "rule_completeness": "5/21",
+  "gaps_to_p0": [
+    "read the Pine source and the published strategy-tester report, including commission settings",
+    "pin a symbol and a timeframe (the source leaves both to the user)"
+  ],
+  "rejection_reason_codes": [
+    "SOURCE_READ_LEVEL_INSUFFICIENT",
+    "NO_CANONICAL_PERIOD_OR_RESULTS",
+    "COST_FLOOR_HEADROOM_NOT_ESTABLISHED"
+  ]
+}

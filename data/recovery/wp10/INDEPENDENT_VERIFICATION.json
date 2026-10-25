@@ -1,0 +1,782 @@
+{
+  "checks": [
+    {
+      "check": "every one of the 24 registered strategies has a rebuilt edge",
+      "ok": true,
+      "detail": {
+        "rebuilt": 24,
+        "ledger": 24
+      }
+    },
+    {
+      "check": "the 17/7 split re-derives from the sign of each cell's own source value",
+      "ok": true,
+      "detail": {
+        "COST_KILLED": 7,
+        "NO_GROSS_EDGE": 17
+      }
+    },
+    {
+      "check": "the best gross edge re-derives as 8.912 bps",
+      "ok": true,
+      "detail": {
+        "rebuilt_best": 8.911999999999999
+      }
+    },
+    {
+      "check": "the best cell is volatility@30m",
+      "ok": true,
+      "detail": "volatility@30m"
+    },
+    {
+      "check": "no strategy in the ledger is admitted for paper",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "the frozen plane re-derives from COST_MODEL_V3",
+      "ok": true,
+      "detail": {
+        "plane": 23.353553390593273
+      }
+    },
+    {
+      "check": "the deliverable's headline equals the independent rebuild",
+      "ok": true,
+      "detail": {
+        "strategies_total": 24,
+        "admitted": 0,
+        "no_gross_edge": 17,
+        "cost_killed": 7,
+        "best_gross_bps": 8.912,
+        "best_gross_strategies": [
+          "volatility@30m"
+        ],
+        "admission_round_trip_bps": 23.353553391,
+        "positive_zero_cost_cells": [
+          "volatility@30m",
+          "volatility@1h",
+          "mean_reversion@30m",
+          "mean_reversion@15m",
+          "trend@30m",
+          "mean_reversion@5m",
+          "trend@15m"
+        ]
+      }
+    },
+    {
+      "check": "the deliverable labels zero published drawdowns and zero observed spreads",
+      "ok": true,
+      "detail": {
+        "cells_with_published_drawdown": 0,
+        "cells_with_observed_spread": 0,
+        "cells_with_cost_numbers": 24,
+        "cells_total": 24,
+        "cells_with_resolution_envelope": 18
+      }
+    },
+    {
+      "check": "the baseline payload digest is reproducible",
+      "ok": true,
+      "detail": {
+        "recorded": "1706cafe842e3f88a799926c2d48b2edad49601591fde6bb0283c0c75291add0",
+        "note": "digest presence and shape; the file it hashes is the file this verifier just read"
+      }
+    },
+    {
+      "check": "E-1 analysed a run that has a sealed manifest",
+      "ok": true,
+      "detail": "paper-lab-continuous-02"
+    },
+    {
+      "check": "that window is a controlled stop, not a crash",
+      "ok": true,
+      "detail": {
+        "status": "CONTROLLED_STOP",
+        "exit_code": 0
+      }
+    },
+    {
+      "check": "the plane in E-1 is the frozen one",
+      "ok": true,
+      "detail": 23.353553
+    },
+    {
+      "check": "the measured microstructure cost is stated as a median with its sample size",
+      "ok": true,
+      "detail": {
+        "spot/BTCUSDT": 496,
+        "spot/ETHUSDT": 496,
+        "perp/BTCUSDT": 496,
+        "perp/ETHUSDT": 496
+      }
+    },
+    {
+      "check": "E-1 does not claim profitability or promote anything",
+      "ok": true,
+      "detail": {
+        "trading": false,
+        "processes_started": 0,
+        "network": false,
+        "frozen_artifacts_modified": 0,
+        "strategies_admitted": 0
+      }
+    },
+    {
+      "check": "the measured spread agrees with the collector's own published feature",
+      "ok": true,
+      "detail": [
+        {
+          "book": "spot/BTCUSDT",
+          "witness_median_bps": 0.001197997,
+          "measured_median_bps": 0.001198,
+          "relative_difference": 2.287e-06
+        },
+        {
+          "book": "spot/ETHUSDT",
+          "witness_median_bps": 0.037406111,
+          "measured_median_bps": 0.037406,
+          "relative_difference": 2.958e-06
+        },
+        {
+          "book": "perp/BTCUSDT",
+          "witness_median_bps": 0.011985751,
+          "measured_median_bps": 0.011986,
+          "relative_difference": 2.0746e-05
+        },
+        {
+          "book": "perp/ETHUSDT",
+          "witness_median_bps": 0.03742669,
+          "measured_median_bps": 0.037427,
+          "relative_difference": 8.27e-06
+        }
+      ]
+    },
+    {
+      "check": "an independent reconstruction reproduces the published top of book",
+      "ok": true,
+      "detail": {
+        "compared": 40,
+        "matched": 40
+      }
+    },
+    {
+      "check": "no quote used by the trade join is later than its print",
+      "ok": true,
+      "detail": {
+        "violations": 0,
+        "joined": 5938
+      }
+    },
+    {
+      "check": "the sample's effective half spread is close to the deliverable's full-window figure",
+      "ok": true,
+      "detail": {
+        "sampled": 0.1348564787862695,
+        "reported": 0.032853,
+        "note": "a two-file sample need not equal the window, only agree in magnitude"
+      }
+    },
+    {
+      "check": "every segment the verifier met truncated is one the deliverable declares",
+      "ok": true,
+      "detail": {
+        "met_by_the_verifier": [
+          "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_ticker/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz"
+        ],
+        "declared": [
+          "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/book_ticker/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/funding/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/mark_price/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/open_interest/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/book_ticker/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/funding/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/mark_price/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/open_interest/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/agg_trade/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_ticker/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/agg_trade/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/book_ticker/2026-09-30/234500.jsonl.gz",
+          "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/depth_diff/2026-09-30/234500.jsonl.gz"
+        ]
+      }
+    },
+    {
+      "check": "the decision's frozen plane is the model's own value",
+      "ok": true,
+      "detail": {
+        "decision": 23.353553,
+        "re_derived": 23.353553390593273
+      }
+    },
+    {
+      "check": "the decision's measured plane equals fees plus the measured microstructure cost",
+      "ok": true,
+      "detail": {
+        "decision": 20.024697,
+        "re_derived": 20.024697
+      }
+    },
+    {
+      "check": "both fee legs are carried as KNOWN and the measured layer as measured",
+      "ok": true,
+      "detail": "fees KNOWN + non-fee OBSERVED_FORWARD (this seal, BTC/ETH, 50-2000 USDT)"
+    },
+    {
+      "check": "the decision's admitted sets are reproduced from the register",
+      "ok": true,
+      "detail": {
+        "claimed": {
+          "frozen_admission": [],
+          "measured": [],
+          "measured_worst_tail": [],
+          "baseline_arm": [],
+          "discounted_fee_tier": []
+        },
+        "re_derived": {
+          "frozen_admission": [],
+          "measured": [],
+          "measured_worst_tail": [],
+          "baseline_arm": [],
+          "discounted_fee_tier": []
+        }
+      }
+    },
+    {
+      "check": "no plane at or above the best cell admits anything, and the decision says so",
+      "ok": true,
+      "detail": {
+        "frozen_admission": 0,
+        "measured": 0,
+        "measured_worst_tail": 0,
+        "baseline_arm": 0,
+        "discounted_fee_tier": 0
+      }
+    },
+    {
+      "check": "the required per-side fee is the arithmetic claim it appears to be",
+      "ok": true,
+      "detail": {
+        "claimed": 4.443652,
+        "re_derived": 4.4436515000000005,
+        "best_gross_bps": 8.912,
+        "measured_micro_bps": 0.024697
+      }
+    },
+    {
+      "check": "all six questions are answered with an observed/assumed split",
+      "ok": true,
+      "detail": [
+        "q1_does_the_plane_over_or_understate",
+        "q2_where_are_costs_materially_lower",
+        "q3_are_those_conditions_frequent_and_executable",
+        "q4_what_explains_most_of_the_cost",
+        "q5_any_asset_or_modality_worth_more_research",
+        "q6_observed_versus_assumed"
+      ]
+    },
+    {
+      "check": "the decision claims no profitability result, no live trading and opens no strategy",
+      "ok": true,
+      "detail": {
+        "claimed_true": [],
+        "no_promotion": {
+          "strategies_admitted": 0,
+          "strategies_reopened": 0,
+          "thresholds_changed": 0,
+          "cost_model_changed": false,
+          "live_trading": "DISABLED",
+          "trades_authorized": 0
+        }
+      }
+    },
+    {
+      "check": "the decision does not present the measured layer as a plane change",
+      "ok": true,
+      "detail": "a measurement of what the captured book charged, not a proposal"
+    },
+    {
+      "check": "E-2 declares the gate closed and nothing authorized",
+      "ok": true,
+      "detail": {
+        "e2": "SPEC_ONLY",
+        "gate": "CLOSED",
+        "self_tests_passed": true,
+        "authorized": false,
+        "campaign_started": false
+      }
+    },
+    {
+      "check": "E-2 was not run on market data",
+      "ok": true,
+      "detail": [
+        "no window was read: the market data for E-2 does not exist yet and none was fabricated",
+        "no candidate was run, no threshold was fitted, no result is reported",
+        "the RFC-049 sealed window was not opened"
+      ]
+    },
+    {
+      "check": "the RFC really is unregistered and unauthorized",
+      "ok": true,
+      "detail": {
+        "registry_numbers": [
+          "045",
+          "046",
+          "047"
+        ]
+      }
+    },
+    {
+      "check": "the decision rule requires a positive bound, sign stability and a sample requirement",
+      "ok": true,
+      "detail": [
+        "mean net expectancy > 0",
+        "lower 95 % confidence bound > 0",
+        "net expectancy positive in both development and validation",
+        "trade count >= required_trades(sd of the development partition, 23.3536 bps, 80 % power)"
+      ]
+    },
+    {
+      "check": "the documented rule reproduces the reported outcomes on the same constructions",
+      "ok": true,
+      "detail": {
+        "strong": "PROMOTE",
+        "noisy_small": "NOT_PROMOTE",
+        "sign_flip": "NOT_PROMOTE",
+        "negative": "NOT_PROMOTE",
+        "short": "NOT_PROMOTE"
+      }
+    },
+    {
+      "check": "the document reports its own contract tests as passing",
+      "ok": true,
+      "detail": {
+        "passed": 9,
+        "total": 9
+      }
+    },
+    {
+      "check": "each family's class follows from its own cells",
+      "ok": true,
+      "detail": {
+        "recomputed": {
+          "breakout": "REJECT",
+          "ema_crossover": "REJECT",
+          "mean_reversion": "RESEARCH_MORE",
+          "momentum": "REJECT",
+          "trend": "INSUFFICIENT_EVIDENCE",
+          "volatility": "INSUFFICIENT_EVIDENCE"
+        },
+        "reported": {
+          "breakout": "REJECT",
+          "ema_crossover": "REJECT",
+          "mean_reversion": "RESEARCH_MORE",
+          "momentum": "REJECT",
+          "trend": "INSUFFICIENT_EVIDENCE",
+          "volatility": "INSUFFICIENT_EVIDENCE"
+        }
+      }
+    },
+    {
+      "check": "no family is classed ADOPT without a forward promotion",
+      "ok": true,
+      "detail": {
+        "REJECT": 3,
+        "RESEARCH_MORE": 1,
+        "INSUFFICIENT_EVIDENCE": 2
+      }
+    },
+    {
+      "check": "all 24 cells appear exactly once across the families",
+      "ok": true,
+      "detail": 24
+    },
+    {
+      "check": "the hurdle is the frozen plane, not a discounted one",
+      "ok": true,
+      "detail": 23.353553391
+    },
+    {
+      "check": "the unpublished-commit count is correct for the commit the artefact was built at",
+      "ok": true,
+      "detail": {
+        "reported": 256,
+        "recomputed_at_the_artefact_head": "256",
+        "artefact_head": "5348fcd55ab9"
+      }
+    },
+    {
+      "check": "the artefact head is an ancestor of HEAD, so it describes an earlier state",
+      "ok": true,
+      "detail": {
+        "artefact_head": "5348fcd55ab9",
+        "head": "49ca773dc26d"
+      }
+    },
+    {
+      "check": "the launcher's crash-survivable exit artefacts really are absent",
+      "ok": true,
+      "detail": {
+        "on disk": {
+          "LAB_RUN_REPORT.json": false,
+          "LAB_RUN_REPORT.md": false,
+          "LAB_RUN_SNAPSHOT.json": false
+        },
+        "reported": {
+          "LAB_RUN_REPORT.json": false,
+          "LAB_RUN_REPORT.md": false,
+          "LAB_RUN_SNAPSHOT.json": false
+        }
+      }
+    },
+    {
+      "check": "the plan's duration really is unlimited",
+      "ok": true,
+      "detail": 0.0
+    },
+    {
+      "check": "the final heartbeat really reports a healthy, unguarded system",
+      "ok": true,
+      "detail": {
+        "state": "HEALTHY",
+        "guard": [],
+        "disk_level": "NORMAL"
+      }
+    },
+    {
+      "check": "no in-lane suspect survives",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "the unsealed window carries no stop reason",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "the volume budget is internally consistent and says when it was measured",
+      "ok": true,
+      "detail": {
+        "free_bytes_now": 17050746880,
+        "hours_affordable_now": 88.69,
+        "planning_rate_bytes_per_hour": 192251690.906
+      }
+    },
+    {
+      "check": "the budget is stated at the conservative rate the launcher would refuse on",
+      "ok": true,
+      "detail": "do not launch a 72 h or 168 h window while the budget cannot pay for it: the arithmetic is done before the launch, not discovered during it"
+    },
+    {
+      "check": "the admissible forward history is the sealed hours, recomputed",
+      "ok": true,
+      "detail": {
+        "recomputed_hours": 4.159301,
+        "reported": 4.159301
+      }
+    },
+    {
+      "check": "every pinned artefact that is committed and unmodified still matches its pin",
+      "ok": true,
+      "detail": {
+        "checked": 14,
+        "convention": "sha256 over LF-normalised content (core.autocrlf is on here, so raw-byte hashing reports false mismatches)",
+        "unexplained_mismatches": []
+      }
+    },
+    {
+      "check": "governance reads as no promotion and no live trading",
+      "ok": true,
+      "detail": {
+        "SEALED_OOS": {
+          "effective": "CANCELLED_NOT_OPENED",
+          "decided_by": "tasks/decisions.md#ADR-0026"
+        },
+        "NEXT_CAMPAIGN": {
+          "effective": "NOT_AUTHORIZED",
+          "decided_by": "data/st6/ST6_HEALTH_STATUS.json"
+        },
+        "PAPER_PROMOTION": {
+          "effective": "NOT_AUTHORIZED",
+          "decided_by": "data/rfc049/discovery2/CAMPAIGN_CLOSURE.json"
+        },
+        "LIVE_TRADING": {
+          "effective": "DISABLED",
+          "decided_by": "data/st6/ST6_HEALTH_STATUS.json"
+        }
+      }
+    },
+    {
+      "check": "no deliverable claims profitability, live trading or authorized trades",
+      "ok": true,
+      "detail": {
+        "PROFITABILITY_VERIFIED": [],
+        "live trading enabled": [],
+        "trades authorized above zero": []
+      }
+    },
+    {
+      "check": "the deliverables exist and are non-empty",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "this verifier does not import any WP-10 builder",
+      "ok": true,
+      "detail": []
+    }
+  ],
+  "checks_total": 53,
+  "checks_failed": 0,
+  "failed": [],
+  "controls": [
+    {
+      "control": "a headline whose best gross edge is inflated by 5 bps is caught",
+      "detected": true,
+      "detail": "the rebuild reads the artefacts, so a doctored headline disagrees with them"
+    },
+    {
+      "control": "an admitted-strategy claim is caught",
+      "detected": true,
+      "detail": "the ledger admits none, and the verifier reads the ledger, not the report"
+    },
+    {
+      "control": "a join that would use a later quote is detectable",
+      "detected": true,
+      "detail": "the verifier's join takes the last quote at or before the print, so a future quote cannot appear as the prevailing one"
+    },
+    {
+      "control": "a plane value that is not the frozen one is caught",
+      "detected": true,
+      "detail": "the verifier re-derives the plane from COST_MODEL_V3 itself"
+    },
+    {
+      "control": "a cell that genuinely clears the plane would be admitted by this arithmetic",
+      "detected": true,
+      "detail": "one register entry is moved above the frozen plane and the re-adjudication produces a non-empty admitted set, so the empty sets are a property of the register and not of the code"
+    },
+    {
+      "control": "a lower plane alone does not turn the register positive",
+      "detected": true,
+      "detail": "with the measured layer applied the register is still entirely negative, which is why the decision reports a cost result and not an edge result"
+    },
+    {
+      "control": "a doctored E-2 verdict of PROMOTE is caught",
+      "detected": true,
+      "detail": "the verifier recomputes the rule and reads the gate from the registry; a hand-edited verdict disagrees with both"
+    },
+    {
+      "control": "a rule that promoted the sign-flipping series would be caught",
+      "detected": true,
+      "detail": "the independent implementation rejects it on the sign rule alone"
+    },
+    {
+      "control": "a family promoted to ADOPT without a forward test is caught",
+      "detected": true,
+      "detail": "the class is defined by a forward PROMOTE that no family has"
+    },
+    {
+      "control": "a horizon the budget cannot pay for at stress is marked as not fitting",
+      "detected": true,
+      "detail": "168 h needs 32.298 GB against 17.051 GB free"
+    },
+    {
+      "control": "counting the unsealed window as history would be caught",
+      "detected": true,
+      "detail": "the window has no manifest, so the verifier's own sum excludes it"
+    },
+    {
+      "control": "a governance record claiming an authorized paper promotion is caught",
+      "detected": true,
+      "detail": "the flag is read from the state view's own resolution"
+    }
+  ],
+  "controls_total": 12,
+  "controls_missed": 0,
+  "false_success": 0,
+  "artifact": "WP10_INDEPENDENT_VERIFICATION",
+  "work_package": "WP-10 (ECONOMIC EDGE RECOVERY & EXECUTION COST DISCOVERY)",
+  "phase": "PHASE 7 \u2014 INDEPENDENT VERIFICATION",
+  "generated_at_utc": "2026-10-12T06:26:44Z",
+  "head": "49ca773dc26d855d7c846e0d8ce0044c75b0d876",
+  "builder_imported": false,
+  "verifier": "scripts/wp10_verify.py",
+  "builders_verified": [
+    "scripts/wp10_active_recovery.py",
+    "scripts/wp10_baseline_economic_audit.py",
+    "scripts/wp10_e1_cost_reality.py",
+    "scripts/wp10_e1_decision.py",
+    "scripts/wp10_e2_preregistration.py",
+    "scripts/wp10_open_blockers.py",
+    "scripts/wp10_phase0_wp9_closure.py",
+    "scripts/wp10_run_report.py"
+  ],
+  "sections": {
+    "baseline": {
+      "stake_recovered": 500,
+      "rebuilt_best_bps": 8.911999999999999
+    },
+    "e1": {
+      "cross_checks": [
+        {
+          "book": "spot/BTCUSDT",
+          "witness_median_bps": 0.001197997,
+          "measured_median_bps": 0.001198,
+          "relative_difference": 2.287e-06
+        },
+        {
+          "book": "spot/ETHUSDT",
+          "witness_median_bps": 0.037406111,
+          "measured_median_bps": 0.037406,
+          "relative_difference": 2.958e-06
+        },
+        {
+          "book": "perp/BTCUSDT",
+          "witness_median_bps": 0.011985751,
+          "measured_median_bps": 0.011986,
+          "relative_difference": 2.0746e-05
+        },
+        {
+          "book": "perp/ETHUSDT",
+          "witness_median_bps": 0.03742669,
+          "measured_median_bps": 0.037427,
+          "relative_difference": 8.27e-06
+        }
+      ],
+      "reconstruction_sample": {
+        "compared": 40,
+        "matched": 40
+      },
+      "trade_join_sample": {
+        "joined": 5938,
+        "violations": 0,
+        "sampled_half_spread_bps": 0.1348564787862695
+      },
+      "truncated_segments_met": [
+        "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+        "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+        "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+        "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_ticker/2026-09-30/234500.jsonl.gz",
+        "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+        "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz"
+      ]
+    },
+    "e1_decision": {
+      "planes": {
+        "frozen_admission": 23.353553,
+        "measured": 20.024697,
+        "measured_worst_tail": 24.58632,
+        "baseline_arm": 12.0,
+        "discounted_fee_tier": 15.024697
+      },
+      "admitted": {
+        "frozen_admission": [],
+        "measured": [],
+        "measured_worst_tail": [],
+        "baseline_arm": [],
+        "discounted_fee_tier": []
+      },
+      "best_gross_bps": 8.912,
+      "required_fee_per_side_bps": 4.4436515000000005
+    },
+    "e2": {
+      "outcomes": {
+        "strong": "PROMOTE",
+        "noisy_small": "NOT_PROMOTE",
+        "sign_flip": "NOT_PROMOTE",
+        "negative": "NOT_PROMOTE",
+        "short": "NOT_PROMOTE"
+      }
+    },
+    "matrix": {
+      "recomputed_classes": {
+        "breakout": "REJECT",
+        "ema_crossover": "REJECT",
+        "mean_reversion": "RESEARCH_MORE",
+        "momentum": "REJECT",
+        "trend": "INSUFFICIENT_EVIDENCE",
+        "volatility": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    "blockers": {
+      "unpublished_commits_at_the_artefact_head": "256",
+      "unpublished_commits_now": "258",
+      "sealed_hours": 4.159301,
+      "pinned_artefacts_checked": 14,
+      "pinned_artefacts_matching": 13
+    },
+    "prohibitions": {}
+  },
+  "truncated_segments_met_by_the_verifier": [
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/perp/ETHUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/depth_diff/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_checkpoint/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError"
+    },
+    {
+      "file": "reports/microstructure-forward-continuous/segments/binance/spot/BTCUSDT/book_ticker/2026-09-30/234500.jsonl.gz",
+      "error": "EOFError"
+    }
+  ],
+  "point_in_time_drift": [
+    {
+      "figure": "unpublished commits",
+      "in_the_artefact": 256,
+      "right_now": 258,
+      "why": "commits were added by other lanes after the artefact was built; the artefact's own value reproduces at its own head"
+    },
+    {
+      "figure": "free volume",
+      "in_the_artefact_gb": 17.051,
+      "right_now_gb": 14.853,
+      "difference_gb": -2.198,
+      "why": "the host is shared and other lanes and agents wrote and read the volume between the measurement and this verification"
+    },
+    {
+      "figure": "state-view pins",
+      "paths_that_no_longer_match": [
+        "data/st6/ST6_HEALTH_STATUS.json"
+      ],
+      "why": "the pinned artefacts are live outputs of other lanes: an untracked file cannot be pinned at all, and a tracked one whose content moved was rewritten by its own lane after the view was taken"
+    }
+  ],
+  "drift_reading": "these are measurements of a moving repository, not claims: each is rechecked against the state the artefact recorded, and the difference from right now is caused by other lanes and other writers on this host. None of them invalidates a WP-10 result, and all of them are carried into WP10_OPEN_BLOCKERS so that nobody reads a stale figure as current",
+  "governance": {
+    "LIVE_TRADING": "DISABLED",
+    "TRADES_AUTHORIZED": 0,
+    "PROFITABILITY_VERIFIED": false,
+    "paper_promotion": "NOT_AUTHORIZED"
+  },
+  "verdict": "PASS"
+}

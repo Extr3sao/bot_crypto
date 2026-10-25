@@ -1,0 +1,59 @@
+{
+  "opportunity_id": "OPP-0030",
+  "title": "Perpetual funding carry on BTC/ETH (Karaptic Note 04)",
+  "source_ids": [
+    "S3-08"
+  ],
+  "economic_hypothesis": "measured funding carry against a realistic capital hurdle",
+  "market": "Binance BTCUSDT and ETHUSDT perpetual funding",
+  "assets": [
+    "BTC",
+    "ETH"
+  ],
+  "timeframe": "8-hour funding periods",
+  "entry_rules": "hold the spot leg and short the perpetual, collecting funding each settlement",
+  "exit_rules": "not specified; the note explains that holding and margin assumptions are exactly what cannot be supported from funding data alone",
+  "risk_rules": "two-legged hedged exposure; margin maintenance is not modelled",
+  "parameters": "none beyond the instrument pair",
+  "claimed_period": "2025-11 to 2026-05, 636 funding periods per coin",
+  "claimed_metrics": "mean annualised funding +2.11%/yr BTC and +1.63%/yr ETH gross",
+  "transaction_cost_model": "declared absent — the note states why a net figure cannot be responsibly derived",
+  "required_data": "Binance funding-rate history",
+  "external_code": "github.com/Silent47boryara/searching-for-edge (directory 04-carry)",
+  "external_results": "the note's measured annualised funding means",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "gross annualised funding of +2.11%/yr BTC and +1.63%/yr ETH is too small to trade at the project's capital scale",
+    "reviewed in RFC-035S3; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "no net-of-costs figure exists",
+    "the hedge requires a short perpetual the project cannot hold"
+  ],
+  "replication_difficulty": "gross annualised funding of +2.11%/yr BTC and +1.63%/yr ETH is too small to trade at the project's capital scale",
+  "evidence_quality": "E2",
+  "selection_bias_risk": "LOW",
+  "overfitting_risk": "LOW",
+  "lookahead_risk": "LOW",
+  "implementation_risk": "HIGH",
+  "status": "ROUND_3_REJECT",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 3,
+    "CODE_AVAILABILITY": 5,
+    "DATA_REPRODUCIBILITY": 5,
+    "TRANSACTION_COST_REALISM": 0,
+    "OOS_EVIDENCE": 4,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 3,
+    "INDEPENDENT_VALIDATION": 3,
+    "IMPLEMENTATION_FIDELITY": 3
+  },
+  "evidence_score_total": 26,
+  "rank": "REJECT",
+  "rfc": "RFC-035S3",
+  "candidate_ref": "reports/rfc035/search_round_3/FINAL_REPORT.json",
+  "round_3_reason": "gross annualised funding of +2.11%/yr BTC and +1.63%/yr ETH is too small to trade at the project's capital scale",
+  "candidate_id": "K-04"
+}

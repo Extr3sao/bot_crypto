@@ -1,0 +1,431 @@
+{
+  "artifact": "FALSIFICATION_REPORT",
+  "spec_digest": "d362d6d75129d2337fb1fa4b3434dc8b1412f059816f7091f9e76dc48b8bb9cf",
+  "dataset_hash": "b58adaa74e7c73f93d6c4270eba673b88216727e4ee0c133de5334a354134900",
+  "battery_predeclared": [
+    "add the same-day return to the price equation",
+    "add the previous return (momentum) to the price equation",
+    "add trailing 20-session realised volatility",
+    "add day-of-week dummies",
+    "winsorise flows at the 1st/99th percentiles",
+    "exclude |flow| > 10,000 USD m",
+    "exclude the first 20 sessions (launch-period effects)",
+    "reverse direction (return -> flow) reported with the same detail as the forward direction"
+  ],
+  "windows": {
+    "window": {
+      "start": "2024-01-11",
+      "end": "2024-10-11",
+      "sessions_in_window": 197
+    },
+    "variants": {
+      "r1+sum7": {
+        "sessions": 190,
+        "variants": {
+          "none": {
+            "rows": 189,
+            "lag_flow_coefficient": 7.853013694592047e-07,
+            "lag_flow_t": 0.32661445943675804,
+            "lag_flow_p": 0.7443267370024464,
+            "lag_price_coefficient": -0.08149027700906346,
+            "degenerate": false,
+            "condition_number": 36133.90881541141,
+            "r2": 0.006860910540315568,
+            "usable_as_evidence": true
+          },
+          "same_day_return": {
+            "rows": 189,
+            "lag_flow_coefficient": -1.2465082156198138e-18,
+            "lag_flow_t": -11.256742851997473,
+            "lag_flow_p": 1.0018394434054756e-22,
+            "lag_price_coefficient": -1.2641119704823178e-17,
+            "degenerate": true,
+            "condition_number": 37674.96852035663,
+            "r2": 1.0,
+            "usable_as_evidence": false
+          },
+          "previous_return": {
+            "rows": 189,
+            "lag_flow_coefficient": 7.853013694790614e-07,
+            "lag_flow_t": 0.32573528030129806,
+            "lag_flow_p": 0.7449927847089185,
+            "lag_price_coefficient": -0.04074513850454371,
+            "degenerate": true,
+            "condition_number": 8.48761081711966e+19,
+            "r2": 0.006860910540315457,
+            "usable_as_evidence": false
+          },
+          "realised_vol_20": {
+            "rows": 177,
+            "lag_flow_coefficient": 1.0983764022218156e-06,
+            "lag_flow_t": 0.44036950316397994,
+            "lag_flow_p": 0.6602192360295243,
+            "lag_price_coefficient": -0.0882144571910383,
+            "degenerate": false,
+            "condition_number": 136165.25834504864,
+            "r2": 0.008209772709543928,
+            "usable_as_evidence": true
+          },
+          "day_of_week": {
+            "rows": 189,
+            "lag_flow_coefficient": 7.917923655771537e-07,
+            "lag_flow_t": 0.3319856010561575,
+            "lag_flow_p": 0.7402821417274629,
+            "lag_price_coefficient": -0.06649626530626374,
+            "degenerate": false,
+            "condition_number": 36801.05709484557,
+            "r2": 0.04496346730330336,
+            "usable_as_evidence": true
+          },
+          "all_controls": {
+            "rows": 177,
+            "lag_flow_coefficient": -2.86015362687084e-19,
+            "lag_flow_t": -10.604605614828294,
+            "lag_flow_p": 2.057293129974491e-20,
+            "lag_price_coefficient": 2.221549309664112e-15,
+            "degenerate": true,
+            "condition_number": 6.615160636431571e+19,
+            "r2": 1.0,
+            "usable_as_evidence": false
+          },
+          "post_hoc_trailing_5_return": {
+            "rows": 185,
+            "lag_flow_coefficient": -6.066483181952674e-06,
+            "lag_flow_t": -2.7336006681460168,
+            "lag_flow_p": 0.006886613101119957,
+            "lag_price_coefficient": -0.3249084668931293,
+            "degenerate": false,
+            "condition_number": 41104.45724019601,
+            "r2": 0.28890464029091745,
+            "usable_as_evidence": true
+          },
+          "post_hoc_trailing_20_return": {
+            "rows": 170,
+            "lag_flow_coefficient": -1.1468084940381637e-05,
+            "lag_flow_t": -3.2024470566906698,
+            "lag_flow_p": 0.0016335413085349305,
+            "lag_price_coefficient": -0.15756300174712706,
+            "degenerate": false,
+            "condition_number": 35744.27076077586,
+            "r2": 0.12107769801413215,
+            "usable_as_evidence": true
+          },
+          "winsorised_1_99": {
+            "lag_price_coefficient": -0.10542725111967723,
+            "lag_price_t": -1.417719383869748,
+            "lag_flow_coefficient": 1.978657800635735e-06,
+            "lag_flow_t": 0.7445590670260384,
+            "lag_flow_p": 0.4575092784681154,
+            "r2": 0.012796816143657241
+          },
+          "exclude_abs_flow_gt_10bn": {
+            "lag_price_coefficient": -0.08149027700906346,
+            "lag_price_t": -1.1135551613776193,
+            "lag_flow_coefficient": 7.853013694592047e-07,
+            "lag_flow_t": 0.32661445943675804,
+            "lag_flow_p": 0.7443267370024464,
+            "r2": 0.006860910540315568
+          },
+          "exclude_first_20_sessions": {
+            "lag_price_coefficient": -0.10244308557214207,
+            "lag_price_t": -1.3125439589936647,
+            "lag_flow_coefficient": 5.572573360781713e-07,
+            "lag_flow_t": 0.2076189907266657,
+            "lag_flow_p": 0.8357825040750608,
+            "r2": 0.010368695838861908
+          }
+        },
+        "winsorised_variant_note": "the 1/99 winsorised variant is implemented by excluding the trimmed rows, which is equivalent to trimming for an OLS estimate",
+        "degenerate_specifications": {
+          "specs": [
+            "all_controls",
+            "previous_return",
+            "same_day_return"
+          ],
+          "why": {
+            "all_controls": "contains the same-session return, so it inherits that exact fit and absorbs the whole equation.",
+            "previous_return": "the control is the previous 1-session return, which is exactly the AR(1) term already in the price equation whenever the price variable is that same 1-session return; the duplicated column makes the design singular, so this control is only identifiable in the 7-session-return combinations. The momentum question is therefore answered by the AR(1) term itself in the daily-return specifications, not by this redundant control.",
+            "same_day_return": "adding the same-session return as a regressor when the dependent variable IS that same return makes the fit exact; the coefficient collapses to ~0 with a meaningless t-statistic. A valid same-session control would need an exogenous instrument, which the spec does not declare."
+          }
+        },
+        "degenerate_flags_match_declaration": true,
+        "post_hoc_note": "post_hoc_trailing_5_return and post_hoc_trailing_20_return were NOT part of the frozen battery; they are reported as explicitly post-hoc exploratory controls"
+      },
+      "r1+nd": {
+        "sessions": 183,
+        "variants": {
+          "none": {
+            "rows": 182,
+            "lag_flow_coefficient": 0.004365960272324412,
+            "lag_flow_t": 1.2366392078002155,
+            "lag_flow_p": 0.21784113647901082,
+            "lag_price_coefficient": -0.09513558708563634,
+            "degenerate": false,
+            "condition_number": 29.407600267951437,
+            "r2": 0.015465962135541522,
+            "usable_as_evidence": true
+          },
+          "same_day_return": {
+            "rows": 182,
+            "lag_flow_coefficient": 1.3985361651046688e-17,
+            "lag_flow_t": 5.852484091731423,
+            "lag_flow_p": 2.2808911720354045e-08,
+            "lag_price_coefficient": 5.204170427930421e-16,
+            "degenerate": true,
+            "condition_number": 30.813264838772703,
+            "r2": 1.0,
+            "usable_as_evidence": false
+          },
+          "previous_return": {
+            "rows": 182,
+            "lag_flow_coefficient": 0.004365960272324411,
+            "lag_flow_t": 1.2331800703731657,
+            "lag_flow_p": 0.21913464153607454,
+            "lag_price_coefficient": -0.047567793542817885,
+            "degenerate": true,
+            "condition_number": 6.056966475117081e+16,
+            "r2": 0.015465962135541522,
+            "usable_as_evidence": false
+          },
+          "realised_vol_20": {
+            "rows": 177,
+            "lag_flow_coefficient": 0.004320446635917382,
+            "lag_flow_t": 1.1850608058247212,
+            "lag_flow_p": 0.23761874866087052,
+            "lag_price_coefficient": -0.09511090890466575,
+            "degenerate": false,
+            "condition_number": 108.17639078694937,
+            "r2": 0.015093237565914519,
+            "usable_as_evidence": true
+          },
+          "day_of_week": {
+            "rows": 182,
+            "lag_flow_coefficient": 0.004209140603915009,
+            "lag_flow_t": 1.200485746546205,
+            "lag_flow_p": 0.23157323663075013,
+            "lag_price_coefficient": -0.07487483854422981,
+            "degenerate": false,
+            "condition_number": 32.37598262586456,
+            "r2": 0.05101753622204652,
+            "usable_as_evidence": true
+          },
+          "all_controls": {
+            "rows": 177,
+            "lag_flow_coefficient": -6.0460341730472056e-18,
+            "lag_flow_t": -0.8310690463452798,
+            "lag_flow_p": 0.4071212591947173,
+            "lag_price_coefficient": -1.5785983631388945e-16,
+            "degenerate": true,
+            "condition_number": 1.022101948166771e+17,
+            "r2": 1.0,
+            "usable_as_evidence": false
+          },
+          "post_hoc_trailing_5_return": {
+            "rows": 178,
+            "lag_flow_coefficient": -0.0016008158396642474,
+            "lag_flow_t": -0.4953215783775226,
+            "lag_flow_p": 0.6209980911974307,
+            "lag_price_coefficient": -0.31780625717068056,
+            "degenerate": false,
+            "condition_number": 32.56792182289382,
+            "r2": 0.2635683931745868,
+            "usable_as_evidence": true
+          },
+          "post_hoc_trailing_20_return": {
+            "rows": 163,
+            "lag_flow_coefficient": 0.0047461646945418864,
+            "lag_flow_t": 1.3057185561374005,
+            "lag_flow_p": 0.19353433227503158,
+            "lag_price_coefficient": -0.1689340085141915,
+            "degenerate": false,
+            "condition_number": 29.127632075992707,
+            "r2": 0.07694378508541988,
+            "usable_as_evidence": true
+          },
+          "winsorised_1_99": {
+            "lag_price_coefficient": -0.09513558708563634,
+            "lag_price_t": -1.2706992207071421,
+            "lag_flow_coefficient": 0.004365960272324412,
+            "lag_flow_t": 1.2366392078002155,
+            "lag_flow_p": 0.21784113647901082,
+            "r2": 0.015465962135541522
+          },
+          "exclude_abs_flow_gt_10bn": {
+            "lag_price_coefficient": -0.09513558708563634,
+            "lag_price_t": -1.2706992207071421,
+            "lag_flow_coefficient": 0.004365960272324412,
+            "lag_flow_t": 1.2366392078002155,
+            "lag_flow_p": 0.21784113647901082,
+            "r2": 0.015465962135541522
+          },
+          "exclude_first_20_sessions": {
+            "lag_price_coefficient": -0.1443170888253797,
+            "lag_price_t": -1.822471397153487,
+            "lag_flow_coefficient": 0.004334958607180518,
+            "lag_flow_t": 1.1845465257373178,
+            "lag_flow_p": 0.23797558413429643,
+            "r2": 0.02642735737098978
+          }
+        },
+        "winsorised_variant_note": "the 1/99 winsorised variant is implemented by excluding the trimmed rows, which is equivalent to trimming for an OLS estimate",
+        "degenerate_specifications": {
+          "specs": [
+            "all_controls",
+            "previous_return",
+            "same_day_return"
+          ],
+          "why": {
+            "all_controls": "contains the same-session return, so it inherits that exact fit and absorbs the whole equation.",
+            "previous_return": "the control is the previous 1-session return, which is exactly the AR(1) term already in the price equation whenever the price variable is that same 1-session return; the duplicated column makes the design singular, so this control is only identifiable in the 7-session-return combinations. The momentum question is therefore answered by the AR(1) term itself in the daily-return specifications, not by this redundant control.",
+            "same_day_return": "adding the same-session return as a regressor when the dependent variable IS that same return makes the fit exact; the coefficient collapses to ~0 with a meaningless t-statistic. A valid same-session control would need an exogenous instrument, which the spec does not declare."
+          }
+        },
+        "degenerate_flags_match_declaration": true,
+        "post_hoc_note": "post_hoc_trailing_5_return and post_hoc_trailing_20_return were NOT part of the frozen battery; they are reported as explicitly post-hoc exploratory controls"
+      },
+      "r1+flow": {
+        "sessions": 195,
+        "variants": {
+          "none": {
+            "rows": 194,
+            "lag_flow_coefficient": 2.342561165094671e-05,
+            "lag_flow_t": 2.0033135176913004,
+            "lag_flow_p": 0.046557236280923404,
+            "lag_price_coefficient": -0.14475151978688047,
+            "degenerate": false,
+            "condition_number": 7930.946443178702,
+            "r2": 0.02684846747785563,
+            "usable_as_evidence": true
+          },
+          "same_day_return": {
+            "rows": 194,
+            "lag_flow_coefficient": -1.0220457124970736e-17,
+            "lag_flow_t": -4.639387804448548,
+            "lag_flow_p": 6.494780492019951e-06,
+            "lag_price_coefficient": -4.5245111910535707e-17,
+            "degenerate": true,
+            "condition_number": 8253.06067336853,
+            "r2": 1.0,
+            "usable_as_evidence": false
+          },
+          "previous_return": {
+            "rows": 194,
+            "lag_flow_coefficient": 2.3425611650936365e-05,
+            "lag_flow_t": 1.9980623592022124,
+            "lag_flow_p": 0.04713609473691169,
+            "lag_price_coefficient": -0.07237575989343556,
+            "degenerate": true,
+            "condition_number": 4.125043842035258e+19,
+            "r2": 0.026848467477855742,
+            "usable_as_evidence": false
+          },
+          "realised_vol_20": {
+            "rows": 177,
+            "lag_flow_coefficient": 2.8353382691054326e-05,
+            "lag_flow_t": 2.2978871361822146,
+            "lag_flow_p": 0.022765202883861538,
+            "lag_price_coefficient": -0.16405619673688743,
+            "degenerate": false,
+            "condition_number": 27134.569086567968,
+            "r2": 0.03650567835961538,
+            "usable_as_evidence": true
+          },
+          "day_of_week": {
+            "rows": 194,
+            "lag_flow_coefficient": 2.3098132176123892e-05,
+            "lag_flow_t": 1.968476037948898,
+            "lag_flow_p": 0.050491121894991026,
+            "lag_price_coefficient": -0.1330182462465918,
+            "degenerate": false,
+            "condition_number": 8109.688836616504,
+            "r2": 0.05674656574229131,
+            "usable_as_evidence": true
+          },
+          "all_controls": {
+            "rows": 177,
+            "lag_flow_coefficient": 2.333180647855961e-19,
+            "lag_flow_t": 4.421273275115662,
+            "lag_flow_p": 1.7617168005327147e-05,
+            "lag_price_coefficient": -1.8222355319553324e-15,
+            "degenerate": true,
+            "condition_number": 6.459909964092253e+18,
+            "r2": 1.0,
+            "usable_as_evidence": false
+          },
+          "post_hoc_trailing_5_return": {
+            "rows": 190,
+            "lag_flow_coefficient": -1.7768677170933087e-05,
+            "lag_flow_t": -1.5084999260214982,
+            "lag_flow_p": 0.13312334134652204,
+            "lag_price_coefficient": -0.2907776924441565,
+            "degenerate": false,
+            "condition_number": 8250.60922257879,
+            "r2": 0.2683772101465747,
+            "usable_as_evidence": true
+          },
+          "post_hoc_trailing_20_return": {
+            "rows": 175,
+            "lag_flow_coefficient": 1.2138355679429197e-05,
+            "lag_flow_t": 0.9034756827286858,
+            "lag_flow_p": 0.36754447076807883,
+            "lag_price_coefficient": -0.16687381440674715,
+            "degenerate": false,
+            "condition_number": 7908.432778538367,
+            "r2": 0.073548751612461,
+            "usable_as_evidence": true
+          },
+          "winsorised_1_99": {
+            "lag_price_coefficient": -0.153400361462583,
+            "lag_price_t": -1.8651191945510701,
+            "lag_flow_coefficient": 3.0203903248882487e-05,
+            "lag_flow_t": 2.1863570763045397,
+            "lag_flow_p": 0.03005847858474639,
+            "r2": 0.03027714266751169
+          },
+          "exclude_abs_flow_gt_10bn": {
+            "lag_price_coefficient": -0.14475151978688047,
+            "lag_price_t": -1.8445436948057892,
+            "lag_flow_coefficient": 2.342561165094671e-05,
+            "lag_flow_t": 2.0033135176913004,
+            "lag_flow_p": 0.046557236280923404,
+            "r2": 0.02684846747785563
+          },
+          "exclude_first_20_sessions": {
+            "lag_price_coefficient": -0.16865307426281248,
+            "lag_price_t": -2.04090735292308,
+            "lag_flow_coefficient": 2.5252251365081552e-05,
+            "lag_flow_t": 2.0187945133138347,
+            "lag_flow_p": 0.045080086270844304,
+            "r2": 0.03339206304401865
+          }
+        },
+        "winsorised_variant_note": "the 1/99 winsorised variant is implemented by excluding the trimmed rows, which is equivalent to trimming for an OLS estimate",
+        "degenerate_specifications": {
+          "specs": [
+            "all_controls",
+            "previous_return",
+            "same_day_return"
+          ],
+          "why": {
+            "all_controls": "contains the same-session return, so it inherits that exact fit and absorbs the whole equation.",
+            "previous_return": "the control is the previous 1-session return, which is exactly the AR(1) term already in the price equation whenever the price variable is that same 1-session return; the duplicated column makes the design singular, so this control is only identifiable in the 7-session-return combinations. The momentum question is therefore answered by the AR(1) term itself in the daily-return specifications, not by this redundant control.",
+            "same_day_return": "adding the same-session return as a regressor when the dependent variable IS that same return makes the fit exact; the coefficient collapses to ~0 with a meaningless t-statistic. A valid same-session control would need an exogenous instrument, which the spec does not declare."
+          }
+        },
+        "degenerate_flags_match_declaration": true,
+        "post_hoc_note": "post_hoc_trailing_5_return and post_hoc_trailing_20_return were NOT part of the frozen battery; they are reported as explicitly post-hoc exploratory controls"
+      }
+    }
+  },
+  "reverse_direction": {
+    "note": "return -> flow is reported in every combination's VAR output, not separately"
+  },
+  "not_tested_and_why": {
+    "flow_publication_lag": "the exact historical publication timestamp per day is UNKNOWN, so a control for the publication lag cannot be estimated; the conservative availability convention is applied uniformly instead",
+    "autocorrelated_flows": "flow persistence is already inside the model as the lagged flow term of the VAR (0.57), and any further correction needs HAC standard errors, which the frozen spec does not declare",
+    "regime_dependence": "the predeclared chronological thirds of the source window are the frozen regime check; any additional regime split would have to be chosen after seeing the results, which this exercise forbids",
+    "btc_momentum": "the AR(1) term of the price equation IS the previous daily return; the separately predeclared previous_return control turned out to duplicate that term and is flagged degenerate, so momentum is tested by the AR term itself",
+    "additional_controls_after_results": "the two trailing-return controls were added post-hoc and are labelled post-hoc everywhere; no further control was added once significance appeared, which would have been specification mining"
+  },
+  "coverage_note": "every specification reported here was declared before estimation or explicitly labelled post-hoc; the not_tested_and_why block records what could not be tested rather than leaving the gap silent"
+}

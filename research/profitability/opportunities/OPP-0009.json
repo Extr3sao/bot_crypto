@@ -1,0 +1,53 @@
+{
+ "opportunity_id": "OPP-0009",
+ "title": "Intraday/overnight seasonality in Bitcoin (hour-of-day windows)",
+ "source_ids": ["S-18"],
+ "economic_hypothesis": "Crypto trading activity is concentrated in particular clock windows (US cash hours, Asian open, overnight). If some windows persistently carry positive drift, a strategy that holds BTC only in those windows should earn it.",
+ "market": "BTC spot",
+ "assets": ["BTC"],
+ "timeframe": "hourly, day-of-week x hour-of-day",
+ "entry_rules": "PARTIAL: hold BTC during a named hour window (the source highlights 22:00 and 23:00 UTC, and calls 04:00 the worst). The window itself is a mined parameter.",
+ "exit_rules": "PARTIAL: exit at the end of the window (implied by the construction).",
+ "risk_rules": "UNKNOWN as a source rule; a window strategy earns nothing when the drift is absent and still pays two round trips per day.",
+ "parameters": "A single hour selection plus day-of-week conditioning.",
+ "claimed_period": "UNKNOWN",
+ "claimed_metrics": "companion backtest reports about 0.07% average return for the best hour; the source ranks 22:00/23:00 as best and 04:00 as worst",
+ "transaction_cost_model": "NONE (the blog reproduction does not state fee assumptions)",
+ "required_data": "hourly BTC OHLCV (public)",
+ "external_code": "NONE",
+ "external_results": "Strategy-blog reproduction of an academic observation; no peer-reviewed tradability result in the registry for this line.",
+ "forward_evidence": "NONE",
+ "live_evidence": "NONE",
+ "counter_evidence": [
+  "About 7 bps gross for the best hour cannot pay a 23.791 bps round trip; entering and exiting daily is a guaranteed cost with the same magnitude as the effect.",
+  "Twenty-four hours x seven days is 168 candidate windows: selecting the best one is textbook multiple testing, and the source shows the ranking, not its stability.",
+  "Seasonality of this kind is exactly the 'different threshold' pattern the reentry policy rejects.",
+  "The project already has a strong internal result in the neighbouring space: intraday/daily price-directional effects are weak and cost-sensitive (WHERE_WE_ARE.md)."
+ ],
+ "ambiguities": [
+  "Whether the selected hour is stable out of sample is not shown.",
+  "No cost model, no turnover accounting."
+ ],
+ "replication_difficulty": "TRIVIAL to run, which is the problem: it is a mining exercise, not a replication.",
+ "evidence_quality": "LOW-MEDIUM",
+ "selection_bias_risk": "HIGH",
+ "overfitting_risk": "HIGH",
+ "lookahead_risk": "MEDIUM",
+ "implementation_risk": "LOW",
+ "evidence_scores": {
+  "RULE_COMPLETENESS": 2,
+  "CODE_AVAILABILITY": 1,
+  "DATA_REPRODUCIBILITY": 4,
+  "TRANSACTION_COST_REALISM": 1,
+  "OOS_EVIDENCE": 2,
+  "FORWARD_EVIDENCE": 0,
+  "LIVE_EVIDENCE": 0,
+  "SAMPLE_SIZE": 4,
+  "INDEPENDENT_VALIDATION": 1,
+  "IMPLEMENTATION_FIDELITY": 2
+ },
+ "evidence_score_total": 17,
+ "rank": "REJECT",
+ "status": "REJECTED_MULTIPLE_TESTING_AND_COST",
+ "selection_note": "Registered because a reader will meet this idea constantly online; rejected on the policy's own grounds (mined threshold) and on arithmetic (gross effect below the cost floor)."
+}
