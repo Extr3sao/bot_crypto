@@ -1,0 +1,78 @@
+[registry] COST_KILLED=7 NO_GROSS_EDGE=17
+[registry] paper-executable on 5m: NONE
+[registry]   refused breakout@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused ema_crossover@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused mean_reversion@5m: COST_KILLED — status COST_KILLED does not authorise PAPER
+[registry]   refused momentum@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused trend@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+[registry]   refused volatility@5m: NO_GROSS_EDGE — status NO_GROSS_EDGE does not authorise PAPER
+2026-10-25 14:13:33 [info     ] reconcile.consistent_fresh_book
+[startup] reconciliation=CONSISTENT
+Starting PAPER trading loop — assets=['BTC'] timeframe=5m interval=0.0s provider=fake balance=10000.0
+2026-10-25 14:13:33 [info     ] paper.orchestrator.started     interval_seconds=0.0 max_sessions=1 mode=paper
+2026-10-25 14:13:33 [info     ] paper.session.started          mode=paper paper_trading_enabled=True session_id=af309a39a4ff497ea987225dc23dbe92
+2026-10-25 14:13:33 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=2d3f18b4ae144566901822f51602fee6
+2026-10-25 14:13:33 [info     ] scanner.pair.processed         active=True rank_score=0.7666666666666666 rejection_reason=None scan_iteration_id=2d3f18b4ae144566901822f51602fee6 symbol=BTC/USDT
+2026-10-25 14:13:33 [info     ] scanner.iteration.completed    all_failed=False duration_ms=0 early_exit=None pairs_active=1 pairs_inactive=0 pairs_processed=1 scan_iteration_id=2d3f18b4ae144566901822f51602fee6 scanner_errors=0
+2026-10-25 14:13:33 [info     ] paper.scanner.completed        mode=paper scanner_errors=0 session_id=af309a39a4ff497ea987225dc23dbe92 total_snapshots=1
+2026-10-25 14:13:33 [info     ] candle_filter.filtered         completed=95 removed=5 timeframe=5m total=100
+2026-10-25 14:13:33 [info     ] paper.cycle.completed          adapter_errors=0 bar_close_skips=0 broker_errors=0 context_errors=0 contexts_built=1 defensive_blocks={} duplicate_intents=0 exits_closed=0 exits_requested=0 hot_stop_blocked=0 mode=paper orders_created=0 rejections=[{'symbol': 'BTC/USDT', 'stage': 'router', 'reason': 'NO_TRADE:no_strategy_passed_gates'}] reversals_refused=0 risk_accepted=0 risk_errors=0 risk_rejected=0 router_errors=0 router_invocations=1 router_no_trade=1 same_side_skips=0 session_id=af309a39a4ff497ea987225dc23dbe92 signals_generated=0 strategy_errors=0 strategy_invocations=0
+2026-10-25 14:13:33 [info     ] paper.broker.reconciled        closed_trades=0 ending_equity=10000.0 fills_count=0 mode=paper realized_pnl=0 risk_events=() session_id=af309a39a4ff497ea987225dc23dbe92
+2026-10-25 14:13:33 [info     ] paper_state.saved              open_positions=0 path=docs\audit\runs\run-20261025T131004Z-G-5\production\state.json sent_intents=0
+2026-10-25 14:13:33 [info     ] paper.state.saved              mode=paper session_id=af309a39a4ff497ea987225dc23dbe92
+2026-10-25 14:13:33 [info     ] paper.report.written           json_path=reports\paper\report.json markdown_path=reports\paper\report.md mode=paper session_id=af309a39a4ff497ea987225dc23dbe92
+2026-10-25 14:13:33 [info     ] paper.session.completed        active_snapshots=1 duration_ms=0 inactive_snapshots=0 mode=paper report_json_path=reports\paper\report.json report_markdown_path=reports\paper\report.md scanner_errors=0 session_id=af309a39a4ff497ea987225dc23dbe92 total_snapshots=1
+2026-10-25 14:13:33 [info     ] paper.orchestrator.session     duration_ms=0 realized_pnl=0 session_id=af309a39a4ff497ea987225dc23dbe92 total_snapshots=1
+2026-10-25 14:13:33 [info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1
+2026-10-25 14:13:33 [info     ] paper_state.saved              open_positions=0 path=docs\audit\runs\run-20261025T131004Z-G-5\production\state.json sent_intents=0
+[startup] paper state saved to docs\audit\runs\run-20261025T131004Z-G-5\production\state.json
+Paper trading loop stopped.
+{
+  "running": false,
+  "mode": "paper",
+  "sessions_completed": 1,
+  "last_session_id": "af309a39a4ff497ea987225dc23dbe92",
+  "last_session_metrics": {
+    "total_snapshots": 1,
+    "active_snapshots": 1,
+    "inactive_snapshots": 0,
+    "scanner_errors": 0,
+    "fills_opened": 0,
+    "ending_equity": 10000.0
+  },
+  "realized_pnl": 0.0,
+  "equity": 10000.0,
+  "kill_switch_active": false,
+  "cycle": {
+    "contexts_built": 1,
+    "context_errors": 0,
+    "router_invocations": 1,
+    "router_no_trade": 1,
+    "router_errors": 0,
+    "strategy_invocations": 0,
+    "signals_generated": 0,
+    "strategy_errors": 0,
+    "adapter_errors": 0,
+    "bar_close_skips": 0,
+    "duplicate_intents": 0,
+    "risk_accepted": 0,
+    "risk_rejected": 0,
+    "risk_errors": 0,
+    "orders_created": 0,
+    "broker_errors": 0,
+    "hot_stop_blocked": 0,
+    "exits_requested": 0,
+    "exits_closed": 0,
+    "reversals_refused": 0,
+    "same_side_skips": 0,
+    "defensive_blocks": {},
+    "rejections": [
+      {
+        "symbol": "BTC/USDT",
+        "stage": "router",
+        "reason": "NO_TRADE:no_strategy_passed_gates"
+      }
+    ]
+  },
+  "last_errors": []
+}
