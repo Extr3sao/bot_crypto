@@ -1,0 +1,33 @@
+{
+  "run_id": "tdm09-paper-bc",
+  "pid": 24776,
+  "state": "STOPPED",
+  "stop_reason": "completed",
+  "cycles": 1,
+  "cadence": "bar-close",
+  "bar_close_settlement_seconds": 5.0,
+  "skipped_duplicate_cycles": 0,
+  "totals": {
+    "asset_cycle_evaluations": 2,
+    "paper_trades": 0,
+    "shadow_trades": 0,
+    "no_trades": 2,
+    "runtime_failures": 0,
+    "orders_created": 0,
+    "traces_persisted": 2,
+    "outcomes_resolved": 0,
+    "outcomes_pending": 2,
+    "performance_updates": 0,
+    "no_trade_NO_TRADE_STRATEGIC": 2,
+    "no_trade_NO_TRADE_RISK": 0,
+    "no_trade_NO_TRADE_DATA": 0,
+    "no_trade_NO_TRADE_CONFLICT": 0,
+    "risk_APPROVED": 2,
+    "risk_VETOED": 0,
+    "risk_NOT_APPLICABLE": 0,
+    "risk_NOT_EVALUATED": 0
+  },
+  "storage_failures": 0,
+  "storage_errors": [],
+  "ended_at_ms": 1792860911203
+}
