@@ -3,6 +3,7 @@
 **Verdict:** `G7_BLOCKED_NO_ELIGIBLE_STRATEGY`  
 **Safety:** `PAPER_ONLY=true` · `LIVE_NO_GO` · `PRODUCTION_READY=false` · `FALSE_SUCCESS=0`  
 **Implementation:** `f3a83569557e031300325c0da2e0ae68861e5576`  
+**Independent verification:** 18/18 checks, `FALSE_SUCCESS=0` (commit `20fc69f8`)  
 **Evidence:** `docs/audit/runs/run-20261025T171942Z-G-7/`
 
 ## IMPLEMENTADO
@@ -40,8 +41,13 @@
   decisions, durable restart, invalid-data blocking, provider containment,
   unchanged LIVE gate and hot stop, and the full focused test set.
 - The independent verifier (`verify_g7.py`) runs from a `git archive` export
-  and re-derives the checks rather than trusting the builder. Its verdict and
-  check count are in `verification.json`.
+  and re-derives the checks rather than trusting the builder: **18/18**,
+  `G7_BLOCKED_NO_ELIGIBLE_STRATEGY`, `FALSE_SUCCESS=0`, 75 tests passed inside
+  the export, and a separate forward probe with 0 orders.
+- The verifier overwrites none of the builder's claims: it re-runs the replay
+  twice from the committed capture, checks the capture hash and PIT rules,
+  compares the deterministic projection, and checks that the LIVE gate and
+  hot stop are byte-identical.
 
 ## NO VERIFICADO / BLOQUEADO
 
@@ -65,6 +71,7 @@ runtime code.
 ## COMMITS
 
 - Implementation: `f3a83569557e031300325c0da2e0ae68861e5576`
+- Evidence + verifier: `20fc69f8` (verification covers this commit)
 - Evidence: the commit containing this run directory. See
   `git log -- docs/audit/runs/run-20261025T171942Z-G-7`.
 - G-6 baseline: `d5e599ec`.

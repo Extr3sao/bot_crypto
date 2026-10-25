@@ -101,8 +101,11 @@ which:
 4. re-derives every check below;
 5. runs the tests inside the export.
 
-The exact verdict and check count are recorded in `verification.json`; the
-summary is repeated in `FINAL_REPORT.md`.
+Result: **18/18 checks**, veredicto `G7_BLOCKED_NO_ELIGIBLE_STRATEGY`,
+`FALSE_SUCCESS=0`, sobre `20fc69f8`. El verifier ejecutó 75 tests dentro del
+export y un forward propio (`EXECUTED`, `received_at == decision_time`, 0
+órdenes). El detalle está en `verification.json`; el resumen en
+`FINAL_REPORT.md`.
 
 ## 7. Artifacts
 
