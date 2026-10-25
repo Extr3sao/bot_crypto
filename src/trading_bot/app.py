@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import hashlib
 import json
 import sys
 import time
@@ -38,6 +39,21 @@ from trading_bot.autonomous.hot_stop import (
 from trading_bot.charting import ChartSnapshotRequest, render_local_chart_snapshot
 from trading_bot.config import TradingMode, load_settings
 from trading_bot.execution.live_gate import LiveTradingGate
+from trading_bot.execution.order_authorization import (
+    BITUNIX_FUTURES,
+    BITUNIX_SPOT,
+    CONNECTOR,
+    LiveOrderAuthorizationError,
+    OrderCategory,
+    OrderDecision,
+    OrderIntent,
+    OrderPrimitive,
+    PositionState,
+    VenueCapabilities,
+    build_reduction_payload_guard,
+    classify_order,
+    is_definitely_opening,
+)
 from trading_bot.market_data.bitunix import (
     BitunixAPIError,
     BitunixSpotClient,
@@ -248,6 +264,11 @@ def _build_parser() -> argparse.ArgumentParser:
     run_parser.add_argument("--config-dir", default="config")
     run_parser.add_argument("--env-file", default=".env")
     run_parser.add_argument("--auto-trade", action="store_true")
+    run_parser.add_argument(
+        "--confirm-live",
+        action="store_true",
+        help="Consentimiento explicito para que --auto-trade despache ordenes live.",
+    )
     run_parser.add_argument(
         "--market-kind",
         choices=["spot", "futures"],
@@ -891,49 +912,298 @@ def _live_refusal_reason(gate: HotStopGate, settings: Settings) -> str:
     return _evaluate_live_gate(settings).reason or "live_gate_blocked"
 
 
+#: Per-decision audit trail, next to the hot-stop events. It answers "why did
+#: this order reach the broker?" with the category, the rule and the gate
+#: verdict; it stores a non-sensitive settings fingerprint, never credentials.
+AUTHORIZATION_AUDIT_FILE_NAME: Final[str] = "live_order_authorizations.jsonl"
+
+
+def _authorization_audit_path(gate: HotStopGate) -> Path:
+    return Path(gate.run_dir) / AUTHORIZATION_AUDIT_FILE_NAME
+
+
+def _settings_fingerprint(settings: Settings) -> str:
+    """Identity of the configuration, without anything that could be a secret."""
+    payload = {
+        "mode": settings.runtime.mode.value,
+        "live_trading_enabled": settings.runtime.live_trading_enabled,
+        "exchange_id": settings.runtime.exchange_id,
+        "sandbox": settings.exchange.sandbox,
+        "risk": {
+            "max_risk_per_trade_pct": settings.risk.max_risk_per_trade_pct,
+            "max_daily_loss_pct": settings.risk.max_daily_loss_pct,
+            "max_total_drawdown_pct": settings.risk.max_total_drawdown_pct,
+            "max_open_positions": settings.risk.max_open_positions,
+            "max_trades_per_day": settings.risk.max_trades_per_day,
+            "kill_switch_enabled": settings.risk.kill_switch_enabled,
+        },
+    }
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()[:16]
+
+
+def _position_state(position: BitunixFuturesPosition) -> PositionState:
+    """Freeze the position read into the evidence the classifier consumes."""
+    return PositionState(
+        position_id=position.position_id,
+        symbol=position.symbol,
+        side=position.side,
+        qty=position.qty,
+        position_mode=position.position_mode,
+        observed_at=time.time(),
+    )
+
+
+@dataclass(frozen=True, slots=True)
+class LiveOrderAuthorization:
+    """The sink's answer, with the reasoning that produced it."""
+
+    allowed: bool
+    category: OrderCategory
+    rule: str
+    reason: str
+    gate: LiveGateVerdict | None = None
+    confirmation_required: bool = False
+    confirmation_present: bool = False
+
+    def __bool__(self) -> bool:
+        return self.allowed
+
+
+def _authorization_denial(
+    decision: OrderDecision,
+    reason: str,
+    *,
+    intent: OrderIntent,
+    confirm_live: bool,
+    gate: LiveGateVerdict | None = None,
+) -> LiveOrderAuthorization:
+    return LiveOrderAuthorization(
+        allowed=False,
+        category=decision.category,
+        rule=decision.rule,
+        reason=reason,
+        gate=gate,
+        confirmation_required=intent.requires_confirmation,
+        confirmation_present=confirm_live,
+    )
+
+
+def _record_authorization(
+    *,
+    audit_path: Path | None,
+    run_id: str,
+    intent: OrderIntent,
+    decision: OrderDecision,
+    authorization: LiveOrderAuthorization,
+    settings: Settings,
+    position: PositionState | None,
+) -> None:
+    """Append one JSONL line per decision. Evidence, never authority.
+
+    A failure to write the record does not change the verdict: the gate and the
+    stop already ran, and turning an unwritable log into a live-order refuser
+    would make a full disk a trading outage. The omission is visible because the
+    file is the only place a decision is written.
+    """
+    if audit_path is None:
+        return
+    record = {
+        "ts": _utc_now_iso(),
+        "run_id": run_id,
+        "entrypoint": intent.entrypoint,
+        "primitive": intent.primitive.value,
+        "symbol": intent.symbol,
+        "side": intent.side,
+        "qty": intent.qty,
+        "trade_side": intent.trade_side,
+        "reduce_only": intent.reduce_only,
+        "category": decision.category.value,
+        "rule": decision.rule,
+        "classification": decision.reason,
+        "allowed": authorization.allowed,
+        "reason": authorization.reason,
+        "gate_evaluated": authorization.gate is not None,
+        "gate_reason": authorization.gate.reason if authorization.gate else "",
+        "confirmation_required": authorization.confirmation_required,
+        "confirmation_present": authorization.confirmation_present,
+        "position_id": position.position_id if position is not None else None,
+        "settings_fingerprint": _settings_fingerprint(settings),
+    }
+    try:
+        with audit_path.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(record, sort_keys=True) + "\n")
+    except OSError:
+        return
+
+
 @contextmanager
 def _live_order_boundary(
-    gate: HotStopGate, *, opens_risk: bool, settings: Settings, run_id: str = ""
-) -> Iterator[bool]:
-    """The only authorisation a live broker call gets.
+    gate: HotStopGate,
+    *,
+    intent: OrderIntent,
+    position: PositionState | None,
+    capabilities: VenueCapabilities,
+    settings: Settings,
+    confirm_live: bool,
+    run_id: str = "",
+    audit_path: Path | None = None,
+) -> Iterator[LiveOrderAuthorization]:
+    """The only authorisation a live broker call gets, ordered by authority.
 
-    ``opens_risk`` is the caller's classification: order **entry** is refused
-    while the stop is in force, while flattening and protective orders are not,
-    because a stop that also refused to close a position would be a second
-    hazard. The classification is a literal at each call site so the structural
-    test can read it and a reviewer can argue with one line.
+    The category is **derived** at the sink from the intent, the position and the
+    venue's real payload capabilities — never passed in by the caller. Only
+    ``PROVEN_REDUCTION`` skips the opening gate, and only because the venue is
+    the one enforcing the reduction (``reduceOnly`` on the wire, or a
+    close-by-position-id endpoint with no side or size).
 
-    ``settings`` is required, not optional: an entry boundary without the data
-    the gate validates would be a bypass with a friendly signature. The gate is
-    consulted **inside** the boundary, after the stop and before
-    ``order_boundary``, so both authorities cover the same in-flight lock and a
-    refused gate never reaches the broker.
+    Everything else — ``OPEN_OR_INCREASE`` and ``UNKNOWN`` alike — needs the
+    operator's confirmation when the entrypoint is a live dispatch, a closed hot
+    stop, all ten gate checks, and the shared in-flight lock.
 
-    Fail closed: a marker that cannot be read (``HotStopGate.poll``), an
-    authority that raises, a gate that cannot be evaluated, and a lock that
-    cannot be acquired all refuse. The broker call must happen inside the
-    ``with`` block — that lock is what makes ``engage``'s ACK mean "nothing is
-    in flight" (G-2 §4.3).
+    ``settings``, ``intent``, ``position`` and ``confirm_live`` have no defaults:
+    a boundary without the data it validates would be a bypass with a friendly
+    signature. Fail closed: a classifier that raises, an authority that cannot be
+    interrogated, a gate that cannot be evaluated and a lock that cannot be
+    acquired all refuse. The broker call must happen inside the ``with`` block —
+    that lock is what makes ``engage``'s ACK mean "nothing is in flight"
+    (G-2 §4.3), and it is why a stop cannot win between the check and the call.
     """
-    if not opens_risk:
-        yield True
-        return
+    classifier_error = ""
     try:
-        switch_active = bool(gate.kill_switch.is_active)
+        decision = classify_order(
+            intent, position=position, capabilities=capabilities, now=time.time()
+        )
+    except Exception as exc:  # a classifier that cannot answer is not permission
+        classifier_error = f"classifier_error:{type(exc).__name__}"
+        decision = OrderDecision(
+            OrderCategory.UNKNOWN,
+            "R-CLASSIFIER-ERROR",
+            f"classification failed: {type(exc).__name__}",
+        )
+
+    if classifier_error:
+        # Not even UNKNOWN: an order whose semantics could not be read must not
+        # be sent on the strength of a gate verdict about configuration.
+        authorization = _authorization_denial(
+            decision, classifier_error, intent=intent, confirm_live=confirm_live
+        )
+        _record_authorization(
+            audit_path=audit_path,
+            run_id=run_id,
+            intent=intent,
+            decision=decision,
+            authorization=authorization,
+            settings=settings,
+            position=position,
+        )
+        yield authorization
+        return
+
+    if decision.category is OrderCategory.PROVEN_REDUCTION:
+        authorization = LiveOrderAuthorization(
+            allowed=True,
+            category=decision.category,
+            rule=decision.rule,
+            reason=decision.reason,
+            confirmation_required=intent.requires_confirmation,
+            confirmation_present=confirm_live,
+        )
+        _record_authorization(
+            audit_path=audit_path,
+            run_id=run_id,
+            intent=intent,
+            decision=decision,
+            authorization=authorization,
+            settings=settings,
+            position=position,
+        )
+        yield authorization
+        return
+
+    if intent.requires_confirmation and not confirm_live:
+        authorization = _authorization_denial(
+            decision, "live_confirmation_missing", intent=intent, confirm_live=confirm_live
+        )
+        _record_authorization(
+            audit_path=audit_path,
+            run_id=run_id,
+            intent=intent,
+            decision=decision,
+            authorization=authorization,
+            settings=settings,
+            position=position,
+        )
+        yield authorization
+        return
+
+    stop_reason = ""
+    try:
+        if gate.engaged:
+            stop_reason = f"kill_switch_engaged_hot:{_live_stop_reason(gate)}"
+        elif gate.kill_switch.is_active:
+            # ``KILL_SWITCH_ENV`` boots the process authority; a live path has no
+            # DecisionEngine rule 0 to catch it. Not persisted: the env token
+            # keeps the boot-time semantics G-1 fixed.
+            stop_reason = "process_kill_switch_active"
     except Exception:  # an authority we cannot interrogate is not permission
-        yield False
+        stop_reason = "kill_switch_authority_unavailable"
+
+    if stop_reason:
+        authorization = _authorization_denial(
+            decision, stop_reason, intent=intent, confirm_live=confirm_live
+        )
+        _record_authorization(
+            audit_path=audit_path,
+            run_id=run_id,
+            intent=intent,
+            decision=decision,
+            authorization=authorization,
+            settings=settings,
+            position=position,
+        )
+        yield authorization
         return
-    if switch_active:
-        # ``KILL_SWITCH_ENV`` boots the process authority; a live path has no
-        # DecisionEngine rule 0 to catch it. Not persisted: the env token keeps
-        # the boot-time semantics G-1 fixed.
-        yield False
+
+    verdict = _evaluate_live_gate(settings)
+    if not verdict.allowed:
+        authorization = _authorization_denial(
+            decision, verdict.reason, intent=intent, confirm_live=confirm_live, gate=verdict
+        )
+        _record_authorization(
+            audit_path=audit_path,
+            run_id=run_id,
+            intent=intent,
+            decision=decision,
+            authorization=authorization,
+            settings=settings,
+            position=position,
+        )
+        yield authorization
         return
-    if not _evaluate_live_gate(settings).allowed:
-        yield False
-        return
+
     with gate.order_boundary(run_id=run_id) as allowed:
-        yield allowed
+        authorization = LiveOrderAuthorization(
+            allowed=allowed,
+            category=decision.category,
+            rule=decision.rule,
+            reason="authorized"
+            if allowed
+            else f"kill_switch_engaged_hot:{_live_stop_reason(gate)}",
+            gate=verdict,
+            confirmation_required=intent.requires_confirmation,
+            confirmation_present=confirm_live,
+        )
+        _record_authorization(
+            audit_path=audit_path,
+            run_id=run_id,
+            intent=intent,
+            decision=decision,
+            authorization=authorization,
+            settings=settings,
+            position=position,
+        )
+        yield authorization
 
 
 def _maybe_execute_live_trade(
@@ -942,6 +1212,8 @@ def _maybe_execute_live_trade(
     snapshots: list[MarketSnapshot],
     connector: MultiExchangeConnector,
     hot_stop: HotStopGate,
+    confirm_live: bool,
+    run_id: str,
     execution: LiveExecutionState,
     trade_quote_usdt: float,
     max_live_orders: int,
@@ -1030,12 +1302,26 @@ def _maybe_execute_live_trade(
             )
             continue
 
-        with _live_order_boundary(hot_stop, opens_risk=True, settings=settings) as allowed:
-            if not allowed:
-                return {
-                    "status": "SKIPPED",
-                    "reason": _live_refusal_reason(hot_stop, settings),
-                }
+        intent = OrderIntent(
+            entrypoint="run",
+            primitive=OrderPrimitive.CONNECTOR_CREATE_ORDER,
+            symbol=snap.symbol,
+            side="buy",
+            qty=amount,
+            order_type="market",
+        )
+        with _live_order_boundary(
+            hot_stop,
+            intent=intent,
+            position=None,
+            capabilities=CONNECTOR,
+            settings=settings,
+            confirm_live=confirm_live,
+            run_id=run_id,
+            audit_path=_authorization_audit_path(hot_stop),
+        ) as authorization:
+            if not authorization:
+                return {"status": "SKIPPED", "reason": authorization.reason}
             order = connector.create_order(
                 symbol=snap.symbol,
                 side="buy",
@@ -1064,6 +1350,8 @@ def _close_stale_futures_positions(
     active_api_symbols: set[str],
     client: BitunixFuturesClient,
     hot_stop: HotStopGate,
+    confirm_live: bool,
+    run_id: str,
     execution: LiveExecutionState,
     settings: Settings,
     desired_directions: dict[str, str] | None = None,
@@ -1082,12 +1370,39 @@ def _close_stale_futures_positions(
                 close_reason = "signal_direction_flipped"
         if close_reason is None:
             continue
-        # Reduction, not entry: flattening must keep working while stopped, so
-        # the live gate is not consulted for it either.
-        with _live_order_boundary(hot_stop, opens_risk=False, settings=settings) as allowed:
-            if not allowed:  # defensive: opens_risk=False never refuses today
-                return {"status": "SKIPPED", "reason": "kill_switch_engaged_hot"}
-            result = client.flash_close_position(position.position_id)
+        # Flattening must keep working while stopped, but only because the
+        # venue closes by position id: the classifier proves that from the
+        # position, not from the name of this function. If the position is not
+        # observable the order becomes UNKNOWN and the gate decides.
+        observed = _position_state(position)
+        intent = OrderIntent(
+            entrypoint="run",
+            primitive=OrderPrimitive.FUTURES_FLASH_CLOSE,
+            symbol=position.symbol,
+            side="",
+            qty=position.qty,
+            trade_side="CLOSE",
+            reduce_only=True,
+            position_id=position.position_id,
+        )
+        with _live_order_boundary(
+            hot_stop,
+            intent=intent,
+            position=observed,
+            capabilities=BITUNIX_FUTURES,
+            settings=settings,
+            confirm_live=confirm_live,
+            run_id=run_id,
+            audit_path=_authorization_audit_path(hot_stop),
+        ) as authorization:
+            if not authorization:
+                return {"status": "SKIPPED", "reason": authorization.reason}
+            guard = (
+                build_reduction_payload_guard(intent=intent, position=observed)
+                if authorization.category is OrderCategory.PROVEN_REDUCTION
+                else None
+            )
+            result = client.flash_close_position(position.position_id, payload_guard=guard)
         closed_trade_case_id = _mark_trade_case_closed_from_position(
             symbol=_to_slash_symbol(position.symbol),
             position_id=position.position_id,
@@ -1119,6 +1434,8 @@ def _maybe_execute_live_futures_trade(
     futures_client: BitunixFuturesClient,
     market_client: BitunixSpotClient,
     hot_stop: HotStopGate,
+    confirm_live: bool,
+    run_id: str,
     execution: LiveExecutionState,
     trade_quote_usdt: float,
     max_live_orders: int,
@@ -1156,6 +1473,8 @@ def _maybe_execute_live_futures_trade(
         active_api_symbols=active_api_symbols,
         client=futures_client,
         hot_stop=hot_stop,
+        confirm_live=confirm_live,
+        run_id=run_id,
         execution=execution,
         settings=settings,
         desired_directions=desired_directions,
@@ -1239,13 +1558,29 @@ def _maybe_execute_live_futures_trade(
             market_client=market_client,
         )
         try:
-            with _live_order_boundary(hot_stop, opens_risk=True, settings=settings) as allowed:
-                if not allowed:
+            intent = OrderIntent(
+                entrypoint="run",
+                primitive=OrderPrimitive.FUTURES_PLACE_ORDER,
+                symbol=snap.symbol,
+                side=side,
+                qty=qty,
+                trade_side="OPEN",
+                reduce_only=False,
+                order_type="MARKET",
+            )
+            with _live_order_boundary(
+                hot_stop,
+                intent=intent,
+                position=None,
+                capabilities=BITUNIX_FUTURES,
+                settings=settings,
+                confirm_live=confirm_live,
+                run_id=run_id,
+                audit_path=_authorization_audit_path(hot_stop),
+            ) as authorization:
+                if not authorization:
                     _mark_trade_case_order_rejected(trade_case_id=trade_case_id)
-                    return {
-                        "status": "SKIPPED",
-                        "reason": _live_refusal_reason(hot_stop, settings),
-                    }
+                    return {"status": "SKIPPED", "reason": authorization.reason}
                 order = futures_client.place_order(
                     symbol=snap.symbol,
                     side=side,
@@ -1320,6 +1655,19 @@ def _cmd_run(args: argparse.Namespace) -> int:
         sys.stderr.write("ERROR: --symbol-cooldown-seconds debe ser >= 0.\n")
         return 2
 
+    # REQ-01: a live dispatch needs explicit consent for *this* invocation.
+    # Checked before the stop is built, before the scanner runs and before any
+    # exchange client exists. ``shadow_live`` is included because the order
+    # functions key off ``settings.runtime.mode``: a shadow process pointed at a
+    # live .env can dispatch. Paper/demo are not touched by this flag.
+    if args.auto_trade and args.mode in {"live", "shadow_live"} and not args.confirm_live:
+        sys.stderr.write(
+            "ERROR: --auto-trade en modo live requiere --confirm-live; "
+            "no se ha ejecutado ninguna accion.\n"
+        )
+        return 2
+
+    run_id = uuid4().hex
     env_file = args.env_file if args.env_file else None
 
     # Built before the first iteration: the constructor adopts a marker left by
@@ -1425,6 +1773,8 @@ def _cmd_run(args: argparse.Namespace) -> int:
                             futures_client=futures_client,
                             market_client=market_client,
                             hot_stop=hot_stop,
+                            confirm_live=args.confirm_live,
+                            run_id=run_id,
                             execution=live_execution,
                             trade_quote_usdt=args.trade_quote_usdt,
                             max_live_orders=args.max_live_orders,
@@ -1439,6 +1789,8 @@ def _cmd_run(args: argparse.Namespace) -> int:
                             snapshots=snapshots,
                             connector=connector,
                             hot_stop=hot_stop,
+                            confirm_live=args.confirm_live,
+                            run_id=run_id,
                             execution=live_execution,
                             trade_quote_usdt=args.trade_quote_usdt,
                             max_live_orders=args.max_live_orders,
@@ -1515,17 +1867,33 @@ def _cmd_place_order(args: argparse.Namespace) -> int:
         return 2
 
     hot_stop = _live_stop_gate(args.run_dir)
-    # Entry vs. reduction, decided here and not by the gate: closing or reducing
-    # must keep working under a stop, opening must not.
-    if args.market_kind == "futures":
-        opens_risk = not (bool(args.reduce_only) or args.trade_side == "CLOSE")
-    else:
-        opens_risk = args.side == "buy"
+    run_id = f"place-order:{uuid4().hex}"
+    audit_path = _authorization_audit_path(hot_stop)
+    futures = args.market_kind == "futures"
 
-    # Fail fast, before a client is even built. The boundary runs the gate again
-    # at the sink; this copy exists so an operator sees the refusal before any
-    # object that could reach an exchange is constructed.
-    if opens_risk and not _live_stop_is_closed(hot_stop):
+    # The intent is built once, here, and classified at the sink. `opens_risk`
+    # used to be derived from these same flags; the difference is that the flags
+    # are now *claims* the classifier must corroborate with a position and a
+    # venue capability before any of them buys an exemption.
+    intent = OrderIntent(
+        entrypoint="place-order",
+        primitive=(
+            OrderPrimitive.FUTURES_PLACE_ORDER if futures else OrderPrimitive.SPOT_PLACE_ORDER
+        ),
+        symbol=args.symbol,
+        side=args.side,
+        qty=float(args.amount),
+        trade_side=args.trade_side if futures else None,
+        reduce_only=bool(args.reduce_only) if futures else False,
+        position_id=args.position_id if futures else None,
+        order_type=args.order_type,
+    )
+
+    # Fail fast, before a client is even built, but only for an order that is
+    # definitely opening. A `sell`, a `CLOSE` without reduceOnly or a TP/SL
+    # change is UNKNOWN: the sink decides that with the position in hand, not
+    # this cheap copy.
+    if is_definitely_opening(intent) and not _live_stop_is_closed(hot_stop):
         verdict = _evaluate_live_gate(settings)
         if not verdict.allowed:
             sys.stderr.write(
@@ -1533,21 +1901,44 @@ def _cmd_place_order(args: argparse.Namespace) -> int:
             )
             return 2
 
-    if args.market_kind == "futures":
+    if futures:
         futures_client = BitunixFuturesClient(
             api_key=settings.exchange.api_key,
             api_secret=settings.exchange.api_secret,
         )
+        position: PositionState | None = None
+        if (intent.trade_side or "").upper() == "CLOSE" or intent.reduce_only:
+            # Read the position the order claims to reduce. A failure to read is
+            # not an exemption: the order stays UNKNOWN and the gate decides.
+            try:
+                for candidate in futures_client.get_pending_positions(args.symbol):
+                    if candidate.position_id == args.position_id:
+                        position = _position_state(candidate)
+                        break
+            except BitunixAPIError:
+                position = None
         try:
             with _live_order_boundary(
-                hot_stop, opens_risk=opens_risk, settings=settings
-            ) as allowed:
-                if not allowed:
+                hot_stop,
+                intent=intent,
+                position=position,
+                capabilities=BITUNIX_FUTURES,
+                settings=settings,
+                confirm_live=bool(args.confirm_live),
+                run_id=run_id,
+                audit_path=audit_path,
+            ) as authorization:
+                if not authorization:
                     sys.stderr.write(
-                        f"ERROR: live entry refused ({_live_refusal_reason(hot_stop, settings)}); "
-                        "order refused.\n"
+                        f"ERROR: live order refused ({authorization.reason}); order refused.\n"
                     )
                     return 2
+                guard = (
+                    build_reduction_payload_guard(intent=intent, position=position)
+                    if authorization.category is OrderCategory.PROVEN_REDUCTION
+                    and position is not None
+                    else None
+                )
                 order = futures_client.place_order(
                     symbol=args.symbol,
                     side=args.side,
@@ -1559,7 +1950,13 @@ def _cmd_place_order(args: argparse.Namespace) -> int:
                     reduce_only=bool(args.reduce_only),
                     tp_price=args.tp_price,
                     sl_price=args.sl_price,
+                    payload_guard=guard,
                 )
+        except LiveOrderAuthorizationError as exc:
+            sys.stderr.write(
+                f"ERROR: live reduction failed payload revalidation ({exc}); order refused.\n"
+            )
+            return 2
         except BitunixAPIError as exc:
             print(json.dumps({"success": False, "error": str(exc)}, ensure_ascii=True))
             return 1
@@ -1589,11 +1986,19 @@ def _cmd_place_order(args: argparse.Namespace) -> int:
     )
     price = float(args.price) if args.price is not None else client.fetch_last_price(args.symbol)
     try:
-        with _live_order_boundary(hot_stop, opens_risk=opens_risk, settings=settings) as allowed:
-            if not allowed:
+        with _live_order_boundary(
+            hot_stop,
+            intent=intent,
+            position=None,
+            capabilities=BITUNIX_SPOT,
+            settings=settings,
+            confirm_live=bool(args.confirm_live),
+            run_id=run_id,
+            audit_path=audit_path,
+        ) as authorization:
+            if not authorization:
                 sys.stderr.write(
-                    f"ERROR: live entry refused ({_live_refusal_reason(hot_stop, settings)}); "
-                    "order refused.\n"
+                    f"ERROR: live order refused ({authorization.reason}); order refused.\n"
                 )
                 return 2
             order = client.place_spot_order(
@@ -1603,6 +2008,11 @@ def _cmd_place_order(args: argparse.Namespace) -> int:
                 amount=float(args.amount),
                 price=price,
             )
+    except LiveOrderAuthorizationError as exc:
+        sys.stderr.write(
+            f"ERROR: live reduction failed payload revalidation ({exc}); order refused.\n"
+        )
+        return 2
     except BitunixAPIError as exc:
         print(json.dumps({"success": False, "error": str(exc)}, ensure_ascii=True))
         return 1
@@ -1655,13 +2065,53 @@ def _cmd_close_position(args: argparse.Namespace) -> int:
         api_secret=settings.exchange.api_secret,
     )
     hot_stop = _live_stop_gate(args.run_dir)
+    run_id = f"close-position:{uuid4().hex}"
     try:
-        # Flattening is risk reduction: it stays available while stopped.
-        with _live_order_boundary(hot_stop, opens_risk=False, settings=settings) as allowed:
-            if not allowed:  # defensive: opens_risk=False never refuses today
-                sys.stderr.write("ERROR: kill switch engaged; close refused.\n")
+        positions = client.get_pending_positions()
+    except BitunixAPIError as exc:
+        print(json.dumps({"success": False, "error": str(exc)}, ensure_ascii=True))
+        return 1
+    matched = next(
+        (position for position in positions if position.position_id == args.position_id), None
+    )
+    observed = _position_state(matched) if matched is not None else None
+    intent = OrderIntent(
+        entrypoint="close-position",
+        primitive=OrderPrimitive.FUTURES_FLASH_CLOSE,
+        symbol=matched.symbol if matched is not None else "",
+        side="",
+        qty=matched.qty if matched is not None else 0.0,
+        trade_side="CLOSE",
+        reduce_only=True,
+        position_id=args.position_id,
+    )
+    try:
+        # A close stays available while stopped only when the position is
+        # observable: the venue closes by position id, and the payload carries
+        # no side or size that could turn it into an opening order. Without that
+        # evidence the order is UNKNOWN and passes the gate like an entry.
+        with _live_order_boundary(
+            hot_stop,
+            intent=intent,
+            position=observed,
+            capabilities=BITUNIX_FUTURES,
+            settings=settings,
+            confirm_live=False,
+            run_id=run_id,
+            audit_path=_authorization_audit_path(hot_stop),
+        ) as authorization:
+            if not authorization:
+                sys.stderr.write(f"ERROR: close refused ({authorization.reason}).\n")
                 return 2
-            result = client.flash_close_position(args.position_id)
+            guard = (
+                build_reduction_payload_guard(intent=intent, position=observed)
+                if authorization.category is OrderCategory.PROVEN_REDUCTION and observed is not None
+                else None
+            )
+            result = client.flash_close_position(args.position_id, payload_guard=guard)
+    except LiveOrderAuthorizationError as exc:
+        sys.stderr.write(f"ERROR: close failed payload revalidation ({exc}); order refused.\n")
+        return 2
     except BitunixAPIError as exc:
         print(json.dumps({"success": False, "error": str(exc)}, ensure_ascii=True))
         return 1
@@ -1679,11 +2129,32 @@ def _cmd_set_tpsl(args: argparse.Namespace) -> int:
         api_secret=settings.exchange.api_secret,
     )
     hot_stop = _live_stop_gate(args.run_dir)
+    intent = OrderIntent(
+        entrypoint="set-tpsl",
+        primitive=OrderPrimitive.FUTURES_TP_SL,
+        symbol=args.symbol,
+        side="",
+        qty=float(args.qty),
+        position_id=args.position_id,
+        changes_protection=True,
+    )
     try:
-        # Protective orders are not new risk: they stay available while stopped.
-        with _live_order_boundary(hot_stop, opens_risk=False, settings=settings) as allowed:
-            if not allowed:  # defensive: opens_risk=False never refuses today
-                sys.stderr.write("ERROR: kill switch engaged; set-tpsl refused.\n")
+        # REQ-04: a TP/SL change can remove or loosen protection without
+        # changing size, and the positions endpoint does not return the current
+        # levels, so this cannot be proven monotonic. It is UNKNOWN: the gate
+        # and the stop decide, exactly as for an entry.
+        with _live_order_boundary(
+            hot_stop,
+            intent=intent,
+            position=None,
+            capabilities=BITUNIX_FUTURES,
+            settings=settings,
+            confirm_live=False,
+            run_id=f"set-tpsl:{uuid4().hex}",
+            audit_path=_authorization_audit_path(hot_stop),
+        ) as authorization:
+            if not authorization:
+                sys.stderr.write(f"ERROR: set-tpsl refused ({authorization.reason}).\n")
                 return 2
             result = client.place_position_tpsl(
                 symbol=args.symbol,

@@ -35,6 +35,14 @@ from trading_bot.autonomous.hot_stop import HOT_STOP_FILE_NAME, HotStopGate
 from trading_bot.config.runtime import TradingMode
 from trading_bot.domain.enums.kill_switch import KillSwitchAction
 from trading_bot.execution.live_gate import GateReport, GateResult, LiveTradingGate
+from trading_bot.execution.order_authorization import (
+    BITUNIX_FUTURES,
+    BITUNIX_SPOT,
+    OrderCategory,
+    OrderIntent,
+    OrderPrimitive,
+    PositionState,
+)
 from trading_bot.market_data.fake import build_demo_settings
 from trading_bot.paper.kill_switch_v2 import KillSwitch
 
@@ -52,11 +60,17 @@ ENTRY_POINTS: tuple[str, ...] = (
     "run-spot",
 )
 
-#: Legitimate reduction/protection stays available even when the gate rejects.
+#: A reduction proven by the venue stays available even when the gate rejects.
+#: ``set-tpsl`` and a spot ``sell`` were in this tuple under P0; RFC-TAP-EXEC-SEC-002
+#: removed them because neither can be proven not to increase risk.
 REDUCTION_POINTS: tuple[str, ...] = (
     "close-position",
-    "set-tpsl",
     "place-order-futures-close",
+)
+
+#: Not provable with the current adapters: they take the full opening treatment.
+UNKNOWN_POINTS: tuple[str, ...] = (
+    "set-tpsl",
     "place-order-spot-sell",
 )
 
@@ -109,7 +123,9 @@ def _broken_settings(gate_id: str) -> Any:
         )
     if gate_id == "GATE-004":
         return settings.model_copy(
-            update={"exchange": settings.exchange.model_copy(update={"api_key": "", "api_secret": ""})}
+            update={
+                "exchange": settings.exchange.model_copy(update={"api_key": "", "api_secret": ""})
+            }
         )
     if gate_id == "GATE-005":
         return settings.model_copy(
@@ -173,7 +189,9 @@ def test_the_gate_still_runs_its_ten_checks() -> None:
     report = LiveTradingGate(_legal_settings(), credentials=("k", "s")).validate()
     assert report.total_gates == 10
     assert [result.gate_id for result in report.results] == list(GATE_IDS)
-    assert report.failed_gates == 0, [(r.gate_id, r.message) for r in report.results if not r.passed]
+    assert report.failed_gates == 0, [
+        (r.gate_id, r.message) for r in report.results if not r.passed
+    ]
 
 
 def test_a_legal_live_configuration_is_allowed() -> None:
@@ -261,19 +279,102 @@ def test_a_gate_that_raises_is_not_permission(monkeypatch: pytest.MonkeyPatch) -
 # ---------------------------------------------------------------------------
 
 
-def _boundary(gate: HotStopGate, settings: Any, *, opens_risk: bool) -> bool:
-    with app_module._live_order_boundary(gate, opens_risk=opens_risk, settings=settings) as allowed:
-        return allowed
+def _opening_intent() -> OrderIntent:
+    return OrderIntent(
+        entrypoint="place-order",
+        primitive=OrderPrimitive.FUTURES_PLACE_ORDER,
+        symbol="BTCUSDT",
+        side="BUY",
+        qty=0.01,
+        trade_side="OPEN",
+    )
+
+
+def _position() -> PositionState:
+    import time
+
+    return PositionState(
+        position_id="pos-1",
+        symbol="BTCUSDT",
+        side="BUY",
+        qty=0.01,
+        position_mode="ONE_WAY",
+        observed_at=time.time(),
+    )
+
+
+def _proven_close_intent() -> OrderIntent:
+    return OrderIntent(
+        entrypoint="close-position",
+        primitive=OrderPrimitive.FUTURES_FLASH_CLOSE,
+        symbol="BTCUSDT",
+        side="",
+        qty=0.01,
+        trade_side="CLOSE",
+        reduce_only=True,
+        position_id="pos-1",
+    )
+
+
+def _boundary(
+    gate: HotStopGate,
+    settings: Any,
+    *,
+    intent: OrderIntent,
+    position: PositionState | None = None,
+    confirm_live: bool = True,
+    capabilities: Any = BITUNIX_FUTURES,
+) -> Any:
+    with app_module._live_order_boundary(
+        gate,
+        intent=intent,
+        position=position,
+        capabilities=capabilities,
+        settings=settings,
+        confirm_live=confirm_live,
+    ) as authorization:
+        return authorization
 
 
 def test_the_boundary_refuses_entry_when_the_gate_rejects(tmp_path: Path) -> None:
     gate = HotStopGate(kill_switch=KillSwitch(), run_dir=tmp_path)
-    assert _boundary(gate, _broken_settings("GATE-004"), opens_risk=True) is False
+    authorization = _boundary(gate, _broken_settings("GATE-004"), intent=_opening_intent())
+    assert authorization.allowed is False
+    assert "GATE-004" in authorization.reason
 
 
-def test_the_boundary_does_not_consult_the_gate_for_reduction(tmp_path: Path) -> None:
+def test_the_boundary_does_not_consult_the_gate_for_a_proven_reduction(
+    tmp_path: Path,
+) -> None:
     gate = HotStopGate(kill_switch=KillSwitch(), run_dir=tmp_path)
-    assert _boundary(gate, _broken_settings("GATE-004"), opens_risk=False) is True
+    authorization = _boundary(
+        gate,
+        _broken_settings("GATE-004"),
+        intent=_proven_close_intent(),
+        position=_position(),
+    )
+    assert authorization.allowed is True
+    assert authorization.category is OrderCategory.PROVEN_REDUCTION
+    assert authorization.gate is None
+
+
+def test_a_spot_sell_is_not_exempt_from_the_gate(tmp_path: Path) -> None:
+    gate = HotStopGate(kill_switch=KillSwitch(), run_dir=tmp_path)
+    sell = OrderIntent(
+        entrypoint="place-order",
+        primitive=OrderPrimitive.SPOT_PLACE_ORDER,
+        symbol="BTC/USDT",
+        side="sell",
+        qty=0.01,
+    )
+    authorization = _boundary(
+        gate,
+        _broken_settings("GATE-004"),
+        intent=sell,
+        capabilities=BITUNIX_SPOT,
+    )
+    assert authorization.allowed is False
+    assert authorization.category is OrderCategory.UNKNOWN
 
 
 def test_the_stop_has_priority_over_the_gate(tmp_path: Path) -> None:
@@ -282,7 +383,9 @@ def test_the_stop_has_priority_over_the_gate(tmp_path: Path) -> None:
     switch.activate(KillSwitchAction.USER)
     settings = _broken_settings("GATE-004")
 
-    assert _boundary(gate, settings, opens_risk=True) is False
+    authorization = _boundary(gate, settings, intent=_opening_intent())
+    assert authorization.allowed is False
+    assert authorization.reason == "process_kill_switch_active"
     reason = app_module._live_refusal_reason(gate, settings)
     assert reason == "process_kill_switch_active", reason
 
@@ -291,11 +394,14 @@ def test_settings_is_a_required_boundary_argument() -> None:
     import inspect
 
     signature = inspect.signature(app_module._live_order_boundary.__wrapped__)
-    parameter = signature.parameters["settings"]
-    assert parameter.default is inspect.Parameter.empty, "a boundary without settings is a bypass"
+    for name in ("settings", "intent", "position", "capabilities", "confirm_live"):
+        parameter = signature.parameters[name]
+        assert parameter.default is inspect.Parameter.empty, (
+            f"a boundary without {name} is a bypass"
+        )
 
 
-def test_every_boundary_call_site_states_risk_and_settings() -> None:
+def test_every_boundary_call_site_passes_a_typed_intent() -> None:
     tree = ast.parse(APP_PATH.read_text(encoding="utf-8"))
     calls = [
         node
@@ -308,9 +414,16 @@ def test_every_boundary_call_site_states_risk_and_settings() -> None:
     missing = [
         call.lineno
         for call in calls
-        if not {"opens_risk", "settings"} <= {keyword.arg for keyword in call.keywords}
+        if not {"intent", "settings", "capabilities", "confirm_live"}
+        <= {keyword.arg for keyword in call.keywords}
     ]
-    assert not missing, f"_live_order_boundary without opens_risk/settings at lines {missing}"
+    assert not missing, f"_live_order_boundary without a typed context at lines {missing}"
+    legacy = [
+        call.lineno
+        for call in calls
+        if any(keyword.arg == "opens_risk" for keyword in call.keywords)
+    ]
+    assert not legacy, f"caller-supplied exposure booleans survived at lines {legacy}"
 
 
 # ---------------------------------------------------------------------------
@@ -342,12 +455,30 @@ def test_positive_control_still_reaches_the_broker(entrypoint: str, tmp_path: Pa
 
 
 @pytest.mark.parametrize("entrypoint", REDUCTION_POINTS)
-def test_reduction_is_not_trapped_by_a_rejecting_gate(
-    entrypoint: str, tmp_path: Path
-) -> None:
+def test_reduction_is_not_trapped_by_a_rejecting_gate(entrypoint: str, tmp_path: Path) -> None:
     payload = _probe(entrypoint, tmp_path / "run", "--break", "GATE-004")
     assert payload["broker_calls"] == 1, payload
     assert payload["exit_code"] == 0, payload
+
+
+@pytest.mark.parametrize("entrypoint", UNKNOWN_POINTS)
+def test_an_unproven_reduction_takes_the_gate(entrypoint: str, tmp_path: Path) -> None:
+    """`sell` and `set-tpsl` are not proofs; a rejecting gate stops both."""
+    payload = _probe(entrypoint, tmp_path / "run", "--break", "GATE-004")
+    assert payload["broker_calls"] == 0, payload
+    assert payload["exit_code"] == 2, payload
+    assert "GATE-004" in payload["stderr_tail"], payload["stderr_tail"]
+
+
+@pytest.mark.parametrize("entrypoint", ["run-futures", "run-spot"])
+def test_auto_trade_without_confirmation_sends_nothing(entrypoint: str, tmp_path: Path) -> None:
+    """REQ-01: no scanner, no exchange client, no broker call."""
+    payload = _probe(entrypoint, tmp_path / "run", "--no-confirm-live")
+    assert payload["broker_calls"] == 0, payload
+    assert payload["exit_code"] == 2, payload
+    assert payload["scanner_builds"] == 0, payload
+    assert payload["client_constructions"] == 0, payload
+    assert "--confirm-live" in payload["stderr_tail"], payload["stderr_tail"]
 
 
 @pytest.mark.parametrize("entrypoint", ["place-order-futures", "run-futures"])

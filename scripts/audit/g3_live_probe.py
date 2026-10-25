@@ -55,18 +55,48 @@ class _Recorder:
         self.calls.append({"sink": sink, **payload})
 
 
-def _build_fakes(recorder: _Recorder) -> dict[str, Any]:
+def _position() -> SimpleNamespace:
+    return SimpleNamespace(
+        position_id="probe-pos-1",
+        symbol="BTCUSDT",
+        side="BUY",
+        qty=0.01,
+        position_mode="ONE_WAY",
+    )
+
+
+def _build_fakes(recorder: _Recorder, *, with_position: bool = False) -> dict[str, Any]:
     from trading_bot.market_data.types import Balance, MarketRules
+
+    def observed() -> list[Any]:
+        return [_position()] if with_position else []
 
     class FakeFutures:
         def __init__(self, *args: Any, **kwargs: Any) -> None:
             pass
 
         def place_order(self, **kwargs: Any) -> dict[str, Any]:
+            guard = kwargs.pop("payload_guard", None)
+            if guard is not None:
+                guard(
+                    {
+                        "symbol": kwargs.get("symbol"),
+                        "side": str(kwargs.get("side", "")).upper(),
+                        "qty": str(kwargs.get("qty")),
+                        "tradeSide": str(kwargs.get("trade_side", "")).upper(),
+                        "reduceOnly": bool(kwargs.get("reduce_only")),
+                        "positionId": kwargs.get("position_id"),
+                    }
+                )
             recorder.record("futures.place_order", **kwargs)
             return {"orderId": "probe-order-1", "clientId": kwargs.get("client_id")}
 
-        def flash_close_position(self, position_id: str) -> dict[str, Any]:
+        def flash_close_position(
+            self, position_id: str, *, payload_guard: Any = None
+        ) -> dict[str, Any]:
+            payload = {"positionId": position_id}
+            if payload_guard is not None:
+                payload_guard(payload)
             recorder.record("futures.flash_close_position", position_id=position_id)
             return {"positionId": position_id, "closed": True}
 
@@ -75,7 +105,7 @@ def _build_fakes(recorder: _Recorder) -> dict[str, Any]:
             return {"positionId": kwargs.get("position_id"), "tpsl": True}
 
         def get_pending_positions(self, symbol: str | None = None) -> list[Any]:
-            return []
+            return observed()
 
         def get_account(self, asset: str = "USDT") -> Any:
             return SimpleNamespace(available=1_000.0, cross_unrealized_pnl=0.0)
@@ -192,8 +222,9 @@ def _argv_for(entrypoint: str, run_dir: Path, trade_side: str, side: str) -> lis
             "place-order",
             "--symbol",
             "BTCUSDT",
+            # The fixture position is a LONG: closing it is a sell.
             "--side",
-            "buy",
+            "sell" if trade_side == "CLOSE" else "buy",
             "--order-type",
             "market",
             "--amount",
@@ -205,7 +236,7 @@ def _argv_for(entrypoint: str, run_dir: Path, trade_side: str, side: str) -> lis
             trade_side,
         ]
         if trade_side == "CLOSE":
-            argv.append("--reduce-only")
+            argv += ["--reduce-only", "--position-id", "probe-pos-1"]
         return argv
     if entrypoint == "place-order-spot":
         return [
@@ -247,6 +278,7 @@ def _argv_for(entrypoint: str, run_dir: Path, trade_side: str, side: str) -> lis
             "live",
             "--once",
             "--auto-trade",
+            "--confirm-live",
             "--market-kind",
             "futures" if entrypoint == "run-futures" else "spot",
             "--trade-quote-usdt",
@@ -299,7 +331,11 @@ def main(argv: list[str] | None = None) -> int:
     from trading_bot.autonomous.hot_stop import AUDIT_FILE_NAME, HOT_STOP_FILE_NAME
 
     recorder = _Recorder()
-    fakes = _build_fakes(recorder)
+    fakes = _build_fakes(
+        recorder,
+        with_position=args.entrypoint == "close-position"
+        or (args.entrypoint == "place-order-futures" and args.trade_side == "CLOSE"),
+    )
     settings = _live_settings()
 
     # One Any-typed alias: the module really does export these names, but

@@ -75,18 +75,58 @@ class _Recorder:
         self.calls.append({"sink": sink, **payload})
 
 
-def _build_fakes(recorder: _Recorder) -> dict[str, Any]:
+def _position() -> SimpleNamespace:
+    """The position a close entrypoint claims to reduce.
+
+    Without it the classifier cannot prove a reduction and the order becomes
+    UNKNOWN — which is the behaviour the RFC wants, but not the case these
+    probe entrypoints are about.
+    """
+    return SimpleNamespace(
+        position_id="p0-pos-1",
+        symbol="BTCUSDT",
+        side="BUY",
+        qty=0.01,
+        position_mode="ONE_WAY",
+    )
+
+
+def _build_fakes(
+    recorder: _Recorder, *, with_position: bool = False, constructions: dict[str, int] | None = None
+) -> dict[str, Any]:
     from trading_bot.market_data.types import Balance, MarketRules
+
+    counters = constructions if constructions is not None else {"client": 0, "scanner": 0}
+
+    def observed() -> list[Any]:
+        return [_position()] if with_position else []
 
     class FakeFutures:
         def __init__(self, *args: Any, **kwargs: Any) -> None:
-            pass
+            counters["client"] += 1
 
         def place_order(self, **kwargs: Any) -> dict[str, Any]:
+            guard = kwargs.pop("payload_guard", None)
+            if guard is not None:
+                guard(
+                    {
+                        "symbol": kwargs.get("symbol"),
+                        "side": str(kwargs.get("side", "")).upper(),
+                        "qty": str(kwargs.get("qty")),
+                        "tradeSide": str(kwargs.get("trade_side", "")).upper(),
+                        "reduceOnly": bool(kwargs.get("reduce_only")),
+                        "positionId": kwargs.get("position_id"),
+                    }
+                )
             recorder.record("futures.place_order", **kwargs)
             return {"orderId": "p0-order-1", "clientId": kwargs.get("client_id")}
 
-        def flash_close_position(self, position_id: str) -> dict[str, Any]:
+        def flash_close_position(
+            self, position_id: str, *, payload_guard: Any = None
+        ) -> dict[str, Any]:
+            payload = {"positionId": position_id}
+            if payload_guard is not None:
+                payload_guard(payload)
             recorder.record("futures.flash_close_position", position_id=position_id)
             return {"positionId": position_id, "closed": True}
 
@@ -95,7 +135,7 @@ def _build_fakes(recorder: _Recorder) -> dict[str, Any]:
             return {"positionId": kwargs.get("position_id"), "tpsl": True}
 
         def get_pending_positions(self, symbol: str | None = None) -> list[Any]:
-            return []
+            return observed()
 
         def get_account(self, asset: str = "USDT") -> Any:
             return SimpleNamespace(available=1_000.0, cross_unrealized_pnl=0.0)
@@ -115,7 +155,7 @@ def _build_fakes(recorder: _Recorder) -> dict[str, Any]:
 
     class FakeSpot:
         def __init__(self, *args: Any, **kwargs: Any) -> None:
-            pass
+            counters["client"] += 1
 
         def place_spot_order(self, **kwargs: Any) -> dict[str, Any]:
             recorder.record("spot.place_spot_order", **kwargs)
@@ -207,7 +247,9 @@ def _break_settings(settings: Any, gate_id: str) -> Any:
         )
     if gate_id == "GATE-004":
         return settings.model_copy(
-            update={"exchange": settings.exchange.model_copy(update={"api_key": "", "api_secret": ""})}
+            update={
+                "exchange": settings.exchange.model_copy(update={"api_key": "", "api_secret": ""})
+            }
         )
     if gate_id == "GATE-005":
         return settings.model_copy(
@@ -276,12 +318,14 @@ def _supports_run_dir(app_module: Any, command: str) -> bool:
 
 def _argv_for(entrypoint: str, run_dir: Path) -> list[str]:
     if entrypoint in {"place-order-futures", "place-order-futures-close"}:
+        closes = entrypoint.endswith("-close")
         argv = [
             "place-order",
             "--symbol",
             "BTCUSDT",
             "--side",
-            "buy",
+            # The fixture position is a LONG: closing it is a sell.
+            "sell" if closes else "buy",
             "--order-type",
             "market",
             "--amount",
@@ -290,9 +334,9 @@ def _argv_for(entrypoint: str, run_dir: Path) -> list[str]:
             "--market-kind",
             "futures",
             "--trade-side",
-            "CLOSE" if entrypoint.endswith("-close") else "OPEN",
+            "CLOSE" if closes else "OPEN",
         ]
-        if entrypoint.endswith("-close"):
+        if closes:
             argv += ["--reduce-only", "--position-id", "p0-pos-1"]
         return argv
     if entrypoint in {"place-order-spot", "place-order-spot-sell"}:
@@ -335,6 +379,7 @@ def _argv_for(entrypoint: str, run_dir: Path) -> list[str]:
             "live",
             "--once",
             "--auto-trade",
+            "--confirm-live",
             "--market-kind",
             "futures" if entrypoint == "run-futures" else "spot",
             "--trade-quote-usdt",
@@ -362,6 +407,11 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Make load_settings raise, to test what happens when the config cannot be read.",
     )
+    parser.add_argument(
+        "--no-confirm-live",
+        action="store_true",
+        help="Drop --confirm-live from the argv, to test REQ-01.",
+    )
     parser.add_argument("--json", default=None)
     args = parser.parse_args(argv)
 
@@ -379,8 +429,15 @@ def main(argv: list[str] | None = None) -> int:
     from trading_bot.execution.live_gate import LiveTradingGate
 
     recorder = _Recorder()
-    fakes = _build_fakes(recorder)
-    settings = _break_settings(_live_settings(), args.break_gate) if args.break_gate else _live_settings()
+    constructions = {"client": 0, "scanner": 0}
+    fakes = _build_fakes(
+        recorder,
+        with_position=args.entrypoint in {"place-order-futures-close", "close-position"},
+        constructions=constructions,
+    )
+    settings = (
+        _break_settings(_live_settings(), args.break_gate) if args.break_gate else _live_settings()
+    )
     if args.settings_error:
         settings = _live_settings()
 
@@ -421,6 +478,7 @@ def main(argv: list[str] | None = None) -> int:
         live_app.load_settings = lambda **kwargs: settings
 
     def _single_live_iteration(config_dir: str, env_file: str | None) -> Any:
+        constructions["scanner"] += 1
         snapshots = [
             SimpleNamespace(
                 symbol="BTC/USDT",
@@ -446,6 +504,8 @@ def main(argv: list[str] | None = None) -> int:
     live_app._reconcile_open_trade_cases_with_positions = lambda **kwargs: []
 
     cli = _argv_for(args.entrypoint, run_dir)
+    if args.no_confirm_live and "--confirm-live" in cli:
+        cli.remove("--confirm-live")
     if _supports_run_dir(app_module, cli[0]) and "--run-dir" not in cli:
         cli += ["--run-dir", str(run_dir)]
 
@@ -475,6 +535,9 @@ def main(argv: list[str] | None = None) -> int:
         "error": error,
         "gate_validations": validate_calls[0],
         "broken_gate_ids": [args.break_gate] if args.break_gate else [],
+        "no_confirm_live": args.no_confirm_live,
+        "scanner_builds": constructions["scanner"],
+        "client_constructions": constructions["client"],
         "broker_calls": len(recorder.calls),
         "calls": recorder.calls,
         "stdout_tail": out.getvalue()[-2000:],

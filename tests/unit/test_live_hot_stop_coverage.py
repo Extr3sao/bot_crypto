@@ -33,6 +33,11 @@ import pytest
 from trading_bot import app as app_module
 from trading_bot.autonomous.hot_stop import HOT_STOP_FILE_NAME, HotStopGate
 from trading_bot.config.runtime import TradingMode
+from trading_bot.execution.order_authorization import (
+    BITUNIX_FUTURES,
+    OrderIntent,
+    OrderPrimitive,
+)
 from trading_bot.market_data.fake import build_demo_settings
 from trading_bot.paper.kill_switch_v2 import KillSwitch
 
@@ -58,10 +63,15 @@ ENTRY_POINTS = (
     "run-spot",
 )
 
+#: Proven reductions only. RFC-TAP-EXEC-SEC-002 removed `set-tpsl` and a spot
+#: `sell`: neither is enforced by the venue, so a stop may (and does) refuse them.
 REDUCTION_POINTS = (
     ("close-position", ()),
-    ("set-tpsl", ()),
     ("place-order-futures", ("--trade-side", "CLOSE")),
+)
+
+UNKNOWN_POINTS = (
+    ("set-tpsl", ()),
     ("place-order-spot", ("--side", "sell")),
 )
 
@@ -257,6 +267,21 @@ def test_reduction_and_protection_still_reach_the_broker(
     assert payload["exit_code"] == 0, payload
 
 
+@pytest.mark.parametrize(("entrypoint", "extra"), UNKNOWN_POINTS)
+def test_unproven_protection_is_refused_by_the_stop(
+    entrypoint: str, extra: tuple[str, ...], tmp_path: Path
+) -> None:
+    """A spot sell and a TP/SL change are UNKNOWN: the stop applies to both."""
+    run_dir = tmp_path / "run"
+    run_dir.mkdir()
+    (run_dir / HOT_STOP_FILE_NAME).write_text("operator stop\n", encoding="utf-8")
+
+    payload = _probe(entrypoint, run_dir, *extra)
+
+    assert payload["broker_calls"] == 0, payload
+    assert payload["exit_code"] == 2, payload
+
+
 # ---------------------------------------------------------------------------
 # ACC-G3-08 — the structure: no sink outside the boundary
 # ---------------------------------------------------------------------------
@@ -315,8 +340,8 @@ def test_every_live_sink_is_inside_the_boundary() -> None:
     assert not escapes, "live sink reached without _live_order_boundary:\n" + "\n".join(escapes)
 
 
-def test_each_boundary_states_whether_it_opens_risk() -> None:
-    """The classification is a literal at the call site, not a default."""
+def test_each_boundary_carries_the_typed_order_and_context() -> None:
+    """The category is derived from the intent, not declared by the caller."""
     tree = ast.parse(APP_PATH.read_text(encoding="utf-8"))
     boundaries = [
         node
@@ -331,9 +356,15 @@ def test_each_boundary_states_whether_it_opens_risk() -> None:
     missing = [
         node.lineno
         for node in boundaries
-        if not any(keyword.arg == "opens_risk" for keyword in node.keywords)
+        if not {"intent", "settings", "confirm_live"} <= {keyword.arg for keyword in node.keywords}
     ]
-    assert not missing, f"_live_order_boundary without opens_risk at lines {missing}"
+    assert not missing, f"_live_order_boundary without a typed context at lines {missing}"
+    legacy = [
+        node.lineno
+        for node in boundaries
+        if any(keyword.arg == "opens_risk" for keyword in node.keywords)
+    ]
+    assert not legacy, f"caller-supplied exposure booleans survived at lines {legacy}"
 
 
 # ---------------------------------------------------------------------------
@@ -349,8 +380,24 @@ def test_engage_waits_for_the_inflight_dispatch(tmp_path: Path) -> None:
     release = threading.Event()
     sent: list[str] = []
 
+    opening = OrderIntent(
+        entrypoint="run",
+        primitive=OrderPrimitive.FUTURES_PLACE_ORDER,
+        symbol="BTC/USDT",
+        side="BUY",
+        qty=10.0,
+        trade_side="OPEN",
+    )
+
     def dispatch() -> None:
-        with app_module._live_order_boundary(gate, opens_risk=True, settings=settings) as allowed:
+        with app_module._live_order_boundary(
+            gate,
+            intent=opening,
+            position=None,
+            capabilities=BITUNIX_FUTURES,
+            settings=settings,
+            confirm_live=True,
+        ) as allowed:
             assert allowed
             entered.set()
             assert release.wait(timeout=10)
@@ -376,7 +423,14 @@ def test_engage_waits_for_the_inflight_dispatch(tmp_path: Path) -> None:
     assert getattr(acks[0], "persisted", False) is True
     assert sent == ["order"]
 
-    with app_module._live_order_boundary(gate, opens_risk=True, settings=settings) as allowed:
+    with app_module._live_order_boundary(
+        gate,
+        intent=opening,
+        position=None,
+        capabilities=BITUNIX_FUTURES,
+        settings=settings,
+        confirm_live=True,
+    ) as allowed:
         assert not allowed, "a dispatch began after the stop was in force"
 
 
