@@ -16,9 +16,14 @@
       "scope": "the exploded artefacts, the producer pins, the input evidence, REPAIR_EVIDENCE"
     },
     {
-      "id": "pending",
-      "subject": "docs(audit): recertify the ledger repair and publish the independent verification",
+      "id": "c447cdb7",
+      "subject": "docs(audit): recertify the ledger repair and publish the independent check",
       "scope": "RECERTIFICATION_REPORT, RUN_REPORT, FINAL_REPORT, INDEPENDENT_VERIFICATION, the re-issued certification record, evidence"
+    },
+    {
+      "id": "tip (unnamed on purpose: a committed file cannot name the commit that carries it)",
+      "subject": "docs(audit): re-check the final tree against the record it now carries",
+      "scope": "the three checks that read the re-issued record, repeated on c447cdb7: full gate 13/13, independent verifier 22/22, lane suite 73 passed"
     }
   ],
   "measured_on_utc": "2026-10-25",

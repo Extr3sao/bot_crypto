@@ -19,7 +19,8 @@
 | --- | --- | --- |
 | `7311e553` | `feat(evidence): give the admission ledger a versioned semantic identity` | contrato v1, las tres implementaciones, la decisión del gate, `newline="\n"` en los escritores, 24 tests de contrato |
 | `265d09ed` | `fix(evidence): re-pin the ledger the commit carries and rebuild the lane at it` | artefactos reconstruidos, pines de productor, evidencia del input, `REPAIR_EVIDENCE.md` |
-| este commit | `docs(audit): recertify the ledger repair and publish the independent verification` | informes, verificación independiente, registro reemitido, evidencia |
+| `c447cdb7` | `docs(audit): recertify the ledger repair and publish the independent check` | informes, verificación independiente, registro reemitido, evidencia |
+| tip (sin hash por diseño) | `docs(audit): re-check the final tree against the record it now carries` | las tres comprobaciones que leen el registro reemitido, repetidas sobre `c447cdb7`: gate 13/13, verificador 22/22, suite del lane 73 passed |
 
 ---
 

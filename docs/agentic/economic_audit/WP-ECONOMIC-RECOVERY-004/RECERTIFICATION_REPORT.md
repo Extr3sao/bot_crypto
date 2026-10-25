@@ -188,3 +188,22 @@ python scripts/cost_barrier_certify.py --supersedes-reason "…"          # CERT
 El gate completo necesita `reports/strategy-baseline/COST_BARRIER.json`; en un checkout
 limpio se restaura con `python scripts/cost_barrier_evidence.py --materialize`, que lo
 verifica contra el pin publicado (`2437f446…`) antes de escribirlo.
+
+---
+
+## 8. Re-comprobación del árbol final (`c447cdb7`)
+
+El registro de certificación se reemite en el commit de informes, así que lo que se
+verificó en `265d09ed` no describía el árbol final. Se repitieron las tres comprobaciones
+que dependen de ese registro, ya sobre `c447cdb7`:
+
+| comprobación | resultado | transcripción |
+| --- | --- | --- |
+| gate completo | `FULL_REPRODUCTION_PASS`, 13/13, **exit 0** | [`evidence/final_tree_gate.txt`](evidence/final_tree_gate.txt) |
+| verificación independiente (segunda corrida) | **22/22 PASS**, exit 0, artefacto propio | [`evidence/FINAL_TREE_RECHECK.json`](evidence/FINAL_TREE_RECHECK.json), [`evidence/final_tree_verification.txt`](evidence/final_tree_verification.txt) |
+| suite del lane que lee el registro (adversarial + contrato + determinismo) | **73 passed**, exit 0 | [`evidence/final_tree_lane_suite.txt`](evidence/final_tree_lane_suite.txt) |
+
+`INDEPENDENT_VERIFICATION.json` (el entregable) sigue nombrando `265d09ed`, el commit
+cuya reparación atestigua; `evidence/FINAL_TREE_RECHECK.json` nombra `c447cdb7`, el árbol
+sobre el que se midió. Un fichero commiteado no puede nombrarse a sí mismo, así que
+separar las dos cosas es la única forma honesta de publicar ambas.
