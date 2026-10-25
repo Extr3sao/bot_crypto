@@ -1,0 +1,254 @@
+{
+  "wp": "WP-ECONOMIC-BLOCKER-001",
+  "artefact": "STRATEGY_ECONOMICS",
+  "matrix_csv": "STRATEGY_ECONOMICS_MATRIX.csv",
+  "rows": 24,
+  "entries_by_timeframe": {
+    "15m": 6,
+    "1h": 6,
+    "30m": 6,
+    "5m": 6
+  },
+  "cost_by_asset_bps": {
+    "BTC": 22.7918,
+    "ETH": 22.8338,
+    "SOL": 23.79,
+    "note": "the runtime's three assets, from the recorded traces; the matrix uses the widest (SOL) so the table cannot flatter a strategy"
+  },
+  "cost_basis": {
+    "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+    "size_usd": 1000.0,
+    "spread": "model default (ESTIMATED 1.0 bps), which coincides with the widest measured spread of the three assets the PAPER runtime traded (SOL ~0.999 bps); the BTC case would cost 22.79 bps, i.e. 1.0 bps less, and changes no verdict",
+    "cost_range_bps": [
+      23.790569,
+      23.790569
+    ],
+    "safety_multiple": 1.5
+  },
+  "verdict_counts": {
+    "NET_NEGATIVE_AFTER_COST": 18,
+    "NET_UNPROVEN_SAMPLE": 6,
+    "NET_POSITIVE_NOT_ADMITTED": 0
+  },
+  "positive_gross_entries": [
+    "mean_reversion@15m",
+    "mean_reversion@30m",
+    "mean_reversion@5m",
+    "trend@15m",
+    "trend@30m",
+    "volatility@1h",
+    "volatility@30m"
+  ],
+  "best_gross_entry": {
+    "strategy_id": "volatility@30m",
+    "gross_bps": 8.91,
+    "net_bps": -14.880569,
+    "sample_trades": 0
+  },
+  "spread_between_best_gross_and_cheapest_cost_bps": -14.880569,
+  "any_entry_clears_cost": false,
+  "any_entry_clears_cost_with_proven_sample": false,
+  "candidates_for_later_validation": [
+    {
+      "strategy_id": "volatility@30m",
+      "gross_bps": 8.91,
+      "net_bps": -14.880569,
+      "sample_trades": 0,
+      "why": "highest zero-cost gross edge among the positive entries, but the sample count is unpublished and the net is still negative",
+      "not_admitted_because": [
+        "sample size unpublished (sample_trades=0)",
+        "net negative after the measured round-trip cost",
+        "no positive OOS result in the admission matrix"
+      ]
+    },
+    {
+      "strategy_id": "volatility@1h",
+      "gross_bps": 6.28,
+      "net_bps": -17.510569,
+      "sample_trades": 0,
+      "why": "highest zero-cost gross edge among the positive entries, but the sample count is unpublished and the net is still negative",
+      "not_admitted_because": [
+        "sample size unpublished (sample_trades=0)",
+        "net negative after the measured round-trip cost",
+        "no positive OOS result in the admission matrix"
+      ]
+    }
+  ],
+  "families": [
+    {
+      "family": "breakout",
+      "entries": 4,
+      "timeframes": [
+        "15m",
+        "1h",
+        "30m",
+        "5m"
+      ],
+      "best_gross_bps": -0.11,
+      "best_timeframe": "5m",
+      "best_net_bps": -23.900569,
+      "proven_sample_entries": 1,
+      "positive_gross_entries": 0,
+      "statuses": [
+        "NO_GROSS_EDGE"
+      ],
+      "matrix_totals_base": {
+        "trades": 2276,
+        "gross_usd": -289.44,
+        "fees_usd": 1137.96,
+        "net_usd": -1427.46,
+        "profit_factor": 0.6612,
+        "expectancy_usd": -0.6272
+      },
+      "fee_drag_multiple_of_gross": 3.932,
+      "profitable_before_fees": false
+    },
+    {
+      "family": "ema_crossover",
+      "entries": 4,
+      "timeframes": [
+        "15m",
+        "1h",
+        "30m",
+        "5m"
+      ],
+      "best_gross_bps": -0.73,
+      "best_timeframe": "30m",
+      "best_net_bps": -24.520569,
+      "proven_sample_entries": 1,
+      "positive_gross_entries": 0,
+      "statuses": [
+        "NO_GROSS_EDGE"
+      ],
+      "matrix_totals_base": {
+        "trades": 1561,
+        "gross_usd": -485.74,
+        "fees_usd": 780.4,
+        "net_usd": -1266.16,
+        "profit_factor": 0.5017,
+        "expectancy_usd": -0.8111
+      },
+      "fee_drag_multiple_of_gross": 1.607,
+      "profitable_before_fees": false
+    },
+    {
+      "family": "mean_reversion",
+      "entries": 4,
+      "timeframes": [
+        "15m",
+        "1h",
+        "30m",
+        "5m"
+      ],
+      "best_gross_bps": 5.47,
+      "best_timeframe": "30m",
+      "best_net_bps": -18.320569,
+      "proven_sample_entries": 1,
+      "positive_gross_entries": 3,
+      "statuses": [
+        "COST_KILLED",
+        "NO_GROSS_EDGE"
+      ],
+      "matrix_totals_base": {
+        "trades": 2861,
+        "gross_usd": -83.91,
+        "fees_usd": 1430.38,
+        "net_usd": -1514.34,
+        "profit_factor": 0.6746,
+        "expectancy_usd": -0.5293
+      },
+      "fee_drag_multiple_of_gross": 17.047,
+      "profitable_before_fees": false
+    },
+    {
+      "family": "momentum",
+      "entries": 4,
+      "timeframes": [
+        "15m",
+        "1h",
+        "30m",
+        "5m"
+      ],
+      "best_gross_bps": -1.88,
+      "best_timeframe": "5m",
+      "best_net_bps": -25.670569,
+      "proven_sample_entries": 1,
+      "positive_gross_entries": 0,
+      "statuses": [
+        "NO_GROSS_EDGE"
+      ],
+      "matrix_totals_base": {
+        "trades": 2436,
+        "gross_usd": -461.3,
+        "fees_usd": 1217.99,
+        "net_usd": -1679.33,
+        "profit_factor": 0.6462,
+        "expectancy_usd": -0.6894
+      },
+      "fee_drag_multiple_of_gross": 2.64,
+      "profitable_before_fees": false
+    },
+    {
+      "family": "trend",
+      "entries": 4,
+      "timeframes": [
+        "15m",
+        "1h",
+        "30m",
+        "5m"
+      ],
+      "best_gross_bps": 2.21,
+      "best_timeframe": "30m",
+      "best_net_bps": -21.580569,
+      "proven_sample_entries": 1,
+      "positive_gross_entries": 2,
+      "statuses": [
+        "COST_KILLED",
+        "NO_GROSS_EDGE"
+      ],
+      "matrix_totals_base": {
+        "trades": 1288,
+        "gross_usd": -232.76,
+        "fees_usd": 644.04,
+        "net_usd": -876.83,
+        "profit_factor": 0.7226,
+        "expectancy_usd": -0.6808
+      },
+      "fee_drag_multiple_of_gross": 2.767,
+      "profitable_before_fees": false
+    },
+    {
+      "family": "volatility",
+      "entries": 4,
+      "timeframes": [
+        "15m",
+        "1h",
+        "30m",
+        "5m"
+      ],
+      "best_gross_bps": 8.91,
+      "best_timeframe": "30m",
+      "best_net_bps": -14.880569,
+      "proven_sample_entries": 1,
+      "positive_gross_entries": 2,
+      "statuses": [
+        "COST_KILLED",
+        "NO_GROSS_EDGE"
+      ],
+      "matrix_totals_base": {
+        "trades": 519,
+        "gross_usd": -169.26,
+        "fees_usd": 259.52,
+        "net_usd": -428.79,
+        "profit_factor": 0.6175,
+        "expectancy_usd": -0.8262
+      },
+      "fee_drag_multiple_of_gross": 1.533,
+      "profitable_before_fees": false
+    }
+  ],
+  "interpretation": {
+    "fee_floor": "20 bps of the 22.79 bps round trip are KNOWN venue fees, so no re-estimation of slippage or impact can change any verdict",
+    "horizon_insensitivity": "cost is ~flat in horizon on spot (funding 0), so extending the holding period does not amortise the fee; the gross edge would have to grow with the horizon, and in the measured data it does not"
+  }
+}

@@ -1,0 +1,261 @@
+{
+  "artifact": "ST6_REGIME_COVERAGE",
+  "asset_presence_fraction": {
+    "BTCUSDT": 1.0,
+    "ETHUSDT": 1.0,
+    "SOLUSDT": 1.0,
+    "XRPUSDT": 1.0
+  },
+  "checks": {
+    "days_covered >= declared minimum": {
+      "observed": 2,
+      "required": 10,
+      "satisfied": false
+    },
+    "distinct slots >= declared minimum": {
+      "observed": 6,
+      "required": 6,
+      "satisfied": true
+    },
+    "distinct volatility bands >= declared minimum": {
+      "observed": 3,
+      "required": 2,
+      "satisfied": true
+    },
+    "each session >= declared minimum": {
+      "observed": 2,
+      "required": 8,
+      "satisfied": false
+    },
+    "every asset present in >= declared fraction of windows": {
+      "observed": 1.0,
+      "required": 0.9,
+      "satisfied": true
+    },
+    "rejected fraction <= declared maximum": {
+      "observed": 0.0,
+      "required": 0.2,
+      "satisfied": true
+    },
+    "weekday windows >= declared minimum": {
+      "observed": 7,
+      "required": 20,
+      "satisfied": false
+    },
+    "weekend windows >= declared minimum": {
+      "observed": 0,
+      "required": 4,
+      "satisfied": false
+    },
+    "windows_total >= declared minimum": {
+      "observed": 7,
+      "required": 42,
+      "satisfied": false
+    }
+  },
+  "coverage_complete": false,
+  "coverage_token": "REGIME_COVERAGE_INSUFFICIENT",
+  "day_detail": {
+    "2026-10-08": {
+      "complete": false,
+      "day_type": "weekday",
+      "slots": [
+        "16:00-20:00 UTC",
+        "20:00-24:00 UTC"
+      ],
+      "windows": 2
+    },
+    "2026-10-09": {
+      "complete": false,
+      "day_type": "weekday",
+      "slots": [
+        "00:00-04:00 UTC",
+        "04:00-08:00 UTC",
+        "08:00-12:00 UTC",
+        "12:00-16:00 UTC",
+        "16:00-20:00 UTC"
+      ],
+      "windows": 5
+    },
+    "2026-10-10": {
+      "complete": false,
+      "day_type": "weekend",
+      "slots": [],
+      "windows": 0
+    },
+    "2026-10-11": {
+      "complete": false,
+      "day_type": "weekend",
+      "slots": [],
+      "windows": 0
+    },
+    "2026-10-12": {
+      "complete": false,
+      "day_type": "weekday",
+      "slots": [],
+      "windows": 0
+    },
+    "2026-10-13": {
+      "complete": false,
+      "day_type": "weekday",
+      "slots": [],
+      "windows": 0
+    },
+    "2026-10-14": {
+      "complete": false,
+      "day_type": "weekday",
+      "slots": [],
+      "windows": 0
+    },
+    "2026-10-15": {
+      "complete": false,
+      "day_type": "weekday",
+      "slots": [],
+      "windows": 0
+    },
+    "2026-10-16": {
+      "complete": false,
+      "day_type": "weekday",
+      "slots": [],
+      "windows": 0
+    },
+    "2026-10-17": {
+      "complete": false,
+      "day_type": "weekend",
+      "slots": [],
+      "windows": 0
+    },
+    "2026-10-18": {
+      "complete": false,
+      "day_type": "weekend",
+      "slots": [],
+      "windows": 0
+    },
+    "2026-10-19": {
+      "complete": false,
+      "day_type": "weekday",
+      "slots": [],
+      "windows": 0
+    },
+    "2026-10-20": {
+      "complete": false,
+      "day_type": "weekday",
+      "slots": [],
+      "windows": 0
+    },
+    "2026-10-21": {
+      "complete": false,
+      "day_type": "weekday",
+      "slots": [],
+      "windows": 0
+    },
+    "2026-10-22": {
+      "complete": false,
+      "day_type": "weekday",
+      "slots": [],
+      "windows": 0
+    }
+  },
+  "declared_rule": {
+    "maximum_rejected_fraction": 0.2,
+    "maximum_windows_per_day": 6,
+    "minimum_asset_presence_fraction": 0.9,
+    "minimum_days_covered": 10,
+    "minimum_distinct_slots": 6,
+    "minimum_distinct_volatility_bands": 2,
+    "minimum_weekday_windows": 20,
+    "minimum_weekend_windows": 4,
+    "minimum_windows_per_three_sessions": 8,
+    "minimum_windows_total": 42,
+    "period_days": 14
+  },
+  "declared_rule_is_frozen": "the pass/fail rule is the one declared when the period was activated and is not adjusted after seeing a window; the liquidity bands actually observed are reported beside it rather than turned into a condition afterwards",
+  "generated_at_utc": "2026-10-09T16:03:26Z",
+  "missing": [
+    {
+      "condition": "days_covered >= declared minimum",
+      "gap": "still short of the declared coverage rule",
+      "observed": 2,
+      "required": 10
+    },
+    {
+      "condition": "windows_total >= declared minimum",
+      "gap": "still short of the declared coverage rule",
+      "observed": 7,
+      "required": 42
+    },
+    {
+      "condition": "each session >= declared minimum",
+      "gap": "still short of the declared coverage rule",
+      "observed": 2,
+      "required": 8
+    },
+    {
+      "condition": "weekday windows >= declared minimum",
+      "gap": "still short of the declared coverage rule",
+      "observed": 7,
+      "required": 20
+    },
+    {
+      "condition": "weekend windows >= declared minimum",
+      "gap": "still short of the declared coverage rule",
+      "observed": 0,
+      "required": 4
+    }
+  ],
+  "observed_windows": 7,
+  "period": {
+    "days_elapsed": 2,
+    "days_remaining": 12,
+    "ends_at_utc": "2026-10-22T16:21:20Z",
+    "period_days": 14,
+    "started_at_utc": "2026-10-08T16:21:20Z"
+  },
+  "planned_windows": 84,
+  "reading": "the period is still open: the coverage rule is checked, not assumed, and an incomplete period keeps ECO-1 open with this limitation stated",
+  "regimes_identified": {
+    "day_types": [
+      "weekday"
+    ],
+    "liquidity_bands": [
+      "DEEP",
+      "THIN"
+    ],
+    "sessions": {
+      "asia": 2,
+      "europe": 2,
+      "us": 3
+    },
+    "slots": [
+      "00:00-04:00 UTC",
+      "04:00-08:00 UTC",
+      "08:00-12:00 UTC",
+      "12:00-16:00 UTC",
+      "16:00-20:00 UTC",
+      "20:00-24:00 UTC"
+    ],
+    "volatility_bands": [
+      "HIGH",
+      "LOW",
+      "NORMAL"
+    ]
+  },
+  "rejected_fraction": 0.0,
+  "windows_per_day": {
+    "2026-10-08": 2,
+    "2026-10-09": 5,
+    "2026-10-10": 0,
+    "2026-10-11": 0,
+    "2026-10-12": 0,
+    "2026-10-13": 0,
+    "2026-10-14": 0,
+    "2026-10-15": 0,
+    "2026-10-16": 0,
+    "2026-10-17": 0,
+    "2026-10-18": 0,
+    "2026-10-19": 0,
+    "2026-10-20": 0,
+    "2026-10-21": 0,
+    "2026-10-22": 0
+  }
+}

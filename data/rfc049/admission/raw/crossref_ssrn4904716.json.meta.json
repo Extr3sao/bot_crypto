@@ -1,0 +1,13 @@
+{
+  "key": "crossref_ssrn4904716.json",
+  "url": "https://api.crossref.org/works?query.bibliographic=Does%20monetary%20liquidity%20affect%20Bitcoin%20price&rows=3&select=DOI,title,container-title,issued,type",
+  "retrieved_at_utc": "2026-10-10T13:10:47Z",
+  "mode": "network",
+  "http_status": 200,
+  "content_type": "application/json",
+  "bytes": 745,
+  "sha256": "21616415595e7fd744f2fb8556683281f67acfd8c85dcc2600ed6719579d7491",
+  "raw_retained": true,
+  "status": "ok",
+  "body_truncated_at_deadline": false
+}

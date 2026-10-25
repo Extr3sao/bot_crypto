@@ -1,0 +1,23 @@
+FFFF.....FFF...FFF.......F....F.FF....F........F.......F.FF............. [ 66%]
+....................................                                     [100%]
+=========================== short test summary info ===========================
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_gate_reproduces_the_committed_state_in_full_mode
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_check_mode_is_partial_and_says_so
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_cli_has_one_exit_code_per_state
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_moved_number_with_an_honest_rehash_is_caught
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_published_market_horizon_section_reproduces_from_the_pinned_source
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_moved_market_horizon_row_is_caught_by_the_re_derivation
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_moved_published_lines_block_is_caught
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_missing_required_input_blocks_rather_than_fails
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_pinned_producers_match_their_manifest
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_changed_producer_is_a_named_failure
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_gate_run_leaves_the_published_artefacts_and_inputs_byte_identical
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_integrity_checks_are_tagged_as_such[source:market_horizon_rows_match_the_pinned_source]
+FAILED tests/unit/research/test_cost_barrier_explorer.py::test_payload_hash_reproduces_and_matches_the_committed_artefact
+FAILED tests/unit/research/test_cost_barrier_explorer.py::test_reading_the_sources_leaves_them_byte_identical
+FAILED tests/unit/research/test_cost_barrier_explorer.py::test_the_market_horizon_is_reused_not_redefined
+FAILED tests/unit/research/test_cost_barrier_explorer.py::test_governance_flags_stay_unauthorized
+FAILED tests/unit/research/test_cost_barrier_adversarial.py::test_the_sandbox_carries_everything_the_gate_reads
+FAILED tests/unit/research/test_cost_barrier_adversarial.py::test_a_removed_required_input_blocks_in_full_mode_and_stays_partial_in_check
+FAILED tests/unit/research/test_cost_barrier_adversarial.py::test_a_line_ending_only_change_is_not_a_finding
+19 failed, 89 passed in 197.49s (0:03:17)

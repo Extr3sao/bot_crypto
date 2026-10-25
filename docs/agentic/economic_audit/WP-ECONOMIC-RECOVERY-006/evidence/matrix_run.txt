@@ -1,0 +1,30 @@
+ema_crossover   [BASE              ] trades= 826 gross=   -94.47 costs=  495.60 net=  -590.08 PF=0.5177 WR=26.51 | DEV= -322.95 VAL= -179.73 OOS=  -87.40
+ema_crossover   [2X_COST           ] trades= 775 gross=   -86.50 costs=  852.51 net=  -939.01 PF=0.3514 WR=25.42 | DEV= -511.77 VAL= -256.18 OOS= -171.06
+ema_crossover   [STRESSED_SLIPPAGE ] trades= 796 gross=   -84.52 costs=  796.01 net=  -880.53 PF=0.3813 WR=25.88 | DEV= -479.33 VAL= -250.14 OOS= -151.05
+ema_crossover   [ZERO_COST         ] trades= 994 gross=   -90.85 costs=    0.00 net=   -90.85 PF=0.9077 WR=30.78 | DEV=  -44.74 VAL=  -80.03 OOS=   33.92
+momentum        [BASE              ] trades=1313 gross=  -202.87 costs=  787.96 net=  -990.82 PF=0.6168 WR=38.84 | DEV= -544.82 VAL= -229.76 OOS= -216.24
+momentum        [2X_COST           ] trades=1299 gross=  -214.32 costs= 1429.20 net= -1643.52 PF=0.4458 WR=38.41 | DEV= -862.55 VAL= -410.77 OOS= -370.20
+momentum        [STRESSED_SLIPPAGE ] trades=1299 gross=  -214.32 costs= 1299.27 net= -1513.59 PF=0.4755 WR=38.41 | DEV= -799.32 VAL= -374.57 OOS= -339.70
+momentum        [ZERO_COST         ] trades=1370 gross=  -219.53 costs=    0.00 net=  -219.53 PF=0.9 WR=39.64 | DEV= -159.76 VAL=  -12.55 OOS=  -47.22
+breakout        [BASE              ] trades=1168 gross=  -154.09 costs=  700.97 net=  -855.06 PF=0.5875 WR=34.33 | DEV= -487.14 VAL= -187.90 OOS= -180.02
+breakout        [2X_COST           ] trades=1118 gross=  -184.77 costs= 1230.12 net= -1414.88 PF=0.4052 WR=33.27 | DEV= -775.31 VAL= -334.99 OOS= -304.59
+breakout        [STRESSED_SLIPPAGE ] trades=1142 gross=  -158.35 costs= 1142.27 net= -1300.62 PF=0.4436 WR=33.80 | DEV= -716.49 VAL= -305.54 OOS= -278.59
+breakout        [ZERO_COST         ] trades=1239 gross=  -159.86 costs=    0.00 net=  -159.86 PF=0.906 WR=35.67 | DEV= -143.12 VAL=  -11.43 OOS=   -5.31
+trend           [BASE              ] trades= 523 gross=    -0.06 costs=  313.93 net=  -313.99 PF=0.7493 WR=56.98 | DEV= -209.99 VAL=  -14.53 OOS=  -89.47
+trend           [2X_COST           ] trades= 523 gross=    -0.06 costs=  575.54 net=  -575.59 PF=0.5783 WR=56.98 | DEV= -323.50 VAL= -109.12 OOS= -142.96
+trend           [STRESSED_SLIPPAGE ] trades= 523 gross=    -0.06 costs=  523.21 net=  -523.27 PF=0.6102 WR=56.98 | DEV= -300.80 VAL=  -90.21 OOS= -132.26
+trend           [ZERO_COST         ] trades= 523 gross=    -0.06 costs=    0.00 net=    -0.06 PF=0.9999 WR=56.98 | DEV=  -73.77 VAL=   98.98 OOS=  -25.27
+mean_reversion  [BASE              ] trades=1748 gross=   242.81 costs= 1048.87 net=  -806.06 PF=0.6994 WR=48.00 | DEV= -429.11 VAL= -149.91 OOS= -227.05
+mean_reversion  [2X_COST           ] trades=1473 gross=   210.69 costs= 1620.42 net= -1409.73 PF=0.4745 WR=42.77 | DEV= -686.93 VAL= -329.74 OOS= -393.06
+mean_reversion  [STRESSED_SLIPPAGE ] trades=1500 gross=   200.09 costs= 1500.13 net= -1300.04 PF=0.5113 WR=43.67 | DEV= -637.56 VAL= -298.26 OOS= -364.22
+mean_reversion  [ZERO_COST         ] trades=1901 gross=   205.02 costs=    0.00 net=   205.02 PF=1.0866 WR=51.92 | DEV=   69.96 VAL=  120.30 OOS=   14.76
+volatility      [BASE              ] trades= 347 gross=  -152.17 costs=  208.23 net=  -360.40 PF=0.5361 WR=38.33 | DEV= -171.67 VAL= -124.04 OOS=  -64.69
+volatility      [2X_COST           ] trades= 347 gross=  -152.17 costs=  381.76 net=  -533.93 PF=0.396 WR=38.33 | DEV= -264.16 VAL= -172.06 OOS=  -97.71
+volatility      [STRESSED_SLIPPAGE ] trades= 347 gross=  -152.17 costs=  347.05 net=  -499.22 PF=0.4213 WR=38.33 | DEV= -245.66 VAL= -162.46 OOS=  -91.10
+volatility      [ZERO_COST         ] trades= 350 gross=  -153.96 costs=    0.00 net=  -153.96 PF=0.765 WR=39.43 | DEV=  -60.69 VAL=  -68.21 OOS=  -25.07
+-> reports\economic\w006\MULTI_FAMILY_RESULTS.json
+
+real	4m32.981s
+user	0m0.015s
+sys	0m0.015s
+EXIT=0

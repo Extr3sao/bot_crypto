@@ -1,0 +1,180 @@
+{
+  "version": "FORWARD-REPLAY-V1",
+  "run_id": "paper-lab-cert-01",
+  "root": "reports\\microstructure-forward-cert01",
+  "segments": 89,
+  "rows": 546043,
+  "partial_tails": 0,
+  "internet_access": false,
+  "event_counts": {
+    "spot/GLOBAL/lifecycle": 5,
+    "perp/BTCUSDT/open_interest": 12,
+    "perp/BTCUSDT/mark_price": 12,
+    "perp/BTCUSDT/funding": 12,
+    "spot/ETHUSDT/book_ticker": 34526,
+    "spot/BTCUSDT/book_ticker": 67776,
+    "perp/ETHUSDT/book_ticker": 188269,
+    "perp/ETHUSDT/open_interest": 12,
+    "perp/BTCUSDT/book_ticker": 219489,
+    "spot/BTCUSDT/depth_diff": 7156,
+    "perp/ETHUSDT/depth_snapshot": 1,
+    "perp/BTCUSDT/depth_snapshot": 1,
+    "spot/BTCUSDT/depth_snapshot": 1,
+    "spot/ETHUSDT/depth_snapshot": 1,
+    "spot/ETHUSDT/depth_diff": 7093,
+    "perp/ETHUSDT/mark_price": 12,
+    "perp/ETHUSDT/funding": 12,
+    "spot/ETHUSDT/agg_trade": 3262,
+    "spot/BTCUSDT/agg_trade": 4291,
+    "perp/BTCUSDT/depth_diff": 7009,
+    "perp/ETHUSDT/depth_diff": 6984,
+    "spot/BTCUSDT/book_checkpoint": 24,
+    "spot/ETHUSDT/book_checkpoint": 24,
+    "perp/BTCUSDT/book_checkpoint": 24,
+    "perp/ETHUSDT/book_checkpoint": 24,
+    "spot/GLOBAL/heartbeat": 11
+  },
+  "manifest_event_counts": {
+    "perp/BTCUSDT/agg_trade": 0,
+    "perp/BTCUSDT/book_checkpoint": 24,
+    "perp/BTCUSDT/book_ticker": 219489,
+    "perp/BTCUSDT/depth_diff": 7009,
+    "perp/BTCUSDT/depth_snapshot": 1,
+    "perp/BTCUSDT/funding": 12,
+    "perp/BTCUSDT/mark_price": 12,
+    "perp/BTCUSDT/open_interest": 12,
+    "perp/ETHUSDT/agg_trade": 0,
+    "perp/ETHUSDT/book_checkpoint": 24,
+    "perp/ETHUSDT/book_ticker": 188269,
+    "perp/ETHUSDT/depth_diff": 6984,
+    "perp/ETHUSDT/depth_snapshot": 1,
+    "perp/ETHUSDT/funding": 12,
+    "perp/ETHUSDT/mark_price": 12,
+    "perp/ETHUSDT/open_interest": 12,
+    "spot/BTCUSDT/agg_trade": 4291,
+    "spot/BTCUSDT/book_checkpoint": 24,
+    "spot/BTCUSDT/book_ticker": 67776,
+    "spot/BTCUSDT/depth_diff": 7156,
+    "spot/BTCUSDT/depth_snapshot": 1,
+    "spot/ETHUSDT/agg_trade": 3262,
+    "spot/ETHUSDT/book_checkpoint": 24,
+    "spot/ETHUSDT/book_ticker": 34526,
+    "spot/ETHUSDT/depth_diff": 7093,
+    "spot/ETHUSDT/depth_snapshot": 1,
+    "spot/GLOBAL/heartbeat": 11,
+    "spot/GLOBAL/lifecycle": 5
+  },
+  "event_count_match": true,
+  "event_count_differences": [],
+  "trade_sequence_ok": true,
+  "trade_sequence_violations": [],
+  "repaired_trade_rows": 0,
+  "trade_sequence_violation_count": 0,
+  "trade_unresolved_holes": 0,
+  "trade_hole_tracker_saturated": false,
+  "books": [
+    {
+      "market": "spot",
+      "symbol": "BTCUSDT",
+      "checkpoints": 24,
+      "matches": 24,
+      "ok": true,
+      "mismatch_count": 0,
+      "mismatches": [],
+      "dispositions": {
+        "APPLIED": 7153,
+        "BUFFERED": 1,
+        "DUPLICATE": 2
+      },
+      "snapshot_outcomes": {
+        "AWAITING_DIFF": 1
+      }
+    },
+    {
+      "market": "perp",
+      "symbol": "ETHUSDT",
+      "checkpoints": 24,
+      "matches": 24,
+      "ok": true,
+      "mismatch_count": 0,
+      "mismatches": [],
+      "dispositions": {
+        "APPLIED": 6982,
+        "DUPLICATE": 2
+      },
+      "snapshot_outcomes": {
+        "AWAITING_DIFF": 1
+      }
+    },
+    {
+      "market": "perp",
+      "symbol": "BTCUSDT",
+      "checkpoints": 24,
+      "matches": 24,
+      "ok": true,
+      "mismatch_count": 0,
+      "mismatches": [],
+      "dispositions": {
+        "APPLIED": 7007,
+        "DUPLICATE": 2
+      },
+      "snapshot_outcomes": {
+        "AWAITING_DIFF": 1
+      }
+    },
+    {
+      "market": "spot",
+      "symbol": "ETHUSDT",
+      "checkpoints": 24,
+      "matches": 24,
+      "ok": true,
+      "mismatch_count": 0,
+      "mismatches": [],
+      "dispositions": {
+        "APPLIED": 7090,
+        "DUPLICATE": 3
+      },
+      "snapshot_outcomes": {
+        "AWAITING_DIFF": 1
+      }
+    }
+  ],
+  "book_match": true,
+  "fingerprint_checks": 89,
+  "fingerprint_matches": 89,
+  "fingerprint_mismatches": [],
+  "fingerprints_match": true,
+  "aggregation_digest": "2f4e90d4f3d31e1187b8f1695e6cdabe26e65803f3ef31659f0c68818564d24a",
+  "recorded_aggregation_digest": "2f4e90d4f3d31e1187b8f1695e6cdabe26e65803f3ef31659f0c68818564d24a",
+  "feature_match": true,
+  "deterministic": true,
+  "second_pass_digest": "2f4e90d4f3d31e1187b8f1695e6cdabe26e65803f3ef31659f0c68818564d24a",
+  "trade_chains": {
+    "spot/BTCUSDT": {
+      "live_head": 4077078668,
+      "resolved_hi": 4077078668,
+      "unresolved_holes": 0,
+      "saturated": false
+    },
+    "spot/ETHUSDT": {
+      "live_head": 2092026585,
+      "resolved_hi": 2092026585,
+      "unresolved_holes": 0,
+      "saturated": false
+    }
+  },
+  "series": {
+    "perp/BTCUSDT": {
+      "samples": 36,
+      "max_ts": 1790720722003,
+      "regressions": 0
+    },
+    "perp/ETHUSDT": {
+      "samples": 36,
+      "max_ts": 1790720723000,
+      "regressions": 0
+    }
+  },
+  "errors": [],
+  "ok": true
+}

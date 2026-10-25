@@ -1,0 +1,83 @@
+{
+  "experiment_id": "EXP-ARP-007",
+  "splits": {
+    "DEV": {
+      "assets": [
+        {
+          "bars": 122,
+          "first_day": 20513,
+          "last_day": 20634,
+          "signal_days": 72,
+          "symbol": "BTCUSDT"
+        },
+        {
+          "bars": 122,
+          "first_day": 20513,
+          "last_day": 20634,
+          "signal_days": 70,
+          "symbol": "ETHUSDT"
+        },
+        {
+          "bars": 122,
+          "first_day": 20513,
+          "last_day": 20634,
+          "signal_days": 69,
+          "symbol": "SOLUSDT"
+        }
+      ],
+      "eligible_signal_days": 211
+    },
+    "OOS_LOCK": {
+      "assets": [
+        {
+          "bars": 24,
+          "first_day": 20697,
+          "last_day": 20720,
+          "signal_days": 4,
+          "symbol": "BTCUSDT"
+        },
+        {
+          "bars": 24,
+          "first_day": 20697,
+          "last_day": 20720,
+          "signal_days": 5,
+          "symbol": "ETHUSDT"
+        },
+        {
+          "bars": 24,
+          "first_day": 20697,
+          "last_day": 20720,
+          "signal_days": 5,
+          "symbol": "SOLUSDT"
+        }
+      ],
+      "eligible_signal_days": 14
+    },
+    "VALIDATION": {
+      "assets": [
+        {
+          "bars": 62,
+          "first_day": 20635,
+          "last_day": 20696,
+          "signal_days": 28,
+          "symbol": "BTCUSDT"
+        },
+        {
+          "bars": 62,
+          "first_day": 20635,
+          "last_day": 20696,
+          "signal_days": 26,
+          "symbol": "ETHUSDT"
+        },
+        {
+          "bars": 62,
+          "first_day": 20635,
+          "last_day": 20696,
+          "signal_days": 30,
+          "symbol": "SOLUSDT"
+        }
+      ],
+      "eligible_signal_days": 84
+    }
+  }
+}

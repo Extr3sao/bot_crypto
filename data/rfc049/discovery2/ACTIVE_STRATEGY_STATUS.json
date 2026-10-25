@@ -1,0 +1,202 @@
+{
+  "artifact": "RFC049_DISCOVERY2_ACTIVE_STRATEGY_STATUS",
+  "generated_at_utc": "2026-10-10T16:37:50Z",
+  "head_at_run": "2d113a0ae82f38123eabe0385ab47bb7991b15ad",
+  "method": "assembled from the tracked admission ledger, the live registry code path the runtime itself uses, and the paper lane's own reports; no process was started and nothing was executed",
+  "ledger": {
+    "source": "config/strategy_admission.json",
+    "total": 24,
+    "status_counts": {
+      "NO_GROSS_EDGE": 17,
+      "COST_KILLED": 7
+    },
+    "admitted_for_paper": 0,
+    "per_status_note": {
+      "NO_GROSS_EDGE": "zero-cost research diagnostic: gross edge per trade <= 0 before any cost is applied",
+      "COST_KILLED": "a positive gross edge exists but is smaller than the frozen round-trip cost floor"
+    },
+    "gross_edge_range_bps": [
+      -7.06,
+      8.91
+    ]
+  },
+  "registry_live": {
+    "counts_by_status": {
+      "RESEARCH_REQUIRED": 0,
+      "PAPER_CANDIDATE": 0,
+      "PAPER_ACTIVE": 0,
+      "PAPER_RETIRED": 0,
+      "REJECTED": 0,
+      "RESEARCH_CANDIDATE": 0,
+      "COST_KILLED": 7,
+      "NO_GROSS_EDGE": 17,
+      "UNKNOWN": 0
+    },
+    "paper_activations": {
+      "5m": [],
+      "15m": [],
+      "1h": []
+    },
+    "strategy_map_sizes": {
+      "5m": 6,
+      "15m": 6,
+      "1h": 6
+    },
+    "refusals_1h": [
+      "[registry]   refused breakout@1h: NO_GROSS_EDGE \u2014 status NO_GROSS_EDGE does not authorise PAPER",
+      "[registry]   refused ema_crossover@1h: NO_GROSS_EDGE \u2014 status NO_GROSS_EDGE does not authorise PAPER",
+      "[registry]   refused mean_reversion@1h: NO_GROSS_EDGE \u2014 status NO_GROSS_EDGE does not authorise PAPER",
+      "[registry]   refused momentum@1h: NO_GROSS_EDGE \u2014 status NO_GROSS_EDGE does not authorise PAPER",
+      "[registry]   refused trend@1h: NO_GROSS_EDGE \u2014 status NO_GROSS_EDGE does not authorise PAPER",
+      "[registry]   refused volatility@1h: COST_KILLED \u2014 status COST_KILLED does not authorise PAPER"
+    ],
+    "paper_candidates": []
+  },
+  "paper_lane": {
+    "last_lab_run": {
+      "cycles": 337,
+      "asset_evaluations": 674,
+      "no_trade_kind": "NO_TRADE_STRATEGIC",
+      "paper_trades": 0,
+      "shadow_trades": 0,
+      "risk_vetoes": 0,
+      "paper_candidates": 0,
+      "state": "RUNNING (at verification)",
+      "verdict": {
+        "final_status": "PAPER_24H_DATA_FAILED",
+        "m03_research_ready": false,
+        "m07_research_ready": false,
+        "false_success": 0,
+        "why": "The collector reached its own 800 MB disk budget after 4.16 h and stopped cleanly. The 24 h clean continuous window was not achieved; usable coverage against the 24 h objective is ~17.3%."
+      },
+      "source": "PAPER_DATA_24H_REPORT.json (worktree evidence owned by the paper lane; cited with sha256)"
+    },
+    "lifecycle_histogram_from_lab_report": "PAPER_ACTIVE=0, PAPER_CANDIDATE=0, REJECTED=0, RESEARCH_REQUIRED=0, PAPER_RETIRED=0 (docs/PAPER_CONTINUOUS_STRATEGY_LAB_FINAL.md)"
+  },
+  "funnel": {
+    "definitions": {
+      "signal_generated": "a strategy evaluation produced a candidate direction (per cycle, per asset)",
+      "proposal": "an executable intent that passed the admission gate",
+      "authorized": "an order authorization issued after the deterministic risk review",
+      "executed": "a fill recorded by the paper broker"
+    },
+    "current": {
+      "strategy_evaluations_per_cycle": 12,
+      "decisions_per_cycle": 2,
+      "proposals": 0,
+      "risk_reviews": 0,
+      "authorized": 0,
+      "executed": 0,
+      "reason": "the admission gate admits no strategy for paper execution, so every cycle ends in NO_TRADE_STRATEGIC",
+      "open_positions_in_state": 0,
+      "sent_intents_in_state": 0,
+      "trades_today_in_risk_state": 0
+    }
+  },
+  "objective_3_ops_per_day": {
+    "requested": "3 operations/day, 7 days/week, multiple assets when it makes sense",
+    "current_operations_per_day": 0,
+    "requirement": {
+      "round_trips_per_year": 1095.0,
+      "round_trip_cost_bps": 23.353553391,
+      "annual_cost_if_achieved_bps": 25572.140963144997,
+      "annual_cost_pct_of_stake": 255.72140963144997,
+      "break_even_gross_bps_per_trip": 23.353553391,
+      "implied_average_hold_hours_at_one_position": 8.0
+    },
+    "measured_edges": {
+      "best_gross_bps_per_trade_across_families": 8.91,
+      "all_measured_gross_below_break_even": true,
+      "families_tested": "24 (6 families x 4 timeframes), zero admitted"
+    },
+    "assessment": "NOT_ACHIEVABLE_FROM_CURRENT_ADMITTED_PIPELINE",
+    "blockers": [
+      "no admitted strategy: the admission gate admits nothing (0 of 24)",
+      "no measured family edge clears the frozen cost floor: best family gross edge is 8.91 bps/trade against a 23.353553391 bps round trip",
+      "at 3 trips/day the strategy would pay ~255.7% of its stake in round-trip costs every year; the gross edge would have to average above the floor per trip"
+    ],
+    "what_would_change_it": [
+      "a new admitted hypothesis whose measured net expectancy is positive at a cadence of several trades per day after the frozen cost model",
+      "multi-asset expansion multiplies opportunity count but not per-trade edge; it does not remove the per-trade cost requirement",
+      "the decision is a governance matter (new hypothesis, new budget); this audit proposes nothing"
+    ],
+    "no_forcing_note": "the objective is not a quota: no operation is generated to satisfy a frequency target"
+  },
+  "low_frequency_line": {
+    "operator_label": "R6 P2 QUALITY",
+    "label_found_in_repository": false,
+    "label_search": "git grep -i 'R6 P2 QUALITY|R6_P2|P2 QUALITY' over tracked files: no matches",
+    "mapping": "if the label denotes the low-frequency liquidity line, that line is the RFC-049 candidates at 2.96-6.18 round trips/year; it stays separate from the 3-ops/day objective and nothing in this campaign modifies it"
+  },
+  "evidence_files": [
+    {
+      "path": "config/strategy_admission.json",
+      "exists": true,
+      "tracked": true,
+      "sha256": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1"
+    },
+    {
+      "path": "docs/PAPER_CONTINUOUS_STRATEGY_LAB_FINAL.md",
+      "exists": true,
+      "tracked": true,
+      "sha256": "f658382e8c34979e69f4a409d3ebce9e017142d7afb0caa852c63cf91a9731f5"
+    },
+    {
+      "path": "RUN_REPORT.json",
+      "exists": true,
+      "tracked": true,
+      "sha256": "c40f7727f9118fcd1f29d12a259143ab66b381263dfd6a16ed54e59e55a245c0"
+    },
+    {
+      "path": "PAPER_DATA_24H_REPORT.json",
+      "exists": true,
+      "tracked": false,
+      "sha256": "a1d2f1de84c3ad3b11d8408763ea8bed7eb36f1c5c61761c2616f9d3ced5777e"
+    },
+    {
+      "path": "data/storage/paper_state.json",
+      "exists": true,
+      "tracked": false,
+      "sha256": "8f07d53e845bf676f8d276f808f4d331a379bc732581d2c21b4f359b4795a2bc"
+    },
+    {
+      "path": "data/storage/autonomous_paper_state.json",
+      "exists": true,
+      "tracked": false,
+      "sha256": "b4714082e2e581520dd4ffdfc036fc42052df1e178753b099203c61480bd05b7"
+    }
+  ],
+  "checks": [
+    {
+      "check": "ledger:24_strategies",
+      "result": "PASS",
+      "detail": "24 entries"
+    },
+    {
+      "check": "ledger:none_admitted",
+      "result": "PASS",
+      "detail": "admitted_for_paper=false everywhere"
+    },
+    {
+      "check": "registry:no_paper_executable",
+      "result": "PASS",
+      "detail": "{\"5m\": [], \"15m\": [], \"1h\": []}"
+    },
+    {
+      "check": "registry:paper_candidates_empty",
+      "result": "PASS",
+      "detail": "ledger exposes no paper candidates"
+    },
+    {
+      "check": "objective:best_measured_gross_below_cost_floor",
+      "result": "PASS",
+      "detail": "best measured family gross edge 8.91 bps/trade < round-trip cost 23.353553391 bps"
+    }
+  ],
+  "checks_failed": 0,
+  "scope": {
+    "trading": "not performed",
+    "processes_started": 0,
+    "state_written_outside_discovery2": false
+  }
+}

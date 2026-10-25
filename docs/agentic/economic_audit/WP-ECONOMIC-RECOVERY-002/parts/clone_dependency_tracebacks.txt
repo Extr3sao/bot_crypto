@@ -1,0 +1,311 @@
+.F..F....F..F..FF.F.F.F...............F................F......sFFFF..... [ 33%]
+FFF...FFF.......F....F.F.s.F...s.........FF...F....................FEEEE [ 66%]
+EEEEEEE.EEEFFF.FFFFFFFFFFFF.FFFFF.......F...F................FFFFFF...F. [100%]
+=================================== ERRORS ====================================
+___________ ERROR at setup of test_every_required_field_is_present ____________
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.json'
+_______________ ERROR at setup of test_closure_values_are_exact _______________
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.json'
+_______________ ERROR at setup of test_no_promotion_flag_is_set _______________
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.json'
+__________ ERROR at setup of test_runtime_is_still_paper_and_unarmed __________
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.json'
+______ ERROR at setup of test_cost_is_derived_and_internally_consistent _______
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.json'
+______ ERROR at setup of test_turnover_arithmetic_uses_the_measured_cost ______
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.json'
+______ ERROR at setup of test_cost_reports_known_and_assumed_separately _______
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.json'
+______ ERROR at setup of test_every_scenario_and_sensitivity_is_present _______
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.json'
+______ ERROR at setup of test_root_causes_cover_all_eight_and_are_owned _______
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.json'
+_ ERROR at setup of test_root_cause_review_refuses_to_infer_absence_of_alpha __
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.json'
+_____ ERROR at setup of test_recommendation_is_a_proposal_not_a_decision ______
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.json'
+________ ERROR at setup of test_catalogue_and_registry_are_consistent _________
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.json'
+_____ ERROR at setup of test_baseline_separates_observed_from_reproduced ______
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.json'
+______ ERROR at setup of test_cap004b_and_campaign_are_quoted_faithfully ______
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.json'
+================================== FAILURES ===================================
+E   AssertionError: assert ['bracket_provenance'] == []
+      
+      Left contains one more item: 'bracket_provenance'
+      Use -v to get more diff
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\risk\test_futures_independent_verifier.py:150: AssertionError: assert ['bracket_provenance'] == []
+E   AssertionError: assert [{'decision_i...ixture'}, ...] == []
+      
+      Left contains 28 more items, first extra item: {'decision_id': 'RFC048-DEC-001', 'check': 'bracket_provenance', 'detail': 'ladder matches the venue payload hash recorded in the fixture'}
+      Use -v to get more diff
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\risk\test_futures_independent_verifier.py:206: AssertionError: assert [{'decision_i...ixture'}, ...] == []
+E   AssertionError: assert 'fe440bafaecc...a9b8a23efd7ef' == '4573f0e25040...3a827eb135bd0'
+      
+      - 4573f0e25040a6dcd2b41665c3457799bdc84655a5d2b92f32a3a827eb135bd0
+      + fe440bafaecc97259a493eba608d71ab757a849e1e862cace64a9b8a23efd7ef
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_economic001_evidence_closure.py:125: AssertionError: assert 'fe440bafaecc...a9b8a23efd7ef' == '4573f0e25040...3a827eb135bd0'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\data\\raw\\alpha003\\price\\BTCUSDT_15m.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\data\\raw\\alpha003\\price\\BTCUSDT_15m.json'
+E   AssertionError: data/rfc046/ECONOMIC_FEASIBILITY.json
+    assert '35a0a0f28b7f...086645a883b73' == '0a2ac9ca7d03...eb4401076d740'
+      
+      - 0a2ac9ca7d03d2150e7e9c9ee90604d06e4dbfe71b02c72e3faeb4401076d740
+      + 35a0a0f28b7fca29632f51efa45703e8d7ce871d74a7cbe0857086645a883b73
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_economic001_evidence_closure.py:180: AssertionError: data/rfc046/ECONOMIC_FEASIBILITY.json
+E   AssertionError: assert '35a0a0f28b7f...086645a883b73' == '0a2ac9ca7d03...eb4401076d740'
+      
+      - 0a2ac9ca7d03d2150e7e9c9ee90604d06e4dbfe71b02c72e3faeb4401076d740
+      + 35a0a0f28b7fca29632f51efa45703e8d7ce871d74a7cbe0857086645a883b73
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_economic001_evidence_closure.py:193: AssertionError: assert '35a0a0f28b7f...086645a883b73' == '0a2ac9ca7d03...eb4401076d740'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\data\\raw\\alpha003\\price\\BTCUSDT_5m.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\data\\raw\\alpha003\\price\\BTCUSDT_5m.json'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\data\\raw\\alpha003\\price\\BTCUSDT_5m.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\data\\raw\\alpha003\\price\\BTCUSDT_5m.json'
+E   AssertionError: assert '230826ad74bb...1622300a02ff7' == '9210344966a6...7b35ec631dc92'
+      
+      - 9210344966a61e61587150ce83f9735a9f2f710655b397a9a607b35ec631dc92
+      + 230826ad74bbfef4c9ed8b7c65a0480553898bb064678e83a341622300a02ff7
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_economic001_evidence_closure.py:274: AssertionError: assert '230826ad74bb...1622300a02ff7' == '9210344966a6...7b35ec631dc92'
+E   AssertionError: missing deliverable reports/rfc046/IMPACT_ASSESSMENT.md
+    assert False
+     +  where False = is_file()
+     +    where is_file = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/wp002-dep-uVRY/repo/reports/rfc046/IMPACT_ASSESSMENT.md').is_file
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_rfc046_discovery_proposal.py:94: AssertionError: missing deliverable reports/rfc046/IMPACT_ASSESSMENT.md
+E   AssertionError: assert False
+     +  where False = is_file()
+     +    where is_file = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/wp002-dep-uVRY/repo/docs/research/work_packages/WP-HTF-PIT-001_htf_availability_unit_fix.md').is_file
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_rfc046_discovery_proposal.py:298: AssertionError: assert False
+E   AssertionError: ['full reproduction requires every declared input; absent: reports/strategy-baseline/COST_BARRIER.json. Materialize th... 'the builder failed (exit 1); its own checks did not pass, so no reproduction claim can be made', '5 check(s) failed']
+    assert 'INTEGRITY_FAILURE' == 'FULL_REPRODUCTION_PASS'
+      
+      - FULL_REPRODUCTION_PASS
+      + INTEGRITY_FAILURE
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_cost_barrier_gate.py:124: AssertionError: ['full reproduction requires every declared input; absent: reports/strategy-baseline/COST_BARRIER.json. Materialize th... 'the builder failed (exit 1); its own checks did not pass, so no reproduction claim can be made', '5 check(s) failed']
+E   AssertionError: ['cited input config/strategy_admission.json no longer matches the content pin the explorer published (6c4dd0be1fc2fff2...): the artefact must be regenerated and re-verified', '1 check(s) failed']
+    assert 'INTEGRITY_FAILURE' == 'CHECK_ONLY_PASS'
+      
+      - CHECK_ONLY_PASS
+      + INTEGRITY_FAILURE
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_cost_barrier_gate.py:138: AssertionError: ['cited input config/strategy_admission.json no longer matches the content pin the explorer published (6c4dd0be1fc2fff2...): the artefact must be regenerated and re-verified', '1 check(s) failed']
+E   AssertionError: cost-barrier drift gate: INTEGRITY_FAILURE (check mode) exit 5
+        head 64fa5112ebdea81291dbc5db07512cc8737feeb0  branch repro/economic-recovery-002
+        checks 10/11 PASS
+        controls 6/6 detected
+        full certification satisfied: False (partial run)
+        [PASS] artifact:explorer_self_hash_and_checks - payload_sha256 recomputes from the stored body and 0 checks failed
+        [PASS] artifact:explorer_governance_flags_unchanged - promotion/rentable/certified/production_ready false; NOT_AUTHORIZED; 0 trades
+        [PASS] artifact:verification_attests_the_explorer - status PASS, 0 failed checks, 0 missed controls, false_success 0, signals cross-pinned to the explorer's payload hash
+        [PASS] inputs:declared_inputs_present - absent: reports/strategy-baseline/COST_BARRIER.json (tolerated in --check mode: no builder run is attempted)
+        [FAIL] inputs:published_pins_match_the_declared_sources - 8/9 present; pinned: 2 byte-exact, 1 state-exact, 0 line-ending-only, 1 drifted; config/strategy_admission.json content drift (pin 6c4dd0be1fc2fff2...)
+        [PASS] producers:digests_match_the_pinned_manifest - 4/4 producer(s) match the pin recorded in data/recovery/wp7/evidence/PRODUCER_PINS.json (3 exact, 1 line-ending-only)
+        [PASS] ci:activation_contract_covers_every_declared_input - 20 watched path(s) covered by both triggers; the gate and the materializer are invoked and no step is softened
+        [PASS] reproduce:verifier_passes - verifier PASS on COST_BARRIER_EXPLORER.json; 13 mutation controls, 0 missed, false_success 0
+        [PASS] reproduce:verification_document_unchanged - the fresh verification document equals the published one
+        [PASS] read_only:no_published_file_changed - the gate and the tools it drives left every watched file byte-identical
+        [PASS] controls:self_controls_detect_tampering - 6/6 controls detected
+        advisories:
+          - check mode: the builder was not re-run because reports/strategy-baseline/COST_BARRIER.json is absent from this checkout; the verifier still recomputes every published number from the primary sources
+        FAILURES:
+          - cited input config/strategy_admission.json no longer matches the content pin the explorer published (6c4dd0be1fc2fff2...): the artefact must be regenerated and re-verified
+          - 1 check(s) failed
+        INTEGRITY_FAILURE (no re-run could explain these):
+          - inputs:published_pins_match_the_declared_sources: 8/9 present; pinned: 2 byte-exact, 1 state-exact, 0 line-ending-only, 1 drifted; config/strategy_admission.json content drift (pin 6c4dd0be1fc2fff2...)
+      
+    assert 5 == 2
+     +  where 5 = CompletedProcess(args=['C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-eco001\\.venv\\Scripts\\python.exe', 'C:\\Users\\GVLLF...t, 0 line-ending-only, 1 drifted; config/strategy_admission.json content drift (pin 6c4dd0be1fc2fff2...)\n", stderr='').returncode
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_cost_barrier_gate.py:152: AssertionError: cost-barrier drift gate: INTEGRITY_FAILURE (check mode) exit 5
+E   AssertionError: assert 'zero_cost_gross_bps' in 'not attempted: the builder did not produce a fresh artefact'
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_cost_barrier_gate.py:195: AssertionError: assert 'zero_cost_gross_bps' in 'not attempted: the builder did not produce a fresh artefact'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\strategy-baseline\\COST_BARRIER.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\strategy-baseline\\COST_BARRIER.json'
+E   AssertionError: no check named source:market_horizon_rows_match_the_pinned_source in ['artifact:explorer_self_hash_and_checks', 'artifact:explorer_governance_flags_unchanged', 'artifact:verification_attests_the_explorer', 'inputs:declared_inputs_present', 'inputs:published_pins_match_the_declared_sources', 'producers:digests_match_the_pinned_manifest', 'ci:activation_contract_covers_every_declared_input', 'reproduce:verifier_passes', 'reproduce:verification_document_unchanged', 'read_only:no_published_file_changed', 'controls:self_controls_detect_tampering']
+    assert []
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_cost_barrier_gate.py:112: AssertionError: no check named source:market_horizon_rows_match_the_pinned_source in ['artifact:explorer_self_hash_and_checks', 'artifact:explorer_governance_flags_unchanged', 'artifact:verification_attests_the_explorer', 'inputs:declared_inputs_present', 'inputs:published_pins_match_the_declared_sources', 'producers:digests_match_the_pinned_manifest', 'ci:activation_contract_covers_every_declared_input', 'reproduce:verifier_passes', 'reproduce:verification_document_unchanged', 'read_only:no_published_file_changed', 'controls:self_controls_detect_tampering']
+E   AssertionError: no check named source:market_horizon_rows_match_the_pinned_source in ['artifact:explorer_self_hash_and_checks', 'artifact:explorer_governance_flags_unchanged', 'artifact:verification_attests_the_explorer', 'inputs:declared_inputs_present', 'inputs:published_pins_match_the_declared_sources', 'producers:digests_match_the_pinned_manifest', 'ci:activation_contract_covers_every_declared_input', 'reproduce:verifier_passes', 'reproduce:verification_document_unchanged', 'read_only:no_published_file_changed', 'controls:self_controls_detect_tampering']
+    assert []
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_cost_barrier_gate.py:112: AssertionError: no check named source:market_horizon_rows_match_the_pinned_source in ['artifact:explorer_self_hash_and_checks', 'artifact:explorer_governance_flags_unchanged', 'artifact:verification_attests_the_explorer', 'inputs:declared_inputs_present', 'inputs:published_pins_match_the_declared_sources', 'producers:digests_match_the_pinned_manifest', 'ci:activation_contract_covers_every_declared_input', 'reproduce:verifier_passes', 'reproduce:verification_document_unchanged', 'read_only:no_published_file_changed', 'controls:self_controls_detect_tampering']
+E   AssertionError: assert 'INTEGRITY_FAILURE' == 'BLOCKED_MISSING_INPUT'
+      
+      - BLOCKED_MISSING_INPUT
+      + INTEGRITY_FAILURE
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_cost_barrier_gate.py:391: AssertionError: assert 'INTEGRITY_FAILURE' == 'BLOCKED_MISSING_INPUT'
+E   assert False
+     +  where False = all(<generator object test_the_pinned_producers_match_their_manifest.<locals>.<genexpr> at 0x00000212CED70040>)
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_cost_barrier_gate.py:421: assert False
+E   assert False
+     +  where False = all(<generator object test_a_changed_producer_is_a_named_failure.<locals>.<genexpr> at 0x00000212CEB90580>)
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_cost_barrier_gate.py:432: assert False
+E   AssertionError: assert 'INTEGRITY_FAILURE' == 'FULL_REPRODUCTION_PASS'
+      
+      - FULL_REPRODUCTION_PASS
+      + INTEGRITY_FAILURE
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_cost_barrier_gate.py:542: AssertionError: assert 'INTEGRITY_FAILURE' == 'FULL_REPRODUCTION_PASS'
+E   AssertionError: no check named source:market_horizon_rows_match_the_pinned_source in ['artifact:explorer_self_hash_and_checks', 'artifact:explorer_governance_flags_unchanged', 'artifact:verification_attests_the_explorer', 'inputs:declared_inputs_present', 'inputs:published_pins_match_the_declared_sources', 'producers:digests_match_the_pinned_manifest', 'ci:activation_contract_covers_every_declared_input', 'reproduce:verifier_passes', 'reproduce:verification_document_unchanged', 'read_only:no_published_file_changed', 'controls:self_controls_detect_tampering']
+    assert []
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_cost_barrier_gate.py:112: AssertionError: no check named source:market_horizon_rows_match_the_pinned_source in ['artifact:explorer_self_hash_and_checks', 'artifact:explorer_governance_flags_unchanged', 'artifact:verification_attests_the_explorer', 'inputs:declared_inputs_present', 'inputs:published_pins_match_the_declared_sources', 'producers:digests_match_the_pinned_manifest', 'ci:activation_contract_covers_every_declared_input', 'reproduce:verifier_passes', 'reproduce:verification_document_unchanged', 'read_only:no_published_file_changed', 'controls:self_controls_detect_tampering']
+E   AssertionError: assert 'c:\\users\\gvllfr0035\\appdata\\local\\temp\\wp002-dep-uvry\\repo' in 'c:\\users\\gvllfr0035\\downloads\\bot freebuff\\.venv\\scripts\\python.exe'
+     +  where 'c:\\users\\gvllfr0035\\appdata\\local\\temp\\wp002-dep-uvry\\repo' = <built-in method lower of str object at 0x00000212D273B670>()
+     +    where <built-in method lower of str object at 0x00000212D273B670> = 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo'.lower
+     +      where 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo' = str(WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/wp002-dep-uVRY/repo'))
+     +  and   'c:\\users\\gvllfr0035\\downloads\\bot freebuff\\.venv\\scripts\\python.exe' = <built-in method lower of str object at 0x00000212D3E57530>()
+     +    where <built-in method lower of str object at 0x00000212D3E57530> = 'C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe'.lower
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_st6_scheduler.py:202: AssertionError: assert 'c:\\users\\gvllfr0035\\appdata\\local\\temp\\wp002-dep-uvry\\repo' in 'c:\\users\\gvllfr0035\\downloads\\bot freebuff\\.venv\\scripts\\python.exe'
+E   AssertionError: 2026-10-08#5
+    assert ('2026-10-08#5' in {'2026-10-08#4'} or '2026-10-08#5' in set())
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_st6_scheduler.py:286: AssertionError: 2026-10-08#5
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\data\\st6\\ST6_HEALTH_STATUS.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\data\\st6\\ST6_HEALTH_STATUS.json'
+E   AssertionError: assert 7 == 1
+     +  where 1 = len([{'artifact': 'ST6_FORWARD_WINDOW', 'assets_present': ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'XRPUSDT'], 'budget': {'declar...rue, 'depth_limit': 100, 'finite': True, 'max_attempts_per_request': 2, ...}, 'clock_offset_median_ms': -244.573, ...}])
+     +    where [{'artifact': 'ST6_FORWARD_WINDOW', 'assets_present': ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'XRPUSDT'], 'budget': {'declar...rue, 'depth_limit': 100, 'finite': True, 'max_attempts_per_request': 2, ...}, 'clock_offset_median_ms': -244.573, ...}] = read_jsonl(WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/wp002-dep-uVRY/repo/data/st6/ST6_WINDOWS.jsonl'))
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_st6_scheduler.py:883: AssertionError: assert 7 == 1
+E   assert 1 == 0
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_st6_scheduler.py:971: assert 1 == 0
+E   AssertionError: missing deliverable FINAL_REPORT.md
+    assert False
+     +  where False = is_file()
+     +    where is_file = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/wp002-dep-uVRY/repo/reports/profitability_gate035/FINAL_REPORT.md').is_file
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_profitability_gate035.py:59: AssertionError: missing deliverable FINAL_REPORT.md
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\INDEPENDENT_VERIFICATION.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\INDEPENDENT_VERIFICATION.json'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\INDEPENDENT_VERIFICATION.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\INDEPENDENT_VERIFICATION.json'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.md'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\FINAL_REPORT.md'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\SEARCH_POSTMORTEM.md'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\SEARCH_POSTMORTEM.md'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\ECONOMIC_FEASIBILITY.md'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\ECONOMIC_FEASIBILITY.md'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\ALTERNATIVE_PATHS.md'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\ALTERNATIVE_PATHS.md'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\INDEPENDENT_VERIFICATION.md'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\profitability_gate035\\INDEPENDENT_VERIFICATION.md'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\BASELINE.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\BASELINE.json'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\RULE_CONTRACT_AUDIT.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\RULE_CONTRACT_AUDIT.json'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\CANDIDATE_DEEP_DIVE.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\CANDIDATE_DEEP_DIVE.json'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\ECONOMIC_EVIDENCE.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\ECONOMIC_EVIDENCE.json'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\REJECTION_LOG.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\REJECTION_LOG.json'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\FINAL_REPORT.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\FINAL_REPORT.json'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\INDEPENDENT_VERIFICATION.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\INDEPENDENT_VERIFICATION.json'
+E   AssertionError: missing deliverable BASELINE.md
+    assert False
+     +  where False = is_file()
+     +    where is_file = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/wp002-dep-uVRY/repo/reports/rfc035/search_round_3/BASELINE.md').is_file
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_rfc035s3_strategy_closure.py:75: AssertionError: missing deliverable BASELINE.md
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\FINAL_REPORT.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\FINAL_REPORT.json'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\RULE_CONTRACT_AUDIT.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\RULE_CONTRACT_AUDIT.json'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\RULE_CONTRACT_AUDIT.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\RULE_CONTRACT_AUDIT.json'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\RULE_CONTRACT_AUDIT.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\RULE_CONTRACT_AUDIT.json'
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\RULE_CONTRACT_AUDIT.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\RULE_CONTRACT_AUDIT.json'
+E   AssertionError: reports/rfc035/BASELINE.json
+    assert False
+     +  where False = is_file()
+     +    where is_file = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/wp002-dep-uVRY/repo/reports/rfc035/BASELINE.json').is_file
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_rfc035s3_strategy_closure.py:172: AssertionError: reports/rfc035/BASELINE.json
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\INDEPENDENT_VERIFICATION.json'
+C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py:1044: FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\wp002-dep-uVRY\\repo\\reports\\rfc035\\search_round_3\\INDEPENDENT_VERIFICATION.json'
+E   StopIteration
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\scripts\sprint002_pipeline.py:93: StopIteration
+E   StopIteration
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\scripts\sprint002_pipeline.py:93: StopIteration
+E   StopIteration
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_sprint024_stats.py:183: StopIteration
+E   StopIteration
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_sprint024_stats.py:183: StopIteration
+E   StopIteration
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\tests\unit\research\test_sprint024_stats.py:183: StopIteration
+E   StopIteration
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\scripts\sprint002_pipeline.py:93: StopIteration
+E   StopIteration
+C:\Users\GVLLFR0035\AppData\Local\Temp\wp002-dep-uVRY\repo\scripts\sprint002_pipeline.py:93: StopIteration
+=========================== short test summary info ===========================
+SKIPPED [1] tests\unit\research\test_rfc046_discovery_proposal.py:389: reports/rfc046 is a gitignored working surface; the tracked contract is data/rfc046/audit.json
+SKIPPED [1] tests\unit\research\test_st6_scheduler.py:245: no ST-6 run log in this checkout: it is produced by scripts/st6_forward_regime.py --due/--collect on this host and is not versioned
+SKIPPED [1] tests\unit\research\test_st6_scheduler.py:610: this slot has no window yet: the tick would have to collect and this test is not a sampler
+ERROR tests/unit/research/test_profitability_gate035.py::test_every_required_field_is_present
+ERROR tests/unit/research/test_profitability_gate035.py::test_closure_values_are_exact
+ERROR tests/unit/research/test_profitability_gate035.py::test_no_promotion_flag_is_set
+ERROR tests/unit/research/test_profitability_gate035.py::test_runtime_is_still_paper_and_unarmed
+ERROR tests/unit/research/test_profitability_gate035.py::test_cost_is_derived_and_internally_consistent
+ERROR tests/unit/research/test_profitability_gate035.py::test_turnover_arithmetic_uses_the_measured_cost
+ERROR tests/unit/research/test_profitability_gate035.py::test_cost_reports_known_and_assumed_separately
+ERROR tests/unit/research/test_profitability_gate035.py::test_every_scenario_and_sensitivity_is_present
+ERROR tests/unit/research/test_profitability_gate035.py::test_root_causes_cover_all_eight_and_are_owned
+ERROR tests/unit/research/test_profitability_gate035.py::test_root_cause_review_refuses_to_infer_absence_of_alpha
+ERROR tests/unit/research/test_profitability_gate035.py::test_recommendation_is_a_proposal_not_a_decision
+ERROR tests/unit/research/test_profitability_gate035.py::test_catalogue_and_registry_are_consistent
+ERROR tests/unit/research/test_profitability_gate035.py::test_baseline_separates_observed_from_reproduced
+ERROR tests/unit/research/test_profitability_gate035.py::test_cap004b_and_campaign_are_quoted_faithfully
+FAILED tests/unit/risk/test_futures_independent_verifier.py::test_verifier_reproduces_a_real_approval
+FAILED tests/unit/risk/test_futures_independent_verifier.py::test_executed_artifacts_verify_when_present
+FAILED tests/unit/research/test_economic001_evidence_closure.py::test_the_verified_bytes_are_the_shipped_bytes
+FAILED tests/unit/research/test_economic001_evidence_closure.py::test_the_dataset_hashes_are_the_files_on_disk
+FAILED tests/unit/research/test_economic001_evidence_closure.py::test_every_deliverable_hash_matches_the_repository
+FAILED tests/unit/research/test_economic001_evidence_closure.py::test_the_report_bytes_still_match_the_rfc046_verification
+FAILED tests/unit/research/test_economic001_evidence_closure.py::test_the_medians_reproduce_on_a_third_window_convention
+FAILED tests/unit/research/test_economic001_evidence_closure.py::test_the_timestamps_are_gapless_grid_aligned_and_on_one_timeline
+FAILED tests/unit/research/test_economic001_evidence_closure.py::test_the_two_tolls_are_distinct_and_the_historical_one_is_frozen
+FAILED tests/unit/research/test_rfc046_discovery_proposal.py::test_all_requested_deliverables_exist_and_are_not_empty
+FAILED tests/unit/research/test_rfc046_discovery_proposal.py::test_pit_enforcement_is_mechanical_and_rooted_in_a_real_defect
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_gate_reproduces_the_committed_state_in_full_mode
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_check_mode_is_partial_and_says_so
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_cli_has_one_exit_code_per_state
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_moved_number_with_an_honest_rehash_is_caught
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_published_market_horizon_section_reproduces_from_the_pinned_source
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_moved_market_horizon_row_is_caught_by_the_re_derivation
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_moved_published_lines_block_is_caught
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_missing_required_input_blocks_rather_than_fails
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_pinned_producers_match_their_manifest
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_changed_producer_is_a_named_failure
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_gate_run_leaves_the_published_artefacts_and_inputs_byte_identical
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_integrity_checks_are_tagged_as_such[source:market_horizon_rows_match_the_pinned_source]
+FAILED tests/unit/research/test_st6_scheduler.py::test_the_task_definition_matches_the_repository_and_the_host
+FAILED tests/unit/research/test_st6_scheduler.py::test_every_ended_slot_is_accounted_for_and_nothing_is_reconstructed
+FAILED tests/unit/research/test_st6_scheduler.py::test_the_health_status_is_declared_and_not_a_heartbeat
+FAILED tests/unit/research/test_st6_scheduler.py::test_the_scheduler_report_agrees_with_its_verification
+FAILED tests/unit/research/test_st6_scheduler.py::test_the_close_replay_is_isolated_and_passes_on_the_shipped_state
+FAILED tests/unit/research/test_profitability_gate035.py::test_all_deliverables_exist_and_are_not_empty
+FAILED tests/unit/research/test_profitability_gate035.py::test_independent_verification_recorded_its_own_result
+FAILED tests/unit/research/test_profitability_gate035.py::test_negative_controls_are_recorded
+FAILED tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[FINAL_REPORT.md]
+FAILED tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[SEARCH_POSTMORTEM.md]
+FAILED tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[ECONOMIC_FEASIBILITY.md]
+FAILED tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[ALTERNATIVE_PATHS.md]
+FAILED tests/unit/research/test_profitability_gate035.py::test_no_artifact_asserts_a_forbidden_success[INDEPENDENT_VERIFICATION.md]
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[BASELINE.json]
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[RULE_CONTRACT_AUDIT.json]
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[CANDIDATE_DEEP_DIVE.json]
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[ECONOMIC_EVIDENCE.json]
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[REJECTION_LOG.json]
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[FINAL_REPORT.json]
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_round3_artifacts_are_parseable[INDEPENDENT_VERIFICATION.json]
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_the_eight_required_deliverables_exist
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_final_status_blocks_rfc_036
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_every_field_uses_one_of_the_four_states
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_an_explicit_absence_is_settled_not_missing
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_rule_completeness_and_evidence_completeness_are_reported_separately
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_no_candidate_is_promoted_to_replication
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_the_integrity_manifest_re_derives
+FAILED tests/unit/research/test_rfc035s3_strategy_closure.py::test_the_independent_verification_is_green_and_can_fail
+FAILED tests/unit/research/test_sprint024_stats.py::test_shock_event_is_the_frozen_detector
+FAILED tests/unit/research/test_sprint024_stats.py::test_signal_values_are_in_int8_set
+FAILED tests/unit/research/test_sprint024_stats.py::test_signals_are_point_in_time[shock_trend_continuation]
+FAILED tests/unit/research/test_sprint024_stats.py::test_signals_are_point_in_time[shock_confirm_followthrough]
+FAILED tests/unit/research/test_sprint024_stats.py::test_signals_are_point_in_time[shock_range_location]
+FAILED tests/unit/research/test_sprint024_stats.py::test_forward_from_entry_is_nan_near_end
+FAILED tests/unit/research/test_sprint024_stats.py::test_run_hypothesis_is_deterministic
+58 failed, 141 passed, 3 skipped, 14 errors in 46.01s

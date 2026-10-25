@@ -1,0 +1,8 @@
+# step 2a: restore the gitignored input from the byte-identical evidence copy
+# (cost_barrier_evidence.py --materialize refuses until the producer pins are re-captured,
+#  and --capture refuses until the input exists: the two are mutually blocking on a machine
+#  that never had the input. The copy is byte-identical, so this is the same operation the
+#  materializer performs, verified against the published pin before anything else runs.)
+published pin: 2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4
+placed digest: 2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4
+MATCH: True bytes: 3822

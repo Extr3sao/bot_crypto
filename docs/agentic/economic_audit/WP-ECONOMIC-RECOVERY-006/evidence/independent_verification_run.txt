@@ -1,0 +1,13 @@
+$ ./.venv/Scripts/python.exe scripts/w006_verify.py
+pnl_identity         PASS checked= 23444 failed=0
+gross_from_prices    PASS checked= 23444 failed=0
+costs_from_bps       PASS checked= 70332 failed=0
+fills_from_costs     PASS checked= 23444 failed=0
+causality            PASS checked= 23444 failed=0
+exit_realism         PASS checked= 23444 failed=0
+mfe_mae              PASS checked= 23444 failed=0
+partitions           PASS checked= 23444 failed=0
+aggregates           PASS checked=   216 failed=0
+no_warmup_trade      PASS checked= 23444 failed=0
+OVERALL: PASS (23444 trades verified) -> reports\economic\w006\INDEPENDENT_VERIFICATION.json
+EXIT=0

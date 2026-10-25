@@ -1,0 +1,98 @@
+{
+  "wp": "WP-ECONOMIC-RECOVERY-003",
+  "artifact": "INDEPENDENT_VERIFICATION",
+  "verified_commit": "2bd6e346348ee7fc039f8ada31a390387a4c30c2",
+  "method": "recomputed from committed blobs, published artefacts, git history and stored transcripts; does not import the audit script; read-only",
+  "summary": {
+    "checks": 14,
+    "passed": 14,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "id": "ledger_pin_names_a_rendering_not_a_blob",
+      "claim": "the published pin for the ledger is a CRLF rendering of an older revision, not any committed blob",
+      "verdict": "PASS",
+      "detail": "pin=6c4dd0be1fc2 head_blob=5e2ccc5792b8 matching_revisions=['ddaf14d1'] revisions_examined=3"
+    },
+    {
+      "id": "audit_byte_pin_is_a_crlf_rendering_but_a_state_pin_covers_it",
+      "claim": "the audit source's byte pin is the CRLF rendering of its committed blob and the semantic state pin is what makes it acceptable",
+      "verdict": "PASS",
+      "detail": "pin=e05be22b1b16 blob=8a101e8875bd crlf=e05be22b1b16 state_pin=023b66ffd121"
+    },
+    {
+      "id": "the_gitignored_input_is_recoverable_exactly",
+      "claim": "the absent declared input is present byte-identically as evidence, so its absence is recoverable rather than lost",
+      "verdict": "PASS",
+      "detail": "pin=2437f446051d copy=2437f446051d present_in_checkout=False"
+    },
+    {
+      "id": "published_payload_digest_is_the_one_under_discussion",
+      "claim": "the payload digest the recertification reproduces is the published one, the verification attests it, and the rebuild moved only provenance leaves",
+      "verdict": "PASS",
+      "detail": "payload=4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb verification_cites_it=True rebuild_differing_leaves=5 payload_leaf_changed=False"
+    },
+    {
+      "id": "gate_reports_integrity_failure_naming_the_ledger",
+      "claim": "the gate, run today, returns INTEGRITY_FAILURE and names the ledger pin as the failing check",
+      "verdict": "PASS",
+      "detail": "exit=5 failing_check=inputs:published_pins_match_the_declared_sources mentions_ledger=True"
+    },
+    {
+      "id": "multi_family_results_are_in_no_commit",
+      "claim": "none of the six multi-family result files exists in any commit, and their directory is ignored by rule",
+      "verdict": "PASS",
+      "detail": "commits_touching_reports/strategy-baseline=0 ignored_by=reports/strategy-baseline/MULTI_FAMILY_R"
+    },
+    {
+      "id": "admission_matrix_records_no_input_provenance",
+      "claim": "the only surviving record of the five non-committed families carries no digest, commit or timestamp for its inputs",
+      "verdict": "PASS",
+      "detail": "provenance_like_keys=[] document_bytes=14323"
+    },
+    {
+      "id": "no_economic_or_runtime_file_changed",
+      "claim": "the working tree has no tracked change under src/, config/, data/, docs/ or reports/ relative to the commit under audit, so no published evidence or economic number moved",
+      "verdict": "PASS",
+      "detail": "porcelain='' diff_vs_2bd6e346=(empty)"
+    },
+    {
+      "id": "transcript_contract_suite_with_input_materialised",
+      "claim": "the stored transcript contract_suite_with_input_materialised.txt ends in the numbers the report quotes",
+      "verdict": "PASS",
+      "detail": "found=9 failed, 84 passed bytes=1262"
+    },
+    {
+      "id": "transcript_recertified_partial_tests",
+      "claim": "the stored transcript recertified_partial_tests.txt ends in the numbers the report quotes",
+      "verdict": "PASS",
+      "detail": "found=3 failed, 105 passed bytes=602"
+    },
+    {
+      "id": "transcript_recertified_clone_tests",
+      "claim": "the stored transcript recertified_clone_tests.txt ends in the numbers the report quotes",
+      "verdict": "PASS",
+      "detail": "found=71 failed, 1866 passed bytes=11830"
+    },
+    {
+      "id": "transcript_full_suite_before_recertification",
+      "claim": "the stored transcript full_suite_before_recertification.txt ends in the numbers the report quotes",
+      "verdict": "PASS",
+      "detail": "found=90 failed, 3270 passed bytes=16296"
+    },
+    {
+      "id": "audit_counts_match_the_recomputed_evidence",
+      "claim": "every count the audit reports is reproduced from the artefacts it cites",
+      "verdict": "PASS",
+      "detail": "{\"chain_nodes\": true, \"pins\": true, \"drifting\": true, \"pathologies\": true, \"dependencies\": true, \"delta_closed\": true, \"delta_introduced\": true, \"graph_cites_18_nodes\": true, \"no_economic_change_claimed\": true}"
+    },
+    {
+      "id": "certification_is_the_published_one",
+      "claim": "the certification quoted by the plan is the committed one and it is not a pass claim for the current tree",
+      "verdict": "PASS",
+      "detail": "artifact=COST_BARRIER_CERTIFICATION status=CERTIFIED head=e07ce6cc"
+    }
+  ],
+  "scope": "verifies the coherence of the audit's conclusions, not their novelty: the audit says the chain drifts by one ledger pin, that the drift is integrity-only, and that the transcripts show 19 contract nodes closing with none introduced"
+}

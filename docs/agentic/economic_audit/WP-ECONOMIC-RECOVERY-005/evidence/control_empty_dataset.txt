@@ -1,0 +1,30 @@
+ema_crossover [BASE]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+ema_crossover [2X_COST]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+ema_crossover [STRESSED_SLIPPAGE]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+ema_crossover [ZERO_COST]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+momentum [BASE]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+momentum [2X_COST]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+momentum [STRESSED_SLIPPAGE]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+momentum [ZERO_COST]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+breakout [BASE]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+breakout [2X_COST]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+breakout [STRESSED_SLIPPAGE]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+breakout [ZERO_COST]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+trend [BASE]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+trend [2X_COST]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+trend [STRESSED_SLIPPAGE]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+trend [ZERO_COST]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+mean_reversion [BASE]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+mean_reversion [2X_COST]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+mean_reversion [STRESSED_SLIPPAGE]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+mean_reversion [ZERO_COST]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+volatility [BASE]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+volatility [2X_COST]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+volatility [STRESSED_SLIPPAGE]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+volatility [ZERO_COST]: trades=0 gross=0 fees=0 net=0 PF=None WR=0.0 mfe=0.0 mae=0.0 dur=0.0 exit={'stop': 0, 'tp': 0, 'flip': 0}
+-> MULTI_FAMILY_RESULTS.json
+ARTIFACT_WRITTEN: reports/strategy-baseline/MULTI_FAMILY_RESULTS.json
+BYTES: 62791
+FAMILIES: ['breakout', 'ema_crossover', 'mean_reversion', 'momentum', 'trend', 'volatility']
+TRADES_BY_FAMILY: {'ema_crossover': 0, 'momentum': 0, 'breakout': 0, 'trend': 0, 'mean_reversion': 0, 'volatility': 0}
+DATASETS_IN_INPUT_DIR: 0

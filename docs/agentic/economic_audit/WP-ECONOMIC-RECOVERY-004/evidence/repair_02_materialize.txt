@@ -1,0 +1,13 @@
+cost-barrier evidence bundle: INTEGRITY_FAILURE (materialize)
+  head 2bd6e346348ee7fc039f8ada31a390387a4c30c2
+  [PASS] evidence:copy_matches_the_recorded_digest - copy 2437f446051d97ec... vs recorded 2437f446051d97ec...
+  [PASS] evidence:the_artefact_pin_is_unchanged_since_capture - recorded 2437f446051d97ec... vs published 2437f446051d97ec...
+  [PASS] evidence:the_copy_reproduces_the_published_pin - EXACT for the copy against pin 2437f446051d97ec...
+  [PASS] evidence:captured_against_the_published_artefact_revision - captured for payload 4383d812d6e18928... vs published 4383d812d6e18928...
+  [FAIL] evidence:producer_digests_match_the_manifest - drifted/absent: scripts/cost_barrier_explorer.py (DRIFT)
+  [PASS] evidence:the_checker_is_not_pinned_by_the_bundle - scripts/cost_barrier_gate.py is excluded by design; the checker cannot vouch for itself
+  placement: {'target': 'reports/strategy-baseline/COST_BARRIER.json', 'materialized': False}
+  ADVISORIES:
+    - line-ending-only difference, accepted: scripts/cost_barrier.py (EOL_ONLY). The content is the pinned content; git rewrote the bytes on checkout
+  FAILURES:
+    - watched producer(s) changed since the manifest was written: scripts/cost_barrier_explorer.py - regenerate, re-verify and re-pin in the same commit

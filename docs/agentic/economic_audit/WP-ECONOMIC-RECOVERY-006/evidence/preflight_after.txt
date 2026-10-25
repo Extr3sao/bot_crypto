@@ -1,0 +1,3 @@
+$ ./.venv/Scripts/python.exe scripts/wp005_preflight.py --repo . --out <fuera>
+REQUIRES_RUNTIME_EXECUTION_AND_INDEPENDENT_VERIFICATION | HEAD=2159c6c53401735aac89741104b70ac7847a5255 | datasets=3 | results=3 | blockers=0
+EXIT=0

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-16"?>
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <RegistrationInfo>
+    <Date>2026-10-23T08:17:11</Date>
+    <Author>DIRECTORI\GVLLFR0035</Author>
+    <URI>\TradingAgentic-EDGE04-Watchdog</URI>
+  </RegistrationInfo>
+  <Principals>
+    <Principal id="Author">
+      <UserId>S-1-12-1-2907394642-1261797007-1573842048-3608101379</UserId>
+      <LogonType>InteractiveToken</LogonType>
+    </Principal>
+  </Principals>
+  <Settings>
+    <DisallowStartIfOnBatteries>true</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>true</StopIfGoingOnBatteries>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <IdleSettings>
+      <Duration>PT10M</Duration>
+      <WaitTimeout>PT1H</WaitTimeout>
+      <StopOnIdleEnd>true</StopOnIdleEnd>
+      <RestartOnIdle>false</RestartOnIdle>
+    </IdleSettings>
+  </Settings>
+  <Triggers>
+    <TimeTrigger>
+      <StartBoundary>2026-10-23T08:17:00</StartBoundary>
+      <Repetition>
+        <Interval>PT15M</Interval>
+      </Repetition>
+    </TimeTrigger>
+  </Triggers>
+  <Actions Context="Author">
+    <Exec>
+      <Command>"C:\Users\GVLLFR0035\Downloads\bot freebuff\.venv\Scripts\python.exe"</Command>
+      <Arguments>"C:\Users\GVLLFR0035\Downloads\bot-freebuff-exp004a-02h\scripts\edge04_watchdog.py" --state-root "C:/Users/GVLLFR0035/Downloads/bot freebuff/data/forward/edge04"</Arguments>
+    </Exec>
+  </Actions>
+</Task>

@@ -1,0 +1,10 @@
+$ python scripts/cost_barrier_verify.py
+{
+  "status": "PASS",
+  "checks_failed": 0,
+  "controls_total": 13,
+  "controls_missed": 0,
+  "false_success": 0,
+  "mismatches": []
+}
+EXIT=0

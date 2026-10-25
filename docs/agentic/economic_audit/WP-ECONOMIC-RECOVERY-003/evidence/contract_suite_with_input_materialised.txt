@@ -1,0 +1,13 @@
+................FFF............FFF.......F...............FF............. [ 77%]
+.....................                                                    [100%]
+=========================== short test summary info ===========================
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_gate_reproduces_the_committed_state_in_full_mode
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_check_mode_is_partial_and_says_so
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_cli_has_one_exit_code_per_state
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_missing_required_input_blocks_rather_than_fails
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_the_pinned_producers_match_their_manifest
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_changed_producer_is_a_named_failure
+FAILED tests/unit/research/test_cost_barrier_gate.py::test_a_gate_run_leaves_the_published_artefacts_and_inputs_byte_identical
+FAILED tests/unit/research/test_cost_barrier_adversarial.py::test_a_removed_required_input_blocks_in_full_mode_and_stays_partial_in_check
+FAILED tests/unit/research/test_cost_barrier_adversarial.py::test_a_line_ending_only_change_is_not_a_finding
+9 failed, 84 passed in 117.53s (0:01:57)

@@ -1,0 +1,4 @@
+ARTIFACT: C:\Users\GVLLFR~1\AppData\Local\Temp\wp005_empty_uwki7psh\reports\strategy-baseline\MULTI_FAMILY_RESULTS.json
+JSON: VALID | empty: False | families: 6
+ZERO_TRADE_FAMILIES: ['breakout', 'ema_crossover', 'mean_reversion', 'momentum', 'trend', 'volatility']
+WOULD_BLOCK: True

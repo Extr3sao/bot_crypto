@@ -1,0 +1,15 @@
+$ ./.venv/Scripts/python.exe scripts/w007_classify.py
+breakout        REJECT     trades= 1168 net_base=  -855.06 gross= -154.09 gross/trade=-0.1319 cost/trade=0.6001 net0= -159.86
+                           net not positive under all cost scenarios: BASE=-855.06, 2X_COST=-1414.88, STRESSED_SLIPPAGE=-1300.62
+ema_crossover   REJECT     trades=  826 net_base=  -590.08 gross=  -94.47 gross/trade=-0.1144 cost/trade=0.6000 net0=  -90.85
+                           net not positive under all cost scenarios: BASE=-590.08, 2X_COST=-939.01, STRESSED_SLIPPAGE=-880.53
+mean_reversion  EXPERIMENT trades= 1748 net_base=  -806.06 gross=  242.81 gross/trade= 0.1389 cost/trade=0.6000 net0=  205.02
+                           net not positive under all cost scenarios: BASE=-806.06, 2X_COST=-1409.73, STRESSED_SLIPPAGE=-1300.04
+momentum        REJECT     trades= 1313 net_base=  -990.82 gross= -202.87 gross/trade=-0.1545 cost/trade=0.6001 net0= -219.53
+                           net not positive under all cost scenarios: BASE=-990.82, 2X_COST=-1643.52, STRESSED_SLIPPAGE=-1513.59
+trend           REJECT     trades=  523 net_base=  -313.99 gross=   -0.06 gross/trade=-0.0001 cost/trade=0.6002 net0=   -0.06
+                           net not positive under all cost scenarios: BASE=-313.99, 2X_COST=-575.59, STRESSED_SLIPPAGE=-523.27
+volatility      REJECT     trades=  347 net_base=  -360.40 gross= -152.17 gross/trade=-0.4385 cost/trade=0.6001 net0= -153.96
+                           net not positive under all cost scenarios: BASE=-360.40, 2X_COST=-533.93, STRESSED_SLIPPAGE=-499.22
+COUNT: {'REJECT': 5, 'EXPERIMENT': 1} | STATUS: NO_ADMITTED_STRATEGY -> reports\economic\w006\ECONOMIC_CLASSIFICATION.json
+EXIT=0

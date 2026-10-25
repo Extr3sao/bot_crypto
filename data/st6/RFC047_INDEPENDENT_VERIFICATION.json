@@ -1,0 +1,448 @@
+{
+  "artifact": "RFC047_INDEPENDENT_VERIFICATION",
+  "builder": "scripts/rfc047_builder.py, scripts/st6_slot_ledger.py, scripts/st6_windows_events.py",
+  "builder_is_not_the_verifier": "no module of the builder is imported here and no constant of its vocabulary is shared: the checks below re-derive what they compare",
+  "checks": 16,
+  "failed_checks": [],
+  "false_accusations": 0,
+  "false_success": 0,
+  "false_success_reading": "a manipulation the verifier accepted, or a claim the artefacts do not support: the only clean value is zero.  An honest state refused by mistake is reported separately as a false accusation, because it is a different failure and must not be hidden inside this count",
+  "findings": [
+    {
+      "check": "channel_state_matches_the_host",
+      "detail": {
+        "audit_says_enabled": false,
+        "host_says_enabled": false,
+        "read_at_utc": "2026-10-09T20:00:41Z"
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "declared_grid_recomputed",
+      "detail": {
+        "bounds_agree": true,
+        "slots_declared_by_the_period": 84,
+        "slots_in_the_ledger": 84,
+        "slots_per_day": 6
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "provenance_recomputed",
+      "detail": {
+        "count": 0,
+        "mismatches": [],
+        "slots": 84
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "store_cannot_outlive_the_channel",
+      "detail": {
+        "coverage_from_utc": null,
+        "reading": "a record of this task in the store implies an instant from which the channel could have produced it",
+        "records_of_the_monitored_task": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "xml_fields_and_task_identity",
+      "detail": {
+        "incomplete": [],
+        "records": 0,
+        "records_not_of_the_monitored_task": [],
+        "task": "TradingAgentic-ST6-Forward",
+        "task_known_to_the_scheduler": "TradingAgentic-ST6-Forward"
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "instance_identity",
+      "detail": {
+        "problems": []
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "hashes_reproduce",
+      "detail": {
+        "event_hash_problems": [],
+        "raw_evidence_problems": []
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "store_invariants",
+      "detail": {
+        "attempts_claiming_a_read_the_channel_could_not_serve": [],
+        "channel_state_as_reported": "CHANNEL_DISABLED",
+        "channel_state_the_other_fields_imply": "CHANNEL_DISABLED",
+        "declared_records_total": 0,
+        "duplicate_keys": [],
+        "reads_of_a_channel_that_never_recorded": [],
+        "records": 0,
+        "rotations_not_recorded": [],
+        "watermark": {
+          "Microsoft-Windows-TaskScheduler/Maintenance": 2713
+        },
+        "watermark_behind_the_store": false
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "ledger_contract",
+      "detail": {
+        "ledger_version": "ST6_SLOT_LEDGER_V1",
+        "missing_version_1_fields": {},
+        "reading": "the store is replaced atomically, so a torn line in it means a write that did not go through the temporary file, and a record may have been lost",
+        "slots": 84,
+        "states_outside_the_vocabulary": [],
+        "torn_lines_in_the_store": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "every_ended_slot_is_accounted_for",
+      "detail": {
+        "reading": "a slot that has ended either produced its window, or carries the classification of the loss that explains it; there is no third state that may pass silently",
+        "slots_that_ended_unaccounted": [],
+        "slots_with_a_run_but_no_outcome": []
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "temporal_integrity",
+      "detail": {
+        "confirmations_without_a_correlated_run": [],
+        "records_dated_in_the_future": [],
+        "slots_ahead_of_now_with_an_outcome": []
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "no_live_orders_or_credentials",
+      "detail": {
+        "credential_values_found": [],
+        "scanned": 13,
+        "standing_invariants": [
+          "ST6_AUTONOMOUS_COLLECTION_ACTIVE",
+          "ECO-1 = OPEN",
+          "NEXT_CAMPAIGN = NOT_AUTHORIZED",
+          "LIVE_TRADING = DISABLED",
+          "TRADES_AUTHORIZED = 0",
+          "PROFITABILITY_VERIFIED = FALSE"
+        ]
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "no_additional_scheduled_task",
+      "detail": {
+        "occurrences_of_it": 1,
+        "probe": {
+          "exit_code": 0,
+          "status": "OK"
+        },
+        "reading": "the campaign's own task is present exactly once and no task carries this RFC's number, so this RFC created none: the other tasks on the host belong to other campaigns of the project and are untouched",
+        "tasks_on_the_host": [
+          "TradingAgentic-ALPHA002-Capture",
+          "TradingAgentic-CAP004-Campaign",
+          "TradingAgentic-CAP004D-HealthWatch",
+          "TradingAgentic-ST6-Forward"
+        ],
+        "tasks_this_rfc_would_have_created": [],
+        "the_task_of_the_campaign": "TradingAgentic-ST6-Forward"
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "report_claims_hold",
+      "detail": {
+        "contradictions": []
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "deliverables_and_identifier",
+      "detail": {
+        "document_present": true,
+        "missing": [],
+        "next_free_number_above_046": "048",
+        "registry_entry": {
+          "approval_record": null,
+          "approved_at": null,
+          "artefact_count": 2,
+          "artefacts_versioned": true,
+          "declaration_strength": "TRACKED_DOCUMENT",
+          "declared_in_tracked_docs": [
+            "docs/rfc/RFC-047_ST6_SCHEDULER_PROVENANCE.md"
+          ],
+          "mentions_only_before_this_rfc": [],
+          "occupant": "RFC-047 ST-6 SCHEDULER PROVENANCE & INDEPENDENT EXECUTION EVIDENCE",
+          "prior_artefacts": [],
+          "registered_by": "the RFC-047 implementation, after checking that this registry did not list the number; the registry's own generator (scripts/rfc046_activate.py) scans artefacts at activation time and was not re-run",
+          "state": "OCCUPIED",
+          "status": "RFC047_BLOCKED_HOST_PERMISSIONS"
+        },
+        "status_in_the_document": "RFC047_BLOCKED_HOST_PERMISSIONS",
+        "status_in_the_report": "RFC047_BLOCKED_HOST_PERMISSIONS"
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "runtime_chain_is_honest",
+      "detail": {
+        "confirmed_slots_recomputed_here": 0,
+        "external_trigger_available": false,
+        "external_trigger_confirmed": false,
+        "links": 6,
+        "status": "RFC047_RUNTIME_CORRELATION_PARTIAL_INTERNAL_AND_SERVICE_ONLY"
+      },
+      "status": "PASS"
+    }
+  ],
+  "host_probe": {
+    "maintenance_enabled": true,
+    "maintenance_records": 2274,
+    "monitor_tasks": [
+      "TradingAgentic-ALPHA002-Capture",
+      "TradingAgentic-CAP004-Campaign",
+      "TradingAgentic-CAP004D-HealthWatch",
+      "TradingAgentic-ST6-Forward"
+    ],
+    "operational_config_sha256": "8c40bc8b7d6b1dcf7a39baeb2f3718883f21b4db96fcfdfa4a1e41443b8814c2",
+    "operational_enabled": false,
+    "operational_read_status": "OK",
+    "read_at_utc": "2026-10-09T20:00:41Z",
+    "schtasks": {
+      "exit_code": 0,
+      "status": "OK"
+    }
+  },
+  "negative_controls": {
+    "accepted_by_mistake": 0,
+    "baseline_failed_checks": [],
+    "baseline_status": "PASS",
+    "cases": [
+      {
+        "as_required": true,
+        "case": "an internal run claiming the schedule with no Windows event",
+        "checks_that_caught_it": [
+          "provenance_recomputed",
+          "report_claims_hold",
+          "runtime_chain_is_honest",
+          "temporal_integrity"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "a Windows event belonging to another task",
+        "checks_that_caught_it": [
+          "report_claims_hold",
+          "store_cannot_outlive_the_channel",
+          "store_invariants",
+          "xml_fields_and_task_identity"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "two instances with neighbouring timestamps",
+        "checks_that_caught_it": [
+          "report_claims_hold",
+          "store_cannot_outlive_the_channel",
+          "store_invariants"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "a manual execution presented as scheduled",
+        "checks_that_caught_it": [
+          "provenance_recomputed",
+          "report_claims_hold",
+          "runtime_chain_is_honest",
+          "temporal_integrity"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "a start event with no completion",
+        "checks_that_caught_it": [
+          "provenance_recomputed",
+          "report_claims_hold",
+          "runtime_chain_is_honest",
+          "store_cannot_outlive_the_channel",
+          "store_invariants",
+          "temporal_integrity"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "a completion event that arrives late",
+        "checks_that_caught_it": [
+          "provenance_recomputed",
+          "report_claims_hold",
+          "store_cannot_outlive_the_channel",
+          "store_invariants"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "a duplicated EventRecordID",
+        "checks_that_caught_it": [
+          "report_claims_hold",
+          "store_cannot_outlive_the_channel",
+          "store_invariants"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "a rotation that happened before the read",
+        "checks_that_caught_it": [
+          "store_invariants"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "the channel disabled during a run",
+        "checks_that_caught_it": [
+          "channel_state_matches_the_host",
+          "provenance_recomputed",
+          "store_invariants"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "a read refused for lack of permission",
+        "checks_that_caught_it": [
+          "store_invariants"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "manipulated event XML",
+        "checks_that_caught_it": [
+          "hashes_reproduce",
+          "report_claims_hold",
+          "store_cannot_outlive_the_channel",
+          "store_invariants"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "a corrupt ledger",
+        "checks_that_caught_it": [
+          "ledger_contract"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "a fabricated timestamp",
+        "checks_that_caught_it": [
+          "report_claims_hold",
+          "store_cannot_outlive_the_channel",
+          "store_invariants",
+          "temporal_integrity"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "market evidence that is absent",
+        "checks_that_caught_it": [
+          "hashes_reproduce"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "a process executed without collecting",
+        "checks_that_caught_it": [
+          "every_ended_slot_is_accounted_for"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "a valid collection without external provenance",
+        "checks_that_caught_it": [],
+        "expected": "ACCEPT",
+        "observed": "ACCEPTED"
+      },
+      {
+        "as_required": true,
+        "case": "a restart during persistence",
+        "checks_that_caught_it": [
+          "ledger_contract"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      },
+      {
+        "as_required": true,
+        "case": "a future slot counted as lost",
+        "checks_that_caught_it": [
+          "temporal_integrity"
+        ],
+        "expected": "REJECT",
+        "observed": "REJECTED"
+      }
+    ],
+    "count": 18,
+    "false_accusations": 0,
+    "reading": "each case mutates the real artefacts in one specific way and is put through the same verification; a manipulation that survives is a false success, and refusing an honest state would be a false accusation — both are counted, neither is hidden",
+    "rejected": 17
+  },
+  "recomputed": {
+    "channel_enabled_per_the_host": false,
+    "monitor_tasks_on_the_host": [
+      "TradingAgentic-ALPHA002-Capture",
+      "TradingAgentic-CAP004-Campaign",
+      "TradingAgentic-CAP004D-HealthWatch",
+      "TradingAgentic-ST6-Forward"
+    ],
+    "records_in_the_store": 0,
+    "slots": 84,
+    "slots_declared_by_the_period": 84,
+    "slots_with_an_external_confirmation": 0,
+    "windows_states": {
+      "PENDING_EVENT_COMPLETION": 0,
+      "PRE_ENABLE_NOT_OBSERVABLE": 84,
+      "WIN_EVENT_CONFIRMED_MANUAL": 0,
+      "WIN_EVENT_CONFIRMED_SCHEDULED": 0,
+      "WIN_EVENT_CONFLICT": 0,
+      "WIN_EVENT_PARTIAL": 0,
+      "WIN_EVENT_UNAVAILABLE": 0
+    }
+  },
+  "status": "PASS",
+  "taken_at_utc": "2026-10-09T20:00:42Z",
+  "unverified_checks": [],
+  "verifier": "scripts/rfc047_verify.py"
+}

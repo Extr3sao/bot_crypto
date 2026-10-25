@@ -1,0 +1,148 @@
+{
+  "wp": "WP-ECONOMIC-RECOVERY-004",
+  "artifact": "INDEPENDENT_VERIFICATION",
+  "verified_commit": "265d09ed9fdc70e385bde87f251fbe234f712e4e",
+  "base_commit": "2bd6e346",
+  "method": "reimplements the ledger identity contract from its document (imports neither the explorer nor the gate), re-hashes the published artefacts, re-runs the real gate in full mode and the evidence bundle, and diffs the node sets of the before/after runs",
+  "summary": {
+    "checks": 22,
+    "passed": 22,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "id": "the_published_state_pin_is_the_contract_value",
+      "claim": "state_sha256 under sources[] is what LEDGER_INTEGRITY_CONTRACT.md computes",
+      "verdict": "PASS",
+      "detail": "contract=strategy-admission-ledger-identity-v1 pin=4d1b1e6a9857356a recomputed=4d1b1e6a9857356a"
+    },
+    {
+      "id": "the_ledger_bytes_are_the_published_ones",
+      "claim": "the byte pin still names the ledger on disk: the state pin did not replace it",
+      "verdict": "PASS",
+      "detail": "pin=5e2ccc5792b8e691 disk=5e2ccc5792b8e691"
+    },
+    {
+      "id": "physical:data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+      "claim": "the immutable input is still identified by its bytes (exact or line-ending rendering), not only by state",
+      "verdict": "PASS",
+      "detail": "EXACT pin=8a101e8875bd disk=8a101e8875bd"
+    },
+    {
+      "id": "physical:reports/strategy-baseline/COST_BARRIER.json",
+      "claim": "the immutable input is still identified by its bytes (exact or line-ending rendering), not only by state",
+      "verdict": "PASS",
+      "detail": "EXACT pin=2437f446051d disk=2437f446051d"
+    },
+    {
+      "id": "physical:config/strategy_admission.json",
+      "claim": "the immutable input is still identified by its bytes (exact or line-ending rendering), not only by state",
+      "verdict": "PASS",
+      "detail": "EXACT pin=5e2ccc5792b8 disk=5e2ccc5792b8"
+    },
+    {
+      "id": "physical:docs/COST_MODEL_V3.json",
+      "claim": "the immutable input is still identified by its bytes (exact or line-ending rendering), not only by state",
+      "verdict": "PASS",
+      "detail": "EXACT pin=2f0e62d2408e disk=2f0e62d2408e"
+    },
+    {
+      "id": "physical:src/trading_bot/research/microstructure/cost_model_v3.py",
+      "claim": "the immutable input is still identified by its bytes (exact or line-ending rendering), not only by state",
+      "verdict": "PASS",
+      "detail": "EXACT pin=bc7e27538b65 disk=bc7e27538b65"
+    },
+    {
+      "id": "physical:cost_barrier_input_evidence_copy",
+      "claim": "the recovered input is still byte-identical to the copy the artefact pinned",
+      "verdict": "PASS",
+      "detail": "copy=2437f446051d97ec"
+    },
+    {
+      "id": "the_ledger_content_is_the_one_committed_before_this_wp",
+      "claim": "the repair changed pins around the ledger, not the ledger's own bytes",
+      "verdict": "PASS",
+      "detail": "diff_vs_2bd6e346=(none)"
+    },
+    {
+      "id": "the_ledger_still_rebuilds_from_its_committed_sources",
+      "claim": "build_strategy_admission.py --check exits 0: the ledger is still what its committed inputs produce, so its authority does not rest on this WP",
+      "verdict": "PASS",
+      "detail": "exit=0 stdout=admission ledger is up to date"
+    },
+    {
+      "id": "the_repair_did_not_rewrite_economic_entries",
+      "claim": "every strategy entry is byte-identical to the pre-WP ledger",
+      "verdict": "PASS",
+      "detail": "strategies=24 identical=True"
+    },
+    {
+      "id": "the_payload_digest_is_unchanged",
+      "claim": "the explorer's economic payload is the one published before the repair",
+      "verdict": "PASS",
+      "detail": "now=4383d812d6e18928 before=4383d812d6e18928"
+    },
+    {
+      "id": "the_economic_body_is_byte_identical",
+      "claim": "every economic section (cells, reachability, horizons, claims) is unchanged",
+      "verdict": "PASS",
+      "detail": "now=4383d812d6e18928 before=4383d812d6e18928"
+    },
+    {
+      "id": "no_governance_flag_moved",
+      "claim": "promotion/rentable/certified/production_ready are still false and nothing is authorized",
+      "verdict": "PASS",
+      "detail": "{\"authorization_state\": \"NOT_AUTHORIZED\", \"trades_authorized\": 0, \"false_success\": 0}"
+    },
+    {
+      "id": "the_gate_reaches_full_reproduction_pass",
+      "claim": "the real gate, on the repaired artefacts, is FULL_REPRODUCTION_PASS with exit 0",
+      "verdict": "PASS",
+      "detail": "status=FULL_REPRODUCTION_PASS exit=0 checks_failed=0"
+    },
+    {
+      "id": "the_gate_reports_no_integrity_failure_and_no_drift",
+      "claim": "the ledger drift that produced INTEGRITY_FAILURE is gone, not tolerated",
+      "verdict": "PASS",
+      "detail": "integrity_failures=[]"
+    },
+    {
+      "id": "false_success_is_zero",
+      "claim": "the gate attests false_success 0 and no mutation control was missed",
+      "verdict": "PASS",
+      "detail": "false_success=0 controls_missed=0"
+    },
+    {
+      "id": "the_evidence_bundle_verifies",
+      "claim": "cost_barrier_evidence.py verifies the bundle and the producer pins (exit 0)",
+      "verdict": "PASS",
+      "detail": "exit=0 cost-barrier evidence bundle: VERIFIED (verify)"
+    },
+    {
+      "id": "the_closed_nodes_are_the_cost_barrier_ones",
+      "claim": "the set difference between the before and after full runs is exactly this lane",
+      "verdict": "PASS",
+      "detail": "closed=19 all_in_lane=True"
+    },
+    {
+      "id": "no_failure_was_introduced_or_hidden",
+      "claim": "the after run contains no node the before run did not already fail",
+      "verdict": "PASS",
+      "detail": "introduced=[] count=0"
+    },
+    {
+      "id": "the_preexisting_failures_are_still_visible",
+      "claim": "85 nodes still fail and none of them belongs to the cost-barrier lane",
+      "verdict": "PASS",
+      "detail": "after_red=85 lane_red=0"
+    },
+    {
+      "id": "the_multi_family_results_are_still_absent",
+      "claim": "the six committed-nowhere result files were not invented to make a report greener",
+      "verdict": "PASS",
+      "detail": "no commit touches reports/strategy-baseline"
+    }
+  ],
+  "false_success": 0,
+  "scope": "the coherence of the repair: identical identity under LF/CRLF, unchanged economic payload, unchanged ledger bytes, gate green, no test hidden"
+}

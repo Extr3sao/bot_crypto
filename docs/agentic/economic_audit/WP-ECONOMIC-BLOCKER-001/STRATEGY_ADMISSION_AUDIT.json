@@ -1,0 +1,952 @@
+{
+  "wp": "WP-ECONOMIC-BLOCKER-001",
+  "artefact": "STRATEGY_ADMISSION_AUDIT",
+  "ledger": "config/strategy_admission.json",
+  "ledger_sha256": "92aab5415d92ff39219e7db68cb8057f746e4d7e6d6a6fb46a3971754bfc65e2",
+  "criteria_document": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+  "builder": "scripts/build_strategy_admission.py",
+  "builder_reproduces_committed_entries": true,
+  "entries_differing_from_builder": [],
+  "entry_count": 24,
+  "entries_by_timeframe": {
+    "5m": 6,
+    "15m": 6,
+    "1h": 6,
+    "30m": 6
+  },
+  "entries_by_status": {
+    "NO_GROSS_EDGE": 17,
+    "COST_KILLED": 7
+  },
+  "entries_with_zero_sample": 18,
+  "paper_candidates_in_matrix": [],
+  "structural_finding": "the builder can only emit PAPER_CANDIDATE for a family listed in matrix.paper_candidates; that list is empty, so PAPER admission is structurally impossible today regardless of measured edge",
+  "provenance": [
+    {
+      "path": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "recorded_sha256": "74024caf9b52b16f63e41f5cc285b26e75d6d5a91a65387038305d66fdf787f0",
+      "actual_sha256": "74024caf9b52b16f63e41f5cc285b26e75d6d5a91a65387038305d66fdf787f0",
+      "matches_disk": true,
+      "matches_a_committed_revision": true,
+      "committed_revisions": [
+        {
+          "commit": "5b4051ee280b",
+          "sha256": "74024caf9b52b16f63e41f5cc285b26e75d6d5a91a65387038305d66fdf787f0"
+        }
+      ]
+    },
+    {
+      "path": "docs/STRATEGY_ADMISSION_MATRIX.json",
+      "recorded_sha256": "5f794c36829f947ff56de3995b68bb4f374d770bb32bd6147bff59a014ea05bf",
+      "actual_sha256": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81",
+      "matches_disk": false,
+      "matches_a_committed_revision": false,
+      "committed_revisions": [
+        {
+          "commit": "3271a975c7b3",
+          "sha256": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81"
+        }
+      ]
+    }
+  ],
+  "provenance_ok": false,
+  "provenance_has_unverifiable_anchor": true,
+  "reason_counts": {
+    "ECONOMIC_NEGATIVE_GROSS": 17,
+    "ECONOMIC_BELOW_RESEARCH_BARRIER": 24,
+    "EVIDENCE_SAMPLE_UNPROVEN": 18,
+    "ADMISSION_GATE_NO_PAPER_CANDIDATES": 24,
+    "CRITERIA_UNCOMPUTED": 24,
+    "ECONOMIC_BELOW_RUNTIME_COST": 7
+  },
+  "entries": [
+    {
+      "strategy_id": "breakout@15m",
+      "family": "breakout",
+      "timeframe": "15m",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -1.82,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.breakout.15m",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 2276,
+        "gross_usd": -289.44,
+        "net_usd": -1427.46,
+        "profit_factor": 0.6612
+      }
+    },
+    {
+      "strategy_id": "breakout@1h",
+      "family": "breakout",
+      "timeframe": "1h",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -0.22,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.breakout.1h",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 2276,
+        "gross_usd": -289.44,
+        "net_usd": -1427.46,
+        "profit_factor": 0.6612
+      }
+    },
+    {
+      "strategy_id": "breakout@30m",
+      "family": "breakout",
+      "timeframe": "30m",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -1.79,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.breakout.30m",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 2276,
+        "gross_usd": -289.44,
+        "net_usd": -1427.46,
+        "profit_factor": 0.6612
+      }
+    },
+    {
+      "strategy_id": "breakout@5m",
+      "family": "breakout",
+      "timeframe": "5m",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -0.11,
+      "sample_trades": 2426,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 2276,
+        "gross_usd": -289.44,
+        "net_usd": -1427.46,
+        "profit_factor": 0.6612
+      }
+    },
+    {
+      "strategy_id": "ema_crossover@15m",
+      "family": "ema_crossover",
+      "timeframe": "15m",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -1.12,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.ema_crossover.15m",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 1561,
+        "gross_usd": -485.74,
+        "net_usd": -1266.16,
+        "profit_factor": 0.5017
+      }
+    },
+    {
+      "strategy_id": "ema_crossover@1h",
+      "family": "ema_crossover",
+      "timeframe": "1h",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -0.96,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.ema_crossover.1h",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 1561,
+        "gross_usd": -485.74,
+        "net_usd": -1266.16,
+        "profit_factor": 0.5017
+      }
+    },
+    {
+      "strategy_id": "ema_crossover@30m",
+      "family": "ema_crossover",
+      "timeframe": "30m",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -0.73,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.ema_crossover.30m",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 1561,
+        "gross_usd": -485.74,
+        "net_usd": -1266.16,
+        "profit_factor": 0.5017
+      }
+    },
+    {
+      "strategy_id": "ema_crossover@5m",
+      "family": "ema_crossover",
+      "timeframe": "5m",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -4.56,
+      "sample_trades": 1725,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 1561,
+        "gross_usd": -485.74,
+        "net_usd": -1266.16,
+        "profit_factor": 0.5017
+      }
+    },
+    {
+      "strategy_id": "mean_reversion@15m",
+      "family": "mean_reversion",
+      "timeframe": "15m",
+      "status": "COST_KILLED",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": 2.71,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.mean_reversion.15m",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_BELOW_RUNTIME_COST",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 2861,
+        "gross_usd": -83.91,
+        "net_usd": -1514.34,
+        "profit_factor": 0.6746
+      }
+    },
+    {
+      "strategy_id": "mean_reversion@1h",
+      "family": "mean_reversion",
+      "timeframe": "1h",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -2.23,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.mean_reversion.1h",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 2861,
+        "gross_usd": -83.91,
+        "net_usd": -1514.34,
+        "profit_factor": 0.6746
+      }
+    },
+    {
+      "strategy_id": "mean_reversion@30m",
+      "family": "mean_reversion",
+      "timeframe": "30m",
+      "status": "COST_KILLED",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": 5.47,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.mean_reversion.30m",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_BELOW_RUNTIME_COST",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 2861,
+        "gross_usd": -83.91,
+        "net_usd": -1514.34,
+        "profit_factor": 0.6746
+      }
+    },
+    {
+      "strategy_id": "mean_reversion@5m",
+      "family": "mean_reversion",
+      "timeframe": "5m",
+      "status": "COST_KILLED",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": 1.49,
+      "sample_trades": 3190,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_BELOW_RUNTIME_COST",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 2861,
+        "gross_usd": -83.91,
+        "net_usd": -1514.34,
+        "profit_factor": 0.6746
+      }
+    },
+    {
+      "strategy_id": "momentum@15m",
+      "family": "momentum",
+      "timeframe": "15m",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -3.97,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.momentum.15m",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 2436,
+        "gross_usd": -461.3,
+        "net_usd": -1679.33,
+        "profit_factor": 0.6462
+      }
+    },
+    {
+      "strategy_id": "momentum@1h",
+      "family": "momentum",
+      "timeframe": "1h",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -2.33,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.momentum.1h",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 2436,
+        "gross_usd": -461.3,
+        "net_usd": -1679.33,
+        "profit_factor": 0.6462
+      }
+    },
+    {
+      "strategy_id": "momentum@30m",
+      "family": "momentum",
+      "timeframe": "30m",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -2.61,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.momentum.30m",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 2436,
+        "gross_usd": -461.3,
+        "net_usd": -1679.33,
+        "profit_factor": 0.6462
+      }
+    },
+    {
+      "strategy_id": "momentum@5m",
+      "family": "momentum",
+      "timeframe": "5m",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -1.88,
+      "sample_trades": 2526,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 2436,
+        "gross_usd": -461.3,
+        "net_usd": -1679.33,
+        "profit_factor": 0.6462
+      }
+    },
+    {
+      "strategy_id": "trend@15m",
+      "family": "trend",
+      "timeframe": "15m",
+      "status": "COST_KILLED",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": 1.28,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.trend.15m",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_BELOW_RUNTIME_COST",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 1288,
+        "gross_usd": -232.76,
+        "net_usd": -876.83,
+        "profit_factor": 0.7226
+      }
+    },
+    {
+      "strategy_id": "trend@1h",
+      "family": "trend",
+      "timeframe": "1h",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -1.25,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.trend.1h",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 1288,
+        "gross_usd": -232.76,
+        "net_usd": -876.83,
+        "profit_factor": 0.7226
+      }
+    },
+    {
+      "strategy_id": "trend@30m",
+      "family": "trend",
+      "timeframe": "30m",
+      "status": "COST_KILLED",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": 2.21,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.trend.30m",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_BELOW_RUNTIME_COST",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 1288,
+        "gross_usd": -232.76,
+        "net_usd": -876.83,
+        "profit_factor": 0.7226
+      }
+    },
+    {
+      "strategy_id": "trend@5m",
+      "family": "trend",
+      "timeframe": "5m",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -1.65,
+      "sample_trades": 1291,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 1288,
+        "gross_usd": -232.76,
+        "net_usd": -876.83,
+        "profit_factor": 0.7226
+      }
+    },
+    {
+      "strategy_id": "volatility@15m",
+      "family": "volatility",
+      "timeframe": "15m",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -7.06,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.volatility.15m",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 519,
+        "gross_usd": -169.26,
+        "net_usd": -428.79,
+        "profit_factor": 0.6175
+      }
+    },
+    {
+      "strategy_id": "volatility@1h",
+      "family": "volatility",
+      "timeframe": "1h",
+      "status": "COST_KILLED",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": 6.28,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.volatility.1h",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_BELOW_RUNTIME_COST",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 519,
+        "gross_usd": -169.26,
+        "net_usd": -428.79,
+        "profit_factor": 0.6175
+      }
+    },
+    {
+      "strategy_id": "volatility@30m",
+      "family": "volatility",
+      "timeframe": "30m",
+      "status": "COST_KILLED",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": 8.91,
+      "sample_trades": 0,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.volatility.30m",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_BELOW_RUNTIME_COST",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "EVIDENCE_SAMPLE_UNPROVEN",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 519,
+        "gross_usd": -169.26,
+        "net_usd": -428.79,
+        "profit_factor": 0.6175
+      }
+    },
+    {
+      "strategy_id": "volatility@5m",
+      "family": "volatility",
+      "timeframe": "5m",
+      "status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "expected_gross_edge_bps": -4.73,
+      "sample_trades": 520,
+      "evidence_class": "HISTORICAL_ESTIMATE",
+      "period": "W1-W7 2026-03-01..2026-09-24",
+      "metric": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+      "source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "reasons": [
+        "ECONOMIC_NEGATIVE_GROSS",
+        "ECONOMIC_BELOW_RESEARCH_BARRIER",
+        "ADMISSION_GATE_NO_PAPER_CANDIDATES",
+        "CRITERIA_UNCOMPUTED"
+      ],
+      "matrix_status": "REJECT",
+      "matrix_mandatory_failures": [
+        "c2_net_positive",
+        "c3_pf_gt1",
+        "c4_oos_positive",
+        "c7_survives_2x"
+      ],
+      "matrix_unknown_checks": [
+        "c6_dd",
+        "c8_no_window_dominance"
+      ],
+      "matrix_base_totals": {
+        "trades": 519,
+        "gross_usd": -169.26,
+        "net_usd": -428.79,
+        "profit_factor": 0.6175
+      }
+    }
+  ],
+  "research_cost_barrier": {
+    "base_rt_bps": 12.0,
+    "twice_rt_bps": 24.0,
+    "runtime_rt_bps": 23.79,
+    "note": "the admission checks were computed against the research barrier, which is LOWER than the runtime's"
+  }
+}

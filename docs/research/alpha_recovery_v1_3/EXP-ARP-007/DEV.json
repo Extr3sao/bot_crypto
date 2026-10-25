@@ -1,0 +1,154 @@
+{
+  "by_key": {
+    "BTC": {
+      "avg_duration_min": 960.0,
+      "avg_loss_usd": -10.9768,
+      "avg_mae_pct": 2.3156,
+      "avg_mfe_pct": 2.0842,
+      "avg_win_usd": 7.5573,
+      "concentration": {
+        "positive_trades": 30,
+        "top10pct_share": 0.3528,
+        "top1_share": 0.0775,
+        "top5_share": 0.3528,
+        "total_positive_net": 226.72
+      },
+      "cost_bps_rt": 23.559,
+      "exit_mix": {
+        "stop": 18,
+        "target": 27,
+        "window_expiry": 9
+      },
+      "expectancy_cost_bps": 23.56,
+      "expectancy_gross_bps": 9.957,
+      "expectancy_net_bps": -13.602,
+      "fees_usd": 63.61,
+      "gross_usd": 26.88,
+      "max_drawdown_bps": 1497.492,
+      "median_duration_min": 0.0,
+      "net_usd": -36.73,
+      "payoff": 0.6885,
+      "profit_factor": 0.8606,
+      "sharpe_per_trade": -0.0615,
+      "trades": 54,
+      "win_rate": 0.5556
+    },
+    "ETH": {
+      "avg_duration_min": 1133.62,
+      "avg_loss_usd": -14.5321,
+      "avg_mae_pct": 3.0601,
+      "avg_mfe_pct": 3.0681,
+      "avg_win_usd": 9.802,
+      "concentration": {
+        "positive_trades": 27,
+        "top10pct_share": 0.3203,
+        "top1_share": 0.0922,
+        "top5_share": 0.382,
+        "total_positive_net": 264.65
+      },
+      "cost_bps_rt": 23.559,
+      "exit_mix": {
+        "stop": 16,
+        "target": 23,
+        "window_expiry": 8
+      },
+      "expectancy_cost_bps": 23.56,
+      "expectancy_gross_bps": 12.5,
+      "expectancy_net_bps": -11.059,
+      "fees_usd": 55.37,
+      "gross_usd": 29.37,
+      "max_drawdown_bps": 1870.352,
+      "median_duration_min": 0.0,
+      "net_usd": -25.99,
+      "payoff": 0.6745,
+      "profit_factor": 0.9106,
+      "sharpe_per_trade": -0.038,
+      "trades": 47,
+      "win_rate": 0.5745
+    },
+    "SOL": {
+      "avg_duration_min": 886.15,
+      "avg_loss_usd": -12.7172,
+      "avg_mae_pct": 3.3363,
+      "avg_mfe_pct": 2.9393,
+      "avg_win_usd": 12.27,
+      "concentration": {
+        "positive_trades": 22,
+        "top10pct_share": 0.4433,
+        "top1_share": 0.1099,
+        "top5_share": 0.4433,
+        "total_positive_net": 269.94
+      },
+      "cost_bps_rt": 23.559,
+      "exit_mix": {
+        "stop": 23,
+        "target": 23,
+        "window_expiry": 6
+      },
+      "expectancy_cost_bps": 23.56,
+      "expectancy_gross_bps": -19.355,
+      "expectancy_net_bps": -42.914,
+      "fees_usd": 61.26,
+      "gross_usd": -50.32,
+      "max_drawdown_bps": 3592.254,
+      "median_duration_min": 0.0,
+      "net_usd": -111.58,
+      "payoff": 0.9648,
+      "profit_factor": 0.7075,
+      "sharpe_per_trade": -0.1504,
+      "trades": 52,
+      "win_rate": 0.4231
+    }
+  },
+  "capture": {
+    "available_1d_move_bps": 198.3762,
+    "capture_ratio": 0.0039,
+    "caveat": "available move is the mean |1-day move| over all DEV days; a mechanism captures only a fraction and this is descriptive, not evidence of edge.",
+    "measured_gross_bps_per_trade": 0.776
+  },
+  "combined": {
+    "avg_duration_min": 988.24,
+    "avg_loss_usd": -12.6433,
+    "avg_mae_pct": 2.8912,
+    "avg_mfe_pct": 2.6771,
+    "avg_win_usd": 9.6369,
+    "concentration": {
+      "positive_trades": 79,
+      "top10pct_share": 0.405,
+      "top1_share": 0.039,
+      "top5_share": 0.168,
+      "total_positive_net": 761.31
+    },
+    "cost_bps_rt": 23.559,
+    "exit_mix": {
+      "stop": 57,
+      "target": 73,
+      "window_expiry": 23
+    },
+    "expectancy_cost_bps": 23.56,
+    "expectancy_gross_bps": 0.776,
+    "expectancy_net_bps": -22.783,
+    "fees_usd": 180.23,
+    "gross_usd": 5.94,
+    "max_drawdown_bps": 5335.504,
+    "median_duration_min": 0.0,
+    "net_usd": -174.29,
+    "payoff": 0.7622,
+    "profit_factor": 0.8137,
+    "sharpe_per_trade": -0.0854,
+    "trades": 153,
+    "win_rate": 0.5163
+  },
+  "verdict": {
+    "checks": {
+      "gross_expectancy_gt_0": true,
+      "not_single_trade_concentrated": true,
+      "sample_sufficient": true
+    },
+    "result": "PASS",
+    "thresholds": {
+      "min_trades": 10,
+      "top1_share_max": 0.5
+    }
+  }
+}
