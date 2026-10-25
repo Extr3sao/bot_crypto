@@ -55,9 +55,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--provider",
-        choices=["fake", "ccxt"],
+        choices=["fake", "ccxt", "public"],
         default="fake",
-        help="Data provider: fake (demo, no credentials) or ccxt (read-only)",
+        help=(
+            "Data provider: fake (demo, no credentials), ccxt (read-only venue), "
+            "or public (read-only public REST klines; no exchange session)"
+        ),
     )
     parser.add_argument("--config-dir", default="config", help="Config directory (default config)")
     parser.add_argument(
@@ -88,6 +91,14 @@ def parse_args() -> argparse.Namespace:
         "--burnin-events",
         default=None,
         help="Append one JSONL event per session to this path (burn-in observability).",
+    )
+    parser.add_argument(
+        "--data-audit",
+        default=None,
+        help=(
+            "Append one JSONL record per public-data request (provider, endpoint, "
+            "timestamp, authenticated=false). Only used by --provider public."
+        ),
     )
     parser.add_argument(
         "--run-dir",
@@ -143,7 +154,11 @@ def build_settings(args: argparse.Namespace, assets: Sequence[str]) -> Settings:
 
 
 def build_scanner_factory(
-    settings: Settings, provider: str
+    settings: Settings,
+    provider: str,
+    *,
+    timeframe: str | None = None,
+    data_audit_path: Path | str | None = None,
 ) -> tuple[Callable[[], UniverseScanner], MarketDataSourceProtocol]:
     """Return (scanner_factory, data_source) for the requested provider.
 
@@ -158,6 +173,16 @@ def build_scanner_factory(
         from trading_bot.market_data.fake import build_demo_fetcher
 
         source: MarketDataSourceProtocol = build_demo_fetcher(settings)
+    elif provider == "public":
+        from trading_bot.market_data.public_rest import PublicRestKlineSource
+
+        resolved_timeframe = timeframe or (
+            settings.universe.timeframes[0] if settings.universe.timeframes else "5m"
+        )
+        source = PublicRestKlineSource(
+            timeframe=resolved_timeframe,
+            audit_path=data_audit_path,
+        )
     else:
         from trading_bot.market_data.wiring import resolve_scanner_source
 
@@ -361,7 +386,13 @@ async def main() -> int:
     run_dir = Path(args.run_dir) if args.run_dir else _default_run_dir()
     run_dir.mkdir(parents=True, exist_ok=True)
 
-    scanner_factory, data_source = build_scanner_factory(settings, args.provider)
+    data_audit_path = Path(args.data_audit) if args.data_audit else None
+    scanner_factory, data_source = build_scanner_factory(
+        settings,
+        args.provider,
+        timeframe=args.timeframe,
+        data_audit_path=data_audit_path,
+    )
     broker = DurablePaperBroker(equity=args.balance)
     cycle_engine = build_cycle_engine(
         settings,
