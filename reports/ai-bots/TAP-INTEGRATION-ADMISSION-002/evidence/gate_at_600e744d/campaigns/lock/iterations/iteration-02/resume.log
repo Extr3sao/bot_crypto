@@ -1,0 +1,24 @@
+[wp04] root=C:\Users\GVLLFR0035\Downloads\ff-wt-adm002 commit=600e744ddf13 out=C:\Users\GVLLFR0035\AppData\Local\Temp\tap_gate_600e744d\campaigns\lock\session
+[wp04] bootstrap complete
+[wp04] measured 3 live delivery latencies
+2026-10-25 17:53:15 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-25 17:53:15 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT
+2026-10-25 17:53:16 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-25 17:53:16 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT
+[wp04] cycle 5 bar 2026-10-25T16:52:00Z fills=0 closed=0
+2026-10-25 17:54:12 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-25 17:54:12 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT
+2026-10-25 17:54:13 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT
+2026-10-25 17:54:13 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT
+[wp04] cycle 6 bar 2026-10-25T16:53:00Z fills=0 closed=0
+{
+  "cycles_executed": 2,
+  "cycles_blocked": 0,
+  "fills": 0,
+  "closed_trades": 0,
+  "net_realised_usdt": 0,
+  "data_delay_ms": 5612,
+  "runtime_stable": true,
+  "run_id": "run-1bca1664432e03a3e9e8",
+  "session_id": "sess-8e3f6af4238c8c0029ef"
+}

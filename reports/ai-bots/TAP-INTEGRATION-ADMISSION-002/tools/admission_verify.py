@@ -22,7 +22,10 @@ Claims:
         touches no executable path;
 ``S1``  self-control: ``A4`` fails on a session whose chain is broken;
 ``S2``  self-control: ``A5`` fails on a ledger that admits one strategy;
-``S3``  self-control: ``A8`` fails on a drifted runtime hash and on an executable delta.
+``S3``  self-control: ``A8`` fails on a drifted runtime hash and on an executable delta;
+``A9``  the gate was recomputed at this branch's own commit and the recomputation still
+        hashes;
+``S4``  self-control: ``A9`` fails on a manifest whose hash was edited after the run.
 
 A claim is ``PASS`` only when the artefact proves it, ``FAIL`` when it contradicts it, and
 ``UNKNOWN`` when the evidence is missing.  ``UNKNOWN`` is never a pass, and a self-control that
@@ -51,6 +54,7 @@ GATE_EVIDENCE = GATE_REPORT_DIR / "evidence"
 PAPER_SESSION = REPORT / "evidence" / "paper_session"
 ADMISSION = REPO / "config" / "strategy_admission.json"
 REVIEWER = GATE_REPORT_DIR / "tools" / "review_gate.py"
+GATE_RECOMPUTE = REPORT / "evidence" / "gate_at_600e744d"
 SCHEMA = "TAP_INTEGRATION_ADMISSION_VERIFICATION_V1"
 GENESIS = "0" * 64
 SEPARATORS = (",", ":")
@@ -580,6 +584,126 @@ def continuity_claim(
     return out
 
 
+def gate_recompute_claim(
+    root: Path | None = None, manifest_path: Path | None = None
+) -> dict[str, Any]:
+    """The gate was recomputed on this branch's own commit, and that recomputation still hashes.
+
+    A3 checks the *delivered* evidence, which was produced at 680c34df.  That is not the same
+    claim as "the gate passes on the commit this report is about", so this recomputation is kept
+    as its own artefact with its own commit binding, and its 260-file manifest is re-hashed here.
+    The executable delta since that commit is classified for the same reason as A8: a report added
+    afterwards is allowed, a changed module is not.
+    """
+    root = root or GATE_RECOMPUTE
+    out = claim(
+        "A9",
+        "the gate was recomputed at 600e744d, passed every step, changed no risk policy, and its "
+        "recomputation still hashes",
+        "read GATE_REPORT.json and its invariants, re-hash EVIDENCE_MANIFEST.json, classify the "
+        "delta from the certified commit to HEAD",
+    )
+    report = read_json(root / "GATE_REPORT.json")
+    manifest = read_json(manifest_path or (root / "EVIDENCE_MANIFEST.json"))
+    problems = out["problems"]
+
+    if not report:
+        problems.append("GATE_REPORT.json missing from the recomputation")
+        out["detail"] = f"no gate recomputation at {root}"
+        out["status"] = "FAIL"
+        return out
+
+    summary = report.get("summary") or {}
+    invariants = report.get("invariants") or {}
+    commit = str(report.get("commit") or "")
+    if report.get("verdict") != "PASS":
+        problems.append(f"verdict {report.get('verdict')}")
+    if report.get("certifies") is not True:
+        problems.append("the report does not certify")
+    if int(report.get("false_success") or 0) != 0:
+        problems.append(f"false_success {report.get('false_success')}")
+    for status in ("FAIL", "BLOCKED", "NOT_TESTED"):
+        if int(summary.get(status) or 0) != 0:
+            problems.append(f"{summary.get(status)} step(s) {status}")
+    if int(summary.get("steps") or 0) != int(summary.get("PASS") or -1) or not summary.get("steps"):
+        problems.append(f"steps {summary.get('steps')} vs PASS {summary.get('PASS')}")
+    if invariants.get("live_orders") != 0:
+        problems.append(f"live_orders {invariants.get('live_orders')}")
+    if invariants.get("risk_policy_changed") is not False:
+        problems.append("the recomputation does not assert the risk policy was left alone")
+    if invariants.get("lane_merged") is not False:
+        problems.append("the recomputation does not assert the lane was not merged")
+    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+        problems.append(f"the report names no commit ({commit!r})")
+
+    files = manifest.get("files") or {}
+    missing = [path for path in files if not (root / path).is_file()]
+    bad = [
+        path
+        for path, digest in files.items()
+        if (root / path).is_file() and sha256_file(root / path) != digest
+    ]
+    if not files:
+        problems.append("EVIDENCE_MANIFEST.json missing or empty")
+    if missing:
+        problems.append(f"{len(missing)} manifest file(s) absent: {sorted(missing)[:3]}")
+    if bad:
+        problems.append(f"{len(bad)} manifest hash(es) disagree: {sorted(bad)[:3]}")
+    if int(manifest.get("count") or 0) != len(files):
+        problems.append("the manifest count field disagrees with its own list")
+
+    delta: list[str] = []
+    executable = ("src/", "scripts/", "tests/", "config/", ".github/", "pyproject.toml", "uv.lock")
+    if re.fullmatch(r"[0-9a-f]{40}", commit):
+        delta = [line for line in git("diff", "--name-only", commit, "HEAD").splitlines() if line]
+        touched = [path for path in delta if path.startswith(executable)]
+        if touched:
+            problems.append(
+                f"delta since the certified commit touches executable paths: {touched[:4]}"
+            )
+
+    out["detail"] = (
+        f"commit={commit[:12]} steps={summary.get('PASS')}/{summary.get('steps')} "
+        f"manifest={len(files)} rehashed={len(files) - len(missing) - len(bad)} "
+        f"delta_files={len(delta)} invariants="
+        f"g1={invariants.get('g1')},admission={invariants.get('paper_admission')}"
+    )
+    out["status"] = "PASS" if not problems else "FAIL"
+    return out
+
+
+def self_control_gate_recompute() -> dict[str, Any]:
+    """A9 must reject a recomputation whose manifest was edited after the run."""
+
+    out = claim(
+        "S4",
+        "the recomputation check is not blind: one edited hash in its manifest must fail A9",
+        "write a copy of the manifest with one digest replaced and re-evaluate A9 against it",
+    )
+    manifest = read_json(GATE_RECOMPUTE / "EVIDENCE_MANIFEST.json")
+    files = dict(manifest.get("files") or {})
+    if not files:
+        out["detail"] = "cannot run: no manifest to tamper with"
+        out["problems"] = ["evidence missing"]
+        out["status"] = "FAIL"
+        return out
+    target = sorted(files)[0]
+    files[target] = "0" * 64
+    with tempfile.TemporaryDirectory() as raw:
+        tampered = Path(raw) / "EVIDENCE_MANIFEST.json"
+        tampered.write_text(json.dumps({**manifest, "files": files}), encoding="utf-8")
+        judged = gate_recompute_claim(None, tampered)
+    detected = judged["status"] == "FAIL" and any(
+        "hash" in problem for problem in judged["problems"]
+    )
+    out["detail"] = (
+        f"tampered file={target} judged={judged['status']} problems={judged['problems'][:2]}"
+    )
+    out["problems"] = [] if detected else ["an edited manifest hash did not fail A9"]
+    out["status"] = "PASS" if detected else "FAIL"
+    return out
+
+
 def self_control_paper() -> dict[str, Any]:
     out = claim(
         "S1",
@@ -712,15 +836,18 @@ def main(argv: list[str] | None = None) -> int:
         check_claim(),
         closure_claim(),
         continuity_claim(),
+        gate_recompute_claim(),
         self_control_paper(),
         self_control_admission(),
         self_control_continuity(),
+        self_control_gate_recompute(),
     ]
     by_id = {row["id"]: row for row in claims}
     false_success = int(
         (by_id["A4"]["status"] == "PASS" and by_id["S1"]["status"] != "PASS")
         or (by_id["A5"]["status"] == "PASS" and by_id["S2"]["status"] != "PASS")
         or (by_id["A8"]["status"] == "PASS" and by_id["S3"]["status"] != "PASS")
+        or (by_id["A9"]["status"] == "PASS" and by_id["S4"]["status"] != "PASS")
     )
     passed = sum(1 for row in claims if row["status"] == "PASS")
     payload = {

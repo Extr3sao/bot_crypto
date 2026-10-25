@@ -1,0 +1,172 @@
+{
+  "abandoned_after_s": 0.2,
+  "chain_at_crash": {
+    "head_sha256": "1a1672ff5ad2d04bafd3173f77115f313a4dc2b5fcdc11e9d85097fa493b31bb",
+    "kinds": {
+      "CYCLE": 12,
+      "DELAY_MEASURED": 8,
+      "LOCK_RECLAIMED": 4,
+      "SESSION_END": 4,
+      "SESSION_PROVENANCE": 9,
+      "SESSION_START": 9
+    },
+    "lines": 46,
+    "ok": true,
+    "reason": "INTACT"
+  },
+  "crash_site": "AFTER_CYCLE",
+  "cycles_at_crash": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "iteration": 5,
+  "killed": {
+    "already_exited_before_kill": false,
+    "detail": "CORRECTO: el proceso con PID 17992 (proceso secundario de PID 43808)\nha sido terminado.\nCORRECTO: el proceso con PID 45096 (proceso secundario de PID 43808)\nha sido terminado.\nCORRECTO: el proceso con PID 43808 (proceso secundario de PID 11920)\nha sido terminado.",
+    "exit_code": 1,
+    "main_pid_alive_after": false,
+    "pid": 43808,
+    "taskkill_exit": 0
+  },
+  "launch": {
+    "cycles_before": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "pid": 43808,
+    "resume": true,
+    "rows_before": 42,
+    "started_at_utc": "2026-10-25T16:59:16Z"
+  },
+  "leftovers": [
+    {
+      "bytes": 311,
+      "fence": 13,
+      "owner_alive_now": false,
+      "owner_host": "DESKTOP-4CHO695",
+      "owner_pid": 45096,
+      "owner_start_ms": 1792947556200,
+      "path": "market-1m/BTCUSDT.jsonl.lock",
+      "reason": "OWNER_PROCESS_DEAD",
+      "record": {
+        "acquired_at_utc": "2026-10-25T16:59:18Z",
+        "fence": 13,
+        "host": "DESKTOP-4CHO695",
+        "path": "BTCUSDT.jsonl.lock",
+        "pid": 45096,
+        "process_start_ms": 1792947556200,
+        "purpose": "minutes:BTCUSDT.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "846c78fb47254ecdab5c3b10824150ca"
+      },
+      "state": "ABANDONED",
+      "token": "846c78fb47254ecdab5c3b10824150ca"
+    },
+    {
+      "bytes": 311,
+      "fence": 13,
+      "owner_alive_now": false,
+      "owner_host": "DESKTOP-4CHO695",
+      "owner_pid": 45096,
+      "owner_start_ms": 1792947556200,
+      "path": "market-1m/ETHUSDT.jsonl.lock",
+      "reason": "OWNER_PROCESS_DEAD",
+      "record": {
+        "acquired_at_utc": "2026-10-25T16:59:18Z",
+        "fence": 13,
+        "host": "DESKTOP-4CHO695",
+        "path": "ETHUSDT.jsonl.lock",
+        "pid": 45096,
+        "process_start_ms": 1792947556200,
+        "purpose": "minutes:ETHUSDT.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "b05f924491bb4f63b437b548ca15f89b"
+      },
+      "state": "ABANDONED",
+      "token": "b05f924491bb4f63b437b548ca15f89b"
+    },
+    {
+      "bytes": 311,
+      "fence": 13,
+      "owner_alive_now": false,
+      "owner_host": "DESKTOP-4CHO695",
+      "owner_pid": 45096,
+      "owner_start_ms": 1792947556200,
+      "path": "market-1m/SOLUSDT.jsonl.lock",
+      "reason": "OWNER_PROCESS_DEAD",
+      "record": {
+        "acquired_at_utc": "2026-10-25T16:59:18Z",
+        "fence": 13,
+        "host": "DESKTOP-4CHO695",
+        "path": "SOLUSDT.jsonl.lock",
+        "pid": 45096,
+        "process_start_ms": 1792947556200,
+        "purpose": "minutes:SOLUSDT.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "4814a90277b249bca5329f124959e9e0"
+      },
+      "state": "ABANDONED",
+      "token": "4814a90277b249bca5329f124959e9e0"
+    },
+    {
+      "bytes": 308,
+      "fence": 13,
+      "owner_alive_now": false,
+      "owner_host": "DESKTOP-4CHO695",
+      "owner_pid": 45096,
+      "owner_start_ms": 1792947556200,
+      "path": "STREAM.jsonl.lock",
+      "reason": "OWNER_PROCESS_DEAD",
+      "record": {
+        "acquired_at_utc": "2026-10-25T16:59:18Z",
+        "fence": 13,
+        "host": "DESKTOP-4CHO695",
+        "path": "STREAM.jsonl.lock",
+        "pid": 45096,
+        "process_start_ms": 1792947556200,
+        "purpose": "ledger:STREAM.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "1e58360b4d80460fb7adf1eb758c1ab6"
+      },
+      "state": "ABANDONED",
+      "token": "1e58360b4d80460fb7adf1eb758c1ab6"
+    }
+  ],
+  "live_owner": {
+    "harness_locks": [
+      {
+        "outcome": "REFUSED",
+        "unchanged": true
+      },
+      {
+        "outcome": "REFUSED",
+        "unchanged": true
+      }
+    ],
+    "stream_outcome": "REFUSED",
+    "stream_unchanged": true
+  },
+  "mode": "after_cycle",
+  "resume": true,
+  "rows_at_crash": 46,
+  "started_at_utc": "2026-10-25T16:59:16Z"
+}

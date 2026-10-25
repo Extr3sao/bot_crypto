@@ -1,0 +1,6 @@
+{
+  "code": "LOCK_HELD",
+  "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_600e744d\\campaigns\\lock\\session\\STREAM.jsonl.lock changed while the takeover was being prepared: it is now HELD (LIVE_OWNER); nothing was overwritten",
+  "outcome": "REFUSED",
+  "pid": 46816
+}

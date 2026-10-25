@@ -2,7 +2,7 @@
   "claims": {
     "A1": {
       "claim": "the audited branch is the one on disk, main is an ancestor only through the delivery, and no merge commit was added",
-      "detail": "branch=admission/integration-002 head=55f991b710ab main=e67194e79a42 origin/main=5e6f9632e8d9 ahead=10 behind=0 merges=0",
+      "detail": "branch=admission/integration-002 head=600e744ddf13 main=e67194e79a42 origin/main=5e6f9632e8d9 ahead=12 behind=0 merges=0",
       "id": "A1",
       "method": "git rev-parse / merge-base / rev-list on the worktree",
       "problems": [],
@@ -56,6 +56,22 @@
       "problems": [],
       "status": "PASS"
     },
+    "A8": {
+      "claim": "the PAPER session's recorded runtime is HEAD's runtime, and the delta since it ran is reports only",
+      "detail": "session_commit=55f991b710ab head=600e744ddf13 runtime_modules=14 drifted=0 delta_files=24 executable_delta=0",
+      "id": "A8",
+      "method": "sha256 `git show HEAD:<module>` for every module SESSION_START recorded, then classify `git diff --name-only <session commit> HEAD`",
+      "problems": [],
+      "status": "PASS"
+    },
+    "A9": {
+      "claim": "the gate was recomputed at 600e744d, passed every step, changed no risk policy, and its recomputation still hashes",
+      "detail": "commit=600e744ddf13 steps=15/15 manifest=260 rehashed=260 delta_files=0 invariants=g1=OPEN_SIGNOFF,admission=NO_GO",
+      "id": "A9",
+      "method": "read GATE_REPORT.json and its invariants, re-hash EVIDENCE_MANIFEST.json, classify the delta from the certified commit to HEAD",
+      "problems": [],
+      "status": "PASS"
+    },
     "S1": {
       "claim": "the session check is not blind: a broken chain must fail A4",
       "detail": "tampered session judged FAIL (cycles=[1] rows=5 exit=0 closed_trades=0/0 live_orders=[0] locks=0 mode=PAPER)",
@@ -71,16 +87,32 @@
       "method": "add an ADMITTED row in a temporary copy of the ledger and re-evaluate A5",
       "problems": [],
       "status": "PASS"
+    },
+    "S3": {
+      "claim": "the continuity check is not blind: a drifted runtime hash and an executable delta must both fail A8",
+      "detail": "drifted=FAIL (session_commit=55f991b710ab head=600e744ddf13 runtime_modules=14 drift) delta=FAIL (session_commit=e67194e79a42 head=600e744ddf13 runtime_modules=14 drift)",
+      "id": "S3",
+      "method": "write two mutated copies of the session's metadata and re-evaluate A8 against each",
+      "problems": [],
+      "status": "PASS"
+    },
+    "S4": {
+      "claim": "the recomputation check is not blind: one edited hash in its manifest must fail A9",
+      "detail": "tampered file=CAMPAIGN_AUDIT.json judged=FAIL problems=[\"1 manifest hash(es) disagree: ['CAMPAIGN_AUDIT.json']\"]",
+      "id": "S4",
+      "method": "write a copy of the manifest with one digest replaced and re-evaluate A9 against it",
+      "problems": [],
+      "status": "PASS"
     }
   },
   "false_success": 0,
-  "head": "55f991b710abd972ece30f002b47350bed31512e",
+  "head": "600e744ddf13172efe10b6eb4c57434f6a3e7dec",
   "repo": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-adm002",
   "schema": "TAP_INTEGRATION_ADMISSION_VERIFICATION_V1",
   "summary": {
-    "claims": 9,
+    "claims": 13,
     "fail": 0,
-    "pass": 9,
+    "pass": 13,
     "unknown": 0
   },
   "verdict": "PASS"
