@@ -9,7 +9,7 @@
     },
     {
       "path": "docs/STRATEGY_ADMISSION_MATRIX.json",
-      "sha256": "5f794c36829f947ff56de3995b68bb4f374d770bb32bd6147bff59a014ea05bf"
+      "sha256": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81"
     }
   ],
   "_admission_cost_model": "COST_MODEL_V3 (evaluated live per cycle; never stored here)",

@@ -206,6 +206,9 @@ def write_json(path: Path, document: dict[str, Any], sort_keys: bool = True) -> 
     temporary.write_text(
         json.dumps(document, indent=2, sort_keys=sort_keys, ensure_ascii=False) + "\n",
         encoding="utf-8",
+        # the artefacts these files carry are digest-pinned elsewhere, so the bytes must not
+        # depend on the host's separator: without this, a Windows rebuild rewrites every line
+        newline="\n",
     )
     temporary.replace(path)
 
@@ -442,8 +445,16 @@ def _corroboration_for(run: dict[str, Any], samples: list[dict[str, Any]]) -> di
     return None
 
 
-def build_runtime(now: datetime | None = None) -> dict[str, Any]:
-    """The chain RFC-047's runtime test asks for, link by link, from real artefacts only."""
+def build_runtime(now: datetime | None = None, *, persist: bool = True) -> dict[str, Any]:
+    """The chain RFC-047's runtime test asks for, link by link, from real artefacts only.
+
+    ``persist=False`` returns the same document without replacing
+    ``data/st6/RFC047_RUNTIME_VERIFICATION.json``. The test that reads the chain
+    asserts on what this function *decides*; writing the tracked artefact as a
+    side effect of a test run meant the shipped evidence was overwritten by
+    whatever the checkout happened to contain, so the test asks for the decision
+    only and the artefact is refreshed by an explicit run of this script.
+    """
     moment = now or datetime.now(UTC)
     ledger = read_json(LEDGER) or {}
     audit = read_json(HOST_AUDIT) or {}
@@ -620,7 +631,8 @@ def build_runtime(now: datetime | None = None) -> dict[str, Any]:
             "induced run would prove nothing about the schedule"
         ),
     }
-    write_json(RUNTIME_JSON, document)
+    if persist:
+        write_json(RUNTIME_JSON, document)
     return document
 
 
@@ -893,7 +905,7 @@ def build_report(
     }
     markdown = render_markdown(report, reconciliation)
     write_json(REPORT_JSON, report, sort_keys=False)
-    REPORT_MD.write_text(markdown, encoding="utf-8")
+    REPORT_MD.write_text(markdown, encoding="utf-8", newline="\n")
     return report, markdown
 
 

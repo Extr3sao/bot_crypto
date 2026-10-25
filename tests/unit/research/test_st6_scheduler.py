@@ -39,7 +39,12 @@ TASK_XML = DATA / "ST6_TASK_DEFINITION.xml"
 TICK = REPO / "scripts" / "st6_forward_regime.py"
 HEALTH_SCRIPT = REPO / "scripts" / "st6_health_check.py"
 SCHEDULER_VERIFIER = REPO / "scripts" / "st6_scheduler_verify.py"
-PYTHON = REPO / ".venv" / "Scripts" / "python.exe"
+#: The interpreter that runs these tests is the interpreter the tick must be exercised with.
+#: It used to be spelled ``REPO/.venv/Scripts/python.exe``, which only exists on Windows and only
+#: after someone has synced this particular checkout: in a fresh clone the subprocess raised
+#: ``FileNotFoundError`` before the tick could refuse anything, and the failure said nothing about
+#: the layer under test.
+PYTHON = Path(sys.executable)
 TASK_NAME = "TradingAgentic-ST6-Forward"
 
 RUN_EVENT_FIELDS = (

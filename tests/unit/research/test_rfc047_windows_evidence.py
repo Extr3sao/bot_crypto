@@ -779,7 +779,9 @@ def test_the_verifier_declared_grid_recomputes_the_ledgers_bounds(verifier) -> N
 
 
 def test_the_runtime_chain_never_claims_the_trigger_it_cannot_see(builder) -> None:
-    runtime = builder.build_runtime()
+    # persist=False: this test reads the decision, it must not rewrite the tracked artefact it is
+    # reading (data/st6/RFC047_RUNTIME_VERIFICATION.json), whose bytes are the evidence itself.
+    runtime = builder.build_runtime(persist=False)
     links = {item["link"]: item for item in runtime["chain"]}
     assert links["windows_scheduled_trigger"]["available"] is False
     assert runtime["external_trigger_confirmed"] is False

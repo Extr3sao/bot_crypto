@@ -25,7 +25,13 @@ Rules:
   count → ``sample_trades=0`` on purpose, so the provenance agent raises the
   "sample below minimum" critique instead of a fabricated sample size.
 
-Deterministic: the same inputs always produce byte-identical output.
+Deterministic: the same inputs always produce byte-identical output — on every
+platform. The file is written with ``newline="\n"`` because ``Path.write_text``
+translates ``\n`` to the host separator, which made a Windows rebuild rewrite all
+547 lines of a tracked artefact and made the artefact's bytes depend on who ran
+the builder. ``--check`` therefore compares **bytes**, not decoded text: the older
+``read_text`` comparison normalised ``\r\n`` away and reported the ledger "up to
+date" while the file on disk no longer matched its own blob.
 
 Usage:
     uv run python scripts/build_strategy_admission.py [--check]
@@ -198,15 +204,17 @@ def main(argv: list[str] | None = None) -> int:
     rendered = json.dumps(payload, indent=2, ensure_ascii=False, sort_keys=False) + "\n"
     out_path = REPO_ROOT / OUTPUT
 
+    rendered_bytes = rendered.encode("utf-8")
+
     if args.check:
-        current = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
-        if current != rendered:
+        current = out_path.read_bytes() if out_path.exists() else b""
+        if current != rendered_bytes:
             sys.stderr.write("ADMISSION_LEDGER_STALE: regenerate with build_strategy_admission.py\n")
             return 1
         print("admission ledger is up to date")
         return 0
 
-    out_path.write_text(rendered, encoding="utf-8")
+    out_path.write_text(rendered, encoding="utf-8", newline="\n")
     print(f"wrote {OUTPUT} ({len(payload['strategies'])} strategies)")
     for sid, entry in payload["strategies"].items():
         print(f"  {sid:<16} {entry['status']:<14} admitted={entry['admitted_for_paper']}")
