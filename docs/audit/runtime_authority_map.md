@@ -288,3 +288,32 @@ What is still not true: `paper_cycle` does not route through
 `autonomous.decision.DecisionEngine`, so rule 0 and the paper engine remain two
 decision implementations. G-4 closes the *stop* bypass on the reachable paper
 entrypoint; it does not merge the engines and does not claim they are one.
+
+## 12. Addendum — G-5 paper end-to-end (2026-10-25)
+
+G-5 executed the route above instead of only describing it. The canonical
+composition is `scripts/start_paper_trading.py::build_cycle_engine` feeding
+`PaperOrchestrator → PaperSessionRunner → PaperCycleEngine`; the measured run
+opened one paper position, persisted it in `PaperStateStore`, restored it with
+`StartupReconcilerV4` in fresh instances, and closed it through
+`PaperBroker.reconcile_session` at take-profit. The evidence is
+`docs/audit/runs/run-20261025T131004Z-G-5/` (`evidence.json`, 12/12 clean-export
+verification).
+
+Two clarifications this addendum pins:
+
+- `trading-bot run --mode paper` is **not** the paper engine. It still runs the
+  synthetic scanner only and now says so on stdout
+  (`paper_cycle=NOT_RUN`, `broker=NOT_CONSTRUCTED`). Connecting it to the
+  broker would violate G-4 REQ-G4-02, so it remains `NOT_REACHABLE`.
+- `PaperSessionRunner._market_conditions` now uses the injected `now_fn` (wall
+  clock by default) for the defensive blocks. Before G-5 it used the wall
+  clock directly, which could attribute a rejection to `weekend_trading` while
+  the replay clock said Wednesday. Policy is unchanged; the session has one
+  clock.
+
+The operational limit is unchanged and explicit: the committed
+`config/strategy_admission.json` admits no strategy, so the real launcher ends
+in `NO_TRADE`. The trade in the evidence uses
+`docs/audit/fixtures/g5_paper_ledger.json` (`CONTROLLED_TEST_FIXTURE`), which is
+reachability evidence, not a production admission or an edge claim.
