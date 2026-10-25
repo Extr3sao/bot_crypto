@@ -1,0 +1,452 @@
+{
+ "started_at_utc": "2026-10-19T09:03:19Z",
+ "config": {
+  "decision_every_bars": 1,
+  "declared_latency_ms": 30000,
+  "duration_s": 3600,
+  "equity": 10000.0,
+  "poll_interval_s": 12.0,
+  "settle_ms": 2500,
+  "symbols": [
+   "BTCUSDT",
+   "ETHUSDT"
+  ],
+  "timeframe": "5m",
+  "warmup_minutes": 240,
+  "window_bars": 20
+ },
+ "runtime_files": 11,
+ "cycles": [
+  {
+   "cycle": 1,
+   "bar_open": "08:55:00.000",
+   "data_time": "09:00:00.000",
+   "decision": "09:04:10.920",
+   "status": "EXECUTED",
+   "fills": 0,
+   "closed": 0,
+   "ledger_rows": 2,
+   "prefix_ok": true,
+   "prefix_compared": 0,
+   "data_le_decision": true,
+   "accounting": {
+    "costs_realised_usdt": 0,
+    "costs_total_usdt": 0.0,
+    "costs_usdt": 0,
+    "entry_commissions_accrued_open_usdt": 0.0,
+    "initial_equity_usdt": 10000.0,
+    "mark_prices": {
+     "BTC/USDT": 82821.41,
+     "ETH/USDT": 2435.31
+    },
+    "marked_equity_usdt": 10000.0,
+    "pnl_realised_usdt": 0,
+    "pnl_total_usdt": 0.0,
+    "pnl_unrealised_usdt": 0.0,
+    "schema_version": "paper-accounting/2"
+   }
+  },
+  {
+   "cycle": 2,
+   "bar_open": "09:00:00.000",
+   "data_time": "09:05:00.000",
+   "decision": "09:05:13.296",
+   "status": "EXECUTED",
+   "fills": 0,
+   "closed": 0,
+   "ledger_rows": 5,
+   "prefix_ok": true,
+   "prefix_compared": 0,
+   "data_le_decision": true,
+   "accounting": {
+    "costs_realised_usdt": 0,
+    "costs_total_usdt": 0.0,
+    "costs_usdt": 0,
+    "entry_commissions_accrued_open_usdt": 0.0,
+    "initial_equity_usdt": 10000.0,
+    "mark_prices": {
+     "BTC/USDT": 82833.65,
+     "ETH/USDT": 2435.54
+    },
+    "marked_equity_usdt": 10000.0,
+    "pnl_realised_usdt": 0,
+    "pnl_total_usdt": 0.0,
+    "pnl_unrealised_usdt": 0.0,
+    "schema_version": "paper-accounting/2"
+   }
+  },
+  {
+   "cycle": 3,
+   "bar_open": "09:05:00.000",
+   "data_time": "09:10:00.000",
+   "decision": "09:10:12.696",
+   "status": "EXECUTED",
+   "fills": 1,
+   "closed": 0,
+   "ledger_rows": 8,
+   "prefix_ok": true,
+   "prefix_compared": 2,
+   "data_le_decision": true,
+   "accounting": {
+    "costs_realised_usdt": 0,
+    "costs_total_usdt": 0.5,
+    "costs_usdt": 0,
+    "entry_commissions_accrued_open_usdt": 0.5,
+    "initial_equity_usdt": 10000.0,
+    "mark_prices": {
+     "BTC/USDT": 82763.95,
+     "ETH/USDT": 2434.68
+    },
+    "marked_equity_usdt": 9999.03555044,
+    "pnl_realised_usdt": 0,
+    "pnl_total_usdt": -0.96444956,
+    "pnl_unrealised_usdt": -0.96444956,
+    "schema_version": "paper-accounting/2"
+   }
+  },
+  {
+   "cycle": 4,
+   "bar_open": "09:10:00.000",
+   "data_time": "09:15:00.000",
+   "decision": "09:15:13.182",
+   "status": "EXECUTED",
+   "fills": 1,
+   "closed": 0,
+   "ledger_rows": 10,
+   "prefix_ok": true,
+   "prefix_compared": 6,
+   "data_le_decision": true,
+   "accounting": {
+    "costs_realised_usdt": 0,
+    "costs_total_usdt": 0.5,
+    "costs_usdt": 0,
+    "entry_commissions_accrued_open_usdt": 0.5,
+    "initial_equity_usdt": 10000.0,
+    "mark_prices": {
+     "BTC/USDT": 82828.0,
+     "ETH/USDT": 2436.17
+    },
+    "marked_equity_usdt": 9999.42213485,
+    "pnl_realised_usdt": 0,
+    "pnl_total_usdt": -0.57786515,
+    "pnl_unrealised_usdt": -0.57786515,
+    "schema_version": "paper-accounting/2"
+   }
+  },
+  {
+   "cycle": 5,
+   "bar_open": "09:15:00.000",
+   "data_time": "09:20:00.000",
+   "decision": "09:20:14.296",
+   "status": "EXECUTED",
+   "fills": 1,
+   "closed": 0,
+   "ledger_rows": 12,
+   "prefix_ok": true,
+   "prefix_compared": 8,
+   "data_le_decision": true,
+   "accounting": {
+    "costs_realised_usdt": 0,
+    "costs_total_usdt": 0.5,
+    "costs_usdt": 0,
+    "entry_commissions_accrued_open_usdt": 0.5,
+    "initial_equity_usdt": 10000.0,
+    "mark_prices": {
+     "BTC/USDT": 82899.98,
+     "ETH/USDT": 2439.99
+    },
+    "marked_equity_usdt": 9999.85658208,
+    "pnl_realised_usdt": 0,
+    "pnl_total_usdt": -0.14341792,
+    "pnl_unrealised_usdt": -0.14341792,
+    "schema_version": "paper-accounting/2"
+   }
+  },
+  {
+   "cycle": 6,
+   "bar_open": "09:20:00.000",
+   "data_time": "09:25:00.000",
+   "decision": "09:25:15.387",
+   "status": "EXECUTED",
+   "fills": 1,
+   "closed": 0,
+   "ledger_rows": 14,
+   "prefix_ok": true,
+   "prefix_compared": 10,
+   "data_le_decision": true,
+   "accounting": {
+    "costs_realised_usdt": 0,
+    "costs_total_usdt": 0.5,
+    "costs_usdt": 0,
+    "entry_commissions_accrued_open_usdt": 0.5,
+    "initial_equity_usdt": 10000.0,
+    "mark_prices": {
+     "BTC/USDT": 82955.15,
+     "ETH/USDT": 2441.22
+    },
+    "marked_equity_usdt": 10000.18956976,
+    "pnl_realised_usdt": 0,
+    "pnl_total_usdt": 0.18956976,
+    "pnl_unrealised_usdt": 0.18956976,
+    "schema_version": "paper-accounting/2"
+   }
+  },
+  {
+   "cycle": 7,
+   "bar_open": "09:25:00.000",
+   "data_time": "09:30:00.000",
+   "decision": "09:30:11.040",
+   "status": "EXECUTED",
+   "fills": 1,
+   "closed": 0,
+   "ledger_rows": 16,
+   "prefix_ok": true,
+   "prefix_compared": 12,
+   "data_le_decision": true,
+   "accounting": {
+    "costs_realised_usdt": 0,
+    "costs_total_usdt": 0.5,
+    "costs_usdt": 0,
+    "entry_commissions_accrued_open_usdt": 0.5,
+    "initial_equity_usdt": 10000.0,
+    "mark_prices": {
+     "BTC/USDT": 82979.25,
+     "ETH/USDT": 2440.65
+    },
+    "marked_equity_usdt": 10000.33502931,
+    "pnl_realised_usdt": 0,
+    "pnl_total_usdt": 0.33502931,
+    "pnl_unrealised_usdt": 0.33502931,
+    "schema_version": "paper-accounting/2"
+   }
+  },
+  {
+   "cycle": 8,
+   "bar_open": "09:30:00.000",
+   "data_time": "09:35:00.000",
+   "decision": "09:35:15.188",
+   "status": "EXECUTED",
+   "fills": 1,
+   "closed": 0,
+   "ledger_rows": 18,
+   "prefix_ok": true,
+   "prefix_compared": 14,
+   "data_le_decision": true,
+   "accounting": {
+    "costs_realised_usdt": 0,
+    "costs_total_usdt": 0.5,
+    "costs_usdt": 0,
+    "entry_commissions_accrued_open_usdt": 0.5,
+    "initial_equity_usdt": 10000.0,
+    "mark_prices": {
+     "BTC/USDT": 83043.99,
+     "ETH/USDT": 2443.72
+    },
+    "marked_equity_usdt": 10000.72577832,
+    "pnl_realised_usdt": 0,
+    "pnl_total_usdt": 0.72577832,
+    "pnl_unrealised_usdt": 0.72577832,
+    "schema_version": "paper-accounting/2"
+   }
+  },
+  {
+   "cycle": 9,
+   "bar_open": "09:35:00.000",
+   "data_time": "09:40:00.000",
+   "decision": "09:40:17.353",
+   "status": "EXECUTED",
+   "fills": 1,
+   "closed": 0,
+   "ledger_rows": 20,
+   "prefix_ok": true,
+   "prefix_compared": 16,
+   "data_le_decision": true,
+   "accounting": {
+    "costs_realised_usdt": 0,
+    "costs_total_usdt": 0.5,
+    "costs_usdt": 0,
+    "entry_commissions_accrued_open_usdt": 0.5,
+    "initial_equity_usdt": 10000.0,
+    "mark_prices": {
+     "BTC/USDT": 83076.61,
+     "ETH/USDT": 2445.46
+    },
+    "marked_equity_usdt": 10000.92266174,
+    "pnl_realised_usdt": 0,
+    "pnl_total_usdt": 0.92266174,
+    "pnl_unrealised_usdt": 0.92266174,
+    "schema_version": "paper-accounting/2"
+   }
+  },
+  {
+   "cycle": 10,
+   "bar_open": "09:40:00.000",
+   "data_time": "09:45:00.000",
+   "decision": "09:45:15.079",
+   "status": "EXECUTED",
+   "fills": 1,
+   "closed": 0,
+   "ledger_rows": 22,
+   "prefix_ok": true,
+   "prefix_compared": 18,
+   "data_le_decision": true,
+   "accounting": {
+    "costs_realised_usdt": 0,
+    "costs_total_usdt": 0.5,
+    "costs_usdt": 0,
+    "entry_commissions_accrued_open_usdt": 0.5,
+    "initial_equity_usdt": 10000.0,
+    "mark_prices": {
+     "BTC/USDT": 83005.66,
+     "ETH/USDT": 2444.61
+    },
+    "marked_equity_usdt": 10000.49443125,
+    "pnl_realised_usdt": 0,
+    "pnl_total_usdt": 0.49443125,
+    "pnl_unrealised_usdt": 0.49443125,
+    "schema_version": "paper-accounting/2"
+   }
+  }
+ ],
+ "minutes": {
+  "BTCUSDT.jsonl": {
+   "rows": 286,
+   "first": "2026-10-19T04:59:00Z",
+   "last": "2026-10-19T09:44:00Z",
+   "min_receive_minus_close": 2771,
+   "max_receive_minus_close": 14600429
+  },
+  "ETHUSDT.jsonl": {
+   "rows": 286,
+   "first": "2026-10-19T04:59:00Z",
+   "last": "2026-10-19T09:44:00Z",
+   "min_receive_minus_close": 2544,
+   "max_receive_minus_close": 14601480
+  }
+ },
+ "last_ledger_sha": "0d657fffb10abf6a83b707db701d89d68d51f9a51d589f70fcdddb6024e2775d",
+ "fill": {
+  "symbol": "BTC/USDT",
+  "side": "buy",
+  "intent": "OPEN_LONG",
+  "decision_seq": 2,
+  "decision_ts_ms": 1792400708462,
+  "received_at_ms": 1792400738462,
+  "quote_ts_ms": 1792400760000,
+  "quote_price": 82821.08,
+  "entry_price": 82840.90083909685,
+  "quantity": 0.0060356658961393675,
+  "notional_usdt": 500.0,
+  "quote_lag_ms": 21538,
+  "opinion_age_ms": 51538,
+  "quote_source": "binance_spot_1m_klines",
+  "entry_commission_usdt": 0.5,
+  "commission_bps": 10.0,
+  "price_bps_per_side": 2.39321186,
+  "position_id": "pos-paper-prospective-003g-00000001",
+  "entry_bar_range_from_ms": 1792400760000,
+  "entry_bar_range_until_ms": 1792401000000,
+  "entry_bar_range_minutes": 3,
+  "entry_bar_range_high": 82815.53,
+  "entry_bar_range_low": 82758.0,
+  "entry_bar_range_last": 82763.95
+ },
+ "fill_ts_utc": {
+  "decision_ts_ms": "2026-10-19T09:05:08.462Z",
+  "received_at_ms": "2026-10-19T09:05:38.462Z",
+  "quote_ts_ms": "2026-10-19T09:06:00.000Z"
+ },
+ "reconciliation": {
+  "accounting_schema_version": "paper-accounting/2",
+  "costs_realised_usdt": 0,
+  "costs_total_usdt": 0.5,
+  "curve_end_equity_usdt": 10000.49443125,
+  "entry_commission_usdt": 0,
+  "entry_commissions_accrued_open_usdt": 0.5,
+  "execution_cost_usdt": 0,
+  "exit_commission_usdt": 0,
+  "final_equity_usdt": 10000.0,
+  "identities": {
+   "cash_rebuilds_from_realised_pnl": true,
+   "curve_ends_at_final_equity": true,
+   "every_close_after_its_entry_quote": true,
+   "every_fill_pays_at_or_after_its_answer": true,
+   "marked_equity_rebuilds_from_open_position": true,
+   "net_pnl_nets_every_named_cost": true,
+   "open_positions_are_disjoint_from_closed_trades": true,
+   "realised_costs_equal_closed_trade_legs": true,
+   "risk_equity_matches_marked_equity": true,
+   "total_costs_equal_realised_plus_accrued": true,
+   "total_pnl_moves_the_marked_book": true
+  },
+  "initial_equity_usdt": 10000.0,
+  "marked_equity_usdt": 10000.49443125,
+  "marks_complete_at_end": true,
+  "net_realised_usdt": 0,
+  "open_gap_exits": 0,
+  "open_position_ids_at_end": [
+   "pos-paper-prospective-003g-00000001"
+  ],
+  "open_positions_at_end": 1,
+  "pnl_total_usdt": 0.49443125,
+  "reference_gross_usdt": 0,
+  "risk_equity_usdt": 10000.49443125,
+  "tolerance_usdt": 1e-06,
+  "unrealised_pnl_gross_usdt": 0.99443125,
+  "unrealised_pnl_net_usdt": 0.49443125
+ },
+ "execution": {
+  "bar_interval_ms": 300000,
+  "data_gap_policy": "fail_closed_unless_independent_coverage",
+  "entry_bar_range_policy": "minutes_strictly_after_the_fill",
+  "entry_quote_sources": {
+   "binance_spot_1m_klines": 1
+  },
+  "exit_ts_resolutions": [
+   "OPEN_GAP",
+   "BAR_WINDOW",
+   "QUOTE"
+  ],
+  "expired_opinions": 0,
+  "fills": 1,
+  "gap_exits": 0,
+  "gap_policy": "open_on_gap",
+  "max_opinion_age_ms": 300000,
+  "open_phase_order": "gap_close>mark>entries>intrabar",
+  "quote_lag_ms": {
+   "max": 21538,
+   "median": 21538,
+   "min": 21538
+  },
+  "quote_source": "bar_open",
+  "stale_valuation_vetoes": 0,
+  "stop_coverage": "entry_bar_from_the_fill",
+  "sub_bar_fills": 1,
+  "subbar_entries": true,
+  "waiting_events": 0
+ },
+ "drawdown_pct": 0.009644,
+ "data_delay_ms": 8462,
+ "decision_bars": 10,
+ "summary": {
+  "costs_usdt": 0,
+  "costs_realised_usdt": 0,
+  "entry_commissions_accrued_open_usdt": 0.5,
+  "costs_total_usdt": 0.5,
+  "pnl_realised_usdt": 0,
+  "pnl_unrealised_usdt": 0.49443125,
+  "pnl_total_usdt": 0.49443125,
+  "marked_equity_usdt": 10000.49443125
+ },
+ "open_positions": {
+  "BTC/USDT": {
+   "entry_commission_usdt": 0.5,
+   "entry_price": 82840.90083909685,
+   "mark_price": 83005.66,
+   "notional_usdt": 500.0,
+   "position_id": "pos-paper-prospective-003g-00000001",
+   "side": "buy",
+   "unrealised_pnl_usdt": 0.99443125
+  }
+ }
+}

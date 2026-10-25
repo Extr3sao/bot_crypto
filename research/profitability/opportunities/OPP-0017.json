@@ -1,0 +1,79 @@
+{
+  "opportunity_id": "OPP-0017",
+  "title": "G-Research Crypto Forecasting (Kaggle 2022) — winning forecasting solutions",
+  "source_ids": [
+    "S2-28",
+    "S2-29",
+    "S2-30",
+    "S2-31",
+    "S2-32"
+  ],
+  "economic_hypothesis": "a correlation metric, not an economic claim",
+  "market": "14 crypto assets in the competition universe",
+  "assets": "the 14 competition assets",
+  "timeframe": "minute bars with a short-horizon return target",
+  "entry_rules": "the competition scores correlation, not trades; no trading rule exists",
+  "exit_rules": "UNKNOWN; UNKNOWN; UNKNOWN; UNKNOWN",
+  "risk_rules": "UNKNOWN; none (minute bars, 24/7)",
+  "parameters": "solutions were trained; notebooks are public but are search artefacts, not fixed rule sets",
+  "claimed_period": "the 2022 competition train/validation windows",
+  "claimed_metrics": "the scoring metric is a correlation on a held-out period; no PnL is reported",
+  "transaction_cost_model": "no trading, therefore no costs",
+  "required_data": "the public Kaggle competition dataset",
+  "external_code": "public winner notebooks and repositories",
+  "external_results": "a public competition with a genuinely held-out evaluation and independent participants",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "strong evidence for a forecasting model, zero evidence for a tradable rule set",
+    "the winning solutions are trained models with per-competitor pipelines, so no single external strategy exists to replicate",
+    "the project's admission cost is a 23.791 bps round trip, and the source declares no cost model (no trading, therefore no costs)",
+    "found in the RFC-035S2 strategy-first search; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "entry_long",
+    "entry_short",
+    "exit_stop",
+    "exit_target",
+    "exit_time",
+    "exit_signal",
+    "parameters",
+    "sizing_rule",
+    "execution_assumption",
+    "warmup",
+    "transaction_costs",
+    "source_version"
+  ],
+  "replication_difficulty": "NOT_APPLICABLE: with no trading layer there is no turnover to charge against the 23.791 bps floor",
+  "evidence_quality": "E3 — a public competition with a genuinely held-out evaluation and independent participants",
+  "selection_bias_risk": "MEDIUM (the search was run with knowledge of 2024-2025 published results)",
+  "overfitting_risk": "MEDIUM",
+  "lookahead_risk": "LOW",
+  "implementation_risk": "HIGH",
+  "status": "ROUND_2_REJECT",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 4,
+    "CODE_AVAILABILITY": 5,
+    "DATA_REPRODUCIBILITY": 5,
+    "TRANSACTION_COST_REALISM": 1,
+    "OOS_EVIDENCE": 4,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 3,
+    "INDEPENDENT_VALIDATION": 5,
+    "IMPLEMENTATION_FIDELITY": 2
+  },
+  "evidence_score_total": 29,
+  "rank": "REJECT",
+  "rfc": "RFC-035S2",
+  "candidate_ref": "reports/rfc035/search_round_2/CANDIDATE_MATRIX.json",
+  "rule_completeness": "9/21",
+  "gaps_to_p0": [
+    "there is no entry, exit, sizing or cost layer to reproduce"
+  ],
+  "rejection_reason_codes": [
+    "FORECAST_ONLY_NOT_A_STRATEGY",
+    "RULES_INCOMPLETE_MATERIAL_FIELDS",
+    "COST_FLOOR_HEADROOM_NOT_ESTABLISHED"
+  ]
+}

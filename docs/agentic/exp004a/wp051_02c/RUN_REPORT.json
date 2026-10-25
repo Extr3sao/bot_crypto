@@ -1,0 +1,171 @@
+{
+  "run_id": "wp051-02c/EXP-004A/2026-10-21",
+  "work_package": "WP-051-02C",
+  "experiment": "EXP-004A",
+  "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "code_commit": "c280a1fe43743577abf22ba6d86223197e1c858c",
+  "code_commit_subject": "Make the lag condition universal so a late bar cannot ride the coverage budget",
+  "head_at_run": "d2aea555d952cccd1204764bea836528552d7471",
+  "deadline_utc": "2026-10-22T00:00:00Z",
+  "deadline_met": true,
+  "deadline_note": "The correction is fixed before the capture window opens; no day observed inside the window was judged by the old rule.",
+  "environment": {
+    "host": "Windows",
+    "shell": "Git Bash",
+    "python": "3.11 (project .venv)",
+    "evidence_root": "repository root",
+    "network": "not used by the correction or the recalculation"
+  },
+  "scope": {
+    "P0_C004": "CORRECTED_AND_VERIFIED",
+    "P1_C015": "FAIL_GENERATOR_DECLARED_NOT_IMPLEMENTED_FOR_TAPE",
+    "P2_C016": "UNREACHABLE_UNDER_DECLARED_COST_MODEL"
+  },
+  "change": {
+    "requirement": "RFC-050 section 3: minimum coverage and temporal validity are independent conditions.",
+    "defect": "classify_day applied the 90 % coverage budget to the lag predicate, admitting days whose bars arrived hours after close.",
+    "files": [
+      "src/trading_bot/research/prospective/admission.py",
+      "tests/unit/research/test_prospective_admission.py"
+    ],
+    "thresholds_changed": false,
+    "lag_bound_changed": false,
+    "fencepost_changed": false,
+    "evidence_rewritten": false
+  },
+  "recalculation": {
+    "sidecar": "docs/agentic/exp004a/wp051_02c/WP_051_02C_RECALCULATION.json",
+    "rule_version": "RFC-050-S3-UNIVERSAL-LAG/V2",
+    "records": 248,
+    "lanes": {
+      "1h": {
+        "records": 234,
+        "recorded_admissible": 5,
+        "corrected_admissible": 3,
+        "changed_days": ["2026-10-15", "2026-10-17"]
+      },
+      "1h+15m": {
+        "records": 14,
+        "recorded_admissible": 4,
+        "corrected_admissible": 1,
+        "changed_days": ["2026-10-17", "2026-10-19", "2026-10-20"]
+      }
+    },
+    "changed_records": 5,
+    "changed_inside_capture_window": 0,
+    "prefix_digests_verified": 248,
+    "runtime_agrees_with_sidecar": true,
+    "inputs": [
+      {
+        "path": "data/exp004a/admission_1h.jsonl",
+        "bytes": 284812,
+        "sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2"
+      },
+      {
+        "path": "data/exp004a/admission_1h+15m.jsonl",
+        "bytes": 28985,
+        "sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1"
+      }
+    ]
+  },
+  "tests": {
+    "admission_and_extractor": {
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_prospective_admission.py tests/unit/research/test_exp004a_capture.py -q",
+      "passed": 56,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0
+    },
+    "verifier_and_preregistration": {
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_exp004a_verify_adversarial.py tests/unit/research/test_prereg_gate_two_phase.py tests/unit/research/test_prereg_gate.py tests/unit/research/test_prereg_gate_escape.py -q",
+      "passed": 89,
+      "failed": 0,
+      "skipped": 1,
+      "skip_reason": "symlinks unavailable in this environment",
+      "exit_code": 0
+    },
+    "forward_observer": {
+      "command": "timeout 240 .venv/Scripts/python.exe -m pytest tests/unit/research/test_edge03_forward.py -q",
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0
+    },
+    "full_research_suite": {
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research -q",
+      "result": "TIMEOUT_AFTER_600S",
+      "counted_as_pass": false
+    },
+    "lint": {
+      "command": ".venv/Scripts/python.exe -m ruff check scripts/exp004a_capture.py tests/unit/research/test_exp004a_capture.py src/trading_bot/research/prospective/admission.py",
+      "result": "All checks passed!",
+      "exit_code": 0
+    }
+  },
+  "immutability": {
+    "pre_change_hashes": "docs/agentic/exp004a/wp051_02c/evidence/pre_change_hashes.txt",
+    "pre_change_state": "docs/agentic/exp004a/wp051_02c/evidence/pre_change_state.txt",
+    "unchanged_after_run": [
+      "data/exp004a/admission_1h.jsonl",
+      "data/exp004a/admission_1h+15m.jsonl",
+      "config/preregistrations/EXP-004A.json",
+      "docs/agentic/exp004a/independent/*"
+    ],
+    "sealed_ledger_rewritten": false,
+    "days_resealed": 0
+  },
+  "gates": {
+    "P0_PASS": true,
+    "P0_criteria": {
+      "rule_matches_RFC_050_s3": true,
+      "adversarial_tests_pass": true,
+      "reconstruction_from_raw_bytes_matches": true,
+      "corrected_runtime_executed": true,
+      "original_evidence_identical": true
+    },
+    "GLOBAL_CERTIFICATION": "BLOCKED",
+    "GLOBAL_blocking_reasons": [
+      "ADMISSION_REPLAY_MISMATCH_RESOLVED_BUT_NO_POST_PATCH_PROSPECTIVE_RUN",
+      "PHASE2_CAPTURE_OPEN",
+      "INSUFFICIENT_ADMITTED_DAYS",
+      "DECLARED_SIZE_NOT_WALKED",
+      "INDEPENDENCE_NOT_PROVEN",
+      "TIME_PROOF_WEAK",
+      "C015_GENERATOR_NOT_IMPLEMENTED_FOR_TAPE",
+      "HOST_PRIVILEGE_SYMLINK_ESCAPE_NOT_EXECUTED"
+    ],
+    "promotion": "NO_PROMOTION",
+    "live_orders": 0,
+    "risk_or_capital_changes": 0,
+    "paper_validation": "NOT_PASS"
+  },
+  "decisions": [
+    "The RFC wins over the runtime: the lag condition is universal over stored bars and the 90 % budget governs presence only.",
+    "The correction is not applied retroactively to the sealed ledger; a versioned sidecar keeps recorded and corrected verdicts side by side.",
+    "No threshold, lag bound or fencepost was touched after seeing the results.",
+    "C-016 is classified unreachable under the declared cost model; the threshold is not changed.",
+    "C-000 is not raised by two scripts, two simulated roles or a different worktree."
+  ],
+  "limitations": [
+    "No prospective execution after the patch exists, so no 90-day window is validated.",
+    "The full tests/unit/research suite did not finish inside the tool timeout; only the affected suites were executed and are reported individually.",
+    "C-015 remains FAIL/BLOCKED: the declared generator exists now for bar series, but the st6:tape slice contract is undefined and was refused rather than invented.",
+    "C-013 remains TIME_PROOF_WEAK (no external trusted time attestation).",
+    "Host-privilege symlink escape and 500 USDT impact remain NOT_EXECUTED/UNPROVEN."
+  ],
+  "false_success": {
+    "value": 0,
+    "scope": "P0 controls executed in this run: admission rule, adversarial tests, recalculation from raw bytes, immutability of original evidence, extractor refusals.",
+    "not_a_universal_certification": true
+  },
+  "evidence": [
+    "docs/agentic/exp004a/wp051_02c/WP_051_02C_CHANGELOG.md",
+    "docs/agentic/exp004a/wp051_02c/WP_051_02C_RECALCULATION.json",
+    "docs/agentic/exp004a/wp051_02c/WP_051_02C_TEST_REPORT.md",
+    "docs/agentic/exp004a/wp051_02c/WP_051_02C_EVIDENCE_MANIFEST.json",
+    "docs/agentic/exp004a/wp051_02c/WP_051_02C_C015_VERDICT.md",
+    "docs/agentic/exp004a/wp051_02c/WP_051_02C_C016_REACHABILITY.json",
+    "docs/agentic/exp004a/wp051_02c/WP_051_02C_FINAL_REPORT.md",
+    "docs/agentic/exp004a/wp051_02c/evidence/audit_02b/"
+  ]
+}

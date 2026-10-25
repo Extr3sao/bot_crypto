@@ -1,0 +1,49 @@
+{
+  "admission_claim": {
+    "fee_share_of_round_trip": 0.859187,
+    "fee_share_percent": 85.92,
+    "mean_fee_bps": 20.0,
+    "mean_round_trip_bps": 23.27783,
+    "n_streams": 10,
+    "population": "admission_scenario_only",
+    "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "verdict": "the fee is 85.9% of the admission round trip"
+  },
+  "checked_by": "scripts/edge14_verify.py (independent arithmetic, own implementation)",
+  "cross_population_defect": {
+    "correct_statement": "the fee is 85.9% of the admission round trip (20 bps of 23.2778 bps); the 1.3863 ratio mixes four venue schedules with one admission scenario and must not be read as a cost share",
+    "defect": "population_mismatch",
+    "denominator": {
+      "n_assets": 6,
+      "population": "admission_scenario_only",
+      "value_bps": 23.443933
+    },
+    "explanation": "the published 1.3863 divides a cross-venue mean fee by an admission-only mean barrier; the fee was not double counted and no identity was broken in the gate, the identity was broken by the sentence at render time",
+    "matches_published_1_3863": true,
+    "numerator": {
+      "n_schedules": 4,
+      "per_schedule_mean_fee_bps": {
+        "BINANCE_SPOT_STANDARD_TAKER": 20.0,
+        "KRAKENPRO_SPOT_TAKER": 80.0,
+        "MEXC_SPOT_TAKER": 10.0,
+        "OKX_SPOT_TAKER": 20.0
+      },
+      "population": "all_registered_venue_schedules",
+      "value_bps": 32.5,
+      "why_it_is_a_real_number": "each of the four schedules has its own taker fee; their mean is the cost of a product a trader would choose between, not the cost of one product"
+    },
+    "published_ratio": 1.386286
+  },
+  "primary_source": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery\\WP-EDGE-09\\gates\\COST_LIQUIDITY_CAPACITY.json",
+  "primary_source_sha256": "a48e106e16b2346a5aaa4b6f7e3cd862887fa4a8be55c22265ea44c4d5d008f6",
+  "primary_source_untouched": true,
+  "schema_version": "EDGE14_INTEGRITY_VERIFICATION_V1",
+  "status_by_axis": {
+    "admission_cost_share": "RECONCILED",
+    "cross_venue_fee_mean": "RECONCILED",
+    "promotions_frozen": true,
+    "published_1_3863_sentence": "INCONSISTENT_SUPERSEDED"
+  },
+  "verdict": "ECONOMIC_INTEGRITY_RECONCILED",
+  "work_package": "WP-EDGE-14B"
+}

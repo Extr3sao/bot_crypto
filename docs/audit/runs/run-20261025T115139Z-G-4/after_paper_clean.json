@@ -1,0 +1,25 @@
+{
+  "scenario": "paper_cycle",
+  "marker": false,
+  "process_stop": false,
+  "attach_gate": true,
+  "gate_supported": true,
+  "gate_engaged": false,
+  "gate_stats": {
+    "engaged": false,
+    "reason": "",
+    "actor": "",
+    "engaged_at_ms": null,
+    "orders_blocked": 0,
+    "broker_calls_allowed": 1,
+    "lock_timeouts": 0,
+    "restored": false,
+    "control_path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g4-paper-xa6l49f6\\KILL_SWITCH",
+    "boundary": "autonomous.runtime._execute_paper -> broker.execute_signal"
+  },
+  "broker_execute_calls": 1,
+  "broker_close_calls": 0,
+  "orders_created": 1,
+  "hot_stop_blocked": 0,
+  "rejections": []
+}

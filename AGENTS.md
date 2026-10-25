@@ -130,3 +130,28 @@ Cada uno describe objetivo, entradas, salidas, agente(s) responsables y criterio
 ```
 
 > En todo loop, **context-engineer** refresca el mapa antes de volver a iterar.
+
+---
+
+## 7. Ejecución autónoma y recuperación entre sesiones
+
+Las sesiones de agente pueden cortarse (límite de contexto, timeout, cierre del cliente). Para que
+el trabajo sea reanudable sin perderlo y sin fingir avances, rige esta política:
+
+1. **Checkpoint persistente.** Al abrir sesión se lee `docs/agentic/EXECUTION_CHECKPOINT.md` y se
+   contrasta con el estado real de Git (`git log -1`, `git status`). Tras cada hito relevante el
+   checkpoint se actualiza con: objetivo, último commit, hecho, pendiente, bloqueos y comandos
+   exactos de reanudación.
+2. **La autonomía no se interrumpe por volumen.** El número de respuestas, acciones o llamadas a
+   herramientas no es motivo para pedir confirmación de trabajo ya autorizado. Solo se pide
+   autorización para: trading real, credenciales, privilegios administrativos, costes relevantes o
+   acciones irreversibles.
+3. **Un checkpoint no declara terminado lo no ejecutado.** Si una prueba o verificación no se
+   ejecutó (o falló), se registra como pendiente o bloqueada; nunca como superada
+   (`FALSE_SUCCESS=0`).
+4. **Manda Git.** Si el checkpoint y el repositorio discrepan, el estado real es el de Git y el
+   checkpoint se corrige de inmediato con ese estado.
+5. **Un solo escritor por fichero.** No se sobrescriben modificaciones de otros agentes: los
+   cambios ajenos se dejan intactos, se identifican y se anotan en el checkpoint.
+6. **Reanudación verificable.** Los comandos de reanudación del checkpoint deben poder ejecutarse
+   tal cual y producir evidencia (log, artefacto, exit code), no una promesa.

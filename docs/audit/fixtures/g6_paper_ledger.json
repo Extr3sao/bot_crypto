@@ -1,0 +1,35 @@
+{
+  "_schema_version": "strategy-admission-ledger-v1",
+  "_generated_by": "G-6 controlled crash-recovery fixture",
+  "_claim": "a controlled fixture, not market evidence and not a production admission",
+  "_sources": [
+    {
+      "path": "docs/audit/fixtures/g6_paper_ledger.json",
+      "sha256": "fixture"
+    }
+  ],
+  "strategies": {
+    "ema_crossover@5m": {
+      "family": "ema_crossover",
+      "status": "PAPER_CANDIDATE",
+      "admitted_for_paper": true,
+      "expected_gross_edge_bps": 12.0,
+      "edge_evidence": {
+        "source_doc": "CONTROLLED TEST fixture",
+        "metric": "fixture.reachability",
+        "value_bps": 12.0,
+        "knowledge": "ASSUMED",
+        "sample_trades": 1,
+        "note": "reachability fixture only: this is NOT market evidence",
+        "evidence_class": "CONTROLLED_TEST_FIXTURE",
+        "period": "n/a",
+        "timeframe": "5m",
+        "status": "PAPER_CANDIDATE"
+      },
+      "source_doc": "CONTROLLED TEST fixture",
+      "rationale": "CONTROLLED TEST: exercises crash boundaries through the real paper broker; never a production admission",
+      "timeframe": "5m",
+      "known": true
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "all_valid": true,
+  "config_hash": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+  "cost_bps_rt": 23.559016994374947,
+  "experiments": {
+    "EXP-ARP-009": {
+      "config_hash_match": true,
+      "cost_model_match": true,
+      "dataset_fingerprint_match": true,
+      "manifest_sha256": "616b2cc754b55292e0c00f79283f23485de3659c6240addd24d117d2e8e48bd6",
+      "oos_locked": true,
+      "spec_sha256": "72609735f8d413f667ac2d1d2ac37fb9ce476d898179fecbdb81d932fbdaf254",
+      "splits_match": true,
+      "strategy_id_match": true
+    },
+    "EXP-ARP-011": {
+      "config_hash_match": true,
+      "cost_model_match": true,
+      "dataset_fingerprint_match": true,
+      "manifest_sha256": "ff28e29bca51f68514011a2e3da1f2ad70b567436e0ae7d8500a60740559f31b",
+      "oos_locked": true,
+      "spec_sha256": "b0a0600d26f3edd1d6e1e751643d799a1b756b027b2e4d35be84ec17f6587902",
+      "splits_match": true,
+      "strategy_id_match": true
+    },
+    "EXP-ARP-012": {
+      "config_hash_match": true,
+      "cost_model_match": true,
+      "dataset_fingerprint_match": true,
+      "manifest_sha256": "a341c6d93e7df91f3222fcf38c8122bd985532d933e7fef31532c89470b9502d",
+      "oos_locked": true,
+      "spec_sha256": "dd2d7a6c5db5ab9651188dd605cd859c2340dd11491fa1374d3b6f05b62da216",
+      "splits_match": true,
+      "strategy_id_match": true
+    }
+  },
+  "problems": []
+}

@@ -1,0 +1,167 @@
+# WP-EDGE-015 — run report
+
+*Generated 2026-10-17T09:05Z against `87b9c6a`. `FALSE_SUCCESS=0`, `BUILDER != VERIFIER`.*
+*No real order, no credential, no leverage, no risk limit changed.*
+
+## Execution classes, kept apart
+
+| class | what it is | produced? |
+| --- | --- | --- |
+| `DEFECT_REPAIR` | certification defects closed with executed evidence | yes |
+| `HISTORICAL_RESEARCH` | families measured on consumed 1h corpora, priced per venue | yes |
+| `EXPERIMENTAL_PROSPECTIVE_PAPER` | new bars driven through the real broker and the real risk policy, in an isolated lane | yes |
+| `PROSPECTIVE_HOLDOUT` | bars after the frozen protocol | **frozen and accruing: 3 bars, not scored** |
+
+A historical measurement is never presented as prospective, and the lane's cycles are never
+counted as an admitted strategy's operations.
+
+## P0 — the certification defects
+
+| # | defect | what was done | evidence |
+| --- | --- | --- | --- |
+| P0.1 | `order_check=false`: the 14R holdout could not show its freeze preceded its capture | a **two-phase** protocol: `--freeze` writes and commits, `--capture` runs later in another process; the check now has five clauses and a verdict | `OOS_PREREGISTRATION_V2.json`, `OOS_CAPTURE_MANIFEST_V2.json` |
+| P0.1b | the manifests stored this host's absolute paths, so the decisive checks only ran on the machine that wrote them | paths are written repository-relative, the verifier re-anchors the frozen 14R path by its tail, and two checks refuse a package that a clean checkout could not re-read or would not ship | `edge15_oos_preregistration.py`, `edge15_verify.py` V33/V34 |
+| P0.2 | the 14R verifier imported the builder's `engine_parity` module | the import is **gone** (not narrowed): rule, indicator, fee conventions and equity path are re-implemented in the verifier; a structural check asserts no builder import | `edge15_verify.py` V31, `edge14r_verify.py` V32 |
+| P0.3 | openings identified from outside by `(symbol, opened_at, entry_price)` | the broker mints `position_id`, `entry_order_id`, `exit_order_id`, `trade_id` per book; the sequence continues across `restore()` | `broker.py`, `test_broker_identity.py` |
+| P0.3b | a replay's evidence carried this host's wall clock in `opened_at`/`closed_at`, so no digest over it could hold | the broker accepts a clock; the lane hands it the bar being replayed, and two runs of the same bars now hash identically (measured) | `broker.py` (`clock`), `edge15_paper_lane.py`, `test_broker_identity.py` |
+| P0.4 | a single equity number could not say *which* quantity moved | `accounting_snapshot()` keeps realised, unrealised, cash and mark-to-market apart, returns the accrued entry commission as its own term, and checks four identities | `broker.py`, verifier V22-V23 |
+| P0.5 | Jesse's 7.02 bps residual and VeighNa's 2 unmatched trades were quantified but not decomposed | both re-derived from the published rows: the residual is exactly three terms, and the two trades are the window's last two entries | `PARITY_DIVERGENCE_EXPLAINED.json/.md` |
+
+### P0.1 — the ordering proof
+
+| clause | value |
+| --- | --- |
+| frozen at | `2026-10-17T07:15:28Z` (`1792221328939466200` ns) |
+| committed in | `b4ff58892263b44de122b8fe6b08239ffb831032`, commit time `1792221564` |
+| captured at | `2026-10-17T07:20:21Z` (`1792221621701637600` ns), +292.8 s after the freeze |
+| working file vs committed blob | sha256 equal after LF normalisation (`cea0be8934…`) — the disk copy is CRLF, which is why both forms are compared |
+| prospective bars captured | **3** (one per symbol; the first hourly bar to open after the freeze, 08:00Z → 09:00Z) |
+| descriptive bars captured | 0 new; the 14R slice is preserved and re-labelled descriptive |
+| state | `OOS_ACCRUING_WITH_PROSPECTIVE_BARS`; `selection_has_read_any_slice=false`, `scoring_run=false` |
+| verdict | `ORDER_VERIFIED` |
+
+The one assumption is stated in the artifact: the instants come from the same host clock read in
+two processes, and what makes the order checkable from outside is the commit between them.
+
+### P0.5 — the two divergences, decomposed
+
+**Jesse.** The 7.021359 bps residual is not an engine disagreement. Each published row obeys
+
+```
+residual_compounded = gross_price_effect + (engine_realised_charge − 20 bps) + our_convention_gap
+```
+
+and at the material index 19 that reads `6.985523 + (−0.059751) + 0.095587 = 7.021359`, error 0.0.
+The price term exists only on the two trades still open at the window's end, where this project
+closes at the final bar's **open** and Jesse at its **close**; among the other 42 trades the worst
+difference is **0.001251 bps**, inside the 1 bps tolerance frozen before the run.
+
+**VeighNa.** 44 opens and 42 closes; the reader pairs fills in order, so an unclosed entry has a
+testable consequence: the two unmatched trades must be the rule's last two entries. Rebuilding the
+rule from the frozen bars shows exactly two forced closes, at exactly those two entry instants.
+
+## P1 — the alpha search
+
+Families are mechanically distinct, and the ones the campaign already rejected are named with their
+measured edges in `ALPHA_RESULTS.json → rejected_family_audit`. No family is a rename: a rename
+would share an entry condition, an exit condition or a conditioning variable, and these share none.
+
+Held-out tail (last 30% of each series, parameters frozen beforehand, never fitted on it):
+
+| family | trades | gross bps/trade | net 1x | net 2x | verdict |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `mean_reversion_vol_liq` | 811 | +54.84 | +21 075 | −2 326 | `EXPERIMENT_COST_FRAGILE` |
+| `vol_regime_breakout` | 171 | +223.79 | +33 367 | +28 465 | `REJECT_OUTLIER_DRIVEN` |
+| `trend_pullback` | 895 | −37.04 | −58 809 | −84 464 | `REJECT` |
+| `cross_sectional_rotation` | 355 | −35.63 | −11 465 | −16 605 | `REJECT` |
+| `maker_only_spread_capture` | — | — | — | — | `DEFER_NO_FILL_MODEL` |
+
+Two readings matter more than the signs.
+
+* **The breakout family's mean is a lottery, not an edge.** Its top five trades are **1.31×** its
+  entire gross: remove them and the family is net negative, and its median trade loses money. A
+  mean that rests on five of 171 trades cannot be sized. It is rejected for that reason, on the
+  number, not by taste.
+* **The mean-reversion family is real but one cost-doubling away from zero.** Its gross per trade is
+  identical in both segments (+54.84 / +54.76) — the structure repeats where it was not chosen — and
+  its expectancy turns negative (−2.87 bps/trade) at 2× cost, i.e. before the tier's own 28.96 bps
+  round trip is doubled. It is not an edge you can risk capital on yet.
+
+The dilemma the search kept hitting is arithmetic: the alt tiers cost 25–29 bps a round trip at the
+200 USDT stake, so a family has to earn ~30 bps gross per trade to survive the *central* model and
+~58 bps to survive the adverse one.
+
+### CURRENT vs PROPOSED, on the same bars, capital and constraints
+
+`ALPHA_RESULTS.json → current_vs_proposed`. Both sides get the held-out tail, 10 000 USDT of
+capital and the order size the runtime's own policy sets (333.33 USDT, from `config/risk.yaml`).
+CURRENT is read from the authoritative ledger rather than assumed: it admits **0 strategies**, so it
+is flat — 0 trades, 0 fees, 0 net, 10 000 USDT. Being flat is why the bar is zero and not a loss.
+
+| proposal | trades | net @1× | net @2× | decision | replaces CURRENT? |
+| --- | ---: | ---: | ---: | --- | --- |
+| `mean_reversion_vol_liq` | 811 | **+702.50 USDT** | −77.54 USDT | `EXPERIMENT_COST_FRAGILE` | no — negative at 2× |
+| `vol_regime_breakout` | 171 | +1 112.22 USDT | +948.82 USDT | `REJECT_OUTLIER_DRIVEN` | no — fails the concentration rule |
+| `trend_pullback` | 895 | −1 960.27 USDT | −2 815.42 USDT | `REJECT` | no |
+| `cross_sectional_rotation` | 355 | −382.15 USDT | −553.50 USDT | `REJECT` | no |
+| `maker_only_spread_capture` | — | — | — | `DEFER_NO_FILL_MODEL` | no — never measured |
+
+Verdict: **`NO_PROPOSAL_BEATS_CURRENT`**. The table is worth reading for one row: the breakout
+family *does* clear its costs at the adverse multiplier (+948.82 USDT), and it still does not
+replace anything, because replacing the runtime is not only a cost test — five trades carry 1.31×
+its gross, and a family that cannot be sized cannot be promoted. The matrix now carries `decision`
+and `current_runtime_net_bps_total` on every row so the comparison sits in the same table.
+
+## P2 — the cost model
+
+Per venue and product, with the provenance of each component declared instead of implied:
+`KNOWN` fee (10 bps a side, VIP0 spot) + `ESTIMATED` half spread + `HYPOTHESIS` slippage
+(√size scaling) and impact (linear), by liquidity tier.
+
+| pair | tier | per side | round trip |
+| --- | --- | ---: | ---: |
+| BTC/ETH | TIER1 | 11.6768 | **23.3536** |
+| SOL | MAJOR | 12.65 | **25.30** |
+| UNI | ALT | 14.48 | **28.96** |
+
+Zero spread and zero slippage appear nowhere in the pricing: those were the 14R *parity* inputs for
+comparing two engines, and the cost model says so in its own `not_used` field.
+
+## P3 — the experimental prospective lane
+
+| quantity | value |
+| --- | --- |
+| cycles | 210 (`NO_TRADE` 182, `FILL_OPENED` 14, `PROTECTIVE_EXIT` 14) over 6 003 bars scanned |
+| simulated orders | **28** = 14 entries + 14 exits, of which 0 exchange orders |
+| closed trades / realised PnL | 14 / **−12.8100 USDT** (gross −3.4767, commissions 9.3332) |
+| prospective bars the lane met | 3 (one per symbol), every decision on them `NO_TRADE` — no family had anything to do, and none was forced |
+| PnL by class | `DESCRIPTIVE` −12.809961 USDT; `PROSPECTIVE` 0.000000 USDT |
+| accounting identities | all hold, in all three books |
+| books | one per symbol (`EDGE15LANE-BTCUSDT`, …), so identifiers cannot collide |
+| authoritative ledger | sha256 unchanged before and after; nothing admitted |
+| rejected families | refused as `NO_TRADE` with the rejecting reason attached |
+| exchange orders | 0 |
+
+The lane's own result is a risk-policy finding rather than a strategy one: the runtime's default
+protective stops (0.5 % / 0.75 %) are far tighter than the horizon the surviving family needs, so
+every position was stopped out before its thesis could play out. Changing those limits is a
+risk-manager decision with its own RFC, and this work package did not touch them.
+
+The disk guard still reports `INSUFFICIENT_FREE_SPACE` (4.17 GiB free, down from 5.9) and was not
+relaxed; the lane's artifacts were written under the package directory only.
+
+## P4 — verification
+
+| artifact | result |
+| --- | --- |
+| `edge15_verify.py` (imports no builder module) | **35/35 checks, verdict VERIFIED** |
+| V35, the comparison above | re-derived from the matrix and `config/risk.yaml`; a tampered figure flips the verdict to `NOT_VERIFIED` (tried) |
+| `edge14r_verify.py` (re-run with the tightened holdout check) | **32/32 checks, VERIFIED** |
+| broker behaviour tests | 8 new tests, all pass (the 8th pins the replay clock) |
+| family causality tests | 10 tests: truncated series reproduce the completed history exactly |
+
+## Publication
+
+`docs/agentic/EXECUTION_CHECKPOINT.md` carries the state, the pending items and the exact
+reproduction commands; the package is committed and pushed on
+`agent/edge-recovery/WP-EDGE-00-baseline`.

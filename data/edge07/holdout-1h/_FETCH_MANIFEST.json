@@ -1,0 +1,76 @@
+{
+  "schema_version": "EDGE07_HOLDOUT_FETCH_V1",
+  "fetched_at_utc": "2026-10-14T08:56:16Z",
+  "source": "BINANCE_PUBLIC_REST:/api/v3/klines",
+  "interval": "1h",
+  "requested_range": {
+    "start_utc": "2026-03-01T00:00:00Z",
+    "end_utc_exclusive": "2026-10-14T07:00:00Z"
+  },
+  "requested_range_ms": [
+    1772323200000,
+    1791961200000
+  ],
+  "normalization": "list of {ts,open,high,low,close,volume}; ts = bar OPEN time (ms, UTC); floats; no interpolation, no synthesis, gaps left absent",
+  "disjoint_from_frozen_corpora": {
+    "frozen_last_bar_utc": {
+      "BTC": "2026-02-28T23:00:00Z",
+      "ETH": "2026-02-28T23:00:00Z",
+      "SOL": "2026-02-28T23:00:00Z"
+    },
+    "new_window_starts_utc": "2026-03-01T00:00:00Z",
+    "disjoint": true
+  },
+  "symbols": {
+    "BTCUSDT": {
+      "bars": 5455,
+      "rows_returned": 5455,
+      "duplicates_removed": 0,
+      "first_utc": "2026-03-01T00:00:00Z",
+      "last_utc": "2026-10-14T06:00:00Z",
+      "gaps": 0,
+      "gap_examples": [],
+      "expected_hours": 5455,
+      "coverage_pct": 100.0,
+      "shard": "data/edge07/holdout-1h/BTCUSDT_holdout2026.json",
+      "sha256": "e2435ca3ee72ad790b25f18a87bde3ed12deec20d9b6a712021a881716e4f6b9",
+      "bytes": 561869
+    },
+    "ETHUSDT": {
+      "bars": 5455,
+      "rows_returned": 5455,
+      "duplicates_removed": 0,
+      "first_utc": "2026-03-01T00:00:00Z",
+      "last_utc": "2026-10-14T06:00:00Z",
+      "gaps": 0,
+      "gap_examples": [],
+      "expected_hours": 5455,
+      "coverage_pct": 100.0,
+      "shard": "data/edge07/holdout-1h/ETHUSDT_holdout2026.json",
+      "sha256": "a38a3efef91092383182cbf30b76d0f8e4422101a534a30f015b368da38600e2",
+      "bytes": 543984
+    },
+    "SOLUSDT": {
+      "bars": 5455,
+      "rows_returned": 5455,
+      "duplicates_removed": 0,
+      "first_utc": "2026-03-01T00:00:00Z",
+      "last_utc": "2026-10-14T06:00:00Z",
+      "gaps": 0,
+      "gap_examples": [],
+      "expected_hours": 5455,
+      "coverage_pct": 100.0,
+      "shard": "data/edge07/holdout-1h/SOLUSDT_holdout2026.json",
+      "sha256": "fe55108b2e38643dbbdb168b91b6640b62685ae9116552d142849d984c3687cb",
+      "bytes": 504934
+    }
+  },
+  "failures": [],
+  "totals": {
+    "bars": 16365,
+    "bytes": 1610787,
+    "gaps": 0,
+    "failures": 0
+  },
+  "corpus_digest": "196884f9e719315eaf4a0e1844d28cdf2528f9743f043931c9383a172a7e3cec"
+}

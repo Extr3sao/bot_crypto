@@ -1,0 +1,168 @@
+{
+  "artifact": "RFC047_HOST_AUDIT",
+  "audit_version": "RFC047_HOST_AUDIT_V1",
+  "candidate_event_identifiers": {
+    "declared": [
+      100,
+      102,
+      107,
+      110,
+      200,
+      201
+    ],
+    "declared_where": "the request names them as candidates; the earlier audit of this host read them from the provider's own documentation and recorded their downstream meaning, but no record of this host was ever seen for any of them",
+    "semantics_verified_on_this_host": false,
+    "what_would_verify_them": "one real record per identifier, read from a channel this host enables, quoted in data/st6/rfc047/EVENT_SEMANTICS.json together with its channel and its record id",
+    "why_not": "no record carrying any of these identifiers exists in a channel this session can read, so their meaning could not be verified against a real record and this RFC does not assign them one"
+  },
+  "channels": {
+    "Microsoft-Windows-TaskScheduler/Maintenance": {
+      "config": {
+        "auto_backup": "false",
+        "channel_access_sddl": "O:BAG:SYD:(A;;0x2;;;S-1-15-2-1)(A;;0x2;;;S-1-15-3-1024-3153509613-960666767-3724611135-2725662640-12138253-543910227-1950414635-4190290187)(A;;0xf0007;;;SY)(A;;0x7;;;BA)(A;;0x7;;;SO)(A;;0x3;;;IU)(A;;0x3;;;SU)(A;;0x3;;;S-1-5-3)(A;;0x3;;;S-1-5-33)(A;;0x1;;;S-1-5-32-573)",
+        "enabled": true,
+        "enabled_raw": "true",
+        "isolation": "Application",
+        "log_file_name": "%SystemRoot%\\System32\\Winevt\\Logs\\Microsoft-Windows-TaskScheduler%4Maintenance.evtx",
+        "max_size_bytes": 1052672,
+        "name": "Microsoft-Windows-TaskScheduler/Maintenance",
+        "owning_publisher": "Microsoft-Windows-TaskScheduler",
+        "parsed": true,
+        "retention": "false",
+        "type": "Operational"
+      },
+      "log_info": {
+        "creation_time_utc": "2025-06-19T02:39:10.3405558Z",
+        "file_size_bytes": 1052672,
+        "last_write_time_utc": "2026-10-09T19:34:13.8277792Z",
+        "oldest_record_number": 440,
+        "parsed": true,
+        "records_present": 2274
+      },
+      "newest_record_utc": "2026-10-09T19:28:23.798309Z",
+      "permissions": {
+        "administrators_grant_present": true,
+        "read_grant_present": true,
+        "readable_by_this_session": true,
+        "source": "the channel's channelAccess attribute, read from wevtutil gl",
+        "write_grant_to_this_session": false
+      },
+      "read_exit_code": 0,
+      "read_status": "OK",
+      "readable": true,
+      "state": "CHANNEL_AVAILABLE",
+      "time_basis": {
+        "host_offset_minutes": 120,
+        "newest_event_utc": "2026-10-09T19:28:23.798309Z",
+        "reading": "the newest record is not in the future, so the instants of this channel are UTC as they claim to be",
+        "seconds_ahead_of_the_wall_clock": -1893.9,
+        "status": "CONSISTENT_WITH_UTC"
+      }
+    },
+    "Microsoft-Windows-TaskScheduler/Operational": {
+      "config": {
+        "auto_backup": "false",
+        "channel_access_sddl": "O:BAG:SYD:(A;;0x2;;;S-1-15-2-1)(A;;0x2;;;S-1-15-3-1024-3153509613-960666767-3724611135-2725662640-12138253-543910227-1950414635-4190290187)(A;;0xf0007;;;SY)(A;;0x7;;;BA)(A;;0x7;;;SO)(A;;0x3;;;IU)(A;;0x3;;;SU)(A;;0x3;;;S-1-5-3)(A;;0x3;;;S-1-5-33)(A;;0x1;;;S-1-5-32-573)",
+        "enabled": false,
+        "enabled_raw": "false",
+        "isolation": "Application",
+        "log_file_name": "%SystemRoot%\\System32\\Winevt\\Logs\\Microsoft-Windows-TaskScheduler%4Operational.evtx",
+        "max_size_bytes": 10485760,
+        "name": "Microsoft-Windows-TaskScheduler/Operational",
+        "owning_publisher": "Microsoft-Windows-TaskScheduler",
+        "parsed": true,
+        "retention": "false",
+        "type": "Operational"
+      },
+      "log_info": {
+        "creation_time_utc": null,
+        "file_size_bytes": null,
+        "last_write_time_utc": null,
+        "oldest_record_number": null,
+        "parsed": false,
+        "records_present": null
+      },
+      "newest_record_utc": null,
+      "permissions": {
+        "administrators_grant_present": true,
+        "read_grant_present": true,
+        "readable_by_this_session": true,
+        "source": "the channel's channelAccess attribute, read from wevtutil gl",
+        "write_grant_to_this_session": false
+      },
+      "read_exit_code": 0,
+      "read_status": "OK",
+      "readable": true,
+      "state": "CHANNEL_DISABLED",
+      "time_basis": {
+        "host_offset_minutes": 120,
+        "status": "NO_RECORD_TO_CHECK"
+      }
+    }
+  },
+  "commands_run": [
+    "wevtutil gl <channel>            (read a channel's own configuration)",
+    "wevtutil gli <channel>           (read how much of a log is still present)",
+    "wevtutil qe <channel> /f:xml ...  (read records; no filter writes anything)",
+    "wevtutil sl <channel> /e:true    (the gate; refused here without elevation)"
+  ],
+  "coverage_from_utc": null,
+  "coverage_reading": "no instant exists from which a per-run record could exist: the operational channel is disabled and has never recorded on this host, so every slot of the period is outside the reach of external evidence, and a later rebuild may not promote one",
+  "disk": {
+    "free_bytes": 20441919488,
+    "measured": true,
+    "total_bytes": 255041990656,
+    "used_percent": 92.0
+  },
+  "gate": {
+    "activation_request": {
+      "command": "wevtutil sl Microsoft-Windows-TaskScheduler/Operational /e:true",
+      "note": "the change was requested with the exact command and the request for an elevated token was not approved in this session, so the change was not applied; the refusal of the unelevated attempt above is the measurement of the gate and is recorded rather than worked around",
+      "outcome": "NOT_GRANTED_IN_THIS_SESSION",
+      "raised": true
+    },
+    "change_contemplated": "enable the Microsoft-Windows-TaskScheduler/Operational channel (wevtutil sl ... /e:true): the only configuration change RFC-047 contemplates",
+    "probe": {
+      "applied": false,
+      "command": "wevtutil sl Microsoft-Windows-TaskScheduler/Operational /e:true",
+      "exit_code": 5,
+      "reading": "the host refused the change without an elevated token, which is the gate RFC-047 describes: it is recorded and not worked around",
+      "stderr": "Error al guardar la configuración o al activar el registro Microsoft-Windows-TaskScheduler/Operational.\nAcceso denegado.",
+      "stdout": ""
+    },
+    "rollback": {
+      "command": "wevtutil sl Microsoft-Windows-TaskScheduler/Operational /e:false",
+      "does_not": "delete the evidence already collected, touch the Security channel, change any ACL, GPO, size limit, retention policy or any other administrator's configuration",
+      "owner_check_required_before_running": true,
+      "restores": "the channel's enabled flag to the value recorded above as state_before"
+    },
+    "state_after": false,
+    "state_before": false,
+    "status": "HOST_AUDIT_CHANGE_APPROVAL_REQUIRED"
+  },
+  "host_offset_minutes": 120,
+  "no_change_applied": true,
+  "purpose": "the before-state of the audit channels, the permissions the effective user holds over them, the gate that stands between this session and the one configuration change RFC-047 contemplates, and how that change would be reversed",
+  "read_only_until_now": true,
+  "retention": {
+    "circular_policy_means": "the channel overwrites its oldest record rather than backing it up, so the system's own history cannot be the durable record; that is why this RFC persists what it reads",
+    "maintenance_file_size_bytes": 1052672,
+    "maintenance_max_size_bytes": 1052672,
+    "maintenance_oldest_record_number": 440,
+    "maintenance_records_present": 2274,
+    "operational": "false"
+  },
+  "session": {
+    "as_of_utc": "2026-10-09T19:59:57Z",
+    "is_administrator_token": false,
+    "read_probe_exit_code": 0,
+    "read_probe_status": "OK",
+    "user": "DIRECTORI\\GVLLFR0035"
+  },
+  "taken_at_utc": "2026-10-09T19:59:57Z",
+  "task": {
+    "declared_by": "data/st6/ST6_SCHEDULER_EVIDENCE.json, the task's own registration",
+    "full_path": "\\TradingAgentic-ST6-Forward",
+    "name": "TradingAgentic-ST6-Forward"
+  }
+}

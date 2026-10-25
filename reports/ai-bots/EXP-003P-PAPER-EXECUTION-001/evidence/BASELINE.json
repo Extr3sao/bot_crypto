@@ -1,0 +1,189 @@
+{
+  "captured_at_utc": "2026-10-21T13:40:23Z",
+  "components": [
+    {
+      "classification": "RUNTIME_AUTHORITATIVE (execution boundary)",
+      "component": "trading_bot.paper.broker.PaperBroker",
+      "evidence": "executed by this baseline probe and the rehearsal",
+      "path": "src/trading_bot/paper/broker.py"
+    },
+    {
+      "classification": "RUNTIME_AUTHORITATIVE (instrumentation, added by 003P)",
+      "component": "trading_bot.paper.lifecycle.PaperBrokerRecorder",
+      "evidence": "executed: emits ORDER_CREATED..ORDER_FILLED from real broker fills",
+      "path": "src/trading_bot/paper/lifecycle/recorder.py"
+    },
+    {
+      "classification": "RUNTIME_AUTHORITATIVE (event construction, added by 003P)",
+      "component": "trading_bot.paper.lifecycle.LifecycleEngine",
+      "evidence": "executed: refusal and scenario paths in the controls",
+      "path": "src/trading_bot/paper/lifecycle/engine.py"
+    },
+    {
+      "classification": "RUNTIME_AUTHORITATIVE",
+      "component": "trading_bot.vision.lane.VisionLane",
+      "evidence": "executed by the rehearsal on frozen bars",
+      "path": "src/trading_bot/vision/lane.py"
+    },
+    {
+      "classification": "RUNTIME_AUTHORITATIVE",
+      "component": "trading_bot.risk.manager.RiskManager",
+      "evidence": "executed inside VisionLane; risk refusals recorded by the controls",
+      "path": "src/trading_bot/risk/manager.py"
+    },
+    {
+      "classification": "TEST_DOUBLE (not an execution platform)",
+      "component": "trading_bot.paper.lifecycle.venue.SimulatedPaperVenue",
+      "evidence": "executed by the scenario phase; every event is OFFLINE_SIMULATED",
+      "path": "src/trading_bot/paper/lifecycle/venue.py"
+    },
+    {
+      "classification": "OUT_OF_SCOPE (live)",
+      "component": "trading_bot.execution.* live adapters",
+      "evidence": "not imported by any 003P entrypoint; asserted by the verifier",
+      "path": "src/trading_bot/execution/"
+    }
+  ],
+  "config_digest": "sha256:4f93519d8fc6b4040e82df6f6c495671ae5f510fe47ee246937a4400baa071fa",
+  "config_sha256": {
+    "config/risk.yaml": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+    "config/runtime.yaml": "ac3cf4fce9ff6246997a059f1c409609a7c87a6bb416198c041ca479fc49a159",
+    "config/vision.yaml": "ba817ef6f2c8768ee8bd094ffbdb0f705281f7056466c95cd0b2016e6e3fd766"
+  },
+  "dataset": {
+    "directory": "reports/ai-bots/EXP-003K-CANDIDATE-001/dataset",
+    "files": {
+      "BTCUSDT.1m.jsonl.gz": "7fbdfefa12785bb025d525994466b5a64d5c0668d6ff997f5f7566bc42d13814",
+      "ETHUSDT.1m.jsonl.gz": "cf04dc37617a0998016fcd7edfb9b2a77c9aa5fa656bbb54422805a5964650a6",
+      "SOLUSDT.1m.jsonl.gz": "33342aacc2ac75f897e2c9df2602a41d340c96ed08cd683dbd3871c3c7c60c32"
+    }
+  },
+  "dependency_003o": {
+    "blockers": [
+      "no evaluable instant in this window: mean_reversion_vol_liq@4h, vol_regime_breakout@4h (their warm-up exceeds 46 days of bars)",
+      "organizational independence not certified: builders A/B and verifier C share one author; BUILDER != VERIFIER holds as three programs, not as three people"
+    ],
+    "design_sha256": "b28a7b4c53168fd5d22c0a52d333703f8ce097c0ca632bdf0269ff1cb3cc5b70",
+    "economic_edge": "NOT_EVALUATED",
+    "full_independent_certification": "INCOMPLETE_REAL_DATA_COVERAGE",
+    "status": "INCOMPLETE",
+    "technical_signal_parity": "PASS",
+    "verdict": "PASS_PARTIAL_INCOMPLETE_REAL_DATA"
+  },
+  "entrypoints": [
+    {
+      "evidence": "documented in docs/runtime/runtime_authority_map.md; not executed by 003P",
+      "id": "PRIMARY_PAPER_RUNTIME",
+      "kind": "autonomous PAPER/SHADOW loop",
+      "path": "scripts/autonomous_paper.py"
+    },
+    {
+      "evidence": "static; superseded per docs/runtime/runtime_authority_map.md",
+      "id": "LEGACY_PAPER_LOOP",
+      "kind": "PaperOrchestrator loop",
+      "path": "scripts/start_paper_trading.py"
+    },
+    {
+      "evidence": "executed by 003P (EXECUTION_TRACE.jsonl)",
+      "id": "VISION_LANE_REPLAY",
+      "kind": "frozen-bar replay through VisionLane",
+      "path": "scripts/exp_003p_rehearsal.py"
+    },
+    {
+      "evidence": "executed by 003P (SCENARIO_TRACE.jsonl)",
+      "id": "LIFECYCLE_SCENARIO",
+      "kind": "offline venue scenarios through LifecycleEngine",
+      "path": "scripts/exp_003p_rehearsal.py"
+    },
+    {
+      "evidence": "executed by 003P (NEGATIVE_CONTROLS.json)",
+      "id": "LIFECYCLE_CONTROLS",
+      "kind": "adversarial controls",
+      "path": "scripts/exp_003p_controls.py"
+    }
+  ],
+  "git": {
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "dirty_lines": 251,
+    "dirty_scopes": [
+      ".ci",
+      ".edge04r_tmp",
+      ".tmp",
+      ".wp003i_gate_update.py",
+      "INAL_REPORT.md",
+      "RFC-TAP-AI-BOTS-003F.md",
+      "RFC-TAP-AI-BOTS-003I.md",
+      "RUN_REPORT.json",
+      "RUN_REPORT.md",
+      "context",
+      "data",
+      "docs",
+      "evidence",
+      "reports",
+      "scripts",
+      "servers.txt",
+      "src",
+      "tasks",
+      "tests"
+    ],
+    "do_not_touch": [
+      "docs/agentic/EXECUTION_CHECKPOINT.md",
+      "config/runtime.yaml",
+      "config/risk.yaml",
+      "config/vision.yaml"
+    ],
+    "foreign_changes_present": true,
+    "head": "bdd96f4cf9eda379294d92282aa78707c669ffd5",
+    "head_subject": "Leave another experiment's suite out of this gate, and say so"
+  },
+  "provider_viability": {
+    "credential_names_present": [],
+    "credentials_present": false,
+    "exchange_sandbox_flag": "true",
+    "order_submitting_adapter_configured": false,
+    "reason": "no paper/testnet order adapter is configured for this workspace; the live adapter is out of scope and unreachable from 003P by construction",
+    "verdict": "BLOCKED_NOT_CONFIGURED"
+  },
+  "python": {
+    "platform": "Windows-10-10.0.26200-SP0",
+    "version": "3.11.15"
+  },
+  "reachability_probe": {
+    "closed": true,
+    "envelopes": [
+      "ORDER_CREATED",
+      "ORDER_SUBMITTED",
+      "ORDER_ACKNOWLEDGED",
+      "ORDER_FILLED",
+      "ORDER_CREATED",
+      "ORDER_SUBMITTED",
+      "ORDER_ACKNOWLEDGED",
+      "ORDER_FILLED"
+    ],
+    "envelopes_count": 8,
+    "executed": true,
+    "ledger_fills": 2,
+    "live_orders": 0,
+    "provenance_tags": [
+      "OFFLINE_SIMULATED"
+    ],
+    "trace_digest": "sha256:b267c0e548520dbb4e49c208a2f8ce84bad9499b12820f7687fa29e9fd9a924c"
+  },
+  "run_id": "EXP-003P-PAPER-EXECUTION-001",
+  "schema_version": "AI_BOTS_003P_BASELINE_V1",
+  "window": {
+    "decision_every_bars": 4,
+    "end_utc": "2026-08-06T00:00:00Z",
+    "equity_usdt": 10000.0,
+    "holdout_touched": false,
+    "start_utc": "2026-07-26T00:00:00Z",
+    "subbar_entries": false,
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "timeframe": "1h",
+    "window_bars": 120
+  }
+}

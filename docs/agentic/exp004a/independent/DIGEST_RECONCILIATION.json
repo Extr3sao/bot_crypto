@@ -1,0 +1,458 @@
+{
+  "checks": [
+    {
+      "claim_id": "C-005",
+      "evidence_refs": [],
+      "observed": {
+        "checked": 28,
+        "eol_normalised_files": [
+          "docs/agentic/exp004a/RUN_REPORT.json",
+          "scripts/exp004a_foundation.py",
+          "config/preregistrations/EXP-004A.json",
+          "tests/unit/research/test_prereg_gate_two_phase.py"
+        ],
+        "evaluated_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+        "mismatches": [],
+        "records": [
+          {
+            "checkout_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "checkout_size": 284812,
+            "git_blob_sha256_at_evaluated": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "git_blob_size_at_evaluated": 284812,
+            "group": "admission_ledgers",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "data/exp004a/admission_1h.jsonl",
+            "present": true,
+            "published_blob_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "published_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2"
+          },
+          {
+            "checkout_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "checkout_size": 28985,
+            "git_blob_sha256_at_evaluated": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "git_blob_size_at_evaluated": 28985,
+            "group": "admission_ledgers",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "data/exp004a/admission_1h+15m.jsonl",
+            "present": true,
+            "published_blob_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "published_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1"
+          },
+          {
+            "checkout_sha256": "a7eaf2c1ec3598bf5ccb69dc5fbca2c4b93769cec4d9ef49bf18101e1811698c",
+            "checkout_size": 1072,
+            "git_blob_sha256_at_evaluated": "a7eaf2c1ec3598bf5ccb69dc5fbca2c4b93769cec4d9ef49bf18101e1811698c",
+            "git_blob_size_at_evaluated": 1072,
+            "group": "builder_gate_evidence",
+            "last_commit_actual": "47808ce1f8c06c1369c67b27ac5beed07bd97848",
+            "last_commit_declared": "47808ce1f8c06c1369c67b27ac5beed07bd97848",
+            "path": "docs/agentic/exp004a/GATE_INSPECT.json",
+            "present": true,
+            "published_blob_sha256": "a7eaf2c1ec3598bf5ccb69dc5fbca2c4b93769cec4d9ef49bf18101e1811698c",
+            "published_sha256": "a7eaf2c1ec3598bf5ccb69dc5fbca2c4b93769cec4d9ef49bf18101e1811698c"
+          },
+          {
+            "checkout_sha256": "3b6f48e21f74f535643a02d826ba71858f6e3829794bb31e7deb82f89dbe5711",
+            "checkout_size": 1054,
+            "group": "builder_gate_evidence",
+            "last_commit_actual": null,
+            "last_commit_declared": null,
+            "path": "docs/agentic/exp004a/GATE_INSPECT.log",
+            "present": true,
+            "published_blob_sha256": null,
+            "published_sha256": "3b6f48e21f74f535643a02d826ba71858f6e3829794bb31e7deb82f89dbe5711"
+          },
+          {
+            "checkout_sha256": "0fe954a1b9ead82027dd96f884762924f832bad6cfc13c534e84313b137f9ad1",
+            "checkout_size": 1498,
+            "git_blob_sha256_at_evaluated": "0fe954a1b9ead82027dd96f884762924f832bad6cfc13c534e84313b137f9ad1",
+            "git_blob_size_at_evaluated": 1498,
+            "group": "builder_gate_evidence",
+            "last_commit_actual": "47808ce1f8c06c1369c67b27ac5beed07bd97848",
+            "last_commit_declared": "47808ce1f8c06c1369c67b27ac5beed07bd97848",
+            "path": "docs/agentic/exp004a/GATE_AUTHORIZE.json",
+            "present": true,
+            "published_blob_sha256": "0fe954a1b9ead82027dd96f884762924f832bad6cfc13c534e84313b137f9ad1",
+            "published_sha256": "0fe954a1b9ead82027dd96f884762924f832bad6cfc13c534e84313b137f9ad1"
+          },
+          {
+            "checkout_sha256": "1090c2e1406cf83cadeeb66aa7851bde7f202571808a5b2f14d65052016781d3",
+            "checkout_size": 1543,
+            "group": "builder_gate_evidence",
+            "last_commit_actual": null,
+            "last_commit_declared": null,
+            "path": "docs/agentic/exp004a/GATE_AUTHORIZE.log",
+            "present": true,
+            "published_blob_sha256": null,
+            "published_sha256": "1090c2e1406cf83cadeeb66aa7851bde7f202571808a5b2f14d65052016781d3"
+          },
+          {
+            "checkout_sha256": "3550fc04f1a07afcced17a084cf01006b610e578d632639c69b15cc7b383b67d",
+            "checkout_size": 23988,
+            "git_blob_sha256_at_evaluated": "dce8f8347fe881e20df41e984003d54b986a90ff35723a925616eff174036bb9",
+            "git_blob_size_at_evaluated": 23329,
+            "group": "builder_reports",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "docs/agentic/exp004a/RUN_REPORT.json",
+            "present": true,
+            "published_blob_sha256": "dce8f8347fe881e20df41e984003d54b986a90ff35723a925616eff174036bb9",
+            "published_sha256": "3550fc04f1a07afcced17a084cf01006b610e578d632639c69b15cc7b383b67d"
+          },
+          {
+            "checkout_sha256": "c82db096d56f6bb1e19acd4b15b85bd7c995e481ac3d74fcc176d833f1eef80f",
+            "checkout_size": 6592,
+            "git_blob_sha256_at_evaluated": "c82db096d56f6bb1e19acd4b15b85bd7c995e481ac3d74fcc176d833f1eef80f",
+            "git_blob_size_at_evaluated": 6592,
+            "group": "builder_reports",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "docs/agentic/exp004a/RUN_REPORT.md",
+            "present": true,
+            "published_blob_sha256": "c82db096d56f6bb1e19acd4b15b85bd7c995e481ac3d74fcc176d833f1eef80f",
+            "published_sha256": "c82db096d56f6bb1e19acd4b15b85bd7c995e481ac3d74fcc176d833f1eef80f"
+          },
+          {
+            "checkout_sha256": "3818e1124c7f2fb86c1decc94cf86bb362858b390cdc497829621a5b2b5a2172",
+            "checkout_size": 15622,
+            "git_blob_sha256_at_evaluated": "3818e1124c7f2fb86c1decc94cf86bb362858b390cdc497829621a5b2b5a2172",
+            "git_blob_size_at_evaluated": 15622,
+            "group": "builder_reports",
+            "last_commit_actual": "8aac8b475a156d7961c0d15fa74c5ec9a175af50",
+            "last_commit_declared": "8aac8b475a156d7961c0d15fa74c5ec9a175af50",
+            "path": "docs/agentic/exp004a/FINAL_REPORT.md",
+            "present": true,
+            "published_blob_sha256": "3818e1124c7f2fb86c1decc94cf86bb362858b390cdc497829621a5b2b5a2172",
+            "published_sha256": "3818e1124c7f2fb86c1decc94cf86bb362858b390cdc497829621a5b2b5a2172"
+          },
+          {
+            "checkout_sha256": "3355329a6ae22df39fca47d6748b5e9098310da94b07a25d5adf18153d6b86d4",
+            "checkout_size": 35663,
+            "git_blob_sha256_at_evaluated": "3355329a6ae22df39fca47d6748b5e9098310da94b07a25d5adf18153d6b86d4",
+            "git_blob_size_at_evaluated": 35663,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prereg_gate.py",
+            "present": true,
+            "published_blob_sha256": "3355329a6ae22df39fca47d6748b5e9098310da94b07a25d5adf18153d6b86d4",
+            "published_sha256": "3355329a6ae22df39fca47d6748b5e9098310da94b07a25d5adf18153d6b86d4"
+          },
+          {
+            "checkout_sha256": "42e77cdf25afc847d377ab6f9c9e7463b8192d4a6f442740712d259677a57329",
+            "checkout_size": 2648,
+            "git_blob_sha256_at_evaluated": "42e77cdf25afc847d377ab6f9c9e7463b8192d4a6f442740712d259677a57329",
+            "git_blob_size_at_evaluated": 2648,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/__init__.py",
+            "present": true,
+            "published_blob_sha256": "42e77cdf25afc847d377ab6f9c9e7463b8192d4a6f442740712d259677a57329",
+            "published_sha256": "42e77cdf25afc847d377ab6f9c9e7463b8192d4a6f442740712d259677a57329"
+          },
+          {
+            "checkout_sha256": "75e08ef8099cfffd21ba79966ecc2e7f46b2128f779c4136bd1e356e50072f66",
+            "checkout_size": 13268,
+            "git_blob_sha256_at_evaluated": "75e08ef8099cfffd21ba79966ecc2e7f46b2128f779c4136bd1e356e50072f66",
+            "git_blob_size_at_evaluated": 13268,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/admission.py",
+            "present": true,
+            "published_blob_sha256": "75e08ef8099cfffd21ba79966ecc2e7f46b2128f779c4136bd1e356e50072f66",
+            "published_sha256": "75e08ef8099cfffd21ba79966ecc2e7f46b2128f779c4136bd1e356e50072f66"
+          },
+          {
+            "checkout_sha256": "e702f70c98093ce4705a4b82bdb3e511cfa88ee23c5ea69d932b86a72ab32ada",
+            "checkout_size": 6504,
+            "git_blob_sha256_at_evaluated": "e702f70c98093ce4705a4b82bdb3e511cfa88ee23c5ea69d932b86a72ab32ada",
+            "git_blob_size_at_evaluated": 6504,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/independence.py",
+            "present": true,
+            "published_blob_sha256": "e702f70c98093ce4705a4b82bdb3e511cfa88ee23c5ea69d932b86a72ab32ada",
+            "published_sha256": "e702f70c98093ce4705a4b82bdb3e511cfa88ee23c5ea69d932b86a72ab32ada"
+          },
+          {
+            "checkout_sha256": "70063e2f643c53cea5308f6c465e42f3a4cdc8fc3370eeafa07e2180a90f8de8",
+            "checkout_size": 11003,
+            "git_blob_sha256_at_evaluated": "70063e2f643c53cea5308f6c465e42f3a4cdc8fc3370eeafa07e2180a90f8de8",
+            "git_blob_size_at_evaluated": 11003,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/ledger.py",
+            "present": true,
+            "published_blob_sha256": "70063e2f643c53cea5308f6c465e42f3a4cdc8fc3370eeafa07e2180a90f8de8",
+            "published_sha256": "70063e2f643c53cea5308f6c465e42f3a4cdc8fc3370eeafa07e2180a90f8de8"
+          },
+          {
+            "checkout_sha256": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d",
+            "checkout_size": 7216,
+            "git_blob_sha256_at_evaluated": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d",
+            "git_blob_size_at_evaluated": 7216,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/prospective/store.py",
+            "present": true,
+            "published_blob_sha256": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d",
+            "published_sha256": "83640457c0e7221bf180ee52775dec3e50ab485f124e09a9c9c78274778c811d"
+          },
+          {
+            "checkout_sha256": "9419063f329d74241f2a4f18cbf81d91714655ebed8feb5440a8081983093963",
+            "checkout_size": 1932,
+            "git_blob_sha256_at_evaluated": "9419063f329d74241f2a4f18cbf81d91714655ebed8feb5440a8081983093963",
+            "git_blob_size_at_evaluated": 1932,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/execution_cost/__init__.py",
+            "present": true,
+            "published_blob_sha256": "9419063f329d74241f2a4f18cbf81d91714655ebed8feb5440a8081983093963",
+            "published_sha256": "9419063f329d74241f2a4f18cbf81d91714655ebed8feb5440a8081983093963"
+          },
+          {
+            "checkout_sha256": "a333588b444de5a50c5d81173d3ee0335a1b51f9d32b4f382852546adb505fd7",
+            "checkout_size": 17721,
+            "git_blob_sha256_at_evaluated": "a333588b444de5a50c5d81173d3ee0335a1b51f9d32b4f382852546adb505fd7",
+            "git_blob_size_at_evaluated": 17721,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "src/trading_bot/research/execution_cost/measured.py",
+            "present": true,
+            "published_blob_sha256": "a333588b444de5a50c5d81173d3ee0335a1b51f9d32b4f382852546adb505fd7",
+            "published_sha256": "a333588b444de5a50c5d81173d3ee0335a1b51f9d32b4f382852546adb505fd7"
+          },
+          {
+            "checkout_sha256": "ef300441f9c3f14d3baba67667ba281d034bb8cdcaec4106348cdd1dfe2f092f",
+            "checkout_size": 25517,
+            "git_blob_sha256_at_evaluated": "4c53a60b075f82ebd85697acbcc24498564bc9345af0b6860e400cbe2765fee5",
+            "git_blob_size_at_evaluated": 24965,
+            "group": "implementation",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "scripts/exp004a_foundation.py",
+            "present": true,
+            "published_blob_sha256": "4c53a60b075f82ebd85697acbcc24498564bc9345af0b6860e400cbe2765fee5",
+            "published_sha256": "ef300441f9c3f14d3baba67667ba281d034bb8cdcaec4106348cdd1dfe2f092f"
+          },
+          {
+            "checkout_sha256": "3761481d8d242289a92486d036751fd1394c2be629d42db59670c5a7397503e9",
+            "checkout_size": 6960,
+            "git_blob_sha256_at_evaluated": "07d4702adc264f0306eb2757049edc2aea98a5d7df2f4b8350603d057794c7df",
+            "git_blob_size_at_evaluated": 6830,
+            "group": "preregistration",
+            "last_commit_actual": "fed25aa893fa6964a22afa61a51e5e68ef930335",
+            "last_commit_declared": "fed25aa893fa6964a22afa61a51e5e68ef930335",
+            "path": "config/preregistrations/EXP-004A.json",
+            "present": true,
+            "published_blob_sha256": "07d4702adc264f0306eb2757049edc2aea98a5d7df2f4b8350603d057794c7df",
+            "published_sha256": "3761481d8d242289a92486d036751fd1394c2be629d42db59670c5a7397503e9"
+          },
+          {
+            "checkout_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+            "checkout_size": 4669,
+            "git_blob_sha256_at_evaluated": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+            "git_blob_size_at_evaluated": 4669,
+            "group": "preregistration",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "config/preregistrations/EXP-004A.datasets.json",
+            "present": true,
+            "published_blob_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+            "published_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211"
+          },
+          {
+            "checkout_sha256": "94b161030d4ca0ed893a3f9496a25bbad1a35fd1b636b280f0aa8207bd7081b7",
+            "checkout_size": 1767,
+            "git_blob_sha256_at_evaluated": "94b161030d4ca0ed893a3f9496a25bbad1a35fd1b636b280f0aa8207bd7081b7",
+            "git_blob_size_at_evaluated": 1767,
+            "group": "preregistration",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "config/preregistrations/EXP-004A.prior_runs.json",
+            "present": true,
+            "published_blob_sha256": "94b161030d4ca0ed893a3f9496a25bbad1a35fd1b636b280f0aa8207bd7081b7",
+            "published_sha256": "94b161030d4ca0ed893a3f9496a25bbad1a35fd1b636b280f0aa8207bd7081b7"
+          },
+          {
+            "checkout_sha256": "b5039ce577a779d20473603de7e832e690780760701d71dd0fd6990c68b4b890",
+            "checkout_size": 447,
+            "git_blob_sha256_at_evaluated": "b5039ce577a779d20473603de7e832e690780760701d71dd0fd6990c68b4b890",
+            "git_blob_size_at_evaluated": 447,
+            "group": "preregistration",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "config/preregistrations/EXP-004A.baseline.json",
+            "present": true,
+            "published_blob_sha256": "b5039ce577a779d20473603de7e832e690780760701d71dd0fd6990c68b4b890",
+            "published_sha256": "b5039ce577a779d20473603de7e832e690780760701d71dd0fd6990c68b4b890"
+          },
+          {
+            "checkout_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+            "checkout_size": 6540,
+            "git_blob_sha256_at_evaluated": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+            "git_blob_size_at_evaluated": 6540,
+            "group": "protocol",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "docs/RFC-050_EXP004A_TWO_PHASE_FREEZE.md",
+            "present": true,
+            "published_blob_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+            "published_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5"
+          },
+          {
+            "checkout_sha256": "9a265fe0ef79dab89569f971d4fdd43b8753ba7ee70fedfecc342e79c7efb53e",
+            "checkout_size": 26541,
+            "git_blob_sha256_at_evaluated": "9a265fe0ef79dab89569f971d4fdd43b8753ba7ee70fedfecc342e79c7efb53e",
+            "git_blob_size_at_evaluated": 26541,
+            "group": "tests",
+            "last_commit_actual": "f831c669f2e6fc34a5e828bb753b9dab2bd7da50",
+            "last_commit_declared": "f831c669f2e6fc34a5e828bb753b9dab2bd7da50",
+            "path": "tests/unit/research/test_prereg_gate.py",
+            "present": true,
+            "published_blob_sha256": "9a265fe0ef79dab89569f971d4fdd43b8753ba7ee70fedfecc342e79c7efb53e",
+            "published_sha256": "9a265fe0ef79dab89569f971d4fdd43b8753ba7ee70fedfecc342e79c7efb53e"
+          },
+          {
+            "checkout_sha256": "e99dab8625a2368262c3e027e13ed13f9218155302a75e4b2d6e690b66a11567",
+            "checkout_size": 12829,
+            "git_blob_sha256_at_evaluated": "8cbdaac511a4975611a16ecee8e4fd9dc87ff3e06023684f2d481dd654dfb969",
+            "git_blob_size_at_evaluated": 12538,
+            "group": "tests",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "tests/unit/research/test_prereg_gate_two_phase.py",
+            "present": true,
+            "published_blob_sha256": "8cbdaac511a4975611a16ecee8e4fd9dc87ff3e06023684f2d481dd654dfb969",
+            "published_sha256": "e99dab8625a2368262c3e027e13ed13f9218155302a75e4b2d6e690b66a11567"
+          },
+          {
+            "checkout_sha256": "40dcb26504f471c4b33bec3dec955a950a84edf0bc03afa9bc546a45a05877dd",
+            "checkout_size": 2998,
+            "git_blob_sha256_at_evaluated": "40dcb26504f471c4b33bec3dec955a950a84edf0bc03afa9bc546a45a05877dd",
+            "git_blob_size_at_evaluated": 2998,
+            "group": "tests",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "tests/unit/research/test_prereg_gate_escape.py",
+            "present": true,
+            "published_blob_sha256": "40dcb26504f471c4b33bec3dec955a950a84edf0bc03afa9bc546a45a05877dd",
+            "published_sha256": "40dcb26504f471c4b33bec3dec955a950a84edf0bc03afa9bc546a45a05877dd"
+          },
+          {
+            "checkout_sha256": "6c3ad2a5b0850a75428acf1e1c651e37f939a9932b2ca1a9c2550329d3a8429a",
+            "checkout_size": 15884,
+            "git_blob_sha256_at_evaluated": "6c3ad2a5b0850a75428acf1e1c651e37f939a9932b2ca1a9c2550329d3a8429a",
+            "git_blob_size_at_evaluated": 15884,
+            "group": "tests",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "tests/unit/research/test_prospective_admission.py",
+            "present": true,
+            "published_blob_sha256": "6c3ad2a5b0850a75428acf1e1c651e37f939a9932b2ca1a9c2550329d3a8429a",
+            "published_sha256": "6c3ad2a5b0850a75428acf1e1c651e37f939a9932b2ca1a9c2550329d3a8429a"
+          },
+          {
+            "checkout_sha256": "3b4aec0b176a3ebae6ad8ecaff3a6d507ac5795e448e57f2936778dcca0d599e",
+            "checkout_size": 9615,
+            "git_blob_sha256_at_evaluated": "3b4aec0b176a3ebae6ad8ecaff3a6d507ac5795e448e57f2936778dcca0d599e",
+            "git_blob_size_at_evaluated": 9615,
+            "group": "tests",
+            "last_commit_actual": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "last_commit_declared": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+            "path": "tests/unit/research/test_execution_cost_measured.py",
+            "present": true,
+            "published_blob_sha256": "3b4aec0b176a3ebae6ad8ecaff3a6d507ac5795e448e57f2936778dcca0d599e",
+            "published_sha256": "3b4aec0b176a3ebae6ad8ecaff3a6d507ac5795e448e57f2936778dcca0d599e"
+          }
+        ]
+      },
+      "reason_code": null,
+      "scope": "tracked references",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-005",
+      "evidence_refs": [],
+      "observed": {
+        "duplicate_series_days": [],
+        "errors": [],
+        "errors_by_kind": {},
+        "ledgers": {
+          "1h": 234,
+          "1h+15m": 14
+        },
+        "lookahead_observations": [],
+        "series_prefixes_checked": 786,
+        "verified": 786
+      },
+      "reason_code": null,
+      "scope": "sealed prefixes and full store bytes",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-005",
+      "evidence_refs": [],
+      "observed": {
+        "1h": {
+          "back_links_valid": 234,
+          "chain_tip": "40693a413ab83c4e110140198d6beef369ab263edeac08f223972841c2e2b43e",
+          "digest_recomputed": 234,
+          "published_chain_tip": "40693a413ab83c4e110140198d6beef369ab263edeac08f223972841c2e2b43e",
+          "records": 234,
+          "seq_contiguous": 234,
+          "unique_days": 234
+        },
+        "1h+15m": {
+          "back_links_valid": 14,
+          "chain_tip": "1d0661bb1982885f197ef0d05c2f3e977b5807eb115b7ec1bb79b1b85791036f",
+          "digest_recomputed": 14,
+          "published_chain_tip": "1d0661bb1982885f197ef0d05c2f3e977b5807eb115b7ec1bb79b1b85791036f",
+          "records": 14,
+          "seq_contiguous": 14,
+          "unique_days": 14
+        },
+        "total_records": 248
+      },
+      "reason_code": null,
+      "scope": "append-only chain",
+      "status": "PASS"
+    },
+    {
+      "claim_id": "C-010",
+      "evidence_refs": [],
+      "observed": {
+        "checkout": {
+          "data/exp004a/admission_1h+15m.jsonl": {
+            "checkout_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "in_checkout": true,
+            "live_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+            "store_series_in_checkout": false
+          },
+          "data/exp004a/admission_1h.jsonl": {
+            "checkout_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "in_checkout": true,
+            "live_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+            "store_series_in_checkout": false
+          }
+        },
+        "ledgers_reproduced": true,
+        "limit": "the gitignored bar store is absent, so this cannot verify source bytes"
+      },
+      "reason_code": null,
+      "scope": "ledgers reproduce; raw bars are not in Git",
+      "status": "PASS"
+    }
+  ],
+  "evaluated_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+  "run_id": "verifier-b/EXP-004A/WP-051-02:2026-10-21T10:26:12.509519Z"
+}

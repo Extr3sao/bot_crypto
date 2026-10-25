@@ -1,0 +1,117 @@
+[registry] PAPER_CANDIDATE=1
+[registry] paper-executable on 5m: ['ema_crossover@5m']
+2026-10-25 14:28:34 [info     ] reconcile.consistent_fresh_book
+2026-10-25 14:28:34 [info     ] paper.orchestrator.started     interval_seconds=0.0 max_sessions=1 mode=paper
+2026-10-25 14:28:34 [info     ] paper.session.started          mode=paper paper_trading_enabled=True session_id=d036f276b6084446935c1d598066ff7d
+2026-10-25 14:28:34 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=40f41ea42eb94be2ad2dc413b0a0d2bf
+2026-10-25 14:28:34 [info     ] scanner.pair.processed         active=True rank_score=0.7666666666666666 rejection_reason=None scan_iteration_id=40f41ea42eb94be2ad2dc413b0a0d2bf symbol=BTC/USDT
+2026-10-25 14:28:34 [info     ] scanner.iteration.completed    all_failed=False duration_ms=0 early_exit=None pairs_active=1 pairs_inactive=0 pairs_processed=1 scan_iteration_id=40f41ea42eb94be2ad2dc413b0a0d2bf scanner_errors=0
+2026-10-25 14:28:34 [info     ] paper.scanner.completed        mode=paper scanner_errors=0 session_id=d036f276b6084446935c1d598066ff7d total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.cycle.completed          adapter_errors=0 bar_close_skips=0 broker_errors=0 context_errors=0 contexts_built=1 defensive_blocks={'weekend_trading': 1} duplicate_intents=0 exits_closed=0 exits_requested=0 hot_stop_blocked=0 mode=paper orders_created=0 rejections=[{'symbol': 'BTC/USDT', 'stage': 'defensive_block', 'reason': 'weekend_trading: weekend (Sunday) and blocks.weekend_trading=false'}] reversals_refused=0 risk_accepted=0 risk_errors=0 risk_rejected=1 router_errors=0 router_invocations=1 router_no_trade=0 same_side_skips=0 session_id=d036f276b6084446935c1d598066ff7d signals_generated=1 strategy_errors=0 strategy_invocations=1
+2026-10-25 14:28:34 [info     ] paper.broker.reconciled        closed_trades=0 ending_equity=10000.0 fills_count=0 mode=paper realized_pnl=0 risk_events=() session_id=d036f276b6084446935c1d598066ff7d
+2026-10-25 14:28:34 [info     ] paper_state.saved              open_positions=0 path=C:\tmp\g5-before-evidence\scenarios\trade\paper_state.json sent_intents=0
+2026-10-25 14:28:34 [info     ] paper.state.saved              mode=paper session_id=d036f276b6084446935c1d598066ff7d
+2026-10-25 14:28:34 [info     ] paper.report.written           json_path=C:\tmp\g5-before-evidence\scenarios\trade\run\reports\report.json markdown_path=C:\tmp\g5-before-evidence\scenarios\trade\run\reports\report.md mode=paper session_id=d036f276b6084446935c1d598066ff7d
+2026-10-25 14:28:34 [info     ] paper.session.completed        active_snapshots=1 duration_ms=0 inactive_snapshots=0 mode=paper report_json_path=C:\tmp\g5-before-evidence\scenarios\trade\run\reports\report.json report_markdown_path=C:\tmp\g5-before-evidence\scenarios\trade\run\reports\report.md scanner_errors=0 session_id=d036f276b6084446935c1d598066ff7d total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.orchestrator.session     duration_ms=0 realized_pnl=0 session_id=d036f276b6084446935c1d598066ff7d total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1
+[registry] PAPER_CANDIDATE=1
+[registry] paper-executable on 5m: ['ema_crossover@5m']
+2026-10-25 14:28:34 [info     ] reconcile.recovered            closed_trades=0 equity=10000.0 intents=0 open_positions=0
+2026-10-25 14:28:34 [info     ] paper.orchestrator.started     interval_seconds=0.0 max_sessions=1 mode=paper
+2026-10-25 14:28:34 [info     ] paper.session.started          mode=paper paper_trading_enabled=True session_id=72c630c487bf4917a92d5ef28082816b
+2026-10-25 14:28:34 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=270d8410d07441e98c5a767adbcdc92c
+2026-10-25 14:28:34 [info     ] scanner.pair.processed         active=True rank_score=0.7666666666666666 rejection_reason=None scan_iteration_id=270d8410d07441e98c5a767adbcdc92c symbol=BTC/USDT
+2026-10-25 14:28:34 [info     ] scanner.iteration.completed    all_failed=False duration_ms=0 early_exit=None pairs_active=1 pairs_inactive=0 pairs_processed=1 scan_iteration_id=270d8410d07441e98c5a767adbcdc92c scanner_errors=0
+2026-10-25 14:28:34 [info     ] paper.scanner.completed        mode=paper scanner_errors=0 session_id=72c630c487bf4917a92d5ef28082816b total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.cycle.completed          adapter_errors=0 bar_close_skips=0 broker_errors=0 context_errors=0 contexts_built=1 defensive_blocks={'weekend_trading': 1} duplicate_intents=0 exits_closed=0 exits_requested=0 hot_stop_blocked=0 mode=paper orders_created=0 rejections=[{'symbol': 'BTC/USDT', 'stage': 'defensive_block', 'reason': 'weekend_trading: weekend (Sunday) and blocks.weekend_trading=false'}] reversals_refused=0 risk_accepted=0 risk_errors=0 risk_rejected=1 router_errors=0 router_invocations=1 router_no_trade=0 same_side_skips=0 session_id=72c630c487bf4917a92d5ef28082816b signals_generated=1 strategy_errors=0 strategy_invocations=1
+2026-10-25 14:28:34 [info     ] paper.broker.reconciled        closed_trades=0 ending_equity=10000.0 fills_count=0 mode=paper realized_pnl=0 risk_events=() session_id=72c630c487bf4917a92d5ef28082816b
+2026-10-25 14:28:34 [info     ] paper_state.saved              open_positions=0 path=C:\tmp\g5-before-evidence\scenarios\trade\paper_state.json sent_intents=0
+2026-10-25 14:28:34 [info     ] paper.state.saved              mode=paper session_id=72c630c487bf4917a92d5ef28082816b
+2026-10-25 14:28:34 [info     ] paper.report.written           json_path=C:\tmp\g5-before-evidence\scenarios\trade\run\reports\report.json markdown_path=C:\tmp\g5-before-evidence\scenarios\trade\run\reports\report.md mode=paper session_id=72c630c487bf4917a92d5ef28082816b
+2026-10-25 14:28:34 [info     ] paper.session.completed        active_snapshots=1 duration_ms=0 inactive_snapshots=0 mode=paper report_json_path=C:\tmp\g5-before-evidence\scenarios\trade\run\reports\report.json report_markdown_path=C:\tmp\g5-before-evidence\scenarios\trade\run\reports\report.md scanner_errors=0 session_id=72c630c487bf4917a92d5ef28082816b total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.orchestrator.session     duration_ms=0 realized_pnl=0 session_id=72c630c487bf4917a92d5ef28082816b total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1
+[registry] PAPER_CANDIDATE=1
+[registry] paper-executable on 5m: ['ema_crossover@5m']
+2026-10-25 14:28:34 [info     ] reconcile.consistent_fresh_book
+2026-10-25 14:28:34 [info     ] paper.orchestrator.started     interval_seconds=0.0 max_sessions=1 mode=paper
+2026-10-25 14:28:34 [info     ] paper.session.started          mode=paper paper_trading_enabled=True session_id=f722be4c4a724cf8bd3309a9905baa1f
+2026-10-25 14:28:34 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=2839aa6379a940489e3de3cb8955358d
+2026-10-25 14:28:34 [info     ] scanner.pair.processed         active=True rank_score=0.7666666666666666 rejection_reason=None scan_iteration_id=2839aa6379a940489e3de3cb8955358d symbol=BTC/USDT
+2026-10-25 14:28:34 [info     ] scanner.iteration.completed    all_failed=False duration_ms=0 early_exit=None pairs_active=1 pairs_inactive=0 pairs_processed=1 scan_iteration_id=2839aa6379a940489e3de3cb8955358d scanner_errors=0
+2026-10-25 14:28:34 [info     ] paper.scanner.completed        mode=paper scanner_errors=0 session_id=f722be4c4a724cf8bd3309a9905baa1f total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.cycle.completed          adapter_errors=0 bar_close_skips=0 broker_errors=0 context_errors=0 contexts_built=1 defensive_blocks={} duplicate_intents=0 exits_closed=0 exits_requested=0 hot_stop_blocked=0 mode=paper orders_created=0 rejections=[{'symbol': 'BTC/USDT', 'stage': 'strategy', 'reason': 'no_alpha_in_direction:ANY'}] reversals_refused=0 risk_accepted=0 risk_errors=0 risk_rejected=0 router_errors=0 router_invocations=1 router_no_trade=0 same_side_skips=0 session_id=f722be4c4a724cf8bd3309a9905baa1f signals_generated=0 strategy_errors=0 strategy_invocations=1
+2026-10-25 14:28:34 [info     ] paper.broker.reconciled        closed_trades=0 ending_equity=10000.0 fills_count=0 mode=paper realized_pnl=0 risk_events=() session_id=f722be4c4a724cf8bd3309a9905baa1f
+2026-10-25 14:28:34 [info     ] paper_state.saved              open_positions=0 path=C:\tmp\g5-before-evidence\scenarios\no_trade\paper_state.json sent_intents=0
+2026-10-25 14:28:34 [info     ] paper.state.saved              mode=paper session_id=f722be4c4a724cf8bd3309a9905baa1f
+2026-10-25 14:28:34 [info     ] paper.report.written           json_path=C:\tmp\g5-before-evidence\scenarios\no_trade\run\reports\report.json markdown_path=C:\tmp\g5-before-evidence\scenarios\no_trade\run\reports\report.md mode=paper session_id=f722be4c4a724cf8bd3309a9905baa1f
+2026-10-25 14:28:34 [info     ] paper.session.completed        active_snapshots=1 duration_ms=0 inactive_snapshots=0 mode=paper report_json_path=C:\tmp\g5-before-evidence\scenarios\no_trade\run\reports\report.json report_markdown_path=C:\tmp\g5-before-evidence\scenarios\no_trade\run\reports\report.md scanner_errors=0 session_id=f722be4c4a724cf8bd3309a9905baa1f total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.orchestrator.session     duration_ms=0 realized_pnl=0 session_id=f722be4c4a724cf8bd3309a9905baa1f total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1
+[registry] PAPER_CANDIDATE=1
+[registry] paper-executable on 5m: ['ema_crossover@5m']
+2026-10-25 14:28:34 [info     ] reconcile.consistent_fresh_book
+2026-10-25 14:28:34 [info     ] paper.orchestrator.started     interval_seconds=0.0 max_sessions=1 mode=paper
+2026-10-25 14:28:34 [info     ] paper.session.started          mode=paper paper_trading_enabled=True session_id=e8000581f3c04dad86846d8c3ec42e3a
+2026-10-25 14:28:34 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=eeecfb76ee7440409f5391bd1c4c2858
+2026-10-25 14:28:34 [info     ] scanner.pair.processed         active=True rank_score=0.7666666666666666 rejection_reason=None scan_iteration_id=eeecfb76ee7440409f5391bd1c4c2858 symbol=BTC/USDT
+2026-10-25 14:28:34 [info     ] scanner.iteration.completed    all_failed=False duration_ms=0 early_exit=None pairs_active=1 pairs_inactive=0 pairs_processed=1 scan_iteration_id=eeecfb76ee7440409f5391bd1c4c2858 scanner_errors=0
+2026-10-25 14:28:34 [info     ] paper.scanner.completed        mode=paper scanner_errors=0 session_id=e8000581f3c04dad86846d8c3ec42e3a total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.cycle.completed          adapter_errors=0 bar_close_skips=0 broker_errors=0 context_errors=0 contexts_built=1 defensive_blocks={} duplicate_intents=0 exits_closed=0 exits_requested=0 hot_stop_blocked=0 mode=paper orders_created=0 rejections=[{'symbol': 'BTC/USDT', 'stage': 'router', 'reason': 'NO_TRADE:stale_context'}] reversals_refused=0 risk_accepted=0 risk_errors=0 risk_rejected=0 router_errors=0 router_invocations=1 router_no_trade=1 same_side_skips=0 session_id=e8000581f3c04dad86846d8c3ec42e3a signals_generated=0 strategy_errors=0 strategy_invocations=0
+2026-10-25 14:28:34 [info     ] paper.broker.reconciled        closed_trades=0 ending_equity=10000.0 fills_count=0 mode=paper realized_pnl=0 risk_events=() session_id=e8000581f3c04dad86846d8c3ec42e3a
+2026-10-25 14:28:34 [info     ] paper_state.saved              open_positions=0 path=C:\tmp\g5-before-evidence\scenarios\stale\paper_state.json sent_intents=0
+2026-10-25 14:28:34 [info     ] paper.state.saved              mode=paper session_id=e8000581f3c04dad86846d8c3ec42e3a
+2026-10-25 14:28:34 [info     ] paper.report.written           json_path=C:\tmp\g5-before-evidence\scenarios\stale\run\reports\report.json markdown_path=C:\tmp\g5-before-evidence\scenarios\stale\run\reports\report.md mode=paper session_id=e8000581f3c04dad86846d8c3ec42e3a
+2026-10-25 14:28:34 [info     ] paper.session.completed        active_snapshots=1 duration_ms=0 inactive_snapshots=0 mode=paper report_json_path=C:\tmp\g5-before-evidence\scenarios\stale\run\reports\report.json report_markdown_path=C:\tmp\g5-before-evidence\scenarios\stale\run\reports\report.md scanner_errors=0 session_id=e8000581f3c04dad86846d8c3ec42e3a total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.orchestrator.session     duration_ms=0 realized_pnl=0 session_id=e8000581f3c04dad86846d8c3ec42e3a total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1
+[registry] PAPER_CANDIDATE=1
+[registry] paper-executable on 5m: ['ema_crossover@5m']
+2026-10-25 14:28:34 [info     ] reconcile.consistent_fresh_book
+2026-10-25 14:28:34 [info     ] paper.orchestrator.started     interval_seconds=0.0 max_sessions=1 mode=paper
+2026-10-25 14:28:34 [info     ] paper.session.started          mode=paper paper_trading_enabled=True session_id=4d8cf6b44eb444be86ef1b440a2e3d11
+2026-10-25 14:28:34 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=6c4e89d892ee4b5bae8d28d21237e1a3
+2026-10-25 14:28:34 [info     ] scanner.pair.processed         active=True rank_score=0.7666666666666666 rejection_reason=None scan_iteration_id=6c4e89d892ee4b5bae8d28d21237e1a3 symbol=BTC/USDT
+2026-10-25 14:28:34 [info     ] scanner.iteration.completed    all_failed=False duration_ms=0 early_exit=None pairs_active=1 pairs_inactive=0 pairs_processed=1 scan_iteration_id=6c4e89d892ee4b5bae8d28d21237e1a3 scanner_errors=0
+2026-10-25 14:28:34 [info     ] paper.scanner.completed        mode=paper scanner_errors=0 session_id=4d8cf6b44eb444be86ef1b440a2e3d11 total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.cycle.completed          adapter_errors=0 bar_close_skips=0 broker_errors=0 context_errors=0 contexts_built=1 defensive_blocks={'weekend_trading': 1} duplicate_intents=0 exits_closed=0 exits_requested=0 hot_stop_blocked=0 mode=paper orders_created=0 rejections=[{'symbol': 'BTC/USDT', 'stage': 'defensive_block', 'reason': 'weekend_trading: weekend (Sunday) and blocks.weekend_trading=false'}] reversals_refused=0 risk_accepted=0 risk_errors=0 risk_rejected=1 router_errors=0 router_invocations=1 router_no_trade=0 same_side_skips=0 session_id=4d8cf6b44eb444be86ef1b440a2e3d11 signals_generated=1 strategy_errors=0 strategy_invocations=1
+2026-10-25 14:28:34 [info     ] paper.broker.reconciled        closed_trades=0 ending_equity=10000.0 fills_count=0 mode=paper realized_pnl=0 risk_events=() session_id=4d8cf6b44eb444be86ef1b440a2e3d11
+2026-10-25 14:28:34 [info     ] paper_state.saved              open_positions=0 path=C:\tmp\g5-before-evidence\scenarios\kill_switch\paper_state.json sent_intents=0
+2026-10-25 14:28:34 [info     ] paper.state.saved              mode=paper session_id=4d8cf6b44eb444be86ef1b440a2e3d11
+2026-10-25 14:28:34 [info     ] paper.report.written           json_path=C:\tmp\g5-before-evidence\scenarios\kill_switch\run\reports\report.json markdown_path=C:\tmp\g5-before-evidence\scenarios\kill_switch\run\reports\report.md mode=paper session_id=4d8cf6b44eb444be86ef1b440a2e3d11
+2026-10-25 14:28:34 [info     ] paper.session.completed        active_snapshots=1 duration_ms=0 inactive_snapshots=0 mode=paper report_json_path=C:\tmp\g5-before-evidence\scenarios\kill_switch\run\reports\report.json report_markdown_path=C:\tmp\g5-before-evidence\scenarios\kill_switch\run\reports\report.md scanner_errors=0 session_id=4d8cf6b44eb444be86ef1b440a2e3d11 total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.orchestrator.session     duration_ms=0 realized_pnl=0 session_id=4d8cf6b44eb444be86ef1b440a2e3d11 total_snapshots=1
+2026-10-25 14:28:34 [info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1
+[registry] PAPER_CANDIDATE=1
+[registry] paper-executable on 5m: ['ema_crossover@5m']
+2026-10-25 14:28:34 [info     ] reconcile.consistent_fresh_book
+2026-10-25 14:28:34 [info     ] paper.orchestrator.started     interval_seconds=0.0 max_sessions=1 mode=paper
+2026-10-25 14:28:34 [info     ] paper.session.started          mode=paper paper_trading_enabled=True session_id=82f00d3c3aa942768162e6bf3f36beea
+2026-10-25 14:28:34 [info     ] scanner.iteration.started      mode=paper scan_iteration_id=fa903bcae7a2461198e2e222176cdcc7
+2026-10-25 14:28:34 [error    ] scanner.pair.error             error_msg='controlled provider outage for BTC/USDT' error_type=ConnectionError scan_iteration_id=fa903bcae7a2461198e2e222176cdcc7 symbol=BTC/USDT
+2026-10-25 14:28:34 [warning  ] scanner.iteration.completed    all_failed=True duration_ms=0 early_exit=None pairs_active=0 pairs_inactive=0 pairs_processed=1 scan_iteration_id=fa903bcae7a2461198e2e222176cdcc7 scanner_errors=1
+2026-10-25 14:28:34 [info     ] paper.scanner.completed        mode=paper scanner_errors=1 session_id=82f00d3c3aa942768162e6bf3f36beea total_snapshots=0
+2026-10-25 14:28:34 [info     ] paper.cycle.completed          adapter_errors=0 bar_close_skips=0 broker_errors=0 context_errors=0 contexts_built=0 defensive_blocks={} duplicate_intents=0 exits_closed=0 exits_requested=0 hot_stop_blocked=0 mode=paper orders_created=0 rejections=[] reversals_refused=0 risk_accepted=0 risk_errors=0 risk_rejected=0 router_errors=0 router_invocations=0 router_no_trade=0 same_side_skips=0 session_id=82f00d3c3aa942768162e6bf3f36beea signals_generated=0 strategy_errors=0 strategy_invocations=0
+2026-10-25 14:28:34 [info     ] paper.broker.reconciled        closed_trades=0 ending_equity=10000.0 fills_count=0 mode=paper realized_pnl=0 risk_events=() session_id=82f00d3c3aa942768162e6bf3f36beea
+2026-10-25 14:28:34 [info     ] paper_state.saved              open_positions=0 path=C:\tmp\g5-before-evidence\scenarios\provider_exception\paper_state.json sent_intents=0
+2026-10-25 14:28:34 [info     ] paper.state.saved              mode=paper session_id=82f00d3c3aa942768162e6bf3f36beea
+2026-10-25 14:28:34 [info     ] paper.report.written           json_path=C:\tmp\g5-before-evidence\scenarios\provider_exception\run\reports\report.json markdown_path=C:\tmp\g5-before-evidence\scenarios\provider_exception\run\reports\report.md mode=paper session_id=82f00d3c3aa942768162e6bf3f36beea
+2026-10-25 14:28:34 [info     ] paper.session.completed        active_snapshots=0 duration_ms=0 inactive_snapshots=0 mode=paper report_json_path=C:\tmp\g5-before-evidence\scenarios\provider_exception\run\reports\report.json report_markdown_path=C:\tmp\g5-before-evidence\scenarios\provider_exception\run\reports\report.md scanner_errors=1 session_id=82f00d3c3aa942768162e6bf3f36beea total_snapshots=0
+2026-10-25 14:28:34 [info     ] paper.orchestrator.session     duration_ms=0 realized_pnl=0 session_id=82f00d3c3aa942768162e6bf3f36beea total_snapshots=0
+2026-10-25 14:28:34 [info     ] paper.orchestrator.stopped     realized_pnl=0.0 sessions_completed=1
+{
+  "trade_orders": 0,
+  "restart_reconciliation": "RECOVERED",
+  "restart_orders": 0,
+  "restart_closed_trades": 0,
+  "no_trade_orders": 0,
+  "stale_orders": 0,
+  "kill_switch_orders": 0,
+  "kill_switch_broker_calls": {
+    "execute_signal": 0,
+    "close_position": 0
+  },
+  "exception_orders": 0
+}
+evidence written to C:\tmp\g5-before-evidence\evidence.json

@@ -1,0 +1,112 @@
+{
+  "artifact": "WP-EDGE-00-INDEPENDENT-VERIFICATION",
+  "verifier": "scripts/wp_edge_00_verify.py (separate process, artifact-only; no runtime imports)",
+  "generated_at_utc": "2026-10-12T09:14:55.907693+00:00",
+  "base": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\edge-recovery",
+  "checks_passed": 12,
+  "checks_total": 12,
+  "checks": [
+    {
+      "name": "ARTIFACTS_PRESENT",
+      "passed": true,
+      "detail": "all required artifacts present"
+    },
+    {
+      "name": "RUN_COMMIT_IS_ANCESTOR",
+      "passed": true,
+      "detail": "run commit=1d2192b0aec8 ancestor of HEAD=c74a3e12239e=True; files changed since run=25 (all evidence/verifier=True)"
+    },
+    {
+      "name": "MODE_PAPER_NO_LIVE_PATH",
+      "passed": true,
+      "detail": "mode=paper/PAPER production_actions=0"
+    },
+    {
+      "name": "TRACE_CHAIN_INTACT",
+      "passed": true,
+      "detail": "6 records; recomputed chain intact; runtime chain ok=True records=6"
+    },
+    {
+      "name": "COUNTS_REDERIVED_FROM_TRACES",
+      "passed": true,
+      "detail": "traces=6 runtime=6 daily=6 kinds={'NO_TRADE_STRATEGIC': 4, 'NO_TRADE_DATA': 2}"
+    },
+    {
+      "name": "NO_ORDERS_NO_TRADES",
+      "passed": true,
+      "detail": "orders_in_traces=0 orders_created=0 paper_trades=0 executions=0"
+    },
+    {
+      "name": "ECONOMIC_GATE_ARITHMETIC",
+      "passed": true,
+      "detail": "4 refusals: gross - cost = net < 0 re-derived from trace checks"
+    },
+    {
+      "name": "FIXTURE_DECISION_PATH",
+      "passed": true,
+      "detail": "contexts=3 router=3 strategy=3 orders=0 equity=10000.0 mode=paper"
+    },
+    {
+      "name": "WP_RUN_REPORT_CONSISTENT",
+      "passed": true,
+      "detail": "wp report matches runtime artifacts"
+    },
+    {
+      "name": "NO_SECRET_MATERIAL",
+      "passed": true,
+      "detail": "no secret-shaped material in commit scope"
+    },
+    {
+      "name": "CONTRACT_GATE_PRESENT",
+      "passed": true,
+      "detail": "test_paper_smoke_decision_path.py: fail-closed invariant and the three counters are asserted"
+    },
+    {
+      "name": "HONESTY_LABELS",
+      "passed": true,
+      "detail": "labels present; no profitability claim"
+    }
+  ],
+  "negative_controls_detected": 8,
+  "negative_controls_total": 8,
+  "negative_controls": [
+    {
+      "name": "commit_rewritten",
+      "detected": true
+    },
+    {
+      "name": "fixture_counters_zeroed",
+      "detected": true
+    },
+    {
+      "name": "trace_body_tampered",
+      "detected": true
+    },
+    {
+      "name": "traces_deleted",
+      "detected": true
+    },
+    {
+      "name": "fake_order_injected",
+      "detected": true
+    },
+    {
+      "name": "kind_count_swapped_in_daily",
+      "detected": true
+    },
+    {
+      "name": "economic_arithmetic_broken",
+      "detected": true
+    },
+    {
+      "name": "secret_injected",
+      "detected": true
+    }
+  ],
+  "false_success": 0,
+  "verdict": "PASS",
+  "limitations": [
+    "Separate process/implementation, not a different human or agent.",
+    "Verifies persisted PAPER evidence; it cannot and does not certify profitability."
+  ]
+}

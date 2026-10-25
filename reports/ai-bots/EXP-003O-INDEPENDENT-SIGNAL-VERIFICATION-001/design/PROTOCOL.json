@@ -1,0 +1,691 @@
+{
+  "acceptance": [
+    "ACC-003O-01 baseline intact",
+    "ACC-003O-02 protocol committed before evaluation",
+    "ACC-003O-03 all 24 cells traceable",
+    "ACC-003O-04 rebuilder isolated",
+    "ACC-003O-05 exact coverage, 0 unexplained differences",
+    "ACC-003O-06 data_available_ms <= decision_ms",
+    "ACC-003O-07 12/12 negative controls",
+    "ACC-003O-08 zero-sample families have fixtures",
+    "ACC-003O-09 verifier independent and clean-checkout reproduced",
+    "ACC-003O-10 holdout closed, 0 orders, config untouched",
+    "ACC-003O-11 reports complete, FALSE_SUCCESS=0",
+    "ACC-003O-12 no promotion, no re-pricing"
+  ],
+  "cells": [
+    {
+      "cell_id": "ema_crossover@5m",
+      "family": "ema_crossover",
+      "lane": "A",
+      "parameter_hash": "0a4a0ced3cb72ac31546dd67dc9c08962664992c06d7d0d6cec13ddfcf526257",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 22,
+        "window_bars": 80
+      },
+      "timeframe": "5m",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "ema_crossover@1h",
+      "family": "ema_crossover",
+      "lane": "A",
+      "parameter_hash": "0a4a0ced3cb72ac31546dd67dc9c08962664992c06d7d0d6cec13ddfcf526257",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 22,
+        "window_bars": 80
+      },
+      "timeframe": "1h",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "ema_crossover@4h",
+      "family": "ema_crossover",
+      "lane": "A",
+      "parameter_hash": "0a4a0ced3cb72ac31546dd67dc9c08962664992c06d7d0d6cec13ddfcf526257",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 22,
+        "window_bars": 80
+      },
+      "timeframe": "4h",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "momentum@5m",
+      "family": "momentum",
+      "lane": "A",
+      "parameter_hash": "dae46c72752bbdf258d57ff09fcab312a99a956cd38e26fab9edd0a4b517ce8d",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 36,
+        "window_bars": 80
+      },
+      "timeframe": "5m",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "momentum@1h",
+      "family": "momentum",
+      "lane": "A",
+      "parameter_hash": "dae46c72752bbdf258d57ff09fcab312a99a956cd38e26fab9edd0a4b517ce8d",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 36,
+        "window_bars": 80
+      },
+      "timeframe": "1h",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "momentum@4h",
+      "family": "momentum",
+      "lane": "A",
+      "parameter_hash": "dae46c72752bbdf258d57ff09fcab312a99a956cd38e26fab9edd0a4b517ce8d",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 36,
+        "window_bars": 80
+      },
+      "timeframe": "4h",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "breakout@5m",
+      "family": "breakout",
+      "lane": "A",
+      "parameter_hash": "1f120c41765afa943a91a310c2a8121b0520eb1aa2b507e3a8168a77c4ca211c",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 21,
+        "window_bars": 80
+      },
+      "timeframe": "5m",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "breakout@1h",
+      "family": "breakout",
+      "lane": "A",
+      "parameter_hash": "1f120c41765afa943a91a310c2a8121b0520eb1aa2b507e3a8168a77c4ca211c",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 21,
+        "window_bars": 80
+      },
+      "timeframe": "1h",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "breakout@4h",
+      "family": "breakout",
+      "lane": "A",
+      "parameter_hash": "1f120c41765afa943a91a310c2a8121b0520eb1aa2b507e3a8168a77c4ca211c",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 21,
+        "window_bars": 80
+      },
+      "timeframe": "4h",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "mean_reversion@5m",
+      "family": "mean_reversion",
+      "lane": "A",
+      "parameter_hash": "0a4a0ced3cb72ac31546dd67dc9c08962664992c06d7d0d6cec13ddfcf526257",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 22,
+        "window_bars": 80
+      },
+      "timeframe": "5m",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "mean_reversion@1h",
+      "family": "mean_reversion",
+      "lane": "A",
+      "parameter_hash": "0a4a0ced3cb72ac31546dd67dc9c08962664992c06d7d0d6cec13ddfcf526257",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 22,
+        "window_bars": 80
+      },
+      "timeframe": "1h",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "mean_reversion@4h",
+      "family": "mean_reversion",
+      "lane": "A",
+      "parameter_hash": "0a4a0ced3cb72ac31546dd67dc9c08962664992c06d7d0d6cec13ddfcf526257",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 22,
+        "window_bars": 80
+      },
+      "timeframe": "4h",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "trend@5m",
+      "family": "trend",
+      "lane": "A",
+      "parameter_hash": "2e8d306fe3929885710b155c3a07635db541920dd8cbb94cf87fabc4f9f5af8d",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 56,
+        "window_bars": 80
+      },
+      "timeframe": "5m",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "trend@1h",
+      "family": "trend",
+      "lane": "A",
+      "parameter_hash": "2e8d306fe3929885710b155c3a07635db541920dd8cbb94cf87fabc4f9f5af8d",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 56,
+        "window_bars": 80
+      },
+      "timeframe": "1h",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "trend@4h",
+      "family": "trend",
+      "lane": "A",
+      "parameter_hash": "2e8d306fe3929885710b155c3a07635db541920dd8cbb94cf87fabc4f9f5af8d",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 56,
+        "window_bars": 80
+      },
+      "timeframe": "4h",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "volatility@5m",
+      "family": "volatility",
+      "lane": "A",
+      "parameter_hash": "16aa49a3407440b8f580f26d46529cf15d341da25608d4edfc6cdc31e2d32d86",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 27,
+        "window_bars": 80
+      },
+      "timeframe": "5m",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "volatility@1h",
+      "family": "volatility",
+      "lane": "A",
+      "parameter_hash": "16aa49a3407440b8f580f26d46529cf15d341da25608d4edfc6cdc31e2d32d86",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 27,
+        "window_bars": 80
+      },
+      "timeframe": "1h",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "volatility@4h",
+      "family": "volatility",
+      "lane": "A",
+      "parameter_hash": "16aa49a3407440b8f580f26d46529cf15d341da25608d4edfc6cdc31e2d32d86",
+      "parameters": {
+        "long_short": true,
+        "min_candles": 27,
+        "window_bars": 80
+      },
+      "timeframe": "4h",
+      "warmup_bars": 79
+    },
+    {
+      "cell_id": "vol_regime_breakout@1h",
+      "family": "vol_regime_breakout",
+      "lane": "B",
+      "parameter_hash": "21e1d0d8c9af1bf53ff4a5ec80126fc56324910cad9ccbd4c94ee80ad4d601ae",
+      "parameters": {
+        "atr_hours": 24,
+        "atr_percentile_max": 0.95,
+        "atr_percentile_min": 0.5,
+        "channel_hours": 168,
+        "percentile_window_hours": 720,
+        "regime_ema_hours": 200,
+        "trail_atr_multiple": 3.0
+      },
+      "timeframe": "1h",
+      "warmup_bars": 743
+    },
+    {
+      "cell_id": "vol_regime_breakout@4h",
+      "family": "vol_regime_breakout",
+      "lane": "B",
+      "parameter_hash": "21e1d0d8c9af1bf53ff4a5ec80126fc56324910cad9ccbd4c94ee80ad4d601ae",
+      "parameters": {
+        "atr_hours": 24,
+        "atr_percentile_max": 0.95,
+        "atr_percentile_min": 0.5,
+        "channel_hours": 168,
+        "percentile_window_hours": 720,
+        "regime_ema_hours": 200,
+        "trail_atr_multiple": 3.0
+      },
+      "timeframe": "4h",
+      "warmup_bars": 743
+    },
+    {
+      "cell_id": "trend_pullback@1h",
+      "family": "trend_pullback",
+      "lane": "B",
+      "parameter_hash": "8cb4fb4c41c608d07530f65b0a7310c9c0fae59093bfdc4109b625a589737d94",
+      "parameters": {
+        "atr_hours": 24,
+        "fast_ema_hours": 20,
+        "slow_ema_hours": 50,
+        "stop_atr_multiple": 3.0,
+        "trend_ema_hours": 200,
+        "trend_slope_hours": 24
+      },
+      "timeframe": "1h",
+      "warmup_bars": 223
+    },
+    {
+      "cell_id": "trend_pullback@4h",
+      "family": "trend_pullback",
+      "lane": "B",
+      "parameter_hash": "8cb4fb4c41c608d07530f65b0a7310c9c0fae59093bfdc4109b625a589737d94",
+      "parameters": {
+        "atr_hours": 24,
+        "fast_ema_hours": 20,
+        "slow_ema_hours": 50,
+        "stop_atr_multiple": 3.0,
+        "trend_ema_hours": 200,
+        "trend_slope_hours": 24
+      },
+      "timeframe": "4h",
+      "warmup_bars": 223
+    },
+    {
+      "cell_id": "mean_reversion_vol_liq@1h",
+      "family": "mean_reversion_vol_liq",
+      "lane": "B",
+      "parameter_hash": "78125116da4453135d4c1f36b8639ebff9e9db9c041d83ad769856d7219c6390",
+      "parameters": {
+        "atr_hours": 24,
+        "atr_percentile_max": 0.5,
+        "atr_stop_multiple": 4.0,
+        "max_hold_hours": 48,
+        "mean_hours": 48,
+        "percentile_window_hours": 720,
+        "volume_median_hours": 168,
+        "volume_multiple_min": 1.2,
+        "z_entry": -2.0,
+        "z_exit": 0.0
+      },
+      "timeframe": "1h",
+      "warmup_bars": 743
+    },
+    {
+      "cell_id": "mean_reversion_vol_liq@4h",
+      "family": "mean_reversion_vol_liq",
+      "lane": "B",
+      "parameter_hash": "78125116da4453135d4c1f36b8639ebff9e9db9c041d83ad769856d7219c6390",
+      "parameters": {
+        "atr_hours": 24,
+        "atr_percentile_max": 0.5,
+        "atr_stop_multiple": 4.0,
+        "max_hold_hours": 48,
+        "mean_hours": 48,
+        "percentile_window_hours": 720,
+        "volume_median_hours": 168,
+        "volume_multiple_min": 1.2,
+        "z_entry": -2.0,
+        "z_exit": 0.0
+      },
+      "timeframe": "4h",
+      "warmup_bars": 743
+    }
+  ],
+  "comparator": {
+    "difference_classes": [
+      "MISSING_EVALUATION",
+      "EXTRA_EVALUATION",
+      "EXTRA_SIGNAL",
+      "MISSING_SIGNAL",
+      "DIRECTION_MISMATCH",
+      "STATE_MISMATCH",
+      "TIMING_MISMATCH",
+      "PIT_VIOLATION",
+      "INPUT_MISMATCH",
+      "PARAMETER_HASH_MISMATCH",
+      "DUPLICATE_KEY",
+      "CONTRACT_AMBIGUITY",
+      "DATA_INTEGRITY_FAIL",
+      "INDEPENDENCE_VIOLATION",
+      "PREFIX_INVARIANCE_FAIL"
+    ],
+    "duplicate_keys": "a duplicate key in either stream is a failure, not a last-write-wins",
+    "exact_fields": [
+      "state",
+      "direction",
+      "decision_ms"
+    ],
+    "join": "full outer join on the evaluation key",
+    "tolerances": {
+      "direction": "exact",
+      "indicator_floats": "not compared; a float difference that changes a decision is a decision difference",
+      "state": "exact",
+      "timestamps": "exact (milliseconds)"
+    }
+  },
+  "defects_known_before_running": [
+    {
+      "effect": "4h cells run a ~4x longer rule than their names claim",
+      "id": "DEF-003O-02",
+      "summary": "lane-B parameter names say hours but the machines consume bars",
+      "treatment": "reproduced, not repaired"
+    },
+    {
+      "effect": "signal counts are not trade counts",
+      "id": "DEF-003O-03",
+      "summary": "lane A has no position state, so overlapping signals are emitted bar by bar",
+      "treatment": "reproduced; the comparator counts decisions, not trades"
+    }
+  ],
+  "evaluation_contract": {
+    "directions": [
+      "LONG",
+      "SHORT",
+      "FLAT"
+    ],
+    "key": [
+      "cell_id",
+      "symbol",
+      "decision_time"
+    ],
+    "lane_a_warmup_bars": 79,
+    "lane_a_window_bars": 80,
+    "lane_b_warmup_bars": {
+      "mean_reversion_vol_liq": 743,
+      "trend_pullback": 223,
+      "vol_regime_breakout": 743
+    },
+    "reason_codes": [
+      "WARMUP",
+      "IN_POSITION",
+      "RULE_FALSE",
+      "ENTRY_RULE",
+      "EXIT_RULE"
+    ],
+    "row_fields": [
+      "cell_id",
+      "symbol",
+      "timeframe",
+      "decision_ms",
+      "bar_open_ms",
+      "bar_close_ms",
+      "data_available_ms",
+      "state",
+      "direction",
+      "reason",
+      "parameter_hash",
+      "input_snapshot_hash",
+      "window_first_ms",
+      "window_last_ms",
+      "window_bars",
+      "producer"
+    ],
+    "states": [
+      "SIGNAL",
+      "NO_SIGNAL",
+      "NOT_READY",
+      "NOT_EVALUABLE"
+    ],
+    "states_never_merged": [
+      "NOT_READY",
+      "NOT_EVALUABLE"
+    ]
+  },
+  "fixtures": [
+    {
+      "bars": 1400,
+      "expected": "at least one ENTRY after bar 743",
+      "family": "vol_regime_breakout",
+      "fixture_id": "vol_regime_breakout_active",
+      "generator": "synthetic_lcg_v1",
+      "generator_seed": 11,
+      "regime": "rising trend, sinusoidal volatility, breakout bar",
+      "timeframe": "1h"
+    },
+    {
+      "bars": 1400,
+      "expected": "no ENTRY",
+      "family": "vol_regime_breakout",
+      "fixture_id": "vol_regime_breakout_quiet",
+      "generator": "synthetic_lcg_v1",
+      "generator_seed": 11,
+      "regime": "flat drift, constant volatility: no breakout",
+      "timeframe": "1h"
+    },
+    {
+      "bars": 1400,
+      "expected": "at least one ENTRY after bar 223",
+      "family": "trend_pullback",
+      "fixture_id": "trend_pullback_active",
+      "generator": "synthetic_lcg_v1",
+      "generator_seed": 7,
+      "regime": "up trend with a pullback and a reclaim",
+      "timeframe": "1h"
+    },
+    {
+      "bars": 1400,
+      "expected": "no ENTRY",
+      "family": "trend_pullback",
+      "fixture_id": "trend_pullback_quiet",
+      "generator": "synthetic_lcg_v1",
+      "generator_seed": 7,
+      "regime": "monotone decline: the trend filter never allows a long",
+      "timeframe": "1h"
+    },
+    {
+      "bars": 1400,
+      "expected": "at least one ENTRY after bar 743",
+      "family": "mean_reversion_vol_liq",
+      "fixture_id": "mean_reversion_vol_liq_active",
+      "generator": "synthetic_lcg_v1",
+      "generator_seed": 3,
+      "regime": "range with a two-sigma flush on a volume spike",
+      "timeframe": "1h"
+    },
+    {
+      "bars": 1400,
+      "expected": "no ENTRY",
+      "family": "mean_reversion_vol_liq",
+      "fixture_id": "mean_reversion_vol_liq_quiet",
+      "generator": "synthetic_lcg_v1",
+      "generator_seed": 3,
+      "regime": "narrow range, no stretch and no volume spike",
+      "timeframe": "1h"
+    }
+  ],
+  "frozen_at_utc": "2026-10-21T07:25:56Z",
+  "governance": {
+    "builder_is_not_verifier": true,
+    "economic_edge": "NOT_EVALUATED",
+    "false_success_target": 0,
+    "holdout": "CLOSED",
+    "live_trading": "DISABLED",
+    "orders_authorised": 0,
+    "paper_promotion": "NOT_AUTHORIZED"
+  },
+  "holdout": {
+    "end_utc": "2026-08-20T00:00:00Z",
+    "opened": false,
+    "start_utc": "2026-08-06T00:00:00Z"
+  },
+  "independence": {
+    "allowed_shared": [
+      "scripts/exp_003o_contract.py",
+      "numpy",
+      "standard library"
+    ],
+    "forbidden_import_prefixes": [
+      "trading_bot.research.families",
+      "trading_bot.indicators",
+      "trading_bot.research.economic_recovery",
+      "trading_bot.vision.signal_sources",
+      "exp_003n_screen"
+    ],
+    "forbidden_path_fragments": [
+      "SIGNALS.jsonl.gz",
+      "SCREENING.json",
+      "VALIDATION.json",
+      "evaluations"
+    ],
+    "rebuilder_module": "scripts/exp_003o_rebuilder.py"
+  },
+  "negative_controls": [
+    {
+      "expected": "PIT_VIOLATION",
+      "id": "NEG-01",
+      "mutation": "a window that reaches one bar past the decision instant (shift(-1))"
+    },
+    {
+      "expected": "TIMING_MISMATCH",
+      "id": "NEG-02",
+      "mutation": "decide on a bar before it closes (decision_time = bar open)"
+    },
+    {
+      "expected": "PIT_VIOLATION",
+      "id": "NEG-03",
+      "mutation": "declare availability as the bar open instead of its close"
+    },
+    {
+      "expected": "PIT_VIOLATION",
+      "id": "NEG-04",
+      "mutation": "centre the rolling window on future bars"
+    },
+    {
+      "expected": "PARAMETER_HASH_MISMATCH",
+      "id": "NEG-05",
+      "mutation": "change one frozen parameter"
+    },
+    {
+      "expected": "MISSING_SIGNAL",
+      "id": "NEG-06",
+      "mutation": "delete a known signal from the independent stream"
+    },
+    {
+      "expected": "EXTRA_SIGNAL",
+      "id": "NEG-07",
+      "mutation": "add a spurious signal and a duplicate key"
+    },
+    {
+      "expected": "DIRECTION_MISMATCH",
+      "id": "NEG-08",
+      "mutation": "invert a direction and shift a signal one bar"
+    },
+    {
+      "expected": "DATA_INTEGRITY_FAIL",
+      "id": "NEG-09",
+      "mutation": "alter one byte of a bar file and duplicate a bar"
+    },
+    {
+      "expected": "STATE_MISMATCH",
+      "id": "NEG-10",
+      "mutation": "relabel a NOT_READY instant as NO_SIGNAL"
+    },
+    {
+      "expected": "PREFIX_INVARIANCE_FAIL",
+      "id": "NEG-11",
+      "mutation": "append future bars until a past decision changes"
+    },
+    {
+      "expected": "INDEPENDENCE_VIOLATION",
+      "id": "NEG-12",
+      "mutation": "make the rebuilder read the published signal calendar"
+    }
+  ],
+  "partitions": {
+    "IS": [
+      "2026-06-21T00:00:00Z",
+      "2026-07-11T00:00:00Z"
+    ],
+    "TEST": [
+      "2026-07-26T00:00:00Z",
+      "2026-08-06T00:00:00Z"
+    ],
+    "VAL": [
+      "2026-07-11T00:00:00Z",
+      "2026-07-26T00:00:00Z"
+    ]
+  },
+  "run_id": "EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001",
+  "schema_version": "AI_BOTS_003O_PROTOCOL_V1",
+  "source": {
+    "baseline_sha256": "9914bba8b6cf831dc38be73d41baab1a16d43af26fa0e4d241cc674bc0d3fd07",
+    "dataset": {
+      "manifest_matches": true,
+      "manifest_sha256_expected": "06339ca29a2334fb95d4c3773c7ef8b6f27b524c274dbd37c1e708704cf654ba",
+      "manifest_sha256_observed": "06339ca29a2334fb95d4c3773c7ef8b6f27b524c274dbd37c1e708704cf654ba",
+      "state": "OK",
+      "symbols": {
+        "BTCUSDT": {
+          "bytes_expected": 1474761,
+          "bytes_observed": 1474761,
+          "file": "BTCUSDT.1m.jsonl.gz",
+          "matches": true,
+          "sha256_expected": "7fbdfefa12785bb025d525994466b5a64d5c0668d6ff997f5f7566bc42d13814",
+          "sha256_observed": "7fbdfefa12785bb025d525994466b5a64d5c0668d6ff997f5f7566bc42d13814"
+        },
+        "ETHUSDT": {
+          "bytes_expected": 1375601,
+          "bytes_observed": 1375601,
+          "file": "ETHUSDT.1m.jsonl.gz",
+          "matches": true,
+          "sha256_expected": "cf04dc37617a0998016fcd7edfb9b2a77c9aa5fa656bbb54422805a5964650a6",
+          "sha256_observed": "cf04dc37617a0998016fcd7edfb9b2a77c9aa5fa656bbb54422805a5964650a6"
+        },
+        "SOLUSDT": {
+          "bytes_expected": 1077312,
+          "bytes_observed": 1077312,
+          "file": "SOLUSDT.1m.jsonl.gz",
+          "matches": true,
+          "sha256_expected": "33342aacc2ac75f897e2c9df2602a41d340c96ed08cd683dbd3871c3c7c60c32",
+          "sha256_observed": "33342aacc2ac75f897e2c9df2602a41d340c96ed08cd683dbd3871c3c7c60c32"
+        }
+      }
+    },
+    "design_sha256": "a0776fa3fbe6d2e122b52d0a381c3e15759a50f64fbd64c73e060ced25773714",
+    "experiment": "EXP-003N-GROSS-FIRST-DISCOVERY-001",
+    "screening_sha256": "225dbad0cc4135b7101e87a938db0cffa3c8ce5a4bde1cf1a7508b5027013e57",
+    "signals_sha256": "4a8f4626c388b781f4c2b66f9fcec171b7e38bf0a4d70d5b0d9bf1935c3de1d2"
+  },
+  "symbols": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "temporal_contract": {
+    "aggregation": "positional complete groups from the first minute; trailing partial group dropped",
+    "availability_convention": "bar available at open + interval; never observed at finer granularity",
+    "bar_timestamp_is": "open",
+    "decision_time_equals": "bar close of the decision bar",
+    "no_partial_bars": true,
+    "requirement": "data_available_ms <= decision_ms and window_last_ms + interval == decision_ms"
+  },
+  "timeframes_ms": {
+    "1h": 3600000,
+    "4h": 14400000,
+    "5m": 300000
+  }
+}

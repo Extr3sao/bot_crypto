@@ -1,0 +1,50 @@
+{
+  "app_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\app.py",
+  "app_src": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src",
+  "argv": [
+    "place-order",
+    "--symbol",
+    "BTC/USDT",
+    "--side",
+    "sell",
+    "--order-type",
+    "market",
+    "--amount",
+    "0.01",
+    "--price",
+    "100",
+    "--confirm-live",
+    "--market-kind",
+    "spot",
+    "--run-dir",
+    "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-after-place-order-spot-sell"
+  ],
+  "break_gate": "GATE-004",
+  "broken_gate_ids": [
+    "GATE-004"
+  ],
+  "broker_calls": 1,
+  "calls": [
+    {
+      "amount": 0.01,
+      "order_type": "market",
+      "price": 100.0,
+      "side": "sell",
+      "sink": "spot.place_spot_order",
+      "symbol": "BTC/USDT"
+    }
+  ],
+  "entrypoint": "place-order-spot-sell",
+  "error": "",
+  "exit_code": 0,
+  "gate_crash": false,
+  "gate_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\execution\\live_gate.py",
+  "gate_validations": 0,
+  "patched": {
+    "futures": "FakeFutures"
+  },
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-after-place-order-spot-sell",
+  "settings_error": false,
+  "stderr_tail": "",
+  "stdout_tail": "{\"success\": true, \"marketKind\": \"spot\", \"symbol\": \"BTC/USDT\", \"side\": \"sell\", \"orderType\": \"market\", \"amount\": 0.01, \"price\": 100.0, \"orderId\": \"p0-spot-1\", \"placeStatus\": \"FILLED\"}\n"
+}

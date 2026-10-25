@@ -1,0 +1,19 @@
+check     WATCH-20261013T184816Z  (2026-10-13T18:48:16Z)
+verdict   WATCH_ALARM · category SCHEDULER_FAILURE · operational_failure True · market_quiet False
+watching  TradingAgentic-EDGE04-Forward
+  OK       evidence_integrity     the lane's evidence is readable and internally consistent
+  OK       lane_cadence           a tick consumed a slot within the declared schedule
+  OK       lane_lease             no lease is on disk
+  OK       lane_process           every recorded tick finished and the process table answered
+  OK       market_expectation     3 bar(s) closed since the last tick and are pending the next trigger: normal latency inside the declared sched
+  OK       resource_disk          free space is above the warning floor
+  OK       resource_growth        the lane publishes no forecast because its own measured rate is volatile; a growth verdict is not invented fro
+  OK       restart_proof          every second ingest pass at an instant appended nothing: no bar was written twice
+  OK       scheduler_cadence      the next trigger is in the future
+  OK       scheduler_last_result  the scheduler's last result is a lane tick that did its job
+  ALARM    scheduler_task         the task is disabled
+  OK       store_freshness        every series holds a bar that closed inside its staleness bound
+  OK       watchdog_cadence       the watchdog's previous check is inside its own cadence
+findings  scheduler_task: the task is disabled
+history   checks 1 · episodes 0 · recoveries 0 · previous WATCH_OK
+alerts    SCHEDULER_DISABLED, WATCHDOG_ALARM

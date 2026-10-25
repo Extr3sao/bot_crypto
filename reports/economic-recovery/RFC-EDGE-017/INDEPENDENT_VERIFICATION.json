@@ -1,0 +1,304 @@
+{
+  "builder": "scripts/edge15_oos_preregistration.py, scripts/edge16_paper_lane.py, scripts/edge17_capture.py, scripts/edge17_reports.py",
+  "checks": [
+    {
+      "detail": "24 rows, freeze 1792221328939",
+      "id": "C1 slice rows are post-freeze",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "C2 every slice key is unique",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "C3 the manifest digest is the file's digest",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "before 9 after 24",
+      "id": "C4 the row census adds up and the slice never shrank",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "24 ledger keys",
+      "id": "C5 the independent ledger records every slice row",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "4 ledger entries",
+      "id": "C6 a re-run added nothing and left the bytes identical",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "C7 expected = observed + missing per symbol",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "C8 captured bars per symbol is the real count, not 0/1",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "C9 missing hours are MISSING_NO_COLLECTOR",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "9",
+      "id": "C10 evaluated hours match the lane's own ledger",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "C11 the still-forming hour never entered the slice",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "C12 the slice is written only through the single-writer transaction",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "S1 storage bytes and rows match the file",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "S2 the guard's decision follows its own arithmetic",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "S3 the fallback overstatement is the measured ratio",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "146 trades",
+      "id": "N1 1x: every trade reconciles its net",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "146 trades",
+      "id": "N2 2x: every trade reconciles its net",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "121 trades",
+      "id": "N3 3x: every trade reconciles its net",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "N4 no fill is free",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "N5 broker net, risk equity and reconciliation agree",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "N6 fills fall monotonically as costs rise",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "N7 lost fills are explained by a loss rule",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "N8 with costs off the engine reproduces WP-EDGE-016 fill for fill",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "-238.770489",
+      "id": "N9 the economic result is a net loss",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "2000 marks, pct 2.387705",
+      "id": "D1x drawdown is the peak-to-trough fall of the equity curve",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "2000 marks, pct 4.256923",
+      "id": "D2x drawdown is the peak-to-trough fall of the equity curve",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "2000 marks, pct 5.005718",
+      "id": "D3x drawdown is the peak-to-trough fall of the equity curve",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "D1 the four declared blocks are evaluated on the paper path",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "D2 the risk policy was not edited and live stays off",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "",
+      "id": "D3 the block matrix maps all four rules",
+      "problems": [],
+      "status": "VERIFIED"
+    },
+    {
+      "detail": "14/14 detected",
+      "id": "V1 every injected fault is detected",
+      "problems": [],
+      "status": "VERIFIED"
+    }
+  ],
+  "failed": [],
+  "generated_at_utc": "2026-10-17T17:26:44Z",
+  "mutations": [
+    {
+      "detected": true,
+      "id": "M1 drop a captured bar",
+      "problems": [
+        "manifest rows_after 24 != 23 on disk"
+      ]
+    },
+    {
+      "detected": true,
+      "id": "M2 duplicate a bar",
+      "problems": [
+        "1 duplicate keys"
+      ]
+    },
+    {
+      "detected": true,
+      "id": "M3 rewrite the manifest digest",
+      "problems": [
+        "manifest sha 0000000000000000000000000000000000000000000000000000000000000000 != file sha 999444b796dfb58b69e3895a9eac06b90e5e149ceb62e3e334428ade2362544c"
+      ]
+    },
+    {
+      "detected": true,
+      "id": "M4 call a missing hour a quiet one",
+      "problems": [
+        "BTC/USDT@0 missing but classified 'NO_SIGNAL'"
+      ]
+    },
+    {
+      "detected": true,
+      "id": "M5 inflate one trade's net",
+      "problems": [
+        "trd-EDGE16LANE-00000003: pnl != reference - costs (-0.9718524926176948)"
+      ]
+    },
+    {
+      "detected": true,
+      "id": "M6 charge nothing",
+      "problems": [
+        "trd-EDGE16LANE-00000003: entry commission is zero or negative",
+        "trd-EDGE16LANE-00000003: execution cost is zero or negative"
+      ]
+    },
+    {
+      "detected": true,
+      "id": "M7 reverse the fill ladder",
+      "problems": [
+        "fills are not non-increasing under cost: {'1x': 10, '2x': 20, '3x': 30}"
+      ]
+    },
+    {
+      "detected": true,
+      "id": "M8 claim a huge rate still fits",
+      "problems": [
+        "guard state COHERENT != INSUFFICIENT_FREE_SPACE from its own arithmetic",
+        "free bytes do not match the host reading"
+      ]
+    },
+    {
+      "detected": true,
+      "id": "M9 unwire the defensive blocks from the launcher",
+      "problems": [
+        "the paper launcher does not wire the blocks policy"
+      ]
+    },
+    {
+      "detected": true,
+      "id": "M10 enable live trading in the runtime config",
+      "problems": [
+        "config/runtime.yaml enables live trading"
+      ]
+    },
+    {
+      "detected": true,
+      "id": "M11 break the frictionless equivalence",
+      "problems": [
+        "0 frictionless fills != 146 baseline fills"
+      ]
+    },
+    {
+      "detected": true,
+      "id": "M12 let the collector write the slice without the lock",
+      "problems": [
+        "the collector does not write both slices through merge_and_write"
+      ]
+    },
+    {
+      "detected": true,
+      "id": "M13 publish peak_equity as drawdown_pct again",
+      "problems": [
+        "drawdown_pct 10000.0 > 100%: looks like a balance, not a fall",
+        "drawdown_pct 10000.0 != recomputed 2.387705"
+      ]
+    },
+    {
+      "detected": true,
+      "id": "M14 claim a drawdown with no curve behind it",
+      "problems": [
+        "declared 0 points, curve has 0",
+        "fewer than two finite marks"
+      ]
+    }
+  ],
+  "mutations_detected": 14,
+  "mutations_total": 14,
+  "schema_version": "EDGE17_INDEPENDENT_VERIFICATION_V1",
+  "total": 31,
+  "verdict": "VERIFIED",
+  "verified": 31,
+  "verifier": "scripts/edge17_verify.py (does not import the builder modules)"
+}

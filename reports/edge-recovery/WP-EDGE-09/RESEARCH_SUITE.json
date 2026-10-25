@@ -1,0 +1,29 @@
+{
+  "schema_version": "EDGE09_V1",
+  "work_package": "WP-EDGE-09F",
+  "artifact": "RESEARCH_SUITE",
+  "as_of_utc": "2026-10-15T05:53:07Z",
+  "commit": "eceef9ee3cdddddc1b45e0e36647ee2282745da8",
+  "suite": "tests/unit/research",
+  "command": "python.exe -m pytest tests/unit/research -q",
+  "log_path": ".ci/edge09_research_suite.log",
+  "exit_code": 1,
+  "failed": 1,
+  "passed": 2296,
+  "seconds": 519.64,
+  "failing_tests": [
+    "tests/unit/research/test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout"
+  ],
+  "failures": [
+    {
+      "test": "tests/unit/research/test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout",
+      "file": "tests/unit/research/test_cost_barrier_adversarial.py",
+      "files_this_package_touched": false,
+      "why": "outside every path this package commits to; the package's own commits touch no file under it"
+    }
+  ],
+  "inherited_failures": 1,
+  "caused_by_this_package": 0,
+  "reading": "declared, not hidden: a failure outside this package's paths is reported as inherited and left to its owner, and a failure inside them would have to be fixed here before the package could close",
+  "how_to_reproduce": "python edge09_suite_evidence.py --run"
+}

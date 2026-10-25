@@ -1,0 +1,51 @@
+{
+  "app_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\app.py",
+  "app_src": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src",
+  "argv": [
+    "run",
+    "--mode",
+    "live",
+    "--once",
+    "--auto-trade",
+    "--market-kind",
+    "futures",
+    "--trade-quote-usdt",
+    "50",
+    "--loop-seconds",
+    "30",
+    "--env-file",
+    "",
+    "--run-dir",
+    "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-before-run-futures"
+  ],
+  "break_gate": "GATE-003",
+  "broken_gate_ids": [
+    "GATE-003"
+  ],
+  "broker_calls": 1,
+  "calls": [
+    {
+      "order_type": "MARKET",
+      "qty": 0.5,
+      "side": "BUY",
+      "sink": "futures.place_order",
+      "sl_price": 99.5,
+      "symbol": "BTC/USDT",
+      "tp_price": 101.0,
+      "trade_side": "OPEN"
+    }
+  ],
+  "entrypoint": "run-futures",
+  "error": "",
+  "exit_code": 0,
+  "gate_crash": false,
+  "gate_file": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\src\\trading_bot\\execution\\live_gate.py",
+  "gate_validations": 0,
+  "patched": {
+    "futures": "FakeFutures"
+  },
+  "run_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.tmp\\p0-before-run-futures",
+  "settings_error": false,
+  "stderr_tail": "",
+  "stdout_tail": "[run] ejecutando una iteracion live real (mode=live).\n[run] live-event={\"status\": \"FUTURES_ORDER_OK\", \"tradeCaseId\": \"p0-tc-1\", \"chartSnapshotPath\": \"\", \"positionId\": null, \"symbol\": \"BTC/USDT\", \"direction\": \"LONG\", \"assumption\": \"ohlcv_direction_last_close_gte_first_close\", \"score\": 0.9, \"qty\": 0.5, \"tpPrice\": 101.0, \"slPrice\": 99.5, \"orderId\": \"p0-order-1\", \"clientId\": null}\n\n==============================================================================\nMarket scanner iteration -- DEMO mode (mode=live, synthetic data)\n==============================================================================\n\n  SYMBOL               LAST     VOL_24H_USDT   SPR_BPS    ATR%   SCORE  STATUS\n  ----------------------------------------------------------------------------\n  BTC/USDT           100.00        5,000,000      1.00    0.50   0.900  ACTIVE\n\nCounters (pine contract: spec section 10):\n  pairs_processed:  1\n  pairs_active:     1\n  pairs_inactive:   0\n  scanner_errors:   0\n\n"
+}

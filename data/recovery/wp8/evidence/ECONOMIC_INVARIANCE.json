@@ -1,0 +1,119 @@
+{
+  "artifact": "WP8_ECONOMIC_INVARIANCE",
+  "work_package": "WP-8D: prove the reproducibility repair moved no economic finding",
+  "generated_at_utc": "2026-10-11T17:53:18Z",
+  "generated_by": "scripts/recovery_economic_invariance.py",
+  "before_commit": "e670d2a94a5444d283c9c51930ee548aedc569f2",
+  "before_rev": "3f8d646^",
+  "after_commit": "3f8d646ac849f494f3838152dcdc64d100554736",
+  "after_rev": "3f8d646",
+  "method": "compare every published finding field of the pre-repair artefact with the post-repair one, key by key, from the committed blobs",
+  "expected_changes": [
+    "the campaign blocks gained input_authority / provenance fields",
+    "local_observations replaced raw-bytes pins"
+  ],
+  "audit": {
+    "comparisons": [
+      {
+        "field": "strategy_count",
+        "identical": true
+      },
+      {
+        "field": "strategies",
+        "identical": true
+      },
+      {
+        "field": "failure_categories",
+        "identical": true
+      },
+      {
+        "field": "aggregates",
+        "identical": true
+      },
+      {
+        "field": "answers",
+        "identical": true
+      },
+      {
+        "field": "paper_lane",
+        "identical": true
+      },
+      {
+        "field": "declared_source_discrepancies",
+        "identical": true
+      },
+      {
+        "field": "defects",
+        "identical": true
+      },
+      {
+        "field": "cost_plane",
+        "identical": true
+      }
+    ],
+    "identical_findings": [
+      "strategy_count",
+      "strategies",
+      "failure_categories",
+      "aggregates",
+      "answers",
+      "paper_lane",
+      "declared_source_discrepancies",
+      "defects",
+      "cost_plane"
+    ],
+    "changed_findings": []
+  },
+  "state_view": {
+    "comparisons": [
+      {
+        "field": "resolutions",
+        "identical": true
+      },
+      {
+        "field": "advisories",
+        "identical": false
+      },
+      {
+        "field": "rfc_numbering",
+        "identical": true
+      },
+      {
+        "field": "status",
+        "identical": true
+      },
+      {
+        "field": "campaigns[*.effective_state]",
+        "identical": true,
+        "note": "compared below"
+      }
+    ],
+    "identical_findings": [
+      "resolutions",
+      "rfc_numbering",
+      "status"
+    ],
+    "changed_findings": [
+      "advisories"
+    ],
+    "campaign_effective_state_identical": true,
+    "campaigns_compared": [
+      "ACTIVE-PAPER",
+      "RFC-046",
+      "RFC-048V",
+      "RFC-049",
+      "RFC-049-DISCOVERY-2",
+      "ST6-FORWARD-REGIME"
+    ]
+  },
+  "not_a_profitability_claim": true,
+  "headline": {
+    "per_strategy_records_identical": true,
+    "aggregates_identical": true,
+    "admitted_for_paper_before": 0,
+    "admitted_for_paper_after": 0,
+    "net_positive_count_before": 0,
+    "net_positive_count_after": 0
+  },
+  "verdict": "IDENTICAL"
+}

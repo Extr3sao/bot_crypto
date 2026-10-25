@@ -1,0 +1,383 @@
+{
+  "schema_version": "1.0",
+  "runner": "runner/EXP-004A/WP-051-02F",
+  "rfc": "RFC-EXP004A-051-02F",
+  "verifier": "verifier-e/EXP-004A/WP-051-02F",
+  "independent_of_runner": true,
+  "claim": {
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\docs\\agentic\\exp004a\\wp051_02f\\evidence\\20261022T140037Z-de5d3329\\CLAIM.json",
+    "sha256": "69ce47d59c16db465dc48a419421735218cb563c77f2f8dc097853c2dcbf74b6"
+  },
+  "generated_at_utc": "2026-10-22T14:03:31.311Z",
+  "duration_s": 44.02,
+  "head": "f20dff9b71fd10a5f110ab6cae88e817c6f5d428",
+  "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "run_state_verified": "INDEPENDENT_VERIFY",
+  "status": "PASS",
+  "controls": {
+    "FREEZE_INTEGRITY": {
+      "checks": 6,
+      "failed": [],
+      "verdict": "PASS"
+    },
+    "CLAIM_INTEGRITY": {
+      "checks": 8,
+      "failed": [],
+      "verdict": "PASS"
+    },
+    "TEMPORAL_ADMISSIBILITY": {
+      "checks": 4,
+      "failed": [],
+      "verdict": "PASS"
+    },
+    "SOURCE_FIDELITY": {
+      "checks": 3,
+      "failed": [],
+      "verdict": "PASS"
+    },
+    "GATE_INTEGRITY": {
+      "checks": 6,
+      "failed": [],
+      "verdict": "PASS"
+    },
+    "INDEPENDENCE": {
+      "checks": 1,
+      "failed": [],
+      "verdict": "PASS"
+    }
+  },
+  "checks": [
+    {
+      "control": "CLAIM_INTEGRITY",
+      "check_id": "RUN_REPORT_PRESENT",
+      "status": "PASS",
+      "detail": "CLAIM.json parses and claims state 'INDEPENDENT_VERIFY'",
+      "evidence": {}
+    },
+    {
+      "control": "FREEZE_INTEGRITY",
+      "check_id": "PHASE2_DECLARATION_DIGEST",
+      "status": "PASS",
+      "detail": "config/preregistrations/EXP-004A.datasets.phase2.json sha256 eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+      "evidence": {
+        "sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e"
+      }
+    },
+    {
+      "control": "FREEZE_INTEGRITY",
+      "check_id": "PHASE1_DIGEST_MATCHES_DECLARATION",
+      "status": "PASS",
+      "detail": "the successor names phase 1 as 8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211; the anchor is 8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+      "evidence": {
+        "declared": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+        "anchor": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211"
+      }
+    },
+    {
+      "control": "FREEZE_INTEGRITY",
+      "check_id": "PHASE1_BLOB",
+      "status": "PASS",
+      "detail": "HEAD:config/preregistrations/EXP-004A.datasets.json is 43c9deea29a8e4af1c0333bcc0b58131620ec3e7; the anchor is 43c9deea29a8e4af1c0333bcc0b58131620ec3e7",
+      "evidence": {
+        "blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7",
+        "anchor": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7"
+      }
+    },
+    {
+      "control": "FREEZE_INTEGRITY",
+      "check_id": "GENERATOR_BLOB",
+      "status": "PASS",
+      "detail": "scripts/exp004a_capture.py at fc036d967923f09a6092cb0e5de7409afd07ebd7 hashes af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+      "evidence": {
+        "sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+        "anchor": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8"
+      }
+    },
+    {
+      "control": "FREEZE_INTEGRITY",
+      "check_id": "GENERATOR_WORKTREE_UNCHANGED",
+      "status": "PASS",
+      "detail": "the generator in the worktree is the committed generator",
+      "evidence": {
+        "worktree_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8"
+      }
+    },
+    {
+      "control": "CLAIM_INTEGRITY",
+      "check_id": "DATASET_PRESENT",
+      "status": "PASS",
+      "detail": "data/exp004a/EXP-004A-1H-BTC.jsonl is on disk with the claimed digest",
+      "evidence": {
+        "sha256": "da7310abcacc410ee20b2dbfdd814d78ff5d5689267554eace6632bf274950cd",
+        "claimed": "da7310abcacc410ee20b2dbfdd814d78ff5d5689267554eace6632bf274950cd"
+      }
+    },
+    {
+      "control": "CLAIM_INTEGRITY",
+      "check_id": "DATASET_PRESENT",
+      "status": "PASS",
+      "detail": "data/exp004a/EXP-004A-1H-ETH.jsonl is on disk with the claimed digest",
+      "evidence": {
+        "sha256": "28275763fe0bc3d6c514681f8c0c94fc2e1266acbd737724884b06c11b500729",
+        "claimed": "28275763fe0bc3d6c514681f8c0c94fc2e1266acbd737724884b06c11b500729"
+      }
+    },
+    {
+      "control": "CLAIM_INTEGRITY",
+      "check_id": "DATASET_PRESENT",
+      "status": "PASS",
+      "detail": "data/exp004a/EXP-004A-1H-SOL.jsonl is on disk with the claimed digest",
+      "evidence": {
+        "sha256": "b617d5492bb89ced9f0c3157a0a6ef50ccf6e1dcbb2167f2d7a5e8d16caa049e",
+        "claimed": "b617d5492bb89ced9f0c3157a0a6ef50ccf6e1dcbb2167f2d7a5e8d16caa049e"
+      }
+    },
+    {
+      "control": "CLAIM_INTEGRITY",
+      "check_id": "NO_FALSE_SUCCESS",
+      "status": "PASS",
+      "detail": "the report claims INDEPENDENT_VERIFY",
+      "evidence": {}
+    },
+    {
+      "control": "CLAIM_INTEGRITY",
+      "check_id": "CAPTURE_OUTPUT_PRESENT",
+      "status": "PASS",
+      "detail": "1h:BTC exited 0 and EXP-004A-1H-BTC.jsonl is on disk",
+      "evidence": {
+        "dataset_path": "data/exp004a/EXP-004A-1H-BTC.jsonl",
+        "exists": true
+      }
+    },
+    {
+      "control": "CLAIM_INTEGRITY",
+      "check_id": "CAPTURE_OUTPUT_PRESENT",
+      "status": "PASS",
+      "detail": "1h:ETH exited 0 and EXP-004A-1H-ETH.jsonl is on disk",
+      "evidence": {
+        "dataset_path": "data/exp004a/EXP-004A-1H-ETH.jsonl",
+        "exists": true
+      }
+    },
+    {
+      "control": "CLAIM_INTEGRITY",
+      "check_id": "CAPTURE_OUTPUT_PRESENT",
+      "status": "PASS",
+      "detail": "1h:SOL exited 0 and EXP-004A-1H-SOL.jsonl is on disk",
+      "evidence": {
+        "dataset_path": "data/exp004a/EXP-004A-1H-SOL.jsonl",
+        "exists": true
+      }
+    },
+    {
+      "control": "TEMPORAL_ADMISSIBILITY",
+      "check_id": "DECISION_INSTANT_NOT_IN_FUTURE",
+      "status": "PASS",
+      "detail": "the capture decision 2026-10-22T14:02:46.640Z is not in the future",
+      "evidence": {
+        "decision_at_utc": "2026-10-22T14:02:46.640Z",
+        "verifier_at_utc": "2026-10-22T14:02:47.288Z",
+        "ahead_ms": -648
+      }
+    },
+    {
+      "control": "TEMPORAL_ADMISSIBILITY",
+      "check_id": "ROWS_ADMISSIBLE",
+      "status": "PASS",
+      "detail": "EXP-004A-1H-BTC.jsonl: 14 row(s) are temporally admissible",
+      "evidence": {
+        "rows": 14,
+        "violations": []
+      }
+    },
+    {
+      "control": "TEMPORAL_ADMISSIBILITY",
+      "check_id": "ROWS_ADMISSIBLE",
+      "status": "PASS",
+      "detail": "EXP-004A-1H-ETH.jsonl: 14 row(s) are temporally admissible",
+      "evidence": {
+        "rows": 14,
+        "violations": []
+      }
+    },
+    {
+      "control": "TEMPORAL_ADMISSIBILITY",
+      "check_id": "ROWS_ADMISSIBLE",
+      "status": "PASS",
+      "detail": "EXP-004A-1H-SOL.jsonl: 14 row(s) are temporally admissible",
+      "evidence": {
+        "rows": 14,
+        "violations": []
+      }
+    },
+    {
+      "control": "SOURCE_FIDELITY",
+      "check_id": "SOURCE_COMPARED",
+      "status": "PASS",
+      "detail": "EXP-004A-1H-BTC: 14 published row(s) equal the store's rows",
+      "evidence": {
+        "published_rows": 14,
+        "selected_rows": 14,
+        "extra": [],
+        "missing": [],
+        "altered": []
+      }
+    },
+    {
+      "control": "SOURCE_FIDELITY",
+      "check_id": "SOURCE_COMPARED",
+      "status": "PASS",
+      "detail": "EXP-004A-1H-ETH: 14 published row(s) equal the store's rows",
+      "evidence": {
+        "published_rows": 14,
+        "selected_rows": 14,
+        "extra": [],
+        "missing": [],
+        "altered": []
+      }
+    },
+    {
+      "control": "SOURCE_FIDELITY",
+      "check_id": "SOURCE_COMPARED",
+      "status": "PASS",
+      "detail": "EXP-004A-1H-SOL: 14 published row(s) equal the store's rows",
+      "evidence": {
+        "published_rows": 14,
+        "selected_rows": 14,
+        "extra": [],
+        "missing": [],
+        "altered": []
+      }
+    },
+    {
+      "control": "GATE_INTEGRITY",
+      "check_id": "GATE_C_013",
+      "status": "PASS",
+      "detail": "C_013 is TIME_PROOF_WEAK",
+      "evidence": {
+        "found": "TIME_PROOF_WEAK",
+        "expected": "TIME_PROOF_WEAK"
+      }
+    },
+    {
+      "control": "GATE_INTEGRITY",
+      "check_id": "GATE_C_016",
+      "status": "PASS",
+      "detail": "C_016 is UNREACHABLE_UNDER_DECLARED_COST_MODEL",
+      "evidence": {
+        "found": "UNREACHABLE_UNDER_DECLARED_COST_MODEL",
+        "expected": "UNREACHABLE_UNDER_DECLARED_COST_MODEL"
+      }
+    },
+    {
+      "control": "GATE_INTEGRITY",
+      "check_id": "GATE_PAPER_VALIDATION",
+      "status": "PASS",
+      "detail": "PAPER_VALIDATION is NOT_PASS",
+      "evidence": {
+        "found": "NOT_PASS",
+        "expected": "NOT_PASS"
+      }
+    },
+    {
+      "control": "GATE_INTEGRITY",
+      "check_id": "GATE_CERTIFICATION",
+      "status": "PASS",
+      "detail": "CERTIFICATION is BLOCKED",
+      "evidence": {
+        "found": "BLOCKED",
+        "expected": "BLOCKED"
+      }
+    },
+    {
+      "control": "GATE_INTEGRITY",
+      "check_id": "GATE_PROMOTION",
+      "status": "PASS",
+      "detail": "PROMOTION is NO_PROMOTION",
+      "evidence": {
+        "found": "NO_PROMOTION",
+        "expected": "NO_PROMOTION"
+      }
+    },
+    {
+      "control": "INDEPENDENCE",
+      "check_id": "NO_FORBIDDEN_IMPORT",
+      "status": "PASS",
+      "detail": "the verifier imports neither trading_bot nor the runner",
+      "evidence": {
+        "imports": [
+          "__future__",
+          "argparse",
+          "ast",
+          "dataclasses",
+          "datetime",
+          "hashlib",
+          "json",
+          "pathlib",
+          "subprocess",
+          "sys",
+          "time",
+          "typing"
+        ],
+        "offending": []
+      }
+    },
+    {
+      "control": "FREEZE_INTEGRITY",
+      "check_id": "SEALED_02E_BYTES_INTACT",
+      "status": "PASS",
+      "detail": "23 sealed 02E artefact(s) still hash to the manifest",
+      "evidence": {
+        "entries": 23,
+        "drifted": [],
+        "absent": []
+      }
+    },
+    {
+      "control": "GATE_INTEGRITY",
+      "check_id": "SEALED_02E_REVERIFICATION",
+      "status": "PASS",
+      "detail": "the sealed 02E package re-verifies except for 3 control(s) that expire with the clock (V-ART-03, V-TEMP-01, V-TEMP-02); this is not a re-certification of 02E and those controls are not reported as passing",
+      "evidence": {
+        "command": "python scripts/exp004a_wp051_02e_verify.py --mode verify --run-dir <02e> --out <02f>",
+        "exit_code": 2,
+        "status": "FAIL",
+        "verdict": "PASS",
+        "detail": "the sealed 02E package re-verifies except for 3 control(s) that expire with the clock (V-ART-03, V-TEMP-01, V-TEMP-02); this is not a re-certification of 02E and those controls are not reported as passing",
+        "failed_checks": [
+          "V-TEMP-01",
+          "V-TEMP-02",
+          "V-ART-03"
+        ],
+        "expired_checks": [
+          "V-TEMP-01",
+          "V-TEMP-02",
+          "V-ART-03"
+        ],
+        "regressed_checks": [],
+        "expiry_reasons": {
+          "V-TEMP-01": "the sealed builder described a window that had not opened; it has since opened",
+          "V-TEMP-02": "the sealed capture status was PENDING_WINDOW; a capture may have run since",
+          "V-ART-03": "the sealed report counted zero published datasets; a capture may have published since"
+        },
+        "out": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\docs\\agentic\\exp004a\\wp051_02f\\evidence\\20261022T140037Z-de5d3329\\reused_preflight\\02E_REVERIFIED.json",
+        "stderr": ""
+      }
+    }
+  ],
+  "anchors": {
+    "phase1_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+    "phase1_git_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7",
+    "generator_commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+    "generator_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+    "capture_window": [
+      "2026-10-22T00:00:00Z",
+      "2027-01-20T00:00:00Z"
+    ],
+    "effective_from_utc": "2026-10-21T16:00:00Z"
+  },
+  "temporal_proof": "TIME_PROOF_WEAK",
+  "external_timestamp": "UNAVAILABLE",
+  "not_a_certification": "a PASS here means the runner's claim matched the evidence at this instant. It is not a capture, not a certification and not a promotion, and the paper, cost and promotion gates are untouched by this verdict.",
+  "economic_executions": 0
+}

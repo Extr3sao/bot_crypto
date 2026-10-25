@@ -1,0 +1,555 @@
+{
+  "acceptance": [
+    {
+      "criterion": "ACC-01",
+      "evidence": "gate DEPENDENCY_GATE_PASS; entry points 6/6 answered --help, modules 9/9 importable, RFC-EDGE-011 NOT_PRESENT_IN_TREE, scheduler Ready",
+      "requirement": "Dependencias auditadas contra runtime real.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-02",
+      "evidence": "selected LOGON_TRIGGER; S4U probe NEEDS_ELEVATION, available without new privileges ['LOGON_TRIGGER', 'WITNESS_ACTION']",
+      "requirement": "Mecanismo de ejecuci\u00f3n seleccionado con evidencia.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-03",
+      "evidence": "applied to the live task: False; probe tasks left behind: none; preflight PREFLIGHT_PASS",
+      "requirement": "Ning\u00fan cambio privilegiado sin autorizaci\u00f3n.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-04",
+      "evidence": "no probe stored a credential (0 offender(s)); every probe record carries stored_a_password=false, and no definition here contains a <Password> element",
+      "requirement": "No se almacenan nuevas credenciales.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-05",
+      "evidence": "the mechanism that would remove the session dependence reads NEEDS_ELEVATION on this process's own attempt, so the dependence is bounded and not removed: selected LOGON_TRIGGER; blocked {'AUTHORISED_SERVICE_ACCOUNT': 'NO_ACCOUNT_DESIGNATED', 'INDEPENDENT_HOST_RUNNER': 'NO_AUTHORISED_INFRASTRUCTURE_FOUND', 'S4U_BARE': 'NEEDS_ELEVATION', 'S4U_PROPOSAL': 'NEEDS_ELEVATION', 'SYSTEM_PRINCIPAL': 'NEEDS_ELEVATION', 'WINDOWS_SERVICE': 'NOT_ATTEMPTED_NEEDS_ELEVATION'}",
+      "requirement": "Observador ejecutable sin sesi\u00f3n interactiva, o bloqueo declarado.",
+      "verdict": "BLOQUEADO_DECLARADO"
+    },
+    {
+      "criterion": "ACC-06",
+      "evidence": "SINGLE_INSTANCE PASS on the runtime; the slot ledger holds 200 row(s) over 200 unique key(s)",
+      "requirement": "No existen ejecuciones simult\u00e1neas que corrompan el ledger.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-07",
+      "evidence": "26 unanswered instant(s), every one classified: {'HOST_DOWN': 1, 'NO_SESSION': 24, 'SILENT_UNATTRIBUTABLE': 1, 'SLEEP': 0}",
+      "requirement": "Los disparos perdidos tienen causa o clasificaci\u00f3n UNATTRIBUTABLE.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-08",
+      "evidence": "guard HEALTHY at 7.5323 GiB against the campaign's own thresholds; storage verification STORAGE_VERIFY_PASS",
+      "requirement": "El guardi\u00e1n de disco permanece activo.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-09",
+      "evidence": "ceiling 72837412 B of a declared 268435456 B budget; the store adds 0.006249 GiB over sixty days at the measured rate",
+      "requirement": "Existe capacidad de almacenamiento justificada para la observaci\u00f3n.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-10",
+      "evidence": "the rehearsal read C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03 and wrote C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge12\\rehearsal; the verifier re-derived its figures from the published snapshots with 24 check(s)",
+      "requirement": "Los snapshots se reproducen offline sin acceder a datos vivos.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-11",
+      "evidence": "level three counts 1 day(s) of 60; an incomplete day is never promoted, it is left INCOMPLETE and reported in FORWARD_COVERAGE.json",
+      "requirement": "Los d\u00edas incompletos no se promocionan.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-12",
+      "evidence": "228 dense day(s) whose bars arrived late are classified DENSE_BUT_BACKFILLED and counted as zero forward days; the rule is the lane's own prospective_days",
+      "requirement": "Los datos backfilled no cuentan como forward prospectivo.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-13",
+      "evidence": "required days 60, coverage floor 0.9 (the campaign's declared values, unchanged by this package)",
+      "requirement": "Se mantienen los 60 d\u00edas y el 90 %.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-14",
+      "evidence": "sabotage matrix 24/24 mutation(s) detected, 0 undetected, over 24 check(s)",
+      "requirement": "Los tests y sabotajes detectan defectos reales.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-15",
+      "evidence": "this verifier imports nothing from trading_bot.research.edge12 and re-derives every figure it checks from the published JSON and the log snapshots",
+      "requirement": "El verificador es independiente del constructor.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-16",
+      "evidence": "4 open failure(s) recorded, every one with an id and a status; every deliverable present: True",
+      "requirement": "Los informes incluyen fallos, bloqueos y evidencia.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-17",
+      "evidence": "every record this package wrote carries order_sent=false and promotion=NONE, including the HEALTHY storage reading and the operational window",
+      "requirement": "order_sent=false y promotion=NONE.",
+      "verdict": "SATISFECHO"
+    },
+    {
+      "criterion": "ACC-18",
+      "evidence": "the operational result is published on its own (26 unanswered instant(s), 1 admissible day(s)) and the inherited economic failure is kept apart from it: ['OPEN-EDGE12-1', 'OPEN-EDGE12-2', 'OPEN-EDGE12-3', 'OPEN-EDGE12-4']",
+      "requirement": "El resultado operativo se separa del resultado econ\u00f3mico.",
+      "verdict": "SATISFECHO"
+    }
+  ],
+  "acceptance_counts": {
+    "BLOQUEADO_DECLARADO": 1,
+    "SATISFECHO": 17
+  },
+  "campaign": "RFC-EDGE-012",
+  "closure_reason": "the mechanism that would remove the session dependence needs an administrator, and 26 instant(s) of the measured window produced no process",
+  "closure_state": "FORWARD_CONTINUITY_BLOCKED",
+  "deliverables": {
+    "BASELINE.json": {
+      "bytes": 3067,
+      "lines": 100,
+      "present": true,
+      "sha256": "db27203a57974140736e7ac429f0a515949298b5e46d25a6492ca84bbf46c92e"
+    },
+    "CAPACITY_FORECAST.json": {
+      "bytes": 6993,
+      "lines": 218,
+      "present": true,
+      "sha256": "94a0644b2e076ddbeb0bf0f985b84ab09dcedb39a7db0809b0680528bbd64a79"
+    },
+    "CONTINUITY_MATRIX.json": {
+      "bytes": 4008,
+      "lines": 98,
+      "present": true,
+      "sha256": "f5b79df2c5bb41f989ccdc5953f119e33d2454d292d834d114822ce20757b43d"
+    },
+    "CONTINUITY_MATRIX.md": {
+      "bytes": 3568,
+      "lines": 41,
+      "present": true,
+      "sha256": "2665f0d8c68c8a616b090d2a8bb10d8dc455ff07e2ebbe478dbbf8623b73d7ec"
+    },
+    "DEPENDENCY_GATE.json": {
+      "bytes": 17051,
+      "lines": 459,
+      "present": true,
+      "sha256": "9479c10f36c23e3082f5d30daeb73791257f5ebc6d74d046629d88b2f862b513"
+    },
+    "DEPENDENCY_GATE.md": {
+      "bytes": 7998,
+      "lines": 159,
+      "present": true,
+      "sha256": "5697e1acb67161023ba44825bc85ee4c5e01c7053186dd7602eb1c1b545988e7"
+    },
+    "FORWARD_COVERAGE.json": {
+      "bytes": 13138,
+      "lines": 591,
+      "present": true,
+      "sha256": "ccc81ea1153b8332fde1c2312a6fde19a401febac0b3b802e76ed1ccae241523"
+    },
+    "GIT_STATE.json": {
+      "bytes": 2254,
+      "lines": 52,
+      "present": true,
+      "sha256": "d67fdd04251f8c1c4833b776763a0fca8e4833ed6a28e21f66ece6f22ad36d76"
+    },
+    "OPERATIONAL_VALIDATION.json": {
+      "bytes": 21678,
+      "lines": 855,
+      "present": true,
+      "sha256": "a5d4ded147840dd1520bc2aac1d14b1031a823ec1ed20171c326b9d13ebf5fff"
+    },
+    "OPERATIONAL_VALIDATION.md": {
+      "bytes": 3420,
+      "lines": 104,
+      "present": true,
+      "sha256": "02e9c5389430521e142c245999c89d6a64dd6cc14e4008be3f8a99e85bef980b"
+    },
+    "OPERATOR_HANDOFF.md": {
+      "bytes": 2030,
+      "lines": 59,
+      "present": true,
+      "sha256": "398220d5a46faf38860e3a5da318972a2ea37d6d820b6760ec3fb68bdbcbc9f1"
+    },
+    "RECOVERY_REPORT.md": {
+      "bytes": 6739,
+      "lines": 263,
+      "present": true,
+      "sha256": "24ba583555fcfb5ba29ed9e9586163c976de50e3e41746fae204cedc4a5865e3"
+    },
+    "ROLLBACK.md": {
+      "bytes": 1644,
+      "lines": 46,
+      "present": true,
+      "sha256": "1a544f64c3f6b1873c9067301c4ba807b1b9a310b47661e652679a7b6e1519d5"
+    },
+    "RUNNER_DECISION.md": {
+      "bytes": 7303,
+      "lines": 98,
+      "present": true,
+      "sha256": "3762ee033ecc68e4ae7b0a495059a5eaded5b0eb09afa304896527a0ce606cc6"
+    },
+    "RUNNER_PREFLIGHT.json": {
+      "bytes": 3200,
+      "lines": 90,
+      "present": true,
+      "sha256": "90644e015eb12cbd61955b7705ba8bf2ffded7a36420bf99dfc70e518a098173"
+    },
+    "RUNTIME_AUTHORITY_MAP.md": {
+      "bytes": 2376,
+      "lines": 24,
+      "present": true,
+      "sha256": "132dcf01473e42f33c8926e1241abbfdbda2a0da81884e4a5ad80b1ae5b41ff0"
+    },
+    "STORAGE_PLAN.md": {
+      "bytes": 5591,
+      "lines": 121,
+      "present": true,
+      "sha256": "3aac6c7e13d51781722e8a1c09174d2a44d1a10ac469367104545c9b23465911"
+    },
+    "STORAGE_VERIFICATION.json": {
+      "bytes": 1004,
+      "lines": 34,
+      "present": true,
+      "sha256": "8e3ba9988b9fe3d62d6dec48a00d7bfddd71806c9a75c025a1b9a3daf9e8d0d4"
+    },
+    "VERIFICATION.json": {
+      "bytes": 6238,
+      "lines": 167,
+      "present": true,
+      "sha256": "083dad622d779201262c71be9fe701312a9541436996a0aaacea40b1fc5e366f"
+    },
+    "VERIFICATION.md": {
+      "bytes": 5856,
+      "lines": 72,
+      "present": true,
+      "sha256": "49bc22159f22b1b91c70826b3ef29fc0809b57544b3e706cb6d78dbaac9f92f5"
+    }
+  },
+  "evidence": {
+    "CONTINUITY_REHEARSAL.json": {
+      "bytes": 10512,
+      "lines": 322,
+      "present": true,
+      "sha256": "68ab86f79c8958e455d1d37d2e4d36742deee90d7c2facae9f0fef5aade08912"
+    },
+    "LIVE_CONTINUITY.json": {
+      "bytes": 1172,
+      "lines": 41,
+      "present": true,
+      "sha256": "aeda3eedfe099711ee0cbf810b980281a8d9b17bd4a5a30a532dd84b9656606c"
+    },
+    "OS_EVIDENCE.json": {
+      "bytes": 20103,
+      "lines": 430,
+      "present": true,
+      "sha256": "fda311310f07f0e2b00c626c67f8cf873a470e804c8e7c23ccdc729f0313c764"
+    },
+    "PROPOSED_DEFINITION.xml": {
+      "bytes": 4782,
+      "lines": 60,
+      "present": true,
+      "sha256": "cbb3c76bd4c4e7f45a0be1bb7bb58961716a1cf93a68add35e348143d5bf9c89"
+    },
+    "RUNNER_DECISION.json": {
+      "bytes": 4429,
+      "lines": 84,
+      "present": true,
+      "sha256": "bd4db96ddfc0852c82cb1cf7642ea6772f609e38f9258f224bd22d6ccbd84955"
+    },
+    "RUNNER_PROBES.json": {
+      "bytes": 13894,
+      "lines": 208,
+      "present": true,
+      "sha256": "f6af10c87fba20305b2405fcae921cc6bddf1a101a1b87b31a797f18c4c4352e"
+    },
+    "RUN_LOG_SNAPSHOT.jsonl": {
+      "bytes": 1097781,
+      "lines": 255,
+      "present": true,
+      "sha256": "9256a1a5499ef8f8da06627b8ba8f73b7575187fa1bae9be7da238f1926b335c"
+    },
+    "SLOT_LEDGER_SNAPSHOT.jsonl": {
+      "bytes": 49812,
+      "lines": 200,
+      "present": true,
+      "sha256": "90e9b85312f92091a950f2d93bdee05b170240c93656646f9fdf3da00e62a123"
+    }
+  },
+  "generated_at_utc": "2026-10-16T06:37:33Z",
+  "git": {
+    "ahead_of_upstream": 0,
+    "behind_upstream": 0,
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "commits": "the 5 commit(s) that touched this package are listed in GIT_STATE.json; a report that named its own commit would be naming a hash that moves",
+    "head": "c047c87a7c3ec3c31d088aae803c9df92e9b6a7a",
+    "head_committed_at": "2026-10-16T08:36:14+02:00",
+    "head_is_the_remote_ref": true,
+    "head_subject": "Read the Spanish report's figures instead of leaving them blank. [WP-EDGE-12]",
+    "read_back_from_the_remote": "c047c87a7c3ec3c31d088aae803c9df92e9b6a7a",
+    "state_file": "GIT_STATE.json",
+    "upstream": "origin/agent/edge-recovery/WP-EDGE-00-baseline"
+  },
+  "hypothetical": true,
+  "next_action": "an administrator registers the S4U variant of the proposed definition (the command is in OPERATOR_HANDOFF.md step 5 and the rollback is written in ROLLBACK.md), and enables the Task Scheduler operational log so the next silent trigger is attributable instead of SILENT_UNATTRIBUTABLE",
+  "no_readiness_claim": "this package does not authorise PAPER or LIVE trading under any circumstance: order_sent is false and promotion is NONE in every record it produced",
+  "open_failures": [
+    {
+      "id": "OPEN-EDGE12-1",
+      "owner": null,
+      "status": "UNREADABLE",
+      "what": "the economic certificate or its input could not be read"
+    },
+    {
+      "id": "OPEN-EDGE12-2",
+      "owner": "an operator with administrator rights on this host",
+      "status": "BLOCKED_NEEDS_ELEVATION",
+      "what": "S4U task registration, a Windows service and the Task Scheduler operational log"
+    },
+    {
+      "id": "OPEN-EDGE12-3",
+      "owner": "an operator who chooses to store a credential on the machine",
+      "status": "BLOCKED_NEEDS_CREDENTIALS",
+      "what": "automatic logon, which is the only non-elevated way to re-create a session after a reboot"
+    },
+    {
+      "id": "OPEN-EDGE12-4",
+      "owner": "the cost-barrier chain; not this work package",
+      "status": "INHERITED_AND_UNREPAIRED",
+      "what": "tests/unit/research/test_cost_barrier_adversarial.py::test_the_certification_record_digests_content_not_a_checkout"
+    }
+  ],
+  "open_failures_summary": "`OPEN-EDGE12-1` UNREADABLE (unowned); `OPEN-EDGE12-2` BLOCKED_NEEDS_ELEVATION (an operator with administrator rights on this host); `OPEN-EDGE12-3` BLOCKED_NEEDS_CREDENTIALS (an operator who chooses to store a credential on the machine); `OPEN-EDGE12-4` INHERITED_AND_UNREPAIRED (the cost-barrier chain; not this work package)",
+  "order_sent": false,
+  "pass": 2,
+  "promotion": "NONE",
+  "results": {
+    "baseline": {
+      "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+      "coverage": {
+        "coverage_required": 0.9,
+        "days_with_any_data": 230,
+        "densely_covered_but_backfilled": 228,
+        "epoch_utc": "2026-03-01T00:00:00Z",
+        "generated_at_utc": "2026-10-16T06:26:41Z",
+        "prospectively_observed": 1,
+        "remaining_days": 59,
+        "required_days": 60
+      },
+      "coverage_required": 0.9,
+      "days_required": 60,
+      "head": "b3f4d8d88ec2ea44e8bd4e43259c9d6fac3ea2ce",
+      "head_is_the_remote_ref": true,
+      "observer_runs": 255,
+      "open_failures_at_the_baseline": [
+        "OPEN-EDGE12-1",
+        "OPEN-EDGE12-2",
+        "OPEN-EDGE12-3",
+        "OPEN-EDGE12-4"
+      ],
+      "orders_recorded": 0,
+      "sealed_slots": 200
+    },
+    "continuity": {
+      "live_gaps": 1,
+      "live_maximum_tick_seconds": 349.035,
+      "live_ticks": 255,
+      "live_worst_gap_seconds": 23418.9,
+      "matrix": "CONTINUITY_MATRIX_COMPLETE",
+      "not_passing": [
+        "RESUME_AFTER_ABSENT_SESSION",
+        "MISSED_TRIGGER_DETECTION"
+      ],
+      "properties": 9,
+      "rehearsal": "REHEARSAL_PASS",
+      "rehearsal_failures": [],
+      "rehearsal_steps": 9,
+      "rows": [
+        {
+          "evidence_kind": "REHEARSED_ON_THE_RUNTIME",
+          "property": "IDEMPOTENT_SLOT",
+          "verdict": "PASS"
+        },
+        {
+          "evidence_kind": "REHEARSED_ON_THE_RUNTIME",
+          "property": "SINGLE_INSTANCE",
+          "verdict": "PASS"
+        },
+        {
+          "evidence_kind": "REHEARSED_ON_THE_RUNTIME",
+          "property": "STALE_LEASE_RECLAIM",
+          "verdict": "PASS"
+        },
+        {
+          "evidence_kind": "REHEARSED_ON_THE_RUNTIME",
+          "property": "RESUME_AFTER_RESTART",
+          "verdict": "PASS"
+        },
+        {
+          "evidence_kind": "OBSERVED_LIVE_AND_BOUNDED",
+          "property": "RESUME_AFTER_ABSENT_SESSION",
+          "verdict": "BOUNDED_NOT_REMOVED"
+        },
+        {
+          "evidence_kind": "REHEARSED_ON_THE_RUNTIME",
+          "property": "INCOMPLETE_WRITE_SURVIVAL",
+          "verdict": "PASS"
+        },
+        {
+          "evidence_kind": "REHEARSED_ON_THE_RUNTIME_AND_READ_LIVE",
+          "property": "LEDGER_RECONCILIATION",
+          "verdict": "PASS"
+        },
+        {
+          "evidence_kind": "REHEARSED_ON_THE_RUNTIME_AND_READ_LIVE",
+          "property": "TIMEOUT_HANDLING",
+          "verdict": "PASS"
+        },
+        {
+          "evidence_kind": "READ_LIVE",
+          "property": "MISSED_TRIGGER_DETECTION",
+          "verdict": "DETECTED"
+        }
+      ]
+    },
+    "dependency_gate": {
+      "dependency_named_by_the_request": "NOT_PRESENT_IN_TREE",
+      "entry_points_reachable": "6/6",
+      "failing_checks": [],
+      "modules_importable": "9/9",
+      "verdict": "DEPENDENCY_GATE_PASS"
+    },
+    "operational": {
+      "admissible_days": 1,
+      "answered": 243,
+      "causes": {
+        "HOST_DOWN": 1,
+        "NO_SESSION": 24,
+        "SILENT_UNATTRIBUTABLE": 1,
+        "SLEEP": 0
+      },
+      "expected_instants": 269,
+      "fired_and_refused": 45,
+      "never_answered": 26,
+      "orders_recorded": 0,
+      "required_days": 60,
+      "slot_consuming_ticks": 201,
+      "window_hours": 67.0384
+    },
+    "runner": {
+      "applied_to_the_live_task": false,
+      "available_without_new_privileges": [
+        "LOGON_TRIGGER",
+        "WITNESS_ACTION"
+      ],
+      "blocked": {
+        "AUTHORISED_SERVICE_ACCOUNT": "NO_ACCOUNT_DESIGNATED",
+        "INDEPENDENT_HOST_RUNNER": "NO_AUTHORISED_INFRASTRUCTURE_FOUND",
+        "S4U_BARE": "NEEDS_ELEVATION",
+        "S4U_PROPOSAL": "NEEDS_ELEVATION",
+        "SYSTEM_PRINCIPAL": "NEEDS_ELEVATION",
+        "WINDOWS_SERVICE": "NOT_ATTEMPTED_NEEDS_ELEVATION"
+      },
+      "blocking_failures": [
+        "definition_carries_a_time_trigger",
+        "definition_adds_a_logon_trigger",
+        "definition_carries_the_witness_action_first",
+        "definition_declares_its_logon_type",
+        "definition_keeps_multiple_instances_ignored",
+        "the_action_binary_exists_on_this_host",
+        "the_working_directory_exists_on_this_host",
+        "the_interpreter_is_the_interpreter_that_certified_this_package",
+        "the_witness_path_is_writable",
+        "the_definition_keeps_the_live_cadence_phase",
+        "the_target_task_name_is_the_lane_own",
+        "no_probe_task_was_left_behind_by_this_pass"
+      ],
+      "preflight": "PREFLIGHT_PASS",
+      "preflight_checks": 13,
+      "preflight_verdict": "PREFLIGHT_PASS",
+      "probe_tasks_left_behind": [],
+      "registration_unchanged_since_wp_edge_04r": true,
+      "s4u_on_this_host": "NEEDS_ELEVATION",
+      "selected": "LOGON_TRIGGER",
+      "selected_detail": "the host refused the S4U registration of this very definition, so the mechanism that removes the dependence is not available to this process; the logon trigger is the strongest available one and is already exercised"
+    },
+    "storage": {
+      "added_gib_over_the_horizon": 0.006249,
+      "ceiling_bytes": 72837412,
+      "checks": "STORAGE_VERIFY_PASS",
+      "lane_budget_bytes": 268435456,
+      "relocation_verdict": "NO_VOLUME_WITH_CAPACITY",
+      "store_bytes_per_day": 111832.62,
+      "verdict": "NO_USABLE_VOLUME_FOR_A_MOVE"
+    },
+    "verification": {
+      "checks": 24,
+      "failures": [],
+      "sabotages_applied": 24,
+      "sabotages_detected": 24,
+      "self_test": "SELF_TEST_PASS",
+      "verdict": "VERIFY_PASS"
+    }
+  },
+  "schema_version": "EDGE12_RUN_REPORT_V1",
+  "tests": {
+    "campaign": "RFC-EDGE-012",
+    "collected_nothing": false,
+    "generated_at_utc": "2026-10-16T06:35:21Z",
+    "hypothetical": true,
+    "lint": {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check src/trading_bot/research/edge12/ scripts/edge12_verify.py scripts/edge12_reports.py scripts/edge12_tests.py tests/unit/research/test_edge12_continuity.py tests/unit/research/test_edge12_runner.py",
+      "exit_code": 0,
+      "passed": true,
+      "reason": null,
+      "tail": "All checks passed!"
+    },
+    "order_sent": false,
+    "promotion": "NONE",
+    "pytest": {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/research/test_edge12_continuity.py tests/unit/research/test_edge12_runner.py",
+      "errors": null,
+      "exit_code": 0,
+      "failed": null,
+      "passed": 61,
+      "reason": null,
+      "skipped": null,
+      "tail": ".............................................................            [100%]\n61 passed in 1.67s"
+    },
+    "read_only": "no network, no live state root, no live store, no scheduler; this step runs the package's own regressions and the lint over its own paths",
+    "schema_version": "EDGE12_TEST_RUNS_V1",
+    "selection": {
+      "declared_in": "scripts/edge12_tests.py",
+      "lint_paths": [
+        "src/trading_bot/research/edge12/",
+        "scripts/edge12_verify.py",
+        "scripts/edge12_reports.py",
+        "scripts/edge12_tests.py",
+        "tests/unit/research/test_edge12_continuity.py",
+        "tests/unit/research/test_edge12_runner.py"
+      ],
+      "test_modules": [
+        "tests/unit/research/test_edge12_continuity.py",
+        "tests/unit/research/test_edge12_runner.py"
+      ],
+      "why_narrow": "these are this package's own regressions and the lint that guards them; the rest of the tree carries other work packages' findings and their owners report them"
+    },
+    "verdict": "TESTS_PASS",
+    "work_package": "WP-EDGE-12"
+  },
+  "verification_pending": false,
+  "what_changed_between_the_passes": "the verification section and the closure state it feeds; every figure the verifier re-derived from the readings is untouched by the second pass",
+  "work_package": "WP-EDGE-12"
+}

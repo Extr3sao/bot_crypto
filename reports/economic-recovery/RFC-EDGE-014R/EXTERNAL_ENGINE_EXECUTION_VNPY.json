@@ -1,0 +1,34 @@
+{
+  "credentials_used": false,
+  "dataset_digest": "sha256:d79ed2c56bf502266d9f950be7f296b0f1e6e068f19a411513c08436c5abe26b",
+  "ema_indicator_probe": {
+    "BTCUSDT": {
+      "bars_probed": 975,
+      "max_abs_diff_fast": 49.378732208686415,
+      "max_abs_diff_slow": 638.6817253603804,
+      "reading": "declared = SMA-seeded recursive EMA over the series; window = the same call over a sliding 26-bar window, re-seeded every bar. The gap is the indicator difference the convenience call would have made"
+    },
+    "ETHUSDT": {
+      "bars_probed": 975,
+      "max_abs_diff_fast": 2.507418293349474,
+      "max_abs_diff_slow": 21.73860144325181,
+      "reading": "declared = SMA-seeded recursive EMA over the series; window = the same call over a sliding 26-bar window, re-seeded every bar. The gap is the indicator difference the convenience call would have made"
+    }
+  },
+  "engine": "vnpy_ctastrategy",
+  "inside_repository_tree": false,
+  "invocation_command": "<vnpy-venv>/python.exe scripts/edge14r_vnpy_backtest.py --bars C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-014R\\scratch\\PAPER_REPLAY_BARS.jsonl --out C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\vnpy_ws\\vnpy_result.json",
+  "isolated_environment": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\vnpy\\.venv",
+  "offsets_seen": {
+    "\u5e73": 42,
+    "\u5f00": 44
+  },
+  "order_sent": false,
+  "outcome": "EXECUTED",
+  "promotion": "NONE",
+  "schema_version": "EDGE14R_EXTERNAL_ENGINE_EXECUTION_V1",
+  "unpaired_fills": 2,
+  "unrecognised_offsets": [],
+  "version": "unknown",
+  "work_package": "WP-EDGE-14R/P2"
+}

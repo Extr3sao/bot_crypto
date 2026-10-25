@@ -1,0 +1,222 @@
+{
+  "schema": "tap.audit-run/v1",
+  "run_id": "run-20261025T115139Z-G-4",
+  "task": "G-4",
+  "title": "Runtime routes without authority",
+  "date_utc": "2026-10-25",
+  "branch": "audit/mt0004-negative-controls",
+  "before_rev": "0a70514058f8deb36489e29a6c02e7050d3217a0",
+  "after_rev": "5478b6de417d1bb3cc66920f56685bd3d0368cc0",
+  "verification_rev": "7e300af5c856c9665bf3b52635572e2ba2b69925",
+  "verdict": "G4_VERIFIED_SCOPED",
+  "false_success": 0,
+  "environment": {
+    "os": "Windows",
+    "python": "3.11.15",
+    "interpreter": ".venv/Scripts/python.exe",
+    "test_target": "clean export of after_rev",
+    "test_target_verified": true
+  },
+  "governance": {
+    "live_no_go": true,
+    "production_ready": false,
+    "real_orders_sent": 0,
+    "exchange_calls": 0,
+    "credentials_used": 0,
+    "hot_stop_py_sha256": "76cfca23d1e7758607c466eea4ff5c0a9411cb812d433eb7ca16dfb45cfdf8b1",
+    "hot_stop_py_unchanged_from": "a072da90"
+  },
+  "defects": [
+    {
+      "id": "G4-D1",
+      "kind": "documentation",
+      "summary": "runtime_authority_map.md, G-2.md and G-3.md claimed run --demo reached paper_cycle; git history and AST show it never did",
+      "severity": "medium",
+      "status": "corrected"
+    },
+    {
+      "id": "G4-D2",
+      "kind": "authorization",
+      "summary": "scripts/start_paper_trading.py reached PaperBroker.execute_signal without consulting the operator KILL_SWITCH marker or the process switch",
+      "severity": "high",
+      "status": "fixed"
+    }
+  ],
+  "measurements": {
+    "demo_run": {
+      "before": {
+        "exit_code": 0,
+        "paper_cycle": 0,
+        "paper_broker": 0,
+        "futures_client": 0,
+        "spot_client": 0,
+        "live_source": 0
+      },
+      "after": {
+        "exit_code": 0,
+        "paper_cycle": 0,
+        "paper_broker": 0,
+        "futures_client": 0,
+        "spot_client": 0,
+        "live_source": 0
+      }
+    },
+    "demo_run_auto_trade": {
+      "before": {
+        "exit_code": 0,
+        "paper_cycle": 0,
+        "paper_broker": 0,
+        "futures_client": 0,
+        "spot_client": 0,
+        "live_source": 0
+      },
+      "after": {
+        "exit_code": 0,
+        "paper_cycle": 0,
+        "paper_broker": 0,
+        "futures_client": 0,
+        "spot_client": 0,
+        "live_source": 0
+      }
+    },
+    "paper_marker": {
+      "before": {
+        "broker_execute_calls": 1,
+        "orders_created": 1,
+        "hot_stop_blocked": 0
+      },
+      "after": {
+        "broker_execute_calls": 0,
+        "orders_created": 0,
+        "hot_stop_blocked": 1,
+        "gate_engaged": true,
+        "rejection": "kill_switch_active:marker:g4 probe operator stop"
+      }
+    },
+    "paper_clean": {
+      "before": {
+        "broker_execute_calls": 1,
+        "orders_created": 1
+      },
+      "after": {
+        "broker_execute_calls": 1,
+        "orders_created": 1,
+        "hot_stop_blocked": 0
+      }
+    },
+    "paper_process_stop": {
+      "before": {
+        "broker_execute_calls": 1,
+        "orders_created": 1
+      },
+      "after": {
+        "broker_execute_calls": 0,
+        "orders_created": 0,
+        "hot_stop_blocked": 1,
+        "rejection": "kill_switch_active:process"
+      }
+    }
+  },
+  "tests": {
+    "before_reproduction": {
+      "command": "pytest tests/unit/paper/test_g4_paper_hot_stop.py",
+      "result": "8 failed",
+      "file": "before_pytest.txt"
+    },
+    "after_focal": {
+      "command": "pytest tests/unit/paper/test_g4_paper_hot_stop.py",
+      "result": "12 passed",
+      "file": "after_pytest.txt"
+    },
+    "after_regression": {
+      "command": "pytest tests/unit/paper tests/integration/test_paper_e2e_001.py tests/integration/test_paper_e2e_002.py tests/integration/test_paper_e2e_003.py tests/unit/cert/test_paper_smoke_decision_path.py tests/unit/test_app_demo.py tests/unit/test_app_cli_contract.py tests/unit/autonomous/test_runtime_integration.py tests/unit/autonomous/test_hot_engage.py tests/unit/autonomous/test_kill_switch_persistence.py",
+      "result": "244 passed",
+      "file": "regression.txt"
+    },
+    "after_regression_broad": {
+      "command": "pytest tests/unit/autonomous tests/unit/paper tests/unit/cert tests/unit/test_app_demo.py tests/unit/test_app_cli_contract.py tests/unit/test_live_gate_enforcement.py tests/unit/test_order_authorization.py tests/unit/test_live_hot_stop_coverage.py",
+      "result": "678 passed",
+      "file": "regression_broad.txt"
+    },
+    "audit_contracts": {
+      "command": "pytest tests/unit/test_audit_contracts_tracked.py",
+      "result": "8 passed",
+      "file": "audit_contracts.txt"
+    },
+    "independent_verification": {
+      "command": "python scripts/audit/verify_g4.py --rev 7e300af5",
+      "result": "10/10 checks passed",
+      "export_tests": "192 passed",
+      "file": "verification.json"
+    }
+  },
+  "route_matrix": {
+    "file": "RUNTIME_ROUTE_MATRIX.md",
+    "authorized": [
+      "scripts/start_paper_trading.py",
+      "scripts/autonomous_paper.py",
+      "trading-bot run --mode live --auto-trade",
+      "trading-bot place-order",
+      "trading-bot close-position",
+      "trading-bot set-tpsl"
+    ],
+    "not_reachable": [
+      "trading-bot run --demo",
+      "trading-bot run --mode paper --auto-trade",
+      "trading-bot scan --demo",
+      "trading-bot scan --no-demo",
+      "trading-bot config-check",
+      "trading-bot status",
+      "trading-bot positions",
+      "trading-bot kill-switch"
+    ],
+    "research_only": [
+      "scripts/ai_bots_run.py",
+      "scripts/ai_vision_lane.py",
+      "scripts/edge15_paper_lane.py",
+      "scripts/edge16_paper_lane.py",
+      "scripts/exp_003p_baseline.py"
+    ]
+  },
+  "acceptance": {
+    "ACC-G4-01": "PASS",
+    "ACC-G4-02": "PASS",
+    "ACC-G4-03": "PASS",
+    "ACC-G4-04": "PASS",
+    "ACC-G4-05": "PASS",
+    "ACC-G4-06": "PASS",
+    "ACC-G4-07": "PASS",
+    "ACC-G4-08": "PASS",
+    "ACC-G4-09": "PASS",
+    "ACC-G4-10": "PASS",
+    "ACC-G4-11": "PASS",
+    "ACC-G4-12": "PASS",
+    "ACC-G4-13": "PASS",
+    "ACC-G4-14": "PASS"
+  },
+  "limits": [
+    "No exchange acceptance was exercised; live sinks remain from G-3/P0/RFC.",
+    "Hedge mode was not exercised; the RFC refuses it as UNKNOWN.",
+    "paper_cycle still does not route through autonomous.decision; two engines remain.",
+    "HotStopGate.stats().boundary carries the autonomous-runtime label because hot_stop.py is untouched.",
+    "The marker is scoped to the run directory; a different --run-dir boots operational.",
+    "Research lanes use PaperBroker without a runtime gate and are classified RESEARCH_ONLY.",
+    "Verification is PROCEDURALLY_SEPARATED, not a second person."
+  ],
+  "blockers": [
+    "D-6 not opened",
+    "DEF-P0-03 not opened",
+    "GATE-009/010 configuration unchanged"
+  ],
+  "artifacts": [
+    "RUNTIME_ROUTE_MATRIX.md",
+    "BEFORE_AFTER.md",
+    "RUN_REPORT.md",
+    "RUN_REPORT.json",
+    "FINAL_REPORT.md",
+    "verification.json",
+    "verification_stdout.txt",
+    "ARTIFACTS.sha256",
+    "EVIDENCE.sha256"
+  ]
+}

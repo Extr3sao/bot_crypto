@@ -1,0 +1,3254 @@
+{
+  "schema_version": "EDGE09_V1",
+  "work_package": "WP-EDGE-09E",
+  "run_utc": "2026-10-15T05:16:14Z",
+  "streams": 10,
+  "grid_seconds": 1,
+  "barriers": {
+    "perp|BTCUSDT": 23.1104,
+    "perp|ETHUSDT": 23.1512,
+    "spot|BTCUSDT": 23.0968,
+    "spot|ETHUSDT": 23.1508,
+    "perp|SOLUSDT": 24.0731,
+    "spot|SOLUSDT": 24.0813
+  },
+  "experiments": {
+    "E-01_imbalance": [
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 1,
+        "n": 14597,
+        "ic": 0.487104,
+        "stats": {
+          "long_only_mean_bps": 0.218105,
+          "low_set_mean_bps": -0.222917,
+          "spread_bps": 0.441023,
+          "high_set_hit_rate": 0.396547,
+          "hop_mid_bps": 0.194121
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.2181 bps is below the measured round trip 23.1104 bps",
+          "gross_bps": 0.218105,
+          "cost_bps": 23.1104,
+          "required_bps": 34.6656,
+          "n": 14597,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14597,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 34014,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 5,
+        "n": 14593,
+        "ic": 0.414245,
+        "stats": {
+          "long_only_mean_bps": 0.432744,
+          "low_set_mean_bps": -0.470679,
+          "spread_bps": 0.903422,
+          "high_set_hit_rate": 0.57648,
+          "hop_mid_bps": 0.609795
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.4327 bps is below the measured round trip 23.1104 bps",
+          "gross_bps": 0.432744,
+          "cost_bps": 23.1104,
+          "required_bps": 34.6656,
+          "n": 14593,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14593,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 34017,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 60,
+        "n": 14539,
+        "ic": 0.136487,
+        "stats": {
+          "long_only_mean_bps": 0.608791,
+          "low_set_mean_bps": -0.667662,
+          "spread_bps": 1.276453,
+          "high_set_hit_rate": 0.569345,
+          "hop_mid_bps": 2.826499
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.6088 bps is below the measured round trip 23.1104 bps",
+          "gross_bps": 0.608791,
+          "cost_bps": 23.1104,
+          "required_bps": 34.6656,
+          "n": 14539,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14539,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 34024,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 1,
+        "n": 14603,
+        "ic": 0.469459,
+        "stats": {
+          "long_only_mean_bps": 0.277095,
+          "low_set_mean_bps": -0.301592,
+          "spread_bps": 0.578686,
+          "high_set_hit_rate": 0.42137,
+          "hop_mid_bps": 0.278145
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.2771 bps is below the measured round trip 23.1512 bps",
+          "gross_bps": 0.277095,
+          "cost_bps": 23.1512,
+          "required_bps": 34.7268,
+          "n": 14603,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14603,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 35214,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 5,
+        "n": 14598,
+        "ic": 0.366445,
+        "stats": {
+          "long_only_mean_bps": 0.505996,
+          "low_set_mean_bps": -0.561334,
+          "spread_bps": 1.067329,
+          "high_set_hit_rate": 0.576322,
+          "hop_mid_bps": 0.819949
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.5060 bps is below the measured round trip 23.1512 bps",
+          "gross_bps": 0.505996,
+          "cost_bps": 23.1512,
+          "required_bps": 34.7268,
+          "n": 14598,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14598,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 35085,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 60,
+        "n": 14543,
+        "ic": 0.105068,
+        "stats": {
+          "long_only_mean_bps": 0.538565,
+          "low_set_mean_bps": -0.574659,
+          "spread_bps": 1.113225,
+          "high_set_hit_rate": 0.548556,
+          "hop_mid_bps": 3.237878
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.5386 bps is below the measured round trip 23.1512 bps",
+          "gross_bps": 0.538565,
+          "cost_bps": 23.1512,
+          "required_bps": 34.7268,
+          "n": 14543,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14543,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 35211,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 1,
+        "n": 14547,
+        "ic": 0.451048,
+        "stats": {
+          "long_only_mean_bps": 0.161799,
+          "low_set_mean_bps": -0.174417,
+          "spread_bps": 0.336216,
+          "high_set_hit_rate": 0.262376,
+          "hop_mid_bps": 0.134643
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.1618 bps is below the measured round trip 23.0968 bps",
+          "gross_bps": 0.161799,
+          "cost_bps": 23.0968,
+          "required_bps": 34.6452,
+          "n": 14547,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14547,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 34162,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 5,
+        "n": 14543,
+        "ic": 0.511442,
+        "stats": {
+          "long_only_mean_bps": 0.426979,
+          "low_set_mean_bps": -0.446094,
+          "spread_bps": 0.873074,
+          "high_set_hit_rate": 0.470702,
+          "hop_mid_bps": 0.454067
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.4270 bps is below the measured round trip 23.0968 bps",
+          "gross_bps": 0.426979,
+          "cost_bps": 23.0968,
+          "required_bps": 34.6452,
+          "n": 14543,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14543,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 33182,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 60,
+        "n": 14488,
+        "ic": 0.229057,
+        "stats": {
+          "long_only_mean_bps": 0.817203,
+          "low_set_mean_bps": -0.929982,
+          "spread_bps": 1.747184,
+          "high_set_hit_rate": 0.556875,
+          "hop_mid_bps": 2.684766
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.8172 bps is below the measured round trip 23.0968 bps",
+          "gross_bps": 0.817203,
+          "cost_bps": 23.0968,
+          "required_bps": 34.6452,
+          "n": 14488,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14488,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 34953,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 1,
+        "n": 14242,
+        "ic": 0.430489,
+        "stats": {
+          "long_only_mean_bps": 0.279383,
+          "low_set_mean_bps": -0.26476,
+          "spread_bps": 0.544143,
+          "high_set_hit_rate": 0.31882,
+          "hop_mid_bps": 0.241733
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.2794 bps is below the measured round trip 23.1508 bps",
+          "gross_bps": 0.279383,
+          "cost_bps": 23.1508,
+          "required_bps": 34.7262,
+          "n": 14242,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14242,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 35143,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 5,
+        "n": 14238,
+        "ic": 0.386354,
+        "stats": {
+          "long_only_mean_bps": 0.557456,
+          "low_set_mean_bps": -0.530434,
+          "spread_bps": 1.08789,
+          "high_set_hit_rate": 0.518685,
+          "hop_mid_bps": 0.729319
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.5575 bps is below the measured round trip 23.1508 bps",
+          "gross_bps": 0.557456,
+          "cost_bps": 23.1508,
+          "required_bps": 34.7262,
+          "n": 14238,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14238,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 34920,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 60,
+        "n": 14184,
+        "ic": 0.130924,
+        "stats": {
+          "long_only_mean_bps": 0.614868,
+          "low_set_mean_bps": -0.857862,
+          "spread_bps": 1.472731,
+          "high_set_hit_rate": 0.545121,
+          "hop_mid_bps": 3.146605
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.6149 bps is below the measured round trip 23.1508 bps",
+          "gross_bps": 0.614868,
+          "cost_bps": 23.1508,
+          "required_bps": 34.7262,
+          "n": 14184,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14184,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 34796,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 1,
+        "n": 5903,
+        "ic": 0.509842,
+        "stats": {
+          "long_only_mean_bps": 0.282763,
+          "low_set_mean_bps": -0.294972,
+          "spread_bps": 0.577735,
+          "high_set_hit_rate": 0.484746,
+          "hop_mid_bps": 0.319927
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.2828 bps is below the measured round trip 23.1104 bps",
+          "gross_bps": 0.282763,
+          "cost_bps": 23.1104,
+          "required_bps": 34.6656,
+          "n": 5903,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5903,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 62108,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 5,
+        "n": 5898,
+        "ic": 0.385919,
+        "stats": {
+          "long_only_mean_bps": 0.599402,
+          "low_set_mean_bps": -0.548345,
+          "spread_bps": 1.147747,
+          "high_set_hit_rate": 0.614654,
+          "hop_mid_bps": 0.90215
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.5994 bps is below the measured round trip 23.1104 bps",
+          "gross_bps": 0.599402,
+          "cost_bps": 23.1104,
+          "required_bps": 34.6656,
+          "n": 5898,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5898,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 62044,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 60,
+        "n": 5852,
+        "ic": 0.097206,
+        "stats": {
+          "long_only_mean_bps": 0.620064,
+          "low_set_mean_bps": -0.877044,
+          "spread_bps": 1.497108,
+          "high_set_hit_rate": 0.548872,
+          "hop_mid_bps": 3.896441
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.6201 bps is below the measured round trip 23.1104 bps",
+          "gross_bps": 0.620064,
+          "cost_bps": 23.1104,
+          "required_bps": 34.6656,
+          "n": 5852,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5852,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 62126,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 1,
+        "n": 5917,
+        "ic": 0.507102,
+        "stats": {
+          "long_only_mean_bps": 0.342407,
+          "low_set_mean_bps": -0.336247,
+          "spread_bps": 0.678655,
+          "high_set_hit_rate": 0.54023,
+          "hop_mid_bps": 0.391872
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.3424 bps is below the measured round trip 23.1512 bps",
+          "gross_bps": 0.342407,
+          "cost_bps": 23.1512,
+          "required_bps": 34.7268,
+          "n": 5917,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5917,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63136,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 5,
+        "n": 5913,
+        "ic": 0.343951,
+        "stats": {
+          "long_only_mean_bps": 0.685527,
+          "low_set_mean_bps": -0.580891,
+          "spread_bps": 1.266418,
+          "high_set_hit_rate": 0.640054,
+          "hop_mid_bps": 1.040743
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.6855 bps is below the measured round trip 23.1512 bps",
+          "gross_bps": 0.685527,
+          "cost_bps": 23.1512,
+          "required_bps": 34.7268,
+          "n": 5913,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5913,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63137,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 60,
+        "n": 5867,
+        "ic": 0.15202,
+        "stats": {
+          "long_only_mean_bps": 1.148407,
+          "low_set_mean_bps": -1.115824,
+          "spread_bps": 2.264231,
+          "high_set_hit_rate": 0.576398,
+          "hop_mid_bps": 4.344022
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 1.1484 bps is below the measured round trip 23.1512 bps",
+          "gross_bps": 1.148407,
+          "cost_bps": 23.1512,
+          "required_bps": 34.7268,
+          "n": 5867,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5867,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63151,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 1,
+        "n": 5835,
+        "ic": 0.428714,
+        "stats": {
+          "long_only_mean_bps": 0.456474,
+          "low_set_mean_bps": -0.491469,
+          "spread_bps": 0.947943,
+          "high_set_hit_rate": 0.379973,
+          "hop_mid_bps": 0.510891
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.4565 bps is below the measured round trip 24.0731 bps",
+          "gross_bps": 0.456474,
+          "cost_bps": 24.0731,
+          "required_bps": 36.10965,
+          "n": 5835,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5835,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63192,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 5,
+        "n": 5831,
+        "ic": 0.342055,
+        "stats": {
+          "long_only_mean_bps": 0.844975,
+          "low_set_mean_bps": -0.887443,
+          "spread_bps": 1.732418,
+          "high_set_hit_rate": 0.546328,
+          "hop_mid_bps": 1.406445
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.8450 bps is below the measured round trip 24.0731 bps",
+          "gross_bps": 0.844975,
+          "cost_bps": 24.0731,
+          "required_bps": 36.10965,
+          "n": 5831,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5831,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 64151,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 60,
+        "n": 5785,
+        "ic": 0.152669,
+        "stats": {
+          "long_only_mean_bps": 1.582703,
+          "low_set_mean_bps": -1.655425,
+          "spread_bps": 3.238128,
+          "high_set_hit_rate": 0.569156,
+          "hop_mid_bps": 5.99882
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 1.5827 bps is below the measured round trip 24.0731 bps",
+          "gross_bps": 1.582703,
+          "cost_bps": 24.0731,
+          "required_bps": 36.10965,
+          "n": 5785,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5785,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63176,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 1,
+        "n": 6827,
+        "ic": 0.496633,
+        "stats": {
+          "long_only_mean_bps": 0.27319,
+          "low_set_mean_bps": -0.289047,
+          "spread_bps": 0.562237,
+          "high_set_hit_rate": 0.382181,
+          "hop_mid_bps": 0.237224
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.2732 bps is below the measured round trip 23.0968 bps",
+          "gross_bps": 0.27319,
+          "cost_bps": 23.0968,
+          "required_bps": 34.6452,
+          "n": 6827,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6827,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63041,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 5,
+        "n": 6823,
+        "ic": 0.472269,
+        "stats": {
+          "long_only_mean_bps": 0.61634,
+          "low_set_mean_bps": -0.662484,
+          "spread_bps": 1.278824,
+          "high_set_hit_rate": 0.570088,
+          "hop_mid_bps": 0.742681
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.6163 bps is below the measured round trip 23.0968 bps",
+          "gross_bps": 0.61634,
+          "cost_bps": 23.0968,
+          "required_bps": 34.6452,
+          "n": 6823,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6823,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63068,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 60,
+        "n": 6768,
+        "ic": 0.168363,
+        "stats": {
+          "long_only_mean_bps": 0.706983,
+          "low_set_mean_bps": -1.451971,
+          "spread_bps": 2.158955,
+          "high_set_hit_rate": 0.539598,
+          "hop_mid_bps": 3.870975
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.7070 bps is below the measured round trip 23.0968 bps",
+          "gross_bps": 0.706983,
+          "cost_bps": 23.0968,
+          "required_bps": 34.6452,
+          "n": 6768,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6768,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63110,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 1,
+        "n": 6770,
+        "ic": 0.502687,
+        "stats": {
+          "long_only_mean_bps": 0.361029,
+          "low_set_mean_bps": -0.374015,
+          "spread_bps": 0.735045,
+          "high_set_hit_rate": 0.4013,
+          "hop_mid_bps": 0.307873
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.3610 bps is below the measured round trip 23.1508 bps",
+          "gross_bps": 0.361029,
+          "cost_bps": 23.1508,
+          "required_bps": 34.7262,
+          "n": 6770,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6770,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 64070,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 5,
+        "n": 6766,
+        "ic": 0.429073,
+        "stats": {
+          "long_only_mean_bps": 0.719139,
+          "low_set_mean_bps": -0.790784,
+          "spread_bps": 1.509923,
+          "high_set_hit_rate": 0.575991,
+          "hop_mid_bps": 0.946527
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.7191 bps is below the measured round trip 23.1508 bps",
+          "gross_bps": 0.719139,
+          "cost_bps": 23.1508,
+          "required_bps": 34.7262,
+          "n": 6766,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6766,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63441,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 60,
+        "n": 6712,
+        "ic": 0.140261,
+        "stats": {
+          "long_only_mean_bps": 0.827246,
+          "low_set_mean_bps": -1.013826,
+          "spread_bps": 1.841072,
+          "high_set_hit_rate": 0.550656,
+          "hop_mid_bps": 4.362951
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.8272 bps is below the measured round trip 23.1508 bps",
+          "gross_bps": 0.827246,
+          "cost_bps": 23.1508,
+          "required_bps": 34.7262,
+          "n": 6712,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6712,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63066,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 1,
+        "n": 6657,
+        "ic": 0.376647,
+        "stats": {
+          "long_only_mean_bps": 0.409573,
+          "low_set_mean_bps": -0.470453,
+          "spread_bps": 0.880025,
+          "high_set_hit_rate": 0.323918,
+          "hop_mid_bps": 0.509682
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.4096 bps is below the measured round trip 24.0813 bps",
+          "gross_bps": 0.409573,
+          "cost_bps": 24.0813,
+          "required_bps": 36.12195,
+          "n": 6657,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6657,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 62668,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 5,
+        "n": 6653,
+        "ic": 0.293986,
+        "stats": {
+          "long_only_mean_bps": 0.720178,
+          "low_set_mean_bps": -0.789632,
+          "spread_bps": 1.509811,
+          "high_set_hit_rate": 0.488274,
+          "hop_mid_bps": 1.423257
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.7202 bps is below the measured round trip 24.0813 bps",
+          "gross_bps": 0.720178,
+          "cost_bps": 24.0813,
+          "required_bps": 36.12195,
+          "n": 6653,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6653,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63144,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 60,
+        "n": 6598,
+        "ic": 0.142395,
+        "stats": {
+          "long_only_mean_bps": 1.46279,
+          "low_set_mean_bps": -1.428308,
+          "spread_bps": 2.891098,
+          "high_set_hit_rate": 0.586416,
+          "hop_mid_bps": 6.168025
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 1.4628 bps is below the measured round trip 24.0813 bps",
+          "gross_bps": 1.46279,
+          "cost_bps": 24.0813,
+          "required_bps": 36.12195,
+          "n": 6598,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6598,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63085,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": false
+      }
+    ],
+    "E-04_oi_quadrant": [
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "states": 36,
+        "cells": {
+          "PRICE_UP_OI_UP": {
+            "n": 10,
+            "mean_bps": 7.258408,
+            "hit_rate": 1.0
+          },
+          "PRICE_UP_OI_DOWN": {
+            "n": 10,
+            "mean_bps": 5.688567,
+            "hit_rate": 1.0
+          },
+          "PRICE_DOWN_OI_UP": {
+            "n": 6,
+            "mean_bps": -8.195912,
+            "hit_rate": 0.0
+          },
+          "PRICE_DOWN_OI_DOWN": {
+            "n": 10,
+            "mean_bps": -6.373226,
+            "hit_rate": 0.0
+          }
+        },
+        "grid_rows": 37
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "states": 38,
+        "cells": {
+          "PRICE_UP_OI_UP": {
+            "n": 9,
+            "mean_bps": 9.536183,
+            "hit_rate": 1.0
+          },
+          "PRICE_UP_OI_DOWN": {
+            "n": 8,
+            "mean_bps": 5.961829,
+            "hit_rate": 1.0
+          },
+          "PRICE_DOWN_OI_UP": {
+            "n": 14,
+            "mean_bps": -8.015351,
+            "hit_rate": 0.0
+          },
+          "PRICE_DOWN_OI_DOWN": {
+            "n": 7,
+            "mean_bps": -6.611324,
+            "hit_rate": 0.0
+          }
+        },
+        "grid_rows": 39
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "states": 17,
+        "cells": {
+          "PRICE_UP_OI_UP": {
+            "n": 6,
+            "mean_bps": 5.381638,
+            "hit_rate": 1.0
+          },
+          "PRICE_UP_OI_DOWN": {
+            "n": 3,
+            "mean_bps": 11.275338,
+            "hit_rate": 1.0
+          },
+          "PRICE_DOWN_OI_UP": {
+            "n": 2,
+            "mean_bps": -8.55394,
+            "hit_rate": 0.0
+          },
+          "PRICE_DOWN_OI_DOWN": {
+            "n": 6,
+            "mean_bps": -11.712225,
+            "hit_rate": 0.0
+          }
+        },
+        "grid_rows": 18
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "states": 16,
+        "cells": {
+          "PRICE_UP_OI_UP": {
+            "n": 4,
+            "mean_bps": 8.961501,
+            "hit_rate": 1.0
+          },
+          "PRICE_UP_OI_DOWN": {
+            "n": 4,
+            "mean_bps": 9.33473,
+            "hit_rate": 1.0
+          },
+          "PRICE_DOWN_OI_UP": {
+            "n": 4,
+            "mean_bps": -10.422376,
+            "hit_rate": 0.0
+          },
+          "PRICE_DOWN_OI_DOWN": {
+            "n": 4,
+            "mean_bps": -8.077244,
+            "hit_rate": 0.0
+          }
+        },
+        "grid_rows": 17
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "SOLUSDT",
+        "states": 11,
+        "cells": {
+          "PRICE_UP_OI_UP": {
+            "n": 3,
+            "mean_bps": 18.088642,
+            "hit_rate": 1.0
+          },
+          "PRICE_UP_OI_DOWN": {
+            "n": 3,
+            "mean_bps": 15.221566,
+            "hit_rate": 1.0
+          },
+          "PRICE_DOWN_OI_UP": {
+            "n": 1,
+            "mean_bps": -27.037303,
+            "hit_rate": 0.0
+          },
+          "PRICE_DOWN_OI_DOWN": {
+            "n": 4,
+            "mean_bps": -17.126015,
+            "hit_rate": 0.0
+          }
+        },
+        "grid_rows": 12
+      }
+    ],
+    "E-05_frequency": [
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 1,
+        "span_days": 0.17311,
+        "span_hours": 4.155,
+        "selector": "|imbalance| >= 0.9588 (q90)",
+        "selected": 1461,
+        "selected_per_day": 8439.556,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1104,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 1461,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 5,
+        "span_days": 0.17311,
+        "span_hours": 4.155,
+        "selector": "|imbalance| >= 0.9588 (q90)",
+        "selected": 1461,
+        "selected_per_day": 8439.556,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1104,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 1461,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 60,
+        "span_days": 0.17311,
+        "span_hours": 4.155,
+        "selector": "|imbalance| >= 0.9584 (q90)",
+        "selected": 1455,
+        "selected_per_day": 8404.897,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1104,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 144.061,
+        "verdict": {
+          "classification": "OBSERVED",
+          "failed_filter": "\u2014",
+          "reason": "the aggregate universe offers 144.061 long-only barrier-clearing opportunities/day at this horizon, so frequency is not what blocks a book at this clock",
+          "n": 1455,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 1,
+        "span_days": 0.17311,
+        "span_hours": 4.155,
+        "selector": "|imbalance| >= 0.9611 (q90)",
+        "selected": 1462,
+        "selected_per_day": 8445.347,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1512,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 1462,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 5,
+        "span_days": 0.17311,
+        "span_hours": 4.155,
+        "selector": "|imbalance| >= 0.9611 (q90)",
+        "selected": 1461,
+        "selected_per_day": 8439.57,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1512,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 1461,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 60,
+        "span_days": 0.17311,
+        "span_hours": 4.155,
+        "selector": "|imbalance| >= 0.961 (q90)",
+        "selected": 1456,
+        "selected_per_day": 8410.687,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1512,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 144.061,
+        "verdict": {
+          "classification": "OBSERVED",
+          "failed_filter": "\u2014",
+          "reason": "the aggregate universe offers 144.061 long-only barrier-clearing opportunities/day at this horizon, so frequency is not what blocks a book at this clock",
+          "n": 1456,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 1,
+        "span_days": 0.17312,
+        "span_hours": 4.155,
+        "selector": "|imbalance| >= 0.972 (q90)",
+        "selected": 1456,
+        "selected_per_day": 8410.395,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.0968,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 1456,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 5,
+        "span_days": 0.17312,
+        "span_hours": 4.155,
+        "selector": "|imbalance| >= 0.972 (q90)",
+        "selected": 1456,
+        "selected_per_day": 8410.395,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.0968,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 1456,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 60,
+        "span_days": 0.17312,
+        "span_hours": 4.155,
+        "selector": "|imbalance| >= 0.9719 (q90)",
+        "selected": 1450,
+        "selected_per_day": 8375.737,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.0968,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 144.061,
+        "verdict": {
+          "classification": "OBSERVED",
+          "failed_filter": "\u2014",
+          "reason": "the aggregate universe offers 144.061 long-only barrier-clearing opportunities/day at this horizon, so frequency is not what blocks a book at this clock",
+          "n": 1450,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 1,
+        "span_days": 0.17311,
+        "span_hours": 4.155,
+        "selector": "|imbalance| >= 0.9382 (q90)",
+        "selected": 1426,
+        "selected_per_day": 8237.35,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1508,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 1426,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 5,
+        "span_days": 0.17311,
+        "span_hours": 4.155,
+        "selector": "|imbalance| >= 0.9383 (q90)",
+        "selected": 1425,
+        "selected_per_day": 8231.573,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1508,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 1425,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 60,
+        "span_days": 0.17311,
+        "span_hours": 4.155,
+        "selector": "|imbalance| >= 0.9378 (q90)",
+        "selected": 1420,
+        "selected_per_day": 8202.69,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1508,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 144.061,
+        "verdict": {
+          "classification": "OBSERVED",
+          "failed_filter": "\u2014",
+          "reason": "the aggregate universe offers 144.061 long-only barrier-clearing opportunities/day at this horizon, so frequency is not what blocks a book at this clock",
+          "n": 1420,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 1,
+        "span_days": 0.08331,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.9776 (q90)",
+        "selected": 592,
+        "selected_per_day": 7105.981,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1104,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 592,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 5,
+        "span_days": 0.08331,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.9776 (q90)",
+        "selected": 591,
+        "selected_per_day": 7093.977,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1104,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 591,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 60,
+        "span_days": 0.08331,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.978 (q90)",
+        "selected": 587,
+        "selected_per_day": 7045.964,
+        "clearing": 2,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 2,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 24.007,
+        "barrier_bps": 23.1104,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 144.061,
+        "verdict": {
+          "classification": "OBSERVED",
+          "failed_filter": "\u2014",
+          "reason": "the aggregate universe offers 144.061 long-only barrier-clearing opportunities/day at this horizon, so frequency is not what blocks a book at this clock",
+          "n": 587,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 1,
+        "span_days": 0.0833,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.9843 (q90)",
+        "selected": 593,
+        "selected_per_day": 7118.932,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1512,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 593,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 5,
+        "span_days": 0.0833,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.9842 (q90)",
+        "selected": 593,
+        "selected_per_day": 7118.932,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1512,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 593,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 60,
+        "span_days": 0.0833,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.9843 (q90)",
+        "selected": 588,
+        "selected_per_day": 7058.907,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1512,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 144.061,
+        "verdict": {
+          "classification": "OBSERVED",
+          "failed_filter": "\u2014",
+          "reason": "the aggregate universe offers 144.061 long-only barrier-clearing opportunities/day at this horizon, so frequency is not what blocks a book at this clock",
+          "n": 588,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 1,
+        "span_days": 0.0833,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.8856 (q90)",
+        "selected": 585,
+        "selected_per_day": 7022.891,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 24.0731,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 585,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 5,
+        "span_days": 0.0833,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.8856 (q90)",
+        "selected": 584,
+        "selected_per_day": 7010.886,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 24.0731,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 584,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 60,
+        "span_days": 0.0833,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.8842 (q90)",
+        "selected": 580,
+        "selected_per_day": 6962.866,
+        "clearing": 10,
+        "clearing_long_only": 7,
+        "clearing_any_direction": 10,
+        "opportunities_per_day": 84.035,
+        "opportunities_per_day_any_direction": 120.049,
+        "barrier_bps": 24.0731,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 144.061,
+        "verdict": {
+          "classification": "OBSERVED",
+          "failed_filter": "\u2014",
+          "reason": "the aggregate universe offers 144.061 long-only barrier-clearing opportunities/day at this horizon, so frequency is not what blocks a book at this clock",
+          "n": 580,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 1,
+        "span_days": 0.08331,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.9653 (q90)",
+        "selected": 684,
+        "selected_per_day": 8210.275,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.0968,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 684,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 5,
+        "span_days": 0.08331,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.9652 (q90)",
+        "selected": 684,
+        "selected_per_day": 8210.275,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.0968,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 684,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 60,
+        "span_days": 0.08331,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.9651 (q90)",
+        "selected": 678,
+        "selected_per_day": 8138.255,
+        "clearing": 4,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 4,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 48.013,
+        "barrier_bps": 23.0968,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 144.061,
+        "verdict": {
+          "classification": "OBSERVED",
+          "failed_filter": "\u2014",
+          "reason": "the aggregate universe offers 144.061 long-only barrier-clearing opportunities/day at this horizon, so frequency is not what blocks a book at this clock",
+          "n": 678,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 1,
+        "span_days": 0.0833,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.976 (q90)",
+        "selected": 678,
+        "selected_per_day": 8139.554,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1508,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 678,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 5,
+        "span_days": 0.0833,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.976 (q90)",
+        "selected": 678,
+        "selected_per_day": 8139.554,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1508,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 678,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 60,
+        "span_days": 0.0833,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.9761 (q90)",
+        "selected": 673,
+        "selected_per_day": 8079.528,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 23.1508,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 144.061,
+        "verdict": {
+          "classification": "OBSERVED",
+          "failed_filter": "\u2014",
+          "reason": "the aggregate universe offers 144.061 long-only barrier-clearing opportunities/day at this horizon, so frequency is not what blocks a book at this clock",
+          "n": 673,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 1,
+        "span_days": 0.0833,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.8219 (q90)",
+        "selected": 667,
+        "selected_per_day": 8007.499,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 24.0813,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 667,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 5,
+        "span_days": 0.0833,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.8219 (q90)",
+        "selected": 667,
+        "selected_per_day": 8007.499,
+        "clearing": 0,
+        "clearing_long_only": 0,
+        "clearing_any_direction": 0,
+        "opportunities_per_day": 0.0,
+        "opportunities_per_day_any_direction": 0.0,
+        "barrier_bps": 24.0813,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 0.0,
+        "verdict": {
+          "classification": "FREQUENCY_KILLED",
+          "failed_filter": "F5",
+          "reason": "the aggregate universe offers 0.0 long-only barrier-clearing opportunities/day at this horizon, below the ACTIVE target of 3.0",
+          "n": 667,
+          "promotion": "NONE"
+        }
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 60,
+        "span_days": 0.0833,
+        "span_hours": 1.999,
+        "selector": "|imbalance| >= 0.8219 (q90)",
+        "selected": 661,
+        "selected_per_day": 7935.467,
+        "clearing": 10,
+        "clearing_long_only": 5,
+        "clearing_any_direction": 10,
+        "opportunities_per_day": 60.026,
+        "opportunities_per_day_any_direction": 120.052,
+        "barrier_bps": 24.0813,
+        "is_executable_long_only": true,
+        "rate_extrapolated_from_hours": true,
+        "pooled_opportunities_per_day": 144.061,
+        "verdict": {
+          "classification": "OBSERVED",
+          "failed_filter": "\u2014",
+          "reason": "the aggregate universe offers 144.061 long-only barrier-clearing opportunities/day at this horizon, so frequency is not what blocks a book at this clock",
+          "n": 661,
+          "promotion": "NONE"
+        }
+      }
+    ],
+    "E-06_execution": [
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "observations": 0,
+        "note": "no prints after a decision instant in this stream"
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "observations": 0,
+        "note": "no prints after a decision instant in this stream"
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "observations": 12219,
+        "median_shortfall_bps": 0.000599,
+        "mean_shortfall_bps": 0.20553,
+        "p90_shortfall_bps": 0.742398,
+        "median_delay_rows": 0
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "observations": 8976,
+        "median_shortfall_bps": 0.018736,
+        "mean_shortfall_bps": 0.474932,
+        "p90_shortfall_bps": 1.469595,
+        "median_delay_rows": 0
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "observations": 0,
+        "note": "no prints after a decision instant in this stream"
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "observations": 0,
+        "note": "no prints after a decision instant in this stream"
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "SOLUSDT",
+        "observations": 0,
+        "note": "no prints after a decision instant in this stream"
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "observations": 6305,
+        "median_shortfall_bps": 0.000591,
+        "mean_shortfall_bps": 0.322162,
+        "p90_shortfall_bps": 1.14623,
+        "median_delay_rows": 0
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "observations": 4831,
+        "median_shortfall_bps": 0.129279,
+        "mean_shortfall_bps": 0.544427,
+        "p90_shortfall_bps": 1.64446,
+        "median_delay_rows": 0
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "SOLUSDT",
+        "observations": 4139,
+        "median_shortfall_bps": 0.423639,
+        "mean_shortfall_bps": 1.103225,
+        "p90_shortfall_bps": 2.118554,
+        "median_delay_rows": 0
+      }
+    ],
+    "E-07_negative_control": [
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 1,
+        "n": 14597,
+        "ic": 0.000284,
+        "stats": {
+          "long_only_mean_bps": -0.002019,
+          "low_set_mean_bps": 0.009152,
+          "spread_bps": -0.011171,
+          "high_set_hit_rate": 0.157029,
+          "hop_mid_bps": 0.194121
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.0002844372797534795 below the registered |IC| floor of 0.01",
+          "gross_bps": -0.002019,
+          "cost_bps": 23.1104,
+          "required_bps": 34.6656,
+          "n": 14597,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14597,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 34014,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 5,
+        "n": 14593,
+        "ic": 0.000641,
+        "stats": {
+          "long_only_mean_bps": -0.018224,
+          "low_set_mean_bps": 0.001135,
+          "spread_bps": -0.019359,
+          "high_set_hit_rate": 0.310307,
+          "hop_mid_bps": 0.609795
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.0006407273427283357 below the registered |IC| floor of 0.01",
+          "gross_bps": -0.018224,
+          "cost_bps": 23.1104,
+          "required_bps": 34.6656,
+          "n": 14593,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14593,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 34017,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 60,
+        "n": 14539,
+        "ic": -0.012684,
+        "stats": {
+          "long_only_mean_bps": -0.135367,
+          "low_set_mean_bps": -0.059591,
+          "spread_bps": -0.075776,
+          "high_set_hit_rate": 0.47661,
+          "hop_mid_bps": 2.826499
+        },
+        "verdict": {
+          "classification": "NO_GROSS_EDGE",
+          "failed_filter": "F1",
+          "reason": "mean gross move -0.1354 bps is not positive",
+          "gross_bps": -0.135367,
+          "cost_bps": 23.1104,
+          "required_bps": 34.6656,
+          "n": 14539,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14539,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 34024,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 1,
+        "n": 14603,
+        "ic": -0.003031,
+        "stats": {
+          "long_only_mean_bps": -0.007125,
+          "low_set_mean_bps": -0.007995,
+          "spread_bps": 0.000871,
+          "high_set_hit_rate": 0.170685,
+          "hop_mid_bps": 0.278145
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content -0.0030310152967277276 below the registered |IC| floor of 0.01",
+          "gross_bps": -0.007125,
+          "cost_bps": 23.1512,
+          "required_bps": 34.7268,
+          "n": 14603,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14603,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 35214,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 5,
+        "n": 14598,
+        "ic": 0.004618,
+        "stats": {
+          "long_only_mean_bps": -0.009508,
+          "low_set_mean_bps": -0.017706,
+          "spread_bps": 0.008197,
+          "high_set_hit_rate": 0.345574,
+          "hop_mid_bps": 0.819949
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.004617938249701983 below the registered |IC| floor of 0.01",
+          "gross_bps": -0.009508,
+          "cost_bps": 23.1512,
+          "required_bps": 34.7268,
+          "n": 14598,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14598,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 35085,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 60,
+        "n": 14543,
+        "ic": -0.001979,
+        "stats": {
+          "long_only_mean_bps": -0.127971,
+          "low_set_mean_bps": -0.085815,
+          "spread_bps": -0.042156,
+          "high_set_hit_rate": 0.477029,
+          "hop_mid_bps": 3.237878
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content -0.00197874801676621 below the registered |IC| floor of 0.01",
+          "gross_bps": -0.127971,
+          "cost_bps": 23.1512,
+          "required_bps": 34.7268,
+          "n": 14543,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14543,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 35211,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 1,
+        "n": 14547,
+        "ic": -0.009509,
+        "stats": {
+          "long_only_mean_bps": -0.006573,
+          "low_set_mean_bps": 0.001084,
+          "spread_bps": -0.007658,
+          "high_set_hit_rate": 0.089934,
+          "hop_mid_bps": 0.134643
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content -0.009508543356455285 below the registered |IC| floor of 0.01",
+          "gross_bps": -0.006573,
+          "cost_bps": 23.0968,
+          "required_bps": 34.6452,
+          "n": 14547,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14547,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 34162,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 5,
+        "n": 14543,
+        "ic": 0.001201,
+        "stats": {
+          "long_only_mean_bps": 0.003202,
+          "low_set_mean_bps": 0.01611,
+          "spread_bps": -0.012908,
+          "high_set_hit_rate": 0.221183,
+          "hop_mid_bps": 0.454067
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.0012007826103101718 below the registered |IC| floor of 0.01",
+          "gross_bps": 0.003202,
+          "cost_bps": 23.0968,
+          "required_bps": 34.6452,
+          "n": 14543,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14543,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 33182,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 60,
+        "n": 14488,
+        "ic": 0.018457,
+        "stats": {
+          "long_only_mean_bps": -0.013197,
+          "low_set_mean_bps": -0.182704,
+          "spread_bps": 0.169507,
+          "high_set_hit_rate": 0.470458,
+          "hop_mid_bps": 2.684766
+        },
+        "verdict": {
+          "classification": "NO_GROSS_EDGE",
+          "failed_filter": "F1",
+          "reason": "mean gross move -0.0132 bps is not positive",
+          "gross_bps": -0.013197,
+          "cost_bps": 23.0968,
+          "required_bps": 34.6452,
+          "n": 14488,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14488,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 34953,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 1,
+        "n": 14242,
+        "ic": -0.000902,
+        "stats": {
+          "long_only_mean_bps": -0.007062,
+          "low_set_mean_bps": -0.005096,
+          "spread_bps": -0.001966,
+          "high_set_hit_rate": 0.123876,
+          "hop_mid_bps": 0.241733
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content -0.000901586352473753 below the registered |IC| floor of 0.01",
+          "gross_bps": -0.007062,
+          "cost_bps": 23.1508,
+          "required_bps": 34.7262,
+          "n": 14242,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14242,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 35143,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 5,
+        "n": 14238,
+        "ic": 0.003946,
+        "stats": {
+          "long_only_mean_bps": -0.001195,
+          "low_set_mean_bps": -0.003542,
+          "spread_bps": 0.002347,
+          "high_set_hit_rate": 0.286597,
+          "hop_mid_bps": 0.729319
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.003945641591197848 below the registered |IC| floor of 0.01",
+          "gross_bps": -0.001195,
+          "cost_bps": 23.1508,
+          "required_bps": 34.7262,
+          "n": 14238,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14238,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 34920,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-lab-continuous-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 60,
+        "n": 14184,
+        "ic": -0.001571,
+        "stats": {
+          "long_only_mean_bps": -0.072323,
+          "low_set_mean_bps": -0.107782,
+          "spread_bps": 0.035459,
+          "high_set_hit_rate": 0.474901,
+          "hop_mid_bps": 3.146605
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content -0.0015706265880289665 below the registered |IC| floor of 0.01",
+          "gross_bps": -0.072323,
+          "cost_bps": 23.1508,
+          "required_bps": 34.7262,
+          "n": 14184,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 14184,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 34796,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 1,
+        "n": 5903,
+        "ic": -0.004199,
+        "stats": {
+          "long_only_mean_bps": -0.009405,
+          "low_set_mean_bps": -0.008601,
+          "spread_bps": -0.000804,
+          "high_set_hit_rate": 0.200678,
+          "hop_mid_bps": 0.319927
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content -0.004198576724668957 below the registered |IC| floor of 0.01",
+          "gross_bps": -0.009405,
+          "cost_bps": 23.1104,
+          "required_bps": 34.6656,
+          "n": 5903,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5903,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 62108,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 5,
+        "n": 5898,
+        "ic": 0.016604,
+        "stats": {
+          "long_only_mean_bps": -0.058476,
+          "low_set_mean_bps": -0.063658,
+          "spread_bps": 0.005182,
+          "high_set_hit_rate": 0.334464,
+          "hop_mid_bps": 0.90215
+        },
+        "verdict": {
+          "classification": "NO_GROSS_EDGE",
+          "failed_filter": "F1",
+          "reason": "mean gross move -0.0585 bps is not positive",
+          "gross_bps": -0.058476,
+          "cost_bps": 23.1104,
+          "required_bps": 34.6656,
+          "n": 5898,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5898,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 62044,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 60,
+        "n": 5852,
+        "ic": 0.011843,
+        "stats": {
+          "long_only_mean_bps": 0.010712,
+          "low_set_mean_bps": -0.121546,
+          "spread_bps": 0.132258,
+          "high_set_hit_rate": 0.486671,
+          "hop_mid_bps": 3.896441
+        },
+        "verdict": {
+          "classification": "COST_KILLED",
+          "failed_filter": "F2",
+          "reason": "gross 0.0107 bps is below the measured round trip 23.1104 bps",
+          "gross_bps": 0.010712,
+          "cost_bps": 23.1104,
+          "required_bps": 34.6656,
+          "n": 5852,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5852,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 62126,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 1,
+        "n": 5917,
+        "ic": -0.00258,
+        "stats": {
+          "long_only_mean_bps": 0.010396,
+          "low_set_mean_bps": 0.007472,
+          "spread_bps": 0.002924,
+          "high_set_hit_rate": 0.234618,
+          "hop_mid_bps": 0.391872
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content -0.0025796714119362732 below the registered |IC| floor of 0.01",
+          "gross_bps": 0.010396,
+          "cost_bps": 23.1512,
+          "required_bps": 34.7268,
+          "n": 5917,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5917,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63136,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 5,
+        "n": 5913,
+        "ic": 0.000721,
+        "stats": {
+          "long_only_mean_bps": -0.004436,
+          "low_set_mean_bps": 0.029718,
+          "spread_bps": -0.034154,
+          "high_set_hit_rate": 0.40866,
+          "hop_mid_bps": 1.040743
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.0007209233800952957 below the registered |IC| floor of 0.01",
+          "gross_bps": -0.004436,
+          "cost_bps": 23.1512,
+          "required_bps": 34.7268,
+          "n": 5913,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5913,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63137,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 60,
+        "n": 5867,
+        "ic": 0.00974,
+        "stats": {
+          "long_only_mean_bps": 0.195002,
+          "low_set_mean_bps": -0.053498,
+          "spread_bps": 0.248499,
+          "high_set_hit_rate": 0.510232,
+          "hop_mid_bps": 4.344022
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.009739761010798861 below the registered |IC| floor of 0.01",
+          "gross_bps": 0.195002,
+          "cost_bps": 23.1512,
+          "required_bps": 34.7268,
+          "n": 5867,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5867,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63151,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 1,
+        "n": 5835,
+        "ic": 0.005818,
+        "stats": {
+          "long_only_mean_bps": 0.028995,
+          "low_set_mean_bps": 0.025066,
+          "spread_bps": 0.003929,
+          "high_set_hit_rate": 0.182442,
+          "hop_mid_bps": 0.510891
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.005817870069080471 below the registered |IC| floor of 0.01",
+          "gross_bps": 0.028995,
+          "cost_bps": 24.0731,
+          "required_bps": 36.10965,
+          "n": 5835,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5835,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63192,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 5,
+        "n": 5831,
+        "ic": 0.01432,
+        "stats": {
+          "long_only_mean_bps": -0.017354,
+          "low_set_mean_bps": -0.081895,
+          "spread_bps": 0.064541,
+          "high_set_hit_rate": 0.341798,
+          "hop_mid_bps": 1.406445
+        },
+        "verdict": {
+          "classification": "NO_GROSS_EDGE",
+          "failed_filter": "F1",
+          "reason": "mean gross move -0.0174 bps is not positive",
+          "gross_bps": -0.017354,
+          "cost_bps": 24.0731,
+          "required_bps": 36.10965,
+          "n": 5831,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5831,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 64151,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "perp",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 60,
+        "n": 5785,
+        "ic": 0.006035,
+        "stats": {
+          "long_only_mean_bps": 0.02509,
+          "low_set_mean_bps": 0.104182,
+          "spread_bps": -0.079092,
+          "high_set_hit_rate": 0.490318,
+          "hop_mid_bps": 5.99882
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.006035339074122518 below the registered |IC| floor of 0.01",
+          "gross_bps": 0.02509,
+          "cost_bps": 24.0731,
+          "required_bps": 36.10965,
+          "n": 5785,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 5785,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63176,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 1,
+        "n": 6827,
+        "ic": 0.001153,
+        "stats": {
+          "long_only_mean_bps": 0.000423,
+          "low_set_mean_bps": -0.004665,
+          "spread_bps": 0.005088,
+          "high_set_hit_rate": 0.154162,
+          "hop_mid_bps": 0.237224
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.0011532463135387329 below the registered |IC| floor of 0.01",
+          "gross_bps": 0.000423,
+          "cost_bps": 23.0968,
+          "required_bps": 34.6452,
+          "n": 6827,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6827,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63041,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 5,
+        "n": 6823,
+        "ic": 0.005647,
+        "stats": {
+          "long_only_mean_bps": -0.036566,
+          "low_set_mean_bps": -0.029949,
+          "spread_bps": -0.006617,
+          "high_set_hit_rate": 0.304985,
+          "hop_mid_bps": 0.742681
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.005647297300270534 below the registered |IC| floor of 0.01",
+          "gross_bps": -0.036566,
+          "cost_bps": 23.0968,
+          "required_bps": 34.6452,
+          "n": 6823,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6823,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63068,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "horizon_seconds": 60,
+        "n": 6768,
+        "ic": -0.00768,
+        "stats": {
+          "long_only_mean_bps": -0.405189,
+          "low_set_mean_bps": -0.200469,
+          "spread_bps": -0.20472,
+          "high_set_hit_rate": 0.456856,
+          "hop_mid_bps": 3.870975
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content -0.00767994847187571 below the registered |IC| floor of 0.01",
+          "gross_bps": -0.405189,
+          "cost_bps": 23.0968,
+          "required_bps": 34.6452,
+          "n": 6768,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6768,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63110,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 1,
+        "n": 6770,
+        "ic": 0.006042,
+        "stats": {
+          "long_only_mean_bps": 0.028707,
+          "low_set_mean_bps": -0.009426,
+          "spread_bps": 0.038133,
+          "high_set_hit_rate": 0.174941,
+          "hop_mid_bps": 0.307873
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.006042057842566439 below the registered |IC| floor of 0.01",
+          "gross_bps": 0.028707,
+          "cost_bps": 23.1508,
+          "required_bps": 34.7262,
+          "n": 6770,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6770,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 64070,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 5,
+        "n": 6766,
+        "ic": 0.000665,
+        "stats": {
+          "long_only_mean_bps": 0.010585,
+          "low_set_mean_bps": -0.045262,
+          "spread_bps": 0.055847,
+          "high_set_hit_rate": 0.340627,
+          "hop_mid_bps": 0.946527
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.0006645836140879215 below the registered |IC| floor of 0.01",
+          "gross_bps": 0.010585,
+          "cost_bps": 23.1508,
+          "required_bps": 34.7262,
+          "n": 6766,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6766,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63441,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "horizon_seconds": 60,
+        "n": 6712,
+        "ic": 0.00659,
+        "stats": {
+          "long_only_mean_bps": 0.057622,
+          "low_set_mean_bps": -0.107028,
+          "spread_bps": 0.164651,
+          "high_set_hit_rate": 0.482718,
+          "hop_mid_bps": 4.362951
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.0065895338609503 below the registered |IC| floor of 0.01",
+          "gross_bps": 0.057622,
+          "cost_bps": 23.1508,
+          "required_bps": 34.7262,
+          "n": 6712,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6712,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63066,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 1,
+        "n": 6657,
+        "ic": -0.003034,
+        "stats": {
+          "long_only_mean_bps": 0.000602,
+          "low_set_mean_bps": -0.018016,
+          "spread_bps": 0.018619,
+          "high_set_hit_rate": 0.157452,
+          "hop_mid_bps": 0.509682
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content -0.003033699725115248 below the registered |IC| floor of 0.01",
+          "gross_bps": 0.000602,
+          "cost_bps": 24.0813,
+          "required_bps": 36.12195,
+          "n": 6657,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6657,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 62668,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 5,
+        "n": 6653,
+        "ic": -0.023996,
+        "stats": {
+          "long_only_mean_bps": -0.039802,
+          "low_set_mean_bps": 0.085507,
+          "spread_bps": -0.125309,
+          "high_set_hit_rate": 0.32291,
+          "hop_mid_bps": 1.423257
+        },
+        "verdict": {
+          "classification": "NO_GROSS_EDGE",
+          "failed_filter": "F1",
+          "reason": "mean gross move -0.0398 bps is not positive",
+          "gross_bps": -0.039802,
+          "cost_bps": 24.0813,
+          "required_bps": 36.12195,
+          "n": 6653,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6653,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63144,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      },
+      {
+        "run": "paper-strategy-lifecycle-shadow-02",
+        "market": "spot",
+        "symbol": "SOLUSDT",
+        "horizon_seconds": 60,
+        "n": 6598,
+        "ic": 0.007241,
+        "stats": {
+          "long_only_mean_bps": -0.018368,
+          "low_set_mean_bps": -0.028461,
+          "spread_bps": 0.010093,
+          "high_set_hit_rate": 0.491813,
+          "hop_mid_bps": 6.168025
+        },
+        "verdict": {
+          "classification": "NO_INFORMATION",
+          "failed_filter": "F0",
+          "reason": "information content 0.007241385537507675 below the registered |IC| floor of 0.01",
+          "gross_bps": -0.018368,
+          "cost_bps": 24.0813,
+          "required_bps": 36.12195,
+          "n": 6598,
+          "promotion": "NONE"
+        },
+        "pit": {
+          "paired_windows": 6598,
+          "min_partner_lag_ms": 0,
+          "max_partner_lag_ms": 63085,
+          "rule": "partner row is the first whose decision clock is at or after decision+h"
+        },
+        "negative_control": true
+      }
+    ]
+  },
+  "frequency_pooled": [
+    {
+      "horizon_seconds": 1,
+      "streams_summed": 10,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "opportunities_per_day": 0.0,
+      "opportunities_per_day_any_direction": 0.0,
+      "active_target_per_day": 3.0,
+      "meets_target": false,
+      "is_upper_bound": true,
+      "is_executable_long_only": true,
+      "rate_extrapolated_from_hours": true
+    },
+    {
+      "horizon_seconds": 5,
+      "streams_summed": 10,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "opportunities_per_day": 0.0,
+      "opportunities_per_day_any_direction": 0.0,
+      "active_target_per_day": 3.0,
+      "meets_target": false,
+      "is_upper_bound": true,
+      "is_executable_long_only": true,
+      "rate_extrapolated_from_hours": true
+    },
+    {
+      "horizon_seconds": 60,
+      "streams_summed": 10,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "opportunities_per_day": 144.061,
+      "opportunities_per_day_any_direction": 312.121,
+      "active_target_per_day": 3.0,
+      "meets_target": true,
+      "is_upper_bound": true,
+      "is_executable_long_only": true,
+      "rate_extrapolated_from_hours": true
+    }
+  ],
+  "venue_comparison": {
+    "hypothesis": "E-02",
+    "best_measured_gross_bps": 1.582703,
+    "scenarios": [
+      {
+        "scenario": "BINANCE_SPOT_STANDARD_TAKER",
+        "venue": "Binance",
+        "assets_compared": 10,
+        "cheapest_round_trip_bps": 22.9866,
+        "fee_component_bps": 20.0,
+        "net_at_best_gross_bps": -21.403897,
+        "clears_cost": false,
+        "clears_1_5x": false
+      },
+      {
+        "scenario": "MEXC_SPOT_TAKER",
+        "venue": "MEXC",
+        "assets_compared": 10,
+        "cheapest_round_trip_bps": 12.9866,
+        "fee_component_bps": 10.0,
+        "net_at_best_gross_bps": -11.403897,
+        "clears_cost": false,
+        "clears_1_5x": false
+      },
+      {
+        "scenario": "OKX_SPOT_TAKER",
+        "venue": "OKX",
+        "assets_compared": 10,
+        "cheapest_round_trip_bps": 22.9866,
+        "fee_component_bps": 20.0,
+        "net_at_best_gross_bps": -21.403897,
+        "clears_cost": false,
+        "clears_1_5x": false
+      },
+      {
+        "scenario": "KRAKENPRO_SPOT_TAKER",
+        "venue": "Kraken Pro",
+        "assets_compared": 10,
+        "cheapest_round_trip_bps": 82.9866,
+        "fee_component_bps": 80.0,
+        "net_at_best_gross_bps": -81.403897,
+        "clears_cost": false,
+        "clears_1_5x": false
+      }
+    ],
+    "cheapest_scenario": "MEXC_SPOT_TAKER",
+    "falsified": true,
+    "note": "a venue change is a governance decision; this only measures whether the fee schedule is what blocks the edge"
+  },
+  "capacity": {
+    "hypothesis": "E-03",
+    "rows": [
+      {
+        "market": "perp",
+        "symbol": "BTCUSDT",
+        "snapshots": 123,
+        "median_notional_within_5bps_usd": 391074.9372,
+        "absorbs_quote_size": true,
+        "quote_size_usd": 1000.0
+      },
+      {
+        "market": "perp",
+        "symbol": "ETHUSDT",
+        "snapshots": 124,
+        "median_notional_within_5bps_usd": 312455.2294,
+        "absorbs_quote_size": true,
+        "quote_size_usd": 1000.0
+      },
+      {
+        "market": "perp",
+        "symbol": "SOLUSDT",
+        "snapshots": 119,
+        "median_notional_within_5bps_usd": 957722.9294,
+        "absorbs_quote_size": true,
+        "quote_size_usd": 1000.0
+      },
+      {
+        "market": "spot",
+        "symbol": "BTCUSDT",
+        "snapshots": 4,
+        "median_notional_within_5bps_usd": 125441.138,
+        "absorbs_quote_size": true,
+        "quote_size_usd": 1000.0
+      },
+      {
+        "market": "spot",
+        "symbol": "ETHUSDT",
+        "snapshots": 4,
+        "median_notional_within_5bps_usd": 41478.1355,
+        "absorbs_quote_size": true,
+        "quote_size_usd": 1000.0
+      },
+      {
+        "market": "spot",
+        "symbol": "SOLUSDT",
+        "snapshots": 3,
+        "median_notional_within_5bps_usd": 234023.5061,
+        "absorbs_quote_size": true,
+        "quote_size_usd": 1000.0
+      }
+    ],
+    "capacity_ok_for_all": true,
+    "note": "spot depth snapshots are rare in this capture, so a spot capacity claim rests on a small number of observations and is reported as such"
+  },
+  "registry": [
+    {
+      "id": "E-01",
+      "track": "ACTIVE",
+      "title": "quote imbalance is big enough to pay a taker round trip",
+      "statement": "the book's own imbalance (bid vs ask size at the touch, and its change) predicts the mid move over 1/5/60 s by more than the venue's round-trip taker cost, so the prediction is executable by a taker order",
+      "falsified_if": "the best measured mean gross move at any horizon is below the measured round-trip cost for that asset",
+      "data_requirement": "forward book_ticker at quote level (no historical substitute exists)",
+      "decided_at": "F2/F3 (cost survival, admission margin)",
+      "executable": true,
+      "note": "",
+      "classification": "COST_KILLED",
+      "failed_filter": "F2",
+      "reason": "best measured cell perp/SOLUSDT h=60s gross 1.582703 bps vs 24.0731 bps barrier \u2014 gross 1.5827 bps is below the measured round trip 24.0731 bps (cells: {'COST_KILLED': 30})",
+      "promotion": "NONE"
+    },
+    {
+      "id": "E-02",
+      "track": "CROSS-VENUE",
+      "title": "the fee schedule is the binding constraint, not the signal",
+      "statement": "the same measured gross move clears the barrier at a venue whose taker fee is lower, so the venue choice (not the model) is what blocks the edge",
+      "falsified_if": "no compared venue brings the round-trip cost at or below the measured gross move, including the venue with the lowest researched taker fee",
+      "data_requirement": "measured spread + the published fee schedules already registered",
+      "decided_at": "F2 (cost survival) with V3 venue scenarios",
+      "executable": false,
+      "note": "a venue change is a governance decision; this measures, it does not adopt",
+      "classification": "COST_KILLED",
+      "failed_filter": "F2",
+      "reason": "the cheapest registered schedule (MEXC_SPOT_TAKER at 12.9866 bps) still exceeds the best measured gross (1.582703 bps): the fee schedule is not the only constraint",
+      "promotion": "NONE"
+    },
+    {
+      "id": "E-03",
+      "track": "ACTIVE",
+      "title": "the measured book can absorb our order size inside the barrier",
+      "statement": "at the registered order size the captured book offers enough notional inside the barrier-implied impact, so the modelled cost is not a fiction",
+      "falsified_if": "the notional available within the barrier-implied price band is below the runtime's minimum order notional",
+      "data_requirement": "forward depth snapshots (10 levels) per symbol and market",
+      "decided_at": "F4 (capacity)",
+      "executable": true,
+      "note": "",
+      "classification": "OBSERVED",
+      "failed_filter": "F4",
+      "reason": "spot depth snapshots are rare in this capture, so a spot capacity claim rests on a small number of observations and is reported as such",
+      "promotion": "NONE"
+    },
+    {
+      "id": "E-04",
+      "track": "QUALITY",
+      "title": "open interest with price is exploitable on a slower clock",
+      "statement": "the quadrant 'price down and open interest up' carries a positive forward move large enough to pay the round trip at a 5-minute horizon",
+      "falsified_if": "no quadrant cell reaches a positive mean gross move at or above the round-trip cost, or the sample is below the registered floor",
+      "data_requirement": "forward open interest + mid at 5-minute resolution",
+      "decided_at": "F1/F2 with an explicit sample floor",
+      "executable": true,
+      "note": "",
+      "classification": "INSUFFICIENT_SAMPLE",
+      "failed_filter": "\u2014",
+      "reason": "PRICE_DOWN_OI_UP n=14 mean=-8.015351 bps against a barrier of 23.1512 bps",
+      "promotion": "NONE"
+    },
+    {
+      "id": "E-05",
+      "track": "ACTIVE",
+      "title": "three executed trades a day is reachable by a positive structure",
+      "statement": "a structure whose expected move clears the barrier occurs at least three times a day across the aggregate universe, so the ACTIVE objective is a strategy question and not an arithmetic impossibility",
+      "falsified_if": "the measured count of barrier-clearing opportunities per day is below the registered 3.0, no trade being forced to reach it",
+      "data_requirement": "the same quote panel, counted without a performance filter",
+      "decided_at": "F5 (frequency), on the pooled universe",
+      "executable": true,
+      "note": "",
+      "classification": "OBSERVED",
+      "failed_filter": "\u2014",
+      "reason": "the tape clears the barrier at h=60s at 144.061 long-only opportunities/day (upper bound, long-only, extrapolated from 1.999-4.155 h of capture), so the ACTIVE frequency target is not what blocks the book at those horizons",
+      "promotion": "NONE"
+    },
+    {
+      "id": "E-06",
+      "track": "EXECUTION",
+      "title": "a taker entry pays no more than the measured spread and impact",
+      "statement": "the price a taker order actually pays, measured against the mid at the decision instant, matches the modelled spread plus impact component, so the cost model is not systematically optimistic",
+      "falsified_if": "the measured execution shortfall exceeds the modelled spread+impact component by more than the published tolerance",
+      "data_requirement": "forward tape (agg_trade with aggressor side) + book_ticker",
+      "decided_at": "measured, then compared to the model; not an admission filter",
+      "executable": true,
+      "note": "",
+      "classification": "OBSERVED",
+      "failed_filter": "\u2014",
+      "reason": "median measured taker shortfall 0.0187 bps against the modelled spread+impact components",
+      "promotion": "NONE"
+    },
+    {
+      "id": "E-07",
+      "track": "GUARD",
+      "title": "negative control: the pipeline does not manufacture an edge",
+      "statement": "the identical pipeline, fed a feature destroyed by a deterministic shuffle inside each day, produces no cost-surviving edge",
+      "falsified_if": "the negative control reaches the positive classification, which would invalidate every other result in this package",
+      "data_requirement": "the same panel",
+      "decided_at": "must end COST_KILLED or NO_GROSS_EDGE or NO_INFORMATION",
+      "executable": false,
+      "note": "FALSE_SUCCESS guard: a positive control here stops the package",
+      "classification": "NO_GROSS_EDGE",
+      "failed_filter": "\u2014",
+      "reason": "negative control verdicts: ['COST_KILLED', 'NO_GROSS_EDGE', 'NO_INFORMATION']",
+      "promotion": "NONE"
+    }
+  ],
+  "negative_control_classification": [
+    "COST_KILLED",
+    "NO_GROSS_EDGE",
+    "NO_INFORMATION"
+  ],
+  "false_success": 0,
+  "promotion": "NONE",
+  "order_sent": false,
+  "depth_snapshots_read": 7540
+}

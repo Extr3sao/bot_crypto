@@ -1,0 +1,402 @@
+{
+  "run_id": "wp-edge-01-entry-timing-h2",
+  "generated_at_utc": "2026-10-12T18:38:02.403697+00:00",
+  "git": {
+    "head_commit": "ce42ca42c297fe2b6a6594a49b385ed811442666",
+    "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+    "worktree_dirty": true,
+    "source_sha256": "616a86fa7258fa9efe2faf1d3b333a87722944aef9796bfa228417014c178c5a",
+    "source_digest_rule": "sha256 over name+bytes of src/trading_bot/research/edge01/*.py, scripts/edge01_run.py and scripts/edge01_verify.py, with CRLF folded to LF so the digest does not depend on the checkout's line endings"
+  },
+  "source_digest": {
+    "combined_sha256": "8b64b3f5ac7a34fa9230d4209258cbca4ea3bf80b5b9d822bb0ec869d206b82c",
+    "files": {
+      "src/trading_bot/research/edge01/__init__.py": "0bff4c03e469f6b2baceafd97f030d9408b0edcbb21dfe4dc3374b9e6239becb",
+      "src/trading_bot/research/edge01/campaign.py": "83970e6203401905a6b4473cee389970769f8a09690c12b565260b4305742605",
+      "src/trading_bot/research/edge01/candidates.py": "592d629ca91714d9730bf959fd44e0f08f1111ed7a06d7654f6407f51279eac3",
+      "src/trading_bot/research/edge01/closure.py": "1a072ef056e2defb7cd756fa7023628f01504d3fe3e5728060ffd90e1d1dbbf8",
+      "src/trading_bot/research/edge01/costs.py": "ebd6aba5da31d6b432d09b6979ea8775e9ca1a30c4e1c714c7cc182c26bf6f8d",
+      "src/trading_bot/research/edge01/data.py": "ac7b37f1768d1d2a5b37801f781a335869b38af8159a16ae173163b84ad495c2",
+      "src/trading_bot/research/edge01/features.py": "76c0dcbb9faef7f0d47f1de9fad1c2d12901c81c1c5496a582a311c5deb21fab",
+      "src/trading_bot/research/edge01/retest.py": "913c1f97c3d8709168f64d43df3ce3a75222a8d11de8f756679c68701155dd5d",
+      "src/trading_bot/research/edge01/simulator.py": "f8ea260e6b770d39a44bf41550f2039cf4fc5ad7ec938a07b6f89bca58cc98db",
+      "scripts/edge01_run.py": "dbfaf908042447cf582f04894bd2513292f3e1cc8f600b8c93046cb086df5d43",
+      "scripts/edge01_verify.py": "d777850c00c49aba7e032057ef1ba8d81e11695b8fe791d66dbd3ab66558f5c3",
+      "scripts/edge01_mechanism_ablation.py": "10eb7befa3f8082460fed743585501ab96d4117320b7a02c5e2173da447fee8d",
+      "scripts/edge01_mechanism_ablation_verify.py": "49912831734c99fd07b096663bf2a5851f35e226255b99da28272f11c9be0970"
+    }
+  },
+  "mode": "deterministic backtest over the local historical corpus, DEV window only; 0 orders, 0 credentials, 0 network calls, no VAL or OOS bar read",
+  "entrypoint": "scripts/edge01_mechanism_ablation.py",
+  "verifier": "scripts/edge01_mechanism_ablation_verify.py",
+  "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+  "experiment": {
+    "id": "ABL-EDGE01-H2",
+    "hypothesis": "H2",
+    "kind": "diagnostic",
+    "question": "gross is negative in DEV, VAL and OOS for the intraday breakout, so the loss is not only cost: is the entry LATE relative to the level it breaks?",
+    "candidate": "edge_intra_01",
+    "split": "intraday",
+    "window": "DEV",
+    "scenario": "BASE",
+    "timeframe": "15m",
+    "horizon_minutes": 240.0,
+    "bucket_edges_atr": [
+      0.25,
+      0.5,
+      1.0
+    ],
+    "distance_definition": "distance_atr = (entry_mid - level) / atr, where level is the broken resistance the signal itself names in hard_invalidation, atr is the signal's own atr_period ATR and entry_mid is the mid the simulator filled at. 0 means the fill happened at the level; 1 means one ATR above it.",
+    "changed_rule": null,
+    "changed_rule_note": "none: this experiment answers a question about the frozen rule, it does not compare two rules. Same candidate, same DEV window, same BASE scenario and the runtime's own risk budget as the WP run.",
+    "window_start_utc": "2024-10-01T00:00:00+00:00",
+    "window_end_utc": "2025-06-30T00:00:00+00:00",
+    "window_start_ms": 1727740800000,
+    "window_end_ms": 1751241600000,
+    "window_days": 272.0,
+    "assets": [
+      "BTC",
+      "ETH",
+      "SOL"
+    ],
+    "plane": {
+      "scenario_id": "BASE",
+      "cost_model_version": "COST_MODEL_V3",
+      "size_usd": 1000.0,
+      "horizon_minutes": 240.0,
+      "fee_bps": 20.0,
+      "spread_bps": 1.0,
+      "slippage_bps": 2.632456,
+      "impact_bps": 0.158114,
+      "funding_bps": 0.0,
+      "other_bps": 0.0,
+      "round_trip_bps": 23.790569
+    },
+    "risk_config_path": "config/risk.yaml",
+    "risk_config_sha256": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+    "decision_rule": {
+      "min_trades_per_side": 25,
+      "meaning": {
+        "INCONCLUSIVE": "one side of the split holds fewer than min_trades_per_side trades, so the DEV sample cannot separate near from far and nothing is claimed",
+        "ENTRY_IS_LATE": "the majority of the fills happen at least one bucket edge past the level AND the minority that fills closest to the level carries the better expectancy: the edge is being paid away on the way in, so the entry rule has to move earlier (limit at or retest of the level), not the stop and not the cost model",
+        "ENTRY_NOT_THE_PROBLEM": "expectancy does not live on the side that fills closest to the level: the late fill is not what makes the intraday gross negative, and moving the entry earlier would not be supported by DEV either"
+      },
+      "rule": "near = trades whose distance_atr is below the first declared edge; far = the rest. Fewer than min_trades_per_side on either side -> INCONCLUSIVE. ENTRY_IS_LATE when far carries at least as many trades as near AND near.expectancy_usdt > far.expectancy_usdt. Otherwise ENTRY_NOT_THE_PROBLEM. Both sides of the comparison are computed from the published trade rows, so the reading can be recomputed by anyone."
+    },
+    "corpus_provenance": {
+      "BTC": {
+        "symbol": "BTC",
+        "timeframe": "15m",
+        "bars": 70703,
+        "first_ts": 1727740800000,
+        "last_ts": 1791372600000,
+        "sources": [
+          "data/raw/alpha003/price/BTCUSDT_15m.json"
+        ],
+        "sha256": "cd1d2ea256a97f7cbbdb8160d183464b6955ff0b8f613146dd61253cd03607ce"
+      },
+      "ETH": {
+        "symbol": "ETH",
+        "timeframe": "15m",
+        "bars": 70703,
+        "first_ts": 1727740800000,
+        "last_ts": 1791372600000,
+        "sources": [
+          "data/raw/alpha003/price/ETHUSDT_15m.json"
+        ],
+        "sha256": "b8fd5744cc66f63566eb2a7ddff26f9882bf7a40348854d1cc42a73a5b39f2ea"
+      },
+      "SOL": {
+        "symbol": "SOL",
+        "timeframe": "15m",
+        "bars": 70703,
+        "first_ts": 1727740800000,
+        "last_ts": 1791372600000,
+        "sources": [
+          "data/raw/alpha003/price/SOLUSDT_15m.json"
+        ],
+        "sha256": "72a268137cbe944b4521da9281b8ae326b5ebeeaa416750f8b75fce772bcc33e"
+      }
+    }
+  },
+  "market_context": {
+    "benchmark": "BTC",
+    "timeframe": "1d (aggregated from 1h shards; a day exists only when its 24 contiguous hours do)",
+    "rule": "benchmark BTC daily close against its own 200-day EMA, with that EMA's 20-day change deciding trend from range: BULL when close > EMA200 and the EMA rose over the last 20 days, BEAR when close < EMA200 and it fell, SIDEWAYS otherwise, UNDEFINED while either input is still warming up. This is the project's existing convention (trading_bot/research/swing/backtest.py::build_regimes), reused rather than re-invented; it is a market label for reporting, never a signal.",
+    "labels": [
+      "BULL",
+      "BEAR",
+      "SIDEWAYS",
+      "UNDEFINED"
+    ],
+    "sources": [
+      "reports/alpha-expansion-v1/data/BTCUSDT_2019.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2020.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2021.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2022.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2023.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2024.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2025.json",
+      "reports/alpha-expansion-v1/data/BTCUSDT_2026.json"
+    ],
+    "source_sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57",
+    "days": 2596,
+    "first_close_ms": 1546387200000,
+    "last_close_ms": 1772323200000,
+    "label_days": {
+      "UNDEFINED": 219,
+      "BULL": 1468,
+      "SIDEWAYS": 212,
+      "BEAR": 697
+    },
+    "artefact": "MARKET_CONTEXT.csv"
+  },
+  "verdict": {
+    "verdict": "ENTRY_IS_LATE",
+    "rule": {
+      "min_trades_per_side": 25
+    },
+    "bucket_edges_atr": [
+      0.25,
+      0.5,
+      1.0
+    ],
+    "rule_text": "near = trades whose distance_atr is below the first declared edge; far = the rest. Fewer than min_trades_per_side on either side -> INCONCLUSIVE. ENTRY_IS_LATE when far carries at least as many trades as near AND near.expectancy_usdt > far.expectancy_usdt. Otherwise ENTRY_NOT_THE_PROBLEM. Both sides of the comparison are computed from the published trade rows, so the reading can be recomputed by anyone.",
+    "rule_sha256": "d07e6afca08aa9b6a48e81474509dd7b5905279722ab5cbdc16dbc425b67f508",
+    "meaning": {
+      "INCONCLUSIVE": "one side of the split holds fewer than min_trades_per_side trades, so the DEV sample cannot separate near from far and nothing is claimed",
+      "ENTRY_IS_LATE": "the majority of the fills happen at least one bucket edge past the level AND the minority that fills closest to the level carries the better expectancy: the edge is being paid away on the way in, so the entry rule has to move earlier (limit at or retest of the level), not the stop and not the cost model",
+      "ENTRY_NOT_THE_PROBLEM": "expectancy does not live on the side that fills closest to the level: the late fill is not what makes the intraday gross negative, and moving the entry earlier would not be supported by DEV either"
+    },
+    "near": {
+      "buckets": [
+        "<0.25"
+      ],
+      "trades": 54,
+      "net_usdt": -58.7637,
+      "gross_usdt": 5.4651,
+      "expectancy_usdt": -1.0882
+    },
+    "far": {
+      "buckets": [
+        "0.25-0.5",
+        "0.5-1",
+        ">=1"
+      ],
+      "trades": 236,
+      "net_usdt": -437.6661,
+      "gross_usdt": -157.1775,
+      "expectancy_usdt": -1.8545
+    },
+    "median_distance_atr": 0.497447,
+    "reason": "236 of 290 fills land at or past 0.25 ATR above the broken level and their expectancy is -1.8545 USDT per trade against -1.0882 for the fills closer in"
+  },
+  "buckets": {
+    "<0.25": {
+      "trades": 54,
+      "net_usdt": -58.7637,
+      "gross_usdt": 5.4651,
+      "fees_usdt": 53.9952,
+      "price_costs_usdt": 10.2336,
+      "cost_usdt": 64.2289,
+      "expectancy_usdt": -1.0882,
+      "win_rate_pct": 16.6667,
+      "median_distance_atr": 0.171247,
+      "median_mfe_bps": 28.250288,
+      "median_mae_bps": 26.84526,
+      "median_duration_min": 15.0,
+      "by_market_context": {
+        "BULL": {
+          "trades": 54,
+          "net_usdt": -58.7637
+        }
+      }
+    },
+    "0.25-0.5": {
+      "trades": 96,
+      "net_usdt": -134.8396,
+      "gross_usdt": -20.6911,
+      "fees_usdt": 95.9611,
+      "price_costs_usdt": 18.1874,
+      "cost_usdt": 114.1485,
+      "expectancy_usdt": -1.4046,
+      "win_rate_pct": 17.7083,
+      "median_distance_atr": 0.372328,
+      "median_mfe_bps": 32.535868,
+      "median_mae_bps": 37.43641,
+      "median_duration_min": 15.0,
+      "by_market_context": {
+        "BULL": {
+          "trades": 96,
+          "net_usdt": -134.8396
+        }
+      }
+    },
+    "0.5-1": {
+      "trades": 112,
+      "net_usdt": -241.7484,
+      "gross_usdt": -108.6757,
+      "fees_usdt": 111.8701,
+      "price_costs_usdt": 21.2026,
+      "cost_usdt": 133.0727,
+      "expectancy_usdt": -2.1585,
+      "win_rate_pct": 19.6429,
+      "median_distance_atr": 0.704719,
+      "median_mfe_bps": 37.026028,
+      "median_mae_bps": 49.413787,
+      "median_duration_min": 30.0,
+      "by_market_context": {
+        "BULL": {
+          "trades": 112,
+          "net_usdt": -241.7484
+        }
+      }
+    },
+    ">=1": {
+      "trades": 28,
+      "net_usdt": -61.0781,
+      "gross_usdt": -27.8107,
+      "fees_usdt": 27.9669,
+      "price_costs_usdt": 5.3005,
+      "cost_usdt": 33.2674,
+      "expectancy_usdt": -2.1814,
+      "win_rate_pct": 28.5714,
+      "median_distance_atr": 1.124243,
+      "median_mfe_bps": 45.510469,
+      "median_mae_bps": 59.651011,
+      "median_duration_min": 67.5,
+      "by_market_context": {
+        "BULL": {
+          "trades": 28,
+          "net_usdt": -61.0781
+        }
+      }
+    }
+  },
+  "unmatched_trades": [],
+  "limitations": [
+    "the diagnostic reads the trades the RISK BUDGET let through, not every signal the candidate printed; what the budget removed is the subject of H5",
+    "two trades may share a (asset, signal_bar) key only if the simulator can re-enter on the same bar; the artefacts publish the join so the reader can see whether any were unmatched",
+    "the level is the one the frozen candidate wrote into its own signal: this measures the timing of THIS rule, not of a re-specified breakout",
+    "single DEV window; no historical order book; long side only (spot)"
+  ],
+  "arms": {
+    "diagnostic": {
+      "role": "diagnostic",
+      "candidate_id": "edge_intra_01",
+      "params": {
+        "resistance_lookback": 20,
+        "atr_period": 14,
+        "breakout_buffer_atr": 0.1,
+        "volume_lookback": 20,
+        "volume_mult": 1.2,
+        "stop_atr_below_level": 0.5,
+        "max_stop_atr": 2.5,
+        "min_rr": 1.5,
+        "cost_margin": 1.5,
+        "trailing_atr": 2.0,
+        "level_reset_atr": 1.0
+      },
+      "bars_evaluated": 78279,
+      "warmup_bars": 60,
+      "signal_count": 860,
+      "joined_trades": 290,
+      "unmatched_trades": 0,
+      "refusals": {
+        "candidate:volume_filter_fail": 550,
+        "candidate:trend_filter_fail": 1097,
+        "candidate:rr_below_minimum": 105,
+        "candidate:level_already_traded": 584,
+        "candidate:stop_too_wide": 55,
+        "risk:risk_loss_cooldown": 17,
+        "candidate:reward_below_cost": 9,
+        "risk:risk_drawdown_halt": 493
+      },
+      "trades": 290,
+      "gross_usdt": -151.7123,
+      "fees_usdt": 289.7934,
+      "price_costs_usdt": 54.9241,
+      "net_usdt": -496.4298,
+      "return_pct": -4.9643,
+      "final_equity": 9503.5702,
+      "win_rate_pct": 19.3103,
+      "profit_factor": 0.3224,
+      "expectancy_usdt": -1.7118,
+      "avg_win_usdt": 4.2187,
+      "avg_loss_usdt": -3.1311,
+      "payoff_ratio": 1.3473,
+      "max_drawdown_pct": 5.0427,
+      "sharpe_annualised": -6.2306,
+      "sharpe_convention": "per-15m equity returns, annualised with 35040 bars/year; None when fewer than 100 observations",
+      "exposure_pct_of_time": 1.5714,
+      "total_cost_bps_per_trade": 23.7736,
+      "largest_trade_share_of_net": null,
+      "by_asset": {
+        "BTC": {
+          "trades": 109,
+          "net": -157.9486,
+          "win_rate": 20.1835
+        },
+        "ETH": {
+          "trades": 83,
+          "net": -157.7756,
+          "win_rate": 15.6627
+        },
+        "SOL": {
+          "trades": 98,
+          "net": -180.7055,
+          "win_rate": 21.4286
+        }
+      },
+      "by_regime": {
+        "UP": {
+          "trades": 290,
+          "net": -496.4298,
+          "win_rate": 19.3103
+        }
+      },
+      "by_market_context": {
+        "BULL": {
+          "trades": 290,
+          "net": -496.4298,
+          "win_rate": 19.3103
+        }
+      },
+      "by_regime_note": "entry trend state of the candidate's own filter (the value that let the trade through), NOT a market regime; see by_market_context for the benchmark-relative one",
+      "exit_reason_mix": {
+        "trailing_stop": 47,
+        "stop_loss": 130,
+        "target": 40,
+        "invalidation": 73
+      },
+      "avg_duration_min": 63.67
+    }
+  },
+  "artifacts": {
+    "ENTRY_TIMING_TRADES.csv": {
+      "sha256": "65544270357d73dc9353628c7bf0217164a7c73b8ed0a2ebd17376b1a0ee074f",
+      "bytes": 104867
+    },
+    "ENTRY_TIMING_LEVELS.csv": {
+      "sha256": "cea4809f07ac31883fbce82c151342ebd1500e6157bd9e440fb6a465cf350553",
+      "bytes": 64234
+    },
+    "ENTRY_TIMING_SIGNALS.csv": {
+      "sha256": "1bfcace7760624caa6dc5ed02e2556ce9a5b1eb12b181411e7188cf1bdac1cb8",
+      "bytes": 131568
+    },
+    "ENTRY_TIMING_REFUSALS.csv": {
+      "sha256": "98105f6bc022fdb1f1f547b48a24a6590c2cadd311a0b00caf330c4d78cdf223",
+      "bytes": 209505
+    },
+    "MARKET_CONTEXT.csv": {
+      "sha256": "b4df16db377d90ac2af68e1283e9db716338bf822ae90f29c51191061e865013",
+      "bytes": 212532
+    },
+    "ENTRY_TIMING.md": {
+      "sha256": "bb99c3564187f357de36a9c4e05d215fe720dfb919984f7ab13f11e83bfd17eb",
+      "bytes": 3747
+    }
+  },
+  "artifact_note": "digests cover every entry-timing artefact except ENTRY_TIMING.json itself, which is the file carrying them"
+}

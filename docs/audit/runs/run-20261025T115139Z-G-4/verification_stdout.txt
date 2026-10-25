@@ -1,0 +1,66 @@
+{
+  "app_sha256": "f732dd560abac1a24f732847c5218e670f449b438440694da194aaba6351a195",
+  "checkout": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004",
+  "checks": [
+    {
+      "check": "TEST_TARGET == RUNTIME_TARGET",
+      "detail": "imported=C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\g4-verify-cq6c7lfv\\tree\\src\\trading_bot\\__init__.py; interpreter=C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004\\.venv\\Scripts\\python.exe",
+      "ok": true
+    },
+    {
+      "check": "ACC-G4-01/02 demo reaches no sink and no exchange client",
+      "detail": "{\"demo\": {\"futures_client\": 0, \"live_source\": 0, \"paper_broker\": 0, \"paper_cycle\": 0, \"spot_client\": 0}, \"demo_autotrade\": {\"futures_client\": 0, \"live_source\": 0, \"paper_broker\": 0, \"paper_cycle\": 0, \"spot_client\": 0}, \"exits\": [0, 0]}",
+      "ok": true
+    },
+    {
+      "check": "ACC-G4-03 marker blocks the paper entry",
+      "detail": "{\"attach_gate\": true, \"broker_close_calls\": 0, \"broker_execute_calls\": 0, \"gate_engaged\": true, \"gate_stats\": {\"actor\": \"boot_restore:C:\\\\Users\\\\GVLLFR~1\\\\AppData\\\\Local\\\\Temp\\\\g4-paper-t6drpj1v\\\\KILL_SWITCH\", \"boundary\": \"autonomous.runtime._execute_paper -> broker.execute_signal\", \"broker_calls_allowed\": 0, \"control_path\": \"C:\\\\Users\\\\GVLLFR~1\\\\AppData\\\\Local\\\\Temp\\\\g4-paper-t6drpj1v\\\\KILL_SWITCH\", \"engaged\": true, \"engaged_at_ms\": 1792931096057, \"lock_timeouts\": 0, \"orders_blocked\": 0, \"reason\": \"g4 probe operator stop\", \"restored\": true}, \"gate_supported\": true, \"hot_stop_blocked\": 1, \"marker\": true, \"orders_created\": 0, \"process_stop\": false, \"rejections\": [{\"reason\": \"kill_switch_active:marker:g4 probe operator stop\", \"stage\": \"hot_stop\", \"symbol\": \"BTC/USDT\"}], \"scenario\": \"paper_cycle\"}",
+      "ok": true
+    },
+    {
+      "check": "ACC-G4-04 clean paper path still trades exactly once",
+      "detail": "{\"attach_gate\": true, \"broker_close_calls\": 0, \"broker_execute_calls\": 1, \"gate_engaged\": false, \"gate_stats\": {\"actor\": \"\", \"boundary\": \"autonomous.runtime._execute_paper -> broker.execute_signal\", \"broker_calls_allowed\": 1, \"control_path\": \"C:\\\\Users\\\\GVLLFR~1\\\\AppData\\\\Local\\\\Temp\\\\g4-paper-86hszq7h\\\\KILL_SWITCH\", \"engaged\": false, \"engaged_at_ms\": null, \"lock_timeouts\": 0, \"orders_blocked\": 0, \"reason\": \"\", \"restored\": false}, \"gate_supported\": true, \"hot_stop_blocked\": 0, \"marker\": false, \"orders_created\": 1, \"process_stop\": false, \"rejections\": [], \"scenario\": \"paper_cycle\"}",
+      "ok": true
+    },
+    {
+      "check": "ACC-G4-08 process switch blocks without a marker",
+      "detail": "{\"attach_gate\": true, \"broker_close_calls\": 0, \"broker_execute_calls\": 0, \"gate_engaged\": false, \"gate_stats\": {\"actor\": \"\", \"boundary\": \"autonomous.runtime._execute_paper -> broker.execute_signal\", \"broker_calls_allowed\": 0, \"control_path\": \"C:\\\\Users\\\\GVLLFR~1\\\\AppData\\\\Local\\\\Temp\\\\g4-paper-ahm4seb9\\\\KILL_SWITCH\", \"engaged\": false, \"engaged_at_ms\": null, \"lock_timeouts\": 0, \"orders_blocked\": 0, \"reason\": \"\", \"restored\": false}, \"gate_supported\": true, \"hot_stop_blocked\": 1, \"marker\": false, \"orders_created\": 0, \"process_stop\": true, \"rejections\": [{\"reason\": \"kill_switch_active:process\", \"stage\": \"hot_stop\", \"symbol\": \"BTC/USDT\"}], \"scenario\": \"paper_cycle\"}",
+      "ok": true
+    },
+    {
+      "check": "ACC-G4-11 hot_stop.py is byte-identical to a072da90",
+      "detail": "current=76cfca23d1e7758607c466eea4ff5c0a9411cb812d433eb7ca16dfb45cfdf8b1 baseline=a072da90",
+      "ok": true
+    },
+    {
+      "check": "ACC-G4-03/10 dispatch and demo AST",
+      "detail": "dispatch_inside_order_boundary=True; app_forbidden_names=[]",
+      "ok": true
+    },
+    {
+      "check": "ACC-G4-10 launcher wires a gate",
+      "detail": "HotStopGate=True; engine_hot_stop=True; main_run_dir=True",
+      "ok": true
+    },
+    {
+      "check": "ACC-G4-05/06/07/12 adversarial and regression suites",
+      "detail": "192 passed in 53.00s",
+      "ok": true
+    },
+    {
+      "check": "ACC-G4-13/14 contract, backlog and no-go declarations",
+      "detail": "contract=True; backlog=True",
+      "ok": true
+    }
+  ],
+  "checks_passed": 10,
+  "checks_total": 10,
+  "cycle_sha256": "8f4328269386c4b3918ff8c3573753691192b8d44dada94acc737b33746f94df",
+  "duration_s": 82.8,
+  "false_success": 0,
+  "pytest_tail": "........................................................................ [ 37%]\n........................................................................ [ 75%]\n................................................                         [100%]\n192 passed in 53.00s\n",
+  "rev": "7e300af5c856c9665bf3b52635572e2ba2b69925",
+  "started_at_utc": "2026-10-25T12:24:35Z",
+  "tool": "verify_g4",
+  "verdict": "G4_VERIFIED_SCOPED"
+}

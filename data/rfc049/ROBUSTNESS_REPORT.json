@@ -1,0 +1,24 @@
+{
+  "artifact": "RFC049_ROBUSTNESS_REPORT",
+  "status": "NOT_RUN",
+  "reason": "NEXT_CAMPAIGN=NOT_AUTHORIZED — no economic run exists to stress",
+  "generated_at_utc": "2026-10-10T11:26:20Z",
+  "planned_battery": {
+    "cost_stress": "1.5x every modelled cost component",
+    "sub_period_stability": "three equal consecutive sub-windows, sign recorded in each",
+    "anti_overfitting_controls": [
+      "no parameter search (0 declared)",
+      "specification frozen before any measurement and hashed",
+      "incremental controls versus buy-and-hold, 200d trend baseline and the sibling hypothesis",
+      "multiple-testing correction across admitted hypotheses (BH and Holm)",
+      "sealed forward OOS opened once",
+      "no trade discarded silently: every decision, including NO_TRADE, is recorded"
+    ],
+    "false_positive_tests": [
+      "block bootstrap LCB",
+      "best-of-N permutation null for the campaign level",
+      "concentration limits (single trade / single quarter)"
+    ]
+  },
+  "note": "nothing in this file is a result"
+}

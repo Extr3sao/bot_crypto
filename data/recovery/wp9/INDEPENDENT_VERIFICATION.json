@@ -1,0 +1,790 @@
+{
+  "artifact": "WP9_INDEPENDENT_VERIFICATION",
+  "work_package": "WP-9F (VERIFICATION AND CERTIFICATION)",
+  "generated_at_utc": "2026-10-11T21:11:15Z",
+  "head": "5348fcd55ab9ef404c676d8aada8daa8c85b9785",
+  "verifier": "scripts/wp9_verify.py",
+  "builders": [
+    "scripts/wp9_disk_budget_audit.py",
+    "src/trading_bot/research/disk_budget.py",
+    "scripts/wp9_m03_m07_readiness.py",
+    "scripts/wp9_economic_blockers.py",
+    "scripts/wp9_ci_audit.py",
+    "scripts/wp9_runtime_rehearsal.py"
+  ],
+  "builder_imported": false,
+  "method": "a second implementation: every headline number is re-derived from a primary artefact (the sealed manifest, the segment files, the pre-registration, the frozen cost components, the workflow text, the traces) and compared with what the builder published; each check is shown to fail under a deliberate mutation",
+  "checks": [
+    {
+      "id": "D1",
+      "claim": "the sealed window's rate is its own bytes divided by its own seconds",
+      "published": 192251690.906,
+      "rederived": 192251690.906,
+      "agrees": true,
+      "evidence": [
+        "reports/microstructure-forward-continuous/manifest/paper-lab-continuous-02.json"
+      ]
+    },
+    {
+      "id": "D2",
+      "claim": "the published rate field reproduces the derived one",
+      "published": 192251690.91,
+      "rederived": 192251690.906,
+      "agrees": true,
+      "evidence": [
+        "reports/microstructure-forward-continuous/manifest/paper-lab-continuous-02.json"
+      ]
+    },
+    {
+      "id": "D3",
+      "claim": "the segment files of window 1 sum to what the manifest says it wrote",
+      "published": 799632725,
+      "rederived": 799632725,
+      "agrees": true,
+      "evidence": [
+        "reports/microstructure-forward-continuous/segments/** (411 files)"
+      ]
+    },
+    {
+      "id": "D4/24h",
+      "claim": "the 24 h requirement is rate x hours, and its fit is free - reserve - requirement >= 0",
+      "published": {
+        "required": 4618059502,
+        "stress": 6927089253,
+        "fits": true,
+        "fits_stress": true
+      },
+      "rederived": {
+        "required": 4618059503,
+        "stress": 6927089254,
+        "fits": true,
+        "fits_stress": true
+      },
+      "agrees": true,
+      "evidence": [
+        "shutil.disk_usage of the workspace volume"
+      ]
+    },
+    {
+      "id": "D4/48h",
+      "claim": "the 48 h requirement is rate x hours, and its fit is free - reserve - requirement >= 0",
+      "published": {
+        "required": 9236119005,
+        "stress": 13854178507,
+        "fits": true,
+        "fits_stress": true
+      },
+      "rederived": {
+        "required": 9236119005,
+        "stress": 13854178508,
+        "fits": true,
+        "fits_stress": true
+      },
+      "agrees": true,
+      "evidence": [
+        "shutil.disk_usage of the workspace volume"
+      ]
+    },
+    {
+      "id": "D4/72h",
+      "claim": "the 72 h requirement is rate x hours, and its fit is free - reserve - requirement >= 0",
+      "published": {
+        "required": 13854178507,
+        "stress": 20781267761,
+        "fits": true,
+        "fits_stress": false
+      },
+      "rederived": {
+        "required": 13854178508,
+        "stress": 20781267761,
+        "fits": true,
+        "fits_stress": false
+      },
+      "agrees": true,
+      "evidence": [
+        "shutil.disk_usage of the workspace volume"
+      ]
+    },
+    {
+      "id": "P1/preflight_refusal",
+      "claim": "the valve's affordable hours are the valve divided by the effective rate",
+      "published": 5.717,
+      "rederived": 5.717,
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/evidence/preflight_refusal.out"
+      ]
+    },
+    {
+      "id": "P2/preflight_refusal",
+      "claim": "the state the launcher published is the one this verifier expects from the input",
+      "published": "INCOHERENT_BUDGET",
+      "rederived": "INCOHERENT_BUDGET",
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/evidence/preflight_refusal.out"
+      ]
+    },
+    {
+      "id": "P3/preflight_refusal",
+      "claim": "a refusal is stated on stderr, never silent",
+      "published": true,
+      "rederived": true,
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/evidence/preflight_refusal.err"
+      ]
+    },
+    {
+      "id": "P1/preflight_refusal_default",
+      "claim": "the valve's affordable hours are the valve divided by the effective rate",
+      "published": 5.717,
+      "rederived": 5.717,
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/evidence/preflight_refusal_default.out"
+      ]
+    },
+    {
+      "id": "P2/preflight_refusal_default",
+      "claim": "the state the launcher published is the one this verifier expects from the input",
+      "published": "INCOHERENT_BUDGET",
+      "rederived": "INCOHERENT_BUDGET",
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/evidence/preflight_refusal_default.out"
+      ]
+    },
+    {
+      "id": "P3/preflight_refusal_default",
+      "claim": "a refusal is stated on stderr, never silent",
+      "published": true,
+      "rederived": true,
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/evidence/preflight_refusal_default.err"
+      ]
+    },
+    {
+      "id": "P1/preflight_autoscale",
+      "claim": "the valve's affordable hours are the valve divided by the effective rate",
+      "published": 36.0,
+      "rederived": 36.0,
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/evidence/preflight_autoscale.out"
+      ]
+    },
+    {
+      "id": "P2/preflight_autoscale",
+      "claim": "the state the launcher published is the one this verifier expects from the input",
+      "published": "COHERENT",
+      "rederived": "COHERENT",
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/evidence/preflight_autoscale.out"
+      ]
+    },
+    {
+      "id": "P3/preflight_autoscale",
+      "claim": "a refusal is stated on stderr, never silent",
+      "published": false,
+      "rederived": false,
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/evidence/preflight_autoscale.err"
+      ]
+    },
+    {
+      "id": "R1",
+      "claim": "the sealed history is the sum of sealed manifest durations",
+      "published": 4.159301,
+      "rederived": 4.159301,
+      "agrees": true,
+      "evidence": [
+        "reports/microstructure-forward-continuous/manifest/paper-lab-continuous-02.json"
+      ]
+    },
+    {
+      "id": "R2",
+      "claim": "the M-07 shortfall is the pre-registered window minus the sealed history",
+      "published": 6.826696,
+      "rederived": 6.826696,
+      "agrees": true,
+      "evidence": [
+        "config/microstructure_preregistration.json"
+      ]
+    },
+    {
+      "id": "R3",
+      "claim": "the M-03 book-window shortfall is the pre-registered window minus the sealed history",
+      "published": 19.8407,
+      "rederived": 19.8407,
+      "agrees": true,
+      "evidence": [
+        "config/microstructure_preregistration.json"
+      ]
+    },
+    {
+      "id": "R4",
+      "claim": "the two pre-registrations are reported separately, not merged",
+      "published": {
+        "campaign_m07_criteria": 4,
+        "registry_m07_criteria": 6
+      },
+      "rederived": {
+        "campaign_m07_criteria": 4,
+        "registry_m07_criteria": 6
+      },
+      "agrees": true,
+      "evidence": [
+        "PAPER_DATA_24H_REPORT.json"
+      ]
+    },
+    {
+      "id": "R5",
+      "claim": "M-03 and M-07 are NOT_READY and the artefact does not claim otherwise",
+      "published": {
+        "M-03": "NOT_READY",
+        "M-07": "NOT_READY",
+        "ready": false
+      },
+      "rederived": {
+        "M-03": "NOT_READY",
+        "M-07": "NOT_READY",
+        "ready": false
+      },
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/WP9_M03_M07_READINESS.json"
+      ]
+    },
+    {
+      "id": "R6",
+      "claim": "the disjoint-period count is a floor division of the history, not a claim",
+      "published": 0,
+      "rederived": 0,
+      "agrees": true,
+      "evidence": [
+        "reports/microstructure-forward-continuous/manifest/paper-lab-continuous-02.json"
+      ]
+    },
+    {
+      "id": "E1",
+      "claim": "the frozen cost plane is the sum of its components, within their own rounding (5e-4 bps)",
+      "published": 23.353553390593273,
+      "rederived": 23.3535,
+      "agrees": true,
+      "evidence": [
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json#cost_plane.components_200_usdt"
+      ]
+    },
+    {
+      "id": "E2",
+      "claim": "the annual cost of the objective is round trips x the plane",
+      "published": 25572.140962699636,
+      "rederived": 25572.141,
+      "agrees": true,
+      "evidence": [
+        "objective round trips per year x cost plane"
+      ]
+    },
+    {
+      "id": "E3",
+      "claim": "the count of gross-positive cells is counted from the strategy records",
+      "published": 7,
+      "rederived": 7,
+      "agrees": true,
+      "evidence": [
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json#strategies.*.economics"
+      ]
+    },
+    {
+      "id": "E4",
+      "claim": "no cell clears the frozen plane, and that is counted per cell",
+      "published": 0,
+      "rederived": 0,
+      "agrees": true,
+      "evidence": [
+        "plane vs each cell's zero-cost gross"
+      ]
+    },
+    {
+      "id": "E5",
+      "claim": "the ledger status counts add up to the strategies audited",
+      "published": 24,
+      "rederived": 24,
+      "agrees": true,
+      "evidence": [
+        "config/strategy_admission.json",
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
+      ]
+    },
+    {
+      "id": "E6",
+      "claim": "primary classifications are the taxonomy's own `primary` field, one per strategy",
+      "published": 24,
+      "rederived": 24,
+      "agrees": true,
+      "evidence": [
+        "data/recovery/ACTIVE_ECONOMIC_AUDIT.json#strategies.*.failure_taxonomy.primary"
+      ]
+    },
+    {
+      "id": "E7",
+      "claim": "no independent cost-and-entry campaign exists in the committed tree",
+      "published": false,
+      "rederived": false,
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/WP9_ACTIVE_ECONOMIC_BLOCKERS.json",
+        "git ls-files"
+      ]
+    },
+    {
+      "id": "E8",
+      "claim": "the draft RFC cannot run: DRAFT and not authorised",
+      "published": {
+        "status": "DRAFT",
+        "authorized": false
+      },
+      "rederived": {
+        "status": "DRAFT",
+        "authorized": false
+      },
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/RFC_050_COST_AND_ENTRY_DRAFT.md"
+      ]
+    },
+    {
+      "id": "CI1/recovery-determinism.yml",
+      "claim": "the workflow is committed and no step softens itself with continue-on-error",
+      "published": {
+        "tracked": true,
+        "softened": []
+      },
+      "rederived": {
+        "tracked": true,
+        "softened": []
+      },
+      "agrees": true,
+      "evidence": [
+        ".github/workflows/recovery-determinism.yml"
+      ]
+    },
+    {
+      "id": "CI1/cost-barrier-gate.yml",
+      "claim": "the workflow is committed and no step softens itself with continue-on-error",
+      "published": {
+        "tracked": true,
+        "softened": []
+      },
+      "rederived": {
+        "tracked": true,
+        "softened": []
+      },
+      "agrees": true,
+      "evidence": [
+        ".github/workflows/cost-barrier-gate.yml"
+      ]
+    },
+    {
+      "id": "CI2",
+      "claim": "every declared command step of both workflows passed locally",
+      "published": 0,
+      "rederived": 0,
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/WP9_CI_EXECUTION_REPORT.json#sequence_runs"
+      ]
+    },
+    {
+      "id": "CI3",
+      "claim": "the report does not claim a runner it did not use",
+      "published": {
+        "ci_certified": false,
+        "runner": "LOCAL",
+        "verdict": "BLOCKED"
+      },
+      "rederived": {
+        "ci_certified": false,
+        "runner": "LOCAL"
+      },
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/WP9_CI_EXECUTION_REPORT.json#certification"
+      ]
+    },
+    {
+      "id": "CI4",
+      "claim": "the workflows are still absent from the default branch, and the history is still local-only \u2014 the two reasons the run could not be authorised",
+      "published": {
+        "commits_local_only": 256,
+        "on_default_branch": {
+          ".github/workflows/recovery-determinism.yml": false,
+          ".github/workflows/cost-barrier-gate.yml": false
+        }
+      },
+      "rederived": {
+        "commits_local_only": 256,
+        "on_default_branch": {
+          ".github/workflows/recovery-determinism.yml": false
+        }
+      },
+      "agrees": true,
+      "evidence": [
+        "git rev-list origin/main..HEAD",
+        "git cat-file -e origin/main:<workflow>"
+      ]
+    },
+    {
+      "id": "CI5",
+      "claim": "no credentials are available in this environment, so the probe's verdict holds",
+      "published": false,
+      "rederived": false,
+      "agrees": true,
+      "evidence": [
+        "git push --dry-run (recorded in the report)"
+      ]
+    },
+    {
+      "id": "T1",
+      "claim": "the report's trace count is the number of records on disk",
+      "published": 18,
+      "rederived": 18,
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/evidence/runtime/traces.jsonl"
+      ]
+    },
+    {
+      "id": "T2",
+      "claim": "the trace chain links are recomputed here rather than trusted",
+      "published": {
+        "linked": true,
+        "records": 18
+      },
+      "rederived": {
+        "linked": true,
+        "records": 18
+      },
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/evidence/runtime/traces.jsonl"
+      ]
+    },
+    {
+      "id": "T3",
+      "claim": "the accounting identity holds in every leg and no order was created",
+      "published": {
+        "identity_holds": true,
+        "orders_created": 0
+      },
+      "rederived": {
+        "identity_holds": true,
+        "orders_created": 0
+      },
+      "agrees": true,
+      "evidence": [
+        "reports/autonomous-paper/wp9-runtime-legs/legs/1-interval-cadence/RUN_REPORT.json",
+        "reports/autonomous-paper/wp9-runtime-legs/legs/2-bar-close-cadence/RUN_REPORT.json",
+        "reports/autonomous-paper/wp9-runtime-legs/legs/3-controlled-stop/RUN_REPORT.json",
+        "reports/autonomous-paper/wp9-runtime-legs/legs/4-resume-after-stop/RUN_REPORT.json"
+      ]
+    },
+    {
+      "id": "T4",
+      "claim": "the window is declared incomplete and no stability verdict is issued",
+      "published": {
+        "window_complete": false,
+        "stability": false,
+        "hours": 0.06209
+      },
+      "rederived": {
+        "window_complete": false,
+        "stability": false,
+        "hours_less_than_target": true
+      },
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/WP9_RUNTIME_24H_REPORT.json#declaration"
+      ]
+    },
+    {
+      "id": "T5",
+      "claim": "each leg began where the previous one ended \u2014 the resume is continuous",
+      "published": true,
+      "rederived": true,
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/evidence/runtime/LEGS.json"
+      ]
+    },
+    {
+      "id": "T6",
+      "claim": "the leg windows in the report are the ones the run recorded",
+      "published": [
+        0,
+        6,
+        8,
+        12
+      ],
+      "rederived": [
+        0,
+        6,
+        8,
+        12
+      ],
+      "agrees": true,
+      "evidence": [
+        "data/recovery/wp9/evidence/runtime/LEGS.json"
+      ]
+    }
+  ],
+  "checks_total": 41,
+  "checks_failed": 0,
+  "controls": [
+    {
+      "id": "C1",
+      "mutation": "the sealed rate is multiplied by 1.01",
+      "result": "DETECTED",
+      "why": "a 1 % change in the rate is not within tolerance, so D1 can fail"
+    },
+    {
+      "id": "C2",
+      "mutation": "one segment file's size is moved by 1 byte",
+      "result": "DETECTED",
+      "why": "D3 compares the sum exactly, so a single byte of drift is visible"
+    },
+    {
+      "id": "C3",
+      "mutation": "the horizon requirement is computed without the reserve",
+      "result": "DETECTED",
+      "why": "the reserve changes the fit verdict, so D4 is not vacuous"
+    },
+    {
+      "id": "C4",
+      "mutation": "the 800 MB valve is costed at the 7 GB valve's rate",
+      "result": "DETECTED",
+      "why": "the two cases do not share an affordable-hours figure, so the arithmetic is case-dependent"
+    },
+    {
+      "id": "C5",
+      "mutation": "the sealed history is inflated to 200 h",
+      "result": "DETECTED",
+      "why": "R3 compares the shortfall, so a changed history changes the verdict"
+    },
+    {
+      "id": "C6",
+      "mutation": "the M-07 criterion is satisfied on paper only (shortfall forced to 0)",
+      "result": "DETECTED",
+      "why": "a zero shortfall is distinguishable from the measured one"
+    },
+    {
+      "id": "C7",
+      "mutation": "one cost component is doubled",
+      "result": "DETECTED",
+      "why": "E1 sums the components, so a doubled fee is visible"
+    },
+    {
+      "id": "C8",
+      "mutation": "the best gross edge is reported as clearing the plane",
+      "result": "DETECTED",
+      "why": "E4 is a comparison that fails for every cell in the registry"
+    },
+    {
+      "id": "C9",
+      "mutation": "a workflow step is given continue-on-error: true",
+      "result": "DETECTED",
+      "why": "CI1 reads the YAML itself, so a softened step is found by the verifier rather than taken from the report"
+    },
+    {
+      "id": "C12",
+      "mutation": "every leg's recorded trace window is shifted by one record",
+      "result": "DETECTED",
+      "why": "T6 compares the report's boundaries with the run's record using this same predicate, so a moved boundary is visible"
+    },
+    {
+      "id": "C10",
+      "mutation": "the window is declared complete although it ran less than a day",
+      "result": "DETECTED",
+      "why": "T4 compares the executed hours against the target the report itself declares"
+    },
+    {
+      "id": "C11",
+      "mutation": "a trace record's prev_hash is replaced with a foreign value",
+      "result": "DETECTED",
+      "why": "T2 walks the chain with this same predicate, so a substituted link is visible \u2014 the control fails the predicate on a mutated copy rather than asserting it holds"
+    }
+  ],
+  "controls_total": 12,
+  "controls_missed": 0,
+  "false_success": 0,
+  "context": {
+    "disk": {
+      "rate_derived_here": 192251690.906,
+      "segments_summed": 799632725,
+      "segments_files": 411,
+      "free_bytes_now": 17623343104,
+      "free_bytes_published": 799632725
+    },
+    "preflight": {
+      "cases": [
+        {
+          "case": "preflight_refusal",
+          "state": "INCOHERENT_BUDGET",
+          "expected_state": "INCOHERENT_BUDGET",
+          "affordable_hours_published": 5.717,
+          "affordable_hours_derived_here": 5.717,
+          "valve_bytes": 1100000000,
+          "refusal_message_present": true,
+          "expected_exit_code": 4
+        },
+        {
+          "case": "preflight_refusal_default",
+          "state": "INCOHERENT_BUDGET",
+          "expected_state": "INCOHERENT_BUDGET",
+          "affordable_hours_published": 5.717,
+          "affordable_hours_derived_here": 5.717,
+          "valve_bytes": 1100000000,
+          "refusal_message_present": true,
+          "expected_exit_code": 4
+        },
+        {
+          "case": "preflight_autoscale",
+          "state": "COHERENT",
+          "expected_state": "COHERENT",
+          "affordable_hours_published": 36.0,
+          "affordable_hours_derived_here": 36.0,
+          "valve_bytes": 6927089254,
+          "refusal_message_present": false,
+          "expected_exit_code": 0
+        }
+      ]
+    },
+    "readiness": {
+      "sealed_hours": 4.159301,
+      "M-07_shortfall_days": 6.826696
+    },
+    "economics": {
+      "plane": 23.3535,
+      "gross_positive_cells": 7,
+      "primaries": {
+        "NO_ECONOMIC_ADVANTAGE": 17,
+        "EXECUTION_COSTS": 7,
+        "INSUFFICIENT_DATA": 0,
+        "ROBUSTNESS": 0,
+        "RUNTIME_FAILURE": 0,
+        "GOVERNANCE": 0
+      }
+    },
+    "ci": {
+      "workflows": {
+        ".github/workflows/recovery-determinism.yml": {
+          "tracked": true,
+          "softened_steps": [],
+          "jobs": [
+            "recovery-determinism"
+          ]
+        },
+        ".github/workflows/cost-barrier-gate.yml": {
+          "tracked": true,
+          "softened_steps": [],
+          "jobs": [
+            "cost-barrier-gate"
+          ]
+        }
+      },
+      "sequence": [
+        {
+          "step": "Sync dependencies",
+          "exit_code": 0,
+          "result": "PASS"
+        },
+        {
+          "step": "Prepare the evidence directory",
+          "exit_code": 0,
+          "result": "PASS"
+        },
+        {
+          "step": "Verify the committed input bundle",
+          "exit_code": 0,
+          "result": "PASS"
+        },
+        {
+          "step": "The repair moved no economic finding",
+          "exit_code": 0,
+          "result": "PASS"
+        },
+        {
+          "step": "Lane contract tests and determinism regressions",
+          "exit_code": 0,
+          "result": "PASS"
+        },
+        {
+          "step": "Clean-checkout rehearsal (scope full)",
+          "exit_code": 0,
+          "result": "PASS"
+        },
+        {
+          "step": "Independent verification of the published artefacts",
+          "exit_code": 0,
+          "result": "PASS"
+        },
+        {
+          "step": "Sync dependencies",
+          "exit_code": 0,
+          "result": "PASS"
+        },
+        {
+          "step": "Verify and materialize the declared inputs",
+          "exit_code": 0,
+          "result": "PASS"
+        },
+        {
+          "step": "Reproduce the artefacts (full reproduction)",
+          "exit_code": 0,
+          "result": "PASS"
+        },
+        {
+          "step": "Adversarial verification of the gate",
+          "exit_code": 0,
+          "result": "PASS"
+        },
+        {
+          "step": "Certification record",
+          "exit_code": 0,
+          "result": "PASS"
+        }
+      ]
+    },
+    "runtime": {
+      "traces": 18,
+      "legs": 4,
+      "hours_executed": 0.06209
+    }
+  },
+  "volatile": {
+    "note": "these two are allowed to move between the build and the verification; they are recorded, not reproduced",
+    "head": "5348fcd55ab9ef404c676d8aada8daa8c85b9785",
+    "free_bytes_now": 17623343104
+  },
+  "verdict": "PASS",
+  "scope": {
+    "rederived": [
+      "the sealed capture rate and the segment-file sum",
+      "the 24/48/72 h requirements and their fit against free space",
+      "the preflight's affordable-hours arithmetic and its refusals",
+      "the M-03/M-07 shortfalls against the pre-registration",
+      "the frozen cost plane, the objective's annual cost and the cell counts",
+      "the workflow text, the local sequence's exit codes and the CI verdict",
+      "the trace chain, the accounting identity and the declared window"
+    ],
+    "not_covered": [
+      "a GitHub runner (none was available; the CI report says so)",
+      "a 24 h window (not run; the runtime report says so)",
+      "any claim about profitability"
+    ]
+  }
+}

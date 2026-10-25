@@ -1,0 +1,2366 @@
+{
+  "artifact": "WP10_BASELINE_ECONOMIC_AUDIT",
+  "work_package": "WP-10 (ECONOMIC EDGE RECOVERY & EXECUTION COST DISCOVERY)",
+  "phase": "PHASE 1 \u2014 REAL ECONOMIC BASELINE",
+  "generated_at_utc": "2026-10-11T22:35:56Z",
+  "mode": "OFFLINE READ-ONLY \u2014 no process, no order, no key, no capital",
+  "head": "5348fcd55ab9ef404c676d8aada8daa8c85b9785",
+  "period": {
+    "label": "W1-W7 2026-03-01..2026-09-24",
+    "days": 207
+  },
+  "sources": {
+    "ledger": "config/strategy_admission.json",
+    "timeframe_audit": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+    "discovery_results": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+    "active_audit": "data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+    "criteria": "docs/STRATEGY_ADMISSION_CRITERIA.md"
+  },
+  "headline_rebuilt": {
+    "strategies_total": 24,
+    "admitted": 0,
+    "no_gross_edge": 17,
+    "cost_killed": 7,
+    "best_gross_bps": 8.912,
+    "best_gross_strategies": [
+      "volatility@30m"
+    ],
+    "admission_round_trip_bps": 23.353553391,
+    "positive_zero_cost_cells": [
+      "volatility@30m",
+      "volatility@1h",
+      "mean_reversion@30m",
+      "mean_reversion@15m",
+      "trend@30m",
+      "mean_reversion@5m",
+      "trend@15m"
+    ]
+  },
+  "headline_published": {
+    "strategies_total": 24,
+    "admitted": 0,
+    "no_gross_edge": 17,
+    "cost_killed": 7,
+    "best_gross_bps": 8.912,
+    "admission_round_trip_bps": 23.353553391,
+    "positive_zero_cost_cells": [
+      "mean_reversion@15m",
+      "mean_reversion@30m",
+      "mean_reversion@5m",
+      "trend@15m",
+      "trend@30m",
+      "volatility@1h",
+      "volatility@30m"
+    ]
+  },
+  "headline_agreement": {
+    "strategies_total": true,
+    "admitted": true,
+    "no_gross_edge": true,
+    "cost_killed": true,
+    "best_gross_bps": true,
+    "admission_round_trip_bps": true,
+    "positive_zero_cost_cells": true
+  },
+  "admission_plane_rebuilt": {
+    "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+    "stake_usd": 200.0,
+    "round_trip_bps": 23.353553390593273,
+    "components": {
+      "exchange_fee_entry": {
+        "value_bps": 10.0,
+        "knowledge": "KNOWN"
+      },
+      "exchange_fee_exit": {
+        "value_bps": 10.0,
+        "knowledge": "KNOWN"
+      },
+      "spread": {
+        "value_bps": 1.0,
+        "knowledge": "ESTIMATED"
+      },
+      "slippage": {
+        "value_bps": 2.282842712474619,
+        "knowledge": "ESTIMATED"
+      },
+      "market_impact": {
+        "value_bps": 0.07071067811865472,
+        "knowledge": "ESTIMATED"
+      }
+    }
+  },
+  "cost_plane_vs_strategy_specific_costs": {
+    "common_model": {
+      "round_trip_bps": 23.353553,
+      "components": {
+        "exchange_fee_entry": {
+          "value_bps": 10.0,
+          "knowledge": "KNOWN"
+        },
+        "exchange_fee_exit": {
+          "value_bps": 10.0,
+          "knowledge": "KNOWN"
+        },
+        "spread": {
+          "value_bps": 1.0,
+          "knowledge": "ESTIMATED"
+        },
+        "slippage": {
+          "value_bps": 2.282842712474619,
+          "knowledge": "ESTIMATED"
+        },
+        "market_impact": {
+          "value_bps": 0.07071067811865472,
+          "knowledge": "ESTIMATED"
+        }
+      },
+      "applies_to": "all 24 cells identically \u2014 it is a scenario, not a measurement"
+    },
+    "per_strategy_observed_costs": {
+      "fees_bps_per_trade_range": [
+        9.9933,
+        10.0048
+      ],
+      "implied_slippage_bps_per_trade_range": [
+        1.276,
+        3.784
+      ],
+      "cells_reporting_costs": 24,
+      "note": "these are the cells' own execution costs as the WP-3 audit recovered them; the nine bps fee average is consistent with two spot legs and the implied slippage is below the common model's 2.3535 bps of slippage-plus-impact"
+    },
+    "cells_that_report_a_spread_measurement": 0,
+    "cells_that_report_a_drawdown": 0
+  },
+  "stake_recovered_from_primary": {
+    "method": "per-trade USD / published bps, on cells that publish both",
+    "candidates": [
+      {
+        "strategy_id": "ema_crossover@5m",
+        "per_trade_usd": -0.228041,
+        "published_bps": -4.56,
+        "implied_stake_usd": 500.088991
+      },
+      {
+        "strategy_id": "mean_reversion@5m",
+        "per_trade_usd": 0.07427,
+        "published_bps": 1.49,
+        "implied_stake_usd": 498.453641
+      },
+      {
+        "strategy_id": "momentum@5m",
+        "per_trade_usd": -0.094177,
+        "published_bps": -1.88,
+        "implied_stake_usd": 500.939169
+      },
+      {
+        "strategy_id": "trend@5m",
+        "per_trade_usd": -0.082239,
+        "published_bps": -1.65,
+        "implied_stake_usd": 498.415605
+      },
+      {
+        "strategy_id": "volatility@5m",
+        "per_trade_usd": -0.236769,
+        "published_bps": -4.73,
+        "implied_stake_usd": 500.569198
+      }
+    ],
+    "median_implied_stake_usd": 500.088991,
+    "min_implied_stake_usd": 498.415605,
+    "max_implied_stake_usd": 500.939169,
+    "stake_used_usd": 500,
+    "excluded": [
+      {
+        "strategy_id": "breakout@5m",
+        "why": "the artefact publishes bps rounded to two decimals and the value is too small for the stake to be recoverable from it"
+      }
+    ],
+    "sensitivity": "the gross edge is linear in the stake, so the 0.5 % spread in the recovery moves the best cell by ~0.05 bps \u2014 two orders of magnitude below that cell's own sampling error",
+    "ledger_implied_stake_usd": {
+      "min": 381.84816,
+      "median": 500.333214,
+      "max": 504.545455,
+      "note": "the ledger's own bps figures imply one stake to within its two-decimal rounding; the spread is a rounding artefact of the ledger, not a disagreement about the underlying measurement"
+    }
+  },
+  "strategies": [
+    {
+      "strategy_id": "breakout@15m",
+      "family": "breakout",
+      "timeframe": "15m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 15m, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 2058,
+      "trades_per_day": 9.942,
+      "zero_cost_gross_bps": -1.822,
+      "ledger_expected_gross_edge_bps": -1.82,
+      "base_gross_bps": -3.858,
+      "base_expectancy_bps": -13.858,
+      "fees_bps_per_trade": 9.9999,
+      "implied_slippage_bps_per_trade": 2.036,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -25.1756,
+      "oos_gross_bps": -4.1,
+      "val_gross_bps": -1.076,
+      "dev_gross_bps": -2.002,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -1.82 bps/trade at 15m; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.breakout.15m",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "15m.breakout.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 2042,
+        "oos_trades": 227,
+        "dev_trades": 1279,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 3.666432,
+        "per_trade_sd_bps_at_stake": 73.328643,
+        "standard_error_usd": 0.08082,
+        "standard_error_bps_at_stake": 1.616408,
+        "ci95_half_width_bps": 3.168101,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 38,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 78,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "breakout@1h",
+      "family": "breakout",
+      "timeframe": "1h",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 1h, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 714,
+      "trades_per_day": 3.449,
+      "zero_cost_gross_bps": -0.222,
+      "ledger_expected_gross_edge_bps": -0.22,
+      "base_gross_bps": -2.064,
+      "base_expectancy_bps": -12.068,
+      "fees_bps_per_trade": 10.0048,
+      "implied_slippage_bps_per_trade": 1.842,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -23.5756,
+      "oos_gross_bps": 7.634,
+      "val_gross_bps": 6.218,
+      "dev_gross_bps": -4.892,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -0.22 bps/trade at 1h; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.breakout.1h",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "1h.breakout.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 710,
+        "oos_trades": 92,
+        "dev_trades": 432,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 4.393111,
+        "per_trade_sd_bps_at_stake": 87.862224,
+        "standard_error_usd": 0.164408,
+        "standard_error_bps_at_stake": 3.288161,
+        "ci95_half_width_bps": 6.444677,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 55,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 112,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "breakout@30m",
+      "family": "breakout",
+      "timeframe": "30m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 30m, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 1285,
+      "trades_per_day": 6.208,
+      "zero_cost_gross_bps": -1.792,
+      "ledger_expected_gross_edge_bps": -1.79,
+      "base_gross_bps": -3.068,
+      "base_expectancy_bps": -13.068,
+      "fees_bps_per_trade": 9.9998,
+      "implied_slippage_bps_per_trade": 1.276,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -25.1456,
+      "oos_gross_bps": -3.914,
+      "val_gross_bps": 1.206,
+      "dev_gross_bps": -3.16,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -1.79 bps/trade at 30m; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.breakout.30m",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "30m.breakout.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 1281,
+        "oos_trades": 142,
+        "dev_trades": 775,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 4.051667,
+        "per_trade_sd_bps_at_stake": 81.033346,
+        "standard_error_usd": 0.113027,
+        "standard_error_bps_at_stake": 2.26054,
+        "ci95_half_width_bps": 4.430577,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 47,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 95,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "breakout@5m",
+      "family": "breakout",
+      "timeframe": "5m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 5m, W1-W7",
+        "source": "docs/STRATEGY_ADMISSION_MATRIX.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 2426,
+      "trades_per_day": 11.72,
+      "zero_cost_gross_bps": -0.084007,
+      "ledger_expected_gross_edge_bps": -0.11,
+      "base_gross_bps": null,
+      "base_expectancy_bps": -12.544,
+      "fees_bps_per_trade": 9.9996,
+      "implied_slippage_bps_per_trade": null,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -23.4376,
+      "oos_gross_bps": -1.9107,
+      "val_gross_bps": null,
+      "dev_gross_bps": -0.6525,
+      "rejection": {
+        "rationale": "research classification NO_GROSS_EDGE; gross -0.11 bps/trade over 2426 trades; admission checks failed: ['c2_net_positive', 'c3_pf_gt1', 'c4_oos_positive', 'c7_survives_2x']; oos net -138.81",
+        "failed_mandatory_checks": [
+          "c2_net_positive",
+          "c3_pf_gt1",
+          "c4_oos_positive",
+          "c7_survives_2x"
+        ],
+        "unevaluated_checks": [
+          "c6_dd",
+          "c8_no_window_dominance"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "rebuilt_pointer": "family_5m_diagnostic_zero_cost.breakout",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 2426,
+        "oos_trades": 233,
+        "dev_trades": 1519,
+        "ledger_sample_trades": 2426,
+        "provenance_gap": false
+      },
+      "missing_metrics": [
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": false,
+        "why": "the cell does not publish a win/loss summary (only the 15m/30m/1h artefact does; the 5m diagnostic publishes bps and a classification)"
+      }
+    },
+    {
+      "strategy_id": "ema_crossover@15m",
+      "family": "ema_crossover",
+      "timeframe": "15m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 15m, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 3166,
+      "trades_per_day": 15.295,
+      "zero_cost_gross_bps": -1.122,
+      "ledger_expected_gross_edge_bps": -1.12,
+      "base_gross_bps": -3.282,
+      "base_expectancy_bps": -13.282,
+      "fees_bps_per_trade": 9.9996,
+      "implied_slippage_bps_per_trade": 2.16,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -24.4756,
+      "oos_gross_bps": -1.14,
+      "val_gross_bps": 1.116,
+      "dev_gross_bps": -2.642,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -1.12 bps/trade at 15m; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.ema_crossover.15m",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "15m.ema_crossover.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 2913,
+        "oos_trades": 296,
+        "dev_trades": 1871,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 3.397716,
+        "per_trade_sd_bps_at_stake": 67.954314,
+        "standard_error_usd": 0.060385,
+        "standard_error_bps_at_stake": 1.207707,
+        "ci95_half_width_bps": 2.367062,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 33,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 67,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "ema_crossover@1h",
+      "family": "ema_crossover",
+      "timeframe": "1h",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 1h, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 2641,
+      "trades_per_day": 12.758,
+      "zero_cost_gross_bps": -0.964,
+      "ledger_expected_gross_edge_bps": -0.96,
+      "base_gross_bps": -2.638,
+      "base_expectancy_bps": -12.638,
+      "fees_bps_per_trade": 10.0002,
+      "implied_slippage_bps_per_trade": 1.674,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -24.3176,
+      "oos_gross_bps": 5.152,
+      "val_gross_bps": -2.724,
+      "dev_gross_bps": -1.856,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -0.96 bps/trade at 1h; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.ema_crossover.1h",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "1h.ema_crossover.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 2620,
+        "oos_trades": 337,
+        "dev_trades": 1663,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 4.300027,
+        "per_trade_sd_bps_at_stake": 86.000539,
+        "standard_error_usd": 0.083673,
+        "standard_error_bps_at_stake": 1.673466,
+        "ci95_half_width_bps": 3.279934,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 53,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 107,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "ema_crossover@30m",
+      "family": "ema_crossover",
+      "timeframe": "30m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 30m, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 3233,
+      "trades_per_day": 15.618,
+      "zero_cost_gross_bps": -0.726,
+      "ledger_expected_gross_edge_bps": -0.73,
+      "base_gross_bps": -2.174,
+      "base_expectancy_bps": -12.176,
+      "fees_bps_per_trade": 9.9999,
+      "implied_slippage_bps_per_trade": 1.448,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -24.0796,
+      "oos_gross_bps": 2.32,
+      "val_gross_bps": 1.296,
+      "dev_gross_bps": -2.596,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -0.73 bps/trade at 30m; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.ema_crossover.30m",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "30m.ema_crossover.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 3214,
+        "oos_trades": 388,
+        "dev_trades": 1978,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 3.895579,
+        "per_trade_sd_bps_at_stake": 77.911576,
+        "standard_error_usd": 0.068512,
+        "standard_error_bps_at_stake": 1.370248,
+        "ci95_half_width_bps": 2.685637,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 43,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 88,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "ema_crossover@5m",
+      "family": "ema_crossover",
+      "timeframe": "5m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 5m, W1-W7",
+        "source": "docs/STRATEGY_ADMISSION_MATRIX.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 1725,
+      "trades_per_day": 8.333,
+      "zero_cost_gross_bps": -4.560812,
+      "ledger_expected_gross_edge_bps": -4.56,
+      "base_gross_bps": null,
+      "base_expectancy_bps": -16.222,
+      "fees_bps_per_trade": 9.9987,
+      "implied_slippage_bps_per_trade": null,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -27.9144,
+      "oos_gross_bps": -6.5966,
+      "val_gross_bps": null,
+      "dev_gross_bps": -5.3406,
+      "rejection": {
+        "rationale": "research classification NO_GROSS_EDGE; gross -4.56 bps/trade over 1725 trades; admission checks failed: ['c2_net_positive', 'c3_pf_gt1', 'c4_oos_positive', 'c7_survives_2x']; oos net -144.38",
+        "failed_mandatory_checks": [
+          "c2_net_positive",
+          "c3_pf_gt1",
+          "c4_oos_positive",
+          "c7_survives_2x"
+        ],
+        "unevaluated_checks": [
+          "c6_dd",
+          "c8_no_window_dominance"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "rebuilt_pointer": "family_5m_diagnostic_zero_cost.ema_crossover",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 1725,
+        "oos_trades": 174,
+        "dev_trades": 969,
+        "ledger_sample_trades": 1725,
+        "provenance_gap": false
+      },
+      "missing_metrics": [
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": false,
+        "why": "the cell does not publish a win/loss summary (only the 15m/30m/1h artefact does; the 5m diagnostic publishes bps and a classification)"
+      }
+    },
+    {
+      "strategy_id": "mean_reversion@15m",
+      "family": "mean_reversion",
+      "timeframe": "15m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 15m, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "COST_KILLED",
+      "rebuilt_status": "COST_KILLED",
+      "admitted_for_paper": false,
+      "trades": 1604,
+      "trades_per_day": 7.749,
+      "zero_cost_gross_bps": 2.714,
+      "ledger_expected_gross_edge_bps": 2.71,
+      "base_gross_bps": 1.094,
+      "base_expectancy_bps": -8.906,
+      "fees_bps_per_trade": 10.0004,
+      "implied_slippage_bps_per_trade": 1.62,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -20.6396,
+      "oos_gross_bps": 3.192,
+      "val_gross_bps": 1.976,
+      "dev_gross_bps": 2.738,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross 2.71 bps/trade at 15m; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "EXECUTION_COST"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.mean_reversion.15m",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "15m.mean_reversion.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 1579,
+        "oos_trades": 199,
+        "dev_trades": 960,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 3.669331,
+        "per_trade_sd_bps_at_stake": 73.38661,
+        "standard_error_usd": 0.091619,
+        "standard_error_bps_at_stake": 1.832376,
+        "ci95_half_width_bps": 3.591391,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 38,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 78,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "mean_reversion@1h",
+      "family": "mean_reversion",
+      "timeframe": "1h",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 1h, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 448,
+      "trades_per_day": 2.164,
+      "zero_cost_gross_bps": -2.226,
+      "ledger_expected_gross_edge_bps": -2.23,
+      "base_gross_bps": -4.404,
+      "base_expectancy_bps": -14.398,
+      "fees_bps_per_trade": 9.9933,
+      "implied_slippage_bps_per_trade": 2.178,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -25.5796,
+      "oos_gross_bps": 5.704,
+      "val_gross_bps": -0.244,
+      "dev_gross_bps": -5.12,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -2.23 bps/trade at 1h; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.mean_reversion.1h",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "1h.mean_reversion.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 448,
+        "oos_trades": 56,
+        "dev_trades": 262,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 4.693761,
+        "per_trade_sd_bps_at_stake": 93.87522,
+        "standard_error_usd": 0.221759,
+        "standard_error_bps_at_stake": 4.435187,
+        "ci95_half_width_bps": 8.692807,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 63,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 127,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "mean_reversion@30m",
+      "family": "mean_reversion",
+      "timeframe": "30m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 30m, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "COST_KILLED",
+      "rebuilt_status": "COST_KILLED",
+      "admitted_for_paper": false,
+      "trades": 935,
+      "trades_per_day": 4.517,
+      "zero_cost_gross_bps": 5.472,
+      "ledger_expected_gross_edge_bps": 5.47,
+      "base_gross_bps": 4.116,
+      "base_expectancy_bps": -5.884,
+      "fees_bps_per_trade": 9.9989,
+      "implied_slippage_bps_per_trade": 1.356,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -17.8816,
+      "oos_gross_bps": -5.602,
+      "val_gross_bps": 5.106,
+      "dev_gross_bps": 7.772,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross 5.47 bps/trade at 30m; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "EXECUTION_COST"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.mean_reversion.30m",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "30m.mean_reversion.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 934,
+        "oos_trades": 118,
+        "dev_trades": 556,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 4.112641,
+        "per_trade_sd_bps_at_stake": 82.252822,
+        "standard_error_usd": 0.134498,
+        "standard_error_bps_at_stake": 2.689955,
+        "ci95_half_width_bps": 5.272215,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 48,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 98,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "mean_reversion@5m",
+      "family": "mean_reversion",
+      "timeframe": "5m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 5m, W1-W7",
+        "source": "docs/STRATEGY_ADMISSION_MATRIX.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "COST_KILLED",
+      "rebuilt_status": "COST_KILLED",
+      "admitted_for_paper": false,
+      "trades": 3190,
+      "trades_per_day": 15.411,
+      "zero_cost_gross_bps": 1.485392,
+      "ledger_expected_gross_edge_bps": 1.49,
+      "base_gross_bps": null,
+      "base_expectancy_bps": -10.586,
+      "fees_bps_per_trade": 9.9992,
+      "implied_slippage_bps_per_trade": null,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -21.8682,
+      "oos_gross_bps": 0.3214,
+      "val_gross_bps": null,
+      "dev_gross_bps": -0.4083,
+      "rejection": {
+        "rationale": "research classification COST_KILLED; gross 1.49 bps/trade over 3190 trades; admission checks failed: ['c2_net_positive', 'c3_pf_gt1', 'c4_oos_positive', 'c7_survives_2x']; oos net -169.88",
+        "failed_mandatory_checks": [
+          "c2_net_positive",
+          "c3_pf_gt1",
+          "c4_oos_positive",
+          "c7_survives_2x"
+        ],
+        "unevaluated_checks": [
+          "c6_dd",
+          "c8_no_window_dominance"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "EXECUTION_COST"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "rebuilt_pointer": "family_5m_diagnostic_zero_cost.mean_reversion",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 3190,
+        "oos_trades": 351,
+        "dev_trades": 1714,
+        "ledger_sample_trades": 3190,
+        "provenance_gap": false
+      },
+      "missing_metrics": [
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": false,
+        "why": "the cell does not publish a win/loss summary (only the 15m/30m/1h artefact does; the 5m diagnostic publishes bps and a classification)"
+      }
+    },
+    {
+      "strategy_id": "momentum@15m",
+      "family": "momentum",
+      "timeframe": "15m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 15m, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 3163,
+      "trades_per_day": 15.28,
+      "zero_cost_gross_bps": -3.972,
+      "ledger_expected_gross_edge_bps": -3.97,
+      "base_gross_bps": -5.68,
+      "base_expectancy_bps": -15.68,
+      "fees_bps_per_trade": 9.9995,
+      "implied_slippage_bps_per_trade": 1.708,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -27.3256,
+      "oos_gross_bps": 2.054,
+      "val_gross_bps": -2.466,
+      "dev_gross_bps": -6.116,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -3.97 bps/trade at 15m; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.momentum.15m",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "15m.momentum.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 3003,
+        "oos_trades": 378,
+        "dev_trades": 1753,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 3.721441,
+        "per_trade_sd_bps_at_stake": 74.428825,
+        "standard_error_usd": 0.06617,
+        "standard_error_bps_at_stake": 1.323401,
+        "ci95_half_width_bps": 2.593819,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 40,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 80,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "momentum@1h",
+      "family": "momentum",
+      "timeframe": "1h",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 1h, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 2315,
+      "trades_per_day": 11.184,
+      "zero_cost_gross_bps": -2.334,
+      "ledger_expected_gross_edge_bps": -2.33,
+      "base_gross_bps": -4.026,
+      "base_expectancy_bps": -14.026,
+      "fees_bps_per_trade": 10.0,
+      "implied_slippage_bps_per_trade": 1.692,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -25.6876,
+      "oos_gross_bps": 4.694,
+      "val_gross_bps": -0.182,
+      "dev_gross_bps": -4.776,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -2.33 bps/trade at 1h; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.momentum.1h",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "1h.momentum.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 2304,
+        "oos_trades": 282,
+        "dev_trades": 1490,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 4.509689,
+        "per_trade_sd_bps_at_stake": 90.193776,
+        "standard_error_usd": 0.093728,
+        "standard_error_bps_at_stake": 1.874567,
+        "ci95_half_width_bps": 3.674085,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 58,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 118,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "momentum@30m",
+      "family": "momentum",
+      "timeframe": "30m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 30m, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 3001,
+      "trades_per_day": 14.498,
+      "zero_cost_gross_bps": -2.612,
+      "ledger_expected_gross_edge_bps": -2.61,
+      "base_gross_bps": -4.516,
+      "base_expectancy_bps": -14.516,
+      "fees_bps_per_trade": 10.0003,
+      "implied_slippage_bps_per_trade": 1.904,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -25.9656,
+      "oos_gross_bps": 1.65,
+      "val_gross_bps": -2.32,
+      "dev_gross_bps": -3.876,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -2.61 bps/trade at 30m; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.momentum.30m",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "30m.momentum.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 2957,
+        "oos_trades": 351,
+        "dev_trades": 1857,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 4.097394,
+        "per_trade_sd_bps_at_stake": 81.947889,
+        "standard_error_usd": 0.074795,
+        "standard_error_bps_at_stake": 1.495908,
+        "ci95_half_width_bps": 2.931925,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 48,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 97,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "momentum@5m",
+      "family": "momentum",
+      "timeframe": "5m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 5m, W1-W7",
+        "source": "docs/STRATEGY_ADMISSION_MATRIX.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 2526,
+      "trades_per_day": 12.203,
+      "zero_cost_gross_bps": -1.883531,
+      "ledger_expected_gross_edge_bps": -1.88,
+      "base_gross_bps": null,
+      "base_expectancy_bps": -13.788,
+      "fees_bps_per_trade": 9.9999,
+      "implied_slippage_bps_per_trade": null,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -25.2371,
+      "oos_gross_bps": -4.2145,
+      "val_gross_bps": null,
+      "dev_gross_bps": -3.4413,
+      "rejection": {
+        "rationale": "research classification NO_GROSS_EDGE; gross -1.88 bps/trade over 2526 trades; admission checks failed: ['c2_net_positive', 'c3_pf_gt1', 'c4_oos_positive', 'c7_survives_2x']; oos net -205.41",
+        "failed_mandatory_checks": [
+          "c2_net_positive",
+          "c3_pf_gt1",
+          "c4_oos_positive",
+          "c7_survives_2x"
+        ],
+        "unevaluated_checks": [
+          "c6_dd",
+          "c8_no_window_dominance"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "rebuilt_pointer": "family_5m_diagnostic_zero_cost.momentum",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 2526,
+        "oos_trades": 289,
+        "dev_trades": 1521,
+        "ledger_sample_trades": 2526,
+        "provenance_gap": false
+      },
+      "missing_metrics": [
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": false,
+        "why": "the cell does not publish a win/loss summary (only the 15m/30m/1h artefact does; the 5m diagnostic publishes bps and a classification)"
+      }
+    },
+    {
+      "strategy_id": "trend@15m",
+      "family": "trend",
+      "timeframe": "15m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 15m, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "COST_KILLED",
+      "rebuilt_status": "COST_KILLED",
+      "admitted_for_paper": false,
+      "trades": 1625,
+      "trades_per_day": 7.85,
+      "zero_cost_gross_bps": 1.284,
+      "ledger_expected_gross_edge_bps": 1.28,
+      "base_gross_bps": -0.79,
+      "base_expectancy_bps": -10.79,
+      "fees_bps_per_trade": 10.0012,
+      "implied_slippage_bps_per_trade": 2.074,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -22.0696,
+      "oos_gross_bps": 2.082,
+      "val_gross_bps": 10.212,
+      "dev_gross_bps": -1.984,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross 1.28 bps/trade at 15m; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "EXECUTION_COST"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.trend.15m",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "15m.trend.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 1616,
+        "oos_trades": 179,
+        "dev_trades": 1102,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 4.65605,
+        "per_trade_sd_bps_at_stake": 93.120996,
+        "standard_error_usd": 0.115502,
+        "standard_error_bps_at_stake": 2.310048,
+        "ci95_half_width_bps": 4.52761,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 62,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 125,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "trend@1h",
+      "family": "trend",
+      "timeframe": "1h",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 1h, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 1407,
+      "trades_per_day": 6.797,
+      "zero_cost_gross_bps": -1.252,
+      "ledger_expected_gross_edge_bps": -1.25,
+      "base_gross_bps": -2.746,
+      "base_expectancy_bps": -12.742,
+      "fees_bps_per_trade": 9.9953,
+      "implied_slippage_bps_per_trade": 1.494,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -24.6056,
+      "oos_gross_bps": 3.338,
+      "val_gross_bps": 1.758,
+      "dev_gross_bps": -3.112,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -1.25 bps/trade at 1h; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.trend.1h",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "1h.trend.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 1405,
+        "oos_trades": 136,
+        "dev_trades": 962,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 5.13926,
+        "per_trade_sd_bps_at_stake": 102.785207,
+        "standard_error_usd": 0.13701,
+        "standard_error_bps_at_stake": 2.740208,
+        "ci95_half_width_bps": 5.370709,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 75,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 153,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "trend@30m",
+      "family": "trend",
+      "timeframe": "30m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 30m, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "COST_KILLED",
+      "rebuilt_status": "COST_KILLED",
+      "admitted_for_paper": false,
+      "trades": 1575,
+      "trades_per_day": 7.609,
+      "zero_cost_gross_bps": 2.206,
+      "ledger_expected_gross_edge_bps": 2.21,
+      "base_gross_bps": 0.54,
+      "base_expectancy_bps": -9.458,
+      "fees_bps_per_trade": 9.9982,
+      "implied_slippage_bps_per_trade": 1.666,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -21.1476,
+      "oos_gross_bps": -1.846,
+      "val_gross_bps": 13.282,
+      "dev_gross_bps": -0.81,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross 2.21 bps/trade at 30m; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "EXECUTION_COST"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.trend.30m",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "30m.trend.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 1562,
+        "oos_trades": 172,
+        "dev_trades": 1067,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 4.831258,
+        "per_trade_sd_bps_at_stake": 96.625168,
+        "standard_error_usd": 0.121736,
+        "standard_error_bps_at_stake": 2.434725,
+        "ci95_half_width_bps": 4.771974,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 66,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 135,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "trend@5m",
+      "family": "trend",
+      "timeframe": "5m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 5m, W1-W7",
+        "source": "docs/STRATEGY_ADMISSION_MATRIX.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 1291,
+      "trades_per_day": 6.237,
+      "zero_cost_gross_bps": -1.644771,
+      "ledger_expected_gross_edge_bps": -1.65,
+      "base_gross_bps": null,
+      "base_expectancy_bps": -13.616,
+      "fees_bps_per_trade": 10.0006,
+      "implied_slippage_bps_per_trade": null,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -24.9984,
+      "oos_gross_bps": 7.4759,
+      "val_gross_bps": null,
+      "dev_gross_bps": -4.2023,
+      "rejection": {
+        "rationale": "research classification NO_GROSS_EDGE; gross -1.65 bps/trade over 1291 trades; admission checks failed: ['c2_net_positive', 'c3_pf_gt1', 'c4_oos_positive', 'c7_survives_2x']; oos net -17.35",
+        "failed_mandatory_checks": [
+          "c2_net_positive",
+          "c3_pf_gt1",
+          "c4_oos_positive",
+          "c7_survives_2x"
+        ],
+        "unevaluated_checks": [
+          "c6_dd",
+          "c8_no_window_dominance"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "rebuilt_pointer": "family_5m_diagnostic_zero_cost.trend",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 1291,
+        "oos_trades": 137,
+        "dev_trades": 886,
+        "ledger_sample_trades": 1291,
+        "provenance_gap": false
+      },
+      "missing_metrics": [
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": false,
+        "why": "the cell does not publish a win/loss summary (only the 15m/30m/1h artefact does; the 5m diagnostic publishes bps and a classification)"
+      }
+    },
+    {
+      "strategy_id": "volatility@15m",
+      "family": "volatility",
+      "timeframe": "15m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 15m, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 277,
+      "trades_per_day": 1.338,
+      "zero_cost_gross_bps": -7.064,
+      "ledger_expected_gross_edge_bps": -7.06,
+      "base_gross_bps": -8.904,
+      "base_expectancy_bps": -18.908,
+      "fees_bps_per_trade": 10.0036,
+      "implied_slippage_bps_per_trade": 1.84,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -30.4176,
+      "oos_gross_bps": -1.432,
+      "val_gross_bps": -2.546,
+      "dev_gross_bps": -11.228,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross -7.06 bps/trade at 15m; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.volatility.15m",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "15m.volatility.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 277,
+        "oos_trades": 42,
+        "dev_trades": 155,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 3.980386,
+        "per_trade_sd_bps_at_stake": 79.607711,
+        "standard_error_usd": 0.239158,
+        "standard_error_bps_at_stake": 4.783164,
+        "ci95_half_width_bps": 9.374829,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 45,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 92,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "volatility@1h",
+      "family": "volatility",
+      "timeframe": "1h",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 1h, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "COST_KILLED",
+      "rebuilt_status": "COST_KILLED",
+      "admitted_for_paper": false,
+      "trades": 96,
+      "trades_per_day": 0.464,
+      "zero_cost_gross_bps": 6.276,
+      "ledger_expected_gross_edge_bps": 6.28,
+      "base_gross_bps": 2.492,
+      "base_expectancy_bps": -7.508,
+      "fees_bps_per_trade": 10.0,
+      "implied_slippage_bps_per_trade": 3.784,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -17.0776,
+      "oos_gross_bps": -4.518,
+      "val_gross_bps": -12.556,
+      "dev_gross_bps": 15.242,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross 6.28 bps/trade at 1h; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "EXECUTION_COST"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.volatility.1h",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "1h.volatility.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 96,
+        "oos_trades": 17,
+        "dev_trades": 50,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 4.640321,
+        "per_trade_sd_bps_at_stake": 92.806414,
+        "standard_error_usd": 0.473601,
+        "standard_error_bps_at_stake": 9.472015,
+        "ci95_half_width_bps": 18.564808,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 61,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 124,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "volatility@30m",
+      "family": "volatility",
+      "timeframe": "30m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 30m, W1-W7",
+        "source": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "COST_KILLED",
+      "rebuilt_status": "COST_KILLED",
+      "admitted_for_paper": false,
+      "trades": 196,
+      "trades_per_day": 0.947,
+      "zero_cost_gross_bps": 8.912,
+      "ledger_expected_gross_edge_bps": 8.91,
+      "base_gross_bps": 7.468,
+      "base_expectancy_bps": -2.538,
+      "fees_bps_per_trade": 10.0041,
+      "implied_slippage_bps_per_trade": 1.444,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -14.4416,
+      "oos_gross_bps": 3.116,
+      "val_gross_bps": -14.236,
+      "dev_gross_bps": 21.326,
+      "rejection": {
+        "rationale": "D-01 timeframe evidence (verdict REJECT_COST_KILLED): zero-cost gross 8.91 bps/trade at 30m; trade count not published in this artifact -> sample size unproven",
+        "failed_mandatory_checks": [],
+        "unevaluated_checks": [
+          "c1..c9 not applied at this timeframe (no per-timeframe admission matrix artefact)"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "EXECUTION_COST"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "D-01_timeframe_horizon.evidence.zero_cost_gross_bps_per_trade.volatility.30m",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "reports/strategy-baseline/TIMEFRAME_AUDIT.json",
+        "rebuilt_pointer": "30m.volatility.ZERO_COST.totals",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 194,
+        "oos_trades": 34,
+        "dev_trades": 108,
+        "ledger_sample_trades": 0,
+        "provenance_gap": true
+      },
+      "missing_metrics": [
+        "admission_checks_c1_c9",
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": true,
+        "knowledge": "DERIVED_ENVELOPE",
+        "stake_usd": 500,
+        "assumption": "two-point win/loss model implied by the cell's own win rate, avg win, avg loss",
+        "per_trade_sd_usd": 4.289213,
+        "per_trade_sd_bps_at_stake": 85.784263,
+        "standard_error_usd": 0.306372,
+        "standard_error_bps_at_stake": 6.127447,
+        "ci95_half_width_bps": 12.009576,
+        "trades_needed_to_resolve_23p35_bps_at_95pct": 52,
+        "trades_needed_to_resolve_23p35_bps_at_80pct_power": 106,
+        "note": "an envelope, not a measurement: it says what this cell's sample could resolve, which is the question a quoted 3-decimal edge does not answer"
+      }
+    },
+    {
+      "strategy_id": "volatility@5m",
+      "family": "volatility",
+      "timeframe": "5m",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "runtime_registry_assets": [
+        "BTCUSDT",
+        "ETHUSDT"
+      ],
+      "regime": [],
+      "data": {
+        "dataset_fingerprint": "e44a7ab1933362096dfd6f5fd36fb560",
+        "engine": "parity engine (runtime family classes + adapter semantics), 5m, W1-W7",
+        "source": "docs/STRATEGY_ADMISSION_MATRIX.json",
+        "price_source": "read-only public klines (W1-W7 windows)",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "ledger_status": "NO_GROSS_EDGE",
+      "rebuilt_status": "NO_GROSS_EDGE",
+      "admitted_for_paper": false,
+      "trades": 520,
+      "trades_per_day": 2.512,
+      "zero_cost_gross_bps": -4.735385,
+      "ledger_expected_gross_edge_bps": -4.73,
+      "base_gross_bps": null,
+      "base_expectancy_bps": -16.524,
+      "fees_bps_per_trade": 10.0008,
+      "implied_slippage_bps_per_trade": null,
+      "spread_bps_observed": null,
+      "max_drawdown": null,
+      "net_vs_admission_floor_bps": -28.089,
+      "oos_gross_bps": -6.8065,
+      "val_gross_bps": null,
+      "dev_gross_bps": -5.134,
+      "rejection": {
+        "rationale": "research classification NO_GROSS_EDGE; gross -4.73 bps/trade over 520 trades; admission checks failed: ['c2_net_positive', 'c3_pf_gt1', 'c4_oos_positive', 'c7_survives_2x']; oos net -52.11",
+        "failed_mandatory_checks": [
+          "c2_net_positive",
+          "c3_pf_gt1",
+          "c4_oos_positive",
+          "c7_survives_2x"
+        ],
+        "unevaluated_checks": [
+          "c6_dd",
+          "c8_no_window_dominance"
+        ],
+        "criteria_source": "docs/STRATEGY_ADMISSION_CRITERIA.md",
+        "primary_category": "NO_ALPHA"
+      },
+      "provenance": {
+        "ledger_source_doc": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "evidence_metric": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+        "evidence_knowledge": "ESTIMATED",
+        "rebuilt_from": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+        "rebuilt_pointer": "family_5m_diagnostic_zero_cost.volatility",
+        "period": "W1-W7 2026-03-01..2026-09-24",
+        "pit_claimed": "no PIT defect is implicated in these failures (reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md)"
+      },
+      "sample": {
+        "trades": 520,
+        "oos_trades": 62,
+        "dev_trades": 315,
+        "ledger_sample_trades": 520,
+        "provenance_gap": false
+      },
+      "missing_metrics": [
+        "max_drawdown",
+        "spread_bps_observed"
+      ],
+      "resolution": {
+        "available": false,
+        "why": "the cell does not publish a win/loss summary (only the 15m/30m/1h artefact does; the 5m diagnostic publishes bps and a classification)"
+      }
+    }
+  ],
+  "discrepancies": [
+    {
+      "strategy_id": "breakout@5m",
+      "field": "expected_gross_edge_bps",
+      "ledger": -0.11,
+      "primary": -0.084007,
+      "source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "pointer": "family_5m_diagnostic_zero_cost.breakout",
+      "delta": -0.025993
+    },
+    {
+      "strategy_id": "trend@5m",
+      "field": "expected_gross_edge_bps",
+      "ledger": -1.65,
+      "primary": -1.644771,
+      "source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "pointer": "family_5m_diagnostic_zero_cost.trend",
+      "delta": -0.005229
+    },
+    {
+      "strategy_id": "volatility@5m",
+      "field": "expected_gross_edge_bps",
+      "ledger": -4.73,
+      "primary": -4.735385,
+      "source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "pointer": "family_5m_diagnostic_zero_cost.volatility",
+      "delta": 0.005385
+    }
+  ],
+  "unresolvable_cells": [
+    {
+      "strategy_id": "volatility@1h",
+      "zero_cost_gross_bps": 6.276,
+      "ci95_half_width_bps": 18.564808,
+      "trades": 96,
+      "trades_needed_at_80pct_power": 124
+    },
+    {
+      "strategy_id": "volatility@30m",
+      "zero_cost_gross_bps": 8.912,
+      "ci95_half_width_bps": 12.009576,
+      "trades": 196,
+      "trades_needed_at_80pct_power": 106
+    },
+    {
+      "strategy_id": "volatility@15m",
+      "zero_cost_gross_bps": -7.064,
+      "ci95_half_width_bps": 9.374829,
+      "trades": 277,
+      "trades_needed_at_80pct_power": 92
+    },
+    {
+      "strategy_id": "mean_reversion@1h",
+      "zero_cost_gross_bps": -2.226,
+      "ci95_half_width_bps": 8.692807,
+      "trades": 448,
+      "trades_needed_at_80pct_power": 127
+    },
+    {
+      "strategy_id": "breakout@1h",
+      "zero_cost_gross_bps": -0.222,
+      "ci95_half_width_bps": 6.444677,
+      "trades": 714,
+      "trades_needed_at_80pct_power": 112
+    },
+    {
+      "strategy_id": "trend@1h",
+      "zero_cost_gross_bps": -1.252,
+      "ci95_half_width_bps": 5.370709,
+      "trades": 1407,
+      "trades_needed_at_80pct_power": 153
+    },
+    {
+      "strategy_id": "trend@30m",
+      "zero_cost_gross_bps": 2.206,
+      "ci95_half_width_bps": 4.771974,
+      "trades": 1575,
+      "trades_needed_at_80pct_power": 135
+    },
+    {
+      "strategy_id": "trend@15m",
+      "zero_cost_gross_bps": 1.284,
+      "ci95_half_width_bps": 4.52761,
+      "trades": 1625,
+      "trades_needed_at_80pct_power": 125
+    },
+    {
+      "strategy_id": "breakout@30m",
+      "zero_cost_gross_bps": -1.792,
+      "ci95_half_width_bps": 4.430577,
+      "trades": 1285,
+      "trades_needed_at_80pct_power": 95
+    },
+    {
+      "strategy_id": "momentum@1h",
+      "zero_cost_gross_bps": -2.334,
+      "ci95_half_width_bps": 3.674085,
+      "trades": 2315,
+      "trades_needed_at_80pct_power": 118
+    },
+    {
+      "strategy_id": "mean_reversion@15m",
+      "zero_cost_gross_bps": 2.714,
+      "ci95_half_width_bps": 3.591391,
+      "trades": 1604,
+      "trades_needed_at_80pct_power": 78
+    },
+    {
+      "strategy_id": "ema_crossover@1h",
+      "zero_cost_gross_bps": -0.964,
+      "ci95_half_width_bps": 3.279934,
+      "trades": 2641,
+      "trades_needed_at_80pct_power": 107
+    },
+    {
+      "strategy_id": "breakout@15m",
+      "zero_cost_gross_bps": -1.822,
+      "ci95_half_width_bps": 3.168101,
+      "trades": 2058,
+      "trades_needed_at_80pct_power": 78
+    },
+    {
+      "strategy_id": "momentum@30m",
+      "zero_cost_gross_bps": -2.612,
+      "ci95_half_width_bps": 2.931925,
+      "trades": 3001,
+      "trades_needed_at_80pct_power": 97
+    },
+    {
+      "strategy_id": "ema_crossover@30m",
+      "zero_cost_gross_bps": -0.726,
+      "ci95_half_width_bps": 2.685637,
+      "trades": 3233,
+      "trades_needed_at_80pct_power": 88
+    },
+    {
+      "strategy_id": "ema_crossover@15m",
+      "zero_cost_gross_bps": -1.122,
+      "ci95_half_width_bps": 2.367062,
+      "trades": 3166,
+      "trades_needed_at_80pct_power": 67
+    }
+  ],
+  "coverage": {
+    "cells_with_published_drawdown": 0,
+    "cells_with_observed_spread": 0,
+    "cells_with_cost_numbers": 24,
+    "cells_total": 24,
+    "cells_with_resolution_envelope": 18
+  },
+  "checks": [
+    {
+      "check": "24 cells rebuilt from the ledger",
+      "ok": true
+    },
+    {
+      "check": "0 admitted",
+      "ok": true
+    },
+    {
+      "check": "17 NO_GROSS_EDGE and 7 COST_KILLED re-derived, not copied",
+      "ok": true
+    },
+    {
+      "check": "best gross edge rebuilt as 8.912 bps",
+      "ok": true
+    },
+    {
+      "check": "admission round trip rebuilt as 23.3536 bps",
+      "ok": true
+    },
+    {
+      "check": "the ledger's status of every cell equals the sign of its primary source value",
+      "ok": true
+    },
+    {
+      "check": "every published headline number agrees with the rebuilt one",
+      "ok": true
+    },
+    {
+      "check": "no frozen artefact is modified",
+      "ok": true
+    }
+  ],
+  "limitations": [
+    "the gross edges are zero-cost research diagnostics over W1-W7 2026-03-01..2026-09-24; they are HISTORICAL_ESTIMATE, not forward evidence",
+    "no cell publishes a drawdown or an observed spread, so two of the operator's requested columns are reported absent rather than filled",
+    "the resolution envelope assumes a two-point win/loss model; it is an envelope for 'can this sample resolve the effect', never a measured dispersion",
+    "admission checks c1..c9 were never applied at 15m/30m/1h, so the ledger's status is a cost classification, not a full admission verdict"
+  ],
+  "verdict": "PARTIAL \u2014 the six headline numbers reproduce from primary sources with declared discrepancies, and two requested metrics do not exist in the record",
+  "payload_sha256": "1706cafe842e3f88a799926c2d48b2edad49601591fde6bb0283c0c75291add0"
+}

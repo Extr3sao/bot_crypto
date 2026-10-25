@@ -1,0 +1,207 @@
+{
+  "schema": "rfc020.data_authority_map.v1",
+  "rfc": "RFC-020",
+  "head": "2d64536b4d41165edb4d32ead8c02c5b479ba8b2",
+  "source_commit": "6a9d47fa58fdecc56acae7af2ac60e732f63d591",
+  "authority_order": ["REAL_RUNTIME", "EXECUTION_EVIDENCE", "TESTS", "SOURCE_CODE", "ARCH/RFC", "ASSUMPTION"],
+  "primary_runtime_entrypoint": "scripts/autonomous_paper.py",
+  "replay_harness": "scripts/rfc010_baseline_replay.py",
+  "runtime_chain": [
+    "autonomous_paper.py",
+    "AdmissionLedger",
+    "StrategyRegistry",
+    "UniverseScanner",
+    "FetcherBarReader",
+    "CryptoAssetAgentRegistry",
+    "StrategyRouter.route",
+    "6 AlphaFamilies",
+    "TradeProposal",
+    "5 reviewers",
+    "IndependentVerifier",
+    "DecisionEngine",
+    "RiskManager.check_signal",
+    "PaperBroker.execute_signal",
+    "reconciliation",
+    "DecisionTraceStore"
+  ],
+  "time_field_semantics": {
+    "event_time": "bar OPEN, epoch ms (UTC)",
+    "bar_open_time": "data field 'ts'",
+    "bar_close_time": "ts + interval_ms (the availability instant)",
+    "available_time": "bar_close_time (a bar is unusable while forming)",
+    "ingestion_time": "network fetch wall-clock in LIVE; replay clock in the harness",
+    "decision_time": "runtime min(snapshot_ts, session_started_ms) = the replay clock instant",
+    "execution_time": "PaperBroker wall-clock closed_at (observability only, never read back)"
+  },
+  "sources": [
+    {
+      "data_id": "ohlcv_5m",
+      "provider": "Binance REST (fetch_baseline_data.py) / replay ReplayMarketSource",
+      "asset": ["BTC", "ETH", "SOL"],
+      "timeframe": "5m",
+      "source_path": "reports/strategy-baseline/data/<SYM>USDT_W*_2026-*.json",
+      "runtime_consumer": "FetcherBarReader -> closed_bar_slice -> BaseCryptoAssetAgent + AlphaFamilies",
+      "timestamp_field": "ts",
+      "timestamp_semantics": "bar OPEN, epoch ms",
+      "event_time": "ts",
+      "ingestion_time": "replay: ReplayClock; live: fetch wall clock",
+      "available_time": "ts + 300000",
+      "decision_time": "min(snapshot_ts, session_started_ms)",
+      "timezone": "UTC (tz-naive integer epoch ms)",
+      "aggregation": "raw provider bars (deduped, sorted)",
+      "revisions_possible": false,
+      "cache_layer": "ReplayMarketSource._visible (filters b.timestamp <= clock)",
+      "fallback_provider": "none",
+      "runtime_authoritative": true,
+      "point_in_time_status": "PIT_SAFE",
+      "evidence": "closed_bar_slice trims to close <= decision_time; DECISION_TIME_PROVENANCE 0/1743 violations; FUTURE_INJECTION_TEST PASS"
+    },
+    {
+      "data_id": "ohlcv_htf_15m_30m_1h",
+      "provider": "resample_baseline_data.py (deterministic 3x/6x/12x from 5m)",
+      "asset": ["BTC", "ETH", "SOL"],
+      "timeframe": "15m/30m/1h",
+      "source_path": "reports/strategy-baseline/data/<SYM>USDT_W*_2026-*_5m_<tf>.json",
+      "runtime_consumer": "none (research backtests only)",
+      "timestamp_field": "ts",
+      "timestamp_semantics": "bucket OPEN, epoch ms",
+      "available_time": "ts + tf_ms",
+      "timezone": "UTC",
+      "aggregation": "complete buckets only (label=BAR_OPEN)",
+      "revisions_possible": false,
+      "runtime_authoritative": false,
+      "point_in_time_status": "NOT_RUNTIME_REACHABLE",
+      "evidence": "HTF_JOIN_AUDIT.json; runtime consumes a single 5m timeframe"
+    },
+    {
+      "data_id": "spread_bps",
+      "provider": "scanner snapshot (live: venue); replay: COST_MODEL_V3 majors default",
+      "asset": ["BTC", "ETH", "SOL"],
+      "timeframe": "5m",
+      "source_path": "MarketSnapshot.spread_bps",
+      "runtime_consumer": "UniverseScanner rank + CostEngine.evaluate",
+      "timestamp_field": "n/a (per-snapshot scalar)",
+      "timestamp_semantics": "observation instant = scanner wall clock",
+      "available_time": "at scan",
+      "revisions_possible": false,
+      "runtime_authoritative": false,
+      "point_in_time_status": "PIT_CONDITIONAL",
+      "evidence": "replay has no historical spread series -> fixed 1.0 bps recorded as knowledge=ESTIMATED (CostBreakdown.spread_knowledge), never observed-zero"
+    },
+    {
+      "data_id": "volume_24h_usdt",
+      "provider": "scanner snapshot (trailing 288 5m bars of the replay source)",
+      "runtime_consumer": "UniverseScanner volume filter + rank",
+      "timestamp_semantics": "derived from bars with timestamp <= clock",
+      "available_time": "<= decision_time",
+      "runtime_authoritative": false,
+      "point_in_time_status": "PIT_SAFE",
+      "evidence": "ReplayMarketSource.fetch_24h_volume_usdt sums only _visible bars"
+    },
+    {
+      "data_id": "last_price",
+      "provider": "scanner snapshot (newest visible bar close)",
+      "runtime_consumer": "UniverseScanner + runtime market_context",
+      "available_time": "<= decision_time",
+      "runtime_authoritative": false,
+      "point_in_time_status": "PIT_SAFE",
+      "evidence": "last_price = ohlcv[-1].close over bars with timestamp <= clock"
+    },
+    {
+      "data_id": "atr_pct",
+      "provider": "scanner (_compute_atr_pct over visible bars)",
+      "runtime_consumer": "UniverseScanner atr filter",
+      "available_time": "<= decision_time",
+      "runtime_authoritative": false,
+      "point_in_time_status": "PIT_SAFE"
+    },
+    {
+      "data_id": "scanner_timestamp_ms",
+      "provider": "scanner._now_ms (time.time())",
+      "runtime_consumer": "trace market_context metadata only",
+      "timestamp_semantics": "wall clock observation stamp",
+      "point_in_time_status": "PIT_CONDITIONAL",
+      "evidence": "runtime never selects data by it: decision_ts = min(snap_ts, session_started); recorded as scanner_timestamp_ms. Replay wall clock (~2026-10) > replay epoch -> min() keeps the replay instant. No decision field derives from it."
+    },
+    {
+      "data_id": "strategy_admission_ledger",
+      "provider": "config/strategy_admission.json (frozen prior)",
+      "source_path": "config/strategy_admission.json",
+      "sha256": "6c4dd0be1fc2fff24920c9f9226c7f81f8d3d4dc80671b5a424721da497f7db1",
+      "edge_source": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+      "edge_metric": "family_5m_diagnostic_zero_cost.gross_bps_per_trade",
+      "edge_period": "W1-W7 2026-03-01..2026-09-24",
+      "runtime_consumer": "StrategyRouter ordering + DecisionEngine classification",
+      "revisions_possible": false,
+      "runtime_authoritative": false,
+      "point_in_time_status": "PIT_CONDITIONAL",
+      "evidence": "static prior; no runtime code writes it; but the calibration period extends beyond the RFC-010 replay decisions (W1-W4) -> prior is IN-SAMPLE for that replay (P1, LEDGER_REGIME_PIT_AUDIT.json)"
+    },
+    {
+      "data_id": "experience_memory",
+      "provider": "StrategyPerformanceStore (run_dir/performance.json)",
+      "runtime_consumer": "StrategyRouter selection_priority (bounded +/-0.25)",
+      "time_field": "sample.timestamp_ms = outcome_time_ms",
+      "available_time": "only after the outcome's horizon elapsed",
+      "revisions_possible": false,
+      "runtime_authoritative": false,
+      "point_in_time_status": "PIT_SAFE",
+      "evidence": "every sample timestamp_ms > its decision_time_ms (0 violations); inactive in the baseline (no cell has >= 20 executable samples)"
+    },
+    {
+      "data_id": "outcomes",
+      "provider": "OutcomeEvaluator over future bars",
+      "runtime_consumer": "experience store + calibration only",
+      "available_time": "bar close after decision + horizon",
+      "point_in_time_status": "PIT_SAFE",
+      "evidence": "outcome_time_ms strictly > decision_time_ms; reference_price_time_ms <= decision_time_ms (0 violations)"
+    },
+    {
+      "data_id": "risk_config",
+      "provider": "config/realdata/{risk,assets,strategies,runtime}.yaml",
+      "runtime_consumer": "RiskManager, UniverseScanner thresholds",
+      "revisions_possible": false,
+      "runtime_authoritative": false,
+      "point_in_time_status": "PIT_SAFE",
+      "evidence": "static config hashes frozen in config/baseline/RFC010-BASELINE-DEV.json"
+    },
+    {
+      "data_id": "cost_model_v3",
+      "provider": "src/trading_bot/research/microstructure/cost_model_v3.py (frozen constants)",
+      "runtime_consumer": "CostEngine",
+      "revisions_possible": false,
+      "runtime_authoritative": false,
+      "point_in_time_status": "PIT_SAFE"
+    },
+    {
+      "data_id": "funding",
+      "provider": "COST_MODEL_V3 funding_carry component",
+      "runtime_consumer": "CostEngine",
+      "point_in_time_status": "NOT_APPLICABLE",
+      "evidence": "no historical funding series exists in the frozen dataset; component constant 0.0"
+    },
+    {
+      "data_id": "htf_pit_helper",
+      "provider": "src/trading_bot/market_data/htf_pit.py",
+      "runtime_consumer": "none (zero tracked src/ importers)",
+      "point_in_time_status": "NOT_RUNTIME_REACHABLE",
+      "evidence": "test_orphan_htf_helper_has_no_runtime_importer; DEF-HTF-PIT-001 P3"
+    },
+    {
+      "data_id": "orderbook_tick_sentiment_macro",
+      "provider": "none",
+      "runtime_consumer": "none",
+      "point_in_time_status": "NOT_RUNTIME_REACHABLE",
+      "evidence": "no runtime-reachable module consumes any of these"
+    }
+  ],
+  "summary": {
+    "total": 15,
+    "PIT_SAFE": 7,
+    "PIT_CONDITIONAL": 3,
+    "PIT_UNSAFE": 0,
+    "UNKNOWN": 0,
+    "NOT_RUNTIME_REACHABLE": 4,
+    "NOT_APPLICABLE": 1
+  }
+}

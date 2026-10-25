@@ -1,0 +1,184 @@
+{
+  "capital_usdt": 10000.0,
+  "current_runtime": {
+    "admitted_strategies": [],
+    "equity_end_usdt": 10000.0,
+    "net_usdt": 0.0,
+    "trades": 0
+  },
+  "note": "surviving the adverse cost multiplier is necessary and not sufficient: the decision also requires the concentration and drawdown thresholds frozen in the WP-EDGE-015 protocol",
+  "order_notional_usdt": 333.33,
+  "order_sizing_rule": "config/risk.yaml, as the canonical RiskManager sizes it",
+  "proposed": {
+    "mean_reversion_vol_liq": {
+      "beats_current_at_2x": false,
+      "family": "mean_reversion_vol_liq",
+      "net_usdt_1x": -240.866053,
+      "net_usdt_2x": -1150.33088,
+      "net_usdt_3x": -2059.795707,
+      "per_symbol": {
+        "AAVE/USDT": {
+          "net_bps_total_1x": 2063.3298,
+          "net_bps_total_2x": -948.5102,
+          "trades": 104
+        },
+        "BTC/USDT": {
+          "net_bps_total_1x": -24.4139,
+          "net_bps_total_2x": -234.5963,
+          "trades": 9
+        },
+        "CRV/USDT": {
+          "net_bps_total_1x": 2923.1653,
+          "net_bps_total_2x": -1739.3947,
+          "trades": 161
+        },
+        "ETH/USDT": {
+          "net_bps_total_1x": -354.8755,
+          "net_bps_total_2x": -565.0579,
+          "trades": 9
+        },
+        "KSM/USDT": {
+          "net_bps_total_1x": -10145.7522,
+          "net_bps_total_2x": -15155.8322,
+          "trades": 173
+        },
+        "SNX/USDT": {
+          "net_bps_total_1x": 4816.27,
+          "net_bps_total_2x": 37.87,
+          "trades": 165
+        },
+        "SOL/USDT": {
+          "net_bps_total_1x": -288.9556,
+          "net_bps_total_2x": -567.2556,
+          "trades": 11
+        },
+        "SUSHI/USDT": {
+          "net_bps_total_1x": -1900.8346,
+          "net_bps_total_2x": -6824.0346,
+          "trades": 170
+        },
+        "UNI/USDT": {
+          "net_bps_total_1x": -4313.9149,
+          "net_bps_total_2x": -8513.1149,
+          "trades": 145
+        }
+      },
+      "trades": 947
+    },
+    "trend_pullback": {
+      "beats_current_at_2x": false,
+      "family": "trend_pullback",
+      "net_usdt_1x": -1954.859493,
+      "net_usdt_2x": -2775.1232,
+      "net_usdt_3x": -3595.386907,
+      "per_symbol": {
+        "AAVE/USDT": {
+          "net_bps_total_1x": -11352.0172,
+          "net_bps_total_2x": -15753.9372,
+          "trades": 152
+        },
+        "BTC/USDT": {
+          "net_bps_total_1x": 1662.4904,
+          "net_bps_total_2x": 1242.1256,
+          "trades": 18
+        },
+        "CRV/USDT": {
+          "net_bps_total_1x": -8811.0181,
+          "net_bps_total_2x": -12778.5381,
+          "trades": 137
+        },
+        "ETH/USDT": {
+          "net_bps_total_1x": 1382.9179,
+          "net_bps_total_2x": 822.4315,
+          "trades": 24
+        },
+        "KSM/USDT": {
+          "net_bps_total_1x": -11127.5858,
+          "net_bps_total_2x": -14863.4258,
+          "trades": 129
+        },
+        "SNX/USDT": {
+          "net_bps_total_1x": -11951.1222,
+          "net_bps_total_2x": -15484.2422,
+          "trades": 122
+        },
+        "SOL/USDT": {
+          "net_bps_total_1x": -700.3165,
+          "net_bps_total_2x": -1130.4165,
+          "trades": 17
+        },
+        "SUSHI/USDT": {
+          "net_bps_total_1x": -11480.1881,
+          "net_bps_total_2x": -15447.7081,
+          "trades": 137
+        },
+        "UNI/USDT": {
+          "net_bps_total_1x": -6268.9452,
+          "net_bps_total_2x": -9859.9852,
+          "trades": 124
+        }
+      },
+      "trades": 860
+    },
+    "vol_regime_breakout": {
+      "beats_current_at_2x": false,
+      "family": "vol_regime_breakout",
+      "net_usdt_1x": -187.077923,
+      "net_usdt_2x": -418.33179,
+      "net_usdt_3x": -649.585657,
+      "per_symbol": {
+        "AAVE/USDT": {
+          "net_bps_total_1x": -2626.8788,
+          "net_bps_total_2x": -3437.7588,
+          "trades": 28
+        },
+        "BTC/USDT": {
+          "net_bps_total_1x": -605.2025,
+          "net_bps_total_2x": -721.9705,
+          "trades": 5
+        },
+        "CRV/USDT": {
+          "net_bps_total_1x": 2662.2212,
+          "net_bps_total_2x": 1532.7812,
+          "trades": 39
+        },
+        "ETH/USDT": {
+          "net_bps_total_1x": 1309.1105,
+          "net_bps_total_2x": 1192.3425,
+          "trades": 5
+        },
+        "KSM/USDT": {
+          "net_bps_total_1x": -1175.9928,
+          "net_bps_total_2x": -2450.2328,
+          "trades": 44
+        },
+        "SNX/USDT": {
+          "net_bps_total_1x": -1702.705,
+          "net_bps_total_2x": -2976.945,
+          "trades": 44
+        },
+        "SOL/USDT": {
+          "net_bps_total_1x": 481.1269,
+          "net_bps_total_2x": 379.9269,
+          "trades": 4
+        },
+        "SUSHI/USDT": {
+          "net_bps_total_1x": -4176.8308,
+          "net_bps_total_2x": -5508.9908,
+          "trades": 46
+        },
+        "UNI/USDT": {
+          "net_bps_total_1x": 222.8136,
+          "net_bps_total_2x": -559.1064,
+          "trades": 27
+        }
+      },
+      "trades": 242
+    }
+  },
+  "restated_after": "PIT repair (exit fills moved to the next executable bar)",
+  "same_data": "held-out tail of each series, same corpora as WP-EDGE-015",
+  "schema_version": "EDGE16_CURRENT_VS_PROPOSED_V1",
+  "survive_the_adverse_multiplier": [],
+  "verdict": "NO_RESTATED_EDGE_SURVIVES"
+}

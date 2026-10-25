@@ -1,0 +1,113 @@
+{
+  "tool": "scripts/audit/negative_controls.py",
+  "criterion": "MT-0004-R1 AC-1/AC-2",
+  "source": "rev",
+  "rev": "ef7955dc5973ab863f010e02a1297a455ef276da",
+  "target_tests": [
+    "tests/unit/autonomous/test_decision_kill_switch.py",
+    "tests/unit/autonomous/test_kill_switch_negative.py"
+  ],
+  "mutated_file": "src/trading_bot/autonomous/decision.py",
+  "python": "3.11.15",
+  "resolved_source": "ef7955dc5973ab863f010e02a1297a455ef276da",
+  "resolved_rev": "ef7955dc5973ab863f010e02a1297a455ef276da",
+  "baseline": {
+    "variant": "baseline",
+    "description": "unmutated tree (control)",
+    "criterion": "AC-1",
+    "exit_code": 0,
+    "killed": false,
+    "duration_s": 19.75,
+    "failing_tests": []
+  },
+  "variants": [
+    {
+      "variant": "baseline",
+      "description": "unmutated tree (control)",
+      "criterion": "AC-1",
+      "exit_code": 0,
+      "killed": false,
+      "duration_s": 19.75,
+      "failing_tests": []
+    },
+    {
+      "variant": "M1",
+      "description": "rule 0 removed from decide",
+      "criterion": "AC-2",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 18.65,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_engaged_switch_blocks_the_authorising_packet[no_new_risk]",
+        "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_engaged_switch_blocks_the_authorising_packet[protection_only]",
+        "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_engaged_switch_blocks_the_authorising_packet[read_only]",
+        "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_engaged_switch_blocks_the_authorising_packet[halted]",
+        "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_rule_zero_wins_over_every_other_rule"
+      ]
+    },
+    {
+      "variant": "M2",
+      "description": "rule 0 removed from intend",
+      "criterion": "AC-2",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 19.21,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_the_engaged_switch_stops_the_intent_before_risk_runs"
+      ]
+    },
+    {
+      "variant": "M3",
+      "description": "unreadable state fails OPEN instead of closed",
+      "criterion": "AC-2",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 19.95,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_unreadable_state_fails_closed[broken0]",
+        "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_unreadable_state_fails_closed[broken1]",
+        "FAILED tests/unit/autonomous/test_kill_switch_negative.py::test_a_broken_state_object_blocks[broken0]",
+        "FAILED tests/unit/autonomous/test_kill_switch_negative.py::test_an_absent_state_is_reported_as_unreadable_not_as_engaged"
+      ]
+    },
+    {
+      "variant": "M4",
+      "description": "gate never blocks (plumbing kept, condition disabled)",
+      "criterion": "AC-2",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 19.04,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_engaged_switch_blocks_the_authorising_packet[no_new_risk]",
+        "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_engaged_switch_blocks_the_authorising_packet[protection_only]",
+        "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_engaged_switch_blocks_the_authorising_packet[read_only]",
+        "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_an_engaged_switch_blocks_the_authorising_packet[halted]",
+        "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_the_engaged_switch_stops_the_intent_before_risk_runs"
+      ]
+    },
+    {
+      "variant": "M5",
+      "description": "derived is_active flag no longer consulted",
+      "criterion": "AC-2",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 19.23,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_decision_kill_switch.py::test_a_state_that_disagrees_with_the_flag_blocks"
+      ]
+    },
+    {
+      "variant": "M6",
+      "description": "unknown TRADING_BOT_KILL_SWITCH value boots NORMAL (fail open)",
+      "criterion": "AC-2",
+      "exit_code": 1,
+      "killed": true,
+      "duration_s": 20.67,
+      "failing_tests": [
+        "FAILED tests/unit/autonomous/test_kill_switch_negative.py::test_only_an_explicit_off_token_boots_the_process_trading[yes-halted]"
+      ]
+    }
+  ],
+  "total_seconds": 151.09,
+  "all_mutants_killed": true
+}

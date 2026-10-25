@@ -1,0 +1,417 @@
+{
+  "schema_version": "1.0",
+  "work_package": "WP-051-02F",
+  "rfc": "RFC_EXP004A_051_02F",
+  "experiment": "EXP-004A",
+  "phase": 2,
+  "generated_at_utc": "2026-10-22T14:49:49Z",
+  "head": {
+    "at_session_start": "87ad0d7ac44c6f9c3a45b7606b4836ccd80da5bb",
+    "at_capture": "f20dff9b71fd10a5f110ab6cae88e817c6f5d428",
+    "at_generation": "5314559fb93266ea5c05343baac1eae6e450d4fe",
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "note": "el checkout es compartido y otros paquetes commitearon durante la sesión (87ad0d7a -> f20dff9b -> 2ed43ad4); el run sella el HEAD desde el que corrió"
+  },
+  "commits": [
+    {
+      "hash": "be5b68e1",
+      "what": "runner, verificador, tests, mapa de autoridad, evidencia sellada y los tres datasets"
+    }
+  ],
+  "files": {
+    "code": [
+      "scripts/exp004a_wp051_02f_runner.py",
+      "scripts/exp004a_wp051_02f_verify.py"
+    ],
+    "tests": [
+      "tests/unit/research/test_exp004a_wp051_02f.py"
+    ],
+    "package": "docs/agentic/exp004a/wp051_02f/",
+    "datasets": [
+      "data/exp004a/EXP-004A-1H-BTC.jsonl",
+      "data/exp004a/EXP-004A-1H-BTC.MANIFEST.json",
+      "data/exp004a/EXP-004A-1H-ETH.jsonl",
+      "data/exp004a/EXP-004A-1H-ETH.MANIFEST.json",
+      "data/exp004a/EXP-004A-1H-SOL.jsonl",
+      "data/exp004a/EXP-004A-1H-SOL.MANIFEST.json"
+    ],
+    "frozen_untouched": [
+      "docs/agentic/exp004a/wp051_02b/",
+      "docs/agentic/exp004a/wp051_02c/",
+      "docs/agentic/exp004a/wp051_02d/",
+      "docs/agentic/exp004a/wp051_02e/"
+    ],
+    "not_committed_by_this_package": [
+      "docs/agentic/EXECUTION_CHECKPOINT.md (fichero compartido: la entrada de 02F se añadió al final, sin tocar las líneas de otros paquetes; queda sin commitear porque el resto de sus cambios no es de este paquete)"
+    ]
+  },
+  "implementation_status": "PASS",
+  "implementation": {
+    "entry_point": "scripts/exp004a_wp051_02f_runner.py",
+    "modes": [
+      "--once",
+      "--check",
+      "--resume",
+      "--seal"
+    ],
+    "states": [
+      "NOT_DUE",
+      "PENDING_DATA",
+      "PENDING_FRESHNESS",
+      "BLOCKED_INTEGRITY",
+      "CAPTURE_ATTEMPTED",
+      "TEMPORAL_QUARANTINE_CHECK",
+      "QUARANTINED",
+      "FAILED_OR_PENDING",
+      "INDEPENDENT_VERIFY",
+      "CAPTURED_VERIFIED",
+      "BLOCKED"
+    ],
+    "delegates": {
+      "observation": "scripts/edge04_observer.py",
+      "preflight": "scripts/exp004a_wp051_02e_preflight.py --out-dir <package>/evidence/<run_id>/reused_preflight",
+      "capture": "scripts/exp004a_capture.py con el generator_command de la declaración, literal",
+      "verify": "scripts/exp004a_wp051_02f_verify.py, proceso separado"
+    },
+    "defects_fixed": [
+      "D1 el runner exigía PASS al preflight 02E, que emite WINDOW_OPEN -> PREFLIGHT_ACCEPTED",
+      "D2 run_id podía colisionar en el mismo tick de reloj -> contador de proceso + nonce del SO",
+      "D3 el sello no incluía los datasets publicados -> entradas role=dataset con digest declarado y medido",
+      "D4 la cobertura no se nombraba -> coverage_status y control del verificador",
+      "D5 '02E sigue verificando' no es integridad por bytes -> SEALED_02E_BYTES_INTACT + re-verificación clasificada",
+      "D6 reverify_02e muerto en el runner -> eliminado",
+      "D7 ruff y mypy --strict no pasaban -> limpios"
+    ]
+  },
+  "test_status": {
+    "status": "PASS",
+    "suite": "tests/unit/research/test_exp004a_wp051_02f.py",
+    "passed": 75,
+    "failed": 0,
+    "skipped": 0,
+    "ruff": "PASS (dos scripts y el test)",
+    "mypy_strict": "PASS (dos scripts)",
+    "command": "./.venv/Scripts/python.exe -m pytest tests/unit/research/test_exp004a_wp051_02f.py -q",
+    "wider_suite": {
+      "path": "tests/unit/research",
+      "passed": 2758,
+      "failed": 24,
+      "skipped": 1,
+      "duration_s": 1019,
+      "status": "NOT_PASS",
+      "collection_errors": [
+        "tests/unit/research/test_alpha15_causality.py",
+        "tests/unit/research/test_edge16_causality.py",
+        "tests/unit/research/test_edge16_pit.py"
+      ],
+      "collection_error_cause": "src/trading_bot/research/economic_recovery/alpha15.py está modificado (M) por otro paquete y ya no exporta FAMILY_BY_NAME / SINGLE_ASSET_FAMILIES",
+      "attribution": "el conjunto de 24 fallos es idéntico antes y después de los cambios de 02F y se reproduce con los tres ficheros de 02F fuera del árbol; ningún fallo menciona 02F"
+    }
+  },
+  "adversarial": [
+    {
+      "case": 1,
+      "name": "Ventana aún cerrada",
+      "test": "test_before_the_window_the_runner_says_not_due_and_publishes_nothing",
+      "result": "PASS"
+    },
+    {
+      "case": 2,
+      "name": "Ventana abierta sin barras",
+      "test": "test_inside_the_window_without_a_closed_bar_is_pending_data",
+      "result": "PASS"
+    },
+    {
+      "case": 3,
+      "name": "BTC válido, ETH/SOL ausentes",
+      "test": "test_a_partially_published_series_is_never_a_global_pass",
+      "result": "PASS"
+    },
+    {
+      "case": 4,
+      "name": "Observer fresco, store retrasado (L-04)",
+      "test": "test_a_stale_store_is_pending_freshness_and_not_pending_data",
+      "result": "PASS"
+    },
+    {
+      "case": 5,
+      "name": "Barra abierta todavía no cerrada",
+      "test": "test_inside_the_window_without_a_closed_bar_is_pending_data",
+      "result": "PASS"
+    },
+    {
+      "case": 6,
+      "name": "Barra futura marcada eligible: rechazo sin alterar el archivo (L-01)",
+      "test": "test_a_capture_with_an_impossible_ingest_is_quarantined_and_left_on_disk",
+      "result": "PASS"
+    },
+    {
+      "case": 7,
+      "name": "Timestamp sin fuente comparable: C-013 no se promociona",
+      "test": "test_the_verifier_refuses_to_promote_the_time_proof",
+      "result": "PASS"
+    },
+    {
+      "case": 8,
+      "name": "Hash de declaración o generador adulterado",
+      "test": "test_a_broken_freeze_blocks_before_the_extractor_is_invoked",
+      "result": "PASS"
+    },
+    {
+      "case": 9,
+      "name": "Código 0 sin salida real; 2/3/4/5 según contrato",
+      "test": "test_an_exit_zero_without_a_dataset_is_a_failure_not_a_capture",
+      "result": "PASS"
+    },
+    {
+      "case": 10,
+      "name": "Dos ejecuciones simultáneas y doble invocación",
+      "test": "test_a_second_runner_does_not_run_while_the_lock_is_held",
+      "result": "PASS"
+    },
+    {
+      "case": 11,
+      "name": "Caída después de una serie: recuperación sin duplicar",
+      "test": "test_resume_finds_the_attempts_a_previous_crash_left_behind",
+      "result": "PASS"
+    },
+    {
+      "case": 12,
+      "name": "Re-ejecución del verificador independiente",
+      "test": "test_the_verifier_can_be_run_as_its_own_process",
+      "result": "PASS"
+    },
+    {
+      "case": 13,
+      "name": "Logs faltantes, hashes incorrectos, normalización CRLF",
+      "test": "test_a_crlf_checkout_is_not_reported_as_freeze_drift",
+      "result": "PASS"
+    },
+    {
+      "case": 14,
+      "name": "Protección de los 19 artefactos 02D y de 02E",
+      "test": "test_the_sealed_02d_and_02e_artefacts_are_not_touched_by_a_run",
+      "result": "PASS"
+    },
+    {
+      "case": 15,
+      "name": "Cero órdenes, cero paper orders, cero cambios de gates",
+      "test": "test_the_runner_and_the_verifier_cannot_place_an_order",
+      "result": "PASS"
+    }
+  ],
+  "runtime_validation": {
+    "capture_status": "CAPTURED_VERIFIED",
+    "window": {
+      "start_utc": "2026-10-22T00:00:00.000Z",
+      "end_utc": "2027-01-20T00:00:00.000Z",
+      "state_at_run": "OPEN"
+    },
+    "run_id": "20261022T140037Z-de5d3329",
+    "started_at_utc": "2026-10-22T14:00:37.581Z",
+    "finished_at_utc": "2026-10-22T14:03:31.539Z",
+    "capture_decision_at_utc": "2026-10-22T14:02:46.640Z",
+    "observation": {
+      "exit_code": 0,
+      "outcome": "OBSERVED, 3 nuevas barras cerradas, 0 ausentes"
+    },
+    "preflight": {
+      "controls": 10,
+      "failed": 0,
+      "status": "WINDOW_OPEN"
+    },
+    "captures": [
+      {
+        "slice": "1h:BTC",
+        "exit_code": 0,
+        "meaning": "OK",
+        "rows": 14,
+        "bytes": 4403,
+        "sha256": "da7310abcacc410ee20b2dbfdd814d78ff5d5689267554eace6632bf274950cd"
+      },
+      {
+        "slice": "1h:ETH",
+        "exit_code": 0,
+        "meaning": "OK",
+        "rows": 14,
+        "bytes": 4348,
+        "sha256": "28275763fe0bc3d6c514681f8c0c94fc2e1266acbd737724884b06c11b500729"
+      },
+      {
+        "slice": "1h:SOL",
+        "exit_code": 0,
+        "meaning": "OK",
+        "rows": 14,
+        "bytes": 4296,
+        "sha256": "b617d5492bb89ced9f0c3157a0a6ef50ccf6e1dcbb2167f2d7a5e8d16caa049e"
+      }
+    ],
+    "temporal_guards": [
+      {
+        "slice": "1h:BTC",
+        "verdict": "PASS",
+        "rows": 14,
+        "violations": []
+      },
+      {
+        "slice": "1h:ETH",
+        "verdict": "PASS",
+        "rows": 14,
+        "violations": []
+      },
+      {
+        "slice": "1h:SOL",
+        "verdict": "PASS",
+        "rows": 14,
+        "violations": []
+      }
+    ],
+    "deferred_slices": [
+      "EXP-004A-ST6-TAPE: timeframe '4h slot, 3 rounds of 15s' is not a bar series"
+    ],
+    "attempts": [
+      {
+        "run_id": "20261022T134802Z-821a8f05",
+        "state": "BLOCKED_INTEGRITY",
+        "exit_code": 2,
+        "what": "el runner exigía PASS al preflight 02E, que emite WINDOW_OPEN (D1); no publicó nada"
+      },
+      {
+        "run_id": "20261022T140037Z-de5d3329",
+        "state": "CAPTURED_VERIFIED",
+        "exit_code": 0,
+        "what": "la captura real y verificada"
+      },
+      {
+        "run_id": "20261022T142234Z-55818916",
+        "state": "BLOCKED_INTEGRITY",
+        "exit_code": 2,
+        "what": "la compuerta 02E NO_DATASET_PUBLISHED rechaza por diseño tras la publicación"
+      }
+    ]
+  },
+  "coverage": {
+    "status": "BELOW_DECLARED",
+    "datasets": [
+      {
+        "dataset_id": "EXP-004A-1H-BTC",
+        "dataset_path": "data/exp004a/EXP-004A-1H-BTC.jsonl",
+        "published_rows": 14,
+        "declared_row_count": 2160,
+        "declared_coverage_required": 0.9,
+        "fraction_of_declared": 0.006481,
+        "coverage_status": "BELOW_DECLARED"
+      },
+      {
+        "dataset_id": "EXP-004A-1H-ETH",
+        "dataset_path": "data/exp004a/EXP-004A-1H-ETH.jsonl",
+        "published_rows": 14,
+        "declared_row_count": 2160,
+        "declared_coverage_required": 0.9,
+        "fraction_of_declared": 0.006481,
+        "coverage_status": "BELOW_DECLARED"
+      },
+      {
+        "dataset_id": "EXP-004A-1H-SOL",
+        "dataset_path": "data/exp004a/EXP-004A-1H-SOL.jsonl",
+        "published_rows": 14,
+        "declared_row_count": 2160,
+        "declared_coverage_required": 0.9,
+        "fraction_of_declared": 0.006481,
+        "coverage_status": "BELOW_DECLARED"
+      }
+    ],
+    "note": "el extractor congelado no aplica coverage_required y escribe un dataset una sola vez: 14 de 2160 barras por serie, y el fichero no puede ampliarse (DEF-02F-01)"
+  },
+  "independent_verification": {
+    "status": "PASS",
+    "checks": 28,
+    "reverification_under_final_verifier": {
+      "status": "PASS",
+      "checks": 32,
+      "file": "docs/agentic/exp004a/wp051_02f/REVERIFICATION_UNDER_FINAL_VERIFIER.json"
+    },
+    "builder_verifier_separation": "el verificador no importa trading_bot ni el runner (control NO_FORBIDDEN_IMPORT) y se re-ejecuta como proceso propio en los tests"
+  },
+  "frozen_artefacts": {
+    "wp051_02b": "14 ficheros byte-idénticos al baseline previo a la captura",
+    "wp051_02c": "14 ficheros byte-idénticos",
+    "wp051_02d": "20 ficheros (19 artefactos sellados) byte-idénticos; SEALED_02D_PACKAGE_INTACT 19/19",
+    "wp051_02e": "23 ficheros byte-idénticos; SEALED_02E_BYTES_INTACT 23/23",
+    "sealed_02e_reverification": {
+      "exit_code": 2,
+      "expired_controls": [
+        "V-ART-03",
+        "V-TEMP-01",
+        "V-TEMP-02"
+      ],
+      "interpretation": "caducan con el reloj: describían una ventana cerrada y cero datasets. Se nombran como expiradas y nunca como PASS; 02E no se re-certifica en este paquete"
+    }
+  },
+  "gates": {
+    "C_004": "PASS",
+    "C_013": "TIME_PROOF_WEAK",
+    "C_015": "PASS (provenance of the declaration chain); unchanged by this runner",
+    "C_016": "UNREACHABLE_UNDER_DECLARED_COST_MODEL",
+    "PAPER_VALIDATION": "NOT_PASS",
+    "CERTIFICATION": "BLOCKED",
+    "PROMOTION": "NO_PROMOTION"
+  },
+  "economic_executions": 0,
+  "live_orders": 0,
+  "paper_orders": 0,
+  "false_success": 0,
+  "defects": [
+    {
+      "id": "DEF-02E-01/L-01",
+      "status": "OPEN",
+      "detail": "el extractor congelado puede marcar eligible una barra con fetched_at_ms posterior a la decisión; contenida por un guard independiente y por el verificador, no corregida (prohibido en phase 2)"
+    },
+    {
+      "id": "DEF-02F-01",
+      "status": "OPEN",
+      "detail": "el extractor no aplica coverage_required y escribe una sola vez: la captura del primer día congela 14/2160 barras por serie; la decisión es del dueño del experimento"
+    },
+    {
+      "id": "L-02",
+      "status": "OPEN",
+      "detail": "sin scheduler; este paquete no instala cron, tarea ni daemon"
+    },
+    {
+      "id": "L-04",
+      "status": "OPEN_MITIGATED",
+      "detail": "el runner compara el store con el reloj justo antes del intento; el caso 4 ejercita la mitigación"
+    },
+    {
+      "id": "DEF-02F-02",
+      "status": "OBSERVED_BY_DESIGN",
+      "detail": "NO_DATASET_PUBLISHED convierte --once en una operación por declaración"
+    }
+  ],
+  "blockers": [
+    "decisión del dueño del experimento sobre DEF-02F-01 (dataset parcial aceptado, phase 3 con rutas nuevas, o captura por día)",
+    "3 módulos de tests/unit/research no coleccionan por trabajo ajeno en curso (alpha15.py modificado)",
+    "24 fallos preexistentes en tests/unit/research, ajenos a 02F (reloj y checkout compartido)"
+  ],
+  "evidence": {
+    "manifest": "docs/agentic/exp004a/wp051_02f/EVIDENCE_MANIFEST.json",
+    "manifest_note": "el manifiesto no se hashea a sí mismo ni a este informe: es el manifiesto el que lleva el sha256 de este fichero, y un ciclo entre los dos no probaría nada",
+    "sha256": {
+      "docs/agentic/exp004a/wp051_02f/RUN_REPORT.json": "721eaa89fe5ed22b64b749a6eb5aa46df1a9b0d555c90639ee3c7d04d2fd485c",
+      "docs/agentic/exp004a/wp051_02f/RUN_REPORT.md": "1ef0beb8eca6081616703668304dd4a8e452d543c4d20c8da3d27187a7f642c4",
+      "docs/agentic/exp004a/wp051_02f/INDEPENDENT_VERIFICATION.json": "b2286aec7ce49055a95ada06fcc6796e1ae854395e5aa0fb69c777ad72992c18",
+      "docs/agentic/exp004a/wp051_02f/REVERIFICATION_UNDER_FINAL_VERIFIER.json": "1bcceaea7dc36fe4bd095d4990346be73fa45f441eb2def1ec3987b8bf65f414",
+      "docs/agentic/exp004a/wp051_02f/RUNTIME_AUTHORITY.md": "8fe252c31758f5678d7a3974a257f20b41aae0fbd04e2d77735bc9e9eae2169f",
+      "scripts/exp004a_wp051_02f_runner.py": "015ba8e63f3977be126b0ff58a1b022b37d37a7fcd32cacd0a5ef0efde743f66",
+      "scripts/exp004a_wp051_02f_verify.py": "4a608584310355083c2963aa146f406b402ba2da1d45adaaf8c29f5dd1f2caa3",
+      "tests/unit/research/test_exp004a_wp051_02f.py": "c3716ebbfcad125243f4dce57e7ad3cdc91513a6420ce83baee618932894711d"
+    }
+  },
+  "time_proof": "TIME_PROOF_WEAK; C_013 no se promociona (sin attestation externa admisible)",
+  "paper_validation": "NOT_PASS",
+  "certification": "BLOCKED",
+  "promotion": "NO_PROMOTION",
+  "overall": "PARTIAL",
+  "next_operational_step": "decisión sobre DEF-02F-01; si es phase 3, RFC con generador nuevo que rechace ingestas posteriores a la decisión, declaración nueva y comparador PIT sobre inputs idénticos",
+  "commits_note": "el commit que lleva este informe no puede nombrarse a sí mismo: escribirlo cambiaría el fichero. Se identifica con `git log -1 -- docs/agentic/exp004a/wp051_02f/FINAL_REPORT.md`, y ese mismo commit re-sella el manifiesto (sealed_at_utc)"
+}

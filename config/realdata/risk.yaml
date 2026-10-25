@@ -1,0 +1,60 @@
+# ===========================================================
+# config/risk.yaml
+# Política de riesgo. Inmutable en runtime.
+# Cambiar aquí requiere ticket ADR en tasks/decisions.md.
+# ===========================================================
+
+risk:
+  # Por operación: porcentaje del capital arriesgado por trade.
+  max_risk_per_trade_pct: 0.25
+
+  # Pérdida diaria máxima (% del capital inicial del día).
+  max_daily_loss_pct: 1.0
+
+  # Pérdida semanal máxima.
+  max_weekly_loss_pct: 3.0
+
+  # Drawdown máximo diario aceptado.
+  max_daily_drawdown_pct: 2.0
+
+  # Drawdown máximo total aceptado (equity peak-to-trough).
+  max_total_drawdown_pct: 5.0
+
+  # Máximo número de posiciones abiertas simultáneamente.
+  max_open_positions: 3
+
+  # Máximo número de operaciones diarias.
+  max_trades_per_day: 20
+
+  # Bloqueo por racha de pérdidas consecutivas.
+  max_consecutive_losses: 3
+  consecutive_loss_cooldown_minutes: 60
+
+  # Exposición máxima por activo (% del capital total).
+  max_asset_exposure_pct: 10
+
+  # Exposición máxima total (% del capital total).
+  max_total_exposure_pct: 25
+
+  # Tamaño mínimo y máximo de una operación (en USDT).
+  min_order_notional_usdt: 20
+  max_order_notional_usdt: 500
+
+  # Stop loss y take profit por defecto si la estrategia no los define.
+  default_stop_loss_pct: 0.5
+  default_take_profit_pct: 0.75
+
+  # Bloqueos defensivos.
+  blocks:
+    excessive_spread_bps: 50
+    extreme_atr_pct: 8.0
+    high_latency_ms: 2000
+    weekend_trading: false
+
+  # Kill switch global (lo activa el risk-manager).
+  kill_switch_enabled: true
+
+  # Live trading — fuente única de verdad: config/runtime.yaml.
+  # Esta copia es defensiva: si runtime.yaml no se carga, este YAML
+  # aún bloquea el modo live por defecto. No editar sin ADR.
+  live_trading_enabled: false

@@ -1,0 +1,13 @@
+{
+  "key": "fred_page_WALCL.html",
+  "url": "https://fred.stlouisfed.org/series/WALCL",
+  "retrieved_at_utc": "2026-10-10T12:58:24Z",
+  "mode": "network",
+  "http_status": 200,
+  "content_type": "text/html; charset=UTF-8",
+  "bytes": 79560,
+  "sha256": "b769716d73f126ff7f148bdad5ffce12deca03f6d8f56a17b9edcd2d9654bc24",
+  "raw_retained": true,
+  "status": "ok",
+  "body_truncated_at_deadline": false
+}

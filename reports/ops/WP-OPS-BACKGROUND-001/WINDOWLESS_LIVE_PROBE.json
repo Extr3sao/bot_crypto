@@ -1,0 +1,61 @@
+{
+  "schema_version": "windowless-live-probe-v1",
+  "generated_at_utc": "2026-10-18T18:39:56Z",
+  "platform": "win32",
+  "parent_has_console": false,
+  "cases": {
+    "plain": {
+      "label": "plain",
+      "guarded": false,
+      "exit_code": 0,
+      "seconds": 0.235,
+      "child": {
+        "attached_processes": 9,
+        "console_hwnd": null,
+        "window_visible": false
+      },
+      "visible_console_windows_before": [],
+      "visible_console_windows_during": [],
+      "new_visible_windows": []
+    },
+    "guarded": {
+      "label": "guarded",
+      "guarded": true,
+      "exit_code": 0,
+      "seconds": 0.484,
+      "child": {
+        "attached_processes": 2,
+        "console_hwnd": null,
+        "window_visible": false
+      },
+      "visible_console_windows_before": [],
+      "visible_console_windows_during": [],
+      "new_visible_windows": [],
+      "log": "reports\\ops\\WP-OPS-BACKGROUND-001\\guarded.log",
+      "execution_log": "reports\\ops\\WP-OPS-BACKGROUND-001\\guarded.execution.jsonl",
+      "execution_record": {
+        "schema_version": "execution-record-v1",
+        "event": "exit",
+        "at_utc": "2026-10-18T18:39:56.513Z",
+        "label": "guarded",
+        "pid": 34612,
+        "command": [
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\ops_windowless_probe.py",
+          "--child",
+          "reports\\ops\\WP-OPS-BACKGROUND-001\\guarded.child.json"
+        ],
+        "exit_code": 0,
+        "duration_seconds": 0.25,
+        "timed_out": false,
+        "cancelled": false,
+        "log": "reports\\ops\\WP-OPS-BACKGROUND-001\\guarded.log",
+        "job_object": false
+      }
+    }
+  },
+  "visual_verdict": "NOT_OBSERVABLE",
+  "visual_note": "GetConsoleWindow returned no handle for either child: this host's console is hosted by Windows Terminal (ConPTY), which has no HWND to inspect. The window outcome is therefore not asserted here; the attachment counts and the creation flags are.",
+  "structural_verdict": "PASS",
+  "structural_note": "the guarded child received a private console (fewer attached processes) instead of joining an existing one; CREATE_NO_WINDOW is what creates that private console"
+}

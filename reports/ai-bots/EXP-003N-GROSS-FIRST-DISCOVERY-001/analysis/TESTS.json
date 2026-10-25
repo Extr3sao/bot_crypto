@@ -1,0 +1,15 @@
+{
+  "all_green": true,
+  "commands": {
+    "mypy": {
+      "exit_code": 0
+    },
+    "pytest": {
+      "exit_code": 0
+    },
+    "ruff": {
+      "exit_code": 0
+    }
+  },
+  "schema_version": "AI_BOTS_003N_TESTS_V1"
+}
