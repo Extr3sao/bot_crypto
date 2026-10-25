@@ -1,5 +1,12 @@
 # RFC-TAP-EXEC-SEC-002 — Autorización explícita de trading live y exenciones seguras de reducción
 
+> **Registro (2026-10-25):** implementado en `de72ad2a` y verificado en
+> `2d512920` con `scripts/audit/verify_exec_sec.py` (21/21, export limpio).
+> Veredicto `P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED`. El cuerpo de este
+> documento no se modifica; el resultado está en
+> `docs/audit/runs/run-20261025T102816Z-RFC-EXEC-SEC-002/`.
+> `LIVE_NO_GO` y `PRODUCTION_READY = false` se mantienen.
+
 **Estado:** PROPOSED · NO IMPLEMENTADO · NO AUTORIZA TRADING REAL  
 **Prioridad:** P0 (seguridad de órdenes)  
 **Proyecto:** Trading Agentic Portable  

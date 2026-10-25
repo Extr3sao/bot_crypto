@@ -1,0 +1,458 @@
+{
+  "tool": "verify_exec_sec",
+  "rfc": "RFC-TAP-EXEC-SEC-002",
+  "run_id": "run-20261025T102816Z-RFC-EXEC-SEC-002",
+  "rev": "2d512920fab01b203ec9b6de03c76303fe362ca9",
+  "independence": {
+    "kind": "PROCEDURALLY_SEPARATED",
+    "author": "same author as the implementation",
+    "separate_artefact": true,
+    "imports_suite": false,
+    "scenarios": "own table in scripts/audit/verify_exec_sec.py",
+    "export": "git archive"
+  },
+  "verdict": "P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED",
+  "checks_total": 21,
+  "checks_passed": 21,
+  "checks": [
+    {
+      "check_id": "V-02",
+      "criterion": "REQ-02",
+      "description": "every live sink is lexically inside _live_order_boundary",
+      "passed": true,
+      "detail": "7 sinks, 0 escapes",
+      "evidence": {
+        "sinks": [
+          "connector.create_order(symbol=snap.symbol, side='buy', order",
+          "client.flash_close_position(position.position_id, payload_gu",
+          "client.place_spot_order(symbol=args.symbol, side=args.side, ",
+          "client.flash_close_position(args.position_id, payload_guard=",
+          "client.place_position_tpsl(symbol=args.symbol, position_id=a",
+          "futures_client.place_order(symbol=snap.symbol, side=side, qt",
+          "futures_client.place_order(symbol=args.symbol, side=args.sid"
+        ],
+        "escapes": []
+      }
+    },
+    {
+      "check_id": "V-03",
+      "criterion": "REQ-02",
+      "description": "all boundary call sites carry the typed context and none supplies opens_risk",
+      "passed": true,
+      "detail": "7 boundaries; missing=[]; legacy=[]",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-04",
+      "criterion": "REQ-02",
+      "description": "the boundary has no defaults for settings, intent, position, capabilities or confirmation",
+      "passed": true,
+      "detail": "permissive defaults: []",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-05",
+      "criterion": "REQ-01",
+      "description": "run refuses an unconfirmed auto-trade before the scanner runs",
+      "passed": true,
+      "detail": "guard_line=1663, first_scanner_line=1722",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-06",
+      "criterion": "REQ-01",
+      "description": "the run parser declares --confirm-live",
+      "passed": true,
+      "detail": "add_argument('--confirm-live') present",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-07",
+      "criterion": "REQ-03 / T07",
+      "description": "the adapter invokes the payload guard before the HTTP request",
+      "passed": true,
+      "detail": "unprotected: []",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-01",
+      "criterion": "REQ-03 / REQ-04",
+      "description": "the classifier names the reduction rules the contract requires",
+      "passed": true,
+      "detail": "missing rules: []",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-08",
+      "criterion": "REQ-05",
+      "description": "hot_stop.py is byte-identical to the G-1/G-2/G-3/P0 authority",
+      "passed": true,
+      "detail": "sha256=76cfca23d1e7758607c466eea4ff5c0a9411cb812d433eb7ca16dfb45cfdf8b1",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-09",
+      "criterion": "REQ-02",
+      "description": "LiveTradingGate still declares GATE-001..GATE-010",
+      "passed": true,
+      "detail": "ten gate ids present",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-10",
+      "criterion": "REQ-01 / T01",
+      "description": "run --auto-trade without confirmation exits 2 with no scanner or client",
+      "passed": true,
+      "detail": "run_no_confirm: exit=2 (want 2), calls=0 (want 0), scanner=0, clients=0",
+      "evidence": {
+        "name": "run_no_confirm",
+        "exit_code": 2,
+        "calls": [],
+        "call_count": 0,
+        "scanner_builds": 0,
+        "client_constructions": 0,
+        "gate_validations": 0,
+        "stderr_tail": "ERROR: --auto-trade en modo live requiere --confirm-live; no se ha ejecutado ninguna accion.\n",
+        "error": ""
+      }
+    },
+    {
+      "check_id": "V-11",
+      "criterion": "REQ-02 / T02",
+      "description": "each of the ten rejected checks stops the live loop with zero broker calls",
+      "passed": true,
+      "detail": "10/10 refused",
+      "evidence": {
+        "run_break_GATE-001": {
+          "passed": true,
+          "exit_code": 2,
+          "calls": 0,
+          "gate_validations": 1,
+          "mentions_gate": true
+        },
+        "run_break_GATE-002": {
+          "passed": true,
+          "exit_code": 2,
+          "calls": 0,
+          "gate_validations": 1,
+          "mentions_gate": true
+        },
+        "run_break_GATE-003": {
+          "passed": true,
+          "exit_code": 2,
+          "calls": 0,
+          "gate_validations": 1,
+          "mentions_gate": true
+        },
+        "run_break_GATE-004": {
+          "passed": true,
+          "exit_code": 2,
+          "calls": 0,
+          "gate_validations": 1,
+          "mentions_gate": true
+        },
+        "run_break_GATE-005": {
+          "passed": true,
+          "exit_code": 2,
+          "calls": 0,
+          "gate_validations": 1,
+          "mentions_gate": true
+        },
+        "run_break_GATE-006": {
+          "passed": true,
+          "exit_code": 2,
+          "calls": 0,
+          "gate_validations": 1,
+          "mentions_gate": true
+        },
+        "run_break_GATE-007": {
+          "passed": true,
+          "exit_code": 2,
+          "calls": 0,
+          "gate_validations": 1,
+          "mentions_gate": true
+        },
+        "run_break_GATE-008": {
+          "passed": true,
+          "exit_code": 2,
+          "calls": 0,
+          "gate_validations": 1,
+          "mentions_gate": true
+        },
+        "run_break_GATE-009": {
+          "passed": true,
+          "exit_code": 2,
+          "calls": 0,
+          "gate_validations": 1,
+          "mentions_gate": true
+        },
+        "run_break_GATE-010": {
+          "passed": true,
+          "exit_code": 2,
+          "calls": 0,
+          "gate_validations": 1,
+          "mentions_gate": true
+        }
+      }
+    },
+    {
+      "check_id": "V-12",
+      "criterion": "ACC-07",
+      "description": "the positive control still reaches the recording broker",
+      "passed": true,
+      "detail": "run_legal: exit=0 (want 0), calls=1 (want 1); place_open_legal: exit=0 (want 0), calls=1 (want 1)",
+      "evidence": {
+        "run": {
+          "name": "run_legal",
+          "exit_code": 0,
+          "calls": [
+            {
+              "sink": "futures.place_order",
+              "wire": {
+                "symbol": "BTC/USDT",
+                "side": "BUY",
+                "qty": "0.5",
+                "tradeSide": "OPEN",
+                "reduceOnly": false,
+                "positionId": null
+              }
+            }
+          ],
+          "call_count": 1,
+          "scanner_builds": 1,
+          "client_constructions": 2,
+          "gate_validations": 2,
+          "stderr_tail": "",
+          "error": ""
+        },
+        "place_order": {
+          "name": "place_open_legal",
+          "exit_code": 0,
+          "calls": [
+            {
+              "sink": "futures.place_order",
+              "wire": {
+                "symbol": "BTCUSDT",
+                "side": "BUY",
+                "qty": "0.01",
+                "tradeSide": "OPEN",
+                "reduceOnly": false,
+                "positionId": null
+              }
+            }
+          ],
+          "call_count": 1,
+          "scanner_builds": 0,
+          "client_constructions": 1,
+          "gate_validations": 2,
+          "stderr_tail": "",
+          "error": ""
+        }
+      }
+    },
+    {
+      "check_id": "V-13",
+      "criterion": "REQ-02 / T03",
+      "description": "unreadable settings, a crashing gate and a rejecting gate all fail closed",
+      "passed": true,
+      "detail": "3/3 refused",
+      "evidence": {
+        "run_settings_error": {
+          "passed": true,
+          "exit_code": 2
+        },
+        "run_gate_crash": {
+          "passed": true,
+          "exit_code": 2
+        },
+        "place_open_break": {
+          "passed": true,
+          "exit_code": 2
+        }
+      }
+    },
+    {
+      "check_id": "V-14",
+      "criterion": "REQ-03 / T05 / ACC-05",
+      "description": "a proven close reaches the broker while the gate rejects, and under the stop",
+      "passed": true,
+      "detail": "4/4 proven closes reached the broker",
+      "evidence": {
+        "place_close_long_break": {
+          "passed": true,
+          "calls": 1,
+          "wire": {
+            "symbol": "BTCUSDT",
+            "side": "SELL",
+            "qty": "0.01",
+            "tradeSide": "CLOSE",
+            "reduceOnly": true,
+            "positionId": "pos-1"
+          }
+        },
+        "place_close_short_break": {
+          "passed": true,
+          "calls": 1,
+          "wire": {
+            "symbol": "BTCUSDT",
+            "side": "BUY",
+            "qty": "0.5",
+            "tradeSide": "CLOSE",
+            "reduceOnly": true,
+            "positionId": "pos-1"
+          }
+        },
+        "close_position_break": {
+          "passed": true,
+          "calls": 1,
+          "wire": {
+            "positionId": "pos-1"
+          }
+        },
+        "close_position_hot_stop": {
+          "passed": true,
+          "calls": 1,
+          "wire": {
+            "positionId": "pos-1"
+          }
+        }
+      }
+    },
+    {
+      "check_id": "V-15",
+      "criterion": "REQ-03 / REQ-04 / T06 / T09",
+      "description": "unproven reductions (no position, excess, hedge, wrong side, spot sell, TP/SL) take the gate",
+      "passed": true,
+      "detail": "6/6 refused",
+      "evidence": {
+        "place_close_no_position_break": {
+          "passed": true,
+          "reason_tail": "ERROR: live order refused (live_gate_blocked:GATE-004); order refused.\n"
+        },
+        "place_close_excess_break": {
+          "passed": true,
+          "reason_tail": "ERROR: live order refused (live_gate_blocked:GATE-004); order refused.\n"
+        },
+        "place_close_hedge_break": {
+          "passed": true,
+          "reason_tail": "ERROR: live order refused (live_gate_blocked:GATE-004); order refused.\n"
+        },
+        "place_close_wrong_side_break": {
+          "passed": true,
+          "reason_tail": "ERROR: live order refused (live_gate_blocked:GATE-004); order refused.\n"
+        },
+        "place_spot_sell_break": {
+          "passed": true,
+          "reason_tail": "ERROR: live order refused (live_gate_blocked:GATE-004); order refused.\n"
+        },
+        "set_tpsl_break": {
+          "passed": true,
+          "reason_tail": "ERROR: set-tpsl refused (live_gate_blocked:GATE-004).\n"
+        }
+      }
+    },
+    {
+      "check_id": "V-16",
+      "criterion": "ACC-03 / T07",
+      "description": "a mutated final payload loses the exemption with zero broker calls",
+      "passed": true,
+      "detail": "drop reduceOnly and injected side both refused",
+      "evidence": {
+        "place_close_drop_reduce_break": {
+          "passed": true,
+          "exit_code": 2
+        },
+        "close_position_flash_extra_break": {
+          "passed": true,
+          "exit_code": 2
+        }
+      }
+    },
+    {
+      "check_id": "V-17",
+      "criterion": "REQ-04",
+      "description": "set-tpsl is not exempt by name but still works when every check passes",
+      "passed": true,
+      "detail": "set_tpsl_legal: exit=0 (want 0), calls=1 (want 1)",
+      "evidence": {
+        "name": "set_tpsl_legal",
+        "exit_code": 0,
+        "calls": [
+          {
+            "sink": "futures.place_position_tpsl",
+            "wire": {}
+          }
+        ],
+        "call_count": 1,
+        "scanner_builds": 0,
+        "client_constructions": 1,
+        "gate_validations": 1,
+        "stderr_tail": "",
+        "error": ""
+      }
+    },
+    {
+      "check_id": "V-18",
+      "criterion": "REQ-05 / T10",
+      "description": "the hot stop keeps its G-3 skip/exit-0 behaviour with confirmation present",
+      "passed": true,
+      "detail": "run_hot_stop: exit=0 (want 0), calls=0 (want 0)",
+      "evidence": {
+        "name": "run_hot_stop",
+        "exit_code": 0,
+        "calls": [],
+        "call_count": 0,
+        "scanner_builds": 1,
+        "client_constructions": 2,
+        "gate_validations": 0,
+        "stderr_tail": "",
+        "error": ""
+      }
+    },
+    {
+      "check_id": "V-19",
+      "criterion": "REQ-01 / T04",
+      "description": "paper is not blocked by the live confirmation flag",
+      "passed": true,
+      "detail": "paper_no_confirm: exit=0 (want 0), calls=0 (want 0)",
+      "evidence": {
+        "name": "paper_no_confirm",
+        "exit_code": 0,
+        "calls": [],
+        "call_count": 0,
+        "scanner_builds": 0,
+        "client_constructions": 0,
+        "gate_validations": 0,
+        "stderr_tail": "",
+        "error": ""
+      }
+    },
+    {
+      "check_id": "V-20",
+      "criterion": "ACC-06 / T12",
+      "description": "the affected suite passes on the exported commit",
+      "passed": true,
+      "detail": "182 passed in 132.86s (0:02:12)",
+      "evidence": {}
+    },
+    {
+      "check_id": "V-21",
+      "criterion": "T12 / ACC-06",
+      "description": "the mutation matrix kills every mutant on the exported commit",
+      "passed": true,
+      "detail": "14/14 killed",
+      "evidence": {
+        "mutants": 14,
+        "killed": 14
+      }
+    }
+  ],
+  "artifacts_sha256": "f732dd560abac1a24f732847c5218e670f449b438440694da194aaba6351a195  src/trading_bot/app.py\nf8863269ab76dc0c9257472a1837a2f5b7b939c1d87cf56524e7abdf80809d88  src/trading_bot/execution/order_authorization.py\n0f8194ff3c17dbc5fa40e03c7f066430033a650c7d248154c386057c35eefa3d  src/trading_bot/market_data/bitunix_futures.py\n57c620f5cd7b252f7ec431a73bad3e43c5c22d0ed3d8aeca69cf0d891c2c897c  tests/unit/test_order_authorization.py\nc57a3984dad88565446fc64d33de68e8549db727fb9767348d3cff35ba9596a7  tests/unit/test_exec_sec_process.py\nc7308113e744df8e8937d3af06b75219bfec05af96ab6ec4ab3ef439d71179f6  tests/unit/test_live_gate_enforcement.py\na69d079be165037c7cc7a358bb5b0931596bdd43ce274e0e6dd9c30cf0f66317  tests/unit/test_live_hot_stop_coverage.py\n6d3947f2391f8dec3efc074ab90586d36c10446f788e305c25c77813a7c9128d  scripts/audit/exec_sec_mutants.py\nb441e7e6d4152a5e929bc5c6d56a3d4cfcc24d47f8c259407d13a85bbddf0b04  scripts/audit/verify_exec_sec.py\n49129ba78eddaef123beb160289f4f363572803a293af7cfb5120e096d14404f  docs/audit/RFC-TAP-EXEC-SEC-002.md\n",
+  "seconds": 304.3,
+  "limitations": [
+    "offline: all brokers are recorders; no exchange accepted a payload",
+    "same author; procedural separation only",
+    "does not cover G-4 (run --demo), DEF-P0-03 or GATE-009/010 configuration",
+    "Bitunix hedge mode is refused rather than exercised"
+  ]
+}

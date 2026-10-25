@@ -1,0 +1,163 @@
+{
+  "schema": "tap.rfc-run/v1",
+  "run_id": "run-20261025T102816Z-RFC-EXEC-SEC-002",
+  "rfc": "RFC-TAP-EXEC-SEC-002",
+  "title": "Explicit live trading authorization and safe reduction exemptions",
+  "started_at_utc": "2026-10-25T10:28:16Z",
+  "branch": "audit/mt0004-negative-controls",
+  "verdict": "P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED",
+  "live_go": false,
+  "production_ready": false,
+  "real_trading": false,
+  "exchange_contact": false,
+  "push": false,
+  "deploy": false,
+  "commits": {
+    "wp00": "368bfcc944912ceeff95b09db40b5ea7132afae4",
+    "wp01_wp02": "de72ad2a3b10bb3ef07515e8fe7f8861fae51109",
+    "wp03": "2d512920fab01b203ec9b6de03c76303fe362ca9",
+    "note": "WP-01 and WP-02 share one commit because the typed sink context is the seam both need; splitting it would have produced a commit that cannot pass its own tests."
+  },
+  "baseline": {
+    "head": "43e1ce2c0308e4df341bc8232d402f096cbf53ee",
+    "worktree_clean": true,
+    "tests": "113 passed in 108.00s",
+    "command": "uv run --frozen pytest tests/unit/test_live_gate_enforcement.py tests/unit/test_live_hot_stop_coverage.py tests/unit/test_app_cli_contract.py tests/unit/test_app_demo.py -q"
+  },
+  "work_packages": {
+    "WP-00": {
+      "status": "done",
+      "artifacts": [
+        "docs/audit/runs/run-20261025T102816Z-RFC-EXEC-SEC-002/WP00_RUNTIME_MAP.md",
+        "docs/audit/runs/run-20261025T102816Z-RFC-EXEC-SEC-002/baseline/git-state.txt",
+        "docs/audit/runs/run-20261025T102816Z-RFC-EXEC-SEC-002/baseline/hashes-before.txt",
+        "docs/audit/runs/run-20261025T102816Z-RFC-EXEC-SEC-002/baseline/pytest-baseline.txt"
+      ],
+      "live_sinks": 7,
+      "gaps": [
+        "DEF-EXEC-001",
+        "DEF-EXEC-002",
+        "DEF-EXEC-003",
+        "DEF-EXEC-004",
+        "DEF-EXEC-005",
+        "DEF-EXEC-006"
+      ]
+    },
+    "WP-01": {
+      "status": "done",
+      "requirement": "REQ-01",
+      "implementation": [
+        "run --confirm-live",
+        "_cmd_run refuses live/shadow_live auto-trade before the stop, scanner and clients",
+        "intent.requires_confirmation re-checked at the sink"
+      ]
+    },
+    "WP-02": {
+      "status": "done",
+      "requirements": ["REQ-02", "REQ-03", "REQ-04", "REQ-05"],
+      "implementation": [
+        "src/trading_bot/execution/order_authorization.py",
+        "_live_order_boundary typed context",
+        "payload guard in BitunixFuturesClient.place_order and flash_close_position",
+        "live_order_authorizations.jsonl"
+      ],
+      "proven_reduction_shapes": [
+        "futures place_order: tradeSide=CLOSE + reduceOnly=true + matching one-way position + closing side + 0 < qty <= position.qty",
+        "flash_close_position: observable, fresh, non-zero position; payload is {positionId} only"
+      ],
+      "unknown_shapes": [
+        "spot sell",
+        "set-tpsl",
+        "tradeSide=CLOSE without reduceOnly",
+        "no position, zero position, excess quantity, wrong side, hedge/ambiguous mode, stale snapshot, unreadable position"
+      ]
+    },
+    "WP-03": {
+      "status": "done",
+      "verifier": "scripts/audit/verify_exec_sec.py",
+      "export": "git archive",
+      "scenarios": 23,
+      "scenario_isolation": "one subprocess per scenario",
+      "checks": 21
+    }
+  },
+  "tests": {
+    "baseline_worktree": {"passed": 113, "seconds": 108.0, "exit_code": 0},
+    "worktree_affected": {"passed": 190, "seconds": 148.7, "exit_code": 0},
+    "export_affected": {"passed": 182, "seconds": 132.86, "exit_code": 0},
+    "unit_order_authorization": {"passed": 43},
+    "process_exec_sec": {"passed": 20},
+    "mutants": {"killed": 14, "total": 14}
+  },
+  "verification": {
+    "after": {
+      "rev": "2d512920fab01b203ec9b6de03c76303fe362ca9",
+      "checks_passed": 21,
+      "checks_total": 21,
+      "verdict": "P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED",
+      "seconds": 304.3,
+      "artifacts_sha256": "ARTIFACTS.sha256"
+    },
+    "before": {
+      "rev": "43e1ce2c0308e4df341bc8232d402f096cbf53ee",
+      "checks_passed": 8,
+      "checks_total": 21,
+      "verdict": "NOT_VERIFIED",
+      "artifacts_sha256": "verification-before.json"
+    },
+    "independence": "PROCEDURALLY_SEPARATED; same author, separate artefact, own scenarios, no test imports"
+  },
+  "acceptance": {
+    "ACC-01": {"passed": true, "evidence": ["V-05", "V-06", "V-10", "V-19"]},
+    "ACC-02": {"passed": true, "evidence": ["V-02", "V-03", "V-04", "V-11", "V-13"]},
+    "ACC-03": {"passed": true, "evidence": ["V-14", "V-15", "V-16"]},
+    "ACC-04": {"passed": true, "evidence": ["V-15", "V-17"]},
+    "ACC-05": {"passed": true, "evidence": ["V-14", "V-18"]},
+    "ACC-06": {"passed": true, "evidence": ["V-20", "V-21"]},
+    "ACC-07": {"passed": true, "evidence": ["verification.json", "verification-before.json"]}
+  },
+  "failures_found": [
+    {"id": "EXEC-F-01", "summary": "M12 stale flash-close survived the first matrix", "resolution": "added the missing stale flash-close test; 14/14 killed"},
+    {"id": "EXEC-F-02", "summary": "shared scenario process let run_hot_stop engage the singleton kill switch", "resolution": "one subprocess per scenario"},
+    {"id": "EXEC-F-03", "summary": "verifier did not break GATE-001..008 through settings", "resolution": "added _break_settings"},
+    {"id": "EXEC-F-04", "summary": "P0/G-3 tests asserted the exemptions REQ-03/REQ-04 removes", "resolution": "moved set-tpsl and spot sell to UNKNOWN_POINTS; 0 calls"},
+    {"id": "EXEC-F-05", "summary": "probes closed a long with side=buy", "resolution": "close a long with sell; position fixture added"},
+    {"id": "EXEC-F-06", "summary": "uv run rewrote uv.lock during baseline", "resolution": "reverted; --frozen thereafter"}
+  ],
+  "defects": {
+    "closed": [
+      "DEF-P0-04",
+      "DEF-EXEC-001",
+      "DEF-EXEC-002",
+      "DEF-EXEC-003",
+      "DEF-EXEC-004",
+      "DEF-EXEC-005",
+      "DEF-EXEC-006"
+    ],
+    "open": [
+      "DEF-P0-03: LiveTradingGate._data_dir unused; GATE-006 resolves SQLite against cwd",
+      "G-4: run --demo -> paper_cycle.py has no gate or stop",
+      "GATE-009/010 cannot fail through configuration",
+      "hedge mode refused as UNKNOWN, not exercised against a hedge venue"
+    ]
+  },
+  "limitations": [
+    "offline: every broker is a recorder; no exchange accepted a payload",
+    "same author; procedural separation only",
+    "one process per scenario does not reproduce a long-lived scanner cadence",
+    "the position snapshot is a precondition, not the guarantee; the venue enforces the reduction",
+    "G-4 remains uncovered"
+  ],
+  "artifacts": {
+    "run_report": "RUN_REPORT.md",
+    "run_report_json": "RUN_REPORT.json",
+    "final_report": "FINAL_REPORT.md",
+    "coverage_matrix": "COVERAGE_MATRIX.md",
+    "before_after": "BEFORE_AFTER.md",
+    "verification": "verification.json",
+    "verification_before": "verification-before.json",
+    "mutations": "mutations.json",
+    "hashes": ["ARTIFACTS.sha256", "EVIDENCE.sha256"],
+    "runtime_map": "WP00_RUNTIME_MAP.md"
+  }
+}
