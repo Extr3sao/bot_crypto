@@ -1,0 +1,305 @@
+{
+  "work_package": "WP-TDM-11",
+  "rfc": "RFC-TDM-011",
+  "run_id": "tdm11-1792928992489",
+  "hypothesis_id": "TDM11-H1",
+  "commit": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+  "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-tdm11",
+  "branch": "HEAD",
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "isolation": "git worktree at fixed commit, detached",
+    "shared_checkout_written": false
+  },
+  "preregistration": {
+    "path": "evidence/tdm/wp-tdm-11/PREREGISTRATION.md",
+    "sha256": "ef68b4c3b520435391420b0e3ed11d7224790015bcb347c4973fc86b7c53f949",
+    "frozen_at_utc": "2026-10-25T11:49:52.489671+00:00",
+    "confirmatory_window_opened": false
+  },
+  "dataset_id": null,
+  "dataset_status": "NO_CONFIRMATORY_SAMPLE",
+  "cost_scenarios": {
+    "primary": {
+      "id": "BINANCE_SPOT_STANDARD_TAKER",
+      "bps": 23.7906,
+      "knowledge": "ESTIMATED"
+    },
+    "prefixed_sensitivity": {
+      "cost_zero": 0.0,
+      "binance_usdm_perp_maker": 9.25,
+      "binance_usdm_perp_taker": 13.7906,
+      "binance_spot_bnb_taker": 18.7906,
+      "binance_spot_standard_maker": 41.25
+    },
+    "scenario_count": 10,
+    "borrow_or_funding_charged": false,
+    "short_cost_state": "COST_UNVERIFIED_FOR_SHORT",
+    "amendment": "PREREGISTRATION_AMENDMENT_01.md (9.25 bps is BINANCE_USDM_PERP_MAKER)"
+  },
+  "agents": {
+    "builders": [
+      "context-engineer (G0 reconciliation)",
+      "quant-researcher (preregistration)",
+      "risk-manager (cost and gate audit)",
+      "backtest-engineer (evaluation harness)",
+      "security-reviewer (no credentials, offline only)",
+      "observability-engineer (hash and artifact manifest)"
+    ],
+    "verifier": "same operator, second implementation",
+    "independence": "INDEPENDENCE_NOT_DEMONSTRATED"
+  },
+  "tests": {
+    "g0": {
+      "isolation": true,
+      "tdm10_artifacts": true,
+      "datasets": true,
+      "spec": true,
+      "costs": true,
+      "claim": false
+    },
+    "controls": {
+      "passed": 11,
+      "total": 11
+    },
+    "verification": {
+      "passed": 12,
+      "total": 12
+    },
+    "module_tests_run": false,
+    "module_tests_note": "no repository source file was modified, so no unit suite was re-run"
+  },
+  "metrics": {
+    "dev_retrospective": {
+      "window_role": "RETROSPECTIVE_OOS_PRE_SELECTION",
+      "trades": 115,
+      "days": 89.57,
+      "trades_per_day": 1.284,
+      "gross_mean_bps": -12.577,
+      "gross_sd_bps": 56.5026,
+      "gross_ci95": [
+        -24.27,
+        -0.3929
+      ],
+      "net_mean_bps": -36.3676,
+      "net_ci95": [
+        -48.0606,
+        -24.1835
+      ],
+      "win_rate_pct": 18.26,
+      "profit_factor": 0.1892,
+      "max_drawdown_bps": -4287.05,
+      "cumulative_net_bps": -4182.27,
+      "per_asset": {
+        "BTC": {
+          "trades": 36,
+          "net_mean": -31.9779
+        },
+        "ETH": {
+          "trades": 35,
+          "net_mean": -43.0722
+        },
+        "SOL": {
+          "trades": 44,
+          "net_mean": -34.6259
+        }
+      },
+      "first_half_net": -34.1067,
+      "second_half_net": -38.5894
+    },
+    "confirmatory": {
+      "trades": 0,
+      "note": "no confirmatory evaluation was run; the window is not acquired"
+    },
+    "power": {
+      "sd_bps": 56.5026,
+      "block_inflation": 1.0049,
+      "required_n_at_cost_effect": 36,
+      "required_n_at_observed_dev_effect": 127,
+      "required_n_at_10bps": 200,
+      "required_n_at_15bps": 89,
+      "required_days_at_cost_effect": 28.0,
+      "required_days_at_observed_effect": 98.9,
+      "expected_trades_per_day": 1.284,
+      "detectable_effect_at_n_1000": 4.46,
+      "formula": "n = ((z_0.95 + z_0.80) * sd_block / effect)^2, one-sided alpha=0.05, power=0.80"
+    },
+    "hold_selection_evidence": {
+      "trades": 68,
+      "gross_mean_bps": 13.292,
+      "net_mean_bps": -10.4986,
+      "note": "exposed holdout; selection sample, not evidence"
+    },
+    "governance_claim_check": {
+      "top6_short_down": 3,
+      "claimed": 5,
+      "holds": false,
+      "reproduced_trades": 16316
+    }
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "decision": "NO_GO_ALPHA for TDM11-H1",
+      "reason_code": "NET_CI_UPPER_BELOW_ZERO",
+      "basis": "pre-registered \u00a77 rule on the DEV retrospective window (n=115 >= 36)",
+      "confirmatory": false
+    },
+    {
+      "id": "D2",
+      "decision": "AWAITING_NEW_DATA for the confirmatory protocol",
+      "reason_code": "NO_CONFIRMATORY_SAMPLE",
+      "basis": "expected 1.09 trades available, need 36"
+    },
+    {
+      "id": "D3",
+      "decision": "PREREGISTRATION_CLAIM_PREMISE_UNSUPPORTED",
+      "reason_code": "DIRECTIONAL_CLAIM_NOT_REPRODUCED",
+      "basis": "3 of 6 top buckets, not 5 of 6; regime_table.csv carries no direction"
+    },
+    {
+      "id": "D4",
+      "decision": "COST_UNVERIFIED_FOR_SHORT",
+      "reason_code": "FUNDING_NOT_CHARGED",
+      "basis": "perp exists but funding_carry is not emitted at the default rate, and the 9.25 maker scenario assumes p=0.5 fills; the primary venue is spot and cannot short"
+    },
+    {
+      "id": "D5",
+      "decision": "AMENDMENT_01_APPLIED",
+      "reason_code": "PREREG_COST_LIST_CORRECTED",
+      "basis": "PREREGISTRATION_AMENDMENT_01.md; primary scenario and min-n unchanged"
+    }
+  ],
+  "errors": [
+    {
+      "id": "E1",
+      "error": "G0-6 first reported 1/24 bucket counts as matching",
+      "cause": "the gate compared against the cell's total trades instead of the bucket count",
+      "fix": "read regime_table.count instead of regime_table.trades; re-ran",
+      "status": "FIXED"
+    },
+    {
+      "id": "E2",
+      "error": "shared-checkout modification count read 0 and then 62",
+      "cause": "POSIX path on Windows (path did not exist) and untracked lines counted as modifications",
+      "fix": "resolve the checkout from the worktree parent; exclude '??' lines; 17 tracked files, unchanged",
+      "status": "FIXED"
+    },
+    {
+      "id": "E3",
+      "error": "planted-edge controls C-08/C-09 produced zero trades",
+      "cause": "synthetic timestamps fell outside the DEV window filter",
+      "fix": "anchor the synthetic series at the DEV start and re-run",
+      "status": "FIXED"
+    },
+    {
+      "id": "E4",
+      "error": "this WP asserted that the 9.25 bps cost was not modelled",
+      "cause": "a console table truncated by UnicodeEncodeError (the perp tier contains U+24C8) was read as the complete scenario list; VENUE_SPECS actually has 10 scenarios",
+      "fix": "V8 recomputed every scenario; 9.25 == BINANCE_USDM_PERP_MAKER reproduced; governance, audit and preregistration corrected by AMENDMENT_01",
+      "status": "CORRECTED",
+      "verdict_impact": "NONE \u2014 the zero-cost case already fails"
+    }
+  ],
+  "result": "NO_GO_ALPHA",
+  "operational_state": "AWAITING_NEW_DATA",
+  "reason_code": "NET_CI_UPPER_BELOW_ZERO",
+  "reason_codes": [
+    "NET_CI_UPPER_BELOW_ZERO",
+    "AWAITING_NEW_DATA",
+    "NO_CONFIRMATORY_SAMPLE",
+    "COST_UNVERIFIED_FOR_SHORT",
+    "INDEPENDENCE_NOT_DEMONSTRATED",
+    "DIRECTIONAL_CLAIM_NOT_REPRODUCED"
+  ],
+  "runtime_validation": "NOT_EXERCISED",
+  "paper_validation": "NOT_EXERCISED",
+  "execution_validation": "NOT_EXERCISED",
+  "false_success_count": 0,
+  "false_success_evidence": "11/11 adversarial controls including a planted-edge positive control and a look-ahead control that would have produced +17.05 bps instead of -12.58",
+  "independent_verifier_id": "single-operator-second-implementation",
+  "evidence_sha256": {
+    "COST_MODEL_AUDIT.md": {
+      "path": "evidence/tdm/wp-tdm-11/COST_MODEL_AUDIT.md",
+      "sha256": "e1a89e0289e12869c972022ba3baff27f4a19caa45b45e97879a17eb9754d8d8",
+      "bytes": 6000
+    },
+    "DATASET_PROVENANCE.json": {
+      "path": "evidence/tdm/wp-tdm-11/DATASET_PROVENANCE.json",
+      "sha256": "adb2c63000a92230484dac22315291963afef94aafe899d125ba2efc1b2c2ff8",
+      "bytes": 15319
+    },
+    "FINAL_REPORT.md": {
+      "path": "evidence/tdm/wp-tdm-11/FINAL_REPORT.md",
+      "sha256": "5d1a07fe40efbbf9e6b5d8cd7e01b36485753f37a4a55a8236249bf9d6687b43",
+      "bytes": 8460
+    },
+    "GOVERNANCE_RECONCILIATION.md": {
+      "path": "evidence/tdm/wp-tdm-11/GOVERNANCE_RECONCILIATION.md",
+      "sha256": "1438eef8978f3a54d95011f3184888b6863c42f3feaf7dbdd2c40b9c7e1beebd",
+      "bytes": 9806
+    },
+    "INDEPENDENT_VERIFICATION.md": {
+      "path": "evidence/tdm/wp-tdm-11/INDEPENDENT_VERIFICATION.md",
+      "sha256": "fa070e9e278460f297a67ee993eb3524a87e0156027cdded4fc4c25b0da658c8",
+      "bytes": 5612
+    },
+    "PREREGISTRATION.md": {
+      "path": "evidence/tdm/wp-tdm-11/PREREGISTRATION.md",
+      "sha256": "ef68b4c3b520435391420b0e3ed11d7224790015bcb347c4973fc86b7c53f949",
+      "bytes": 9827
+    },
+    "PREREGISTRATION_AMENDMENT_01.md": {
+      "path": "evidence/tdm/wp-tdm-11/PREREGISTRATION_AMENDMENT_01.md",
+      "sha256": "96de28b865012360fefcfd96d9b14be78de3c775a8dc75b448507063b008d9f2",
+      "bytes": 3268
+    },
+    "RETROSPECTIVE_LEDGER.csv": {
+      "path": "evidence/tdm/wp-tdm-11/RETROSPECTIVE_LEDGER.csv",
+      "sha256": "28d76c0b78a93711fd2c5f12f2b3f098bceef8c616be6784d3f86f99c2e58d09",
+      "bytes": 9554
+    },
+    "ROBUSTNESS_REPORT.md": {
+      "path": "evidence/tdm/wp-tdm-11/ROBUSTNESS_REPORT.md",
+      "sha256": "4ec7f42e334c045f3045778da339b797e8c983f824219dec92b813cc64fe873e",
+      "bytes": 7573
+    },
+    "RUN_REPORT.md": {
+      "path": "evidence/tdm/wp-tdm-11/RUN_REPORT.md",
+      "sha256": "37f778c87bbfa2e190b875be5cd75339d143b5455460b28618c2bfdc914d2c67",
+      "bytes": 5828
+    }
+  },
+  "code_sha256": {
+    "tdm11_g0.py": {
+      "sha256": "603228b2bfdd56fc27d7f78ca59212231bfd77a32865cbe9a0f7374afe133729",
+      "bytes": 25683
+    },
+    "tdm11_prereg.py": {
+      "sha256": "39ccbf605a62e00f21b69ec3078989779a71711359fc3728e5dff79e53f37448",
+      "bytes": 14521
+    },
+    "tdm11_retro.py": {
+      "sha256": "72c44b2003bd554972604e776ed0ea8b57b979d742542a6cc53e7318106e144a",
+      "bytes": 16886
+    },
+    "tdm11_controls.py": {
+      "sha256": "96f04989802336bfe483145f1afa0d0e5ef6b6c7a6655908a0717d9fe274def6",
+      "bytes": 13171
+    },
+    "tdm11_availability.py": {
+      "sha256": "b8bbd4da8993c3ab3105891d3d4622490adc2adf841e2e1f8c0873fc508f45ab",
+      "bytes": 3828
+    },
+    "tdm11_verify.py": {
+      "sha256": "f6f7db2a2b11adde5cf62b203a83c95523e145f6b4a9a7cbcc01b600aa879c26",
+      "bytes": 16271
+    },
+    "tdm11_publish.py": {
+      "sha256": "3a0dfb30eb3f603c3ecf1fcbd61561a67246a1b16d91b6c2a6bfa946e47ac4d6",
+      "bytes": 15333
+    }
+  },
+  "generated_at_ms": 1792930731674
+}
