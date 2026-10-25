@@ -1,0 +1,17 @@
+captured_at_utc: 2026-10-25T10:31:58Z
+branch: audit/mt0004-negative-controls
+head: 43e1ce2c0308e4df341bc8232d402f096cbf53ee
+status_porcelain:
+ M uv.lock
+?? docs/audit/RFC-TAP-EXEC-SEC-002.md
+?? docs/audit/runs/run-20261025T102816Z-RFC-EXEC-SEC-002/
+--- refs ---
+82e8b3ac 82e8b3ac13ebc9abe0a43c78174200d3db145764
+1b4e1896 1b4e1896af3e02084813ab3d3e589e44db94be29
+43e1ce2c 43e1ce2c0308e4df341bc8232d402f096cbf53ee
+efd97e76 efd97e7630630d6f08804ac8b84e886fb264bfd8
+6c90b21d 6c90b21d75707cd4a64783f90c30b28442f8df38
+96e211bd 96e211bdda8ea3b0d312ce867560e17867aed7dd
+--- ancestry ---
+82e8b3ac ancestor of 1b4e1896
+1b4e1896 ancestor of 43e1ce2c
