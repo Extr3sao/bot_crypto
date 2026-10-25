@@ -15,6 +15,7 @@
 | WP-00 | `368bfcc9` | Record the entrypoints, payloads and gaps this RFC has to close |
 | WP-01 + WP-02 | `de72ad2a` | Derive live order authorisation from the order, not its name |
 | WP-03 | `2d512920` | Verify the order authorisation from a clean export, not from its tests |
+| Evidence | `09a44c21` | Report the verified order authorisation and keep live trading closed |
 
 WP-01 and WP-02 share one commit. The typed sink context is the seam both need:
 a confirmation check at the sink requires the intent and the category, and a
@@ -23,9 +24,11 @@ unconsented. Splitting it would have produced a commit that cannot pass its own
 tests. This is a documented deviation from "commits separados por WP"; the
 acceptance criteria do not depend on commit granularity.
 
-The evidence commit (this report and its siblings) comes after `2d512920`. The
-verifier ran on `2d512920`; the code is identical to `de72ad2a` for the files it
-checks (`ARTIFACTS.sha256`).
+The final verification ran on `09a44c21`, which contains `2d512920` plus the
+first copy of these reports. Its code is identical to `2d512920` for every file
+the verifier checks, and those hashes match `de72ad2a` (`ARTIFACTS.sha256`).
+The evidence commit after `09a44c21` only updates the reports and their hashes;
+no source file changes.
 
 ## 2. WP-00 — read-only audit
 
@@ -118,7 +121,8 @@ re-runs the affected suite and the mutation matrix.
 | Revision | Checks | Verdict |
 |---|---|---|
 | `43e1ce2c` (before) | 8/21 | `NOT_VERIFIED` |
-| `2d512920` (after) | **21/21** | `P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED` |
+| `2d512920` (code + verifier) | 21/21 | `P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED` |
+| `09a44c21` (final export) | **21/21** | `P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED` |
 
 The before run is real, not reconstructed:
 [`verification-before.json`](verification-before.json). On the before tree the

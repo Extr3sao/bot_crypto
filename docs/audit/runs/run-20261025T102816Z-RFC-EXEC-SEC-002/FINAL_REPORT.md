@@ -1,7 +1,7 @@
 # FINAL REPORT — RFC-TAP-EXEC-SEC-002
 
 **Verdict:** `P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED`
-**Code:** `de72ad2a` · **Verified export:** `2d512920` · **Before:** `43e1ce2c`
+**Code:** `de72ad2a` · **Verified export:** `09a44c21` · **Before:** `43e1ce2c`
 **Trading:** none · **Exchange contact:** none · **Push/deploy:** none
 **Status retained:** `LIVE_NO_GO`, `PRODUCTION_READY = false`
 

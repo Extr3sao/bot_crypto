@@ -2,7 +2,7 @@
   "tool": "verify_exec_sec",
   "rfc": "RFC-TAP-EXEC-SEC-002",
   "run_id": "run-20261025T102816Z-RFC-EXEC-SEC-002",
-  "rev": "2d512920fab01b203ec9b6de03c76303fe362ca9",
+  "rev": "09a44c218030628c7c9964f4aeccd3c8388adabc",
   "independence": {
     "kind": "PROCEDURALLY_SEPARATED",
     "author": "same author as the implementation",
@@ -432,7 +432,7 @@
       "criterion": "ACC-06 / T12",
       "description": "the affected suite passes on the exported commit",
       "passed": true,
-      "detail": "182 passed in 132.86s (0:02:12)",
+      "detail": "182 passed in 145.77s (0:02:25)",
       "evidence": {}
     },
     {
@@ -447,8 +447,8 @@
       }
     }
   ],
-  "artifacts_sha256": "f732dd560abac1a24f732847c5218e670f449b438440694da194aaba6351a195  src/trading_bot/app.py\nf8863269ab76dc0c9257472a1837a2f5b7b939c1d87cf56524e7abdf80809d88  src/trading_bot/execution/order_authorization.py\n0f8194ff3c17dbc5fa40e03c7f066430033a650c7d248154c386057c35eefa3d  src/trading_bot/market_data/bitunix_futures.py\n57c620f5cd7b252f7ec431a73bad3e43c5c22d0ed3d8aeca69cf0d891c2c897c  tests/unit/test_order_authorization.py\nc57a3984dad88565446fc64d33de68e8549db727fb9767348d3cff35ba9596a7  tests/unit/test_exec_sec_process.py\nc7308113e744df8e8937d3af06b75219bfec05af96ab6ec4ab3ef439d71179f6  tests/unit/test_live_gate_enforcement.py\na69d079be165037c7cc7a358bb5b0931596bdd43ce274e0e6dd9c30cf0f66317  tests/unit/test_live_hot_stop_coverage.py\n6d3947f2391f8dec3efc074ab90586d36c10446f788e305c25c77813a7c9128d  scripts/audit/exec_sec_mutants.py\nb441e7e6d4152a5e929bc5c6d56a3d4cfcc24d47f8c259407d13a85bbddf0b04  scripts/audit/verify_exec_sec.py\n49129ba78eddaef123beb160289f4f363572803a293af7cfb5120e096d14404f  docs/audit/RFC-TAP-EXEC-SEC-002.md\n",
-  "seconds": 304.3,
+  "artifacts_sha256": "f732dd560abac1a24f732847c5218e670f449b438440694da194aaba6351a195  src/trading_bot/app.py\nf8863269ab76dc0c9257472a1837a2f5b7b939c1d87cf56524e7abdf80809d88  src/trading_bot/execution/order_authorization.py\n0f8194ff3c17dbc5fa40e03c7f066430033a650c7d248154c386057c35eefa3d  src/trading_bot/market_data/bitunix_futures.py\n57c620f5cd7b252f7ec431a73bad3e43c5c22d0ed3d8aeca69cf0d891c2c897c  tests/unit/test_order_authorization.py\nc57a3984dad88565446fc64d33de68e8549db727fb9767348d3cff35ba9596a7  tests/unit/test_exec_sec_process.py\nc7308113e744df8e8937d3af06b75219bfec05af96ab6ec4ab3ef439d71179f6  tests/unit/test_live_gate_enforcement.py\na69d079be165037c7cc7a358bb5b0931596bdd43ce274e0e6dd9c30cf0f66317  tests/unit/test_live_hot_stop_coverage.py\n6d3947f2391f8dec3efc074ab90586d36c10446f788e305c25c77813a7c9128d  scripts/audit/exec_sec_mutants.py\nb441e7e6d4152a5e929bc5c6d56a3d4cfcc24d47f8c259407d13a85bbddf0b04  scripts/audit/verify_exec_sec.py\n612be9d20374a38635d46343b7230e85b6fb5e90b1e9c6469ae7db7ced9ffe06  docs/audit/RFC-TAP-EXEC-SEC-002.md\n",
+  "seconds": 309.8,
   "limitations": [
     "offline: all brokers are recorders; no exchange accepted a payload",
     "same author; procedural separation only",

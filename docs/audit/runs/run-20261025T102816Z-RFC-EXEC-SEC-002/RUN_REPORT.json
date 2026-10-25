@@ -16,6 +16,8 @@
     "wp00": "368bfcc944912ceeff95b09db40b5ea7132afae4",
     "wp01_wp02": "de72ad2a3b10bb3ef07515e8fe7f8861fae51109",
     "wp03": "2d512920fab01b203ec9b6de03c76303fe362ca9",
+    "evidence": "09a44c218030628c7c9964f4aeccd3c8388adabc",
+    "code_export": "2d512920fab01b203ec9b6de03c76303fe362ca9",
     "note": "WP-01 and WP-02 share one commit because the typed sink context is the seam both need; splitting it would have produced a commit that cannot pass its own tests."
   },
   "baseline": {
@@ -91,7 +93,8 @@
   },
   "verification": {
     "after": {
-      "rev": "2d512920fab01b203ec9b6de03c76303fe362ca9",
+      "rev": "09a44c218030628c7c9964f4aeccd3c8388adabc",
+      "code_export": "2d512920fab01b203ec9b6de03c76303fe362ca9",
       "checks_passed": 21,
       "checks_total": 21,
       "verdict": "P0_ORDER_AUTHORIZATION_VERIFIED_SCOPED",

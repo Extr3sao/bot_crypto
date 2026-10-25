@@ -1285,7 +1285,11 @@ def _hash_manifest(tree: Path, run_dir: Path | None) -> str:
     manifest = "\n".join(lines) + "\n"
     if run_dir is not None:
         run_dir.mkdir(parents=True, exist_ok=True)
-        (run_dir / "ARTIFACTS.sha256").write_text(manifest, encoding="utf-8")
+        # LF, not the platform default: `sha256sum -c` treats the CR as part of
+        # the path on a Windows checkout, so a CRLF manifest verifies nothing.
+        (run_dir / "ARTIFACTS.sha256").write_text(
+            manifest, encoding="utf-8", newline="\n"
+        )
     return manifest
 
 
@@ -1360,7 +1364,7 @@ def main(argv: list[str] | None = None) -> int:
     text = json.dumps(report, indent=2, default=str)
     if args.json:
         Path(args.json).parent.mkdir(parents=True, exist_ok=True)
-        Path(args.json).write_text(text + "\n", encoding="utf-8")
+        Path(args.json).write_text(text + "\n", encoding="utf-8", newline="\n")
     return 0 if verdict.startswith("P0_ORDER_AUTHORIZATION_VERIFIED") else 1
 
 
