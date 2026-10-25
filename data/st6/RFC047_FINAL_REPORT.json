@@ -1,0 +1,151 @@
+{
+  "artifact": "RFC047_FINAL_REPORT",
+  "title": "RFC-047 — ST-6 SCHEDULER PROVENANCE & INDEPENDENT EXECUTION EVIDENCE",
+  "generated_at_utc": "2026-10-09T20:00:40Z",
+  "generated_by": "scripts/rfc047_builder.py",
+  "CURRENT_HEAD": "c667683e2e1d8c4a1a55abca9ad1f06d25d9dd4c",
+  "RFC047_STATUS": "RFC047_BLOCKED_HOST_PERMISSIONS",
+  "WINDOWS_CHANNEL_BEFORE": "CHANNEL_DISABLED (enabled=False, retention=false, max_size_bytes=10485760, records=None, never recorded)",
+  "WINDOWS_CHANNEL_AFTER": "CHANNEL_DISABLED (enabled=False, retention=false, max_size_bytes=10485760, records=None, never recorded); unchanged, because the change that would enable it was not applied",
+  "HOST_PERMISSION_STATUS": "HOST_AUDIT_CHANGE_APPROVAL_REQUIRED",
+  "LIVE_SCHEDULER_STATUS": "ST6_AUTONOMOUS_COLLECTION_ACTIVE: the task remains registered and enabled with its fifteen-minute cadence, and no configuration of it was touched",
+  "REAL_EXECUTION_CORROBORATED": false,
+  "EXTERNAL_EVENTS_CAPTURED": 0,
+  "EXTERNAL_EVENTS_MISSING": "every per-run record of this period: the operational channel is disabled and has never recorded, and the maintenance channel holds only maintenance identifiers (800 and 808), none of which describes a task's execution",
+  "LEDGER_RECONCILIATION": "84 slots, version-1 fields intact True, 0 disagreement(s), 84 slot(s) outside the reach of external evidence",
+  "HISTORICAL_EVIDENCE_LIMITATIONS": [
+    "no per-run Windows record exists for any instant of this period and none can be recovered: the channel records from the moment it is enabled",
+    "440 maintenance records were evicted by the circular policy before this audit read the log",
+    "the Security channel is not readable from this session, so nothing there could be consulted either",
+    "the candidate identifiers (100, 102, 107, 110, 200, 201) could not be verified against a single real record of this host, so they were never turned into classification rules",
+    "the scheduler's own register keeps only its most recent run, so a launch can be corroborated while it is still the most recent one, and not afterwards"
+  ],
+  "RETENTION_STATUS": "RFC047_EVENT_STORE_BOUNDED: 0 record(s), 0 byte(s) of original evidence; incremental by EventRecordID, deduplicated on write, watermark advanced only after a durable write, rotation and identifier resets recorded, refusals recorded, and the store preserved until the period closes",
+  "NEGATIVE_TESTS": "18 adversarial case(s) run against the real artefacts: 17 rejected, 0 accepted by mistake, 0 honest state(s) refused by mistake",
+  "RUNTIME_TESTS": "RFC047_RUNTIME_CORRELATION_PARTIAL_INTERNAL_AND_SERVICE_ONLY: 5 of 6 links of the runtime chain are held by real artefacts; the external trigger is not among them",
+  "INDEPENDENT_VERIFICATION": "PASS",
+  "FALSE_SUCCESS": 0,
+  "COMMITS": "2 commit(s) touch the paths of this RFC, read from the repository's own history: 7b673f5 (2026-10-09) RFC-047: read the Windows event plane instead of letting the monitor's own account stand as proof; a709c88 (2026-10-09) feat(research): record the origin of every ST-6 run and stop losing slot evidence. The report is written after them, so CURRENT_HEAD names the head it was written at; only RFC-047's own files are committed by those commits, and the pending modifications of other work are left untouched. A defect found beside this RFC is repaired in a commit of its own and is recorded in section 14 of the document.",
+  "BLOCKERS": [
+    "HOST_AUDIT_CHANGE_APPROVAL_REQUIRED: enable the Microsoft-Windows-TaskScheduler/Operational channel (wevtutil sl ... /e:true): the only configuration change RFC-047 contemplates was requested and not approved, and the unelevated attempt was refused with exit code 5 (Error al guardar la configuración o al activar el registro Microsoft-Windows-TaskScheduler/Operational.\nAcceso denegado.)",
+    "without that change no external per-run record can exist, so no slot of this period can be corroborated run by run"
+  ],
+  "NEXT_GATE": "the real close of the ST-6 period at 2026-10-22T16:21:20Z, and — before it — the single command that would let the remaining slots of the period be corroborated as they happen: wevtutil sl Microsoft-Windows-TaskScheduler/Operational /e:true, with an elevated token",
+  "STANDING_INVARIANTS": [
+    "ST6_AUTONOMOUS_COLLECTION_ACTIVE",
+    "ECO-1 = OPEN",
+    "NEXT_CAMPAIGN = NOT_AUTHORIZED",
+    "LIVE_TRADING = DISABLED",
+    "TRADES_AUTHORIZED = 0",
+    "PROFITABILITY_VERIFIED = FALSE"
+  ],
+  "rfc_identifier": {
+    "number": "047",
+    "free_in_the_registry_before_registration": false,
+    "next_free_number_above_046_before_registration": "048",
+    "document": "docs/rfc/RFC-047_ST6_SCHEDULER_PROVENANCE.md",
+    "artefacts": [
+      "data/st6/RFC047_HOST_AUDIT.json",
+      "data/st6/RFC047_WINDOWS_EVENT_EVIDENCE.json",
+      "data/st6/RFC047_LEDGER_RECONCILIATION.json",
+      "data/st6/RFC047_RUNTIME_VERIFICATION.json",
+      "data/st6/RFC047_INDEPENDENT_VERIFICATION.md",
+      "data/st6/RFC047_INDEPENDENT_VERIFICATION.json",
+      "data/st6/RFC047_FINAL_REPORT.md",
+      "data/st6/RFC047_FINAL_REPORT.json"
+    ]
+  },
+  "runtime": {
+    "artifact": "RFC047_RUNTIME_VERIFICATION",
+    "built_at_utc": "2026-10-09T20:00:40Z",
+    "built_by": "scripts/rfc047_builder.py",
+    "requirement": "WP-047-06 and the runtime test of RFC-047: show at least one real correlation between a Windows scheduled trigger, a process execution, an ST-6 run id, the outcome of the slot and the reference to its evidence",
+    "status": "RFC047_RUNTIME_CORRELATION_PARTIAL_INTERNAL_AND_SERVICE_ONLY",
+    "external_trigger_confirmed": false,
+    "runtime_correlation_achieved": false,
+    "blocked_by": "HOST_AUDIT_CHANGE_APPROVAL_REQUIRED",
+    "reason": "the strongest chain this host can actually support is shown: the process, the run identity, the slot's outcome and its evidence are all held, and the scheduler's own register corroborates the launch — but the link that would make it a *scheduled* execution in Windows' own words is missing, because the operational channel is disabled and the request to enable it was not approved",
+    "chain": [
+      {
+        "link": "windows_scheduled_trigger",
+        "available": false,
+        "evidence": {
+          "channel_state": "HOST_AUDIT_CHANGE_APPROVAL_REQUIRED",
+          "records_in_the_store": 0
+        },
+        "reading": "no external record of a trigger exists: the operational channel is disabled on this host and the change that would enable it was refused without an elevated token"
+      },
+      {
+        "link": "process_execution",
+        "available": true,
+        "evidence": {
+          "run_id": "20261009T162845Z-c949dd7b",
+          "process_start_utc": "2026-10-09T16:28:45Z",
+          "process_end_utc": "2026-10-09T16:28:54Z",
+          "exit_code": 0
+        },
+        "reading": "the run log records the process, and the scheduler's own register named the same instant while the witness was sampling"
+      },
+      {
+        "link": "scheduler_register_corroboration",
+        "available": true,
+        "evidence": {
+          "witness_sample_id": "2026-10-09T16:31:50.326Z-8fb5203b",
+          "witness_sampled_at_utc": "2026-10-09T16:31:50.326Z",
+          "scheduler_reported_instant_utc": "2026-10-09T16:27:33Z",
+          "delta_s": 72.0
+        },
+        "reading": "a witness process that is not the tick sampled the Task Scheduler's own reporting and it named this instant; this corroborates an engine launch, never the trigger type, because the channel that names the trigger is disabled"
+      },
+      {
+        "link": "st6_run_id",
+        "available": true,
+        "evidence": {
+          "run_id": "20261009T162845Z-c949dd7b",
+          "slot_id": "2026-10-09#4"
+        },
+        "reading": "the internal identity of the run is recorded in the ledger entry of its slot"
+      },
+      {
+        "link": "slot_outcome",
+        "available": true,
+        "evidence": {
+          "slot_state": "COLLECTED",
+          "collection_window_id": "20261009T160324Z",
+          "missed_record": null
+        },
+        "reading": "the slot's own outcome is recorded: a window was collected, or the slot was lost with a stated classification"
+      },
+      {
+        "link": "evidence_reference",
+        "available": true,
+        "evidence": {
+          "raw_evidence_hash": "4394eae495246217895655dac144d715c6d7f238901cf98dfb5b54936dccb33e",
+          "raw_path": "data\\st6\\raw\\20261009T160324Z.json.gz",
+          "uncompressed_sha256": "4394eae495246217895655dac144d715c6d7f238901cf98dfb5b54936dccb33e"
+        },
+        "reading": "the market evidence of the slot is referenced by hash and re-hashable from the window index"
+      }
+    ],
+    "candidates_corroborated_by_the_scheduler_register": 20,
+    "chain_shown_for": {
+      "slot_id": "2026-10-09#4",
+      "run_id": "20261009T162845Z-c949dd7b",
+      "process_start_utc": "2026-10-09T16:28:45Z",
+      "process_end_utc": "2026-10-09T16:28:54Z",
+      "result": "SKIPPED_NO_WINDOW_DUE",
+      "exit_code": 0,
+      "collection_window_id": "20261009T160324Z",
+      "raw_evidence_hash": "4394eae495246217895655dac144d715c6d7f238901cf98dfb5b54936dccb33e",
+      "slot_state": "COLLECTED",
+      "windows_event_state": "PRE_ENABLE_NOT_OBSERVABLE",
+      "witness_sample_id": "2026-10-09T16:31:50.326Z-8fb5203b",
+      "witness_sampled_at_utc": "2026-10-09T16:31:50.326Z",
+      "scheduler_reported_instant_utc": "2026-10-09T16:27:33Z",
+      "delta_s": 72.0
+    },
+    "what_would_complete_it": "enable the operational channel with an elevated token, let the schedule run, and read the channel again: a record naming this task's launch would move the slot's external state from PRE_ENABLE_NOT_OBSERVABLE to a confirmation, and the first link of the chain would carry its record id instead of a refusal",
+    "no_run_was_induced_for_this": "no run was started by hand and none was forced outside a slot: a chain built from an induced run would prove nothing about the schedule"
+  },
+  "test_summary": null
+}

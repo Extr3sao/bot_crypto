@@ -1,0 +1,482 @@
+{
+  "artifact": "RFC-046_FIRST_CAMPAIGN_RUN_REPORT",
+  "rfc": "RFC-046",
+  "rfc_status": "APPROVED / ACTIVE (ADR-0024, 2026-10-08, option 5A)",
+  "generated_at_utc": "2026-10-08T12:21:20Z",
+  "head_at_run": "78bfb871ec62c9f9bc6a2181e28ccc307d5f1b83",
+  "working_tree_at_run": [
+    "FINAL_REPORT.md",
+    "PAPER_DATA_24H_REPORT.json",
+    "PAPER_DATA_24H_REPORT.md",
+    "RUN_REPORT.json",
+    "RUN_REPORT.md",
+    "data/rfc035e/",
+    "docs/research/experiment_specs/EXP-CAND-001-SOURCE-FAITHFUL-EXIT.md",
+    "docs/research/runtime_reconciliation/",
+    "docs/research/work_packages/WP-CAND-001_ma_pullback.md",
+    "docs/research/work_packages/WP-CAND-002_mtf_alignment.md",
+    "docs/research/work_packages/WP-CAND-003_macd_regime_crossover.md",
+    "docs/research/work_packages/WP-HTF-PIT-001_htf_availability_unit_fix.md",
+    "docs/research/work_packages/WP-IMP-001_process_conformance_rfc.md",
+    "docs/research/work_packages/WP-IMP-002_post_trade_reconstruction.md",
+    "docs/research/work_packages/WP-IMP-004_rule_provenance_rfc.md",
+    "docs/research/work_packages/WP-IMP-005_source_threshold_quarantine.md",
+    "docs/research/work_packages/WP-PAIR-INFRA-001_pair_execution_gap.md",
+    "docs/research/work_packages/WP-RISK-001_exposure_and_stop_audit.md",
+    "docs/research/work_packages/WP-RISK-EXPOSURE-001.md",
+    "docs/source_registry.md",
+    "evidence/real_decisions/evaluations.jsonl",
+    "evidence/real_decisions/outcomes.jsonl",
+    "scripts/cap004c_verify.py",
+    "scripts/rfc035_discovery_verify.py",
+    "scripts/rfc035e_fetch.py",
+    "scripts/rfc035e_reproduce.py",
+    "scripts/rfc035e_verify.py",
+    "scripts/rfc035s2_search.py",
+    "scripts/rfc035s2_verify.py",
+    "scripts/source_candidate_experiment.py",
+    "src/trading_bot/research/experimental/",
+    "tests/unit/research/test_experimental_candidates_pit.py",
+    "tests/unit/research/test_rfc035_opportunity_registry.py",
+    "tests/unit/research/test_rfc035e_effect_reproduction.py",
+    "tests/unit/research/test_rfc035s2_strategy_search.py"
+  ],
+  "cost_bps_round_trip": 23.7906,
+  "cost_bps_stressed": 35.6859,
+  "signal_version": "rfc046.discovery.v1",
+  "runtime_state": {
+    "discovery_offline_authorized": true,
+    "live_trading": "DISABLED",
+    "trades_authorized": 0,
+    "G_BUSINESS_REENTRY": "NOT_PASS",
+    "profitability_verified": false,
+    "false_success": 0
+  },
+  "blockers_registered": [
+    "DEF-HTF-PIT-001: not on this data path; the campaign imports no market_data module and the negative control test asserts the defective helper is absent from it",
+    "TD-1 repo-wide mypy failure (another workstream's reports/ script)",
+    "TD-2 RFC-035E verifier TypeError with absent inputs (OPEN_NOT_REPAIRED)",
+    "TD-3 reports/ concurrency (detail written to reports/rfc046/, tracked summary in data/rfc046/)",
+    "TD-4 artificial timestamps: every timestamp in this report is computed at run time",
+    "TD-5 evidence outside git: RUN_REPORT.md/json are versioned in data/rfc046/"
+  ],
+  "campaign": {
+    "campaign_status": "DISCOVERY_CAMPAIGN_FAILED",
+    "admitted": [],
+    "verdicts": {
+      "CAND-046-001": "CANDIDATE_REJECTED",
+      "CAND-046-002": "CANDIDATE_REJECTED",
+      "CAND-046-003": "CANDIDATE_REJECTED"
+    },
+    "refill": "NONE — a failed campaign ends; no new hypotheses are generated"
+  },
+  "runs": [
+    {
+      "hypothesis_id": "HYP-001",
+      "candidate_id": "CAND-046-001",
+      "mechanism": "forced_flows",
+      "asset": "BTCUSDT",
+      "strategy": "funding_capitulation",
+      "spec_hash": "e5e58176e4c8fb01e79c7db368fd889f6f264a3e956bc1be601389daa8dd135a",
+      "evidence_level": "OFFICIAL_DATA_SOURCE (SRC-05 funding history) + STRUCTURAL_MECHANISM (RFC-041 trigger B: forced flows); no publication claim registered",
+      "data": {
+        "price_file": "data\\raw\\alpha003\\price\\BTCUSDT_1h.json",
+        "funding_file": "data\\raw\\alpha002\\funding_rate\\BTCUSDT.json",
+        "bars": 17676,
+        "funding_points": 7756,
+        "first_bar_ms": 1727740800000,
+        "last_bar_ms": 1791370800000
+      },
+      "gate": {
+        "hypothesis_id": "HYP-001",
+        "candidate_id": "CAND-046-001",
+        "spec_hash": "ce63971b8219068a6d29c4e1375090b045c5d44b1019e889244a8dc9669474f5",
+        "trials": 3,
+        "requirements": [
+          {
+            "id": "PG-1",
+            "requirement": "net expectancy > 0",
+            "pass": false,
+            "observed": -0.0019260004432087611
+          },
+          {
+            "id": "PG-2",
+            "requirement": "OOS net > 0",
+            "pass": false,
+            "observed": -0.09838148395466174
+          },
+          {
+            "id": "PG-3",
+            "requirement": "PF >= 1.10",
+            "pass": false,
+            "observed": 0.7287931485897143
+          },
+          {
+            "id": "PG-4",
+            "requirement": "sample >= 100 total and >= 30 OOS",
+            "pass": false,
+            "observed": {
+              "total": 38,
+              "oos": 10
+            }
+          },
+          {
+            "id": "PG-5",
+            "requirement": "positive in every partition",
+            "pass": false,
+            "observed": {
+              "development": [
+                19,
+                0.08455765347026321
+              ],
+              "validation": [
+                8,
+                -0.06531844991685452
+              ],
+              "final_oos": [
+                10,
+                -0.09838148395466174
+              ]
+            }
+          },
+          {
+            "id": "PG-6",
+            "requirement": "block-bootstrap LCB > 0",
+            "pass": false,
+            "observed": -0.008779281451815734
+          },
+          {
+            "id": "PG-7",
+            "requirement": "1.5x cost stress > 0",
+            "pass": false,
+            "observed": -0.0031155304432087584
+          },
+          {
+            "id": "PG-8",
+            "requirement": "no risk-engine violation (<=1x, DD <= 10%)",
+            "pass": false,
+            "observed": 0.15670493954184533
+          },
+          {
+            "id": "PG-9",
+            "requirement": "no single trade > 40% and no quarter > 60% of positive net",
+            "pass": true,
+            "observed": {
+              "trade_share": 0.21779980674065177,
+              "quarter_share": 0.5576017838087776,
+              "trade_index": 2
+            }
+          },
+          {
+            "id": "PG-10",
+            "requirement": "multiple-testing correction applied",
+            "pass": true,
+            "observed": {
+              "trials": 3,
+              "alpha": 0.016666666666666666
+            }
+          },
+          {
+            "id": "PG-11",
+            "requirement": "no look-ahead / PIT violation",
+            "pass": true,
+            "observed": 0
+          }
+        ],
+        "failed": [
+          "PG-1",
+          "PG-2",
+          "PG-3",
+          "PG-4",
+          "PG-5",
+          "PG-6",
+          "PG-7",
+          "PG-8"
+        ],
+        "zero_sample": false,
+        "verdict": "CANDIDATE_REJECTED",
+        "metrics": {
+          "trades_total": 38,
+          "trades_oos": 10,
+          "net_expectancy": -0.0019260004432087611,
+          "net_pf": 0.7287931485897143,
+          "oos_net": -0.09838148395466174,
+          "lcb": -0.008779281451815734,
+          "stress_expectancy": -0.0031155304432087584,
+          "max_drawdown": 0.15670493954184533
+        }
+      }
+    },
+    {
+      "hypothesis_id": "HYP-002",
+      "candidate_id": "CAND-046-002",
+      "mechanism": "market_microstructure",
+      "asset": "ETHUSDT",
+      "strategy": "settlement_dip",
+      "spec_hash": "3336b8f343d899af0415f3f9e35fce03d72f0cdd626ac6872b9add2e53964ecf",
+      "evidence_level": "OFFICIAL_DATA_SOURCE (SRC-05 funding schedule, SRC-03 klines) + STRUCTURAL_MECHANISM (RFC-041 trigger B: market microstructure); no publication claim registered",
+      "data": {
+        "price_file": "data\\raw\\alpha003\\price\\ETHUSDT_1h.json",
+        "funding_file": "data\\raw\\alpha002\\funding_rate\\ETHUSDT.json",
+        "bars": 17676,
+        "funding_points": 7522,
+        "first_bar_ms": 1727740800000,
+        "last_bar_ms": 1791370800000
+      },
+      "gate": {
+        "hypothesis_id": "HYP-002",
+        "candidate_id": "CAND-046-002",
+        "spec_hash": "4636c1a1a2e34aad7d7ad6a2dede9d64d926cf7013487ad3f300f8f87dda4d4c",
+        "trials": 3,
+        "requirements": [
+          {
+            "id": "PG-1",
+            "requirement": "net expectancy > 0",
+            "pass": false,
+            "observed": -0.004924862006861509
+          },
+          {
+            "id": "PG-2",
+            "requirement": "OOS net > 0",
+            "pass": false,
+            "observed": -0.07421615521000612
+          },
+          {
+            "id": "PG-3",
+            "requirement": "PF >= 1.10",
+            "pass": false,
+            "observed": 0.4170330288649767
+          },
+          {
+            "id": "PG-4",
+            "requirement": "sample >= 100 total and >= 30 OOS",
+            "pass": false,
+            "observed": {
+              "total": 75,
+              "oos": 23
+            }
+          },
+          {
+            "id": "PG-5",
+            "requirement": "positive in every partition",
+            "pass": false,
+            "observed": {
+              "development": [
+                34,
+                -0.10731876741307465
+              ],
+              "validation": [
+                18,
+                -0.18782972789153296
+              ],
+              "final_oos": [
+                23,
+                -0.07421615521000612
+              ]
+            }
+          },
+          {
+            "id": "PG-6",
+            "requirement": "block-bootstrap LCB > 0",
+            "pass": false,
+            "observed": -0.010021838826775577
+          },
+          {
+            "id": "PG-7",
+            "requirement": "1.5x cost stress > 0",
+            "pass": false,
+            "observed": -0.00611439200686151
+          },
+          {
+            "id": "PG-8",
+            "requirement": "no risk-engine violation (<=1x, DD <= 10%)",
+            "pass": false,
+            "observed": 0.36174884910527283
+          },
+          {
+            "id": "PG-9",
+            "requirement": "no single trade > 40% and no quarter > 60% of positive net",
+            "pass": true,
+            "observed": {
+              "trade_share": 0.09729123091364227,
+              "quarter_share": 0.2657661451697813,
+              "trade_index": 15
+            }
+          },
+          {
+            "id": "PG-10",
+            "requirement": "multiple-testing correction applied",
+            "pass": true,
+            "observed": {
+              "trials": 3,
+              "alpha": 0.016666666666666666
+            }
+          },
+          {
+            "id": "PG-11",
+            "requirement": "no look-ahead / PIT violation",
+            "pass": true,
+            "observed": 0
+          }
+        ],
+        "failed": [
+          "PG-1",
+          "PG-2",
+          "PG-3",
+          "PG-4",
+          "PG-5",
+          "PG-6",
+          "PG-7",
+          "PG-8"
+        ],
+        "zero_sample": false,
+        "verdict": "CANDIDATE_REJECTED",
+        "metrics": {
+          "trades_total": 75,
+          "trades_oos": 23,
+          "net_expectancy": -0.004924862006861509,
+          "net_pf": 0.4170330288649767,
+          "oos_net": -0.07421615521000612,
+          "lcb": -0.010021838826775577,
+          "stress_expectancy": -0.00611439200686151,
+          "max_drawdown": 0.36174884910527283
+        }
+      }
+    },
+    {
+      "hypothesis_id": "HYP-003",
+      "candidate_id": "CAND-046-003",
+      "mechanism": "institutional_constraint",
+      "asset": "BTCUSDT",
+      "strategy": "weekend_rebound",
+      "spec_hash": "8f99b0366301a304e6637dc2a640265d18bd1607df73b579fe2ca418a0cf007c",
+      "evidence_level": "OFFICIAL_DATA_SOURCE (SRC-04/SRC-03 klines) + STRUCTURAL_MECHANISM (RFC-041 trigger B: institutional constraint); no publication claim registered",
+      "data": {
+        "price_file": "data\\raw\\alpha003\\price\\BTCUSDT_1h.json",
+        "funding_file": "data\\raw\\alpha002\\funding_rate\\BTCUSDT.json",
+        "bars": 17676,
+        "funding_points": 7756,
+        "first_bar_ms": 1727740800000,
+        "last_bar_ms": 1791370800000
+      },
+      "gate": {
+        "hypothesis_id": "HYP-003",
+        "candidate_id": "CAND-046-003",
+        "spec_hash": "6faa17db062cc7076feffa4f3cd6a8909ff5698f97f9ed57286eb3464431e85e",
+        "trials": 3,
+        "requirements": [
+          {
+            "id": "PG-1",
+            "requirement": "net expectancy > 0",
+            "pass": false,
+            "observed": null
+          },
+          {
+            "id": "PG-2",
+            "requirement": "OOS net > 0",
+            "pass": false,
+            "observed": 0
+          },
+          {
+            "id": "PG-3",
+            "requirement": "PF >= 1.10",
+            "pass": false,
+            "observed": null
+          },
+          {
+            "id": "PG-4",
+            "requirement": "sample >= 100 total and >= 30 OOS",
+            "pass": false,
+            "observed": {
+              "total": 0,
+              "oos": 0
+            }
+          },
+          {
+            "id": "PG-5",
+            "requirement": "positive in every partition",
+            "pass": false,
+            "observed": {
+              "development": [
+                0,
+                0
+              ],
+              "validation": [
+                0,
+                0
+              ],
+              "final_oos": [
+                0,
+                0
+              ]
+            }
+          },
+          {
+            "id": "PG-6",
+            "requirement": "block-bootstrap LCB > 0",
+            "pass": false,
+            "observed": null
+          },
+          {
+            "id": "PG-7",
+            "requirement": "1.5x cost stress > 0",
+            "pass": false,
+            "observed": null
+          },
+          {
+            "id": "PG-8",
+            "requirement": "no risk-engine violation (<=1x, DD <= 10%)",
+            "pass": true,
+            "observed": 0.0
+          },
+          {
+            "id": "PG-9",
+            "requirement": "no single trade > 40% and no quarter > 60% of positive net",
+            "pass": true,
+            "observed": {
+              "trade_share": 0.0,
+              "quarter_share": 0.0,
+              "trade_index": -1
+            }
+          },
+          {
+            "id": "PG-10",
+            "requirement": "multiple-testing correction applied",
+            "pass": true,
+            "observed": {
+              "trials": 3,
+              "alpha": 0.016666666666666666
+            }
+          },
+          {
+            "id": "PG-11",
+            "requirement": "no look-ahead / PIT violation",
+            "pass": true,
+            "observed": 0
+          }
+        ],
+        "failed": [
+          "PG-1",
+          "PG-2",
+          "PG-3",
+          "PG-4",
+          "PG-5",
+          "PG-6",
+          "PG-7"
+        ],
+        "zero_sample": true,
+        "verdict": "CANDIDATE_REJECTED",
+        "metrics": {
+          "trades_total": 0,
+          "trades_oos": 0,
+          "net_expectancy": null,
+          "net_pf": null,
+          "oos_net": 0,
+          "lcb": null,
+          "stress_expectancy": null,
+          "max_drawdown": 0.0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "actions_on_drift": [
+    "the observation is recorded with its raw evidence and its hash",
+    "the asset and the context are named in the breach entry",
+    "the model is NOT adjusted and no strategy is touched",
+    "no real order is requested"
+  ],
+  "artifact": "ST6_MODEL_DRIFT",
+  "boundary_breaches": 0,
+  "breaches": [
+    {
+      "asset": "SOLUSDT",
+      "context": {
+        "day_type": "weekday",
+        "levels_consumed": 2,
+        "liquidity_band": "THIN",
+        "session": "us",
+        "size_usdt": 200.0,
+        "slot": "16:00-20:00 UTC",
+        "volatility_regime": "HIGH",
+        "window_id": "20261008T162202Z"
+      },
+      "kind": "impact_over_model_buy",
+      "multiple_of_model": 2.853711,
+      "observed_at_utc": "2026-10-08T16:22:15.903079Z",
+      "st6_effect": "DRIFT",
+      "threshold_bps": 0.25,
+      "value_bps": 0.713427697
+    }
+  ],
+  "breaches_total": 1,
+  "drift_breaches": 1,
+  "drift_detected": true,
+  "generated_at_utc": "2026-10-09T04:03:24Z",
+  "not_measured": [
+    "realised slippage",
+    "fill quality or price improvement",
+    "maker queue position"
+  ],
+  "per_asset_extremes": {
+    "BTCUSDT": {
+      "median_spread_bps": 0.001223,
+      "observations": 12,
+      "over_model_observations": 0,
+      "worst_impact_bps": 0.015344,
+      "worst_spread_bps": 0.001229
+    },
+    "ETHUSDT": {
+      "median_spread_bps": 0.040475,
+      "observations": 12,
+      "over_model_observations": 0,
+      "worst_impact_bps": 0.0,
+      "worst_spread_bps": 0.041091
+    },
+    "SOLUSDT": {
+      "median_spread_bps": 0.915542,
+      "observations": 12,
+      "over_model_observations": 0,
+      "worst_impact_bps": 0.713428,
+      "worst_spread_bps": 0.918738
+    },
+    "XRPUSDT": {
+      "median_spread_bps": 0.725483,
+      "observations": 12,
+      "over_model_observations": 0,
+      "worst_impact_bps": 0.0,
+      "worst_spread_bps": 0.737327
+    }
+  },
+  "period": {
+    "ends_at_utc": "2026-10-22T16:21:20Z",
+    "started_at_utc": "2026-10-08T16:21:20Z"
+  },
+  "rule": {
+    "aggregation_policy": "extreme values are never hidden by aggregation: every observation above a threshold is listed individually with its asset, instant and context, up to 1 recorded here",
+    "boundary_multiple": 1.5,
+    "impact_threshold_bps": 0.25,
+    "size_usdt": 200.0,
+    "source": "COST_MODEL_V3.model_constants, read at run time; this phase never writes it",
+    "spread_threshold_bps": 1.0
+  },
+  "st6_components": {
+    "depth": "WITHIN",
+    "impact": "DRIFT",
+    "spread": "WITHIN"
+  },
+  "st6_provisional": false,
+  "st6_window_verdict": "DRIFT_WIDER_THAN_MODELLED",
+  "what_the_rule_saw": [
+    {
+      "depth_covers_account_size": true,
+      "observations": 12,
+      "pooled_median_spread_bps": 0.389073383,
+      "rounds_covered": 3,
+      "source": "observations",
+      "window_id": "20261008T162202Z",
+      "worst_spread_bps": 0.918737654,
+      "worst_walk_bps_at_account_size": 0.713427697
+    },
+    {
+      "depth_covers_account_size": true,
+      "observations": 12,
+      "pooled_median_spread_bps": 0.383923488,
+      "rounds_covered": 3,
+      "source": "observations",
+      "window_id": "20261008T200323Z",
+      "worst_spread_bps": 0.916548279,
+      "worst_walk_bps_at_account_size": 0.0
+    },
+    {
+      "depth_covers_account_size": true,
+      "observations": 12,
+      "pooled_median_spread_bps": 0.381854511,
+      "rounds_covered": 3,
+      "source": "observations",
+      "window_id": "20261009T000323Z",
+      "worst_spread_bps": 0.914954938,
+      "worst_walk_bps_at_account_size": 0.0
+    },
+    {
+      "depth_covers_account_size": true,
+      "observations": 12,
+      "pooled_median_spread_bps": 0.37809949,
+      "rounds_covered": 3,
+      "source": "observations",
+      "window_id": "20261009T040323Z",
+      "worst_spread_bps": 0.904200009,
+      "worst_walk_bps_at_account_size": 0.0
+    }
+  ],
+  "what_the_rule_saw_note": "the ST-6 rule is applied to values recomputed over every round of each window, from the recorded observations; the *_round_zero fields in the window index are kept beside them so the difference is visible instead of hidden",
+  "windows_judged": 4
+}

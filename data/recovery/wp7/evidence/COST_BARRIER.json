@@ -1,0 +1,150 @@
+{
+  "meta": {
+    "cost_model_bps_rt": {
+      "BASE": 12.0,
+      "2X_COST": 24.0,
+      "STRESSED": 32.0
+    },
+    "note": "bars_to_X = median bars for a move equal to X bps"
+  },
+  "5m": {
+    "BTC": {
+      "bars": 95131,
+      "abs_ret_bps_median": 6.83,
+      "atr_pct_mean": 0.2278,
+      "bars_to_BASE": 1.8,
+      "hours_to_BASE": 0.15,
+      "bars_to_2X_COST": 3.5,
+      "hours_to_2X_COST": 0.29,
+      "bars_to_STRESSED": 4.7,
+      "hours_to_STRESSED": 0.39
+    },
+    "ETH": {
+      "bars": 95131,
+      "abs_ret_bps_median": 8.6,
+      "atr_pct_mean": 0.3042,
+      "bars_to_BASE": 1.4,
+      "hours_to_BASE": 0.12,
+      "bars_to_2X_COST": 2.8,
+      "hours_to_2X_COST": 0.23,
+      "bars_to_STRESSED": 3.7,
+      "hours_to_STRESSED": 0.31
+    },
+    "SOL": {
+      "bars": 95131,
+      "abs_ret_bps_median": 10.45,
+      "atr_pct_mean": 0.3557,
+      "bars_to_BASE": 1.1,
+      "hours_to_BASE": 0.09,
+      "bars_to_2X_COST": 2.2,
+      "hours_to_2X_COST": 0.18,
+      "bars_to_STRESSED": 2.9,
+      "hours_to_STRESSED": 0.25
+    }
+  },
+  "15m": {
+    "BTC": {
+      "bars": 20025,
+      "abs_ret_bps_median": 9.38,
+      "atr_pct_mean": 0.2771,
+      "bars_to_BASE": 1.3,
+      "hours_to_BASE": 0.32,
+      "bars_to_2X_COST": 2.6,
+      "hours_to_2X_COST": 0.64,
+      "bars_to_STRESSED": 3.4,
+      "hours_to_STRESSED": 0.85
+    },
+    "ETH": {
+      "bars": 20025,
+      "abs_ret_bps_median": 11.67,
+      "atr_pct_mean": 0.3685,
+      "bars_to_BASE": 1.0,
+      "hours_to_BASE": 0.26,
+      "bars_to_2X_COST": 2.1,
+      "hours_to_2X_COST": 0.51,
+      "bars_to_STRESSED": 2.7,
+      "hours_to_STRESSED": 0.68
+    },
+    "SOL": {
+      "bars": 20025,
+      "abs_ret_bps_median": 14.0,
+      "atr_pct_mean": 0.4309,
+      "bars_to_BASE": 0.8,
+      "hours_to_BASE": 0.21,
+      "bars_to_2X_COST": 1.7,
+      "hours_to_2X_COST": 0.42,
+      "bars_to_STRESSED": 2.2,
+      "hours_to_STRESSED": 0.55
+    }
+  },
+  "30m": {
+    "BTC": {
+      "bars": 10009,
+      "abs_ret_bps_median": 13.26,
+      "atr_pct_mean": 0.4024,
+      "bars_to_BASE": 0.9,
+      "hours_to_BASE": 0.45,
+      "bars_to_2X_COST": 1.8,
+      "hours_to_2X_COST": 0.9,
+      "bars_to_STRESSED": 2.4,
+      "hours_to_STRESSED": 1.21
+    },
+    "ETH": {
+      "bars": 10009,
+      "abs_ret_bps_median": 15.99,
+      "atr_pct_mean": 0.5325,
+      "bars_to_BASE": 0.7,
+      "hours_to_BASE": 0.37,
+      "bars_to_2X_COST": 1.5,
+      "hours_to_2X_COST": 0.75,
+      "bars_to_STRESSED": 2.0,
+      "hours_to_STRESSED": 1.0
+    },
+    "SOL": {
+      "bars": 10009,
+      "abs_ret_bps_median": 19.74,
+      "atr_pct_mean": 0.6185,
+      "bars_to_BASE": 0.6,
+      "hours_to_BASE": 0.3,
+      "bars_to_2X_COST": 1.2,
+      "hours_to_2X_COST": 0.6,
+      "bars_to_STRESSED": 1.6,
+      "hours_to_STRESSED": 0.79
+    }
+  },
+  "1h": {
+    "BTC": {
+      "bars": 5001,
+      "abs_ret_bps_median": 18.62,
+      "atr_pct_mean": 0.5856,
+      "bars_to_BASE": 0.6,
+      "hours_to_BASE": 0.64,
+      "bars_to_2X_COST": 1.3,
+      "hours_to_2X_COST": 1.29,
+      "bars_to_STRESSED": 1.7,
+      "hours_to_STRESSED": 1.72
+    },
+    "ETH": {
+      "bars": 5001,
+      "abs_ret_bps_median": 23.21,
+      "atr_pct_mean": 0.7754,
+      "bars_to_BASE": 0.5,
+      "hours_to_BASE": 0.52,
+      "bars_to_2X_COST": 1.0,
+      "hours_to_2X_COST": 1.03,
+      "bars_to_STRESSED": 1.4,
+      "hours_to_STRESSED": 1.38
+    },
+    "SOL": {
+      "bars": 5001,
+      "abs_ret_bps_median": 27.51,
+      "atr_pct_mean": 0.8915,
+      "bars_to_BASE": 0.4,
+      "hours_to_BASE": 0.43,
+      "bars_to_2X_COST": 0.9,
+      "hours_to_2X_COST": 0.86,
+      "bars_to_STRESSED": 1.1,
+      "hours_to_STRESSED": 1.14
+    }
+  }
+}

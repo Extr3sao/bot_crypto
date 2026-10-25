@@ -1,0 +1,436 @@
+{
+  "model": "MICROSTRUCTURE_ADMISSION_V2",
+  "criteria_doc": "docs/MICROSTRUCTURE_HYPOTHESES_V2.md",
+  "cost_model": "EXECUTION_COST_MODEL_V4",
+  "admission_scenario": "BINANCE_SPOT_STANDARD_TAKER",
+  "zero_cost_diagnostic": [
+    {
+      "candidate_id": "M-02-BTC",
+      "gross_mean_bps_dev": 1.3992,
+      "net_mean_bps_dev_with_zero_cost": 1.3992,
+      "note": "diagnostic only: ZERO_COST is never an admission model. It answers whether the candidate fails because of cost or because of signal."
+    },
+    {
+      "candidate_id": "M-02-ETH",
+      "gross_mean_bps_dev": 6.4267,
+      "net_mean_bps_dev_with_zero_cost": 6.4267,
+      "note": "diagnostic only: ZERO_COST is never an admission model. It answers whether the candidate fails because of cost or because of signal."
+    },
+    {
+      "candidate_id": "M-02-SOL",
+      "gross_mean_bps_dev": 5.1185,
+      "net_mean_bps_dev_with_zero_cost": 5.1185,
+      "note": "diagnostic only: ZERO_COST is never an admission model. It answers whether the candidate fails because of cost or because of signal."
+    },
+    {
+      "candidate_id": "M-07-BTC",
+      "gross_mean_bps_dev": 0.0,
+      "net_mean_bps_dev_with_zero_cost": 0.0,
+      "note": "diagnostic only: ZERO_COST is never an admission model. It answers whether the candidate fails because of cost or because of signal."
+    },
+    {
+      "candidate_id": "M-07-ETH",
+      "gross_mean_bps_dev": 0.0,
+      "net_mean_bps_dev_with_zero_cost": 0.0,
+      "note": "diagnostic only: ZERO_COST is never an admission model. It answers whether the candidate fails because of cost or because of signal."
+    },
+    {
+      "candidate_id": "M-07-SOL",
+      "gross_mean_bps_dev": 0.0,
+      "net_mean_bps_dev_with_zero_cost": 0.0,
+      "note": "diagnostic only: ZERO_COST is never an admission model. It answers whether the candidate fails because of cost or because of signal."
+    },
+    {
+      "candidate_id": "M-09-BTC_to_ETH",
+      "gross_mean_bps_dev": 0.6059,
+      "net_mean_bps_dev_with_zero_cost": 0.6059,
+      "note": "diagnostic only: ZERO_COST is never an admission model. It answers whether the candidate fails because of cost or because of signal."
+    },
+    {
+      "candidate_id": "M-09-BTC_to_SOL",
+      "gross_mean_bps_dev": 0.5178,
+      "net_mean_bps_dev_with_zero_cost": 0.5178,
+      "note": "diagnostic only: ZERO_COST is never an admission model. It answers whether the candidate fails because of cost or because of signal."
+    },
+    {
+      "candidate_id": "M-10-BTC",
+      "gross_mean_bps_dev": 0.0076,
+      "net_mean_bps_dev_with_zero_cost": 0.0076,
+      "note": "diagnostic only: ZERO_COST is never an admission model. It answers whether the candidate fails because of cost or because of signal."
+    },
+    {
+      "candidate_id": "M-10-ETH",
+      "gross_mean_bps_dev": 0.2825,
+      "net_mean_bps_dev_with_zero_cost": 0.2825,
+      "note": "diagnostic only: ZERO_COST is never an admission model. It answers whether the candidate fails because of cost or because of signal."
+    },
+    {
+      "candidate_id": "M-10-SOL",
+      "gross_mean_bps_dev": 0.0832,
+      "net_mean_bps_dev_with_zero_cost": 0.0832,
+      "note": "diagnostic only: ZERO_COST is never an admission model. It answers whether the candidate fails because of cost or because of signal."
+    },
+    {
+      "candidate_id": "M-10-PANEL-DISPERSION",
+      "gross_mean_bps_dev": 0.4056,
+      "net_mean_bps_dev_with_zero_cost": 0.4056,
+      "note": "diagnostic only: ZERO_COST is never an admission model. It answers whether the candidate fails because of cost or because of signal."
+    }
+  ],
+  "cost_aware_decision_check": [
+    {
+      "candidate_id": "M-02-BTC",
+      "gross_positive": true,
+      "net_positive": false,
+      "positive_gross_would_have_been_a_trade": false,
+      "required_gross_edge_bps": 35.25
+    },
+    {
+      "candidate_id": "M-02-ETH",
+      "gross_positive": true,
+      "net_positive": false,
+      "positive_gross_would_have_been_a_trade": false,
+      "required_gross_edge_bps": 35.6412
+    },
+    {
+      "candidate_id": "M-02-SOL",
+      "gross_positive": true,
+      "net_positive": false,
+      "positive_gross_would_have_been_a_trade": false,
+      "required_gross_edge_bps": 37.03
+    },
+    {
+      "candidate_id": "M-07-BTC",
+      "gross_positive": false,
+      "net_positive": false,
+      "positive_gross_would_have_been_a_trade": false,
+      "required_gross_edge_bps": 35.25
+    },
+    {
+      "candidate_id": "M-07-ETH",
+      "gross_positive": false,
+      "net_positive": false,
+      "positive_gross_would_have_been_a_trade": false,
+      "required_gross_edge_bps": 35.6412
+    },
+    {
+      "candidate_id": "M-07-SOL",
+      "gross_positive": false,
+      "net_positive": false,
+      "positive_gross_would_have_been_a_trade": false,
+      "required_gross_edge_bps": 37.03
+    },
+    {
+      "candidate_id": "M-09-BTC_to_ETH",
+      "gross_positive": true,
+      "net_positive": false,
+      "positive_gross_would_have_been_a_trade": false,
+      "required_gross_edge_bps": 35.6412
+    },
+    {
+      "candidate_id": "M-09-BTC_to_SOL",
+      "gross_positive": true,
+      "net_positive": false,
+      "positive_gross_would_have_been_a_trade": false,
+      "required_gross_edge_bps": 37.03
+    },
+    {
+      "candidate_id": "M-10-BTC",
+      "gross_positive": true,
+      "net_positive": false,
+      "positive_gross_would_have_been_a_trade": false,
+      "required_gross_edge_bps": 35.25
+    },
+    {
+      "candidate_id": "M-10-ETH",
+      "gross_positive": true,
+      "net_positive": false,
+      "positive_gross_would_have_been_a_trade": false,
+      "required_gross_edge_bps": 35.6412
+    },
+    {
+      "candidate_id": "M-10-SOL",
+      "gross_positive": true,
+      "net_positive": false,
+      "positive_gross_would_have_been_a_trade": false,
+      "required_gross_edge_bps": 37.03
+    },
+    {
+      "candidate_id": "M-10-PANEL-DISPERSION",
+      "gross_positive": true,
+      "net_positive": false,
+      "positive_gross_would_have_been_a_trade": false,
+      "required_gross_edge_bps": 35.9738
+    }
+  ],
+  "matrix": [
+    {
+      "candidate_id": "M-02-BTC",
+      "hypothesis": "M-02_FLOW_IMPULSE",
+      "horizon_bars": 5,
+      "n": 137,
+      "gross_mean_bps_dev": 1.3992,
+      "cost_bps": 23.5,
+      "net_mean_bps_dev": -22.1008,
+      "filters": {
+        "filter0_info_content": true,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": false,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "COST_KILLED",
+      "classification_reason": "gross 1.3992 bps < cost 23.5000 bps"
+    },
+    {
+      "candidate_id": "M-02-ETH",
+      "hypothesis": "M-02_FLOW_IMPULSE",
+      "horizon_bars": 5,
+      "n": 168,
+      "gross_mean_bps_dev": 6.4267,
+      "cost_bps": 23.7608,
+      "net_mean_bps_dev": -17.3341,
+      "filters": {
+        "filter0_info_content": true,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": false,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "COST_KILLED",
+      "classification_reason": "gross 6.4267 bps < cost 23.7608 bps"
+    },
+    {
+      "candidate_id": "M-02-SOL",
+      "hypothesis": "M-02_FLOW_IMPULSE",
+      "horizon_bars": 5,
+      "n": 131,
+      "gross_mean_bps_dev": 5.1185,
+      "cost_bps": 24.6867,
+      "net_mean_bps_dev": -19.5682,
+      "filters": {
+        "filter0_info_content": true,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": false,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "COST_KILLED",
+      "classification_reason": "gross 5.1185 bps < cost 24.6867 bps"
+    },
+    {
+      "candidate_id": "M-07-BTC",
+      "hypothesis": "M-07_OI_PRICE_STATES",
+      "horizon_bars": 15,
+      "n": 0,
+      "gross_mean_bps_dev": 0.0,
+      "cost_bps": 23.5,
+      "net_mean_bps_dev": 0.0,
+      "filters": {
+        "filter0_info_content": false,
+        "filter1_gross_positive_dev": false,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": false,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "LIMITED_HISTORY",
+      "classification_reason": "open interest exists only for the OOS days, so no quadrant can be selected on DEV; the measured distribution is reported but no tradeable rule is evaluated or promoted"
+    },
+    {
+      "candidate_id": "M-07-ETH",
+      "hypothesis": "M-07_OI_PRICE_STATES",
+      "horizon_bars": 15,
+      "n": 0,
+      "gross_mean_bps_dev": 0.0,
+      "cost_bps": 23.7608,
+      "net_mean_bps_dev": 0.0,
+      "filters": {
+        "filter0_info_content": false,
+        "filter1_gross_positive_dev": false,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": false,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "LIMITED_HISTORY",
+      "classification_reason": "open interest exists only for the OOS days, so no quadrant can be selected on DEV; the measured distribution is reported but no tradeable rule is evaluated or promoted"
+    },
+    {
+      "candidate_id": "M-07-SOL",
+      "hypothesis": "M-07_OI_PRICE_STATES",
+      "horizon_bars": 15,
+      "n": 0,
+      "gross_mean_bps_dev": 0.0,
+      "cost_bps": 24.6867,
+      "net_mean_bps_dev": 0.0,
+      "filters": {
+        "filter0_info_content": false,
+        "filter1_gross_positive_dev": false,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": false,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "LIMITED_HISTORY",
+      "classification_reason": "open interest exists only for the OOS days, so no quadrant can be selected on DEV; the measured distribution is reported but no tradeable rule is evaluated or promoted"
+    },
+    {
+      "candidate_id": "M-09-BTC_to_ETH",
+      "hypothesis": "M-09_FLOW_LEAD_LAG",
+      "horizon_bars": 5,
+      "n": 3948,
+      "gross_mean_bps_dev": 0.6059,
+      "cost_bps": 23.7608,
+      "net_mean_bps_dev": -23.1549,
+      "filters": {
+        "filter0_info_content": true,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": true,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "COST_KILLED",
+      "classification_reason": "gross 0.6059 bps < cost 23.7608 bps"
+    },
+    {
+      "candidate_id": "M-09-BTC_to_SOL",
+      "hypothesis": "M-09_FLOW_LEAD_LAG",
+      "horizon_bars": 5,
+      "n": 3948,
+      "gross_mean_bps_dev": 0.5178,
+      "cost_bps": 24.6867,
+      "net_mean_bps_dev": -24.1689,
+      "filters": {
+        "filter0_info_content": true,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": true,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "COST_KILLED",
+      "classification_reason": "gross 0.5178 bps < cost 24.6867 bps"
+    },
+    {
+      "candidate_id": "M-10-BTC",
+      "hypothesis": "M-10_CROSS_SECTIONAL_FLOW",
+      "horizon_bars": 5,
+      "n": 3962,
+      "gross_mean_bps_dev": 0.0076,
+      "cost_bps": 23.5,
+      "net_mean_bps_dev": -23.4924,
+      "filters": {
+        "filter0_info_content": true,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": true,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "COST_KILLED",
+      "classification_reason": "gross 0.0076 bps < cost 23.5000 bps"
+    },
+    {
+      "candidate_id": "M-10-ETH",
+      "hypothesis": "M-10_CROSS_SECTIONAL_FLOW",
+      "horizon_bars": 5,
+      "n": 3962,
+      "gross_mean_bps_dev": 0.2825,
+      "cost_bps": 23.7608,
+      "net_mean_bps_dev": -23.4783,
+      "filters": {
+        "filter0_info_content": true,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": true,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "COST_KILLED",
+      "classification_reason": "gross 0.2825 bps < cost 23.7608 bps"
+    },
+    {
+      "candidate_id": "M-10-SOL",
+      "hypothesis": "M-10_CROSS_SECTIONAL_FLOW",
+      "horizon_bars": 5,
+      "n": 3962,
+      "gross_mean_bps_dev": 0.0832,
+      "cost_bps": 24.6867,
+      "net_mean_bps_dev": -24.6035,
+      "filters": {
+        "filter0_info_content": false,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": true,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "NO_INFORMATION",
+      "classification_reason": "rank correlation below the pre-registered threshold"
+    },
+    {
+      "candidate_id": "M-10-PANEL-DISPERSION",
+      "hypothesis": "M-10_CROSS_SECTIONAL_FLOW",
+      "horizon_bars": 5,
+      "n": 3962,
+      "gross_mean_bps_dev": 0.4056,
+      "cost_bps": 23.9825,
+      "net_mean_bps_dev": -23.5769,
+      "filters": {
+        "filter0_info_content": false,
+        "filter1_gross_positive_dev": true,
+        "filter2_cost_survival": false,
+        "filter3_all_splits_positive": false,
+        "filter4_stress_1p25x": false,
+        "filter4_stress_1p5x": false,
+        "filter5_min_sample": true,
+        "filter5_pf_oos": false,
+        "filter5_material_margin": false
+      },
+      "classification": "NO_INFORMATION",
+      "classification_reason": "rank correlation below the pre-registered threshold"
+    }
+  ],
+  "admitted": [],
+  "paper_candidates": [],
+  "false_success": 0,
+  "empty_candidate_list_reason": "no hypothesis clears gross edge + cost survival + temporal stability + cost stress simultaneously; PAPER_CANDIDATES stays empty on purpose"
+}

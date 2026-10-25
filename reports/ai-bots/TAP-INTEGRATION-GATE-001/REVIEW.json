@@ -1,0 +1,237 @@
+{
+  "checks": [
+    {
+      "detail": "258 recorded, 258 on disk",
+      "id": "R2_MANIFEST",
+      "problems": [],
+      "statement": "the manifest hashes every artefact and nothing else",
+      "status": "PASS"
+    },
+    {
+      "detail": "derived=PASS recorded=PASS steps=15",
+      "id": "R3_VERDICT",
+      "problems": [],
+      "statement": "the verdict follows from the step statuses, and only PASS certifies",
+      "status": "PASS"
+    },
+    {
+      "detail": "candidate=9a420ff18179 is HEAD",
+      "id": "R4_BINDING",
+      "problems": [],
+      "statement": "every artefact names the commit the campaigns ran on",
+      "status": "PASS"
+    },
+    {
+      "detail": "iterations=6 recovery=6 cycles=17 fences=[2, 5, 8, 11, 14, 17] rows=64",
+      "id": "R5_LOCK_FACTS",
+      "problems": [],
+      "statement": "the lock campaign on disk has the shape and the facts claimed",
+      "status": "PASS"
+    },
+    {
+      "detail": "cycles=[1, 2, 3, 4, 5] state=RECOVERED rows=13 scenarios=['budget', 'corrupt']",
+      "id": "R6_SUPERVISOR_FACTS",
+      "problems": [],
+      "statement": "the supervisor campaign on disk recovered without a lock",
+      "status": "PASS"
+    },
+    {
+      "detail": "0 disagreement(s)",
+      "id": "R7_VERIFIER_FLOORS",
+      "problems": [],
+      "statement": "both verifier reports are truthful at their published size",
+      "status": "PASS"
+    },
+    {
+      "detail": "5 claims, false_success=0",
+      "id": "R8_AUDIT_CLAIMS",
+      "problems": [],
+      "statement": "the independent audit passed all five claims",
+      "status": "PASS"
+    },
+    {
+      "detail": "clean=True/True observed=1",
+      "id": "R9_STABILITY",
+      "problems": [],
+      "statement": "the tree was clean and the commit never moved",
+      "status": "PASS"
+    },
+    {
+      "detail": ".github/workflows/integration-gate.yml",
+      "id": "R10_CI_WIRING",
+      "problems": [],
+      "statement": "CI invokes the gate and no step can swallow a failure",
+      "status": "PASS"
+    }
+  ],
+  "commit": "9a420ff18179c1f196221495aba5fdd2a81f5073",
+  "control_failures": [],
+  "controls": [
+    {
+      "detail": "rejected as required",
+      "exit_code": 1,
+      "expectation": "refused because it carries no gate report",
+      "id": "N0_LEGACY_EVIDENCE",
+      "matched": [
+        "GATE_REPORT.json missing"
+      ],
+      "output_tail": [
+        "{",
+        "  \"verdict\": \"FAIL\",",
+        "  \"problems\": [",
+        "    \"GATE_REPORT.json missing\"",
+        "  ]",
+        "}"
+      ],
+      "passed": true,
+      "statement": "evidence from TAP-SUPERVISOR-INTEGRATION-002 is not this gate's evidence"
+    },
+    {
+      "detail": "rejected as required",
+      "exit_code": 1,
+      "expectation": "COMMIT_MISMATCH",
+      "id": "N1_STALE_COMMIT",
+      "matched": [
+        "COMMIT_MISMATCH"
+      ],
+      "output_tail": [
+        "    \"COMMIT_MISMATCH 000000000000 is not an ancestor of 9a420ff18179\",",
+        "    \"STEP_DISAGREEMENT {'J4_CANDIDATE_BINDING': {'recorded': 'PASS', 'now': 'FAIL'}}\",",
+        "    \"VERDICT_MISMATCH recorded=PASS derived=FAIL\",",
+        "    \"VERDICT FAIL {'J4_CANDIDATE_BINDING': ('FAIL', 'supervisor.campaign=9a420ff18179 lock.campaign=9a420ff18179 supervisor.verifier=9a420ff18179 lock.verifier=9a420ff18179')}\"",
+        "  ]",
+        "}"
+      ],
+      "passed": true,
+      "statement": "evidence whose commit is not this commit is refused even with a valid manifest"
+    },
+    {
+      "detail": "rejected as required",
+      "exit_code": 1,
+      "expectation": "commit-probe exits non-zero and says HEAD moved",
+      "id": "N2_HEAD_MOVED",
+      "matched": [
+        "HEAD moved"
+      ],
+      "output_tail": [
+        "  ],",
+        "  \"command_exit\": 0,",
+        "  \"moved\": true,",
+        "  \"verdict\": \"FAIL\",",
+        "  \"detail\": \"HEAD moved during the command\"",
+        "}"
+      ],
+      "passed": true,
+      "statement": "a commit that moves while a command runs is a failure, not a footnote"
+    },
+    {
+      "detail": "rejected as required",
+      "exit_code": 1,
+      "expectation": "the audit exits non-zero and names the recovery count",
+      "id": "N3_ABSENT_RECOVERY",
+      "matched": [
+        "RECOVERY.json"
+      ],
+      "output_tail": [
+        "    \"fail\": 3,",
+        "    \"pass\": 2,",
+        "    \"unknown\": 0",
+        "  },",
+        "  \"verdict\": \"FAIL\"",
+        "}"
+      ],
+      "passed": true,
+      "statement": "a campaign missing one RECOVERY.json is not a recovered campaign"
+    },
+    {
+      "detail": "rejected as required",
+      "exit_code": 1,
+      "expectation": "MANIFEST_MISMATCH",
+      "id": "N4_MUTATED_EVIDENCE",
+      "matched": [
+        "MANIFEST_MISMATCH"
+      ],
+      "output_tail": [
+        "    \"MANIFEST_MISMATCH missing=[] extra=[] changed=['LOCK_CAMPAIGN_VERIFICATION.json']\",",
+        "    \"STEP_DISAGREEMENT {'J2_LOCK_CONTRACT': {'recorded': 'PASS', 'now': 'FAIL'}}\",",
+        "    \"VERDICT_MISMATCH recorded=PASS derived=FAIL\",",
+        "    \"VERDICT FAIL {'J2_LOCK_CONTRACT': ('FAIL', 'verdict=PASS checks=32 mutations=9 undetected=0 false_success=7')}\"",
+        "  ]",
+        "}"
+      ],
+      "passed": true,
+      "statement": "an edited report is refused when the manifest no longer matches"
+    },
+    {
+      "detail": "rejected as required",
+      "exit_code": 1,
+      "expectation": "the audit exits non-zero and names the iteration contract",
+      "id": "N5_PARTIAL_CAMPAIGN",
+      "matched": [
+        "contract is 6"
+      ],
+      "output_tail": [
+        "    \"fail\": 2,",
+        "    \"pass\": 3,",
+        "    \"unknown\": 0",
+        "  },",
+        "  \"verdict\": \"FAIL\"",
+        "}"
+      ],
+      "passed": true,
+      "statement": "five iterations declared complete is not six"
+    },
+    {
+      "detail": "rejected as required",
+      "exit_code": 1,
+      "expectation": "re-judgement disagrees with the recorded step",
+      "id": "N6_WEAKENED_REPORT",
+      "matched": [
+        "STEP_DISAGREEMENT",
+        "CONTRACT"
+      ],
+      "output_tail": [
+        "  \"problems\": [",
+        "    \"STEP_DISAGREEMENT {'J2_LOCK_CONTRACT': {'recorded': 'PASS', 'now': 'FAIL'}}\",",
+        "    \"VERDICT_MISMATCH recorded=PASS derived=FAIL\",",
+        "    \"VERDICT FAIL {'J2_LOCK_CONTRACT': ('FAIL', 'verdict=PASS checks=20 mutations=5 undetected=0 false_success=0')}\"",
+        "  ]",
+        "}"
+      ],
+      "passed": true,
+      "statement": "a smaller report with the same PASS verdict is not a smaller campaign"
+    },
+    {
+      "detail": "rejected as required",
+      "exit_code": 1,
+      "expectation": "verify exits non-zero and reports a derived failure",
+      "id": "N7_SINGLE_VERIFIER_FAILURE",
+      "matched": [
+        "VERDICT"
+      ],
+      "output_tail": [
+        "  \"problems\": [",
+        "    \"STEP_DISAGREEMENT {'J2_LOCK_CONTRACT': {'recorded': 'PASS', 'now': 'FAIL'}, 'J5_CAMPAIGN_SHAPE': {'recorded': 'PASS', 'now': 'FAIL'}}\",",
+        "    \"VERDICT_MISMATCH recorded=PASS derived=FAIL\",",
+        "    \"VERDICT FAIL {'J2_LOCK_CONTRACT': ('FAIL', 'verdict=FAIL checks=32 mutations=9 undetected=0 false_success=1'), 'J5_CAMPAIGN_SHAPE': ('FAIL', \\\"lock iterations=6 races=2 sites=['AFTER_CYCLE', 'BEFORE_CYCLE']; supervisor episodes=1 cycles=5 state=RECOVERED\\\")}\"",
+        "  ]",
+        "}"
+      ],
+      "passed": true,
+      "statement": "one failing verifier sinks the verdict although the rest passed"
+    }
+  ],
+  "evidence": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001\\reports\\ai-bots\\TAP-INTEGRATION-GATE-001\\evidence",
+  "failing": [],
+  "false_success": 0,
+  "reviewed_at_utc": "2026-10-25T13:36:57Z",
+  "reviewer": "reports/ai-bots/TAP-INTEGRATION-GATE-001/tools/review_gate.py",
+  "schema": "TAP_INTEGRATION_GATE_REVIEW_V1",
+  "summary": {
+    "checks": 9,
+    "checks_passed": 9,
+    "controls": 8,
+    "controls_passed": 8
+  },
+  "verdict": "PASS"
+}

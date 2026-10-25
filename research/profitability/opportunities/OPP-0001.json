@@ -1,0 +1,180 @@
+{
+  "opportunity_id": "OPP-0001",
+  "title": "Spot-BTC ETF net-flow continuation (structural creation demand)",
+  "source_ids": [
+    "S-01",
+    "S-02",
+    "S-03",
+    "S-04"
+  ],
+  "economic_hypothesis": "US spot Bitcoin ETF creations are in-kind or cash purchases of spot BTC executed by authorised participants. Net creations therefore represent mechanical, price-insensitive spot demand that is visible with a lag and is persistent, while prices are already informative about it. If previous-day net flows carry information about the next days' spot price, a long/cash spot position conditioned on the sign of net flows should capture part of that demand.",
+  "market": "Binance spot BTC/USDT (execution) vs US spot Bitcoin ETF daily net flows (signal)",
+  "assets": [
+    "BTC"
+  ],
+  "timeframe": "daily signal, holding horizon 1-5 days (S-01 impulse peaks around days 3-4)",
+  "entry_rules": "UNKNOWN (no source in S-01..S-04 states a rule). The only rule-shaped statement found is the estimated VAR relation: previous-day ETF net inflow has a positive coefficient on today's BTC return (0.027). Candidate operational form to be specified in RFC-036, not here.",
+  "exit_rules": "UNKNOWN (not stated by any source).",
+  "risk_rules": "UNKNOWN as a source rule. Project constraints that any future spec must satisfy: long/cash only, no derivatives, 200 USDT reference capital, 23.791 bps round-trip cost floor.",
+  "parameters": "UNKNOWN (no thresholds, lookbacks or sizing are given). S-01 uses 7-day aggregation to reduce noise and an orthogonalised impulse response over 10 days; it does not define a tradable parameter set.",
+  "claimed_period": "2024-01-11 to 2024-10-11 (S-01)",
+  "claimed_metrics": "correlation 0.30 between flow changes and price changes; Granger causality F=8.4767, p=0.00406; VAR coefficient of previous-day flow on today's return 0.027; flow persistence 0.533; price momentum 0.802; impulse response peak about +1.2% at days 3-4, non-negative",
+  "transaction_cost_model": "NONE in the source. The project's own floor for any replication is 23.791 bps round trip (Binance spot standard taker, as fixed in the internal cost model).",
+  "required_data": "daily US spot BTC ETF net flows (public tables, several vendors, reconstructible historically); BTC/USDT daily and 1h OHLCV from Binance; publication timing of flows relative to Binance trading (PIT requirement)",
+  "external_code": "NONE (no repository or script published with S-01..S-04)",
+  "external_results": "S-01: statistically significant Granger causality from flows to BTC price, persistent positive impulse response peaking near +1.2%. S-02/S-03/S-04: peer-reviewed price-discovery/return-volatility effects around the ETF market, i.e. the ETF channel is materially connected to spot price formation.",
+  "forward_evidence": "NONE",
+  "live_evidence": "NONE",
+  "counter_evidence": [
+    "S-01 itself: correlation is only 0.30, so less than 10% of price variation is explained; the relation is unstable (rolling 60-day correlation 0.10-0.50).",
+    "S-01 itself: a feedback loop from price to flows means part of the flow signal is a consequence of the price move already realised.",
+    "S-01 itself: short sample (10 months at publication), stationarity assumed, non-linearity possible.",
+    "The project's own cost floor (23.791 bps round trip) is a large share of the 1.2% shock response, so the post-cost remainder depends heavily on how many independent shocks exist.",
+    "Publication timing: daily flow data is published after the US close, so the tradable part is the residual move after the print — exactly the part the source's causality test says is smaller.",
+    "The source is buy-side research, not peer-reviewed, and it evaluates a statistical relation, not a strategy with fees, slippage and turnover."
+  ],
+  "ambiguities": [
+    "No entry/exit rule, threshold, lookback or sizing is defined by any source: an RFC-036 spec must fix them before looking at data (and must declare that the choices are ours, not the source's).",
+    "Whether flows should be used as a level, a change, a normalised difference, a 7-day aggregate or a sign is not settled by the sources.",
+    "The exact PIT publication timestamp per day is vendor-specific and must be pinned before replication."
+  ],
+  "replication_difficulty": "LOW-MEDIUM: data is free and shallow (one series + one price series), but the rule set must be frozen by us and the honest sample is short (about 21 months of ETF history, far fewer independent episodes).",
+  "evidence_quality": "MIXED: peer-reviewed papers (S-02..S-04) establish the ETF-spot linkage but not tradability; the only predictability claim with numbers (S-01) is industry research with a declared weak correlation.",
+  "selection_bias_risk": "MEDIUM: ETF-flow strategies were widely publicised during 2024-2025; any rule we now invent is chosen with knowledge of that period.",
+  "overfitting_risk": "MEDIUM-HIGH: a flexible rule set (threshold, lookback, aggregation) on ~640 daily observations can be fitted easily. RFC-036 must pre-register choices.",
+  "lookahead_risk": "MEDIUM: flows are published with a lag, but several free tables retro-fill intraday revisions; the replication must pin a single publication timestamp per day.",
+  "implementation_risk": "LOW: a long/cash BTC position is expressible in the existing runtime; no derivatives, no shorting, no borrow.",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 3,
+    "CODE_AVAILABILITY": 1,
+    "DATA_REPRODUCIBILITY": 4,
+    "TRANSACTION_COST_REALISM": 2,
+    "OOS_EVIDENCE": 2,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 1,
+    "INDEPENDENT_VALIDATION": 3,
+    "IMPLEMENTATION_FIDELITY": 3
+  },
+  "evidence_score_total": 19,
+  "rank": "RESEARCH_HYPOTHESIS_P0",
+  "status": "RESEARCH_HYPOTHESIS_SELECTED_FOR_VALIDATION",
+  "frozen_selection": {
+    "OPPORTUNITY_ID": "OPP-0001",
+    "SOURCE_IDS": [
+      "S-01",
+      "S-02",
+      "S-03",
+      "S-04"
+    ],
+    "SELECTION_TIMESTAMP": "2026-10-07T21:20:00Z",
+    "RULE_HASH_ALGORITHM": "sha256 of the canonical JSON of the rules_for_hash block (keys sorted, separators ',' and ':', UTF-8, ensure_ascii=False)",
+    "SOURCE_BUNDLE_HASH_ALGORITHM": "sha256 of the canonical JSON of [{source_id, url, version, commit, read_level}] for each source of this opportunity, in the order listed above",
+    "RULE_HASH": "afb82b7079143ade6aad1ceb5a759549d99d2904ba4eb32b08b912b0cfb73036",
+    "SOURCE_BUNDLE_HASH": "34ea7e3866f582fbdf2584fb946a55cf57693cbcb26647b71907e1af21c4b52e",
+    "SELECTION_ORDER": "selection happened BEFORE any backtest of our own; no project backtest artifact for this line exists at selection time",
+    "SOURCE_VERSIONS": [
+      {
+        "source_id": "S-01",
+        "version": "UNKNOWN"
+      },
+      {
+        "source_id": "S-02",
+        "version": "UNKNOWN"
+      },
+      {
+        "source_id": "S-03",
+        "version": "UNKNOWN"
+      },
+      {
+        "source_id": "S-04",
+        "version": "UNKNOWN"
+      }
+    ],
+    "SOURCE_COMMITS": [
+      {
+        "source_id": "S-01",
+        "commit": "UNKNOWN"
+      },
+      {
+        "source_id": "S-02",
+        "commit": "UNKNOWN"
+      },
+      {
+        "source_id": "S-03",
+        "commit": "UNKNOWN"
+      },
+      {
+        "source_id": "S-04",
+        "commit": "UNKNOWN"
+      }
+    ]
+  },
+  "rules_for_hash": {
+    "market": "Binance spot BTC/USDT (execution) vs US spot Bitcoin ETF daily net flows (signal)",
+    "assets": [
+      "BTC"
+    ],
+    "timeframe": "daily signal, holding horizon 1-5 days (S-01 impulse peaks around days 3-4)",
+    "entry_rules": "UNKNOWN (no source in S-01..S-04 states a rule). The only rule-shaped statement found is the estimated VAR relation: previous-day ETF net inflow has a positive coefficient on today's BTC return (0.027). Candidate operational form to be specified in RFC-036, not here.",
+    "exit_rules": "UNKNOWN (not stated by any source).",
+    "risk_rules": "UNKNOWN as a source rule. Project constraints that any future spec must satisfy: long/cash only, no derivatives, 200 USDT reference capital, 23.791 bps round-trip cost floor.",
+    "parameters": "UNKNOWN (no thresholds, lookbacks or sizing are given). S-01 uses 7-day aggregation to reduce noise and an orthogonalised impulse response over 10 days; it does not define a tradable parameter set."
+  },
+  "classification_correction": {
+    "PREVIOUS_CLASSIFICATION": "REPLICATE_P0",
+    "CORRECTED_CLASSIFICATION": "RESEARCH_HYPOTHESIS_P0",
+    "REASON": "the source does not define a complete trading strategy; entry rules, exit rules, threshold, lookback, aggregation and position size are all UNKNOWN, so there is no externally specified strategy to replicate exactly. REPLICATE_P0 requires REPLICABLE_ENTRY_EXIT_LOGIC, which this candidate never had.",
+    "CORRECTED_AT": "2026-10-08T00:00:00Z",
+    "CORRECTED_BY": "RFC-035E",
+    "PREVIOUS_VALUE_PRESERVED": "rank was REPLICATE_P0 from the RFC-035 selection until this correction; no earlier evidence was edited or removed",
+    "UNCHANGED_EVIDENCE": {
+      "frozen_selection": "kept verbatim, including SELECTION_TIMESTAMP, SOURCE_IDS and both hashes",
+      "RULE_HASH_AFTER_CORRECTION": "afb82b7079143ade6aad1ceb5a759549d99d2904ba4eb32b08b912b0cfb73036",
+      "rules_for_hash": "unchanged: the correction reclassifies the candidate, it does not restate its rules"
+    },
+    "EVIDENCE": [
+      "reports/rfc035e/FINAL_REPORT.json",
+      "reports/rfc035e/FINAL_REPORT.md",
+      "reports/rfc035e/SOURCE_REPLICATION.json",
+      "reports/rfc035e/EXTERNAL_EFFECT_OOS.json",
+      "reports/rfc035e/FALSIFICATION_REPORT.json",
+      "reports/rfc035e/INDEPENDENT_VERIFICATION.json"
+    ]
+  },
+  "rank_history": [
+    {
+      "rank": "REPLICATE_P0",
+      "from": "2026-10-07T21:20:00Z",
+      "to": "2026-10-08T00:00:00Z",
+      "note": "RFC-035 selection: frozen before any backtest; classification found to be contract-violating"
+    },
+    {
+      "rank": "RESEARCH_HYPOTHESIS_P0",
+      "since": "2026-10-08T00:00:00Z",
+      "note": "RFC-035E: a research hypothesis with an unstated strategy, to be validated as an external effect"
+    }
+  ],
+  "validation_evidence": {
+    "rfc": "RFC-035E",
+    "verdict": "EFFECT_NOT_REPRODUCED",
+    "action": "OPP-0001_REJECT",
+    "artifacts": [
+      "reports/rfc035e/FINAL_REPORT.json",
+      "reports/rfc035e/FINAL_REPORT.md",
+      "reports/rfc035e/SOURCE_REPLICATION.json",
+      "reports/rfc035e/EXTERNAL_EFFECT_OOS.json",
+      "reports/rfc035e/FALSIFICATION_REPORT.json",
+      "reports/rfc035e/INDEPENDENT_VERIFICATION.json"
+    ],
+    "independently_verified": {
+      "status": "PASS",
+      "checks": "107/107",
+      "mismatches": 0,
+      "false_success": 0,
+      "verifier": "scripts/rfc035e_verify.py"
+    },
+    "summary": "the source's named flow transform does not reproduce (p 0.2178 / 0.4438); the variant that does reproduce (raw daily flow, p 0.0466) is not robust: its coefficient flips sign once a trailing 5-session price trend is controlled (p 0.1331) and it is insignificant in every sub-period; the source's delayed +1.2% drift does not appear (post-publication response about -7 bps to +10 bps)",
+    "kept_as_history": "the candidate remains in the registry as a rejected research hypothesis, not deleted"
+  }
+}

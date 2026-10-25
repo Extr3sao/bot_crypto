@@ -1,0 +1,314 @@
+{
+  "code": {
+    "commit": "59ddebda042fb29d990c074cfcaef47f9192d2a3",
+    "files": {
+      "src/trading_bot/config/settings.py": {
+        "blob": "bef1f648ae6f14ba59ae33740335547bfb18ee86",
+        "sha256": "795867a0c0fa37b148a9a9a194f69098dfa0b254954641c4b4781a4dc785538b"
+      },
+      "src/trading_bot/indicators/builtin.py": {
+        "blob": "8d9490611e53ca32aa926c05d970a48afa500824",
+        "sha256": "001a3c5b75f4139ae3e5a970241b64b987c305781e181d782003a35031b86270"
+      },
+      "src/trading_bot/market_data/minute_collector.py": {
+        "blob": "026fade02539009b4a97f2341b615c9bb3288282",
+        "sha256": "35ab5837643be6c6a32a81cc074f4808e50f5e6973d78769525c0eaf5854beea"
+      },
+      "src/trading_bot/paper/broker.py": {
+        "blob": "7d4514b41c2340a981a7a28696c9d9fcdbf6db54",
+        "sha256": "321db84ce7a7753a7fc3ce5dc4c762d5d6649cf4f7bef5513d4a1824f9e8b143"
+      },
+      "src/trading_bot/research/economic_recovery/alpha15.py": {
+        "blob": "7f905b0437f34f43d7cb3ff67aa224f4147aa104",
+        "sha256": "b91426057084d83799f92cf87c057dffd95959089d30e0e91b7ac5273e0c0750"
+      },
+      "src/trading_bot/research/economic_recovery/experiments.py": {
+        "blob": "9127854eefc83f9fc74182f88a1ca4c65279fd92",
+        "sha256": "1cbb2d9a42ab0b323b38149b2d1c0a8533c78b713f996c7746f071ae5613f362"
+      },
+      "src/trading_bot/research/families/ema_crossover_family.py": {
+        "blob": "37430f74b70814345e074841f82b625b2c8e315a",
+        "sha256": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c"
+      },
+      "src/trading_bot/risk/manager.py": {
+        "blob": "95d888a034735fcd245488dc79b025db2da7d346",
+        "sha256": "110ed942b227760d4c308adfdec1d1505ab6c087e1db976cba527c959301c495"
+      },
+      "src/trading_bot/vision/chart.py": {
+        "blob": "fbe1844047c7757059b60cb2f75724d867704ba2",
+        "sha256": "e912b496f6417af88487ae21d592cd7683ace6775ddf6bc3bda893d7e6882241"
+      },
+      "src/trading_bot/vision/clock.py": {
+        "blob": "0346094fa711cbc890115b9541189e4e9686b2aa",
+        "sha256": "5c39bc4fbd1b3eaacf806108ab2a6e290d6ee835f8cddee33e7bd0a5bfc7dfc3"
+      },
+      "src/trading_bot/vision/contract.py": {
+        "blob": "537f764f794d57965ac277c302511b49838a8cf3",
+        "sha256": "b13e3aa8e376d68c92c70e3c65b6cbb0dc3292778dcf75aa809c962625d6c757"
+      },
+      "src/trading_bot/vision/execution.py": {
+        "blob": "04ef7ba23a98eab86d32726acfcda6610da6d187",
+        "sha256": "4d518bba40faca163eb9a632f23e6b0a6584c8886e8287b76e942889347141d1"
+      },
+      "src/trading_bot/vision/guards.py": {
+        "blob": "242c94d53b65c8c536dc017dd0e329e099d23c1b",
+        "sha256": "6e632375385dda9a22b35c18707bea7a7e2748563393d3a631adb416d52b7ace"
+      },
+      "src/trading_bot/vision/lane.py": {
+        "blob": "4a2a40b91f8107f7ae3c0128094b72f4ea0105b1",
+        "sha256": "99ff8c9a3c863d1ee7ef308703f324c49f3ada2460a096f7b63290df914b23bc"
+      },
+      "src/trading_bot/vision/ledger.py": {
+        "blob": "94fe138c45bdbd1bbf30bc56ef95100f55df1736",
+        "sha256": "bbdfd19b0b67b1f1d256536b5409782aff450114aaad54152beb18055dff1af4"
+      },
+      "src/trading_bot/vision/prospective.py": {
+        "blob": "df59584089936847caedd14ef1784f44fcf1948d",
+        "sha256": "7186757f1368f39795e1401a6a4573a22b0fad5d2e04346d7e8594c233faf7d2"
+      },
+      "src/trading_bot/vision/provenance.py": {
+        "blob": "d04ee47d2ba244ded7cd9fb18dc1fc478892ecae",
+        "sha256": "17903c4116861bf01df27d72fef83895146835e3544dbd2d49c33c83cc542272"
+      },
+      "src/trading_bot/vision/provider.py": {
+        "blob": "742835472155c399bff7525a087eabb8affc031b",
+        "sha256": "ad39e47e944fdbcf278674c2f9644fba61c6c6425dbb653fdeccb021c086c70e"
+      },
+      "src/trading_bot/vision/quotes.py": {
+        "blob": "07f8dadda55d921d3d7b3ceccaaded12ca357c75",
+        "sha256": "5ec0766e068ec1c49762555529e548dc82e27abf8fe0c92fb224d85072d3c086"
+      },
+      "src/trading_bot/vision/settings.py": {
+        "blob": "3900f38b98e2e2d4550866c463f6c13ae406e879",
+        "sha256": "a9f25bb24abd0f55d8a152e0fa5200883a8c7b6649b72752052336a491a90831"
+      },
+      "src/trading_bot/vision/signal_sources.py": {
+        "blob": "a2b60c3f8287c3d54fa64ca2e5d05a79ac0ef2d0",
+        "sha256": "92b5b8227af15d74eafacdf8dc610961764a86f5f9086272139c8a31dd22be2a"
+      }
+    },
+    "head_at_capture": "59ddebda042fb29d990c074cfcaef47f9192d2a3",
+    "missing_runtime_paths": [],
+    "policy": "CLEAN_RUNTIME_PATHS",
+    "runtime_paths": [
+      "src/trading_bot/config/settings.py",
+      "src/trading_bot/indicators/builtin.py",
+      "src/trading_bot/market_data/minute_collector.py",
+      "src/trading_bot/paper/broker.py",
+      "src/trading_bot/research/economic_recovery/alpha15.py",
+      "src/trading_bot/research/economic_recovery/experiments.py",
+      "src/trading_bot/research/families/ema_crossover_family.py",
+      "src/trading_bot/risk/manager.py",
+      "src/trading_bot/vision/chart.py",
+      "src/trading_bot/vision/clock.py",
+      "src/trading_bot/vision/contract.py",
+      "src/trading_bot/vision/execution.py",
+      "src/trading_bot/vision/guards.py",
+      "src/trading_bot/vision/lane.py",
+      "src/trading_bot/vision/ledger.py",
+      "src/trading_bot/vision/prospective.py",
+      "src/trading_bot/vision/provenance.py",
+      "src/trading_bot/vision/provider.py",
+      "src/trading_bot/vision/quotes.py",
+      "src/trading_bot/vision/settings.py",
+      "src/trading_bot/vision/signal_sources.py"
+    ],
+    "schema": "VISION_RUN_CODE_PROVENANCE_V1",
+    "unavailable_reasons": [],
+    "worktree": {
+      "dirty_outside_runtime": [
+        "reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/FINAL_REPORT.md",
+        "reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/RUN_REPORT.md",
+        "reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/evidence/LOCK_CAMPAIGN_FULL_stdout.log",
+        "reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/tools/independent_verify.py",
+        "reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/tools/route_manifest.py",
+        "tests/unit/ops/test_lock_attribution_b1.py",
+        "tests/unit/risk/test_risk_contract_014.py"
+      ],
+      "dirty_outside_runtime_total": 7,
+      "fully_clean": false,
+      "runtime_dirty": []
+    }
+  },
+  "config": {
+    "fingerprint": "d2d65af1158464e7dbbbbb7fa3710d12bd0c4ed21c0e0c4b08f1dc96bd6126c8",
+    "payload": {
+      "decision_every_bars": 1,
+      "duration_s": 300,
+      "equity": 10000.0,
+      "latency_ms": 30000,
+      "max_cycles": 2,
+      "max_skew_ms": 5000,
+      "mode": "PAPER",
+      "poll_interval_s": 5.0,
+      "settle_ms": 2500,
+      "signal_source": "legacy_parity",
+      "stale_after_ms": 150000,
+      "strategy_id": "ema_crossover",
+      "symbols": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ],
+      "timeframe": "1m",
+      "warmup_minutes": 120,
+      "window_bars": 20
+    }
+  },
+  "environment": {
+    "distributions": {
+      "PyYAML": "6.0.3",
+      "matplotlib": "3.11.2",
+      "numpy": "2.0.2",
+      "pandas": "3.0.3",
+      "pydantic": "2.13.4",
+      "pydantic-settings": "2.14.2",
+      "structlog": "26.1.0",
+      "tenacity": "9.1.4"
+    },
+    "executable": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-integ002\\.venv\\Scripts\\python.exe",
+    "machine": "AMD64",
+    "platform": "win32",
+    "python_implementation": "CPython",
+    "python_version": "3.11.15"
+  },
+  "environment_digest": "7b701554eb645c65ab5c222a6078d639609ac96eabda466dfc37661369f6d648",
+  "live_enabled": false,
+  "mode": "PAPER",
+  "pinned_identity": "3738bb52712ec382e452a57d721148bde3977e92238d7197da5cf3c27bde4b30",
+  "provider": {
+    "data": {
+      "base_url": "https://api.binance.com",
+      "kind": "default",
+      "name": "binance_spot_rest_1m"
+    },
+    "signal": {
+      "declared_latency_ms": 30000,
+      "provider": "paper-script",
+      "real_model_called": false,
+      "source": "legacy_parity",
+      "strategy_id": null
+    }
+  },
+  "resume": {
+    "chain": [
+      {
+        "pinned_identity": "3738bb52712ec382e452a57d721148bde3977e92238d7197da5cf3c27bde4b30",
+        "runtime_digest": null,
+        "session_id": "sess-606b2341c51405f3de05",
+        "started_at_ms": 1792924011433
+      },
+      {
+        "pinned_identity": "3738bb52712ec382e452a57d721148bde3977e92238d7197da5cf3c27bde4b30",
+        "runtime_digest": null,
+        "session_id": "sess-2c474015a0aee843b406",
+        "started_at_ms": 1792924040329
+      },
+      {
+        "pinned_identity": "3738bb52712ec382e452a57d721148bde3977e92238d7197da5cf3c27bde4b30",
+        "runtime_digest": null,
+        "session_id": "sess-92068a7d4f029f779f85",
+        "started_at_ms": 1792924153972
+      },
+      {
+        "pinned_identity": "3738bb52712ec382e452a57d721148bde3977e92238d7197da5cf3c27bde4b30",
+        "runtime_digest": null,
+        "session_id": "sess-b30ea66483c43fe6bf9d",
+        "started_at_ms": 1792924225383
+      },
+      {
+        "pinned_identity": "3738bb52712ec382e452a57d721148bde3977e92238d7197da5cf3c27bde4b30",
+        "runtime_digest": null,
+        "session_id": "sess-b85dee481f6dc90a035c",
+        "started_at_ms": 1792924337352
+      },
+      {
+        "pinned_identity": "3738bb52712ec382e452a57d721148bde3977e92238d7197da5cf3c27bde4b30",
+        "runtime_digest": null,
+        "session_id": "sess-ca7f7904c213a9f95354",
+        "started_at_ms": 1792924348052
+      },
+      {
+        "pinned_identity": "3738bb52712ec382e452a57d721148bde3977e92238d7197da5cf3c27bde4b30",
+        "runtime_digest": null,
+        "session_id": "sess-1d53fc83ad68272dc8bf",
+        "started_at_ms": 1792924459176
+      },
+      {
+        "pinned_identity": "3738bb52712ec382e452a57d721148bde3977e92238d7197da5cf3c27bde4b30",
+        "runtime_digest": null,
+        "session_id": "sess-f6019e589b6efc0daf5f",
+        "started_at_ms": 1792924521140
+      },
+      {
+        "pinned_identity": "3738bb52712ec382e452a57d721148bde3977e92238d7197da5cf3c27bde4b30",
+        "runtime_digest": null,
+        "session_id": "sess-65f6578c02029ac0bfea",
+        "started_at_ms": 1792924643318
+      },
+      {
+        "pinned_identity": "3738bb52712ec382e452a57d721148bde3977e92238d7197da5cf3c27bde4b30",
+        "runtime_digest": null,
+        "session_id": "sess-a2501023eb075e72d774",
+        "started_at_ms": 1792924704756
+      }
+    ],
+    "parent_session_id": "sess-a2501023eb075e72d774",
+    "resumed": true
+  },
+  "run_id": "run-3738bb52712ec382e452",
+  "runtime": {
+    "digest": "39303dfb01220c27d766a5027db1a6e49755711788e055e3d3010c430612ad4b",
+    "paths": [
+      "src/trading_bot/config/settings.py",
+      "src/trading_bot/indicators/builtin.py",
+      "src/trading_bot/market_data/minute_collector.py",
+      "src/trading_bot/paper/broker.py",
+      "src/trading_bot/research/economic_recovery/alpha15.py",
+      "src/trading_bot/research/economic_recovery/experiments.py",
+      "src/trading_bot/research/families/ema_crossover_family.py",
+      "src/trading_bot/risk/manager.py",
+      "src/trading_bot/vision/chart.py",
+      "src/trading_bot/vision/clock.py",
+      "src/trading_bot/vision/contract.py",
+      "src/trading_bot/vision/execution.py",
+      "src/trading_bot/vision/guards.py",
+      "src/trading_bot/vision/lane.py",
+      "src/trading_bot/vision/ledger.py",
+      "src/trading_bot/vision/prospective.py",
+      "src/trading_bot/vision/provenance.py",
+      "src/trading_bot/vision/provider.py",
+      "src/trading_bot/vision/quotes.py",
+      "src/trading_bot/vision/settings.py",
+      "src/trading_bot/vision/signal_sources.py"
+    ],
+    "sha256": {
+      "src/trading_bot/config/settings.py": "795867a0c0fa37b148a9a9a194f69098dfa0b254954641c4b4781a4dc785538b",
+      "src/trading_bot/indicators/builtin.py": "001a3c5b75f4139ae3e5a970241b64b987c305781e181d782003a35031b86270",
+      "src/trading_bot/market_data/minute_collector.py": "35ab5837643be6c6a32a81cc074f4808e50f5e6973d78769525c0eaf5854beea",
+      "src/trading_bot/paper/broker.py": "321db84ce7a7753a7fc3ce5dc4c762d5d6649cf4f7bef5513d4a1824f9e8b143",
+      "src/trading_bot/research/economic_recovery/alpha15.py": "b91426057084d83799f92cf87c057dffd95959089d30e0e91b7ac5273e0c0750",
+      "src/trading_bot/research/economic_recovery/experiments.py": "1cbb2d9a42ab0b323b38149b2d1c0a8533c78b713f996c7746f071ae5613f362",
+      "src/trading_bot/research/families/ema_crossover_family.py": "78d0625e5604f84f91e2bda18e908f34a57a5a7332a665fc8e7711b476f37b2c",
+      "src/trading_bot/risk/manager.py": "110ed942b227760d4c308adfdec1d1505ab6c087e1db976cba527c959301c495",
+      "src/trading_bot/vision/chart.py": "e912b496f6417af88487ae21d592cd7683ace6775ddf6bc3bda893d7e6882241",
+      "src/trading_bot/vision/clock.py": "5c39bc4fbd1b3eaacf806108ab2a6e290d6ee835f8cddee33e7bd0a5bfc7dfc3",
+      "src/trading_bot/vision/contract.py": "b13e3aa8e376d68c92c70e3c65b6cbb0dc3292778dcf75aa809c962625d6c757",
+      "src/trading_bot/vision/execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e8287b76e942889347141d1",
+      "src/trading_bot/vision/guards.py": "6e632375385dda9a22b35c18707bea7a7e2748563393d3a631adb416d52b7ace",
+      "src/trading_bot/vision/lane.py": "99ff8c9a3c863d1ee7ef308703f324c49f3ada2460a096f7b63290df914b23bc",
+      "src/trading_bot/vision/ledger.py": "bbdfd19b0b67b1f1d256536b5409782aff450114aaad54152beb18055dff1af4",
+      "src/trading_bot/vision/prospective.py": "7186757f1368f39795e1401a6a4573a22b0fad5d2e04346d7e8594c233faf7d2",
+      "src/trading_bot/vision/provenance.py": "17903c4116861bf01df27d72fef83895146835e3544dbd2d49c33c83cc542272",
+      "src/trading_bot/vision/provider.py": "ad39e47e944fdbcf278674c2f9644fba61c6c6425dbb653fdeccb021c086c70e",
+      "src/trading_bot/vision/quotes.py": "5ec0766e068ec1c49762555529e548dc82e27abf8fe0c92fb224d85072d3c086",
+      "src/trading_bot/vision/settings.py": "a9f25bb24abd0f55d8a152e0fa5200883a8c7b6649b72752052336a491a90831",
+      "src/trading_bot/vision/signal_sources.py": "92b5b8227af15d74eafacdf8dc610961764a86f5f9086272139c8a31dd22be2a"
+    }
+  },
+  "schema": "VISION_SESSION_PROVENANCE_V1",
+  "session_id": "sess-073ea2b38233760586d1",
+  "started_at_ms": 1792924826844,
+  "started_at_utc": "2026-10-25T10:40:26Z",
+  "unavailable_reasons": []
+}

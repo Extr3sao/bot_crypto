@@ -1,0 +1,1 @@
+[lab] disk preflight REFUSED: INCOHERENT_BUDGET — the collector valve cannot pay for the window: 0.800 GB affords 4.16 h of the 24.00 h declared, and 4.618 GB is needed at 192.42 MB/h (this is the defect that stopped the first 24 h window)

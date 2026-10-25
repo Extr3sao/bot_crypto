@@ -1,0 +1,71 @@
+{
+  "run_id": "STRATEGY-BEHAVIOR-RUN-01",
+  "phase": "STRATEGY-BEHAVIOR-AUDIT-V1",
+  "instrument_commit": "23985f1",
+  "provider": "binance_testnet_spot_readonly",
+  "assets": ["BTC/USDT", "ETH/USDT", "SOL/USDT"],
+  "timeframe": "5m",
+  "duration": {
+    "uptime_minutes": 31.3,
+    "cycles": 342,
+    "segments": 8,
+    "segment_reconciliations": {"CONSISTENT": 1, "RECOVERED": 7},
+    "note": "segments caused by shell-tool 600s limit; every restart reconciled cleanly"
+  },
+  "funnel": {
+    "evaluations": 1026,
+    "signals_generated": 1026,
+    "unique_economic_intents": 7,
+    "duplicate_submissions_suppressed": {"idempotency": 191, "broker_same_side": 38},
+    "risk_approvals": 45,
+    "risk_vetoes": 790,
+    "orders": 7,
+    "fills": 7,
+    "closed_trades": 4,
+    "orders_equal_unique_intents": true
+  },
+  "duplicate_analysis": {
+    "evaluations_per_candle_per_asset_approx": 54,
+    "duplicate_rate_of_evaluations_approx": 0.993,
+    "verdict": "EFFICIENCY_DEBT_P3_same_candle_reevaluation_by_design_downstream_collapse_held"
+  },
+  "no_trade_taxonomy": {
+    "POSITION_LIMIT": 790,
+    "DUPLICATE_SIGNAL": 229,
+    "NO_SIGNAL": 0,
+    "DATA_INVALID": 0,
+    "PROVIDER_ERRORS_AS_NO_TRADE": 0
+  },
+  "risk_funnel": {
+    "rule": "max_open_positions(3)",
+    "count": 790,
+    "legitimate": true,
+    "upstream_churn_note": "same 3 open positions re-proposed every ~5.5s; risk counters match fills post-DEF-101"
+  },
+  "attribution": {
+    "pnl_by_strategy": {"ema_crossover": 15.1491},
+    "pnl_by_asset": {"SOL/USDT": 8.65, "ETH/USDT": 6.49},
+    "trades": [
+      {"symbol": "SOL/USDT", "strategy": "ema_crossover", "pnl": 5.2, "exit": "take_profit"},
+      {"symbol": "SOL/USDT", "strategy": "ema_crossover", "pnl": 3.45, "exit": "take_profit"},
+      {"symbol": "ETH/USDT", "strategy": "ema_crossover", "pnl": 3.21, "exit": "take_profit"},
+      {"symbol": "ETH/USDT", "strategy": "ema_crossover", "pnl": 3.28, "exit": "take_profit"}
+    ],
+    "sample": "INSUFFICIENT_SAMPLE"
+  },
+  "mark_to_market": {
+    "realized_equity_end": 10015.14907325328,
+    "realized_max_drawdown": 0.0,
+    "mtm_implementation": "PaperBroker.mark_to_market_equity(prices) added",
+    "mtm_drawdown_series": "PENDING_P3_per_cycle_price_history"
+  },
+  "strategies": {
+    "RUNTIME_ACTIVE": ["ema_crossover"],
+    "REACHABLE_NOT_SELECTABLE": ["momentum", "breakout", "trend", "mean_reversion", "volatility"],
+    "router_regime_effect": "NONE_with_current_map",
+    "router_asset_effect": "NONE",
+    "router_timeframe_effect": "NONE"
+  },
+  "health": {"cycles_failed": 0, "temporal_violations": 0, "corrupted_state": 0},
+  "final_status": "STRATEGY_BEHAVIOR_BASELINE_VERIFIED"
+}

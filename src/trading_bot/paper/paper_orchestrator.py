@@ -101,6 +101,10 @@ class PaperOrchestrator:
         cycle_engine: Any | None = None,
         cycle_history_reader: Any | None = None,
         history_lookback_bars: int = 120,
+        # -- GAP-R1 durable state (optional; default off) --------------------
+        state_store: Any | None = None,
+        # -- BURN-IN-V1 observability (optional; default off) -----------------
+        burnin_events_path: Any | None = None,
     ) -> None:
         self._settings = settings
         self._scanner_factory = scanner_factory
@@ -114,6 +118,8 @@ class PaperOrchestrator:
         self._cycle_engine = cycle_engine
         self._cycle_history_reader = cycle_history_reader
         self._history_lookback_bars = history_lookback_bars
+        self._state_store = state_store
+        self._burnin_events_path = burnin_events_path
         self._log = structlog.get_logger("paper_orchestrator")
 
         self._status = PaperOrchestratorStatus(mode=settings.runtime.mode.value)
@@ -186,6 +192,8 @@ class PaperOrchestrator:
             cycle_engine=self._cycle_engine,
             cycle_history_reader=self._cycle_history_reader,
             history_lookback_bars=self._history_lookback_bars,
+            state_store=self._state_store,
+            burnin_events_path=self._burnin_events_path,
         )
         result = await runner.run_session()
 

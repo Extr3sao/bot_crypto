@@ -1,0 +1,12 @@
+{
+  "key": "philly_wp26-24.extracted.txt",
+  "url": "https://www.philadelphiafed.org/-/media/frbp/assets/working-papers/2026/wp26-24.pdf",
+  "retrieved_at_utc": "2026-10-10T13:15:31Z",
+  "mode": "derived",
+  "http_status": null,
+  "bytes": 167923,
+  "sha256": "4606ece2d567b213dcd32666098f5a9ce6b44da20135b9d23e57ab358e6875ec",
+  "raw_retained": true,
+  "status": "ok",
+  "derived_from": "philly_wp26-24.pdf"
+}

@@ -1,0 +1,55 @@
+{
+  "artifact": "RFC049_DISCOVERY2_CAMPAIGN_AUTHORIZATION",
+  "generated_at_utc": "2026-10-10T16:20:23Z",
+  "adr": "ADR-0025 (tasks/decisions.md)",
+  "authorized_by": "operator (owner)",
+  "authorization_instrument": "operator instruction 'TRADING AGENTIC PORTABLE - RFC-049 DISCOVERY 2' (received 2026-10-10), registered here per the previous gate's requirement 'Once explicit approval exists, register the governance decision and execute Phase B autonomously only for the candidates that pass the requirements'",
+  "charter_control_check": {
+    "required_by": "data/rfc049/PREREGISTRATION_MANIFEST.json#gate.authorization_required_from = 'the operator, via a governance decision that changes NEXT_CAMPAIGN'",
+    "operator_authority": "docs/governance/RFC049_DISCOVERY_ADMISSION.md section 7: 'operator (human) | may: authorize the campaign, amend governance, promote to paper'",
+    "provided": "ADR-0025 plus this artifact; historical artifacts are not rewritten",
+    "additional_unsatisfied_authorization_for_authorized_scope": "NONE",
+    "conclusion": "the authorization is registered validly for the scope below; no control is bypassed and no unmet authorization was eluded",
+    "note_for_excluded_items": "each excluded item (sealed OOS opening, paper promotion, live trading) has its own gate and is NOT bypassed: it simply remains closed"
+  },
+  "next_campaign": "AUTHORIZED",
+  "authorization_scope": "OFFLINE_DEV_VAL_ONLY",
+  "authorized_work": [
+    "WP-049-06 strategy runtime implementation in the research plane (no runtime/live path)",
+    "WP-049-07 economic experiments on RESEARCH_EXPOSED partitions (development + validation) for H-049-001 and H-049-002 under the frozen specs",
+    "WP-049-08 robustness battery (1.5x cost stress, sub-window sign stability, incremental tests versus buy-and-hold and the 200-day trend baseline, and between the two candidates)",
+    "WP-049-09 independent reproduction by a verifier that does not import the builder",
+    "filter ablation diagnostic (new hypothesis + contract; H-049-001 and H-049-002 are not modified), adoption explicitly not granted by this authorization",
+    "ACTIVE pipeline audit (FASE 5 of the instruction)"
+  ],
+  "explicitly_excluded": {
+    "sealed_forward_oos": "CLOSED - opens exactly once, at its frozen gate: 20 closed round trips or 24 months after freeze_timestamp_utc=2026-10-10T11:26:20Z, whichever comes first",
+    "paper_promotion": "NOT_AUTHORIZED (separate gate; no result of this campaign may promote anything)",
+    "live_trading": "DISABLED",
+    "trades_authorized": 0,
+    "threshold_changes": "FORBIDDEN (frozen acceptance thresholds are inputs, never outputs)",
+    "parameter_searches": 0,
+    "hypothesis_refill": "FORBIDDEN (a failed candidate is closed, never replaced)"
+  },
+  "governance_flags_at_authorization": {
+    "DISCOVERY_CAMPAIGN_FAILED": true,
+    "NEXT_CAMPAIGN": "AUTHORIZED",
+    "NEXT_CAMPAIGN_PREVIOUS": "NOT_AUTHORIZED",
+    "LIVE_TRADING": "DISABLED",
+    "TRADES_AUTHORIZED": 0,
+    "PROFITABILITY_VERIFIED": false
+  },
+  "frozen_inputs_protected": {
+    "spec_hashes": "data/rfc049/PREREGISTRATION_MANIFEST.json#spec_hashes",
+    "cost_model": "docs/COST_MODEL_V3.json (sha256 2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159)",
+    "vendor_manifest": "data/rfc049/vendor/VENDOR_MANIFEST.json",
+    "exposure_audit": "data/rfc049/DATA_EXPOSURE_AUDIT.json"
+  },
+  "historical_artifacts_rewritten": false,
+  "result_scope": {
+    "dev_val_results": "RESEARCH_EXPOSED, non-confirmatory, recorded in data/rfc049/discovery2/",
+    "pass_possible_before_sealed_oos": false,
+    "insufficient_oos_sample_rule": "fewer than 20 closed round trips at 24 months is INSUFFICIENT_OOS_SAMPLE, never PASS and never REJECT on power alone"
+  },
+  "revocation": "revocable by the operator at any moment; on revocation the programme returns to NOT_ACTIVE with artifacts left intact (DISCOVERY_STOP_RULES.md ST-11)"
+}

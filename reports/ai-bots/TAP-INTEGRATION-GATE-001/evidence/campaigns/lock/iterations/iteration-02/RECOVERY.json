@@ -1,0 +1,272 @@
+{
+  "chain_after": {
+    "head_sha256": "c69b90c4794590ad754b29f11518badfa67b34e17e36877b6dc60aa24e273fa0",
+    "kinds": {
+      "CYCLE": 6,
+      "DELAY_MEASURED": 4,
+      "LOCK_RECLAIMED": 2,
+      "SESSION_END": 2,
+      "SESSION_PROVENANCE": 4,
+      "SESSION_START": 4
+    },
+    "lines": 22,
+    "ok": true,
+    "reason": "INTACT"
+  },
+  "cycle_numbers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "exit_code": 0,
+  "fences_after": {
+    "STREAM.jsonl.lock.fence": 6,
+    "cycles/cycle-0001/ledger.jsonl.lock.fence": 1,
+    "cycles/cycle-0002/ledger.jsonl.lock.fence": 1,
+    "cycles/cycle-0003/ledger.jsonl.lock.fence": 1,
+    "cycles/cycle-0004/ledger.jsonl.lock.fence": 1,
+    "cycles/cycle-0005/ledger.jsonl.lock.fence": 1,
+    "cycles/cycle-0006/ledger.jsonl.lock.fence": 1,
+    "market-1m/BTCUSDT.jsonl.lock.fence": 6,
+    "market-1m/ETHUSDT.jsonl.lock.fence": 6,
+    "market-1m/SOLUSDT.jsonl.lock.fence": 6
+  },
+  "iteration": 2,
+  "locks_after": [],
+  "new_rows": [
+    "SESSION_START",
+    "SESSION_PROVENANCE",
+    "LOCK_RECLAIMED",
+    "DELAY_MEASURED",
+    "CYCLE",
+    "CYCLE",
+    "SESSION_END"
+  ],
+  "reclaimed": [
+    {
+      "entry": {
+        "kind": "LOCK_RECLAIMED",
+        "live_orders": 0,
+        "locks": [
+          {
+            "fence": 5,
+            "lock": "BTCUSDT.jsonl.lock",
+            "pid": 40764,
+            "process_start_ms": 1792934235839,
+            "reason": "OWNER_PROCESS_DEAD"
+          },
+          {
+            "fence": 5,
+            "lock": "ETHUSDT.jsonl.lock",
+            "pid": 40764,
+            "process_start_ms": 1792934235839,
+            "reason": "OWNER_PROCESS_DEAD"
+          },
+          {
+            "fence": 5,
+            "lock": "SOLUSDT.jsonl.lock",
+            "pid": 40764,
+            "process_start_ms": 1792934235839,
+            "reason": "OWNER_PROCESS_DEAD"
+          }
+        ],
+        "recorded_at_utc": "2026-10-25T13:18:24Z"
+      },
+      "seq": 18
+    }
+  ],
+  "resume_pid": 49060,
+  "rows_after_resume": 22,
+  "rows_before_resume": 15,
+  "status_after": {
+    "checked_at_utc": "2026-10-25T13:20:16Z",
+    "fencing": {
+      "fence_files": [
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0001/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0002/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0003/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0004/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0005/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0006/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 6,
+          "path": "market-1m/BTCUSDT.jsonl.lock.fence"
+        },
+        {
+          "fence": 6,
+          "path": "market-1m/ETHUSDT.jsonl.lock.fence"
+        },
+        {
+          "fence": 6,
+          "path": "market-1m/SOLUSDT.jsonl.lock.fence"
+        },
+        {
+          "fence": 6,
+          "path": "STREAM.jsonl.lock.fence"
+        }
+      ],
+      "max_fence_in_reclaims": 5,
+      "stream_fence": 6
+    },
+    "last_attempt": {
+      "aborted": false,
+      "exit_code": 0,
+      "refused": false
+    },
+    "ledger": {
+      "chain_ok": true,
+      "chain_reason": "INTACT",
+      "cycle_directories": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "cycle_ledgers": {
+        "cycle-0001": {
+          "lines": 7,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0002": {
+          "lines": 10,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0003": {
+          "lines": 17,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0004": {
+          "lines": 20,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0005": {
+          "lines": 27,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0006": {
+          "lines": 30,
+          "ok": true,
+          "reason": "INTACT"
+        }
+      },
+      "cycle_ledgers_ok": true,
+      "cycles": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "head_sha256": "c69b90c4794590ad754b29f11518badfa67b34e17e36877b6dc60aa24e273fa0",
+      "interrupted_cycles": [],
+      "kinds": {
+        "CYCLE": 6,
+        "DELAY_MEASURED": 4,
+        "LOCK_RECLAIMED": 2,
+        "SESSION_END": 2,
+        "SESSION_PROVENANCE": 4,
+        "SESSION_START": 4
+      },
+      "last_cycle": 6,
+      "rows": 22,
+      "seq_continuous": true
+    },
+    "locks": {
+      "abandoned_paths": [],
+      "active": [],
+      "all": [],
+      "awaiting_recovery": []
+    },
+    "out_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\lock\\session",
+    "owner": {
+      "acquired_at_utc": null,
+      "fence": null,
+      "host": null,
+      "live": false,
+      "pid": null,
+      "process_start_ms": null
+    },
+    "read_only": true,
+    "recoveries": {
+      "count": 2,
+      "last": {
+        "cycle": null,
+        "locks": [
+          {
+            "fence": 5,
+            "lock": "BTCUSDT.jsonl.lock",
+            "pid": 40764,
+            "process_start_ms": 1792934235839,
+            "reason": "OWNER_PROCESS_DEAD"
+          },
+          {
+            "fence": 5,
+            "lock": "ETHUSDT.jsonl.lock",
+            "pid": 40764,
+            "process_start_ms": 1792934235839,
+            "reason": "OWNER_PROCESS_DEAD"
+          },
+          {
+            "fence": 5,
+            "lock": "SOLUSDT.jsonl.lock",
+            "pid": 40764,
+            "process_start_ms": 1792934235839,
+            "reason": "OWNER_PROCESS_DEAD"
+          }
+        ],
+        "scope": "session",
+        "seq": 18
+      },
+      "last_fence": 5,
+      "last_reason": "OWNER_PROCESS_DEAD",
+      "scopes": [
+        "session"
+      ]
+    },
+    "schema_version": "TAP_PAPER_SESSION_STATUS_V1",
+    "session": {
+      "ended_at_utc": null,
+      "pinned_identity": "043208c72bc5e8e7411a5024b91aae88804b24829654eeefc782ad291ee6e333",
+      "resumed": true,
+      "resumed_starts": 3,
+      "run_id": "run-043208c72bc5e8e7411a",
+      "runtime_digest": "39303dfb01220c27d766a5027db1a6e49755711788e055e3d3010c430612ad4b",
+      "runtime_stable": true,
+      "session_id": "sess-1ccaeefabd66f434ff6a",
+      "started_at_utc": "2026-10-25T13:18:23Z",
+      "starts": 4
+    },
+    "state": "RECOVERED",
+    "why": []
+  },
+  "tail": "[wp04] root=C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-gate001 commit=9a420ff18179 out=C:\\Users\\GVLLFR0035\\Downloads\\ff-gate-run-003\\campaigns\\lock\\session\n[wp04] bootstrap complete\n[wp04] measured 3 live delivery latencies\n2026-10-25 14:19:16 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT\n2026-10-25 14:19:16 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT\n2026-10-25 14:19:17 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT\n2026-10-25 14:19:17 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT\n[wp04] cycle 5 bar 2026-10-25T13:18:00Z fills=0 closed=0\n2026-10-25 14:20:13 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT\n2026-10-25 14:20:13 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT\n2026-10-25 14:20:14 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=buy stop_loss_pct=1.0 stop_source=SIGNAL symbol=BTC/USDT\n2026-10-25 14:20:14 [info     ] risk.signal_approved           confidence=0.5 notional=500.0 risk_at_stop_usdt=5.0 side=sell stop_loss_pct=1.0 stop_source=SIGNAL symbol=SOL/USDT\n[wp04] cycle 6 bar 2026-10-25T13:19:00Z fills=0 closed=0\n{\n  \"cycles_executed\": 2,\n  \"cycles_blocked\": 0,\n  \"fills\": 0,\n  \"closed_trades\": 0,\n  \"net_realised_usdt\": 0,\n  \"data_delay_ms\": 4848,\n  \"runtime_stable\": true,\n  \"run_id\": \"run-043208c72bc5e8e7411a\",\n  \"session_id\": \"sess-1ccaeefabd66f434ff6a\"\n}\n"
+}

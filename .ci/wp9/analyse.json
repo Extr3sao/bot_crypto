@@ -1,0 +1,448 @@
+{
+  "artifact": "WP9_RUNTIME_24H_REPORT",
+  "work_package": "WP-9C (OPERATIONAL VALIDATION)",
+  "generated_at_utc": "2026-10-11T20:18:19Z",
+  "runtime": {
+    "entrypoint": "scripts/autonomous_paper.py",
+    "same_entrypoint_as_the_lab": true,
+    "lab_launcher": "scripts/start_paper_lab.py",
+    "provider": "ccxt",
+    "mode_the_runtime_reports": "paper",
+    "live_path": "absent by construction: the entrypoint refuses any mode other than paper"
+  },
+  "declaration": {
+    "hours_requested": 24.0,
+    "hours_executed": 0.06209,
+    "coverage_of_target": 0.002587,
+    "window_complete": false,
+    "paper_authorisation": "NOT_AUTHORIZED \u2014 this is a read-only market-data rehearsal, not the contractual paper test",
+    "what_this_is": "a bounded execution of the real runtime against live public market data, with a controlled stop and a resume, measured; it is not a 24 h window and is not evidence of profitability"
+  },
+  "legs": [
+    {
+      "name": "1-interval-cadence",
+      "notes": "free-running loop: the cadence that loses part of its cycles to the freshness gate",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/autonomous_paper.py --assets BTC,ETH --timeframe 5m --provider ccxt --run-id wp9-runtime-legs --run-root C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper --state-path C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\paper_state.json --horizon-minutes 5.0 --size-usd 1000.0 --verify-provider --cadence interval --cycles 3 --interval 15.0",
+      "exit_code": 0,
+      "seconds": 51.953,
+      "stop_file_written_at_seconds": null,
+      "stdout_tail": "  \"risk_NOT_EVALUATED\": 0\n}\n[run] stop reason: completed\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.md\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.json\n[run] traces: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\traces.jsonl\n[run] heartbeat: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\heartbeat.json (3 beats)\n[run] daily report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\PAPER_DAILY_REPORT.json",
+      "log": "reports/autonomous-paper/wp9-runtime-legs/legs/1-interval-cadence/stdout.log",
+      "run_report": "reports/autonomous-paper/wp9-runtime-legs/legs/1-interval-cadence/RUN_REPORT.json",
+      "traces_before": 0,
+      "traces_after": 6,
+      "traces_added": 6,
+      "cycles_reported": 3,
+      "resources": {
+        "samples": 101,
+        "measured_samples": 101,
+        "rss_mb_max": 148.844,
+        "peak_rss_mb_max": 148.959,
+        "cpu_seconds": 1.391,
+        "cpu_utilisation": 0.0268,
+        "processes_in_the_tree_max": 2,
+        "method": "win32 GetProcessMemoryInfo + GetProcessTimes"
+      },
+      "disk": {
+        "run_dir_bytes_before": 0,
+        "run_dir_bytes_after": 84341,
+        "run_root_bytes_before": 29395619,
+        "run_root_bytes_after": 29479960,
+        "bytes_written": 84341
+      },
+      "reconstructed": true
+    },
+    {
+      "name": "2-bar-close-cadence",
+      "notes": "phase-aligned to sealed bars: the cadence that keeps the same budget",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/autonomous_paper.py --assets BTC,ETH --timeframe 5m --provider ccxt --run-id wp9-runtime-legs --run-root C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper --state-path C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\paper_state.json --horizon-minutes 5.0 --size-usd 1000.0 --verify-provider --cadence bar-close --cycles 2",
+      "exit_code": 0,
+      "seconds": 69.157,
+      "stop_file_written_at_seconds": null,
+      "stdout_tail": "  \"risk_NOT_EVALUATED\": 0\n}\n[run] stop reason: completed\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.md\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.json\n[run] traces: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\traces.jsonl\n[run] heartbeat: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\heartbeat.json (1 beats)\n[run] daily report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\PAPER_DAILY_REPORT.json",
+      "log": "reports/autonomous-paper/wp9-runtime-legs/legs/2-bar-close-cadence/stdout.log",
+      "run_report": "reports/autonomous-paper/wp9-runtime-legs/legs/2-bar-close-cadence/RUN_REPORT.json",
+      "traces_before": 6,
+      "traces_after": 8,
+      "traces_added": 2,
+      "cycles_reported": 1,
+      "resources": {
+        "samples": 134,
+        "measured_samples": 134,
+        "rss_mb_max": 148.627,
+        "peak_rss_mb_max": 148.746,
+        "cpu_seconds": 1.422,
+        "cpu_utilisation": 0.0206,
+        "processes_in_the_tree_max": 3,
+        "method": "win32 GetProcessMemoryInfo + GetProcessTimes"
+      },
+      "disk": {
+        "run_dir_bytes_before": 86629,
+        "run_dir_bytes_after": 108019,
+        "run_root_bytes_before": 29482248,
+        "run_root_bytes_after": 29503638,
+        "bytes_written": 21390
+      },
+      "reconstructed": true
+    },
+    {
+      "name": "3-controlled-stop",
+      "notes": "stopped through the runtime's own STOP file (\u00a751), which must exit zero",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/autonomous_paper.py --assets BTC,ETH --timeframe 5m --provider ccxt --run-id wp9-runtime-legs --run-root C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper --state-path C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\paper_state.json --horizon-minutes 5.0 --size-usd 1000.0 --verify-provider --continuous --interval 15.0",
+      "exit_code": 0,
+      "seconds": 49.375,
+      "stop_file_written_at_seconds": 45.234,
+      "stdout_tail": "  \"risk_NOT_EVALUATED\": 0\n}\n[run] stop reason: STOP file\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.md\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.json\n[run] traces: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\traces.jsonl\n[run] heartbeat: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\heartbeat.json (2 beats)\n[run] daily report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\PAPER_DAILY_REPORT.json",
+      "log": "reports/autonomous-paper/wp9-runtime-legs/legs/3-controlled-stop/stdout.log",
+      "run_report": "reports/autonomous-paper/wp9-runtime-legs/legs/3-controlled-stop/RUN_REPORT.json",
+      "traces_before": 8,
+      "traces_after": 12,
+      "traces_added": 4,
+      "cycles_reported": 2,
+      "resources": {
+        "samples": 96,
+        "measured_samples": 96,
+        "rss_mb_max": 149.299,
+        "peak_rss_mb_max": 149.557,
+        "cpu_seconds": 1.563,
+        "cpu_utilisation": 0.0317,
+        "processes_in_the_tree_max": 3,
+        "method": "win32 GetProcessMemoryInfo + GetProcessTimes"
+      },
+      "disk": {
+        "run_dir_bytes_before": 110281,
+        "run_dir_bytes_after": 162015,
+        "run_root_bytes_before": 29505900,
+        "run_root_bytes_after": 29557634,
+        "bytes_written": 51734
+      },
+      "reconstructed": true
+    },
+    {
+      "name": "4-resume-after-stop",
+      "notes": "the same run id, run root and state path, after the controlled stop",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/autonomous_paper.py --assets BTC,ETH --timeframe 5m --provider ccxt --run-id wp9-runtime-legs --run-root C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper --state-path C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\paper_state.json --horizon-minutes 5.0 --size-usd 1000.0 --verify-provider --cycles 3 --interval 15.0",
+      "exit_code": 0,
+      "seconds": 53.031,
+      "stop_file_written_at_seconds": null,
+      "stdout_tail": "  \"risk_NOT_EVALUATED\": 0\n}\n[run] stop reason: completed\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.md\n[run] report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\RUN_REPORT.json\n[run] traces: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\traces.jsonl\n[run] heartbeat: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\heartbeat.json (3 beats)\n[run] daily report: C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\autonomous-paper\\wp9-runtime-legs\\PAPER_DAILY_REPORT.json",
+      "log": "reports/autonomous-paper/wp9-runtime-legs/legs/4-resume-after-stop/stdout.log",
+      "run_report": "reports/autonomous-paper/wp9-runtime-legs/legs/4-resume-after-stop/RUN_REPORT.json",
+      "traces_before": 12,
+      "traces_after": 18,
+      "traces_added": 6,
+      "cycles_reported": 3,
+      "resources": {
+        "samples": 103,
+        "measured_samples": 103,
+        "rss_mb_max": 148.832,
+        "peak_rss_mb_max": 148.935,
+        "cpu_seconds": 1.578,
+        "cpu_utilisation": 0.0298,
+        "processes_in_the_tree_max": 3,
+        "method": "win32 GetProcessMemoryInfo + GetProcessTimes"
+      },
+      "disk": {
+        "run_dir_bytes_before": 164279,
+        "run_dir_bytes_after": 235433,
+        "run_root_bytes_before": 29559898,
+        "run_root_bytes_after": 29631052,
+        "bytes_written": 71154
+      },
+      "reconstructed": true
+    }
+  ],
+  "checks": [
+    {
+      "check": "decisions are persisted and the trace chain is intact",
+      "result": "PASS",
+      "detail": "18 persisted records, links intact; the runtime's own summary agrees",
+      "evidence": [
+        "reports/autonomous-paper/wp9-runtime-legs/traces.jsonl"
+      ]
+    },
+    {
+      "check": "no look-ahead: every decision consumed only sealed bars",
+      "result": "PASS",
+      "detail": "every one of 18 traces has window_end_ts <= decision_time_ms (window_end is the newest bar's open, so the sealed bar closes before the decision)",
+      "evidence": [
+        "reports/autonomous-paper/wp9-runtime-legs/traces.jsonl"
+      ]
+    },
+    {
+      "check": "the freshness gate is enforced: a late context cannot reach a proposal",
+      "result": "PASS",
+      "detail": "max age 537.7 s against a 450 s budget (1.5 bars of 5m); 6 of 18 evaluations were late, 6 of them were rejected by the router for exactly that reason, and 0 produced a proposal",
+      "evidence": [
+        "traces.jsonl asset_context.window_end_ts",
+        "traces.jsonl strategies_considered"
+      ]
+    },
+    {
+      "check": "the strategy router ran and never selected a candidate that emitted no alpha",
+      "result": "PASS",
+      "detail": "108 candidate evaluations, statuses ['NOT_APPLICABLE', 'REJECTED'], 6 distinct strategies",
+      "evidence": [
+        "traces.jsonl strategies_considered"
+      ]
+    },
+    {
+      "check": "the risk engine reviewed every proposal (deterministic, binding on orders)",
+      "result": "NOT_EXERCISED",
+      "detail": "no evaluation carried a proposal, so the binding path was never entered: 18 rows are NO_TRADE with risk ['NOT_APPLICABLE']; the runtime reviews risk only when there is something to review (\u00a73 of the runtime document)",
+      "evidence": [
+        "traces.jsonl risk"
+      ]
+    },
+    {
+      "check": "the independent verifier graded the decisions it was asked to grade",
+      "result": "NOT_EXERCISED",
+      "detail": "verifier verdicts ['NOT_RUN']: a NO_TRADE row with no proposal is not sent to the verifier, so this branch is NOT_EXERCISED in a window whose router rejects everything",
+      "evidence": [
+        "traces.jsonl verification.verdict"
+      ]
+    },
+    {
+      "check": "the agents were reachable from the live path",
+      "result": "NOT_EXERCISED",
+      "detail": "0 agent message(s) recorded; with no proposal the registry is never consulted, so the live window cannot prove the agents are reachable and says so",
+      "evidence": [
+        "traces.jsonl agent_messages"
+      ]
+    },
+    {
+      "check": "checkpoint and resume: a later run continues the same chain",
+      "result": "PASS",
+      "detail": "paper_state.json exists=True; leg 2-bar-close-cadence continued from record 6 and added 2; leg 3-controlled-stop continued from record 8 and added 4; leg 4-resume-after-stop continued from record 12 and added 6",
+      "evidence": [
+        "reports/autonomous-paper/wp9-runtime-legs/paper_state.json"
+      ]
+    },
+    {
+      "check": "every evaluation is accounted for and no order was created",
+      "result": "PASS",
+      "detail": "18 evaluations across 4 leg(s), 0 runtime failure(s), 0 order(s), 0 production action(s)",
+      "evidence": [
+        "1-interval-cadence/RUN_REPORT.json",
+        "2-bar-close-cadence/RUN_REPORT.json",
+        "3-controlled-stop/RUN_REPORT.json",
+        "4-resume-after-stop/RUN_REPORT.json"
+      ]
+    },
+    {
+      "check": "replay reconstructs each decision without reading the market again",
+      "result": "PASS",
+      "detail": "1-interval-cadence: 6/6 ok, failed=0, market_data_accessed=False; 2-bar-close-cadence: 8/8 ok, failed=0, market_data_accessed=False; 3-controlled-stop: 12/12 ok, failed=0, market_data_accessed=False; 4-resume-after-stop: 18/18 ok, failed=0, market_data_accessed=False",
+      "evidence": [
+        "1-interval-cadence/RUN_REPORT.json#replay",
+        "2-bar-close-cadence/RUN_REPORT.json#replay",
+        "3-controlled-stop/RUN_REPORT.json#replay",
+        "4-resume-after-stop/RUN_REPORT.json#replay"
+      ]
+    },
+    {
+      "check": "no hidden critical error, and the cycle latency is measured",
+      "result": "PASS",
+      "detail": "0 error(s) in the leg reports; 9 cycle(s) with latency min 2487 ms / max 5743 ms",
+      "evidence": [
+        "1-interval-cadence/RUN_REPORT.json#errors",
+        "2-bar-close-cadence/RUN_REPORT.json#errors",
+        "3-controlled-stop/RUN_REPORT.json#errors",
+        "4-resume-after-stop/RUN_REPORT.json#errors"
+      ]
+    },
+    {
+      "check": "the executed window's flow coverage matches its own records",
+      "result": "PASS",
+      "detail": "stages reached: scan and bar history fetched 18/18, regime and context built 18/18, router consulted 18/18, proposal built 0/18, agents consulted 0/0, risk engine evaluated 0/0, independent verifier ran 0/0, decision persisted to the trace chain 18/18, order created (TRADE_PAPER) 0/18, broker reconciliation / outcome resolved 0/0; not exercised in this window: agents consulted, independent verifier ran, proposal built, risk engine evaluated (the router admitted no candidate that emitted alpha; which stages a real window reaches depends on the market, so the rest is reported, not asserted)",
+      "evidence": [
+        "traces.jsonl",
+        "legs/*/RUN_REPORT.json"
+      ]
+    },
+    {
+      "check": "the window reached the 24 h the operator asked for",
+      "result": "NOT_EXERCISED",
+      "detail": "0.0621 h executed of 24.0 h (0.259% of the target): the rehearsal is prepared and driven, the window is not complete, so no stability verdict is issued",
+      "evidence": [
+        "this report"
+      ]
+    }
+  ],
+  "per_leg_freshness": {
+    "1-interval-cadence": {
+      "evaluations": 6,
+      "age_ms_max": 537736,
+      "age_ms_min": 490134,
+      "stale_evaluations": 6,
+      "stale_share": 1.0,
+      "router_reasons": [
+        "stale_context"
+      ]
+    },
+    "2-bar-close-cadence": {
+      "evaluations": 2,
+      "age_ms_max": 305006,
+      "age_ms_min": 305006,
+      "stale_evaluations": 0,
+      "stale_share": 0.0,
+      "router_reasons": []
+    },
+    "3-controlled-stop": {
+      "evaluations": 4,
+      "age_ms_max": 335463,
+      "age_ms_min": 311555,
+      "stale_evaluations": 0,
+      "stale_share": 0.0,
+      "router_reasons": []
+    },
+    "4-resume-after-stop": {
+      "evaluations": 6,
+      "age_ms_max": 409551,
+      "age_ms_min": 360914,
+      "stale_evaluations": 0,
+      "stale_share": 0.0,
+      "router_reasons": []
+    }
+  },
+  "flow_coverage": {
+    "stages": [
+      {
+        "stage": "scan and bar history fetched",
+        "reached": 18,
+        "of": 18,
+        "evidence": "traces.jsonl asset_context.bar_count"
+      },
+      {
+        "stage": "regime and context built",
+        "reached": 18,
+        "of": 18,
+        "evidence": "traces.jsonl regime"
+      },
+      {
+        "stage": "router consulted",
+        "reached": 18,
+        "of": 18,
+        "evidence": "traces.jsonl strategies_considered"
+      },
+      {
+        "stage": "proposal built",
+        "reached": 0,
+        "of": 18,
+        "evidence": "traces.jsonl proposal"
+      },
+      {
+        "stage": "agents consulted",
+        "reached": 0,
+        "of": 0,
+        "evidence": "traces.jsonl agent_messages"
+      },
+      {
+        "stage": "risk engine evaluated",
+        "reached": 0,
+        "of": 0,
+        "evidence": "traces.jsonl risk.risk_evaluated"
+      },
+      {
+        "stage": "independent verifier ran",
+        "reached": 0,
+        "of": 0,
+        "evidence": "traces.jsonl verification.verdict"
+      },
+      {
+        "stage": "decision persisted to the trace chain",
+        "reached": 18,
+        "of": 18,
+        "evidence": "traces.jsonl"
+      },
+      {
+        "stage": "order created (TRADE_PAPER)",
+        "reached": 0,
+        "of": 18,
+        "evidence": "traces.jsonl mode"
+      },
+      {
+        "stage": "broker reconciliation / outcome resolved",
+        "reached": 0,
+        "of": 0,
+        "evidence": "legs/*/RUN_REPORT.json totals.outcomes_resolved"
+      }
+    ],
+    "stages_reached": 4,
+    "stages_total": 10,
+    "proposals": 0,
+    "evaluations": 18,
+    "proposal_share": 0.0,
+    "order_creating_stages_reached": 0,
+    "why_the_rest_was_not_reached": "a decision may only create an order when a strategy is admitted and its net edge is positive; no strategy in the ledger is admitted, and every proposal was classified NO_GROSS_EDGE, so the order-creating stages are unreachable in a real window by design rather than by defect"
+  },
+  "identity": [
+    {
+      "leg": "1-interval-cadence",
+      "left": 6,
+      "right": 6,
+      "holds": true,
+      "runtime_failures": 0,
+      "orders_created": 0,
+      "production_actions": 0
+    },
+    {
+      "leg": "2-bar-close-cadence",
+      "left": 2,
+      "right": 2,
+      "holds": true,
+      "runtime_failures": 0,
+      "orders_created": 0,
+      "production_actions": 0
+    },
+    {
+      "leg": "3-controlled-stop",
+      "left": 4,
+      "right": 4,
+      "holds": true,
+      "runtime_failures": 0,
+      "orders_created": 0,
+      "production_actions": 0
+    },
+    {
+      "leg": "4-resume-after-stop",
+      "left": 6,
+      "right": 6,
+      "holds": true,
+      "runtime_failures": 0,
+      "orders_created": 0,
+      "production_actions": 0
+    }
+  ],
+  "trace_records": 18,
+  "hours_executed": 0.06209,
+  "hours_target": 24.0,
+  "window_complete": false,
+  "coverage_of_target": 0.002587,
+  "freshness_budget_ms": 450000,
+  "freshness_grace_bars": 1.5,
+  "        checks_total": 13,
+  "checks_failed": 0,
+  "checks_not_exercised": 4,
+  "verdict": "WINDOW_INCOMPLETE",
+  "stability_declared": false,
+  "stability_reason": "a window shorter than the target cannot pass a stability test, and the checks the short window could not reach are reported as NOT_EXERCISED rather than PASS",
+  "budgets": {
+    "disk": "measured per leg, by summing the run root before and after",
+    "cpu_memory": "win32 GetProcessMemoryInfo + GetProcessTimes",
+    "process_tree": "the figures aggregate the child and every descendant: a virtual environment's python.exe can be a launcher stub, and sampling it alone would report the stub's few megabytes instead of the runtime's",
+    "note": "resource figures cover the paper child tree only, not the whole lab"
+  },
+  "governance": {
+    "LIVE_TRADING": "DISABLED",
+    "TRADES_AUTHORIZED": 0,
+    "orders_created": 0,
+    "false_success": 0,
+    "not_claimed": [
+      "24 h of continuous operation",
+      "profitability",
+      "the contractual paper test",
+      "any branch of the flow the executed window never entered"
+    ]
+  }
+}

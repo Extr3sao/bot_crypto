@@ -56,6 +56,23 @@ reports/*
 !reports/.gitkeep
 
 # ============================================================
+# CAP-003 — evidencias OHLCV crudas: locales por tamano.
+# El ledger (evidence/real_decisions/*.jsonl) SI se versiona y
+# fija cada fichero crudo con su sha256.
+# ============================================================
+evidence/real_decisions/raw_evidence/
+
+# ============================================================
+# CAP-004 — estado operativo vivo (cambia en cada ciclo, no es evidencia)
+# El manifiesto, el RAW_EVIDENCE_MANIFEST y los checkpoints SI se versionan.
+# ============================================================
+evidence/real_decisions/heartbeat.json
+evidence/real_decisions/CAMPAIGN_LOCK.json
+# CAP-004B — the supervisor's operational history is append-only host state
+# (it grows every scheduled run); the campaign ledger remains versioned.
+evidence/real_decisions/operations.jsonl
+
+# ============================================================
 # Notebooks — solo checkpoints
 # ============================================================
 notebooks/.ipynb_checkpoints/
@@ -113,3 +130,22 @@ commit_msg*.txt
 .agentic-backup/
 .freebuff/
 his.zip
+
+# ============================================================
+# TAP-SUPERVISOR-INTEGRATION-002 — this delivery's reports are evidence and are
+# versioned; the rest of reports/ stays ignored exactly as main decided. git does
+# not re-include a file whose parent is excluded, so the chain is re-opened one
+# level at a time and closed again below it.
+# ============================================================
+!reports/ai-bots/
+reports/ai-bots/*
+!reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/
+!reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/evidence/*.log
+!reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/evidence/*.txt
+
+# ============================================================
+# TAP-INTEGRATION-GATE-001 — the gate's reports and the evidence it used are the
+# delivery. Re-opened one level at a time for the same reason as the 002 block above.
+# ============================================================
+!reports/ai-bots/TAP-INTEGRATION-GATE-001/
+!reports/ai-bots/TAP-INTEGRATION-GATE-001/**

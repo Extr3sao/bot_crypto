@@ -1,0 +1,31 @@
+$ C:\Users\GVLLFR0035\Downloads\ff-wt-gate001\.venv\Scripts\python.exe C:\Users\GVLLFR0035\Downloads\ff-wt-gate001\scripts\paper_lock_campaign.py run --out C:\Users\GVLLFR0035\Downloads\ff-gate-run-003\campaigns\lock --modes after_cycle after_cycle before_cycle after_cycle after_cycle after_cycle --race-iterations 2 5
+exit=0
+
+--- stdout ---
+{
+  "iterations": 6,
+  "state": "RECOVERED",
+  "cycles": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+  ],
+  "locks": 0
+}
+
+--- stderr ---
+

@@ -1,0 +1,11 @@
+main-only commits since merge base 1d2192b0:
+  e67194e7 Stop the final report from naming its own commit
+  af84fd1a Record the third broken registration and why the cadence is parked
+  c94b1a2b Repair the EDGE-04 alarm, restore the 1h corpus, and show what still blocks
+  0e13160a Anchor the lost campaign commit and record why the stores cannot be recovered.
+
+paths they touch: 66
+route paths (manifest): 84
+intersection:
+   (empty)
+  overlap count: 0

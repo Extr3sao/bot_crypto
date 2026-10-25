@@ -1,0 +1,260 @@
+{
+  "checked_at_utc": "2026-10-25T10:30:23Z",
+  "fencing": {
+    "fence_files": [
+      {
+        "fence": 1,
+        "path": "cycles/cycle-0001/ledger.jsonl.lock.fence"
+      },
+      {
+        "fence": 1,
+        "path": "cycles/cycle-0002/ledger.jsonl.lock.fence"
+      },
+      {
+        "fence": 1,
+        "path": "cycles/cycle-0003/ledger.jsonl.lock.fence"
+      },
+      {
+        "fence": 1,
+        "path": "cycles/cycle-0004/ledger.jsonl.lock.fence"
+      },
+      {
+        "fence": 4,
+        "path": "market-1m/BTCUSDT.jsonl.lock.fence"
+      },
+      {
+        "fence": 4,
+        "path": "market-1m/ETHUSDT.jsonl.lock.fence"
+      },
+      {
+        "fence": 4,
+        "path": "market-1m/SOLUSDT.jsonl.lock.fence"
+      },
+      {
+        "fence": 5,
+        "path": "STREAM.jsonl.lock.fence"
+      }
+    ],
+    "max_fence_in_reclaims": 2,
+    "stream_fence": 5
+  },
+  "last_attempt": {
+    "aborted": false,
+    "exit_code": 0,
+    "refused": false
+  },
+  "ledger": {
+    "chain_ok": true,
+    "chain_reason": "INTACT",
+    "cycle_directories": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "cycle_ledgers": {
+      "cycle-0001": {
+        "lines": 7,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "cycle-0002": {
+        "lines": 10,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "cycle-0003": {
+        "lines": 17,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "cycle-0004": {
+        "lines": 20,
+        "ok": true,
+        "reason": "INTACT"
+      }
+    },
+    "cycle_ledgers_ok": true,
+    "cycles": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "head_sha256": "f6b88e83e2fbc5dceba021df40969f1f86aa61e2635216e352cfa3276d65d386",
+    "interrupted_cycles": [],
+    "kinds": {
+      "CYCLE": 4,
+      "DELAY_MEASURED": 3,
+      "LOCK_RECLAIMED": 1,
+      "SESSION_END": 1,
+      "SESSION_PROVENANCE": 3,
+      "SESSION_START": 3
+    },
+    "last_cycle": 4,
+    "rows": 15,
+    "seq_continuous": true
+  },
+  "locks": {
+    "abandoned_paths": [
+      "market-1m/BTCUSDT.jsonl.lock",
+      "market-1m/ETHUSDT.jsonl.lock",
+      "market-1m/SOLUSDT.jsonl.lock"
+    ],
+    "active": [],
+    "all": [
+      {
+        "acquired_at_utc": "2026-10-25T10:29:15Z",
+        "bytes": 310,
+        "fence": 4,
+        "owner_host": "DESKTOP-4CHO695",
+        "owner_pid": 39748,
+        "owner_start_ms": 1792924151731,
+        "path": "market-1m/BTCUSDT.jsonl.lock",
+        "purpose": "minutes:BTCUSDT.jsonl",
+        "reason": "OWNER_PROCESS_DEAD",
+        "state": "ABANDONED",
+        "token": "5be683835c694944b4ea08e384a655a1"
+      },
+      {
+        "acquired_at_utc": "2026-10-25T10:29:15Z",
+        "bytes": 310,
+        "fence": 4,
+        "owner_host": "DESKTOP-4CHO695",
+        "owner_pid": 39748,
+        "owner_start_ms": 1792924151731,
+        "path": "market-1m/ETHUSDT.jsonl.lock",
+        "purpose": "minutes:ETHUSDT.jsonl",
+        "reason": "OWNER_PROCESS_DEAD",
+        "state": "ABANDONED",
+        "token": "81b949e0f1334b9fb172dc14326428ea"
+      },
+      {
+        "acquired_at_utc": "2026-10-25T10:29:15Z",
+        "bytes": 310,
+        "fence": 4,
+        "owner_host": "DESKTOP-4CHO695",
+        "owner_pid": 39748,
+        "owner_start_ms": 1792924151731,
+        "path": "market-1m/SOLUSDT.jsonl.lock",
+        "purpose": "minutes:SOLUSDT.jsonl",
+        "reason": "OWNER_PROCESS_DEAD",
+        "state": "ABANDONED",
+        "token": "50ef577363884e18b70c6142f07f7881"
+      }
+    ],
+    "awaiting_recovery": [
+      {
+        "acquired_at_utc": "2026-10-25T10:29:15Z",
+        "bytes": 310,
+        "fence": 4,
+        "owner_host": "DESKTOP-4CHO695",
+        "owner_pid": 39748,
+        "owner_start_ms": 1792924151731,
+        "path": "market-1m/BTCUSDT.jsonl.lock",
+        "purpose": "minutes:BTCUSDT.jsonl",
+        "reason": "OWNER_PROCESS_DEAD",
+        "state": "ABANDONED",
+        "token": "5be683835c694944b4ea08e384a655a1"
+      },
+      {
+        "acquired_at_utc": "2026-10-25T10:29:15Z",
+        "bytes": 310,
+        "fence": 4,
+        "owner_host": "DESKTOP-4CHO695",
+        "owner_pid": 39748,
+        "owner_start_ms": 1792924151731,
+        "path": "market-1m/ETHUSDT.jsonl.lock",
+        "purpose": "minutes:ETHUSDT.jsonl",
+        "reason": "OWNER_PROCESS_DEAD",
+        "state": "ABANDONED",
+        "token": "81b949e0f1334b9fb172dc14326428ea"
+      },
+      {
+        "acquired_at_utc": "2026-10-25T10:29:15Z",
+        "bytes": 310,
+        "fence": 4,
+        "owner_host": "DESKTOP-4CHO695",
+        "owner_pid": 39748,
+        "owner_start_ms": 1792924151731,
+        "path": "market-1m/SOLUSDT.jsonl.lock",
+        "purpose": "minutes:SOLUSDT.jsonl",
+        "reason": "OWNER_PROCESS_DEAD",
+        "state": "ABANDONED",
+        "token": "50ef577363884e18b70c6142f07f7881"
+      }
+    ]
+  },
+  "out_dir": "C:\\Users\\GVLLFR0035\\Downloads\\ff-lockcamp-full2\\session",
+  "owner": {
+    "acquired_at_utc": "2026-10-25T10:29:15Z",
+    "fence": 4,
+    "host": "DESKTOP-4CHO695",
+    "live": false,
+    "pid": 39748,
+    "process_start_ms": 1792924151731
+  },
+  "read_only": true,
+  "recoveries": {
+    "count": 1,
+    "last": {
+      "cycle": null,
+      "locks": [
+        {
+          "fence": 2,
+          "lock": "BTCUSDT.jsonl.lock",
+          "pid": 10244,
+          "process_start_ms": 1792924007935,
+          "reason": "OWNER_PROCESS_DEAD"
+        },
+        {
+          "fence": 2,
+          "lock": "ETHUSDT.jsonl.lock",
+          "pid": 10244,
+          "process_start_ms": 1792924007935,
+          "reason": "OWNER_PROCESS_DEAD"
+        },
+        {
+          "fence": 2,
+          "lock": "SOLUSDT.jsonl.lock",
+          "pid": 10244,
+          "process_start_ms": 1792924007935,
+          "reason": "OWNER_PROCESS_DEAD"
+        },
+        {
+          "fence": 2,
+          "lock": "STREAM.jsonl.lock",
+          "pid": 10244,
+          "process_start_ms": 1792924007935,
+          "reason": "OWNER_PROCESS_DEAD"
+        }
+      ],
+      "scope": "session",
+      "seq": 7
+    },
+    "last_fence": 2,
+    "last_reason": "OWNER_PROCESS_DEAD",
+    "scopes": [
+      "session"
+    ]
+  },
+  "schema_version": "TAP_PAPER_SESSION_STATUS_V1",
+  "session": {
+    "ended_at_utc": null,
+    "pinned_identity": "3738bb52712ec382e452a57d721148bde3977e92238d7197da5cf3c27bde4b30",
+    "resumed": true,
+    "resumed_starts": 2,
+    "run_id": "run-3738bb52712ec382e452",
+    "runtime_digest": "39303dfb01220c27d766a5027db1a6e49755711788e055e3d3010c430612ad4b",
+    "runtime_stable": true,
+    "session_id": "sess-92068a7d4f029f779f85",
+    "started_at_utc": "2026-10-25T10:29:13Z",
+    "starts": 3
+  },
+  "state": "RECOVERING",
+  "why": [
+    "ABANDONED:OWNER_PROCESS_DEAD:market-1m/BTCUSDT.jsonl.lock",
+    "ABANDONED:OWNER_PROCESS_DEAD:market-1m/ETHUSDT.jsonl.lock",
+    "ABANDONED:OWNER_PROCESS_DEAD:market-1m/SOLUSDT.jsonl.lock"
+  ]
+}
