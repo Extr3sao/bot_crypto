@@ -1,0 +1,558 @@
+{
+  "finished_at_utc": "2026-10-25T17:33:42Z",
+  "scenarios": {
+    "budget": {
+      "attempts": [
+        {
+          "attempt": 1,
+          "killed": {
+            "alive_after": true,
+            "detail": "CORRECTO: el proceso con PID 46484 (proceso secundario de PID 5144)\nha sido terminado.",
+            "pid": 46484,
+            "taskkill_exit": 0
+          },
+          "recorded": true,
+          "resumes": 1,
+          "rows": 2,
+          "settled": true,
+          "starts": 1,
+          "supervisor_exited": false
+        },
+        {
+          "attempt": 2,
+          "killed": {
+            "alive_after": true,
+            "detail": "CORRECTO: el proceso con PID 46968 (proceso secundario de PID 36596)\nha sido terminado.",
+            "pid": 46968,
+            "taskkill_exit": 0
+          },
+          "recorded": true,
+          "resumes": 1,
+          "rows": 5,
+          "settled": true,
+          "starts": 2,
+          "supervisor_exited": true
+        }
+      ],
+      "exit_code": 3,
+      "locks": [
+        {
+          "path": "market-1m/BTCUSDT.jsonl.lock",
+          "reason": "OWNER_PROCESS_DEAD",
+          "state": "ABANDONED"
+        },
+        {
+          "path": "market-1m/ETHUSDT.jsonl.lock",
+          "reason": "OWNER_PROCESS_DEAD",
+          "state": "ABANDONED"
+        },
+        {
+          "path": "market-1m/SOLUSDT.jsonl.lock",
+          "reason": "OWNER_PROCESS_DEAD",
+          "state": "ABANDONED"
+        },
+        {
+          "path": "STREAM.jsonl.lock",
+          "reason": "OWNER_PROCESS_DEAD",
+          "state": "ABANDONED"
+        }
+      ],
+      "result": {
+        "action": "STOP_BUDGET",
+        "attempts": [
+          {
+            "action": "START",
+            "attempt": 1,
+            "clean": false,
+            "continued": true,
+            "exit_code": 1,
+            "locks_after": 4,
+            "new_cycles": [],
+            "pid": 5144,
+            "progress": true,
+            "resumed_flag": false,
+            "rows_after": 2,
+            "rows_before": 0,
+            "start_kind": "SESSION_START",
+            "start_seq": 1,
+            "stream_readable": true
+          },
+          {
+            "action": "RESUME",
+            "attempt": 2,
+            "clean": false,
+            "continued": true,
+            "exit_code": 1,
+            "locks_after": 4,
+            "new_cycles": [],
+            "pid": 36596,
+            "progress": true,
+            "resumed_flag": true,
+            "rows_after": 5,
+            "rows_before": 2,
+            "start_kind": "SESSION_START",
+            "start_seq": 3,
+            "stream_readable": true
+          }
+        ],
+        "elapsed_s": 10.907,
+        "exit_code": 3,
+        "final_state": "RECOVERING",
+        "final_status": {
+          "checked_at_utc": "2026-10-25T17:33:42Z",
+          "fencing": {
+            "fence_files": [
+              {
+                "fence": 3,
+                "path": "market-1m/BTCUSDT.jsonl.lock.fence"
+              },
+              {
+                "fence": 3,
+                "path": "market-1m/ETHUSDT.jsonl.lock.fence"
+              },
+              {
+                "fence": 3,
+                "path": "market-1m/SOLUSDT.jsonl.lock.fence"
+              },
+              {
+                "fence": 3,
+                "path": "STREAM.jsonl.lock.fence"
+              }
+            ],
+            "max_fence_in_reclaims": 2,
+            "stream_fence": 3
+          },
+          "last_attempt": {
+            "aborted": false,
+            "exit_code": null,
+            "refused": false
+          },
+          "ledger": {
+            "chain_ok": true,
+            "chain_reason": "INTACT",
+            "cycle_directories": [],
+            "cycle_ledgers": {},
+            "cycle_ledgers_ok": true,
+            "cycles": [],
+            "head_sha256": "f0a463f67f58a1ca56202b9a9b064869bc631fa7650e49f13b6d4f71bee2dd51",
+            "interrupted_cycles": [],
+            "kinds": {
+              "LOCK_RECLAIMED": 1,
+              "SESSION_PROVENANCE": 2,
+              "SESSION_START": 2
+            },
+            "last_cycle": null,
+            "rows": 5,
+            "seq_continuous": true
+          },
+          "locks": {
+            "abandoned_paths": [
+              "market-1m/BTCUSDT.jsonl.lock",
+              "market-1m/ETHUSDT.jsonl.lock",
+              "market-1m/SOLUSDT.jsonl.lock",
+              "STREAM.jsonl.lock"
+            ],
+            "active": [],
+            "all": [
+              {
+                "acquired_at_utc": "2026-10-25T17:33:41Z",
+                "bytes": 310,
+                "fence": 3,
+                "owner_host": "DESKTOP-4CHO695",
+                "owner_pid": 46968,
+                "owner_start_ms": 1792949617443,
+                "path": "market-1m/BTCUSDT.jsonl.lock",
+                "purpose": "minutes:BTCUSDT.jsonl",
+                "reason": "OWNER_PROCESS_DEAD",
+                "state": "ABANDONED",
+                "token": "11d4b977b89e481d862bafa1175ce4a7"
+              },
+              {
+                "acquired_at_utc": "2026-10-25T17:33:41Z",
+                "bytes": 310,
+                "fence": 3,
+                "owner_host": "DESKTOP-4CHO695",
+                "owner_pid": 46968,
+                "owner_start_ms": 1792949617443,
+                "path": "market-1m/ETHUSDT.jsonl.lock",
+                "purpose": "minutes:ETHUSDT.jsonl",
+                "reason": "OWNER_PROCESS_DEAD",
+                "state": "ABANDONED",
+                "token": "f1c92b5cb06f485b949bd8f06517f8d4"
+              },
+              {
+                "acquired_at_utc": "2026-10-25T17:33:41Z",
+                "bytes": 310,
+                "fence": 3,
+                "owner_host": "DESKTOP-4CHO695",
+                "owner_pid": 46968,
+                "owner_start_ms": 1792949617443,
+                "path": "market-1m/SOLUSDT.jsonl.lock",
+                "purpose": "minutes:SOLUSDT.jsonl",
+                "reason": "OWNER_PROCESS_DEAD",
+                "state": "ABANDONED",
+                "token": "447899ef458f49bfbce5ee8c705d90cc"
+              },
+              {
+                "acquired_at_utc": "2026-10-25T17:33:41Z",
+                "bytes": 307,
+                "fence": 3,
+                "owner_host": "DESKTOP-4CHO695",
+                "owner_pid": 46968,
+                "owner_start_ms": 1792949617443,
+                "path": "STREAM.jsonl.lock",
+                "purpose": "ledger:STREAM.jsonl",
+                "reason": "OWNER_PROCESS_DEAD",
+                "state": "ABANDONED",
+                "token": "c2ed763605704025a25ac3f7ae067c68"
+              }
+            ],
+            "awaiting_recovery": [
+              {
+                "acquired_at_utc": "2026-10-25T17:33:41Z",
+                "bytes": 310,
+                "fence": 3,
+                "owner_host": "DESKTOP-4CHO695",
+                "owner_pid": 46968,
+                "owner_start_ms": 1792949617443,
+                "path": "market-1m/BTCUSDT.jsonl.lock",
+                "purpose": "minutes:BTCUSDT.jsonl",
+                "reason": "OWNER_PROCESS_DEAD",
+                "state": "ABANDONED",
+                "token": "11d4b977b89e481d862bafa1175ce4a7"
+              },
+              {
+                "acquired_at_utc": "2026-10-25T17:33:41Z",
+                "bytes": 310,
+                "fence": 3,
+                "owner_host": "DESKTOP-4CHO695",
+                "owner_pid": 46968,
+                "owner_start_ms": 1792949617443,
+                "path": "market-1m/ETHUSDT.jsonl.lock",
+                "purpose": "minutes:ETHUSDT.jsonl",
+                "reason": "OWNER_PROCESS_DEAD",
+                "state": "ABANDONED",
+                "token": "f1c92b5cb06f485b949bd8f06517f8d4"
+              },
+              {
+                "acquired_at_utc": "2026-10-25T17:33:41Z",
+                "bytes": 310,
+                "fence": 3,
+                "owner_host": "DESKTOP-4CHO695",
+                "owner_pid": 46968,
+                "owner_start_ms": 1792949617443,
+                "path": "market-1m/SOLUSDT.jsonl.lock",
+                "purpose": "minutes:SOLUSDT.jsonl",
+                "reason": "OWNER_PROCESS_DEAD",
+                "state": "ABANDONED",
+                "token": "447899ef458f49bfbce5ee8c705d90cc"
+              },
+              {
+                "acquired_at_utc": "2026-10-25T17:33:41Z",
+                "bytes": 307,
+                "fence": 3,
+                "owner_host": "DESKTOP-4CHO695",
+                "owner_pid": 46968,
+                "owner_start_ms": 1792949617443,
+                "path": "STREAM.jsonl.lock",
+                "purpose": "ledger:STREAM.jsonl",
+                "reason": "OWNER_PROCESS_DEAD",
+                "state": "ABANDONED",
+                "token": "c2ed763605704025a25ac3f7ae067c68"
+              }
+            ]
+          },
+          "out_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_9d622bb5\\campaigns\\supervisor\\scenarios\\budget\\session",
+          "owner": {
+            "acquired_at_utc": "2026-10-25T17:33:41Z",
+            "fence": 3,
+            "host": "DESKTOP-4CHO695",
+            "live": false,
+            "pid": 46968,
+            "process_start_ms": 1792949617443
+          },
+          "read_only": true,
+          "recoveries": {
+            "count": 1,
+            "last": {
+              "cycle": null,
+              "locks": [
+                {
+                  "fence": 2,
+                  "lock": "BTCUSDT.jsonl.lock",
+                  "pid": 46484,
+                  "process_start_ms": 1792949611552,
+                  "reason": "OWNER_PROCESS_DEAD"
+                },
+                {
+                  "fence": 2,
+                  "lock": "ETHUSDT.jsonl.lock",
+                  "pid": 46484,
+                  "process_start_ms": 1792949611552,
+                  "reason": "OWNER_PROCESS_DEAD"
+                },
+                {
+                  "fence": 2,
+                  "lock": "SOLUSDT.jsonl.lock",
+                  "pid": 46484,
+                  "process_start_ms": 1792949611552,
+                  "reason": "OWNER_PROCESS_DEAD"
+                },
+                {
+                  "fence": 2,
+                  "lock": "STREAM.jsonl.lock",
+                  "pid": 46484,
+                  "process_start_ms": 1792949611552,
+                  "reason": "OWNER_PROCESS_DEAD"
+                }
+              ],
+              "scope": "session",
+              "seq": 5
+            },
+            "last_fence": 2,
+            "last_reason": "OWNER_PROCESS_DEAD",
+            "scopes": [
+              "session"
+            ]
+          },
+          "schema_version": "TAP_PAPER_SESSION_STATUS_V1",
+          "session": {
+            "ended_at_utc": null,
+            "pinned_identity": "3499d9d8ccdc9ce62d1da9299dbd47f164cacaae4156ef4f2316f12b90a5cf60",
+            "resumed": true,
+            "resumed_starts": 1,
+            "run_id": "run-3499d9d8ccdc9ce62d1d",
+            "runtime_digest": "39303dfb01220c27d766a5027db1a6e49755711788e055e3d3010c430612ad4b",
+            "runtime_stable": true,
+            "session_id": "sess-82b88c0db27ef432b689",
+            "started_at_utc": "2026-10-25T17:33:40Z",
+            "starts": 2
+          },
+          "state": "RECOVERING",
+          "why": [
+            "ABANDONED:OWNER_PROCESS_DEAD:market-1m/BTCUSDT.jsonl.lock",
+            "ABANDONED:OWNER_PROCESS_DEAD:market-1m/ETHUSDT.jsonl.lock",
+            "ABANDONED:OWNER_PROCESS_DEAD:market-1m/SOLUSDT.jsonl.lock",
+            "ABANDONED:OWNER_PROCESS_DEAD:STREAM.jsonl.lock"
+          ]
+        },
+        "finished_at_utc": "2026-10-25T17:33:42Z",
+        "live_orders": 0,
+        "locks": [
+          {
+            "path": "market-1m/BTCUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/ETHUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/SOLUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "STREAM.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          }
+        ],
+        "mode": "PAPER",
+        "reason": "RETRY_BUDGET_EXHAUSTED",
+        "restarts": 1,
+        "schema_version": "TAP_PAPER_SUPERVISOR_V1",
+        "session": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_9d622bb5\\campaigns\\supervisor\\scenarios\\budget\\session",
+        "started_at_utc": "2026-10-25T17:33:31Z",
+        "state_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_9d622bb5\\campaigns\\supervisor\\scenarios\\budget\\supervisor"
+      },
+      "state": "RECOVERING"
+    },
+    "corrupt": {
+      "exit_code": 3,
+      "result": {
+        "action": "STOP_FAILED",
+        "attempts": [],
+        "elapsed_s": 0.016,
+        "exit_code": 3,
+        "final_state": "FAILED",
+        "final_status": {
+          "checked_at_utc": "2026-10-25T17:33:31Z",
+          "fencing": {
+            "fence_files": [
+              {
+                "fence": 1,
+                "path": "cycles/cycle-0001/ledger.jsonl.lock.fence"
+              },
+              {
+                "fence": 1,
+                "path": "cycles/cycle-0002/ledger.jsonl.lock.fence"
+              },
+              {
+                "fence": 1,
+                "path": "cycles/cycle-0003/ledger.jsonl.lock.fence"
+              },
+              {
+                "fence": 1,
+                "path": "cycles/cycle-0004/ledger.jsonl.lock.fence"
+              },
+              {
+                "fence": 1,
+                "path": "cycles/cycle-0005/ledger.jsonl.lock.fence"
+              },
+              {
+                "fence": 3,
+                "path": "market-1m/BTCUSDT.jsonl.lock.fence"
+              },
+              {
+                "fence": 3,
+                "path": "market-1m/ETHUSDT.jsonl.lock.fence"
+              },
+              {
+                "fence": 3,
+                "path": "market-1m/SOLUSDT.jsonl.lock.fence"
+              },
+              {
+                "fence": 3,
+                "path": "STREAM.jsonl.lock.fence"
+              }
+            ],
+            "max_fence_in_reclaims": 0,
+            "stream_fence": 3
+          },
+          "last_attempt": {
+            "aborted": false,
+            "exit_code": 0,
+            "refused": false
+          },
+          "ledger": {
+            "chain_ok": false,
+            "chain_reason": "BAD_JSON_AT_14: Unterminated string starting at: line 1 column 41 (char 40)",
+            "cycle_directories": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "cycle_ledgers": {},
+            "cycle_ledgers_ok": true,
+            "cycles": [],
+            "head_sha256": null,
+            "interrupted_cycles": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "kinds": {},
+            "last_cycle": null,
+            "rows": 0,
+            "seq_continuous": false
+          },
+          "locks": {
+            "abandoned_paths": [
+              "STREAM.jsonl.lock"
+            ],
+            "active": [],
+            "all": [
+              {
+                "acquired_at_utc": null,
+                "bytes": 222,
+                "fence": 1,
+                "owner_host": "DESKTOP-4CHO695",
+                "owner_pid": 47860,
+                "owner_start_ms": null,
+                "path": "STREAM.jsonl.lock",
+                "purpose": "campaign-corrupt",
+                "reason": "OWNER_PROCESS_DEAD",
+                "state": "ABANDONED",
+                "token": "corrupt-ownercorrupt-ownercorrupt-ownercorrupt-owner"
+              }
+            ],
+            "awaiting_recovery": [
+              {
+                "acquired_at_utc": null,
+                "bytes": 222,
+                "fence": 1,
+                "owner_host": "DESKTOP-4CHO695",
+                "owner_pid": 47860,
+                "owner_start_ms": null,
+                "path": "STREAM.jsonl.lock",
+                "purpose": "campaign-corrupt",
+                "reason": "OWNER_PROCESS_DEAD",
+                "state": "ABANDONED",
+                "token": "corrupt-ownercorrupt-ownercorrupt-ownercorrupt-owner"
+              }
+            ]
+          },
+          "out_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_9d622bb5\\campaigns\\supervisor\\scenarios\\corrupt\\session",
+          "owner": {
+            "acquired_at_utc": null,
+            "fence": 1,
+            "host": "DESKTOP-4CHO695",
+            "live": false,
+            "pid": 47860,
+            "process_start_ms": null
+          },
+          "read_only": true,
+          "recoveries": {
+            "count": 0,
+            "last": null,
+            "last_fence": null,
+            "last_reason": null,
+            "scopes": []
+          },
+          "schema_version": "TAP_PAPER_SESSION_STATUS_V1",
+          "session": {
+            "ended_at_utc": null,
+            "pinned_identity": null,
+            "resumed": null,
+            "resumed_starts": 0,
+            "run_id": null,
+            "runtime_digest": null,
+            "runtime_stable": false,
+            "session_id": null,
+            "started_at_utc": null,
+            "starts": 0
+          },
+          "state": "FAILED",
+          "why": [
+            "CHAIN_BAD_JSON_AT_14: Unterminated string starting at: line 1 column 41 (char 40)",
+            "ABANDONED:OWNER_PROCESS_DEAD:STREAM.jsonl.lock"
+          ]
+        },
+        "finished_at_utc": "2026-10-25T17:33:31Z",
+        "live_orders": 0,
+        "locks": [
+          {
+            "path": "STREAM.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          }
+        ],
+        "mode": "PAPER",
+        "reason": "STATE_FAILED",
+        "restarts": 0,
+        "schema_version": "TAP_PAPER_SUPERVISOR_V1",
+        "session": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_9d622bb5\\campaigns\\supervisor\\scenarios\\corrupt\\session",
+        "started_at_utc": "2026-10-25T17:33:31Z",
+        "state_dir": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_9d622bb5\\campaigns\\supervisor\\scenarios\\corrupt\\supervisor"
+      },
+      "rows_after": null,
+      "rows_before": 13,
+      "source": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\tap_gate_9d622bb5\\campaigns\\supervisor\\session",
+      "spawned": [],
+      "state": "FAILED",
+      "stream_sha256": "4d4b9ef94aa9318e4c21c117419aa54c49ed9c740e728f9a1674f0db41c7ec02",
+      "why": [
+        "CHAIN_BAD_JSON_AT_14: Unterminated string starting at: line 1 column 41 (char 40)",
+        "ABANDONED:OWNER_PROCESS_DEAD:STREAM.jsonl.lock"
+      ]
+    }
+  },
+  "started_at_utc": "2026-10-25T17:33:30Z"
+}

@@ -25,7 +25,10 @@ Claims:
 ``S3``  self-control: ``A8`` fails on a drifted runtime hash and on an executable delta;
 ``A9``  the gate was recomputed at this branch's own commit and the recomputation still
         hashes;
-``S4``  self-control: ``A9`` fails on a manifest whose hash was edited after the run.
+``S4``  self-control: ``A9`` fails on a manifest whose hash was edited after the run;
+``A10`` the six-cycle session on live data reached the risk gate and accounts for every
+        absent fill;
+``S5``  self-control: ``A10`` fails on a summary that claims a fill the ledgers lack.
 
 A claim is ``PASS`` only when the artefact proves it, ``FAIL`` when it contradicts it, and
 ``UNKNOWN`` when the evidence is missing.  ``UNKNOWN`` is never a pass, and a self-control that
@@ -54,7 +57,8 @@ GATE_EVIDENCE = GATE_REPORT_DIR / "evidence"
 PAPER_SESSION = REPORT / "evidence" / "paper_session"
 ADMISSION = REPO / "config" / "strategy_admission.json"
 REVIEWER = GATE_REPORT_DIR / "tools" / "review_gate.py"
-GATE_RECOMPUTE = REPORT / "evidence" / "gate_at_600e744d"
+GATE_RECOMPUTE = REPORT / "evidence" / "gate_at_9d622bb5"
+PAPER_LONG = REPORT / "evidence" / "paper_session_long"
 SCHEMA = "TAP_INTEGRATION_ADMISSION_VERIFICATION_V1"
 GENESIS = "0" * 64
 SEPARATORS = (",", ":")
@@ -109,7 +113,23 @@ def add_delivery_worktree() -> tuple[Path | None, Path]:
     if not sha:
         return None, holder
     added = subprocess.run(
-        ["git", "worktree", "add", "--detach", str(target), sha],
+        [
+            # The checkout must reproduce the *blobs* the evidence was hashed from.  With
+            # core.autocrlf=true git rewrites every script on the way out, the six contract
+            # hashes stop matching, and `verify` fails for a reason that has nothing to do with
+            # the commit it is judging.  Pinning the config for this one command makes the
+            # judgment about the commit instead of about the machine that reads it.
+            "git",
+            "-c",
+            "core.autocrlf=false",
+            "-c",
+            "core.eol=lf",
+            "worktree",
+            "add",
+            "--detach",
+            str(target),
+            sha,
+        ],
         cwd=str(REPO),
         capture_output=True,
         text=True,
@@ -704,6 +724,113 @@ def self_control_gate_recompute() -> dict[str, Any]:
     return out
 
 
+def long_session_claim(root: Path | None = None) -> dict[str, Any]:
+    """The six-cycle session on real market data, and why it did not fill.
+
+    Two things are checked that the two-cycle session could not show: that the decisions really
+    reached the risk gate (so the harness is not simply idle), and that a zero fill count is
+    *accounted for* by a recorded gate or rejection. A session that reports no fills and no reason
+    is not evidence of a quiet market, it is a missing explanation, and it fails here.
+    """
+    root = root or PAPER_LONG
+    out = claim(
+        "A10",
+        "the long PAPER session ran six cycles on live data, reached the risk gate, sent no live "
+        "order, and every absent fill is accounted for by a recorded gate",
+        "re-count the cycle ledgers, compare the summary against them, and require a named reason "
+        "for each missing fill",
+    )
+    problems = out["problems"]
+    paper = paper_claim(root)
+    problems.extend(paper["problems"])
+    continuity = continuity_claim(root / "RUN_META.json", root / "SESSION_START.json")
+    problems.extend(continuity["problems"])
+
+    summary = read_json(root / "SUMMARY.json")
+    cycles = [path for path in sorted((root / "cycles").glob("*/ledger.jsonl")) if path.is_file()]
+    rows: list[dict[str, Any]] = []
+    for ledger in cycles:
+        for line in ledger.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                try:
+                    rows.append(json.loads(line).get("entry") or {})
+                except json.JSONDecodeError:
+                    problems.append(f"unreadable ledger row in {ledger.parent.name}")
+    kinds = [row.get("kind") for row in rows]
+    app_fills = kinds.count("FILL")
+    closes = sum(1 for row in rows if row.get("kind") == "FILL" and row.get("closed"))
+    approved = sum(
+        1 for row in rows if row.get("kind") == "DECISION_OUTCOME" and row.get("approved") is True
+    )
+    gated = [
+        row
+        for row in rows
+        if row.get("kind") == "DECISION_OUTCOME"
+        and row.get("approved") is True
+        and row.get("executed") is False
+    ]
+    rejected = [row for row in rows if row.get("kind") == "GUARD_REJECT"]
+    reasons = sorted(
+        {str(row.get("risk_gate") or row.get("code") or "?") for row in gated + rejected}
+    )
+
+    if len(cycles) < 6:
+        problems.append(f"{len(cycles)} cycle ledgers, expected at least 6")
+    if int(summary.get("cycles_executed") or 0) != len(cycles):
+        problems.append(
+            f"summary claims {summary.get('cycles_executed')} cycles, {len(cycles)} ledgers found"
+        )
+    if approved < 1:
+        problems.append("no decision reached the risk gate")
+    if int(summary.get("fills") or 0) != app_fills:
+        problems.append(f"summary fills {summary.get('fills')} != {app_fills} FILL row(s)")
+    if int(summary.get("closed_trades") or 0) != closes:
+        problems.append(
+            f"summary closed_trades {summary.get('closed_trades')} != {closes} closed FILL row(s)"
+        )
+    if app_fills == 0 and not reasons:
+        problems.append("zero fills with no recorded gate or rejection explaining them")
+    if int(summary.get("live_orders") or 0) != 0:
+        problems.append(f"live_orders {summary.get('live_orders')}")
+
+    out["detail"] = (
+        f"cycles={len(cycles)} decisions={kinds.count('DECISION')} approved={approved} "
+        f"fills={app_fills} gated={len(gated)} rejected={len(rejected)} reasons={reasons[:3]} "
+        f"live_orders={summary.get('live_orders')} "
+        f"equity={(summary.get('reconciliation') or {}).get('final_equity_usdt')}"
+    )
+    out["status"] = "PASS" if not problems else "FAIL"
+    return out
+
+
+def self_control_long_session() -> dict[str, Any]:
+    """A10 must reject a summary that claims a fill the ledgers do not contain."""
+
+    out = claim(
+        "S5",
+        "the long-session check is not blind: a summary claiming a fill with no FILL row must fail",
+        "copy the session, raise its fill count, and re-evaluate A10 against the copy",
+    )
+    if not (PAPER_LONG / "SUMMARY.json").is_file():
+        out["detail"] = "cannot run: no long session to tamper with"
+        out["problems"] = ["evidence missing"]
+        out["status"] = "FAIL"
+        return out
+    with tempfile.TemporaryDirectory() as raw:
+        copy = Path(raw) / "session"
+        shutil.copytree(PAPER_LONG, copy)
+        summary = read_json(copy / "SUMMARY.json")
+        (copy / "SUMMARY.json").write_text(
+            json.dumps({**summary, "fills": int(summary.get("fills") or 0) + 1}), encoding="utf-8"
+        )
+        judged = long_session_claim(copy)
+    detected = judged["status"] == "FAIL" and any("FILL row" in p for p in judged["problems"])
+    out["detail"] = f"tampered fills judged={judged['status']} problems={judged['problems'][:2]}"
+    out["problems"] = [] if detected else ["a fabricated fill did not fail A10"]
+    out["status"] = "PASS" if detected else "FAIL"
+    return out
+
+
 def self_control_paper() -> dict[str, Any]:
     out = claim(
         "S1",
@@ -837,10 +964,12 @@ def main(argv: list[str] | None = None) -> int:
         closure_claim(),
         continuity_claim(),
         gate_recompute_claim(),
+        long_session_claim(),
         self_control_paper(),
         self_control_admission(),
         self_control_continuity(),
         self_control_gate_recompute(),
+        self_control_long_session(),
     ]
     by_id = {row["id"]: row for row in claims}
     false_success = int(
@@ -848,6 +977,7 @@ def main(argv: list[str] | None = None) -> int:
         or (by_id["A5"]["status"] == "PASS" and by_id["S2"]["status"] != "PASS")
         or (by_id["A8"]["status"] == "PASS" and by_id["S3"]["status"] != "PASS")
         or (by_id["A9"]["status"] == "PASS" and by_id["S4"]["status"] != "PASS")
+        or (by_id["A10"]["status"] == "PASS" and by_id["S5"]["status"] != "PASS")
     )
     passed = sum(1 for row in claims if row["status"] == "PASS")
     payload = {
