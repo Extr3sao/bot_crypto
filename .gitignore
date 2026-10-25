@@ -142,3 +142,10 @@ reports/ai-bots/*
 !reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/
 !reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/evidence/*.log
 !reports/ai-bots/TAP-SUPERVISOR-INTEGRATION-002/evidence/*.txt
+
+# ============================================================
+# TAP-INTEGRATION-GATE-001 — the gate's reports and the evidence it used are the
+# delivery. Re-opened one level at a time for the same reason as the 002 block above.
+# ============================================================
+!reports/ai-bots/TAP-INTEGRATION-GATE-001/
+!reports/ai-bots/TAP-INTEGRATION-GATE-001/**
