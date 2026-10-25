@@ -1,0 +1,298 @@
+{
+  "hypothesis_id": "TDM11-H1",
+  "window_role": "RETROSPECTIVE_OOS_PRE_SELECTION",
+  "window": {
+    "start_ms": 1782345600000,
+    "end_ms": 1790294400000
+  },
+  "not_confirmatory": true,
+  "confirmatory_window_opened": false,
+  "preregistration_sha256": "ef68b4c3b520435391420b0e3ed11d7224790015bcb347c4973fc86b7c53f949",
+  "cost_bps": 23.7906,
+  "primary": {
+    "label": "DEV retrospective (SHORT + trend=down)",
+    "trades": 115,
+    "days": 89.57,
+    "trades_per_day": 1.284,
+    "gross_mean": -12.577,
+    "gross_sd": 56.5026,
+    "gross_ci95": [
+      -24.27,
+      -0.3929
+    ],
+    "gross_ci95_upper": -0.3929,
+    "gross_ci95_lower": -24.27,
+    "net_mean": -36.3676,
+    "net_ci95": [
+      -48.0606,
+      -24.1835
+    ],
+    "net_ci95_lower": -48.0606,
+    "net_ci95_upper": -24.1835,
+    "gross_ci95_circular": [
+      -23.9576,
+      -0.727
+    ],
+    "gross_ci95_analytic": [
+      -22.9038,
+      -2.2501
+    ],
+    "net_ci95_analytic": [
+      -46.6944,
+      -26.0407
+    ],
+    "ci_upper_max": -2.2501,
+    "win_rate_pct": 18.26,
+    "profit_factor": 0.1892,
+    "max_drawdown_bps": -4287.05,
+    "cumulative_net_bps": -4182.27,
+    "first_half_net": -34.1067,
+    "second_half_net": -38.5894,
+    "per_asset": {
+      "BTC": {
+        "trades": 36,
+        "net_mean": -31.9779
+      },
+      "ETH": {
+        "trades": 35,
+        "net_mean": -43.0722
+      },
+      "SOL": {
+        "trades": 44,
+        "net_mean": -34.6259
+      }
+    },
+    "cost_sensitivity": {
+      "0.0": {
+        "net_mean": -12.577,
+        "ci_lower": -24.27,
+        "ci_upper": -0.3929
+      },
+      "9.25": {
+        "net_mean": -21.827,
+        "ci_lower": -33.52,
+        "ci_upper": -9.6429
+      },
+      "13.7906": {
+        "net_mean": -26.3676,
+        "ci_lower": -38.0606,
+        "ci_upper": -14.1835
+      },
+      "18.7906": {
+        "net_mean": -31.3676,
+        "ci_lower": -43.0606,
+        "ci_upper": -19.1835
+      },
+      "23.7906": {
+        "net_mean": -36.3676,
+        "ci_lower": -48.0606,
+        "ci_upper": -24.1835
+      },
+      "41.25": {
+        "net_mean": -53.827,
+        "ci_lower": -65.52,
+        "ci_upper": -41.6429
+      }
+    }
+  },
+  "comparators": [
+    {
+      "label": "C1 SHORT, no regime filter",
+      "trades": 1621,
+      "days": 91.57,
+      "trades_per_day": 17.702,
+      "gross_mean": -5.4002,
+      "gross_sd": 49.2365,
+      "gross_ci95": [
+        -8.7765,
+        -2.1975
+      ],
+      "gross_ci95_upper": -2.1975,
+      "gross_ci95_lower": -8.7765,
+      "net_mean": -29.1908,
+      "net_ci95": [
+        -32.5671,
+        -25.9881
+      ],
+      "net_ci95_lower": -32.5671,
+      "net_ci95_upper": -25.9881,
+      "gross_ci95_circular": [
+        -8.1825,
+        -2.606
+      ],
+      "gross_ci95_analytic": [
+        -7.7971,
+        -3.0034
+      ],
+      "net_ci95_analytic": [
+        -31.5877,
+        -26.794
+      ],
+      "ci_upper_max": -3.0034,
+      "win_rate_pct": 21.53,
+      "profit_factor": 0.2041,
+      "max_drawdown_bps": -48077.02,
+      "cumulative_net_bps": -47318.31,
+      "first_half_net": -27.8731,
+      "second_half_net": -30.5069,
+      "per_asset": {
+        "BTC": {
+          "trades": 347,
+          "net_mean": -28.3854
+        },
+        "ETH": {
+          "trades": 553,
+          "net_mean": -29.1841
+        },
+        "SOL": {
+          "trades": 721,
+          "net_mean": -29.5836
+        }
+      },
+      "cost_sensitivity": {
+        "0.0": {
+          "net_mean": -5.4002,
+          "ci_lower": -8.7765,
+          "ci_upper": -2.1975
+        },
+        "9.25": {
+          "net_mean": -14.6502,
+          "ci_lower": -18.0265,
+          "ci_upper": -11.4475
+        },
+        "13.7906": {
+          "net_mean": -19.1908,
+          "ci_lower": -22.5671,
+          "ci_upper": -15.9881
+        },
+        "18.7906": {
+          "net_mean": -24.1908,
+          "ci_lower": -27.5671,
+          "ci_upper": -20.9881
+        },
+        "23.7906": {
+          "net_mean": -29.1908,
+          "ci_lower": -32.5671,
+          "ci_upper": -25.9881
+        },
+        "41.25": {
+          "net_mean": -46.6502,
+          "ci_lower": -50.0265,
+          "ci_upper": -43.4475
+        }
+      }
+    },
+    {
+      "label": "C2 both directions, trend=down",
+      "trades": 138,
+      "days": 89.66,
+      "trades_per_day": 1.539,
+      "gross_mean": -12.3667,
+      "gross_sd": 55.7364,
+      "gross_ci95": [
+        -22.3839,
+        -2.1807
+      ],
+      "gross_ci95_upper": -2.1807,
+      "gross_ci95_lower": -22.3839,
+      "net_mean": -36.1573,
+      "net_ci95": [
+        -46.1745,
+        -25.9713
+      ],
+      "net_ci95_lower": -46.1745,
+      "net_ci95_upper": -25.9713,
+      "gross_ci95_circular": [
+        -22.0278,
+        -2.0082
+      ],
+      "gross_ci95_analytic": [
+        -21.6659,
+        -3.0675
+      ],
+      "net_ci95_analytic": [
+        -45.4565,
+        -26.8581
+      ],
+      "ci_upper_max": -3.0675,
+      "win_rate_pct": 18.84,
+      "profit_factor": 0.1879,
+      "max_drawdown_bps": -5094.49,
+      "cumulative_net_bps": -4989.71,
+      "first_half_net": -34.5496,
+      "second_half_net": -37.765,
+      "per_asset": {
+        "BTC": {
+          "trades": 42,
+          "net_mean": -33.3007
+        },
+        "ETH": {
+          "trades": 41,
+          "net_mean": -44.2448
+        },
+        "SOL": {
+          "trades": 55,
+          "net_mean": -32.3098
+        }
+      },
+      "cost_sensitivity": {
+        "0.0": {
+          "net_mean": -12.3667,
+          "ci_lower": -22.3839,
+          "ci_upper": -2.1807
+        },
+        "9.25": {
+          "net_mean": -21.6167,
+          "ci_lower": -31.6339,
+          "ci_upper": -11.4307
+        },
+        "13.7906": {
+          "net_mean": -26.1573,
+          "ci_lower": -36.1745,
+          "ci_upper": -15.9713
+        },
+        "18.7906": {
+          "net_mean": -31.1573,
+          "ci_lower": -41.1745,
+          "ci_upper": -20.9713
+        },
+        "23.7906": {
+          "net_mean": -36.1573,
+          "ci_lower": -46.1745,
+          "ci_upper": -25.9713
+        },
+        "41.25": {
+          "net_mean": -53.6167,
+          "ci_lower": -63.6339,
+          "ci_upper": -43.4307
+        }
+      }
+    }
+  ],
+  "cost_independence": {
+    "gross_ci95_upper": -0.3929,
+    "below_zero": true,
+    "note": "if the gross CI upper bound is < 0, H1 is refuted for every non-negative cost",
+    "corroboration": [
+      "GROSS_CI_UPPER_BELOW_ZERO",
+      "GROSS_CI_UPPER_BELOW_ZERO_CIRCULAR_BLOCK",
+      "GROSS_CI_UPPER_BELOW_ZERO_ANALYTIC"
+    ],
+    "margin_bps": {
+      "gross_ci95_upper_stationary": -0.3929,
+      "gross_ci95_upper_circular": -0.727,
+      "gross_ci95_upper_analytic": -2.2501,
+      "net_ci95_upper_stationary": -24.1835,
+      "net_ci95_upper_analytic": -26.0407
+    }
+  },
+  "decision": {
+    "n_ge_min": true,
+    "min_n": 36,
+    "rule": "prereg \u00a77",
+    "result": "NO_GO_ALPHA",
+    "reason_code": "NET_CI_UPPER_BELOW_ZERO"
+  },
+  "generated_at_ms": 1792931190343,
+  "elapsed_s": 93.6
+}

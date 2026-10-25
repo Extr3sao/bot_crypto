@@ -1,0 +1,120 @@
+{
+  "generated_at_ms": 1792931096353,
+  "checks": [
+    {
+      "id": "C-01",
+      "check": "look-ahead regime labels produce a different trade population than PIT labels",
+      "passed": true,
+      "observed": {
+        "pit_n": 115,
+        "lookahead_n": 90,
+        "pit_mean": -12.577,
+        "lookahead_mean": 17.0538
+      }
+    },
+    {
+      "id": "C-02",
+      "check": "entry at the decision bar's close differs from entry at the next open",
+      "passed": true,
+      "observed": {
+        "next_open_n": 115,
+        "same_bar_n": 115,
+        "next_open_mean": -12.577,
+        "same_bar_mean": -11.9809,
+        "optimism_bps": 0.5961
+      }
+    },
+    {
+      "id": "C-03",
+      "check": "a window starting one bar before the cutoff is rejected",
+      "passed": true,
+      "observed": {
+        "first_bar_ms": 1792857300000,
+        "problems": [
+          "WINDOW_STARTS_BEFORE_CUTOFF"
+        ]
+      }
+    },
+    {
+      "id": "C-04",
+      "check": "a duplicated bar is rejected",
+      "passed": true,
+      "observed": {
+        "problems": [
+          "DUPLICATE_TIMESTAMPS",
+          "NON_MONOTONIC",
+          "GAPS expected=500 got=501"
+        ]
+      }
+    },
+    {
+      "id": "C-05",
+      "check": "reordered timestamps are rejected",
+      "passed": true,
+      "observed": {
+        "problems": [
+          "NON_MONOTONIC"
+        ]
+      }
+    },
+    {
+      "id": "C-06",
+      "check": "a DEV/HOLD overlap is rejected",
+      "passed": true,
+      "observed": {
+        "problems": [
+          "OVERLAP"
+        ]
+      }
+    },
+    {
+      "id": "C-07",
+      "check": "subtracting the cost twice is rejected",
+      "passed": true,
+      "observed": {
+        "single": 6.209399999999999,
+        "double": -17.581200000000003
+      }
+    },
+    {
+      "id": "C-08",
+      "check": "a planted negative drift is detected as a positive SHORT edge",
+      "passed": true,
+      "observed": {
+        "trades": 622,
+        "mean_gross": 12.9505,
+        "ci95_lower": 7.1064
+      }
+    },
+    {
+      "id": "C-09",
+      "check": "an inverted drift flips the sign of the measured edge",
+      "passed": true,
+      "observed": {
+        "planted_short_mean": 12.9505,
+        "inverted_mean": -18.6552
+      }
+    },
+    {
+      "id": "C-10",
+      "check": "a dataset lagging the window end by >2 bars is rejected as stale",
+      "passed": true,
+      "observed": {
+        "lag_bars": 90
+      }
+    },
+    {
+      "id": "C-11",
+      "check": "NO_TRADE (0 bps) beats the measured rule",
+      "passed": true,
+      "observed": {
+        "no_trade": 0.0,
+        "rule_net": -36.3676
+      }
+    }
+  ],
+  "checks_total": 11,
+  "checks_passed": 11,
+  "all_passed": true,
+  "elapsed_s": 29.2
+}

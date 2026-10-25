@@ -1,0 +1,1897 @@
+{
+  "artifact": "tdm10-economic-matrix-v1",
+  "generated_by": "scripts/tdm10_experiment.py",
+  "spec": {
+    "path": "reports/trading-decision-monitor/WP-TDM-10/EXPERIMENT_SPEC.md",
+    "sha256": "8964d314a817fce3907627f30903e22c90486a7a140a60e8e718c6bed3d610d9"
+  },
+  "data": {
+    "dev_manifest": "data/tdm10/DATASET_DEV.json",
+    "dev_manifest_sha256": "4a9e30c47b54144c631b0cdc94964693aae033ecf1a3ef41293a57c3a5b2fe23",
+    "hold_manifest": "data/tdm08/DATASET.json",
+    "hold_manifest_sha256": "af7fa95ced41f36381e67909b133d87a675274293ca3457d1901aa1a341d9d84",
+    "integrity": "PASS",
+    "files_checked": 24
+  },
+  "cost_reference": {
+    "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+    "all_in_bps": 23.790569415042093,
+    "components": [
+      {
+        "name": "exchange_fee_entry",
+        "value_bps": 10.0,
+        "knowledge": "KNOWN",
+        "source_id": "SRC-01",
+        "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset"
+      },
+      {
+        "name": "exchange_fee_exit",
+        "value_bps": 10.0,
+        "knowledge": "KNOWN",
+        "source_id": "SRC-01",
+        "note": "VIP0 (regular user, 30d volume < 1,000,000 USD), pay in quote_asset"
+      },
+      {
+        "name": "spread",
+        "value_bps": 1.0,
+        "knowledge": "ESTIMATED",
+        "source_id": "SRC-07",
+        "note": "2 taker leg(s) x half-spread"
+      },
+      {
+        "name": "slippage",
+        "value_bps": 2.632456,
+        "knowledge": "ESTIMATED",
+        "source_id": "MODEL-V3",
+        "note": "base 1.0 bps x liq 1.0 x size 1.316 x vol 1.000"
+      },
+      {
+        "name": "market_impact",
+        "value_bps": 0.158114,
+        "knowledge": "ESTIMATED",
+        "source_id": "MODEL-V3",
+        "note": "size-driven displacement above the base slippage"
+      }
+    ],
+    "variants": {
+      "base": 23.7906,
+      "mult_1.25": 29.7382,
+      "mult_1.50": 35.6859,
+      "mult_2.00": 47.5811,
+      "size_10000": 25.5,
+      "size_50000": 28.5902,
+      "liquidity_deep": 22.3953,
+      "liquidity_thin": 27.9764,
+      "maker_post_only": 41.25,
+      "vol_aware": 23.7906
+    }
+  },
+  "estimator": {
+    "name": "HORIZON_H",
+    "window_bars": 100,
+    "primary_horizon_minutes": 30.0,
+    "horizons_swept": [
+      30.0,
+      15.0,
+      60.0,
+      240.0
+    ],
+    "bootstrap_resamples": 2000,
+    "bootstrap_seed": 20261025,
+    "bootstrap_rng": "numpy.random.default_rng (PCG64), chunked index resampling"
+  },
+  "windows": {
+    "D1": {
+      "start": "2026-06-25T00:00:00Z",
+      "end": "2026-08-26T00:00:00Z",
+      "days": 62.0
+    },
+    "D2": {
+      "start": "2026-08-26T00:00:00Z",
+      "end": "2026-09-25T00:00:00Z",
+      "days": 30.0
+    },
+    "HOLD": {
+      "start": "2026-09-25T00:00:00Z",
+      "end": "2026-10-25T00:00:00Z",
+      "days": 30.0
+    }
+  },
+  "bootstrap_pvalues": {
+    "ema_crossover@5m": 0.9045,
+    "momentum@5m": 0.4698,
+    "breakout@5m": 0.9935,
+    "trend@5m": 0.906,
+    "mean_reversion@5m": 0.5247,
+    "volatility@5m": 0.043,
+    "ema_crossover@15m": 0.8436,
+    "momentum@15m": 0.7461,
+    "breakout@15m": 0.2149,
+    "trend@15m": 0.8261,
+    "mean_reversion@15m": 0.1134,
+    "volatility@15m": 0.996,
+    "ema_crossover@30m": 0.2689,
+    "momentum@30m": 0.5557,
+    "breakout@30m": 0.1869,
+    "trend@30m": 0.4063,
+    "mean_reversion@30m": 0.3663,
+    "volatility@30m": 0.6287,
+    "ema_crossover@1h": 0.7701,
+    "momentum@1h": 0.9585,
+    "breakout@1h": 0.8166,
+    "trend@1h": 0.2414,
+    "mean_reversion@1h": 0.6382,
+    "volatility@1h": 0.7466
+  },
+  "sensitivity": {
+    "ema_crossover@5m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -24.4955
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -30.4431
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -36.3908
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -48.286
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -26.2049
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -29.2951
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -23.1002
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -28.6813
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -41.9549
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -25.4206
+      }
+    },
+    "momentum@5m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -23.6578
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -29.6055
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -35.5531
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -47.4484
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -25.3673
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -28.4574
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -22.2626
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -27.8437
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -41.1173
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -25.0506
+      }
+    },
+    "breakout@5m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -27.3594
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -33.307
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -39.2546
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -51.1499
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -29.0688
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -32.159
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -25.9641
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -31.5452
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -44.8188
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -28.3085
+      }
+    },
+    "trend@5m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -31.5425
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -37.4901
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -43.4378
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -55.3331
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -33.2519
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -36.3421
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -30.1472
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -35.7284
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -49.0019
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -33.7031
+      }
+    },
+    "mean_reversion@5m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -23.9043
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -29.8519
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -35.7996
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -47.6948
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -25.6137
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -28.7039
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -22.509
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -28.0901
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -41.3637
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -24.8514
+      }
+    },
+    "volatility@5m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -16.7375
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -22.6851
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -28.6327
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -40.528
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -18.4469
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -21.5371
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -15.3422
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -20.9233
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -34.1969
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -17.5883
+      }
+    },
+    "ema_crossover@15m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -24.4378
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -30.3855
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -36.3331
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -48.2284
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -26.1473
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -29.2374
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -23.0425
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -28.6237
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -41.8973
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -26.0988
+      }
+    },
+    "momentum@15m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -24.5348
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -30.4824
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -36.43
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -48.3253
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -26.2442
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -29.3344
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -23.1395
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -28.7206
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -41.9942
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -26.7117
+      }
+    },
+    "breakout@15m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -21.8509
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -27.7986
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -33.7462
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -45.6415
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -23.5604
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -26.6505
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -20.4556
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -26.0368
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -39.3104
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -23.6439
+      }
+    },
+    "trend@15m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -26.9163
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -32.8639
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -38.8116
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -50.7069
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -28.6257
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -31.7159
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -25.521
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -31.1021
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -44.3757
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -29.7702
+      }
+    },
+    "mean_reversion@15m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -21.4715
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -27.4192
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -33.3668
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -45.2621
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -23.181
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -26.2711
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -20.0763
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -25.6574
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -38.931
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -23.1028
+      }
+    },
+    "volatility@15m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -32.9821
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -38.9297
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -44.8774
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -56.7726
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -34.6915
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -37.7817
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -31.5868
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -37.1679
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -50.4415
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -34.3682
+      }
+    },
+    "ema_crossover@30m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -23.3283
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -29.276
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -35.2236
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -47.1189
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -25.0378
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -28.1279
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -21.9331
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -27.5142
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -40.7878
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -25.7678
+      }
+    },
+    "momentum@30m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -23.8959
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -29.8435
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -35.7912
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -47.6865
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -25.6053
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -28.6955
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -22.5006
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -28.0817
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -41.3553
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -26.7767
+      }
+    },
+    "breakout@30m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -20.9973
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -26.9449
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -32.8925
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -44.7878
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -22.7067
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -25.7969
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -19.602
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -25.1831
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -38.4567
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -23.5616
+      }
+    },
+    "trend@30m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -23.1363
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -29.084
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -35.0316
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -46.9269
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -24.8458
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -27.9359
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -21.741
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -27.3222
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -40.5958
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -26.5548
+      }
+    },
+    "mean_reversion@30m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -22.8322
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -28.7799
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -34.7275
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -46.6228
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -24.5417
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -27.6318
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -21.437
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -27.0181
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -40.2917
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -25.3131
+      }
+    },
+    "volatility@30m": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -26.1705
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -32.1181
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -38.0658
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -49.961
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -27.8799
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -30.9701
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -24.7752
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -30.3563
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -43.6299
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -28.4623
+      }
+    },
+    "ema_crossover@1h": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -24.8712
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -30.8189
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -36.7665
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -48.6618
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -26.5807
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -29.6708
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -23.4759
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -29.0571
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -42.3307
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -28.4064
+      }
+    },
+    "momentum@1h": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -27.4966
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -33.4442
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -39.3918
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -51.2871
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -29.206
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -32.2962
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -26.1013
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -31.6824
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -44.956
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -31.3491
+      }
+    },
+    "breakout@1h": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -30.5516
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -36.4993
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -42.4469
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -54.3422
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -32.2611
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -35.3512
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -29.1564
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -34.7375
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -48.0111
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -34.342
+      }
+    },
+    "trend@1h": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -21.1359
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -27.0835
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -33.0312
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -44.9264
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -22.8453
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -25.9355
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -19.7406
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -25.3217
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -38.5953
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -25.4813
+      }
+    },
+    "mean_reversion@1h": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -27.7015
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -33.6492
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -39.5968
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -51.4921
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -29.4109
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -32.5011
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -26.3062
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -31.8874
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -45.1609
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -31.4057
+      }
+    },
+    "volatility@1h": {
+      "base": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -31.5517
+      },
+      "mult_1.25": {
+        "cost_bps": 29.7382,
+        "net_bps_per_trade": -37.4994
+      },
+      "mult_1.50": {
+        "cost_bps": 35.6859,
+        "net_bps_per_trade": -43.447
+      },
+      "mult_2.00": {
+        "cost_bps": 47.5811,
+        "net_bps_per_trade": -55.3423
+      },
+      "size_10000": {
+        "cost_bps": 25.5,
+        "net_bps_per_trade": -33.2612
+      },
+      "size_50000": {
+        "cost_bps": 28.5902,
+        "net_bps_per_trade": -36.3513
+      },
+      "liquidity_deep": {
+        "cost_bps": 22.3953,
+        "net_bps_per_trade": -30.1565
+      },
+      "liquidity_thin": {
+        "cost_bps": 27.9764,
+        "net_bps_per_trade": -35.7376
+      },
+      "maker_post_only": {
+        "cost_bps": 41.25,
+        "net_bps_per_trade": -49.0112
+      },
+      "vol_aware": {
+        "cost_bps": 23.7906,
+        "net_bps_per_trade": -34.6436
+      }
+    }
+  },
+  "holm": {
+    "method": "holm",
+    "family_size": 24,
+    "adjusted": {
+      "volatility@5m": 1.0,
+      "mean_reversion@15m": 1.0,
+      "breakout@30m": 1.0,
+      "breakout@15m": 1.0,
+      "trend@1h": 1.0,
+      "ema_crossover@30m": 1.0,
+      "mean_reversion@30m": 1.0,
+      "trend@30m": 1.0,
+      "momentum@5m": 1.0,
+      "mean_reversion@5m": 1.0,
+      "momentum@30m": 1.0,
+      "volatility@30m": 1.0,
+      "mean_reversion@1h": 1.0,
+      "momentum@15m": 1.0,
+      "volatility@1h": 1.0,
+      "ema_crossover@1h": 1.0,
+      "breakout@1h": 1.0,
+      "trend@15m": 1.0,
+      "ema_crossover@15m": 1.0,
+      "ema_crossover@5m": 1.0,
+      "trend@5m": 1.0,
+      "momentum@1h": 1.0,
+      "breakout@5m": 1.0,
+      "volatility@15m": 1.0
+    }
+  },
+  "verdicts": {
+    "ema_crossover@5m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -24.4955 <= 0; ci95_low(gross) -1.7416 <= 0; D1 gross -0.1822 <= 0; D2 gross -1.2574 <= 0; net at x1.25 cost -30.4431 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -24.4955,
+      "holdout_gross_bps": -0.7049,
+      "holdout_trades": 3511,
+      "d1_gross_bps": -0.1822,
+      "d2_gross_bps": -1.2574,
+      "stress_net_x1.25": -30.4431,
+      "bootstrap_p": 0.9045,
+      "holm_p": 1.0
+    },
+    "momentum@5m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -23.6578 <= 0; ci95_low(gross) -2.9386 <= 0; D1 gross -0.4315 <= 0; D2 gross -3.7269 <= 0; net at x1.25 cost -29.6055 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -23.6578,
+      "holdout_gross_bps": 0.1327,
+      "holdout_trades": 1020,
+      "d1_gross_bps": -0.4315,
+      "d2_gross_bps": -3.7269,
+      "stress_net_x1.25": -29.6055,
+      "bootstrap_p": 0.4698,
+      "holm_p": 1.0
+    },
+    "breakout@5m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -27.3594 <= 0; ci95_low(gross) -6.3173 <= 0; D1 gross -1.4561 <= 0; D2 gross -3.3013 <= 0; net at x1.25 cost -33.307 <= 0; gross CI excludes zero on the negative side",
+      "holdout_net_bps": -27.3594,
+      "holdout_gross_bps": -3.5688,
+      "holdout_trades": 836,
+      "d1_gross_bps": -1.4561,
+      "d2_gross_bps": -3.3013,
+      "stress_net_x1.25": -33.307,
+      "bootstrap_p": 0.9935,
+      "holm_p": 1.0
+    },
+    "trend@5m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -31.5425 <= 0; ci95_low(gross) -18.924 <= 0; D1 gross -2.2011 <= 0; D2 gross -1.1036 <= 0; net at x1.25 cost -37.4901 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -31.5425,
+      "holdout_gross_bps": -7.7519,
+      "holdout_trades": 125,
+      "d1_gross_bps": -2.2011,
+      "d2_gross_bps": -1.1036,
+      "stress_net_x1.25": -37.4901,
+      "bootstrap_p": 0.906,
+      "holm_p": 1.0
+    },
+    "mean_reversion@5m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -23.9043 <= 0; ci95_low(gross) -2.7636 <= 0; net at x1.25 cost -29.8519 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -23.9043,
+      "holdout_gross_bps": -0.1137,
+      "holdout_trades": 771,
+      "d1_gross_bps": 1.0919,
+      "d2_gross_bps": 2.3427,
+      "stress_net_x1.25": -29.8519,
+      "bootstrap_p": 0.5247,
+      "holm_p": 1.0
+    },
+    "volatility@5m": {
+      "classification": "INCONCLUSIVE_CELL",
+      "fail_reason": "net -16.7375 <= 0; ci95_low(gross) -1.1279 <= 0; D2 gross -2.5538 <= 0; net at x1.25 cost -22.6851 <= 0",
+      "holdout_net_bps": -16.7375,
+      "holdout_gross_bps": 7.0531,
+      "holdout_trades": 58,
+      "d1_gross_bps": 1.6446,
+      "d2_gross_bps": -2.5538,
+      "stress_net_x1.25": -22.6851,
+      "bootstrap_p": 0.043,
+      "holm_p": 1.0
+    },
+    "ema_crossover@15m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -24.4378 <= 0; ci95_low(gross) -1.8475 <= 0; D1 gross -0.4826 <= 0; net at x1.25 cost -30.3855 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -24.4378,
+      "holdout_gross_bps": -0.6473,
+      "holdout_trades": 2574,
+      "d1_gross_bps": -0.4826,
+      "d2_gross_bps": 0.0707,
+      "stress_net_x1.25": -30.3855,
+      "bootstrap_p": 0.8436,
+      "holm_p": 1.0
+    },
+    "momentum@15m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -24.5348 <= 0; ci95_low(gross) -3.1474 <= 0; D1 gross -1.5373 <= 0; net at x1.25 cost -30.4824 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -24.5348,
+      "holdout_gross_bps": -0.7442,
+      "holdout_trades": 1105,
+      "d1_gross_bps": -1.5373,
+      "d2_gross_bps": 0.5054,
+      "stress_net_x1.25": -30.4824,
+      "bootstrap_p": 0.7461,
+      "holm_p": 1.0
+    },
+    "breakout@15m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -21.8509 <= 0; ci95_low(gross) -2.4118 <= 0; D1 gross -1.7993 <= 0; D2 gross -4.6281 <= 0; net at x1.25 cost -27.7986 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -21.8509,
+      "holdout_gross_bps": 1.9396,
+      "holdout_trades": 351,
+      "d1_gross_bps": -1.7993,
+      "d2_gross_bps": -4.6281,
+      "stress_net_x1.25": -27.7986,
+      "bootstrap_p": 0.2149,
+      "holm_p": 1.0
+    },
+    "trend@15m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -26.9163 <= 0; ci95_low(gross) -9.6322 <= 0; D1 gross -1.2824 <= 0; net at x1.25 cost -32.8639 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -26.9163,
+      "holdout_gross_bps": -3.1257,
+      "holdout_trades": 272,
+      "d1_gross_bps": -1.2824,
+      "d2_gross_bps": 2.5338,
+      "stress_net_x1.25": -32.8639,
+      "bootstrap_p": 0.8261,
+      "holm_p": 1.0
+    },
+    "mean_reversion@15m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -21.4715 <= 0; ci95_low(gross) -1.0897 <= 0; net at x1.25 cost -27.4192 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -21.4715,
+      "holdout_gross_bps": 2.319,
+      "holdout_trades": 279,
+      "d1_gross_bps": 1.6848,
+      "d2_gross_bps": 2.5988,
+      "stress_net_x1.25": -27.4192,
+      "bootstrap_p": 0.1134,
+      "holm_p": 1.0
+    },
+    "volatility@15m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -32.9821 <= 0; ci95_low(gross) -16.7832 <= 0; D1 gross -9.4821 <= 0; D2 gross -4.2006 <= 0; net at x1.25 cost -38.9297 <= 0; gross CI excludes zero on the negative side",
+      "holdout_net_bps": -32.9821,
+      "holdout_gross_bps": -9.1915,
+      "holdout_trades": 55,
+      "d1_gross_bps": -9.4821,
+      "d2_gross_bps": -4.2006,
+      "stress_net_x1.25": -38.9297,
+      "bootstrap_p": 0.996,
+      "holm_p": 1.0
+    },
+    "ema_crossover@30m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -23.3283 <= 0; ci95_low(gross) -1.0237 <= 0; net at x1.25 cost -29.276 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -23.3283,
+      "holdout_gross_bps": 0.4622,
+      "holdout_trades": 1814,
+      "d1_gross_bps": 0.2606,
+      "d2_gross_bps": 1.0344,
+      "stress_net_x1.25": -29.276,
+      "bootstrap_p": 0.2689,
+      "holm_p": 1.0
+    },
+    "momentum@30m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -23.8959 <= 0; ci95_low(gross) -2.4987 <= 0; D2 gross -2.2109 <= 0; net at x1.25 cost -29.8435 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -23.8959,
+      "holdout_gross_bps": -0.1053,
+      "holdout_trades": 1002,
+      "d1_gross_bps": 1.3275,
+      "d2_gross_bps": -2.2109,
+      "stress_net_x1.25": -29.8435,
+      "bootstrap_p": 0.5557,
+      "holm_p": 1.0
+    },
+    "breakout@30m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -20.9973 <= 0; ci95_low(gross) -3.0174 <= 0; D2 gross -6.7721 <= 0; net at x1.25 cost -26.9449 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -20.9973,
+      "holdout_gross_bps": 2.7933,
+      "holdout_trades": 180,
+      "d1_gross_bps": 2.2355,
+      "d2_gross_bps": -6.7721,
+      "stress_net_x1.25": -26.9449,
+      "bootstrap_p": 0.1869,
+      "holm_p": 1.0
+    },
+    "trend@30m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -23.1363 <= 0; ci95_low(gross) -4.2247 <= 0; D2 gross -1.514 <= 0; net at x1.25 cost -29.084 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -23.1363,
+      "holdout_gross_bps": 0.6542,
+      "holdout_trades": 345,
+      "d1_gross_bps": 2.2447,
+      "d2_gross_bps": -1.514,
+      "stress_net_x1.25": -29.084,
+      "bootstrap_p": 0.4063,
+      "holm_p": 1.0
+    },
+    "mean_reversion@30m": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -22.8322 <= 0; ci95_low(gross) -4.7025 <= 0; D1 gross -2.4485 <= 0; D2 gross -2.2488 <= 0; net at x1.25 cost -28.7799 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -22.8322,
+      "holdout_gross_bps": 0.9583,
+      "holdout_trades": 150,
+      "d1_gross_bps": -2.4485,
+      "d2_gross_bps": -2.2488,
+      "stress_net_x1.25": -28.7799,
+      "bootstrap_p": 0.3663,
+      "holm_p": 1.0
+    },
+    "volatility@30m": {
+      "classification": "INCONCLUSIVE_CELL",
+      "fail_reason": "net -26.1705 <= 0; ci95_low(gross) -17.9638 <= 0; D1 gross -0.1367 <= 0; D2 gross -5.1712 <= 0; net at x1.25 cost -32.1181 <= 0",
+      "holdout_net_bps": -26.1705,
+      "holdout_gross_bps": -2.3799,
+      "holdout_trades": 31,
+      "d1_gross_bps": -0.1367,
+      "d2_gross_bps": -5.1712,
+      "stress_net_x1.25": -32.1181,
+      "bootstrap_p": 0.6287,
+      "holm_p": 1.0
+    },
+    "ema_crossover@1h": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -24.8712 <= 0; ci95_low(gross) -4.0561 <= 0; net at x1.25 cost -30.8189 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -24.8712,
+      "holdout_gross_bps": -1.0807,
+      "holdout_trades": 832,
+      "d1_gross_bps": 0.5281,
+      "d2_gross_bps": 0.9652,
+      "stress_net_x1.25": -30.8189,
+      "bootstrap_p": 0.7701,
+      "holm_p": 1.0
+    },
+    "momentum@1h": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -27.4966 <= 0; ci95_low(gross) -7.624 <= 0; net at x1.25 cost -33.4442 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -27.4966,
+      "holdout_gross_bps": -3.706,
+      "holdout_trades": 578,
+      "d1_gross_bps": 0.9651,
+      "d2_gross_bps": 3.2417,
+      "stress_net_x1.25": -33.4442,
+      "bootstrap_p": 0.9585,
+      "holm_p": 1.0
+    },
+    "breakout@1h": {
+      "classification": "INCONCLUSIVE_CELL",
+      "fail_reason": "net -30.5516 <= 0; ci95_low(gross) -22.4726 <= 0; net at x1.25 cost -36.4993 <= 0",
+      "holdout_net_bps": -30.5516,
+      "holdout_gross_bps": -6.7611,
+      "holdout_trades": 85,
+      "d1_gross_bps": 10.7594,
+      "d2_gross_bps": 12.2462,
+      "stress_net_x1.25": -36.4993,
+      "bootstrap_p": 0.8166,
+      "holm_p": 1.0
+    },
+    "trend@1h": {
+      "classification": "NO_GO_CELL",
+      "fail_reason": "net -21.1359 <= 0; ci95_low(gross) -4.5352 <= 0; D2 gross -3.0273 <= 0; net at x1.25 cost -27.0835 <= 0; >=100 trades of power with no edge",
+      "holdout_net_bps": -21.1359,
+      "holdout_gross_bps": 2.6547,
+      "holdout_trades": 252,
+      "d1_gross_bps": 4.2822,
+      "d2_gross_bps": -3.0273,
+      "stress_net_x1.25": -27.0835,
+      "bootstrap_p": 0.2414,
+      "holm_p": 1.0
+    },
+    "mean_reversion@1h": {
+      "classification": "INCONCLUSIVE_CELL",
+      "fail_reason": "net -27.7015 <= 0; ci95_low(gross) -23.2314 <= 0; D2 gross -4.1196 <= 0; net at x1.25 cost -33.6492 <= 0",
+      "holdout_net_bps": -27.7015,
+      "holdout_gross_bps": -3.9109,
+      "holdout_trades": 73,
+      "d1_gross_bps": 2.1687,
+      "d2_gross_bps": -4.1196,
+      "stress_net_x1.25": -33.6492,
+      "bootstrap_p": 0.6382,
+      "holm_p": 1.0
+    },
+    "volatility@1h": {
+      "classification": "INSUFFICIENT_SAMPLE",
+      "fail_reason": "holdout trades=17 < 30",
+      "holdout_net_bps": -31.5517,
+      "holdout_gross_bps": -7.7612,
+      "holdout_trades": 17,
+      "d1_gross_bps": -1.4349,
+      "d2_gross_bps": 10.7711,
+      "stress_net_x1.25": -37.4994,
+      "bootstrap_p": 0.7466,
+      "holm_p": 1.0
+    }
+  },
+  "windows_disjoint": {
+    "pairs": [
+      {
+        "asset": "BTC",
+        "timeframe": "5m",
+        "dev_bars": 26496,
+        "hold_bars": 8543,
+        "d1_bars": 17856,
+        "d2_bars": 8640,
+        "overlap_bars": 0,
+        "hold_first": "2026-09-25T00:00:00Z",
+        "dev_last": "2026-09-24T23:55:00Z",
+        "disjoint": true
+      },
+      {
+        "asset": "BTC",
+        "timeframe": "15m",
+        "dev_bars": 8832,
+        "hold_bars": 2847,
+        "d1_bars": 5952,
+        "d2_bars": 2880,
+        "overlap_bars": 0,
+        "hold_first": "2026-09-25T00:00:00Z",
+        "dev_last": "2026-09-24T23:45:00Z",
+        "disjoint": true
+      },
+      {
+        "asset": "BTC",
+        "timeframe": "30m",
+        "dev_bars": 4416,
+        "hold_bars": 1423,
+        "d1_bars": 2976,
+        "d2_bars": 1440,
+        "overlap_bars": 0,
+        "hold_first": "2026-09-25T00:00:00Z",
+        "dev_last": "2026-09-24T23:30:00Z",
+        "disjoint": true
+      },
+      {
+        "asset": "BTC",
+        "timeframe": "1h",
+        "dev_bars": 2208,
+        "hold_bars": 711,
+        "d1_bars": 1488,
+        "d2_bars": 720,
+        "overlap_bars": 0,
+        "hold_first": "2026-09-25T00:00:00Z",
+        "dev_last": "2026-09-24T23:00:00Z",
+        "disjoint": true
+      },
+      {
+        "asset": "ETH",
+        "timeframe": "5m",
+        "dev_bars": 26496,
+        "hold_bars": 8543,
+        "d1_bars": 17856,
+        "d2_bars": 8640,
+        "overlap_bars": 0,
+        "hold_first": "2026-09-25T00:00:00Z",
+        "dev_last": "2026-09-24T23:55:00Z",
+        "disjoint": true
+      },
+      {
+        "asset": "ETH",
+        "timeframe": "15m",
+        "dev_bars": 8832,
+        "hold_bars": 2847,
+        "d1_bars": 5952,
+        "d2_bars": 2880,
+        "overlap_bars": 0,
+        "hold_first": "2026-09-25T00:00:00Z",
+        "dev_last": "2026-09-24T23:45:00Z",
+        "disjoint": true
+      },
+      {
+        "asset": "ETH",
+        "timeframe": "30m",
+        "dev_bars": 4416,
+        "hold_bars": 1423,
+        "d1_bars": 2976,
+        "d2_bars": 1440,
+        "overlap_bars": 0,
+        "hold_first": "2026-09-25T00:00:00Z",
+        "dev_last": "2026-09-24T23:30:00Z",
+        "disjoint": true
+      },
+      {
+        "asset": "ETH",
+        "timeframe": "1h",
+        "dev_bars": 2208,
+        "hold_bars": 711,
+        "d1_bars": 1488,
+        "d2_bars": 720,
+        "overlap_bars": 0,
+        "hold_first": "2026-09-25T00:00:00Z",
+        "dev_last": "2026-09-24T23:00:00Z",
+        "disjoint": true
+      },
+      {
+        "asset": "SOL",
+        "timeframe": "5m",
+        "dev_bars": 26496,
+        "hold_bars": 8543,
+        "d1_bars": 17856,
+        "d2_bars": 8640,
+        "overlap_bars": 0,
+        "hold_first": "2026-09-25T00:00:00Z",
+        "dev_last": "2026-09-24T23:55:00Z",
+        "disjoint": true
+      },
+      {
+        "asset": "SOL",
+        "timeframe": "15m",
+        "dev_bars": 8832,
+        "hold_bars": 2847,
+        "d1_bars": 5952,
+        "d2_bars": 2880,
+        "overlap_bars": 0,
+        "hold_first": "2026-09-25T00:00:00Z",
+        "dev_last": "2026-09-24T23:45:00Z",
+        "disjoint": true
+      },
+      {
+        "asset": "SOL",
+        "timeframe": "30m",
+        "dev_bars": 4416,
+        "hold_bars": 1423,
+        "d1_bars": 2976,
+        "d2_bars": 1440,
+        "overlap_bars": 0,
+        "hold_first": "2026-09-25T00:00:00Z",
+        "dev_last": "2026-09-24T23:30:00Z",
+        "disjoint": true
+      },
+      {
+        "asset": "SOL",
+        "timeframe": "1h",
+        "dev_bars": 2208,
+        "hold_bars": 711,
+        "d1_bars": 1488,
+        "d2_bars": 720,
+        "overlap_bars": 0,
+        "hold_first": "2026-09-25T00:00:00Z",
+        "dev_last": "2026-09-24T23:00:00Z",
+        "disjoint": true
+      }
+    ],
+    "status": "PASS"
+  },
+  "reproduction_of_tdm08": {
+    "reference": "reports/trading-decision-monitor/WP-TDM-08/alpha_diagnostics.json",
+    "reference_sha256": "6942a7c275c539850dbe456726033e00e43dbf86ba23a39e8c9c75966e40ee54",
+    "comparisons": [
+      {
+        "cell": "breakout@15m",
+        "reference_trades": 351,
+        "builder_trades": 351,
+        "reference_gross_bps": 1.9396,
+        "builder_gross_bps": 1.9396,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "breakout@1h",
+        "reference_trades": 85,
+        "builder_trades": 85,
+        "reference_gross_bps": -6.7611,
+        "builder_gross_bps": -6.7611,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "breakout@30m",
+        "reference_trades": 180,
+        "builder_trades": 180,
+        "reference_gross_bps": 2.7933,
+        "builder_gross_bps": 2.7933,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "breakout@5m",
+        "reference_trades": 836,
+        "builder_trades": 836,
+        "reference_gross_bps": -3.5688,
+        "builder_gross_bps": -3.5688,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "ema_crossover@15m",
+        "reference_trades": 2574,
+        "builder_trades": 2574,
+        "reference_gross_bps": -0.6473,
+        "builder_gross_bps": -0.6473,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "ema_crossover@1h",
+        "reference_trades": 832,
+        "builder_trades": 832,
+        "reference_gross_bps": -1.0807,
+        "builder_gross_bps": -1.0807,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "ema_crossover@30m",
+        "reference_trades": 1814,
+        "builder_trades": 1814,
+        "reference_gross_bps": 0.4622,
+        "builder_gross_bps": 0.4622,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "ema_crossover@5m",
+        "reference_trades": 3511,
+        "builder_trades": 3511,
+        "reference_gross_bps": -0.7049,
+        "builder_gross_bps": -0.7049,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "mean_reversion@15m",
+        "reference_trades": 279,
+        "builder_trades": 279,
+        "reference_gross_bps": 2.319,
+        "builder_gross_bps": 2.319,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "mean_reversion@1h",
+        "reference_trades": 73,
+        "builder_trades": 73,
+        "reference_gross_bps": -3.9109,
+        "builder_gross_bps": -3.9109,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "mean_reversion@30m",
+        "reference_trades": 150,
+        "builder_trades": 150,
+        "reference_gross_bps": 0.9583,
+        "builder_gross_bps": 0.9583,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "mean_reversion@5m",
+        "reference_trades": 771,
+        "builder_trades": 771,
+        "reference_gross_bps": -0.1137,
+        "builder_gross_bps": -0.1137,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "momentum@15m",
+        "reference_trades": 1105,
+        "builder_trades": 1105,
+        "reference_gross_bps": -0.7442,
+        "builder_gross_bps": -0.7442,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "momentum@1h",
+        "reference_trades": 578,
+        "builder_trades": 578,
+        "reference_gross_bps": -3.706,
+        "builder_gross_bps": -3.706,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "momentum@30m",
+        "reference_trades": 1002,
+        "builder_trades": 1002,
+        "reference_gross_bps": -0.1053,
+        "builder_gross_bps": -0.1053,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "momentum@5m",
+        "reference_trades": 1020,
+        "builder_trades": 1020,
+        "reference_gross_bps": 0.1327,
+        "builder_gross_bps": 0.1327,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "trend@15m",
+        "reference_trades": 272,
+        "builder_trades": 272,
+        "reference_gross_bps": -3.1257,
+        "builder_gross_bps": -3.1257,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "trend@1h",
+        "reference_trades": 252,
+        "builder_trades": 252,
+        "reference_gross_bps": 2.6547,
+        "builder_gross_bps": 2.6547,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "trend@30m",
+        "reference_trades": 345,
+        "builder_trades": 345,
+        "reference_gross_bps": 0.6542,
+        "builder_gross_bps": 0.6542,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "trend@5m",
+        "reference_trades": 125,
+        "builder_trades": 125,
+        "reference_gross_bps": -7.7519,
+        "builder_gross_bps": -7.7519,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "volatility@15m",
+        "reference_trades": 55,
+        "builder_trades": 55,
+        "reference_gross_bps": -9.1915,
+        "builder_gross_bps": -9.1915,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "volatility@1h",
+        "reference_trades": 17,
+        "builder_trades": 17,
+        "reference_gross_bps": -7.7612,
+        "builder_gross_bps": -7.7612,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "volatility@30m",
+        "reference_trades": 31,
+        "builder_trades": 31,
+        "reference_gross_bps": -2.3799,
+        "builder_gross_bps": -2.3799,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      },
+      {
+        "cell": "volatility@5m",
+        "reference_trades": 58,
+        "builder_trades": 58,
+        "reference_gross_bps": 7.0531,
+        "builder_gross_bps": 7.0531,
+        "trades_match": true,
+        "gross_match": true,
+        "status": "PASS"
+      }
+    ],
+    "status": "PASS",
+    "cells_compared": 24,
+    "cells_matching": 24
+  },
+  "aggregate_verdict": {
+    "verdict": "INCONCLUSIVE",
+    "cells_go_research": [],
+    "cells_with_positive_holdout_gross": [
+      "breakout@15m",
+      "breakout@30m",
+      "ema_crossover@30m",
+      "mean_reversion@15m",
+      "mean_reversion@30m",
+      "momentum@5m",
+      "trend@1h",
+      "trend@30m",
+      "volatility@5m"
+    ],
+    "cells_evaluated": 24,
+    "cells_insufficient_sample": [
+      "volatility@1h"
+    ],
+    "cells_no_go": [
+      "breakout@15m",
+      "breakout@30m",
+      "breakout@5m",
+      "ema_crossover@15m",
+      "ema_crossover@1h",
+      "ema_crossover@30m",
+      "ema_crossover@5m",
+      "mean_reversion@15m",
+      "mean_reversion@30m",
+      "mean_reversion@5m",
+      "momentum@15m",
+      "momentum@1h",
+      "momentum@30m",
+      "momentum@5m",
+      "trend@15m",
+      "trend@1h",
+      "trend@30m",
+      "trend@5m",
+      "volatility@15m"
+    ],
+    "note": "GO_RESEARCH authorises offline research only; not PAPER, LIVE, sizing or cost changes."
+  },
+  "duration_seconds": 235.547,
+  "complete": true
+}

@@ -1,0 +1,31 @@
+{
+  "computed_at_ms": 1792930721598,
+  "cutoff_ms": 1792857600000,
+  "elapsed_days": 0.846,
+  "bars_if_fully_populated": 243,
+  "hard_ceiling_trades": 40,
+  "expected_trades_now": 1.09,
+  "min_trades_required": 36,
+  "min_days_required": 28.0,
+  "trades_per_day_used": 1.284,
+  "shortfall_trades": 34.91,
+  "earliest_feasible_ms": 1795280029906,
+  "earliest_feasible_days": 28.0,
+  "earliest_feasible_utc": "2026-11-21T16:53:49Z",
+  "gates": {
+    "elapsed_at_least_min_days": false,
+    "expected_trades_at_least_min": false,
+    "hard_ceiling_at_least_min": true,
+    "adversarial_controls_passed": true
+  },
+  "decision": {
+    "confirmatory_window_opened": false,
+    "confirmatory_bars_read": 0,
+    "dataset_id": null,
+    "result": "AWAITING_NEW_DATA",
+    "reason_code": "NO_CONFIRMATORY_SAMPLE",
+    "detail": "the admissible window starts at 2026-10-24T16:00Z; as of the run the expected yield is far below the preregistered minimum, and no confirmatory bar was fetched or read"
+  },
+  "fetched_confirmatory_data": false,
+  "note": "the gate is expressed in expected trades, not bar count: 19h of 5m bars could physically hold at most 40 sequential 30-minute positions"
+}
