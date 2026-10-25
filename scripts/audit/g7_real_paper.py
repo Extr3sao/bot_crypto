@@ -688,8 +688,12 @@ async def _run_all(
     execute_calls += int(((forward or {}).get("broker_calls") or {}).get("execute_signal", 0))
 
     verdict = "G7_BLOCKED_NO_ELIGIBLE_STRATEGY" if not selected else "G7_EXECUTED"
+    replay_sessions = [
+        *replay["sessions"],
+        *([replay["restart"]] if replay.get("restart") else []),
+    ]
     replay_decisions = [
-        str(session.get("decision_outcome", "FAILED")) for session in replay["sessions"]
+        str(session.get("decision_outcome", "FAILED")) for session in replay_sessions
     ]
     decision_counts: dict[str, int] = {}
     for outcome in [
