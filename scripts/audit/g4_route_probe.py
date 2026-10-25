@@ -153,13 +153,15 @@ def _engine(broker: Any, hot_stop: Any | None) -> Any:
 
 
 def _paper_cycle(*, marker: bool, process_stop: bool, attach_gate: bool) -> dict[str, Any]:
-    from trading_bot.autonomous.hot_stop import HotStopGate
+    from trading_bot.autonomous.hot_stop import HotStopGate, write_control_file
     from trading_bot.domain.enums.kill_switch import KillSwitchAction, KillSwitchState
     from trading_bot.paper.kill_switch_v2 import KillSwitch
 
     run_dir = Path(tempfile.mkdtemp(prefix="g4-paper-"))
     if marker:
-        (run_dir / "KILL_SWITCH").write_text("g4 probe operator stop\n", encoding="utf-8")
+        # The same atomic primitive the ``kill-switch`` CLI uses, not a test
+        # approximation: the probe must exercise the authority an operator has.
+        write_control_file(run_dir / "KILL_SWITCH", "g4 probe operator stop")
 
     switch = KillSwitch()
     if process_stop:
