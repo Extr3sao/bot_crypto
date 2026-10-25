@@ -346,3 +346,44 @@ What is still not true: `paper_cycle` and `autonomous.decision` remain two
 engines, the data is synthetic, and the kill/recovery uses the same disk. No
 exchange client or credential is constructed; `LIVE_NO_GO` and
 `PRODUCTION_READY=false` are unchanged.
+
+## 14. Addendum — G-7 real public market data (2026-10-25)
+
+G-7 replaced the synthetic input of the G-5/G-6 evidence with a real public
+capture, without adding a second runtime. The authoritative route is
+unchanged; only the market-data source and the validation gate are new:
+
+```text
+PublicRestKlineSource (read-only public REST; no session, no credentials)
+  → capture (bars + quotes + received_at)
+      ├─ HISTORICAL_REPLAY: ReplayMarketDataSource at a pinned decision
+      └─ FORWARD: same rows, consumed after the provider answered
+  → validate_closed_bars (PIT, gaps, duplicates, freshness, OHLC)
+  → UniverseScanner → CryptoAssetAgentRegistry
+  → StrategyRouter.select_eligible_strategies
+      → 0 SELECTED (ledger admits 0/24)
+  → NO_TRADE:no_strategy_passed_gates
+  → RiskManager / HotStopGate / DurablePaperBroker not reached
+```
+
+| Component | Classification | Evidence |
+|---|---|---|
+| `src/trading_bot/market_data/public_rest.py` | **RUNTIME_REACHABLE, data-only** | `scripts/start_paper_trading.py --provider public`; `scripts/audit/g7_real_paper.py`; endpoint allowlist has no order route. |
+| `src/trading_bot/market_data/real_data_validation.py` | **RUNTIME_AUTHORITATIVE gate** | Both replay and forward snapshots are produced by `validate_closed_bars`; the cycle refuses non-`OK` snapshots. |
+| `src/trading_bot/paper/eligibility.py` | **EVIDENCE_ONLY** | Reads `StrategyRegistry`/`StrategyRouter`; no mutation of ledger, registry or router. |
+| `scripts/audit/g7_real_paper.py` | **EVIDENCE_DRIVER** | Uses `build_cycle_engine`, `PaperOrchestrator`, `DurablePaperBroker`, `StartupReconcilerV4`; does not implement a second engine. |
+| `scripts/audit/verify_g7.py` | **VERIFIER, separate** | `git archive` export; runs replay/tests inside it; does not import the builder. |
+
+Reachability checks that matter:
+
+```bash
+grep -n "PublicRestKlineSource\|ReplayMarketDataSource" scripts/start_paper_trading.py scripts/audit/g7_real_paper.py
+grep -n "validate_closed_bars" src/trading_bot/market_data/public_rest.py
+grep -n "execute_signal\|order" src/trading_bot/market_data/public_rest.py   # no order path
+```
+
+The measured outcome is `G7_BLOCKED_NO_ELIGIBLE_STRATEGY`: real data reached
+the router, the router selected nothing, and the broker was not called. The
+LIVE gate and `hot_stop.py` remain byte-identical (SHA-256 `edabd6d3…` and
+`76cfca23…`). `paper_cycle` still does not import `autonomous.decision`; G-7
+does not merge them and does not claim to.
