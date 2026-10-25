@@ -55,6 +55,9 @@ LANE_TESTS: tuple[str, ...] = (
     "tests/unit/research/test_cost_barrier_gate.py",
     "tests/unit/research/test_cost_barrier_adversarial.py",
     "tests/unit/research/test_cost_barrier_ci_parity.py",
+    # WP-ECONOMIC-RECOVERY-004: the ledger's identity contract is one of the things this
+    # record certifies, so its tests belong to the gate that certifies it.
+    "tests/unit/research/test_ledger_identity_contract.py",
 )
 
 # Everything the record rests on. Digests make the record identifiable; the
@@ -544,8 +547,9 @@ def main(argv: list[str] | None = None) -> int:
         supersession_reason=args.supersedes_reason,
     )
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+    # newline="\n": the record's bytes are part of the evidence chain, not of this host.
     Path(args.out).write_text(
-        json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n"
     )
     print(render(record))
     if args.json:

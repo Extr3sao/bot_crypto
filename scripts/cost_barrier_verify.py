@@ -501,8 +501,10 @@ def main() -> int:
             "model, and that the assumed lines are unmodelled. No promotion is implied."
         ),
     }
+    # newline="\n": the verification document is published evidence, so its bytes may not
+    # depend on the writer's platform (see the same note in cost_barrier_explorer.py).
     Path(args.out).write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
-                              encoding="utf-8")
+                              encoding="utf-8", newline="\n")
 
     print(json.dumps({
         "status": payload["status"],

@@ -99,8 +99,13 @@ def read_json(path: Path) -> Any:
 
 
 def write_json(path: Path, document: Any) -> None:
+    # newline="\n": these are evidence documents whose digests are pinned elsewhere. A
+    # Windows capture must not rewrite every line of them, for the same reason the ledger
+    # builder was fixed: the bytes are the evidence.
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(document, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    path.write_text(
+        json.dumps(document, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n"
+    )
 
 
 def eol_forms(data: bytes) -> dict[str, bytes]:

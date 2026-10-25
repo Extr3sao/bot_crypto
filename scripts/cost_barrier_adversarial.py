@@ -140,7 +140,11 @@ def read_json(path: Path) -> Any:
 
 
 def write_json(path: Path, document: Any) -> None:
-    path.write_text(json.dumps(document, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    # newline="\n": the report this harness writes is published evidence, and the sandbox
+    # mutations must not differ from the real tree by the host's separator either.
+    path.write_text(
+        json.dumps(document, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n"
+    )
 
 
 def payload_hash(body: dict[str, Any], volatile: tuple[str, ...]) -> str:

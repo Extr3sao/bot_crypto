@@ -289,15 +289,49 @@ def pin_status(pin: str | None, data: bytes) -> str:
 STATE_VOLATILE_KEYS: tuple[str, ...] = ("generated_at_utc", "payload_sha256", "head", "branch",
                                         "sources", "local_observations")
 
+# WP-ECONOMIC-RECOVERY-004: the admission ledger carries no payload_sha256 (it stamps
+# nothing), so it has a versioned identity contract of its own instead of the convention
+# above. Reimplemented here from the contract document, not imported from the explorer: a
+# gate that asked the builder what "the same ledger" means could never notice the builder
+# redefining it. The two implementations are held together by
+# tests/unit/research/test_ledger_identity_contract.py.
+LEDGER_PATH = "config/strategy_admission.json"
+LEDGER_IDENTITY_CONTRACT = "strategy-admission-ledger-identity-v1"
+LEDGER_SCHEMA_VERSION = "strategy-admission-ledger-v1"
+LEDGER_PROVENANCE_KEYS: tuple[str, ...] = ("_generated_by",)
+KNOWN_STATE_CONTRACTS: tuple[str, ...] = (LEDGER_IDENTITY_CONTRACT,)
 
-def state_digest(rel: str, data: bytes | None) -> str | None:
-    """The digest of a JSON input's own state, or None when the input has no such identity."""
+
+def ledger_state_digest(document: Any) -> str | None:
+    """A re-derivation of LEDGER_INTEGRITY_CONTRACT.md §3 from the parsed document."""
+    if not isinstance(document, dict):
+        return None
+    if document.get("_schema_version") != LEDGER_SCHEMA_VERSION:
+        return None
+    state = {k: v for k, v in document.items() if k not in LEDGER_PROVENANCE_KEYS}
+    envelope = {"contract": LEDGER_IDENTITY_CONTRACT, "state": state}
+    return sha256_bytes(
+        json.dumps(envelope, indent=2, sort_keys=True, ensure_ascii=False).encode("utf-8")
+    )
+
+
+def state_digest(rel: str, data: bytes | None, contract: str | None = None) -> str | None:
+    """The digest of a JSON input's own state, or None when the input has no such identity.
+
+    ``contract`` names the convention the artefact published. An unknown contract returns
+    None and is reported as a defect by the caller: reinterpreting an unfamiliar identity
+    under a familiar rule is how a pin stops meaning anything.
+    """
     if data is None or Path(rel).suffix != ".json":
+        return None
+    if contract is not None and contract not in KNOWN_STATE_CONTRACTS:
         return None
     try:
         document = json.loads(data.decode("utf-8"))
     except (json.JSONDecodeError, UnicodeDecodeError):
         return None
+    if contract == LEDGER_IDENTITY_CONTRACT:
+        return ledger_state_digest(document)
     if not isinstance(document, dict) or "payload_sha256" not in document:
         return None
     body = {k: v for k, v in document.items() if k not in STATE_VOLATILE_KEYS}
@@ -502,19 +536,27 @@ def input_rows(explorer: dict[str, Any]) -> tuple[list[dict[str, Any]], list[str
         source = published.get(rel) or {}
         pin = source.get("sha256") if pinned else None
         state_pin = source.get("state_sha256") if pinned else None
+        contract = source.get("state_contract") if pinned else None
         if pinned and pin is None:
             defects.append(
                 f"{rel} is declared pinned but the artefact's sources[] carries no pin for it"
             )
+        if contract is not None and contract not in KNOWN_STATE_CONTRACTS:
+            defects.append(
+                f"{rel} declares state contract {contract!r}, which this gate does not "
+                f"implement: an unknown identity convention cannot be verified or ignored"
+            )
         byte_status = PIN_ABSENT if data is None else pin_status(pin, data)
-        state = state_digest(rel, data)
+        state = state_digest(rel, data, contract)
         if data is None:
             status = PIN_ABSENT
         elif state_pin is not None:
-            if state is None:
-                status = PIN_DRIFT
-            else:
-                status = PIN_STATE_EXACT if state == state_pin else PIN_DRIFT
+            # Both identities must hold: the state says the ledger still decides the same
+            # thing, the bytes say it is still the published artefact. Tolerating only a
+            # line-ending re-rendering is what keeps a foreign pin a finding.
+            state_ok = state is not None and state == state_pin
+            byte_ok = byte_status in (PIN_EXACT, PIN_EOL)
+            status = PIN_STATE_EXACT if (state_ok and byte_ok) else PIN_DRIFT
         else:
             status = byte_status
         rows.append({
@@ -525,6 +567,7 @@ def input_rows(explorer: dict[str, Any]) -> tuple[list[dict[str, Any]], list[str
             "pin_status": status,
             "pin": pin,
             "state_pin": state_pin,
+            "state_contract": contract,
             "state_status": ("EXACT" if state_pin is not None and state == state_pin
                              else "UNPINNED" if state_pin is None else "DRIFT"),
             "byte_status": byte_status,

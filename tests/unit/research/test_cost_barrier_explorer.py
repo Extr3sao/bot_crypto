@@ -23,6 +23,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import subprocess
 import sys
 from copy import deepcopy
 from pathlib import Path
@@ -252,6 +253,44 @@ def test_the_committed_verification_document_is_clean():
     assert doc["false_success"] == 0
     assert doc["builder_imported"] is False
     assert doc["verifier"] != doc["builder"]
+
+
+def test_the_writers_do_not_let_the_host_choose_the_line_endings(tmp_path):
+    """A rebuild on Windows used to rewrite all 10 800 lines of the artefact.
+
+    ``Path.write_text`` translates ``\n`` to the host separator, so the published bytes
+    depended on who ran the builder while no number changed. That is indistinguishable
+    from an edit to anything downstream of the digest, so the artefacts this lane
+    publishes are written with ``newline="\n"`` and must contain no CRLF anywhere.
+    """
+
+    out = tmp_path / "rebuilt"
+    out.mkdir()
+    subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "cost_barrier_explorer.py"), "--out-dir", str(out)],
+        check=True,
+        capture_output=True,
+    )
+    produced = [out / "COST_BARRIER_EXPLORER.json", out / "COST_BARRIER_EXPLORER.md"]
+    for path in produced:
+        assert b"\r\n" not in path.read_bytes(), f"{path.name} carries host line endings"
+    verification = tmp_path / "VERIFICATION.json"
+    subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "cost_barrier_verify.py"),
+            "--explorer",
+            str(produced[0]),
+            "--out",
+            str(verification),
+        ],
+        check=True,
+        capture_output=True,
+    )
+    assert b"\r\n" not in verification.read_bytes()
+    for committed in ("COST_BARRIER_EXPLORER.json", "COST_BARRIER_EXPLORER.md",
+                      "COST_BARRIER_VERIFICATION.json"):
+        assert b"\r\n" not in (RECOVERY / committed).read_bytes(), committed
 
 
 def test_governance_flags_stay_unauthorized(built):

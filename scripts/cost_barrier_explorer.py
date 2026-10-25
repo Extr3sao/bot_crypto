@@ -622,20 +622,59 @@ VOLATILE_KEYS = ("generated_at_utc", "payload_sha256", "head", "branch", "source
 # satisfied on the machine that wrote them, which is the defect WP-8 removed from this lane
 # and the rehearsal then found here.
 
-def state_pin(path: Path) -> str | None:
-    """The digest of what a JSON artefact *states*, or None for a file without the convention."""
-    if path.suffix != ".json" or not path.exists():
+# WP-ECONOMIC-RECOVERY-004: the admission ledger is not such a file (it stamps nothing), so
+# it has its own, versioned identity contract instead of the audit's convention above. The
+# contract is documented in docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-004/
+# LEDGER_INTEGRITY_CONTRACT.md; the gate repeats it on purpose so that a producer cannot
+# redefine what "the same ledger" means without the divergence showing up as drift.
+LEDGER_IDENTITY_CONTRACT = "strategy-admission-ledger-identity-v1"
+LEDGER_SCHEMA_VERSION = "strategy-admission-ledger-v1"
+#: Rendering metadata, not a decision: the script that wrote the file. Everything else,
+#: including the dependency digests in ``_sources``, changes what the ledger states.
+LEDGER_PROVENANCE_KEYS: tuple[str, ...] = ("_generated_by",)
+STATE_CONTRACTS: dict[str, str] = {LEDGER: LEDGER_IDENTITY_CONTRACT}
+
+
+def ledger_state_sha256(document: Any) -> str | None:
+    """LEDGER_INTEGRITY_CONTRACT.md §3, computed from the parsed document.
+
+    Parsing is what makes the identity independent of the bytes: LF and CRLF renderings
+    of the same JSON parse to the same object, so they cannot produce different ids.
+    """
+    if not isinstance(document, dict):
         return None
+    if document.get("_schema_version") != LEDGER_SCHEMA_VERSION:
+        return None
+    state = {k: v for k, v in document.items() if k not in LEDGER_PROVENANCE_KEYS}
+    envelope = {"contract": LEDGER_IDENTITY_CONTRACT, "state": state}
+    canonical = json.dumps(envelope, indent=2, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def state_identity(path: Path, rel: str) -> tuple[str | None, str | None]:
+    """``(state_sha256, contract)`` for a declared input, or ``(None, None)``.
+
+    Two conventions live here: the audit's (a ``payload_sha256`` document minus its
+    volatile keys) and, for the ledger, the versioned contract above. They are kept
+    apart on purpose - a single generic rule would make the ledger's identity depend on
+    keys that have nothing to do with what it decides.
+    """
+    if path.suffix != ".json" or not path.exists():
+        return None, None
     try:
         document = json.loads(path.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, UnicodeDecodeError):
-        return None
+        return None, None
+    contract = STATE_CONTRACTS.get(rel)
+    if contract is not None:
+        return ledger_state_sha256(document), contract
     if not isinstance(document, dict) or "payload_sha256" not in document:
-        return None
+        return None, None
     body = {k: v for k, v in document.items() if k not in VOLATILE_KEYS}
-    return hashlib.sha256(
+    digest = hashlib.sha256(
         json.dumps(body, indent=2, sort_keys=True, ensure_ascii=False).encode("utf-8")
     ).hexdigest()
+    return digest, None
 
 
 def payload_hash(payload: dict[str, Any]) -> str:
@@ -665,13 +704,20 @@ def build() -> dict[str, Any]:
         recomputed == audit.get("payload_sha256"),
         f"recomputed {recomputed[:16]} vs stored {str(audit.get('payload_sha256'))[:16]}",
     )
-    sources = [
-        {"path": rel, "role": SOURCE_ROLES[rel], "exists": (ROOT / rel).exists(),
-         "tracked": tracked(rel) if (ROOT / rel).exists() else None,
-         "sha256": sha256_file(ROOT / rel),
-         "state_sha256": state_pin(ROOT / rel)}
-        for rel in (AUDIT, COST_BARRIER, LEDGER, COST_V3, COST_MODEL_MODULE)
-    ]
+    sources = []
+    for rel in (AUDIT, COST_BARRIER, LEDGER, COST_V3, COST_MODEL_MODULE):
+        state, contract = state_identity(ROOT / rel, rel)
+        row: dict[str, Any] = {
+            "path": rel,
+            "role": SOURCE_ROLES[rel],
+            "exists": (ROOT / rel).exists(),
+            "tracked": tracked(rel) if (ROOT / rel).exists() else None,
+            "sha256": sha256_file(ROOT / rel),
+            "state_sha256": state,
+        }
+        if contract is not None:
+            row["state_contract"] = contract
+        sources.append(row)
     check("sources:all_present", all(s["exists"] for s in sources),
           ", ".join(f"{s['path']}={'ok' if s['exists'] else 'MISSING'}" for s in sources))
 
@@ -1168,8 +1214,16 @@ def main() -> int:
     payload["payload_sha256"] = payload_hash(payload)
     target_json = out_dir / "COST_BARRIER_EXPLORER.json"
     stored = json.loads(target_json.read_text(encoding="utf-8")) if target_json.exists() else {}
-    target_json.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    (out_dir / "COST_BARRIER_EXPLORER.md").write_text(render_markdown(payload), encoding="utf-8")
+    # newline="\n": Path.write_text translates "\n" to the host separator, so a rebuild on
+    # Windows used to rewrite every one of the artefact's 10 800 lines without changing a
+    # number, and made the published bytes depend on who ran the builder. The digest chain
+    # cannot tell that apart from an edit, so the writer must not have an opinion here.
+    target_json.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n"
+    )
+    (out_dir / "COST_BARRIER_EXPLORER.md").write_text(
+        render_markdown(payload), encoding="utf-8", newline="\n"
+    )
 
     if args.check:
         same = stored.get("payload_sha256") == payload["payload_sha256"]
