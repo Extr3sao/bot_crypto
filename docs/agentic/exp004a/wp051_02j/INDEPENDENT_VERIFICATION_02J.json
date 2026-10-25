@@ -1,0 +1,147 @@
+{
+  "check_count": 15,
+  "checks": [
+    {
+      "detail": "60 candidate(s), volume 3.621 GiB free",
+      "id": "DIAGNOSIS_PRESENT",
+      "status": "PASS"
+    },
+    {
+      "detail": "14 SAFE_OWNED path(s), all inside this worktree and untracked",
+      "evidence": {
+        "safe_owned": [
+          "scripts\\__pycache__",
+          "tests\\unit\\research\\__pycache__",
+          "src\\trading_bot\\research\\__pycache__",
+          "src\\trading_bot\\research\\prospective\\__pycache__",
+          "src\\trading_bot\\market_data\\__pycache__",
+          "src\\trading_bot\\backtesting\\__pycache__",
+          "src\\trading_bot\\config\\__pycache__",
+          "src\\trading_bot\\indicators\\__pycache__",
+          "src\\trading_bot\\storage\\__pycache__",
+          "src\\trading_bot\\domain\\events\\__pycache__",
+          "tests\\__pycache__",
+          "src\\trading_bot\\__pycache__",
+          "src\\trading_bot\\domain\\__pycache__",
+          "tests\\unit\\__pycache__"
+        ]
+      },
+      "id": "CLASSIFICATION_IS_CONSERVATIVE",
+      "status": "PASS"
+    },
+    {
+      "detail": "12 candidate(s) re-measured within tolerance",
+      "id": "CANDIDATE_SIZES_RECOMPUTED",
+      "status": "PASS"
+    },
+    {
+      "detail": "two OS APIs differ by 0 bytes; zeros recomputed 7, reported 7",
+      "evidence": {
+        "agreement_bytes": 0
+      },
+      "id": "READING_SEMANTICS_RECOMPUTED",
+      "status": "PASS"
+    },
+    {
+      "detail": "24 admissible row(s) of 72 declared, recomputed hour by hour",
+      "id": "LOST_DAY_RECOMPUTED",
+      "status": "PASS"
+    },
+    {
+      "detail": "p90 12.467 GiB, required 14.565 GiB, free now 3.249 GiB, refusals 162 -> INSUFFICIENT",
+      "id": "CAPACITY_ARITHMETIC",
+      "status": "PASS"
+    },
+    {
+      "detail": "alert EDGE04-ALERT_TEST-20261023T112758Z: the OS history still holds it (helper exit 0)",
+      "evidence": {
+        "helper": "{\"mode\":\"history\",\"tag\":\"EDGE04-ALERT_TEST-20261023T112758Z\",\"shown\":false,\"receipt\":true,\"history\":6,\"error\":null,\"at_utc\":\"2026-10-23T11:53:28Z\"}"
+      },
+      "id": "ALERT_HAS_A_RECEIPT",
+      "status": "PASS"
+    },
+    {
+      "detail": "2 delivered alert(s), 2 distinct id(s)",
+      "id": "NO_DUPLICATE_DELIVERY",
+      "status": "PASS"
+    },
+    {
+      "detail": "the remote verdict is BLOCKED and no webhook is configured",
+      "id": "CHANNELS_STATE_THEIR_LIMITS",
+      "status": "PASS"
+    },
+    {
+      "detail": "TradingAgentic-EDGE04-Watchdog last ran 2026-10-23T11:47:01+00:00 (result 1), writing WATCHDOG.json 1.0s later; TradingAgentic-EDGE04-Alarm last ran 2026-10-23T11:48:01+00:00 (result 0), writing SUPERVISOR.json 1.0s later",
+      "evidence": {
+        "tasks": [
+          {
+            "artifact": "WATCHDOG.json",
+            "artifact_at_utc": "2026-10-23T11:47:02Z",
+            "enabled": true,
+            "last_result": "1",
+            "last_run_raw": "23/10/2026 13:47:01",
+            "last_run_utc": "2026-10-23T11:47:01+00:00",
+            "query_exit": 0,
+            "registered": true,
+            "task": "TradingAgentic-EDGE04-Watchdog",
+            "written_by_that_run_seconds": 1.0
+          },
+          {
+            "artifact": "SUPERVISOR.json",
+            "artifact_at_utc": "2026-10-23T11:48:02Z",
+            "enabled": true,
+            "last_result": "0",
+            "last_run_raw": "23/10/2026 13:48:01",
+            "last_run_utc": "2026-10-23T11:48:01+00:00",
+            "query_exit": 0,
+            "registered": true,
+            "task": "TradingAgentic-EDGE04-Alarm",
+            "written_by_that_run_seconds": 1.0
+          }
+        ]
+      },
+      "id": "SCHEDULE_FIRES_WITHOUT_AN_OPERATOR",
+      "status": "PASS"
+    },
+    {
+      "detail": "15 test(s) passed under exit 0, suite digest 20850bdf6a68 matches",
+      "evidence": {
+        "recorded": "20850bdf6a686010a04b1bfc0e9070693baf290ff8a093f0839693bdff4a85f5",
+        "suite_sha256": "20850bdf6a686010a04b1bfc0e9070693baf290ff8a093f0839693bdff4a85f5"
+      },
+      "id": "TESTS_RAN_AND_PASSED",
+      "status": "PASS"
+    },
+    {
+      "detail": "git diff exit 0; window 2026-10-23T00:00:00Z..2027-01-21T00:00:00Z (90 d), floor 0.9, rows 6480",
+      "id": "CONTRACT_UNCHANGED",
+      "status": "PASS"
+    },
+    {
+      "detail": "the 2 GiB floor and the 5 GiB warning in the guard's own module are untouched",
+      "id": "FLOOR_UNCHANGED",
+      "status": "PASS"
+    },
+    {
+      "detail": "runs.jsonl and health.json are byte-identical after a reporting run",
+      "id": "TOOLS_DO_NOT_TOUCH_THE_STORE",
+      "status": "PASS"
+    },
+    {
+      "detail": "verdict 'BLOCKED' with capacity 'INSUFFICIENT'",
+      "id": "VERDICT_IS_HONEST",
+      "status": "PASS"
+    }
+  ],
+  "failed": 0,
+  "generated_at_utc": "2026-10-23T11:53:29Z",
+  "head": "7f9758d9bbff55dd2cbc01a1146f8a2ed5d49b77",
+  "main_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+  "not_a_certification": "this says the recovery report agrees with the host. It promotes nothing and it does not restore the days the campaign has already lost.",
+  "package": "WP-051-02J",
+  "passed": 15,
+  "schema_version": "EXP004A_WP051_02J_VERIFICATION_V1",
+  "unverifiable": 0,
+  "verdict": "PASS",
+  "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h"
+}

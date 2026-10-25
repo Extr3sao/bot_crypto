@@ -1,0 +1,71 @@
+{
+  "admissible": true,
+  "asset": "ETH",
+  "bytes": 7454,
+  "capture": {
+    "generator": {
+      "argv": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "scripts/exp004a_wp051_02g_capture.py",
+        "--once",
+        "--declaration",
+        "config/preregistrations/EXP-004A.datasets.phase3.json",
+        "--rehearsal"
+      ],
+      "git_blob_sha": "2fec148451ed74245435dfc6e82de2b168625f16",
+      "script": "scripts/exp004a_wp051_02g_capture.py",
+      "script_sha256": "b778c642efdf9b4dc4056875c8589035148839c403ee31d9f5b3357c9e16f8e5"
+    },
+    "id": "capture/EXP-004A/WP-051-02G"
+  },
+  "captured_at_utc": "2026-10-22T22:10:44.810Z",
+  "counts_toward_coverage": false,
+  "dataset_id": "EXP-004A-1H-ETH-P3",
+  "day": "2026-10-19",
+  "day_closed_at_utc": "2026-10-20T00:00:00.000Z",
+  "declaration": {
+    "declaration_id": "EXP-004A.datasets.phase3/v1",
+    "effective_from_utc": "2026-10-23T00:00:00.000Z",
+    "path": "config/preregistrations/EXP-004A.datasets.phase3.json",
+    "sha256": "baeffad097f7d9370cd5b3aa3ab91517ee01d409b7dcbb00c96aad82e54a2cfe"
+  },
+  "defects": [],
+  "first_open_utc": "2026-10-19T00:00:00.000Z",
+  "interval": "1h",
+  "lag": {
+    "bound_ms": 7200000,
+    "definition": "lag_ms = fetched_at_ms - (ts + interval_ms), the forward store's own definition",
+    "max_ms": 6957826,
+    "min_ms": 657094,
+    "negative": 0,
+    "over_bound": 0
+  },
+  "last_close_utc": "2026-10-20T00:00:00.000Z",
+  "last_open_utc": "2026-10-19T23:00:00.000Z",
+  "note": "Lines are the forward store's own bytes for this day, in open order. The manifest was written by the builder; it says what the builder did and not that the shard is right.",
+  "opens": {
+    "count": 24,
+    "expected": 24,
+    "first_utc": "2026-10-19T00:00:00.000Z",
+    "last_utc": "2026-10-19T23:00:00.000Z"
+  },
+  "period": {
+    "end_utc": "2026-10-22T00:00:00.000Z",
+    "fencepost": "period_start_utc <= bar open < period_end_utc",
+    "start_utc": "2026-10-19T00:00:00.000Z"
+  },
+  "prospective": false,
+  "row_count": 24,
+  "schema_version": "1.0",
+  "sha256": "77dd6756b1847f675450181bdf3dc26d9e6666c3d79b821950544763f554eca0",
+  "shard_id": "1h:ETH@2026-10-19",
+  "slice": "1h:ETH",
+  "source": {
+    "bars_in_source": 5659,
+    "path": "data/forward/edge03/1h/ETH.jsonl",
+    "prefix_bytes": 1737551,
+    "prefix_sha256": "31b8ee2ce7a4aa03f6c5e56730e0dab2c7bee241a3d63e659063672282f64c5f",
+    "sha256_at_read": "66c53c5624085c8db4e73cfeb4a383eed7b8ad7799ec93798cdea793444a39c6",
+    "total_bytes_at_read": 1758358
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "lane_task": {
+    "available": true,
+    "settings": {
+      "action": {
+        "Arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due",
+        "Command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "WorkingDirectory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+      },
+      "defaulted": [
+        "Enabled=true",
+        "RunLevel=LeastPrivilege",
+        "AllowHardTerminate=true",
+        "WakeToRun=false",
+        "RunOnlyIfNetworkAvailable=false",
+        "Hidden=false",
+        "AllowStartOnDemand=true",
+        "Priority=7"
+      ],
+      "explicit": [
+        "Principals/UserId",
+        "Principals/LogonType",
+        "Settings/DisallowStartIfOnBatteries",
+        "Settings/StopIfGoingOnBatteries",
+        "Settings/ExecutionTimeLimit",
+        "Settings/MultipleInstancesPolicy",
+        "Settings/RestartOnFailure",
+        "Settings/StartWhenAvailable",
+        "Settings/IdleSettings"
+      ],
+      "principals": {
+        "LogonType": "InteractiveToken",
+        "UserId": "S-1-12-1-2907394642-1261797007-1573842048-3608101379"
+      },
+      "reading": "read by element path from the platform's own export; an element the platform omits is at its schema default, which is listed under *_defaulted rather than recorded as unset",
+      "settings": {
+        "AllowHardTerminate_defaulted": "true",
+        "AllowStartOnDemand_defaulted": "true",
+        "DisallowStartIfOnBatteries": "false",
+        "Enabled_defaulted": "true",
+        "ExecutionTimeLimit": "PT1H",
+        "Hidden_defaulted": "false",
+        "IdleSettings": {
+          "RestartOnIdle": "false",
+          "StopOnIdleEnd": "true"
+        },
+        "MultipleInstancesPolicy": "IgnoreNew",
+        "Priority_defaulted": "7",
+        "RestartOnFailure": {
+          "Count": "3",
+          "Interval": "PT5M"
+        },
+        "RunLevel_defaulted": "LeastPrivilege",
+        "RunOnlyIfNetworkAvailable_defaulted": "false",
+        "StartWhenAvailable": "true",
+        "StopIfGoingOnBatteries": "false",
+        "WakeToRun_defaulted": "false"
+      },
+      "trigger": {
+        "Duration": "P3650D",
+        "StartBoundary": "2026-10-13T13:25:53",
+        "repetition_interval": "PT15M"
+      }
+    },
+    "sha256": "09ac051a0fd582b30fbe2e5718a9928fa71ea64780a1ea58602160ca8543beda",
+    "task_name": "TradingAgentic-EDGE04-Forward",
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-16\"?>\n<Task version=\"1.2\" xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\">\n  <RegistrationInfo>\n    <Date>2026-10-13T13:24:53</Date>\n    <Author>DIRECTORI\\GVLLFR0035</Author>\n    <Description>WP-EDGE-04 forward observation: unattended tick of the frozen WP-EDGE-03 forward lane. Public market data only; no credentials, no orders, no capital.</Description>\n    <URI>\\TradingAgentic-EDGE04-Forward</URI>\n  </RegistrationInfo>\n  <Principals>\n    <Principal id=\"Author\">\n      <UserId>S-1-12-1-2907394642-1261797007-1573842048-3608101379</UserId>\n      <LogonType>InteractiveToken</LogonType>\n    </Principal>\n  </Principals>\n  <Settings>\n    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>\n    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>\n    <ExecutionTimeLimit>PT1H</ExecutionTimeLimit>\n    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>\n    <RestartOnFailure>\n      <Count>3</Count>\n      <Interval>PT5M</Interval>\n    </RestartOnFailure>\n    <StartWhenAvailable>true</StartWhenAvailable>\n    <IdleSettings>\n      <StopOnIdleEnd>true</StopOnIdleEnd>\n      <RestartOnIdle>false</RestartOnIdle>\n    </IdleSettings>\n  </Settings>\n  <Triggers>\n    <TimeTrigger>\n      <StartBoundary>2026-10-13T13:25:53</StartBoundary>\n      <Repetition>\n        <Interval>PT15M</Interval>\n        <Duration>P3650D</Duration>\n      </Repetition>\n    </TimeTrigger>\n  </Triggers>\n  <Actions Context=\"Author\">\n    <Exec>\n      <Command>C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe</Command>\n      <Arguments>\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge04_observer.py\" --scheduled --due</Arguments>\n      <WorkingDirectory>C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff</WorkingDirectory>\n    </Exec>\n  </Actions>\n</Task>"
+  },
+  "logon_mode": {
+    "available": true,
+    "fields": {
+      "Ejecutar como usuario": "GVLLFR0035",
+      "Estado": "Listo",
+      "Nombre de tarea": "\\TradingAgentic-EDGE04-Forward"
+    },
+    "raw_sha256": "c1b3eff11399994bfc40daab8ed580b9b603017c50692ecf75e31f8dfcdcac81",
+    "reading": "the platform's own description of the task, read verbatim; the language of this host is Spanish, so the field names are the ones it prints",
+    "result": {
+      "ok": true,
+      "returncode": 0
+    }
+  },
+  "watchdog_task": {
+    "available": true,
+    "settings": {
+      "action": {
+        "Arguments": "\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge05_watchdog.py\"",
+        "Command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "WorkingDirectory": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff"
+      },
+      "defaulted": [
+        "Enabled=true",
+        "RunLevel=LeastPrivilege",
+        "AllowHardTerminate=true",
+        "WakeToRun=false",
+        "RunOnlyIfNetworkAvailable=false",
+        "Hidden=false",
+        "AllowStartOnDemand=true",
+        "Priority=7"
+      ],
+      "explicit": [
+        "Principals/UserId",
+        "Principals/LogonType",
+        "Settings/DisallowStartIfOnBatteries",
+        "Settings/StopIfGoingOnBatteries",
+        "Settings/ExecutionTimeLimit",
+        "Settings/MultipleInstancesPolicy",
+        "Settings/RestartOnFailure",
+        "Settings/StartWhenAvailable",
+        "Settings/IdleSettings"
+      ],
+      "principals": {
+        "LogonType": "InteractiveToken",
+        "UserId": "S-1-12-1-2907394642-1261797007-1573842048-3608101379"
+      },
+      "reading": "read by element path from the platform's own export; an element the platform omits is at its schema default, which is listed under *_defaulted rather than recorded as unset",
+      "settings": {
+        "AllowHardTerminate_defaulted": "true",
+        "AllowStartOnDemand_defaulted": "true",
+        "DisallowStartIfOnBatteries": "false",
+        "Enabled_defaulted": "true",
+        "ExecutionTimeLimit": "PT1H",
+        "Hidden_defaulted": "false",
+        "IdleSettings": {
+          "RestartOnIdle": "false",
+          "StopOnIdleEnd": "true"
+        },
+        "MultipleInstancesPolicy": "IgnoreNew",
+        "Priority_defaulted": "7",
+        "RestartOnFailure": {
+          "Count": "3",
+          "Interval": "PT5M"
+        },
+        "RunLevel_defaulted": "LeastPrivilege",
+        "RunOnlyIfNetworkAvailable_defaulted": "false",
+        "StartWhenAvailable": "true",
+        "StopIfGoingOnBatteries": "false",
+        "WakeToRun_defaulted": "false"
+      },
+      "trigger": {
+        "Duration": "P3650D",
+        "StartBoundary": "2026-10-13T21:02:30",
+        "repetition_interval": "PT15M"
+      }
+    },
+    "sha256": "7ff412321ec119eb48f538fe355b1621176b6f0adef26f8f521a2cf1ff48d808",
+    "task_name": "TradingAgentic-EDGE05-Watchdog",
+    "xml": "<?xml version=\"1.0\" encoding=\"UTF-16\"?>\n<Task version=\"1.2\" xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\">\n  <RegistrationInfo>\n    <Date>2026-10-13T21:01:30</Date>\n    <Author>DIRECTORI\\GVLLFR0035</Author>\n    <Description>WP-EDGE-05 independent watchdog: reads the WP-EDGE-04 forward lane's evidence and the operating system's own reporting and records a verdict. Reads only; no credentials, no orders, no capital, no promotion.</Description>\n    <URI>\\TradingAgentic-EDGE05-Watchdog</URI>\n  </RegistrationInfo>\n  <Principals>\n    <Principal id=\"Author\">\n      <UserId>S-1-12-1-2907394642-1261797007-1573842048-3608101379</UserId>\n      <LogonType>InteractiveToken</LogonType>\n    </Principal>\n  </Principals>\n  <Settings>\n    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>\n    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>\n    <ExecutionTimeLimit>PT1H</ExecutionTimeLimit>\n    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>\n    <RestartOnFailure>\n      <Count>3</Count>\n      <Interval>PT5M</Interval>\n    </RestartOnFailure>\n    <StartWhenAvailable>true</StartWhenAvailable>\n    <IdleSettings>\n      <StopOnIdleEnd>true</StopOnIdleEnd>\n      <RestartOnIdle>false</RestartOnIdle>\n    </IdleSettings>\n  </Settings>\n  <Triggers>\n    <TimeTrigger>\n      <StartBoundary>2026-10-13T21:02:30</StartBoundary>\n      <Repetition>\n        <Interval>PT15M</Interval>\n        <Duration>P3650D</Duration>\n      </Repetition>\n    </TimeTrigger>\n  </Triggers>\n  <Actions Context=\"Author\">\n    <Exec>\n      <Command>C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe</Command>\n      <Arguments>\"C:/Users/GVLLFR0035/Downloads/bot freebuff/scripts/edge05_watchdog.py\"</Arguments>\n      <WorkingDirectory>C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff</WorkingDirectory>\n    </Exec>\n  </Actions>\n</Task>"
+  }
+}

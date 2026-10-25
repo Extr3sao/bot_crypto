@@ -1,0 +1,18 @@
+{
+  "experiment_id": "EXP-ARP-011",
+  "final": "INSUFFICIENT_EVIDENCE",
+  "identity": {
+    "dataset": "baseline",
+    "kind": "daily",
+    "max_hold_days": 10,
+    "min_trades": 10,
+    "strategy_id": "H-VOLEXP-BREAK-001"
+  },
+  "oos_opened": false,
+  "stages": {
+    "COST": "NOT_REACHED",
+    "DEV": "INSUFFICIENT_EVIDENCE",
+    "ROBUSTNESS": "NOT_REACHED",
+    "VALIDATION": "NOT_REACHED"
+  }
+}

@@ -1,0 +1,4 @@
+BTC 15m: 70703 rows <= cut, 4497889 bytes (recorded 4497888), sha match=False
+ETH 15m: 70703 rows <= cut, 4466467 bytes (recorded 4466466), sha match=False
+SOL 15m: 70703 rows <= cut, 4095008 bytes (recorded None), sha match=False
+control 5m: 212109 rows, 13389298 bytes (recorded 13389298, delta 0)

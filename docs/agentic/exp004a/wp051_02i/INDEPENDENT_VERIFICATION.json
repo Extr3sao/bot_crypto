@@ -1,0 +1,169 @@
+{
+  "check_count": 16,
+  "checks": [
+    {
+      "detail": "STORAGE_CAPACITY_REPORT.json parsed: schema EXP004A_WP051_02I_STORAGE_V1, generated 2026-10-23T10:55:31Z",
+      "id": "REPORT_PRESENT",
+      "status": "PASS"
+    },
+    {
+      "detail": "the report must not carry a coverage or certification claim: it measures storage",
+      "id": "REPORT_HAS_NO_GRADE",
+      "status": "PASS"
+    },
+    {
+      "detail": "required 17910637750 = own + floor + drawdown, verdict INSUFFICIENT",
+      "id": "PROJECTION_ARITHMETIC",
+      "status": "PASS"
+    },
+    {
+      "detail": "the report claims 162 refusal(s); the tick log holds 162",
+      "evidence": {
+        "claimed": 162,
+        "recomputed": 162
+      },
+      "id": "REFUSALS_RECOMPUTED",
+      "status": "PASS"
+    },
+    {
+      "detail": "the report claims 24 refusal episode(s); the outcomes form 24",
+      "id": "REFUSAL_EPISODES_RECOMPUTED",
+      "status": "PASS"
+    },
+    {
+      "detail": "the report claims 25 stretch(es) under the floor; the readings form 25",
+      "id": "FREE_SPACE_EPISODES_RECOMPUTED",
+      "status": "PASS"
+    },
+    {
+      "detail": "every refused tick carries 0 new bars and exit 5",
+      "id": "A_REFUSAL_IS_NOT_A_CAPTURE",
+      "status": "PASS"
+    },
+    {
+      "detail": "4 stable path(s) agree within tolerance; 4 evidence path(s) did not shrink; 4 volatile path(s) reported separately",
+      "evidence": {
+        "compared": 4,
+        "protected": [
+          {
+            "claimed": 14336531,
+            "growth": 7131,
+            "id": "lane_state",
+            "now": 14343662
+          },
+          {
+            "claimed": 6695977,
+            "growth": 932,
+            "id": "lane_source_store",
+            "now": 6696909
+          },
+          {
+            "claimed": 336780,
+            "growth": 0,
+            "id": "phase3_shards",
+            "now": 336780
+          },
+          {
+            "claimed": 157898573,
+            "growth": 778181,
+            "id": "git_objects",
+            "now": 158676754
+          }
+        ],
+        "volatile": [
+          {
+            "claimed": 0,
+            "growth": 0,
+            "id": "other_agent_temp",
+            "now": 0
+          },
+          {
+            "claimed": 168005792,
+            "growth": 0,
+            "id": "audit_baseline",
+            "now": 168005792
+          },
+          {
+            "claimed": 19894377686,
+            "growth": 1575159,
+            "id": "downloads_worktrees",
+            "now": 19895952845
+          },
+          {
+            "claimed": 7370908553,
+            "growth": -492367921,
+            "id": "temp",
+            "now": 6878540632
+          }
+        ]
+      },
+      "id": "CONSUMERS_MATCH_THE_FILESYSTEM",
+      "status": "PASS"
+    },
+    {
+      "detail": "report 314.5 bytes/row, recomputed 314.5 over 15 shard(s)",
+      "evidence": {
+        "missing": [],
+        "recomputed": 314.5
+      },
+      "id": "SHARD_FORMAT_RECOMPUTED",
+      "status": "PASS"
+    },
+    {
+      "detail": "4 distinct removed director(ies) across the recorded history, all whitelisted and untracked; 4 of them have been rebuilt since, which is what a cache does",
+      "evidence": {
+        "regenerated": [
+          "scripts\\__pycache__",
+          "tests\\__pycache__",
+          "tests\\unit\\__pycache__",
+          "tests\\unit\\research\\__pycache__"
+        ]
+      },
+      "id": "SWEEP_STAYED_INSIDE_ITS_SCOPE",
+      "status": "PASS"
+    },
+    {
+      "detail": "status DEGRADED exit 1 (process 1); missing fields: []",
+      "id": "WATCHDOG_RUNS",
+      "status": "PASS"
+    },
+    {
+      "detail": "watchdog 4.897 GiB, verifier 4.897 GiB",
+      "id": "WATCHDOG_READS_THE_SAME_VOLUME",
+      "status": "PASS"
+    },
+    {
+      "detail": "status 'DEGRADED' is one of the five documented states",
+      "id": "WATCHDOG_STATE_VOCABULARY",
+      "status": "PASS"
+    },
+    {
+      "detail": "forecast label 'AT_RISK' with 3.1 h to the floor",
+      "id": "WATCHDOG_FORECAST_IS_LABELLED",
+      "status": "PASS"
+    },
+    {
+      "detail": "runs.jsonl and health.json are byte-identical after a --no-persist run",
+      "id": "WATCHDOG_DOES_NOT_WRITE_THE_STORE",
+      "status": "PASS"
+    },
+    {
+      "detail": "window 2026-10-23T00:00:00Z .. 2027-01-21T00:00:00Z (90 d) holds now and matches",
+      "id": "WINDOW_MATCHES_THE_CONTRACT",
+      "status": "PASS"
+    }
+  ],
+  "corrupt_run_lines": 0,
+  "failed": 0,
+  "generated_at_utc": "2026-10-23T11:05:03Z",
+  "head": "2e0b13273d4d6efb23187aeaccfb394f05220180",
+  "not_a_certification": "this says the storage report agrees with the bytes on this host. It says nothing about the experiment's coverage, and it promotes nothing.",
+  "package": "WP-051-02I",
+  "passed": 16,
+  "report": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h\\docs\\agentic\\exp004a\\wp051_02i\\STORAGE_CAPACITY_REPORT.json",
+  "schema_version": "EXP004A_WP051_02I_VERIFICATION_V1",
+  "state_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04",
+  "unverifiable": 0,
+  "verdict": "PASS",
+  "worktree": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h"
+}

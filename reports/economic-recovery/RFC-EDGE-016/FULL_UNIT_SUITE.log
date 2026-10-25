@@ -1,0 +1,208 @@
+........................................................................ [  1%]
+........................................................................ [  3%]
+........................................................................ [  5%]
+........................................................................ [  7%]
+........................................................................ [  8%]
+........................................................................ [ 10%]
+........................................................................ [ 12%]
+........................................................................ [ 14%]
+........................................................................ [ 16%]
+........................................................................ [ 17%]
+........................................................................ [ 19%]
+........................................................................ [ 21%]
+........................................................................ [ 23%]
+........................................................................ [ 25%]
+........................................................................ [ 26%]
+........................................................................ [ 28%]
+........................................................................ [ 30%]
+........................................................................ [ 32%]
+........................................................................ [ 34%]
+........................................................................ [ 35%]
+........................................................................ [ 37%]
+........................................................................ [ 39%]
+........................................................................ [ 41%]
+........................................................................ [ 43%]
+........................................................................ [ 44%]
+........................................................................ [ 46%]
+........................................................................ [ 48%]
+........................................................................ [ 50%]
+........................................................................ [ 51%]
+........................................................................ [ 53%]
+........................................................................ [ 55%]
+........................................................................ [ 57%]
+........................................................................ [ 59%]
+........................................................................ [ 60%]
+........................................................................ [ 62%]
+........................................................................ [ 64%]
+........................................................................ [ 66%]
+........................................................................ [ 68%]
+........................................................................ [ 69%]
+........................................................................ [ 71%]
+........................................................................ [ 73%]
+........................................................................ [ 75%]
+........................................................................ [ 77%]
+........................................................................ [ 78%]
+........................................................................ [ 80%]
+........................................................................ [ 82%]
+..................................................FF.................... [ 84%]
+........................................................................ [ 86%]
+........................................................................ [ 87%]
+........................................................................ [ 89%]
+........................................................................ [ 91%]
+........................................................................ [ 93%]
+........................................................................ [ 95%]
+........................................................................ [ 96%]
+........................................................................ [ 98%]
+........................................FF..............                 [100%]
+================================== FAILURES ===================================
+__________________ test_the_committed_artefacts_are_coherent __________________
+
+    def test_the_committed_artefacts_are_coherent() -> None:
+        period = json.loads(PERIOD.read_text(encoding="utf-8"))
+        windows = [
+            json.loads(line)
+            for line in WINDOWS.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+        observations = [
+            json.loads(line)
+            for line in OBSERVATIONS.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+        coverage = json.loads(COVERAGE.read_text(encoding="utf-8"))
+        drift = json.loads(DRIFT.read_text(encoding="utf-8"))
+        report = json.loads(REPORT.read_text(encoding="utf-8"))
+    
+        assert windows, "the phase has never collected a window"
+        for window in windows:
+            raw = Path(window["raw"]["path"])
+            if not raw.is_absolute():
+                raw = REPO / raw
+            assert raw.exists(), window["raw"]["path"]
+            with gzip.open(raw, "rb") as handle:
+                assert hashlib.sha256(handle.read()).hexdigest() == window["raw"]["uncompressed_sha256"]
+            assert window["orders_sent"] == 0 and window["credentials_used"] == 0
+            assert window["thresholds"]["spread_bps"] == SPREAD_MODEL_BPS
+            assert window["thresholds"]["impact_bps"] == IMPACT_MODEL_BPS
+            assert window["collected_at_utc"].endswith("Z")
+            assert window["freshness"]["freshness_limit_ms"] > 0
+        # every recorded book age is a real, non-negative age and follows the declared limit
+        for row in observations:
+            if row.get("book_age_ms") is None:
+                continue
+            assert row["book_age_ms"] >= 0.0, row
+            assert row["stale"] == (row["book_age_ms"] > row["freshness_limit_ms"]), row
+        # the raw instants reproduce the age of every observation
+        for window in windows:
+            raw = Path(window["raw"]["path"])
+            if not raw.is_absolute():
+                raw = REPO / raw
+            with gzip.open(raw, "rb") as handle:
+                snapshot = json.loads(handle.read().decode("utf-8"))
+            finished = datetime.strptime(
+                snapshot["local_finished_utc"].split(".")[0], "%Y-%m-%dT%H:%M:%S"
+            ).replace(tzinfo=UTC)
+            for row in [r for r in observations if r["window_id"] == window["window_id"]]:
+                observed = datetime.strptime(
+                    row["observed_at_utc"].split(".")[0], "%Y-%m-%dT%H:%M:%S"
+                ).replace(tzinfo=UTC)
+                expected = (finished - observed).total_seconds() * 1000.0
+                assert abs(row["book_age_ms"] - expected) <= 1000.0, (row, expected)
+        assert report["outcome"] in OUTCOMES
+        assert coverage["coverage_token"] in (
+            "REGIME_COVERAGE_SUFFICIENT",
+            "REGIME_COVERAGE_INSUFFICIENT",
+        )
+        # one window cannot satisfy the declared rule, and the reports say so
+>       assert coverage["coverage_complete"] is False
+E       assert True is False
+
+tests\unit\research\test_st6_forward_regime.py:815: AssertionError
+_ test_the_independent_verifier_passes_without_rewriting_the_committed_artefact _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-2019/test_the_independent_verifier_10')
+
+    def test_the_independent_verifier_passes_without_rewriting_the_committed_artefact(
+        tmp_path: Path,
+    ) -> None:
+        out = tmp_path / "verification.json"
+        md_out = tmp_path / "verification.md"
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(VERIFIER),
+                "--out",
+                str(out),
+                "--md-out",
+                str(md_out),
+            ],
+            cwd=REPO,
+            capture_output=True,
+            text=True,
+        )
+>       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: FAIL 10644/10645 checks, 1 mismatches, FALSE_SUCCESS = 1
+E           FAIL the report states what it does not certify: a measured cost exceeded the modelled term beyond the declared boundary policy
+E         written -> C:\Users\GVLLFR0035\AppData\Local\Temp\pytest-of-GVLLFR0035\pytest-2019\test_the_independent_verifier_10\verification.json, C:\Users\GVLLFR0035\AppData\Local\Temp\pytest-of-GVLLFR0035\pytest-2019\test_the_independent_verifier_10\verification.md
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe', 'C:\\Users\\GVLLF...pData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-2019\\test_the_independent_verifier_10\\verification.md\n', stderr='').returncode
+
+tests\unit\research\test_st6_forward_regime.py:844: AssertionError
+_______________ test_all_imported_internal_modules_are_tracked ________________
+
+    def test_all_imported_internal_modules_are_tracked() -> None:
+        """Every trading_bot.* module in the TRACKED closure must be tracked.
+    
+        DEF-CLOSURE-001: the previous implementation inspected this process's
+        global ``sys.modules`` *after the whole suite had imported*, so a single
+        untracked test file importing untracked modules made the guard fail (and
+        only when that test ran first) — an order-dependent false positive on
+        code that a clean checkout would never load. The check now imports the
+        tracked source tree in a fresh interpreter, which is order-independent and
+        still fails loudly if a TRACKED module pulls in an untracked internal one.
+        """
+        offenders = _closure_offenders()
+        assert not offenders["outside"], (
+            "Internal modules resolved OUTSIDE the repository:\n  " + "\n  ".join(offenders["outside"])
+        )
+>       assert not offenders["untracked"], (
+            "Internal modules imported but NOT tracked by Git (clean checkouts "
+            "cannot reproduce this tree):\n  " + "\n  ".join(offenders["untracked"])
+        )
+E       AssertionError: Internal modules imported but NOT tracked by Git (clean checkouts cannot reproduce this tree):
+E           trading_bot.research.economic_recovery.pit15 -> src/trading_bot/research/economic_recovery/pit15.py
+E       assert not ['trading_bot.research.economic_recovery.pit15 -> src/trading_bot/research/economic_recovery/pit15.py']
+
+tests\unit\test_dependency_closure_guard.py:114: AssertionError
+_______ test_closure_guard_is_order_independent_under_module_pollution ________
+
+    def test_closure_guard_is_order_independent_under_module_pollution() -> None:
+        """Regression for DEF-CLOSURE-001.
+    
+        An untracked module injected into THIS process's ``sys.modules`` (the exact
+        shape of the pollution that produced the order-dependent failure) must NOT
+        make the closure guard fail: the guard derives its verdict from a fresh
+        import of the tracked tree, not from mutable global state.
+        """
+        name = "trading_bot.research.experimental._pollution_probe"
+        assert name not in _tracked_files()
+        stub = types.ModuleType(name)
+        stub.__file__ = str(REPO / "src" / "trading_bot" / "research" / "experimental" / "_probe.py")
+        sys.modules[name] = stub
+        try:
+            offenders = _closure_offenders()
+>           assert offenders["untracked"] == [], offenders["untracked"]
+E           AssertionError: ['trading_bot.research.economic_recovery.pit15 -> src/trading_bot/research/economic_recovery/pit15.py']
+E           assert ['trading_bot...ery/pit15.py'] == []
+E             
+E             Left contains one more item: 'trading_bot.research.economic_recovery.pit15 -> src/trading_bot/research/economic_recovery/pit15.py'
+E             Use -v to get more diff
+
+tests\unit\test_dependency_closure_guard.py:135: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/research/test_st6_forward_regime.py::test_the_committed_artefacts_are_coherent
+FAILED tests/unit/research/test_st6_forward_regime.py::test_the_independent_verifier_passes_without_rewriting_the_committed_artefact
+FAILED tests/unit/test_dependency_closure_guard.py::test_all_imported_internal_modules_are_tracked
+FAILED tests/unit/test_dependency_closure_guard.py::test_closure_guard_is_order_independent_under_module_pollution
+4 failed, 4012 passed in 939.34s (0:15:39)

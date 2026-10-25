@@ -1,0 +1,32 @@
+{
+  "decision": "DO_NOT_CREATE_A_SCHEDULER",
+  "delivered_instead": {
+    "manual_collector": "scripts/edge15_oos_preregistration.py --capture (idempotent, appends only new bars)",
+    "runbook": "PROSPECTIVE_COVERAGE.md",
+    "status_while_blocked": "PROSPECTIVE_CAPTURE_NOT_AUTOMATED"
+  },
+  "existing_scheduled_jobs_found": [
+    {
+      "belongs_to": "the ST6 forward-regime line, not this package",
+      "cadence": 15,
+      "evidence": "data\\st6\\ST6_SCHEDULER_PROVENANCE.json",
+      "name": "TradingAgentic-ST6-Forward",
+      "runs": "\"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\st6_forward_regime.py\" --due --scheduled"
+    }
+  ],
+  "github_actions": {
+    "with_schedule_trigger": 0,
+    "workflows": 3
+  },
+  "reasons": [
+    "the disk guard reports INSUFFICIENT_FREE_SPACE for the declared collection window",
+    "creating a Windows scheduled task needs administrator privileges, which are not authorized",
+    "a GitHub cron cannot run this collector: the working copy and the data are local",
+    "the brief prefers reuse over invention, and the one existing task belongs to another line"
+  ],
+  "schema_version": "EDGE16_SCHEDULER_DECISION_V1",
+  "unblocking_requires": [
+    "free space for the declared horizon (the guard's own arithmetic, not a lowered threshold)",
+    "an explicit decision to schedule a local task, which this package does not take"
+  ]
+}

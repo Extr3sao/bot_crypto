@@ -1,0 +1,82 @@
+{
+  "after": {
+    "free_bytes": 3859378176,
+    "free_gib": 3.5943,
+    "path": "C:\\",
+    "status": "WARNING",
+    "total_bytes": 255041990656,
+    "used_percent": 98.49
+  },
+  "before": {
+    "free_bytes": 3860291584,
+    "free_gib": 3.5952,
+    "path": "C:\\",
+    "status": "WARNING",
+    "total_bytes": 255041990656,
+    "used_percent": 98.49
+  },
+  "deleted_bytes": 1421356,
+  "generated_at_utc": "2026-10-23T11:34:06Z",
+  "kept": [],
+  "note": "only this worktree's untracked byte-compiled caches. The volume moves for reasons this program does not control, so deleted_bytes is the quantity it is responsible for.",
+  "removed": [
+    {
+      "bytes": 391226,
+      "path": "scripts/__pycache__"
+    },
+    {
+      "bytes": 561,
+      "path": "src/trading_bot/__pycache__"
+    },
+    {
+      "bytes": 64009,
+      "path": "src/trading_bot/backtesting/__pycache__"
+    },
+    {
+      "bytes": 54975,
+      "path": "src/trading_bot/config/__pycache__"
+    },
+    {
+      "bytes": 298,
+      "path": "src/trading_bot/domain/__pycache__"
+    },
+    {
+      "bytes": 14230,
+      "path": "src/trading_bot/domain/events/__pycache__"
+    },
+    {
+      "bytes": 34649,
+      "path": "src/trading_bot/indicators/__pycache__"
+    },
+    {
+      "bytes": 76111,
+      "path": "src/trading_bot/market_data/__pycache__"
+    },
+    {
+      "bytes": 265597,
+      "path": "src/trading_bot/research/__pycache__"
+    },
+    {
+      "bytes": 109085,
+      "path": "src/trading_bot/research/prospective/__pycache__"
+    },
+    {
+      "bytes": 19938,
+      "path": "src/trading_bot/storage/__pycache__"
+    },
+    {
+      "bytes": 2287,
+      "path": "tests/__pycache__"
+    },
+    {
+      "bytes": 216,
+      "path": "tests/unit/__pycache__"
+    },
+    {
+      "bytes": 388174,
+      "path": "tests/unit/research/__pycache__"
+    }
+  ],
+  "schema_version": "EXP004A_WP051_02J_RECOVERY_V1",
+  "volume_delta_bytes": -913408
+}

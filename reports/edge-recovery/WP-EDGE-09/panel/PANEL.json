@@ -1,0 +1,307 @@
+{
+  "runs": [
+    "paper-lab-continuous-02",
+    "paper-strategy-lifecycle-shadow-02"
+  ],
+  "coverage": [
+    {
+      "root": "reports/microstructure-forward-continuous",
+      "run": "paper-lab-continuous-02",
+      "market": "spot",
+      "symbol": "BTCUSDT",
+      "book_ticker_files": 43,
+      "agg_trade_files": 43,
+      "periodic_files": 0,
+      "depth_snapshot_files": 5,
+      "tape_seconds": 12226
+    },
+    {
+      "root": "reports/microstructure-forward-continuous",
+      "run": "paper-lab-continuous-02",
+      "market": "spot",
+      "symbol": "ETHUSDT",
+      "book_ticker_files": 43,
+      "agg_trade_files": 43,
+      "periodic_files": 0,
+      "depth_snapshot_files": 5,
+      "tape_seconds": 9064
+    },
+    {
+      "root": "reports/microstructure-forward-continuous",
+      "run": "paper-lab-continuous-02",
+      "market": "perp",
+      "symbol": "BTCUSDT",
+      "book_ticker_files": 43,
+      "agg_trade_files": 0,
+      "periodic_files": 86,
+      "depth_snapshot_files": 24,
+      "tape_seconds": 0
+    },
+    {
+      "root": "reports/microstructure-forward-continuous",
+      "run": "paper-lab-continuous-02",
+      "market": "perp",
+      "symbol": "ETHUSDT",
+      "book_ticker_files": 43,
+      "agg_trade_files": 0,
+      "periodic_files": 86,
+      "depth_snapshot_files": 24,
+      "tape_seconds": 0
+    },
+    {
+      "root": "reports/microstructure-forward-lab",
+      "run": "paper-strategy-lifecycle-shadow-02",
+      "market": "spot",
+      "symbol": "BTCUSDT",
+      "book_ticker_files": 11,
+      "agg_trade_files": 11,
+      "periodic_files": 0,
+      "depth_snapshot_files": 4,
+      "tape_seconds": 6312
+    },
+    {
+      "root": "reports/microstructure-forward-lab",
+      "run": "paper-strategy-lifecycle-shadow-02",
+      "market": "spot",
+      "symbol": "ETHUSDT",
+      "book_ticker_files": 11,
+      "agg_trade_files": 11,
+      "periodic_files": 0,
+      "depth_snapshot_files": 4,
+      "tape_seconds": 4858
+    },
+    {
+      "root": "reports/microstructure-forward-lab",
+      "run": "paper-strategy-lifecycle-shadow-02",
+      "market": "spot",
+      "symbol": "SOLUSDT",
+      "book_ticker_files": 11,
+      "agg_trade_files": 11,
+      "periodic_files": 0,
+      "depth_snapshot_files": 4,
+      "tape_seconds": 4189
+    },
+    {
+      "root": "reports/microstructure-forward-lab",
+      "run": "paper-strategy-lifecycle-shadow-02",
+      "market": "perp",
+      "symbol": "BTCUSDT",
+      "book_ticker_files": 11,
+      "agg_trade_files": 0,
+      "periodic_files": 22,
+      "depth_snapshot_files": 11,
+      "tape_seconds": 0
+    },
+    {
+      "root": "reports/microstructure-forward-lab",
+      "run": "paper-strategy-lifecycle-shadow-02",
+      "market": "perp",
+      "symbol": "ETHUSDT",
+      "book_ticker_files": 11,
+      "agg_trade_files": 0,
+      "periodic_files": 22,
+      "depth_snapshot_files": 11,
+      "tape_seconds": 0
+    },
+    {
+      "root": "reports/microstructure-forward-lab",
+      "run": "paper-strategy-lifecycle-shadow-02",
+      "market": "perp",
+      "symbol": "SOLUSDT",
+      "book_ticker_files": 11,
+      "agg_trade_files": 0,
+      "periodic_files": 22,
+      "depth_snapshot_files": 11,
+      "tape_seconds": 0
+    }
+  ],
+  "stats": {
+    "paper-lab-continuous-02|spot|BTCUSDT": {
+      "quotes": 1241954,
+      "seconds": 14548,
+      "trades": 91391,
+      "trade_volume": 1484.68425,
+      "oi_samples": 0,
+      "depth_snapshots": 1,
+      "files": 91,
+      "missing_seconds": 410,
+      "truncated_segments": 2,
+      "truncated_paths": [
+        "234500.jsonl.gz: EOFError: Compressed file ended before the end-of-stream marker was reached",
+        "234500.jsonl.gz: EOFError: Compressed file ended before the end-of-stream marker was reached"
+      ],
+      "first_second_ms": 1790722760043,
+      "last_second_ms": 1790737717533
+    },
+    "paper-lab-continuous-02|spot|ETHUSDT": {
+      "quotes": 692423,
+      "seconds": 14244,
+      "trades": 72269,
+      "trade_volume": 25817.9874,
+      "oi_samples": 0,
+      "depth_snapshots": 1,
+      "files": 91,
+      "missing_seconds": 714,
+      "truncated_segments": 2,
+      "truncated_paths": [
+        "234500.jsonl.gz: EOFError: Compressed file ended before the end-of-stream marker was reached",
+        "234500.jsonl.gz: EOFError: Compressed file ended before the end-of-stream marker was reached"
+      ],
+      "first_second_ms": 1790722760046,
+      "last_second_ms": 1790737717090
+    },
+    "paper-lab-continuous-02|perp|BTCUSDT": {
+      "quotes": 5070497,
+      "seconds": 14599,
+      "trades": 0,
+      "trade_volume": 0.0,
+      "oi_samples": 488,
+      "depth_snapshots": 10,
+      "files": 153,
+      "missing_seconds": 359,
+      "truncated_segments": 3,
+      "truncated_paths": [
+        "234500.jsonl.gz: EOFError: Compressed file ended before the end-of-stream marker was reached",
+        "234500.jsonl.gz: EOFError: Compressed file ended before the end-of-stream marker was reached",
+        "234500.jsonl.gz: EOFError: Compressed file ended before the end-of-stream marker was reached"
+      ],
+      "first_second_ms": 1790722760033,
+      "last_second_ms": 1790737717028
+    },
+    "paper-lab-continuous-02|perp|ETHUSDT": {
+      "quotes": 3815872,
+      "seconds": 14604,
+      "trades": 0,
+      "trade_volume": 0.0,
+      "oi_samples": 488,
+      "depth_snapshots": 11,
+      "files": 153,
+      "missing_seconds": 354,
+      "truncated_segments": 3,
+      "truncated_paths": [
+        "234500.jsonl.gz: EOFError: Compressed file ended before the end-of-stream marker was reached",
+        "234500.jsonl.gz: EOFError: Compressed file ended before the end-of-stream marker was reached",
+        "234500.jsonl.gz: EOFError: Compressed file ended before the end-of-stream marker was reached"
+      ],
+      "first_second_ms": 1790722760046,
+      "last_second_ms": 1790737717016
+    },
+    "paper-strategy-lifecycle-shadow-02|spot|BTCUSDT": {
+      "quotes": 862488,
+      "seconds": 6829,
+      "trades": 68973,
+      "trade_volume": 1308.30528,
+      "oi_samples": 0,
+      "depth_snapshots": 3,
+      "files": 26,
+      "missing_seconds": 370,
+      "truncated_segments": 0,
+      "truncated_paths": [],
+      "first_second_ms": 1790877430009,
+      "last_second_ms": 1790884628014
+    },
+    "paper-strategy-lifecycle-shadow-02|spot|ETHUSDT": {
+      "quotes": 447514,
+      "seconds": 6772,
+      "trades": 43239,
+      "trade_volume": 16314.3807,
+      "oi_samples": 0,
+      "depth_snapshots": 3,
+      "files": 26,
+      "missing_seconds": 426,
+      "truncated_segments": 0,
+      "truncated_paths": [],
+      "first_second_ms": 1790877431149,
+      "last_second_ms": 1790884628005
+    },
+    "paper-strategy-lifecycle-shadow-02|spot|SOLUSDT": {
+      "quotes": 368470,
+      "seconds": 6659,
+      "trades": 12074,
+      "trade_volume": 189637.141,
+      "oi_samples": 0,
+      "depth_snapshots": 3,
+      "files": 26,
+      "missing_seconds": 539,
+      "truncated_segments": 0,
+      "truncated_paths": [],
+      "first_second_ms": 1790877431150,
+      "last_second_ms": 1790884628004
+    },
+    "paper-strategy-lifecycle-shadow-02|perp|BTCUSDT": {
+      "quotes": 1791213,
+      "seconds": 5904,
+      "trades": 0,
+      "trade_volume": 0.0,
+      "oi_samples": 231,
+      "depth_snapshots": 113,
+      "files": 44,
+      "missing_seconds": 1295,
+      "truncated_segments": 0,
+      "truncated_paths": [],
+      "first_second_ms": 1790877430009,
+      "last_second_ms": 1790884628002
+    },
+    "paper-strategy-lifecycle-shadow-02|perp|ETHUSDT": {
+      "quotes": 1603790,
+      "seconds": 5918,
+      "trades": 0,
+      "trade_volume": 0.0,
+      "oi_samples": 232,
+      "depth_snapshots": 113,
+      "files": 44,
+      "missing_seconds": 1280,
+      "truncated_segments": 0,
+      "truncated_paths": [],
+      "first_second_ms": 1790877431127,
+      "last_second_ms": 1790884628162
+    },
+    "paper-strategy-lifecycle-shadow-02|perp|SOLUSDT": {
+      "quotes": 732665,
+      "seconds": 5836,
+      "trades": 0,
+      "trade_volume": 0.0,
+      "oi_samples": 232,
+      "depth_snapshots": 119,
+      "files": 44,
+      "missing_seconds": 1362,
+      "truncated_segments": 0,
+      "truncated_paths": [],
+      "first_second_ms": 1790877431127,
+      "last_second_ms": 1790884628163
+    }
+  },
+  "paths": {
+    "panel_seconds": "reports/edge-recovery/WP-EDGE-09/panel/PANEL_SECONDS.csv",
+    "oi_samples": "reports/edge-recovery/WP-EDGE-09/panel/OI_SAMPLES.csv",
+    "depth_snapshots": "reports/edge-recovery/WP-EDGE-09/panel/DEPTH_SNAPSHOTS.csv"
+  },
+  "grid_seconds": 1,
+  "depth_levels_kept": 10,
+  "sample_rule": "one row per one-second boundary, taken from the first quote event at or after the boundary; the first sample of a stream after a gap only establishes state",
+  "schema_version": "EDGE09_V1",
+  "work_package": "WP-EDGE-09B",
+  "declared_run_selection": [
+    "paper-lab-continuous-02",
+    "paper-strategy-lifecycle-shadow-02"
+  ],
+  "selection_rule": "the longest single continuous captures this repository holds; every other capture stays available and is enumerated in the estate audit",
+  "build_seconds": 130.93,
+  "digests": {
+    "panel_seconds": {
+      "path": "reports/edge-recovery/WP-EDGE-09/panel/PANEL_SECONDS.csv",
+      "sha256": "0f87b7baeb92f93d8563043af68d5ea1f60ad51466a8a5ea6ff00bf501a1bff1",
+      "bytes": 16729291
+    },
+    "oi_samples": {
+      "path": "reports/edge-recovery/WP-EDGE-09/panel/OI_SAMPLES.csv",
+      "sha256": "c7941d7ecd75c7a859935df1bcc6d6690d110707664551112c6c6242daf99941",
+      "bytes": 125749
+    },
+    "depth_snapshots": {
+      "path": "reports/edge-recovery/WP-EDGE-09/panel/DEPTH_SNAPSHOTS.csv",
+      "sha256": "3cab2af1f378db613adc79baf93e20a4d732046269bdeee082faacc6b2693fff",
+      "bytes": 625342
+    }
+  }
+}

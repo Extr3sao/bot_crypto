@@ -1,0 +1,103 @@
+{
+  "schema_version": "EDGE09_V1",
+  "work_package": "WP-EDGE-09E",
+  "artifact": "RESULTS_MATRIX",
+  "as_of_utc": "2026-10-15T05:16:16Z",
+  "rows": [
+    {
+      "hypothesis_id": "E-01",
+      "track": "ACTIVE",
+      "registered_criterion": "the best measured mean gross move at any horizon is below the measured round-trip cost for that asset",
+      "measured": "best measured cell perp/SOLUSDT h=60s gross 1.582703 bps vs 24.0731 bps barrier \u2014 gross 1.5827 bps is below the measured round trip 24.0731 bps (cells: {'COST_KILLED': 30})",
+      "classification": "COST_KILLED",
+      "failed_filter": "F2",
+      "evidence": "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENTS.json"
+    },
+    {
+      "hypothesis_id": "E-02",
+      "track": "CROSS-VENUE",
+      "registered_criterion": "no compared venue brings the round-trip cost at or below the measured gross move, including the venue with the lowest researched taker fee",
+      "measured": "the cheapest registered schedule (MEXC_SPOT_TAKER at 12.9866 bps) still exceeds the best measured gross (1.582703 bps): the fee schedule is not the only constraint",
+      "classification": "COST_KILLED",
+      "failed_filter": "F2",
+      "evidence": "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENTS.json"
+    },
+    {
+      "hypothesis_id": "E-03",
+      "track": "ACTIVE",
+      "registered_criterion": "the notional available within the barrier-implied price band is below the runtime's minimum order notional",
+      "measured": "spot depth snapshots are rare in this capture, so a spot capacity claim rests on a small number of observations and is reported as such",
+      "classification": "OBSERVED",
+      "failed_filter": "F4",
+      "evidence": "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENTS.json"
+    },
+    {
+      "hypothesis_id": "E-04",
+      "track": "QUALITY",
+      "registered_criterion": "no quadrant cell reaches a positive mean gross move at or above the round-trip cost, or the sample is below the registered floor",
+      "measured": "PRICE_DOWN_OI_UP n=14 mean=-8.015351 bps against a barrier of 23.1512 bps",
+      "classification": "INSUFFICIENT_SAMPLE",
+      "failed_filter": "\u2014",
+      "evidence": "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENTS.json"
+    },
+    {
+      "hypothesis_id": "E-05",
+      "track": "ACTIVE",
+      "registered_criterion": "the measured count of barrier-clearing opportunities per day is below the registered 3.0, no trade being forced to reach it",
+      "measured": "the tape clears the barrier at h=60s at 144.061 long-only opportunities/day (upper bound, long-only, extrapolated from 1.999-4.155 h of capture), so the ACTIVE frequency target is not what blocks the book at those horizons",
+      "classification": "OBSERVED",
+      "failed_filter": "\u2014",
+      "evidence": "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENTS.json"
+    },
+    {
+      "hypothesis_id": "E-06",
+      "track": "EXECUTION",
+      "registered_criterion": "the measured execution shortfall exceeds the modelled spread+impact component by more than the published tolerance",
+      "measured": "median measured taker shortfall 0.0187 bps against the modelled spread+impact components",
+      "classification": "OBSERVED",
+      "failed_filter": "\u2014",
+      "evidence": "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENTS.json"
+    },
+    {
+      "hypothesis_id": "E-07",
+      "track": "GUARD",
+      "registered_criterion": "the negative control reaches the positive classification, which would invalidate every other result in this package",
+      "measured": "negative control verdicts: ['COST_KILLED', 'NO_GROSS_EDGE', 'NO_INFORMATION']",
+      "classification": "NO_GROSS_EDGE",
+      "failed_filter": "\u2014",
+      "evidence": "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENTS.json"
+    }
+  ],
+  "comparison_current_vs_proposed": {
+    "status": "NOT_PRODUCIBLE",
+    "why": "no arm reached simulation: the registered F2/F3 cost filters rejected every hypothesis before a backtest, so there is no PROPOSED trade list and therefore no paired CURRENT/PROPOSED PnL to publish. Producing one would require inventing trades the gate forbade.",
+    "what_is_comparable_today": "the measured cost barrier against the measured best gross and against the tape's own frequency bound, all on the same panel and the same cost model"
+  },
+  "best_measured_long_only_gross_bps": 1.582703,
+  "negative_control": {
+    "classifications": [
+      "COST_KILLED",
+      "NO_GROSS_EDGE",
+      "NO_INFORMATION"
+    ],
+    "false_success": 0
+  },
+  "false_success": 0,
+  "promotion": "NONE",
+  "order_sent": false,
+  "derived_from": {
+    "config/risk.yaml": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+    "config/runtime.yaml": "ac3cf4fce9ff6246997a059f1c409609a7c87a6bb416198c041ca479fc49a159",
+    "docs/COST_MODEL_V3.json": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+    "docs/EXECUTION_COST_MODEL_V4.json": "7e772c34cbf0c894fc1ff00d643e82680847ebedaf986ba6dbb5b756121641a4",
+    "docs/FORWARD_DATA_CONTRACT.json": "eab7f4b158a9f8e4befa4f782327e8fb0e41d0b8525d53452e928b0be6bfff88",
+    "docs/source_registry.md": "c5a8bf6b48da6f733db31269e38fe11b00faca24028a99decfbd9529d64cfd71",
+    "reports/edge-recovery/WP-EDGE-09/panel/PANEL_SECONDS.csv": "0f87b7baeb92f93d8563043af68d5ea1f60ad51466a8a5ea6ff00bf501a1bff1",
+    "reports/edge-recovery/WP-EDGE-09/gates/COST_LIQUIDITY_CAPACITY.json": "a48e106e16b2346a5aaa4b6f7e3cd862887fa4a8be55c22265ea44c4d5d008f6",
+    "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENTS.json": "bde376e5139b651bab24c60e39287dba8c79d29d83d94be82b4210802cab9345",
+    "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENT_REGISTRY.json": "52aebe35ad050939ef010d74aaac06325d5bea2e6c4a702faf65946412e9f2a2",
+    "reports/edge-recovery/WP-EDGE-09/PREREGISTRATION.json": "7e2acbddef8f45d5ba30c7e8fd3057046134645b010cb72e865db6dd5c83309a",
+    "reports/edge-recovery/WP-EDGE-09/PREREGISTRATION.md": "b74f4a2b977d46d586a5a4313b029ae5587576704295cb989abd52ea04ae15ff"
+  },
+  "derived_no_new_measurement": true
+}

@@ -1,0 +1,196 @@
+{
+  "coverage": {
+    "admissible_rows": 216,
+    "counts_toward_coverage": false,
+    "declared_rows": 216,
+    "fraction": 1.0,
+    "required_fraction": 0.9,
+    "status": "COVERAGE_COMPLETE"
+  },
+  "entries": [
+    {
+      "bytes": 2904,
+      "git_blob_sha": "a8b954ae555ca93a02a357cc5b35e55bebaf826b",
+      "path": "docs/agentic/exp004a/wp051_02g/CHECK.json",
+      "sha256": "e0229508e7a0e52571d75387e618493fac66b69168301e3148252d659e3a4ce0"
+    },
+    {
+      "bytes": 6996,
+      "git_blob_sha": "d6d3d80f2f0b63014d5b4396ccedd30e86eadb09",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221043Z-a2bce8a6/CLAIM.json",
+      "sha256": "ec3a9136bb15abb892f46c233c86ca911279e528212cf4039cc495bc8cf17236"
+    },
+    {
+      "bytes": 5347,
+      "git_blob_sha": "3a3d654b8b43f757866ad42fdbb824953f5c43cb",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221043Z-a2bce8a6/INDEPENDENT_VERIFICATION.json",
+      "sha256": "c05e1818b0f89ac0d8df108cd1180e777733cfe685f16256342dd40cbeab2364"
+    },
+    {
+      "bytes": 6996,
+      "git_blob_sha": "d6d3d80f2f0b63014d5b4396ccedd30e86eadb09",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221043Z-a2bce8a6/RUN_REPORT.json",
+      "sha256": "ec3a9136bb15abb892f46c233c86ca911279e528212cf4039cc495bc8cf17236"
+    },
+    {
+      "bytes": 1687,
+      "git_blob_sha": "82d9307b943d27fe40be9a226ab01adc5a78ae5d",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221043Z-a2bce8a6/RUN_REPORT.md",
+      "sha256": "2843bad95b3f9dec5fbebd1fe803ed319c82f2c2bb7d8ffbfa4d994ed5e89a54"
+    },
+    {
+      "bytes": 10992,
+      "git_blob_sha": "657367b7fa39ca19ed7d2c3a84bb5dbe5af0c97c",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221044Z-c9a9f320/CLAIM.json",
+      "sha256": "f37a1f8d5c8de598e7739de741292da34018656cecbf460c50519a71c395d211"
+    },
+    {
+      "bytes": 5217,
+      "git_blob_sha": "810e4016a07232d8f525bb7cc647d3e331dbdb8f",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221044Z-c9a9f320/INDEPENDENT_VERIFICATION.json",
+      "sha256": "2faf0fc86880a13d3143a6210be7004113070820a5df83410b931390f04091cd"
+    },
+    {
+      "bytes": 10992,
+      "git_blob_sha": "657367b7fa39ca19ed7d2c3a84bb5dbe5af0c97c",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221044Z-c9a9f320/RUN_REPORT.json",
+      "sha256": "f37a1f8d5c8de598e7739de741292da34018656cecbf460c50519a71c395d211"
+    },
+    {
+      "bytes": 2459,
+      "git_blob_sha": "443fd3c5a1dcf020458f3db16992aaed190a9457",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221044Z-c9a9f320/RUN_REPORT.md",
+      "sha256": "59b1efdc435669fdeb1b994e0275a1facd5e6c2e7a7cb9867e4275f6471bbfc4"
+    },
+    {
+      "bytes": 3132,
+      "git_blob_sha": "21e1c57e3da13ee545fd0edc0600a40cd85d4264",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221044Z-c9a9f320/shards.jsonl",
+      "sha256": "63e8424c6c56bf77966f035fac27df0524bb52a564d46b11f83c72aef8568820"
+    },
+    {
+      "bytes": 7975,
+      "git_blob_sha": "74b5104ad25d85b42816945cfa500f23404c655a",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221046Z-8a317fe4/CLAIM.json",
+      "sha256": "67dab5f9edc41b4917e1b56bee6ec4e1d645d95b875b87d870a8cd9d516187c7"
+    },
+    {
+      "bytes": 5217,
+      "git_blob_sha": "2a2b487dd9db0c0c9dc88da8450e546a4592b5b2",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221046Z-8a317fe4/INDEPENDENT_VERIFICATION.json",
+      "sha256": "e5d81fe22c9cb292b7971eadef9d0a81dc6b9b58bab585ea621a382e99a476f9"
+    },
+    {
+      "bytes": 7975,
+      "git_blob_sha": "74b5104ad25d85b42816945cfa500f23404c655a",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221046Z-8a317fe4/RUN_REPORT.json",
+      "sha256": "67dab5f9edc41b4917e1b56bee6ec4e1d645d95b875b87d870a8cd9d516187c7"
+    },
+    {
+      "bytes": 1749,
+      "git_blob_sha": "b8521968fbd0be31e2368b431bdfb18f414ae579",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221046Z-8a317fe4/RUN_REPORT.md",
+      "sha256": "f41c9016c1b9d1b3bdad633f0d0a53a05fd667388b4affb748b05c3ee4aa5517"
+    },
+    {
+      "bytes": 10216,
+      "git_blob_sha": "a649de1f4d614e24726663bebad23025b3c1dab2",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221048Z-0d5ae0a6/CLAIM.json",
+      "sha256": "fc07839836e7d9d30d2c2b24734d7c5b91def19e1a6499b3b5adba106807c433"
+    },
+    {
+      "bytes": 5217,
+      "git_blob_sha": "169c1a0cadeb95a68d622b4c3ac1f76ba70e07b4",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221048Z-0d5ae0a6/INDEPENDENT_VERIFICATION.json",
+      "sha256": "6c27dc38d5abef9b6d46a8a47e5cbfa0655a695cd10fd7672e7aed13af5b83d5"
+    },
+    {
+      "bytes": 10216,
+      "git_blob_sha": "a649de1f4d614e24726663bebad23025b3c1dab2",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221048Z-0d5ae0a6/RUN_REPORT.json",
+      "sha256": "fc07839836e7d9d30d2c2b24734d7c5b91def19e1a6499b3b5adba106807c433"
+    },
+    {
+      "bytes": 1751,
+      "git_blob_sha": "225eaa41ce7add97b9ee008732fbdcca6b281540",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221048Z-0d5ae0a6/RUN_REPORT.md",
+      "sha256": "4eb9de2c7826319a10b42e23b373e882f19d712cb8ed4bc24f252a642d475b84"
+    },
+    {
+      "bytes": 6900,
+      "git_blob_sha": "dbe89f77877e5291335c1f4e5eccf9ae5705e909",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261023T053435Z-7fe919f5/CLAIM.json",
+      "sha256": "73bbd0d738028b457af37897f216158e980fc584e93832ee18bd93a6c43cc655"
+    },
+    {
+      "bytes": 5299,
+      "git_blob_sha": "ed66d13bca6e84c93be16a7062bb54b94678082c",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261023T053435Z-7fe919f5/INDEPENDENT_VERIFICATION.json",
+      "sha256": "50300a1ecff9e211db6a85a1296e0252f4a15db6c9820bba814bc11cd41b1062"
+    },
+    {
+      "bytes": 6900,
+      "git_blob_sha": "dbe89f77877e5291335c1f4e5eccf9ae5705e909",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261023T053435Z-7fe919f5/RUN_REPORT.json",
+      "sha256": "73bbd0d738028b457af37897f216158e980fc584e93832ee18bd93a6c43cc655"
+    },
+    {
+      "bytes": 1615,
+      "git_blob_sha": "7bb018f19e580587886e3baa61022337994e2505",
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261023T053435Z-7fe919f5/RUN_REPORT.md",
+      "sha256": "39bb2d9140b42c78f5a84a7dcd9d5e03ccee20effff398b44a9ef21066d54294"
+    },
+    {
+      "bytes": 36837,
+      "git_blob_sha": "3bcb9a505f78e38716347ec8af27a4ceab7ecf42",
+      "path": "docs/agentic/exp004a/wp051_02g/FINAL_REPORT.md",
+      "sha256": "38783ad0d38915e116995ae7baa3427826e88c2ed1bcfd5badc5e2f1a218de62"
+    },
+    {
+      "bytes": 5057,
+      "git_blob_sha": "810e4016a07232d8f525bb7cc647d3e331dbdb8f",
+      "path": "docs/agentic/exp004a/wp051_02g/INDEPENDENT_VERIFICATION.json",
+      "sha256": "18073e07d1e20d76cd7b1411abba8da6ce970f6279ca33156ac611ca2505f861"
+    },
+    {
+      "bytes": 84,
+      "git_blob_sha": "2424cd249e76b1837d7aa4f6e40c7ec515fb5d86",
+      "path": "docs/agentic/exp004a/wp051_02g/LATEST_RUN.json",
+      "sha256": "0aaa71a0043f690d40d8a80d621acbe1a9e62ad6dd6691687356de7ae435c7e0"
+    },
+    {
+      "bytes": 5123,
+      "git_blob_sha": "48e4debeca3afe8bd9f7ad4d3fbe56f93aa53120",
+      "path": "docs/agentic/exp004a/wp051_02g/PACKAGE_SUMMARY.json",
+      "sha256": "136e7d992864104d0be0196a4a49dd09d6ec58895257495e783922f9bbf4e134"
+    },
+    {
+      "bytes": 10992,
+      "git_blob_sha": "657367b7fa39ca19ed7d2c3a84bb5dbe5af0c97c",
+      "path": "docs/agentic/exp004a/wp051_02g/RUN_REPORT.json",
+      "sha256": "f37a1f8d5c8de598e7739de741292da34018656cecbf460c50519a71c395d211"
+    },
+    {
+      "bytes": 2459,
+      "git_blob_sha": "33e95c5179a1f5c821439a950c0d992f3a5c89a4",
+      "path": "docs/agentic/exp004a/wp051_02g/RUN_REPORT.md",
+      "sha256": "ee1c465978af6236604918e87351d216c364996834083303c814eff07c935bb8"
+    },
+    {
+      "bytes": 3901,
+      "git_blob_sha": "a3f2de1bc27104393e512a4fbedaea135b59dea5",
+      "path": "docs/agentic/exp004a/wp051_02g/RUNTIME_AUTHORITY.md",
+      "sha256": "bb16341b7e70fc83041c7b2b09473cbb5674f7600cadeb7d45489e9d000721d3"
+    }
+  ],
+  "entry_count": 29,
+  "hash_semantics": "sha256 hashes the bytes in this checkout; git_blob_sha is the Git object id at HEAD. They are different magnitudes and are never presented as the same value.",
+  "head": "ddb70fd9622f412489313d95e3f4d9d943525c73",
+  "not_a_certification": "a manifest says what is in the package. It does not say the package is right, and it promotes nothing.",
+  "package": "WP-051-02G",
+  "run_dir": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221044Z-c9a9f320",
+  "run_id": "20261022T221044Z-c9a9f320",
+  "schema_version": "1.0",
+  "sealed_at_utc": "2026-10-23T05:40:55.551Z",
+  "state": "CAPTURE_COMPLETE_AWAITING_VERIFICATION"
+}

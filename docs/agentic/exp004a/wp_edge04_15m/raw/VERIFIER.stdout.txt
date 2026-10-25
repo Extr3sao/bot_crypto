@@ -1,0 +1,15 @@
+PASS  PIN_DECODES_TO_RECORDED_SHARDS             the frozen 15m pin is sha256(name+sha256(bytes)) over the alpha003 shards recorded in data/economic001/EVIDENCE_CLOSURE.json (3/3)
+PASS  CORPUS_ABSENT_AT_PIN_LOCATION              3/3 frozen 15m shards are absent from data/raw/alpha003/price
+PASS  NO_BYTE_IDENTICAL_COPY_ON_HOST             hashed 15 name-matching files and 143640 files total across the swept roots; 0 match the recorded sha256
+PASS  GIT_AND_LFS_HOLD_NOTHING                   1 reachable object(s) named *_15m.json, 0 LFS files, 155 dangling blobs (largest 3580812 bytes vs ~4.5 MB per shard)
+PASS  REPLAY_REPRODUCES_STRUCTURE                replaying scripts/alpha003_run.py yields 70,703 rows per asset, first 1727740800000, last 1791372600000 — the span WP-EDGE-01 recorded
+PASS  REPLAY_BYTES_DIFFER                        3/3 shards hash differently; byte delta against the recorded st_size is {'BTC': 1, 'ETH': 1} (SOL has no recorded size: the inventory lists only its largest files)
+PASS  CONTROL_5M_SIZE_EXACT_BUT_HASH_DIFFERS     BTCUSDT_5m.json at the same cut: 212109 rows, 13389298 bytes vs recorded 13389298 (delta 0), sha still different
+PASS  FROZEN_GATE_FAILS_LOUDLY                   assert_frozen_corpus() -> FileNotFoundError : [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\data\\raw\\alpha003\\price\\BTCUSDT_15m.json'
+PASS  SUBSTITUTE_IS_REFUSED                      rehearsal with the refetched shards in an isolated corpus root -> AssertionError : the frozen 15m corpus for BTC changed: shard digest is b21d66e3aa2292ea, the frozen value is cd1d2ea256a97f7c. A forward bar must not be compared against a different past; refusing to run.
+PASS  FORWARD_TASK_PARKED                        TradingAgentic-EDGE04-Forward: enabled=False, action=<Command>C:\Users\GVLLFR0035\Downloads\exp004a-recovery-02k\scripts\edge04_forward_r01.cmd</Command>
+PASS  NO_ORDER_PATH_IN_THIS_WORK_PACKAGE         the two scripts that touch the venue only call fetch_ohlcv; no order verb, no credential, no order route
+PASS  BUILDER_NEQ_VERIFIER                       builder: scripts/edge04_15m_refetch.py + scripts/edge04_15m_audit.py; verifier: scripts/edge04_15m_verify.py (reads their JSON, re-hashes the bytes)
+PASS  FALSE_SUCCESS_ZERO                         0 artefact(s) in the report directory claim the corpus is recovered; the verdict may only be BLOCKED_WITH_EVIDENCE
+
+verdict  EVIDENCE_CONSISTENT_WITH_BLOCKED  (13/13)

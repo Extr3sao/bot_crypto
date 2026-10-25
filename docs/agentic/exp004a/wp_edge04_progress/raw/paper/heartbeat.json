@@ -1,0 +1,29 @@
+{
+  "schema_version": "paper-heartbeat-v1",
+  "run_id": "WP-EDGE04-PAPER-20261024T115217Z",
+  "mode": "PAPER",
+  "cycle": 2,
+  "timestamp_ms": 1792842739940,
+  "timestamp_iso": "2026-10-24T11:52:19.940000+00:00",
+  "assets": [
+    "BTC"
+  ],
+  "timeframe": "5m",
+  "strategies_evaluated": 6,
+  "decisions": 1,
+  "no_trade": 1,
+  "no_trade_kinds": {
+    "NO_TRADE_STRATEGIC": 1
+  },
+  "shadow_trades": 0,
+  "paper_trades": 0,
+  "risk_vetoes": 0,
+  "runtime_failures": 0,
+  "errors": [],
+  "cycles_completed": 2,
+  "uptime_seconds": 0.017,
+  "state_age_seconds": null,
+  "paper_candidates": [],
+  "storage_failures": 0,
+  "storage_errors": []
+}

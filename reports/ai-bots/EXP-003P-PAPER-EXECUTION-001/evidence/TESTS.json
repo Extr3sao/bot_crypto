@@ -1,0 +1,53 @@
+{
+  "executed_at_utc": "2026-10-21T13:44:37Z",
+  "failed": [],
+  "results": {
+    "mypy": {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m mypy --strict src/trading_bot/paper/lifecycle",
+      "exit_code": 0,
+      "tail": [
+        "Success: no issues found in 7 source files"
+      ]
+    },
+    "pytest_autonomous": {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/autonomous -q -p no:cacheprovider",
+      "exit_code": 0,
+      "tail": [
+        "........................................................................ [ 76%]",
+        "....................................................................     [100%]",
+        "284 passed in 43.40s"
+      ]
+    },
+    "pytest_integration": {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/integration -q -p no:cacheprovider",
+      "exit_code": 0,
+      "tail": [
+        "    ParserElement.enablePackrat()",
+        "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+        "35 passed, 14 warnings in 109.48s (0:01:49)"
+      ]
+    },
+    "pytest_paper": {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/paper -q -p no:cacheprovider",
+      "exit_code": 0,
+      "tail": [
+        "........................................................................ [ 64%]",
+        ".......................................                                  [100%]",
+        "111 passed in 13.18s"
+      ]
+    },
+    "ruff": {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check src/trading_bot/paper/lifecycle scripts/exp_003p_baseline.py scripts/exp_003p_preregister.py scripts/exp_003p_schema.py scripts/exp_003p_rehearsal.py scripts/exp_003p_controls.py scripts/exp_003p_verify.py scripts/exp_003p_report.py scripts/exp_003p_contract.py scripts/exp_003p_pipeline.py scripts/exp_003p_checkout_compare.py tests/unit/paper/test_execution_lifecycle.py src/trading_bot/paper/broker.py src/trading_bot/vision/lane.py",
+      "exit_code": 0,
+      "tail": [
+        "All checks passed!"
+      ]
+    }
+  },
+  "state": "PASS",
+  "suites": [
+    "tests/unit/paper",
+    "tests/unit/autonomous",
+    "tests/integration"
+  ]
+}

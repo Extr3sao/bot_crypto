@@ -1,0 +1,265 @@
+{
+  "as_of_utc": "2026-10-14T08:01:03Z",
+  "breakdown": [
+    {
+      "bytes": 31417482014,
+      "files": 242040,
+      "kind": "temporary files",
+      "measured": true,
+      "name": "AppData/Local/Temp",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp",
+      "unsized_entries": 0,
+      "walk_seconds": 33.75
+    },
+    {
+      "bytes": 14608699255,
+      "files": 62786,
+      "kind": "browser and profile caches",
+      "measured": true,
+      "name": "AppData/Local/Microsoft",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Microsoft",
+      "unsized_entries": 8,
+      "walk_seconds": 6.19
+    },
+    {
+      "bytes": 7542487577,
+      "files": 102966,
+      "kind": "per-user installed software",
+      "measured": true,
+      "name": "AppData/Local/Programs",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs",
+      "unsized_entries": 0,
+      "walk_seconds": 11.45
+    },
+    {
+      "bytes": 6616551767,
+      "files": 2,
+      "kind": "WSL distributions (data, not cache)",
+      "measured": true,
+      "name": "AppData/Local/wsl",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\wsl",
+      "unsized_entries": 0,
+      "walk_seconds": 0.0
+    },
+    {
+      "bytes": 3516550686,
+      "files": 2528,
+      "kind": "browser builds",
+      "measured": true,
+      "name": "AppData/Local/ms-playwright",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\ms-playwright",
+      "unsized_entries": 0,
+      "walk_seconds": 0.2
+    },
+    {
+      "bytes": 1243515030,
+      "files": 7175,
+      "kind": "package cache",
+      "measured": true,
+      "name": "AppData/Local/npm-cache",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\npm-cache",
+      "unsized_entries": 0,
+      "walk_seconds": 1.66
+    },
+    {
+      "bytes": 2970110216,
+      "files": 113264,
+      "kind": "user data",
+      "measured": true,
+      "name": "AppData/Local/hermes",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\hermes",
+      "unsized_entries": 0,
+      "walk_seconds": 10.22
+    },
+    {
+      "bytes": 6818947320,
+      "files": 100,
+      "kind": "local model files",
+      "measured": true,
+      "name": "AppData/Roaming/Msty",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\Msty",
+      "unsized_entries": 0,
+      "walk_seconds": 0.0
+    },
+    {
+      "bytes": 1775603077,
+      "files": 5421,
+      "kind": "editor state and extensions",
+      "measured": true,
+      "name": "AppData/Roaming/Code",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\Code",
+      "unsized_entries": 0,
+      "walk_seconds": 0.62
+    },
+    {
+      "bytes": 1121494250,
+      "files": 68623,
+      "kind": "global packages",
+      "measured": true,
+      "name": "AppData/Roaming/npm",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Roaming\\npm",
+      "unsized_entries": 0,
+      "walk_seconds": 9.19
+    }
+  ],
+  "deleted_anything": false,
+  "host": "DESKTOP-4CHO695",
+  "label": "WP-EDGE-06",
+  "method": "read-only bounded directory walks; a tenant whose walk hit the 75s budget carries measured: false and its bytes are a floor, not a size",
+  "repository_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+  "run_id": "EDGE06-TENANTS-20261014T080103Z",
+  "schema_version": "EDGE06_VOLUME_TENANTS_V1",
+  "temp_age": {
+    "buckets": {
+      "1d_to_7d": {
+        "bytes": 24732715656,
+        "files": 182066
+      },
+      "6h_to_24h": {
+        "bytes": 994079574,
+        "files": 3570
+      },
+      "over_7d": {
+        "bytes": 5229605394,
+        "files": 51103
+      },
+      "under_6h": {
+        "bytes": 467053358,
+        "files": 5301
+      }
+    },
+    "measured": true,
+    "name": "AppData/Local/Temp",
+    "walk_seconds": 35.02
+  },
+  "tenants": [
+    {
+      "bytes": 78313968689,
+      "files": 595003,
+      "kind": "host user data",
+      "measured": false,
+      "mib": 74686.0,
+      "name": "AppData/Local",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local",
+      "unsized_entries": 1271,
+      "walk_seconds": 75.02
+    },
+    {
+      "bytes": 12307932069,
+      "files": 115930,
+      "kind": "host user data",
+      "measured": true,
+      "mib": 11737.8,
+      "name": "AppData/Roaming",
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Roaming",
+      "unsized_entries": 0,
+      "walk_seconds": 16.05
+    },
+    {
+      "bytes": 8292716277,
+      "files": 158024,
+      "kind": "user data",
+      "measured": true,
+      "mib": 7908.6,
+      "name": "Downloads",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads",
+      "unsized_entries": 0,
+      "walk_seconds": 19.64
+    },
+    {
+      "bytes": 1365397200,
+      "files": 646,
+      "kind": "user data",
+      "measured": true,
+      "mib": 1302.1,
+      "name": "Documents",
+      "path": "C:\\Users\\GVLLFR0035\\Documents",
+      "unsized_entries": 0,
+      "walk_seconds": 0.09
+    },
+    {
+      "bytes": 1551928351,
+      "files": 29237,
+      "kind": "tool cache (outside the repository)",
+      "measured": true,
+      "mib": 1480.0,
+      "name": ".cache",
+      "path": "C:\\Users\\GVLLFR0035\\.cache",
+      "unsized_entries": 17,
+      "walk_seconds": 2.73
+    },
+    {
+      "bytes": 78980836,
+      "files": 23,
+      "kind": "tool cache (outside the repository)",
+      "measured": true,
+      "mib": 75.3,
+      "name": ".docker",
+      "path": "C:\\Users\\GVLLFR0035\\.docker",
+      "unsized_entries": 0,
+      "walk_seconds": 0.0
+    },
+    {
+      "bytes": 54891436,
+      "files": 120,
+      "kind": "tool cache (outside the repository)",
+      "measured": true,
+      "mib": 52.3,
+      "name": ".npm",
+      "path": "C:\\Users\\GVLLFR0035\\.npm",
+      "unsized_entries": 0,
+      "walk_seconds": 0.06
+    },
+    {
+      "bytes": 43650096952,
+      "files": 227346,
+      "kind": "operating system",
+      "measured": true,
+      "mib": 41628.0,
+      "name": "Windows",
+      "path": "C:\\Windows",
+      "unsized_entries": 0,
+      "walk_seconds": 56.77
+    },
+    {
+      "bytes": 21069265518,
+      "files": 59233,
+      "kind": "installed software",
+      "measured": true,
+      "mib": 20093.2,
+      "name": "Program Files",
+      "path": "C:\\Program Files",
+      "unsized_entries": 0,
+      "walk_seconds": 5.52
+    },
+    {
+      "bytes": 10415245502,
+      "files": 9658,
+      "kind": "installed software",
+      "measured": true,
+      "mib": 9932.8,
+      "name": "Program Files (x86)",
+      "path": "C:\\Program Files (x86)",
+      "unsized_entries": 0,
+      "walk_seconds": 1.03
+    },
+    {
+      "bytes": 2069842981,
+      "files": 9524,
+      "kind": "installed software",
+      "measured": true,
+      "mib": 1974.0,
+      "name": "ProgramData",
+      "path": "C:\\ProgramData",
+      "unsized_entries": 0,
+      "walk_seconds": 1.19
+    }
+  ],
+  "tenants_all_measured": false,
+  "tenants_total_bytes": 179170265811,
+  "volume": {
+    "drive": "C:/",
+    "free_bytes": 1694085120,
+    "free_gib": 1.578
+  }
+}

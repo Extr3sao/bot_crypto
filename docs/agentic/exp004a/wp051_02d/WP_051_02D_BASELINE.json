@@ -1,0 +1,46 @@
+{
+  "run_id": "wp051-02d/EXP-004A/2026-10-21",
+  "phase": "WP-051-02D-01",
+  "captured_at_utc": "2026-10-21T15:12:57Z",
+  "purpose": "Estado real antes de tocar nada: qué declaración existía, qué commit contenía el generador y qué había sucio en el worktree.",
+  "repo": {
+    "path": "C:/Users/GVLLFR0035/Downloads/bot freebuff",
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "head_before_work": "bdd96f4cf9eda379294d92282aa78707c669ffd5",
+    "unrelated_worktree_changes_present": true,
+    "unrelated_worktree_changes_note": "El checkout está compartido con otros WP: había decenas de rutas modificadas y sin versionar ajenas a este paquete. Este WP solo ha commiteado sus propios ficheros y no ha tocado ni revertido cambios ajenos. La lista exacta cambia con el trabajo de los demás agentes, por lo que no se congela aquí."
+  },
+  "original_declaration": {
+    "path": "config/preregistrations/EXP-004A.datasets.json",
+    "sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+    "git_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7",
+    "last_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+    "phase": 1,
+    "generator_code_commit": "0000000000000000000000000000000000000000",
+    "entries": 4
+  },
+  "generator": {
+    "path": "scripts/exp004a_capture.py",
+    "commit": "daa7bdefd03af292a7c36a4951630ece6a008e7d",
+    "git_blob": "5f6f310f315ec7755a4aaab8a3cc85ce52f44504",
+    "sha256": "85f646b776cb5181fa8cd2c0609b8340a9d22bf0ef07629937015d9b765ff1bc",
+    "worktree_clean": true,
+    "note": "El fichero existía y coincidía con su blob, pero la declaración phase 2 lo citaba con el SHA cero."
+  },
+  "successor_declaration": {
+    "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+    "present": false
+  },
+  "capture_window": {
+    "start_utc": "2026-10-22T00:00:00Z",
+    "end_utc": "2027-01-20T00:00:00Z",
+    "open_at_baseline": false
+  },
+  "datasets_on_disk": [],
+  "defects_at_baseline": [
+    "C-015: la declaración phase 2 no identifica el código que producirá sus capturas (generator_code_commit = SHA cero).",
+    "Ninguna captura puede ser elegible: no existe contrato de procedencia que ligue declaración, commit y barra.",
+    "C-013 sigue TIME_PROOF_WEAK: no hay attestation de tiempo externa."
+  ],
+  "economic_executions": 0
+}

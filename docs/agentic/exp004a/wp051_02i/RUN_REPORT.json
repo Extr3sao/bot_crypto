@@ -1,0 +1,224 @@
+{
+  "schema_version": "EXP004A_WP051_02I_RUN_V1",
+  "package": "WP-051-02I",
+  "rfc": "CODEX — EDGE04 STORAGE STABILITY",
+  "generated_at_utc": "2026-10-23T10:58:00Z",
+  "head_at_start": "611cd717",
+  "branch": "wp/exp004a-051-02h",
+  "worktree": "C:/Users/GVLLFR0035/Downloads/bot-freebuff-exp004a-02h",
+  "state_root": "C:/Users/GVLLFR0035/Downloads/bot freebuff/data/forward/edge04",
+  "commands": [
+    {
+      "seq": 1,
+      "command": "python scripts/exp004a_wp051_02i_storage.py --audit",
+      "exit_code": 0,
+      "note": "wrote STORAGE_CAPACITY_REPORT.json and GROWTH_DIAGNOSIS.md; last run at 10:54:43Z"
+    },
+    {
+      "seq": 2,
+      "command": "python scripts/exp004a_wp051_02i_storage.py --survey",
+      "exit_code": 0,
+      "note": "wrote FILESYSTEM_SURVEY.json; names the consumers this package does not own"
+    },
+    {
+      "seq": 3,
+      "command": "python scripts/exp004a_wp051_02i_storage.py --sweep",
+      "exit_code": 0,
+      "note": "dry run: listed 13.57 MiB of its own untracked caches and deleted nothing"
+    },
+    {
+      "seq": 4,
+      "command": "python scripts/exp004a_wp051_02i_storage.py --sweep --apply",
+      "exit_code": 0,
+      "note": "first applied run: 321 files in 13.57 MiB removed (console record; the history field was added after this run)"
+    },
+    {
+      "seq": 5,
+      "command": "python scripts/exp004a_wp051_02i_storage.py --sweep --apply",
+      "exit_code": 0,
+      "note": "recorded run: 4 directories, 216353 bytes; a third identical run removed 0 bytes"
+    },
+    {
+      "seq": 6,
+      "command": "python scripts/exp004a_wp051_02i_verify.py",
+      "exit_code": 0,
+      "note": "16/16 PASS, 0 FAIL, 0 UNVERIFIABLE; wrote INDEPENDENT_VERIFICATION.json"
+    },
+    {
+      "seq": 7,
+      "command": "python scripts/edge04_watchdog.py --state-root <main>/data/forward/edge04",
+      "exit_code": 1,
+      "note": "DEGRADED by design: free space under the 5 GiB warning floor; forecast AT_RISK"
+    },
+    {
+      "seq": 8,
+      "command": "python scripts/edge04_watchdog.py --state-root <main>/data/forward/edge04 --json --no-persist",
+      "exit_code": 1,
+      "note": "used by the verifier; runs.jsonl and health.json byte-identical afterwards"
+    },
+    {
+      "seq": 9,
+      "command": "python -m pytest tests/unit/research/test_exp004a_wp051_02i.py -q -p no:cacheprovider",
+      "exit_code": 0,
+      "note": "21 passed"
+    },
+    {
+      "seq": 10,
+      "command": "python -m pytest tests/unit/research/test_exp004a_wp051_02h.py tests/unit/research/test_exp004a_wp051_02i.py tests/unit/research/test_exp004a_capture.py tests/unit/research/test_prospective_admission.py tests/unit/research/test_prereg_gate.py tests/unit/research/test_prereg_gate_escape.py -q",
+      "exit_code": 0,
+      "note": "161 passed, 1 skipped (symlinks unavailable: pre-existing environment skip)"
+    },
+    {
+      "seq": 11,
+      "command": "python -m pytest tests/unit/research -q",
+      "exit_code": 2,
+      "note": "NOT a passing run: collection error in tests/unit/research/test_exp004a_wp051_02g.py (imports trading_bot.research.prospective.incremental, which does not exist in this worktree) and a second attempt hit the 600 s cap. The six suites above were run file by file instead."
+    },
+    {
+      "seq": 12,
+      "command": "eventcreate /t ERROR /id 901 /l APPLICATION /d \"EDGE04 storage guard probe\"",
+      "exit_code": 1,
+      "note": "channel probe: 'Acceso denegado' — an unprivileged writer cannot use the Windows event log, so the watchdog records that refusal instead of promising a notification"
+    },
+    {
+      "seq": 13,
+      "command": "schtasks /query /tn TradingAgentic-EDGE04-Forward|Watchdog /v",
+      "exit_code": 0,
+      "note": "both tasks running; watchdog's LastTaskResult carries 1 (DEGRADED) at 10:47:01Z with EDGE04_WATCHDOG_V2 written to WATCHDOG.json"
+    }
+  ],
+  "measured": {
+    "volume": {
+      "path": "C:/",
+      "total_gib": 237.5264,
+      "free_gib": 4.4168,
+      "used_percent": 98.14,
+      "critical_free_bytes": 2147483648,
+      "warning_free_bytes": 5368709120
+    },
+    "history": {
+      "readings": 929,
+      "first_at_utc": "2026-10-13T11:23:38Z",
+      "last_at_utc": "2026-10-23T10:40:56Z",
+      "source": "the observer's own runs.jsonl, one reading per tick"
+    },
+    "breaches": {
+      "free_space_episodes": 25,
+      "refusal_episodes": 24,
+      "refused_ticks": 162,
+      "hours_under_floor": 40.55,
+      "lowest_free_gib": 0.0,
+      "refused_ticks_by_day": {
+        "2026-10-13": 13,
+        "2026-10-14": 32,
+        "2026-10-17": 11,
+        "2026-10-18": 37,
+        "2026-10-19": 11,
+        "2026-10-20": 3,
+        "2026-10-21": 13,
+        "2026-10-22": 17,
+        "2026-10-23": 25
+      }
+    },
+    "today": {
+      "refused_ticks": 25,
+      "longest_episode": "2026-10-23T00:10:56Z -> 2026-10-23T05:25:57Z (22 ticks, ~5.5 h)",
+      "lowest_free_gib": 0.0,
+      "lowest_at_utc": ["2026-10-23T03:40:57Z", "2026-10-23T04:55:56Z"]
+    },
+    "host_trend": {
+      "status": "MEASURED",
+      "basis": "median per-UTC-day net change",
+      "median_gib_per_day": -1.6607,
+      "days": 11,
+      "days_spending": 7,
+      "days_recovering": 4
+    },
+    "drawdown": {
+      "bytes": 15658606592,
+      "gib": 14.58,
+      "day": "2026-10-19",
+      "from_gib": 22.91,
+      "to_gib": 8.32
+    },
+    "campaign_footprint": {
+      "lane_state_mib": 13.67,
+      "source_store_mib": 6.4,
+      "phase3_shards_mib": 0.3,
+      "total_mib": 20.37,
+      "own_bytes_per_day": 1161639,
+      "own_window_bytes": 104547510,
+      "shard_bytes_per_row": 314.5,
+      "rows_per_day": 72
+    },
+    "projection": {
+      "verdict": "INSUFFICIENT",
+      "required_free_gib": 16.681,
+      "current_free_gib": 4.417,
+      "headroom_bytes": -13152638236,
+      "hours_to_floor_at_worst_observed_rate": 3.98,
+      "hypotheses": 6
+    },
+    "reclaimed": {
+      "first_applied_run_bytes": 14239266,
+      "recorded_history_bytes": 216353,
+      "recorded_directories": 4,
+      "files_first_run": 321,
+      "idempotent_second_run_bytes": 0
+    }
+  },
+  "alarm_channels": {
+    "scheduler_exit_code": {
+      "effective": true,
+      "evidence": "TradingAgentic-EDGE04-Watchdog LastTaskResult=1 at 10:47:01Z with status DEGRADED"
+    },
+    "marker_file": {
+      "effective": true,
+      "evidence": "ATTENTION_REQUIRED.txt is written for BLOCKED/STALE/UNREADABLE and removed by the next healthy run"
+    },
+    "windows_event_log": {
+      "effective": false,
+      "evidence": "eventcreate returns 'Acceso denegado' without elevation; the refusal is recorded in the verdict"
+    },
+    "webhook": {
+      "effective": false,
+      "evidence": "EDGE04_ALERT_WEBHOOK is not set; no credentials were created"
+    },
+    "human_reader": {
+      "effective": false,
+      "evidence": "nothing on this host polls the task result or the marker: the alarm fires and nobody is paged"
+    }
+  },
+  "governance": {
+    "contract": "config/preregistrations/EXP-004A.datasets.phase3.json",
+    "window_start_utc": "2026-10-23T00:00:00Z",
+    "window_end_utc": "2027-01-21T00:00:00Z",
+    "window_days": 90,
+    "is_2026_10_24_inside": true,
+    "declared_rows": 6480,
+    "required_fraction": 0.9,
+    "floor_rows": 5832,
+    "rows_lost_2026_10_23": 72,
+    "ceiling_fraction_now": 0.988889,
+    "complete_rule_reachable": false,
+    "days_that_can_still_be_lost": 8,
+    "restarted_or_shifted": false
+  },
+  "tests": {
+    "new_suite": "tests/unit/research/test_exp004a_wp051_02i.py",
+    "new_tests": 21,
+    "new_passing": 21,
+    "regression_suites": 6,
+    "regression_passing": 163,
+    "regression_skipped": 1,
+    "independent_verification": "16/16 PASS",
+    "not_run": "tests/unit/research as a whole (600 s cap, plus a pre-existing collection error in test_exp004a_wp051_02g.py)"
+  },
+  "false_success_controls": [
+    "A_REFUSAL_IS_NOT_A_CAPTURE: every refused tick carries 0 new bars and exit 5 (verifier, recomputed)",
+    "WATCHDOG_DOES_NOT_WRITE_THE_STORE: runs.jsonl and health.json byte-identical after --no-persist",
+    "REPORT_HAS_NO_GRADE: the storage report carries no coverage or certification field",
+    "PROJECTION_ARITHMETIC: required = own + floor + drawdown, recomputed independently",
+    "the watchdog exits non-zero for DEGRADED, BLOCKED, STALE and UNREADABLE, and zero only for OK and RECOVERED"
+  ]
+}

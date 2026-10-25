@@ -1,0 +1,56 @@
+{
+  "current_free_bytes": 3487633408,
+  "current_free_gib": 3.2481,
+  "drawdown": {
+    "basis": "largest peak-to-trough fall inside each complete UTC day of the observer's readings",
+    "days_per_gib": [
+      6.562,
+      4.29,
+      5.045,
+      7.597,
+      5.686,
+      5.334,
+      14.583,
+      8.996,
+      12.467,
+      6.959,
+      7.731
+    ],
+    "max_bytes": 15658606592,
+    "p50_bytes": 7472607232,
+    "p90_bytes": 13386858496
+  },
+  "floor_bytes": 2147483648,
+  "generated_at_utc": "2026-10-23T11:52:30Z",
+  "headroom_at_p90_bytes": -12151078856,
+  "history_days": 11,
+  "main_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+  "net_per_day": {
+    "days_recovering": 4,
+    "days_spending": 7,
+    "median_bytes": -1783136256,
+    "median_gib": -1.661
+  },
+  "own": {
+    "bytes_per_day": 1159668,
+    "window_bytes": 104370120,
+    "window_gib": 0.0972
+  },
+  "refused_ticks_in_history": 162,
+  "required": {
+    "at_p90_bytes": 15638712264,
+    "at_p90_gib": 14.565,
+    "at_worst_bytes": 17910460360,
+    "at_worst_gib": 16.68
+  },
+  "schema_version": "EXP004A_WP051_02J_RECOVERY_V1",
+  "shortfall_at_p90_gib": 11.317,
+  "verdict": "INSUFFICIENT",
+  "verdict_note": "the budget is the p90 drawdown plus the floor plus the campaign's own growth for the whole window. The maximum is reported next to it, not used as the budget: it is one observation, and building on it would guarantee failure on any worse day.",
+  "window": {
+    "days": 90,
+    "end": "2027-01-21T00:00:00Z",
+    "start": "2026-10-23T00:00:00Z"
+  },
+  "window_day0_ms": 1792713600000
+}

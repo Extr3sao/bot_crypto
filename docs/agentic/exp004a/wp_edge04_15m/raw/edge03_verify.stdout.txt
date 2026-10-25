@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "C:\Users\GVLLFR0035\Downloads\exp004a-recovery-02k\scripts\edge03_verify.py", line 1418, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\GVLLFR0035\Downloads\exp004a-recovery-02k\scripts\edge03_verify.py", line 1397, in main
+    report = run_checks(bundle)
+             ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\GVLLFR0035\Downloads\exp004a-recovery-02k\scripts\edge03_verify.py", line 1038, in run_checks
+    produced = function(bundle)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\GVLLFR0035\Downloads\exp004a-recovery-02k\scripts\edge03_verify.py", line 297, in check_frozen_corpus
+    digest = _combined_digest(paths)[:16]
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\GVLLFR0035\Downloads\exp004a-recovery-02k\scripts\edge03_verify.py", line 235, in _combined_digest
+    combined.update(_sha256(path).encode("utf-8"))
+                    ^^^^^^^^^^^^^
+  File "C:\Users\GVLLFR0035\Downloads\exp004a-recovery-02k\scripts\edge03_verify.py", line 215, in _sha256
+    with path.open("rb") as handle:
+         ^^^^^^^^^^^^^^^
+  File "C:\Users\GVLLFR0035\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\pathlib.py", line 1044, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\data\\raw\\alpha003\\price\\BTCUSDT_15m.json'

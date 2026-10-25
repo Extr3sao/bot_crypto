@@ -1,0 +1,17 @@
+runs folded: paper-lab-continuous-02, paper-strategy-lifecycle-shadow-02
+build seconds: 130.93
+  paper-lab-continuous-02|spot|BTCUSDT       seconds=14548   quotes=1241954   trades=91391    missing=410    oi=0     depth=1
+  paper-lab-continuous-02|spot|ETHUSDT       seconds=14244   quotes=692423    trades=72269    missing=714    oi=0     depth=1
+  paper-lab-continuous-02|perp|BTCUSDT       seconds=14599   quotes=5070497   trades=0        missing=359    oi=488   depth=10
+  paper-lab-continuous-02|perp|ETHUSDT       seconds=14604   quotes=3815872   trades=0        missing=354    oi=488   depth=11
+  paper-strategy-lifecycle-shadow-02|spot|BTCUSDT seconds=6829    quotes=862488    trades=68973    missing=370    oi=0     depth=3
+  paper-strategy-lifecycle-shadow-02|spot|ETHUSDT seconds=6772    quotes=447514    trades=43239    missing=426    oi=0     depth=3
+  paper-strategy-lifecycle-shadow-02|spot|SOLUSDT seconds=6659    quotes=368470    trades=12074    missing=539    oi=0     depth=3
+  paper-strategy-lifecycle-shadow-02|perp|BTCUSDT seconds=5904    quotes=1791213   trades=0        missing=1295   oi=231   depth=113
+  paper-strategy-lifecycle-shadow-02|perp|ETHUSDT seconds=5918    quotes=1603790   trades=0        missing=1280   oi=232   depth=113
+  paper-strategy-lifecycle-shadow-02|perp|SOLUSDT seconds=5836    quotes=732665    trades=0        missing=1362   oi=232   depth=119
+streams: 10
+  panel_seconds: 16729291 bytes sha256 0f87b7baeb92f93d
+  oi_samples: 125749 bytes sha256 c7941d7ecd75c7a8
+  depth_snapshots: 625342 bytes sha256 3cab2af1f378db61
+wrote reports\edge-recovery\WP-EDGE-09\panel/PANEL.{json,csv}

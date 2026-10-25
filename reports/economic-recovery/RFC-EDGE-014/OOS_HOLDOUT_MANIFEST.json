@@ -1,0 +1,104 @@
+{
+  "consequence": "no corpus in the tree is unread for EDGE-14, so the holdout used here is a temporal split inside a consumed corpus: it is descriptive and cannot carry a promotion or an inference",
+  "corpora": [
+    {
+      "assets": [
+        "AAVEUSDT",
+        "CRVUSDT",
+        "KSMUSDT",
+        "SNXUSDT",
+        "SUSHIUSDT",
+        "UNIUSDT"
+      ],
+      "consumed_by": [
+        "WP-EDGE-08"
+      ],
+      "declared_unread_when_fetched": true,
+      "path": "data/edge08/universe-1h",
+      "present": true,
+      "shards": [
+        "AAVEUSDT_2021_2026_1h.json",
+        "CRVUSDT_2021_2026_1h.json",
+        "KSMUSDT_2021_2026_1h.json",
+        "SNXUSDT_2021_2026_1h.json",
+        "SUSHIUSDT_2021_2026_1h.json",
+        "UNIUSDT_2021_2026_1h.json",
+        "_FETCH_MANIFEST.json"
+      ],
+      "still_fresh_for_this_package": false,
+      "why": "the EDGE-08 fetch manifest declares these symbols an unread cross-section, but EDGE-08 then measured on them, so they are consumed for EDGE-14",
+      "window": "2021-01-01T00:00:00Z..2026-10-14T19:00:00Z"
+    },
+    {
+      "assets": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ],
+      "consumed_by": [
+        "WP-EDGE-07"
+      ],
+      "declared_unread_when_fetched": false,
+      "path": "data/edge07/holdout-1h",
+      "present": true,
+      "shards": [
+        "BTCUSDT_holdout2026.json",
+        "ETHUSDT_holdout2026.json",
+        "SOLUSDT_holdout2026.json",
+        "_FETCH_MANIFEST.json"
+      ],
+      "still_fresh_for_this_package": false,
+      "why": "the EDGE-07 holdout window is consumed by EDGE-07",
+      "window": "2026 holdout window"
+    }
+  ],
+  "data_manifest": [
+    {
+      "bars": 5455,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\edge07\\holdout-1h\\BTCUSDT_holdout2026.json",
+      "sha256": "e2435ca3ee72ad790b25f18a87bde3ed12deec20d9b6a712021a881716e4f6b9",
+      "symbol": "BTCUSDT"
+    },
+    {
+      "bars": 5455,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\edge07\\holdout-1h\\ETHUSDT_holdout2026.json",
+      "sha256": "a38a3efef91092383182cbf30b76d0f8e4422101a534a30f015b368da38600e2",
+      "symbol": "ETHUSDT"
+    },
+    {
+      "bars": 50693,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\edge08\\universe-1h\\UNIUSDT_2021_2026_1h.json",
+      "sha256": "7d68f4d3f8291557d033a6ff49a279c7ceae1574dbf4310e40424dca28d55c82",
+      "symbol": "UNIUSDT(signal)"
+    },
+    {
+      "bars": 50693,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\edge08\\universe-1h\\AAVEUSDT_2021_2026_1h.json",
+      "sha256": "e3d555cd638aa8bce8c51dd2dd3859ac263aca7eeca00c4a230acb88f83ae8c5",
+      "symbol": "AAVEUSDT"
+    },
+    {
+      "bars": 50693,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\edge08\\universe-1h\\SUSHIUSDT_2021_2026_1h.json",
+      "sha256": "b2c3ab061509065d67e59acfdb8e01239d1625ca3e6406e541e41eff1b4cc4c2",
+      "symbol": "SUSHIUSDT"
+    },
+    {
+      "bars": 50693,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\edge08\\universe-1h\\CRVUSDT_2021_2026_1h.json",
+      "sha256": "37a5307f9421f2ad01c2ab626589c66ad2675fe5a24136be400b625c683922bb",
+      "symbol": "CRVUSDT"
+    },
+    {
+      "bars": 50693,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\edge08\\universe-1h\\KSMUSDT_2021_2026_1h.json",
+      "sha256": "93cf90eb3db64261ffd42379ff41ccb9755c4957a4155b66ef15ed9dc7a3a0a7",
+      "symbol": "KSMUSDT"
+    }
+  ],
+  "oos_class": "TEMPORAL_WITHIN_A_CONSUMED_CORPUS",
+  "oos_is_fresh": false,
+  "rule": "an OOS is fresh only when its fingerprint covers data no selection step has touched; a temporal split inside a consumed corpus is descriptive only",
+  "schema_version": "EDGE14_OOS_HOLDOUT_MANIFEST_V1",
+  "work_package": "WP-EDGE-14D"
+}

@@ -1,0 +1,71 @@
+{
+  "entries": [
+    {
+      "bytes": 7183,
+      "git_blob_sha": "a5d270c1ed4e2b0059e3f48467cda7b234fe6d53",
+      "path": "docs/agentic/exp004a/wp051_02h/CONTINUITY_REPORT.json",
+      "sha256": "7d6309f0cb1731e6f8a80a6044033a3168119775100bb873442c2afeef4bfb6b"
+    },
+    {
+      "bytes": 58299,
+      "git_blob_sha": "77633ae43a2a03ee73955ed5495a3012797c1822",
+      "path": "docs/agentic/exp004a/wp051_02h/COVERAGE_GAP_REPORT.json",
+      "sha256": "6db2e05ec3e3940cc000dfe1bd7e18080f627b8ef24e7e0ab2a4d526f8e0b0a6"
+    },
+    {
+      "bytes": 2862,
+      "git_blob_sha": "d24b56555686a1c637644d5d84e05d5bcf712338",
+      "path": "docs/agentic/exp004a/wp051_02h/DAILY_CAPTURE_VERIFICATION.json",
+      "sha256": "55e223f867a21df8d8869173416cb511066975630eeee579c8e954bfc24d8c40"
+    },
+    {
+      "bytes": 19559,
+      "git_blob_sha": "3b90db65aebbbecdc43b3a04794c430280c500c3",
+      "path": "docs/agentic/exp004a/wp051_02h/FINAL_REPORT.md",
+      "sha256": "df255351a6d05afd1072fbe949300b2609c9427393fa6d655efa1d29b6992652"
+    },
+    {
+      "bytes": 11684,
+      "git_blob_sha": "c7560a34681caf288c800cb6c6a2af546945a5b0",
+      "path": "docs/agentic/exp004a/wp051_02h/INDEPENDENT_VERIFICATION.json",
+      "sha256": "1a832e203eeeb14a223da2869d995ba0fd18123ae2bd7a1d10152e07382f04ab"
+    },
+    {
+      "bytes": 13664,
+      "git_blob_sha": "4d176fa6256a96f4b65cc58536e16b61c2ea3a33",
+      "path": "docs/agentic/exp004a/wp051_02h/RECOVERY_REPORT.json",
+      "sha256": "1396967ca8c3e1eefbe36a36d5295b67dfe8c9391e798438e4f0298a1c9db824"
+    },
+    {
+      "bytes": 4324,
+      "git_blob_sha": "bd03c9cb4a653bf217adff5f845d62b8a683b8d2",
+      "path": "docs/agentic/exp004a/wp051_02h/ROOT_CAUSE.json",
+      "sha256": "c7269b3253b30595ead4dcac25ae7b8abd334a6491b9dddb1109182ed41b80bf"
+    },
+    {
+      "bytes": 3764,
+      "git_blob_sha": "a20cf9656d0f32018f7fed2d279d1a6878fc3dcd",
+      "path": "docs/agentic/exp004a/wp051_02h/ROOT_CAUSE_ANALYSIS.md",
+      "sha256": "646b207013e7827b3bafbc583a98db8d3c111c0550d0c3efbbe5d34281cc8907"
+    },
+    {
+      "bytes": 1888,
+      "git_blob_sha": "db05177c5ec89cfb50aab50dd5afec8b81c14779",
+      "path": "docs/agentic/exp004a/wp051_02h/RUN_REPORT.json",
+      "sha256": "e7fe9f00d3cd11f508fc19da7859b6bed9512c0d5c2199a4c978baadd56d577a"
+    },
+    {
+      "bytes": 1892,
+      "git_blob_sha": "d4bc1372171ad4f9c3de0b8ba36c95cce8667c7e",
+      "path": "docs/agentic/exp004a/wp051_02h/RUN_REPORT.md",
+      "sha256": "8a710d39615be8342a6f304745073bc05151f30127398e2c6a659b666546ed04"
+    }
+  ],
+  "entry_count": 10,
+  "hash_semantics": "sha256 is the bytes on disk at seal time; git_blob_sha is HEAD:<path> at seal time, so an artefact that the seal itself rewrites cannot agree with both",
+  "head": "c9727fff68dd9f58af40cdf9b62705be76f729cc",
+  "not_a_certification": "a manifest says what is in the package, not that the package is right",
+  "package": "WP-051-02H",
+  "schema_version": "1.0",
+  "sealed_at_utc": "2026-10-23T07:45:10.628Z"
+}

@@ -1,0 +1,56 @@
+{
+  "defects": [
+    {
+      "defect": "exp_003n_screen.py printed target.relative_to(REPO) and raised ValueError when --out pointed outside the repository (the worktree path arrived in 8.3 short form), so a legitimate run exited 1",
+      "found_by": "this reproduction",
+      "id": "DEF-003N-01",
+      "impact": "the crash came after SCREENING.json, SIGNALS.jsonl.gz and ECONOMIC_SCREENING.csv were written; the reproduced numbers matched, the stage exit code did not, and a caller that only reads the exit code would have discarded a good result",
+      "repair": "the diagnostic line falls back to the absolute path when the target is outside the repo; no measurement code changed"
+    }
+  ],
+  "experiment": "EXP-003N-GROSS-FIRST-DISCOVERY-001",
+  "generated_at_utc": "2026-10-20T22:14:21Z",
+  "method": {
+    "comparison": "published and reproduced JSON are walked leaf by leaf; timestamps are the only keys excluded, floats compare within 1e-06",
+    "dataset": "the three frozen 1-minute files were copied into the worktree only after each SHA-256 matched the digest design/DESIGN.json recorded before the screening ran",
+    "stages": [
+      "python scripts/exp_003n_screen.py --out <worktree>/repro-out",
+      "python scripts/exp_003n_validate.py --out <worktree>/repro-out",
+      "python scripts/exp_003n_verify.py --negative-controls",
+      "python -m pytest tests/unit/reports/test_exp_003n_screen.py -q"
+    ],
+    "worktree": "git worktree add --detach <commit>; no copy of the dirty tree"
+  },
+  "not_verified": [
+    "no order was placed and no fill is observed: this reproduces the arithmetic, not the market",
+    "the reproduction writes into <worktree>/repro-out, so the checkout stays as committed; what is compared is the numbers, not the bytes",
+    "the frozen bars were copied in after their digests matched, not re-downloaded here; EXP-003M's rehearsal already re-downloaded this same window byte-identically from the venue",
+    "lane B cells with no sample stay INSUFFICIENT_EVIDENCE: a reproduction cannot create sample"
+  ],
+  "result": {
+    "cells_compared": 24,
+    "cells_mismatched": 0,
+    "commit": "cd3fc313c2121b80c0e50feaa3bd992d2ff5633b",
+    "dataset_digests_expected": 3,
+    "dataset_digests_matched": 3,
+    "decision_verdict_published": "NO_VIABLE_CANDIDATES",
+    "decision_verdict_reproduced": "NO_VIABLE_CANDIDATES",
+    "differences": [],
+    "screen_seconds": 0.0,
+    "screen_source": "a full re-run inside this worktree at this commit; the first invocation wrote every artifact and then exited 1 in a final print (DEF-003N-01), so this one reused that output instead of spending the sample twice",
+    "screening_verdict_published": "NO_VIABLE_CANDIDATES",
+    "screening_verdict_reproduced": "NO_VIABLE_CANDIDATES",
+    "tests_exit_code": 0,
+    "tests_failed": 0,
+    "tests_passed": 20,
+    "validation_compared": 24,
+    "validation_mismatched": 0,
+    "verification_checks": 12,
+    "verification_controls": 10,
+    "verification_false_success": 0,
+    "verification_verdict": "PASS",
+    "worktree_status_lines_before": 0
+  },
+  "schema_version": "AI_BOTS_003N_CHECKOUT_REPRODUCTION_V1",
+  "verdict": "REPRODUCED"
+}

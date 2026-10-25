@@ -1,0 +1,63 @@
+{
+  "schema_version": "paper-daily-report-v1",
+  "report_date": "2026-10-12",
+  "generated_at_ms": 1791795418997,
+  "generated_at_iso": "2026-10-12T08:56:58.997000+00:00",
+  "run_id": "wp-edge-00-smoke-real",
+  "mode": "PAPER",
+  "timeframe": "5m",
+  "assets": [
+    "BTC",
+    "ETH",
+    "SOL"
+  ],
+  "runtime_hours": 0.006629,
+  "cycles": 2,
+  "decisions": 6,
+  "no_trade": 6,
+  "no_trade_kinds": {
+    "no_trade_NO_TRADE_DATA": 2,
+    "no_trade_NO_TRADE_STRATEGIC": 4
+  },
+  "shadow_trades": 0,
+  "paper_trades": 0,
+  "orders_created": 0,
+  "pnl": {
+    "gross_bps_total": 0.0,
+    "resolved_outcomes": 0,
+    "pending_outcomes": 4,
+    "note": "PAPER only; no capital, no live orders. 0 trades is a PASS."
+  },
+  "drawdown": {
+    "max_drawdown_bps": 0.0,
+    "note": "computed from resolved PAPER outcomes only"
+  },
+  "strategy_attribution": {
+    "ema_crossover@5m": {
+      "decisions": 4,
+      "paper_trades": 0,
+      "shadow_trades": 0,
+      "no_trade": 4,
+      "risk_vetoes": 0,
+      "outcomes_resolved": 0,
+      "limitations": "per-strategy PnL is not attributed yet (no admitted strategy has traded)"
+    }
+  },
+  "risk_events": {
+    "risk_APPROVED": 4,
+    "risk_NOT_APPLICABLE": 2
+  },
+  "runtime_failures": 0,
+  "errors": [
+    "SOL/USDT: context_error AssetContextError: no bars at or before ts 1791795395133 for SOL",
+    "SOL/USDT: context_error AssetContextError: no bars at or before ts 1791795415745 for SOL"
+  ],
+  "restarts": [],
+  "outcomes": {
+    "resolved": 0,
+    "pending": 4,
+    "performance_cells": 0
+  },
+  "paper_candidates": [],
+  "no_trade_is_expected": "No strategy is admitted for PAPER, so the correct behaviour is NO_TRADE with zero trades."
+}

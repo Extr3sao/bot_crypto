@@ -1,0 +1,298 @@
+{
+  "schema_version": "EDGE09_V1",
+  "work_package": "WP-EDGE-09D",
+  "artifact": "ECONOMIC_FEASIBILITY_REPORT",
+  "as_of_utc": "2026-10-15T05:16:16Z",
+  "decision": "NO_ECONOMIC_EDGE_FOUND",
+  "decision_scope": "no measured structure in this capture covers the round trip; the decision is about this capture and this venue set, not about microstructure in general",
+  "per_asset": [
+    {
+      "market": "perp",
+      "symbol": "BTCUSDT",
+      "admission_round_trip_bps": 23.1104,
+      "break_even_bps": 23.1104,
+      "required_1_5x_bps": 34.6656,
+      "best_measured_long_only_gross_bps": 1.582703,
+      "net_at_best_gross_bps": -21.5277,
+      "gap_to_break_even_bps": 21.5277,
+      "survives": false
+    },
+    {
+      "market": "perp",
+      "symbol": "ETHUSDT",
+      "admission_round_trip_bps": 23.1512,
+      "break_even_bps": 23.1512,
+      "required_1_5x_bps": 34.7268,
+      "best_measured_long_only_gross_bps": 1.582703,
+      "net_at_best_gross_bps": -21.5685,
+      "gap_to_break_even_bps": 21.5685,
+      "survives": false
+    },
+    {
+      "market": "perp",
+      "symbol": "SOLUSDT",
+      "admission_round_trip_bps": 24.0731,
+      "break_even_bps": 24.0731,
+      "required_1_5x_bps": 36.1097,
+      "best_measured_long_only_gross_bps": 1.582703,
+      "net_at_best_gross_bps": -22.4904,
+      "gap_to_break_even_bps": 22.4904,
+      "survives": false
+    },
+    {
+      "market": "spot",
+      "symbol": "BTCUSDT",
+      "admission_round_trip_bps": 23.0968,
+      "break_even_bps": 23.0968,
+      "required_1_5x_bps": 34.6452,
+      "best_measured_long_only_gross_bps": 1.582703,
+      "net_at_best_gross_bps": -21.5141,
+      "gap_to_break_even_bps": 21.5141,
+      "survives": false
+    },
+    {
+      "market": "spot",
+      "symbol": "ETHUSDT",
+      "admission_round_trip_bps": 23.1508,
+      "break_even_bps": 23.1508,
+      "required_1_5x_bps": 34.7262,
+      "best_measured_long_only_gross_bps": 1.582703,
+      "net_at_best_gross_bps": -21.5681,
+      "gap_to_break_even_bps": 21.5681,
+      "survives": false
+    },
+    {
+      "market": "spot",
+      "symbol": "SOLUSDT",
+      "admission_round_trip_bps": 24.0813,
+      "break_even_bps": 24.0813,
+      "required_1_5x_bps": 36.1219,
+      "best_measured_long_only_gross_bps": 1.582703,
+      "net_at_best_gross_bps": -22.4986,
+      "gap_to_break_even_bps": 22.4986,
+      "survives": false
+    }
+  ],
+  "fee_share_of_barrier": 1.3863,
+  "mean_fee_bps": 32.5,
+  "mean_barrier_bps": 23.4439,
+  "best_measured_long_only_gross_bps": 1.582703,
+  "best_measured_cell": {
+    "run": "paper-strategy-lifecycle-shadow-02",
+    "market": "perp",
+    "symbol": "SOLUSDT",
+    "horizon_seconds": 60,
+    "ic": 0.152669,
+    "n": 5785,
+    "classification": "COST_KILLED"
+  },
+  "cheapest_registered_venue": {
+    "scenario": "MEXC_SPOT_TAKER",
+    "venue": "MEXC",
+    "cheapest_round_trip_bps": 12.9866,
+    "still_above_best_gross": true
+  },
+  "frequency_bound": [
+    {
+      "horizon_seconds": 1,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "rate_extrapolated_from_hours": true,
+      "streams_summed": 10,
+      "clearing_per_day": 0.0,
+      "per_stream_per_day": {
+        "perp|BTCUSDT": 0.0,
+        "perp|ETHUSDT": 0.0,
+        "spot|BTCUSDT": 0.0,
+        "spot|ETHUSDT": 0.0,
+        "perp|SOLUSDT": 0.0,
+        "spot|SOLUSDT": 0.0
+      },
+      "streams_with_any_clearing": {},
+      "active_target_per_day": 3.0,
+      "meets_target": false,
+      "is_upper_bound": true
+    },
+    {
+      "horizon_seconds": 5,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "rate_extrapolated_from_hours": true,
+      "streams_summed": 10,
+      "clearing_per_day": 0.0,
+      "per_stream_per_day": {
+        "perp|BTCUSDT": 0.0,
+        "perp|ETHUSDT": 0.0,
+        "spot|BTCUSDT": 0.0,
+        "spot|ETHUSDT": 0.0,
+        "perp|SOLUSDT": 0.0,
+        "spot|SOLUSDT": 0.0
+      },
+      "streams_with_any_clearing": {},
+      "active_target_per_day": 3.0,
+      "meets_target": false,
+      "is_upper_bound": true
+    },
+    {
+      "horizon_seconds": 60,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "rate_extrapolated_from_hours": true,
+      "streams_summed": 10,
+      "clearing_per_day": 48.018,
+      "per_stream_per_day": {
+        "perp|BTCUSDT": 12.003,
+        "perp|ETHUSDT": 0.0,
+        "spot|BTCUSDT": 0.0,
+        "spot|ETHUSDT": 0.0,
+        "perp|SOLUSDT": 24.01,
+        "spot|SOLUSDT": 12.005
+      },
+      "streams_with_any_clearing": {
+        "perp|BTCUSDT": 12.003,
+        "perp|SOLUSDT": 24.01,
+        "spot|SOLUSDT": 12.005
+      },
+      "active_target_per_day": 3.0,
+      "meets_target": true,
+      "is_upper_bound": true
+    },
+    {
+      "horizon_seconds": 900,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "rate_extrapolated_from_hours": true,
+      "streams_summed": 10,
+      "clearing_per_day": 179.619,
+      "per_stream_per_day": {
+        "perp|BTCUSDT": 12.003,
+        "perp|ETHUSDT": 24.01,
+        "spot|BTCUSDT": 24.007,
+        "spot|ETHUSDT": 24.01,
+        "perp|SOLUSDT": 48.02,
+        "spot|SOLUSDT": 36.016
+      },
+      "streams_with_any_clearing": {
+        "perp|BTCUSDT": 12.003,
+        "perp|ETHUSDT": 24.01,
+        "spot|BTCUSDT": 24.007,
+        "spot|ETHUSDT": 24.01,
+        "perp|SOLUSDT": 48.02,
+        "spot|SOLUSDT": 36.016
+      },
+      "active_target_per_day": 3.0,
+      "meets_target": true,
+      "is_upper_bound": true
+    },
+    {
+      "horizon_seconds": 3600,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "rate_extrapolated_from_hours": true,
+      "streams_summed": 10,
+      "clearing_per_day": 11.553,
+      "per_stream_per_day": {
+        "perp|BTCUSDT": 0.0,
+        "perp|ETHUSDT": 0.0,
+        "spot|BTCUSDT": 0.0,
+        "spot|ETHUSDT": 0.0,
+        "perp|SOLUSDT": 0.0,
+        "spot|SOLUSDT": 0.0
+      },
+      "streams_with_any_clearing": {},
+      "active_target_per_day": 3.0,
+      "meets_target": true,
+      "is_upper_bound": true
+    }
+  ],
+  "frequency_measured": [
+    {
+      "horizon_seconds": 1,
+      "streams_summed": 10,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "opportunities_per_day": 0.0,
+      "opportunities_per_day_any_direction": 0.0,
+      "active_target_per_day": 3.0,
+      "meets_target": false,
+      "is_upper_bound": true,
+      "is_executable_long_only": true,
+      "rate_extrapolated_from_hours": true
+    },
+    {
+      "horizon_seconds": 5,
+      "streams_summed": 10,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "opportunities_per_day": 0.0,
+      "opportunities_per_day_any_direction": 0.0,
+      "active_target_per_day": 3.0,
+      "meets_target": false,
+      "is_upper_bound": true,
+      "is_executable_long_only": true,
+      "rate_extrapolated_from_hours": true
+    },
+    {
+      "horizon_seconds": 60,
+      "streams_summed": 10,
+      "span_days_min": 0.0833,
+      "span_days_max": 0.17312,
+      "hours_min": 1.999,
+      "hours_max": 4.155,
+      "opportunities_per_day": 144.061,
+      "opportunities_per_day_any_direction": 312.121,
+      "active_target_per_day": 3.0,
+      "meets_target": true,
+      "is_upper_bound": true,
+      "is_executable_long_only": true,
+      "rate_extrapolated_from_hours": true
+    }
+  ],
+  "capacity_note": "spot depth snapshots are rare in this capture, so a spot capacity claim rests on a small number of observations and is reported as such",
+  "what_would_change_the_answer": [
+    "a taker fee low enough that fee + spread + impact falls under the measured gross, or a measured maker fill model that turns a passive product into a costed one",
+    "a product with a different cost structure (the runtime's spot book is long-only)",
+    "a structure whose gross move is measured at or above 34-36 bps (1.5x of 23-24 bps) rather than the 1.6 bps best measured here"
+  ],
+  "what_is_not_measured": [
+    "duplicates (the collector appends events; no trade-id de-duplication pass exists)",
+    "stale_rate (no staleness threshold is registered for the forward capture)",
+    "provider_failure_rate (reconnect counters exist in the capture, not a failure rate)",
+    "turnover, exposure, max_drawdown, profit_factor, expectancy (no PnL backtest was run)",
+    "pnl_usd (the cost gate stopped every arm before a simulator was invoked)",
+    "perp aggressor flow (the environment delivered zero perp aggTrade messages)",
+    "maker fills on every venue (no measured fill model exists in this project)",
+    "liquidation prints (no public endpoint answered)"
+  ],
+  "derived_from": {
+    "config/risk.yaml": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+    "config/runtime.yaml": "ac3cf4fce9ff6246997a059f1c409609a7c87a6bb416198c041ca479fc49a159",
+    "docs/COST_MODEL_V3.json": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+    "docs/EXECUTION_COST_MODEL_V4.json": "7e772c34cbf0c894fc1ff00d643e82680847ebedaf986ba6dbb5b756121641a4",
+    "docs/FORWARD_DATA_CONTRACT.json": "eab7f4b158a9f8e4befa4f782327e8fb0e41d0b8525d53452e928b0be6bfff88",
+    "docs/source_registry.md": "c5a8bf6b48da6f733db31269e38fe11b00faca24028a99decfbd9529d64cfd71",
+    "reports/edge-recovery/WP-EDGE-09/panel/PANEL_SECONDS.csv": "0f87b7baeb92f93d8563043af68d5ea1f60ad51466a8a5ea6ff00bf501a1bff1",
+    "reports/edge-recovery/WP-EDGE-09/gates/COST_LIQUIDITY_CAPACITY.json": "a48e106e16b2346a5aaa4b6f7e3cd862887fa4a8be55c22265ea44c4d5d008f6",
+    "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENTS.json": "bde376e5139b651bab24c60e39287dba8c79d29d83d94be82b4210802cab9345",
+    "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENT_REGISTRY.json": "52aebe35ad050939ef010d74aaac06325d5bea2e6c4a702faf65946412e9f2a2",
+    "reports/edge-recovery/WP-EDGE-09/PREREGISTRATION.json": "7e2acbddef8f45d5ba30c7e8fd3057046134645b010cb72e865db6dd5c83309a",
+    "reports/edge-recovery/WP-EDGE-09/PREREGISTRATION.md": "b74f4a2b977d46d586a5a4313b029ae5587576704295cb989abd52ea04ae15ff"
+  },
+  "derived_no_new_measurement": true,
+  "promotion": "NONE",
+  "order_sent": false
+}

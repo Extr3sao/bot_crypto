@@ -1,0 +1,809 @@
+{
+  "admission_effect": "NONE \u2014 this artefact audits an economic profile; it admits nothing, creates no hypothesis and authorizes no campaign",
+  "artifact": "RFC-046_ECONOMIC_FEASIBILITY",
+  "authorized_runtime": {
+    "account_type": "spot",
+    "config_hashes": {
+      "config\\exchange.yaml": "07d8e0ebafc5cf9d3d7bca96dbf547fe07e292f9f27f29c292e8ce065273d4bf",
+      "config\\runtime.yaml": "ac3cf4fce9ff6246997a059f1c409609a7c87a6bb416198c041ca479fc49a159"
+    },
+    "default_order_posture": {
+      "post_only_default": true,
+      "time_in_force_default": "GTC"
+    },
+    "default_type": "spot",
+    "direction": "long/cash only (spot cannot short; derivatives are excluded)",
+    "excluded_markets": [
+      "Leveraged Tokens",
+      "Derivatives",
+      "Options"
+    ],
+    "live_trading_enabled": false,
+    "reference_capital_usdt": 200.0,
+    "runtime_mode": "paper",
+    "sandbox": true,
+    "venue": "binance"
+  },
+  "break_even": {
+    "at_reference_capital_usdt": 200.0,
+    "frozen_campaign_comparison": {
+      "delta_vs_200_usdt_bps": -0.437046609,
+      "frozen_admission_bps": 23.7906,
+      "frozen_stress_threshold_bps": 35.6859,
+      "note": "the frozen gate is marginally *more* demanding than a 1.5x stress at 200 USDT, so the campaign did not overstate the difficulty of the toll",
+      "stress_delta_bps": 0.655569914
+    },
+    "maker_modality": {
+      "admissible": false,
+      "cost_per_round_trip_usdt": 0.825,
+      "reason": "no measured fill evidence exists yet; the maker path stays EXECUTION_MODEL_REQUIRED and is barred from admission",
+      "round_trip_bps_at_200_usdt": 41.25,
+      "size_invariant": true
+    },
+    "minimum_expectancy_bps_to_be_net_positive": 23.353553391,
+    "minimum_gross_move_bps_per_round_trip": 23.353553391,
+    "minimum_gross_move_usdt_per_round_trip": 0.467071068,
+    "modality": "Binance Spot VIP0, market/taker both legs, long/cash only",
+    "required_gross_edge_bps_at_1p5x_stress": 35.030330086,
+    "required_gross_edge_usdt_at_1p5x_stress": 0.700606602,
+    "size_sensitivity": [
+      {
+        "cost_per_round_trip_usdt": 0.0578125,
+        "fees_share_of_round_trip": 0.864864865,
+        "min_position_ok": true,
+        "round_trip_bps": 23.125,
+        "size_usd": 25.0
+      },
+      {
+        "cost_per_round_trip_usdt": 0.115883883,
+        "fees_share_of_round_trip": 0.862932765,
+        "min_position_ok": true,
+        "round_trip_bps": 23.176776695,
+        "size_usd": 50.0
+      },
+      {
+        "cost_per_round_trip_usdt": 0.2325,
+        "fees_share_of_round_trip": 0.860215054,
+        "min_position_ok": true,
+        "round_trip_bps": 23.25,
+        "size_usd": 100.0
+      },
+      {
+        "cost_per_round_trip_usdt": 0.467071068,
+        "fees_share_of_round_trip": 0.856400723,
+        "min_position_ok": true,
+        "round_trip_bps": 23.353553391,
+        "size_usd": 200.0
+      },
+      {
+        "cost_per_round_trip_usdt": 1.17795085,
+        "fees_share_of_round_trip": 0.848931855,
+        "min_position_ok": true,
+        "round_trip_bps": 23.559016994,
+        "size_usd": 500.0
+      },
+      {
+        "cost_per_round_trip_usdt": 2.379056942,
+        "fees_share_of_round_trip": 0.840669244,
+        "min_position_ok": true,
+        "round_trip_bps": 23.790569415,
+        "size_usd": 1000.0
+      }
+    ],
+    "taker_vs_maker_at_1000_usd": {
+      "maker_bps": 41.25,
+      "taker_bps": 23.790569415
+    },
+    "three_daily_round_trips_illustrative": {
+      "cost_per_day_pct_of_capital": 0.007006066,
+      "cost_per_day_usdt": 1.401213203,
+      "cost_per_year_multiple_of_capital": 2.557214096,
+      "cost_per_year_usdt": 511.442819254,
+      "note": "illustrative arithmetic at full deployment, never a forecast: it is the gross profit the account must extract from the market just to pay the venue",
+      "round_trips_per_day": 3
+    },
+    "turnover_sensitivity": {
+      "reading": "the thinner the net margin over the toll, the more the business depends on the cost model being right: at high turnover the margin is a few percent of the gross move and any realised-cost overrun erases the year",
+      "rows": [
+        {
+          "annual_cost_pct_of_capital": 0.17048094,
+          "annual_cost_usdt": 34.09618795,
+          "cost_overrun_bps_that_erases_target": 27.397260274,
+          "gross_bps_per_trade_to_net_target": 50.750813665,
+          "illustrative_daily_cost_usdt": 0.093414214,
+          "net_margin_bps_per_trade": 27.397260274,
+          "net_margin_share_of_gross": 0.539838838,
+          "round_trips_per_day": 0.2,
+          "round_trips_per_year": 73.0
+        },
+        {
+          "annual_cost_pct_of_capital": 0.852404699,
+          "annual_cost_usdt": 170.480939751,
+          "cost_overrun_bps_that_erases_target": 5.479452055,
+          "gross_bps_per_trade_to_net_target": 28.833005445,
+          "illustrative_daily_cost_usdt": 0.467071068,
+          "net_margin_bps_per_trade": 5.479452055,
+          "net_margin_share_of_gross": 0.190040961,
+          "round_trips_per_day": 1.0,
+          "round_trips_per_year": 365.0
+        },
+        {
+          "annual_cost_pct_of_capital": 2.557214096,
+          "annual_cost_usdt": 511.442819254,
+          "cost_overrun_bps_that_erases_target": 1.826484018,
+          "gross_bps_per_trade_to_net_target": 25.180037409,
+          "illustrative_daily_cost_usdt": 1.401213203,
+          "net_margin_bps_per_trade": 1.826484018,
+          "net_margin_share_of_gross": 0.072536986,
+          "round_trips_per_day": 3.0,
+          "round_trips_per_year": 1095.0
+        },
+        {
+          "annual_cost_pct_of_capital": 8.524046988,
+          "annual_cost_usdt": 1704.809397513,
+          "cost_overrun_bps_that_erases_target": 0.547945205,
+          "gross_bps_per_trade_to_net_target": 23.901498596,
+          "illustrative_daily_cost_usdt": 4.670710678,
+          "net_margin_bps_per_trade": 0.547945205,
+          "net_margin_share_of_gross": 0.02292514,
+          "round_trips_per_day": 10.0,
+          "round_trips_per_year": 3650.0
+        }
+      ],
+      "target_net_annual": 0.2,
+      "target_net_usdt": 40.0,
+      "target_source": "PROFITABILITY_OPERATING_MODEL.json (20% -> 40 USDT/year is the documented scenario, never a forecast)"
+    }
+  },
+  "builder": "scripts/rfc046_economic_gate.py",
+  "builder_equals_verifier": false,
+  "cost_audit": {
+    "admission_scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "applicability": [
+      {
+        "assumption": "Binance Spot VIP0 fee, 10 bps per leg, paid in the quote asset",
+        "conflict": "the runtime is configured sandbox: true, so a testnet fill does not reproduce live-account fees \u2014 the fee arithmetic is a live-account property",
+        "knowledge": "KNOWN",
+        "source_id": "SRC-01",
+        "value": "20.0 bps per round trip",
+        "verdict": "CONFIRMED",
+        "why": "published schedule for our tier; the runtime's venue and account type match the scenario"
+      },
+      {
+        "assumption": "majors' taker spread 1.0 bps (2 legs x half-spread)",
+        "caveat": "a forward collection is required before any realised-cost comparison, and this is the component a cost overrun would most likely arrive in",
+        "knowledge": "ESTIMATED",
+        "source_id": "SRC-07",
+        "value": "1.0 bps per round trip",
+        "verdict": "UNKNOWN",
+        "why": "SRC-07 has no historical endpoint: the estimate comes from a single bookTicker observation and cannot be re-verified for a past period"
+      },
+      {
+        "assumption": "base slippage 1.0 bps and size/impact constants",
+        "caveat": "no measured slippage exists for our order flow",
+        "knowledge": "ESTIMATED",
+        "source_id": "MODEL-V3",
+        "value": "2.35355339 bps per round trip at 200 USDT",
+        "verdict": "UNKNOWN",
+        "why": "the model's own constants block labels them ASSUMED/ESTIMATED modelling constants, not observations"
+      },
+      {
+        "assumption": "size term 1 + sqrt(size / 10,000)",
+        "caveat": "it moves the bar by only 0.32 bps between the two reference sizes, because the fee term dominates and is size-invariant \u2014 the model's precision is spent on a small term",
+        "knowledge": "ASSUMED",
+        "source_id": "MODEL-V3",
+        "value": "size factor 1.141421 at 200 USDT",
+        "verdict": "UNKNOWN",
+        "why": "a documented modelling choice, never fitted to our fills"
+      },
+      {
+        "assumption": "maker adverse selection 0.5 bps per leg and fill probability 0.5",
+        "conflict": "the runtime's own default order posture is post_only (config), and at VIP0 the maker fee equals the taker fee, so the configured default buys no fee saving while adding fill risk the model charges for",
+        "knowledge": "ASSUMED",
+        "source_id": "MODEL-V3",
+        "value": "21.25 bps of maker-specific risk at 1,000 USD",
+        "verdict": "NOT_APPLICABLE",
+        "why": "no usable fill evidence exists; EXECUTION_MODEL_V1.json is EXECUTION_MODEL_REQUIRED \u2014 the maker path is barred from admission"
+      },
+      {
+        "assumption": "BNB fee discount (-25%)",
+        "caveat": "the frozen model forbids treating a discount as CONFIRMED without a governance decision, so it cannot lower today's bar",
+        "knowledge": "KNOWN",
+        "source_id": "SRC-01",
+        "value": "18.7906 bps per round trip at 1,000 USD",
+        "verdict": "POSSIBLE",
+        "why": "the rate is published, but applicability to our account is unconfirmed"
+      },
+      {
+        "assumption": "derivative scenarios (USD\u24c8-M perpetual, 9.25 bps maker)",
+        "conflict": "the cheapest documented scenario in the whole model is therefore unreachable today",
+        "knowledge": "ASSUMED",
+        "source_id": "SRC-02",
+        "value": "9.25 bps per round trip",
+        "verdict": "NOT_APPLICABLE",
+        "why": "excluded from the runtime by config/exchange.yaml (Derivatives) and by the RFC-046 scope rules"
+      },
+      {
+        "assumption": "other spot venues (MEXC 17.79, Bybit/OKX 23.79, Kraken 83.79 bps)",
+        "conflict": "no venue switch is available as a cost-side rescue without a new measurement and a governance decision",
+        "knowledge": "ASSUMED",
+        "source_id": "SRC-11 / SRC-09 / SRC-10 / SRC-12",
+        "value": "17.79 bps per round trip at MEXC",
+        "verdict": "NOT_APPLICABLE",
+        "why": "not the authorized runtime venue, and their spreads are ASSUMED rather than observed (caveat in VENUE_EXECUTION_MATRIX_V1.json)"
+      },
+      {
+        "assumption": "min notional 5 USD",
+        "conflict": "at 200 USDT the smallest legal position is 2.5% of the account, so any size below that cannot be executed at all \u2014 a granularity floor, not a cash cost",
+        "knowledge": "KNOWN",
+        "source_id": "SRC-01",
+        "value": "0.0250 of capital per position at 200 USDT",
+        "verdict": "CONFIRMED",
+        "why": "published instrument filter present in the frozen model's venue specs"
+      }
+    ],
+    "at_documented_reference_size": {
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "spread",
+          "source_id": "SRC-07",
+          "value_bps": 1.0
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.632455532
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.158113883
+        }
+      ],
+      "knowledge_class": "ESTIMATED",
+      "order_types": "market / market",
+      "round_trip_bps": 23.790569415,
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_factor": 1.316228,
+      "size_invariant": false,
+      "size_usd": 1000.0
+    },
+    "at_reference_capital": {
+      "components": [
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_entry",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "KNOWN",
+          "name": "exchange_fee_exit",
+          "source_id": "SRC-01",
+          "value_bps": 10.0
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "spread",
+          "source_id": "SRC-07",
+          "value_bps": 1.0
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "slippage",
+          "source_id": "MODEL-V3",
+          "value_bps": 2.282842712
+        },
+        {
+          "knowledge": "ESTIMATED",
+          "name": "market_impact",
+          "source_id": "MODEL-V3",
+          "value_bps": 0.070710678
+        }
+      ],
+      "knowledge_class": "ESTIMATED",
+      "order_types": "market / market",
+      "round_trip_bps": 23.353553391,
+      "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+      "size_factor": 1.141421,
+      "size_invariant": false,
+      "size_usd": 200.0
+    },
+    "cost_landscape": {
+      "cheapest_documented_bps": 9.25,
+      "cheapest_documented_scenario": "BINANCE_USDM_PERP_MAKER",
+      "cheapest_spot_bps": 17.7906,
+      "cheapest_spot_scenario": "MEXC_SPOT_TAKER",
+      "scenarios": [
+        {
+          "product": "USD\u24c8-M Perpetual",
+          "round_trip_bps": 9.25,
+          "scenario_id": "BINANCE_USDM_PERP_MAKER"
+        },
+        {
+          "product": "USD\u24c8-M Perpetual",
+          "round_trip_bps": 13.7906,
+          "scenario_id": "BINANCE_USDM_PERP_TAKER"
+        },
+        {
+          "product": "Spot",
+          "round_trip_bps": 17.7906,
+          "scenario_id": "MEXC_SPOT_TAKER"
+        },
+        {
+          "product": "Spot",
+          "round_trip_bps": 18.7906,
+          "scenario_id": "BINANCE_SPOT_BNB_TAKER"
+        },
+        {
+          "product": "Spot",
+          "round_trip_bps": 23.7906,
+          "scenario_id": "BINANCE_SPOT_STANDARD_TAKER"
+        },
+        {
+          "product": "Spot",
+          "round_trip_bps": 23.7906,
+          "scenario_id": "BYBIT_SPOT_TAKER"
+        },
+        {
+          "product": "Spot",
+          "round_trip_bps": 23.7906,
+          "scenario_id": "OKX_SPOT_TAKER"
+        },
+        {
+          "product": "Spot",
+          "round_trip_bps": 31.25,
+          "scenario_id": "BINANCE_SPOT_BNB_MAKER"
+        },
+        {
+          "product": "Spot",
+          "round_trip_bps": 41.25,
+          "scenario_id": "BINANCE_SPOT_STANDARD_MAKER"
+        },
+        {
+          "product": "Spot",
+          "round_trip_bps": 83.7906,
+          "scenario_id": "KRAKENPRO_SPOT_TAKER"
+        }
+      ]
+    },
+    "fee_dominance_at_200_usdt": {
+      "exchange_fees_bps": 20.0,
+      "fees_share_of_round_trip": 0.856400723,
+      "market_impact_bps": 0.070710678,
+      "non_fee_bps": 3.35355339,
+      "note": "the toll is a fee schedule with a small execution term attached; nothing about our own execution assumptions moves it materially",
+      "slippage_bps": 2.282842712,
+      "spread_bps": 1.0
+    },
+    "fixed_costs": {
+      "fixed_cash_costs_in_model": "none \u2014 COST_MODEL_V3 contains only per-round-trip bps terms; no deposit, withdrawal, subscription or data fee is modelled",
+      "min_notional_usd": 5.0,
+      "min_position_fraction_of_capital": 0.025,
+      "note": "the only non-scaling terms are the fee floor and the instrument's minimum notional"
+    },
+    "maker_path": {
+      "at_documented_reference_size": {
+        "components": [
+          {
+            "knowledge": "KNOWN",
+            "name": "exchange_fee_entry",
+            "source_id": "SRC-01",
+            "value_bps": 10.0
+          },
+          {
+            "knowledge": "KNOWN",
+            "name": "exchange_fee_exit",
+            "source_id": "SRC-01",
+            "value_bps": 10.0
+          },
+          {
+            "knowledge": "ASSUMED",
+            "name": "adverse_selection",
+            "source_id": "MODEL-V3",
+            "value_bps": 1.0
+          },
+          {
+            "knowledge": "ASSUMED",
+            "name": "missed_fill_penalty",
+            "source_id": "MODEL-V3",
+            "value_bps": 0.25
+          },
+          {
+            "knowledge": "ASSUMED",
+            "name": "fill_probability_inflation",
+            "source_id": "MODEL-V3",
+            "value_bps": 20.0
+          }
+        ],
+        "knowledge_class": "ASSUMED",
+        "order_types": "limit_post_only / limit_post_only",
+        "round_trip_bps": 41.25,
+        "scenario_id": "BINANCE_SPOT_STANDARD_MAKER",
+        "size_factor": 1.316228,
+        "size_invariant": true,
+        "size_usd": 1000.0
+      },
+      "at_reference_capital": {
+        "components": [
+          {
+            "knowledge": "KNOWN",
+            "name": "exchange_fee_entry",
+            "source_id": "SRC-01",
+            "value_bps": 10.0
+          },
+          {
+            "knowledge": "KNOWN",
+            "name": "exchange_fee_exit",
+            "source_id": "SRC-01",
+            "value_bps": 10.0
+          },
+          {
+            "knowledge": "ASSUMED",
+            "name": "adverse_selection",
+            "source_id": "MODEL-V3",
+            "value_bps": 1.0
+          },
+          {
+            "knowledge": "ASSUMED",
+            "name": "missed_fill_penalty",
+            "source_id": "MODEL-V3",
+            "value_bps": 0.25
+          },
+          {
+            "knowledge": "ASSUMED",
+            "name": "fill_probability_inflation",
+            "source_id": "MODEL-V3",
+            "value_bps": 20.0
+          }
+        ],
+        "knowledge_class": "ASSUMED",
+        "order_types": "limit_post_only / limit_post_only",
+        "round_trip_bps": 41.25,
+        "scenario_id": "BINANCE_SPOT_STANDARD_MAKER",
+        "size_factor": 1.141421,
+        "size_invariant": true,
+        "size_usd": 200.0
+      },
+      "execution_model_reason": "no measured fill evidence exists yet; the maker path stays EXECUTION_MODEL_REQUIRED and is barred from admission",
+      "execution_model_status": "EXECUTION_MODEL_REQUIRED",
+      "premium_over_taker_bps": 17.459431,
+      "scenario_id": "BINANCE_SPOT_STANDARD_MAKER"
+    },
+    "model": "COST_MODEL_V3",
+    "model_file": "docs\\COST_MODEL_V3.json",
+    "model_file_sha256": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+    "open_defects": [],
+    "reference_intent": {
+      "horizon_minutes": 25.0,
+      "liquidity_regime": "normal",
+      "size_usd": 1000.0
+    },
+    "reused_not_rebuilt": true
+  },
+  "decision": {
+    "edge_status": "NOT_DEMONSTRATED",
+    "families_at_the_boundary": [
+      "intraday"
+    ],
+    "families_cost_compatible": [
+      "mean_reversion",
+      "momentum",
+      "swing_trading",
+      "trend_following"
+    ],
+    "families_not_cost_compatible": [
+      "scalping"
+    ],
+    "meaning": "a cost profile exists under which the toll is small relative to the typical move available at the strategy's own horizon; it is a *cost* finding and says nothing about whether any edge exists",
+    "next_campaign": "NOT_AUTHORIZED",
+    "not_an_edge_claim": true,
+    "note": "no strategy is proposed, no hypothesis is created and no gate is reopened by this recommendation; the owner must authorize any next step",
+    "profile": {
+      "execution": "market/taker on both legs (the cheapest permitted posture at VIP0)",
+      "horizon_region": "holding periods from about one day upwards, where the measured median move is at least seven times the toll",
+      "minimum_gross_edge_bps": 23.353553391,
+      "product": "Binance Spot, long/cash only",
+      "required_gross_edge_bps_at_1p5x": 35.030330086,
+      "round_trip_bps_at_200_usdt": 23.353553391,
+      "turnover_region": "low: each round trip costs 0.467071068 USDT at full deployment, so the annual toll is roughly 0.852 x capital per round trip per day",
+      "venue": "BINANCE_SPOT_STANDARD_TAKER"
+    },
+    "scope_recommendation": "VIABLE_COST_PROFILE_IDENTIFIED",
+    "violated_if": [
+      "realised round-trip cost exceeds the modelled toll: every extra bps of realised cost is an extra bps of required gross edge, and ST-6 halts the campaign on exactly that",
+      "the forward spread measurement contradicts the modelled 1.0 bps (SRC-07 has no historical endpoint, so the estimate is unverified until then)",
+      "a candidate's holding horizon is shorter than its own measured cost-compatible region"
+    ]
+  },
+  "does_not_license": [
+    "a second campaign or any new hypothesis",
+    "paper or live trading",
+    "any statement that an edge, a profit or a production capability exists",
+    "a cost-side change to the frozen model without a new measurement and a governance decision"
+  ],
+  "false_success": 0,
+  "family_classification": {
+    "a_family_that_can_cover_commissions_is_not_validated": true,
+    "boundary_capture": 0.5,
+    "edge_existence_basis": "no family has passed PROFITABILITY_GATE_V1 and none is claimed to have an edge; the three mechanisms RFC-046 tested produced +4.5306, -25.4580 and an unmeasured zero gross bps per trade",
+    "families": {
+      "intraday": {
+        "capture_required_to_break_even": 0.794849,
+        "considered_horizons": [
+          "1h",
+          "4h",
+          "8h"
+        ],
+        "cost_bps": 23.353553391,
+        "cost_verdict": "COST_BOUNDARY",
+        "edge_existence": "NOT_DEMONSTRATED",
+        "family": "intraday",
+        "holding_band": "1 to 8 hours",
+        "median_abs_move_bps": 29.381129,
+        "move_over_cost": 1.258101,
+        "note": "cost compatibility is arithmetic about the toll against the typical move; it is not evidence of edge, and it is not a promotion",
+        "representative_horizon": "1h",
+        "runtime_fit": "long/cash only: an intraday exit must be a cash exit, not a short",
+        "share_of_windows_below_cost": 0.419844
+      },
+      "mean_reversion": {
+        "capture_required_to_break_even": 0.386221,
+        "considered_horizons": [
+          "1h",
+          "4h",
+          "24h"
+        ],
+        "cost_bps": 23.353553391,
+        "cost_verdict": "COST_COMPATIBLE",
+        "edge_existence": "NOT_DEMONSTRATED",
+        "family": "mean_reversion",
+        "holding_band": "hours (reversion half-life)",
+        "median_abs_move_bps": 60.466783,
+        "move_over_cost": 2.58919,
+        "note": "cost compatibility is arithmetic about the toll against the typical move; it is not evidence of edge, and it is not a promotion",
+        "representative_horizon": "4h",
+        "runtime_fit": "long/cash only: expressible as buy-the-dip, not as sell-the-rip",
+        "share_of_windows_below_cost": 0.229685
+      },
+      "momentum": {
+        "capture_required_to_break_even": 0.141707,
+        "considered_horizons": [
+          "24h",
+          "72h"
+        ],
+        "cost_bps": 23.353553391,
+        "cost_verdict": "COST_COMPATIBLE",
+        "edge_existence": "NOT_DEMONSTRATED",
+        "family": "momentum",
+        "holding_band": "1 to 5 days",
+        "median_abs_move_bps": 164.801314,
+        "move_over_cost": 7.056798,
+        "note": "cost compatibility is arithmetic about the toll against the typical move; it is not evidence of edge, and it is not a promotion",
+        "representative_horizon": "24h",
+        "runtime_fit": "long/cash only: participates only in upward momentum",
+        "share_of_windows_below_cost": 0.097826
+      },
+      "scalping": {
+        "capture_required_to_break_even": 2.719021,
+        "considered_horizons": [
+          "5m",
+          "15m"
+        ],
+        "cost_bps": 23.353553391,
+        "cost_verdict": "NOT_COST_COMPATIBLE",
+        "edge_existence": "NOT_DEMONSTRATED",
+        "family": "scalping",
+        "holding_band": "seconds to 15 minutes",
+        "median_abs_move_bps": 8.588957,
+        "move_over_cost": 0.367779,
+        "note": "cost compatibility is arithmetic about the toll against the typical move; it is not evidence of edge, and it is not a promotion",
+        "representative_horizon": "5m",
+        "runtime_fit": "long/cash only: the short side of a scalp is not expressible",
+        "share_of_windows_below_cost": 0.840134
+      },
+      "swing_trading": {
+        "capture_required_to_break_even": 0.0755,
+        "considered_horizons": [
+          "24h",
+          "72h"
+        ],
+        "cost_bps": 23.353553391,
+        "cost_verdict": "COST_COMPATIBLE",
+        "edge_existence": "NOT_DEMONSTRATED",
+        "family": "swing_trading",
+        "holding_band": "2 to 10 days",
+        "median_abs_move_bps": 309.317526,
+        "move_over_cost": 13.244988,
+        "note": "cost compatibility is arithmetic about the toll against the typical move; it is not evidence of edge, and it is not a promotion",
+        "representative_horizon": "72h",
+        "runtime_fit": "long/cash only: a swing entry and exit are both cash legs",
+        "share_of_windows_below_cost": 0.043878
+      },
+      "trend_following": {
+        "capture_required_to_break_even": 0.047024,
+        "considered_horizons": [
+          "72h",
+          "168h"
+        ],
+        "cost_bps": 23.353553391,
+        "cost_verdict": "COST_COMPATIBLE",
+        "edge_existence": "NOT_DEMONSTRATED",
+        "family": "trend_following",
+        "holding_band": "2 to 12 weeks",
+        "median_abs_move_bps": 496.629154,
+        "move_over_cost": 21.265678,
+        "note": "cost compatibility is arithmetic about the toll against the typical move; it is not evidence of edge, and it is not a promotion",
+        "representative_horizon": "168h",
+        "runtime_fit": "long/cash only: a long-only trend follower is long beta most of the time",
+        "share_of_windows_below_cost": 0.011905
+      }
+    },
+    "rule": "cost_verdict is derived, never authored: median move <= toll -> NOT_COST_COMPATIBLE; toll >= 50% of the median move -> COST_BOUNDARY; otherwise COST_COMPATIBLE. Only the *representative* horizon (the shortest one the family trades) decides, because that is where the toll bites hardest."
+  },
+  "generated_at_utc": "2026-10-08T14:13:48Z",
+  "head_at_run": "04fa741ab3dd6fb27a7fc44d42ed4e1e439a27b5",
+  "horizon_measurement": {
+    "assets": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT",
+      "XRPUSDT"
+    ],
+    "bars_available_per_asset": {
+      "BTCUSDT": 212109,
+      "ETHUSDT": 212109,
+      "SOLUSDT": 212109,
+      "XRPUSDT": 212110
+    },
+    "method": "non-overlapping windows on the open of the 5-minute bars: |open[i+k]/open[i] - 1| in bps, k set by the horizon; four majors pooled; no signal, no direction and no parameter is generated",
+    "per_horizon": {
+      "15m": {
+        "bars_per_window": 3,
+        "median_abs_move_bps": 15.08965,
+        "observations": 282809,
+        "p25_abs_move_bps": 6.721936,
+        "p75_abs_move_bps": 29.764365,
+        "p90_abs_move_bps": 52.325906
+      },
+      "168h": {
+        "bars_per_window": 2016,
+        "median_abs_move_bps": 496.629154,
+        "observations": 420,
+        "p25_abs_move_bps": 233.806445,
+        "p75_abs_move_bps": 942.435286,
+        "p90_abs_move_bps": 1493.35295
+      },
+      "1h": {
+        "bars_per_window": 12,
+        "median_abs_move_bps": 29.381129,
+        "observations": 70700,
+        "p25_abs_move_bps": 12.911556,
+        "p75_abs_move_bps": 59.027778,
+        "p90_abs_move_bps": 105.284392
+      },
+      "24h": {
+        "bars_per_window": 288,
+        "median_abs_move_bps": 164.801314,
+        "observations": 2944,
+        "p25_abs_move_bps": 69.997917,
+        "p75_abs_move_bps": 322.182344,
+        "p90_abs_move_bps": 555.72085
+      },
+      "4h": {
+        "bars_per_window": 48,
+        "median_abs_move_bps": 60.466783,
+        "observations": 17672,
+        "p25_abs_move_bps": 25.439408,
+        "p75_abs_move_bps": 122.415987,
+        "p90_abs_move_bps": 217.628747
+      },
+      "5m": {
+        "bars_per_window": 1,
+        "median_abs_move_bps": 8.588957,
+        "observations": 848433,
+        "p25_abs_move_bps": 3.688676,
+        "p75_abs_move_bps": 17.220544,
+        "p90_abs_move_bps": 30.422037
+      },
+      "72h": {
+        "bars_per_window": 864,
+        "median_abs_move_bps": 309.317526,
+        "observations": 980,
+        "p25_abs_move_bps": 125.380119,
+        "p75_abs_move_bps": 583.685339,
+        "p90_abs_move_bps": 937.192361
+      },
+      "8h": {
+        "bars_per_window": 96,
+        "median_abs_move_bps": 89.265721,
+        "observations": 8836,
+        "p25_abs_move_bps": 38.555205,
+        "p75_abs_move_bps": 178.64175,
+        "p90_abs_move_bps": 308.174706
+      }
+    },
+    "source_files": [
+      "data/raw/alpha003/price/BTCUSDT_5m.json",
+      "data/raw/alpha003/price/ETHUSDT_5m.json",
+      "data/raw/alpha003/price/SOLUSDT_5m.json",
+      "data/raw/alpha003/price/XRPUSDT_5m.json"
+    ]
+  },
+  "purpose": "Determine what economic profile a strategy would need to be viable with 200 USDT on the authorized runtime: verified costs, break-even, family classification and a bounded scope recommendation. No strategy is created; no gate is reopened.",
+  "rfc": "RFC-046",
+  "rfc046_review": {
+    "confirmations": {
+      "CAND-046-001_has_no_gross_edge_out_of_sample": {
+        "aggregate_gross_bps": 4.530596,
+        "aggregate_is_stable_across_partitions": false,
+        "confirmed": true,
+        "oos_gross_bps": -74.590884,
+        "partitions_without_gross_edge": [
+          "final_oos",
+          "validation"
+        ],
+        "reading": "the aggregate positive gross is confined to development; the OOS leg is negative, so there is no gross edge to harvest out of sample"
+      },
+      "CAND-046-002_loses_before_costs": {
+        "confirmed": true,
+        "gross_bps": -25.45802,
+        "oos_gross_bps": -8.477294,
+        "reading": "negative gross in every partition: an economic rejection, not a cost rejection"
+      },
+      "CAND-046-003_stays_zero_sample": {
+        "confirmed": true,
+        "reading": "unmeasured, neither disproved nor supported",
+        "signals": 0,
+        "trades_total": 0
+      }
+    },
+    "oos_policy": {
+      "candidates_re_evaluated": 0,
+      "new_hypotheses_generated": 0,
+      "reused_for_selection": false,
+      "second_campaign": "NOT_AUTHORIZED",
+      "spec_count": 3,
+      "spec_hashes": {
+        "HYP-001": "e5e58176e4c8fb01e79c7db368fd889f6f264a3e956bc1be601389daa8dd135a",
+        "HYP-002": "3336b8f343d899af0415f3f9e35fce03d72f0cdd626ac6872b9add2e53964ecf",
+        "HYP-003": "8f99b0366301a304e6637dc2a640265d18bd1607df73b579fe2ca418a0cf007c"
+      },
+      "specs_frozen_and_unchanged": true,
+      "statement": "the final OOS partition was opened once per candidate and is not reused here for selection, tuning or comparison; this artefact generates no candidate"
+    },
+    "sources": {
+      "cost_forensics": "data\\rfc046\\COST_FORENSICS.json",
+      "cost_forensics_sha256": "230826ad74bbfef4c9ed8b7c65a0480553898bb064678e83a341622300a02ff7",
+      "run_report": "data\\rfc046\\RUN_REPORT.json",
+      "run_report_sha256": "d16e1369253ce2c317822773b921201ae4d6a101fc3838ea268c56359d476af8"
+    }
+  },
+  "standing_state": {
+    "G_BUSINESS_REENTRY": "NOT_PASS",
+    "campaign_status": "DISCOVERY_CAMPAIGN_FAILED",
+    "discovery_campaign_failed": "DISCOVERY_CAMPAIGN_FAILED",
+    "discovery_offline_authorized": true,
+    "false_success": 0,
+    "live_trading": false,
+    "next_campaign": "NOT_AUTHORIZED",
+    "profitability_verified": false,
+    "risk_engine": "DETERMINISTIC",
+    "trades_authorized": 0
+  }
+}

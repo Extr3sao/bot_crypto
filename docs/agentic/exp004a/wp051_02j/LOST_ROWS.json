@@ -1,0 +1,395 @@
+{
+  "admissible_rows": 24,
+  "assets": {
+    "BTC": {
+      "admissible": 8,
+      "hours": [
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "00:00",
+          "lag_minutes": 281.0,
+          "status": "LATE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "01:00",
+          "lag_minutes": 221.0,
+          "status": "LATE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "02:00",
+          "lag_minutes": 161.0,
+          "status": "LATE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "03:00",
+          "lag_minutes": 101.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "04:00",
+          "lag_minutes": 41.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T06:11:02Z",
+          "hour_utc": "05:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T07:10:58Z",
+          "hour_utc": "06:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T08:10:58Z",
+          "hour_utc": "07:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T09:10:57Z",
+          "hour_utc": "08:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T10:10:59Z",
+          "hour_utc": "09:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T11:11:00Z",
+          "hour_utc": "10:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "hour_utc": "11:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "12:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "13:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "14:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "15:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "16:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "17:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "18:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "19:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "20:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "21:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "22:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "23:00",
+          "status": "MISSING"
+        }
+      ],
+      "late_beyond_bound": 3,
+      "missing": 13,
+      "rows_present": 11
+    },
+    "ETH": {
+      "admissible": 8,
+      "hours": [
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "00:00",
+          "lag_minutes": 281.0,
+          "status": "LATE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "01:00",
+          "lag_minutes": 221.0,
+          "status": "LATE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "02:00",
+          "lag_minutes": 161.0,
+          "status": "LATE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "03:00",
+          "lag_minutes": 101.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "04:00",
+          "lag_minutes": 41.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T06:11:02Z",
+          "hour_utc": "05:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T07:10:58Z",
+          "hour_utc": "06:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T08:10:58Z",
+          "hour_utc": "07:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T09:10:57Z",
+          "hour_utc": "08:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T10:10:59Z",
+          "hour_utc": "09:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T11:11:00Z",
+          "hour_utc": "10:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "hour_utc": "11:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "12:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "13:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "14:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "15:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "16:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "17:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "18:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "19:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "20:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "21:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "22:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "23:00",
+          "status": "MISSING"
+        }
+      ],
+      "late_beyond_bound": 3,
+      "missing": 13,
+      "rows_present": 11
+    },
+    "SOL": {
+      "admissible": 8,
+      "hours": [
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "00:00",
+          "lag_minutes": 281.0,
+          "status": "LATE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "01:00",
+          "lag_minutes": 221.0,
+          "status": "LATE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "02:00",
+          "lag_minutes": 161.0,
+          "status": "LATE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "03:00",
+          "lag_minutes": 101.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T05:40:59Z",
+          "hour_utc": "04:00",
+          "lag_minutes": 41.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T06:11:02Z",
+          "hour_utc": "05:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T07:10:58Z",
+          "hour_utc": "06:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T08:10:58Z",
+          "hour_utc": "07:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T09:10:57Z",
+          "hour_utc": "08:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T10:10:59Z",
+          "hour_utc": "09:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "fetched_at_utc": "2026-10-23T11:11:00Z",
+          "hour_utc": "10:00",
+          "lag_minutes": 11.0,
+          "status": "ADMISSIBLE"
+        },
+        {
+          "hour_utc": "11:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "12:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "13:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "14:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "15:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "16:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "17:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "18:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "19:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "20:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "21:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "22:00",
+          "status": "MISSING"
+        },
+        {
+          "hour_utc": "23:00",
+          "status": "MISSING"
+        }
+      ],
+      "late_beyond_bound": 3,
+      "missing": 13,
+      "rows_present": 11
+    }
+  },
+  "causal_chain": "the volume was under the 2 GiB floor from 00:10Z, the guard refused every tick until 05:25Z, and the hours that were eventually fetched after the refusals came with lag 281, 221 and 161 minutes -- all above the bound.",
+  "day": "2026-10-23",
+  "declared_rows_for_the_day": 72,
+  "generated_at_utc": "2026-10-23T11:33:41Z",
+  "not_repaired": "nothing was re-fetched, re-timed or reclassified: the store keeps the late rows with their real lag, and the day stays lost.",
+  "refused_between_utc": [
+    "2026-10-23T00:10:56Z",
+    "2026-10-23T06:55:57Z"
+  ],
+  "refused_ticks_that_day": 25,
+  "schema_version": "EXP004A_WP051_02J_RECOVERY_V1",
+  "why_the_whole_day_was_excluded": "the day holds bars whose lag exceeds the 120 min bound, and the lag policy in the phase-3 declaration excludes a day holding any inadmissible bar from the dataset and from the coverage numerator. One late bar costs the day, not one row: 72 declared rows are lost, of which the store holds 24 admissible ones."
+}

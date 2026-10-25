@@ -1,0 +1,57 @@
+{
+  "target_id": "T-QR-SIGNAL",
+  "rea_executed": true,
+  "operations": [
+    {
+      "operation": "analyze_javascript_application",
+      "evidence_id": "ev_9b45318c072de54798bb93a37354c38ec82b2bccf31d3cd1fbf9be0898a16b99",
+      "subject_sha256": "7effba616c5692dabaf95b364b0143f3c20be18afaf56a20c7707a98954de4fa",
+      "statistics": {
+        "relevant_files": 17,
+        "parsed_javascript_files": 14,
+        "visited_ast_nodes": 15628,
+        "findings": 86,
+        "parse_failures": 0
+      },
+      "graph": {
+        "schema": "JavaScriptApplicationGraph",
+        "nodes": 79,
+        "edges": 115
+      }
+    },
+    {
+      "operation": "analyze_web_bundle",
+      "evidence_id": "ev_b954b8b016f1736a766bc45627a3d21f600503c1d4294e7147133a7ce461c46c",
+      "subject_url": "http://127.0.0.1:8124/",
+      "statistics": {
+        "scripts_observed": 14,
+        "scripts_analyzed": 14,
+        "observations": 5,
+        "parse_failures": 0
+      },
+      "completeness": {
+        "status": "complete",
+        "parsed_scripts": 14,
+        "visited_ast_nodes": 15628
+      }
+    },
+    {
+      "operation": "capture_web_screenshot",
+      "evidence_id": "ev_ee6845ff71d389439559036e9c661edbaee90a518ac18bd29639ef72995417a3",
+      "artifact_sha256": "1d3d97451fbfa2f77fc0ec7a3634aab7c7e5578897f6d6764c03b479d8ba0e0b",
+      "viewport": {
+        "width": 1262,
+        "height": 804
+      },
+      "completeness": "complete_within_window",
+      "file": "rea_screenshot.png"
+    }
+  ],
+  "evidence_ids": [
+    "ev_9b45318c072de54798bb93a37354c38ec82b2bccf31d3cd1fbf9be0898a16b99",
+    "ev_b954b8b016f1736a766bc45627a3d21f600503c1d4294e7147133a7ce461c46c",
+    "ev_ee6845ff71d389439559036e9c661edbaee90a518ac18bd29639ef72995417a3"
+  ],
+  "what_rea_can_say": "El dashboard del commit exacto se compone de 14 módulos JS sin bundler y renderiza en un perfil limpio; su inventario de ficheros y su grafo de aplicación son verificables.",
+  "what_rea_cannot_say": "Nada del backend Python: REA no ejecuta ni comprende el runtime de análisis. La cadena gráfico→modelo se corrobora por fuente, no por REA."
+}

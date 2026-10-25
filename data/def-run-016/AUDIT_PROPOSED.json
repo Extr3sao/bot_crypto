@@ -1,0 +1,2708 @@
+{
+  "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "commit": "4ea93d815ed6e3573239ae34bd7782cff4efe9c0",
+  "dataset": {
+    "first_open_ms": 1792501320000,
+    "last_open_ms": 1792516620000,
+    "minutes": 256,
+    "minutes_sha256": "fa201e6ba3b623f770f6ebbddef85014fc05a80c6af20a525d6fe8e905d747e1",
+    "path": "reports\\ai-bots\\DEF-RUN-PAPER\\model-20261020T170635Z\\market-1m\\BTCUSDT.jsonl",
+    "symbol": "BTC/USDT"
+  },
+  "dirty": true,
+  "generated_at_utc": "2026-10-21T07:32:30Z",
+  "label": "PROPOSED",
+  "lane_module_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\vision\\lane.py",
+  "lane_module_sha256": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3",
+  "lifecycle": "DEFER",
+  "runtime_sha256": {
+    "src\\trading_bot\\paper\\broker.py": "c145960896999f6a7a7f2b9090c40471b582b8a7caa02b45563db2f8cbe33389",
+    "src\\trading_bot\\risk\\manager.py": "493a989ef2fc220eae212df0ee9d2b91e901eb04540da0c3fa41a1127ed45440",
+    "src\\trading_bot\\vision\\execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e8287b76e942889347141d1",
+    "src\\trading_bot\\vision\\lane.py": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3"
+  },
+  "scenarios": {
+    "m1_cadence1": {
+      "config": {
+        "data_delay_ms": 3620,
+        "decision_every_bars": 1,
+        "declared_provider_latency_ms": 0,
+        "dropped_bar_open_ms": null,
+        "interval_ms": 60000,
+        "max_opinion_age_ms": 60000,
+        "signal_source": "strategy_experimental",
+        "strategy_id": "ema_crossover",
+        "timeframe": "1m"
+      },
+      "ledger": {
+        "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\def-run-016-be7xe_sz\\m1_cadence1\\ledger.jsonl",
+        "rows": 282,
+        "sha256": "ebe16ee1f7baa72854bfb4f07f3055caf87f961c0a023f699848de86fd45dabd"
+      },
+      "metrics": {
+        "actionable_opinions": 41,
+        "calls": 194,
+        "data_gap": 0,
+        "decision_rows": 194,
+        "deferred_slots": 41,
+        "duplicate_terminals": 0,
+        "executed_share": 0.04878048780487805,
+        "expired": 0,
+        "fills": 2,
+        "fills_without_approval": 0,
+        "ids_unique": true,
+        "max_opinion_age_ms": 60000,
+        "opinions": [
+          {
+            "decision_bar_open_ms": 1792502580000,
+            "decision_seq": 2,
+            "decision_ts_ms": 1792502643620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792502820000,
+            "decision_seq": 7,
+            "decision_ts_ms": 1792502883620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792502940000,
+            "decision_seq": 10,
+            "decision_ts_ms": 1792503003620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503060000,
+            "decision_seq": 13,
+            "decision_ts_ms": 1792503123620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503180000,
+            "decision_seq": 16,
+            "decision_ts_ms": 1792503243620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503420000,
+            "decision_seq": 21,
+            "decision_ts_ms": 1792503483620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503540000,
+            "decision_seq": 24,
+            "decision_ts_ms": 1792503603620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503660000,
+            "decision_seq": 27,
+            "decision_ts_ms": 1792503723620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503780000,
+            "decision_seq": 30,
+            "decision_ts_ms": 1792503843620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503900000,
+            "decision_seq": 33,
+            "decision_ts_ms": 1792503963620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504020000,
+            "decision_seq": 36,
+            "decision_ts_ms": 1792504083620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504140000,
+            "decision_seq": 39,
+            "decision_ts_ms": 1792504203620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504260000,
+            "decision_seq": 42,
+            "decision_ts_ms": 1792504323620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504380000,
+            "decision_seq": 45,
+            "decision_ts_ms": 1792504443620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504500000,
+            "decision_seq": 48,
+            "decision_ts_ms": 1792504563620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504620000,
+            "decision_seq": 51,
+            "decision_ts_ms": 1792504683620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504740000,
+            "decision_seq": 54,
+            "decision_ts_ms": 1792504803620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504860000,
+            "decision_seq": 57,
+            "decision_ts_ms": 1792504923620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504980000,
+            "decision_seq": 60,
+            "decision_ts_ms": 1792505043620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505100000,
+            "decision_seq": 63,
+            "decision_ts_ms": 1792505163620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505220000,
+            "decision_seq": 66,
+            "decision_ts_ms": 1792505283620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505340000,
+            "decision_seq": 69,
+            "decision_ts_ms": 1792505403620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505460000,
+            "decision_seq": 72,
+            "decision_ts_ms": 1792505523620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505580000,
+            "decision_seq": 75,
+            "decision_ts_ms": 1792505643620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505700000,
+            "decision_seq": 78,
+            "decision_ts_ms": 1792505763620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792509120000,
+            "decision_seq": 138,
+            "decision_ts_ms": 1792509183620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509240000,
+            "decision_seq": 141,
+            "decision_ts_ms": 1792509303620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509360000,
+            "decision_seq": 144,
+            "decision_ts_ms": 1792509423620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792514820000,
+            "decision_seq": 238,
+            "decision_ts_ms": 1792514883620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792514940000,
+            "decision_seq": 241,
+            "decision_ts_ms": 1792515003620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515060000,
+            "decision_seq": 244,
+            "decision_ts_ms": 1792515123620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515180000,
+            "decision_seq": 247,
+            "decision_ts_ms": 1792515243620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515300000,
+            "decision_seq": 250,
+            "decision_ts_ms": 1792515363620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515420000,
+            "decision_seq": 253,
+            "decision_ts_ms": 1792515483620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515540000,
+            "decision_seq": 256,
+            "decision_ts_ms": 1792515603620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515660000,
+            "decision_seq": 259,
+            "decision_ts_ms": 1792515723620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515780000,
+            "decision_seq": 262,
+            "decision_ts_ms": 1792515843620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515900000,
+            "decision_seq": 265,
+            "decision_ts_ms": 1792515963620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516020000,
+            "decision_seq": 268,
+            "decision_ts_ms": 1792516083620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516140000,
+            "decision_seq": 271,
+            "decision_ts_ms": 1792516203620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516440000,
+            "decision_seq": 277,
+            "decision_ts_ms": 1792516503620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          }
+        ],
+        "orphan_terminals": 0,
+        "over_age_fills": 0,
+        "pending_at_end": 0,
+        "risk_blocked": 39,
+        "rows_after_run_end": 0,
+        "run_end_present": true,
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 2
+          },
+          "decision_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          },
+          "opinion_age_at_fill": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          },
+          "provider": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 2
+          },
+          "received_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          }
+        },
+        "stale_fills": 0,
+        "superseded": 0,
+        "terminal": 41,
+        "terminal_before_birth": 0,
+        "unrecorded": 0,
+        "wasted_opinions": 0
+      },
+      "opinion_lifecycle": "DEFER",
+      "scenario": "m1_cadence1",
+      "series": {
+        "aggregate": {
+          "bars": 256,
+          "groups": 256,
+          "incomplete_groups_discarded": 0,
+          "minutes": 256,
+          "minutes_per_bar": 1
+        },
+        "bars": 256,
+        "bars_sha256": "3e1f7be9e429df99f3ddefe9a2eeb0a3be66af39676a5c6c676b4f6758781464",
+        "first_open_ms": 1792501320000,
+        "last_open_ms": 1792516620000
+      },
+      "summary_view": {
+        "calls": 194,
+        "costs_total_usdt": 2.47858384,
+        "execution_opinions": {
+          "blocked_by_risk": 39,
+          "closed_by_intent": 0,
+          "deferrals_per_opinion": {
+            "10": 1,
+            "13": 1,
+            "138": 1,
+            "141": 1,
+            "144": 1,
+            "16": 1,
+            "2": 1,
+            "21": 1,
+            "238": 1,
+            "24": 1,
+            "241": 1,
+            "244": 1,
+            "247": 1,
+            "250": 1,
+            "253": 1,
+            "256": 1,
+            "259": 1,
+            "262": 1,
+            "265": 1,
+            "268": 1,
+            "27": 1,
+            "271": 1,
+            "277": 1,
+            "30": 1,
+            "33": 1,
+            "36": 1,
+            "39": 1,
+            "42": 1,
+            "45": 1,
+            "48": 1,
+            "51": 1,
+            "54": 1,
+            "57": 1,
+            "60": 1,
+            "63": 1,
+            "66": 1,
+            "69": 1,
+            "7": 1,
+            "72": 1,
+            "75": 1,
+            "78": 1
+          },
+          "deferred_slots": 41,
+          "executed_openings": 2,
+          "expired": 0,
+          "gated": 0,
+          "generated": 41,
+          "lifecycle": {
+            "duplicate_terminals": [],
+            "generated": 41,
+            "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+            "ledger_lines": 281,
+            "ok": true,
+            "orphan_terminals": [],
+            "rejected_by_code": {},
+            "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+            "session_continuity": "NONE",
+            "source": "ledger_bytes",
+            "terminal_classes": {
+              "BLOCKED_BY_RISK": 39,
+              "CLOSED": 0,
+              "FILLED": 2,
+              "GATED": 0,
+              "REJECTED": 0
+            },
+            "unrecorded": []
+          },
+          "pending_at_end": 0,
+          "rejected": {},
+          "superseded": 0,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 39,
+            "CLOSED": 0,
+            "FILLED": 2,
+            "GATED": 0,
+            "REJECTED": 0
+          }
+        },
+        "fills": 2,
+        "net_realised_usdt": -4.764071,
+        "opinion_accounting": {
+          "adds_up": true,
+          "counter_disagreements": [],
+          "deferred_slots": 41,
+          "duplicate_terminals": [],
+          "generated": 41,
+          "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+          "ledger_lines": 281,
+          "orphan_terminals": [],
+          "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+          "session_continuity": "NONE",
+          "source": "ledger_bytes",
+          "terminal": 41,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 39,
+            "CLOSED": 0,
+            "FILLED": 2,
+            "GATED": 0,
+            "REJECTED": 0
+          },
+          "unrecorded": []
+        },
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 2
+          },
+          "decision_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          },
+          "decision_to_received": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 2
+          },
+          "received_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          }
+        }
+      },
+      "why": "la sesi\u00f3n real: rejilla de 1 minuto, cadencia 1, 3.62 s de retraso de datos"
+    },
+    "m1_cadence5": {
+      "config": {
+        "data_delay_ms": 3620,
+        "decision_every_bars": 5,
+        "declared_provider_latency_ms": 0,
+        "dropped_bar_open_ms": null,
+        "interval_ms": 60000,
+        "max_opinion_age_ms": 60000,
+        "signal_source": "strategy_experimental",
+        "strategy_id": "ema_crossover",
+        "timeframe": "1m"
+      },
+      "ledger": {
+        "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\def-run-016-be7xe_sz\\m1_cadence5\\ledger.jsonl",
+        "rows": 86,
+        "sha256": "a7bee1f5c7abc71f995344b33a4610aa25f5398a06301debf4330489acf492ad"
+      },
+      "metrics": {
+        "actionable_opinions": 33,
+        "calls": 47,
+        "data_gap": 0,
+        "decision_rows": 47,
+        "deferred_slots": 0,
+        "duplicate_terminals": 0,
+        "executed_share": 0.06060606060606061,
+        "expired": 0,
+        "fills": 2,
+        "fills_without_approval": 0,
+        "ids_unique": true,
+        "max_opinion_age_ms": 60000,
+        "opinions": [
+          {
+            "decision_bar_open_ms": 1792502820000,
+            "decision_seq": 2,
+            "decision_ts_ms": 1792502883620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503120000,
+            "decision_seq": 4,
+            "decision_ts_ms": 1792503183620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503420000,
+            "decision_seq": 6,
+            "decision_ts_ms": 1792503483620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503720000,
+            "decision_seq": 8,
+            "decision_ts_ms": 1792503783620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504020000,
+            "decision_seq": 10,
+            "decision_ts_ms": 1792504083620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504320000,
+            "decision_seq": 12,
+            "decision_ts_ms": 1792504383620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504620000,
+            "decision_seq": 14,
+            "decision_ts_ms": 1792504683620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504920000,
+            "decision_seq": 16,
+            "decision_ts_ms": 1792504983620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505220000,
+            "decision_seq": 18,
+            "decision_ts_ms": 1792505283620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505520000,
+            "decision_seq": 20,
+            "decision_ts_ms": 1792505583620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505820000,
+            "decision_seq": 22,
+            "decision_ts_ms": 1792505883620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792506120000,
+            "decision_seq": 26,
+            "decision_ts_ms": 1792506183620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792509120000,
+            "decision_seq": 39,
+            "decision_ts_ms": 1792509183620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509420000,
+            "decision_seq": 41,
+            "decision_ts_ms": 1792509483620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509720000,
+            "decision_seq": 43,
+            "decision_ts_ms": 1792509783620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792510020000,
+            "decision_seq": 45,
+            "decision_ts_ms": 1792510083620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792510320000,
+            "decision_seq": 47,
+            "decision_ts_ms": 1792510383620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792510920000,
+            "decision_seq": 50,
+            "decision_ts_ms": 1792510983620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792511220000,
+            "decision_seq": 52,
+            "decision_ts_ms": 1792511283620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792511820000,
+            "decision_seq": 55,
+            "decision_ts_ms": 1792511883620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792512420000,
+            "decision_seq": 58,
+            "decision_ts_ms": 1792512483620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792512720000,
+            "decision_seq": 60,
+            "decision_ts_ms": 1792512783620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792513020000,
+            "decision_seq": 62,
+            "decision_ts_ms": 1792513083620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792513320000,
+            "decision_seq": 64,
+            "decision_ts_ms": 1792513383620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792513620000,
+            "decision_seq": 66,
+            "decision_ts_ms": 1792513683620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792513920000,
+            "decision_seq": 68,
+            "decision_ts_ms": 1792513983620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792514220000,
+            "decision_seq": 70,
+            "decision_ts_ms": 1792514283620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792514520000,
+            "decision_seq": 72,
+            "decision_ts_ms": 1792514583620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792514820000,
+            "decision_seq": 74,
+            "decision_ts_ms": 1792514883620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515120000,
+            "decision_seq": 76,
+            "decision_ts_ms": 1792515183620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515420000,
+            "decision_seq": 78,
+            "decision_ts_ms": 1792515483620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515720000,
+            "decision_seq": 80,
+            "decision_ts_ms": 1792515783620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516020000,
+            "decision_seq": 82,
+            "decision_ts_ms": 1792516083620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          }
+        ],
+        "orphan_terminals": 0,
+        "over_age_fills": 0,
+        "pending_at_end": 0,
+        "risk_blocked": 31,
+        "rows_after_run_end": 0,
+        "run_end_present": true,
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 2
+          },
+          "decision_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          },
+          "opinion_age_at_fill": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          },
+          "provider": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 2
+          },
+          "received_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          }
+        },
+        "stale_fills": 0,
+        "superseded": 0,
+        "terminal": 33,
+        "terminal_before_birth": 0,
+        "unrecorded": 0,
+        "wasted_opinions": 0
+      },
+      "opinion_lifecycle": "DEFER",
+      "scenario": "m1_cadence5",
+      "series": {
+        "aggregate": {
+          "bars": 256,
+          "groups": 256,
+          "incomplete_groups_discarded": 0,
+          "minutes": 256,
+          "minutes_per_bar": 1
+        },
+        "bars": 256,
+        "bars_sha256": "3e1f7be9e429df99f3ddefe9a2eeb0a3be66af39676a5c6c676b4f6758781464",
+        "first_open_ms": 1792501320000,
+        "last_open_ms": 1792516620000
+      },
+      "summary_view": {
+        "calls": 47,
+        "costs_total_usdt": 2.47784879,
+        "execution_opinions": {
+          "blocked_by_risk": 31,
+          "closed_by_intent": 0,
+          "deferrals_per_opinion": {},
+          "deferred_slots": 0,
+          "executed_openings": 2,
+          "expired": 0,
+          "gated": 0,
+          "generated": 33,
+          "lifecycle": {
+            "duplicate_terminals": [],
+            "generated": 33,
+            "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+            "ledger_lines": 85,
+            "ok": true,
+            "orphan_terminals": [],
+            "rejected_by_code": {},
+            "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+            "session_continuity": "NONE",
+            "source": "ledger_bytes",
+            "terminal_classes": {
+              "BLOCKED_BY_RISK": 31,
+              "CLOSED": 0,
+              "FILLED": 2,
+              "GATED": 0,
+              "REJECTED": 0
+            },
+            "unrecorded": []
+          },
+          "pending_at_end": 0,
+          "rejected": {},
+          "superseded": 0,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 31,
+            "CLOSED": 0,
+            "FILLED": 2,
+            "GATED": 0,
+            "REJECTED": 0
+          }
+        },
+        "fills": 2,
+        "net_realised_usdt": -5.07671,
+        "opinion_accounting": {
+          "adds_up": true,
+          "counter_disagreements": [],
+          "deferred_slots": 0,
+          "duplicate_terminals": [],
+          "generated": 33,
+          "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+          "ledger_lines": 85,
+          "orphan_terminals": [],
+          "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+          "session_continuity": "NONE",
+          "source": "ledger_bytes",
+          "terminal": 33,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 31,
+            "CLOSED": 0,
+            "FILLED": 2,
+            "GATED": 0,
+            "REJECTED": 0
+          },
+          "unrecorded": []
+        },
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 2
+          },
+          "decision_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          },
+          "decision_to_received": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 2
+          },
+          "received_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          }
+        }
+      },
+      "why": "control de cadencia: con 5 barras entre decisiones la orden ya se resolvi\u00f3"
+    },
+    "m1_hole": {
+      "config": {
+        "data_delay_ms": 3620,
+        "decision_every_bars": 1,
+        "declared_provider_latency_ms": 0,
+        "dropped_bar_open_ms": 1792503720000,
+        "interval_ms": 60000,
+        "max_opinion_age_ms": 60000,
+        "signal_source": "strategy_experimental",
+        "strategy_id": "ema_crossover",
+        "timeframe": "1m"
+      },
+      "ledger": {
+        "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\def-run-016-be7xe_sz\\m1_hole\\ledger.jsonl",
+        "rows": 281,
+        "sha256": "dd1779623c757254c967bfc85bf2c0e15da5b6c4fd1d4c7acbef9aa3b53d9dcb"
+      },
+      "metrics": {
+        "actionable_opinions": 41,
+        "calls": 194,
+        "data_gap": 1,
+        "decision_rows": 194,
+        "deferred_slots": 40,
+        "duplicate_terminals": 0,
+        "executed_share": 0.04878048780487805,
+        "expired": 0,
+        "fills": 2,
+        "fills_without_approval": 0,
+        "ids_unique": true,
+        "max_opinion_age_ms": 60000,
+        "opinions": [
+          {
+            "decision_bar_open_ms": 1792502580000,
+            "decision_seq": 2,
+            "decision_ts_ms": 1792502643620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792502820000,
+            "decision_seq": 7,
+            "decision_ts_ms": 1792502883620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792502940000,
+            "decision_seq": 10,
+            "decision_ts_ms": 1792503003620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503060000,
+            "decision_seq": 13,
+            "decision_ts_ms": 1792503123620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503180000,
+            "decision_seq": 16,
+            "decision_ts_ms": 1792503243620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503420000,
+            "decision_seq": 21,
+            "decision_ts_ms": 1792503483620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503540000,
+            "decision_seq": 24,
+            "decision_ts_ms": 1792503603620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503660000,
+            "decision_seq": 27,
+            "decision_ts_ms": 1792503723620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "DATA_GAP"
+          },
+          {
+            "decision_bar_open_ms": 1792503780000,
+            "decision_seq": 29,
+            "decision_ts_ms": 1792503843620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503900000,
+            "decision_seq": 32,
+            "decision_ts_ms": 1792503963620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504020000,
+            "decision_seq": 35,
+            "decision_ts_ms": 1792504083620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504140000,
+            "decision_seq": 38,
+            "decision_ts_ms": 1792504203620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504260000,
+            "decision_seq": 41,
+            "decision_ts_ms": 1792504323620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504380000,
+            "decision_seq": 44,
+            "decision_ts_ms": 1792504443620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504500000,
+            "decision_seq": 47,
+            "decision_ts_ms": 1792504563620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504620000,
+            "decision_seq": 50,
+            "decision_ts_ms": 1792504683620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504740000,
+            "decision_seq": 53,
+            "decision_ts_ms": 1792504803620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504860000,
+            "decision_seq": 56,
+            "decision_ts_ms": 1792504923620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504980000,
+            "decision_seq": 59,
+            "decision_ts_ms": 1792505043620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505100000,
+            "decision_seq": 62,
+            "decision_ts_ms": 1792505163620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505220000,
+            "decision_seq": 65,
+            "decision_ts_ms": 1792505283620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505340000,
+            "decision_seq": 68,
+            "decision_ts_ms": 1792505403620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505460000,
+            "decision_seq": 71,
+            "decision_ts_ms": 1792505523620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505580000,
+            "decision_seq": 74,
+            "decision_ts_ms": 1792505643620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505700000,
+            "decision_seq": 77,
+            "decision_ts_ms": 1792505763620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792509120000,
+            "decision_seq": 137,
+            "decision_ts_ms": 1792509183620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509240000,
+            "decision_seq": 140,
+            "decision_ts_ms": 1792509303620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509360000,
+            "decision_seq": 143,
+            "decision_ts_ms": 1792509423620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792514820000,
+            "decision_seq": 237,
+            "decision_ts_ms": 1792514883620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792514940000,
+            "decision_seq": 240,
+            "decision_ts_ms": 1792515003620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515060000,
+            "decision_seq": 243,
+            "decision_ts_ms": 1792515123620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515180000,
+            "decision_seq": 246,
+            "decision_ts_ms": 1792515243620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515300000,
+            "decision_seq": 249,
+            "decision_ts_ms": 1792515363620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515420000,
+            "decision_seq": 252,
+            "decision_ts_ms": 1792515483620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515540000,
+            "decision_seq": 255,
+            "decision_ts_ms": 1792515603620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515660000,
+            "decision_seq": 258,
+            "decision_ts_ms": 1792515723620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515780000,
+            "decision_seq": 261,
+            "decision_ts_ms": 1792515843620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515900000,
+            "decision_seq": 264,
+            "decision_ts_ms": 1792515963620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516020000,
+            "decision_seq": 267,
+            "decision_ts_ms": 1792516083620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516140000,
+            "decision_seq": 270,
+            "decision_ts_ms": 1792516203620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516440000,
+            "decision_seq": 276,
+            "decision_ts_ms": 1792516503620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          }
+        ],
+        "orphan_terminals": 0,
+        "over_age_fills": 0,
+        "pending_at_end": 0,
+        "risk_blocked": 38,
+        "rows_after_run_end": 0,
+        "run_end_present": true,
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 2
+          },
+          "decision_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          },
+          "opinion_age_at_fill": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          },
+          "provider": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 2
+          },
+          "received_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          }
+        },
+        "stale_fills": 0,
+        "superseded": 0,
+        "terminal": 41,
+        "terminal_before_birth": 0,
+        "unrecorded": 0,
+        "wasted_opinions": 0
+      },
+      "opinion_lifecycle": "DEFER",
+      "scenario": "m1_hole",
+      "series": {
+        "aggregate": {
+          "bars": 256,
+          "groups": 256,
+          "incomplete_groups_discarded": 0,
+          "minutes": 256,
+          "minutes_per_bar": 1
+        },
+        "bars": 255,
+        "bars_sha256": "67aef04c540f47607812166cbd8fee078df4ba36cff38e4906659010e5bde09d",
+        "first_open_ms": 1792501320000,
+        "last_open_ms": 1792516620000
+      },
+      "summary_view": {
+        "calls": 194,
+        "costs_total_usdt": 2.47858384,
+        "execution_opinions": {
+          "blocked_by_risk": 38,
+          "closed_by_intent": 0,
+          "deferrals_per_opinion": {
+            "10": 1,
+            "13": 1,
+            "137": 1,
+            "140": 1,
+            "143": 1,
+            "16": 1,
+            "2": 1,
+            "21": 1,
+            "237": 1,
+            "24": 1,
+            "240": 1,
+            "243": 1,
+            "246": 1,
+            "249": 1,
+            "252": 1,
+            "255": 1,
+            "258": 1,
+            "261": 1,
+            "264": 1,
+            "267": 1,
+            "270": 1,
+            "276": 1,
+            "29": 1,
+            "32": 1,
+            "35": 1,
+            "38": 1,
+            "41": 1,
+            "44": 1,
+            "47": 1,
+            "50": 1,
+            "53": 1,
+            "56": 1,
+            "59": 1,
+            "62": 1,
+            "65": 1,
+            "68": 1,
+            "7": 1,
+            "71": 1,
+            "74": 1,
+            "77": 1
+          },
+          "deferred_slots": 40,
+          "executed_openings": 2,
+          "expired": 0,
+          "gated": 0,
+          "generated": 41,
+          "lifecycle": {
+            "duplicate_terminals": [],
+            "generated": 41,
+            "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+            "ledger_lines": 280,
+            "ok": true,
+            "orphan_terminals": [],
+            "rejected_by_code": {
+              "DATA_GAP": 1
+            },
+            "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+            "session_continuity": "NONE",
+            "source": "ledger_bytes",
+            "terminal_classes": {
+              "BLOCKED_BY_RISK": 38,
+              "CLOSED": 0,
+              "FILLED": 2,
+              "GATED": 0,
+              "REJECTED": 1
+            },
+            "unrecorded": []
+          },
+          "pending_at_end": 0,
+          "rejected": {
+            "DATA_GAP": 1
+          },
+          "superseded": 0,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 38,
+            "CLOSED": 0,
+            "FILLED": 2,
+            "GATED": 0,
+            "REJECTED": 1
+          }
+        },
+        "fills": 2,
+        "net_realised_usdt": -4.764071,
+        "opinion_accounting": {
+          "adds_up": true,
+          "counter_disagreements": [],
+          "deferred_slots": 40,
+          "duplicate_terminals": [],
+          "generated": 41,
+          "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+          "ledger_lines": 280,
+          "orphan_terminals": [],
+          "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+          "session_continuity": "NONE",
+          "source": "ledger_bytes",
+          "terminal": 41,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 38,
+            "CLOSED": 0,
+            "FILLED": 2,
+            "GATED": 0,
+            "REJECTED": 1
+          },
+          "unrecorded": []
+        },
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 2
+          },
+          "decision_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          },
+          "decision_to_received": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 2
+          },
+          "received_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          }
+        }
+      },
+      "why": "una barra ausente en el camino: el hueco no es una cotizaci\u00f3n"
+    },
+    "m1_zero_delay": {
+      "config": {
+        "data_delay_ms": 0,
+        "decision_every_bars": 1,
+        "declared_provider_latency_ms": 0,
+        "dropped_bar_open_ms": null,
+        "interval_ms": 60000,
+        "max_opinion_age_ms": 60000,
+        "signal_source": "strategy_experimental",
+        "strategy_id": "ema_crossover",
+        "timeframe": "1m"
+      },
+      "ledger": {
+        "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\def-run-016-be7xe_sz\\m1_zero_delay\\ledger.jsonl",
+        "rows": 323,
+        "sha256": "93954c9c0a87c4b7b1d6fcb60892a3cd13615fa8715fa522827f1633599334ac"
+      },
+      "metrics": {
+        "actionable_opinions": 80,
+        "calls": 235,
+        "data_gap": 0,
+        "decision_rows": 235,
+        "deferred_slots": 0,
+        "duplicate_terminals": 0,
+        "executed_share": 0.0375,
+        "expired": 0,
+        "fills": 3,
+        "fills_without_approval": 0,
+        "ids_unique": true,
+        "max_opinion_age_ms": 60000,
+        "opinions": [
+          {
+            "decision_bar_open_ms": 1792502580000,
+            "decision_seq": 2,
+            "decision_ts_ms": 1792502640000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792502640000,
+            "decision_seq": 4,
+            "decision_ts_ms": 1792502700000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792502820000,
+            "decision_seq": 8,
+            "decision_ts_ms": 1792502880000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792502880000,
+            "decision_seq": 10,
+            "decision_ts_ms": 1792502940000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792502940000,
+            "decision_seq": 12,
+            "decision_ts_ms": 1792503000000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503000000,
+            "decision_seq": 14,
+            "decision_ts_ms": 1792503060000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503060000,
+            "decision_seq": 16,
+            "decision_ts_ms": 1792503120000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503120000,
+            "decision_seq": 18,
+            "decision_ts_ms": 1792503180000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503180000,
+            "decision_seq": 20,
+            "decision_ts_ms": 1792503240000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503240000,
+            "decision_seq": 22,
+            "decision_ts_ms": 1792503300000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503420000,
+            "decision_seq": 26,
+            "decision_ts_ms": 1792503480000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503480000,
+            "decision_seq": 28,
+            "decision_ts_ms": 1792503540000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503540000,
+            "decision_seq": 30,
+            "decision_ts_ms": 1792503600000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503600000,
+            "decision_seq": 32,
+            "decision_ts_ms": 1792503660000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503660000,
+            "decision_seq": 34,
+            "decision_ts_ms": 1792503720000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503720000,
+            "decision_seq": 36,
+            "decision_ts_ms": 1792503780000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503780000,
+            "decision_seq": 38,
+            "decision_ts_ms": 1792503840000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503840000,
+            "decision_seq": 40,
+            "decision_ts_ms": 1792503900000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503900000,
+            "decision_seq": 42,
+            "decision_ts_ms": 1792503960000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503960000,
+            "decision_seq": 44,
+            "decision_ts_ms": 1792504020000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504020000,
+            "decision_seq": 46,
+            "decision_ts_ms": 1792504080000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504080000,
+            "decision_seq": 48,
+            "decision_ts_ms": 1792504140000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504140000,
+            "decision_seq": 50,
+            "decision_ts_ms": 1792504200000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504200000,
+            "decision_seq": 52,
+            "decision_ts_ms": 1792504260000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504260000,
+            "decision_seq": 54,
+            "decision_ts_ms": 1792504320000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504320000,
+            "decision_seq": 56,
+            "decision_ts_ms": 1792504380000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504380000,
+            "decision_seq": 58,
+            "decision_ts_ms": 1792504440000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504440000,
+            "decision_seq": 60,
+            "decision_ts_ms": 1792504500000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504500000,
+            "decision_seq": 62,
+            "decision_ts_ms": 1792504560000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504560000,
+            "decision_seq": 64,
+            "decision_ts_ms": 1792504620000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504620000,
+            "decision_seq": 66,
+            "decision_ts_ms": 1792504680000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504680000,
+            "decision_seq": 68,
+            "decision_ts_ms": 1792504740000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504740000,
+            "decision_seq": 70,
+            "decision_ts_ms": 1792504800000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504800000,
+            "decision_seq": 72,
+            "decision_ts_ms": 1792504860000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504860000,
+            "decision_seq": 74,
+            "decision_ts_ms": 1792504920000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504920000,
+            "decision_seq": 76,
+            "decision_ts_ms": 1792504980000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504980000,
+            "decision_seq": 78,
+            "decision_ts_ms": 1792505040000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505040000,
+            "decision_seq": 80,
+            "decision_ts_ms": 1792505100000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505100000,
+            "decision_seq": 82,
+            "decision_ts_ms": 1792505160000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505160000,
+            "decision_seq": 84,
+            "decision_ts_ms": 1792505220000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505220000,
+            "decision_seq": 86,
+            "decision_ts_ms": 1792505280000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505280000,
+            "decision_seq": 88,
+            "decision_ts_ms": 1792505340000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505340000,
+            "decision_seq": 90,
+            "decision_ts_ms": 1792505400000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505400000,
+            "decision_seq": 92,
+            "decision_ts_ms": 1792505460000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505460000,
+            "decision_seq": 94,
+            "decision_ts_ms": 1792505520000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505520000,
+            "decision_seq": 96,
+            "decision_ts_ms": 1792505580000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505580000,
+            "decision_seq": 98,
+            "decision_ts_ms": 1792505640000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505640000,
+            "decision_seq": 100,
+            "decision_ts_ms": 1792505700000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505700000,
+            "decision_seq": 102,
+            "decision_ts_ms": 1792505760000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792505760000,
+            "decision_seq": 106,
+            "decision_ts_ms": 1792505820000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792509120000,
+            "decision_seq": 165,
+            "decision_ts_ms": 1792509180000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509180000,
+            "decision_seq": 167,
+            "decision_ts_ms": 1792509240000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509240000,
+            "decision_seq": 169,
+            "decision_ts_ms": 1792509300000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509300000,
+            "decision_seq": 171,
+            "decision_ts_ms": 1792509360000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509360000,
+            "decision_seq": 173,
+            "decision_ts_ms": 1792509420000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792514820000,
+            "decision_seq": 267,
+            "decision_ts_ms": 1792514880000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792514880000,
+            "decision_seq": 269,
+            "decision_ts_ms": 1792514940000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792514940000,
+            "decision_seq": 271,
+            "decision_ts_ms": 1792515000000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515000000,
+            "decision_seq": 273,
+            "decision_ts_ms": 1792515060000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515060000,
+            "decision_seq": 275,
+            "decision_ts_ms": 1792515120000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515120000,
+            "decision_seq": 277,
+            "decision_ts_ms": 1792515180000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515180000,
+            "decision_seq": 279,
+            "decision_ts_ms": 1792515240000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515300000,
+            "decision_seq": 282,
+            "decision_ts_ms": 1792515360000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515360000,
+            "decision_seq": 284,
+            "decision_ts_ms": 1792515420000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515420000,
+            "decision_seq": 286,
+            "decision_ts_ms": 1792515480000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515480000,
+            "decision_seq": 288,
+            "decision_ts_ms": 1792515540000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515540000,
+            "decision_seq": 290,
+            "decision_ts_ms": 1792515600000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515600000,
+            "decision_seq": 292,
+            "decision_ts_ms": 1792515660000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515660000,
+            "decision_seq": 294,
+            "decision_ts_ms": 1792515720000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515720000,
+            "decision_seq": 296,
+            "decision_ts_ms": 1792515780000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515780000,
+            "decision_seq": 298,
+            "decision_ts_ms": 1792515840000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515840000,
+            "decision_seq": 300,
+            "decision_ts_ms": 1792515900000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515900000,
+            "decision_seq": 302,
+            "decision_ts_ms": 1792515960000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515960000,
+            "decision_seq": 304,
+            "decision_ts_ms": 1792516020000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516020000,
+            "decision_seq": 306,
+            "decision_ts_ms": 1792516080000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516080000,
+            "decision_seq": 308,
+            "decision_ts_ms": 1792516140000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516140000,
+            "decision_seq": 310,
+            "decision_ts_ms": 1792516200000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516200000,
+            "decision_seq": 312,
+            "decision_ts_ms": 1792516260000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516440000,
+            "decision_seq": 317,
+            "decision_ts_ms": 1792516500000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516500000,
+            "decision_seq": 319,
+            "decision_ts_ms": 1792516560000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          }
+        ],
+        "orphan_terminals": 0,
+        "over_age_fills": 0,
+        "pending_at_end": 0,
+        "risk_blocked": 77,
+        "rows_after_run_end": 0,
+        "run_end_present": true,
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "decision_to_quote": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "opinion_age_at_fill": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "provider": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "received_to_quote": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          }
+        },
+        "stale_fills": 0,
+        "superseded": 0,
+        "terminal": 80,
+        "terminal_before_birth": 0,
+        "unrecorded": 0,
+        "wasted_opinions": 0
+      },
+      "opinion_lifecycle": "DEFER",
+      "scenario": "m1_zero_delay",
+      "series": {
+        "aggregate": {
+          "bars": 256,
+          "groups": 256,
+          "incomplete_groups_discarded": 0,
+          "minutes": 256,
+          "minutes_per_bar": 1
+        },
+        "bars": 256,
+        "bars_sha256": "3e1f7be9e429df99f3ddefe9a2eeb0a3be66af39676a5c6c676b4f6758781464",
+        "first_open_ms": 1792501320000,
+        "last_open_ms": 1792516620000
+      },
+      "summary_view": {
+        "calls": 235,
+        "costs_total_usdt": 3.71751815,
+        "execution_opinions": {
+          "blocked_by_risk": 77,
+          "closed_by_intent": 0,
+          "deferrals_per_opinion": {},
+          "deferred_slots": 0,
+          "executed_openings": 3,
+          "expired": 0,
+          "gated": 0,
+          "generated": 80,
+          "lifecycle": {
+            "duplicate_terminals": [],
+            "generated": 80,
+            "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+            "ledger_lines": 322,
+            "ok": true,
+            "orphan_terminals": [],
+            "rejected_by_code": {},
+            "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+            "session_continuity": "NONE",
+            "source": "ledger_bytes",
+            "terminal_classes": {
+              "BLOCKED_BY_RISK": 77,
+              "CLOSED": 0,
+              "FILLED": 3,
+              "GATED": 0,
+              "REJECTED": 0
+            },
+            "unrecorded": []
+          },
+          "pending_at_end": 0,
+          "rejected": {},
+          "superseded": 0,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 77,
+            "CLOSED": 0,
+            "FILLED": 3,
+            "GATED": 0,
+            "REJECTED": 0
+          }
+        },
+        "fills": 3,
+        "net_realised_usdt": -7.260989,
+        "opinion_accounting": {
+          "adds_up": true,
+          "counter_disagreements": [],
+          "deferred_slots": 0,
+          "duplicate_terminals": [],
+          "generated": 80,
+          "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+          "ledger_lines": 322,
+          "orphan_terminals": [],
+          "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+          "session_continuity": "NONE",
+          "source": "ledger_bytes",
+          "terminal": 80,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 77,
+            "CLOSED": 0,
+            "FILLED": 3,
+            "GATED": 0,
+            "REJECTED": 0
+          },
+          "unrecorded": []
+        },
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "decision_to_quote": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "decision_to_received": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "received_to_quote": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          }
+        }
+      },
+      "why": "control: sin retraso de datos la respuesta precede a la apertura y no hay colisi\u00f3n"
+    },
+    "m3_cadence1": {
+      "config": {
+        "data_delay_ms": 3620,
+        "decision_every_bars": 1,
+        "declared_provider_latency_ms": 0,
+        "dropped_bar_open_ms": null,
+        "interval_ms": 180000,
+        "max_opinion_age_ms": 180000,
+        "signal_source": "strategy_experimental",
+        "strategy_id": "ema_crossover",
+        "timeframe": "3m"
+      },
+      "ledger": {
+        "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\def-run-016-be7xe_sz\\m3_cadence1\\ledger.jsonl",
+        "rows": 77,
+        "sha256": "6cacaad004740f6ffad092431976cd02288743d0e2c85d1ab14c859d4539978b"
+      },
+      "metrics": {
+        "actionable_opinions": 5,
+        "calls": 60,
+        "data_gap": 0,
+        "decision_rows": 60,
+        "deferred_slots": 4,
+        "duplicate_terminals": 0,
+        "executed_share": 0.6,
+        "expired": 0,
+        "fills": 3,
+        "fills_without_approval": 0,
+        "ids_unique": true,
+        "max_opinion_age_ms": 180000,
+        "opinions": [
+          {
+            "decision_bar_open_ms": 1792505160000,
+            "decision_seq": 2,
+            "decision_ts_ms": 1792505343620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792506060000,
+            "decision_seq": 10,
+            "decision_ts_ms": 1792506243620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792509120000,
+            "decision_seq": 30,
+            "decision_ts_ms": 1792509303620,
+            "deferrals": 1,
+            "intent": "OPEN_SHORT",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792516140000,
+            "decision_seq": 72,
+            "decision_ts_ms": 1792516323620,
+            "deferrals": 1,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516500000,
+            "decision_seq": 75,
+            "decision_ts_ms": 1792516683620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RUN_ENDED_WITH_ORDER_PENDING"
+          }
+        ],
+        "orphan_terminals": 0,
+        "over_age_fills": 0,
+        "pending_at_end": 0,
+        "risk_blocked": 1,
+        "rows_after_run_end": 0,
+        "run_end_present": true,
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 3
+          },
+          "decision_to_quote": {
+            "max": 176380,
+            "p50": 176380,
+            "p95": 176380,
+            "p99": 176380,
+            "samples": 3
+          },
+          "opinion_age_at_fill": {
+            "max": 176380,
+            "p50": 176380,
+            "p95": 176380,
+            "p99": 176380,
+            "samples": 3
+          },
+          "provider": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "received_to_quote": {
+            "max": 176380,
+            "p50": 176380,
+            "p95": 176380,
+            "p99": 176380,
+            "samples": 3
+          }
+        },
+        "stale_fills": 0,
+        "superseded": 0,
+        "terminal": 5,
+        "terminal_before_birth": 0,
+        "unrecorded": 0,
+        "wasted_opinions": 0
+      },
+      "opinion_lifecycle": "DEFER",
+      "scenario": "m3_cadence1",
+      "series": {
+        "aggregate": {
+          "bars": 85,
+          "groups": 86,
+          "incomplete_groups_discarded": 1,
+          "minutes": 256,
+          "minutes_per_bar": 3
+        },
+        "bars": 85,
+        "bars_sha256": "2ecd2e7f97e287f8b166c900e8f35bb9e6612dca4af6ed0343efd815c77e70ae",
+        "first_open_ms": 1792501380000,
+        "last_open_ms": 1792516500000
+      },
+      "summary_view": {
+        "calls": 60,
+        "costs_total_usdt": 3.71745565,
+        "execution_opinions": {
+          "blocked_by_risk": 1,
+          "closed_by_intent": 0,
+          "deferrals_per_opinion": {
+            "10": 1,
+            "2": 1,
+            "30": 1,
+            "72": 1
+          },
+          "deferred_slots": 4,
+          "executed_openings": 3,
+          "expired": 0,
+          "gated": 0,
+          "generated": 5,
+          "lifecycle": {
+            "duplicate_terminals": [],
+            "generated": 5,
+            "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+            "ledger_lines": 76,
+            "ok": true,
+            "orphan_terminals": [],
+            "rejected_by_code": {
+              "RUN_ENDED_WITH_ORDER_PENDING": 1
+            },
+            "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+            "session_continuity": "NONE",
+            "source": "ledger_bytes",
+            "terminal_classes": {
+              "BLOCKED_BY_RISK": 1,
+              "CLOSED": 0,
+              "FILLED": 3,
+              "GATED": 0,
+              "REJECTED": 1
+            },
+            "unrecorded": []
+          },
+          "pending_at_end": 1,
+          "rejected": {
+            "RUN_ENDED_WITH_ORDER_PENDING": 1
+          },
+          "superseded": 0,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 1,
+            "CLOSED": 0,
+            "FILLED": 3,
+            "GATED": 0,
+            "REJECTED": 1
+          }
+        },
+        "fills": 3,
+        "net_realised_usdt": -8.933756,
+        "opinion_accounting": {
+          "adds_up": true,
+          "counter_disagreements": [],
+          "deferred_slots": 4,
+          "duplicate_terminals": [],
+          "generated": 5,
+          "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+          "ledger_lines": 76,
+          "orphan_terminals": [],
+          "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+          "session_continuity": "NONE",
+          "source": "ledger_bytes",
+          "terminal": 5,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 1,
+            "CLOSED": 0,
+            "FILLED": 3,
+            "GATED": 0,
+            "REJECTED": 1
+          },
+          "unrecorded": []
+        },
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 3
+          },
+          "decision_to_quote": {
+            "max": 176380,
+            "p50": 176380,
+            "p95": 176380,
+            "p99": 176380,
+            "samples": 3
+          },
+          "decision_to_received": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "received_to_quote": {
+            "max": 176380,
+            "p50": 176380,
+            "p95": 176380,
+            "p99": 176380,
+            "samples": 3
+          }
+        }
+      },
+      "why": "mismo mercado con un reloj m\u00e1s grueso: la colisi\u00f3n no depende del activo"
+    }
+  },
+  "schema_version": "DEF_RUN_016_AUDIT_V1"
+}

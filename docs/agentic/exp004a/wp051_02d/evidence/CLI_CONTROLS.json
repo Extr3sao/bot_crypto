@@ -1,0 +1,108 @@
+{
+  "run_id": "wp051-02d/EXP-004A/2026-10-21",
+  "note": "Controles negativos y positivos ejecutados sobre el comando declarado; cada fila es un proceso real con su exit code.",
+  "controls": [
+    {
+      "control": "ST6_TAPE_REFUSED",
+      "argv": [
+        "python",
+        "scripts/exp004a_capture.py",
+        "--slice",
+        "st6:tape",
+        "--dry-run"
+      ],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "{\"ok\": false, \"error\": \"EXP-004A-ST6-TAPE declares timeframe '4h slot, 3 rounds of 15s', which is not a bar series; a slice rule for it is not defined by the declaration. Refusing rather than inventing one (this is the st6:tape case).\", \"slice\": \"st6:tape\"}"
+    },
+    {
+      "control": "EMPTY_WINDOW_REFUSED",
+      "argv": [
+        "python",
+        "scripts/exp004a_capture.py",
+        "--slice",
+        "1h:BTC",
+        "--dry-run"
+      ],
+      "exit_code": 3,
+      "stdout": "",
+      "stderr": "{\"ok\": false, \"error\": \"no bar of BTC.jsonl opens inside the declared window; an empty slice is not a dataset (the capture window may not have started yet)\", \"slice\": \"1h:BTC\"}"
+    },
+    {
+      "control": "DECLARATION_ABSENT_BLOCKED",
+      "argv": [
+        "python",
+        "scripts/exp004a_capture.py",
+        "--slice",
+        "1h:BTC",
+        "--source",
+        "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp051-02d-cli-l_43gedd\\ok.jsonl",
+        "--declaration",
+        "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp051-02d-cli-l_43gedd\\absent.json",
+        "--dry-run"
+      ],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "{\"defects\": [{\"code\": \"DECLARATION_MISSING\", \"detail\": \"C:\\\\Users\\\\GVLLFR~1\\\\AppData\\\\Local\\\\Temp\\\\wp051-02d-cli-l_43gedd\\\\absent.json does not exist\"}], \"error\": \"declaration refused: DECLARATION_MISSING\", \"ok\": false, \"slice\": \"1h:BTC\"}"
+    },
+    {
+      "control": "PRE_EFFECTIVE_NOT_ELIGIBLE",
+      "argv": [
+        "python",
+        "scripts/exp004a_capture.py",
+        "--slice",
+        "1h:BTC",
+        "--source",
+        "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp051-02d-cli-l_43gedd\\early.jsonl",
+        "--out",
+        "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp051-02d-cli-l_43gedd\\early",
+        "--dry-run"
+      ],
+      "exit_code": 5,
+      "stdout": "",
+      "stderr": "{\"ok\": false, \"error\": \"1 bar(s) were fetched before 2026-10-21T16:00:00.000Z; earliest fetch 2026-09-22T00:00:00.000Z\", \"slice\": \"1h:BTC\"}"
+    },
+    {
+      "control": "ELIGIBLE_SLICE_WRITTEN",
+      "argv": [
+        "python",
+        "scripts/exp004a_capture.py",
+        "--slice",
+        "1h:BTC",
+        "--source",
+        "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp051-02d-cli-l_43gedd\\ok.jsonl",
+        "--out",
+        "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp051-02d-cli-l_43gedd\\ok"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"ok\": true, \"dataset_id\": \"EXP-004A-1H-BTC\", \"row_count\": 1, \"sha256\": \"ade50c9e1137b067a5aa3107865f2673ebdbd7b6652ad50eb01e59ab9654b2bf\"}",
+      "stderr": ""
+    },
+    {
+      "control": "OVERWRITE_REFUSED",
+      "argv": [
+        "python",
+        "scripts/exp004a_capture.py",
+        "--slice",
+        "1h:BTC",
+        "--source",
+        "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp051-02d-cli-l_43gedd\\ok.jsonl",
+        "--out",
+        "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp051-02d-cli-l_43gedd\\ok"
+      ],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "{\"ok\": false, \"error\": \"C:\\\\Users\\\\GVLLFR~1\\\\AppData\\\\Local\\\\Temp\\\\wp051-02d-cli-l_43gedd\\\\ok\\\\EXP-004A-1H-BTC.jsonl already exists; a dataset is written once, not regenerated\", \"slice\": \"1h:BTC\"}"
+    },
+    {
+      "control": "PROVENANCE_BLOCK",
+      "argv": [
+        "manifest"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"declaration_id\": \"EXP-004A.datasets.phase2/v1\", \"declaration_commit\": \"a179ed0d74bfc5fd00383b2d575c9949ca6e1f95\", \"eligible\": true}",
+      "stderr": ""
+    }
+  ],
+  "verbatim_bytes": true
+}

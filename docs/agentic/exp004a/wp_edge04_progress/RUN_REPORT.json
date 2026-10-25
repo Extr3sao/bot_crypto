@@ -1,0 +1,83 @@
+{
+  "branch": "recovery/exp004a-02k-9983b050",
+  "commands": [
+    {
+      "command": "pytest tests/unit/research/test_prospective_freeze.py -q",
+      "exit_code": 0,
+      "n": 1,
+      "result": "10 passed"
+    },
+    {
+      "command": "wp_edge04_freeze.py freeze --root reports/alpha-expansion-v1/data",
+      "exit_code": 0,
+      "n": 2,
+      "result": "23 shards, 174094 bars, digest e813921a0c91d682"
+    },
+    {
+      "command": "recompute the EDGE-03 1h pins from the shard bytes",
+      "exit_code": 0,
+      "n": 3,
+      "result": "3/3 unchanged"
+    },
+    {
+      "command": "wp_edge04_freeze.py mirror --dest ~/exp004a-corpus-mirror",
+      "exit_code": 0,
+      "n": 4,
+      "result": "23/23 verified outside the tree"
+    },
+    {
+      "command": "wp_edge04_freeze.py drill",
+      "exit_code": 0,
+      "n": 5,
+      "result": "24 files deleted, verify failed, restored, reader agreed"
+    },
+    {
+      "command": "wp_edge04_deps.py --out raw/DEPENDENCY_MATRIX.json",
+      "exit_code": 0,
+      "n": 6,
+      "result": "470 entrypoints, 29 blocked"
+    },
+    {
+      "command": "pytest tests/unit/paper tests/unit/autonomous -q",
+      "exit_code": 0,
+      "n": 7,
+      "result": "395 passed"
+    },
+    {
+      "command": "autonomous_paper.py --provider fake --cycles 2 --assets BTC",
+      "exit_code": 0,
+      "n": 8,
+      "result": "paper run, 0 orders, 0 runtime failures, 2 traces"
+    },
+    {
+      "command": "wp_edge04_verify.py --raw ... --reports ...",
+      "exit_code": 0,
+      "n": 9,
+      "result": "11/11 EVIDENCE_CONSISTENT_WITH_BLOCKED"
+    },
+    {
+      "command": "ruff check scripts/wp_edge04_*.py src/.../prospective/freeze.py",
+      "exit_code": 0,
+      "n": 10,
+      "result": "All checks passed"
+    }
+  ],
+  "corpus_recovered": false,
+  "exp004a_unblocked": false,
+  "false_success": 0,
+  "generated_at_utc": "2026-10-24T12:01:45Z",
+  "head_at_run": "c02edc0a",
+  "not_run_and_why": [
+    "EXP004A forward tick / Forward enable: the frozen pin cannot be satisfied",
+    "re-freezing the 15m corpus: forbidden by the previous WP and the RFC",
+    "off-host copy: needs external media; the mirror covers deletion, not disk loss"
+  ],
+  "tests": {
+    "freeze_unit": "10 passed",
+    "paper_and_autonomous": "395 passed",
+    "ruff": "All checks passed",
+    "verifier": "11/11 EVIDENCE_CONSISTENT_WITH_BLOCKED"
+  },
+  "verdict": "EXP004A_BLOCKED__OPERATIONAL_PROGRESS_UNBLOCKED",
+  "wp": "EXP004A-PROGRESS"
+}

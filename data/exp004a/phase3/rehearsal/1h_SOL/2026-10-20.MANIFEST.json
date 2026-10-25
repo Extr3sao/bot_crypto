@@ -1,0 +1,71 @@
+{
+  "admissible": true,
+  "asset": "SOL",
+  "bytes": 7357,
+  "capture": {
+    "generator": {
+      "argv": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+        "scripts/exp004a_wp051_02g_capture.py",
+        "--once",
+        "--declaration",
+        "config/preregistrations/EXP-004A.datasets.phase3.json",
+        "--rehearsal"
+      ],
+      "git_blob_sha": "2fec148451ed74245435dfc6e82de2b168625f16",
+      "script": "scripts/exp004a_wp051_02g_capture.py",
+      "script_sha256": "b778c642efdf9b4dc4056875c8589035148839c403ee31d9f5b3357c9e16f8e5"
+    },
+    "id": "capture/EXP-004A/WP-051-02G"
+  },
+  "captured_at_utc": "2026-10-22T22:10:44.810Z",
+  "counts_toward_coverage": false,
+  "dataset_id": "EXP-004A-1H-SOL-P3",
+  "day": "2026-10-20",
+  "day_closed_at_utc": "2026-10-21T00:00:00.000Z",
+  "declaration": {
+    "declaration_id": "EXP-004A.datasets.phase3/v1",
+    "effective_from_utc": "2026-10-23T00:00:00.000Z",
+    "path": "config/preregistrations/EXP-004A.datasets.phase3.json",
+    "sha256": "baeffad097f7d9370cd5b3aa3ab91517ee01d409b7dcbb00c96aad82e54a2cfe"
+  },
+  "defects": [],
+  "first_open_utc": "2026-10-20T00:00:00.000Z",
+  "interval": "1h",
+  "lag": {
+    "bound_ms": 7200000,
+    "definition": "lag_ms = fetched_at_ms - (ts + interval_ms), the forward store's own definition",
+    "max_ms": 2476429,
+    "min_ms": 657624,
+    "negative": 0,
+    "over_bound": 0
+  },
+  "last_close_utc": "2026-10-21T00:00:00.000Z",
+  "last_open_utc": "2026-10-20T23:00:00.000Z",
+  "note": "Lines are the forward store's own bytes for this day, in open order. The manifest was written by the builder; it says what the builder did and not that the shard is right.",
+  "opens": {
+    "count": 24,
+    "expected": 24,
+    "first_utc": "2026-10-20T00:00:00.000Z",
+    "last_utc": "2026-10-20T23:00:00.000Z"
+  },
+  "period": {
+    "end_utc": "2026-10-22T00:00:00.000Z",
+    "fencepost": "period_start_utc <= bar open < period_end_utc",
+    "start_utc": "2026-10-19T00:00:00.000Z"
+  },
+  "prospective": false,
+  "row_count": 24,
+  "schema_version": "1.0",
+  "sha256": "085fc73baf06cd270376ead5e44c908e24e7bb180e81624377a30e06513ab05c",
+  "shard_id": "1h:SOL@2026-10-20",
+  "slice": "1h:SOL",
+  "source": {
+    "bars_in_source": 5659,
+    "path": "data/forward/edge03/1h/SOL.jsonl",
+    "prefix_bytes": 1705301,
+    "prefix_sha256": "f168849ad4b615c91290fcea1bea43c3ac9d53601d74f9fba144ffc7db87be25",
+    "sha256_at_read": "bca1cab96e4570590653f7c6c04053e150399ff120dfa3b8be637068c03d0810",
+    "total_bytes_at_read": 1718489
+  }
+}

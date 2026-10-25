@@ -1,0 +1,546 @@
+{
+  "schema_version": "EDGE09_V1",
+  "work_package": "WP-EDGE-09A",
+  "title": "estate audit: repository, runtime, data and closed work",
+  "head": "ef5c8f2baa4a1da22d494f30c68711c661ff4e6b",
+  "branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "universe": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "rfc_present": true,
+  "work_packages": [
+    {
+      "id": "WP-EDGE-09A",
+      "scope": "audit: repository, runtime and the data actually held"
+    },
+    {
+      "id": "WP-EDGE-09B",
+      "scope": "sources: provider viability, coverage, provenance, point-in-time"
+    },
+    {
+      "id": "WP-EDGE-09C",
+      "scope": "hypotheses: falsifiable economic statements, registered first"
+    },
+    {
+      "id": "WP-EDGE-09D",
+      "scope": "gates: cost, liquidity, capacity and frequency"
+    },
+    {
+      "id": "WP-EDGE-09E",
+      "scope": "experiments: run only where the gates allow, negatives included"
+    },
+    {
+      "id": "WP-EDGE-09F",
+      "scope": "verification: independent, adversarial, and the closure"
+    }
+  ],
+  "authoritative": {
+    "files": [
+      {
+        "path": "config/risk.yaml",
+        "exists": true,
+        "bytes": 1870,
+        "sha256": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+        "last_commit": "10cdee2 chore: initial Phase 0 scaffolding for crypto-scalping-agentic-bot",
+        "worktree_modified": false
+      },
+      {
+        "path": "config/runtime.yaml",
+        "exists": true,
+        "bytes": 1907,
+        "sha256": "ac3cf4fce9ff6246997a059f1c409609a7c87a6bb416198c041ca479fc49a159",
+        "last_commit": "10cdee2 chore: initial Phase 0 scaffolding for crypto-scalping-agentic-bot",
+        "worktree_modified": false
+      },
+      {
+        "path": "docs/COST_MODEL_V3.json",
+        "exists": true,
+        "bytes": 28651,
+        "sha256": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+        "last_commit": "3fd712e feat(research): parametrisable COST_MODEL_V3 + venue economics + execution model",
+        "worktree_modified": false
+      },
+      {
+        "path": "docs/EXECUTION_COST_MODEL_V4.json",
+        "exists": true,
+        "bytes": 9207,
+        "sha256": "7e772c34cbf0c894fc1ff00d643e82680847ebedaf986ba6dbb5b756121641a4",
+        "last_commit": "3120f3f research(microstructure): measure the untested flow/OI hypotheses on real data \u00e2\u20ac\u201d no edge found",
+        "worktree_modified": false
+      },
+      {
+        "path": "docs/FORWARD_DATA_CONTRACT.json",
+        "exists": true,
+        "bytes": 7740,
+        "sha256": "eab7f4b158a9f8e4befa4f782327e8fb0e41d0b8525d53452e928b0be6bfff88",
+        "last_commit": "d3b7c04 feat(research): certify the forward hour with a network-free replay and an id-space trade chain",
+        "worktree_modified": false
+      },
+      {
+        "path": "docs/source_registry.md",
+        "exists": true,
+        "bytes": 26899,
+        "sha256": "c5a8bf6b48da6f733db31269e38fe11b00faca24028a99decfbd9529d64cfd71",
+        "last_commit": "df95974 docs(research): RFC-030 pair execution, short-cost and accounting contracts",
+        "worktree_modified": true
+      }
+    ],
+    "risk_limits_read_not_written": true,
+    "runtime_mode": "paper",
+    "runtime_live_trading_enabled": "false",
+    "risk_live_trading_enabled": "false"
+  },
+  "estate": {
+    "directories": [
+      {
+        "path": "data",
+        "kind": "market and run data",
+        "present": true,
+        "files": 894,
+        "bytes": 231660436,
+        "mib": 220.9
+      },
+      {
+        "path": "reports/microstructure-forward",
+        "kind": "forward microstructure capture",
+        "present": true,
+        "files": 107,
+        "bytes": 377691470,
+        "mib": 360.2
+      },
+      {
+        "path": "reports/microstructure-forward-continuous",
+        "kind": "forward microstructure capture",
+        "present": true,
+        "files": 1132,
+        "bytes": 1741975946,
+        "mib": 1661.3
+      },
+      {
+        "path": "reports/microstructure-forward-lab",
+        "kind": "forward microstructure capture",
+        "present": true,
+        "files": 421,
+        "bytes": 556464980,
+        "mib": 530.7
+      },
+      {
+        "path": "reports/microstructure-v1",
+        "kind": "microstructure phase artifacts",
+        "present": true,
+        "files": 67,
+        "bytes": 96907173,
+        "mib": 92.4
+      },
+      {
+        "path": "reports/microstructure-v2",
+        "kind": "microstructure phase artifacts",
+        "present": true,
+        "files": 7,
+        "bytes": 5808677,
+        "mib": 5.5
+      },
+      {
+        "path": "reports/edge-recovery",
+        "kind": "edge-recovery work packages",
+        "present": true,
+        "files": 320,
+        "bytes": 73492032,
+        "mib": 70.1
+      },
+      {
+        "path": "reports/execution-economics",
+        "kind": "execution cost phase",
+        "present": true,
+        "files": 36,
+        "bytes": 81950,
+        "mib": 0.1
+      },
+      {
+        "path": "reports/carry",
+        "kind": "carry/basis research",
+        "present": true,
+        "files": 40,
+        "bytes": 15307771,
+        "mib": 14.6
+      },
+      {
+        "path": "reports/economic001",
+        "kind": "economic checkpoint",
+        "present": false
+      }
+    ]
+  },
+  "captures": [
+    {
+      "root": "reports/microstructure-forward",
+      "run_id": "forward-1790610007-9d07f3df",
+      "manifest": "reports/microstructure-forward/manifest/forward-1790610007-9d07f3df.json",
+      "started_at": "2026-09-28T15:40:07.810000+00:00",
+      "ended_at": "2026-09-28T16:43:11.151000+00:00",
+      "duration_seconds": 3783.341,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "INCOMPLETE_DATA",
+      "status": null,
+      "stopped_on_disk_budget": false,
+      "bytes_written": 376477867,
+      "segments_on_disk": 78
+    },
+    {
+      "root": "reports/microstructure-forward-cert01",
+      "run_id": "paper-lab-cert-01",
+      "manifest": "reports/microstructure-forward-cert01/manifest/paper-lab-cert-01.json",
+      "started_at": "2026-09-29T22:14:04.368000+00:00",
+      "ended_at": "2026-09-29T22:26:03.423000+00:00",
+      "duration_seconds": 719.055,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "CONTINUOUS_DATA",
+      "status": "CONTROLLED_STOP",
+      "stopped_on_disk_budget": false,
+      "bytes_written": 39289853,
+      "segments_on_disk": 89
+    },
+    {
+      "root": "reports/microstructure-forward-continuous",
+      "run_id": "paper-lab-continuous-02",
+      "manifest": "reports/microstructure-forward-continuous/manifest/paper-lab-continuous-02.json",
+      "started_at": "2026-09-29T22:59:18.288000+00:00",
+      "ended_at": "2026-09-30T03:08:51.773000+00:00",
+      "duration_seconds": 14973.485,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "INCOMPLETE_DATA",
+      "status": "CONTROLLED_STOP",
+      "stopped_on_disk_budget": true,
+      "bytes_written": 799632725,
+      "segments_on_disk": 1009
+    },
+    {
+      "root": "reports/microstructure-forward-headcert",
+      "run_id": "headcert-3d3be37",
+      "manifest": "reports/microstructure-forward-headcert/manifest/headcert-3d3be37.json",
+      "started_at": "2026-09-29T18:29:44.490000+00:00",
+      "ended_at": "2026-09-29T18:46:25.403000+00:00",
+      "duration_seconds": 1000.913,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "INCOMPLETE_DATA",
+      "status": null,
+      "stopped_on_disk_budget": false,
+      "bytes_written": 37207880,
+      "segments_on_disk": 211
+    },
+    {
+      "root": "reports/microstructure-forward-headcert-222078b",
+      "run_id": "headcert-222078b",
+      "manifest": "reports/microstructure-forward-headcert-222078b/manifest/headcert-222078b.json",
+      "started_at": "2026-09-29T21:10:15.993000+00:00",
+      "ended_at": "2026-09-29T21:23:18.271000+00:00",
+      "duration_seconds": 782.278,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "INCOMPLETE_DATA",
+      "status": "COMPLETE",
+      "stopped_on_disk_budget": false,
+      "bytes_written": 24873797,
+      "segments_on_disk": 297
+    },
+    {
+      "root": "reports/microstructure-forward-lab",
+      "run_id": "paper-strategy-lifecycle-shadow-01",
+      "manifest": "reports/microstructure-forward-lab/manifest/paper-strategy-lifecycle-shadow-01.json",
+      "started_at": "2026-10-01T16:10:21.686000+00:00",
+      "ended_at": "2026-10-01T16:28:56.631000+00:00",
+      "duration_seconds": 1114.945,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "INCOMPLETE_DATA",
+      "status": "CONTROLLED_STOP",
+      "stopped_on_disk_budget": false,
+      "bytes_written": 116764929,
+      "segments_on_disk": 409
+    },
+    {
+      "root": "reports/microstructure-forward-lab",
+      "run_id": "paper-strategy-lifecycle-shadow-02",
+      "manifest": "reports/microstructure-forward-lab/manifest/paper-strategy-lifecycle-shadow-02.json",
+      "started_at": "2026-10-01T17:57:08.801000+00:00",
+      "ended_at": "2026-10-01T19:57:29.396000+00:00",
+      "duration_seconds": 7220.595,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "INCOMPLETE_DATA",
+      "status": "CONTROLLED_STOP",
+      "stopped_on_disk_budget": false,
+      "bytes_written": 438487974,
+      "segments_on_disk": 409
+    },
+    {
+      "root": "reports/microstructure-forward-lab-05",
+      "run_id": "paper-lab-stoprestart-02",
+      "manifest": "reports/microstructure-forward-lab-05/manifest/paper-lab-stoprestart-02.json",
+      "started_at": "2026-09-29T18:26:58.045000+00:00",
+      "ended_at": "2026-09-29T18:28:32.094000+00:00",
+      "duration_seconds": 94.049,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "INCOMPLETE_DATA",
+      "status": null,
+      "stopped_on_disk_budget": false,
+      "bytes_written": 1951028,
+      "segments_on_disk": 49
+    },
+    {
+      "root": "reports/microstructure-forward-lab-06",
+      "run_id": "paper-lab-integrated-04",
+      "manifest": "reports/microstructure-forward-lab-06/manifest/paper-lab-integrated-04.json",
+      "started_at": "2026-09-29T18:48:59.246000+00:00",
+      "ended_at": "2026-09-29T19:10:35.242000+00:00",
+      "duration_seconds": 1295.996,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "INCOMPLETE_DATA",
+      "status": null,
+      "stopped_on_disk_budget": false,
+      "bytes_written": 29912220,
+      "segments_on_disk": 143
+    },
+    {
+      "root": "reports/microstructure-forward-lab-07",
+      "run_id": "paper-lab-final-head-01",
+      "manifest": "reports/microstructure-forward-lab-07/manifest/paper-lab-final-head-01.json",
+      "started_at": "2026-09-29T19:15:51.791000+00:00",
+      "ended_at": "2026-09-29T19:18:51.478000+00:00",
+      "duration_seconds": 179.687,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "CONTINUOUS_DATA",
+      "status": null,
+      "stopped_on_disk_budget": false,
+      "bytes_written": 5010131,
+      "segments_on_disk": 40
+    },
+    {
+      "root": "reports/microstructure-forward-lab-08",
+      "run_id": "paper-lab-continuous-01",
+      "manifest": "reports/microstructure-forward-lab-08/manifest/paper-lab-continuous-01.json",
+      "started_at": "2026-09-29T19:21:19.008000+00:00",
+      "ended_at": "2026-09-29T20:16:26.902000+00:00",
+      "duration_seconds": 3307.894,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "INCOMPLETE_DATA",
+      "status": null,
+      "stopped_on_disk_budget": false,
+      "bytes_written": 74812922,
+      "segments_on_disk": 69
+    },
+    {
+      "root": "reports/microstructure-forward-lab-smoke-cert",
+      "run_id": "smoke-cert",
+      "manifest": "reports/microstructure-forward-lab-smoke-cert/manifest/smoke-cert.json",
+      "started_at": "2026-09-29T22:46:02.249000+00:00",
+      "ended_at": "2026-09-29T22:46:23.136000+00:00",
+      "duration_seconds": 20.887,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "CONTINUOUS_DATA",
+      "status": "COMPLETE",
+      "stopped_on_disk_budget": false,
+      "bytes_written": 682367,
+      "segments_on_disk": 38
+    },
+    {
+      "root": "reports/microstructure-forward-lab-smoke-cert2",
+      "run_id": "smoke-cert2",
+      "manifest": "reports/microstructure-forward-lab-smoke-cert2/manifest/smoke-cert2.json",
+      "started_at": "2026-09-29T22:48:25.532000+00:00",
+      "ended_at": "2026-09-29T22:48:46.445000+00:00",
+      "duration_seconds": 20.913,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "CONTINUOUS_DATA",
+      "status": "COMPLETE",
+      "stopped_on_disk_budget": false,
+      "bytes_written": 694375,
+      "segments_on_disk": 38
+    },
+    {
+      "root": "reports/microstructure-forward-lab-smoke-cert3",
+      "run_id": "smoke-cert3",
+      "manifest": "reports/microstructure-forward-lab-smoke-cert3/manifest/smoke-cert3.json",
+      "started_at": "2026-09-29T22:50:03.567000+00:00",
+      "ended_at": "2026-09-29T22:50:24.434000+00:00",
+      "duration_seconds": 20.867,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "CONTINUOUS_DATA",
+      "status": "COMPLETE",
+      "stopped_on_disk_budget": false,
+      "bytes_written": 626542,
+      "segments_on_disk": 38
+    },
+    {
+      "root": "reports/microstructure-forward-lab-smoke-cert4",
+      "run_id": "smoke-cert4",
+      "manifest": "reports/microstructure-forward-lab-smoke-cert4/manifest/smoke-cert4.json",
+      "started_at": "2026-09-29T22:51:51.224000+00:00",
+      "ended_at": "2026-09-29T22:52:11.883000+00:00",
+      "duration_seconds": 20.659,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "CONTINUOUS_DATA",
+      "status": "COMPLETE",
+      "stopped_on_disk_budget": false,
+      "bytes_written": 821020,
+      "segments_on_disk": 59
+    },
+    {
+      "root": "reports/microstructure-forward-ops01",
+      "run_id": "paper-lab-ops-hardened-01",
+      "manifest": "reports/microstructure-forward-ops01/manifest/paper-lab-ops-hardened-01.json",
+      "started_at": "2026-09-29T20:42:06.205000+00:00",
+      "ended_at": "2026-09-29T21:04:55.117000+00:00",
+      "duration_seconds": 1368.912,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "INCOMPLETE_DATA",
+      "status": "CONTROLLED_STOP",
+      "stopped_on_disk_budget": false,
+      "bytes_written": 49523828,
+      "segments_on_disk": 115
+    },
+    {
+      "root": "reports/microstructure-forward-recert-7b14297",
+      "run_id": "recert-7b14297",
+      "manifest": "reports/microstructure-forward-recert-7b14297/manifest/recert-7b14297.json",
+      "started_at": "2026-09-29T20:17:29.502000+00:00",
+      "ended_at": "2026-09-29T20:28:32.211000+00:00",
+      "duration_seconds": 662.709,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "CONTINUOUS_DATA",
+      "status": "COMPLETE",
+      "stopped_on_disk_budget": false,
+      "bytes_written": 25247635,
+      "segments_on_disk": 249
+    },
+    {
+      "root": "reports/microstructure-forward-smoke",
+      "run_id": "forward-1790606407-7308fd49",
+      "manifest": "reports/microstructure-forward-smoke/manifest/forward-1790606407-7308fd49.json",
+      "started_at": "2026-09-28T14:40:07.624000+00:00",
+      "ended_at": "2026-09-28T14:40:30.886000+00:00",
+      "duration_seconds": 23.262,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "CONTINUOUS_DATA",
+      "status": null,
+      "stopped_on_disk_budget": null,
+      "bytes_written": 3683761,
+      "segments_on_disk": 38
+    },
+    {
+      "root": "reports/microstructure-forward-writercert",
+      "run_id": "writercert-v1",
+      "manifest": "reports/microstructure-forward-writercert/manifest/writercert-v1.json",
+      "started_at": "2026-09-29T14:28:26.596000+00:00",
+      "ended_at": "2026-09-29T14:45:13.306000+00:00",
+      "duration_seconds": 1006.71,
+      "markets": [
+        "spot",
+        "perp"
+      ],
+      "continuity": "INCOMPLETE_DATA",
+      "status": null,
+      "stopped_on_disk_budget": false,
+      "bytes_written": 109787592,
+      "segments_on_disk": 0
+    }
+  ],
+  "capture_root_measured": "reports/microstructure-forward-continuous",
+  "closed_phases": [
+    {
+      "phase": "MICROSTRUCTURE-EDGE-V1/V2",
+      "artifact": "docs/MICROSTRUCTURE_FINAL_REPORT.md",
+      "present": true,
+      "status_line": "FINAL STATUS: MICROSTRUCTURE_NO_EDGE_FOUND",
+      "sha256": "35a739c48db80e24"
+    },
+    {
+      "phase": "MICROSTRUCTURE-V2-ADMISSION",
+      "artifact": "docs/MICROSTRUCTURE_ADMISSION_V2.md",
+      "present": true,
+      "status_line": "FINAL STATUS: MICROSTRUCTURE_NO_EDGE_FOUND (ampliado)",
+      "sha256": "53ba3143e26c99d8"
+    },
+    {
+      "phase": "MICROSTRUCTURE-FORWARD-COLLECTION-V1",
+      "artifact": "docs/MICROSTRUCTURE_FORWARD_COLLECTION_FINAL.md",
+      "present": true,
+      "status_line": "FINAL STATUS: MICROSTRUCTURE_FORWARD_DATA_VERIFIED",
+      "sha256": "b925d782cbdd1084"
+    },
+    {
+      "phase": "EXECUTION-COST-MODEL-V4",
+      "artifact": "docs/COST_MODEL_V3.md",
+      "present": true,
+      "status_line": null,
+      "sha256": "e40e8f6a33d22317"
+    }
+  ],
+  "reusable_assets": [
+    {
+      "asset": "src/trading_bot/research/microstructure/",
+      "why": "cost models V2/V3/V4, execution model, PIT types, integrity checks"
+    },
+    {
+      "asset": "src/trading_bot/research/forward/",
+      "why": "the capture read side (storage, contract, aggregation) this package reads"
+    },
+    {
+      "asset": "docs/source_registry.md",
+      "why": "SRC-01..SRC-18 with their measured claims; extended, never rewritten"
+    }
+  ]
+}

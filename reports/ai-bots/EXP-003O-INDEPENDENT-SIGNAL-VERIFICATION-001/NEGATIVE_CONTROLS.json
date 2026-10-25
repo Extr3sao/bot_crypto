@@ -1,0 +1,167 @@
+{
+  "all_detected": true,
+  "catalog": [
+    {
+      "expected": "PIT_VIOLATION",
+      "id": "NEG-01",
+      "mutation": "window reaches one bar past the decision"
+    },
+    {
+      "expected": "TIMING_MISMATCH",
+      "id": "NEG-02",
+      "mutation": "decision taken at the bar open"
+    },
+    {
+      "expected": "PIT_VIOLATION",
+      "id": "NEG-03",
+      "mutation": "availability declared at the bar open"
+    },
+    {
+      "expected": "PIT_VIOLATION",
+      "id": "NEG-04",
+      "mutation": "centred rolling window over future bars"
+    },
+    {
+      "expected": "PARAMETER_HASH_MISMATCH",
+      "id": "NEG-05",
+      "mutation": "one frozen parameter changed"
+    },
+    {
+      "expected": "MISSING_SIGNAL",
+      "id": "NEG-06",
+      "mutation": "a known signal deleted"
+    },
+    {
+      "expected": "EXTRA_SIGNAL",
+      "id": "NEG-07",
+      "mutation": "a spurious signal and a duplicate key"
+    },
+    {
+      "expected": "DIRECTION_MISMATCH",
+      "id": "NEG-08",
+      "mutation": "a direction inverted and a signal shifted"
+    },
+    {
+      "expected": "DATA_INTEGRITY_FAIL",
+      "id": "NEG-09",
+      "mutation": "one bar byte altered and a bar duplicated"
+    },
+    {
+      "expected": "STATE_MISMATCH",
+      "id": "NEG-10",
+      "mutation": "NOT_READY relabelled NO_SIGNAL"
+    },
+    {
+      "expected": "PREFIX_INVARIANCE_FAIL",
+      "id": "NEG-11",
+      "mutation": "a past decision changed by later bars"
+    },
+    {
+      "expected": "INDEPENDENCE_VIOLATION",
+      "id": "NEG-12",
+      "mutation": "the rebuilder reads the published calendar"
+    }
+  ],
+  "effective": 12,
+  "false_success": 0,
+  "passed": true,
+  "results": [
+    {
+      "control": "NEG-01",
+      "detail": "window extended to the bar that opens at the decision",
+      "detected": true,
+      "expected": "PIT_VIOLATION",
+      "mutation_reached": true,
+      "observed": "PIT_VIOLATION"
+    },
+    {
+      "control": "NEG-02",
+      "detail": "decision moved back to the open of its own bar",
+      "detected": true,
+      "expected": "TIMING_MISMATCH",
+      "mutation_reached": true,
+      "observed": "TIMING_MISMATCH"
+    },
+    {
+      "control": "NEG-03",
+      "detail": "availability declared before the bar closed",
+      "detected": true,
+      "expected": "PIT_VIOLATION",
+      "mutation_reached": true,
+      "observed": "PIT_VIOLATION"
+    },
+    {
+      "control": "NEG-04",
+      "detail": "centred window ends 40 bars after the decision",
+      "detected": true,
+      "expected": "PIT_VIOLATION",
+      "mutation_reached": true,
+      "observed": "PIT_VIOLATION"
+    },
+    {
+      "control": "NEG-05",
+      "detail": "window_bars 80 -> 79",
+      "detected": true,
+      "expected": "PARAMETER_HASH_MISMATCH",
+      "mutation_reached": true,
+      "observed": "PARAMETER_HASH_MISMATCH"
+    },
+    {
+      "control": "NEG-06",
+      "detail": "one SIGNAL row removed from the independent side of a full cell",
+      "detected": true,
+      "expected": "MISSING_SIGNAL",
+      "mutation_reached": true,
+      "observed": "MISSING_SIGNAL"
+    },
+    {
+      "control": "NEG-07",
+      "detail": "an extra signal key that no evaluation backs; a duplicated line is counted 1 time(s)",
+      "detected": true,
+      "expected": "EXTRA_SIGNAL",
+      "mutation_reached": true,
+      "observed": "EXTRA_SIGNAL"
+    },
+    {
+      "control": "NEG-08",
+      "detail": "direction inverted on a shared key",
+      "detected": true,
+      "expected": "DIRECTION_MISMATCH",
+      "mutation_reached": true,
+      "observed": "DIRECTION_MISMATCH"
+    },
+    {
+      "control": "NEG-09",
+      "detail": "appended byte changes digest=True; duplicated minute detected=True",
+      "detected": true,
+      "expected": "DATA_INTEGRITY_FAIL",
+      "mutation_reached": true,
+      "observed": "DATA_INTEGRITY_FAIL"
+    },
+    {
+      "control": "NEG-10",
+      "detail": "a warm-up instant relabelled as a quiet one inside an otherwise identical cell",
+      "detected": true,
+      "expected": "STATE_MISMATCH",
+      "mutation_reached": true,
+      "observed": "STATE_MISMATCH"
+    },
+    {
+      "control": "NEG-11",
+      "detail": "baseline differences=0, after one past state changed=1",
+      "detected": true,
+      "expected": "PREFIX_INVARIANCE_FAIL",
+      "mutation_reached": true,
+      "observed": "PREFIX_INVARIANCE_FAIL"
+    },
+    {
+      "control": "NEG-12",
+      "detail": "hook blocked the deliberate cheat=True; rebuilder ran clean=True",
+      "detected": true,
+      "expected": "INDEPENDENCE_VIOLATION",
+      "mutation_reached": true,
+      "observed": "INDEPENDENCE_VIOLATION"
+    }
+  ],
+  "total": 12
+}

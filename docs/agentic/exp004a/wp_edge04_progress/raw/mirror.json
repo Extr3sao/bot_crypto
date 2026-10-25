@@ -1,0 +1,11 @@
+{
+  "bytes": 19380640,
+  "command": "mirror",
+  "corpus_digest": "e813921a0c91d6821a147c6f94ee86f29e1e340dd2515c26a2ca4a20c5a20783",
+  "destination": "C:\\Users\\GVLLFR0035\\exp004a-corpus-mirror\\alpha-expansion-v1-data",
+  "ok": true,
+  "root": "reports\\alpha-expansion-v1\\data",
+  "shards": 23,
+  "source": "reports\\alpha-expansion-v1\\data",
+  "verified": true
+}

@@ -1,0 +1,97 @@
+{
+  "costs": {
+    "commissions_realised_usdt": 42.275145,
+    "cost_per_closed_trade_usdt": 1.281065,
+    "execution_cost_realised_usdt": 9.27514543,
+    "source": "ClosedTrade decomposition of the real paper broker"
+  },
+  "event_counts": {
+    "runtime": {
+      "DUPLICATE_DELIVERIES_REFUSED": 0,
+      "ORDER_ACKNOWLEDGED": 69,
+      "ORDER_CANCELED": 0,
+      "ORDER_CREATED": 69,
+      "ORDER_EXPIRED": 0,
+      "ORDER_FILLED": 69,
+      "ORDER_PARTIALLY_FILLED": 0,
+      "ORDER_REJECTED": 0,
+      "ORDER_RISK_REJECTED": 0,
+      "ORDER_STATE_RESOLVED": 0,
+      "ORDER_SUBMITTED": 69,
+      "ORDER_UNKNOWN": 0
+    },
+    "scenario": {
+      "DUPLICATE_DELIVERIES_REFUSED": 1,
+      "ORDER_ACKNOWLEDGED": 6,
+      "ORDER_CANCELED": 1,
+      "ORDER_CREATED": 8,
+      "ORDER_EXPIRED": 0,
+      "ORDER_FILLED": 4,
+      "ORDER_PARTIALLY_FILLED": 3,
+      "ORDER_REJECTED": 1,
+      "ORDER_RISK_REJECTED": 0,
+      "ORDER_STATE_RESOLVED": 0,
+      "ORDER_SUBMITTED": 8,
+      "ORDER_UNKNOWN": 1
+    }
+  },
+  "fills": {
+    "runtime": 69,
+    "scenario": 7
+  },
+  "lane_summary": {
+    "calls": 108,
+    "closed_trades": 33,
+    "costs_usdt": 42.275145,
+    "decision_points": 3,
+    "execution_costs_realised_usdt": 9.27514543,
+    "fills": 36,
+    "final_equity_usdt": 9992.188391,
+    "net_realised_usdt": -7.811609,
+    "stop_reason": null
+  },
+  "latencies": {
+    "ack_to_fill": {
+      "clock": "event_time_utc of the persisted envelopes",
+      "max": 240,
+      "p50": 0,
+      "samples": 74,
+      "unit": "ms"
+    },
+    "signal_to_intent": "NOT_AVAILABLE",
+    "submit_to_ack": {
+      "clock": "event_time_utc of the persisted envelopes",
+      "max": 5,
+      "p50": 0,
+      "samples": 75,
+      "unit": "ms"
+    }
+  },
+  "lifecycle_rows": 79,
+  "live_orders": 0,
+  "orders": {
+    "runtime": 69,
+    "scenario": 8
+  },
+  "paper_validation": "BLOCKED_NOT_CONFIGURED",
+  "positions_open_at_end": 3,
+  "provenance_counts": {
+    "OFFLINE_SIMULATED": 308
+  },
+  "risk_gate": {
+    "approved_and_executed": 0,
+    "blocked": {}
+  },
+  "run_id": "EXP-003P-PAPER-EXECUTION-001",
+  "schema_version": "AI_BOTS_003P_METRICS_V1",
+  "spread_and_slippage_vs_external_quote": "NOT_AVAILABLE",
+  "unrealized_pnl": {
+    "mark": "final frozen bar close per symbol",
+    "mark_prices": {
+      "BTC": 64665.23,
+      "ETH": 1908.9,
+      "SOL": 74.04
+    },
+    "value": -5.457768865525919
+  }
+}

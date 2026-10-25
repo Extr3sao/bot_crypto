@@ -1,0 +1,42 @@
+{
+  "dest_1m_bytes": 16848072,
+  "dest_1m_dataset": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-014R\\scratch\\JESSE_1M_BARS.jsonl",
+  "dest_1m_sha256": "10212dc97010c3b91f66d3685829b1d5ef214b505ab59bd797c8197d50f2a280",
+  "exchange": "binance",
+  "frozen_1h_dataset": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-014R\\scratch\\PAPER_REPLAY_BARS.jsonl",
+  "frozen_1h_sha256": "d79ed2c56bf502266d9f950be7f296b0f1e6e068f19a411513c08436c5abe26b",
+  "frozen_final_bar": {
+    "BTC/USDT": 1792162800000,
+    "ETH/USDT": 1792162800000
+  },
+  "identical_to_frozen_1h": true,
+  "partial_final_bar_included": false,
+  "route_timeframe": "1h",
+  "source_timeframe": "1m",
+  "symbols": {
+    "BTC/USDT": {
+      "bars_extra_after_aggregation": 0,
+      "bars_missing_after_aggregation": 0,
+      "coverage": 1.0,
+      "expected_rows_1m": 59940,
+      "frozen_1h_bars": 1000,
+      "ohlc_mismatch_examples": [],
+      "ohlc_mismatched_bars": 0,
+      "rows_1m": 59940,
+      "window_end_ms": 1792162800000,
+      "window_start_ms": 1788566400000
+    },
+    "ETH/USDT": {
+      "bars_extra_after_aggregation": 0,
+      "bars_missing_after_aggregation": 0,
+      "coverage": 1.0,
+      "expected_rows_1m": 59940,
+      "frozen_1h_bars": 1000,
+      "ohlc_mismatch_examples": [],
+      "ohlc_mismatched_bars": 0,
+      "rows_1m": 59940,
+      "window_end_ms": 1792162800000,
+      "window_start_ms": 1788566400000
+    }
+  }
+}

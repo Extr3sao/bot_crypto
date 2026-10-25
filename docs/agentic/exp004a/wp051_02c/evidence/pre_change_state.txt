@@ -1,0 +1,49 @@
+== date ==
+2026-10-21T12:07:46Z
+== branch/head ==
+agent/ai-bots/RFC-TAP-AI-BOTS-003
+f55e923a4b9221144b631b790c97e7d8976d58cb
+== status short (first 20) ==
+ M FINAL_REPORT.md
+ M RUN_REPORT.json
+ M RUN_REPORT.md
+ M context/retrieval-log.md
+ M data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json
+ M data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.md
+ M data/st6/RFC047_RUNTIME_VERIFICATION.json
+ M data/st6/ST6_FORWARD_REGIME_REPORT.json
+ M data/st6/ST6_FORWARD_REGIME_REPORT.md
+ M data/st6/ST6_INDEPENDENT_RECONCILIATION.json
+ M data/st6/ST6_INDEPENDENT_RECONCILIATION.md
+ M data/st6/ST6_INDEPENDENT_VERIFICATION.json
+ M data/st6/ST6_INDEPENDENT_VERIFICATION.md
+ M data/st6/ST6_MODEL_DRIFT.json
+ M data/st6/ST6_OBSERVATIONS.jsonl
+ M data/st6/ST6_REGIME_COVERAGE.json
+ M data/st6/ST6_SCHEDULER_PROVENANCE.json
+ M data/st6/ST6_SCHEDULER_PROVENANCE.md
+ M data/st6/ST6_SCHEDULER_REPORT.json
+ M data/st6/ST6_SCHEDULER_REPORT.md
+== status count ==
+280
+== worktrees ==
+worktree C:/Users/GVLLFR0035/Downloads/bot freebuff
+HEAD f55e923a4b9221144b631b790c97e7d8976d58cb
+branch refs/heads/agent/ai-bots/RFC-TAP-AI-BOTS-003
+
+worktree C:/Users/GVLLFR0035/AppData/Local/Temp/003n-clean
+HEAD fefb0771036c33c648ecb2ed11cb28e8c2b49264
+detached
+
+worktree C:/Users/GVLLFR0035/AppData/Local/Temp/003n-repro
+HEAD cd3fc313c2121b80c0e50feaa3bd992d2ff5633b
+detached
+
+worktree C:/Users/GVLLFR0035/AppData/Local/Temp/003n-sealcheck
+HEAD 6b0dac1ed930d66cdbd6689e2da40bcb69e12852
+detached
+
+worktree C:/Users/GVLLFR0035/AppData/Local/Temp/tmpl8iq2prk
+HEAD 47116b2f2c5fd37ed1a60550eefe17d8bd703638
+detached
+

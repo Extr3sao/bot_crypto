@@ -1,0 +1,61 @@
+{
+  "caveat": "the value is what the API reports as available to this user, and Windows keeps a reserve it does not offer; the tick's own log line still landed, so the volume was not literally out of sectors. What matters for the campaign is that the guard acted on a real OS reading and not on a measurement error -- and it did.",
+  "generated_at_utc": "2026-10-23T11:33:41Z",
+  "instrument": {
+    "agreement_bytes": 0,
+    "getdiskfreespaceex_free": 3888033792,
+    "note": "shutil.disk_usage calls GetDiskFreeSpaceEx on Windows; the two are compared to show the reading is a direct OS answer, not a number this project computes",
+    "shutil_disk_usage_free": 3888033792,
+    "total_bytes": 255041990656
+  },
+  "pair_agrees_in_every_tiny_reading": true,
+  "readings_below_50_mib": 18,
+  "readings_exactly_zero": 7,
+  "schema_version": "EXP004A_WP051_02J_RECOVERY_V1",
+  "tick_wrote_its_log_while_reporting_zero": true,
+  "verdict": "REAL_AVAILABILITY_ZERO",
+  "zero_examples": [
+    {
+      "at_utc": "2026-10-18T12:10:57Z",
+      "free_bytes": 0,
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "pair_equal": true,
+      "wrote_its_own_log": true
+    },
+    {
+      "at_utc": "2026-10-18T21:10:56Z",
+      "free_bytes": 0,
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "pair_equal": true,
+      "wrote_its_own_log": true
+    },
+    {
+      "at_utc": "2026-10-23T03:55:56Z",
+      "free_bytes": 0,
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "pair_equal": true,
+      "wrote_its_own_log": true
+    },
+    {
+      "at_utc": "2026-10-23T04:10:56Z",
+      "free_bytes": 0,
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "pair_equal": true,
+      "wrote_its_own_log": true
+    },
+    {
+      "at_utc": "2026-10-23T04:25:56Z",
+      "free_bytes": 0,
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "pair_equal": true,
+      "wrote_its_own_log": true
+    },
+    {
+      "at_utc": "2026-10-23T04:40:56Z",
+      "free_bytes": 0,
+      "outcome": "DISK_BUDGET_EXCEEDED",
+      "pair_equal": true,
+      "wrote_its_own_log": true
+    }
+  ]
+}

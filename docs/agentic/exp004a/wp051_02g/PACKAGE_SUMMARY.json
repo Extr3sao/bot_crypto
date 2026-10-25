@@ -1,0 +1,164 @@
+{
+  "generated_at_utc": "2026-10-23T05:35:26.993Z",
+  "head": "937a55c31df10cf3d1236dbca76049df5588c022",
+  "note": "the phase and the rehearsal are reported apart on purpose. The rehearsal verifies the mechanism on historical bytes; it never moves the phase's coverage.",
+  "package": "WP-051-02G",
+  "phase": {
+    "at_utc": "2026-10-23T05:34:35.848Z",
+    "certifiable": false,
+    "coverage": {
+      "admissible_rows": 0,
+      "counts_toward_coverage": true,
+      "declared_rows": 6480,
+      "fraction": 0.0,
+      "required_fraction": 0.9,
+      "status": "PENDING"
+    },
+    "mode": "once",
+    "rehearsal": false,
+    "run_id": "20261023T053435Z-7fe919f5",
+    "shards_written": 0,
+    "state": "NOT_DUE",
+    "verdict": {
+      "certification_allowed": false,
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261023T053435Z-7fe919f5/INDEPENDENT_VERIFICATION.json",
+      "verdict": "PASS_COVERAGE_INCOMPLETE"
+    }
+  },
+  "rehearsal": {
+    "at_utc": "2026-10-22T22:10:48.059Z",
+    "certifiable": false,
+    "coverage": {
+      "admissible_rows": 216,
+      "counts_toward_coverage": false,
+      "declared_rows": 216,
+      "fraction": 1.0,
+      "required_fraction": 0.9,
+      "status": "COVERAGE_COMPLETE"
+    },
+    "mode": "resume",
+    "rehearsal": true,
+    "run_id": "20261022T221048Z-0d5ae0a6",
+    "shards_written": 0,
+    "state": "RESUMED",
+    "verdict": {
+      "certification_allowed": false,
+      "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221048Z-0d5ae0a6/INDEPENDENT_VERIFICATION.json",
+      "verdict": "PASS_COVERAGE_COMPLETE"
+    }
+  },
+  "run_count": 5,
+  "runs": [
+    {
+      "at_utc": "2026-10-22T22:10:43.225Z",
+      "certifiable": false,
+      "coverage": {
+        "admissible_rows": 0,
+        "counts_toward_coverage": true,
+        "declared_rows": 6480,
+        "fraction": 0.0,
+        "required_fraction": 0.9,
+        "status": "PENDING_WINDOW_OPEN"
+      },
+      "mode": "once",
+      "rehearsal": false,
+      "run_id": "20261022T221043Z-a2bce8a6",
+      "shards_written": 0,
+      "state": "PENDING_WINDOW_OPEN",
+      "verdict": {
+        "certification_allowed": false,
+        "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221043Z-a2bce8a6/INDEPENDENT_VERIFICATION.json",
+        "verdict": "PASS_PENDING_WINDOW_OPEN"
+      }
+    },
+    {
+      "at_utc": "2026-10-22T22:10:44.810Z",
+      "certifiable": false,
+      "coverage": {
+        "admissible_rows": 216,
+        "counts_toward_coverage": false,
+        "declared_rows": 216,
+        "fraction": 1.0,
+        "required_fraction": 0.9,
+        "status": "COVERAGE_COMPLETE"
+      },
+      "mode": "once",
+      "rehearsal": true,
+      "run_id": "20261022T221044Z-c9a9f320",
+      "shards_written": 9,
+      "state": "CAPTURE_COMPLETE_AWAITING_VERIFICATION",
+      "verdict": {
+        "certification_allowed": false,
+        "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221044Z-c9a9f320/INDEPENDENT_VERIFICATION.json",
+        "verdict": "PASS_COVERAGE_COMPLETE"
+      }
+    },
+    {
+      "at_utc": "2026-10-22T22:10:46.558Z",
+      "certifiable": false,
+      "coverage": {
+        "admissible_rows": 216,
+        "counts_toward_coverage": false,
+        "declared_rows": 216,
+        "fraction": 1.0,
+        "required_fraction": 0.9,
+        "status": "COVERAGE_COMPLETE"
+      },
+      "mode": "once",
+      "rehearsal": true,
+      "run_id": "20261022T221046Z-8a317fe4",
+      "shards_written": 0,
+      "state": "NOT_DUE",
+      "verdict": {
+        "certification_allowed": false,
+        "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221046Z-8a317fe4/INDEPENDENT_VERIFICATION.json",
+        "verdict": "PASS_COVERAGE_COMPLETE"
+      }
+    },
+    {
+      "at_utc": "2026-10-22T22:10:48.059Z",
+      "certifiable": false,
+      "coverage": {
+        "admissible_rows": 216,
+        "counts_toward_coverage": false,
+        "declared_rows": 216,
+        "fraction": 1.0,
+        "required_fraction": 0.9,
+        "status": "COVERAGE_COMPLETE"
+      },
+      "mode": "resume",
+      "rehearsal": true,
+      "run_id": "20261022T221048Z-0d5ae0a6",
+      "shards_written": 0,
+      "state": "RESUMED",
+      "verdict": {
+        "certification_allowed": false,
+        "path": "docs/agentic/exp004a/wp051_02g/evidence/20261022T221048Z-0d5ae0a6/INDEPENDENT_VERIFICATION.json",
+        "verdict": "PASS_COVERAGE_COMPLETE"
+      }
+    },
+    {
+      "at_utc": "2026-10-23T05:34:35.848Z",
+      "certifiable": false,
+      "coverage": {
+        "admissible_rows": 0,
+        "counts_toward_coverage": true,
+        "declared_rows": 6480,
+        "fraction": 0.0,
+        "required_fraction": 0.9,
+        "status": "PENDING"
+      },
+      "mode": "once",
+      "rehearsal": false,
+      "run_id": "20261023T053435Z-7fe919f5",
+      "shards_written": 0,
+      "state": "NOT_DUE",
+      "verdict": {
+        "certification_allowed": false,
+        "path": "docs/agentic/exp004a/wp051_02g/evidence/20261023T053435Z-7fe919f5/INDEPENDENT_VERIFICATION.json",
+        "verdict": "PASS_COVERAGE_INCOMPLETE"
+      }
+    }
+  ],
+  "schema_version": "1.0"
+}

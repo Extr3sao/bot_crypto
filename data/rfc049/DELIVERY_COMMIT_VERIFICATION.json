@@ -1,0 +1,24 @@
+{
+  "artifact": "RFC049_DELIVERY_COMMIT_VERIFICATION",
+  "generated_at_utc": "2026-10-10T11:27:15Z",
+  "delivered_commit": "cfd988bef46e6ebb9fa35c3721fb40082f0c7c1f",
+  "delivered_commit_short": "cfd988b",
+  "baseline_commit": "cba8a337e802e66941a7ba72af71c499322bd2fa",
+  "delivered_files": 33,
+  "foreign_files_in_commit": [],
+  "verifier_rerun": {
+    "command": "python scripts/rfc049_verify.py --no-write",
+    "status": "PASS",
+    "checks_total": 72,
+    "checks_failed": 0,
+    "false_success": 0,
+    "wrote_artifact": false
+  },
+  "tests_rerun": {
+    "command": "pytest tests/unit/research/test_rfc049_phase_a.py -q",
+    "result": "8 passed in 0.21s",
+    "exit_code": 0
+  },
+  "scope_statement": "the commit contains RFC-049 files only, zero foreign paths",
+  "note": "this attestation describes the commit above and is itself committed afterwards, the same one-step-behind pattern RFC-048V used for its delivery record; the verifier re-ran read-only (--no-write) so the verified bytes were not modified"
+}

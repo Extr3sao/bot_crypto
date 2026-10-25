@@ -1,0 +1,72 @@
+{
+  "after": {
+    "anchor": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h",
+    "critical_free_bytes": 2147483648,
+    "free_bytes": 4743647232,
+    "free_gib": 4.4179,
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h",
+    "status": "WARNING",
+    "total_bytes": 255041990656,
+    "total_gib": 237.5264,
+    "used_bytes": 250298343424,
+    "used_percent": 98.14,
+    "warning_free_bytes": 5368709120
+  },
+  "applied": true,
+  "before": {
+    "anchor": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h",
+    "critical_free_bytes": 2147483648,
+    "free_bytes": 4743712768,
+    "free_gib": 4.4179,
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-exp004a-02h",
+    "status": "WARNING",
+    "total_bytes": 255041990656,
+    "total_gib": 237.5264,
+    "used_bytes": 250298277888,
+    "used_percent": 98.14,
+    "warning_free_bytes": 5368709120
+  },
+  "candidates": [],
+  "deleted_bytes": 0,
+  "failures": [],
+  "generated_at_utc": "2026-10-23T10:54:22Z",
+  "history": [
+    {
+      "applied": true,
+      "at_utc": "2026-10-23T10:54:21Z",
+      "candidates": 4,
+      "deleted_bytes": 216353,
+      "removed": [
+        {
+          "bytes": 143183,
+          "path": "scripts/__pycache__"
+        },
+        {
+          "bytes": 2287,
+          "path": "tests/__pycache__"
+        },
+        {
+          "bytes": 216,
+          "path": "tests/unit/__pycache__"
+        },
+        {
+          "bytes": 70667,
+          "path": "tests/unit/research/__pycache__"
+        }
+      ]
+    },
+    {
+      "applied": true,
+      "at_utc": "2026-10-23T10:54:22Z",
+      "candidates": 0,
+      "deleted_bytes": 0,
+      "removed": []
+    }
+  ],
+  "protected_note": "the sweep never walks outside this worktree, never touches a tracked path, and never removes evidence, data, configuration or another agent's files",
+  "reclaimable_bytes": 0,
+  "reclaimable_files": 0,
+  "removed": [],
+  "volume_delta_bytes": -65536,
+  "volume_delta_note": "the volume moves for reasons this sweep does not control: other processes write and delete while it runs, so the change in free space is not the bytes reclaimed. deleted_bytes is the quantity the sweep is responsible for."
+}

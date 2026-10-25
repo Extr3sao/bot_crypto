@@ -1,0 +1,268 @@
+{
+  "branch": "recovery/exp004a-02k-9983b050",
+  "builder": [
+    "scripts/edge04_15m_audit.py",
+    "scripts/edge04_15m_refetch.py"
+  ],
+  "corpus_recovered": false,
+  "false_success": 0,
+  "gate": {
+    "assert_frozen_corpus": "FileNotFoundError: data/raw/alpha003/price/BTCUSDT_15m.json",
+    "edge03_verify": {
+      "detail": "crashes in check_frozen_corpus with FileNotFoundError on BTCUSDT_15m.json; its 18 checks never run",
+      "exit_code": 1
+    },
+    "edge04_verify": {
+      "exit_code": 1,
+      "passed": 7,
+      "reading": "every failure follows from no tick having consumed a slot",
+      "total": 15,
+      "verdict": "VERIFY_FAIL"
+    },
+    "substitution_rehearsal": "AssertionError: the frozen 15m corpus for BTC changed \u2014 a refetched shard in an isolated corpus root is refused, which is why it was not written to data/"
+  },
+  "generated_at_utc": "2026-10-24T11:26:59Z",
+  "head_at_run": "688c5805",
+  "identity": {
+    "all_pins_agree": true,
+    "claim": "the frozen 15m corpus is ALPHA-003's data/raw/alpha003/price/<SYM>USDT_15m.json",
+    "decoded": {
+      "BTC": {
+        "frozen_pin": "cd1d2ea256a97f7c",
+        "path": "data/raw/alpha003/price/BTCUSDT_15m.json",
+        "pin_agrees": true,
+        "pin_rederived_from_record": "cd1d2ea256a97f7c",
+        "recorded_bytes": 4497888,
+        "recorded_file_sha256": "60b0630153dc8e879d63c9691712c8e15d06ede0cc2ae815725340e44c4e9d7f"
+      },
+      "ETH": {
+        "frozen_pin": "b8fd5744cc66f635",
+        "path": "data/raw/alpha003/price/ETHUSDT_15m.json",
+        "pin_agrees": true,
+        "pin_rederived_from_record": "b8fd5744cc66f635",
+        "recorded_bytes": 4466466,
+        "recorded_file_sha256": "b3b1f02e9a299500b77fc3b8d31a31c3856820daa1c99bba3921d74cec5b943e"
+      },
+      "SOL": {
+        "frozen_pin": "72a268137cbe944b",
+        "path": "data/raw/alpha003/price/SOLUSDT_15m.json",
+        "pin_agrees": true,
+        "pin_rederived_from_record": "72a268137cbe944b",
+        "recorded_bytes": null,
+        "recorded_file_sha256": "d3a637c2f5e98c121f8d197bf8b15229d7ec754d41d59bebf2de2e232a99d0ed"
+      }
+    },
+    "recipe": "edge01.data._digest = sha256(name + sha256(bytes))",
+    "size_record": "reports/edge-recovery/WP-EDGE-06/STORAGE_INVENTORY.json#subtrees (largest files per subtree)",
+    "written_record": "data/economic001/EVIDENCE_CLOSURE.json#dataset_hashes (commit 6b4edd45, 2026-10-08)"
+  },
+  "mode": "PAPER/OFFLINE ONLY \u2014 reads market data, writes no order, changes no risk limit",
+  "next_action": "obtain the three shards from a copy of data/raw/alpha003/price that lives outside this host, confirm sha256 60b0630153dc8e87/ b3b1f02e9a299500/ d3a637c2f5e98c12 and 'assert_frozen_corpus()' printing 15m:BTC cd1d2ea2..., then enable the Forward task. Re-freezing the corpus is a different experiment, not a repair.",
+  "producer": {
+    "commit": "71dd6fac 2026-10-07",
+    "file": "scripts/alpha003_run.py",
+    "recipe": "ccxt.binanceusdm.fetch_ohlcv(since=2024-10-01T00:00:00Z, limit=1000), page by last_ts+1, stop on a short batch, then write_text(json.dumps(rows))",
+    "why_missed_before": "the shard name is built as f'{symbol}_{timeframe}.json' with symbol already 'BTCUSDT', so no producer text mentions 'BTCUSDT_15m.json'; and data/raw is gitignored, so no history holds the bytes"
+  },
+  "replay": {
+    "ccxt_version": "4.5.63",
+    "control_5m": {
+      "byte_delta_vs_recorded": 0,
+      "bytes": 13389298,
+      "file_sha256": "092a0c5c56064e764807af6a6a71a096a49c7ea8dc7c9eff88f306f445424b6e",
+      "matches_frozen_pin": null,
+      "matches_recorded_file_sha256": false,
+      "pin_digest_prefix16": "c557d1f13752c9f6",
+      "recorded_bytes": 13389298,
+      "requests": 218,
+      "rows": 212109,
+      "truncated_at_ms": 1791373200000
+    },
+    "fetched_at_utc": "2026-10-24T11:18:48Z",
+    "reading": "structure reproduced exactly (70,703 rows, same span); bytes not reproduced (+1 byte on the two shards whose size is on record), so the pin still refuses",
+    "script": "scripts/edge04_15m_refetch.py",
+    "series": {
+      "BTC": {
+        "byte_delta": 1,
+        "bytes": 4497889,
+        "file_sha256": "4830906879e6238d68ccba743d599dc876f3f729e0ba18d533305bd53755e084",
+        "first_ts": 1727740800000,
+        "frozen_pin": "cd1d2ea256a97f7c",
+        "last_ts": 1791372600000,
+        "matches_frozen_pin": false,
+        "matches_recorded_file_sha256": false,
+        "pin_digest_prefix16": "b21d66e3aa2292ea",
+        "recorded_bytes": 4497888,
+        "rows": 70703
+      },
+      "ETH": {
+        "byte_delta": 1,
+        "bytes": 4466467,
+        "file_sha256": "511de6ac63eceb64c9d01d76e65873dbba563212bc224ccb56f3e002081bde3b",
+        "first_ts": 1727740800000,
+        "frozen_pin": "b8fd5744cc66f635",
+        "last_ts": 1791372600000,
+        "matches_frozen_pin": false,
+        "matches_recorded_file_sha256": false,
+        "pin_digest_prefix16": "9b9eaca812a7dbac",
+        "recorded_bytes": 4466466,
+        "rows": 70703
+      },
+      "SOL": {
+        "byte_delta": null,
+        "bytes": 4095008,
+        "file_sha256": "00daffcdd9dc6da4e6a48485c3b968a0c8c3516176d0f5bcc46525cfb4632460",
+        "first_ts": 1727740800000,
+        "frozen_pin": "72a268137cbe944b",
+        "last_ts": 1791372600000,
+        "matches_frozen_pin": false,
+        "matches_recorded_file_sha256": false,
+        "pin_digest_prefix16": "9ba67d2602574211",
+        "recorded_bytes": null,
+        "rows": 70703
+      }
+    },
+    "venue": "ccxt.binanceusdm -> fapi.binance.com /fapi/v1/klines"
+  },
+  "scripts": {
+    "edge04_15m_audit.py": {
+      "bytes": 11488,
+      "sha256_prefix16": "4cdb39e125f19802"
+    },
+    "edge04_15m_refetch.py": {
+      "bytes": 8219,
+      "sha256_prefix16": "257a23e6b62a82b8"
+    },
+    "edge04_15m_verify.py": {
+      "bytes": 16303,
+      "sha256_prefix16": "98c5ac4c8da4e06e"
+    }
+  },
+  "sources_reviewed": {
+    "alpha002_15m_shards": [
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\global_long_short_account_ratio\\BTCUSDT_15m.json",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\global_long_short_account_ratio\\ETHUSDT_15m.json",
+      "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\raw\\alpha002\\global_long_short_account_ratio\\SOLUSDT_15m.json"
+    ],
+    "alpha003_trees_found": [],
+    "byte_identical_copies": 0,
+    "git": {
+      "dangling_blobs": 155,
+      "largest_dangling_blobs": [
+        {
+          "bytes": 3580812,
+          "sha": "062684631ca7890183ef248442d6a8dcbb93cd61"
+        },
+        {
+          "bytes": 2099828,
+          "sha": "30f45f0a9687eee41fb47b38998c9c54988b65b5"
+        },
+        {
+          "bytes": 1893361,
+          "sha": "1063e683db85466e46e021c9129b5d017290dd7c"
+        },
+        {
+          "bytes": 1786519,
+          "sha": "149b767e4f2637b9270eaecf9f4839d8d6d0ae1d"
+        },
+        {
+          "bytes": 473482,
+          "sha": "3fcb173c41c0f979922f256256521cf5ed26da14"
+        }
+      ],
+      "lfs_attributes": [],
+      "lfs_files": [],
+      "tracked_or_reachable_objects_named_15m": [
+        "d1edbdcc767fd51b1dc10bf83f738f648403a905 docs/agentic/exp004a/wp051_02k/ops/raw/corpus_report_15m.json"
+      ]
+    },
+    "host_files_scanned": 143640,
+    "name_matching_files_hashed": 15,
+    "note_on_alpha002": "15 files named like the target exist, they are ALPHA-002 ratio products (long/short, open interest) \u2014 hashed, none matches",
+    "other_drives": {
+      "files_scanned": 8372,
+      "hits": [],
+      "roots": [
+        "G:\\"
+      ]
+    },
+    "recycle_bin": {
+      "files": 12,
+      "root": "C:\\$Recycle.Bin",
+      "searched": true,
+      "unreadable": 41
+    },
+    "root": "C:/Users/GVLLFR0035 (user profile, Downloads, incident-backup-20261023, AppData/Local/Temp)"
+  },
+  "task": {
+    "action": "scripts\\edge04_forward_r01.cmd",
+    "enabled": false,
+    "name": "TradingAgentic-EDGE04-Forward",
+    "note": "parked on purpose; its state reports what is true instead of a green light over an empty lane"
+  },
+  "tree": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k",
+  "verdict": "BLOCKED_WITH_EVIDENCE",
+  "verification": {
+    "checks": [
+      {
+        "check": "PIN_DECODES_TO_RECORDED_SHARDS",
+        "status": "PASS"
+      },
+      {
+        "check": "CORPUS_ABSENT_AT_PIN_LOCATION",
+        "status": "PASS"
+      },
+      {
+        "check": "NO_BYTE_IDENTICAL_COPY_ON_HOST",
+        "status": "PASS"
+      },
+      {
+        "check": "GIT_AND_LFS_HOLD_NOTHING",
+        "status": "PASS"
+      },
+      {
+        "check": "REPLAY_REPRODUCES_STRUCTURE",
+        "status": "PASS"
+      },
+      {
+        "check": "REPLAY_BYTES_DIFFER",
+        "status": "PASS"
+      },
+      {
+        "check": "CONTROL_5M_SIZE_EXACT_BUT_HASH_DIFFERS",
+        "status": "PASS"
+      },
+      {
+        "check": "FROZEN_GATE_FAILS_LOUDLY",
+        "status": "PASS"
+      },
+      {
+        "check": "SUBSTITUTE_IS_REFUSED",
+        "status": "PASS"
+      },
+      {
+        "check": "FORWARD_TASK_PARKED",
+        "status": "PASS"
+      },
+      {
+        "check": "NO_ORDER_PATH_IN_THIS_WORK_PACKAGE",
+        "status": "PASS"
+      },
+      {
+        "check": "BUILDER_NEQ_VERIFIER",
+        "status": "PASS"
+      },
+      {
+        "check": "FALSE_SUCCESS_ZERO",
+        "status": "PASS"
+      }
+    ],
+    "false_success": 0,
+    "passed": 13,
+    "script": "scripts/edge04_15m_verify.py",
+    "total": 13,
+    "verdict": "EVIDENCE_CONSISTENT_WITH_BLOCKED"
+  },
+  "verifier": "scripts/edge04_15m_verify.py",
+  "wp": "WP-EDGE04-RECOVERY-15M"
+}

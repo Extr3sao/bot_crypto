@@ -1,0 +1,98 @@
+{
+  "generated_at_utc": "2026-10-16T06:30:47Z",
+  "hypothetical": true,
+  "not_passed": [
+    "RESUME_AFTER_ABSENT_SESSION",
+    "MISSED_TRIGGER_DETECTION"
+  ],
+  "order_sent": false,
+  "passed": [
+    "IDEMPOTENT_SLOT",
+    "SINGLE_INSTANCE",
+    "STALE_LEASE_RECLAIM",
+    "RESUME_AFTER_RESTART",
+    "INCOMPLETE_WRITE_SURVIVAL",
+    "LEDGER_RECONCILIATION",
+    "TIMEOUT_HANDLING"
+  ],
+  "properties_missing": [],
+  "properties_required": [
+    "IDEMPOTENT_SLOT",
+    "SINGLE_INSTANCE",
+    "STALE_LEASE_RECLAIM",
+    "RESUME_AFTER_RESTART",
+    "RESUME_AFTER_ABSENT_SESSION",
+    "INCOMPLETE_WRITE_SURVIVAL",
+    "LEDGER_RECONCILIATION",
+    "TIMEOUT_HANDLING",
+    "MISSED_TRIGGER_DETECTION"
+  ],
+  "reading": "no row passes because the design intends it: each one names either a rehearsal step or a live reading, and the rows that could not be exercised say so",
+  "rows": [
+    {
+      "detail": "outcome ALREADY_OBSERVED with 0 market request(s), store unchanged True",
+      "evidence": "repeat_inside_the_same_slot",
+      "evidence_kind": "REHEARSED_ON_THE_RUNTIME",
+      "property": "IDEMPOTENT_SLOT",
+      "verdict": "PASS"
+    },
+    {
+      "detail": "outcome ALREADY_RUNNING while another holder's lease was live, store unchanged True",
+      "evidence": "trigger_while_another_tick_holds_the_lease",
+      "evidence_kind": "REHEARSED_ON_THE_RUNTIME",
+      "property": "SINGLE_INSTANCE",
+      "verdict": "PASS"
+    },
+    {
+      "detail": "lease status STALE_LEASE_RECLAIMED after an 360 s old lease",
+      "evidence": "lease_left_by_a_crashed_process",
+      "evidence_kind": "REHEARSED_ON_THE_RUNTIME",
+      "property": "STALE_LEASE_RECLAIM",
+      "verdict": "PASS"
+    },
+    {
+      "detail": "12 bar(s) removed, next tick reported new_bars=12 outcome=OBSERVED",
+      "evidence": "bars_that_closed_while_the_observer_was_down",
+      "evidence_kind": "REHEARSED_ON_THE_RUNTIME",
+      "property": "RESUME_AFTER_RESTART",
+      "verdict": "PASS"
+    },
+    {
+      "detail": "the absence itself cannot be removed without a privilege or a credential this package does not have; the logon trigger is UNKNOWN on this host and the worst live gap was 23418.9 s",
+      "evidence": "WP-EDGE-04R SESSION_INDEPENDENCE.json + the logon-trigger probe in this pass",
+      "evidence_kind": "OBSERVED_LIVE_AND_BOUNDED",
+      "property": "RESUME_AFTER_ABSENT_SESSION",
+      "verdict": "BOUNDED_NOT_REMOVED"
+    },
+    {
+      "detail": "corrupt_log_lines=1, partial line preserved True",
+      "evidence": "a_log_line_interrupted_mid_write",
+      "evidence_kind": "REHEARSED_ON_THE_RUNTIME",
+      "property": "INCOMPLETE_WRITE_SURVIVAL",
+      "verdict": "PASS"
+    },
+    {
+      "detail": "1 duplicate(s) dropped; the live ledger holds 200 row(s) and 200 unique key(s)",
+      "evidence": "a_duplicated_slot_seal + the live slot ledger",
+      "evidence_kind": "REHEARSED_ON_THE_RUNTIME_AND_READ_LIVE",
+      "property": "LEDGER_RECONCILIATION",
+      "verdict": "PASS"
+    },
+    {
+      "detail": "rehearsal maximum 56.398 s of wall clock against a 900 s interval; live maximum 349.035 s with 0 tick(s) over it",
+      "evidence": "a_tick_against_its_own_interval + the live run log",
+      "evidence_kind": "REHEARSED_ON_THE_RUNTIME_AND_READ_LIVE",
+      "property": "TIMEOUT_HANDLING",
+      "verdict": "PASS"
+    },
+    {
+      "detail": "1 silence(s) over the declared bound, worst 23418.9 s; alerts recorded: {'DISK_CRITICAL': 1, 'DISK_RECOVERED': 1, 'DISK_WARNING': 1, 'HEALTH_BLOCKED': 5, 'HEALTH_DEGRADED': 7, 'HEALTH_RECOVERED': 3, 'OBSERVATION_GAP': 1, 'OBSERVATION_STALLED': 1, 'PUBLICATION_PAUSED': 1}",
+      "evidence": "the live run log and alerts.jsonl",
+      "evidence_kind": "READ_LIVE",
+      "property": "MISSED_TRIGGER_DETECTION",
+      "verdict": "DETECTED"
+    }
+  ],
+  "schema_version": "EDGE12_CONTINUITY_MATRIX_V1",
+  "verdict": "CONTINUITY_MATRIX_COMPLETE"
+}

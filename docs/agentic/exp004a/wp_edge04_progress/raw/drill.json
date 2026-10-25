@@ -1,0 +1,57 @@
+{
+  "after_restore": {
+    "corpus_digest": "e813921a0c91d6821a147c6f94ee86f29e1e340dd2515c26a2ca4a20c5a20783",
+    "ok": true
+  },
+  "before": {
+    "corpus_digest": "e813921a0c91d6821a147c6f94ee86f29e1e340dd2515c26a2ca4a20c5a20783",
+    "ok": true
+  },
+  "command": "drill",
+  "during_loss": {
+    "ok": false,
+    "problems": [
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING",
+      "MISSING"
+    ]
+  },
+  "ok": true,
+  "reader_after": {
+    "bars": 62724,
+    "first_ts": 1546300800000,
+    "last_ts": 1772319600000,
+    "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57"
+  },
+  "reader_agrees": true,
+  "reader_before": {
+    "bars": 62724,
+    "first_ts": 1546300800000,
+    "last_ts": 1772319600000,
+    "sha256": "f4d16c3664c142d178e65a944f927bdcf0d450318a90f67a5089048c194ace57"
+  },
+  "restored": true,
+  "root": "reports\\alpha-expansion-v1\\data",
+  "scratch": "C:\\Users\\GVLLFR0035\\Downloads\\exp004a-recovery-02k\\.tmp15m\\drill",
+  "shards_removed": 24
+}
