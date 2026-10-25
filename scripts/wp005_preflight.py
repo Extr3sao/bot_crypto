@@ -44,6 +44,10 @@ ENTRY = "scripts/multi_family_backtest.py"
 FAMILY_DIR = "src/trading_bot/research/families"
 FAMILY_MODULE = FAMILY_DIR + "/{family}_family.py"
 DATA_DIR = "reports/strategy-baseline/data"
+# WP-006 moved the canonical bars to a manifest; when it exists it is the truth and
+# the legacy directory is only a fallback, otherwise the preflight would report
+# NO_DATASETS while a validated dataset sits in the repository.
+MANIFEST = "data/economic/w006/MANIFEST.json"
 RESULT_DIR = "reports/strategy-baseline"
 AGGREGATE = RESULT_DIR + "/MULTI_FAMILY_RESULTS.json"
 RESULT_PREFIX = "MULTI_FAMILY_RESULTS_"
@@ -132,10 +136,18 @@ def check_dataset(path: Path) -> dict[str, Any]:
 
 
 def _trade_counts(payload: Any) -> dict[str, int]:
-    """Per-family trade counts from either artifact shape. Missing => 0."""
+    """Per-family trade counts from any published artifact shape. Missing => 0.
+
+    The engine publishes ``{... "results": {family: {scenario: {totals: {...}}}}}``
+    since WP-006; older aggregates were keyed by family at the top level. Reading the
+    envelope as if it were a family would report six nonexistent families, which is a
+    false blocker and just as bad as a false pass.
+    """
     out: dict[str, int] = {}
     if isinstance(payload, dict):
-        for fam, scenarios in payload.items():
+        nested = payload.get("results")
+        body = nested if isinstance(nested, dict) else payload
+        for fam, scenarios in body.items():
             total = 0
             if isinstance(scenarios, dict):
                 for block in scenarios.values():
@@ -202,8 +214,29 @@ def build_observation(root: Path, with_git: bool = True) -> dict[str, Any]:
         rel = FAMILY_MODULE.format(family=fam)
         files[rel] = file_detail(root, rel)
 
-    data_dir = root / DATA_DIR
-    datasets = [check_dataset(p) for p in sorted(data_dir.glob("*.json"))] if data_dir.is_dir() else []
+    manifest_path = root / MANIFEST
+    datasets: list[dict[str, Any]] = []
+    datasets_source = DATA_DIR
+    if manifest_path.is_file():
+        datasets_source = MANIFEST
+        try:
+            entries = json.loads(manifest_path.read_text(encoding="utf-8")).get("datasets") or {}
+        except (ValueError, UnicodeError, OSError):
+            entries = {}
+        for symbol, entry in sorted(entries.items()):
+            path = manifest_path.parent / entry["path"]
+            detail = check_dataset(path) if path.is_file() else {
+                "path": entry["path"], "status": "ABSENT", "validation": "INVALID"}
+            detail["symbol"] = symbol
+            digest_ok = path.is_file() and sha256(path) == entry.get("sha256")
+            detail["manifest_digest_match"] = digest_ok
+            if not digest_ok:
+                detail["validation"] = "INVALID"
+                detail["error"] = "digest does not match the manifest"
+            datasets.append(detail)
+    else:
+        data_dir = root / DATA_DIR
+        datasets = [check_dataset(p) for p in sorted(data_dir.glob("*.json"))] if data_dir.is_dir() else []
     artifacts, coverage = result_artifacts(root)
 
     blockers: list[str] = []
@@ -216,6 +249,8 @@ def build_observation(root: Path, with_git: bool = True) -> dict[str, Any]:
         blockers.append("FAMILY_MODULE_MISSING:" + ",".join(missing_modules))
     if not datasets:
         blockers.append("NO_DATASETS_IN_CANONICAL_INPUT_PATH")
+    if datasets_source == MANIFEST and not manifest_path.is_file():
+        blockers.append("MANIFEST_MISSING")
     if any(d.get("validation") != "BASIC_SCHEMA_PASS" for d in datasets):
         blockers.append("INVALID_DATASET_SCHEMA")
     if not artifacts:
@@ -246,6 +281,7 @@ def build_observation(root: Path, with_git: bool = True) -> dict[str, Any]:
             "note": "the entrypoint writes its JSON even when no dataset matched; "
                     "presence is not execution",
         },
+        "datasets_source": datasets_source,
         "datasets": datasets,
         "multi_family_results": artifacts,
         "result_coverage": coverage,
@@ -273,7 +309,7 @@ def render_markdown(observation: dict[str, Any]) -> str:
         f"- Estado: `{status}`",
         f"- HEAD observado: `{head_line}`",
         f"- Rama: `{observation['git']['branch'].get('stdout') or 'UNAVAILABLE'}`",
-        f"- Datasets JSON en la ruta canónica: {len(observation['datasets'])}",
+        f"- Datasets validados desde `{observation['datasets_source']}`: {len(observation['datasets'])}",
         f"- Artefactos `MULTI_FAMILY_RESULTS*.json`: {len(observation['multi_family_results'])}",
         f"- Familias cubiertas por algún artefacto de resultados: "
         f"{len(observation['result_coverage']['families_covered'])}/{len(FAMILIES)}",

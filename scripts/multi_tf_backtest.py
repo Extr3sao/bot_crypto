@@ -50,7 +50,7 @@ def run_tf(tf: str, scenarios: dict[str, tuple[float, float]] | None = None) -> 
                 sym, window = base.split("_", 1)
                 with open(f, encoding="utf-8") as fh:
                     bars = json.load(fh)
-                res = M.simulate_family(fam_id, sym.replace("USDT", "/USDT"), bars, cm, sm)
+                res = M.simulate_family_legacy(fam_id, sym.replace("USDT", "/USDT"), bars, cm, sm)
                 for t in res["trades"]:
                     t["window"] = window
                 all_trades.extend(res["trades"])

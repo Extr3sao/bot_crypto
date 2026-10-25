@@ -133,7 +133,7 @@ def _load_window(filename: str) -> list[dict[str, Any]]:
 
 
 def _family_trades(family: str, window: str, bars: list[dict[str, Any]]) -> list[Trade]:
-    sim = hb.simulate_family(family, ASSET, bars, 1.0, 1.0)
+    sim = hb.simulate_family_legacy(family, ASSET, bars, 1.0, 1.0)
     out: list[Trade] = []
     for t in sim["trades"]:
         entry_ts = int(t["entry_ts"])

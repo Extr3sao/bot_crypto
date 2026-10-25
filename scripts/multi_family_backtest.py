@@ -414,6 +414,38 @@ def simulate_family(fam_id: str, symbol: str, bars: list[dict[str, Any]], cost: 
     return summarize(fam_id, symbol, trades, failures, status, equity_xy, realized_curve, unfilled)
 
 
+def simulate_family_legacy(fam_id: str, symbol: str, bars: list[dict[str, Any]],
+                           cost_mult: float = 1.0, slip_mult: float = 1.0) -> dict[str, Any]:
+    """Evaluate one family with the pre-WP-006 multiplier signature and result shape.
+
+    ``scripts/multi_tf_backtest.py`` and ``scripts/strategy_dynamic_experiment.py``
+    call the simulator with ``(cost_mult, slip_mult)`` and read ``net``/``entry_ts``.
+    Those callers keep working through this adapter, which runs the repaired engine
+    under the same cost multipliers and maps the decomposed result back to the old
+    key names. ``gross`` here is the pre-cost PnL, which is stricter than the old
+    field it replaces: it no longer hides slippage.
+    """
+    cost = CostModel(fees_bps=5.0 * cost_mult, slippage_bps=1.0 * slip_mult,
+                     half_spread_bps=0.0, name="LEGACY")
+    partitions = compute_partitions({symbol: bars})
+    res = simulate_family(fam_id, symbol, bars, cost, partitions)
+    trades = [{
+        "asset": symbol, "side": t["side"], "reason": t["reason"],
+        "net": round(t["net_pnl"], 4), "gross": round(t["gross_pnl"], 4),
+        "fees": round(t["fees"], 4), "spread": round(t["spread_cost"], 4),
+        "slippage": round(t["slippage_cost"], 4),
+        "entry": t["entry_ref"], "exit": t["exit_ref"],
+        "entry_ts": t["entry_bar_ts"], "exit_ts": t["exit_bar_ts"],
+        "entry_signal_ts": t["entry_signal_ts"],
+        "mfe_pct": t["mfe_pct"], "mae_pct": t["mae_pct"], "notional": t["notional"],
+        "duration_min": t["duration_min"], "partition": t["partition"],
+    } for t in res["trades"]]
+    return {"trades": trades, "final_equity": res["final_equity"],
+            "max_dd_pct": res["max_dd_pct_mtm"], "sharpe_proxy": res["sharpe_proxy_mtm"],
+            "eval_bars": res["eval_bars"], "status": res["status"],
+            "failures": res["failures"], "unfilled_signals": res["unfilled_signals"]}
+
+
 def summarize(fam_id: str, symbol: str, trades: list[dict[str, Any]],
               failures: list[dict[str, Any]], status: str,
               equity_xy: list[tuple[int, float]], realized_curve: list[float],

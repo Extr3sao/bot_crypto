@@ -358,6 +358,26 @@ def test_drawdown_sees_the_open_position(engine, tmp_path):
     assert result["max_dd_pct_mtm"] > 0.0
 
 
+def test_the_legacy_adapter_keeps_its_callers_working(engine, tmp_path):
+    """``multi_tf_backtest`` and ``strategy_dynamic_experiment`` call the simulator
+    with (cost_mult, slip_mult) and read ``net``/``entry_ts``. The rewrite must not
+    break them silently, so the adapter is held to that contract here."""
+    register(engine, "legacy", StubFamily(signal_indices=[100, 140]))
+    result = engine.simulate_family_legacy("legacy", "SYM", make_bars(), 1.0, 1.0)
+    assert result["status"] == "OK"
+    assert len(result["trades"]) == 2
+    trade = result["trades"][0]
+    for key in ("net", "gross", "fees", "entry_ts", "exit_ts", "notional", "reason"):
+        assert key in trade, key
+    assert trade["net"] == pytest.approx(trade["gross"] - trade["fees"] - trade["spread"]
+                                         - trade["slippage"], abs=1e-4)
+    assert {"final_equity", "max_dd_pct", "sharpe_proxy", "eval_bars"} <= set(result)
+    doubled = engine.simulate_family_legacy("legacy", "SYM", make_bars(), 2.0, 1.0)
+    # the adapter rounds to 4 decimals for its legacy consumers, so the doubled fee
+    # can only match to that published precision
+    assert doubled["trades"][0]["fees"] == pytest.approx(2 * trade["fees"], abs=1e-4)
+
+
 def test_equity_at_the_end_reflects_the_realised_result(engine, tmp_path):
     register(engine, "equity", StubFamily(signal_indices=[100]))
     out, _ = run_probe(engine, tmp_path, "equity")
