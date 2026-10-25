@@ -1,0 +1,3 @@
+$ ./.venv/Scripts/python.exe scripts/wp005_preflight.py --repo . --out $OUTSIDE/WP005_OUT
+BLOCKED | HEAD=a6290714f8685dc3b91fdbc7ed4a66c305dba848 | datasets=0 | results=0 | blockers=2
+EXIT=2

@@ -1,0 +1,24 @@
+== CONTROL 1: one W1 dataset ==
+--- W1 dataset present | stderr/traceback emitted for a failing family: NO
+  ema_crossover   BASE trades=  6 gross=     -7.34 fees=    3.00 net=    -10.34 | ZERO_COST gross=     -6.94 fees=  0.00 net=     -6.94
+                  split trades dev=6 val=0 oos=0 per_window=['W1']
+  momentum        BASE trades=  6 gross=    -11.86 fees=    3.00 net=    -14.85 | ZERO_COST gross=    -11.51 fees=  0.00 net=    -11.51
+                  split trades dev=6 val=0 oos=0 per_window=['W1']
+  C2 gross(BASE) - gross(ZERO_COST) != 0 => 'gross' carries slippage: {'ema_crossover': 0.4, 'momentum': 0.35, 'breakout': 0.35, 'trend': 0.1, 'mean_reversion': 0.4}
+
+== CONTROL 2: same bars, filename outside W1..W7 ==
+--- AUGSEP dataset present | stderr/traceback emitted for a failing family: NO
+  ema_crossover   BASE trades=  6 gross=     -7.34 fees=    3.00 net=    -10.34 | ZERO_COST gross=     -6.94 fees=  0.00 net=     -6.94
+                  split trades dev=0 val=0 oos=0 per_window=['AUGSEP']
+  momentum        BASE trades=  6 gross=    -11.86 fees=    3.00 net=    -14.85 | ZERO_COST gross=    -11.51 fees=  0.00 net=    -11.51
+                  split trades dev=0 val=0 oos=0 per_window=['AUGSEP']
+  C3 totals unchanged: {'ema_crossover': (6, 6), 'momentum': (6, 6), 'breakout': (7, 7), 'trend': (2, 2), 'mean_reversion': (6, 6), 'volatility': (0, 0)}
+  C3 split emptied for ema_crossover: {'DEV_W1_W4': 0, 'VAL_W5_W6': 0, 'OOS_W7': 0}
+
+== CONTROL 3: one family raises inside _compute_indicators ==
+  traceback in process output: NO
+Traceback (most recent call last):
+  File "C:\Users\GVLLFR~1\AppData\Local\Temp\wp005_synthetic_control.py", line 122, in <module>
+    print("  momentum BASE trades:", payload["momentum"]["BASE"]["trades"], "net:", payload["momentum"]["BASE"]["net"])
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'trades'
