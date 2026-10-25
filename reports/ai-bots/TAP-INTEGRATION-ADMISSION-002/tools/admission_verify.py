@@ -18,8 +18,11 @@ Claims:
 ``A5``  the admission ledger admits no strategy;
 ``A6``  the integration check rejects tampered evidence and accepts the delivered evidence;
 ``A7``  the runtime's static import closure is complete without the 301-commit lane;
+``A8``  the PAPER session's recorded runtime is HEAD's runtime and the delta since it ran
+        touches no executable path;
 ``S1``  self-control: ``A4`` fails on a session whose chain is broken;
-``S2``  self-control: ``A5`` fails on a ledger that admits one strategy.
+``S2``  self-control: ``A5`` fails on a ledger that admits one strategy;
+``S3``  self-control: ``A8`` fails on a drifted runtime hash and on an executable delta.
 
 A claim is ``PASS`` only when the artefact proves it, ``FAIL`` when it contradicts it, and
 ``UNKNOWN`` when the evidence is missing.  ``UNKNOWN`` is never a pass, and a self-control that
@@ -32,6 +35,7 @@ import argparse
 import ast
 import hashlib
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -519,6 +523,63 @@ def closure_claim() -> dict[str, Any]:
 # --------------------------------------------------------------------------- self-controls
 
 
+def continuity_claim(
+    meta_path: Path | None = None, start_path: Path | None = None
+) -> dict[str, Any]:
+    """The PAPER session's certificate still describes HEAD, not only the commit it ran on.
+
+    The session recorded the commit it started from and the sha256 of every runtime module it
+    imported.  Both are re-derived here against *HEAD* (through `git show`, so the working tree
+    cannot flatter the claim), and the commit delta is required to touch nothing executable: a
+    report added after the run is allowed, a changed risk or broker module is not.
+    """
+    out = claim(
+        "A8",
+        "the PAPER session's recorded runtime is HEAD's runtime, and the delta since it ran is "
+        "reports only",
+        "sha256 `git show HEAD:<module>` for every module SESSION_START recorded, then classify "
+        "`git diff --name-only <session commit> HEAD`",
+    )
+    meta = read_json(meta_path or (PAPER_SESSION / "RUN_META.json"))
+    start = read_json(start_path or (PAPER_SESSION / "SESSION_START.json"))
+    problems = out["problems"]
+    recorded = str(meta.get("commit") or "")
+    hashes = start.get("runtime_sha256") or {}
+    executable = ("src/", "scripts/", "tests/", "config/", ".github/", "pyproject.toml", "uv.lock")
+
+    if not re.fullmatch(r"[0-9a-f]{40}", recorded):
+        problems.append(f"session recorded no commit ({recorded!r})")
+    if not isinstance(hashes, dict) or not hashes:
+        problems.append("SESSION_START recorded no runtime hashes")
+    drifted: list[str] = []
+    for path, digest in sorted(hashes.items()):
+        blob = subprocess.run(
+            ["git", "show", f"HEAD:{path}"], cwd=str(REPO), capture_output=True, check=False
+        )
+        if blob.returncode != 0:
+            problems.append(f"{path} is not readable at HEAD")
+            continue
+        if hashlib.sha256(blob.stdout).hexdigest() != digest:
+            drifted.append(path)
+    if drifted:
+        problems.append(f"{len(drifted)} module(s) differ from the session runtime: {drifted[:4]}")
+
+    delta: list[str] = []
+    if recorded:
+        delta = [line for line in git("diff", "--name-only", recorded, "HEAD").splitlines() if line]
+        touched = [path for path in delta if path.startswith(executable)]
+        if touched:
+            problems.append(f"delta since the session touches executable paths: {touched[:4]}")
+
+    out["detail"] = (
+        f"session_commit={recorded[:12]} head={git('rev-parse', 'HEAD')[:12]} "
+        f"runtime_modules={len(hashes)} drifted={len(drifted)} delta_files={len(delta)} "
+        f"executable_delta={len([p for p in delta if p.startswith(executable)])}"
+    )
+    out["status"] = "PASS" if not problems else "FAIL"
+    return out
+
+
 def self_control_paper() -> dict[str, Any]:
     out = claim(
         "S1",
@@ -547,6 +608,59 @@ def self_control_paper() -> dict[str, Any]:
     out["detail"] = f"tampered session judged {verdict['status']} ({verdict['detail']})"
     out["problems"] = [] if verdict["status"] == "FAIL" else ["the tampered copy still passed"]
     out["status"] = "PASS" if verdict["status"] == "FAIL" else "FAIL"
+    return out
+
+
+def self_control_continuity() -> dict[str, Any]:
+    """A8 must fail on both things it claims: a drifted module and an executable delta.
+
+    One mutation is not enough.  A check that only compares hashes would pass the second case,
+    and a check that only compares commit deltas would pass the first, so both are exercised
+    against copies written outside the repository.
+    """
+    out = claim(
+        "S3",
+        "the continuity check is not blind: a drifted runtime hash and an executable delta must "
+        "both fail A8",
+        "write two mutated copies of the session's metadata and re-evaluate A8 against each",
+    )
+    meta = read_json(PAPER_SESSION / "RUN_META.json")
+    start = read_json(PAPER_SESSION / "SESSION_START.json")
+    hashes = dict(start.get("runtime_sha256") or {})
+    recorded = str(meta.get("commit") or "")
+    problems = out["problems"]
+    if not hashes or not recorded:
+        problems.append("no recorded runtime to mutate")
+        out["detail"] = "cannot run: session metadata missing"
+        out["status"] = "FAIL"
+        return out
+
+    with tempfile.TemporaryDirectory() as raw:
+        holder = Path(raw)
+        module = sorted(hashes)[0]
+        flipped = dict(hashes)
+        flipped[module] = "0" * 64
+        drifted_meta = holder / "drifted_meta.json"
+        drifted_start = holder / "drifted_start.json"
+        drifted_meta.write_text(json.dumps(dict(meta)), encoding="utf-8")
+        drifted_start.write_text(json.dumps({**start, "runtime_sha256": flipped}), encoding="utf-8")
+        first = continuity_claim(drifted_meta, drifted_start)
+
+        behind_meta = holder / "behind_meta.json"
+        behind_meta.write_text(
+            json.dumps({**meta, "commit": git("rev-parse", "main")}), encoding="utf-8"
+        )
+        second = continuity_claim(behind_meta, None)
+
+    if first["status"] != "FAIL":
+        problems.append("a drifted module hash did not fail A8")
+    if second["status"] != "FAIL":
+        problems.append("a session commit behind the executable delta did not fail A8")
+    out["detail"] = (
+        f"drifted={first['status']} ({first['detail'][:70]}) "
+        f"delta={second['status']} ({second['detail'][:70]})"
+    )
+    out["status"] = "PASS" if not problems else "FAIL"
     return out
 
 
@@ -597,13 +711,16 @@ def main(argv: list[str] | None = None) -> int:
         admission_claim(),
         check_claim(),
         closure_claim(),
+        continuity_claim(),
         self_control_paper(),
         self_control_admission(),
+        self_control_continuity(),
     ]
     by_id = {row["id"]: row for row in claims}
     false_success = int(
         (by_id["A4"]["status"] == "PASS" and by_id["S1"]["status"] != "PASS")
         or (by_id["A5"]["status"] == "PASS" and by_id["S2"]["status"] != "PASS")
+        or (by_id["A8"]["status"] == "PASS" and by_id["S3"]["status"] != "PASS")
     )
     passed = sum(1 for row in claims if row["status"] == "PASS")
     payload = {
