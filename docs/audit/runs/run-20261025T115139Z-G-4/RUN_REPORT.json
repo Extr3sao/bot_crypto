@@ -144,7 +144,7 @@
       "file": "audit_contracts.txt"
     },
     "independent_verification": {
-      "command": "python scripts/audit/verify_g4.py --rev 5478b6de",
+      "command": "python scripts/audit/verify_g4.py --rev 7e300af5",
       "result": "10/10 checks passed",
       "export_tests": "192 passed",
       "file": "verification.json"

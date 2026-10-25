@@ -104,7 +104,8 @@ AFTER   verify_g4.py sobre export limpio                 10/10, FALSE_SUCCESS=0
 Entorno: Windows, CPython 3.11.15, `.venv` del worktree, `PYTHONPATH=src`.
 Los archivos de salida están en este mismo directorio (`*.txt`).
 
-El verificador corrió sobre un `git archive` del commit `5478b6de`, comprobó
+El verificador corrió sobre un `git archive` del commit `7e300af5` (código de
+producto idéntico a `5478b6de`; solo cambió el probe), comprobó
 `TEST_TARGET == RUNTIME_TARGET` (import desde el export, no del worktree) y
 ejecutó **192 tests** dentro del export. No se reutilizó el resultado del
 worktree.

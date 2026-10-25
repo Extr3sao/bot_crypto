@@ -44,7 +44,7 @@ AFTER   demo:          exit=0  calls={paper_cycle:0, paper_broker:0, futures_cli
 | AFTER regresión | paper + e2e 001/002/003 + cert + app + autonomía | **244 passed** — `regression.txt` |
 | AFTER regresión amplia | `tests/unit/autonomous`, `tests/unit/paper`, `tests/unit/cert`, app, live gate, order authorization, live hot stop | **678 passed** — `regression_broad.txt` |
 | Contratos de auditoría | `tests/unit/test_audit_contracts_tracked.py` | **8 passed** — `audit_contracts.txt` |
-| Verificador separado | `verify_g4.py --rev 5478b6de` sobre export limpio | **10/10**, `G4_VERIFIED_SCOPED`, `FALSE_SUCCESS=0` — `verification.json` |
+| Verificador separado | `verify_g4.py --rev 7e300af5` sobre export limpio | **10/10**, `G4_VERIFIED_SCOPED`, `FALSE_SUCCESS=0` — `verification.json` |
 
 ## 4. Cambio mínimo
 
