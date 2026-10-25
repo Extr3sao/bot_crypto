@@ -11,7 +11,7 @@ económica se ha movido.
 | campo | valor |
 | --- | --- |
 | `PHASE` | cerrado con PASS; `FALSE_SUCCESS = 0` |
-| `COMMITS` | `7311e553` (contrato + tests) · `265d09ed` (reparación + pines) · este commit (recertificación + verificación independiente + informes) |
+| `COMMITS` | `7311e553` (contrato + tests) · `265d09ed` (reparación + pines) · `c447cdb7` (recertificación + verificación independiente + informes) · y un commit de re-comprobación del árbol final (evidencia, ver §8 de [`RECERTIFICATION_REPORT.md`](RECERTIFICATION_REPORT.md)) |
 | `IMPLEMENTED` | contrato de identidad semántica v1 con identificador versionado; productor, verificador de gate y verificador independiente (tres implementaciones que no se importan); gate que acepta `state-exact` sólo si el estado recalcula **y** los bytes coinciden o son su render LF/CRLF; pines de estado publicados en `sources[]`; `newline="\n"` en los cinco escritores del lane |
 | `TESTS` | lane: **137 passed, 0 failed** (24 del contrato, 32 gate, 34 adversarial, 17 explorer, 11 CI-parity, 15 determinismo, 4 ledger). Suite completa: **104 → 85** nodos rojos, **19 cerrados** (todos del lane), **0 introducidos**, 3270 → 3314 passed |
 | `RUNTIME_VALIDATION` | gate completo real: `FULL_REPRODUCTION_PASS`, 13/13, **exit 0**; `--check`: `CHECK_ONLY_PASS`, 12/12, exit 2 (parcial por diseño); certificador: **CERTIFIED, exit 0**, 5/5 pasos, 0 rutas vigiladas sucias; ensayo de checkout limpio verde |
@@ -68,10 +68,12 @@ económica se ha movido.
 ## Árbol Git
 
 ```
-265d09ed fix(evidence): re-pin the ledger the commit carries and rebuild the lane at it
-7311e553 feat(evidence): give the admission ledger a versioned semantic identity
-5dd4a225 docs(audit): publish the economic evidence impact audit (WP-003)
-2bd6e346 docs(audit): name the measured commit, not the one that carries the report
+(re-comprobación)  docs(audit): re-check the final tree against the record it now carries
+c447cdb7           docs(audit): recertify the ledger repair and publish the independent check
+265d09ed           fix(evidence): re-pin the ledger the commit carries and rebuild the lane at it
+7311e553           feat(evidence): give the admission ledger a versioned semantic identity
+5dd4a225           docs(audit): publish the economic evidence impact audit (WP-003)
+2bd6e346           docs(audit): name the measured commit, not the one that carries the report
 ```
 
 Las rutas vigiladas por el certificador quedaron limpias (`dirty watched paths 0`). El
