@@ -1,6 +1,6 @@
 # RUN_REPORT — RFC-TDM-013 (verificación independiente y reproducibilidad de TDM-12)
 
-**Run id:** `tdm13-fc716021` · **Commit auditado:** `a96e9c80` · **Baseline:** `504256ec` · **Rama:** `evidence/tdm13`
+**Run id:** `tdm13-d7819188` · **Commit auditado:** `a96e9c80` · **Baseline:** `504256ec` · **Rama:** `evidence/tdm13`
 
 ## Estado de cada fase
 

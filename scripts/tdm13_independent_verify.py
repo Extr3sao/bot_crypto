@@ -650,6 +650,16 @@ def verify() -> tuple[int, dict[str, Any]]:
     if controls and controls_status != "PASS":
         failures += [{"phase": "controls", **f} for f in controls.get("failures", [])]
 
+    commands: list[dict[str, Any]] = []
+    commands_path = ART / "commands.jsonl"
+    if commands_path.is_file():
+        commands = [
+            json.loads(line)
+            for line in commands_path.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+    duration = round(sum(c.get("duration_seconds") or 0 for c in commands), 1) if commands else None
+
     payload = {
         "rfc_id": RFC_ID,
         "target_commit": TARGET_COMMIT,
@@ -680,6 +690,8 @@ def verify() -> tuple[int, dict[str, Any]]:
             "evidence/tdm/wp-tdm-13/RUN_REPORT.md",
             "evidence/tdm/wp-tdm-13/RUN_REPORT.json",
         ],
+        "commands": commands,
+        "duration_seconds": duration,
         "paper_orders": 0,
         "live_orders": 0,
     }

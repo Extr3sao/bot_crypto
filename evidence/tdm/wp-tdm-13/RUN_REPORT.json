@@ -1,6 +1,6 @@
 {
   "rfc_id": "RFC-TDM-013",
-  "run_id": "tdm13-fc716021",
+  "run_id": "tdm13-d7819188",
   "commit": "a96e9c80c608ed91943d1fab35db6fa1704111bb",
   "commit_role": "TDM-12 evidence commit whose package this run audits and replays; the TDM-13 commit that carries this report cannot name itself, so its closure is proven by 'python scripts/tdm13_independent_verify.py audit-closure'",
   "baseline_commit_expected": "504256ec8934b97a6d405c202604ecac81a02346",
@@ -138,7 +138,7 @@
   "live_orders": 0,
   "false_success": 0,
   "false_success_basis": "no check that failed, timed out or was not run is reported as PASS; the replay verdict is INCOMPLETE or FAIL unless every phase exited 0 and every comparison matched",
-  "generated_at_utc": "2026-10-25T14:02:44.214600+00:00",
+  "generated_at_utc": "2026-10-25T14:03:32.157156+00:00",
   "evidence_sha256": {
     "evidence/tdm/wp-tdm-13/DATASET_MANIFEST.json": {
       "path": "evidence/tdm/wp-tdm-13/DATASET_MANIFEST.json",
@@ -312,13 +312,13 @@
     },
     "evidence/tdm/wp-tdm-13/RUN_REPORT.md": {
       "path": "evidence/tdm/wp-tdm-13/RUN_REPORT.md",
-      "sha256": "527d30c14f7a00f3739661c2b5091ace3a2bd0590a6d83f42ba4e0976702cb5e",
+      "sha256": "a614968577971261b2793e3c20da4525f95fdff61153556e8418f88a155d7364",
       "bytes": 4680
     },
     "evidence/tdm/wp-tdm-13/verification_result.json": {
       "path": "evidence/tdm/wp-tdm-13/verification_result.json",
-      "sha256": "69b9c27e6c262d1eaa57d3481228fcdd4237988b3a35f2b6086327fd76aeb86c",
-      "bytes": 1174
+      "sha256": "7894437f10a1ff753d74448cff23958bed721c4ef05ad9bbcea6adcd9e716c8f",
+      "bytes": 2889
     }
   }
 }
