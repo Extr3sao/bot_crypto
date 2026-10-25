@@ -48,6 +48,8 @@ OUTPUT = Path("config/strategy_admission.json")
 
 LEDGER_SCHEMA_VERSION = "strategy-admission-ledger-v1"
 
+CRLF = b"\r\n"
+
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -198,15 +200,28 @@ def main(argv: list[str] | None = None) -> int:
     rendered = json.dumps(payload, indent=2, ensure_ascii=False, sort_keys=False) + "\n"
     out_path = REPO_ROOT / OUTPUT
 
+    expected = rendered.encode("utf-8")
     if args.check:
-        current = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
-        if current != rendered:
-            sys.stderr.write("ADMISSION_LEDGER_STALE: regenerate with build_strategy_admission.py\n")
+        # Compare BYTES, not decoded text. ``read_text`` normalises the line
+        # endings away, so a Windows rebuild (which used to emit CRLF via
+        # ``write_text``) churned all 547 lines while ``--check`` still said
+        # "up to date". The ledger is digest-referenced, so its bytes are the
+        # artifact (DEF-TDM-08-2).
+        current = out_path.read_bytes() if out_path.exists() else b""
+        if current != expected:
+            on_disk_crlf = current.count(CRLF)
+            sys.stderr.write(
+                "ADMISSION_LEDGER_STALE: regenerate with build_strategy_admission.py "
+                f"(on disk {len(current)} bytes / {on_disk_crlf} CRLF, "
+                f"expected {len(expected)} bytes / 0 CRLF)\n"
+            )
             return 1
         print("admission ledger is up to date")
         return 0
 
-    out_path.write_text(rendered, encoding="utf-8")
+    # ``newline="\n"`` is load-bearing: without it Windows writes CRLF and the
+    # committed bytes stop being reproducible on Linux (DEF-TDM-08-2).
+    out_path.write_text(rendered, encoding="utf-8", newline="\n")
     print(f"wrote {OUTPUT} ({len(payload['strategies'])} strategies)")
     for sid, entry in payload["strategies"].items():
         print(f"  {sid:<16} {entry['status']:<14} admitted={entry['admitted_for_paper']}")

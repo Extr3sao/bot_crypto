@@ -5,11 +5,11 @@
   "_sources": [
     {
       "path": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
-      "sha256": "74024caf9b52b16f63e41f5cc285b26e75d6d5a91a65387038305d66fdf787f0"
+      "sha256": "282e9f20118e853f7cd8e12b8ed2fcf3ea7e0ee45c662b4debe704e9d0464cb4"
     },
     {
       "path": "docs/STRATEGY_ADMISSION_MATRIX.json",
-      "sha256": "5f794c36829f947ff56de3995b68bb4f374d770bb32bd6147bff59a014ea05bf"
+      "sha256": "4e15882cd3b9bc31e0f4922fddd65d325fc949648b542bef9e03ebe0f822af81"
     }
   ],
   "_admission_cost_model": "COST_MODEL_V3 (evaluated live per cycle; never stored here)",

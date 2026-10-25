@@ -26,12 +26,17 @@ from trading_bot.risk.futures import (
 )
 from trading_bot.risk.futures.engine import FuturesRiskEngine, FuturesRiskPolicy
 from trading_bot.risk.futures_verification import (
+    authoritative_evidence_dir,
     load_fixtures,
     run_verification,
     verify_decision,
 )
 
 DATA = Path(__file__).resolve().parents[3] / "data" / "rfc048"
+#: WP-TDM-07: the authoritative bundle is the v2 generation (digests over the
+#: bytes the repository stores). ``DATA`` keeps pointing at the historical v1
+#: artifacts so they remain inspectable; verification reads v2.
+EVIDENCE = authoritative_evidence_dir(DATA)
 REPO = Path(__file__).resolve().parents[3]
 
 pytestmark = pytest.mark.unit
@@ -39,22 +44,24 @@ pytestmark = pytest.mark.unit
 
 @pytest.fixture(scope="module")
 def fixtures():
-    return load_fixtures(DATA)
+    return load_fixtures(EVIDENCE)
 
 
 @pytest.fixture(scope="module")
 def instrument() -> InstrumentSpec:
-    return load_instrument_registry(DATA / "INSTRUMENTS.json").get("BINANCE_USDM_BTCUSDT_PERP")
+    return load_instrument_registry(EVIDENCE / "INSTRUMENTS.json").get(
+        "BINANCE_USDM_BTCUSDT_PERP"
+    )
 
 
 @pytest.fixture(scope="module")
 def snapshot_payload() -> dict:
-    return json.loads((DATA / "MARKET_SNAPSHOT.json").read_text(encoding="utf-8"))
+    return json.loads((EVIDENCE / "MARKET_SNAPSHOT.json").read_text(encoding="utf-8"))
 
 
 @pytest.fixture(scope="module")
 def funding_history() -> dict:
-    return json.loads((DATA / "FUNDING_HISTORY.json").read_text(encoding="utf-8"))
+    return json.loads((EVIDENCE / "FUNDING_HISTORY.json").read_text(encoding="utf-8"))
 
 
 def build_case(
@@ -197,7 +204,7 @@ def test_negative_control_requires_an_approval_to_tamper_with(
 
 def test_executed_artifacts_verify_when_present(fixtures) -> None:
     """The artefacts of the real offline run must survive verification."""
-    scenarios_path = DATA / "RISK_SCENARIOS.json"
+    scenarios_path = EVIDENCE / "RISK_SCENARIOS.json"
     if not scenarios_path.exists():  # pragma: no cover - run script not executed yet
         pytest.skip("data/rfc048/RISK_SCENARIOS.json not generated")
     scenarios = json.loads(scenarios_path.read_text(encoding="utf-8"))
@@ -210,8 +217,8 @@ def test_executed_artifacts_verify_when_present(fixtures) -> None:
 
 def test_execution_report_claims_match_the_artifacts() -> None:
     """The report may not claim more than the artefacts show."""
-    scenarios_path = DATA / "RISK_SCENARIOS.json"
-    report_path = DATA / "RUNTIME_EXECUTION_REPORT.json"
+    scenarios_path = EVIDENCE / "RISK_SCENARIOS.json"
+    report_path = EVIDENCE / "RUNTIME_EXECUTION_REPORT.json"
     if not (scenarios_path.exists() and report_path.exists()):  # pragma: no cover
         pytest.skip("RFC-048 artefacts not generated")
     cases = json.loads(scenarios_path.read_text(encoding="utf-8"))["cases"]
@@ -237,7 +244,7 @@ def test_execution_report_claims_match_the_artifacts() -> None:
 
 def test_reduced_request_never_widens_risk_in_artifacts() -> None:
     """§12 property, checked on the executed catalogue rather than a unit case."""
-    scenarios_path = DATA / "RISK_SCENARIOS.json"
+    scenarios_path = EVIDENCE / "RISK_SCENARIOS.json"
     if not scenarios_path.exists():  # pragma: no cover
         pytest.skip("RFC-048 artefacts not generated")
     cases = json.loads(scenarios_path.read_text(encoding="utf-8"))["cases"]
@@ -253,5 +260,5 @@ def test_fixture_ladder_hash_matches_the_raw_payload(fixtures) -> None:
     """The verifier's own provenance check must be able to fail."""
     import hashlib
 
-    raw = (DATA / "raw" / "binance_usdm_leverage_brackets_btcusdt.json").read_bytes()
+    raw = (EVIDENCE / "raw" / "binance_usdm_leverage_brackets_btcusdt.json").read_bytes()
     assert hashlib.sha256(raw).hexdigest() == fixtures.bracket_source_hash

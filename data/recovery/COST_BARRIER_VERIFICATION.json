@@ -1,14 +1,14 @@
 {
   "artifact": "COST_BARRIER_INDEPENDENT_VERIFICATION",
   "work_package": "POST RFC-049 / ACTIVE RECOVERY - WP-6 verification",
-  "generated_at_utc": "2026-10-11T18:36:10Z",
-  "head": "66dc3de62f87a0bcc8a53f1065ba7a311a4ca6d0",
+  "generated_at_utc": "2026-10-24T06:59:34Z",
+  "head": "0e13160a8d5522961978fe3bd6b904b3a14be1c3",
   "verifier": "scripts/cost_barrier_verify.py",
   "builder": "scripts/cost_barrier_explorer.py",
   "builder_imported": false,
   "method": "independent recomputation from primary sources (WP-3 audit + COST_MODEL_V3) of every published number, followed by 13 mutation controls against the artefact",
   "subjects": [
-    "data/recovery/COST_BARRIER_EXPLORER.json",
+    "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\recovery\\COST_BARRIER_EXPLORER.json",
     "data/recovery/ACTIVE_ECONOMIC_AUDIT.json"
   ],
   "checks": [

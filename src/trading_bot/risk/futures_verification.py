@@ -74,6 +74,8 @@ class VerificationFixtures:
     bracket_source_hash: str
     funding_source_hash: str
     snapshot_source_hash: str
+    #: Which provenance generation the digests came from (``v1`` superseded).
+    provenance_version: str = "v1"
 
     def spec(self, instrument_id: str) -> dict[str, Any]:
         for row in self.instruments["instruments"]:
@@ -86,13 +88,79 @@ def _sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def load_fixtures(data_dir: Path) -> VerificationFixtures:
-    """Read the derived fixtures and hash the raw payloads independently."""
+PROVENANCE_SCHEMA_V2 = "rfc048-provenance-v2"
+
+
+def select_provenance(data_dir: Path) -> tuple[Path, Path, str]:
+    """Pick the provenance generation, preferring the versioned v2 artifacts.
+
+    v1 pinned digests of CRLF bytes that the repository never stores (see
+    ``data/rfc048/provenance/GENERATION.json``); v2 pins the bytes as delivered.
+    v1 stays on disk for historical audit but is no longer authoritative.
+
+    A self-contained v2 bundle (``provenance/evidence-v2``) keeps the canonical
+    file names, so the generation is recognised by its schema as well as by the
+    ``@v2`` file names.
+    """
+    v2_provenance = data_dir / "provenance" / "PROVENANCE@v2.json"
+    v2_instruments = data_dir / "provenance" / "INSTRUMENTS@v2.json"
+    if v2_provenance.is_file() and v2_instruments.is_file():
+        return v2_provenance, v2_instruments, "v2"
+
+    provenance = data_dir / "PROVENANCE.json"
+    instruments = data_dir / "INSTRUMENTS.json"
+    if provenance.is_file() and instruments.is_file():
+        # A self-contained generation keeps the canonical file names, so the
+        # generation has to be read from the schema instead of the file name.
+        payload = json.loads(provenance.read_text(encoding="utf-8"))
+        if payload.get("schema_version") == PROVENANCE_SCHEMA_V2:
+            return provenance, instruments, "v2"
+        return provenance, instruments, "v1"
+    return provenance, instruments, "v1"
+
+
+def _generation(provenance: dict[str, Any]) -> str:
+    return "v2" if provenance.get("schema_version") == PROVENANCE_SCHEMA_V2 else "v1"
+
+
+def authoritative_evidence_dir(data_dir: Path) -> Path:
+    """The evidence bundle a verifier must read today.
+
+    ``provenance/evidence-v2`` holds the same scenarios regenerated against the
+    digests of the bytes the repository stores; the top-level bundle stays as the
+    historical v1 record.
+    """
+    v2 = data_dir / "provenance" / "evidence-v2"
+    if (v2 / "PROVENANCE.json").is_file() and (v2 / "RISK_SCENARIOS.json").is_file():
+        return v2
+    return data_dir
+
+
+def load_fixtures(data_dir: Path, *, generation: str = "auto") -> VerificationFixtures:
+    """Read the derived fixtures and hash the raw payloads independently.
+
+    ``generation`` pins the provenance generation: ``auto`` (default) prefers v2,
+    ``v1`` reproduces the historical bundle for audit, ``v2`` refuses to fall back
+    so a missing v2 cannot silently be verified against v1.
+    """
     raw_dir = data_dir / "raw"
-    instruments = json.loads((data_dir / "INSTRUMENTS.json").read_text(encoding="utf-8"))
+    if generation == "v1":
+        provenance_path = data_dir / "PROVENANCE.json"
+        instruments_path = data_dir / "INSTRUMENTS.json"
+        version = "v1"
+    elif generation == "v2":
+        provenance_path, instruments_path, version = select_provenance(data_dir)
+        if version != "v2":
+            raise FileNotFoundError(f"no v2 provenance under {data_dir}")
+    elif generation == "auto":
+        provenance_path, instruments_path, version = select_provenance(data_dir)
+    else:  # pragma: no cover - defensive
+        raise ValueError(f"unknown provenance generation {generation!r}")
+    instruments = json.loads(instruments_path.read_text(encoding="utf-8"))
     snapshot = json.loads((data_dir / "MARKET_SNAPSHOT.json").read_text(encoding="utf-8"))
     funding = json.loads((data_dir / "FUNDING_HISTORY.json").read_text(encoding="utf-8"))
-    provenance = json.loads((data_dir / "PROVENANCE.json").read_text(encoding="utf-8"))
+    provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+    version = _generation(provenance)
     return VerificationFixtures(
         instruments=instruments,
         snapshot=snapshot,
@@ -102,6 +170,7 @@ def load_fixtures(data_dir: Path) -> VerificationFixtures:
         bracket_source_hash=_sha256_file(raw_dir / "binance_usdm_leverage_brackets_btcusdt.json"),
         funding_source_hash=_sha256_file(raw_dir / "binance_usdm_funding_rate_btcusdt.json"),
         snapshot_source_hash=_sha256_file(raw_dir / "binance_usdm_depth_btcusdt_100.json"),
+        provenance_version=version,
     )
 
 
@@ -341,7 +410,10 @@ def verify_decision(
             "bracket_provenance",
             passed=provenance_ok,
             detail="ladder matches the venue payload hash recorded in the fixture",
-            numbers={"bracket_source_hash": fixtures.bracket_source_hash},
+            numbers={
+                "bracket_source_hash": fixtures.bracket_source_hash,
+                "provenance_version": fixtures.provenance_version,
+            },
         )
     )
 
