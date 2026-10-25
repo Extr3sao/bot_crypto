@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import contextlib
 import json
 import os
 import sys
@@ -55,6 +56,24 @@ from trading_bot.research.router_gates import timeframe_ms as timeframe_width_ms
 DEFAULT_RUN_ROOT = Path("reports/autonomous-paper")
 DEFAULT_STATE_PATH = Path("data/storage/autonomous_paper_state.json")
 DEFAULT_DAILY_REPORT_SECONDS = 3600.0
+
+
+def _make_console_utf8() -> None:
+    """Let this module's own help text survive a non-UTF-8 console.
+
+    The docstring above (and several reason strings) use the arrow character
+    U+2192. A default Windows console is cp1252, so ``--help`` — the first
+    command the runbook tells an operator to run — died with
+    ``UnicodeEncodeError`` before printing anything (DEF-TDM-08-3). Reconfigure
+    instead of stripping the text: the same code then works under a pipe, a CI
+    log and a UTF-8 terminal.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if callable(reconfigure):
+            # PEP 528 streams: a closed or already-detached stream is not an error.
+            with contextlib.suppress(ValueError, OSError):
+                reconfigure(encoding="utf-8", errors="replace")
 
 
 def parse_args() -> argparse.Namespace:
@@ -151,13 +170,23 @@ def parse_args() -> argparse.Namespace:
 
 
 def build_settings(args: argparse.Namespace, assets: list[str]) -> Settings:
+    from trading_bot.config.settings_contract import (
+        SettingsContractError,
+        assert_load_settings_contract,
+    )
     from trading_bot.config.universe import PairSpec
+
+    # Fail closed on a drifted config API *before* any market data is read: the
+    # error names the missing keyword instead of surfacing as a bare TypeError
+    # from deep inside the settings loader (WP-TDM-07, DEF-TDM-07-1).
+    try:
+        assert_load_settings_contract()
+    except SettingsContractError as exc:
+        raise SystemExit(f"[config] {exc}") from exc
 
     settings = load_settings(config_dir=args.config_dir)
     pairs = [PairSpec(symbol=f"{asset}/USDT", enabled=True) for asset in assets]
-    universe = settings.universe.model_copy(
-        update={"pairs": pairs, "timeframes": [args.timeframe]}
-    )
+    universe = settings.universe.model_copy(update={"pairs": pairs, "timeframes": [args.timeframe]})
     return settings.model_copy(update={"universe": universe})
 
 
@@ -274,6 +303,7 @@ def write_run_descriptor(run_dir: Path, payload: dict[str, Any]) -> Path:
 
 
 async def main() -> int:
+    _make_console_utf8()
     args = parse_args()
     try:
         assets = parse_assets(args.assets)
@@ -437,8 +467,7 @@ async def main() -> int:
     if args.cadence == CADENCE_BAR_CLOSE:
         if cadence_interval_ms is None:
             raise SystemExit(
-                f"--cadence {CADENCE_BAR_CLOSE} needs a known timeframe, "
-                f"got {args.timeframe!r}"
+                f"--cadence {CADENCE_BAR_CLOSE} needs a known timeframe, got {args.timeframe!r}"
             )
         validate_settlement(cadence_interval_ms, args.bar_close_settlement_seconds)
     last_bar_close_ms: int | None = None
@@ -481,9 +510,7 @@ async def main() -> int:
                         args.bar_close_settlement_seconds,
                     )
                 )
-                current_close = bar_close_ms(
-                    int(time.time() * 1000), cadence_interval_ms
-                )
+                current_close = bar_close_ms(int(time.time() * 1000), cadence_interval_ms)
                 if current_close == last_bar_close_ms:
                     skipped_duplicate_cycles += 1
                     continue
@@ -542,8 +569,16 @@ async def main() -> int:
             if time.monotonic() >= next_daily_report_at:
                 durable_write(
                     lambda: _write_daily(
-                        cycle_reports, cycle_errors, runtime, registry, started_at_ms,
-                        run_id, args, stop, write_daily_report, build_daily_report,
+                        cycle_reports,
+                        cycle_errors,
+                        runtime,
+                        registry,
+                        started_at_ms,
+                        run_id,
+                        args,
+                        stop,
+                        write_daily_report,
+                        build_daily_report,
                     ),
                     what="daily report",
                     failures=storage_failures,
@@ -558,7 +593,9 @@ async def main() -> int:
                 await asyncio.sleep(args.interval)
     finally:
         summary = runtime.finalize_summary(
-            run_id=run_id, started_at_ms=started_at_ms, cycle_reports=cycle_reports,
+            run_id=run_id,
+            started_at_ms=started_at_ms,
+            cycle_reports=cycle_reports,
             errors=cycle_errors,
         )
         try:
@@ -572,8 +609,16 @@ async def main() -> int:
             print(f"[run] state save failed: {type(exc).__name__}: {exc}", file=sys.stderr)
         daily = durable_write(
             lambda: _write_daily(
-                cycle_reports, cycle_errors, runtime, registry, started_at_ms, run_id, args,
-                stop, write_daily_report, build_daily_report,
+                cycle_reports,
+                cycle_errors,
+                runtime,
+                registry,
+                started_at_ms,
+                run_id,
+                args,
+                stop,
+                write_daily_report,
+                build_daily_report,
             ),
             what="final daily report",
             failures=storage_failures,
@@ -640,7 +685,9 @@ def _write_daily(
         return None
     assets = [a.strip().upper() for a in args.assets.split(",") if a.strip()]
     summary = runtime.finalize_summary(
-        run_id=run_id, started_at_ms=started_at_ms, cycle_reports=cycle_reports,
+        run_id=run_id,
+        started_at_ms=started_at_ms,
+        cycle_reports=cycle_reports,
         errors=cycle_errors,
     )
     payload = build_daily_report(

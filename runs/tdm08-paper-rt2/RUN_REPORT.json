@@ -1,0 +1,242 @@
+{
+  "run_id": "tdm08-paper-rt2",
+  "runtime_version": "autonomous-paper-runtime-v1",
+  "environment": "ccxt:binance",
+  "commit": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
+  "mode": "paper",
+  "assets": [
+    "BTC",
+    "ETH"
+  ],
+  "timeframe": "5m",
+  "cycles": 2,
+  "started_at_ms": 1792858310475,
+  "ended_at_ms": 1792858321254,
+  "totals": {
+    "asset_cycle_evaluations": 4,
+    "paper_trades": 0,
+    "shadow_trades": 0,
+    "no_trades": 4,
+    "runtime_failures": 0,
+    "orders_created": 0,
+    "traces_persisted": 4,
+    "outcomes_resolved": 0,
+    "outcomes_pending": 4,
+    "performance_updates": 0,
+    "no_trade_NO_TRADE_STRATEGIC": 4,
+    "no_trade_NO_TRADE_RISK": 0,
+    "no_trade_NO_TRADE_DATA": 0,
+    "no_trade_NO_TRADE_CONFLICT": 0,
+    "risk_APPROVED": 4,
+    "risk_VETOED": 0,
+    "risk_NOT_APPLICABLE": 0,
+    "risk_NOT_EVALUATED": 0
+  },
+  "cycles_detail": [
+    {
+      "cycle": 1,
+      "session_id": "fc78db574e544d8f",
+      "started_at_ms": 1792858310475,
+      "ended_at_ms": 1792858315379,
+      "assets": [
+        {
+          "asset": "BTC",
+          "symbol": "BTC/USDT",
+          "regime": "HIGH_VOLATILITY",
+          "market_time_ms": 1792858310475,
+          "decision_time_ms": 1792858310475,
+          "strategies_considered": [
+            "breakout@5m",
+            "ema_crossover@5m",
+            "mean_reversion@5m",
+            "momentum@5m",
+            "trend@5m",
+            "volatility@5m"
+          ],
+          "strategy_selected": "momentum@5m",
+          "mode": "NO_TRADE",
+          "reason": "gross_edge_not_positive:-1.8800bps",
+          "classification": "NO_GROSS_EDGE",
+          "no_trade_kind": "NO_TRADE_STRATEGIC",
+          "failure_kind": null,
+          "expected_gross_edge_bps": -1.88,
+          "expected_cost_bps": 22.791822094603134,
+          "expected_net_edge_bps": -24.671822094603133,
+          "verifier_verdict": "PASS",
+          "risk_verdict": "PASS",
+          "risk_state": "APPROVED",
+          "risk_evaluated": true,
+          "risk_rule": "all_limits_pass",
+          "decision_id": "fc78db574e544d8f-BTC",
+          "trace_persisted": true,
+          "order_created": false
+        },
+        {
+          "asset": "ETH",
+          "symbol": "ETH/USDT",
+          "regime": "TREND_DOWN",
+          "market_time_ms": 1792858310475,
+          "decision_time_ms": 1792858310475,
+          "strategies_considered": [
+            "breakout@5m",
+            "ema_crossover@5m",
+            "mean_reversion@5m",
+            "momentum@5m",
+            "trend@5m",
+            "volatility@5m"
+          ],
+          "strategy_selected": "trend@5m",
+          "mode": "NO_TRADE",
+          "reason": "gross_edge_not_positive:-1.6500bps",
+          "classification": "NO_GROSS_EDGE",
+          "no_trade_kind": "NO_TRADE_STRATEGIC",
+          "failure_kind": null,
+          "expected_gross_edge_bps": -1.65,
+          "expected_cost_bps": 22.833904763470073,
+          "expected_net_edge_bps": -24.483904763470072,
+          "verifier_verdict": "PASS",
+          "risk_verdict": "PASS",
+          "risk_state": "APPROVED",
+          "risk_evaluated": true,
+          "risk_rule": "all_limits_pass",
+          "decision_id": "fc78db574e544d8f-ETH",
+          "trace_persisted": true,
+          "order_created": false
+        }
+      ],
+      "paper_trades": 0,
+      "shadow_trades": 0,
+      "no_trades": 2,
+      "no_trade_kinds": {
+        "NO_TRADE_STRATEGIC": 2
+      },
+      "risk_states": {
+        "APPROVED": 2
+      },
+      "runtime_failures": 0,
+      "orders_created": 0,
+      "traces_persisted": 2,
+      "outcomes_resolved": 0,
+      "outcomes_pending": 2,
+      "performance_updates": 0,
+      "broker_fills_closed": 0,
+      "errors": []
+    },
+    {
+      "cycle": 2,
+      "session_id": "116de81f662f492c",
+      "started_at_ms": 1792858318388,
+      "ended_at_ms": 1792858321215,
+      "assets": [
+        {
+          "asset": "BTC",
+          "symbol": "BTC/USDT",
+          "regime": "HIGH_VOLATILITY",
+          "market_time_ms": 1792858318388,
+          "decision_time_ms": 1792858318388,
+          "strategies_considered": [
+            "breakout@5m",
+            "ema_crossover@5m",
+            "mean_reversion@5m",
+            "momentum@5m",
+            "trend@5m",
+            "volatility@5m"
+          ],
+          "strategy_selected": "momentum@5m",
+          "mode": "NO_TRADE",
+          "reason": "gross_edge_not_positive:-1.8800bps",
+          "classification": "NO_GROSS_EDGE",
+          "no_trade_kind": "NO_TRADE_STRATEGIC",
+          "failure_kind": null,
+          "expected_gross_edge_bps": -1.88,
+          "expected_cost_bps": 22.791822094603134,
+          "expected_net_edge_bps": -24.671822094603133,
+          "verifier_verdict": "PASS",
+          "risk_verdict": "PASS",
+          "risk_state": "APPROVED",
+          "risk_evaluated": true,
+          "risk_rule": "all_limits_pass",
+          "decision_id": "116de81f662f492c-BTC",
+          "trace_persisted": true,
+          "order_created": false
+        },
+        {
+          "asset": "ETH",
+          "symbol": "ETH/USDT",
+          "regime": "TREND_DOWN",
+          "market_time_ms": 1792858318388,
+          "decision_time_ms": 1792858318388,
+          "strategies_considered": [
+            "breakout@5m",
+            "ema_crossover@5m",
+            "mean_reversion@5m",
+            "momentum@5m",
+            "trend@5m",
+            "volatility@5m"
+          ],
+          "strategy_selected": "trend@5m",
+          "mode": "NO_TRADE",
+          "reason": "gross_edge_not_positive:-1.6500bps",
+          "classification": "NO_GROSS_EDGE",
+          "no_trade_kind": "NO_TRADE_STRATEGIC",
+          "failure_kind": null,
+          "expected_gross_edge_bps": -1.65,
+          "expected_cost_bps": 22.833904763470073,
+          "expected_net_edge_bps": -24.483904763470072,
+          "verifier_verdict": "PASS",
+          "risk_verdict": "PASS",
+          "risk_state": "APPROVED",
+          "risk_evaluated": true,
+          "risk_rule": "all_limits_pass",
+          "decision_id": "116de81f662f492c-ETH",
+          "trace_persisted": true,
+          "order_created": false
+        }
+      ],
+      "paper_trades": 0,
+      "shadow_trades": 0,
+      "no_trades": 2,
+      "no_trade_kinds": {
+        "NO_TRADE_STRATEGIC": 2
+      },
+      "risk_states": {
+        "APPROVED": 2
+      },
+      "runtime_failures": 0,
+      "orders_created": 0,
+      "traces_persisted": 2,
+      "outcomes_resolved": 0,
+      "outcomes_pending": 4,
+      "performance_updates": 0,
+      "broker_fills_closed": 0,
+      "errors": []
+    }
+  ],
+  "executions": [],
+  "outcomes": [],
+  "pending_decision_ids": [
+    "116de81f662f492c-BTC",
+    "116de81f662f492c-ETH",
+    "fc78db574e544d8f-BTC",
+    "fc78db574e544d8f-ETH"
+  ],
+  "performance": [],
+  "trace_chain": {
+    "ok": true,
+    "records": 4,
+    "broken_at": null,
+    "detail": "hash chain intact"
+  },
+  "replay": {
+    "attempted": 4,
+    "ok": 4,
+    "failed": 0,
+    "statuses": {
+      "PARTIAL": 4
+    },
+    "failures": [],
+    "market_data_accessed": false
+  },
+  "errors": [],
+  "production_actions": 0
+}
