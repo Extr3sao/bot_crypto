@@ -267,7 +267,7 @@ tasks:
     status: done
     provenance: gap
     contract: docs/audit/G-4.md
-    verified_commit: "PENDING"
+    verified_commit: "5478b6de"
     verification: docs/audit/runs/run-20261025T115139Z-G-4/verification.json
     run_report: docs/audit/runs/run-20261025T115139Z-G-4/RUN_REPORT.md
     verdict: G4_VERIFIED_SCOPED

@@ -98,19 +98,36 @@ def _check(checks: list[dict[str, Any]], name: str, ok: bool, detail: str) -> No
     checks.append({"check": name, "ok": bool(ok), "detail": detail})
 
 
-def _probe(
-    tree: Path, src: Path, scenario: str, *, attach_gate: bool
-) -> dict[str, Any]:
-    cmd = [sys.executable, "scripts/audit/g4_route_probe.py", "--scenario", scenario]
-    if attach_gate:
-        cmd.append("--attach-gate")
-    completed = _run(cmd, cwd=tree, env=_env(src))
-    if completed.returncode != 0:
-        return {"_error": completed.stderr[-1200:], "_stdout": completed.stdout[-1200:]}
+def _probe(tree: Path, src: Path, scenario: str, *, attach_gate: bool) -> dict[str, Any]:
+    fd, raw_path = tempfile.mkstemp(prefix=f"g4-probe-{scenario}-", suffix=".json")
+    os.close(fd)
+    path = Path(raw_path)
     try:
-        return json.loads(completed.stdout)
-    except json.JSONDecodeError as exc:
-        return {"_error": f"probe output is not JSON: {exc}", "_stdout": completed.stdout[-1200:]}
+        cmd = [
+            sys.executable,
+            "scripts/audit/g4_route_probe.py",
+            "--scenario",
+            scenario,
+            "--json",
+            str(path),
+        ]
+        if attach_gate:
+            cmd.append("--attach-gate")
+        completed = _run(cmd, cwd=tree, env=_env(src))
+        if completed.returncode != 0:
+            return {
+                "_error": completed.stderr[-1200:],
+                "_stdout": completed.stdout[-1200:],
+            }
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            return {
+                "_error": f"probe result is not readable JSON: {exc}",
+                "_stdout": completed.stdout[-1200:],
+            }
+    finally:
+        path.unlink(missing_ok=True)
 
 
 def _ast_checks(tree: Path) -> tuple[bool, str]:
@@ -165,9 +182,7 @@ def _launcher_checks(tree: Path) -> tuple[bool, str]:
         if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Name)):
             continue
         if node.func.id == "PaperCycleEngine" and "PaperCycleEngine(" in source:
-            engine_call_has_hot_stop = any(
-                kw.arg == "hot_stop" for kw in node.keywords
-            )
+            engine_call_has_hot_stop = any(kw.arg == "hot_stop" for kw in node.keywords)
     main_builds_with_run_dir = "run_dir=run_dir" in source and "run_dir.mkdir" in source
     return builds_gate and engine_call_has_hot_stop and main_builds_with_run_dir, (
         f"HotStopGate={builds_gate}; engine_hot_stop={engine_call_has_hot_stop}; "
@@ -349,9 +364,7 @@ def main(argv: list[str] | None = None) -> int:
     report["checks_passed"] = sum(1 for c in checks if c["ok"])
     report["false_success"] = report["checks_total"] - report["checks_passed"]
     report["verdict"] = (
-        "G4_VERIFIED_SCOPED"
-        if report["false_success"] == 0
-        else "G4_VERIFICATION_FAILED"
+        "G4_VERIFIED_SCOPED" if report["false_success"] == 0 else "G4_VERIFICATION_FAILED"
     )
     report["duration_s"] = round(time.time() - started, 1)
     text = json.dumps(report, indent=2, sort_keys=True)

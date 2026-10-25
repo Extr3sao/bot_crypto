@@ -1,22 +1,2 @@
-.....F..                                                                 [100%]
-================================== FAILURES ===================================
-____________________ test_every_contract_is_tracked_by_git ____________________
-
-backlog = {'schema': 'tap.audit-backlog/v1', 'generated_at_utc': '2026-10-23T18:53:56Z', 'updated_at_utc': '2026-10-25T13:10:00Z', 'repository': 'trading-agentic-portable', ...}
-
-    def test_every_contract_is_tracked_by_git(backlog: dict[str, Any]) -> None:
-        _require_git_worktree()
-        for rel in _required_contracts(backlog):
-            completed = _git("ls-files", "--error-unmatch", "--", rel)
->           assert completed.returncode == 0, (
-                f"{rel} exists but is not tracked by git; commit it "
-                f"(git said: {completed.stderr.strip()!r})"
-            )
-E           AssertionError: docs/audit/G-4.md exists but is not tracked by git; commit it (git said: "error: pathspec 'docs/audit/G-4.md' did not match any file(s) known to git\nDid you forget to 'git add'?")
-E           assert 1 == 0
-E            +  where 1 = CompletedProcess(args=['git', '-C', 'C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-mt0004', 'ls-files', '--error-unmatch', '...', stderr="error: pathspec 'docs/audit/G-4.md' did not match any file(s) known to git\nDid you forget to 'git add'?\n").returncode
-
-tests\unit\test_audit_contracts_tracked.py:153: AssertionError
-=========================== short test summary info ===========================
-FAILED tests/unit/test_audit_contracts_tracked.py::test_every_contract_is_tracked_by_git
-1 failed, 7 passed in 2.42s
+........                                                                 [100%]
+8 passed in 1.36s
