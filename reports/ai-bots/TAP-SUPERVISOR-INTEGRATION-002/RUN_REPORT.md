@@ -16,9 +16,12 @@ is recorded in [ROUTE_MANIFEST.json](ROUTE_MANIFEST.json) with its lane blob, SH
 commit, state and reason. Two gates were closed with code and evidence (G2: verifiers on real
 campaigns; G3: B1 forced deterministically), two blockers were investigated to root cause
 (B3: fixed; `finished_without_locks`), and one was corrected rather than closed (B2: the
-script does not exist in either tree). The result ran a **real 5-cycle PAPER campaign with a
-crash and a recovery**, which the independent verifier judged PASS with 10/10 applicable
-mutations detected, 2 explicitly not applicable, and `false_success = 0`.
+script does not exist in either tree). Two **real PAPER campaigns** were executed without
+credentials: a 5-cycle supervisor campaign with a crash and a resume (`STOP_COMPLETED`, 0
+locks, `live_orders 0`), and the lock campaign's **full contract** — 6 crash sites, 2 reclaim
+races, 17 cycles, 6 recoveries, exit 0 — whose verifier returns PASS with 32/32 checks and
+9/9 mutations detected. The independent checker re-derives both from the artefacts and
+returns **9/9 PASS** with `false_success = 0`.
 
 ## 2. Commits
 
@@ -27,7 +30,7 @@ mutations detected, 2 explicitly not applicable, and `false_success = 0`.
 | `f238b632` | `matplotlib` declared **and pinned**; lock consistency test (B3) |
 | `537e4990` | 47-route slice + 37 tests + the verifier's G2 compatibility |
 | `b489d488` | G1 contract/parity tests (`tests/unit/risk/test_risk_contract_014.py`) |
-| `HEAD` (this delivery) | G2 completion (applicability pinned, fence floor), B1 tests, independent verifier, reports |
+| `HEAD` (this delivery) | G2 completion (applicability pinned, fence floor), B1 tests, full-contract lock campaign + its independent claim, reports |
 
 No commit merges, cherry-picks or rewrites a lane commit; `git rev-list --merges main..HEAD`
 is empty. `main` was not touched.
@@ -66,7 +69,7 @@ paths, and **none** of them is one of the 87 route paths (`evidence/MAIN_ONLY_OV
 
 ### The 33 remaining failures, by cause (none invented, none hidden)
 
-* **16 × `test_minute_quote_feed.py` / `test_subbar_execution.py`** — `data/quote-feed-1m/`
+* **15 × `test_minute_quote_feed.py` (14) / `test_subbar_execution.py` (1)** — `data/quote-feed-1m/`
   is a lane-only corpus; the manifest the tests read is not in `main`.
   `FileNotFoundError: data/quote-feed-1m/SOURCE_MANIFEST.json`.
 * **1 × `test_def_run_016_integrity.py`** — loads `scripts/def_run_016_verify.py`, outside the
@@ -146,13 +149,33 @@ Fixture behaviour is preserved: `tests/unit/ops/test_paper_supervisor_verifier.p
 judges all 33 checks on a real 3-cycle / 1-crash lock campaign — it no longer refuses with
 `UNSUPPORTED_CAMPAIGN_SCHEMA`, because that refusal was aimed at a *supervisor* campaign. On
 that short campaign it fails 3 checks that encode the campaign's minimum shape
-(`at_least_five_recoveries`, `both_crash_sites_covered`, `concurrent_reclaim_has_one_winner`).
-A full-contract campaign (6 crash sites, reclaim races) is running; its result is appended in
-`evidence/LOCK_CAMPAIGN_FULL_*.json` if it completed before delivery, otherwise this document
-says so explicitly.
+(`at_least_five_recoveries`, `both_crash_sites_covered`, `concurrent_reclaim_has_one_winner`),
+which is the correct verdict: a 1-crash campaign is not the campaign's own contract.
 
-**G2 status: `CLOSED` for the supervisor verifier, `PARTIAL` for the lock verifier** (schema
-and judging proven; the full 5-recovery campaign is the remaining measurement).
+**The full contract, executed** (`evidence/LOCK_CAMPAIGN_FULL2/`, `..._stdout.log`, exit 0):
+6 crash sites (5 `after_cycle`, 1 `before_cycle`), 2 reclaim races, **17 cycles**, 12 session
+starts, 64 stream rows, chain `INTACT`.
+
+| Field | Value |
+| --- | --- |
+| Verdict | **PASS** (exit 0) |
+| Checks | **32/32 true** |
+| Mutations | **9/9 applicable, 9 detected**, 0 invalid |
+| `false_success` | **0** |
+| Recoveries / reclaim rows | 6 / 6, fences `2 → 5 → 8 → 11 → 14 → 17` |
+| Races | iterations 2 and 5, exactly **1** reclaimer each |
+| Locks at end | **0**; `live_orders 0` in every row |
+
+**Why the first attempt aborted at iteration 5 (`B5`, explained, not a defect).** That run
+had been launched while this branch was still being committed to; the resume was refused with
+`COMMIT_CHANGED` — the session pins the runtime identity at `SESSION_START` and will not
+continue under a different commit. That is the provenance guard doing its job, and it is the
+only cause: the same campaign, re-run against a frozen `HEAD`, completed 6/6 iterations with
+exit 0. The aborted artefacts are kept as `evidence/LOCK_CAMPAIGN_FULL1_aborted_stdout.log`
+so the refusal is auditable rather than deleted.
+
+**G2 status: `CLOSED`** for both verifiers — the supervisor verifier on the real campaign and
+the lock verifier on a full-contract 6-recovery campaign with races.
 
 ## 7. G3 / B1 — the lock window, forced
 
@@ -215,22 +238,31 @@ two adjacent syscalls.
 
 `tools/independent_verify.py` imports **nothing** from `trading_bot` and nothing from the
 verifier: it re-implements the canonical hash, re-hashes every route and artifact, parses the
-pytest logs and checks Git state. Result: **7/7 PASS, 0 FAIL, 0 UNKNOWN, `false_success 0`**
-(`evidence/INDEPENDENT_VERIFICATION.json`, exit 0). Its self-control evaluates the campaign
-claim against the tampered chain and requires it to FAIL — it does (`S1`), so the checker is
-not blind by construction.
+pytest logs and checks Git state. Result: **9/9 PASS, 0 FAIL, 0 UNKNOWN, `false_success 0`**
+(`evidence/INDEPENDENT_VERIFICATION.json`, exit 0). Two self-controls require a FAIL on a
+tampered copy — `S1` on the supervisor campaign, `S2` on the lock campaign with one
+iteration's `RECOVERY.json` deleted — and both do FAIL, so neither checker is blind.
 
 Claims checked: `G1` branch/base/main immutability; `R1` 84 routes hashed and declared edits;
-`C1` campaign facts recomputed; `V1` verifier report truthfulness incl. artifact hashes; `V2`
-four negative controls; `S1` self-control; `T1` log numbers match this report.
+`C1` campaign facts recomputed; **`L1` the 6-iteration lock campaign re-walked from its own
+stream** (17 cycles, 6 reclaims whose fences advance, 6 `SESSION_END`, 6 resumes at exit 0, no
+`*.lock`, no live order, and the verifier's counts must equal the recounted ones); `V1`
+verifier report truthfulness incl. artifact hashes; `V2` four negative controls; `S1`/`S2`
+self-controls; `T1` log numbers match this report.
+
+`L1` earned its keep on the first run: it **failed** on the committed campaign because the
+check itself demanded strictly increasing fences for the four locks *inside* one reclaim,
+while a single reclaim takes them all over at the same fence. The campaign was right and the
+checker was wrong; the check was corrected to compare fences across reclaim rows and to reject
+a reclaim that mixes fences. Recorded here because a verifier that is only ever right is a
+verifier nobody has tested.
 
 ## 11. Limitations and open items
 
 1. **G1/D needs risk-manager sign-off** (weekly veto now rolls). `OPEN_SIGNOFF`.
-2. **G2 lock verifier `PARTIAL`** — full 5-recovery campaign is the outstanding measurement.
-3. **B2 `NOT_REAUDITED`** — script absent from both trees.
+2. **B2 `NOT_REAUDITED`** — script absent from both trees.
 4. **`finished_without_locks` `NOT_REPRODUCED`** — code path identified, producer unchanged.
-5. **16 vision failures are data-bound** (`data/quote-feed-1m` is lane-only) and **1 is flaky**
+5. **15 vision failures are data-bound** (`data/quote-feed-1m` is lane-only) and **1 is flaky**
    under full-suite order; **14 research failures** are data/script/Windows-probe bound. None
    touches the supervisor's runtime path.
 6. **No profitability claim.** Admission stays `NO_GO`; the ledger is untouched.

@@ -220,7 +220,9 @@ def test_stop_inside_costs_is_reported_off_and_refused_on_request() -> None:
     # 0.30 % stop = 30 bps; the injected schedule says one round trip costs 40 bps.
     cost = lambda symbol, notional: 40.0  # noqa: E731 - a fixture, not a helper
 
-    off = RiskManager(risk=_risk(), equity=EQUITY, _clock=lambda: MONDAY / 1000.0, cost_bps_for=cost)
+    off = RiskManager(
+        risk=_risk(), equity=EQUITY, _clock=lambda: MONDAY / 1000.0, cost_bps_for=cost
+    )
     report = RiskManager(
         risk=_risk(),
         equity=EQUITY,
@@ -280,7 +282,9 @@ def _voted_week(*, clock_ms: int = MONDAY + 9 * HOUR_MS) -> RiskManager:
     """A manager whose weekly loss already crosses the 3 % veto."""
 
     mgr = RiskManager(
-        risk=_risk(max_daily_loss_pct=10.0, max_daily_drawdown_pct=20.0, max_total_drawdown_pct=50.0),
+        risk=_risk(
+            max_daily_loss_pct=10.0, max_daily_drawdown_pct=20.0, max_total_drawdown_pct=50.0
+        ),
         equity=EQUITY,
         _clock=lambda: clock_ms / 1000.0,
     )
@@ -358,9 +362,9 @@ def test_the_weekly_limit_is_still_read_from_the_same_policy_field() -> None:
     lenient.record_trade_result(-350.0)
     assert strict.check_signal(_signal()).blocked_by == "weekly_loss_limit"
     assert lenient.check_signal(_signal()).approved is True
-    assert math.isclose(
-        strict.risk.max_weekly_loss_pct, 3.0, rel_tol=0, abs_tol=0
-    ), "the test may not silently move the threshold it is asserting"
+    assert math.isclose(strict.risk.max_weekly_loss_pct, 3.0, rel_tol=0, abs_tol=0), (
+        "the test may not silently move the threshold it is asserting"
+    )
 
 
 # ---------------------------------------------------------------------------

@@ -19,8 +19,10 @@ import argparse
 import hashlib
 import json
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -30,6 +32,7 @@ REPO = HERE.parents[4]
 EVIDENCE = REPORTS / "evidence"
 CAMPAIGN = Path("C:/Users/GVLLFR0035/Downloads/ff-campaign-002")
 CONTROLS = Path("C:/Users/GVLLFR0035/Downloads/ff-campaign-002-controls")
+LOCK_CAMPAIGN = EVIDENCE / "LOCK_CAMPAIGN_FULL2"
 GENESIS = "0" * 64
 CANONICAL_SEPARATORS = (",", ":")
 
@@ -58,7 +61,9 @@ def read_json(path: Path) -> dict[str, Any]:
 
 
 def git(*args: str) -> str:
-    return subprocess.run(["git", *args], cwd=REPO, capture_output=True, text=True, check=False).stdout.strip()
+    return subprocess.run(
+        ["git", *args], cwd=REPO, capture_output=True, text=True, check=False
+    ).stdout.strip()
 
 
 def chain_of(stream: Path) -> dict[str, Any]:
@@ -76,7 +81,12 @@ def chain_of(stream: Path) -> dict[str, Any]:
         try:
             row = json.loads(raw)
         except json.JSONDecodeError:
-            return {"ok": False, "reason": f"BAD_JSON_AT_{lines}", "lines": lines, "entries": entries}
+            return {
+                "ok": False,
+                "reason": f"BAD_JSON_AT_{lines}",
+                "lines": lines,
+                "entries": entries,
+            }
         if int(row.get("seq", -1)) != lines:
             return {"ok": False, "reason": f"SEQ_AT_{lines}", "lines": lines, "entries": entries}
         if str(row.get("prev_sha256")) != prev:
@@ -95,7 +105,14 @@ def chain_of(stream: Path) -> dict[str, Any]:
 
 
 def claim(identifier: str, statement: str, method: str) -> dict[str, Any]:
-    return {"id": identifier, "claim": statement, "method": method, "status": "UNKNOWN", "detail": "", "evidence": []}
+    return {
+        "id": identifier,
+        "claim": statement,
+        "method": method,
+        "status": "UNKNOWN",
+        "detail": "",
+        "evidence": [],
+    }
 
 
 def route_manifest_claim() -> dict[str, Any]:
@@ -142,7 +159,11 @@ def campaign_claim(root: Path = CAMPAIGN) -> dict[str, Any]:
     campaign = read_json(root / "CAMPAIGN.json")
     final = campaign.get("final") or {}
     chain = chain_of(root / "session" / "STREAM.jsonl")
-    locks = sorted(p.relative_to(root).as_posix() for p in (root / "session").rglob("*.lock")) if (root / "session").is_dir() else []
+    locks = (
+        sorted(p.relative_to(root).as_posix() for p in (root / "session").rglob("*.lock"))
+        if (root / "session").is_dir()
+        else []
+    )
     entries = chain.get("entries") or []
     cycles = [e.get("cycle") for e in entries if e.get("kind") == "CYCLE"]
     live = [int(e.get("live_orders", 0) or 0) for e in entries if "live_orders" in e]
@@ -165,7 +186,9 @@ def campaign_claim(root: Path = CAMPAIGN) -> dict[str, Any]:
     if result.get("action") != "STOP_COMPLETED":
         problems.append(f"supervisor action {result.get('action')}")
     if run_meta.get("mode") != "PAPER" or run_meta.get("live_enabled") is not False:
-        problems.append(f"run meta mode={run_meta.get('mode')} live_enabled={run_meta.get('live_enabled')}")
+        problems.append(
+            f"run meta mode={run_meta.get('mode')} live_enabled={run_meta.get('live_enabled')}"
+        )
     if len(cycles) < 2:
         problems.append("fewer than two cycles: not a multi-cycle campaign")
 
@@ -175,6 +198,137 @@ def campaign_claim(root: Path = CAMPAIGN) -> dict[str, Any]:
     )
     out["evidence"] = [f"chain head {chain.get('head')}", f"problems: {problems}"]
     out["status"] = "PASS" if not problems else "FAIL"
+    return out
+
+
+def lock_campaign_claim(root: Path = LOCK_CAMPAIGN) -> dict[str, Any]:
+    """The lock campaign, judged from its own stream rather than from its verifier.
+
+    ``paper_lock_campaign_verify.py`` is the builder's verifier; this claim does not read
+    its verdict to decide anything.  It re-walks the six iterations on disk, recounts the
+    stream, and only then compares the verifier's numbers with its own as an *agreement*
+    check: a verifier that reports a different campaign is a failure, not corroboration.
+    """
+
+    out = claim(
+        "L1",
+        "six crash sites were each reclaimed once, every resume exited 0, no lock survived and no order was live",
+        "re-hash STREAM.jsonl, recount rows and cycles, stat every iteration, list *.lock",
+    )
+    campaign = read_json(root / "CAMPAIGN.json")
+    if not campaign:
+        out["detail"] = "CAMPAIGN.json missing"
+        return out
+    chain = chain_of(root / "session" / "STREAM.jsonl")
+    entries = chain.get("entries") or []
+    kinds: list[str] = [str(e.get("kind")) for e in entries]
+    cycles = [e.get("cycle") for e in entries if e.get("kind") == "CYCLE"]
+    iterations = campaign.get("iterations") or []
+    recovery_files = sorted(root.glob("iterations/iteration-*/RECOVERY.json"))
+    resumes = [read_json(path) for path in recovery_files]
+    reclaims = [e for e in entries if e.get("kind") == "LOCK_RECLAIMED"]
+    #: One reclaim takes over every lock of a dead owner at the *same* fence: the fences
+    #: must advance from one reclaim to the next, not between the locks of one reclaim.
+    row_fences = [
+        sorted({int(lock.get("fence", 0)) for lock in (row.get("locks") or [])}) for row in reclaims
+    ]
+    fences = [group[0] if len(group) == 1 else group for group in row_fences]
+    live = [
+        int(e.get("live_orders", 0) or 0)
+        for e in entries
+        if e.get("kind") == "CYCLE" or "live_orders" in e
+    ]
+    locks = (
+        sorted(p.relative_to(root).as_posix() for p in (root / "session").rglob("*.lock"))
+        if (root / "session").is_dir()
+        else []
+    )
+    report = read_json(EVIDENCE / "LOCK_CAMPAIGN_VERIFICATION_FULL.json")
+    judged = (report.get("judgement") or {}).get("counts") or {}
+    mine = {
+        "cycles": len(cycles),
+        "iterations": len(iterations),
+        "reclaim_rows": len(reclaims),
+        "rows": chain.get("lines", 0),
+        "starts": kinds.count("SESSION_START"),
+    }
+
+    problems: list[str] = []
+    if not chain["ok"]:
+        problems.append(f"chain {chain['reason']}")
+    if len(iterations) != 6:
+        problems.append(f"{len(iterations)} iterations, contract is 6")
+    if len(recovery_files) != len(iterations) or any(not row for row in resumes):
+        problems.append(f"{len(recovery_files)} RECOVERY.json for {len(iterations)} iterations")
+    for index, row in enumerate(resumes, start=1):
+        if row.get("exit_code") != 0:
+            problems.append(f"iteration {index} resume exit {row.get('exit_code')}")
+        if row.get("locks_after"):
+            problems.append(f"iteration {index} left {len(row['locks_after'])} lock(s)")
+    for index, row in enumerate(iterations, start=1):
+        if row.get("failure") or (row.get("after") or {}).get("exit_code") != 0:
+            problems.append(f"iteration {index} failure={row.get('failure')}")
+    if len(cycles) != len(set(cycles)) or cycles != sorted(cycles):
+        problems.append(f"cycle numbering {cycles}")
+    if len(reclaims) != len(iterations):
+        problems.append(f"{len(reclaims)} reclaim rows for {len(iterations)} crashes")
+    mixed = [group for group in row_fences if len(group) != 1]
+    if mixed:
+        problems.append(f"a reclaim mixed fences: {mixed}")
+    if fences != sorted(set(fences)):
+        problems.append(f"reclaim fences do not advance: {fences}")
+    if locks:
+        problems.append(f"lock files still on disk: {locks}")
+    if any(live):
+        problems.append("a live_order is non-zero")
+    if kinds.count("SESSION_END") != len(iterations):
+        problems.append(f"{kinds.count('SESSION_END')} SESSION_END rows")
+    for index, row in enumerate(iterations, start=1):
+        race = row.get("concurrency")
+        if race is not None and race.get("reclaimers") != 1:
+            problems.append(f"iteration {index} race winners={race.get('reclaimers')}")
+    if not report:
+        problems.append("LOCK_CAMPAIGN_VERIFICATION_FULL.json missing")
+    else:
+        if report.get("verdict") != "PASS" or report.get("false_success") not in (0, None):
+            problems.append(f"verifier verdict {report.get('verdict')}")
+        disagreement = {k: (mine[k], judged.get(k)) for k in mine if judged.get(k) != mine[k]}
+        if disagreement:
+            problems.append(f"verifier counts disagree (mine, theirs): {disagreement}")
+        failed = sorted(
+            name
+            for name, value in (report.get("judgement") or {}).get("checks", {}).items()
+            if value is False
+        )
+        if failed:
+            problems.append(f"verifier checks false: {failed}")
+
+    out["detail"] = (
+        f"iterations={len(iterations)} cycles={cycles} reclaims={len(reclaims)} "
+        f"fences={fences} rows={chain.get('lines')} locks={locks} live_orders={sorted(set(live))}"
+    )
+    out["evidence"] = [f"chain head {chain.get('head')}", f"problems: {problems}"]
+    out["status"] = "PASS" if not problems else "FAIL"
+    return out
+
+
+def lock_self_control_claim() -> dict[str, Any]:
+    out = claim(
+        "S2",
+        "the lock-campaign check is not blind: removing one iteration's recovery must fail it",
+        "delete iterations/iteration-03/RECOVERY.json in a temporary copy and re-evaluate L1",
+    )
+    if not LOCK_CAMPAIGN.is_dir():
+        out["detail"] = "the campaign copy is absent; the self-control cannot run"
+        return out
+    with tempfile.TemporaryDirectory() as tmp:
+        copy = Path(tmp) / "campaign"
+        shutil.copytree(LOCK_CAMPAIGN, copy)
+        (copy / "iterations" / "iteration-03" / "RECOVERY.json").unlink()
+        verdict = lock_campaign_claim(copy)
+    out["detail"] = f"tampered campaign evaluated as {verdict['status']} ({verdict['detail']})"
+    out["evidence"] = verdict["evidence"][1:]
+    out["status"] = "PASS" if verdict["status"] == "FAIL" else "FAIL"
     return out
 
 
@@ -189,7 +343,9 @@ def verifier_report_claim() -> dict[str, Any]:
         out["detail"] = "REAL_CAMPAIGN_VERIFICATION.json missing"
         return out
     artefacts = report.get("artifacts") or {}
-    bad = {name: digest for name, digest in artefacts.items() if sha256_file(CAMPAIGN / name) != digest}
+    bad = {
+        name: digest for name, digest in artefacts.items() if sha256_file(CAMPAIGN / name) != digest
+    }
     judgement = report.get("judgement") or {}
     mutants = report.get("adversarial") or []
     applicable = [m for m in mutants if m.get("applicable", True)]
@@ -235,7 +391,9 @@ def controls_claim() -> dict[str, Any]:
     for name, expected in cases.items():
         target = EVIDENCE / f"CONTROL_{name}.json"
         payload = read_json(target)
-        failed = sorted(k for k, v in (payload.get("judgement", {}).get("checks") or {}).items() if v is False)
+        failed = sorted(
+            k for k, v in (payload.get("judgement", {}).get("checks") or {}).items() if v is False
+        )
         results[name] = {
             "verdict": payload.get("verdict"),
             "expected_check_failed": expected in failed,
@@ -276,12 +434,20 @@ def tests_claim() -> dict[str, Any]:
     }
     results = {}
     for name, (failed, passed) in expected.items():
-        text = (EVIDENCE / name).read_text(encoding="utf-8", errors="replace") if (EVIDENCE / name).is_file() else ""
+        text = (
+            (EVIDENCE / name).read_text(encoding="utf-8", errors="replace")
+            if (EVIDENCE / name).is_file()
+            else ""
+        )
         match = re.search(r"(\d+) failed, (\d+) passed", text)
         if not match:
             results[name] = "UNKNOWN"
             continue
-        results[name] = "PASS" if (int(match.group(1)), int(match.group(2))) == (failed, passed) else f"FAIL {match.groups()}"
+        results[name] = (
+            "PASS"
+            if (int(match.group(1)), int(match.group(2))) == (failed, passed)
+            else f"FAIL {match.groups()}"
+        )
     ok = all(value == "PASS" for value in results.values())
     out["detail"] = json.dumps(results)
     out["status"] = "PASS" if ok else "FAIL"
@@ -328,9 +494,11 @@ def main() -> int:
         git_claim(),
         route_manifest_claim(),
         campaign_claim(),
+        lock_campaign_claim(),
         verifier_report_claim(),
         controls_claim(),
         self_control_claim(),
+        lock_self_control_claim(),
         tests_claim(),
     ]
     false_success = sum(1 for item in claims if item["status"] == "PASS" and item.get("_problems"))
@@ -348,9 +516,13 @@ def main() -> int:
             "unknown": sum(1 for item in claims if item["status"] == "UNKNOWN"),
         },
         "false_success": false_success,
-        "verdict": "PASS" if all(item["status"] == "PASS" for item in claims) and false_success == 0 else "FAIL",
+        "verdict": "PASS"
+        if all(item["status"] == "PASS" for item in claims) and false_success == 0
+        else "FAIL",
     }
-    Path(args.out).write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    Path(args.out).write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
     print(json.dumps({item["id"]: item["status"] for item in claims}, indent=2))
     print(json.dumps(payload["summary"]), payload["verdict"])
     return 0 if payload["verdict"] == "PASS" else 1

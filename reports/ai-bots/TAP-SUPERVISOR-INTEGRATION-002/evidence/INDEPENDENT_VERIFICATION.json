@@ -2,7 +2,7 @@
   "claims": [
     {
       "claim": "the work happened on a branch derived from main, and main itself did not move",
-      "detail": "branch=integ/supervisor-002 head=b489d488 main=e67194e7 base=e67194e7 commits main..HEAD=3 merge-commits=0 lane=3b758e22",
+      "detail": "branch=integ/supervisor-002 head=59ddebda main=e67194e7 base=e67194e7 commits main..HEAD=4 merge-commits=0 lane=3b758e22",
       "evidence": [],
       "id": "G1",
       "method": "git rev-parse / rev-list / merge-base",
@@ -27,6 +27,17 @@
       ],
       "id": "C1",
       "method": "re-hash session/STREAM.jsonl, read CAMPAIGN.json, list *.lock, scan live_orders",
+      "status": "PASS"
+    },
+    {
+      "claim": "six crash sites were each reclaimed once, every resume exited 0, no lock survived and no order was live",
+      "detail": "iterations=6 cycles=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] reclaims=6 fences=[2, 5, 8, 11, 14, 17] rows=64 locks=[] live_orders=[0]",
+      "evidence": [
+        "chain head bc9a872869c112aba830221b05c3dc9495972560d9da2e0aba1fb2f5e28bf193",
+        "problems: []"
+      ],
+      "id": "L1",
+      "method": "re-hash STREAM.jsonl, recount rows and cycles, stat every iteration, list *.lock",
       "status": "PASS"
     },
     {
@@ -58,6 +69,16 @@
       "status": "PASS"
     },
     {
+      "claim": "the lock-campaign check is not blind: removing one iteration's recovery must fail it",
+      "detail": "tampered campaign evaluated as FAIL (iterations=6 cycles=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] reclaims=6 fences=[2, 5, 8, 11, 14, 17] rows=64 locks=[] live_orders=[0])",
+      "evidence": [
+        "problems: ['5 RECOVERY.json for 6 iterations']"
+      ],
+      "id": "S2",
+      "method": "delete iterations/iteration-03/RECOVERY.json in a temporary copy and re-evaluate L1",
+      "status": "PASS"
+    },
+    {
       "claim": "the pytest logs support the numbers this report quotes",
       "detail": "{\"PYTEST_paper_risk_after_tests.log\": \"PASS\", \"PYTEST_paper_risk_main_baseline.log\": \"PASS\"}",
       "evidence": [],
@@ -67,12 +88,12 @@
     }
   ],
   "false_success": 0,
-  "head": "b489d48825af9da6cb975d2462290134d1f45fd0",
+  "head": "59ddebda042fb29d990c074cfcaef47f9192d2a3",
   "imports_from_src": false,
   "schema_version": "TAP_SUPERVISOR_INTEGRATION_INDEPENDENT_VERIFICATION_V1",
   "summary": {
     "fail": 0,
-    "pass": 7,
+    "pass": 9,
     "unknown": 0
   },
   "verdict": "PASS",

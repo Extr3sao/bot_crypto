@@ -55,7 +55,11 @@ def _is_record(text: str) -> bool:
         payload = json.loads(text)
     except json.JSONDecodeError:
         return False
-    return isinstance(payload, dict) and bool(payload.get("token")) and isinstance(payload.get("pid"), int)
+    return (
+        isinstance(payload, dict)
+        and bool(payload.get("token"))
+        and isinstance(payload.get("pid"), int)
+    )
 
 
 def test_the_fallback_path_still_writes_a_complete_record(

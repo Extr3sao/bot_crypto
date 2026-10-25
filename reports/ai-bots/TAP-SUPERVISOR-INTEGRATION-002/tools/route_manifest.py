@@ -49,34 +49,110 @@ ROUTES: dict[str, tuple[str, str, str]] = {
     # -- 3. ops package (new in main) ---------------------------------------------------
     "src/trading_bot/ops/__init__.py": ("3-ops", "package root imported by every ops module", ""),
     "src/trading_bot/ops/paper_supervisor.py": ("3-ops", "the supervisor loop itself", ""),
-    "src/trading_bot/ops/session_status.py": ("3-ops", "status document read by supervisor and status CLI", ""),
-    "src/trading_bot/ops/single_writer.py": ("3-ops", "single-writer lock guard for the stream", ""),
-    "src/trading_bot/ops/windowless.py": ("3-ops", "windowless launcher used by the supervisor", ""),
+    "src/trading_bot/ops/session_status.py": (
+        "3-ops",
+        "status document read by supervisor and status CLI",
+        "",
+    ),
+    "src/trading_bot/ops/single_writer.py": (
+        "3-ops",
+        "single-writer lock guard for the stream",
+        "",
+    ),
+    "src/trading_bot/ops/windowless.py": (
+        "3-ops",
+        "windowless launcher used by the supervisor",
+        "",
+    ),
     # -- 4. vision (decision chain) -----------------------------------------------------
-    "src/trading_bot/vision/chart.py": ("4-vision", "renders the chart the model sees (matplotlib)", ""),
+    "src/trading_bot/vision/chart.py": (
+        "4-vision",
+        "renders the chart the model sees (matplotlib)",
+        "",
+    ),
     "src/trading_bot/vision/clock.py": ("4-vision", "causal clock of the session", ""),
     "src/trading_bot/vision/contract.py": ("4-vision", "session contract / stop reasons", ""),
-    "src/trading_bot/vision/execution.py": ("4-vision", "paper execution of the lane's decisions", ""),
+    "src/trading_bot/vision/execution.py": (
+        "4-vision",
+        "paper execution of the lane's decisions",
+        "",
+    ),
     "src/trading_bot/vision/guards.py": ("4-vision", "runtime guards for the session", ""),
-    "src/trading_bot/vision/lane.py": ("4-vision", "the lane itself; imports most of vision and research", ""),
+    "src/trading_bot/vision/lane.py": (
+        "4-vision",
+        "the lane itself; imports most of vision and research",
+        "",
+    ),
     "src/trading_bot/vision/ledger.py": ("4-vision", "append-only decision ledger", ""),
     "src/trading_bot/vision/prompt.py": ("4-vision", "prompt assembly for the multimodal step", ""),
-    "src/trading_bot/vision/prospective.py": ("4-vision", "prospective session runner (default child of the supervisor)", ""),
-    "src/trading_bot/vision/provenance.py": ("4-vision", "code/data provenance recorded in the stream", ""),
+    "src/trading_bot/vision/prospective.py": (
+        "4-vision",
+        "prospective session runner (default child of the supervisor)",
+        "",
+    ),
+    "src/trading_bot/vision/provenance.py": (
+        "4-vision",
+        "code/data provenance recorded in the stream",
+        "",
+    ),
     "src/trading_bot/vision/provider.py": ("4-vision", "model provider abstraction", ""),
     "src/trading_bot/vision/quotes.py": ("4-vision", "minute quote feed", ""),
-    "src/trading_bot/vision/settings.py": ("4-vision", "vision settings loaded from config/vision.yaml", ""),
-    "src/trading_bot/vision/signal_sources.py": ("4-vision", "signal families evaluated by the lane", ""),
-    "src/trading_bot/market_data/minute_collector.py": ("4-vision", "minute bars/quote collection behind vision/quotes.py", ""),
+    "src/trading_bot/vision/settings.py": (
+        "4-vision",
+        "vision settings loaded from config/vision.yaml",
+        "",
+    ),
+    "src/trading_bot/vision/signal_sources.py": (
+        "4-vision",
+        "signal families evaluated by the lane",
+        "",
+    ),
+    "src/trading_bot/market_data/minute_collector.py": (
+        "4-vision",
+        "minute bars/quote collection behind vision/quotes.py",
+        "",
+    ),
     # -- 5. economics of the cycle ------------------------------------------------------
-    "src/trading_bot/research/economic_recovery/alpha15.py": ("5-economics", "alpha15 signal evaluated by the lane", ""),
-    "src/trading_bot/research/economic_recovery/contracts.py": ("5-economics", "typed contracts of the economic audit", ""),
-    "src/trading_bot/research/economic_recovery/costs.py": ("5-economics", "cost model; hidden from the graph until relative imports were fixed", ""),
-    "src/trading_bot/research/economic_recovery/evidence.py": ("5-economics", "evidence writer for the economic audit", ""),
-    "src/trading_bot/research/economic_recovery/experiments.py": ("5-economics", "experiment registry used by the audit", ""),
-    "src/trading_bot/research/economic_recovery/pit15.py": ("5-economics", "point-in-time 15m series", ""),
-    "src/trading_bot/research/equity_drawdown.py": ("5-economics", "drawdown accounting imported by the lane", ""),
-    "src/trading_bot/risk/defensive_blocks.py": ("5-economics", "defensive blocks referenced by risk/manager.py", ""),
+    "src/trading_bot/research/economic_recovery/alpha15.py": (
+        "5-economics",
+        "alpha15 signal evaluated by the lane",
+        "",
+    ),
+    "src/trading_bot/research/economic_recovery/contracts.py": (
+        "5-economics",
+        "typed contracts of the economic audit",
+        "",
+    ),
+    "src/trading_bot/research/economic_recovery/costs.py": (
+        "5-economics",
+        "cost model; hidden from the graph until relative imports were fixed",
+        "",
+    ),
+    "src/trading_bot/research/economic_recovery/evidence.py": (
+        "5-economics",
+        "evidence writer for the economic audit",
+        "",
+    ),
+    "src/trading_bot/research/economic_recovery/experiments.py": (
+        "5-economics",
+        "experiment registry used by the audit",
+        "",
+    ),
+    "src/trading_bot/research/economic_recovery/pit15.py": (
+        "5-economics",
+        "point-in-time 15m series",
+        "",
+    ),
+    "src/trading_bot/research/equity_drawdown.py": (
+        "5-economics",
+        "drawdown accounting imported by the lane",
+        "",
+    ),
+    "src/trading_bot/risk/defensive_blocks.py": (
+        "5-economics",
+        "defensive blocks referenced by risk/manager.py",
+        "",
+    ),
     # -- 6. the seven modified files ----------------------------------------------------
     "scripts/start_paper_trading.py": (
         "6-modified",
@@ -114,13 +190,29 @@ ROUTES: dict[str, tuple[str, str, str]] = {
         "G1: migrated as-is, then judged by contract tests; no threshold, sizing or leverage was edited",
     ),
     # -- 7. scripts ---------------------------------------------------------------------
-    "scripts/def_run_019_prospective_run.py": ("7-scripts", "child process the supervisor launches by default", ""),
-    "scripts/paper_lock_campaign.py": ("7-scripts", "l  ock campaign producer (crash/recovery evidence)", ""),
-    "scripts/paper_lock_campaign_verify.py": ("7-scripts", "campaign verifier (fixture-only today: G2)", ""),
+    "scripts/def_run_019_prospective_run.py": (
+        "7-scripts",
+        "child process the supervisor launches by default",
+        "",
+    ),
+    "scripts/paper_lock_campaign.py": (
+        "7-scripts",
+        "l  ock campaign producer (crash/recovery evidence)",
+        "",
+    ),
+    "scripts/paper_lock_campaign_verify.py": (
+        "7-scripts",
+        "campaign verifier (fixture-only today: G2)",
+        "",
+    ),
     "scripts/paper_session_status.py": ("7-scripts", "status CLI over ops/session_status.py", ""),
     "scripts/paper_supervisor.py": ("7-scripts", "supervisor CLI", ""),
     "scripts/paper_supervisor_campaign.py": ("7-scripts", "multi-cycle campaign producer", ""),
-    "scripts/paper_supervisor_verify.py": ("7-scripts", "campaign verifier (crashes on real input: G2)", ""),
+    "scripts/paper_supervisor_verify.py": (
+        "7-scripts",
+        "campaign verifier (crashes on real input: G2)",
+        "",
+    ),
     # -- 7. config ----------------------------------------------------------------------
     "config/vision.yaml": (
         "7-scripts",
@@ -223,7 +315,9 @@ POST_MIGRATION_EDITS: dict[str, str] = {
     ),
 }
 
-CONFIG_TOTAL_NOTE = "2 config files are invisible to the import graph; 1 lock/1 dependency file; 1 ignore policy"
+CONFIG_TOTAL_NOTE = (
+    "2 config files are invisible to the import graph; 1 lock/1 dependency file; 1 ignore policy"
+)
 
 
 def git(*args: str, binary: bool = False) -> bytes | str:
@@ -348,14 +442,13 @@ def apply(rows: list[dict[str, object]]) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--apply", action="store_true")
-    parser.add_argument("--check", action="store_true", help="assert every route matches its target state")
+    parser.add_argument(
+        "--check", action="store_true", help="assert every route matches its target state"
+    )
     args = parser.parse_args()
 
     rows = build()
-    if args.apply:
-        rc = apply(rows)
-    else:
-        rc = 0
+    rc = apply(rows) if args.apply else 0
 
     if args.check:
         bad = []
@@ -368,9 +461,8 @@ def main() -> int:
                 if actual is None:
                     bad.append({"path": path, "expected": "present (hand-applied)", "actual": None})
                 continue
-            if row["state"] in {"MISSING", "DIFFERS"}:
-                if actual != row["lane_sha256"]:
-                    bad.append({"path": path, "expected": row["lane_sha256"], "actual": actual})
+            if row["state"] in {"MISSING", "DIFFERS"} and actual != row["lane_sha256"]:
+                bad.append({"path": path, "expected": row["lane_sha256"], "actual": actual})
         if bad:
             print(json.dumps({"check": "FAIL", "mismatches": bad}, indent=2))
             return 1
@@ -396,7 +488,9 @@ def main() -> int:
         "excluded_tests": TEST_EXCLUDED,
         "routes": rows,
     }
-    (OUT_DIR / "ROUTE_MANIFEST.json").write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (OUT_DIR / "ROUTE_MANIFEST.json").write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
     (OUT_DIR / "ROUTE_MANIFEST.tsv").write_text(tsv(rows), encoding="utf-8")
     print(json.dumps(payload["counts"], indent=2))
     return rc

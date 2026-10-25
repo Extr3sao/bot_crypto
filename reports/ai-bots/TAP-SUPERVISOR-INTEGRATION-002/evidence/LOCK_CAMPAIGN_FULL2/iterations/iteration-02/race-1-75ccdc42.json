@@ -1,0 +1,6 @@
+{
+  "code": "LOCK_HELD",
+  "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\Downloads\\ff-lockcamp-full2\\session\\STREAM.jsonl.lock changed while the takeover was being prepared: it is now HELD (LIVE_OWNER); nothing was overwritten",
+  "outcome": "REFUSED",
+  "pid": 38956
+}

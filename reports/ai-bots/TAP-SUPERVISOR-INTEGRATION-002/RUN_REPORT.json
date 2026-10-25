@@ -133,8 +133,8 @@
         "broken_chain": "FAIL",
         "exit": 1
       },
-      "lock_verifier": {
-        "status": "PARTIAL",
+      "lock_verifier_short_campaign": {
+        "status": "FAIL_AS_EXPECTED",
         "schema_accepted": true,
         "checks_passed": 29,
         "checks_total": 32,
@@ -144,7 +144,26 @@
           "concurrent_reclaim_has_one_winner"
         ],
         "false_success": 0,
-        "note": "the short 3-cycle campaign does not meet the campaign's own minimum shape; a full-contract campaign is running"
+        "note": "a 1-crash campaign is not the campaign's own minimum shape; its FAIL is the correct verdict"
+      },
+      "lock_verifier_full_campaign": {
+        "status": "CLOSED",
+        "verdict": "PASS",
+        "iterations": 6,
+        "crash_sites": ["after_cycle", "after_cycle", "before_cycle", "after_cycle", "after_cycle", "after_cycle"],
+        "races": [2, 5],
+        "cycles": 17,
+        "session_starts": 12,
+        "rows": 64,
+        "reclaim_rows": 6,
+        "reclaim_fences": [2, 5, 8, 11, 14, 17],
+        "checks_passed": 32,
+        "checks_total": 32,
+        "applicable_mutations": 9,
+        "detected": 9,
+        "false_success": 0,
+        "exit": 0,
+        "evidence": "evidence/LOCK_CAMPAIGN_VERIFICATION_FULL.json; evidence/LOCK_CAMPAIGN_FULL2/; evidence/LOCK_CAMPAIGN_FULL2_stdout.log"
       }
     },
     "G3": {
@@ -167,27 +186,48 @@
     "finished_without_locks": true,
     "credentials_used": false
   },
+  "lock_campaign": {
+    "producer": "scripts/paper_lock_campaign.py run",
+    "contract": {"iterations": 6, "crash_sites": 5, "before_cycle": 1, "races": [2, 5]},
+    "iterations_completed": 6,
+    "cycles": 17,
+    "final_state": "RECOVERED",
+    "locks": [],
+    "live_orders": 0,
+    "finished_exit": 0,
+    "credentials_used": false,
+    "chain": {"ok": true, "reason": "INTACT", "lines": 64},
+    "recoveries": 6,
+    "race_winners": [1, 1]
+  },
   "blockers": {
     "B1_lock_unattributed": {"status": "DIAGNOSED", "reproduced_by_construction": true, "open": true},
     "B2_verify_claims": {"status": "NOT_REAUDITED", "reason": "script absent from main and from the lane"},
     "B3_uv_frozen": {"status": "FIXED", "reproduced": true, "lock_check_exit": 0, "frozen_sync_exit": 0, "matplotlib": "3.11.2"},
-    "B4_finished_without_locks": {"status": "NOT_REPRODUCED", "observed": true, "exit": 0, "cause": "the flag is a poll timeout, not a verdict"}
+    "B4_finished_without_locks": {"status": "NOT_REPRODUCED", "observed": true, "exit": 0, "cause": "the flag is a poll timeout, not a verdict"},
+    "B5_aborted_first_lock_campaign": {
+      "status": "EXPLAINED",
+      "cause": "COMMIT_CHANGED: the resume was refused because the branch moved after SESSION_START pinned the runtime identity",
+      "not_a_runtime_defect": true,
+      "counterproof": "the same campaign re-run against a frozen HEAD completed 6/6 iterations, exit 0",
+      "evidence": "evidence/LOCK_CAMPAIGN_FULL1_aborted_stdout.log"
+    }
   },
   "independent_verification": {
     "tool": "tools/independent_verify.py",
     "imports_from_src": false,
-    "claims": 7,
-    "pass": 7,
+    "claims": 9,
+    "pass": 9,
     "fail": 0,
     "unknown": 0,
-    "self_control_fails_on_tampered_campaign": true,
+    "self_controls": {"S1": "tampered supervisor campaign must FAIL", "S2": "lock campaign without one RECOVERY.json must FAIL"},
+    "checker_defect_found_and_fixed": "L1 first demanded strictly increasing fences between the locks of one reclaim; the campaign was right and the check was corrected",
     "false_success": 0,
     "exit": 0,
     "evidence": "evidence/INDEPENDENT_VERIFICATION.json"
   },
   "not_tested": [
     "full pytest tests/unit (subsets alone take 27+ minutes)",
-    "G2e full-contract lock campaign (6 crash sites + reclaim races)",
     "authenticated ccxt path",
     "B2 re-audit",
     "profitability of anything"

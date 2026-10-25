@@ -1,8 +1,9 @@
 # FINAL REPORT — TAP-SUPERVISOR-INTEGRATION-002
 
-**Recomendación: `NOT_READY` para `main`.** Todo está integrado, ejecutado y verificado
-salvo **una firma**: el veto semanal de pérdidas ahora se libera los lunes a las 00:00 UTC en
-vez de no liberarse nunca. Eso es una decisión de política de riesgo, no mía.
+**Recomendación: `NOT_READY` para `main`.** Todo está integrado, ejecutado y verificado —dos
+campañas PAPER reales incluidas— salvo **una firma**: el veto semanal de pérdidas ahora se
+libera los lunes a las 00:00 UTC en vez de no liberarse nunca. Eso es una decisión de política
+de riesgo, no mía.
 
 ---
 
@@ -86,9 +87,29 @@ una secuencia de fences de longitud 1 hacía `reclaim_fences_advance` vacuamente
 recalcular la aplicabilidad por mutante dejaba que la mutación borrase su propio check.
 
 El verificador de lock ya **no rechaza** su propio esquema: juzga los 33 checks sobre una
-campaña real de 3 ciclos y 1 crash. Falla 3 checks que exigen la forma mínima de la campaña
-(≥5 recuperaciones, ambos sitios de crash, carrera de reclaim), así que **G2 = CLOSED** para el
-supervisor y **PARTIAL** para el lock hasta que termine la campaña completa.
+campaña real de 3 ciclos y 1 crash, y ahí falla —correctamente— los 3 checks que exigen la
+forma mínima de la campaña. Esa campaña corta no era el contrato.
+
+**El contrato completo sí se ejecutó** (`evidence/LOCK_CAMPAIGN_FULL2/`, exit 0): 6 sitios de
+crash (5 `after_cycle`, 1 `before_cycle`), 2 carreras de reclaim, **17 ciclos**, 12 arranques,
+64 filas, cadena `INTACT`.
+
+| Medida | Valor |
+| --- | --- |
+| Veredicto | **PASS** (exit 0) |
+| Checks | **32/32** |
+| Mutaciones aplicables | **9/9 detectadas**, 0 inválidas |
+| `false_success` | **0** |
+| Recuperaciones | 6/6, fences `2 → 5 → 8 → 11 → 14 → 17` |
+| Carreras | iteraciones 2 y 5, **1** ganador en cada una |
+| Locks al final | **0**; `live_orders 0` en todas las filas |
+
+Por qué el primer intento murió en la iteración 5 (**B5**, explicado): se lanzó mientras la
+rama todavía recibía commits, y el resume fue rechazado con `COMMIT_CHANGED` — la sesión fija
+la identidad del runtime en `SESSION_START` y no continúa bajo otro commit. Es el guard de
+procedencia haciendo su trabajo, y es la única causa: la misma campaña, con `HEAD` congelado,
+terminó 6/6 con exit 0. Los artefactos del intento abortado se conservan en
+`evidence/LOCK_CAMPAIGN_FULL1_aborted_stdout.log`. **G2 = `CLOSED`** para ambos verificadores.
 
 ## 6. G3 / B1 — la ventana del lock
 
@@ -136,23 +157,39 @@ seguridad donde no.
 | `finished_without_locks` | `true` |
 | Verificador | PASS, 10/10, `false_success 0` |
 
+Y la campaña de lock completa (§5): 6 crashes, 2 carreras, 17 ciclos, `RECOVERED`, 0 locks,
+verificador PASS 32/32 con 9/9 mutaciones detectadas.
+
+Ninguna de las dos usó credenciales ni envió una orden live: `live_orders = 0` en las 64 filas
+de la campaña de lock y en las 13 del supervisor.
+
 ## 9. Verificador independiente
 
 `tools/independent_verify.py` no importa nada de `trading_bot` ni del verificador: reimplementa
 la canonicalización, rehashea cada ruta y artefacto, parsea los logs y comprueba Git.
-**7/7 claims PASS, 0 FAIL, 0 UNKNOWN, `false_success 0`** (exit 0). Su autocontrol exige que el
-claim de campaña falle sobre la copia manipulada y **falla** (`S1`), así que no es ciego por
-construcción.
+**9/9 claims PASS, 0 FAIL, 0 UNKNOWN, `false_success 0`** (exit 0). Dos autocontroles exigen
+que un claim falle sobre una copia manipulada —`S1` la campaña del supervisor, `S2` la de lock
+sin el `RECOVERY.json` de una iteración— y ambos **fallan**, así que ninguno es ciego por
+construcción. El claim nuevo `L1` recorre la campaña de lock desde su propio stream: 17 ciclos,
+6 reclaims con fences crecientes, 6 `SESSION_END`, 6 resumes a exit 0, ningún `*.lock`, ninguna
+orden live, y los conteos del verificador deben coincidir con los recalculados.
+
+`L1` se ganó el sueldo en su primera ejecución: **falló** contra la campaña real porque el
+check exigía fences estrictamente crecientes entre los cuatro locks de *un mismo* reclaim,
+cuando un reclaim los toma todos al mismo fence. La campaña tenía razón y el check estaba mal;
+se corrigió y ahora exige que los fences crezcan **entre** reclaims y que ningún reclaim mezcle
+fences. Queda escrito porque un verificador que nunca se equivoca es un verificador sin probar.
 
 ## 10. Defectos abiertos
 
-1. **G1/D** — el veto semanal se libera; falta la firma del risk-manager.
-2. **G2/e** — campaña completa de lock (6 sitios de crash + carreras) en ejecución.
-3. **B2** — sin reauditar (script inexistente).
-4. **`finished_without_locks`** — sin reproducir; ruta de código identificada.
-5. **`data/rfc048`** — procedencia obsoleta preexistente en `main` (2 tests rojos).
-6. 16 fallos de visión atados a datos (y 1 flaky) + 14 de investigación: declarados, ninguno
+1. **G1/D** — el veto semanal se libera; falta la firma del risk-manager. Es el único bloqueo.
+2. **B2** — sin reauditar (script inexistente en ambos árboles).
+3. **`finished_without_locks`** — sin reproducir; ruta de código identificada.
+4. **`data/rfc048`** — procedencia obsoleta preexistente en `main` (2 tests rojos).
+5. 15 fallos de visión atados a datos (y 1 flaky) + 14 de investigación: declarados, ninguno
    en la ruta de ejecución del supervisor.
+6. **B5** — el intento de campaña abortado por `COMMIT_CHANGED`: explicado y reproducido al
+   revés (rerun con `HEAD` congelado → 6/6), no es un defecto del runtime.
 7. Sin ninguna afirmación de rentabilidad; la admisión sigue `NO_GO` y el ledger no se tocó.
 
 **`FALSE_SUCCESS = 0`** en todas las afirmaciones emitidas: cada PASS tiene su artefacto y su

@@ -1,0 +1,20 @@
+{
+  "acquired_at_utc": "2026-10-25T10:30:19Z",
+  "fence": 5,
+  "held_s": 4.015,
+  "outcome": "RECLAIMED",
+  "pid": 26132,
+  "previous_owner": {
+    "acquired_at_utc": "2026-10-25T10:29:15Z",
+    "fence": 4,
+    "host": "DESKTOP-4CHO695",
+    "path": "STREAM.jsonl.lock",
+    "pid": 39748,
+    "process_start_ms": 1792924151731,
+    "purpose": "ledger:STREAM.jsonl",
+    "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+    "token": "1bd8d33fbd5844749053e8d0ddfac626"
+  },
+  "reason": "OWNER_PROCESS_DEAD",
+  "released": true
+}

@@ -1,0 +1,91 @@
+{
+  "cycles": [
+    {
+      "after": {
+        "acquired_at_utc": "2026-10-25T10:40:28Z",
+        "fence": 16,
+        "host": "DESKTOP-4CHO695",
+        "path": "BTCUSDT.jsonl.lock",
+        "pid": 24040,
+        "process_start_ms": 1792924823360,
+        "purpose": "minutes:BTCUSDT.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "d307b1a5a2d044a9813b6b98b92cd216"
+      },
+      "before": {
+        "acquired_at_utc": "2026-10-25T10:40:28Z",
+        "fence": 16,
+        "host": "DESKTOP-4CHO695",
+        "path": "BTCUSDT.jsonl.lock",
+        "pid": 24040,
+        "process_start_ms": 1792924823360,
+        "purpose": "minutes:BTCUSDT.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "d307b1a5a2d044a9813b6b98b92cd216"
+      },
+      "code": "LOCK_HELD",
+      "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\Downloads\\ff-lockcamp-full2\\session\\market-1m\\BTCUSDT.jsonl.lock is held by live pid 24040; a second writer would interleave prev_sha256 and the chain would stop verifying",
+      "outcome": "REFUSED",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\ff-lockcamp-full2\\session\\market-1m\\BTCUSDT.jsonl.lock",
+      "unchanged": true
+    },
+    {
+      "after": {
+        "acquired_at_utc": "2026-10-25T10:40:28Z",
+        "fence": 16,
+        "host": "DESKTOP-4CHO695",
+        "path": "ETHUSDT.jsonl.lock",
+        "pid": 24040,
+        "process_start_ms": 1792924823360,
+        "purpose": "minutes:ETHUSDT.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "6ec1c084c0354434b6a31fcbb0b6d09a"
+      },
+      "before": {
+        "acquired_at_utc": "2026-10-25T10:40:28Z",
+        "fence": 16,
+        "host": "DESKTOP-4CHO695",
+        "path": "ETHUSDT.jsonl.lock",
+        "pid": 24040,
+        "process_start_ms": 1792924823360,
+        "purpose": "minutes:ETHUSDT.jsonl",
+        "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+        "token": "6ec1c084c0354434b6a31fcbb0b6d09a"
+      },
+      "code": "LOCK_HELD",
+      "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\Downloads\\ff-lockcamp-full2\\session\\market-1m\\ETHUSDT.jsonl.lock is held by live pid 24040; a second writer would interleave prev_sha256 and the chain would stop verifying",
+      "outcome": "REFUSED",
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\ff-lockcamp-full2\\session\\market-1m\\ETHUSDT.jsonl.lock",
+      "unchanged": true
+    }
+  ],
+  "stream": {
+    "after": {
+      "acquired_at_utc": "2026-10-25T10:40:28Z",
+      "fence": 16,
+      "host": "DESKTOP-4CHO695",
+      "path": "STREAM.jsonl.lock",
+      "pid": 24040,
+      "process_start_ms": 1792924823360,
+      "purpose": "ledger:STREAM.jsonl",
+      "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+      "token": "7600727e5c224aaeb8f262c6a3155b4f"
+    },
+    "before": {
+      "acquired_at_utc": "2026-10-25T10:40:28Z",
+      "fence": 16,
+      "host": "DESKTOP-4CHO695",
+      "path": "STREAM.jsonl.lock",
+      "pid": 24040,
+      "process_start_ms": 1792924823360,
+      "purpose": "ledger:STREAM.jsonl",
+      "schema_version": "TAP_SINGLE_WRITER_LOCK_V1",
+      "token": "7600727e5c224aaeb8f262c6a3155b4f"
+    },
+    "code": "LOCK_HELD",
+    "detail": "LOCK_HELD: C:\\Users\\GVLLFR0035\\Downloads\\ff-lockcamp-full2\\session\\STREAM.jsonl.lock is held by live pid 24040; a second writer would interleave prev_sha256 and the chain would stop verifying",
+    "outcome": "REFUSED",
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\ff-lockcamp-full2\\session\\STREAM.jsonl.lock",
+    "unchanged": true
+  }
+}
