@@ -1,0 +1,6 @@
+$ python scripts/cost_barrier_evidence.py --capture
+cost-barrier evidence bundle: CAPTURED (capture)
+  head 7311e55330d2841772015a2aa4efea591daab22a
+  [PASS] capture:the_published_artefact_pins_this_input - pin 2437f446051d97ec... from sources[]
+  [PASS] capture:the_local_input_reproduces_the_published_pin - status EXACT for sha256 2437f446051d97ec...
+EXIT=0

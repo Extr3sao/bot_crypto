@@ -1,6 +1,6 @@
 # COST-BARRIER EXPLORER - per venue and per horizon
 
-- generated `2026-10-11T18:36:08Z` · head `66dc3de62f87` · branch `main`
+- generated `2026-10-25T13:34:00Z` · head `7311e55330d2` · branch `repro/economic-recovery-002`
 - mode: OFFLINE read-only: no keys, no orders, no capital, no live path
 - cells: 24 · venue configurations: 120 · checks: 24/24 pass
 
