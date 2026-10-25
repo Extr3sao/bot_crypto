@@ -81,6 +81,16 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _sha256_text(path: Path) -> str:
+    """Hash source bytes with Git's checkout EOL conversion removed.
+
+    ``git archive`` can materialise CRLF on a Windows host with
+    ``core.autocrlf=true`` even though the blob is LF. The safety hash is about
+    the source, not the checkout, so normalise before hashing.
+    """
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
 def _canonical_capture_hash(capture: dict[str, Any]) -> str:
     payload = json.dumps(capture, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(payload).hexdigest()
@@ -499,8 +509,8 @@ def _verify_builder_forward(payload: dict[str, Any]) -> list[dict[str, Any]]:
 
 def _verify_baseline(tree: Path, rev: str) -> list[dict[str, Any]]:
     checks: list[dict[str, Any]] = []
-    live_hash = _sha256_file(tree / "src/trading_bot/execution/live_gate.py")
-    hot_hash = _sha256_file(tree / "src/trading_bot/autonomous/hot_stop.py")
+    live_hash = _sha256_text(tree / "src/trading_bot/execution/live_gate.py")
+    hot_hash = _sha256_text(tree / "src/trading_bot/autonomous/hot_stop.py")
     _check(
         checks,
         "LIVE_GATE_UNCHANGED",
