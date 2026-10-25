@@ -83,3 +83,11 @@ docs/agentic/exp004a/handoff/** -text
 data/def-run-016/** -text
 data/def-run-017/** -text
 data/quote-feed-1m/** -text
+
+# G-7 evidence is digest-pinned: its manifest hashes the exact bytes of the
+# reports, the public capture and the run artifacts, so git must not rewrite
+# their line endings on check-out.
+docs/audit/G-7.md -text
+docs/audit/runtime_authority_map.md -text
+docs/audit/fixtures/g7_market_capture.json -text
+docs/audit/runs/run-20261025T173625Z-G-7/** -text
