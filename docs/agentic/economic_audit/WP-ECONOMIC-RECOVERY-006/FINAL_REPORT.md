@@ -49,7 +49,7 @@ barra futura entra en el dataset.
 
 ## 3. Defectos reparados
 
-Cada fila tiene su test en `tests/unit/research/test_w006_engine.py` (17 tests).
+Cada fila tiene su test en `tests/unit/research/test_w006_engine.py` (18 tests).
 
 | # | defecto reproducido en WP-005 | reparación | evidencia |
 | --- | --- | --- | --- |
@@ -140,11 +140,10 @@ EXIT=0
 Sigue sin poder emitir `PASS`: la procedencia y la admisión económica no son cosas que un
 escaneo de presencia pueda certificar. Transcripción: `evidence/preflight_after.txt`.
 
-Durante la comprobación final aparecieron tres defectos **míos** que se corrigieron antes
-de cerrar: los dos llamadores legacy del simulador (§7) y dos lecturas erróneas del propio
-preflight (el sobre `results` de WP-006 y la ruta de los datos). El preflight además
-declaraba seis familias ausentes sobre el artefacto nuevo, que es un falso bloqueo, tan
-malo como un falso pase.
+Durante la comprobación final aparecieron cuatro defectos **míos**, corregidos antes de
+cerrar: los dos llamadores legacy del simulador (§7) y dos lecturas erróneas del propio
+preflight (el sobre `results` de WP-006 y la ruta de los datos). Con el artefacto nuevo el
+preflight declaraba seis familias ausentes: un falso bloqueo, tan malo como un falso pase.
 
 ## 7. Tests
 
@@ -163,8 +162,9 @@ malo como un falso pase.
 
 - No admite ninguna estrategia: eso se decide en WP-007 con los números de este motor.
 - No toca el ledger, los gates ni `admitted_for_paper`.
-- No introduce arquitectura nueva: se reparó el entrypoint existente y se añadieron tres
-  herramientas de verificación (`w006_fetch_klines`, `w006_validate_data`, `w006_verify`)
-  más un clasificador de fallos.
+- No introduce arquitectura nueva: se reparó el entrypoint existente y se añadieron un
+  fetcher (`w006_fetch_klines`), un validador de datos (`w006_validate_data`), un
+  verificador independiente (`w006_verify`) y dos clasificadores (`w006_classify_failures`,
+  `w007_classify`).
 - No repara evidencias de otras líneas (pins obsoletos, artefactos no versionados): las
   clasifica y las deja declaradas.
