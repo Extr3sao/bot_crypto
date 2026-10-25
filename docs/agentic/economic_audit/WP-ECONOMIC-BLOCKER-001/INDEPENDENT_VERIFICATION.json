@@ -1,0 +1,339 @@
+{
+  "wp": "WP-ECONOMIC-BLOCKER-001",
+  "artefact": "INDEPENDENT_VERIFICATION",
+  "evidence_dir": "C:/Users/GVLLFR0035/Downloads/ff-wt-eco001/docs/agentic/economic_audit/WP-ECONOMIC-BLOCKER-001",
+  "checked_artefacts": [
+    "COST_MODEL_AUDIT.json",
+    "COST_MODEL_AUDIT.md",
+    "COST_OBSERVED.json",
+    "FINAL_REPORT.md",
+    "INDEPENDENT_VERIFICATION.json",
+    "RUN_REPORT.json",
+    "RUN_REPORT.md",
+    "STRATEGY_ADMISSION_AUDIT.json",
+    "STRATEGY_ADMISSION_AUDIT.md",
+    "STRATEGY_ECONOMICS.json",
+    "STRATEGY_ECONOMICS_MATRIX.csv",
+    "TEST_BASELINE_COMPARISON.json",
+    "TEST_BASELINE_COMPARISON.md"
+  ],
+  "totals": {
+    "pass": 27,
+    "fail": 0,
+    "not_assessed": 0,
+    "known_defect": 1,
+    "checks": 28
+  },
+  "verdict": "VERIFIED_WITH_DECLARED_DEFECTS",
+  "checks": [
+    {
+      "check": "A1_ledger_entry_count_is_24",
+      "status": "PASS",
+      "detail": {
+        "audit": 24,
+        "ledger": 24
+      }
+    },
+    {
+      "check": "A2_six_entries_per_timeframe",
+      "status": "PASS",
+      "detail": {
+        "5m": 6,
+        "15m": 6,
+        "1h": 6,
+        "30m": 6
+      }
+    },
+    {
+      "check": "A3_no_family_is_a_paper_candidate",
+      "status": "PASS",
+      "detail": {
+        "audit": [],
+        "matrix": []
+      }
+    },
+    {
+      "check": "A4_reason_counts_match_entry_rows",
+      "status": "PASS",
+      "detail": {
+        "audit": {
+          "ECONOMIC_NEGATIVE_GROSS": 17,
+          "ECONOMIC_BELOW_RESEARCH_BARRIER": 24,
+          "EVIDENCE_SAMPLE_UNPROVEN": 18,
+          "ADMISSION_GATE_NO_PAPER_CANDIDATES": 24,
+          "CRITERIA_UNCOMPUTED": 24,
+          "ECONOMIC_BELOW_RUNTIME_COST": 7
+        },
+        "recomputed": {
+          "ECONOMIC_NEGATIVE_GROSS": 17,
+          "ECONOMIC_BELOW_RESEARCH_BARRIER": 24,
+          "EVIDENCE_SAMPLE_UNPROVEN": 18,
+          "ADMISSION_GATE_NO_PAPER_CANDIDATES": 24,
+          "CRITERIA_UNCOMPUTED": 24,
+          "ECONOMIC_BELOW_RUNTIME_COST": 7
+        }
+      }
+    },
+    {
+      "check": "A5_every_entry_has_a_non_empty_reason_set",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "check": "A6_audit_reports_the_measured_hash_state",
+      "status": "PASS",
+      "detail": {
+        "audit_claims_ok": false,
+        "measured_ok": false,
+        "sources": [
+          {
+            "path": "docs/STRATEGY_DISCOVERY_V3_RESULTS.json",
+            "recorded": "74024caf9b52b16f",
+            "actual": "74024caf9b52b16f"
+          },
+          {
+            "path": "docs/STRATEGY_ADMISSION_MATRIX.json",
+            "recorded": "5f794c36829f947f",
+            "actual": "4e15882cd3b9bc31"
+          }
+        ]
+      }
+    },
+    {
+      "check": "A7_provenance_anchor_defect_is_declared_not_hidden",
+      "status": "KNOWN_DEFECT",
+      "detail": {
+        "stale": [
+          {
+            "path": "docs/STRATEGY_ADMISSION_MATRIX.json",
+            "recorded": "5f794c36829f947f",
+            "actual": "4e15882cd3b9bc31"
+          }
+        ],
+        "severity": "audit-chain only: the runtime reads statuses, never the hashes",
+        "declared_in": "STRATEGY_ADMISSION_AUDIT.json + FINAL_REPORT.md"
+      }
+    },
+    {
+      "check": "B1_observed_blocks_were_extracted",
+      "status": "PASS",
+      "detail": 24
+    },
+    {
+      "check": "B2_recorded_runtime_cost_recomputed_within_1e-6",
+      "status": "PASS",
+      "detail": {
+        "cases": 24,
+        "max_abs_delta_bps": 5.042096518081962e-09
+      }
+    },
+    {
+      "check": "B3_component_inventory_matches_the_engine_vocabulary",
+      "status": "PASS",
+      "detail": {
+        "documented": [
+          "exchange_fee_entry",
+          "exchange_fee_exit",
+          "spread",
+          "slippage",
+          "market_impact",
+          "adverse_selection",
+          "missed_fill_penalty",
+          "fill_probability_inflation",
+          "funding_carry"
+        ],
+        "emitted_for_a_taker_intent": [
+          "exchange_fee_entry",
+          "exchange_fee_exit",
+          "spread",
+          "slippage",
+          "market_impact"
+        ]
+      }
+    },
+    {
+      "check": "B4_knwn_fee_floor_is_structural",
+      "status": "PASS",
+      "detail": {
+        "KNOWN_bps": 20.0,
+        "OBSERVED_bps": 0,
+        "ESTIMATED_bps": 3.79057,
+        "ASSUMED_bps": 0,
+        "KNOWN_share_pct": 84.0669,
+        "certain_part_exceeds_max_gross_edge": 20.0
+      }
+    },
+    {
+      "check": "B5_barrier_arithmetic_is_consistent",
+      "status": "PASS",
+      "detail": {
+        "runtime_round_trip_observed_spread_bps": 22.791769,
+        "runtime_round_trip_estimated_spread_bps": 23.790569,
+        "required_gross_edge_bps_1.0x": 22.791769,
+        "required_gross_edge_bps_1.5x": 34.187654,
+        "research_admission_barrier_bps": 12.0,
+        "research_barrier_gap_bps": 10.791769,
+        "max_measured_gross_edge_bps": 8.91,
+        "max_gross_minus_runtime_cost_bps": -13.881769,
+        "max_gross_minus_known_fees_bps": -11.09,
+        "known_fees_alone_exceed_every_gross_edge": true,
+        "safety_multiple_used_by_v4": 1.5
+      }
+    },
+    {
+      "check": "B6_no_gross_edge_covers_even_the_known_fees",
+      "status": "PASS",
+      "detail": {
+        "max_gross": 8.91,
+        "known_fees": 22.791769
+      }
+    },
+    {
+      "check": "B7_published_v4_numbers_re_derived",
+      "status": "PASS",
+      "detail": [
+        {
+          "asset": "BTC",
+          "published_round_trip_bps": 23.5,
+          "recomputed_round_trip_bps": 23.499988,
+          "published_required_gross_bps": 35.25,
+          "recomputed_required_gross_bps": 35.249982,
+          "matches": true
+        },
+        {
+          "asset": "ETH",
+          "published_round_trip_bps": 23.7608,
+          "recomputed_round_trip_bps": 23.760795,
+          "published_required_gross_bps": 35.6412,
+          "recomputed_required_gross_bps": 35.641192,
+          "matches": true
+        },
+        {
+          "asset": "SOL",
+          "published_round_trip_bps": 24.6867,
+          "recomputed_round_trip_bps": 24.686717,
+          "published_required_gross_bps": 37.03,
+          "recomputed_required_gross_bps": 37.030076,
+          "matches": true
+        }
+      ]
+    },
+    {
+      "check": "C1_csv_columns_are_the_documented_ones",
+      "status": "PASS",
+      "detail": [
+        "strategy_id",
+        "family",
+        "timeframe",
+        "horizon_minutes",
+        "gross_bps_per_trade",
+        "gross_knowledge",
+        "sample_trades",
+        "sample_proven",
+        "round_trip_cost_bps",
+        "cost_known_fees_bps",
+        "cost_estimated_bps",
+        "net_bps_per_trade",
+        "break_even_gross_bps",
+        "required_gross_1.5x_bps",
+        "net_at_1.5x_bps",
+        "gross_shortfall_vs_cost_bps",
+        "admission_status",
+        "admitted_for_paper",
+        "matrix_status",
+        "matrix_net_usd_base",
+        "matrix_fees_usd_base",
+        "matrix_profit_factor_base",
+        "verdict",
+        "evidence_gap"
+      ]
+    },
+    {
+      "check": "C2_one_row_per_ledger_entry",
+      "status": "PASS",
+      "detail": 24
+    },
+    {
+      "check": "C3_csv_covers_exactly_the_ledger_ids",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "check": "C4_net_arithmetic_recomputed",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "check": "C5_gross_column_equals_the_ledger",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "check": "C6_no_entry_clears_its_cost",
+      "status": "PASS",
+      "detail": {
+        "NET_NEGATIVE_AFTER_COST": 18,
+        "NET_UNPROVEN_SAMPLE": 6,
+        "NET_POSITIVE_NOT_ADMITTED": 0
+      }
+    },
+    {
+      "check": "C7_verdict_vocabulary_is_exhaustive",
+      "status": "PASS",
+      "detail": {
+        "NET_NEGATIVE_AFTER_COST": 18,
+        "NET_UNPROVEN_SAMPLE": 6,
+        "NET_POSITIVE_NOT_ADMITTED": 0
+      }
+    },
+    {
+      "check": "C8_unproven_verdicts_require_zero_sample",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "check": "C9_cost_matches_the_cost_audit",
+      "status": "PASS",
+      "detail": {
+        "csv_cost": [
+          "23.790569"
+        ],
+        "audit": 23.790569
+      }
+    },
+    {
+      "check": "D1_every_current_failure_also_fails_the_clean_checkout",
+      "status": "PASS",
+      "detail": {
+        "working": 103,
+        "clean": 124,
+        "intersection": 103
+      }
+    },
+    {
+      "check": "D2_clean_checkout_ran_its_own_source",
+      "status": "PASS",
+      "detail": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\wp-eco001-baseline-296lvl4h\\src\\trading_bot\\__init__.py"
+    },
+    {
+      "check": "D3_healthy_sets_are_green",
+      "status": "PASS",
+      "detail": {
+        "counts": {
+          "passed": 447
+        },
+        "exit": 0
+      }
+    },
+    {
+      "check": "E1_no_runtime_config_or_code_was_modified",
+      "status": "PASS",
+      "detail": "(clean)"
+    },
+    {
+      "check": "E2_paper_not_declared_validated",
+      "status": "PASS",
+      "detail": "(checked the machine-readable artefacts)"
+    }
+  ]
+}

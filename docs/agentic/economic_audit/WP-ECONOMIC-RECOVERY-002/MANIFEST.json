@@ -1,0 +1,97 @@
+{
+  "wp": "WP-ECONOMIC-RECOVERY-002",
+  "artefact": "MANIFEST",
+  "commit_under_measurement": "64fa5112ebdea81291dbc5db07512cc8737feeb0",
+  "files": [
+    {
+      "path": "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/ANCHOR_REPAIR.json",
+      "sha256": "3b8fe2dfd5b46d6acab540fff2bfd1feba49a0b6a28c1950c857ef395bef4c7a",
+      "bytes": 4311
+    },
+    {
+      "path": "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/DECLARED_DEPENDENCIES.json",
+      "sha256": "cfd7698f9883c8f35124aff7ada66d59cb441bcd95b7a7855cca2d67a4bd2167",
+      "bytes": 11864
+    },
+    {
+      "path": "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/FINAL_REPORT.md",
+      "sha256": "8c111aa61f0af77280a0d332c3b0aecc7aea5312ca57534e8bf843a7af6355f3",
+      "bytes": 12602
+    },
+    {
+      "path": "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/INDEPENDENT_VERIFICATION.json",
+      "sha256": "bdc08d861a711a80bc4964e4f5514beb0a78500f14371d0efb49e35f9274fe88",
+      "bytes": 4464
+    },
+    {
+      "path": "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/parts/clone.json",
+      "sha256": "65b692c4caee4658e315e743cf5f1182faa1636c5a1cb96363f89406327263d6",
+      "bytes": 24759
+    },
+    {
+      "path": "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/parts/clone_dependency_tracebacks.txt",
+      "sha256": "f6280903f77c93da9fdd195022bc0062dfff24e64f95dcf510a3ca50f5c36a98",
+      "bytes": 42319
+    },
+    {
+      "path": "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/parts/focused.json",
+      "sha256": "cce1f5e067c064a70256722c024e054b953fa556a368e2168700178730f936f0",
+      "bytes": 3578
+    },
+    {
+      "path": "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/parts/healthy.json",
+      "sha256": "04b858442c614ed9a70d49bebab21c046d1370bc862df8093b3625ac80cbef91",
+      "bytes": 607
+    },
+    {
+      "path": "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/parts/working.json",
+      "sha256": "9f890f1b52e25eb072fe713ed65b55ee056f1e3efcd39d6397d7457b179934d1",
+      "bytes": 23701
+    },
+    {
+      "path": "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/REPRODUCIBILITY_COMPARISON.json",
+      "sha256": "3eab990b44fbbaf9fbe3dda6a60813b628acf0d833892af526cff8467c4b0c91",
+      "bytes": 6391
+    },
+    {
+      "path": "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/REPRODUCIBILITY_COMPARISON.md",
+      "sha256": "4e642c2561ff2822733849e675721160ba07a7ed87dc5d3803027a844a7c08b1",
+      "bytes": 3933
+    },
+    {
+      "path": "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-002/RUN_REPORT.md",
+      "sha256": "ef02add86d88a4e334692ed6a20ed28ae9e822251f84e9f0a92b554126a9b9d5",
+      "bytes": 4254
+    },
+    {
+      "path": "scripts/wp_eco002_anchor.py",
+      "sha256": "b49a722304a6a20cfb5baceeed4336d9a5a953489605f8c0b26f2e7973ee5577",
+      "bytes": 10654
+    },
+    {
+      "path": "scripts/wp_eco002_dependencies.py",
+      "sha256": "504e38da11a94f500192ef08dec03ab2925b243d5502b76bfee6a89dc5fb339c",
+      "bytes": 9481
+    },
+    {
+      "path": "scripts/wp_eco002_report.py",
+      "sha256": "093c8b8b18bd26e9207cb0b61ffaa32a24d7ef91464b44afdb74acb84f4a99b1",
+      "bytes": 13170
+    },
+    {
+      "path": "scripts/wp_eco002_reproducibility.py",
+      "sha256": "894d7d718ddf80cc403cc74803ef57f0946e6cb1f076b0e25214611450572ea3",
+      "bytes": 20628
+    },
+    {
+      "path": "scripts/wp_eco002_verify.py",
+      "sha256": "7762ca87f2bf3bf9e1c65ba79a4a22eadeae429863d871b86811d7c03ce8a90d",
+      "bytes": 19726
+    }
+  ],
+  "self_referential": [
+    "MANIFEST.json",
+    "RUN_REPORT.json"
+  ],
+  "note": "RUN_REPORT.json and MANIFEST.json cannot carry their own digest in the same commit; they are named here rather than shown with a value that would be stale on write"
+}
