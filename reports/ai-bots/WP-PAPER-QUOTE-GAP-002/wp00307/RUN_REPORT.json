@@ -1,0 +1,131 @@
+{
+ "schema": "wp00307-run-report/1",
+ "work_package": "WP-003-07",
+ "generated_at_utc": "2026-10-23T11:30:58Z",
+ "builder": "Codebuff (Freebuff desktop), single session, Windows 11 host",
+ "executed": {
+  "worktree": "../ff-wt-trunkfmt",
+  "branch": "recovery/trunk-format-001",
+  "base": "1d2192b0",
+  "format_commit": "026ea574c32ab15a477d70e850cc9fecbdf1ec47",
+  "commands": [
+   "ruff format --check .  (before)",
+   "ruff format .",
+   "ruff format --check .  (after)",
+   "python scripts/verify_trunk_format.py --base 1d2192b0 --head HEAD --expect-files 409",
+   "python scripts/verify_trunk_format.py --base 1d2192b0 --self-test",
+   "ruff check .",
+   "mypy .",
+   "pytest -m 'not slow and not market' -q --junit-xml=..."
+  ],
+  "exit_codes": {
+   "format_check_before": 1,
+   "format_run": 0,
+   "format_check_after": 1,
+   "verify": 0,
+   "self_test": 0,
+   "lint": 1,
+   "mypy": 1,
+   "pytest_base": 1,
+   "pytest_head": 1
+  }
+ },
+ "gates": {
+  "format": {
+   "base": 433,
+   "head": 24,
+   "head_flagged_are_exactly_the_exemptions": true,
+   "source": "ruff 0.15.20, `ruff format --check .`"
+  },
+  "lint": {
+   "base": 100,
+   "head": 100,
+   "delta": 0,
+   "source": "ruff 0.15.20, `ruff check .`"
+  },
+  "mypy": {
+   "base_errors": 253,
+   "base_files_with_errors": 29,
+   "base_checked": 801,
+   "head_errors": 253,
+   "head_files_with_errors": 29,
+   "head_checked": 802,
+   "delta_errors": 0,
+   "note": "head checks one more file than base because the verifier is added in the evidence commit; the verifier itself reports zero errors under mypy strict",
+   "source": "mypy 2.1.0, `mypy .` (the CI command, not `mypy src scripts`)"
+  },
+  "collection": {
+   "base_errors": 0,
+   "head_errors": 0,
+   "source": "pytest --collect-only -m 'not slow and not market'",
+   "corrects_inherited_claim": "WP-003-05 recorded 4 collection errors at this same sha, attributed to four tests importing trading_bot.ops; git grep at 1d2192b0 finds no reference to trading_bot.ops anywhere in src/ or tests/, and those four modules run 73 tests green"
+  }
+ },
+ "suite": {
+  "base": {
+   "sha": "1d2192b0",
+   "tests": 3339,
+   "failures": 81,
+   "errors": 14,
+   "skipped": 31,
+   "passed": 3213,
+   "red_nodes": 95
+  },
+  "head": {
+   "sha": "8c36d9bf",
+   "tests": 3339,
+   "failures": 81,
+   "errors": 14,
+   "skipped": 31,
+   "passed": 3213,
+   "red_nodes": 95
+  },
+  "delta": {
+   "tests": 0,
+   "passed": 0,
+   "failed": 0,
+   "errors": 0,
+   "skipped": 0,
+   "red_nodes": 0
+  },
+  "new_red_nodes": [],
+  "fixed_red_nodes": [],
+  "verdict": "NO_NEW_FAILURES"
+ },
+ "verification": {
+  "verdict": "PASS_WITH_DECLARED_RESIDUAL",
+  "checks_ok": 7,
+  "checks_total": 8,
+  "negative_controls": 6,
+  "negative_controls_rejected": 6,
+  "residuals": [
+   {
+    "path": "scripts/sprint002_lib.py",
+    "line": 356,
+    "whitespace_only": true,
+    "bytes_removed": 1,
+    "before_tail": "mean(first n), multiplier 1.0 + ignore. ",
+    "after_tail": " mean(first n), multiplier 1.0 + ignore."
+   }
+  ],
+  "builder_verifier_separate": "the verifier reads only git objects and was written to fail: six mutations of the base commit are built with git plumbing and must each be rejected"
+ },
+ "ci": {
+  "status": "NOT_PERFORMED",
+  "why": ".github/workflows/ci.yml triggers on push to main and pull_request to main only; this branch is published without a PR and no GitHub CLI or token exists on this host, so no Actions run was started"
+ },
+ "economy": {
+  "risk_rules_changed": false,
+  "sizing_changed": false,
+  "execution_changed": false,
+  "accounting_changed": false,
+  "basis": "ast.dump is identical for 408/409 changed files and identical for all 409 once docstring values are excluded; the single residual removes one trailing space inside a docstring"
+ },
+ "status": {
+  "WP_STATUS": "PASS",
+  "TRUNK_STATUS": "PARTIAL (format debt 433 -> 24, all pinned; lint/mypy/collection unchanged)",
+  "CI_STATUS": "NOT_PERFORMED",
+  "RUNTIME_STATUS": "PASS (suite identical to base, 95 red nodes unchanged)",
+  "FALSE_SUCCESS": 0
+ }
+}

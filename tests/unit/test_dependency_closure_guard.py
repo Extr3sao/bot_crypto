@@ -14,8 +14,10 @@ runs AFTER the whole suite has imported, so it sees the complete closure.
 
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
+import types
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
@@ -26,34 +28,114 @@ def _tracked_files() -> set[str]:
     return set(out.stdout.splitlines())
 
 
-def test_all_imported_internal_modules_are_tracked() -> None:
-    """Every loaded trading_bot.* module must live inside the repo and be tracked."""
+#: Propósito: importar la CLOSURE del árbol de fuentes rastreado en un
+#: intérprete FRESCO y reportar cualquier módulo interno que resuelva fuera del
+#: repositorio o que no esté rastreado. Que corra en un subproceso es lo que
+#: hace la comprobación INDEPENDIENTE DEL ORDEN: sólo ve la closure alcanzable
+#: desde módulos RASTREADOS, nunca la contaminación incidental que un fichero de
+#: test NO rastreado haya dejado en ``sys.modules`` del proceso llamante.
+_CLOSURE_PROBE = r"""
+import importlib
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+repo = Path.cwd()
+sys.path.insert(0, str(repo / "src"))
+tracked = set(
+    subprocess.run(
+        ["git", "ls-files"], capture_output=True, text=True, check=True, cwd=repo
+    ).stdout.splitlines()
+)
+for mod in json.loads(sys.argv[1]):
+    try:
+        importlib.import_module(mod)
+    except Exception:  # noqa: BLE001 - a genuinely unimportable module is
+        pass          # reported by test_every_tracked_module_imports_*
+
+offenders_outside: list[str] = []
+offenders_untracked: list[str] = []
+for name, mod in sorted(sys.modules.items()):
+    if not name.startswith("trading_bot"):
+        continue
+    f = getattr(mod, "__file__", None)
+    if f is None:
+        continue
+    p = Path(f).resolve()
+    try:
+        rel = p.relative_to(repo).as_posix()
+    except ValueError:
+        offenders_outside.append(f"{name} -> {p}")
+        continue
+    if rel not in tracked:
+        offenders_untracked.append(f"{name} -> {rel}")
+print("__CLOSURE__" + json.dumps({"outside": offenders_outside, "untracked": offenders_untracked}))
+"""
+
+
+def _closure_offenders() -> dict[str, list[str]]:
+    """Offenders of the tracked-source closure, derived from a fresh import."""
     tracked = _tracked_files()
-    offenders_outside: list[str] = []
-    offenders_untracked: list[str] = []
-
-    for name, mod in sorted(sys.modules.items()):
-        if not name.startswith("trading_bot"):
-            continue
-        f = getattr(mod, "__file__", None)
-        if f is None:  # namespace package stub
-            continue
-        path = Path(f).resolve()
-        try:
-            rel = path.relative_to(REPO).as_posix()
-        except ValueError:
-            offenders_outside.append(f"{name} -> {path}")
-            continue
-        if rel not in tracked:
-            offenders_untracked.append(f"{name} -> {rel}")
-
-    assert not offenders_outside, (
-        "Internal modules resolved OUTSIDE the repository:\n  " + "\n  ".join(offenders_outside)
+    src_modules = sorted(
+        rel[len("src/") : -3].replace("/", ".")
+        for rel in tracked
+        if rel.startswith("src/trading_bot/") and rel.endswith(".py")
     )
-    assert not offenders_untracked, (
+    proc = subprocess.run(
+        [sys.executable, "-c", _CLOSURE_PROBE, json.dumps(src_modules)],
+        capture_output=True,
+        text=True,
+        check=True,
+        cwd=REPO,
+    )
+    marker = "__CLOSURE__"
+    line = next((ln for ln in proc.stdout.splitlines() if ln.startswith(marker)), None)
+    assert line is not None, f"closure probe produced no result:\n{proc.stdout}\n{proc.stderr}"
+    payload: dict[str, list[str]] = json.loads(line[len(marker) :])
+    return payload
+
+
+def test_all_imported_internal_modules_are_tracked() -> None:
+    """Every trading_bot.* module in the TRACKED closure must be tracked.
+
+    DEF-CLOSURE-001: the previous implementation inspected this process's
+    global ``sys.modules`` *after the whole suite had imported*, so a single
+    untracked test file importing untracked modules made the guard fail (and
+    only when that test ran first) — an order-dependent false positive on
+    code that a clean checkout would never load. The check now imports the
+    tracked source tree in a fresh interpreter, which is order-independent and
+    still fails loudly if a TRACKED module pulls in an untracked internal one.
+    """
+    offenders = _closure_offenders()
+    assert not offenders["outside"], (
+        "Internal modules resolved OUTSIDE the repository:\n  " + "\n  ".join(offenders["outside"])
+    )
+    assert not offenders["untracked"], (
         "Internal modules imported but NOT tracked by Git (clean checkouts "
-        "cannot reproduce this tree):\n  " + "\n  ".join(offenders_untracked)
+        "cannot reproduce this tree):\n  " + "\n  ".join(offenders["untracked"])
     )
+
+
+def test_closure_guard_is_order_independent_under_module_pollution() -> None:
+    """Regression for DEF-CLOSURE-001.
+
+    An untracked module injected into THIS process's ``sys.modules`` (the exact
+    shape of the pollution that produced the order-dependent failure) must NOT
+    make the closure guard fail: the guard derives its verdict from a fresh
+    import of the tracked tree, not from mutable global state.
+    """
+    name = "trading_bot.research.experimental._pollution_probe"
+    assert name not in _tracked_files()
+    stub = types.ModuleType(name)
+    stub.__file__ = str(REPO / "src" / "trading_bot" / "research" / "experimental" / "_probe.py")
+    sys.modules[name] = stub
+    try:
+        offenders = _closure_offenders()
+        assert offenders["untracked"] == [], offenders["untracked"]
+        assert offenders["outside"] == [], offenders["outside"]
+    finally:
+        sys.modules.pop(name, None)
 
 
 def test_runtime_entry_points_importable() -> None:

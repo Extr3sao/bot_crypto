@@ -1,0 +1,7 @@
+# The files under this directory are evidence, not source: every manifest records the sha256 of the
+# exact bytes it copied.  This host writes the live ST-6 artefacts with CRLF line endings and git's
+# text conversion (core.autocrlf=true here) would rewrite them on the way into the object store, so
+# the recorded digest would describe bytes no reader could reproduce from the commit — the snapshot
+# would reproduce only on the machine that took it.  `-text` disables the conversion for everything
+# below, and the copies are then stored verbatim.
+* -text

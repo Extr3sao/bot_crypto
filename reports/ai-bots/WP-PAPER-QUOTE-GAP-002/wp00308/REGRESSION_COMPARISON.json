@@ -1,0 +1,35 @@
+{
+ "base": {
+  "errors": 14,
+  "failures": 89,
+  "passed": 3205,
+  "red_nodes": 103,
+  "sha": "1d2192b0",
+  "skipped": 31,
+  "tests": 3339
+ },
+ "command": "pytest -m \"not slow and not market\" -q --tb=no -p no:cacheprovider",
+ "delta": {
+  "errors": 0,
+  "failed": 0,
+  "passed": 0,
+  "red_nodes": 0,
+  "skipped": 0,
+  "tests": 0
+ },
+ "fixed_red_nodes": [],
+ "head": {
+  "errors": 14,
+  "failures": 89,
+  "passed": 3205,
+  "red_nodes": 103,
+  "sha": "HEAD",
+  "skipped": 31,
+  "tests": 3339
+ },
+ "method": "both runs use the same interpreter, the same rebuilt repository .venv, the same command and the same markers; failures are compared by node id (module::test), not by count, so a test that fails on one side and is merely renumbered on the other cannot hide",
+ "new_red_nodes": [],
+ "schema": "wp00308-regression-comparison/1",
+ "shared_red_nodes": 103,
+ "verdict": "NO_NEW_FAILURES"
+}

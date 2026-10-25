@@ -1,0 +1,754 @@
+{
+  "artifact": "RFC049_DISCOVERY2_FILTER_ABLATION",
+  "generated_at_utc": "2026-10-10T16:39:53Z",
+  "head_at_run": "2d113a0ae82f38123eabe0385ab47bb7991b15ad",
+  "classification": "DIAGNOSTIC (non-confirmatory, RESEARCH_EXPOSED); no adoption follows from any result",
+  "hypothesis_record": {
+    "id": "E-049-ABL-001",
+    "status": "DIAGNOSTIC_NOT_ADMITTED",
+    "statement": "stablecoin/macro liquidity states, used as gates on a declared base state machine, may improve its net economics; the mechanism is the liquidity regime, not a price pattern",
+    "sources": [
+      "SRC-049-001",
+      "SRC-049-002",
+      "SRC-049-008"
+    ],
+    "falsification": "no improvement (net, drawdown or stability) in forward data outside the selection sample; any result built only on exposed history is non-confirmatory",
+    "budget_note": "consumes no admitted-hypothesis slot; a future adoption requires a new hypothesis and a new experimental budget"
+  },
+  "base": "200-day trend long/cash machine (the frozen specs' own comparator; used as a measuring instrument, not proposed for trading)",
+  "cost_bps_round_trip": 23.353553390593273,
+  "arms": {
+    "base": {
+      "development": {
+        "round_trips": 11,
+        "net_sum_bps": 38696.68514807975,
+        "net_sum_usdt": 773.9337029615949,
+        "net_expectancy_bps": 3517.88046800725,
+        "net_expectancy_usdt": 70.357609360145,
+        "net_profit_factor": 6.583105021137315,
+        "net_compounded": 5.467491597291395,
+        "max_drawdown": 0.4262971606032646,
+        "single_trade_share_of_positive_net": 0.6349251796949743,
+        "stress_1_25x_net_sum_bps": 38632.46287625562,
+        "stress_1_5x_net_sum_bps": 38568.240604431485,
+        "stress_1_5x_expectancy_bps": 3506.203691311953,
+        "lcb_95_net_expectancy_bps": -60.49880135515679,
+        "bootstrap_p_le_zero": 0.057,
+        "bootstrap_block_obs": 1,
+        "lcb_block_sensitivity_bps": {
+          "block_1": -60.49880135515679,
+          "block_2": 223.89116925750594,
+          "block_3": 733.8212444718811
+        },
+        "mean_entry_spacing_days": 165.9,
+        "subwindows": [
+          {
+            "window": "2018-12-30..2020-08-29",
+            "round_trips": 5,
+            "net_sum_bps": 29733.601864358614,
+            "positive": true
+          },
+          {
+            "window": "2020-08-30..2022-04-30",
+            "round_trips": 4,
+            "net_sum_bps": -2161.4763623118974,
+            "positive": false
+          },
+          {
+            "window": "2022-05-01..2023-12-31",
+            "round_trips": 2,
+            "net_sum_bps": 11124.559646033033,
+            "positive": true
+          }
+        ],
+        "subwindows_positive": 2,
+        "subwindows_with_trips": 3,
+        "median_hold_days": 28
+      },
+      "validation": {
+        "round_trips": 6,
+        "net_sum_bps": 1124.7623342835761,
+        "net_sum_usdt": 22.495246685671525,
+        "net_expectancy_bps": 187.46038904726268,
+        "net_expectancy_usdt": 3.749207780945254,
+        "net_profit_factor": 1.3895790895680653,
+        "net_compounded": 0.06480066532079909,
+        "max_drawdown": 0.1887381481943703,
+        "single_trade_share_of_positive_net": 0.6098351198058157,
+        "stress_1_25x_net_sum_bps": 1089.732004197686,
+        "stress_1_5x_net_sum_bps": 1054.7016741117966,
+        "stress_1_5x_expectancy_bps": 175.7836123519661,
+        "lcb_95_net_expectancy_bps": -702.7584361623565,
+        "bootstrap_p_le_zero": 0.3744,
+        "bootstrap_block_obs": 1,
+        "lcb_block_sensitivity_bps": {
+          "block_1": -702.7584361623565,
+          "block_2": -705.9683015132274,
+          "block_3": -704.3633688377919
+        },
+        "mean_entry_spacing_days": 93.8,
+        "subwindows": [
+          {
+            "window": "2024-01-01..2024-12-01",
+            "round_trips": 4,
+            "net_sum_bps": 441.4535042138332,
+            "positive": true
+          },
+          {
+            "window": "2024-12-02..2025-11-01",
+            "round_trips": 2,
+            "net_sum_bps": 683.3088300697431,
+            "positive": true
+          },
+          {
+            "window": "2025-11-02..2026-10-04",
+            "round_trips": 0,
+            "net_sum_bps": null,
+            "positive": null
+          }
+        ],
+        "subwindows_positive": 2,
+        "subwindows_with_trips": 2,
+        "median_hold_days": 17.5
+      },
+      "all_exposed": {
+        "round_trips": 17,
+        "net_sum_bps": 39821.44748236333,
+        "net_sum_usdt": 796.4289496472666,
+        "net_expectancy_bps": 2342.438087197843,
+        "net_expectancy_usdt": 46.84876174395686,
+        "net_profit_factor": 5.055899275324576,
+        "net_compounded": 5.886589355752554,
+        "max_drawdown": 0.4262971606032646,
+        "single_trade_share_of_positive_net": 0.583610378295111,
+        "stress_1_25x_net_sum_bps": 39722.19488045331,
+        "stress_1_5x_net_sum_bps": 39622.94227854328,
+        "stress_1_5x_expectancy_bps": 2330.761310502546,
+        "lcb_95_net_expectancy_bps": -65.64635635908999,
+        "bootstrap_p_le_zero": 0.0591,
+        "bootstrap_block_obs": 1,
+        "lcb_block_sensitivity_bps": {
+          "block_1": -65.64635635908999,
+          "block_2": 235.36200107334503,
+          "block_3": 459.8929540606749
+        },
+        "mean_entry_spacing_days": 149.625,
+        "subwindows": [
+          {
+            "window": "2018-12-30..2021-07-31",
+            "round_trips": 5,
+            "net_sum_bps": 29733.601864358614,
+            "positive": true
+          },
+          {
+            "window": "2021-08-01..2024-03-02",
+            "round_trips": 6,
+            "net_sum_bps": 8963.083283721135,
+            "positive": true
+          },
+          {
+            "window": "2024-03-03..2026-10-04",
+            "round_trips": 6,
+            "net_sum_bps": 1124.7623342835761,
+            "positive": true
+          }
+        ],
+        "subwindows_positive": 3,
+        "subwindows_with_trips": 3,
+        "median_hold_days": 28
+      },
+      "simulation": {
+        "open_position_at_data_end": {
+          "entry_sunday": "2026-08-23",
+          "entry_ms": 1787529600000,
+          "entry_price": 77734.0
+        },
+        "transitions": 17
+      }
+    },
+    "base+stablecoin": {
+      "development": {
+        "round_trips": 12,
+        "net_sum_bps": 25409.678153861933,
+        "net_sum_usdt": 508.1935630772387,
+        "net_expectancy_bps": 2117.4731794884947,
+        "net_expectancy_usdt": 42.34946358976989,
+        "net_profit_factor": 5.2639687160156186,
+        "net_compounded": 3.9466674995522597,
+        "max_drawdown": 0.5146408493445324,
+        "single_trade_share_of_positive_net": 0.4086309043185988,
+        "stress_1_25x_net_sum_bps": 25339.617493690148,
+        "stress_1_5x_net_sum_bps": 25269.556833518374,
+        "stress_1_5x_expectancy_bps": 2105.7964027931976,
+        "lcb_95_net_expectancy_bps": 177.00759471448484,
+        "bootstrap_p_le_zero": 0.0341,
+        "bootstrap_block_obs": 1,
+        "lcb_block_sensitivity_bps": {
+          "block_1": 177.00759471448484,
+          "block_2": 66.79951328033948,
+          "block_3": 90.00765365648122
+        },
+        "mean_entry_spacing_days": 150.8181818181818,
+        "subwindows": [
+          {
+            "window": "2018-12-30..2020-08-29",
+            "round_trips": 5,
+            "net_sum_bps": 13317.826896694189,
+            "positive": true
+          },
+          {
+            "window": "2020-08-30..2022-04-30",
+            "round_trips": 4,
+            "net_sum_bps": -527.4235592865095,
+            "positive": false
+          },
+          {
+            "window": "2022-05-01..2023-12-31",
+            "round_trips": 3,
+            "net_sum_bps": 12619.274816454252,
+            "positive": true
+          }
+        ],
+        "subwindows_positive": 2,
+        "subwindows_with_trips": 3,
+        "median_hold_days": 49.0
+      },
+      "validation": {
+        "round_trips": 8,
+        "net_sum_bps": -246.27719109809252,
+        "net_sum_usdt": -4.92554382196185,
+        "net_expectancy_bps": -30.784648887261564,
+        "net_expectancy_usdt": -0.6156929777452312,
+        "net_profit_factor": 0.9493667561869348,
+        "net_compounded": -0.0967906682998041,
+        "max_drawdown": 0.25676784829264415,
+        "single_trade_share_of_positive_net": 0.559758727842906,
+        "stress_1_25x_net_sum_bps": -292.9842978792793,
+        "stress_1_5x_net_sum_bps": -339.6914046604661,
+        "stress_1_5x_expectancy_bps": -42.46142558255826,
+        "lcb_95_net_expectancy_bps": -832.9240218229803,
+        "bootstrap_p_le_zero": 0.5347,
+        "bootstrap_block_obs": 1,
+        "lcb_block_sensitivity_bps": {
+          "block_1": -832.9240218229803,
+          "block_2": -560.119285571345,
+          "block_3": -483.824991237829
+        },
+        "mean_entry_spacing_days": 105.0,
+        "subwindows": [
+          {
+            "window": "2024-01-01..2024-12-01",
+            "round_trips": 2,
+            "net_sum_bps": 1484.156025038368,
+            "positive": true
+          },
+          {
+            "window": "2024-12-02..2025-11-01",
+            "round_trips": 5,
+            "net_sum_bps": -2581.157312651894,
+            "positive": false
+          },
+          {
+            "window": "2025-11-02..2026-10-04",
+            "round_trips": 1,
+            "net_sum_bps": 850.7240965154332,
+            "positive": true
+          }
+        ],
+        "subwindows_positive": 2,
+        "subwindows_with_trips": 3,
+        "median_hold_days": 28.0
+      },
+      "all_exposed": {
+        "round_trips": 20,
+        "net_sum_bps": 25163.40096276384,
+        "net_sum_usdt": 503.26801925527684,
+        "net_expectancy_bps": 1258.1700481381922,
+        "net_expectancy_usdt": 25.163400962763845,
+        "net_profit_factor": 3.324970801523122,
+        "net_compounded": 3.4678762464136748,
+        "max_drawdown": 0.5146408493445324,
+        "single_trade_share_of_positive_net": 0.3561967825266518,
+        "stress_1_25x_net_sum_bps": 25046.633195810868,
+        "stress_1_5x_net_sum_bps": 24929.865428857905,
+        "stress_1_5x_expectancy_bps": 1246.4932714428953,
+        "lcb_95_net_expectancy_bps": 37.60689104245582,
+        "bootstrap_p_le_zero": 0.0453,
+        "bootstrap_block_obs": 1,
+        "lcb_block_sensitivity_bps": {
+          "block_1": 37.60689104245582,
+          "block_2": 107.99733372563078,
+          "block_3": 217.0620616225027
+        },
+        "mean_entry_spacing_days": 142.21052631578948,
+        "subwindows": [
+          {
+            "window": "2018-12-30..2021-07-31",
+            "round_trips": 8,
+            "net_sum_bps": 14189.328279935819,
+            "positive": true
+          },
+          {
+            "window": "2021-08-01..2024-03-02",
+            "round_trips": 4,
+            "net_sum_bps": 11220.349873926114,
+            "positive": true
+          },
+          {
+            "window": "2024-03-03..2026-10-04",
+            "round_trips": 8,
+            "net_sum_bps": -246.27719109809252,
+            "positive": false
+          }
+        ],
+        "subwindows_positive": 2,
+        "subwindows_with_trips": 3,
+        "median_hold_days": 38.5
+      },
+      "simulation": {
+        "open_position_at_data_end": {
+          "entry_sunday": "2026-10-04",
+          "entry_ms": 1791158400000,
+          "entry_price": 86530.0
+        },
+        "transitions": 20
+      }
+    },
+    "base+macro": {
+      "development": {
+        "round_trips": 18,
+        "net_sum_bps": 25822.803713195535,
+        "net_sum_usdt": 516.4560742639108,
+        "net_expectancy_bps": 1434.600206288641,
+        "net_expectancy_usdt": 28.69200412577282,
+        "net_profit_factor": 3.516020930548937,
+        "net_compounded": 2.3343750903586766,
+        "max_drawdown": 0.48432404200834966,
+        "single_trade_share_of_positive_net": 0.6412853399988219,
+        "stress_1_25x_net_sum_bps": 25717.712722937875,
+        "stress_1_5x_net_sum_bps": 25612.621732680214,
+        "stress_1_5x_expectancy_bps": 1422.9234295933452,
+        "lcb_95_net_expectancy_bps": -295.2367386462465,
+        "bootstrap_p_le_zero": 0.1321,
+        "bootstrap_block_obs": 1,
+        "lcb_block_sensitivity_bps": {
+          "block_1": -295.2367386462465,
+          "block_2": -295.6582456119136,
+          "block_3": -214.0566755068472
+        },
+        "mean_entry_spacing_days": 94.70588235294117,
+        "subwindows": [
+          {
+            "window": "2018-12-30..2020-08-29",
+            "round_trips": 7,
+            "net_sum_bps": -2275.648413623869,
+            "positive": false
+          },
+          {
+            "window": "2020-08-30..2022-04-30",
+            "round_trips": 6,
+            "net_sum_bps": 22843.30471439878,
+            "positive": true
+          },
+          {
+            "window": "2022-05-01..2023-12-31",
+            "round_trips": 5,
+            "net_sum_bps": 5255.147412420629,
+            "positive": true
+          }
+        ],
+        "subwindows_positive": 2,
+        "subwindows_with_trips": 3,
+        "median_hold_days": 28.0
+      },
+      "validation": {
+        "round_trips": 15,
+        "net_sum_bps": 663.0631651646027,
+        "net_sum_usdt": 13.261263303292054,
+        "net_expectancy_bps": 44.20421101097351,
+        "net_expectancy_usdt": 0.8840842202194702,
+        "net_profit_factor": 1.1193777593427736,
+        "net_compounded": -0.018730710075461787,
+        "max_drawdown": 0.31798098386500523,
+        "single_trade_share_of_positive_net": 0.5125216962904209,
+        "stress_1_25x_net_sum_bps": 575.4873399498779,
+        "stress_1_5x_net_sum_bps": 487.91151473515345,
+        "stress_1_5x_expectancy_bps": 32.52743431567689,
+        "lcb_95_net_expectancy_bps": -398.3471364211285,
+        "bootstrap_p_le_zero": 0.4625,
+        "bootstrap_block_obs": 1,
+        "lcb_block_sensitivity_bps": {
+          "block_1": -398.3471364211285,
+          "block_2": -373.89459207142124,
+          "block_3": -338.72216023389
+        },
+        "mean_entry_spacing_days": 69.5,
+        "subwindows": [
+          {
+            "window": "2024-01-01..2024-12-01",
+            "round_trips": 9,
+            "net_sum_bps": 1472.4207957891208,
+            "positive": true
+          },
+          {
+            "window": "2024-12-02..2025-11-01",
+            "round_trips": 5,
+            "net_sum_bps": -1778.950513694918,
+            "positive": false
+          },
+          {
+            "window": "2025-11-02..2026-10-04",
+            "round_trips": 1,
+            "net_sum_bps": 969.5928830703997,
+            "positive": true
+          }
+        ],
+        "subwindows_positive": 2,
+        "subwindows_with_trips": 3,
+        "median_hold_days": 21
+      },
+      "all_exposed": {
+        "round_trips": 33,
+        "net_sum_bps": 26485.86687836014,
+        "net_sum_usdt": 529.7173375672028,
+        "net_expectancy_bps": 802.602026616974,
+        "net_expectancy_usdt": 16.05204053233948,
+        "net_profit_factor": 2.674447261423355,
+        "net_compounded": 2.271919877258327,
+        "max_drawdown": 0.48432404200834966,
+        "single_trade_share_of_positive_net": 0.5470350471542472,
+        "stress_1_25x_net_sum_bps": 26293.20006288776,
+        "stress_1_5x_net_sum_bps": 26100.533247415366,
+        "stress_1_5x_expectancy_bps": 790.9252499216777,
+        "lcb_95_net_expectancy_bps": -183.4351237478095,
+        "bootstrap_p_le_zero": 0.1301,
+        "bootstrap_block_obs": 1,
+        "lcb_block_sensitivity_bps": {
+          "block_1": -183.4351237478095,
+          "block_2": -165.38534580381295,
+          "block_3": -107.92455285292505
+        },
+        "mean_entry_spacing_days": 83.34375,
+        "subwindows": [
+          {
+            "window": "2018-12-30..2021-07-31",
+            "round_trips": 9,
+            "net_sum_bps": 22809.526621372337,
+            "positive": true
+          },
+          {
+            "window": "2021-08-01..2024-03-02",
+            "round_trips": 11,
+            "net_sum_bps": 3964.926630026866,
+            "positive": true
+          },
+          {
+            "window": "2024-03-03..2026-10-04",
+            "round_trips": 13,
+            "net_sum_bps": -288.5863730390566,
+            "positive": false
+          }
+        ],
+        "subwindows_positive": 2,
+        "subwindows_with_trips": 3,
+        "median_hold_days": 21
+      },
+      "simulation": {
+        "open_position_at_data_end": {
+          "entry_sunday": "2026-10-04",
+          "entry_ms": 1791158400000,
+          "entry_price": 86530.0
+        },
+        "transitions": 33
+      }
+    },
+    "base+both": {
+      "development": {
+        "round_trips": 12,
+        "net_sum_bps": 12082.35700000783,
+        "net_sum_usdt": 241.6471400001566,
+        "net_expectancy_bps": 1006.8630833339859,
+        "net_expectancy_usdt": 20.137261666679716,
+        "net_profit_factor": 3.4005181326641924,
+        "net_compounded": 1.4578233685997275,
+        "max_drawdown": 0.3606598784122055,
+        "single_trade_share_of_positive_net": 0.2908945697697768,
+        "stress_1_25x_net_sum_bps": 12012.296339836057,
+        "stress_1_5x_net_sum_bps": 11942.235679664273,
+        "stress_1_5x_expectancy_bps": 995.1863066386894,
+        "lcb_95_net_expectancy_bps": -60.54521291004673,
+        "bootstrap_p_le_zero": 0.0623,
+        "bootstrap_block_obs": 1,
+        "lcb_block_sensitivity_bps": {
+          "block_1": -60.54521291004673,
+          "block_2": 25.50259628048612,
+          "block_3": 105.17081467761852
+        },
+        "mean_entry_spacing_days": 146.36363636363637,
+        "subwindows": [
+          {
+            "window": "2018-12-30..2020-08-29",
+            "round_trips": 5,
+            "net_sum_bps": 5816.475018059271,
+            "positive": true
+          },
+          {
+            "window": "2020-08-30..2022-04-30",
+            "round_trips": 4,
+            "net_sum_bps": 1176.2761261754872,
+            "positive": true
+          },
+          {
+            "window": "2022-05-01..2023-12-31",
+            "round_trips": 3,
+            "net_sum_bps": 5089.605855773074,
+            "positive": true
+          }
+        ],
+        "subwindows_positive": 3,
+        "subwindows_with_trips": 3,
+        "median_hold_days": 24.5
+      },
+      "validation": {
+        "round_trips": 15,
+        "net_sum_bps": -481.2588461875196,
+        "net_sum_usdt": -9.625176923750391,
+        "net_expectancy_bps": -32.083923079167974,
+        "net_expectancy_usdt": -0.6416784615833595,
+        "net_profit_factor": 0.9071647362403655,
+        "net_compounded": -0.09018715373631181,
+        "max_drawdown": 0.2948774561311655,
+        "single_trade_share_of_positive_net": 0.24601215751227304,
+        "stress_1_25x_net_sum_bps": -568.8346714022449,
+        "stress_1_5x_net_sum_bps": -656.4104966169689,
+        "stress_1_5x_expectancy_bps": -43.760699774464584,
+        "lcb_95_net_expectancy_bps": -360.4551194182805,
+        "bootstrap_p_le_zero": 0.5628,
+        "bootstrap_block_obs": 1,
+        "lcb_block_sensitivity_bps": {
+          "block_1": -360.4551194182805,
+          "block_2": -355.1354732095051,
+          "block_3": -348.5955801404398
+        },
+        "mean_entry_spacing_days": 69.5,
+        "subwindows": [
+          {
+            "window": "2024-01-01..2024-12-01",
+            "round_trips": 7,
+            "net_sum_bps": 1804.9696978977202,
+            "positive": true
+          },
+          {
+            "window": "2024-12-02..2025-11-01",
+            "round_trips": 7,
+            "net_sum_bps": -3255.8214271556394,
+            "positive": false
+          },
+          {
+            "window": "2025-11-02..2026-10-04",
+            "round_trips": 1,
+            "net_sum_bps": 969.5928830703997,
+            "positive": true
+          }
+        ],
+        "subwindows_positive": 2,
+        "subwindows_with_trips": 3,
+        "median_hold_days": 14
+      },
+      "all_exposed": {
+        "round_trips": 27,
+        "net_sum_bps": 11601.098153820316,
+        "net_sum_usdt": 232.0219630764063,
+        "net_expectancy_bps": 429.67030199334505,
+        "net_expectancy_usdt": 8.5934060398669,
+        "net_profit_factor": 2.1354436825460414,
+        "net_compounded": 1.236159274599125,
+        "max_drawdown": 0.3606598784122055,
+        "single_trade_share_of_positive_net": 0.2281948068804266,
+        "stress_1_25x_net_sum_bps": 11443.461668433805,
+        "stress_1_5x_net_sum_bps": 11285.825183047307,
+        "stress_1_5x_expectancy_bps": 417.9935252980484,
+        "lcb_95_net_expectancy_bps": -78.80635220538053,
+        "bootstrap_p_le_zero": 0.0917,
+        "bootstrap_block_obs": 1,
+        "lcb_block_sensitivity_bps": {
+          "block_1": -78.80635220538053,
+          "block_2": -60.15274262228317,
+          "block_3": -54.510601842107725
+        },
+        "mean_entry_spacing_days": 102.57692307692308,
+        "subwindows": [
+          {
+            "window": "2018-12-30..2021-07-31",
+            "round_trips": 8,
+            "net_sum_bps": 8391.676086762895,
+            "positive": true
+          },
+          {
+            "window": "2021-08-01..2024-03-02",
+            "round_trips": 6,
+            "net_sum_bps": 4642.330451448597,
+            "positive": true
+          },
+          {
+            "window": "2024-03-03..2026-10-04",
+            "round_trips": 13,
+            "net_sum_bps": -1432.9083843911787,
+            "positive": false
+          }
+        ],
+        "subwindows_positive": 2,
+        "subwindows_with_trips": 3,
+        "median_hold_days": 14
+      },
+      "simulation": {
+        "open_position_at_data_end": {
+          "entry_sunday": "2026-10-04",
+          "entry_ms": 1791158400000,
+          "entry_price": 86530.0
+        },
+        "transitions": 27
+      }
+    }
+  },
+  "deltas": {
+    "base+stablecoin": {
+      "development": {
+        "round_trips_base": 11,
+        "round_trips_arm": 12,
+        "round_trips_delta": 1,
+        "base_trips_preserved_exactly": 0,
+        "base_trips_reshaped_or_dropped": 11,
+        "net_sum_delta_bps": -13287.006994217816,
+        "expectancy_delta_bps": -1400.4072885187552,
+        "max_drawdown_base": 0.4262971606032646,
+        "max_drawdown_arm": 0.5146408493445324,
+        "max_drawdown_delta": 0.08834368874126775,
+        "subwindows_positive_arm": 2,
+        "subwindows_with_trips_arm": 3
+      },
+      "validation": {
+        "round_trips_base": 6,
+        "round_trips_arm": 8,
+        "round_trips_delta": 2,
+        "base_trips_preserved_exactly": 1,
+        "base_trips_reshaped_or_dropped": 5,
+        "net_sum_delta_bps": -1371.0395253816687,
+        "expectancy_delta_bps": -218.24503793452425,
+        "max_drawdown_base": 0.1887381481943703,
+        "max_drawdown_arm": 0.25676784829264415,
+        "max_drawdown_delta": 0.06802970009827386,
+        "subwindows_positive_arm": 2,
+        "subwindows_with_trips_arm": 3
+      }
+    },
+    "base+macro": {
+      "development": {
+        "round_trips_base": 11,
+        "round_trips_arm": 18,
+        "round_trips_delta": 7,
+        "base_trips_preserved_exactly": 4,
+        "base_trips_reshaped_or_dropped": 7,
+        "net_sum_delta_bps": -12873.881434884213,
+        "expectancy_delta_bps": -2083.280261718609,
+        "max_drawdown_base": 0.4262971606032646,
+        "max_drawdown_arm": 0.48432404200834966,
+        "max_drawdown_delta": 0.05802688140508505,
+        "subwindows_positive_arm": 2,
+        "subwindows_with_trips_arm": 3
+      },
+      "validation": {
+        "round_trips_base": 6,
+        "round_trips_arm": 15,
+        "round_trips_delta": 9,
+        "base_trips_preserved_exactly": 1,
+        "base_trips_reshaped_or_dropped": 5,
+        "net_sum_delta_bps": -461.6991691189735,
+        "expectancy_delta_bps": -143.25617803628916,
+        "max_drawdown_base": 0.1887381481943703,
+        "max_drawdown_arm": 0.31798098386500523,
+        "max_drawdown_delta": 0.12924283567063494,
+        "subwindows_positive_arm": 2,
+        "subwindows_with_trips_arm": 3
+      }
+    },
+    "base+both": {
+      "development": {
+        "round_trips_base": 11,
+        "round_trips_arm": 12,
+        "round_trips_delta": 1,
+        "base_trips_preserved_exactly": 0,
+        "base_trips_reshaped_or_dropped": 11,
+        "net_sum_delta_bps": -26614.328148071916,
+        "expectancy_delta_bps": -2511.017384673264,
+        "max_drawdown_base": 0.4262971606032646,
+        "max_drawdown_arm": 0.3606598784122055,
+        "max_drawdown_delta": -0.06563728219105913,
+        "subwindows_positive_arm": 3,
+        "subwindows_with_trips_arm": 3
+      },
+      "validation": {
+        "round_trips_base": 6,
+        "round_trips_arm": 15,
+        "round_trips_delta": 9,
+        "base_trips_preserved_exactly": 1,
+        "base_trips_reshaped_or_dropped": 5,
+        "net_sum_delta_bps": -1606.0211804710957,
+        "expectancy_delta_bps": -219.54431212643067,
+        "max_drawdown_base": 0.1887381481943703,
+        "max_drawdown_arm": 0.2948774561311655,
+        "max_drawdown_delta": 0.10613930793679521,
+        "subwindows_positive_arm": 2,
+        "subwindows_with_trips_arm": 3
+      }
+    }
+  },
+  "base_regimes": {
+    "both_long": {
+      "round_trips": 3,
+      "net_sum_bps": 36470.16192619519,
+      "mean_net_bps": 12156.720642065064
+    },
+    "stablecoin_only": {
+      "round_trips": 3,
+      "net_sum_bps": 3768.9448999382757,
+      "mean_net_bps": 1256.3149666460918
+    },
+    "macro_only": {
+      "round_trips": 4,
+      "net_sum_bps": -4999.987730055018,
+      "mean_net_bps": -1249.9969325137545
+    },
+    "neither": {
+      "round_trips": 7,
+      "net_sum_bps": 4582.328386284875,
+      "mean_net_bps": 654.6183408978393
+    }
+  },
+  "adoption": {
+    "status": "NOT_ADOPTED",
+    "reasons": [
+      "no ACTIVE strategy exists as an adoption target today (paper ledger: 0 admitted, PAPER_ACTIVE=0)",
+      "all numbers are RESEARCH_EXPOSED and non-confirmatory",
+      "the operator's adoption rule requires reproducible improvement outside the data used to select the filter (forward evidence), which does not exist yet"
+    ],
+    "prerequisites_for_a_future_decision": [
+      "a new admitted hypothesis with its own budget and frozen rules",
+      "forward (post-selection) data showing the improvement survives"
+    ]
+  },
+  "checks": [
+    {
+      "check": "base_reproduces_engine_trend_comparator",
+      "result": "PASS",
+      "detail": "dev 5.467491597291395 vs 5.467491597291395; val 0.06480066532079909 vs 0.06480066532079909"
+    }
+  ],
+  "checks_failed": 0,
+  "scope": {
+    "sealed_oos_opened": false,
+    "trading": "not performed",
+    "h_049_001_modified": false,
+    "h_049_002_modified": false
+  }
+}

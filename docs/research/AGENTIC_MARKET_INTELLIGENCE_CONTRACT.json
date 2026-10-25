@@ -1,0 +1,129 @@
+{
+  "spike_id": "CAP-001",
+  "spike_name": "AGENTIC MARKET INTELLIGENCE CAPABILITY SPIKE",
+  "governance_framing": "CAPABILITY_SPIKE_OUTSIDE_ALPHA_FREEZE",
+  "authority_map": {
+    "tradingview": "INTELLIGENCE_SOURCE",
+    "historical_bars": "OUR_DATASETS",
+    "fills": "BROKER_OR_EXCHANGE",
+    "pnl": "PORTFOLIO_ACCOUNTING"
+  },
+  "tradingview_is_accounting_source_of_truth": false,
+  "non_deterministic_domains": [
+    "market_interpretation",
+    "regime_interpretation",
+    "opportunity_detection",
+    "news_context_reasoning",
+    "evidence_weighting",
+    "trade_thesis",
+    "no_trade_judgment",
+    "confidence"
+  ],
+  "deterministic_domains": [
+    "max_risk",
+    "max_exposure",
+    "position_sizing",
+    "capital_allocation_limits",
+    "stop_constraints",
+    "fees",
+    "accounting",
+    "pnl",
+    "reconciliation",
+    "execution_permissions"
+  ],
+  "llm_sizing_forbidden": true,
+  "llm_leverage_forbidden": true,
+  "forbidden_proposal_fields": [
+    "size",
+    "quantity",
+    "qty",
+    "leverage",
+    "notional",
+    "position_size",
+    "order_type",
+    "order_id",
+    "api_key",
+    "exchange_order"
+  ],
+  "read_only_mcp_tools": [
+    "get_ohlcv",
+    "get_technicals_rating",
+    "run_screener",
+    "get_symbol_data",
+    "get_symbol_data_batch",
+    "get_news",
+    "get_economic_data",
+    "get_economic_calendar",
+    "get_dividends_calendar",
+    "get_earnings_calendar",
+    "search_symbols",
+    "list_watchlists",
+    "get_watchlist"
+  ],
+  "write_mcp_tools_forbidden": [
+    "create_alert",
+    "update_alert",
+    "delete_alert",
+    "stop_alerts",
+    "restart_alerts",
+    "create_watchlist",
+    "delete_watchlist",
+    "add_to_watchlist",
+    "remove_from_watchlist",
+    "update_watchlist"
+  ],
+  "mcp_constraints": {
+    "auth": "OAuth 2.1 against a paid TradingView account (Essential or above); no API key",
+    "transport": "streamable HTTP MCP, consumed by an LLM client (Claude / ChatGPT / Codex)",
+    "rate_limit": "~100 requests per minute per user",
+    "get_ohlcv_max_bars": "5000",
+    "get_technicals_rating": "single timeframe per call; multi_timeframe must be composed",
+    "run_screener_max_rows": "1000",
+    "create_alert": "simple price conditions only; multi-condition and indicator alerts rejected",
+    "webhooks": "cannot be configured through MCP (2FA not available); set up on tradingview.com"
+  },
+  "forbidden_during_roadmap": [
+    "tsmom_campaign",
+    "xmom_campaign",
+    "rsi_strategy",
+    "macd_strategy",
+    "mean_reversion",
+    "pine_strategy_mining",
+    "hyperparameter_optimization"
+  ],
+  "gates": [
+    "G0_TV_CONTEXT",
+    "G1_AGENT_HYPOTHESES",
+    "G2_CAUSAL_FREEZE",
+    "G3_AGENT_EDGE",
+    "G4_PORTFOLIO_EDGE",
+    "G5_PAPER_EXECUTION",
+    "G6_CANARY_200_USDT"
+  ],
+  "budget_before_g3": {
+    "MAX_AI_AGENTS": 2,
+    "MAX_TRADINGVIEW_CONNECTORS": 1,
+    "MAX_SHADOW_ENGINES": 1,
+    "MAX_EVALUATORS": 1
+  },
+  "universe_v1": [
+    "BINANCE:BTCUSDT",
+    "BINANCE:ETHUSDT",
+    "SP:SPX",
+    "NASDAQ:NDX",
+    "TVC:GOLD",
+    "TVC:US10Y",
+    "FX:EURUSD"
+  ],
+  "timeframes_v1": [
+    "1h",
+    "4h",
+    "1D"
+  ],
+  "kpi_values": {
+    "STRATEGY_EDGE": 0,
+    "AGENTIC_DECISION_EDGE": 0,
+    "PORTFOLIO_EDGE": 0
+  },
+  "immediate_kpi_target": "AGENTIC_DECISION_EDGE 0 -> 1 (or PORTFOLIO_EDGE 0 -> 1)"
+}

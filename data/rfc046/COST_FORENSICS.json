@@ -1,0 +1,240 @@
+{
+  "admission_effect": "NONE \u2014 this artefact explains a rejection; it admits nothing and it generates no new hypothesis (RFC-046 stop rule).",
+  "artifact": "RFC-046_COST_FORENSICS",
+  "campaign_status_unchanged": "DISCOVERY_CAMPAIGN_FAILED",
+  "candidates": {
+    "CAND-046-001": {
+      "asset": "BTCUSDT",
+      "avg_gross_loss_bps": -123.209839,
+      "avg_gross_win_bps": 119.496986,
+      "break_even_round_trip_bps": 4.530596,
+      "break_even_vs_admission": 0.190436,
+      "candidate_id": "CAND-046-001",
+      "cost_reduction_factor_required": 5.251097,
+      "gross_expectancy_bps": 4.530596,
+      "gross_positive_in_every_partition": false,
+      "hit_rate": 0.526316,
+      "hypothesis_id": "HYP-001",
+      "mechanism": "forced_flows",
+      "net_expectancy_bps": -19.260004,
+      "oos_gross_expectancy_bps": -74.590884,
+      "oos_net_expectancy_bps": -98.381484,
+      "partition_detail": {
+        "development": {
+          "gross_bps": 68.294628,
+          "n": 19,
+          "net_bps": 44.504028
+        },
+        "final_oos": {
+          "gross_bps": -74.590884,
+          "n": 10,
+          "net_bps": -98.381484
+        },
+        "validation": {
+          "gross_bps": -57.857462,
+          "n": 8,
+          "net_bps": -81.648062
+        }
+      },
+      "partitions_without_gross_edge": [
+        "final_oos",
+        "validation"
+      ],
+      "recorded_net_expectancy_bps": -19.260004,
+      "recorded_vs_measured": {
+        "abs_diff_bps": 0.0,
+        "comparable": true,
+        "match": true
+      },
+      "signals": 38,
+      "spec_hash": "e5e58176e4c8fb01e79c7db368fd889f6f264a3e956bc1be601389daa8dd135a",
+      "strategy": "funding_capitulation",
+      "stressed_net_expectancy_bps": -31.155304,
+      "trades_oos": 10,
+      "trades_total": 38,
+      "verdict": "COST_DISQUALIFIED",
+      "verdict_reason": "gross expectancy is 4.5306 bps per trade, below even the cheapest documented scenario in the frozen cost model (9.25 bps, BINANCE_USDM_PERP_MAKER). No cost-side change documented in this repository rescues it. The aggregate is not a stable edge: gross is not positive in validation (-57.857462 bps), final_oos (-74.590884 bps), so the positive figure is confined to the earlier window and the mechanism has no gross edge out of sample either. Cost is the second problem, not the first.",
+      "zero_sample": false
+    },
+    "CAND-046-002": {
+      "asset": "ETHUSDT",
+      "avg_gross_loss_bps": -136.683932,
+      "avg_gross_win_bps": 95.036718,
+      "break_even_round_trip_bps": -25.45802,
+      "break_even_vs_admission": -1.070087,
+      "candidate_id": "CAND-046-002",
+      "cost_reduction_factor_required": null,
+      "gross_expectancy_bps": -25.45802,
+      "gross_positive_in_every_partition": false,
+      "hit_rate": 0.48,
+      "hypothesis_id": "HYP-002",
+      "mechanism": "market_microstructure",
+      "net_expectancy_bps": -49.24862,
+      "oos_gross_expectancy_bps": -8.477294,
+      "oos_net_expectancy_bps": -32.267894,
+      "partition_detail": {
+        "development": {
+          "gross_bps": -7.773743,
+          "n": 34,
+          "net_bps": -31.564343
+        },
+        "final_oos": {
+          "gross_bps": -8.477294,
+          "n": 23,
+          "net_bps": -32.267894
+        },
+        "validation": {
+          "gross_bps": -80.559249,
+          "n": 18,
+          "net_bps": -104.349849
+        }
+      },
+      "partitions_without_gross_edge": [
+        "development",
+        "final_oos",
+        "validation"
+      ],
+      "recorded_net_expectancy_bps": -49.24862,
+      "recorded_vs_measured": {
+        "abs_diff_bps": 0.0,
+        "comparable": true,
+        "match": true
+      },
+      "signals": 75,
+      "spec_hash": "3336b8f343d899af0415f3f9e35fce03d72f0cdd626ac6872b9add2e53964ecf",
+      "strategy": "settlement_dip",
+      "stressed_net_expectancy_bps": -61.14392,
+      "trades_oos": 23,
+      "trades_total": 75,
+      "verdict": "NO_GROSS_EDGE",
+      "verdict_reason": "gross expectancy is -25.4580 bps per trade, i.e. the mechanism loses money before any cost is charged. Cost reduction cannot rescue it; this is an economic rejection, not an execution-cost rejection.",
+      "zero_sample": false
+    },
+    "CAND-046-003": {
+      "asset": "BTCUSDT",
+      "avg_gross_loss_bps": null,
+      "avg_gross_win_bps": null,
+      "break_even_round_trip_bps": null,
+      "break_even_vs_admission": null,
+      "candidate_id": "CAND-046-003",
+      "cost_reduction_factor_required": null,
+      "gross_expectancy_bps": null,
+      "gross_positive_in_every_partition": null,
+      "hit_rate": null,
+      "hypothesis_id": "HYP-003",
+      "mechanism": "institutional_constraint",
+      "net_expectancy_bps": null,
+      "oos_gross_expectancy_bps": null,
+      "oos_net_expectancy_bps": null,
+      "partition_detail": {
+        "development": {
+          "gross_bps": null,
+          "n": 0,
+          "net_bps": null
+        },
+        "final_oos": {
+          "gross_bps": null,
+          "n": 0,
+          "net_bps": null
+        },
+        "validation": {
+          "gross_bps": null,
+          "n": 0,
+          "net_bps": null
+        }
+      },
+      "partitions_without_gross_edge": [],
+      "recorded_net_expectancy_bps": null,
+      "recorded_vs_measured": {
+        "abs_diff_bps": null,
+        "comparable": false,
+        "match": true
+      },
+      "signals": 0,
+      "spec_hash": "8f99b0366301a304e6637dc2a640265d18bd1607df73b579fe2ca418a0cf007c",
+      "strategy": "weekend_rebound",
+      "stressed_net_expectancy_bps": null,
+      "trades_oos": 0,
+      "trades_total": 0,
+      "verdict": "ZERO_SAMPLE",
+      "verdict_reason": "no trade was generated, so no edge was measured in either direction: the entry filter never fired on the frozen data. Nothing about cost or mechanism follows from this.",
+      "zero_sample": true
+    }
+  },
+  "cost_model": {
+    "admission_round_trip_bps": 23.7906,
+    "admission_scenario": "BINANCE_SPOT_STANDARD_TAKER",
+    "cheapest_documented_bps": 9.25,
+    "cheapest_documented_scenario": "BINANCE_USDM_PERP_MAKER",
+    "cheapest_spot_bps": 17.7906,
+    "cheapest_spot_scenario": "MEXC_SPOT_TAKER",
+    "name": "COST_MODEL_V3",
+    "scenarios": [
+      {
+        "product": "USD\u24c8-M Perpetual",
+        "round_trip_bps": 9.25,
+        "scenario_id": "BINANCE_USDM_PERP_MAKER"
+      },
+      {
+        "product": "USD\u24c8-M Perpetual",
+        "round_trip_bps": 13.7906,
+        "scenario_id": "BINANCE_USDM_PERP_TAKER"
+      },
+      {
+        "product": "Spot",
+        "round_trip_bps": 17.7906,
+        "scenario_id": "MEXC_SPOT_TAKER"
+      },
+      {
+        "product": "Spot",
+        "round_trip_bps": 18.7906,
+        "scenario_id": "BINANCE_SPOT_BNB_TAKER"
+      },
+      {
+        "product": "Spot",
+        "round_trip_bps": 23.7906,
+        "scenario_id": "BINANCE_SPOT_STANDARD_TAKER"
+      },
+      {
+        "product": "Spot",
+        "round_trip_bps": 23.7906,
+        "scenario_id": "BYBIT_SPOT_TAKER"
+      },
+      {
+        "product": "Spot",
+        "round_trip_bps": 23.7906,
+        "scenario_id": "OKX_SPOT_TAKER"
+      },
+      {
+        "product": "Spot",
+        "round_trip_bps": 31.25,
+        "scenario_id": "BINANCE_SPOT_BNB_MAKER"
+      },
+      {
+        "product": "Spot",
+        "round_trip_bps": 41.25,
+        "scenario_id": "BINANCE_SPOT_STANDARD_MAKER"
+      },
+      {
+        "product": "Spot",
+        "round_trip_bps": 83.7906,
+        "scenario_id": "KRAKENPRO_SPOT_TAKER"
+      }
+    ],
+    "stress_multiple": 1.5,
+    "stressed_round_trip_bps": 35.6859
+  },
+  "false_success": 0,
+  "generated_at_utc": "2026-10-08T13:15:28Z",
+  "head_at_run": "0f09bda8f06fdefa16dbe2acf0da1b9fd87a125e",
+  "purpose": "Separate a cost-disqualified rejection (positive gross edge eaten by the documented cost floor) from an economic rejection (negative gross edge, which no cost can rescue).",
+  "rfc": "RFC-046",
+  "standing_state": {
+    "G_BUSINESS_REENTRY": "NOT_PASS",
+    "discovery_offline_authorized": true,
+    "false_success": 0,
+    "live_trading": "DISABLED",
+    "profitability_verified": false,
+    "trades_authorized": 0
+  }
+}

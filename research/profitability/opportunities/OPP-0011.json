@@ -1,0 +1,86 @@
+{
+  "opportunity_id": "OPP-0011",
+  "title": "Strategy001 (freqtrade-strategies) — EMA20/50 cross with Heikin-Ashi confirmation on 5m",
+  "source_ids": [
+    "S2-03",
+    "S2-01"
+  ],
+  "economic_hypothesis": "no result is claimed anywhere: the file is a rule set without a published period, trade count or return",
+  "market": "crypto spot pairs traded through freqtrade",
+  "assets": "the file declares no pairlist; the README says results depend on the user's pairs, timeframe and timerange",
+  "timeframe": "5m (timeframe = '5m' in the file)",
+  "entry_rules": "enter when EMA20 crosses above EMA50, the Heikin-Ashi bar is green and ha_close > EMA20",
+  "exit_rules": "stoploss = -0.10; minimal_roi ladder {60: 0.01, 30: 0.03, 20: 0.04, 0: 0.05}; the ROI ladder's time buckets (1% if closed within 60 min, 3% within 30, 4% within 20, 5% at any time); exit when EMA50 crosses above EMA100 with ha_close < EMA20 and a red Heikin-Ashi bar, use_exit_signal = True",
+  "risk_rules": "stake amount and tradable balance come from the user's config, which the source does not fix; none declared (24/7 market)",
+  "parameters": "every parameter is a literal in the file (EMA 20/50/100, 5m, stoploss -0.10, the ROI ladder)",
+  "claimed_period": "nothing is published with the file",
+  "claimed_metrics": "the corpus README shows results as links/images, not as numbers",
+  "transaction_cost_model": "no fee or slippage model; freqtrade applies whatever the user's config says",
+  "required_data": "exchange OHLCV (freqtrade download-data)",
+  "external_code": "this exact file in freqtrade/freqtrade-strategies",
+  "external_results": "the strategy source read in full (rules, ROI, stoploss, order types)",
+  "forward_evidence": "SEE_SOURCE_REGISTRY",
+  "live_evidence": "SEE_SOURCE_REGISTRY",
+  "counter_evidence": [
+    "the corpus README itself calls these strategies starting points and warns that results depend on the user's pairs and period",
+    "the file's own comment notes that minimal_roi and stoploss are overridden by the user's config",
+    "no backtest is published with the file, so there is no external result to reproduce — only an external rule set",
+    "the project's admission cost is a 23.791 bps round trip, and the source declares no cost model (no fee or slippage model; freqtrade applies whatever the user's config says)",
+    "found in the RFC-035S2 strategy-first search; no local backtest influenced this record"
+  ],
+  "ambiguities": [
+    "assets",
+    "sizing_rule",
+    "warmup",
+    "transaction_costs",
+    "original_period",
+    "original_metrics"
+  ],
+  "replication_difficulty": "NOT_ESTABLISHED: the first ROI bucket (1%) is about 42x the 23.791 bps round trip, but with an unknown hit rate, an unknown trade count and a -10% stop the source supports no headroom claim either way",
+  "evidence_quality": "E1 — the strategy source read in full (rules, ROI, stoploss, order types)",
+  "selection_bias_risk": "MEDIUM (the search was run with knowledge of 2024-2025 published results)",
+  "overfitting_risk": "HIGH",
+  "lookahead_risk": "MEDIUM",
+  "implementation_risk": "LOW",
+  "status": "ROUND_3_SUPERSEDED_INSUFFICIENT_EVIDENCE",
+  "evidence_scores": {
+    "RULE_COMPLETENESS": 7,
+    "CODE_AVAILABILITY": 5,
+    "DATA_REPRODUCIBILITY": 5,
+    "TRANSACTION_COST_REALISM": 1,
+    "OOS_EVIDENCE": 1,
+    "FORWARD_EVIDENCE": 0,
+    "LIVE_EVIDENCE": 0,
+    "SAMPLE_SIZE": 0,
+    "INDEPENDENT_VALIDATION": 1,
+    "IMPLEMENTATION_FIDELITY": 0
+  },
+  "evidence_score_total": 20,
+  "rank": "REPLICATE_P1",
+  "rfc": "RFC-035S2",
+  "candidate_ref": "reports/rfc035/search_round_2/CANDIDATE_MATRIX.json",
+  "rule_completeness": "15/21",
+  "gaps_to_p0": [
+    "no published original period or metrics exist to replicate",
+    "universe and stake rule must be chosen by us (material invention)",
+    "no transaction-cost model in the source",
+    "the 5m cadence must be tested against the cost floor before any claim"
+  ],
+  "rejection_reason_codes": [],
+  "rank_history": [
+    {
+      "rank": "REPLICATE_P1",
+      "rfc": "RFC-035S2"
+    }
+  ],
+  "current_rank": "INSUFFICIENT_EVIDENCE",
+  "rank_semantics": "`rank` is frozen as assigned by the round that classified this candidate; `current_rank` is the rank in force after RFC-035S3",
+  "round_3_reclassification": {
+    "previous_rank": "REPLICATE_P1",
+    "corrected_rank": "INSUFFICIENT_EVIDENCE",
+    "reason": "reglas incompletas (universo, sizing y warmup fuera de la fuente) y sin evidencia económica atribuible al código: por debajo de E2 aunque las reglas de entrada y salida estén completas",
+    "executable_rule_completeness": "7/10",
+    "evidence_completeness": "5/7",
+    "snapshot_from": "S3-01"
+  }
+}
