@@ -20,6 +20,7 @@ import hashlib
 import json
 import math
 import statistics
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -45,6 +46,15 @@ from tdm12_review import (  # noqa: E402  (own harness, purpose-built)
     TIMEFRAMES,
     WINDOW,
     bars,
+)
+
+from trading_bot.research.source_fingerprint import (  # noqa: E402
+    FINGERPRINT_SCHEME_V1,
+    FINGERPRINT_SCHEME_V2,
+    FingerprintError,
+    SourceFingerprint,
+    compute_source_fingerprint,
+    legacy_working_tree_fingerprint,
 )
 
 Z90 = 1.6448536269514722
@@ -95,20 +105,85 @@ def strategy_protocol_implementations() -> list[dict[str, str]]:
     return found
 
 
-def family_classes() -> list[dict[str, str]]:
-    out: list[dict[str, str]] = []
+#: Historical artefacts were published with this literal in ``source_commit``. It is
+#: not provenance and never was (defect D-02); ``v1`` keeps it only so the published
+#: registry can be reproduced byte for byte, and says so out loud.
+LEGACY_SOURCE_COMMIT_LITERAL = "504256ec"
+
+
+def git_head() -> str:
+    proc = subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, capture_output=True, text=True, check=False
+    )
+    if proc.returncode != 0:
+        raise FingerprintError(f"cannot resolve HEAD in {REPO_ROOT}: {proc.stderr.strip()}")
+    return proc.stdout.strip()
+
+
+def family_classes(scheme: str, source_commit: str | None) -> list[dict[str, Any]]:
+    """One fingerprint row per family module.
+
+    ``v2`` hashes the committed blob and refuses a dirty or untracked source file
+    (RFC-TDM-014A §5.1). ``v1`` reproduces the published artefact exactly, defect
+    included, so historical numbers stay checkable instead of being rewritten.
+    """
+    out: list[dict[str, Any]] = []
     for name, (module_name, class_name) in FAMILY_MODULES.items():
         module = __import__(f"trading_bot.research.families.{module_name}", fromlist=[class_name])
         getattr(module, class_name)  # import check: the class must exist in the frozen module
-        out.append(
-            {
-                "family": name,
-                "class": class_name,
-                "module": f"trading_bot.research.families.{module_name}",
-                "source_sha256": sha(Path(module.__file__)),
-            }
-        )
+        path = Path(module.__file__)
+        relpath = path.resolve().relative_to(REPO_ROOT).as_posix()
+        entry: dict[str, Any] = {
+            "family": name,
+            "class": class_name,
+            "module": f"trading_bot.research.families.{module_name}",
+        }
+        if scheme == FINGERPRINT_SCHEME_V2:
+            fingerprint: SourceFingerprint = compute_source_fingerprint(
+                REPO_ROOT, relpath, commit=source_commit or "HEAD"
+            )
+            entry["source_sha256"] = fingerprint.source_fingerprint
+            entry["fingerprint"] = fingerprint.to_dict()
+        else:
+            entry["source_sha256"] = legacy_working_tree_fingerprint(path)
+            entry["fingerprint"] = None
+        out.append(entry)
     return out
+
+
+def fingerprint_fields(family_row: dict[str, Any], scheme: str) -> dict[str, Any]:
+    """Registry columns for one family, versioned by scheme.
+
+    ``v1`` emits ``parameter_hash`` and nothing else, so the published registry can
+    be reproduced byte for byte. ``v2`` keeps ``parameter_hash`` as an explicit
+    truncation alias of ``source_fingerprint`` and adds the provenance fields, so a
+    reader can tell which identity it is holding without guessing from width.
+    """
+    fingerprint = family_row.get("fingerprint")
+    if scheme == FINGERPRINT_SCHEME_V2 and fingerprint:
+        return {
+            "parameter_hash": fingerprint["parameter_hash"],
+            "fingerprint_scheme": fingerprint["fingerprint_scheme"],
+            "source_fingerprint": fingerprint["source_fingerprint"],
+            "source_relpath": fingerprint["source_relpath"],
+            "source_blob_oid": fingerprint["source_blob_oid"],
+            "working_tree_clean_verified": fingerprint["working_tree_clean_verified"],
+        }
+    return {"parameter_hash": str(family_row["source_sha256"])[:16]}
+
+
+def empty_fingerprint_fields(scheme: str) -> dict[str, Any]:
+    """The same columns for rows that have no module to fingerprint."""
+    if scheme == FINGERPRINT_SCHEME_V2:
+        return {
+            "parameter_hash": "-",
+            "fingerprint_scheme": "not_applicable",
+            "source_fingerprint": "-",
+            "source_relpath": "-",
+            "source_blob_oid": "-",
+            "working_tree_clean_verified": False,
+        }
+    return {"parameter_hash": "-"}
 
 
 def declared_config_strategies() -> list[dict[str, Any]]:
@@ -318,13 +393,52 @@ def _max_dd(net: list[float]) -> float:
     return worst
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--fingerprint-scheme",
+        choices=(FINGERPRINT_SCHEME_V1, FINGERPRINT_SCHEME_V2),
+        default=FINGERPRINT_SCHEME_V2,
+        help="v2 hashes the committed blob (RFC-TDM-014A); v1 reproduces the published artefact",
+    )
+    parser.add_argument(
+        "--source-commit",
+        default=None,
+        help="commit whose blobs are fingerprinted; defaults to HEAD for v2 and to the "
+        "historical literal for v1",
+    )
+    parser.add_argument(
+        "--out-dir",
+        default=None,
+        help="where the registry artefacts are written (default: the published evidence dir)",
+    )
+    parser.add_argument(
+        "--run-id",
+        default=None,
+        help="identifies this execution inside the written artefacts",
+    )
+    parser.add_argument(
+        "--reuse",
+        action="store_true",
+        help="reuse .tdm12/cell_metrics.json instead of recomputing it",
+    )
+    args = parser.parse_args(argv)
+
+    scheme = args.fingerprint_scheme
+    source_commit = args.source_commit or (
+        git_head() if scheme == FINGERPRINT_SCHEME_V2 else LEGACY_SOURCE_COMMIT_LITERAL
+    )
+    out_dir = Path(args.out_dir).resolve() if args.out_dir else EVIDENCE
+    run_id = args.run_id
+
     ART.mkdir(parents=True, exist_ok=True)
-    EVIDENCE.mkdir(parents=True, exist_ok=True)
+    out_dir.mkdir(parents=True, exist_ok=True)
     started = time.time()
 
     ledger = admission_ledger()
-    families = family_classes()
+    families = family_classes(scheme, source_commit)
     protocol = strategy_protocol_implementations()
     declared = declared_config_strategies()
     entrypoints = runtime_entrypoints()
@@ -334,7 +448,7 @@ def main() -> int:
         flush=True,
     )
     cache = ART / "cell_metrics.json"
-    if "--reuse" in sys.argv and cache.exists():
+    if args.reuse and cache.exists():
         metrics = json.loads(cache.read_text(encoding="utf-8"))
     else:
         metrics = cell_metrics()
@@ -375,13 +489,13 @@ def main() -> int:
                 "family": rec["family"],
                 "runtime_class": "RUNTIME_REACHABLE",
                 "entrypoint": "scripts/autonomous_paper.py::families",
-                "source_commit": "504256ec",
+                "source_commit": source_commit,
                 "assets": "BTC,ETH,SOL",
                 "timeframes": rec["timeframe"],
                 "regimes": "all; regime label recorded but not filtered",
-                "parameter_hash": next(
-                    f["source_sha256"] for f in families if f["family"] == rec["family"]
-                )[:16],
+                **fingerprint_fields(
+                    next(f for f in families if f["family"] == rec["family"]), scheme
+                ),
                 "datasets": "data/tdm08 (HOLD), data/tdm10 (DEV)",
                 "data_fingerprint": "see DATA_WINDOW_REGISTRY.json",
                 "selection_history": "measured in WP-TDM-10 across 24 cells x 4 horizons",
@@ -417,11 +531,11 @@ def main() -> int:
                 "family": "ema_crossover",
                 "runtime_class": "ORPHAN",
                 "entrypoint": item["module"],
-                "source_commit": "504256ec",
+                "source_commit": source_commit,
                 "assets": "-",
                 "timeframes": "-",
                 "regimes": "-",
-                "parameter_hash": "-",
+                **empty_fingerprint_fields(scheme),
                 "datasets": "-",
                 "data_fingerprint": "-",
                 "selection_history": "no measured campaign",
@@ -448,11 +562,11 @@ def main() -> int:
                 "family": "-",
                 "runtime_class": "ORPHAN",
                 "entrypoint": "config/strategies.yaml",
-                "source_commit": "504256ec",
+                "source_commit": source_commit,
                 "assets": "-",
                 "timeframes": "-",
                 "regimes": "-",
-                "parameter_hash": "-",
+                **empty_fingerprint_fields(scheme),
                 "datasets": "-",
                 "data_fingerprint": "-",
                 "selection_history": "none",
@@ -473,7 +587,7 @@ def main() -> int:
         )
 
     public_cols = [k for k in rows[0] if not k.startswith("_")]
-    with (EVIDENCE / "CANDIDATE_REGISTRY.csv").open("w", encoding="utf-8", newline="") as fh:
+    with (out_dir / "CANDIDATE_REGISTRY.csv").open("w", encoding="utf-8", newline="") as fh:
         writer = csv.DictWriter(fh, fieldnames=public_cols)
         writer.writeheader()
         for row in rows:
@@ -530,7 +644,7 @@ def main() -> int:
         ],
         "note": "no window in this registry may be relabelled confirmatory after being used to compare candidates",
     }
-    (EVIDENCE / "DATA_WINDOW_REGISTRY.json").write_text(
+    (out_dir / "DATA_WINDOW_REGISTRY.json").write_text(
         json.dumps(windows, indent=2) + "\n", encoding="utf-8"
     )
 
@@ -569,22 +683,26 @@ def main() -> int:
         "elapsed_s": round(time.time() - started, 1),
     }
     (ART / "triage.json").write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-    (EVIDENCE / "CANDIDATE_REGISTRY.json").write_text(
-        json.dumps(
-            {
-                "artifact": "tdm12-candidate-registry-v1",
-                "generated_at_ms": payload["generated_at_ms"],
-                "rows": [{k: v for k, v in r.items() if not k.startswith("_")} for r in rows],
-                "metrics_by_cell": payload["metrics_by_cell"],
-            },
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
+    registry: dict[str, Any] = {
+        "artifact": f"tdm12-candidate-registry-{scheme}",
+        "generated_at_ms": payload["generated_at_ms"],
+        "rows": [{k: v for k, v in r.items() if not k.startswith("_")} for r in rows],
+        "metrics_by_cell": payload["metrics_by_cell"],
+    }
+    if scheme == FINGERPRINT_SCHEME_V2:
+        # Provenance travels with the artefact so a reader never has to infer it.
+        registry["fingerprint_scheme"] = FINGERPRINT_SCHEME_V2
+        registry["source_commit"] = source_commit
+        registry["fingerprint_algorithm"] = "sha256(git_cat_file_blob:<commit>:<relpath>)"
+        registry["run_id"] = run_id
+    (out_dir / "CANDIDATE_REGISTRY.json").write_text(
+        json.dumps(registry, indent=2) + "\n", encoding="utf-8"
     )
     print(
         json.dumps(
             {
+                "fingerprint_scheme": scheme,
+                "source_commit": source_commit,
                 "rows": len(rows),
                 "measured": len(measured),
                 "eligible": len(eligible),
