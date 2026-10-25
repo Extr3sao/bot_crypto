@@ -1,8 +1,8 @@
 cad0cd5ce98a27ab17f558928b8024ff357906e443b849382311ee2835df7f53  docs/audit/fixtures/g7_market_capture.json
-62b4ff2aa13fd85aca9c83c7a495f8768fe79731eb9008f086725cbf01948157  docs/audit/G-7.md
+7db3f5c8e7b11be0617adda829636f9410ce496277b48419d2c3bc7540b47c93  docs/audit/G-7.md
 dff80f2c0e0f6e7ee749993f1176ce3a3305e97aa2cd94fd66525ced9ab00cb7  docs/audit/runs/run-20261025T173625Z-G-7/data_access_forward.jsonl
 c37107aec9d19a6c4f824045c5ed1782b81a02b1bc42fb8bac4c9c4c5075c7ce  docs/audit/runs/run-20261025T173625Z-G-7/evidence.json
-0ea7e27461cb2cc647978d3a507e44d7c1d94f41df1f6529cfa52c45e9ff0747  docs/audit/runs/run-20261025T173625Z-G-7/FINAL_REPORT.md
+e5985944eb6ba52adfc5e20ee4bc6f06b69c9a82eb00d052b4a9251617d0de12  docs/audit/runs/run-20261025T173625Z-G-7/FINAL_REPORT.md
 003dcac75e171e339cf11b982d5dbda993758fb3071dd6b3736d5866e653efe9  docs/audit/runs/run-20261025T173625Z-G-7/forward/paper_state.json
 8319e6f7bd026a714ef89e345eabc554c628345676af76b4f25e972e700bbaef  docs/audit/runs/run-20261025T173625Z-G-7/forward/run/reports/report.json
 3fb2f5465bf3e4a13912090660ad362aeaee175c3659bcdaf352e708a902c84e  docs/audit/runs/run-20261025T173625Z-G-7/forward/run/reports/report.md
@@ -18,7 +18,7 @@ b8e6fdfda82526a9ea98aeb61fe762cc868b60330f942c271fabfd1e6749d619  docs/audit/run
 772375d30c90b6672d2b96e6328ef9ea8eb00692d79bd49f9ba0e1b4639d0d3d  docs/audit/runs/run-20261025T173625Z-G-7/replay-restart/run/reports/report.json
 0c76cb990d6210bfc6013ebbaa7b1431be5e4a7f104c91e8f0463d002346fd75  docs/audit/runs/run-20261025T173625Z-G-7/replay-restart/run/reports/report.md
 c37107aec9d19a6c4f824045c5ed1782b81a02b1bc42fb8bac4c9c4c5075c7ce  docs/audit/runs/run-20261025T173625Z-G-7/RUN_REPORT.json
-0adabefdb2c24cb26797e4996aec4a03acff5b1941e8f23f376a205d0cd44f3d  docs/audit/runs/run-20261025T173625Z-G-7/RUN_REPORT.md
+b16c18d30436c212ae9329dae0ad8a02d2dceeacf55d518d185c2ae1b839c771  docs/audit/runs/run-20261025T173625Z-G-7/RUN_REPORT.md
 04fd2b5c8547734e16de7a29e619f55e925fdb2ce4a117b1d4a34764443bc989  docs/audit/runs/run-20261025T173625Z-G-7/STRATEGY_ELIGIBILITY_REPORT.md
 44dbe0332ba12371fd360d3b02303cde22f28c1d9df0c57a8046b3f13096d450  docs/audit/runs/run-20261025T173625Z-G-7/verification.json
 809ea30c42876f1c98cd09aea9ee02d4be2e51972205da8eb54c9e0661766a6c  docs/audit/runtime_authority_map.md

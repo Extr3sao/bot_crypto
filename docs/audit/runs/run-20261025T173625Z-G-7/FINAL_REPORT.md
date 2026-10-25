@@ -3,7 +3,7 @@
 **Verdict:** `G7_BLOCKED_NO_ELIGIBLE_STRATEGY`  
 **Safety:** `PAPER_ONLY=true` · `LIVE_NO_GO` · `PRODUCTION_READY=false` · `FALSE_SUCCESS=0`  
 **Implementation:** `5c76060f` (includes `f3a83569`)  
-**Independent verification:** 18/18 checks, `FALSE_SUCCESS=0` (commit `41d34c81`)  
+**Independent verification:** 18/18 checks, `FALSE_SUCCESS=0` (commit `c85e2af2`)  
 **Evidence:** `docs/audit/runs/run-20261025T173625Z-G-7/`
 
 ## IMPLEMENTADO
@@ -71,7 +71,7 @@ runtime code.
 ## COMMITS
 
 - Implementation: `f3a83569` + `5c76060f` (summary fix)
-- Verification: `41d34c81`, 18/18 checks; verdict and count are in
+- Verification: `c85e2af2`, 18/18 checks; verdict and count are in
   `verification.json`.
 - Evidence: the commit containing this run directory. See
   `git log -- docs/audit/runs/run-20261025T173625Z-G-7`.
