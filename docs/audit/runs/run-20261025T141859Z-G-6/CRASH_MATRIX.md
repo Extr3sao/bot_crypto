@@ -22,7 +22,7 @@ abre el mismo fichero durable. No se usa una excepción para simular la muerte.
 | 6 | `inconsistent` | (tamper #4) | — | `ACCOUNTED` sin `open_positions`, 1.388 B | `FATAL` (exit 2) | Se niega a arrancar; no toca el broker |
 | 7 | `corrupt` | (JSON truncado) | — | 35 B ilegibles | `FATAL` (exit 2) | `.corrupt` conservado; no se inventa libro vacío |
 | 8 | `recovery_close` | (desde #4, precio +10 %) | — | `ACCOUNTED`, 1 posición, 1.542 B | `RECOVERED` | 0 órdenes; 1 cierre `take_profit`; PnL +49,3900165 |
-| 9 | `kill_switch` | (desde #8, marker activo) | — | `ACCOUNTED`, 0 posiciones, 1 cierre, 2.017 B | `RECOVERED` | `hot_stop_blocked=1`, `risk_accepted=1`, 0 órdenes, 0 llamadas al broker |
+| 9 | `kill_switch` | (desde #8, marker activo) | — | `ACCOUNTED`, 0 posiciones, 1 cierre, 2.017 B → `CLOSED`, 1.879 B | `RECOVERED` | `hot_stop_blocked=1`, `risk_accepted=1`, 0 órdenes, 0 llamadas al broker |
 
 ## 2. Terminaciones forzadas
 
