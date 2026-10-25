@@ -639,8 +639,11 @@ def run_gate(args: argparse.Namespace) -> int:
                 [
                     *entrypoint(SUPERVISOR_CAMPAIGN),
                     "scenarios",
+                    #: The verifier reads ``<campaign>/scenarios/SCENARIOS.json``; writing the
+                    #: record at the campaign root would leave its two scenario checks
+                    #: ``not_applicable`` while the run still looked green.
                     "--out",
-                    str(supervisor_root),
+                    str(supervisor_root / "scenarios"),
                     "--source-session",
                     str(supervisor_root / "session"),
                 ],

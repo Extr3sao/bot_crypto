@@ -462,7 +462,9 @@ def ci_wiring_check() -> dict[str, Any]:
         out["problems"].append(f"{WORKFLOW.relative_to(REPO)} missing")
         out["status"] = "FAIL"
         return out
-    text = WORKFLOW.read_text(encoding="utf-8")
+    raw = WORKFLOW.read_text(encoding="utf-8")
+    #: Comments may name the things the workflow forbids; only executable lines count.
+    text = "\n".join(line for line in raw.splitlines() if not line.lstrip().startswith("#"))
     if "tap_integration_gate.py" not in text:
         out["problems"].append("the workflow does not invoke the gate")
     if "review_gate.py" not in text:
