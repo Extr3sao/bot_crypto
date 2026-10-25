@@ -33,6 +33,7 @@ import json
 from dataclasses import dataclass, field
 from typing import Any
 
+from trading_bot.autonomous.hot_stop import HotStopGate
 from trading_bot.config.risk import DefensiveBlocks
 from trading_bot.execution.idempotency import IdempotencyGuard
 from trading_bot.market_data.types import OHLCV
@@ -87,6 +88,10 @@ class CycleStageCounts:
     risk_errors: int = 0
     orders_created: int = 0
     broker_errors: int = 0
+    #: G-4: entries refused because the runtime stop was engaged. Reductions are
+    #: not counted here: they are allowed while stopped (a stop must not trap the
+    #: book). Published so an operator can tell "no signal" from "stopped".
+    hot_stop_blocked: int = 0
     #: DEF-RUN-015: an exit is not an entry. ``exits_requested`` counts the exit
     #: evaluations this cycle produced, ``exits_closed`` how many actually closed a book
     #: position, ``reversals_refused`` an opposite signal the broker refused, and
@@ -117,6 +122,7 @@ class CycleStageCounts:
             "risk_errors": self.risk_errors,
             "orders_created": self.orders_created,
             "broker_errors": self.broker_errors,
+            "hot_stop_blocked": self.hot_stop_blocked,
             "exits_requested": self.exits_requested,
             "exits_closed": self.exits_closed,
             "reversals_refused": self.reversals_refused,
@@ -187,6 +193,10 @@ class PaperCycleEngine:
         # historical behaviour for callers that have not opted in; the paper
         # launcher always supplies the policy from config/risk.yaml.
         defensive_blocks: DefensiveBlocks | None = None,
+        # G-4: the operator stop, at the same boundary the autonomous runtime
+        # uses. ``None`` is an embedding/test caller; the paper launcher always
+        # supplies a gate. A gate cannot be bypassed by a strategy or a signal.
+        hot_stop: HotStopGate | None = None,
     ) -> None:
         self._registry = asset_registry
         self._router = router
@@ -197,6 +207,7 @@ class PaperCycleEngine:
         self._indicator_fn = indicator_fn
         self._idempotency = idempotency or IdempotencyGuard()
         self._defensive_blocks = defensive_blocks
+        self._hot_stop = hot_stop
         # BAR_CLOSE gate state (BURN-IN-V2): per symbol, the (bar_ts, state
         # version) already evaluated. State version bumps when anything that
         # could legitimately change a decision happens (risk counters,
@@ -212,6 +223,38 @@ class PaperCycleEngine:
     def risk_manager(self) -> RiskManager:
         """Public accessor used by the runner to sync broker equity."""
         return self._risk
+
+    @property
+    def hot_stop(self) -> HotStopGate | None:
+        """The operator-stop boundary, when the composed route supplied one."""
+        return self._hot_stop
+
+    def _process_stop_active(self) -> bool:
+        """The boot-time process authority, fail closed on an unreadable switch."""
+        if self._hot_stop is None:
+            return False
+        try:
+            return bool(getattr(self._hot_stop.kill_switch, "is_active", False))
+        except Exception:
+            return True
+
+    def _hot_stop_verdict(self) -> str | None:
+        """Why a new entry is refused, or ``None`` when it may dispatch.
+
+        The marker (polled here and again under the boundary lock) is named
+        separately from the boot-time process switch so the evidence says which
+        authority refused. An exception is a refusal, never permission.
+        """
+        if self._hot_stop is None:
+            return None
+        try:
+            if self._hot_stop.engaged or self._hot_stop.poll():
+                return f"marker:{self._hot_stop.engaged_reason or 'engaged'}"
+        except Exception:
+            return "marker:unreadable"
+        if self._process_stop_active():
+            return "process"
+        return None
 
     def pending_intents(self) -> list[str]:
         """Snapshot of the intent ledger (durable persistence, GAP-R1)."""
@@ -507,7 +550,37 @@ class PaperCycleEngine:
                         "risk_approved_by": "RiskManager",
                     },
                 )
-                result = self._broker.execute_signal(approved_signal)
+                # G-4 — the same boundary the autonomous runtime uses. The lock
+                # is held across the broker call, so an operator engagement cannot
+                # ACK while this dispatch is in flight. A marker written before the
+                # call refuses it; a process switch (KILL_SWITCH_ENV) refuses it
+                # even when there is no marker. Reductions never reach this block:
+                # the exit path above is deliberately outside the stop.
+                if self._hot_stop is None:
+                    result = self._broker.execute_signal(approved_signal)
+                else:
+                    refusal = self._hot_stop_verdict()
+                    if refusal is not None:
+                        counts.hot_stop_blocked += 1
+                        _reject(
+                            counts,
+                            symbol,
+                            "hot_stop",
+                            f"kill_switch_active:{refusal}",
+                        )
+                        continue
+                    with self._hot_stop.order_boundary() as allowed:
+                        if not allowed:
+                            counts.hot_stop_blocked += 1
+                            reason = self._hot_stop.engaged_reason or "marker"
+                            _reject(
+                                counts,
+                                symbol,
+                                "hot_stop",
+                                f"kill_switch_active:marker:{reason}",
+                            )
+                            continue
+                        result = self._broker.execute_signal(approved_signal)
             except Exception as exc:  # broker failure ⇒ no order
                 counts.broker_errors += 1
                 _reject(counts, symbol, "broker", f"{type(exc).__name__}: {exc}")

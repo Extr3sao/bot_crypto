@@ -71,7 +71,7 @@ grep -rn 'from trading_bot.paper.kill_switch import' --include='*.py' src script
 | `src/trading_bot/autonomous/runtime.py` | **RUNTIME_AUTHORITATIVE consumer** | `runtime.py:341` builds `DecisionEngine()` with no injected switch, so the runtime reads the process authority. |
 | `src/trading_bot/risk/futures/integration.py` (`run_through_decision_engine`) | **RUNTIME_REACHABLE** | Builds `DecisionEngine()` at line 332, so it inherits rule 0. |
 | `src/trading_bot/paper/kill_switch.py` (V0.3 `KillSwitch`) | **ORPHAN** | Zero importers in `src/`, `scripts/`, `tests/`. Two classes named `KillSwitch` in the codebase; only `kill_switch_v2` is wired. |
-| `src/trading_bot/paper/paper_cycle.py` (`PaperCycleEngine`) | **RUNTIME_REACHABLE, gate absent** | Imported by `paper/harness.py:31` and `scripts/start_paper_trading.py:34`. Its imports (`grep -n '^from' paper_cycle.py`) include `risk.manager.RiskManager` and `risk.defensive_blocks` but **not** `autonomous.decision`, so rule 0 is not on that path. |
+| `src/trading_bot/paper/paper_cycle.py` (`PaperCycleEngine`) | **RUNTIME_REACHABLE, gate present (G-4)** | Imported by `paper/harness.py:31` and `scripts/start_paper_trading.py:34`. Its imports (`grep -n '^from' paper_cycle.py`) include `risk.manager.RiskManager`, `risk.defensive_blocks` and `autonomous.hot_stop.HotStopGate`; the launcher injects a gate over `process_kill_switch()` and a run directory, so the entry dispatch is refused by the same hot-stop authority as the autonomous runtime. It still does not import `autonomous.decision`: G-4 closes the stop boundary, not rule 0. |
 | `src/trading_bot/app.py` — `kill-switch`, `status` | **RUNTIME_REACHABLE, refuses** | Both are in `NOT_IMPLEMENTED_SUBCOMMANDS` (`app.py:66`) and `main` returns 2 with an empty stdout (`app.py:1392-1400`). No in-process activation surface exists. |
 | `tests/unit/autonomous/test_decision_kill_switch.py` | **TEST_ONLY** | 35 cases over rule 0, including the real runtime. |
 | `tests/unit/test_app_cli_contract.py` | **TEST_ONLY** | Drives `python -m trading_bot.app` in a subprocess; AST scan of `main`. |
@@ -115,7 +115,7 @@ veto, 6 gross edge, 7 paper admission. Rule 0 reads no request field.
 | **G-1** | Kill-switch state is not persisted; a restart boots `NORMAL` | **Closed for the autonomous path** by `docs/audit/G-1.md`: `HotStopGate` adopts `<run_dir>/KILL_SWITCH` in its constructor, before any broker call, and `engage` writes the marker atomically. Scope is the run directory — a new `--run-id` is a new scope and boots operational, which the contract states and pins with a test. `KillSwitch` itself still has no store, by design. |
 | **G-2** | No hot activation from the CLI | **Closed for the autonomous path** by `docs/audit/G-2.md`: `HotStopGate` polls `<run_dir>/KILL_SWITCH` and holds the lock across `broker.execute_signal`, so an ACK means nothing is in flight. `kill-switch --run-dir … --engage` writes that file; `status` stays a stub. The `paper_cycle` and live paths remain **unprotected** (G-3/G-4). |
 | **G-3** | Live order paths that bypass `DecisionEngine` | Open. Not measured here; the CLI's live path was not exercised in this task. |
-| **G-4** | Duplicate engine `paper/paper_cycle.py` | Open, and sharper than before: that module does not import `autonomous.decision`, so the robots started by `scripts/start_paper_trading.py` are not protected by rule 0. |
+| **G-4** | Duplicate engine `paper/paper_cycle.py` | **Closed for the paper launcher** by `docs/audit/G-4.md`: `PaperCycleEngine` now refuses an entry at `HotStopGate.order_boundary`, and `scripts/start_paper_trading.py` builds the gate over `process_kill_switch()` and `<run-dir>/KILL_SWITCH`. `run --demo` was never on this path: it runs the synthetic scanner only. The module still does not import `autonomous.decision`; route-to-one-engine is a separate architectural change, not a stop bypass. |
 
 ## 6. What this map cannot tell you
 
@@ -163,8 +163,9 @@ scripts/autonomous_paper.py
 | Path | Boundary | Covered |
 |---|---|---|
 | `scripts/autonomous_paper.py` | `runtime.py:1455` inside the gate | **yes** |
-| `trading-bot run --demo` → `paper/paper_cycle.py` | its own `execute_signal` | **no** — no `DecisionEngine`, no gate (G-4) |
-| `trading-bot place-order`, `--auto-trade` | Bitunix clients | **no** — live, not measured (G-3) |
+| `scripts/start_paper_trading.py` → `paper_cycle` | `paper_cycle.py` dispatch inside `HotStopGate.order_boundary` | **yes** (G-4) |
+| `trading-bot run --demo` | no broker: `_run_single_iteration` → `_build_demo_scanner` (fake data) | n/a — no sink |
+| `trading-bot place-order`, `--auto-trade` | Bitunix clients | **no** in this row — live, closed by G-3/P0/RFC |
 
 `grep -n "execute_signal" src/trading_bot/autonomous/runtime.py` returns exactly
 one dispatch site, which is why a single boundary is sufficient here and why a
@@ -197,7 +198,7 @@ trading-bot close-position / set-tpsl
 | `run --auto-trade` futures/spot entry | **yes** | startup + boundary; 0 calls with any rejected check |
 | `place-order` futures OPEN / spot buy | **yes** | pre-client + boundary |
 | `close-position`, `set-tpsl`, futures CLOSE, spot sell | no (exempt) | 1 call with GATE-004 rejected |
-| `run --demo` → `paper_cycle` | no (G-4) | unchanged |
+| `run --demo` | n/a | no broker or client is constructed (G-4 probe) |
 
 `HotStopGate` still owns the stop and is still byte-identical to `a072da90`.
 
@@ -230,7 +231,8 @@ CLI/runtime
 | `set-tpsl` | `UNKNOWN` | yes |
 | `place-order` spot `sell` | `UNKNOWN` | yes |
 | futures `CLOSE` without `reduceOnly`, hedge/ambiguous mode, excess qty, no position, stale snapshot, unreadable position | `UNKNOWN` | yes |
-| `run --demo` → `paper_cycle` | not classified | no (G-4, unchanged) |
+| `scripts/start_paper_trading.py` paper entry | not a live order | paper hot stop, no live gate (G-4) |
+| `run --demo` | not classified — no broker | n/a (G-4) |
 
 The proof is revalidated on the **wire payload** inside the adapter, immediately
 before `_request`: `reduceOnly` must be `true`, `tradeSide` must be `CLOSE`, the
@@ -246,3 +248,43 @@ behaviour. The gate's verdict is the stricter `failed_gates == 0`, not
 `GateReport.all_passed`: GATE-006 and GATE-008 are rated `high` by the class, and
 a rejected check must still stop an order. That policy lives in
 `app._evaluate_live_gate`, not in the gate.
+
+## 11. Addendum — G-4 paper route and the retired demo claim (2026-10-25)
+
+G-4 measured the route instead of repeating the previous sentence. The result
+has two rows, and they are different:
+
+```text
+scripts/start_paper_trading.py
+  → PaperOrchestrator → PaperSessionRunner → PaperCycleEngine
+      → RiskManager.check_signal              (already present)
+      → _hot_stop_verdict()                   (marker / process switch)
+      → HotStopGate.order_boundary() [lock]   (same class as G-2)
+          → PaperBroker.execute_signal        (the paper sink)
+```
+
+```text
+trading-bot run --demo / --mode paper --auto-trade
+  → _cmd_run → _run_single_iteration → _build_demo_scanner
+      → market_data.fake                      (synthetic snapshots)
+      → _print_demo_results                   (no broker, no exchange client)
+```
+
+`run --demo` was never joined to `paper_cycle` in git history:
+`git log -S'PaperCycleEngine' -- src/trading_bot/app.py` returns no commit. The
+previous map rows that said otherwise were a documentation defect, not a code
+path. `app.py` now has no `PaperCycleEngine`, `PaperBroker` or `execute_signal`
+symbol at all, and the G-4 probe runs the command with those sinks instrumented:
+zero calls, exit 0, both with and without `--auto-trade`.
+
+For the real paper route, the marker is `<run-dir>/KILL_SWITCH`; the default is
+`data/storage/paper` (`PAPER_RUN_DIR` overrides), and
+`trading-bot kill-switch --run-dir data/storage/paper --engage` writes it. A
+stop is checked after risk approval and re-checked under the boundary lock. A
+reduction (`PaperBroker.close_position` from the opposite-signal path) stays
+outside the stop, so a stop does not trap the book.
+
+What is still not true: `paper_cycle` does not route through
+`autonomous.decision.DecisionEngine`, so rule 0 and the paper engine remain two
+decision implementations. G-4 closes the *stop* bypass on the reachable paper
+entrypoint; it does not merge the engines and does not claim they are one.

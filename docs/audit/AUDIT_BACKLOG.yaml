@@ -10,7 +10,7 @@
 
 schema: tap.audit-backlog/v1
 generated_at_utc: "2026-10-23T18:53:56Z"
-updated_at_utc: "2026-10-25T11:00:00Z"
+updated_at_utc: "2026-10-25T13:10:00Z"
 repository: trading-agentic-portable
 
 recovery:
@@ -48,7 +48,8 @@ tasks:
       - "60455b46 is an ancestor of baseline_rev (git merge-base --is-ancestor)"
       - "rule 0 runs before every other rule in intend and decide"
       - "tests/unit/autonomous/test_decision_kill_switch.py passes in this tree"
-    open_gaps: [G-1, G-2, G-3, G-4]
+    open_gaps: []
+    closed_gaps: [G-1, G-2, G-3, G-4]
 
   - id: MT-0004
     title: "(unrecoverable) tests negativos"
@@ -147,7 +148,6 @@ tasks:
       - scripts/start_paper_lab.py (passes --run-id, so a supervised restart reuses the directory)
     uncovered_paths:
       - a new --run-id or a different --run-root is a new scope and boots operational
-      - trading-bot run --demo -> paper/paper_cycle.py (G-4)
       - trading-bot place-order / --auto-trade (G-3)
     note: >-
       Closes G-1 only for the autonomous runtime and only inside one run
@@ -197,7 +197,6 @@ tasks:
     covered_paths:
       - scripts/autonomous_paper.py
     uncovered_paths:
-      - trading-bot run --demo -> paper/paper_cycle.py (G-4)
       - trading-bot place-order / --auto-trade (G-3)
     note: >-
       Closes G-2 only for the autonomous runtime. The filesystem permission on
@@ -252,7 +251,6 @@ tasks:
       - trading-bot close-position and set-tpsl (reduction and protection, allowed)
     uncovered_paths:
       - a different --run-dir, or a different checkout, is a different scope; no global latch
-      - trading-bot run --demo -> paper/paper_cycle.py (G-4) still has no gate
       - D-6 not opened by this task
     note: >-
       Closes G-3 for the live entrypoints that exist today, and only those. The
@@ -263,6 +261,60 @@ tasks:
       shipped; the assertion was updated to the current contract and the red
       baseline is kept in COMMANDS.md. PROCEDURALLY_SEPARATED verification,
       same author.
+
+  - id: G-4
+    title: The paper entrypoint consults the runtime stop before it trades
+    status: done
+    provenance: gap
+    contract: docs/audit/G-4.md
+    verified_commit: "PENDING"
+    verification: docs/audit/runs/run-20261025T115139Z-G-4/verification.json
+    run_report: docs/audit/runs/run-20261025T115139Z-G-4/RUN_REPORT.md
+    verdict: G4_VERIFIED_SCOPED
+    allowed_paths:
+      - docs/audit/G-4.md
+      - docs/audit/AUDIT_BACKLOG.yaml
+      - docs/audit/runtime_authority_map.md
+      - docs/audit/runs/**
+      - src/trading_bot/paper/paper_cycle.py
+      - scripts/start_paper_trading.py
+      - tests/unit/paper/test_g4_paper_hot_stop.py
+      - scripts/audit/g4_route_probe.py
+      - scripts/audit/verify_g4.py
+    protected_paths:
+      - src/trading_bot/autonomous/hot_stop.py
+      - src/trading_bot/autonomous/decision.py
+      - src/trading_bot/autonomous/runtime.py
+      - src/trading_bot/risk/**
+      - src/trading_bot/config/**
+      - src/trading_bot/execution/**
+      - src/trading_bot/market_data/**
+      - scripts/autonomous_paper.py
+      - .github/**
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+    acceptance_criteria: [ACC-G4-01, ACC-G4-02, ACC-G4-03, ACC-G4-04, ACC-G4-05, ACC-G4-06, ACC-G4-07, ACC-G4-08, ACC-G4-09, ACC-G4-10, ACC-G4-11, ACC-G4-12, ACC-G4-13, ACC-G4-14]
+    evidence:
+      - "run --demo and run --mode paper --auto-trade: 0 paper-cycle, broker and exchange-client calls, exit 0"
+      - "paper marker: 0 execute_signal calls, 0 orders, 1 hot_stop rejection; clean control: 1 order"
+      - "marker after risk approval and marker after engine construction both block"
+      - "process switch without a marker blocks; unreadable marker and poll exception block"
+      - "a stop still lets close_position flatten the book"
+      - "hot_stop.py byte-identical to a072da90"
+    covered_paths:
+      - scripts/start_paper_trading.py -> PaperCycleEngine -> PaperBroker.execute_signal
+    uncovered_paths:
+      - paper_cycle still does not route through autonomous.decision (two engines remain)
+      - the HotStopGate.stats().boundary label is inherited from the autonomous runtime
+      - offline research lanes (ai_vision_lane, edge*_paper_lane, exp_003p_baseline) are not runtime entrypoints and carry no gate
+      - no exchange acceptance is exercised
+    note: >-
+      G-4 corrected a documentation defect as well as a code defect: run --demo
+      never reached paper_cycle (git log -S is empty). The real paper launcher
+      was the reachable route, and it now refuses entries at the same
+      HotStopGate boundary as the autonomous runtime. PROCEDURALLY_SEPARATED
+      verification, same author.
 
   - id: P0-LIVE-GATE
     title: Enforce LiveTradingGate on every live path that opens risk
@@ -318,7 +370,6 @@ tasks:
       - trading-bot close-position, set-tpsl and reduce-only orders (exempt)
     uncovered_paths:
       - real exchange acceptance of the payload (all sinks are recorders)
-      - trading-bot run --demo -> paper/paper_cycle.py (G-4) still has no gate
       - D-6 not opened by this task
     note: >-
       Closes DEF-G3-03. The gate is consulted at the sink boundary and at the
@@ -372,6 +423,12 @@ contracts:
   - path: docs/audit/G-2.md
     required: true
     producer: G-2
+  - path: docs/audit/G-3.md
+    required: true
+    producer: G-3
+  - path: docs/audit/G-4.md
+    required: true
+    producer: G-4
   - path: docs/audit/AUDIT_BACKLOG.yaml
     required: true
     producer: MT-0004-R1
@@ -394,13 +451,11 @@ unrecoverable:
 next_ready:
   task: null
   reason: >-
-    G-1, G-2, G-3, P0-LIVE-GATE and RFC-EXEC-SEC-002 are closed and their
+    G-1, G-2, G-3, G-4, P0-LIVE-GATE and RFC-EXEC-SEC-002 are closed and their
     contracts are committed. The live gate is enforced on every live
-    risk-opening path, `run --auto-trade` needs explicit consent, and the only
-    exemptions are venue-enforced reductions revalidated on the wire payload.
-    G-4 (paper_cycle.py has its own broker call) still has no contract, so
-    naming it READY would fabricate its specification. `run --demo` reaches
-    PaperBroker through a decision path that never constructs DecisionEngine,
-    so neither the hot stop nor the live gate applies to it. G-4 remains the
-    larger risk, because it needs two decision paths reconciled rather than a
-    gate added to one. D-6 was not opened by any of these tasks.
+    risk-opening path, `run --auto-trade` needs explicit consent, the paper
+    launcher now consults the same hot stop as the autonomous runtime, and the
+    only exemptions are venue-enforced reductions revalidated on the wire
+    payload. `run --demo` was removed from the route matrix because it never
+    reached a broker: it runs the synthetic scanner only. D-6 was not opened by
+    any of these tasks; no evidenced task remains to name READY.

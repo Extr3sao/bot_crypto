@@ -89,6 +89,14 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Append one JSONL event per session to this path (burn-in observability).",
     )
+    parser.add_argument(
+        "--run-dir",
+        default=None,
+        help=(
+            "Operator-stop directory (default data/storage/paper; PAPER_RUN_DIR "
+            "overrides for tests). The live kill-switch CLI writes <run-dir>/KILL_SWITCH."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -206,6 +214,21 @@ def _default_ledger_path() -> Path:
     return Path(__file__).resolve().parents[1] / "config" / "strategy_admission.json"
 
 
+def _default_run_dir() -> Path:
+    """Where the paper process watches for ``KILL_SWITCH``.
+
+    ``data/storage`` is local runtime state (gitignored), not an evidence tree;
+    the marker is an operator control, not a report. ``PAPER_RUN_DIR`` exists so
+    tests and supervisors can give each process a private control directory.
+    """
+    import os
+
+    env_path = os.environ.get("PAPER_RUN_DIR", "")
+    if env_path:
+        return Path(env_path)
+    return Path("data/storage/paper")
+
+
 def _rotate_state(path: Path) -> None:
     """Explicit fresh-book request: back up the existing state, never delete.
 
@@ -227,6 +250,8 @@ def build_cycle_engine(
     assets: Sequence[str] = ("BTC", "ETH", "SOL"),
     timeframe: str = "5m",
     ledger_path: Path | str | None = None,
+    run_dir: Path | str | None = None,
+    hot_stop: Any | None = None,
 ) -> PaperCycleEngine:
     """Compose the canonical decision cycle (CP-PO-002, FASE 7B-8B).
 
@@ -244,6 +269,8 @@ def build_cycle_engine(
     closed: a missing or unreadable ledger stops the launcher.
     """
     from trading_bot.autonomous.admission_ledger import AdmissionLedger
+    from trading_bot.autonomous.decision import process_kill_switch
+    from trading_bot.autonomous.hot_stop import HotStopGate
     from trading_bot.autonomous.strategy_state import StrategyRegistry
     from trading_bot.execution.idempotency import IdempotencyGuard
     from trading_bot.paper.paper_cycle import PaperCycleEngine
@@ -270,6 +297,9 @@ def build_cycle_engine(
     }
     families = {name: cls() for name, cls in family_classes.items()}
 
+    if hot_stop is None and run_dir is not None:
+        hot_stop = HotStopGate(kill_switch=process_kill_switch(), run_dir=run_dir)
+
     ledger = AdmissionLedger.load(ledger_path or _default_ledger_path())
     registry = StrategyRegistry.from_ledger(ledger, assets=list(assets))
     for line in registry.describe(timeframe):
@@ -291,6 +321,10 @@ def build_cycle_engine(
         # config/risk.yaml through the runtime's own loader; nothing is re-typed
         # and the weekend flag is not changed here.
         defensive_blocks=settings.risk.blocks,
+        # G-4 — the paper route consults the SAME operator stop as the autonomous
+        # runtime. It is built before the engine, so a marker left by an earlier
+        # process is adopted before any cycle can run.
+        hot_stop=hot_stop,
     )
 
 
@@ -324,6 +358,9 @@ async def main() -> int:
     if args.fresh:
         _rotate_state(state_path)
 
+    run_dir = Path(args.run_dir) if args.run_dir else _default_run_dir()
+    run_dir.mkdir(parents=True, exist_ok=True)
+
     scanner_factory, data_source = build_scanner_factory(settings, args.provider)
     broker = PaperBroker(equity=args.balance)
     cycle_engine = build_cycle_engine(
@@ -332,6 +369,7 @@ async def main() -> int:
         assets=assets,
         timeframe=args.timeframe,
         ledger_path=Path(args.ledger) if args.ledger else _default_ledger_path(),
+        run_dir=run_dir,
     )
     store = PaperStateStore(state_path)
     reconciler = StartupReconcilerV4(
