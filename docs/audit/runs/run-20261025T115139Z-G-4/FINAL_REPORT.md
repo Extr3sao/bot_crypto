@@ -2,6 +2,7 @@
 
 **Veredicto:** `G4_VERIFIED_SCOPED`  
 **Commit implementado:** `5478b6de417d1bb3cc66920f56685bd3d0368cc0`  
+**Export verificado:** `7e300af5c856c9665bf3b52635572e2ba2b69925`  
 **BEFORE:** `0a70514058f8deb36489e29a6c02e7050d3217a0`  
 **`FALSE_SUCCESS`:** 0  
 **`LIVE_NO_GO`:** mantenido  

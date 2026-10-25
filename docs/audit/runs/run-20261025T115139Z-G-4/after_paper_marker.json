@@ -8,13 +8,13 @@
   "gate_stats": {
     "engaged": true,
     "reason": "g4 probe operator stop",
-    "actor": "boot_restore:C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g4-paper-79a8avl2\\KILL_SWITCH",
-    "engaged_at_ms": 1792929906034,
+    "actor": "boot_restore:C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g4-paper-_wn9mkl8\\KILL_SWITCH",
+    "engaged_at_ms": 1792931030523,
     "orders_blocked": 0,
     "broker_calls_allowed": 0,
     "lock_timeouts": 0,
     "restored": true,
-    "control_path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g4-paper-79a8avl2\\KILL_SWITCH",
+    "control_path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\g4-paper-_wn9mkl8\\KILL_SWITCH",
     "boundary": "autonomous.runtime._execute_paper -> broker.execute_signal"
   },
   "broker_execute_calls": 0,

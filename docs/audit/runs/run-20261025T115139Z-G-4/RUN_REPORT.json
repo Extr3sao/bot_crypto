@@ -7,6 +7,7 @@
   "branch": "audit/mt0004-negative-controls",
   "before_rev": "0a70514058f8deb36489e29a6c02e7050d3217a0",
   "after_rev": "5478b6de417d1bb3cc66920f56685bd3d0368cc0",
+  "verification_rev": "7e300af5c856c9665bf3b52635572e2ba2b69925",
   "verdict": "G4_VERIFIED_SCOPED",
   "false_success": 0,
   "environment": {

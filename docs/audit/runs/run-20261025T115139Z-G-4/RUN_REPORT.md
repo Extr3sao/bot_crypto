@@ -5,6 +5,7 @@
 **Rama:** `audit/mt0004-negative-controls`  
 **BEFORE:** `0a70514058f8deb36489e29a6c02e7050d3217a0`  
 **AFTER:** `5478b6de417d1bb3cc66920f56685bd3d0368cc0`  
+**Evidencia verificada sobre:** `7e300af5c856c9665bf3b52635572e2ba2b69925` (mismo código de producto; solo cambia el probe)  
 **Veredicto:** `G4_VERIFIED_SCOPED`  
 **`FALSE_SUCCESS`:** `0` sobre 10 comprobaciones del verificador y 12 tests focales.
 
