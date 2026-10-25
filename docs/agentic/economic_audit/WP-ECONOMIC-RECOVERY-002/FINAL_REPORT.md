@@ -148,7 +148,7 @@ y el test del ledger pasa.
 
 Se re-ejecutó **después** del commit de entregables. La comprobación
 `no_code_changed_between_the_measurement_and_head` es la que lo hace legítimo: demuestra
-que entre el commit medido (`64fa5112`) y HEAD (`2913c34b`) no se movió **nada** bajo
+que entre el commit medido (`64fa5112`) y la cabeza del árbol al verificar no se movió **nada** bajo
 `src/`, `tests/` ni `config/`, de modo que los números siguen describiendo el árbol que
 existe. Un fichero no puede llevar el hash del commit que lo contiene —el WP anterior
 tuvo que añadir un commit para deshacer justo eso— así que el informe nombra el commit

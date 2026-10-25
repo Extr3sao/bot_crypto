@@ -2,7 +2,7 @@
   "wp": "WP-ECONOMIC-RECOVERY-002",
   "artefact": "INDEPENDENT_VERIFICATION",
   "commit_under_measurement": "64fa5112ebdea81291dbc5db07512cc8737feeb0",
-  "head_when_verified": "2913c34b99413fd58375b8eb4f6847367e0eb588",
+  "head_when_verified": "89669fbe3d48c2282952d23091b4404c2183917f",
   "branch": "repro/economic-recovery-002",
   "base": "e67194e79a42aef2a2ded3aca21ac4a0ea3689c5",
   "verifier": "scripts/wp_eco002_verify.py (imports nothing from the work package's scripts)",
@@ -50,7 +50,7 @@
     {
       "check": "a_test_fails_when_the_ledger_drifts",
       "verdict": "PASS",
-      "evidence": "4 passed in 0.22s"
+      "evidence": "4 passed in 0.21s"
     },
     {
       "check": "the_suite_rewrites_no_tracked_file",
@@ -65,12 +65,12 @@
     {
       "check": "no_code_changed_between_the_measurement_and_head",
       "verdict": "PASS",
-      "evidence": "measured at 64fa5112ebde, HEAD 2913c34b9941; src/tests/config changed since: []"
+      "evidence": "measured at 64fa5112ebde, HEAD 89669fbe3d48; src/tests/config changed since: []"
     },
     {
       "check": "no_runtime_or_configuration_logic_changed",
       "verdict": "PASS",
-      "evidence": "src/ and config/ files in e67194e7..2913c34b: ['config/strategy_admission.json']"
+      "evidence": "src/ and config/ files in e67194e7..89669fbe: ['config/strategy_admission.json']"
     },
     {
       "check": "no_fee_or_slippage_constant_changed",
@@ -100,7 +100,7 @@
     {
       "check": "the_previously_clean_only_nodes_pass_in_a_fresh_clone",
       "verdict": "PASS",
-      "evidence": "25 passed in 83.05s (0:01:23); `.venv` present: False"
+      "evidence": "25 passed in 80.76s (0:01:20); `.venv` present: False"
     },
     {
       "check": "the_admission_chain_survives_a_default_windows_clone",
