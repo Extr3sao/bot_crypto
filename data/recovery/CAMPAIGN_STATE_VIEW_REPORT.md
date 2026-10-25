@@ -1,6 +1,6 @@
 # CAMPAIGN STATE VIEW (WP-2)
 
-- generated `2026-10-11T18:01:50Z` · head `9b9a4b8a6429` · branch `main`
+- generated `2026-10-24T11:49:22Z` · head `e67194e79a42` · branch ``
 - **status: CONSISTENT_WITH_ADVISORIES** · sources unchanged: True
 
 A frozen declaration is a historical record. This view resolves, per campaign and per field, which statement is *current*, using this precedence and nothing else:
@@ -142,13 +142,13 @@ What each input is, and what it answers to. A committed input is read from the c
 ## Local observations (volatile — not part of the identity)
 
 - `PAPER_DATA_24H_REPORT.json` (COMMITTED): resolved from `HEAD`; local file present: True; reproduces its authority: True
-- `data/raw/alpha001/BTC-USDT_1d.json` (EXTERNAL_DATASET): resolved from `LOCAL_MATERIALIZATION`; local file present: True; reproduces its authority: True
-- `data/raw/alpha001/ETH-USDT_1d.json` (EXTERNAL_DATASET): resolved from `LOCAL_MATERIALIZATION`; local file present: True; reproduces its authority: True
-- `data/st6/ST6_HEALTH_STATUS.json` (EXTERNAL_LIVE): resolved from `EVIDENCE_COPY`; local file present: True; reproduces its authority: False; attested fields match the snapshot: True
-- `reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md` (EXTERNAL_GENERATED): resolved from `EVIDENCE_COPY`; local file present: True; reproduces its authority: True
+- `data/raw/alpha001/BTC-USDT_1d.json` (EXTERNAL_DATASET): resolved from `LOCAL_MATERIALIZATION`; local file present: False
+- `data/raw/alpha001/ETH-USDT_1d.json` (EXTERNAL_DATASET): resolved from `LOCAL_MATERIALIZATION`; local file present: False
+- `data/st6/ST6_HEALTH_STATUS.json` (EXTERNAL_LIVE): resolved from `EVIDENCE_COPY`; local file present: False; attested fields match the snapshot: False
+- `reports/alpha-recovery-v1/STRATEGY_FAILURE_MATRIX.md` (EXTERNAL_GENERATED): resolved from `EVIDENCE_COPY`; local file present: False
 - `reports/strategy-baseline/COST_BARRIER.json` (EXTERNAL_GENERATED): resolved from `EVIDENCE_COPY`; local file present: True; reproduces its authority: True
-- `reports/strategy-baseline/REGIME_ANALYSIS.json` (EXTERNAL_GENERATED): resolved from `EVIDENCE_COPY`; local file present: True; reproduces its authority: True
-- `reports/strategy-baseline/TIMEFRAME_AUDIT.json` (EXTERNAL_GENERATED): resolved from `EVIDENCE_COPY`; local file present: True; reproduces its authority: True
+- `reports/strategy-baseline/REGIME_ANALYSIS.json` (EXTERNAL_GENERATED): resolved from `EVIDENCE_COPY`; local file present: False
+- `reports/strategy-baseline/TIMEFRAME_AUDIT.json` (EXTERNAL_GENERATED): resolved from `EVIDENCE_COPY`; local file present: False
 
 ## Invariants
 

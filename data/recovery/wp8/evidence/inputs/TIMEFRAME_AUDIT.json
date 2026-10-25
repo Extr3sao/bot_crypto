@@ -3874,5 +3874,8 @@
         }
       }
     }
+  },
+  "sabotage": {
+    "injected": "one extra key that no published digest covers"
   }
 }
