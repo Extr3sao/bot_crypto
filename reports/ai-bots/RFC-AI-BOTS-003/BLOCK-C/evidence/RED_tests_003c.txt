@@ -1,0 +1,803 @@
+# RED â€” WP-TAP-AI-BOTS-003C against BLOCK-B code
+# commit: ffbc0cad593bbe3a8202a99d6c90fd9a499fda03
+# command: .venv/Scripts/python.exe -m pytest tests/unit/vision/test_open_phase_causality.py -q -p no:warnings
+
+FFFFFFFFF.FFFFFFFFF                                                      [100%]
+================================== FAILURES ===================================
+_ test_a_long_gapped_through_its_stop_is_settled_before_the_entry_at_that_open _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_long_gapped_through_its0')
+
+    def test_a_long_gapped_through_its_stop_is_settled_before_the_entry_at_that_open(tmp_path):
+        """C-01: la pérdida existe antes de que la misma apertura apruebe riesgo nuevo."""
+    
+        scenario = gap_left("long", policy_overrides={"max_daily_loss_pct": 0.05})
+>       lane, summary, rows = run_lane(tmp_path, **scenario)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\vision\test_open_phase_causality.py:312: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_long_gapped_through_its0')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772758...lose=100.0, volume=100.0), Bar(ts_ms=1772773200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function gap_left.<locals>.script at 0x000001E6CC1E5260>
+latency_ms = 0
+risk_policy = Risk(max_risk_per_trade_pct=0.25, max_daily_loss_pct=0.05, max_weekly_loss_pct=3.0, max_daily_drawdown_pct=2.0, max_to...xtreme_atr_pct=8.0, high_latency_ms=2000, weekend_trading=False), kill_switch_enabled=True, live_trading_enabled=False)
+quote_feed = None, lane_overrides = {}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+_ test_a_short_gapped_through_its_stop_is_settled_before_the_entry_at_that_open _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_short_gapped_through_it0')
+
+    def test_a_short_gapped_through_its_stop_is_settled_before_the_entry_at_that_open(tmp_path):
+        """C-02: simétrico. Un corto sufre un hueco al alza y el riesgo lo ve primero."""
+    
+        scenario = gap_left("short", policy_overrides={"max_daily_loss_pct": 0.05})
+>       lane, summary, rows = run_lane(tmp_path, **scenario)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\vision\test_open_phase_causality.py:351: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_short_gapped_through_it0')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772758...lose=100.0, volume=100.0), Bar(ts_ms=1772773200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function gap_left.<locals>.script at 0x000001E6CC2E60C0>
+latency_ms = 0
+risk_policy = Risk(max_risk_per_trade_pct=0.25, max_daily_loss_pct=0.05, max_weekly_loss_pct=3.0, max_daily_drawdown_pct=2.0, max_to...xtreme_atr_pct=8.0, high_latency_ms=2000, weekend_trading=False), kill_switch_enabled=True, live_trading_enabled=False)
+quote_feed = None, lane_overrides = {}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+_________ test_an_open_gap_never_reads_the_range_of_the_bar_it_opened _________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_an_open_gap_never_reads_t0')
+
+    def test_an_open_gap_never_reads_the_range_of_the_bar_it_opened(tmp_path):
+        """C-03: el stop cruzado por la apertura se paga en la apertura.
+    
+        La vela del hueco tiene un high un 10 % por encima del cierre anterior — por encima
+        del objetivo. Si la fase de apertura mirase el rango de la vela, la posición podría
+        "salir en objetivo" a un precio que sólo existió después del hueco. La única salida
+        coherente es la del stop, al precio de la apertura.
+        """
+    
+        scenario = gap_left("target_and_stop", policy_overrides={"max_daily_loss_pct": 0.05})
+>       _, _, rows = run_lane(tmp_path, **scenario)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\vision\test_open_phase_causality.py:386: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_an_open_gap_never_reads_t0')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772758...lose=100.0, volume=100.0), Bar(ts_ms=1772773200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function gap_left.<locals>.script at 0x000001E6CC2E65C0>
+latency_ms = 0
+risk_policy = Risk(max_risk_per_trade_pct=0.25, max_daily_loss_pct=0.05, max_weekly_loss_pct=3.0, max_daily_drawdown_pct=2.0, max_to...xtreme_atr_pct=8.0, high_latency_ms=2000, weekend_trading=False), kill_switch_enabled=True, live_trading_enabled=False)
+quote_feed = None, lane_overrides = {}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+_____ test_the_bar_a_position_opens_on_is_checked_at_its_close_not_before _____
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_the_bar_a_position_opens_0')
+
+    def test_the_bar_a_position_opens_on_is_checked_at_its_close_not_before(tmp_path):
+        """C-04: la vela de entrada se evalúa al cierre y con una ventana declarada."""
+    
+        bars = flat_bars(patches=pierce(20, low_at=0.985))
+>       _, summary, rows = run_lane(
+            tmp_path,
+            series={SYMBOL: bars},
+            script=lambda symbol, ts: answer(LONG, symbol),
+        )
+
+tests\unit\vision\test_open_phase_causality.py:409: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_the_bar_a_position_opens_0')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772758...lose=100.0, volume=100.0), Bar(ts_ms=1772773200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function test_the_bar_a_position_opens_on_is_checked_at_its_close_not_before.<locals>.<lambda> at 0x000001E6CC2E6AC0>
+latency_ms = 0, risk_policy = None, quote_feed = None, lane_overrides = {}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+_______ test_the_insertion_order_of_the_series_cannot_change_what_fills _______
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_the_insertion_order_of_th0')
+
+    def test_the_insertion_order_of_the_series_cannot_change_what_fills(tmp_path):
+        """C-05: con un solo hueco de posición, el mismo activo gana siempre."""
+    
+        shared = flat_bars()
+        script = lambda symbol, ts: answer(LONG, symbol)  # noqa: E731
+        first = tmp_path / "first"
+        second = tmp_path / "second"
+        first.mkdir()
+        second.mkdir()
+    
+>       _, one, rows_one = run_lane(
+            first,
+            series={SYMBOL: shared, PEER: list(shared)},
+            script=script,
+            risk_policy=policy(max_open_positions=1),
+        )
+
+tests\unit\vision\test_open_phase_causality.py:478: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_the_insertion_order_of_th0/first')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772758...lose=100.0, volume=100.0), Bar(ts_ms=1772773200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function test_the_insertion_order_of_the_series_cannot_change_what_fills.<locals>.<lambda> at 0x000001E6CC2E6E80>
+latency_ms = 0
+risk_policy = Risk(max_risk_per_trade_pct=0.25, max_daily_loss_pct=1.0, max_weekly_loss_pct=3.0, max_daily_drawdown_pct=2.0, max_tot...xtreme_atr_pct=8.0, high_latency_ms=2000, weekend_trading=False), kill_switch_enabled=True, live_trading_enabled=False)
+quote_feed = None, lane_overrides = {}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+______ test_a_missing_bar_is_not_a_price_however_late_the_next_quote_is _______
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_missing_bar_is_not_a_pr0')
+
+    def test_a_missing_bar_is_not_a_price_however_late_the_next_quote_is(tmp_path):
+        """C-06: fail-closed. Un timestamp posterior no demuestra continuidad."""
+    
+>       _, summary, rows = run_lane(
+            tmp_path,
+            series={SYMBOL: missing_expected_bar()},
+            script=lambda symbol, ts: answer(LONG, symbol),
+        )
+
+tests\unit\vision\test_open_phase_causality.py:519: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_missing_bar_is_not_a_pr0')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772758...lose=100.0, volume=100.0), Bar(ts_ms=1772773200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function test_a_missing_bar_is_not_a_price_however_late_the_next_quote_is.<locals>.<lambda> at 0x000001E6B594B560>
+latency_ms = 0, risk_policy = None, quote_feed = None, lane_overrides = {}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+___ test_a_trusted_quote_feed_can_prove_the_venue_was_open_during_the_hole ____
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_trusted_quote_feed_can_0')
+
+    def test_a_trusted_quote_feed_can_prove_the_venue_was_open_during_the_hole(tmp_path):
+        """C-06: el único camino permitido a través de un hueco es evidencia independiente."""
+    
+>       _, summary, rows = run_lane(
+            tmp_path,
+            series={SYMBOL: missing_expected_bar()},
+            script=lambda symbol, ts: answer(LONG, symbol),
+            quote_feed=ContinuousFeed(),
+        )
+
+tests\unit\vision\test_open_phase_causality.py:537: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_trusted_quote_feed_can_0')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772758...lose=100.0, volume=100.0), Bar(ts_ms=1772773200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function test_a_trusted_quote_feed_can_prove_the_venue_was_open_during_the_hole.<locals>.<lambda> at 0x000001E6B84A3100>
+latency_ms = 0, risk_policy = None
+quote_feed = <test_open_phase_causality.ContinuousFeed object at 0x000001E6CC45EA10>
+lane_overrides = {}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+______ test_a_feed_that_reports_the_venue_closed_does_not_cover_the_hole ______
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_feed_that_reports_the_v0')
+
+    def test_a_feed_that_reports_the_venue_closed_does_not_cover_the_hole(tmp_path):
+>       _, summary, rows = run_lane(
+            tmp_path,
+            series={SYMBOL: missing_expected_bar()},
+            script=lambda symbol, ts: answer(LONG, symbol),
+            quote_feed=ContinuousFeed(venue_open=False),
+        )
+
+tests\unit\vision\test_open_phase_causality.py:556: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_feed_that_reports_the_v0')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772758...lose=100.0, volume=100.0), Bar(ts_ms=1772773200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function test_a_feed_that_reports_the_venue_closed_does_not_cover_the_hole.<locals>.<lambda> at 0x000001E6B84A2D40>
+latency_ms = 0, risk_policy = None
+quote_feed = <test_open_phase_causality.ContinuousFeed object at 0x000001E6CC1DD350>
+lane_overrides = {}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+_____ test_a_one_minute_stream_fills_at_the_first_quote_after_the_answer ______
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_one_minute_stream_fills0')
+
+    def test_a_one_minute_stream_fills_at_the_first_quote_after_the_answer(tmp_path):
+        """C-07: 30 s de latencia en una rejilla de 1 m compran el siguiente minuto."""
+    
+        bars = flat_bars(count=200, step_ms=MINUTE_MS)
+>       _, summary, rows = run_lane(
+            tmp_path,
+            series={SYMBOL: bars},
+            script=lambda symbol, ts: answer(LONG, symbol),
+            latency_ms=30_000,
+            timeframe="1m",
+        )
+
+tests\unit\vision\test_open_phase_causality.py:574: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_one_minute_stream_fills0')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772755...lose=100.0, volume=100.0), Bar(ts_ms=1772755500000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function test_a_one_minute_stream_fills_at_the_first_quote_after_the_answer.<locals>.<lambda> at 0x000001E6CC2E63E0>
+latency_ms = 30000, risk_policy = None, quote_feed = None
+lane_overrides = {'timeframe': '1m'}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+____________________ test_the_lane_uses_the_same_boundary _____________________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_the_lane_uses_the_same_bo0')
+
+    def test_the_lane_uses_the_same_boundary(tmp_path):
+        bars = flat_bars(count=40)
+        at_limit = tmp_path / "limit"
+        at_limit.mkdir()
+>       _, summary, rows = run_lane(
+            at_limit,
+            series={SYMBOL: bars},
+            script=lambda symbol, ts: answer(LONG, symbol),
+            latency_ms=HOUR_MS,
+        )
+
+tests\unit\vision\test_open_phase_causality.py:625: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_the_lane_uses_the_same_bo0/limit')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772758...lose=100.0, volume=100.0), Bar(ts_ms=1772773200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function test_the_lane_uses_the_same_boundary.<locals>.<lambda> at 0x000001E6CC2E60C0>
+latency_ms = 3600000, risk_policy = None, quote_feed = None, lane_overrides = {}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+_________ test_a_gap_at_monday_open_lands_in_the_active_day_and_week __________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_gap_at_monday_open_land0')
+
+    def test_a_gap_at_monday_open_lands_in_the_active_day_and_week(tmp_path):
+        """C-09: la pérdida entra en la ventana de calendario que la puerta va a mirar."""
+    
+        scenario = gap_left("long", policy_overrides={"max_daily_loss_pct": 0.05})
+>       lane, _, rows = run_lane(tmp_path, **scenario)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\vision\test_open_phase_causality.py:654: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_gap_at_monday_open_land0')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772758...lose=100.0, volume=100.0), Bar(ts_ms=1772773200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function gap_left.<locals>.script at 0x000001E6CC2E71A0>
+latency_ms = 0
+risk_policy = Risk(max_risk_per_trade_pct=0.25, max_daily_loss_pct=0.05, max_weekly_loss_pct=3.0, max_daily_drawdown_pct=2.0, max_to...xtreme_atr_pct=8.0, high_latency_ms=2000, weekend_trading=False), kill_switch_enabled=True, live_trading_enabled=False)
+quote_feed = None, lane_overrides = {}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+_________ test_a_missing_mark_for_another_open_asset_vetoes_new_risk __________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_missing_mark_for_anothe0')
+
+    def test_a_missing_mark_for_another_open_asset_vetoes_new_risk(tmp_path):
+        """C-10: si el patrimonio del libro es ambiguo, no se abre riesgo nuevo."""
+    
+        peer_bars = [bar for index, bar in enumerate(flat_bars()) if index != 30]
+        bitcoin = flat_bars()
+    
+        def script(symbol: str, decision_ts_ms: int) -> str:
+            if symbol == SYMBOL:
+                return answer(LONG, symbol) if decision_ts_ms == at(30) else answer(NO_TRADE, symbol)
+            return answer(LONG, symbol)
+    
+>       lane, summary, rows = run_lane(
+            tmp_path,
+            series={SYMBOL: bitcoin, PEER: peer_bars},
+            script=script,
+        )
+
+tests\unit\vision\test_open_phase_causality.py:686: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_missing_mark_for_anothe0')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772758...lose=100.0, volume=100.0), Bar(ts_ms=1772773200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function test_a_missing_mark_for_another_open_asset_vetoes_new_risk.<locals>.script at 0x000001E6CC2E7920>
+latency_ms = 0, risk_policy = None, quote_feed = None, lane_overrides = {}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+_____ test_a_cancelled_answer_and_a_missing_price_are_states_not_crashes ______
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_cancelled_answer_and_a_0')
+
+    def test_a_cancelled_answer_and_a_missing_price_are_states_not_crashes(tmp_path):
+        bars = flat_bars(count=40)
+        lane = VisionLane(
+            series={SYMBOL: bars},
+            provider=RefusingProvider([]),
+            config=vision_config(),
+            risk_policy=policy(),
+            ledger_path=tmp_path / "cancel.jsonl",
+        )
+        summary = lane.run()
+        rows = [row["entry"] for row in read_entries(tmp_path / "cancel.jsonl")]
+    
+        failures = of_kind(rows, "PROVIDER_FAILURE")
+        assert failures and failures[0]["code"] == "CANCELLED"
+        assert failures[0]["attempts"] == 1
+        assert failures[0]["decision"] is None
+        assert summary["fills"] == 0
+        assert summary["counters"].get("provider_failure:CANCELLED", 0) >= 1
+    
+        zeroed = flat_bars(count=40, patches={20: lambda natural: (0.0, natural, natural, natural)})
+        lane = VisionLane(
+            series={SYMBOL: zeroed},
+            provider=ScriptedProvider(lambda symbol, ts: answer(LONG, symbol)),
+            config=vision_config(),
+            risk_policy=policy(),
+            ledger_path=tmp_path / "zero.jsonl",
+        )
+>       summary = lane.run()
+                  ^^^^^^^^^^
+
+tests\unit\vision\test_open_phase_causality.py:739: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\trading_bot\vision\lane.py:842: in run
+    if self._execute(symbol, bars[index], pending, index) == "RESOLVED":
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\trading_bot\vision\lane.py:524: in _execute
+    quote: Quote | None = quote_at(
+src\trading_bot\vision\execution.py:174: in quote_at
+    return Quote(symbol=symbol, ts_ms=opened, price=float(bar.open))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<string>:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Quote(symbol='BTC/USDT', ts_ms=1772827200000, price=0.0, source='bar_open', bar_open_ms=0)
+
+    def __post_init__(self) -> None:
+        if self.price <= 0:
+>           raise ValueError("a quote must have a positive price")
+E           ValueError: a quote must have a positive price
+
+src\trading_bot\vision\execution.py:55: ValueError
+__________ test_the_legacy_gap_policy_still_fills_at_the_stop_level ___________
+
+    def test_the_legacy_gap_policy_still_fills_at_the_stop_level():
+        """C-12: el comportamiento histórico del broker no cambia por defecto."""
+    
+        broker = legacy_broker()
+        trade = broker.check_positions_ohlc({SYMBOL: (90.0, 91.0, 89.0, 90.5)})[0]
+    
+        assert trade.exit_reason == "stop_loss"
+>       assert trade.reference_exit_price == pytest.approx(99.0), (
+            "the default policy credits the stop level; only the lane opts into open_on_gap"
+        )
+E       AssertionError: the default policy credits the stop level; only the lane opts into open_on_gap
+E       assert 99.01485000000001 == 99.0 ± 9.9e-05
+E         
+E         comparison failed
+E         Obtained: 99.01485000000001
+E         Expected: 99.0 ± 9.9e-05
+
+tests\unit\vision\test_open_phase_causality.py:786: AssertionError
+---------------------------- Captured stdout call -----------------------------
+2026-10-18 18:08:12 [info     ] paper.fill_opened              entry_commission=0.25 notional=500.0 price=100.01500000000001 quantity=4.999250112483127 side=buy symbol=BTC/USDT
+2026-10-18 18:08:12 [info     ] paper.fill_closed              entry_commission=0.25 equity=9994.42576113583 exit_commission=0.25 gross_pnl=-5.0742388641704474 net_pnl=-5.5742388641704474 reason=stop_loss symbol=BTC/USDT
+___ test_the_open_gap_primitive_only_touches_the_positions_the_open_crossed ___
+
+    def test_the_open_gap_primitive_only_touches_the_positions_the_open_crossed():
+        broker = legacy_broker()
+        peer = broker.execute_signal(
+            Signal(
+                symbol=PEER,
+                side="buy",
+                strategy_name="legacy",
+                timeframe="1h",
+                confidence=0.5,
+                price=100.0,
+                stop_loss_pct=1.0,
+                take_profit_pct=2.0,
+                metadata={"notional_usdt": 500.0},
+            )
+        )
+        assert peer is not None
+    
+>       closed = broker.exit_on_open_gap(SYMBOL, 90.0)
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'PaperBroker' object has no attribute 'exit_on_open_gap'
+
+tests\unit\vision\test_open_phase_causality.py:808: AttributeError
+---------------------------- Captured stdout call -----------------------------
+2026-10-18 18:08:12 [info     ] paper.fill_opened              entry_commission=0.25 notional=500.0 price=100.01500000000001 quantity=4.999250112483127 side=buy symbol=BTC/USDT
+2026-10-18 18:08:12 [info     ] paper.fill_opened              entry_commission=0.25 notional=500.0 price=100.01500000000001 quantity=4.999250112483127 side=buy symbol=ETH/USDT
+_____ test_a_close_cannot_reverse_the_book_or_be_blocked_by_an_entry_gate _____
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_close_cannot_reverse_th0')
+
+    def test_a_close_cannot_reverse_the_book_or_be_blocked_by_an_entry_gate(tmp_path):
+        """Un CLOSE reduce-only: cierra, no abre el contrario, y no pasa por el gate."""
+    
+        script = lambda symbol, ts: (  # noqa: E731
+            answer(CLOSE, symbol) if ts >= at(24) else answer(LONG, symbol)
+        )
+>       _, summary, rows = run_lane(
+            tmp_path,
+            series={SYMBOL: flat_bars(count=40)},
+            script=script,
+            risk_policy=policy(kill_switch_enabled=True),
+        )
+
+tests\unit\vision\test_open_phase_causality.py:826: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_close_cannot_reverse_th0')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772758...lose=100.0, volume=100.0), Bar(ts_ms=1772773200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function test_a_close_cannot_reverse_the_book_or_be_blocked_by_an_entry_gate.<locals>.<lambda> at 0x000001E6CEDD6840>
+latency_ms = 0
+risk_policy = Risk(max_risk_per_trade_pct=0.25, max_daily_loss_pct=1.0, max_weekly_loss_pct=3.0, max_daily_drawdown_pct=2.0, max_tot...xtreme_atr_pct=8.0, high_latency_ms=2000, weekend_trading=False), kill_switch_enabled=True, live_trading_enabled=False)
+quote_feed = None, lane_overrides = {}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+_________________ test_a_close_with_nothing_open_does_nothing _________________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_close_with_nothing_open0')
+
+    def test_a_close_with_nothing_open_does_nothing(tmp_path):
+>       _, summary, rows = run_lane(
+            tmp_path,
+            series={SYMBOL: flat_bars(count=40)},
+            script=lambda symbol, ts: answer(CLOSE, symbol),
+        )
+
+tests\unit\vision\test_open_phase_causality.py:852: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_a_close_with_nothing_open0')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772758...lose=100.0, volume=100.0), Bar(ts_ms=1772773200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function test_a_close_with_nothing_open_does_nothing.<locals>.<lambda> at 0x000001E6CEDD79C0>
+latency_ms = 0, risk_policy = None, quote_feed = None, lane_overrides = {}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+___________ test_an_opposite_call_never_reverses_through_the_broker ___________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_an_opposite_call_never_re0')
+
+    def test_an_opposite_call_never_reverses_through_the_broker(tmp_path):
+        def script(symbol: str, decision_ts_ms: int) -> str:
+            return answer(LONG, symbol) if decision_ts_ms < at(24) else answer(SHORT, symbol)
+    
+>       _, summary, rows = run_lane(
+            tmp_path,
+            series={SYMBOL: flat_bars(count=40)},
+            script=script,
+        )
+
+tests\unit\vision\test_open_phase_causality.py:868: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-16/test_an_opposite_call_never_re0')
+series = {'BTC/USDT': [Bar(ts_ms=1772755200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), Bar(ts_ms=1772758...lose=100.0, volume=100.0), Bar(ts_ms=1772773200000, open=100.0, high=100.1, low=99.9, close=100.0, volume=100.0), ...]}
+script = <function test_an_opposite_call_never_reverses_through_the_broker.<locals>.script at 0x000001E6CED167A0>
+latency_ms = 0, risk_policy = None, quote_feed = None, lane_overrides = {}
+
+    def run_lane(
+        tmp_path: Path,
+        *,
+        series: dict[str, list[Bar]],
+        script: Callable[[str, int], str],
+        latency_ms: int = 0,
+        risk_policy=None,
+        quote_feed=None,
+        **lane_overrides,
+    ):
+>       lane = VisionLane(
+            series=series,
+            provider=ScriptedProvider(script, latency_ms=latency_ms),
+            config=vision_config(**lane_overrides),
+            risk_policy=risk_policy or policy(),
+            ledger_path=tmp_path / "decisions.jsonl",
+            quote_feed=quote_feed,
+        )
+E       TypeError: VisionLane.__init__() got an unexpected keyword argument 'quote_feed'
+
+tests\unit\vision\test_open_phase_causality.py:235: TypeError
+=========================== short test summary info ===========================
+FAILED tests/unit/vision/test_open_phase_causality.py::test_a_long_gapped_through_its_stop_is_settled_before_the_entry_at_that_open
+FAILED tests/unit/vision/test_open_phase_causality.py::test_a_short_gapped_through_its_stop_is_settled_before_the_entry_at_that_open
+FAILED tests/unit/vision/test_open_phase_causality.py::test_an_open_gap_never_reads_the_range_of_the_bar_it_opened
+FAILED tests/unit/vision/test_open_phase_causality.py::test_the_bar_a_position_opens_on_is_checked_at_its_close_not_before
+FAILED tests/unit/vision/test_open_phase_causality.py::test_the_insertion_order_of_the_series_cannot_change_what_fills
+FAILED tests/unit/vision/test_open_phase_causality.py::test_a_missing_bar_is_not_a_price_however_late_the_next_quote_is
+FAILED tests/unit/vision/test_open_phase_causality.py::test_a_trusted_quote_feed_can_prove_the_venue_was_open_during_the_hole
+FAILED tests/unit/vision/test_open_phase_causality.py::test_a_feed_that_reports_the_venue_closed_does_not_cover_the_hole
+FAILED tests/unit/vision/test_open_phase_causality.py::test_a_one_minute_stream_fills_at_the_first_quote_after_the_answer
+FAILED tests/unit/vision/test_open_phase_causality.py::test_the_lane_uses_the_same_boundary
+FAILED tests/unit/vision/test_open_phase_causality.py::test_a_gap_at_monday_open_lands_in_the_active_day_and_week
+FAILED tests/unit/vision/test_open_phase_causality.py::test_a_missing_mark_for_another_open_asset_vetoes_new_risk
+FAILED tests/unit/vision/test_open_phase_causality.py::test_a_cancelled_answer_and_a_missing_price_are_states_not_crashes
+FAILED tests/unit/vision/test_open_phase_causality.py::test_the_legacy_gap_policy_still_fills_at_the_stop_level
+FAILED tests/unit/vision/test_open_phase_causality.py::test_the_open_gap_primitive_only_touches_the_positions_the_open_crossed
+FAILED tests/unit/vision/test_open_phase_causality.py::test_a_close_cannot_reverse_the_book_or_be_blocked_by_an_entry_gate
+FAILED tests/unit/vision/test_open_phase_causality.py::test_a_close_with_nothing_open_does_nothing
+FAILED tests/unit/vision/test_open_phase_causality.py::test_an_opposite_call_never_reverses_through_the_broker
+18 failed, 1 passed in 8.83s
+EXIT:1

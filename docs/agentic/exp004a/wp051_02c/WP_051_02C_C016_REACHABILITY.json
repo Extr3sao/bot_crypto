@@ -1,0 +1,57 @@
+{
+  "claim_id": "C-016",
+  "status": "FAIL",
+  "classification": "UNREACHABLE_UNDER_DECLARED_COST_MODEL",
+  "threshold_changed": false,
+  "hypothesis_empirically_refuted": false,
+  "declared_cost_model": {
+    "scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+    "fee_source_id": "SRC-01",
+    "taker_fee_bps_per_side": 10.0,
+    "maker_fee_bps_per_side": 10.0,
+    "round_trip_fee_bps": 20.0,
+    "code": "src/trading_bot/research/execution_cost/measured.py::round_trip_components (bps = 2.0 * taker_fee_bps)"
+  },
+  "unreachable_branch": {
+    "predicate": "median_round_trip_cost_bps <= 20.0",
+    "reason": "The declared model charges 20.0 bps of taker fees on a round trip before any spread. Every observed spread is strictly positive, so the sum is strictly greater than 20.0 bps for every row. The branch cannot be satisfied by any observation, not by an unlucky sample.",
+    "floor_bps": 20.001191,
+    "cheapest_observed_round_trip_bps": 20.001191
+  },
+  "spread_double_counting_note": {
+    "correct_single_spread_bps": 20.941398,
+    "erroneous_two_spread_bps": 21.882796,
+    "reading": "The sealed reference charges the spread once per round trip. Charging it twice produces a cost that is 0.941398 bps higher and must not be compared against the 20.0 bps threshold."
+  },
+  "sol_reference": {
+    "sealed_median_one_spread_bps": 20.941398,
+    "sealed_median_two_spread_bps": 21.882796,
+    "recomputed_median_one_spread_bps": 20.940424,
+    "recomputed_median_two_spread_bps": 21.880848,
+    "recomputed_rows": 924,
+    "sealed_rows": 912,
+    "difference_explained": "The tape is append-only and grew by 12 rows after the 02B seal; the recomputation reads the larger file. Both readings exceed the threshold, so the classification does not depend on the new rows."
+  },
+  "tape_integrity": {
+    "path": "data/st6/ST6_OBSERVATIONS.jsonl",
+    "sealed_sha256": "3d5755d78af7c9f1e8d959ae1559228ccb19c5fdd152181efa6b98d766008434",
+    "sealed_bytes": 2030451,
+    "current_sha256": "896b9fa3498f31f590562085e00b1d4b3fa06a7716fd89bf3e0bcc3860b15280",
+    "current_bytes": 2057201,
+    "current_rows": 924,
+    "sha256_of_first_sealed_bytes": "3d5755d78af7c9f1e8d959ae1559228ccb19c5fdd152181efa6b98d766008434",
+    "append_only_prefix_verified": true
+  },
+  "declared_size": {
+    "declared_notional_usdt": 500.0,
+    "walked_notional_usdt": 200.0,
+    "status": "DECLARED_SIZE_NOT_WALKED",
+    "rows_walking_200_usdt": 912,
+    "note": "The 500 USDT impact is NOT_EXECUTED/UNPROVEN. No empirical impact at 500 USDT may be inferred by scaling."
+  },
+  "supporting_evidence": [
+    "docs/agentic/exp004a/wp051_02c/evidence/audit_02b/cost_recomputation.json",
+    "docs/agentic/exp004a/wp051_02b/WP_051_02B_CLAIM_VERDICTS.json"
+  ],
+  "decision": "Do not change the threshold after the pilot. The hypothesis is not evaluable through this branch under the declared cost model, and a new hypothesis or rule requires a new preregistration over future data, with governance."
+}

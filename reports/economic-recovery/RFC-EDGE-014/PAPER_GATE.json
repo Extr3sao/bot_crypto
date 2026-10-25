@@ -1,0 +1,33 @@
+{
+  "blocked_by": [
+    {
+      "evidence": "42 cycles refused a new decision slot with NO_NEW_DECISION_DISK_CRITICAL",
+      "gate": "DISK_BUDGET"
+    },
+    {
+      "evidence": "no paper fill ledger exists on the CAP-004 real-decision path",
+      "gate": "PAPER_BROKER_NOT_RUNNING"
+    }
+  ],
+  "forward_days_waived": 0,
+  "gates_relaxed": [],
+  "note": "no gate was loosened to obtain a paper reading, and none of the offline measurements were discarded: they are preserved under WP-EDGE-14D",
+  "order_sent": false,
+  "promotion": "NONE",
+  "risk_limits_changed": false,
+  "schema_version": "EDGE14_PAPER_GATE_V1",
+  "status": "PAPER_BLOCKED_BY_GATE",
+  "window": {
+    "available": true,
+    "cycle_counter_in_heartbeat": 906,
+    "cycles_recorded": 862,
+    "first_operation_utc": "2026-10-06T19:59:02Z",
+    "interval_seconds": 900,
+    "last_operation_utc": "2026-10-16T12:45:03Z",
+    "note": "the window is the ledger's own extent; no day was filled in, and the difference between 30 and the measured span is reported, not padded",
+    "requested_days": 30,
+    "span_days": 9.6986,
+    "window_is_the_full_thirty_days": false
+  },
+  "work_package": "WP-EDGE-14E"
+}

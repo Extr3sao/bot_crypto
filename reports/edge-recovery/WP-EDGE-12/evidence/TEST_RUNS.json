@@ -1,0 +1,45 @@
+{
+  "campaign": "RFC-EDGE-012",
+  "collected_nothing": false,
+  "generated_at_utc": "2026-10-16T06:35:21Z",
+  "hypothetical": true,
+  "lint": {
+    "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m ruff check src/trading_bot/research/edge12/ scripts/edge12_verify.py scripts/edge12_reports.py scripts/edge12_tests.py tests/unit/research/test_edge12_continuity.py tests/unit/research/test_edge12_runner.py",
+    "exit_code": 0,
+    "passed": true,
+    "reason": null,
+    "tail": "All checks passed!"
+  },
+  "order_sent": false,
+  "promotion": "NONE",
+  "pytest": {
+    "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest -q tests/unit/research/test_edge12_continuity.py tests/unit/research/test_edge12_runner.py",
+    "errors": null,
+    "exit_code": 0,
+    "failed": null,
+    "passed": 61,
+    "reason": null,
+    "skipped": null,
+    "tail": ".............................................................            [100%]\n61 passed in 1.67s"
+  },
+  "read_only": "no network, no live state root, no live store, no scheduler; this step runs the package's own regressions and the lint over its own paths",
+  "schema_version": "EDGE12_TEST_RUNS_V1",
+  "selection": {
+    "declared_in": "scripts/edge12_tests.py",
+    "lint_paths": [
+      "src/trading_bot/research/edge12/",
+      "scripts/edge12_verify.py",
+      "scripts/edge12_reports.py",
+      "scripts/edge12_tests.py",
+      "tests/unit/research/test_edge12_continuity.py",
+      "tests/unit/research/test_edge12_runner.py"
+    ],
+    "test_modules": [
+      "tests/unit/research/test_edge12_continuity.py",
+      "tests/unit/research/test_edge12_runner.py"
+    ],
+    "why_narrow": "these are this package's own regressions and the lint that guards them; the rest of the tree carries other work packages' findings and their owners report them"
+  },
+  "verdict": "TESTS_PASS",
+  "work_package": "WP-EDGE-12"
+}

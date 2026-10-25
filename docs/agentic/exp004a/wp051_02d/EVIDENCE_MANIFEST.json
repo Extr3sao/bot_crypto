@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0",
+  "run_id": "wp051-02d/EXP-004A/2026-10-21",
+  "generated_at_utc": "2026-10-21T15:40:32Z",
+  "head_when_generated": "0c54133308fb85dd5aef13d957232798326557be",
+  "preflight_status": "PASS",
+  "hashing": {
+    "sha256": "bytes as read from this checkout",
+    "git_blob": "the object id Git stores; stable across checkouts",
+    "blob_sha256": "sha256 of the committed blob, not of a CRLF-restored checkout",
+    "self_exclusion": "this manifest does not hash itself, and it does not hash the final report: the report is emitted after the verifier has read the chain, so including it would either freeze a report that cannot mention the verdict or leave a digest that the next edit breaks. The commit that carries both files addresses them."
+  },
+  "missing": [],
+  "entries": [
+    {
+      "role": "declaration",
+      "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+      "bytes": 6201,
+      "sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+      "git_blob": "9421cc52a8a3366b3a1fa6998d547b0a002ed89b",
+      "blob_sha256": "6922d12e781800e7f670c7d1eb3f944e92806fc69af686a78ac671e314989eeb"
+    },
+    {
+      "role": "rule",
+      "path": "src/trading_bot/research/prospective/provenance.py",
+      "bytes": 29329,
+      "sha256": "63a4f41368605fcbbd62a5ca590524265cf447144467951e0e35ad8c03263f65",
+      "git_blob": "3b59f8f335a2a9b475299a0b2224acfb4431a424",
+      "blob_sha256": "63a4f41368605fcbbd62a5ca590524265cf447144467951e0e35ad8c03263f65"
+    },
+    {
+      "role": "generator",
+      "path": "scripts/exp004a_capture.py",
+      "bytes": 16470,
+      "sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+      "git_blob": "052832c2252a719c63d0859628ada648c799c6ce",
+      "blob_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8"
+    },
+    {
+      "role": "test",
+      "path": "tests/unit/research/test_exp004a_provenance.py",
+      "bytes": 17032,
+      "sha256": "88164ba1be7c28499464ad70929998013811ec4b41a811b38964921c32da8a2d",
+      "git_blob": "50f9bfdba129daa78485529a32393435dccfd929",
+      "blob_sha256": "88164ba1be7c28499464ad70929998013811ec4b41a811b38964921c32da8a2d"
+    },
+    {
+      "role": "test",
+      "path": "tests/unit/research/test_exp004a_capture.py",
+      "bytes": 13635,
+      "sha256": "5da8cf28b039e1fbf2393798dd5e7e2119cb29e52d2b83db65f8190ee3e6a292",
+      "git_blob": "ce9ffc2371c07e962aa788f9f5e9b49776fa25d7",
+      "blob_sha256": "5da8cf28b039e1fbf2393798dd5e7e2119cb29e52d2b83db65f8190ee3e6a292"
+    },
+    {
+      "role": "tool",
+      "path": "scripts/exp004a_provenance_preflight.py",
+      "bytes": 22262,
+      "sha256": "662295c3732acc1142bd8df050deca1aef7c856d4bdd8d6af48dab76b89ab806",
+      "git_blob": "29fa36d97d350861093744a08e9bb075ae265ce3",
+      "blob_sha256": "e219fb23bd4c82ccf4e56a1045b5603dd677c5898567ba021b15bcce9133a3bf"
+    },
+    {
+      "role": "tool",
+      "path": "scripts/exp004a_provenance_verify.py",
+      "bytes": 36033,
+      "sha256": "0ae5fe10355e36f719084fe3e06177c5cb838c9135b03e6d37dc12c7cc12a287",
+      "git_blob": "519ce77079c8e79a9f3025b8f8fa8a7a38c1c756",
+      "blob_sha256": "0ae5fe10355e36f719084fe3e06177c5cb838c9135b03e6d37dc12c7cc12a287"
+    },
+    {
+      "role": "input",
+      "path": "config/preregistrations/EXP-004A.datasets.json",
+      "bytes": 4669,
+      "sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+      "git_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7",
+      "blob_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211"
+    },
+    {
+      "role": "input",
+      "path": "docs/RFC-050_EXP004A_TWO_PHASE_FREEZE.md",
+      "bytes": 6540,
+      "sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+      "git_blob": "41ba4b163b37ad714587c3dccd7741bea715ad62",
+      "blob_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5"
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02d/RFC_EXP004A_051_02D.md",
+      "bytes": 9307,
+      "sha256": "aa61cb63fe92bcd73abf0bf8e58807730d05469d4ac5212cef9ce7ae32e64640",
+      "git_blob": "14646ef2d411dbec0435f169546997cc205eed0c",
+      "blob_sha256": "aa61cb63fe92bcd73abf0bf8e58807730d05469d4ac5212cef9ce7ae32e64640"
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02d/WP_051_02D_BASELINE.json",
+      "bytes": 2333,
+      "sha256": "98934a8d989a78e47c9b220dd91feb0c3f8f72386580b9ac8cd3d4eac3532c18",
+      "git_blob": "296bb844196e61ab8a59d0f5033699652f7a31e5",
+      "blob_sha256": "98934a8d989a78e47c9b220dd91feb0c3f8f72386580b9ac8cd3d4eac3532c18"
+    },
+    {
+      "role": "output",
+      "path": "docs/agentic/exp004a/wp051_02d/WP_051_02D_PREFLIGHT.json",
+      "bytes": 6677,
+      "sha256": "9427bdadc6695a5e19bb07b543c7e6cca127e9bb8ce7090bcc4234e8770a74f7",
+      "git_blob": "f3a948b9254e6f7aaaf636b34c0d1a90f11c0ddc",
+      "blob_sha256": "3c8146d5802239af508318583b0f478f70ea949567cb1131401366aceac08567"
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02d/WP_051_02D_PREFLIGHT.md",
+      "bytes": 1968,
+      "sha256": "14ed0b8562879a8b9a3a1a9e6e8d31c0f792a5f6f883fad216bb741c19fc9203",
+      "git_blob": "cfe12911cc0286e05b100a9d2cce9b66d6e817a8",
+      "blob_sha256": "6c7e055abce4a8dc2ea73195e897931bd7f0547c42779d2cca841f71d1cb8b97"
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02d/WP_051_02D_TEST_REPORT.md",
+      "bytes": 5912,
+      "sha256": "d524f2ee30b12cc2091f916eae886bcc98a950dfc0c9b4114d857615c6d007bd",
+      "git_blob": "a8437c35cf8a02d8de37a74066f193dbe5fceaba",
+      "blob_sha256": "d524f2ee30b12cc2091f916eae886bcc98a950dfc0c9b4114d857615c6d007bd"
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02d/WP_051_02D_CHANGELOG.md",
+      "bytes": 3484,
+      "sha256": "e1c7f3c82563bd8a1780bbad9af005fcea0f50ed54f5046dac48a3e415351669",
+      "git_blob": "9457f182e3fc2c2e5bb0a5b3ec671f44725eff29",
+      "blob_sha256": "e1c7f3c82563bd8a1780bbad9af005fcea0f50ed54f5046dac48a3e415351669"
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02d/RUN_REPORT.md",
+      "bytes": 4309,
+      "sha256": "7010dc83ef8aac2419da0a9cff0f3db4deccc7fda64a9c18ff951e9ad9c48e42",
+      "git_blob": "3e16ade4784ff542fd1b3e5ef786abf4c556cfa4",
+      "blob_sha256": "7010dc83ef8aac2419da0a9cff0f3db4deccc7fda64a9c18ff951e9ad9c48e42"
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02d/RUN_REPORT.json",
+      "bytes": 5863,
+      "sha256": "0ba3e66813f0ac1e367fd1a1b8bd0a7eedffd15e430219bd17412ef79112fb3c",
+      "git_blob": "47c40c2ca877e2a8162bcab7e7768f24a25e06bc",
+      "blob_sha256": "0ba3e66813f0ac1e367fd1a1b8bd0a7eedffd15e430219bd17412ef79112fb3c"
+    },
+    {
+      "role": "independent",
+      "path": "docs/agentic/exp004a/wp051_02d/WP_051_02D_PROVENANCE_VERIFICATION.json",
+      "bytes": 12472,
+      "sha256": "0e0fbb353dc1e061b410dac22465900e12123840e16c5ab8cba4cb318060e0be",
+      "git_blob": "b1a020a50fd9186970f6f7134dac7592121e9d15",
+      "blob_sha256": "479affafe5cdf8b1b4acb94eebcec787e9d5f3869338ea1c8cc70fdc5f3f211f"
+    },
+    {
+      "role": "independent",
+      "path": "docs/agentic/exp004a/wp051_02d/WP_051_02D_PROVENANCE_VERIFICATION.md",
+      "bytes": 3990,
+      "sha256": "ca2a925a0cfbf49456b3972a933fda4938afc1d296e6829adfb9343a075f416c",
+      "git_blob": "ba5299d306ca3953f48c5062c1bc8e2022170560",
+      "blob_sha256": "772f2c4af7fb01aac5322d518ea2ffcff93101a6be9905cc4fd8a4b467b4ca2e"
+    }
+  ]
+}

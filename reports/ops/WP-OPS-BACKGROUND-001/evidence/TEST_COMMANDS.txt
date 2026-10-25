@@ -1,0 +1,96 @@
+WP-OPS-BACKGROUND-001 — comandos ejecutados y resultado real
+================================================================
+
+RED (antes de implementar)
+--------------------------
+$ .venv/Scripts/python.exe -m pytest tests/unit/ops/test_windowless.py -q
+  ERROR collecting tests/unit/ops/test_windowless.py
+  ModuleNotFoundError: No module named 'trading_bot.ops'
+  exit 1
+
+$ .venv/Scripts/python.exe scripts/ops_background_audit.py --json ...RED.json --md ...RED.md
+  HIGH_FINDINGS  HIGH 7 / MEDIUM 333
+  exit 1
+
+GREEN (implementado)
+--------------------
+$ .venv/Scripts/python.exe -m pytest tests/unit/ops -q
+  13 passed
+  exit 0
+
+$ .venv/Scripts/python.exe -m pytest tests/unit/autonomous -q
+  284 passed
+  exit 0
+
+$ .venv/Scripts/python.exe -m pytest tests/unit/research/test_campaign_supervisor.py -q
+  39 passed
+  exit 0
+
+$ .venv/Scripts/python.exe -m pytest tests/unit/research/test_st6_scheduler.py \
+    tests/unit/research/test_edge12_runner.py \
+    tests/unit/research/test_edge04r_continuity.py -q
+  90 passed
+  exit 0
+
+$ .venv/Scripts/python.exe -m pytest tests/unit/research/test_edge04_autonomous.py -q
+  87 passed
+  exit 0
+
+$ .venv/Scripts/python.exe -m pytest tests/unit/ops tests/unit/autonomous \
+    tests/unit/research/test_campaign_supervisor.py -q
+  335 passed
+  exit 0
+
+$ .venv/Scripts/python.exe scripts/ops_background_audit.py --json ...GREEN.json --md ...GREEN.md --origin
+  CLEAN  HIGH 0 / MEDIUM 324
+  exit 0
+
+$ .venv/Scripts/python.exe -m ruff check <nuevos y tocados>
+  All checks passed
+  exit 0
+
+$ .venv/Scripts/python.exe -m mypy src/trading_bot/ops/windowless.py \
+    src/trading_bot/autonomous/supervisor.py scripts/windowless.py \
+    scripts/ops_background_audit.py scripts/ops_window_origin.py \
+    scripts/cap004_supervisor.py scripts/recovery_run_report.py
+  Success: no issues found in 7 source files
+  exit 0
+
+WINDOWS — ejecución real sin ventana
+------------------------------------
+$ .venv/Scripts/python.exe scripts/ops_windowless_probe.py --out ...PROBE.json
+  visual_verdict: NOT_OBSERVABLE (ConPTY, no HWND)
+  structural_verdict: PASS
+  plain child:   9 processes attached to its console
+  guarded child: 2 processes attached to its console
+  exit 0
+
+$ .venv/Scripts/pythonw.exe scripts/windowless.py --log ...pytest.log \
+    -- pytest tests/unit/ops -q
+  12 passed · exit 0 · execution.jsonl con spawn+exit
+
+$ .venv/Scripts/pythonw.exe scripts/windowless.py --log ...capture.log \
+    -- ai_bots_003c_capture.py --bars 200 --out ...capture
+  exit 0 · CAPTURE.json · DATA_COVERAGE_LEDGER.jsonl
+          · PIT_OPEN_EVENT_TRACE.jsonl · RISK_NET_RECONCILIATION.json
+
+$ .venv/Scripts/pythonw.exe scripts/windowless.py --timeout 2 --keep-together \
+    -- python -c "import time; time.sleep(60)"
+  exit 124 · timed_out=true · job_object=true
+
+$ .venv/Scripts/pythonw.exe scripts/windowless.py -- does-not-exist.exe
+  exit 127 · "[windowless] cannot start does-not-exist.exe: FileNotFoundError"
+
+$ .venv/Scripts/python.exe scripts/ops_window_origin.py
+  Freebuff.exe (GUI) -> bun.exe (CONSOLE)
+  = el primer proceso de consola de la cadena: la ventana la abre Codebuff
+
+NO EJECUTADO
+------------
+- Suite completa del repositorio (~3200 tests): fuera de alcance por tiempo;
+  se ejecutaron las suites que tocan los ficheros modificados.
+- Registro real de la tarea programada (`cap004_supervisor.py install`): no se
+  ejecutó para no alterar el Programador de tareas del host. El XML se verifica
+  por test y por `task_command()`/`task_arguments()`.
+- mypy de `scripts/wp9_runtime_rehearsal.py`: 10 errores preexistentes en HEAD
+  (verificado con `git show HEAD:`), no introducidos por este WP.

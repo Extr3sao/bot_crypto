@@ -1,0 +1,329 @@
+{
+ "schema_version": "AI_BOTS_003G_RUN_REPORT_V1",
+ "rfc": "RFC-TAP-AI-BOTS-003G",
+ "generated_at_utc": "2026-10-19T08:24:28Z",
+ "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+ "base_commit": "fe9b5e2623b0d023833249e9687b753eaacd27d4",
+ "published_commit": null,
+ "mode": "PAPER",
+ "live_enabled": false,
+ "real_model_called": false,
+ "environment": {
+  "python": "3.11.15",
+  "executable": ".venv/Scripts/python.exe",
+  "matplotlib": "3.9.2",
+  "numpy": "2.0.2",
+  "pandas": "3.0.3",
+  "pyyaml": "6.0.3",
+  "host_clock_skew_vs_exchange_ms": -206,
+  "disk_free_at_close_gb": 18.5
+ },
+ "dataset": {
+  "source": "binance_spot_rest_1m",
+  "endpoint": "https://api.binance.com/api/v3/klines?interval=1m",
+  "credential_free": true,
+  "symbols": {
+   "BTCUSDT": {
+    "minutes": 276,
+    "first_open_utc": "2026-10-19T03:24:00Z",
+    "last_open_utc": "2026-10-19T07:59:00Z",
+    "gaps": 0,
+    "sha256": "54b28822c4e2ae3a626f22c8fb6bf8ff74cacd01acb59b1f8d0760f8df81a703"
+   },
+   "ETHUSDT": {
+    "minutes": 276,
+    "first_open_utc": "2026-10-19T03:24:00Z",
+    "last_open_utc": "2026-10-19T07:59:00Z",
+    "gaps": 0,
+    "sha256": "c91f4844ef9e08422eb6bf2b8e2c9b456fe1f4a0383d4e96b93427ea507c1506"
+   }
+  },
+  "forming_bars_ignored": "every page's still-open minute, one per poll",
+  "settle_ms": 2500
+ },
+ "session": {
+  "directory": "reports/ai-bots/RFC-AI-BOTS-003G/session",
+  "started_at_utc": "2026-10-19T07:28:46Z",
+  "ended_at_utc": "2026-10-19T08:00:12Z",
+  "timeframe": "5m",
+  "window_bars": 20,
+  "decision_every_bars": 1,
+  "provider": "paper-script",
+  "real_model_called": false,
+  "declared_latency_ms": 30000,
+  "measured_data_delay_ms": 2956,
+  "cycles_executed": 8,
+  "cycles_blocked": 0,
+  "decisions": 14,
+  "fills": 1,
+  "closed_trades": 0,
+  "net_realised_usdt": 0.0,
+  "drawdown_pct": 0.024483,
+  "sub_bar_fills": 1,
+  "entry_quote_sources": {
+   "binance_spot_1m_klines": 1
+  },
+  "quote_lag_ms": {
+   "min": 27044,
+   "median": 27044,
+   "max": 27044
+  },
+  "data_time_le_decision_time": true,
+  "cycle_rows": [
+   {
+    "cycle": 1,
+    "bar_open_ms": 1792394400000,
+    "data_time_ms": 1792394700000,
+    "decision_time_ms": 1792394944684,
+    "bars": 48,
+    "fills": 0,
+    "ledger_rows": 2
+   },
+   {
+    "cycle": 2,
+    "bar_open_ms": 1792394700000,
+    "data_time_ms": 1792395000000,
+    "decision_time_ms": 1792395012059,
+    "bars": 49,
+    "fills": 0,
+    "ledger_rows": 5
+   },
+   {
+    "cycle": 3,
+    "bar_open_ms": 1792395000000,
+    "data_time_ms": 1792395300000,
+    "decision_time_ms": 1792395310078,
+    "bars": 50,
+    "fills": 1,
+    "ledger_rows": 8
+   },
+   {
+    "cycle": 4,
+    "bar_open_ms": 1792395300000,
+    "data_time_ms": 1792395600000,
+    "decision_time_ms": 1792395608108,
+    "bars": 51,
+    "fills": 1,
+    "ledger_rows": 10
+   },
+   {
+    "cycle": 5,
+    "bar_open_ms": 1792395600000,
+    "data_time_ms": 1792395900000,
+    "decision_time_ms": 1792395907172,
+    "bars": 52,
+    "fills": 1,
+    "ledger_rows": 12
+   },
+   {
+    "cycle": 6,
+    "bar_open_ms": 1792395900000,
+    "data_time_ms": 1792396200000,
+    "decision_time_ms": 1792396207459,
+    "bars": 53,
+    "fills": 1,
+    "ledger_rows": 14
+   },
+   {
+    "cycle": 7,
+    "bar_open_ms": 1792396200000,
+    "data_time_ms": 1792396500000,
+    "decision_time_ms": 1792396507876,
+    "bars": 54,
+    "fills": 1,
+    "ledger_rows": 16
+   },
+   {
+    "cycle": 8,
+    "bar_open_ms": 1792396500000,
+    "data_time_ms": 1792396800000,
+    "decision_time_ms": 1792396812290,
+    "bars": 55,
+    "fills": 1,
+    "ledger_rows": 18
+   }
+  ],
+  "fill": {
+   "symbol": "BTC/USDT",
+   "side": "buy",
+   "intent": "OPEN_LONG",
+   "decision_seq": 2,
+   "decision_ts_utc": "2026-10-19T07:30:02Z",
+   "received_at_utc": "2026-10-19T07:30:32.956Z",
+   "quote_ts_utc": "2026-10-19T07:31:00Z",
+   "quote_price": 82884.01,
+   "quote_source": "binance_spot_1m_klines",
+   "quote_lag_ms": 27044,
+   "opinion_age_ms": 57044,
+   "entry_bar_range_from_ms": 1792395060000,
+   "entry_bar_range_until_ms": 1792395300000,
+   "entry_bar_range_minutes": 3,
+   "entry_bar_range_high": 83158.0,
+   "entry_bar_range_low": 82903.0,
+   "entry_bar_range_last": 83122.66,
+   "risk_gate": "approved"
+  }
+ },
+ "verification": {
+  "tool": "scripts/ai_bots_003g_verify.py",
+  "imports_runtime": false,
+  "passed": 25,
+  "failed": 0,
+  "verdict": "PASS",
+  "independent_agent": "NOT_AVAILABLE",
+  "independent_verification": "INDEPENDENT_VERIFICATION_PENDING",
+  "mutations": {
+   "fill_price_plus_one": "DETECTED (subbar_fills_are_observed_prices, cycle chain)",
+   "raw_minute_mid_series": "DETECTED (published_series_rebuilds_from_minutes, manifest)",
+   "decision_before_data": "DETECTED (data_time_le_decision_time, declared delay)",
+   "answer_after_fill": "DETECTED (subbar_fills_are_observed_prices, cycle chain)"
+  }
+ },
+ "comparisons": {
+  "prospective_session_window": {
+   "path": "reports/ai-bots/RFC-AI-BOTS-003G/session/compare/COMPARISON.json",
+   "scope": "PROSPECTIVE_SESSION_WINDOW",
+   "current": {
+    "decisions": 14,
+    "fills": 0,
+    "closed_trades": 0,
+    "net_realised_usdt": 0.0
+   },
+   "proposed": {
+    "decisions": 14,
+    "fills": 1,
+    "closed_trades": 0,
+    "net_realised_usdt": 0.0,
+    "sub_bar_fills": 1
+   },
+   "delta": {
+    "fills": 1,
+    "net_realised_usdt": 0.0,
+    "drawdown_pp": 0.024483
+   },
+   "gate": "INSUFFICIENT_SAMPLE"
+  },
+  "retrospective_full_collected_window": {
+   "path": "reports/ai-bots/RFC-AI-BOTS-003G/session/compare-full/COMPARISON.json",
+   "scope": "RETROSPECTIVE_FULL_COLLECTED_WINDOW",
+   "current": {
+    "decisions": 72,
+    "fills": 0,
+    "closed_trades": 0,
+    "net_realised_usdt": 0.0
+   },
+   "proposed": {
+    "decisions": 72,
+    "fills": 1,
+    "closed_trades": 0,
+    "net_realised_usdt": 0.0,
+    "sub_bar_fills": 1
+   },
+   "delta": {
+    "fills": 1,
+    "net_realised_usdt": 0.0,
+    "drawdown_pp": 0.024575
+   },
+   "gate": "INSUFFICIENT_SAMPLE"
+  }
+ },
+ "tests": [
+  {
+   "layer": "UNIT/CONTRACT",
+   "command": "pytest tests/unit/market_data -q",
+   "result": "134 passed",
+   "exit": 0
+  },
+  {
+   "layer": "INTEGRATION/RUNTIME",
+   "command": "pytest tests/unit/vision/test_prospective_session.py -q",
+   "result": "6 passed",
+   "exit": 0
+  },
+  {
+   "layer": "UNIT",
+   "command": "pytest tests/unit/vision/test_subbar_execution.py -q",
+   "result": "6 passed",
+   "exit": 0
+  },
+  {
+   "layer": "REGRESSION",
+   "command": "pytest tests/unit/vision tests/unit/market_data tests/unit/paper tests/unit/risk tests/unit/intelligence tests/unit/reports tests/unit/observability -q",
+   "result": "657 passed, 1 failed (dashboard concurrency; passes 14/14 when rerun alone)",
+   "exit": 1
+  },
+  {
+   "layer": "REGRESSION (rerun)",
+   "command": "pytest tests/unit/observability/test_dashboard_server.py -q",
+   "result": "14 passed",
+   "exit": 0
+  },
+  {
+   "layer": "REGRESSION",
+   "command": "pytest tests/unit/vision/test_lane_vertical.py test_causal_execution.py test_open_phase_causality.py test_guards_and_controls.py -q",
+   "result": "56 passed",
+   "exit": 0
+  },
+  {
+   "layer": "LINT",
+   "command": "ruff check <new files>",
+   "result": "clean",
+   "exit": 0
+  },
+  {
+   "layer": "TYPE",
+   "command": "mypy src/trading_bot/{market_data/minute_collector,vision/prospective,vision/lane}.py",
+   "result": "no issues",
+   "exit": 0
+  },
+  {
+   "layer": "PAPER",
+   "command": "scripts/ai_bots_003g_paper.py --duration-s 2400 --max-cycles 8",
+   "result": "8 cycles executed, 1 fill, 0 blocked",
+   "exit": 0
+  },
+  {
+   "layer": "LINT (rerun)",
+   "command": "ruff check <9 new/touched files>",
+   "result": "clean (4 unused-noqa fixed)",
+   "exit": 0
+  }
+ ],
+ "defects_found_and_fixed": [
+  {
+   "id": "003G-D1",
+   "detail": "aggregate_complete treated the 5m group cut by the start of the requested window as a hole, blocking a healthy session at cycle 1.",
+   "evidence": "session-aborted-aggregation/STREAM.jsonl: BLOCKED INCOMPLETE_DECISION_BAR",
+   "fix": "leading_partial_group is dropped like the trailing pending group; test added",
+   "status": "FIXED"
+  },
+  {
+   "id": "003G-D2",
+   "detail": "a just-closed minute was stored 1.19 s after close and the venue revised its low/close nine minutes later (ETHUSDT 07:18).",
+   "evidence": "session-venue-revision/market-1m/EVENTS.jsonl DUPLICATE_CONFLICT; collector blocked the symbol, session stopped.",
+   "fix": "settle_ms is now enforced before storing; lookback reduced to 3 minutes; test added. Later revisions of already-stored minutes still block (fail-closed).",
+   "status": "FIXED_BY_POLICY"
+  },
+  {
+   "id": "003G-D3",
+   "detail": "the independent verifier first reported a false FAIL because it counted the boundary partial groups as holes.",
+   "evidence": "first run: 24 PASS / 1 FAIL published_series_rebuilds_from_minutes",
+   "fix": "verifier mirrors the declared leading/pending policy; mid-series mutation still detected",
+   "status": "FIXED"
+  },
+  {
+   "id": "003G-D4",
+   "detail": "test_runtime_artifacts_are_untouched_by_serving fails when another process is writing inside reports/ during the test.",
+   "evidence": "regression run while the PAPER session was live: 1 failed; rerun alone: 14 passed",
+   "fix": "none in 003G; it is a concurrency assumption of the dashboard test",
+   "status": "DECLARED"
+  }
+ ],
+ "blocked": [
+  "REAL_MODEL_CALLED=false: no credential and no spending authorization; the provider is a deterministic script.",
+  "INDEPENDENT_VERIFICATION_PENDING: no second agent was available; the artifact verifier is builder-authored.",
+  "Economics cannot be judged: 1 fill and 0 closed trades (the 003F gate requires 30 closed trades).",
+  "No LIVE: not attempted and no route exists in this code path."
+ ],
+ "verdict": "PARTIAL"
+}

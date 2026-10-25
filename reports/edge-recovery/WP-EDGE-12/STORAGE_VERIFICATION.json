@@ -1,0 +1,34 @@
+{
+  "checks": [
+    {
+      "detail": "critical=2147483648 warning=5368709120",
+      "name": "the_guard_thresholds_are_the_campaigns_own",
+      "passed": true
+    },
+    {
+      "detail": "72837412 B against 268435456 B",
+      "name": "the_lane_ceiling_is_inside_its_declared_budget",
+      "passed": true
+    },
+    {
+      "detail": "6 series measured, none extrapolated",
+      "name": "the_store_rate_is_measured_from_the_store_and_not_fitted",
+      "passed": true
+    },
+    {
+      "detail": "market requests at a refused tick: [0]",
+      "name": "a_refusal_makes_no_market_request",
+      "passed": true
+    },
+    {
+      "detail": "this reading is read-only; nothing was moved or deleted anywhere on the volume",
+      "name": "no_other_workstreams_data_was_touched",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "hypothetical": true,
+  "order_sent": false,
+  "schema_version": "EDGE12_STORAGE_VERIFICATION_V1",
+  "verdict": "STORAGE_VERIFY_PASS"
+}

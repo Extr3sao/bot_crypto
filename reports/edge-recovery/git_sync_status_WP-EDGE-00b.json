@@ -1,0 +1,57 @@
+{
+  "artifact": "WP-EDGE-00b-GIT-SYNC-STATUS",
+  "generated_at_utc": "2026-10-12T10:44:16.669093+00:00",
+  "wp": "WP-EDGE-00b",
+  "run_id": "wp-edge-00b-universe-fix",
+  "local_sha": "1bf9f79483a788f6a3f4a1444610dd28dd777c02",
+  "local_branch": "agent/edge-recovery/WP-EDGE-00-baseline",
+  "remote": "origin https://github.com/Extr3sao/bot_crypto.git",
+  "remote_sha": "NOT_VERIFIED",
+  "remote_branch_exists": false,
+  "tracking_upstream": null,
+  "push": {
+    "attempted": true,
+    "command": "GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never git push -u origin agent/edge-recovery/WP-EDGE-00-baseline",
+    "force": false,
+    "target": "agent branch only (no push to main)",
+    "exit_code": 128,
+    "result": "BLOCKED_GITHUB_AUTH",
+    "stderr": [
+      "fatal: Cannot prompt because user interactivity has been disabled.",
+      "fatal: could not read Username for 'https://github.com': terminal prompts disabled"
+    ],
+    "cause": "no stored GitHub credential, no gh CLI session, no token in the environment",
+    "retry_policy": "no force push, no history rewrite; retry after credentials are provided out of band"
+  },
+  "pr": {
+    "url": null,
+    "status": "BLOCKED",
+    "reason": "push blocked; gh CLI unavailable"
+  },
+  "ci": {
+    "status": "NOT_TRIGGERED",
+    "reason": "no remote branch, so no pipeline ran"
+  },
+  "main": {
+    "local_sha": "1d2192b0aec8cfe1bf2bfcaa308c4787229b3d22",
+    "ahead_of_origin_main_by": 259,
+    "touched_by_this_wp": false
+  },
+  "commits_retained_locally": [
+    "1bf9f79 Report an inactive asset as a universe no-decision, not a data error. [WP-EDGE-00b]"
+  ],
+  "secret_scan": {
+    "scope": "staged diff of WP-EDGE-00b (git diff --cached)",
+    "patterns": [
+      "PEM private key block",
+      "AKIA access key",
+      "sk- style key",
+      "api_key/api_secret assignment",
+      "long mixed-case token"
+    ],
+    "hits": 0,
+    "note": "the only PEM-shaped string in the tree is the verifier's own secret canary, assembled at runtime so the repository never contains a complete header; the frozen WP-EDGE-00 verifier has the same literal canary from its own commit"
+  },
+  "false_success": 0,
+  "statement": "GitHub is NOT updated. The commits exist locally only; no remote SHA could be read, so no synchronisation is claimed."
+}

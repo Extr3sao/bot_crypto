@@ -1,0 +1,160 @@
+{
+  "rfc": "RFC-047",
+  "title": "ST-6 SCHEDULER PROVENANCE & INDEPENDENT EXECUTION EVIDENCE",
+  "status": "RFC047_BLOCKED_HOST_PERMISSIONS",
+  "declared_as": "PROPOSED",
+  "baseline": "a709c88",
+  "period": {
+    "started_at_utc": "2026-10-08T16:21:20Z",
+    "ends_at_utc": "2026-10-22T16:21:20Z",
+    "period_days": 14,
+    "slots_per_day": 6,
+    "slot_hours": 4,
+    "declared_slots": 84
+  },
+  "mode": "read-only; no order, no credential, no strategy, no backtest, no second scheduled task",
+  "supersedes": null,
+  "authority_order": "REAL_RUNTIME > EXECUTION_EVIDENCE > TESTS > SOURCE_CODE > ARCH/RFC > EXTERNAL_SOURCE > ASSUMPTION",
+  "planes_of_evidence": {
+    "windows": [
+      "data/st6/rfc047/WINDOWS_EVENTS.jsonl",
+      "data/st6/rfc047/WINDOWS_EVENT_LIVE_STATE.json",
+      "data/st6/RFC047_WINDOWS_EVENT_EVIDENCE.json"
+    ],
+    "execution": [
+      "data/st6/ST6_RUNS.jsonl",
+      "data/st6/ST6_SLOT_LEDGER.json"
+    ],
+    "market": [
+      "data/st6/ST6_WINDOWS.jsonl",
+      "data/st6/raw/*.json.gz"
+    ]
+  },
+  "host_audit": {
+    "operational_channel_enabled": false,
+    "operational_channel_retention": "circular",
+    "operational_channel_records": 0,
+    "operational_channel_ever_recorded": false,
+    "maintenance_channel_enabled": true,
+    "maintenance_records_present": 2274,
+    "maintenance_oldest_record_number": 440,
+    "maintenance_records_already_evicted": 439,
+    "session_can_read": true,
+    "session_can_change": false,
+    "write_probe_exit_code": 5,
+    "audited_as": "read-only, before anything else; the before-state is kept verbatim"
+  },
+  "gate": {
+    "change_contemplated": "wevtutil sl Microsoft-Windows-TaskScheduler/Operational /e:true",
+    "status": "HOST_AUDIT_CHANGE_APPROVAL_REQUIRED",
+    "applied": false,
+    "rollback": "wevtutil sl Microsoft-Windows-TaskScheduler/Operational /e:false",
+    "not_done": [
+      "no ACL, GPO, other channel, size or retention policy was touched",
+      "the Security channel was not modified and could not be read",
+      "no administrator credential was sought and no restriction was worked around",
+      "no second scheduled task was created"
+    ],
+    "coverage_from_utc": null,
+    "coverage_rule": "the channel records from the moment it is enabled; no coverage is inferred for any instant before it, and no slot may be promoted retroactively"
+  },
+  "identifier_semantics": {
+    "candidates": [100, 102, 107, 110, 200, 201],
+    "verified_on_this_host": false,
+    "why_not": "no record carrying any of them exists in a channel this session can read: the maintenance channel holds only identifiers 800 and 808",
+    "rule": "a record is classified by its channel, task path, instants and instance identifiers; an identifier alone never establishes that a run was scheduled",
+    "promotion_rule": "a meaning becomes usable only through data/st6/rfc047/EVENT_SEMANTICS.json and only when it quotes a record that is really in the store"
+  },
+  "windows_evidence_vocabulary": [
+    "WIN_EVENT_CONFIRMED_SCHEDULED",
+    "WIN_EVENT_CONFIRMED_MANUAL",
+    "WIN_EVENT_PARTIAL",
+    "WIN_EVENT_UNAVAILABLE",
+    "WIN_EVENT_CONFLICT",
+    "PRE_ENABLE_NOT_OBSERVABLE",
+    "PENDING_EVENT_COMPLETION"
+  ],
+  "ledger_integration": {
+    "ledger_version": "ST6_SLOT_LEDGER_V1",
+    "block_version": "RFC047_WINDOWS_EVIDENCE_V1",
+    "historical_fields_rewritten": 0,
+    "carry_forward": "a rebuild never weakens a recorded statement; a stronger earlier block is carried forward with the instant it was read"
+  },
+  "retention": {
+    "incremental_by": "EventRecordID",
+    "deduplicated_on": "(channel, EventRecordID)",
+    "atomic_write": true,
+    "watermark_advanced_after_the_durable_write_only": true,
+    "watermark_never_advanced_past_an_unreadable_fragment": true,
+    "rotation_and_identifier_resets_recorded": true,
+    "refusals_recorded": true,
+    "bounded": "only records of the monitored task, at most a declared number per read, original fragment kept only up to 8 KiB",
+    "preserved_until": "the close of the declared period"
+  },
+  "verification": {
+    "builder": "scripts/rfc047_builder.py",
+    "verifier": "scripts/rfc047_verify.py",
+    "builder_is_not_the_verifier": true,
+    "shares_code_with_the_builder": false,
+    "recomputes": [
+      "the channel state from the host",
+      "the declared slot grid from the period",
+      "every classification from the raw evidence",
+      "every hash from the bytes",
+      "task and instance identity",
+      "temporal integrity",
+      "the absence of live orders, credentials and a second task"
+    ],
+    "negative_controls": 18,
+    "negative_controls_reading": "seventeen manipulations must be rejected and one honest state must be accepted; a case is judged against the baseline of the unmutated artefacts",
+    "false_success_definition": "a manipulation the verifier accepted, or a claim the artefacts do not support",
+    "false_accusations_reported_separately": true
+  },
+  "failure_policy": [
+    "RFC047_VERIFIED",
+    "RFC047_PARTIAL_EXTERNAL_EVIDENCE",
+    "RFC047_BLOCKED_HOST_PERMISSIONS",
+    "RFC047_FAILED"
+  ],
+  "forbidden_verdicts": [
+    "VERIFIED because the code compiles",
+    "VERIFIED because the suite passes",
+    "VERIFIED because the channel is enabled",
+    "VERIFIED because an event exists without a correlation",
+    "VERIFIED because the scheduler reports LastTaskResult = 0",
+    "VERIFIED because a run log contains the word SCHEDULED"
+  ],
+  "invariants_while_blocked": [
+    "ST6_AUTONOMOUS_COLLECTION_ACTIVE",
+    "ECO-1 = OPEN",
+    "NEXT_CAMPAIGN = NOT_AUTHORIZED",
+    "LIVE_TRADING = DISABLED",
+    "TRADES_AUTHORIZED = 0",
+    "PROFITABILITY_VERIFIED = FALSE"
+  ],
+  "next_gate": "the real close of the ST-6 period at 2026-10-22T16:21:20Z; before it, the single command above with an elevated token would let the remaining slots be corroborated as they happen",
+  "artefacts": [
+    "docs/rfc/RFC-047_ST6_SCHEDULER_PROVENANCE.md",
+    "data/st6/RFC047_HOST_AUDIT.json",
+    "data/st6/RFC047_WINDOWS_EVENT_EVIDENCE.json",
+    "data/st6/RFC047_LEDGER_RECONCILIATION.json",
+    "data/st6/RFC047_RUNTIME_VERIFICATION.json",
+    "data/st6/RFC047_INDEPENDENT_VERIFICATION.md",
+    "data/st6/RFC047_INDEPENDENT_VERIFICATION.json",
+    "data/st6/RFC047_FINAL_REPORT.md",
+    "data/st6/RFC047_FINAL_REPORT.json"
+  ],
+  "defects_found_beside_this_rfc": [
+    {
+      "where": "scripts/st6_scheduler_verify.py, live tests live_error_exit_status and live_real_execution",
+      "what": "fresh run events are identified by the length of the bounded run log, which is front-truncated at RUN_EVENTS_KEPT (400): one appended event removes one from the front, the length does not change, and the fresh slice is empty",
+      "effect": "the refusal path is reported as misbehaving while it behaves exactly as declared: measured directly at 400/400 with the event REFUSED_INVALID_ARGUMENTS and exit code 1 written",
+      "caused_by_this_rfc": false,
+      "repaired": true,
+      "repaired_in": "a commit of its own, separate from the RFC-047 change set, because the program belongs to the campaign and not to this RFC",
+      "repair": "fresh events are identified by run identity in both live tests, and the launch test waits for an event that declares a scheduled invocation and is not a refusal; no assertion was weakened and one was made stricter",
+      "reverified": "scripts/st6_scheduler_verify.py PASS 5449/5449 checks, 0 mismatches, FALSE_SUCCESS = 0; tests/unit/research/test_st6_scheduler.py 44 passed"
+    }
+  ],
+  "no_further_rfc": "no RFC-048 and no new strategy campaign is started by this document"
+}

@@ -1,0 +1,4900 @@
+{
+  "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "commit": "4ea93d815ed6e3573239ae34bd7782cff4efe9c0",
+  "dataset": {
+    "first_open_ms": 1792501320000,
+    "last_open_ms": 1792516620000,
+    "minutes": 256,
+    "minutes_sha256": "fa201e6ba3b623f770f6ebbddef85014fc05a80c6af20a525d6fe8e905d747e1",
+    "path": "reports\\ai-bots\\DEF-RUN-PAPER\\model-20261020T170635Z\\market-1m\\BTCUSDT.jsonl",
+    "symbol": "BTC/USDT"
+  },
+  "dirty": true,
+  "generated_at_utc": "2026-10-21T07:36:40Z",
+  "label": "CURRENT",
+  "lane_module_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\src\\trading_bot\\vision\\lane.py",
+  "lane_module_sha256": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3",
+  "lifecycle": "SUPERSEDE",
+  "runtime_sha256": {
+    "src\\trading_bot\\paper\\broker.py": "c145960896999f6a7a7f2b9090c40471b582b8a7caa02b45563db2f8cbe33389",
+    "src\\trading_bot\\risk\\manager.py": "493a989ef2fc220eae212df0ee9d2b91e901eb04540da0c3fa41a1127ed45440",
+    "src\\trading_bot\\vision\\execution.py": "4d518bba40faca163eb9a632f23e6b0a6584c8886e8287b76e942889347141d1",
+    "src\\trading_bot\\vision\\lane.py": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3"
+  },
+  "scenarios": {
+    "m1_cadence1": {
+      "config": {
+        "data_delay_ms": 3620,
+        "decision_every_bars": 1,
+        "declared_provider_latency_ms": 0,
+        "dropped_bar_open_ms": null,
+        "interval_ms": 60000,
+        "max_opinion_age_ms": 60000,
+        "signal_source": "strategy_experimental",
+        "strategy_id": "ema_crossover",
+        "timeframe": "1m"
+      },
+      "ledger": {
+        "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\def-run-016-9m0l06tu\\m1_cadence1\\ledger.jsonl",
+        "rows": 404,
+        "sha256": "08494714fbb0813a14c7ae43a947fa953a3e8b3c39cf784e8380408bebb047ab"
+      },
+      "metrics": {
+        "actionable_opinions": 165,
+        "calls": 235,
+        "data_gap": 0,
+        "decision_rows": 235,
+        "deferred_slots": 0,
+        "duplicate_terminals": 0,
+        "executed_share": 0.006060606060606061,
+        "expired": 0,
+        "fills": 1,
+        "fills_without_approval": 0,
+        "ids_unique": true,
+        "max_opinion_age_ms": 60000,
+        "opinions": [
+          {
+            "decision_bar_open_ms": 1792502580000,
+            "decision_seq": 2,
+            "decision_ts_ms": 1792502643620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792502640000,
+            "decision_seq": 3,
+            "decision_ts_ms": 1792502703620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792502820000,
+            "decision_seq": 8,
+            "decision_ts_ms": 1792502883620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792502880000,
+            "decision_seq": 9,
+            "decision_ts_ms": 1792502943620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792502940000,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792503003620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503000000,
+            "decision_seq": 13,
+            "decision_ts_ms": 1792503063620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503060000,
+            "decision_seq": 15,
+            "decision_ts_ms": 1792503123620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503120000,
+            "decision_seq": 17,
+            "decision_ts_ms": 1792503183620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503180000,
+            "decision_seq": 19,
+            "decision_ts_ms": 1792503243620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503240000,
+            "decision_seq": 21,
+            "decision_ts_ms": 1792503303620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503420000,
+            "decision_seq": 26,
+            "decision_ts_ms": 1792503483620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503480000,
+            "decision_seq": 27,
+            "decision_ts_ms": 1792503543620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503540000,
+            "decision_seq": 29,
+            "decision_ts_ms": 1792503603620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503600000,
+            "decision_seq": 31,
+            "decision_ts_ms": 1792503663620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503660000,
+            "decision_seq": 33,
+            "decision_ts_ms": 1792503723620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503720000,
+            "decision_seq": 35,
+            "decision_ts_ms": 1792503783620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503780000,
+            "decision_seq": 37,
+            "decision_ts_ms": 1792503843620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503840000,
+            "decision_seq": 39,
+            "decision_ts_ms": 1792503903620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503900000,
+            "decision_seq": 41,
+            "decision_ts_ms": 1792503963620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503960000,
+            "decision_seq": 43,
+            "decision_ts_ms": 1792504023620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504020000,
+            "decision_seq": 45,
+            "decision_ts_ms": 1792504083620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504080000,
+            "decision_seq": 47,
+            "decision_ts_ms": 1792504143620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504140000,
+            "decision_seq": 49,
+            "decision_ts_ms": 1792504203620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504200000,
+            "decision_seq": 51,
+            "decision_ts_ms": 1792504263620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504260000,
+            "decision_seq": 53,
+            "decision_ts_ms": 1792504323620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504320000,
+            "decision_seq": 55,
+            "decision_ts_ms": 1792504383620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504380000,
+            "decision_seq": 57,
+            "decision_ts_ms": 1792504443620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504440000,
+            "decision_seq": 59,
+            "decision_ts_ms": 1792504503620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504500000,
+            "decision_seq": 61,
+            "decision_ts_ms": 1792504563620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504560000,
+            "decision_seq": 63,
+            "decision_ts_ms": 1792504623620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504620000,
+            "decision_seq": 65,
+            "decision_ts_ms": 1792504683620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504680000,
+            "decision_seq": 67,
+            "decision_ts_ms": 1792504743620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504740000,
+            "decision_seq": 69,
+            "decision_ts_ms": 1792504803620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504800000,
+            "decision_seq": 71,
+            "decision_ts_ms": 1792504863620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504860000,
+            "decision_seq": 73,
+            "decision_ts_ms": 1792504923620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504920000,
+            "decision_seq": 75,
+            "decision_ts_ms": 1792504983620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504980000,
+            "decision_seq": 77,
+            "decision_ts_ms": 1792505043620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505040000,
+            "decision_seq": 79,
+            "decision_ts_ms": 1792505103620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505100000,
+            "decision_seq": 81,
+            "decision_ts_ms": 1792505163620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505160000,
+            "decision_seq": 83,
+            "decision_ts_ms": 1792505223620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505220000,
+            "decision_seq": 85,
+            "decision_ts_ms": 1792505283620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505280000,
+            "decision_seq": 87,
+            "decision_ts_ms": 1792505343620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505340000,
+            "decision_seq": 89,
+            "decision_ts_ms": 1792505403620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505400000,
+            "decision_seq": 91,
+            "decision_ts_ms": 1792505463620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505460000,
+            "decision_seq": 93,
+            "decision_ts_ms": 1792505523620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505520000,
+            "decision_seq": 95,
+            "decision_ts_ms": 1792505583620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505580000,
+            "decision_seq": 97,
+            "decision_ts_ms": 1792505643620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505640000,
+            "decision_seq": 99,
+            "decision_ts_ms": 1792505703620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505700000,
+            "decision_seq": 101,
+            "decision_ts_ms": 1792505763620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505760000,
+            "decision_seq": 103,
+            "decision_ts_ms": 1792505823620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505820000,
+            "decision_seq": 105,
+            "decision_ts_ms": 1792505883620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505880000,
+            "decision_seq": 107,
+            "decision_ts_ms": 1792505943620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505940000,
+            "decision_seq": 109,
+            "decision_ts_ms": 1792506003620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506000000,
+            "decision_seq": 111,
+            "decision_ts_ms": 1792506063620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506060000,
+            "decision_seq": 113,
+            "decision_ts_ms": 1792506123620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506120000,
+            "decision_seq": 115,
+            "decision_ts_ms": 1792506183620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506180000,
+            "decision_seq": 117,
+            "decision_ts_ms": 1792506243620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506240000,
+            "decision_seq": 119,
+            "decision_ts_ms": 1792506303620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506300000,
+            "decision_seq": 121,
+            "decision_ts_ms": 1792506363620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792509120000,
+            "decision_seq": 172,
+            "decision_ts_ms": 1792509183620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509180000,
+            "decision_seq": 173,
+            "decision_ts_ms": 1792509243620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509240000,
+            "decision_seq": 175,
+            "decision_ts_ms": 1792509303620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509300000,
+            "decision_seq": 177,
+            "decision_ts_ms": 1792509363620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509360000,
+            "decision_seq": 179,
+            "decision_ts_ms": 1792509423620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509420000,
+            "decision_seq": 181,
+            "decision_ts_ms": 1792509483620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509480000,
+            "decision_seq": 183,
+            "decision_ts_ms": 1792509543620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509540000,
+            "decision_seq": 185,
+            "decision_ts_ms": 1792509603620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509600000,
+            "decision_seq": 187,
+            "decision_ts_ms": 1792509663620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509660000,
+            "decision_seq": 189,
+            "decision_ts_ms": 1792509723620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509720000,
+            "decision_seq": 191,
+            "decision_ts_ms": 1792509783620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509780000,
+            "decision_seq": 193,
+            "decision_ts_ms": 1792509843620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509840000,
+            "decision_seq": 195,
+            "decision_ts_ms": 1792509903620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509900000,
+            "decision_seq": 197,
+            "decision_ts_ms": 1792509963620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509960000,
+            "decision_seq": 199,
+            "decision_ts_ms": 1792510023620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510020000,
+            "decision_seq": 201,
+            "decision_ts_ms": 1792510083620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510080000,
+            "decision_seq": 203,
+            "decision_ts_ms": 1792510143620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510140000,
+            "decision_seq": 205,
+            "decision_ts_ms": 1792510203620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510200000,
+            "decision_seq": 207,
+            "decision_ts_ms": 1792510263620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510260000,
+            "decision_seq": 209,
+            "decision_ts_ms": 1792510323620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510320000,
+            "decision_seq": 211,
+            "decision_ts_ms": 1792510383620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510380000,
+            "decision_seq": 213,
+            "decision_ts_ms": 1792510443620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510440000,
+            "decision_seq": 215,
+            "decision_ts_ms": 1792510503620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510500000,
+            "decision_seq": 217,
+            "decision_ts_ms": 1792510563620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510560000,
+            "decision_seq": 219,
+            "decision_ts_ms": 1792510623620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792510800000,
+            "decision_seq": 225,
+            "decision_ts_ms": 1792510863620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510860000,
+            "decision_seq": 226,
+            "decision_ts_ms": 1792510923620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510920000,
+            "decision_seq": 228,
+            "decision_ts_ms": 1792510983620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510980000,
+            "decision_seq": 230,
+            "decision_ts_ms": 1792511043620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511040000,
+            "decision_seq": 232,
+            "decision_ts_ms": 1792511103620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792511220000,
+            "decision_seq": 237,
+            "decision_ts_ms": 1792511283620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511280000,
+            "decision_seq": 238,
+            "decision_ts_ms": 1792511343620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511340000,
+            "decision_seq": 240,
+            "decision_ts_ms": 1792511403620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511400000,
+            "decision_seq": 242,
+            "decision_ts_ms": 1792511463620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511460000,
+            "decision_seq": 244,
+            "decision_ts_ms": 1792511523620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792511760000,
+            "decision_seq": 251,
+            "decision_ts_ms": 1792511823620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511820000,
+            "decision_seq": 252,
+            "decision_ts_ms": 1792511883620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511880000,
+            "decision_seq": 254,
+            "decision_ts_ms": 1792511943620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511940000,
+            "decision_seq": 256,
+            "decision_ts_ms": 1792512003620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512000000,
+            "decision_seq": 258,
+            "decision_ts_ms": 1792512063620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512060000,
+            "decision_seq": 260,
+            "decision_ts_ms": 1792512123620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792512180000,
+            "decision_seq": 264,
+            "decision_ts_ms": 1792512243620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512240000,
+            "decision_seq": 265,
+            "decision_ts_ms": 1792512303620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512300000,
+            "decision_seq": 267,
+            "decision_ts_ms": 1792512363620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512360000,
+            "decision_seq": 269,
+            "decision_ts_ms": 1792512423620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512420000,
+            "decision_seq": 271,
+            "decision_ts_ms": 1792512483620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512480000,
+            "decision_seq": 273,
+            "decision_ts_ms": 1792512543620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512540000,
+            "decision_seq": 275,
+            "decision_ts_ms": 1792512603620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512600000,
+            "decision_seq": 277,
+            "decision_ts_ms": 1792512663620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792512720000,
+            "decision_seq": 281,
+            "decision_ts_ms": 1792512783620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792512960000,
+            "decision_seq": 286,
+            "decision_ts_ms": 1792513023620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513020000,
+            "decision_seq": 287,
+            "decision_ts_ms": 1792513083620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513080000,
+            "decision_seq": 289,
+            "decision_ts_ms": 1792513143620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513140000,
+            "decision_seq": 291,
+            "decision_ts_ms": 1792513203620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513200000,
+            "decision_seq": 293,
+            "decision_ts_ms": 1792513263620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513260000,
+            "decision_seq": 295,
+            "decision_ts_ms": 1792513323620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513320000,
+            "decision_seq": 297,
+            "decision_ts_ms": 1792513383620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513380000,
+            "decision_seq": 299,
+            "decision_ts_ms": 1792513443620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513440000,
+            "decision_seq": 301,
+            "decision_ts_ms": 1792513503620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513500000,
+            "decision_seq": 303,
+            "decision_ts_ms": 1792513563620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513560000,
+            "decision_seq": 305,
+            "decision_ts_ms": 1792513623620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513620000,
+            "decision_seq": 307,
+            "decision_ts_ms": 1792513683620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513680000,
+            "decision_seq": 309,
+            "decision_ts_ms": 1792513743620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513740000,
+            "decision_seq": 311,
+            "decision_ts_ms": 1792513803620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513800000,
+            "decision_seq": 313,
+            "decision_ts_ms": 1792513863620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513860000,
+            "decision_seq": 315,
+            "decision_ts_ms": 1792513923620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513920000,
+            "decision_seq": 317,
+            "decision_ts_ms": 1792513983620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513980000,
+            "decision_seq": 319,
+            "decision_ts_ms": 1792514043620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514040000,
+            "decision_seq": 321,
+            "decision_ts_ms": 1792514103620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514100000,
+            "decision_seq": 323,
+            "decision_ts_ms": 1792514163620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514160000,
+            "decision_seq": 325,
+            "decision_ts_ms": 1792514223620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514220000,
+            "decision_seq": 327,
+            "decision_ts_ms": 1792514283620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514280000,
+            "decision_seq": 329,
+            "decision_ts_ms": 1792514343620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514340000,
+            "decision_seq": 331,
+            "decision_ts_ms": 1792514403620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514400000,
+            "decision_seq": 333,
+            "decision_ts_ms": 1792514463620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514460000,
+            "decision_seq": 335,
+            "decision_ts_ms": 1792514523620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514520000,
+            "decision_seq": 337,
+            "decision_ts_ms": 1792514583620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514580000,
+            "decision_seq": 339,
+            "decision_ts_ms": 1792514643620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514640000,
+            "decision_seq": 341,
+            "decision_ts_ms": 1792514703620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514700000,
+            "decision_seq": 343,
+            "decision_ts_ms": 1792514763620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514760000,
+            "decision_seq": 345,
+            "decision_ts_ms": 1792514823620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514820000,
+            "decision_seq": 347,
+            "decision_ts_ms": 1792514883620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514880000,
+            "decision_seq": 349,
+            "decision_ts_ms": 1792514943620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514940000,
+            "decision_seq": 351,
+            "decision_ts_ms": 1792515003620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515000000,
+            "decision_seq": 353,
+            "decision_ts_ms": 1792515063620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515060000,
+            "decision_seq": 355,
+            "decision_ts_ms": 1792515123620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515120000,
+            "decision_seq": 357,
+            "decision_ts_ms": 1792515183620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515180000,
+            "decision_seq": 359,
+            "decision_ts_ms": 1792515243620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515300000,
+            "decision_seq": 363,
+            "decision_ts_ms": 1792515363620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515360000,
+            "decision_seq": 364,
+            "decision_ts_ms": 1792515423620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515420000,
+            "decision_seq": 366,
+            "decision_ts_ms": 1792515483620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515480000,
+            "decision_seq": 368,
+            "decision_ts_ms": 1792515543620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515540000,
+            "decision_seq": 370,
+            "decision_ts_ms": 1792515603620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515600000,
+            "decision_seq": 372,
+            "decision_ts_ms": 1792515663620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515660000,
+            "decision_seq": 374,
+            "decision_ts_ms": 1792515723620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515720000,
+            "decision_seq": 376,
+            "decision_ts_ms": 1792515783620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515780000,
+            "decision_seq": 378,
+            "decision_ts_ms": 1792515843620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515840000,
+            "decision_seq": 380,
+            "decision_ts_ms": 1792515903620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515900000,
+            "decision_seq": 382,
+            "decision_ts_ms": 1792515963620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515960000,
+            "decision_seq": 384,
+            "decision_ts_ms": 1792516023620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792516020000,
+            "decision_seq": 386,
+            "decision_ts_ms": 1792516083620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792516080000,
+            "decision_seq": 388,
+            "decision_ts_ms": 1792516143620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792516140000,
+            "decision_seq": 390,
+            "decision_ts_ms": 1792516203620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792516200000,
+            "decision_seq": 392,
+            "decision_ts_ms": 1792516263620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516440000,
+            "decision_seq": 398,
+            "decision_ts_ms": 1792516503620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792516500000,
+            "decision_seq": 399,
+            "decision_ts_ms": 1792516563620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          }
+        ],
+        "orphan_terminals": 0,
+        "over_age_fills": 0,
+        "pending_at_end": 0,
+        "risk_blocked": 11,
+        "rows_after_run_end": 0,
+        "run_end_present": true,
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 1
+          },
+          "decision_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 1
+          },
+          "opinion_age_at_fill": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 1
+          },
+          "provider": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 1
+          },
+          "received_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 1
+          }
+        },
+        "stale_fills": 0,
+        "superseded": 153,
+        "terminal": 165,
+        "terminal_before_birth": 0,
+        "unrecorded": 0,
+        "wasted_opinions": 153
+      },
+      "opinion_lifecycle": "SUPERSEDE",
+      "scenario": "m1_cadence1",
+      "series": {
+        "aggregate": {
+          "bars": 256,
+          "groups": 256,
+          "incomplete_groups_discarded": 0,
+          "minutes": 256,
+          "minutes_per_bar": 1
+        },
+        "bars": 256,
+        "bars_sha256": "3e1f7be9e429df99f3ddefe9a2eeb0a3be66af39676a5c6c676b4f6758781464",
+        "first_open_ms": 1792501320000,
+        "last_open_ms": 1792516620000
+      },
+      "summary_view": {
+        "calls": 235,
+        "costs_total_usdt": 1.23895304,
+        "execution_opinions": {
+          "blocked_by_risk": 11,
+          "closed_by_intent": 0,
+          "deferrals_per_opinion": {},
+          "deferred_slots": 0,
+          "executed_openings": 1,
+          "expired": 0,
+          "gated": 0,
+          "generated": 165,
+          "lifecycle": {
+            "duplicate_terminals": [],
+            "generated": 165,
+            "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+            "ledger_lines": 403,
+            "ok": true,
+            "orphan_terminals": [],
+            "rejected_by_code": {
+              "SUPERSEDED_BY_NEWER_OPINION": 153
+            },
+            "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+            "session_continuity": "NONE",
+            "source": "ledger_bytes",
+            "terminal_classes": {
+              "BLOCKED_BY_RISK": 11,
+              "CLOSED": 0,
+              "FILLED": 1,
+              "GATED": 0,
+              "REJECTED": 153
+            },
+            "unrecorded": []
+          },
+          "pending_at_end": 0,
+          "rejected": {
+            "SUPERSEDED_BY_NEWER_OPINION": 153
+          },
+          "superseded": 153,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 11,
+            "CLOSED": 0,
+            "FILLED": 1,
+            "GATED": 0,
+            "REJECTED": 153
+          }
+        },
+        "fills": 1,
+        "net_realised_usdt": -2.418656,
+        "opinion_accounting": {
+          "adds_up": true,
+          "counter_disagreements": [],
+          "deferred_slots": 0,
+          "duplicate_terminals": [],
+          "generated": 165,
+          "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+          "ledger_lines": 403,
+          "orphan_terminals": [],
+          "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+          "session_continuity": "NONE",
+          "source": "ledger_bytes",
+          "terminal": 165,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 11,
+            "CLOSED": 0,
+            "FILLED": 1,
+            "GATED": 0,
+            "REJECTED": 153
+          },
+          "unrecorded": []
+        },
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 1
+          },
+          "decision_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 1
+          },
+          "decision_to_received": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 1
+          },
+          "received_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 1
+          }
+        }
+      },
+      "why": "la sesi\u00f3n real: rejilla de 1 minuto, cadencia 1, 3.62 s de retraso de datos"
+    },
+    "m1_cadence5": {
+      "config": {
+        "data_delay_ms": 3620,
+        "decision_every_bars": 5,
+        "declared_provider_latency_ms": 0,
+        "dropped_bar_open_ms": null,
+        "interval_ms": 60000,
+        "max_opinion_age_ms": 60000,
+        "signal_source": "strategy_experimental",
+        "strategy_id": "ema_crossover",
+        "timeframe": "1m"
+      },
+      "ledger": {
+        "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\def-run-016-9m0l06tu\\m1_cadence5\\ledger.jsonl",
+        "rows": 86,
+        "sha256": "f984eede8e0458bf11ff1d21d5a0420b17ff2fc94652603283ddbf4ca2f557d4"
+      },
+      "metrics": {
+        "actionable_opinions": 33,
+        "calls": 47,
+        "data_gap": 0,
+        "decision_rows": 47,
+        "deferred_slots": 0,
+        "duplicate_terminals": 0,
+        "executed_share": 0.06060606060606061,
+        "expired": 0,
+        "fills": 2,
+        "fills_without_approval": 0,
+        "ids_unique": true,
+        "max_opinion_age_ms": 60000,
+        "opinions": [
+          {
+            "decision_bar_open_ms": 1792502820000,
+            "decision_seq": 2,
+            "decision_ts_ms": 1792502883620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503120000,
+            "decision_seq": 4,
+            "decision_ts_ms": 1792503183620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503420000,
+            "decision_seq": 6,
+            "decision_ts_ms": 1792503483620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503720000,
+            "decision_seq": 8,
+            "decision_ts_ms": 1792503783620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504020000,
+            "decision_seq": 10,
+            "decision_ts_ms": 1792504083620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504320000,
+            "decision_seq": 12,
+            "decision_ts_ms": 1792504383620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504620000,
+            "decision_seq": 14,
+            "decision_ts_ms": 1792504683620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504920000,
+            "decision_seq": 16,
+            "decision_ts_ms": 1792504983620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505220000,
+            "decision_seq": 18,
+            "decision_ts_ms": 1792505283620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505520000,
+            "decision_seq": 20,
+            "decision_ts_ms": 1792505583620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505820000,
+            "decision_seq": 22,
+            "decision_ts_ms": 1792505883620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792506120000,
+            "decision_seq": 26,
+            "decision_ts_ms": 1792506183620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792509120000,
+            "decision_seq": 39,
+            "decision_ts_ms": 1792509183620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509420000,
+            "decision_seq": 41,
+            "decision_ts_ms": 1792509483620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509720000,
+            "decision_seq": 43,
+            "decision_ts_ms": 1792509783620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792510020000,
+            "decision_seq": 45,
+            "decision_ts_ms": 1792510083620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792510320000,
+            "decision_seq": 47,
+            "decision_ts_ms": 1792510383620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792510920000,
+            "decision_seq": 50,
+            "decision_ts_ms": 1792510983620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792511220000,
+            "decision_seq": 52,
+            "decision_ts_ms": 1792511283620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792511820000,
+            "decision_seq": 55,
+            "decision_ts_ms": 1792511883620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792512420000,
+            "decision_seq": 58,
+            "decision_ts_ms": 1792512483620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792512720000,
+            "decision_seq": 60,
+            "decision_ts_ms": 1792512783620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792513020000,
+            "decision_seq": 62,
+            "decision_ts_ms": 1792513083620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792513320000,
+            "decision_seq": 64,
+            "decision_ts_ms": 1792513383620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792513620000,
+            "decision_seq": 66,
+            "decision_ts_ms": 1792513683620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792513920000,
+            "decision_seq": 68,
+            "decision_ts_ms": 1792513983620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792514220000,
+            "decision_seq": 70,
+            "decision_ts_ms": 1792514283620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792514520000,
+            "decision_seq": 72,
+            "decision_ts_ms": 1792514583620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792514820000,
+            "decision_seq": 74,
+            "decision_ts_ms": 1792514883620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515120000,
+            "decision_seq": 76,
+            "decision_ts_ms": 1792515183620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515420000,
+            "decision_seq": 78,
+            "decision_ts_ms": 1792515483620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515720000,
+            "decision_seq": 80,
+            "decision_ts_ms": 1792515783620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516020000,
+            "decision_seq": 82,
+            "decision_ts_ms": 1792516083620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          }
+        ],
+        "orphan_terminals": 0,
+        "over_age_fills": 0,
+        "pending_at_end": 0,
+        "risk_blocked": 31,
+        "rows_after_run_end": 0,
+        "run_end_present": true,
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 2
+          },
+          "decision_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          },
+          "opinion_age_at_fill": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          },
+          "provider": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 2
+          },
+          "received_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          }
+        },
+        "stale_fills": 0,
+        "superseded": 0,
+        "terminal": 33,
+        "terminal_before_birth": 0,
+        "unrecorded": 0,
+        "wasted_opinions": 0
+      },
+      "opinion_lifecycle": "SUPERSEDE",
+      "scenario": "m1_cadence5",
+      "series": {
+        "aggregate": {
+          "bars": 256,
+          "groups": 256,
+          "incomplete_groups_discarded": 0,
+          "minutes": 256,
+          "minutes_per_bar": 1
+        },
+        "bars": 256,
+        "bars_sha256": "3e1f7be9e429df99f3ddefe9a2eeb0a3be66af39676a5c6c676b4f6758781464",
+        "first_open_ms": 1792501320000,
+        "last_open_ms": 1792516620000
+      },
+      "summary_view": {
+        "calls": 47,
+        "costs_total_usdt": 2.47784879,
+        "execution_opinions": {
+          "blocked_by_risk": 31,
+          "closed_by_intent": 0,
+          "deferrals_per_opinion": {},
+          "deferred_slots": 0,
+          "executed_openings": 2,
+          "expired": 0,
+          "gated": 0,
+          "generated": 33,
+          "lifecycle": {
+            "duplicate_terminals": [],
+            "generated": 33,
+            "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+            "ledger_lines": 85,
+            "ok": true,
+            "orphan_terminals": [],
+            "rejected_by_code": {},
+            "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+            "session_continuity": "NONE",
+            "source": "ledger_bytes",
+            "terminal_classes": {
+              "BLOCKED_BY_RISK": 31,
+              "CLOSED": 0,
+              "FILLED": 2,
+              "GATED": 0,
+              "REJECTED": 0
+            },
+            "unrecorded": []
+          },
+          "pending_at_end": 0,
+          "rejected": {},
+          "superseded": 0,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 31,
+            "CLOSED": 0,
+            "FILLED": 2,
+            "GATED": 0,
+            "REJECTED": 0
+          }
+        },
+        "fills": 2,
+        "net_realised_usdt": -5.07671,
+        "opinion_accounting": {
+          "adds_up": true,
+          "counter_disagreements": [],
+          "deferred_slots": 0,
+          "duplicate_terminals": [],
+          "generated": 33,
+          "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+          "ledger_lines": 85,
+          "orphan_terminals": [],
+          "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+          "session_continuity": "NONE",
+          "source": "ledger_bytes",
+          "terminal": 33,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 31,
+            "CLOSED": 0,
+            "FILLED": 2,
+            "GATED": 0,
+            "REJECTED": 0
+          },
+          "unrecorded": []
+        },
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 2
+          },
+          "decision_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          },
+          "decision_to_received": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 2
+          },
+          "received_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 2
+          }
+        }
+      },
+      "why": "control de cadencia: con 5 barras entre decisiones la orden ya se resolvi\u00f3"
+    },
+    "m1_hole": {
+      "config": {
+        "data_delay_ms": 3620,
+        "decision_every_bars": 1,
+        "declared_provider_latency_ms": 0,
+        "dropped_bar_open_ms": 1792503720000,
+        "interval_ms": 60000,
+        "max_opinion_age_ms": 60000,
+        "signal_source": "strategy_experimental",
+        "strategy_id": "ema_crossover",
+        "timeframe": "1m"
+      },
+      "ledger": {
+        "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\def-run-016-9m0l06tu\\m1_hole\\ledger.jsonl",
+        "rows": 402,
+        "sha256": "8749613030a73a78afd3e9550a9a1d3202d08865167a0f2c37d7f23ab1d64854"
+      },
+      "metrics": {
+        "actionable_opinions": 164,
+        "calls": 234,
+        "data_gap": 1,
+        "decision_rows": 234,
+        "deferred_slots": 0,
+        "duplicate_terminals": 0,
+        "executed_share": 0.006097560975609756,
+        "expired": 0,
+        "fills": 1,
+        "fills_without_approval": 0,
+        "ids_unique": true,
+        "max_opinion_age_ms": 60000,
+        "opinions": [
+          {
+            "decision_bar_open_ms": 1792502580000,
+            "decision_seq": 2,
+            "decision_ts_ms": 1792502643620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792502640000,
+            "decision_seq": 3,
+            "decision_ts_ms": 1792502703620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792502820000,
+            "decision_seq": 8,
+            "decision_ts_ms": 1792502883620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792502880000,
+            "decision_seq": 9,
+            "decision_ts_ms": 1792502943620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792502940000,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792503003620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503000000,
+            "decision_seq": 13,
+            "decision_ts_ms": 1792503063620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503060000,
+            "decision_seq": 15,
+            "decision_ts_ms": 1792503123620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503120000,
+            "decision_seq": 17,
+            "decision_ts_ms": 1792503183620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503180000,
+            "decision_seq": 19,
+            "decision_ts_ms": 1792503243620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503240000,
+            "decision_seq": 21,
+            "decision_ts_ms": 1792503303620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503420000,
+            "decision_seq": 26,
+            "decision_ts_ms": 1792503483620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503480000,
+            "decision_seq": 27,
+            "decision_ts_ms": 1792503543620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503540000,
+            "decision_seq": 29,
+            "decision_ts_ms": 1792503603620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503600000,
+            "decision_seq": 31,
+            "decision_ts_ms": 1792503663620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503660000,
+            "decision_seq": 33,
+            "decision_ts_ms": 1792503723620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "DATA_GAP"
+          },
+          {
+            "decision_bar_open_ms": 1792503780000,
+            "decision_seq": 36,
+            "decision_ts_ms": 1792503843620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503840000,
+            "decision_seq": 37,
+            "decision_ts_ms": 1792503903620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503900000,
+            "decision_seq": 39,
+            "decision_ts_ms": 1792503963620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792503960000,
+            "decision_seq": 41,
+            "decision_ts_ms": 1792504023620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504020000,
+            "decision_seq": 43,
+            "decision_ts_ms": 1792504083620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504080000,
+            "decision_seq": 45,
+            "decision_ts_ms": 1792504143620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504140000,
+            "decision_seq": 47,
+            "decision_ts_ms": 1792504203620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504200000,
+            "decision_seq": 49,
+            "decision_ts_ms": 1792504263620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504260000,
+            "decision_seq": 51,
+            "decision_ts_ms": 1792504323620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504320000,
+            "decision_seq": 53,
+            "decision_ts_ms": 1792504383620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504380000,
+            "decision_seq": 55,
+            "decision_ts_ms": 1792504443620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504440000,
+            "decision_seq": 57,
+            "decision_ts_ms": 1792504503620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504500000,
+            "decision_seq": 59,
+            "decision_ts_ms": 1792504563620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504560000,
+            "decision_seq": 61,
+            "decision_ts_ms": 1792504623620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504620000,
+            "decision_seq": 63,
+            "decision_ts_ms": 1792504683620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504680000,
+            "decision_seq": 65,
+            "decision_ts_ms": 1792504743620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504740000,
+            "decision_seq": 67,
+            "decision_ts_ms": 1792504803620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504800000,
+            "decision_seq": 69,
+            "decision_ts_ms": 1792504863620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504860000,
+            "decision_seq": 71,
+            "decision_ts_ms": 1792504923620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504920000,
+            "decision_seq": 73,
+            "decision_ts_ms": 1792504983620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792504980000,
+            "decision_seq": 75,
+            "decision_ts_ms": 1792505043620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505040000,
+            "decision_seq": 77,
+            "decision_ts_ms": 1792505103620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505100000,
+            "decision_seq": 79,
+            "decision_ts_ms": 1792505163620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505160000,
+            "decision_seq": 81,
+            "decision_ts_ms": 1792505223620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505220000,
+            "decision_seq": 83,
+            "decision_ts_ms": 1792505283620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505280000,
+            "decision_seq": 85,
+            "decision_ts_ms": 1792505343620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505340000,
+            "decision_seq": 87,
+            "decision_ts_ms": 1792505403620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505400000,
+            "decision_seq": 89,
+            "decision_ts_ms": 1792505463620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505460000,
+            "decision_seq": 91,
+            "decision_ts_ms": 1792505523620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505520000,
+            "decision_seq": 93,
+            "decision_ts_ms": 1792505583620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505580000,
+            "decision_seq": 95,
+            "decision_ts_ms": 1792505643620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505640000,
+            "decision_seq": 97,
+            "decision_ts_ms": 1792505703620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505700000,
+            "decision_seq": 99,
+            "decision_ts_ms": 1792505763620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505760000,
+            "decision_seq": 101,
+            "decision_ts_ms": 1792505823620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505820000,
+            "decision_seq": 103,
+            "decision_ts_ms": 1792505883620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505880000,
+            "decision_seq": 105,
+            "decision_ts_ms": 1792505943620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505940000,
+            "decision_seq": 107,
+            "decision_ts_ms": 1792506003620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506000000,
+            "decision_seq": 109,
+            "decision_ts_ms": 1792506063620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506060000,
+            "decision_seq": 111,
+            "decision_ts_ms": 1792506123620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506120000,
+            "decision_seq": 113,
+            "decision_ts_ms": 1792506183620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506180000,
+            "decision_seq": 115,
+            "decision_ts_ms": 1792506243620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506240000,
+            "decision_seq": 117,
+            "decision_ts_ms": 1792506303620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506300000,
+            "decision_seq": 119,
+            "decision_ts_ms": 1792506363620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792509120000,
+            "decision_seq": 170,
+            "decision_ts_ms": 1792509183620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509180000,
+            "decision_seq": 171,
+            "decision_ts_ms": 1792509243620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509240000,
+            "decision_seq": 173,
+            "decision_ts_ms": 1792509303620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509300000,
+            "decision_seq": 175,
+            "decision_ts_ms": 1792509363620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509360000,
+            "decision_seq": 177,
+            "decision_ts_ms": 1792509423620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509420000,
+            "decision_seq": 179,
+            "decision_ts_ms": 1792509483620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509480000,
+            "decision_seq": 181,
+            "decision_ts_ms": 1792509543620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509540000,
+            "decision_seq": 183,
+            "decision_ts_ms": 1792509603620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509600000,
+            "decision_seq": 185,
+            "decision_ts_ms": 1792509663620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509660000,
+            "decision_seq": 187,
+            "decision_ts_ms": 1792509723620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509720000,
+            "decision_seq": 189,
+            "decision_ts_ms": 1792509783620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509780000,
+            "decision_seq": 191,
+            "decision_ts_ms": 1792509843620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509840000,
+            "decision_seq": 193,
+            "decision_ts_ms": 1792509903620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509900000,
+            "decision_seq": 195,
+            "decision_ts_ms": 1792509963620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509960000,
+            "decision_seq": 197,
+            "decision_ts_ms": 1792510023620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510020000,
+            "decision_seq": 199,
+            "decision_ts_ms": 1792510083620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510080000,
+            "decision_seq": 201,
+            "decision_ts_ms": 1792510143620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510140000,
+            "decision_seq": 203,
+            "decision_ts_ms": 1792510203620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510200000,
+            "decision_seq": 205,
+            "decision_ts_ms": 1792510263620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510260000,
+            "decision_seq": 207,
+            "decision_ts_ms": 1792510323620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510320000,
+            "decision_seq": 209,
+            "decision_ts_ms": 1792510383620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510380000,
+            "decision_seq": 211,
+            "decision_ts_ms": 1792510443620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510440000,
+            "decision_seq": 213,
+            "decision_ts_ms": 1792510503620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510500000,
+            "decision_seq": 215,
+            "decision_ts_ms": 1792510563620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510560000,
+            "decision_seq": 217,
+            "decision_ts_ms": 1792510623620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792510800000,
+            "decision_seq": 223,
+            "decision_ts_ms": 1792510863620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510860000,
+            "decision_seq": 224,
+            "decision_ts_ms": 1792510923620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510920000,
+            "decision_seq": 226,
+            "decision_ts_ms": 1792510983620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510980000,
+            "decision_seq": 228,
+            "decision_ts_ms": 1792511043620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511040000,
+            "decision_seq": 230,
+            "decision_ts_ms": 1792511103620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792511220000,
+            "decision_seq": 235,
+            "decision_ts_ms": 1792511283620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511280000,
+            "decision_seq": 236,
+            "decision_ts_ms": 1792511343620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511340000,
+            "decision_seq": 238,
+            "decision_ts_ms": 1792511403620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511400000,
+            "decision_seq": 240,
+            "decision_ts_ms": 1792511463620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511460000,
+            "decision_seq": 242,
+            "decision_ts_ms": 1792511523620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792511760000,
+            "decision_seq": 249,
+            "decision_ts_ms": 1792511823620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511820000,
+            "decision_seq": 250,
+            "decision_ts_ms": 1792511883620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511880000,
+            "decision_seq": 252,
+            "decision_ts_ms": 1792511943620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511940000,
+            "decision_seq": 254,
+            "decision_ts_ms": 1792512003620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512000000,
+            "decision_seq": 256,
+            "decision_ts_ms": 1792512063620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512060000,
+            "decision_seq": 258,
+            "decision_ts_ms": 1792512123620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792512180000,
+            "decision_seq": 262,
+            "decision_ts_ms": 1792512243620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512240000,
+            "decision_seq": 263,
+            "decision_ts_ms": 1792512303620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512300000,
+            "decision_seq": 265,
+            "decision_ts_ms": 1792512363620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512360000,
+            "decision_seq": 267,
+            "decision_ts_ms": 1792512423620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512420000,
+            "decision_seq": 269,
+            "decision_ts_ms": 1792512483620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512480000,
+            "decision_seq": 271,
+            "decision_ts_ms": 1792512543620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512540000,
+            "decision_seq": 273,
+            "decision_ts_ms": 1792512603620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512600000,
+            "decision_seq": 275,
+            "decision_ts_ms": 1792512663620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792512720000,
+            "decision_seq": 279,
+            "decision_ts_ms": 1792512783620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792512960000,
+            "decision_seq": 284,
+            "decision_ts_ms": 1792513023620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513020000,
+            "decision_seq": 285,
+            "decision_ts_ms": 1792513083620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513080000,
+            "decision_seq": 287,
+            "decision_ts_ms": 1792513143620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513140000,
+            "decision_seq": 289,
+            "decision_ts_ms": 1792513203620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513200000,
+            "decision_seq": 291,
+            "decision_ts_ms": 1792513263620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513260000,
+            "decision_seq": 293,
+            "decision_ts_ms": 1792513323620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513320000,
+            "decision_seq": 295,
+            "decision_ts_ms": 1792513383620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513380000,
+            "decision_seq": 297,
+            "decision_ts_ms": 1792513443620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513440000,
+            "decision_seq": 299,
+            "decision_ts_ms": 1792513503620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513500000,
+            "decision_seq": 301,
+            "decision_ts_ms": 1792513563620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513560000,
+            "decision_seq": 303,
+            "decision_ts_ms": 1792513623620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513620000,
+            "decision_seq": 305,
+            "decision_ts_ms": 1792513683620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513680000,
+            "decision_seq": 307,
+            "decision_ts_ms": 1792513743620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513740000,
+            "decision_seq": 309,
+            "decision_ts_ms": 1792513803620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513800000,
+            "decision_seq": 311,
+            "decision_ts_ms": 1792513863620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513860000,
+            "decision_seq": 313,
+            "decision_ts_ms": 1792513923620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513920000,
+            "decision_seq": 315,
+            "decision_ts_ms": 1792513983620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792513980000,
+            "decision_seq": 317,
+            "decision_ts_ms": 1792514043620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514040000,
+            "decision_seq": 319,
+            "decision_ts_ms": 1792514103620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514100000,
+            "decision_seq": 321,
+            "decision_ts_ms": 1792514163620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514160000,
+            "decision_seq": 323,
+            "decision_ts_ms": 1792514223620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514220000,
+            "decision_seq": 325,
+            "decision_ts_ms": 1792514283620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514280000,
+            "decision_seq": 327,
+            "decision_ts_ms": 1792514343620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514340000,
+            "decision_seq": 329,
+            "decision_ts_ms": 1792514403620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514400000,
+            "decision_seq": 331,
+            "decision_ts_ms": 1792514463620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514460000,
+            "decision_seq": 333,
+            "decision_ts_ms": 1792514523620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514520000,
+            "decision_seq": 335,
+            "decision_ts_ms": 1792514583620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514580000,
+            "decision_seq": 337,
+            "decision_ts_ms": 1792514643620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514640000,
+            "decision_seq": 339,
+            "decision_ts_ms": 1792514703620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514700000,
+            "decision_seq": 341,
+            "decision_ts_ms": 1792514763620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514760000,
+            "decision_seq": 343,
+            "decision_ts_ms": 1792514823620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514820000,
+            "decision_seq": 345,
+            "decision_ts_ms": 1792514883620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514880000,
+            "decision_seq": 347,
+            "decision_ts_ms": 1792514943620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792514940000,
+            "decision_seq": 349,
+            "decision_ts_ms": 1792515003620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515000000,
+            "decision_seq": 351,
+            "decision_ts_ms": 1792515063620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515060000,
+            "decision_seq": 353,
+            "decision_ts_ms": 1792515123620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515120000,
+            "decision_seq": 355,
+            "decision_ts_ms": 1792515183620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515180000,
+            "decision_seq": 357,
+            "decision_ts_ms": 1792515243620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515300000,
+            "decision_seq": 361,
+            "decision_ts_ms": 1792515363620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515360000,
+            "decision_seq": 362,
+            "decision_ts_ms": 1792515423620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515420000,
+            "decision_seq": 364,
+            "decision_ts_ms": 1792515483620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515480000,
+            "decision_seq": 366,
+            "decision_ts_ms": 1792515543620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515540000,
+            "decision_seq": 368,
+            "decision_ts_ms": 1792515603620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515600000,
+            "decision_seq": 370,
+            "decision_ts_ms": 1792515663620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515660000,
+            "decision_seq": 372,
+            "decision_ts_ms": 1792515723620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515720000,
+            "decision_seq": 374,
+            "decision_ts_ms": 1792515783620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515780000,
+            "decision_seq": 376,
+            "decision_ts_ms": 1792515843620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515840000,
+            "decision_seq": 378,
+            "decision_ts_ms": 1792515903620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515900000,
+            "decision_seq": 380,
+            "decision_ts_ms": 1792515963620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792515960000,
+            "decision_seq": 382,
+            "decision_ts_ms": 1792516023620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792516020000,
+            "decision_seq": 384,
+            "decision_ts_ms": 1792516083620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792516080000,
+            "decision_seq": 386,
+            "decision_ts_ms": 1792516143620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792516140000,
+            "decision_seq": 388,
+            "decision_ts_ms": 1792516203620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792516200000,
+            "decision_seq": 390,
+            "decision_ts_ms": 1792516263620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516440000,
+            "decision_seq": 396,
+            "decision_ts_ms": 1792516503620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792516500000,
+            "decision_seq": 397,
+            "decision_ts_ms": 1792516563620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          }
+        ],
+        "orphan_terminals": 0,
+        "over_age_fills": 0,
+        "pending_at_end": 0,
+        "risk_blocked": 11,
+        "rows_after_run_end": 0,
+        "run_end_present": true,
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 1
+          },
+          "decision_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 1
+          },
+          "opinion_age_at_fill": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 1
+          },
+          "provider": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 1
+          },
+          "received_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 1
+          }
+        },
+        "stale_fills": 0,
+        "superseded": 151,
+        "terminal": 164,
+        "terminal_before_birth": 0,
+        "unrecorded": 0,
+        "wasted_opinions": 151
+      },
+      "opinion_lifecycle": "SUPERSEDE",
+      "scenario": "m1_hole",
+      "series": {
+        "aggregate": {
+          "bars": 256,
+          "groups": 256,
+          "incomplete_groups_discarded": 0,
+          "minutes": 256,
+          "minutes_per_bar": 1
+        },
+        "bars": 255,
+        "bars_sha256": "67aef04c540f47607812166cbd8fee078df4ba36cff38e4906659010e5bde09d",
+        "first_open_ms": 1792501320000,
+        "last_open_ms": 1792516620000
+      },
+      "summary_view": {
+        "calls": 234,
+        "costs_total_usdt": 1.23895304,
+        "execution_opinions": {
+          "blocked_by_risk": 11,
+          "closed_by_intent": 0,
+          "deferrals_per_opinion": {},
+          "deferred_slots": 0,
+          "executed_openings": 1,
+          "expired": 0,
+          "gated": 0,
+          "generated": 164,
+          "lifecycle": {
+            "duplicate_terminals": [],
+            "generated": 164,
+            "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+            "ledger_lines": 401,
+            "ok": true,
+            "orphan_terminals": [],
+            "rejected_by_code": {
+              "DATA_GAP": 1,
+              "SUPERSEDED_BY_NEWER_OPINION": 151
+            },
+            "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+            "session_continuity": "NONE",
+            "source": "ledger_bytes",
+            "terminal_classes": {
+              "BLOCKED_BY_RISK": 11,
+              "CLOSED": 0,
+              "FILLED": 1,
+              "GATED": 0,
+              "REJECTED": 152
+            },
+            "unrecorded": []
+          },
+          "pending_at_end": 0,
+          "rejected": {
+            "DATA_GAP": 1,
+            "SUPERSEDED_BY_NEWER_OPINION": 151
+          },
+          "superseded": 151,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 11,
+            "CLOSED": 0,
+            "FILLED": 1,
+            "GATED": 0,
+            "REJECTED": 152
+          }
+        },
+        "fills": 1,
+        "net_realised_usdt": -2.418656,
+        "opinion_accounting": {
+          "adds_up": true,
+          "counter_disagreements": [],
+          "deferred_slots": 0,
+          "duplicate_terminals": [],
+          "generated": 164,
+          "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+          "ledger_lines": 401,
+          "orphan_terminals": [],
+          "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+          "session_continuity": "NONE",
+          "source": "ledger_bytes",
+          "terminal": 164,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 11,
+            "CLOSED": 0,
+            "FILLED": 1,
+            "GATED": 0,
+            "REJECTED": 152
+          },
+          "unrecorded": []
+        },
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 1
+          },
+          "decision_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 1
+          },
+          "decision_to_received": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 1
+          },
+          "received_to_quote": {
+            "max": 56380,
+            "p50": 56380,
+            "p95": 56380,
+            "p99": 56380,
+            "samples": 1
+          }
+        }
+      },
+      "why": "una barra ausente en el camino: el hueco no es una cotizaci\u00f3n"
+    },
+    "m1_zero_delay": {
+      "config": {
+        "data_delay_ms": 0,
+        "decision_every_bars": 1,
+        "declared_provider_latency_ms": 0,
+        "dropped_bar_open_ms": null,
+        "interval_ms": 60000,
+        "max_opinion_age_ms": 60000,
+        "signal_source": "strategy_experimental",
+        "strategy_id": "ema_crossover",
+        "timeframe": "1m"
+      },
+      "ledger": {
+        "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\def-run-016-9m0l06tu\\m1_zero_delay\\ledger.jsonl",
+        "rows": 323,
+        "sha256": "82906e889e189e9ad0d129ef7cc99e927b1254a5b53b3a21d42812b081f3ec90"
+      },
+      "metrics": {
+        "actionable_opinions": 80,
+        "calls": 235,
+        "data_gap": 0,
+        "decision_rows": 235,
+        "deferred_slots": 0,
+        "duplicate_terminals": 0,
+        "executed_share": 0.0375,
+        "expired": 0,
+        "fills": 3,
+        "fills_without_approval": 0,
+        "ids_unique": true,
+        "max_opinion_age_ms": 60000,
+        "opinions": [
+          {
+            "decision_bar_open_ms": 1792502580000,
+            "decision_seq": 2,
+            "decision_ts_ms": 1792502640000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792502640000,
+            "decision_seq": 4,
+            "decision_ts_ms": 1792502700000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792502820000,
+            "decision_seq": 8,
+            "decision_ts_ms": 1792502880000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792502880000,
+            "decision_seq": 10,
+            "decision_ts_ms": 1792502940000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792502940000,
+            "decision_seq": 12,
+            "decision_ts_ms": 1792503000000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503000000,
+            "decision_seq": 14,
+            "decision_ts_ms": 1792503060000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503060000,
+            "decision_seq": 16,
+            "decision_ts_ms": 1792503120000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503120000,
+            "decision_seq": 18,
+            "decision_ts_ms": 1792503180000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503180000,
+            "decision_seq": 20,
+            "decision_ts_ms": 1792503240000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503240000,
+            "decision_seq": 22,
+            "decision_ts_ms": 1792503300000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503420000,
+            "decision_seq": 26,
+            "decision_ts_ms": 1792503480000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503480000,
+            "decision_seq": 28,
+            "decision_ts_ms": 1792503540000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503540000,
+            "decision_seq": 30,
+            "decision_ts_ms": 1792503600000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503600000,
+            "decision_seq": 32,
+            "decision_ts_ms": 1792503660000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503660000,
+            "decision_seq": 34,
+            "decision_ts_ms": 1792503720000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503720000,
+            "decision_seq": 36,
+            "decision_ts_ms": 1792503780000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503780000,
+            "decision_seq": 38,
+            "decision_ts_ms": 1792503840000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503840000,
+            "decision_seq": 40,
+            "decision_ts_ms": 1792503900000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503900000,
+            "decision_seq": 42,
+            "decision_ts_ms": 1792503960000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792503960000,
+            "decision_seq": 44,
+            "decision_ts_ms": 1792504020000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504020000,
+            "decision_seq": 46,
+            "decision_ts_ms": 1792504080000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504080000,
+            "decision_seq": 48,
+            "decision_ts_ms": 1792504140000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504140000,
+            "decision_seq": 50,
+            "decision_ts_ms": 1792504200000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504200000,
+            "decision_seq": 52,
+            "decision_ts_ms": 1792504260000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504260000,
+            "decision_seq": 54,
+            "decision_ts_ms": 1792504320000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504320000,
+            "decision_seq": 56,
+            "decision_ts_ms": 1792504380000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504380000,
+            "decision_seq": 58,
+            "decision_ts_ms": 1792504440000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504440000,
+            "decision_seq": 60,
+            "decision_ts_ms": 1792504500000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504500000,
+            "decision_seq": 62,
+            "decision_ts_ms": 1792504560000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504560000,
+            "decision_seq": 64,
+            "decision_ts_ms": 1792504620000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504620000,
+            "decision_seq": 66,
+            "decision_ts_ms": 1792504680000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504680000,
+            "decision_seq": 68,
+            "decision_ts_ms": 1792504740000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504740000,
+            "decision_seq": 70,
+            "decision_ts_ms": 1792504800000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504800000,
+            "decision_seq": 72,
+            "decision_ts_ms": 1792504860000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504860000,
+            "decision_seq": 74,
+            "decision_ts_ms": 1792504920000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504920000,
+            "decision_seq": 76,
+            "decision_ts_ms": 1792504980000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792504980000,
+            "decision_seq": 78,
+            "decision_ts_ms": 1792505040000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505040000,
+            "decision_seq": 80,
+            "decision_ts_ms": 1792505100000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505100000,
+            "decision_seq": 82,
+            "decision_ts_ms": 1792505160000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505160000,
+            "decision_seq": 84,
+            "decision_ts_ms": 1792505220000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505220000,
+            "decision_seq": 86,
+            "decision_ts_ms": 1792505280000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505280000,
+            "decision_seq": 88,
+            "decision_ts_ms": 1792505340000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505340000,
+            "decision_seq": 90,
+            "decision_ts_ms": 1792505400000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505400000,
+            "decision_seq": 92,
+            "decision_ts_ms": 1792505460000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505460000,
+            "decision_seq": 94,
+            "decision_ts_ms": 1792505520000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505520000,
+            "decision_seq": 96,
+            "decision_ts_ms": 1792505580000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505580000,
+            "decision_seq": 98,
+            "decision_ts_ms": 1792505640000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505640000,
+            "decision_seq": 100,
+            "decision_ts_ms": 1792505700000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792505700000,
+            "decision_seq": 102,
+            "decision_ts_ms": 1792505760000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792505760000,
+            "decision_seq": 106,
+            "decision_ts_ms": 1792505820000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792509120000,
+            "decision_seq": 165,
+            "decision_ts_ms": 1792509180000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509180000,
+            "decision_seq": 167,
+            "decision_ts_ms": 1792509240000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509240000,
+            "decision_seq": 169,
+            "decision_ts_ms": 1792509300000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509300000,
+            "decision_seq": 171,
+            "decision_ts_ms": 1792509360000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792509360000,
+            "decision_seq": 173,
+            "decision_ts_ms": 1792509420000,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792514820000,
+            "decision_seq": 267,
+            "decision_ts_ms": 1792514880000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792514880000,
+            "decision_seq": 269,
+            "decision_ts_ms": 1792514940000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792514940000,
+            "decision_seq": 271,
+            "decision_ts_ms": 1792515000000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515000000,
+            "decision_seq": 273,
+            "decision_ts_ms": 1792515060000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515060000,
+            "decision_seq": 275,
+            "decision_ts_ms": 1792515120000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515120000,
+            "decision_seq": 277,
+            "decision_ts_ms": 1792515180000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515180000,
+            "decision_seq": 279,
+            "decision_ts_ms": 1792515240000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515300000,
+            "decision_seq": 282,
+            "decision_ts_ms": 1792515360000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515360000,
+            "decision_seq": 284,
+            "decision_ts_ms": 1792515420000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515420000,
+            "decision_seq": 286,
+            "decision_ts_ms": 1792515480000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515480000,
+            "decision_seq": 288,
+            "decision_ts_ms": 1792515540000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515540000,
+            "decision_seq": 290,
+            "decision_ts_ms": 1792515600000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515600000,
+            "decision_seq": 292,
+            "decision_ts_ms": 1792515660000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515660000,
+            "decision_seq": 294,
+            "decision_ts_ms": 1792515720000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515720000,
+            "decision_seq": 296,
+            "decision_ts_ms": 1792515780000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515780000,
+            "decision_seq": 298,
+            "decision_ts_ms": 1792515840000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515840000,
+            "decision_seq": 300,
+            "decision_ts_ms": 1792515900000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515900000,
+            "decision_seq": 302,
+            "decision_ts_ms": 1792515960000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792515960000,
+            "decision_seq": 304,
+            "decision_ts_ms": 1792516020000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516020000,
+            "decision_seq": 306,
+            "decision_ts_ms": 1792516080000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516080000,
+            "decision_seq": 308,
+            "decision_ts_ms": 1792516140000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516140000,
+            "decision_seq": 310,
+            "decision_ts_ms": 1792516200000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516200000,
+            "decision_seq": 312,
+            "decision_ts_ms": 1792516260000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516440000,
+            "decision_seq": 317,
+            "decision_ts_ms": 1792516500000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          },
+          {
+            "decision_bar_open_ms": 1792516500000,
+            "decision_seq": 319,
+            "decision_ts_ms": 1792516560000,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RISK_BLOCKED"
+          }
+        ],
+        "orphan_terminals": 0,
+        "over_age_fills": 0,
+        "pending_at_end": 0,
+        "risk_blocked": 77,
+        "rows_after_run_end": 0,
+        "run_end_present": true,
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "decision_to_quote": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "opinion_age_at_fill": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "provider": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "received_to_quote": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          }
+        },
+        "stale_fills": 0,
+        "superseded": 0,
+        "terminal": 80,
+        "terminal_before_birth": 0,
+        "unrecorded": 0,
+        "wasted_opinions": 0
+      },
+      "opinion_lifecycle": "SUPERSEDE",
+      "scenario": "m1_zero_delay",
+      "series": {
+        "aggregate": {
+          "bars": 256,
+          "groups": 256,
+          "incomplete_groups_discarded": 0,
+          "minutes": 256,
+          "minutes_per_bar": 1
+        },
+        "bars": 256,
+        "bars_sha256": "3e1f7be9e429df99f3ddefe9a2eeb0a3be66af39676a5c6c676b4f6758781464",
+        "first_open_ms": 1792501320000,
+        "last_open_ms": 1792516620000
+      },
+      "summary_view": {
+        "calls": 235,
+        "costs_total_usdt": 3.71751815,
+        "execution_opinions": {
+          "blocked_by_risk": 77,
+          "closed_by_intent": 0,
+          "deferrals_per_opinion": {},
+          "deferred_slots": 0,
+          "executed_openings": 3,
+          "expired": 0,
+          "gated": 0,
+          "generated": 80,
+          "lifecycle": {
+            "duplicate_terminals": [],
+            "generated": 80,
+            "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+            "ledger_lines": 322,
+            "ok": true,
+            "orphan_terminals": [],
+            "rejected_by_code": {},
+            "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+            "session_continuity": "NONE",
+            "source": "ledger_bytes",
+            "terminal_classes": {
+              "BLOCKED_BY_RISK": 77,
+              "CLOSED": 0,
+              "FILLED": 3,
+              "GATED": 0,
+              "REJECTED": 0
+            },
+            "unrecorded": []
+          },
+          "pending_at_end": 0,
+          "rejected": {},
+          "superseded": 0,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 77,
+            "CLOSED": 0,
+            "FILLED": 3,
+            "GATED": 0,
+            "REJECTED": 0
+          }
+        },
+        "fills": 3,
+        "net_realised_usdt": -7.260989,
+        "opinion_accounting": {
+          "adds_up": true,
+          "counter_disagreements": [],
+          "deferred_slots": 0,
+          "duplicate_terminals": [],
+          "generated": 80,
+          "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+          "ledger_lines": 322,
+          "orphan_terminals": [],
+          "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+          "session_continuity": "NONE",
+          "source": "ledger_bytes",
+          "terminal": 80,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 77,
+            "CLOSED": 0,
+            "FILLED": 3,
+            "GATED": 0,
+            "REJECTED": 0
+          },
+          "unrecorded": []
+        },
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "decision_to_quote": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "decision_to_received": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          },
+          "received_to_quote": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 3
+          }
+        }
+      },
+      "why": "control: sin retraso de datos la respuesta precede a la apertura y no hay colisi\u00f3n"
+    },
+    "m3_cadence1": {
+      "config": {
+        "data_delay_ms": 3620,
+        "decision_every_bars": 1,
+        "declared_provider_latency_ms": 0,
+        "dropped_bar_open_ms": null,
+        "interval_ms": 180000,
+        "max_opinion_age_ms": 180000,
+        "signal_source": "strategy_experimental",
+        "strategy_id": "ema_crossover",
+        "timeframe": "3m"
+      },
+      "ledger": {
+        "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\def-run-016-9m0l06tu\\m3_cadence1\\ledger.jsonl",
+        "rows": 112,
+        "sha256": "c0a350b9667335be8927142e0914e3e01c77ddadaf0dcc5b0a82e832d8c5db40"
+      },
+      "metrics": {
+        "actionable_opinions": 42,
+        "calls": 64,
+        "data_gap": 0,
+        "decision_rows": 64,
+        "deferred_slots": 0,
+        "duplicate_terminals": 0,
+        "executed_share": 0.047619047619047616,
+        "expired": 0,
+        "fills": 2,
+        "fills_without_approval": 0,
+        "ids_unique": true,
+        "max_opinion_age_ms": 180000,
+        "opinions": [
+          {
+            "decision_bar_open_ms": 1792505160000,
+            "decision_seq": 2,
+            "decision_ts_ms": 1792505343620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505340000,
+            "decision_seq": 3,
+            "decision_ts_ms": 1792505523620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505520000,
+            "decision_seq": 5,
+            "decision_ts_ms": 1792505703620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505700000,
+            "decision_seq": 7,
+            "decision_ts_ms": 1792505883620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792505880000,
+            "decision_seq": 9,
+            "decision_ts_ms": 1792506063620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506060000,
+            "decision_seq": 11,
+            "decision_ts_ms": 1792506243620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506240000,
+            "decision_seq": 13,
+            "decision_ts_ms": 1792506423620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506420000,
+            "decision_seq": 15,
+            "decision_ts_ms": 1792506603620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506600000,
+            "decision_seq": 17,
+            "decision_ts_ms": 1792506783620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506780000,
+            "decision_seq": 19,
+            "decision_ts_ms": 1792506963620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792506960000,
+            "decision_seq": 21,
+            "decision_ts_ms": 1792507143620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792507140000,
+            "decision_seq": 23,
+            "decision_ts_ms": 1792507323620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792507320000,
+            "decision_seq": 25,
+            "decision_ts_ms": 1792507503620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792507500000,
+            "decision_seq": 27,
+            "decision_ts_ms": 1792507683620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792507680000,
+            "decision_seq": 29,
+            "decision_ts_ms": 1792507863620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792507860000,
+            "decision_seq": 31,
+            "decision_ts_ms": 1792508043620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792508040000,
+            "decision_seq": 33,
+            "decision_ts_ms": 1792508223620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792508220000,
+            "decision_seq": 35,
+            "decision_ts_ms": 1792508403620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792508400000,
+            "decision_seq": 37,
+            "decision_ts_ms": 1792508583620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792508580000,
+            "decision_seq": 39,
+            "decision_ts_ms": 1792508763620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792508760000,
+            "decision_seq": 41,
+            "decision_ts_ms": 1792508943620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792509120000,
+            "decision_seq": 47,
+            "decision_ts_ms": 1792509303620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509300000,
+            "decision_seq": 48,
+            "decision_ts_ms": 1792509483620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509480000,
+            "decision_seq": 50,
+            "decision_ts_ms": 1792509663620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509660000,
+            "decision_seq": 52,
+            "decision_ts_ms": 1792509843620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792509840000,
+            "decision_seq": 54,
+            "decision_ts_ms": 1792510023620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510020000,
+            "decision_seq": 56,
+            "decision_ts_ms": 1792510203620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510200000,
+            "decision_seq": 58,
+            "decision_ts_ms": 1792510383620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510380000,
+            "decision_seq": 60,
+            "decision_ts_ms": 1792510563620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510560000,
+            "decision_seq": 62,
+            "decision_ts_ms": 1792510743620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510740000,
+            "decision_seq": 64,
+            "decision_ts_ms": 1792510923620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792510920000,
+            "decision_seq": 66,
+            "decision_ts_ms": 1792511103620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511100000,
+            "decision_seq": 68,
+            "decision_ts_ms": 1792511283620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511280000,
+            "decision_seq": 70,
+            "decision_ts_ms": 1792511463620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511460000,
+            "decision_seq": 72,
+            "decision_ts_ms": 1792511643620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511640000,
+            "decision_seq": 74,
+            "decision_ts_ms": 1792511823620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792511820000,
+            "decision_seq": 76,
+            "decision_ts_ms": 1792512003620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512000000,
+            "decision_seq": 78,
+            "decision_ts_ms": 1792512183620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792512180000,
+            "decision_seq": 80,
+            "decision_ts_ms": 1792512363620,
+            "deferrals": 0,
+            "intent": "OPEN_SHORT",
+            "terminal": "FILL"
+          },
+          {
+            "decision_bar_open_ms": 1792516140000,
+            "decision_seq": 106,
+            "decision_ts_ms": 1792516323620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792516320000,
+            "decision_seq": 107,
+            "decision_ts_ms": 1792516503620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "SUPERSEDED_BY_NEWER_OPINION"
+          },
+          {
+            "decision_bar_open_ms": 1792516500000,
+            "decision_seq": 109,
+            "decision_ts_ms": 1792516683620,
+            "deferrals": 0,
+            "intent": "OPEN_LONG",
+            "terminal": "RUN_ENDED_WITH_ORDER_PENDING"
+          }
+        ],
+        "orphan_terminals": 0,
+        "over_age_fills": 0,
+        "pending_at_end": 0,
+        "risk_blocked": 0,
+        "rows_after_run_end": 0,
+        "run_end_present": true,
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 2
+          },
+          "decision_to_quote": {
+            "max": 176380,
+            "p50": 176380,
+            "p95": 176380,
+            "p99": 176380,
+            "samples": 2
+          },
+          "opinion_age_at_fill": {
+            "max": 176380,
+            "p50": 176380,
+            "p95": 176380,
+            "p99": 176380,
+            "samples": 2
+          },
+          "provider": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 2
+          },
+          "received_to_quote": {
+            "max": 176380,
+            "p50": 176380,
+            "p95": 176380,
+            "p99": 176380,
+            "samples": 2
+          }
+        },
+        "stale_fills": 0,
+        "superseded": 39,
+        "terminal": 42,
+        "terminal_before_birth": 0,
+        "unrecorded": 0,
+        "wasted_opinions": 39
+      },
+      "opinion_lifecycle": "SUPERSEDE",
+      "scenario": "m3_cadence1",
+      "series": {
+        "aggregate": {
+          "bars": 85,
+          "groups": 86,
+          "incomplete_groups_discarded": 1,
+          "minutes": 256,
+          "minutes_per_bar": 3
+        },
+        "bars": 85,
+        "bars_sha256": "2ecd2e7f97e287f8b166c900e8f35bb9e6612dca4af6ed0343efd815c77e70ae",
+        "first_open_ms": 1792501380000,
+        "last_open_ms": 1792516500000
+      },
+      "summary_view": {
+        "calls": 64,
+        "costs_total_usdt": 2.47851235,
+        "execution_opinions": {
+          "blocked_by_risk": 0,
+          "closed_by_intent": 0,
+          "deferrals_per_opinion": {},
+          "deferred_slots": 0,
+          "executed_openings": 2,
+          "expired": 0,
+          "gated": 0,
+          "generated": 42,
+          "lifecycle": {
+            "duplicate_terminals": [],
+            "generated": 42,
+            "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+            "ledger_lines": 111,
+            "ok": true,
+            "orphan_terminals": [],
+            "rejected_by_code": {
+              "RUN_ENDED_WITH_ORDER_PENDING": 1,
+              "SUPERSEDED_BY_NEWER_OPINION": 39
+            },
+            "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+            "session_continuity": "NONE",
+            "source": "ledger_bytes",
+            "terminal_classes": {
+              "BLOCKED_BY_RISK": 0,
+              "CLOSED": 0,
+              "FILLED": 2,
+              "GATED": 0,
+              "REJECTED": 40
+            },
+            "unrecorded": []
+          },
+          "pending_at_end": 1,
+          "rejected": {
+            "RUN_ENDED_WITH_ORDER_PENDING": 1,
+            "SUPERSEDED_BY_NEWER_OPINION": 39
+          },
+          "superseded": 39,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 0,
+            "CLOSED": 0,
+            "FILLED": 2,
+            "GATED": 0,
+            "REJECTED": 40
+          }
+        },
+        "fills": 2,
+        "net_realised_usdt": -5.508405,
+        "opinion_accounting": {
+          "adds_up": true,
+          "counter_disagreements": [],
+          "deferred_slots": 0,
+          "duplicate_terminals": [],
+          "generated": 42,
+          "invariant": "generated == FILLED + CLOSED + BLOCKED_BY_RISK + GATED + REJECTED",
+          "ledger_lines": 111,
+          "orphan_terminals": [],
+          "schema_version": "DEF_RUN_016_OPINION_ACCOUNTING_V1",
+          "session_continuity": "NONE",
+          "source": "ledger_bytes",
+          "terminal": 42,
+          "terminal_classes": {
+            "BLOCKED_BY_RISK": 0,
+            "CLOSED": 0,
+            "FILLED": 2,
+            "GATED": 0,
+            "REJECTED": 40
+          },
+          "unrecorded": []
+        },
+        "stage_latency_ms": {
+          "data_to_decision": {
+            "max": 3620,
+            "p50": 3620,
+            "p95": 3620,
+            "p99": 3620,
+            "samples": 2
+          },
+          "decision_to_quote": {
+            "max": 176380,
+            "p50": 176380,
+            "p95": 176380,
+            "p99": 176380,
+            "samples": 2
+          },
+          "decision_to_received": {
+            "max": 0,
+            "p50": 0,
+            "p95": 0,
+            "p99": 0,
+            "samples": 2
+          },
+          "received_to_quote": {
+            "max": 176380,
+            "p50": 176380,
+            "p95": 176380,
+            "p99": 176380,
+            "samples": 2
+          }
+        }
+      },
+      "why": "mismo mercado con un reloj m\u00e1s grueso: la colisi\u00f3n no depende del activo"
+    }
+  },
+  "schema_version": "DEF_RUN_016_AUDIT_V1"
+}

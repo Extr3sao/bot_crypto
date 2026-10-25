@@ -1,0 +1,1097 @@
+{
+  "checks": {
+    "V10_governance": {
+      "broker_or_exchange_imported": false,
+      "config_expected": {
+        "risk.yaml": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+        "runtime.yaml": "ac3cf4fce9ff6246997a059f1c409609a7c87a6bb416198c041ca479fc49a159",
+        "vision.yaml": "ba817ef6f2c8768ee8bd094ffbdb0f705281f7056466c95cd0b2016e6e3fd766"
+      },
+      "config_observed": {
+        "risk.yaml": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+        "runtime.yaml": "ac3cf4fce9ff6246997a059f1c409609a7c87a6bb416198c041ca479fc49a159",
+        "vision.yaml": "ba817ef6f2c8768ee8bd094ffbdb0f705281f7056466c95cd0b2016e6e3fd766"
+      },
+      "config_unchanged": true,
+      "live_disabled": true,
+      "orders_produced_by_this_run": 0,
+      "paper_orders_produced_by_this_run": 0,
+      "passed": true
+    },
+    "V11_functional_coverage": {
+      "active_fixtures_fire": true,
+      "cells_evaluated_without_signal": [
+        "vol_regime_breakout@1h"
+      ],
+      "cells_without_evaluable_instants": [
+        "mean_reversion_vol_liq@4h",
+        "vol_regime_breakout@4h"
+      ],
+      "complete": true,
+      "fixture_parity": true,
+      "fixtures": {
+        "mean_reversion_vol_liq_active": {
+          "differences": 0,
+          "expected": "at least one ENTRY after bar 743",
+          "family": "mean_reversion_vol_liq",
+          "signals_independent": 2,
+          "signals_original": 2,
+          "status": "PASS"
+        },
+        "mean_reversion_vol_liq_quiet": {
+          "differences": 0,
+          "expected": "no ENTRY",
+          "family": "mean_reversion_vol_liq",
+          "signals_independent": 0,
+          "signals_original": 0,
+          "status": "PASS"
+        },
+        "trend_pullback_active": {
+          "differences": 0,
+          "expected": "at least one ENTRY after bar 223",
+          "family": "trend_pullback",
+          "signals_independent": 1,
+          "signals_original": 1,
+          "status": "PASS"
+        },
+        "trend_pullback_quiet": {
+          "differences": 0,
+          "expected": "no ENTRY",
+          "family": "trend_pullback",
+          "signals_independent": 0,
+          "signals_original": 0,
+          "status": "PASS"
+        },
+        "vol_regime_breakout_active": {
+          "differences": 0,
+          "expected": "at least one ENTRY after bar 743",
+          "family": "vol_regime_breakout",
+          "signals_independent": 1,
+          "signals_original": 1,
+          "status": "PASS"
+        },
+        "vol_regime_breakout_quiet": {
+          "differences": 0,
+          "expected": "no ENTRY",
+          "family": "vol_regime_breakout",
+          "signals_independent": 0,
+          "signals_original": 0,
+          "status": "PASS"
+        }
+      },
+      "note": "a fixture proves implementation behaviour under known conditions; it proves nothing about regimes or edge",
+      "passed": true,
+      "quiet_fixtures_silent": true,
+      "real_data_sufficient": false,
+      "zero_sample_cells": [
+        "mean_reversion_vol_liq@4h",
+        "vol_regime_breakout@1h",
+        "vol_regime_breakout@4h"
+      ]
+    },
+    "V12_no_false_success": {
+      "comparator_verdict": "PASS",
+      "mismatches": 0,
+      "pass_with_pit_violation": false,
+      "pass_without_controls": false,
+      "passed": true,
+      "policy": "PASS requires 0 unexplained differences, 12/12 controls and no PIT violation",
+      "verdict_matches_numbers": true
+    },
+    "V1_input_provenance": {
+      "dataset_matches": true,
+      "observed": {
+        "BTCUSDT": "7fbdfefa12785bb025d525994466b5a64d5c0668d6ff997f5f7566bc42d13814",
+        "ETHUSDT": "cf04dc37617a0998016fcd7edfb9b2a77c9aa5fa656bbb54422805a5964650a6",
+        "SOLUSDT": "33342aacc2ac75f897e2c9df2602a41d340c96ed08cd683dbd3871c3c7c60c32"
+      },
+      "passed": true,
+      "seal_at_baseline": "OK",
+      "signals_003n_expected": "4a8f4626c388b781f4c2b66f9fcec171b7e38bf0a4d70d5b0d9bf1935c3de1d2",
+      "signals_003n_sha256": "4a8f4626c388b781f4c2b66f9fcec171b7e38bf0a4d70d5b0d9bf1935c3de1d2"
+    },
+    "V2_design_binding": {
+      "design_sha256": "b28a7b4c53168fd5d22c0a52d333703f8ce097c0ca632bdf0269ff1cb3cc5b70",
+      "passed": true,
+      "published": "b28a7b4c53168fd5d22c0a52d333703f8ce097c0ca632bdf0269ff1cb3cc5b70"
+    },
+    "V3_holdout": {
+      "bars_at_or_after_holdout": 0,
+      "boundary_rows": 72,
+      "clean": true,
+      "holes": 0,
+      "rows_at_or_after_holdout": 0
+    },
+    "V4_calendar_coverage": {
+      "duplicates_independent": 0,
+      "duplicates_original": 0,
+      "independent": {
+        "clean": true,
+        "duplicated_instants": {},
+        "extra": {
+          "breakout@1h": 0,
+          "breakout@4h": 0,
+          "breakout@5m": 0,
+          "ema_crossover@1h": 0,
+          "ema_crossover@4h": 0,
+          "ema_crossover@5m": 0,
+          "mean_reversion@1h": 0,
+          "mean_reversion@4h": 0,
+          "mean_reversion@5m": 0,
+          "mean_reversion_vol_liq@1h": 0,
+          "mean_reversion_vol_liq@4h": 0,
+          "momentum@1h": 0,
+          "momentum@4h": 0,
+          "momentum@5m": 0,
+          "trend@1h": 0,
+          "trend@4h": 0,
+          "trend@5m": 0,
+          "trend_pullback@1h": 0,
+          "trend_pullback@4h": 0,
+          "vol_regime_breakout@1h": 0,
+          "vol_regime_breakout@4h": 0,
+          "volatility@1h": 0,
+          "volatility@4h": 0,
+          "volatility@5m": 0
+        },
+        "missing": {
+          "breakout@1h": 0,
+          "breakout@4h": 0,
+          "breakout@5m": 0,
+          "ema_crossover@1h": 0,
+          "ema_crossover@4h": 0,
+          "ema_crossover@5m": 0,
+          "mean_reversion@1h": 0,
+          "mean_reversion@4h": 0,
+          "mean_reversion@5m": 0,
+          "mean_reversion_vol_liq@1h": 0,
+          "mean_reversion_vol_liq@4h": 0,
+          "momentum@1h": 0,
+          "momentum@4h": 0,
+          "momentum@5m": 0,
+          "trend@1h": 0,
+          "trend@4h": 0,
+          "trend@5m": 0,
+          "trend_pullback@1h": 0,
+          "trend_pullback@4h": 0,
+          "vol_regime_breakout@1h": 0,
+          "vol_regime_breakout@4h": 0,
+          "volatility@1h": 0,
+          "volatility@4h": 0,
+          "volatility@5m": 0
+        },
+        "per_cell_symbol": {
+          "breakout@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "breakout@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "breakout@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "breakout@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "breakout@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "breakout@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "breakout@5m/BTCUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "breakout@5m/ETHUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "breakout@5m/SOLUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "ema_crossover@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "ema_crossover@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "ema_crossover@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "ema_crossover@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "ema_crossover@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "ema_crossover@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "ema_crossover@5m/BTCUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "ema_crossover@5m/ETHUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "ema_crossover@5m/SOLUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "mean_reversion@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "mean_reversion@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "mean_reversion@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "mean_reversion@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "mean_reversion@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "mean_reversion@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "mean_reversion@5m/BTCUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "mean_reversion@5m/ETHUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "mean_reversion@5m/SOLUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "mean_reversion_vol_liq@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "mean_reversion_vol_liq@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "mean_reversion_vol_liq@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "mean_reversion_vol_liq@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "mean_reversion_vol_liq@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "mean_reversion_vol_liq@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "momentum@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "momentum@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "momentum@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "momentum@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "momentum@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "momentum@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "momentum@5m/BTCUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "momentum@5m/ETHUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "momentum@5m/SOLUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "trend@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "trend@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "trend@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "trend@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "trend@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "trend@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "trend@5m/BTCUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "trend@5m/ETHUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "trend@5m/SOLUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "trend_pullback@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "trend_pullback@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "trend_pullback@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "trend_pullback@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "trend_pullback@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "trend_pullback@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "vol_regime_breakout@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "vol_regime_breakout@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "vol_regime_breakout@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "vol_regime_breakout@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "vol_regime_breakout@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "vol_regime_breakout@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "volatility@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "volatility@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "volatility@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "volatility@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "volatility@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "volatility@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "volatility@5m/BTCUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "volatility@5m/ETHUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "volatility@5m/SOLUSDT": {
+            "expected": 13248,
+            "present": 13248
+          }
+        }
+      },
+      "original": {
+        "clean": true,
+        "duplicated_instants": {},
+        "extra": {
+          "breakout@1h": 0,
+          "breakout@4h": 0,
+          "breakout@5m": 0,
+          "ema_crossover@1h": 0,
+          "ema_crossover@4h": 0,
+          "ema_crossover@5m": 0,
+          "mean_reversion@1h": 0,
+          "mean_reversion@4h": 0,
+          "mean_reversion@5m": 0,
+          "mean_reversion_vol_liq@1h": 0,
+          "mean_reversion_vol_liq@4h": 0,
+          "momentum@1h": 0,
+          "momentum@4h": 0,
+          "momentum@5m": 0,
+          "trend@1h": 0,
+          "trend@4h": 0,
+          "trend@5m": 0,
+          "trend_pullback@1h": 0,
+          "trend_pullback@4h": 0,
+          "vol_regime_breakout@1h": 0,
+          "vol_regime_breakout@4h": 0,
+          "volatility@1h": 0,
+          "volatility@4h": 0,
+          "volatility@5m": 0
+        },
+        "missing": {
+          "breakout@1h": 0,
+          "breakout@4h": 0,
+          "breakout@5m": 0,
+          "ema_crossover@1h": 0,
+          "ema_crossover@4h": 0,
+          "ema_crossover@5m": 0,
+          "mean_reversion@1h": 0,
+          "mean_reversion@4h": 0,
+          "mean_reversion@5m": 0,
+          "mean_reversion_vol_liq@1h": 0,
+          "mean_reversion_vol_liq@4h": 0,
+          "momentum@1h": 0,
+          "momentum@4h": 0,
+          "momentum@5m": 0,
+          "trend@1h": 0,
+          "trend@4h": 0,
+          "trend@5m": 0,
+          "trend_pullback@1h": 0,
+          "trend_pullback@4h": 0,
+          "vol_regime_breakout@1h": 0,
+          "vol_regime_breakout@4h": 0,
+          "volatility@1h": 0,
+          "volatility@4h": 0,
+          "volatility@5m": 0
+        },
+        "per_cell_symbol": {
+          "breakout@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "breakout@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "breakout@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "breakout@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "breakout@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "breakout@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "breakout@5m/BTCUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "breakout@5m/ETHUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "breakout@5m/SOLUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "ema_crossover@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "ema_crossover@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "ema_crossover@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "ema_crossover@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "ema_crossover@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "ema_crossover@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "ema_crossover@5m/BTCUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "ema_crossover@5m/ETHUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "ema_crossover@5m/SOLUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "mean_reversion@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "mean_reversion@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "mean_reversion@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "mean_reversion@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "mean_reversion@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "mean_reversion@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "mean_reversion@5m/BTCUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "mean_reversion@5m/ETHUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "mean_reversion@5m/SOLUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "mean_reversion_vol_liq@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "mean_reversion_vol_liq@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "mean_reversion_vol_liq@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "mean_reversion_vol_liq@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "mean_reversion_vol_liq@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "mean_reversion_vol_liq@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "momentum@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "momentum@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "momentum@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "momentum@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "momentum@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "momentum@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "momentum@5m/BTCUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "momentum@5m/ETHUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "momentum@5m/SOLUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "trend@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "trend@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "trend@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "trend@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "trend@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "trend@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "trend@5m/BTCUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "trend@5m/ETHUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "trend@5m/SOLUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "trend_pullback@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "trend_pullback@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "trend_pullback@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "trend_pullback@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "trend_pullback@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "trend_pullback@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "vol_regime_breakout@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "vol_regime_breakout@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "vol_regime_breakout@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "vol_regime_breakout@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "vol_regime_breakout@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "vol_regime_breakout@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "volatility@1h/BTCUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "volatility@1h/ETHUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "volatility@1h/SOLUSDT": {
+            "expected": 1104,
+            "present": 1104
+          },
+          "volatility@4h/BTCUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "volatility@4h/ETHUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "volatility@4h/SOLUSDT": {
+            "expected": 276,
+            "present": 276
+          },
+          "volatility@5m/BTCUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "volatility@5m/ETHUSDT": {
+            "expected": 13248,
+            "present": 13248
+          },
+          "volatility@5m/SOLUSDT": {
+            "expected": 13248,
+            "present": 13248
+          }
+        }
+      },
+      "passed": true
+    },
+    "V5_pit": {
+      "bars_reconciliation": {
+        "clean": true,
+        "disagreements": [],
+        "reduction": "numpy pairwise float64 sum per bar, struct-packed digests",
+        "windows_checked": 2826
+      },
+      "digests_recomputed": 551448,
+      "independent": {
+        "availability_violation": 0,
+        "calendar_mismatch": 0,
+        "digest_mismatch": 0,
+        "holdout_rows": 0,
+        "rows": 275724,
+        "window_violation": 0
+      },
+      "original": {
+        "availability_violation": 0,
+        "calendar_mismatch": 0,
+        "digest_mismatch": 0,
+        "holdout_rows": 0,
+        "rows": 275724,
+        "window_violation": 0
+      },
+      "passed": true
+    },
+    "V6_prefix_invariance": {
+      "clean": true,
+      "truncations": [
+        {
+          "compared": 20952,
+          "cut": 300,
+          "differing": 0,
+          "duplicates": 0,
+          "examples": []
+        },
+        {
+          "compared": 64260,
+          "cut": 1500,
+          "differing": 0,
+          "duplicates": 0,
+          "examples": []
+        }
+      ]
+    },
+    "V7_independence": {
+      "clean": true,
+      "forbidden_imports": [],
+      "forbidden_literals": [],
+      "hook_detects_deliberate_cheat": true,
+      "hook_run_clean": true,
+      "hook_run_output": "INDEPENDENT_RUN_OK 14400\n",
+      "imports": [
+        "__future__",
+        "argparse",
+        "collections",
+        "exp_003o_contract",
+        "gzip",
+        "hashlib",
+        "json",
+        "math",
+        "numpy",
+        "numpy.typing",
+        "pathlib",
+        "sys",
+        "typing"
+      ],
+      "literals_present": [
+        "evaluations"
+      ],
+      "module": "scripts/exp_003o_rebuilder.py",
+      "note": "the verifier is a program written after the builders; BUILDER != VERIFIER holds as two programs, not as two people",
+      "own_output_literals": [
+        "evaluations"
+      ],
+      "shared_modules": [
+        "exp_003o_contract"
+      ]
+    },
+    "V8_parity_recomputation": {
+      "comparator_classes": {},
+      "comparator_differences": 0,
+      "passed": true,
+      "verifier_classes": {},
+      "verifier_differences": 0
+    },
+    "V9_negative_controls": {
+      "all_detected": true,
+      "catalog": [
+        {
+          "expected": "PIT_VIOLATION",
+          "id": "NEG-01",
+          "mutation": "window reaches one bar past the decision"
+        },
+        {
+          "expected": "TIMING_MISMATCH",
+          "id": "NEG-02",
+          "mutation": "decision taken at the bar open"
+        },
+        {
+          "expected": "PIT_VIOLATION",
+          "id": "NEG-03",
+          "mutation": "availability declared at the bar open"
+        },
+        {
+          "expected": "PIT_VIOLATION",
+          "id": "NEG-04",
+          "mutation": "centred rolling window over future bars"
+        },
+        {
+          "expected": "PARAMETER_HASH_MISMATCH",
+          "id": "NEG-05",
+          "mutation": "one frozen parameter changed"
+        },
+        {
+          "expected": "MISSING_SIGNAL",
+          "id": "NEG-06",
+          "mutation": "a known signal deleted"
+        },
+        {
+          "expected": "EXTRA_SIGNAL",
+          "id": "NEG-07",
+          "mutation": "a spurious signal and a duplicate key"
+        },
+        {
+          "expected": "DIRECTION_MISMATCH",
+          "id": "NEG-08",
+          "mutation": "a direction inverted and a signal shifted"
+        },
+        {
+          "expected": "DATA_INTEGRITY_FAIL",
+          "id": "NEG-09",
+          "mutation": "one bar byte altered and a bar duplicated"
+        },
+        {
+          "expected": "STATE_MISMATCH",
+          "id": "NEG-10",
+          "mutation": "NOT_READY relabelled NO_SIGNAL"
+        },
+        {
+          "expected": "PREFIX_INVARIANCE_FAIL",
+          "id": "NEG-11",
+          "mutation": "a past decision changed by later bars"
+        },
+        {
+          "expected": "INDEPENDENCE_VIOLATION",
+          "id": "NEG-12",
+          "mutation": "the rebuilder reads the published calendar"
+        }
+      ],
+      "effective": 12,
+      "false_success": 0,
+      "passed": true,
+      "results": [
+        {
+          "control": "NEG-01",
+          "detail": "window extended to the bar that opens at the decision",
+          "detected": true,
+          "expected": "PIT_VIOLATION",
+          "mutation_reached": true,
+          "observed": "PIT_VIOLATION"
+        },
+        {
+          "control": "NEG-02",
+          "detail": "decision moved back to the open of its own bar",
+          "detected": true,
+          "expected": "TIMING_MISMATCH",
+          "mutation_reached": true,
+          "observed": "TIMING_MISMATCH"
+        },
+        {
+          "control": "NEG-03",
+          "detail": "availability declared before the bar closed",
+          "detected": true,
+          "expected": "PIT_VIOLATION",
+          "mutation_reached": true,
+          "observed": "PIT_VIOLATION"
+        },
+        {
+          "control": "NEG-04",
+          "detail": "centred window ends 40 bars after the decision",
+          "detected": true,
+          "expected": "PIT_VIOLATION",
+          "mutation_reached": true,
+          "observed": "PIT_VIOLATION"
+        },
+        {
+          "control": "NEG-05",
+          "detail": "window_bars 80 -> 79",
+          "detected": true,
+          "expected": "PARAMETER_HASH_MISMATCH",
+          "mutation_reached": true,
+          "observed": "PARAMETER_HASH_MISMATCH"
+        },
+        {
+          "control": "NEG-06",
+          "detail": "one SIGNAL row removed from the independent side of a full cell",
+          "detected": true,
+          "expected": "MISSING_SIGNAL",
+          "mutation_reached": true,
+          "observed": "MISSING_SIGNAL"
+        },
+        {
+          "control": "NEG-07",
+          "detail": "an extra signal key that no evaluation backs; a duplicated line is counted 1 time(s)",
+          "detected": true,
+          "expected": "EXTRA_SIGNAL",
+          "mutation_reached": true,
+          "observed": "EXTRA_SIGNAL"
+        },
+        {
+          "control": "NEG-08",
+          "detail": "direction inverted on a shared key",
+          "detected": true,
+          "expected": "DIRECTION_MISMATCH",
+          "mutation_reached": true,
+          "observed": "DIRECTION_MISMATCH"
+        },
+        {
+          "control": "NEG-09",
+          "detail": "appended byte changes digest=True; duplicated minute detected=True",
+          "detected": true,
+          "expected": "DATA_INTEGRITY_FAIL",
+          "mutation_reached": true,
+          "observed": "DATA_INTEGRITY_FAIL"
+        },
+        {
+          "control": "NEG-10",
+          "detail": "a warm-up instant relabelled as a quiet one inside an otherwise identical cell",
+          "detected": true,
+          "expected": "STATE_MISMATCH",
+          "mutation_reached": true,
+          "observed": "STATE_MISMATCH"
+        },
+        {
+          "control": "NEG-11",
+          "detail": "baseline differences=0, after one past state changed=1",
+          "detected": true,
+          "expected": "PREFIX_INVARIANCE_FAIL",
+          "mutation_reached": true,
+          "observed": "PREFIX_INVARIANCE_FAIL"
+        },
+        {
+          "control": "NEG-12",
+          "detail": "hook blocked the deliberate cheat=True; rebuilder ran clean=True",
+          "detected": true,
+          "expected": "INDEPENDENCE_VIOLATION",
+          "mutation_reached": true,
+          "observed": "INDEPENDENCE_VIOLATION"
+        }
+      ],
+      "total": 12
+    }
+  },
+  "checks_passed": 12,
+  "checks_total": 12,
+  "design_sha256": "b28a7b4c53168fd5d22c0a52d333703f8ce097c0ca632bdf0269ff1cb3cc5b70",
+  "economic_edge": "NOT_EVALUATED",
+  "evaluations_compared": 275724,
+  "false_success_observed": 0,
+  "full_independent_certification": "INCOMPLETE_REAL_DATA_COVERAGE",
+  "negative_controls_detected": 12,
+  "negative_controls_effective": 12,
+  "pit_violations": 0,
+  "residual_risks": [
+    "the verifier is a program, not a person: BUILDER != VERIFIER holds as two programs",
+    "availability is the declared open+interval convention, not an observed publication timestamp",
+    "parity proves the two implementations agree on decisions; it does not prove the market says so",
+    "lane-B 4h cells have no evaluable bar in this window: functional coverage rests on fixtures"
+  ],
+  "run_id": "EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001",
+  "schema_version": "AI_BOTS_003O_VERIFICATION_V1",
+  "signals_independent": 52848,
+  "signals_original": 52848,
+  "technical_signal_parity": "PASS"
+}

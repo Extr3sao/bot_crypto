@@ -1,0 +1,150 @@
+{
+ "prospective": {
+  "current": {
+   "decisions": 18,
+   "fills": 0,
+   "closed_trades": 0,
+   "net_realised_usdt": 0,
+   "drawdown_pct": 0.0,
+   "costs_usdt": 0,
+   "costs_realised_usdt": 0,
+   "costs_total_usdt": 0.0,
+   "entry_commissions_accrued_open_usdt": 0.0,
+   "pnl_realised_usdt": 0,
+   "pnl_unrealised_usdt": 0.0,
+   "pnl_total_usdt": 0.0,
+   "marked_equity_usdt": 10000.0,
+   "open_positions_at_end": 0,
+   "median_quote_lag_ms": null
+  },
+  "proposed": {
+   "decisions": 18,
+   "fills": 1,
+   "closed_trades": 0,
+   "net_realised_usdt": 0,
+   "drawdown_pct": 0.009644,
+   "costs_usdt": 0,
+   "costs_realised_usdt": 0,
+   "costs_total_usdt": 0.5,
+   "entry_commissions_accrued_open_usdt": 0.5,
+   "pnl_realised_usdt": 0,
+   "pnl_unrealised_usdt": 0.49443125,
+   "pnl_total_usdt": 0.49443125,
+   "marked_equity_usdt": 10000.49443125,
+   "open_positions_at_end": 1,
+   "median_quote_lag_ms": 21538
+  },
+  "delta": {
+   "closed_trades": 0,
+   "costs_total_usdt": 0.5,
+   "drawdown_pp": 0.009644,
+   "entry_price": {
+    "matched": 0
+   },
+   "fills": 1,
+   "net_realised_usdt": 0.0,
+   "pnl_total_usdt": 0.49443125,
+   "sub_bar_fills": 1
+  },
+  "gate": {
+   "detail": "0 closed trades: the 003F gate requires >= 30 to judge economics",
+   "verdict": "INSUFFICIENT_SAMPLE"
+  },
+  "scope": "PROSPECTIVE_SESSION_WINDOW",
+  "dataset": {
+   "bar_interval_ms": 300000,
+   "data_time_ms": 1792403100000,
+   "symbols": {
+    "BTCUSDT": {
+     "bars": 57,
+     "incomplete_groups": [],
+     "matches_session": true,
+     "minutes": 286,
+     "sha256": "d50208e5801f1b7eb804fcfe567e2bb34e3c22bb02411b31c8ea27d962903a5e"
+    },
+    "ETHUSDT": {
+     "bars": 57,
+     "incomplete_groups": [],
+     "matches_session": true,
+     "minutes": 286,
+     "sha256": "6970abf31ccf2f52a4df52188097235bb80d1f4afb0a1698474e9dd0d8fbe9c1"
+    }
+   },
+   "timeframe": "5m"
+  }
+ },
+ "full": {
+  "current": {
+   "decisions": 76,
+   "fills": 0,
+   "closed_trades": 0,
+   "net_realised_usdt": 0,
+   "drawdown_pct": 0.0,
+   "costs_usdt": 0,
+   "costs_realised_usdt": 0,
+   "costs_total_usdt": 0.0,
+   "entry_commissions_accrued_open_usdt": 0.0,
+   "pnl_realised_usdt": 0,
+   "pnl_unrealised_usdt": 0.0,
+   "pnl_total_usdt": 0.0,
+   "marked_equity_usdt": 10000.0,
+   "open_positions_at_end": 0,
+   "median_quote_lag_ms": null
+  },
+  "proposed": {
+   "decisions": 76,
+   "fills": 1,
+   "closed_trades": 0,
+   "net_realised_usdt": 0,
+   "drawdown_pct": 0.030206,
+   "costs_usdt": 0,
+   "costs_realised_usdt": 0,
+   "costs_total_usdt": 0.5,
+   "entry_commissions_accrued_open_usdt": 0.5,
+   "pnl_realised_usdt": 0,
+   "pnl_unrealised_usdt": 0.34367213,
+   "pnl_total_usdt": 0.34367213,
+   "marked_equity_usdt": 10000.34367213,
+   "open_positions_at_end": 1,
+   "median_quote_lag_ms": 21538
+  },
+  "delta": {
+   "closed_trades": 0,
+   "costs_total_usdt": 0.5,
+   "drawdown_pp": 0.030206,
+   "entry_price": {
+    "matched": 0
+   },
+   "fills": 1,
+   "net_realised_usdt": 0.0,
+   "pnl_total_usdt": 0.34367213,
+   "sub_bar_fills": 1
+  },
+  "gate": {
+   "detail": "0 closed trades: the 003F gate requires >= 30 to judge economics",
+   "verdict": "INSUFFICIENT_SAMPLE"
+  },
+  "scope": "RETROSPECTIVE_FULL_COLLECTED_WINDOW",
+  "dataset": {
+   "bar_interval_ms": 300000,
+   "data_time_ms": 1792403100000,
+   "symbols": {
+    "BTCUSDT": {
+     "bars": 57,
+     "incomplete_groups": [],
+     "matches_session": null,
+     "minutes": 286,
+     "sha256": "d50208e5801f1b7eb804fcfe567e2bb34e3c22bb02411b31c8ea27d962903a5e"
+    },
+    "ETHUSDT": {
+     "bars": 57,
+     "incomplete_groups": [],
+     "matches_session": null,
+     "minutes": 286,
+     "sha256": "6970abf31ccf2f52a4df52188097235bb80d1f4afb0a1698474e9dd0d8fbe9c1"
+    }
+   },
+   "timeframe": "5m"
+  }
+ }
+}

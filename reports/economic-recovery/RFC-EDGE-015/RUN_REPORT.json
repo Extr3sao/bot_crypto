@@ -1,0 +1,307 @@
+{
+  "artifact_hash_reading": "digests of the files as committed; the lane's trade file is byte-stable across runs because the broker takes the replay's clock, the verification report is byte-stable because its detail strings are ordered, and the paper report carries its own generation instant by design",
+  "artifacts": {
+    "ALPHA_EXPERIMENT_MATRIX.csv": "853a1a6d889f8618ef0afcc272a7e6493969b9c28a69c494cf2e4199c0d52c7f",
+    "ALPHA_RESULTS.json": "46f7e0243ada0986814872055e7be4be38e2733140f8fe019396682eec094f18",
+    "EXPERIMENTAL_TRADES.jsonl": "889734699a8d8af046d27ef002a70fdf79ab91a5b3d94bfa576bbf5a23bf76d9",
+    "INDEPENDENT_VERIFICATION.json": "6de99cf61f1b1e523392c265d41cc3bcf08e6cf1d12dd2735fcb47faefb8f5f2",
+    "OOS_CAPTURE_MANIFEST_V2.json": "585febb8a6d9f35a467924c430c608bd88f7299342b6326ba0e26980085a9028",
+    "OOS_PREREGISTRATION_V2.json": "76351aaf63a80d8608a833012ab90bd1325936a9d92ad3eab9abd1a6bfd3666e",
+    "PARITY_DIVERGENCE_EXPLAINED.json": "e8506ebe12288c18bd630e2c8d777e1b5acaca789f2b0868850f6ba1c126566a",
+    "PROSPECTIVE_PAPER_REPORT.json": "077986b7c4d9a8ad2447da1c01e83861e5ef4d3c00d2a4b525937ff443a4fdf1"
+  },
+  "builder_neq_verifier": true,
+  "candidate_registration": {
+    "counts_by_status": {
+      "COST_KILLED": 0,
+      "NO_GROSS_EDGE": 0,
+      "PAPER_ACTIVE": 0,
+      "PAPER_CANDIDATE": 0,
+      "PAPER_RETIRED": 0,
+      "REJECTED": 0,
+      "RESEARCH_CANDIDATE": 12,
+      "RESEARCH_REQUIRED": 3,
+      "UNKNOWN": 0
+    },
+    "paper_candidates": [],
+    "path": "config\\strategy_candidates_edge15.json"
+  },
+  "credentials_used": false,
+  "execution_classes": [
+    {
+      "class": "DEFECT_REPAIR",
+      "produced": true
+    },
+    {
+      "class": "HISTORICAL_RESEARCH",
+      "corpora_are_consumed": true,
+      "produced": true
+    },
+    {
+      "class": "EXPERIMENTAL_PROSPECTIVE_PAPER",
+      "produced": true
+    },
+    {
+      "class": "PROSPECTIVE_HOLDOUT",
+      "produced": false,
+      "prospective_bars": 3,
+      "reading": "bars exist and are reserved; nothing has been scored on them",
+      "state": "OOS_ACCRUING_WITH_PROSPECTIVE_BARS"
+    }
+  ],
+  "false_success": 0,
+  "generated_at_utc": "2026-10-17T09:05:00Z",
+  "git_head": "87b9c6a",
+  "git_head_reading": "the commit whose code produced these figures; a report cannot name the commit that contains its own amendment, and no figure here depends on a commit later than this one",
+  "open_items": [
+    "prospective holdout accruing: 3 bars captured, none scored, selection has read nothing",
+    "no admitted strategy with a measured positive gross edge after costs",
+    "maker family deferred until a fill/queue model exists",
+    "disk guard at INSUFFICIENT_FREE_SPACE (4.17 GiB free), not relaxed"
+  ],
+  "order_sent": false,
+  "p0_defects": {
+    "p0_1_holdout_order": {
+      "capture_started_unix_ns": 1792221621701637600,
+      "captured_at_utc": "2026-10-17T09:01:39Z",
+      "clauses": {
+        "all_prospective_bars_open_after_freeze": true,
+        "commit_precedes_capture": true,
+        "freeze_precedes_capture": true,
+        "prereg_file_matches_committed_blob": true,
+        "protocol_digest_matches": true
+      },
+      "commit": "b4ff58892263b44de122b8fe6b08239ffb831032",
+      "first_prospective_bar_open_utc": "2026-10-17T08:00:00Z",
+      "frozen_at_utc": "2026-10-17T07:15:28Z",
+      "previous_capture_is_descriptive": "DESCRIPTIVE_FOR_THESE_HYPOTHESES",
+      "prospective_bars": 3,
+      "state": "OOS_ACCRUING_WITH_PROSPECTIVE_BARS",
+      "verdict": "ORDER_VERIFIED"
+    },
+    "p0_2_independent_verifier": {
+      "imports_builder_modules": false,
+      "result": "35/35",
+      "structural_check": "V31 refuses a builder import; V32 asserts the 14R import is gone; V33/V34 keep every recorded path re-readable and shipped; V35 re-derives the CURRENT vs PROPOSED table from the matrix, config/risk.yaml and the admission ledger",
+      "verdict": "VERIFIED",
+      "verifier": "scripts/edge15_verify.py"
+    },
+    "p0_3_broker_identity": {
+      "identifiers": [
+        "position_id",
+        "entry_order_id",
+        "exit_order_id",
+        "trade_id"
+      ],
+      "lane_books": [
+        "EDGE15LANE-BTCUSDT",
+        "EDGE15LANE-ETHUSDT",
+        "EDGE15LANE-SOLUSDT"
+      ],
+      "sequence_continues_across_restore": true,
+      "tests": "tests/unit/paper/test_broker_identity.py (7 tests)"
+    },
+    "p0_4_accounting": {
+      "accrued_entry_commissions_reported_separately": true,
+      "identities_hold_in_lane": true,
+      "quantities": [
+        "cash",
+        "realised_pnl",
+        "unrealised_pnl",
+        "equity_mark_to_market"
+      ]
+    },
+    "p0_5_parity_divergences": {
+      "jesse": {
+        "verdict": "RESOLVED",
+        "worst_agreement_among_other_trades_bps": 0.080318,
+        "worst_decomposition_error_bps": 1.21e-07
+      },
+      "vnpy": {
+        "they_are_the_last_two_entries": true,
+        "unmatched_trades": 2,
+        "verdict": "RESOLVED"
+      }
+    }
+  },
+  "p1_alpha": {
+    "current_vs_proposed": {
+      "capital_usdt": 10000.0,
+      "current": {
+        "admitted_strategies": [],
+        "definition": "the runtime exactly as committed: whatever config/strategy_admission.json admits",
+        "equity_end_usdt": 10000.0,
+        "fees_usdt": 0.0,
+        "net_usdt": 0.0,
+        "reading": "flat by construction: a strategy that is not admitted does not trade, so the bar a proposal has to clear is zero, not a loss",
+        "trades": 0
+      },
+      "proposed": {
+        "cross_sectional_rotation": {
+          "decision": "REJECT",
+          "net_usdt_1x": -382.150588,
+          "net_usdt_2x": -553.495541,
+          "replaces_current": false,
+          "trades": 355
+        },
+        "mean_reversion_vol_liq": {
+          "decision": "EXPERIMENT_COST_FRAGILE",
+          "net_usdt_1x": 702.496921,
+          "net_usdt_2x": -77.535812,
+          "replaces_current": false,
+          "trades": 811
+        },
+        "trend_pullback": {
+          "decision": "REJECT",
+          "net_usdt_1x": -1960.26702,
+          "net_usdt_2x": -2815.422362,
+          "replaces_current": false,
+          "trades": 895
+        },
+        "vol_regime_breakout": {
+          "decision": "REJECT_OUTLIER_DRIVEN",
+          "net_usdt_1x": 1112.217291,
+          "net_usdt_2x": 948.821085,
+          "replaces_current": false,
+          "trades": 171
+        }
+      },
+      "same_capital_and_constraints": 333.33,
+      "verdict": "NO_PROPOSAL_BEATS_CURRENT",
+      "where": "ALPHA_RESULTS.json -> current_vs_proposed; ALPHA_EXPERIMENT_MATRIX.csv carries decision and current_runtime_net_bps_total per row"
+    },
+    "families": [
+      "vol_regime_breakout",
+      "trend_pullback",
+      "cross_sectional_rotation",
+      "mean_reversion_vol_liq",
+      "maker_only_spread_capture"
+    ],
+    "held_out_tail": {
+      "cross_sectional_rotation": {
+        "gross_bps_per_trade": -35.6295,
+        "net_bps_1x": -11464.6323,
+        "net_bps_2x": -16605.0323,
+        "trades": 355
+      },
+      "mean_reversion_vol_liq": {
+        "gross_bps_per_trade": 54.8413,
+        "net_bps_1x": 21075.1184,
+        "net_bps_2x": -2326.0976,
+        "trades": 811
+      },
+      "trend_pullback": {
+        "gross_bps_per_trade": -37.0432,
+        "net_bps_1x": -58808.5987,
+        "net_bps_2x": -84463.5155,
+        "trades": 895
+      },
+      "vol_regime_breakout": {
+        "gross_bps_per_trade": 223.7941,
+        "net_bps_1x": 33366.8524,
+        "net_bps_2x": 28464.9172,
+        "trades": 171
+      }
+    },
+    "next_hypothesis": "the tail says the surviving structure is the cost model, not the signal: a family whose gross expectancy per trade exceeds its own tier's round trip (>= 24 bps for a tier-1 pair, >= 28 bps for a thin alt) is the next thing to look for, and the prospective slice is the only place it can be confirmed",
+    "no_economic_edge_found": true,
+    "verdicts": {
+      "cross_sectional_rotation": "REJECT",
+      "maker_only_spread_capture": "DEFER_NO_FILL_MODEL",
+      "mean_reversion_vol_liq": "EXPERIMENT_COST_FRAGILE",
+      "trend_pullback": "REJECT",
+      "vol_regime_breakout": "REJECT_OUTLIER_DRIVEN"
+    }
+  },
+  "p2_cost_model": {
+    "examples": [
+      {
+        "per_side_bps": 11.6768,
+        "round_trip_bps": 23.3536,
+        "symbol": "BTC/USDT",
+        "tier": "TIER1"
+      },
+      {
+        "per_side_bps": 11.6768,
+        "round_trip_bps": 23.3536,
+        "symbol": "ETH/USDT",
+        "tier": "TIER1"
+      },
+      {
+        "per_side_bps": 12.65,
+        "round_trip_bps": 25.3,
+        "symbol": "SOL/USDT",
+        "tier": "MAJOR"
+      },
+      {
+        "per_side_bps": 14.48,
+        "round_trip_bps": 28.96,
+        "symbol": "UNI/USDT",
+        "tier": "ALT"
+      }
+    ],
+    "schema_version": "EDGE15_COST_MODEL_V1",
+    "sensitivity": [
+      1.0,
+      2.0,
+      3.0
+    ],
+    "zero_cost_used_to_certify": false
+  },
+  "p3_lane": {
+    "authoritative_ledger_untouched": true,
+    "bars_scanned": 6003,
+    "closed_trades": 14,
+    "closed_trades_by_class": {
+      "DESCRIPTIVE": 14,
+      "PROSPECTIVE": 0
+    },
+    "commissions_usdt": 9.333240000000002,
+    "cycles": {
+      "by_action": {
+        "FILL_OPENED": 14,
+        "NO_TRADE": 182,
+        "PROTECTIVE_EXIT": 14
+      },
+      "total": 210
+    },
+    "disk": {
+      "free_gib": 4.169,
+      "ok": false,
+      "reasons": [
+        "free space cannot pay for the window: 8.640 GB needed at 1.5x, 2.477 GB usable above the 2.000 GB reserve"
+      ],
+      "status": "INSUFFICIENT_FREE_SPACE",
+      "thresholds_changed_by_this_work_package": false
+    },
+    "gross_pnl_usdt": -3.4767205863824433,
+    "net_pnl_by_class_usdt": {
+      "DESCRIPTIVE": -12.809961,
+      "PROSPECTIVE": 0
+    },
+    "per_family": {
+      "mean_reversion_vol_liq": {
+        "closed_trades": 14,
+        "fees": 9.333240000000002,
+        "gross_pnl": -3.4767205863824433,
+        "net_pnl": -12.809960586382445,
+        "wins": 5
+      }
+    },
+    "prospective_bars_scanned": 3,
+    "prospective_cycles": 0,
+    "realised_pnl_usdt": -12.809960586382445,
+    "simulated_entries": 14,
+    "simulated_exits": 14,
+    "simulated_orders": 28,
+    "stop_policy_interaction": "the default protective stops (0.5%/0.75%) are far tighter than the surviving family's horizon, so every lane position closed by stop before its thesis played out",
+    "tag": "EXPERIMENTAL_PROSPECTIVE_PAPER"
+  },
+  "promotion": {
+    "promoted": false,
+    "reason": "no family clears its costs; ADOPT needs prospective data"
+  },
+  "risk_limits_changed": false,
+  "schema_version": "EDGE15_RUN_REPORT_V1",
+  "work_package": "WP-EDGE-015"
+}

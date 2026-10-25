@@ -1,0 +1,23 @@
+rea analyze-web-bundle — Capture and statically analyze a page bundle, defaulting to the selected target origin
+
+Usage: rea analyze-web-bundle <endpoint> <targetId> [options]
+
+Arguments:
+  endpoint  Configured loopback CDP HTTP endpoint
+  targetId  Target ID from list-browser-targets
+
+Options:
+  --allowed-origins <array>  Optional exact-origin filter
+  --observation-ms <number>  Observation duration in milliseconds (default: 500)
+  --fetch-source-maps        Fetch source maps referenced by captured scripts
+
+Global Options:
+  --filter-output <keys>              Filter output by key paths (e.g. foo,bar.baz,a[0,3])
+  --format <toon|json|yaml|md|jsonl>  Output format
+  --full-output                       Show full output envelope
+  --help                              Show help
+  --llms, --llms-full                 Print LLM-readable manifest
+  --schema                            Show JSON Schema for command
+  --token-count                       Print token count of output (instead of output)
+  --token-limit <n>                   Limit output to n tokens
+  --token-offset <n>                  Skip first n tokens of output

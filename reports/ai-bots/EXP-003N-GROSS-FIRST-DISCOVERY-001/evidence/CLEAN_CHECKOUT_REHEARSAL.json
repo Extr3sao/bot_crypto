@@ -1,0 +1,58 @@
+{
+  "schema_version": "AI_BOTS_003N_CLEAN_CHECKOUT_REHEARSAL_V1",
+  "experiment": "EXP-003N-GROSS-FIRST-DISCOVERY-001",
+  "subject": "EXP-003M-MAKER-FILL-REALITY-001",
+  "generated_at_utc": "2026-10-20T18:57:01Z",
+  "method": {
+    "worktree": "git worktree add --detach /tmp/003n-clean <commit>",
+    "why_a_worktree": "a clean checkout is the only thing that proves the published bytes survived Git; the working tree it was written in does not",
+    "steps": [
+      "git worktree add --detach /tmp/003n-clean fefb077",
+      "python scripts/exp_003j_dataset.py --fetch --start 2026-06-21T00:00:00Z --end 2026-08-20T00:00:00Z --out reports/ai-bots/EXP-003K-CANDIDATE-001/dataset",
+      "python scripts/exp_003m_tape.py",
+      "sha256sum -c reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/SHA256SUMS.txt",
+      "sha256sum -c reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/DATASET_SHA256SUMS.txt",
+      "python -m pytest tests/unit/reports/test_exp_003m_fills.py tests/unit/reports/test_exp_003m_pipeline.py"
+    ],
+    "network": "the run downloaded the frozen 1-minute bars from Binance spot /api/v3/klines and 42 (symbol, UTC day) aggregate-trade archives from data.binance.vision; no cached copy from this host was used"
+  },
+  "result": {
+    "commit": "fefb0771036c33c648ecb2ed11cb28e8c2b49264",
+    "worktree_status_lines": 0,
+    "artifact_manifest_files": 18,
+    "artifact_manifest_sha256": "a8b6b5b980af0243d5488bc649a3781d6b0be2c54bd162e65e49befe07b50298",
+    "artifacts_verified": 18,
+    "dataset_manifest_files": 126,
+    "dataset_manifest_sha256": "84e2fe6eb4758693a7088d82bd3efb05b7b13fae8efefb768995f882857cbb8c",
+    "dataset_files_verified": 126,
+    "regenerated_dataset_matches_frozen_digests": {
+      "BTCUSDT": "7fbdfefa12785bb025d525994466b5a64d5c0668d6ff997f5f7566bc42d13814",
+      "ETHUSDT": "cf04dc37617a0998016fcd7edfb9b2a77c9aa5fa656bbb54422805a5964650a6",
+      "SOLUSDT": "33342aacc2ac75f897e2c9df2602a41d340c96ed08cd683dbd3871c3c7c60c32"
+    },
+    "regenerated_tape_manifest_sha256": "2d5154449fe17aba7e8319932c2a6ddfa3a994abed4fcfb30479e5ced3c14946",
+    "tests_passed": 25,
+    "tests_failed": 0,
+    "stdout": "evidence/CLEAN_CHECKOUT_REHEARSAL_STDOUT.txt"
+  },
+  "defects_found_and_repaired": [
+    {
+      "id": "R1",
+      "defect": "a clean checkout rewrote SHA256SUMS.txt and every pinned artifact to CRLF (core.autocrlf=true), so sha256sum -c verified 0 of 18 and the experiment was reproducible only on the machine that wrote it",
+      "repair": ".gitattributes marks reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/** -text, as the other digest-pinned trees already do",
+      "commit": "9800925",
+      "verified": "18/18 in the clean worktree after the repair"
+    },
+    {
+      "id": "R2",
+      "defect": "8 of 25 EXP-003M tests sealed a synthetic experiment, and seal() read EXP-003L's SHA256SUMS.txt, a tree that is not committed: the suite passed only where 003L happened to exist",
+      "repair": "the predecessor digest is provenance, not a precondition; the seal records NOT_PRESENT_IN_CHECKOUT instead of crashing",
+      "commit": "fefb077",
+      "verified": "25/25 in a worktree that never had EXP-003L"
+    }
+  ],
+  "not_verified": [
+    "no live order was placed and no fill is observed anywhere in this chain; the rehearsal proves the bytes, not the market",
+    "the 003L predecessor tree remains unpublished: its digests cannot be checked from a clean checkout by anyone"
+  ]
+}

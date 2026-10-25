@@ -1,0 +1,871 @@
+{
+  "schema_version": "EDGE07_STORAGE_RECLAIM_V1",
+  "label": "WP-EDGE-07",
+  "as_of_utc": "2026-10-14T08:50:23Z",
+  "host": "DESKTOP-4CHO695",
+  "mode": "applied",
+  "temp_root": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp",
+  "pytest_base": {
+    "base": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035",
+    "present": true,
+    "sessions": 15,
+    "newest_session": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1765",
+    "sessions_kept": [
+      "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1763",
+      "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1764",
+      "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1765"
+    ]
+  },
+  "rules": {
+    "pytest_sessions": "siblings of the newest session under pytest's own base temp dir",
+    "lane_lab_scratch": [
+      "st6-verify-rerun-",
+      "st6-close-replay-"
+    ],
+    "rehearsal_parents": "recovery-rehearsal-",
+    "registered_worktrees": "worktrees of this repository, removed with git worktree remove"
+  },
+  "volume": {
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+    "free_before_bytes": 2824138752,
+    "free_after_bytes": 3955908608,
+    "reclaimed_bytes": 1093254748,
+    "would_reclaim_bytes": 1093254748,
+    "critical_floor_bytes": 2147483648,
+    "healthy_floor_bytes": 5368709120,
+    "clears_critical_floor": true,
+    "clears_healthy_floor": false,
+    "sentence": "the reclaim clears the 2 GiB the tick refuses below, so ingestion may resume; it is 1347.4 MiB short of the 5 GiB the heavy publication waits below"
+  },
+  "eligible": [
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1337",
+      "rule": "pytest_sessions",
+      "bytes": 119356651,
+      "files": 1811,
+      "newest_write_utc": "2026-10-11T23:03:07Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "b3"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1338",
+      "rule": "pytest_sessions",
+      "bytes": 119324022,
+      "files": 1809,
+      "newest_write_utc": "2026-10-11T23:06:25Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "ad"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1345",
+      "rule": "pytest_sessions",
+      "bytes": 118737601,
+      "files": 1805,
+      "newest_write_utc": "2026-10-11T23:18:09Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "36",
+          "62"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1344",
+      "rule": "pytest_sessions",
+      "bytes": 118729499,
+      "files": 1805,
+      "newest_write_utc": "2026-10-11T23:13:55Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "55",
+          "62"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1488",
+      "rule": "pytest_sessions",
+      "bytes": 118729440,
+      "files": 1805,
+      "newest_write_utc": "2026-10-12T12:56:04Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "7d"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1358",
+      "rule": "pytest_sessions",
+      "bytes": 118696644,
+      "files": 1803,
+      "newest_write_utc": "2026-10-12T06:20:57Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "a2"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1343",
+      "rule": "pytest_sessions",
+      "bytes": 82073435,
+      "files": 1636,
+      "newest_write_utc": "2026-10-11T23:09:52Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "cb"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1329",
+      "rule": "pytest_sessions",
+      "bytes": 59604667,
+      "files": 915,
+      "newest_write_utc": "2026-10-11T22:54:36Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "79"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1327",
+      "rule": "pytest_sessions",
+      "bytes": 59539635,
+      "files": 678,
+      "newest_write_utc": "2026-10-11T22:49:12Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "a0"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1328",
+      "rule": "pytest_sessions",
+      "bytes": 59538738,
+      "files": 778,
+      "newest_write_utc": "2026-10-11T22:52:55Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "aa"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1336",
+      "rule": "pytest_sessions",
+      "bytes": 59483947,
+      "files": 609,
+      "newest_write_utc": "2026-10-11T22:59:37Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "81"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1330",
+      "rule": "pytest_sessions",
+      "bytes": 59440469,
+      "files": 772,
+      "newest_write_utc": "2026-10-11T22:56:14Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "60",
+          "62"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true
+    }
+  ],
+  "removed": [
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1337",
+      "rule": "pytest_sessions",
+      "bytes": 119356651,
+      "files": 1811,
+      "newest_write_utc": "2026-10-11T23:03:07Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "b3"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true,
+      "removed": true,
+      "error": ""
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1338",
+      "rule": "pytest_sessions",
+      "bytes": 119324022,
+      "files": 1809,
+      "newest_write_utc": "2026-10-11T23:06:25Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "ad"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true,
+      "removed": true,
+      "error": ""
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1345",
+      "rule": "pytest_sessions",
+      "bytes": 118737601,
+      "files": 1805,
+      "newest_write_utc": "2026-10-11T23:18:09Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "36",
+          "62"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true,
+      "removed": true,
+      "error": ""
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1344",
+      "rule": "pytest_sessions",
+      "bytes": 118729499,
+      "files": 1805,
+      "newest_write_utc": "2026-10-11T23:13:55Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "55",
+          "62"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true,
+      "removed": true,
+      "error": ""
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1488",
+      "rule": "pytest_sessions",
+      "bytes": 118729440,
+      "files": 1805,
+      "newest_write_utc": "2026-10-12T12:56:04Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "7d"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true,
+      "removed": true,
+      "error": ""
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1358",
+      "rule": "pytest_sessions",
+      "bytes": 118696644,
+      "files": 1803,
+      "newest_write_utc": "2026-10-12T06:20:57Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "a2"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true,
+      "removed": true,
+      "error": ""
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1343",
+      "rule": "pytest_sessions",
+      "bytes": 82073435,
+      "files": 1636,
+      "newest_write_utc": "2026-10-11T23:09:52Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "cb"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true,
+      "removed": true,
+      "error": ""
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1329",
+      "rule": "pytest_sessions",
+      "bytes": 59604667,
+      "files": 915,
+      "newest_write_utc": "2026-10-11T22:54:36Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "79"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true,
+      "removed": true,
+      "error": ""
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1327",
+      "rule": "pytest_sessions",
+      "bytes": 59539635,
+      "files": 678,
+      "newest_write_utc": "2026-10-11T22:49:12Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "a0"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true,
+      "removed": true,
+      "error": ""
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1328",
+      "rule": "pytest_sessions",
+      "bytes": 59538738,
+      "files": 778,
+      "newest_write_utc": "2026-10-11T22:52:55Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "aa"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true,
+      "removed": true,
+      "error": ""
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1336",
+      "rule": "pytest_sessions",
+      "bytes": 59483947,
+      "files": 609,
+      "newest_write_utc": "2026-10-11T22:59:37Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "62",
+          "81"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true,
+      "removed": true,
+      "error": ""
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1330",
+      "rule": "pytest_sessions",
+      "bytes": 59440469,
+      "files": 772,
+      "newest_write_utc": "2026-10-11T22:56:14Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_AT006_analyze_does_not_mo0",
+          "DylanRepas",
+          ".git",
+          "objects",
+          "1a",
+          "23",
+          "60",
+          "62"
+        ],
+        "reason": "not the newest session, and no file inside has been written for the declared 60 minutes"
+      },
+      "eligible": true,
+      "removed": true,
+      "error": ""
+    }
+  ],
+  "kept": [
+    {
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot-freebuff-rfc035s3-lab",
+      "rule": "registered_worktrees",
+      "bytes": 16113800,
+      "files": 1505,
+      "newest_write_utc": null,
+      "created_by": "this repository (git worktree add)",
+      "provenance": {
+        "what": "a worktree of this repository registered outside it",
+        "head": "7e21f7ca6dbf8816d83f2f8ab15aeb09310b878c",
+        "head_present_in_repository": true,
+        "clean": false,
+        "dirty_paths": [
+          "?? data/rfc035e/",
+          "?? docs/governance/",
+          "?? research/",
+          "?? scripts/rfc035_discovery_verify.py",
+          "?? scripts/rfc035e_fetch.py",
+          "?? scripts/rfc035e_reproduce.py",
+          "?? scripts/rfc035e_verify.py",
+          "?? scripts/rfc035s2_search.py",
+          "?? scripts/rfc035s2_verify.py",
+          "?? tests/unit/research/test_rfc035_opportunity_registry.py",
+          "?? tests/unit/research/test_rfc035e_effect_reproduction.py",
+          "?? tests/unit/research/test_rfc035s2_strategy_search.py"
+        ],
+        "untracked_paths": [
+          "?? data/rfc035e/",
+          "?? docs/governance/",
+          "?? research/",
+          "?? scripts/rfc035_discovery_verify.py",
+          "?? scripts/rfc035e_fetch.py",
+          "?? scripts/rfc035e_reproduce.py",
+          "?? scripts/rfc035e_verify.py",
+          "?? scripts/rfc035s2_search.py",
+          "?? scripts/rfc035s2_verify.py",
+          "?? tests/unit/research/test_rfc035_opportunity_registry.py",
+          "?? tests/unit/research/test_rfc035e_effect_reproduction.py",
+          "?? tests/unit/research/test_rfc035s2_strategy_search.py"
+        ],
+        "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "reason": "untracked paths: work that exists nowhere else"
+      },
+      "eligible": false
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1764",
+      "rule": "pytest_sessions",
+      "bytes": 3716615,
+      "files": 1026,
+      "newest_write_utc": "2026-10-14T08:16:31Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_alerts_are_per_transition0",
+          "lane",
+          "ledger",
+          "store",
+          "15m",
+          "1h",
+          "watch",
+          "daily"
+        ],
+        "reason": "the newest session, or written inside the declared freshness window"
+      },
+      "eligible": false
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1763",
+      "rule": "pytest_sessions",
+      "bytes": 3716599,
+      "files": 1026,
+      "newest_write_utc": "2026-10-14T08:14:02Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_alerts_are_per_transition0",
+          "lane",
+          "ledger",
+          "store",
+          "15m",
+          "1h",
+          "watch",
+          "daily"
+        ],
+        "reason": "the newest session, or written inside the declared freshness window"
+      },
+      "eligible": false
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035\\pytest-1765",
+      "rule": "pytest_sessions",
+      "bytes": 3716593,
+      "files": 1026,
+      "newest_write_utc": "2026-10-14T08:19:14Z",
+      "created_by": "pytest (the base temp directory is the framework's own)",
+      "provenance": {
+        "what": "a completed pytest session's temp root",
+        "test_scoped_dirs_sample": [
+          "test_alerts_are_per_transition0",
+          "lane",
+          "ledger",
+          "store",
+          "15m",
+          "1h",
+          "watch",
+          "daily"
+        ],
+        "reason": "the newest session, or written inside the declared freshness window"
+      },
+      "eligible": false
+    }
+  ],
+  "neighbours": [
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035",
+      "bytes": 1104404555,
+      "files": 19304,
+      "newest_write_utc": "2026-10-14T08:44:40Z",
+      "reclaimed": false,
+      "reason": "not created by this repository's tools: the volume owner's decision"
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\vscode-stable-user-x64",
+      "bytes": 251843123,
+      "files": 3,
+      "newest_write_utc": "2026-10-13T20:04:26Z",
+      "reclaimed": false,
+      "reason": "not created by this repository's tools: the volume owner's decision"
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\TeamViewer",
+      "bytes": 84379064,
+      "files": 1,
+      "newest_write_utc": "2026-09-30T05:06:17Z",
+      "reclaimed": false,
+      "reason": "not created by this repository's tools: the volume owner's decision"
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\Diagnostics",
+      "bytes": 67108864,
+      "files": 4,
+      "newest_write_utc": "2026-10-01T04:35:01Z",
+      "reclaimed": false,
+      "reason": "not created by this repository's tools: the volume owner's decision"
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpyhksnp1q",
+      "bytes": 28925395,
+      "files": 15,
+      "newest_write_utc": "2026-10-14T08:13:34Z",
+      "reclaimed": false,
+      "reason": "not created by this repository's tools: the volume owner's decision"
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpte65o4n5",
+      "bytes": 28892665,
+      "files": 13,
+      "newest_write_utc": "2026-10-14T08:12:44Z",
+      "reclaimed": false,
+      "reason": "not created by this repository's tools: the volume owner's decision"
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\dylan-smoke-r1",
+      "bytes": 18259259,
+      "files": 8,
+      "newest_write_utc": "2026-10-13T23:03:02Z",
+      "reclaimed": false,
+      "reason": "not created by this repository's tools: the volume owner's decision"
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpqg6hk9gp",
+      "bytes": 18131895,
+      "files": 2,
+      "newest_write_utc": "2026-10-03T19:27:43Z",
+      "reclaimed": false,
+      "reason": "not created by this repository's tools: the volume owner's decision"
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmpbk8m943y",
+      "bytes": 18131895,
+      "files": 2,
+      "newest_write_utc": "2026-10-03T19:23:06Z",
+      "reclaimed": false,
+      "reason": "not created by this repository's tools: the volume owner's decision"
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\tmp2hmnpwe0",
+      "bytes": 18131895,
+      "files": 2,
+      "newest_write_utc": "2026-10-03T19:26:32Z",
+      "reclaimed": false,
+      "reason": "not created by this repository's tools: the volume owner's decision"
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\arp005_run1",
+      "bytes": 17378580,
+      "files": 33,
+      "newest_write_utc": "2026-10-02T09:01:40Z",
+      "reclaimed": false,
+      "reason": "not created by this repository's tools: the volume owner's decision"
+    },
+    {
+      "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\SsmsSetup",
+      "bytes": 14955159,
+      "files": 9,
+      "newest_write_utc": "2026-10-07T08:22:53Z",
+      "reclaimed": false,
+      "reason": "not created by this repository's tools: the volume owner's decision"
+    }
+  ],
+  "worktrees_after": [
+    {
+      "path": "C:/Users/GVLLFR0035/Downloads/bot-freebuff-rfc035s3-lab",
+      "dirty_paths": [
+        "?? data/rfc035e/",
+        "?? docs/governance/",
+        "?? research/",
+        "?? scripts/rfc035_discovery_verify.py",
+        "?? scripts/rfc035e_fetch.py",
+        "?? scripts/rfc035e_reproduce.py",
+        "?? scripts/rfc035e_verify.py",
+        "?? scripts/rfc035s2_search.py",
+        "?? scripts/rfc035s2_verify.py",
+        "?? tests/unit/research/test_rfc035_opportunity_registry.py",
+        "?? tests/unit/research/test_rfc035e_effect_reproduction.py",
+        "?? tests/unit/research/test_rfc035s2_strategy_search.py"
+      ],
+      "clean": false,
+      "head": "7e21f7ca6dbf8816d83f2f8ab15aeb09310b878c",
+      "detached": true,
+      "exists": true,
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "head_present": true,
+      "is_this_checkout": false,
+      "size_bytes": 16113800,
+      "files": 1505
+    }
+  ],
+  "verification": {
+    "every_removal_recorded": true,
+    "failed_removals": [],
+    "worktrees_still_registered_outside": [
+      "C:/Users/GVLLFR0035/Downloads/bot-freebuff-rfc035s3-lab"
+    ],
+    "nothing_outside_the_rules_is_a_candidate": true
+  },
+  "payload_sha256": "fb8bcd1ab9a922b3e91a326f1fb5e925bda1e5affb35cb44d7071742e9736ca8"
+}

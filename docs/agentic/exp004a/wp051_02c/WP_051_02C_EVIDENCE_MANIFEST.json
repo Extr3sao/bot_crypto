@@ -1,0 +1,298 @@
+{
+  "run_id": "wp051-02c/EXP-004A/2026-10-21",
+  "generated_at_utc": "2026-10-21T12:48:48Z",
+  "head_when_generated": "2d596572c51dbf81f3389fece4a94fc6e796f43f",
+  "code_commit": "c280a1fe43743577abf22ba6d86223197e1c858c",
+  "commits": {
+    "P0_rule_fix": "c280a1f",
+    "P0_sidecar_and_reports": "5462517",
+    "P1_extractor": "daa7bde",
+    "P2_c016": "9488c60"
+  },
+  "hashing": {
+    "sha256": "bytes as read from this checkout; Git may restore CRLF on a later checkout, so a fresh clone can differ",
+    "blob_sha256": "the committed blob as Git stores it; stable across checkouts. Compare a checkout of the named commit against this field.",
+    "null_git_blob": "the file was not in HEAD when this manifest was generated; only sha256 addresses it",
+    "self_exclusion": "this manifest does not hash itself, by design, to avoid a circular digest"
+  },
+  "entries": [
+    {
+      "role": "rule",
+      "path": "src/trading_bot/research/prospective/admission.py",
+      "note": "corrected classify_day (lag universal)",
+      "bytes": 15511,
+      "sha256": "87847699beb4827c7264a086dd049c64494bc327930541a5373b04cf643f4301",
+      "git_blob": "49c23dc2babf382f9479bddd63e88be03afa67a0",
+      "blob_sha256": "87847699beb4827c7264a086dd049c64494bc327930541a5373b04cf643f4301",
+      "blob_bytes": 15511
+    },
+    {
+      "role": "test",
+      "path": "tests/unit/research/test_prospective_admission.py",
+      "note": "admission adversarial suite",
+      "bytes": 20588,
+      "sha256": "d74d7f7dbdbf398d586e5bcfd49c072177953ab791cd782352ce961da9d525fd",
+      "git_blob": "3e06df0854792afbd81a150f71b9b72cd9cff34c",
+      "blob_sha256": "d74d7f7dbdbf398d586e5bcfd49c072177953ab791cd782352ce961da9d525fd",
+      "blob_bytes": 20588
+    },
+    {
+      "role": "tool",
+      "path": "scripts/wp051_02c_recalculate.py",
+      "note": "sidecar builder reading attested prefixes",
+      "bytes": 10795,
+      "sha256": "03080eb3748c797a20bd3a44a20148e7b0cf8a129d66aa830cbef6436ba6d644",
+      "git_blob": "4533c5cbd222096ad253dd27535793e964ddf27a",
+      "blob_sha256": "03080eb3748c797a20bd3a44a20148e7b0cf8a129d66aa830cbef6436ba6d644",
+      "blob_bytes": 10795
+    },
+    {
+      "role": "output",
+      "path": "docs/agentic/exp004a/wp051_02c/WP_051_02C_RECALCULATION.json",
+      "note": "recorded vs corrected vs runtime verdicts",
+      "bytes": 37188,
+      "sha256": "69e716abbec4ddb762103702e2e11f9365c5844811f5719d0b8927df4bcc4cd4",
+      "git_blob": "82170fc3b586fc1766a47cb4a030e1f7c27815d5",
+      "blob_sha256": "bf5bbb80315548bdae4a1fc7f32d030eb47bf864afa48a500c1937a812ac1b98",
+      "blob_bytes": 36032
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02c/WP_051_02C_CHANGELOG.md",
+      "note": "change rationale",
+      "bytes": 5141,
+      "sha256": "07139e5bfbe170bc6285db72e8bbe718d581e7059ea7075669a9dfbfc6e7465f",
+      "git_blob": "fbd3f5ec5c06a6ea87b8341b3981b6e0518344db",
+      "blob_sha256": "07139e5bfbe170bc6285db72e8bbe718d581e7059ea7075669a9dfbfc6e7465f",
+      "blob_bytes": 5141
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02c/WP_051_02C_TEST_REPORT.md",
+      "note": "commands, outputs, exit codes",
+      "bytes": 7417,
+      "sha256": "78cb3684f937295cd2ff56a858e10f5c805a75c7ff89df89eb2ee5c232ddb445",
+      "git_blob": "1b1b73991744733f41daa88362e2f23e05aa32ec",
+      "blob_sha256": "78cb3684f937295cd2ff56a858e10f5c805a75c7ff89df89eb2ee5c232ddb445",
+      "blob_bytes": 7417
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02c/RUN_REPORT.md",
+      "note": "run report (human)",
+      "bytes": 5222,
+      "sha256": "0d0abe4918fb7719e2b8ca9de6ce70ba1fabd715de269f301f490e4c59daf580",
+      "git_blob": "79d37df843645cd68428599de5dead807fb24097",
+      "blob_sha256": "0d0abe4918fb7719e2b8ca9de6ce70ba1fabd715de269f301f490e4c59daf580",
+      "blob_bytes": 5222
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02c/RUN_REPORT.json",
+      "note": "run report (machine)",
+      "bytes": 7252,
+      "sha256": "5c0c5f8ec1eeafb0098f373b05695719c5c4573dc23eadd65fc92331172314be",
+      "git_blob": "c443aebda812770618259172ca0f2220c145fdf4",
+      "blob_sha256": "5c0c5f8ec1eeafb0098f373b05695719c5c4573dc23eadd65fc92331172314be",
+      "blob_bytes": 7252
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02c/WP_051_02C_C015_VERDICT.md",
+      "note": "C-015 investigation and partial implementation",
+      "bytes": 5593,
+      "sha256": "9fc69b1e77f3f31cf5c683ffbf3c7beb4f55313f5730e6c3db21d94289296fb8",
+      "git_blob": "ebe15bddfafb486857066c8dc96288d4656acb3d",
+      "blob_sha256": "9fc69b1e77f3f31cf5c683ffbf3c7beb4f55313f5730e6c3db21d94289296fb8",
+      "blob_bytes": 5593
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02c/WP_051_02C_C016_REACHABILITY.json",
+      "note": "C-016 unreachable branch",
+      "bytes": 2981,
+      "sha256": "7e4dd88da3cdca93f6fbc86c0898642a30dded1568507759f12ffec67586f622",
+      "git_blob": "da4e133f35f649d058a4f3b3f0e990d0627116d3",
+      "blob_sha256": "7e4dd88da3cdca93f6fbc86c0898642a30dded1568507759f12ffec67586f622",
+      "blob_bytes": 2981
+    },
+    {
+      "role": "doc",
+      "path": "docs/agentic/exp004a/wp051_02c/WP_051_02C_FINAL_REPORT.md",
+      "note": "final report (this package)",
+      "bytes": 7938,
+      "sha256": "30b0020b3cb1b94aad1c2bec80e7d079de5b673b99512768a094ac2d02bbad70",
+      "git_blob": null,
+      "blob_sha256": null,
+      "blob_bytes": null
+    },
+    {
+      "role": "tool",
+      "path": "scripts/exp004a_capture.py",
+      "note": "phase-2 slice extractor",
+      "bytes": 14169,
+      "sha256": "85f646b776cb5181fa8cd2c0609b8340a9d22bf0ef07629937015d9b765ff1bc",
+      "git_blob": "5f6f310f315ec7755a4aaab8a3cc85ce52f44504",
+      "blob_sha256": "85f646b776cb5181fa8cd2c0609b8340a9d22bf0ef07629937015d9b765ff1bc",
+      "blob_bytes": 14169
+    },
+    {
+      "role": "test",
+      "path": "tests/unit/research/test_exp004a_capture.py",
+      "note": "extractor refusal suite",
+      "bytes": 10609,
+      "sha256": "0ea180ca3cbf9b0e46f83a7136d3c3677b07c3f2c336d4764f711eeabe01120f",
+      "git_blob": "8bd6ed06d89747b4e883c90ed35084d9233f38d5",
+      "blob_sha256": "0ea180ca3cbf9b0e46f83a7136d3c3677b07c3f2c336d4764f711eeabe01120f",
+      "blob_bytes": 10609
+    },
+    {
+      "role": "input",
+      "path": "data/exp004a/admission_1h.jsonl",
+      "note": "sealed admission ledger, lane 1h (immutable)",
+      "bytes": 284812,
+      "sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+      "git_blob": "1d0ce49caae90677fb2414f258bd6550ad752b12",
+      "blob_sha256": "73f8ba7b5716a725d166578bc7bfb629aefc0f31c306772e7fba5d83dd90c4b2",
+      "blob_bytes": 284812
+    },
+    {
+      "role": "input",
+      "path": "data/exp004a/admission_1h+15m.jsonl",
+      "note": "sealed admission ledger, joint lane (immutable)",
+      "bytes": 28985,
+      "sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+      "git_blob": "db9cb92869b1c9b28980a9c24a8a41d173c4e8f6",
+      "blob_sha256": "1f10efb48f1c1272e9ef3fcf2e95f3d9c5ba5ccf2907d261196e7ee9e7e044d1",
+      "blob_bytes": 28985
+    },
+    {
+      "role": "input",
+      "path": "config/preregistrations/EXP-004A.json",
+      "note": "frozen preregistration",
+      "bytes": 6960,
+      "sha256": "3761481d8d242289a92486d036751fd1394c2be629d42db59670c5a7397503e9",
+      "git_blob": "d3bf7f003f22023ec40dd3be50d27ad592d064bb",
+      "blob_sha256": "07d4702adc264f0306eb2757049edc2aea98a5d7df2f4b8350603d057794c7df",
+      "blob_bytes": 6830
+    },
+    {
+      "role": "input",
+      "path": "config/preregistrations/EXP-004A.datasets.json",
+      "note": "phase-2 dataset declaration",
+      "bytes": 4669,
+      "sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+      "git_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7",
+      "blob_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+      "blob_bytes": 4669
+    },
+    {
+      "role": "input",
+      "path": "docs/RFC-050_EXP004A_TWO_PHASE_FREEZE.md",
+      "note": "requirement authority, section 3",
+      "bytes": 6540,
+      "sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+      "git_blob": "41ba4b163b37ad714587c3dccd7741bea715ad62",
+      "blob_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+      "blob_bytes": 6540
+    },
+    {
+      "role": "input",
+      "path": "docs/agentic/exp004a/wp051_02c/evidence/pre_change_hashes.txt",
+      "note": "hashes captured before the change",
+      "bytes": 1277,
+      "sha256": "63d8d05510e3f0c48233cedb66d85910525cf88cde4f04b610f33a29af3a5e00",
+      "git_blob": "74302ca15cbce81f7956249253951cd3c106ffda",
+      "blob_sha256": "63d8d05510e3f0c48233cedb66d85910525cf88cde4f04b610f33a29af3a5e00",
+      "blob_bytes": 1277
+    },
+    {
+      "role": "input",
+      "path": "docs/agentic/exp004a/wp051_02c/evidence/pre_change_state.txt",
+      "note": "git state captured before the change",
+      "bytes": 1581,
+      "sha256": "4e9ae9158dad0a53fbe433e55f155f450c65147d91b4ffd5ff3a7c8d92bf41c6",
+      "git_blob": "6a34723f525aa3267a2ef00ec9f82a3ae76fc884",
+      "blob_sha256": "4e9ae9158dad0a53fbe433e55f155f450c65147d91b4ffd5ff3a7c8d92bf41c6",
+      "blob_bytes": 1581
+    },
+    {
+      "role": "input",
+      "path": "docs/agentic/exp004a/wp051_02c/evidence/audit_02b/admission_recomputation.json",
+      "note": "02B admission recomputation",
+      "bytes": 659340,
+      "sha256": "d16567d83ffb709848d3a2be122cb0e4186b2f55d8b356813389db731cd843a0",
+      "git_blob": "90931f1bc553d2b942d883e5c4cc1156a5055e43",
+      "blob_sha256": "cea252e9ecd3717e50139404d83136de41a4e105baf4a255bcd162b9ea28b458",
+      "blob_bytes": 640524
+    },
+    {
+      "role": "input",
+      "path": "docs/agentic/exp004a/wp051_02c/evidence/audit_02b/cost_recomputation.json",
+      "note": "cost recomputation",
+      "bytes": 5928,
+      "sha256": "10eb3b21eb187f9d87407a31655b38be0d7edae783aae25b8d52792b3caf2241",
+      "git_blob": "97c29cad8ab082c1023b925235db0fb60f3b2d98",
+      "blob_sha256": "d7686aca28d97140dd02578520903ff1b1c491ed3e1b772c18d871c7c6d61c32",
+      "blob_bytes": 5742
+    },
+    {
+      "role": "input",
+      "path": "docs/agentic/exp004a/wp051_02c/evidence/audit_02b/control_matrix.json",
+      "note": "02B control matrix",
+      "bytes": 1688,
+      "sha256": "640196d5063c522781472279fc6675614cb7491a4adeded150a2326179c8ebdc",
+      "git_blob": "a384eabcf121e9b588bd2e7740282ebed369560b",
+      "blob_sha256": "ac15446c7134c45b0b94f380701105c5efe3adee7fa9ecc73d7adec967e791d8",
+      "blob_bytes": 1621
+    },
+    {
+      "role": "unversioned-input",
+      "path": "docs/agentic/exp004a/wp051_02b/WP_051_02B_DEFECT_REGISTER.md",
+      "note": "defect source (untracked in this worktree)",
+      "bytes": 17915,
+      "sha256": "8b35a98a2c1de482f1a627c17f009fae57380aa24b3031b971bc824846970ea0",
+      "git_blob": null,
+      "blob_sha256": null,
+      "blob_bytes": null
+    },
+    {
+      "role": "unversioned-input",
+      "path": "docs/agentic/exp004a/wp051_02b/WP_051_02B_CLAIM_VERDICTS.json",
+      "note": "claim verdicts under audit (untracked)",
+      "bytes": 13685,
+      "sha256": "83f7afaf35d76192f989a0e429dbbac4259dd5f70b04bc7158e85a9008206313",
+      "git_blob": null,
+      "blob_sha256": null,
+      "blob_bytes": null
+    }
+  ],
+  "append_only_series": {
+    "path": "data/st6/ST6_OBSERVATIONS.jsonl",
+    "bytes_at_seal": 2030451,
+    "sha256_of_sealed_prefix": "3d5755d78af7c9f1e8d959ae1559228ccb19c5fdd152181efa6b98d766008434",
+    "bytes_now": 2057201,
+    "sha256_now": "896b9fa3498f31f590562085e00b1d4b3fa06a7716fd89bf3e0bcc3860b15280",
+    "prefix_verified": true,
+    "note": "A whole-file digest of a live series is true for one instant; only the sealed prefix is durable."
+  },
+  "immutability": {
+    "sealed_ledgers_rewritten": false,
+    "days_resealed": 0,
+    "independent_reports_modified": false,
+    "preregistrations_modified": false
+  },
+  "worktree_state": {
+    "this_worktree": {
+      "path": "C:/Users/GVLLFR0035/Downloads/bot freebuff",
+      "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+      "head": "2d596572c51dbf81f3389fece4a94fc6e796f43f"
+    },
+    "wp051_02b_clean_worktree": {
+      "path": "C:/Users/GVLLFR0035/Downloads/bot-freebuff-wp051-02b-clean",
+      "head": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+      "contains_02b_deliverables": false
+    },
+    "finding": "A clean worktree at 47116b2 does not contain the WP-051-02B package; docs/agentic/exp004a/wp051_02b/ is untracked in this worktree. Uncommitted deliverables are recorded as unversioned inputs, never inferred to be versioned."
+  }
+}

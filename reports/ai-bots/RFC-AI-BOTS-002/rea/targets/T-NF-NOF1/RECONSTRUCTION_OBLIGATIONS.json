@@ -1,0 +1,44 @@
+{
+  "target_id": "T-NF-NOF1",
+  "source_commit": "5d27641dfa47cc942aa0709ffb3f5237de876373",
+  "rea_evidence_id": "ev_4b2bf9c5c313530cc7e1e399d4cde5c175ecdd0018a9f608ee12782522ea9ade",
+  "license_decision": "AGPL-3.0: se estudia, no se importa ni se traduce código",
+  "obligations": [
+    {
+      "claim": "Contexto multi-timeframe explícito con número de velas por timeframe",
+      "source_fact": "TIMEFRAMES: 1m/60, 3m/100, 5m/100, 15m/96, 30m/90, 1h/120",
+      "own_implementation": "src/trading_bot/intelligence/ai_bots/bots.py (BOT-CTX-01)",
+      "matched_test": "tests/unit/vision/test_integrity_and_latency.py + suites de ai_bots",
+      "divergence": "el nuestro agrega un timeframe superior desde barras 1h; el suyo pide 6 series independientes",
+      "status": "EXPERIMENT_PENDING_MEASUREMENT",
+      "why_not_adopted": "sin economía medida, ampliar el pack es coste sin evidencia"
+    },
+    {
+      "claim": "El modelo decide apalancamiento y tamaño de posición",
+      "source_fact": "tool `execute({symbol, side, leverage, amountUsdt})` con leverage hasta 15",
+      "own_implementation": "n/a",
+      "matched_test": "n/a",
+      "divergence": "nuestro contrato prohíbe que el modelo fije tamaño, apalancamiento o límites",
+      "status": "REJECT_ANTI_PATTERN",
+      "why_not_adopted": "rompe la separación de autoridad que el runtime canónico exige"
+    },
+    {
+      "claim": "Guardas de drawdown de cuenta",
+      "source_fact": "umbrales definidos pero comprobaciones comentadas en el código",
+      "own_implementation": "RiskManager canónico (sin cambios)",
+      "matched_test": "tests/unit/risk/*",
+      "divergence": "el upstream las declara y no las aplica; el nuestro las aplica",
+      "status": "REJECT_ANTI_PATTERN",
+      "why_not_adopted": "un umbral documentado y no aplicado es peor que no tenerlo"
+    },
+    {
+      "claim": "Prompt que declara qué indicadores son visibles y sus valores",
+      "source_fact": "no existe: no hay prompt visual en este repositorio",
+      "own_implementation": "src/trading_bot/vision/lane.py (prompt versionado + sha256)",
+      "matched_test": "tests/unit/vision/test_integrity_and_latency.py",
+      "divergence": "sin contraparte externa; el patrón es enteramente nuestro",
+      "status": "NOT_COMPARABLE",
+      "why_not_adopted": "no hay nada que adoptar de este target"
+    }
+  ]
+}

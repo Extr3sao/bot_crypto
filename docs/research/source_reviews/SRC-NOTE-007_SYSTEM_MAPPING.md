@@ -1,0 +1,7 @@
+# SOURCE-TO-SYSTEM MAPPING — SRC-NOTE-007
+
+| CLAIM | SOURCE | PROJECT COMPONENT | CURRENT | GAP | ACTION |
+|---|---|---|---|---|---|
+| CLAIM-N007-01 | SRC-NOTE-007 §1-3 | GOVERNANCE / OBSERVABILITY / AGENT_INTELLIGENCE_PLANE | ARCH/RFC-level evidence | Runtime implementation not verified | KEEP |
+| CLAIM-N007-02 | SRC-NOTE-007 §4 | GOVERNANCE / OBSERVABILITY / AGENT_INTELLIGENCE_PLANE | ARCH/RFC-level evidence | Runtime implementation not verified | KEEP |
+| CLAIM-N007-03 | SRC-NOTE-007 §5 | GOVERNANCE / OBSERVABILITY / AGENT_INTELLIGENCE_PLANE | ARCH/RFC-level evidence | Runtime implementation not verified | KEEP |

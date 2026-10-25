@@ -1,0 +1,59 @@
+WP-EDGE-00b — CONSECUENCIA SOBRE LA EVIDENCIA CONGELADA DE WP-EDGE-00
+=====================================================================
+
+Por qué este fichero existe
+---------------------------
+WP-EDGE-00 certificó su smoke con un verificador que exige que NADA de código
+de runtime haya cambiado entre el run y HEAD (`RUN_COMMIT_IS_ANCESTOR`: "the
+commit the run executed on is an ancestor of HEAD and nothing since then
+touched anything but this WP's own evidence/verifier paths"). WP-EDGE-00b
+cambia código de runtime, así que ese chequeo DEBE pasar a FAIL: es la señal
+correcta de que la evidencia de WP-00 ya no describe HEAD. NO se debilitó el
+chequeo para que siguiera verde, y NO se reescribió el artefacto congelado:
+la verificación de WP-00 se ejecutó sobre una COPIA de la evidencia.
+
+Estado del artefacto congelado
+------------------------------
+reports/edge-recovery/INDEPENDENT_VERIFICATION.json
+    verdict = PASS · checks 12/12 · false_success = 0 · run commit = 6a3a090
+    `git status` sobre ese fichero: sin cambios (pertenece a su commit).
+
+Re-ejecución del verificador de WP-00 en HEAD = 1bf9f79 (copia temporal)
+------------------------------------------------------------------------
+comando:
+    .venv/Scripts/python.exe scripts/wp_edge_00_verify.py --base <copia>/edge-recovery
+
+salida (transcripción literal de la línea que falla):
+
+[FAIL] RUN_COMMIT_IS_ANCESTOR: run commit=1d2192b0aec8 ancestor of HEAD=1bf9f79483a7=True; files changed since run=44 (all evidence/verifier=False)
+-> FAIL checks=11/12 negative=8/8 false_success=0
+exit code = 1
+
+Lectura correcta de ese FAIL
+----------------------------
+- "ancestor of HEAD=True": el run de WP-00 se ejecutó en un commit que sigue
+  siendo ancestro; la cadena no se reescribió.
+- "files changed since run=44 (all evidence/verifier=False)": desde el run
+  cambiaron 44 ficheros, y no todos son evidencia/verificador de WP-00. Los 9
+  que no lo son son exactamente los de este WP:
+      src/trading_bot/autonomous/contracts.py
+      src/trading_bot/autonomous/decision.py
+      src/trading_bot/autonomous/runtime.py
+      tests/unit/autonomous/test_contracts.py
+      tests/unit/autonomous/test_risk_observability.py
+      tests/unit/autonomous/test_universe_exclusion_classification.py
+      scripts/wp_edge_00b_verify.py
+      reports/edge-recovery/WP-EDGE-00b_UNIVERSE_CLASSIFICATION.md
+      reports/edge-recovery/runs/WP-EDGE-00b-universe-fix/**
+  (los 35 restantes son la evidencia y el verificador de WP-00, ya permitidos).
+- Conclusión: el run `wp-edge-00-smoke-real` (6 decisiones, SOL como
+  NO_TRADE_DATA) sigue siendo evidencia válida de su commit `1d2192b`, y NO es
+  evidencia del estado actual. El smoke equivalente para HEAD es
+  `wp-edge-00b-universe-fix`, verificado por `scripts/wp_edge_00b_verify.py`
+  (PASS 13/13, negativos 7/7, false_success 0).
+
+Qué NO se hizo
+--------------
+- No se modificó `scripts/wp_edge_00_verify.py` ni sus expectativas.
+- No se borró ni regeneró el `INDEPENDENT_VERIFICATION.json` de WP-00.
+- No se declaró PASS donde el verificador dice FAIL.

@@ -1,0 +1,222 @@
+{
+  "schema_version": "1.0",
+  "runner": "runner/EXP-004A/WP-051-02F",
+  "rfc": "RFC-EXP004A-051-02F",
+  "mode": "once",
+  "run_id": "20261022T134802Z-821a8f05",
+  "run_dir": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05",
+  "state": "BLOCKED",
+  "started_at_utc": "2026-10-22T13:48:02.652Z",
+  "finished_at_utc": "2026-10-22T13:50:24.813Z",
+  "head": "f20dff9b71fd10a5f110ab6cae88e817c6f5d428",
+  "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "declaration": {
+    "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+    "declaration_id": "EXP-004A.datasets.phase2/v1",
+    "worktree_sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+    "git_blob_sha": "9421cc52a8a3366b3a1fa6998d547b0a002ed89b",
+    "commit": "a179ed0d74bfc5fd00383b2d575c9949ca6e1f95",
+    "effective_from_utc": "2026-10-21T16:00:00.000Z",
+    "hash_note": "worktree_sha256 hashes the bytes in this checkout; git_blob_sha is the Git object id at HEAD. They are different magnitudes and a CRLF checkout of an LF blob makes them differ without any drift in the committed content."
+  },
+  "generator": {
+    "path": "scripts/exp004a_capture.py",
+    "worktree_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+    "git_blob_sha": "052832c2252a719c63d0859628ada648c799c6ce",
+    "frozen_commit": "fc036d967923f09a6092cb0e5de7409afd07ebd7",
+    "frozen_blob_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8"
+  },
+  "capture_window": {
+    "start_utc": "2026-10-22T00:00:00.000Z",
+    "end_utc": "2027-01-20T00:00:00.000Z",
+    "state_at_run": "OPEN"
+  },
+  "capture_decision_at_utc": null,
+  "steps": [
+    {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/edge04_observer.py",
+      "exit_code": 0,
+      "duration_s": 85.744,
+      "stdout": "run          FWD-EDGE04-20261022T134500Z\nslot         2026-10-22T13:45Z  mode=MANUAL\noutcome      OBSERVED \u2014 3 new closed bar(s) stored\nduration     82.014 s\nnew bars     3 (expected 3, missing 0)\nmarket reqs  4\ndisk         WARNING / 3.1378 GiB free\npublication  skipped \u2014 the publication cadence has not elapsed\nhealth       DEGRADED\nalerts       0\nexit         0",
+      "stderr": "",
+      "log": "observation.log",
+      "step": "observation"
+    },
+    {
+      "step": "window",
+      "state": "OPEN",
+      "instant_utc": "2026-10-22T13:49:29.107Z",
+      "seconds_until_open": 0
+    },
+    {
+      "step": "freshness",
+      "per_series": [
+        {
+          "ok": true,
+          "reason": "the store's last bar opens 2026-10-22T12:00:00.000Z; the clock expects 2026-10-22T12:00:00.000Z",
+          "expected_last_closed_open_utc": "2026-10-22T12:00:00.000Z",
+          "behind_ms": 0
+        },
+        {
+          "ok": true,
+          "reason": "the store's last bar opens 2026-10-22T12:00:00.000Z; the clock expects 2026-10-22T12:00:00.000Z",
+          "expected_last_closed_open_utc": "2026-10-22T12:00:00.000Z",
+          "behind_ms": 0
+        },
+        {
+          "ok": true,
+          "reason": "the store's last bar opens 2026-10-22T12:00:00.000Z; the clock expects 2026-10-22T12:00:00.000Z",
+          "expected_last_closed_open_utc": "2026-10-22T12:00:00.000Z",
+          "behind_ms": 0
+        }
+      ]
+    },
+    {
+      "step": "eligibility",
+      "series_with_closed_in_window_bars": [
+        "1h:BTC",
+        "1h:ETH",
+        "1h:SOL"
+      ],
+      "per_series_closed_bars": {
+        "1h:BTC": 13,
+        "1h:ETH": 13,
+        "1h:SOL": 13
+      }
+    },
+    {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/exp004a_wp051_02e_preflight.py --out-dir C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\docs\\agentic\\exp004a\\wp051_02f\\evidence\\20261022T134802Z-821a8f05\\reused_preflight",
+      "exit_code": 0,
+      "duration_s": 12.398,
+      "stdout": "[preflight] PASS  DECLARATION_AUTHORIZES           EXP-004A.datasets.phase2/v1 binds; generator fc036d967923...\n[preflight] PASS  PHASE_ONE_BYTES_INTACT           phase 1 sha256 8946f871a97b7575... blob 43c9deea29a8... dirty=False\n[preflight] PASS  GENERATOR_IDENTITY               scripts/exp004a_capture.py at fc036d967923 sha256 af1ab7cc23980dad... would-run 052832c2252a... == committed 052832c2252a...\n[preflight] PASS  SEALED_02D_PACKAGE_INTACT        19 sealed artefacts, 0 drifted\n[preflight] PASS  STORE_READABLE                   3 series readable, 39 bar(s) open inside the window\n[preflight] PASS  STORE_HAS_NO_FUTURE_INGEST       no stored bar claims an ingest later than this instant\n[preflight] PASS  FORWARD_OBSERVER_FRESH           every series was written within its own lag bound\n[preflight] PASS  NO_DATASET_PUBLISHED             0 dataset(s) and 0 manifest(s) in data/exp004a\n[preflight] PASS  ST6_TAPE_REFUSED                 st6:tape exit 2: {\"ok\": false, \"error\": \"EXP-004A-ST6-TAPE declares timeframe '4h slot, 3 rounds of 15s', which is not a bar series; a slice rule for it is not defined by the de\n[preflight] PASS  WINDOW_CANNOT_BE_EXTENDED        period beyond the window exit 2\n[preflight] WINDOW_OPEN - 10 controls - 0 failed",
+      "stderr": "",
+      "log": "preflight.log",
+      "preflight_status": "WINDOW_OPEN",
+      "controls": 10,
+      "failed_controls": [],
+      "out_dir": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/reused_preflight"
+    },
+    {
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/exp004a_wp051_02f_verify.py --run-dir C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\docs\\agentic\\exp004a\\wp051_02f\\evidence\\20261022T134802Z-821a8f05 --report CLAIM.json --out C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\docs\\agentic\\exp004a\\wp051_02f\\evidence\\20261022T134802Z-821a8f05\\INDEPENDENT_VERIFICATION.json",
+      "exit_code": 2,
+      "duration_s": 43.068,
+      "stdout": "[verify] PASS  RUN_REPORT_PRESENT               CLAIM.json parses and claims state 'BLOCKED_INTEGRITY'\n[verify] PASS  PHASE2_DECLARATION_DIGEST        config/preregistrations/EXP-004A.datasets.phase2.json sha256 eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e\n[verify] PASS  PHASE1_DIGEST_MATCHES_DECLARATION the successor names phase 1 as 8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211; the anchor is 8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211\n[verify] PASS  PHASE1_BLOB                      HEAD:config/preregistrations/EXP-004A.datasets.json is 43c9deea29a8e4af1c0333bcc0b58131620ec3e7; the anchor is 43c9deea29a8e4af1c0333bcc0b58131620ec3e7\n[verify] PASS  GENERATOR_BLOB                   scripts/exp004a_capture.py at fc036d967923f09a6092cb0e5de7409afd07ebd7 hashes af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8\n[verify] PASS  GENERATOR_WORKTREE_UNCHANGED     the generator in the worktree is the committed generator\n[verify] PASS  NO_FALSE_SUCCESS                 the report claims BLOCKED_INTEGRITY\n[verify] BLOCKED DECISION_INSTANT_PRESENT         the report records no capture decision instant, so no temporal claim can be checked\n[verify] PASS  GATE_C_013                       C_013 is TIME_PROOF_WEAK\n[verify] PASS  GATE_C_016                       C_016 is UNREACHABLE_UNDER_DECLARED_COST_MODEL\n[verify] PASS  GATE_PAPER_VALIDATION            PAPER_VALIDATION is NOT_PASS\n[verify] PASS  GATE_CERTIFICATION               CERTIFICATION is BLOCKED\n[verify] PASS  GATE_PROMOTION                   PROMOTION is NO_PROMOTION\n[verify] PASS  NO_FORBIDDEN_IMPORT              the verifier imports neither trading_bot nor the runner\n[verify] FAIL  SEALED_02E_STILL_VERIFIES        the sealed 02E package returned exit 2 (FAIL)\n[verify] FAIL - 15 checks",
+      "stderr": "",
+      "log": "verify_02f.log",
+      "verifier_status": "FAIL",
+      "verifier_report": "CLAIM.json",
+      "out": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/INDEPENDENT_VERIFICATION.json",
+      "step": "independent_verification",
+      "claim": {
+        "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/CLAIM.json",
+        "sha256": "6a19d6c5f573c3725ff43acab35000811fdfbf0f9470bcb530870dadf684fcc6"
+      }
+    }
+  ],
+  "store": [
+    {
+      "spec": "1h:BTC",
+      "asset": "BTC",
+      "interval": "1h",
+      "path": "data/forward/edge03/1h/BTC.jsonl",
+      "readable": true,
+      "rows": 5653,
+      "last_open_utc": "2026-10-22T12:00:00.000Z",
+      "last_fetched_utc": "2026-10-22T13:25:58.067Z",
+      "bars_in_window": 13,
+      "closed_bars_in_window": 13,
+      "last_closed_open_utc": "2026-10-22T12:00:00.000Z",
+      "error": null
+    },
+    {
+      "spec": "1h:ETH",
+      "asset": "ETH",
+      "interval": "1h",
+      "path": "data/forward/edge03/1h/ETH.jsonl",
+      "readable": true,
+      "rows": 5653,
+      "last_open_utc": "2026-10-22T12:00:00.000Z",
+      "last_fetched_utc": "2026-10-22T13:25:58.067Z",
+      "bars_in_window": 13,
+      "closed_bars_in_window": 13,
+      "last_closed_open_utc": "2026-10-22T12:00:00.000Z",
+      "error": null
+    },
+    {
+      "spec": "1h:SOL",
+      "asset": "SOL",
+      "interval": "1h",
+      "path": "data/forward/edge03/1h/SOL.jsonl",
+      "readable": true,
+      "rows": 5653,
+      "last_open_utc": "2026-10-22T12:00:00.000Z",
+      "last_fetched_utc": "2026-10-22T13:25:58.067Z",
+      "bars_in_window": 13,
+      "closed_bars_in_window": 13,
+      "last_closed_open_utc": "2026-10-22T12:00:00.000Z",
+      "error": null
+    }
+  ],
+  "captures": [],
+  "temporal_guards": [],
+  "datasets": [
+    {
+      "dataset_id": "EXP-004A-1H-BTC",
+      "slice": "1h:BTC",
+      "dataset_path": "data/exp004a/EXP-004A-1H-BTC.jsonl",
+      "exists": false,
+      "bytes": 0,
+      "sha256": null,
+      "manifest_exists": false,
+      "manifest_sha256": null
+    },
+    {
+      "dataset_id": "EXP-004A-1H-ETH",
+      "slice": "1h:ETH",
+      "dataset_path": "data/exp004a/EXP-004A-1H-ETH.jsonl",
+      "exists": false,
+      "bytes": 0,
+      "sha256": null,
+      "manifest_exists": false,
+      "manifest_sha256": null
+    },
+    {
+      "dataset_id": "EXP-004A-1H-SOL",
+      "slice": "1h:SOL",
+      "dataset_path": "data/exp004a/EXP-004A-1H-SOL.jsonl",
+      "exists": false,
+      "bytes": 0,
+      "sha256": null,
+      "manifest_exists": false,
+      "manifest_sha256": null
+    }
+  ],
+  "deferred_slices": [
+    "EXP-004A-ST6-TAPE: timeframe '4h slot, 3 rounds of 15s' is not a bar series"
+  ],
+  "notes": [
+    "the provenance controls did not pass: []; the freeze or the contract does not bind, and nothing is captured",
+    "the independent verifier refused the claim (exit 2); its checks are in INDEPENDENT_VERIFICATION.json"
+  ],
+  "gates": {
+    "C_004": "PASS",
+    "C_013": "TIME_PROOF_WEAK",
+    "C_015": "PASS (provenance of the declaration chain); unchanged by this runner",
+    "C_016": "UNREACHABLE_UNDER_DECLARED_COST_MODEL",
+    "PAPER_VALIDATION": "NOT_PASS",
+    "CERTIFICATION": "BLOCKED",
+    "PROMOTION": "NO_PROMOTION"
+  },
+  "economic_executions": 0,
+  "not_a_certification": "this runner moves bytes and names reasons. It does not admit a day, does not recompute cost, does not validate a strategy and does not promote anything.",
+  "independent_verification": "FAIL",
+  "verified_claim": {
+    "path": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/CLAIM.json",
+    "sha256": "6a19d6c5f573c3725ff43acab35000811fdfbf0f9470bcb530870dadf684fcc6",
+    "claimed_state": "BLOCKED_INTEGRITY",
+    "verifier_status": "FAIL",
+    "verifier_exit_code": 2,
+    "verifier_report": "docs/agentic/exp004a/wp051_02f/evidence/20261022T134802Z-821a8f05/INDEPENDENT_VERIFICATION.json"
+  }
+}

@@ -1,0 +1,23 @@
+[003n-verify] PASS V1_dataset_provenance: 3 files, drifted=[]
+[003n-verify] PASS V2_config_frozen: 3 config digests
+[003n-verify] PASS V3_design_binding: design sha256 a0776fa3fbe6d2e1…
+[003n-verify] PASS V4_holdout_closed: 0 rows at or after 2026-08-06T00:00:00Z; partitions inside=True
+[003n-verify] PASS V5_forward_returns_recomputed: 6692 values compared from raw bars, 0 mismatched
+[003n-verify] PASS V6_means_consistent: 72 symbol cells, 0 inconsistencies
+[003n-verify] PASS V7_multiple_testing: 1 surviving cells; builder=1
+[003n-verify] PASS V8_cost_subtracted: costs={'BTCUSDT': 24.786, 'ETHUSDT': 24.786, 'SOLUSDT': 27.31}, 0 defects
+[003n-verify] PASS V9_closed_trade_view: 24 cells priced; unpriced=0; censored=0
+[003n-verify] PASS V10_no_promotion: paper/live authorisation untouched
+[003n-verify] PASS V11_verdict_from_numbers: 0 advanced candidates
+[003n-verify] PASS V12_runtime_paper: mode=paper live_enabled=False
+[003n-verify] DETECTED tampered_forward_return: breakout/1h/BTCUSDT shifted by +50 bps
+[003n-verify] DETECTED holdout_injection: a row at 2026-08-10T00:00:00Z is outside every allowed partition
+[003n-verify] DETECTED cost_omitted: 6 cells would pass a zero-cost gate and fail the real one: ['momentum/1h', 'breakout/1h', 'mean_reversion/5m']
+[003n-verify] DETECTED false_success: a negative-net cell relabelled ADVANCE is contradicted by its own number
+[003n-verify] DETECTED multiple_testing_inoperative: q=1.0 keeps 84 vs 1 at q=0.1
+[003n-verify] DETECTED dataset_byte_append: an appended byte changes the digest the design froze
+[003n-verify] DETECTED sample_gate_inflated: the smallest IS cell has 0 signals; the gate is 20
+[003n-verify] DETECTED verdict_contradicts_gates: 0 cells claim a state their gates deny
+[003n-verify] DETECTED cost_below_floor: min round trip 24.7864 bps vs floor 20.0 bps
+[003n-verify] DETECTED closed_trade_recomputed: 35 closed trades recomputed here, 0 mismatched; 35 change when the fees are removed: []
+[003n-verify] 12/12 checks, 10/10 controls, verdict=PASS

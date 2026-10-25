@@ -1,0 +1,20 @@
+{
+  "active_goal_7_of_7": {
+    "blocked_by": "blocks.weekend_trading=false, plus the fact that nothing enforces it",
+    "possible_under_the_policy_as_written": false,
+    "requires": "an explicit risk/governance decision (ADR) that either changes the flag or states that the lane may trade the weekend despite it; this package does neither"
+  },
+  "declared": {
+    "blocks.weekend_trading": false
+  },
+  "lane_behaviour": "refuses entries on Saturday and Sunday, recorded as WEEKEND_VETO_POLICY",
+  "readers_in_the_runtime": [
+    "scripts/edge15_paper_lane.py",
+    "scripts/edge16_artifacts.py",
+    "scripts/edge16_paper_lane.py",
+    "scripts/edge16_reports.py"
+  ],
+  "reading": "the flag is declared and unread: no runtime component consults it, so a 24/7 goal is neither enabled nor blocked by code \u2014 it is a decision nobody has taken",
+  "schema_version": "EDGE16_WEEKEND_POLICY_V1",
+  "weekend_refusals_recorded": 52
+}

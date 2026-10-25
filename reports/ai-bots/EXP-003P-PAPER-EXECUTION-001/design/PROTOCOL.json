@@ -1,0 +1,378 @@
+{
+  "acceptance_criteria": [
+    {
+      "acc": "runtime authority map + reachable PaperBroker demonstration",
+      "req": "REQ-003P-01"
+    },
+    {
+      "acc": "every event carries provenance, adapter, clock, correlation",
+      "req": "REQ-003P-02"
+    },
+    {
+      "acc": "data_time <= decision_time <= event_time on every event",
+      "req": "REQ-003P-03"
+    },
+    {
+      "acc": "no submit without risk approval and policy identity",
+      "req": "REQ-003P-04"
+    },
+    {
+      "acc": "only legal transitions; ACK != FILL; terminal states hold",
+      "req": "REQ-003P-05"
+    },
+    {
+      "acc": "one fill key books exactly once across replay and duplicates",
+      "req": "REQ-003P-06"
+    },
+    {
+      "acc": "quantities, cash, positions, fees and PnL rebuilt from events",
+      "req": "REQ-003P-07"
+    },
+    {
+      "acc": "reconciliation PASS/FAIL/INCOMPLETE, never a simulated source",
+      "req": "REQ-003P-08"
+    },
+    {
+      "acc": "timeouts and unknowns produce no duplicate order or invented fill",
+      "req": "REQ-003P-09"
+    },
+    {
+      "acc": "trace, metrics, per-provenance counts and a verifiable manifest",
+      "req": "REQ-003P-10"
+    },
+    {
+      "acc": "each control fails with its declared class, not any error",
+      "req": "REQ-003P-11"
+    },
+    {
+      "acc": "separate verification program; organisational independence declared",
+      "req": "REQ-003P-12"
+    },
+    {
+      "acc": "LIVE unreachable, no secrets, config hashes preserved",
+      "req": "REQ-003P-13"
+    },
+    {
+      "acc": "two offline runs produce the same canonical digest",
+      "req": "REQ-003P-14"
+    }
+  ],
+  "config_digest": "sha256:4f93519d8fc6b4040e82df6f6c495671ae5f510fe47ee246937a4400baa071fa",
+  "controls": [
+    {
+      "control_id": "NEG-01",
+      "defect": "acknowledgement without a fill",
+      "expected_class": "ACK_NOT_FILL"
+    },
+    {
+      "control_id": "NEG-02",
+      "defect": "partial fill that never completes",
+      "expected_class": "PARTIAL_ACCOUNTING"
+    },
+    {
+      "control_id": "NEG-03",
+      "defect": "cancel after a partial fill",
+      "expected_class": "PARTIAL_PRESERVED"
+    },
+    {
+      "control_id": "NEG-04",
+      "defect": "venue rejection of the order",
+      "expected_class": "ZERO_FILL"
+    },
+    {
+      "control_id": "NEG-05",
+      "defect": "duplicate delivery of one fill",
+      "expected_class": "DUPLICATE_FILL"
+    },
+    {
+      "control_id": "NEG-06",
+      "defect": "retry after an acknowledgement timeout",
+      "expected_class": "UNKNOWN_REQUIRES_RECONCILIATION"
+    },
+    {
+      "control_id": "NEG-07",
+      "defect": "chronologically out-of-order event",
+      "expected_class": "OUT_OF_ORDER_EVENT"
+    },
+    {
+      "control_id": "NEG-08",
+      "defect": "fill observed before its acknowledgement",
+      "expected_class": "FILL_WITHOUT_ACK"
+    },
+    {
+      "control_id": "NEG-09",
+      "defect": "fill quantity altered in the persisted trace",
+      "expected_class": "DATA_INTEGRITY_FAIL"
+    },
+    {
+      "control_id": "NEG-10",
+      "defect": "provenance relabelled after the fact",
+      "expected_class": "PROVENANCE_MISMATCH"
+    },
+    {
+      "control_id": "NEG-11",
+      "defect": "slippage requested without a point-in-time quote",
+      "expected_class": "NOT_AVAILABLE"
+    },
+    {
+      "control_id": "NEG-12",
+      "defect": "primary source unavailable at reconciliation",
+      "expected_class": "INCOMPLETE"
+    },
+    {
+      "control_id": "NEG-13",
+      "defect": "decision taken on data from the future",
+      "expected_class": "CAUSALITY_VIOLATION"
+    },
+    {
+      "control_id": "NEG-14",
+      "defect": "adapter pointed at a live environment",
+      "expected_class": "LIVE_MODE_FORBIDDEN"
+    },
+    {
+      "control_id": "NEG-15",
+      "defect": "submit without a risk-approved intent",
+      "expected_class": "RISK_GATE_VIOLATION"
+    },
+    {
+      "control_id": "NEG-16",
+      "defect": "ledger missing a fill the venue reported",
+      "expected_class": "RECONCILIATION_FAIL"
+    },
+    {
+      "control_id": "NEG-17",
+      "defect": "NO_TRADE decision carried into an order",
+      "expected_class": "ZERO_ORDER_INTENT"
+    }
+  ],
+  "dataset": {
+    "directory": "reports/ai-bots/EXP-003K-CANDIDATE-001/dataset",
+    "files": {
+      "BTCUSDT.1m.jsonl.gz": "7fbdfefa12785bb025d525994466b5a64d5c0668d6ff997f5f7566bc42d13814",
+      "ETHUSDT.1m.jsonl.gz": "cf04dc37617a0998016fcd7edfb9b2a77c9aa5fa656bbb54422805a5964650a6",
+      "SOLUSDT.1m.jsonl.gz": "33342aacc2ac75f897e2c9df2602a41d340c96ed08cd683dbd3871c3c7c60c32"
+    }
+  },
+  "declared_limits": [
+    "the offline venue is a test double, not a paper broker; a fill from it proves code semantics and never venue acceptance",
+    "the broker-observed events stamp the decision instant with the booking instant of the fill; the payload says so instead of inventing a decision clock",
+    "the recorded risk gate on broker-observed events is the broker's notional guard, not a copy of the RiskManager transcript",
+    "PAPER_VALIDATION stays BLOCKED until an authorised paper provider exists",
+    "organisational independence is false: the same agent wrote producer, verifier and controls"
+  ],
+  "dependency": {
+    "experiment": "EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001",
+    "inherited": {
+      "economic_edge": "NOT_EVALUATED",
+      "full_independent_certification": "INCOMPLETE_REAL_DATA_COVERAGE",
+      "organizational_independence": false,
+      "technical_signal_parity": "PASS"
+    },
+    "status": "PASS_PARTIAL_INCOMPLETE_REAL_DATA"
+  },
+  "experiment": "EXP-003P-PAPER-EXECUTION-001",
+  "frozen_at_utc": "2026-10-21T00:00:00Z",
+  "live": {
+    "enabled": false,
+    "flags_checked": [
+      "runtime.mode",
+      "features.enable_paper_trading"
+    ],
+    "orders_allowed": 0
+  },
+  "mode": "OFFLINE_SIMULATED",
+  "reproduction": {
+    "clean_checkout": "python scripts/exp_003p_rehearsal.py --checkout-check",
+    "commands": [
+      "python scripts/exp_003p_pipeline.py baseline",
+      "python scripts/exp_003p_pipeline.py preregister",
+      "python scripts/exp_003p_pipeline.py rehearse --runs 2",
+      "python scripts/exp_003p_pipeline.py controls",
+      "python scripts/exp_003p_pipeline.py verify",
+      "python scripts/exp_003p_pipeline.py tests",
+      "python scripts/exp_003p_pipeline.py report",
+      "python scripts/exp_003p_pipeline.py seal"
+    ]
+  },
+  "run_id": "EXP-003P-PAPER-EXECUTION-001",
+  "runtime": {
+    "entrypoint": "scripts/exp_003p_rehearsal.py",
+    "execution_boundary": "trading_bot.paper.broker.PaperBroker",
+    "instrumentation": "trading_bot.paper.lifecycle.recorder.PaperBrokerRecorder",
+    "lanes": [
+      "trading_bot.vision.lane.VisionLane"
+    ],
+    "live": false,
+    "provenance": "OFFLINE_SIMULATED",
+    "provider_environment": "OFFLINE",
+    "risk": "trading_bot.risk.manager.RiskManager",
+    "signal_source": "strategy_experimental",
+    "strategy_id": "ema_crossover"
+  },
+  "scenario_fee_bps": 4.0,
+  "scenario_reference_price": 100.0,
+  "scenarios": [
+    {
+      "deliver_fills_before_ack": false,
+      "duplicate_last": false,
+      "expected_terminal_state": "FILLED",
+      "fill_delays_ms": [
+        120
+      ],
+      "mode": "FULL_FILL",
+      "quantity": 1.0,
+      "scenario_id": "S01_FULL_FILL",
+      "side": "buy",
+      "tranches": [
+        1.0
+      ]
+    },
+    {
+      "deliver_fills_before_ack": false,
+      "duplicate_last": false,
+      "expected_terminal_state": "FILLED",
+      "fill_delays_ms": [
+        90,
+        240
+      ],
+      "mode": "PARTIAL_THEN_FILL",
+      "quantity": 2.0,
+      "scenario_id": "S02_PARTIAL_THEN_FILL",
+      "side": "buy",
+      "tranches": [
+        0.4,
+        0.6
+      ]
+    },
+    {
+      "deliver_fills_before_ack": false,
+      "duplicate_last": false,
+      "expected_terminal_state": "CANCELED",
+      "fill_delays_ms": [
+        150
+      ],
+      "mode": "PARTIAL_THEN_CANCEL",
+      "quantity": 2.0,
+      "scenario_id": "S03_PARTIAL_THEN_CANCEL",
+      "side": "sell",
+      "tranches": [
+        0.5
+      ]
+    },
+    {
+      "deliver_fills_before_ack": false,
+      "duplicate_last": true,
+      "expected_terminal_state": "FILLED",
+      "fill_delays_ms": [
+        75
+      ],
+      "mode": "FULL_FILL",
+      "quantity": 1.5,
+      "scenario_id": "S04_DUPLICATE_DELIVERY",
+      "side": "buy",
+      "tranches": [
+        1.0
+      ]
+    },
+    {
+      "deliver_fills_before_ack": true,
+      "duplicate_last": false,
+      "expected_terminal_state": "FILLED",
+      "fill_delays_ms": [
+        40,
+        80
+      ],
+      "mode": "PARTIAL_THEN_FILL",
+      "quantity": 1.0,
+      "scenario_id": "S05_OUT_OF_ORDER",
+      "side": "buy",
+      "tranches": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "deliver_fills_before_ack": false,
+      "duplicate_last": false,
+      "expected_terminal_state": "UNKNOWN",
+      "fill_delays_ms": [
+        100
+      ],
+      "mode": "TIMEOUT_UNKNOWN",
+      "quantity": 1.0,
+      "scenario_id": "S06_TIMEOUT_UNKNOWN",
+      "side": "buy",
+      "tranches": [
+        1.0
+      ]
+    },
+    {
+      "deliver_fills_before_ack": false,
+      "duplicate_last": false,
+      "expected_terminal_state": "REJECTED",
+      "fill_delays_ms": [
+        100
+      ],
+      "mode": "REJECT_AT_SUBMIT",
+      "quantity": 1.0,
+      "scenario_id": "S07_REJECT",
+      "side": "buy",
+      "tranches": [
+        1.0
+      ]
+    },
+    {
+      "deliver_fills_before_ack": false,
+      "duplicate_last": false,
+      "expected_terminal_state": "ACKNOWLEDGED",
+      "fill_delays_ms": [
+        100
+      ],
+      "mode": "ACK_WITHOUT_FILL",
+      "quantity": 1.0,
+      "scenario_id": "S08_ACK_WITHOUT_FILL",
+      "side": "buy",
+      "tranches": [
+        1.0
+      ]
+    }
+  ],
+  "schema_version": "AI_BOTS_003P_PROTOCOL_V1",
+  "success_rules": {
+    "FINAL_STATUS": "PARTIAL unless PAPER_VALIDATION is PASS",
+    "OFFLINE_RUNTIME_VALIDATION": {
+      "on_failure": "FAIL",
+      "requires": [
+        "two rehearsals produce the same trace digest",
+        "every persisted event carries provenance, adapter and correlation",
+        "no illegal transition and no unexplained anomaly in the runtime phase",
+        "reconciliation against the broker book is PASS",
+        "scenario reconciliation against the venue snapshot is PASS",
+        "live_orders == 0"
+      ]
+    },
+    "PAPER_VALIDATION": {
+      "note": "No paper venue is configured in this workspace. The phase therefore reports BLOCKED and does not relabel an offline simulation as observed paper.",
+      "on_absence": "BLOCKED_NOT_CONFIGURED",
+      "requires": [
+        "an authorised paper provider, endpoint and account already configured",
+        "at least one fill observed from that provider in the evaluated cycle"
+      ]
+    }
+  },
+  "window": {
+    "decision_every_bars": 4,
+    "end_utc": "2026-08-06T00:00:00Z",
+    "equity_usdt": 10000.0,
+    "holdout_touched": false,
+    "start_utc": "2026-07-26T00:00:00Z",
+    "subbar_entries": false,
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "timeframe": "1h",
+    "window_bars": 120
+  }
+}

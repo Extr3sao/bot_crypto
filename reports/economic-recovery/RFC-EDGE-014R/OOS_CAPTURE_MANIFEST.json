@@ -1,0 +1,33 @@
+{
+  "capture_from_ms": 1792166400000,
+  "capture_from_reading": "one bar after the boundary: the bar starting at the boundary was already forming while the exhausted window was in use, so it is excluded",
+  "captured_at_utc": "2026-10-16T20:01:44Z",
+  "order_check": "preregistration_frozen_at_utc < captured_at_utc: False",
+  "preregistration": {
+    "frozen_at_utc": "2026-10-16T20:01:44Z",
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-014R\\OOS_PREREGISTRATION.json",
+    "sha256": "ea332d4ee11a4b42dd2c586eb51fde59f177dba18280a1cea63cdae3bc2d79bc"
+  },
+  "prospective_boundary_ms": 1792162800000,
+  "reading": "this is the first slice of a prospective holdout and it is small by construction: it starts at the instant the exhausted window ends. It cannot accept or reject anything yet, and no routine in this project selects on it",
+  "schema_version": "EDGE14R_OOS_CAPTURE_V1",
+  "scoring_run": false,
+  "selection_has_read_this_slice": false,
+  "slice_bytes": 1142,
+  "slice_path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-014R\\scratch\\OOS_SLICE_1H.jsonl",
+  "slice_sha256": "d92ac8cd8e86641c5b39e15ef7ffbf793b8f5381e37d31f35d65b19ebc1d6132",
+  "state": "OOS_ACCRUING",
+  "symbols": {
+    "BTC/USDT": {
+      "bars": 4,
+      "first_ms": 1792166400000,
+      "last_ms": 1792177200000
+    },
+    "ETH/USDT": {
+      "bars": 4,
+      "first_ms": 1792166400000,
+      "last_ms": 1792177200000
+    }
+  },
+  "work_package": "WP-EDGE-14R/P3"
+}

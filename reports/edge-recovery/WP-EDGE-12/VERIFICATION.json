@@ -1,0 +1,167 @@
+{
+  "campaign": "RFC-EDGE-012",
+  "checks": [
+    {
+      "detail": "22 deliverable(s) and 6 evidence file(s); missing deliverables [], missing evidence []",
+      "name": "the_deliverable_set_is_complete",
+      "passed": true
+    },
+    {
+      "detail": "243 answered + 26 lost = 269 expected",
+      "name": "the_three_levels_reconcile",
+      "passed": true
+    },
+    {
+      "detail": "causes sum to 26, total_lost says 26, instants listed 26",
+      "name": "the_levels_account_for_every_instant",
+      "passed": true
+    },
+    {
+      "detail": "25 attributed by the host's record, 1 left unattributable and reported as such",
+      "name": "every_unanswered_instant_has_a_cause_it_can_name",
+      "passed": true
+    },
+    {
+      "detail": "0 sleep attribution(s) against 0 recorded sleep window(s)",
+      "name": "no_sleep_cause_without_a_sleep_record",
+      "passed": true
+    },
+    {
+      "detail": "coverage floor 0.9, forward requirement 60 days",
+      "name": "the_coverage_floor_and_the_forward_requirement_are_intact",
+      "passed": true
+    },
+    {
+      "detail": "1 admissible day(s), 228 backfilled day(s), overlap none, mis-classed rows none",
+      "name": "backfilled_days_are_not_counted_as_forward",
+      "passed": true
+    },
+    {
+      "detail": "200 row(s) and 200 unique key(s) in the live slot ledger",
+      "name": "the_slot_ledger_is_a_set",
+      "passed": true
+    },
+    {
+      "detail": "9 step(s); a verdict its own observation contradicts: none",
+      "name": "every_rehearsal_step_won_its_verdict",
+      "passed": true
+    },
+    {
+      "detail": "rehearsal read C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03, wrote C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge12\\rehearsal; the live store is C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge03",
+      "name": "the_rehearsal_did_not_touch_the_live_store",
+      "passed": true
+    },
+    {
+      "detail": "verdict NOT_PRESENT_IN_TREE, 0 non-self hit(s), 9 of this package's own file(s) excluded",
+      "name": "the_dependency_scan_excluded_its_own_text",
+      "passed": true
+    },
+    {
+      "detail": "9 check(s), failing none, verdict DEPENDENCY_GATE_PASS",
+      "name": "the_gate_carried_no_failing_check",
+      "passed": true
+    },
+    {
+      "detail": "72837412 B ceiling against 268435456 B budget",
+      "name": "the_storage_ceiling_is_inside_its_declared_budget",
+      "passed": true
+    },
+    {
+      "detail": "45 refused tick(s), market requests at a refusal: [0]",
+      "name": "the_refusals_made_no_market_request",
+      "passed": true
+    },
+    {
+      "detail": "4 off-phase launch(es), limitation stated: True",
+      "name": "off_phase_launches_are_not_attributed",
+      "passed": true
+    },
+    {
+      "detail": "applied=False, probe leftovers none, 13 preflight check(s)",
+      "name": "nothing_was_applied_to_the_live_task",
+      "passed": true
+    },
+    {
+      "detail": "13 check(s), blocking none, verdict PREFLIGHT_PASS",
+      "name": "the_preflight_verdict_follows_from_its_checks",
+      "passed": true
+    },
+    {
+      "detail": "8 probe(s); unearned verdicts: none",
+      "name": "every_mechanism_verdict_was_earned",
+      "passed": true
+    },
+    {
+      "detail": "9 required, 9 row(s), missing none, rows without named evidence none",
+      "name": "the_matrix_covers_every_property",
+      "passed": true
+    },
+    {
+      "detail": "255 row(s) re-read, 1 silence(s) re-derived, worst 23418.9 s, maximum tick 349.035 s",
+      "name": "the_live_reading_matches_the_log_it_was_taken_from",
+      "passed": true
+    },
+    {
+      "detail": "offending records: none",
+      "name": "no_order_and_no_promotion_anywhere",
+      "passed": true
+    },
+    {
+      "detail": "readiness claims found: none",
+      "name": "no_readiness_claim_anywhere",
+      "passed": true
+    },
+    {
+      "detail": "6 evidence file(s) digested, empty none",
+      "name": "the_snapshots_match_their_digests",
+      "passed": true
+    },
+    {
+      "detail": "closure state 'FORWARD_CONTINUITY_BLOCKED'; allowed ['FORWARD_CONTINUITY_BLOCKED', 'IMPLEMENTED_NOT_RUNTIME_VALIDATED', 'OPERATIONAL_CONTINUITY_VALIDATED', 'VERIFICATION_FAILED']",
+      "name": "the_closure_state_is_one_the_rfc_allows",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "generated_at_utc": "2026-10-16T06:37:49Z",
+  "hypothetical": true,
+  "independence": "this verifier imports nothing from trading_bot.research.edge12 and re-derives every figure it checks from the published JSON and the log snapshots",
+  "order_sent": false,
+  "promotion": "NONE",
+  "schema_version": "EDGE12_VERIFICATION_V1",
+  "self_test": {
+    "applied": 24,
+    "detected": 24,
+    "sabotages": {
+      "blank_a_snapshot": true,
+      "call_a_backfilled_day_admissible": true,
+      "call_a_mechanism_viable_without_a_read_back": true,
+      "call_the_idempotency_step_passed_with_a_second_request": true,
+      "claim_an_order_was_sent": true,
+      "claim_one_more_trigger": true,
+      "declare_an_invented_closure_state": true,
+      "delete_a_deliverable": true,
+      "drop_a_lost_instant_from_the_causes": true,
+      "drop_a_property_from_the_matrix": true,
+      "duplicate_a_slot_seal": true,
+      "hide_a_failing_gate_check": true,
+      "invent_a_sleep_that_nobody_recorded": true,
+      "leave_a_probe_task_behind": true,
+      "lower_the_coverage_floor": true,
+      "move_the_live_reading_by_one_tick": true,
+      "pass_the_preflight_with_a_blocking_failure": true,
+      "publish_a_ceiling_above_the_budget": true,
+      "publish_a_readiness_claim": true,
+      "refuse_a_tick_after_a_market_request": true,
+      "rehearse_against_the_live_store_itself": true,
+      "remove_the_unattributable_bucket": true,
+      "satisfy_the_dependency_with_the_scans_own_text": true,
+      "stop_explaining_the_off_phase_launches": true
+    },
+    "undetected": 0,
+    "undetected_names": [],
+    "verdict": "SELF_TEST_PASS"
+  },
+  "verdict": "VERIFY_PASS",
+  "work_package": "WP-EDGE-12F"
+}

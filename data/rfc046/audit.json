@@ -1,0 +1,631 @@
+{
+  "artifact": "RFC-046_AUDIT",
+  "rfc": "RFC-046",
+  "status": "PROPOSED",
+  "intentionally_excluded": [
+    "current_head",
+    "timestamps"
+  ],
+  "reason": "a tracked artefact that embeds HEAD or an author-typed timestamp churns on every commit (TD-4)",
+  "cost_baseline": {
+    "rederived_from": "src/trading_bot/research/microstructure/cost_model_v3.py",
+    "admission_scenario_id": "BINANCE_SPOT_STANDARD_TAKER",
+    "venue": "Binance",
+    "product": "Spot",
+    "size_usd": 1000.0,
+    "liquidity_regime": "normal",
+    "horizon_minutes": 25.0,
+    "entry_order_type": "market",
+    "exit_order_type": "market",
+    "round_trip_bps": 23.7906,
+    "knowledge_class_overall": "ESTIMATED",
+    "components": [
+      {
+        "name": "exchange_fee_entry",
+        "value_bps": 10.0,
+        "knowledge": "KNOWN"
+      },
+      {
+        "name": "exchange_fee_exit",
+        "value_bps": 10.0,
+        "knowledge": "KNOWN"
+      },
+      {
+        "name": "spread",
+        "value_bps": 1.0,
+        "knowledge": "ESTIMATED"
+      },
+      {
+        "name": "slippage",
+        "value_bps": 2.6325,
+        "knowledge": "ESTIMATED"
+      },
+      {
+        "name": "market_impact",
+        "value_bps": 0.1581,
+        "knowledge": "ESTIMATED"
+      }
+    ],
+    "known_bps": 20.0,
+    "estimated_bps": 3.7906,
+    "assumed_bps": 0,
+    "known_share": 0.8407,
+    "stress_multiple": 1.5,
+    "required_gross_edge_stressed_bps": 35.6859,
+    "documented_reference_bps": 23.791,
+    "arithmetic_check": true
+  },
+  "turnover_drag": [
+    {
+      "cadence": "monthly",
+      "round_trips_per_year": 12,
+      "annual_drag_pct": 2.8549,
+      "annual_drag_stressed_pct": 4.2823
+    },
+    {
+      "cadence": "biweekly",
+      "round_trips_per_year": 26,
+      "annual_drag_pct": 6.1856,
+      "annual_drag_stressed_pct": 9.2783
+    },
+    {
+      "cadence": "weekly",
+      "round_trips_per_year": 52,
+      "annual_drag_pct": 12.3711,
+      "annual_drag_stressed_pct": 18.5567
+    },
+    {
+      "cadence": "twice weekly",
+      "round_trips_per_year": 104,
+      "annual_drag_pct": 24.7422,
+      "annual_drag_stressed_pct": 37.1133
+    },
+    {
+      "cadence": "daily",
+      "round_trips_per_year": 365,
+      "annual_drag_pct": 86.8357,
+      "annual_drag_stressed_pct": 130.2535
+    },
+    {
+      "cadence": "hourly",
+      "round_trips_per_year": 8760,
+      "annual_drag_pct": 2084.0566,
+      "annual_drag_stressed_pct": 3126.0848
+    }
+  ],
+  "governance": {
+    "collision": {
+      "method": "artefact presence under reports/ (on disk) + tracked documents declaring an rfc field + text references at HEAD, classified by number",
+      "occupancy_evidence_note": "every RFC-nnn final-report artefact lives in the gitignored reports/ tree, so the only versioned occupancy evidence is the tracked documents that declare the number (TD-5 in the RFC)",
+      "registry_exists": false,
+      "registry_proposed_path": "docs/roadmap/RFC_REGISTRY.json",
+      "occupied": {
+        "000": {
+          "artefacts": [
+            "reports/autonomous-paper/RFC000-AUDIT-01/",
+            "reports/autonomous-paper/RFC000-VERIFY-01/",
+            "reports/rfc000/"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "010": {
+          "artefacts": [
+            "reports/autonomous-paper/RFC010-G0RECHECK/",
+            "reports/rfc010/",
+            "reports/rfc010/runs/RFC010-BASELINE-DEV/",
+            "reports/rfc010/runs/RFC010-BASELINE-DEV-RERUN/",
+            "reports/rfc010/runs/RFC010-RUN0/",
+            "reports/rfc010/runs/RFC010-T10/",
+            "reports/rfc010/runs/RFC010-T120/",
+            "reports/rfc010/runs/RFC010-T3/",
+            "reports/rfc010/runs/RFC010-T50/",
+            "reports/rfc010/runs/RFC010-TIMING/"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "020": {
+          "artefacts": [
+            "reports/data-integrity/RFC020_VERIFICATION.json",
+            "reports/data-integrity/RFC020_VERIFICATION.md",
+            "reports/rfc010/runs/RFC020-DEV/",
+            "reports/rfc010/runs/RFC020-DEV-B/",
+            "reports/rfc020/",
+            "reports/rfc020/RFC020-DEV-B_summary.json",
+            "reports/rfc020/RFC020-DEV_summary.json",
+            "reports/rfc020/RFC020-FUTURE-A_truncated/",
+            "reports/rfc020/RFC020-FUTURE-B_poison_10x/",
+            "reports/rfc020/RFC020-FUTURE-C_crash/",
+            "reports/rfc020/RFC020-FUTURE-D_rally/",
+            "reports/RFC020_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": [
+            "docs/runtime/data_authority_map.json",
+            "docs/runtime/data_authority_map.md"
+          ]
+        },
+        "021": {
+          "artefacts": [
+            "reports/rfc010/runs/RFC021-PIT-A/",
+            "reports/rfc010/runs/RFC021-PIT-B/",
+            "reports/rfc021/",
+            "reports/RFC021_EDGE001_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "023": {
+          "artefacts": [
+            "reports/generalization/RFC023_PLAN.json",
+            "reports/generalization/RFC023_PLAN.md",
+            "reports/generalization/RFC023_VERIFICATION.json",
+            "reports/generalization/RFC023_VERIFICATION.md",
+            "reports/RFC023_GENERALIZATION_FINAL_REPORT.json",
+            "reports/RFC023_GENERALIZATION_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "024": {
+          "artefacts": [
+            "reports/directional/RFC024_BASELINE.json",
+            "reports/directional/RFC024_BASELINE.md",
+            "reports/directional/RFC024_CASE_DECISION.json",
+            "reports/directional/RFC024_CASE_DECISION.md",
+            "reports/directional/RFC024_FINAL_REPORT.json",
+            "reports/directional/RFC024_FINAL_REPORT.md",
+            "reports/directional/RFC024_HYPOTHESIS_REGISTRY.json",
+            "reports/directional/RFC024_HYPOTHESIS_REGISTRY.md",
+            "reports/directional/RFC024_VERIFICATION.json",
+            "reports/directional/RFC024_VERIFICATION.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "025": {
+          "artefacts": [
+            "reports/RFC025_FINAL_REPORT.json",
+            "reports/RFC025_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "026": {
+          "artefacts": [
+            "reports/execution-economics/RFC026_PLAN.json",
+            "reports/execution-economics/RFC026_PLAN.md",
+            "reports/execution-economics/RFC026_VERIFICATION.json",
+            "reports/execution-economics/RFC026_VERIFICATION.md",
+            "reports/RFC026_FINAL_REPORT.json",
+            "reports/RFC026_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "027": {
+          "artefacts": [
+            "reports/RFC027_FINAL_REPORT.json",
+            "reports/RFC027_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "028": {
+          "artefacts": [
+            "reports/carry/RFC028_PLAN.json",
+            "reports/carry/RFC028_PLAN.md",
+            "reports/carry/RFC028_VERIFICATION.json",
+            "reports/carry/RFC028_VERIFICATION.md",
+            "reports/RFC028_FINAL_REPORT.json",
+            "reports/RFC028_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "029": {
+          "artefacts": [
+            "reports/RFC029_FINAL_REPORT.json",
+            "reports/RFC029_FINAL_REPORT.md",
+            "reports/structural-carry/RFC029_PLAN.json",
+            "reports/structural-carry/RFC029_PLAN.md",
+            "reports/structural-carry/RFC029_VERIFICATION.json",
+            "reports/structural-carry/RFC029_VERIFICATION.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "030": {
+          "artefacts": [
+            "reports/external-alpha/RFC030_PLAN.json",
+            "reports/external-alpha/RFC030_PLAN.md",
+            "reports/external-alpha/RFC030_VERIFICATION.json",
+            "reports/external-alpha/RFC030_VERIFICATION.md",
+            "reports/paper-certification/RFC030_GATE_RECONCILIATION.json",
+            "reports/paper-certification/RFC030_GATE_RECONCILIATION.md",
+            "reports/rfc030/",
+            "reports/rfc030-short-data/",
+            "reports/RFC030_FINAL_REPORT.json",
+            "reports/RFC030_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": [
+            "docs/runtime/RFC-030_TWO_LEG_EXECUTION.md"
+          ]
+        },
+        "031": {
+          "artefacts": [
+            "reports/paper-certification/RFC031_GATES.json",
+            "reports/paper-certification/RFC031_GATES.md",
+            "reports/paper-certification/RFC031_PLAN.json",
+            "reports/paper-certification/RFC031_PLAN.md",
+            "reports/paper-certification/RFC031_VERIFICATION.json",
+            "reports/paper-certification/RFC031_VERIFICATION.md",
+            "reports/RFC031_FINAL_REPORT.json",
+            "reports/RFC031_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "032": {
+          "artefacts": [
+            "reports/RFC032_FINAL_REPORT.json",
+            "reports/RFC032_FINAL_REPORT.md",
+            "reports/tsmom-remediation/RFC032_PLAN.json",
+            "reports/tsmom-remediation/RFC032_PLAN.md",
+            "reports/tsmom-remediation/RFC032_VERIFICATION.json",
+            "reports/tsmom-remediation/RFC032_VERIFICATION.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "033": {
+          "artefacts": [
+            "reports/perp-tsmom/RFC033_PLAN.json",
+            "reports/perp-tsmom/RFC033_PLAN.md",
+            "reports/perp-tsmom/RFC033_VERIFICATION.json",
+            "reports/perp-tsmom/RFC033_VERIFICATION.md",
+            "reports/RFC033_FINAL_REPORT.json",
+            "reports/RFC033_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "034": {
+          "artefacts": [
+            "reports/RFC034_FINAL_REPORT.json",
+            "reports/RFC034_FINAL_REPORT.md",
+            "reports/strategy-closure/RFC034_PLAN.json",
+            "reports/strategy-closure/RFC034_PLAN.md",
+            "reports/strategy-closure/RFC034_VERIFICATION.json",
+            "reports/strategy-closure/RFC034_VERIFICATION.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "035": {
+          "artefacts": [
+            "reports/profitability-v2/RFC035_PLAN.json",
+            "reports/profitability-v2/RFC035_PLAN.md",
+            "reports/profitability-v2/RFC035_VERIFICATION.json",
+            "reports/profitability-v2/RFC035_VERIFICATION.md",
+            "reports/rfc035/",
+            "reports/rfc035/RFC035_VERIFICATION.json",
+            "reports/rfc035/RFC035_VERIFICATION.md",
+            "reports/RFC035_FINAL_REPORT.json",
+            "reports/RFC035_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": [
+            "docs/research/STRATEGIC_PROFITABILITY_PLAN_V2.json",
+            "docs/research/STRATEGIC_PROFITABILITY_PLAN_V2.md"
+          ]
+        },
+        "036": {
+          "artefacts": [
+            "reports/managed-futures-v1/RFC036_PLAN.json",
+            "reports/managed-futures-v1/RFC036_PLAN.md",
+            "reports/managed-futures-v1/RFC036_VERIFICATION.json",
+            "reports/managed-futures-v1/RFC036_VERIFICATION.md",
+            "reports/RFC036_FINAL_REPORT.json",
+            "reports/RFC036_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": [
+            "docs/research/MANAGED_FUTURES_TREND_V1.json",
+            "docs/research/MANAGED_FUTURES_TREND_V1.md"
+          ]
+        },
+        "037": {
+          "artefacts": [
+            "reports/managed-futures-decision/RFC037_STATUS_RECONCILIATION.json",
+            "reports/managed-futures-decision/RFC037_STATUS_RECONCILIATION.md",
+            "reports/managed-futures-refutation/RFC037_PLAN.json",
+            "reports/managed-futures-refutation/RFC037_PLAN.md",
+            "reports/managed-futures-refutation/RFC037_VERIFICATION.json",
+            "reports/managed-futures-refutation/RFC037_VERIFICATION.md",
+            "reports/RFC037_FINAL_REPORT.json",
+            "reports/RFC037_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": [
+            "docs/research/MANAGED_FUTURES_REFUTATION_RFC037.json",
+            "docs/research/MANAGED_FUTURES_REFUTATION_RFC037.md"
+          ]
+        },
+        "038": {
+          "artefacts": [
+            "reports/managed-futures-decision/RFC038_PLAN.json",
+            "reports/managed-futures-decision/RFC038_PLAN.md",
+            "reports/managed-futures-decision/RFC038_VERIFICATION.json",
+            "reports/managed-futures-decision/RFC038_VERIFICATION.md",
+            "reports/RFC038_FINAL_REPORT.json",
+            "reports/RFC038_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": [
+            "docs/research/MANAGED_FUTURES_DECISION_RFC038.md"
+          ]
+        },
+        "039": {
+          "artefacts": [
+            "reports/RFC039_FINAL_REPORT.json",
+            "reports/RFC039_FINAL_REPORT.md",
+            "reports/small-capital-v1/RFC039_PLAN.json",
+            "reports/small-capital-v1/RFC039_PLAN.md",
+            "reports/small-capital-v1/RFC039_VERIFICATION.json",
+            "reports/small-capital-v1/RFC039_VERIFICATION.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "040": {
+          "artefacts": [
+            "reports/RFC040_FINAL_REPORT.json",
+            "reports/RFC040_FINAL_REPORT.md",
+            "reports/small-capital-dual-momentum-v1/RFC040_PLAN.json",
+            "reports/small-capital-dual-momentum-v1/RFC040_PLAN.md",
+            "reports/small-capital-dual-momentum-v1/RFC040_VERIFICATION.json",
+            "reports/small-capital-dual-momentum-v1/RFC040_VERIFICATION.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "041": {
+          "artefacts": [
+            "reports/business-freeze/RFC041_PLAN.json",
+            "reports/business-freeze/RFC041_PLAN.md",
+            "reports/business-freeze/RFC041_VERIFICATION.json",
+            "reports/business-freeze/RFC041_VERIFICATION.md",
+            "reports/RFC041_FINAL_REPORT.json",
+            "reports/RFC041_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": [
+            "docs/research/BUSINESS_REENTRY_POLICY.json",
+            "docs/research/BUSINESS_REENTRY_POLICY.md",
+            "docs/research/CANDIDATE_ARCHIVE.json",
+            "docs/research/CANDIDATE_ARCHIVE.md",
+            "docs/research/ECONOMIC_SCOREBOARD.json",
+            "docs/research/ECONOMIC_SCOREBOARD.md",
+            "docs/research/ECONOMIC_STATE.json",
+            "docs/research/FINAL_BUSINESS_DECISION.json",
+            "docs/research/FINAL_BUSINESS_DECISION.md"
+          ]
+        },
+        "042": {
+          "artefacts": [
+            "reports/business-opportunity-radar/RFC042_PLAN.json",
+            "reports/business-opportunity-radar/RFC042_PLAN.md",
+            "reports/business-opportunity-radar/RFC042_VERIFICATION.json",
+            "reports/business-opportunity-radar/RFC042_VERIFICATION.md",
+            "reports/RFC042_FINAL_REPORT.json",
+            "reports/RFC042_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": []
+        },
+        "043": {
+          "artefacts": [
+            "reports/profitability-operating-model/RFC043_PLAN.json",
+            "reports/profitability-operating-model/RFC043_PLAN.md",
+            "reports/profitability-operating-model/RFC043_VERIFICATION.json",
+            "reports/profitability-operating-model/RFC043_VERIFICATION.md",
+            "reports/RFC043_FINAL_REPORT.json",
+            "reports/RFC043_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": [
+            "docs/research/CAPITAL_PROFIT_MATRIX.json",
+            "docs/research/CAPITAL_PROFIT_MATRIX.md",
+            "docs/research/CAPITAL_SCALE_PLAN.json",
+            "docs/research/PROFITABILITY_OPERATING_MODEL.json",
+            "docs/research/PROFITABILITY_OPERATING_SCOREBOARD.json"
+          ]
+        },
+        "044": {
+          "artefacts": [
+            "reports/reentry-watch/RFC044_PLAN.json",
+            "reports/reentry-watch/RFC044_PLAN.md",
+            "reports/reentry-watch/RFC044_VERIFICATION.json",
+            "reports/reentry-watch/RFC044_VERIFICATION.md",
+            "reports/RFC044_FINAL_REPORT.json",
+            "reports/RFC044_FINAL_REPORT.md"
+          ],
+          "artefacts_versioned": false,
+          "declared_in_tracked_docs": [
+            "docs/research/REENTRY_DECISION_LEDGER.json",
+            "docs/research/REENTRY_EVIDENCE_REGISTRY.json"
+          ]
+        }
+      },
+      "taken_by_this_rfc": {
+        "046": {
+          "status": "TAKEN_BY_THIS_RFC",
+          "prior_artefacts": [],
+          "prior_mentions": [
+            "scripts/pgate035_closure.py",
+            "scripts/pgate035_verify.py",
+            "tests/unit/research/test_profitability_gate035.py"
+          ],
+          "note": "mentioned before only by the RFC-035 closure lineage, which named it as the vehicle; no artefact existed under this number before this RFC"
+        }
+      },
+      "vacant_by_control": {
+        "045": {
+          "reason": "asserted absent by campaign verifiers; creating an RFC-045 artefact would break those checks",
+          "asserting_files": [
+            "scripts/cap001_verify.py",
+            "scripts/cap002_verify.py",
+            "scripts/cap003_verify.py",
+            "scripts/cap004_verify.py"
+          ],
+          "assertion_count": 4
+        }
+      },
+      "mentioned_only_no_artefact": [
+        "001",
+        "016",
+        "022"
+      ],
+      "free": [
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "007",
+        "008",
+        "009",
+        "011",
+        "012",
+        "013",
+        "014",
+        "015",
+        "017",
+        "018",
+        "019",
+        "047",
+        "048",
+        "049",
+        "050"
+      ],
+      "excluded_paths": [
+        "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md",
+        "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.json",
+        "docs/roadmap/PROFITABILITY_ROADMAP_AMENDMENT.md",
+        "docs/governance/DISCOVERY_ADMISSION_POLICY.md",
+        "docs/governance/DISCOVERY_STOP_RULES.md",
+        "docs/architecture/DISCOVERY_EXECUTION_FLOW.md",
+        "docs/roadmap/PROFITABILITY_DISCOVERY_PROPOSAL.md",
+        "scripts/rfc046_audit.py",
+        "scripts/rfc046_verify.py",
+        "tests/unit/research/test_rfc046_discovery_proposal.py",
+        "data/rfc046/audit.json"
+      ],
+      "excluded_reason": "files added or authored by this RFC would otherwise pollute the pre-existing audit",
+      "namespace_separate": {
+        "RFC-STRAT-*": [
+          "docs/research/strategy_lifecycle/rfc/RFC-STRAT-013-dynamic-strategy-lifecycle-and-pods.md",
+          "docs/research/strategy_lifecycle/rfc/RFC-STRAT-014-champion-challenger-and-portfolio-allocation.md"
+        ]
+      }
+    },
+    "invariants": {
+      "roadmap_unchanged": true,
+      "operating_model_trigger_unchanged": true,
+      "operating_model_supports_discovery": false,
+      "freeze_still_active_on_rfc035": true,
+      "freeze_declares_rfc035_open": true,
+      "no_adr_for_rfc046": true,
+      "highest_adr": "0023",
+      "runtime_live_disabled": true,
+      "risk_live_disabled": true,
+      "runtime_mode_paper": true,
+      "manual_confirmation_required_for_live": true,
+      "exchange_sandbox": true,
+      "rfc_status_proposed": true,
+      "reentry_gate_still_requires_pass": true
+    },
+    "amendments_required": [
+      "docs/research/BUSINESS_REENTRY_POLICY.md - explicit dated exemption or the programme does not start",
+      "docs/research/PROFITABILITY_OPERATING_MODEL.json - amend next_action_policy.trigger",
+      "docs/governance/PROFITABILITY_FIRST_FREEZE.md - close the RFC-035 freeze explicitly",
+      "tasks/roadmap.md - add Fase 10 and name RFC-046 as the vehicle",
+      "tasks/decisions.md - one ADR recording the amendment, the reason and the stop rule"
+    ],
+    "amendment_options": [
+      "5A explicit dated RFC-041 exemption (recommended)",
+      "5B no exemption: stay PROPOSED"
+    ]
+  },
+  "technical_debt": {
+    "items": [
+      {
+        "id": "TD-1",
+        "incident": "repo-wide mypy cannot complete: duplicate module name inside the gitignored reports tree",
+        "evidence": "reports/paper-strategy-lifecycle-shadow-02/analyze.py",
+        "evidence_present": true,
+        "status": "OPEN",
+        "blocks_this_rfc": false,
+        "diagnosed_cause": "python -m mypy . walks reports/ and finds two modules with the same basename",
+        "remedy_direction": "keep mypy out of the reports/ scratch tree, or add __init__.py",
+        "ownership": "another thread's scratch tree; not this RFC"
+      },
+      {
+        "id": "TD-2",
+        "incident": "RFC-035E verifier raises TypeError on missing inputs instead of FAIL/INCOMPLETE",
+        "evidence": "scripts/rfc035e_verify.py",
+        "evidence_present": true,
+        "status": "OPEN_NOT_REPAIRED",
+        "blocks_this_rfc": false,
+        "why_not_repaired": "repairing another round's verifier would edit frozen round-2 evidence"
+      },
+      {
+        "id": "TD-3",
+        "incident": "concurrency risk in the gitignored reports/ scratch tree",
+        "evidence": "reports/paper-strategy-lifecycle-shadow-01",
+        "evidence_present": true,
+        "status": "OPEN",
+        "blocks_this_rfc": false,
+        "mitigation": "canonical state kept in tracked docs/ and data/ artefacts"
+      },
+      {
+        "id": "TD-4",
+        "incident": "execution timestamps fixed by author constants",
+        "evidence": "scripts/pgate035_closure.py (RETRIEVED_AT), scripts/rfc035s2_search.py, scripts/rfc035s3_closure.py",
+        "instances": [
+          "scripts/pgate035_closure.py",
+          "scripts/rfc035s2_search.py",
+          "scripts/rfc035s3_closure.py",
+          "scripts/rfc046_audit.py",
+          "scripts/rfc046_verify.py"
+        ],
+        "status": "OPEN",
+        "blocks_this_rfc": false,
+        "mitigation": "this RFC's tracked artefacts carry no timestamp at all"
+      },
+      {
+        "id": "TD-5",
+        "incident": "evidence persistence ignored by git for reports/*: most RFC history has no versioned declaration",
+        "evidence": ".gitignore",
+        "evidence_present": true,
+        "quantified": "17 of the 26 occupied RFC numbers have artefacts only in the gitignored reports/ tree",
+        "status": "OPEN",
+        "blocks_this_rfc": false,
+        "mitigation": "mirrored into tracked docs/rfc/ and data/rfc046/"
+      }
+    ],
+    "all_recorded": true,
+    "any_blocks_gate": false
+  },
+  "document_hashes": {
+    "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.md": "4849150568e03fe29ec3eb8fc44ec69fa3e103c1b77be1caf1b21c2e08df1c7b",
+    "docs/rfc/RFC-046_CONTROLLED_DISCOVERY.json": "34fc8faf8c6ef80ceb66228396481e820b65111e5907869882f143afb47a62d5",
+    "docs/roadmap/PROFITABILITY_ROADMAP_AMENDMENT.md": "c25e1794376781cbcf7c3c63142c901f16b554961b0935875ca694f93ab67f07",
+    "docs/governance/DISCOVERY_ADMISSION_POLICY.md": "209f8f47ffc509ef1dd53703af82c41e3abca89932d6e7ae4ab6057c88d055fe",
+    "docs/governance/DISCOVERY_STOP_RULES.md": "3c5bfd2cf00f73ab1348742c2ac3b7481855a44af0e44355153ac7561ce91d1d",
+    "docs/architecture/DISCOVERY_EXECUTION_FLOW.md": "95ece8b5fa4936052b9ab0b72a5dd3e353d96dbccecd9b1087429d8b34727d50"
+  }
+}

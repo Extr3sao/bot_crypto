@@ -1,0 +1,22 @@
+{
+  "target_id": "T-NF-PUBLIC",
+  "adoption": "NONE",
+  "why": "no readable behaviour was observed, so there is nothing to reconstruct; only structure was observed and our implementation already covers it",
+  "obligations": [],
+  "rejected_candidates": [
+    {
+      "pattern": "decision ledger of the competitor",
+      "source_evidence": "ev_aee35b0f11df7a73b082c5cbc72e10c97f27b22917da003998d93eaa455617fc",
+      "obligation": "would require observing an actual decision record; the static graph does not contain one",
+      "status": "NOT_OBSERVABLE"
+    },
+    {
+      "pattern": "multimodal chart call",
+      "source_evidence": "ev_82d99570975285bde3570fb1b4002ea6b323fefed4308ce5c39ac23d0621d56c",
+      "obligation": "would require a network trace of the model call; not present in a bounded bundle analysis",
+      "status": "NOT_OBSERVABLE"
+    }
+  ],
+  "license_decision": "AGPL-3.0: no code copied, no derivative produced from this target",
+  "our_implementation_affected": []
+}

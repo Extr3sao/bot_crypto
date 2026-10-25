@@ -1,0 +1,177 @@
+{
+  "dir": "reports\\edge-recovery\\WP-EDGE-01\\ablation-h1",
+  "checks": [
+    {
+      "check": "ARTIFACTS_PRESENT",
+      "ok": true,
+      "detail": "5 artefacts match their digests"
+    },
+    {
+      "check": "WINDOW_IS_PREREGISTERED_DEV",
+      "ok": true,
+      "detail": "every one of 603 trades, 5785 refusals and 2388 signals sits inside the DEV window"
+    },
+    {
+      "check": "GROSS_BEFORE_COSTS_RECOMPUTED",
+      "ok": true,
+      "detail": "base: gross -151.71 vs recomputed -151.71 | ablation: gross -128.96 vs recomputed -128.96"
+    },
+    {
+      "check": "COST_SPLIT_IDENTITY",
+      "ok": true,
+      "detail": "cost split reconciles on both arms"
+    },
+    {
+      "check": "FUNNEL_ARITHMETIC",
+      "ok": true,
+      "detail": "base: 2910 refusals over 8 reasons | ablation: 2875 refusals over 7 reasons"
+    },
+    {
+      "check": "SIGNALS_ARITHMETIC",
+      "ok": true,
+      "detail": "base: evaluated 78279, signals 860, candidate refusals 2400 | ablation: evaluated 78279, signals 1528, candidate refusals 1732"
+    },
+    {
+      "check": "ABLATION_ISOLATION",
+      "ok": true,
+      "detail": "3260 setups considered in both arms, resolved differently: 860 signals / 2400 candidate refusals (base) vs 1528 / 1732 (ablation); filter refusals 1097 -> 0"
+    },
+    {
+      "check": "MARKET_CONTEXT_ATTRIBUTION",
+      "ok": true,
+      "detail": "603 trades attributed from 2596 benchmark days (BULL=603)"
+    },
+    {
+      "check": "DECISION_RULE_FROZEN",
+      "ok": true,
+      "detail": "the decision rule matches the pre-registered constants ({'min_dev_trades': 30, 'gross_positive_usdt': 0.0})"
+    },
+    {
+      "check": "VERDICT_RECOMPUTED",
+      "ok": true,
+      "detail": "BREAKOUT_IS_THE_CAUSE recomputed: base gross -151.71 / net -496.43; ablation gross -128.96 / net -501.06"
+    }
+  ],
+  "passed": 10,
+  "total": 10,
+  "self_test": {
+    "baseline_all_green": true,
+    "baseline": {
+      "ARTIFACTS_PRESENT": true,
+      "WINDOW_IS_PREREGISTERED_DEV": true,
+      "GROSS_BEFORE_COSTS_RECOMPUTED": true,
+      "COST_SPLIT_IDENTITY": true,
+      "FUNNEL_ARITHMETIC": true,
+      "SIGNALS_ARITHMETIC": true,
+      "ABLATION_ISOLATION": true,
+      "MARKET_CONTEXT_ATTRIBUTION": true,
+      "DECISION_RULE_FROZEN": true,
+      "VERDICT_RECOMPUTED": true
+    },
+    "mutations": [
+      {
+        "mutation": "M1_flattered_gross",
+        "expected_check": "GROSS_BEFORE_COSTS_RECOMPUTED",
+        "detected": [
+          "COST_SPLIT_IDENTITY",
+          "GROSS_BEFORE_COSTS_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "ablation: declared gross -88.96 != recomputed -128.96"
+      },
+      {
+        "mutation": "M2_tampered_fees",
+        "expected_check": "COST_SPLIT_IDENTITY",
+        "detected": [
+          "COST_SPLIT_IDENTITY"
+        ],
+        "expected_check_failed": true,
+        "detail": "base: declared fees 294.79 != the sum of the rows"
+      },
+      {
+        "mutation": "M3_window_moved_to_val",
+        "expected_check": "WINDOW_IS_PREREGISTERED_DEV",
+        "detected": [
+          "WINDOW_IS_PREREGISTERED_DEV"
+        ],
+        "expected_check_failed": true,
+        "detail": "declared window starts 1751328000000, DEV starts 1727740800000"
+      },
+      {
+        "mutation": "M4_filter_refusal_reinstated",
+        "expected_check": "ABLATION_ISOLATION",
+        "detected": [
+          "ABLATION_ISOLATION",
+          "ARTIFACTS_PRESENT",
+          "FUNNEL_ARITHMETIC"
+        ],
+        "expected_check_failed": true,
+        "detail": "the ablation still refused 1 setups with candidate:trend_filter_fail: the gate is not removed; the arms considered 3260 vs 3261 setups: removing a gate must re-route setups, not create or destroy them"
+      },
+      {
+        "mutation": "M5_refusals_trimmed",
+        "expected_check": "FUNNEL_ARITHMETIC",
+        "detected": [
+          "ABLATION_ISOLATION",
+          "ARTIFACTS_PRESENT",
+          "FUNNEL_ARITHMETIC"
+        ],
+        "expected_check_failed": true,
+        "detail": "ablation: funnel in the file and in the JSON disagree (file-only {'candidate:volume_filter_fail': 262, 'candidate:level_already_traded': 575, 'candidate:rr_below_minimum': 110, 'candidate:reward_below_cost': 8, 'candidate:stop_too_wide': 37, 'risk:risk_drawdown_halt': 425}, json-only {'candidate:volume_filter_fail': 461, 'candidate:level_already_traded': 983, 'candidate:rr_below_minimum': 197, 'candidate:reward_below_cost': 13, 'candidate:stop_too_wide': 78, 'risk:risk_drawdown_halt': 1123})"
+      },
+      {
+        "mutation": "M6_extra_signal",
+        "expected_check": "SIGNALS_ARITHMETIC",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "SIGNALS_ARITHMETIC"
+        ],
+        "expected_check_failed": true,
+        "detail": "ablation: 1529 signal rows but 1528 declared"
+      },
+      {
+        "mutation": "M7_flipped_verdict",
+        "expected_check": "VERDICT_RECOMPUTED",
+        "detected": [
+          "VERDICT_RECOMPUTED"
+        ],
+        "expected_check_failed": true,
+        "detail": "declared FILTER_HARMS_EDGE but the rule on the published numbers gives BREAKOUT_IS_THE_CAUSE"
+      },
+      {
+        "mutation": "M8_relaxed_rule",
+        "expected_check": "DECISION_RULE_FROZEN",
+        "detected": [
+          "DECISION_RULE_FROZEN"
+        ],
+        "expected_check_failed": true,
+        "detail": "rule.min_dev_trades is 1, frozen value is 30"
+      },
+      {
+        "mutation": "M9_out_of_window_trade",
+        "expected_check": "WINDOW_IS_PREREGISTERED_DEV",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "COST_SPLIT_IDENTITY",
+          "GROSS_BEFORE_COSTS_RECOMPUTED",
+          "MARKET_CONTEXT_ATTRIBUTION",
+          "WINDOW_IS_PREREGISTERED_DEV"
+        ],
+        "expected_check_failed": true,
+        "detail": "trade decision_ts 1769904000000 outside DEV; trade entry_ts 1769904900000 outside DEV; trade exit_ts 1769905800000 outside DEV"
+      },
+      {
+        "mutation": "M10_relabelled_market_context",
+        "expected_check": "MARKET_CONTEXT_ATTRIBUTION",
+        "detected": [
+          "ARTIFACTS_PRESENT",
+          "MARKET_CONTEXT_ATTRIBUTION"
+        ],
+        "expected_check_failed": true,
+        "detail": "base/ETH @ 1728310500000: market_context 'BEAR' != 'BULL' readable at that instant; base/BTC @ 1728311400000: market_context 'BEAR' != 'BULL' readable at that instant; base/SOL @ 1728311400000: market_context 'BEAR' != 'BULL' readable at that instant; base/BTC @ 1728396000000: market_context 'BEAR' != 'BULL' readable at that instant; base/ETH @ 1728396000000: market_context 'BEAR' != 'BULL' readable at that instant; base/SOL @ 1728396000000: market_context 'BEAR' != 'BULL' readable at that instant"
+      }
+    ],
+    "all_detected": true
+  },
+  "failed": 0
+}

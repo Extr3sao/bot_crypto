@@ -1,0 +1,147 @@
+{
+  "artifact": "EXP004A_INDEPENDENT_VERIFICATION_RUN_REPORT",
+  "artifacts": {
+    "ACCEPTANCE_DECISION.json": "5c42deedadb97c09822655f93bc73168b1609b0cb59ee1c924242663b82eac77",
+    "ADVERSARIAL_TEST_REPORT.md": "2936f3f00ffe8d3cd05460720ac3ee07edbad626bda2a64f2a6e3fe511e3a690",
+    "CLAIM_VERDICTS.json": "b74ac974c899b52e2ca5a5ec5d2c98184e682f220dc0cab7392352a24708d5b4",
+    "DIGEST_RECONCILIATION.json": "5a7d55a20f1ee5170fbdbd80ceab8388da07e3532f77c4ecf52901148697c0e1",
+    "FINAL_REPORT.md": "fd3d1f3aaebfe6024f06eca34aca3bc756468dd968309ba1eeff6979f6cd5df6",
+    "INDEPENDENT_VERIFICATION_REPORT.json": "19974cc07d2531b2b7eaa854f4467441eb6861984878ff6476978f27e050c563",
+    "INDEPENDENT_VERIFICATION_REPORT.md": "86bdf006158788148126d8023b57b24077d84e028c17cf69f441b2a2b56a4cc8",
+    "RUNTIME_VALIDATION.md": "b9fa508527f412fa54fa4fcc72b5c09b840f59214efe626550af819c2a074436",
+    "SOURCE_INVENTORY.json": "fd6a3feb8a0a4a757efbdb50027f5e3aad7cf9f076eb126fef3444576b7207f4"
+  },
+  "claim_counts": {
+    "BLOCKED": 3,
+    "FAIL": 1,
+    "PASS": 11,
+    "total": 15
+  },
+  "claims": {
+    "C-000": {
+      "reason_code": "INDEPENDENCE_NOT_PROVEN",
+      "status": "BLOCKED"
+    },
+    "C-001": {
+      "reason_code": null,
+      "status": "PASS"
+    },
+    "C-002": {
+      "reason_code": null,
+      "status": "PASS"
+    },
+    "C-003": {
+      "reason_code": null,
+      "status": "PASS"
+    },
+    "C-004": {
+      "reason_code": "ADMISSION_REPLAY_MISMATCH",
+      "status": "FAIL"
+    },
+    "C-005": {
+      "reason_code": null,
+      "status": "PASS"
+    },
+    "C-006": {
+      "reason_code": null,
+      "status": "PASS"
+    },
+    "C-007": {
+      "reason_code": "COST_SCOPE_UNPROVEN",
+      "status": "BLOCKED"
+    },
+    "C-008": {
+      "reason_code": null,
+      "status": "PASS"
+    },
+    "C-009": {
+      "reason_code": null,
+      "status": "PASS"
+    },
+    "C-010": {
+      "reason_code": null,
+      "status": "PASS"
+    },
+    "C-011": {
+      "reason_code": null,
+      "status": "PASS"
+    },
+    "C-012": {
+      "reason_code": null,
+      "status": "PASS"
+    },
+    "C-013": {
+      "reason_code": "TIME_PROOF_WEAK",
+      "status": "BLOCKED"
+    },
+    "C-014": {
+      "reason_code": null,
+      "status": "PASS"
+    }
+  },
+  "commit_note": "the audit ran before its own commit existed; scripts/exp004a_verify.py at sha256 35cdf88ec40e671d6eaac43cdabbf3e1b77a8b9f58f0a7068afd6fad5c4eb6d9 is the binding link between this report and the code that produced it",
+  "dependencies": {
+    "git": "git version 2.51.1.windows.1",
+    "measured_at_utc": "2026-10-21T10:42:30Z",
+    "mypy": "mypy 2.1.0 (compiled: yes)",
+    "note": "measured when this index was written; the audit ran in this same interpreter",
+    "pytest": "pytest 9.1.1",
+    "python": "3.11.15",
+    "ruff": "ruff 0.15.20"
+  },
+  "economic_executions": 0,
+  "environment": {
+    "evidence_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+    "os": "win32",
+    "output_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\docs\\agentic\\exp004a\\independent",
+    "python": "3.11.15",
+    "python_executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+    "source_root": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff",
+    "worktree_dirty_entries": 263,
+    "worktree_head": "881f0610a13d971404e7aaaa24d486a15b4d7277"
+  },
+  "evaluated_commit": "47116b2f2c5fd37ed1a60550eefe17d8bd703638",
+  "false_success": 0,
+  "independence": {
+    "principal_separation": "NOT_PROVEN",
+    "program_separation": "AUDITED_CLEAN",
+    "reason_code": "INDEPENDENCE_NOT_PROVEN",
+    "status": "BLOCKED"
+  },
+  "parents_of_evaluated_commit": [
+    "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6"
+  ],
+  "promotion": {
+    "blocking_reasons": [
+      "PHASE2_CAPTURE_OPEN",
+      "INSUFFICIENT_ADMITTED_DAYS",
+      "DECLARED_SIZE_NOT_WALKED",
+      "ZERO_ADMITTED_DAYS_INSIDE_CAPTURE_WINDOW",
+      "BLOCKED_MISSING_INDEPENDENT_VERIFIER"
+    ],
+    "decision": "NO_PROMOTION",
+    "note": "eligibility is never a live order; phase 1 stays un-authorisable"
+  },
+  "rfc050_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+  "rfc_id": "RFC-051",
+  "run_id": "verifier-b/EXP-004A/WP-051-02:2026-10-21T10:26:12.509519Z",
+  "schema_version": "1.0",
+  "source_mutations": 0,
+  "source_tree_sha": "51394aa9efc02ba7ddc595428419253d3b229857",
+  "status": "FAIL",
+  "tests": {
+    "builder_suites": "128 passed, 1 skipped in 223.98s (0:03:43)",
+    "exit_codes": {
+      "acceptance": 0,
+      "builder_suites": 0
+    },
+    "verifier_acceptance": "20 passed in 23.53s"
+  },
+  "verifier": {
+    "agent_id": "verifier-b/EXP-004A/WP-051-02",
+    "implementation": "scripts/exp004a_verify.py",
+    "implementation_sha256": "35cdf88ec40e671d6eaac43cdabbf3e1b77a8b9f58f0a7068afd6fad5c4eb6d9",
+    "run_id": "verifier-b/EXP-004A/WP-051-02:2026-10-21T10:26:12.509519Z"
+  },
+  "work_package": "WP-051-02"
+}

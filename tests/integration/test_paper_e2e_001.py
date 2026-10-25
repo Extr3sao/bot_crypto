@@ -156,12 +156,17 @@ def test_trade_path_signal_to_fill_to_position():
 
 
 def test_trade_path_exit_realizes_pnl():
-    """Position closes on opposite signal → ClosedTrade with realized PnL."""
+    """Position closes on an explicit close request → ClosedTrade with realized PnL.
+
+    DEF-RUN-015: this used to close through an *opposite signal*, which the broker read
+    as a close and the callers read as an order. The exit is now a named request; the
+    trade object, its reason and its PnL are unchanged.
+    """
     from trading_bot.paper.broker import ClosedTrade
 
     broker = PaperBroker(equity=10_000.0, slippage_bps=1.0, commission_bps=5.0)
     broker.execute_signal(_make_signal("buy", price=100.0))
-    close_result = broker.execute_signal(_make_signal("sell", price=110.0))
+    close_result = broker.close_position("BTC/USDT", 110.0, "signal")
 
     assert isinstance(close_result, ClosedTrade)
     assert close_result.symbol == "BTC/USDT"

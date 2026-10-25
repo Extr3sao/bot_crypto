@@ -1,0 +1,21 @@
+{
+  "files": {
+    "RUN_LOG_SNAPSHOT.jsonl": {
+      "bytes": 849070,
+      "copied_from": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\runs.jsonl",
+      "sha256": "2a9db98131c51a025c7b00785f5b31ceb0a1f1ddbe8e50ba6635c67fea4f32f0",
+      "sha256_lf": "b23b8cc16146012d295ffda01f5027b6259eaeac8942713ae04cb2f56e60acd7"
+    },
+    "SLOT_LEDGER_SNAPSHOT.jsonl": {
+      "bytes": 37860,
+      "copied_from": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\data\\forward\\edge04\\slots.jsonl",
+      "sha256": "65381f8837df84c9b2dff2c3cd09cf363c607b9472175c53052883faaca08e33",
+      "sha256_lf": "e554d839127be466fb3cf7eb71312a013a4e7b280a38966d8a3d8050da4953af"
+    }
+  },
+  "generated_at_utc": "2026-10-15T18:32:38Z",
+  "hypothetical": true,
+  "order_sent": false,
+  "schema_version": "EDGE04R_SNAPSHOT_V1",
+  "source": "the live lane state root, copied without translation"
+}

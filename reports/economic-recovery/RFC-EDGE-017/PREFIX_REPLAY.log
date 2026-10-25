@@ -1,0 +1,36 @@
+==============================================================================
+PART 1 - the pre-fix collector at 2536928, executed as published
+==============================================================================
+
+run 1: venue returned 3 bars -> slice holds 3
+run 2: venue page starts at the second bar -> slice holds 2
+[DETECTED] repeated capture destroys the oldest bar (write mode 'w'): rows 3 -> 2, bar 1791997200000 destroyed
+
+single-page fetch for a 2600-bar window: requests=(since=1791997200000, limit=1000)
+[DETECTED] history beyond one page is never reached (fixed since + limit=1000): returned 1000 of 2600 bars, newest held=1795593600000, newest available=1801353600000
+
+coverage expressions copied verbatim from 2536928:scripts/edge16_capture.py (captured_bars_per_symbol, dedupe_check):
+[DETECTED] coverage cannot report more than one bar per symbol: 3 rows in the slice -> captured_bars_per_symbol=1
+[DETECTED] duplicate check compares a dict's keys with their own set (tautology): 3 identical rows collapsed into a 1-key dict -> duplicate_keys=0 always
+
+==============================================================================
+PART 2 - the new tests run against four re-introduced defects
+==============================================================================
+[DETECTED] M1 truncating write (merge drops existing rows): pytest exit=1; 4 failed, 15 passed in 1.11s
+[DETECTED] M2 binary coverage (one observed bar per symbol): pytest exit=1; 3 failed, 16 passed in 1.11s
+[DETECTED] M3 tautological dedupe (keys compared with their own set): pytest exit=1; 3 failed, 16 passed in 1.09s
+[DETECTED] M4 non-atomic write (truncate in place): pytest exit=1; 1 failed, 18 passed in 1.04s
+
+==============================================================================
+PART 3 - the concurrency test with the single-writer lock removed
+==============================================================================
+USDT', 'timestamp': 1791997200000, 'open': 100.0, 'high': 101.0, ...}, {'symbol': 'BTC/USDT', 'timest...104.0, 'high': 105.0, ...}, {'symbol': 'BTC/USDT', 'timestamp': 1792015200000, 'open': 105.0, 'high': 106.0, ...}, ...])
+C:\Users\GVLLFR0035\Downloads\bot freebuff\tests\unit\research\test_edge17_capture.py:330: AssertionError: a slow writer must not be overwritten by the other collector
+=========================== short test summary info ===========================
+FAILED tests/unit/research/test_edge17_capture.py::test_two_concurrent_collectors_lose_no_bars
+1 failed, 18 deselected in 0.51s
+[DETECTED] without the lock the concurrent capture fails (lost update, or a replace race): pytest exit=1; 1 failed, 18 deselected in 0.51s
+
+==============================================================================
+SUMMARY: 9/9 defects reproduced by the executed artefacts
+==============================================================================

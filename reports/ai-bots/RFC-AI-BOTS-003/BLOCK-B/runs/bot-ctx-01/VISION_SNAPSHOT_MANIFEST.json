@@ -1,0 +1,408 @@
+{
+  "bot_id": "BOT-CTX-01",
+  "run_id": "26e6a9812b3f",
+  "image_mode": "text_only",
+  "prompt_version": "aibot-ctx-prompt/1",
+  "snapshots": [
+    {
+      "decision_time_ms": 1787040000000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787036400000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "0ba792e6b4720caa0767bf51182f50f372762302d1044f1c1917c9b44b003afb"
+    },
+    {
+      "decision_time_ms": 1787040000000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787036400000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "a4e6388c24236ac5c8574de046a4c652ca67d051485ba4be4e335cdd7b7cb270"
+    },
+    {
+      "decision_time_ms": 1787126400000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787122800000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "702330f5702af402c05decf6c2f53b62beec4fc1399d8ddbdb77367b0b916ea6"
+    },
+    {
+      "decision_time_ms": 1787126400000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787122800000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "f687da60a216706a1e5a5f64eeac43efdc6b9368d946412b15a17ceaf3935771"
+    },
+    {
+      "decision_time_ms": 1787212800000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787209200000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "476603383c2a81af9e9a697a4912df7e7256547a65d147703f526a58bdd035b8"
+    },
+    {
+      "decision_time_ms": 1787212800000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787209200000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "d04a9dc5d1eba363ce424641e51e849333644d7c2e967caa47d4bd764224251e"
+    },
+    {
+      "decision_time_ms": 1787299200000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787295600000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "494b335cbb18ae6b2331549791132d694528cd96c414e8928faa0171b5b7757e"
+    },
+    {
+      "decision_time_ms": 1787299200000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787295600000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "83e3e9d36fa4264bda8c97bac0e123182e4b2ea24392345691948aca317f3bc7"
+    },
+    {
+      "decision_time_ms": 1787385600000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787382000000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "d6a4b732a5e39ec351b6c5a9061dd459747d230f58d6095713c30fb48fd10443"
+    },
+    {
+      "decision_time_ms": 1787385600000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787382000000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "1b89d46800d938d9499f003fbff32bed9c3eb12a3e7653f15fdd049fe07e8ff6"
+    },
+    {
+      "decision_time_ms": 1787472000000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787468400000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "941232a481d60890ddcc74098c60e2a31712d816843ed47f1439f61ab7cb0614"
+    },
+    {
+      "decision_time_ms": 1787472000000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787468400000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "40631971df5b8e0080da52c9bce9cfcbb564f256c38b7b039a17ebe343ad02b9"
+    },
+    {
+      "decision_time_ms": 1787558400000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787554800000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "db3640ed6cdeb66c0e8665936b9f2b1c5fe73e9e4b940d3d51632d32237e7171"
+    },
+    {
+      "decision_time_ms": 1787558400000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787554800000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "2cfa353d20a7c3dab932160e1f4dc34a6faad7fbc900f1470a5f6016ff617b9f"
+    },
+    {
+      "decision_time_ms": 1787644800000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787641200000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "19deef0e8ecbe803c27e8ba95c9b23f743acccf9bf60b99544b44f84c5ea46cb"
+    },
+    {
+      "decision_time_ms": 1787644800000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787641200000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "656ea6b7a745709f75bf3dd555cefb1284df0061af8d93d02e60ef5461255390"
+    },
+    {
+      "decision_time_ms": 1787731200000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787727600000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "111be3cf7e41d02acd334eb6dcdaffacfe4456ba57c912e2098b65a14d35fcb2"
+    },
+    {
+      "decision_time_ms": 1787731200000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787727600000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "5a583bad55be7d84434a3efbc2c8614f8a653fc899d97f0dcced3219774b7141"
+    },
+    {
+      "decision_time_ms": 1787817600000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787814000000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "813b52450e0af43ae3f90b35f0e7e8c731fabc803654ac890d698f14787bb3d8"
+    },
+    {
+      "decision_time_ms": 1787817600000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787814000000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "10f9119d907e669a1847b9b6d260737569399eedbc2a7ed0ade43bf09b309053"
+    },
+    {
+      "decision_time_ms": 1787904000000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787900400000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "8bd23de17c0e7e442c69ba04d06b750cef12049392d2567ec0bb97c0049fdd57"
+    },
+    {
+      "decision_time_ms": 1787904000000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787900400000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "5e840d7aa9680572a07c2d40155df6fed8ee411ddff1823ee87ca740a6742c90"
+    },
+    {
+      "decision_time_ms": 1787990400000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787986800000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "18ffed8572ab1dc8dd8469d1cb259e6c5ec5df0b38f2c42bad19c74576670200"
+    },
+    {
+      "decision_time_ms": 1787990400000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1787986800000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "bacc5bb1897ad69c65c2d2ca43a7cd22dfd0e96f7168748578f2a6b917eff78d"
+    },
+    {
+      "decision_time_ms": 1788076800000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788073200000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "210c9b820311dc2391575b65e67353683297acd8e1a9830c7a96420b2c55a552"
+    },
+    {
+      "decision_time_ms": 1788076800000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788073200000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "14978f1cb7d9dba4e665d5e11542555862a39a749a229842c57db2f6ef703eaf"
+    },
+    {
+      "decision_time_ms": 1788163200000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788159600000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "b0ce4ede5706971013200338076cba65e402ca25b2c6a4384476fc0df219ef86"
+    },
+    {
+      "decision_time_ms": 1788163200000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788159600000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "f729e3f7c8905eb91b325dff1bc2d4f25eb7212d6b513559ea5614316936f624"
+    },
+    {
+      "decision_time_ms": 1788249600000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788246000000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "ea846e023f32c9ea9a66d071a364d504969c3a20656c9938f45e212d9ee643f7"
+    },
+    {
+      "decision_time_ms": 1788249600000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788246000000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "e275c2d20473039700dffa031e9d4aa61f2f59d56a1167061d09c28548f7100f"
+    },
+    {
+      "decision_time_ms": 1788336000000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788332400000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "fabcf12c6721708346fe05c5e7e12e686039ad16995f109fb54d8e47aa7faa10"
+    },
+    {
+      "decision_time_ms": 1788336000000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788332400000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "a6f04416cf9ee08335b7bdb294e8b1ecc70fbd41091bc609d70c2fe4b42c2ba0"
+    },
+    {
+      "decision_time_ms": 1788422400000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788418800000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "5cb3a371ec7a0627e17796a08d27a4ca1b1d5776a6247b2170c91f21fd5e4c21"
+    },
+    {
+      "decision_time_ms": 1788422400000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788418800000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "313fccfe2ae5b9f0718d1be924987e7a6c5ccc39677b54cb8a799cf615936aac"
+    },
+    {
+      "decision_time_ms": 1788508800000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788505200000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "aa6dc68bd508557d8ad863396bc7b6305f65be6a1afbd4af488897c5d94a3bbe"
+    },
+    {
+      "decision_time_ms": 1788508800000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788505200000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "6c5cac03bbe8cce39e49876655e80925188eee472344b45919c0a80343cb02f2"
+    },
+    {
+      "decision_time_ms": 1788595200000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788591600000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "271508af5e8d89db979ce2d1ef42b2b8876df162072faf8c8cd18c88aaf333a9"
+    },
+    {
+      "decision_time_ms": 1788595200000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788591600000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "d16878bbd0ff3aac83a87dc4fb1a0b467fcbb34a80ea34235189ae0921d22f00"
+    },
+    {
+      "decision_time_ms": 1788681600000,
+      "symbol": "AAVE/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788678000000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "77768e7897e382fbdc7b94e0e1ec5feff01c0c751fd6f449439ad485d2e2595f"
+    },
+    {
+      "decision_time_ms": 1788681600000,
+      "symbol": "UNI/USDT",
+      "image_sha256": "",
+      "image_attached": false,
+      "window_bars": 120,
+      "last_bar_ts_ms": 1788678000000,
+      "prompt_id": "aibot-ctx-prompt/1",
+      "prompt_sha256": "ef61ec74af5957aadf410bcf67782c1b5b3ea75b6a89878b204f056b5e2066f7"
+    }
+  ]
+}

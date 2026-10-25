@@ -1,0 +1,74 @@
+[003n-screen] lane_a 5m ema_crossover  BTCUSDT: 11533 signals (16.86s)
+[003n-screen] lane_a 5m momentum       BTCUSDT:  1493 signals (13.2s)
+[003n-screen] lane_a 5m breakout       BTCUSDT:   679 signals (12.44s)
+[003n-screen] lane_a 5m mean_reversion BTCUSDT:   432 signals (12.65s)
+[003n-screen] lane_a 5m trend          BTCUSDT:   157 signals (12.69s)
+[003n-screen] lane_a 5m volatility     BTCUSDT:    28 signals (8.91s)
+[003n-screen] lane_a 5m ema_crossover  ETHUSDT: 11448 signals (19.58s)
+[003n-screen] lane_a 5m momentum       ETHUSDT:  2325 signals (14.4s)
+[003n-screen] lane_a 5m breakout       ETHUSDT:   755 signals (13.28s)
+[003n-screen] lane_a 5m mean_reversion ETHUSDT:   496 signals (14.82s)
+[003n-screen] lane_a 5m trend          ETHUSDT:   351 signals (15.11s)
+[003n-screen] lane_a 5m volatility     ETHUSDT:    52 signals (13.4s)
+[003n-screen] lane_a 5m ema_crossover  SOLUSDT: 11443 signals (16.37s)
+[003n-screen] lane_a 5m momentum       SOLUSDT:  2886 signals (13.04s)
+[003n-screen] lane_a 5m breakout       SOLUSDT:   697 signals (12.05s)
+[003n-screen] lane_a 5m mean_reversion SOLUSDT:   480 signals (11.14s)
+[003n-screen] lane_a 5m trend          SOLUSDT:   434 signals (12.38s)
+[003n-screen] lane_a 5m volatility     SOLUSDT:    75 signals (13.36s)
+[003n-screen] lane_a 1h ema_crossover  BTCUSDT:   900 signals (10.86s)
+[003n-screen] lane_a 1h momentum       BTCUSDT:   553 signals (10.65s)
+[003n-screen] lane_a 1h breakout       BTCUSDT:    56 signals (8.94s)
+[003n-screen] lane_a 1h mean_reversion BTCUSDT:    32 signals (6.99s)
+[003n-screen] lane_a 1h trend          BTCUSDT:   234 signals (8.06s)
+[003n-screen] lane_a 1h volatility     BTCUSDT:     5 signals (0.33s)
+[003n-screen] lane_a 1h ema_crossover  ETHUSDT:   881 signals (10.09s)
+[003n-screen] lane_a 1h momentum       ETHUSDT:   610 signals (10.68s)
+[003n-screen] lane_a 1h breakout       ETHUSDT:    55 signals (9.38s)
+[003n-screen] lane_a 1h mean_reversion ETHUSDT:    34 signals (9.01s)
+[003n-screen] lane_a 1h trend          ETHUSDT:   362 signals (11.24s)
+[003n-screen] lane_a 1h volatility     ETHUSDT:    14 signals (3.13s)
+[003n-screen] lane_a 1h ema_crossover  SOLUSDT:   886 signals (12.89s)
+[003n-screen] lane_a 1h momentum       SOLUSDT:   634 signals (10.39s)
+[003n-screen] lane_a 1h breakout       SOLUSDT:    53 signals (11.19s)
+[003n-screen] lane_a 1h mean_reversion SOLUSDT:    40 signals (8.16s)
+[003n-screen] lane_a 1h trend          SOLUSDT:   374 signals (10.12s)
+[003n-screen] lane_a 1h volatility     SOLUSDT:    10 signals (1.12s)
+[003n-screen] lane_a 4h ema_crossover  BTCUSDT:   164 signals (8.95s)
+[003n-screen] lane_a 4h momentum       BTCUSDT:   144 signals (9.34s)
+[003n-screen] lane_a 4h breakout       BTCUSDT:     9 signals (0.02s)
+[003n-screen] lane_a 4h mean_reversion BTCUSDT:     6 signals (0.01s)
+[003n-screen] lane_a 4h trend          BTCUSDT:    89 signals (7.82s)
+[003n-screen] lane_a 4h volatility     BTCUSDT:     1 signals (0.06s)
+[003n-screen] lane_a 4h ema_crossover  ETHUSDT:   165 signals (8.99s)
+[003n-screen] lane_a 4h momentum       ETHUSDT:   140 signals (9.1s)
+[003n-screen] lane_a 4h breakout       ETHUSDT:     7 signals (0.03s)
+[003n-screen] lane_a 4h mean_reversion ETHUSDT:     4 signals (0.03s)
+[003n-screen] lane_a 4h trend          ETHUSDT:   108 signals (9.05s)
+[003n-screen] lane_a 4h volatility     ETHUSDT:     1 signals (0.03s)
+[003n-screen] lane_a 4h ema_crossover  SOLUSDT:   170 signals (7.52s)
+[003n-screen] lane_a 4h momentum       SOLUSDT:   148 signals (8.87s)
+[003n-screen] lane_a 4h breakout       SOLUSDT:     6 signals (0.02s)
+[003n-screen] lane_a 4h mean_reversion SOLUSDT:     8 signals (0.02s)
+[003n-screen] lane_a 4h trend          SOLUSDT:   100 signals (6.66s)
+[003n-screen] lane_a 4h volatility     SOLUSDT:     2 signals (0.07s)
+[003n-screen] lane_b 1h vol_regime_breakout      BTCUSDT:     0 trades
+[003n-screen] lane_b 1h trend_pullback           BTCUSDT:    15 trades
+[003n-screen] lane_b 1h mean_reversion_vol_liq   BTCUSDT:     2 trades
+[003n-screen] lane_b 1h vol_regime_breakout      ETHUSDT:     0 trades
+[003n-screen] lane_b 1h trend_pullback           ETHUSDT:    10 trades
+[003n-screen] lane_b 1h mean_reversion_vol_liq   ETHUSDT:     2 trades
+[003n-screen] lane_b 1h vol_regime_breakout      SOLUSDT:     0 trades
+[003n-screen] lane_b 1h trend_pullback           SOLUSDT:     5 trades
+[003n-screen] lane_b 1h mean_reversion_vol_liq   SOLUSDT:     3 trades
+[003n-screen] lane_b 4h vol_regime_breakout      BTCUSDT:     0 trades
+[003n-screen] lane_b 4h trend_pullback           BTCUSDT:     0 trades
+[003n-screen] lane_b 4h mean_reversion_vol_liq   BTCUSDT:     0 trades
+[003n-screen] lane_b 4h vol_regime_breakout      ETHUSDT:     0 trades
+[003n-screen] lane_b 4h trend_pullback           ETHUSDT:     2 trades
+[003n-screen] lane_b 4h mean_reversion_vol_liq   ETHUSDT:     0 trades
+[003n-screen] lane_b 4h vol_regime_breakout      SOLUSDT:     0 trades
+[003n-screen] lane_b 4h trend_pullback           SOLUSDT:     0 trades
+[003n-screen] lane_b 4h mean_reversion_vol_liq   SOLUSDT:     0 trades
+[003n-screen] verdict=NO_VIABLE_CANDIDATES counts={'EXPERIMENT': 1, 'INSUFFICIENT_EVIDENCE': 10, 'REJECT': 13}
+[003n-screen] wrote reports\ai-bots\EXP-003N-GROSS-FIRST-DISCOVERY-001\analysis\SCREENING.json

@@ -1,0 +1,53 @@
+{
+  "schema_version": "rfc048v-delivery-commit-verification-v1",
+  "rfc": "RFC-048V",
+  "generated_at_utc": "2026-10-10T09:40:54Z",
+  "delivery_commit": "9898cc476ef289c5c6cd9f056158b6f78b1a2b97",
+  "delivery_commit_subject": "Make the RFC-048V certificate verifiable against the commit it describes",
+  "delivery_tree": "974ec600481a29a9bc7142b3e90327466820e0a5",
+  "certificate": {
+    "generated_at_utc": "2026-10-10T09:40:10Z",
+    "generated_at_head": "081201f1eeaf77985f55dc488ffec373939d8c02",
+    "status": "RFC048_OFFLINE_CERTIFIED",
+    "false_success": 0
+  },
+  "manifest_files": 50,
+  "manifest_digest": "4ee673cc040a7ded5e3c6807f5e7a50fa66d92a1c0a954d7fdf9a8657772b6a9",
+  "blob_identity": {
+    "checked_files": 50,
+    "mismatches": [],
+    "working_tree_clean": true,
+    "dirty_entries": [],
+    "ignored_dirty_entries": [],
+    "current_head": "9898cc476ef289c5c6cd9f056158b6f78b1a2b97",
+    "recorded_head": "081201f1eeaf77985f55dc488ffec373939d8c02",
+    "passed": true
+  },
+  "self_referential_files": [
+    {
+      "path": "data/rfc048/INDEPENDENT_CERTIFICATION.json",
+      "sha256": "0abeaaf0fc2d5f4faa3df5ded231fea1d0b26658633cc6c187fc5427940bc5c8",
+      "git_blob": "238b6b1d70270a1d82b2edbf6526ff4bd9c9bf05",
+      "tracked": true
+    },
+    {
+      "path": "data/rfc048/INDEPENDENT_CERTIFICATION.md",
+      "sha256": "79f2fefd5daba363d03ad59800e8d429a9be142a3b14ac12d8e9da353855f12d",
+      "git_blob": "37cec6812510a6861ddaafef7b674ebc863f54e1",
+      "tracked": true
+    },
+    {
+      "path": "data/rfc048/FINAL_CERTIFICATION_REPORT.json",
+      "sha256": "de3f56ec67b8b863fa631cdb47cddf1f1966c94b4f24221e53f4001ef32a6938",
+      "git_blob": "f7dea61e7f81cbebc5e9d06889669c739009f094",
+      "tracked": true
+    },
+    {
+      "path": "data/rfc048/FINAL_CERTIFICATION_REPORT.md",
+      "sha256": "1b7376eeb370db13dfa8b6698a80516daf046a5b1231abeba0b1710a0476ffab",
+      "git_blob": "d10811560241a8d47ac2eff2664f61b98274600a",
+      "tracked": true
+    }
+  ],
+  "conclusion": "Every file in the certified manifest hashes to the same git object in the delivered commit, the certificate's own files are hashed here, and the delivered paths carry no uncommitted change: the certificate describes the tree this commit records."
+}

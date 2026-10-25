@@ -1,0 +1,865 @@
+{
+  "as_of_utc": "2026-10-14T09:11:52Z",
+  "candidates": {
+    "available": true,
+    "candidates": {
+      "edge07_active_fade": {
+        "dev_avg_duration_min": 461.65,
+        "dev_exit_reason_mix": {
+          "stop_loss": 192,
+          "target": 63
+        },
+        "dev_gross_bps_per_trade": -15.761,
+        "dev_net_usdt": -503.9857,
+        "dev_trades": 255,
+        "dev_trades_per_day": 0.1397
+      },
+      "edge07_active_thrust": {
+        "dev_avg_duration_min": 173.61,
+        "dev_exit_reason_mix": {
+          "stop_loss": 206,
+          "target": 132
+        },
+        "dev_gross_bps_per_trade": -5.3873,
+        "dev_net_usdt": -492.9215,
+        "dev_trades": 338,
+        "dev_trades_per_day": 0.1852
+      }
+    }
+  },
+  "cost_model": "COST_MODEL_V3 / BINANCE_SPOT_STANDARD_TAKER at a one-hour horizon",
+  "declared_cost_wall_bps": 23.7906,
+  "frequency_target_per_day": 3.0,
+  "hypothetical": true,
+  "methods": "perfect foresight: entry at the open of the next bar, exit at the open H bars later, capturing the absolute open-to-open move, paying the round trip; a real book captures less because it is sometimes wrong and exits early",
+  "note": "a horizon whose perfect-foresight net is below zero is a horizon where no strategy on these assets can profit; a positive ceiling is necessary, never sufficient",
+  "order_sent": false,
+  "per_asset": {
+    "DEV": {
+      "BTC": [
+        {
+          "capture_fraction_needed_to_break_even": 0.5557,
+          "horizon_bars": 1,
+          "horizon_hours": 1,
+          "mean_absolute_move_bps": 42.8115,
+          "median_absolute_move_bps": 25.0662,
+          "observations": 43739,
+          "p90_absolute_move_bps": 97.8315,
+          "perfect_foresight_net_bps": 19.0209,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.4823,
+          "trades_per_day_across_the_universe": 72.0,
+          "trades_per_day_per_asset": 24.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.3911,
+          "horizon_bars": 2,
+          "horizon_hours": 2,
+          "mean_absolute_move_bps": 60.8227,
+          "median_absolute_move_bps": 34.9965,
+          "observations": 43739,
+          "p90_absolute_move_bps": 143.113,
+          "perfect_foresight_net_bps": 37.0321,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.3761,
+          "trades_per_day_across_the_universe": 36.0,
+          "trades_per_day_per_asset": 12.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.2747,
+          "horizon_bars": 4,
+          "horizon_hours": 4,
+          "mean_absolute_move_bps": 86.592,
+          "median_absolute_move_bps": 49.0837,
+          "observations": 43739,
+          "p90_absolute_move_bps": 207.4533,
+          "perfect_foresight_net_bps": 62.8014,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.288,
+          "trades_per_day_across_the_universe": 18.0,
+          "trades_per_day_per_asset": 6.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.1911,
+          "horizon_bars": 8,
+          "horizon_hours": 8,
+          "mean_absolute_move_bps": 124.4972,
+          "median_absolute_move_bps": 72.1694,
+          "observations": 43739,
+          "p90_absolute_move_bps": 300.665,
+          "perfect_foresight_net_bps": 100.7067,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.2114,
+          "trades_per_day_across_the_universe": 9.0,
+          "trades_per_day_per_asset": 3.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.1023,
+          "horizon_bars": 24,
+          "horizon_hours": 24,
+          "mean_absolute_move_bps": 232.645,
+          "median_absolute_move_bps": 147.5327,
+          "observations": 43739,
+          "p90_absolute_move_bps": 541.7621,
+          "perfect_foresight_net_bps": 208.8544,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.114,
+          "trades_per_day_across_the_universe": 3.0,
+          "trades_per_day_per_asset": 1.0
+        }
+      ],
+      "ETH": [
+        {
+          "capture_fraction_needed_to_break_even": 0.4284,
+          "horizon_bars": 1,
+          "horizon_hours": 1,
+          "mean_absolute_move_bps": 55.5341,
+          "median_absolute_move_bps": 33.3704,
+          "observations": 43739,
+          "p90_absolute_move_bps": 127.6596,
+          "perfect_foresight_net_bps": 31.7435,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.3879,
+          "trades_per_day_across_the_universe": 72.0,
+          "trades_per_day_per_asset": 24.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.3009,
+          "horizon_bars": 2,
+          "horizon_hours": 2,
+          "mean_absolute_move_bps": 79.0727,
+          "median_absolute_move_bps": 47.0925,
+          "observations": 43739,
+          "p90_absolute_move_bps": 185.9844,
+          "perfect_foresight_net_bps": 55.2821,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.2959,
+          "trades_per_day_across_the_universe": 36.0,
+          "trades_per_day_per_asset": 12.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.2114,
+          "horizon_bars": 4,
+          "horizon_hours": 4,
+          "mean_absolute_move_bps": 112.5619,
+          "median_absolute_move_bps": 67.525,
+          "observations": 43739,
+          "p90_absolute_move_bps": 265.7221,
+          "perfect_foresight_net_bps": 88.7713,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.2145,
+          "trades_per_day_across_the_universe": 18.0,
+          "trades_per_day_per_asset": 6.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.1471,
+          "horizon_bars": 8,
+          "horizon_hours": 8,
+          "mean_absolute_move_bps": 161.6938,
+          "median_absolute_move_bps": 99.2896,
+          "observations": 43739,
+          "p90_absolute_move_bps": 385.6169,
+          "perfect_foresight_net_bps": 137.9032,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.1544,
+          "trades_per_day_across_the_universe": 9.0,
+          "trades_per_day_per_asset": 3.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.0791,
+          "horizon_bars": 24,
+          "horizon_hours": 24,
+          "mean_absolute_move_bps": 300.6456,
+          "median_absolute_move_bps": 199.7853,
+          "observations": 43739,
+          "p90_absolute_move_bps": 697.8734,
+          "perfect_foresight_net_bps": 276.8551,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.0789,
+          "trades_per_day_across_the_universe": 3.0,
+          "trades_per_day_per_asset": 1.0
+        }
+      ],
+      "SOL": [
+        {
+          "capture_fraction_needed_to_break_even": 0.2447,
+          "horizon_bars": 1,
+          "horizon_hours": 1,
+          "mean_absolute_move_bps": 97.2099,
+          "median_absolute_move_bps": 61.9915,
+          "observations": 29661,
+          "p90_absolute_move_bps": 221.2459,
+          "perfect_foresight_net_bps": 73.4193,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.219,
+          "trades_per_day_across_the_universe": 72.0,
+          "trades_per_day_per_asset": 24.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.1727,
+          "horizon_bars": 2,
+          "horizon_hours": 2,
+          "mean_absolute_move_bps": 137.7528,
+          "median_absolute_move_bps": 87.746,
+          "observations": 29661,
+          "p90_absolute_move_bps": 311.8097,
+          "perfect_foresight_net_bps": 113.9623,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.162,
+          "trades_per_day_across_the_universe": 36.0,
+          "trades_per_day_per_asset": 12.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.1222,
+          "horizon_bars": 4,
+          "horizon_hours": 4,
+          "mean_absolute_move_bps": 194.6135,
+          "median_absolute_move_bps": 127.3306,
+          "observations": 29661,
+          "p90_absolute_move_bps": 443.2944,
+          "perfect_foresight_net_bps": 170.8229,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.1151,
+          "trades_per_day_across_the_universe": 18.0,
+          "trades_per_day_per_asset": 6.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.0859,
+          "horizon_bars": 8,
+          "horizon_hours": 8,
+          "mean_absolute_move_bps": 276.9158,
+          "median_absolute_move_bps": 184.1042,
+          "observations": 29661,
+          "p90_absolute_move_bps": 626.7543,
+          "perfect_foresight_net_bps": 253.1252,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.0798,
+          "trades_per_day_across_the_universe": 9.0,
+          "trades_per_day_per_asset": 3.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.0478,
+          "horizon_bars": 24,
+          "horizon_hours": 24,
+          "mean_absolute_move_bps": 497.9938,
+          "median_absolute_move_bps": 348.7911,
+          "observations": 29661,
+          "p90_absolute_move_bps": 1096.5767,
+          "perfect_foresight_net_bps": 474.2032,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.0405,
+          "trades_per_day_across_the_universe": 3.0,
+          "trades_per_day_per_asset": 1.0
+        }
+      ]
+    },
+    "NEW_HOLDOUT": {
+      "BTC": [
+        {
+          "capture_fraction_needed_to_break_even": 0.8615,
+          "horizon_bars": 1,
+          "horizon_hours": 1,
+          "mean_absolute_move_bps": 27.6151,
+          "median_absolute_move_bps": 18.1789,
+          "observations": 5453,
+          "p90_absolute_move_bps": 62.1037,
+          "perfect_foresight_net_bps": 3.8246,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.605,
+          "trades_per_day_across_the_universe": 72.0,
+          "trades_per_day_per_asset": 24.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.6029,
+          "horizon_bars": 2,
+          "horizon_hours": 2,
+          "mean_absolute_move_bps": 39.4633,
+          "median_absolute_move_bps": 26.2852,
+          "observations": 5452,
+          "p90_absolute_move_bps": 88.3777,
+          "perfect_foresight_net_bps": 15.6728,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.4659,
+          "trades_per_day_across_the_universe": 36.0,
+          "trades_per_day_per_asset": 12.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.4277,
+          "horizon_bars": 4,
+          "horizon_hours": 4,
+          "mean_absolute_move_bps": 55.6179,
+          "median_absolute_move_bps": 35.9796,
+          "observations": 5450,
+          "p90_absolute_move_bps": 126.4566,
+          "perfect_foresight_net_bps": 31.8274,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.3576,
+          "trades_per_day_across_the_universe": 18.0,
+          "trades_per_day_per_asset": 6.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.2974,
+          "horizon_bars": 8,
+          "horizon_hours": 8,
+          "mean_absolute_move_bps": 79.9841,
+          "median_absolute_move_bps": 54.9613,
+          "observations": 5446,
+          "p90_absolute_move_bps": 177.3202,
+          "perfect_foresight_net_bps": 56.1936,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.2563,
+          "trades_per_day_across_the_universe": 9.0,
+          "trades_per_day_per_asset": 3.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.1603,
+          "horizon_bars": 24,
+          "horizon_hours": 24,
+          "mean_absolute_move_bps": 148.3688,
+          "median_absolute_move_bps": 107.9044,
+          "observations": 5430,
+          "p90_absolute_move_bps": 332.5359,
+          "perfect_foresight_net_bps": 124.5782,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.1319,
+          "trades_per_day_across_the_universe": 3.0,
+          "trades_per_day_per_asset": 1.0
+        }
+      ],
+      "ETH": [
+        {
+          "capture_fraction_needed_to_break_even": 0.6732,
+          "horizon_bars": 1,
+          "horizon_hours": 1,
+          "mean_absolute_move_bps": 35.3403,
+          "median_absolute_move_bps": 22.5915,
+          "observations": 5453,
+          "p90_absolute_move_bps": 77.747,
+          "perfect_foresight_net_bps": 11.5498,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.5164,
+          "trades_per_day_across_the_universe": 72.0,
+          "trades_per_day_per_asset": 24.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.4694,
+          "horizon_bars": 2,
+          "horizon_hours": 2,
+          "mean_absolute_move_bps": 50.6857,
+          "median_absolute_move_bps": 31.4321,
+          "observations": 5452,
+          "p90_absolute_move_bps": 114.4245,
+          "perfect_foresight_net_bps": 26.8951,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.401,
+          "trades_per_day_across_the_universe": 36.0,
+          "trades_per_day_per_asset": 12.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.3267,
+          "horizon_bars": 4,
+          "horizon_hours": 4,
+          "mean_absolute_move_bps": 72.8126,
+          "median_absolute_move_bps": 45.968,
+          "observations": 5450,
+          "p90_absolute_move_bps": 162.6109,
+          "perfect_foresight_net_bps": 49.022,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.2938,
+          "trades_per_day_across_the_universe": 18.0,
+          "trades_per_day_per_asset": 6.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.2256,
+          "horizon_bars": 8,
+          "horizon_hours": 8,
+          "mean_absolute_move_bps": 105.4404,
+          "median_absolute_move_bps": 69.1827,
+          "observations": 5446,
+          "p90_absolute_move_bps": 238.4924,
+          "perfect_foresight_net_bps": 81.6499,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.2025,
+          "trades_per_day_across_the_universe": 9.0,
+          "trades_per_day_per_asset": 3.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.1221,
+          "horizon_bars": 24,
+          "horizon_hours": 24,
+          "mean_absolute_move_bps": 194.9175,
+          "median_absolute_move_bps": 136.3605,
+          "observations": 5430,
+          "p90_absolute_move_bps": 437.5838,
+          "perfect_foresight_net_bps": 171.127,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.1074,
+          "trades_per_day_across_the_universe": 3.0,
+          "trades_per_day_per_asset": 1.0
+        }
+      ],
+      "SOL": [
+        {
+          "capture_fraction_needed_to_break_even": 0.5773,
+          "horizon_bars": 1,
+          "horizon_hours": 1,
+          "mean_absolute_move_bps": 41.2123,
+          "median_absolute_move_bps": 27.5563,
+          "observations": 5453,
+          "p90_absolute_move_bps": 92.6557,
+          "perfect_foresight_net_bps": 17.4217,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.4434,
+          "trades_per_day_across_the_universe": 72.0,
+          "trades_per_day_per_asset": 24.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.4028,
+          "horizon_bars": 2,
+          "horizon_hours": 2,
+          "mean_absolute_move_bps": 59.0639,
+          "median_absolute_move_bps": 39.6132,
+          "observations": 5452,
+          "p90_absolute_move_bps": 133.123,
+          "perfect_foresight_net_bps": 35.2733,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.327,
+          "trades_per_day_across_the_universe": 36.0,
+          "trades_per_day_per_asset": 12.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.2834,
+          "horizon_bars": 4,
+          "horizon_hours": 4,
+          "mean_absolute_move_bps": 83.94,
+          "median_absolute_move_bps": 55.9459,
+          "observations": 5450,
+          "p90_absolute_move_bps": 193.4031,
+          "perfect_foresight_net_bps": 60.1495,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.2393,
+          "trades_per_day_across_the_universe": 18.0,
+          "trades_per_day_per_asset": 6.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.1978,
+          "horizon_bars": 8,
+          "horizon_hours": 8,
+          "mean_absolute_move_bps": 120.2721,
+          "median_absolute_move_bps": 85.4306,
+          "observations": 5446,
+          "p90_absolute_move_bps": 268.1299,
+          "perfect_foresight_net_bps": 96.4815,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.1607,
+          "trades_per_day_across_the_universe": 9.0,
+          "trades_per_day_per_asset": 3.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.1065,
+          "horizon_bars": 24,
+          "horizon_hours": 24,
+          "mean_absolute_move_bps": 223.4628,
+          "median_absolute_move_bps": 168.606,
+          "observations": 5430,
+          "p90_absolute_move_bps": 489.5844,
+          "perfect_foresight_net_bps": 199.6722,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.0823,
+          "trades_per_day_across_the_universe": 3.0,
+          "trades_per_day_per_asset": 1.0
+        }
+      ]
+    },
+    "VAL": {
+      "BTC": [
+        {
+          "capture_fraction_needed_to_break_even": 0.6435,
+          "horizon_bars": 1,
+          "horizon_hours": 1,
+          "mean_absolute_move_bps": 36.973,
+          "median_absolute_move_bps": 24.2732,
+          "observations": 8760,
+          "p90_absolute_move_bps": 82.3471,
+          "perfect_foresight_net_bps": 13.1825,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.4928,
+          "trades_per_day_across_the_universe": 72.0,
+          "trades_per_day_per_asset": 24.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.4594,
+          "horizon_bars": 2,
+          "horizon_hours": 2,
+          "mean_absolute_move_bps": 51.7897,
+          "median_absolute_move_bps": 34.1072,
+          "observations": 8760,
+          "p90_absolute_move_bps": 115.8668,
+          "perfect_foresight_net_bps": 27.9992,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.375,
+          "trades_per_day_across_the_universe": 36.0,
+          "trades_per_day_per_asset": 12.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.3231,
+          "horizon_bars": 4,
+          "horizon_hours": 4,
+          "mean_absolute_move_bps": 73.639,
+          "median_absolute_move_bps": 47.656,
+          "observations": 8760,
+          "p90_absolute_move_bps": 172.4378,
+          "perfect_foresight_net_bps": 49.8484,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.2836,
+          "trades_per_day_across_the_universe": 18.0,
+          "trades_per_day_per_asset": 6.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.2238,
+          "horizon_bars": 8,
+          "horizon_hours": 8,
+          "mean_absolute_move_bps": 106.318,
+          "median_absolute_move_bps": 70.2224,
+          "observations": 8760,
+          "p90_absolute_move_bps": 248.7837,
+          "perfect_foresight_net_bps": 82.5274,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.1997,
+          "trades_per_day_across_the_universe": 9.0,
+          "trades_per_day_per_asset": 3.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.1215,
+          "horizon_bars": 24,
+          "horizon_hours": 24,
+          "mean_absolute_move_bps": 195.7442,
+          "median_absolute_move_bps": 138.169,
+          "observations": 8760,
+          "p90_absolute_move_bps": 448.1342,
+          "perfect_foresight_net_bps": 171.9536,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.1068,
+          "trades_per_day_across_the_universe": 3.0,
+          "trades_per_day_per_asset": 1.0
+        }
+      ],
+      "ETH": [
+        {
+          "capture_fraction_needed_to_break_even": 0.5314,
+          "horizon_bars": 1,
+          "horizon_hours": 1,
+          "mean_absolute_move_bps": 44.7671,
+          "median_absolute_move_bps": 29.6386,
+          "observations": 8760,
+          "p90_absolute_move_bps": 99.979,
+          "perfect_foresight_net_bps": 20.9766,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.4152,
+          "trades_per_day_across_the_universe": 72.0,
+          "trades_per_day_per_asset": 24.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.3792,
+          "horizon_bars": 2,
+          "horizon_hours": 2,
+          "mean_absolute_move_bps": 62.7392,
+          "median_absolute_move_bps": 41.3364,
+          "observations": 8760,
+          "p90_absolute_move_bps": 139.4876,
+          "perfect_foresight_net_bps": 38.9486,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.3116,
+          "trades_per_day_across_the_universe": 36.0,
+          "trades_per_day_per_asset": 12.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.2677,
+          "horizon_bars": 4,
+          "horizon_hours": 4,
+          "mean_absolute_move_bps": 88.8807,
+          "median_absolute_move_bps": 59.3219,
+          "observations": 8760,
+          "p90_absolute_move_bps": 199.7904,
+          "perfect_foresight_net_bps": 65.0902,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.2282,
+          "trades_per_day_across_the_universe": 18.0,
+          "trades_per_day_per_asset": 6.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.1852,
+          "horizon_bars": 8,
+          "horizon_hours": 8,
+          "mean_absolute_move_bps": 128.4777,
+          "median_absolute_move_bps": 87.6439,
+          "observations": 8760,
+          "p90_absolute_move_bps": 285.2616,
+          "perfect_foresight_net_bps": 104.6871,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.161,
+          "trades_per_day_across_the_universe": 9.0,
+          "trades_per_day_per_asset": 3.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.1014,
+          "horizon_bars": 24,
+          "horizon_hours": 24,
+          "mean_absolute_move_bps": 234.6624,
+          "median_absolute_move_bps": 166.3943,
+          "observations": 8760,
+          "p90_absolute_move_bps": 523.9642,
+          "perfect_foresight_net_bps": 210.8719,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.0842,
+          "trades_per_day_across_the_universe": 3.0,
+          "trades_per_day_per_asset": 1.0
+        }
+      ],
+      "SOL": [
+        {
+          "capture_fraction_needed_to_break_even": 0.35,
+          "horizon_bars": 1,
+          "horizon_hours": 1,
+          "mean_absolute_move_bps": 67.9788,
+          "median_absolute_move_bps": 47.564,
+          "observations": 8760,
+          "p90_absolute_move_bps": 148.7547,
+          "perfect_foresight_net_bps": 44.1883,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.2615,
+          "trades_per_day_across_the_universe": 72.0,
+          "trades_per_day_per_asset": 24.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.2515,
+          "horizon_bars": 2,
+          "horizon_hours": 2,
+          "mean_absolute_move_bps": 94.5851,
+          "median_absolute_move_bps": 66.2574,
+          "observations": 8760,
+          "p90_absolute_move_bps": 208.6393,
+          "perfect_foresight_net_bps": 70.7946,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.1934,
+          "trades_per_day_across_the_universe": 36.0,
+          "trades_per_day_per_asset": 12.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.1793,
+          "horizon_bars": 4,
+          "horizon_hours": 4,
+          "mean_absolute_move_bps": 132.668,
+          "median_absolute_move_bps": 94.9902,
+          "observations": 8760,
+          "p90_absolute_move_bps": 290.13,
+          "perfect_foresight_net_bps": 108.8774,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.139,
+          "trades_per_day_across_the_universe": 18.0,
+          "trades_per_day_per_asset": 6.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.1277,
+          "horizon_bars": 8,
+          "horizon_hours": 8,
+          "mean_absolute_move_bps": 186.2881,
+          "median_absolute_move_bps": 135.5602,
+          "observations": 8760,
+          "p90_absolute_move_bps": 413.9271,
+          "perfect_foresight_net_bps": 162.4976,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.0995,
+          "trades_per_day_across_the_universe": 9.0,
+          "trades_per_day_per_asset": 3.0
+        },
+        {
+          "capture_fraction_needed_to_break_even": 0.0717,
+          "horizon_bars": 24,
+          "horizon_hours": 24,
+          "mean_absolute_move_bps": 331.8434,
+          "median_absolute_move_bps": 254.4447,
+          "observations": 8760,
+          "p90_absolute_move_bps": 714.1916,
+          "perfect_foresight_net_bps": 308.0529,
+          "round_trip_cost_bps": 23.7906,
+          "share_of_moves_below_cost": 0.0521,
+          "trades_per_day_across_the_universe": 3.0,
+          "trades_per_day_per_asset": 1.0
+        }
+      ]
+    }
+  },
+  "pooled": {
+    "DEV": [
+      {
+        "horizon_bars": 1,
+        "mean_absolute_move_bps": 65.1852,
+        "perfect_foresight_net_bps": 41.3946,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.3631,
+        "trades_per_day_across_the_universe": 72.0
+      },
+      {
+        "horizon_bars": 2,
+        "mean_absolute_move_bps": 92.5494,
+        "perfect_foresight_net_bps": 68.7588,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.278,
+        "trades_per_day_across_the_universe": 36.0
+      },
+      {
+        "horizon_bars": 4,
+        "mean_absolute_move_bps": 131.2558,
+        "perfect_foresight_net_bps": 107.4652,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.2059,
+        "trades_per_day_across_the_universe": 18.0
+      },
+      {
+        "horizon_bars": 8,
+        "mean_absolute_move_bps": 187.7023,
+        "perfect_foresight_net_bps": 163.9117,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.1485,
+        "trades_per_day_across_the_universe": 9.0
+      },
+      {
+        "horizon_bars": 24,
+        "mean_absolute_move_bps": 343.7615,
+        "perfect_foresight_net_bps": 319.9709,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.0778,
+        "trades_per_day_across_the_universe": 3.0
+      }
+    ],
+    "NEW_HOLDOUT": [
+      {
+        "horizon_bars": 1,
+        "mean_absolute_move_bps": 34.7226,
+        "perfect_foresight_net_bps": 10.932,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.5216,
+        "trades_per_day_across_the_universe": 72.0
+      },
+      {
+        "horizon_bars": 2,
+        "mean_absolute_move_bps": 49.7376,
+        "perfect_foresight_net_bps": 25.9471,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.398,
+        "trades_per_day_across_the_universe": 36.0
+      },
+      {
+        "horizon_bars": 4,
+        "mean_absolute_move_bps": 70.7902,
+        "perfect_foresight_net_bps": 46.9996,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.2969,
+        "trades_per_day_across_the_universe": 18.0
+      },
+      {
+        "horizon_bars": 8,
+        "mean_absolute_move_bps": 101.8989,
+        "perfect_foresight_net_bps": 78.1083,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.2065,
+        "trades_per_day_across_the_universe": 9.0
+      },
+      {
+        "horizon_bars": 24,
+        "mean_absolute_move_bps": 188.9164,
+        "perfect_foresight_net_bps": 165.1258,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.1072,
+        "trades_per_day_across_the_universe": 3.0
+      }
+    ],
+    "VAL": [
+      {
+        "horizon_bars": 1,
+        "mean_absolute_move_bps": 49.9063,
+        "perfect_foresight_net_bps": 26.1157,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.3898,
+        "trades_per_day_across_the_universe": 72.0
+      },
+      {
+        "horizon_bars": 2,
+        "mean_absolute_move_bps": 69.7047,
+        "perfect_foresight_net_bps": 45.9141,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.2933,
+        "trades_per_day_across_the_universe": 36.0
+      },
+      {
+        "horizon_bars": 4,
+        "mean_absolute_move_bps": 98.3959,
+        "perfect_foresight_net_bps": 74.6053,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.2169,
+        "trades_per_day_across_the_universe": 18.0
+      },
+      {
+        "horizon_bars": 8,
+        "mean_absolute_move_bps": 140.3613,
+        "perfect_foresight_net_bps": 116.5707,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.1534,
+        "trades_per_day_across_the_universe": 9.0
+      },
+      {
+        "horizon_bars": 24,
+        "mean_absolute_move_bps": 254.0833,
+        "perfect_foresight_net_bps": 230.2928,
+        "round_trip_cost_bps": 23.7906,
+        "share_of_moves_below_cost": 0.081,
+        "trades_per_day_across_the_universe": 3.0
+      }
+    ]
+  },
+  "promotion": "NONE",
+  "schema_version": "EDGE07_ACTIVE_COST_BARRIER_V1",
+  "the_frequency_target_is_reachable_at": [
+    {
+      "horizon_bars": 1,
+      "mean_absolute_move_bps": 34.7226,
+      "perfect_foresight_net_bps": 10.932,
+      "round_trip_cost_bps": 23.7906,
+      "share_of_moves_below_cost": 0.5216,
+      "trades_per_day_across_the_universe": 72.0
+    },
+    {
+      "horizon_bars": 2,
+      "mean_absolute_move_bps": 49.7376,
+      "perfect_foresight_net_bps": 25.9471,
+      "round_trip_cost_bps": 23.7906,
+      "share_of_moves_below_cost": 0.398,
+      "trades_per_day_across_the_universe": 36.0
+    },
+    {
+      "horizon_bars": 4,
+      "mean_absolute_move_bps": 70.7902,
+      "perfect_foresight_net_bps": 46.9996,
+      "round_trip_cost_bps": 23.7906,
+      "share_of_moves_below_cost": 0.2969,
+      "trades_per_day_across_the_universe": 18.0
+    },
+    {
+      "horizon_bars": 8,
+      "mean_absolute_move_bps": 101.8989,
+      "perfect_foresight_net_bps": 78.1083,
+      "round_trip_cost_bps": 23.7906,
+      "share_of_moves_below_cost": 0.2065,
+      "trades_per_day_across_the_universe": 9.0
+    },
+    {
+      "horizon_bars": 24,
+      "mean_absolute_move_bps": 188.9164,
+      "perfect_foresight_net_bps": 165.1258,
+      "round_trip_cost_bps": 23.7906,
+      "share_of_moves_below_cost": 0.1072,
+      "trades_per_day_across_the_universe": 3.0
+    }
+  ]
+}

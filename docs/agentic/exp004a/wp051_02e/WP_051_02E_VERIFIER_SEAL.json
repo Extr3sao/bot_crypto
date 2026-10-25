@@ -1,0 +1,199 @@
+{
+  "schema_version": "1.0",
+  "run_id": "wp051-02e/EXP-004A/2026-10-21",
+  "verifier": "verifier-d/EXP-004A/WP-051-02E",
+  "generated_at_utc": "2026-10-21T19:33:54Z",
+  "head": "a8b4dbb64ac2c432d345125577abe4d5bc637803",
+  "status": "PASS",
+  "entries": 23,
+  "mismatched": [],
+  "missing_reports": [],
+  "not_in_head": [],
+  "detail": "the manifest is verified against the files on disk and against the objects Git stores; an artefact that is not committed yet is listed, not treated as absent",
+  "entries_by_path": [
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/RFC_EXP004A_051_02E.md",
+      "recorded": "053774d7e222f48b34225a45c282e889ae7b004de4210f34c6dde7c9f5c06c96",
+      "now": "053774d7e222f48b34225a45c282e889ae7b004de4210f34c6dde7c9f5c06c96",
+      "match": true,
+      "in_head": true,
+      "head_blob": "28e455dd51a9bf3b361ebdf5fd4aa00119869d68"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_BASELINE.json",
+      "recorded": "d42d2bffa54906a436a6e8e470f79ee8d5d4c4310d94ab31ae74ea37375e1b7e",
+      "now": "d42d2bffa54906a436a6e8e470f79ee8d5d4c4310d94ab31ae74ea37375e1b7e",
+      "match": true,
+      "in_head": true,
+      "head_blob": "6d1620a595a5771e9a2a3b9f698d0ff6ff0b1aea"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_PREFLIGHT.json",
+      "recorded": "ebfc9aff54381fb00f09d261955ee72ef4afc94fd881edcc25944cb005d668e2",
+      "now": "ebfc9aff54381fb00f09d261955ee72ef4afc94fd881edcc25944cb005d668e2",
+      "match": true,
+      "in_head": true,
+      "head_blob": "260cb7c84f8c10b24647db32798416a6b840945a"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_CAPTURE_REPORT.json",
+      "recorded": "059ba996e7a7f102caa5eb2c6f6cf1d62460eb2feffda6250e6ff83ffa8f62bc",
+      "now": "059ba996e7a7f102caa5eb2c6f6cf1d62460eb2feffda6250e6ff83ffa8f62bc",
+      "match": true,
+      "in_head": true,
+      "head_blob": "ab5420cb2d9742fc76b4f6a9732962e9e4ccde8c"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_INDEPENDENT_VERIFICATION.json",
+      "recorded": "a058ee841770fa10ca0bc6cfd2a4fa5c96ee36c924ab110d7a2d7eb35b472561",
+      "now": "a058ee841770fa10ca0bc6cfd2a4fa5c96ee36c924ab110d7a2d7eb35b472561",
+      "match": true,
+      "in_head": true,
+      "head_blob": "f2e0bc39afa5bf9e6401915fadd3ad268e898af0"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/WP_051_02E_FINAL_REPORT.md",
+      "recorded": "30603ce0115ac829b21474abdcc176bd3962e3be31a7e943f32b47668a5f357f",
+      "now": "30603ce0115ac829b21474abdcc176bd3962e3be31a7e943f32b47668a5f357f",
+      "match": true,
+      "in_head": true,
+      "head_blob": "41e4cb1bf6d0f82e8a57fb325ab9b50d89ec655d"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/RUN_REPORT.md",
+      "recorded": "51f7d5a3674e8a6b7464e3f4b59f4a0f23b0fd103012cf636a2e03838e82d7d3",
+      "now": "51f7d5a3674e8a6b7464e3f4b59f4a0f23b0fd103012cf636a2e03838e82d7d3",
+      "match": true,
+      "in_head": true,
+      "head_blob": "94abc0f6ff0f4c2b41b0186863fb8e3ecde79128"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/RUN_REPORT.json",
+      "recorded": "2bc44f4414bd21fd74947308870311fcddb11f965463551bcb5c16c8b00555b0",
+      "now": "2bc44f4414bd21fd74947308870311fcddb11f965463551bcb5c16c8b00555b0",
+      "match": true,
+      "in_head": true,
+      "head_blob": "2bc105a6537e1fffefd6cf9d6fb07e4a5a0c0079"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/TEST_RUNS.json",
+      "recorded": "70929ade5df0f860952b5aff7c4a139ab65efb4d31a27e053c3e70f7b7283b00",
+      "now": "70929ade5df0f860952b5aff7c4a139ab65efb4d31a27e053c3e70f7b7283b00",
+      "match": true,
+      "in_head": true,
+      "head_blob": "d7d7dbdb6e6eee9e89499ab13d54e8f762bd45e2"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/preflight_run.log",
+      "recorded": "da987811e2ae07b56cd9457f147c1a31a3b8645307911b7524f46287458a32fe",
+      "now": "da987811e2ae07b56cd9457f147c1a31a3b8645307911b7524f46287458a32fe",
+      "match": true,
+      "in_head": true,
+      "head_blob": "17d38d9fbb3c16959c0cc827c1fc81757c5b7008"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/verify_run.log",
+      "recorded": "da2ab384d8deb2814851352638c615293f9ffb1422208276b611d31391d4b698",
+      "now": "da2ab384d8deb2814851352638c615293f9ffb1422208276b611d31391d4b698",
+      "match": true,
+      "in_head": true,
+      "head_blob": "661536ea006ef96ec272c3a94b4ea4af90e60b5e"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_capture_provenance.log",
+      "recorded": "c2522a0e71a21fda065f807fc48213cbb983729749777894e58f35b4678b1473",
+      "now": "c2522a0e71a21fda065f807fc48213cbb983729749777894e58f35b4678b1473",
+      "match": true,
+      "in_head": true,
+      "head_blob": "de1e34d406dc9affa37f2ab3536dd052d474674a"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_wp051_02e.log",
+      "recorded": "0b8ce5206d5f759505cde793a002bb3819e86fc8bf49b983fbf32b35a894b36c",
+      "now": "0b8ce5206d5f759505cde793a002bb3819e86fc8bf49b983fbf32b35a894b36c",
+      "match": true,
+      "in_head": true,
+      "head_blob": "7f687ed7da9fe84db92053ef1e908918d88738e6"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_adversarial.log",
+      "recorded": "5c3793ceeaf8dbd0a71e307be0d1cb542769a2bd8f6ef9cb048bc226fc95ded2",
+      "now": "5c3793ceeaf8dbd0a71e307be0d1cb542769a2bd8f6ef9cb048bc226fc95ded2",
+      "match": true,
+      "in_head": true,
+      "head_blob": "27bca70c2f42fd83b388dd5ebe1f50daffbf70b8"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_admission.log",
+      "recorded": "8a1c576315a65317d936ea19fe30011185b6de81c75395362a1171c047048ef3",
+      "now": "8a1c576315a65317d936ea19fe30011185b6de81c75395362a1171c047048ef3",
+      "match": true,
+      "in_head": true,
+      "head_blob": "a93d4bc991a8909456e97a46680bfcfef2864ed8"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02e/evidence/pytest_prereg_gate.log",
+      "recorded": "814150574d6770658e13b4c456218e1a88ff32d7cd849c830aa8143342cb1461",
+      "now": "814150574d6770658e13b4c456218e1a88ff32d7cd849c830aa8143342cb1461",
+      "match": true,
+      "in_head": true,
+      "head_blob": "62975c65ca58baf5ee29c18ca1e5e9e7d321a409"
+    },
+    {
+      "path": "scripts/exp004a_wp051_02e_preflight.py",
+      "recorded": "6e9b7d8f08df5947f40513b565e765e7633b750a07dbcab1a456f41f447dd58c",
+      "now": "6e9b7d8f08df5947f40513b565e765e7633b750a07dbcab1a456f41f447dd58c",
+      "match": true,
+      "in_head": true,
+      "head_blob": "41749c4d8c53deb74e6f8bfe0a4dba97eb7af2c4"
+    },
+    {
+      "path": "scripts/exp004a_wp051_02e_verify.py",
+      "recorded": "945684c66586bdf49a91079e6b78a5c2bc2a1eca1f2f09bbac80195921ca645b",
+      "now": "945684c66586bdf49a91079e6b78a5c2bc2a1eca1f2f09bbac80195921ca645b",
+      "match": true,
+      "in_head": true,
+      "head_blob": "60e92a942014e9bbf648f097fd340d052ec46e5c"
+    },
+    {
+      "path": "tests/unit/research/test_exp004a_wp051_02e.py",
+      "recorded": "0c8783a3f08ccc182edaff61c2536320222cf72de9854325983bc0b1ad58e61f",
+      "now": "0c8783a3f08ccc182edaff61c2536320222cf72de9854325983bc0b1ad58e61f",
+      "match": true,
+      "in_head": true,
+      "head_blob": "94cd516561639d5b125b36e2e2d51516a2990b45"
+    },
+    {
+      "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+      "recorded": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+      "now": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+      "match": true,
+      "in_head": true,
+      "head_blob": "9421cc52a8a3366b3a1fa6998d547b0a002ed89b"
+    },
+    {
+      "path": "config/preregistrations/EXP-004A.datasets.json",
+      "recorded": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+      "now": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+      "match": true,
+      "in_head": true,
+      "head_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7"
+    },
+    {
+      "path": "scripts/exp004a_capture.py",
+      "recorded": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+      "now": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+      "match": true,
+      "in_head": true,
+      "head_blob": "052832c2252a719c63d0859628ada648c799c6ce"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02d/EVIDENCE_MANIFEST.json",
+      "recorded": "ccefdac4151ae0435e5570549a15eb9974336fd14248e06c61e7005e1308c984",
+      "now": "ccefdac4151ae0435e5570549a15eb9974336fd14248e06c61e7005e1308c984",
+      "match": true,
+      "in_head": true,
+      "head_blob": "c86254b68e8409c92587bc724bffc43922b44849"
+    }
+  ]
+}

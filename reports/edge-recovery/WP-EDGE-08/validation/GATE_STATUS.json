@@ -1,0 +1,124 @@
+{
+  "as_of_utc": "2026-10-14T20:37:22Z",
+  "note": "GATE_STATUS is a status table, not a permission: `promotion` is NONE and `order_sent` is false for every arm in this package, and an ADMIT_PAPER verdict would mean a paper lane and nothing else",
+  "order_sent": false,
+  "promotion": "NONE",
+  "rows": [
+    {
+      "arm": "edge06_trend_fixed",
+      "cross_section_load": "not read",
+      "failed": null,
+      "frozen_gate_power": "powered (oos n=144 >= 30)",
+      "frozen_gate_verdict": "REJECT",
+      "registered_verdict": "NOT_APPLICABLE",
+      "track": "CURRENT"
+    },
+    {
+      "arm": "edge07_active_thrust",
+      "cross_section_load": "not read",
+      "failed": null,
+      "frozen_gate_power": "powered (oos n=196 >= 30)",
+      "frozen_gate_verdict": "REJECT",
+      "registered_verdict": "NOT_APPLICABLE",
+      "track": "CURRENT"
+    },
+    {
+      "arm": "edge08_active_daybreak_1h",
+      "cross_section_load": "read",
+      "failed": [
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "P6",
+        "R1",
+        "R2",
+        "F1"
+      ],
+      "frozen_gate_power": "powered (oos n=103 >= 30)",
+      "frozen_gate_verdict": "REJECT",
+      "registered_verdict": "REJECT",
+      "track": "ACTIVE"
+    },
+    {
+      "arm": "edge08_active_multiday_range_1h",
+      "cross_section_load": "read",
+      "failed": [
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "R1",
+        "R2",
+        "S1",
+        "F1"
+      ],
+      "frozen_gate_power": "powered (oos n=128 >= 30)",
+      "frozen_gate_verdict": "REJECT",
+      "registered_verdict": "REJECT",
+      "track": "ACTIVE"
+    },
+    {
+      "arm": "edge08_active_stretch_revert_1h",
+      "cross_section_load": "not read",
+      "failed": [
+        "C0"
+      ],
+      "frozen_gate_power": null,
+      "frozen_gate_verdict": null,
+      "registered_verdict": "REJECT_NO_GROSS_EDGE",
+      "track": "ACTIVE"
+    },
+    {
+      "arm": "edge08_quality_breakout_daily",
+      "cross_section_load": "read",
+      "failed": [
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "P6",
+        "R1",
+        "R2",
+        "S1",
+        "F2"
+      ],
+      "frozen_gate_power": "powered (oos n=30 >= 30)",
+      "frozen_gate_verdict": "REJECT",
+      "registered_verdict": "REJECT",
+      "track": "QUALITY"
+    },
+    {
+      "arm": "edge08_quality_pullback_daily",
+      "cross_section_load": "not read",
+      "failed": [
+        "C0"
+      ],
+      "frozen_gate_power": null,
+      "frozen_gate_verdict": null,
+      "registered_verdict": "REJECT_NO_GROSS_EDGE",
+      "track": "QUALITY"
+    },
+    {
+      "arm": "edge08_quality_reversion_daily",
+      "cross_section_load": "not read",
+      "failed": [
+        "C0"
+      ],
+      "frozen_gate_power": null,
+      "frozen_gate_verdict": null,
+      "registered_verdict": "REJECT_NO_GROSS_EDGE",
+      "track": "QUALITY"
+    },
+    {
+      "arm": "edge_trend_01_4h",
+      "cross_section_load": "not read",
+      "failed": null,
+      "frozen_gate_power": "powered (oos n=126 >= 30)",
+      "frozen_gate_verdict": "REJECT",
+      "registered_verdict": "NOT_APPLICABLE",
+      "track": "CURRENT"
+    }
+  ],
+  "schema_version": "EDGE08_V1"
+}

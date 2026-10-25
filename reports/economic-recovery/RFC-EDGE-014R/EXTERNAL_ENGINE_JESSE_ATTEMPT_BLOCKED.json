@@ -1,0 +1,128 @@
+{
+  "engine": "jesse",
+  "attempted_at_utc": "2026-10-16T19:54:43Z",
+  "inside_repository_tree": false,
+  "order_sent": false,
+  "credentials_used": false,
+  "bootstrap": "coordination_runtime.start(owner client) \u2014 the same call the jesse CLI makes",
+  "history": [
+    {
+      "attempt": 1,
+      "what": "called jesse.modes.backtest_mode.run directly with candles in memory",
+      "outcome": "BLOCKED",
+      "stage": "run",
+      "error_type": "AttributeError",
+      "error": "'NoneType' object has no attribute 'sismember'",
+      "cause": "no Jesse project (strategies/ + storage/) existed, so jesse.services.redis bound no client and the bundled Rust coordinator was never started"
+    }
+  ],
+  "version": "3.3.5",
+  "candles": {
+    "Binance-BTC-USDT": {
+      "shaped": true,
+      "rows": 59940
+    },
+    "Binance-ETH-USDT": {
+      "shaped": true,
+      "rows": 59940
+    }
+  },
+  "window": {
+    "start_date": "2026-09-05",
+    "finish_date": "2026-10-16"
+  },
+  "coordinator": {
+    "bootstrap_ok": true,
+    "app_port": "9901",
+    "client_registered_active": true
+  },
+  "invocation": {
+    "entrypoint": "jesse.modes.backtest_mode.run",
+    "routes": [
+      {
+        "exchange": "Binance",
+        "strategy": "NeutralMaCross",
+        "symbol": "BTC-USDT",
+        "timeframe": "1h"
+      },
+      {
+        "exchange": "Binance",
+        "strategy": "NeutralMaCross",
+        "symbol": "ETH-USDT",
+        "timeframe": "1h"
+      }
+    ],
+    "start_date": "2026-09-05",
+    "finish_date": "2026-10-16",
+    "candles_passed_in_memory": true,
+    "user_config": {
+      "warm_up_candles": 0,
+      "logging": {
+        "strategy_execution": true,
+        "order_submission": true,
+        "order_cancellation": true,
+        "order_execution": true,
+        "position_opened": true,
+        "position_increased": true,
+        "position_reduced": true,
+        "position_closed": true,
+        "shorter_period_candles": false,
+        "trading_candles": true,
+        "balance_update": true,
+        "exchange_ws_reconnection": true
+      },
+      "exchanges": {
+        "Binance": {
+          "fee": 0.001,
+          "type": "spot",
+          "balance": 10000.0,
+          "futures_leverage": 1,
+          "futures_leverage_mode": "cross"
+        }
+      }
+    },
+    "one_route_per_run": true
+  },
+  "strategy_module_file": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\edge14r\\jesse_ws\\strategies\\NeutralMaCross\\__init__.py",
+  "signal_log": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\edge14r\\jesse_ws\\signal_log.jsonl",
+  "outcome": "EXECUTED_WITH_POST_RUN_FAILURE",
+  "stage": "run",
+  "error_type": "InsufficientBalance",
+  "error": "Not enough balance. Available balance at Binance for USDT is 9897.604508182874 but you're trying to spend 9897.604508182876",
+  "traceback_tail": "Traceback (most recent call last):\n  File \"C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\scripts\\edge14r_jesse_attempt.py\", line 420, in main\n    jesse_backtest(\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\jesse\\.venv\\Lib\\site-packages\\jesse\\modes\\backtest_mode.py\", line 64, in run\n    _execute_backtest(\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\jesse\\.venv\\Lib\\site-packages\\jesse\\modes\\backtest_mode.py\", line 161, in _execute_backtest\n    result = simulator(\n             ^^^^^^^^^^\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\jesse\\.venv\\Lib\\site-packages\\jesse\\modes\\backtest_mode.py\", line 552, in simulator\n    return _step_simulator(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\jesse\\.venv\\Lib\\site-packages\\jesse\\modes\\backtest_mode.py\", line 1263, in _step_simulator\n    strategy._execute()\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\jesse\\.venv\\Lib\\site-packages\\jesse\\strategies\\Strategy.py\", line 1359, in _execute\n    self._check()\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\jesse\\.venv\\Lib\\site-packages\\jesse\\strategies\\Strategy.py\", line 1167, in _check\n    self._execute_long()\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\jesse\\.venv\\Lib\\site-packages\\jesse\\strategies\\Strategy.py\", line 662, in _execute_long\n    self._submit_buy_orders()\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\jesse\\.venv\\Lib\\site-packages\\jesse\\strategies\\Strategy.py\", line 676, in _submit_buy_orders\n    self.broker.buy_at_market(o[0])\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\jesse\\.venv\\Lib\\site-packages\\jesse\\services\\broker.py\", line 58, in buy_at_market\n    return self.api.market_order(\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\jesse\\.venv\\Lib\\site-packages\\jesse\\services\\api.py\", line 57, in market_order\n    return self.drivers[exchange].market_order(symbol, qty, current_price, side, reduce_only)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\jesse\\.venv\\Lib\\site-packages\\jesse\\exchanges\\sandbox\\Sandbox.py\", line 16, in market_order\n    return order_service.create_order({\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\jesse\\.venv\\Lib\\site-packages\\jesse\\services\\order_service.py\", line 44, in create_order\n    e.on_order_submission(order)\n  File \"C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14r\\engines\\jesse\\.venv\\Lib\\site-packages\\jesse\\models\\SpotExchange.py\", line 54, in on_order_submission\n    raise InsufficientBalance(\njesse.exceptions.InsufficientBalance: Not enough balance. Available balance at Binance for USDT is 9897.604508182874 but you're trying to spend 9897.604508182876\n",
+  "runs": [],
+  "engine_export_trades": 0,
+  "strategy_executions": 108,
+  "long_signals": 5,
+  "trades": [
+    {
+      "symbol": "BTC-USDT",
+      "exchange": "Binance",
+      "type": "long",
+      "opened_at": 1788660000000,
+      "closed_at": 1788717600000,
+      "entry_price": 79951.39,
+      "exit_price": 79745.34,
+      "qty": 0.12507599930407715,
+      "fee": 19.964253862253052,
+      "size": 10000.0,
+      "pnl": -45.73616351885851,
+      "holding_period": 57600
+    },
+    {
+      "symbol": "BTC-USDT",
+      "exchange": "Binance",
+      "type": "long",
+      "opened_at": 1788721200000,
+      "closed_at": 1788764400000,
+      "entry_price": 79955.34,
+      "exit_price": 79659.27,
+      "qty": 0.12449812118103429,
+      "fee": 19.861801628593874,
+      "size": 9954.289608390798,
+      "pnl": -56.721960366661754,
+      "holding_period": 43200
+    }
+  ],
+  "n_trades": 2
+}

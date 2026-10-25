@@ -1,0 +1,91 @@
+{
+  "schema_version": "wp-run-report-v1",
+  "work_package": "WP-OPS-BACKGROUND-001",
+  "title": "Windowless execution for Trading Agentic Portable automation",
+  "generated_at_utc": "2026-10-18T18:45:00Z",
+  "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "mode": "OFFLINE — no keys, no orders, no capital, no live path",
+  "scope": [
+    "src/trading_bot/ops/windowless.py",
+    "src/trading_bot/autonomous/supervisor.py",
+    "scripts/windowless.py",
+    "scripts/ops_background_audit.py",
+    "scripts/ops_window_origin.py",
+    "scripts/ops_windowless_probe.py",
+    "scripts/cap004_supervisor.py",
+    "scripts/wp9_runtime_rehearsal.py",
+    "scripts/recovery_run_report.py",
+    "scripts/alpha002_capture.cmd",
+    "tests/unit/ops/test_windowless.py",
+    "tests/unit/research/test_campaign_supervisor.py",
+    "docs/runtime/WINDOWLESS_EXECUTION.md"
+  ],
+  "untouched": [
+    "src/trading_bot/risk/**",
+    "src/trading_bot/paper/**",
+    "config/**"
+  ],
+  "origin": {
+    "console_is_created_at": "Freebuff.exe (GUI) -> bun.exe (CONSOLE)",
+    "gui_ancestor": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Programs\\@codebufffreebuff-desktop\\Freebuff.exe",
+    "first_console_child": "bun.exe",
+    "shell_child": "C:\\Program Files\\Git\\usr\\bin\\bash.exe",
+    "verdict": "EXTERNAL — Codebuff's command runner, not a repository launcher"
+  },
+  "tests": {
+    "new_suite": {"path": "tests/unit/ops/test_windowless.py", "result": "13 passed", "exit_code": 0},
+    "red": {"observation": "ModuleNotFoundError: No module named 'trading_bot.ops'", "exit_code": 1},
+    "autonomous": {"count": 284, "result": "passed", "exit_code": 0},
+    "campaign_supervisor": {"count": 39, "result": "passed", "exit_code": 0},
+    "scheduler_runner_edge04r": {"count": 90, "result": "passed", "exit_code": 0},
+    "edge04_autonomous": {"count": 87, "result": "passed", "exit_code": 0},
+    "combined_ops_autonomous_campaign": {"count": 335, "result": "passed", "exit_code": 0}
+  },
+  "audit": {
+    "red": {"high": 7, "medium": 333, "verdict": "HIGH_FINDINGS", "artifact": "WINDOWLESS_AUDIT_RED.json"},
+    "green": {"high": 0, "medium": 324, "verdict": "CLEAN", "artifact": "WINDOWLESS_AUDIT_GREEN.json"},
+    "medium_breakdown": {
+      "RUN_WITHOUT_WINDOWLESS": 303,
+      "BAT_WITHOUT_WINDOWLESS": 20,
+      "RESEARCH_PROBE_CMD_ACTION": 1
+    }
+  },
+  "live_probe": {
+    "artifact": "WINDOWLESS_LIVE_PROBE.json",
+    "parent_has_console": false,
+    "plain_attached_processes": 9,
+    "guarded_attached_processes": 2,
+    "structural_verdict": "PASS",
+    "visual_verdict": "NOT_OBSERVABLE",
+    "visual_reason": "ConPTY console has no HWND on this host; the claim is the mechanism and the attachment difference, not an unobserved window"
+  },
+  "executions": {
+    "pytest_through_launcher": {"exit_code": 0, "tests": "12 passed", "log": "evidence/pytest.log", "execution_log": "evidence/pytest.execution.jsonl"},
+    "capture_through_launcher": {"exit_code": 0, "bars": 200, "artifacts": ["CAPTURE.json", "DATA_COVERAGE_LEDGER.jsonl", "PIT_OPEN_EVENT_TRACE.jsonl", "RISK_NET_RECONCILIATION.json"], "log": "evidence/capture.log"},
+    "timeout": {"exit_code": 124, "timed_out": true, "job_object": true, "artifact": "evidence/timeout.execution.jsonl"},
+    "missing_command": {"exit_code": 127, "artifact": "evidence/launcher_missing.log"}
+  },
+  "static_checks": {
+    "ruff": {"scope": "new and touched files", "result": "All checks passed", "exit_code": 0},
+    "mypy": {"scope": "7 new/touched modules", "result": "Success: no issues found", "exit_code": 0},
+    "mypy_preexisting": {"path": "scripts/wp9_runtime_rehearsal.py", "errors": 10, "note": "present at HEAD; not introduced or suppressed by this WP"}
+  },
+  "blocked": {
+    "tap_061_excel": {
+      "status": "BLOCKED",
+      "reason": "no master workbook exists on this host; only an orphan Excel lock file Downloads/~$Tareas_Programadas.xlsx",
+      "searched": ["repository", "C:\\Users\\GVLLFR0035\\Downloads", "Desktop", "Documents", "OneDrive", "G:"],
+      "deliverable": ["TAP-061_ROW.json", "TAP-061_ROW.md"]
+    }
+  },
+  "governance": {
+    "LIVE_TRADING": "DISABLED",
+    "orders_created": 0,
+    "false_success": 0,
+    "claims_not_made": [
+      "that a visible window was observed and then suppressed on this host",
+      "that every subprocess call in the repository has been migrated",
+      "that the Codebuff launcher has been fixed"
+    ]
+  }
+}

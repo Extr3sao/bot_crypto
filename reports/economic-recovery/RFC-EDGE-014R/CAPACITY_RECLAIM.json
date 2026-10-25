@@ -1,0 +1,30 @@
+{
+  "edge14_clone_prune": {
+    "freed_bytes": 147456,
+    "note": "shallow bare clones fetched by the previous RFC-EDGE-014 pass; re-fetchable from the pinned SHAs",
+    "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14_clones"
+  },
+  "free_bytes_after": 8108986368,
+  "free_bytes_before": 6285803520,
+  "mypy_cache_prune": {
+    "freed_bytes": 13840384,
+    "note": "type-check cache; regenerated on next mypy run"
+  },
+  "pip_cache_purge": {
+    "freed_bytes": 716988416,
+    "note": "regenerable download cache; no project evidence",
+    "path": "c:\\users\\gvllfr0035\\appdata\\local\\pip\\cache"
+  },
+  "pycache_prune": {
+    "dirs_removed": 218,
+    "freed_bytes": 54829056,
+    "note": "bytecode caches; regenerated on next import"
+  },
+  "pytest_temp_prune": {
+    "dirs_removed": 8,
+    "freed_bytes": 1037377536,
+    "note": "pytest tmp_path scratch older than 2h; pytest's own retention policy keeps the recent ones",
+    "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035"
+  },
+  "reclaimed_bytes": 1823182848
+}

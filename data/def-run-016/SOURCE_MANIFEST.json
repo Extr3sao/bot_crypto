@@ -1,0 +1,121 @@
+{
+  "entries": {
+    "AUDIT_COMPARISON.json": {
+      "bytes": 203606,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/AUDIT_COMPARISON.json",
+      "purpose": "captura publicada por RFC-016 contra la que se reconcilia",
+      "sha256": "9f516c05bc76f6637cbcc421c958f1a567a7295a5ca27a3b42349a5a4a270431",
+      "source_sha256": "9f516c05bc76f6637cbcc421c958f1a567a7295a5ca27a3b42349a5a4a270431"
+    },
+    "AUDIT_CURRENT.json": {
+      "bytes": 159176,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/AUDIT_CURRENT.json",
+      "purpose": "captura publicada por RFC-016 contra la que se reconcilia",
+      "sha256": "36f205d10467290acfd9f1429ac335f4c6ddd65f2e34f51d4590e58be3f1f3c2",
+      "source_sha256": "36f205d10467290acfd9f1429ac335f4c6ddd65f2e34f51d4590e58be3f1f3c2"
+    },
+    "AUDIT_PROPOSED.json": {
+      "bytes": 82729,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/AUDIT_PROPOSED.json",
+      "purpose": "captura publicada por RFC-016 contra la que se reconcilia",
+      "sha256": "260af6372a378e29c143bd04b89b3ef38a75c8efacc7f8ef584984bfe8c9f7ff",
+      "source_sha256": "260af6372a378e29c143bd04b89b3ef38a75c8efacc7f8ef584984bfe8c9f7ff"
+    },
+    "ECONOMICS.json": {
+      "bytes": 37422,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/ECONOMICS.json",
+      "purpose": "captura publicada por RFC-016 contra la que se reconcilia",
+      "sha256": "fae572dd1397ee05189b4bf5a93859f5c64ee6eeb32c8bf3afb1ad3d8326054b",
+      "source_sha256": "fae572dd1397ee05189b4bf5a93859f5c64ee6eeb32c8bf3afb1ad3d8326054b"
+    },
+    "RFC16_ARTIFACT_MANIFEST.json": {
+      "bytes": 7924,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/ARTIFACT_MANIFEST.json",
+      "purpose": "ancla original: sus sha256 son los que public\u00f3 RFC-016",
+      "sha256": "7ef7950e5896da05656745c55aa694085e08cbc18778c044652e9de25d31bc44",
+      "source_sha256": "7ef7950e5896da05656745c55aa694085e08cbc18778c044652e9de25d31bc44"
+    },
+    "ledgers/CURRENT/m1_cadence1.jsonl": {
+      "bytes": 732895,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/CURRENT/m1_cadence1.jsonl",
+      "purpose": "ledger hash-chained del run: fuente primaria de la reconstrucci\u00f3n",
+      "sha256": "08494714fbb0813a14c7ae43a947fa953a3e8b3c39cf784e8380408bebb047ab",
+      "source_sha256": "08494714fbb0813a14c7ae43a947fa953a3e8b3c39cf784e8380408bebb047ab"
+    },
+    "ledgers/CURRENT/m1_cadence5.jsonl": {
+      "bytes": 189648,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/CURRENT/m1_cadence5.jsonl",
+      "purpose": "ledger hash-chained del run: fuente primaria de la reconstrucci\u00f3n",
+      "sha256": "f984eede8e0458bf11ff1d21d5a0420b17ff2fc94652603283ddbf4ca2f557d4",
+      "source_sha256": "f984eede8e0458bf11ff1d21d5a0420b17ff2fc94652603283ddbf4ca2f557d4"
+    },
+    "ledgers/CURRENT/m1_hole.jsonl": {
+      "bytes": 729672,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/CURRENT/m1_hole.jsonl",
+      "purpose": "ledger hash-chained del run: fuente primaria de la reconstrucci\u00f3n",
+      "sha256": "8749613030a73a78afd3e9550a9a1d3202d08865167a0f2c37d7f23ab1d64854",
+      "source_sha256": "8749613030a73a78afd3e9550a9a1d3202d08865167a0f2c37d7f23ab1d64854"
+    },
+    "ledgers/CURRENT/m1_zero_delay.jsonl": {
+      "bytes": 741583,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/CURRENT/m1_zero_delay.jsonl",
+      "purpose": "ledger hash-chained del run: fuente primaria de la reconstrucci\u00f3n",
+      "sha256": "82906e889e189e9ad0d129ef7cc99e927b1254a5b53b3a21d42812b081f3ec90",
+      "source_sha256": "82906e889e189e9ad0d129ef7cc99e927b1254a5b53b3a21d42812b081f3ec90"
+    },
+    "ledgers/CURRENT/m3_cadence1.jsonl": {
+      "bytes": 209389,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/CURRENT/m3_cadence1.jsonl",
+      "purpose": "ledger hash-chained del run: fuente primaria de la reconstrucci\u00f3n",
+      "sha256": "c0a350b9667335be8927142e0914e3e01c77ddadaf0dcc5b0a82e832d8c5db40",
+      "source_sha256": "c0a350b9667335be8927142e0914e3e01c77ddadaf0dcc5b0a82e832d8c5db40"
+    },
+    "ledgers/PROPOSED/m1_cadence1.jsonl": {
+      "bytes": 617204,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/PROPOSED/m1_cadence1.jsonl",
+      "purpose": "ledger hash-chained del run: fuente primaria de la reconstrucci\u00f3n",
+      "sha256": "ebe16ee1f7baa72854bfb4f07f3055caf87f961c0a023f699848de86fd45dabd",
+      "source_sha256": "ebe16ee1f7baa72854bfb4f07f3055caf87f961c0a023f699848de86fd45dabd"
+    },
+    "ledgers/PROPOSED/m1_cadence5.jsonl": {
+      "bytes": 189644,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/PROPOSED/m1_cadence5.jsonl",
+      "purpose": "ledger hash-chained del run: fuente primaria de la reconstrucci\u00f3n",
+      "sha256": "a7bee1f5c7abc71f995344b33a4610aa25f5398a06301debf4330489acf492ad",
+      "source_sha256": "a7bee1f5c7abc71f995344b33a4610aa25f5398a06301debf4330489acf492ad"
+    },
+    "ledgers/PROPOSED/m1_hole.jsonl": {
+      "bytes": 615428,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/PROPOSED/m1_hole.jsonl",
+      "purpose": "ledger hash-chained del run: fuente primaria de la reconstrucci\u00f3n",
+      "sha256": "dd1779623c757254c967bfc85bf2c0e15da5b6c4fd1d4c7acbef9aa3b53d9dcb",
+      "source_sha256": "dd1779623c757254c967bfc85bf2c0e15da5b6c4fd1d4c7acbef9aa3b53d9dcb"
+    },
+    "ledgers/PROPOSED/m1_zero_delay.jsonl": {
+      "bytes": 741579,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/PROPOSED/m1_zero_delay.jsonl",
+      "purpose": "ledger hash-chained del run: fuente primaria de la reconstrucci\u00f3n",
+      "sha256": "93954c9c0a87c4b7b1d6fcb60892a3cd13615fa8715fa522827f1633599334ac",
+      "source_sha256": "93954c9c0a87c4b7b1d6fcb60892a3cd13615fa8715fa522827f1633599334ac"
+    },
+    "ledgers/PROPOSED/m3_cadence1.jsonl": {
+      "bytes": 187173,
+      "origin": "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/PROPOSED/m3_cadence1.jsonl",
+      "purpose": "ledger hash-chained del run: fuente primaria de la reconstrucci\u00f3n",
+      "sha256": "6cacaad004740f6ffad092431976cd02288743d0e2c85d1ab14c859d4539978b",
+      "source_sha256": "6cacaad004740f6ffad092431976cd02288743d0e2c85d1ab14c859d4539978b"
+    },
+    "market-1m/BTCUSDT.jsonl": {
+      "bytes": 79080,
+      "origin": "reports/ai-bots/DEF-RUN-PAPER/model-20261020T170635Z/market-1m/BTCUSDT.jsonl",
+      "purpose": "minutos de la sesi\u00f3n: permiten reejecutar el replay y comprobar el corte",
+      "sha256": "fa201e6ba3b623f770f6ebbddef85014fc05a80c6af20a525d6fe8e905d747e1",
+      "source_sha256": "fa201e6ba3b623f770f6ebbddef85014fc05a80c6af20a525d6fe8e905d747e1"
+    }
+  },
+  "generated_at_utc": "2026-10-21T10:06:51Z",
+  "manifest": "data\\def-run-016\\ARTIFACT_MANIFEST.json",
+  "schema_version": "DEF_RUN_017_SOURCE_V1",
+  "source_commit": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+  "why": "reports/ est\u00e1 gitignored; estos bytes permiten verificar RFC-016 y RFC-017 desde un checkout limpio sin regenerar evidencia"
+}
