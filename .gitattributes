@@ -21,3 +21,10 @@ data/recovery/wp8/evidence/** -text
 # shortened every file and broke the independent verifier's bracket_provenance check (two red
 # tests on a clean tree), so the tree is stored exactly as retrieved.
 data/rfc048/raw/** -text
+
+# The audit evidence is digest-pinned the same way: every manifest in
+# reports/ai-bots/*/evidence was computed over the bytes as written (LF), and a client with
+# core.autocrlf=true would rewrite them on checkout and invalidate every recorded sha256 --
+# including the gate's 260-file manifest and the 525 hashes of the delivered gate evidence.
+# -text makes the checkout reproduce the blobs instead of the client's line-ending preference.
+reports/ai-bots/*/evidence/** -text
