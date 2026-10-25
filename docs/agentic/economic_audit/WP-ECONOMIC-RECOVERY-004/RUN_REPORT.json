@@ -1,0 +1,175 @@
+{
+  "wp": "WP-ECONOMIC-RECOVERY-004",
+  "artifact": "RUN_REPORT",
+  "branch": "repro/economic-recovery-002",
+  "base_commit": "2bd6e346348ee7fc039f8ada31a390387a4c30c2",
+  "commit_under_test": "265d09ed9fdc70e385bde87f251fbe234f712e4e",
+  "commits": [
+    {
+      "id": "7311e553",
+      "subject": "feat(evidence): give the admission ledger a versioned semantic identity",
+      "scope": "contract v1, the three implementations, the gate decision, the writers' line endings, the contract tests"
+    },
+    {
+      "id": "265d09ed",
+      "subject": "fix(evidence): re-pin the ledger the commit carries and rebuild the lane at it",
+      "scope": "the exploded artefacts, the producer pins, the input evidence, REPAIR_EVIDENCE"
+    },
+    {
+      "id": "pending",
+      "subject": "docs(audit): recertify the ledger repair and publish the independent verification",
+      "scope": "RECERTIFICATION_REPORT, RUN_REPORT, FINAL_REPORT, INDEPENDENT_VERIFICATION, the re-issued certification record, evidence"
+    }
+  ],
+  "measured_on_utc": "2026-10-25",
+  "environment": {
+    "python": "3.11.15",
+    "implementation": "CPython",
+    "platform": "Windows-10-10.0.26200",
+    "package_manager": "uv",
+    "note": "core.autocrlf=true is this host's default; .gitattributes pins -text on the chain files, which is why the ledger's identity had to stop depending on the checkout"
+  },
+  "scripts": {
+    "contract_doc": "docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-004/LEDGER_INTEGRITY_CONTRACT.md",
+    "producer": "scripts/cost_barrier_explorer.py#ledger_state_sha256",
+    "gate": "scripts/cost_barrier_gate.py#ledger_state_digest",
+    "independent_verify": "scripts/wp_eco004_verify.py",
+    "certifier": "scripts/cost_barrier_certify.py"
+  },
+  "commands": [
+    {
+      "id": "gate_full_before",
+      "command": "python scripts/cost_barrier_gate.py --check",
+      "at_commit": "2bd6e346",
+      "exit_code": 5,
+      "status": "INTEGRITY_FAILURE",
+      "checks": "10/11",
+      "cause": "config/strategy_admission.json content drift: the published pin 6c4dd0be names the CRLF rendering of ddaf14d1, which no checkout contains",
+      "transcript": "evidence/gate_before.txt"
+    },
+    {
+      "id": "gate_full_after",
+      "command": "python scripts/cost_barrier_gate.py",
+      "at_commit": "265d09ed",
+      "exit_code": 0,
+      "status": "FULL_REPRODUCTION_PASS",
+      "checks": "13/13",
+      "controls": "6/6",
+      "integrity_failures": 0,
+      "transcript": "evidence/gate_after_full.txt"
+    },
+    {
+      "id": "gate_check_after",
+      "command": "python scripts/cost_barrier_gate.py --check",
+      "at_commit": "265d09ed",
+      "exit_code": 2,
+      "status": "CHECK_ONLY_PASS",
+      "checks": "12/12",
+      "reading": "still partial by design: the builder is not re-run, so this may never be promoted to a certification",
+      "transcript": "evidence/gate_after_check.txt"
+    },
+    {
+      "id": "lane_suite",
+      "command": "python -m pytest tests/unit/research/test_ledger_identity_contract.py tests/unit/research/test_cost_barrier_{explorer,gate,adversarial,ci_parity}.py tests/unit/research/test_strategy_admission_ledger.py tests/unit/research/test_recovery_determinism.py -q",
+      "exit_code": 0,
+      "passed": 137,
+      "failed": 0,
+      "transcript": "evidence/lane_suite_after.txt"
+    },
+    {
+      "id": "full_suite_before",
+      "command": "python -m pytest -q",
+      "at_commit": "2bd6e346",
+      "exit_code": 1,
+      "failed": 90,
+      "errors": 14,
+      "passed": 3270,
+      "skipped": 31,
+      "red_nodes": 104,
+      "transcript": "evidence/full_suite_before.txt"
+    },
+    {
+      "id": "full_suite_after",
+      "command": "python -m pytest -q",
+      "at_commit": "265d09ed",
+      "exit_code": 1,
+      "failed": 71,
+      "errors": 14,
+      "passed": 3314,
+      "skipped": 31,
+      "red_nodes": 85,
+      "closed_by_node_identity": 19,
+      "introduced": 0,
+      "lane_nodes_red": 0,
+      "transcript": "evidence/full_suite_after.txt"
+    },
+    {
+      "id": "independent_verification",
+      "command": "python scripts/wp_eco004_verify.py",
+      "exit_code": 0,
+      "verdict": "22/22 PASS",
+      "false_success": 0,
+      "artifact": "INDEPENDENT_VERIFICATION.json",
+      "transcript": "evidence/independent_verification_run.txt"
+    },
+    {
+      "id": "certification_attempt_1",
+      "command": "python scripts/cost_barrier_certify.py --supersedes-reason \"…\"",
+      "exit_code": 4,
+      "status": "FAILED",
+      "cause": "its own contract tests failed because the committed record still digested the pre-repair artefacts; the record cannot be fixed by the run that is validating it",
+      "retained_as": "evidence/CERTIFICATION_ATTEMPT_1_REFUSED.json",
+      "transcript": "evidence/certify_run.txt"
+    },
+    {
+      "id": "certification_attempt_2",
+      "command": "python scripts/cost_barrier_certify.py --supersedes-reason \"…\"",
+      "exit_code": 0,
+      "status": "CERTIFIED",
+      "steps": {
+        "contract_tests": 0,
+        "materialize_inputs": 0,
+        "input_integrity": 0,
+        "full_reproduction": 0,
+        "adversarial": 0
+      },
+      "dirty_watched_paths": 0,
+      "satisfies_full_certification": true,
+      "record": "data/recovery/wp7/COST_BARRIER_CERTIFICATION.json",
+      "transcript": "evidence/certify_run_2.txt"
+    }
+  ],
+  "artifacts": {
+    "ledger": {
+      "path": "config/strategy_admission.json",
+      "sha256": "5e2ccc5792b8e69158c27d414e4ed967db59542444d105c0baffc8de6900de76",
+      "unchanged_vs_base_commit": true,
+      "state_sha256": "4d1b1e6a9857356a7685764e3481a31dd447df8ea16e7adde73d4815b7f032f9",
+      "state_contract": "strategy-admission-ledger-identity-v1",
+      "strategies": 24,
+      "admitted_for_paper": 0
+    },
+    "explorer": {
+      "path": "data/recovery/COST_BARRIER_EXPLORER.json",
+      "payload_sha256": "4383d812d6e18928c53894c7ee3ba063723d351ab945fcfc206373dfaa2621fb",
+      "payload_unchanged_vs_base_commit": true,
+      "sha256_after": "fdc6892f12280f4fa6bf391397deafe53103b78e140f4ddba861acd66a914061",
+      "content_lines_changed": 13
+    },
+    "immutable_input": {
+      "path": "data/recovery/wp7/evidence/COST_BARRIER.json",
+      "sha256": "2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4",
+      "checked_by": "exact bytes, unchanged"
+    }
+  },
+  "false_success": 0,
+  "governance": {
+    "authorization_state": "NOT_AUTHORIZED",
+    "trades_authorized": 0,
+    "authorizes_promotion": false,
+    "authorizes_live_trading": false,
+    "economic_recovery_claimed": false
+  },
+  "preexisting_failures_kept_visible": 85,
+  "multi_family_results_present": false
+}

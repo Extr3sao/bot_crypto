@@ -1,0 +1,25 @@
+[PASS] the_published_state_pin_is_the_contract_value: contract=strategy-admission-ledger-identity-v1 pin=4d1b1e6a9857356a recomputed=4d1b1e6a9857356a
+[PASS] the_ledger_bytes_are_the_published_ones: pin=5e2ccc5792b8e691 disk=5e2ccc5792b8e691
+[PASS] physical:data/recovery/ACTIVE_ECONOMIC_AUDIT.json: EXACT pin=8a101e8875bd disk=8a101e8875bd
+[PASS] physical:reports/strategy-baseline/COST_BARRIER.json: EXACT pin=2437f446051d disk=2437f446051d
+[PASS] physical:config/strategy_admission.json: EXACT pin=5e2ccc5792b8 disk=5e2ccc5792b8
+[PASS] physical:docs/COST_MODEL_V3.json: EXACT pin=2f0e62d2408e disk=2f0e62d2408e
+[PASS] physical:src/trading_bot/research/microstructure/cost_model_v3.py: EXACT pin=bc7e27538b65 disk=bc7e27538b65
+[PASS] physical:cost_barrier_input_evidence_copy: copy=2437f446051d97ec
+[PASS] the_ledger_content_is_the_one_committed_before_this_wp: diff_vs_2bd6e346=(none)
+[PASS] the_ledger_still_rebuilds_from_its_committed_sources: exit=0 stdout=admission ledger is up to date
+[PASS] the_repair_did_not_rewrite_economic_entries: strategies=24 identical=True
+[PASS] the_payload_digest_is_unchanged: now=4383d812d6e18928 before=4383d812d6e18928
+[PASS] the_economic_body_is_byte_identical: now=4383d812d6e18928 before=4383d812d6e18928
+[PASS] no_governance_flag_moved: {"authorization_state": "NOT_AUTHORIZED", "trades_authorized": 0, "false_success": 0}
+[PASS] the_gate_reaches_full_reproduction_pass: status=FULL_REPRODUCTION_PASS exit=0 checks_failed=0
+[PASS] the_gate_reports_no_integrity_failure_and_no_drift: integrity_failures=[]
+[PASS] false_success_is_zero: false_success=0 controls_missed=0
+[PASS] the_evidence_bundle_verifies: exit=0 cost-barrier evidence bundle: VERIFIED (verify)
+[PASS] the_closed_nodes_are_the_cost_barrier_ones: closed=19 all_in_lane=True
+[PASS] no_failure_was_introduced_or_hidden: introduced=[] count=0
+[PASS] the_preexisting_failures_are_still_visible: after_red=85 lane_red=0
+[PASS] the_multi_family_results_are_still_absent: no commit touches reports/strategy-baseline
+
+22/22 PASS -> C:\Users\GVLLFR0035\Downloads\ff-wt-eco001\docs\agentic\economic_audit\WP-ECONOMIC-RECOVERY-004\INDEPENDENT_VERIFICATION.json
+VERIFY_EXIT=0
