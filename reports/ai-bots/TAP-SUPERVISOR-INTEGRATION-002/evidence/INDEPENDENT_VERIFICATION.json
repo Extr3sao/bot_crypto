@@ -2,7 +2,7 @@
   "claims": [
     {
       "claim": "the work happened on a branch derived from main, and main itself did not move",
-      "detail": "branch=integ/supervisor-002 head=59ddebda main=e67194e7 base=e67194e7 commits main..HEAD=4 merge-commits=0 lane=3b758e22",
+      "detail": "branch=integ/supervisor-002 head=7f53c75a main=e67194e7 base=e67194e7 commits main..HEAD=5 merge-commits=0 lane=3b758e22",
       "evidence": [],
       "id": "G1",
       "method": "git rev-parse / rev-list / merge-base",
@@ -88,7 +88,7 @@
     }
   ],
   "false_success": 0,
-  "head": "59ddebda042fb29d990c074cfcaef47f9192d2a3",
+  "head": "7f53c75a68103487eb49ed7c23464ff80b88b0d9",
   "imports_from_src": false,
   "schema_version": "TAP_SUPERVISOR_INTEGRATION_INDEPENDENT_VERIFICATION_V1",
   "summary": {
