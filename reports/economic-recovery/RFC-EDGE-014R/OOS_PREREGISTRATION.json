@@ -1,0 +1,60 @@
+{
+  "acceptance_thresholds_frozen_now": {
+    "cost_sensitivity_must_stay_positive_at_fees_bps_per_side": 15.0,
+    "max_drawdown_bps_max": 2000.0,
+    "min_closed_trades_per_strategy": 200,
+    "net_expectancy_bps_per_trade_min": 0.0,
+    "notes": "a slice that has not reached 200 closed trades cannot accept or reject anything, and is reported as ACCRUING rather than as a verdict",
+    "profit_factor_min": 1.2
+  },
+  "comparator_CURRENT": "the runtime as it stands: no strategy admitted, no trades, flat equity. A candidate must beat that flat line net of the declared costs, not merely exist",
+  "costs": {
+    "fees_bps_per_side": 10.0,
+    "slippage_bps_per_side": 0.0,
+    "spread_bps_per_round_trip": 0.0,
+    "why": "the same declared parity inputs the engine comparison used, so the holdout is scored under the same model rather than a kinder one; spread and slippage are held at zero here because they are model inputs and the paper broker's 1 bps per side is reported separately"
+  },
+  "entry_and_exit_rules": {
+    "entry": "long while ema(12) > ema(26) on the previous closed 1h bar; fill at the open of the next bar",
+    "exit": "flat when ema(12) < ema(26) on a closed bar; fill at the open of the next bar",
+    "open_position_at_window_end": "force-closed at the final bar's open on both engines"
+  },
+  "exhausted_corpus": {
+    "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-014R\\scratch\\PAPER_REPLAY_BARS.jsonl",
+    "sha256": "d79ed2c56bf502266d9f950be7f296b0f1e6e068f19a411513c08436c5abe26b"
+  },
+  "exhausted_window": {
+    "end_utc": "2026-10-16T15:00:00Z",
+    "last_bar_closed_utc": "2026-10-16T14:00:00Z",
+    "start_utc": "2026-09-05T00:00:00Z"
+  },
+  "frozen_at_utc": "2026-10-16T20:01:44Z",
+  "hypothesis": "H0: this rule's net expectancy per trade is <= 0 after the declared costs. H1: it is > 0. The measurement window is exhausted at 2026-10-16T15:00:00Z, so every bar at or after that instant is prospective with respect to it",
+  "instruments_and_timeframes": {
+    "symbols": [
+      "BTC/USDT",
+      "ETH/USDT"
+    ],
+    "timeframe": "1h",
+    "venue": "binance (public OHLCV through ccxt, read-only, no credentials)"
+  },
+  "kind": "PROSPECTIVE_HOLDOUT",
+  "prospective_boundary_ms": 1792162800000,
+  "reserved": {
+    "routine_that_may_score_it": "scripts/edge14r_oos_score.py (not run by this script)",
+    "selection_may_read": false,
+    "state_until_thresholds_are_met": "OOS_ACCRUING"
+  },
+  "schema_version": "EDGE14R_OOS_PREREGISTRATION_V1",
+  "strategies_and_parameters": {
+    "admission_gate": "the committed strategy_admission ledger, unchanged",
+    "family": "ema_crossover",
+    "parameter_source": "frozen before capture; no fitting, no search, no walk-forward",
+    "parameters": {
+      "fast": 12,
+      "slow": 26
+    }
+  },
+  "why_a_new_slice_is_needed": "the frozen corpus has been read by candidate experiments and by the engine comparison, so any further scoring on it is in-sample. Mechanical parity between engines can and has been tested on historical bars; economic inference requires a slice that no decision has touched",
+  "work_package": "WP-EDGE-14R/P3"
+}

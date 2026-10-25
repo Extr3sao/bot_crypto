@@ -1,0 +1,71 @@
+{
+  "fixtures": [
+    {
+      "bars": 1400,
+      "bytes": 219827,
+      "cell_id": "vol_regime_breakout@1h",
+      "expected": "at least one ENTRY after bar 743",
+      "family": "vol_regime_breakout",
+      "fixture_id": "vol_regime_breakout_active",
+      "generator": "synthetic_lcg_v1",
+      "generator_seed": 11,
+      "interval_ms": 3600000
+    },
+    {
+      "bars": 1400,
+      "bytes": 217583,
+      "cell_id": "vol_regime_breakout@1h",
+      "expected": "no ENTRY",
+      "family": "vol_regime_breakout",
+      "fixture_id": "vol_regime_breakout_quiet",
+      "generator": "synthetic_lcg_v1",
+      "generator_seed": 11,
+      "interval_ms": 3600000
+    },
+    {
+      "bars": 1400,
+      "bytes": 219788,
+      "cell_id": "trend_pullback@1h",
+      "expected": "at least one ENTRY after bar 223",
+      "family": "trend_pullback",
+      "fixture_id": "trend_pullback_active",
+      "generator": "synthetic_lcg_v1",
+      "generator_seed": 7,
+      "interval_ms": 3600000
+    },
+    {
+      "bars": 1400,
+      "bytes": 215527,
+      "cell_id": "trend_pullback@1h",
+      "expected": "no ENTRY",
+      "family": "trend_pullback",
+      "fixture_id": "trend_pullback_quiet",
+      "generator": "synthetic_lcg_v1",
+      "generator_seed": 7,
+      "interval_ms": 3600000
+    },
+    {
+      "bars": 1400,
+      "bytes": 219642,
+      "cell_id": "mean_reversion_vol_liq@1h",
+      "expected": "at least one ENTRY after bar 743",
+      "family": "mean_reversion_vol_liq",
+      "fixture_id": "mean_reversion_vol_liq_active",
+      "generator": "synthetic_lcg_v1",
+      "generator_seed": 3,
+      "interval_ms": 3600000
+    },
+    {
+      "bars": 1400,
+      "bytes": 219427,
+      "cell_id": "mean_reversion_vol_liq@1h",
+      "expected": "no ENTRY",
+      "family": "mean_reversion_vol_liq",
+      "fixture_id": "mean_reversion_vol_liq_quiet",
+      "generator": "synthetic_lcg_v1",
+      "generator_seed": 3,
+      "interval_ms": 3600000
+    }
+  ],
+  "generator": "synthetic_lcg_v1"
+}

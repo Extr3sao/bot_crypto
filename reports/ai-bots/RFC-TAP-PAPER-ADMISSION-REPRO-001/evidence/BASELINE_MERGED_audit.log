@@ -1,0 +1,9 @@
+{
+  "verdict": "HIGH_FINDINGS",
+  "high": 3,
+  "by_severity": {
+    "HIGH": 3,
+    "MEDIUM": 412
+  }
+}
+EXIT=1

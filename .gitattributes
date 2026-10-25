@@ -1,0 +1,106 @@
+# The RFC-049 audits hash these trees byte for byte (frozen specifications, vendor
+# snapshots, retrieved primary-source evidence).  Git's automatic end-of-line
+# normalisation would rewrite those bytes on checkout and silently break every
+# recorded digest, so the trees are stored exactly as they are on disk.
+data/rfc049/** -text
+
+# The cost-barrier CI evidence bundle is digest-pinned: the copy of the gitignored
+# market-horizon input must arrive in a clean checkout with exactly the bytes the
+# published explorer recorded for it, so git must not normalise them on the way in
+# or out.  Same reason as the RFC-049 trees above, same treatment.
+data/recovery/wp7/evidence/** -text
+
+# The WP-8 input-authority bundle is digest-pinned for the same reason as the
+# cost-barrier one: every external input the ACTIVE recovery lane needs must arrive
+# in a clean checkout with exactly the bytes its published artefact recorded, so git
+# must not normalise them on the way in or out.
+data/recovery/wp8/evidence/** -text
+
+# The WP-EDGE-04R proposal is the definition the scheduler consumes, and ``schtasks`` reads
+# that form (the document declares UTF-16).  It is committed in the bytes it is applied with
+# and pinned by digest in the record beside it, so git must not normalise it either.
+reports/edge-recovery/WP-EDGE-04R/evidence/PROPOSED_FORWARD_TASK.xml -text
+
+# The WP-EDGE-09 evidence is digest-pinned by the package itself: every gate,
+# experiment, ledger and report row quotes the sha256 of the files it was derived
+# from, and the panel of one second is the only copy of the capture that survives a
+# clone (the raw segments under reports/ are not versioned).  Normalising these bytes
+# on checkout would break the digests the verifier recomputes, so the tree is stored
+# exactly as it is on disk.  Same reason as the trees above, same treatment.
+reports/edge-recovery/WP-EDGE-09/** -text
+
+# The WP-EDGE-12 proposal is the definition a preflight hashes and an operator would
+# register, and ``schtasks`` reads that form (the document declares UTF-16): the digest
+# published beside it in RUNNER_PREFLIGHT.json is a digest of these bytes, so normalising
+# them on the way in or out would make the recorded hash name a document nobody has.
+reports/edge-recovery/WP-EDGE-12/evidence/PROPOSED_DEFINITION.xml -text
+
+# The prospective holdout slices are digest-pinned: the capture manifest records the
+# sha256 of the bytes the collector wrote, and a checkout that rewrites their line
+# endings (core.autocrlf=true on this host did exactly that) makes the digest name a
+# file nobody has.  Same reason as the digest-pinned trees above, same treatment.
+reports/economic-recovery/RFC-EDGE-01*/scratch/*.jsonl -text
+
+# EXP-003M publishes digests of its own artifacts (SHA256SUMS.txt) and of the regenerable
+# tape (DATASET_SHA256SUMS.txt).  A clean checkout with core.autocrlf=true rewrote those
+# files to CRLF and the seal verified 0/18: the hash named bytes nobody had.  The tree is
+# stored exactly as written so the manifest is a check and not a coincidence.
+reports/ai-bots/EXP-003M-MAKER-FILL-REALITY-001/** -text
+
+# EXP-003N publishes SHA256SUMS.txt over its own tree, and the universe/inventory documents
+# are compared byte for byte by the verifier. A checkout that rewrote their line endings
+# would break both, exactly as it broke EXP-003M's seal (see 003N's evidence/).
+reports/ai-bots/EXP-003N-GROSS-FIRST-DISCOVERY-001/** -text
+
+# EXP-003O seals its own artefact tree and quotes a design digest inside every report, so
+# the bytes must survive a checkout unchanged: LF in, LF out, no normalisation either way.
+reports/ai-bots/EXP-003O-INDEPENDENT-SIGNAL-VERIFICATION-001/** -text
+
+# EXP-003P commits the traces it replays and seals them in SHA256SUMS.txt, and the checkout
+# gate compares its artefacts with these bytes.  Storing them normalised would turn the seal
+# into a statement about CRLF and the comparison into a statement about the platform.
+reports/ai-bots/EXP-003P-PAPER-EXECUTION-001/** -text
+
+# EXP-004A's admission ledger is digest-pinned: every attestation records the sha256 of a
+# byte prefix of the bar store and the chain links each record to the previous one.  Git's
+# end-of-line normalisation would rewrite those bytes on checkout and make the committed
+# ledger fail its own verification on a machine that never touched the data, so the tree is
+# stored exactly as it was sealed.
+data/exp004a/** -text
+
+# The RFC-051 handoff publishes the sha256 of its own inventory and of every reference it
+# lists.  A checkout that rewrote these line endings would make those digests name bytes the
+# verifier cannot obtain, which is the failure the entries above already document for three
+# other trees.  LF in, LF out.
+docs/agentic/exp004a/handoff/** -text
+
+# RFC-DEF-018: the DEF evidence package and the OOS price feed are digest-pinned.  The OOS
+# plan carries the sha256 of each dataset and every run summary carries the sha256 of its
+# ledger; with `core.autocrlf=true` a checkout would turn LF into CRLF, the bytes would no
+# longer match those digests, and a clean replay would look like tampering.  Stored exactly
+# as produced.  (Found by the RFC-018 clean-checkout rehearsal: the dataset index blob
+# differed from the working file before this rule existed.)
+data/def-run-016/** -text
+data/def-run-017/** -text
+data/quote-feed-1m/** -text
+
+# RFC-TAP-PAPER-ADMISSION-REPRO-001 publishes evidence_manifest.json: a digest of every
+# file it cites.  `core.autocrlf=true` (the Git-for-Windows default in this checkout)
+# rewrote the line endings on checkout, so the manifest agreed with itself only in the
+# tree that produced it and a fresh clone failed 13 of its 44 digests (V01/V02).  The
+# digest-covered paths are now stored exactly as they are on disk, same treatment as the
+# trees above and for the same reason: a digest that depends on who checked it out is not
+# a digest.
+reports/ai-bots/CODEX-PAPER-ADMISSION-DIAG-001/** -text
+reports/ai-bots/CODEX-PAPER-SUPERVISOR-001/** -text
+reports/ai-bots/RFC-TAP-PAPER-ADMISSION-REPRO-001/** -text
+scripts/exp004a_verify.py -text
+scripts/ops_background_audit.py -text
+scripts/paper_lock_campaign_verify.py -text
+tests/unit/ops/test_paper_lock_campaign.py -text
+tests/unit/ops/test_session_status.py -text
+tests/unit/ops/test_windowless.py -text
+uv.lock -text
+.gitignore -text
+tests/unit/reports/test_evidence_manifest_eol.py -text
+.gitattributes -text

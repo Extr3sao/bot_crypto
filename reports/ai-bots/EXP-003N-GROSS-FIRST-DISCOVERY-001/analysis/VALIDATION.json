@@ -1,0 +1,4952 @@
+{
+  "cells": [
+    {
+      "best_horizon_bars": "24",
+      "family": "breakout",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::breakout::1h",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 343.8516,
+            "final_equity_usdt": 9739.485933,
+            "max_drawdown_pct": 2.822859,
+            "trades": 68,
+            "worst_trade_bps": -398.8347
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 4,
+              "ci_lower": -127.92096976494507,
+              "ci_upper": -8.237789323702,
+              "mean": -76.62178431747205,
+              "p_one_sided": 0.997,
+              "resamples": 10000
+            },
+            "mean_bps": -76.62178431747205,
+            "median_bps": -99.05772454028788,
+            "p05_bps": -303.1489191172708,
+            "p95_bps": 179.67357680735353,
+            "profit_factor": 0.3331543783215831,
+            "stdev_bps": 162.90874888465672,
+            "total_bps": -5210.281333588099,
+            "trades": 68,
+            "win_rate": 0.3088235294117647
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 209.5415,
+            "final_equity_usdt": 9927.087697,
+            "max_drawdown_pct": 1.06716,
+            "trades": 41,
+            "worst_trade_bps": -198.5934
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 2,
+              "ci_lower": -99.84617242707141,
+              "ci_upper": 19.946873506208608,
+              "mean": -35.56697704823822,
+              "p_one_sided": 0.7538,
+              "resamples": 10000
+            },
+            "mean_bps": -35.56697704823822,
+            "median_bps": -65.86955137163815,
+            "p05_bps": -148.3859964400815,
+            "p95_bps": 128.21973066839473,
+            "profit_factor": 0.4364069712069923,
+            "stdev_bps": 98.47041468452994,
+            "total_bps": -1458.246058977767,
+            "trades": 41,
+            "win_rate": 0.36585365853658536
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 430.0203,
+            "final_equity_usdt": 9956.973671,
+            "max_drawdown_pct": 0.649131,
+            "trades": 52,
+            "worst_trade_bps": -200.3045
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -47.40801648638431,
+              "ci_upper": 8.46890699482691,
+              "mean": -16.54858803096592,
+              "p_one_sided": 0.8487,
+              "resamples": 10000
+            },
+            "mean_bps": -16.54858803096592,
+            "median_bps": -15.270140871768646,
+            "p05_bps": -164.72620988160665,
+            "p95_bps": 141.52298820143866,
+            "profit_factor": 0.6580499116812012,
+            "stdev_bps": 109.48793631121188,
+            "total_bps": -860.5265776102278,
+            "trades": 52,
+            "win_rate": 0.4230769230769231
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -63.97192540539067,
+            "ci_upper": -1.1941986963147748,
+            "mean": -33.910538827602196,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -33.910538827602196,
+          "median_bps": -22.55060391022636,
+          "p05_bps": -125.26517005272386,
+          "p95_bps": 110.32574722094893,
+          "profit_factor": 0.3002599282153048,
+          "stdev_bps": 76.31527986865801,
+          "total_bps": -712.121315379646,
+          "trades": 21,
+          "win_rate": 0.38095238095238093
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -51.700686105078134,
+            "ci_upper": 44.67101532017153,
+            "mean": -1.9148926801389363,
+            "p_one_sided": 0.6977,
+            "resamples": 10000
+          },
+          "mean_bps": -1.9148926801389363,
+          "median_bps": -6.18804051165297,
+          "p05_bps": -189.23690675687138,
+          "p95_bps": 191.66716776342412,
+          "profit_factor": 0.9644210297575946,
+          "stdev_bps": 148.9412825240747,
+          "total_bps": -34.468068242500856,
+          "trades": 18,
+          "win_rate": 0.4444444444444444
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -35.42974977643923,
+            "ci_upper": 25.817451677782433,
+            "mean": -8.76439953754468,
+            "p_one_sided": 0.7036,
+            "resamples": 10000
+          },
+          "mean_bps": -8.76439953754468,
+          "median_bps": -15.174367871323685,
+          "p05_bps": -145.97391131819148,
+          "p95_bps": 124.78662549390761,
+          "profit_factor": 0.785047013328454,
+          "stdev_bps": 94.33781141039069,
+          "total_bps": -113.93719398808085,
+          "trades": 13,
+          "win_rate": 0.46153846153846156
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "LONG",
+          "net_bps": 110.32574722094893,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784030400000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 4.1043449864445165,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784037600000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -17.374438915269874,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784041200000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 12.9948115436218,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784394000000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 6.090694590561551,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784397600000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -31.5486
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -36.5486
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -43.8582
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -71.1679
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -98.4775
+        }
+      },
+      "screen_verdict": "REJECT",
+      "sensitivity": null,
+      "timeframe": "1h"
+    },
+    {
+      "best_horizon_bars": "3",
+      "family": "breakout",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::breakout::4h",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": -70.5281,
+            "final_equity_usdt": 9996.473594,
+            "max_drawdown_pct": 0.035264,
+            "trades": 1,
+            "worst_trade_bps": -70.5281
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 0,
+              "ci_lower": null,
+              "ci_upper": null,
+              "mean": -70.52812385206273,
+              "p_one_sided": null,
+              "resamples": 0
+            },
+            "mean_bps": -70.52812385206273,
+            "median_bps": -70.52812385206273,
+            "p05_bps": -70.52812385206273,
+            "p95_bps": -70.52812385206273,
+            "profit_factor": 0.0,
+            "stdev_bps": null,
+            "total_bps": -70.52812385206273,
+            "trades": 1,
+            "win_rate": 0.0
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": -86.0329,
+            "final_equity_usdt": 9959.595419,
+            "max_drawdown_pct": 0.404046,
+            "trades": 5,
+            "worst_trade_bps": -242.7315
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 0,
+              "ci_lower": null,
+              "ci_upper": null,
+              "mean": -161.61832359265753,
+              "p_one_sided": null,
+              "resamples": 0
+            },
+            "mean_bps": -161.61832359265753,
+            "median_bps": -188.09519053269162,
+            "p05_bps": -234.94967688495234,
+            "p95_bps": -86.30826923244591,
+            "profit_factor": 0.0,
+            "stdev_bps": 71.2067936305402,
+            "total_bps": -808.0916179632877,
+            "trades": 5,
+            "win_rate": 0.0
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 189.06,
+            "final_equity_usdt": 9937.173986,
+            "max_drawdown_pct": 0.62826,
+            "trades": 15,
+            "worst_trade_bps": -345.3148
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -199.52497762521017,
+              "ci_upper": 27.40652207454711,
+              "mean": -83.76801884087554,
+              "p_one_sided": 0.9619,
+              "resamples": 10000
+            },
+            "mean_bps": -83.76801884087554,
+            "median_bps": -130.0174679324149,
+            "p05_bps": -276.22483315200157,
+            "p95_bps": 165.20574126806173,
+            "profit_factor": 0.31466919660832704,
+            "stdev_bps": 171.87115771767316,
+            "total_bps": -1256.520282613133,
+            "trades": 15,
+            "win_rate": 0.4
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -139.9422171288834,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -139.9422171288834,
+          "median_bps": -137.25169174387077,
+          "p05_bps": -245.04173964968285,
+          "p95_bps": 21.246646576608423,
+          "profit_factor": 0.04258595770969294,
+          "stdev_bps": 113.1260329923191,
+          "total_bps": -979.5955199021838,
+          "trades": 7,
+          "win_rate": 0.14285714285714285
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -46.70602211329248,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -46.70602211329248,
+          "median_bps": 10.767435057328587,
+          "p05_bps": -324.85690793049173,
+          "p95_bps": 182.24446911697893,
+          "profit_factor": 0.6030694727149515,
+          "stdev_bps": 238.36709780316778,
+          "total_bps": -233.53011056646238,
+          "trades": 5,
+          "win_rate": 0.6
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -14.46488404816236,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -14.46488404816236,
+          "median_bps": 61.35270120396292,
+          "p05_bps": -193.61310231764853,
+          "p95_bps": 111.61102454483613,
+          "profit_factor": 0.8044780718193237,
+          "stdev_bps": 181.83745944183187,
+          "total_bps": -43.39465214448708,
+          "trades": 3,
+          "win_rate": 0.6666666666666666
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "LONG",
+          "net_bps": -30.847230814205254,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784030400000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -241.3711980634077,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784116800000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 43.57259402981436,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784548800000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -137.25169174387077,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784606400000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -237.065696477156,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784620800000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -98.768
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -103.768
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -111.0777
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -138.3873
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -165.697
+        }
+      },
+      "screen_verdict": "INSUFFICIENT_EVIDENCE",
+      "sensitivity": null,
+      "timeframe": "4h"
+    },
+    {
+      "best_horizon_bars": "1",
+      "family": "breakout",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::breakout::5m",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 276.337,
+            "final_equity_usdt": 8756.471074,
+            "max_drawdown_pct": 12.435289,
+            "trades": 961,
+            "worst_trade_bps": -188.8074
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 4,
+              "ci_lower": -35.978641711077316,
+              "ci_upper": -15.371643397570232,
+              "mean": -25.879894404677557,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -25.879894404677557,
+            "median_bps": -42.60249749191189,
+            "p05_bps": -97.34851321521312,
+            "p95_bps": 93.78232941602161,
+            "profit_factor": 0.3559593397859848,
+            "stdev_bps": 61.33426273487322,
+            "total_bps": -24870.57852289513,
+            "trades": 961,
+            "win_rate": 0.2611862643080125
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 174.4012,
+            "final_equity_usdt": 9279.093595,
+            "max_drawdown_pct": 7.209064,
+            "trades": 515,
+            "worst_trade_bps": -103.9858
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -32.69314555712868,
+              "ci_upper": -24.57178641092289,
+              "mean": -27.996365241235825,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -27.996365241235825,
+            "median_bps": -38.4869007596344,
+            "p05_bps": -71.88161934412094,
+            "p95_bps": 54.995538874957916,
+            "profit_factor": 0.19775634649184753,
+            "stdev_bps": 38.471298752756184,
+            "total_bps": -14418.12809923645,
+            "trades": 515,
+            "win_rate": 0.17281553398058253
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 257.7541,
+            "final_equity_usdt": 9042.401259,
+            "max_drawdown_pct": 9.575987,
+            "trades": 653,
+            "worst_trade_bps": -117.7054
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -32.74509521451563,
+              "ci_upper": -25.200839468234157,
+              "mean": -29.329211058960425,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -29.329211058960425,
+            "median_bps": -38.99244636599575,
+            "p05_bps": -73.19938117010251,
+            "p95_bps": 46.76963639065319,
+            "profit_factor": 0.1815423866583193,
+            "stdev_bps": 40.01813850394647,
+            "total_bps": -19151.974821501157,
+            "trades": 653,
+            "win_rate": 0.16232771822358347
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -29.966359234283576,
+            "ci_upper": -23.367758770125793,
+            "mean": -25.825308917516647,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -25.825308917516647,
+          "median_bps": -33.17250476315463,
+          "p05_bps": -57.000424067151876,
+          "p95_bps": 34.27730033525763,
+          "profit_factor": 0.1417176392885819,
+          "stdev_bps": 29.395687439382105,
+          "total_bps": -5371.664254843463,
+          "trades": 208,
+          "win_rate": 0.12980769230769232
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -32.57923622261874,
+            "ci_upper": -20.06167829932888,
+            "mean": -27.668428169103652,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -27.668428169103652,
+          "median_bps": -41.07091496572498,
+          "p05_bps": -74.3246869126086,
+          "p95_bps": 61.872344579789726,
+          "profit_factor": 0.2527652260663314,
+          "stdev_bps": 47.878522322876734,
+          "total_bps": -6778.764901430395,
+          "trades": 245,
+          "win_rate": 0.17959183673469387
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -37.003549298714034,
+            "ci_upper": -33.45516311348566,
+            "mean": -35.007728326136494,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -35.007728326136494,
+          "median_bps": -44.83517353993271,
+          "p05_bps": -81.8334751577307,
+          "p95_bps": 40.26298002356498,
+          "profit_factor": 0.1323617010067501,
+          "stdev_bps": 38.5844777630427,
+          "total_bps": -7001.545665227299,
+          "trades": 200,
+          "win_rate": 0.175
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "LONG",
+          "net_bps": -7.350826756564928,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783779300000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -7.47095711034812,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783779600000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -17.189815989664037,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783779900000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -36.035800688163654,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783780500000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -31.696790810779852,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783802400000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -44.3292
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -49.3292
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -56.6389
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -83.9485
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -111.2581
+        }
+      },
+      "screen_verdict": "REJECT",
+      "sensitivity": null,
+      "timeframe": "5m"
+    },
+    {
+      "best_horizon_bars": "24",
+      "family": "ema_crossover",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::ema_crossover::1h",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 621.5516,
+            "final_equity_usdt": 8119.578024,
+            "max_drawdown_pct": 19.454195,
+            "trades": 1022,
+            "worst_trade_bps": -455.0659
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 4,
+              "ci_lower": -82.66630341394205,
+              "ci_upper": 17.943518721974907,
+              "mean": -36.7988644984228,
+              "p_one_sided": 0.9315,
+              "resamples": 10000
+            },
+            "mean_bps": -36.7988644984228,
+            "median_bps": -62.68783137596357,
+            "p05_bps": -250.7888352362809,
+            "p95_bps": 279.29021455116185,
+            "profit_factor": 0.5925253329853666,
+            "stdev_bps": 171.1396510691797,
+            "total_bps": -37608.439517388106,
+            "trades": 1022,
+            "win_rate": 0.3786692759295499
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 340.1241,
+            "final_equity_usdt": 8675.926093,
+            "max_drawdown_pct": 16.685321,
+            "trades": 649,
+            "worst_trade_bps": -273.2895
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -54.40885167300672,
+              "ci_upper": 53.909717401571235,
+              "mean": -40.80351023093608,
+              "p_one_sided": 0.9634,
+              "resamples": 10000
+            },
+            "mean_bps": -40.80351023093608,
+            "median_bps": -57.60762261770091,
+            "p05_bps": -176.02543755339053,
+            "p95_bps": 168.1478611298578,
+            "profit_factor": 0.4043091836955624,
+            "stdev_bps": 107.14264006434072,
+            "total_bps": -26481.478139877516,
+            "trades": 649,
+            "win_rate": 0.31587057010785824
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 496.5192,
+            "final_equity_usdt": 8997.276318,
+            "max_drawdown_pct": 10.708833,
+            "trades": 961,
+            "worst_trade_bps": -221.0865
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -29.39600032435595,
+              "ci_upper": -12.280358056455698,
+              "mean": -20.868338848403532,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -20.868338848403532,
+            "median_bps": -37.91151393390238,
+            "p05_bps": -169.30417432165206,
+            "p95_bps": 185.89858932177188,
+            "profit_factor": 0.639962529334008,
+            "stdev_bps": 114.08316823451221,
+            "total_bps": -20054.473633315793,
+            "trades": 961,
+            "win_rate": 0.37356919875130074
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -33.8657040109292,
+            "ci_upper": -22.560833280935913,
+            "mean": -27.62520336803715,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -27.62520336803715,
+          "median_bps": -43.84280815116564,
+          "p05_bps": -136.54026578603248,
+          "p95_bps": 130.66301872814213,
+          "profit_factor": 0.47046195498863097,
+          "stdev_bps": 88.1519143180405,
+          "total_bps": -8978.191094612073,
+          "trades": 325,
+          "win_rate": 0.32
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -26.569234860213133,
+            "ci_upper": 11.356895815244282,
+            "mean": -10.242513314718094,
+            "p_one_sided": 0.8575,
+            "resamples": 10000
+          },
+          "mean_bps": -10.242513314718094,
+          "median_bps": -35.367911580328055,
+          "p05_bps": -178.31155716725291,
+          "p95_bps": 216.0544391024308,
+          "profit_factor": 0.8296753027362401,
+          "stdev_bps": 136.25795131119597,
+          "total_bps": -3257.119234080354,
+          "trades": 318,
+          "win_rate": 0.39622641509433965
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -64.31497384482003,
+            "ci_upper": 4.082795739815694,
+            "mean": -24.58856385101687,
+            "p_one_sided": 0.9619,
+            "resamples": 10000
+          },
+          "mean_bps": -24.58856385101687,
+          "median_bps": -34.0763340794591,
+          "p05_bps": -175.40910391661527,
+          "p95_bps": 176.0849829585644,
+          "profit_factor": 0.6015370251658967,
+          "stdev_bps": 112.83562890224535,
+          "total_bps": -7819.163304623364,
+          "trades": 318,
+          "win_rate": 0.4056603773584906
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "LONG",
+          "net_bps": -13.641326752885675,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783728000000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 9.991606423010168,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783731600000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 5.131750159541053,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783735200000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -20.838063071743058,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783738800000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -20.42216038532738,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783742400000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -35.8683
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -40.8683
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -48.178
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -75.4876
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -102.7973
+        }
+      },
+      "screen_verdict": "REJECT",
+      "sensitivity": null,
+      "timeframe": "1h"
+    },
+    {
+      "best_horizon_bars": "1",
+      "family": "ema_crossover",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::ema_crossover::4h",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 270.8655,
+            "final_equity_usdt": 9064.797118,
+            "max_drawdown_pct": 9.686329,
+            "trades": 109,
+            "worst_trade_bps": -415.2526
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 2,
+              "ci_lower": -212.23165019944662,
+              "ci_upper": -35.06396129522015,
+              "mean": -171.59685916636718,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -171.59685916636718,
+            "median_bps": -207.79848242601759,
+            "p05_bps": -370.41979954812905,
+            "p95_bps": 125.12200846660372,
+            "profit_factor": 0.09096768956181556,
+            "stdev_bps": 171.05041807674155,
+            "total_bps": -18704.05764913402,
+            "trades": 109,
+            "win_rate": 0.22018348623853212
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 170.3285,
+            "final_equity_usdt": 9253.021258,
+            "max_drawdown_pct": 7.469787,
+            "trades": 126,
+            "worst_trade_bps": -354.9389
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 2,
+              "ci_lower": -131.58740674098308,
+              "ci_upper": -102.29386363659144,
+              "mean": -118.56805425014235,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -118.56805425014235,
+            "median_bps": -154.56239979239587,
+            "p05_bps": -292.34444445130697,
+            "p95_bps": 125.7438463079294,
+            "profit_factor": 0.1303615011945112,
+            "stdev_bps": 130.71303549474678,
+            "total_bps": -14939.574835517937,
+            "trades": 126,
+            "win_rate": 0.2222222222222222
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 351.7247,
+            "final_equity_usdt": 8192.705077,
+            "max_drawdown_pct": 18.072949,
+            "trades": 230,
+            "worst_trade_bps": -373.9073
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -194.5696698429531,
+              "ci_upper": -85.13335349399159,
+              "mean": -157.15608028932314,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -157.15608028932314,
+            "median_bps": -220.97962838347257,
+            "p05_bps": -341.69648800543575,
+            "p95_bps": 212.21466879004845,
+            "profit_factor": 0.16059199299153812,
+            "stdev_bps": 174.3138965936764,
+            "total_bps": -36145.89846654432,
+            "trades": 230,
+            "win_rate": 0.19130434782608696
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -210.12278826056559,
+            "ci_upper": -146.88837902182476,
+            "mean": -175.3124940158036,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -175.3124940158036,
+          "median_bps": -191.7492148307553,
+          "p05_bps": -258.708745741279,
+          "p95_bps": 70.57954436180678,
+          "profit_factor": 0.041715473361338615,
+          "stdev_bps": 96.60034933436961,
+          "total_bps": -13148.43705118527,
+          "trades": 75,
+          "win_rate": 0.09333333333333334
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -228.7317785644543,
+            "ci_upper": -32.21378593386795,
+            "mean": -163.7566840098253,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -163.7566840098253,
+          "median_bps": -249.89117975491104,
+          "p05_bps": -354.3362778721926,
+          "p95_bps": 295.49441347059627,
+          "profit_factor": 0.18757635671923728,
+          "stdev_bps": 199.35457287830837,
+          "total_bps": -12773.021352766375,
+          "trades": 78,
+          "win_rate": 0.1794871794871795
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -197.3209880850971,
+            "ci_upper": -86.26959927306095,
+            "mean": -132.784935877827,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -132.784935877827,
+          "median_bps": -247.38577317496438,
+          "p05_bps": -339.1419438708941,
+          "p95_bps": 206.5775250248683,
+          "profit_factor": 0.24921058573859317,
+          "stdev_bps": 203.0585683478432,
+          "total_bps": -10224.44006259268,
+          "trades": 77,
+          "win_rate": 0.2987012987012987
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "LONG",
+          "net_bps": -235.40629921672894,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783728000000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -230.9855970351237,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783742400000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -213.8163466257614,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783756800000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -197.88807916022063,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783771200000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -193.86801379479584,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783785600000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -172.1561
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -177.1561
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -184.4657
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -211.7754
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -239.085
+        }
+      },
+      "screen_verdict": "REJECT",
+      "sensitivity": null,
+      "timeframe": "4h"
+    },
+    {
+      "best_horizon_bars": "1",
+      "family": "ema_crossover",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::ema_crossover::5m",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 457.5007,
+            "final_equity_usdt": -10338.740999,
+            "max_drawdown_pct": 203.38741,
+            "trades": 14911,
+            "worst_trade_bps": -254.8138
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 4,
+              "ci_lower": -30.747267599327195,
+              "ci_upper": -24.420760638629268,
+              "mean": -27.280183755106787,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -27.280183755106787,
+            "median_bps": -38.31709603647668,
+            "p05_bps": -90.40398102821224,
+            "p95_bps": 60.938888575762434,
+            "profit_factor": 0.26660266560053664,
+            "stdev_bps": 52.091425557215246,
+            "total_bps": -406774.8199723973,
+            "trades": 14911,
+            "win_rate": 0.22708067869358192
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 250.3415,
+            "final_equity_usdt": -1020.607724,
+            "max_drawdown_pct": 110.206077,
+            "trades": 8299,
+            "worst_trade_bps": -127.8025
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -29.083399684925652,
+              "ci_upper": -23.95395098691827,
+              "mean": -26.558881128126945,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -26.558881128126945,
+            "median_bps": -32.16620299571805,
+            "p05_bps": -65.51535568567346,
+            "p95_bps": 28.37599461000581,
+            "profit_factor": 0.14385922056713024,
+            "stdev_bps": 32.49201740796784,
+            "total_bps": -220412.1544823255,
+            "trades": 8299,
+            "win_rate": 0.15158452825641644
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 411.3893,
+            "final_equity_usdt": -5422.383836,
+            "max_drawdown_pct": 154.226945,
+            "trades": 11179,
+            "worst_trade_bps": -128.3485
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -29.802967961691856,
+              "ci_upper": -26.076526051777194,
+              "mean": -27.591705583327858,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -27.591705583327858,
+            "median_bps": -34.499549709466436,
+            "p05_bps": -69.0283480443088,
+            "p95_bps": 34.70499992717835,
+            "profit_factor": 0.1530469150690915,
+            "stdev_bps": 34.94612847954283,
+            "total_bps": -308447.67671602214,
+            "trades": 11179,
+            "win_rate": 0.15117631272922444
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -26.52175444697987,
+            "ci_upper": -25.30116242970214,
+            "mean": -25.78407940808568,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -25.78407940808568,
+          "median_bps": -31.678831583004268,
+          "p05_bps": -56.522061368268965,
+          "p95_bps": 23.569361095809366,
+          "profit_factor": 0.11690286940694417,
+          "stdev_bps": 26.53839104392214,
+          "total_bps": -97283.33160670727,
+          "trades": 3773,
+          "win_rate": 0.12960508878876226
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -28.894372842154645,
+            "ci_upper": -22.86549378561055,
+            "mean": -26.31303733423591,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -26.31303733423591,
+          "median_bps": -35.69508497211843,
+          "p05_bps": -74.00267005438894,
+          "p95_bps": 43.255313447147444,
+          "profit_factor": 0.20857052568660345,
+          "stdev_bps": 42.03781108430745,
+          "total_bps": -97542.42939801252,
+          "trades": 3707,
+          "win_rate": 0.1707580253574319
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -34.07240513874368,
+            "ci_upper": -28.064655857556392,
+            "mean": -30.716927740281793,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -30.716927740281793,
+          "median_bps": -40.256074039924236,
+          "p05_bps": -72.83006621446215,
+          "p95_bps": 34.70499992717834,
+          "profit_factor": 0.13116573911590604,
+          "stdev_bps": 34.4574149596882,
+          "total_bps": -113621.91571130235,
+          "trades": 3699,
+          "win_rate": 0.15355501486888348
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "LONG",
+          "net_bps": -38.97986354141807,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783731000000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -37.46959155503113,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783731300000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -37.71933368849355,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783731600000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -37.951987827840256,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783731900000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -36.61987089403734,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783732200000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -42.5917
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -47.5917
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -54.9013
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -82.211
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -109.5206
+        }
+      },
+      "screen_verdict": "REJECT",
+      "sensitivity": null,
+      "timeframe": "5m"
+    },
+    {
+      "best_horizon_bars": "6",
+      "family": "mean_reversion",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::mean_reversion::1h",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 350.5789,
+            "final_equity_usdt": 9984.425005,
+            "max_drawdown_pct": 0.964619,
+            "trades": 44,
+            "worst_trade_bps": -329.9583
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -57.23936602013906,
+              "ci_upper": 94.01691613042827,
+              "mean": -7.0795433572215805,
+              "p_one_sided": 0.7398,
+              "resamples": 10000
+            },
+            "mean_bps": -7.0795433572215805,
+            "median_bps": -0.6913127750362076,
+            "p05_bps": -303.0784588255346,
+            "p95_bps": 255.29312507703514,
+            "profit_factor": 0.9101480545495207,
+            "stdev_bps": 178.55543438653174,
+            "total_bps": -311.4999077177495,
+            "trades": 44,
+            "win_rate": 0.5
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 198.9124,
+            "final_equity_usdt": 9936.551343,
+            "max_drawdown_pct": 0.855354,
+            "trades": 26,
+            "worst_trade_bps": -177.3815
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 2,
+              "ci_lower": -82.33386115094038,
+              "ci_upper": 62.95068083458409,
+              "mean": -48.80665915428089,
+              "p_one_sided": 0.748,
+              "resamples": 10000
+            },
+            "mean_bps": -48.80665915428089,
+            "median_bps": -84.72820876031179,
+            "p05_bps": -154.2895827973101,
+            "p95_bps": 113.86316635452529,
+            "profit_factor": 0.37017207047322276,
+            "stdev_bps": 107.09353601083414,
+            "total_bps": -1268.973138011303,
+            "trades": 26,
+            "win_rate": 0.2692307692307692
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 160.2712,
+            "final_equity_usdt": 9898.683172,
+            "max_drawdown_pct": 1.084266,
+            "trades": 36,
+            "worst_trade_bps": -219.2815
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -88.02514555534532,
+              "ci_upper": -28.532710990459506,
+              "mean": -56.2871265870973,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -56.2871265870973,
+            "median_bps": -59.72139235293857,
+            "p05_bps": -204.16164777364128,
+            "p95_bps": 136.38703753034684,
+            "profit_factor": 0.28978501525008477,
+            "stdev_bps": 109.95979695707155,
+            "total_bps": -2026.3365571355027,
+            "trades": 36,
+            "win_rate": 0.3611111111111111
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -14.805566045799862,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -14.805566045799862,
+          "median_bps": -0.14178342800855503,
+          "p05_bps": -109.6867612041866,
+          "p95_bps": 84.56475398809222,
+          "profit_factor": 0.6233800173308083,
+          "stdev_bps": 77.89271116616293,
+          "total_bps": -133.25009441219876,
+          "trades": 9,
+          "win_rate": 0.4444444444444444
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -175.48186521525486,
+            "ci_upper": -13.779556046506855,
+            "mean": -87.14261214869826,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -87.14261214869826,
+          "median_bps": -169.58796245721433,
+          "p05_bps": -209.91395639015613,
+          "p95_bps": 98.00787987440792,
+          "profit_factor": 0.19880123356561316,
+          "stdev_bps": 123.26651257313738,
+          "total_bps": -1132.8539579330775,
+          "trades": 13,
+          "win_rate": 0.3076923076923077
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -89.45343923744218,
+            "ci_upper": 1.6573089813783426,
+            "mean": -54.302321770730444,
+            "p_one_sided": 0.9639,
+            "resamples": 10000
+          },
+          "mean_bps": -54.302321770730444,
+          "median_bps": -57.44847076807096,
+          "p05_bps": -184.49138613520174,
+          "p95_bps": 137.36932118350202,
+          "profit_factor": 0.29956849372470973,
+          "stdev_bps": 112.45452965078249,
+          "total_bps": -760.2325047902262,
+          "trades": 14,
+          "win_rate": 0.35714285714285715
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "LONG",
+          "net_bps": -94.54022327227368,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783818000000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 109.25036383409213,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784530800000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -43.180367082386084,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784725200000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -99.39456206811924,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784793600000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 28.94269967933348,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784970000000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -71.2871
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -76.2871
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -83.5968
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -110.9064
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -138.2161
+        }
+      },
+      "screen_verdict": "REJECT",
+      "sensitivity": null,
+      "timeframe": "1h"
+    },
+    {
+      "best_horizon_bars": "12",
+      "family": "mean_reversion",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::mean_reversion::4h",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 271.9733,
+            "final_equity_usdt": 10035.643708,
+            "max_drawdown_pct": 0.0,
+            "trades": 4,
+            "worst_trade_bps": 34.6485
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 0,
+              "ci_lower": null,
+              "ci_upper": null,
+              "mean": 178.21853980504088,
+              "p_one_sided": null,
+              "resamples": 0
+            },
+            "mean_bps": 178.21853980504088,
+            "median_bps": 203.1261668479264,
+            "p05_bps": 54.62781271828726,
+            "p95_bps": 266.9385890317547,
+            "profit_factor": null,
+            "stdev_bps": 105.09168426473965,
+            "total_bps": 712.8741592201635,
+            "trades": 4,
+            "win_rate": 1.0
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 407.5048,
+            "final_equity_usdt": 10035.300602,
+            "max_drawdown_pct": 0.0,
+            "trades": 4,
+            "worst_trade_bps": 50.1718
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 0,
+              "ci_lower": null,
+              "ci_upper": null,
+              "mean": 176.50300827167507,
+              "p_one_sided": null,
+              "resamples": 0
+            },
+            "mean_bps": 176.50300827167507,
+            "median_bps": 124.16773272894869,
+            "p05_bps": 50.45172826095368,
+            "p95_bps": 375.8236740422134,
+            "profit_factor": null,
+            "stdev_bps": 168.52767826092628,
+            "total_bps": 706.0120330867003,
+            "trades": 4,
+            "win_rate": 1.0
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 215.8031,
+            "final_equity_usdt": 9913.055945,
+            "max_drawdown_pct": 1.001538,
+            "trades": 10,
+            "worst_trade_bps": -358.1091
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -308.2804813064626,
+              "ci_upper": 48.39126617520302,
+              "mean": -173.8881098355832,
+              "p_one_sided": 0.9634,
+              "resamples": 10000
+            },
+            "mean_bps": -173.8881098355832,
+            "median_bps": -254.57558207906015,
+            "p05_bps": -334.14896726255097,
+            "p95_bps": 140.46775481667873,
+            "profit_factor": 0.13189434913741527,
+            "stdev_bps": 187.09640311044816,
+            "total_bps": -1738.8810983558321,
+            "trades": 10,
+            "win_rate": 0.2
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": 10.475108062537819,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": 10.475108062537819,
+          "median_bps": 48.39126617520303,
+          "p05_bps": -204.65297850595354,
+          "p95_bps": 199.06188395216353,
+          "profit_factor": 1.135006480326227,
+          "stdev_bps": 226.6769764345264,
+          "total_bps": 31.425324187613455,
+          "trades": 3,
+          "win_rate": 0.6666666666666666
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -317.24564605309945,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -317.24564605309945,
+          "median_bps": -317.24564605309945,
+          "p05_bps": -354.0227848820545,
+          "p95_bps": -280.46850722414433,
+          "profit_factor": 0.0,
+          "stdev_bps": 57.78969835242937,
+          "total_bps": -634.4912921061989,
+          "trades": 2,
+          "win_rate": 0.0
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -227.16302608744937,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -227.16302608744937,
+          "median_bps": -284.14854575781203,
+          "p05_bps": -301.0914408455703,
+          "p95_bps": -70.0937808232453,
+          "profit_factor": 0.0,
+          "stdev_bps": 113.66374285030777,
+          "total_bps": -1135.8151304372468,
+          "trades": 5,
+          "win_rate": 0.0
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "SHORT",
+          "net_bps": -358.1091336408273,
+          "symbol": "ETHUSDT",
+          "ts_ms": 1784073600000
+        },
+        {
+          "direction": "SHORT",
+          "net_bps": -232.76900569274872,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784563200000
+        },
+        {
+          "direction": "SHORT",
+          "net_bps": -276.38215846537156,
+          "symbol": "ETHUSDT",
+          "ts_ms": 1784563200000
+        },
+        {
+          "direction": "SHORT",
+          "net_bps": 215.80306370515916,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784649600000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 48.39126617520303,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784908800000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -188.8881
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -193.8881
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -201.1978
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -228.5074
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -255.817
+        }
+      },
+      "screen_verdict": "INSUFFICIENT_EVIDENCE",
+      "sensitivity": null,
+      "timeframe": "4h"
+    },
+    {
+      "best_horizon_bars": "24",
+      "family": "mean_reversion",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::mean_reversion::5m",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 241.4362,
+            "final_equity_usdt": 9280.19622,
+            "max_drawdown_pct": 7.200093,
+            "trades": 581,
+            "worst_trade_bps": -180.3442
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 4,
+              "ci_lower": -28.536705603466192,
+              "ci_upper": -20.231728253355985,
+              "mean": -24.778099135330837,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -24.778099135330837,
+            "median_bps": -36.22376264999827,
+            "p05_bps": -92.89723895752196,
+            "p95_bps": 75.08338286127446,
+            "profit_factor": 0.31565613832255496,
+            "stdev_bps": 52.0617656469029,
+            "total_bps": -14396.075597627216,
+            "trades": 581,
+            "win_rate": 0.27538726333907054
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 105.2181,
+            "final_equity_usdt": 9695.444286,
+            "max_drawdown_pct": 3.045557,
+            "trades": 319,
+            "worst_trade_bps": -86.5657
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -22.14934657842393,
+              "ci_upper": -16.284507606851033,
+              "mean": -19.09440210774826,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -19.09440210774826,
+            "median_bps": -25.223022363092692,
+            "p05_bps": -65.47351618349933,
+            "p95_bps": 55.02004543495877,
+            "profit_factor": 0.2864624784726863,
+            "stdev_bps": 35.689969548398146,
+            "total_bps": -6091.114272371695,
+            "trades": 319,
+            "win_rate": 0.22570532915360503
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 132.7013,
+            "final_equity_usdt": 9379.774382,
+            "max_drawdown_pct": 6.202256,
+            "trades": 506,
+            "worst_trade_bps": -140.5302
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -26.575420829679945,
+              "ci_upper": -23.442025245000053,
+              "mean": -24.514846570784446,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -24.514846570784446,
+            "median_bps": -29.644252673430568,
+            "p05_bps": -65.70153260169116,
+            "p95_bps": 33.40943477466395,
+            "profit_factor": 0.16073650323163033,
+            "stdev_bps": 31.855168436654303,
+            "total_bps": -12404.51236481693,
+            "trades": 506,
+            "win_rate": 0.18972332015810275
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -25.862307869166354,
+            "ci_upper": -21.288245096894677,
+            "mean": -23.088476343322302,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -23.088476343322302,
+          "median_bps": -28.207428272504572,
+          "p05_bps": -56.35031904781332,
+          "p95_bps": 24.59723441213292,
+          "profit_factor": 0.10603818990980735,
+          "stdev_bps": 24.95837880465524,
+          "total_bps": -3578.713833214957,
+          "trades": 155,
+          "win_rate": 0.13548387096774195
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -26.594054024397117,
+            "ci_upper": -19.91700592804924,
+            "mean": -22.677087798153387,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -22.677087798153387,
+          "median_bps": -29.82029915960885,
+          "p05_bps": -62.02331897837511,
+          "p95_bps": 42.93064123767455,
+          "profit_factor": 0.2172984554611516,
+          "stdev_bps": 34.208335341158545,
+          "total_bps": -3945.813276878689,
+          "trades": 174,
+          "win_rate": 0.22988505747126436
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -28.839366318624236,
+            "ci_upper": -26.849084229236126,
+            "mean": -27.570538162278442,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -27.570538162278442,
+          "median_bps": -35.86072056389558,
+          "p05_bps": -69.96524744522112,
+          "p95_bps": 32.65948950337601,
+          "profit_factor": 0.14919910733148622,
+          "stdev_bps": 34.667067603164945,
+          "total_bps": -4879.985254723284,
+          "trades": 177,
+          "win_rate": 0.1977401129943503
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "LONG",
+          "net_bps": -17.818225997787007,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783743000000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -8.614692051672403,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783756500000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -20.3219548311723,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783763700000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -9.52120488183982,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783773600000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -28.233105708435858,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783785000000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -39.5148
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -44.5148
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -51.8245
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -79.1341
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -106.4438
+        }
+      },
+      "screen_verdict": "REJECT",
+      "sensitivity": null,
+      "timeframe": "5m"
+    },
+    {
+      "best_horizon_bars": "24",
+      "family": "momentum",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::momentum::1h",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 621.5516,
+            "final_equity_usdt": 7631.52787,
+            "max_drawdown_pct": 23.712216,
+            "trades": 779,
+            "worst_trade_bps": -621.5696
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 4,
+              "ci_lower": -97.99080086071292,
+              "ci_upper": -1.760265102582314,
+              "mean": -60.808013616557204,
+              "p_one_sided": 0.9818,
+              "resamples": 10000
+            },
+            "mean_bps": -60.808013616557204,
+            "median_bps": -93.61421297337289,
+            "p05_bps": -273.35162759195856,
+            "p95_bps": 259.4603221600606,
+            "profit_factor": 0.4179651615468998,
+            "stdev_bps": 170.39765846635024,
+            "total_bps": -47369.442607298064,
+            "trades": 779,
+            "win_rate": 0.31322207958921694
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 333.6689,
+            "final_equity_usdt": 9220.220422,
+            "max_drawdown_pct": 10.095617,
+            "trades": 423,
+            "worst_trade_bps": -234.1519
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -46.130561396796935,
+              "ci_upper": -7.994094293770824,
+              "mean": -36.86901077284761,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -36.86901077284761,
+            "median_bps": -65.86955137163815,
+            "p05_bps": -175.13379975587668,
+            "p95_bps": 216.1197320266964,
+            "profit_factor": 0.4859334907192997,
+            "stdev_bps": 119.85377092483483,
+            "total_bps": -15595.59155691454,
+            "trades": 423,
+            "win_rate": 0.3120567375886525
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 527.4929,
+            "final_equity_usdt": 9704.148058,
+            "max_drawdown_pct": 4.805734,
+            "trades": 576,
+            "worst_trade_bps": -200.3045
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -24.245209041569336,
+              "ci_upper": -0.08843803022953324,
+              "mean": -10.272636891287,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -10.272636891287,
+            "median_bps": -20.09633750378699,
+            "p05_bps": -165.6227990343536,
+            "p95_bps": 175.65035588890464,
+            "profit_factor": 0.8041360441673164,
+            "stdev_bps": 122.73156303855869,
+            "total_bps": -5917.038849381312,
+            "trades": 576,
+            "win_rate": 0.4253472222222222
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -34.4990692726795,
+            "ci_upper": 5.10762755136343,
+            "mean": -16.57073990971173,
+            "p_one_sided": 0.9639,
+            "resamples": 10000
+          },
+          "mean_bps": -16.57073990971173,
+          "median_bps": -24.405537985049463,
+          "p05_bps": -125.24955009923077,
+          "p95_bps": 138.7456349684677,
+          "profit_factor": 0.6435473932332071,
+          "stdev_bps": 96.88866923677718,
+          "total_bps": -2717.601345192724,
+          "trades": 164,
+          "win_rate": 0.3597560975609756
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -22.14981439777894,
+            "ci_upper": 17.372891887668683,
+            "mean": -2.8273889310052502,
+            "p_one_sided": 0.7426,
+            "resamples": 10000
+          },
+          "mean_bps": -2.8273889310052502,
+          "median_bps": -20.200771797314335,
+          "p05_bps": -171.98386914398063,
+          "p95_bps": 212.5740730861176,
+          "profit_factor": 0.9516943789009071,
+          "stdev_bps": 152.9877753800491,
+          "total_bps": -590.9242865800973,
+          "trades": 209,
+          "win_rate": 0.40669856459330145
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -27.945492081805053,
+            "ci_upper": -2.2360690651038446,
+            "mean": -12.849818805953152,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -12.849818805953152,
+          "median_bps": -2.9589998150772168,
+          "p05_bps": -162.9634283938829,
+          "p95_bps": 156.72293573902792,
+          "profit_factor": 0.7480400963631493,
+          "stdev_bps": 105.38389931679241,
+          "total_bps": -2608.51321760849,
+          "trades": 203,
+          "win_rate": 0.4975369458128079
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "LONG",
+          "net_bps": -86.01958408299862,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783872000000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -75.80857217748822,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783886400000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 322.0238766820276,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783998000000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 291.38594626136853,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784001600000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 275.441373578231,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784005200000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -25.2726
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -30.2726
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -37.5823
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -64.8919
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -92.2016
+        }
+      },
+      "screen_verdict": "REJECT",
+      "sensitivity": null,
+      "timeframe": "1h"
+    },
+    {
+      "best_horizon_bars": "48",
+      "family": "momentum",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::momentum::4h",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 141.6804,
+            "final_equity_usdt": 9332.623263,
+            "max_drawdown_pct": 6.740018,
+            "trades": 74,
+            "worst_trade_bps": -415.2526
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 2,
+              "ci_lower": -216.8196822361058,
+              "ci_upper": -113.08423034519788,
+              "mean": -180.37209103119218,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -180.37209103119218,
+            "median_bps": -208.93860241680125,
+            "p05_bps": -363.3919477860642,
+            "p95_bps": 78.20897168737166,
+            "profit_factor": 0.05526829805165057,
+            "stdev_bps": 155.38588023123606,
+            "total_bps": -13347.534736308222,
+            "trades": 74,
+            "win_rate": 0.16216216216216217
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 154.7559,
+            "final_equity_usdt": 9295.416601,
+            "max_drawdown_pct": 7.270201,
+            "trades": 109,
+            "worst_trade_bps": -354.6156
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 2,
+              "ci_lower": -149.71964735696133,
+              "ci_upper": -99.0884296443573,
+              "mean": -129.281357638112,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -129.281357638112,
+            "median_bps": -154.85143851979365,
+            "p05_bps": -301.0277343561267,
+            "p95_bps": 101.70928160648361,
+            "profit_factor": 0.08682768785848577,
+            "stdev_bps": 120.71023028240744,
+            "total_bps": -14091.667982554209,
+            "trades": 109,
+            "win_rate": 0.1743119266055046
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 486.0819,
+            "final_equity_usdt": 8595.826181,
+            "max_drawdown_pct": 14.041738,
+            "trades": 224,
+            "worst_trade_bps": -453.9475
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -222.02287089470383,
+              "ci_upper": -49.88306622251999,
+              "mean": -125.37266239565928,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -125.37266239565928,
+            "median_bps": -204.92658615253484,
+            "p05_bps": -341.4234384841202,
+            "p95_bps": 278.7147170925251,
+            "profit_factor": 0.263816338474413,
+            "stdev_bps": 200.47300502781727,
+            "total_bps": -28083.476376627677,
+            "trades": 224,
+            "win_rate": 0.24553571428571427
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -209.05576564723202,
+            "ci_upper": -80.70357542272711,
+            "mean": -135.85840969719683,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -135.85840969719683,
+          "median_bps": -187.44470727605616,
+          "p05_bps": -257.43931819537954,
+          "p95_bps": 139.2677868565211,
+          "profit_factor": 0.13776534725241876,
+          "stdev_bps": 135.70553015068106,
+          "total_bps": -9645.947088500976,
+          "trades": 71,
+          "win_rate": 0.18309859154929578
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -244.2398128848909,
+            "ci_upper": -24.827291260659315,
+            "mean": -149.4300945860424,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -149.4300945860424,
+          "median_bps": -243.43845387079907,
+          "p05_bps": -346.41008669307246,
+          "p95_bps": 289.2540497835189,
+          "profit_factor": 0.21125263804699806,
+          "stdev_bps": 201.79094232936941,
+          "total_bps": -11356.687188539223,
+          "trades": 76,
+          "win_rate": 0.19736842105263158
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -204.20176027649293,
+            "ci_upper": -24.610587555933353,
+            "mean": -91.95898830633087,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -91.95898830633087,
+          "median_bps": -206.63234182015714,
+          "p05_bps": -345.7231759762552,
+          "p95_bps": 315.2407360252697,
+          "profit_factor": 0.43632152055384305,
+          "stdev_bps": 242.82853494900093,
+          "total_bps": -7080.842099587477,
+          "trades": 77,
+          "win_rate": 0.35064935064935066
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "LONG",
+          "net_bps": -235.40629921672894,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783728000000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -230.9855970351237,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783742400000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -213.8163466257614,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783756800000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -197.88807916022063,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783771200000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -193.86801379479584,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783785600000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -140.3727
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -145.3727
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -152.6823
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -179.992
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -207.3016
+        }
+      },
+      "screen_verdict": "REJECT",
+      "sensitivity": null,
+      "timeframe": "4h"
+    },
+    {
+      "best_horizon_bars": "3",
+      "family": "momentum",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::momentum::5m",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 331.411,
+            "final_equity_usdt": 4547.576339,
+            "max_drawdown_pct": 54.534152,
+            "trades": 3929,
+            "worst_trade_bps": -254.8138
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 4,
+              "ci_lower": -35.536523291569274,
+              "ci_upper": -21.875543530669276,
+              "mean": -27.754765388772412,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -27.754765388772412,
+            "median_bps": -38.64523510348067,
+            "p05_bps": -114.43924426297546,
+            "p95_bps": 94.31950920952771,
+            "profit_factor": 0.3498950207793149,
+            "stdev_bps": 65.79294631409519,
+            "total_bps": -109048.4732124868,
+            "trades": 3929,
+            "win_rate": 0.28098752863324
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 250.3415,
+            "final_equity_usdt": 8720.534175,
+            "max_drawdown_pct": 13.510687,
+            "trades": 1158,
+            "worst_trade_bps": -106.0784
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -26.254770016979112,
+              "ci_upper": -19.954494393737804,
+              "mean": -22.097855348106776,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -22.097855348106776,
+            "median_bps": -28.725311814247384,
+            "p05_bps": -79.30801528661617,
+            "p95_bps": 73.45206288332221,
+            "profit_factor": 0.3156449699956628,
+            "stdev_bps": 47.41602064226494,
+            "total_bps": -25589.316493107646,
+            "trades": 1158,
+            "win_rate": 0.23402417962003455
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 265.3519,
+            "final_equity_usdt": 7499.826904,
+            "max_drawdown_pct": 25.179958,
+            "trades": 1617,
+            "worst_trade_bps": -128.3485
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -36.5898406254377,
+              "ci_upper": -24.986358150468025,
+              "mean": -30.923600450572025,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -30.923600450572025,
+            "median_bps": -40.57791191652465,
+            "p05_bps": -87.1002547571751,
+            "p95_bps": 54.82756262873031,
+            "profit_factor": 0.1993311873315318,
+            "stdev_bps": 44.87773756404743,
+            "total_bps": -50003.461928574965,
+            "trades": 1617,
+            "win_rate": 0.20902906617192332
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -28.862065271163747,
+            "ci_upper": -21.02753585355631,
+            "mean": -27.108828024967245,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -27.108828024967245,
+          "median_bps": -33.50935269247554,
+          "p05_bps": -76.70131063823538,
+          "p95_bps": 50.951530454417025,
+          "profit_factor": 0.18526940146359533,
+          "stdev_bps": 36.48423121194597,
+          "total_bps": -8810.369108114355,
+          "trades": 325,
+          "win_rate": 0.19692307692307692
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -37.62730174307319,
+            "ci_upper": -23.089099041566502,
+            "mean": -31.149694581180665,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -31.149694581180665,
+          "median_bps": -41.79510465817266,
+          "p05_bps": -90.10981612033737,
+          "p95_bps": 55.47359250826111,
+          "profit_factor": 0.2203367785670132,
+          "stdev_bps": 49.241699938121364,
+          "total_bps": -19624.30758614382,
+          "trades": 630,
+          "win_rate": 0.22698412698412698
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -41.69501570430227,
+            "ci_upper": -26.02866186819147,
+            "mean": -32.58124657751781,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -32.58124657751781,
+          "median_bps": -43.16907912546636,
+          "p05_bps": -87.76633409350967,
+          "p95_bps": 56.84516994415126,
+          "profit_factor": 0.18510067407787278,
+          "stdev_bps": 44.204530409658986,
+          "total_bps": -21568.78523431679,
+          "trades": 662,
+          "win_rate": 0.19788519637462235
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "LONG",
+          "net_bps": -36.58309829645074,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783820400000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -53.25229599372254,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783901400000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -55.33001229504767,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783901700000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -56.102462722979624,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783902000000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -56.44860321249974,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783902300000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -45.9236
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -50.9236
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -58.2332
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -85.5429
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -112.8525
+        }
+      },
+      "screen_verdict": "REJECT",
+      "sensitivity": null,
+      "timeframe": "5m"
+    },
+    {
+      "best_horizon_bars": "48",
+      "family": "trend",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::trend::1h",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 606.1068,
+            "final_equity_usdt": 9422.063436,
+            "max_drawdown_pct": 8.966973,
+            "trades": 512,
+            "worst_trade_bps": -455.0659
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 4,
+              "ci_lower": -83.17455311396871,
+              "ci_upper": 38.79992074495007,
+              "mean": -22.57564702628956,
+              "p_one_sided": 0.7465,
+              "resamples": 10000
+            },
+            "mean_bps": -22.57564702628956,
+            "median_bps": -36.2479425576351,
+            "p05_bps": -296.8089554909105,
+            "p95_bps": 314.4006317211739,
+            "profit_factor": 0.7347684102014093,
+            "stdev_bps": 183.41752303660533,
+            "total_bps": -11558.731277460254,
+            "trades": 512,
+            "win_rate": 0.419921875
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 259.8172,
+            "final_equity_usdt": 9512.290766,
+            "max_drawdown_pct": 5.615508,
+            "trades": 107,
+            "worst_trade_bps": -213.1014
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 2,
+              "ci_lower": -95.00055811128271,
+              "ci_upper": -82.54979935311123,
+              "mean": -91.16060447558498,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -91.16060447558498,
+            "median_bps": -124.36590251733735,
+            "p05_bps": -193.72911406804664,
+            "p95_bps": 166.03695772337434,
+            "profit_factor": 0.14697730789328925,
+            "stdev_bps": 100.5748671067592,
+            "total_bps": -9754.184678887592,
+            "trades": 107,
+            "win_rate": 0.11214953271028037
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 343.161,
+            "final_equity_usdt": 9308.030797,
+            "max_drawdown_pct": 7.134714,
+            "trades": 343,
+            "worst_trade_bps": -203.4733
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -47.72965681437199,
+              "ci_upper": -27.118611289452062,
+              "mean": -40.34805848766374,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -40.34805848766374,
+            "median_bps": -51.37344297832213,
+            "p05_bps": -177.80371221511618,
+            "p95_bps": 183.51351236456298,
+            "profit_factor": 0.4053254783633031,
+            "stdev_bps": 108.10372328043138,
+            "total_bps": -13839.384061268664,
+            "trades": 343,
+            "win_rate": 0.2886297376093295
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -52.50498835912483,
+            "ci_upper": -29.39506958883696,
+            "mean": -42.79146194767018,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -42.79146194767018,
+          "median_bps": -28.789185515074116,
+          "p05_bps": -142.61812365563648,
+          "p95_bps": 79.72286558778579,
+          "profit_factor": 0.20657336181011587,
+          "stdev_bps": 70.17827599692394,
+          "total_bps": -3252.151108022934,
+          "trades": 76,
+          "win_rate": 0.27631578947368424
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -79.29152368828352,
+            "ci_upper": -23.52755209000873,
+            "mean": -44.39572778284999,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -44.39572778284999,
+          "median_bps": -74.18945925659351,
+          "p05_bps": -190.24836618584823,
+          "p95_bps": 215.2281493241734,
+          "profit_factor": 0.4368917354674707,
+          "stdev_bps": 124.99673272114339,
+          "total_bps": -6304.193345164698,
+          "trades": 142,
+          "win_rate": 0.24647887323943662
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -87.30310612755248,
+            "ci_upper": 18.00083159113857,
+            "mean": -34.26431686464824,
+            "p_one_sided": 0.9634,
+            "resamples": 10000
+          },
+          "mean_bps": -34.26431686464824,
+          "median_bps": -39.47710171188527,
+          "p05_bps": -180.1988848392943,
+          "p95_bps": 177.0773247642615,
+          "profit_factor": 0.46314253132785393,
+          "stdev_bps": 106.89771691224365,
+          "total_bps": -4283.03960808103,
+          "trades": 125,
+          "win_rate": 0.344
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "LONG",
+          "net_bps": 25.117568033866746,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784048400000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 12.678008150129898,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784052000000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -27.920904693954732,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784055600000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 5.55137906193162,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784059200000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -25.565136834092776,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784062800000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -55.3481
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -60.3481
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -67.6577
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -94.9673
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -122.277
+        }
+      },
+      "screen_verdict": "REJECT",
+      "sensitivity": null,
+      "timeframe": "1h"
+    },
+    {
+      "best_horizon_bars": "48",
+      "family": "trend",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::trend::4h",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 279.8265,
+            "final_equity_usdt": 9316.984713,
+            "max_drawdown_pct": 7.334076,
+            "trades": 85,
+            "worst_trade_bps": -383.7806
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 2,
+              "ci_lower": -193.8094453298645,
+              "ci_upper": 22.613410066020794,
+              "mean": -160.7094792104938,
+              "p_one_sided": 0.748,
+              "resamples": 10000
+            },
+            "mean_bps": -160.7094792104938,
+            "median_bps": -203.13471705483698,
+            "p05_bps": -362.1434420691828,
+            "p95_bps": 132.15761053280383,
+            "profit_factor": 0.12075615538005526,
+            "stdev_bps": 177.07420834389796,
+            "total_bps": -13660.305732891973,
+            "trades": 85,
+            "win_rate": 0.25882352941176473
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 120.0142,
+            "final_equity_usdt": 9572.453762,
+            "max_drawdown_pct": 4.275462,
+            "trades": 72,
+            "worst_trade_bps": -310.997
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 2,
+              "ci_lower": -128.05032780419785,
+              "ci_upper": -105.76036659006358,
+              "mean": -118.76284396497522,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -118.76284396497522,
+            "median_bps": -151.36041718866198,
+            "p05_bps": -254.04608115356402,
+            "p95_bps": 60.6356105579576,
+            "profit_factor": 0.08337143646774291,
+            "stdev_bps": 111.00493986590314,
+            "total_bps": -8550.924765478216,
+            "trades": 72,
+            "win_rate": 0.20833333333333334
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 436.2886,
+            "final_equity_usdt": 8884.377664,
+            "max_drawdown_pct": 11.156223,
+            "trades": 140,
+            "worst_trade_bps": -373.9073
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -237.70335039883724,
+              "ci_upper": -47.85986095540109,
+              "mean": -159.37461944089233,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -159.37461944089233,
+            "median_bps": -239.91944194281842,
+            "p05_bps": -347.13152423881917,
+            "p95_bps": 247.8157878463811,
+            "profit_factor": 0.17988772394044564,
+            "stdev_bps": 187.164160531877,
+            "total_bps": -22312.446721724926,
+            "trades": 140,
+            "win_rate": 0.19285714285714287
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -207.35991948127332,
+            "ci_upper": -54.263565803246365,
+            "mean": -173.4057528233299,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -173.4057528233299,
+          "median_bps": -213.8163466257614,
+          "p05_bps": -258.63519880198373,
+          "p95_bps": 96.24982680694026,
+          "profit_factor": 0.052692120877458205,
+          "stdev_bps": 108.26961714133289,
+          "total_bps": -6762.824360109866,
+          "trades": 39,
+          "win_rate": 0.10256410256410256
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -260.70719626324797,
+            "ci_upper": 43.17742111165581,
+            "mean": -126.59911713635243,
+            "p_one_sided": 0.9619,
+            "resamples": 10000
+          },
+          "mean_bps": -126.59911713635243,
+          "median_bps": -247.50868783287305,
+          "p05_bps": -359.86100679244964,
+          "p95_bps": 306.0475535599051,
+          "profit_factor": 0.32334853342054076,
+          "stdev_bps": 235.69292019983257,
+          "total_bps": -7089.550559635736,
+          "trades": 56,
+          "win_rate": 0.26785714285714285
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -241.8031885418021,
+            "ci_upper": -116.32538202108175,
+            "mean": -188.00159559954048,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -188.00159559954048,
+          "median_bps": -254.4225894294535,
+          "p05_bps": -343.5211623872512,
+          "p95_bps": 187.4410764609375,
+          "profit_factor": 0.11784005129982086,
+          "stdev_bps": 169.4747793615591,
+          "total_bps": -8460.071801979322,
+          "trades": 45,
+          "win_rate": 0.17777777777777778
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "LONG",
+          "net_bps": -235.40629921672894,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783728000000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -230.9855970351237,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783742400000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -213.8163466257614,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783756800000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -197.88807916022063,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783771200000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -193.86801379479584,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783785600000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -174.3746
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -179.3746
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -186.6843
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -213.9939
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -241.3036
+        }
+      },
+      "screen_verdict": "EXPERIMENT",
+      "sensitivity": {
+        "configurations": 9,
+        "grid": {
+          "h12_m1.5": {
+            "mean_net_bps": -142.1168105927361,
+            "trades": 212
+          },
+          "h12_m2": {
+            "mean_net_bps": -145.58194097737328,
+            "trades": 212
+          },
+          "h12_m3": {
+            "mean_net_bps": -153.95586867135526,
+            "trades": 212
+          },
+          "h24_m1.5": {
+            "mean_net_bps": -178.83616236905235,
+            "trades": 193
+          },
+          "h24_m2": {
+            "mean_net_bps": -197.87689831656365,
+            "trades": 193
+          },
+          "h24_m3": {
+            "mean_net_bps": -183.58564008639723,
+            "trades": 193
+          },
+          "h6_m1.5": {
+            "mean_net_bps": -88.14634494909316,
+            "trades": 212
+          },
+          "h6_m2": {
+            "mean_net_bps": -86.75683724201573,
+            "trades": 212
+          },
+          "h6_m3": {
+            "mean_net_bps": -84.17544316737498,
+            "trades": 212
+          }
+        },
+        "note": "VAL+TEST net per closed trade after full cost; a cell is not promoted because one corner of this grid is positive",
+        "positive": 0,
+        "stable": false
+      },
+      "timeframe": "4h"
+    },
+    {
+      "best_horizon_bars": "1",
+      "family": "trend",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::trend::5m",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 281.7034,
+            "final_equity_usdt": 8607.950355,
+            "max_drawdown_pct": 14.465918,
+            "trades": 701,
+            "worst_trade_bps": -254.8138
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 4,
+              "ci_lower": -51.981580789352165,
+              "ci_upper": -32.87089428716669,
+              "mean": -39.71610969608827,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -39.71610969608827,
+            "median_bps": -52.35840524146033,
+            "p05_bps": -162.93718016030437,
+            "p95_bps": 141.37115437597598,
+            "profit_factor": 0.33644605845651165,
+            "stdev_bps": 89.14398777341337,
+            "total_bps": -27840.992896957876,
+            "trades": 701,
+            "win_rate": 0.268188302425107
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 96.865,
+            "final_equity_usdt": 9856.415028,
+            "max_drawdown_pct": 1.43585,
+            "trades": 120,
+            "worst_trade_bps": -104.6714
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 2,
+              "ci_lower": -34.78200850265369,
+              "ci_upper": -20.313768831900163,
+              "mean": -23.930828749588546,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -23.930828749588546,
+            "median_bps": -25.139497505841007,
+            "p05_bps": -82.33529419734613,
+            "p95_bps": 37.20153729898648,
+            "profit_factor": 0.2080435443375596,
+            "stdev_bps": 37.728885105645396,
+            "total_bps": -2871.6994499506254,
+            "trades": 120,
+            "win_rate": 0.24166666666666667
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 265.3519,
+            "final_equity_usdt": 9788.477332,
+            "max_drawdown_pct": 2.115475,
+            "trades": 121,
+            "worst_trade_bps": -128.3485
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -64.97961790692965,
+              "ci_upper": -32.21509056609277,
+              "mean": -34.96242444111085,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -34.96242444111085,
+            "median_bps": -44.91769711933981,
+            "p05_bps": -114.71738620188937,
+            "p95_bps": 70.04808360430025,
+            "profit_factor": 0.275165037017555,
+            "stdev_bps": 68.0739518381039,
+            "total_bps": -4230.453357374413,
+            "trades": 121,
+            "win_rate": 0.2231404958677686
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -79.10015630620836,
+            "ci_upper": -29.74748847466004,
+            "mean": -34.10077114830882,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -34.10077114830882,
+          "median_bps": -29.40644163744991,
+          "p05_bps": -83.78293823165058,
+          "p95_bps": 27.42669801132854,
+          "profit_factor": 0.09747259268368634,
+          "stdev_bps": 35.03325235615113,
+          "total_bps": -545.6123383729412,
+          "trades": 16,
+          "win_rate": 0.125
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -75.16102445824819,
+            "ci_upper": -19.456503696905642,
+            "mean": -21.774050043728163,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -21.774050043728163,
+          "median_bps": -36.86797704751626,
+          "p05_bps": -117.72473876380751,
+          "p95_bps": 119.48602127597042,
+          "profit_factor": 0.5038143072854548,
+          "stdev_bps": 81.93773864674135,
+          "total_bps": -1480.635402973515,
+          "trades": 68,
+          "win_rate": 0.3088235294117647
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -60.50270345997948,
+            "ci_upper": -33.7301562889098,
+            "mean": -59.573124757512346,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -59.573124757512346,
+          "median_bps": -81.94104708862571,
+          "p05_bps": -98.22525971451064,
+          "p95_bps": 2.782262703690595,
+          "profit_factor": 0.019421973692045208,
+          "stdev_bps": 38.587471191125026,
+          "total_bps": -2204.2056160279567,
+          "trades": 37,
+          "win_rate": 0.10810810810810811
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "LONG",
+          "net_bps": -9.586257014656278,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784033100000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -22.286215888951926,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784033400000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -76.6358676204575,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784033700000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -88.15388169779145,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784035200000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 33.53546971753913,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784041200000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -49.9624
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -54.9624
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -62.2721
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -89.5817
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -116.8914
+        }
+      },
+      "screen_verdict": "REJECT",
+      "sensitivity": null,
+      "timeframe": "5m"
+    },
+    {
+      "best_horizon_bars": "3",
+      "family": "volatility",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::volatility::1h",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 70.722,
+            "final_equity_usdt": 9980.392904,
+            "max_drawdown_pct": 0.196071,
+            "trades": 7,
+            "worst_trade_bps": -180.7429
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 0,
+              "ci_lower": null,
+              "ci_upper": null,
+              "mean": -56.02027407146924,
+              "p_one_sided": null,
+              "resamples": 0
+            },
+            "mean_bps": -56.02027407146924,
+            "median_bps": -92.46770593610829,
+            "p05_bps": -157.67041955914434,
+            "p95_bps": 69.97978111574281,
+            "profit_factor": 0.2616584755941701,
+            "stdev_bps": 93.87702689109156,
+            "total_bps": -392.14191850028465,
+            "trades": 7,
+            "win_rate": 0.2857142857142857
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 206.1351,
+            "final_equity_usdt": 9995.119768,
+            "max_drawdown_pct": 0.174812,
+            "trades": 4,
+            "worst_trade_bps": -175.3012
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 0,
+              "ci_lower": null,
+              "ci_upper": null,
+              "mean": -24.401158861828925,
+              "p_one_sided": null,
+              "resamples": 0
+            },
+            "mean_bps": -24.401158861828925,
+            "median_bps": -64.21928958654281,
+            "p05_bps": -175.154328674138,
+            "p95_bps": 182.0973939650795,
+            "profit_factor": 0.7208291210349523,
+            "stdev_bps": 185.59276186531147,
+            "total_bps": -97.6046354473157,
+            "trades": 4,
+            "win_rate": 0.5
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 64.6676,
+            "final_equity_usdt": 9937.039166,
+            "max_drawdown_pct": 0.668311,
+            "trades": 16,
+            "worst_trade_bps": -200.3045
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -98.22056770253282,
+              "ci_upper": -0.058483683712438506,
+              "mean": -78.70104224384283,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -78.70104224384283,
+            "median_bps": -103.8232264244603,
+            "p05_bps": -190.53897422856608,
+            "p95_bps": 61.1803050277086,
+            "profit_factor": 0.1607125069447782,
+            "stdev_bps": 95.50114729802006,
+            "total_bps": -1259.2166759014854,
+            "trades": 16,
+            "win_rate": 0.3125
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -107.58421475298489,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -107.58421475298489,
+          "median_bps": -112.63783267023916,
+          "p05_bps": -123.9087165935169,
+          "p95_bps": -87.72218037037487,
+          "profit_factor": 0.0,
+          "stdev_bps": 20.57450556820832,
+          "total_bps": -322.75264425895466,
+          "trades": 3,
+          "win_rate": 0.0
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -70.3735242615568,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -70.3735242615568,
+          "median_bps": -77.5804452813672,
+          "p05_bps": -195.09621037949756,
+          "p95_bps": 52.434532563629155,
+          "profit_factor": 0.2178958058327788,
+          "stdev_bps": 114.16527876674648,
+          "total_bps": -633.3617183540111,
+          "trades": 9,
+          "win_rate": 0.4444444444444444
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -75.77557832212997,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -75.77557832212997,
+          "median_bps": -103.8232264244603,
+          "p05_bps": -152.82801628225187,
+          "p95_bps": 40.54356698125437,
+          "profit_factor": 0.17583703650908966,
+          "stdev_bps": 97.51863948632702,
+          "total_bps": -303.1023132885199,
+          "trades": 4,
+          "win_rate": 0.25
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "SHORT",
+          "net_bps": -84.95377455927884,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783810800000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 60.01788482842538,
+          "symbol": "ETHUSDT",
+          "ts_ms": 1784394000000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": 39.03297303062987,
+          "symbol": "ETHUSDT",
+          "ts_ms": 1784397600000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -112.63783267023916,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784512800000
+        },
+        {
+          "direction": "SHORT",
+          "net_bps": -125.16103702943664,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784523600000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -93.701
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -98.701
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -106.0107
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -133.3203
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -160.63
+        }
+      },
+      "screen_verdict": "INSUFFICIENT_EVIDENCE",
+      "sensitivity": null,
+      "timeframe": "1h"
+    },
+    {
+      "best_horizon_bars": "3",
+      "family": "volatility",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::volatility::4h",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": -70.5281,
+            "final_equity_usdt": 9958.674928,
+            "max_drawdown_pct": 0.413251,
+            "trades": 3,
+            "worst_trade_bps": -415.2526
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 0,
+              "ci_lower": null,
+              "ci_upper": null,
+              "mean": -275.5004818106159,
+              "p_one_sided": null,
+              "resamples": 0
+            },
+            "mean_bps": -275.5004818106159,
+            "median_bps": -340.72072208247545,
+            "p05_bps": -407.79941175582604,
+            "p95_bps": -97.54738367510403,
+            "profit_factor": 0.0,
+            "stdev_bps": 181.38081715843575,
+            "total_bps": -826.5014454318476,
+            "trades": 3,
+            "win_rate": 0.0
+          }
+        },
+        "TEST": {
+          "equity": {
+            "trades": 0
+          },
+          "summary": {
+            "trades": 0
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 262.2054,
+            "final_equity_usdt": 10013.110271,
+            "max_drawdown_pct": 0.0,
+            "trades": 1,
+            "worst_trade_bps": 262.2054
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 0,
+              "ci_lower": null,
+              "ci_upper": null,
+              "mean": 262.2054130313854,
+              "p_one_sided": null,
+              "resamples": 0
+            },
+            "mean_bps": 262.2054130313854,
+            "median_bps": 262.2054130313854,
+            "p05_bps": 262.2054130313854,
+            "p95_bps": 262.2054130313854,
+            "profit_factor": null,
+            "stdev_bps": null,
+            "total_bps": 262.2054130313854,
+            "trades": 1,
+            "win_rate": 1.0
+          }
+        }
+      },
+      "per_symbol": {
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": 262.2054130313854,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": 262.2054130313854,
+          "median_bps": 262.2054130313854,
+          "p05_bps": 262.2054130313854,
+          "p95_bps": 262.2054130313854,
+          "profit_factor": null,
+          "stdev_bps": null,
+          "total_bps": 262.2054130313854,
+          "trades": 1,
+          "win_rate": 1.0
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "SHORT",
+          "net_bps": 262.2054130313854,
+          "symbol": "SOLUSDT",
+          "ts_ms": 1784808000000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": 247.2054
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": 242.2054
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": 234.8958
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": 207.5861
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": 180.2765
+        }
+      },
+      "screen_verdict": "INSUFFICIENT_EVIDENCE",
+      "sensitivity": null,
+      "timeframe": "4h"
+    },
+    {
+      "best_horizon_bars": "48",
+      "family": "volatility",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_a::volatility::5m",
+      "lane": "lane_a",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 136.1951,
+            "final_equity_usdt": 9934.7353,
+            "max_drawdown_pct": 0.751855,
+            "trades": 71,
+            "worst_trade_bps": -104.6941
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 4,
+              "ci_lower": -26.85595793160456,
+              "ci_upper": 1.2480028318581522,
+              "mean": -18.384422499605304,
+              "p_one_sided": 0.9495,
+              "resamples": 10000
+            },
+            "mean_bps": -18.384422499605304,
+            "median_bps": -25.830827539464543,
+            "p05_bps": -75.30500779423724,
+            "p95_bps": 69.2647292185284,
+            "profit_factor": 0.38494356734599683,
+            "stdev_bps": 47.37061890602377,
+            "total_bps": -1305.2939974719766,
+            "trades": 71,
+            "win_rate": 0.2676056338028169
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 111.5099,
+            "final_equity_usdt": 9949.926993,
+            "max_drawdown_pct": 0.501221,
+            "trades": 34,
+            "worst_trade_bps": -67.532
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -44.34947765708431,
+              "ci_upper": 0.9810946320784737,
+              "mean": -29.454710196829406,
+              "p_one_sided": 0.9634,
+              "resamples": 10000
+            },
+            "mean_bps": -29.454710196829406,
+            "median_bps": -39.86602758446563,
+            "p05_bps": -62.61797587748967,
+            "p95_bps": 4.255796406817614,
+            "profit_factor": 0.10930255082516717,
+            "stdev_bps": 33.29502670719201,
+            "total_bps": -1001.4601466921998,
+            "trades": 34,
+            "win_rate": 0.14705882352941177
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 110.4092,
+            "final_equity_usdt": 9937.514734,
+            "max_drawdown_pct": 0.624853,
+            "trades": 50,
+            "worst_trade_bps": -59.1028
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -34.189605369059166,
+              "ci_upper": -17.364118144325605,
+              "mean": -24.99410638280015,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -24.99410638280015,
+            "median_bps": -34.10519662927905,
+            "p05_bps": -52.01741500332352,
+            "p95_bps": 14.851831001852382,
+            "profit_factor": 0.1326654995199867,
+            "stdev_bps": 28.773831640207874,
+            "total_bps": -1249.7053191400075,
+            "trades": 50,
+            "win_rate": 0.14
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -30.46578231643164,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -30.46578231643164,
+          "median_bps": -34.10519662927905,
+          "p05_bps": -41.67563661106892,
+          "p95_bps": -12.690313637280147,
+          "profit_factor": 0.0,
+          "stdev_bps": 11.14109788570727,
+          "total_bps": -243.7262585314531,
+          "trades": 8,
+          "win_rate": 0.0
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -26.098251396539553,
+            "ci_upper": -8.36778063384233,
+            "mean": -23.43852475775962,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -23.43852475775962,
+          "median_bps": -29.17654189300118,
+          "p05_bps": -53.946206816314174,
+          "p95_bps": 12.449125776474666,
+          "profit_factor": 0.06603137932778057,
+          "stdev_bps": 22.08877315232763,
+          "total_bps": -492.209019912952,
+          "trades": 21,
+          "win_rate": 0.19047619047619047
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 3,
+            "ci_lower": -44.49452299866545,
+            "ci_upper": -0.17570930180401742,
+            "mean": -24.465240033123937,
+            "p_one_sided": 1.0,
+            "resamples": 10000
+          },
+          "mean_bps": -24.465240033123937,
+          "median_bps": -37.93069385469046,
+          "p05_bps": -51.910463186146046,
+          "p95_bps": 39.33607055545942,
+          "profit_factor": 0.23331983146905064,
+          "stdev_bps": 38.50025028707675,
+          "total_bps": -513.7700406956027,
+          "trades": 21,
+          "win_rate": 0.14285714285714285
+        }
+      },
+      "sample_trades": [
+        {
+          "direction": "SHORT",
+          "net_bps": -34.05093265387836,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783865100000
+        },
+        {
+          "direction": "SHORT",
+          "net_bps": -34.15946060467974,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783865400000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -10.62719977922157,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1783927200000
+        },
+        {
+          "direction": "SHORT",
+          "net_bps": -43.49545228875434,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784059800000
+        },
+        {
+          "direction": "LONG",
+          "net_bps": -31.369727909512278,
+          "symbol": "BTCUSDT",
+          "ts_ms": 1784950200000
+        }
+      ],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -39.9941
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -44.9941
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -52.3038
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -79.6134
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -106.923
+        }
+      },
+      "screen_verdict": "REJECT",
+      "sensitivity": null,
+      "timeframe": "5m"
+    },
+    {
+      "best_horizon_bars": null,
+      "family": "mean_reversion_vol_liq",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_b::mean_reversion_vol_liq::1h",
+      "lane": "lane_b",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "trades": 0
+          },
+          "summary": {
+            "trades": 0
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 157.9755,
+            "final_equity_usdt": 10005.740421,
+            "max_drawdown_pct": 0.026696,
+            "trades": 3,
+            "worst_trade_bps": -53.3912
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 0,
+              "ci_lower": null,
+              "ci_upper": null,
+              "mean": 38.269474043243235,
+              "p_one_sided": null,
+              "resamples": 0
+            },
+            "mean_bps": 38.269474043243235,
+            "median_bps": 10.224091017139187,
+            "p05_bps": -47.02966842532051,
+            "p95_bps": 143.20038463007978,
+            "profit_factor": 3.1503249231757757,
+            "stdev_bps": 108.43837331099856,
+            "total_bps": 114.8084221297297,
+            "trades": 3,
+            "win_rate": 0.6666666666666666
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": 62.1992,
+            "final_equity_usdt": 9964.77859,
+            "max_drawdown_pct": 0.383314,
+            "trades": 4,
+            "worst_trade_bps": -287.0804
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 0,
+              "ci_lower": null,
+              "ci_upper": null,
+              "mean": -176.107047810477,
+              "p_one_sided": null,
+              "resamples": 0
+            },
+            "mean_bps": -176.107047810477,
+            "median_bps": -239.7734845731669,
+            "p05_bps": -285.1209724912775,
+            "p95_bps": 22.03988833808927,
+            "profit_factor": 0.08113350516980115,
+            "stdev_bps": 162.8466410613424,
+            "total_bps": -704.428191241908,
+            "trades": 4,
+            "win_rate": 0.25
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -205.52934343353033,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -205.52934343353033,
+          "median_bps": -205.52934343353033,
+          "p05_bps": -205.52934343353033,
+          "p95_bps": -205.52934343353033,
+          "profit_factor": 0.0,
+          "stdev_bps": null,
+          "total_bps": -205.52934343353033,
+          "trades": 1,
+          "win_rate": 0.0
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -287.0803866286553,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -287.0803866286553,
+          "median_bps": -287.0803866286553,
+          "p05_bps": -287.0803866286553,
+          "p95_bps": -287.0803866286553,
+          "profit_factor": 0.0,
+          "stdev_bps": null,
+          "total_bps": -287.0803866286553,
+          "trades": 1,
+          "win_rate": 0.0
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -105.90923058986122,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -105.90923058986122,
+          "median_bps": -105.90923058986122,
+          "p05_bps": -257.20678620050927,
+          "p95_bps": 45.38832502078683,
+          "profit_factor": 0.2269896484625106,
+          "stdev_bps": 237.74117233164006,
+          "total_bps": -211.81846117972245,
+          "trades": 2,
+          "win_rate": 0.5
+        }
+      },
+      "sample_trades": [],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -191.107
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -196.107
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -203.4167
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -230.7263
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -258.036
+        }
+      },
+      "screen_verdict": "INSUFFICIENT_EVIDENCE",
+      "sensitivity": null,
+      "timeframe": "1h"
+    },
+    {
+      "best_horizon_bars": null,
+      "family": "mean_reversion_vol_liq",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_b::mean_reversion_vol_liq::4h",
+      "lane": "lane_b",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "trades": 0
+          },
+          "summary": {
+            "trades": 0
+          }
+        },
+        "TEST": {
+          "equity": {
+            "trades": 0
+          },
+          "summary": {
+            "trades": 0
+          }
+        },
+        "VAL": {
+          "equity": {
+            "trades": 0
+          },
+          "summary": {
+            "trades": 0
+          }
+        }
+      },
+      "per_symbol": {},
+      "sample_trades": [],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": null
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": null
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": null
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": null
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": null
+        }
+      },
+      "screen_verdict": "INSUFFICIENT_EVIDENCE",
+      "sensitivity": null,
+      "timeframe": "4h"
+    },
+    {
+      "best_horizon_bars": "exit_policy",
+      "family": "trend_pullback",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_b::trend_pullback::1h",
+      "lane": "lane_b",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "best_trade_bps": 965.0543,
+            "final_equity_usdt": 10026.331543,
+            "max_drawdown_pct": 0.218159,
+            "trades": 10,
+            "worst_trade_bps": -143.2828
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -42.439139797671615,
+              "ci_upper": 271.75079997152886,
+              "mean": 52.66308644483797,
+              "p_one_sided": 0.2964,
+              "resamples": 10000
+            },
+            "mean_bps": 52.66308644483797,
+            "median_bps": -41.70824717515896,
+            "p05_bps": -132.570155096872,
+            "p95_bps": 543.7142230821728,
+            "profit_factor": 2.061802540518603,
+            "stdev_bps": 325.87541685463754,
+            "total_bps": 526.6308644483797,
+            "trades": 10,
+            "win_rate": 0.4
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": -121.7183,
+            "final_equity_usdt": 9968.432047,
+            "max_drawdown_pct": 0.31568,
+            "trades": 3,
+            "worst_trade_bps": -300.806
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 0,
+              "ci_lower": null,
+              "ci_upper": null,
+              "mean": -210.45302290795266,
+              "p_one_sided": null,
+              "resamples": 0
+            },
+            "mean_bps": -210.45302290795266,
+            "median_bps": -208.83475666877425,
+            "p05_bps": -291.6089006484004,
+            "p95_bps": -130.42993153492975,
+            "profit_factor": 0.0,
+            "stdev_bps": 89.55483824764394,
+            "total_bps": -631.359068723858,
+            "trades": 3,
+            "win_rate": 0.0
+          }
+        },
+        "VAL": {
+          "equity": {
+            "best_trade_bps": -24.5482,
+            "final_equity_usdt": 9917.828776,
+            "max_drawdown_pct": 0.821712,
+            "trades": 17,
+            "worst_trade_bps": -174.8959
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 3,
+              "ci_lower": -107.88050265621872,
+              "ci_upper": -85.73588672009413,
+              "mean": -96.67202864514363,
+              "p_one_sided": 1.0,
+              "resamples": 10000
+            },
+            "mean_bps": -96.67202864514363,
+            "median_bps": -91.82080517590617,
+            "p05_bps": -173.04437321678853,
+            "p95_bps": -28.10111842007544,
+            "profit_factor": 0.0,
+            "stdev_bps": 45.180658224545745,
+            "total_bps": -1643.4244869674417,
+            "trades": 17,
+            "win_rate": 0.0
+          }
+        }
+      },
+      "per_symbol": {
+        "BTCUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -96.24619883083643,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -96.24619883083643,
+          "median_bps": -91.82080517590617,
+          "p05_bps": -131.90541307918457,
+          "p95_bps": -60.42411848318484,
+          "profit_factor": 0.0,
+          "stdev_bps": 29.25796582766913,
+          "total_bps": -866.2157894775279,
+          "trades": 9,
+          "win_rate": 0.0
+        },
+        "ETHUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -103.24236019044122,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -103.24236019044122,
+          "median_bps": -101.83988279893362,
+          "p05_bps": -174.31730198237318,
+          "p95_bps": -29.34836351795587,
+          "profit_factor": 0.0,
+          "stdev_bps": 63.15200154184666,
+          "total_bps": -619.4541611426473,
+          "trades": 6,
+          "win_rate": 0.0
+        },
+        "SOLUSDT": {
+          "bootstrap": {
+            "block_days": 5,
+            "blocks": 0,
+            "ci_lower": null,
+            "ci_upper": null,
+            "mean": -78.87726817363327,
+            "p_one_sided": null,
+            "resamples": 0
+          },
+          "mean_bps": -78.87726817363327,
+          "median_bps": -78.87726817363327,
+          "p05_bps": -123.77640244116444,
+          "p95_bps": -33.978133906102094,
+          "profit_factor": 0.0,
+          "stdev_bps": 70.55218291105908,
+          "total_bps": -157.75453634726654,
+          "trades": 2,
+          "win_rate": 0.0
+        }
+      },
+      "sample_trades": [],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": -111.672
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": -116.672
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": -123.9817
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": -151.2913
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": -178.601
+        }
+      },
+      "screen_verdict": "INSUFFICIENT_EVIDENCE",
+      "sensitivity": null,
+      "timeframe": "1h"
+    },
+    {
+      "best_horizon_bars": null,
+      "family": "trend_pullback",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_b::trend_pullback::4h",
+      "lane": "lane_b",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "trades": 0
+          },
+          "summary": {
+            "trades": 0
+          }
+        },
+        "TEST": {
+          "equity": {
+            "best_trade_bps": 4.4268,
+            "final_equity_usdt": 9992.299867,
+            "max_drawdown_pct": 0.079213,
+            "trades": 2,
+            "worst_trade_bps": -158.4295
+          },
+          "summary": {
+            "bootstrap": {
+              "block_days": 5,
+              "blocks": 0,
+              "ci_lower": null,
+              "ci_upper": null,
+              "mean": -77.00133183005661,
+              "p_one_sided": null,
+              "resamples": 0
+            },
+            "mean_bps": -77.00133183005661,
+            "median_bps": -77.00133183005661,
+            "p05_bps": -150.2866764755862,
+            "p95_bps": -3.715987184527025,
+            "profit_factor": 0.027941949545009816,
+            "stdev_bps": 115.15680924543827,
+            "total_bps": -154.00266366011323,
+            "trades": 2,
+            "win_rate": 0.5
+          }
+        },
+        "VAL": {
+          "equity": {
+            "trades": 0
+          },
+          "summary": {
+            "trades": 0
+          }
+        }
+      },
+      "per_symbol": {},
+      "sample_trades": [],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": null
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": null
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": null
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": null
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": null
+        }
+      },
+      "screen_verdict": "INSUFFICIENT_EVIDENCE",
+      "sensitivity": null,
+      "timeframe": "4h"
+    },
+    {
+      "best_horizon_bars": null,
+      "family": "vol_regime_breakout",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_b::vol_regime_breakout::1h",
+      "lane": "lane_b",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "trades": 0
+          },
+          "summary": {
+            "trades": 0
+          }
+        },
+        "TEST": {
+          "equity": {
+            "trades": 0
+          },
+          "summary": {
+            "trades": 0
+          }
+        },
+        "VAL": {
+          "equity": {
+            "trades": 0
+          },
+          "summary": {
+            "trades": 0
+          }
+        }
+      },
+      "per_symbol": {},
+      "sample_trades": [],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": null
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": null
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": null
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": null
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": null
+        }
+      },
+      "screen_verdict": "INSUFFICIENT_EVIDENCE",
+      "sensitivity": null,
+      "timeframe": "1h"
+    },
+    {
+      "best_horizon_bars": null,
+      "family": "vol_regime_breakout",
+      "full_cost_bps": 27.309644256269408,
+      "key": "lane_b::vol_regime_breakout::4h",
+      "lane": "lane_b",
+      "partitions": {
+        "IS": {
+          "equity": {
+            "trades": 0
+          },
+          "summary": {
+            "trades": 0
+          }
+        },
+        "TEST": {
+          "equity": {
+            "trades": 0
+          },
+          "summary": {
+            "trades": 0
+          }
+        },
+        "VAL": {
+          "equity": {
+            "trades": 0
+          },
+          "summary": {
+            "trades": 0
+          }
+        }
+      },
+      "per_symbol": {},
+      "sample_trades": [],
+      "scenarios": {
+        "fee_floor_bnb": {
+          "cost_bps": 15.0,
+          "net_val_bps": null
+        },
+        "fee_floor_no_bnb": {
+          "cost_bps": 20.0,
+          "net_val_bps": null
+        },
+        "full_cost": {
+          "cost_bps": 27.3096,
+          "net_val_bps": null
+        },
+        "full_cost_2x": {
+          "cost_bps": 54.6193,
+          "net_val_bps": null
+        },
+        "full_cost_3x": {
+          "cost_bps": 81.9289,
+          "net_val_bps": null
+        }
+      },
+      "screen_verdict": "INSUFFICIENT_EVIDENCE",
+      "sensitivity": null,
+      "timeframe": "4h"
+    }
+  ],
+  "decision": {
+    "candidates": [
+      {
+        "closed_mean_net_bps": 262.2054130313854,
+        "closed_net_full_bps": 234.8958,
+        "closed_profit_factor": null,
+        "closed_trades_val": 1,
+        "closed_win_rate": 1.0,
+        "cost_full_bps": 27.3096,
+        "family": "volatility",
+        "is_mean_bps": 53.8296,
+        "key": "lane_a::volatility::4h",
+        "lane": "lane_a",
+        "net_val_signal_bps": 44.6893,
+        "reason": "fewer signals than the frozen sample gate (RESEARCH>=50, IS>=20, VAL>=15); measured, not passed",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 0.3036,
+        "timeframe": "4h",
+        "val_mean_bps": 71.999,
+        "verdict": "INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "closed_mean_net_bps": -10.272636891287,
+        "closed_net_full_bps": -37.5823,
+        "closed_profit_factor": 0.8041360441673164,
+        "closed_trades_val": 576,
+        "closed_win_rate": 0.4253472222222222,
+        "cost_full_bps": 27.3096,
+        "family": "momentum",
+        "is_mean_bps": 4.4212,
+        "key": "lane_a::momentum::1h",
+        "lane": "lane_a",
+        "net_val_signal_bps": -3.824,
+        "reason": "the mean forward return in IS is not positive with a positive bootstrap bound: no exit, fill or fee model can turn it into income",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 156.5969,
+        "timeframe": "1h",
+        "val_mean_bps": 23.4857,
+        "verdict": "REJECT"
+      },
+      {
+        "closed_mean_net_bps": -16.54858803096592,
+        "closed_net_full_bps": -43.8582,
+        "closed_profit_factor": 0.6580499116812012,
+        "closed_trades_val": 52,
+        "closed_win_rate": 0.4230769230769231,
+        "cost_full_bps": 27.3096,
+        "family": "breakout",
+        "is_mean_bps": 26.5345,
+        "key": "lane_a::breakout::1h",
+        "lane": "lane_a",
+        "net_val_signal_bps": -2.8252,
+        "reason": "the mean forward return in IS is not positive with a positive bootstrap bound: no exit, fill or fee model can turn it into income",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 14.4319,
+        "timeframe": "1h",
+        "val_mean_bps": 24.4845,
+        "verdict": "REJECT"
+      },
+      {
+        "closed_mean_net_bps": -20.868338848403532,
+        "closed_net_full_bps": -48.178,
+        "closed_profit_factor": 0.639962529334008,
+        "closed_trades_val": 961,
+        "closed_win_rate": 0.37356919875130074,
+        "cost_full_bps": 27.3096,
+        "family": "ema_crossover",
+        "is_mean_bps": 8.3557,
+        "key": "lane_a::ema_crossover::1h",
+        "lane": "lane_a",
+        "net_val_signal_bps": -28.5683,
+        "reason": "the mean forward return in IS is not positive with a positive bootstrap bound: no exit, fill or fee model can turn it into income",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 235.3268,
+        "timeframe": "1h",
+        "val_mean_bps": -1.2586,
+        "verdict": "REJECT"
+      },
+      {
+        "closed_mean_net_bps": -24.514846570784446,
+        "closed_net_full_bps": -51.8245,
+        "closed_profit_factor": 0.16073650323163033,
+        "closed_trades_val": 506,
+        "closed_win_rate": 0.18972332015810275,
+        "cost_full_bps": 27.3096,
+        "family": "mean_reversion",
+        "is_mean_bps": 1.8923,
+        "key": "lane_a::mean_reversion::5m",
+        "lane": "lane_a",
+        "net_val_signal_bps": -20.9805,
+        "reason": "the mean forward return in IS is not positive with a positive bootstrap bound: no exit, fill or fee model can turn it into income",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 122.5738,
+        "timeframe": "5m",
+        "val_mean_bps": 6.3291,
+        "verdict": "REJECT"
+      },
+      {
+        "closed_mean_net_bps": -24.99410638280015,
+        "closed_net_full_bps": -52.3038,
+        "closed_profit_factor": 0.1326654995199867,
+        "closed_trades_val": 50,
+        "closed_win_rate": 0.14,
+        "cost_full_bps": 27.3096,
+        "family": "volatility",
+        "is_mean_bps": 17.073,
+        "key": "lane_a::volatility::5m",
+        "lane": "lane_a",
+        "net_val_signal_bps": -31.9139,
+        "reason": "the mean forward return in IS is not positive with a positive bootstrap bound: no exit, fill or fee model can turn it into income",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 13.3437,
+        "timeframe": "5m",
+        "val_mean_bps": -4.6043,
+        "verdict": "REJECT"
+      },
+      {
+        "closed_mean_net_bps": -27.591705583327858,
+        "closed_net_full_bps": -54.9013,
+        "closed_profit_factor": 0.1530469150690915,
+        "closed_trades_val": 11179,
+        "closed_win_rate": 0.15117631272922444,
+        "cost_full_bps": 27.3096,
+        "family": "ema_crossover",
+        "is_mean_bps": -0.1762,
+        "key": "lane_a::ema_crossover::5m",
+        "lane": "lane_a",
+        "net_val_signal_bps": -27.4274,
+        "reason": "the mean forward return in IS is not positive with a positive bootstrap bound: no exit, fill or fee model can turn it into income",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 2996.8009,
+        "timeframe": "5m",
+        "val_mean_bps": -0.1178,
+        "verdict": "REJECT"
+      },
+      {
+        "closed_mean_net_bps": -29.329211058960425,
+        "closed_net_full_bps": -56.6389,
+        "closed_profit_factor": 0.1815423866583193,
+        "closed_trades_val": 653,
+        "closed_win_rate": 0.16232771822358347,
+        "cost_full_bps": 27.3096,
+        "family": "breakout",
+        "is_mean_bps": 0.9567,
+        "key": "lane_a::breakout::5m",
+        "lane": "lane_a",
+        "net_val_signal_bps": -27.0951,
+        "reason": "the mean forward return in IS is not positive with a positive bootstrap bound: no exit, fill or fee model can turn it into income",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 184.9094,
+        "timeframe": "5m",
+        "val_mean_bps": 0.2145,
+        "verdict": "REJECT"
+      },
+      {
+        "closed_mean_net_bps": -30.923600450572025,
+        "closed_net_full_bps": -58.2332,
+        "closed_profit_factor": 0.1993311873315318,
+        "closed_trades_val": 1617,
+        "closed_win_rate": 0.20902906617192332,
+        "cost_full_bps": 27.3096,
+        "family": "momentum",
+        "is_mean_bps": 0.4372,
+        "key": "lane_a::momentum::5m",
+        "lane": "lane_a",
+        "net_val_signal_bps": -27.8339,
+        "reason": "the mean forward return in IS is not positive with a positive bootstrap bound: no exit, fill or fee model can turn it into income",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 555.2618,
+        "timeframe": "5m",
+        "val_mean_bps": -0.5243,
+        "verdict": "REJECT"
+      },
+      {
+        "closed_mean_net_bps": -34.96242444111085,
+        "closed_net_full_bps": -62.2721,
+        "closed_profit_factor": 0.275165037017555,
+        "closed_trades_val": 121,
+        "closed_win_rate": 0.2231404958677686,
+        "cost_full_bps": 27.3096,
+        "family": "trend",
+        "is_mean_bps": -0.5126,
+        "key": "lane_a::trend::5m",
+        "lane": "lane_a",
+        "net_val_signal_bps": -29.1041,
+        "reason": "the mean forward return in IS is not positive with a positive bootstrap bound: no exit, fill or fee model can turn it into income",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 74.504,
+        "timeframe": "5m",
+        "val_mean_bps": -1.7945,
+        "verdict": "REJECT"
+      },
+      {
+        "closed_mean_net_bps": -40.34805848766374,
+        "closed_net_full_bps": -67.6577,
+        "closed_profit_factor": 0.4053254783633031,
+        "closed_trades_val": 343,
+        "closed_win_rate": 0.2886297376093295,
+        "cost_full_bps": 27.3096,
+        "family": "trend",
+        "is_mean_bps": 46.7518,
+        "key": "lane_a::trend::1h",
+        "lane": "lane_a",
+        "net_val_signal_bps": -210.6506,
+        "reason": "the mean forward return in IS is not positive with a positive bootstrap bound: no exit, fill or fee model can turn it into income",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 80.0083,
+        "timeframe": "1h",
+        "val_mean_bps": -183.341,
+        "verdict": "REJECT"
+      },
+      {
+        "closed_mean_net_bps": -56.2871265870973,
+        "closed_net_full_bps": -83.5968,
+        "closed_profit_factor": 0.28978501525008477,
+        "closed_trades_val": 36,
+        "closed_win_rate": 0.3611111111111111,
+        "cost_full_bps": 27.3096,
+        "family": "mean_reversion",
+        "is_mean_bps": 45.2809,
+        "key": "lane_a::mean_reversion::1h",
+        "lane": "lane_a",
+        "net_val_signal_bps": -39.6289,
+        "reason": "the mean forward return in IS is not positive with a positive bootstrap bound: no exit, fill or fee model can turn it into income",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 9.2681,
+        "timeframe": "1h",
+        "val_mean_bps": -12.3192,
+        "verdict": "REJECT"
+      },
+      {
+        "closed_mean_net_bps": -78.70104224384283,
+        "closed_net_full_bps": -106.0107,
+        "closed_profit_factor": 0.1607125069447782,
+        "closed_trades_val": 16,
+        "closed_win_rate": 0.3125,
+        "cost_full_bps": 27.3096,
+        "family": "volatility",
+        "is_mean_bps": 33.5184,
+        "key": "lane_a::volatility::1h",
+        "lane": "lane_a",
+        "net_val_signal_bps": -69.0028,
+        "reason": "fewer signals than the frozen sample gate (RESEARCH>=50, IS>=20, VAL>=15); measured, not passed",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 2.5925,
+        "timeframe": "1h",
+        "val_mean_bps": -41.6931,
+        "verdict": "INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "closed_mean_net_bps": -83.76801884087554,
+        "closed_net_full_bps": -111.0777,
+        "closed_profit_factor": 0.31466919660832704,
+        "closed_trades_val": 15,
+        "closed_win_rate": 0.4,
+        "cost_full_bps": 27.3096,
+        "family": "breakout",
+        "is_mean_bps": 250.2223,
+        "key": "lane_a::breakout::4h",
+        "lane": "lane_a",
+        "net_val_signal_bps": -16.5319,
+        "reason": "fewer signals than the frozen sample gate (RESEARCH>=50, IS>=20, VAL>=15); measured, not passed",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 2.0737,
+        "timeframe": "4h",
+        "val_mean_bps": 10.7778,
+        "verdict": "INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "closed_mean_net_bps": -96.67202864514363,
+        "closed_net_full_bps": -123.9817,
+        "closed_profit_factor": 0.0,
+        "closed_trades_val": 17,
+        "closed_win_rate": 0.0,
+        "cost_full_bps": 27.3096,
+        "family": "trend_pullback",
+        "is_mean_bps": 72.6631,
+        "key": "lane_b::trend_pullback::1h",
+        "lane": "lane_b",
+        "net_val_signal_bps": -103.9817,
+        "reason": "fewer signals than the frozen sample gate (RESEARCH>=50, IS>=20, VAL>=15); measured, not passed",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 2.5582,
+        "timeframe": "1h",
+        "val_mean_bps": -76.672,
+        "verdict": "INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "closed_mean_net_bps": -125.37266239565928,
+        "closed_net_full_bps": -152.6823,
+        "closed_profit_factor": 0.263816338474413,
+        "closed_trades_val": 224,
+        "closed_win_rate": 0.24553571428571427,
+        "cost_full_bps": 27.3096,
+        "family": "momentum",
+        "is_mean_bps": 25.6378,
+        "key": "lane_a::momentum::4h",
+        "lane": "lane_a",
+        "net_val_signal_bps": -76.8746,
+        "reason": "the mean forward return in IS is not positive with a positive bootstrap bound: no exit, fill or fee model can turn it into income",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 40.2064,
+        "timeframe": "4h",
+        "val_mean_bps": -49.5649,
+        "verdict": "REJECT"
+      },
+      {
+        "closed_mean_net_bps": -157.15608028932314,
+        "closed_net_full_bps": -184.4657,
+        "closed_profit_factor": 0.16059199299153812,
+        "closed_trades_val": 230,
+        "closed_win_rate": 0.19130434782608696,
+        "cost_full_bps": 27.3096,
+        "family": "ema_crossover",
+        "is_mean_bps": -6.4124,
+        "key": "lane_a::ema_crossover::4h",
+        "lane": "lane_a",
+        "net_val_signal_bps": -32.444,
+        "reason": "the mean forward return in IS is not positive with a positive bootstrap bound: no exit, fill or fee model can turn it into income",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 46.1767,
+        "timeframe": "4h",
+        "val_mean_bps": -5.1343,
+        "verdict": "REJECT"
+      },
+      {
+        "closed_mean_net_bps": -159.37461944089233,
+        "closed_net_full_bps": -186.6843,
+        "closed_profit_factor": 0.17988772394044564,
+        "closed_trades_val": 140,
+        "closed_win_rate": 0.19285714285714287,
+        "cost_full_bps": 27.3096,
+        "family": "trend",
+        "is_mean_bps": 10.5228,
+        "key": "lane_a::trend::4h",
+        "lane": "lane_a",
+        "net_val_signal_bps": -12.5075,
+        "reason": "the signal carries information in IS but does not replicate or does not pay: VAL gross 14.8021 bps against a full round trip of 27.3096 bps",
+        "sensitivity_configurations": 9,
+        "sensitivity_positive": 0,
+        "signals_per_day": 26.5853,
+        "timeframe": "4h",
+        "val_mean_bps": 14.8021,
+        "verdict": "EXPERIMENT"
+      },
+      {
+        "closed_mean_net_bps": -173.8881098355832,
+        "closed_net_full_bps": -201.1978,
+        "closed_profit_factor": 0.13189434913741527,
+        "closed_trades_val": 10,
+        "closed_win_rate": 0.2,
+        "cost_full_bps": 27.3096,
+        "family": "mean_reversion",
+        "is_mean_bps": 203.6893,
+        "key": "lane_a::mean_reversion::4h",
+        "lane": "lane_a",
+        "net_val_signal_bps": -53.3551,
+        "reason": "fewer signals than the frozen sample gate (RESEARCH>=50, IS>=20, VAL>=15); measured, not passed",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 1.6215,
+        "timeframe": "4h",
+        "val_mean_bps": -26.0454,
+        "verdict": "INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "closed_mean_net_bps": -176.107047810477,
+        "closed_net_full_bps": -203.4167,
+        "closed_profit_factor": 0.08113350516980115,
+        "closed_trades_val": 4,
+        "closed_win_rate": 0.25,
+        "cost_full_bps": 27.3096,
+        "family": "mean_reversion_vol_liq",
+        "is_mean_bps": null,
+        "key": "lane_b::mean_reversion_vol_liq::1h",
+        "lane": "lane_b",
+        "net_val_signal_bps": null,
+        "reason": "fewer signals than the frozen sample gate (RESEARCH>=50, IS>=20, VAL>=15); measured, not passed",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 0.6916,
+        "timeframe": "1h",
+        "val_mean_bps": null,
+        "verdict": "INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "closed_mean_net_bps": null,
+        "closed_net_full_bps": null,
+        "closed_profit_factor": null,
+        "closed_trades_val": 0,
+        "closed_win_rate": null,
+        "cost_full_bps": 27.3096,
+        "family": "mean_reversion_vol_liq",
+        "is_mean_bps": null,
+        "key": "lane_b::mean_reversion_vol_liq::4h",
+        "lane": "lane_b",
+        "net_val_signal_bps": null,
+        "reason": "fewer signals than the frozen sample gate (RESEARCH>=50, IS>=20, VAL>=15); measured, not passed",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 0.0,
+        "timeframe": "4h",
+        "val_mean_bps": null,
+        "verdict": "INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "closed_mean_net_bps": null,
+        "closed_net_full_bps": null,
+        "closed_profit_factor": null,
+        "closed_trades_val": 0,
+        "closed_win_rate": null,
+        "cost_full_bps": 27.3096,
+        "family": "trend_pullback",
+        "is_mean_bps": null,
+        "key": "lane_b::trend_pullback::4h",
+        "lane": "lane_b",
+        "net_val_signal_bps": null,
+        "reason": "fewer signals than the frozen sample gate (RESEARCH>=50, IS>=20, VAL>=15); measured, not passed",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 0.2253,
+        "timeframe": "4h",
+        "val_mean_bps": null,
+        "verdict": "INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "closed_mean_net_bps": null,
+        "closed_net_full_bps": null,
+        "closed_profit_factor": null,
+        "closed_trades_val": 0,
+        "closed_win_rate": null,
+        "cost_full_bps": 27.3096,
+        "family": "vol_regime_breakout",
+        "is_mean_bps": null,
+        "key": "lane_b::vol_regime_breakout::1h",
+        "lane": "lane_b",
+        "net_val_signal_bps": null,
+        "reason": "fewer signals than the frozen sample gate (RESEARCH>=50, IS>=20, VAL>=15); measured, not passed",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 0.0,
+        "timeframe": "1h",
+        "val_mean_bps": null,
+        "verdict": "INSUFFICIENT_EVIDENCE"
+      },
+      {
+        "closed_mean_net_bps": null,
+        "closed_net_full_bps": null,
+        "closed_profit_factor": null,
+        "closed_trades_val": 0,
+        "closed_win_rate": null,
+        "cost_full_bps": 27.3096,
+        "family": "vol_regime_breakout",
+        "is_mean_bps": null,
+        "key": "lane_b::vol_regime_breakout::4h",
+        "lane": "lane_b",
+        "net_val_signal_bps": null,
+        "reason": "fewer signals than the frozen sample gate (RESEARCH>=50, IS>=20, VAL>=15); measured, not passed",
+        "sensitivity_configurations": null,
+        "sensitivity_positive": null,
+        "signals_per_day": 0.0,
+        "timeframe": "4h",
+        "val_mean_bps": null,
+        "verdict": "INSUFFICIENT_EVIDENCE"
+      }
+    ],
+    "counts": {
+      "EXPERIMENT": 1,
+      "INSUFFICIENT_EVIDENCE": 10,
+      "REJECT": 13
+    },
+    "experiment": "EXP-003N-GROSS-FIRST-DISCOVERY-001",
+    "holdout_opened": false,
+    "not_promoted": {
+      "live_trading": "DISABLED",
+      "paper_promotion": "NOT_AUTHORIZED",
+      "trades_authorized": 0
+    },
+    "schema_version": "AI_BOTS_003N_DECISION_V1",
+    "verdict": "NO_VIABLE_CANDIDATES"
+  },
+  "exit_policy": {
+    "atr_period": 14,
+    "entry": "open of the bar after the decision bar, plus the adverse price terms of the cost model",
+    "exit": "open of the bar 12 bars later, or the stop level if the stop is touched first",
+    "horizon_bars": 12,
+    "intrabar": "stop_first: when a bar holds both the stop and the horizon price, the stop is taken",
+    "stop_atr_multiple": 2.0,
+    "target": "NONE"
+  },
+  "experiment": "EXP-003N-GROSS-FIRST-DISCOVERY-001",
+  "generated_at_utc": "2026-10-20T19:37:05Z",
+  "holdout_opened": false,
+  "schema_version": "AI_BOTS_003N_VALIDATION_V1",
+  "stake_usdt": 500.0
+}

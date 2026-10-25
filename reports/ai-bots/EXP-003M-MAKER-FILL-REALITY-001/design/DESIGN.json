@@ -1,0 +1,269 @@
+{
+  "candidate": {
+    "decision_every_bars": 24,
+    "experiment": "EXP-003L-EXECUTION-ECONOMICS-001",
+    "interval_ms": 300000,
+    "ledger_bytes": 4109435,
+    "ledger_closes": 47,
+    "ledger_net_per_signal_usdt": -0.84204578,
+    "ledger_net_pnl_usdt": -39.57615161,
+    "ledger_sha256": "bafd54e368573c37772f59e9c2e19a13d41dbf3b83a0cb8318ef15099b97f801",
+    "partition": "research",
+    "run": "reports/ai-bots/EXP-003L-EXECUTION-ECONOMICS-001/runs/5m/mean_reversion/real/research",
+    "signals": 47,
+    "strategy_id": "mean_reversion",
+    "strategy_version": "sha256:6fe364297f1af6b1",
+    "timeframe": "5m"
+  },
+  "dataset": {
+    "bars": {
+      "BTCUSDT": {
+        "bars": 86400,
+        "first_open_utc": "2026-06-21T00:00:00Z",
+        "last_open_utc": "2026-08-19T23:59:00Z"
+      },
+      "ETHUSDT": {
+        "bars": 86400,
+        "first_open_utc": "2026-06-21T00:00:00Z",
+        "last_open_utc": "2026-08-19T23:59:00Z"
+      },
+      "SOLUSDT": {
+        "bars": 86400,
+        "first_open_utc": "2026-06-21T00:00:00Z",
+        "last_open_utc": "2026-08-19T23:59:00Z"
+      }
+    },
+    "fetched_by": "scripts/exp_003j_dataset.py --fetch against Binance spot /api/v3/klines",
+    "source": "reports/ai-bots/EXP-003K-CANDIDATE-001/dataset",
+    "symbols": {
+      "BTCUSDT": {
+        "file": "BTCUSDT.1m.jsonl.gz",
+        "sha256": "7fbdfefa12785bb025d525994466b5a64d5c0668d6ff997f5f7566bc42d13814"
+      },
+      "ETHUSDT": {
+        "file": "ETHUSDT.1m.jsonl.gz",
+        "sha256": "cf04dc37617a0998016fcd7edfb9b2a77c9aa5fa656bbb54422805a5964650a6"
+      },
+      "SOLUSDT": {
+        "file": "SOLUSDT.1m.jsonl.gz",
+        "sha256": "33342aacc2ac75f897e2c9df2602a41d340c96ed08cd683dbd3871c3c7c60c32"
+      }
+    }
+  },
+  "decision_rule": {
+    "INSUFFICIENT_EVIDENCE": "G4 and G5 pass but the fill evidence class is ESTIMATED, or G1/G2/G3 cannot be established",
+    "PROMOTE": "impossible in this experiment: it needs observed live fills and a forward window",
+    "REJECT": "G4 or G5 fails on a sample of at least 40 signals",
+    "thresholds_are_not_relaxed": true
+  },
+  "economics": {
+    "bootstrap": {
+      "alpha": 0.05,
+      "method": "moving block, 5-day blocks",
+      "resamples": 10000,
+      "seed": 20261020,
+      "unit": "net PnL per signal (misses count as zero)"
+    },
+    "equity_usdt": 10000.0,
+    "halves": "the research window split at its midpoint; both halves must be positive",
+    "notional_usdt": 500.0
+  },
+  "experiment": "EXP-003M-MAKER-FILL-REALITY-001",
+  "fee_schedules": {
+    "futures_vip0": {
+      "maker_bps": 2.0,
+      "note": "NOT EXECUTABLE BY THIS SPOT LANE: a bound, never a plan",
+      "taker_bps": 5.0
+    },
+    "spot_vip0": {
+      "maker_bps": 10.0,
+      "taker_bps": 10.0
+    },
+    "spot_vip0_bnb": {
+      "maker_bps": 7.5,
+      "taker_bps": 7.5
+    }
+  },
+  "fill_model": {
+    "aggressor_side": {
+      "buy": "trades with is_buyer_maker true (seller aggressed) at price <= limit",
+      "sell": "trades with is_buyer_maker false (buyer aggressed) at price >= limit"
+    },
+    "anchor": "reference_price (the bar open the taker paid), same instant as EXP-003L",
+    "evidence_class": "ESTIMATED_FROM_OBSERVED_TRADE_TAPE",
+    "exit_rules": "unchanged from EXP-003L and from the lane: stop 0.50 %, target 0.75 % off the fill price, stop_first inside a minute, exits adjudicated from the minute after the fill minute",
+    "improvement": "half_spread_bps (per symbol, from the lane's cost model) + offset_bps",
+    "limit_rule": "buy: reference/(1+improvement/1e4); sell: reference*(1+improvement/1e4)",
+    "partial_fills": "linear: net = fill_fraction * net_of_full_fill, fees included",
+    "queue_model": "queue ahead of us at the limit is unobservable without an L2 feed. It is a declared multiple q of our own order quantity; fill fraction is clamp((aggressor_volume_at_or_through_limit - q*order_qty)/order_qty, 0, 1) measured from placement (decision + latency) to decision + horizon",
+    "unobservable": [
+      "displayed depth at the touch (no spot L2 published)",
+      "our queue position when we join",
+      "whether a trade at our price actually matched our order",
+      "cancel/replace traffic that would have moved us up the queue"
+    ]
+  },
+  "gates": {
+    "G1_reproduces_003l": "F0_touch_full must restate EXP-003L's published maker_resting__spot_vip0_bnb__h15__o0 fill rate and net/fill to 1e-8, or this experiment is BLOCKED",
+    "G2_dataset_provenance": "the frozen 1-minute bars must match an independent download of the same minutes from data.binance.vision klines (open, high, low, close)",
+    "G3_tape_integrity": "every tape file must be monotonic in agg_trade_id and time, inside its UTC day, free of non-positive prices/quantities, and re-hash to its manifest digest",
+    "G4_economics_pessimistic": "F2 net per signal > 0, net per fill > 0 and the 95 % CI lower bound > 0",
+    "G5_optimistic_ceiling": "F0 (every touch fills fully at the improved price) must be net per fill > 0. If the most generous fill model already loses, fill realism cannot rescue it and no promotion may cite a better fill rate",
+    "G6_holdout_closed": "no dataset or analysis file covers 2026-08-06 → 2026-08-20",
+    "G7_evidence_class": "no live order was placed, so fills are ESTIMATED. Even if G4 and G5 passed, the ceiling would be INSUFFICIENT_EVIDENCE, never a paper promotion",
+    "G8_no_live_trading": "config/runtime.yaml still declares mode paper with live_trading_enabled false, and every ledger read reports zero live orders",
+    "G9_config_unchanged": "config/risk.yaml, config/runtime.yaml and config/vision.yaml still hash to the digests frozen here: the stop/target levels and the fee terms are not this experiment's to move after the fact"
+  },
+  "holdout": {
+    "end_utc": "2026-08-20T00:00:00Z",
+    "rule": "no tape, klines or derived statistic for this window may be downloaded, stored or summarised in this experiment; the verifier fails if any file under dataset/ or analysis/ covers it",
+    "start_utc": "2026-08-06T00:00:00Z",
+    "status": "CLOSED"
+  },
+  "market_data_plan": {
+    "book_source": "NONE. data.binance.vision publishes aggTrades, trades and klines for spot: there is no historical spot L2 book. No book is synthesised, and no depth figure from another venue is presented as a spot book.",
+    "credential_used": false,
+    "depth_role": "CALIBRATION ONLY. USD-M futures band depth is a different venue and a different instrument; it is used to size the queue assumption, never to declare a spot fill.",
+    "depth_source": "https://data.binance.vision/data/futures/um/daily/bookDepth/{symbol}/{symbol}-bookDepth-{day}.zip",
+    "klines_source": "https://data.binance.vision/data/spot/daily/klines/{symbol}/1m/{symbol}-1m-{day}.zip",
+    "live_orders": false,
+    "selection_rule": "every (symbol, UTC day) that contains at least one pre-registered signal, and inside it every trade in [decision-60 s, decision+16 min] for those signals. No filter on price, side or outcome; missed signals are impossible to hide",
+    "tape_source": "https://data.binance.vision/data/spot/daily/aggTrades/{symbol}/{symbol}-aggTrades-{day}.zip",
+    "window_after_ms": 960000,
+    "window_before_ms": 60000
+  },
+  "predecessor": {
+    "experiment": "EXP-003L-EXECUTION-ECONOMICS-001",
+    "inputs": {
+      "analysis/CANDIDATE_SELECTION.json": {
+        "bytes": 5391,
+        "sha256": "7c57fb0d3ed660efab2033b308960f6766119b463e42c529d94cfd7c5c257362"
+      },
+      "analysis/METRICS.json": {
+        "bytes": 132462,
+        "sha256": "4e7e75424403809a0994f4c4e7dbe742e1667db37ffeba6356bd3840281eb078"
+      },
+      "analysis/execution/5m__mean_reversion.json": {
+        "bytes": 35142,
+        "sha256": "4df9a9317d7153794ca1974759d4a7cd8ff155d83b3893ff975ae8b74ee0cd3b"
+      },
+      "design/DESIGN.json": {
+        "bytes": 12530,
+        "sha256": "79eccb0bb88a79ed673710840177f0b27b20f5c4f8a1e1a7069785aa84df7920"
+      },
+      "design/FEE_SCHEDULE.json": {
+        "bytes": 1549,
+        "sha256": "628f2d8f6112d7796680b207c2d49a0c31ba2c2b0e93426398c08609813b31bb"
+      }
+    },
+    "reproduction_target": {
+      "fill_rate": 0.93617,
+      "gross_per_fill_usdt": 0.26690893,
+      "net_per_fill_usdt": -0.48309107,
+      "net_per_signal_usdt": -0.45225547,
+      "note": "published by EXP-003L; EXP-003M must restate it before it may price anything",
+      "scenario": "maker_resting__spot_vip0_bnb__h15__o0"
+    },
+    "seal": {
+      "listed": 70,
+      "mismatched": [],
+      "missing": [],
+      "ok": true,
+      "seal": "reports\\ai-bots\\EXP-003L-EXECUTION-ECONOMICS-001\\SHA256SUMS.txt",
+      "seal_sha256": "6aabe23c35b5ac86d4b0cbb59df0e3d6c7a69dc992068c79e70834c44cf043b3"
+    }
+  },
+  "prohibitions": [
+    "opening the holdout 2026-08-06 → 2026-08-20",
+    "modifying the signal, the risk policy, the exits or the fee schedules",
+    "presenting an estimate as an observed fill",
+    "using another venue's book as a spot book",
+    "live orders, private credentials or any move of funds"
+  ],
+  "provenance": {
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "commit": "b0e15497d967ff1c1d3015203ffb7cbfcf0a70a0",
+    "commit_date_utc": "2026-10-20T14:04:09+02:00",
+    "dirty_path_count": 547,
+    "dirty_paths_sha256": "d040a2a18501302c86bed821740944045a480e8b5fdeef411af5d4376c4c5361",
+    "worktree_dirty": true
+  },
+  "question": "Does a maker fill model built on the observed spot trade tape leave the frozen 5m/mean_reversion candidate a positive net edge, or does EXP-003L's touch-to-fill assumption carry the result?",
+  "runtime_config": {
+    "files": {
+      "risk.yaml": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+      "runtime.yaml": "ac3cf4fce9ff6246997a059f1c409609a7c87a6bb416198c041ca479fc49a159",
+      "vision.yaml": "ba817ef6f2c8768ee8bd094ffbdb0f705281f7056466c95cd0b2016e6e3fd766"
+    },
+    "risk": {
+      "default_stop_loss_pct": 0.5,
+      "default_take_profit_pct": 0.75,
+      "max_open_positions": 3,
+      "max_order_notional_usdt": 500.0
+    },
+    "runtime": {
+      "live_trading_enabled": false,
+      "mode": "paper"
+    }
+  },
+  "scenarios": {
+    "F0_touch_full": {
+      "fee_schedule": "spot_vip0_bnb",
+      "horizon_minutes": 15,
+      "kind": "FILL_UPPER_BOUND",
+      "latency_ms": 0,
+      "note": "EXP-003L's assumption: any touch fills us fully at the limit",
+      "offset_bps": 0.0,
+      "queue_multiple": 0.0
+    },
+    "F1_tape_base": {
+      "fee_schedule": "spot_vip0_bnb",
+      "horizon_minutes": 15,
+      "kind": "ESTIMATED",
+      "latency_ms": 400,
+      "note": "one order of queue ahead of us, 400 ms to reach the venue",
+      "offset_bps": 0.0,
+      "queue_multiple": 1.0
+    },
+    "F2_tape_pessimistic": {
+      "fee_schedule": "spot_vip0",
+      "horizon_minutes": 5,
+      "kind": "ESTIMATED",
+      "latency_ms": 2000,
+      "note": "four orders of queue, 2 s latency, 5 min horizon, 2 bp offset: the corner EXP-003L gated on",
+      "offset_bps": 2.0,
+      "queue_multiple": 4.0
+    },
+    "F3_tape_no_queue": {
+      "fee_schedule": "spot_vip0_bnb",
+      "horizon_minutes": 15,
+      "kind": "TAPE_UPPER_BOUND",
+      "latency_ms": 400,
+      "note": "queue ignored: what the tape alone allows. Brackets F0",
+      "offset_bps": 0.0,
+      "queue_multiple": 0.0
+    }
+  },
+  "schema_version": "AI_BOTS_003M_DESIGN_V1",
+  "sensitivity": {
+    "fee_schedule": "spot_vip0_bnb",
+    "horizon_minutes": 15,
+    "latency_ms": [
+      0,
+      400,
+      2000
+    ],
+    "note": "queue is unobservable, so it is swept instead of asserted. Every point uses the same signals, tape, exits and fee schedule",
+    "offset_bps": 0.0,
+    "queue_multiple": [
+      0.0,
+      0.25,
+      0.5,
+      1.0,
+      2.0,
+      4.0,
+      10.0,
+      100.0
+    ]
+  }
+}

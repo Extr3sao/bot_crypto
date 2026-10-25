@@ -1,0 +1,177 @@
+{
+  "schema_version": "EDGE09_V1",
+  "work_package": "WP-EDGE-09B",
+  "artifact": "DATA_FEASIBILITY_MATRIX",
+  "as_of_utc": "2026-10-15T05:16:16Z",
+  "universe": {
+    "markets": [
+      "perp",
+      "spot"
+    ],
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT"
+    ],
+    "streams": 10
+  },
+  "families": [
+    {
+      "family": "spreads and liquidity (book imbalance)",
+      "mechanism": "the book's own imbalance predicts the mid move by more than a round trip",
+      "minimum_data": "forward quote/depth at the touch, point-in-time",
+      "data_available": true,
+      "dataset_ids": [
+        "EDGE09-PANEL-paper-lab-continuous-02|perp|BTCUSDT",
+        "EDGE09-PANEL-paper-lab-continuous-02|perp|ETHUSDT",
+        "EDGE09-PANEL-paper-lab-continuous-02|spot|BTCUSDT",
+        "EDGE09-PANEL-paper-lab-continuous-02|spot|ETHUSDT",
+        "EDGE09-PANEL-paper-strategy-lifecycle-shadow-02|perp|BTCUSDT",
+        "EDGE09-PANEL-paper-strategy-lifecycle-shadow-02|perp|ETHUSDT",
+        "EDGE09-PANEL-paper-strategy-lifecycle-shadow-02|perp|SOLUSDT",
+        "EDGE09-PANEL-paper-strategy-lifecycle-shadow-02|spot|BTCUSDT",
+        "EDGE09-PANEL-paper-strategy-lifecycle-shadow-02|spot|ETHUSDT",
+        "EDGE09-PANEL-paper-strategy-lifecycle-shadow-02|spot|SOLUSDT"
+      ],
+      "source_ids": [
+        "SRC-19"
+      ],
+      "status": "MEASURED_AND_REJECTED",
+      "why": "the capture exists and was measured; the best long-only gross is far below the barrier and the tape offers no clearing move at a 1 or 5 second horizon"
+    },
+    {
+      "family": "regimes",
+      "mechanism": "momentum or reversal only in a regime observable in real time",
+      "minimum_data": "OHLCV point-in-time plus volatility and volume",
+      "data_available": true,
+      "dataset_ids": [],
+      "source_ids": [
+        "SRC-20"
+      ],
+      "status": "DEFERRED",
+      "why": "klines are available but a bar close is not a decision instant this runtime would trade on; the package does not open a new window for it, and no arm here survived the cost gate to justify one"
+    },
+    {
+      "family": "cross-asset (lead/lag)",
+      "mechanism": "BTC leads or lags ETH and the alts by more than the round trip",
+      "minimum_data": "synchronised bars, one venue and one clock",
+      "data_available": true,
+      "dataset_ids": [
+        "EDGE09-PANEL-paper-lab-continuous-02|perp|BTCUSDT",
+        "EDGE09-PANEL-paper-lab-continuous-02|perp|ETHUSDT",
+        "EDGE09-PANEL-paper-lab-continuous-02|spot|BTCUSDT",
+        "EDGE09-PANEL-paper-lab-continuous-02|spot|ETHUSDT",
+        "EDGE09-PANEL-paper-strategy-lifecycle-shadow-02|perp|BTCUSDT",
+        "EDGE09-PANEL-paper-strategy-lifecycle-shadow-02|perp|ETHUSDT",
+        "EDGE09-PANEL-paper-strategy-lifecycle-shadow-02|perp|SOLUSDT",
+        "EDGE09-PANEL-paper-strategy-lifecycle-shadow-02|spot|BTCUSDT",
+        "EDGE09-PANEL-paper-strategy-lifecycle-shadow-02|spot|ETHUSDT",
+        "EDGE09-PANEL-paper-strategy-lifecycle-shadow-02|spot|SOLUSDT"
+      ],
+      "source_ids": [
+        "SRC-19",
+        "SRC-20"
+      ],
+      "status": "DEFERRED",
+      "why": "the captured clock is one venue, but three symbols over a few hours cannot separate a lead/lag effect from a shared move; the sample is declared too small"
+    },
+    {
+      "family": "funding and open interest",
+      "mechanism": "positioning imbalances are exploitable after their publication instant",
+      "minimum_data": "funding and OI history with the real publication time",
+      "data_available": true,
+      "dataset_ids": [],
+      "source_ids": [
+        "SRC-21",
+        "SRC-22"
+      ],
+      "status": "DEFERRED",
+      "why": "funding history is available and OI is retained for about 30 days; the forward capture held only 14 usable quadrant states, below the registered floor of 500, so the family is deferred rather than rejected on a sample too small to judge"
+    },
+    {
+      "family": "events",
+      "mechanism": "a post-event reaction is capturable",
+      "minimum_data": "an event feed with publication timestamps",
+      "data_available": true,
+      "dataset_ids": [],
+      "source_ids": [
+        "SRC-23"
+      ],
+      "status": "REJECTED_NO_DATA",
+      "why": "no public liquidation or event feed answered in this environment (probe 404), and a retrospective timestamp cannot be used as a publication instant"
+    }
+  ],
+  "probes": [
+    {
+      "id": "P-01",
+      "what": "funding history reach (alternatives: none for a perp-only series)",
+      "url": "https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&limit=1000",
+      "status": 200,
+      "seconds": 0.309,
+      "bytes": 4096,
+      "head": "[{\"symbol\":\"BTCUSDT\",\"fundingTime\":1777651200000,\"fundingRate\":\"-0.00003143\",\"markPrice\":\"78424.72796268\",\"rateType\":\"Re",
+      "reachable": true
+    },
+    {
+      "id": "P-02",
+      "what": "open-interest retention: the newest window the endpoint will serve",
+      "url": "https://fapi.binance.com/futures/data/openInterestHist?symbol=BTCUSDT&period=5m&limit=500",
+      "status": 200,
+      "seconds": 0.408,
+      "bytes": 4096,
+      "head": "[{\"symbol\":\"BTCUSDT\",\"sumOpenInterest\":\"93456.55200000\",\"sumOpenInterestValue\":\"7799540497.63726800\",\"CMCCirculatingSupp",
+      "reachable": true
+    },
+    {
+      "id": "P-03",
+      "what": "liquidation prints: does a public endpoint exist at all",
+      "url": "https://fapi.binance.com/fapi/v1/allForceOrders?symbol=BTCUSDT&limit=100",
+      "status": 404,
+      "seconds": 0.266,
+      "note": "HTTPError 404",
+      "reachable": false
+    },
+    {
+      "id": "P-04",
+      "what": "order-book history: the endpoint answers with the current book only",
+      "url": "https://api.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5",
+      "status": 200,
+      "seconds": 0.293,
+      "bytes": 367,
+      "head": "{\"lastUpdateId\":101455184833,\"bids\":[[\"81276.00000000\",\"5.96859000\"],[\"81275.99000000\",\"0.01805000\"],[\"81275.98000000\",\"",
+      "reachable": true
+    },
+    {
+      "id": "P-05",
+      "what": "bulk archive reach for aggressor flow (monthly klines)",
+      "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2026-08.zip",
+      "status": 200,
+      "seconds": 0.758,
+      "bytes": 4096,
+      "head": "PK\u0003\u0004\u0014\u0000\u0000\u0000\b\u0000# ']\ufffd\ufffd\ufffdj\ufffd\ufffd\u001f\u0000BYi\u0000\u0016\u0000\u0000\u0000BTCUSDT-1m-2026-08.csv\ufffd}\ufffd\ufffd8\ufffd\ufffd\ufffd}\u0016\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdf\ufffd\ufffd\ufffdPY\ufffd\ufffd\ufffd\u0648s\ufffd\ufffd\ufffde\ufffd\u0012\t\u0002H \u0011\ufffd\ufffd\ufffd\ufffd\u0012\ufffd\ufffd\ufffdZ\u001a\ufffd\ufffd\u01f8\ufffd3\ufffd\ufffd}\ufffd\ufffd\ufffd\ufffd\ufffd\u040ea",
+      "reachable": true
+    }
+  ],
+  "capture": {
+    "roots": 21,
+    "total_hours": 10.14,
+    "longest_seconds": 14973.49,
+    "continuity_note": "most captures declare INCOMPLETE_DATA: the loss is quantified in their own manifests (gaps, reconnects, resnapshots), and this package reads the declared loss instead of assuming a clean stream"
+  },
+  "rule": "PROJECT != PATTERN != IMPLEMENTATION: a family is FEASIBLE only when the data its minimum specification names exists here, with the availability semantics it needs",
+  "derived_from": {
+    "config/risk.yaml": "3c27c866d5f11afea96a80598c1e72c69816ecc3b77e97c5ad7fa86417593a2e",
+    "config/runtime.yaml": "ac3cf4fce9ff6246997a059f1c409609a7c87a6bb416198c041ca479fc49a159",
+    "docs/COST_MODEL_V3.json": "2f0e62d2408e6cc544d139bd6d43292698061d4d6ac325f70adab2b781965159",
+    "docs/EXECUTION_COST_MODEL_V4.json": "7e772c34cbf0c894fc1ff00d643e82680847ebedaf986ba6dbb5b756121641a4",
+    "docs/FORWARD_DATA_CONTRACT.json": "eab7f4b158a9f8e4befa4f782327e8fb0e41d0b8525d53452e928b0be6bfff88",
+    "docs/source_registry.md": "c5a8bf6b48da6f733db31269e38fe11b00faca24028a99decfbd9529d64cfd71",
+    "reports/edge-recovery/WP-EDGE-09/panel/PANEL_SECONDS.csv": "0f87b7baeb92f93d8563043af68d5ea1f60ad51466a8a5ea6ff00bf501a1bff1",
+    "reports/edge-recovery/WP-EDGE-09/gates/COST_LIQUIDITY_CAPACITY.json": "a48e106e16b2346a5aaa4b6f7e3cd862887fa4a8be55c22265ea44c4d5d008f6",
+    "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENTS.json": "bde376e5139b651bab24c60e39287dba8c79d29d83d94be82b4210802cab9345",
+    "reports/edge-recovery/WP-EDGE-09/experiments/EXPERIMENT_REGISTRY.json": "52aebe35ad050939ef010d74aaac06325d5bea2e6c4a702faf65946412e9f2a2",
+    "reports/edge-recovery/WP-EDGE-09/PREREGISTRATION.json": "7e2acbddef8f45d5ba30c7e8fd3057046134645b010cb72e865db6dd5c83309a",
+    "reports/edge-recovery/WP-EDGE-09/PREREGISTRATION.md": "b74f4a2b977d46d586a5a4313b029ae5587576704295cb989abd52ea04ae15ff"
+  },
+  "derived_no_new_measurement": true
+}

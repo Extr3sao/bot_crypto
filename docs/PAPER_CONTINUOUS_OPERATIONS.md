@@ -1,0 +1,261 @@
+# PAPER CONTROLS OPERATIONS — running the lab continuously
+
+> Estado: operativo. Este documento describe cómo dejar TRADING AGENTIC PORTABLE
+> corriendo en **PAPER** de forma continua, con el colector de microestructura
+> forward y el laboratorio de estrategias en paralelo.
+>
+> **No hay ruta a LIVE.** Ningún hijo del supervisor tiene credenciales de
+> ejecución; el único broker en el proceso PAPER es `PaperBroker`.
+
+---
+
+## 1. Un solo comando
+
+```bash
+uv run python scripts/start_paper_lab.py
+```
+
+o, sin `uv`:
+
+```bash
+.venv/Scripts/python.exe scripts/start_paper_lab.py
+```
+
+Esto arranca **cuatro** procesos bajo un supervisor portable (`§27`-`§31`):
+
+| proceso | crítico | qué es | comando |
+| --- | --- | --- | --- |
+| `paper` | sí | runtime PAPER continuo | `scripts/autonomous_paper.py --continuous` |
+| `collector` | sí | captura forward read-only | `scripts/forward_collector.py --mode run` |
+| `retention` | no | compactación + lineage | `scripts/forward_retention.py --loop` |
+| `strategy_lab` | no | pass read-only de research | `scripts/paper_lab_research.py --loop` |
+
+`paper` y `collector` corren en **procesos separados**: el fallo de uno no puede
+tumbar al otro (`§26`). El supervisor los reinicia de forma independiente con
+backoff y, si uno entra en crash loop, lo marca `FAILED` y deja de reintentarlo
+(`§29`). `retention` y `strategy_lab` son mantenimiento: si se rompen, el sistema
+queda `DEGRADED`, no `FAILED` (`§16`).
+
+### Opciones útiles
+
+```bash
+--duration-hours 2          # el laboratorio se detiene solo a las 2 h
+--assets BTC,ETH,SOL        # universo PAPER
+--timeframe 5m              # timeframe del runtime
+--provider ccxt             # ccxt (datos reales) | fake (sin red)
+--raw-hot-hours 2           # ventana caliente de RAW antes de compactar
+--delete-when-free-below N  # 0 = compactar sin borrar nunca (por defecto)
+--collector-max-bytes N     # guarda de disco del colector (última barrera)
+--sealed-grace-seconds N    # cuánto debe reposar un segmento sellado antes de compactar
+--stop-grace-seconds N      # cuánto puede tardar un hijo en finalizarse antes del kill
+--data-root D:/capture      # dónde vive la captura (alias de --forward-root)
+--disk-warning-gb 1.5       # nivel WARNING
+--disk-critical-gb 0.8      # nivel CRITICAL
+--disk-stop-gb 0.3          # nivel STOP: el colector para, PAPER no se toca
+--status                    # estado de operador y salir
+--restart                   # parar el run en curso y arrancarlo otra vez
+--dry-run                   # imprime el plan y no arranca nada
+```
+
+Antes de arrancar en serio, revisa el plan:
+
+```bash
+uv run python scripts/start_paper_lab.py --dry-run
+```
+
+`LAB_PLAN.json` queda escrito en el directorio del run con exactamente la misma
+información que se va a ejecutar.
+
+---
+
+## 2. Parar (un comando, o Ctrl-C)
+
+Tres formas equivalentes; las tres vacían estado y finalizan manifiestos (`§51`):
+
+```bash
+# 0) el comando de parada del propio launcher (el que se documenta como oficial)
+uv run python scripts/start_paper_lab.py --stop reports/paper-lab/<run-id>
+
+# y para volver a arrancar el mismo laboratorio, continuando la captura
+uv run python scripts/start_paper_lab.py --restart --run-id <run-id>
+
+# 1) Ctrl-C en la terminal del supervisor
+# 2) un archivo STOP en el directorio del run
+printf 'stop\n' > reports/paper-lab/<run-id>/STOP
+# 3) el propio launcher
+uv run python scripts/start_paper_lab.py --stop reports/paper-lab/<run-id>
+```
+
+Qué hace la parada, en orden:
+
+1. el supervisor **pide** a cada hijo que se detenga escribiendo su archivo de
+   parada (ver §6) y espera `--stop-grace-seconds`;
+2. el loop PAPER termina **el ciclo en curso** y persiste su estado;
+3. el colector deja de ingerir, cierra el writer, sella los segmentos y escribe
+   `manifest/<run-id>.json` con `stop_reason` y *partial tails* = 0;
+4. `retention` y `strategy_lab` terminan la pasada en curso y salen 0;
+5. solo entonces el supervisor escala a `terminate()` y, si el hijo no responde,
+   a `kill()`;
+6. se escriben `SYSTEM_HEARTBEAT.json`, `LAB_RUN_REPORT.{json,md}` y
+   `SYSTEM_DAILY_REPORT.{json,md}`.
+
+El paso 1 existe porque en Windows `terminate()` es `TerminateProcess`: un
+kill duro que no deja al hijo ejecutar su cierre. Por eso la parada se *pide*
+con un archivo y el kill es la última barrera, no la primera. Si un hijo agota
+su gracia y muere por kill, `LAB_RUN_REPORT.json` lo dice con `exit_code` ≠ 0 y
+el veredicto `SAFE_STOP_AND_RESTART` no puede pasar en falso: sin manifiesto no
+hay *partial tails* = 0 que citar.
+
+---
+
+## 3. Reiniciar y recuperar
+
+```bash
+uv run python scripts/start_paper_lab.py --run-id <el-mismo-run-id>
+```
+
+* **PAPER**: `PaperStateStore` + `StartupReconcilerV4` recargan el estado desde
+  `paper_state.json`; las decisiones económicas ya emitidas no se duplican
+  (`IdempotencyGuard`).
+* **Colector**: `state/<run-id>.json` guarda `last_agg_trade_id`, `gap_seq` y
+  contadores. El launcher añade `--resume` **solo** cuando ese estado ya existe
+  (`collector_resume` en `LAB_PLAN.json`): sin él, el writer se niega a escribir
+  en una ventana que ya capturó otro proceso —la ruta de un segmento es función
+  de la ventana que cubre— y el run muere de su propio pasado con cada stream en
+  gap mientras los hijos salen 0. Con `--resume` la cadena de ids continúa y la
+  ventana de indisponibilidad se registra como gap `COLLECTOR_RESTART`, no se
+  oculta.
+* **Retention**: es idempotente; un corte entre el agregado y el marcador se
+  repara en la siguiente pasada.
+
+---
+
+## 4. Inspección
+
+```bash
+# ¿está pasando algo? (lo que un operador pregunta de verdad)
+uv run python scripts/paper_lab_status.py
+uv run python scripts/paper_lab_status.py --run-id <run-id> --json
+uv run python scripts/paper_lab_status.py --snapshot          # CURRENT_RUN_SNAPSHOT.json
+uv run python scripts/paper_lab_status.py --exit-code-if-not-running   # para un monitor
+
+# o en el navegador, sólo lectura, sólo loopback
+uv run python scripts/paper_lab_dashboard.py                  # http://127.0.0.1:8787
+
+# ¿está sano el conjunto?
+cat reports/paper-lab/<run-id>/SYSTEM_HEARTBEAT.json
+
+# ¿qué hizo PAPER?
+cat reports/paper-lab/<run-id>/../autonomous-paper/<run-id>/PAPER_DAILY_REPORT.md
+tail -20 reports/paper-lab/<run-id>/../autonomous-paper/<run-id>/heartbeat.jsonl
+
+# ¿qué capturó el colector?
+cat reports/microstructure-forward-lab/state/<run-id>.json
+cat reports/microstructure-forward-lab/manifest/<run-id>.json
+
+# ¿qué dice el laboratorio de estrategias?
+cat reports/microstructure-forward-lab/STRATEGY_LAB_REPORT.json
+
+# ¿qué haría retention? (no toca nada)
+uv run python scripts/forward_retention.py --root reports/microstructure-forward-lab \
+    --run-id <run-id> --raw-hot-hours 2 --dry-run
+
+# informe combinado
+uv run python scripts/system_daily_report.py --lab-run-dir reports/paper-lab/<run-id>
+```
+
+`SYSTEM_HEARTBEAT.json` incluye: estado del sistema (`HEALTHY`/`DEGRADED`/`FAILED`),
+estado y PID de cada proceso, número de reinicios, disco libre, memoria, y el
+contenido del heartbeat de cada hijo (último ciclo PAPER, eventos/gaps/reconexiones
+del colector). Añade además `disk` (nivel `NORMAL/WARNING/CRITICAL/STOP`, umbrales
+en vigor, GB/día observados y horas estimadas que quedan),
+`heartbeat_write_failures`, `storage_guard_stopped` y `stop_report` (el veredicto
+del último paro: hijos que fallaron o que hubo que matar).
+
+El panel de estado separa los veredictos en vez de fundirlos en una luz verde:
+`PAPER_READY`, `COLLECTOR_READY`, `STORAGE_READY`, `STRATEGY_LAB_READY`
+(y `RESEARCH_READY`). Que el colector esté bloqueado por disco mientras PAPER
+sigue decidiendo es un estado soportado (§22), no una contradicción.
+
+---
+
+## 5. Dónde vive cada cosa
+
+```text
+RAW HOT            reports/microstructure-forward-lab/segments/     (bounded by --raw-hot-hours)
+AGGREGATED         reports/microstructure-forward-lab/aggregated/   (1m/5m/15m/30m, indefinido)
+LINEAGE            reports/microstructure-forward-lab/lineage/      (RAW -> AGGREGATE, indefinido)
+MANIFESTS          reports/microstructure-forward-lab/manifest/     (indefinido)
+STATE              reports/microstructure-forward-lab/state/        (reanudación del colector)
+PAPER RUN          reports/autonomous-paper/<run-id>/               (traces, outcomes, informes)
+SUPERVISOR RUN     reports/paper-lab/<run-id>/                      (plan, logs, heartbeat, informes)
+BROKER STATE       reports/paper-lab/<run-id>/paper_state.json
+ADMISSION LEDGER   config/strategy_admission.json                   (autoridad de admisión)
+STOP PAPER         reports/autonomous-paper/<run-id>/STOP            (el mismo que ya vigila PAPER)
+STOP COLLECTOR     reports/microstructure-forward-lab/state/<run-id>.stop
+STOP RETENTION     reports/paper-lab/<run-id>/STOP.retention
+STOP STRATEGY LAB  reports/paper-lab/<run-id>/STOP.strategy_lab
+```
+
+Los cuatro archivos de parada los escribe el supervisor; cada hijo nace con el
+suyo borrado (`start` limpia el archivo antes de lanzar el proceso), de modo que
+un reinicio con el mismo `--run-id` nunca hereda la parada anterior.
+
+Nada en `reports/` se borra nunca por política de retención (`§6`): sólo los
+segmentos RAW, y sólo tras comprobar que el agregado existe, re-hashea al hash
+que la línea de linaje registró, y que la ventana fue sellada.
+
+---
+
+## 6. Estado esperado de las estrategias
+
+```text
+REJECTED            no puede rutear
+RESEARCH_REQUIRED   no puede rutear
+PAPER_CANDIDATE     elegible para promoción
+PAPER_ACTIVE        única que participa en PAPER
+PAPER_RETIRED       no abre posiciones nuevas
+```
+
+Hoy el ledger no admite ninguna estrategia, así que el resultado correcto de un
+run PAPER es **muchas decisiones `NO_TRADE`, 0 trades de sombra y 0 trades PAPER**.
+Eso es un PASS, no un fallo: no se activa ninguna estrategia históricamente
+rechazada para fabricar actividad.
+
+---
+
+## 7. Guarda de disco
+
+El colector mantiene `--max-total-bytes` como **última** barrera: si se alcanza,
+escribe el evento `DISK_LIMIT_REACHED`, sella y para **limpiamente** (manifiesto
+completo, sin pérdida silenciosa). Antes de llegar ahí, el sistema intenta
+rotación → compresión → compactación/retención. El borrado de RAW es *demand
+driven*: sólo con `--delete-when-free-below` y disco por debajo de ese umbral.
+
+Hay dos barreras más, añadidas tras llenar el volumen dos veces en operación real:
+
+* `--min-free-bytes` en el colector: si el **sistema de ficheros** baja de ese
+  suelo, para como parada controlada (`stopped_on_min_free: true`, salida 0). El
+  launcher lo fija por encima del umbral `STOP` del supervisor.
+* **guarda de almacenamiento** en el supervisor: al nivel `STOP` (configurable con
+  `--disk-stop-gb`, por defecto 0,3 GB) pide al colector que pare de forma
+  ordenada y **no toca PAPER**, que no depende del volumen de investigación. No
+  reinicia la captura dentro de un disco lleno.
+
+Un fallo de escritura deja de ser silencioso en los dos lados: la captura publica
+`COMPLETE`/`CONTROLLED_STOP`/`FAILED` en el manifiesto **y** en el código de
+salida (0/0/2), PAPER cuenta `storage_failures` en su heartbeat y sigue
+decidiendo, y el supervisor sobrevive a su propio heartbeat
+(`heartbeat_write_failures`).
+
+### Disco en otro volumen
+
+```bash
+uv run python scripts/start_paper_lab.py --data-root D:/trading-capture ...
+uv run python scripts/forward_collector.py --data-root D:/trading-capture --mode run ...
+uv run python scripts/forward_retention.py --data-root D:/trading-capture --run-id <id> --loop
+```
+
+`--data-root` es la raíz de segmentos, manifiestos, linaje, registros de
+preservación, estado de reanudación y archivo de parada: mover la captura no
+pierde su rastro de auditoría.

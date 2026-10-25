@@ -1,0 +1,1294 @@
+{
+  "journal": [
+    {
+      "allow_start": true,
+      "at_utc": "2026-10-23T18:33:58Z",
+      "event": "ACQUIRED",
+      "policy": {
+        "backoff_base_s": 1.0,
+        "backoff_cap_s": 10.0,
+        "max_restarts": 8,
+        "observe_timeout_s": null,
+        "poll_s": 2.0
+      },
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 1,
+      "session": "reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign\\session",
+      "supervisor_pid": 21420
+    },
+    {
+      "action": "START",
+      "at_utc": "2026-10-23T18:33:58Z",
+      "detail": [
+        "nothing has run in this directory"
+      ],
+      "event": "DECISION",
+      "reason": "NO_SESSION_YET",
+      "restarts": 0,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 2,
+      "state": {
+        "awaiting": [],
+        "cycles": [],
+        "exit_code": null,
+        "last_cycle": null,
+        "locks": 0,
+        "recoveries": 0,
+        "rows": 0,
+        "session_id": null,
+        "state": "ABSENT",
+        "why": [
+          "CHAIN_MISSING"
+        ]
+      },
+      "supervisor_pid": 21420
+    },
+    {
+      "at_utc": "2026-10-23T18:33:58Z",
+      "code": "LOCK_HELD",
+      "detail": "LOCK_HELD: reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign\\supervisor\\SUPERVISOR.lock is held by live pid 21420; a second writer would interleave prev_sha256 and the chain would stop verifying",
+      "event": "REFUSED",
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 1,
+      "supervisor_pid": 39532
+    },
+    {
+      "action": "ALREADY_ACTIVE",
+      "at_utc": "2026-10-23T18:33:58Z",
+      "event": "STOP",
+      "reason": "ANOTHER_SUPERVISOR_IS_ACTIVE",
+      "restarts": 0,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 2,
+      "supervisor_pid": 39532
+    },
+    {
+      "argv": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\wt-sup001\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\wt-sup001\\scripts\\def_run_019_prospective_run.py",
+        "--out",
+        "reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign\\session",
+        "--symbols",
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT",
+        "--timeframe",
+        "1m",
+        "--window-bars",
+        "20",
+        "--decision-every-bars",
+        "1",
+        "--warmup-minutes",
+        "120",
+        "--duration-s",
+        "240",
+        "--poll-s",
+        "5.0",
+        "--settle-ms",
+        "2500",
+        "--latency-ms",
+        "30000",
+        "--max-cycles",
+        "50"
+      ],
+      "at_utc": "2026-10-23T18:33:58Z",
+      "config_fingerprint_keys": [
+        "decision_every_bars",
+        "duration_s",
+        "equity",
+        "latency_ms",
+        "max_cycles",
+        "max_skew_ms",
+        "mode",
+        "poll_interval_s",
+        "settle_ms",
+        "signal_source",
+        "stale_after_ms",
+        "strategy_id",
+        "symbols",
+        "timeframe",
+        "warmup_minutes",
+        "window_bars"
+      ],
+      "event": "SPAWNED",
+      "pid": 40128,
+      "resume": false,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 3,
+      "supervisor_pid": 21420
+    },
+    {
+      "action": "START",
+      "after": {
+        "awaiting": [],
+        "cycles": [
+          1
+        ],
+        "exit_code": null,
+        "last_cycle": 1,
+        "locks": 4,
+        "recoveries": 0,
+        "rows": 4,
+        "session_id": "sess-01cc743601c26ee6177e",
+        "state": "RUNNING",
+        "why": [
+          "LIVE_OWNER"
+        ]
+      },
+      "at_utc": "2026-10-23T18:35:15Z",
+      "before": {
+        "awaiting": [],
+        "cycles": [],
+        "exit_code": null,
+        "last_cycle": null,
+        "locks": 0,
+        "recoveries": 0,
+        "rows": 0,
+        "session_id": null,
+        "state": "ABSENT",
+        "why": [
+          "CHAIN_MISSING"
+        ]
+      },
+      "event": "CHILD_EXIT",
+      "exit_code": 1,
+      "pid": 40128,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 4,
+      "supervisor_pid": 21420,
+      "verified": {
+        "action": "START",
+        "attempt": 1,
+        "clean": false,
+        "continued": true,
+        "exit_code": 1,
+        "locks_after": 4,
+        "new_cycles": [
+          1
+        ],
+        "pid": 40128,
+        "progress": true,
+        "resumed_flag": false,
+        "rows_after": 4,
+        "rows_before": 0,
+        "start_kind": "SESSION_START",
+        "start_seq": 1,
+        "stream_readable": true
+      }
+    },
+    {
+      "action": "RESUME",
+      "at_utc": "2026-10-23T18:35:15Z",
+      "detail": [
+        "market-1m/BTCUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "market-1m/ETHUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "market-1m/SOLUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "STREAM.jsonl.lock: OWNER_PROCESS_DEAD"
+      ],
+      "event": "DECISION",
+      "reason": "ABANDONED_LOCK_PROVED",
+      "restarts": 0,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 5,
+      "state": {
+        "awaiting": [
+          {
+            "path": "market-1m/BTCUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/ETHUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/SOLUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "STREAM.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          }
+        ],
+        "cycles": [
+          1
+        ],
+        "exit_code": null,
+        "last_cycle": 1,
+        "locks": 4,
+        "recoveries": 0,
+        "rows": 4,
+        "session_id": "sess-01cc743601c26ee6177e",
+        "state": "RECOVERING",
+        "why": [
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/BTCUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/ETHUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/SOLUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:STREAM.jsonl.lock"
+        ]
+      },
+      "supervisor_pid": 21420
+    },
+    {
+      "at_utc": "2026-10-23T18:35:15Z",
+      "event": "BACKOFF",
+      "failures": 1,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seconds": 1.0,
+      "seq": 6,
+      "supervisor_pid": 21420
+    },
+    {
+      "argv": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\wt-sup001\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\wt-sup001\\scripts\\def_run_019_prospective_run.py",
+        "--out",
+        "reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign\\session",
+        "--symbols",
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT",
+        "--timeframe",
+        "1m",
+        "--window-bars",
+        "20",
+        "--decision-every-bars",
+        "1",
+        "--warmup-minutes",
+        "120",
+        "--duration-s",
+        "240",
+        "--poll-s",
+        "5.0",
+        "--settle-ms",
+        "2500",
+        "--latency-ms",
+        "30000",
+        "--max-cycles",
+        "50",
+        "--resume"
+      ],
+      "at_utc": "2026-10-23T18:35:16Z",
+      "config_fingerprint_keys": [
+        "decision_every_bars",
+        "duration_s",
+        "equity",
+        "latency_ms",
+        "max_cycles",
+        "max_skew_ms",
+        "mode",
+        "poll_interval_s",
+        "settle_ms",
+        "signal_source",
+        "stale_after_ms",
+        "strategy_id",
+        "symbols",
+        "timeframe",
+        "warmup_minutes",
+        "window_bars"
+      ],
+      "event": "SPAWNED",
+      "pid": 31820,
+      "resume": true,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 7,
+      "supervisor_pid": 21420
+    },
+    {
+      "action": "RESUME",
+      "after": {
+        "awaiting": [],
+        "cycles": [
+          1,
+          2
+        ],
+        "exit_code": null,
+        "last_cycle": 2,
+        "locks": 4,
+        "recoveries": 1,
+        "rows": 9,
+        "session_id": "sess-140d9092f8d56ca27c82",
+        "state": "RUNNING",
+        "why": [
+          "LIVE_OWNER"
+        ]
+      },
+      "at_utc": "2026-10-23T18:36:22Z",
+      "before": {
+        "awaiting": [
+          {
+            "path": "market-1m/BTCUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/ETHUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/SOLUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "STREAM.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          }
+        ],
+        "cycles": [
+          1
+        ],
+        "exit_code": null,
+        "last_cycle": 1,
+        "locks": 4,
+        "recoveries": 0,
+        "rows": 4,
+        "session_id": "sess-01cc743601c26ee6177e",
+        "state": "RECOVERING",
+        "why": [
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/BTCUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/ETHUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/SOLUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:STREAM.jsonl.lock"
+        ]
+      },
+      "event": "CHILD_EXIT",
+      "exit_code": 1,
+      "pid": 31820,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 8,
+      "supervisor_pid": 21420,
+      "verified": {
+        "action": "RESUME",
+        "attempt": 2,
+        "clean": false,
+        "continued": true,
+        "exit_code": 1,
+        "locks_after": 4,
+        "new_cycles": [
+          2
+        ],
+        "pid": 31820,
+        "progress": true,
+        "resumed_flag": true,
+        "rows_after": 9,
+        "rows_before": 4,
+        "start_kind": "SESSION_START",
+        "start_seq": 5,
+        "stream_readable": true
+      }
+    },
+    {
+      "action": "RESUME",
+      "at_utc": "2026-10-23T18:36:22Z",
+      "detail": [
+        "market-1m/BTCUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "market-1m/ETHUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "market-1m/SOLUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "STREAM.jsonl.lock: OWNER_PROCESS_DEAD"
+      ],
+      "event": "DECISION",
+      "reason": "ABANDONED_LOCK_PROVED",
+      "restarts": 1,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 9,
+      "state": {
+        "awaiting": [
+          {
+            "path": "market-1m/BTCUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/ETHUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/SOLUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "STREAM.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          }
+        ],
+        "cycles": [
+          1,
+          2
+        ],
+        "exit_code": null,
+        "last_cycle": 2,
+        "locks": 4,
+        "recoveries": 1,
+        "rows": 9,
+        "session_id": "sess-140d9092f8d56ca27c82",
+        "state": "RECOVERING",
+        "why": [
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/BTCUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/ETHUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/SOLUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:STREAM.jsonl.lock"
+        ]
+      },
+      "supervisor_pid": 21420
+    },
+    {
+      "at_utc": "2026-10-23T18:36:22Z",
+      "event": "BACKOFF",
+      "failures": 2,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seconds": 2.0,
+      "seq": 10,
+      "supervisor_pid": 21420
+    },
+    {
+      "argv": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\wt-sup001\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\wt-sup001\\scripts\\def_run_019_prospective_run.py",
+        "--out",
+        "reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign\\session",
+        "--symbols",
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT",
+        "--timeframe",
+        "1m",
+        "--window-bars",
+        "20",
+        "--decision-every-bars",
+        "1",
+        "--warmup-minutes",
+        "120",
+        "--duration-s",
+        "240",
+        "--poll-s",
+        "5.0",
+        "--settle-ms",
+        "2500",
+        "--latency-ms",
+        "30000",
+        "--max-cycles",
+        "50",
+        "--resume"
+      ],
+      "at_utc": "2026-10-23T18:36:24Z",
+      "config_fingerprint_keys": [
+        "decision_every_bars",
+        "duration_s",
+        "equity",
+        "latency_ms",
+        "max_cycles",
+        "max_skew_ms",
+        "mode",
+        "poll_interval_s",
+        "settle_ms",
+        "signal_source",
+        "stale_after_ms",
+        "strategy_id",
+        "symbols",
+        "timeframe",
+        "warmup_minutes",
+        "window_bars"
+      ],
+      "event": "SPAWNED",
+      "pid": 29828,
+      "resume": true,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 11,
+      "supervisor_pid": 21420
+    },
+    {
+      "action": "RESUME",
+      "after": {
+        "awaiting": [],
+        "cycles": [
+          1,
+          2,
+          3
+        ],
+        "exit_code": null,
+        "last_cycle": 3,
+        "locks": 4,
+        "recoveries": 2,
+        "rows": 14,
+        "session_id": "sess-8875aefa02b4944859c5",
+        "state": "RUNNING",
+        "why": [
+          "LIVE_OWNER"
+        ]
+      },
+      "at_utc": "2026-10-23T18:37:21Z",
+      "before": {
+        "awaiting": [
+          {
+            "path": "market-1m/BTCUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/ETHUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/SOLUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "STREAM.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          }
+        ],
+        "cycles": [
+          1,
+          2
+        ],
+        "exit_code": null,
+        "last_cycle": 2,
+        "locks": 4,
+        "recoveries": 1,
+        "rows": 9,
+        "session_id": "sess-140d9092f8d56ca27c82",
+        "state": "RECOVERING",
+        "why": [
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/BTCUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/ETHUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/SOLUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:STREAM.jsonl.lock"
+        ]
+      },
+      "event": "CHILD_EXIT",
+      "exit_code": 1,
+      "pid": 29828,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 12,
+      "supervisor_pid": 21420,
+      "verified": {
+        "action": "RESUME",
+        "attempt": 3,
+        "clean": false,
+        "continued": true,
+        "exit_code": 1,
+        "locks_after": 4,
+        "new_cycles": [
+          3
+        ],
+        "pid": 29828,
+        "progress": true,
+        "resumed_flag": true,
+        "rows_after": 14,
+        "rows_before": 9,
+        "start_kind": "SESSION_START",
+        "start_seq": 10,
+        "stream_readable": true
+      }
+    },
+    {
+      "action": "RESUME",
+      "at_utc": "2026-10-23T18:37:21Z",
+      "detail": [
+        "market-1m/BTCUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "market-1m/ETHUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "market-1m/SOLUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "STREAM.jsonl.lock: OWNER_PROCESS_DEAD"
+      ],
+      "event": "DECISION",
+      "reason": "ABANDONED_LOCK_PROVED",
+      "restarts": 2,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 13,
+      "state": {
+        "awaiting": [
+          {
+            "path": "market-1m/BTCUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/ETHUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/SOLUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "STREAM.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          }
+        ],
+        "cycles": [
+          1,
+          2,
+          3
+        ],
+        "exit_code": null,
+        "last_cycle": 3,
+        "locks": 4,
+        "recoveries": 2,
+        "rows": 14,
+        "session_id": "sess-8875aefa02b4944859c5",
+        "state": "RECOVERING",
+        "why": [
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/BTCUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/ETHUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/SOLUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:STREAM.jsonl.lock"
+        ]
+      },
+      "supervisor_pid": 21420
+    },
+    {
+      "at_utc": "2026-10-23T18:37:21Z",
+      "event": "BACKOFF",
+      "failures": 3,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seconds": 4.0,
+      "seq": 14,
+      "supervisor_pid": 21420
+    },
+    {
+      "argv": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\wt-sup001\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\wt-sup001\\scripts\\def_run_019_prospective_run.py",
+        "--out",
+        "reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign\\session",
+        "--symbols",
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT",
+        "--timeframe",
+        "1m",
+        "--window-bars",
+        "20",
+        "--decision-every-bars",
+        "1",
+        "--warmup-minutes",
+        "120",
+        "--duration-s",
+        "240",
+        "--poll-s",
+        "5.0",
+        "--settle-ms",
+        "2500",
+        "--latency-ms",
+        "30000",
+        "--max-cycles",
+        "50",
+        "--resume"
+      ],
+      "at_utc": "2026-10-23T18:37:25Z",
+      "config_fingerprint_keys": [
+        "decision_every_bars",
+        "duration_s",
+        "equity",
+        "latency_ms",
+        "max_cycles",
+        "max_skew_ms",
+        "mode",
+        "poll_interval_s",
+        "settle_ms",
+        "signal_source",
+        "stale_after_ms",
+        "strategy_id",
+        "symbols",
+        "timeframe",
+        "warmup_minutes",
+        "window_bars"
+      ],
+      "event": "SPAWNED",
+      "pid": 8480,
+      "resume": true,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 15,
+      "supervisor_pid": 21420
+    },
+    {
+      "action": "RESUME",
+      "after": {
+        "awaiting": [],
+        "cycles": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "exit_code": null,
+        "last_cycle": 4,
+        "locks": 4,
+        "recoveries": 3,
+        "rows": 19,
+        "session_id": "sess-723fb164ad2ea88f497a",
+        "state": "RUNNING",
+        "why": [
+          "LIVE_OWNER"
+        ]
+      },
+      "at_utc": "2026-10-23T18:38:22Z",
+      "before": {
+        "awaiting": [
+          {
+            "path": "market-1m/BTCUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/ETHUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/SOLUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "STREAM.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          }
+        ],
+        "cycles": [
+          1,
+          2,
+          3
+        ],
+        "exit_code": null,
+        "last_cycle": 3,
+        "locks": 4,
+        "recoveries": 2,
+        "rows": 14,
+        "session_id": "sess-8875aefa02b4944859c5",
+        "state": "RECOVERING",
+        "why": [
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/BTCUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/ETHUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/SOLUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:STREAM.jsonl.lock"
+        ]
+      },
+      "event": "CHILD_EXIT",
+      "exit_code": 1,
+      "pid": 8480,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 16,
+      "supervisor_pid": 21420,
+      "verified": {
+        "action": "RESUME",
+        "attempt": 4,
+        "clean": false,
+        "continued": true,
+        "exit_code": 1,
+        "locks_after": 4,
+        "new_cycles": [
+          4
+        ],
+        "pid": 8480,
+        "progress": true,
+        "resumed_flag": true,
+        "rows_after": 19,
+        "rows_before": 14,
+        "start_kind": "SESSION_START",
+        "start_seq": 15,
+        "stream_readable": true
+      }
+    },
+    {
+      "action": "RESUME",
+      "at_utc": "2026-10-23T18:38:22Z",
+      "detail": [
+        "market-1m/BTCUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "market-1m/ETHUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "market-1m/SOLUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "STREAM.jsonl.lock: OWNER_PROCESS_DEAD"
+      ],
+      "event": "DECISION",
+      "reason": "ABANDONED_LOCK_PROVED",
+      "restarts": 3,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 17,
+      "state": {
+        "awaiting": [
+          {
+            "path": "market-1m/BTCUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/ETHUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/SOLUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "STREAM.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          }
+        ],
+        "cycles": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "exit_code": null,
+        "last_cycle": 4,
+        "locks": 4,
+        "recoveries": 3,
+        "rows": 19,
+        "session_id": "sess-723fb164ad2ea88f497a",
+        "state": "RECOVERING",
+        "why": [
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/BTCUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/ETHUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/SOLUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:STREAM.jsonl.lock"
+        ]
+      },
+      "supervisor_pid": 21420
+    },
+    {
+      "at_utc": "2026-10-23T18:38:22Z",
+      "event": "BACKOFF",
+      "failures": 4,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seconds": 8.0,
+      "seq": 18,
+      "supervisor_pid": 21420
+    },
+    {
+      "argv": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\wt-sup001\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\wt-sup001\\scripts\\def_run_019_prospective_run.py",
+        "--out",
+        "reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign\\session",
+        "--symbols",
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT",
+        "--timeframe",
+        "1m",
+        "--window-bars",
+        "20",
+        "--decision-every-bars",
+        "1",
+        "--warmup-minutes",
+        "120",
+        "--duration-s",
+        "240",
+        "--poll-s",
+        "5.0",
+        "--settle-ms",
+        "2500",
+        "--latency-ms",
+        "30000",
+        "--max-cycles",
+        "50",
+        "--resume"
+      ],
+      "at_utc": "2026-10-23T18:38:30Z",
+      "config_fingerprint_keys": [
+        "decision_every_bars",
+        "duration_s",
+        "equity",
+        "latency_ms",
+        "max_cycles",
+        "max_skew_ms",
+        "mode",
+        "poll_interval_s",
+        "settle_ms",
+        "signal_source",
+        "stale_after_ms",
+        "strategy_id",
+        "symbols",
+        "timeframe",
+        "warmup_minutes",
+        "window_bars"
+      ],
+      "event": "SPAWNED",
+      "pid": 40256,
+      "resume": true,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 19,
+      "supervisor_pid": 21420
+    },
+    {
+      "action": "RESUME",
+      "after": {
+        "awaiting": [],
+        "cycles": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "exit_code": null,
+        "last_cycle": 5,
+        "locks": 4,
+        "recoveries": 4,
+        "rows": 24,
+        "session_id": "sess-31000cc6898d16f260c0",
+        "state": "RUNNING",
+        "why": [
+          "LIVE_OWNER"
+        ]
+      },
+      "at_utc": "2026-10-23T18:39:21Z",
+      "before": {
+        "awaiting": [
+          {
+            "path": "market-1m/BTCUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/ETHUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/SOLUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "STREAM.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          }
+        ],
+        "cycles": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "exit_code": null,
+        "last_cycle": 4,
+        "locks": 4,
+        "recoveries": 3,
+        "rows": 19,
+        "session_id": "sess-723fb164ad2ea88f497a",
+        "state": "RECOVERING",
+        "why": [
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/BTCUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/ETHUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/SOLUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:STREAM.jsonl.lock"
+        ]
+      },
+      "event": "CHILD_EXIT",
+      "exit_code": 1,
+      "pid": 40256,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 20,
+      "supervisor_pid": 21420,
+      "verified": {
+        "action": "RESUME",
+        "attempt": 5,
+        "clean": false,
+        "continued": true,
+        "exit_code": 1,
+        "locks_after": 4,
+        "new_cycles": [
+          5
+        ],
+        "pid": 40256,
+        "progress": true,
+        "resumed_flag": true,
+        "rows_after": 24,
+        "rows_before": 19,
+        "start_kind": "SESSION_START",
+        "start_seq": 20,
+        "stream_readable": true
+      }
+    },
+    {
+      "action": "RESUME",
+      "at_utc": "2026-10-23T18:39:21Z",
+      "detail": [
+        "market-1m/BTCUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "market-1m/ETHUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "market-1m/SOLUSDT.jsonl.lock: OWNER_PROCESS_DEAD",
+        "STREAM.jsonl.lock: OWNER_PROCESS_DEAD"
+      ],
+      "event": "DECISION",
+      "reason": "ABANDONED_LOCK_PROVED",
+      "restarts": 4,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 21,
+      "state": {
+        "awaiting": [
+          {
+            "path": "market-1m/BTCUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/ETHUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/SOLUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "STREAM.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          }
+        ],
+        "cycles": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "exit_code": null,
+        "last_cycle": 5,
+        "locks": 4,
+        "recoveries": 4,
+        "rows": 24,
+        "session_id": "sess-31000cc6898d16f260c0",
+        "state": "RECOVERING",
+        "why": [
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/BTCUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/ETHUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/SOLUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:STREAM.jsonl.lock"
+        ]
+      },
+      "supervisor_pid": 21420
+    },
+    {
+      "at_utc": "2026-10-23T18:39:21Z",
+      "event": "BACKOFF",
+      "failures": 5,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seconds": 10.0,
+      "seq": 22,
+      "supervisor_pid": 21420
+    },
+    {
+      "argv": [
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\wt-sup001\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\wt-sup001\\scripts\\def_run_019_prospective_run.py",
+        "--out",
+        "reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign\\session",
+        "--symbols",
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT",
+        "--timeframe",
+        "1m",
+        "--window-bars",
+        "20",
+        "--decision-every-bars",
+        "1",
+        "--warmup-minutes",
+        "120",
+        "--duration-s",
+        "240",
+        "--poll-s",
+        "5.0",
+        "--settle-ms",
+        "2500",
+        "--latency-ms",
+        "30000",
+        "--max-cycles",
+        "50",
+        "--resume"
+      ],
+      "at_utc": "2026-10-23T18:39:31Z",
+      "config_fingerprint_keys": [
+        "decision_every_bars",
+        "duration_s",
+        "equity",
+        "latency_ms",
+        "max_cycles",
+        "max_skew_ms",
+        "mode",
+        "poll_interval_s",
+        "settle_ms",
+        "signal_source",
+        "stale_after_ms",
+        "strategy_id",
+        "symbols",
+        "timeframe",
+        "warmup_minutes",
+        "window_bars"
+      ],
+      "event": "SPAWNED",
+      "pid": 13596,
+      "resume": true,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 23,
+      "supervisor_pid": 21420
+    },
+    {
+      "action": "RESUME",
+      "after": {
+        "awaiting": [],
+        "cycles": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "exit_code": 0,
+        "last_cycle": 9,
+        "locks": 0,
+        "recoveries": 5,
+        "rows": 33,
+        "session_id": "sess-af86cd59154abc8290e3",
+        "state": "RECOVERED",
+        "why": []
+      },
+      "at_utc": "2026-10-23T18:43:36Z",
+      "before": {
+        "awaiting": [
+          {
+            "path": "market-1m/BTCUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/ETHUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "market-1m/SOLUSDT.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          },
+          {
+            "path": "STREAM.jsonl.lock",
+            "reason": "OWNER_PROCESS_DEAD",
+            "state": "ABANDONED"
+          }
+        ],
+        "cycles": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "exit_code": null,
+        "last_cycle": 5,
+        "locks": 4,
+        "recoveries": 4,
+        "rows": 24,
+        "session_id": "sess-31000cc6898d16f260c0",
+        "state": "RECOVERING",
+        "why": [
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/BTCUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/ETHUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:market-1m/SOLUSDT.jsonl.lock",
+          "ABANDONED:OWNER_PROCESS_DEAD:STREAM.jsonl.lock"
+        ]
+      },
+      "event": "CHILD_EXIT",
+      "exit_code": 0,
+      "pid": 13596,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 24,
+      "supervisor_pid": 21420,
+      "verified": {
+        "action": "RESUME",
+        "attempt": 6,
+        "clean": true,
+        "continued": true,
+        "exit_code": 0,
+        "locks_after": 0,
+        "new_cycles": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "pid": 13596,
+        "progress": true,
+        "resumed_flag": true,
+        "rows_after": 33,
+        "rows_before": 24,
+        "start_kind": "SESSION_START",
+        "start_seq": 25,
+        "stream_readable": true
+      }
+    },
+    {
+      "action": "STOP_COMPLETED",
+      "at_utc": "2026-10-23T18:43:36Z",
+      "detail": [
+        "the last attempt exited 0"
+      ],
+      "event": "DECISION",
+      "reason": "CLEAN_END",
+      "restarts": 5,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 25,
+      "state": {
+        "awaiting": [],
+        "cycles": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "exit_code": 0,
+        "last_cycle": 9,
+        "locks": 0,
+        "recoveries": 5,
+        "rows": 33,
+        "session_id": "sess-af86cd59154abc8290e3",
+        "state": "RECOVERED",
+        "why": []
+      },
+      "supervisor_pid": 21420
+    },
+    {
+      "action": "STOP_COMPLETED",
+      "at_utc": "2026-10-23T18:43:36Z",
+      "event": "STOP",
+      "reason": "CLEAN_END",
+      "restarts": 5,
+      "schema_version": "TAP_PAPER_SUPERVISOR_JOURNAL_V1",
+      "seq": 26,
+      "supervisor_pid": 21420
+    }
+  ]
+}

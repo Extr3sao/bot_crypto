@@ -1,0 +1,11 @@
+{
+  "verdict": "FAIL",
+  "checks": {
+    "campaign_schema_is_supported": false
+  }
+}
+{
+  "adversarial": [],
+  "false_success": 0
+}
+EXIT=1

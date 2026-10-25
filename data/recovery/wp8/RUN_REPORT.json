@@ -1,0 +1,245 @@
+{
+  "artifact": "WP8_RUN_REPORT",
+  "work_package": "WP-8 — recovery determinism, state authority & clean checkout certification",
+  "generated_at_utc": "2026-10-11T21:40:00Z",
+  "branch": "main",
+  "mode": "OFFLINE — no keys, no orders, no capital, no live path; read-only audits, tests and a detached-worktree rehearsal",
+  "flags": {
+    "FALSE_SUCCESS": 0,
+    "BUILDER_NOT_VERIFIER": true,
+    "TEST_TARGET_IS_RUNTIME_TARGET": true,
+    "LIVE_TRADING": "DISABLED",
+    "PAPER_PROMOTION": "NOT_AUTHORIZED",
+    "SEALED_OOS": "CANCELLED_NOT_OPENED",
+    "RFC049_TERMINAL_STATE": "DISCOVERY_CAMPAIGN_FAILED"
+  },
+  "baseline": {
+    "captured_before_any_edit": true,
+    "evidence": "data/recovery/wp8/evidence/BASELINE_REPRODUCTION.json",
+    "trees": [
+      {
+        "label": "shared working tree",
+        "head": "33512b591bbf60e9a995792644257262bdd0b563",
+        "summary": "1 failed, 25 passed",
+        "failed_nodes": [
+          "tests/unit/research/test_active_recovery_wp.py::test_state_view_is_deterministic"
+        ]
+      },
+      {
+        "label": "clean worktree at HEAD",
+        "head": "33512b591bbf60e9a995792644257262bdd0b563",
+        "summary": "3 failed, 23 passed",
+        "missing_inputs": 8
+      },
+      {
+        "label": "clean worktree at the pre-WP-7 baseline 38b8e18",
+        "head": "38b8e183d54c5ac8552296218e28f3ded8d95885",
+        "summary": "3 failed, 23 passed"
+      }
+    ],
+    "attribution": "the same three fail at 38b8e18, before WP-7 touched this lane: the defect is not a WP-7 regression"
+  },
+  "steps": [
+    {
+      "step": "input authority (capture)",
+      "command": ".venv/Scripts/python.exe scripts/recovery_input_evidence.py --capture",
+      "exit_code": 0,
+      "result": "PASS",
+      "produces": "data/recovery/wp8/evidence/INPUT_EVIDENCE.json + evidence/inputs/"
+    },
+    {
+      "step": "input bundle verify",
+      "command": ".venv/Scripts/python.exe scripts/recovery_input_evidence.py --verify",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "status VERIFIED, 0 failures"
+    },
+    {
+      "step": "campaign state view",
+      "command": ".venv/Scripts/python.exe scripts/campaign_state_view.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "step": "state view determinism",
+      "command": ".venv/Scripts/python.exe scripts/campaign_state_view.py --check",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "step": "ACTIVE economic audit",
+      "command": ".venv/Scripts/python.exe scripts/active_economic_audit.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "step": "audit determinism",
+      "command": ".venv/Scripts/python.exe scripts/active_economic_audit.py --check",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "step": "economic invariance of the repair",
+      "command": ".venv/Scripts/python.exe scripts/recovery_economic_invariance.py --check",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "status STABLE, verdict IDENTICAL, 0 changed audit findings, 0 changed campaign effective states"
+    },
+    {
+      "step": "lane contract tests",
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_active_recovery_wp.py -q",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "28 passed (26 before WP-8)"
+    },
+    {
+      "step": "determinism regressions",
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_recovery_determinism.py -q",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "15 tests: 12 fast, 3 slow (rehearsal + 2 sabotage)"
+    },
+    {
+      "step": "CI parity contract",
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_recovery_ci_parity.py -q",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "8 passed"
+    },
+    {
+      "step": "cost-barrier lane tests",
+      "command": ".venv/Scripts/python.exe -m pytest tests/unit/research/test_cost_barrier_{explorer,gate,adversarial,ci_parity}.py -q",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "93 passed"
+    },
+    {
+      "step": "cost-barrier gate",
+      "command": ".venv/Scripts/python.exe scripts/cost_barrier_gate.py --json --report .ci/gate.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "FULL_REPRODUCTION_PASS; 0 checks failed; 0 controls missed; pins 4 byte-exact + 1 state-exact, 0 drifted"
+    },
+    {
+      "step": "adversarial sweep",
+      "command": ".venv/Scripts/python.exe scripts/cost_barrier_adversarial.py --out .ci/adv.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "EVALUATED; 17 attacks; 0 evaded; 0 legs failed"
+    },
+    {
+      "step": "certification re-issue",
+      "command": ".venv/Scripts/python.exe scripts/cost_barrier_certify.py --out data/recovery/wp7/COST_BARRIER_CERTIFICATION.json",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "CERTIFIED; head e07ce6c; dirty_watched_paths []; fingerprint 0cfdb13e…; supersedes bd607266… (081ee7a)"
+    },
+    {
+      "step": "lint",
+      "command": ".venv/Scripts/python.exe -m ruff check <thirteen touched files>",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "step": "types",
+      "command": ".venv/Scripts/python.exe -m mypy <seven scripts>",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "no issues found"
+    },
+    {
+      "step": "global suite",
+      "command": ".venv/Scripts/python.exe -m pytest -m \"not slow and not market\" -q",
+      "exit_code": 0,
+      "result": "PASS",
+      "detail": "3390 passed, 3 deselected (the slow rehearsal tests)"
+    }
+  ],
+  "clean_checkout_rehearsal": {
+    "script": "scripts/clean_checkout_rehearsal.py",
+    "scope": "full",
+    "status": "PASS",
+    "exit_code": 0,
+    "rehearsed_commit": "e07ce6cc3c00",
+    "runner": "LOCAL",
+    "report": "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json",
+    "artefacts": {
+      "state_reproduced": 4,
+      "bytes_identical": 0,
+      "note": "the bytes of all four differ only in the moment; the state digests are the comparison"
+    },
+    "inputs_modified_in_the_checkout": [],
+    "published_paths_moved": [],
+    "run_records_changed": [],
+    "sabotage": [
+      {
+        "target": "evidence_copy",
+        "artifact": "data/recovery/wp8/evidence/SABOTAGE_EVIDENCE_COPY.json",
+        "status": "SABOTAGE_DETECTED",
+        "detected_by": "the input guard: M data/recovery/wp8/evidence/inputs/TIMEFRAME_AUDIT.json"
+      },
+      {
+        "target": "committed_input",
+        "artifact": "data/recovery/wp8/evidence/SABOTAGE_COMMITTED_INPUT.json",
+        "status": "SABOTAGE_DETECTED",
+        "detected_by": "the input guard: M tasks/decisions.md"
+      }
+    ],
+    "why_the_guard_is_the_detector": "every declared input is read from HEAD, so a mutation inside the checkout is invisible to the steps themselves; the guard is what sees it"
+  },
+  "defects_the_rehearsal_found": [
+    {
+      "defect": "the coverage summaries embedded the machine: a gitignored dataset resolved to LOCAL_MATERIALIZATION when present and ABSENT when not, inside a field that is part of the identity",
+      "fixed_in": "6c3af00",
+      "consequence": "both artefacts regenerated"
+    },
+    {
+      "defect": "the cost-barrier lane pinned the audit's bytes, so the pin could only be satisfied on the machine that wrote it",
+      "fixed_in": "279d73f",
+      "consequence": "state pin added, producers re-captured, chain re-pinned (66dc3de, 279d73f), WP-7 record re-issued"
+    },
+    {
+      "defect": "the sabotage proofs rested on detectors that cannot fire for a HEAD-reading lane",
+      "fixed_in": "272df9f",
+      "consequence": "the input guard is the detector; both sabotage artefacts record it firing"
+    },
+    {
+      "defect": "C14 demanded an evidence copy for the two declared-only datasets, which by declaration never need one",
+      "fixed_in": "6cac3c6",
+      "consequence": "C14 now requires their authority in the commit and forbids promoting them; control N13 covers the branch"
+    }
+  ],
+  "independent_verification": {
+    "program": "scripts/recovery_verify.py",
+    "status": "PASS",
+    "exit_code": 0,
+    "head": "e07ce6cc3c00",
+    "checks_passed": 17,
+    "checks_total": 17,
+    "controls_detected": 13,
+    "controls_total": 13,
+    "builder_imported": false,
+    "false_success": 0,
+    "record": "data/recovery/INDEPENDENT_VERIFICATION.json"
+  },
+  "not_claimed": {
+    "profitability": false,
+    "admitted_for_paper_before": 0,
+    "admitted_for_paper_after": 0,
+    "net_positive_count_before": 0,
+    "net_positive_count_after": 0,
+    "cross_platform": "rests on content digests taken over LF-normalised content and on the CI workflow committed with WP-8E; it has not been executed on a GitHub runner from this machine",
+    "supersession": "the WP-7 record was re-issued twice while the chain was being fixed; only the final re-issue is committed and it names the record it replaced"
+  },
+  "deliverables": [
+    "data/recovery/wp8/RECOVERY_RUNTIME_AUTHORITY_MAP.md",
+    "data/recovery/wp8/CAMPAIGN_STATE_DETERMINISM_AUDIT.md",
+    "data/recovery/wp8/ACTIVE_RECOVERY_REPRODUCIBILITY.md",
+    "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.json",
+    "data/recovery/wp8/CLEAN_CHECKOUT_REHEARSAL_REPORT.md",
+    "data/recovery/wp8/RUN_REPORT.md",
+    "data/recovery/wp8/RUN_REPORT.json",
+    "data/recovery/wp8/FINAL_REPORT.md",
+    "data/recovery/INDEPENDENT_VERIFICATION.json"
+  ]
+}

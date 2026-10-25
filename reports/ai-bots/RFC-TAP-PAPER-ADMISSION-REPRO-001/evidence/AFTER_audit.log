@@ -1,0 +1,8 @@
+{
+  "verdict": "CLEAN",
+  "high": 0,
+  "by_severity": {
+    "MEDIUM": 403
+  }
+}
+EXIT=0

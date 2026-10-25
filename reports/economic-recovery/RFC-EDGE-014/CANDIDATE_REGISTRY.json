@@ -1,0 +1,195 @@
+{
+  "candidates": [
+    {
+      "admission_status": "REJECTED",
+      "assets": [
+        "BTC/USDT",
+        "ETH/USDT",
+        "SOL/USDT"
+      ],
+      "candidate_id": "E14-01",
+      "comparator_id": "CURRENT",
+      "costs_manifest": [],
+      "data_manifest": [],
+      "duplicate_of": [
+        "breakout_family",
+        "volatility_family"
+      ],
+      "duplicate_reason": "shares mechanism tokens with ['breakout_family', 'volatility_family'] (token coverage 1.0)",
+      "evidence": [
+        "duplicate_scan:E14-01"
+      ],
+      "family": "REGIME_CONDITIONED_VOL_BREAKOUT",
+      "holdout_registry": [],
+      "hypothesis": "a range breakout sized to realised volatility, entered only when a regime filter says the market is trending, carries a net move that covers the admission round trip on 1h/4h bars",
+      "is_duplicate": true,
+      "params_locked": {
+        "breakout_multiple": 1.0,
+        "exit": "opposite range boundary or 3-bar hold, whichever first",
+        "range_lookback_bars": 20,
+        "regime_filter": "close > ema200 and ema50 > ema200",
+        "vol_atr_lookback_bars": 14
+      },
+      "permitted_sides": [
+        "long"
+      ],
+      "priority": 1,
+      "product": "spot",
+      "regime": "trending_only",
+      "sizing_authority": "DETERMINISTIC_RISK",
+      "source_id": "SRC-03",
+      "source_sha": "7a8768de9784dda35a7b261a7ade1dbfbff50919",
+      "spec_digest": "169b9fa4461a331013bafd95c30b091add98b47173ce65a76d146ef22d9959aa",
+      "test_plan": "frozen train/validation/OOS split; walk-forward with purged folds; null and CURRENT comparators; nominal and 2x variable-cost stress",
+      "timeframes": [
+        "1h",
+        "4h"
+      ],
+      "venue": "binance"
+    },
+    {
+      "admission_status": "REJECTED",
+      "assets": [
+        "BTC/USDT",
+        "ETH/USDT",
+        "SOL/USDT",
+        "BNB/USDT",
+        "XRP/USDT"
+      ],
+      "candidate_id": "E14-02",
+      "comparator_id": "CURRENT",
+      "costs_manifest": [],
+      "data_manifest": [],
+      "duplicate_of": [
+        "cross_sectional",
+        "diversified_xsec",
+        "diversified_xsec_riskadj"
+      ],
+      "duplicate_reason": "shares mechanism tokens with ['cross_sectional', 'diversified_xsec', 'diversified_xsec_riskadj'] (token coverage 1.0)",
+      "evidence": [
+        "duplicate_scan:E14-02"
+      ],
+      "family": "LIQUID_SPOT_CROSS_SECTIONAL_ROTATION",
+      "holdout_registry": [],
+      "hypothesis": "rotating into the top-k liquid spot assets by relative 4h/1d return, with a concentration cap and a minimum-notional floor, carries a net cross-sectional return above the rebalance friction",
+      "is_duplicate": true,
+      "params_locked": {
+        "max_weight": 0.5,
+        "min_notional_usdt": 20.0,
+        "rebalance": "daily_00utc",
+        "top_k": 2,
+        "weighting": "equal"
+      },
+      "permitted_sides": [
+        "long"
+      ],
+      "priority": 2,
+      "product": "spot",
+      "regime": "all",
+      "sizing_authority": "DETERMINISTIC_RISK",
+      "source_id": "SRC-02",
+      "source_sha": "5e642997f9623d67b63543962eab46caca30e613",
+      "spec_digest": "d179383431c5469a5eb10147128b26e6054815a74ec3e5862073857651f91f6b",
+      "test_plan": "asset-level OOS held out; rebalance friction charged per name; compare against the diversified cross-section and against buy-and-hold",
+      "timeframes": [
+        "4h",
+        "1d"
+      ],
+      "venue": "binance"
+    },
+    {
+      "admission_status": "REJECTED",
+      "assets": [
+        "BTC/USDT",
+        "ETH/USDT"
+      ],
+      "candidate_id": "E14-03",
+      "comparator_id": "CURRENT",
+      "costs_manifest": [],
+      "data_manifest": [],
+      "duplicate_of": [
+        "mean_reversion_family"
+      ],
+      "duplicate_reason": "shares mechanism tokens with ['mean_reversion_family'] (token coverage 0.6)",
+      "evidence": [
+        "duplicate_scan:E14-03"
+      ],
+      "family": "CONDITIONAL_EXTREME_MEAN_REVERSION",
+      "holdout_registry": [],
+      "hypothesis": "a mean reversion entered only after an extreme displacement beyond a volatility-scaled band, and only when the short-horizon trend is not persistent, reverts enough to cover the round trip",
+      "is_duplicate": true,
+      "params_locked": {
+        "band_sigma": 2.5,
+        "exit": "revert to the band mean or 4-bar timeout",
+        "persistence_filter": "abs(1h return) < 1.5x atr",
+        "sigma_lookback_bars": 96
+      },
+      "permitted_sides": [
+        "long"
+      ],
+      "priority": 3,
+      "product": "spot",
+      "regime": "range_bound_only",
+      "sizing_authority": "DETERMINISTIC_RISK",
+      "source_id": "SRC-03",
+      "source_sha": "7a8768de9784dda35a7b261a7ade1dbfbff50919",
+      "spec_digest": "fb8167ad897027640790d8587ef8ce3aa1a46e99a8b31a539b861136e02e89d1",
+      "test_plan": "OOS held out; spread-sensitivity sweep; explicit persistent-trend failure analysis before any acceptance",
+      "timeframes": [
+        "15m",
+        "1h"
+      ],
+      "venue": "binance"
+    },
+    {
+      "admission_status": "STRATEGY_CANDIDATE",
+      "assets": [
+        "ETH/USDT",
+        "SOL/USDT"
+      ],
+      "candidate_id": "E14-04",
+      "comparator_id": "CURRENT",
+      "costs_manifest": [],
+      "data_manifest": [],
+      "duplicate_of": [],
+      "duplicate_reason": null,
+      "evidence": [
+        "duplicate_scan:E14-04"
+      ],
+      "family": "CROSS_ASSET_LEAD_LAG_TRANSMISSION",
+      "holdout_registry": [],
+      "hypothesis": "when a large BTC move has not yet propagated to a correlated liquid alt, the un-propagated residual carries a net move that covers the round trip; the edge is the timing gap between assets, not the direction of either",
+      "is_duplicate": false,
+      "params_locked": {
+        "entry": "alt still below its own expected co-move after the shock",
+        "exit": "the residual closes or 3 bars elapse",
+        "propagation_window_bars": 2,
+        "shock_threshold_sigma": 1.5,
+        "sigma_lookback_bars": 48,
+        "signal_asset": "BTC/USDT"
+      },
+      "permitted_sides": [
+        "long"
+      ],
+      "priority": 2,
+      "product": "spot",
+      "regime": "all",
+      "sizing_authority": "DETERMINISTIC_RISK",
+      "source_id": "SRC-02",
+      "source_sha": "5e642997f9623d67b63543962eab46caca30e613",
+      "spec_digest": "71f65fb2867191b5444be0e029330d088c92b2cdaf5c1da04f472d25be635187",
+      "test_plan": "synchronised multi-asset OOS held out; residual measured on closed bars only; co-move expectation estimated on the training window and frozen; compared against own-asset momentum and buy-and-hold",
+      "timeframes": [
+        "1h"
+      ],
+      "venue": "binance"
+    }
+  ],
+  "n_registered": 4,
+  "n_rejected_duplicate": 3,
+  "order_sent": false,
+  "preregistered_before_oos": true,
+  "promotion": "NONE",
+  "schema_version": "EDGE14_CANDIDATE_REGISTRY_V1",
+  "work_package": "WP-EDGE-14D"
+}

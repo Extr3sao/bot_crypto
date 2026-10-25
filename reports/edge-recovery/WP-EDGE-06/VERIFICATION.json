@@ -1,0 +1,116 @@
+{
+  "as_of_utc": "2026-10-14T08:14:31Z",
+  "checks": [
+    {
+      "check": "audit:the_decomposition_re_sums_from_the_trades",
+      "failures": [],
+      "figures_checked": 45,
+      "result": "PASS"
+    },
+    {
+      "check": "audit:every_figure_equals_the_campaign_artefact",
+      "failures": [],
+      "figures_checked": 225,
+      "result": "PASS"
+    },
+    {
+      "book": "edge06_trend_fixed",
+      "check": "program:one_family_re_runs_to_the_published_metrics",
+      "failures": [],
+      "figures_checked": 24,
+      "result": "PASS"
+    },
+    {
+      "check": "storage:every_removed_path_passed_the_three_checks",
+      "failures": [],
+      "paths_checked": 175,
+      "reclaimed_bytes": 45591379,
+      "result": "PASS"
+    },
+    {
+      "check": "freeze:no_strategy_or_risk_path_moved_since_the_freeze",
+      "failures": [],
+      "params_hash": "d073a2d686b9b198c36c9a3c6009d36130577ba247a2016c3f791813cb749d77",
+      "paths_checked": [
+        "config/risk.yaml",
+        "src/trading_bot/risk",
+        "src/trading_bot/strategies",
+        "src/trading_bot/research/edge01/candidates.py",
+        "src/trading_bot/research/edge01/campaign.py"
+      ],
+      "result": "PASS",
+      "since": "5237c76"
+    },
+    {
+      "check": "registration:the_hypotheses_commit_precedes_the_results_commit",
+      "failures": [],
+      "hypotheses_commit": "7ba9d999db6a51c23559517a597e57aba2ab41ea",
+      "ordered": true,
+      "result": "PASS",
+      "results_commit": "fe5c400d9cc69c08f797a703b8e6f376d8922ec8"
+    },
+    {
+      "check": "repair:the_derived_view_agrees_with_a_fresh_build_of_head",
+      "failures": [],
+      "fresh_sha256": "51ef35aa5168d9758d0a0493bb9a10ee99708879ee37a1ad64dedff2ffb74a6f",
+      "published_sha256": "51ef35aa5168d9758d0a0493bb9a10ee99708879ee37a1ad64dedff2ffb74a6f",
+      "result": "PASS"
+    }
+  ],
+  "checks_passed": 7,
+  "checks_total": 7,
+  "hypothetical": true,
+  "order_sent": false,
+  "promotion": "NONE",
+  "run_id": "EDGE06-VERIFY-20261014T081431Z",
+  "schema_version": "EDGE06_VERIFICATION_V1",
+  "self_test": {
+    "check": "self_test:every_sabotage_is_detected",
+    "mutations": [
+      {
+        "check": "audit_re_sums_from_the_trades",
+        "detected": true,
+        "mutation": "one gross figure moves by 1 USDT"
+      },
+      {
+        "check": "audit_re_sums_from_the_trades",
+        "detected": true,
+        "mutation": "the net is stated as zero"
+      },
+      {
+        "check": "audit_re_sums_from_the_trades",
+        "detected": true,
+        "mutation": "fees erased from the trade rows"
+      },
+      {
+        "check": "audit_equals_the_campaign_artefact",
+        "detected": true,
+        "mutation": "the audit disagrees with the campaign"
+      },
+      {
+        "check": "family_re_runs",
+        "detected": true,
+        "mutation": "the published OOS net moves by 1 USDT"
+      },
+      {
+        "check": "family_re_runs",
+        "detected": true,
+        "mutation": "the published trade count moves"
+      },
+      {
+        "check": "reclaim_rule",
+        "detected": true,
+        "mutation": "a removed path is claimed as tracked by git"
+      },
+      {
+        "check": "reclaim_rule",
+        "detected": true,
+        "mutation": "the reclaimed total stops matching its rows"
+      }
+    ],
+    "mutations_total": 8,
+    "result": "PASS",
+    "undetected": []
+  },
+  "verdict": "VERIFY_PASS"
+}

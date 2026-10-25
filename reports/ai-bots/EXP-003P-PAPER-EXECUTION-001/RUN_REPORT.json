@@ -1,0 +1,128 @@
+{
+  "blockers": [
+    "PAPER_VALIDATION=BLOCKED_NOT_CONFIGURED: no authorised paper/testnet provider, endpoint or account is configured in this workspace, so no fill of this cycle was observed at a venue. The offline book is not a substitute.",
+    "organizational_independence=false: producer, verifier and controls were written by one agent. The separation is between programs.",
+    "Prospective status does not rest on a commit that predates the run: the artifacts are committed by the evidence commit, which follows the code commit the run binds. The preregistration is a frozen document (`PROTOCOL_FROZEN_UTC`), its digest is recorded in every run, and a clean checkout re-derives the identical file from the frozen constants."
+  ],
+  "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "checkout_environment": {
+    "paths_outside_checkout": [],
+    "pins": "114/114",
+    "pins_mismatch": [],
+    "state": "PASS"
+  },
+  "checks": {
+    "failed": [],
+    "passed": 18,
+    "total": 18
+  },
+  "commit": "bdd96f4cf9eda379294d92282aa78707c669ffd5",
+  "config_digest": "sha256:4f93519d8fc6b4040e82df6f6c495671ae5f510fe47ee246937a4400baa071fa",
+  "controls": {
+    "effective": 17,
+    "total": 17
+  },
+  "digests": {
+    "execution_trace_sha256": "f0264348e3823c2fd2cfd95b5a4643496f34a95bacfcd914fce3dcf25b52429e",
+    "protocol_sha256": "9f349bda6f2dbbfea5aed8b27418ffd9d92d59cdf26068172fad5ba841d00c9a",
+    "run_digest": "sha256:433a819e7537d73aa484fda414b21c63b4efba4afc164d6f7b3fce0ba7a3f95c",
+    "scenario_trace_sha256": "a97955f89591225e5f8a7216eab780bb8c86574e9bdc96b1743f21aa3a62a385"
+  },
+  "dimensions": {
+    "CHECKOUT_ENVIRONMENT": "PASS",
+    "CLEAN_CHECKOUT_REPRODUCTION": "PASS",
+    "ECONOMIC_EDGE": "NOT_EVALUATED",
+    "FALSE_SUCCESS": 0,
+    "IMPLEMENTATION": "PASS",
+    "INDEPENDENT_VERIFICATION": "PARTIAL",
+    "LIVE": "DISABLED",
+    "OFFLINE_RUNTIME_VALIDATION": "PASS",
+    "PAPER_VALIDATION": "BLOCKED_NOT_CONFIGURED",
+    "STRATEGY_PROMOTION": "DENIED",
+    "TESTS": "PASS"
+  },
+  "economic_edge": "NOT_EVALUATED",
+  "environment": {
+    "live_orders": 0,
+    "network_used": false,
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.15",
+    "timezone": "UTC"
+  },
+  "errors": [],
+  "evidence": [
+    "EXECUTION_TRACE.jsonl",
+    "SCENARIO_TRACE.jsonl",
+    "ORDER_LIFECYCLE.csv",
+    "RECONCILIATION.json",
+    "METRICS.json",
+    "NEGATIVE_CONTROLS.json",
+    "VERIFICATION.json",
+    "INDEPENDENCE_AUDIT.json"
+  ],
+  "generated_at_utc": "2026-10-21T15:48:00Z",
+  "head_when_report_rendered": "15721195a6889d0f44253fb2f085c7a8732e4ee6",
+  "holdout": "CLOSED",
+  "orders_and_fills_by_provenance": {
+    "OFFLINE_SIMULATED": 308
+  },
+  "paths_executed": [
+    "scripts/exp_003p_baseline.py",
+    "scripts/exp_003p_preregister.py",
+    "scripts/exp_003p_rehearsal.py",
+    "scripts/exp_003p_controls.py",
+    "scripts/exp_003p_verify.py",
+    "scripts/exp_003p_checkout_compare.py",
+    "scripts/exp_003p_report.py"
+  ],
+  "reconciliation": "PASS",
+  "reconciliation_detail": {
+    "paper_validation": "BLOCKED_NOT_CONFIGURED",
+    "runtime": "PASS",
+    "scenario": "PASS"
+  },
+  "run_id": "EXP-003P-PAPER-EXECUTION-001",
+  "runtime": {
+    "anomalies": [],
+    "events": 276,
+    "execution_boundary": "trading_bot.paper.broker.PaperBroker",
+    "fills": 69,
+    "instrumentation": "trading_bot.paper.lifecycle.PaperBrokerRecorder",
+    "orders": 69,
+    "provenance": "OFFLINE_SIMULATED"
+  },
+  "scenario": {
+    "adapter": "OFFLINE_SIM_PAPER_VENUE",
+    "events": 32,
+    "fills": 7,
+    "state_mismatches": {},
+    "terminal_states": {
+      "OFFLINE:SCN-S01_FULL_FILL": "FILLED",
+      "OFFLINE:SCN-S02_PARTIAL_THEN_FILL": "FILLED",
+      "OFFLINE:SCN-S03_PARTIAL_THEN_CANCEL": "CANCELED",
+      "OFFLINE:SCN-S04_DUPLICATE_DELIVERY": "FILLED",
+      "OFFLINE:SCN-S05_OUT_OF_ORDER": "FILLED",
+      "OFFLINE:SCN-S06_TIMEOUT_UNKNOWN": "UNKNOWN",
+      "OFFLINE:SCN-S07_REJECT": "REJECTED",
+      "OFFLINE:SCN-S08_ACK_WITHOUT_FILL": "ACKNOWLEDGED"
+    }
+  },
+  "schema_version": "AI_BOTS_003P_RUN_REPORT_V1",
+  "status": "PARTIAL",
+  "strategy_promotion": "DENIED",
+  "tests": {
+    "exit_codes": {
+      "mypy": 0,
+      "pytest_autonomous": 0,
+      "pytest_integration": 0,
+      "pytest_paper": 0,
+      "ruff": 0
+    },
+    "state": "PASS",
+    "suites": [
+      "tests/unit/paper",
+      "tests/unit/autonomous",
+      "tests/integration"
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+...............................................................F........ [ 83%]
+..............                                                           [100%]
+================================== FAILURES ===================================
+___________ test_only_one_of_many_processes_reclaims_the_same_lock ____________
+
+tmp_path = WindowsPath('C:/Users/GVLLFR0035/AppData/Local/Temp/pytest-of-GVLLFR0035/pytest-376/test_only_one_of_many_processe0')
+
+    def test_only_one_of_many_processes_reclaims_the_same_lock(tmp_path: Path) -> None:
+        path = tmp_path / "STREAM.jsonl.lock"
+        go = tmp_path / "go"
+        dead = _dead_pid_or_skip()
+        _record(path, pid=dead, process_start_ms=None, token="crashed" * 8)
+    
+        outputs = [tmp_path / f"result-{index}.json" for index in range(6)]
+        procs = [_spawn(CONTEND_SCRIPT, path, go, out) for out in outputs]
+        go.touch()
+        try:
+            results = [_wait_for(out) for out in outputs]
+            for proc in procs:
+                assert proc.wait(timeout=60) == 0
+        finally:
+            for proc in procs:
+                if proc.poll() is None:  # pragma: no cover - only on a hung child
+                    proc.kill()
+                    proc.wait(timeout=30)
+    
+        winners = [row for row in results if row["status"] in ("ACQUIRED", "RECLAIMED")]
+        losers = [row for row in results if row["status"] not in ("ACQUIRED", "RECLAIMED")]
+        assert len(winners) == 1, results
+        assert winners[0]["status"] == "RECLAIMED"
+>       assert {row["status"] for row in losers} <= {"LOCK_HELD", "LOCK_CONTENDED"}
+E       AssertionError: assert {'LOCK_HELD',...UNATTRIBUTED'} <= {'LOCK_CONTEN..., 'LOCK_HELD'}
+E         
+E         Extra items in the left set:
+E         'LOCK_UNATTRIBUTED'
+
+tests\unit\ops\test_single_writer_lock.py:350: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/ops/test_single_writer_lock.py::test_only_one_of_many_processes_reclaims_the_same_lock
+1 failed, 85 passed in 36.62s
+EXIT=1

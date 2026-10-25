@@ -1,0 +1,317 @@
+{
+  "artifacts": {
+    "campaign/CAMPAIGN.json": "42bd5c2849b912c36a0eddd7f418022f49b4745363400726575b099f436203e4",
+    "campaign/VERIFICATION.json": "8557590b6a08afd7d0540ea8b6b8f6af9922fbf2c698cf245d9fbeaf71ed3764",
+    "campaign/scenarios/SCENARIOS.json": "87bfab06ff544b729a14a47de4f2cba0d79896740ad52067910407a4635dccf6",
+    "campaign/session/STREAM.jsonl": "3d9e83f4a32840fd7e4f69335c7fc848a470c15016bb49190c64387b0edffc73",
+    "campaign/supervisor/SUPERVISOR.jsonl": "888694b3ae1a61d3dee9402eb77c39864765ddffaa81f76ef481eacafd07f5a2"
+  },
+  "base_commit": "60455b460dfb805a934c4307f9778ac8b7ffb562",
+  "campaign": {
+    "closed_trades": 0,
+    "config": {
+      "duration_s": 240,
+      "max_cycles": 50,
+      "max_restarts": 8,
+      "poll_s": 5.0,
+      "symbols": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT"
+      ],
+      "timeframe": "1m",
+      "warmup_minutes": 120,
+      "window_bars": 20
+    },
+    "crash_sites": [
+      {
+        "all_abandoned": true,
+        "cycles_at_crash": [
+          1
+        ],
+        "episode": 1,
+        "locks": [
+          "market-1m/BTCUSDT.jsonl.lock",
+          "market-1m/ETHUSDT.jsonl.lock",
+          "market-1m/SOLUSDT.jsonl.lock",
+          "STREAM.jsonl.lock"
+        ],
+        "rows_at_crash": 4
+      },
+      {
+        "all_abandoned": true,
+        "cycles_at_crash": [
+          1,
+          2
+        ],
+        "episode": 2,
+        "locks": [
+          "market-1m/BTCUSDT.jsonl.lock",
+          "market-1m/ETHUSDT.jsonl.lock",
+          "market-1m/SOLUSDT.jsonl.lock",
+          "STREAM.jsonl.lock"
+        ],
+        "rows_at_crash": 9
+      },
+      {
+        "all_abandoned": true,
+        "cycles_at_crash": [
+          1,
+          2,
+          3
+        ],
+        "episode": 3,
+        "locks": [
+          "market-1m/BTCUSDT.jsonl.lock",
+          "market-1m/ETHUSDT.jsonl.lock",
+          "market-1m/SOLUSDT.jsonl.lock",
+          "STREAM.jsonl.lock"
+        ],
+        "rows_at_crash": 14
+      },
+      {
+        "all_abandoned": true,
+        "cycles_at_crash": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "episode": 4,
+        "locks": [
+          "market-1m/BTCUSDT.jsonl.lock",
+          "market-1m/ETHUSDT.jsonl.lock",
+          "market-1m/SOLUSDT.jsonl.lock",
+          "STREAM.jsonl.lock"
+        ],
+        "rows_at_crash": 19
+      },
+      {
+        "all_abandoned": true,
+        "cycles_at_crash": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "episode": 5,
+        "locks": [
+          "market-1m/BTCUSDT.jsonl.lock",
+          "market-1m/ETHUSDT.jsonl.lock",
+          "market-1m/SOLUSDT.jsonl.lock",
+          "STREAM.jsonl.lock"
+        ],
+        "rows_at_crash": 24
+      }
+    ],
+    "crashes": 5,
+    "cycle_gaps": [],
+    "cycles": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "cycles_executed": 9,
+    "entrypoint": "scripts/def_run_019_prospective_run.py",
+    "episodes_recorded": 5,
+    "fills": 21,
+    "final_locks": 0,
+    "final_state": "RECOVERED",
+    "finished_at_utc": "2026-10-23T18:43:36Z",
+    "kinds": {
+      "CYCLE": 9,
+      "DELAY_MEASURED": 6,
+      "LOCK_RECLAIMED": 5,
+      "SESSION_END": 1,
+      "SESSION_PROVENANCE": 6,
+      "SESSION_START": 6
+    },
+    "live_owner_probes": [
+      {
+        "code": "LOCK_HELD",
+        "episode": 1,
+        "outcome": "REFUSED",
+        "record_unchanged": true
+      },
+      {
+        "code": "LOCK_HELD",
+        "episode": 2,
+        "outcome": "REFUSED",
+        "record_unchanged": true
+      },
+      {
+        "code": "LOCK_HELD",
+        "episode": 3,
+        "outcome": "REFUSED",
+        "record_unchanged": true
+      },
+      {
+        "code": "LOCK_HELD",
+        "episode": 4,
+        "outcome": "REFUSED",
+        "record_unchanged": true
+      },
+      {
+        "code": "LOCK_HELD",
+        "episode": 5,
+        "outcome": "REFUSED",
+        "record_unchanged": true
+      }
+    ],
+    "reclaim_fences": {
+      "BTCUSDT.jsonl.lock": [
+        2,
+        4,
+        6,
+        8,
+        10
+      ],
+      "ETHUSDT.jsonl.lock": [
+        2,
+        4,
+        6,
+        8,
+        10
+      ],
+      "SOLUSDT.jsonl.lock": [
+        2,
+        4,
+        6,
+        8,
+        10
+      ],
+      "STREAM.jsonl.lock": [
+        2,
+        4,
+        6,
+        8,
+        10
+      ]
+    },
+    "reclaim_rows": 5,
+    "recoveries": 5,
+    "resumed_starts": 5,
+    "rows": 33,
+    "started_at_utc": "2026-10-23T18:33:57Z",
+    "starts": 6,
+    "stream_head_sha256": "dfd4f55cc095d3b4da72fd3b98962f6eb3c9193a4c01c11707124a8ccf109610",
+    "stream_sha256": "3d9e83f4a32840fd7e4f69335c7fc848a470c15016bb49190c64387b0edffc73",
+    "supervisor": "scripts/paper_supervisor.py",
+    "supervisor_exit_code": 0,
+    "supervisor_result": {
+      "action": "STOP_COMPLETED",
+      "exit_code": 0,
+      "final_state": "RECOVERED",
+      "reason": "CLEAN_END",
+      "restarts": 5
+    }
+  },
+  "code_commit": "0e2ba09d47625fd899bee4e4fd3a82a0232c2d29",
+  "generated_at_utc": "2026-10-23T18:57:16Z",
+  "harness_fix_commit": "cc4f15f6",
+  "host": "DESKTOP-4CHO695",
+  "live_orders": 0,
+  "mode": "PAPER",
+  "scenarios": {
+    "budget": {
+      "action": "STOP_BUDGET",
+      "attempts": 2,
+      "exit_code": 3,
+      "locks_left_abandoned": 4,
+      "restarts": 1
+    },
+    "corrupt": {
+      "action": "STOP_FAILED",
+      "exit_code": 3,
+      "reason": "STATE_FAILED",
+      "rows_before": 33,
+      "rows_readable_after": null,
+      "spawned": 0,
+      "state": "FAILED"
+    }
+  },
+  "schema_version": "CODEX_PAPER_SUPERVISOR_RUN_V1",
+  "supervisor_race": {
+    "acquired_rows": 1,
+    "loser_exit_code": 4,
+    "loser_real_pid": 39532,
+    "loser_refused": true,
+    "loser_spawn_pid": 15292,
+    "loser_spawned": false,
+    "spawn_pids": [
+      15292,
+      8536
+    ],
+    "winner_pid": 21420,
+    "winner_spawn_pid": 8536
+  },
+  "tests": {
+    "after": {
+      "failed": 1,
+      "passed": 82,
+      "total": 83
+    },
+    "baseline": {
+      "failed": 1,
+      "passed": 46,
+      "total": 47
+    },
+    "command": ".venv/Scripts/python.exe -m pytest tests/unit/ops -m \"not slow and not market\" -q",
+    "new_tests": 36,
+    "preexisting_failure": "tests/unit/ops/test_windowless.py::test_no_controlled_launcher_can_start_an_unhidden_child",
+    "ruff": "clean on every changed file"
+  },
+  "verification": {
+    "artifact_count": 27,
+    "checks": {
+      "attempts_continue_the_stream": true,
+      "budget_was_exhausted_not_exceeded": true,
+      "corrupt_evidence_was_refused": true,
+      "cycle_gaps_are_interrupted": true,
+      "cycle_ledgers_intact": true,
+      "cycle_numbers_increasing": true,
+      "cycle_numbers_unique": true,
+      "every_resume_backed_by_a_reclaim": true,
+      "every_resume_child_is_recorded": true,
+      "every_resume_decision_saw_only_abandoned_locks": true,
+      "final_state_not_failed": true,
+      "killed_children_did_not_exit_zero": true,
+      "loser_refused_without_spawning": true,
+      "no_clean_exit_without_evidence": true,
+      "no_live_orders": true,
+      "no_lock_remaining_now": true,
+      "no_supervisor_decision_acted_on_failed": true,
+      "one_run_id_and_pin": true,
+      "one_supervisor_acquired": true,
+      "only_one_supervisor_spawned": true,
+      "protected_paths_untouched": true,
+      "reclaim_fences_advance": true,
+      "restarts_within_budget": true,
+      "resume_decisions_match_resumed_starts": true,
+      "resume_flags_are_false_then_true": true,
+      "rows_never_shrank": true,
+      "runtime_bytes_stable": true,
+      "seq_continuous": true,
+      "starts_carry_their_own_identity": true,
+      "stream_chain_intact": true,
+      "supervisor_finished_completed": true,
+      "supervisor_result_counts_its_restarts": true,
+      "zero_exit_is_terminal": true
+    },
+    "checks_failed": [],
+    "checks_total": 33,
+    "false_success": 0,
+    "invalid_mutations": [],
+    "mutations": 12,
+    "mutations_detected": 12,
+    "verdict": "PASS"
+  },
+  "verifier_commit": "3b758e22f0c9835646c9eba9db6634757970b126"
+}

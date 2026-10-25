@@ -1,0 +1,1863 @@
+{
+  "artifact": "RFC049B_ADMISSION_AUDIT",
+  "campaign": "RFC-049 DISCOVERY 2",
+  "scope": "final admission check of H-049-001 and H-049-002 before any authorized campaign",
+  "generated_at_utc": "2026-10-10T13:15:31Z",
+  "returns_computed": false,
+  "pnl_computed": false,
+  "oos_opened": false,
+  "experiments_executed": 0,
+  "baseline": {
+    "head": "b295dc81be8ea9044d453f3ed34279d302cf850c",
+    "code_commit_at_freeze": "cba8a337e802e66941a7ba72af71c499322bd2fa",
+    "branch": "main",
+    "working_tree_entries": 86,
+    "working_tree_note": "entries belong to other workstreams (ST-6 observation, reports); this RFC touches none of them",
+    "freeze_timestamp_utc": "2026-10-10T11:26:20Z",
+    "sealed_oos_start_utc": "2026-10-11T00:00:00Z",
+    "specs": [
+      {
+        "hypothesis_id": "H-049-001",
+        "status": "SPEC_FROZEN",
+        "spec_file": "data/rfc049/specs/H-049-001.json",
+        "frozen_spec_file_sha256": "fd5cd2991466e2436a16d2440984845285a0258da5f65fe1d44c3ef289969d88",
+        "observed_spec_file_sha256": "fd5cd2991466e2436a16d2440984845285a0258da5f65fe1d44c3ef289969d88",
+        "unchanged_since_freeze": true,
+        "frozen_canonical_sha256": "8efafe60c217ad9950f8dc85c4a6ea68730cc95613ab377db764720c79d56cec"
+      },
+      {
+        "hypothesis_id": "H-049-002",
+        "status": "SPEC_FROZEN",
+        "spec_file": "data/rfc049/specs/H-049-002.json",
+        "frozen_spec_file_sha256": "cdafdc151e2514f9cafeb5580f960a991de29f57ef96b609889ff23d36a01bd0",
+        "observed_spec_file_sha256": "cdafdc151e2514f9cafeb5580f960a991de29f57ef96b609889ff23d36a01bd0",
+        "unchanged_since_freeze": true,
+        "frozen_canonical_sha256": "d2a2a9891df9bc439120b5e6794bf00ebcffcc6ce88e6241bca7f6c98c02e02c"
+      },
+      {
+        "hypothesis_id": "H-049-003",
+        "status": "RESEARCH_CANDIDATE",
+        "spec_file": "data/rfc049/specs/H-049-003.json",
+        "frozen_spec_file_sha256": "c77aa9a8c7aa897c2d504ed940c012cd3100a47490ee2ca6b37f08a5a79e26e9",
+        "observed_spec_file_sha256": "c77aa9a8c7aa897c2d504ed940c012cd3100a47490ee2ca6b37f08a5a79e26e9",
+        "unchanged_since_freeze": true,
+        "frozen_canonical_sha256": "4e32cc3d17518629059aaa6c55ba526a8d620817708ed06364e8674353fa47f6"
+      }
+    ],
+    "datasets": [
+      {
+        "group": "price_series",
+        "path": "data/raw/alpha001/BTC-USDT_1d.json",
+        "frozen_sha256": "558fb9a07d2baa6a5e68b9eaed031adb750774542bfdc4c27c3b6a4f6260ebd1",
+        "observed_sha256": "558fb9a07d2baa6a5e68b9eaed031adb750774542bfdc4c27c3b6a4f6260ebd1",
+        "unchanged": true
+      },
+      {
+        "group": "price_series",
+        "path": "data/raw/alpha001/ETH-USDT_1d.json",
+        "frozen_sha256": "840396f1adf31bef0a533ec3f56b52517c9facd9c23f0dbd7d448be9a113d745",
+        "observed_sha256": "840396f1adf31bef0a533ec3f56b52517c9facd9c23f0dbd7d448be9a113d745",
+        "unchanged": true
+      },
+      {
+        "group": "signal_series",
+        "path": "data/rfc049/vendor/raw/defillama_stablecoin_supply_all.json",
+        "frozen_sha256": "b8250250e0cabc5d0eda669b6b0f064e4aed1521bc6be67ef0edb03d048336e9",
+        "observed_sha256": "b8250250e0cabc5d0eda669b6b0f064e4aed1521bc6be67ef0edb03d048336e9",
+        "unchanged": true
+      },
+      {
+        "group": "signal_series",
+        "path": "data/rfc049/vendor/raw/blockchain_info_hashrate_8y.json",
+        "frozen_sha256": "ede914a9089311a2fc82b181dd9f508ab510c6952dca7da3736ad0caaa929882",
+        "observed_sha256": "ede914a9089311a2fc82b181dd9f508ab510c6952dca7da3736ad0caaa929882",
+        "unchanged": true
+      },
+      {
+        "group": "signal_series",
+        "path": "data/rfc049/vendor/raw/blockchain_info_miners_revenue_all.json",
+        "frozen_sha256": "c62f0a94a622dd35da8e40cc009484b42bf2a00088ddc4ab66f4a7d7b9ad273f",
+        "observed_sha256": "c62f0a94a622dd35da8e40cc009484b42bf2a00088ddc4ab66f4a7d7b9ad273f",
+        "unchanged": true
+      },
+      {
+        "group": "signal_series",
+        "path": "data/rfc049/vendor/raw/fred_WALCL.csv",
+        "frozen_sha256": "c6519d91e9d8546ce63f6a8ea20b82c1a7ddd0d6bd3a1146e448d574cc4d2c1c",
+        "observed_sha256": "c6519d91e9d8546ce63f6a8ea20b82c1a7ddd0d6bd3a1146e448d574cc4d2c1c",
+        "unchanged": true
+      },
+      {
+        "group": "signal_series",
+        "path": "data/rfc049/vendor/raw/fred_RRPONTSYD.csv",
+        "frozen_sha256": "1bea66a24c8bae36df0661efc96e1ff7d0388625d6f0dbf3b79d20fdbf5c3d68",
+        "observed_sha256": "1bea66a24c8bae36df0661efc96e1ff7d0388625d6f0dbf3b79d20fdbf5c3d68",
+        "unchanged": true
+      },
+      {
+        "group": "signal_series",
+        "path": "data/rfc049/vendor/raw/fred_WTREGEN.csv",
+        "frozen_sha256": "1efab94a7a507516f319cb152b4336427424590ed58ea34580cdc54366a7036e",
+        "observed_sha256": "1efab94a7a507516f319cb152b4336427424590ed58ea34580cdc54366a7036e",
+        "unchanged": true
+      },
+      {
+        "group": "signal_series",
+        "path": "data/rfc049/vendor/raw/fred_DFII10.csv",
+        "frozen_sha256": "0277781c1336527c38275803bfedc0b7f1c264740b9406981edda0d2796ab6ee",
+        "observed_sha256": "0277781c1336527c38275803bfedc0b7f1c264740b9406981edda0d2796ab6ee",
+        "unchanged": true
+      },
+      {
+        "group": "signal_series",
+        "path": "data/rfc049/vendor/raw/fred_DTWEXBGS.csv",
+        "frozen_sha256": "75edd28ba1eceade938fa6621edfebc4d4e9cbcc846c6f07be27f8aef0ead321",
+        "observed_sha256": "75edd28ba1eceade938fa6621edfebc4d4e9cbcc846c6f07be27f8aef0ead321",
+        "unchanged": true
+      },
+      {
+        "group": "signal_series",
+        "path": "data/rfc049/vendor/raw/fred_DFF.csv",
+        "frozen_sha256": "a93504210b53532fda653a7ee8d543b00b1780c83f2131e35bb94827a973c2df",
+        "observed_sha256": "a93504210b53532fda653a7ee8d543b00b1780c83f2131e35bb94827a973c2df",
+        "unchanged": true
+      }
+    ],
+    "vendor_series_count": 9,
+    "governance_preserved": {
+      "DISCOVERY_CAMPAIGN_FAILED": true,
+      "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+      "LIVE_TRADING": "DISABLED",
+      "TRADES_AUTHORIZED": 0,
+      "PROFITABILITY_VERIFIED": false
+    },
+    "rfc048v_status": "RFC048_OFFLINE_CERTIFIED",
+    "spot_cost_status": {
+      "model": "COST_MODEL_V3",
+      "round_trip_bps_200_usdt": 23.353553391,
+      "round_trip_bps_1000_usdt": 23.790569415,
+      "stress_1_5x_bps_200_usdt": 35.030330087,
+      "source": "data/rfc049/PREREGISTRATION_MANIFEST.json (frozen at Phase A; not recomputed here so the frozen contract is never touched by an admission check)"
+    }
+  },
+  "stablecoin_variable": {
+    "frozen_field": "totalCirculatingUSD.peggedUSD",
+    "field_meaning_verified": "the circulating amount of every USD-pegged stablecoin multiplied by its own price and summed: a USD *valuation* of circulating supply, not a net mint/burn series and not a measured dollar flow",
+    "alternative_field_in_same_payload": "totalCirculating.peggedUSD (amount-denominated; ~1:1 with USD at a 1.00 peg)",
+    "payload_fields": {
+      "date": 3238,
+      "totalCirculating": 3238,
+      "totalCirculatingUSD": 3238,
+      "totalUnreleased": 2762,
+      "totalMintedUSD": 1,
+      "totalBridgedToUSD": 1
+    },
+    "rows": 3238,
+    "first_day": "2017-11-29",
+    "last_day": "2026-10-10",
+    "missing_days": 0,
+    "gap_examples": [],
+    "peg_factor": {
+      "definition": "frozen USD value / amount-denominated amount: a supply-weighted average peg price",
+      "min": 0.9746480509105151,
+      "max": 1.0085963452238262,
+      "last": 1.000664379770985,
+      "largest_daily_moves": [
+        [
+          0.02451228814361439,
+          "2022-05-09"
+        ],
+        [
+          0.01812502765106805,
+          "2023-03-13"
+        ],
+        [
+          0.01620997414046621,
+          "2023-03-12"
+        ],
+        [
+          0.01074512947102646,
+          "2022-05-11"
+        ],
+        [
+          0.009938655978966926,
+          "2022-05-12"
+        ]
+      ],
+      "interpretation": "when this factor moves, the frozen signal moves without any dollar entering or leaving the system; the size of the largest daily moves bounds that contamination"
+    },
+    "quantity_vs_valuation_30d_growth": {
+      "max_abs_divergence": 0.025119759156405075,
+      "worst_day": "2022-05-09",
+      "days_where_valuation_effect_exceeds_25pct_of_growth": 158,
+      "days_compared": 3208,
+      "material_examples": [
+        {
+          "date": "2021-08-05",
+          "growth_usd": 0.013319376767938484,
+          "growth_amount": 0.02031210666254113,
+          "divergence": -0.006992729894602645
+        },
+        {
+          "date": "2022-03-29",
+          "growth_usd": 0.01129664048656176,
+          "growth_amount": 0.016142752589174414,
+          "divergence": -0.004846112102612654
+        },
+        {
+          "date": "2022-04-17",
+          "growth_usd": 0.0024195241143158963,
+          "growth_amount": 0.0035719948306891514,
+          "divergence": -0.001152470716373255
+        },
+        {
+          "date": "2022-04-18",
+          "growth_usd": -0.00010426866124946255,
+          "growth_amount": 0.0002493658077085126,
+          "divergence": -0.0003536344689579751
+        },
+        {
+          "date": "2022-04-22",
+          "growth_usd": 0.0017055395804761453,
+          "growth_amount": 0.0011262177147206565,
+          "divergence": 0.0005793218657554888
+        }
+      ]
+    },
+    "net_mint_burn": {
+      "provided_by_vendor": false,
+      "closest_available_proxy": "first difference of totalCirculating.peggedUSD",
+      "note": "the frozen rule never uses a net mint/burn series; its claim is a supply-growth regime, not a flow"
+    },
+    "bridged_and_unreleased_buckets": {
+      "totalUnreleased_rows_with_value": 2762,
+      "totalBridgedToUSD_rows_with_value": 1,
+      "totalMintedUSD_rows_with_value": 1,
+      "note": "the payload carries a distinct unreleased bucket; the bridged and cumulative-minted buckets are zeroed in this response, so bridged double counting cannot be ruled out from this endpoint alone"
+    },
+    "revision_exposure": {
+      "frozen_sha256": "b8250250e0cabc5d0eda669b6b0f064e4aed1521bc6be67ef0edb03d048336e9",
+      "refetched_sha256": "7ed8b074f196c3efe888384f367e0d22f69df90d9ef5cce4617938277fbc6bd4",
+      "days_compared": 3238,
+      "revised_days": 1,
+      "settled_days_revised": 0,
+      "revisions": [
+        {
+          "date": "2026-10-10",
+          "frozen": 310972065838.85,
+          "refetched": 310978437998.98,
+          "relative_change": 2.0491101388209654e-05
+        }
+      ],
+      "honest_limit": "a single re-fetch cannot prove multi-year stability; it does show that every settled day returned an identical value and that only the still-forming current day had moved"
+    }
+  },
+  "macro_inputs": {
+    "series_profiles": {
+      "WALCL": {
+        "series_id": "WALCL",
+        "column": "WALCL",
+        "rows": 1243,
+        "first_observation": "2002-12-18",
+        "last_observation": "2026-10-07",
+        "blank_rows": 0,
+        "first_non_blank": "2002-12-18",
+        "last_blank": null,
+        "weekday_histogram": {
+          "2": 1243
+        },
+        "duplicate_dates": 0,
+        "last_value": 6747560.0
+      },
+      "RRPONTSYD": {
+        "series_id": "RRPONTSYD",
+        "column": "RRPONTSYD",
+        "rows": 6176,
+        "first_observation": "2003-02-07",
+        "last_observation": "2026-10-09",
+        "blank_rows": 2832,
+        "first_non_blank": "2003-02-07",
+        "last_blank": "2026-09-07",
+        "weekday_histogram": {
+          "0": 1235,
+          "1": 1235,
+          "2": 1235,
+          "3": 1235,
+          "4": 1236
+        },
+        "duplicate_dates": 0,
+        "last_value": 0.3
+      },
+      "WTREGEN": {
+        "series_id": "WTREGEN",
+        "column": "WTREGEN",
+        "rows": 1243,
+        "first_observation": "2002-12-18",
+        "last_observation": "2026-10-07",
+        "blank_rows": 0,
+        "first_non_blank": "2002-12-18",
+        "last_blank": null,
+        "weekday_histogram": {
+          "2": 1243
+        },
+        "duplicate_dates": 0,
+        "last_value": 880253.0
+      }
+    },
+    "frozen_units_expectation": {
+      "WALCL": "millions",
+      "RRPONTSYD": "billions",
+      "WTREGEN": "millions"
+    },
+    "fred_metadata_pages": {
+      "WALCL": {
+        "units": "Millions of U.S. Dollars , Not Seasonally Adjusted Frequency: Weekly, A",
+        "frequency": "Weekly, As of Wednesday Fullscreen Data in this graph are copyrighted.",
+        "release": "Calendar Tools FRED Add-in for Excel FRED API FRED Mobile Apps News Blo"
+      },
+      "RRPONTSYD": {
+        "units": "Billions of US Dollars , Not Seasonally Adjusted Frequency: Daily Fulls",
+        "frequency": "Daily Fullscreen Data in this graph are copyrighted. Please review the",
+        "release": "Calendar Tools FRED Add-in for Excel FRED API FRED Mobile Apps News Blo"
+      },
+      "WTREGEN": {
+        "units": "Millions of U.S. Dollars , Not Seasonally Adjusted Frequency: Weekly, E",
+        "frequency": "Weekly, Ending Wednesday Fullscreen Data in this graph are copyrighted.",
+        "release": "Calendar Tools FRED Add-in for Excel FRED API FRED Mobile Apps News Blo"
+      }
+    },
+    "primary_source_crosschecks": {
+      "h41_current_release": {
+        "release_date": "October 08, 2026",
+        "total_assets_millions": 6747560.0,
+        "total_assets_quote": "Total assets (0) 6,747,560 + 4,529 + 156,745 Note: Components may not sum to totals because of rounding. Footnotes appear at the end of the table. H.4.1 5. Consolidated Statement of Condition of All Federal Reserve Banks",
+        "tga_numbers_in_order": [
+          880253.0,
+          68421.0,
+          72825.0,
+          885783.0,
+          9470.0,
+          9473.0
+        ],
+        "tga_quote": "U.S. Treasury, General Account 880,253 - 68,421 + 72,825 885,783 Foreign official 9,470 + 2 + 36 9,473 Other 13 239,904 - 8,834 + 17,826 239,756 Treasury contributions to credit facilities 14 0 0 - 2,029 0 Other liabilit"
+      },
+      "h41_total_assets_matches_fred": true,
+      "h41_tga_week_average_matches_fred": true,
+      "h41_tga_wednesday_level_vs_dts_latest": {
+        "h41_wednesday_level": 885783.0,
+        "latest_dts_date": "2026-10-06",
+        "latest_dts_closing_balance": 885414.0,
+        "relative_difference": 0.0004165805846352888,
+        "note": "the DTS has not yet published the H.4.1 reference Wednesday, which is itself evidence of a next-business-day publication lag",
+        "matches_within_2pct": true
+      },
+      "dts_weekly_mean_vs_fred": [
+        {
+          "week_ending_wednesday": "2026-09-02",
+          "dts_daily_points": 2,
+          "dts_mean_millions": 943578.5,
+          "frozen_fred_wtregen_millions": 967935.0
+        },
+        {
+          "week_ending_wednesday": "2026-09-09",
+          "dts_daily_points": 4,
+          "dts_mean_millions": 879143.75,
+          "frozen_fred_wtregen_millions": 883335.0
+        },
+        {
+          "week_ending_wednesday": "2026-09-16",
+          "dts_daily_points": 5,
+          "dts_mean_millions": 898959.8,
+          "frozen_fred_wtregen_millions": 877028.0
+        },
+        {
+          "week_ending_wednesday": "2026-09-23",
+          "dts_daily_points": 5,
+          "dts_mean_millions": 973544.8,
+          "frozen_fred_wtregen_millions": 977084.0
+        },
+        {
+          "week_ending_wednesday": "2026-09-30",
+          "dts_daily_points": 5,
+          "dts_mean_millions": 950027.0,
+          "frozen_fred_wtregen_millions": 948674.0
+        },
+        {
+          "week_ending_wednesday": "2026-10-07",
+          "dts_daily_points": 4,
+          "dts_mean_millions": 883407.25,
+          "frozen_fred_wtregen_millions": 880253.0
+        }
+      ],
+      "dts_weekly_mean_within_2pct": {
+        "compared": 3,
+        "within": 2
+      },
+      "nyfed_rrp_matches_fred": [
+        {
+          "date": "2026-10-09",
+          "nyfed_total_amt_accepted_usd": 300000000,
+          "nyfed_billions": 0.3,
+          "frozen_fred_billions": 0.3,
+          "matches": true,
+          "nyfed_release_time_et": "12:45",
+          "nyfed_last_updated": "2026-10-09 13:15:25"
+        },
+        {
+          "date": "2026-10-08",
+          "nyfed_total_amt_accepted_usd": 335000000,
+          "nyfed_billions": 0.335,
+          "frozen_fred_billions": 0.335,
+          "matches": true,
+          "nyfed_release_time_et": "12:45",
+          "nyfed_last_updated": "2026-10-08 13:15:56"
+        },
+        {
+          "date": "2026-10-07",
+          "nyfed_total_amt_accepted_usd": 2338000000,
+          "nyfed_billions": 2.338,
+          "frozen_fred_billions": 2.338,
+          "matches": true,
+          "nyfed_release_time_et": "12:45",
+          "nyfed_last_updated": "2026-10-07 13:15:36"
+        },
+        {
+          "date": "2026-10-06",
+          "nyfed_total_amt_accepted_usd": 414000000,
+          "nyfed_billions": 0.414,
+          "frozen_fred_billions": 0.414,
+          "matches": true,
+          "nyfed_release_time_et": "12:45",
+          "nyfed_last_updated": "2026-10-06 13:15:40"
+        },
+        {
+          "date": "2026-10-05",
+          "nyfed_total_amt_accepted_usd": 1004000000,
+          "nyfed_billions": 1.004,
+          "frozen_fred_billions": 1.004,
+          "matches": true,
+          "nyfed_release_time_et": "12:45",
+          "nyfed_last_updated": "2026-10-05 13:15:49"
+        },
+        {
+          "date": "2026-10-02",
+          "nyfed_total_amt_accepted_usd": 1501000000,
+          "nyfed_billions": 1.501,
+          "frozen_fred_billions": 1.501,
+          "matches": true,
+          "nyfed_release_time_et": "12:45",
+          "nyfed_last_updated": "2026-10-02 13:15:26"
+        },
+        {
+          "date": "2026-10-01",
+          "nyfed_total_amt_accepted_usd": 350000000,
+          "nyfed_billions": 0.35,
+          "frozen_fred_billions": 0.35,
+          "matches": true,
+          "nyfed_release_time_et": "12:45",
+          "nyfed_last_updated": "2026-10-01 13:15:23"
+        }
+      ]
+    },
+    "revision_exposure": {
+      "frozen_vs_latest_vintage": {
+        "WALCL": {
+          "latest_vintage_column": "WALCL_20261010",
+          "common_dates": 1243,
+          "changed": 0,
+          "examples": [],
+          "dates_added_since_freeze": 0
+        },
+        "RRPONTSYD": {
+          "latest_vintage_column": "RRPONTSYD_20261010",
+          "common_dates": 6176,
+          "changed": 0,
+          "examples": [],
+          "dates_added_since_freeze": 0
+        },
+        "WTREGEN": {
+          "latest_vintage_column": "WTREGEN_20261010",
+          "common_dates": 1243,
+          "changed": 0,
+          "examples": [],
+          "dates_added_since_freeze": 0
+        }
+      },
+      "alfred_vintages": {
+        "WALCL": {
+          "2019-03-07": {
+            "column": "WALCL_20190307",
+            "vintage_rows": 847,
+            "vintage_first": "2002-12-18",
+            "vintage_last": "2019-03-06",
+            "common_dates": 847,
+            "changed_values": 0,
+            "changed_by_exact_1000_factor": 0,
+            "changed_examples": [],
+            "blank_to_value": 0,
+            "value_to_other_value": 0
+          },
+          "2023-03-15": {
+            "column": "WALCL_20230315",
+            "vintage_rows": 1056,
+            "vintage_first": "2002-12-18",
+            "vintage_last": "2023-03-08",
+            "common_dates": 1056,
+            "changed_values": 0,
+            "changed_by_exact_1000_factor": 0,
+            "changed_examples": [],
+            "blank_to_value": 0,
+            "value_to_other_value": 0
+          }
+        },
+        "WTREGEN": {
+          "2019-03-07": {
+            "column": "WTREGEN_20190307",
+            "vintage_rows": 1731,
+            "vintage_first": "1986-01-08",
+            "vintage_last": "2019-03-06",
+            "common_dates": 847,
+            "changed_values": 847,
+            "changed_by_exact_1000_factor": 400,
+            "changed_examples": [
+              {
+                "date": "2002-12-18",
+                "then": 5.959,
+                "now": 5959.0
+              },
+              {
+                "date": "2002-12-25",
+                "then": 4.678,
+                "now": 4678.0
+              },
+              {
+                "date": "2003-01-01",
+                "then": 5.016,
+                "now": 5016.0
+              },
+              {
+                "date": "2003-01-08",
+                "then": 4.829,
+                "now": 4829.0
+              },
+              {
+                "date": "2003-01-15",
+                "then": 5.244,
+                "now": 5244.0
+              },
+              {
+                "date": "2003-01-22",
+                "then": 6.133,
+                "now": 6133.0
+              }
+            ],
+            "blank_to_value": 0,
+            "value_to_other_value": 847
+          },
+          "2023-03-15": {
+            "column": "WTREGEN_20230315",
+            "vintage_rows": 1940,
+            "vintage_first": "1986-01-08",
+            "vintage_last": "2023-03-08",
+            "common_dates": 1056,
+            "changed_values": 1056,
+            "changed_by_exact_1000_factor": 400,
+            "changed_examples": [
+              {
+                "date": "2002-12-18",
+                "then": 5.959,
+                "now": 5959.0
+              },
+              {
+                "date": "2002-12-25",
+                "then": 4.678,
+                "now": 4678.0
+              },
+              {
+                "date": "2003-01-01",
+                "then": 5.016,
+                "now": 5016.0
+              },
+              {
+                "date": "2003-01-08",
+                "then": 4.829,
+                "now": 4829.0
+              },
+              {
+                "date": "2003-01-15",
+                "then": 5.244,
+                "now": 5244.0
+              },
+              {
+                "date": "2003-01-22",
+                "then": 6.133,
+                "now": 6133.0
+              }
+            ],
+            "blank_to_value": 0,
+            "value_to_other_value": 1056
+          }
+        },
+        "RRPONTSYD": {
+          "2019-03-07": {
+            "column": "RRPONTSYD_20190307",
+            "vintage_rows": 319,
+            "vintage_first": "2017-12-18",
+            "vintage_last": "2019-03-07",
+            "common_dates": 319,
+            "changed_values": 0,
+            "changed_by_exact_1000_factor": 0,
+            "changed_examples": [],
+            "blank_to_value": 0,
+            "value_to_other_value": 0
+          },
+          "2023-03-15": {
+            "column": "RRPONTSYD_20230315",
+            "vintage_rows": 5244,
+            "vintage_first": "2003-02-07",
+            "vintage_last": "2023-03-15",
+            "common_dates": 5244,
+            "changed_values": 4,
+            "changed_by_exact_1000_factor": 0,
+            "changed_examples": [
+              {
+                "date": "2020-04-09",
+                "then": null,
+                "now": 5.525
+              },
+              {
+                "date": "2020-07-02",
+                "then": null,
+                "now": 0.0
+              },
+              {
+                "date": "2020-11-18",
+                "then": 0.0,
+                "now": 0.103
+              },
+              {
+                "date": "2021-04-01",
+                "then": null,
+                "now": 9.575
+              }
+            ],
+            "blank_to_value": 3,
+            "value_to_other_value": 1
+          }
+        }
+      }
+    },
+    "asof_join_policy": {
+      "grid": "weekly Wednesday",
+      "walcl": "exact Wednesday observation (holidays are published in this series)",
+      "wtregen": "exact Wednesday observation",
+      "rrpontsyd": "most recent non-blank observation on or before the Wednesday, reach-back bounded at 7 days; beyond that the input counts as missing and the week is FLAT",
+      "fail_closed": "any missing input on a decision week forces FLAT"
+    }
+  },
+  "pit_source_verification": {
+    "artifact": "RFC049B_PIT_SOURCE_VERIFICATION",
+    "generated_at_utc": "2026-10-10T13:15:30Z",
+    "classification_vocabulary": {
+      "PIT_VERIFIED": "primary-source evidence fixes both the value identity and an availability time on or before the decision instant, with no measured restatement affecting a decision",
+      "PIT_CONSERVATIVE_PROXY": "availability is a declared convention or the series shows measured backfill, so the value used is conservative rather than provable",
+      "PIT_UNKNOWN": "no availability information exists",
+      "PIT_FAILED": "a decision demonstrably consumed a value published after its instant"
+    },
+    "inputs": {
+      "defillama_stablecoin": {
+        "values_are_primary": true,
+        "vendor_publication_timestamp": false,
+        "declared_convention": "value dated day t treated as available 00:00 UTC of day t+1",
+        "measured_revision_exposure": {
+          "settled_days_revised": 0,
+          "days_compared": 3238
+        },
+        "classification": "PIT_CONSERVATIVE_PROXY",
+        "why": "the payload carries no publication timestamp, so decision-time availability is a declared convention rather than a vendor fact; the convention is one full day of conservatism and no settled history moved in the observed re-fetch window"
+      },
+      "WALCL": {
+        "publication_evidence": "H.4.1 release page dated with an explicit Release Date for the week ending the reference Wednesday",
+        "reference_to_release_lag_days_min": 1,
+        "measured_revision_exposure": {
+          "2019-03-07": {
+            "column": "WALCL_20190307",
+            "vintage_rows": 847,
+            "vintage_first": "2002-12-18",
+            "vintage_last": "2019-03-06",
+            "common_dates": 847,
+            "changed_values": 0,
+            "changed_by_exact_1000_factor": 0,
+            "changed_examples": [],
+            "blank_to_value": 0,
+            "value_to_other_value": 0
+          },
+          "2023-03-15": {
+            "column": "WALCL_20230315",
+            "vintage_rows": 1056,
+            "vintage_first": "2002-12-18",
+            "vintage_last": "2023-03-08",
+            "common_dates": 1056,
+            "changed_values": 0,
+            "changed_by_exact_1000_factor": 0,
+            "changed_examples": [],
+            "blank_to_value": 0,
+            "value_to_other_value": 0
+          }
+        },
+        "classification": "PIT_VERIFIED",
+        "why": "primary-source release date verified and the 2019-03-07 ALFRED vintage reproduces today's values exactly, so no restatement affects a decision"
+      },
+      "WTREGEN": {
+        "publication_evidence": "H.4.1 release page: the week-average Treasury General Account figure published with the same statement as WALCL",
+        "reference_to_release_lag_days_min": 1,
+        "series_definition_change": {
+          "2019-03-07": {
+            "column": "WTREGEN_20190307",
+            "vintage_rows": 1731,
+            "vintage_first": "1986-01-08",
+            "vintage_last": "2019-03-06",
+            "common_dates": 847,
+            "changed_values": 847,
+            "changed_by_exact_1000_factor": 400,
+            "changed_examples": [
+              {
+                "date": "2002-12-18",
+                "then": 5.959,
+                "now": 5959.0
+              },
+              {
+                "date": "2002-12-25",
+                "then": 4.678,
+                "now": 4678.0
+              },
+              {
+                "date": "2003-01-01",
+                "then": 5.016,
+                "now": 5016.0
+              },
+              {
+                "date": "2003-01-08",
+                "then": 4.829,
+                "now": 4829.0
+              },
+              {
+                "date": "2003-01-15",
+                "then": 5.244,
+                "now": 5244.0
+              },
+              {
+                "date": "2003-01-22",
+                "then": 6.133,
+                "now": 6133.0
+              }
+            ],
+            "blank_to_value": 0,
+            "value_to_other_value": 847
+          },
+          "2023-03-15": {
+            "column": "WTREGEN_20230315",
+            "vintage_rows": 1940,
+            "vintage_first": "1986-01-08",
+            "vintage_last": "2023-03-08",
+            "common_dates": 1056,
+            "changed_values": 1056,
+            "changed_by_exact_1000_factor": 400,
+            "changed_examples": [
+              {
+                "date": "2002-12-18",
+                "then": 5.959,
+                "now": 5959.0
+              },
+              {
+                "date": "2002-12-25",
+                "then": 4.678,
+                "now": 4678.0
+              },
+              {
+                "date": "2003-01-01",
+                "then": 5.016,
+                "now": 5016.0
+              },
+              {
+                "date": "2003-01-08",
+                "then": 4.829,
+                "now": 4829.0
+              },
+              {
+                "date": "2003-01-15",
+                "then": 5.244,
+                "now": 5244.0
+              },
+              {
+                "date": "2003-01-22",
+                "then": 6.133,
+                "now": 6133.0
+              }
+            ],
+            "blank_to_value": 0,
+            "value_to_other_value": 1056
+          }
+        },
+        "classification": "PIT_VERIFIED",
+        "why": "availability is primary-source verified and conservative; the frozen contract already declares millions and a 2002 start, which is the current series definition"
+      },
+      "RRPONTSYD": {
+        "publication_evidence": "NY Fed operation API exposes the operation result with a same-business-day releaseTime and lastUpdated timestamp; values match the frozen series exactly",
+        "reference_to_release_lag_days_min": 0,
+        "measured_revision_exposure": {
+          "2019-03-07": {
+            "column": "RRPONTSYD_20190307",
+            "vintage_rows": 319,
+            "vintage_first": "2017-12-18",
+            "vintage_last": "2019-03-07",
+            "common_dates": 319,
+            "changed_values": 0,
+            "changed_by_exact_1000_factor": 0,
+            "changed_examples": [],
+            "blank_to_value": 0,
+            "value_to_other_value": 0
+          },
+          "2023-03-15": {
+            "column": "RRPONTSYD_20230315",
+            "vintage_rows": 5244,
+            "vintage_first": "2003-02-07",
+            "vintage_last": "2023-03-15",
+            "common_dates": 5244,
+            "changed_values": 4,
+            "changed_by_exact_1000_factor": 0,
+            "changed_examples": [
+              {
+                "date": "2020-04-09",
+                "then": null,
+                "now": 5.525
+              },
+              {
+                "date": "2020-07-02",
+                "then": null,
+                "now": 0.0
+              },
+              {
+                "date": "2020-11-18",
+                "then": 0.0,
+                "now": 0.103
+              },
+              {
+                "date": "2021-04-01",
+                "then": null,
+                "now": 9.575
+              }
+            ],
+            "blank_to_value": 3,
+            "value_to_other_value": 1
+          }
+        },
+        "wednesday_grid_points_affected": [
+          "2020-11-18"
+        ],
+        "classification": "PIT_CONSERVATIVE_PROXY",
+        "why": "same-day publication is verified, but the series is demonstrably backfilled on rare dates, so a re-run over the current vintage can differ from what a live reader saw; the exposure is measured, bounded and immaterial in magnitude"
+      }
+    },
+    "decision_time_rules": {
+      "decision_instant": "weekly Sunday 23:00:00 UTC",
+      "margin_before_decision": "1 hour",
+      "stablecoin_cutoff": "most recent daily value dated at or before Sunday-2 (one day of availability lag)",
+      "macro_cutoff": "most recent complete Wednesday snapshot, whose H.4.1 inputs publish the following Thursday",
+      "execution": "first daily bar open strictly after the decision instant (Monday 00:00 UTC)"
+    },
+    "data_time_le_decision_time_violations": {
+      "H-049-001": [],
+      "H-049-002": []
+    },
+    "not_yet_decidable_decisions": {
+      "H-049-001": [
+        {
+          "decision": "2018-12-30",
+          "t_star": "2018-12-28"
+        }
+      ],
+      "H-049-002": [],
+      "rule": "a decision with no usable value is FLAT; that is fail-closed behaviour, not look-ahead"
+    },
+    "incremental_reconstruction": {
+      "sampled_decisions": 40,
+      "mismatches": [],
+      "method": "the decision is recomputed from a feed truncated at the decision instant and compared with the full-history value; equality means the signal is a function of past data only"
+    },
+    "def_htf_pit_001_assessment": {
+      "defect": "DEF-HTF-PIT-001",
+      "applies_here": false,
+      "reason": "both frozen rules consume completed daily values and closed weekly references; no higher-timeframe bar is read while still forming, and execution is deferred to the next bar open"
+    },
+    "higher_timeframe_check": {
+      "timeframes_used": [
+        "1d closed bars",
+        "weekly Wednesday reference dates"
+      ],
+      "incomplete_bar_consumed": false,
+      "look_ahead_found": false
+    },
+    "composite_classification": {
+      "H-049-001": "PIT_CONSERVATIVE_PROXY",
+      "H-049-002": "PIT_VERIFIED",
+      "note": "the weaker of a hypothesis's inputs decides its composite class"
+    },
+    "residual_risks": [
+      "the stablecoin series has no vendor publication timestamp: the t+1 convention is the mitigation, and the sealed-period collector must read the settled value and retain the retrieval record",
+      "the RRP series is backfilled on rare dates; the affected Wednesday grid points are listed explicitly",
+      "neither the vendor nor FRED is contractually obliged to keep history immutable; the retained hashes make any later change detectable rather than invisible"
+    ]
+  },
+  "hypothesis_independence": {
+    "returns_computed": false,
+    "basis": "frozen rules applied to research-exposed inputs; only states and counts are produced",
+    "common_decision_grid": {
+      "first": "2019-01-06",
+      "last": "2026-10-04",
+      "weeks": 405
+    },
+    "mechanisms": {
+      "H-049-001": {
+        "information_set": "crypto-native: aggregate USD-pegged stablecoin circulating supply (daily, vendor)",
+        "transmission": "primary-market issuance/redemption changes the dollar float available to crypto venues",
+        "cadence_of_input": "daily, 30-day growth versus its own 365-day median"
+      },
+      "H-049-002": {
+        "information_set": "off-crypto policy accounts: Federal Reserve total assets, ON RRP, Treasury General Account",
+        "transmission": "net dollar liquidity in the banking system moves the market price of risk",
+        "cadence_of_input": "weekly Wednesday references, 4-week change in net liquidity"
+      },
+      "shared_label": "both sit in a 'dollar liquidity -> risk appetite' family; the information sets and the transmission channels differ, and the frozen cross-incremental test is the control"
+    },
+    "measured_overlap": {
+      "weeks_both_long": 93,
+      "weeks_a_long_only": 85,
+      "weeks_b_long_only": 120,
+      "weeks_both_flat": 107,
+      "state_agreement_rate": 0.49382716049382713,
+      "jaccard_on_long_weeks": 0.31208053691275167,
+      "spearman_rank_correlation_of_drivers": 0.08748981630511161,
+      "transitions_a": 47,
+      "transitions_b": 97
+    },
+    "conclusion": "the two candidates do not trade the same clock: different inputs, different sampling frequency and different transmission channels. The measured state overlap is reported above; it is a structural measure, not an economic one, and the frozen cross-incremental test remains the decisive control (if either candidate is indistinguishable from the other's state, the frozen test rejects it)."
+  },
+  "sample_feasibility": {
+    "artifact": "RFC049B_OOS_SAMPLE_FEASIBILITY",
+    "generated_at_utc": "2026-10-10T13:15:30Z",
+    "method": "frozen rules applied to research-exposed inputs; only trade counts and dates are produced. No return, no PnL and no profit factor is computed, and the sealed window is untouched.",
+    "thresholds_changed": false,
+    "statistical_criterion_unchanged": "20 round trips or 24 months, whichever comes first; fewer than 20 at 24 months is INSUFFICIENT_OOS_SAMPLE and is neither PASS nor REJECT",
+    "H-049-001": {
+      "declared_development_start": null,
+      "effective_first_decidable_week": "2018-12-30",
+      "effective_last_decidable_week": "2026-10-04",
+      "exposed_years_measured": 7.76,
+      "round_trips": {
+        "development": 14,
+        "validation": 9,
+        "all_exposed": 23,
+        "last_12_months": 2
+      },
+      "round_trips_per_year_all_exposed": 2.96,
+      "round_trips_per_year_last_12_months": 2,
+      "round_trips_per_month_all_exposed": 0.247,
+      "expected_round_trips_in_24_month_sealed_window": 5.9,
+      "months_to_reach_20_round_trips_at_measured_rate": 81.0,
+      "frozen_floor": "20 closed round trips or 24 months, whichever comes first",
+      "sealed_window_risk": "INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION",
+      "median_hold_days": 35
+    },
+    "H-049-002": {
+      "declared_development_start": "first decidable week (on or after 2004-01-01) to 2023-12-31 (RESEARCH_EXPOSED for price; the FRED series were never used by any prior campaign)",
+      "effective_first_decidable_week": "2018-12-30",
+      "effective_last_decidable_week": "2026-10-04",
+      "exposed_years_measured": 7.76,
+      "round_trips": {
+        "development": 26,
+        "validation": 22,
+        "all_exposed": 48,
+        "last_12_months": 6
+      },
+      "round_trips_per_year_all_exposed": 6.18,
+      "round_trips_per_year_last_12_months": 6,
+      "round_trips_per_month_all_exposed": 0.515,
+      "expected_round_trips_in_24_month_sealed_window": 12.4,
+      "months_to_reach_20_round_trips_at_measured_rate": 38.8,
+      "frozen_floor": "20 closed round trips or 24 months, whichever comes first",
+      "sealed_window_risk": "INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION",
+      "median_hold_days": 28.0
+    },
+    "precision_requirements": [
+      {
+        "per_trip_information_ratio": 0.15,
+        "round_trips_for_one_sided_95pct_precision": 121,
+        "months_at_h001_measured_rate": 489.9,
+        "months_at_h002_measured_rate": 235.0
+      },
+      {
+        "per_trip_information_ratio": 0.2,
+        "round_trips_for_one_sided_95pct_precision": 68,
+        "months_at_h001_measured_rate": 275.3,
+        "months_at_h002_measured_rate": 132.0
+      },
+      {
+        "per_trip_information_ratio": 0.25,
+        "round_trips_for_one_sided_95pct_precision": 44,
+        "months_at_h001_measured_rate": 178.1,
+        "months_at_h002_measured_rate": 85.4
+      },
+      {
+        "per_trip_information_ratio": 0.3,
+        "round_trips_for_one_sided_95pct_precision": 31,
+        "months_at_h001_measured_rate": 125.5,
+        "months_at_h002_measured_rate": 60.2
+      },
+      {
+        "per_trip_information_ratio": 0.4,
+        "round_trips_for_one_sided_95pct_precision": 17,
+        "months_at_h001_measured_rate": 68.8,
+        "months_at_h002_measured_rate": 33.0
+      }
+    ],
+    "conclusion": "the frozen count floor is reachable inside the sealed window only if the realised turnover matches the measured exposed-history turnover. Where it does not, the correct outcome is INSUFFICIENT_OOS_SAMPLE, and the sample floor must not be lowered to manufacture a verdict."
+  },
+  "source_evidence": {
+    "artifact": "RFC049B_SOURCE_EVIDENCE",
+    "generated_at_utc": "2026-10-10T13:15:31Z",
+    "read_level_vocabulary": [
+      "FULL_TEXT_VERIFIED",
+      "ABSTRACT_ONLY",
+      "CLAIM_ONLY",
+      "FULL_PAYLOAD_AND_HASH"
+    ],
+    "sources": {
+      "SRC-049-001": {
+        "what": "DefiLlama stablecoin charts API",
+        "read_level": "FULL_PAYLOAD_AND_HASH",
+        "evidence": "data/rfc049/vendor/raw/defillama_stablecoin_supply_all.json + a fresh re-fetch in data/rfc049/admission/raw/refetch_defillama.json",
+        "supports": "the frozen signal variable exists, is contiguous, and its exact field is identified",
+        "limits": "no publication timestamp; USD valuation of supply, not a flow"
+      },
+      "SRC-049-002": {
+        "what": "Chi, Chu & Hao (arXiv:2411.06327v2) on-chain flows and return forecasting",
+        "read_level": "ABSTRACT_ONLY",
+        "abstract_verified_from": "https://arxiv.org/abs/2411.06327v2",
+        "abstract_quote": "We empirically examine the intraday return- and volatility-forecasting power of on-chain flow data for Bitcoin(BTC), Ethereum(ETH), and Tether(USDT). We find ETH net inflows to strongly predict ETH returns and volatility in the 2017-2023 period. Our intraday frequencies are 1-6 hours. We find that differing significantly from forecasting patterns for BTC, ETH net inflows negatively predict ETH returns and volatility. First, we find that USDT flowing out of investors wallets and into cryptocurrency exchanges, namely, USDT net inflows into the exchanges, positively predicts BTC and ETH returns at multiple intervals and negatively predicts ETH volatility at various intervals and BTC volatility at the 6-hour interval. Second, we find that ETH net inflows negatively predict ETH returns and volatility for all intraday intervals. Third, BTC net inflows generally lack predictive power for BTC returns(except at 4 hours) but are negatively associated with volatility across all intraday intervals. We illustrate our findings on return forecasting via case studies. Moreover, we develop option st",
+        "pdf_text_extraction": "failed: the PDF maps glyphs through a subset font encoding, so no reliable text can be recovered; the file is recorded by hash instead of being paraphrased",
+        "registry_characterisation_verified": "matches the abstract: the predictability is for USDT net inflows *into exchanges* at 1-6 hour intraday intervals, and ETH net inflows carry the opposite sign",
+        "decisive_claim_check": "the paper does not test aggregate stablecoin supply growth at daily horizons; using it as support for H-049-001 is an extrapolation the campaign must earn on data"
+      },
+      "SRC-049-003": {
+        "what": "FEDS Notes (2024-02-23) Primary and Secondary Markets for Stablecoins",
+        "read_level": "FULL_TEXT_VERIFIED",
+        "source_url": "https://www.federalreserve.gov/econres/notes/feds-notes/primary-and-secondary-markets-for-stablecoins-20240223.html",
+        "quote": "mart contract function associated with these actions executes such transactions by calling a transfer of tokens to or from a \"null address.\" We track mints and burns by documenting every transfer of tokens to and from the null address for each token. Return to text 22. Data source: AWS Public Blockchain Data, accessed 2023-07-28, https://registry.opendata.aws/aws-public-blockchain . Notes: *DAI's primary market is not intermediated by a treasury wallet as it is for centralized stablecoins; ** We follow Lyons and Viswanath-Natraj (2023), tracking tokens minted and burned between the null address for DAI, BUSD, and USDC, and the address \"0xc6cde7c39eb2f0f0095f41570af89efc2c1ea828\" for USDT. Return to text 23. As of July 25, 2023, according to Etherscan and Tronscan, Tether's treasury wallet has executed fewer than 5,000 transactions in its history on Ethereum, and less than 8,000 times on Tron. Circle's treasury wallet has executed 850,000 transactions on Ethereum. Return to text 24. During the March event, USDT was perceived to be the safer stablecoin to hold, as its issuer did not appear to rely on SVB or other affected banks for cash reserves. However, this has not always been the case \u2013 in fact, this dynamic represents a departure from wide-spread treatment of USDT as a comparatively less safe stablecoin given past scrutiny over its issuer, Tether. For example, see media reporting on Tether's business here: https://www.forbes.com/sites/stevenehrlich/2022/12/21/inside-tether",
+        "quote_anchor": "primary market",
+        "supports": "primary-market mints/redemptions change supply, while depegs appear in the secondary market",
+        "limits": "a crisis anatomy (March 2023), not a return-prediction study"
+      },
+      "SRC-049-004": {
+        "what": "Federal Reserve Bank of Philadelphia working paper 26-24",
+        "read_level": "FULL_TEXT_VERIFIED",
+        "extraction_note": "text recovered from the publisher PDF with a local extractor and retained as derived evidence (philly_wp26-24.extracted.txt); the 1.4 MB PDF itself is recorded by hash rather than committed",
+        "extraction_metrics": {
+          "squashed_chars": 124171,
+          "alpha_ratio": 0.5034669930982274,
+          "stopword_hits": 1797
+        },
+        "abstract_quote": "ers to rapid reall oc ation. A na l yz ing USDT vel oc ity a nd h ol di ng s reveals disti nc t , ne tw or k - depe nd e nt r ol es f or the sta bl ec oi n. On t he Ethere um bl oc kchain , e vi de nc e p oi nt s toward USDT ser vi ng as a retail - driven li qui di ty ch annel, wi th retail inve st ors sh o wi ng co n si st ent rea llo ca tion patterns and ve lo ci ty in cr ea se s fo llo wi ng ma jo r market di sr uptions. C on versely , on t he Bi tco in b lo ck ch ain , d yna mi cs are mor e muted an d tr an s ac tion - or iented , with USDT vel oc ity s hi fts c or relating with market eve nt s rat he r t ha n su st ained portfo li o rea llo ca tio ns . - to - safety patter ns obs erved in Wrapped BTC ( WBTC ) on Et hereum than in na tive BTC , rei nf or ce this ne tw or k - Howe ve r , 20 differe nt iati ng ge nu ine safety - seeking beha vi or fr om high - freque nc y trading ( HFT ) at l ow er v ol atility le ve ls remains an empiri ca l ch a lle nge . Our analy si s revea ls that US DT \\222 s role as a safe haven asset is n ot a bs ol ute , bu t highly depe nd e nt W hi le CV I - based mod els of ten pr od uce extre me ou tliers , CVIX - ba sed mod els yi eld clearer , al be it s ome ti me s diverge nt , patter ns . Fli gh t - to - safety be ha vi or is mos t r obu st f or retail ETH invest or s duri ng high - v ol atilityperi od s , yet this e vi de nc e re ma i ns se ns itc ons idera bl y weaker a nd less c ons iste nt . 4 ) , wh o - to - safety dy na mi cs are si m",
+        "quote_anchor": "muted",
+        "direction_tokens_found": {
+          "lifeline": true,
+          "muted": true,
+          "stabilizing": true,
+          "flighttosafety": true,
+          "networkdependent": false
+        },
+        "DIRECTION_FINDING": "the paper's own framing is not 'stablecoin inflows predict positive BTC returns': its extracted abstract describes USDT as a primary liquidity lifeline during stress for Ethereum holders, a notably more muted and stabilizing role for Bitcoin, and a network-dependent function. Read in full, this source sits closer to the counter-evidence column for H-049-001's directional claim than the Phase A registry recorded",
+        "finding_basis": "the quoted extracted abstract above; the verifier re-checks the tokens against the retained derived text",
+        "action": "recorded as a defect against the Phase A source characterisation; the frozen rules are unaffected because they never depended on this source"
+      },
+      "SRC-049-005": {
+        "what": "peer-reviewed counter-evidence on stablecoin/crypto return relationships",
+        "read_level": "ABSTRACT_ONLY",
+        "publisher_blocked": "https://www.mdpi.com/1911-8074/18/9/491 returned HTTP 403 to this agent",
+        "abstract_recovered_via": "Crossref metadata (DOI registration agency); Semantic Scholar kept as secondary",
+        "verified_record": {
+          "doi": "10.3390/fintech5030068",
+          "title": "The Relationship Between Stablecoin and Cryptocurrency Returns During Periods of Market Stress",
+          "journal": "FinTech",
+          "year": 2026,
+          "volume": "5",
+          "issue": "3",
+          "type": "journal-article",
+          "abstract": "Active asset managers increasingly include cryptocurrencies in their alternative asset allocations, highlighting their speculative and volatile nature. The aim of this research is to examine trends in the returns and volatility of cryptocurrencies, whilst accounting for the depegging of stablecoins, driven by speculative trading during macroeconomic shocks and technological shifts. We build a sample of market capitalisation, using data from the daily closing prices of Bitcoin (BTC), Ethereum (ETH), Binance (BNB), and Ripple (XRP), two fiat-backed stablecoins (USDT and USDC), and a cryptocurrency-collateralised stablecoin (DAI). As a first step, a Granger-causality framework is applied to examine the influence of stablecoin depegging events on crypto returns during financial market stress. The results are strongly asymmetric: there is little evidence that depegs predict returns; whereas cryptocurrency returns robustly Granger-cause USDC depegging events, an effect that intensifies during periods of market stress. Stablecoin depegs appear to be a downstream symptom of cryptocurrency stress rather than a leading indicator of it. The analysis was extended by modelling volatility, using an EGARCH-X model to study whether depegs also affect crypto during periods of market stress and if larger deviations from the dollar peg are associated with higher cryptocurrency volatility, concentrated in the most liquid stablecoins (USDT and USDC), while the evidence for any change in this asso",
+          "source": "Crossref REST API (DOI registration agency)"
+        },
+        "CITATION_CORRECTION": "the Phase A registry cites this work as MDPI JRFM 5(3):68. The registration agency record is MDPI *FinTech* 5(3):68, DOI 10.3390/fintech5030068, with a different title from the registered short title. The substance of the counter-evidence stands and is visible in the retrieved abstract, which states that the analysis accounts for the depegging of stablecoins.",
+        "supports": "counter-evidence for H-049-001"
+      },
+      "SRC-049-006": {
+        "what": "working paper on a USD monetary-liquidity measure and the Bitcoin price",
+        "read_level": "CLAIM_ONLY",
+        "publisher_blocked": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4904716 returned HTTP 403",
+        "bibliographic_identity_verified": {
+          "doi": "10.2139/ssrn.4904716",
+          "title": "Does Monetary Liquidity Affect Bitcoin Price?",
+          "journal": null,
+          "year": 2024,
+          "volume": null,
+          "issue": null,
+          "type": "posted-content",
+          "abstract": null,
+          "source": "Crossref REST API (DOI registration agency)"
+        },
+        "text_read": false,
+        "limits": "a single working paper with a practitioner-constructed measure. Its identity is verified through the registration agency, but its text was not read; the frozen H-049-002 rule does not replicate its measure in any case, it uses the Federal Reserve's own accounts"
+      },
+      "SRC-049-007": {
+        "what": "Eickmeier, Gambacorta & Hofmann (2013), Understanding Global Liquidity, BIS WP 402",
+        "read_level": "ABSTRACT_ONLY",
+        "extraction_note": "the BIS PDF endpoint serves the landing page to non-browser clients; the landing-page abstract is retained",
+        "quote": "and emerging market economies. We measure global liquidity conditions based on the common global factors in the dynamics of liquidity indicators. By imposing theoretically motivated sign restrictions on factor loadings, we achieve a structural identification of the factors. The results suggest that global liquidity conditions are largely driven by three common factors and can therefore not be summarised by a single indicator. These three factors can be identified as global monetary policy, global credit supply and global credit demand. The views expressed in this publication are those of the authors and do not necessarily reflect the views of the BIS or its member central banks. PDF (36 Pages) Authors Sandra Eickmeier Leonardo Gambacorta Head, Emerging Markets Monetary and Economic Department Boris Hofmann Head of Monetary Policy Monetary and Economic Department About Careers Contact FAQ Legal information Cookies notice Copyright and permissions Privacy notice Terms and conditions Warning on fraudulent schemes Stay connected Sign up to receive email alerts BIS alerts",
+        "quote_anchor": "global liquidity",
+        "supports": "the framework: global liquidity is a priced factor in risk assets",
+        "limits": "macro-level, not crypto-specific"
+      },
+      "SRC-049-008": {
+        "what": "FRED series WALCL / RRPONTSYD / WTREGEN and their release practice",
+        "read_level": "FULL_TEXT_VERIFIED",
+        "primary_sources": [
+          "https://www.federalreserve.gov/releases/h41/current/h41.htm",
+          "https://markets.newyorkfed.org/api/rp/reverserepo/all/results/last/7.json",
+          "https://api.fiscaldata.treasury.gov/services/data/v1/accounting/dts/operating_cash_balance"
+        ],
+        "supports": "value identity, units, observation dates and publication timing of every traded macro input"
+      }
+    },
+    "read_level_upgrades_vs_phase_a": {
+      "SRC-049-003": "introduction/background -> full note read",
+      "SRC-049-004": "snippet -> full text read (direction finding recorded)",
+      "SRC-049-005": "snippet -> verified abstract + corrected citation metadata",
+      "SRC-049-007": "snippet -> landing-page abstract retained",
+      "SRC-049-002": "unchanged: abstract read in full; PDF text is not machine-readable"
+    },
+    "unreadable_and_why": {
+      "arXiv:2411.06327v2 full text": "PDF glyph subset encoding; no reliable extraction",
+      "MDPI FinTech 5(3):68 full text": "HTTP 403 from the publisher",
+      "SSRN 4904716 full text": "HTTP 403 from the publisher",
+      "BIS WP 402 full text": "the PDF endpoint returns the landing page to non-browser clients"
+    },
+    "citation_verification": {
+      "method": "DOI registration agency (Crossref REST API), which is versioned and citable, for every source whose publisher page refused this agent",
+      "SRC-049-005": {
+        "doi": "10.3390/fintech5030068",
+        "title": "The Relationship Between Stablecoin and Cryptocurrency Returns During Periods of Market Stress",
+        "journal": "FinTech",
+        "year": 2026,
+        "volume": "5",
+        "issue": "3",
+        "type": "journal-article",
+        "abstract": "Active asset managers increasingly include cryptocurrencies in their alternative asset allocations, highlighting their speculative and volatile nature. The aim of this research is to examine trends in the returns and volatility of cryptocurrencies, whilst accounting for the depegging of stablecoins, driven by speculative trading during macroeconomic shocks and technological shifts. We build a sample of market capitalisation, using data from the daily closing prices of Bitcoin (BTC), Ethereum (ETH), Binance (BNB), and Ripple (XRP), two fiat-backed stablecoins (USDT and USDC), and a cryptocurrency-collateralised stablecoin (DAI). As a first step, a Granger-causality framework is applied to examine the influence of stablecoin depegging events on crypto returns during financial market stress. The results are strongly asymmetric: there is little evidence that depegs predict returns; whereas cryptocurrency returns robustly Granger-cause USDC depegging events, an effect that intensifies during periods of market stress. Stablecoin depegs appear to be a downstream symptom of cryptocurrency stress rather than a leading indicator of it. The analysis was extended by modelling volatility, using an EGARCH-X model to study whether depegs also affect crypto during periods of market stress and if larger deviations from the dollar peg are associated with higher cryptocurrency volatility, concentrated in the most liquid stablecoins (USDT and USDC), while the evidence for any change in this asso",
+        "source": "Crossref REST API (DOI registration agency)"
+      },
+      "SRC-049-006": {
+        "doi": "10.2139/ssrn.4904716",
+        "title": "Does Monetary Liquidity Affect Bitcoin Price?",
+        "journal": null,
+        "year": 2024,
+        "volume": null,
+        "issue": null,
+        "type": "posted-content",
+        "abstract": null,
+        "source": "Crossref REST API (DOI registration agency)"
+      }
+    },
+    "sufficiency_statement": "the decisive claims of both hypotheses rest on: the vendor payload and its semantics (fully verified), the release practice of the three macro inputs (verified at primary source), and the mechanism literature (abstract level, with the direction finding of SRC-049-004 now working against H-049-001). No conclusion in this audit is drawn from a source that was not read to the level declared here."
+  },
+  "defects": [
+    {
+      "id": "RFC049B-DEF-01",
+      "severity": "documentation",
+      "finding": "the frozen H-049-002 text attributes WTREGEN's availability to the Daily Treasury Statement, while the FRED series is the weekly-average General Account figure published inside H.4.1 on the Thursday after the reference Wednesday",
+      "evidence": "H.4.1 release page (Release Date for the week ending 2026-10-07) matches the frozen WTREGEN value exactly; both mechanisms imply a lag of at least one day",
+      "pit_impact": "none: the declared lag is verified either way, and the decision instant is three days later",
+      "action": "correct the provenance wording in the Phase B implementation notes; the frozen rule is not edited",
+      "changes_frozen_rule": false
+    },
+    {
+      "id": "RFC049B-DEF-02",
+      "severity": "contract-interpretation",
+      "finding": "the frozen H-049-002 development period starts on the first decidable week on or after 2004-01-01, but the price history the rules execute against starts in 2017",
+      "evidence": "data/rfc049/PREREGISTRATION_MANIFEST.json dataset hashes for the BTC/ETH daily series and their first observation",
+      "pit_impact": "none; the conservative reading starts later and therefore uses fewer data",
+      "action": "record the interpretation effective_start = max(declared start, first price bar + warmup) before the campaign opens; this audit uses that reading in every count it reports",
+      "changes_frozen_rule": false
+    },
+    {
+      "id": "RFC049B-DEF-03",
+      "severity": "units",
+      "finding": "the WTREGEN series definition changed across FRED vintages: the 2019 vintage is expressed in billions and begins in 1986, the current vintage in millions and begins in 2002",
+      "evidence": "847 of 847 shared dates differ across vintages, 400 of them by exactly a factor of 1000",
+      "pit_impact": "none for this campaign: the frozen contract declares millions, which is the current vintage, and the vendor snapshot was taken from it",
+      "action": "the Phase B ingestion must assert the fetched units per retrieval instead of assuming them",
+      "changes_frozen_rule": false
+    },
+    {
+      "id": "RFC049B-DEF-04",
+      "severity": "data-revision",
+      "finding": "the RRPONTSYD series is backfilled on rare dates, including one Wednesday grid point",
+      "evidence": "4 changed dates out of 5244 shared dates against the 2023-03-15 vintage; one of them falls on a Wednesday reference",
+      "pit_impact": "bounded and immaterial: the largest change is 0.103 billion against roughly 6,700 billion of net liquidity (about 0.002%)",
+      "action": "none beyond declaring it; the affected dates are listed in the PIT artifact",
+      "changes_frozen_rule": false
+    },
+    {
+      "id": "RFC049B-DEF-05",
+      "severity": "source-direction",
+      "finding": "read in full, SRC-049-004 does not support the directional claim registered for it: it reports a more muted, stabilizing USDT role for Bitcoin and flight-to-safety behaviour during stress",
+      "evidence": "ers to rapid reall oc ation. A na l yz ing USDT vel oc ity a nd h ol di ng s reveals disti nc t , ne tw or k - depe nd e nt r ol es f or the sta bl ec oi n. On t he Ethere um bl oc kchain , e vi de nc e p oi nt s toward USDT ser vi ng as a retail - driven li qui di ty ch annel, wi th retail inve st ors sh o wi ng co n si st ent rea llo ca tion patterns and ve lo ci ty in cr ea se s fo llo wi ng ma",
+      "pit_impact": "none",
+      "action": "recorded as strengthened counter-evidence for H-049-001; the frozen rule is unaffected because it never depended on this source",
+      "changes_frozen_rule": false
+    },
+    {
+      "id": "RFC049B-DEF-06",
+      "severity": "citation",
+      "finding": "the Phase A registry cites SRC-049-005 to the wrong journal and with an inexact title",
+      "evidence": "Semantic Scholar verified record: MDPI FinTech 5(3):68, DOI 10.3390/fintech5030068",
+      "pit_impact": "none",
+      "action": "the corrected record is stored in the admission artifact; the substance of the counter-evidence is unchanged",
+      "changes_frozen_rule": false
+    },
+    {
+      "id": "RFC049B-DEF-07",
+      "severity": "vendor-semantics",
+      "finding": "the vendor payload has no publication timestamp and its current day is still forming (it moved intraday between two retrievals)",
+      "evidence": "[{\"date\": \"2026-10-10\", \"frozen\": 310972065838.85, \"refetched\": 310978437998.98, \"relative_change\": 2.0491101388209654e-05}]",
+      "pit_impact": "the frozen t+1 convention is what makes this safe; sealed collection must read the settled value and retain the retrieval record",
+      "action": "specified for the sealed-period collector; no frozen rule is edited",
+      "changes_frozen_rule": false
+    },
+    {
+      "id": "RFC049B-DEF-08",
+      "severity": "signal-attribution",
+      "finding": "the frozen H-049-001 field is a USD valuation of circulating supply, so a depeg moves the signal without any dollar entering or leaving",
+      "evidence": "{\"max_abs_divergence\": 0.025119759156405075, \"worst_day\": \"2022-05-09\", \"days_where_valuation_effect_exceeds_25pct_of_growth\": 158, \"days_compared\": 3208, \"material_examples\": [{\"date\": \"2021-08-05\", \"growth_usd\": 0.013319376767938484, \"growth_amount\": 0.02031210666254113, \"divergence\": -0.006992729894602645}, {\"date\": \"2022-03-29\", \"growth_usd\": 0.01129664048656176, \"growth_amount\": 0.01614275258",
+      "pit_impact": "none",
+      "action": "the amount-denominated field in the same payload is the disclosed diagnostic; a campaign that passes must survive the incremental controls, and this is reported as a residual attribution risk",
+      "changes_frozen_rule": false
+    },
+    {
+      "id": "RFC049B-DEF-09",
+      "severity": "power",
+      "finding": "the frozen 20-round-trip floor may not be reachable inside the 24-month sealed window at the measured exposed-history turnover",
+      "evidence": "{\"H-049-001\": \"INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION\", \"H-049-002\": \"INSUFFICIENT_OOS_SAMPLE_BY_CONSTRUCTION\"}",
+      "pit_impact": "none",
+      "action": "the correct outcome in that case is INSUFFICIENT_OOS_SAMPLE; the threshold is not lowered",
+      "changes_frozen_rule": false
+    }
+  ],
+  "admission_decisions": {
+    "H-049-001": {
+      "state": "READY_FOR_AUTHORIZED_TEST",
+      "reason": "variable semantics identified at the vendor payload, contiguous daily history with no gaps, conservative declared availability convention, and a frozen rule with two incremental controls. Its source evidence is weaker than Phase A claimed and is recorded as such, but nothing blocks a valid test.",
+      "flags": [
+        "PIT_CONSERVATIVE_PROXY (no vendor publication timestamp; measured backfill on settled days: 0)",
+        "signal is a USD valuation of supply, so depeg moves are a residual attribution risk (DEF-08)",
+        "external direction evidence weakened by the SRC-049-004 full-text finding (DEF-05)"
+      ]
+    },
+    "H-049-002": {
+      "state": "READY_FOR_AUTHORIZED_TEST",
+      "reason": "every traded input is verified against its primary source for value, units, observation dates and publication timing; decision-time availability is proven for every decision instant; the declared development start is wider than the available price history, which is recorded as an interpretation defect rather than a reason to touch the rule.",
+      "flags": [
+        "PIT_VERIFIED",
+        "WTREGEN publication mechanism misattributed in the frozen text (DEF-01, no PIT impact)",
+        "WTREGEN unit convention changed across vintages; ingestion must assert units (DEF-03)",
+        "RRPONTSYD shows bounded, immaterial backfill (DEF-04)"
+      ]
+    }
+  },
+  "governance": {
+    "DISCOVERY_CAMPAIGN_FAILED": true,
+    "NEXT_CAMPAIGN": "NOT_AUTHORIZED",
+    "LIVE_TRADING": "DISABLED",
+    "TRADES_AUTHORIZED": 0,
+    "PROFITABILITY_VERIFIED": false,
+    "EXPERIMENTS_EXECUTED": 0,
+    "OOS_OPENED": false,
+    "authorized": false,
+    "consequence": "no economic evaluation, no OOS opening and no implementation is performed by this audit"
+  },
+  "evidence_index": [
+    {
+      "key": "refetch_defillama.json",
+      "url": "https://stablecoins.llama.fi/stablecoincharts/all",
+      "retrieved_at_utc": "2026-10-10T13:13:14Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/json",
+      "bytes": 1311026,
+      "sha256": "7ed8b074f196c3efe888384f367e0d22f69df90d9ef5cce4617938277fbc6bd4",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "fred_page_WALCL.html",
+      "url": "https://fred.stlouisfed.org/series/WALCL",
+      "retrieved_at_utc": "2026-10-10T12:58:24Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 79560,
+      "sha256": "b769716d73f126ff7f148bdad5ffce12deca03f6d8f56a17b9edcd2d9654bc24",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "fred_page_RRPONTSYD.html",
+      "url": "https://fred.stlouisfed.org/series/RRPONTSYD",
+      "retrieved_at_utc": "2026-10-10T12:58:24Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 80128,
+      "sha256": "328214d68ad5914f2012444215a6a982d61dd473476e8b1c44fd73c768a659be",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "fred_page_WTREGEN.html",
+      "url": "https://fred.stlouisfed.org/series/WTREGEN",
+      "retrieved_at_utc": "2026-10-10T12:58:24Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "bytes": 79961,
+      "sha256": "c9821f735b78079f749dd4611950994e1c44c41386f4b9b67d0da79a7801d6e9",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_WALCL_latest.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WALCL",
+      "retrieved_at_utc": "2026-10-10T12:58:25Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 23348,
+      "sha256": "47cbbf5338e64f39930e6206314bc7f033c616998d153f9b455e0af76f0d5241",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_WALCL_2019-03-07.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WALCL&vintage_date=2019-03-07",
+      "retrieved_at_utc": "2026-10-10T12:58:25Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 15824,
+      "sha256": "c2a58276880b14189385e3fd4947214b0c586fe75d35b2fc0b789296d34da1a2",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_WALCL_2023-03-15.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WALCL&vintage_date=2023-03-15",
+      "retrieved_at_utc": "2026-10-10T12:58:26Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 19795,
+      "sha256": "bcb42655369a25576fc7d968dc6fb586cc78964e5885e17902c2450884532de5",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_WTREGEN_latest.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WTREGEN",
+      "retrieved_at_utc": "2026-10-10T12:58:27Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 21539,
+      "sha256": "73face29afe1d988b8266f421ec45605866f25333f8f1a21c96a0395e633de4b",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_WTREGEN_2019-03-07.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WTREGEN&vintage_date=2019-03-07",
+      "retrieved_at_utc": "2026-10-10T12:58:28Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 30291,
+      "sha256": "b8fdc0251a315fbcb0710e1143df7cd4994345d1c2a2a4d89f8a7f26af90de29",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_WTREGEN_2023-03-15.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=WTREGEN&vintage_date=2023-03-15",
+      "retrieved_at_utc": "2026-10-10T12:58:28Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 34309,
+      "sha256": "d9bc7d80749d305f3b14a215d99d94c1ad0ed145a3c98673ea2f7605e254a187",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_RRPONTSYD_latest.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=RRPONTSYD",
+      "retrieved_at_utc": "2026-10-10T12:58:30Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 95451,
+      "sha256": "3cc8e1c8a43625f664f6b65616af780409e4dc01d2592d2f7322fc477c73e18b",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_RRPONTSYD_2019-03-07.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=RRPONTSYD&vintage_date=2019-03-07",
+      "retrieved_at_utc": "2026-10-10T12:58:30Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 5471,
+      "sha256": "3b5231bb3393fddd0d5be8a31f663e2eef4d2a7fc7db22ed771c8ba328b21144",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "alfred_RRPONTSYD_2023-03-15.csv",
+      "url": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=RRPONTSYD&vintage_date=2023-03-15",
+      "retrieved_at_utc": "2026-10-10T12:58:32Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/csv",
+      "bytes": 78390,
+      "sha256": "383d313a26c9c3ea2536e9873ace86bcdf6fd68e99698d39b0bdf3503ddf98c8",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "h41_current.html",
+      "url": "https://www.federalreserve.gov/releases/h41/current/h41.htm",
+      "retrieved_at_utc": "2026-10-10T12:58:32Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "text/html",
+      "bytes": 701918,
+      "sha256": "bbc62c6b9050fc5986b779e305bcabcf0e92582d559e89af77d28889cc97183d",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "nyfed_rrp_last7.json",
+      "url": "https://markets.newyorkfed.org/api/rp/reverserepo/all/results/last/7.json",
+      "retrieved_at_utc": "2026-10-10T12:58:33Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/json;charset=utf-8",
+      "bytes": 4626,
+      "sha256": "26179b56b8d9cbaec4bb0391ba90cc48dbcd385458fdf1d115b5b51a9c8ddc63",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "dts_tga.json",
+      "url": "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/dts/operating_cash_balance?filter=record_date:gte:2026-09-01&fields=record_date,account_type,open_today_bal,close_today_bal&page[size]=100&sort=record_date",
+      "retrieved_at_utc": "2026-10-10T12:58:33Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/json",
+      "bytes": 14383,
+      "sha256": "6175152c0f7dc0e3102bf64845c17cbf55dd348e33a4bce4e960540fc3e78d11",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "arxiv_abs.html",
+      "url": "https://arxiv.org/abs/2411.06327v2",
+      "retrieved_at_utc": "2026-10-10T12:58:34Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 41509,
+      "sha256": "0116a86601dafb7440966818682af2de6debcc720c175479a5db811ce8dcefe1",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "arxiv_pdf.pdf",
+      "url": "https://arxiv.org/pdf/2411.06327v2",
+      "retrieved_at_utc": "2026-10-10T13:15:00Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 943315,
+      "sha256": "5ad76d991a2d35319fbad716403e110b7a6f028505aeccf2ed911a0e362b6c07",
+      "raw_retained": false,
+      "status": "ok",
+      "body_truncated_at_deadline": false
+    },
+    {
+      "key": "fedsnote.html",
+      "url": "https://www.federalreserve.gov/econres/notes/feds-notes/primary-and-secondary-markets-for-stablecoins-20240223.html",
+      "retrieved_at_utc": "2026-10-10T12:58:34Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "text/html",
+      "bytes": 135763,
+      "sha256": "990c98060743a0df473cbdbf1461419a0be3d9b3b10c611c387e196677b6bf90",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "philly_wp26-24.pdf",
+      "url": "https://www.philadelphiafed.org/-/media/frbp/assets/working-papers/2026/wp26-24.pdf",
+      "retrieved_at_utc": "2026-10-10T13:15:00Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "bytes": 1408168,
+      "sha256": "774a970bbdfd44e2873f83d14738911701e0577eb956245fff26366c535d83bc",
+      "raw_retained": false,
+      "status": "ok",
+      "body_truncated_at_deadline": false
+    },
+    {
+      "key": "bis_wp402.html",
+      "url": "https://www.bis.org/publ/work402.htm",
+      "retrieved_at_utc": "2026-10-10T12:58:35Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 125600,
+      "sha256": "95a0f327d7cfdba64049ff8eeae336e14c8ed2053363785d5e9e4e53e0097d53",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "crossref_fintech5030068.json",
+      "url": "https://api.crossref.org/works/10.3390/fintech5030068",
+      "retrieved_at_utc": "2026-10-10T13:10:47Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/json",
+      "bytes": 13961,
+      "sha256": "fe523dd4f0f346530c32ad79057765893009014b4cdd7a97168a89c3c0fa912c",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "crossref_ssrn4904716.json",
+      "url": "https://api.crossref.org/works?query.bibliographic=Does%20monetary%20liquidity%20affect%20Bitcoin%20price&rows=3&select=DOI,title,container-title,issued,type",
+      "retrieved_at_utc": "2026-10-10T13:10:47Z",
+      "mode": "network",
+      "http_status": 200,
+      "content_type": "application/json",
+      "bytes": 745,
+      "sha256": "21616415595e7fd744f2fb8556683281f67acfd8c85dcc2600ed6719579d7491",
+      "raw_retained": true,
+      "status": "ok",
+      "served_from_cache_at_utc": "2026-10-10T13:15:00Z"
+    },
+    {
+      "key": "blocked_mdpi.html",
+      "url": "https://www.mdpi.com/1911-8074/18/9/491",
+      "retrieved_at_utc": "2026-10-10T13:15:06Z",
+      "mode": "network",
+      "http_status": null,
+      "bytes": 0,
+      "sha256": null,
+      "raw_retained": false,
+      "status": "unavailable",
+      "note": "EvidenceUnavailable: HTTPError: HTTP Error 403: Forbidden -> https://www.mdpi.com/1911-8074/18/9/491"
+    },
+    {
+      "key": "blocked_ssrn.html",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4904716",
+      "retrieved_at_utc": "2026-10-10T13:15:13Z",
+      "mode": "network",
+      "http_status": null,
+      "bytes": 0,
+      "sha256": null,
+      "raw_retained": false,
+      "status": "unavailable",
+      "note": "EvidenceUnavailable: HTTPError: HTTP Error 403: Forbidden -> https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4904716"
+    },
+    {
+      "key": "semantic_scholar.json",
+      "url": "https://api.semanticscholar.org/graph/v1/paper/search",
+      "retrieved_at_utc": "2026-10-10T13:15:28Z",
+      "mode": "network",
+      "http_status": 200,
+      "bytes": 909,
+      "sha256": "ce75a436d10cc7300f1edb247658b96301cc6b3833702c9d7c7cc07612dd5a5c",
+      "raw_retained": true,
+      "status": "ok"
+    },
+    {
+      "key": "philly_wp26-24.extracted.txt",
+      "url": "https://www.philadelphiafed.org/-/media/frbp/assets/working-papers/2026/wp26-24.pdf",
+      "retrieved_at_utc": "2026-10-10T13:15:31Z",
+      "mode": "derived",
+      "http_status": null,
+      "bytes": 167923,
+      "sha256": "4606ece2d567b213dcd32666098f5a9ce6b44da20135b9d23e57ab358e6875ec",
+      "raw_retained": true,
+      "status": "ok",
+      "derived_from": "philly_wp26-24.pdf"
+    }
+  ],
+  "checks": [
+    {
+      "check": "baseline:spec_unchanged:H-049-001",
+      "result": "PASS",
+      "detail": "frozen spec bytes identical to the freeze-time hash"
+    },
+    {
+      "check": "baseline:spec_unchanged:H-049-002",
+      "result": "PASS",
+      "detail": "frozen spec bytes identical to the freeze-time hash"
+    },
+    {
+      "check": "baseline:dataset_unchanged:BTC-USDT_1d.json",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:ETH-USDT_1d.json",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:defillama_stablecoin_supply_all.json",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:blockchain_info_hashrate_8y.json",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:blockchain_info_miners_revenue_all.json",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:fred_WALCL.csv",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:fred_RRPONTSYD.csv",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:fred_WTREGEN.csv",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:fred_DFII10.csv",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:fred_DTWEXBGS.csv",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:dataset_unchanged:fred_DFF.csv",
+      "result": "PASS",
+      "detail": "frozen dataset bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:defillama_stablecoin_supply_all.json",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:blockchain_info_hashrate_8y.json",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:blockchain_info_miners_revenue_all.json",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:fred_WALCL.csv",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:fred_RRPONTSYD.csv",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:fred_WTREGEN.csv",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:fred_DFII10.csv",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:fred_DTWEXBGS.csv",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:vendor_bytes:fred_DFF.csv",
+      "result": "PASS",
+      "detail": "vendor snapshot bytes unchanged"
+    },
+    {
+      "check": "baseline:governance",
+      "result": "PASS",
+      "detail": "{\"DISCOVERY_CAMPAIGN_FAILED\": true, \"LIVE_TRADING\": \"DISABLED\", \"NEXT_CAMPAIGN\": \"NOT_AUTHORIZED\", \"PROFITABILITY_VERIFIED\": false, \"TRADES_AUTHORIZED\": 0}"
+    },
+    {
+      "check": "baseline:rfc048v",
+      "result": "PASS",
+      "detail": "RFC048_OFFLINE_CERTIFIED"
+    },
+    {
+      "check": "baseline:exposure_audit_gate",
+      "result": "PASS",
+      "detail": "Phase A activation-gate flags still read NOT_AUTHORIZED / 0 / DISABLED"
+    },
+    {
+      "check": "evidence:blocked_mdpi.html",
+      "result": "BLOCKED",
+      "detail": "optional evidence unavailable: EvidenceUnavailable: HTTPError: HTTP Error 403: Forbidden -> https://www.mdpi.com/1911-8074/18/9/491"
+    },
+    {
+      "check": "evidence:blocked_ssrn.html",
+      "result": "BLOCKED",
+      "detail": "optional evidence unavailable: EvidenceUnavailable: HTTPError: HTTP Error 403: Forbidden -> https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4904716"
+    },
+    {
+      "check": "macro:units_WALCL",
+      "result": "PASS",
+      "detail": "{\"units\": \"Millions of U.S. Dollars , Not Seasonally Adjusted Frequency: Weekly, A\", \"frequency\": \"Weekly, As of Wednesday Fullscreen Data in this graph are copyrighted.\", \"release\": \"Calendar Tools FRED Add-in for Excel FRED API FRED Mobile Apps News Blo\"}"
+    },
+    {
+      "check": "macro:units_RRPONTSYD",
+      "result": "PASS",
+      "detail": "{\"units\": \"Billions of US Dollars , Not Seasonally Adjusted Frequency: Daily Fulls\", \"frequency\": \"Daily Fullscreen Data in this graph are copyrighted. Please review the\", \"release\": \"Calendar Tools FRED Add-in for Excel FRED API FRED Mobile Apps News Blo\"}"
+    },
+    {
+      "check": "macro:units_WTREGEN",
+      "result": "PASS",
+      "detail": "{\"units\": \"Millions of U.S. Dollars , Not Seasonally Adjusted Frequency: Weekly, E\", \"frequency\": \"Weekly, Ending Wednesday Fullscreen Data in this graph are copyrighted.\", \"release\": \"Calendar Tools FRED Add-in for Excel FRED API FRED Mobile Apps News Blo\"}"
+    },
+    {
+      "check": "macro:primary_source:rrp_value_identity",
+      "result": "PASS",
+      "detail": "7/7 NY Fed operations match the frozen series exactly"
+    },
+    {
+      "check": "macro:primary_source:h41_total_assets",
+      "result": "PASS",
+      "detail": "H.4.1 total assets 6747560.0 vs frozen WALCL 6747560.0"
+    },
+    {
+      "check": "macro:primary_source:h41_tga_week_average",
+      "result": "PASS",
+      "detail": "H.4.1 week-average TGA [880253.0] vs frozen WTREGEN 880253.0"
+    },
+    {
+      "check": "macro:primary_source:h41_vs_dts",
+      "result": "PASS",
+      "detail": "{\"h41_wed_vs_dts_latest\": {\"h41_wednesday_level\": 885783.0, \"latest_dts_date\": \"2026-10-06\", \"latest_dts_closing_balance\": 885414.0, \"relative_difference\": 0.0004165805846352888, \"note\": \"the DTS has not yet published the H.4.1 reference Wednesday, which is itself evidence of a next-business-day publication lag\", \"matches_within_2pct\": true}, \"dts_weekly\": {\"compared\": 3, \"within\": 2}}"
+    },
+    {
+      "check": "grid:non_empty",
+      "result": "PASS",
+      "detail": "406 weekly decision instants from 2018-12-30 to 2026-10-04"
+    },
+    {
+      "check": "macro:grid_decidable",
+      "result": "PASS",
+      "detail": "first decidable macro week 2018-12-30; 0 Wednesday references with a missing input (fail-closed FLAT); reach-back days used [0, 1, 2]"
+    },
+    {
+      "check": "pit:H-049-001:no_decision_consumes_future_data",
+      "result": "PASS",
+      "detail": "0 availability violations over 406 decision instants; 1 decisions were not yet decidable (fail-closed FLAT, not a PIT defect)"
+    },
+    {
+      "check": "pit:H-049-002:no_decision_consumes_future_data",
+      "result": "PASS",
+      "detail": "0 availability violations over 406 decision instants; 0 decisions were not yet decidable (fail-closed FLAT, not a PIT defect)"
+    },
+    {
+      "check": "pit:incremental_reconstruction",
+      "result": "PASS",
+      "detail": "40 sampled decisions recomputed from a truncated feed; mismatches=0"
+    },
+    {
+      "check": "governance:flags_unchanged",
+      "result": "PASS",
+      "detail": "{\"DISCOVERY_CAMPAIGN_FAILED\": true, \"LIVE_TRADING\": \"DISABLED\", \"NEXT_CAMPAIGN\": \"NOT_AUTHORIZED\", \"PROFITABILITY_VERIFIED\": false, \"TRADES_AUTHORIZED\": 0}"
+    },
+    {
+      "check": "scope:no_returns_computed",
+      "result": "PASS",
+      "detail": "this module computes no return, no PnL, no drawdown and no profit factor"
+    },
+    {
+      "check": "scope:sealed_oos_untouched",
+      "result": "PASS",
+      "detail": "the sealed window starts 2026-10-11T00:00:00Z; no observation from it exists yet"
+    },
+    {
+      "check": "labels:no_forbidden_claim",
+      "result": "PASS",
+      "detail": "clean"
+    }
+  ],
+  "checks_total": 43,
+  "checks_failed": 0,
+  "checks_blocked": 2
+}

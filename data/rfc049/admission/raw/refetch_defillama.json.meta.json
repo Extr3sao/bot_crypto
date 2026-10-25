@@ -1,0 +1,13 @@
+{
+  "key": "refetch_defillama.json",
+  "url": "https://stablecoins.llama.fi/stablecoincharts/all",
+  "retrieved_at_utc": "2026-10-10T13:13:14Z",
+  "mode": "network",
+  "http_status": 200,
+  "content_type": "application/json",
+  "bytes": 1311026,
+  "sha256": "7ed8b074f196c3efe888384f367e0d22f69df90d9ef5cce4617938277fbc6bd4",
+  "raw_retained": true,
+  "status": "ok",
+  "body_truncated_at_deadline": false
+}

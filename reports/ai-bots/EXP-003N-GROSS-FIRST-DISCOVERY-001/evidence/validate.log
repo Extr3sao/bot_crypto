@@ -1,0 +1,25 @@
+[003n-validate] lane_a::breakout::1h: VAL trades=52 mean=-16.5486 bps net(full)=-43.8582
+[003n-validate] lane_a::breakout::4h: VAL trades=15 mean=-83.7680 bps net(full)=-111.0777
+[003n-validate] lane_a::breakout::5m: VAL trades=653 mean=-29.3292 bps net(full)=-56.6389
+[003n-validate] lane_a::ema_crossover::1h: VAL trades=961 mean=-20.8683 bps net(full)=-48.1780
+[003n-validate] lane_a::ema_crossover::4h: VAL trades=230 mean=-157.1561 bps net(full)=-184.4657
+[003n-validate] lane_a::ema_crossover::5m: VAL trades=11179 mean=-27.5917 bps net(full)=-54.9013
+[003n-validate] lane_a::mean_reversion::1h: VAL trades=36 mean=-56.2871 bps net(full)=-83.5968
+[003n-validate] lane_a::mean_reversion::4h: VAL trades=10 mean=-173.8881 bps net(full)=-201.1978
+[003n-validate] lane_a::mean_reversion::5m: VAL trades=506 mean=-24.5148 bps net(full)=-51.8245
+[003n-validate] lane_a::momentum::1h: VAL trades=576 mean=-10.2726 bps net(full)=-37.5823
+[003n-validate] lane_a::momentum::4h: VAL trades=224 mean=-125.3727 bps net(full)=-152.6823
+[003n-validate] lane_a::momentum::5m: VAL trades=1617 mean=-30.9236 bps net(full)=-58.2332
+[003n-validate] lane_a::trend::1h: VAL trades=343 mean=-40.3481 bps net(full)=-67.6577
+[003n-validate] lane_a::trend::4h: VAL trades=140 mean=-159.3746 bps net(full)=-186.6843
+[003n-validate] lane_a::trend::5m: VAL trades=121 mean=-34.9624 bps net(full)=-62.2721
+[003n-validate] lane_a::volatility::1h: VAL trades=16 mean=-78.7010 bps net(full)=-106.0107
+[003n-validate] lane_a::volatility::4h: VAL trades=1 mean=262.2054 bps net(full)=234.8958
+[003n-validate] lane_a::volatility::5m: VAL trades=50 mean=-24.9941 bps net(full)=-52.3038
+[003n-validate] lane_b::mean_reversion_vol_liq::1h: VAL trades=4 mean=-176.1070 bps net(full)=-203.4167
+[003n-validate] lane_b::mean_reversion_vol_liq::4h: VAL trades=0 mean=n/a bps net(full)=n/a
+[003n-validate] lane_b::trend_pullback::1h: VAL trades=17 mean=-96.6720 bps net(full)=-123.9817
+[003n-validate] lane_b::trend_pullback::4h: VAL trades=0 mean=n/a bps net(full)=n/a
+[003n-validate] lane_b::vol_regime_breakout::1h: VAL trades=0 mean=n/a bps net(full)=n/a
+[003n-validate] lane_b::vol_regime_breakout::4h: VAL trades=0 mean=n/a bps net(full)=n/a
+[003n-validate] verdict=NO_VIABLE_CANDIDATES

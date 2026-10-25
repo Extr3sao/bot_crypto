@@ -1,0 +1,362 @@
+{
+  "action": "STOP_COMPLETED",
+  "attempts": [
+    {
+      "action": "START",
+      "attempt": 1,
+      "clean": false,
+      "continued": true,
+      "exit_code": 1,
+      "locks_after": 4,
+      "new_cycles": [
+        1
+      ],
+      "pid": 40128,
+      "progress": true,
+      "resumed_flag": false,
+      "rows_after": 4,
+      "rows_before": 0,
+      "start_kind": "SESSION_START",
+      "start_seq": 1,
+      "stream_readable": true
+    },
+    {
+      "action": "RESUME",
+      "attempt": 2,
+      "clean": false,
+      "continued": true,
+      "exit_code": 1,
+      "locks_after": 4,
+      "new_cycles": [
+        2
+      ],
+      "pid": 31820,
+      "progress": true,
+      "resumed_flag": true,
+      "rows_after": 9,
+      "rows_before": 4,
+      "start_kind": "SESSION_START",
+      "start_seq": 5,
+      "stream_readable": true
+    },
+    {
+      "action": "RESUME",
+      "attempt": 3,
+      "clean": false,
+      "continued": true,
+      "exit_code": 1,
+      "locks_after": 4,
+      "new_cycles": [
+        3
+      ],
+      "pid": 29828,
+      "progress": true,
+      "resumed_flag": true,
+      "rows_after": 14,
+      "rows_before": 9,
+      "start_kind": "SESSION_START",
+      "start_seq": 10,
+      "stream_readable": true
+    },
+    {
+      "action": "RESUME",
+      "attempt": 4,
+      "clean": false,
+      "continued": true,
+      "exit_code": 1,
+      "locks_after": 4,
+      "new_cycles": [
+        4
+      ],
+      "pid": 8480,
+      "progress": true,
+      "resumed_flag": true,
+      "rows_after": 19,
+      "rows_before": 14,
+      "start_kind": "SESSION_START",
+      "start_seq": 15,
+      "stream_readable": true
+    },
+    {
+      "action": "RESUME",
+      "attempt": 5,
+      "clean": false,
+      "continued": true,
+      "exit_code": 1,
+      "locks_after": 4,
+      "new_cycles": [
+        5
+      ],
+      "pid": 40256,
+      "progress": true,
+      "resumed_flag": true,
+      "rows_after": 24,
+      "rows_before": 19,
+      "start_kind": "SESSION_START",
+      "start_seq": 20,
+      "stream_readable": true
+    },
+    {
+      "action": "RESUME",
+      "attempt": 6,
+      "clean": true,
+      "continued": true,
+      "exit_code": 0,
+      "locks_after": 0,
+      "new_cycles": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "pid": 13596,
+      "progress": true,
+      "resumed_flag": true,
+      "rows_after": 33,
+      "rows_before": 24,
+      "start_kind": "SESSION_START",
+      "start_seq": 25,
+      "stream_readable": true
+    }
+  ],
+  "elapsed_s": 577.922,
+  "exit_code": 0,
+  "final_state": "RECOVERED",
+  "final_status": {
+    "checked_at_utc": "2026-10-23T18:43:36Z",
+    "fencing": {
+      "fence_files": [
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0001/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0002/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0003/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0004/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0005/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0006/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0007/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0008/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 1,
+          "path": "cycles/cycle-0009/ledger.jsonl.lock.fence"
+        },
+        {
+          "fence": 11,
+          "path": "market-1m/BTCUSDT.jsonl.lock.fence"
+        },
+        {
+          "fence": 11,
+          "path": "market-1m/ETHUSDT.jsonl.lock.fence"
+        },
+        {
+          "fence": 11,
+          "path": "market-1m/SOLUSDT.jsonl.lock.fence"
+        },
+        {
+          "fence": 11,
+          "path": "STREAM.jsonl.lock.fence"
+        }
+      ],
+      "max_fence_in_reclaims": 10,
+      "stream_fence": 11
+    },
+    "last_attempt": {
+      "aborted": false,
+      "exit_code": 0,
+      "refused": false
+    },
+    "ledger": {
+      "chain_ok": true,
+      "chain_reason": "INTACT",
+      "cycle_directories": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "cycle_ledgers": {
+        "cycle-0001": {
+          "lines": 10,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0002": {
+          "lines": 15,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0003": {
+          "lines": 19,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0004": {
+          "lines": 22,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0005": {
+          "lines": 26,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0006": {
+          "lines": 29,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0007": {
+          "lines": 32,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0008": {
+          "lines": 35,
+          "ok": true,
+          "reason": "INTACT"
+        },
+        "cycle-0009": {
+          "lines": 38,
+          "ok": true,
+          "reason": "INTACT"
+        }
+      },
+      "cycle_ledgers_ok": true,
+      "cycles": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "head_sha256": "dfd4f55cc095d3b4da72fd3b98962f6eb3c9193a4c01c11707124a8ccf109610",
+      "interrupted_cycles": [],
+      "kinds": {
+        "CYCLE": 9,
+        "DELAY_MEASURED": 6,
+        "LOCK_RECLAIMED": 5,
+        "SESSION_END": 1,
+        "SESSION_PROVENANCE": 6,
+        "SESSION_START": 6
+      },
+      "last_cycle": 9,
+      "rows": 33,
+      "seq_continuous": true
+    },
+    "locks": {
+      "abandoned_paths": [],
+      "active": [],
+      "all": [],
+      "awaiting_recovery": []
+    },
+    "out_dir": "reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign\\session",
+    "owner": {
+      "acquired_at_utc": null,
+      "fence": null,
+      "host": null,
+      "live": false,
+      "pid": null,
+      "process_start_ms": null
+    },
+    "read_only": true,
+    "recoveries": {
+      "count": 5,
+      "last": {
+        "cycle": null,
+        "locks": [
+          {
+            "fence": 10,
+            "lock": "BTCUSDT.jsonl.lock",
+            "pid": 17828,
+            "process_start_ms": 1792780710786,
+            "reason": "OWNER_PROCESS_DEAD"
+          },
+          {
+            "fence": 10,
+            "lock": "ETHUSDT.jsonl.lock",
+            "pid": 17828,
+            "process_start_ms": 1792780710786,
+            "reason": "OWNER_PROCESS_DEAD"
+          },
+          {
+            "fence": 10,
+            "lock": "SOLUSDT.jsonl.lock",
+            "pid": 17828,
+            "process_start_ms": 1792780710786,
+            "reason": "OWNER_PROCESS_DEAD"
+          },
+          {
+            "fence": 10,
+            "lock": "STREAM.jsonl.lock",
+            "pid": 17828,
+            "process_start_ms": 1792780710786,
+            "reason": "OWNER_PROCESS_DEAD"
+          }
+        ],
+        "scope": "session",
+        "seq": 27
+      },
+      "last_fence": 10,
+      "last_reason": "OWNER_PROCESS_DEAD",
+      "scopes": [
+        "session"
+      ]
+    },
+    "schema_version": "TAP_PAPER_SESSION_STATUS_V1",
+    "session": {
+      "ended_at_utc": null,
+      "pinned_identity": "7a677223940deac7a13ddcc038d5f2c902a50e9384596ce0e2c12a16de19907e",
+      "resumed": true,
+      "resumed_starts": 5,
+      "run_id": "run-7a677223940deac7a13d",
+      "runtime_digest": "39303dfb01220c27d766a5027db1a6e49755711788e055e3d3010c430612ad4b",
+      "runtime_stable": true,
+      "session_id": "sess-af86cd59154abc8290e3",
+      "started_at_utc": "2026-10-23T18:39:33Z",
+      "starts": 6
+    },
+    "state": "RECOVERED",
+    "why": []
+  },
+  "finished_at_utc": "2026-10-23T18:43:36Z",
+  "live_orders": 0,
+  "locks": [],
+  "mode": "PAPER",
+  "reason": "CLEAN_END",
+  "restarts": 5,
+  "schema_version": "TAP_PAPER_SUPERVISOR_V1",
+  "session": "reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign\\session",
+  "started_at_utc": "2026-10-23T18:33:58Z",
+  "state_dir": "reports\\ai-bots\\CODEX-PAPER-SUPERVISOR-001\\campaign\\supervisor"
+}

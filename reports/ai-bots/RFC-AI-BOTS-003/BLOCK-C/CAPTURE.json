@@ -1,0 +1,285 @@
+{
+  "bars": 1000,
+  "decision_every_bars": 24,
+  "git": {
+    "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+    "dirty_paths": 178,
+    "head": "eeb0bea1049e551bd4744e5f1d4ea195f4b5d139"
+  },
+  "libraries": {
+    "mypy": "2.1.0",
+    "numpy": "2.0.2",
+    "pydantic": "2.13.4",
+    "pytest": "9.1.1",
+    "python": "3.11.15",
+    "pyyaml": "6.0.3",
+    "ruff": "0.15.20"
+  },
+  "prospective_paper_validated": false,
+  "provider": "replay (scripted transport; NOT a model)",
+  "python": "3.11.15",
+  "real_model_called": false,
+  "scenarios": [
+    {
+      "chain": {
+        "head_sha256": "b9f323d4f50439ea30bce8783fc7c319c993bfec661f08f5d86c07c921943454",
+        "kinds": {
+          "CLOSE": 34,
+          "DECISION": 74,
+          "DECISION_OUTCOME": 66,
+          "FILL": 34,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 210,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 16,
+        "requote:WAITING_FOR_QUOTE": 50
+      },
+      "declared_bars": {
+        "AAVE/USDT": 1000,
+        "UNI/USDT": 1000
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 900,
+      "ledger": "evidence\\real_900ms_ledger.jsonl",
+      "name": "real_900ms",
+      "net_realised_usdt": -97.926767,
+      "policy_override": null,
+      "removed_bar_open_ms": {},
+      "series_sha256": "2b4c1614de8a251839a71c6d271c8d2a4a8b71e2aca87420186cd45d8d297972",
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "02eb53040846551e635c2f2dc1282dfe494ca5302c61d51bdcfea2e2d2e5776f",
+        "kinds": {
+          "CLOSE": 34,
+          "DECISION": 74,
+          "DECISION_OUTCOME": 66,
+          "FILL": 34,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 210,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 16,
+        "requote:WAITING_FOR_QUOTE": 50
+      },
+      "declared_bars": {
+        "AAVE/USDT": 1000,
+        "UNI/USDT": 1000
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 900,
+      "ledger": "evidence\\real_900ms_wide_stop_ledger.jsonl",
+      "name": "real_900ms_wide_stop",
+      "net_realised_usdt": -34.247921,
+      "policy_override": {
+        "default_stop_loss_pct": 2.0,
+        "default_take_profit_pct": 3.0
+      },
+      "removed_bar_open_ms": {},
+      "series_sha256": "2b4c1614de8a251839a71c6d271c8d2a4a8b71e2aca87420186cd45d8d297972",
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "a15b8789d908a60c43052d3d08b893baf336e0cd06532c825fb4b787d86481f4",
+        "kinds": {
+          "CLOSE": 34,
+          "DECISION": 74,
+          "DECISION_OUTCOME": 66,
+          "FILL": 34,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 210,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 16
+      },
+      "declared_bars": {
+        "AAVE/USDT": 1000,
+        "UNI/USDT": 1000
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 0,
+      "ledger": "evidence\\real_0ms_ledger.jsonl",
+      "name": "real_0ms",
+      "net_realised_usdt": -85.426764,
+      "policy_override": null,
+      "removed_bar_open_ms": {},
+      "series_sha256": "2b4c1614de8a251839a71c6d271c8d2a4a8b71e2aca87420186cd45d8d297972",
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "313a8ab60d7f83a0a67d07120c53ba562e2134300a2ebbd442caccf6cb4b8e1d",
+        "kinds": {
+          "CLOSE": 34,
+          "DECISION": 74,
+          "DECISION_OUTCOME": 62,
+          "FILL": 34,
+          "GUARD_REJECT": 2,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 208,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 34,
+      "counters": {
+        "action:CLOSE": 12,
+        "action:LONG": 25,
+        "action:NO_TRADE": 12,
+        "action:SHORT": 25,
+        "closed_trades": 34,
+        "dropped:MODEL_NO_TRADE": 12,
+        "dropped:NO_POSITION_TO_CLOSE": 12,
+        "fills": 34,
+        "gate:WEEKEND_BLOCK": 14,
+        "guard:DATA_GAP": 2,
+        "requote:WAITING_FOR_QUOTE": 48
+      },
+      "declared_bars": {
+        "AAVE/USDT": 1000,
+        "UNI/USDT": 1000
+      },
+      "fills": 34,
+      "gap_exits": 0,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 900,
+      "ledger": "evidence\\real_900ms_hole_ledger.jsonl",
+      "name": "real_900ms_hole",
+      "net_realised_usdt": -85.449238,
+      "policy_override": null,
+      "removed_bar_open_ms": {
+        "AAVE/USDT": 1610154000000,
+        "UNI/USDT": 1610154000000
+      },
+      "series_sha256": "34204820039f5a90bddd052063c544a400ac8d1e20b255dda64e6038cd00fa1c",
+      "synthetic_dataset": false
+    },
+    {
+      "chain": {
+        "head_sha256": "4ba5bcfa8c31cebc36d5e175d7ecd105c6ab578565efbde8f1d7ef66b1c88c32",
+        "kinds": {
+          "CLOSE": 1,
+          "DECISION": 114,
+          "DECISION_OUTCOME": 5,
+          "FILL": 1,
+          "GUARD_REJECT": 1,
+          "RUN": 1,
+          "RUN_END": 1
+        },
+        "lines": 124,
+        "ok": true,
+        "reason": "INTACT"
+      },
+      "closed_trades": 1,
+      "counters": {
+        "action:LONG": 58,
+        "action:NO_TRADE": 56,
+        "closed_trades": 1,
+        "dropped:ALREADY_LONG": 52,
+        "dropped:MODEL_NO_TRADE": 56,
+        "fills": 1,
+        "gap_exits": 1,
+        "guard:RUN_ENDED_WITH_ORDER_PENDING": 1,
+        "risk_blocked:daily_loss_limit": 4
+      },
+      "declared_bars": {
+        "BTC/USDT": 76,
+        "ETH/USDT": 76
+      },
+      "fills": 1,
+      "gap_exits": 1,
+      "identities": {
+        "cash_rebuilds_from_realised_pnl": true,
+        "curve_ends_at_final_equity": true,
+        "every_close_after_its_entry_quote": true,
+        "net_pnl_nets_every_named_cost": true,
+        "risk_equity_matches_marked_equity": true
+      },
+      "latency_ms": 0,
+      "ledger": "evidence\\synthetic_gap_open_ledger.jsonl",
+      "name": "synthetic_gap_open",
+      "net_realised_usdt": -16.232058,
+      "policy_override": {
+        "max_daily_loss_pct": 0.05
+      },
+      "removed_bar_open_ms": {},
+      "series_sha256": "246b02854c56be98798e1b5c273b0228f18aefd22b0b3b0e0cbdba8dd0b129c5",
+      "synthetic_dataset": true
+    }
+  ],
+  "tool": "ai_bots_003c_capture",
+  "window_bars": 120
+}

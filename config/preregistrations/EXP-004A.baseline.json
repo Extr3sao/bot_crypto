@@ -1,0 +1,7 @@
+{
+  "baseline_id": "NO_TRADE",
+  "reading": "A cost measurement that places no order has exactly one honest baseline: doing nothing. Every measured basis point is a cost the baseline does not pay, so the baseline cannot be beaten by a cheaper venue without the measurement itself changing.",
+  "positions": [],
+  "trades_per_day": 0,
+  "assumptions": ["no capital is committed", "no order is sent", "the measurement is of prices, not of fills"]
+}

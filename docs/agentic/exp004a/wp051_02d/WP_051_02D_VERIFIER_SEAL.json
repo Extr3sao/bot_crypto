@@ -1,0 +1,173 @@
+{
+  "schema_version": "1.0",
+  "run_id": "wp051-02d/EXP-004A/2026-10-21",
+  "role": "independent verifier (seal)",
+  "verifier_id": "verifier-c/EXP-004A/WP-051-02D",
+  "sealed_at_utc": "2026-10-21T15:40:35Z",
+  "head_at_seal": "0c54133308fb85dd5aef13d957232798326557be",
+  "manifest": {
+    "path": "docs/agentic/exp004a/wp051_02d/EVIDENCE_MANIFEST.json",
+    "sha256": "ccefdac4151ae0435e5570549a15eb9974336fd14248e06c61e7005e1308c984",
+    "entries": 19,
+    "self_excluded": "this manifest does not hash itself, and it does not hash the final report: the report is emitted after the verifier has read the chain, so including it would either freeze a report that cannot mention the verdict or leave a digest that the next edit breaks. The commit that carries both files addresses them."
+  },
+  "status": "PASS",
+  "mismatched": [],
+  "unlisted_required": [],
+  "entries": [
+    {
+      "path": "config/preregistrations/EXP-004A.datasets.phase2.json",
+      "recorded_sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+      "recomputed_sha256": "eb27cedc2626844daba9c82915c9258687e20072b774ca564142993ed6e7c01e",
+      "sha256_matches": true,
+      "worktree_blob": "9421cc52a8a3366b3a1fa6998d547b0a002ed89b",
+      "head_blob": "9421cc52a8a3366b3a1fa6998d547b0a002ed89b"
+    },
+    {
+      "path": "src/trading_bot/research/prospective/provenance.py",
+      "recorded_sha256": "63a4f41368605fcbbd62a5ca590524265cf447144467951e0e35ad8c03263f65",
+      "recomputed_sha256": "63a4f41368605fcbbd62a5ca590524265cf447144467951e0e35ad8c03263f65",
+      "sha256_matches": true,
+      "worktree_blob": "3b59f8f335a2a9b475299a0b2224acfb4431a424",
+      "head_blob": "3b59f8f335a2a9b475299a0b2224acfb4431a424"
+    },
+    {
+      "path": "scripts/exp004a_capture.py",
+      "recorded_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+      "recomputed_sha256": "af1ab7cc23980dadac83ba53d2a5f8c1c5f33f6b5dd4841dd58620b9bb421cb8",
+      "sha256_matches": true,
+      "worktree_blob": "052832c2252a719c63d0859628ada648c799c6ce",
+      "head_blob": "052832c2252a719c63d0859628ada648c799c6ce"
+    },
+    {
+      "path": "tests/unit/research/test_exp004a_provenance.py",
+      "recorded_sha256": "88164ba1be7c28499464ad70929998013811ec4b41a811b38964921c32da8a2d",
+      "recomputed_sha256": "88164ba1be7c28499464ad70929998013811ec4b41a811b38964921c32da8a2d",
+      "sha256_matches": true,
+      "worktree_blob": "50f9bfdba129daa78485529a32393435dccfd929",
+      "head_blob": "50f9bfdba129daa78485529a32393435dccfd929"
+    },
+    {
+      "path": "tests/unit/research/test_exp004a_capture.py",
+      "recorded_sha256": "5da8cf28b039e1fbf2393798dd5e7e2119cb29e52d2b83db65f8190ee3e6a292",
+      "recomputed_sha256": "5da8cf28b039e1fbf2393798dd5e7e2119cb29e52d2b83db65f8190ee3e6a292",
+      "sha256_matches": true,
+      "worktree_blob": "ce9ffc2371c07e962aa788f9f5e9b49776fa25d7",
+      "head_blob": "ce9ffc2371c07e962aa788f9f5e9b49776fa25d7"
+    },
+    {
+      "path": "scripts/exp004a_provenance_preflight.py",
+      "recorded_sha256": "662295c3732acc1142bd8df050deca1aef7c856d4bdd8d6af48dab76b89ab806",
+      "recomputed_sha256": "662295c3732acc1142bd8df050deca1aef7c856d4bdd8d6af48dab76b89ab806",
+      "sha256_matches": true,
+      "worktree_blob": "29fa36d97d350861093744a08e9bb075ae265ce3",
+      "head_blob": "29fa36d97d350861093744a08e9bb075ae265ce3"
+    },
+    {
+      "path": "scripts/exp004a_provenance_verify.py",
+      "recorded_sha256": "0ae5fe10355e36f719084fe3e06177c5cb838c9135b03e6d37dc12c7cc12a287",
+      "recomputed_sha256": "0ae5fe10355e36f719084fe3e06177c5cb838c9135b03e6d37dc12c7cc12a287",
+      "sha256_matches": true,
+      "worktree_blob": "519ce77079c8e79a9f3025b8f8fa8a7a38c1c756",
+      "head_blob": "519ce77079c8e79a9f3025b8f8fa8a7a38c1c756"
+    },
+    {
+      "path": "config/preregistrations/EXP-004A.datasets.json",
+      "recorded_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+      "recomputed_sha256": "8946f871a97b7575b1a9aa2900b3243f88d07a4821d09d6d0a3c113f1e5de211",
+      "sha256_matches": true,
+      "worktree_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7",
+      "head_blob": "43c9deea29a8e4af1c0333bcc0b58131620ec3e7"
+    },
+    {
+      "path": "docs/RFC-050_EXP004A_TWO_PHASE_FREEZE.md",
+      "recorded_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+      "recomputed_sha256": "cc7820a99d0554389ddc45c9ff285729c25c1b1727b1bebffa93fa593b8b89d5",
+      "sha256_matches": true,
+      "worktree_blob": "41ba4b163b37ad714587c3dccd7741bea715ad62",
+      "head_blob": "41ba4b163b37ad714587c3dccd7741bea715ad62"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02d/RFC_EXP004A_051_02D.md",
+      "recorded_sha256": "aa61cb63fe92bcd73abf0bf8e58807730d05469d4ac5212cef9ce7ae32e64640",
+      "recomputed_sha256": "aa61cb63fe92bcd73abf0bf8e58807730d05469d4ac5212cef9ce7ae32e64640",
+      "sha256_matches": true,
+      "worktree_blob": "14646ef2d411dbec0435f169546997cc205eed0c",
+      "head_blob": "14646ef2d411dbec0435f169546997cc205eed0c"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02d/WP_051_02D_BASELINE.json",
+      "recorded_sha256": "98934a8d989a78e47c9b220dd91feb0c3f8f72386580b9ac8cd3d4eac3532c18",
+      "recomputed_sha256": "98934a8d989a78e47c9b220dd91feb0c3f8f72386580b9ac8cd3d4eac3532c18",
+      "sha256_matches": true,
+      "worktree_blob": "296bb844196e61ab8a59d0f5033699652f7a31e5",
+      "head_blob": "296bb844196e61ab8a59d0f5033699652f7a31e5"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02d/WP_051_02D_PREFLIGHT.json",
+      "recorded_sha256": "9427bdadc6695a5e19bb07b543c7e6cca127e9bb8ce7090bcc4234e8770a74f7",
+      "recomputed_sha256": "9427bdadc6695a5e19bb07b543c7e6cca127e9bb8ce7090bcc4234e8770a74f7",
+      "sha256_matches": true,
+      "worktree_blob": "f3a948b9254e6f7aaaf636b34c0d1a90f11c0ddc",
+      "head_blob": "f3a948b9254e6f7aaaf636b34c0d1a90f11c0ddc"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02d/WP_051_02D_PREFLIGHT.md",
+      "recorded_sha256": "14ed0b8562879a8b9a3a1a9e6e8d31c0f792a5f6f883fad216bb741c19fc9203",
+      "recomputed_sha256": "14ed0b8562879a8b9a3a1a9e6e8d31c0f792a5f6f883fad216bb741c19fc9203",
+      "sha256_matches": true,
+      "worktree_blob": "cfe12911cc0286e05b100a9d2cce9b66d6e817a8",
+      "head_blob": "cfe12911cc0286e05b100a9d2cce9b66d6e817a8"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02d/WP_051_02D_TEST_REPORT.md",
+      "recorded_sha256": "d524f2ee30b12cc2091f916eae886bcc98a950dfc0c9b4114d857615c6d007bd",
+      "recomputed_sha256": "d524f2ee30b12cc2091f916eae886bcc98a950dfc0c9b4114d857615c6d007bd",
+      "sha256_matches": true,
+      "worktree_blob": "a8437c35cf8a02d8de37a74066f193dbe5fceaba",
+      "head_blob": "a8437c35cf8a02d8de37a74066f193dbe5fceaba"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02d/WP_051_02D_CHANGELOG.md",
+      "recorded_sha256": "e1c7f3c82563bd8a1780bbad9af005fcea0f50ed54f5046dac48a3e415351669",
+      "recomputed_sha256": "e1c7f3c82563bd8a1780bbad9af005fcea0f50ed54f5046dac48a3e415351669",
+      "sha256_matches": true,
+      "worktree_blob": "9457f182e3fc2c2e5bb0a5b3ec671f44725eff29",
+      "head_blob": "9457f182e3fc2c2e5bb0a5b3ec671f44725eff29"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02d/RUN_REPORT.md",
+      "recorded_sha256": "7010dc83ef8aac2419da0a9cff0f3db4deccc7fda64a9c18ff951e9ad9c48e42",
+      "recomputed_sha256": "7010dc83ef8aac2419da0a9cff0f3db4deccc7fda64a9c18ff951e9ad9c48e42",
+      "sha256_matches": true,
+      "worktree_blob": "3e16ade4784ff542fd1b3e5ef786abf4c556cfa4",
+      "head_blob": "3e16ade4784ff542fd1b3e5ef786abf4c556cfa4"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02d/RUN_REPORT.json",
+      "recorded_sha256": "0ba3e66813f0ac1e367fd1a1b8bd0a7eedffd15e430219bd17412ef79112fb3c",
+      "recomputed_sha256": "0ba3e66813f0ac1e367fd1a1b8bd0a7eedffd15e430219bd17412ef79112fb3c",
+      "sha256_matches": true,
+      "worktree_blob": "47c40c2ca877e2a8162bcab7e7768f24a25e06bc",
+      "head_blob": "47c40c2ca877e2a8162bcab7e7768f24a25e06bc"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02d/WP_051_02D_PROVENANCE_VERIFICATION.json",
+      "recorded_sha256": "0e0fbb353dc1e061b410dac22465900e12123840e16c5ab8cba4cb318060e0be",
+      "recomputed_sha256": "0e0fbb353dc1e061b410dac22465900e12123840e16c5ab8cba4cb318060e0be",
+      "sha256_matches": true,
+      "worktree_blob": "d4e2e2b8aa8f7288217b6a5d9f6446e91d7e473d",
+      "head_blob": "b1a020a50fd9186970f6f7134dac7592121e9d15"
+    },
+    {
+      "path": "docs/agentic/exp004a/wp051_02d/WP_051_02D_PROVENANCE_VERIFICATION.md",
+      "recorded_sha256": "ca2a925a0cfbf49456b3972a933fda4938afc1d296e6829adfb9343a075f416c",
+      "recomputed_sha256": "ca2a925a0cfbf49456b3972a933fda4938afc1d296e6829adfb9343a075f416c",
+      "sha256_matches": true,
+      "worktree_blob": "4831da7adca1e11d3f773cc522574084bb825995",
+      "head_blob": "ba5299d306ca3953f48c5062c1bc8e2022170560"
+    }
+  ],
+  "note": "The seal cannot hash itself, and it does not re-hash the verification report it accompanies: it hashes every entry the manifest claims. A commit made after the seal is the durable record of this file.",
+  "economic_executions": 0
+}

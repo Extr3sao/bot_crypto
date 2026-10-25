@@ -1,0 +1,1430 @@
+{
+  "alternatives": [
+    {
+      "breakeven_win_rate": 0.598291,
+      "dev_expectancy_bps_net": -29.707555,
+      "expectancy_bps_net": -29.707555,
+      "holdout_expectancy_bps_net": null,
+      "net_rr_p50": 0.671426,
+      "strategy": "ema_crossover",
+      "timeframe": "15m",
+      "trades": 339,
+      "win_rate": 0.345133
+    },
+    {
+      "breakeven_win_rate": 0.598291,
+      "dev_expectancy_bps_net": -29.138363,
+      "expectancy_bps_net": -36.104384,
+      "holdout_expectancy_bps_net": -46.055844,
+      "net_rr_p50": 0.671426,
+      "strategy": "mean_reversion",
+      "timeframe": "15m",
+      "trades": 34,
+      "win_rate": 0.294118
+    },
+    {
+      "breakeven_win_rate": 0.598291,
+      "dev_expectancy_bps_net": -23.940706,
+      "expectancy_bps_net": -25.752089,
+      "holdout_expectancy_bps_net": -38.960094,
+      "net_rr_p50": 0.671426,
+      "strategy": "ema_crossover",
+      "timeframe": "1h",
+      "trades": 398,
+      "win_rate": 0.376884
+    },
+    {
+      "breakeven_win_rate": 0.598291,
+      "dev_expectancy_bps_net": -35.868043,
+      "expectancy_bps_net": -41.611777,
+      "holdout_expectancy_bps_net": -48.996577,
+      "net_rr_p50": 0.671426,
+      "strategy": "mean_reversion",
+      "timeframe": "1h",
+      "trades": 48,
+      "win_rate": 0.25
+    },
+    {
+      "breakeven_win_rate": 0.598291,
+      "dev_expectancy_bps_net": -38.3155,
+      "expectancy_bps_net": -37.735717,
+      "holdout_expectancy_bps_net": -36.756528,
+      "net_rr_p50": 0.671426,
+      "strategy": "ema_crossover",
+      "timeframe": "4h",
+      "trades": 242,
+      "win_rate": 0.280992
+    },
+    {
+      "breakeven_win_rate": 0.598291,
+      "dev_expectancy_bps_net": -65.137725,
+      "expectancy_bps_net": -66.650936,
+      "holdout_expectancy_bps_net": -72.703781,
+      "net_rr_p50": 0.671426,
+      "strategy": "mean_reversion",
+      "timeframe": "4h",
+      "trades": 20,
+      "win_rate": 0.05
+    },
+    {
+      "breakeven_win_rate": 0.598291,
+      "dev_expectancy_bps_net": -33.133289,
+      "expectancy_bps_net": -33.133289,
+      "holdout_expectancy_bps_net": null,
+      "net_rr_p50": 0.671426,
+      "strategy": "ema_crossover",
+      "timeframe": "5m",
+      "trades": 302,
+      "win_rate": 0.317881
+    },
+    {
+      "breakeven_win_rate": 0.598291,
+      "dev_expectancy_bps_net": -21.798929,
+      "expectancy_bps_net": -16.840916,
+      "holdout_expectancy_bps_net": -10.147598,
+      "net_rr_p50": 0.671426,
+      "strategy": "mean_reversion",
+      "timeframe": "5m",
+      "trades": 47,
+      "win_rate": 0.446809
+    }
+  ],
+  "corpus": {
+    "closed_trades": 1430,
+    "decisions": 10992,
+    "root": "reports\\ai-bots\\EXP-003L-EXECUTION-ECONOMICS-001\\runs",
+    "runs": 8,
+    "stake_usdt": 500.0
+  },
+  "costs": {
+    "fee_bps_per_side": 10.0,
+    "half_spread_bps": 0.5,
+    "impact_bps_per_side": 0.0885,
+    "risk_policy": {
+      "default_stop_loss_pct": 0.5,
+      "default_take_profit_pct": 0.75,
+      "max_order_notional_usdt": 500.0,
+      "max_risk_per_trade_pct": 0.25
+    },
+    "round_trip_bps": 24.786424,
+    "slippage_bps_per_side": 1.804712,
+    "stake_usdt": 500.0
+  },
+  "cross_asset_published": {
+    "all_expectancy_negative": true,
+    "arms": [
+      "control",
+      "real"
+    ],
+    "assets": [
+      "BTC/USDT",
+      "ETH/USDT",
+      "SOL/USDT"
+    ],
+    "available": true,
+    "best_row": {
+      "arm": "real",
+      "closes": 93,
+      "decisions": 549,
+      "expectancy_usdt": -0.729929,
+      "net_realised_usdt": -67.883427,
+      "partition": "research",
+      "symbol": "BTC/USDT",
+      "win_rate_pct": 46.236559
+    },
+    "oos_all_negative": true,
+    "path": "reports\\ai-bots\\EXP-003J-REAL-SIGNAL-PAPER-001\\METRICS_BY_ASSET.csv",
+    "rows": [
+      {
+        "arm": "control",
+        "closes": 146,
+        "decisions": 549,
+        "expectancy_usdt": -1.094014,
+        "net_realised_usdt": -159.725978,
+        "partition": "research",
+        "symbol": "BTC/USDT",
+        "win_rate_pct": 40.410959
+      },
+      {
+        "arm": "control",
+        "closes": 165,
+        "decisions": 549,
+        "expectancy_usdt": -0.816693,
+        "net_realised_usdt": -134.754355,
+        "partition": "research",
+        "symbol": "ETH/USDT",
+        "win_rate_pct": 44.848485
+      },
+      {
+        "arm": "control",
+        "closes": 171,
+        "decisions": 549,
+        "expectancy_usdt": -0.941545,
+        "net_realised_usdt": -161.00427,
+        "partition": "research",
+        "symbol": "SOL/USDT",
+        "win_rate_pct": 43.859649
+      },
+      {
+        "arm": "control",
+        "closes": 38,
+        "decisions": 165,
+        "expectancy_usdt": -1.645976,
+        "net_realised_usdt": -62.5471,
+        "partition": "oos",
+        "symbol": "BTC/USDT",
+        "win_rate_pct": 31.578947
+      },
+      {
+        "arm": "control",
+        "closes": 41,
+        "decisions": 165,
+        "expectancy_usdt": -1.637801,
+        "net_realised_usdt": -67.149858,
+        "partition": "oos",
+        "symbol": "ETH/USDT",
+        "win_rate_pct": 31.707317
+      },
+      {
+        "arm": "control",
+        "closes": 52,
+        "decisions": 165,
+        "expectancy_usdt": -1.39901,
+        "net_realised_usdt": -72.748519,
+        "partition": "oos",
+        "symbol": "SOL/USDT",
+        "win_rate_pct": 36.538462
+      },
+      {
+        "arm": "real",
+        "closes": 93,
+        "decisions": 549,
+        "expectancy_usdt": -0.729929,
+        "net_realised_usdt": -67.883427,
+        "partition": "research",
+        "symbol": "BTC/USDT",
+        "win_rate_pct": 46.236559
+      },
+      {
+        "arm": "real",
+        "closes": 110,
+        "decisions": 549,
+        "expectancy_usdt": -1.801437,
+        "net_realised_usdt": -198.158102,
+        "partition": "research",
+        "symbol": "ETH/USDT",
+        "win_rate_pct": 29.090909
+      },
+      {
+        "arm": "real",
+        "closes": 127,
+        "decisions": 549,
+        "expectancy_usdt": -1.763415,
+        "net_realised_usdt": -223.953663,
+        "partition": "research",
+        "symbol": "SOL/USDT",
+        "win_rate_pct": 30.708661
+      },
+      {
+        "arm": "real",
+        "closes": 46,
+        "decisions": 165,
+        "expectancy_usdt": -1.581573,
+        "net_realised_usdt": -72.752377,
+        "partition": "oos",
+        "symbol": "BTC/USDT",
+        "win_rate_pct": 32.608696
+      },
+      {
+        "arm": "real",
+        "closes": 58,
+        "decisions": 165,
+        "expectancy_usdt": -1.248868,
+        "net_realised_usdt": -72.434329,
+        "partition": "oos",
+        "symbol": "ETH/USDT",
+        "win_rate_pct": 37.931034
+      },
+      {
+        "arm": "real",
+        "closes": 71,
+        "decisions": 165,
+        "expectancy_usdt": -1.129779,
+        "net_realised_usdt": -80.214337,
+        "partition": "oos",
+        "symbol": "SOL/USDT",
+        "win_rate_pct": 40.84507
+      }
+    ]
+  },
+  "generated_at_utc": "2026-10-20T20:27:17Z",
+  "live_corpus_audit": {
+    "by_source": {
+      "legacy_parity": {
+        "at_or_below_model_cost": 0,
+        "below_share": 0.0,
+        "distinct_decisions": 14,
+        "stop_bps": {
+          "mean": 100.0,
+          "p10": 100.0,
+          "p50": 100.0,
+          "p90": 100.0,
+          "samples": 14
+        }
+      },
+      "strategy_experimental": {
+        "at_or_below_model_cost": 61,
+        "below_share": 1.0,
+        "distinct_decisions": 61,
+        "stop_bps": {
+          "mean": 6.28078,
+          "p10": 4.5359,
+          "p50": 5.3817,
+          "p90": 10.4121,
+          "samples": 61
+        }
+      }
+    },
+    "decision_rows_summed_over_cycles": 4983,
+    "distinct_at_or_below_model_cost": 61,
+    "distinct_below_share": 0.813333,
+    "distinct_decisions": 75,
+    "distinct_stop_bps": {
+      "mean": 23.775035,
+      "p10": 4.5484,
+      "p50": 5.5555,
+      "p90": 100.0,
+      "samples": 75
+    },
+    "inflation_factor": 66.44,
+    "published_4114_is": "sum over every cycle ledger, not distinct opinions",
+    "sessions": [
+      {
+        "cycles": 3,
+        "decision_rows_all_cycles": 18,
+        "distinct_decisions": 3,
+        "session": "experimental-1m",
+        "signal_source": "strategy_experimental"
+      },
+      {
+        "cycles": 25,
+        "decision_rows_all_cycles": 507,
+        "distinct_decisions": 14,
+        "session": "experimental-1m-d2",
+        "signal_source": "strategy_experimental"
+      },
+      {
+        "cycles": 72,
+        "decision_rows_all_cycles": 4353,
+        "distinct_decisions": 43,
+        "session": "experimental-1m-d2-close",
+        "signal_source": "strategy_experimental"
+      },
+      {
+        "cycles": 2,
+        "decision_rows_all_cycles": 3,
+        "distinct_decisions": 1,
+        "session": "experimental-5m-w360",
+        "signal_source": "strategy_experimental"
+      },
+      {
+        "cycles": 3,
+        "decision_rows_all_cycles": 12,
+        "distinct_decisions": 6,
+        "session": "legacy-1m",
+        "signal_source": "legacy_parity"
+      },
+      {
+        "cycles": 10,
+        "decision_rows_all_cycles": 90,
+        "distinct_decisions": 8,
+        "session": "legacy-1m-d2",
+        "signal_source": "legacy_parity"
+      }
+    ]
+  },
+  "runs": [
+    {
+      "actionable": 1296,
+      "asset": "BTC/USDT",
+      "breakeven_cost_multiplier": -0.377731,
+      "breakeven_win_rate": {
+        "mean": 0.598291,
+        "p10": 0.598291,
+        "p50": 0.598291,
+        "p90": 0.598291,
+        "samples": 339
+      },
+      "closed_trades": 339,
+      "dataset_bars": 4416,
+      "decision_every_bars": 8,
+      "decisions": 1632,
+      "declared_stop_at_or_below_model_cost": 0,
+      "declared_stop_bps": {
+        "mean": 49.841204,
+        "p10": 26.6129,
+        "p50": 46.1234,
+        "p90": 76.092,
+        "samples": 1432
+      },
+      "declared_stop_sample_with_fill": 339,
+      "declared_vs_effective_stop_mismatch": 306,
+      "dev_holdout": {
+        "dev": {
+          "expectancy_bps_net": -29.707555,
+          "pnl_net_usdt": -503.543058,
+          "trades": 339,
+          "win_rate": 0.345133
+        },
+        "dev_end_ms": 1784405700000,
+        "holdout": {
+          "expectancy_bps_net": null,
+          "trades": 0,
+          "win_rate": null
+        }
+      },
+      "effective_stop_bps": {
+        "mean": 50.0,
+        "p10": 50.0,
+        "p50": 50.0,
+        "p90": 50.0,
+        "samples": 339
+      },
+      "effective_target_bps": {
+        "mean": 75.0,
+        "p10": 75.0,
+        "p50": 75.0,
+        "p90": 75.0,
+        "samples": 339
+      },
+      "expectancy_bps_gross": -9.707555,
+      "expectancy_bps_net": -29.707555,
+      "fills": 339,
+      "gross_bps": {
+        "mean": -9.707555,
+        "p10": -53.673096,
+        "p50": -52.380676,
+        "p90": 72.624737,
+        "samples": 339
+      },
+      "model_cost_bps": 24.786424,
+      "net_bps": {
+        "mean": -29.707555,
+        "p10": -73.673096,
+        "p50": -72.380676,
+        "p90": 52.624737,
+        "samples": 339
+      },
+      "net_rr": {
+        "mean": 0.671426,
+        "p10": 0.671426,
+        "p50": 0.671426,
+        "p90": 0.671426,
+        "samples": 339
+      },
+      "path": "reports\\ai-bots\\EXP-003L-EXECUTION-ECONOMICS-001\\runs\\15m\\ema_crossover\\real\\research\\ledger.jsonl",
+      "pnl_net_usdt": -503.543058,
+      "realised_cost_bps": {
+        "mean": 25.699675,
+        "p10": 24.768475,
+        "p50": 24.79839,
+        "p90": 27.327918,
+        "samples": 339
+      },
+      "regime": {
+        "trend:down": {
+          "expectancy_bps_net": -28.281751,
+          "trades": 157,
+          "win_rate": 0.356688
+        },
+        "trend:flat": {
+          "expectancy_bps_net": 0.544202,
+          "trades": 17,
+          "win_rate": 0.588235
+        },
+        "trend:up": {
+          "expectancy_bps_net": -34.181077,
+          "trades": 165,
+          "win_rate": 0.309091
+        },
+        "vol:high": {
+          "expectancy_bps_net": -37.557127,
+          "trades": 194,
+          "win_rate": 0.283505
+        },
+        "vol:mid": {
+          "expectancy_bps_net": -19.205369,
+          "trades": 145,
+          "win_rate": 0.427586
+        }
+      },
+      "rejected_actions": {
+        "LONG": 425,
+        "SHORT": 348
+      },
+      "rejections": {
+        "consecutive_loss_cooldown": 36,
+        "daily_trade_limit": 41,
+        "max_drawdown": 696
+      },
+      "sensitivity": {
+        "cost_x0.0": -9.707555,
+        "cost_x0.5": -22.557393,
+        "cost_x1.0": -35.40723,
+        "cost_x1.5": -48.257068,
+        "cost_x2.0": -61.106906,
+        "cost_x3.0": -86.806581
+      },
+      "strategy": "ema_crossover",
+      "timeframe": "15m",
+      "win_rate": 0.345133,
+      "window_bars": 60
+    },
+    {
+      "actionable": 48,
+      "asset": "BTC/USDT",
+      "breakeven_cost_multiplier": -0.625551,
+      "breakeven_win_rate": {
+        "mean": 0.598291,
+        "p10": 0.598291,
+        "p50": 0.598291,
+        "p90": 0.598291,
+        "samples": 34
+      },
+      "closed_trades": 34,
+      "dataset_bars": 4416,
+      "decision_every_bars": 8,
+      "decisions": 1632,
+      "declared_stop_at_or_below_model_cost": 0,
+      "declared_stop_bps": {
+        "mean": 73.240892,
+        "p10": 30.4459,
+        "p50": 61.8489,
+        "p90": 147.7268,
+        "samples": 48
+      },
+      "declared_stop_sample_with_fill": 34,
+      "declared_vs_effective_stop_mismatch": 30,
+      "dev_holdout": {
+        "dev": {
+          "expectancy_bps_net": -29.138363,
+          "pnl_net_usdt": -29.138363,
+          "trades": 20,
+          "win_rate": 0.35
+        },
+        "dev_end_ms": 1784405700000,
+        "holdout": {
+          "expectancy_bps_net": -46.055844,
+          "pnl_net_usdt": -32.23909,
+          "trades": 14,
+          "win_rate": 0.214286
+        }
+      },
+      "effective_stop_bps": {
+        "mean": 50.0,
+        "p10": 50.0,
+        "p50": 50.0,
+        "p90": 50.0,
+        "samples": 34
+      },
+      "effective_target_bps": {
+        "mean": 75.0,
+        "p10": 75.0,
+        "p50": 75.0,
+        "p90": 75.0,
+        "samples": 34
+      },
+      "expectancy_bps_gross": -16.104384,
+      "expectancy_bps_net": -36.104384,
+      "fills": 34,
+      "gross_bps": {
+        "mean": -16.104384,
+        "p10": -53.635219,
+        "p50": -52.380676,
+        "p90": 72.624737,
+        "samples": 34
+      },
+      "model_cost_bps": 24.786424,
+      "net_bps": {
+        "mean": -36.104384,
+        "p10": -73.635219,
+        "p50": -72.380676,
+        "p90": 52.624737,
+        "samples": 34
+      },
+      "net_rr": {
+        "mean": 0.671426,
+        "p10": 0.671426,
+        "p50": 0.671426,
+        "p90": 0.671426,
+        "samples": 34
+      },
+      "path": "reports\\ai-bots\\EXP-003L-EXECUTION-ECONOMICS-001\\runs\\15m\\mean_reversion\\real\\research\\ledger.jsonl",
+      "pnl_net_usdt": -61.377453,
+      "realised_cost_bps": {
+        "mean": 25.744312,
+        "p10": 24.768475,
+        "p50": 24.79839,
+        "p90": 27.327918,
+        "samples": 34
+      },
+      "regime": {
+        "trend:down": {
+          "expectancy_bps_net": -62.595087,
+          "trades": 12,
+          "win_rate": 0.083333
+        },
+        "trend:flat": {
+          "expectancy_bps_net": -72.405178,
+          "trades": 2,
+          "win_rate": 0.0
+        },
+        "trend:up": {
+          "expectancy_bps_net": -16.579883,
+          "trades": 20,
+          "win_rate": 0.45
+        },
+        "vol:high": {
+          "expectancy_bps_net": -41.771868,
+          "trades": 8,
+          "win_rate": 0.25
+        },
+        "vol:mid": {
+          "expectancy_bps_net": -34.360543,
+          "trades": 26,
+          "win_rate": 0.307692
+        }
+      },
+      "rejected_actions": {},
+      "rejections": {},
+      "sensitivity": {
+        "cost_x0.0": -16.104384,
+        "cost_x0.5": -28.97654,
+        "cost_x1.0": -41.848696,
+        "cost_x1.5": -54.720852,
+        "cost_x2.0": -67.593008,
+        "cost_x3.0": -93.33732
+      },
+      "strategy": "mean_reversion",
+      "timeframe": "15m",
+      "win_rate": 0.294118,
+      "window_bars": 60
+    },
+    {
+      "actionable": 1172,
+      "asset": "BTC/USDT",
+      "breakeven_cost_multiplier": -0.223603,
+      "breakeven_win_rate": {
+        "mean": 0.598291,
+        "p10": 0.598291,
+        "p50": 0.598291,
+        "p90": 0.598291,
+        "samples": 398
+      },
+      "closed_trades": 398,
+      "dataset_bars": 1104,
+      "decision_every_bars": 2,
+      "decisions": 1566,
+      "declared_stop_at_or_below_model_cost": 0,
+      "declared_stop_bps": {
+        "mean": 103.540847,
+        "p10": 59.9619,
+        "p50": 98.3338,
+        "p90": 149.0212,
+        "samples": 1356
+      },
+      "declared_stop_sample_with_fill": 398,
+      "declared_vs_effective_stop_mismatch": 398,
+      "dev_holdout": {
+        "dev": {
+          "expectancy_bps_net": -23.940706,
+          "pnl_net_usdt": -418.962351,
+          "trades": 350,
+          "win_rate": 0.391429
+        },
+        "dev_end_ms": 1784466000000,
+        "holdout": {
+          "expectancy_bps_net": -38.960094,
+          "pnl_net_usdt": -93.504226,
+          "trades": 48,
+          "win_rate": 0.270833
+        }
+      },
+      "effective_stop_bps": {
+        "mean": 50.0,
+        "p10": 50.0,
+        "p50": 50.0,
+        "p90": 50.0,
+        "samples": 398
+      },
+      "effective_target_bps": {
+        "mean": 75.0,
+        "p10": 75.0,
+        "p50": 75.0,
+        "p90": 75.0,
+        "samples": 398
+      },
+      "expectancy_bps_gross": -5.752089,
+      "expectancy_bps_net": -25.752089,
+      "fills": 398,
+      "gross_bps": {
+        "mean": -5.752089,
+        "p10": -53.673096,
+        "p50": -52.380676,
+        "p90": 72.624737,
+        "samples": 398
+      },
+      "model_cost_bps": 24.786424,
+      "net_bps": {
+        "mean": -25.752089,
+        "p10": -73.673096,
+        "p50": -72.380676,
+        "p90": 52.624737,
+        "samples": 398
+      },
+      "net_rr": {
+        "mean": 0.671426,
+        "p10": 0.671426,
+        "p50": 0.671426,
+        "p90": 0.671426,
+        "samples": 398
+      },
+      "path": "reports\\ai-bots\\EXP-003L-EXECUTION-ECONOMICS-001\\runs\\1h\\ema_crossover\\real\\research\\ledger.jsonl",
+      "pnl_net_usdt": -512.466577,
+      "realised_cost_bps": {
+        "mean": 25.724545,
+        "p10": 24.768475,
+        "p50": 24.803223,
+        "p90": 27.327918,
+        "samples": 398
+      },
+      "regime": {
+        "trend:down": {
+          "expectancy_bps_net": -33.995981,
+          "trades": 177,
+          "win_rate": 0.310734
+        },
+        "trend:flat": {
+          "expectancy_bps_net": -6.054077,
+          "trades": 15,
+          "win_rate": 0.533333
+        },
+        "trend:up": {
+          "expectancy_bps_net": -20.103067,
+          "trades": 206,
+          "win_rate": 0.42233
+        },
+        "vol:high": {
+          "expectancy_bps_net": -25.516529,
+          "trades": 396,
+          "win_rate": 0.378788
+        },
+        "vol:mid": {
+          "expectancy_bps_net": -72.392927,
+          "trades": 2,
+          "win_rate": 0.0
+        }
+      },
+      "rejected_actions": {
+        "LONG": 279,
+        "SHORT": 273
+      },
+      "rejections": {
+        "consecutive_loss_cooldown": 58,
+        "daily_trade_limit": 50,
+        "max_drawdown": 444
+      },
+      "sensitivity": {
+        "cost_x0.0": -5.752089,
+        "cost_x0.5": -18.614362,
+        "cost_x1.0": -31.476635,
+        "cost_x1.5": -44.338907,
+        "cost_x2.0": -57.20118,
+        "cost_x3.0": -82.925725
+      },
+      "strategy": "ema_crossover",
+      "timeframe": "1h",
+      "win_rate": 0.376884,
+      "window_bars": 60
+    },
+    {
+      "actionable": 59,
+      "asset": "BTC/USDT",
+      "breakeven_cost_multiplier": -0.84002,
+      "breakeven_win_rate": {
+        "mean": 0.598291,
+        "p10": 0.598291,
+        "p50": 0.598291,
+        "p90": 0.598291,
+        "samples": 48
+      },
+      "closed_trades": 48,
+      "dataset_bars": 1104,
+      "decision_every_bars": 2,
+      "decisions": 1566,
+      "declared_stop_at_or_below_model_cost": 0,
+      "declared_stop_bps": {
+        "mean": 155.683942,
+        "p10": 97.2066,
+        "p50": 137.9401,
+        "p90": 269.136,
+        "samples": 59
+      },
+      "declared_stop_sample_with_fill": 48,
+      "declared_vs_effective_stop_mismatch": 48,
+      "dev_holdout": {
+        "dev": {
+          "expectancy_bps_net": -35.868043,
+          "pnl_net_usdt": -48.421858,
+          "trades": 27,
+          "win_rate": 0.296296
+        },
+        "dev_end_ms": 1784466000000,
+        "holdout": {
+          "expectancy_bps_net": -48.996577,
+          "pnl_net_usdt": -51.446405,
+          "trades": 21,
+          "win_rate": 0.190476
+        }
+      },
+      "effective_stop_bps": {
+        "mean": 50.0,
+        "p10": 50.0,
+        "p50": 50.0,
+        "p90": 50.0,
+        "samples": 48
+      },
+      "effective_target_bps": {
+        "mean": 75.0,
+        "p10": 75.0,
+        "p50": 75.0,
+        "p90": 75.0,
+        "samples": 48
+      },
+      "expectancy_bps_gross": -21.611777,
+      "expectancy_bps_net": -41.611777,
+      "fills": 48,
+      "gross_bps": {
+        "mean": -21.611777,
+        "p10": -53.673096,
+        "p50": -52.405178,
+        "p90": 72.624737,
+        "samples": 48
+      },
+      "model_cost_bps": 24.786424,
+      "net_bps": {
+        "mean": -41.611777,
+        "p10": -73.673096,
+        "p50": -72.405178,
+        "p90": 52.624737,
+        "samples": 48
+      },
+      "net_rr": {
+        "mean": 0.671426,
+        "p10": 0.671426,
+        "p50": 0.671426,
+        "p90": 0.671426,
+        "samples": 48
+      },
+      "path": "reports\\ai-bots\\EXP-003L-EXECUTION-ECONOMICS-001\\runs\\1h\\mean_reversion\\real\\research\\ledger.jsonl",
+      "pnl_net_usdt": -99.868264,
+      "realised_cost_bps": {
+        "mean": 25.727699,
+        "p10": 24.768475,
+        "p50": 24.79839,
+        "p90": 27.327918,
+        "samples": 48
+      },
+      "regime": {
+        "trend:down": {
+          "expectancy_bps_net": -37.209362,
+          "trades": 21,
+          "win_rate": 0.285714
+        },
+        "trend:flat": {
+          "expectancy_bps_net": -72.380676,
+          "trades": 2,
+          "win_rate": 0.0
+        },
+        "trend:up": {
+          "expectancy_bps_net": -42.848293,
+          "trades": 25,
+          "win_rate": 0.24
+        },
+        "vol:high": {
+          "expectancy_bps_net": -40.273466,
+          "trades": 46,
+          "win_rate": 0.26087
+        },
+        "vol:mid": {
+          "expectancy_bps_net": -72.392927,
+          "trades": 2,
+          "win_rate": 0.0
+        }
+      },
+      "rejected_actions": {},
+      "rejections": {},
+      "sensitivity": {
+        "cost_x0.0": -21.611777,
+        "cost_x0.5": -34.475626,
+        "cost_x1.0": -47.339475,
+        "cost_x1.5": -60.203325,
+        "cost_x2.0": -73.067174,
+        "cost_x3.0": -98.794873
+      },
+      "strategy": "mean_reversion",
+      "timeframe": "1h",
+      "win_rate": 0.25,
+      "window_bars": 60
+    },
+    {
+      "actionable": 482,
+      "asset": "BTC/USDT",
+      "breakeven_cost_multiplier": -0.689526,
+      "breakeven_win_rate": {
+        "mean": 0.598291,
+        "p10": 0.598291,
+        "p50": 0.598291,
+        "p90": 0.598291,
+        "samples": 242
+      },
+      "closed_trades": 242,
+      "dataset_bars": 276,
+      "decision_every_bars": 1,
+      "decisions": 651,
+      "declared_stop_at_or_below_model_cost": 0,
+      "declared_stop_bps": {
+        "mean": 200.68048,
+        "p10": 138.8651,
+        "p50": 193.8672,
+        "p90": 268.8081,
+        "samples": 557
+      },
+      "declared_stop_sample_with_fill": 243,
+      "declared_vs_effective_stop_mismatch": 242,
+      "dev_holdout": {
+        "dev": {
+          "expectancy_bps_net": -38.3155,
+          "pnl_net_usdt": -291.197803,
+          "trades": 152,
+          "win_rate": 0.276316
+        },
+        "dev_end_ms": 1784721600000,
+        "holdout": {
+          "expectancy_bps_net": -36.756528,
+          "pnl_net_usdt": -165.404378,
+          "trades": 90,
+          "win_rate": 0.288889
+        }
+      },
+      "effective_stop_bps": {
+        "mean": 50.0,
+        "p10": 50.0,
+        "p50": 50.0,
+        "p90": 50.0,
+        "samples": 242
+      },
+      "effective_target_bps": {
+        "mean": 75.0,
+        "p10": 75.0,
+        "p50": 75.0,
+        "p90": 75.0,
+        "samples": 242
+      },
+      "expectancy_bps_gross": -17.735717,
+      "expectancy_bps_net": -37.735717,
+      "fills": 243,
+      "gross_bps": {
+        "mean": -17.735717,
+        "p10": -53.673096,
+        "p50": -52.380676,
+        "p90": 72.589416,
+        "samples": 242
+      },
+      "model_cost_bps": 24.786424,
+      "net_bps": {
+        "mean": -37.735717,
+        "p10": -73.673096,
+        "p50": -72.380676,
+        "p90": 52.589416,
+        "samples": 242
+      },
+      "net_rr": {
+        "mean": 0.671426,
+        "p10": 0.671426,
+        "p50": 0.671426,
+        "p90": 0.671426,
+        "samples": 242
+      },
+      "path": "reports\\ai-bots\\EXP-003L-EXECUTION-ECONOMICS-001\\runs\\4h\\ema_crossover\\real\\research\\ledger.jsonl",
+      "pnl_net_usdt": -456.602181,
+      "realised_cost_bps": {
+        "mean": 25.721604,
+        "p10": 24.773315,
+        "p50": 24.79839,
+        "p90": 27.327918,
+        "samples": 242
+      },
+      "regime": {
+        "trend:down": {
+          "expectancy_bps_net": -37.248303,
+          "trades": 98,
+          "win_rate": 0.285714
+        },
+        "trend:flat": {
+          "expectancy_bps_net": -31.137755,
+          "trades": 3,
+          "win_rate": 0.333333
+        },
+        "trend:up": {
+          "expectancy_bps_net": -38.21487,
+          "trades": 141,
+          "win_rate": 0.276596
+        },
+        "vol:high": {
+          "expectancy_bps_net": -37.735717,
+          "trades": 242,
+          "win_rate": 0.280992
+        }
+      },
+      "rejected_actions": {
+        "LONG": 63,
+        "SHORT": 33
+      },
+      "rejections": {
+        "RUN_ENDED_WITH_ORDER_PENDING": 2,
+        "consecutive_loss_cooldown": 94
+      },
+      "sensitivity": {
+        "cost_x0.0": -17.735717,
+        "cost_x0.5": -30.59652,
+        "cost_x1.0": -43.457322,
+        "cost_x1.5": -56.318124,
+        "cost_x2.0": -69.178926,
+        "cost_x3.0": -94.900531
+      },
+      "strategy": "ema_crossover",
+      "timeframe": "4h",
+      "win_rate": 0.280992,
+      "window_bars": 60
+    },
+    {
+      "actionable": 23,
+      "asset": "BTC/USDT",
+      "breakeven_cost_multiplier": -1.80828,
+      "breakeven_win_rate": {
+        "mean": 0.598291,
+        "p10": 0.598291,
+        "p50": 0.598291,
+        "p90": 0.598291,
+        "samples": 20
+      },
+      "closed_trades": 20,
+      "dataset_bars": 276,
+      "decision_every_bars": 1,
+      "decisions": 651,
+      "declared_stop_at_or_below_model_cost": 0,
+      "declared_stop_bps": {
+        "mean": 279.681935,
+        "p10": 177.0232,
+        "p50": 264.6519,
+        "p90": 413.8771,
+        "samples": 23
+      },
+      "declared_stop_sample_with_fill": 20,
+      "declared_vs_effective_stop_mismatch": 20,
+      "dev_holdout": {
+        "dev": {
+          "expectancy_bps_net": -65.137725,
+          "pnl_net_usdt": -52.11018,
+          "trades": 16,
+          "win_rate": 0.0625
+        },
+        "dev_end_ms": 1784721600000,
+        "holdout": {
+          "expectancy_bps_net": -72.703781,
+          "pnl_net_usdt": -14.540756,
+          "trades": 4,
+          "win_rate": 0.0
+        }
+      },
+      "effective_stop_bps": {
+        "mean": 50.0,
+        "p10": 50.0,
+        "p50": 50.0,
+        "p90": 50.0,
+        "samples": 20
+      },
+      "effective_target_bps": {
+        "mean": 75.0,
+        "p10": 75.0,
+        "p50": 75.0,
+        "p90": 75.0,
+        "samples": 20
+      },
+      "expectancy_bps_gross": -46.650936,
+      "expectancy_bps_net": -66.650936,
+      "fills": 20,
+      "gross_bps": {
+        "mean": -46.650936,
+        "p10": -53.673096,
+        "p50": -52.405178,
+        "p90": -52.380676,
+        "samples": 20
+      },
+      "model_cost_bps": 24.786424,
+      "net_bps": {
+        "mean": -66.650936,
+        "p10": -73.673096,
+        "p50": -72.405178,
+        "p90": -72.380676,
+        "samples": 20
+      },
+      "net_rr": {
+        "mean": 0.671426,
+        "p10": 0.671426,
+        "p50": 0.671426,
+        "p90": 0.671426,
+        "samples": 20
+      },
+      "path": "reports\\ai-bots\\EXP-003L-EXECUTION-ECONOMICS-001\\runs\\4h\\mean_reversion\\real\\research\\ledger.jsonl",
+      "pnl_net_usdt": -66.650936,
+      "realised_cost_bps": {
+        "mean": 25.798516,
+        "p10": 24.773315,
+        "p50": 24.79839,
+        "p90": 27.327918,
+        "samples": 20
+      },
+      "regime": {
+        "trend:down": {
+          "expectancy_bps_net": -72.739117,
+          "trades": 7,
+          "win_rate": 0.0
+        },
+        "trend:up": {
+          "expectancy_bps_net": -63.372685,
+          "trades": 13,
+          "win_rate": 0.076923
+        },
+        "vol:high": {
+          "expectancy_bps_net": -66.650936,
+          "trades": 20,
+          "win_rate": 0.05
+        }
+      },
+      "rejected_actions": {},
+      "rejections": {},
+      "sensitivity": {
+        "cost_x0.0": -46.650936,
+        "cost_x0.5": -59.550194,
+        "cost_x1.0": -72.449452,
+        "cost_x1.5": -85.348709,
+        "cost_x2.0": -98.247967,
+        "cost_x3.0": -124.046483
+      },
+      "strategy": "mean_reversion",
+      "timeframe": "4h",
+      "win_rate": 0.05,
+      "window_bars": 60
+    },
+    {
+      "actionable": 1311,
+      "asset": "BTC/USDT",
+      "breakeven_cost_multiplier": -0.51028,
+      "breakeven_win_rate": {
+        "mean": 0.598291,
+        "p10": 0.598291,
+        "p50": 0.598291,
+        "p90": 0.598291,
+        "samples": 302
+      },
+      "closed_trades": 302,
+      "dataset_bars": 13248,
+      "decision_every_bars": 24,
+      "decisions": 1647,
+      "declared_stop_at_or_below_model_cost": 38,
+      "declared_stop_bps": {
+        "mean": 27.210454,
+        "p10": 12.5017,
+        "p50": 24.2938,
+        "p90": 44.2418,
+        "samples": 1409
+      },
+      "declared_stop_sample_with_fill": 302,
+      "declared_vs_effective_stop_mismatch": 280,
+      "dev_holdout": {
+        "dev": {
+          "expectancy_bps_net": -33.133289,
+          "pnl_net_usdt": -500.312661,
+          "trades": 302,
+          "win_rate": 0.317881
+        },
+        "dev_end_ms": 1784390700000,
+        "holdout": {
+          "expectancy_bps_net": null,
+          "trades": 0,
+          "win_rate": null
+        }
+      },
+      "effective_stop_bps": {
+        "mean": 50.0,
+        "p10": 50.0,
+        "p50": 50.0,
+        "p90": 50.0,
+        "samples": 302
+      },
+      "effective_target_bps": {
+        "mean": 75.0,
+        "p10": 75.0,
+        "p50": 75.0,
+        "p90": 75.0,
+        "samples": 302
+      },
+      "expectancy_bps_gross": -13.133289,
+      "expectancy_bps_net": -33.133289,
+      "fills": 302,
+      "gross_bps": {
+        "mean": -13.133289,
+        "p10": -53.673096,
+        "p50": -52.380676,
+        "p90": 72.624737,
+        "samples": 302
+      },
+      "model_cost_bps": 24.786424,
+      "net_bps": {
+        "mean": -33.133289,
+        "p10": -73.673096,
+        "p50": -72.380676,
+        "p90": 52.624737,
+        "samples": 302
+      },
+      "net_rr": {
+        "mean": 0.671426,
+        "p10": 0.671426,
+        "p50": 0.671426,
+        "p90": 0.671426,
+        "samples": 302
+      },
+      "path": "reports\\ai-bots\\EXP-003L-EXECUTION-ECONOMICS-001\\runs\\5m\\ema_crossover\\real\\research\\ledger.jsonl",
+      "pnl_net_usdt": -500.312661,
+      "realised_cost_bps": {
+        "mean": 25.737429,
+        "p10": 24.768475,
+        "p50": 24.79839,
+        "p90": 27.327918,
+        "samples": 302
+      },
+      "regime": {
+        "trend:down": {
+          "expectancy_bps_net": -29.182024,
+          "trades": 143,
+          "win_rate": 0.34965
+        },
+        "trend:flat": {
+          "expectancy_bps_net": -36.357575,
+          "trades": 24,
+          "win_rate": 0.291667
+        },
+        "trend:up": {
+          "expectancy_bps_net": -36.745496,
+          "trades": 135,
+          "win_rate": 0.288889
+        },
+        "vol:high": {
+          "expectancy_bps_net": -44.026919,
+          "trades": 43,
+          "win_rate": 0.232558
+        },
+        "vol:low": {
+          "expectancy_bps_net": -25.553471,
+          "trades": 32,
+          "win_rate": 0.375
+        },
+        "vol:mid": {
+          "expectancy_bps_net": -32.138258,
+          "trades": 227,
+          "win_rate": 0.325991
+        }
+      },
+      "rejected_actions": {
+        "LONG": 450,
+        "SHORT": 357
+      },
+      "rejections": {
+        "consecutive_loss_cooldown": 62,
+        "daily_trade_limit": 29,
+        "max_drawdown": 716
+      },
+      "sensitivity": {
+        "cost_x0.0": -13.133289,
+        "cost_x0.5": -26.002003,
+        "cost_x1.0": -38.870718,
+        "cost_x1.5": -51.739432,
+        "cost_x2.0": -64.608146,
+        "cost_x3.0": -90.345575
+      },
+      "strategy": "ema_crossover",
+      "timeframe": "5m",
+      "win_rate": 0.317881,
+      "window_bars": 60
+    },
+    {
+      "actionable": 54,
+      "asset": "BTC/USDT",
+      "breakeven_cost_multiplier": 0.124471,
+      "breakeven_win_rate": {
+        "mean": 0.598291,
+        "p10": 0.598291,
+        "p50": 0.598291,
+        "p90": 0.598291,
+        "samples": 47
+      },
+      "closed_trades": 47,
+      "dataset_bars": 13248,
+      "decision_every_bars": 24,
+      "decisions": 1647,
+      "declared_stop_at_or_below_model_cost": 6,
+      "declared_stop_bps": {
+        "mean": 45.683788,
+        "p10": 19.0481,
+        "p50": 36.3008,
+        "p90": 86.1832,
+        "samples": 56
+      },
+      "declared_stop_sample_with_fill": 47,
+      "declared_vs_effective_stop_mismatch": 47,
+      "dev_holdout": {
+        "dev": {
+          "expectancy_bps_net": -21.798929,
+          "pnl_net_usdt": -29.428554,
+          "trades": 27,
+          "win_rate": 0.407407
+        },
+        "dev_end_ms": 1784390700000,
+        "holdout": {
+          "expectancy_bps_net": -10.147598,
+          "pnl_net_usdt": -10.147598,
+          "trades": 20,
+          "win_rate": 0.5
+        }
+      },
+      "effective_stop_bps": {
+        "mean": 50.0,
+        "p10": 50.0,
+        "p50": 50.0,
+        "p90": 50.0,
+        "samples": 47
+      },
+      "effective_target_bps": {
+        "mean": 75.0,
+        "p10": 75.0,
+        "p50": 75.0,
+        "p90": 75.0,
+        "samples": 47
+      },
+      "expectancy_bps_gross": 3.159084,
+      "expectancy_bps_net": -16.840916,
+      "fills": 47,
+      "gross_bps": {
+        "mean": 3.159084,
+        "p10": -53.635219,
+        "p50": -52.380676,
+        "p90": 72.624737,
+        "samples": 47
+      },
+      "model_cost_bps": 24.786424,
+      "net_bps": {
+        "mean": -16.840916,
+        "p10": -73.635219,
+        "p50": -72.380676,
+        "p90": 52.624737,
+        "samples": 47
+      },
+      "net_rr": {
+        "mean": 0.671426,
+        "p10": 0.671426,
+        "p50": 0.671426,
+        "p90": 0.671426,
+        "samples": 47
+      },
+      "path": "reports\\ai-bots\\EXP-003L-EXECUTION-ECONOMICS-001\\runs\\5m\\mean_reversion\\real\\research\\ledger.jsonl",
+      "pnl_net_usdt": -39.576152,
+      "realised_cost_bps": {
+        "mean": 25.38008,
+        "p10": 24.768475,
+        "p50": 24.79839,
+        "p90": 27.327918,
+        "samples": 47
+      },
+      "regime": {
+        "trend:down": {
+          "expectancy_bps_net": -0.493429,
+          "trades": 19,
+          "win_rate": 0.578947
+        },
+        "trend:flat": {
+          "expectancy_bps_net": 10.932719,
+          "trades": 3,
+          "win_rate": 0.666667
+        },
+        "trend:up": {
+          "expectancy_bps_net": -32.597841,
+          "trades": 25,
+          "win_rate": 0.32
+        },
+        "vol:high": {
+          "expectancy_bps_net": -1.156122,
+          "trades": 7,
+          "win_rate": 0.571429
+        },
+        "vol:low": {
+          "expectancy_bps_net": -19.005946,
+          "trades": 14,
+          "win_rate": 0.428571
+        },
+        "vol:mid": {
+          "expectancy_bps_net": -19.897959,
+          "trades": 26,
+          "win_rate": 0.423077
+        }
+      },
+      "rejected_actions": {},
+      "rejections": {},
+      "sensitivity": {
+        "cost_x0.0": 3.159084,
+        "cost_x0.5": -9.530956,
+        "cost_x1.0": -22.220996,
+        "cost_x1.5": -34.911036,
+        "cost_x2.0": -47.601076,
+        "cost_x3.0": -72.981156
+      },
+      "strategy": "mean_reversion",
+      "timeframe": "5m",
+      "win_rate": 0.446809,
+      "window_bars": 60
+    }
+  ],
+  "schema_version": "DEF_RUN_016_ECONOMICS_V1",
+  "selection": {
+    "chosen": {
+      "strategy": "mean_reversion",
+      "timeframe": "5m"
+    },
+    "dev": {
+      "expectancy_bps_net": -21.798929,
+      "pnl_net_usdt": -29.428554,
+      "trades": 27,
+      "win_rate": 0.407407
+    },
+    "holdout": {
+      "expectancy_bps_net": -10.147598,
+      "pnl_net_usdt": -10.147598,
+      "trades": 20,
+      "win_rate": 0.5
+    },
+    "holdout_evaluated_after_choice": true,
+    "rule": "the alternative with the best DEV expectancy (net of realised costs) among runs with >= 20 dev trades; DEV is the first 60 % of each run's decisions by time"
+  },
+  "verdict": "ECONOMIC_EDGE_NOT_EVIDENCED"
+}

@@ -383,20 +383,32 @@ def test_main_run_runs_iteration(capsys: pytest.CaptureFixture[str]) -> None:
     assert "Market scanner iteration" in captured.out
 
 
-def test_main_kill_switch_stub_returns_zero(
+def test_main_kill_switch_not_implemented_returns_two(
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    """Pine contract: kill-switch es un stub que retorna 0."""
+    """MT-0002: un subcomando reservado aborta con exit 2 y no finge exito.
+
+    Sustituye a ``test_main_kill_switch_stub_returns_zero``, que fijaba como
+    contrato el defecto OB-02 (exit 0 sin ejecutar nada). El subcomando sigue
+    sin implementarse: lo que cambia es que ahora lo dice y no imprime nada
+    por stdout.
+    """
     exit_code = main(["kill-switch"])
-    assert exit_code == 0
+    captured = capsys.readouterr()
+    assert exit_code == 2
+    assert captured.out == ""
+    assert "no esta implementado" in captured.err
 
 
-def test_main_status_stub_returns_zero(
+def test_main_status_not_implemented_returns_two(
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    """Pine contract: status es un stub que retorna 0."""
+    """MT-0002: ``status`` reservado aborta con exit 2 (antes: ``return 0``)."""
     exit_code = main(["status"])
-    assert exit_code == 0
+    captured = capsys.readouterr()
+    assert exit_code == 2
+    assert captured.out == ""
+    assert "no esta implementado" in captured.err
 
 
 def test_main_unknown_command_exits_via_argparse() -> None:

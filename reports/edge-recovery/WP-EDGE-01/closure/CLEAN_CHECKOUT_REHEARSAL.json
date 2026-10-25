@@ -1,0 +1,297 @@
+{
+  "artifact": "CLEAN_CHECKOUT_REHEARSAL_REPORT",
+  "work_package": "WP-8E: the rehearsal is a versioned script, not a note in a log",
+  "runner": "LOCAL",
+  "started_at_utc": "2026-10-12T18:49:43Z",
+  "rehearsed_commit": "af250f27811ce7c913d4a89585f531b739fd2d2b",
+  "invoked_from_commit": "af250f27811ce7c913d4a89585f531b739fd2d2b",
+  "scope": "recovery",
+  "steps": [
+    {
+      "step": "verify_recovery_input_bundle",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/recovery_input_evidence.py --verify",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "PASS",
+      "stdout_tail": "{\n  \"action\": \"verify\",\n  \"status\": \"VERIFIED\",\n  \"failures\": [],\n  \"checks_failed\": 0\n}",
+      "stderr_tail": "",
+      "eol_only_difference_reported": false
+    },
+    {
+      "step": "verify_cost_barrier_bundle",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/cost_barrier_evidence.py",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "PASS",
+      "stdout_tail": "  [PASS] evidence:captured_against_the_published_artefact_revision - captured for payload 4383d812d6e18928... vs published 4383d812d6e18928...\n  [PASS] evidence:producer_digests_match_the_manifest - 4/4 producer(s) match (1 exact, 3 line-ending-only)\n  [PASS] evidence:the_checker_is_not_pinned_by_the_bundle - scripts/cost_barrier_gate.py is excluded by design; the checker cannot vouch for itself\n  placement: {'target': 'reports/strategy-baseline/COST_BARRIER.json', 'materialized': False}\n  ADVISORIES:\n    - line-ending-only difference, accepted: scripts/active_economic_audit.py (EOL_ONLY), scripts/cost_barrier_explorer.py (EOL_ONLY), scripts/cost_barrier_verify.py (EOL_ONLY). The content is the pinned content; git rewrote the bytes on checkout",
+      "stderr_tail": "",
+      "eol_only_difference_reported": true
+    },
+    {
+      "step": "materialize_cost_barrier_input",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/cost_barrier_evidence.py --materialize",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "PASS",
+      "stdout_tail": "  [PASS] evidence:producer_digests_match_the_manifest - 4/4 producer(s) match (1 exact, 3 line-ending-only)\n  [PASS] evidence:the_checker_is_not_pinned_by_the_bundle - scripts/cost_barrier_gate.py is excluded by design; the checker cannot vouch for itself\n  [PASS] materialize:input_placed_at_its_canonical_path - reports/strategy-baseline/COST_BARRIER.json now carries sha256 2437f446051d97ec...\n  placement: {'target': 'reports/strategy-baseline/COST_BARRIER.json', 'materialized': True, 'action': 'written', 'bytes': 3822, 'target_sha256': '2437f446051d97ec15bd1bd95de550d46db3fb4d555ccab6557a3a2b2bac1fd4'}\n  ADVISORIES:\n    - line-ending-only difference, accepted: scripts/active_economic_audit.py (EOL_ONLY), scripts/cost_barrier_explorer.py (EOL_ONLY), scripts/cost_barrier_verify.py (EOL_ONLY). The content is the pinned content; git rewrote the bytes on checkout",
+      "stderr_tail": "",
+      "eol_only_difference_reported": true
+    },
+    {
+      "step": "run_active_economic_audit",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/active_economic_audit.py",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "PASS",
+      "stdout_tail": "      \"zero_cost_gross_bps\": 6.276\n    }\n  ],\n  \"checks_failed\": 0,\n  \"payload_sha256\": \"023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53\"\n}",
+      "stderr_tail": "",
+      "eol_only_difference_reported": false
+    },
+    {
+      "step": "run_campaign_state_view",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/campaign_state_view.py",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "PASS",
+      "stdout_tail": "    \"EXTERNAL_LIVE\": 1\n  },\n  \"next_free_rfc_derived\": 50,\n  \"sources_unchanged\": true,\n  \"payload_sha256\": \"3fb11fc9b9ff51f103b1ba1c5f61b159927e3e532a26acffc7e4c4ef43f1c72c\"\n}",
+      "stderr_tail": "",
+      "eol_only_difference_reported": false
+    },
+    {
+      "step": "run_contract_tests",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_active_recovery_wp.py -q -p no:cacheprovider",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "PASS",
+      "stdout_tail": "............................                                             [100%]\n28 passed in 4.54s",
+      "stderr_tail": "",
+      "eol_only_difference_reported": false
+    },
+    {
+      "step": "run_determinism_tests",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe -m pytest tests/unit/research/test_recovery_determinism.py -q -p no:cacheprovider -k not rehearsal and not sabotaged",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "PASS",
+      "stdout_tail": "............                                                             [100%]\n12 passed, 3 deselected in 4.52s",
+      "stderr_tail": "",
+      "eol_only_difference_reported": false
+    },
+    {
+      "step": "run_independent_verifier",
+      "command": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe scripts/recovery_verify.py",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "result": "PASS",
+      "stdout_tail": "  \"C17\": \"PASS\",\n  \"C12\": \"PASS\",\n  \"controls\": 13,\n  \"controls_missed\": 0,\n  \"status\": \"PASS\"\n}",
+      "stderr_tail": "",
+      "eol_only_difference_reported": false
+    }
+  ],
+  "published": {
+    "data/recovery/CAMPAIGN_STATE_VIEW.json": {
+      "exists": true,
+      "sha256_lf": "6f43dc0d31f8e7193168f0c50ec8fbb4aba4bc72fc255c8a38f416f773e5cea1",
+      "state_sha256_lf": "3fb11fc9b9ff51f103b1ba1c5f61b159927e3e532a26acffc7e4c4ef43f1c72c",
+      "state_volatile_lines_removed": 0,
+      "payload_sha256": "3fb11fc9b9ff51f103b1ba1c5f61b159927e3e532a26acffc7e4c4ef43f1c72c",
+      "status": "CONSISTENT_WITH_ADVISORIES",
+      "checks_failed": null
+    },
+    "data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md": {
+      "exists": true,
+      "sha256_lf": "cd4ae8031e555b6d25f34aa76825205943c9f2a170d2743b00e057d9364f1208",
+      "state_sha256_lf": "43b9f3932141b91ae461d94ab82a6db06fb33aed376e1ef7244a8cc2e47a8e4d",
+      "state_volatile_lines_removed": 11,
+      "payload_sha256": null,
+      "status": null,
+      "checks_failed": null
+    },
+    "data/recovery/ACTIVE_ECONOMIC_AUDIT.json": {
+      "exists": true,
+      "sha256_lf": "d1d49f09d8de20ad14437cbce1e7d362e597342ae21c452ff51b08c14a207aa5",
+      "state_sha256_lf": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53",
+      "state_volatile_lines_removed": 0,
+      "payload_sha256": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53",
+      "status": null,
+      "checks_failed": 0
+    },
+    "data/recovery/ACTIVE_ECONOMIC_AUDIT.md": {
+      "exists": true,
+      "sha256_lf": "40c8dd2cfc26d9ee3463941df49d7a010fa6ed23ef9d611d4ac058763c39281a",
+      "state_sha256_lf": "62a57a9ad25df366abcee0e53f73bd8735a1a921e02c38c101ce8c5dea9866f5",
+      "state_volatile_lines_removed": 1,
+      "payload_sha256": null,
+      "status": null,
+      "checks_failed": null
+    }
+  },
+  "regenerated": {
+    "data/recovery/CAMPAIGN_STATE_VIEW.json": {
+      "exists": true,
+      "sha256_lf": "1c49af7e757d7d436eeb76a079db914c2632cccd339b979a6910a6b4a75fc489",
+      "state_sha256_lf": "3fb11fc9b9ff51f103b1ba1c5f61b159927e3e532a26acffc7e4c4ef43f1c72c",
+      "state_volatile_lines_removed": 0,
+      "payload_sha256": "3fb11fc9b9ff51f103b1ba1c5f61b159927e3e532a26acffc7e4c4ef43f1c72c",
+      "status": "CONSISTENT_WITH_ADVISORIES",
+      "checks_failed": null
+    },
+    "data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md": {
+      "exists": true,
+      "sha256_lf": "a63031f9a60d1e77075236d5421cb67968ca2e2211b4d5def089619dcaa9b206",
+      "state_sha256_lf": "43b9f3932141b91ae461d94ab82a6db06fb33aed376e1ef7244a8cc2e47a8e4d",
+      "state_volatile_lines_removed": 11,
+      "payload_sha256": null,
+      "status": null,
+      "checks_failed": null
+    },
+    "data/recovery/ACTIVE_ECONOMIC_AUDIT.json": {
+      "exists": true,
+      "sha256_lf": "2c4774e01932387e0e331fa08e837b679aeb8bccdbb20d5aef1f62603c4285aa",
+      "state_sha256_lf": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53",
+      "state_volatile_lines_removed": 0,
+      "payload_sha256": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53",
+      "status": null,
+      "checks_failed": 0
+    },
+    "data/recovery/ACTIVE_ECONOMIC_AUDIT.md": {
+      "exists": true,
+      "sha256_lf": "e50df56e2596fdeeed0d6e774df28f0e9bf8672c7ca5967f3e2095fc2f5b3154",
+      "state_sha256_lf": "62a57a9ad25df366abcee0e53f73bd8735a1a921e02c38c101ce8c5dea9866f5",
+      "state_volatile_lines_removed": 1,
+      "payload_sha256": null,
+      "status": null,
+      "checks_failed": null
+    }
+  },
+  "artifacts": {
+    "data/recovery/CAMPAIGN_STATE_VIEW.json": {
+      "published": {
+        "exists": true,
+        "sha256_lf": "6f43dc0d31f8e7193168f0c50ec8fbb4aba4bc72fc255c8a38f416f773e5cea1",
+        "state_sha256_lf": "3fb11fc9b9ff51f103b1ba1c5f61b159927e3e532a26acffc7e4c4ef43f1c72c",
+        "state_volatile_lines_removed": 0,
+        "payload_sha256": "3fb11fc9b9ff51f103b1ba1c5f61b159927e3e532a26acffc7e4c4ef43f1c72c",
+        "status": "CONSISTENT_WITH_ADVISORIES",
+        "checks_failed": null
+      },
+      "regenerated": {
+        "exists": true,
+        "sha256_lf": "1c49af7e757d7d436eeb76a079db914c2632cccd339b979a6910a6b4a75fc489",
+        "state_sha256_lf": "3fb11fc9b9ff51f103b1ba1c5f61b159927e3e532a26acffc7e4c4ef43f1c72c",
+        "state_volatile_lines_removed": 0,
+        "payload_sha256": "3fb11fc9b9ff51f103b1ba1c5f61b159927e3e532a26acffc7e4c4ef43f1c72c",
+        "status": "CONSISTENT_WITH_ADVISORIES",
+        "checks_failed": null
+      },
+      "identical": true,
+      "bytes_identical": false
+    },
+    "data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md": {
+      "published": {
+        "exists": true,
+        "sha256_lf": "cd4ae8031e555b6d25f34aa76825205943c9f2a170d2743b00e057d9364f1208",
+        "state_sha256_lf": "43b9f3932141b91ae461d94ab82a6db06fb33aed376e1ef7244a8cc2e47a8e4d",
+        "state_volatile_lines_removed": 11,
+        "payload_sha256": null,
+        "status": null,
+        "checks_failed": null
+      },
+      "regenerated": {
+        "exists": true,
+        "sha256_lf": "a63031f9a60d1e77075236d5421cb67968ca2e2211b4d5def089619dcaa9b206",
+        "state_sha256_lf": "43b9f3932141b91ae461d94ab82a6db06fb33aed376e1ef7244a8cc2e47a8e4d",
+        "state_volatile_lines_removed": 11,
+        "payload_sha256": null,
+        "status": null,
+        "checks_failed": null
+      },
+      "identical": true,
+      "bytes_identical": false
+    },
+    "data/recovery/ACTIVE_ECONOMIC_AUDIT.json": {
+      "published": {
+        "exists": true,
+        "sha256_lf": "d1d49f09d8de20ad14437cbce1e7d362e597342ae21c452ff51b08c14a207aa5",
+        "state_sha256_lf": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53",
+        "state_volatile_lines_removed": 0,
+        "payload_sha256": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53",
+        "status": null,
+        "checks_failed": 0
+      },
+      "regenerated": {
+        "exists": true,
+        "sha256_lf": "2c4774e01932387e0e331fa08e837b679aeb8bccdbb20d5aef1f62603c4285aa",
+        "state_sha256_lf": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53",
+        "state_volatile_lines_removed": 0,
+        "payload_sha256": "023b66ffd1213b069607a8844f669c0ff00c0b35533619a031d4d6a5d2fb2a53",
+        "status": null,
+        "checks_failed": 0
+      },
+      "identical": true,
+      "bytes_identical": false
+    },
+    "data/recovery/ACTIVE_ECONOMIC_AUDIT.md": {
+      "published": {
+        "exists": true,
+        "sha256_lf": "40c8dd2cfc26d9ee3463941df49d7a010fa6ed23ef9d611d4ac058763c39281a",
+        "state_sha256_lf": "62a57a9ad25df366abcee0e53f73bd8735a1a921e02c38c101ce8c5dea9866f5",
+        "state_volatile_lines_removed": 1,
+        "payload_sha256": null,
+        "status": null,
+        "checks_failed": null
+      },
+      "regenerated": {
+        "exists": true,
+        "sha256_lf": "e50df56e2596fdeeed0d6e774df28f0e9bf8672c7ca5967f3e2095fc2f5b3154",
+        "state_sha256_lf": "62a57a9ad25df366abcee0e53f73bd8735a1a921e02c38c101ce8c5dea9866f5",
+        "state_volatile_lines_removed": 1,
+        "payload_sha256": null,
+        "status": null,
+        "checks_failed": null
+      },
+      "identical": true,
+      "bytes_identical": false
+    }
+  },
+  "published_paths_moved": [],
+  "run_records_changed": [],
+  "inputs_modified_in_the_checkout": [],
+  "line_endings": {
+    "eol_only_encountered": true,
+    "note": "a line-ending-only difference is a checkout artefact, not a finding: the digests are content digests and an EOL difference is an advisory"
+  },
+  "comparison_rule": {
+    "state_digest": "sha256 of the JSON document minus the volatile keys, or of the rendered report minus the line that carries the moment",
+    "excluded_json_keys": [
+      "generated_at_utc",
+      "payload_sha256",
+      "head",
+      "branch",
+      "sources",
+      "local_observations"
+    ],
+    "excluded_report_line_prefixes": [
+      "- generated `"
+    ],
+    "excluded_report_sections": [
+      "Local observations (volatile"
+    ],
+    "not_excluded": "the verdict, the checks, the invariants, the sources' resolution origins and the payload identity - none of these may differ"
+  },
+  "sabotage": null,
+  "limitations": [
+    "this run proves the commit reproduces in a clean checkout and that the input authority resolves from the commit; it does not prove the derivation is correct - that is the verifier's and the contract tests' job",
+    "the rehearsal was executed on one operating system; the cross-platform claim rests on the content digests, which are taken over LF-normalised content, and not on this run"
+  ],
+  "worktree": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\recovery-rehearsal-flt3wy5d\\checkout",
+  "untracked_after_the_run": [],
+  "worktree_paths_rewritten_by_the_run": [
+    "M data/recovery/ACTIVE_ECONOMIC_AUDIT.json",
+    "M data/recovery/ACTIVE_ECONOMIC_AUDIT.md",
+    "M data/recovery/CAMPAIGN_STATE_VIEW.json",
+    "M data/recovery/CAMPAIGN_STATE_VIEW_REPORT.md"
+  ],
+  "status": "PASS",
+  "finished_at_utc": "2026-10-12T18:50:01Z"
+}

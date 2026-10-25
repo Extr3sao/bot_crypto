@@ -1,0 +1,183 @@
+{
+  "branch": "agent/ai-bots/RFC-TAP-AI-BOTS-003",
+  "commands": [
+    {
+      "command": "python scripts/def_run_016_audit.py --label CURRENT --lifecycle SUPERSEDE --out reports/ai-bots/RFC-DEF-RUN-016/evidence/AUDIT_CURRENT.json --publish-ledgers reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers",
+      "exit_code": 0
+    },
+    {
+      "command": "python scripts/def_run_016_audit.py --label PROPOSED --lifecycle DEFER --out reports/ai-bots/RFC-DEF-RUN-016/evidence/AUDIT_PROPOSED.json --publish-ledgers reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers",
+      "exit_code": 0
+    },
+    {
+      "command": "python scripts/def_run_016_audit.py --compare .../AUDIT_CURRENT.json .../AUDIT_PROPOSED.json --out .../AUDIT_COMPARISON.json",
+      "exit_code": 0
+    },
+    {
+      "checks": 401,
+      "command": "python scripts/def_run_016_verify.py",
+      "exit_code": 0,
+      "failed": 0
+    },
+    {
+      "command": "python -m pytest tests/unit/vision tests/integration/test_def_run_016_pipeline.py -q",
+      "exit_code": 0,
+      "failed": 0,
+      "passed": 311
+    },
+    {
+      "command": "python -m pytest tests/unit/reports/test_ai_bots_003b_verify.py tests/unit/observability/test_vision_panel.py tests/unit/risk/test_def_run_014_stop_contract.py tests/unit/paper/test_paper_cycle.py tests/unit/paper/test_paper_recovery.py tests/unit/paper/test_broker_identity.py tests/integration/test_paper_e2e_001.py tests/unit/paper/test_def_run_015_close_vs_reverse.py -q",
+      "exit_code": 0,
+      "failed": 0,
+      "passed": 82
+    },
+    {
+      "command": "python -m ruff check src/trading_bot/vision/lane.py scripts/def_run_016_*.py tests/unit/vision/test_def_run_016_*.py tests/integration/test_def_run_016_pipeline.py tests/unit/vision/test_minute_quote_feed.py",
+      "exit_code": 0,
+      "findings": 0
+    }
+  ],
+  "decision": "PASS",
+  "environment": {
+    "executable": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\.venv\\Scripts\\python.exe",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.15"
+  },
+  "evidence": {
+    "reports/ai-bots/RFC-DEF-RUN-016/evidence/AUDIT_COMPARISON.json": {
+      "bytes": 203606,
+      "sha256": "9f516c05bc76f6637cbcc421c958f1a567a7295a5ca27a3b42349a5a4a270431"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/evidence/AUDIT_CURRENT.json": {
+      "bytes": 159176,
+      "sha256": "36f205d10467290acfd9f1429ac335f4c6ddd65f2e34f51d4590e58be3f1f3c2"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/evidence/AUDIT_PROPOSED.json": {
+      "bytes": 82729,
+      "sha256": "260af6372a378e29c143bd04b89b3ef38a75c8efacc7f8ef584984bfe8c9f7ff"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/evidence/ECONOMICS.json": {
+      "bytes": 37422,
+      "sha256": "fae572dd1397ee05189b4bf5a93859f5c64ee6eeb32c8bf3afb1ad3d8326054b"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/CURRENT/m1_cadence1.jsonl": {
+      "bytes": 732895,
+      "sha256": "08494714fbb0813a14c7ae43a947fa953a3e8b3c39cf784e8380408bebb047ab"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/CURRENT/m1_cadence5.jsonl": {
+      "bytes": 189648,
+      "sha256": "f984eede8e0458bf11ff1d21d5a0420b17ff2fc94652603283ddbf4ca2f557d4"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/CURRENT/m1_hole.jsonl": {
+      "bytes": 729672,
+      "sha256": "8749613030a73a78afd3e9550a9a1d3202d08865167a0f2c37d7f23ab1d64854"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/CURRENT/m1_zero_delay.jsonl": {
+      "bytes": 741583,
+      "sha256": "82906e889e189e9ad0d129ef7cc99e927b1254a5b53b3a21d42812b081f3ec90"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/CURRENT/m3_cadence1.jsonl": {
+      "bytes": 209389,
+      "sha256": "c0a350b9667335be8927142e0914e3e01c77ddadaf0dcc5b0a82e832d8c5db40"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/PROPOSED/m1_cadence1.jsonl": {
+      "bytes": 617204,
+      "sha256": "ebe16ee1f7baa72854bfb4f07f3055caf87f961c0a023f699848de86fd45dabd"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/PROPOSED/m1_cadence5.jsonl": {
+      "bytes": 189644,
+      "sha256": "a7bee1f5c7abc71f995344b33a4610aa25f5398a06301debf4330489acf492ad"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/PROPOSED/m1_hole.jsonl": {
+      "bytes": 615428,
+      "sha256": "dd1779623c757254c967bfc85bf2c0e15da5b6c4fd1d4c7acbef9aa3b53d9dcb"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/PROPOSED/m1_zero_delay.jsonl": {
+      "bytes": 741579,
+      "sha256": "93954c9c0a87c4b7b1d6fcb60892a3cd13615fa8715fa522827f1633599334ac"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/evidence/ledgers/PROPOSED/m3_cadence1.jsonl": {
+      "bytes": 187173,
+      "sha256": "6cacaad004740f6ffad092431976cd02288743d0e2c85d1ab14c859d4539978b"
+    }
+  },
+  "false_success": 0,
+  "generated_at_utc": "2026-10-21T07:47:16Z",
+  "gitignored": {
+    "meaning": "the evidence directory is excluded from Git by repository policy; the code, tests and scripts that regenerate it are versioned in the RFC commit",
+    "pattern": ".gitignore:463",
+    "scope": "reports/ai-bots/*"
+  },
+  "head": "d05f8de498c175f7a9b8ccdd38e6e1067832d5e6",
+  "head_subject": "Make an opinion that cannot be accounted for stop the run",
+  "reports": {
+    "reports/ai-bots/RFC-DEF-RUN-016/FINAL_REPORT.md": {
+      "bytes": 4716,
+      "sha256": "cf162466f77e69bfd5d234cc3de2fb0367e528001d8a271a3ae8e910f5c221fa"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/RUN_REPORT.json": {
+      "bytes": 10957,
+      "sha256": "8c162480efbb3f669421ff7c566f31b41a09e526b5a4d3228d7ff7936b6969bc"
+    },
+    "reports/ai-bots/RFC-DEF-RUN-016/RUN_REPORT.md": {
+      "bytes": 15378,
+      "sha256": "4913219be4277ada1ca70fcbaee61f3023abcfff0242c39c1072f52fc5febbfb"
+    }
+  },
+  "rfc": "RFC-DEF-RUN-016",
+  "schema_version": "DEF_RUN_016_EVIDENCE_MANIFEST_V1",
+  "source": {
+    "data/quote-feed-1m/SOURCE_MANIFEST.json": {
+      "bytes": 2504,
+      "sha256": "55855c8440470c53e7f1c9674bb5cac37f035b4ae9b3aff532b773f3e85f4f7b"
+    },
+    "data/quote-feed-1m/UNIUSDT_1m_2021-01-04_2021-02-17.json": {
+      "bytes": 3491121,
+      "sha256": "05033895083b62b6664029181b0df1f3f2275d95c381dea213b9d9297002a6f9"
+    },
+    "scripts/def_run_016_audit.py": {
+      "bytes": 26015,
+      "sha256": "310143cb7d0862d0b517b53606ce25b7efe256f8eb79b41093d3a25c9f987345"
+    },
+    "scripts/def_run_016_economics.py": {
+      "bytes": 27381,
+      "sha256": "42d8bdec27e91214afa921d389dfe4058b4394be0c1cb269c917495308fb7384"
+    },
+    "scripts/def_run_016_verify.py": {
+      "bytes": 30720,
+      "sha256": "27a13ad34cde24a1935f5f9e40522b15a56f34b4855cd4b7b530e8e2affb18a4"
+    },
+    "src/trading_bot/paper/broker.py": {
+      "bytes": 41919,
+      "sha256": "c145960896999f6a7a7f2b9090c40471b582b8a7caa02b45563db2f8cbe33389"
+    },
+    "src/trading_bot/risk/manager.py": {
+      "bytes": 36183,
+      "sha256": "493a989ef2fc220eae212df0ee9d2b91e901eb04540da0c3fa41a1127ed45440"
+    },
+    "src/trading_bot/vision/lane.py": {
+      "bytes": 116602,
+      "sha256": "617e544a552f9dcf176f2c359037bb41698e705063e4c6da057284ead79e9bd3"
+    },
+    "src/trading_bot/vision/ledger.py": {
+      "bytes": 8631,
+      "sha256": "9b44d75c8492a2b32a90b7684d6a2436e53a1152add3b4ab30be27d671cf0251"
+    },
+    "tests/integration/test_def_run_016_pipeline.py": {
+      "bytes": 10696,
+      "sha256": "a10c55f52f51ffb450104f7a808eff7a194e3b323c0b390f721698fc0aeee7f0"
+    },
+    "tests/unit/vision/test_def_run_016_integrity.py": {
+      "bytes": 24005,
+      "sha256": "886505df16c690e53019c677a8dde643ee595444bddd6ec2e9a2e22d94c991ee"
+    },
+    "tests/unit/vision/test_def_run_016_opinion_lifecycle.py": {
+      "bytes": 23175,
+      "sha256": "5f91877425f14f06c24e6641c1ce67b9d9ebc03fa3343f0f66831f6c10eaf486"
+    },
+    "tests/unit/vision/test_minute_quote_feed.py": {
+      "bytes": 15256,
+      "sha256": "f21d4e174e069b3aef1c0809c8c72d8a9ba4a43bf0ded5edf25c309b82ca6a8a"
+    }
+  }
+}

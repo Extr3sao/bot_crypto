@@ -1,0 +1,49 @@
+{
+  "target_id": "T-NF-NOF1",
+  "rea_executed": true,
+  "attribution": "REPO_EXACT",
+  "operations": [
+    {
+      "operation": "analyze_javascript_application",
+      "evidence_id": "ev_4b2bf9c5c313530cc7e1e399d4cde5c175ecdd0018a9f608ee12782522ea9ade",
+      "predicate_type": "rea.javascript-application-analysis",
+      "provider": {
+        "id": "rea-javascript-application",
+        "name": "REA JavaScript application analyzer",
+        "version": "1"
+      },
+      "subject_sha256": "9bef5c9bb778b96fdb154b531980c792e85fd201900599c6d4e76b033bb79248",
+      "statistics": {
+        "relevant_files": 3,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 71485,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 2,
+        "visited_ast_nodes": 4812,
+        "findings": 22,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "graph": {
+        "schema": "JavaScriptApplicationGraph",
+        "nodes": 22,
+        "edges": 27
+      },
+      "coverage": {
+        "status": "complete",
+        "truncated": false
+      },
+      "warnings": [
+        "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed",
+        "Static imports, entrypoints, workers, endpoints and storage relationships do not prove runtime execution",
+        "Static paths and relationships may remain unresolved when expressions are dynamic",
+        "CommonJS and ESM binding relationships were resolved only within the inventoried container"
+      ]
+    }
+  ],
+  "evidence_ids": [
+    "ev_4b2bf9c5c313530cc7e1e399d4cde5c175ecdd0018a9f608ee12782522ea9ade"
+  ],
+  "what_rea_can_say": "The committed dashboard at this exact commit is 2 JavaScript files and one HTML page, with no module graph, no bundler output and no Next.js runtime.",
+  "what_rea_cannot_say": "Anything about runtime behaviour of the agent: REA never executes the JavaScript it parses, and the decision loop lives in TypeScript on the server, which REA does not execute either."
+}

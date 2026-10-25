@@ -1,0 +1,127 @@
+{
+  "generated_at_utc": "2026-10-23T18:36:39Z",
+  "package": "WP-051-02K",
+  "refused": [
+    {
+      "bytes": 2149074132,
+      "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\hermes",
+      "why": "el propietario no autorizó este árbol"
+    },
+    {
+      "bytes": 82,
+      "path": "C:\\Users\\GVLLFR0035\\Downloads\\bot_crypto_004g",
+      "why": "el propietario no autorizó este worktree"
+    },
+    {
+      "bytes": 1394267913,
+      "path": "C:\\Users\\GVLLFR0035\\.cache\\codex-runtimes",
+      "why": "runtime of a tool that is running (codex-computer-use-swift.exe#28092, codex-windows-sandbox-service.exe#38040, codex.exe#14028): regenerable, but not provably unused, so not deleted"
+    }
+  ],
+  "schema_version": "EXP004A_WP051_02K_CONTINUATION_V1",
+  "targets": [
+    {
+      "deleted_bytes": 736117959,
+      "deleted_files": 602,
+      "deleted_gib": 0.6856,
+      "dry_run": false,
+      "key": "playwright-obsolete",
+      "manifest": "docs/agentic/exp004a/wp051_02k/continuation/CLEANUP_PLAYWRIGHT_OBSOLETE.jsonl",
+      "planned_bytes": 736117959,
+      "planned_files": 602,
+      "pruned_directories": 18,
+      "root": "C:\\Users\\GVLLFR0035\\AppData\\Local\\ms-playwright",
+      "skipped": [],
+      "skipped_count": 0,
+      "volume_after": {
+        "at_utc": "2026-10-23T18:35:58Z",
+        "free_bytes": 20383739904,
+        "free_bytes_kernel32": 20383739904,
+        "free_gib": 18.9838,
+        "instruments_agree": true,
+        "path": "C:/",
+        "total_bytes": 255041990656,
+        "used_bytes": 234658250752,
+        "used_percent": 92.01
+      },
+      "volume_before": {
+        "at_utc": "2026-10-23T18:35:50Z",
+        "free_bytes": 19648995328,
+        "free_bytes_kernel32": 19648995328,
+        "free_gib": 18.2996,
+        "instruments_agree": true,
+        "path": "C:/",
+        "total_bytes": 255041990656,
+        "used_bytes": 235392995328,
+        "used_percent": 92.3
+      },
+      "volume_delta_bytes": 734744576
+    },
+    {
+      "deleted_bytes": 257425155,
+      "deleted_files": 115,
+      "deleted_gib": 0.2397,
+      "dry_run": false,
+      "key": "temp-stale",
+      "manifest": "docs/agentic/exp004a/wp051_02k/continuation/CLEANUP_TEMP_STALE.jsonl",
+      "planned_bytes": 307756803,
+      "planned_files": 122,
+      "pruned_directories": 18,
+      "root": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp",
+      "skipped": [
+        {
+          "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\04e393c1-9229-4017-bd16-9173649ecd6a.tmp",
+          "why": "locked or refused: PermissionError"
+        },
+        {
+          "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\cf0d54cf-2417-4cc6-bc0d-6af9d410c1a2.tmp",
+          "why": "locked or refused: PermissionError"
+        },
+        {
+          "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\FXSAPIDebugLogFile.txt",
+          "why": "locked or refused: PermissionError"
+        },
+        {
+          "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\mat-debug-22936.log",
+          "why": "locked or refused: PermissionError"
+        },
+        {
+          "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\Diagnostics\\WINWORD\\Primary1792088467850173100_E218808A-3D0B-4B66-B3FA-6172A6D31E9A.log",
+          "why": "locked or refused: PermissionError"
+        },
+        {
+          "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\Diagnostics\\WINWORD\\Additional\\Additional1792087854706028800_E218808A-3D0B-4B66-B3FA-6172A6D31E9A.log",
+          "why": "locked or refused: PermissionError"
+        },
+        {
+          "path": "C:\\Users\\GVLLFR0035\\AppData\\Local\\Temp\\Diagnostics\\WINWORD\\Additional\\Additional1792087854708440500_E218808A-3D0B-4B66-B3FA-6172A6D31E9A.log",
+          "why": "locked or refused: PermissionError"
+        }
+      ],
+      "skipped_count": 7,
+      "volume_after": {
+        "at_utc": "2026-10-23T18:35:59Z",
+        "free_bytes": 20639940608,
+        "free_bytes_kernel32": 20639940608,
+        "free_gib": 19.2224,
+        "instruments_agree": true,
+        "path": "C:/",
+        "total_bytes": 255041990656,
+        "used_bytes": 234402050048,
+        "used_percent": 91.91
+      },
+      "volume_before": {
+        "at_utc": "2026-10-23T18:35:58Z",
+        "free_bytes": 20383739904,
+        "free_bytes_kernel32": 20383739904,
+        "free_gib": 18.9838,
+        "instruments_agree": true,
+        "path": "C:/",
+        "total_bytes": 255041990656,
+        "used_bytes": 234658250752,
+        "used_percent": 92.01
+      },
+      "volume_delta_bytes": 256200704
+    }
+  ]
+}

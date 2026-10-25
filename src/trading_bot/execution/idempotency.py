@@ -10,6 +10,8 @@ class IdempotencyGuard:
     """Prevents duplicate order submissions.
 
     Tracks sent cloids and order IDs to ensure exactly-once execution.
+    ``sent_cloids`` exposes the ledger for durable persistence (GAP-R1:
+    exactly-once across process restarts).
     """
 
     _sent_cloids: set[str] = field(default_factory=set)
@@ -39,3 +41,13 @@ class IdempotencyGuard:
     def active_count(self) -> int:
         """Number of active tracked IDs."""
         return len(self._sent_cloids) + len(self._sent_order_ids)
+
+    @property
+    def sent_cloids(self) -> set[str]:
+        """Read-only intent ledger (persisted for restart idempotency)."""
+        return set(self._sent_cloids)
+
+    def register_many(self, cloids: list[str] | set[str]) -> None:
+        """Bulk-register persisted cloids at startup reconciliation."""
+        for cloid in cloids:
+            self._sent_cloids.add(cloid)

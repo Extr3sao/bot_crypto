@@ -1,0 +1,221 @@
+{
+  "arms": {
+    "GATE_INTACT": {
+      "arm": "GATE_INTACT",
+      "broker_equity": {
+        "final": 10000.0,
+        "initial": 10000.0,
+        "realised_pnl": 0
+      },
+      "cycles": 879,
+      "exchange_orders": 0,
+      "order_sent": false,
+      "stages": {
+        "DETERMINISTIC_RISK": {
+          "count": 0,
+          "evidence_class": "OBSERVED",
+          "ledger": "present (per-cycle counters)",
+          "note": "never reached: the router returned no trade, so no signal was sized",
+          "unit": "decisions"
+        },
+        "FILL_LEDGER": {
+          "count": 0,
+          "evidence_class": "OBSERVED",
+          "ledger": "present",
+          "unit": "closed fills"
+        },
+        "MARKET_DATA": {
+          "count": 1758,
+          "evidence_class": "OBSERVED",
+          "ledger": "present (per-cycle context)",
+          "unit": "symbol-contexts built"
+        },
+        "PAPER_BROKER": {
+          "count": 0,
+          "evidence_class": "OBSERVED",
+          "ledger": "present (broker equity and fills)",
+          "unit": "orders"
+        },
+        "RECONCILIATION": {
+          "count": 879,
+          "evidence_class": "OBSERVED",
+          "ledger": "present",
+          "note": "every cycle ends with a recorded terminal state",
+          "unit": "cycles reconciled"
+        },
+        "ROUTER": {
+          "count": 1758,
+          "evidence_class": "OBSERVED",
+          "ledger": "present (per-cycle counters)",
+          "rejected_as": {
+            "router:NO_TRADE:no_strategy_passed_gates": 1758
+          },
+          "terminal_cause": "NO_TRADE:no_strategy_passed_gates",
+          "unit": "invocations"
+        },
+        "SIGNAL": {
+          "count": 0,
+          "evidence_class": "OBSERVED",
+          "ledger": "present (per-cycle counters)",
+          "note": "zero signals: no admitted strategy exists, so the router has nothing to ask for one",
+          "unit": "signals"
+        },
+        "TRADE_PROPOSAL": {
+          "count": 0,
+          "evidence_class": "OBSERVED",
+          "ledger": "present (per-cycle counters)",
+          "unit": "proposals"
+        }
+      },
+      "what_it_is": "the committed admission ledger, unmodified: the strategy under test has to be admitted by a committed research artifact before the router will let it reach risk"
+    },
+    "SANDBOX_ADMISSION": {
+      "arm": "SANDBOX_ADMISSION",
+      "broker_equity": {
+        "final": 9787.455325948866,
+        "initial": 10000.0,
+        "realised_pnl": -212.54467405113758
+      },
+      "cycles": 879,
+      "reading": "the risk and broker boundary is reachable: once a strategy is admitted the same canonical path produces orders and closed fills. That certifies connectivity, not admissibility",
+      "stages": {
+        "DETERMINISTIC_RISK": {
+          "count": 1528,
+          "evidence_class": "OBSERVED",
+          "unit": "decisions"
+        },
+        "FILL_LEDGER": {
+          "count": 347,
+          "evidence_class": "OBSERVED",
+          "opened": 348,
+          "unit": "closed fills"
+        },
+        "PAPER_BROKER": {
+          "count": 394,
+          "evidence_class": "OBSERVED",
+          "unit": "orders"
+        },
+        "ROUTER": {
+          "count": 1758,
+          "evidence_class": "OBSERVED",
+          "rejected_as": {
+            "broker:broker_returned_no_fill": 1134,
+            "strategy:no_alpha_in_direction:ANY": 230
+          },
+          "unit": "invocations"
+        }
+      },
+      "what_it_is": "a declared sandbox ledger placed in this package's scratch directory, admitting one family so the downstream stages can be exercised. It is not an admission and nothing here promotes it"
+    }
+  },
+  "cap004_real_decision_path": {
+    "directional_decisions": 1,
+    "exchange_orders": 0,
+    "paper_broker_fills": 0,
+    "paper_order_intents": 0,
+    "reconciled_against": "the PAPER_REPLAY execution, which drives the same canonical pipeline with a ledger at every stage and localises the stop to the router",
+    "sealed_decisions": 4,
+    "source": "reports\\economic-recovery\\RFC-EDGE-014\\TRADE_PATH_DIAGNOSIS.md",
+    "stages_without_a_ledger": [
+      "ROUTER",
+      "DETERMINISTIC_RISK",
+      "TRADE_PROPOSAL",
+      "PAPER_BROKER"
+    ],
+    "why_zero_paper_orders": "the CAP-004 real-decision path writes decision and outcome records but no order-intent, router or broker record, so the path's middle is unobserved there: `0` in that window is a weakly-asserted zero (nothing would have recorded an intent had one existed), not a measured absence of trading",
+    "window": "2026-10-06T19:59:02Z -> 2026-10-16T12:45:03Z"
+  },
+  "capacity": {
+    "allows_new_decision": true,
+    "critical_free_bytes": 2147483648,
+    "free_bytes": 4241940480,
+    "free_gib": 3.9506,
+    "reading": "the guardian keeps the campaign's own thresholds (5 GiB healthy, 2 GiB critical); capacity was recovered from regenerable caches and scratch, no evidence artifact was deleted and no limit was lowered",
+    "reclaim": {
+      "edge14_clone_prune": {
+        "freed_bytes": 147456,
+        "note": "shallow bare clones fetched by the previous RFC-EDGE-014 pass; re-fetchable from the pinned SHAs",
+        "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\edge14_clones"
+      },
+      "free_bytes_after": 8108986368,
+      "free_bytes_before": 6285803520,
+      "mypy_cache_prune": {
+        "freed_bytes": 13840384,
+        "note": "type-check cache; regenerated on next mypy run"
+      },
+      "pip_cache_purge": {
+        "freed_bytes": 716988416,
+        "note": "regenerable download cache; no project evidence",
+        "path": "c:\\users\\gvllfr0035\\appdata\\local\\pip\\cache"
+      },
+      "pycache_prune": {
+        "dirs_removed": 218,
+        "freed_bytes": 54829056,
+        "note": "bytecode caches; regenerated on next import"
+      },
+      "pytest_temp_prune": {
+        "dirs_removed": 8,
+        "freed_bytes": 1037377536,
+        "note": "pytest tmp_path scratch older than 2h; pytest's own retention policy keeps the recent ones",
+        "path": "C:\\Users\\GVLLFR~1\\AppData\\Local\\Temp\\pytest-of-GVLLFR0035"
+      },
+      "reclaimed_bytes": 1823182848
+    },
+    "refusal_reason": null,
+    "status": "WARNING",
+    "thresholds": {
+      "changed_by_this_work_package": false,
+      "critical_bytes": 2147483648,
+      "healthy_bytes": 5368709120
+    },
+    "warning_free_bytes": 5368709120
+  },
+  "cause_of_no_paper_orders": [
+    {
+      "cause": "NO_STRATEGY_PASSED_GATES",
+      "measured": "1758 of 1758 router invocations on the authoritative arm returned no trade",
+      "not_a_defect": true,
+      "where": "router",
+      "why": "config/strategy_admission.json admits nothing: every strategy in it is NO_GROSS_EDGE or not measured under the cost model, so the gate that protects capital refuses before sizing"
+    },
+    {
+      "cause": "PAPER_BROKER_RETURNED_NO_FILL",
+      "measured": {
+        "broker:broker_returned_no_fill": 1134,
+        "strategy:no_alpha_in_direction:ANY": 230
+      },
+      "not_a_defect": true,
+      "where": "paper_broker",
+      "why": "on the sandbox arm the broker refused 1134 of 1528 risk-accepted decisions: an order with no fill is a normal broker outcome, not a missing stage"
+    }
+  ],
+  "committed_ledger": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\config\\strategy_admission.json",
+  "connectivity_verdict": "the pipeline runs end to end: contexts are built, the router is invoked, risk accepts and the broker fills \u2014 on the arm that has an admitted strategy. On the authoritative arm the funnel stops at the router by design, and that stop is the gate working, not a broken stage",
+  "credentials_used": false,
+  "engine_factory": "scripts/start_paper_trading.py::build_cycle_engine",
+  "execution_class": "PAPER_REPLAY",
+  "execution_class_reading": "historical bars driven through the canonical paper path; this is real execution of the runtime's code but NOT prospective observation, because every bar predates the run",
+  "generated_at_utc": "2026-10-16T21:20:35Z",
+  "limitations": [
+    "PAPER_REPLAY is historical bars replayed through the runtime: it is real execution of the project's code and NOT prospective observation, because every bar predates the run",
+    "one dataset, two symbols, one timeframe and one family certify the path, not an edge",
+    "the sandbox ledger is a scratch input that admits a family for connectivity testing; no result from it may be treated as a research finding",
+    "the disk guard refuses only on CRITICAL; a WARNING state still permits new decision slots, so the earlier 42 refusals were capacity-driven and are resolved by capacity, not by loosening the guard"
+  ],
+  "order_sent": false,
+  "promotion": "NONE",
+  "sandbox_ledger": "C:\\Users\\GVLLFR0035\\Downloads\\bot freebuff\\reports\\economic-recovery\\RFC-EDGE-014R\\scratch\\SANDBOX_ADMISSION.json",
+  "schema_version": "EDGE14R_TRADE_PATH_RECONCILIATION_V1",
+  "stage_order": [
+    "MARKET_DATA",
+    "SIGNAL",
+    "TRADE_PROPOSAL",
+    "ROUTER",
+    "DETERMINISTIC_RISK",
+    "PAPER_BROKER",
+    "FILL_LEDGER",
+    "RECONCILIATION"
+  ],
+  "unknown_is_not_zero": "a stage without a ledger is reported UNKNOWN and a zero is only asserted where a ledger that would have recorded the event exists; the CAP-004 path is weak-zero for intent, broker and fill, and the PAPER_REPLAY arm is a strong zero because its ledger is present and counted",
+  "work_package": "WP-EDGE-14R/P1"
+}

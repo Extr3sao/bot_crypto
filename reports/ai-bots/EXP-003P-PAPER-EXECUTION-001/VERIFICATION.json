@@ -1,0 +1,265 @@
+{
+  "checks": [
+    {
+      "check_id": "V1_chain_integrity",
+      "detail": "276 rows, broken links at none",
+      "passed": true,
+      "rows": 276,
+      "title": "execution trace hash chain"
+    },
+    {
+      "check_id": "V1_scenario_chain",
+      "detail": "32 rows, broken links at none",
+      "passed": true,
+      "rows": 32,
+      "title": "scenario trace hash chain"
+    },
+    {
+      "check_id": "V2_provenance_completeness",
+      "detail": "0 problems",
+      "passed": true,
+      "problems": [],
+      "title": "runtime: provenance, adapter, clock and correlation on every event"
+    },
+    {
+      "check_id": "V2_provenance_completeness",
+      "detail": "0 problems",
+      "passed": true,
+      "problems": [],
+      "title": "scenario: provenance, adapter, clock and correlation on every event"
+    },
+    {
+      "check_id": "V3_causality",
+      "detail": "0 violations",
+      "passed": true,
+      "title": "data_time <= decision_time <= event_time",
+      "violations": []
+    },
+    {
+      "check_id": "V4_state_machine",
+      "detail": "77 orders, 0 illegal transitions",
+      "illegal": [],
+      "passed": true,
+      "title": "every transition is one the contract allows"
+    },
+    {
+      "check_id": "V5_ledger_rebuild",
+      "detail": "69 runtime and 7 scenario fills rebuilt; 0 disagreements",
+      "passed": true,
+      "problems": [],
+      "rebuilt": {
+        "runtime": {
+          "cash": {
+            "BTC": -480.2873296261,
+            "ETH": -493.42454656,
+            "SOL": -501.0997326759
+          },
+          "fees": {
+            "USDT": 34.5
+          },
+          "fills": 69,
+          "positions": {
+            "BTC": 0.007711480391,
+            "ETH": 0.260748196775,
+            "SOL": 6.72792200374
+          },
+          "realised": {
+            "BTC": 19.7126703739,
+            "ETH": 6.57545344,
+            "SOL": -1.0997326759
+          }
+        },
+        "scenario": {
+          "cash": {
+            "BTC": -451.70275
+          },
+          "fees": {
+            "USDT": 0.26100142
+          },
+          "fills": 7,
+          "positions": {
+            "BTC": 4.5
+          },
+          "realised": {
+            "BTC": 0.267
+          }
+        }
+      },
+      "title": "quantities, cash, fees and realised PnL rebuilt from fills"
+    },
+    {
+      "check_id": "V6_ack_is_not_fill",
+      "detail": "no ORDER_ACKNOWLEDGED row carries a fill payload",
+      "passed": true,
+      "title": "acknowledgements never move quantity"
+    },
+    {
+      "check_id": "V7_live_disabled",
+      "detail": "0 live-claiming rows",
+      "live": [],
+      "passed": true,
+      "title": "no persisted event claims a live environment or adapter"
+    },
+    {
+      "check_id": "V8_determinism",
+      "commit_bound_differences": [],
+      "commits": [
+        "bdd96f4cf9eda379294d92282aa78707c669ffd5",
+        "bdd96f4cf9eda379294d92282aa78707c669ffd5"
+      ],
+      "detail": "identical on 5/5 content digests (commit-bound differences: none)",
+      "differences": [],
+      "passed": true,
+      "title": "two rehearsals produce the same content digest"
+    },
+    {
+      "check_id": "V9_negative_controls",
+      "detail": "exit=0 effective=17/17 mismatched=[]",
+      "passed": true,
+      "title": "each control is detected as its declared class"
+    },
+    {
+      "check_id": "V12_config_unchanged",
+      "detail": "baseline=sha256:4f93519d8… now=sha256:4f93519d8…",
+      "passed": true,
+      "title": "config/runtime.yaml, risk.yaml and vision.yaml are byte-identical to the baseline"
+    },
+    {
+      "check_id": "V13_no_secrets",
+      "detail": "0 files matched",
+      "files": [],
+      "passed": true,
+      "title": "no credential-shaped string in the published artifacts"
+    },
+    {
+      "check_id": "V10_protocol_frozen",
+      "detail": "check_exit=0 protocol=9f349bda6f2dbbfe…",
+      "passed": true,
+      "title": "the protocol still matches the frozen contract and is the one that ran"
+    },
+    {
+      "check_id": "V11_protocol_integrity",
+      "detail": "ACCs=14 limits=5",
+      "passed": true,
+      "title": "protocol carries the acceptance criteria and declared limits"
+    },
+    {
+      "check_id": "V14_scenario_states",
+      "detail": "mismatches={}",
+      "passed": true,
+      "title": "every scripted scenario reaches the terminal state the protocol declared"
+    },
+    {
+      "check_id": "V15_reconciliation",
+      "detail": "result=PASS (runtime=PASS, scenario=PASS)",
+      "passed": true,
+      "title": "runtime and scenario reconciliation both PASS"
+    },
+    {
+      "check_id": "V16_paper_blocked",
+      "detail": "paper_validation=BLOCKED_NOT_CONFIGURED",
+      "passed": true,
+      "title": "observed paper is declared BLOCKED, not simulated into existence"
+    }
+  ],
+  "checks_failed": [],
+  "checks_passed": 18,
+  "checks_total": 18,
+  "commit": "bdd96f4cf9eda379294d92282aa78707c669ffd5",
+  "economic_edge": "NOT_EVALUATED",
+  "false_success": 0,
+  "live_orders": 0,
+  "order_states": {
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000008": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000010": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000012": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000018": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000020": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000028": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000032": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000034": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000036": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000044": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000046": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000048": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000054": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000056": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000064": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000066": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000068": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000076": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000078": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000080": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000086": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000092": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000094": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000098": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000104": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000108": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000110": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000116": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000120": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000124": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000126": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000132": "FILLED",
+    "OFFLINE:EXIT-paper-003p-ordx-paper-003p-00000134": "FILLED",
+    "OFFLINE:LANE-paper-003p-BTC-000002": "FILLED",
+    "OFFLINE:LANE-paper-003p-BTC-000014": "FILLED",
+    "OFFLINE:LANE-paper-003p-BTC-000023": "FILLED",
+    "OFFLINE:LANE-paper-003p-BTC-000041": "FILLED",
+    "OFFLINE:LANE-paper-003p-BTC-000140": "FILLED",
+    "OFFLINE:LANE-paper-003p-BTC-000149": "FILLED",
+    "OFFLINE:LANE-paper-003p-BTC-000161": "FILLED",
+    "OFFLINE:LANE-paper-003p-BTC-000176": "FILLED",
+    "OFFLINE:LANE-paper-003p-BTC-000220": "FILLED",
+    "OFFLINE:LANE-paper-003p-BTC-000256": "FILLED",
+    "OFFLINE:LANE-paper-003p-ETH-000003": "FILLED",
+    "OFFLINE:LANE-paper-003p-ETH-000015": "FILLED",
+    "OFFLINE:LANE-paper-003p-ETH-000024": "FILLED",
+    "OFFLINE:LANE-paper-003p-ETH-000034": "FILLED",
+    "OFFLINE:LANE-paper-003p-ETH-000042": "FILLED",
+    "OFFLINE:LANE-paper-003p-ETH-000141": "FILLED",
+    "OFFLINE:LANE-paper-003p-ETH-000150": "FILLED",
+    "OFFLINE:LANE-paper-003p-ETH-000162": "FILLED",
+    "OFFLINE:LANE-paper-003p-ETH-000185": "FILLED",
+    "OFFLINE:LANE-paper-003p-ETH-000194": "FILLED",
+    "OFFLINE:LANE-paper-003p-ETH-000200": "FILLED",
+    "OFFLINE:LANE-paper-003p-ETH-000241": "FILLED",
+    "OFFLINE:LANE-paper-003p-ETH-000248": "FILLED",
+    "OFFLINE:LANE-paper-003p-ETH-000257": "FILLED",
+    "OFFLINE:LANE-paper-003p-SOL-000004": "FILLED",
+    "OFFLINE:LANE-paper-003p-SOL-000025": "FILLED",
+    "OFFLINE:LANE-paper-003p-SOL-000043": "FILLED",
+    "OFFLINE:LANE-paper-003p-SOL-000151": "FILLED",
+    "OFFLINE:LANE-paper-003p-SOL-000163": "FILLED",
+    "OFFLINE:LANE-paper-003p-SOL-000178": "FILLED",
+    "OFFLINE:LANE-paper-003p-SOL-000186": "FILLED",
+    "OFFLINE:LANE-paper-003p-SOL-000201": "FILLED",
+    "OFFLINE:LANE-paper-003p-SOL-000212": "FILLED",
+    "OFFLINE:LANE-paper-003p-SOL-000222": "FILLED",
+    "OFFLINE:LANE-paper-003p-SOL-000236": "FILLED",
+    "OFFLINE:LANE-paper-003p-SOL-000249": "FILLED",
+    "OFFLINE:SCN-S01_FULL_FILL": "FILLED",
+    "OFFLINE:SCN-S02_PARTIAL_THEN_FILL": "FILLED",
+    "OFFLINE:SCN-S03_PARTIAL_THEN_CANCEL": "CANCELED",
+    "OFFLINE:SCN-S04_DUPLICATE_DELIVERY": "FILLED",
+    "OFFLINE:SCN-S05_OUT_OF_ORDER": "FILLED",
+    "OFFLINE:SCN-S06_TIMEOUT_UNKNOWN": "UNKNOWN",
+    "OFFLINE:SCN-S07_REJECT": "REJECTED",
+    "OFFLINE:SCN-S08_ACK_WITHOUT_FILL": "ACKNOWLEDGED"
+  },
+  "organizational_independence": false,
+  "paper_validation": "BLOCKED_NOT_CONFIGURED",
+  "program_independence": true,
+  "protocol_ok": true,
+  "protocol_sha256": "9f349bda6f2dbbfea5aed8b27418ffd9d92d59cdf26068172fad5ba841d00c9a",
+  "run_id": "EXP-003P-PAPER-EXECUTION-001",
+  "schema_version": "AI_BOTS_003P_VERIFICATION_V1",
+  "success_rule_dimensions": [
+    "FINAL_STATUS",
+    "OFFLINE_RUNTIME_VALIDATION",
+    "PAPER_VALIDATION"
+  ],
+  "technical_execution_validation": "PASS",
+  "verified_at_utc": "2026-10-21T13:44:37Z"
+}

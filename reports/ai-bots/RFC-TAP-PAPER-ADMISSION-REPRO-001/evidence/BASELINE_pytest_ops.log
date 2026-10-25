@@ -1,0 +1,43 @@
+........................................................................ [ 86%]
+..........F                                                              [100%]
+================================== FAILURES ===================================
+___________ test_no_controlled_launcher_can_start_an_unhidden_child ___________
+
+    def test_no_controlled_launcher_can_start_an_unhidden_child() -> None:
+        module = _load_script("ops_background_audit.py")
+        report = module.scan(REPO)  # type: ignore[attr-defined]
+        high = [finding for finding in report["findings"] if finding["severity"] == "HIGH"]
+>       assert not high, json.dumps(high, indent=2)
+E       AssertionError: [
+E           {
+E             "severity": "HIGH",
+E             "code": "POPEN_WITHOUT_WINDOWLESS",
+E             "path": "scripts/exp004a_verify.py",
+E             "line": 1216,
+E             "detail": "Popen without CREATE_NO_WINDOW leaves a child that can draw a console",
+E             "remedy": "use trading_bot.ops.windowless.spawn()"
+E           },
+E           {
+E             "severity": "HIGH",
+E             "code": "POPEN_WITHOUT_WINDOWLESS",
+E             "path": "tests/unit/ops/test_paper_lock_campaign.py",
+E             "line": 44,
+E             "detail": "Popen without CREATE_NO_WINDOW leaves a child that can draw a console",
+E             "remedy": "use trading_bot.ops.windowless.spawn()"
+E           },
+E           {
+E             "severity": "HIGH",
+E             "code": "POPEN_WITHOUT_WINDOWLESS",
+E             "path": "tests/unit/ops/test_session_status.py",
+E             "line": 65,
+E             "detail": "Popen without CREATE_NO_WINDOW leaves a child that can draw a console",
+E             "remedy": "use trading_bot.ops.windowless.spawn()"
+E           }
+E         ]
+E       assert not [{'severity': 'HIGH', 'code': 'POPEN_WITHOUT_WINDOWLESS', 'path': 'scripts/exp004a_verify.py', 'line': 1216, ...}, {'s...verity': 'HIGH', 'code': 'POPEN_WITHOUT_WINDOWLESS', 'path': 'tests/unit/ops/test_session_status.py', 'line': 65, ...}]
+
+tests\unit\ops\test_windowless.py:296: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/ops/test_windowless.py::test_no_controlled_launcher_can_start_an_unhidden_child
+1 failed, 82 passed in 32.34s
+EXIT=1

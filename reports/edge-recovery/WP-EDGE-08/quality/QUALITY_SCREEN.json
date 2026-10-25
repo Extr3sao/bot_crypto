@@ -1,0 +1,761 @@
+{
+  "arms": {
+    "edge08_quality_breakout_daily": {
+      "answers": "Q-1: does the daily breakout pay its own round trip on a cross-section?",
+      "horizon_minutes": 4320.0,
+      "params": {
+        "atr_period": 20,
+        "breakout_lookback": 20,
+        "cost_margin": 1.5,
+        "exit_ema": 100,
+        "min_rr": 1.5,
+        "stop_atr": 2.0,
+        "target_atr": 6.0,
+        "trail_atr": 4.0,
+        "trend_ema": 200
+      },
+      "params_hash": "576a457a58e9fc79ea70ab1e266ca570b22c610248300d1ca8f5668516b349d2",
+      "rows": {
+        "DEV": {
+          "arm": "edge08_quality_breakout_daily",
+          "by_asset": {
+            "BTC": {
+              "net": 166.315,
+              "trades": 17,
+              "win_rate": 41.1765
+            },
+            "ETH": {
+              "net": 174.577,
+              "trades": 19,
+              "win_rate": 42.1053
+            },
+            "SOL": {
+              "net": 583.2768,
+              "trades": 16,
+              "win_rate": 62.5
+            }
+          },
+          "by_market_context": {
+            "BEAR": {
+              "net": -15.2715,
+              "trades": 1,
+              "win_rate": 0.0
+            },
+            "BULL": {
+              "net": 984.6191,
+              "trades": 40,
+              "win_rate": 55.0
+            },
+            "SIDEWAYS": {
+              "net": -45.1789,
+              "trades": 11,
+              "win_rate": 27.2727
+            }
+          },
+          "exit_reason_mix": {
+            "ema_invalidation": 2,
+            "end_of_data": 2,
+            "stop_loss": 19,
+            "target": 19,
+            "trailing_stop": 10
+          },
+          "expectancy_ci_90_usdt": {
+            "high": 28.7858,
+            "low": 5.8488,
+            "point": 17.7725
+          },
+          "expectancy_usdt": 17.7725,
+          "fees_usdt": 29.0976,
+          "frequency_target": 0.05,
+          "frequency_target_met": false,
+          "funnel": {
+            "trend_filter_fail": 51
+          },
+          "gross_expectancy_usdt": 18.4381,
+          "gross_usdt": 958.7812,
+          "largest_trade_share_of_net": 0.0876,
+          "max_drawdown_pct": 2.5776,
+          "mean_bps_per_trade": 958.9381,
+          "mean_hold_hours": 347.0769,
+          "net_usdt": 924.1688,
+          "positive_time_blocks": 2,
+          "price_costs_usdt": 5.5149,
+          "profit_factor": 2.4865,
+          "scenario": "BASE",
+          "sharpe_annualised": 1.3481,
+          "timeframe": "1d",
+          "total_cost_bps_per_trade": 24.5964,
+          "track": "QUALITY",
+          "trades": 52,
+          "trades_per_day_per_asset": 0.0158,
+          "trades_per_day_universe": 0.0475,
+          "win_rate_pct": 48.0769,
+          "window": {
+            "end": 1704063600000,
+            "start": 1609459200000
+          }
+        },
+        "OOS": {
+          "arm": "edge08_quality_breakout_daily",
+          "by_asset": {
+            "BTC": {
+              "net": -3.3445,
+              "trades": 5,
+              "win_rate": 20.0
+            },
+            "ETH": {
+              "net": 19.9893,
+              "trades": 7,
+              "win_rate": 28.5714
+            },
+            "SOL": {
+              "net": -74.4461,
+              "trades": 5,
+              "win_rate": 20.0
+            }
+          },
+          "by_market_context": {
+            "BULL": {
+              "net": -131.3965,
+              "trades": 16,
+              "win_rate": 18.75
+            },
+            "SIDEWAYS": {
+              "net": 73.5953,
+              "trades": 1,
+              "win_rate": 100.0
+            }
+          },
+          "exit_reason_mix": {
+            "ema_invalidation": 2,
+            "stop_loss": 9,
+            "target": 3,
+            "trailing_stop": 3
+          },
+          "expectancy_ci_90_usdt": {
+            "high": -3.4001,
+            "low": -3.4001,
+            "point": -3.4001
+          },
+          "expectancy_usdt": -3.4001,
+          "fees_usdt": 10.6289,
+          "frequency_target": 0.05,
+          "frequency_target_met": false,
+          "funnel": {
+            "trend_filter_fail": 16
+          },
+          "gross_expectancy_usdt": -2.6563,
+          "gross_usdt": -45.1579,
+          "largest_trade_share_of_net": null,
+          "max_drawdown_pct": 2.1158,
+          "mean_bps_per_trade": -121.0425,
+          "mean_hold_hours": 381.1765,
+          "net_usdt": -57.8012,
+          "positive_time_blocks": 1,
+          "price_costs_usdt": 2.0145,
+          "profit_factor": 0.8014,
+          "scenario": "BASE",
+          "sharpe_annualised": -0.3013,
+          "timeframe": "1d",
+          "total_cost_bps_per_trade": 23.6854,
+          "track": "QUALITY",
+          "trades": 17,
+          "trades_per_day_per_asset": 0.0087,
+          "trades_per_day_universe": 0.0261,
+          "win_rate_pct": 23.5294,
+          "window": {
+            "end": 1791964800000,
+            "start": 1735689600000
+          }
+        },
+        "VAL": {
+          "arm": "edge08_quality_breakout_daily",
+          "by_asset": {
+            "BTC": {
+              "net": 98.1808,
+              "trades": 14,
+              "win_rate": 28.5714
+            },
+            "ETH": {
+              "net": 93.2237,
+              "trades": 8,
+              "win_rate": 37.5
+            },
+            "SOL": {
+              "net": 103.7278,
+              "trades": 9,
+              "win_rate": 55.5556
+            }
+          },
+          "by_market_context": {
+            "BULL": {
+              "net": 316.728,
+              "trades": 28,
+              "win_rate": 39.2857
+            },
+            "SIDEWAYS": {
+              "net": -21.5956,
+              "trades": 3,
+              "win_rate": 33.3333
+            }
+          },
+          "exit_reason_mix": {
+            "ema_invalidation": 8,
+            "stop_loss": 11,
+            "target": 9,
+            "trailing_stop": 3
+          },
+          "expectancy_ci_90_usdt": {
+            "high": 21.7663,
+            "low": 9.5204,
+            "point": 9.5204
+          },
+          "expectancy_usdt": 9.5204,
+          "fees_usdt": 19.0902,
+          "frequency_target": 0.05,
+          "frequency_target_met": true,
+          "funnel": {
+            "trend_filter_fail": 3
+          },
+          "gross_expectancy_usdt": 10.2529,
+          "gross_usdt": 317.8406,
+          "largest_trade_share_of_net": 0.2573,
+          "max_drawdown_pct": 2.2886,
+          "mean_bps_per_trade": 213.6541,
+          "mean_hold_hours": 296.5161,
+          "net_usdt": 295.1323,
+          "positive_time_blocks": 2,
+          "price_costs_usdt": 3.6181,
+          "profit_factor": 1.7572,
+          "scenario": "BASE",
+          "sharpe_annualised": 1.0583,
+          "timeframe": "1d",
+          "total_cost_bps_per_trade": 24.1887,
+          "track": "QUALITY",
+          "trades": 31,
+          "trades_per_day_per_asset": 0.0282,
+          "trades_per_day_universe": 0.0847,
+          "win_rate_pct": 38.7097,
+          "window": {
+            "end": 1735686000000,
+            "start": 1704067200000
+          }
+        }
+      },
+      "screen": {
+        "arm": "edge08_quality_breakout_daily",
+        "consequence": "read on the cross-section (the screen does not itself admit anything)",
+        "dev_expectancy_usdt": 17.7725,
+        "dev_gross_expectancy_usdt": 18.4381,
+        "dev_net_usdt": 924.1688,
+        "dev_trades": 52,
+        "dev_trades_per_day_universe": 0.0475,
+        "passed": true,
+        "screen": "C0",
+        "statement": "gross expectancy > 0 on the known universe's DEV window",
+        "verdict_if_failed": null
+      },
+      "timeframe": "1d",
+      "track": "QUALITY"
+    },
+    "edge08_quality_pullback_daily": {
+      "answers": "Q-2: is the cheaper entry into an uptrend the one that survives costs?",
+      "horizon_minutes": 4320.0,
+      "params": {
+        "atr_period": 20,
+        "cost_margin": 1.5,
+        "entry_distance_atr": 0.5,
+        "exit_ema": 100,
+        "min_rr": 1.5,
+        "pullback_ema": 20,
+        "stop_atr": 2.0,
+        "target_atr": 3.0,
+        "trail_atr": 2.5,
+        "trend_fast": 50,
+        "trend_slow": 200
+      },
+      "params_hash": "2ba39edfc34f04df9d45221953397fdcb45979e95b6dd6480963d991af609f55",
+      "rows": {
+        "DEV": {
+          "arm": "edge08_quality_pullback_daily",
+          "by_asset": {
+            "BTC": {
+              "net": -127.0934,
+              "trades": 67,
+              "win_rate": 44.7761
+            },
+            "ETH": {
+              "net": -148.344,
+              "trades": 61,
+              "win_rate": 40.9836
+            },
+            "SOL": {
+              "net": -103.5386,
+              "trades": 37,
+              "win_rate": 48.6486
+            }
+          },
+          "by_market_context": {
+            "BEAR": {
+              "net": -182.1641,
+              "trades": 77,
+              "win_rate": 46.7532
+            },
+            "BULL": {
+              "net": -291.4994,
+              "trades": 45,
+              "win_rate": 24.4444
+            },
+            "SIDEWAYS": {
+              "net": 94.6875,
+              "trades": 43,
+              "win_rate": 60.4651
+            }
+          },
+          "exit_reason_mix": {
+            "ema_invalidation": 143,
+            "stop_loss": 13,
+            "target": 6,
+            "trailing_stop": 3
+          },
+          "expectancy_ci_90_usdt": {
+            "high": -0.6931,
+            "low": -3.8263,
+            "point": -2.2968
+          },
+          "expectancy_usdt": -2.2968,
+          "fees_usdt": 59.0509,
+          "frequency_target": 0.05,
+          "frequency_target_met": true,
+          "funnel": {
+            "risk_drawdown_halt": 31,
+            "rr_below_minimum": 170,
+            "trend_filter_fail": 681
+          },
+          "gross_expectancy_usdt": -1.8711,
+          "gross_usdt": -308.7333,
+          "largest_trade_share_of_net": null,
+          "max_drawdown_pct": 5.0301,
+          "mean_bps_per_trade": -95.7218,
+          "mean_hold_hours": 53.2364,
+          "net_usdt": -378.976,
+          "positive_time_blocks": 0,
+          "price_costs_usdt": 11.1918,
+          "profit_factor": 0.5474,
+          "scenario": "BASE",
+          "sharpe_annualised": -0.9375,
+          "timeframe": "1d",
+          "total_cost_bps_per_trade": 23.6624,
+          "track": "QUALITY",
+          "trades": 165,
+          "trades_per_day_per_asset": 0.0502,
+          "trades_per_day_universe": 0.1507,
+          "win_rate_pct": 44.2424,
+          "window": {
+            "end": 1704063600000,
+            "start": 1609459200000
+          }
+        },
+        "OOS": {
+          "arm": "edge08_quality_pullback_daily",
+          "by_asset": {
+            "BTC": {
+              "net": 62.2608,
+              "trades": 45,
+              "win_rate": 53.3333
+            },
+            "ETH": {
+              "net": -40.3636,
+              "trades": 36,
+              "win_rate": 38.8889
+            },
+            "SOL": {
+              "net": 5.6511,
+              "trades": 46,
+              "win_rate": 41.3043
+            }
+          },
+          "by_market_context": {
+            "BEAR": {
+              "net": -16.0576,
+              "trades": 22,
+              "win_rate": 40.9091
+            },
+            "BULL": {
+              "net": 18.3804,
+              "trades": 74,
+              "win_rate": 37.8378
+            },
+            "SIDEWAYS": {
+              "net": 25.2255,
+              "trades": 31,
+              "win_rate": 64.5161
+            }
+          },
+          "exit_reason_mix": {
+            "ema_invalidation": 111,
+            "stop_loss": 6,
+            "target": 8,
+            "trailing_stop": 2
+          },
+          "expectancy_ci_90_usdt": {
+            "high": 2.9578,
+            "low": -1.9962,
+            "point": 0.2169
+          },
+          "expectancy_usdt": 0.2169,
+          "fees_usdt": 58.0431,
+          "frequency_target": 0.05,
+          "frequency_target_met": true,
+          "funnel": {
+            "rr_below_minimum": 81,
+            "trend_filter_fail": 290
+          },
+          "gross_expectancy_usdt": 0.7606,
+          "gross_usdt": 96.5923,
+          "largest_trade_share_of_net": 1.3452,
+          "max_drawdown_pct": 1.5924,
+          "mean_bps_per_trade": -4.1382,
+          "mean_hold_hours": 24.9449,
+          "net_usdt": 27.5484,
+          "positive_time_blocks": 1,
+          "price_costs_usdt": 11.0008,
+          "profit_factor": 1.0519,
+          "scenario": "BASE",
+          "sharpe_annualised": 0.1444,
+          "timeframe": "1d",
+          "total_cost_bps_per_trade": 23.8257,
+          "track": "QUALITY",
+          "trades": 127,
+          "trades_per_day_per_asset": 0.065,
+          "trades_per_day_universe": 0.195,
+          "win_rate_pct": 44.8819,
+          "window": {
+            "end": 1791964800000,
+            "start": 1735689600000
+          }
+        },
+        "VAL": {
+          "arm": "edge08_quality_pullback_daily",
+          "by_asset": {
+            "BTC": {
+              "net": -15.7897,
+              "trades": 33,
+              "win_rate": 45.4545
+            },
+            "ETH": {
+              "net": -105.9435,
+              "trades": 34,
+              "win_rate": 35.2941
+            },
+            "SOL": {
+              "net": -91.0804,
+              "trades": 48,
+              "win_rate": 39.5833
+            }
+          },
+          "by_market_context": {
+            "BEAR": {
+              "net": 2.3008,
+              "trades": 3,
+              "win_rate": 33.3333
+            },
+            "BULL": {
+              "net": -220.5905,
+              "trades": 72,
+              "win_rate": 29.1667
+            },
+            "SIDEWAYS": {
+              "net": 5.4761,
+              "trades": 40,
+              "win_rate": 60.0
+            }
+          },
+          "exit_reason_mix": {
+            "ema_invalidation": 100,
+            "end_of_data": 2,
+            "stop_loss": 9,
+            "target": 4
+          },
+          "expectancy_ci_90_usdt": {
+            "high": -1.0598,
+            "low": -2.6476,
+            "point": -1.8506
+          },
+          "expectancy_usdt": -1.8506,
+          "fees_usdt": 52.3472,
+          "frequency_target": 0.05,
+          "frequency_target_met": true,
+          "funnel": {
+            "rr_below_minimum": 112,
+            "trend_filter_fail": 42
+          },
+          "gross_expectancy_usdt": -1.3091,
+          "gross_usdt": -150.5451,
+          "largest_trade_share_of_net": null,
+          "max_drawdown_pct": 3.3742,
+          "mean_bps_per_trade": -56.4816,
+          "mean_hold_hours": 49.0435,
+          "net_usdt": -212.8136,
+          "positive_time_blocks": 0,
+          "price_costs_usdt": 9.9213,
+          "profit_factor": 0.6502,
+          "scenario": "BASE",
+          "sharpe_annualised": -1.1933,
+          "timeframe": "1d",
+          "total_cost_bps_per_trade": 23.7179,
+          "track": "QUALITY",
+          "trades": 115,
+          "trades_per_day_per_asset": 0.1047,
+          "trades_per_day_universe": 0.3142,
+          "win_rate_pct": 40.0,
+          "window": {
+            "end": 1735686000000,
+            "start": 1704067200000
+          }
+        }
+      },
+      "screen": {
+        "arm": "edge08_quality_pullback_daily",
+        "consequence": "a book that fails C0 gets REJECT_NO_GROSS_EDGE and is NOT read on the cross-section; its holdout rows are absent, not zero",
+        "dev_expectancy_usdt": -2.2968,
+        "dev_gross_expectancy_usdt": -1.8711,
+        "dev_net_usdt": -378.976,
+        "dev_trades": 165,
+        "dev_trades_per_day_universe": 0.1507,
+        "passed": false,
+        "screen": "C0",
+        "statement": "gross expectancy > 0 on the known universe's DEV window",
+        "verdict_if_failed": "REJECT_NO_GROSS_EDGE"
+      },
+      "timeframe": "1d",
+      "track": "QUALITY"
+    },
+    "edge08_quality_reversion_daily": {
+      "answers": "Q-3: does a band stretch inside a range regime pay after costs?",
+      "horizon_minutes": 4320.0,
+      "params": {
+        "atr_period": 20,
+        "cost_margin": 1.5,
+        "mean_period": 20,
+        "min_rr": 1.5,
+        "regime_ema_fast": 50,
+        "regime_ema_slow": 200,
+        "regime_max_gap_pct": 1.0,
+        "stop_atr": 2.0,
+        "stretch_atr": 3.0
+      },
+      "params_hash": "988137f4e8dbaf6449f1a976c975491fb50530abd86ce6183428661e38677ef3",
+      "rows": {
+        "DEV": {
+          "arm": "edge08_quality_reversion_daily",
+          "by_asset": {},
+          "by_market_context": {},
+          "exit_reason_mix": {},
+          "expectancy_ci_90_usdt": {
+            "high": null,
+            "low": null,
+            "point": null
+          },
+          "expectancy_usdt": null,
+          "fees_usdt": 0,
+          "frequency_target": 0.05,
+          "frequency_target_met": false,
+          "funnel": {
+            "regime_filter_fail": 66
+          },
+          "gross_expectancy_usdt": null,
+          "gross_usdt": 0,
+          "largest_trade_share_of_net": null,
+          "max_drawdown_pct": 0.0,
+          "mean_bps_per_trade": null,
+          "mean_hold_hours": null,
+          "net_usdt": 0,
+          "positive_time_blocks": 0,
+          "price_costs_usdt": 0,
+          "profit_factor": null,
+          "scenario": "BASE",
+          "sharpe_annualised": null,
+          "timeframe": "1d",
+          "total_cost_bps_per_trade": null,
+          "track": "QUALITY",
+          "trades": 0,
+          "trades_per_day_per_asset": 0.0,
+          "trades_per_day_universe": 0.0,
+          "win_rate_pct": null,
+          "window": {
+            "end": 1704063600000,
+            "start": 1609459200000
+          }
+        },
+        "OOS": {
+          "arm": "edge08_quality_reversion_daily",
+          "by_asset": {},
+          "by_market_context": {},
+          "exit_reason_mix": {},
+          "expectancy_ci_90_usdt": {
+            "high": null,
+            "low": null,
+            "point": null
+          },
+          "expectancy_usdt": null,
+          "fees_usdt": 0,
+          "frequency_target": 0.05,
+          "frequency_target_met": false,
+          "funnel": {
+            "regime_filter_fail": 31
+          },
+          "gross_expectancy_usdt": null,
+          "gross_usdt": 0,
+          "largest_trade_share_of_net": null,
+          "max_drawdown_pct": 0.0,
+          "mean_bps_per_trade": null,
+          "mean_hold_hours": null,
+          "net_usdt": 0,
+          "positive_time_blocks": 0,
+          "price_costs_usdt": 0,
+          "profit_factor": null,
+          "scenario": "BASE",
+          "sharpe_annualised": null,
+          "timeframe": "1d",
+          "total_cost_bps_per_trade": null,
+          "track": "QUALITY",
+          "trades": 0,
+          "trades_per_day_per_asset": 0.0,
+          "trades_per_day_universe": 0.0,
+          "win_rate_pct": null,
+          "window": {
+            "end": 1791964800000,
+            "start": 1735689600000
+          }
+        },
+        "VAL": {
+          "arm": "edge08_quality_reversion_daily",
+          "by_asset": {},
+          "by_market_context": {},
+          "exit_reason_mix": {},
+          "expectancy_ci_90_usdt": {
+            "high": null,
+            "low": null,
+            "point": null
+          },
+          "expectancy_usdt": null,
+          "fees_usdt": 0,
+          "frequency_target": 0.05,
+          "frequency_target_met": false,
+          "funnel": {
+            "regime_filter_fail": 11
+          },
+          "gross_expectancy_usdt": null,
+          "gross_usdt": 0,
+          "largest_trade_share_of_net": null,
+          "max_drawdown_pct": 0.0,
+          "mean_bps_per_trade": null,
+          "mean_hold_hours": null,
+          "net_usdt": 0,
+          "positive_time_blocks": 0,
+          "price_costs_usdt": 0,
+          "profit_factor": null,
+          "scenario": "BASE",
+          "sharpe_annualised": null,
+          "timeframe": "1d",
+          "total_cost_bps_per_trade": null,
+          "track": "QUALITY",
+          "trades": 0,
+          "trades_per_day_per_asset": 0.0,
+          "trades_per_day_universe": 0.0,
+          "win_rate_pct": null,
+          "window": {
+            "end": 1735686000000,
+            "start": 1704067200000
+          }
+        }
+      },
+      "screen": {
+        "arm": "edge08_quality_reversion_daily",
+        "consequence": "a book that fails C0 gets REJECT_NO_GROSS_EDGE and is NOT read on the cross-section; its holdout rows are absent, not zero",
+        "dev_expectancy_usdt": null,
+        "dev_gross_expectancy_usdt": null,
+        "dev_net_usdt": 0,
+        "dev_trades": 0,
+        "dev_trades_per_day_universe": 0.0,
+        "passed": false,
+        "screen": "C0",
+        "statement": "gross expectancy > 0 on the known universe's DEV window",
+        "verdict_if_failed": "REJECT_NO_GROSS_EDGE"
+      },
+      "timeframe": "1d",
+      "track": "QUALITY"
+    }
+  },
+  "as_of_utc": "2026-10-14T20:35:45Z",
+  "barrier_reference": {
+    "available": true,
+    "note": "the measured barrier this track is judged against: the fraction of the open-to-open move a perfect call must capture merely to break even, per holding horizon",
+    "path": "reports/edge-recovery/WP-EDGE-07/active-research/COST_BARRIER_ACTIVE.json",
+    "round_trip_bps": null,
+    "sha256": "d7fcaee590aa0c7724b2a197864548050b1d810b37ed8cda4784691fd5b0f0dc"
+  },
+  "corpora": {
+    "1d": {
+      "BTC": {
+        "bars": 2596,
+        "first_ts": 1546300800000,
+        "last_ts": 1772236800000
+      },
+      "ETH": {
+        "bars": 2596,
+        "first_ts": 1546300800000,
+        "last_ts": 1772236800000
+      },
+      "SOL": {
+        "bars": 2017,
+        "first_ts": 1597190400000,
+        "last_ts": 1772236800000
+      }
+    }
+  },
+  "defects_fixed": [
+    {
+      "cause": "the frozen cost_gate applies max(min_rr, cost_margin) as its reward/risk floor, so a book whose registered min_rr (1.2 and 0.5) sits below its declared cost_margin (1.5) carries a requirement that is unsatisfiable by construction — the same defect class DEF-EDGE01-01 recorded for the frozen campaign, where a candidate printed signals and never traded one of them.",
+      "evidence": "the per-arm funnels of both affected arms (zero trades and zero refusals on DEV, VAL and OOS before the fix) and the hashes above, absent from every book under test",
+      "fix": "the reward/risk of both books was made satisfiable by design rather than by weakening a gate: Q-2 moved to a 2.0 ATR stop against a 3.0 ATR objective (R:R 1.5) and Q-3 to an ATR-denominated dislocation (entry at least 3.0 ATR below the 20-day mean, 2.0 ATR stop, objective the mean), both with min_rr = cost_margin = 1.5, so the gate judges each setup instead of refusing the book.",
+      "found": "by running the screen, before the registration was committed and before any bar of the cross-section was aggregated or measured",
+      "id": "DEF-EDGE08-01",
+      "superseded_params_hashes": {
+        "edge08_quality_pullback_daily": "7d2c5f5c2fba5e969197f3847feee48f72e37be3043817f6ecd42aef3dd8b750",
+        "edge08_quality_reversion_daily": "c44e61e2745b5d5b1f688084da702875078102b1b7e22aa2888e4220fa5d1d10"
+      },
+      "symptom": "two registered QUALITY books produced no trades at all on the screening ground: edge08_quality_pullback_daily and edge08_quality_reversion_daily could not fire, the second of them on any bar of a three-year corpus.",
+      "what_did_not_happen": "no criterion, window, cost scenario or risk limit moved; the two books' signals are what changed, and the cross-section had not been touched when they did"
+    }
+  ],
+  "forward_to_the_cross_section": [
+    "edge08_quality_breakout_daily"
+  ],
+  "frequency_target_per_day": 0.05,
+  "ground": "the known universe (BTC/ETH/SOL) — the screening ground, never the evidence",
+  "order_sent": false,
+  "promotion": "NONE",
+  "rejected_before_the_cross_section": [
+    "edge08_quality_pullback_daily",
+    "edge08_quality_reversion_daily"
+  ],
+  "schema_version": "EDGE08_V1",
+  "track": "QUALITY",
+  "windows": {
+    "DEV": {
+      "end": 1704063600000,
+      "start": 1609459200000
+    },
+    "OOS": {
+      "end": 1791964800000,
+      "start": 1735689600000
+    },
+    "VAL": {
+      "end": 1735686000000,
+      "start": 1704067200000
+    }
+  },
+  "work_package": "WP-EDGE-08B"
+}

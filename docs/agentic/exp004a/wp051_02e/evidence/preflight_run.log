@@ -1,0 +1,12 @@
+[capture] PENDING_WINDOW: no bar opens inside the declared window yet; the extractor refused with exit 3 and wrote nothing
+[preflight] PASS  DECLARATION_AUTHORIZES           EXP-004A.datasets.phase2/v1 binds; generator fc036d967923...
+[preflight] PASS  PHASE_ONE_BYTES_INTACT           phase 1 sha256 8946f871a97b7575... blob 43c9deea29a8... dirty=False
+[preflight] PASS  GENERATOR_IDENTITY               scripts/exp004a_capture.py at fc036d967923 sha256 af1ab7cc23980dad... would-run 052832c2252a... == committed 052832c2252a...
+[preflight] PASS  SEALED_02D_PACKAGE_INTACT        19 sealed artefacts, 0 drifted
+[preflight] PASS  STORE_READABLE                   3 series readable, 0 bar(s) open inside the window
+[preflight] PASS  STORE_HAS_NO_FUTURE_INGEST       no stored bar claims an ingest later than this instant
+[preflight] PASS  FORWARD_OBSERVER_FRESH           every series was written within its own lag bound
+[preflight] PASS  NO_DATASET_PUBLISHED             0 dataset(s) and 0 manifest(s) in data/exp004a
+[preflight] PASS  ST6_TAPE_REFUSED                 st6:tape exit 2: {"ok": false, "error": "EXP-004A-ST6-TAPE declares timeframe '4h slot, 3 rounds of 15s', which is not a bar series; a slice rule for it is not defined by the de
+[preflight] PASS  WINDOW_CANNOT_BE_EXTENDED        period beyond the window exit 2
+[preflight] READY_FOR_WINDOW - 10 controls - 0 failed
