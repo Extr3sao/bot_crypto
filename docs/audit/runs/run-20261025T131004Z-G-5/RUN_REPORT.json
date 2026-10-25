@@ -1,0 +1,187 @@
+{
+  "schema_version": "tap.g5-paper-run-report/v1",
+  "task": "G-5",
+  "title": "Paper runtime end to end",
+  "generated_at_utc": "2026-10-25T14:30:00Z",
+  "verdict": "G5_VERIFIED",
+  "scope": "PAPER_ONLY_SYNTHETIC_FIXTURE",
+  "live_no_go": true,
+  "production_ready": false,
+  "commits": {
+    "implementation": "05b361f7bd26a4fb9d470d9ba5c68d7f967846c9",
+    "before": "0bc8a926",
+    "branch": "audit/mt0004-negative-controls"
+  },
+  "canonical_engine": {
+    "class": "trading_bot.paper.paper_cycle.PaperCycleEngine",
+    "factory": "scripts/start_paper_trading.py::build_cycle_engine",
+    "orchestrator": "trading_bot.paper.paper_orchestrator.PaperOrchestrator",
+    "runner": "trading_bot.paper.harness.PaperSessionRunner",
+    "broker": "trading_bot.paper.broker.PaperBroker",
+    "state": "trading_bot.paper.paper_state_store.PaperStateStore",
+    "reconciler": "trading_bot.paper.reconciliation_v4.StartupReconcilerV4",
+    "evidence": [
+      "production_no_trade_stdout.log (real command, committed ledger, NO_TRADE)",
+      "evidence.json (controlled fixture, full trade + restart)"
+    ]
+  },
+  "commands": [
+    {
+      "command": "python -m trading_bot.app run --mode paper --auto-trade --once",
+      "exit_code": 0,
+      "observed": "synthetic scan; paper_cycle=NOT_RUN; broker=NOT_CONSTRUCTED; --auto-trade not applied",
+      "artifact": "cli_synthetic_stdout.log"
+    },
+    {
+      "command": "python scripts/start_paper_trading.py --assets BTC --max-cycles 1 --interval 0 --provider fake --fresh --state-path <run>/production/state.json --run-dir <run>/production/run",
+      "exit_code": 0,
+      "observed": "real cycle; contexts_built=1; router_invocations=1; strategy_invocations=0; orders_created=0; NO_TRADE:no_strategy_passed_gates",
+      "artifact": "production_no_trade_stdout.log"
+    },
+    {
+      "command": "python scripts/audit/g5_paper_e2e.py --out docs/audit/runs/run-20261025T131004Z-G-5",
+      "exit_code": 0,
+      "observed": "six scenarios; trade=1 order; restart=RECOVERED + 1 TP close; no_trade/stale/kill_switch/exception=0 orders",
+      "artifact": "evidence.json"
+    },
+    {
+      "command": "python scripts/audit/verify_g5.py --rev HEAD --out docs/audit/runs/run-20261025T131004Z-G-5/verification.json",
+      "exit_code": 0,
+      "observed": "G5_VERIFIED 12/12, deterministic replay, FALSE_SUCCESS=0",
+      "artifact": "verification.json"
+    }
+  ],
+  "scenarios": {
+    "trade": {
+      "contexts_built": 1,
+      "router_invocations": 1,
+      "strategy_invocations": 1,
+      "signals_generated": 1,
+      "risk_accepted": 1,
+      "orders_created": 1,
+      "broker_execute_signal": 1,
+      "open_positions": 1,
+      "realized_pnl": 0.0,
+      "equity": 10000.0,
+      "state_bytes": 908,
+      "state_open_positions": 1,
+      "state_sent_intents": 1,
+      "elapsed_ms": 9.81,
+      "accounting_identities": true
+    },
+    "restart": {
+      "reconciliation": "RECOVERED",
+      "restored_open_positions": 1,
+      "restored_intents": 1,
+      "orders_created": 0,
+      "same_side_skips": 1,
+      "broker_execute_signal": 0,
+      "closed_trades": 1,
+      "exit_reason": "take_profit",
+      "realized_pnl": 49.39001649780036,
+      "equity": 10049.3900164978,
+      "state_bytes": 1387,
+      "state_open_positions": 0,
+      "state_closed_trades": 1,
+      "elapsed_ms": 6.555,
+      "accounting_identities": true
+    },
+    "no_trade": {
+      "orders_created": 0,
+      "signals_generated": 0,
+      "broker_execute_signal": 0,
+      "reason": "no_alpha_in_direction:ANY",
+      "state_bytes": 476,
+      "elapsed_ms": 7.114
+    },
+    "stale": {
+      "orders_created": 0,
+      "router_no_trade": 1,
+      "broker_execute_signal": 0,
+      "reason": "NO_TRADE:stale_context",
+      "state_bytes": 476,
+      "elapsed_ms": 15.873
+    },
+    "kill_switch": {
+      "orders_created": 0,
+      "risk_accepted": 1,
+      "hot_stop_blocked": 1,
+      "broker_execute_signal": 0,
+      "broker_close_position": 0,
+      "reason": "kill_switch_active:marker:G-5 operator stop",
+      "state_bytes": 476,
+      "elapsed_ms": 8.096
+    },
+    "provider_exception": {
+      "orders_created": 0,
+      "broker_execute_signal": 0,
+      "scanner_errors": 1,
+      "total_snapshots": 0,
+      "state_bytes": 476,
+      "elapsed_ms": 7.29
+    }
+  },
+  "before": {
+    "artifact": "before_g5_evidence.json",
+    "trade_orders": 0,
+    "trade_reason": "weekend_trading: weekend (Sunday) and blocks.weekend_trading=false",
+    "restart_restored_open_positions": 0,
+    "kill_switch_reason": "weekend_trading: weekend (Sunday) and blocks.weekend_trading=false",
+    "cli_had_paper_cycle_label": false
+  },
+  "tests": {
+    "g5": {"command": "pytest tests/integration/test_g5_paper_end_to_end.py", "passed": 8, "failed": 0},
+    "focused": {"passed": 200, "failed": 0, "command": "G-5 + paper E2E + unit paper/cert/app"},
+    "broad": {
+      "passed": 837,
+      "failed": 2,
+      "failed_tests": [
+        "tests/unit/risk/test_futures_independent_verifier.py::test_verifier_reproduces_a_real_approval",
+        "tests/unit/risk/test_futures_independent_verifier.py::test_executed_artifacts_verify_when_present"
+      ],
+      "pre_existing": true,
+      "pre_existing_evidence": "same 2 failures at base 0bc8a926 in a detached worktree"
+    },
+    "full_unit_collection": {
+      "status": "blocked",
+      "reason": "tests/unit/observability/test_vision_panel.py imports missing trading_bot.observability.vision_panel; outside changed paths"
+    },
+    "lint": "ruff format --check and ruff check: PASS on changed files",
+    "types": "mypy: PASS on changed source and audit scripts"
+  },
+  "integrity": {
+    "hot_stop_sha256": "76cfca23d1e7758607c466eea4ff5c0a9411cb812d433eb7ca16dfb45cfdf8b1",
+    "hot_stop_unchanged_from": "a072da90",
+    "evidence_sha256": "e4092b34b8efffdb6d83a5650ee636962f78ef3a56f708292930cec1287762af",
+    "verification_sha256": "fba5ede29f3938c2abdad019616e5056e336809c9467e8979628c5bb46c52273",
+    "verification_rev": "05b361f7bd26a4fb9d470d9ba5c68d7f967846c9",
+    "checks_passed": 12,
+    "checks_total": 12,
+    "false_success": 0
+  },
+  "limitations": [
+    "Synthetic market data and a controlled admission fixture: reachability, not strategy edge.",
+    "The committed production ledger admits no strategy, so the real launcher ends in NO_TRADE.",
+    "The restart is logical (new broker/engine/reconciler, same process and disk), not an OS process crash.",
+    "paper_cycle and autonomous.decision remain two engines.",
+    "No exchange was contacted and no credential was used.",
+    "Verification is procedurally separated (different script, same author), not a second person."
+  ],
+  "artifacts": [
+    "RUNTIME_ROUTE_MATRIX.md",
+    "PAPER_END_TO_END.md",
+    "BEFORE_AFTER.md",
+    "RUN_REPORT.md",
+    "RUN_REPORT.json",
+    "FINAL_REPORT.md",
+    "evidence.json",
+    "verification.json",
+    "production_no_trade_stdout.log",
+    "cli_synthetic_stdout.log",
+    "before_g5_evidence.json",
+    "before_g5_evidence_stdout.log",
+    "before_cli_synthetic_stdout.log",
+    "evidence_stdout.log",
+    "verification_stdout.log"
+  ]
+}

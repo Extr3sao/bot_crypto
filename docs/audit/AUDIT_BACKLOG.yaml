@@ -10,7 +10,7 @@
 
 schema: tap.audit-backlog/v1
 generated_at_utc: "2026-10-23T18:53:56Z"
-updated_at_utc: "2026-10-25T13:10:00Z"
+updated_at_utc: "2026-10-25T14:30:00Z"
 repository: trading-agentic-portable
 
 recovery:
@@ -316,6 +316,65 @@ tasks:
       HotStopGate boundary as the autonomous runtime. PROCEDURALLY_SEPARATED
       verification, same author.
 
+  - id: G-5
+    title: Demonstrate a complete paper cycle through the real runtime
+    status: done
+    provenance: gap
+    contract: docs/audit/G-5.md
+    verified_commit: "05b361f7bd26a4fb9d470d9ba5c68d7f967846c9"
+    verification: docs/audit/runs/run-20261025T131004Z-G-5/verification.json
+    run_report: docs/audit/runs/run-20261025T131004Z-G-5/RUN_REPORT.md
+    verdict: G5_VERIFIED
+    allowed_paths:
+      - docs/audit/G-5.md
+      - docs/audit/AUDIT_BACKLOG.yaml
+      - docs/audit/runtime_authority_map.md
+      - docs/audit/fixtures/**
+      - docs/audit/runs/**
+      - src/trading_bot/app.py
+      - src/trading_bot/paper/harness.py
+      - scripts/audit/g5_paper_e2e.py
+      - scripts/audit/verify_g5.py
+      - tests/integration/test_g5_paper_end_to_end.py
+    protected_paths:
+      - src/trading_bot/autonomous/hot_stop.py
+      - src/trading_bot/autonomous/decision.py
+      - src/trading_bot/autonomous/runtime.py
+      - src/trading_bot/risk/manager.py
+      - src/trading_bot/paper/paper_cycle.py
+      - src/trading_bot/paper/broker.py
+      - scripts/start_paper_trading.py
+      - config/**
+      - .github/**
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+    acceptance_criteria: [ACC-G5-01, ACC-G5-02, ACC-G5-03, ACC-G5-04, ACC-G5-05, ACC-G5-06, ACC-G5-07, ACC-G5-08, ACC-G5-09, ACC-G5-10, ACC-G5-11, ACC-G5-12]
+    evidence:
+      - "real launcher with the committed ledger: exit 0, contexts=1, strategy=0, orders=0, NO_TRADE:no_strategy_passed_gates"
+      - "controlled fixture: 1 order, 1 fill, 1 durable position, 1 intent"
+      - "restart: RECOVERED 1 position/1 intent, 0 reopens, TP close +49.390016, equity 10049.390016"
+      - "kill switch: risk_accepted=1, hot_stop_blocked=1, execute_signal=0, orders=0"
+      - "flat and stale markets: 0 orders with observable reasons; provider exception: 0 orders, scanner_errors=1"
+      - "clean-export verifier: 12/12, deterministic replay, FALSE_SUCCESS=0"
+    covered_paths:
+      - scripts/start_paper_trading.py -> PaperCycleEngine -> HotStopGate -> PaperBroker
+      - PaperStateStore -> StartupReconcilerV4 -> PaperBroker.restore
+    uncovered_paths:
+      - synthetic fixture admission is reachability evidence, not strategy edge
+      - the committed ledger admits no strategy, so the operational command is NO_TRADE
+      - restart is logical (new instances, same process/disk), not an OS crash
+      - paper_cycle still does not route through autonomous.decision (two engines remain)
+      - no exchange acceptance is exercised
+    note: >-
+      G-5 measured the route rather than the documentation. The synthetic CLI
+      branch is now labelled as such and is not connected to the broker; the
+      real paper engine is exercised through the existing launcher and a
+      controlled evidence runner. `_market_conditions` now uses the session's
+      injected clock instead of the wall clock, so a deterministic replay can
+      actually reach risk and the stop. PROCEDURALLY_SEPARATED verification,
+      same author.
+
   - id: P0-LIVE-GATE
     title: Enforce LiveTradingGate on every live path that opens risk
     status: done
@@ -429,6 +488,9 @@ contracts:
   - path: docs/audit/G-4.md
     required: true
     producer: G-4
+  - path: docs/audit/G-5.md
+    required: true
+    producer: G-5
   - path: docs/audit/AUDIT_BACKLOG.yaml
     required: true
     producer: MT-0004-R1
@@ -451,11 +513,11 @@ unrecoverable:
 next_ready:
   task: null
   reason: >-
-    G-1, G-2, G-3, G-4, P0-LIVE-GATE and RFC-EXEC-SEC-002 are closed and their
-    contracts are committed. The live gate is enforced on every live
+    G-1, G-2, G-3, G-4, G-5, P0-LIVE-GATE and RFC-EXEC-SEC-002 are closed and
+    their contracts are committed. The live gate is enforced on every live
     risk-opening path, `run --auto-trade` needs explicit consent, the paper
-    launcher now consults the same hot stop as the autonomous runtime, and the
-    only exemptions are venue-enforced reductions revalidated on the wire
-    payload. `run --demo` was removed from the route matrix because it never
-    reached a broker: it runs the synthetic scanner only. D-6 was not opened by
-    any of these tasks; no evidenced task remains to name READY.
+    launcher consults the same hot stop as the autonomous runtime and G-5
+    executed a complete paper cycle through it with durable state and
+    reconciliation. `run --demo` and `run --mode paper` are labelled as the
+    synthetic scanner they are; they remain outside the paper sink. D-6 was not
+    opened by any of these tasks; no evidenced task remains to name READY.
