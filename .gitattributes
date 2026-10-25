@@ -35,4 +35,4 @@ docs/COST_MODEL_V3.json -text
 # rewrites those bytes and turns every one of those anchors into a false alarm on a
 # clean clone, so both trees are stored exactly as they are on disk.
 data/economic/** -text
-docs/agentic/economic_audit/WP-ECONOMIC-RECOVERY-006/evidence/results/** -text
+docs/agentic/economic_audit/**/evidence/** -text

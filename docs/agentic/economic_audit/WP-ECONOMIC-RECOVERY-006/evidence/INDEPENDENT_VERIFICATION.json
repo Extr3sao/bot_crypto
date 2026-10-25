@@ -1,0 +1,105 @@
+{
+  "schema": "W006_INDEPENDENT_VERIFICATION_V1",
+  "verifier": "scripts/w006_verify.py (does not import the engine under test)",
+  "results": "reports\\economic\\w006\\MULTI_FAMILY_RESULTS.json",
+  "results_sha256": "33088ff0271f1c3c1f940826330a88109bf70e85eb62e66490ef56b96c888787",
+  "trades_sha256": "94f20287ac0e0ec7e9473d655882ce21dbe1c840285c3aeeecad752112eb9ebd",
+  "trades_verified": 23444,
+  "checks": {
+    "pnl_identity": {
+      "name": "pnl_identity",
+      "description": "net = gross - spread - slippage - fees",
+      "checked": 23444,
+      "failed": 0,
+      "failures": [],
+      "max_residual": 1.0000000028043132e-06,
+      "status": "PASS"
+    },
+    "gross_from_prices": {
+      "name": "gross_from_prices",
+      "description": "gross recomputed from qty and reference prices",
+      "checked": 23444,
+      "failed": 0,
+      "failures": [],
+      "max_residual": 0.0,
+      "status": "PASS"
+    },
+    "costs_from_bps": {
+      "name": "costs_from_bps",
+      "description": "fees/spread/slippage recomputed from bps",
+      "checked": 70332,
+      "failed": 0,
+      "failures": [],
+      "max_residual": 0.0,
+      "status": "PASS"
+    },
+    "fills_from_costs": {
+      "name": "fills_from_costs",
+      "description": "fill = ref +/- (half_spread+slippage)",
+      "checked": 23444,
+      "failed": 0,
+      "failures": [],
+      "max_residual": 0.0,
+      "status": "PASS"
+    },
+    "causality": {
+      "name": "causality",
+      "description": "entry bar is exactly one bar after the signal bar",
+      "checked": 23444,
+      "failed": 0,
+      "failures": [],
+      "max_residual": 0.0,
+      "status": "PASS"
+    },
+    "exit_realism": {
+      "name": "exit_realism",
+      "description": "exits lie inside the bar that produced them",
+      "checked": 23444,
+      "failed": 0,
+      "failures": [],
+      "max_residual": 0.0,
+      "status": "PASS"
+    },
+    "mfe_mae": {
+      "name": "mfe_mae",
+      "description": "MFE/MAE recomputed from the bars the position was exposed to",
+      "checked": 23444,
+      "failed": 0,
+      "failures": [],
+      "max_residual": 0.0,
+      "status": "PASS"
+    },
+    "partitions": {
+      "name": "partitions",
+      "description": "partition matches the published boundaries",
+      "checked": 23444,
+      "failed": 0,
+      "failures": [],
+      "max_residual": 0.0,
+      "status": "PASS"
+    },
+    "aggregates": {
+      "name": "aggregates",
+      "description": "published totals equal the sums over the trade file",
+      "checked": 216,
+      "failed": 0,
+      "failures": [],
+      "max_residual": 0.0,
+      "status": "PASS"
+    },
+    "no_warmup_trade": {
+      "name": "no_warmup_trade",
+      "description": "no trade before the 60-bar warmup",
+      "checked": 23444,
+      "failed": 0,
+      "failures": [],
+      "max_residual": 0.0,
+      "status": "PASS"
+    }
+  },
+  "status": "PASS",
+  "limitations": [
+    "verifies arithmetic and causality of the published trades; it cannot prove that the strategy classes are the production ones, only that the artifacts agree",
+    "a bar-close signal is verified to fill one bar later; the paper adapter's own fill semantics are a separate comparison"
+  ]
+}

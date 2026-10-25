@@ -1,0 +1,101 @@
+{
+  "schema": "MULTI_FAMILY_RUN_V2",
+  "status": "OK",
+  "manifest": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-eco001\\data\\economic\\w006\\MANIFEST.json",
+  "out_dir": "reports\\economic\\w006",
+  "cost_model_base": {
+    "name": "BASE",
+    "fees_bps": 5.0,
+    "slippage_bps": 1.0,
+    "half_spread_bps": 0.0
+  },
+  "scenarios": [
+    "BASE",
+    "2X_COST",
+    "STRESSED_SLIPPAGE",
+    "ZERO_COST"
+  ],
+  "families": {
+    "ema_crossover": {
+      "status": "OK"
+    },
+    "momentum": {
+      "status": "OK"
+    },
+    "breakout": {
+      "status": "OK"
+    },
+    "trend": {
+      "status": "OK"
+    },
+    "mean_reversion": {
+      "status": "OK"
+    },
+    "volatility": {
+      "status": "OK"
+    }
+  },
+  "failures": [],
+  "data": {
+    "manifest": "C:\\Users\\GVLLFR0035\\Downloads\\ff-wt-eco001\\data\\economic\\w006\\MANIFEST.json",
+    "manifest_sha256": "3e392e0fcbc6ae548fd654e1622ad9d5580fd0f7c710ee6239af863fa194d62d",
+    "datasets": {
+      "BTCUSDT": {
+        "path": "datasets/BTCUSDT_5m.json",
+        "sha256": "6ba56816a77b5fea8749ba2008d8fcec507b6da62dfc2c58f20f19d4955853c5",
+        "bars": 34560,
+        "start_ts": 1782582000000,
+        "end_ts": 1792949700000,
+        "step_ms": 300000
+      },
+      "ETHUSDT": {
+        "path": "datasets/ETHUSDT_5m.json",
+        "sha256": "63a8f39c1f6d80701dd2d8af461db743a8deeb29177023d6a3fb6fc75b22ae55",
+        "bars": 34560,
+        "start_ts": 1782582000000,
+        "end_ts": 1792949700000,
+        "step_ms": 300000
+      },
+      "SOLUSDT": {
+        "path": "datasets/SOLUSDT_5m.json",
+        "sha256": "7cbf41aed656b2665ca0edde50ee87b2920919f1e3635f0a26bcab6a3b75bd4d",
+        "bars": 34560,
+        "start_ts": 1782582000000,
+        "end_ts": 1792949700000,
+        "step_ms": 300000
+      }
+    }
+  },
+  "partitions": {
+    "boundaries_utc": {
+      "dev": [
+        "2026-06-27T17:40:00Z",
+        "2026-08-26T17:40:00Z"
+      ],
+      "val": [
+        "2026-08-26T17:40:00Z",
+        "2026-09-25T17:40:00Z"
+      ],
+      "oos": [
+        "2026-09-25T17:40:00Z",
+        "2026-10-25T17:40:00Z"
+      ]
+    },
+    "boundaries_ms": {
+      "dev": [
+        1782582000000,
+        1787766000000
+      ],
+      "val": [
+        1787766000000,
+        1790358000000
+      ],
+      "oos": [
+        1790358000000,
+        1792950000000
+      ]
+    },
+    "coverage_mismatch": {},
+    "rule": "chronological over pooled coverage: DEV 50%, VAL 25%, OOS 25%"
+  }
+}
