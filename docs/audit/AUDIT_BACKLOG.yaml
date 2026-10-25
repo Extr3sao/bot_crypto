@@ -375,6 +375,69 @@ tasks:
       actually reach risk and the stop. PROCEDURALLY_SEPARATED verification,
       same author.
 
+  - id: G-6
+    title: Demonstrate crash recovery without duplicate paper execution
+    status: done
+    provenance: gap
+    contract: docs/audit/G-6.md
+    verified_commit: "66e96e1685226508e4c03a1ea2771aecf878f5b5"
+    verification: docs/audit/runs/run-20261025T141859Z-G-6/verification.json
+    run_report: docs/audit/runs/run-20261025T141859Z-G-6/RUN_REPORT.md
+    verdict: G6_VERIFIED
+    allowed_paths:
+      - docs/audit/G-6.md
+      - docs/audit/AUDIT_BACKLOG.yaml
+      - docs/audit/runtime_authority_map.md
+      - docs/audit/fixtures/**
+      - docs/audit/runs/**
+      - src/trading_bot/paper/crash_injection.py
+      - src/trading_bot/paper/durable_broker.py
+      - src/trading_bot/paper/paper_state_store.py
+      - src/trading_bot/paper/paper_runtime_state.py
+      - src/trading_bot/paper/reconciliation_v4.py
+      - scripts/start_paper_trading.py
+      - scripts/audit/g6_crash_e2e.py
+      - scripts/audit/g6_crash_worker.py
+      - scripts/audit/verify_g6.py
+      - tests/unit/paper/test_paper_recovery.py
+    protected_paths:
+      - src/trading_bot/autonomous/hot_stop.py
+      - src/trading_bot/paper/paper_cycle.py
+      - src/trading_bot/paper/broker.py
+      - src/trading_bot/risk/manager.py
+      - config/**
+      - .github/**
+      - pyproject.toml
+      - uv.lock
+      - .gitignore
+    acceptance_criteria: [ACC-G6-01, ACC-G6-02, ACC-G6-03, ACC-G6-04, ACC-G6-05, ACC-G6-06, ACC-G6-07, ACC-G6-08, ACC-G6-09, ACC-G6-10, ACC-G6-11, ACC-G6-12]
+    evidence:
+      - "4 real forced terminations (taskkill /F /T), PIDs and markers recorded"
+      - "PREPARED intent blocked as BLOCKED_UNKNOWN: 0 orders, 0 positions, 0 resends"
+      - "FILLED order materialized once: 1 position, 0 orders, ACCOUNTED persisted"
+      - "ACCOUNTED book restored: 1 position, 0 orders; two restarts identical"
+      - "inconsistent book and truncated JSON: FATAL, exit 2; .corrupt preserved"
+      - "kill switch during recovery: risk_accepted=1, hot_stop_blocked=1, 0 broker calls"
+      - "recovered position closes once at take-profit: +49.3900165 USDT, five identities true"
+      - "clean-export verifier: 17/17, deterministic replay, FALSE_SUCCESS=0"
+    covered_paths:
+      - DurablePaperBroker -> PaperStateStore -> StartupReconcilerV4
+      - scripts/start_paper_trading.py -> DurablePaperBroker -> PaperCycleEngine
+      - real child process -> taskkill/SIGKILL -> new process over the same state file
+    uncovered_paths:
+      - synthetic fixture admission is reachability evidence, not strategy edge
+      - forced kill is real but recovery uses the same disk; no physical disk failure or cross-machine failover
+      - paper_cycle still does not route through autonomous.decision (two engines remain)
+      - no exchange acceptance is exercised
+      - the two futures independent-verifier tests and the vision-panel collection error remain preexisting
+    note: >-
+      G-6 replaces the logical in-process restart with a real forced termination
+      and a new process. It separates the intent, fill and accounting boundaries
+      in the existing atomic store: FILLED is materialized once, PREPARED is
+      blocked as an unknown outcome, and ACCOUNTED/CLOSED must agree with the
+      restored book or startup fails closed. PROCEDURALLY_SEPARATED verification,
+      same author.
+
   - id: P0-LIVE-GATE
     title: Enforce LiveTradingGate on every live path that opens risk
     status: done
@@ -491,6 +554,9 @@ contracts:
   - path: docs/audit/G-5.md
     required: true
     producer: G-5
+  - path: docs/audit/G-6.md
+    required: true
+    producer: G-6
   - path: docs/audit/AUDIT_BACKLOG.yaml
     required: true
     producer: MT-0004-R1
@@ -513,11 +579,14 @@ unrecoverable:
 next_ready:
   task: null
   reason: >-
-    G-1, G-2, G-3, G-4, G-5, P0-LIVE-GATE and RFC-EXEC-SEC-002 are closed and
-    their contracts are committed. The live gate is enforced on every live
+    G-1, G-2, G-3, G-4, G-5, G-6, P0-LIVE-GATE and RFC-EXEC-SEC-002 are closed
+    and their contracts are committed. The live gate is enforced on every live
     risk-opening path, `run --auto-trade` needs explicit consent, the paper
-    launcher consults the same hot stop as the autonomous runtime and G-5
-    executed a complete paper cycle through it with durable state and
-    reconciliation. `run --demo` and `run --mode paper` are labelled as the
-    synthetic scanner they are; they remain outside the paper sink. D-6 was not
-    opened by any of these tasks; no evidenced task remains to name READY.
+    launcher consults the same hot stop as the autonomous runtime, G-5 executed
+    a complete paper cycle through it with durable state and reconciliation, and
+    G-6 proved recovery after a real forced kill without duplicate execution.
+    `run --demo` and `run --mode paper` are labelled as the synthetic scanner
+    they are; they remain outside the paper sink. D-6 was not opened by any of
+    these tasks; no evidenced task remains to name READY. The next objective is
+    to activate eligible strategies in the PAPER runtime with real, traceable
+    market data, without changing the LIVE gate.
